@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.gorgon",
+  "name": "戈耳工",
+  "class": "Avenger",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.gorgon.skill.sc-gorgon-3",
+      "aliases": [
+        "card.skill.servant.gorgon.skill.sc-gorgon-3",
+        "sc_gorgon_3"
+      ],
+      "legacyId": "sc_gorgon_3",
+      "name": "强制封印·万魔神殿",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.gorgon"
+      },
+      "printedText": "【真名解放】血之城塞-特殊攻击于你所在的战场禁止打出。所有玩家不能移动至此战场也不能离开此战场。地母神之眼-战斗阶段：令所有本回合打出了超过一张正面攻击的交战对手【败北】。",
+      "cardFace": {
+        "typeLabel": "宝具",
+        "cost": 11,
+        "basePower": 3,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 11
+        }
+      ],
+      "abilities": [
+        {
+          "id": "blood-fortress-lockdown",
+          "printedClause": "特殊攻击于你所在的战场禁止打出。所有玩家不能移动至此战场也不能离开此战场。",
+          "kind": "passive",
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "forbid-special-attacks-here",
+              "operation": "forbid",
+              "rule": "card_play",
+              "scope": {
+                "subject": "players_at_source_battlefield",
+                "cards": {
+                  "attributesAny": [
+                    "特殊"
+                  ]
+                }
+              },
+              "lifecycle": {
+                "duration": "while_active"
+              }
+            },
+            {
+              "id": "lock-source-battlefield-boundary",
+              "operation": "forbid",
+              "rule": "movement_destinations",
+              "scope": {
+                "subject": "all_players",
+                "sourceLocationBoundary": true
+              },
+              "lifecycle": {
+                "duration": "while_active"
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_active",
+            "cleanup": "remain_active"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "activation": {
+            "requiresSourceState": "active"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "responseWindow": {},
+          "limit": {}
+        },
+        {
+          "id": "earth-mother-eye",
+          "printedClause": "战斗阶段：令所有本回合打出了超过一张正面攻击的交战对手【败北】。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat",
+            "requiresSourceState": "active",
+            "opens": "controller_combat_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "defeat_player",
+              "target": {
+                "scope": "same_battlefield_opponents",
+                "where": [
+                  {
+                    "type": "face_up_cards_played_this_round_at_least",
+                    "count": 2
+                  }
+                ]
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "戈耳工.htm",
+            "locator": "从者/复仇者/英文版/戈耳工.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/戈耳工.png",
+            "locator": "servant.gorgon/戈耳工"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

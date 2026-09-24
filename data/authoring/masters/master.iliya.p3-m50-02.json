@@ -1,0 +1,206 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.iliya",
+  "name": "伊莉雅斯菲尔",
+  "class": "Master",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "master.iliya.skill.ascension",
+      "aliases": [
+        "card.skill.master.iliya.skill.ascension",
+        "ascension"
+      ],
+      "legacyId": "ascension",
+      "name": "第三法",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.iliya"
+      },
+      "printedText": "解锁此技能后，你立即从手牌、牌库及弃牌堆中移除所有力量牌。你的魔术和特殊属性的基本攻击获得+2威力。当局势牌为天之杯时，未被淘汰的玩家全部获胜。",
+      "cardFace": {
+        "typeLabel": "升华技",
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "third-magic-on-unlock",
+          "kind": "forced_trigger",
+          "printedClause": "解锁此技能后，你立即从手牌、牌库及弃牌堆中移除所有力量牌。",
+          "conditions": [
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_definition_is_self"
+            }
+          ],
+          "effects": [
+            {
+              "type": "remove_cards_in_zone",
+              "target": "controller",
+              "zone": "hand",
+              "attributesAny": [
+                "力量"
+              ]
+            },
+            {
+              "type": "remove_cards_in_zone",
+              "target": "controller",
+              "zone": "deck",
+              "attributesAny": [
+                "力量"
+              ]
+            },
+            {
+              "type": "remove_cards_in_zone",
+              "target": "controller",
+              "zone": "discard",
+              "attributesAny": [
+                "力量"
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "trigger": "m50_skill_unlocked"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "third-magic-basic-power",
+          "kind": "passive",
+          "printedClause": "你的魔术和特殊属性的基本攻击获得+2威力。",
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "magic-special-basic-plus-two",
+              "operation": "add",
+              "rule": "card_power",
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "basic": true,
+                  "attributesAny": [
+                    "魔术",
+                    "特殊"
+                  ]
+                }
+              },
+              "value": 2,
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "third-magic-heavens-cup-victory",
+          "kind": "passive",
+          "printedClause": "当局势牌为天之杯时，未被淘汰的玩家全部获胜。",
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "current_situation_id_is",
+              "situationId": "situation.sit13"
+            }
+          ],
+          "effects": [
+            {
+              "type": "finish_game",
+              "target": {
+                "scope": "all_players"
+              },
+              "reason": "master.iliya.third-magic-heavens-cup"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "trigger": "m50_round_started"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/伊莉雅斯菲尔.png",
+            "locator": "master.iliya/伊莉雅斯菲尔"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.iliya/ascension"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

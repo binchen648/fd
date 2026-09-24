@@ -1,0 +1,334 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.ciel",
+  "name": "希耶尔",
+  "class": "Master",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "master.ciel.skill.ascension",
+      "aliases": [
+        "card.skill.master.ciel.skill.ascension",
+        "ascension"
+      ],
+      "legacyId": "ascension",
+      "name": "第七圣典·形态展开",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.ciel"
+      },
+      "printedText": "你的力量攻击获得+4威力和粉碎灵魂。（战斗阶段：你的交战对手若未控制【幸运】，其下回合无法从局势牌获得魔力和威力加成。）若你拥有8点及以上的魔力，你可以令【火葬式典】+2魔力消耗将其追加打出。",
+      "cardFace": {
+        "typeLabel": "升华技",
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "expanded-seventh-scripture-strength",
+          "kind": "passive",
+          "printedClause": "你的力量攻击获得+4威力和粉碎灵魂。（战斗阶段：你的交战对手若未控制【幸运】，其下回合无法从局势牌获得魔力和威力加成。）",
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "strength-attack-power-plus-four",
+              "operation": "add",
+              "rule": "card_power",
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "attributesAny": [
+                    "力量"
+                  ]
+                }
+              },
+              "value": 4,
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            }
+          ],
+          "transforms": [
+            {
+              "id": "grant-expanded-soul-crush",
+              "type": "card",
+              "target": {
+                "subject": "controller",
+                "cards": {
+                  "attributesAny": [
+                    "力量"
+                  ]
+                }
+              },
+              "grantAbilities": [
+                {
+                  "id": "expanded-soul-crush",
+                  "kind": "phase_action",
+                  "printedClause": "你的力量攻击获得+4威力和粉碎灵魂。（战斗阶段：你的交战对手若未控制【幸运】，其下回合无法从局势牌获得魔力和威力加成。）",
+                  "activation": {
+                    "phase": "combat",
+                    "opens": "controller_combat_action_window"
+                  },
+                  "conditions": [
+                    {
+                      "type": "source_active"
+                    },
+                    {
+                      "type": "at_battlefield"
+                    }
+                  ],
+                  "targets": [],
+                  "cost": [],
+                  "effects": [
+                    {
+                      "type": "suppress_next_round_situation_benefits",
+                      "target": {
+                        "scope": "same_battlefield_opponents",
+                        "where": [
+                          {
+                            "type": "does_not_control_card_definition",
+                            "definitionIds": [
+                              "card.cardluck"
+                            ],
+                            "zones": [
+                              "attack"
+                            ],
+                            "activeOnly": true,
+                            "face": "up"
+                          }
+                        ]
+                      },
+                      "roundOffset": 1,
+                      "benefits": [
+                        "situation_mana_gain",
+                        "situation_power_bonus"
+                      ]
+                    }
+                  ],
+                  "creates": [],
+                  "ruleModifiers": [],
+                  "lifecycle": {},
+                  "responseWindow": {
+                    "order": "turn_order",
+                    "passBehavior": "decline_this_window"
+                  },
+                  "limit": {},
+                  "visibility": {},
+                  "execution": {
+                    "mode": "automatic",
+                    "allowedOperations": []
+                  }
+                }
+              ],
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "append-funeral-rite",
+          "kind": "passive",
+          "printedClause": "若你拥有8点及以上的魔力，你可以令【火葬式典】+2魔力消耗将其追加打出。",
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "mana_at_least",
+              "amount": 8
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "allow-funeral-rite-append",
+              "operation": "allow",
+              "rule": "standard_append",
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "definitionIds": [
+                    "master.ciel.skill.s2"
+                  ]
+                }
+              },
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            },
+            {
+              "id": "funeral-rite-append-surcharge",
+              "operation": "add",
+              "rule": "standard_append_cost",
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "definitionIds": [
+                    "master.ciel.skill.s2"
+                  ]
+                }
+              },
+              "value": 2,
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/希耶尔.png",
+            "locator": "master.ciel/希耶尔"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.ciel/ascension"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    },
+    {
+      "id": "master.ciel.skill.s1",
+      "aliases": [
+        "card.skill.master.ciel.skill.s1",
+        "s1"
+      ],
+      "legacyId": "s1",
+      "name": "秘密的代行者",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.ciel"
+      },
+      "printedText": "你进行常规移动时无视交战状态，其他玩家进行常规移动时无视与你的交战状态。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "game-start-player-flags",
+          "kind": "forced_trigger",
+          "printedClause": "你进行常规移动时无视交战状态，其他玩家进行常规移动时无视与你的交战状态。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "set_player_flag",
+              "target": "controller",
+              "key": "ignoreEngagement",
+              "value": true
+            },
+            {
+              "type": "set_player_flag",
+              "target": "controller",
+              "key": "ignoreOthersEngagement",
+              "value": true
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.ciel-mediator",
+        "sourceRefs": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/希耶尔.png",
+            "locator": "master.ciel/希耶尔"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.ciel/s1"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

@@ -1,0 +1,173 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.kriemhild",
+  "name": "克琳希德",
+  "class": "Berserker",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.kriemhild.skill.sc-kriemhild-2",
+      "aliases": [
+        "card.skill.servant.kriemhild.skill.sc-kriemhild-2",
+        "sc_kriemhild_2"
+      ],
+      "legacyId": "sc_kriemhild_2",
+      "name": "未亡人",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.kriemhild"
+      },
+      "printedText": "如果其他控制或于技能区存在【流离魔剑·圣妃失坠】的玩家赢得了你所在的战斗，你同时赢得该战斗（均分战果，无视【败北】）。未亡人的请柬-打出时：令所有其他玩家按回合顺位选择是否移动至你所在的战场。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "cost": 1,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 1
+        }
+      ],
+      "abilities": [
+        {
+          "id": "widow-shared-victory",
+          "kind": "passive",
+          "printedClause": "If another player who controls Corrupted Balmung or has it in their Skill Zone wins your fight, you also win that fight, split the VP, and ignore Defeat for this win.",
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "kriemhild-black-wedding-winner",
+              "operation": "allow",
+              "rule": "combat_winner_inclusion",
+              "scope": {
+                "subject": "controller",
+                "whenOtherWinnerControlsOrHasSkillDefinitionId": "servant.kriemhild.skill.sc-kriemhild-3"
+              },
+              "lifecycle": {
+                "duration": "while_active"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "widows-invitation",
+          "kind": "forced_trigger",
+          "printedClause": "Widow's Invitation - On Play: In turn order, each other player chooses whether to move to your battlefield.",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "event_definition_is_self"
+            },
+            {
+              "type": "event_face_is",
+              "face": "face_up"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_each_player_option",
+              "candidateTarget": {
+                "scope": "all_opponents"
+              },
+              "candidateConditions": [
+                {
+                  "type": "can_effect_move_to_controller_location"
+                }
+              ],
+              "skipIfNoCandidates": true,
+              "options": [
+                {
+                  "id": "move",
+                  "label": "移动至该战场",
+                  "effects": [
+                    {
+                      "type": "move_player",
+                      "target": "decision_player",
+                      "to": "controller_location",
+                      "movementKind": "effect"
+                    }
+                  ]
+                },
+                {
+                  "id": "stay",
+                  "label": "留在原地",
+                  "effects": []
+                }
+              ]
+            }
+          ],
+          "creates": [],
+          "activation": {
+            "trigger": "on_card_played"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.kriemhild-black-wedding",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "克琳希德.htm",
+            "locator": "从者/狂战士/英文版/克琳希德.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/克琳希德.png",
+            "locator": "servant.kriemhild/克琳希德"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

@@ -13,6 +13,7 @@ export interface EventRuleCandidate {
   tags: string[];
   eventSetIds: string[];
   locationId?: string;
+  visibility?: 'public' | 'hidden_until_trigger';
   ruleInstanceId?: string;
   ruleControllerPlayerId?: string;
 }
@@ -101,6 +102,7 @@ export function listEventRuleCandidates(
       if (!pack.eventCatalog?.[entry.eventCardId]) return;
       result.push({ token: indexedToken(revision, 'event_discard', index, entry.eventCardId, entry.ruleInstanceId), zone: 'event_discard',
         ...candidateBase(pack, entry.eventCardId), ...(entry.locationId ? { locationId: entry.locationId } : {}),
+        ...(entry.visibility.scope === 'public' || entry.visibility.scope === 'hidden_until_trigger' ? { visibility: entry.visibility.scope } : {}),
         ...(entry.ruleInstanceId ? { ruleInstanceId: entry.ruleInstanceId } : {}),
         ...(entry.ruleControllerPlayerId ? { ruleControllerPlayerId: entry.ruleControllerPlayerId } : {}) });
     });
@@ -110,6 +112,7 @@ export function listEventRuleCandidates(
       if (!pack.eventCatalog?.[placement.eventCardId]) return;
       result.push({ token: battlefieldToken(revision, index, placement.eventCardId, placement.ruleInstanceId), zone: 'event_battlefield',
         ...candidateBase(pack, placement.eventCardId), locationId: placement.locationId,
+        ...(placement.visibility.scope === 'public' || placement.visibility.scope === 'hidden_until_trigger' ? { visibility: placement.visibility.scope } : {}),
         ...(placement.ruleInstanceId ? { ruleInstanceId: placement.ruleInstanceId } : {}),
         ...(placement.ruleControllerPlayerId ? { ruleControllerPlayerId: placement.ruleControllerPlayerId } : {}) });
     });
@@ -281,6 +284,73 @@ export function moveEventRuleCandidate(
   options: MoveEventRuleOptions = {},
 ): EventRuleCandidate {
   return moveEventRuleCandidates(state, pack, [token], destination, options)[0]!;
+}
+
+function shuffleMainEventDeckDeterministically(state: GameState): void {
+  const deck = state.eventDeck ??= [];
+  const r = runtime(state);
+  for (let index = deck.length - 1; index > 0; index--) {
+    let randomState = r.randomState >>> 0;
+    randomState ^= randomState << 13; randomState ^= randomState >>> 17; randomState ^= randomState << 5;
+    r.randomState = randomState >>> 0;
+    const swapIndex = Math.floor((r.randomState / 0x100000000) * (index + 1));
+    [deck[index], deck[swapIndex]] = [deck[swapIndex]!, deck[index]!];
+  }
+}
+
+/** Swap exactly two currently placed events without changing either event's face/visibility. */
+export function swapSelectedEventRuleLocations(state: GameState, pack: AbilityDefinitionPack, tokens: readonly string[]): void {
+  if (tokens.length !== 2 || new Set(tokens).size !== 2) throw new Error('Event-rule swap requires exactly two distinct selections');
+  const resolved = tokens.map((token) => resolveCandidate(state, pack, token));
+  if (resolved.some((entry) => entry.candidate.zone !== 'event_battlefield' || !entry.placement)) {
+    throw new Error('Event-rule swap selections must be current battlefield events');
+  }
+  const left = resolved[0]!; const right = resolved[1]!;
+  const leftPlacement = state.eventPlacements[left.index];
+  const rightPlacement = state.eventPlacements[right.index];
+  if (!leftPlacement || !rightPlacement) throw new Error('Event-rule swap selection became stale');
+  if (leftPlacement.locationId === rightPlacement.locationId) {
+    [state.eventPlacements[left.index], state.eventPlacements[right.index]] = [rightPlacement, leftPlacement];
+  } else {
+    const leftLocation = leftPlacement.locationId;
+    leftPlacement.locationId = rightPlacement.locationId;
+    rightPlacement.locationId = leftLocation;
+  }
+  runtime(state).eventRuleZoneRevision++;
+  refreshEventForbids(state, pack);
+}
+
+/** Return one current event to the main event deck, shuffle, then draw its replacement at the same place and visibility. */
+export function replaceSelectedEventRuleFromDeck(state: GameState, pack: AbilityDefinitionPack, token: string): EventRuleCandidate {
+  const resolved = resolveCandidate(state, pack, token);
+  if (resolved.candidate.zone !== 'event_battlefield' || !resolved.placement) {
+    throw new Error('Event-rule replacement selection must be a current battlefield event');
+  }
+  const prior = structuredClone(resolved.placement);
+  const priorLocationId = prior.locationId;
+  if (!priorLocationId) throw new Error('Event-rule replacement battlefield location is missing');
+  if (!['public', 'hidden_until_trigger'].includes(prior.visibility.scope)) throw new Error('Event-rule replacement visibility is unsupported');
+  state.eventPlacements.splice(resolved.index, 1);
+  state.eventDeck ??= [];
+  state.eventDeck.push(resolved.candidate.eventCardId);
+  shuffleMainEventDeckDeterministically(state);
+  const replacementEventId = state.eventDeck.shift();
+  if (!replacementEventId) throw new Error('Event-rule replacement deck is empty');
+  const metadata = eventMetadata(pack, replacementEventId);
+  const ruleInstanceId = pack.eventRules?.[replacementEventId] ? allocateRuleInstanceId(state) : undefined;
+  state.eventPlacements.push({
+    eventCardId: replacementEventId, locationId: priorLocationId,
+    ...(ruleInstanceId ? { ruleInstanceId } : {}),
+    visibility: structuredClone(prior.visibility),
+    ...(metadata.printedReward !== undefined ? { victoryPoints: metadata.printedReward } : {}),
+    ...(metadata.battleModifiers?.length ? { battleModifiers: structuredClone(metadata.battleModifiers) } : {}),
+  });
+  runtime(state).eventRuleZoneRevision++;
+  refreshEventForbids(state, pack);
+  const candidate = listEventRuleCandidates(state, pack, ['event_battlefield']).find((entry) =>
+    entry.eventCardId === replacementEventId && entry.locationId === priorLocationId);
+  if (!candidate) throw new Error('Event-rule replacement placement is missing after commit');
+  return candidate;
 }
 
 export function eventRulePlacementByInstance(state: GameState, ruleInstanceId: string): EventPlacementState | undefined {

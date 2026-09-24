@@ -1,0 +1,359 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.arcueid",
+  "name": "爱尔奎特·布伦史塔德(御主)",
+  "class": "Master",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "master.arcueid.skill.ascension",
+      "aliases": [
+        "card.skill.master.arcueid.skill.ascension",
+        "ascension"
+      ],
+      "legacyId": "ascension",
+      "name": "千年城",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.arcueid"
+      },
+      "printedText": "（将此牌加入你的技能区）\n只有在你本回合使用了【空想具现化】时，才可打出此牌。\n月之真祖-被动：你的基础攻击受到【血之渴望】效果的双倍影响。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "cost": 5,
+        "basePower": 9,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 5
+        }
+      ],
+      "abilities": [
+        {
+          "id": "millennium-castle-double-thirst",
+          "kind": "passive",
+          "printedClause": "月之真祖-被动：你的基础攻击受到【血之渴望】效果的双倍影响。",
+          "conditions": [
+            {
+              "type": "player_flag_equals",
+              "key": "moonPrincessThirstActive",
+              "value": true
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "millennium-castle-extra-thirst-cost",
+              "printedClause": "月之真祖-被动：你的基础攻击受到【血之渴望】效果的双倍影响。",
+              "operation": "add",
+              "rule": "card_cost",
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "basic": true
+                }
+              },
+              "value": 1
+            },
+            {
+              "id": "millennium-castle-extra-thirst-power",
+              "printedClause": "月之真祖-被动：你的基础攻击受到【血之渴望】效果的双倍影响。",
+              "operation": "add",
+              "rule": "card_power",
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "basic": true
+                }
+              },
+              "value": 2
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/爱尔奎特·布伦史塔德(御主).png",
+            "locator": "master.arcueid/爱尔奎特·布伦史塔德(御主)"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.arcueid/ascension"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      },
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "master.arcueid.skill.s1a",
+      "aliases": [
+        "card.skill.master.arcueid.skill.s1a",
+        "s1a"
+      ],
+      "legacyId": "s1a",
+      "name": "月姬",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.arcueid"
+      },
+      "printedText": "前哨阶段：获得【血之渴望】直至你赢得一场战斗且当你赢得时，偷取该战斗中一名对手的至多2点魔力。",
+      "cardFace": {
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "moon-princess-grant-thirst",
+          "printedClause": "前哨阶段：获得【血之渴望】直至你赢得一场战斗",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "advance",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "effects": [
+            {
+              "type": "set_player_flag",
+              "target": "controller",
+              "key": "moonPrincessThirstActive",
+              "value": true
+            }
+          ],
+          "creates": [
+            {
+              "type": "create_card_instances",
+              "definitionId": "master.arcueid.skill.s3",
+              "count": 1,
+              "zone": "skill",
+              "face": "up",
+              "active": false,
+              "residual": false,
+              "temporary": true,
+              "lifecycle": {
+                "duration": "until_condition_met",
+                "cleanup": "remain_active",
+                "expiresOn": [
+                  "combat.win"
+                ]
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "moon-princess-steal-on-win",
+          "printedClause": "当你赢得时，偷取该战斗中一名对手的至多2点魔力",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "player_flag_equals",
+              "key": "moonPrincessThirstActive",
+              "value": true
+            },
+            {
+              "type": "event_player_won_combat"
+            },
+            {
+              "type": "target_count_at_least",
+              "count": 1,
+              "target": {
+                "scope": "event_combat_opponents"
+              }
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_players",
+              "candidateTarget": {
+                "scope": "event_combat_opponents"
+              },
+              "minCount": 1,
+              "maxCount": 1,
+              "allowCancel": false,
+              "then": [
+                {
+                  "type": "choose_one",
+                  "allowCancel": false,
+                  "options": [
+                    {
+                      "id": "0",
+                      "label": "0",
+                      "effects": [
+                        {
+                          "type": "transfer_mana",
+                          "from": "selected_player",
+                          "target": "controller",
+                          "amount": 0
+                        }
+                      ]
+                    },
+                    {
+                      "id": "1",
+                      "label": "1",
+                      "effects": [
+                        {
+                          "type": "transfer_mana",
+                          "from": "selected_player",
+                          "target": "controller",
+                          "amount": 1
+                        }
+                      ]
+                    },
+                    {
+                      "id": "2",
+                      "label": "2",
+                      "effects": [
+                        {
+                          "type": "transfer_mana",
+                          "from": "selected_player",
+                          "target": "controller",
+                          "amount": 2
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "payloadKey": "targetPlayerId"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "trigger": "after_battle_result_determined"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "moon-princess-end-thirst-on-win",
+          "printedClause": "获得【血之渴望】直至你赢得一场战斗",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "player_flag_equals",
+              "key": "moonPrincessThirstActive",
+              "value": true
+            },
+            {
+              "type": "event_player_won_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "remove_owned_cards_by_linked_skill",
+              "target": "controller",
+              "linkedSkillId": "master.arcueid.skill.s3",
+              "zones": [
+                "skill"
+              ]
+            },
+            {
+              "type": "clear_player_flag",
+              "target": "controller",
+              "key": "moonPrincessThirstActive"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "trigger": "after_battle_result_determined"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "master.arcueid/爱尔奎特·布伦史塔德(御主)",
+          "master/master.arcueid/s1a"
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

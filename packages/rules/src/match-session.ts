@@ -18,6 +18,8 @@ import {
   type OpponentCloseToOneServerAuthoritySeal,
 } from './ability/opponent-close-to-one-authority';
 import { clearTransientCardTransformState } from './ability/card-instance-state';
+import { m50FaceDownAttackResidual } from './ability/m50-face-down-attack-rules';
+import { m50DeploymentDestinationForbidden, m50DeploymentManaGainForbidden } from './ability/m50-structural-card-modifiers';
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
 import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './ability/deployment-destinations';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from './ability/battle-terminal';
@@ -569,6 +571,7 @@ export class MatchSession {
     const legalLocations = getEnabledLocations(this.state.map, this.state.locationConfig)
       .filter((location) => !closedLocations.has(location.id))
       .filter((location) => location.id !== 'recon')
+      .filter((location) => !m50DeploymentDestinationForbidden(this.state, playerId, location.id))
       .filter((location) => {
         const occupyingPlayerIds = this.state.players
           .filter((candidate) => candidate.id !== playerId && candidate.status === 'active' && candidate.locationId === location.id)
@@ -1216,7 +1219,8 @@ export class MatchSession {
       const shouldRemainActive = abilities.some((ability) =>
         ability.kind === 'residual' &&
         !['discard_at_round_end', 'close_at_round_end'].includes(String(ability.lifecycle?.cleanup ?? ''))) ?? false;
-      if (shouldRemainActive) continue;
+      const shouldRemainFaceDown = m50FaceDownAttackResidual(this.state, card.instanceId);
+      if (shouldRemainActive || shouldRemainFaceDown) continue;
       card.zone = 'discard';
       card.controllerPlayerId = card.ownerPlayerId;
       card.visibility = visibleScope('discard', card.ownerPlayerId);
@@ -1247,7 +1251,7 @@ export class MatchSession {
   }
 
   private applyDeploymentLocationReward(playerId: string, locationId: LocationId): void {
-    if (locationId !== 'magic_workshop') return;
+    if (locationId !== 'magic_workshop' || m50DeploymentManaGainForbidden(this.state, playerId, locationId)) return;
     const workshopPlayers = this.state.players
       .filter((candidate) => candidate.status === 'active' && candidate.locationId === 'magic_workshop')
       .sort((left, right) => left.seat - right.seat);

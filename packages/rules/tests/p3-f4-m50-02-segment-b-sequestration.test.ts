@@ -1,0 +1,23 @@
+import { describe, expect, it } from 'vitest';
+import * as rules from '../src/index';
+import type { AbilityDefinitionPack, AuthoringCard } from '../src/ability/types';
+import type { GameState } from '../src/schema/game';
+import { sequesterRandomInactiveServantSkill } from '../src/ability/m50-sequestration';
+import { createSeededGameState } from '../src/tools/seeded-state';
+
+const SOURCE_DEF='servant.fixture.diarmuid';
+const NORMAL_DEF='servant.fixture.normal-skill';
+const ONCE_DEF='servant.fixture.once-skill';
+function ability(limit:any={}) { return { id:'a',kind:'phase_action',printedClause:'fixture',activation:{phase:'action',opens:'controller_action_window'},conditions:[],targets:[],effects:[],cost:[],ruleModifiers:[],creates:[],lifecycle:{},responseWindow:{},limit,visibility:{},execution:{mode:'automatic',allowedOperations:[]} } as any; }
+function card(id:string, abilities:any[]=[ability()]):AuthoringCard { return {id,name:id,cardType:'servant_skill',cardFace:{typeLabel:'fixture',attributes:[],cost:0,basePower:0},playTiming:{phase:'action',window:'controller_action_window'},playRequirements:[],abilities,mode:'automatic'}; }
+function pack():AbilityDefinitionPack { return {cards:{[SOURCE_DEF]:card(SOURCE_DEF),[NORMAL_DEF]:card(NORMAL_DEF),[ONCE_DEF]:card(ONCE_DEF,[ability({type:'per_game',scope:'this_card',uses:1})])}}; }
+function physical(instanceId:string,definitionId:string,owner:string){return {instanceId,definitionId,ownerPlayerId:owner,controllerPlayerId:owner,zone:'skill',visibility:{scope:'owner_only' as const,ownerPlayerId:owner}};}
+function setup(definitionId=NORMAL_DEF, active=false, faceDown=true):GameState { const s=createSeededGameState({activeSeats:[1,2]}); s.cards=[physical('source',SOURCE_DEF,'p1'),physical('target-skill',definitionId,'p2')]; rules.initializeAbilityRuntime(s,pack(),{seed:17}); s.abilityRuntime!.cardState.source={active:true,faceDown:false,playedRound:s.round.roundNumber}; s.abilityRuntime!.cardState['target-skill']={active,faceDown,playedRound:s.round.roundNumber}; return s; }
+function eliminateController(s:GameState){ s.players[0]!.militaryResult=-7; s.battleResults=[{battlefieldId:'shinto',winnerPlayerIds:[],tied:false,winnerPlayerId:null,margin:1,vpReward:0,militaryAdjustments:[{playerId:'p1',delta:-1}],participantBreakdowns:[]}]; return rules.applyBattleScoring(s).nextState; }
+
+describe('P3 F4 M50-02 servant-skill sequestration lifecycle',()=>{
+  it('sequesters an inactive servant skill and restores its face when the sequestering controller is eliminated',()=>{ const s=setup(); expect(sequesterRandomInactiveServantSkill(s,'p2','p1','source')).toBe('target-skill'); expect(s.cards[1]).toMatchObject({zone:'removed_from_game',visibility:{scope:'public'}}); expect(s.abilityRuntime!.sequesteredServantSkills).toEqual([expect.objectContaining({instanceId:'target-skill',ownerPlayerId:'p2',returnOnPlayerEliminationId:'p1',returnFaceDown:true})]); const scored=eliminateController(s); expect(scored.players[0]).toMatchObject({status:'eliminated'}); expect(scored.cards.find(c=>c.instanceId==='target-skill')).toMatchObject({zone:'skill',controllerPlayerId:'p2',visibility:{scope:'owner_only',ownerPlayerId:'p2'}}); expect(scored.abilityRuntime!.cardState['target-skill']).toMatchObject({active:false,faceDown:true}); expect(scored.abilityRuntime!.sequesteredServantSkills).toEqual([]); });
+  it('never selects an active servant skill',()=>{ const s=setup(NORMAL_DEF,true,false); expect(sequesterRandomInactiveServantSkill(s,'p2','p1','source')).toBeUndefined(); expect(s.cards[1]!.zone).toBe('skill'); expect(s.abilityRuntime!.sequesteredServantSkills).toEqual([]); });
+  it('does not create a return receipt for once-per-game servant skills',()=>{ const s=setup(ONCE_DEF,false,false); expect(sequesterRandomInactiveServantSkill(s,'p2','p1','source')).toBe('target-skill'); expect(s.abilityRuntime!.sequesteredServantSkills).toEqual([]); const scored=eliminateController(s); expect(scored.cards.find(c=>c.instanceId==='target-skill')!.zone).toBe('removed_from_game'); });
+  it('does not restore a receipt when a different player is eliminated',()=>{ const s=setup(); sequesterRandomInactiveServantSkill(s,'p2','p1','source'); s.players[1]!.militaryResult=-7; s.battleResults=[{battlefieldId:'shinto',winnerPlayerIds:[],tied:false,winnerPlayerId:null,margin:1,vpReward:0,militaryAdjustments:[{playerId:'p2',delta:-1}],participantBreakdowns:[]}]; const scored=rules.applyBattleScoring(s).nextState; expect(scored.cards.find(c=>c.instanceId==='target-skill')!.zone).toBe('removed_from_game'); expect(scored.abilityRuntime!.sequesteredServantSkills).toHaveLength(1); });
+});

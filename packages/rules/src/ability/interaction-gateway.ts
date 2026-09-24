@@ -52,8 +52,12 @@ function containsNodeType(value: unknown, type: string): boolean {
 
 /** Reserved structural envelope for the FB2-23 private hand interaction. */
 export function isSameBattlefieldPrivateHandReturnInteractionCandidate(ability: AuthoringAbility): boolean {
-  return containsNodeType(ability, 'same_battlefield_as_controller') ||
-    containsNodeType(ability, 'inspect_target_hand_optional_return_one_to_owner_deck');
+  if (containsNodeType(ability, 'inspect_target_hand_optional_return_one_to_owner_deck')) return true;
+  if (ability.targets.length !== 1) return false;
+  const target = ability.targets[0]!;
+  const constraints = nodes(target.constraints);
+  return target.type === 'player' && constraints.length === 1 &&
+    constraints[0]!.type === 'same_battlefield_as_controller';
 }
 
 /** Exact identity-free semantic contract accepted by FB2-23. */

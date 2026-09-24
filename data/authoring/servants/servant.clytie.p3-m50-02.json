@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.clytie",
+  "name": "克吕提厄·梵高",
+  "class": "Foreigner",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.clytie.skill.sc-clytie-3",
+      "aliases": [
+        "card.skill.servant.clytie.skill.sc-clytie-3",
+        "sc_clytie_3"
+      ],
+      "legacyId": "sc_clytie_3",
+      "name": "淬标之魂",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.clytie"
+      },
+      "printedText": "向日葵-被动：当你【真名解放】时，所有玩家展示其弃牌堆且其中每有一张【领域外生命】，该玩家失去2点战果（至多失去6点），然后，将因此效果展示的所有【领域外生命】加入你的手牌并将此牌移除游戏。",
+      "cardFace": {
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sunflower-true-name-harvest",
+          "printedClause": "向日葵-被动：当你【真名解放】时，所有玩家展示其弃牌堆且其中每有一张【领域外生命】，该玩家失去2点战果（至多失去6点），然后，将因此效果展示的所有【领域外生命】加入你的手牌并将此牌移除游戏。",
+          "kind": "forced_trigger",
+          "conditions": [
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points_per_matching_cards",
+              "target": "all_players",
+              "zone": "discard",
+              "definitionIds": [
+                "card.x-foreign-life",
+                "card.x-foreigner",
+                "card.skill.servant.molay.skill.sc-molay-4",
+                "card.skill.servant.abigail.skill.sc-abigail-4",
+                "card.skill.servant.hokusai.skill.sc-hokusai-4",
+                "card.skill.servant.voyager.skill.sc-voyager-4",
+                "card.skill.servant.clytie.skill.sc-clytie-4"
+              ],
+              "amountPerCard": 2,
+              "maxAmount": 6
+            },
+            {
+              "type": "transfer_matching_cards",
+              "sourceTarget": "all_players",
+              "target": "controller",
+              "zone": "discard",
+              "destination": "hand",
+              "definitionIds": [
+                "card.x-foreign-life",
+                "card.x-foreigner",
+                "card.skill.servant.molay.skill.sc-molay-4",
+                "card.skill.servant.abigail.skill.sc-abigail-4",
+                "card.skill.servant.hokusai.skill.sc-hokusai-4",
+                "card.skill.servant.voyager.skill.sc-voyager-4",
+                "card.skill.servant.clytie.skill.sc-clytie-4"
+              ]
+            },
+            {
+              "type": "exile_source_card"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "trigger": "m50_servant_true_name_revealed"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "从者/降临者/英文版/克吕提厄·梵高.htm",
+          "servant.clytie/克吕提厄·梵高"
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

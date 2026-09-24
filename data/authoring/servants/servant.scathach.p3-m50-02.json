@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.scathach",
+  "name": "斯卡哈",
+  "class": "Lancer",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.scathach.skill.sc-scathach-2",
+      "aliases": [
+        "card.skill.servant.scathach.skill.sc-scathach-2",
+        "sc_scathach_2"
+      ],
+      "legacyId": "sc_scathach_2",
+      "name": "贯穿死翔之枪",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.scathach"
+      },
+      "printedText": "【真名解放】\n战斗阶段：若仅有一名对手与你位于同一战场，令其关闭一张自己的非残留攻击。\n死兆-战斗阶段：若你获胜，你每有一名交战对手，便获得1点战果。",
+      "cardFace": {
+        "typeLabel": "迅捷/宝具",
+        "cost": 5,
+        "basePower": 9,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "piercing-spear-close",
+          "printedClause": "战斗阶段：若仅有一名对手与你位于同一战场，令其关闭一张自己的非残留攻击。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat",
+            "requiresSourceState": "active",
+            "opens": "controller_combat_action_window"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "phase_is",
+              "phase": "combat"
+            },
+            {
+              "type": "target_count_equals",
+              "scope": "same_battlefield_opponents",
+              "count": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "opponent_close_one_non_residual"
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "death-omen",
+          "printedClause": "死兆-战斗阶段：若你获胜，你每有一名交战对手，便获得1点战果。",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "gain_victory_points_per_target",
+              "target": "controller",
+              "countTarget": {
+                "scope": "same_battlefield_opponents"
+              },
+              "amountPerTarget": 1
+            }
+          ],
+          "kind": "passive",
+          "activation": {
+            "phase": "combat",
+            "requiresSourceState": "active",
+            "trigger": "after_battle_result_determined"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "event_player_won_combat"
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "斯卡哈.htm",
+            "locator": "从者/枪兵/英文版/斯卡哈.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/斯卡哈.png",
+            "locator": "servant.scathach/斯卡哈"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

@@ -18,7 +18,7 @@ import { assignInitialPlayerLocations, movePlayer } from "./movement";
 import { resolveBattlefield } from "./combat-resolver";
 import { resolveEffectsForWindow } from "./effect-resolver";
 import { getEnabledLocations } from "./map-engine";
-import { advanceAbilityPhase, processAbilityEvent, processAuthoritativeMovementAbilityEvent, recordAuthoritativeVictoryPointChange } from '../ability/interpreter';
+import { advanceAbilityPhase, processAbilityEvent, processAuthoritativeManaSpentAbilityEvent, processAuthoritativeMovementAbilityEvent, recordAuthoritativeVictoryPointChange } from '../ability/interpreter';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from '../ability/battle-terminal';
 import { rememberB03BattleAttributeSnapshot } from '../ability/batch-modifier-lifecycle-rules';
 import { rememberB06BattleEventVpSnapshot } from '../ability/batch-card-play-combat-event-burst-rules';
@@ -507,6 +507,7 @@ export function stepGameLoop(
     });
     nextState = movement.nextState;
     if (movement.moved && nextState.abilityRuntime && fromLocationId) {
+      if (movement.manaSpent > 0) processAuthoritativeManaSpentAbilityEvent(nextState, input.action.playerId, movement.manaSpent, fromLocationId);
       processAuthoritativeMovementAbilityEvent(nextState, {
         type: 'after_controller_enters_location',
         playerId: input.action.playerId,
@@ -528,11 +529,17 @@ export function stepGameLoop(
   }
 
   if (state.round.activePhase === "action" && input?.action?.type === "play") {
+    const beforeMana = state.players.find((player) => player.id === input.action!.playerId)?.mana;
+    const spendLocationId = state.players.find((player) => player.id === input.action!.playerId)?.locationId;
     nextState = playServantCardPair(state, {
       playerId: input.action.playerId,
       cardInstanceIds: input.action.cardInstanceIds,
       revealedCardInstanceIds: input.action.revealedCardInstanceIds,
     }).nextState;
+    const afterMana = nextState.players.find((player) => player.id === input.action!.playerId)?.mana;
+    if (nextState.abilityRuntime && Number.isSafeInteger(beforeMana) && Number.isSafeInteger(afterMana) && beforeMana! > afterMana!) {
+      processAuthoritativeManaSpentAbilityEvent(nextState, input.action.playerId, beforeMana! - afterMana!, spendLocationId);
+    }
     nextState = {
       ...nextState,
       round: {

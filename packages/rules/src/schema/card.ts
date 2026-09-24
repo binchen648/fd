@@ -35,4 +35,8 @@ export interface CardInstance {
   zone: string;
   visibility: VisibilityState;
   generatedBy?: string;
+  /** Player that created this derived physical card instance, distinct from source-instance provenance. */
+  createdByPlayerId?: string;
+  /** Physical card instance copied to derive this card, when applicable. */
+  derivedFromInstanceId?: string;
 }

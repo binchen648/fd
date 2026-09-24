@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.sieg",
+  "name": "齐格",
+  "class": "Master",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "master.sieg.skill.ascension",
+      "aliases": [
+        "card.skill.master.sieg.skill.ascension",
+        "ascension"
+      ],
+      "legacyId": "ascension",
+      "name": "第二类永动机碎片",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sieg"
+      },
+      "printedText": "当位于你所在地点的一名对手花费了4点或更多的魔力时，你恢复一枚令咒。【同调】状态时，你的力量基础攻击获得威力+3。",
+      "cardFace": {
+        "typeLabel": "升华技",
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "galvanism-recover-seal",
+          "kind": "forced_trigger",
+          "printedClause": "当位于你所在地点的一名对手花费了4点或更多的魔力时，你恢复一枚令咒。",
+          "conditions": [
+            {
+              "type": "source_owned_live"
+            },
+            {
+              "type": "event_player_is_opponent"
+            },
+            {
+              "type": "event_player_same_location_as_controller"
+            },
+            {
+              "type": "event_mana_spent_at_least",
+              "amount": 4
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "adjust_command_seals",
+              "player": "controller",
+              "amount": 1,
+              "directive": "recover_command_seal"
+            }
+          ],
+          "creates": [],
+          "activation": {
+            "trigger": "m50_player_mana_spent"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "galvanism-transformed-strength",
+          "kind": "passive",
+          "printedClause": "【同调】状态时，你的力量基础攻击获得威力+3。",
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "player_flag_number_current_round",
+              "key": "transformedRound"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "ruleModifiers": [
+            {
+              "id": "galvanism-transformed-strength-power",
+              "rule": "card_power",
+              "operation": "add",
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "basic": true,
+                  "attributesAny": [
+                    "力量"
+                  ]
+                }
+              },
+              "value": 3,
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            }
+          ],
+          "effects": [],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.sieg-galvanism",
+        "sourceRefs": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/齐格.png",
+            "locator": "master.sieg/齐格"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.sieg/ascension"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      },
+      "initialPlacement": "outside_game"
+    }
+  ]
+}

@@ -4,6 +4,9 @@ import type { LocationId, MapDefinition, MatchLocationConfig } from "../schema/l
 import { canOccupyLocation, getLocationById } from "./map-engine";
 import { movementLockedByPersistentRule, rulerSealMovementLocked } from "./rule-overrides";
 import { b03WorkshopExitForbidden } from '../ability/batch-modifier-lifecycle-rules';
+import { m50MovementDestinationForbidden, m50RegularMovementCostDiscount } from '../ability/m50-structural-card-modifiers';
+import { m50SourceBattlefieldMovementForbidden } from '../ability/m50-source-battlefield-lockdown';
+import { m50ManaSpendingForbidden } from '../ability/m50-effect-installed-rule-modifiers';
 
 const STARTING_LOCATION_BY_SEAT: Record<number, LocationId> = {
   1: "miyama_town",
@@ -26,6 +29,8 @@ export interface MovePlayerInput {
   movementKind: "normal" | "effect";
   /** Explicit trusted exception for an already-authorized effect that ignores card movement restrictions. */
   ignoreCardMovementRestrictions?: boolean;
+  /** Trusted effect relocation may target a location without following normal movement arrows. */
+  ignorePathForEffect?: boolean;
 }
 
 export interface MovePlayerResult extends MovementResult {
@@ -40,6 +45,7 @@ export interface MovePlayerResult extends MovementResult {
     | "movement_locked"
     | "invalid_path"
     | "insufficient_mana"
+    | "mana_spending_forbidden"
     | "destination_blocked";
 }
 
@@ -100,18 +106,33 @@ export function movePlayer(state: GameState, input: MovePlayerInput): MovePlayer
   if ((movementLockedByPersistentRule(state, player.id) || rulerSealMovementLocked(state, player.id) || b03WorkshopExitForbidden(state, player.id)) && input.ignoreCardMovementRestrictions !== true) {
     return failure(state, "movement_locked");
   }
+  if (m50MovementDestinationForbidden(state, player.id, input.to) && input.ignoreCardMovementRestrictions !== true) {
+    return failure(state, "destination_blocked");
+  }
+  if (m50SourceBattlefieldMovementForbidden(state, player.locationId, input.to) && input.ignoreCardMovementRestrictions !== true) {
+    return failure(state, "movement_locked");
+  }
   if (input.movementKind === "normal" && isPlayerEngaged(state, player.id)) {
     return failure(state, "engaged");
   }
 
-  const path = findMovementPath(state.map, state.locationConfig, player.locationId, input.to);
+  const path = input.movementKind === "effect" && input.ignorePathForEffect === true
+    ? [player.locationId, input.to]
+    : findMovementPath(state.map, state.locationConfig, player.locationId, input.to);
   if (!path) {
     return failure(state, "invalid_path");
   }
 
-  const manaSpent = input.movementKind === "normal"
+  const printedMovementCost = input.movementKind === "normal"
     ? calculateMovementCost(state.map, state.locationConfig, path)
     : 0;
+  const manaSpent = input.movementKind === "normal"
+    ? Math.max(0, printedMovementCost - m50RegularMovementCostDiscount(state, player.id, player.locationId))
+    : 0;
+
+  if (input.movementKind === "normal" && manaSpent > 0 && m50ManaSpendingForbidden(state, player.id)) {
+    return failure(state, "mana_spending_forbidden");
+  }
 
   if (input.movementKind === "normal" && player.mana < manaSpent) {
     return failure(state, "insufficient_mana");

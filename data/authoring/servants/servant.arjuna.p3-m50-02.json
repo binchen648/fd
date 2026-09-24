@@ -1,0 +1,208 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.arjuna",
+  "name": "阿周那（Alter）",
+  "class": "Berserker",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.arjuna.skill.sc-arjuna-1",
+      "aliases": [
+        "card.skill.servant.arjuna.skill.sc-arjuna-1",
+        "sc_arjuna_1"
+      ],
+      "legacyId": "sc_arjuna_1",
+      "name": "至高神",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.arjuna"
+      },
+      "printedText": "【真名解放】被动：当你输掉一场战斗时，将此牌移除游戏。被动/行动阶段：获得5点合计威力。输给你的玩家在你失去此牌前处于【有瑕】状态。",
+      "cardFace": {
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "supreme-god-loss-exile",
+          "printedClause": "【真名解放】被动：当你输掉一场战斗时，将此牌移除游戏",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "event_player_lost_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "exile_source_card"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "trigger": "after_battle_result_determined"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "supreme-god-action-power",
+          "printedClause": "被动/行动阶段：获得5点合计威力",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "effects": [
+            {
+              "type": "combat_power_bonus",
+              "target": "controller",
+              "amount": 5
+            }
+          ],
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {}
+        },
+        {
+          "id": "supreme-god-flaw",
+          "printedClause": "输给你的玩家在你失去此牌前处于【有瑕】状态",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "event_player_won_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "add_linked_status",
+              "target": {
+                "scope": "event_combat_losers"
+              },
+              "status": "flawed"
+            }
+          ],
+          "lifecycle": {
+            "duration": "until_card_closed",
+            "expiresOn": [
+              "card.exiled"
+            ]
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "trigger": "after_battle_result_determined"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "supreme-god-flaw-cleanup",
+          "printedClause": "输给你的玩家在你失去此牌前处于【有瑕】状态",
+          "kind": "forced_trigger",
+          "conditions": [
+            {
+              "type": "event_definition_is_self"
+            }
+          ],
+          "effects": [
+            {
+              "type": "remove_linked_status",
+              "target": {
+                "scope": "all_players"
+              },
+              "status": "flawed"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "trigger": "m50_card_exiled"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "从者/狂战士/英文版/阿周那(Alter).htm",
+          "servant.arjuna/阿周那（Alter）"
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.cu-alter",
+  "name": "库·丘林 (Alter)",
+  "class": "Berserker",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.cu-alter.skill.sc-cu-alter-1",
+      "aliases": [
+        "card.skill.servant.cu-alter.skill.sc-cu-alter-1",
+        "sc_cu_alter_1"
+      ],
+      "legacyId": "sc_cu_alter_1",
+      "name": "噬碎死牙之兽",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.cu-alter"
+      },
+      "printedText": "避矢之加护-被动：当一名对手即将令你【败北】时，他需花费3点魔力。否则，你不会因该效果【败北】。被动：与你交战的对手在战斗阶段结束后失去X点战果，X为其控制的激活攻击数-1且最大为3。此效果在计算因战斗获得战果之后结算。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "protection-from-arrows",
+          "kind": "passive",
+          "printedClause": "避矢之加护-被动：当一名对手即将令你【败北】时，他需花费3点魔力。",
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "ruleModifiers": [
+            {
+              "id": "opponent-defeat-cost-three",
+              "operation": "add",
+              "rule": "defeat_cost",
+              "scope": {
+                "subject": "controller"
+              },
+              "value": 3,
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            }
+          ],
+          "effects": [],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "curruid-combat-attrition",
+          "kind": "forced_trigger",
+          "printedClause": "被动：与你交战的对手在战斗阶段结束后失去X点战果，X为其控制的激活攻击数-1且最大为3。",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "activation": {
+            "trigger": "after_battle_ended"
+          },
+          "conditions": [
+            {
+              "type": "source_owned_live"
+            }
+          ],
+          "effects": [
+            {
+              "type": "battle_terminal_active_attack_vp_attrition",
+              "offset": -1,
+              "maxAmount": 3
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.cu-alter-curruid-passive",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "库·丘林〔Alter].htm",
+            "locator": "从者/狂战士/英文版/库·丘林〔Alter].htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/库·丘林 (Alter).png",
+            "locator": "servant.cu-alter/库·丘林 (Alter)"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

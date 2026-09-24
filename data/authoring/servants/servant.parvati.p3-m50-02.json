@@ -1,0 +1,193 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.parvati",
+  "name": "帕尔瓦蒂",
+  "class": "Lancer",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.parvati.skill.sc-parvati-3",
+      "aliases": [
+        "card.skill.servant.parvati.skill.sc-parvati-3",
+        "sc_parvati_3"
+      ],
+      "legacyId": "sc_parvati_3",
+      "name": "知恋不为，无爱也",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.parvati"
+      },
+      "printedText": "【真名解放】\n行动阶段：从手牌打出至多3张基础攻击，若你以此效果打出了3张魔术攻击，于你的战斗阶段令一名你的交战对手【败北】。",
+      "cardFace": {
+        "cost": 7,
+        "basePower": 3,
+        "attributes": [
+          "迅捷",
+          "宝具"
+        ],
+        "requirements": {
+          "type": "min_mana",
+          "value": 8
+        }
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "love-unknown-play-basics",
+          "printedClause": "【真名解放】\n行动阶段：从手牌打出至多3张基础攻击，若你以此效果打出了3张魔术攻击，于你的战斗阶段令一名你的交战对手【败北】。",
+          "markers": [
+            "真名解放",
+            "m50_structured_v1"
+          ],
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_cards",
+              "target": "controller",
+              "zone": "hand",
+              "basicOnly": true,
+              "playableOnly": true,
+              "totalPlayCostAtMostMana": true,
+              "minCount": 1,
+              "maxCount": 3,
+              "payloadKey": "selectedInstanceIds"
+            },
+            {
+              "type": "play_selected_cards",
+              "target": "controller",
+              "sourceZones": [
+                "hand"
+              ],
+              "payCost": true,
+              "minCount": 1,
+              "maxCount": 3,
+              "payloadKey": "selectedInstanceIds"
+            },
+            {
+              "type": "if_condition",
+              "conditions": [
+                {
+                  "type": "metric_compare",
+                  "left": {
+                    "type": "metric",
+                    "metric": "selected_card_count",
+                    "source": "selected_card",
+                    "payloadKey": "selectedInstanceIds"
+                  },
+                  "operator": "eq",
+                  "right": 3
+                },
+                {
+                  "type": "selected_cards_all_have_attribute",
+                  "attribute": "魔术",
+                  "payloadKey": "selectedInstanceIds"
+                }
+              ],
+              "then": [
+                {
+                  "type": "set_player_flag",
+                  "target": "controller",
+                  "key": "parvatiLoveUnknownDefeatRound",
+                  "value": {
+                    "type": "current_round"
+                  },
+                  "lifecycle": {
+                    "duration": "this_round"
+                  }
+                }
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "love-unknown-defeat-opponent",
+          "printedClause": "【真名解放】\n行动阶段：从手牌打出至多3张基础攻击，若你以此效果打出了3张魔术攻击，于你的战斗阶段令一名你的交战对手【败北】。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "player_flag_number_current_round",
+              "key": "parvatiLoveUnknownDefeatRound"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_players",
+              "candidateTarget": "engaged_opponents",
+              "minCount": 1,
+              "maxCount": 1,
+              "then": [
+                {
+                  "type": "defeat_player",
+                  "target": "targetPlayerId"
+                }
+              ],
+              "payloadKey": "targetPlayerId"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "从者/枪兵/英文版/帕尔瓦蒂.htm",
+          "servant.parvati/帕尔瓦蒂"
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

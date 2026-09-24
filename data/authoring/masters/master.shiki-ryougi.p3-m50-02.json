@@ -1,0 +1,178 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.shiki-ryougi",
+  "name": "两仪式",
+  "class": "Master",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "master.shiki-ryougi.skill.ascension",
+      "aliases": [
+        "card.skill.master.shiki-ryougi.skill.ascension",
+        "ascension"
+      ],
+      "legacyId": "ascension",
+      "name": "空之境界",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.shiki-ryougi"
+      },
+      "printedText": "你的敏捷攻击获得威力+2和\"战斗阶段：弃置一张你战斗中的一名玩家牌堆底的牌。\"",
+      "cardFace": {
+        "typeLabel": "升华技",
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "boundary-of-emptiness",
+          "kind": "passive",
+          "printedClause": "Your Agility attacks have +2 power and Combat: discard the bottom card from the deck of a player in your fight.",
+          "ruleModifiers": [
+            {
+              "id": "ryougi-boundary-agility-power",
+              "operation": "add",
+              "rule": "card_power",
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "attributesAny": [
+                    "迅捷"
+                  ]
+                }
+              },
+              "value": 2,
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            }
+          ],
+          "transforms": [
+            {
+              "id": "ryougi-boundary-agility-ability",
+              "type": "card",
+              "target": {
+                "subject": "controller",
+                "cards": {
+                  "attributesAny": [
+                    "迅捷"
+                  ]
+                }
+              },
+              "grantAbilities": [
+                {
+                  "id": "ryougi-boundary-bottom-discard",
+                  "kind": "phase_action",
+                  "printedClause": "Your Agility attacks have +2 power and Combat: discard the bottom card from the deck of a player in your fight.",
+                  "activation": {
+                    "phase": "combat",
+                    "opens": "controller_combat_action_window",
+                    "requiresSourceState": "active"
+                  },
+                  "conditions": [],
+                  "targets": [
+                    {
+                      "id": "boundary_target",
+                      "type": "player",
+                      "count": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "constraints": [
+                        {
+                          "type": "same_battlefield_as_controller"
+                        },
+                        {
+                          "type": "card_count_at_least",
+                          "target": "controller",
+                          "zone": "deck",
+                          "value": 1
+                        }
+                      ]
+                    }
+                  ],
+                  "cost": [],
+                  "effects": [
+                    {
+                      "type": "discard_bottom_card",
+                      "target": "boundary_target"
+                    }
+                  ],
+                  "creates": [],
+                  "ruleModifiers": [],
+                  "lifecycle": {},
+                  "responseWindow": {},
+                  "limit": {
+                    "type": "per_round",
+                    "uses": 1,
+                    "scope": "this_card"
+                  },
+                  "visibility": {},
+                  "execution": {
+                    "mode": "automatic",
+                    "allowedOperations": []
+                  }
+                }
+              ],
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.rule-marker",
+        "sourceRefs": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/两仪式.png",
+            "locator": "master.shiki-ryougi/两仪式"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.shiki-ryougi/ascension"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

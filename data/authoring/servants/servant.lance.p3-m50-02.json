@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.lance",
+  "name": "兰斯洛特",
+  "class": "Berserker",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.lance.skill.sc-lance-2",
+      "aliases": [
+        "card.skill.servant.lance.skill.sc-lance-2",
+        "sc_lance_2"
+      ],
+      "legacyId": "sc_lance_2",
+      "name": "不为一己之荣光(被动)",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.lance"
+      },
+      "printedText": "被动：你拥有的魔力少于8点也可打出从者技能牌。被动：如果御主令咒变为0枚时，【真名解放】，你的从者真名不能通过其他方法解放。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "game-start-player-flags",
+          "kind": "forced_trigger",
+          "printedClause": "被动：你拥有的魔力少于8点也可打出从者技能牌。被动：如果御主令咒变为0枚时，【真名解放】，你的从者真名不能通过其他方法解放。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "set_player_flag",
+              "target": "controller",
+              "key": "servantSkillEightManaWaiver",
+              "value": true
+            },
+            {
+              "type": "set_player_flag",
+              "target": "controller",
+              "key": "preventTrueNameRevealWhenNoSeals",
+              "value": true
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.game-start-rule-flags",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "兰斯洛特1.htm",
+            "locator": "从者/狂战士/英文版/兰斯洛特1.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/兰斯洛特.png",
+            "locator": "servant.lance/兰斯洛特"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

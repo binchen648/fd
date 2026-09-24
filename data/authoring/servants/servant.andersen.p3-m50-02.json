@@ -1,0 +1,204 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.andersen",
+  "name": "汉斯·克里斯蒂安·安徒生",
+  "class": "Caster",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.andersen.skill.sc-andersen-2",
+      "aliases": [
+        "card.skill.servant.andersen.skill.sc-andersen-2",
+        "sc_andersen_2"
+      ],
+      "legacyId": "sc_andersen_2",
+      "name": "为你撰写的故事",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.andersen"
+      },
+      "printedText": "【真名解放】\nX为你的战果除以5（向上取整）。\n残留：你只能从效果获得战果。你的基础特殊牌名为幸运且拥有“战斗阶段：你无视【败北】效果。”",
+      "cardFace": {
+        "typeLabel": "魔术/宝具",
+        "cost": 8,
+        "basePower": {
+          "type": "formula",
+          "op": "ceil_divide",
+          "args": [
+            {
+              "type": "metric",
+              "metric": "victory_points"
+            },
+            5
+          ]
+        },
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "written-story-residual",
+          "printedClause": "残留：你只能从效果获得战果。你的基础特殊牌名为幸运且拥有“战斗阶段：你无视【败北】效果。”",
+          "markers": [
+            "真名解放",
+            "m50_structured_v1"
+          ],
+          "kind": "residual",
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "effects-only-victory-points",
+              "printedClause": "你只能从效果获得战果。",
+              "operation": "forbid",
+              "rule": "non_effect_victory_point_gain",
+              "scope": {
+                "subject": "controller"
+              },
+              "lifecycle": {
+                "duration": "while_active"
+              },
+              "priority": {
+                "tier": "card_text",
+                "specificity": "explicit_exception"
+              },
+              "conflictPolicy": "explicit_exception_over_general"
+            }
+          ],
+          "transforms": [
+            {
+              "id": "basic-special-becomes-luck",
+              "printedClause": "你的基础特殊牌名为幸运且拥有“战斗阶段：你无视【败北】效果。”",
+              "type": "card",
+              "target": {
+                "subject": "controller",
+                "cards": {
+                  "basic": true,
+                  "attributesAny": [
+                    "特殊"
+                  ]
+                }
+              },
+              "set": {
+                "name": "幸运"
+              },
+              "grantAbilities": [
+                {
+                  "id": "written-story-ignore-defeat",
+                  "kind": "phase_action",
+                  "printedClause": "战斗阶段：你无视【败北】效果。",
+                  "activation": {
+                    "phase": "combat",
+                    "opens": "controller_combat_action_window",
+                    "requiresSourceState": "active"
+                  },
+                  "conditions": [],
+                  "targets": [],
+                  "cost": [],
+                  "effects": [],
+                  "creates": [],
+                  "ruleModifiers": [
+                    {
+                      "id": "ignore-defeat-this-round",
+                      "printedClause": "战斗阶段：你无视【败北】效果。",
+                      "operation": "ignore",
+                      "rule": "defeat",
+                      "scope": {
+                        "subject": "controller"
+                      },
+                      "lifecycle": {
+                        "duration": "this_round"
+                      },
+                      "priority": {
+                        "tier": "card_text",
+                        "specificity": "explicit_exception"
+                      },
+                      "conflictPolicy": "explicit_exception_over_general"
+                    }
+                  ],
+                  "lifecycle": {},
+                  "responseWindow": {},
+                  "limit": {
+                    "type": "per_round",
+                    "uses": 1,
+                    "scope": "this_card"
+                  },
+                  "visibility": {},
+                  "execution": {
+                    "mode": "automatic",
+                    "allowedOperations": []
+                  }
+                }
+              ],
+              "lifecycle": {
+                "duration": "while_active"
+              }
+            }
+          ],
+          "lifecycle": {
+            "starts": "immediate",
+            "cleanup": "remain_active",
+            "duration": "while_active"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "effects": [],
+          "creates": [],
+          "activation": {
+            "requiresSourceState": "active"
+          },
+          "targets": [],
+          "cost": [],
+          "responseWindow": {},
+          "limit": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "汉斯·克里斯蒂安·安徒生.htm",
+            "locator": "从者/魔术师/英文版/汉斯·克里斯蒂安·安徒生.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/汉斯·克里斯蒂安·安徒生.png",
+            "locator": "servant.andersen/汉斯·克里斯蒂安·安徒生"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

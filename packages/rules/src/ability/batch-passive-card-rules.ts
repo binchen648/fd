@@ -199,8 +199,25 @@ export function cardRequiresSoloPlay(state: GameState, cardInstanceId: string): 
   return d.abilities.some((ability) => classifyPlayAloneAbility(ability)?.definitionId === d.id);
 }
 
+function controllerHasInstalledRoundDefeatIgnore(state: GameState, controllerId: string): boolean {
+  const runtime = state.abilityRuntime; if (!runtime) return false;
+  return runtime.ongoingEffects.some((ongoing) => {
+    if (ongoing.controllerId !== controllerId || ongoing.duration !== 'this_round' || ongoing.startRound !== state.round.roundNumber ||
+        ongoing.expiresAtRound !== state.round.roundNumber + 1 || ongoing.sourceMustRemainActive !== false || ongoing.ruleModifiers.length !== 1) return false;
+    const modifier = ongoing.ruleModifiers[0]!; const definition = modifier.definition; const scope = record(definition.scope);
+    const life = record(definition.lifecycle); const priority = record(definition.priority);
+    return modifier.controllerId === controllerId && modifier.sourceCardId === ongoing.sourceCardId &&
+      exactKeys(definition, ['id','printedClause','operation','rule','scope','lifecycle','priority','conflictPolicy']) &&
+      definition.operation === 'ignore' && definition.rule === 'defeat' && exactKeys(scope, ['subject']) && scope.subject === 'controller' &&
+      exactKeys(life, ['duration']) && life.duration === 'this_round' && exactKeys(priority, ['tier','specificity']) &&
+      priority.tier === 'card_text' && priority.specificity === 'explicit_exception' &&
+      definition.conflictPolicy === 'explicit_exception_over_general';
+  });
+}
+
 export function controllerHasActiveDefeatIgnore(state: GameState, controllerId: string): boolean {
-  return activeSources(state, controllerId).some((source) => definition(state, source.instanceId)?.abilities.some(isAcceptedDefeatIgnoreAbility));
+  return activeSources(state, controllerId).some((source) => definition(state, source.instanceId)?.abilities.some(isAcceptedDefeatIgnoreAbility)) ||
+    controllerHasInstalledRoundDefeatIgnore(state, controllerId);
 }
 
 function exactStringArray(left: unknown, right: unknown): boolean {

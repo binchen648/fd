@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.mash",
+  "name": "玛修·基列莱特",
+  "class": "Shielder",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.mash.skill.sc-mash-4",
+      "aliases": [
+        "card.skill.servant.mash.skill.sc-mash-4",
+        "sc_mash_4"
+      ],
+      "legacyId": "sc_mash_4",
+      "name": "守护",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.mash"
+      },
+      "printedText": "若玛修战败，将【守护】返还于玛修的手牌。若玛修未参与此战斗，则将此牌【关闭】。你和玛修无视【败北】效果，你们二人各自的合计威力变为你和玛修中合计威力最高的数值。\n行动阶段：玛修将【守护】借给一位对手直到战斗阶段结束。",
+      "cardFace": {
+        "typeLabel": "力量",
+        "cost": 3,
+        "basePower": 5,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 3
+        }
+      ],
+      "abilities": [
+        {
+          "id": "guard-legacy-catalogue-marker",
+          "kind": "passive",
+          "printedClause": "Legacy catalogue marker only: executable Guard rules belong to the two physical card.x-guard cards in Mash's deck.",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "conditions": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.rule-marker",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "玛修·基列莱特.htm",
+            "locator": "从者/盾兵/英文版/玛修·基列莱特.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/玛修·基列莱特.png",
+            "locator": "servant.mash/玛修·基列莱特"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      },
+      "initialPlacement": "outside_game"
+    }
+  ]
+}

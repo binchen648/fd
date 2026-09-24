@@ -2,6 +2,9 @@ import type { GameState, PlayerScoringBreakdown } from "../schema/game";
 import type { ResolverResult } from "./resolver-contracts";
 import { resolveEliminationBatch } from "./elimination-resolver";
 import { consumeB02EliminationReplacement, consumeM50NextRoundVpEliminationReplacement } from "../ability/batch-owned-passive-rules";
+import { settleSequesteredServantSkillsForEliminations } from "../ability/m50-sequestration";
+import { m50NonEffectVictoryPointGainForbidden } from "../ability/m50-granted-card-abilities";
+import { m50VictoryPointGainForSource } from "../ability/m50-victory-point-gain";
 
 export const ELIMINATION_MILITARY_THRESHOLD = -8;
 
@@ -56,8 +59,9 @@ export function applyOccupiedLocationRewards(state: GameState): ResolverResult {
 
     let vpDelta = 0;
     const reasons: PlayerScoringBreakdown["reasons"] = [];
+    const nonEffectVpBlocked = m50NonEffectVictoryPointGainForbidden(state, player.id);
 
-    if (location.rewardHooks.includes("location_rewards") && location.vpRewardRules?.location) {
+    if (!nonEffectVpBlocked && location.rewardHooks.includes("location_rewards") && location.vpRewardRules?.location) {
       vpDelta += location.vpRewardRules.location;
       reasons.push({
         source: "location_vp",
@@ -66,7 +70,7 @@ export function applyOccupiedLocationRewards(state: GameState): ResolverResult {
       });
     }
 
-    if (location.rewardHooks.includes("recon_rewards") && location.vpRewardRules?.recon) {
+    if (!nonEffectVpBlocked && location.rewardHooks.includes("recon_rewards") && location.vpRewardRules?.recon) {
       vpDelta += location.vpRewardRules.recon;
       reasons.push({
         source: "recon_vp",
@@ -142,16 +146,20 @@ export function applyBattleScoring(state: GameState): ResolverResult {
 
     for (const result of state.battleResults) {
       const winnerPlayerIds = result.winnerPlayerIds ?? (result.winnerPlayerId ? [result.winnerPlayerId] : []);
-      if (winnerPlayerIds.includes(player.id)) {
-        vpDelta += result.vpReward;
-        reasons.push({
+      if (winnerPlayerIds.includes(player.id) && !m50NonEffectVictoryPointGainForbidden(state, player.id)) {
+        const hasObjectiveReward = Number(result.printedEventVpTotal ?? 0) > 0;
+        const battleVp = hasObjectiveReward
+          ? m50VictoryPointGainForSource(state, player.id, 'objective', result.vpReward)
+          : result.vpReward;
+        vpDelta += battleVp;
+        if (battleVp !== 0) reasons.push({
           source: "battle_vp",
-          value: result.vpReward,
+          value: battleVp,
           label: `${result.battlefieldId}.vp`,
         });
         nextPlayer = {
           ...nextPlayer,
-          vp: nextPlayer.vp + result.vpReward,
+          vp: nextPlayer.vp + battleVp,
         };
       }
 
@@ -159,16 +167,18 @@ export function applyBattleScoring(state: GameState): ResolverResult {
         if (vpAdjustment.playerId !== player.id) {
           continue;
         }
-
-        vpDelta += vpAdjustment.delta;
-        reasons.push({
+        const adjustedDelta = vpAdjustment.delta > 0 && vpAdjustment.source === 'competition_vp'
+          ? m50VictoryPointGainForSource(state, player.id, 'competition', vpAdjustment.delta)
+          : vpAdjustment.delta;
+        vpDelta += adjustedDelta;
+        if (adjustedDelta !== 0) reasons.push({
           source: vpAdjustment.source,
-          value: vpAdjustment.delta,
+          value: adjustedDelta,
           label: vpAdjustment.label,
         });
         nextPlayer = {
           ...nextPlayer,
-          vp: nextPlayer.vp + vpAdjustment.delta,
+          vp: nextPlayer.vp + adjustedDelta,
         };
       }
 
@@ -243,6 +253,9 @@ export function applyBattleScoring(state: GameState): ResolverResult {
       entries.push({ playerId: eliminated.playerId, ...(locationId ? { locationId } : {}) });
     }
     runtime.structuredRoundEliminations = { round, entries };
+  }
+  if (resolvedEliminations.length > 0 && replacementState.abilityRuntime) {
+    settleSequesteredServantSkillsForEliminations(replacementState, resolvedEliminations.map((entry) => entry.playerId));
   }
   const eliminationOrderByPlayerId = new Map(
     resolvedEliminations.map((candidate) => [candidate.playerId, candidate.eliminationOrder]),

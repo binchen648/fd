@@ -1,0 +1,169 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.diarmuid",
+  "name": "迪卢木多·奥迪那",
+  "class": "Lancer",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.diarmuid.skill.sc-diarmuid-1",
+      "aliases": [
+        "card.skill.servant.diarmuid.skill.sc-diarmuid-1",
+        "sc_diarmuid_1"
+      ],
+      "legacyId": "sc_diarmuid_1",
+      "name": "必灭的黄蔷薇",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.diarmuid"
+      },
+      "printedText": "【真名解放】\n战斗阶段：若你赢得战斗，所有因此战败的从者随机移除一张未激活的技能牌。当你被淘汰时，他们重新获得该技能。",
+      "cardFace": {
+        "typeLabel": "迅捷/宝具",
+        "cost": 8,
+        "basePower": 9,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "yellow-rose-arm",
+          "printedClause": "战斗阶段：若你赢得战斗，所有因此战败的从者随机移除一张未激活的技能牌。",
+          "markers": [
+            "真名解放",
+            "m50_structured_v1"
+          ],
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat",
+            "requiresSourceState": "active",
+            "opens": "controller_combat_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "set_player_flag",
+              "target": "controller",
+              "key": "yellowRoseArmedRound",
+              "value": {
+                "type": "current_round"
+              },
+              "lifecycle": {
+                "duration": "this_round"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "creates": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {}
+        },
+        {
+          "id": "yellow-rose-sequester-on-win",
+          "printedClause": "若你赢得战斗，所有因此战败的从者随机移除一张未激活的技能牌。当你被淘汰时，他们重新获得该技能。",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "player_flag_number_current_round",
+              "key": "yellowRoseArmedRound"
+            },
+            {
+              "type": "event_player_won_combat"
+            },
+            {
+              "type": "event_location_equals_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "sequester_random_inactive_servant_skill",
+              "target": {
+                "scope": "event_defeated_players"
+              },
+              "returnOn": "controller_elimination"
+            },
+            {
+              "type": "clear_player_flag",
+              "target": "controller",
+              "key": "yellowRoseArmedRound"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "requiresSourceState": "active",
+            "trigger": "after_battle_result_determined"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "迪卢木多·奥迪那.htm",
+            "locator": "从者/枪兵/英文版/迪卢木多·奥迪那.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/迪卢木多·奥迪那.png",
+            "locator": "servant.diarmuid/迪卢木多·奥迪那"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

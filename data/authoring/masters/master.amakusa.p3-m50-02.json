@@ -1,0 +1,319 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.amakusa",
+  "name": "天草四郎",
+  "class": "Master",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "master.amakusa.skill.s1a",
+      "aliases": [
+        "card.skill.master.amakusa.skill.s1a",
+        "s1a"
+      ],
+      "legacyId": "s1a",
+      "name": "绝罚",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.amakusa"
+      },
+      "printedText": "行动阶段：将一名【神仆】已展示的从者技能的临时复制加入你的技能区直至回合结束。他本回合无法使用你使用了其复制的原技能牌且其不再为【神仆】。",
+      "cardFace": {
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "absolute-punishment",
+          "printedClause": "行动阶段：将一名【神仆】已展示的从者技能的临时复制加入你的技能区直至回合结束。他本回合无法使用你使用了其复制的原技能牌且其不再为【神仆】。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_cards",
+              "target": {
+                "scope": "players_with_status",
+                "status": "role:god-servant"
+              },
+              "zone": "skill",
+              "face": "up",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedInstanceIds"
+            },
+            {
+              "type": "remove_status",
+              "target": {
+                "scope": "selected_card_owners",
+                "payloadKey": "selectedInstanceIds"
+              },
+              "status": "role:god-servant"
+            },
+            {
+              "type": "install_ability_rule_modifier",
+              "abilityId": "absolute-punishment",
+              "modifierId": "forbid-copied-original",
+              "target": {
+                "scope": "selected_card_owners",
+                "payloadKey": "selectedInstanceIds"
+              },
+              "payloadKey": "selectedInstanceIds"
+            },
+            {
+              "id": "temporary-servant-skill-copy",
+              "printedClause": "将一名【神仆】已展示的从者技能的临时复制加入你的技能区直至回合结束",
+              "source": "selected_card",
+              "payloadKey": "selectedInstanceIds",
+              "zone": "skill",
+              "target": "controller",
+              "face": "up",
+              "active": false,
+              "residual": false,
+              "temporary": true,
+              "lifecycle": {
+                "duration": "this_round",
+                "cleanup": "remove_from_game"
+              },
+              "type": "copy_selected_card"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "forbid-copied-original",
+              "printedClause": "他本回合无法使用你使用了其复制的原技能牌",
+              "installation": "effect",
+              "operation": "forbid",
+              "rule": "skill_use",
+              "scope": {
+                "subject": "controller",
+                "skillDefinitionIdsFromSelectedCard": true
+              },
+              "lifecycle": {
+                "duration": "this_round"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "master.amakusa/天草四郎",
+          "master/master.amakusa/s1a"
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    },
+    {
+      "id": "master.amakusa.skill.s2",
+      "aliases": [
+        "card.skill.master.amakusa.skill.s2",
+        "s2"
+      ],
+      "legacyId": "s2",
+      "name": "红队领袖",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.amakusa"
+      },
+      "printedText": "臣属-行动阶段：花费X枚令咒，选择一名本局游戏未成为过【神仆】且在你花费令咒前令咒数少于你的玩家，下回合开始时他成为【神仆】，X为1+【神仆】数。",
+      "cardFace": {
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "vassalize",
+          "printedClause": "臣属-行动阶段：花费X枚令咒，选择一名本局游戏未成为过【神仆】且在你花费令咒前令咒数少于你的玩家，下回合开始时他成为【神仆】，X为1+【神仆】数",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "has_status",
+              "status": "role:red-team-leader"
+            },
+            {
+              "type": "command_seals_at_least",
+              "target": "controller",
+              "value": {
+                "type": "formula",
+                "op": "add",
+                "args": [
+                  1,
+                  {
+                    "type": "metric",
+                    "metric": "players_with_status_count",
+                    "source": "controller",
+                    "status": "role:god-servant"
+                  }
+                ]
+              }
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_players",
+              "candidateTarget": "all_opponents",
+              "candidateConditions": [
+                {
+                  "type": "lacks_status",
+                  "status": "history:god-servant"
+                },
+                {
+                  "type": "command_seals_less_than_controller"
+                }
+              ],
+              "minCount": 1,
+              "maxCount": 1,
+              "allowCancel": false,
+              "then": [
+                {
+                  "type": "pay_command_seals",
+                  "target": "controller",
+                  "amount": {
+                    "type": "formula",
+                    "op": "add",
+                    "args": [
+                      1,
+                      {
+                        "type": "metric",
+                        "metric": "players_with_status_count",
+                        "source": "controller",
+                        "status": "role:god-servant"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "schedule_effect",
+                  "abilityId": "vassalize-resolve",
+                  "triggerEventType": "round.started",
+                  "triggerRoundOffset": 1,
+                  "expiresAfterRoundOffset": 1,
+                  "once": true,
+                  "capturePayloadKeys": [
+                    "targetPlayerId"
+                  ]
+                }
+              ],
+              "payloadKey": "targetPlayerId"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "vassalize-resolve",
+          "printedClause": "下回合开始时他成为【神仆】",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "scheduled_payload_present"
+            }
+          ],
+          "effects": [
+            {
+              "type": "add_status",
+              "target": "selected_player",
+              "status": "role:god-servant"
+            },
+            {
+              "type": "add_status",
+              "target": "selected_player",
+              "status": "history:god-servant"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "trigger": "m50_round_started"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "master.amakusa/天草四郎",
+          "master/master.amakusa/s2"
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}
