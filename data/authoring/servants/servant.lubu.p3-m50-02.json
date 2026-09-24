@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.lubu",
+  "name": "吕布",
+  "class": "Berserker",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.lubu.skill.sc-lubu-2",
+      "aliases": [
+        "card.skill.servant.lubu.skill.sc-lubu-2",
+        "sc_lubu_2"
+      ],
+      "legacyId": "sc_lubu_2",
+      "name": "乱世枭雄",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.lubu"
+      },
+      "printedText": "反叛-你从事件牌获得战果为0，因令咒和竞争获得的战果翻倍。",
+      "cardFace": {
+        "typeLabel": "力量",
+        "cost": 0,
+        "basePower": 7,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "lapse-of-loyalty",
+          "kind": "passive",
+          "printedClause": "You gain 0 VP from objectives and double all VP you gain from command seals and contested area bonuses.",
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "ruleModifiers": [
+            {
+              "id": "defiance-objective-zero",
+              "operation": "set",
+              "rule": "victory_point_gain",
+              "scope": {
+                "subject": "controller",
+                "sources": [
+                  "objective"
+                ]
+              },
+              "value": 0,
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            },
+            {
+              "id": "defiance-command-competition-double",
+              "operation": "multiply",
+              "rule": "victory_point_gain",
+              "scope": {
+                "subject": "controller",
+                "sources": [
+                  "command_seal",
+                  "competition"
+                ]
+              },
+              "value": 2,
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            }
+          ],
+          "effects": [],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.rule-marker",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "吕布.htm",
+            "locator": "从者/狂战士/英文版/吕布.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/吕布.png",
+            "locator": "servant.lubu/吕布"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

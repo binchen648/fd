@@ -1,0 +1,380 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.kuzuki",
+  "name": "葛木宗一郎",
+  "class": "Master",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "master.kuzuki.skill.ascension",
+      "aliases": [
+        "card.skill.master.kuzuki.skill.ascension",
+        "ascension"
+      ],
+      "legacyId": "ascension",
+      "name": "完美呼吸",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.kuzuki"
+      },
+      "printedText": "解锁此技能后立刻从牌库，弃牌堆及手牌中移除所有魔术牌、迅捷基础牌威力+3。你的【蛇】获得以下效果\"被动/战斗阶段：花费6点魔力，将此牌加入你的攻击中。\"",
+      "cardFace": {
+        "typeLabel": "升华技",
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "perfect-breath-on-unlock",
+          "kind": "forced_trigger",
+          "printedClause": "解锁此技能后立刻从牌库，弃牌堆及手牌中移除所有魔术牌。",
+          "conditions": [
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_definition_is_self"
+            }
+          ],
+          "effects": [
+            {
+              "type": "remove_cards_in_zone",
+              "target": "controller",
+              "zone": "deck",
+              "attributesAny": [
+                "魔术"
+              ]
+            },
+            {
+              "type": "remove_cards_in_zone",
+              "target": "controller",
+              "zone": "discard",
+              "attributesAny": [
+                "魔术"
+              ]
+            },
+            {
+              "type": "remove_cards_in_zone",
+              "target": "controller",
+              "zone": "hand",
+              "attributesAny": [
+                "魔术"
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "trigger": "m50_skill_unlocked"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "perfect-breath-continuous",
+          "kind": "passive",
+          "printedClause": "迅捷基础牌威力+3。你的【蛇】获得以下效果“被动/战斗阶段：花费6点魔力，将此牌加入你的攻击中。”",
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "quick-basic-power-plus-three",
+              "operation": "add",
+              "rule": "card_power",
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "basic": true,
+                  "attributesAny": [
+                    "迅捷"
+                  ]
+                }
+              },
+              "value": 3,
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            }
+          ],
+          "transforms": [
+            {
+              "id": "grant-snake-combat-join",
+              "type": "card",
+              "target": {
+                "subject": "controller",
+                "cards": {
+                  "definitionIds": [
+                    "master.kuzuki.skill.s3"
+                  ]
+                }
+              },
+              "grantAbilities": [
+                {
+                  "id": "perfect-breath-snake-join",
+                  "kind": "phase_action",
+                  "printedClause": "迅捷基础牌威力+3。你的【蛇】获得以下效果“被动/战斗阶段：花费6点魔力，将此牌加入你的攻击中。”",
+                  "activation": {
+                    "phase": "combat",
+                    "opens": "controller_combat_action_window"
+                  },
+                  "conditions": [],
+                  "targets": [],
+                  "cost": [
+                    {
+                      "type": "pay_mana",
+                      "amount": 6
+                    }
+                  ],
+                  "effects": [
+                    {
+                      "type": "join_source_card_to_attack",
+                      "allowedSourceZones": [
+                        "hand",
+                        "skill"
+                      ]
+                    }
+                  ],
+                  "creates": [],
+                  "ruleModifiers": [],
+                  "lifecycle": {},
+                  "responseWindow": {},
+                  "limit": {},
+                  "visibility": {},
+                  "execution": {
+                    "mode": "automatic",
+                    "allowedOperations": []
+                  }
+                }
+              ],
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/葛木宗一郎.png",
+            "locator": "master.kuzuki/葛木宗一郎"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.kuzuki/ascension"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    },
+    {
+      "id": "master.kuzuki.skill.s2",
+      "aliases": [
+        "card.skill.master.kuzuki.skill.s2",
+        "s2"
+      ],
+      "legacyId": "s2",
+      "name": "局外人",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.kuzuki"
+      },
+      "printedText": "你无法通过部署于魔术工房获得魔力，但你以常规移动从魔术工房离开时-1移动成本。每回合战斗阶段结束后，若你于该回合未获得战果，获得1点战果，若你同时是位于魔术工房的唯一玩家，改为获得2点战果。",
+      "cardFace": {
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "outsider-base-rules",
+          "printedClause": "你无法通过部署于魔术工房获得魔力，但你以常规移动从魔术工房离开时-1移动成本",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "no-workshop-deploy-mana",
+              "printedClause": "你无法通过部署于魔术工房获得魔力",
+              "operation": "forbid",
+              "rule": "deployment_resource_gain",
+              "scope": {
+                "subject": "controller",
+                "resource": "mana",
+                "locationIds": [
+                  "workshop"
+                ]
+              },
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            },
+            {
+              "id": "workshop-regular-move-discount",
+              "printedClause": "你以常规移动从魔术工房离开时-1移动成本",
+              "operation": "subtract",
+              "rule": "movement_cost",
+              "scope": {
+                "subject": "controller",
+                "method": "regular",
+                "fromLocationIds": [
+                  "workshop"
+                ]
+              },
+              "value": 1,
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "permanent"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "outsider-combat-ending-reward",
+          "printedClause": "每回合战斗阶段结束后，若你于该回合未获得战果，获得1点战果，若你同时是位于魔术工房的唯一玩家，改为获得2点战果",
+          "kind": "passive",
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "round_victory_points_gained_equals",
+              "value": 0
+            }
+          ],
+          "effects": [
+            {
+              "type": "if_condition",
+              "conditions": [
+                {
+                  "type": "location_is",
+                  "locationId": "workshop"
+                },
+                {
+                  "type": "same_location_player_count_equals",
+                  "value": 1
+                }
+              ],
+              "then": [
+                {
+                  "type": "gain_victory_points",
+                  "target": "controller",
+                  "amount": 2
+                }
+              ],
+              "else": [
+                {
+                  "type": "gain_victory_points",
+                  "target": "controller",
+                  "amount": 1
+                }
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "activation": {
+            "trigger": "after_battle_ended"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "master.kuzuki/葛木宗一郎",
+          "master/master.kuzuki/s2"
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

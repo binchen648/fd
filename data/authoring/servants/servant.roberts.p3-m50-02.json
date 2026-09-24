@@ -1,0 +1,250 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.roberts",
+  "name": "巴沙洛缪·罗伯茨",
+  "class": "Rider",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.roberts.skill.sc-roberts-1",
+      "aliases": [
+        "card.skill.servant.roberts.skill.sc-roberts-1",
+        "sc_roberts_1"
+      ],
+      "legacyId": "sc_roberts_1",
+      "name": "海盗绅士",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.roberts"
+      },
+      "printedText": "会谈-行动阶段：选择一张你所在战场的事件牌，所有位于此地点的对手可以支付2点魔力，你和所有支付的玩家一起平分该事件牌的战果（向上取整）然后弃置该牌，除非所有人都拒绝支付。",
+      "cardFace": {
+        "cost": 0,
+        "basePower": 1,
+        "attributes": [
+          "特殊"
+        ]
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "parley",
+          "printedClause": "行动阶段：选择一张你所在战场的事件牌，所有位于此地点的对手可以支付2点魔力，你和所有支付的玩家一起平分该事件牌的战果（向上取整）然后弃置该牌，除非所有人都拒绝支付。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "at_battlefield"
+            },
+            {
+              "type": "event_count_at_least",
+              "sourceZone": "current",
+              "locationId": "controller_location",
+              "value": 1
+            },
+            {
+              "type": "target_count_at_least",
+              "target": {
+                "scope": "same_location_opponents"
+              },
+              "count": 1
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_events",
+              "sourceZone": "current",
+              "locationId": "controller_location",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedEventIds"
+            },
+            {
+              "type": "remove_status",
+              "target": {
+                "scope": "all_players"
+              },
+              "status": "roberts-parley-paid"
+            },
+            {
+              "type": "choose_each_player_option",
+              "candidateTarget": {
+                "scope": "same_location_opponents"
+              },
+              "options": [
+                {
+                  "id": "pay",
+                  "label": "支付2点魔力",
+                  "effects": [
+                    {
+                      "type": "pay_mana",
+                      "target": "decision_player",
+                      "amount": 2
+                    },
+                    {
+                      "type": "add_status",
+                      "target": "decision_player",
+                      "status": "roberts-parley-paid"
+                    }
+                  ]
+                },
+                {
+                  "id": "refuse",
+                  "label": "拒绝",
+                  "effects": [
+                    {
+                      "type": "set_player_flag",
+                      "target": "controller",
+                      "key": "robertsParleyRefusedRound",
+                      "value": {
+                        "type": "current_round"
+                      },
+                      "lifecycle": {
+                        "duration": "this_round"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "candidateConditions": [
+                {
+                  "type": "can_pay_mana",
+                  "amount": 2
+                }
+              ],
+              "skipIfNoCandidates": true
+            },
+            {
+              "type": "if_condition",
+              "conditions": [
+                {
+                  "type": "target_count_at_least",
+                  "target": {
+                    "scope": "players_with_status",
+                    "status": "roberts-parley-paid"
+                  },
+                  "count": 1
+                }
+              ],
+              "then": [
+                {
+                  "type": "gain_victory_points",
+                  "target": "controller",
+                  "amount": {
+                    "type": "formula",
+                    "op": "ceil_divide",
+                    "args": [
+                      {
+                        "type": "metric",
+                        "metric": "selected_event_victory_points",
+                        "source": "controller",
+                        "payloadKey": "selectedEventIds"
+                      },
+                      {
+                        "type": "formula",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "metric",
+                            "metric": "players_with_status_count",
+                            "source": "controller",
+                            "status": "roberts-parley-paid"
+                          },
+                          1
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "gain_victory_points",
+                  "target": {
+                    "scope": "players_with_status",
+                    "status": "roberts-parley-paid"
+                  },
+                  "amount": {
+                    "type": "formula",
+                    "op": "ceil_divide",
+                    "args": [
+                      {
+                        "type": "metric",
+                        "metric": "selected_event_victory_points",
+                        "source": "controller",
+                        "payloadKey": "selectedEventIds"
+                      },
+                      {
+                        "type": "formula",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "metric",
+                            "metric": "players_with_status_count",
+                            "source": "controller",
+                            "status": "roberts-parley-paid"
+                          },
+                          1
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "move_selected_events",
+                  "payloadKey": "selectedEventIds",
+                  "destination": "discard"
+                },
+                {
+                  "type": "remove_status",
+                  "target": {
+                    "scope": "all_players"
+                  },
+                  "status": "roberts-parley-paid"
+                }
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "从者/骑兵/英文版/巴沙洛缪·罗伯茨.htm",
+          "servant.roberts/巴沙洛缪·罗伯茨"
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

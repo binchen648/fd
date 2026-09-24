@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.maxwell",
+  "name": "麦克斯韦妖",
+  "class": "Caster",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.maxwell.skill.sc-maxwell-2",
+      "aliases": [
+        "card.skill.servant.maxwell.skill.sc-maxwell-2",
+        "sc_maxwell_2"
+      ],
+      "legacyId": "sc_maxwell_2",
+      "name": "恶魔的证明",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.maxwell"
+      },
+      "printedText": "你拥有的魔力少于8点也可打出此牌。\n行动阶段：你所在地点的玩家获得2点魔力与一个【悖论】指示物。\n战斗阶段：<每局游戏限一次>【真名解放】，令拥有【悖论】的数量大于其魔力值一半的所有玩家【败北】。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "cost": 1,
+        "basePower": 1,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "paradox-seed",
+          "printedClause": "行动阶段：你所在地点的玩家获得2点魔力与一个【悖论】指示物。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "requiresSourceState": "active",
+            "opens": "controller_action_window"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "phase_is",
+              "phase": "action"
+            }
+          ],
+          "effects": [
+            {
+              "type": "gain_mana",
+              "target": {
+                "scope": "same_location_players"
+              },
+              "amount": 2
+            },
+            {
+              "type": "add_player_flag_number",
+              "target": {
+                "scope": "same_location_players"
+              },
+              "key": "paradoxCount",
+              "amount": 1
+            }
+          ],
+          "limit": {
+            "type": "per_round",
+            "uses": 1,
+            "scope": "this_card"
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "visibility": {}
+        },
+        {
+          "id": "paradox-collapse",
+          "printedClause": "战斗阶段：<每局游戏限一次>【真名解放】，令拥有【悖论】的数量大于其魔力值一半的所有玩家【败北】。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat",
+            "requiresSourceState": "active",
+            "opens": "controller_combat_action_window"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "phase_is",
+              "phase": "combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "defeat_player",
+              "target": {
+                "scope": "all_players",
+                "where": [
+                  {
+                    "type": "player_flag_greater_than_mana_ratio",
+                    "key": "paradoxCount",
+                    "numerator": 1,
+                    "denominator": 2
+                  }
+                ]
+              }
+            }
+          ],
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "limit": {
+            "type": "per_game",
+            "uses": 1,
+            "scope": "this_card"
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "麦克斯韦妖.htm",
+            "locator": "从者/魔术师/英文版/麦克斯韦妖.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/麦克斯韦妖.png",
+            "locator": "servant.maxwell/麦克斯韦妖"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

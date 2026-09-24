@@ -1,4 +1,4 @@
-﻿import type { GameState } from '../schema/game';
+import type { GameState } from '../schema/game';
 import { getEnabledLocations } from '../core/map-engine';
 import { hostOperations, type AbilityEvent, type AuthoringAbility, type PlayerId, type RuleNode } from './types';
 
@@ -38,8 +38,8 @@ export function isCombatOpponentPowerVpRewardCandidate(ability: AuthoringAbility
     if (Array.isArray(value)) return value.some(visit);
     if (!value || typeof value !== 'object') return false;
     const current = node(value);
-    if (current.type === COMBAT_OPPONENT_POWER_VP_REWARD_EFFECT || current.type === 'choose_players' ||
-        current.scope === 'event_combat_opponents' || current.type === 'selected_player_event_combat_power' ||
+    if (current.type === COMBAT_OPPONENT_POWER_VP_REWARD_EFFECT ||
+        current.type === 'selected_player_event_combat_power' ||
         current.metric === 'selected_player_event_combat_power' || current.op === 'floor_divide') return true;
     return Object.values(current).some(visit);
   };

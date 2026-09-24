@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.chaos",
+  "name": "尼禄·卡欧斯",
+  "class": "Master",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "master.chaos.skill.s10",
+      "aliases": [
+        "card.skill.master.chaos.skill.s10",
+        "s10"
+      ],
+      "legacyId": "s10",
+      "name": "哨兵",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.chaos"
+      },
+      "printedText": "【兽】\n守望-行动阶段：翻倍你的地利。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "cost": 1,
+        "basePower": 1,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 1
+        }
+      ],
+      "abilities": [
+        {
+          "id": "double-deployment-bonus",
+          "kind": "phase_action",
+          "printedClause": "【兽】\n守望-行动阶段：翻倍你的地利。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "multiply_deployment_bonus",
+              "target": "controller",
+              "multiplier": 2
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.double-deployment-bonus",
+        "sourceRefs": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/尼禄·卡欧斯.png",
+            "locator": "master.chaos/尼禄·卡欧斯"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.chaos/s10"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      },
+      "initialPlacement": "outside_game"
+    }
+  ]
+}

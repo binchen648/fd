@@ -1,0 +1,294 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.goredolf",
+  "name": "戈尔德鲁夫·穆吉克",
+  "class": "Master",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "master.goredolf.skill.s1a",
+      "aliases": [
+        "card.skill.master.goredolf.skill.s1a",
+        "s1a"
+      ],
+      "legacyId": "s1a",
+      "name": "愚者的决意",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.goredolf"
+      },
+      "printedText": "前哨阶段：+2合计威力。你本回合必须部署于一处战场且你不能于你的回合移动，若你本回合战败，失去2点战果。\n【戈夫铁拳】为牌库替换牌，抽到手牌后于战斗时打出。",
+      "cardFace": {
+        "typeLabel": "前哨",
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "foolish-resolve-use",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "advance",
+            "opens": "controller_action_window"
+          },
+          "printedClause": "前哨阶段：+2合计威力。你本回合必须部署于一处战场且你不能于你的回合移动，若你本回合战败，失去2点战果",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [],
+          "effects": [
+            {
+              "type": "combat_power_bonus",
+              "amount": 2
+            },
+            {
+              "type": "set_player_flag",
+              "target": "controller",
+              "key": "goredolfFoolishResolveRound",
+              "value": {
+                "type": "current_round"
+              }
+            },
+            {
+              "type": "set_player_flag",
+              "target": "controller",
+              "key": "mustDeployBattlefieldRound",
+              "value": {
+                "type": "current_round"
+              }
+            },
+            {
+              "type": "set_player_flag",
+              "target": "controller",
+              "key": "movementBlockedRound",
+              "value": {
+                "type": "current_round"
+              }
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "foolish-resolve-loss",
+          "kind": "passive",
+          "activation": {
+            "eventType": "combat.resolved",
+            "trigger": "after_battle_result_determined"
+          },
+          "printedClause": "若你本回合战败，失去2点战果",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "player_flag_number_current_round",
+              "key": "goredolfFoolishResolveRound"
+            },
+            {
+              "type": "event_player_lost_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "target": "controller",
+              "amount": 2
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.goredolf-fools-resolve",
+        "sourceRefs": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/戈尔德鲁夫·穆吉克.png",
+            "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.goredolf/s1a"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    },
+    {
+      "id": "master.goredolf.skill.ascension",
+      "aliases": [
+        "card.skill.master.goredolf.skill.ascension",
+        "ascension"
+      ],
+      "legacyId": "ascension",
+      "name": "别掉队了！",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.goredolf"
+      },
+      "printedText": "【戈夫铁拳】获得+6威力。\n当你使用了愚者的决意并赢得了战斗，此战斗的所有败者失去2点战果。",
+      "cardFace": {
+        "typeLabel": "升华技",
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "iron-fist-plus-six",
+          "kind": "passive",
+          "printedClause": "【戈夫铁拳】获得+6威力",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "goredolf-iron-fist-plus-six",
+              "rule": "card_power",
+              "operation": "add",
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "definitionIds": [
+                    "card.card-gof-fist"
+                  ]
+                }
+              },
+              "value": 6,
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            }
+          ],
+          "effects": [],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "dont-fall-behind-reward",
+          "kind": "passive",
+          "activation": {
+            "eventType": "combat.resolved",
+            "trigger": "after_battle_result_determined"
+          },
+          "printedClause": "当你使用了愚者的决意并赢得了战斗，此战斗的所有败者失去2点战果",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "player_flag_number_current_round",
+              "key": "goredolfFoolishResolveRound"
+            },
+            {
+              "type": "event_player_won_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "target": {
+                "scope": "event_combat_losers"
+              },
+              "amount": 2
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.goredolf-dont-fall-behind",
+        "sourceRefs": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/戈尔德鲁夫·穆吉克.png",
+            "locator": "master.goredolf/戈尔德鲁夫·穆吉克"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.goredolf/ascension"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

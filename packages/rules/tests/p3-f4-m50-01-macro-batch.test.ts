@@ -97,7 +97,7 @@ describe('P3 F4 M50-01 50-skill macro-batch', () => {
     const inventory = json('data/phase3/full-roster-ability-inventory.json');
     const frozen = new Set<string>([...inventory.staticSkills, ...inventory.dynamicSkills].map((entry: any) => String(entry.canonicalAbilityId)));
     const counts = new Map<string, number>();
-    for (const file of authoringJsonFiles(resolve(ROOT, 'data/authoring'))) {
+    for (const file of authoringJsonFiles(resolve(ROOT, 'data/authoring')).filter((file) => !/\.p3-m50-\d+\.json$/.test(file) || file.endsWith('.p3-m50-01.json'))) {
       const raw = JSON.parse(readFileSync(file, 'utf8').replace(/^\uFEFF/, ''));
       for (const card of raw.cards ?? []) if (frozen.has(String(card.id))) counts.set(String(card.id), (counts.get(String(card.id)) ?? 0) + 1);
     }

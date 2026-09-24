@@ -3,6 +3,7 @@ import type { CardInstance } from '../schema/card';
 import type { LocationId } from '../schema/location';
 import starterPack from '../data/cards/starter-pack.json';
 import { canOccupyLocation, getEnabledLocations } from '../core/map-engine';
+import { movePlayer as movePlayerCore } from '../core/movement';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID, evaluateCardSourceValidity, isActiveCardSource } from '../core/card-source-state';
 import {
   isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic,
@@ -12,6 +13,7 @@ import { checkExtendedCondition, resolveExtendedEffect } from './extended-effect
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, installRulerSealMovementLock, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, rulerSealMovementLocked, situationForbidsAttribute, structuredCardDrawForbidden, structuredCloseWhenHandEmptySources, structuredStandardAttackCardMaximum } from '../core/rule-overrides';
 import { node, nodes, str } from './loader';
+import { isAcceptedCommandSealLossConditionalDefeatAbility } from './command-seal-loss-conditional-defeat';
 import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
 import {
@@ -19,11 +21,12 @@ import {
   isRulerSealUseCandidate, isRulerSealUseSemantic, unspentRulerSealBindings,
 } from './ruler-seal';
 import { currentDeploymentBonus, multiplyDeploymentBonus } from '../core/terrain-advantage';
-import { eventRulePlacementByInstance, initializeEventRulePlacements, listEventRuleCandidates, moveEventRuleCandidate, moveEventRuleCandidates, type EventRuleZone } from './event-rule';
+import { eventRulePlacementByInstance, initializeEventRulePlacements, listEventRuleCandidates, moveEventRuleCandidate, moveEventRuleCandidates, replaceSelectedEventRuleFromDeck, swapSelectedEventRuleLocations, type EventRuleZone } from './event-rule';
 import { applyOuterGodLifeUse, isOuterGodLifeAbilityCandidate, isOuterGodLifeAbilitySemantic, settlePendingSourceCardReturns } from './outer-god-life';
+import { sequesterRandomInactiveServantSkill } from './m50-sequestration';
 import { classifyAcceptedSkillUseForbidModifier, definitionHasStructuralTrueNameRelease, isAcceptedStaticWhileActiveSkillUseForbidAbility } from './skill-use-forbid';
 import { isCardCloseForbidden } from './card-close-forbid';
-import { faceUpCardPlayLimitReached, recordCompletedFaceUpCardPlay } from './face-up-cards-per-round';
+import { faceUpCardPlayLimitReached, faceUpCardsPlayedThisRound, recordCompletedFaceUpCardPlay } from './face-up-cards-per-round';
 import { currentRoundCombatLossAbsent, isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
 import { eventLocationEqualsController, isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
 import {
@@ -39,7 +42,7 @@ import {
   isNextRoundSituationBenefitSuppressionCandidate,
   nextRoundSituationSuppressionQualifyingOpponentIds,
 } from './next-round-situation-benefit-suppression';
-import { isAcceptedCommandSealUnusedSameBattlefieldDefeatAbility, isAcceptedPreBattleDefeatAbility, isAcceptedSelectedSameBattlefieldDefeatAbility, isPreBattleDefeatCandidate, preBattleDefeatAttribute } from './pre-battle-defeat';
+import { isAcceptedCommandSealUnusedSameBattlefieldDefeatAbility, isAcceptedDeploymentLocationOpponentDefeatAbility, isAcceptedFaceUpPlayThresholdSameBattlefieldDefeatAbility, isAcceptedPreBattleDefeatAbility, isAcceptedSelectedSameBattlefieldDefeatAbility, isAcceptedStructuredChosenOpponentDefeatAbility, isPreBattleDefeatCandidate, preBattleDefeatAttribute } from './pre-battle-defeat';
 import {
   battleLossVpWinnerRewardAmounts,
   isAcceptedBattleLossVpWinnerRewardAbility,
@@ -61,6 +64,7 @@ import {
 } from './combat-opponent-power-vp-reward';
 import {
   isAcceptedOpponentCloseToOneAbility,
+  isAcceptedOpponentCloseOneNonResidualAbility,
   isOpponentCloseToOneCandidate,
 } from './opponent-close-to-one';
 import {
@@ -98,6 +102,15 @@ import {
   trustedCrowdedBattleEventMatches,
 } from './batch-passive-card-rules';
 import { b02OwnedBasicAttackAdjustment, b02SkillDefinitionForbidden, b02SourceOwned, isAcceptedB02RoundEndVpLossAbility } from './batch-owned-passive-rules';
+import { m50AdditiveCardAdjustment, m50IgnoresCardEffectPlayRestrictions, m50StructuredStandardAppendRule, m50StructuredStandardAppendTargetIsAttack } from './m50-structural-card-modifiers';
+import { m50LinkedPlayerCardMultipliers } from './m50-linked-player-card-modifiers';
+import { isAcceptedM50BladeStormGrantedAbility, isAcceptedM50BoundaryBottomDiscardAbility, isAcceptedM50FreeSourceCardCombatPlayAbility, isAcceptedM50GrantedRoundDefeatIgnoreAbility, isAcceptedM50SourceCardCombatJoinAbility, m50GrantedAbilitiesForCard, m50GrantedAbilityForCard } from './m50-granted-card-abilities';
+import { M50_CLOSE_SELECTED_FACE_DOWN_ATTACKS, M50_DRAW_AND_PLAY_FACE_DOWN, isAcceptedM50DrawAndPlayFaceDownAttackAbility, isAcceptedM50FaceDownAttackCloseAbility, m50FaceDownAttackPrintedBasePowerOverride, revealM50FaceDownAttackResidualSources } from './m50-face-down-attack-rules';
+import { M50_EFFECT_INSTALLED_COMBAT_SETTLEMENT_POLICY, M50_EFFECT_INSTALLED_MANA_SPENDING_FORBID_POLICY, isAcceptedEffectInstalledCombatSettlementBundle, isAcceptedEffectInstalledCombatSettlementModifier, isAcceptedEffectInstalledControllerManaSpendingForbidModifier, m50ManaSpendingForbidden } from './m50-effect-installed-rule-modifiers';
+import { isAcceptedM50SourceBattlefieldLockdownAbility, m50SourceBattlefieldCardPlayForbidden } from './m50-source-battlefield-lockdown';
+import { M50_BATTLE_TERMINAL_ACTIVE_ATTACK_VP_ATTRITION, isAcceptedM50BattleTerminalActiveAttackVpAttritionAbility } from './m50-battle-terminal-attrition';
+import { m50OpponentDefeatManaCost } from './m50-defeat-cost';
+import { M50_PLAYER_FLAG_GREATER_THAN_MANA_RATIO, isAcceptedM50RatioFilteredDefeatAbility, parseM50PlayerFlagManaRatioPredicate } from './m50-ratio-defeat';
 import {
   B03_EVENT_COMBAT_HAS_ATTRIBUTE, B03_SCHEDULE_EFFECT, advanceB03RoundSchedules, armB03NextRoundCardPowerSchedule,
   b03OpponentCardPowerSetZero, b03ScheduledCardPowerBonus, b03TrustedBattlefieldEqualsController, b03TrustedCombatHasAttribute,
@@ -139,6 +152,7 @@ import {
   gameStartPlayerStatusAssignments,
   isGameStartPlayerStatusAssignmentCandidate,
   isGameStartPlayerStatusAssignmentSemantic,
+  playerHasStatus,
 } from './game-start-player-status-assignment';
 export { isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import {
@@ -151,7 +165,7 @@ import {
 import type {
   AbilityCommand, AbilityDefinitionPack, AbilityEvent, AbilityPlayerView, AbilityRuntime, AuthoringAbility, AuthoringCard, PlayerId,
   BattleResult, BattleResultData, CalculationLine, CardPlayClassification, CardRuntimeState, DispatchResult, EffectContext, ExecutableCardDefinition,
-  LegalAction, OngoingEffect, PendingDecision, PendingOpponentCloseToOne, RuleNode, TriggeredAbility,
+  LegalAction, OngoingEffect, PendingDecision, PendingOpponentCloseToOne, PendingStructuredEachPlayerOption, ResponseWindow, RuleNode, TriggeredAbility,
   AbilityInteractionClassification,
   PlayCardAction,
 } from './types';
@@ -192,10 +206,32 @@ function definition(s: GameState, id: string): AuthoringCard | undefined {
   return eventPlacement ? runtime(s).pack.eventRules?.[eventPlacement.eventCardId] : undefined;
 }
 function abilityDefinition(s: GameState, source: string, abilityId: string): AuthoringAbility {
-  const a = definition(s, source)?.abilities.find(a => a.id === abilityId);
+  const native = definition(s, source)?.abilities.find(a => a.id === abilityId);
+  const physical = s.cards.some((candidate) => candidate.instanceId === source);
+  const granted = physical ? m50GrantedAbilityForCard(s, source, abilityId) : undefined;
+  if (native && granted) reject('invalid_state', 'Granted ability collides with a native ability id');
+  const a = native ?? granted;
   if (!a) reject('illegal_action', 'Ability is not available'); return a;
 }
+function cardActivationAbilities(s: GameState, sourceId: string): AuthoringAbility[] {
+  const native = definition(s, sourceId)?.abilities ?? [];
+  const granted = m50GrantedAbilitiesForCard(s, sourceId);
+  const nativeIds = new Set(native.map((ability) => ability.id));
+  if (granted.some((ability) => nativeIds.has(ability.id))) reject('invalid_state', 'Granted ability collides with a native ability id');
+  return [...native, ...granted];
+}
 function nextId(s: GameState, label: string): string { return `${label}-${++runtime(s).sequence}`; }
+function recordAuthoritativeManaSpend(s: GameState, playerId: string, amount: number, locationId?: string): string | undefined {
+  if (amount === 0) return undefined;
+  if (!Number.isSafeInteger(amount) || amount < 0) reject('invalid_amount', 'Mana spend must be a nonnegative safe integer');
+  const payer = player(s, playerId);
+  const effectiveLocationId = locationId ?? payer.locationId;
+  const id = nextId(s, 'mana-spent');
+  const facts = { playerId, resource: 'mana' as const, amount, ...(effectiveLocationId ? { locationId: effectiveLocationId } : {}), roundNumber: s.round.roundNumber };
+  (runtime(s).trustedManaSpentSnapshots ??= {})[id] = facts;
+  processEvent(s, { id, type: 'm50_player_mana_spent', ...facts });
+  return id;
+}
 function active(s: GameState, id: string): boolean {
   card(s, id);
   return isActiveCardSource(s, id);
@@ -229,7 +265,12 @@ export function classifyCardPlay(d: AuthoringCard | undefined): CardPlayClassifi
 }
 function cardPlayClassification(s: GameState, sourceId: string): CardPlayClassification {
   const d = definition(s, sourceId);
-  return runtime(s).playRulesVersion === 'legacy-v0' ? legacyCardPlayClassification(d) : classifyCardPlay(d);
+  if (runtime(s).playRulesVersion === 'legacy-v0') return legacyCardPlayClassification(d);
+  const physical = s.cards.find((candidate) => candidate.instanceId === sourceId);
+  if (physical && m50StructuredStandardAppendTargetIsAttack(s, physical.controllerPlayerId, sourceId)) {
+    return { playKind: 'attack', destinationZone: 'attack_area' };
+  }
+  return classifyCardPlay(d);
 }
 function entersAttackArea(s: GameState, sourceId: string): boolean {
   return cardPlayClassification(s, sourceId).playKind === 'attack';
@@ -269,6 +310,32 @@ function attackPlayLimitReached(s: GameState, playerId: string, sourceId: string
     entersAttackArea(s, choice.cardInstanceId) && !isRequiredAdditionalPlayCard(s, choice.cardInstanceId)).length;
   return attacksDeclaredThisRound(s, playerId) + staged >= attackPlayAllowance(s, playerId);
 }
+interface RegularAttackSelectionPlan {
+  regularAttackCount: number;
+  structuredAppendId?: string;
+  structuredAppendExtraCost?: number;
+}
+function regularAttackSelectionPlan(s: GameState, playerId: string, choices: PlayCardAction[]): RegularAttackSelectionPlan | undefined {
+  const requiredAdditionalIds = new Set(choices.filter((choice) => isRequiredAdditionalPlayCard(s, choice.cardInstanceId)).map((choice) => choice.cardInstanceId));
+  const ordinaryAttackChoices = choices.filter((choice) => entersAttackArea(s, choice.cardInstanceId) && !requiredAdditionalIds.has(choice.cardInstanceId));
+  const remainingAllowance = Math.max(0, attackPlayAllowance(s, playerId) - attacksDeclaredThisRound(s, playerId));
+  if (ordinaryAttackChoices.length <= remainingAllowance) return { regularAttackCount: ordinaryAttackChoices.length };
+  if (requiredAdditionalIds.size > 0 || remainingAllowance < 1 || ordinaryAttackChoices.length !== remainingAllowance + 1) return undefined;
+  const candidates = ordinaryAttackChoices.flatMap((choice) => {
+    if (choice.faceDown === true) return [];
+    const rule = m50StructuredStandardAppendRule(s, playerId, choice.cardInstanceId);
+    return rule ? [{ id: choice.cardInstanceId, extraCost: rule.extraCost }] : [];
+  });
+  if (candidates.length !== 1) return undefined;
+  return { regularAttackCount: ordinaryAttackChoices.length - 1, structuredAppendId: candidates[0]!.id, structuredAppendExtraCost: candidates[0]!.extraCost };
+}
+function canStageAttackChoice(s: GameState, playerId: string, choice: PlayCardAction, currentStaged: PlayCardAction[]): boolean {
+  if (!entersAttackArea(s, choice.cardInstanceId)) return false;
+  const hasOrdinaryStagedAttack = currentStaged.some((entry) => entersAttackArea(s, entry.cardInstanceId) && !isRequiredAdditionalPlayCard(s, entry.cardInstanceId));
+  const allowRequiredAdditional = hasOrdinaryStagedAttack && isRequiredAdditionalPlayCard(s, choice.cardInstanceId);
+  if (playFailure(s, playerId, choice.cardInstanceId, choice.faceDown === true, false, true, false, allowRequiredAdditional)) return false;
+  return regularAttackSelectionPlan(s, playerId, [...currentStaged, choice]) !== undefined;
+}
 function expectedPhaseWindow(abilityPhase: string): string | undefined {
   if (abilityPhase === 'combat') return 'controller_combat_action_window';
   if (abilityPhase === 'preparation' || abilityPhase === 'advance' || abilityPhase === 'action') return 'controller_action_window';
@@ -299,6 +366,24 @@ export function classifyAbilityInteraction(a: AuthoringAbility): AbilityInteract
     if (!expected) return { kind: 'unsupported', window: opens, reason: 'passive_phase_missing_or_unknown_phase' };
     if (opens && opens !== expected) return { kind: 'unsupported', ...phasePart, window: opens, reason: 'passive_phase_window_mismatch' };
     return { kind: 'phase_activation', ...phasePart, window: opens || expected, commandType: 'activate_ability' };
+  }
+  if (isGenericScheduledRankedSelfDefeatSequence(a)) {
+    return { kind: 'automatic_trigger', ...phasePart, window: opens, trigger };
+  }
+  const containsStructuredChoiceSyntax = (value: unknown): boolean => {
+    if (Array.isArray(value)) return value.some(containsStructuredChoiceSyntax);
+    if (!value || typeof value !== 'object') return false;
+    const current = node(value);
+    if (['choose_cards','choose_one','choose_locations','choose_events','choose_players','choose_each_player_option'].includes(str(current.type))) return true;
+    return Object.values(current).some(containsStructuredChoiceSyntax);
+  };
+  const m50StructuredAutomaticPassiveTrigger = a.kind === 'passive' && trigger &&
+    trigger !== 'while_active' && trigger !== 'when_play_requirements_checked' &&
+    a.markers?.includes('m50_structured_v1') === true && !str(response.opens) &&
+    executionMode === 'automatic' && Array.isArray(a.execution.allowedOperations) && a.execution.allowedOperations.length === 0 &&
+    !containsStructuredChoiceSyntax([...a.effects, ...a.creates]);
+  if (m50StructuredAutomaticPassiveTrigger) {
+    return { kind: 'automatic_trigger', ...phasePart, window: opens, trigger };
   }
   if (a.kind === 'passive' && trigger && trigger !== 'while_active' && trigger !== 'when_play_requirements_checked') {
     return { kind: 'response_window', ...phasePart, window: str(response.opens) || trigger, trigger, commandType: 'resolve_response' };
@@ -338,13 +423,13 @@ export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPa
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
     cardState: {}, playerStatusKeysByPlayer: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPreBattleDefeats: [], pendingPostBattleEvents: [], trustedBattleResultSnapshots: {},
     eventRuleZoneRevision: 0, rulerSealBindings: [], rulerSealBindingHistory: {}, pendingRulerSealRewards: [],
-    roundTotalPowerAdjustments: { round: s.round.roundNumber, byPlayer: {} }, pendingSourceCardReturns: [],
+    roundTotalPowerAdjustments: { round: s.round.roundNumber, byPlayer: {} }, pendingSourceCardReturns: [], sequesteredServantSkills: [],
     usedAbilities: {}, processedEvents: [], revealedServants: [],
     events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [], roomMode: options.roomMode ?? 'standard',
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
     manaGainedThisRound: { round: s.round.roundNumber, byPlayer: {} },
-    trustedVictoryPointChanges: {}, roundPositiveVictoryPointGain: { round: s.round.roundNumber, byPlayer: {} },
+    trustedVictoryPointChanges: {}, trustedManaSpentSnapshots: {}, roundPositiveVictoryPointGain: { round: s.round.roundNumber, byPlayer: {} },
     situationBenefitsSuppressedRoundByPlayer: {},
     playRulesVersion: options.playRulesVersion ?? 'explicit-v1',
     playCounters: { round: s.round.roundNumber, cardsPlayedByPlayer: {}, faceUpCardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} } };
@@ -441,6 +526,7 @@ export function evaluateFormula(input: unknown, s: GameState, controllerId: stri
     if (!value || typeof value !== 'object' || Array.isArray(value)) reject('unsupported', 'Formula must be a controlled AST');
     const n = node(value);
     if (n.formula !== undefined) return visit(n.formula);
+    if (n.type === 'formula' || n.type === 'metric') return numeric(s, ctx, n);
     if (n.formulaRef === 'cardFace.basePower') return visit(definition(s, sourceCardId)?.cardFace.basePower ?? 0);
     if (n.var !== undefined || n.op === 'var') {
       const name = str(n.var ?? n.name);
@@ -488,13 +574,27 @@ export function evaluateFormula(input: unknown, s: GameState, controllerId: stri
       default: return reject('unsupported', `Unsupported formula operation: ${str(n.op)}`);
     }
     if (!Number.isFinite(result)) reject('invalid_formula', 'Nonfinite formula result');
-    lines.push({ label: n.op === 'min' ? `至多 ${args[args.length - 1]}` : args.join(n.op === 'multiply' ? ' × ' : n.op === 'add' ? ' + ' : ` ${str(n.op)} `), value: result }); return result;
+    lines.push({ label: n.op === 'min' ? `\u81f3\u591a ${args[args.length - 1]}` : args.join(n.op === 'multiply' ? ' × ' : n.op === 'add' ? ' + ' : ` ${str(n.op)} `), value: result }); return result;
   };
   return { value: visit(input), lines };
 }
 function structuredMetricValue(s: GameState, ctx: EffectContext, metric: RuleNode): number {
   const kind = str(metric.metric);
+  if (kind === 'round_number') {
+    if (metric.source !== 'controller' || Object.keys(metric).some((key) => !['type', 'metric', 'source'].includes(key))) {
+      reject('invalid_formula', 'Round-number metric requires exact controller source shape');
+    }
+    const value = s.round.roundNumber;
+    if (!Number.isSafeInteger(value) || value < 1) reject('invalid_formula', 'Round-number metric state is invalid');
+    return value;
+  }
   if (kind === 'victory_points') return player(s, ctx.controllerId).vp;
+  if (kind === 'source_card_current_power') {
+    card(s, ctx.sourceCardId);
+    const value = calculateCardPower(s, ctx.sourceCardId).value;
+    if (!Number.isSafeInteger(value) || value < 0) reject('invalid_formula', 'Source-card current power is invalid');
+    return value;
+  }
   if (kind === 'combat_power') {
     const trusted = ctx.event?.battleParticipantPowers?.[ctx.controllerId];
     if (Number.isFinite(trusted)) return Number(trusted);
@@ -521,6 +621,11 @@ function structuredMetricValue(s: GameState, ctx: EffectContext, metric: RuleNod
   if (kind === 'face_up_definition_count') {
     const definitionId = str(metric.key); if (!definitionId) reject('invalid_formula', 'Face-up definition count requires key');
     return s.cards.filter((entry) => entry.definitionId === definitionId && runtime(s).cardState[entry.instanceId]?.faceDown !== true && entry.zone !== 'removed_from_game').length;
+  }
+  if (kind === 'players_with_status_count') {
+    const status = str(metric.status);
+    if (!status || (metric.source !== undefined && metric.source !== 'controller') || Object.keys(metric).some((key) => !['type', 'metric', 'source', 'status'].includes(key))) reject('invalid_formula', 'Players-with-status metric shape is invalid');
+    return s.players.filter((entry) => playerHasStatus(s, entry.id, status)).length;
   }
   return reject('unsupported', `Unsupported structured metric: ${kind}`);
 }
@@ -677,15 +782,32 @@ function modifierControllerApplies(s: GameState, modifierControllerId: string, s
   return false;
 }
 export function calculateCardPower(s: GameState, sourceId: string): { value: number; lines: CalculationLine[] } {
-  if (runtime(s).cardState[sourceId]?.faceDown) return { value: 0, lines: [{ label: '暗置攻击无伤害结算', value: 0 }] };
+  const faceDown = runtime(s).cardState[sourceId]?.faceDown === true;
+  const faceDownPrintedPowerOverride = faceDown ? m50FaceDownAttackPrintedBasePowerOverride(s, sourceId) : undefined;
+  if (faceDown && faceDownPrintedPowerOverride === undefined) return { value: 0, lines: [{ label: '暗置攻击无伤害结算', value: 0 }] };
   const source = card(s, sourceId); const d = definition(s, sourceId);
   const persistentLock = s.ruleOverrides?.masterSkillPowerLockIfSituationForbidsByPlayer?.[source.controllerPlayerId];
   if (d?.cardType === 'master_skill' && persistentLock && situationForbidsAttribute(s, persistentLock.attribute)) {
     return { value: persistentLock.value, lines: [{ label: 'persistent_situation_attribute_power_lock', value: persistentLock.value }] };
   }
-  const result = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
+  const result = evaluateFormula(faceDownPrintedPowerOverride ?? d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
+  if (faceDownPrintedPowerOverride !== undefined) result.lines.push({ label: 'm50_face_down_printed_base_power', value: result.value });
+  const physicalMultiplier = runtime(s).cardState[sourceId]?.basePowerMultiplier ?? 1;
+  if (!Number.isSafeInteger(physicalMultiplier) || physicalMultiplier < 1) reject('invalid_modifier', 'Physical-card base-power multiplier is invalid');
+  if (physicalMultiplier !== 1) {
+    result.value *= physicalMultiplier;
+    if (!Number.isSafeInteger(result.value)) reject('invalid_modifier', 'Physical-card base-power multiplier overflow');
+    result.lines.push({ label: 'physical_card_base_power_multiplier', value: result.value });
+  }
+  const linkedPlayerMultipliers = m50LinkedPlayerCardMultipliers(s, sourceId);
+  if (linkedPlayerMultipliers.basePower !== 1) {
+    result.value *= linkedPlayerMultipliers.basePower;
+    if (!Number.isFinite(result.value)) reject('invalid_modifier', 'Linked-player base-power multiplier overflow');
+    result.lines.push({ label: 'm50_linked_player_base_power_multiplier', value: result.value });
+  }
   const ownedDefinitionAdjustment = ownedDefinitionCardRuleAdjustment(s, sourceId);
   const b02BasicAdjustment = b02OwnedBasicAttackAdjustment(s, sourceId);
+  const m50StructuralAdjustment = m50AdditiveCardAdjustment(s, sourceId);
   if (ownedDefinitionAdjustment.power !== 0) {
     result.value += ownedDefinitionAdjustment.power;
     result.lines.push({ label: 'active_source_owned_definition_base_power', value: result.value });
@@ -693,6 +815,10 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
   if (b02BasicAdjustment.power !== 0) {
     result.value += b02BasicAdjustment.power;
     result.lines.push({ label: 'owned_passive_basic_attack_power', value: result.value });
+  }
+  if (m50StructuralAdjustment.power !== 0) {
+    result.value += m50StructuralAdjustment.power;
+    result.lines.push({ label: 'm50_structural_card_power', value: result.value });
   }
   for (const modifier of ((source as unknown as { powerModifiers?: Array<Record<string, unknown>> }).powerModifiers ?? [])) {
     const value = Number(modifier.value ?? 0);
@@ -777,6 +903,7 @@ function structuredChoiceSelectionKey(effect: RuleNode): string {
   if (str(effect.payloadKey)) return str(effect.payloadKey);
   if (effect.type === 'choose_locations') return 'targetLocationId';
   if (effect.type === 'choose_events') return 'selectedEventIds';
+  if (effect.type === 'choose_players') return 'targetPlayerId';
   if (effect.type === 'choose_one') return str(effect.id) || 'selectedOptionId';
   return 'selectedInstanceIds';
 }
@@ -797,6 +924,87 @@ function structuredCountTargetPlayerIds(s: GameState, ctx: EffectContext, rawTar
   return structuredChoiceTargetPlayers(s, ctx, rawTarget);
 }
 
+function deployedThisRoundAtControllerLocation(s: GameState, ctx: EffectContext, playerId: PlayerId): boolean {
+  const here=player(s,ctx.controllerId).locationId; if(!here) return false;
+  return s.log.some((entry)=>entry.type==='player_deployment_recorded'&&entry.payload?.playerId===playerId&&entry.payload?.locationId===here&&entry.payload?.roundNumber===s.round.roundNumber);
+}
+function commandSealCount(s: GameState, playerId: PlayerId): number {
+  const value = Number((player(s, playerId) as unknown as { commandSpells?: number }).commandSpells ?? 3);
+  if (!Number.isSafeInteger(value) || value < 0) reject('invalid_state', 'Command-seal count is invalid');
+  return value;
+}
+function structuredPlayerCandidateConditionMatches(s: GameState, ctx: EffectContext, candidateId: PlayerId, entry: RuleNode): boolean {
+  if (entry.type === 'lacks_status') {
+    const status = str(entry.status); if (!status || Object.keys(entry).some((key) => !['type','status'].includes(key))) reject('unsupported', 'Candidate lacks-status condition is invalid');
+    return !playerHasStatus(s, candidateId, status);
+  }
+  if (entry.type === 'has_status') {
+    const status = str(entry.status); if (!status || Object.keys(entry).some((key) => !['type','status'].includes(key))) reject('unsupported', 'Candidate has-status condition is invalid');
+    return playerHasStatus(s, candidateId, status);
+  }
+  if (entry.type === 'command_seals_less_than_controller') {
+    if (Object.keys(entry).some((key) => key !== 'type')) reject('unsupported', 'Candidate command-seal comparison shape is invalid');
+    return commandSealCount(s, candidateId) < commandSealCount(s, ctx.controllerId);
+  }
+  if (entry.type === 'can_pay_mana') {
+    const amount = Number(entry.amount);
+    if (!Number.isSafeInteger(amount) || amount < 0 || Object.keys(entry).some((key) => !['type', 'amount'].includes(key))) {
+      reject('unsupported', 'Candidate mana-payment condition is invalid');
+    }
+    return player(s, candidateId).mana >= amount;
+  }
+  if (entry.type === 'can_effect_move_to_controller_location') {
+    if (Object.keys(entry).some((key) => key !== 'type')) reject('unsupported', 'Candidate effect-movement condition is invalid');
+    const controller = player(s, ctx.controllerId);
+    const candidate = player(s, candidateId);
+    if (!controller.locationId || candidate.locationId === controller.locationId) return false;
+    const probe = movePlayerCore(structuredClone(s), { playerId: candidateId, to: controller.locationId, movementKind: 'effect', ignorePathForEffect: true });
+    return probe.moved;
+  }
+  if (entry.type === 'lacks_linked_skill_card') {
+    const linkedSkillId = str(entry.linkedSkillId);
+    const rawZones = Array.isArray(entry.zones) ? entry.zones : [];
+    const zones = rawZones.map(normalizeStructuredZone);
+    if (!linkedSkillId || !rawZones.length || zones.some((zone) => !zone) ||
+        Object.keys(entry).some((key) => !['type', 'linkedSkillId', 'zones'].includes(key))) {
+      reject('unsupported', 'Candidate linked-skill absence condition is invalid');
+    }
+    return !s.cards.some((candidate) => candidate.controllerPlayerId === candidateId && candidate.definitionId === linkedSkillId && zones.includes(candidate.zone));
+  }
+  if (entry.type === 'victory_points_not_first') {
+    if (Object.keys(entry).some((key) => key !== 'type')) reject('unsupported', 'Candidate victory-point rank condition is invalid');
+    const active = s.players.filter((candidate) => candidate.status === 'active');
+    if (!active.length) reject('invalid_state', 'Victory-point rank requires at least one active player');
+    const highest = Math.max(...active.map((candidate) => candidate.vp));
+    return player(s, candidateId).vp < highest;
+  }
+  return condition(s, { ...ctx, controllerId: candidateId }, entry);
+}
+function structuredPlayerWhereMatches(s: GameState, ctx: EffectContext, playerId: PlayerId, predicate: RuleNode): boolean {
+  if (predicate.type === 'deployed_this_round_at_controller_location' && Object.keys(predicate).length === 1) return deployedThisRoundAtControllerLocation(s, ctx, playerId);
+  if (predicate.type === M50_PLAYER_FLAG_GREATER_THAN_MANA_RATIO) {
+    const parsed = parseM50PlayerFlagManaRatioPredicate(predicate);
+    if (!parsed) reject('unsupported', 'Player-flag/mana ratio target predicate is invalid');
+    const target = player(s, playerId);
+    const rawFlagValue = structuredFlagValue(s, playerId, parsed.key);
+    const flagValue = rawFlagValue === undefined ? 0 : Number(rawFlagValue);
+    if (!Number.isSafeInteger(flagValue) || flagValue < 0 || !Number.isSafeInteger(target.mana) || target.mana < 0) {
+      reject('invalid_state', 'Player-flag/mana ratio requires nonnegative safe-integer server state');
+    }
+    const left = flagValue * parsed.denominator;
+    const right = target.mana * parsed.numerator;
+    if (!Number.isSafeInteger(left) || !Number.isSafeInteger(right)) reject('invalid_state', 'Player-flag/mana ratio comparison exceeds safe integer range');
+    return left > right;
+  }  if (predicate.type === 'face_up_cards_played_this_round_at_least') {
+    const count = Number(predicate.count);
+    if (Object.keys(predicate).some((key) => !['type', 'count'].includes(key)) || !Number.isSafeInteger(count) || count < 0) {
+      reject('unsupported', 'Face-up play-count target predicate is invalid');
+    }
+    return faceUpCardsPlayedThisRound(s, playerId) >= count;
+  }
+  reject('unsupported','Unsupported structured player target predicate');
+}
+
 function structuredChoiceTargetPlayers(s: GameState, ctx: EffectContext, rawTarget: unknown): PlayerId[] {
   if (rawTarget === undefined || rawTarget === null || rawTarget === '' || rawTarget === 'controller' || rawTarget === 'self') return [ctx.controllerId];
   if (typeof rawTarget === 'string') return structuredTargetPlayerIds(s, ctx, rawTarget);
@@ -804,13 +1012,27 @@ function structuredChoiceTargetPlayers(s: GameState, ctx: EffectContext, rawTarg
   const scope = str(target.scope);
   if (scope === 'same_battlefield_opponents' || scope === 'same_location_opponents') {
     const here = player(s, ctx.controllerId).locationId;
-    return s.players.filter((entry) => entry.status === 'active' && entry.id !== ctx.controllerId && entry.locationId === here).map((entry) => entry.id);
+    const where=nodes(target.where);
+    return s.players.filter((entry) => entry.status === 'active' && entry.id !== ctx.controllerId && entry.locationId === here && where.every((predicate)=>structuredPlayerWhereMatches(s,ctx,entry.id,predicate))).map((entry) => entry.id);
   }
   if (scope === 'same_location_players') {
     const here = player(s, ctx.controllerId).locationId;
     return s.players.filter((entry) => entry.status === 'active' && entry.locationId === here).map((entry) => entry.id);
   }
-  if (scope === 'all_players') return s.players.filter((entry) => entry.status === 'active').map((entry) => entry.id);
+  if (scope === 'all_opponents') {
+    if (Object.keys(target).some((key) => key !== 'scope')) reject('unsupported', 'Structured all-opponents target contains unsupported fields');
+    return s.players.filter((entry) => entry.status === 'active' && entry.id !== ctx.controllerId).map((entry) => entry.id);
+  }
+  if (scope === 'all_players') {
+    const where = nodes(target.where);
+    if (Object.keys(target).some((key) => !['scope','where'].includes(key))) reject('unsupported', 'Structured all-players target contains unsupported fields');
+    return s.players.filter((entry) => entry.status === 'active' && where.every((predicate) => structuredPlayerWhereMatches(s, ctx, entry.id, predicate))).map((entry) => entry.id);
+  }
+  if (scope === 'players_with_status') {
+    const status = str(target.status);
+    if (!status || Object.keys(target).some((key) => !['scope','status'].includes(key))) reject('unsupported', 'Structured status-scoped choice target is invalid');
+    return s.players.filter((entry) => entry.status === 'active' && playerHasStatus(s, entry.id, status)).map((entry) => entry.id);
+  }
   if (scope === 'selected_card_owners') {
     const payloadKey = str(target.payloadKey); const ids = ctx.selections[payloadKey] ?? [];
     return [...new Set(ids.map((instanceId) => s.cards.find((entry) => entry.instanceId === instanceId)?.ownerPlayerId).filter((id): id is PlayerId => !!id))];
@@ -830,6 +1052,24 @@ function structuredChoiceTargetPlayers(s: GameState, ctx: EffectContext, rawTarg
 function structuredChoiceCandidates(s: GameState, ctx: EffectContext, effect: RuleNode): string[] {
   if (effect.type === 'choose_one') {
     return nodes(effect.options).filter((option) => nodes(option.conditions).every((entry) => condition(s, ctx, entry))).map((option) => str(option.id)).filter(Boolean);
+  }
+  if (effect.type === 'choose_players') {
+    if (Number(effect.minCount ?? 1) !== 1 || Number(effect.maxCount ?? 1) !== 1) reject('unsupported', 'Structured player choice currently requires exactly one target');
+    const rawTarget = effect.candidateTarget;
+    let target: RuleNode;
+    if (rawTarget === 'all_opponents') target = { type: 'player', constraints: [{ type: 'not_controller' }] };
+    else if (rawTarget === 'same_location_opponents' || rawTarget === 'same_battlefield_opponents' || rawTarget === 'engaged_opponents') target = { type: 'player', constraints: [{ type: 'not_controller' }, { type: 'same_battlefield_as_controller' }] };
+    else if (rawTarget && typeof rawTarget === 'object' && ['same_location_opponents','same_battlefield_opponents'].includes(str(node(rawTarget).scope))) target = { type: 'player', constraints: [{ type: 'not_controller' }, { type: 'same_battlefield_as_controller' }] };
+    else if (rawTarget && typeof rawTarget === 'object' && str(node(rawTarget).scope) === 'event_combat_opponents') {
+      const ids = structuredChoiceTargetPlayers(s, ctx, rawTarget);
+      const extra = nodes(effect.candidateConditions);
+      return extra.length ? ids.filter((playerId) => extra.every((entry) => structuredPlayerCandidateConditionMatches(s, ctx, playerId, entry))) : ids;
+    }
+    else reject('unsupported', 'Structured player choice target scope is unsupported');
+    let ids = candidates(s, ctx, target);
+    const extra = nodes(effect.candidateConditions);
+    if (extra.length) ids = ids.filter((playerId) => extra.every((entry) => structuredPlayerCandidateConditionMatches(s, ctx, playerId, entry)));
+    return ids;
   }
   if (effect.type === 'choose_locations') {
     const current = player(s, ctx.controllerId).locationId ?? '';
@@ -857,8 +1097,11 @@ function structuredChoiceCandidates(s: GameState, ctx: EffectContext, effect: Ru
       sourceZone === 'discard' ? ['event_discard'] : sourceZone === 'outside_game' ? ['event_outside_game'] :
       sourceZone === 'all' || !sourceZone ? ['event_battlefield', 'event_deck', 'event_discard', 'event_outside_game'] : [];
     if (!zones.length) reject('unsupported', 'Structured event choice source zone is unsupported');
+    const visibility = str(effect.visibility);
+    if (visibility && !['up', 'down'].includes(visibility)) reject('unsupported', 'Structured event choice visibility is unsupported');
     let candidates = listEventRuleCandidates(s, runtime(s).pack, zones)
       .filter((entry) => !locationId || entry.locationId === locationId)
+      .filter((entry) => !visibility || entry.visibility === (visibility === 'up' ? 'public' : 'hidden_until_trigger'))
       .filter((entry) => effect.victoryPoints === undefined || runtime(s).pack.eventCatalog?.[entry.eventCardId]?.printedReward === numeric(s, ctx, effect.victoryPoints));
     if (effect.topCount !== undefined) {
       const topCount = Number(effect.topCount);
@@ -878,6 +1121,9 @@ function structuredChoiceCandidates(s: GameState, ctx: EffectContext, effect: Ru
     if (zones.length && !zones.includes(candidate.zone)) return false;
     if (definitions.size && !definitions.has(candidate.definitionId)) return false;
     if (linkedSkillId && candidate.definitionId !== linkedSkillId) return false;
+    const cardState = runtime(s).cardState[candidate.instanceId];
+    if (effect.face === 'up' && cardState?.faceDown === true) return false;
+    if (effect.face === 'down' && cardState?.faceDown !== true) return false;
     const def = definition(s, candidate.instanceId);
     if (effect.basicOnly === true && def?.cardType !== 'basic_attack') return false;
     if (effect.attackOnly === true && !isAttack(def)) return false;
@@ -900,8 +1146,77 @@ function structuredChoiceCandidates(s: GameState, ctx: EffectContext, effect: Ru
   }).map((entry) => entry.instanceId);
 }
 
+function isStructuredEachPlayerOptionEffect(effect: RuleNode): boolean {
+  if (effect.type !== 'choose_each_player_option') return false;
+  const target = node(effect.candidateTarget); const scope = str(target.scope);
+  if (!['same_location_opponents', 'same_battlefield_opponents', 'all_opponents'].includes(scope) || Object.keys(target).some((key) => key !== 'scope')) return false;
+  const options = nodes(effect.options);
+  if (options.length < 2 || options.length > 8) return false;
+  const ids = options.map((option) => str(option.id));
+  if (ids.some((id) => !id) || new Set(ids).size !== ids.length) return false;
+  if (options.some((option) => Object.keys(option).some((key) => !['id','label','effects'].includes(key)) ||
+      (option.label !== undefined && typeof option.label !== 'string') || !Array.isArray(option.effects) ||
+      nodes(option.effects).some((entry) => ['choose_each_player_option','choose_cards','choose_one','choose_locations','choose_events','choose_players'].includes(str(entry.type))))) return false;
+  if (effect.candidateConditions !== undefined && !Array.isArray(effect.candidateConditions)) return false;
+  if (effect.skipIfNoCandidates !== undefined && effect.skipIfNoCandidates !== true && effect.skipIfNoCandidates !== false) return false;
+  return Object.keys(effect).every((key) => ['type','candidateTarget','options','candidateConditions','skipIfNoCandidates'].includes(key));
+}
+function isStructuredEachPlayerOptionAbility(a: AuthoringAbility): boolean {
+  return a.effects.some((effect) => isStructuredEachPlayerOptionEffect(effect));
+}
+function structuredEachPlayerOptionCandidates(s: GameState, ctx: EffectContext, effect: RuleNode): PlayerId[] {
+  if (!isStructuredEachPlayerOptionEffect(effect)) reject('unsupported', 'Structured each-player option shape is invalid');
+  const extra = nodes(effect.candidateConditions);
+  return structuredChoiceTargetPlayers(s, ctx, effect.candidateTarget)
+    .filter((id) => extra.every((entry) => structuredPlayerCandidateConditionMatches(s, ctx, id, entry)))
+    .sort((left, right) => player(s, left).seat - player(s, right).seat);
+}
+function stageNextStructuredEachPlayerOptionDecision(s: GameState): void {
+  const r = runtime(s); const pending = r.pendingStructuredEachPlayerOption;
+  if (!pending) return;
+  while (pending.remainingDecisionPlayerIds.length && player(s, pending.remainingDecisionPlayerIds[0]!).status !== 'active') pending.remainingDecisionPlayerIds.shift();
+  if (!pending.remainingDecisionPlayerIds.length) {
+    const tail = pending.remainingEffects; const ctx = structuredClone(pending.context);
+    delete r.pendingStructuredEachPlayerOption;
+    if (tail.length) executeEffects(s, ctx, tail);
+    return;
+  }
+  const decisionPlayerId = pending.remainingDecisionPlayerIds[0]!;
+  const id = nextId(s, 'm50-each-player-option');
+  const decisionContext = structuredClone(pending.context);
+  decisionContext.selections.decisionPlayerId = [decisionPlayerId];
+  const target: RuleNode = { id: 'm50_each_player_option', type: 'choice', options: pending.optionIds.map((optionId) => ({ id: optionId })) };
+  r.pendingDecision = {
+    id, controllerId: decisionPlayerId, target, candidates: [...pending.optionIds], min: 1, max: 1,
+    context: decisionContext, remainingEffects: [],
+    interaction: {
+      kind: 'structured_each_player_option_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: pending.sourceCardId, abilityId: pending.abilityId, createdRevision: r.revision + 1,
+      continuationRef: `${id}:continuation`, initiatingControllerId: pending.initiatingControllerId, decisionPlayerId,
+      remainingDecisionPlayerIds: [...pending.remainingDecisionPlayerIds], optionIds: [...pending.optionIds],
+      constraints: { kind: 'target', targetKind: 'option', min: 1, max: 1, distinct: true },
+    },
+  };
+}
+function stageStructuredEachPlayerOption(s: GameState, ctx: EffectContext, effect: RuleNode, remainingEffects: RuleNode[]): boolean {
+  if (!isStructuredEachPlayerOptionEffect(effect)) reject('unsupported', 'Structured each-player option shape is invalid');
+  const candidates = structuredEachPlayerOptionCandidates(s, ctx, effect);
+  if (!candidates.length) {
+    if (effect.skipIfNoCandidates === true) return false;
+    reject('no_legal_target', 'No legal each-player option chooser remains');
+  }
+  const optionIds = nodes(effect.options).map((option) => str(option.id));
+  runtime(s).pendingStructuredEachPlayerOption = {
+    initiatingControllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+    choice: structuredClone(effect), remainingEffects: structuredClone(remainingEffects), context: structuredClone(ctx),
+    remainingDecisionPlayerIds: [...candidates], optionIds: [...optionIds],
+  };
+  stageNextStructuredEachPlayerOptionDecision(s);
+  return true;
+}
+
 function structuredChoicePending(s: GameState, ctx: EffectContext, effect: RuleNode, remainingEffects: RuleNode[]): PendingDecision | undefined {
-  if (!['choose_cards', 'choose_one', 'choose_locations', 'choose_events'].includes(str(effect.type))) return undefined;
+  if (!['choose_cards', 'choose_one', 'choose_locations', 'choose_events', 'choose_players'].includes(str(effect.type))) return undefined;
   const key = structuredChoiceSelectionKey(effect);
   if (Object.prototype.hasOwnProperty.call(ctx.selections, key)) return undefined;
   const options = structuredChoiceCandidates(s, ctx, effect);
@@ -1142,7 +1457,7 @@ function roundVpGainCrossingCondition(s: GameState, ctx: EffectContext, c: RuleN
 }
 
 export function isSourceStateCondition(c: RuleNode): boolean {
-  return ['source_active', 'source_owned'].includes(str(c.type)) &&
+  return ['source_active', 'source_owned', 'source_owned_live', 'source_revealed'].includes(str(c.type)) &&
     Object.keys(c).every((key) => key === 'type');
 }
 
@@ -1151,6 +1466,15 @@ function sourceStateCondition(s: GameState, ctx: EffectContext, c: RuleNode): bo
   const source = s.cards.find((candidate) => candidate.instanceId === ctx.sourceCardId);
   if (!source) return false;
   if (c.type === 'source_active') return active(s, source.instanceId);
+  if (c.type === 'source_revealed') {
+    const sourceState = runtime(s).cardState[source.instanceId];
+    return source.ownerPlayerId === ctx.controllerId && source.controllerPlayerId === ctx.controllerId &&
+      ['skill', 'attack_area'].includes(source.zone) && source.visibility.scope === 'public' && sourceState?.faceDown !== true;
+  }
+  if (c.type === 'source_owned_live') {
+    return source.ownerPlayerId === ctx.controllerId && source.controllerPlayerId === ctx.controllerId &&
+      ['skill', 'hand', 'attack_area'].includes(source.zone);
+  }
   const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   return isAcceptedB02RoundEndVpLossAbility(ability)
     ? b02SourceOwned(s, source.instanceId, ctx.controllerId)
@@ -1223,8 +1547,48 @@ function structuredEventFace(s: GameState, event: AbilityEvent | undefined): 'fa
   return state ? (state.faceDown ? 'face_down' : 'face_up') : undefined;
 }
 
+function trustedStructuredBattleResultTargets(s: GameState, ctx: EffectContext): { winners: PlayerId[]; losers: PlayerId[]; participants: PlayerId[] } | undefined {
+  const event = ctx.event;
+  if (!event || typeof event.resultId !== 'string' || typeof event.battleId !== 'string' ||
+      typeof event.battlePhaseResolutionId !== 'string' || typeof event.battlefieldId !== 'string' ||
+      !Array.isArray(event.battleParticipantIds) || !Array.isArray(event.battleResult?.winners) || !Array.isArray(event.battleResult?.loserIds)) return undefined;
+  const trusted = runtime(s).trustedBattleResultSnapshots?.[event.resultId];
+  if (!trusted || trusted.resultId !== event.resultId || trusted.battleId !== event.battleId ||
+      trusted.battlePhaseResolutionId !== event.battlePhaseResolutionId || trusted.battlefieldId !== event.battlefieldId ||
+      !exactStringArray(event.battleParticipantIds, trusted.battleParticipantIds) ||
+      !exactStringArray(event.battleResult.winners, trusted.winners) || !exactStringArray(event.battleResult.loserIds, trusted.loserIds)) return undefined;
+  const known = new Set(s.players.map((entry) => entry.id));
+  if (new Set(trusted.battleParticipantIds).size !== trusted.battleParticipantIds.length ||
+      trusted.battleParticipantIds.some((id) => !known.has(id)) ||
+      trusted.winners.some((id) => !trusted.battleParticipantIds.includes(id)) ||
+      trusted.loserIds.some((id) => !trusted.battleParticipantIds.includes(id))) return undefined;
+  const expectedId = event.type === 'after_battle_result_determined' ? event.resultId :
+    event.type === 'after_controller_wins_battle' && event.playerId ? `${event.resultId}:win:${event.playerId}` :
+    event.type === 'after_controller_gains_victory' && event.playerId ? `${event.resultId}:victory:${event.playerId}` :
+    event.type === 'after_controller_loses_battle' && event.playerId ? `${event.resultId}:lose:${event.playerId}` :
+    undefined;
+  if (!expectedId || event.id !== expectedId) return undefined;
+  const winners = trusted.winners.filter((id): id is PlayerId => known.has(id));
+  const losers = trusted.loserIds.filter((id): id is PlayerId => known.has(id) && !winners.includes(id));
+  if (event.type === 'after_controller_wins_battle' && (!event.playerId || !winners.includes(event.playerId))) return undefined;
+  if (event.type === 'after_controller_loses_battle' && (!event.playerId || !losers.includes(event.playerId))) return undefined;
+  return { winners, losers, participants: trusted.battleParticipantIds.filter((id): id is PlayerId => known.has(id)) };
+}
+
 function structuredTargetPlayerIds(s: GameState, ctx: EffectContext, target: unknown): PlayerId[] {
   if (target === undefined || target === null || target === '' || target === 'controller' || target === 'self') return [ctx.controllerId];
+  if (target === 'decision_player') {
+    const selected = ctx.selections.decisionPlayerId ?? [];
+    if (selected.length !== 1) return [];
+    const candidate = s.players.find((entry) => entry.id === selected[0]);
+    return candidate && candidate.status === 'active' ? [candidate.id] : [];
+  }
+  if (target === 'selected_player') {
+    const selected = ctx.selections.targetPlayerId ?? [];
+    if (selected.length !== 1) return [];
+    const candidate = s.players.find((entry) => entry.id === selected[0]);
+    return candidate && candidate.status === 'active' && candidate.id !== ctx.controllerId ? [candidate.id] : [];
+  }
   if (target === 'event_player') return ctx.event?.playerId && s.players.some((entry) => entry.id === ctx.event!.playerId) ? [ctx.event.playerId] : [];
   if (target === 'opponents') return s.players.filter((entry) => entry.id !== ctx.controllerId && entry.status === 'active').map((entry) => entry.id);
   if (target === 'all_players') return s.players.filter((entry) => entry.status === 'active').map((entry) => entry.id);
@@ -1239,6 +1603,54 @@ function structuredTargetPlayerIds(s: GameState, ctx: EffectContext, target: unk
     if (scope === 'event_player') return structuredTargetPlayerIds(s, ctx, 'event_player');
     if (scope === 'opponents') return structuredTargetPlayerIds(s, ctx, 'opponents');
     if (scope === 'all_players') return structuredTargetPlayerIds(s, ctx, 'all_players');
+    if (scope === 'same_location_players') {
+      if (Object.keys(target as RuleNode).some((key) => key !== 'scope')) reject('unsupported', 'Same-location player target shape is invalid');
+      const here = player(s, ctx.controllerId).locationId;
+      return s.players.filter((entry) => entry.status === 'active' && entry.locationId === here).map((entry) => entry.id);
+    }
+    if (scope === 'event_combat_opponents') {
+      if (Object.keys(target as RuleNode).some((key) => key !== 'scope')) reject('unsupported', 'Event-combat-opponent target shape is invalid');
+      const trusted = trustedStructuredBattleResultTargets(s, ctx);
+      if (!trusted || !trusted.participants.includes(ctx.controllerId)) return [];
+      return trusted.participants.filter((id) => id !== ctx.controllerId && player(s, id).status === 'active');
+    }
+    if (scope === 'players_with_status') {
+      const status = str((target as RuleNode).status);
+      if (!status || Object.keys(target as RuleNode).some((key) => !['scope','status'].includes(key))) reject('unsupported', 'Status-scoped player target shape is invalid');
+      return s.players.filter((entry) => entry.status === 'active' && playerHasStatus(s, entry.id, status)).map((entry) => entry.id);
+    }
+    if (scope === 'selected_card_owners') {
+      const payloadKey = str((target as RuleNode).payloadKey);
+      if (!payloadKey || Object.keys(target as RuleNode).some((key) => !['scope','payloadKey'].includes(key))) reject('unsupported', 'Selected-card-owner target shape is invalid');
+      const selected = ctx.selections[payloadKey] ?? [];
+      const owners = selected.map((instanceId) => s.cards.find((entry) => entry.instanceId === instanceId)?.ownerPlayerId)
+        .filter((id): id is PlayerId => typeof id === 'string' && s.players.some((entry) => entry.id === id && entry.status === 'active'));
+      return [...new Set(owners)];
+    }
+    if (scope === 'selected_same_battlefield_player') {
+      const selected = Object.values(ctx.selections).flat().filter((id) => s.players.some((entry) => entry.id === id));
+      const here = player(s, ctx.controllerId).locationId;
+      return [...new Set(selected.filter((id) => player(s, id).status === 'active' && player(s, id).locationId === here))];
+    }
+    if (scope === 'source_card_creator') {
+      const linkedSkillId = str((target as RuleNode).linkedSkillId);
+      if (!linkedSkillId || Object.keys(target as RuleNode).some((key) => !['scope','linkedSkillId'].includes(key))) reject('unsupported', 'Source-card creator target shape is invalid');
+      const sourceInstance = s.cards.find((entry) =>
+        entry.ownerPlayerId === ctx.controllerId && entry.controllerPlayerId === ctx.controllerId &&
+        ['attack_area','skill','hand'].includes(entry.zone) && entry.definitionId === linkedSkillId);
+      const creatorId = sourceInstance?.createdByPlayerId;
+      const creator = creatorId ? s.players.find((entry) => entry.id === creatorId) : undefined;
+      if (!creatorId || creatorId === ctx.controllerId || !creator || creator.status !== 'active') reject('invalid_state', 'Source-card creator provenance is missing or invalid');
+      return [creatorId];
+    }
+    if (scope === 'event_defeated_players') {
+      const trusted = trustedStructuredBattleResultTargets(s, ctx);
+      return trusted ? trusted.losers : [];
+    }
+    if (scope === 'event_combat_winners' || scope === 'event_combat_losers') {
+      const trusted = trustedStructuredBattleResultTargets(s, ctx);
+      return trusted ? (scope === 'event_combat_winners' ? trusted.winners : trusted.losers) : [];
+    }
     const ref = str((target as RuleNode).targetRef || (target as RuleNode).selectionRef);
     if (ref) return structuredTargetPlayerIds(s, ctx, ref);
   }
@@ -1251,6 +1663,75 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   const p = player(s, ctx.controllerId);
   switch (c.type) {
     case 'phase_is': return typeof c.phase === 'string' && phase(s) === c.phase;
+    case 'has_status':
+    case 'lacks_status': {
+      const status = str(c.status);
+      if (!status || Object.keys(c).some((key) => !['type', 'status', 'target'].includes(key))) reject('unsupported', 'Player-status condition is invalid');
+      const targets = structuredTargetPlayerIds(s, ctx, c.target ?? 'controller');
+      if (targets.length !== 1) reject('unsupported', 'Player-status condition requires exactly one target');
+      const has = playerHasStatus(s, targets[0]!, status);
+      return c.type === 'has_status' ? has : !has;
+    }
+    case 'target_command_seals_at_most':
+    case 'target_command_seals_equals': {
+      const targets = structuredTargetPlayerIds(s, ctx, c.target ?? 'controller');
+      const value = Number(c.value);
+      if (targets.length !== 1 || !Number.isSafeInteger(value) || value < 0 || Object.keys(c).some((key) => !['type', 'target', 'value'].includes(key))) reject('unsupported', 'Pre-loss command-seal condition shape is invalid');
+      const record = ctx.commandSealLosses?.[targets[0]!];
+      if (!record || !Number.isSafeInteger(record.before) || record.before < 0 || !Number.isSafeInteger(record.lost) || record.lost < 0 || record.lost > record.before) reject('invalid_state', 'Pre-loss command-seal provenance is missing or invalid');
+      return c.type === 'target_command_seals_at_most' ? record.before <= value : record.before === value;
+    }
+    case 'command_seals_at_least': {
+      const targets = structuredTargetPlayerIds(s, ctx, c.target ?? 'controller');
+      const value = numeric(s, ctx, c.value ?? 1);
+      if (targets.length < 1 || !Number.isSafeInteger(value) || value < 0 || Object.keys(c).some((key) => !['type', 'target', 'value'].includes(key))) reject('unsupported', 'Command-seal threshold condition is invalid');
+      return targets.every((id) => commandSealCount(s, id) >= value);
+    }
+    case 'scheduled_payload_present': {
+      if (Object.keys(c).some((key) => key !== 'type')) reject('unsupported', 'Scheduled-payload condition is invalid');
+      return ctx.scheduledPayload === true;
+    }
+    case 'mana_at_least': {
+      const amount = Number(c.amount);
+      if (Object.keys(c).some((key) => !['type', 'amount'].includes(key)) || !Number.isSafeInteger(amount) || amount < 0) reject('unsupported', 'Mana threshold condition is invalid');
+      return p.mana >= amount;
+    }
+    case 'location_is': {
+      const expected = normalizeStructuredLocationId(c.locationId);
+      if (Object.keys(c).some((key) => !['type', 'locationId'].includes(key)) || !expected) reject('unsupported', 'Location condition is invalid');
+      return normalizeStructuredLocationId(p.locationId) === expected;
+    }
+    case 'current_situation_id_is': {
+      const situationId = str(c.situationId);
+      if (Object.keys(c).some((key) => !['type', 'situationId'].includes(key)) || !situationId) reject('unsupported', 'Current-situation condition is invalid');
+      return modeState(s).currentSituationId === situationId;
+    }
+    case 'same_location_player_count_equals': {
+      const value = Number(c.value);
+      if (Object.keys(c).some((key) => !['type', 'value'].includes(key)) || !Number.isSafeInteger(value) || value < 0) reject('unsupported', 'Same-location player-count condition is invalid');
+      if (!p.locationId) return value === 0;
+      return s.players.filter((entry) => entry.status === 'active' && entry.locationId === p.locationId).length === value;
+    }
+    case 'round_victory_points_gained_equals': {
+      const value = Number(c.value);
+      if (Object.keys(c).some((key) => !['type', 'value'].includes(key)) || !Number.isSafeInteger(value) || value < 0) reject('unsupported', 'Round VP-gain condition is invalid');
+      const ledger = runtime(s).roundPositiveVictoryPointGain;
+      const gained = ledger?.round === s.round.roundNumber ? (ledger.byPlayer[p.id] ?? 0) : 0;
+      return Number.isSafeInteger(gained) && gained >= 0 && gained === value;
+    }
+    case 'face_up_cards_played_this_round_at_least': {
+      const count = Number(c.count);
+      if (Object.keys(c).some((key) => !['type', 'count'].includes(key)) || !Number.isSafeInteger(count) || count < 0) reject('unsupported', 'Face-up play-count condition is invalid');
+      return faceUpCardsPlayedThisRound(s, p.id) >= count;
+    }
+    case 'owned_active_card_by_definition': { const id=str(c.definitionId); if(!id) reject('unsupported','Owned-active definition condition requires definitionId'); return s.cards.some((entry)=>entry.definitionId===id&&entry.ownerPlayerId===ctx.controllerId&&entry.controllerPlayerId===ctx.controllerId&&active(s,entry.instanceId)); }
+    case 'deployed_this_round_at_controller_location': return deployedThisRoundAtControllerLocation(s,ctx,ctx.controllerId);
+    case 'selected_cards_all_have_attribute': {
+      const key = str(c.payloadKey) || 'selectedInstanceIds'; const attribute = str(c.attribute);
+      if (!attribute) reject('unsupported', 'Selected-card attribute condition requires a nonempty attribute');
+      const selected = ctx.selections[key] ?? [];
+      return selected.length > 0 && selected.every((instanceId) => getEffectiveCardAttributes(s, instanceId).includes(attribute));
+    }
     case 'card_count_at_least': {
       const targetIds = structuredTargetPlayerIds(s, ctx, c.target);
       const zone = normalizeStructuredZone(c.zone);
@@ -1281,7 +1762,11 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
         sourceZone === 'deck' ? ['event_deck'] : sourceZone === 'discard' ? ['event_discard'] : sourceZone === 'outside_game' ? ['event_outside_game'] : [];
       if (!zones.length) reject('unsupported', 'Structured event-count source zone is unsupported');
       const locationId = c.locationId === 'controller_location' ? player(s, ctx.controllerId).locationId : normalizeStructuredLocationId(c.locationId);
-      return listEventRuleCandidates(s, runtime(s).pack, zones).filter((entry) => !locationId || entry.locationId === locationId).length >= minimum;
+      const visibility = str(c.visibility);
+      if (visibility && !['up', 'down'].includes(visibility)) reject('unsupported', 'Structured event-count visibility is unsupported');
+      return listEventRuleCandidates(s, runtime(s).pack, zones)
+        .filter((entry) => !locationId || entry.locationId === locationId)
+        .filter((entry) => !visibility || entry.visibility === (visibility === 'up' ? 'public' : 'hidden_until_trigger')).length >= minimum;
     }
     case 'player_flag_equals': {
       const key = str(c.key); if (!key) reject('unsupported', 'Structured player flag condition requires key');
@@ -1371,7 +1856,7 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'controller_mana_at_least': case 'min_mana': return p.mana >= Number(c.value);
     case 'source_card_in_zone': return card(s, ctx.sourceCardId).zone === c.zone || (c.zone === 'field' && card(s, ctx.sourceCardId).zone === 'attack_area');
     case 'card_not_on_board': return !s.cards.some(candidate => candidate.definitionId === c.cardId && candidate.zone === 'field');
-    case 'controller_at_location_kind': return c.locationKind === '侦察' || c.locationKind === '侦查' ? p.locationId === 'recon' : false;
+    case 'controller_at_location_kind': return c.locationKind === '\u4fa6\u5bdf' || c.locationKind === '\u4fa6\u67e5' ? p.locationId === 'recon' : false;
     case 'controller_servant_revealed': return runtime(s).revealedServants.includes(ctx.controllerId);
     case 'source_reversed': return runtime(s).cardState[ctx.sourceCardId]?.reversed === true;
     case 'can_adjust_mana': return !runtime(s).manaGainBlocked.includes(p.id) && p.mana < (runtime(s).manaCaps[p.id] ?? 12);
@@ -1381,6 +1866,16 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'controller_sole_winner': return ctx.event?.battleResult?.winners.length === 1 && ctx.event.battleResult.winners[0] === p.id;
     case 'event_player_is_controller':
     case 'event_player_is_opponent': return eventPlayerRelationCondition(s, ctx, c);
+    case 'event_player_same_location_as_controller': {
+      if (Object.keys(c).some((key) => key !== 'type') || ctx.event?.type !== 'm50_player_mana_spent' || !ctx.event.playerId || !ctx.event.locationId) return false;
+      const controller = player(s, ctx.controllerId);
+      return !!controller.locationId && ctx.event.locationId === controller.locationId;
+    }
+    case 'event_mana_spent_at_least': {
+      const amount = Number(c.amount);
+      return Object.keys(c).every((key) => ['type', 'amount'].includes(key)) && Number.isSafeInteger(amount) && amount > 0 &&
+        ctx.event?.type === 'm50_player_mana_spent' && ctx.event.resource === 'mana' && Number.isSafeInteger(ctx.event.amount) && Number(ctx.event.amount) >= amount;
+    }
     case 'event_location_is': {
       const expected = normalizeStructuredLocationId(c.locationId);
       return !!expected && normalizeStructuredLocationId(ctx.event?.locationId ?? ctx.event?.battlefieldId) === expected;
@@ -1399,9 +1894,17 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
       const locations = Array.isArray(c.locationIds) ? c.locationIds.map(normalizeStructuredLocationId) : [];
       return !!p.locationId && locations.includes(normalizeStructuredLocationId(p.locationId));
     }
+    case 'victory_points_is_first': {
+      if (Object.keys(c).some((key) => key !== 'type')) reject('unsupported', 'Victory-point first-place condition shape is invalid');
+      const active = s.players.filter((candidate) => candidate.status === 'active');
+      if (!active.length) reject('invalid_state', 'Victory-point rank requires at least one active player');
+      return p.vp === Math.max(...active.map((candidate) => candidate.vp));
+    }
     case 'event_round_victory_points_gain_crosses': return roundVpGainCrossingCondition(s, ctx, c);
     case 'source_active':
-    case 'source_owned': return sourceStateCondition(s, ctx, c);    case B05_CONTROLLER_MANA_BELOW_TWO_CONDITION: {
+    case 'source_owned':
+    case 'source_owned_live':
+    case 'source_revealed': return sourceStateCondition(s, ctx, c);    case B05_CONTROLLER_MANA_BELOW_TWO_CONDITION: {
       const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
       if (!isAcceptedB05LowManaCloseAbility(ability) || Object.keys(c).some((key) => key !== 'type')) reject('unsupported', 'Unsupported F4 B05 low-mana condition shape');
       return p.mana < 2;
@@ -1516,6 +2019,27 @@ function perGamePlayLimit(d: AuthoringCard): { key: string; uses: number } | und
   const limiter = d.abilities.find(a => a.execution.mode === 'automatic' && node(a.limit).type === 'per_game' && node(a.limit).scope === 'this_card');
   return limiter ? { key: limiter.id, uses: Number(node(limiter.limit).uses ?? 1) } : undefined;
 }
+const M50_EFFECT_INSTALLED_SKILL_USE_FORBID_POLICY = 'm50-effect-installed-skill-use-forbid-v1';
+function effectInstalledSelectedSkillUseForbidApplies(s: GameState, ongoing: OngoingEffect, targetPlayerId: string, targetSourceId: string): boolean {
+  if (ongoing.policyKey !== M50_EFFECT_INSTALLED_SKILL_USE_FORBID_POLICY) return false;
+  if (ongoing.duration !== 'this_round' || ongoing.cleanup !== 'expire_after_duration' || ongoing.sourceMustRemainActive !== false ||
+      ongoing.expiresAtRound !== ongoing.startRound + 1 || ongoing.ruleModifiers.length !== 1 || ongoing.publicZones.length !== 0) {
+    reject('invalid_state', 'Malformed effect-installed skill-use forbid ongoing state');
+  }
+  const modifier = ongoing.ruleModifiers[0]!;
+  const m = modifier.definition; const scope = node(m.scope);
+  if (modifier.sourceCardId !== ongoing.sourceCardId || modifier.controllerId !== ongoing.controllerId ||
+      m.operation !== 'forbid' || m.rule !== 'skill_use' ||
+      Object.keys(m).some((key) => !['id','operation','rule','scope'].includes(key)) ||
+      scope.subject !== 'selected_player' || typeof scope.playerId !== 'string' || typeof scope.definitionId !== 'string' ||
+      Object.keys(scope).some((key) => !['subject','playerId','definitionId'].includes(key))) {
+    reject('invalid_state', 'Malformed effect-installed skill-use forbid modifier state');
+  }
+  const targetCard = s.cards.find((candidate) => candidate.instanceId === targetSourceId);
+  if (!targetCard) return false;
+  return targetPlayerId === scope.playerId && targetCard.definitionId === scope.definitionId;
+}
+
 function acceptedSkillUseForbidApplies(s: GameState, modifierControllerId: string, modifierSourceId: string, targetPlayerId: string, targetSourceId: string, modifier: RuleNode): boolean {
   const variant = classifyAcceptedSkillUseForbidModifier(modifier);
   if (!variant) return false;
@@ -1549,12 +2073,16 @@ function staticWhileActiveSkillUseForbidRules(s: GameState, playerId: string, so
 function ongoingCardPlayForbidRules(s: GameState, playerId: string, sourceId: string): string[] {
   const d = definition(s, sourceId); if (!d) return ['missing_definition'];
   const targetPlayer = player(s, playerId);
-  const ongoingRules = liveOngoing(s).flatMap(o => o.ruleModifiers).flatMap(({ controllerId, sourceCardId, definition: m }) => {
+  const ongoingRules = liveOngoing(s).flatMap(o => o.ruleModifiers.flatMap(({ controllerId, sourceCardId, definition: m }) => {
+    if (o.policyKey === M50_EFFECT_INSTALLED_SKILL_USE_FORBID_POLICY) {
+      return effectInstalledSelectedSkillUseForbidApplies(s, o, playerId, sourceId) ? ['skill_use'] : [];
+    }
     const controller = player(s, controllerId); const scope = node(m.scope);
     const appliesToSameBattlefieldOpponent = ['opponents_at_same_battlefield', 'engaged_opponents_same_battlefield'].includes(str(scope.subject)) ||
       ['opponents_at_same_battlefield', 'engaged_opponents_same_battlefield'].includes(str(scope.object));
     if (appliesToSameBattlefieldOpponent && (controllerId === playerId || !sameBattlefield(s, controller.locationId, targetPlayer.locationId))) return [];
     if (m.operation !== 'forbid') return [];
+    if (m.rule === 'card_play' && scope.subject === 'controller' && controllerId === playerId) return ['card_play'];
     if (m.rule === 'skill_use' && acceptedSkillUseForbidApplies(s, controllerId, sourceCardId, playerId, sourceId, m)) return ['skill_use'];
     if (m.rule === 'situation_restrictions' || m.rule === 'situation_play_forbid') return [str(m.rule)];
     if (m.rule === 'use_skill_card') return d.cardType === 'servant_skill' ? [str(m.rule)] : [];
@@ -1563,7 +2091,7 @@ function ongoingCardPlayForbidRules(s: GameState, playerId: string, sourceId: st
       return Array.isArray(d.cardFace.attributes) && d.cardFace.attributes.includes(attribute) ? [str(m.rule)] : [];
     }
     return [];
-  });
+  }));
   const matchRules = Array.isArray((s as unknown as { modeState?: { cardPlayForbids?: unknown[] } }).modeState?.cardPlayForbids)
     ? (s as unknown as { modeState: { cardPlayForbids: Array<{ sourceId?: string; sourceType?: string; locationId?: string; attribute?: string; rule?: string }> } }).modeState.cardPlayForbids.flatMap((entry) => {
         if (entry.locationId && entry.locationId !== targetPlayer.locationId) return [];
@@ -1606,7 +2134,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a)) return false;
   if (isMagicResistancePowerModifierCandidate(a) && !isMagicResistancePowerModifierSemantic(a)) return false;
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
-  if (isPreBattleDefeatCandidate(a) && !isAcceptedPreBattleDefeatAbility(a, 'compiled') && !isAcceptedSelectedSameBattlefieldDefeatAbility(a, 'compiled') && !isAcceptedCommandSealUnusedSameBattlefieldDefeatAbility(a, 'compiled')) return false;
+  if (isPreBattleDefeatCandidate(a) && !isAcceptedPreBattleDefeatAbility(a, 'compiled') && !isAcceptedSelectedSameBattlefieldDefeatAbility(a, 'compiled') && !isAcceptedCommandSealUnusedSameBattlefieldDefeatAbility(a, 'compiled') && !isAcceptedStructuredChosenOpponentDefeatAbility(a, 'compiled') && !isAcceptedDeploymentLocationOpponentDefeatAbility(a, 'compiled') && !isAcceptedFaceUpPlayThresholdSameBattlefieldDefeatAbility(a, 'compiled') && !isGenericScheduledRankedSelfDefeatSequence(a) && !isAcceptedCommandSealLossConditionalDefeatAbility(a) && !isAcceptedM50RatioFilteredDefeatAbility(a)) return false;
   if (isBattleLossVpWinnerRewardCandidate(a) && !isAcceptedBattleLossVpWinnerRewardAbility(a, 'compiled')) return false;
   if (isControllerDefeatedVpRewardCandidate(a) && !isAcceptedControllerDefeatedVpRewardAbility(a, 'compiled') && !isAcceptedB04ControllerDefeatManaReleaseAbility(a)) return false;
   if (isCombatOpponentPowerVpRewardCandidate(a) && !isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled')) return false;
@@ -1619,13 +2147,15 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
-  if (isGameStartPlayerStatusAssignmentCandidate(a) &&
+  if (isGameStartPlayerStatusAssignmentCandidate(a) && !isStructuredEachPlayerOptionAbility(a) &&
     (!isGameStartPlayerStatusAssignmentSemantic(a) ||
       !gameStartPlayerStatusAssignments(s, card(s, sourceId).controllerPlayerId, a))) return false;
   if (isOuterGodLifeAbilityCandidate(a) && !isOuterGodLifeAbilitySemantic(a)) return false;
   if (isBasicStrengthOpponentSkillFaceDownCandidate(a) && !isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled')) return false;
   if (isEventPowerUncontestedWinRewardCandidate(a) && !isAcceptedEventPowerUncontestedWinRewardAbility(a, 'compiled')) return false;
-  if (isBatchPassiveFamilyCandidate(a) && !isAcceptedBatchPassiveFamilyAbility(a)) return false;
+  if (isBatchPassiveFamilyCandidate(a) && !isAcceptedBatchPassiveFamilyAbility(a) && !isAcceptedM50GrantedRoundDefeatIgnoreAbility(a) &&
+      !isAcceptedEffectInstalledCombatSettlementBundle(a.ruleModifiers)) return false;
+  if (isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled') && !opponentCloseSelectedOneFacts(s, sourceId)) return false;
   if (isAcceptedBasicStrengthOpponentSkillFaceDownAbility(a, 'compiled') &&
       !hasMandatoryTargetAvailability(s, context(s, sourceId, a.id, event), a)) return false;
   if (hasControllerMasterSkillDefinitionReturnCandidate(a) && !isAcceptedOpponentRoundVpGainThresholdAbility(a, 'compiled')) return false;
@@ -1634,7 +2164,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     const controller = player(s, card(s, sourceId).controllerPlayerId);
     if (controller.status !== 'active' || !isBattlefield(s, controller.locationId)) return false;
   }
-  if (runtime(s).cardState[sourceId]?.faceDown) return false;
+  if (runtime(s).cardState[sourceId]?.faceDown && !isAcceptedM50DrawAndPlayFaceDownAttackAbility(a)) return false;
   const sourceDefinitionForForbid = definition(s, sourceId);
   if (sourceDefinitionForForbid && (skillDefinitionForbiddenByOwnedDefinitionCardRule(s, card(s, sourceId).controllerPlayerId, sourceDefinitionForForbid.id) ||
       b02SkillDefinitionForbidden(s, card(s, sourceId).controllerPlayerId, sourceDefinitionForForbid.id))) return false;
@@ -1646,6 +2176,9 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     Number((player(s, card(s, sourceId).controllerPlayerId) as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) return false;
   if (!isRulerSealUseSemantic(a) && !isCommandSpellCard(s, sourceId) && a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber) return false;
   if (abilityLimitReached(s, sourceId, a)) return false;
+  const physicalAbilitySource = s.cards.find((candidate) => candidate.instanceId === sourceId);
+  if (physicalAbilitySource && m50ManaSpendingForbidden(s, physicalAbilitySource.controllerPlayerId) &&
+      a.cost.some((cost) => cost.type === 'pay_mana' && typeof cost.amount === 'number' && cost.amount > 0)) return false;
   if ((isPlayActionRouteCandidate(a) || isAddToAttackRouteCandidate(a) || isAnyLocationExceptWorkshopMovementSemantic(a) ||
     isRulerSealBindingSemantic(a) || isRulerSealUseSemantic(a)) &&
     !hasMandatoryTargetAvailability(s, context(s, sourceId, a.id, event), a)) return false;
@@ -1668,6 +2201,16 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (!a.conditions.every(c => condition(s, activationContext, c))) return false;
   if (isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled') &&
       nextRoundSituationSuppressionQualifyingOpponentIds(s, activationContext.controllerId).length === 0) return false;
+  if (isAcceptedM50SourceCardCombatJoinAbility(a)) {
+    const source = card(s, sourceId);
+    if (source.ownerPlayerId !== activationContext.controllerId || source.controllerPlayerId !== activationContext.controllerId ||
+        !['hand', 'skill'].includes(source.zone) || player(s, activationContext.controllerId).mana < 6) return false;
+  }
+  if (isAcceptedM50FreeSourceCardCombatPlayAbility(a)) {
+    const source = card(s, sourceId);
+    if (source.ownerPlayerId !== activationContext.controllerId || source.controllerPlayerId !== activationContext.controllerId || source.zone !== 'hand') return false;
+    return !playFailure(s, activationContext.controllerId, sourceId, false, true, true, true, false, false, ['hand'], true);
+  }
   return !faceUpEffectPlayLimitReached(s, activationContext, a);
 }
 function isGameStartRuleOverrideCandidate(a: AuthoringAbility): boolean {
@@ -1739,7 +2282,15 @@ function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean
       isActivateCardByIdTrigger(ability) &&
       ability.effects.some((effect) => effect.type === 'activate_card_by_id' && effect.definitionId === definitionId)));
 }
-function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false, ignoreManaCost = false, allowedSourceZones: readonly string[] = ['hand', 'skill']): string | undefined {
+function effectiveCardManaCost(s: GameState, sourceId: string): number | undefined {
+  const d = definition(s, sourceId); if (!d) return undefined;
+  const additive = Number(d.cardFace.cost ?? 0) + ownedDefinitionCardRuleAdjustment(s, sourceId).cost + b02OwnedBasicAttackAdjustment(s, sourceId).cost +
+    m50AdditiveCardAdjustment(s, sourceId).cost + structuredOngoingCardCostAdjustment(s, sourceId);
+  const value = additive * m50LinkedPlayerCardMultipliers(s, sourceId).cost;
+  return Number.isSafeInteger(value) && value >= 0 ? value : undefined;
+}
+
+function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false, ignoreManaCost = false, allowedSourceZones: readonly string[] = ['hand', 'skill'], ignoreFaceUpPlayLimit = false): string | undefined {
   const c = card(s, sourceId); const d = definition(s, sourceId); if (!d) return 'unsupported';
   if (d.mode !== 'automatic') return d.mode;
   if (c.controllerPlayerId !== p || !allowedSourceZones.includes(c.zone) || player(s, p).status !== 'active') return 'illegal_action';
@@ -1751,8 +2302,10 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   if (!ignoreTiming && (phase(s) !== d.playTiming.phase || s.round.prioritySeat !== player(s, p).seat)) return 'illegal_timing';
   if (faceDown && (!isAttack(d) || d.cardType === 'servant_skill')) return 'illegal_face_down';
   const forbidRules = ongoingCardPlayForbidRules(s, p, sourceId);
-  if (forbidRules.some(rule => !hasPlayRuleException(d, rule))) return 'play_forbidden';
-  if (!faceDown && faceUpCardPlayLimitReached(s, p)) return 'face_up_card_play_limit_reached';
+  const ignoresAuthoredCardPlayForbids = m50IgnoresCardEffectPlayRestrictions(s, p);
+  if (forbidRules.some(rule => !hasPlayRuleException(d, rule) && !(rule === 'card_play' && ignoresAuthoredCardPlayForbids))) return 'play_forbidden';
+  if (m50SourceBattlefieldCardPlayForbidden(s, p, sourceId) && !hasPlayRuleException(d, 'card_play') && !ignoresAuthoredCardPlayForbids) return 'play_forbidden';
+  if (!faceDown && !ignoreFaceUpPlayLimit && faceUpCardPlayLimitReached(s, p)) return 'face_up_card_play_limit_reached';
   const limit = perGamePlayLimit(d);
   if (limit && (runtime(s).abilityUsage[`play:${sourceId}:${limit.key}`] ?? 0) >= limit.uses) return 'card_limit_reached';
   if (!ignoreAttackLimit && attackPlayLimitReached(s, p, sourceId, ignoreStagedAttackLimit)) return 'attack_play_limit_reached';
@@ -1760,8 +2313,9 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
     str(r.type) && !(str(r.type) === 'skill_zone_mana_at_least' && hasPlayRuleException(d, 'skill_zone_mana_at_least')));
   if (!requirements.every(r => condition(s, context(s, sourceId, ''), r))) return 'play_requirement';
   
-  const effectiveManaCost = Number(d.cardFace.cost ?? 0) + ownedDefinitionCardRuleAdjustment(s, sourceId).cost + b02OwnedBasicAttackAdjustment(s, sourceId).cost + structuredOngoingCardCostAdjustment(s, sourceId);
-  if (!Number.isSafeInteger(effectiveManaCost) || effectiveManaCost < 0) return 'invalid_cost';
+  const effectiveManaCost = effectiveCardManaCost(s, sourceId);
+  if (effectiveManaCost === undefined) return 'invalid_cost';
+  if (!ignoreManaCost && !faceDown && effectiveManaCost > 0 && m50ManaSpendingForbidden(s, p)) return 'mana_spending_forbidden';
   if (!ignoreManaCost && !faceDown && player(s, p).mana < effectiveManaCost) return 'insufficient_mana';
   const unconfirmed = d.abilities.find(a => ['unsupported', 'text_unconfirmed'].includes(a.execution.mode));
   if (unconfirmed) return unconfirmed.execution.mode;
@@ -1769,6 +2323,17 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
     const blocked = d.abilities.find(a => a.execution.mode !== 'automatic'); if (blocked) return blocked.execution.mode;
   }
   return undefined;
+}
+function responseWindowChoiceStillStructurallyAvailable(s: GameState, window: ResponseWindow, choice: TriggeredAbility): boolean {
+  if (choice.controllerId !== window.controllerId) return false;
+  const controller = s.players.find((entry) => entry.id === choice.controllerId);
+  if (!controller || controller.status !== 'active') return false;
+  const source = s.cards.find((entry) => entry.instanceId === choice.cardInstanceId);
+  if (!source || source.controllerPlayerId !== choice.controllerId || source.zone === 'removed_from_game') return false;
+  const ability = runtime(s).pack.cards[source.definitionId]?.abilities.find((entry) => entry.id === choice.abilityId);
+  if (!ability || ability.execution.mode !== 'automatic') return false;
+  const interaction = classifyAbilityInteraction(ability);
+  return interaction.kind === 'response_window';
 }
 export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
   const r = runtime(s); const p = s.players.find(p => p.id === playerId); if (!p || p.status !== 'active') return [];
@@ -1781,7 +2346,7 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
   }
   const window = r.responseWindows[0];
   if (window) return window.controllerId === playerId ? [
-    ...window.choices.filter(c => canActivate(s, c.cardInstanceId, abilityDefinition(s, c.cardInstanceId, c.abilityId), window.event))
+    ...window.choices.filter(c => responseWindowChoiceStillStructurallyAvailable(s, window, c))
       .map(c => ({ type: 'resolve_response' as const, windowId: window.id, cardInstanceId: c.cardInstanceId, abilityId: c.abilityId })),
     { type: 'decline_this_window', windowId: window.id },
   ] : [];
@@ -1790,14 +2355,11 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
   const staged = stagedAttacks(s)[playerId] ?? [];
   if (staged.length && s.round.prioritySeat === p.seat) {
     result.push({ type: 'confirm_staged_attack' }, { type: 'cancel_staged_attack' });
-    const hasOrdinaryStagedAttack = staged.some((entry) =>
-      entersAttackArea(s, entry.cardInstanceId) && !isRequiredAdditionalPlayCard(s, entry.cardInstanceId));
     for (const c of s.cards.filter(c => c.controllerPlayerId === playerId && !staged.some(entry => entry.cardInstanceId === c.instanceId))) {
-      const allowRequiredAdditional = hasOrdinaryStagedAttack && isRequiredAdditionalPlayCard(s, c.instanceId);
-      if (!playFailure(s, playerId, c.instanceId, false, false, false, false, allowRequiredAdditional) && entersAttackArea(s, c.instanceId)) {
+      if (canStageAttackChoice(s, playerId, { type: 'play_card', cardInstanceId: c.instanceId }, staged)) {
         result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId });
       }
-      if (!playFailure(s, playerId, c.instanceId, true, false, false, false, allowRequiredAdditional) && entersAttackArea(s, c.instanceId)) {
+      if (canStageAttackChoice(s, playerId, { type: 'play_card', cardInstanceId: c.instanceId, faceDown: true }, staged)) {
         result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId, faceDown: true });
       }
     }
@@ -1807,17 +2369,17 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
     const alreadyStaged = staged.some((entry) => entry.cardInstanceId === c.instanceId);
     if (!alreadyStaged && !playFailure(s, playerId, c.instanceId)) {
       result.push({ type: 'play_card', cardInstanceId: c.instanceId });
-      if (s.round.prioritySeat === p.seat && entersAttackArea(s, c.instanceId) && !staged.some((entry) => entry.cardInstanceId === c.instanceId && !entry.faceDown)) {
-        result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId });
-      }
+    }
+    if (!alreadyStaged && s.round.prioritySeat === p.seat && canStageAttackChoice(s, playerId, { type: 'play_card', cardInstanceId: c.instanceId }, staged)) {
+      result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId });
     }
     if (!alreadyStaged && !playFailure(s, playerId, c.instanceId, true)) {
       result.push({ type: 'play_card', cardInstanceId: c.instanceId, faceDown: true });
-      if (s.round.prioritySeat === p.seat && entersAttackArea(s, c.instanceId) && !staged.some((entry) => entry.cardInstanceId === c.instanceId && entry.faceDown === true)) {
-        result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId, faceDown: true });
-      }
     }
-    for (const a of definition(s, c.instanceId)?.abilities ?? []) {
+    if (!alreadyStaged && s.round.prioritySeat === p.seat && canStageAttackChoice(s, playerId, { type: 'play_card', cardInstanceId: c.instanceId, faceDown: true }, staged)) {
+      result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId, faceDown: true });
+    }
+    for (const a of cardActivationAbilities(s, c.instanceId)) {
       const interaction = classifyAbilityInteraction(a);
       if (interaction.kind !== 'phase_activation' || effectiveActivationPhase(s, c.instanceId, a) !== phase(s) || s.round.prioritySeat !== p.seat || !canActivate(s, c.instanceId, a)) continue;
       const costs = a.cost.filter(x => x.type === 'pay_mana' && node(x.amount).var).map(x => ({ name: str(node(x.amount).var), min: 0, max: p.mana }));
@@ -1852,9 +2414,13 @@ function isGenericStructuredScheduleEffect(effect: RuleNode): boolean {
   const captureKey = str(effect.captureCardPowerFromPayloadKey);
   const variableKey = str(effect.payloadVariableKey);
   const captureShapeValid = (!captureKey && !variableKey) || (!!captureKey && !!variableKey);
+  const payloadKeys = effect.capturePayloadKeys === undefined ? [] : Array.isArray(effect.capturePayloadKeys) ? effect.capturePayloadKeys : [null];
+  const payloadShapeValid = payloadKeys.length <= 4 && payloadKeys.every((key) => typeof key === 'string' && key.length > 0) && new Set(payloadKeys).size === payloadKeys.length;
+  const hasPayloadLifecycle = effect.capturePayloadKeys !== undefined || effect.expiresAfterRoundOffset !== undefined || effect.once !== undefined;
+  const payloadLifecycleValid = !hasPayloadLifecycle || (effect.once === true && Number(effect.expiresAfterRoundOffset) === offset);
   return effect.type === 'schedule_effect' && typeof effect.abilityId === 'string' && effect.abilityId.length > 0 && !!trigger &&
-    Number.isSafeInteger(offset) && offset >= 0 && offset <= 1 && captureShapeValid &&
-    Object.keys(effect).every((key) => ['type', 'abilityId', 'triggerEventType', 'triggerRoundOffset', 'captureCardPowerFromPayloadKey', 'payloadVariableKey'].includes(key));
+    Number.isSafeInteger(offset) && offset >= 0 && offset <= 1 && captureShapeValid && payloadShapeValid && payloadLifecycleValid &&
+    Object.keys(effect).every((key) => ['type', 'abilityId', 'triggerEventType', 'triggerRoundOffset', 'captureCardPowerFromPayloadKey', 'payloadVariableKey', 'capturePayloadKeys', 'expiresAfterRoundOffset', 'once'].includes(key));
 }
 
 function containsGenericStructuredScheduleTarget(value: unknown, abilityId: string): boolean {
@@ -1880,6 +2446,22 @@ function isGenericScheduledSelfDefeat(a: AuthoringAbility): boolean {
   return a.kind === 'passive' && a.activation.trigger === 'm50_round_started' && a.conditions.length === 0 && a.effects.length === 1 &&
     a.effects[0]?.type === 'defeat_player' && a.effects[0]?.target === 'controller' && Object.keys(a.effects[0]!).every((key) => ['type', 'target'].includes(key));
 }
+function isGenericScheduledRankedSelfDefeatSequence(a: AuthoringAbility): boolean {
+  if (a.kind !== 'passive' || a.activation.trigger !== 'm50_round_started' || a.conditions.length !== 2 || a.effects.length < 2) return false;
+  if (a.conditions[0]?.type !== 'source_active' || Object.keys(a.conditions[0]!).some((key) => key !== 'type')) return false;
+  if (a.conditions[1]?.type !== 'victory_points_is_first' || Object.keys(a.conditions[1]!).some((key) => key !== 'type')) return false;
+  const first = a.effects[0];
+  return first?.type === 'defeat_player' && first.target === 'controller' && Object.keys(first).every((key) => ['type', 'target'].includes(key));
+}
+
+function isM50ScheduledPayloadStatusTarget(a: AuthoringAbility): boolean {
+  return a.kind === 'passive' && a.activation.trigger === 'm50_round_started' &&
+    a.conditions.length === 1 && a.conditions[0]?.type === 'scheduled_payload_present' &&
+    Object.keys(a.conditions[0]!).every((key) => key === 'type') &&
+    a.effects.length > 0 && a.effects.every((effect) => effect.type === 'add_status' && effect.target === 'selected_player' &&
+      typeof effect.status === 'string' && effect.status.length > 0 &&
+      Object.keys(effect).every((key) => ['type', 'target', 'status'].includes(key)));
+}
 
 function isGenericStructuredScheduleTarget(abilities: AuthoringAbility[], abilityId: string): boolean {
   return abilities.some((candidate) => candidate.id !== abilityId && containsGenericStructuredScheduleTarget(candidate.effects, abilityId));
@@ -1901,6 +2483,16 @@ function armGenericStructuredSchedule(s: GameState, ctx: EffectContext, effect: 
   const captureKey = str(effect.captureCardPowerFromPayloadKey);
   const variableKey = str(effect.payloadVariableKey);
   let variables: Record<string, number> | undefined;
+  let selections: Record<string, string[]> | undefined;
+  const payloadKeys = Array.isArray(effect.capturePayloadKeys) ? effect.capturePayloadKeys.map(str) : [];
+  if (payloadKeys.length) {
+    selections = {};
+    for (const key of payloadKeys) {
+      const selected = ctx.selections[key] ?? [];
+      if (!key || !selected.length || new Set(selected).size !== selected.length || selected.some((value) => !value)) reject('invalid_target', 'Structured schedule captured selection is missing or invalid');
+      selections[key] = [...selected];
+    }
+  }
   if (captureKey || variableKey) {
     if (!captureKey || !variableKey) reject('resolution_failed', 'Structured schedule capture requires both payload and variable keys');
     const selected = ctx.selections[captureKey] ?? [];
@@ -1918,6 +2510,7 @@ function armGenericStructuredSchedule(s: GameState, ctx: EffectContext, effect: 
     sourceCardId: ctx.sourceCardId, sourceDefinitionId: source.definitionId, controllerId: ctx.controllerId,
     armAbilityId: ctx.abilityId, targetAbilityId, triggerEventType, armedRound: s.round.roundNumber, triggerRound, once: true as const,
     ...(variables ? { variables } : {}),
+    ...(selections ? { selections } : {}),
   };
   const schedules = runtime(s).structuredScheduledEffects ??= [];
   const duplicate = schedules.find((candidate) => candidate.sourceCardId === entry.sourceCardId && candidate.armAbilityId === entry.armAbilityId &&
@@ -1943,6 +2536,13 @@ function settleGenericStructuredSchedules(s: GameState, triggerEventType: string
     }
     const scheduledEvent = event ?? { id: nextId(s, 'structured-schedule'), type: triggerEventType };
     const scheduledContext = context(s, entry.sourceCardId, entry.targetAbilityId, scheduledEvent);
+    scheduledContext.scheduledPayload = true;
+    if (entry.selections) {
+      for (const [key, selected] of Object.entries(entry.selections)) {
+        if (!key || !selected.length || new Set(selected).size !== selected.length || selected.some((value) => !value)) reject('invalid_state', 'Structured scheduled selection payload is malformed');
+        scheduledContext.selections[key] = [...selected];
+      }
+    }
     if (entry.variables) {
       for (const [key, value] of Object.entries(entry.variables)) {
         if (!key || !Number.isSafeInteger(value)) reject('invalid_state', 'Structured scheduled payload is malformed');
@@ -1970,6 +2570,7 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
         const isReturnSilenceState = a.effects.some((effect) => effect.type === 'return_silence_battle_start');
         if ((transformed && isSoulDragState) || (!transformed && isReturnSilenceState)) continue;
       }
+      if (event.type === 'm50_skill_unlocked' && (event.sourceCardId !== c.instanceId || event.playerId !== c.controllerPlayerId)) continue;
       if (event.type === 'after_battle_power_calculated' &&
         (!Array.isArray(event.battleParticipantIds) || !event.battleParticipantIds.includes(c.controllerPlayerId))) continue;
       if (event.type === 'after_battle_result_determined' &&
@@ -2223,37 +2824,47 @@ function setOwnedSkillZoneActiveState(s: GameState, ctx: EffectContext, definiti
   target.visibility = { scope: 'owner_only', ownerPlayerId: target.ownerPlayerId };
   const r = runtime(s);
   const prior = r.cardState[target.instanceId];
+  const wasActive = prior?.active === true;
   r.cardState[target.instanceId] = {
     ...(prior ?? { playedRound: s.round.roundNumber }),
     active: activeState,
     faceDown: false,
   };
+  if (activeState && !wasActive) {
+    processEvent(s, { id: nextId(s, 'skill-unlocked'), type: 'm50_skill_unlocked', playerId: ctx.controllerId, sourceCardId: target.instanceId });
+  }
 }
 
 function createStructuredCardInstances(s: GameState, ctx: EffectContext, effect: RuleNode): void {
   const definitionId = str(effect.definitionId);
   const count = Number(effect.count ?? 1);
   const zone = normalizeStructuredZone(effect.zone);
-  if (!definitionId || !Number.isSafeInteger(count) || count < 0 || count > 50 || !['hand', 'attack_area'].includes(zone)) {
-    reject('resolution_failed', 'Structured create-card-instances requires a bounded controller hand/attack-area destination');
+  if (!definitionId || !Number.isSafeInteger(count) || count < 0 || count > 50 || !['hand', 'attack_area', 'skill'].includes(zone)) {
+    reject('resolution_failed', 'Structured create-card-instances requires a bounded controller hand/attack-area/skill destination');
   }
   const activeState = effect.active === true;
   const faceDown = effect.face === 'down';
   const temporary = effect.temporary === true;
+  const lifecycle = node(effect.lifecycle);
+  const untilCombatWinSkill = zone === 'skill' && temporary && effect.face === 'up' && !activeState && effect.residual === false &&
+    lifecycle.duration === 'until_condition_met' && lifecycle.cleanup === 'remain_active' && Array.isArray(lifecycle.expiresOn) &&
+    lifecycle.expiresOn.length === 1 && lifecycle.expiresOn[0] === 'combat.win' &&
+    Object.keys(lifecycle).every((key) => ['duration','cleanup','expiresOn'].includes(key));
   if (zone === 'attack_area' && (effect.face !== 'up' || !activeState)) {
     reject('resolution_failed', 'Structured attack-area creation requires exact face-up active shape');
   }
-  if (temporary && node(effect.lifecycle).duration !== 'this_round') {
-    reject('resolution_failed', 'Structured temporary card creation requires exact this-round lifecycle');
+  if (zone === 'skill' && !untilCombatWinSkill) reject('resolution_failed', 'Structured skill-zone creation requires exact temporary-until-combat-win shape');
+  if (temporary && !untilCombatWinSkill && lifecycle.duration !== 'this_round') {
+    reject('resolution_failed', 'Structured temporary card creation requires exact this-round or until-combat-win lifecycle');
   }
   const known = !!runtime(s).pack.cards[definitionId] || starterPack.servants.some((entry) => entry.id === definitionId);
   if (!known) reject('resolution_failed', 'Structured create-card-instances references an unknown definition');
   for (let index = 0; index < count; index++) {
     const instanceId = nextId(s, 'm50-created');
     s.cards.push({ instanceId, definitionId, ownerPlayerId: ctx.controllerId, controllerPlayerId: ctx.controllerId,
-      zone: zone as CardInstance['zone'], visibility: zone === 'hand' ? { scope: 'owner_only', ownerPlayerId: ctx.controllerId } : { scope: 'public' }, generatedBy: ctx.sourceCardId });
+      zone: zone as CardInstance['zone'], visibility: ['hand','skill'].includes(zone) ? { scope: 'owner_only', ownerPlayerId: ctx.controllerId } : { scope: 'public' }, generatedBy: ctx.sourceCardId });
     runtime(s).cardState[instanceId] = { active: zone === 'attack_area' ? activeState : false, faceDown, playedRound: s.round.roundNumber };
-    if (temporary) (runtime(s).structuredTemporaryGeneratedCards ??= []).push({ instanceId, createdRound: s.round.roundNumber, sourceCardId: ctx.sourceCardId });
+    if (temporary && !untilCombatWinSkill) (runtime(s).structuredTemporaryGeneratedCards ??= []).push({ instanceId, createdRound: s.round.roundNumber, sourceCardId: ctx.sourceCardId });
     runtime(s).events.push({ type: 'card_created', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
       cardInstanceId: instanceId, toZone: zone, movedCount: 1 });
   }
@@ -2331,7 +2942,9 @@ function payEffectCost(s: GameState, ctx: EffectContext, cost: RuleNode, selecte
   const p = player(s, ctx.controllerId);
   const value = numeric(s, ctx, cost.amount);
   if (!Number.isSafeInteger(value) || value < 0 || value > p.mana) reject('insufficient_mana', 'Cannot pay optional mana cost');
+  if (value > 0 && m50ManaSpendingForbidden(s, p.id)) reject('mana_spending_forbidden', 'Mana spending is forbidden this round');
   p.mana -= value;
+  if (value > 0) recordAuthoritativeManaSpend(s, p.id, value);
 }
 function shuffle(s: GameState, ownerId: string): void {
   const r = runtime(s); const indexes = s.cards.map((c, i) => c.ownerPlayerId === ownerId && c.zone === 'deck' ? i : -1).filter(i => i >= 0);
@@ -2564,7 +3177,8 @@ function installOngoing(s: GameState, ctx: EffectContext, a: AuthoringAbility): 
   const ruleModifiers = applicableModifiers.map(m => ({ sourceCardId: ctx.sourceCardId, controllerId: ctx.controllerId, definition: m }));
   r.ongoingEffects.push({ id: key, sourceCardId: ctx.sourceCardId, abilityId: a.id, controllerId: ctx.controllerId,
     starts: 'immediate', duration, startRound: s.round.roundNumber, ...(rounds !== undefined ? { expiresAtRound: s.round.roundNumber + rounds } : {}),
-    cleanup: str(a.lifecycle.cleanup), ruleModifiers, publicZones: [] });
+    cleanup: str(a.lifecycle.cleanup), ruleModifiers, publicZones: [],
+    ...(isAcceptedM50GrantedRoundDefeatIgnoreAbility(a) ? { sourceMustRemainActive: false } : {}) });
 }
 function cleanupOngoing(s: GameState): void {
   const r = runtime(s);
@@ -2583,6 +3197,9 @@ function cleanupOngoing(s: GameState): void {
         }
         if (temporary.zone !== 'removed_from_game') moveCard(s, temporary.instanceId, 'removed_from_game');
       }
+      continue;
+    }
+    if ([M50_EFFECT_INSTALLED_MANA_SPENDING_FORBID_POLICY, M50_EFFECT_INSTALLED_COMBAT_SETTLEMENT_POLICY].includes(o.policyKey ?? '')) {
       continue;
     }
     if (o.sourceValidityPolicyId) {
@@ -2607,6 +3224,7 @@ function cleanupOngoing(s: GameState): void {
 function reveal(s: GameState, controllerId: string): void {
   const r = runtime(s); if (r.revealedServants.includes(controllerId)) return;
   r.revealedServants.push(controllerId); r.events.push({ type: 'servant_package_revealed', playerId: controllerId });
+  processEvent(s, { id: nextId(s, 'true-name-revealed'), type: 'm50_servant_true_name_revealed', playerId: controllerId });
 }
 function playerHasRoundAttackWithAttribute(s: GameState, playerId: string, attribute: string): boolean {
   return s.cards.some((candidate) => {
@@ -2616,6 +3234,21 @@ function playerHasRoundAttackWithAttribute(s: GameState, playerId: string, attri
     const d = definition(s, candidate.instanceId);
     return classifyCardPlay(d).playKind === 'attack' && Array.isArray(d?.cardFace.attributes) && d.cardFace.attributes.includes(attribute);
   });
+}
+
+function payableEffectDefeatTargets(s: GameState, controllerId: string, targetPlayerIds: string[]): string[] {
+  const controller = player(s, controllerId);
+  const payable: string[] = [];
+  for (const targetId of [...new Set(targetPlayerIds)]) {
+    if (targetId === controllerId) { payable.push(targetId); continue; }
+    const cost = m50OpponentDefeatManaCost(s, targetId);
+    if (cost <= 0) { payable.push(targetId); continue; }
+    if (m50ManaSpendingForbidden(s, controllerId) || controller.mana < cost) continue;
+    controller.mana -= cost;
+    recordAuthoritativeManaSpend(s, controllerId, cost);
+    payable.push(targetId);
+  }
+  return payable;
 }
 
 function stagePreBattleDefeat(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
@@ -2634,21 +3267,35 @@ function stagePreBattleDefeat(s: GameState, ctx: EffectContext, a: AuthoringAbil
   const existing = ledger.find((entry) => entry.round === s.round.roundNumber && entry.battlefieldId === controller.locationId &&
     entry.controllerId === ctx.controllerId && entry.sourceCardId === ctx.sourceCardId && entry.abilityId === ctx.abilityId);
   if (existing) {
-    existing.targetPlayerIds = [...new Set([...existing.targetPlayerIds, ...targetPlayerIds])];
+    const newTargets = targetPlayerIds.filter((targetId) => !existing.targetPlayerIds.includes(targetId));
+    existing.targetPlayerIds = [...existing.targetPlayerIds, ...payableEffectDefeatTargets(s, ctx.controllerId, newTargets)];
     return;
   }
+  const payableTargets = payableEffectDefeatTargets(s, ctx.controllerId, targetPlayerIds);
+  if (!payableTargets.length) return;
   ledger.push({
     round: s.round.roundNumber, battlefieldId: controller.locationId, controllerId: ctx.controllerId,
-    sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, targetPlayerIds,
+    sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, targetPlayerIds: payableTargets,
   });
+}
+
+function stageDeploymentLocationOpponentDefeat(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if(!isAcceptedDeploymentLocationOpponentDefeatAbility(a,'compiled')) reject('resolution_failed','Unsupported deployment-location opponent defeat semantic shape');
+  const controller=player(s,ctx.controllerId); if(controller.status!=='active'||!controller.locationId||!isBattlefield(s,controller.locationId)) reject('invalid_state','Deployment-location defeat requires active battlefield controller');
+  const target=nodes(a.effects)[0]?.target; const targetPlayerIds=structuredChoiceTargetPlayers(s,ctx,target);
+  if(!targetPlayerIds.length) reject('invalid_target','Deployment-location defeat requires at least one authoritative target');
+  const r=runtime(s); const pending=r.pendingPreBattleDefeats ??= []; if(pending.some((entry)=>entry.round===s.round.roundNumber&&entry.controllerId===ctx.controllerId&&entry.sourceCardId===ctx.sourceCardId&&entry.abilityId===ctx.abilityId)) reject('invalid_state','Deployment-location defeat is already staged this round');
+  const payableTargets=payableEffectDefeatTargets(s,ctx.controllerId,targetPlayerIds); if(!payableTargets.length) return;
+  pending.push({round:s.round.roundNumber,battlefieldId:controller.locationId,controllerId:ctx.controllerId,sourceCardId:ctx.sourceCardId,abilityId:ctx.abilityId,targetPlayerIds:payableTargets});
 }
 
 function stageSelectedSameBattlefieldDefeat(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
   const commandSealGuarded = isAcceptedCommandSealUnusedSameBattlefieldDefeatAbility(a, 'compiled');
-  if (!isAcceptedSelectedSameBattlefieldDefeatAbility(a, 'compiled') && !commandSealGuarded) {
+  const structuredChosen = isAcceptedStructuredChosenOpponentDefeatAbility(a, 'compiled');
+  if (!isAcceptedSelectedSameBattlefieldDefeatAbility(a, 'compiled') && !commandSealGuarded && !structuredChosen) {
     reject('resolution_failed', 'Unsupported selected same-battlefield defeat semantic shape');
   }
-  const controller = player(s, ctx.controllerId); const targetId = str(a.targets[0]?.id); const selected = ctx.selections[targetId] ?? [];
+  const controller = player(s, ctx.controllerId); const targetId = structuredChosen ? 'targetPlayerId' : str(a.targets[0]?.id); const selected = ctx.selections[targetId] ?? [];
   if (controller.status !== 'active' || !controller.locationId || !isBattlefield(s, controller.locationId) || selected.length !== 1) {
     reject('invalid_state', 'Selected same-battlefield defeat requires one target and an active battlefield controller');
   }
@@ -2661,8 +3308,10 @@ function stageSelectedSameBattlefieldDefeat(s: GameState, ctx: EffectContext, a:
   const existing = ledger.find((entry) => entry.round === s.round.roundNumber && entry.battlefieldId === controller.locationId &&
     entry.controllerId === ctx.controllerId && entry.sourceCardId === ctx.sourceCardId && entry.abilityId === ctx.abilityId);
   if (existing) reject('invalid_state', 'Selected same-battlefield defeat was already staged for this source ability');
+  const payableTargets = payableEffectDefeatTargets(s, ctx.controllerId, [target.id]);
+  if (!payableTargets.length) return;
   ledger.push({ round: s.round.roundNumber, battlefieldId: controller.locationId, controllerId: ctx.controllerId,
-    sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, targetPlayerIds: [target.id] });
+    sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, targetPlayerIds: payableTargets });
 }
 
 function settleBattleLossVpWinnerReward(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
@@ -2758,6 +3407,51 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
   if (r.preventEffects && !unpreventable) { r.events.push({ type: 'effect_prevented', playerId: p.id }); return; }
   switch (effect.type) {
     case 'info_note': break;
+    case M50_BATTLE_TERMINAL_ACTIVE_ATTACK_VP_ATTRITION: {
+      if (!isAcceptedM50BattleTerminalActiveAttackVpAttritionAbility(a)) {
+        reject('unsupported', 'Battle-terminal active-attack VP attrition requires the exact accepted structured ability');
+      }
+      const event = ctx.event;
+      const phaseId = `battle-phase:${s.round.roundNumber}`;
+      if (!event || event.type !== 'after_battle_ended' || event.id !== `${phaseId}:after_battle_ended` ||
+          event.battlePhaseResolutionId !== phaseId || !Array.isArray(event.battleParticipantIds) || !Array.isArray(event.battleOutcomes)) {
+        reject('invalid_event', 'Battle-terminal active-attack VP attrition requires authoritative terminal provenance');
+      }
+      const participantIds = event.battleParticipantIds;
+      if (participantIds.some((playerId) => !s.players.some((candidate) => candidate.id === playerId)) ||
+          new Set(participantIds).size !== participantIds.length) {
+        reject('invalid_event', 'Battle-terminal active-attack VP attrition participant provenance is malformed');
+      }
+      const controllerOutcomes = event.battleOutcomes.filter((outcome) =>
+        Array.isArray(outcome.participantPlayerIds) && outcome.participantPlayerIds.includes(ctx.controllerId));
+      if (controllerOutcomes.length === 0) break;
+      if (controllerOutcomes.length !== 1) reject('invalid_event', 'Battle-terminal controller appears in multiple battle outcomes');
+      const outcome = controllerOutcomes[0]!;
+      const frozenParticipants = outcome.participantPlayerIds!;
+      if (!outcome.battlefieldId || frozenParticipants.some((playerId) => !participantIds.includes(playerId)) ||
+          new Set(frozenParticipants).size !== frozenParticipants.length || !outcome.winnerPlayerIds.every((playerId) => frozenParticipants.includes(playerId))) {
+        reject('invalid_event', 'Battle-terminal active-attack VP attrition outcome provenance is malformed');
+      }
+      const offset = Number(effect.offset);
+      const maxAmount = Number(effect.maxAmount);
+      for (const targetId of frozenParticipants) {
+        if (targetId === ctx.controllerId) continue;
+        const targetPlayer = player(s, targetId);
+        if (targetPlayer.status !== 'active') continue;
+        const activeAttackCount = s.cards.filter((candidate) => {
+          if (candidate.controllerPlayerId !== targetId || candidate.zone !== 'attack_area') return false;
+          const state = r.cardState[candidate.instanceId];
+          return state?.active === true && state.faceDown !== true && cardPlayClassification(s, candidate.instanceId).playKind === 'attack';
+        }).length;
+        const loss = Math.min(maxAmount, Math.max(0, activeAttackCount + offset));
+        if (loss <= 0) continue;
+        const before = targetPlayer.vp;
+        const after = Math.max(0, before - loss);
+        targetPlayer.vp = after;
+        recordAuthoritativeVictoryPointChange(s, targetId, before, after, 'battle-terminal-active-attack-attrition');
+      }
+      break;
+    }
     case 'set_player_flag': {
       const key = str(effect.key); if (!key) reject('resolution_failed', 'Structured player flag effect requires key');
       const targetIds = structuredTargetPlayerIds(s, ctx, effect.target);
@@ -2774,7 +3468,43 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       for (const targetId of targetIds) setStructuredFlag(s, targetId, key, value, thisRound);
       break;
     }
-    case 'clear_player_flag': {
+    case 'add_status': {
+      const status = str(effect.status);
+      const targetIds = structuredTargetPlayerIds(s, ctx, effect.target ?? 'controller');
+      if (!status || !targetIds.length || Object.keys(effect).some((key) => !['type', 'target', 'status'].includes(key))) reject('resolution_failed', 'Structured add-status effect is invalid');
+      const store = runtime(s).playerStatusKeysByPlayer ??= {};
+      for (const targetId of targetIds) {
+        const statuses = store[targetId] ??= [];
+        if (!statuses.includes(status)) statuses.push(status);
+      }
+      break;
+    }
+    case 'add_linked_status': {
+      const status = str(effect.status);
+      const targetIds = structuredTargetPlayerIds(s, ctx, effect.target ?? 'controller');
+      if (!status || !targetIds.length || Object.keys(effect).some((key) => !['type', 'target', 'status'].includes(key))) reject('resolution_failed', 'Structured linked-status add effect is invalid');
+      const linkedStatus = `${status}:${ctx.sourceCardId}`;
+      const store = runtime(s).playerStatusKeysByPlayer ??= {};
+      for (const targetId of targetIds) { const statuses = store[targetId] ??= []; if (!statuses.includes(linkedStatus)) statuses.push(linkedStatus); }
+      break;
+    }
+    case 'remove_linked_status': {
+      const status = str(effect.status);
+      const targetIds = structuredTargetPlayerIds(s, ctx, effect.target ?? { scope: 'all_players' });
+      if (!status || !targetIds.length || Object.keys(effect).some((key) => !['type', 'target', 'status'].includes(key))) reject('resolution_failed', 'Structured linked-status remove effect is invalid');
+      const linkedStatus = `${status}:${ctx.sourceCardId}`;
+      const store = runtime(s).playerStatusKeysByPlayer ??= {};
+      for (const targetId of targetIds) store[targetId] = (store[targetId] ?? []).filter((entry) => entry !== linkedStatus);
+      break;
+    }
+    case 'remove_status': {
+      const status = str(effect.status);
+      const targetIds = structuredTargetPlayerIds(s, ctx, effect.target ?? 'controller');
+      if (!status || !targetIds.length || Object.keys(effect).some((key) => !['type', 'target', 'status'].includes(key))) reject('resolution_failed', 'Structured remove-status effect is invalid');
+      const store = runtime(s).playerStatusKeysByPlayer ??= {};
+      for (const targetId of targetIds) store[targetId] = (store[targetId] ?? []).filter((entry) => entry !== status);
+      break;
+    }    case 'clear_player_flag': {
       const key = str(effect.key); if (!key) reject('resolution_failed', 'Structured clear-player-flag effect requires key');
       const targetIds = structuredTargetPlayerIds(s, ctx, effect.target);
       if (!targetIds.length) reject('resolution_failed', 'Structured clear-player-flag effect has no authoritative target');
@@ -2853,6 +3583,52 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       r.structuredInstantVictory = next;
       break;
     }
+    case 'transfer_mana': {
+      const sourceIds = structuredTargetPlayerIds(s, ctx, effect.from ?? effect.source);
+      const targetIds = structuredTargetPlayerIds(s, ctx, effect.target ?? 'controller');
+      const amount = numeric(s, ctx, effect.amount ?? 0);
+      if (sourceIds.length !== 1 || targetIds.length !== 1 || sourceIds[0] === targetIds[0] || !Number.isSafeInteger(amount) || amount < 0 ||
+          Object.keys(effect).some((key) => !['type','from','source','target','amount','requireExact'].includes(key)) ||
+          (effect.requireExact !== undefined && effect.requireExact !== true)) reject('unsupported', 'Structured mana transfer shape is invalid');
+      const sourceId = sourceIds[0]!, targetId = targetIds[0]!;
+      const transferOn = (state: GameState): number => {
+        const source = player(state, sourceId);
+        if (!Number.isSafeInteger(source.mana) || source.mana < 0) reject('invalid_state', 'Mana transfer source balance is invalid');
+        const available = Math.min(amount, source.mana);
+        if (available <= 0) return 0;
+        const result = grantMana(state, targetId, available, { source: 'generic' });
+        if (result.actualAmount > 0) source.mana -= result.actualAmount;
+        return result.actualAmount;
+      };
+      if (effect.requireExact === true) {
+        const draft = structuredClone(s);
+        const transferred = transferOn(draft);
+        if (transferred !== amount) reject('insufficient_mana', 'Exact mana transfer amount is unavailable');
+      }
+      transferOn(s);
+      break;
+    }
+    case 'transfer_victory_points': {
+      const sourceIds = structuredTargetPlayerIds(s, ctx, effect.from ?? effect.source);
+      const targetIds = structuredTargetPlayerIds(s, ctx, effect.target ?? 'controller');
+      const amount = numeric(s, ctx, effect.amount);
+      if (!sourceIds.length || targetIds.length !== 1 || !Number.isSafeInteger(amount) || amount < 0 ||
+          Object.keys(effect).some((key) => !['type','from','source','target','amount'].includes(key))) reject('unsupported', 'Structured victory-point transfer shape is invalid');
+      const targetId = targetIds[0]!; let total = 0;
+      for (const sourceId of sourceIds) {
+        if (sourceId === targetId) continue;
+        const source = player(s, sourceId);
+        if (!Number.isSafeInteger(source.vp) || source.vp < 0) reject('invalid_state', 'Victory-point transfer source balance is invalid');
+        const actual = Math.min(amount, source.vp);
+        if (actual <= 0) continue;
+        const before = source.vp; source.vp -= actual; total += actual;
+        recordAuthoritativeVictoryPointChange(s, source.id, before, source.vp, 'structured-vp-transfer-source');
+      }
+      const target = player(s, targetId); const before = target.vp; const after = before + total;
+      if (!Number.isSafeInteger(before) || before < 0 || !Number.isSafeInteger(after)) reject('invalid_state', 'Victory-point transfer target balance is invalid');
+      if (total > 0) { target.vp = after; recordAuthoritativeVictoryPointChange(s, target.id, before, after, 'structured-vp-transfer-target'); }
+      break;
+    }
     case 'gain_mana': {
       const amount = numeric(s, ctx, effect.amount);
       if (!Number.isSafeInteger(amount) || amount < 0) reject('resolution_failed', 'Structured mana gain must be a nonnegative safe integer');
@@ -2889,6 +3665,25 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
     }
     case 'add_card_cost_modifier': {
       installStructuredCardCostModifier(s, ctx, effect);
+      break;
+    }
+    case 'exile_source_card': {
+      if (Object.keys(effect).some((key) => key !== 'type')) reject('unsupported', 'Structured exile-source-card effect is invalid');
+      const source = card(s, ctx.sourceCardId);
+      moveCard(s, source.instanceId, 'removed_from_game');
+      const sourceState = runtime(s).cardState[source.instanceId];
+      if (sourceState) { sourceState.active = false; sourceState.faceDown = false; }
+      processEvent(s, { id: nextId(s, 'card-exiled'), type: 'm50_card_exiled', sourceCardId: source.instanceId, playerId: source.controllerPlayerId });
+      break;
+    }
+    case 'sequester_random_inactive_servant_skill': {
+      const target = node(effect.target);
+      if (str(target.scope) !== 'event_defeated_players' || effect.returnOn !== 'controller_elimination' ||
+          Object.keys(effect).some((key) => !['type','target','returnOn'].includes(key)) || Object.keys(target).some((key) => key !== 'scope')) {
+        reject('unsupported', 'Structured servant-skill sequestration shape is invalid');
+      }
+      const targetIds = structuredTargetPlayerIds(s, ctx, effect.target);
+      for (const targetPlayerId of targetIds) sequesterRandomInactiveServantSkill(s, targetPlayerId, ctx.controllerId, ctx.sourceCardId);
       break;
     }
     case 'remove_selected_cards': {
@@ -2950,8 +3745,191 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       setOwnedSkillZoneActiveState(s, ctx, str(effect.definitionId), false);
       break;
     }
+    case 'copy_selected_card': {
+      const payloadKey = str(effect.payloadKey) || 'selectedInstanceIds';
+      const selectedIds = ctx.selections[payloadKey] ?? [];
+      const targetIds = structuredTargetPlayerIds(s, ctx, effect.target);
+      const lifecycle = node(effect.lifecycle);
+      const allowedKeys = ['type','id','printedClause','source','payloadKey','target','zone','face','active','temporary','lifecycle','residual'];
+      const permanentAttack = normalizeStructuredZone(effect.zone) === 'attack_area' && effect.face === 'up' && effect.active === true &&
+        effect.temporary === false && effect.residual === true && lifecycle.duration === 'permanent' &&
+        Object.keys(lifecycle).every((key) => key === 'duration');
+      const temporarySkill = normalizeStructuredZone(effect.zone) === 'skill' && effect.target === 'controller' && effect.face === 'up' &&
+        effect.active === false && effect.temporary === true && effect.residual === false && lifecycle.duration === 'this_round' &&
+        lifecycle.cleanup === 'remove_from_game' && Object.keys(lifecycle).every((key) => ['duration','cleanup'].includes(key));
+      if (selectedIds.length !== 1 || targetIds.length !== 1 || effect.source !== 'selected_card' ||
+          Object.keys(effect).some((key) => !allowedKeys.includes(key)) || (!permanentAttack && !temporarySkill)) {
+        reject('unsupported', 'Structured selected-card copy shape is invalid');
+      }
+      const source = card(s, selectedIds[0]!);
+      if (source.zone !== 'skill') reject('invalid_target', 'Structured copy source must remain in a skill zone');
+      const sourceState = runtime(s).cardState[source.instanceId];
+      const definition = runtime(s).pack.cards[source.definitionId];
+      if (!definition || definition.cardType !== 'servant_skill' || sourceState?.faceDown === true) {
+        reject('invalid_target', 'Structured copy source must be a face-up servant skill card');
+      }
+      if (permanentAttack && (source.ownerPlayerId !== ctx.controllerId || source.controllerPlayerId !== ctx.controllerId)) {
+        reject('invalid_target', 'Structured permanent attack copy source must be controller-owned');
+      }
+      const targetId = targetIds[0]!;
+      const copyId = nextId(s, 'm50-copy');
+      s.cards.push({
+        instanceId: copyId, definitionId: source.definitionId, ownerPlayerId: targetId, controllerPlayerId: targetId,
+        zone: permanentAttack ? 'attack_area' : 'skill', visibility: permanentAttack ? { scope: 'public' } : { scope: 'owner_only', ownerPlayerId: targetId },
+        generatedBy: ctx.sourceCardId, createdByPlayerId: ctx.controllerId, derivedFromInstanceId: source.instanceId,
+      });
+      runtime(s).cardState[copyId] = { active: permanentAttack, faceDown: false, playedRound: s.round.roundNumber };
+      if (temporarySkill) (runtime(s).structuredTemporaryGeneratedCards ??= []).push({
+        instanceId: copyId, createdRound: s.round.roundNumber, sourceCardId: ctx.sourceCardId,
+      });
+      runtime(s).events.push({ type: 'card_created', playerId: targetId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+        cardInstanceId: copyId, toZone: permanentAttack ? 'attack_area' : 'skill', movedCount: 1 });
+      break;
+    }
+    case 'install_ability_rule_modifier': {
+      const abilityId = str(effect.abilityId); const modifierId = str(effect.modifierId); const payloadKey = str(effect.payloadKey);
+      if (!abilityId || abilityId !== ctx.abilityId || !modifierId ||
+          Object.keys(effect).some((key) => !['type','abilityId','modifierId','target','payloadKey'].includes(key))) {
+        reject('unsupported', 'Effect-installed ability rule modifier shape is invalid');
+      }
+      const ability = abilityDefinition(s, ctx.sourceCardId, abilityId);
+      const modifier = ability.ruleModifiers.find((candidate) => str(candidate.id) === modifierId);
+      const scope = node(modifier?.scope); const modifierLifecycle = node(modifier?.lifecycle);
+      if (modifier && isAcceptedEffectInstalledControllerManaSpendingForbidModifier(modifier)) {
+        if (payloadKey || effect.target !== 'decision_player' ||
+            Object.keys(effect).some((key) => !['type','abilityId','modifierId','target'].includes(key))) {
+          reject('unsupported', 'Effect-installed mana-spending modifier shape is invalid');
+        }
+        const targetIds = structuredTargetPlayerIds(s, ctx, effect.target);
+        if (targetIds.length !== 1) reject('invalid_target', 'Effect-installed mana-spending modifier requires one decision player');
+        const targetId = targetIds[0]!;
+        const policyKey = M50_EFFECT_INSTALLED_MANA_SPENDING_FORBID_POLICY;
+        const exact = runtime(s).ongoingEffects.find((ongoing) => ongoing.policyKey === policyKey && ongoing.startRound === s.round.roundNumber &&
+          ongoing.ruleModifiers.some((entry) => node(entry.definition.scope).playerId === targetId));
+        if (!exact) runtime(s).ongoingEffects.push({
+          id: nextId(s, 'm50-mana-spending-forbid'), sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, controllerId: ctx.controllerId,
+          starts: 'immediate', duration: 'this_round', startRound: s.round.roundNumber, expiresAtRound: s.round.roundNumber + 1,
+          cleanup: 'expire_after_duration', sourceMustRemainActive: false, policyKey, publicZones: [],
+          ruleModifiers: [{ sourceCardId: ctx.sourceCardId, controllerId: ctx.controllerId, definition: {
+            id: modifierId, operation: 'forbid', rule: 'mana_spending', scope: { subject: 'selected_player', playerId: targetId },
+          } }],
+        });
+        break;
+      }
+      if (modifier && isAcceptedEffectInstalledCombatSettlementModifier(modifier)) {
+        if (payloadKey || effect.target !== 'controller' ||
+            Object.keys(effect).some((key) => !['type','abilityId','modifierId','target'].includes(key))) {
+          reject('unsupported', 'Effect-installed combat-settlement modifier shape is invalid');
+        }
+        const targetIds = structuredTargetPlayerIds(s, ctx, effect.target);
+        if (targetIds.length !== 1 || targetIds[0] !== ctx.controllerId) {
+          reject('invalid_target', 'Effect-installed combat-settlement modifier requires the controller');
+        }
+        const targetId = targetIds[0]!;
+        const policyKey = M50_EFFECT_INSTALLED_COMBAT_SETTLEMENT_POLICY;
+        let ongoing = runtime(s).ongoingEffects.find((candidate) => candidate.policyKey === policyKey &&
+          candidate.sourceCardId === ctx.sourceCardId && candidate.abilityId === ctx.abilityId &&
+          candidate.controllerId === ctx.controllerId && candidate.startRound === s.round.roundNumber);
+        if (!ongoing) {
+          ongoing = {
+            id: nextId(s, 'm50-combat-settlement'), sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, controllerId: ctx.controllerId,
+            starts: 'immediate', duration: 'this_round', startRound: s.round.roundNumber, expiresAtRound: s.round.roundNumber + 1,
+            cleanup: 'remain_active', sourceMustRemainActive: false, policyKey, publicZones: [], ruleModifiers: [],
+          };
+          runtime(s).ongoingEffects.push(ongoing);
+        }
+        if (ongoing.ruleModifiers.some((entry) => entry.definition.rule === modifier.rule)) {
+          reject('invalid_state', 'Duplicate effect-installed combat-settlement rule');
+        }
+        const baseScope = node(modifier.scope);
+        const installedScope = modifier.rule === 'combat_reward_distribution'
+          ? { subject: 'selected_player', playerId: targetId, whenControllerWins: true, mode: 'full_reward_each' }
+          : { subject: 'selected_player', playerId: targetId };
+        if (baseScope.subject !== 'controller') reject('unsupported', 'Combat-settlement modifier controller scope is invalid');
+        ongoing.ruleModifiers.push({ sourceCardId: ctx.sourceCardId, controllerId: ctx.controllerId, definition: {
+          id: modifierId, operation: modifier.operation, rule: modifier.rule, scope: installedScope,
+        } });
+        break;
+      }
+      if (!modifier || modifier.installation !== 'effect' || modifier.operation !== 'forbid' || modifier.rule !== 'skill_use' ||
+          scope.subject !== 'controller' || scope.skillDefinitionIdsFromSelectedCard !== true ||
+          Object.keys(scope).some((key) => !['subject','skillDefinitionIdsFromSelectedCard'].includes(key)) ||
+          modifierLifecycle.duration !== 'this_round' || Object.keys(modifierLifecycle).some((key) => key !== 'duration') ||
+          Object.keys(modifier).some((key) => !['id','printedClause','installation','operation','rule','scope','lifecycle'].includes(key))) {
+        reject('unsupported', 'Effect-installed selected-definition skill-use modifier is invalid');
+      }
+      const selectedIds = ctx.selections[payloadKey] ?? []; const targetIds = structuredTargetPlayerIds(s, ctx, effect.target);
+      if (selectedIds.length !== 1 || targetIds.length !== 1) reject('invalid_target', 'Effect-installed skill-use modifier requires one selected card owner');
+      const selected = card(s, selectedIds[0]!); const selectedDefinition = runtime(s).pack.cards[selected.definitionId]; const targetId = targetIds[0]!;
+      if (selected.ownerPlayerId !== targetId || selected.controllerPlayerId !== targetId || selected.zone !== 'skill' ||
+          runtime(s).cardState[selected.instanceId]?.faceDown === true || selectedDefinition?.cardType !== 'servant_skill') {
+        reject('invalid_target', 'Effect-installed skill-use modifier selection provenance is stale or invalid');
+      }
+      const policyKey = M50_EFFECT_INSTALLED_SKILL_USE_FORBID_POLICY;
+      const exact = runtime(s).ongoingEffects.find((ongoing) => ongoing.policyKey === policyKey && ongoing.startRound === s.round.roundNumber &&
+        ongoing.ruleModifiers.some((entry) => node(entry.definition.scope).playerId === targetId && node(entry.definition.scope).definitionId === selected.definitionId));
+      if (!exact) runtime(s).ongoingEffects.push({
+        id: nextId(s, 'm50-skill-use-forbid'), sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, controllerId: ctx.controllerId,
+        starts: 'immediate', duration: 'this_round', startRound: s.round.roundNumber, expiresAtRound: s.round.roundNumber + 1,
+        cleanup: 'expire_after_duration', sourceMustRemainActive: false, policyKey, publicZones: [],
+        ruleModifiers: [{ sourceCardId: ctx.sourceCardId, controllerId: ctx.controllerId, definition: {
+          id: modifierId, operation: 'forbid', rule: 'skill_use', scope: { subject: 'selected_player', playerId: targetId, definitionId: selected.definitionId },
+        } }],
+      });
+      break;
+    }
+    case 'join_source_card_to_attack': {
+      if (!isAcceptedM50SourceCardCombatJoinAbility(a)) reject('unsupported', 'Source-card combat join requires the exact accepted M50 granted ability');
+      const zones = Array.isArray(effect.allowedSourceZones) ? effect.allowedSourceZones.map(str) : [];
+      if (JSON.stringify(zones) !== JSON.stringify(['hand', 'skill']) ||
+          Object.keys(effect).some((key) => !['type', 'allowedSourceZones'].includes(key))) {
+        reject('unsupported', 'Source-card combat join effect shape is invalid');
+      }
+      const source = card(s, ctx.sourceCardId);
+      if (source.ownerPlayerId !== ctx.controllerId || source.controllerPlayerId !== ctx.controllerId || !zones.includes(source.zone)) {
+        reject('invalid_state', 'Source card is no longer an owned hand/skill card eligible to join the attack');
+      }
+      moveCard(s, ctx.sourceCardId, 'attack_area');
+      const sourceState = runtime(s).cardState[ctx.sourceCardId] ??= { active: false, faceDown: false, playedRound: s.round.roundNumber };
+      sourceState.active = true; sourceState.faceDown = false; sourceState.playedRound = s.round.roundNumber;
+      break;
+    }
+    case 'double_source_base_power_remove_after_battle': {
+      if (!isAcceptedM50BladeStormGrantedAbility(a) || Object.keys(effect).some((key) => key !== 'type')) {
+        reject('unsupported', 'Source-card base-power doubling requires the exact accepted M50 granted ability');
+      }
+      const source = card(s, ctx.sourceCardId); const sourceDefinition = definition(s, ctx.sourceCardId);
+      const sourceState = runtime(s).cardState[ctx.sourceCardId];
+      if (source.ownerPlayerId !== ctx.controllerId || source.controllerPlayerId !== ctx.controllerId || source.zone !== 'attack_area' ||
+          sourceDefinition?.cardType !== 'basic_attack' || sourceState?.active !== true || sourceState.faceDown === true) {
+        reject('invalid_source', 'Granted base-power doubling requires an active face-up basic attack');
+      }
+      const before = sourceState.basePowerMultiplier ?? 1;
+      const after = before * 2;
+      if (!Number.isSafeInteger(before) || before < 1 || !Number.isSafeInteger(after)) {
+        reject('invalid_state', 'Physical-card base-power multiplier overflow');
+      }
+      sourceState.basePowerMultiplier = after;
+      sourceState.removeAfterBattleRound = s.round.roundNumber;
+      break;
+    }
     case 'create_card_instances': {
       createStructuredCardInstances(s, ctx, effect);
+      break;
+    }
+    case 'remove_owned_cards_by_linked_skill': {
+      const linkedSkillId = str(effect.linkedSkillId);
+      const zones = Array.isArray(effect.zones) ? effect.zones.map(normalizeStructuredZone) : [];
+      if (effect.target !== 'controller' || !linkedSkillId || zones.length !== 1 || zones[0] !== 'skill' ||
+          Object.keys(effect).some((key) => !['type','target','linkedSkillId','zones'].includes(key))) {
+        reject('unsupported', 'Structured linked-skill cleanup shape is invalid');
+      }
+      const targets = s.cards.filter((candidate) => candidate.ownerPlayerId === ctx.controllerId && candidate.controllerPlayerId === ctx.controllerId &&
+        candidate.definitionId === linkedSkillId && candidate.zone === 'skill');
+      for (const target of targets) {
+        moveCard(s, target.instanceId, 'removed_from_game');
+        const state = runtime(s).cardState[target.instanceId]; if (state) { state.active = false; state.faceDown = false; }
+      }
       break;
     }
     case 'retrigger_card_play_effects': {
@@ -2979,6 +3957,19 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
           executeAbility(s, context(s, source.instanceId, triggeredAbility.id, playedEvent));
         }
       }
+      break;
+    }
+    case 'discard_bottom_card': {
+      if (!isAcceptedM50BoundaryBottomDiscardAbility(a)) reject('unsupported', 'Structured bottom-card discard is reserved to the exact granted boundary ability');
+      const targetIds = structuredTargetPlayerIds(s, ctx, effect.target);
+      if (targetIds.length !== 1) reject('invalid_target', 'Boundary bottom discard requires exactly one selected player');
+      const targetId = targetIds[0]!;
+      const acceptedTargetIds = candidates(s, ctx, a.targets[0]!);
+      if (!acceptedTargetIds.includes(targetId)) reject('invalid_target', 'Boundary bottom discard target is no longer eligible');
+      const deck = s.cards.filter((candidate) => candidate.ownerPlayerId === targetId && candidate.zone === 'deck');
+      const bottom = deck.at(-1);
+      if (!bottom) reject('resolution_failed', 'Boundary bottom discard target deck is empty');
+      moveCard(s, bottom.instanceId, 'discard');
       break;
     }
     case 'gain_mana_from_selected_card_base_power': {
@@ -3048,6 +4039,26 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       shuffleStructuredEventDeck(s);
       break;
     }
+    case 'swap_selected_event_locations': {
+      const key = str(effect.payloadKey) || 'selectedEventIds';
+      const selected = ctx.selections[key] ?? [];
+      if (selected.length !== 2 || new Set(selected).size !== 2 || Object.keys(effect).some((field) => !['type','payloadKey'].includes(field))) {
+        reject('invalid_target', 'Structured event swap requires exactly two distinct selected event tokens');
+      }
+      try { swapSelectedEventRuleLocations(s, runtime(s).pack, selected); }
+      catch (error) { reject('resolution_failed', error instanceof Error ? error.message : 'Structured event swap failed'); }
+      break;
+    }
+    case 'replace_selected_event_from_deck': {
+      const key = str(effect.payloadKey) || 'selectedEventIds';
+      const selected = ctx.selections[key] ?? [];
+      if (selected.length !== 1 || Object.keys(effect).some((field) => !['type','payloadKey'].includes(field))) {
+        reject('invalid_target', 'Structured event replacement requires exactly one selected event token');
+      }
+      try { replaceSelectedEventRuleFromDeck(s, runtime(s).pack, selected[0]!); }
+      catch (error) { reject('resolution_failed', error instanceof Error ? error.message : 'Structured event replacement failed'); }
+      break;
+    }
     case 'move_selected_events': {
       const key = str(effect.payloadKey) || 'selectedEventIds';
       const selected = ctx.selections[key] ?? [];
@@ -3111,6 +4122,48 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       controller.vp = after; recordAuthoritativeVictoryPointChange(s, controller.id, before, after, 'structured-battlefield-competition-reward');
       break;
     }
+    case 'lose_victory_points_per_matching_cards': {
+      const targetIds = structuredTargetPlayerIds(s, ctx, effect.target ?? 'all_players');
+      const zone = normalizeStructuredZone(effect.zone ?? 'discard');
+      const definitionIds = Array.isArray(effect.definitionIds) ? effect.definitionIds.map(str).filter(Boolean) : [];
+      const uniqueDefinitionIds = new Set(definitionIds);
+      const amountPerCard = numeric(s, ctx, effect.amountPerCard ?? 0);
+      const maxAmount = Number(effect.maxAmount ?? Number.MAX_SAFE_INTEGER);
+      if (zone !== 'discard' || !definitionIds.length || uniqueDefinitionIds.size !== definitionIds.length ||
+          !Number.isSafeInteger(amountPerCard) || amountPerCard < 0 || !Number.isSafeInteger(maxAmount) || maxAmount < 0 ||
+          Object.keys(effect).some((key) => !['type','target','zone','definitionIds','amountPerCard','maxAmount'].includes(key))) {
+        reject('unsupported', 'Structured matching-card VP loss requires exact discard-zone shape');
+      }
+      for (const targetId of targetIds) {
+        const target = player(s, targetId);
+        const count = s.cards.filter((entry) => entry.ownerPlayerId === targetId && entry.zone === 'discard' && uniqueDefinitionIds.has(entry.definitionId)).length;
+        const requested = Math.min(count * amountPerCard, maxAmount);
+        if (!Number.isSafeInteger(requested)) reject('invalid_state', 'Structured matching-card VP loss exceeds safe integer range');
+        const before = target.vp; const actual = Math.min(Math.max(0, before), requested); const after = before - actual;
+        target.vp = after; recordAuthoritativeVictoryPointChange(s, targetId, before, after, 'structured-matching-card-vp-loss');
+      }
+      break;
+    }
+    case 'transfer_matching_cards': {
+      const sourceIds = structuredTargetPlayerIds(s, ctx, effect.sourceTarget ?? 'all_players');
+      const targetIds = structuredTargetPlayerIds(s, ctx, effect.target ?? 'controller');
+      const definitionIds = Array.isArray(effect.definitionIds) ? effect.definitionIds.map(str).filter(Boolean) : [];
+      const uniqueDefinitionIds = new Set(definitionIds);
+      if (targetIds.length !== 1 || normalizeStructuredZone(effect.zone ?? 'discard') !== 'discard' || effect.destination !== 'hand' ||
+          !definitionIds.length || uniqueDefinitionIds.size !== definitionIds.length ||
+          Object.keys(effect).some((key) => !['type','sourceTarget','target','zone','destination','definitionIds'].includes(key))) {
+        reject('unsupported', 'Structured matching-card transfer requires exact discard-to-hand shape');
+      }
+      const recipientId = targetIds[0]!;
+      const sourceSet = new Set(sourceIds);
+      for (const entry of s.cards.filter((candidate) => sourceSet.has(candidate.ownerPlayerId) && candidate.zone === 'discard' && uniqueDefinitionIds.has(candidate.definitionId))) {
+        entry.ownerPlayerId = recipientId; entry.controllerPlayerId = recipientId; entry.zone = 'hand';
+        entry.visibility = { scope: 'owner_only', ownerPlayerId: recipientId };
+        const cardState = r.cardState[entry.instanceId] ??= { active: false, faceDown: true, playedRound: s.round.roundNumber };
+        cardState.active = false; cardState.faceDown = true;
+      }
+      break;
+    }
     case 'gain_victory_points': {
       const amount = numeric(s, ctx, effect.amount);
       if (!Number.isSafeInteger(amount) || amount < 0) reject('resolution_failed', 'Structured VP gain must be a nonnegative safe integer');
@@ -3171,11 +4224,26 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       break;
     }
     case 'defeat_player': {
-      if (isGenericScheduledSelfDefeat(a)) {
+      if (isAcceptedFaceUpPlayThresholdSameBattlefieldDefeatAbility(a, 'compiled')) {
+        const targetIds = payableEffectDefeatTargets(s, ctx.controllerId, structuredChoiceTargetPlayers(s, ctx, effect.target));
+        const defeatRounds = r.structuredDefeatRoundByPlayer ??= {};
+        for (const targetId of targetIds) defeatRounds[targetId] = s.round.roundNumber;
+      } else if (isAcceptedM50RatioFilteredDefeatAbility(a)) {
+        const targetIds = payableEffectDefeatTargets(s, ctx.controllerId, structuredChoiceTargetPlayers(s, ctx, effect.target));
+        const defeatRounds = r.structuredDefeatRoundByPlayer ??= {};
+        for (const targetId of targetIds) defeatRounds[targetId] = s.round.roundNumber;
+      } else if (isGenericScheduledSelfDefeat(a) || isGenericScheduledRankedSelfDefeatSequence(a)) {
         const targetIds = structuredTargetPlayerIds(s, ctx, effect.target);
         if (targetIds.length !== 1 || targetIds[0] !== ctx.controllerId) reject('resolution_failed', 'Scheduled self-defeat requires exact controller target');
         (r.structuredDefeatRoundByPlayer ??= {})[ctx.controllerId] = s.round.roundNumber;
-      } else if (isAcceptedSelectedSameBattlefieldDefeatAbility(a, 'compiled') || isAcceptedCommandSealUnusedSameBattlefieldDefeatAbility(a, 'compiled')) {
+      } else if (isAcceptedCommandSealLossConditionalDefeatAbility(a)) {
+        const selectedTargetIds = structuredTargetPlayerIds(s, ctx, effect.target);
+        if (selectedTargetIds.length !== 1) reject('resolution_failed', 'Command-seal conditional defeat requires exactly one authoritative selected target');
+        const targetIds = payableEffectDefeatTargets(s, ctx.controllerId, selectedTargetIds);
+        if (targetIds.length === 1) (r.structuredDefeatRoundByPlayer ??= {})[targetIds[0]!] = s.round.roundNumber;
+      } else if (isAcceptedDeploymentLocationOpponentDefeatAbility(a, 'compiled')) {
+        stageDeploymentLocationOpponentDefeat(s, ctx, a);
+      } else if (isAcceptedSelectedSameBattlefieldDefeatAbility(a, 'compiled') || isAcceptedCommandSealUnusedSameBattlefieldDefeatAbility(a, 'compiled') || isAcceptedStructuredChosenOpponentDefeatAbility(a, 'compiled')) {
         stageSelectedSameBattlefieldDefeat(s, ctx, a);
       } else stagePreBattleDefeat(s, ctx, a);
       break;
@@ -3187,9 +4255,11 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       if (!event || event.type !== 'after_battle_power_calculated' || !event.resultId || !event.battlefieldId || !snapshot) {
         reject('invalid_event', 'Presence Concealment requires trusted pre-scoring battle identity and Power facts');
       }
-      const targetPlayerIds = highestPowerOpponents(event, ctx.controllerId);
+      const rawTargetPlayerIds = highestPowerOpponents(event, ctx.controllerId);
       const pending = r.pendingPresenceConcealmentDefeats ??= [];
       if (!pending.some((entry) => entry.triggerEventId === event.id && entry.sourceCardId === ctx.sourceCardId && entry.abilityId === ctx.abilityId)) {
+        const targetPlayerIds = payableEffectDefeatTargets(s, ctx.controllerId, rawTargetPlayerIds);
+        if (!targetPlayerIds.length) break;
         pending.push({
           controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, triggerEventId: event.id,
           resultId: event.resultId, battlefieldId: event.battlefieldId, participantIds: snapshot.participantIds, participantPowers: snapshot.powers, targetPlayerIds,
@@ -3422,6 +4492,58 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       }
       break;
     }
+    case M50_DRAW_AND_PLAY_FACE_DOWN: {
+      if (!isAcceptedM50DrawAndPlayFaceDownAttackAbility(a) || effect.target !== 'controller' || effect.count !== 2 ||
+          Object.keys(effect).some((key) => !['type','target','count'].includes(key))) {
+        reject('unsupported', 'Draw-and-play face-down attacks requires the exact accepted M50 ability');
+      }
+      const targetId = ctx.controllerId;
+      if (structuredCardDrawForbidden(s, targetId)) break;
+      const playedIds: string[] = [];
+      for (let index = 0; index < 2; index += 1) {
+        if (!s.cards.some((candidate) => candidate.ownerPlayerId === targetId && candidate.zone === 'deck')) {
+          s.cards.filter((candidate) => candidate.ownerPlayerId === targetId && candidate.zone === 'discard')
+            .forEach((candidate) => moveCard(s, candidate.instanceId, 'deck'));
+          shuffle(s, targetId);
+        }
+        const top = s.cards.find((candidate) => candidate.ownerPlayerId === targetId && candidate.zone === 'deck');
+        if (!top) break;
+        if (!definition(s, top.instanceId)) reject('invalid_state', 'Draw-and-play card has no executable definition');
+        moveCard(s, top.instanceId, 'attack_area');
+        runtime(s).cardState[top.instanceId] = { active: false, faceDown: true, playedRound: s.round.roundNumber, paidManaOnPlay: 0 };
+        top.visibility = { scope: 'owner_only', ownerPlayerId: top.ownerPlayerId };
+        playedIds.push(top.instanceId);
+        const playedCards = [{ instanceId: top.instanceId, controllerId: targetId, cardType: definition(s, top.instanceId)!.cardType, faceDown: true }];
+        processTrustedCardPlayEvent(s, { id: nextId(s, 'play'), type: 'on_card_played', playerId: targetId, sourceCardId: top.instanceId, playedCards });
+      }
+      const counters = runtime(s).playCounters;
+      if (counters.round !== s.round.roundNumber) reject('invalid_state', 'Play counters are stale during draw-and-play resolution');
+      counters.cardsPlayedByPlayer[targetId] = (counters.cardsPlayedByPlayer[targetId] ?? 0) + playedIds.length;
+      break;
+    }
+    case M50_CLOSE_SELECTED_FACE_DOWN_ATTACKS: {
+      if (!isAcceptedM50FaceDownAttackCloseAbility(a) || effect.target !== 'face_down_attacks' ||
+          Object.keys(effect).some((key) => !['type','target'].includes(key))) {
+        reject('unsupported', 'Face-down attack close requires the exact accepted M50 round-end response');
+      }
+      const selected = ctx.selections.face_down_attacks ?? [];
+      if (selected.length < 1 || selected.length > 50 || new Set(selected).size !== selected.length) {
+        reject('invalid_target', 'Face-down attack close requires a nonempty distinct selection');
+      }
+      for (const instanceId of selected) {
+        const target = card(s, instanceId); const targetDefinition = definition(s, instanceId); const targetState = runtime(s).cardState[instanceId];
+        if (target.ownerPlayerId !== ctx.controllerId || target.controllerPlayerId !== ctx.controllerId || target.zone !== 'attack_area' ||
+            !targetDefinition || !isAttack(targetDefinition) || targetState?.faceDown !== true || targetState.active === true) {
+          reject('invalid_target', 'Selected face-down attack can no longer be closed');
+        }
+      }
+      for (const instanceId of selected) {
+        moveCard(s, instanceId, 'discard');
+        const targetState = runtime(s).cardState[instanceId];
+        if (targetState) { targetState.active = false; targetState.faceDown = false; }
+      }
+      break;
+    }
     case 'draw_cards': {
       const count = numeric(s, ctx, effect.count ?? effect.amount);
       if (!Number.isSafeInteger(count) || count < 0) reject('invalid_count', 'Invalid draw count');
@@ -3492,6 +4614,11 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       break;
     }
     case 'play_source_card': {
+      if (isAcceptedM50FreeSourceCardCombatPlayAbility(a)) {
+        if (effect.face !== 'face_up') reject('unsupported', 'Granted combat hand-play requires face-up play');
+        playBatch(s, p.id, [{ type: 'play_card', cardInstanceId: ctx.sourceCardId }], 'effect', false, ['hand'], true);
+        break;
+      }
       const source = card(s, ctx.sourceCardId);
       if (source.controllerPlayerId !== p.id || source.zone !== 'hand') reject('illegal_action', 'Source card is not playable from hand');
       if (isRequiredAdditionalPlayCard(s, ctx.sourceCardId)) reject('append_only', 'Required additional-play cards are not effect-playable');
@@ -3505,6 +4632,21 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       break;
     }
     case 'reveal_information': if (effect.scope !== 'servant_package') reject('unsupported', 'Unknown reveal scope'); reveal(s, p.id); break;
+    case 'hide_servant_true_name': {
+      const keys = Object.keys(effect).sort();
+      const exactControllerTarget = effect.target === 'controller' && JSON.stringify(keys) === JSON.stringify(['target', 'type']);
+      const exactLegacyImmediate = effect.target === undefined && JSON.stringify(keys) === JSON.stringify(['type']);
+      const exactLegacyRound = effect.target === undefined && effect.duration === 'until_round_end' && JSON.stringify(keys) === JSON.stringify(['duration', 'type']);
+      if (!exactControllerTarget && !exactLegacyImmediate && !exactLegacyRound) {
+        reject('unsupported', 'Servant true-name hide requires an accepted exact shape');
+      }
+      const index = r.revealedServants.indexOf(p.id);
+      if (index >= 0) {
+        r.revealedServants.splice(index, 1);
+        r.events.push({ type: 'servant_package_hidden', playerId: p.id });
+      }
+      break;
+    }
     case 'set_zone_visibility': {
       const ongoing = r.ongoingEffects.find(o => o.sourceCardId === ctx.sourceCardId && o.abilityId === ctx.abilityId);
       if (!ongoing || effect.visibility !== 'public') reject('unsupported', 'Visibility requires an ongoing public effect');
@@ -3552,6 +4694,34 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       installGameStartRuleOverride(s, ctx.controllerId, effect);
       break;
     }
+    case 'lose_command_seals': {
+      const targetIds = structuredTargetPlayerIds(s, ctx, effect.target ?? 'controller');
+      const amount = numeric(s, ctx, effect.amount ?? 1);
+      if (!targetIds.length || !Number.isSafeInteger(amount) || amount < 0 || Object.keys(effect).some((key) => !['type', 'target', 'amount', 'then'].includes(key))) reject('resolution_failed', 'Command-seal loss shape is invalid');
+      const losses: Record<PlayerId, { before: number; lost: number }> = {};
+      for (const id of targetIds) {
+        const targetPlayer = player(s, id); const before = commandSealCount(s, id); const lost = Math.min(before, amount); const after = Math.max(0, before - amount);
+        (targetPlayer as unknown as { commandSpells: number }).commandSpells = after;
+        losses[id] = { before, lost };
+        if (before > 0 && after === 0) processEvent(s, { id: nextId(s, 'empty-seals'), type: 'after_controller_loses_all_command_seals', playerId: id });
+      }
+      const nestedCtx: EffectContext = { ...ctx, commandSealLosses: losses };
+      for (const nested of nodes(effect.then)) resolveEffect(s, nestedCtx, nested);
+      break;
+    }
+    case 'pay_command_seals': {
+      const targetIds = structuredTargetPlayerIds(s, ctx, effect.target ?? 'controller');
+      const amount = numeric(s, ctx, effect.amount ?? 1);
+      if (!targetIds.length || !Number.isSafeInteger(amount) || amount < 0 || Object.keys(effect).some((key) => !['type', 'target', 'amount'].includes(key))) reject('resolution_failed', 'Command-seal payment shape is invalid');
+      for (const id of targetIds) if (commandSealCount(s, id) < amount) reject('insufficient_command_seals', 'Cannot pay command seals');
+      for (const id of targetIds) {
+        const targetPlayer = player(s, id); const before = commandSealCount(s, id); const after = before - amount;
+        (targetPlayer as unknown as { commandSpells: number }).commandSpells = after;
+        markCommandSealSpendRound(s, id, 'pay_command_seals', before, after);
+        if (before > 0 && after === 0) processEvent(s, { id: nextId(s, 'empty-seals'), type: 'after_controller_loses_all_command_seals', playerId: id });
+      }
+      break;
+    }
     case 'adjust_command_seals': {
       const current = Number((p as unknown as { commandSpells?: number }).commandSpells ?? 3);
       const amount = numeric(s, ctx, effect.amount);
@@ -3575,8 +4745,13 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
     }
     case 'pay_mana': {
       const amount = numeric(s, ctx, effect.amount);
-      if (!Number.isSafeInteger(amount) || amount < 0 || amount > p.mana) reject('insufficient_mana', 'Cannot pay mana');
-      p.mana -= amount;
+      const targetIds = structuredTargetPlayerIds(s, ctx, effect.target ?? 'controller');
+      if (targetIds.length !== 1) reject('resolution_failed', 'Mana payment requires exactly one authoritative target');
+      const payer = player(s, targetIds[0]!);
+      if (!Number.isSafeInteger(amount) || amount < 0 || amount > payer.mana) reject('insufficient_mana', 'Cannot pay mana');
+      if (amount > 0 && m50ManaSpendingForbidden(s, payer.id)) reject('mana_spending_forbidden', 'Mana spending is forbidden this round');
+      payer.mana -= amount;
+      if (amount > 0) recordAuthoritativeManaSpend(s, payer.id, amount);
       break;
     }
     case 'adjust_victory_points': {
@@ -3600,6 +4775,23 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       break;
     }
     case 'move_player': {
+      if (effect.movementKind === 'effect') {
+        if (effect.target !== 'decision_player' || effect.to !== 'controller_location' ||
+            Object.keys(effect).some((key) => !['type', 'target', 'to', 'movementKind'].includes(key))) {
+          reject('unsupported', 'Structured effect movement requires exact decision-player/controller-location shape');
+        }
+        const targetIds = structuredTargetPlayerIds(s, ctx, 'decision_player');
+        const destination = player(s, ctx.controllerId).locationId;
+        if (targetIds.length !== 1 || !destination) reject('invalid_target', 'Structured effect movement target or destination is unavailable');
+        const target = player(s, targetIds[0]!);
+        const from = target.locationId;
+        if (!from || from === destination) reject('invalid_target', 'Structured effect movement requires a different current location');
+        const moved = movePlayerCore(s, { playerId: target.id, to: destination, movementKind: 'effect', ignorePathForEffect: true });
+        if (!moved.moved) reject('invalid_target', `Structured effect movement is no longer legal: ${moved.reason ?? 'unknown'}`);
+        Object.assign(s, moved.nextState);
+        processTrustedMovementEntryEvent(s, { id: nextId(s, 'enter-location'), type: 'after_controller_enters_location', playerId: target.id, locationId: destination }, from, destination, 'effect', false);
+        break;
+      }
       const explicit = normalizeStructuredLocationId(effect.locationId);
       const selected = ctx.selections[str(effect.to)]?.[0] ?? ctx.selections.targetLocationId?.[0];
       const to = explicit || selected;
@@ -3925,6 +5117,21 @@ function isExactOpponentCloseToOneTarget(value: unknown): value is RuleNode {
     value.id === 'frozen_non_residual_attack_to_keep' && value.type === 'card_instance' &&
     value.count.min === 1 && value.count.max === 1;
 }
+function isExactOpponentCloseSelectedOneTarget(value: unknown): value is RuleNode {
+  if (!isPlainRecord(value) || !isPlainRecord(value.count)) return false;
+  const keys = Object.keys(value).sort();
+  const countKeys = Object.keys(value.count).sort();
+  return exactPlayerArray(keys, ['count', 'id', 'type']) && exactPlayerArray(countKeys, ['max', 'min']) &&
+    value.id === 'frozen_non_residual_attack_to_close' && value.type === 'card_instance' &&
+    value.count.min === 1 && value.count.max === 1;
+}
+function hasExactOpponentCloseSelectedOneInteractionRootKeys(value: unknown): boolean {
+  if (!isPlainRecord(value)) return false;
+  return exactPlayerArray(Object.keys(value).sort(), [
+    'abilityId', 'battlefieldId', 'cancelPolicy', 'candidateIds', 'candidateOwners', 'constraints', 'continuationRef', 'createdRevision',
+    'decisionPlayerId', 'initiatingControllerId', 'kind', 'sourceCardInstanceId', 'template', 'visibility',
+  ]);
+}
 function exactPlayerPowerMap(left: Record<string, number>, right: Record<string, number>, ids: readonly string[]): boolean {
   return Object.keys(left).length === ids.length && Object.keys(right).length === ids.length &&
     ids.every((id) => Object.prototype.hasOwnProperty.call(left, id) && Object.prototype.hasOwnProperty.call(right, id) && left[id] === right[id]);
@@ -4069,6 +5276,44 @@ function qualifyingOpponentCloseToOneCardIds(s: GameState, decisionPlayerId: str
     }
     return state.active === true && state.faceDown === false;
   }).map((candidate) => candidate.instanceId);
+}
+function opponentCloseSelectedOneFacts(s: GameState, sourceId: string): {
+  controllerId: PlayerId; decisionPlayerId: PlayerId; battlefieldId: string; candidateIds: string[]; candidateOwners: Record<string, PlayerId>;
+} | undefined {
+  const r = runtime(s);
+  const source = s.cards.find((candidate) => candidate.instanceId === sourceId);
+  if (!source || source.ownerPlayerId !== source.controllerPlayerId) return undefined;
+  const controller = s.players.find((candidate) => candidate.id === source.controllerPlayerId);
+  const sourceState: unknown = r.cardState[sourceId];
+  if (!controller || controller.status !== 'active' || !isBattlefield(s, controller.locationId) ||
+      !isValidOpponentCloseToOneSourceCardState(sourceState) || sourceState.active !== true || sourceState.faceDown !== false) return undefined;
+  const opponents = s.players.filter((candidate) => candidate.id !== controller.id && candidate.status === 'active' &&
+    candidate.locationId === controller.locationId).sort((left, right) => left.seat - right.seat);
+  if (opponents.length !== 1) return undefined;
+  const decisionPlayerId = opponents[0]!.id;
+  const candidateIds = qualifyingOpponentCloseToOneCardIds(s, decisionPlayerId);
+  if (candidateIds.length < 1) return undefined;
+  const candidateOwners = Object.fromEntries(candidateIds.map((instanceId) => [instanceId, card(s, instanceId).ownerPlayerId])) as Record<string, PlayerId>;
+  return { controllerId: controller.id, decisionPlayerId, battlefieldId: controller.locationId!, candidateIds, candidateOwners };
+}
+function createOpponentCloseSelectedOneDecision(s: GameState, ctx: EffectContext, a: AuthoringAbility): PendingDecision {
+  if (!isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled')) reject('resolution_failed', 'Unsupported opponent close-selected-one interaction semantic shape');
+  const facts = opponentCloseSelectedOneFacts(s, ctx.sourceCardId);
+  if (!facts || facts.controllerId !== ctx.controllerId) reject('no_legal_target', 'Opponent close-selected-one has no legal chooser or card');
+  const id = nextId(s, 'opponent-close-selected-one');
+  const target: RuleNode = { id: 'frozen_non_residual_attack_to_close', type: 'card_instance', count: { min: 1, max: 1 } };
+  return {
+    id, controllerId: facts.decisionPlayerId, target, candidates: [...facts.candidateIds], min: 1, max: 1,
+    context: { controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, variables: {}, selections: {} },
+    remainingEffects: [],
+    interaction: {
+      kind: 'opponent_close_selected_one_non_residual_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: runtime(s).revision + 1,
+      continuationRef: `${id}:continuation`, initiatingControllerId: ctx.controllerId, decisionPlayerId: facts.decisionPlayerId,
+      battlefieldId: facts.battlefieldId, candidateIds: [...facts.candidateIds], candidateOwners: { ...facts.candidateOwners },
+      constraints: { kind: 'target', targetKind: 'card', min: 1, max: 1, distinct: true },
+    },
+  };
 }
 function stageNextOpponentCloseToOneDecision(s: GameState): void {
   const r = runtime(s);
@@ -5265,7 +6510,9 @@ function hasAvailableManaForFixedCosts(s: GameState, ctx: EffectContext, a: Auth
     ? Number(definition(s, ctx.sourceCardId)?.cardFace.cost ?? 0)
     : 0;
   const total = abilityCost + printedPlayCost;
-  return Number.isSafeInteger(total) && player(s, ctx.controllerId).mana >= total;
+  if (!Number.isSafeInteger(total)) return false;
+  if (total > 0 && m50ManaSpendingForbidden(s, ctx.controllerId)) return false;
+  return player(s, ctx.controllerId).mana >= total;
 }
 
 function hasMandatoryTargetAvailability(s: GameState, ctx: EffectContext, a: AuthoringAbility): boolean {
@@ -5339,6 +6586,10 @@ function referencesMovedCountBinding(value: unknown, binding: string): boolean {
 
 function pushResourceDirectives(s: GameState, ctx: EffectContext, results: KnownEffectResult[]): void {
   for (const result of results) {
+    if (result.effectType === 'pay_mana') {
+      if (result.payload.actualAmount > 0) recordAuthoritativeManaSpend(s, result.payload.playerId, result.payload.actualAmount);
+      continue;
+    }
     if (result.effectType !== 'adjust_command_seals') continue;
     const directive = result.payload.directive ?? 'adjust_command_seals';
     markCommandSealSpendRound(s, result.payload.playerId, directive, result.payload.before, result.payload.after);
@@ -5462,6 +6713,10 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     stageOpponentCloseToOne(s, ctx, a);
     return;
   }
+  if (isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled')) {
+    runtime(s).pendingDecision = createOpponentCloseSelectedOneDecision(s, ctx, a);
+    return;
+  }
   if (isOpponentCloseToOneCandidate(a)) reject('resolution_failed', 'Unsupported opponent close-to-one interaction semantic shape');
   if (isAcceptedSelectedPlayedAttackTemporaryCopyAbility(a, 'compiled')) {
     runtime(s).pendingDecision = createSelectedPlayedAttackTemporaryCopyDecision(s, ctx, a);
@@ -5547,7 +6802,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (isOptionalBattleResultVpTriggerCandidate(a)) reject('resolution_failed', 'Unsupported optional battle-result VP semantic shape');
   if (isBattleEndSourceReturnCandidate(a)) reject('resolution_failed', 'Unsupported battle-end source-return semantic shape');
   if (isBattleEndMobilePlayersRewardCandidate(a)) reject('resolution_failed', 'Unsupported battle-end mobile-player reward semantic shape');
-  if (isSameBattlefieldPrivateHandReturnInteractionCandidate(a) && !isAcceptedSelectedSameBattlefieldDefeatAbility(a, 'compiled') && !isAcceptedCommandSealUnusedSameBattlefieldDefeatAbility(a, 'compiled')) {
+  if (isSameBattlefieldPrivateHandReturnInteractionCandidate(a) && !isAcceptedSelectedSameBattlefieldDefeatAbility(a, 'compiled') && !isAcceptedCommandSealUnusedSameBattlefieldDefeatAbility(a, 'compiled') && !isAcceptedCommandSealLossConditionalDefeatAbility(a)) {
     if (!isSameBattlefieldPrivateHandReturnInteractionSemantic(a)) reject('resolution_failed', 'Unsupported same-battlefield private hand-return interaction semantic shape');
     const playerTargetId = str(a.targets[0]?.id);
     if (!Object.prototype.hasOwnProperty.call(ctx.selections, playerTargetId)) {
@@ -5625,7 +6880,11 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (pending) { runtime(s).pendingDecision = pending; return; }
   for (let i = 0; i < effects.length; i++) {
     const structuredEffect = effects[i]!;
-    if (['choose_cards', 'choose_one', 'choose_locations', 'choose_events'].includes(str(structuredEffect.type))) {
+    if (structuredEffect.type === 'choose_each_player_option') {
+      if (stageStructuredEachPlayerOption(s, ctx, structuredEffect, effects.slice(i + 1))) return;
+      executeEffects(s, ctx, effects.slice(i + 1)); return;
+    }
+    if (['choose_cards', 'choose_one', 'choose_locations', 'choose_events', 'choose_players'].includes(str(structuredEffect.type))) {
       const key = structuredChoiceSelectionKey(structuredEffect);
       if (!Object.prototype.hasOwnProperty.call(ctx.selections, key)) {
         const choicePending = structuredChoicePending(s, ctx, structuredEffect, effects.slice(i));
@@ -5775,7 +7034,7 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   if (isEventPowerUncontestedWinRewardCandidate(a) && !isAcceptedEventPowerUncontestedWinRewardAbility(a, 'compiled')) {
     reject('resolution_failed', 'Unsupported FB2-54 event-power / uncontested-win reward semantic shape');
   }
-  if (isB03ModifierLifecycleCandidate(a) && !isAcceptedB03ModifierLifecycleAbility(a) && !isGenericStructuredScheduleArm(a)) {
+  if (isB03ModifierLifecycleCandidate(a) && !isAcceptedB03ModifierLifecycleAbility(a) && !isGenericStructuredScheduleArm(a) && !isAcceptedM50SourceBattlefieldLockdownAbility(a)) {
     reject('resolution_failed', 'Unsupported F4 B03 modifier/lifecycle semantic shape');
   }
   if (isB04EventSourcePowerCandidate(a) && !isAcceptedB04EventSourcePowerAbility(a)) {
@@ -5803,7 +7062,7 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) {
     reject('resolution_failed', 'Unsupported Presence Concealment semantic shape');
   }
-  if (isPreBattleDefeatCandidate(a) && !isAcceptedPreBattleDefeatAbility(a, 'compiled') && !isAcceptedSelectedSameBattlefieldDefeatAbility(a, 'compiled') && !isAcceptedCommandSealUnusedSameBattlefieldDefeatAbility(a, 'compiled') && !isGenericScheduledSelfDefeat(a)) {
+  if (isPreBattleDefeatCandidate(a) && !isAcceptedPreBattleDefeatAbility(a, 'compiled') && !isAcceptedSelectedSameBattlefieldDefeatAbility(a, 'compiled') && !isAcceptedCommandSealUnusedSameBattlefieldDefeatAbility(a, 'compiled') && !isAcceptedStructuredChosenOpponentDefeatAbility(a, 'compiled') && !isAcceptedDeploymentLocationOpponentDefeatAbility(a, 'compiled') && !isAcceptedFaceUpPlayThresholdSameBattlefieldDefeatAbility(a, 'compiled') && !isGenericScheduledSelfDefeat(a) && !isGenericScheduledRankedSelfDefeatSequence(a) && !isAcceptedCommandSealLossConditionalDefeatAbility(a) && !isAcceptedM50RatioFilteredDefeatAbility(a)) {
     reject('resolution_failed', 'Unsupported pre-battle defeat semantic shape');
   }
   if (isBattleLossVpWinnerRewardCandidate(a) && !isAcceptedBattleLossVpWinnerRewardAbility(a, 'compiled')) {
@@ -5815,7 +7074,8 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   if (isCombatOpponentPowerVpRewardCandidate(a) && !isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled')) {
     reject('resolution_failed', 'Unsupported frozen combat-opponent power VP reward semantic shape');
   }
-  if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'compiled')) {
+  if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'compiled') &&
+      !isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled')) {
     reject('resolution_failed', 'Unsupported opponent close-to-one interaction semantic shape');
   }
   if (isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled')) {
@@ -5835,10 +7095,15 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
     reject('resolution_failed', 'Unsupported game-start fixed set-mana semantic shape');
   }
   if (isGameStartPlayerStatusAssignmentCandidate(a)) {
-    if (!assignGameStartPlayerStatuses(s, ctx.controllerId, a)) {
-      reject('resolution_failed', 'Unsupported game-start player-status assignment semantic shape or target topology');
+    if (isGameStartPlayerStatusAssignmentSemantic(a)) {
+      if (!assignGameStartPlayerStatuses(s, ctx.controllerId, a)) {
+        reject('resolution_failed', 'Unsupported game-start player-status assignment semantic shape or target topology');
+      }
+      return;
     }
-    return;
+    if (!(ctx.scheduledPayload === true && isM50ScheduledPayloadStatusTarget(a)) && !isStructuredEachPlayerOptionAbility(a)) {
+      reject('resolution_failed', 'Unsupported non-game-start player-status assignment semantic shape');
+    }
   }
   if (isGameStartSkillProvisioningCandidate(a)) {
     provisionGameStartSkillCards(s, ctx, a);
@@ -5891,7 +7156,7 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
     }
   }
   if (isAddToAttackRouteCandidate(a)) assertAddToAttackSupportAvailable(s, ctx, a);
-  preflightFaceUpEffectPlays(s, ctx, a);
+  if (!isAcceptedM50FreeSourceCardCombatPlayAbility(a)) preflightFaceUpEffectPlays(s, ctx, a);
   const p = player(s, ctx.controllerId); let manaCost = 0;
   const fixedControllerManaCost = usesAcceptedFixedControllerManaCostComponent(a);
   
@@ -5933,10 +7198,14 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
     } else reject('unsupported', 'Unsupported ability cost');
   }
   if (manaCost > p.mana) reject('insufficient_mana', 'Insufficient mana');
+  if (manaCost > 0 && m50ManaSpendingForbidden(s, p.id)) reject('mana_spending_forbidden', 'Mana spending is forbidden this round');
   if (fixedControllerManaCost && isFixedControllerAdvanceDrawActionSemantic(a) &&
-    !hasAvailableManaForFixedCosts(s, ctx, a)) reject('insufficient_mana', 'Insufficient mana');
-  preflightFaceUpEffectPlaysAfterPreEffectMutations(s, ctx, a, manaCost, fixedControllerManaCost, names, limitType);
+    !hasAvailableManaForFixedCosts(s, ctx, a)) reject(m50ManaSpendingForbidden(s, p.id) ? 'mana_spending_forbidden' : 'insufficient_mana', m50ManaSpendingForbidden(s, p.id) ? 'Mana spending is forbidden this round' : 'Insufficient mana');
+  if (!isAcceptedM50FreeSourceCardCombatPlayAbility(a)) {
+    preflightFaceUpEffectPlaysAfterPreEffectMutations(s, ctx, a, manaCost, fixedControllerManaCost, names, limitType);
+  }
   p.mana -= manaCost;
+  if (manaCost > 0) recordAuthoritativeManaSpend(s, p.id, manaCost);
   if (fixedControllerManaCost && isAddToAttackRouteCandidate(a)) executeFixedControllerManaCost(s, ctx, a);
   if (names.length) runtime(s).calculations.push({ controllerId: p.id, lines: names.map(name => ({ label: name, value: ctx.variables[name]! })) });
   for (const cost of a.cost.filter(c => c.type === 'move_source_card')) moveCard(s, ctx.sourceCardId, str(node(cost.to).zone));
@@ -6035,6 +7304,24 @@ function processTrustedCardPlayEvent(s: GameState, event: AbilityEvent): void {
   processEvent(s, event);
 }
 
+function settlePhysicalCardsScheduledAfterBattle(s: GameState, event: AbilityEvent): void {
+  if (event.type !== 'after_battle_ended') return;
+  const r = runtime(s);
+  for (const [instanceId, cardState] of Object.entries(r.cardState)) {
+    const dueRound = cardState.removeAfterBattleRound;
+    if (dueRound === undefined) continue;
+    if (!Number.isSafeInteger(dueRound) || dueRound < 1) reject('invalid_state', 'Physical-card battle-removal round is invalid');
+    if (dueRound > s.round.roundNumber) continue;
+    const physical = s.cards.find((candidate) => candidate.instanceId === instanceId);
+    if (!physical) reject('invalid_state', 'Scheduled physical-card battle removal lost its card instance');
+    if (physical.zone !== 'removed_from_game') {
+      moveCard(s, instanceId, 'removed_from_game');
+      physical.controllerPlayerId = physical.ownerPlayerId;
+    }
+    delete cardState.removeAfterBattleRound;
+  }
+}
+
 function reconcileB05LowManaClosures(s: GameState): void {
   for (const source of s.cards) {
     if (!active(s, source.instanceId)) continue;
@@ -6048,6 +7335,18 @@ function reconcileB05LowManaClosures(s: GameState): void {
 function processEvent(s: GameState, event: AbilityEvent): void {
   const r = runtime(s); if (r.processedEvents.includes(event.id)) return;
   if (!event.id) reject('invalid_event', 'Events require stable ids');
+  if (event.type === 'm50_player_mana_spent') {
+    const trusted = r.trustedManaSpentSnapshots?.[event.id];
+    const expectedKeys = ['amount', 'id', 'playerId', 'resource', 'roundNumber', 'type', ...(event.locationId ? ['locationId'] : [])].sort();
+    const keys = Object.keys(event).sort();
+    if (!trusted || keys.length !== expectedKeys.length || keys.some((key, index) => key !== expectedKeys[index]) ||
+        event.resource !== 'mana' || !event.playerId || event.roundNumber !== s.round.roundNumber ||
+        !Number.isSafeInteger(event.amount) || Number(event.amount) <= 0 ||
+        trusted.playerId !== event.playerId || trusted.resource !== event.resource || trusted.amount !== event.amount ||
+        trusted.locationId !== event.locationId || trusted.roundNumber !== event.roundNumber) {
+      reject('invalid_event', 'Mana-spent event lacks exact current authoritative provenance');
+    }
+  }
   if (event.type === OPPONENT_ROUND_VP_GAIN_TRIGGER) {
     const trusted = r.trustedVictoryPointChanges?.[event.id];
     const keys = Object.keys(event).sort();
@@ -6076,6 +7375,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   if (event.type === 'after_battle_result_determined') recordCurrentRoundCombatWinsFromBattleResult(s, event);
   if (event.type === 'round_end') consumeDelayedActivations(s, event);
   settleGenericStructuredSchedules(s, event.type, event);
+  if (event.type === 'round_end') revealM50FaceDownAttackResidualSources(s);
   const triggered = collectTriggeredAbilities(s, event);
   for (const t of triggered) {
     const a = abilityDefinition(s, t.cardInstanceId, t.abilityId);
@@ -6113,6 +7413,9 @@ function processEvent(s: GameState, event: AbilityEvent): void {
     for (const id of winners) processEvent(s, { ...event, id: `${event.id}:victory:${id}`, type: 'after_controller_gains_victory', playerId: id });
     for (const id of losers) processEvent(s, { ...event, id: `${event.id}:lose:${id}`, type: 'after_controller_loses_battle', playerId: id });
   }
+  // Scheduled physical-card removal is a battle-terminal cleanup. Resolve it only
+  // after all authored after_battle_ended abilities had a chance to observe the card.
+  settlePhysicalCardsScheduledAfterBattle(s, event);
   reconcileB05LowManaClosures(s);
   reconcileStructuredHandEmptyClosures(s);
   checkFormulaTriggers(s);
@@ -6134,6 +7437,13 @@ export function processAbilityEvent(s: GameState, event: AbilityEvent): void {
   // FB2-54 entry provenance is transaction-local server authority, never replay/persistence authority.
   delete runtime(copy).trustedEntryEventSnapshots;
   processEvent(copy, event); runtime(copy).revision++;
+  Object.assign(s, copy);
+}
+/** Trusted backend producer for an already-committed positive mana payment. */
+export function processAuthoritativeManaSpentAbilityEvent(s: GameState, playerId: string, amount: number, locationId?: string): void {
+  const copy = structuredClone(s);
+  recordAuthoritativeManaSpend(copy, playerId, amount, locationId);
+  runtime(copy).revision++;
   Object.assign(s, copy);
 }
 /** Trusted backend producer helper. Allocates event identity inside the same cloned transaction. */
@@ -6279,7 +7589,10 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
   copy.round.activePhase = next; copy.round.roundNumber = round;
   if (round > s.round.roundNumber) {
     advanceB03RoundSchedules(copy, round);
-    if (next === 'preparation') settleGenericStructuredSchedules(copy, 'm50_round_started');
+    if (next === 'preparation') {
+      settleGenericStructuredSchedules(copy, 'm50_round_started');
+      processEvent(copy, { id: nextId(copy, 'round-start'), type: 'm50_round_started' });
+    }
   }
   cleanupOngoing(copy);
   const type = next === 'battle' ? 'controller_combat_action_window' : next === 'action' ? 'controller_action_window' : next === 'round_end' ? 'round_end' : 'phase_changed';
@@ -6383,11 +7696,14 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const owned = s.cards.find(c => c.instanceId === command.cardInstanceId && c.controllerPlayerId === playerId);
       if (!owned) reject('illegal_action', 'Card is not available');
       const currentStaged = stagedAttacks(s)[playerId] ?? [];
-      const allowRequiredAdditional = isRequiredAdditionalPlayCard(s, command.cardInstanceId) && currentStaged.some((entry) =>
-        entersAttackArea(s, entry.cardInstanceId) && !isRequiredAdditionalPlayCard(s, entry.cardInstanceId));
-      const failure = playFailure(s, playerId, command.cardInstanceId, command.faceDown === true, false, false, false, allowRequiredAdditional);
-      if (failure) reject(failure, 'Card cannot be staged in the current state');
       if (!entersAttackArea(s, command.cardInstanceId)) reject('not_attack_card', 'Only attack cards can be staged');
+      const hasOrdinaryStagedAttack = currentStaged.some((entry) => entersAttackArea(s, entry.cardInstanceId) && !isRequiredAdditionalPlayCard(s, entry.cardInstanceId));
+      const allowRequiredAdditional = hasOrdinaryStagedAttack && isRequiredAdditionalPlayCard(s, command.cardInstanceId);
+      const stageFailure = playFailure(s, playerId, command.cardInstanceId, command.faceDown === true, false, true, false, allowRequiredAdditional);
+      if (stageFailure) reject(stageFailure, 'Card cannot be staged in the current state');
+      if (!canStageAttackChoice(s, playerId, { type: 'play_card', cardInstanceId: command.cardInstanceId, ...(command.faceDown ? { faceDown: true } : {}) }, currentStaged)) {
+        reject('attack_play_limit_reached', 'Card cannot be staged in the current state');
+      }
       if (!legal.some(a => a.type === command.type && a.cardInstanceId === command.cardInstanceId && !!a.faceDown === !!command.faceDown)) reject('illegal_action', 'Card staging is not available');
       const staged = stagedAttacks(s);
       staged[playerId] = [...(staged[playerId] ?? []), { type: 'play_card', cardInstanceId: command.cardInstanceId, ...(command.faceDown ? { faceDown: true } : {}) }];
@@ -6518,6 +7834,77 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           authoritativeContext.selections[meta.targetId] = [...selected];
           delete r.pendingDecision;
           resolveSelectedPlayedAttackTemporaryCopy(s, authoritativeContext, effect);
+          break;
+        }
+        if (meta.kind === 'structured_each_player_option_v1') {
+          const pending = r.pendingStructuredEachPlayerOption;
+          const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+          const a = source ? abilityDefinition(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
+          const currentChoice = a?.effects.find((effect) => JSON.stringify(effect) === JSON.stringify(pending?.choice));
+          const expectedRemaining = pending?.remainingDecisionPlayerIds ?? [];
+          const exactTarget = d.target.type === 'choice' && d.target.id === 'm50_each_player_option' &&
+            exactPlayerArray(nodes(d.target.options).map((option) => str(option.id)), meta.optionIds);
+          if (!pending || !a || !source || !currentChoice || !isStructuredEachPlayerOptionEffect(currentChoice) ||
+              pending.sourceCardId !== meta.sourceCardInstanceId || pending.abilityId !== meta.abilityId ||
+              pending.initiatingControllerId !== meta.initiatingControllerId || source.controllerPlayerId !== meta.initiatingControllerId ||
+              d.controllerId !== meta.decisionPlayerId || d.context.controllerId !== meta.initiatingControllerId ||
+              !exactPlayerArray(expectedRemaining, meta.remainingDecisionPlayerIds) || expectedRemaining[0] !== meta.decisionPlayerId ||
+              !exactPlayerArray(pending.optionIds, meta.optionIds) || !exactPlayerArray(d.candidates, meta.optionIds) ||
+              meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
+              meta.continuationRef !== `${d.id}:continuation` || meta.createdRevision !== r.revision ||
+              meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'option' || meta.constraints.min !== 1 || meta.constraints.max !== 1 || meta.constraints.distinct !== true ||
+              d.min !== 1 || d.max !== 1 || d.remainingEffects.length !== 0 || !exactTarget ||
+              !Array.isArray(selected) || selected.length !== 1 || !meta.optionIds.includes(selected[0]!)) {
+            reject('resolution_failed', 'Corrupt or stale structured each-player option state');
+          }
+          const option = nodes(currentChoice.options).find((candidate) => str(candidate.id) === selected[0]);
+          if (!option) reject('illegal_target', 'Structured each-player option is no longer valid');
+          const nestedContext = structuredClone(pending.context);
+          nestedContext.selections.decisionPlayerId = [meta.decisionPlayerId];
+          nestedContext.selections.choiceId = [selected[0]!];
+          nestedContext.selections.optionId = [selected[0]!];
+          delete r.pendingDecision;
+          for (const nestedEffect of nodes(option.effects)) resolveEffect(s, nestedContext, nestedEffect);
+          pending.remainingDecisionPlayerIds.shift();
+          stageNextStructuredEachPlayerOptionDecision(s);
+          break;
+        }
+        if (meta.kind === 'opponent_close_selected_one_non_residual_v1') {
+          if (!hasExactOpponentCloseToOneDecisionRootKeys(d) || !hasExactOpponentCloseSelectedOneInteractionRootKeys(meta)) {
+            reject('resolution_failed', 'Corrupt or stale opponent close-selected-one interaction state');
+          }
+          const decisionContext: unknown = d.context;
+          const decisionTarget: unknown = d.target;
+          if (!isExactOpponentCloseToOneContext(decisionContext) || !isExactOpponentCloseSelectedOneTarget(decisionTarget)) {
+            reject('resolution_failed', 'Corrupt or stale opponent close-selected-one interaction state');
+          }
+          const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+          const ability = source ? abilityDefinition(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
+          const facts = source ? opponentCloseSelectedOneFacts(s, source.instanceId) : undefined;
+          const candidateIds = meta.candidateIds;
+          const exactCandidates = Array.isArray(candidateIds) && candidateIds.length >= 1 &&
+            candidateIds.every((id) => typeof id === 'string' && id.length > 0) && new Set(candidateIds).size === candidateIds.length;
+          const exactOwners = exactCandidates && isExactPlayerOwnerMap(meta.candidateOwners, candidateIds) &&
+            !!facts && Object.keys(facts.candidateOwners).length === candidateIds.length &&
+            candidateIds.every((id) => facts.candidateOwners[id] === meta.candidateOwners[id]);
+          if (!ability || !isAcceptedOpponentCloseOneNonResidualAbility(ability, 'compiled') || !source || !facts ||
+              facts.controllerId !== meta.initiatingControllerId || facts.decisionPlayerId !== meta.decisionPlayerId || facts.battlefieldId !== meta.battlefieldId ||
+              !exactCandidates || !exactOwners || !exactPlayerArray(facts.candidateIds, candidateIds) ||
+              d.controllerId !== meta.decisionPlayerId || playerId !== meta.decisionPlayerId || decisionContext.controllerId !== meta.initiatingControllerId ||
+              decisionContext.sourceCardId !== meta.sourceCardInstanceId || decisionContext.abilityId !== meta.abilityId ||
+              meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
+              meta.continuationRef !== `${d.id}:continuation` || meta.createdRevision !== r.revision ||
+              !isExactOpponentCloseToOneConstraints(meta.constraints) || d.min !== 1 || d.max !== 1 ||
+              !Array.isArray(d.remainingEffects) || d.remainingEffects.length !== 0 || !exactPlayerArray(d.candidates, candidateIds) ||
+              !Array.isArray(selected) || selected.length !== 1 || !candidateIds.includes(selected[0]!)) {
+            reject('resolution_failed', 'Corrupt or stale opponent close-selected-one interaction state');
+          }
+          const selectedCardId = selected[0]!;
+          closeOpponentCardForCloseToOne(s, meta.decisionPlayerId, selectedCardId);
+          delete r.pendingDecision;
+          const closed = card(s, selectedCardId);
+          r.events.push({ type: 'opponent_card_closed_selected_one', playerId: meta.decisionPlayerId, controllerId: meta.initiatingControllerId,
+            sourceCardId: meta.sourceCardInstanceId, abilityId: meta.abilityId, cardInstanceId: selectedCardId, toZone: closed.zone });
           break;
         }
         if (meta.kind === 'opponent_close_non_residual_to_one_v1') {
@@ -6770,6 +8157,18 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
             reject('illegal_target', 'Structured card choice requires distinct printed base power');
           }
         }
+        if (structuredChoice.totalPlayCostAtMostMana === true) {
+          let total = 0;
+          for (const instanceId of selected) {
+            const value = effectiveCardManaCost(s, instanceId);
+            if (value === undefined) reject('invalid_cost', 'Structured selected-card play cost is invalid');
+            total += value;
+            if (!Number.isSafeInteger(total)) reject('invalid_cost', 'Structured selected-card play cost exceeds safe integer range');
+          }
+          if (total > player(s, d.context.controllerId).mana) {
+            reject('illegal_target', 'Structured selected cards exceed authoritative available mana');
+          }
+        }
       }
       d.context.selections[str(d.target.id)] = selected; delete r.pendingDecision;
       executeEffects(s, d.context, d.remainingEffects); break;
@@ -6777,7 +8176,16 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
     case 'resolve_response': {
       const w = r.responseWindows[0];
       if (!w || w.controllerId !== playerId || w.id !== command.windowId || !legal.some(a => a.type === command.type && a.cardInstanceId === command.cardInstanceId && a.abilityId === command.abilityId)) reject('illegal_response', 'Response is not available');
-      executeAbility(s, context(s, command.cardInstanceId, command.abilityId, w.event)); runtime(s).responseWindows.shift(); break;
+      try {
+        executeAbility(s, context(s, command.cardInstanceId, command.abilityId, w.event));
+      } catch (error) {
+        const responseAbility = abilityDefinition(s, command.cardInstanceId, command.abilityId);
+        if (error instanceof RuleRejection && isPlaySourceCardWithCostResponseRouteCandidate(responseAbility)) {
+          reject('illegal_response', error.message);
+        }
+        throw error;
+      }
+      runtime(s).responseWindows.shift(); break;
     }
     case 'pass': case 'decline_this_window': {
       const w = r.responseWindows[0]; if (!w || w.controllerId !== playerId || w.id !== command.windowId) reject('illegal_response', 'Window is not available');
@@ -6788,34 +8196,35 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
   reconcileB05LowManaClosures(s); cleanupOngoing(s); checkFormulaTriggers(s);
 }
 /** All eligibility/costs are checked against the pre-payment state; all cards activate before triggers. */
-function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false, allowedSourceZones: readonly string[] = ['hand', 'skill']): void {
+function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false, allowedSourceZones: readonly string[] = ['hand', 'skill'], bypassFaceUpPlayLimit = false): void {
   if (new Set(choices.map(c => c.cardInstanceId)).size !== choices.length) reject('illegal_action', 'Duplicate card in play batch');
   if (choices.length > 1 && choices.some((choice) => cardRequiresSoloPlay(s, choice.cardInstanceId))) {
     reject('play_forbidden', 'This card must be played alone');
   }
   const faceUpChoiceCount = choices.filter((choice) => choice.faceDown !== true).length;
-  if (faceUpChoiceCount > 0 && faceUpCardPlayLimitReached(s, playerId, faceUpChoiceCount)) {
+  if (!bypassFaceUpPlayLimit && faceUpChoiceCount > 0 && faceUpCardPlayLimitReached(s, playerId, faceUpChoiceCount)) {
     reject('face_up_card_play_limit_reached', 'Face-up card play limit reached for this round');
   }
   const requiredAdditionalIds = new Set(choices
     .filter(c => isRequiredAdditionalPlayCard(s, c.cardInstanceId))
     .map(c => c.cardInstanceId));
-  const regularAttackChoices = choices.filter(c =>
-    entersAttackArea(s, c.cardInstanceId) && !requiredAdditionalIds.has(c.cardInstanceId)).length;
+  const regularPlan = quota === 'regular' ? regularAttackSelectionPlan(s, playerId, choices) : undefined;
+  const rawRegularAttackChoices = choices.filter(c => entersAttackArea(s, c.cardInstanceId) && !requiredAdditionalIds.has(c.cardInstanceId)).length;
+  const regularAttackChoices = quota === 'regular' ? regularPlan?.regularAttackCount ?? rawRegularAttackChoices : rawRegularAttackChoices;
+  if (quota === 'regular' && !regularPlan) reject('attack_play_limit_reached', 'Attack play limit reached for this round');
   if (quota === 'regular' && requiredAdditionalIds.size > 0 && regularAttackChoices === 0) {
     reject('append_only', 'Required additional-play cards need a regular attack in the same batch');
-  }
-  if (quota === 'regular' && attacksDeclaredThisRound(s, playerId) + regularAttackChoices > attackPlayAllowance(s, playerId)) {
-    reject('attack_play_limit_reached', 'Attack play limit reached for this round');
   }
   let cost = 0;
   const paidManaByCard = new Map<string, number>();
   for (const c of choices) {
     const allowRequiredAdditional = quota === 'regular' && requiredAdditionalIds.has(c.cardInstanceId) && regularAttackChoices > 0;
-    const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost, allowedSourceZones);
+    const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost, allowedSourceZones, bypassFaceUpPlayLimit);
     if (failure) reject(failure, 'Card cannot be played in this batch');
     const printedCost = Number(definition(s, c.cardInstanceId)!.cardFace.cost ?? 0);
-    const paidMana = !waiveManaCost && !c.faceDown ? printedCost + ownedDefinitionCardRuleAdjustment(s, c.cardInstanceId).cost + b02OwnedBasicAttackAdjustment(s, c.cardInstanceId).cost + structuredOngoingCardCostAdjustment(s, c.cardInstanceId) : 0;
+    const appendSurcharge = quota === 'regular' && regularPlan?.structuredAppendId === c.cardInstanceId ? regularPlan.structuredAppendExtraCost ?? 0 : 0;
+    const cardCostBeforeMultiplier = printedCost + ownedDefinitionCardRuleAdjustment(s, c.cardInstanceId).cost + b02OwnedBasicAttackAdjustment(s, c.cardInstanceId).cost + m50AdditiveCardAdjustment(s, c.cardInstanceId).cost + structuredOngoingCardCostAdjustment(s, c.cardInstanceId);
+    const paidMana = !waiveManaCost && !c.faceDown ? cardCostBeforeMultiplier * m50LinkedPlayerCardMultipliers(s, c.cardInstanceId).cost + appendSurcharge : 0;
     if (!Number.isSafeInteger(paidMana) || paidMana < 0) reject('invalid_cost', 'Card paid mana provenance must be a nonnegative safe integer');
     paidManaByCard.set(c.cardInstanceId, paidMana);
     cost += paidMana;
@@ -6824,6 +8233,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   const playedCards = choices.map(c => ({ instanceId: c.cardInstanceId, controllerId: playerId,
     cardType: definition(s, c.cardInstanceId)!.cardType, faceDown: !!c.faceDown }));
   player(s, playerId).mana -= cost;
+  if (cost > 0) recordAuthoritativeManaSpend(s, playerId, cost);
   for (const c of choices) {
     moveCard(s, c.cardInstanceId, cardPlayClassification(s, c.cardInstanceId).destinationZone);
     const limit = perGamePlayLimit(definition(s, c.cardInstanceId)!);

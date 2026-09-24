@@ -2,6 +2,7 @@ import starterPack from "../data/cards/starter-pack.json";
 import type { GameState } from "../schema/game";
 
 import { getLocationById } from "./map-engine";
+import { m50ManaSpendingForbidden } from '../ability/m50-effect-installed-rule-modifiers';
 
 export interface PlayCardInput {
   playerId: string;
@@ -58,6 +59,10 @@ export function playServantCardPair(
   }
 
   if (cardTypes.some((entry) => entry === "servant_skill") && (player?.mana ?? 0) < 8) {
+    return { nextState: state, playedCardIds: [] };
+  }
+
+  if (totalCost > 0 && m50ManaSpendingForbidden(state, input.playerId)) {
     return { nextState: state, playedCardIds: [] };
   }
 

@@ -1,0 +1,301 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.mephisto",
+  "name": "梅菲斯托费勒斯",
+  "class": "Caster",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.mephisto.skill.sc-mephisto-2",
+      "aliases": [
+        "card.skill.servant.mephisto.skill.sc-mephisto-2",
+        "sc_mephisto_2"
+      ],
+      "legacyId": "sc_mephisto_2",
+      "name": "寄生炸弹虫",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.mephisto"
+      },
+      "printedText": "残留：准备阶段，若你的战果数为第一，你【败北】且梅菲斯托费勒斯偷取你X点战果，之后将此牌从游戏中移除。X为此牌的威力。\n行动阶段：偷取梅菲斯托费勒斯的1点魔力。若如此做，此攻击威力永久+1。",
+      "cardFace": {
+        "typeLabel": "力量/魔术",
+        "cost": 13,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 13
+        }
+      ],
+      "abilities": [
+        {
+          "id": "parasite-preparation-detonation",
+          "printedClause": "残留：准备阶段，若你的战果数为第一，你【败北】且梅菲斯托费勒斯偷取你X点战果，之后将此牌从游戏中移除。X为此牌的威力。",
+          "kind": "passive",
+          "activation": {
+            "phase": "preparation",
+            "requiresSourceState": "active",
+            "trigger": "m50_round_started"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "victory_points_is_first"
+            }
+          ],
+          "effects": [
+            {
+              "type": "defeat_player",
+              "target": "controller"
+            },
+            {
+              "type": "transfer_victory_points",
+              "from": "controller",
+              "target": {
+                "scope": "source_card_creator",
+                "linkedSkillId": "servant.mephisto.skill.sc-mephisto-2"
+              },
+              "amount": {
+                "type": "metric",
+                "metric": "source_card_current_power"
+              }
+            },
+            {
+              "type": "exile_source_card"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "parasite-steal-mana",
+          "printedClause": "行动阶段：偷取梅菲斯托费勒斯的1点魔力。若如此做，此攻击威力永久+1。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "requiresSourceState": "active",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "transfer_mana",
+              "from": {
+                "scope": "source_card_creator",
+                "linkedSkillId": "servant.mephisto.skill.sc-mephisto-2"
+              },
+              "target": "controller",
+              "amount": 1,
+              "requireExact": true
+            },
+            {
+              "type": "source_card_power_bonus",
+              "id": "parasite-permanent-power",
+              "amount": 1,
+              "duration": "game"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "梅菲斯托费勒斯.htm",
+            "locator": "从者/魔术师/英文版/梅菲斯托费勒斯.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/梅菲斯托费勒斯.png",
+            "locator": "servant.mephisto/梅菲斯托费勒斯"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    },
+    {
+      "id": "servant.mephisto.skill.sc-mephisto-3",
+      "aliases": [
+        "card.skill.servant.mephisto.skill.sc-mephisto-3",
+        "sc_mephisto_3"
+      ],
+      "legacyId": "sc_mephisto_3",
+      "name": "浅眠炸弹",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.mephisto"
+      },
+      "printedText": "【真名解放】\n不可抗拒的赠礼-行动阶段：将一张你技能区【寄生炸弹虫】的复制加入一名与你位于同一地点的，未控制【寄生炸弹虫】且战果数不为第一的其他玩家的攻击，你与其各获得1点战果。",
+      "cardFace": {
+        "cost": 4,
+        "basePower": 7,
+        "attributes": [
+          "魔术",
+          "宝具"
+        ],
+        "requirements": {
+          "type": "min_mana",
+          "value": 8
+        }
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "irresistible-gift",
+          "printedClause": "【真名解放】\n不可抗拒的赠礼-行动阶段：将一张你技能区【寄生炸弹虫】的复制加入一名与你位于同一地点的，未控制【寄生炸弹虫】且战果数不为第一的其他玩家的攻击，你与其各获得1点战果。",
+          "markers": [
+            "真名解放",
+            "m50_structured_v1"
+          ],
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_cards",
+              "target": "controller",
+              "zone": "skill",
+              "linkedSkillId": "servant.mephisto.skill.sc-mephisto-2",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedInstanceIds"
+            },
+            {
+              "type": "choose_players",
+              "candidateTarget": "same_location_opponents",
+              "candidateConditions": [
+                {
+                  "type": "lacks_linked_skill_card",
+                  "linkedSkillId": "servant.mephisto.skill.sc-mephisto-2",
+                  "zones": [
+                    "attack_area"
+                  ]
+                },
+                {
+                  "type": "victory_points_not_first"
+                }
+              ],
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "targetPlayerId",
+              "then": []
+            },
+            {
+              "type": "gain_victory_points",
+              "target": "controller",
+              "amount": 1
+            },
+            {
+              "type": "gain_victory_points",
+              "target": "selected_player",
+              "amount": 1
+            },
+            {
+              "id": "parasite-copy",
+              "printedClause": "【真名解放】\n不可抗拒的赠礼-行动阶段：将一张你技能区【寄生炸弹虫】的复制加入一名与你位于同一地点的，未控制【寄生炸弹虫】且战果数不为第一的其他玩家的攻击，你与其各获得1点战果。",
+              "source": "selected_card",
+              "payloadKey": "selectedInstanceIds",
+              "target": "selected_player",
+              "zone": "attack_area",
+              "face": "up",
+              "active": true,
+              "temporary": false,
+              "lifecycle": {
+                "duration": "permanent"
+              },
+              "residual": true,
+              "type": "copy_selected_card"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "从者/魔术师/英文版/梅菲斯托费勒斯.htm",
+          "servant.mephisto/梅菲斯托费勒斯"
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

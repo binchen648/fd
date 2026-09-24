@@ -1,0 +1,216 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.jeanne",
+  "name": "贞德",
+  "class": "Ruler",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.jeanne.skill.sc-jeanne-2",
+      "aliases": [
+        "card.skill.servant.jeanne.skill.sc-jeanne-2",
+        "sc_jeanne_2"
+      ],
+      "legacyId": "sc_jeanne_2",
+      "name": "吾主在此",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.jeanne"
+      },
+      "printedText": "【真名解放】被动/战斗阶段：场上每有一张正面表示的【幸运】牌，便获得合计威力+2。行动阶段：所有玩家抽一张牌。所有【幸运】牌获得：“被动/战斗阶段：打出此牌。”",
+      "cardFace": {
+        "typeLabel": "宝具",
+        "cost": 4,
+        "basePower": 3,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "lord-luck-field",
+          "kind": "passive",
+          "printedClause": "【真名解放】被动/战斗阶段：场上每有一张正面表示的【幸运】牌，便获得合计威力+2。行动阶段：所有玩家抽一张牌。所有【幸运】牌获得：“被动/战斗阶段：打出此牌。”",
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "phase_is",
+              "phase": "combat"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "face-up-luck-total-power",
+              "operation": "add",
+              "rule": "combat_power",
+              "scope": {
+                "subject": "controller"
+              },
+              "value": {
+                "type": "formula",
+                "op": "multiply",
+                "args": [
+                  {
+                    "type": "constant",
+                    "value": 2
+                  },
+                  {
+                    "type": "metric",
+                    "metric": "face_up_definition_count",
+                    "source": "all_players",
+                    "key": "card.cardluck"
+                  }
+                ]
+              },
+              "lifecycle": {
+                "duration": "while_active"
+              }
+            }
+          ],
+          "transforms": [
+            {
+              "id": "grant-luck-combat-play",
+              "printedClause": "所有【幸运】牌获得：“被动/战斗阶段：打出此牌。",
+              "type": "card",
+              "target": {
+                "subject": "all_players",
+                "cards": {
+                  "definitionIds": [
+                    "card.cardluck"
+                  ]
+                }
+              },
+              "grantAbilities": [
+                {
+                  "id": "lord-luck-combat-play",
+                  "kind": "phase_action",
+                  "printedClause": "【真名解放】被动/战斗阶段：场上每有一张正面表示的【幸运】牌，便获得合计威力+2。行动阶段：所有玩家抽一张牌。所有【幸运】牌获得：“被动/战斗阶段：打出此牌。”",
+                  "activation": {
+                    "phase": "combat",
+                    "opens": "controller_combat_action_window"
+                  },
+                  "conditions": [],
+                  "targets": [],
+                  "cost": [],
+                  "effects": [
+                    {
+                      "type": "play_source_card",
+                      "face": "face_up"
+                    }
+                  ],
+                  "creates": [],
+                  "ruleModifiers": [],
+                  "lifecycle": {},
+                  "responseWindow": {},
+                  "limit": {},
+                  "visibility": {},
+                  "execution": {
+                    "mode": "automatic",
+                    "allowedOperations": []
+                  }
+                }
+              ],
+              "lifecycle": {
+                "duration": "while_active"
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_active"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "activation": {
+            "requiresSourceState": "active"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "lord-draw-all",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：所有玩家抽一张牌。",
+          "activation": {
+            "phase": "action",
+            "requiresSourceState": "active",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "target": "all_players",
+              "amount": 1
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "贞德.htm",
+            "locator": "从者/裁定者/英文版/贞德.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/贞德.png",
+            "locator": "servant.jeanne/贞德"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

@@ -1,0 +1,231 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.gareth",
+  "name": "加雷斯",
+  "class": "Lancer",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.gareth.skill.sc-gareth-1",
+      "aliases": [
+        "card.skill.servant.gareth.skill.sc-gareth-1",
+        "sc_gareth_1"
+      ],
+      "legacyId": "sc_gareth_1",
+      "name": "变身戒指",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.gareth"
+      },
+      "printedText": "荣光之冠-被动：当你赢得一场战斗时，你【真名解放】。若你以此法【真名解放】，你获得1点战果。\n伪装-打出时：隐藏真名。\n无名骑士-被动/行动阶段：花费2点魔力，若你真名隐藏，移动至一处相邻的地点。",
+      "cardFace": {
+        "typeLabel": "特殊/宝具",
+        "cost": 1,
+        "basePower": 2,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "crown-of-glory",
+          "printedClause": "荣光之冠-被动：当你赢得一场战斗时，你【真名解放】。若你以此法【真名解放】，你获得1点战果。",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "branch",
+              "branches": [
+                {
+                  "if": {
+                    "type": "not",
+                    "condition": {
+                      "type": "controller_servant_revealed"
+                    }
+                  },
+                  "then": [
+                    {
+                      "type": "reveal_information",
+                      "scope": "servant_package",
+                      "subject": "controller.servant"
+                    },
+                    {
+                      "type": "gain_victory_points",
+                      "target": "controller",
+                      "amount": 1
+                    }
+                  ]
+                },
+                {
+                  "else": []
+                }
+              ]
+            }
+          ],
+          "kind": "passive",
+          "activation": {
+            "phase": "combat",
+            "requiresSourceState": "active",
+            "trigger": "after_battle_result_determined"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "event_player_won_combat"
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "disguise-on-play",
+          "printedClause": "伪装-打出时：隐藏真名。",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "hide_servant_true_name",
+              "target": "controller"
+            }
+          ],
+          "kind": "forced_trigger",
+          "conditions": [
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_definition_is_self"
+            },
+            {
+              "type": "event_face_is",
+              "face": "face_up"
+            }
+          ],
+          "creates": [],
+          "activation": {
+            "requiresSourceState": "active",
+            "trigger": "on_card_played"
+          },
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "nameless-knight",
+          "printedClause": "无名骑士-被动/行动阶段：花费2点魔力，若你真名隐藏，移动至一处相邻的地点。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "requiresSourceState": "active",
+            "opens": "controller_action_window"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "phase_is",
+              "phase": "action"
+            },
+            {
+              "type": "not",
+              "condition": {
+                "type": "controller_servant_revealed"
+              }
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_locations",
+              "adjacentOnly": true,
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "targetLocationId",
+              "then": [
+                {
+                  "type": "move_player",
+                  "target": "controller",
+                  "to": "targetLocationId"
+                }
+              ]
+            }
+          ],
+          "cost": [
+            {
+              "type": "pay_mana",
+              "amount": 2
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "加雷斯.htm",
+            "locator": "从者/枪兵/英文版/加雷斯.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/加雷斯.png",
+            "locator": "servant.gareth/加雷斯"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

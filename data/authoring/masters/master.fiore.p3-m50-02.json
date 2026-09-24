@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.fiore",
+  "name": "菲奥蕾·弗尔维吉",
+  "class": "Master",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "master.fiore.skill.s1",
+      "aliases": [
+        "card.skill.master.fiore.skill.s1",
+        "s1"
+      ],
+      "legacyId": "s1",
+      "name": "菲奥蕾·弗尔维吉",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.fiore"
+      },
+      "printedText": "菲奥蕾拥有【瘫痪】，【温顺】与【回路不良】。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "game-start-provision",
+          "kind": "forced_trigger",
+          "printedClause": "菲奥蕾拥有【瘫痪】，【温顺】与【回路不良】。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "provision_skill_cards",
+              "player": "controller",
+              "targetDefinitionIds": [
+                "master.fiore.skill.s2",
+                "master.fiore.skill.s3",
+                "master.fiore.skill.s4"
+              ]
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.game-start-add-skill",
+        "sourceRefs": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/菲奥蕾·弗尔维吉.png",
+            "locator": "master.fiore/菲奥蕾·弗尔维吉"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.fiore/s1"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

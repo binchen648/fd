@@ -1,0 +1,380 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.twice",
+  "name": "特维斯·I·皮斯曼",
+  "class": "Master",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "master.twice.skill.s1",
+      "aliases": [
+        "card.skill.master.twice.skill.s1",
+        "s1"
+      ],
+      "legacyId": "s1",
+      "name": "游戏胜利者",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.twice"
+      },
+      "printedText": "准备阶段和行动阶段：当你于第10回合前，行动阶段时使用此能力需要支付一枚令咒。将桌面上两张事件牌交换位置（不将它们翻开），或将桌面上一张正面表示的事件牌洗回事件牌库，抽一张新的事件牌代替它的位置。",
+      "cardFace": {
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "game-winner-event-control__preparation",
+          "printedClause": "准备阶段和行动阶段：当你于第10回合前，行动阶段时使用此能力需要支付一枚令咒。将桌面上两张事件牌交换位置（不将它们翻开），或将桌面上一张正面表示的事件牌洗回事件牌库，抽一张新的事件牌代替它的位置。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "preparation",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "or",
+              "conditions": [
+                {
+                  "type": "event_count_at_least",
+                  "sourceZone": "current",
+                  "value": 2
+                },
+                {
+                  "type": "event_count_at_least",
+                  "sourceZone": "current",
+                  "visibility": "up",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "type": "or",
+              "conditions": [
+                {
+                  "type": "not",
+                  "condition": {
+                    "type": "and",
+                    "conditions": [
+                      {
+                        "type": "phase_is",
+                        "phase": "action"
+                      },
+                      {
+                        "type": "metric_compare",
+                        "left": {
+                          "type": "metric",
+                          "metric": "round_number",
+                          "source": "controller"
+                        },
+                        "operator": "lt",
+                        "right": 10
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "and",
+                  "conditions": [
+                    {
+                      "type": "command_seals_at_least",
+                      "target": "controller",
+                      "value": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "if_condition",
+              "conditions": [
+                {
+                  "type": "phase_is",
+                  "phase": "action"
+                },
+                {
+                  "type": "metric_compare",
+                  "left": {
+                    "type": "metric",
+                    "metric": "round_number",
+                    "source": "controller"
+                  },
+                  "operator": "lt",
+                  "right": 10
+                }
+              ],
+              "then": [
+                {
+                  "type": "pay_command_seals",
+                  "target": "controller",
+                  "amount": 1
+                }
+              ]
+            },
+            {
+              "type": "choose_one",
+              "options": [
+                {
+                  "id": "swap-events",
+                  "label": "交换两张事件牌的位置",
+                  "conditions": [
+                    {
+                      "type": "event_count_at_least",
+                      "sourceZone": "current",
+                      "value": 2
+                    }
+                  ],
+                  "effects": [
+                    {
+                      "type": "choose_events",
+                      "sourceZone": "current",
+                      "minCount": 2,
+                      "maxCount": 2,
+                      "payloadKey": "twiceSwapEventIds"
+                    },
+                    {
+                      "type": "swap_selected_event_locations",
+                      "payloadKey": "twiceSwapEventIds"
+                    }
+                  ]
+                },
+                {
+                  "id": "replace-face-up-event",
+                  "label": "洗回一张明置事件并抽取替代事件",
+                  "conditions": [
+                    {
+                      "type": "event_count_at_least",
+                      "sourceZone": "current",
+                      "visibility": "up",
+                      "value": 1
+                    }
+                  ],
+                  "effects": [
+                    {
+                      "type": "choose_events",
+                      "sourceZone": "current",
+                      "visibility": "up",
+                      "minCount": 1,
+                      "maxCount": 1,
+                      "payloadKey": "twiceReplaceEventIds"
+                    },
+                    {
+                      "type": "replace_selected_event_from_deck",
+                      "payloadKey": "twiceReplaceEventIds"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "game-winner-event-control__action",
+          "printedClause": "准备阶段和行动阶段：当你于第10回合前，行动阶段时使用此能力需要支付一枚令咒。将桌面上两张事件牌交换位置（不将它们翻开），或将桌面上一张正面表示的事件牌洗回事件牌库，抽一张新的事件牌代替它的位置。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "or",
+              "conditions": [
+                {
+                  "type": "event_count_at_least",
+                  "sourceZone": "current",
+                  "value": 2
+                },
+                {
+                  "type": "event_count_at_least",
+                  "sourceZone": "current",
+                  "visibility": "up",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "type": "or",
+              "conditions": [
+                {
+                  "type": "not",
+                  "condition": {
+                    "type": "and",
+                    "conditions": [
+                      {
+                        "type": "phase_is",
+                        "phase": "action"
+                      },
+                      {
+                        "type": "metric_compare",
+                        "left": {
+                          "type": "metric",
+                          "metric": "round_number",
+                          "source": "controller"
+                        },
+                        "operator": "lt",
+                        "right": 10
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "and",
+                  "conditions": [
+                    {
+                      "type": "command_seals_at_least",
+                      "target": "controller",
+                      "value": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "if_condition",
+              "conditions": [
+                {
+                  "type": "phase_is",
+                  "phase": "action"
+                },
+                {
+                  "type": "metric_compare",
+                  "left": {
+                    "type": "metric",
+                    "metric": "round_number",
+                    "source": "controller"
+                  },
+                  "operator": "lt",
+                  "right": 10
+                }
+              ],
+              "then": [
+                {
+                  "type": "pay_command_seals",
+                  "target": "controller",
+                  "amount": 1
+                }
+              ]
+            },
+            {
+              "type": "choose_one",
+              "options": [
+                {
+                  "id": "swap-events",
+                  "label": "交换两张事件牌的位置",
+                  "conditions": [
+                    {
+                      "type": "event_count_at_least",
+                      "sourceZone": "current",
+                      "value": 2
+                    }
+                  ],
+                  "effects": [
+                    {
+                      "type": "choose_events",
+                      "sourceZone": "current",
+                      "minCount": 2,
+                      "maxCount": 2,
+                      "payloadKey": "twiceSwapEventIds"
+                    },
+                    {
+                      "type": "swap_selected_event_locations",
+                      "payloadKey": "twiceSwapEventIds"
+                    }
+                  ]
+                },
+                {
+                  "id": "replace-face-up-event",
+                  "label": "洗回一张明置事件并抽取替代事件",
+                  "conditions": [
+                    {
+                      "type": "event_count_at_least",
+                      "sourceZone": "current",
+                      "visibility": "up",
+                      "value": 1
+                    }
+                  ],
+                  "effects": [
+                    {
+                      "type": "choose_events",
+                      "sourceZone": "current",
+                      "visibility": "up",
+                      "minCount": 1,
+                      "maxCount": 1,
+                      "payloadKey": "twiceReplaceEventIds"
+                    },
+                    {
+                      "type": "replace_selected_event_from_deck",
+                      "payloadKey": "twiceReplaceEventIds"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "master.twice/特维斯·I·皮斯曼",
+          "master/master.twice/s1"
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

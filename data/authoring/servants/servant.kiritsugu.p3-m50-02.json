@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.kiritsugu",
+  "name": "卫宫切嗣",
+  "class": "Master",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.kiritsugu.skill.sc-kiritsugu-2",
+      "aliases": [
+        "card.skill.servant.kiritsugu.skill.sc-kiritsugu-2",
+        "sc_kiritsugu_2"
+      ],
+      "legacyId": "sc_kiritsugu_2",
+      "name": "神秘碾断",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.kiritsugu"
+      },
+      "printedText": "【真名解放】\n行动阶段：与你位于同一战场的其他玩家选择自己失去3点战果或者于本回合中不能使用魔力。",
+      "cardFace": {
+        "cost": 1,
+        "basePower": 3,
+        "attributes": [
+          "迅捷",
+          "宝具"
+        ],
+        "requirements": {
+          "type": "min_mana",
+          "value": 8
+        }
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "mystic-break-each-opponent",
+          "printedClause": "行动阶段：与你位于同一战场的其他玩家选择自己失去3点战果或者于本回合中不能使用魔力。",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "at_battlefield"
+            },
+            {
+              "type": "target_count_at_least",
+              "count": 1,
+              "target": {
+                "scope": "same_battlefield_opponents"
+              }
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "mystic-break-no-mana",
+              "printedClause": "于本回合中不能使用魔力",
+              "installation": "effect",
+              "operation": "forbid",
+              "rule": "mana_spending",
+              "scope": {
+                "subject": "controller"
+              },
+              "lifecycle": {
+                "duration": "this_round"
+              }
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_each_player_option",
+              "candidateTarget": {
+                "scope": "same_battlefield_opponents"
+              },
+              "options": [
+                {
+                  "id": "lose-vp",
+                  "label": "失去3点战果",
+                  "effects": [
+                    {
+                      "type": "lose_victory_points",
+                      "target": "decision_player",
+                      "amount": 3
+                    }
+                  ]
+                },
+                {
+                  "id": "no-mana",
+                  "label": "本回合不能使用魔力",
+                  "effects": [
+                    {
+                      "type": "install_ability_rule_modifier",
+                      "target": "decision_player",
+                      "abilityId": "mystic-break-each-opponent",
+                      "modifierId": "mystic-break-no-mana"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "servant.kiritsugu/卫宫切嗣",
+          "servant/servant.kiritsugu/sc_kiritsugu_2"
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

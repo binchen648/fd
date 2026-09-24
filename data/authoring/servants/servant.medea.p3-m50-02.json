@@ -1,0 +1,153 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.medea",
+  "name": "美狄亚",
+  "class": "Caster",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.medea.skill.sc-medea-np",
+      "aliases": [
+        "card.skill.servant.medea.skill.sc-medea-np",
+        "sc_medea_np"
+      ],
+      "legacyId": "sc_medea_np",
+      "name": "万符必应破戒",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.medea"
+      },
+      "printedText": "【真名解放】<每局游戏限一次>\n行动阶段：你所在战场的一名玩家失去一枚令咒，若其原本只有一枚或更少的令咒，另其【败北】。若其原本没有令咒，你总威力+10。",
+      "cardFace": {
+        "typeLabel": "力量/宝具",
+        "cost": 3,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 3
+        }
+      ],
+      "abilities": [
+        {
+          "id": "rule-breaker",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action",
+            "requiresSourceState": "active",
+            "opens": "controller_action_window"
+          },
+          "printedClause": "【真名解放】<每局游戏限一次>\n行动阶段：你所在战场的一名玩家失去一枚令咒，若其原本只有一枚或更少的令咒，另其【败北】。若其原本没有令咒，你总威力+10。",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "conditions": [
+            {
+              "type": "at_battlefield"
+            }
+          ],
+          "targets": [
+            {
+              "id": "targetPlayerId",
+              "type": "player",
+              "constraints": [
+                {
+                  "type": "same_battlefield_as_controller"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_command_seals",
+              "target": "targetPlayerId",
+              "amount": 1,
+              "then": [
+                {
+                  "type": "if_condition",
+                  "conditions": [
+                    {
+                      "type": "target_command_seals_at_most",
+                      "target": "targetPlayerId",
+                      "value": 1
+                    }
+                  ],
+                  "then": [
+                    {
+                      "type": "defeat_player",
+                      "target": "targetPlayerId"
+                    }
+                  ]
+                },
+                {
+                  "type": "if_condition",
+                  "conditions": [
+                    {
+                      "type": "target_command_seals_equals",
+                      "target": "targetPlayerId",
+                      "value": 0
+                    }
+                  ],
+                  "then": [
+                    {
+                      "type": "combat_power_bonus",
+                      "amount": 10
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "limit": {
+            "type": "per_game",
+            "uses": 1,
+            "scope": "this_card"
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "美狄亚.htm",
+            "locator": "从者/魔术师/英文版/美狄亚.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/美狄亚.png",
+            "locator": "servant.medea/美狄亚"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

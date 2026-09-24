@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.brynhildr",
+  "name": "布伦希尔德",
+  "class": "Lancer",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.brynhildr.skill.sc-brynhildr-3",
+      "aliases": [
+        "card.skill.servant.brynhildr.skill.sc-brynhildr-3",
+        "sc_brynhildr_3"
+      ],
+      "legacyId": "sc_brynhildr_3",
+      "name": "直至死亡拆散两人",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.brynhildr"
+      },
+      "printedText": "【真名解放】\n被动：当你与【爱人】位于同一战场时，直到回合结束此牌失去迅捷属性然后得到力量属性，基础威力和魔力消耗翻倍。",
+      "cardFace": {
+        "typeLabel": "迅捷/宝具",
+        "cost": 4,
+        "basePower": 9,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "beloved-romantia",
+          "kind": "passive",
+          "printedClause": "被动：当你与【爱人】位于同一战场时，直到回合结束此牌失去迅捷属性然后得到力量属性，基础威力和魔力消耗翻倍。",
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "linked_player_flag_same_battlefield",
+              "key": "brynhildrBelovedPlayerId"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "beloved-double-cost",
+              "operation": "multiply",
+              "rule": "card_cost",
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "definitionIds": [
+                    "servant.brynhildr.skill.sc-brynhildr-3"
+                  ]
+                }
+              },
+              "value": 2,
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            },
+            {
+              "id": "beloved-double-base-power",
+              "operation": "multiply",
+              "rule": "card_base_power",
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "definitionIds": [
+                    "servant.brynhildr.skill.sc-brynhildr-3"
+                  ]
+                }
+              },
+              "value": 2,
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            },
+            {
+              "id": "linked-player-same-battlefield-attributes",
+              "operation": "replace",
+              "rule": "card_attributes",
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "definitionIds": [
+                    "servant.brynhildr.skill.sc-brynhildr-3"
+                  ]
+                }
+              },
+              "value": {
+                "removeAttributes": [
+                  "迅捷"
+                ],
+                "addAttributes": [
+                  "力量"
+                ]
+              },
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.card-play",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "布伦希尔德.htm",
+            "locator": "从者/枪兵/英文版/布伦希尔德.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/布伦希尔德.png",
+            "locator": "servant.brynhildr/布伦希尔德"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

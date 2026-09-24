@@ -204,7 +204,7 @@ describe('P3 S R113 Helena s1 consumer migration', () => {
     };
     collectFrozen(inventory);
     const material: string[] = [];
-    for (const file of authoringFiles(resolve(ROOT, 'data/authoring')).filter((entry) => !entry.endsWith('.p3-m50-01.json'))) {
+    for (const file of authoringFiles(resolve(ROOT, 'data/authoring')).filter((entry) => !/\.p3-m50-\d+\.json$/.test(entry))) {
       const raw = JSON.parse(readFileSync(file, 'utf8').replace(/^\uFEFF/, ''));
       for (const card of raw.cards ?? []) if (frozen.has(card.id)) material.push(card.id);
     }

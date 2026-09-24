@@ -1,5 +1,6 @@
 import type { GameState, PlayerState, LocationId } from "../schema/game";
 import { grantMana } from "../core/rule-overrides";
+import { m50DeploymentManaGainForbidden } from "../ability/m50-structural-card-modifiers";
 
 export interface AdvancePhaseContext {
   deploymentOrder: string[];
@@ -98,7 +99,8 @@ function awardManaForWorkshopDeployment(
     : 0;
 
   const nextState = structuredClone(state);
-  const result = grantMana(nextState, playerId, manaReward, { source: 'deployment' });
+  const appliedReward = m50DeploymentManaGainForbidden(nextState, playerId, 'magic_workshop') ? 0 : manaReward;
+  const result = grantMana(nextState, playerId, appliedReward, { source: 'deployment' });
   nextState.log = state.log.concat({
     type: "workshop_deployment_mana_awarded",
     message: `player:${playerId}:workshop:mana:+${result.actualAmount}`,

@@ -1,0 +1,184 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.sigurd",
+  "name": "齐格鲁德",
+  "class": "Saber",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.sigurd.skill.sc-sigurd-2",
+      "aliases": [
+        "card.skill.servant.sigurd.skill.sc-sigurd-2",
+        "sc_sigurd_2"
+      ],
+      "legacyId": "sc_sigurd_2",
+      "name": "坏劫之天轮",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.sigurd"
+      },
+      "printedText": "诅咒-被动：此牌展示后，每个回合开始时失去1点战果。\n剑刃风暴-被动：你所有的的基础牌获得以下效果：“行动阶段：花费2点魔力，将此牌的基本威力翻倍，战斗阶段结束后将此牌移除游戏。”",
+      "cardFace": {
+        "typeLabel": "迅捷/宝具",
+        "cost": 0,
+        "basePower": 5,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "bolverk-cursed",
+          "kind": "forced_trigger",
+          "printedClause": "Cursed - Passive: While this card is revealed, lose 1 VP at the start of each round.",
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "activation": {
+            "trigger": "m50_round_started"
+          },
+          "conditions": [
+            {
+              "type": "source_revealed"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "target": "controller",
+              "amount": 1
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "blade-storm",
+          "kind": "passive",
+          "printedClause": "Blade Storm - Passive: All your basic attacks have: Action: Pay 2 mana. Double the base power of this card. Remove it from the game after combat.",
+          "conditions": [
+            {
+              "type": "source_revealed"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "transforms": [
+            {
+              "id": "sigurd-grant-blade-storm",
+              "type": "card",
+              "target": {
+                "subject": "controller",
+                "cards": {
+                  "basic": true
+                }
+              },
+              "grantAbilities": [
+                {
+                  "id": "sigurd-blade-storm",
+                  "kind": "phase_action",
+                  "printedClause": "Blade Storm - Passive: All your basic attacks have: Action: Pay 2 mana. Double the base power of this card. Remove it from the game after combat.",
+                  "activation": {
+                    "phase": "action",
+                    "opens": "controller_action_window",
+                    "requiresSourceState": "active"
+                  },
+                  "conditions": [],
+                  "targets": [],
+                  "cost": [
+                    {
+                      "type": "pay_mana",
+                      "amount": 2
+                    }
+                  ],
+                  "effects": [
+                    {
+                      "type": "double_source_base_power_remove_after_battle"
+                    }
+                  ],
+                  "creates": [],
+                  "ruleModifiers": [],
+                  "lifecycle": {},
+                  "responseWindow": {},
+                  "limit": {
+                    "type": "per_round",
+                    "uses": 1,
+                    "scope": "this_card"
+                  },
+                  "visibility": {},
+                  "execution": {
+                    "mode": "automatic",
+                    "allowedOperations": []
+                  }
+                }
+              ],
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            }
+          ],
+          "effects": [],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.sigurd-bolverk-gram",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "Sigurd.htm",
+            "locator": "从者/剑士/英文版/Sigurd.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/齐格鲁德.png",
+            "locator": "servant.sigurd/齐格鲁德"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

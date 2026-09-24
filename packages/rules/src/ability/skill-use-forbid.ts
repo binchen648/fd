@@ -37,6 +37,16 @@ export function classifyAcceptedSkillUseForbidModifier(modifier: RuleNode): Acce
   return undefined;
 }
 
+export function isAcceptedEffectInstalledSelectedDefinitionSkillUseForbidModifier(modifier: RuleNode): boolean {
+  if (modifier.operation !== 'forbid' || modifier.rule !== 'skill_use' || modifier.installation !== 'effect') return false;
+  if (!exactKeys(modifier, ['id', 'printedClause', 'installation', 'operation', 'rule', 'scope', 'lifecycle'])) return false;
+  const scope = record(modifier.scope);
+  const lifecycle = record(modifier.lifecycle);
+  return exactKeys(scope, ['subject', 'skillDefinitionIdsFromSelectedCard']) &&
+    scope.subject === 'controller' && scope.skillDefinitionIdsFromSelectedCard === true &&
+    exactKeys(lifecycle, ['duration']) && lifecycle.duration === 'this_round';
+}
+
 export function isAcceptedStaticWhileActiveSkillUseForbidAbility(ability: AuthoringAbility): boolean {
   if (ability.execution.mode !== 'automatic' || ability.kind !== 'passive') return false;
   if (ability.lifecycle.duration !== 'while_active' || !exactKeys(ability.lifecycle, ['duration'])) return false;

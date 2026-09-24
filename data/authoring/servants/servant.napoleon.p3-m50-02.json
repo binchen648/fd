@@ -1,0 +1,174 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.napoleon",
+  "name": "拿破仑",
+  "class": "Archer",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.napoleon.skill.sc-napoleon-1",
+      "aliases": [
+        "card.skill.servant.napoleon.skill.sc-napoleon-1",
+        "sc_napoleon_1"
+      ],
+      "legacyId": "sc_napoleon_1",
+      "name": "隐藏王牌",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.napoleon"
+      },
+      "printedText": "【真名解放】 <每局游戏限一次>\n被动/战斗阶段：将一张你手牌中的【幸运】移除游戏，结算胜者时，你无视【败北】与当前战斗的其他胜者一同赢得战斗，此战斗的胜者不均分战果，改为一同获得相应战果",
+      "cardFace": {
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "hidden-trump-combat",
+          "printedClause": "被动/战斗阶段：将一张你手牌中的【幸运】移除游戏，结算胜者时，你无视【败北】与当前战斗的其他胜者一同赢得战斗，此战斗的胜者不均分战果，改为一同获得相应战果",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window"
+          },
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "at_battlefield"
+            },
+            {
+              "type": "card_count_at_least",
+              "zone": "hand",
+              "value": 1,
+              "definitionId": "card.cardluck"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_cards",
+              "zone": "hand",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedInstanceIds",
+              "then": [
+                {
+                  "type": "remove_selected_cards",
+                  "zone": "hand",
+                  "payloadKey": "selectedInstanceIds",
+                  "minCount": 1,
+                  "maxCount": 1
+                },
+                {
+                  "type": "install_ability_rule_modifier",
+                  "abilityId": "hidden-trump-combat",
+                  "modifierId": "hidden-trump-ignore-defeat",
+                  "target": "controller"
+                },
+                {
+                  "type": "install_ability_rule_modifier",
+                  "abilityId": "hidden-trump-combat",
+                  "modifierId": "hidden-trump-co-win",
+                  "target": "controller"
+                },
+                {
+                  "type": "install_ability_rule_modifier",
+                  "abilityId": "hidden-trump-combat",
+                  "modifierId": "hidden-trump-full-reward",
+                  "target": "controller"
+                }
+              ],
+              "definitionId": "card.cardluck"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "hidden-trump-ignore-defeat",
+              "printedClause": "结算胜者时，你无视【败北】",
+              "installation": "effect",
+              "operation": "ignore",
+              "rule": "defeat",
+              "scope": {
+                "subject": "controller"
+              },
+              "lifecycle": {
+                "duration": "this_round",
+                "cleanup": "remain_active"
+              }
+            },
+            {
+              "id": "hidden-trump-co-win",
+              "printedClause": "与当前战斗的其他胜者一同赢得战斗",
+              "installation": "effect",
+              "operation": "allow",
+              "rule": "combat_winner_inclusion",
+              "scope": {
+                "subject": "controller"
+              },
+              "lifecycle": {
+                "duration": "this_round",
+                "cleanup": "remain_active"
+              }
+            },
+            {
+              "id": "hidden-trump-full-reward",
+              "printedClause": "此战斗的胜者不均分战果，改为一同获得相应战果",
+              "installation": "effect",
+              "operation": "replace",
+              "rule": "combat_reward_distribution",
+              "scope": {
+                "subject": "controller",
+                "whenControllerWins": true,
+                "mode": "full_reward_each"
+              },
+              "lifecycle": {
+                "duration": "this_round",
+                "cleanup": "remain_active"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "inventoryStatus": "SOURCE_GROUNDED",
+        "referenceHandlerId": "core.structured-skill",
+        "sourceLocators": [
+          "从者/弓兵/英文版/拿破仑.htm",
+          "servant.napoleon/拿破仑"
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}

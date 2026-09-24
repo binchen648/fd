@@ -17,7 +17,7 @@ export interface AdapterReportEntry {
 export interface AuthoringAbility {
   id: string; kind: string; printedClause: string; markers?: string[]; activation: RuleNode;
   conditions: RuleNode[]; targets: RuleNode[]; effects: RuleNode[]; cost: RuleNode[];
-  ruleModifiers: RuleNode[]; creates: RuleNode[]; lifecycle: RuleNode;
+  ruleModifiers: RuleNode[]; creates: RuleNode[]; transforms?: RuleNode[]; lifecycle: RuleNode;
   responseWindow: RuleNode; limit: RuleNode; visibility: RuleNode;
   execution: { mode: ExecutionMode; allowedOperations: HostOperation[] };
 }
@@ -110,7 +110,9 @@ export interface AbilityEvent {
   /** Authoritative scouting reward facts attached to the single post-scoring combat result that paid scouting this round. */
   scoutingPlayerId?: PlayerId;
   victoryPoints?: Record<PlayerId, number>;
-  resource?: 'victory_points';
+  resource?: 'victory_points' | 'mana';
+  /** Trusted positive amount for an authoritative mana-spent transaction. */
+  amount?: number;
   delta?: number;
   before?: number;
   after?: number;
@@ -139,6 +141,10 @@ export interface LifecycleTransition {
 export interface EffectContext {
   controllerId: PlayerId; sourceCardId: string; abilityId: string;
   variables: Record<string, number>; selections: Record<string, string[]>;
+  /** Set only by the authoritative structured scheduler when restoring captured payload. */
+  scheduledPayload?: true;
+  /** Server-authored pre-loss command-seal facts, scoped to nested lose_command_seals effects. */
+  commandSealLosses?: Record<PlayerId, { before: number; lost: number }>;
   event?: AbilityEvent;
   /** Present only when sourceCardId is a server-owned EventPlacement ruleInstanceId. */
   eventSource?: { ruleInstanceId: string; definitionId: string; locationId: string };
@@ -214,11 +220,29 @@ export interface PendingOpponentCloseToOne {
   battlefieldId: string; qualifyingCardIds: string[]; qualifyingCardOwners: Record<string, PlayerId>;
   remainingDecisionPlayerIds: PlayerId[];
 }
+export interface StructuredEachPlayerOptionInteractionMetadata {
+  kind: 'structured_each_player_option_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  initiatingControllerId: PlayerId; decisionPlayerId: PlayerId; remainingDecisionPlayerIds: PlayerId[]; optionIds: string[];
+  constraints: { kind: 'target'; targetKind: 'option'; min: 1; max: 1; distinct: true };
+}
+export interface OpponentCloseSelectedOneInteractionMetadata {
+  kind: 'opponent_close_selected_one_non_residual_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  initiatingControllerId: PlayerId; decisionPlayerId: PlayerId; battlefieldId: string;
+  candidateIds: string[]; candidateOwners: Record<string, PlayerId>;
+  constraints: { kind: 'target'; targetKind: 'card'; min: 1; max: 1; distinct: true };
+}
+export interface PendingStructuredEachPlayerOption {
+  initiatingControllerId: PlayerId; sourceCardId: string; abilityId: string; choice: RuleNode; remainingEffects: RuleNode[];
+  context: EffectContext; remainingDecisionPlayerIds: PlayerId[]; optionIds: string[];
+}
 export type PendingInteractionMetadata =
   PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata | SameBattlefieldPrivateHandReturnInteractionMetadata |
   RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata | CombatOpponentPowerVpRewardInteractionMetadata |
   OpponentCloseToOneInteractionMetadata | SelectedPlayedAttackTemporaryCopyInteractionMetadata |
-  BasicStrengthAttackPlayInteractionMetadata | BasicStrengthOpponentSkillFaceDownInteractionMetadata;
+  BasicStrengthAttackPlayInteractionMetadata | BasicStrengthOpponentSkillFaceDownInteractionMetadata |
+  StructuredEachPlayerOptionInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -287,6 +311,10 @@ export interface CardRuntimeState {
   active: boolean; faceDown: boolean; playedRound: number;
   /** Actual mana charged for this physical card by its latest authoritative play. */
   paidManaOnPlay?: number;
+  /** Physical-card multiplier applied to its current base-power expression. */
+  basePowerMultiplier?: number;
+  /** Authoritative round whose battle-terminal event removes this physical card. */
+  removeAfterBattleRound?: number;
   reversed?: boolean; attributeOverrides?: string[];
 }
 export interface RulerSealBinding {
@@ -339,7 +367,7 @@ export interface AbilityRuntime {
   /** Round marker for structured flags whose Reference lifecycle is exactly this_round. */
   structuredRoundFlagKeysByPlayer?: Record<PlayerId, Record<string, number>>;
   /** M50 server-owned structured schedules. Targets are same-card abilities and are never dispatched unless this receipt is due. */
-  structuredScheduledEffects?: Array<{ sourceCardId: string; sourceDefinitionId: string; controllerId: PlayerId; armAbilityId: string; targetAbilityId: string; triggerEventType: string; armedRound: number; triggerRound: number; once: true; variables?: Record<string, number> }>;
+  structuredScheduledEffects?: Array<{ sourceCardId: string; sourceDefinitionId: string; controllerId: PlayerId; armAbilityId: string; targetAbilityId: string; triggerEventType: string; armedRound: number; triggerRound: number; once: true; variables?: Record<string, number>; selections?: Record<string, string[]> }>;
   /** M50 instant-win settlement fact. MatchSession treats this as authoritative terminal state. */
   structuredInstantVictory?: { winnerIds: PlayerId[]; reason: string; sourceCardId: string; abilityId: string; unpreventable: boolean; round: number };
   /** M50 one-shot next-round positive VP multipliers armed by elimination replacement. */
@@ -358,6 +386,8 @@ export interface AbilityRuntime {
   fb254SourcePowerInstallReceipts?: Record<string, Fb254SourcePowerInstallReceipt>;
   /** FB2-51 server-owned provenance for authoritative VP adjustments. */
   trustedVictoryPointChanges?: Record<string, { playerId: PlayerId; resource: 'victory_points'; delta: number; before: number; after: number; roundNumber: number; crossed?: boolean }>;
+  /** M50 server-owned provenance for authoritative positive mana-spend transactions. */
+  trustedManaSpentSnapshots?: Record<string, { playerId: PlayerId; resource: 'mana'; amount: number; locationId?: string; roundNumber: number }>;
   /** FB2-51 current-round positive VP gain, keyed by affected player. */
   roundPositiveVictoryPointGain?: { round: number; byPlayer: Record<PlayerId, number> };
   /** FB2-52 exact next-round situation-benefit suppression marker, keyed by affected player. */
@@ -403,6 +433,8 @@ export interface AbilityRuntime {
   pendingCombatOpponentPowerVpRewards?: PendingCombatOpponentPowerVpReward[];
   /** FB2-49 serialized same-battlefield opponent keep-one card decisions. */
   pendingOpponentCloseToOne?: PendingOpponentCloseToOne[];
+  /** M50 serialized turn-order queue for each affected player choosing one option for themselves. */
+  pendingStructuredEachPlayerOption?: PendingStructuredEachPlayerOption;
   /** Server-owned once-per-battle-phase terminal event, staged until ordinary post-battle work is settled. */
   pendingBattleTerminalEvent?: AbilityEvent;
   /** Source-bound state for the exact Soul Drag -> Return Silence transform family. */
@@ -419,6 +451,8 @@ export interface AbilityRuntime {
   roundTotalPowerAdjustments: { round: number; byPlayer: Record<PlayerId, number> };
   /** Physical source cards scheduled to return to a structural source-servant owner at battle terminal. */
   pendingSourceCardReturns: PendingSourceCardReturn[];
+  /** M50 Gae Buidhe-style servant-skill sequestration receipts awaiting the controller's elimination. */
+  sequesteredServantSkills?: Array<{ instanceId: string; ownerPlayerId: PlayerId; returnOnPlayerEliminationId: PlayerId; returnFaceDown: boolean; sourceCardId: string }>;
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];
   events: SafeEvent[]; calculations: { controllerId: PlayerId; lines: CalculationLine[] }[];
   preventEffects: boolean; manaCaps: Record<PlayerId, number>; manaGainBlocked: PlayerId[];

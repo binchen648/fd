@@ -1,0 +1,259 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.kagekiyo",
+  "name": "平景清",
+  "class": "Avenger",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "P3 F4 M50-02 macro-batch mechanical materialization from locked source-grounded evidence."
+  },
+  "cards": [
+    {
+      "id": "servant.kagekiyo.skill.sc-kagekiyo-3",
+      "aliases": [
+        "card.skill.servant.kagekiyo.skill.sc-kagekiyo-3",
+        "sc_kagekiyo_3"
+      ],
+      "legacyId": "sc_kagekiyo_3",
+      "name": "景清不灭",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.kagekiyo"
+      },
+      "printedText": "复仇之怨念-被动：你的暗置攻击视为印刷威力为0并拥有“残留：你可以于回合结束时关闭此牌。”（其威力可以因效果被增加或减少）被动/前哨阶段：若你未控制暗置攻击，花费3点魔力，抽2张牌并将其暗置打出。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "cost": 0,
+        "basePower": 0,
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "vengeful-grudge-zero-power",
+          "kind": "passive",
+          "printedClause": "复仇之怨念-被动：你的暗置攻击视为印刷威力为0并拥有“残留：你可以于回合结束时关闭此牌。",
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "kagekiyo-facedown-printed-power-zero",
+              "operation": "set",
+              "rule": "card_base_power",
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "zones": [
+                    "attack_area"
+                  ],
+                  "face": "down"
+                }
+              },
+              "value": 0,
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "vengeful-grudge-permanent",
+          "kind": "passive",
+          "printedClause": "复仇之怨念-被动：你的暗置攻击视为印刷威力为0并拥有“残留：你可以于回合结束时关闭此牌。",
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "id": "kagekiyo-facedown-residual",
+              "operation": "allow",
+              "rule": "card_residual",
+              "scope": {
+                "subject": "controller",
+                "cards": {
+                  "zones": [
+                    "attack_area"
+                  ],
+                  "face": "down"
+                }
+              },
+              "value": 1,
+              "lifecycle": {
+                "duration": "permanent"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [],
+          "creates": [],
+          "activation": {},
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "cost": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        },
+        {
+          "id": "vengeful-grudge-permanent__round-end-close",
+          "kind": "optional_trigger",
+          "printedClause": "复仇之怨念-被动：你的暗置攻击视为印刷威力为0并拥有“残留：你可以于回合结束时关闭此牌。",
+          "activation": {
+            "trigger": "round_end"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "targets": [
+            {
+              "id": "face_down_attacks",
+              "type": "card_instance",
+              "scope": {
+                "zone": "attack_area"
+              },
+              "count": {
+                "min": 1,
+                "max": 50
+              },
+              "constraints": [
+                {
+                  "type": "is_attack",
+                  "face": "face_down"
+                }
+              ]
+            }
+          ],
+          "cost": [],
+          "effects": [
+            {
+              "type": "close_selected_face_down_attacks",
+              "target": "face_down_attacks"
+            }
+          ],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "opens": "round_end",
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "markers": [
+            "m50_structured_v1"
+          ]
+        },
+        {
+          "id": "vengeful-grudge-facedown",
+          "kind": "phase_action",
+          "printedClause": "”（其威力可以因效果被增加或减少）被动/前哨阶段：若你未控制暗置攻击，花费3点魔力，抽2张牌并将其暗置打出。",
+          "activation": {
+            "phase": "advance",
+            "opens": "controller_action_window"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "cost": [
+            {
+              "type": "pay_mana",
+              "amount": 3
+            }
+          ],
+          "conditions": [
+            {
+              "type": "not",
+              "condition": {
+                "type": "card_count_at_least",
+                "target": "controller",
+                "zone": "attack_area",
+                "face": "down",
+                "value": 1
+              }
+            }
+          ],
+          "effects": [
+            {
+              "type": "draw_and_play_face_down_attacks",
+              "target": "controller",
+              "count": 2
+            }
+          ],
+          "creates": [],
+          "markers": [
+            "m50_structured_v1"
+          ],
+          "targets": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {}
+        }
+      ],
+      "phase3Evidence": {
+        "lockedReferenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "sourceGrounding": "locked-confirmed-skill-overrides",
+        "referenceHandlerId": "core.kagekiyo-never-dies",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "平景清.htm",
+            "locator": "从者/复仇者/英文版/平景清.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/平景清.png",
+            "locator": "servant.kagekiyo/平景清"
+          }
+        ],
+        "macroBatch": "P3-F4-M50-02-50-SKILL-MACRO-MIGRATION-BATCH"
+      }
+    }
+  ]
+}
