@@ -28,10 +28,20 @@ The accepted #452 scalar contract is preserved: boolean/string/finite-number con
 
 No consumer authoring, arbitrary player targets, status subsystem, event-relation family, resource family, choice/selection, modifier family, card create/movement, identity/name/printed-text/Chinese routing, or SkillLib fallback is added.
 
+## R1 revision closure
+
+- Prior exact Candidate: `97396088d436188cdac8ef41f2fa7be802bb0c99`.
+- Fresh-R verdict: `IMPLEMENTATION_NEEDS_REVISION`; canonical Coordinator relay: `https://github.com/binchen648/fd/pull/453#issuecomment-5839429570`.
+- The sole blocker was stale direct-predecessor focused coverage: accepted #452 still asserted exact `current_round` values and exact `this_round` lifecycle must be rejected after R2 intentionally authorized them.
+- Revision changes no runtime/source semantics. It updates only `set-player-flag-scalar-controller.test.ts` plus this report.
+- Exact `current_round` and exact `this_round` are now positive compatibility coverage; wrong target, missing value, extra fields, malformed current-round near-matches, invalid lifecycle, and nested placement remain fail-closed.
+- The below-loader regression now uses a still-unauthorized malformed `current_round` node and proves rejection leaves structured flag state unchanged.
+
 ## Verification
 
+- direct predecessor #452 regression: `1 file / 7 tests PASS`;
 - focused R2: `1 file / 6 tests PASS`;
-- affected chain (R2 + M50-01/02 + FB2-32/33/42/49 + card-source-state + resolution-dataflow + MatchSession): `10 files / 150 tests PASS`;
+- combined affected chain (predecessor + R2 + M50-01/02 + FB2-32/33/42/49 + card-source-state + resolution-dataflow + MatchSession): `11 files / 157 tests PASS`;
 - `match-session.test.ts`: `30/30 PASS`;
 - `npm run typecheck`: `PASS`;
 - `npm run phase3:coverage`: `PASS`, `blockingIssues=0`;
@@ -39,7 +49,7 @@ No consumer authoring, arbitrary player targets, status subsystem, event-relatio
 - unrelated `noop` with `key/lifecycle/offset`: loader remains fail-closed;
 - strict reconciliation/evidence prefilter under this runtime: `17` identities; readiness only, not migration credit or final S membership;
 - Base-to-Candidate `data/authoring/**`: `EMPTY` by construction;
-- formal source delta is limited to loader/interpreter/types/MatchSession + one focused test + this report;
+- Base-to-successor source delta remains loader/interpreter/types/MatchSession + R2 focused test + inherited predecessor focused test + this report; predecessor-to-successor revision delta is test + report only;
 - `git diff --check`: `PASS`.
 
 ## Accounting
