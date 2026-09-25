@@ -4721,3 +4721,23 @@ Accounting: zero migration credit. Formal/material remains `112/944`, remaining 
 Allowed final status:
 - `IMPLEMENTATION_COMPLETE_CANDIDATE`
 - `IMPLEMENTATION_BLOCKED`
+
+## TASK P3-A-MAIN-REPLAY-M50-02-ACCEPTANCE-SYNCHRONIZATION
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Accepted Candidate: `8e3570d753a42683d3d69751a51900f5daeaefee`
+Canonical fresh-R evidence: `https://github.com/binchen648/fd/pull/450#issuecomment-5838514469`
+Read: `docs/reports/2026-09-26-p3-a-main-replay-m50-02-acceptance-synchronization.md`
+
+Result: fresh independent R returned `IMPLEMENTATION_ACCEPTED_CANDIDATE` for the exact revised current-main M50-02 Candidate. A synchronizes only the identity-free `opponent_close_one_non_residual` selected-one interaction. The accepted successor closes the prior answer-time source-zone stale-state finding by revalidating the physical source through canonical current-main `isActiveCardSource(state, sourceId)` before consuming the pending opponent choice.
+
+Accounting remains zero-credit at `112/944`, remaining `832`. No authoring identity is added or removed by this capability synchronization. PR #450 remains unmerged and unretargeted.
+
+Latest user ruling supersedes the historical 10-40 / one-card dispatch cadence for subsequent F4 work: every non-tail F4 migration batch must freeze exactly 50 identities. A single compatible capability family smaller than 50 must be combined with other mechanically isolated, dependency-complete subgroups until exact membership is 50. Do not dispatch a 1/2/5/10/20-card non-tail batch.
+
+Next action: A must mechanically derive and freeze the next exact-50 current-main F4 batch membership from accepted/synchronized capabilities and source-grounded identities. This synchronization does not itself authorize blindly copying either historical M50 50-card authoring batch; each selected identity still requires exact source/dependency proof on the current-main lineage.
+
+Allowed next A status:
+- `EXACT_50_BATCH_READY`
+- `EXACT_50_BATCH_BLOCKED`
