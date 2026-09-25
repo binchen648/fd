@@ -407,11 +407,14 @@ function isRestoreNonNegativeIntegerMap(value: unknown): value is Record<string,
 function isRestoreStringArrayMap(value: unknown): value is Record<string, string[]> {
   return isRestoreRecord(value) && Object.values(value).every(isRestoreStringArray);
 }
-
-function isRestoreStructuredPlayerFlags(value: unknown): value is Record<string, Record<string, boolean | string | number>> {
-  if (!isRestoreRecord(value)) return false;
-  return Object.values(value).every((flags) => isRestoreRecord(flags) && Object.entries(flags).every(([key, entry]) =>
-    key.length > 0 && (typeof entry === 'boolean' || typeof entry === 'string' || isRestoreFiniteNumber(entry))));
+function isRestoreStructuredPlayerFlags(value: unknown): boolean {
+  return isRestoreRecord(value) && Object.values(value).every((flags) =>
+    isRestoreRecord(flags) && Object.entries(flags).every(([key, flag]) => key.length > 0 &&
+      (typeof flag === 'boolean' || typeof flag === 'string' || (typeof flag === 'number' && Number.isFinite(flag)))));
+}
+function isRestoreStructuredRoundFlagKeys(value: unknown): boolean {
+  return isRestoreRecord(value) && Object.values(value).every((keys) =>
+    isRestoreRecord(keys) && Object.entries(keys).every(([key, round]) => key.length > 0 && isRestoreSafeInteger(round, 1)));
 }
 
 function isRestoreNestedNonNegativeIntegerMap(value: unknown): boolean {
@@ -716,8 +719,9 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       (value.playRulesVersion !== 'legacy-v0' && value.playRulesVersion !== 'explicit-v1') ||
       !isRestoreRoundPlayCounters(value.playCounters)) return false;
 
-  if (value.structuredPlayerFlagsByPlayer !== undefined && !isRestoreStructuredPlayerFlags(value.structuredPlayerFlagsByPlayer)) return false;
   if (value.playerStatusKeysByPlayer !== undefined && !isRestoreStringArrayMap(value.playerStatusKeysByPlayer)) return false;
+  if (value.structuredPlayerFlagsByPlayer !== undefined && !isRestoreStructuredPlayerFlags(value.structuredPlayerFlagsByPlayer)) return false;
+  if (value.structuredRoundFlagKeysByPlayer !== undefined && !isRestoreStructuredRoundFlagKeys(value.structuredRoundFlagKeysByPlayer)) return false;
   if (value.combatWinRoundByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.combatWinRoundByPlayer)) return false;
   if (value.lifecycleTransitions !== undefined && (!Array.isArray(value.lifecycleTransitions) || !value.lifecycleTransitions.every(isRestoreLifecycleTransition))) return false;
   if (value.pendingDelayedActivations !== undefined && (!Array.isArray(value.pendingDelayedActivations) || !value.pendingDelayedActivations.every(isRestorePendingDelayedActivation))) return false;
@@ -940,7 +944,7 @@ function isRestoreAbilityRuntimeReferences(
   eventPlacements: Array<Record<string, unknown>>,
 ): boolean {
   const playerKeyedMaps = [
-    'playerStatusKeysByPlayer','combatWinRoundByPlayer','manaCaps','noblePhantasmCostsThisRound','movementDistanceThisRound',
+    'playerStatusKeysByPlayer','structuredPlayerFlagsByPlayer','structuredRoundFlagKeysByPlayer','combatWinRoundByPlayer','manaCaps','noblePhantasmCostsThisRound','movementDistanceThisRound',
     'battlefieldsPassedOrStayedThisRound',
   ] as const;
   for (const key of playerKeyedMaps) if (value[key] !== undefined && !restoreRecordKeysBelongTo(value[key], playerIds)) return false;
@@ -959,9 +963,6 @@ function isRestoreAbilityRuntimeReferences(
   if (!(value.hostRequests as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
   if (!(value.ongoingEffects as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
   if (!(value.responseWindows as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
-
-  if (value.structuredPlayerFlagsByPlayer !== undefined &&
-      !restoreRecordKeysBelongTo(value.structuredPlayerFlagsByPlayer, playerIds)) return false;
 
   if (value.pendingDelayedActivations !== undefined && !(value.pendingDelayedActivations as Array<Record<string, unknown>>).every((entry) =>
       playerIds.has(entry.controllerId as string) &&
