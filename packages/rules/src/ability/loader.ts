@@ -143,7 +143,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (!Object.keys(n).every((key) => key === 'type')) issue(path, 'Event combat outcome condition must contain only type', abilityId);
       }
       if (n.type === 'target_count_equals') {
-        if (!path.startsWith('conditions')) issue(path, 'Exact target-count condition is supported only under ability conditions', abilityId);
+        if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Exact target-count condition is supported only as a direct ability condition', abilityId);
         if (!Object.keys(n).every((key) => ['type', 'scope', 'count'].includes(key)) ||
           str(n.scope) !== 'same_battlefield_opponents' || !Number.isSafeInteger(n.count) || Number(n.count) < 0) {
           issue(path, 'Exact target-count condition requires same_battlefield_opponents and a nonnegative safe-integer count', abilityId);
@@ -151,7 +151,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (n.type === 'gain_victory_points_per_target') {
         const countTarget = node(n.countTarget);
-        if (!path.startsWith('effects')) issue(path, 'Per-target victory-point gain is supported only under ability effects', abilityId);
+        if (!/^effects\[\d+\]$/.test(path)) issue(path, 'Per-target victory-point gain is supported only as a direct ability effect', abilityId);
         if (!Object.keys(n).every((key) => ['type', 'target', 'countTarget', 'amountPerTarget'].includes(key)) ||
           n.target !== 'controller' || !Object.keys(countTarget).every((key) => key === 'scope') ||
           str(countTarget.scope) !== 'same_battlefield_opponents' ||

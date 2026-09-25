@@ -1289,12 +1289,15 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       const amount = counted.length * Number(effect.amountPerTarget);
       if (!Number.isSafeInteger(amount)) reject('resolution_failed', 'Per-target victory-point total exceeds safe integer range');
       if (!Number.isSafeInteger(p.vp) || p.vp < 0) reject('invalid_state', 'Controller victory points must be a nonnegative safe integer');
-      const before = p.vp; const after = before + amount;
+      const after = p.vp + amount;
       if (!Number.isSafeInteger(after)) reject('invalid_state', 'Per-target victory-point gain would exceed safe integer range');
-      p.vp = after;
-      r.events.push({ type: 'victory_points_adjusted', playerId: p.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
-        resource: 'victory_points', delta: amount, before, after });
-      break;
+      executeResolutionEffects(s, ctx, [{
+        id: 'gain-victory-points-per-target-authoritative',
+        type: 'adjust_victory_points',
+        player: 'controller',
+        amount,
+      }]);
+      return;
     }
     case 'adjust_victory_points': p.vp = Math.max(0, p.vp + numeric(s, ctx, effect.amount)); break;
     case 'move_player': {

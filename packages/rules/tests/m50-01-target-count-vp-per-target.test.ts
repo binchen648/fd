@@ -69,9 +69,15 @@ describe('P3 current-main M50-01 target-count / VP-per-target primitives', () =>
     const state = setup(ability(null, [effect]));
     rules.processAbilityEvent(state, event('gain-one'));
     expect(state.players[0]!.vp).toBe(4);
-    expect(state.abilityRuntime!.events).toEqual(expect.arrayContaining([expect.objectContaining({
-      type: 'victory_points_adjusted', playerId: 'p1', resource: 'victory_points', delta: 2, before: 2, after: 4,
-    })]));
+    const vpEvents = state.abilityRuntime!.events.filter((entry) => entry.type === 'victory_points_adjusted');
+    expect(vpEvents).toHaveLength(1);
+    expect(vpEvents[0]).toEqual(expect.objectContaining({
+      type: 'victory_points_adjusted', playerId: 'p1', controllerId: 'p1', sourceCardId: 'source',
+      abilityId: 'primitive-proof', sourceAbilityId: 'primitive-proof', resource: 'victory_points',
+      delta: 2, before: 2, after: 4, resultId: expect.stringMatching(/gain-victory-points-per-target-authoritative\.vp_adjusted$/),
+    }));
+    const resolved = state.abilityRuntime!.events.filter((entry) => entry.type === 'effect_resolved' && entry.abilityId === 'primitive-proof');
+    expect(resolved).toHaveLength(1);
   });
 
   it('treats an authoritative zero opponent count as a legal zero gain', () => {
@@ -79,7 +85,12 @@ describe('P3 current-main M50-01 target-count / VP-per-target primitives', () =>
     const state = setup(ability(null, [effect])); state.players[1]!.locationId = 'shinto'; state.players[2]!.locationId = 'shinto';
     rules.processAbilityEvent(state, event('zero-gain'));
     expect(state.players[0]!.vp).toBe(2);
-    expect(state.abilityRuntime!.events).toEqual(expect.arrayContaining([expect.objectContaining({ type: 'victory_points_adjusted', delta: 0, before: 2, after: 2 })]));
+    const vpEvents = state.abilityRuntime!.events.filter((entry) => entry.type === 'victory_points_adjusted');
+    expect(vpEvents).toHaveLength(1);
+    expect(vpEvents[0]).toEqual(expect.objectContaining({
+      type: 'victory_points_adjusted', playerId: 'p1', resource: 'victory_points', delta: 0, before: 2, after: 2,
+      resultId: expect.stringMatching(/gain-victory-points-per-target-authoritative\.vp_adjusted$/),
+    }));
   });
 
   it('fails closed for invalid battlefield context, malformed shapes, and overflow', () => {
@@ -108,12 +119,22 @@ describe('P3 current-main M50-01 target-count / VP-per-target primitives', () =>
     const targetRoute = archive(null, []) as any;
     targetRoute.cards[0].abilities[0].targets = [{ id: 'who', type: 'player', conditions: [cond], constraints: [], count: { min: 0, max: 1 } }];
     const targetLoaded = rules.loadAuthoringJson(targetRoute);
-    expect(targetLoaded.report).toEqual(expect.arrayContaining([expect.objectContaining({ reason: 'Exact target-count condition is supported only under ability conditions' })]));
+    expect(targetLoaded.report).toEqual(expect.arrayContaining([expect.objectContaining({ reason: 'Exact target-count condition is supported only as a direct ability condition' })]));
     expect(targetLoaded.cards['skill.source']!.abilities[0]!.execution.mode).toBe('unsupported');
+
 
     const wrongEffectRoute = archive(gain, []) as any;
     const wrongLoaded = rules.loadAuthoringJson(wrongEffectRoute);
-    expect(wrongLoaded.report).toEqual(expect.arrayContaining([expect.objectContaining({ reason: 'Per-target victory-point gain is supported only under ability effects' })]));
+    expect(wrongLoaded.report).toEqual(expect.arrayContaining([expect.objectContaining({ reason: 'Per-target victory-point gain is supported only as a direct ability effect' })]));
     expect(wrongLoaded.cards['skill.source']!.abilities[0]!.execution.mode).toBe('unsupported');
+  });
+  it('rejects target_count_equals when nested under an existing logical condition', () => {
+    const cond = { type: 'target_count_equals', scope: 'same_battlefield_opponents', count: 1 };
+    const nestedLogicalRoute = archive({ type: 'and', conditions: [cond] }, []) as any;
+    const nestedLoaded = rules.loadAuthoringJson(nestedLogicalRoute);
+    expect(nestedLoaded.report).toEqual(expect.arrayContaining([
+      expect.objectContaining({ reason: 'Exact target-count condition is supported only as a direct ability condition' }),
+    ]));
+    expect(nestedLoaded.cards['skill.source']!.abilities[0]!.execution.mode).toBe('unsupported');
   });
 });
