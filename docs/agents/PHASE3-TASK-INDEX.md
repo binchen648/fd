@@ -4291,6 +4291,72 @@ Goal: freshly classify the remaining eleven frozen FM09 provisioning target defi
 - Eleven frozen FM09 provisioning targets remain absent and unresolved.
 - P3-A-FM09-TARGET-DEPENDENCY-PLANNING is READY; it must freshly select the next narrow dependency rather than inherit historical ordering.
 - P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 or broad Ciel task is dispatched.
+## TASK P3-A-MAIN-REPLAY-FB2-49-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-main-replay-fb2-49-dispatch`
+Base: exact current main `4b52b3166ed2ba0efaa4569ee95c6513fd26ab2f`
+Read: `docs/reports/2026-09-25-p3-a-main-replay-fb2-49-dispatch.md`
+
+Result: integration-recovery reconciliation authorizes exactly one current-main semantic replay: the identity-free FB2-49 opponent-close-to-one runtime/restore authority contract proven by PR #422 exact Base `822b5f9dfd05a64a5707fcb945b8b85eff2238e6` -> accepted Candidate `aa04a12e1647560374e09f7e2b6e62a5dccd0954`. This A dispatch grants zero migration credit and does not accept any frontier authoring identity on main. PR #424 is evidence-only for this replay and must not be used as a wholesale promotion source because its main-relative tree adds 35 frozen authoring identities (`111/944 -> 146/944` material) while declaring zero migration credit.
+
+Current-main formal accepted overlap remains `111/944`. Historical frontier formal/material ledgers remain evidence only until replayed through current-main A/B/R/A/I gates.
+
+## TASK P3-B-MAIN-REPLAY-FB2-49
+
+Owner: Codex B2
+Status: `READY`
+Base: exact `P3-A-MAIN-REPLAY-FB2-49-DISPATCH` commit carrying this task block
+Source semantic diff: PR #422 exact Base `822b5f9dfd05a64a5707fcb945b8b85eff2238e6` -> accepted Candidate `aa04a12e1647560374e09f7e2b6e62a5dccd0954`
+Accepted source reviewer evidence: `https://github.com/binchen648/fd/pull/422#issuecomment-5775423822`
+Locked Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-25-p3-a-main-replay-fb2-49-dispatch.md`, `docs/governance/phase3-promotion-lane.md`
+
+Goal: re-implement on current main only the identity-free FB2-49 opponent-close-to-one compound interaction and its authenticated lifecycle/restore/replay authority. Treat #422 Base->Candidate as semantic evidence, not as a commit-history transplant. Do not cherry-pick or merge frontier commits. Preserve current-main behavior outside the exact FB2-49 envelope.
+
+May touch only as required by the exact replay:
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/loader.ts`
+- `packages/rules/src/ability/opponent-close-to-one.ts`
+- `packages/rules/src/ability/opponent-close-to-one-authority.ts`
+- `packages/rules/src/ability/portable-sha256.ts`
+- `packages/rules/src/ability/types.ts`
+- `packages/rules/src/index.ts`
+- `packages/rules/src/match-session.ts`
+- `packages/rules/src/match-room.ts`
+- `packages/rules/src/match-room-hub.ts`
+- `apps/server/src/match-server.ts`
+- focused tests for the exact files above, including FB2-49 / MatchSession / MatchRoomHub / server restore / portable SHA as needed
+- one B result report for this task
+
+Must not touch:
+- `data/authoring/**`
+- `data/packs/**`
+- `data/generated/**`
+- `apps/client/**`
+- unrelated Phase 3 consumer/migration files
+- M50-03 frozen work
+- promotion/governance policy files
+
+Hard replay constraints:
+- no character/card/ability identity routing;
+- no printed-text or Chinese-text runtime routing;
+- no SkillLib fallback;
+- no import of the 35 frozen identities currently present in PR #424 but absent from main;
+- no Astolfo or Scathach migration/credit; they remain later consumers requiring current-main parity after this capability is accepted;
+- zero migration credit; formal main remains `111/944` through B/R/A capability synchronization;
+- if an exact prerequisite is missing on current main, return `IMPLEMENTATION_BLOCKED` with the missing structural dependency. Do not pull that prerequisite from frontier automatically;
+- if the exact #422 semantic diff cannot be reproduced without unrelated frontier runtime, stop as `IMPLEMENTATION_BLOCKED` rather than widening scope.
+
+Required validation before fresh R: exact focused FB2-49 tests and adversarial restore/replay/lifecycle tests; affected MatchSession/MatchRoomHub/server tests; `npm.cmd run typecheck`; `npm.cmd run test:ci -- --maxWorkers=2`; `npm.cmd run content:validate`; generated-content determinism; `git diff --check`; exact current-main material rescan proving `111/944`, zero frozen additions/removals/duplicates.
+
+Allowed final status:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_BLOCKED`
+
+After `IMPLEMENTATION_COMPLETE_CANDIDATE`: commit/push one exact Candidate, open one stacked PR against the exact A dispatch branch, then request one fresh independent R. Do not merge or retarget.
+
 ## Prompt Templates
 
 Codex A startup prompt:
