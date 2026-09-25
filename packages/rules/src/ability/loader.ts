@@ -3,6 +3,7 @@ import { hostOperations } from './types';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID } from '../core/card-source-state';
 import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
 import { isAcceptedControlledCardCloseForbidModifier } from './card-close-forbid';
+import { isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
 import {
   OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT,
   OPPONENT_CLOSE_ONE_NON_RESIDUAL_EFFECT,
@@ -46,7 +47,7 @@ const supportedTypes = new Set([
   'source_card_in_zone', 'controller_at_location_kind', 'reachable_along_arrows', 'can_adjust_mana',
   'event_played_card_has_attribute', 'source_reversed', 'source_active', 'source_owned',
   'event_player_won_combat', 'event_player_lost_combat',
-  'event_player_is_controller', 'event_player_is_opponent',
+  'event_player_is_controller', 'event_player_is_opponent', 'event_location_equals_controller',
   'player_flag_equals', 'player_flag_number_at_least', 'player_flag_number_current_round', 'player_flag_number_not_current_round',
   'set_player_flag', 'clear_player_flag', 'add_player_flag_number', 'current_round',
   'target_count_equals', 'gain_victory_points_per_target', 'transform_event_source_card',
@@ -157,6 +158,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (['event_player_is_controller', 'event_player_is_opponent'].includes(str(n.type))) {
         if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Event-player relation condition is supported only as a direct ability condition', abilityId);
         if (!Object.keys(n).every((key) => key === 'type')) issue(path, 'Event-player relation condition must contain only type', abilityId);
+      }
+      if (str(n.type) === 'event_location_equals_controller') {
+        if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Event-location relation condition is supported only as a direct ability condition', abilityId);
+        if (!isAcceptedEventLocationEqualsControllerCondition(n)) issue(path, 'Event-location relation condition must contain only type', abilityId);
       }
       if (['player_flag_equals', 'player_flag_number_at_least', 'player_flag_number_current_round', 'player_flag_number_not_current_round'].includes(str(n.type))) {
         if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Structured player-flag condition is supported only as a direct ability condition', abilityId);
