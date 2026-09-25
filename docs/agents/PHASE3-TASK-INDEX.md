@@ -4556,7 +4556,7 @@ Current-main formal/material accounting is now `112/944`, with `832` remaining. 
 ## TASK P3-A-MAIN-REPLAY-SCATHACH-S2-CONTRACT-DECOMPOSITION
 
 Owner: Codex A
-Status: `READY`
+Status: `DECOMPOSITION_COMPLETE`
 Base: exact `P3-A-MAIN-REPLAY-ASTOLFO-S1-ACCEPTANCE-SYNCHRONIZATION` commit carrying this task block
 Identity under analysis: `servant.scathach.skill.sc-scathach-2`
 Historical material source: PR #441 Candidate `fc6d2f52f2d2cebbedc60e9e5d106744b347c8ff`
@@ -4579,3 +4579,25 @@ Required output: one current-main A decomposition/dispatch report that names eac
 Allowed final status:
 - `DECOMPOSITION_COMPLETE`
 - `DECOMPOSITION_BLOCKED`
+## TASK P3-B-MAIN-REPLAY-FB2-32-SOURCE-STATE-CONDITIONS
+
+Owner: Codex B2
+Status: `READY`
+Base: exact `P3-A-MAIN-REPLAY-SCATHACH-S2-CONTRACT-DECOMPOSITION` commit carrying this task block
+Historical accepted capability: FB2-32 source-state condition seam
+Historical accepted Candidate: `ae80ed7fb759a35964bcf5d9f581dc4e52d49d49`
+Historical reviewer evidence commit: `f1da3b4d0976cd80dbe4a3569bb9a216cf7dc441`
+Historical acceptance report: `docs/reports/2026-09-19-p3-a-r71-fb2-32-acceptance-synchronization.md`
+Initial rejected Candidate: `c89eac0357b2427aa9682a95f644f3e1442281bc` / PR #376 comment `https://github.com/binchen648/fd/pull/376#issuecomment-5742601244`
+
+Goal: replay the exact accepted identity-free FB2-32 condition capability onto current main: exact type-only `{type:"source_active"}` and `{type:"source_owned"}` condition nodes over authoritative physical source/current controller state. Preserve the accepted revision fixes: condition-only route admission, malformed/widened shapes rejected, and nonphysical/missing source contexts fail closed without raw runtime exceptions. Do not broaden activation/effect/target/interaction/lifecycle/modifier vocabulary.
+
+Authorized scope: only the minimum current-main loader/interpreter helpers required for the two source-state conditions, one focused FB2-32 replay test, and one B result report. Reuse existing current-main physical card/source-state helpers where compatible. No consumer authoring, Scathach material, M50 runtime, generated products, packs, client production, governance edits, character/card identity routing, printed-text/Chinese runtime parsing, or SkillLib fallback.
+
+Accounting: zero migration credit. Formal/material remains `112/944`, remaining `832` throughout B/R/A capability synchronization.
+
+Required validation: focused source-active/source-owned positives; wrong owner/inactive/dead/missing/nonphysical source negatives; condition-as-effect/target/etc rejection; widened-shape rejection; typecheck; affected rules regressions; full CI; content validate; generated determinism; `git diff --check`; frozen rescan proving no authoring delta and `112/944` unchanged.
+
+Allowed final status:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_BLOCKED`
