@@ -231,6 +231,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (!['card_instance', 'location', 'choice', 'player'].includes(str(target.type))) issue('targets.type', 'Unmapped target type', id);
         if (target.type !== 'choice') {
           scan(target.constraints, 'targets.constraints', id);
+          scan(target.conditions, 'targets.conditions', id);
           if (target.type === 'location' && nodes(target.constraints).some(c => c.type === 'any_enabled_location') &&
             nodes(target.constraints).some(c => !['any_enabled_location', 'not_location_kind'].includes(str(c.type)))) {
             issue('targets.constraints', 'Any-location selection cannot silently ignore additional constraints', id);

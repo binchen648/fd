@@ -59,3 +59,21 @@ Validation was run from an exact scratch snapshot based on the A-decomposition t
 ## Gate
 
 This is only a zero-credit B implementation Candidate. Formal/material accounting remains `112/944`. Fresh independent R must review the exact Candidate before A synchronization and before FB2-33 replay is dispatched.
+## Revision R2 — target.conditions boundary closure
+
+Fresh independent R on initial Candidate `b0ded18877db95dac5cd1030c2f87544b25525a5` returned `IMPLEMENTATION_NEEDS_REVISION` with canonical evidence `https://github.com/binchen648/fd/pull/447#issuecomment-5834476060`.
+
+The single blocker was a loader coverage gap: runtime target selection evaluates `target.conditions`, but the loader did not scan that route. As a result, `{ type: "source_active" }` could survive under `target.conditions` and remain automatic despite the contract requiring source-state conditions to exist only under top-level `ability.conditions`.
+
+R2 closes only that boundary:
+
+- loader now scans `target.conditions` as `targets.conditions`, so the existing position-aware source-state rule reports it unsupported;
+- focused regression reproduces the Reviewer probe and requires execution mode `unsupported`;
+- no new condition/effect/target vocabulary is added.
+
+R2 verification on the exact successor scratch snapshot:
+
+- `npm run typecheck` — PASS.
+- affected focused set — PASS, **5 files / 89 tests**; FB2-32 **9/9**, FB2-42 **9/9**, FB2-49 **51/51**.
+- current-main frozen/material accounting remains **112/944**, zero migration credit.
+- `git diff --check` is required on the exact successor tree before freeze.

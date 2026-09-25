@@ -115,6 +115,19 @@ describe('P3-FB2-32 source-state conditions', () => {
     expect(loaded.cards['skill.source']!.abilities[0]!.execution.mode).toBe('unsupported');
   });
 
+  it('rejects source-state condition nodes from target.conditions and disables automation', () => {
+    const authored = archive({ type: 'source_owned' }) as any;
+    authored.cards[0].abilities[0].conditions = [];
+    authored.cards[0].abilities[0].targets = [{
+      id: 'who', type: 'player', conditions: [{ type: 'source_active' }], count: { min: 0, max: 1 },
+    }];
+    const loaded = rules.loadAuthoringJson(authored);
+    expect(loaded.report).toEqual(expect.arrayContaining([
+      expect.objectContaining({ reason: 'Source-state condition is supported only under ability conditions' }),
+    ]));
+    expect(loaded.cards['skill.source']!.abilities[0]!.execution.mode).toBe('unsupported');
+  });
+
   it('fails closed without throwing when an event-rule source has no physical card', () => {
     const state = createSeededGameState({ activeSeats: [1, 2] });
     state.cards = [];
