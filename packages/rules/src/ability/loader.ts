@@ -43,7 +43,8 @@ const supportedTypes = new Set([
   'or', 'and', 'not', 'not_card_type', 'is_attack', 'has_attribute', 'not_source_card', 'has_card_id',
   'source_card_in_zone', 'controller_at_location_kind', 'reachable_along_arrows', 'can_adjust_mana',
   'event_played_card_has_attribute', 'source_reversed', 'source_active', 'source_owned',
-  'event_player_won_combat', 'event_player_lost_combat', 'transform_event_source_card',
+  'event_player_won_combat', 'event_player_lost_combat',
+  'target_count_equals', 'gain_victory_points_per_target', 'transform_event_source_card',
   'controller_won_battle', 'controller_sole_winner', 'controller_mana_at_least', 'min_mana',
   // New types for 5 servants
   'opponents_random_discard', 'lock_battlefield', 'exclude_from_terrain_and_external_effects',
@@ -84,6 +85,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'resultZone', 'visibility', 'to', 'from', 'optional', 'excluding', 'branches', 'if', 'then', 'else', 'cardId', 'zone',
   'var', 'op', 'args', 'left', 'right', 'formula', 'formulaRef', 'printedExpression', 'constraints', 'value', 'min', 'max',
   'targetRef', 'resultVar', 'optionalCost', 'uses', 'conditions', 'locationKind', 'maxSteps', 'cardType', 'face', 'attribute', 'sourceCard',
+  'countTarget', 'amountPerTarget',
   'object', 'controller', 'location', 'negated', 'tier', 'specificity',
   'source', 'interpretation', 'name',
   // New mechanic keys for 5 servants
@@ -139,6 +141,23 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (['event_player_won_combat', 'event_player_lost_combat'].includes(str(n.type))) {
         if (!path.startsWith('conditions')) issue(path, 'Event combat outcome condition is supported only under ability conditions', abilityId);
         if (!Object.keys(n).every((key) => key === 'type')) issue(path, 'Event combat outcome condition must contain only type', abilityId);
+      }
+      if (n.type === 'target_count_equals') {
+        if (!path.startsWith('conditions')) issue(path, 'Exact target-count condition is supported only under ability conditions', abilityId);
+        if (!Object.keys(n).every((key) => ['type', 'scope', 'count'].includes(key)) ||
+          str(n.scope) !== 'same_battlefield_opponents' || !Number.isSafeInteger(n.count) || Number(n.count) < 0) {
+          issue(path, 'Exact target-count condition requires same_battlefield_opponents and a nonnegative safe-integer count', abilityId);
+        }
+      }
+      if (n.type === 'gain_victory_points_per_target') {
+        const countTarget = node(n.countTarget);
+        if (!path.startsWith('effects')) issue(path, 'Per-target victory-point gain is supported only under ability effects', abilityId);
+        if (!Object.keys(n).every((key) => ['type', 'target', 'countTarget', 'amountPerTarget'].includes(key)) ||
+          n.target !== 'controller' || !Object.keys(countTarget).every((key) => key === 'scope') ||
+          str(countTarget.scope) !== 'same_battlefield_opponents' ||
+          !Number.isSafeInteger(n.amountPerTarget) || Number(n.amountPerTarget) < 0) {
+          issue(path, 'Per-target victory-point gain requires controller, same_battlefield_opponents, and a nonnegative safe-integer amountPerTarget', abilityId);
+        }
       }
       if (n.op && !formulaOps.has(str(n.op))) issue(`${path}.op`, `Unmapped formula: ${str(n.op)}`, abilityId);
       const serverMetric = ['controller.availableMana', 'consecutive_play_rounds', 'game.round_number',

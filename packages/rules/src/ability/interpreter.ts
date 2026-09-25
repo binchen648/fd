@@ -539,8 +539,30 @@ function eventCombatOutcomeCondition(s: GameState, ctx: EffectContext, c: RuleNo
     ? winners.includes(eventPlayerId)
     : losers.includes(eventPlayerId);
 }
+export function isTargetCountEqualsCondition(c: RuleNode): boolean {
+  return c.type === 'target_count_equals' && str(c.scope) === 'same_battlefield_opponents' &&
+    Number.isSafeInteger(c.count) && Number(c.count) >= 0 &&
+    Object.keys(c).every((key) => ['type', 'scope', 'count'].includes(key));
+}
+
+export function isGainVictoryPointsPerTargetEffect(effect: RuleNode): boolean {
+  const countTarget = node(effect.countTarget);
+  return effect.type === 'gain_victory_points_per_target' && effect.target === 'controller' &&
+    str(countTarget.scope) === 'same_battlefield_opponents' && Object.keys(countTarget).every((key) => key === 'scope') &&
+    Number.isSafeInteger(effect.amountPerTarget) && Number(effect.amountPerTarget) >= 0 &&
+    Object.keys(effect).every((key) => ['type', 'target', 'countTarget', 'amountPerTarget'].includes(key));
+}
+
+function sameBattlefieldOpponentIds(s: GameState, ctx: EffectContext): string[] | null {
+  const controller = s.players.find((candidate) => candidate.id === ctx.controllerId);
+  if (!controller || controller.status !== 'active' || !controller.locationId || !isBattlefield(s, controller.locationId)) return null;
+  return s.players.filter((candidate) => candidate.status === 'active' && candidate.id !== controller.id &&
+    candidate.locationId === controller.locationId).map((candidate) => candidate.id);
+}
+
 function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   if (!c || typeof c !== 'object') reject('unsupported', 'Unsupported condition');
+  if (c.type === 'target_count_equals' && !isTargetCountEqualsCondition(c)) reject('unsupported', 'Unsupported exact target-count condition shape');
   if (c.negated === true) return !condition(s, ctx, { ...c, negated: undefined });
   const p = player(s, ctx.controllerId);
   switch (c.type) {
@@ -571,6 +593,10 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'source_owned': return sourceStateCondition(s, ctx, c);
     case 'event_player_won_combat':
     case 'event_player_lost_combat': return eventCombatOutcomeCondition(s, ctx, c);
+    case 'target_count_equals': {
+      const targets = sameBattlefieldOpponentIds(s, ctx);
+      return targets !== null && targets.length === Number(c.count);
+    }
     case 'can_adjust_mana': return !runtime(s).manaGainBlocked.includes(p.id) && p.mana < (runtime(s).manaCaps[p.id] ?? 12);
     case 'controller_strict_second_battle_power': return controllerIsStrictSecondBattlePower(ctx.event, p.id);
     case 'controller_won_battle': return ctx.event?.battleResult?.winners.includes(p.id) ?? false;
@@ -1254,6 +1280,20 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       const amount = numeric(s, ctx, effect.amount);
       if (!Number.isSafeInteger(amount) || amount < 0 || amount > p.mana) reject('insufficient_mana', 'Cannot pay mana');
       p.mana -= amount;
+      break;
+    }
+    case 'gain_victory_points_per_target': {
+      if (!isGainVictoryPointsPerTargetEffect(effect)) reject('unsupported', 'Unsupported per-target victory-point gain shape');
+      const counted = sameBattlefieldOpponentIds(s, ctx);
+      if (counted === null) reject('resolution_failed', 'Per-target victory-point gain requires an active controller at a battlefield');
+      const amount = counted.length * Number(effect.amountPerTarget);
+      if (!Number.isSafeInteger(amount)) reject('resolution_failed', 'Per-target victory-point total exceeds safe integer range');
+      if (!Number.isSafeInteger(p.vp) || p.vp < 0) reject('invalid_state', 'Controller victory points must be a nonnegative safe integer');
+      const before = p.vp; const after = before + amount;
+      if (!Number.isSafeInteger(after)) reject('invalid_state', 'Per-target victory-point gain would exceed safe integer range');
+      p.vp = after;
+      r.events.push({ type: 'victory_points_adjusted', playerId: p.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+        resource: 'victory_points', delta: amount, before, after });
       break;
     }
     case 'adjust_victory_points': p.vp = Math.max(0, p.vp + numeric(s, ctx, effect.amount)); break;
