@@ -4601,3 +4601,43 @@ Required validation: focused source-active/source-owned positives; wrong owner/i
 Allowed final status:
 - `IMPLEMENTATION_COMPLETE_CANDIDATE`
 - `IMPLEMENTATION_BLOCKED`
+
+
+## TASK P3-A-MAIN-REPLAY-FB2-32-ACCEPTANCE-SYNCHRONIZATION
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-main-replay-fb2-32-acceptance-sync`
+Implementation Base: `63666879bc004c724d7ceef0b43d8a9bbd910fdf`
+Accepted Candidate: `ac9ed4ac5b696402e9621992a9a4a9bfaba5ed04`
+Canonical fresh-R evidence: `https://github.com/binchen648/fd/pull/447#issuecomment-5836400011`
+Read: `docs/reports/2026-09-26-p3-a-main-replay-fb2-32-acceptance-synchronization.md`
+
+Result: fresh independent R returned `IMPLEMENTATION_ACCEPTED_CANDIDATE` for the exact current-main FB2-32 R3 Candidate. A synchronizes only the identity-free source-state condition capability: exact type-only `source_active` / `source_owned` beneath top-level `ability.conditions`, with widened shapes rejected, non-condition runtime carriers rejected, and missing/nonphysical source contexts failing closed. The accepted R3 closes both prior loader-boundary findings for choice `target.conditions` and `ruleModifiers[].conditions`.
+
+Current-main formal/material accounting remains `112/944`, with `832` remaining. FB2-32 is zero-credit infrastructure and adds/removes no frozen identity. PR #447 remains unmerged and unretargeted.
+
+## TASK P3-B-MAIN-REPLAY-FB2-33-COMBAT-OUTCOME-CONDITIONS
+
+Owner: Codex B2
+Status: `READY`
+Base: exact `P3-A-MAIN-REPLAY-FB2-32-ACCEPTANCE-SYNCHRONIZATION` commit carrying this task block
+Historical accepted capability: FB2-33 event-player combat-outcome condition seam
+Historical accepted Candidate: `5ccef0d682ce0673926e349eda1732419fc0792c`
+Canonical historical reviewer evidence: `https://github.com/binchen648/fd/pull/377#issuecomment-5743426456`
+Historical dispatch: `docs/reports/2026-09-19-p3-a-fb2-33-event-combat-outcome-dispatch.md`
+Historical result: `docs/reports/2026-09-19-p3-fb2-33-event-combat-outcome-result.md`
+Scathach decomposition source: `docs/reports/2026-09-25-p3-a-main-replay-scathach-s2-contract-decomposition.md`
+Locked Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+
+Goal: replay the exact accepted identity-free FB2-33 capability onto current main: exact type-only `event_player_won_combat` and `event_player_lost_combat` conditions evaluated only from trusted `AbilityEvent.playerId` plus trusted `battleResult`. Preserve accepted fail-closed semantics for missing/unknown actor, missing/malformed outcome, unknown ids, duplicate ids, and winner/loser contradiction. No event producer, trigger, effect, target, interaction, lifecycle, modifier, consumer identity, or authoring migration is authorized.
+
+Authorized scope: only the minimum current-main loader/interpreter helpers required for these two conditions, one focused FB2-33 replay test, and one B result report. Reuse existing trusted event/battle-result structures. No Scathach authoring, M50 primitives, generated products, packs, client production, governance edits, character/card identity routing, printed-text/Chinese runtime parsing, SkillLib fallback, merge, or retarget.
+
+Required validation: exact-shape loader acceptance under top-level ability conditions; rejection/disable under effects/targets/modifier conditions and other non-condition runtime carriers; payload-bearing near-match rejection; winner/loss positives and opposites; missing/unknown/malformed/duplicate/contradictory event context fail false; evaluation read-only/no emitted event; unsupported trigger remains unsupported; typecheck; affected focused regressions; `git diff --check`; frozen/material rescan proving no authoring delta and `112/944` unchanged. Full CI/content/generated gates only if current exact task/repo contract requires them for this zero-credit replay.
+
+Accounting: zero migration credit. Formal/material remains `112/944`, remaining `832` throughout B/R/A capability synchronization.
+
+Allowed final status:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_BLOCKED`
