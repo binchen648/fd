@@ -4685,3 +4685,39 @@ Accounting: zero migration credit. Formal/material remains `112/944`, remaining 
 Allowed final status:
 - `IMPLEMENTATION_COMPLETE_CANDIDATE`
 - `IMPLEMENTATION_BLOCKED`
+
+## TASK P3-A-MAIN-REPLAY-M50-01-PRIMITIVES-ACCEPTANCE-SYNCHRONIZATION
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-main-replay-m50-01-primitives-acceptance-sync`
+Implementation Base: `ba958e78fcd6ce7a4276889aaac75d689a767409`
+Accepted Candidate: `9a2a273d67b59872f4589d2ec10cbf32b2e1cef5`
+Canonical fresh-R evidence: `https://github.com/binchen648/fd/pull/449#issuecomment-5837438369`
+Read: `docs/reports/2026-09-26-p3-a-main-replay-m50-01-primitives-acceptance-synchronization.md`
+
+Result: fresh independent R returned `IMPLEMENTATION_ACCEPTED_CANDIDATE` for the exact revised current-main M50-01 primitive Candidate. A synchronizes only the identity-free `target_count_equals` and `gain_victory_points_per_target` seam required by Scathach S2. The accepted successor closes the authoritative VP-path and direct/top-level loader-boundary findings by delegating VP gain through current-main resolution-dataflow `adjust_victory_points` and rejecting nested logical/non-direct placements.
+
+Current-main formal/material accounting remains `112/944`, with `832` remaining. This capability replay is zero-credit and adds/removes no frozen identity. PR #449 remains unmerged and unretargeted.
+
+## TASK P3-B-MAIN-REPLAY-M50-02-OPPONENT-CLOSE-ONE-NON-RESIDUAL
+
+Owner: Codex B2
+Status: `READY`
+Base: exact `P3-A-MAIN-REPLAY-M50-01-PRIMITIVES-ACCEPTANCE-SYNCHRONIZATION` commit carrying this task block
+Historical accepted source: PR #441 exact Candidate `fc6d2f52f2d2cebbedc60e9e5d106744b347c8ff`
+Canonical historical reviewer evidence: `https://github.com/binchen648/fd/pull/441#issuecomment-5825842148`
+Scathach decomposition source: `docs/reports/2026-09-25-p3-a-main-replay-scathach-s2-contract-decomposition.md`
+Locked Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+
+Goal: replay only the identity-free M50-02 generic `opponent_close_one_non_residual` contract required by Scathach S2. Preserve the historical exact single-opponent interaction semantics and adversarial fail-closed behavior. This contract is distinct from current-main FB2-49 `opponent_close_non_residual_to_one`: FB2-49 closes multiple non-residual attacks until one remains, while this task lets the unique same-battlefield opponent choose exactly one of their own eligible non-residual attacks to close.
+
+Authorized scope: minimum current-main loader/interpreter/interaction helpers required for this one primitive, focused tests for exact positive/negative interaction semantics, and one B result report. Reuse current-main close-forbid/card-source/interaction persistence seams where applicable. No M50-02 50-card batch import, no Scathach consumer authoring, no unrelated M50 vocabulary, no generated/client/pack/governance changes, no identity/name/printed-text/Chinese runtime routing, no SkillLib fallback, no merge/retarget.
+
+Required semantics/validation: exact supported effect shape; exactly one active same-battlefield opponent; that opponent is the decision player; candidates are only that opponent's active non-residual attacks; exactly one candidate must be selected/closed when legal; residual/protected/inactive/wrong-owner/off-battlefield/stale/tampered selections fail closed; zero legal cards does not fabricate a decision; persistence/replay/restore metadata stays bounded and rejects corruption; non-authorized routes remain unsupported; typecheck; affected focused regressions; `git diff --check`; Base-to-Candidate `data/authoring/**` delta empty and accounting unchanged at `112/944`.
+
+Accounting: zero migration credit. Formal/material remains `112/944`, remaining `832` throughout B/R/A capability synchronization.
+
+Allowed final status:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_BLOCKED`
