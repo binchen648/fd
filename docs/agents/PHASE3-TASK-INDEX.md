@@ -4373,7 +4373,7 @@ Current-main formal/material accounting remains `111/944`.
 ## TASK P3-B-MAIN-REPLAY-FB2-42
 
 Owner: Codex B2
-Status: `READY`
+Status: `ACCEPTED`
 Base: exact `P3-A-MAIN-REPLAY-FB2-42-DISPATCH` commit carrying this task block
 Source implementation Base: `ec39baa2d99c1e9f2359e832ca7bd61118c44558`
 Source accepted Candidate: `d082a90e194ee4cf1f528086f1ba01150a9ead41`
@@ -4402,6 +4402,42 @@ Allowed final status:
 - `IMPLEMENTATION_BLOCKED`
 
 On `IMPLEMENTATION_COMPLETE_CANDIDATE`, commit/push one exact B Candidate, open one stacked PR against this exact A dispatch branch, and request one fresh independent R. Do not merge or retarget.
+
+## TASK P3-A-MAIN-REPLAY-FB2-42-ACCEPTANCE-SYNCHRONIZATION
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-main-replay-fb2-42-acceptance-sync`
+Implementation Base: `c6c5786cb48f6abc563aa8359e335fbd26c14c4f`
+Accepted Candidate: `c820161a427de6b0e55c209b7e14e3f6fba36033`
+Canonical fresh-R evidence: `https://github.com/binchen648/fd/pull/444#issuecomment-5830650148`
+Read: `docs/reports/2026-09-25-p3-a-main-replay-fb2-42-acceptance-synchronization.md`
+
+Result: fresh independent retry1 accepted the exact current-main FB2-42 replay Candidate after the prior environment-only `MIGRATION_BLOCKED` attempt was repaired without changing Candidate. A synchronizes the accepted identity-free `card_close` forbid capability only. This synchronization is zero-credit infrastructure and does not import any frontier consumer material.
+
+Current-main formal/material accounting remains `111/944`, with `833` remaining. No authoring addition/removal is granted by FB2-42.
+
+## TASK P3-B-MAIN-REPLAY-FB2-49-R2
+
+Owner: Codex B2
+Status: `READY`
+Base: exact `P3-A-MAIN-REPLAY-FB2-42-ACCEPTANCE-SYNCHRONIZATION` commit carrying this task block
+Source semantic diff: PR #422 exact Base `822b5f9dfd05a64a5707fcb945b8b85eff2238e6` -> accepted Candidate `aa04a12e1647560374e09f7e2b6e62a5dccd0954`
+Source reviewer evidence: `https://github.com/binchen648/fd/pull/422#issuecomment-5775423822`
+Prerequisite accepted on current main: FB2-42 Candidate `c820161a427de6b0e55c209b7e14e3f6fba36033`, evidence `https://github.com/binchen648/fd/pull/444#issuecomment-5830650148`
+Read: `docs/reports/2026-09-25-p3-a-main-replay-fb2-49-dispatch.md`, `docs/reports/2026-09-25-p3-b-main-replay-fb2-49-blocked.md`, `docs/reports/2026-09-25-p3-a-main-replay-fb2-42-acceptance-synchronization.md`
+
+Goal: resume the previously blocked current-main semantic replay of FB2-49 now that the exact FB2-42 close-forbid prerequisite is synchronized. Treat PR #422 / #424 / divergent frontier only as semantic/evidence sources. Do not cherry-pick, merge, wholesale-copy, retarget, or import their ancestry.
+
+Authorized production scope remains the existing narrow FB2-49 hot-set only: `packages/rules/src/ability/interpreter.ts`, `loader.ts`, `opponent-close-to-one.ts`, `opponent-close-to-one-authority.ts`, `portable-sha256.ts`, `types.ts`, `packages/rules/src/index.ts`, `packages/rules/src/match-session.ts`, `match-room.ts`, `match-room-hub.ts`, `apps/server/src/match-server.ts`, exact focused/restore/replay/server tests, and one B result report.
+
+Hard constraints remain unchanged: no `data/authoring/**`, packs/generated/client production, M50-03, governance-policy edits, identity/name/printed-text/Chinese runtime routing, SkillLib fallback, Astolfo/Scathach consumer migration, or migration credit. Current-main formal/material must remain `111/944` throughout B/R/A capability synchronization.
+
+Required validation before fresh R: exact focused FB2-49 plus adversarial restore/replay/lifecycle coverage, affected MatchSession/MatchRoom/Hub/server tests, typecheck, official `test:ci -- --maxWorkers=2`, content validation, generated determinism, `git diff --check`, and frozen rescan proving `111/944`, zero additions/removals/duplicates.
+
+Allowed final status:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_BLOCKED`
 
 ## Prompt Templates
 
