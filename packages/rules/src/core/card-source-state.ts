@@ -29,6 +29,13 @@ export interface CardSourceValidityResult {
     | 'inactive_source';
 }
 
+/** Canonical Card Zone predicate for whether a physical card is an active source. */
+export function isActiveCardSource(state: GameState, cardInstanceId: string): boolean {
+  const source = state.cards.find((card) => card.instanceId === cardInstanceId);
+  const sourceState = state.abilityRuntime?.cardState[cardInstanceId];
+  return !!source && (source.zone === 'field' || source.zone === 'attack_area') && sourceState?.active === true && sourceState.faceDown !== true;
+}
+
 export function evaluateCardSourceValidity(state: GameState, input: CardSourceValidityInput): CardSourceValidityResult {
   if (input.policyId !== ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID) {
     return { supported: false, valid: false, reason: 'unknown_policy' };
@@ -49,9 +56,7 @@ export function evaluateCardSourceValidity(state: GameState, input: CardSourceVa
   ) ?? false;
   if (!abilityStillExists) return { supported: true, valid: false, reason: 'ability_missing' };
 
-  const sourceState = runtime?.cardState[source.instanceId];
-  const inActiveArea = source.zone === 'field' || source.zone === 'attack_area';
-  const valid = inActiveArea && sourceState?.active === true && sourceState.faceDown !== true;
+  const valid = isActiveCardSource(state, source.instanceId);
   return valid
     ? { supported: true, valid: true }
     : { supported: true, valid: false, reason: 'inactive_source' };
