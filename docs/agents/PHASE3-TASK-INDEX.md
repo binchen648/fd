@@ -4746,3 +4746,43 @@ Hard constraints:
 - formal/material stays 112/944 until an exact-50 S Candidate receives fresh independent MIGRATION_ACCEPTED and A synchronizes it.
 
 Required planning output: an exact 50-identity manifest with subgroup/source/evidence/prerequisite classification, Base frozen rescan, zero-duplicate proof, and explicit exclusion reasons for near-ready identities not admitted. Only then dispatch the exact-50 S batch.
+## TASK P3-A-F4-EXACT-50-COMPOSITION-01-RESULT
+
+Owner: Codex A
+Status: `PREREQUISITE_DISPATCHED`
+Base: exact `P3-A-MAIN-REPLAY-M50-02-ACCEPTANCE-SYNCHRONIZATION` commit `355089549671ba90dd9b50d7a929d4b032643ac0`
+Read: `docs/reports/2026-09-26-p3-a-f4-exact-50-composition-01.md`
+
+Mechanical composition result: the exact-50 S batch is not yet dispatchable without violating current-main runtime/evidence gates. Historical frontier inventory has 158 delta identities. Current-main loader/runtime prefilter found 16 zero-report/automatic identities; only 8 also have concrete independent reviewer evidence plus frontier material. Astolfo S1 is already material/formal current-main and is excluded as a duplicate; several other loader-green identities remain blocked by identity-contract revalidation or missing current-main generic prerequisites. Historical M50 100-card material yields only 5 zero-report/automatic identities after the already-authorized redundant `phase_is == activation.phase` normalization; 95 still expose unsupported current-main vocabulary/routes.
+
+Do not shrink the S batch. Continue prerequisite replay until the mechanically verified eligible pool reaches at least 50 unique frozen identities.
+
+The highest-yield next missing identity-free family is structured player-flag/state core. A what-if blocker scan shows this family alone removes the sole loader blocker from 9 concrete-evidence material identities, more than the other independently bounded candidate families tested. Dispatch one zero-credit B replay from historical accepted M50 runtime semantics; do not include consumer authoring or migration credit.
+
+## TASK P3-B-MAIN-REPLAY-M50-PLAYER-FLAG-STATE-CORE
+
+Owner: Codex B2
+Status: `READY`
+Base: exact `P3-A-F4-EXACT-50-COMPOSITION-01-RESULT` commit carrying this task block
+Historical accepted semantic sources: PR #440 accepted successor `f0e5554e3210e721ae98faa29fc5241b410c5b72` and PR #441 accepted Candidate `fc6d2f52f2d2cebbedc60e9e5d106744b347c8ff`
+Canonical historical evidence: `https://github.com/binchen648/fd/pull/440#issuecomment-5805914781` and `https://github.com/binchen648/fd/pull/441#issuecomment-5825842148`
+Locked Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+
+Goal: replay only the identity-free structured player-flag/state primitives needed to enlarge the exact-50 F4 eligibility pool. Preserve accepted safe/fail-closed storage and round semantics without importing unrelated M50 formula, selection, status, trigger, modifier, consumer, or authoring vocabulary.
+
+Authorized primitive family:
+- conditions: `player_flag_equals`, `player_flag_number_at_least`, `player_flag_number_current_round`, `player_flag_number_not_current_round`;
+- effects: `set_player_flag`, `clear_player_flag`, `add_player_flag_number`;
+- controlled value node: exact `current_round` only where used as a flag value;
+- authoritative targets limited to structurally supported player targets; exact key/value/amount/lifecycle shapes must fail closed when widened or malformed;
+- `this_round` flag lifecycle must expire/clear deterministically and survive authenticated MatchSession persistence until its legitimate expiry.
+
+Forbidden scope: no M50 consumer authoring; no `choose_*`, status, event-relation, resource, formula/metric, modifier, trigger-producer, card-create, movement, or other M50 vocabulary; no character/card identity routing; no printed-text/Chinese runtime routing; no SkillLib fallback; no merge/retarget.
+
+Required validation: exact loader admission/rejection by authorized route and shape; boolean/string/safe-integer flags; exact current-round storage and round comparisons; numeric add overflow/malformed prior-value negatives; clear behavior; this-round expiry; persistence/restore round-trip plus corrupted state fail-closed; affected current rules regressions; typecheck; `git diff --check`; `data/authoring/**` delta empty; formal/material remains `112/944`.
+
+Accounting: zero migration credit. This capability only expands the future exact-50 eligibility pool after fresh R acceptance and A synchronization.
+
+Allowed final status:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_BLOCKED`
