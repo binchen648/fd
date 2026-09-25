@@ -46,6 +46,8 @@ const supportedTypes = new Set([
   'source_card_in_zone', 'controller_at_location_kind', 'reachable_along_arrows', 'can_adjust_mana',
   'event_played_card_has_attribute', 'source_reversed', 'source_active', 'source_owned',
   'event_player_won_combat', 'event_player_lost_combat',
+  'player_flag_equals', 'player_flag_number_at_least', 'player_flag_number_current_round', 'player_flag_number_not_current_round',
+  'set_player_flag', 'clear_player_flag', 'add_player_flag_number', 'current_round',
   'target_count_equals', 'gain_victory_points_per_target', 'transform_event_source_card',
   'controller_won_battle', 'controller_sole_winner', 'controller_mana_at_least', 'min_mana',
   // New types for 5 servants
@@ -87,7 +89,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'resultZone', 'visibility', 'to', 'from', 'optional', 'excluding', 'branches', 'if', 'then', 'else', 'cardId', 'zone',
   'var', 'op', 'args', 'left', 'right', 'formula', 'formulaRef', 'printedExpression', 'constraints', 'value', 'min', 'max',
   'targetRef', 'resultVar', 'optionalCost', 'uses', 'conditions', 'locationKind', 'maxSteps', 'cardType', 'face', 'attribute', 'sourceCard',
-  'countTarget', 'amountPerTarget',
+  'countTarget', 'amountPerTarget', 'key', 'lifecycle', 'offset',
   'object', 'controller', 'location', 'negated', 'tier', 'specificity',
   'source', 'interpretation', 'name',
   // New mechanic keys for 5 servants
@@ -143,6 +145,47 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (['event_player_won_combat', 'event_player_lost_combat'].includes(str(n.type))) {
         if (!path.startsWith('conditions')) issue(path, 'Event combat outcome condition is supported only under ability conditions', abilityId);
         if (!Object.keys(n).every((key) => key === 'type')) issue(path, 'Event combat outcome condition must contain only type', abilityId);
+      }
+      if (['player_flag_equals', 'player_flag_number_at_least', 'player_flag_number_current_round', 'player_flag_number_not_current_round'].includes(str(n.type))) {
+        if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Structured player-flag condition is supported only as a direct ability condition', abilityId);
+        const key = str(n.key);
+        if (!key) issue(path, 'Structured player-flag condition requires a nonempty key', abilityId);
+        const keys = Object.keys(n);
+        if (n.type === 'player_flag_equals') {
+          if (!keys.every((key) => ['type', 'key', 'value'].includes(key)) ||
+            !(typeof n.value === 'boolean' || typeof n.value === 'string' || (typeof n.value === 'number' && Number.isSafeInteger(n.value))))
+            issue(path, 'player_flag_equals requires an exact primitive flag value', abilityId);
+        } else if (n.type === 'player_flag_number_at_least') {
+          if (!keys.every((key) => ['type', 'key', 'value'].includes(key)) || !Number.isSafeInteger(n.value))
+            issue(path, 'player_flag_number_at_least requires an exact safe-integer value', abilityId);
+        } else if (!keys.every((key) => ['type', 'key'].includes(key))) {
+          issue(path, 'Current-round player-flag condition must contain only type and key', abilityId);
+        }
+      }
+      if (['set_player_flag', 'clear_player_flag', 'add_player_flag_number'].includes(str(n.type))) {
+        if (!/^effects\[\d+\]$/.test(path)) issue(path, 'Structured player-flag mutation is supported only as a direct ability effect', abilityId);
+        if (n.target !== 'controller' || !str(n.key)) issue(path, 'Structured player-flag mutation requires controller target and nonempty key', abilityId);
+        const lifecycle = node(n.lifecycle);
+        if (n.lifecycle !== undefined && (!Object.keys(lifecycle).every((key) => key === 'duration') || lifecycle.duration !== 'this_round'))
+          issue(path, 'Structured player-flag lifecycle must be exactly this_round', abilityId);
+        const keys = Object.keys(n);
+        if (n.type === 'set_player_flag') {
+          if (!keys.every((key) => ['type', 'target', 'key', 'value', 'lifecycle'].includes(key))) issue(path, 'set_player_flag contains unsupported fields', abilityId);
+          const value = n.value; const currentRound = node(value);
+          const primitive = typeof value === 'boolean' || typeof value === 'string' || (typeof value === 'number' && Number.isSafeInteger(value));
+          const exactRound = currentRound.type === 'current_round' && Object.keys(currentRound).every((key) => ['type', 'offset'].includes(key)) &&
+            (currentRound.offset === undefined || Number.isSafeInteger(currentRound.offset));
+          if (!primitive && !exactRound) issue(path, 'set_player_flag requires a primitive or exact current_round value', abilityId);
+        } else if (n.type === 'clear_player_flag') {
+          if (!keys.every((key) => ['type', 'target', 'key'].includes(key))) issue(path, 'clear_player_flag contains unsupported fields', abilityId);
+        } else if (!keys.every((key) => ['type', 'target', 'key', 'amount', 'lifecycle'].includes(key)) || !Number.isSafeInteger(n.amount)) {
+          issue(path, 'add_player_flag_number requires an exact safe-integer amount', abilityId);
+        }
+      }
+      if (n.type === 'current_round') {
+        if (!/^effects\[\d+\]\.value$/.test(path) || !Object.keys(n).every((key) => ['type', 'offset'].includes(key)) ||
+            (n.offset !== undefined && !Number.isSafeInteger(n.offset)))
+          issue(path, 'current_round is supported only as an exact set_player_flag value', abilityId);
       }
       if (n.type === 'target_count_equals') {
         if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Exact target-count condition is supported only as a direct ability condition', abilityId);

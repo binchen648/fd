@@ -201,7 +201,7 @@ function context(s: GameState, sourceCardId: string, abilityId: string, event?: 
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-    cardState: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
+    cardState: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
     events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [], roomMode: options.roomMode ?? 'standard',
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
@@ -561,6 +561,61 @@ function sameBattlefieldOpponentIds(s: GameState, ctx: EffectContext): string[] 
     candidate.locationId === controller.locationId).map((candidate) => candidate.id);
 }
 
+function structuredFlagPrimitive(value: unknown): value is boolean | string | number {
+  return typeof value === 'boolean' || typeof value === 'string' ||
+    (typeof value === 'number' && Number.isSafeInteger(value));
+}
+function structuredPlayerFlags(s: GameState, playerId: PlayerId): Record<string, boolean | string | number> {
+  if (!s.players.some((candidate) => candidate.id === playerId)) reject('invalid_player', 'Unknown structured player-flag owner');
+  const r = runtime(s);
+  const all = r.structuredPlayerFlagsByPlayer ??= {};
+  const flags = all[playerId] ??= {};
+  const roundKeys = (r.structuredRoundFlagKeysByPlayer ??= {})[playerId] ??= {};
+  for (const [key, value] of Object.entries(flags)) {
+    if (!key || !structuredFlagPrimitive(value)) reject('invalid_state', 'Corrupt structured player flag state');
+  }
+  for (const [key, round] of Object.entries(roundKeys)) {
+    if (!key || !Number.isSafeInteger(round) || round < 1) reject('invalid_state', 'Corrupt structured round-flag state');
+    if (round === s.round.roundNumber) continue;
+    delete roundKeys[key];
+    delete flags[key];
+  }
+  return flags;
+}
+function structuredFlagValue(s: GameState, playerId: PlayerId, key: string): boolean | string | number | undefined {
+  return structuredPlayerFlags(s, playerId)[key];
+}
+function setStructuredFlag(s: GameState, playerId: PlayerId, key: string, value: boolean | string | number, thisRound: boolean): void {
+  if (!key || !structuredFlagPrimitive(value)) reject('invalid_state', 'Structured player flag key/value is invalid');
+  structuredPlayerFlags(s, playerId)[key] = value;
+  const roundKeys = (runtime(s).structuredRoundFlagKeysByPlayer ??= {})[playerId] ??= {};
+  if (thisRound) roundKeys[key] = s.round.roundNumber;
+  else delete roundKeys[key];
+}
+function exactRuleNodeKeys(value: RuleNode, allowed: readonly string[]): boolean {
+  return Object.keys(value).every((key) => allowed.includes(key));
+}
+function structuredFlagLifecycle(value: unknown): boolean {
+  if (value === undefined) return false;
+  const lifecycle = node(value);
+  if (!exactRuleNodeKeys(lifecycle, ['duration']) || lifecycle.duration !== 'this_round') {
+    reject('unsupported', 'Structured player flag lifecycle must be exactly this_round');
+  }
+  return true;
+}
+function structuredSetFlagValue(s: GameState, value: unknown): boolean | string | number {
+  if (structuredFlagPrimitive(value)) return value;
+  const current = node(value);
+  if (current.type !== 'current_round' || !exactRuleNodeKeys(current, ['type', 'offset'])) {
+    reject('unsupported', 'Structured player flag value is unsupported');
+  }
+  const offset = current.offset === undefined ? 0 : Number(current.offset);
+  if (!Number.isSafeInteger(offset)) reject('unsupported', 'Structured current-round offset must be a safe integer');
+  const round = s.round.roundNumber + offset;
+  if (!Number.isSafeInteger(round) || round < 1) reject('resolution_failed', 'Structured current-round flag value is invalid');
+  return round;
+}
+
 function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   if (!c || typeof c !== 'object') reject('unsupported', 'Unsupported condition');
   if (c.type === 'target_count_equals' && !isTargetCountEqualsCondition(c)) reject('unsupported', 'Unsupported exact target-count condition shape');
@@ -597,6 +652,25 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'target_count_equals': {
       const targets = sameBattlefieldOpponentIds(s, ctx);
       return targets !== null && targets.length === Number(c.count);
+    }
+    case 'player_flag_equals': {
+      if (!exactRuleNodeKeys(c, ['type', 'key', 'value']) || !str(c.key) || !structuredFlagPrimitive(c.value))
+        reject('unsupported', 'Structured player_flag_equals shape is invalid');
+      return structuredFlagValue(s, ctx.controllerId, str(c.key)) === c.value;
+    }
+    case 'player_flag_number_at_least': {
+      if (!exactRuleNodeKeys(c, ['type', 'key', 'value']) || !str(c.key) || !Number.isSafeInteger(c.value))
+        reject('unsupported', 'Structured player_flag_number_at_least shape is invalid');
+      const current = structuredFlagValue(s, ctx.controllerId, str(c.key));
+      return typeof current === 'number' && Number.isSafeInteger(current) && current >= Number(c.value);
+    }
+    case 'player_flag_number_current_round':
+    case 'player_flag_number_not_current_round': {
+      if (!exactRuleNodeKeys(c, ['type', 'key']) || !str(c.key))
+        reject('unsupported', 'Structured current-round player flag condition shape is invalid');
+      const current = structuredFlagValue(s, ctx.controllerId, str(c.key));
+      const equals = typeof current === 'number' && Number.isSafeInteger(current) && current === s.round.roundNumber;
+      return c.type === 'player_flag_number_current_round' ? equals : !equals;
     }
     case 'can_adjust_mana': return !runtime(s).manaGainBlocked.includes(p.id) && p.mana < (runtime(s).manaCaps[p.id] ?? 12);
     case 'controller_strict_second_battle_power': return controllerIsStrictSecondBattlePower(ctx.event, p.id);
@@ -1251,6 +1325,33 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       const moved = s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === effect.from && !excluded.includes(c.instanceId))
         .reduce((sum, c) => sum + moveCard(s, c.instanceId, str(node(effect.to).zone)), 0);
       if (str(effect.resultVar)) ctx.variables[str(effect.resultVar)] = (ctx.variables[str(effect.resultVar)] ?? 0) + moved;
+      break;
+    }
+    case 'set_player_flag': {
+      if (!exactRuleNodeKeys(effect, ['type', 'target', 'key', 'value', 'lifecycle']) || effect.target !== 'controller' || !str(effect.key))
+        reject('unsupported', 'Structured set_player_flag shape is invalid');
+      const value = structuredSetFlagValue(s, effect.value);
+      setStructuredFlag(s, ctx.controllerId, str(effect.key), value, structuredFlagLifecycle(effect.lifecycle));
+      break;
+    }
+    case 'clear_player_flag': {
+      if (!exactRuleNodeKeys(effect, ['type', 'target', 'key']) || effect.target !== 'controller' || !str(effect.key))
+        reject('unsupported', 'Structured clear_player_flag shape is invalid');
+      delete structuredPlayerFlags(s, ctx.controllerId)[str(effect.key)];
+      const roundKeys = runtime(s).structuredRoundFlagKeysByPlayer?.[ctx.controllerId];
+      if (roundKeys) delete roundKeys[str(effect.key)];
+      break;
+    }
+    case 'add_player_flag_number': {
+      if (!exactRuleNodeKeys(effect, ['type', 'target', 'key', 'amount', 'lifecycle']) || effect.target !== 'controller' ||
+          !str(effect.key) || !Number.isSafeInteger(effect.amount))
+        reject('unsupported', 'Structured add_player_flag_number shape is invalid');
+      const prior = structuredFlagValue(s, ctx.controllerId, str(effect.key));
+      const current = prior === undefined ? 0 : prior;
+      if (typeof current !== 'number' || !Number.isSafeInteger(current)) reject('invalid_state', 'Structured numeric player flag is not a safe integer');
+      const next = current + Number(effect.amount);
+      if (!Number.isSafeInteger(next)) reject('invalid_state', 'Structured numeric player flag would exceed safe integer range');
+      setStructuredFlag(s, ctx.controllerId, str(effect.key), next, structuredFlagLifecycle(effect.lifecycle));
       break;
     }
     case 'adjust_mana': {
