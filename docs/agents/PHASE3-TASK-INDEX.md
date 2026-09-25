@@ -4791,3 +4791,14 @@ Allowed B verdicts:
 - Accepted scope is the bounded player-flag condition/current-round/clear/add-number delta beyond #452, with locally bounded `key`/`lifecycle`/`offset`, finite scalar compatibility, safe-integer arithmetic/round semantics, and bounded MatchSession restore.
 - No consumer authoring, migration credit, merge, retarget, arbitrary target widening, identity/name/printed-text/Chinese routing, or SkillLib fallback is accepted by this synchronization.
 - Non-tail F4 exact-50 remains blocked pending a fresh readiness/provenance rescan on this accepted runtime. A must continue zero-credit capability work until exactly 50 identities are mechanically dependency-complete; do not shrink to a smaller S batch.
+
+## P3-A-MAIN-REPLAY-FB2-31-EVENT-PLAYER-RELATION-ACCEPTANCE-SYNC
+
+- Exact accepted B Candidate: `5d120f6a667ba1809e4c63a60018da781780ebda` (PR #454).
+- Canonical fresh-R evidence: `https://github.com/binchen648/fd/pull/454#issuecomment-5839932242`.
+- Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`; the comment is the Coordinator bounded relay of the same already-completed fresh review attempt after reviewer GitHub write 403.
+- Accepted capability is only exact type-only direct ability conditions `event_player_is_controller` / `event_player_is_opponent` over trusted `AbilityEvent.playerId`; missing/unknown actor fails closed, evaluation is read-only, and no trigger/carrier widening is accepted.
+- Base-to-Candidate `data/authoring/**` is empty. Capability remains zero-credit: formal/material `112/944`, remaining `832`.
+- Exact-50 readiness remains blocked; acceptance of this condition seam alone does not make a consumer migration-ready.
+- Next formal task: `P3-B-MAIN-REPLAY-FB2-43-EVENT-LOCATION-EQUALS-CONTROLLER`, replaying only the historically accepted exact type-only location relation condition from PR #396 / accepted Candidate `19ff09ed65e34f241d332250e1cc1370071ecf75` and canonical evidence `https://github.com/binchen648/fd/pull/396#issuecomment-5748914327`.
+- No merge, retarget, consumer authoring, or migration credit is authorized by this synchronization.
