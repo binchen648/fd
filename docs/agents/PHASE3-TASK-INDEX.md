@@ -4721,3 +4721,28 @@ Accounting: zero migration credit. Formal/material remains `112/944`, remaining 
 Allowed final status:
 - `IMPLEMENTATION_COMPLETE_CANDIDATE`
 - `IMPLEMENTATION_BLOCKED`
+
+## TASK P3-A-MAIN-REPLAY-M50-02-ACCEPTANCE-SYNCHRONIZATION
+
+Owner: Codex A
+Status: SYNCHRONIZED`nBranch: codex/a-p3-main-replay-m50-02-acceptance-sync`nImplementation Base: 67a8d150efd20d7b84c08fab59d9b403a9543087`nAccepted Candidate: 8e3570d753a42683d3d69751a51900f5daeaefee`nCanonical fresh-R evidence: https://github.com/binchen648/fd/pull/450#issuecomment-5838215993`nRead: docs/reports/2026-09-26-p3-a-main-replay-m50-02-acceptance-synchronization.md`n
+Result: fresh independent R returned IMPLEMENTATION_ACCEPTED_CANDIDATE for the exact revised current-main M50-02 selected-one Candidate. A synchronizes only the identity-free opponent_close_one_non_residual interaction contract. The accepted successor closes the pending source-zone stale-state P1 by revalidating through current-main isActiveCardSource(state, sourceId) before answer-time settlement.
+
+Current-main formal/material accounting remains 112/944, with 832 remaining. This capability replay is zero-credit and adds/removes no frozen identity. PR #450 remains unmerged and unretargeted.
+
+## TASK P3-A-F4-EXACT-50-COMPOSITION-01
+
+Owner: Codex A
+Status: READY`nBase: exact P3-A-MAIN-REPLAY-M50-02-ACCEPTANCE-SYNCHRONIZATION commit carrying this task block
+
+Goal: compose the next F4 migration batch at exactly 50 frozen identities. Scathach S2 is now capability-ready and may be one member, but this lane must not dispatch a singleton or another 2/5/10/20-card micro-batch. Fill the batch to exactly 50 with mechanically isolated compatible subgroups whose required runtime capabilities are already accepted on the current-main lineage and whose historical source/evidence can be recovered exactly.
+
+Hard constraints:
+- every non-tail F4 batch contains exactly 50 frozen identities;
+- combine multiple compatible mechanically isolated subgroups when one capability family contributes fewer than 50;
+- do not include identities with unresolved runtime prerequisites, ambiguous historical source, duplicate frozen IDs, or unverified Base/Candidate lineage;
+- no new runtime capability may be smuggled into an S migration batch; dispatch missing generic runtime as zero-credit B first;
+- no merge/retarget, no character-name or Chinese-text runtime routing, no SkillLib fallback;
+- formal/material stays 112/944 until an exact-50 S Candidate receives fresh independent MIGRATION_ACCEPTED and A synchronizes it.
+
+Required planning output: an exact 50-identity manifest with subgroup/source/evidence/prerequisite classification, Base frozen rescan, zero-duplicate proof, and explicit exclusion reasons for near-ready identities not admitted. Only then dispatch the exact-50 S batch.
