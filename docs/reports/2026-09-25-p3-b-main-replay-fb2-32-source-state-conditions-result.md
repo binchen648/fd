@@ -77,3 +77,21 @@ R2 verification on the exact successor scratch snapshot:
 - affected focused set — PASS, **5 files / 89 tests**; FB2-32 **9/9**, FB2-42 **9/9**, FB2-49 **51/51**.
 - current-main frozen/material accounting remains **112/944**, zero migration credit.
 - `git diff --check` is required on the exact successor tree before freeze.
+## Revision R3 - remaining runtime condition-carrier boundary closure
+
+Fresh independent R on successor Candidate `213a8d758e9f9b07b1d6cf2e85d41fab37a2e969` returned `IMPLEMENTATION_NEEDS_REVISION`. Reviewer GitHub comment publication failed with `GITHUB_WRITE_FAILED_403`; the same completed review attempt returned a bounded evidence relay. The later marker-only comment `https://github.com/binchen648/fd/pull/447#issuecomment-5834969544` is not treated as standalone canonical evidence.
+
+R3 closes the two remaining loader/runtime route mismatches from that exact review attempt:
+
+- `target.conditions` is scanned for every target type, including `choice`; source-state nodes there are reported unsupported and disable automation;
+- `ruleModifiers[].conditions` is scanned as `ruleModifiers.conditions`; source-state nodes there are likewise reported unsupported and disable automation;
+- focused regressions cover both paths and require the exact source-state boundary reason plus `execution.mode = unsupported`.
+
+No new runtime vocabulary, authoring consumer, trigger, effect, target, modifier semantics, or migration credit is introduced. Current-main formal/material accounting remains **112/944**, remaining **832**.
+
+R3 verification on the exact successor scratch snapshot:
+
+- `npm run typecheck` - PASS.
+- affected focused set - PASS, **5 files / 91 tests**; FB2-32 **11/11**, FB2-42 **9/9**, FB2-49 **51/51**, card-source-state **5/5**, resolution-dataflow **15/15**.
+- R3 changes only loader boundary coverage, two focused regressions in the existing FB2-32 test file, and this result report; no authoring delta.
+- final `git diff --check` - PASS on the exact successor tree.

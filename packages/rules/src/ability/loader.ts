@@ -229,9 +229,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       for (const target of nodes(a.targets)) {
         if (!['card_instance', 'location', 'choice', 'player'].includes(str(target.type))) issue('targets.type', 'Unmapped target type', id);
+        scan(target.conditions, 'targets.conditions', id);
         if (target.type !== 'choice') {
           scan(target.constraints, 'targets.constraints', id);
-          scan(target.conditions, 'targets.conditions', id);
           if (target.type === 'location' && nodes(target.constraints).some(c => c.type === 'any_enabled_location') &&
             nodes(target.constraints).some(c => !['any_enabled_location', 'not_location_kind'].includes(str(c.type)))) {
             issue('targets.constraints', 'Any-location selection cannot silently ignore additional constraints', id);
@@ -257,6 +257,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         const ruleIsStaticException = m.operation === 'ignore' && m.rule === 'netherworld_protection';
         if (m.rule !== 'effect_prevention' && !ruleIsPlayException && !ruleIsStaticException && !lifecycle.duration && !node(m.lifecycle).duration) issue('ruleModifiers.lifecycle', 'Modifier requires lifecycle', id);
         scan(m.value, 'ruleModifiers.value', id); scan(node(m.scope).constraints, 'ruleModifiers.scope.constraints', id);
+        scan(m.conditions, 'ruleModifiers.conditions', id);
         if (node(m.scope).object && !['source_card', 'this_card', 'attack_card', 'this_effect', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield', 'all_players'].includes(str(node(m.scope).object))) issue('ruleModifiers.scope.object', 'Unmapped modifier scope', id);
         if (node(m.scope).controller && !['self', 'controller', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield'].includes(str(node(m.scope).controller))) issue('ruleModifiers.scope.controller', 'Unmapped modifier controller', id);
         if (m.lifecycle && a.lifecycle && JSON.stringify(m.lifecycle) !== JSON.stringify(a.lifecycle) &&

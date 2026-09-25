@@ -128,6 +128,37 @@ describe('P3-FB2-32 source-state conditions', () => {
     expect(loaded.cards['skill.source']!.abilities[0]!.execution.mode).toBe('unsupported');
   });
 
+  it('rejects source-state conditions from choice target.conditions and disables automation', () => {
+    const authored = archive({ type: 'source_owned' }) as any;
+    authored.cards[0].abilities[0].conditions = [];
+    authored.cards[0].abilities[0].targets = [{
+      id: 'chosen_option', type: 'choice', options: [{ id: 'yes' }],
+      conditions: [{ type: 'source_active' }], count: { min: 1, max: 1 },
+    }];
+    const loaded = rules.loadAuthoringJson(authored);
+    expect(loaded.report).toEqual(expect.arrayContaining([
+      expect.objectContaining({ path: 'targets.conditions[0]', reason: 'Source-state condition is supported only under ability conditions' }),
+    ]));
+    expect(loaded.cards['skill.source']!.abilities[0]!.execution.mode).toBe('unsupported');
+  });
+
+  it('rejects source-state conditions from ruleModifiers.conditions and disables automation', () => {
+    const authored = archive({ type: 'source_owned' }) as any;
+    const ability = authored.cards[0].abilities[0];
+    ability.conditions = [];
+    ability.lifecycle = { duration: 'this_round' };
+    ability.ruleModifiers = [{
+      type: 'combat_power_modifier', operation: 'add', rule: 'attack.currentPower', value: 1,
+      scope: { object: 'attack_card', controller: 'self', constraints: [] },
+      conditions: [{ type: 'source_owned' }], lifecycle: { duration: 'this_round' },
+    }];
+    const loaded = rules.loadAuthoringJson(authored);
+    expect(loaded.report).toEqual(expect.arrayContaining([
+      expect.objectContaining({ path: 'ruleModifiers.conditions[0]', reason: 'Source-state condition is supported only under ability conditions' }),
+    ]));
+    expect(loaded.cards['skill.source']!.abilities[0]!.execution.mode).toBe('unsupported');
+  });
+
   it('fails closed without throwing when an event-rule source has no physical card', () => {
     const state = createSeededGameState({ activeSeats: [1, 2] });
     state.cards = [];
