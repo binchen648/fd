@@ -4481,3 +4481,61 @@ Do not merge independent card-action contracts for acceptance.
 Return findings first, then Gate judgment.
 Final status must be one of the statuses allowed by your TASK block.
 ```
+## TASK P3-A-MAIN-REPLAY-FB2-49-ACCEPTANCE-SYNCHRONIZATION
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-main-replay-fb2-49-acceptance-sync`
+Implementation Base: `5c8e21c853ac95a1b0ee42e28108ae40692491cf`
+Accepted Candidate: `658849d1602bd4b705a924f6aa649e973d9d65ca`
+Canonical fresh-R evidence: `https://github.com/binchen648/fd/pull/445#issuecomment-5832739229`
+Read: `docs/reports/2026-09-25-p3-a-main-replay-fb2-49-acceptance-synchronization.md`
+
+Result: fresh independent R accepted the exact current-main FB2-49 semantic replay Candidate. A synchronizes only the identity-free opponent-close-to-one transaction/lifecycle/restore/replay authority capability on the current-main reconciliation lineage. This is zero-credit infrastructure and does not import any frontier consumer authoring, generated material, Astolfo/Scathach migration, or divergent ancestry.
+
+Current-main formal/material accounting remains `111/944`, with `833` remaining. No frozen identity is added or removed by FB2-49 capability acceptance synchronization.
+
+PR #422, PR #424, PR #423, PR #441 and R123 remain semantic/evidence sources only; they are not ancestry sources and must not be cherry-picked/merged/retargeted wholesale.
+
+## TASK P3-S-MAIN-REPLAY-ASTOLFO-S1-CONSUMER
+
+Owner: Codex S
+Status: `READY`
+Base: exact `P3-A-MAIN-REPLAY-FB2-49-ACCEPTANCE-SYNCHRONIZATION` commit carrying this task block
+Identity: `servant.astolfo.skill.sc-astolfo-1`
+Historical source migration: PR #423 exact Base `2909898608d0d986fbc77b5936bdfbfdcf0ed953` -> accepted Candidate `110257b76a957a5bba39ea1822f7861cecf288a9`
+Historical reviewer evidence: `https://github.com/binchen648/fd/pull/423#issuecomment-5775187822`
+Current-main FB2-49 prerequisite: Candidate `658849d1602bd4b705a924f6aa649e973d9d65ca`, evidence `https://github.com/binchen648/fd/pull/445#issuecomment-5832739229`
+Reconciliation source: PR #442 / `artifacts/phase3-frontier-reconciliation.json`
+Locked Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+
+Goal: replay exactly one frozen consumer identity, `servant.astolfo.skill.sc-astolfo-1`, onto the synchronized current-main FB2-49 runtime. Treat historical PR #423 as source/semantic/test evidence only; do not transplant its ancestry. Reconstruct the complete card against current-main and preserve the accepted `opponent_close_non_residual_to_one` whole-ability envelope, final skill-zone play threshold/cost behavior, source ownership/battlefield conditions, combat timing, true-name reveal, private per-opponent keep-one settlement, authenticated persistence/replay boundaries, and malformed/stale fail-closed behavior.
+
+Authorized scope:
+- `data/authoring/servants/servant.astolfo.json` — exactly the one dispatched frozen card;
+- `packages/rules/tests/astolfo-s1-consumer-migration.test.ts` — current-main focused whole-card/runtime/persistence/accounting evidence;
+- one S result report for this task;
+- a pre-existing test may receive only the minimum accounting-baseline compatibility edit if current-main absolute-count coupling mechanically requires it; do not port historical compatibility edits speculatively.
+
+Forbidden scope:
+- no production runtime changes;
+- no second frozen identity;
+- no Scathach S2 / M50-02 decomposition in this task;
+- no `data/generated/**`, packs, client production, promotion/governance policy, or frontier ancestry import;
+- no character/card canonical-ID routing, printed-text/Chinese-text runtime routing, or SkillLib fallback.
+
+Accounting contract:
+- exact Base material/formal overlap: `111/944`, duplicate frozen IDs `0`;
+- Candidate material must be exactly `112/944`: exact +1 Astolfo S1, zero frozen removals, zero duplicates, no second frozen identity;
+- formal migration remains `111/944` until fresh independent R returns `MIGRATION_ACCEPTED` for the exact Candidate and A performs acceptance synchronization;
+- after that A synchronization only, formal/material may become `112/944`, remaining `832`.
+
+Required validation before fresh R: complete-card source/printed-clause provenance recheck; loader admission with zero report for the exact authoring; 7/8-mana play boundary and printed cost 4; combat timing/true-name/source ownership/battlefield positives and negatives; exact FB2-49 settlement + forged/stale/replay/persistence negatives; focused Astolfo + FB2-49 + FB2-42 coverage; `npm.cmd run typecheck`; official `npm.cmd run test:ci -- --maxWorkers=2`; `npm.cmd run content:validate`; generated-content determinism; `git diff --check`; frozen rescan proving Base `111/944` -> Candidate `112/944`, exact +1, zero removals/duplicates.
+
+Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
+
+Allowed final status:
+- `MIGRATION_COMPLETE_CANDIDATE`
+- `MIGRATION_BLOCKED`
+
+On `MIGRATION_COMPLETE_CANDIDATE`, commit/push one exact Candidate, open one stacked PR against this exact A synchronization branch, and request one fresh independent R. Do not merge or retarget.
