@@ -4306,8 +4306,10 @@ Current-main formal accepted overlap remains `111/944`. Historical frontier form
 ## TASK P3-B-MAIN-REPLAY-FB2-49
 
 Owner: Codex B2
-Status: `READY`
-Base: exact `P3-A-MAIN-REPLAY-FB2-49-DISPATCH` commit carrying this task block
+Status: `IMPLEMENTATION_BLOCKED`
+Base: exact A dispatch `8842186ca3653775d35dd07eff1965606532da66`
+Blocker report: `docs/reports/2026-09-25-p3-b-main-replay-fb2-49-blocked.md`
+Result: current main lacks the accepted FB2-42 `card_close` forbid prerequisite that the exact #422 FB2-49 accepted runtime checks before any close mutation. The replay therefore stops fail-closed without importing FB2-42 or any frontier consumer material. Next A action is a separate zero-credit current-main semantic replay of FB2-42, then re-dispatch FB2-49 from that synchronized capability lineage.
 Source semantic diff: PR #422 exact Base `822b5f9dfd05a64a5707fcb945b8b85eff2238e6` -> accepted Candidate `aa04a12e1647560374e09f7e2b6e62a5dccd0954`
 Accepted source reviewer evidence: `https://github.com/binchen648/fd/pull/422#issuecomment-5775423822`
 Locked Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
