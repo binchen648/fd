@@ -13,6 +13,7 @@ import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSema
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
 import {
   isAcceptedOpponentCloseToOneAbility,
+  isAcceptedOpponentCloseOneNonResidualAbility,
   isOpponentCloseToOneCandidate,
 } from './opponent-close-to-one';
 import {
@@ -33,7 +34,7 @@ import {
 import type {
   AbilityCommand, AbilityDefinitionPack, AbilityEvent, AbilityPlayerView, AbilityRuntime, AuthoringAbility, AuthoringCard,
   BattleResult, BattleResultData, CalculationLine, CardPlayClassification, CardRuntimeState, DispatchResult, EffectContext, ExecutableCardDefinition,
-  LegalAction, OngoingEffect, PendingDecision, PendingOpponentCloseToOne, RuleNode, TriggeredAbility,
+  LegalAction, OngoingEffect, PendingDecision, PendingOpponentCloseToOne, PlayerId, RuleNode, TriggeredAbility,
   AbilityInteractionClassification,
   PlayCardAction,
 } from './types';
@@ -707,6 +708,9 @@ function canActivateAcceptedOpponentCloseToOne(s: GameState, sourceId: string, a
     source.ownerPlayerId === controller.id && source.controllerPlayerId === controller.id &&
     isValidOpponentCloseToOneSourceCardState(sourceState) && sourceState.faceDown === false;
 }
+function canActivateAcceptedOpponentCloseSelectedOne(s: GameState, sourceId: string, a: AuthoringAbility): boolean {
+  return isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled') && !!opponentCloseSelectedOneFacts(s, sourceId);
+}
 function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
   if (a.execution.mode !== 'automatic') return false;
   if (isPlayActionStructuralCandidate(a) && !isPlayActionRouteCandidate(a)) return false;
@@ -717,7 +721,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isMagicResistancePowerModifierCandidate(a) && !isMagicResistancePowerModifierSemantic(a)) return false;
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
-  if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'compiled')) return false;
+  if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'compiled') &&
+      !isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled')) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
@@ -748,6 +753,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     if (classifyAlterEgoTransformVariant(a) === 'ex' && !hasAvailableManaForFixedCosts(s, ctx, a)) return false;
   }
   if (isAcceptedOpponentCloseToOneAbility(a, 'compiled')) return canActivateAcceptedOpponentCloseToOne(s, sourceId, a);
+  if (isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled')) return canActivateAcceptedOpponentCloseSelectedOne(s, sourceId, a);
   return a.conditions.every(c => condition(s, context(s, sourceId, a.id, event), c));
 }
 function isGameStartRuleOverrideCandidate(a: AuthoringAbility): boolean {
@@ -1540,6 +1546,13 @@ function isExactOpponentCloseToOneTarget(value: unknown): value is RuleNode {
     value.id === 'frozen_non_residual_attack_to_keep' && value.type === 'card_instance' &&
     value.count.min === 1 && value.count.max === 1;
 }
+function isExactOpponentCloseSelectedOneTarget(value: unknown): value is RuleNode {
+  if (!isPlainRecord(value) || !isPlainRecord(value.count)) return false;
+  const keys = Object.keys(value).sort(); const countKeys = Object.keys(value.count).sort();
+  return exactPlayerArray(keys, ['count', 'id', 'type']) && exactPlayerArray(countKeys, ['max', 'min']) &&
+    value.id === 'frozen_non_residual_attack_to_close' && value.type === 'card_instance' &&
+    value.count.min === 1 && value.count.max === 1;
+}
 
 function isExactPlayerOwnerMap(value: unknown, ids: readonly string[]): value is Record<string, string> {
   if (value === null || typeof value !== 'object' || Array.isArray(value)) return false;
@@ -1597,6 +1610,10 @@ function hasExactOpponentCloseToOneDecisionRootKeys(value: unknown): boolean {
 function hasExactOpponentCloseToOneInteractionRootKeys(value: unknown): boolean {
   if (!isPlainRecord(value)) return false;
   return exactPlayerArray(Object.keys(value).sort(), ['abilityId', 'battlefieldId', 'cancelPolicy', 'constraints', 'continuationRef', 'createdRevision', 'decisionPlayerId', 'initiatingControllerId', 'kind', 'qualifyingCardIds', 'qualifyingCardOwners', 'remainingDecisionPlayerIds', 'sourceCardInstanceId', 'template', 'visibility']);
+}
+function hasExactOpponentCloseSelectedOneInteractionRootKeys(value: unknown): boolean {
+  if (!isPlainRecord(value)) return false;
+  return exactPlayerArray(Object.keys(value).sort(), ['abilityId', 'battlefieldId', 'cancelPolicy', 'candidateIds', 'candidateOwners', 'constraints', 'continuationRef', 'createdRevision', 'decisionPlayerId', 'initiatingControllerId', 'kind', 'sourceCardInstanceId', 'template', 'visibility']);
 }
 
 function isExactOpponentCloseToOneQueueEntry(value: unknown): value is PendingOpponentCloseToOne {
@@ -1657,6 +1674,47 @@ function qualifyingOpponentCloseToOneCardIds(s: GameState, decisionPlayerId: str
   }).map((candidate) => candidate.instanceId);
 }
 
+function opponentCloseSelectedOneFacts(s: GameState, sourceId: string): {
+  controllerId: PlayerId; decisionPlayerId: PlayerId; battlefieldId: string; candidateIds: string[]; candidateOwners: Record<string, PlayerId>;
+} | undefined {
+  const r = runtime(s); const source = s.cards.find((candidate) => candidate.instanceId === sourceId);
+  if (!source || source.ownerPlayerId !== source.controllerPlayerId) return undefined;
+  const controller = s.players.find((candidate) => candidate.id === source.controllerPlayerId);
+  const sourceState: unknown = r.cardState[sourceId];
+  if (!controller || controller.status !== 'active' || !isBattlefield(s, controller.locationId) ||
+      !isValidOpponentCloseToOneSourceCardState(sourceState) || sourceState.active !== true || sourceState.faceDown !== false) return undefined;
+  const opponents = s.players.filter((candidate) => candidate.id !== controller.id && candidate.status === 'active' &&
+    candidate.locationId === controller.locationId).sort((left, right) => left.seat - right.seat);
+  if (opponents.length !== 1) return undefined;
+  const decisionPlayerId = opponents[0]!.id;
+  const candidateIds = qualifyingOpponentCloseToOneCardIds(s, decisionPlayerId).filter((instanceId) => {
+    const physical = s.cards.find((candidate) => candidate.instanceId === instanceId);
+    return !!physical && physical.ownerPlayerId === decisionPlayerId && !isCardCloseForbidden(s, instanceId);
+  });
+  if (candidateIds.length < 1) return undefined;
+  const candidateOwners = Object.fromEntries(candidateIds.map((instanceId) => [instanceId, card(s, instanceId).ownerPlayerId])) as Record<string, PlayerId>;
+  return { controllerId: controller.id, decisionPlayerId, battlefieldId: controller.locationId!, candidateIds, candidateOwners };
+}
+
+function createOpponentCloseSelectedOneDecision(s: GameState, ctx: EffectContext, a: AuthoringAbility): PendingDecision {
+  if (!isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled')) reject('resolution_failed', 'Unsupported opponent close-selected-one interaction semantic shape');
+  const facts = opponentCloseSelectedOneFacts(s, ctx.sourceCardId);
+  if (!facts || facts.controllerId !== ctx.controllerId) reject('no_legal_target', 'Opponent close-selected-one has no legal chooser or card');
+  const id = nextId(s, 'opponent-close-selected-one');
+  const target: RuleNode = { id: 'frozen_non_residual_attack_to_close', type: 'card_instance', count: { min: 1, max: 1 } };
+  return {
+    id, controllerId: facts.decisionPlayerId, target, candidates: [...facts.candidateIds], min: 1, max: 1,
+    context: { controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, variables: {}, selections: {} },
+    remainingEffects: [],
+    interaction: {
+      kind: 'opponent_close_selected_one_non_residual_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: runtime(s).revision + 1,
+      continuationRef: `${id}:continuation`, initiatingControllerId: ctx.controllerId, decisionPlayerId: facts.decisionPlayerId,
+      battlefieldId: facts.battlefieldId, candidateIds: [...facts.candidateIds], candidateOwners: { ...facts.candidateOwners },
+      constraints: { kind: 'target', targetKind: 'card', min: 1, max: 1, distinct: true },
+    },
+  };
+}
 function stageNextOpponentCloseToOneDecision(s: GameState): void {
   const r = runtime(s);
   if (r.pendingDecision) return;
@@ -2811,6 +2869,10 @@ function executeFixedControllerManaCost(s: GameState, ctx: EffectContext, a: Aut
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (isAcceptedOpponentCloseToOneAbility(a, 'compiled')) { stageOpponentCloseToOne(s, ctx, a); return; }
+  if (isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled')) {
+    runtime(s).pendingDecision = createOpponentCloseSelectedOneDecision(s, ctx, a);
+    return;
+  }
   if (isOpponentCloseToOneCandidate(a)) reject('resolution_failed', 'Unsupported opponent close-to-one interaction semantic shape');
   if (isBattleEndMobilePlayersRewardSemantic(a)) {
     settleBattleEndMobilePlayersReward(s, ctx);
@@ -2961,7 +3023,8 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) {
     reject('resolution_failed', 'Unsupported Presence Concealment semantic shape');
   }
-  if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'compiled')) {
+  if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'compiled') &&
+      !isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled')) {
     reject('resolution_failed', 'Unsupported opponent close-to-one interaction semantic shape');
   }
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) {
@@ -3297,6 +3360,43 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const selected = command.selectedIds;
       if (d.interaction) {
         const meta = d.interaction;
+        if (meta.kind === 'opponent_close_selected_one_non_residual_v1') {
+          if (!hasExactOpponentCloseToOneDecisionRootKeys(d) || !hasExactOpponentCloseSelectedOneInteractionRootKeys(meta)) {
+            reject('resolution_failed', 'Corrupt or stale opponent close-selected-one interaction state');
+          }
+          const decisionContext: unknown = d.context; const decisionTarget: unknown = d.target;
+          if (!isExactOpponentCloseToOneContext(decisionContext) || !isExactOpponentCloseSelectedOneTarget(decisionTarget)) {
+            reject('resolution_failed', 'Corrupt or stale opponent close-selected-one interaction state');
+          }
+          const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+          const ability = source ? abilityDefinition(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
+          const facts = source ? opponentCloseSelectedOneFacts(s, source.instanceId) : undefined;
+          const candidateIds = meta.candidateIds;
+          const exactCandidates = Array.isArray(candidateIds) && candidateIds.length >= 1 &&
+            candidateIds.every((id) => typeof id === 'string' && id.length > 0) && new Set(candidateIds).size === candidateIds.length;
+          const exactOwners = exactCandidates && isExactPlayerOwnerMap(meta.candidateOwners, candidateIds) && !!facts &&
+            Object.keys(facts.candidateOwners).length === candidateIds.length &&
+            candidateIds.every((id) => facts.candidateOwners[id] === meta.candidateOwners[id] && meta.candidateOwners[id] === meta.decisionPlayerId);
+          if (!ability || !isAcceptedOpponentCloseOneNonResidualAbility(ability, 'compiled') || !source || !facts ||
+              facts.controllerId !== meta.initiatingControllerId || facts.decisionPlayerId !== meta.decisionPlayerId || facts.battlefieldId !== meta.battlefieldId ||
+              !exactCandidates || !exactOwners || !exactPlayerArray(facts.candidateIds, candidateIds) ||
+              d.controllerId !== meta.decisionPlayerId || playerId !== meta.decisionPlayerId || decisionContext.controllerId !== meta.initiatingControllerId ||
+              decisionContext.sourceCardId !== meta.sourceCardInstanceId || decisionContext.abilityId !== meta.abilityId ||
+              meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
+              meta.continuationRef !== `${d.id}:continuation` || meta.createdRevision !== r.revision ||
+              !isExactOpponentCloseToOneConstraints(meta.constraints) || d.min !== 1 || d.max !== 1 ||
+              !Array.isArray(d.remainingEffects) || d.remainingEffects.length !== 0 || !exactPlayerArray(d.candidates, candidateIds) ||
+              !Array.isArray(selected) || selected.length !== 1 || !candidateIds.includes(selected[0]!)) {
+            reject('resolution_failed', 'Corrupt or stale opponent close-selected-one interaction state');
+          }
+          const selectedCardId = selected[0]!;
+          closeOpponentCardForCloseToOne(s, meta.decisionPlayerId, selectedCardId);
+          delete r.pendingDecision;
+          const closed = card(s, selectedCardId);
+          r.events.push({ type: 'opponent_card_closed_selected_one', playerId: meta.decisionPlayerId, controllerId: meta.initiatingControllerId,
+            sourceCardId: meta.sourceCardInstanceId, abilityId: meta.abilityId, cardInstanceId: selectedCardId, toZone: closed.zone });
+          break;
+        }
         if (meta.kind === 'opponent_close_non_residual_to_one_v1') {
           if (!hasExactOpponentCloseToOneDecisionRootKeys(d) || !hasExactOpponentCloseToOneInteractionRootKeys(meta)) reject('resolution_failed', 'Corrupt or stale opponent close-to-one interaction state');
           const decisionContext: unknown = d.context; const decisionTarget: unknown = d.target;

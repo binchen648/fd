@@ -139,8 +139,15 @@ export interface PendingOpponentCloseToOne {
   battlefieldId: string; qualifyingCardIds: string[]; qualifyingCardOwners: Record<string, PlayerId>;
   remainingDecisionPlayerIds: PlayerId[];
 }
+export interface OpponentCloseSelectedOneInteractionMetadata {
+  kind: 'opponent_close_selected_one_non_residual_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  initiatingControllerId: PlayerId; decisionPlayerId: PlayerId; battlefieldId: string;
+  candidateIds: string[]; candidateOwners: Record<string, PlayerId>;
+  constraints: { kind: 'target'; targetKind: 'card'; min: 1; max: 1; distinct: true };
+}
 export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata |
-  OpponentCloseToOneInteractionMetadata;
+  OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];

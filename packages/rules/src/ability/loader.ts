@@ -5,7 +5,9 @@ import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPla
 import { isAcceptedControlledCardCloseForbidModifier } from './card-close-forbid';
 import {
   OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT,
+  OPPONENT_CLOSE_ONE_NON_RESIDUAL_EFFECT,
   isAcceptedOpponentCloseToOneAbility,
+  isAcceptedOpponentCloseOneNonResidualAbility,
   isOpponentCloseToOneCandidate,
 } from './opponent-close-to-one';
 export function node(value: unknown): RuleNode {
@@ -68,7 +70,7 @@ const supportedTypes = new Set([
   'false_attendant_book_replacement', 'existing_attack_controlled_by_target', 'not_controller', 'at_battlefield',
   // Phase 3A resolution/data-flow infrastructure
   'remove_advantage_position', 'noop', 'fail_invariant', 'install_rule_override', 'provision_skill_cards',
-  OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT,
+  OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT, OPPONENT_CLOSE_ONE_NON_RESIDUAL_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -321,7 +323,8 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (isPrivateOptionalHandPlayInteractionCandidate(candidateAbility) && !isPrivateOptionalHandPlayInteractionSemantic(candidateAbility)) {
         issue('interaction.gateway', 'Unsupported private optional hand-play interaction semantic shape', id);
       }
-      if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'authoring')) {
+      if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'authoring') &&
+          !isAcceptedOpponentCloseOneNonResidualAbility(a, 'authoring')) {
         issue('opponentCloseToOne.gateway', 'Unsupported opponent close-to-one interaction semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');

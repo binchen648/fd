@@ -541,6 +541,12 @@ function isRestorePendingOpponentCloseToOne(value: unknown): boolean {
     isRestoreStringArray(value.remainingDecisionPlayerIds);
 }
 
+function hasExactRestoreKeys(value: unknown, expected: readonly string[]): value is Record<string, unknown> {
+  if (!isRestoreRecord(value)) return false;
+  const actual = Object.keys(value).sort(); const wanted = [...expected].sort();
+  return actual.length === wanted.length && actual.every((key, index) => key === wanted[index]);
+}
+
 function isRestoreInteractionConstraints(value: unknown, targetKinds: readonly string[]): boolean {
   return isRestoreRecord(value) && value.kind === 'target' && typeof value.targetKind === 'string' && targetKinds.includes(value.targetKind) &&
     isRestoreFiniteNumber(value.min) && isRestoreFiniteNumber(value.max) && value.distinct === true;
@@ -575,7 +581,21 @@ function isRestorePendingInteraction(value: unknown): boolean {
         typeof value.battlefieldId === 'string' && isRestoreStringArray(value.qualifyingCardIds) &&
         isRestoreRecord(value.qualifyingCardOwners) && Object.values(value.qualifyingCardOwners).every((owner) => typeof owner === 'string') &&
         isRestoreStringArray(value.remainingDecisionPlayerIds) && isRestoreInteractionConstraints(value.constraints, ['card']);
-    default:
+    case 'opponent_close_selected_one_non_residual_v1': {
+      if (!hasExactRestoreKeys(value, [
+        'kind', 'template', 'visibility', 'cancelPolicy', 'sourceCardInstanceId', 'abilityId', 'createdRevision', 'continuationRef',
+        'initiatingControllerId', 'decisionPlayerId', 'battlefieldId', 'candidateIds', 'candidateOwners', 'constraints',
+      ]) || typeof value.initiatingControllerId !== 'string' || typeof value.decisionPlayerId !== 'string' ||
+          value.decisionPlayerId === value.initiatingControllerId || typeof value.battlefieldId !== 'string') return false;
+      const candidateIds = value.candidateIds;
+      if (!Array.isArray(candidateIds) || candidateIds.length < 1 ||
+          !candidateIds.every((id) => typeof id === 'string' && id.length > 0) || new Set(candidateIds).size !== candidateIds.length) return false;
+      const owners = value.candidateOwners;
+      if (!hasExactRestoreKeys(owners, candidateIds) || !candidateIds.every((id) => typeof owners[id] === 'string')) return false;
+      const constraints = value.constraints;
+      if (!hasExactRestoreKeys(constraints, ['kind', 'targetKind', 'min', 'max', 'distinct'])) return false;
+      return isRestoreInteractionConstraints(constraints, ['card']) && constraints.min === 1 && constraints.max === 1;
+    }    default:
       return false;
   }
 }
@@ -973,6 +993,19 @@ function isRestoreAbilityRuntimeReferences(
       restoreIdsBelongTo(entry.remainingDecisionPlayerIds, playerIds) &&
       (entry.qualifyingCardIds as string[]).every((id) => cardsByInstance.has(id)) &&
       Object.values(entry.qualifyingCardOwners as Record<string, unknown>).every((owner) => playerIds.has(owner as string)))) return false;
+  const pendingDecision = value.pendingDecision;
+  if (isRestoreRecord(pendingDecision) && isRestoreRecord(pendingDecision.interaction) &&
+      pendingDecision.interaction.kind === 'opponent_close_selected_one_non_residual_v1') {
+    const meta = pendingDecision.interaction;
+    const candidateIds = meta.candidateIds as string[];
+    const owners = meta.candidateOwners as Record<string, unknown>;
+    if (!playerIds.has(meta.initiatingControllerId as string) || !playerIds.has(meta.decisionPlayerId as string) ||
+        !locationIds.has(meta.battlefieldId as string) || pendingDecision.controllerId !== meta.decisionPlayerId ||
+        !restoreSourceControllerMatches(cardsByInstance, eventPlacements, meta.sourceCardInstanceId as string, meta.initiatingControllerId as string) ||
+        !restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, meta.sourceCardInstanceId as string, meta.abilityId as string) ||
+        !candidateIds.every((id) => cardsByInstance.has(id) &&
+          cardsByInstance.get(id)?.ownerPlayerId === owners[id] && owners[id] === meta.decisionPlayerId)) return false;
+  }
   if (value.pendingBattleTerminalEvent !== undefined && (!isRestoreRecord(value.pendingBattleTerminalEvent) ||
       !isRestoreAbilityEventReferences(value.pendingBattleTerminalEvent, playerIds, locationIds))) return false;
   if (value.transformedReturnSilenceSourceCardIds !== undefined &&
