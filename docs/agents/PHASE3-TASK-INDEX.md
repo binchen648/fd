@@ -6304,3 +6304,27 @@ Base: exact P3-A-R122-F4-M50-01-ACCEPTANCE-SYNC commit carrying this task block
 Result required: migrate the next **exact 50** previously unmaterialized frozen skills from the synchronized `219/944` formal / `215/944` material baseline. This is a macro-batch, not a single-family size cap: combine multiple mechanically isolated, source-grounded compatible subgroups as needed to fill exactly 50. Reuse accepted shared runtime primitives and existing F1/capability evidence; do not redo whole-roster classification. If an individual selected skill is truly blocked, replace it with another eligible frozen skill where possible so the non-tail batch remains exactly 50. Only the final project tail may contain fewer than 50.
 
 The batch must produce one exact Base/Candidate, one PR and one fresh independent R for the whole 50-skill Candidate. Runtime capability scaffolding remains zero-credit; only exact migrated frozen identities accepted by fresh R and synchronized by A receive formal credit. Pre-review verification is focused/affected plus necessary typecheck/content validation/determinism/diff checks; full convergence gates remain mandatory at F4/F5 closure. Do not merge/retarget, do not create per-skill R, and do not shrink the batch merely because an individual capability family has fewer than 50 consumers.
+## TASK P3-A-R123-F4-M50-02-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: SYNCHRONIZED
+Branch: $branch
+Base: exact accepted Candidate $candidate
+Read: $reportRel
+
+Result: synchronize the exact fresh independent R IMPLEMENTATION_ACCEPTED_CANDIDATE for PR #441 Candidate $candidate, backed by bounded-relay canonical GitHub evidence $evidence. The relay contains the Reviewer-supplied complete evidence body from the same already-completed fresh review attempt after Reviewer GitHub write returned explicit 403; it is not a Coordinator review or second R.
+
+Exact material accounting is 215/944 -> 265/944, exactly +50 fresh frozen additions, zero removals and zero duplicate frozen IDs. The Reviewer independently verified the exact direct-parent lineage, exact 50-skill roster, the three contract-guided blocked-selection replacements, shared runtime changes, identity-free/fail-closed routing constraints, and the Candidate verification gates.
+
+Formal project migration advances exactly +50 to **269/944**, with **675** remaining; material authoring overlap is **265/944**. PR #441 remains OPEN, unmerged and unretargeted.
+
+## TASK P3-F4-M50-03-50-SKILL-MACRO-MIGRATION-BATCH
+
+Owner: Codex Batch
+Status: READY
+Branch: codex/batch-p3-f4-m50-03-50-skill-macro
+Base: exact P3-A-R123-F4-M50-02-ACCEPTANCE-SYNC commit carrying this task block
+
+Result required: migrate the next **exact 50** previously unmaterialized frozen skills from the synchronized 269/944 formal / 265/944 material baseline. This remains one non-tail macro-batch: combine multiple mechanically isolated, source-grounded compatible subgroups as needed to fill exactly 50, reuse accepted shared runtime primitives and existing F1/capability evidence, and replace truly blocked selections with other eligible frozen skills where possible. Only the final project tail may contain fewer than 50.
+
+The batch must produce one exact Base/Candidate, one PR and one fresh independent R for the whole 50-skill Candidate. Runtime capability scaffolding remains zero-credit; only exact migrated frozen identities accepted by fresh R and synchronized by A receive formal credit. Do not merge/retarget, do not create per-skill R, and do not shrink the batch merely because an individual capability family has fewer than 50 consumers.
