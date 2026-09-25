@@ -61,7 +61,7 @@ const supportedTypes = new Set([
   'highest_cost_noble_phantasm_cost_at_least', 'selected_count_at_least',
   'create_modifier', 'not_location_kind', 'power_bonus', 'card_not_on_board', 'not_card_id',
   // Master authoring adapters
-  'record_master_directive', 'adjust_command_seals', 'set_mana', 'create_independent_deck',
+  'record_master_directive', 'adjust_command_seals', 'set_mana', 'set_player_flag', 'create_independent_deck',
   'draw_from_independent_deck', 'activate_card_by_id', 'replace_card_in_deck',
   'movement_rule_override', 'deployment_rule_override', 'play_source_card',
   'attach_card_to_player_attack', 'append_only_rule', 'transfer_vp_to_owner',
@@ -132,7 +132,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (Array.isArray(value)) { value.forEach((v, i) => scan(v, `${path}[${i}]`, abilityId)); return; }
       if (!value || typeof value !== 'object') return;
       const n = node(value);
-      for (const key of Object.keys(n)) if (!mechanicKeys.has(key)) issue(`${path}.${key}`, 'Unmapped mechanic field', abilityId);
+      for (const key of Object.keys(n)) if (!mechanicKeys.has(key) && !(n.type === 'set_player_flag' && key === 'key')) issue(`${path}.${key}`, 'Unmapped mechanic field', abilityId);
       const exactOpponentCloseCondition = !!abilityId && acceptedOpponentCloseToOneAbilityIds.has(abilityId) &&
         ['source_owned', 'at_battlefield'].includes(str(n.type));
       if (n.type && !supportedTypes.has(str(n.type)) && !exactOpponentCloseCondition) issue(`${path}.type`, `Unmapped type: ${str(n.type)}`, abilityId);
@@ -149,6 +149,15 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (!Object.keys(n).every((key) => ['type', 'scope', 'count'].includes(key)) ||
           str(n.scope) !== 'same_battlefield_opponents' || !Number.isSafeInteger(n.count) || Number(n.count) < 0) {
           issue(path, 'Exact target-count condition requires same_battlefield_opponents and a nonnegative safe-integer count', abilityId);
+        }
+      }
+      if (n.type === 'set_player_flag') {
+        const scalar = typeof n.value === 'boolean' || typeof n.value === 'string' ||
+          (typeof n.value === 'number' && Number.isFinite(n.value));
+        if (!/^effects\[\d+\]$/.test(path)) issue(path, 'Scalar player flag is supported only as a direct ability effect', abilityId);
+        if (!Object.keys(n).every((key) => ['type', 'target', 'key', 'value'].includes(key)) ||
+          n.target !== 'controller' || typeof n.key !== 'string' || n.key.length === 0 || !scalar) {
+          issue(path, 'Scalar player flag requires exact controller target, nonempty key, and explicit boolean/string/finite-number value', abilityId);
         }
       }
       if (n.type === 'gain_victory_points_per_target') {

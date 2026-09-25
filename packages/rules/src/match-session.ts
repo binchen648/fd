@@ -408,6 +408,12 @@ function isRestoreStringArrayMap(value: unknown): value is Record<string, string
   return isRestoreRecord(value) && Object.values(value).every(isRestoreStringArray);
 }
 
+function isRestoreStructuredPlayerFlags(value: unknown): value is Record<string, Record<string, boolean | string | number>> {
+  if (!isRestoreRecord(value)) return false;
+  return Object.values(value).every((flags) => isRestoreRecord(flags) && Object.entries(flags).every(([key, entry]) =>
+    key.length > 0 && (typeof entry === 'boolean' || typeof entry === 'string' || isRestoreFiniteNumber(entry))));
+}
+
 function isRestoreNestedNonNegativeIntegerMap(value: unknown): boolean {
   return isRestoreRecord(value) && Object.values(value).every(isRestoreNonNegativeIntegerMap);
 }
@@ -710,6 +716,7 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       (value.playRulesVersion !== 'legacy-v0' && value.playRulesVersion !== 'explicit-v1') ||
       !isRestoreRoundPlayCounters(value.playCounters)) return false;
 
+  if (value.structuredPlayerFlagsByPlayer !== undefined && !isRestoreStructuredPlayerFlags(value.structuredPlayerFlagsByPlayer)) return false;
   if (value.playerStatusKeysByPlayer !== undefined && !isRestoreStringArrayMap(value.playerStatusKeysByPlayer)) return false;
   if (value.combatWinRoundByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.combatWinRoundByPlayer)) return false;
   if (value.lifecycleTransitions !== undefined && (!Array.isArray(value.lifecycleTransitions) || !value.lifecycleTransitions.every(isRestoreLifecycleTransition))) return false;
@@ -952,6 +959,9 @@ function isRestoreAbilityRuntimeReferences(
   if (!(value.hostRequests as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
   if (!(value.ongoingEffects as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
   if (!(value.responseWindows as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
+
+  if (value.structuredPlayerFlagsByPlayer !== undefined &&
+      !restoreRecordKeysBelongTo(value.structuredPlayerFlagsByPlayer, playerIds)) return false;
 
   if (value.pendingDelayedActivations !== undefined && !(value.pendingDelayedActivations as Array<Record<string, unknown>>).every((entry) =>
       playerIds.has(entry.controllerId as string) &&
