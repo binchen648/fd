@@ -222,6 +222,8 @@ export interface AbilityRuntime {
   pendingPresenceConcealmentDefeats?: PendingPresenceConcealmentDefeat[];
   /** Server-owned post-scoring battle events waiting for Trigger Gateway settlement. */
   pendingPostBattleEvents?: AbilityEvent[];
+  /** Identity-free persistent scalar controller flags set by validated structured effects. */
+  structuredPlayerFlagsByPlayer?: Record<PlayerId, Record<string, boolean | string | number>>;
   /** FB2-49 serialized same-battlefield opponent keep-one card decisions. */
   pendingOpponentCloseToOne?: PendingOpponentCloseToOne[];
   /** Server-owned once-per-battle-phase terminal event, staged until ordinary post-battle work is settled. */

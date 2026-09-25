@@ -1172,6 +1172,20 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
   const unpreventable = a.ruleModifiers.some(m => m.rule === 'effect_prevention' && m.operation === 'ignore' && node(m.priority).tier === 'explicit_exception');
   if (r.preventEffects && !unpreventable) { r.events.push({ type: 'effect_prevented', playerId: p.id }); return; }
   switch (effect.type) {
+    case 'set_player_flag': {
+      const keys = Object.keys(effect);
+      const value = effect.value;
+      const scalar = typeof value === 'boolean' || typeof value === 'string' ||
+        (typeof value === 'number' && Number.isFinite(value));
+      if (!keys.every((key) => ['type', 'target', 'key', 'value'].includes(key)) ||
+          effect.target !== 'controller' || typeof effect.key !== 'string' || effect.key.length === 0 || !scalar) {
+        reject('resolution_failed', 'Unsupported scalar controller player-flag shape');
+      }
+      const flagsByPlayer = r.structuredPlayerFlagsByPlayer ??= {};
+      const flags = flagsByPlayer[ctx.controllerId] ??= {};
+      flags[effect.key] = value as boolean | string | number;
+      break;
+    }
     case 'defeat_highest_power_opponents': {
       if (!isPresenceConcealmentAssassinationSemantic(a)) reject('resolution_failed', 'Unsupported Presence Concealment semantic shape');
       const event = ctx.event;
