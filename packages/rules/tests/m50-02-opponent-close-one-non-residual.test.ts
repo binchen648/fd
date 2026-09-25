@@ -112,6 +112,15 @@ describe('P3 current-main M50-02 opponent_close_one_non_residual replay', () => 
 
     const sourceStale = setup(); addAttack(sourceStale, 'a', 'p2', NORMAL_ALT); const d3 = open(sourceStale); sourceStale.abilityRuntime!.cardState[SOURCE]!.active = false;
     expect(rules.dispatchAbilityCommand(sourceStale, 'p2', { type: 'choose_target', decisionId: d3.id, selectedIds: ['a'] }).ok).toBe(false);
+
+  });
+
+  it('fails closed when the source leaves the canonical active-source zones while the decision is pending', () => {
+    const state = setup(); addAttack(state, 'a', 'p2', NORMAL_ALT); const decision = open(state);
+    state.cards.find((card) => card.instanceId === SOURCE)!.zone = 'skill';
+    const denied = rules.dispatchAbilityCommand(state, 'p2', { type: 'choose_target', decisionId: decision.id, selectedIds: ['a'] });
+    expect(denied.ok).toBe(false);
+    expect(state.abilityRuntime!.cardState['a']).toMatchObject({ active: true, faceDown: false });
   });
 
   it('rejects wrong chooser, forged selection, and newly protected frozen candidates without mutation', () => {

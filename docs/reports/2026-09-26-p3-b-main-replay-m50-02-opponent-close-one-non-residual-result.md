@@ -22,22 +22,28 @@ Legal candidates are restricted to the unique active same-battlefield opponent's
 
 A dedicated `opponent_close_selected_one_non_residual_v1` interaction metadata shape is bounded in `types.ts` and restore validation. Valid pending state round-trips through MatchSession persistence; host-signed widened metadata is rejected. No second hidden-authority subsystem is introduced.
 
+## Fresh-R revision closure
+
+Exact predecessor Candidate `e5ebb84b24a9d063a1685240dccb8ddaa6dd4624` received `IMPLEMENTATION_NEEDS_REVISION`. Canonical same-attempt evidence is `https://github.com/binchen648/fd/pull/450#issuecomment-5838032349`.
+
+The sole P1 finding was answer-time source-zone staleness: the pending selected-one path checked `cardState.active` and `faceDown` but did not enforce the canonical active-source zone. The revision now revalidates the physical source through current-main `isActiveCardSource(state, sourceId)`, so leaving `field` / `attack_area` while a decision is pending fails closed. A dedicated focused regression moves the source from `attack_area` to `skill`, submits the previously frozen opponent choice, and verifies rejection with the target still active and face-up.
 ## Scope
 
 Production changes are limited to the existing opponent-close classifier, loader/interpreter interaction handling, interaction metadata/restore validation, one focused test, and this result report. No `data/authoring/**`, Scathach consumer card, M50-02 50-card batch, unrelated M50 vocabulary, generated/client/pack/governance change, identity/name/printed-text/Chinese routing, SkillLib fallback, merge, or retarget is included.
 
 ## Verification
 
-- focused M50-02: `1 file / 6 tests PASS`;
-- affected chain including M50-02, M50-01, FB2-33, FB2-32, FB2-42, FB2-49, card-source-state, resolution-dataflow, and full `match-session.test.ts`: `9 files / 143 tests PASS`;
+- focused M50-02: `1 file / 7 tests PASS`;
+- affected chain including M50-02, M50-01, FB2-33, FB2-32, FB2-42, FB2-49, card-source-state, resolution-dataflow, and full `match-session.test.ts`: `9 files / 144 tests PASS`;
 - `match-session.test.ts`: `30/30 PASS`;
 - `npm run typecheck`: `PASS`;
 - valid pending selected-one persistence round-trip: `PASS`;
 - host-signed widened selected-one metadata restore rejection: `PASS`;
-- exact Base-to-Candidate scope: `7 files`;
-- Base-to-Candidate `data/authoring/**` delta: `EMPTY`;
+- exact Base-to-successor scope: `7 files`;
+- predecessor-to-successor revision delta: `interpreter + focused test + result report` only;
+- Base-to-successor `data/authoring/**` delta: `EMPTY`;
 - production identity/name/printed-text/Chinese/SkillLib routing audit: `CLEAN`;
-- exact Base-to-Candidate `git diff --check`: `PASS`.
+- exact Base-to-successor `git diff --check`: `PASS`.
 
 ## Accounting
 

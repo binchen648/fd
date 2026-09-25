@@ -1677,12 +1677,11 @@ function qualifyingOpponentCloseToOneCardIds(s: GameState, decisionPlayerId: str
 function opponentCloseSelectedOneFacts(s: GameState, sourceId: string): {
   controllerId: PlayerId; decisionPlayerId: PlayerId; battlefieldId: string; candidateIds: string[]; candidateOwners: Record<string, PlayerId>;
 } | undefined {
-  const r = runtime(s); const source = s.cards.find((candidate) => candidate.instanceId === sourceId);
+  const source = s.cards.find((candidate) => candidate.instanceId === sourceId);
   if (!source || source.ownerPlayerId !== source.controllerPlayerId) return undefined;
   const controller = s.players.find((candidate) => candidate.id === source.controllerPlayerId);
-  const sourceState: unknown = r.cardState[sourceId];
   if (!controller || controller.status !== 'active' || !isBattlefield(s, controller.locationId) ||
-      !isValidOpponentCloseToOneSourceCardState(sourceState) || sourceState.active !== true || sourceState.faceDown !== false) return undefined;
+      !isActiveCardSource(s, sourceId)) return undefined;
   const opponents = s.players.filter((candidate) => candidate.id !== controller.id && candidate.status === 'active' &&
     candidate.locationId === controller.locationId).sort((left, right) => left.seat - right.seat);
   if (opponents.length !== 1) return undefined;
