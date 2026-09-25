@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.astolfo",
+  "name": "阿斯托尔福",
+  "class": "Rider",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "b014cada5ae30c489ca384094681cf313aa71c82",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from accepted F1 source evidence plus accepted FB2-49; locked Reference is used only for owner/static metadata."
+  },
+  "cards": [
+    {
+      "id": "servant.astolfo.skill.sc-astolfo-1",
+      "aliases": [
+        "sc_astolfo_1"
+      ],
+      "legacyId": "sc_astolfo_1",
+      "name": "唤起恐慌之魔笛",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.astolfo"
+      },
+      "printedText": "【真名解放】\n战斗阶段：与你交战的对手关闭其非残留的牌直至只剩一张为止。",
+      "cardFace": {
+        "typeLabel": "宝具",
+        "attributes": [
+          "宝具"
+        ],
+        "cost": 4,
+        "basePower": 1
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "panic-flute-close-to-one",
+          "kind": "phase_action",
+          "printedClause": "战斗阶段：与你交战的对手关闭其非残留的牌直至只剩一张为止。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "at_battlefield"
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "opponent_close_non_residual_to_one"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "b014cada5ae30c489ca384094681cf313aa71c82",
+        "f1AuditCommit": "b258039cc5da519cecee2129a658dd95bdb5524c",
+        "f1ReviewCommit": "222a8ea0e2d73d64a1138b3326df20c767f37b01",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "阿斯托尔福.htm",
+            "locator": "从者/骑兵/英文版/阿斯托尔福.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/阿斯托尔福.png",
+            "locator": "servant.astolfo/阿斯托尔福"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "sourceAbilityId": "panic-flute-close-to-one",
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[58].abilities[0].printedClause",
+            "sha256": "693e886ed5695721ec10dce30d64b978e45407eba1b81de3c7c5401f8bcb4e67"
+          }
+        ],
+        "f1FullPrintedTextSha256": "a66f9f8f2f72bea1f7b801459ea742cc4359723a847ef5a5a855501c3ac6d083",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_astolfo_1",
+          "class": "Rider",
+          "cost": 4,
+          "basePower": 1,
+          "legacyRequirement": 8,
+          "typeLabel": "宝具",
+          "attributes": [
+            "宝具"
+          ]
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4"
+        },
+        "acceptedContracts": {
+          "opponentCloseToOne": "P3-A-MAIN-REPLAY-FB2-49-ACCEPTANCE-SYNCHRONIZATION",
+          "skillZonePlayThreshold": "final_rules_9.4"
+        }
+      }
+    }
+  ]
+}
