@@ -1,4 +1,4 @@
-﻿import type { PhaseName } from '../schema/game';
+import type { PhaseName } from '../schema/game';
 
 export type PlayerId = string;
 /** Raw JSON nodes are inspected by the loader, never evaluated as executable text. */
@@ -127,7 +127,20 @@ export interface AlterEgoAttributeChoiceInteractionMetadata {
   triggerEventId: string; targetCardInstanceId: string; variant: 'regular' | 'ex';
   constraints: { kind: 'target'; targetKind: 'attribute'; min: 0; max: 3; distinct: true };
 }
-export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata;
+export interface OpponentCloseToOneInteractionMetadata {
+  kind: 'opponent_close_non_residual_to_one_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  initiatingControllerId: PlayerId; decisionPlayerId: PlayerId; battlefieldId: string; qualifyingCardIds: string[];
+  qualifyingCardOwners: Record<string, PlayerId>; remainingDecisionPlayerIds: PlayerId[];
+  constraints: { kind: 'target'; targetKind: 'card'; min: 1; max: 1; distinct: true };
+}
+export interface PendingOpponentCloseToOne {
+  initiatingControllerId: PlayerId; decisionPlayerId: PlayerId; sourceCardId: string; abilityId: string;
+  battlefieldId: string; qualifyingCardIds: string[]; qualifyingCardOwners: Record<string, PlayerId>;
+  remainingDecisionPlayerIds: PlayerId[];
+}
+export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata |
+  OpponentCloseToOneInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -202,6 +215,8 @@ export interface AbilityRuntime {
   pendingPresenceConcealmentDefeats?: PendingPresenceConcealmentDefeat[];
   /** Server-owned post-scoring battle events waiting for Trigger Gateway settlement. */
   pendingPostBattleEvents?: AbilityEvent[];
+  /** FB2-49 serialized same-battlefield opponent keep-one card decisions. */
+  pendingOpponentCloseToOne?: PendingOpponentCloseToOne[];
   /** Server-owned once-per-battle-phase terminal event, staged until ordinary post-battle work is settled. */
   pendingBattleTerminalEvent?: AbilityEvent;
   /** Source-bound state for the exact Soul Drag -> Return Silence transform family. */

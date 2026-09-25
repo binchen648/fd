@@ -4,7 +4,9 @@ import {
   advanceAbilityPhase,
   applyBattleScoring,
   createMatchSession,
+  isDeferredAbilityRuntimeProvenanceValidForRestore,
   processAbilityEvent,
+  restoreMatchSession,
   resolveBattlefield,
 } from '../../src/index';
 
@@ -142,6 +144,10 @@ describe('P3-B17 Olga first-loss ACTIVATE TO14 recertification', () => {
 
     bridge.queuePostScoringBattleEvents(resolvedBattles, freshScoringLogs);
 
+    const queuedRestored = restoreMatchSession(session.serializeSession());
+    expect(queuedRestored.state.abilityRuntime!.pendingPostBattleEvents).toEqual(session.state.abilityRuntime!.pendingPostBattleEvents);
+    expect(queuedRestored.state.abilityRuntime!.pendingBattleTerminalEvent).toEqual(session.state.abilityRuntime!.pendingBattleTerminalEvent);
+
     const firstLoss = session.state.abilityRuntime!.pendingPostBattleEvents!.find((event) =>
       event.type === 'after_controller_first_loses_battle' && event.playerId === OLGA_PLAYER_ID);
     expect(firstLoss).toMatchObject({
@@ -190,6 +196,20 @@ describe('P3-B17 Olga first-loss ACTIVATE TO14 recertification', () => {
     ]);
     expect(session.state.cards.find((card) => card.instanceId === trismegistusInstanceId)?.zone).toBe('skill');
     expect(activatedCount(session)).toBe(0);
+
+    const durable = session.serializeSession();
+    const restored = restoreMatchSession(durable);
+    expect(restored.state.abilityRuntime!.pendingDelayedActivations).toEqual(session.state.abilityRuntime!.pendingDelayedActivations);
+    const forged: any = structuredClone(durable);
+    forged.state.abilityRuntime.pendingDelayedActivations[0].triggerEventId = 'review-unrelated-event';
+    forged.state.abilityRuntime.processedEvents.push('review-unrelated-event');
+    expect(isDeferredAbilityRuntimeProvenanceValidForRestore(forged.state)).toBe(false);
+    expect(() => restoreMatchSession(forged)).toThrow('Invalid MatchSession state container');
+
+    const wrongOwner: any = structuredClone(durable);
+    wrongOwner.state.cards.find((card: any) => card.instanceId === astronomyInstanceId).ownerPlayerId = 'p1';
+    expect(isDeferredAbilityRuntimeProvenanceValidForRestore(wrongOwner.state)).toBe(false);
+    expect(() => restoreMatchSession(wrongOwner)).toThrow('Invalid MatchSession state container');
 
     const stagedSnapshot = JSON.stringify(session.state.abilityRuntime!.pendingDelayedActivations);
     processAbilityEvent(session.state, structuredClone(firstLoss!));

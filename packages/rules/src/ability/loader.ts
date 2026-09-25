@@ -3,7 +3,11 @@ import { hostOperations } from './types';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID } from '../core/card-source-state';
 import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
 import { isAcceptedControlledCardCloseForbidModifier } from './card-close-forbid';
-
+import {
+  OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT,
+  isAcceptedOpponentCloseToOneAbility,
+  isOpponentCloseToOneCandidate,
+} from './opponent-close-to-one';
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
 }
@@ -62,6 +66,7 @@ const supportedTypes = new Set([
   'false_attendant_book_replacement', 'existing_attack_controlled_by_target', 'not_controller', 'at_battlefield',
   // Phase 3A resolution/data-flow infrastructure
   'remove_advantage_position', 'noop', 'fail_invariant', 'install_rule_override', 'provision_skill_cards',
+  OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -106,6 +111,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       const n = node(value);
       return [str(n.resultVar), ...Object.values(n).flatMap(collectResultVars)].filter(Boolean);
     };
+    const acceptedOpponentCloseToOneAbilityIds = new Set(nodes(raw.abilities)
+      .filter(a => isAcceptedOpponentCloseToOneAbility(a, 'authoring'))
+      .map(a => str(a.id)).filter(Boolean));
     const boundVariables = new Map(nodes(raw.abilities).map(a => [str(a.id), [
       ...nodes(Array.isArray(a.cost) ? a.cost : a.cost ? [a.cost] : []).filter(c => c.type === 'pay_mana').map(c => str(node(c.amount).var)).filter(Boolean),
       ...collectResultVars(a.effects),
@@ -120,7 +128,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (!value || typeof value !== 'object') return;
       const n = node(value);
       for (const key of Object.keys(n)) if (!mechanicKeys.has(key)) issue(`${path}.${key}`, 'Unmapped mechanic field', abilityId);
-      if (n.type && !supportedTypes.has(str(n.type))) issue(`${path}.type`, `Unmapped type: ${str(n.type)}`, abilityId);
+      const exactOpponentCloseCondition = !!abilityId && acceptedOpponentCloseToOneAbilityIds.has(abilityId) &&
+        ['source_owned', 'at_battlefield'].includes(str(n.type));
+      if (n.type && !supportedTypes.has(str(n.type)) && !exactOpponentCloseCondition) issue(`${path}.type`, `Unmapped type: ${str(n.type)}`, abilityId);
       if (n.op && !formulaOps.has(str(n.op))) issue(`${path}.op`, `Unmapped formula: ${str(n.op)}`, abilityId);
       const serverMetric = ['controller.availableMana', 'consecutive_play_rounds', 'game.round_number',
         'controller.movement_distance_this_round',
@@ -280,6 +290,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         limit, visibility: node(a.visibility), execution: { mode: mode as ExecutionMode, allowedOperations: allowed } };
       if (isPrivateOptionalHandPlayInteractionCandidate(candidateAbility) && !isPrivateOptionalHandPlayInteractionSemantic(candidateAbility)) {
         issue('interaction.gateway', 'Unsupported private optional hand-play interaction semantic shape', id);
+      }
+      if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'authoring')) {
+        issue('opponentCloseToOne.gateway', 'Unsupported opponent close-to-one interaction semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

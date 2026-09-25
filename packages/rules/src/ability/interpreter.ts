@@ -11,6 +11,17 @@ import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, insta
 import { node, nodes, str } from './loader';
 import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
+import {
+  isAcceptedOpponentCloseToOneAbility,
+  isOpponentCloseToOneCandidate,
+} from './opponent-close-to-one';
+import {
+  advanceOpponentCloseToOneServerAuthority,
+  clearOpponentCloseToOneServerAuthority,
+  copyOpponentCloseToOneServerAuthority,
+  getOpponentCloseToOneServerAuthority,
+  installOpponentCloseToOneServerAuthority,
+} from './opponent-close-to-one-authority';
 export { isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import {
   DataFlowValidationError,
@@ -21,8 +32,8 @@ import {
 } from './resolution-dataflow';
 import type {
   AbilityCommand, AbilityDefinitionPack, AbilityEvent, AbilityPlayerView, AbilityRuntime, AuthoringAbility, AuthoringCard,
-  BattleResult, BattleResultData, CalculationLine, CardPlayClassification, DispatchResult, EffectContext, ExecutableCardDefinition,
-  LegalAction, OngoingEffect, PendingDecision, RuleNode, TriggeredAbility,
+  BattleResult, BattleResultData, CalculationLine, CardPlayClassification, CardRuntimeState, DispatchResult, EffectContext, ExecutableCardDefinition,
+  LegalAction, OngoingEffect, PendingDecision, PendingOpponentCloseToOne, RuleNode, TriggeredAbility,
   AbilityInteractionClassification,
   PlayCardAction,
 } from './types';
@@ -621,6 +632,16 @@ function effectiveActivationPhase(s: GameState, sourceId: string, a: AuthoringAb
         effect.directive === 'command_spells_used_in_preparation_phase')));
   return usesAdvanceCommandSpells ? 'advance' : basePhase;
 }
+function canActivateAcceptedOpponentCloseToOne(s: GameState, sourceId: string, a: AuthoringAbility): boolean {
+  if (!isAcceptedOpponentCloseToOneAbility(a, 'compiled')) return false;
+  const source = s.cards.find((candidate) => candidate.instanceId === sourceId);
+  if (!source) return false;
+  const controller = s.players.find((candidate) => candidate.id === source.controllerPlayerId);
+  const sourceState: unknown = runtime(s).cardState[sourceId];
+  return !!controller && controller.status === 'active' && isBattlefield(s, controller.locationId) &&
+    source.ownerPlayerId === controller.id && source.controllerPlayerId === controller.id &&
+    isValidOpponentCloseToOneSourceCardState(sourceState) && sourceState.faceDown === false;
+}
 function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
   if (a.execution.mode !== 'automatic') return false;
   if (isPlayActionStructuralCandidate(a) && !isPlayActionRouteCandidate(a)) return false;
@@ -631,6 +652,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isMagicResistancePowerModifierCandidate(a) && !isMagicResistancePowerModifierSemantic(a)) return false;
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
+  if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'compiled')) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
@@ -660,6 +682,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     if (!alterEgoTriggerTarget(s, sourceId, event)) return false;
     if (classifyAlterEgoTransformVariant(a) === 'ex' && !hasAvailableManaForFixedCosts(s, ctx, a)) return false;
   }
+  if (isAcceptedOpponentCloseToOneAbility(a, 'compiled')) return canActivateAcceptedOpponentCloseToOne(s, sourceId, a);
   return a.conditions.every(c => condition(s, context(s, sourceId, a.id, event), c));
 }
 function isGameStartRuleOverrideCandidate(a: AuthoringAbility): boolean {
@@ -1236,22 +1259,26 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
   r.events.push({ type: 'effect_resolved', playerId: p.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, unpreventable,
     ...(effect.type === 'look_at_deck_top' || effect.type === 'move_card' || effect.type === 'move_all_remaining' ? { visibility: p.id } : {}) });
 }
-function findPendingTarget(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): PendingDecision | undefined {
+interface PendingTargetRestoreSpec {
+  target: RuleNode;
+  candidates: string[];
+  min: number;
+  max: number;
+  remainingEffects: RuleNode[];
+}
+function findPendingTargetRestoreSpec(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): PendingTargetRestoreSpec | undefined {
   for (const target of a.targets.filter(t => t.type === 'choice')) {
     const targetRef = str(target.id);
     if (Object.prototype.hasOwnProperty.call(ctx.selections, targetRef)) continue;
     const count = node(target.count); const min = Number(count.min ?? 1); const max = Number(count.max ?? 1);
     const choices = candidates(s, ctx, target);
     if (choices.length < min) reject('no_legal_target', 'No legal target remains');
-    return { id: nextId(s, 'decision'), controllerId: ctx.controllerId, target, candidates: choices, min, max,
-      context: structuredClone(ctx), remainingEffects: effects };
+    return { target, candidates: choices, min, max, remainingEffects: effects };
   }
   for (const effect of effects) {
     if (effect.type === 'branch') {
       const branch = nodes(effect.branches).find(b => b.else !== undefined || condition(s, ctx, node(b.if)));
-      const pending = branch ? findPendingTarget(s, ctx, a, nodes(branch.then ?? branch.else)) : undefined;
-      if (pending) return pending;
-      return undefined;
+      return branch ? findPendingTargetRestoreSpec(s, ctx, a, nodes(branch.then ?? branch.else)) : undefined;
     }
     const targetRef = effect.type === 'move_player' ? str(effect.to) : str(effect.target);
     const target = a.targets.find(t => t.id === targetRef);
@@ -1260,10 +1287,113 @@ function findPendingTarget(s: GameState, ctx: EffectContext, a: AuthoringAbility
     const count = node(target.count); const min = Number(count.min ?? 1); const max = Number(count.max ?? 1);
     const choices = candidates(s, ctx, target);
     if (choices.length < min) reject('no_legal_target', 'No legal target remains');
-    return { id: nextId(s, 'decision'), controllerId: ctx.controllerId, target, candidates: choices, min, max,
-      context: structuredClone(ctx), remainingEffects: effects };
+    return { target, candidates: choices, min, max, remainingEffects: effects };
   }
   return undefined;
+}
+function findPendingTarget(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): PendingDecision | undefined {
+  const pending = findPendingTargetRestoreSpec(s, ctx, a, effects);
+  if (!pending) return undefined;
+  return { id: nextId(s, 'decision'), controllerId: ctx.controllerId, target: pending.target, candidates: pending.candidates,
+    min: pending.min, max: pending.max, context: structuredClone(ctx), remainingEffects: pending.remainingEffects };
+}
+
+function exactRestoreValue(left: unknown, right: unknown): boolean {
+  if (Array.isArray(left) || Array.isArray(right)) return Array.isArray(left) && Array.isArray(right) && left.length === right.length && left.every((entry, index) => exactRestoreValue(entry, right[index]));
+  if (left && right && typeof left === 'object' && typeof right === 'object') {
+    const l = left as Record<string, unknown>; const r = right as Record<string, unknown>;
+    const lk = Object.keys(l).sort(); const rk = Object.keys(r).sort();
+    return lk.length === rk.length && lk.every((key, index) => key === rk[index] && exactRestoreValue(l[key], r[key]));
+  }
+  return Object.is(left, right);
+}
+function restoredPhysicalSource(s: GameState, sourceCardId: string, controllerId?: string): CardInstance | undefined {
+  const source = s.cards.find((candidate) => candidate.instanceId === sourceCardId);
+  if (!source || (controllerId !== undefined && source.controllerPlayerId !== controllerId)) return undefined;
+  return source;
+}
+function restoredAbility(s: GameState, sourceCardId: string, abilityId: string): AuthoringAbility | undefined {
+  try { return abilityDefinition(s, sourceCardId, abilityId); } catch { return undefined; }
+}
+function runtimeContinuationSequenceMatches(s: GameState, ctx: EffectContext, effects: RuleNode[], remainingEffects: RuleNode[], depth = 0): boolean {
+  if (depth > 32) return false;
+  for (let index = 0; index < effects.length; index += 1) {
+    const suffix = effects.slice(index);
+    if (exactRestoreValue(suffix, remainingEffects)) return true;
+    const effect = effects[index]!;
+    if (effect.type !== 'branch') continue;
+    const branch = nodes(effect.branches).find((candidate) => candidate.else !== undefined || condition(s, ctx, node(candidate.if)));
+    if (!branch) continue;
+    const expanded = [...nodes(branch.then ?? branch.else), ...effects.slice(index + 1)];
+    if (runtimeContinuationSequenceMatches(s, ctx, expanded, remainingEffects, depth + 1)) return true;
+  }
+  return false;
+}
+function contextVariablesBelongToAbility(ability: AuthoringAbility, ctx: EffectContext): boolean {
+  const allowed = new Set<string>();
+  const visit = (value: unknown): void => {
+    if (Array.isArray(value)) { value.forEach(visit); return; }
+    if (!value || typeof value !== 'object') return;
+    const record = value as Record<string, unknown>;
+    if (typeof record.var === 'string' && record.var.length > 0) allowed.add(record.var);
+    if (typeof record.resultVar === 'string' && record.resultVar.length > 0) allowed.add(record.resultVar);
+    Object.values(record).forEach(visit);
+  };
+  visit(ability);
+  return Object.keys(ctx.variables).every((name) => allowed.has(name));
+}
+function inputVariableCalculationsMatch(s: GameState, ability: AuthoringAbility, ctx: EffectContext): boolean {
+  const names = ability.cost.filter((cost) => cost.type === 'pay_mana').map((cost) => str(node(cost.amount).var)).filter(Boolean);
+  if (!names.length) return true;
+  if (names.some((name) => !Object.prototype.hasOwnProperty.call(ctx.variables, name))) return false;
+  const latest = [...runtime(s).calculations].reverse().find((entry) => entry.controllerId === ctx.controllerId && entry.lines.length === names.length && entry.lines.every((line, index) => line.label === names[index]));
+  return !!latest && latest.lines.every((line) => ctx.variables[line.label] === line.value);
+}
+export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decision: PendingDecision): boolean {
+  if (decision.interaction) return true;
+  try {
+    if (decision.controllerId !== decision.context.controllerId) return false;
+    const source = restoredPhysicalSource(s, decision.context.sourceCardId, decision.context.controllerId);
+    if (!source) return false;
+    const ability = restoredAbility(s, decision.context.sourceCardId, decision.context.abilityId);
+    if (!ability || !contextVariablesBelongToAbility(ability, decision.context) || !inputVariableCalculationsMatch(s, ability, decision.context)) return false;
+    const targetIds = new Set(ability.targets.map((target) => str(target.id)).filter(Boolean));
+    if (Object.entries(decision.context.selections).some(([targetId, selectedIds]) => !targetIds.has(targetId) || !Array.isArray(selectedIds) || new Set(selectedIds).size !== selectedIds.length)) return false;
+    const canonicalEffects = [...ability.effects, ...ability.creates];
+    if (!runtimeContinuationSequenceMatches(s, decision.context, canonicalEffects, decision.remainingEffects)) return false;
+    const expected = findPendingTargetRestoreSpec(s, structuredClone(decision.context), ability, decision.remainingEffects);
+    return !!expected && decision.min === expected.min && decision.max === expected.max && exactRestoreValue(decision.target, expected.target) && exactRestoreValue(decision.candidates, expected.candidates) && exactRestoreValue(decision.remainingEffects, expected.remainingEffects);
+  } catch { return false; }
+}
+export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState): boolean {
+  try {
+    const r = runtime(s); const playerIds = new Set(s.players.map((candidate) => candidate.id));
+    const locationIds = new Set<string>(s.map.locations.map((candidate) => candidate.id));
+    const hasPlayers = (ids: readonly string[]) => ids.every((id) => playerIds.has(id)) && new Set(ids).size === ids.length;
+    if (!(r.pendingDelayedActivations ?? []).every((entry) => {
+      const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
+      const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
+      const suffix = ':first-loss:' + entry.controllerId;
+      if (!source || source.ownerPlayerId !== entry.controllerId || !ability || !isActivateCardByIdTrigger(ability) || str(ability.effects[0]?.definitionId) !== entry.definitionId || entry.round !== s.round.roundNumber || !r.processedEvents.includes(entry.triggerEventId) || !entry.triggerEventId.endsWith(suffix)) return false;
+      const prefix = entry.triggerEventId.slice(0, -suffix.length);
+      return new RegExp('^battle-phase:' + entry.round + ':battle:[^:]+:[1-9]\d*:result$').test(prefix);
+    })) return false;
+    if (!(r.pendingPresenceConcealmentDefeats ?? []).every((entry) => {
+      const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId); const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
+      if (!source || !ability || !isPresenceConcealmentAssassinationSemantic(ability) || !locationIds.has(entry.battlefieldId) || !hasPlayers(entry.participantIds) || !hasPlayers(entry.targetPlayerIds) || !entry.participantIds.includes(entry.controllerId)) return false;
+      const powers = entry.participantPowers; if (Object.keys(powers).length !== entry.participantIds.length || entry.participantIds.some((id) => !Number.isFinite(powers[id]))) return false;
+      const opponents = entry.participantIds.filter((id) => id !== entry.controllerId); if (opponents.length < 2) return false;
+      const ownPower = powers[entry.controllerId]!; const highest = Math.max(...opponents.map((id) => powers[id]!));
+      const expectedTargets = opponents.filter((id) => powers[id] === highest);
+      return ownPower < highest && exactRestoreValue(entry.targetPlayerIds, expectedTargets) && r.processedEvents.includes(entry.triggerEventId);
+    })) return false;
+    if (!(r.pendingOpponentCloseToOne ?? []).every((entry) => {
+      const source = restoredPhysicalSource(s, entry.sourceCardId, entry.initiatingControllerId); const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
+      return !!source && source.ownerPlayerId === entry.initiatingControllerId && !!ability && isAcceptedOpponentCloseToOneAbility(ability, 'compiled') && locationIds.has(entry.battlefieldId) && playerIds.has(entry.decisionPlayerId) && hasPlayers(entry.remainingDecisionPlayerIds);
+    })) return false;
+    if ((r.transformedReturnSilenceSourceCardIds ?? []).some((id) => !s.cards.some((card) => card.instanceId === id))) return false;
+    return true;
+  } catch { return false; }
 }
 
 function createPrivateOptionalHandPlayInteraction(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): PendingDecision {
@@ -1284,6 +1414,255 @@ function createPrivateOptionalHandPlayInteraction(s: GameState, ctx: EffectConte
     },
   };
 }
+
+function exactPlayerArray(left: readonly string[], right: readonly string[]): boolean {
+  return left.length === right.length && left.every((value, index) => value === right[index]);
+}
+
+function isExactFrozenCardIdList(value: unknown): value is string[] {
+  return Array.isArray(value) && value.length >= 2 &&
+    value.every((id) => typeof id === 'string' && id.length > 0) && new Set(value).size === value.length;
+}
+
+function exactFrozenCardIdList(left: unknown, right: unknown): boolean {
+  return isExactFrozenCardIdList(left) && isExactFrozenCardIdList(right) && exactPlayerArray(left, right);
+}
+
+function isExactOpponentCloseToOneConstraints(value: unknown): boolean {
+  if (value === null || typeof value !== 'object' || Array.isArray(value)) return false;
+  const record = value as Record<string, unknown>;
+  const keys = Object.keys(record).sort();
+  return exactPlayerArray(keys, ['distinct', 'kind', 'max', 'min', 'targetKind']) &&
+    record.kind === 'target' && record.targetKind === 'card' && record.min === 1 && record.max === 1 && record.distinct === true;
+}
+
+function isPlainRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
+function isExactOpponentCloseToOneContext(value: unknown): value is EffectContext {
+  if (!isPlainRecord(value) || !isPlainRecord(value.variables) || !isPlainRecord(value.selections)) return false;
+  const keys = Object.keys(value).sort();
+  return exactPlayerArray(keys, ['abilityId', 'controllerId', 'selections', 'sourceCardId', 'variables']) &&
+    typeof value.controllerId === 'string' && value.controllerId.length > 0 &&
+    typeof value.sourceCardId === 'string' && value.sourceCardId.length > 0 &&
+    typeof value.abilityId === 'string' && value.abilityId.length > 0 &&
+    Object.keys(value.variables).length === 0 && Object.keys(value.selections).length === 0;
+}
+
+function isExactOpponentCloseToOneTarget(value: unknown): value is RuleNode {
+  if (!isPlainRecord(value) || !isPlainRecord(value.count)) return false;
+  const keys = Object.keys(value).sort();
+  const countKeys = Object.keys(value.count).sort();
+  return exactPlayerArray(keys, ['count', 'id', 'type']) && exactPlayerArray(countKeys, ['max', 'min']) &&
+    value.id === 'frozen_non_residual_attack_to_keep' && value.type === 'card_instance' &&
+    value.count.min === 1 && value.count.max === 1;
+}
+
+function isExactPlayerOwnerMap(value: unknown, ids: readonly string[]): value is Record<string, string> {
+  if (value === null || typeof value !== 'object' || Array.isArray(value)) return false;
+  const record = value as Record<string, unknown>;
+  return Object.keys(record).length === ids.length && ids.every((id) =>
+    Object.prototype.hasOwnProperty.call(record, id) && typeof record[id] === 'string' && record[id]!.length > 0);
+}
+
+function exactPlayerOwnerMap(left: unknown, right: unknown, ids: unknown): boolean {
+  if (!isExactFrozenCardIdList(ids)) return false;
+  return isExactPlayerOwnerMap(left, ids) && isExactPlayerOwnerMap(right, ids) && ids.every((id) => left[id] === right[id]);
+}
+
+function livePlayerOwnersMatchFrozen(s: GameState, frozen: unknown, ids: unknown): boolean {
+  if (!isExactFrozenCardIdList(ids) || !isExactPlayerOwnerMap(frozen, ids)) return false;
+  return ids.every((instanceId) => {
+    const current = s.cards.find((candidate) => candidate.instanceId === instanceId);
+    return !!current && current.ownerPlayerId === frozen[instanceId];
+  });
+}
+
+function isExactNonEmptyPlayerIdList(value: unknown): value is string[] {
+  return Array.isArray(value) && value.length >= 1 &&
+    value.every((id) => typeof id === 'string' && id.length > 0) && new Set(value).size === value.length;
+}
+
+function isValidOpponentCloseToOneSourceCardState(value: unknown): value is CardRuntimeState {
+  return isPlainRecord(value) && typeof value.active === 'boolean' && typeof value.faceDown === 'boolean' &&
+    Number.isSafeInteger(value.playedRound);
+}
+
+function opponentCloseToOneQueueMatchesServerAuthority(s: GameState, queue: PendingOpponentCloseToOne[]): boolean {
+  const authority = getOpponentCloseToOneServerAuthority(s);
+  if (!authority || !Number.isSafeInteger(authority.nextIndex) || authority.nextIndex < 0 || authority.nextIndex >= authority.entries.length) return false;
+  const remaining = authority.entries.slice(authority.nextIndex);
+  if (remaining.length !== queue.length) return false;
+  const remainingPlayerIds = remaining.map((entry) => entry.decisionPlayerId);
+  if (!exactPlayerArray(queue.map((entry) => entry.decisionPlayerId), remainingPlayerIds)) return false;
+  return queue.every((entry, index) => {
+    const frozen = remaining[index]!;
+    return entry.initiatingControllerId === frozen.initiatingControllerId &&
+      entry.decisionPlayerId === frozen.decisionPlayerId && entry.sourceCardId === frozen.sourceCardId &&
+      entry.abilityId === frozen.abilityId && entry.battlefieldId === frozen.battlefieldId &&
+      exactFrozenCardIdList(entry.qualifyingCardIds, frozen.qualifyingCardIds) &&
+      exactPlayerOwnerMap(entry.qualifyingCardOwners, frozen.qualifyingCardOwners, frozen.qualifyingCardIds) &&
+      exactPlayerArray(entry.remainingDecisionPlayerIds, remainingPlayerIds.slice(index));
+  });
+}
+
+function hasExactOpponentCloseToOneDecisionRootKeys(value: unknown): boolean {
+  if (!isPlainRecord(value)) return false;
+  return exactPlayerArray(Object.keys(value).sort(), ['candidates', 'context', 'controllerId', 'id', 'interaction', 'max', 'min', 'remainingEffects', 'target']);
+}
+
+function hasExactOpponentCloseToOneInteractionRootKeys(value: unknown): boolean {
+  if (!isPlainRecord(value)) return false;
+  return exactPlayerArray(Object.keys(value).sort(), ['abilityId', 'battlefieldId', 'cancelPolicy', 'constraints', 'continuationRef', 'createdRevision', 'decisionPlayerId', 'initiatingControllerId', 'kind', 'qualifyingCardIds', 'qualifyingCardOwners', 'remainingDecisionPlayerIds', 'sourceCardInstanceId', 'template', 'visibility']);
+}
+
+function isExactOpponentCloseToOneQueueEntry(value: unknown): value is PendingOpponentCloseToOne {
+  if (!isPlainRecord(value)) return false;
+  const keys = Object.keys(value).sort();
+  return exactPlayerArray(keys, ['abilityId', 'battlefieldId', 'decisionPlayerId', 'initiatingControllerId', 'qualifyingCardIds', 'qualifyingCardOwners', 'remainingDecisionPlayerIds', 'sourceCardId']) &&
+    typeof value.initiatingControllerId === 'string' && value.initiatingControllerId.length > 0 &&
+    typeof value.decisionPlayerId === 'string' && value.decisionPlayerId.length > 0 && value.decisionPlayerId !== value.initiatingControllerId &&
+    typeof value.sourceCardId === 'string' && value.sourceCardId.length > 0 &&
+    typeof value.abilityId === 'string' && value.abilityId.length > 0 &&
+    typeof value.battlefieldId === 'string' && value.battlefieldId.length > 0 &&
+    isExactFrozenCardIdList(value.qualifyingCardIds) && isExactPlayerOwnerMap(value.qualifyingCardOwners, value.qualifyingCardIds) &&
+    isExactNonEmptyPlayerIdList(value.remainingDecisionPlayerIds);
+}
+
+function isExactOpponentCloseToOneQueue(s: GameState, value: unknown): value is PendingOpponentCloseToOne[] {
+  if (!Array.isArray(value) || value.length < 1) return false;
+  let priorSeat = -Infinity;
+  const decisionPlayerIds = new Set<string>();
+  let first: PendingOpponentCloseToOne | undefined;
+  for (const rawEntry of value) {
+    if (!isExactOpponentCloseToOneQueueEntry(rawEntry)) return false;
+    const entry = rawEntry;
+    first ??= entry;
+    if (entry.initiatingControllerId !== first.initiatingControllerId || entry.sourceCardId !== first.sourceCardId ||
+        entry.abilityId !== first.abilityId || entry.battlefieldId !== first.battlefieldId ||
+        decisionPlayerIds.has(entry.decisionPlayerId)) return false;
+    const decisionPlayer = s.players.find((candidate) => candidate.id === entry.decisionPlayerId);
+    if (!decisionPlayer || decisionPlayer.status !== 'active' || decisionPlayer.locationId !== entry.battlefieldId ||
+        decisionPlayer.seat <= priorSeat ||
+        !exactFrozenCardIdList(qualifyingOpponentCloseToOneCardIds(s, entry.decisionPlayerId), entry.qualifyingCardIds) ||
+        !livePlayerOwnersMatchFrozen(s, entry.qualifyingCardOwners, entry.qualifyingCardIds)) return false;
+    priorSeat = decisionPlayer.seat;
+    decisionPlayerIds.add(entry.decisionPlayerId);
+  }
+  const queueDecisionPlayerIds = value.map((entry) => entry.decisionPlayerId);
+  if (value.some((entry, index) => !exactPlayerArray(entry.remainingDecisionPlayerIds, queueDecisionPlayerIds.slice(index)))) return false;
+  const initiatingController = s.players.find((candidate) => candidate.id === first!.initiatingControllerId);
+  return !!initiatingController && initiatingController.status === 'active' && initiatingController.locationId === first!.battlefieldId;
+}
+
+function isResidualAttackCardDefinition(cardDefinition: AuthoringCard | undefined): boolean {
+  return !!cardDefinition && cardDefinition.abilities.some((ability) =>
+    ability.kind === 'residual' && !['discard_at_round_end', 'close_at_round_end'].includes(str(ability.lifecycle?.cleanup)));
+}
+
+function qualifyingOpponentCloseToOneCardIds(s: GameState, decisionPlayerId: string): string[] {
+  const r = runtime(s);
+  return s.cards.filter((candidate) => {
+    if (candidate.controllerPlayerId !== decisionPlayerId || candidate.zone !== 'attack_area') return false;
+    const cardDefinition = r.pack.cards[candidate.definitionId];
+    if (!cardDefinition || isResidualAttackCardDefinition(cardDefinition)) return false;
+    const state: unknown = r.cardState[candidate.instanceId];
+    if (!isValidOpponentCloseToOneSourceCardState(state)) {
+      reject('resolution_failed', 'Malformed opponent close-to-one qualifying card runtime state');
+    }
+    return state.active === true && state.faceDown === false;
+  }).map((candidate) => candidate.instanceId);
+}
+
+function stageNextOpponentCloseToOneDecision(s: GameState): void {
+  const r = runtime(s);
+  if (r.pendingDecision) return;
+  const queue: unknown = r.pendingOpponentCloseToOne;
+  if (queue === undefined) return;
+  if (!Array.isArray(queue)) reject('resolution_failed', 'Corrupt opponent close-to-one queue state');
+  if (queue.length === 0) return;
+  if (!isExactOpponentCloseToOneQueue(s, queue)) reject('resolution_failed', 'Corrupt or stale opponent close-to-one queue state');
+  if (!opponentCloseToOneQueueMatchesServerAuthority(s, queue)) {
+    reject('resolution_failed', 'Corrupt or stale opponent close-to-one server authority');
+  }
+  const pending = queue[0]!;
+  const id = nextId(s, 'opponent-close-to-one');
+  const target: RuleNode = { id: 'frozen_non_residual_attack_to_keep', type: 'card_instance', count: { min: 1, max: 1 } };
+  r.pendingDecision = {
+    id, controllerId: pending.decisionPlayerId, target, candidates: [...pending.qualifyingCardIds], min: 1, max: 1,
+    context: { controllerId: pending.initiatingControllerId, sourceCardId: pending.sourceCardId, abilityId: pending.abilityId, variables: {}, selections: {} },
+    remainingEffects: [],
+    interaction: {
+      kind: 'opponent_close_non_residual_to_one_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: pending.sourceCardId, abilityId: pending.abilityId, createdRevision: r.revision + 1,
+      continuationRef: `${id}:continuation`, initiatingControllerId: pending.initiatingControllerId,
+      decisionPlayerId: pending.decisionPlayerId, battlefieldId: pending.battlefieldId, qualifyingCardIds: [...pending.qualifyingCardIds],
+      qualifyingCardOwners: { ...pending.qualifyingCardOwners }, remainingDecisionPlayerIds: [...pending.remainingDecisionPlayerIds],
+      constraints: { kind: 'target', targetKind: 'card', min: 1, max: 1, distinct: true },
+    },
+  };
+}
+
+function stageOpponentCloseToOne(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isAcceptedOpponentCloseToOneAbility(a, 'compiled')) reject('resolution_failed', 'Unsupported opponent close-to-one interaction semantic shape');
+  const controller = player(s, ctx.controllerId);
+  const source = s.cards.find((candidate) => candidate.instanceId === ctx.sourceCardId);
+  const r = runtime(s);
+  const sourceState: unknown = source ? r.cardState[source.instanceId] : undefined;
+  if (controller.status !== 'active' || !isBattlefield(s, controller.locationId) || !source ||
+      !isValidOpponentCloseToOneSourceCardState(sourceState) ||
+      source.ownerPlayerId !== ctx.controllerId || source.controllerPlayerId !== ctx.controllerId || sourceState.faceDown) {
+    reject('invalid_state', 'Opponent close-to-one requires a controller-owned source at an active battlefield');
+  }
+  const battlefieldId = controller.locationId!;
+  const existingQueue: unknown = r.pendingOpponentCloseToOne;
+  if (existingQueue !== undefined && !Array.isArray(existingQueue)) reject('resolution_failed', 'Corrupt opponent close-to-one queue state');
+  if (getOpponentCloseToOneServerAuthority(s)) reject('pending_resolution', 'Opponent close-to-one server authority is already active');
+  const queue = r.pendingOpponentCloseToOne ??= [];
+  if (queue.length) reject('pending_resolution', 'Opponent close-to-one queue is already active');
+  const opponents = s.players.filter((candidate) => candidate.id !== controller.id && candidate.status === 'active' &&
+    candidate.locationId === battlefieldId).sort((left, right) => left.seat - right.seat);
+  const frozenEntries: Array<Omit<PendingOpponentCloseToOne, 'remainingDecisionPlayerIds'>> = [];
+  for (const opponent of opponents) {
+    const qualifyingCardIds = qualifyingOpponentCloseToOneCardIds(s, opponent.id);
+    if (qualifyingCardIds.length < 2) continue;
+    const qualifyingCardOwners = Object.fromEntries(qualifyingCardIds.map((instanceId) =>
+      [instanceId, card(s, instanceId).ownerPlayerId]));
+    frozenEntries.push({ initiatingControllerId: controller.id, decisionPlayerId: opponent.id, sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId, battlefieldId, qualifyingCardIds, qualifyingCardOwners });
+  }
+  const frozenDecisionPlayerIds = frozenEntries.map((entry) => entry.decisionPlayerId);
+  for (const [index, entry] of frozenEntries.entries()) {
+    queue.push({ ...entry, remainingDecisionPlayerIds: frozenDecisionPlayerIds.slice(index) });
+  }
+  installOpponentCloseToOneServerAuthority(s, queue);
+  stageNextOpponentCloseToOneDecision(s);
+}
+
+function closeOpponentCardForCloseToOne(s: GameState, decisionPlayerId: string, instanceId: string): void {
+  const target = card(s, instanceId);
+  const r = runtime(s);
+  const cardDefinition = r.pack.cards[target.definitionId];
+  const state: unknown = r.cardState[instanceId];
+  if (target.controllerPlayerId !== decisionPlayerId || target.zone !== 'attack_area' || !cardDefinition ||
+      !isValidOpponentCloseToOneSourceCardState(state) || state.active !== true || state.faceDown !== false ||
+      isResidualAttackCardDefinition(cardDefinition) || isCardCloseForbidden(s, instanceId)) {
+    reject('resolution_failed', 'Opponent close-to-one target can no longer be closed');
+  }
+  state.active = false;
+  clearTransientCardTransformState(s, instanceId);
+  if (['servant_skill', 'master_skill'].includes(cardDefinition.cardType)) {
+    target.zone = 'skill';
+    target.controllerPlayerId = target.ownerPlayerId;
+    target.visibility = { scope: 'owner_only', ownerPlayerId: target.ownerPlayerId };
+    state.faceDown = false;
+  } else {
+    state.faceDown = true;
+    target.visibility = { scope: 'owner_only', ownerPlayerId: target.ownerPlayerId };
+  }
+}
+
 
 const directResourcePrimitiveTypes = new Set(['adjust_mana', 'adjust_victory_points']);
 const fixedControllerResourcePrimitiveTypes = new Set(['adjust_mana', 'adjust_victory_points']);
@@ -2349,6 +2728,8 @@ function executeFixedControllerManaCost(s: GameState, ctx: EffectContext, a: Aut
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (isAcceptedOpponentCloseToOneAbility(a, 'compiled')) { stageOpponentCloseToOne(s, ctx, a); return; }
+  if (isOpponentCloseToOneCandidate(a)) reject('resolution_failed', 'Unsupported opponent close-to-one interaction semantic shape');
   if (isBattleEndMobilePlayersRewardSemantic(a)) {
     settleBattleEndMobilePlayersReward(s, ctx);
     installOngoing(s, ctx, a);
@@ -2497,6 +2878,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) {
     reject('resolution_failed', 'Unsupported Presence Concealment semantic shape');
+  }
+  if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'compiled')) {
+    reject('resolution_failed', 'Unsupported opponent close-to-one interaction semantic shape');
   }
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) {
     reject('resolution_failed', 'Unsupported persistent RuleOverride semantic shape');
@@ -2831,6 +3215,42 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const selected = command.selectedIds;
       if (d.interaction) {
         const meta = d.interaction;
+        if (meta.kind === 'opponent_close_non_residual_to_one_v1') {
+          if (!hasExactOpponentCloseToOneDecisionRootKeys(d) || !hasExactOpponentCloseToOneInteractionRootKeys(meta)) reject('resolution_failed', 'Corrupt or stale opponent close-to-one interaction state');
+          const decisionContext: unknown = d.context; const decisionTarget: unknown = d.target;
+          if (!isExactOpponentCloseToOneContext(decisionContext) || !isExactOpponentCloseToOneTarget(decisionTarget)) reject('resolution_failed', 'Corrupt or stale opponent close-to-one interaction state');
+          const a = abilityDefinition(s, decisionContext.sourceCardId, decisionContext.abilityId);
+          const pendingQueueValue: unknown = r.pendingOpponentCloseToOne;
+          if (!isExactOpponentCloseToOneQueue(s, pendingQueueValue)) reject('resolution_failed', 'Corrupt or stale opponent close-to-one queue state');
+          const pendingQueue = pendingQueueValue; const pending = pendingQueue[0]!;
+          if (!opponentCloseToOneQueueMatchesServerAuthority(s, pendingQueue)) reject('resolution_failed', 'Corrupt or stale opponent close-to-one server authority');
+          const source = s.cards.find((candidate) => candidate.instanceId === decisionContext.sourceCardId);
+          const sourceState: unknown = source ? r.cardState[source.instanceId] : undefined;
+          const initiatingController = s.players.find((candidate) => candidate.id === meta.initiatingControllerId);
+          const decisionPlayer = s.players.find((candidate) => candidate.id === meta.decisionPlayerId);
+          const pendingQualifyingCardIds: unknown = pending?.qualifyingCardIds; const metaQualifyingCardIds: unknown = meta.qualifyingCardIds;
+          const metaConstraints: unknown = meta.constraints; const metaRemainingDecisionPlayerIds: unknown = meta.remainingDecisionPlayerIds; const decisionCandidates: unknown = d.candidates;
+          if (!isAcceptedOpponentCloseToOneAbility(a, 'compiled') || !pending || !source || !initiatingController || !decisionPlayer ||
+              initiatingController.status !== 'active' || decisionPlayer.status !== 'active' || initiatingController.locationId !== meta.battlefieldId || decisionPlayer.locationId !== meta.battlefieldId ||
+              !isBattlefield(s, meta.battlefieldId) || source.ownerPlayerId !== meta.initiatingControllerId || source.controllerPlayerId !== meta.initiatingControllerId ||
+              !isValidOpponentCloseToOneSourceCardState(sourceState) || sourceState.faceDown || d.controllerId !== meta.decisionPlayerId || decisionContext.controllerId !== meta.initiatingControllerId ||
+              pending.initiatingControllerId !== meta.initiatingControllerId || pending.decisionPlayerId !== meta.decisionPlayerId || pending.sourceCardId !== meta.sourceCardInstanceId || pending.abilityId !== meta.abilityId ||
+              pending.battlefieldId !== meta.battlefieldId || !exactFrozenCardIdList(pendingQualifyingCardIds, metaQualifyingCardIds) || !exactPlayerOwnerMap(pending.qualifyingCardOwners, meta.qualifyingCardOwners, metaQualifyingCardIds) ||
+              !isExactNonEmptyPlayerIdList(metaRemainingDecisionPlayerIds) || !exactPlayerArray(pending.remainingDecisionPlayerIds, metaRemainingDecisionPlayerIds) ||
+              !exactPlayerArray(metaRemainingDecisionPlayerIds, pendingQueue.map((entry) => entry.decisionPlayerId)) || meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
+              meta.continuationRef !== d.id + ':continuation' || meta.createdRevision !== r.revision || meta.sourceCardInstanceId !== decisionContext.sourceCardId || meta.abilityId !== decisionContext.abilityId ||
+              !isExactOpponentCloseToOneConstraints(metaConstraints) || !Array.isArray(d.remainingEffects) || d.remainingEffects.length !== 0 || d.min !== 1 || d.max !== 1 ||
+              !exactFrozenCardIdList(decisionCandidates, metaQualifyingCardIds) || !Array.isArray(selected) || selected.length !== 1 || !d.candidates.includes(selected[0]!) ||
+              !exactFrozenCardIdList(qualifyingOpponentCloseToOneCardIds(s, meta.decisionPlayerId), metaQualifyingCardIds) || !livePlayerOwnersMatchFrozen(s, meta.qualifyingCardOwners, metaQualifyingCardIds)) {
+            reject('resolution_failed', 'Corrupt or stale opponent close-to-one interaction state');
+          }
+          const selectedCardId = selected[0]!; const closeIds = meta.qualifyingCardIds.filter((instanceId) => instanceId !== selectedCardId);
+          if (closeIds.some((instanceId) => isCardCloseForbidden(s, instanceId))) reject('resolution_failed', 'Opponent close-to-one contains a card protected from closing');
+          for (const instanceId of closeIds) closeOpponentCardForCloseToOne(s, meta.decisionPlayerId, instanceId);
+          delete r.pendingDecision; pendingQueue.shift(); advanceOpponentCloseToOneServerAuthority(s); if (pendingQueue.length === 0) clearOpponentCloseToOneServerAuthority(s);
+          for (const instanceId of closeIds) { const closed = card(s, instanceId); r.events.push({ type: 'opponent_card_closed_to_one', playerId: meta.decisionPlayerId, controllerId: meta.initiatingControllerId, sourceCardId: meta.sourceCardInstanceId, abilityId: meta.abilityId, cardInstanceId: instanceId, toZone: closed.zone }); }
+          stageNextOpponentCloseToOneDecision(s); break;
+        }
         const a = abilityDefinition(s, d.context.sourceCardId, d.context.abilityId);
         if (meta.kind === 'alter_ego_attribute_choice_v1') {
           const variant = classifyAlterEgoTransformVariant(a);
@@ -2972,8 +3392,10 @@ export function playAbilityCardBatch(s: GameState, playerId: string, choices: Om
 /** Transactional mutation of server state; only a safe DTO is returned, even on rejection. */
 export function dispatchAbilityCommand(s: GameState, playerId: string, command: AbilityCommand): DispatchResult {
   const before = runtime(s).events.length; const beforeCalculations = runtime(s).calculations.length; const copy = structuredClone(s);
+  copyOpponentCloseToOneServerAuthority(s, copy);
   try {
     dispatch(copy, playerId, command); runtime(copy).revision++; Object.assign(s, copy);
+    copyOpponentCloseToOneServerAuthority(copy, s);
     return { ok: true, view: projectAbilityState(s, playerId),
       events: runtime(s).events.slice(before).filter(e => !e.visibility || e.visibility === playerId).map(({ visibility: _, ...e }) => e),
       calculations: runtime(s).calculations.slice(beforeCalculations).filter(c => c.controllerId === playerId).flatMap(c => c.lines) };
@@ -2982,7 +3404,7 @@ export function dispatchAbilityCommand(s: GameState, playerId: string, command: 
     const sourceId = command && 'cardInstanceId' in command ? command.cardInstanceId : undefined;
     const source = s.cards.find(c => c.instanceId === sourceId && c.controllerPlayerId === playerId);
     const blocked = source ? definition(s, source.instanceId)?.abilities.find(a => a.execution.mode === 'host_adjudicated') : undefined;
-    return { ok: false, view: projectAbilityState(s, playerId), events: [], calculations: [], rejection: { code: error.code, message: error.message,
+    return { ok: false, view: projectAbilityState(structuredClone(s), playerId), events: [], calculations: [], rejection: { code: error.code, message: error.message,
       ...(error.code === 'host_adjudicated' && blocked ? { allowedOperations: blocked.execution.allowedOperations } : {}) } };
   }
 }
