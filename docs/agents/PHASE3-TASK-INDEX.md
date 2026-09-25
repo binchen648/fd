@@ -4780,3 +4780,14 @@ Allowed B verdicts:
 - Exact-50 readiness rescan on the accepted runtime is `22 ready / 131 blocked` within the historical 153-identity replay pool. Readiness is not migration credit and is not itself S eligibility.
 - Non-tail F4 remains `EXACT_50_BATCH_BLOCKED`: fewer than 50 identities are currently loader-ready before provenance/semantic recertification.
 - Next formal task: `P3-B-MAIN-REPLAY-M50-PLAYER-FLAG-ROUND-STATE-CORE-R2`, replaying only the bounded player-flag condition/current-round/clear/add-number delta not already accepted by #452; historical #440/#441 material may be used as semantic provenance, while PR #451 is implementation reference only and not formal lineage.
+
+## P3-A-MAIN-REPLAY-M50-PLAYER-FLAG-ROUND-STATE-CORE-R2-ACCEPTANCE-SYNC
+
+- Exact accepted B Candidate: `31bf148c173d04fd0332ad3d8e0442fbcb85984a` (PR #453).
+- Canonical fresh-R evidence: `https://github.com/binchen648/fd/pull/453#issuecomment-5839633506`.
+- Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`; relay is the same already-completed review attempt after reviewer GitHub write 403.
+- R1 predecessor-test blocker is closed; predecessor #452 regression is now `7/7 PASS`, R2 focused `6/6 PASS`, combined affected chain `11 files / 157 tests PASS`.
+- Capability remains zero-credit: formal/material `112/944`, remaining `832`; `data/authoring/**` remains unchanged.
+- Accepted scope is the bounded player-flag condition/current-round/clear/add-number delta beyond #452, with locally bounded `key`/`lifecycle`/`offset`, finite scalar compatibility, safe-integer arithmetic/round semantics, and bounded MatchSession restore.
+- No consumer authoring, migration credit, merge, retarget, arbitrary target widening, identity/name/printed-text/Chinese routing, or SkillLib fallback is accepted by this synchronization.
+- Non-tail F4 exact-50 remains blocked pending a fresh readiness/provenance rescan on this accepted runtime. A must continue zero-credit capability work until exactly 50 identities are mechanically dependency-complete; do not shrink to a smaller S batch.
