@@ -4641,3 +4641,47 @@ Accounting: zero migration credit. Formal/material remains `112/944`, remaining 
 Allowed final status:
 - `IMPLEMENTATION_COMPLETE_CANDIDATE`
 - `IMPLEMENTATION_BLOCKED`
+
+## TASK P3-A-MAIN-REPLAY-FB2-33-ACCEPTANCE-SYNCHRONIZATION
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-main-replay-fb2-33-acceptance-sync`
+Implementation Base: `471392953e58ab60726cf3a6746481a04ce072ad`
+Accepted Candidate: `f0d753f49f0b7541d14ca9a5446644cbdc751199`
+Canonical fresh-R evidence: `https://github.com/binchen648/fd/pull/448#issuecomment-5836766768`
+Read: `docs/reports/2026-09-26-p3-a-main-replay-fb2-33-acceptance-synchronization.md`
+
+Result: fresh independent R returned `IMPLEMENTATION_ACCEPTED_CANDIDATE` for the exact current-main FB2-33 replay Candidate. A synchronizes only the identity-free exact type-only `event_player_won_combat` / `event_player_lost_combat` condition capability over trusted `AbilityEvent.playerId` and trusted `battleResult`, with malformed/unknown/duplicate/contradictory outcome state failing closed and all non-condition carriers remaining unsupported.
+
+Current-main formal/material accounting remains `112/944`, with `832` remaining. FB2-33 is zero-credit infrastructure and adds/removes no frozen identity. PR #448 remains unmerged and unretargeted.
+
+## TASK P3-B-MAIN-REPLAY-M50-01-TARGET-COUNT-VP-PER-TARGET
+
+Owner: Codex B2
+Status: `READY`
+Base: exact `P3-A-MAIN-REPLAY-FB2-33-ACCEPTANCE-SYNCHRONIZATION` commit carrying this task block
+Historical accepted source: PR #440 exact Base `b4589eebbd09409458cf7b49d7fb7d9af6469f07` -> accepted successor `f0e5554e3210e721ae98faa29fc5241b410c5b72`
+Historical reviewer evidence: `https://github.com/binchen648/fd/pull/440#issuecomment-5805914781`
+Historical rejected predecessor: `12efa4d292a04a5b592b965b44dde67d1ad6b9da`
+Scathach decomposition source: `docs/reports/2026-09-25-p3-a-main-replay-scathach-s2-contract-decomposition.md`
+Locked Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+
+Goal: replay only the two identity-free generic primitives required by Scathach S2: `target_count_equals` and `gain_victory_points_per_target`. Preserve historical accepted structural semantics and fail-closed validation, but do not transplant the M50-01 50-skill batch or any unrelated M50 vocabulary/runtime.
+
+Authorized semantics:
+- `target_count_equals`: compare an exact nonnegative safe-integer `count` against the authoritative number of players selected by the declared structural count target;
+- `gain_victory_points_per_target`: compute `amountPerTarget * authoritative counted target count`, then grant that exact safe-integer amount to each authoritative recipient; invalid amount/overflow/no authoritative recipient fail closed;
+- for the Scathach-required seam, `same_battlefield_opponents` is the required count scope and remains structural/identity-free.
+
+Authorized scope: only the minimum current-main loader/interpreter helper(s) for these two primitives, focused tests for both positive and adversarial semantics, and one B result report. Reuse existing current-main player/location/battlefield and authoritative VP mutation helpers.
+
+Forbidden: no M50-01 authoring archives, no Scathach consumer authoring, no 50-card batch import, no unrelated structured target/formula/choice vocabulary, no new trigger/event producer, no generated products/packs/client production/governance edits, no identity/name/printed-text/Chinese runtime routing, no SkillLib fallback, no merge/retarget.
+
+Required validation: exact supported shapes and malformed/widened rejection; same-battlefield-opponent count positives/zero/multi-target; non-battlefield/controller and stale/missing target context fail closed; per-target VP gain positive, zero-count, malformed amount, overflow/no-recipient negatives; read-only condition evaluation and authoritative VP event behavior; non-authorized routes remain unsupported; typecheck; affected focused regressions; `git diff --check`; Base-to-Candidate `data/authoring/**` delta empty and accounting unchanged at `112/944`.
+
+Accounting: zero migration credit. Formal/material remains `112/944`, remaining `832` throughout B/R/A capability synchronization.
+
+Allowed final status:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_BLOCKED`
