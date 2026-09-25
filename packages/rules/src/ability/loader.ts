@@ -42,7 +42,7 @@ const supportedTypes = new Set([
   'create_card', 'pay_mana', 'move_source_card', 'integer', 'lte', 'gt', 'exists_target', 'played_this_round',
   'or', 'and', 'not', 'not_card_type', 'is_attack', 'has_attribute', 'not_source_card', 'has_card_id',
   'source_card_in_zone', 'controller_at_location_kind', 'reachable_along_arrows', 'can_adjust_mana',
-  'event_played_card_has_attribute', 'source_reversed', 'transform_event_source_card',
+  'event_played_card_has_attribute', 'source_reversed', 'source_active', 'source_owned', 'transform_event_source_card',
   'controller_won_battle', 'controller_sole_winner', 'controller_mana_at_least', 'min_mana',
   // New types for 5 servants
   'opponents_random_discard', 'lock_battlefield', 'exclude_from_terrain_and_external_effects',
@@ -131,6 +131,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       const exactOpponentCloseCondition = !!abilityId && acceptedOpponentCloseToOneAbilityIds.has(abilityId) &&
         ['source_owned', 'at_battlefield'].includes(str(n.type));
       if (n.type && !supportedTypes.has(str(n.type)) && !exactOpponentCloseCondition) issue(`${path}.type`, `Unmapped type: ${str(n.type)}`, abilityId);
+      if (['source_active', 'source_owned'].includes(str(n.type))) {
+        if (!path.startsWith('conditions')) issue(path, 'Source-state condition is supported only under ability conditions', abilityId);
+        if (!Object.keys(n).every((key) => key === 'type')) issue(path, 'Source-state condition must contain only type', abilityId);
+      }
       if (n.op && !formulaOps.has(str(n.op))) issue(`${path}.op`, `Unmapped formula: ${str(n.op)}`, abilityId);
       const serverMetric = ['controller.availableMana', 'consecutive_play_rounds', 'game.round_number',
         'controller.movement_distance_this_round',

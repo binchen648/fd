@@ -504,6 +504,19 @@ function highestPowerOpponents(event: AbilityEvent, controllerId: string): strin
   return opponents.filter((playerId) => snapshot.powers[playerId] === highest);
 }
 
+export function isSourceStateCondition(c: RuleNode): boolean {
+  return ['source_active', 'source_owned'].includes(str(c.type)) &&
+    Object.keys(c).every((key) => key === 'type');
+}
+
+function sourceStateCondition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
+  if (!isSourceStateCondition(c)) reject('unsupported', 'Unsupported source-state condition shape');
+  const source = s.cards.find((candidate) => candidate.instanceId === ctx.sourceCardId);
+  if (!source) return false;
+  return c.type === 'source_active'
+    ? active(s, source.instanceId)
+    : source.ownerPlayerId === ctx.controllerId;
+}
 function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   if (!c || typeof c !== 'object') reject('unsupported', 'Unsupported condition');
   if (c.negated === true) return !condition(s, ctx, { ...c, negated: undefined });
@@ -532,6 +545,8 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'controller_at_location_kind': return c.locationKind === '侦察' || c.locationKind === '侦查' ? p.locationId === 'recon' : false;
     case 'controller_servant_revealed': return runtime(s).revealedServants.includes(ctx.controllerId);
     case 'source_reversed': return runtime(s).cardState[ctx.sourceCardId]?.reversed === true;
+    case 'source_active':
+    case 'source_owned': return sourceStateCondition(s, ctx, c);
     case 'can_adjust_mana': return !runtime(s).manaGainBlocked.includes(p.id) && p.mana < (runtime(s).manaCaps[p.id] ?? 12);
     case 'controller_strict_second_battle_power': return controllerIsStrictSecondBattlePower(ctx.event, p.id);
     case 'controller_won_battle': return ctx.event?.battleResult?.winners.includes(p.id) ?? false;
