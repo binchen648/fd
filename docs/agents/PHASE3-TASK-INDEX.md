@@ -4358,6 +4358,50 @@ Allowed final status:
 - `IMPLEMENTATION_BLOCKED`
 
 After `IMPLEMENTATION_COMPLETE_CANDIDATE`: commit/push one exact Candidate, open one stacked PR against the exact A dispatch branch, then request one fresh independent R. Do not merge or retarget.
+## TASK P3-A-MAIN-REPLAY-FB2-42-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-main-replay-fb2-42-dispatch`
+Base: exact blocked FB2-49 evidence Candidate `855ae96f509f9a9dccb243b3d276f4ccf1d67288`
+Read: `docs/reports/2026-09-25-p3-a-main-replay-fb2-42-dispatch.md`
+
+Result: current-main reconciliation reorders the prerequisite chain after `P3-B-MAIN-REPLAY-FB2-49` mechanically returned `IMPLEMENTATION_BLOCKED`. Dispatch exactly one zero-credit current-main replay of the accepted FB2-42 controlled-card close-forbid capability. Historical source authority is PR #394 exact Base `ec39baa2d99c1e9f2359e832ca7bd61118c44558` -> accepted Candidate `d082a90e194ee4cf1f528086f1ba01150a9ead41`, canonical reviewer evidence `https://github.com/binchen648/fd/pull/394#issuecomment-5748132070`. No consumer material or migration credit is authorized.
+
+Current-main formal/material accounting remains `111/944`.
+
+## TASK P3-B-MAIN-REPLAY-FB2-42
+
+Owner: Codex B2
+Status: `READY`
+Base: exact `P3-A-MAIN-REPLAY-FB2-42-DISPATCH` commit carrying this task block
+Source implementation Base: `ec39baa2d99c1e9f2359e832ca7bd61118c44558`
+Source accepted Candidate: `d082a90e194ee4cf1f528086f1ba01150a9ead41`
+Source fresh-R evidence: `https://github.com/binchen648/fd/pull/394#issuecomment-5748132070`
+Locked Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-25-p3-a-main-replay-fb2-42-dispatch.md`
+
+Goal: adapt only the accepted identity-free FB2-42 controlled-card close-forbid capability to the current-main runtime. Do not cherry-pick or merge frontier ancestry. The admitted seam is exact `operation=forbid`, `rule=card_close`, `scope.controller=self`, one nonempty structural `has_card_id` selector, modifier lifecycle `this_round`, automatic parent, ordinary source-bound liveness. Both server-owned `close_source_card` routes must reject before mutation/event while the matching live modifier is active; dead protection source, expired round, different controller/definition and widened near-matches must not protect.
+
+Authorized production/test scope only:
+- `packages/rules/src/ability/card-close-forbid.ts`
+- `packages/rules/src/ability/interpreter.ts`
+- `packages/rules/src/ability/loader.ts`
+- `packages/rules/src/ability/resolution-dataflow.ts`
+- `packages/rules/src/core/card-source-state.ts`
+- `packages/rules/src/index.ts`
+- `packages/rules/tests/fb2-42-controlled-card-close-forbid.test.ts`
+- one current-main B replay result report
+
+Must not touch `data/authoring/**`, packs, generated content, client production, consumer identities, M50-03, FB2-49 implementation files, or governance policy. No character/card identity routing, printed-text routing, Chinese-text parsing or SkillLib fallback. Zero migration credit; current-main formal/material remains `111/944`.
+
+Required validation: exact focused FB2-42 + current-main card close/source-liveness/resolution-dataflow coverage; typecheck; affected rules suites; official `test:ci -- --maxWorkers=2`; content validation; generated-content determinism; `git diff --check`; current-main frozen rescan proving `111/944`, zero additions/removals/duplicates. If the exact accepted capability requires another prerequisite absent from current main, return `IMPLEMENTATION_BLOCKED` instead of widening scope.
+
+Allowed final status:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_BLOCKED`
+
+On `IMPLEMENTATION_COMPLETE_CANDIDATE`, commit/push one exact B Candidate, open one stacked PR against this exact A dispatch branch, and request one fresh independent R. Do not merge or retarget.
 
 ## Prompt Templates
 
