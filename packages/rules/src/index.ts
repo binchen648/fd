@@ -33,3 +33,5 @@ export * from './ability/card-close-forbid';
 export * from './ability/opponent-close-to-one';
 export * from './ability/report';
 export * from './ability/resolution-dataflow';
+
+export * from './ability/event-location-equals-controller';

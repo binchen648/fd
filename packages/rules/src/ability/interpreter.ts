@@ -1,4 +1,5 @@
 import type { GameState, PhaseName } from '../schema/game';
+import { eventLocationEqualsController, isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
 import type { CardInstance } from '../schema/card';
 import type { LocationId } from '../schema/location';
 import { canOccupyLocation, getEnabledLocations } from '../core/map-engine';
@@ -663,6 +664,10 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'event_player_lost_combat': return eventCombatOutcomeCondition(s, ctx, c);
     case 'event_player_is_controller':
     case 'event_player_is_opponent': return eventPlayerRelationCondition(s, ctx, c);
+    case 'event_location_equals_controller': {
+      if (!isAcceptedEventLocationEqualsControllerCondition(c)) reject('unsupported', 'Unsupported event-location relation condition shape');
+      return eventLocationEqualsController(s, ctx.controllerId, ctx.event);
+    }
     case 'target_count_equals': {
       const targets = sameBattlefieldOpponentIds(s, ctx);
       return targets !== null && targets.length === Number(c.count);
@@ -1040,7 +1045,10 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
       if (['on_card_played', 'on_use_declared'].includes(event.type) && event.sourceCardId !== c.instanceId &&
         !a.conditions.some((condition) => condition.type === 'event_played_card_has_attribute') &&
         !isAlterEgoTransformSemantic(a)) continue;
-      if (event.type.startsWith('after_controller_') && event.playerId !== c.controllerPlayerId) continue;
+      const allowsOpponentMovementEvent = event.type === 'after_controller_enters_location' &&
+        a.conditions.some((entry) => isEventPlayerRelationCondition(entry) && entry.type === 'event_player_is_opponent');
+      if (event.type.startsWith('after_controller_') && event.playerId !== c.controllerPlayerId &&
+        !allowsOpponentMovementEvent) continue;
       found.push({ cardInstanceId: c.instanceId, abilityId: a.id, controllerId: c.controllerPlayerId });
     }
   }
