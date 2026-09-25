@@ -616,6 +616,18 @@ function structuredSetFlagValue(s: GameState, value: unknown): boolean | string 
   return round;
 }
 
+export function isEventPlayerRelationCondition(c: RuleNode): boolean {
+  return ['event_player_is_controller', 'event_player_is_opponent'].includes(str(c.type)) &&
+    Object.keys(c).every((key) => key === 'type');
+}
+
+function eventPlayerRelationCondition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
+  if (!isEventPlayerRelationCondition(c)) reject('unsupported', 'Unsupported event-player relation condition shape');
+  const eventPlayerId = ctx.event?.playerId;
+  if (!eventPlayerId || !s.players.some((candidate) => candidate.id === eventPlayerId)) return false;
+  return c.type === 'event_player_is_controller' ? eventPlayerId === ctx.controllerId : eventPlayerId !== ctx.controllerId;
+}
+
 function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   if (!c || typeof c !== 'object') reject('unsupported', 'Unsupported condition');
   if (c.type === 'target_count_equals' && !isTargetCountEqualsCondition(c)) reject('unsupported', 'Unsupported exact target-count condition shape');
@@ -649,6 +661,8 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'source_owned': return sourceStateCondition(s, ctx, c);
     case 'event_player_won_combat':
     case 'event_player_lost_combat': return eventCombatOutcomeCondition(s, ctx, c);
+    case 'event_player_is_controller':
+    case 'event_player_is_opponent': return eventPlayerRelationCondition(s, ctx, c);
     case 'target_count_equals': {
       const targets = sameBattlefieldOpponentIds(s, ctx);
       return targets !== null && targets.length === Number(c.count);
