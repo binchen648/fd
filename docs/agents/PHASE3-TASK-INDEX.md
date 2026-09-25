@@ -4539,3 +4539,43 @@ Allowed final status:
 - `MIGRATION_BLOCKED`
 
 On `MIGRATION_COMPLETE_CANDIDATE`, commit/push one exact Candidate, open one stacked PR against this exact A synchronization branch, and request one fresh independent R. Do not merge or retarget.
+## TASK P3-A-MAIN-REPLAY-ASTOLFO-S1-ACCEPTANCE-SYNCHRONIZATION
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-main-replay-astolfo-s1-acceptance-sync`
+Implementation Base: `7c2ee773a8ca36fde7cc2812c86e9cb20cdb83e2`
+Accepted Candidate: `509a027a3b5487259b2c3f6d3c7722710031c046`
+Canonical fresh-R evidence: `https://github.com/binchen648/fd/pull/446#issuecomment-5833210179`
+Read: `docs/reports/2026-09-25-p3-a-main-replay-astolfo-s1-acceptance-synchronization.md`
+
+Result: fresh independent R returned `MIGRATION_ACCEPTED` for the exact current-main Astolfo S1 replay Candidate. A synchronizes exactly one frozen identity, `servant.astolfo.skill.sc-astolfo-1`, on top of the already synchronized FB2-49 runtime. No second identity, production runtime, generated product, pack registration, client production, frontier ancestry, merge, or retarget is included.
+
+Current-main formal/material accounting is now `112/944`, with `832` remaining. This synchronization grants exactly +1 formal migration credit for Astolfo S1 and zero other frozen identities.
+
+## TASK P3-A-MAIN-REPLAY-SCATHACH-S2-CONTRACT-DECOMPOSITION
+
+Owner: Codex A
+Status: `READY`
+Base: exact `P3-A-MAIN-REPLAY-ASTOLFO-S1-ACCEPTANCE-SYNCHRONIZATION` commit carrying this task block
+Identity under analysis: `servant.scathach.skill.sc-scathach-2`
+Historical material source: PR #441 Candidate `fc6d2f52f2d2cebbedc60e9e5d106744b347c8ff`
+Historical reviewer evidence: `https://github.com/binchen648/fd/pull/441#issuecomment-5825842148`
+Reconciliation source: PR #442 / `artifacts/phase3-frontier-reconciliation.json`
+Locked Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+
+Goal: decompose Scathach S2 before any current-main migration. The historical M50-02 card has two structured abilities: combat `opponent_close_one_non_residual` under `target_count_equals(same_battlefield_opponents, 1)`, and passive `death-omen` using `gain_victory_points_per_target` after battle result. Determine, against the exact current-main lineage, which normalized contracts/capabilities already exist, which require current-main semantic replay, and which are identity-local authoring only.
+
+Hard constraints:
+- do not copy/replay the 50-skill M50-02 batch wholesale;
+- do not add Scathach authoring or migration credit in this decomposition task;
+- do not change production runtime unless a later B task is explicitly dispatched for a proven missing generic capability;
+- do not treat Astolfo/FB2-49 whole-opponent-close semantics as proof of the distinct single-opponent-close contract;
+- preserve current-main formal/material accounting at `112/944` throughout decomposition;
+- no character/card canonical-ID routing, printed-text/Chinese-text runtime routing, SkillLib fallback, merge, or retarget.
+
+Required output: one current-main A decomposition/dispatch report that names each Scathach S2 ability, its exact historical source evidence, current-main capability status, required focused/adversarial tests, and the smallest next B/S task(s). If a generic runtime prerequisite is missing, dispatch that zero-credit B replay first; only after all required capabilities are accepted/synchronized may A dispatch the one-card S migration.
+
+Allowed final status:
+- `DECOMPOSITION_COMPLETE`
+- `DECOMPOSITION_BLOCKED`
