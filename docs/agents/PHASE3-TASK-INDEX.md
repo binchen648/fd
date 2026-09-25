@@ -4769,3 +4769,14 @@ Allowed B verdicts:
 - `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 - `IMPLEMENTATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+## P3-A-MAIN-REPLAY-SET-PLAYER-FLAG-SCALAR-CONTROLLER-ACCEPTANCE-SYNC
+
+- Exact accepted B Candidate: `a0f58e40bb82dd33740e9aec395e884cc40b2ab2` (PR #452).
+- Canonical fresh-R evidence: `https://github.com/binchen648/fd/pull/452#issuecomment-5838947759`.
+- Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`; relay is the same already-completed review attempt after reviewer GitHub write 403.
+- Capability remains zero-credit: formal/material `112/944`, remaining `832`.
+- Accepted scope is only direct controller `set_player_flag` with explicit scalar boolean/string/finite-number value plus bounded runtime/restore state.
+- No consumer authoring, merge, retarget, broad player-flag conditions, current-round lifecycle, clear/add-number mutation, or other M50 subsystem is accepted by this synchronization.
+- Exact-50 readiness rescan on the accepted runtime is `22 ready / 131 blocked` within the historical 153-identity replay pool. Readiness is not migration credit and is not itself S eligibility.
+- Non-tail F4 remains `EXACT_50_BATCH_BLOCKED`: fewer than 50 identities are currently loader-ready before provenance/semantic recertification.
+- Next formal task: `P3-B-MAIN-REPLAY-M50-PLAYER-FLAG-ROUND-STATE-CORE-R2`, replaying only the bounded player-flag condition/current-round/clear/add-number delta not already accepted by #452; historical #440/#441 material may be used as semantic provenance, while PR #451 is implementation reference only and not formal lineage.
