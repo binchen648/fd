@@ -7,6 +7,11 @@ import {
   type MatchSessionSnapshot,
 } from './match-session';
 import type { AbilityCommand, DispatchResult } from './ability/types';
+import {
+  resolveOpponentCloseToOnePersistenceScope,
+  resolveOpponentCloseToOnePersistenceSecret,
+  rotateOpponentCloseToOnePersistenceScope,
+} from './ability/opponent-close-to-one-authority';
 
 export type RoomStatus = 'lobby' | 'running' | 'ended';
 export type RoomClientRole = 'host' | 'player' | 'spectator';
@@ -84,11 +89,17 @@ export class MatchRoom {
   clients: RoomClient[];
   seats: RoomSeat[];
   session: MatchSession | undefined;
+  private readonly persistenceSecret: string;
+  private readonly persistenceScope: string;
+  private readonly restorePackKind: NonNullable<MatchSessionConfig['restorePackKind']>;
 
   constructor(config: MatchRoomConfig = {}) {
     this.roomId = config.roomId ?? `fd-room-${config.seed ?? 20260904}`;
     this.seed = config.seed ?? 20260904;
     this.hostClientId = config.hostClientId ?? 'host';
+    this.persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
+    this.persistenceScope = config.persistenceScope ?? rotateOpponentCloseToOnePersistenceScope(this.roomId);
+    this.restorePackKind = config.restorePackKind ?? 'production_executable';
     this.clients = [{
       id: this.hostClientId,
       displayName: config.hostName ?? '房主',
@@ -159,6 +170,8 @@ export class MatchRoom {
       seed: this.seed,
       humanPlayerId: primaryHuman,
       humanPlayerIds: humanPlayerIds.length ? humanPlayerIds : [primaryHuman],
+      persistenceSecret: this.persistenceSecret,
+      persistenceScope: this.persistenceScope,
     });
     this.status = 'running';
     this.session.runUntilHumanInputOrRoundEnd();
@@ -243,6 +256,14 @@ export class MatchRoom {
     };
   }
 
+  getPersistenceContext(): Pick<MatchSessionConfig, 'persistenceSecret' | 'persistenceScope' | 'restorePackKind'> {
+    return {
+      persistenceSecret: this.persistenceSecret,
+      persistenceScope: this.persistenceScope,
+      restorePackKind: this.session?.getRestorePackKind() ?? this.restorePackKind,
+    };
+  }
+
   serializeRoom(): MatchRoomSnapshot {
     return {
       version: 1,
@@ -271,16 +292,27 @@ export function createMatchRoom(config?: MatchRoomConfig): MatchRoom {
   return new MatchRoom(config);
 }
 
-export function restoreMatchRoom(snapshot: MatchRoomSnapshot): MatchRoom {
+export function restoreMatchRoom(
+  snapshot: MatchRoomSnapshot,
+  persistence: Pick<MatchSessionConfig, 'persistenceSecret' | 'persistenceScope' | 'restorePackKind'> = {},
+  reconcileReplayTrust = true,
+): MatchRoom {
   if (snapshot.version !== 1) throw new Error(`Unsupported MatchRoom snapshot version: ${snapshot.version}`);
+  const persistenceScope = persistence.persistenceScope ?? resolveOpponentCloseToOnePersistenceScope(snapshot.roomId);
   const room = new MatchRoom({
     roomId: snapshot.roomId,
     seed: snapshot.seed,
     hostClientId: snapshot.hostClientId,
+    ...persistence,
+    persistenceScope,
   });
+  const persistenceContext = room.getPersistenceContext();
+  const restoredSession = snapshot.session
+    ? restoreMatchSession(snapshot.session, persistenceContext, reconcileReplayTrust)
+    : undefined;
   room.status = snapshot.status;
   room.clients = structuredClone(snapshot.clients);
   room.seats = structuredClone(snapshot.seats);
-  room.session = snapshot.session ? restoreMatchSession(snapshot.session) : undefined;
+  room.session = restoredSession;
   return room;
 }

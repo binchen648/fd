@@ -3,7 +3,8 @@ import { describe, expect, it } from 'vitest';
 
 import * as rules from '../../src/index';
 import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from '../../src/ability/interaction-gateway';
-import { MatchSession, restoreMatchSession } from '../../src/match-session';
+import { MatchSession } from '../../src/match-session';
+import { restoreTrustedAuthoringFixtureSession } from '../trusted-authoring-fixture';
 import type { GameState } from '../../src/schema/game';
 import { createSeededGameState } from '../../src/tools/seeded-state';
 
@@ -114,7 +115,7 @@ describe('P3-TO-13 private optional target interaction gateway', () => {
     const ownerBefore = rules.projectAbilityState(state, 'p1').pendingDecision!;
     const session = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'] });
     session.state = structuredClone(state);
-    const restored = restoreMatchSession(session.serializeSession());
+    const restored = restoreTrustedAuthoringFixtureSession(session.serializeSession());
     const ownerAfter = restored.getClientProjection('p1');
     const observerAfter = restored.getClientProjection('p2');
 
