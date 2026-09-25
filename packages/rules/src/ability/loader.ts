@@ -46,6 +46,8 @@ const supportedTypes = new Set([
   'source_card_in_zone', 'controller_at_location_kind', 'reachable_along_arrows', 'can_adjust_mana',
   'event_played_card_has_attribute', 'source_reversed', 'source_active', 'source_owned',
   'event_player_won_combat', 'event_player_lost_combat',
+  'player_flag_equals', 'player_flag_number_at_least', 'player_flag_number_current_round', 'player_flag_number_not_current_round',
+  'set_player_flag', 'clear_player_flag', 'add_player_flag_number', 'current_round',
   'target_count_equals', 'gain_victory_points_per_target', 'transform_event_source_card',
   'controller_won_battle', 'controller_sole_winner', 'controller_mana_at_least', 'min_mana',
   // New types for 5 servants
@@ -61,7 +63,7 @@ const supportedTypes = new Set([
   'highest_cost_noble_phantasm_cost_at_least', 'selected_count_at_least',
   'create_modifier', 'not_location_kind', 'power_bonus', 'card_not_on_board', 'not_card_id',
   // Master authoring adapters
-  'record_master_directive', 'adjust_command_seals', 'set_mana', 'set_player_flag', 'create_independent_deck',
+  'record_master_directive', 'adjust_command_seals', 'set_mana', 'create_independent_deck',
   'draw_from_independent_deck', 'activate_card_by_id', 'replace_card_in_deck',
   'movement_rule_override', 'deployment_rule_override', 'play_source_card',
   'attach_card_to_player_attack', 'append_only_rule', 'transfer_vp_to_owner',
@@ -132,7 +134,14 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (Array.isArray(value)) { value.forEach((v, i) => scan(v, `${path}[${i}]`, abilityId)); return; }
       if (!value || typeof value !== 'object') return;
       const n = node(value);
-      for (const key of Object.keys(n)) if (!mechanicKeys.has(key) && !(n.type === 'set_player_flag' && key === 'key')) issue(`${path}.${key}`, 'Unmapped mechanic field', abilityId);
+      for (const key of Object.keys(n)) {
+        const playerFlagLocalField =
+          (['player_flag_equals', 'player_flag_number_at_least', 'player_flag_number_current_round', 'player_flag_number_not_current_round',
+            'set_player_flag', 'clear_player_flag', 'add_player_flag_number'].includes(str(n.type)) && key === 'key') ||
+          (['set_player_flag', 'add_player_flag_number'].includes(str(n.type)) && key === 'lifecycle') ||
+          (n.type === 'current_round' && key === 'offset');
+        if (!mechanicKeys.has(key) && !playerFlagLocalField) issue(`${path}.${key}`, 'Unmapped mechanic field', abilityId);
+      }
       const exactOpponentCloseCondition = !!abilityId && acceptedOpponentCloseToOneAbilityIds.has(abilityId) &&
         ['source_owned', 'at_battlefield'].includes(str(n.type));
       if (n.type && !supportedTypes.has(str(n.type)) && !exactOpponentCloseCondition) issue(`${path}.type`, `Unmapped type: ${str(n.type)}`, abilityId);
@@ -144,20 +153,52 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (!path.startsWith('conditions')) issue(path, 'Event combat outcome condition is supported only under ability conditions', abilityId);
         if (!Object.keys(n).every((key) => key === 'type')) issue(path, 'Event combat outcome condition must contain only type', abilityId);
       }
+      if (['player_flag_equals', 'player_flag_number_at_least', 'player_flag_number_current_round', 'player_flag_number_not_current_round'].includes(str(n.type))) {
+        if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Structured player-flag condition is supported only as a direct ability condition', abilityId);
+        const key = str(n.key);
+        if (!key) issue(path, 'Structured player-flag condition requires a nonempty key', abilityId);
+        const keys = Object.keys(n);
+        if (n.type === 'player_flag_equals') {
+          if (!keys.every((key) => ['type', 'key', 'value'].includes(key)) ||
+            !(typeof n.value === 'boolean' || typeof n.value === 'string' || (typeof n.value === 'number' && Number.isSafeInteger(n.value))))
+            issue(path, 'player_flag_equals requires an exact primitive flag value', abilityId);
+        } else if (n.type === 'player_flag_number_at_least') {
+          if (!keys.every((key) => ['type', 'key', 'value'].includes(key)) || !Number.isSafeInteger(n.value))
+            issue(path, 'player_flag_number_at_least requires an exact safe-integer value', abilityId);
+        } else if (!keys.every((key) => ['type', 'key'].includes(key))) {
+          issue(path, 'Current-round player-flag condition must contain only type and key', abilityId);
+        }
+      }
+      if (['set_player_flag', 'clear_player_flag', 'add_player_flag_number'].includes(str(n.type))) {
+        if (!/^effects\[\d+\]$/.test(path)) issue(path, 'Structured player-flag mutation is supported only as a direct ability effect', abilityId);
+        if (n.target !== 'controller' || !str(n.key)) issue(path, 'Structured player-flag mutation requires controller target and nonempty key', abilityId);
+        const lifecycle = node(n.lifecycle);
+        if (n.lifecycle !== undefined && (!Object.keys(lifecycle).every((key) => key === 'duration') || lifecycle.duration !== 'this_round'))
+          issue(path, 'Structured player-flag lifecycle must be exactly this_round', abilityId);
+        const keys = Object.keys(n);
+        if (n.type === 'set_player_flag') {
+          if (!keys.every((key) => ['type', 'target', 'key', 'value', 'lifecycle'].includes(key))) issue(path, 'set_player_flag contains unsupported fields', abilityId);
+          const value = n.value; const currentRound = node(value);
+          const primitive = typeof value === 'boolean' || typeof value === 'string' || (typeof value === 'number' && Number.isFinite(value));
+          const exactRound = currentRound.type === 'current_round' && Object.keys(currentRound).every((key) => ['type', 'offset'].includes(key)) &&
+            (currentRound.offset === undefined || Number.isSafeInteger(currentRound.offset));
+          if (!primitive && !exactRound) issue(path, 'set_player_flag requires a primitive or exact current_round value', abilityId);
+        } else if (n.type === 'clear_player_flag') {
+          if (!keys.every((key) => ['type', 'target', 'key'].includes(key))) issue(path, 'clear_player_flag contains unsupported fields', abilityId);
+        } else if (!keys.every((key) => ['type', 'target', 'key', 'amount', 'lifecycle'].includes(key)) || !Number.isSafeInteger(n.amount)) {
+          issue(path, 'add_player_flag_number requires an exact safe-integer amount', abilityId);
+        }
+      }
+      if (n.type === 'current_round') {
+        if (!/^effects\[\d+\]\.value$/.test(path) || !Object.keys(n).every((key) => ['type', 'offset'].includes(key)) ||
+            (n.offset !== undefined && !Number.isSafeInteger(n.offset)))
+          issue(path, 'current_round is supported only as an exact set_player_flag value', abilityId);
+      }
       if (n.type === 'target_count_equals') {
         if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Exact target-count condition is supported only as a direct ability condition', abilityId);
         if (!Object.keys(n).every((key) => ['type', 'scope', 'count'].includes(key)) ||
           str(n.scope) !== 'same_battlefield_opponents' || !Number.isSafeInteger(n.count) || Number(n.count) < 0) {
           issue(path, 'Exact target-count condition requires same_battlefield_opponents and a nonnegative safe-integer count', abilityId);
-        }
-      }
-      if (n.type === 'set_player_flag') {
-        const scalar = typeof n.value === 'boolean' || typeof n.value === 'string' ||
-          (typeof n.value === 'number' && Number.isFinite(n.value));
-        if (!/^effects\[\d+\]$/.test(path)) issue(path, 'Scalar player flag is supported only as a direct ability effect', abilityId);
-        if (!Object.keys(n).every((key) => ['type', 'target', 'key', 'value'].includes(key)) ||
-          n.target !== 'controller' || typeof n.key !== 'string' || n.key.length === 0 || !scalar) {
-          issue(path, 'Scalar player flag requires exact controller target, nonempty key, and explicit boolean/string/finite-number value', abilityId);
         }
       }
       if (n.type === 'gain_victory_points_per_target') {

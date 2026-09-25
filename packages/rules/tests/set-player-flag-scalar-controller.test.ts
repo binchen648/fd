@@ -41,6 +41,22 @@ describe('P3 current-main scalar controller set_player_flag replay', () => {
     }
   });
 
+  it('accepts the R2 exact current_round value and exact this_round lifecycle without widening other shapes', () => {
+    const effects = [
+      { type: 'set_player_flag', target: 'controller', key: 'round', value: { type: 'current_round' } },
+      { type: 'set_player_flag', target: 'controller', key: 'temporary', value: 1, lifecycle: { duration: 'this_round' } },
+    ];
+    const pack = rules.loadAuthoringJson(archive(effects));
+    expect(pack.report).toEqual([]);
+    expect(pack.cards[DEF]!.abilities[0]!.execution.mode).toBe('automatic');
+
+    const state = setup(effects);
+    const round = state.round.roundNumber;
+    rules.processAbilityEvent(state, { id: 'r2-compatible-player-flags', type: 'game_start' });
+    expect(state.abilityRuntime!.structuredPlayerFlagsByPlayer!.p1).toEqual({ round, temporary: 1 });
+    expect(state.abilityRuntime!.structuredRoundFlagKeysByPlayer!.p1!.temporary).toBe(round);
+  });
+
   it('executes trusted game_start scalar flags without identity routing', () => {
     const effects = [flag('one', 1), flag('two', 2), flag('place', 'india'), flag('ready', true), flag('cap', 16)];
     const state = setup(effects);
@@ -53,8 +69,9 @@ describe('P3 current-main scalar controller set_player_flag replay', () => {
     const cases: any[] = [
       { type: 'set_player_flag', target: 'p2', key: 'x', value: 1 },
       { type: 'set_player_flag', target: 'controller', key: 'x' },
-      { type: 'set_player_flag', target: 'controller', key: 'x', value: { type: 'current_round' } },
-      { type: 'set_player_flag', target: 'controller', key: 'x', value: 1, lifecycle: { duration: 'this_round' } },
+      { type: 'set_player_flag', target: 'controller', key: 'x', value: { type: 'current_round', extra: true } },
+      { type: 'set_player_flag', target: 'controller', key: 'x', value: { type: 'current_round', offset: 1.5 } },
+      { type: 'set_player_flag', target: 'controller', key: 'x', value: 1, lifecycle: { duration: 'per_game' } },
       { type: 'set_player_flag', target: 'controller', key: 'x', value: 1, extra: true },
     ];
     for (const effect of cases) {
@@ -66,11 +83,12 @@ describe('P3 current-main scalar controller set_player_flag replay', () => {
     expect(nested.cards[DEF]!.abilities[0]!.execution.mode).toBe('unsupported');
   });
 
-  it('runtime rejects a malformed flag shape even if called below the loader boundary', () => {
+  it('runtime rejects a still-unauthorized malformed current_round shape below the loader boundary without mutating flags', () => {
     const state = setup([flag('ok', 1)]);
+    const before = structuredClone(state.abilityRuntime!.structuredPlayerFlagsByPlayer ?? {});
     expect(() => rules.resolveEffect(state, { sourceCardId: SOURCE, abilityId: 'game-start-player-flags', controllerId: 'p1', variables: {}, selections: {} },
-      { type: 'set_player_flag', target: 'controller', key: 'bad', value: { type: 'current_round' } } as never)).toThrow(/Unsupported scalar controller player-flag shape/);
-    expect(state.abilityRuntime!.structuredPlayerFlagsByPlayer).toBeUndefined();
+      { type: 'set_player_flag', target: 'controller', key: 'bad', value: { type: 'current_round', extra: true } } as never)).toThrow(/Structured player flag value is unsupported/);
+    expect(state.abilityRuntime!.structuredPlayerFlagsByPlayer ?? {}).toEqual(before);
   });
 
   it('round-trips bounded scalar flag state through MatchSession persistence', () => {

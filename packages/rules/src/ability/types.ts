@@ -216,14 +216,16 @@ export interface CardRuntimeState {
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
+  /** Identity-free server-owned structured player flags. */
+  structuredPlayerFlagsByPlayer?: Record<PlayerId, Record<string, boolean | string | number>>;
+  /** Round marker for flags whose authored lifecycle is exactly this_round. */
+  structuredRoundFlagKeysByPlayer?: Record<PlayerId, Record<string, number>>;
   ongoingEffects: OngoingEffect[]; lifecycleTransitions?: LifecycleTransition[]; responseWindows: ResponseWindow[]; pendingDecision?: PendingDecision;
   pendingDelayedActivations?: PendingDelayedActivation[];
   /** Server-owned pre-scoring battle-local defeat requests staged by the exact Presence Concealment response. */
   pendingPresenceConcealmentDefeats?: PendingPresenceConcealmentDefeat[];
   /** Server-owned post-scoring battle events waiting for Trigger Gateway settlement. */
   pendingPostBattleEvents?: AbilityEvent[];
-  /** Identity-free persistent scalar controller flags set by validated structured effects. */
-  structuredPlayerFlagsByPlayer?: Record<PlayerId, Record<string, boolean | string | number>>;
   /** FB2-49 serialized same-battlefield opponent keep-one card decisions. */
   pendingOpponentCloseToOne?: PendingOpponentCloseToOne[];
   /** Server-owned once-per-battle-phase terminal event, staged until ordinary post-battle work is settled. */
