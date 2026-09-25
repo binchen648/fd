@@ -4741,3 +4741,31 @@ Next action: A must mechanically derive and freeze the next exact-50 current-mai
 Allowed next A status:
 - `EXACT_50_BATCH_READY`
 - `EXACT_50_BATCH_BLOCKED`
+## TASK P3-A-F4-EXACT-50-COMPOSITION-01
+
+Owner: Codex A
+Status: `EXACT_50_BATCH_BLOCKED`
+Base: `bf1e3ed5ece561b7ac2b9a49064783bbead9f85f`
+Read: `docs/reports/2026-09-26-p3-a-f4-exact-50-composition-01.md`
+
+Mechanical scan at the accepted M50-02 production tree proves frozen denominator `944`, current materialized overlap `112`, absent `832`, duplicate frozen IDs `0`. Historical accepted PR #441 materialized `265`; its old-frontier-minus-current replay pool is `153` identities.
+
+Each of those 153 historical identities was re-run individually through the current-main `loadAuthoringJson` boundary. Only `14` currently load with zero adapter report and all abilities `execution.mode=automatic`; `139` still hit explicit unsupported runtime/loader gaps. Therefore an exact-50 S batch is not yet dependency-complete and must not be dispatched. At least `36` additional identities must be unlocked by zero-credit B capability work before exact-50 membership can be frozen.
+
+Immediate current-loader-ready historical identities are recorded in the planning report. The next capability chosen by mechanical gap clustering is the narrow scalar controller `set_player_flag` effect: it appears in the gap pool 19 times and has five immediate consumers whose only current loader gap is this effect/key family.
+
+Next task: `P3-B-MAIN-REPLAY-SET-PLAYER-FLAG-SCALAR-CONTROLLER`.
+
+Hard boundary for B:
+- identity-free zero-credit runtime only;
+- accept only a direct ability effect with exact shape `{type:"set_player_flag", target:"controller", key:<nonempty string>, value:<boolean|string|finite number>}`;
+- no missing-value default, no current-round AST/lifecycle, no arbitrary player targets, no clear/add-number/flag conditions, no broad M50 flag subsystem;
+- persist only the scalar flag map in AbilityRuntime with bounded MatchSession restore/reference validation;
+- add focused runtime/loader/persistence/near-match tests;
+- affected focused tests + typecheck + `git diff --check`;
+- no `data/authoring/**`, no migration credit, no merge/retarget.
+
+Allowed B verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `MIGRATION_BLOCKED`
