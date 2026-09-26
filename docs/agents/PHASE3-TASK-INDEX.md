@@ -5241,3 +5241,5 @@ Hard scope boundary:
 Evidence: `docs/reports/2026-09-27-p3-b-sigurd-revealed-source-capability-result.md`.
 
 Formal accounting remains `129/944`; this task is permanently zero-credit.
+
+R1 predecessor `986b04be707911b8f741ffc4f7bf33da8f59fe50` -> `IMPLEMENTATION_NEEDS_REVISION`; canonical relay: `https://github.com/binchen648/fd/pull/461#issuecomment-5848501887`. Successor revision closes disabled/unsupported-derived capability leakage and requires canonical battle-terminal provenance for after-battle removal; fresh R is required on the successor exact Candidate.

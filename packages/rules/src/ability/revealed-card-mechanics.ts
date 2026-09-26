@@ -58,9 +58,10 @@ export function conditionalRevealedSourceAttributes(state: GameState, cardInstan
   const runtime = state.abilityRuntime;
   const card = state.cards.find((candidate) => candidate.instanceId === cardInstanceId);
   const definition = card && runtime?.pack.cards[card.definitionId];
-  if (!runtime || !card || !definition) return [];
+  if (!runtime || !card || !definition || definition.mode !== 'automatic') return [];
   const attributes: string[] = [];
   for (const ability of definition.abilities) {
+    if (ability.execution.mode !== 'automatic') continue;
     for (const effect of ability.effects) {
       if (!isConditionalAttributeGrantEffect(effect)) continue;
       if (ownedDefinitionWasRevealed(state, card.controllerPlayerId, String(effect.definitionId))) {
@@ -75,10 +76,13 @@ export function conditionalRevealedSourceAttributes(state: GameState, cardInstan
 function controllerHasRevealedGrantSource(state: GameState, controllerId: string): boolean {
   const runtime = state.abilityRuntime;
   if (!runtime) return false;
-  return state.cards.some((candidate) => candidate.ownerPlayerId === controllerId && candidate.controllerPlayerId === controllerId &&
-    physicalCardWasRevealed(state, candidate.instanceId) &&
-    runtime.pack.cards[candidate.definitionId]?.abilities.some((ability) =>
-      ability.effects.some(isGrantBasicDoubleRemoveEffect)) === true);
+  return state.cards.some((candidate) => {
+    const definition = runtime.pack.cards[candidate.definitionId];
+    return candidate.ownerPlayerId === controllerId && candidate.controllerPlayerId === controllerId &&
+      physicalCardWasRevealed(state, candidate.instanceId) && definition?.mode === 'automatic' &&
+      definition.abilities.some((ability) => ability.execution.mode === 'automatic' &&
+        ability.effects.some(isGrantBasicDoubleRemoveEffect));
+  });
 }
 
 export function grantedBasicDoubleRemoveAbility(state: GameState, cardInstanceId: string): AuthoringAbility | undefined {

@@ -70,3 +70,14 @@ Allowed review verdicts:
 - `MIGRATION_BLOCKED` only for an external Reviewer-attempt blocker
 
 The exact Candidate SHA is frozen by the commit containing this report. After ACCEPTED, A must synchronize/rescan this capability and return to the same `servant.sigurd` owner; no next-owner transition is permitted here.
+
+## R1 successor revision
+
+R1 on predecessor Candidate `986b04be707911b8f741ffc4f7bf33da8f59fe50` returned `IMPLEMENTATION_NEEDS_REVISION`; canonical Coordinator bounded relay of that same completed attempt: `https://github.com/binchen648/fd/pull/461#issuecomment-5848501887`.
+
+Both exact-scope findings are closed in the successor revision:
+
+1. revealed-source derived capabilities now require both the source card definition and the specific authored ability to remain executable `automatic`; loader-disabled/unsupported abilities cannot synthesize the granted basic action or conditional attributes;
+2. the remove-after-battle marker is consumed only by the canonical current-round battle terminal identity (matching `battlePhaseResolutionId` and terminal event id), so an unproven same-name event cannot remove the card.
+
+Successor-focused verification: revealed-source capability `6/6 PASS`; affected serial chain `7 files / 160 tests PASS`; typecheck/content validate/generated determinism/diff-check PASS. Formal accounting remains `129/944` because this task is zero-credit.

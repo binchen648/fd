@@ -3760,7 +3760,10 @@ function processEvent(s: GameState, event: AbilityEvent): void {
       w.choices.push(t);
     } else executeAbility(s, context(s, t.cardInstanceId, t.abilityId, event));
   }
-  if (event.type === 'after_battle_ended') {
+  const canonicalBattleTerminalId = `battle-phase:${s.round.roundNumber}`;
+  if (event.type === 'after_battle_ended' &&
+      event.battlePhaseResolutionId === canonicalBattleTerminalId &&
+      event.id === `${canonicalBattleTerminalId}:after_battle_ended`) {
     for (const candidate of [...s.cards]) {
       const state = r.cardState[candidate.instanceId];
       if (state?.removeAfterBattleRound !== s.round.roundNumber) continue;
