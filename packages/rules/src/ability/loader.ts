@@ -4,6 +4,7 @@ import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID } from '../core/card-source-state
 import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
 import { isAcceptedControlledCardCloseForbidModifier } from './card-close-forbid';
 import { isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
+import { isLinkedOwnerCombatRule, isServantNoCommandSealsRule } from './linked-owner-combat';
 import {
   OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT,
   OPPONENT_CLOSE_ONE_NON_RESIDUAL_EFFECT,
@@ -48,6 +49,7 @@ const supportedTypes = new Set([
   'event_played_card_has_attribute', 'source_reversed', 'source_active', 'source_owned',
   'event_player_won_combat', 'event_player_lost_combat',
   'event_player_is_controller', 'event_player_is_opponent', 'event_location_equals_controller',
+  'controller_command_seals_at_least', 'controller_command_seals_at_most',
   'player_flag_equals', 'player_flag_number_at_least', 'player_flag_number_current_round', 'player_flag_number_not_current_round',
   'set_player_flag', 'clear_player_flag', 'add_player_flag_number', 'current_round',
   'target_count_equals', 'gain_victory_points_per_target', 'transform_event_source_card',
@@ -74,6 +76,8 @@ const supportedTypes = new Set([
   'false_attendant_book_replacement', 'existing_attack_controlled_by_target', 'not_controller', 'at_battlefield',
   // Phase 3A resolution/data-flow infrastructure
   'remove_advantage_position', 'noop', 'fail_invariant', 'install_rule_override', 'provision_skill_cards',
+  'adjust_selected_player_terrain', 'lend_source_card', 'engaged_opponent_attack_power_modifier',
+  'linked_owner_combat_rule', 'servant_no_command_seals_rule',
   OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT, OPPONENT_CLOSE_ONE_NON_RESIDUAL_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
@@ -103,6 +107,8 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'returnAtRoundEnd', 'preserveVictoryPoints', 'sakuraMasterId', 'fallbackServantPool',
   // Phase 3A resolution/data-flow infrastructure
   'bind', 'expr', 'binding', 'field', 'valueType', 'ids', 'reason', 'message', 'enabled', 'regular', 'climax', 'threshold', 'phase', 'targetDefinitionIds',
+  'add', 'multiply', 'until', 'hiddenAmount', 'revealedAmount', 'excludeLinkedOwnerRecipient', 'commandSealsAtMost', 'hideTrueName',
+  'ignoreBattleLossEffects', 'shareMaximumCombatPower', 'closeIfOwnerAbsent', 'returnToOwnerAtBattleEnd', 'returnToOwnerHandOnOwnerLoss', 'ownerCommandSealsAtMost', 'basePowerMultiplier',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -316,6 +322,22 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       else if (limit.type && !['unique', 'per_game', 'per_round'].includes(str(limit.type))) issue('limit', 'Unmapped activation limit', id);
       for (const field of ['effects', 'conditions', 'cost', 'creates']) scan(a[field], field, id);
       for (const effect of nodes(a.effects)) {
+        if (effect.type === 'linked_owner_combat_rule' && !isLinkedOwnerCombatRule(effect)) issue('effects', 'Unsupported linked-owner combat rule shape', id);
+        if (effect.type === 'servant_no_command_seals_rule' && !isServantNoCommandSealsRule(effect)) issue('effects', 'Unsupported no-command-seals servant rule shape', id);
+        if (effect.type === 'adjust_selected_player_terrain' && !(
+          str(effect.target) && Number(effect.add) === 2 && Number(effect.multiply) === 2 && effect.duration === 'this_round' &&
+          Object.keys(effect).every((key) => ['type','target','add','multiply','duration'].includes(key)))) {
+          issue('effects', 'Unsupported selected-player terrain adjustment shape', id);
+        }
+        if (effect.type === 'lend_source_card' && !(str(effect.target) && effect.until === 'battle_phase_end' &&
+          Object.keys(effect).every((key) => ['type','target','until'].includes(key)))) {
+          issue('effects', 'Unsupported source-card lending shape', id);
+        }
+        if (effect.type === 'engaged_opponent_attack_power_modifier' && !(
+          Number(effect.hiddenAmount) === -3 && Number(effect.revealedAmount) === -4 && effect.excludeLinkedOwnerRecipient === true &&
+          Object.keys(effect).every((key) => ['type','hiddenAmount','revealedAmount','excludeLinkedOwnerRecipient'].includes(key)))) {
+          issue('effects', 'Unsupported engaged-opponent attack modifier shape', id);
+        }
         if (effect.type === 'play_selected_cards' && !nodes(a.targets).some(t => t.id === effect.target && t.type === 'card_instance' && node(t.scope).zone === 'hand')) {
           issue('effects.target', 'Effect play requires a declared hand-card target', id);
         }

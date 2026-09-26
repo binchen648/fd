@@ -3,11 +3,22 @@
   "packId": "fd-playtest-v1",
   "summary": {
     "masters": 7,
-    "servants": 7,
+    "servants": 8,
     "events": 20,
     "blockingIssues": 0
   },
   "entities": [
+    {
+      "entityId": "card.x-guard",
+      "displayName": "守护",
+      "entityKind": "generated",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "玛修·基列莱特.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/cards/x_Guard.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
     {
       "entityId": "event-set.waxing_moon_ritual",
       "displayName": "盈月之仪",
@@ -1151,6 +1162,72 @@
       "issueCodes": [
         "SOURCE_ASSET_UNVERIFIED"
       ]
+    },
+    {
+      "entityId": "servant.mash",
+      "displayName": "玛修·基列莱特",
+      "entityKind": "servant",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "玛修·基列莱特.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/玛修·基列莱特.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.mash.overview",
+      "displayName": "玛修·基列莱特",
+      "entityKind": "servant_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "玛修·基列莱特.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/玛修·基列莱特.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.mash.skill.sc-mash-1",
+      "displayName": "已然遥远的理想之城",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "玛修·基列莱特.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/skills/sc_mash_1.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.mash.skill.sc-mash-2",
+      "displayName": "雪花之壁",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "玛修·基列莱特.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/skills/sc_mash_2.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.mash.skill.sc-mash-3",
+      "displayName": "奥特瑙斯",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "玛修·基列莱特.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/skills/sc_mash_3.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.mash.skill.sc-mash-4",
+      "displayName": "守护",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "玛修·基列莱特.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/cards/x_Guard.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
     },
     {
       "entityId": "servant.tomoe",

@@ -14,6 +14,8 @@ import type { ResolverResult } from "./resolver-contracts";
 import { getLocationById } from "./map-engine";
 import { calculateCardPower, processAbilityEvent } from '../ability/interpreter';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
+import { applyLinkedOwnerCombatPowerSharing, playerHasLinkedOwnerLossImmunity, prepareLinkedOwnerCardsForBattle } from '../ability/linked-owner-combat';
+import { hasTerrainAdvantageOverride, terrainAdvantageAtLocation } from '../ability/terrain-advantage-override';
 import { logicalDayForPlayer } from './rule-overrides';
 
 export interface CombatParticipantInput {
@@ -156,18 +158,15 @@ function getTerrainBreakdowns(
   participant: CombatParticipantInput,
 ): BattleModifierBreakdown[] {
   const location = getLocationById(state.map, state.locationConfig, battlefieldId);
-  if (!location?.terrainBonuses?.length || participant.terrainSlotIndex === undefined) {
-    return [];
+  if (isTerrainSuppressedByAuthoredDuel(state, battlefieldId, participant.playerId)) return [];
+  if (hasTerrainAdvantageOverride(state, participant.playerId, battlefieldId)) {
+    return [createTerrainBreakdown(battlefieldId, participant.terrainSlotIndex ?? 0, terrainAdvantageAtLocation(state, participant.playerId, battlefieldId))];
   }
-  if (isTerrainSuppressedByAuthoredDuel(state, battlefieldId, participant.playerId)) {
-    return [];
-  }
+  if (!location?.terrainBonuses?.length || participant.terrainSlotIndex === undefined) return [];
 
   const baseValue = location.terrainBonuses[participant.terrainSlotIndex];
   const value = typeof baseValue === "number" ? baseValue * terrainMultiplierForPlayer(state, participant.playerId) : baseValue;
-  if (typeof value !== "number") {
-    return [];
-  }
+  if (typeof value !== "number") return [];
 
   return [createTerrainBreakdown(battlefieldId, participant.terrainSlotIndex, value)];
 }
@@ -210,7 +209,8 @@ function hasActiveBasicCardAtBattlefield(
 }
 
 function ignoresBattleLossEffects(state: GameState, playerId: string, battlefieldId: CombatResolutionInput["battlefieldId"]): boolean {
-  return hasActiveBasicCardAtBattlefield(state, playerId, battlefieldId, "basic.luck");
+  return hasActiveBasicCardAtBattlefield(state, playerId, battlefieldId, "basic.luck") ||
+    playerHasLinkedOwnerLossImmunity(state, playerId, battlefieldId);
 }
 
 function hasRemoteOperationBonus(state: GameState, playerId: string, battlefieldId: CombatResolutionInput["battlefieldId"]): boolean {
@@ -544,6 +544,8 @@ export function resolveBattlefield(
     };
   }
 
+  state = prepareLinkedOwnerCardsForBattle(state, input.battlefieldId);
+
   const nextPlacements = state.eventPlacements.map((placement) => {
     if (placement.locationId !== input.battlefieldId || !input.revealHiddenEvents) {
       return placement;
@@ -615,9 +617,9 @@ export function resolveBattlefield(
     }
     return { nextState, appliedLogEntries: [`return_silence:${input.battlefieldId}`] };
   }
-  const ranked = [...participants]
-    .map((participant) => buildParticipantBreakdown(state, input.battlefieldId, participant))
-    .sort((left, right) => right.effectivePower - left.effectivePower);
+  const ranked = applyLinkedOwnerCombatPowerSharing(
+    state, input.battlefieldId, [...participants].map((participant) => buildParticipantBreakdown(state, input.battlefieldId, participant)),
+  ).sort((left, right) => right.effectivePower - left.effectivePower);
   const resultId = `battle-result:${state.round.roundNumber}:${input.battlefieldId}`;
   const powerEventId = `battle-power:${state.round.roundNumber}:${input.battlefieldId}`;
   let settlementState = state;

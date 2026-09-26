@@ -354,7 +354,12 @@ function toNamedCard(
   };
 }
 
-function mapDeckCard(cardId: string, copies: number): ServantDefinition['startingDeck']['entries'][number] {
+function mapDeckCard(cardId: string, copies: number, archive?: AuthoringArchive): ServantDefinition['startingDeck']['entries'][number] {
+  const authoredNamed = archive?.cards.find((card) => card.id === cardId && card.cardType === 'servant_deck_card');
+  if (authoredNamed) {
+    const attribute = authoredNamed.cardFace?.attributes?.map(toAttribute).find(Boolean) ?? 'special';
+    return { entryType: 'named', attribute, cardId, copies };
+  }
   const lower = cardId.toLowerCase();
   if (lower === 'card.x-pilgrimcall') return { entryType: 'named', attribute: 'special', cardId: 'servant.artoriac.skill.sc-artoriac-4', copies };
   if (lower === 'card.x-pilgrimrespite') return { entryType: 'named', attribute: 'special', cardId: 'servant.artoriac.skill.sc-artoriac-5', copies };
@@ -370,7 +375,7 @@ function mapDeckCard(cardId: string, copies: number): ServantDefinition['startin
 }
 
 function startingDeckFromAuthoring(archive: AuthoringArchive): ServantDefinition['startingDeck'] {
-  const entries = (archive.deck ?? []).map((entry) => mapDeckCard(entry.cardId, entry.count ?? 1));
+  const entries = (archive.deck ?? []).map((entry) => mapDeckCard(entry.cardId, entry.count ?? 1, archive));
   const total = entries.reduce((sum, entry) => sum + entry.copies, 0);
   if (total !== 12) throw new Error(`${archive.id} deck must contain exactly 12 cards; found ${total}`);
 
@@ -402,7 +407,7 @@ function convertAuthoringServant(
   workspaceRoot: string,
 ): { servant: ServantDefinition; cards: NamedCardDefinition[] } {
   const skillCardIds = archive.cards
-    .filter((card) => card.cardType === 'servant_skill')
+    .filter((card) => card.cardType === 'servant_skill' && card.initialPlacement !== 'outside_game')
     .map((card) => card.id);
   if (skillCardIds.length !== 3) throw new Error(`${archive.id} must define exactly 3 servant skill cards; found ${skillCardIds.length}`);
   const generatedCardIds = archive.cards
