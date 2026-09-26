@@ -3,7 +3,7 @@
   "packId": "fd-playtest-v1",
   "summary": {
     "masters": 7,
-    "servants": 8,
+    "servants": 9,
     "events": 20,
     "blockingIssues": 0
   },
@@ -1226,6 +1226,105 @@
       "htmPath": "玛修·基列莱特.htm",
       "imagePath": "../../Fate_Domination-开发版/images/cards/x_Guard.png",
       "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.sherlock",
+      "displayName": "夏洛克·福尔摩斯",
+      "entityKind": "servant",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/夏洛克·福尔摩斯.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/夏洛克·福尔摩斯.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.sherlock.overview",
+      "displayName": "夏洛克·福尔摩斯",
+      "entityKind": "servant_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/夏洛克·福尔摩斯.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/夏洛克·福尔摩斯.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.sherlock.skill.sc-sherlock-1",
+      "displayName": "这是常识，我亲爱的朋友啊",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/夏洛克·福尔摩斯.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/skills/sc_sherlock_1.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.sherlock.skill.sc-sherlock-2",
+      "displayName": "空屋历险",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/夏洛克·福尔摩斯.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/skills/sc_sherlock_2.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.sherlock.skill.sc-sherlock-3",
+      "displayName": "逆推法",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/夏洛克·福尔摩斯.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/skills/sc_sherlock_3.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.sherlock.skill.sc-sherlock-4",
+      "displayName": "逆推法：力量",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/夏洛克·福尔摩斯.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/夏洛克·福尔摩斯.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.sherlock.skill.sc-sherlock-5",
+      "displayName": "逆推法：迅捷",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/夏洛克·福尔摩斯.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/夏洛克·福尔摩斯.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.sherlock.skill.sc-sherlock-6",
+      "displayName": "逆推法：魔术",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/夏洛克·福尔摩斯.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/夏洛克·福尔摩斯.png",
+      "imageIndex": 6,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.sherlock.skill.sc-sherlock-7",
+      "displayName": "逆推法：特殊",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/夏洛克·福尔摩斯.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/夏洛克·福尔摩斯.png",
+      "imageIndex": 7,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

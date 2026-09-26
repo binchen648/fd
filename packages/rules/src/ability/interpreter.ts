@@ -14,6 +14,8 @@ import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSema
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
 import { controllerHasLinkedOwnerCardFrom, isLinkedOwnerCombatRule, isServantNoCommandSealsRule, linkedOwnerBasePowerMultiplier, servantRevealForbiddenByNoCommandSeals } from './linked-owner-combat';
 import { setTerrainAdvantageOverride } from './terrain-advantage-override';
+import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute, deductionRecordDefinitionsForOwner, isDeductionRecordEffect, type DeductionRecordAttribute } from './deduction-record';
+import { activePlayerCountMinusRoundPlayCostAbility } from './dynamic-play-cost';
 import {
   isAcceptedOpponentCloseToOneAbility,
   isAcceptedOpponentCloseOneNonResidualAbility,
@@ -204,7 +206,7 @@ function context(s: GameState, sourceCardId: string, abilityId: string, event?: 
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-    cardState: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
+    cardState: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
     events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [], roomMode: options.roomMode ?? 'standard',
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
@@ -441,6 +443,10 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
       candidate.status === 'active' &&
       nodes(target.constraints).every(c => {
         if (c.type === 'not_controller') return candidate.id !== ctx.controllerId;
+        if (c.type === 'same_location_as_controller') {
+          const controllerLocation = player(s, ctx.controllerId).locationId;
+          return !!controllerLocation && candidate.locationId === controllerLocation;
+        }
         if (c.type === 'at_battlefield') return isBattlefield(s, candidate.locationId);
         if (c.type === 'existing_attack_controlled_by_target') {
           return s.cards.some(card =>
@@ -637,6 +643,25 @@ function eventPlayerRelationCondition(s: GameState, ctx: EffectContext, c: RuleN
   return c.type === 'event_player_is_controller' ? eventPlayerId === ctx.controllerId : eventPlayerId !== ctx.controllerId;
 }
 
+function deductionRecordForPlayer(s: GameState, playerId: string) {
+  return runtime(s).deductionRecordsByPlayer?.[playerId];
+}
+function eventMatchesDeductionRecordAttack(s: GameState, ctx: EffectContext, allowNoblePhantasmRevealException: boolean): boolean {
+  const record = deductionRecordForPlayer(s, ctx.controllerId);
+  const event = ctx.event;
+  if (!record || !event || event.type !== 'on_card_played' || !event.playerId || event.playerId === ctx.controllerId) return false;
+  return (event.playedCards ?? []).some((played) => {
+    if (played.faceDown || played.controllerId !== event.playerId) return false;
+    const physical = s.cards.find((candidate) => candidate.instanceId === played.instanceId);
+    if (!physical) return false;
+    const d = runtime(s).pack.cards[physical.definitionId];
+    if (!d || !getEffectiveCardAttributes(s, physical.instanceId).includes(record.attribute)) return false;
+    if (d.cardType === 'basic_attack') return true;
+    return allowNoblePhantasmRevealException && getEffectiveCardAttributes(s, physical.instanceId).includes('宝具') &&
+      classifyCardPlay(d).playKind === 'attack';
+  });
+}
+
 function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   if (!c || typeof c !== 'object') reject('unsupported', 'Unsupported condition');
   if (c.type === 'target_count_equals' && !isTargetCountEqualsCondition(c)) reject('unsupported', 'Unsupported exact target-count condition shape');
@@ -683,6 +708,10 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
       if (!isAcceptedEventLocationEqualsControllerCondition(c)) reject('unsupported', 'Unsupported event-location relation condition shape');
       return eventLocationEqualsController(s, ctx.controllerId, ctx.event);
     }
+    case 'event_location_is': return !!ctx.event?.locationId && ctx.event.locationId === str(c.locationId);
+    case 'deduction_record_present': return !!deductionRecordForPlayer(s, ctx.controllerId);
+    case 'deduction_record_absent': return !deductionRecordForPlayer(s, ctx.controllerId);
+    case 'deduction_record_matches_event_attack': return eventMatchesDeductionRecordAttack(s, ctx, c.allowNoblePhantasmRevealException === true);
     case 'target_count_equals': {
       const targets = sameBattlefieldOpponentIds(s, ctx);
       return targets !== null && targets.length === Number(c.count);
@@ -933,6 +962,20 @@ function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean
       isActivateCardByIdTrigger(ability) &&
       ability.effects.some((effect) => effect.type === 'activate_card_by_id' && effect.definitionId === definitionId)));
 }
+export function effectiveCardPlayCost(s: GameState, playerId: string, sourceId: string): number {
+  const d = definition(s, sourceId);
+  if (!d) reject('unsupported', 'Missing card definition');
+  const base = Number(d.cardFace.cost ?? 0);
+  if (!Number.isFinite(base) || base < 0) reject('unsupported', 'Card play cost must be a nonnegative finite number');
+  const dynamic = d.abilities.filter(activePlayerCountMinusRoundPlayCostAbility);
+  if (dynamic.length > 1) reject('unsupported', 'Conflicting dynamic play-cost modifiers');
+  if (!dynamic.length) return base;
+  const source = card(s, sourceId);
+  if (source.controllerPlayerId !== playerId) reject('illegal_action', 'Card is not controlled by player');
+  const activePlayers = s.players.filter((candidate) => candidate.status === 'active').length;
+  return Math.max(0, activePlayers - s.round.roundNumber);
+}
+
 function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false): string | undefined {
   const c = card(s, sourceId); const d = definition(s, sourceId); if (!d) return 'unsupported';
   if (d.mode !== 'automatic') return d.mode;
@@ -952,7 +995,7 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
     str(r.type) && !(str(r.type) === 'skill_zone_mana_at_least' && hasPlayRuleException(d, 'skill_zone_mana_at_least')));
   if (!requirements.every(r => condition(s, context(s, sourceId, ''), r))) return 'play_requirement';
   
-  if (!faceDown && player(s, p).mana < Number(d.cardFace.cost ?? 0)) return 'insufficient_mana';
+  if (!faceDown && player(s, p).mana < effectiveCardPlayCost(s, p, sourceId)) return 'insufficient_mana';
   const unconfirmed = d.abilities.find(a => ['unsupported', 'text_unconfirmed'].includes(a.execution.mode));
   if (unconfirmed) return unconfirmed.execution.mode;
   if (!faceDown) {
@@ -1058,7 +1101,7 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
         !sourcePlayBasicAttackDrawEventScopeMatches(event, c.instanceId, c.controllerPlayerId)) continue;
       if (!matches || !canActivate(s, c.instanceId, a, event) || !triggerEventScopeMatches(a, event)) continue;
       if (['on_card_played', 'on_use_declared'].includes(event.type) && event.sourceCardId !== c.instanceId &&
-        !a.conditions.some((condition) => condition.type === 'event_played_card_has_attribute') &&
+        !a.conditions.some((condition) => ['event_played_card_has_attribute', 'deduction_record_matches_event_attack'].includes(str(condition.type))) &&
         !isAlterEgoTransformSemantic(a)) continue;
       const allowsOpponentMovementEvent = event.type === 'after_controller_enters_location' &&
         a.conditions.some((entry) => isEventPlayerRelationCondition(entry) && entry.type === 'event_player_is_opponent');
@@ -1277,6 +1320,46 @@ function checkFormulaTriggers(s: GameState): void {
     executeAbility(s, context(s, t.cardInstanceId, t.abilityId));
   }
 }
+function exactDeductionRecordDefinitions(s: GameState, controllerId: string): Map<DeductionRecordAttribute, string> {
+  const servantRoot = player(s, controllerId).servantCardId;
+  const definitions = deductionRecordDefinitionsForOwner(runtime(s).pack, servantRoot);
+  if (definitions.size !== DEDUCTION_RECORD_ATTRIBUTES.length || DEDUCTION_RECORD_ATTRIBUTES.some((attribute) => !definitions.has(attribute))) {
+    reject('resolution_failed', 'Deduction record set is incomplete or malformed for controller servant');
+  }
+  return definitions;
+}
+
+function stageDeductionRecordChoice(s: GameState, ctx: EffectContext, optional: boolean): void {
+  const r = runtime(s);
+  if (r.pendingDecision) reject('pending_resolution', 'Resolve current decision first');
+  const definitions = exactDeductionRecordDefinitions(s, ctx.controllerId);
+  const definitionByAttribute = Object.fromEntries(DEDUCTION_RECORD_ATTRIBUTES.map((attribute) => [attribute, definitions.get(attribute)!]));
+  const min: 0 | 1 = optional ? 0 : 1;
+  const id = nextId(s, 'deduction-record');
+  r.pendingDecision = {
+    id, controllerId: ctx.controllerId,
+    target: { id: 'deduction-record-attribute', type: 'choice', count: { min, max: 1 }, options: DEDUCTION_RECORD_ATTRIBUTES.map((attribute) => ({ id: attribute, label: attribute })) },
+    candidates: [...DEDUCTION_RECORD_ATTRIBUTES], min, max: 1,
+    context: structuredClone(ctx), remainingEffects: [],
+    interaction: {
+      kind: 'deduction_record_choice_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: r.revision + 1,
+      continuationRef: `${id}:continuation`, optional, definitionByAttribute,
+      constraints: { kind: 'target', targetKind: 'attribute', min, max: 1, distinct: true },
+    },
+  };
+}
+
+function clearDeductionRecord(s: GameState, playerId: string): void {
+  const records = runtime(s).deductionRecordsByPlayer ??= {};
+  delete records[playerId];
+}
+
+function shownOpponentCards(s: GameState, opponentId: string): CardInstance[] {
+  return s.cards.filter((candidate) => candidate.controllerPlayerId === opponentId &&
+    (candidate.zone === 'hand' || (candidate.zone === 'attack_area' && runtime(s).cardState[candidate.instanceId]?.faceDown === true)));
+}
+
 /** Executes one validated effect; continuation and choices are managed by executeEffects. Server-only. */
 export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode): void {
   const p = player(s, ctx.controllerId); const r = runtime(s); const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
@@ -1291,6 +1374,48 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       if (!isServantNoCommandSealsRule(effect)) reject('unsupported', 'Unsupported no-command-seals servant rule shape');
       if (Number((p as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) {
         r.revealedServants = r.revealedServants.filter((id) => id !== p.id);
+      }
+      break;
+    }
+    case 'choose_deduction_record': {
+      if (!isDeductionRecordEffect(effect)) reject('unsupported', 'Unsupported deduction-record choice shape');
+      if (deductionRecordForPlayer(s, ctx.controllerId)) reject('illegal_action', 'Controller already has a deduction record');
+      stageDeductionRecordChoice(s, ctx, effect.optional === true);
+      break;
+    }
+    case 'resolve_deduction_record_on_event': {
+      if (!isDeductionRecordEffect(effect) || !eventMatchesDeductionRecordAttack(s, ctx, effect.allowNoblePhantasmRevealException === true)) reject('invalid_event', 'Deduction hit requires a matching trusted basic attack or exact Noble-Phantasm reveal exception');
+      clearDeductionRecord(s, ctx.controllerId);
+      if (!Number.isSafeInteger(p.vp) || p.vp < 0) reject('invalid_state', 'Victory points must be a nonnegative safe integer');
+      p.vp += Number(effect.vpGain);
+      if (!Number.isSafeInteger(p.vp)) reject('invalid_state', 'Victory points exceed safe integer range');
+      if (effect.optionalNext === true) stageDeductionRecordChoice(s, ctx, true);
+      break;
+    }
+    case 'expire_deduction_record': {
+      if (!isDeductionRecordEffect(effect)) reject('unsupported', 'Unsupported deduction-record expiry shape');
+      if (!deductionRecordForPlayer(s, ctx.controllerId)) break;
+      clearDeductionRecord(s, ctx.controllerId);
+      p.vp = Math.max(0, p.vp - Number(effect.vpPenalty));
+      break;
+    }
+    case 'reveal_selected_opponent_and_resolve_deduction': {
+      if (!isDeductionRecordEffect(effect)) reject('unsupported', 'Unsupported deduction reveal shape');
+      const targetId = ctx.selections[str(effect.target)]?.[0];
+      const target = targetId ? s.players.find((candidate) => candidate.id === targetId && candidate.status === 'active') : undefined;
+      if (!target || target.id === ctx.controllerId || !p.locationId || target.locationId !== p.locationId) reject('invalid_target', 'Deduction reveal target must be an active opponent at the same location');
+      const shown = shownOpponentCards(s, target.id);
+      r.events.push({ type: 'deduction_cards_revealed', playerId: target.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+        visibility: ctx.controllerId, revealedCardDefinitionIds: shown.map((entry) => entry.definitionId), revealedCardInstanceIds: shown.map((entry) => entry.instanceId) });
+      const record = deductionRecordForPlayer(s, ctx.controllerId);
+      const matched = !!record && shown.some((entry) => getEffectiveCardAttributes(s, entry.instanceId).includes(record.attribute));
+      if (matched) {
+        clearDeductionRecord(s, ctx.controllerId);
+        p.vp += Number(effect.vpGain);
+        if (!Number.isSafeInteger(p.vp)) reject('invalid_state', 'Victory points exceed safe integer range');
+        (r.battleDefeatRoundByPlayer ??= {})[target.id] = s.round.roundNumber;
+        r.events.push({ type: 'player_defeated_by_effect', playerId: target.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+        if (effect.optionalNext === true) stageDeductionRecordChoice(s, ctx, true);
       }
       break;
     }
@@ -3555,6 +3680,32 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const selected = command.selectedIds;
       if (d.interaction) {
         const meta = d.interaction;
+        if (meta.kind === 'deduction_record_choice_v1') {
+          const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+          if (!source || source.controllerPlayerId !== playerId || d.controllerId !== playerId || meta.visibility !== 'owner_only' ||
+              meta.cancelPolicy !== 'forbidden' || meta.template !== 'target' || meta.constraints.targetKind !== 'attribute' ||
+              meta.constraints.max !== 1 || meta.constraints.min !== (meta.optional ? 0 : 1) || meta.createdRevision !== r.revision ||
+              d.context.sourceCardId !== meta.sourceCardInstanceId || d.context.abilityId !== meta.abilityId) {
+            reject('resolution_failed', 'Corrupt or stale deduction-record choice state');
+          }
+          const definitions = exactDeductionRecordDefinitions(s, playerId);
+          const expected = Object.fromEntries(DEDUCTION_RECORD_ATTRIBUTES.map((attribute) => [attribute, definitions.get(attribute)!]));
+          if (JSON.stringify(meta.definitionByAttribute) !== JSON.stringify(expected) ||
+              d.candidates.length !== DEDUCTION_RECORD_ATTRIBUTES.length || !DEDUCTION_RECORD_ATTRIBUTES.every((attribute, index) => d.candidates[index] === attribute)) {
+            reject('resolution_failed', 'Deduction-record choice authority changed');
+          }
+          if (selected.length < d.min || selected.length > d.max || new Set(selected).size !== selected.length || selected.some((attribute) => !DEDUCTION_RECORD_ATTRIBUTES.includes(attribute as DeductionRecordAttribute))) {
+            reject('illegal_decision', 'Invalid deduction-record selection');
+          }
+          if (selected.length === 1) {
+            if (deductionRecordForPlayer(s, playerId)) reject('illegal_decision', 'Controller already has a deduction record');
+            const attribute = selected[0] as DeductionRecordAttribute;
+            (r.deductionRecordsByPlayer ??= {})[playerId] = { definitionId: expected[attribute]!, attribute, recordedRound: s.round.roundNumber };
+            r.events.push({ type: 'deduction_record_set', playerId, sourceCardId: meta.sourceCardInstanceId, abilityId: meta.abilityId, visibility: playerId });
+          }
+          delete r.pendingDecision;
+          break;
+        }
         if (meta.kind === 'opponent_close_selected_one_non_residual_v1') {
           if (!hasExactOpponentCloseToOneDecisionRootKeys(d) || !hasExactOpponentCloseSelectedOneInteractionRootKeys(meta)) {
             reject('resolution_failed', 'Corrupt or stale opponent close-selected-one interaction state');
@@ -3698,11 +3849,14 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     reject('attack_play_limit_reached', 'Attack play limit reached for this round');
   }
   let cost = 0;
+  const paidCostByCard = new Map<string, number>();
   for (const c of choices) {
     const allowRequiredAdditional = quota === 'regular' && requiredAdditionalIds.has(c.cardInstanceId) && regularAttackChoices > 0;
     const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional);
     if (failure) reject(failure, 'Card cannot be played in this batch');
-    if (!c.faceDown) cost += Number(definition(s, c.cardInstanceId)!.cardFace.cost ?? 0);
+    const cardCost = c.faceDown ? 0 : effectiveCardPlayCost(s, playerId, c.cardInstanceId);
+    paidCostByCard.set(c.cardInstanceId, cardCost);
+    cost += cardCost;
   }
   if (cost > player(s, playerId).mana) reject('insufficient_mana', 'Cannot pay aggregate batch cost');
   const playedCards = choices.map(c => ({ instanceId: c.cardInstanceId, controllerId: playerId,
@@ -3712,7 +3866,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     moveCard(s, c.cardInstanceId, cardPlayClassification(s, c.cardInstanceId).destinationZone);
     const limit = perGamePlayLimit(definition(s, c.cardInstanceId)!);
     if (limit) runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] = (runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] ?? 0) + 1;
-    runtime(s).cardState[c.cardInstanceId] = { active: !c.faceDown, faceDown: !!c.faceDown, playedRound: s.round.roundNumber };
+    runtime(s).cardState[c.cardInstanceId] = { active: !c.faceDown, faceDown: !!c.faceDown, playedRound: s.round.roundNumber, paidManaOnPlay: paidCostByCard.get(c.cardInstanceId) ?? 0 };
     if (c.faceDown) card(s, c.cardInstanceId).visibility = { scope: 'owner_only', ownerPlayerId: playerId };
     
     // Track noble phantasm costs for cards with 宝具 attribute
@@ -3720,7 +3874,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     if (d && !c.faceDown) {
       const attributes = Array.isArray(d.cardFace.attributes) ? d.cardFace.attributes : [];
       if (attributes.includes('宝具')) {
-        const cardCost = Number(d.cardFace.cost ?? 0);
+        const cardCost = paidCostByCard.get(c.cardInstanceId) ?? effectiveCardPlayCost(s, playerId, c.cardInstanceId);
         if (!runtime(s).noblePhantasmCostsThisRound[playerId]) {
           runtime(s).noblePhantasmCostsThisRound[playerId] = [];
         }

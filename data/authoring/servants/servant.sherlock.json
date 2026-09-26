@@ -1,0 +1,570 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.sherlock",
+  "name": "夏洛克·福尔摩斯",
+  "class": "Ruler",
+  "sourcePolicy": {
+    "phase3EvidenceBase": "83d3f6dcc9476390aa8bc11d1dc5b5e15f077a63",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics are frozen FULL confirmed overrides/source evidence; locked Reference is static/behavioral cross-check only. Runtime remains generic and data-driven."
+  },
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": [
+        "../../Fate_Domination-开发版/images/servants/夏洛克·福尔摩斯.png",
+        "../../Fate_Domination-开发版/images/skills/sc_sherlock_1.png",
+        "../../Fate_Domination-开发版/images/skills/sc_sherlock_2.png",
+        "../../Fate_Domination-开发版/images/skills/sc_sherlock_3.png",
+        "../../Fate_Domination-开发版/images/servants/夏洛克·福尔摩斯.png",
+        "../../Fate_Domination-开发版/images/servants/夏洛克·福尔摩斯.png",
+        "../../Fate_Domination-开发版/images/servants/夏洛克·福尔摩斯.png",
+        "../../Fate_Domination-开发版/images/servants/夏洛克·福尔摩斯.png"
+      ]
+    }
+  ],
+  "deck": [
+    {
+      "cardId": "card.cardq1",
+      "count": 1
+    },
+    {
+      "cardId": "card.cardq2",
+      "count": 1
+    },
+    {
+      "cardId": "card.cardq4",
+      "count": 1
+    },
+    {
+      "cardId": "card.carda1",
+      "count": 1
+    },
+    {
+      "cardId": "card.carda2",
+      "count": 1
+    },
+    {
+      "cardId": "card.carda3",
+      "count": 1
+    },
+    {
+      "cardId": "card.carda4",
+      "count": 1
+    },
+    {
+      "cardId": "card.cardluck",
+      "count": 3
+    },
+    {
+      "cardId": "card.cardsurveil",
+      "count": 1
+    },
+    {
+      "cardId": "card.cardpreparation",
+      "count": 1
+    }
+  ],
+  "cards": [
+    {
+      "id": "servant.sherlock.skill.sc-sherlock-1",
+      "name": "这是常识，我亲爱的朋友啊",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.sherlock"
+      },
+      "cardFace": {
+        "typeLabel": "宝具",
+        "attributes": [
+          "宝具"
+        ],
+        "cost": 4,
+        "basePower": 9
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-sherlock-1.elementary",
+          "kind": "phase_action",
+          "printedClause": "【真名解放】战斗阶段：你所在地点的一名对手展示其手牌与其打出的暗置牌，若其展示了一张你以【逆推法】记录的卡牌，触发【逆推法】并令其【败北】。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "deduction_record_present"
+            }
+          ],
+          "targets": [
+            {
+              "id": "chosen-opponent",
+              "type": "player",
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "not_controller"
+                },
+                {
+                  "type": "same_location_as_controller"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "reveal_selected_opponent_and_resolve_deduction",
+              "target": "chosen-opponent",
+              "show": "hand_and_face_down_attacks",
+              "vpGain": 1,
+              "optionalNext": true,
+              "defeatOnMatch": true
+            }
+          ],
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "printedText": "【真名解放】战斗阶段：你所在地点的一名对手展示其手牌与其打出的暗置牌，若其展示了一张你以【逆推法】记录的卡牌，触发【逆推法】并令其【败北】。"
+    },
+    {
+      "id": "servant.sherlock.skill.sc-sherlock-2",
+      "name": "空屋历险",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.sherlock"
+      },
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": [
+          "魔术"
+        ],
+        "cost": 0,
+        "basePower": 3
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sc-sherlock-2.dynamic-cost",
+          "kind": "passive",
+          "printedClause": "X等于玩家数减去回合数。",
+          "activation": {},
+          "ruleModifiers": [
+            {
+              "type": "play_cost_formula",
+              "operation": "set",
+              "rule": "card.playCost",
+              "formula": "active_player_count_minus_round",
+              "min": 0
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "sc-sherlock-2.workshop-residual",
+          "kind": "residual",
+          "printedClause": "残留：当你部署于魔术工房时，获得1点魔力。",
+          "activation": {
+            "trigger": "after_player_deployed_to_location",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_location_is",
+              "locationId": "magic_workshop"
+            }
+          ],
+          "effects": [
+            {
+              "type": "adjust_mana",
+              "player": "controller",
+              "amount": 1
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_card_active",
+            "cleanup": "remain_active"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "sc-sherlock-2.memory-palace",
+          "kind": "phase_action",
+          "printedClause": "记忆宫殿-前哨阶段：进行一次【逆推法】。",
+          "activation": {
+            "phase": "advance",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "deduction_record_absent"
+            }
+          ],
+          "effects": [
+            {
+              "type": "choose_deduction_record",
+              "optional": false
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "printedText": "X等于玩家数减去回合数。\n残留：当你部署于魔术工房时，获得1点魔力。\n记忆宫殿-前哨阶段：进行一次【逆推法】。"
+    },
+    {
+      "id": "servant.sherlock.skill.sc-sherlock-3",
+      "name": "逆推法",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.sherlock"
+      },
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sc-sherlock-3.trigger",
+          "kind": "residual",
+          "printedClause": "当一名其他玩家打出相对应的基础牌时，翻开并弃置秘密记录的牌获得一点战果，然后你可以再进行一次【逆推法】。",
+          "activation": {
+            "trigger": "on_card_played",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "event_player_is_opponent"
+            },
+            {
+              "type": "deduction_record_matches_event_attack",
+              "allowNoblePhantasmRevealException": true
+            }
+          ],
+          "effects": [
+            {
+              "type": "resolve_deduction_record_on_event",
+              "vpGain": 1,
+              "optionalNext": true,
+              "allowNoblePhantasmRevealException": true
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_card_active",
+            "cleanup": "remain_active"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "sc-sherlock-3.expire",
+          "kind": "residual",
+          "printedClause": "如果回合结束时尚有未触发的【逆推法】，失去3点战果然后将其弃置。",
+          "activation": {
+            "trigger": "round_end",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "deduction_record_present"
+            }
+          ],
+          "effects": [
+            {
+              "type": "expire_deduction_record",
+              "vpPenalty": 3
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_card_active",
+            "cleanup": "remain_active"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "printedText": "秘密记录一种攻击类型。当一名其他玩家打出相对应的基础牌时，翻开并弃置秘密记录的牌获得一点战果，然后你可以再进行一次【逆推法】。如果回合结束时尚有未触发的【逆推法】，失去3点战果然后将其弃置。\n*以宝具展示攻击的情况下，不局限于基础攻击。"
+    },
+    {
+      "id": "servant.sherlock.skill.sc-sherlock-4",
+      "name": "逆推法：力量",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.sherlock"
+      },
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sc-sherlock-4.deduction-record",
+          "kind": "passive",
+          "printedClause": "【逆推法】的秘密记录：力量属性。",
+          "markers": [
+            "m50_structured_v1",
+            "deduction-record",
+            "deduction-attribute:力量"
+          ],
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "effects": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "printedText": "【逆推法】的秘密记录：力量属性。",
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "servant.sherlock.skill.sc-sherlock-5",
+      "name": "逆推法：迅捷",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.sherlock"
+      },
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sc-sherlock-5.deduction-record",
+          "kind": "passive",
+          "printedClause": "【逆推法】的秘密记录：迅捷属性。",
+          "markers": [
+            "m50_structured_v1",
+            "deduction-record",
+            "deduction-attribute:迅捷"
+          ],
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "effects": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "printedText": "【逆推法】的秘密记录：迅捷属性。",
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "servant.sherlock.skill.sc-sherlock-6",
+      "name": "逆推法：魔术",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.sherlock"
+      },
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sc-sherlock-6.deduction-record",
+          "kind": "passive",
+          "printedClause": "【逆推法】的秘密记录：魔术属性。",
+          "markers": [
+            "m50_structured_v1",
+            "deduction-record",
+            "deduction-attribute:魔术"
+          ],
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "effects": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "printedText": "【逆推法】的秘密记录：魔术属性。",
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "servant.sherlock.skill.sc-sherlock-7",
+      "name": "逆推法：特殊",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.sherlock"
+      },
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sc-sherlock-7.deduction-record",
+          "kind": "passive",
+          "printedClause": "【逆推法】的秘密记录：特殊属性。",
+          "markers": [
+            "m50_structured_v1",
+            "deduction-record",
+            "deduction-attribute:特殊"
+          ],
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "effects": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "printedText": "【逆推法】的秘密记录：特殊属性。",
+      "initialPlacement": "outside_game"
+    }
+  ]
+}

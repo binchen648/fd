@@ -187,6 +187,7 @@ function assignedTerrainSlotIndex(state: GameState, battlefieldId: CombatResolut
 }
 
 function cannotWinBattleThisRound(state: GameState, playerId: string): boolean {
+  if (state.abilityRuntime?.battleDefeatRoundByPlayer?.[playerId] === state.round.roundNumber) return true;
   const statuses = (state as unknown as { activeStatuses?: Array<Record<string, unknown>> }).activeStatuses ?? [];
   return statuses.some((status) =>
     status.id === "maiya_cannot_win_battle_this_round" &&

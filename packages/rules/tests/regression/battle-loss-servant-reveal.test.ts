@@ -65,7 +65,10 @@ function activateAttack(session: ReturnType<typeof rules.createMatchSession>, ow
 
 function productionSession() {
   const session = rules.createMatchSession({ seed: 20260904, humanPlayerId: 'p3', humanPlayerIds: ['p3'] });
-  expect(session.pairings.find((pairing) => pairing.playerId === 'p3')?.servant.id).toBe('servant.achilles');
+  const achillesId = session.pairings.find((pairing) => pairing.servant.id === 'servant.achilles')?.playerId;
+  if (!achillesId) throw new Error('Production fixture must contain servant.achilles');
+  const opponentId = session.state.players.find((player) => player.id !== achillesId)?.id;
+  if (!opponentId) throw new Error('Production fixture requires an Achilles opponent');
   session.state.round.activePhase = 'battle';
   session.state.eventPlacements = [];
   session.state.currentSituationModifiers = [];
@@ -73,15 +76,14 @@ function productionSession() {
   session.state.abilityRuntime!.hostRequests = [];
   session.state.abilityRuntime!.responseWindows = [];
   session.state.abilityRuntime!.pendingPostBattleEvents = [];
-  session.state.abilityRuntime!.revealedServants = session.state.abilityRuntime!.revealedServants.filter((id) => id !== 'p3');
+  session.state.abilityRuntime!.revealedServants = session.state.abilityRuntime!.revealedServants.filter((id) => id !== achillesId);
   delete session.state.abilityRuntime!.pendingDecision;
-  const active = new Set(['p1', 'p2', 'p3', 'p4']);
+  const active = new Set([achillesId, opponentId]);
   for (const player of session.state.players) {
     player.status = active.has(player.id) ? 'active' : 'eliminated';
     player.vp = 0;
     player.militaryResult = 0;
-    if (player.id === 'p1' || player.id === 'p2') player.locationId = 'miyama_town';
-    else if (player.id === 'p3' || player.id === 'p4') player.locationId = 'shinto';
+    if (active.has(player.id)) player.locationId = 'shinto';
     else delete player.locationId;
   }
   for (const card of session.state.cards) {
@@ -91,10 +93,9 @@ function productionSession() {
       if (session.state.abilityRuntime!.cardState[card.instanceId]) session.state.abilityRuntime!.cardState[card.instanceId]!.active = false;
     }
   }
-  expect(session.state.cards.some((card) => card.ownerPlayerId === 'p3' && card.definitionId === CARD_ID)).toBe(true);
-  activateAttack(session, 'p2');
-  activateAttack(session, 'p4');
-  return session;
+  expect(session.state.cards.some((card) => card.ownerPlayerId === achillesId && card.definitionId === CARD_ID)).toBe(true);
+  activateAttack(session, opponentId);
+  return { session, achillesId, opponentId };
 }
 
 function resolveProductionBattle(session: ReturnType<typeof rules.createMatchSession>): void {
@@ -203,12 +204,12 @@ describe('P3-B16 battle-loss servant reveal', () => {
   });
 
   it('reveals Achilles only after a real post-scoring loss and keeps the loss trigger before phase-terminal work', () => {
-    const session = productionSession();
-    expect(session.state.abilityRuntime!.revealedServants).not.toContain('p3');
+    const { session, achillesId } = productionSession();
+    expect(session.state.abilityRuntime!.revealedServants).not.toContain(achillesId);
     resolveProductionBattle(session);
 
-    expect(session.state.abilityRuntime!.revealedServants).toContain('p3');
-    const revealEvent = session.state.abilityRuntime!.events.find((entry) => entry.type === 'servant_package_revealed' && entry.playerId === 'p3');
+    expect(session.state.abilityRuntime!.revealedServants).toContain(achillesId);
+    const revealEvent = session.state.abilityRuntime!.events.find((entry) => entry.type === 'servant_package_revealed' && entry.playerId === achillesId);
     expect(revealEvent).toMatchObject({ sourceCardId: expect.any(String), abilityId: ABILITY_ID, resultId: expect.any(String) });
     const barrierIndex = session.logs.findIndex((entry) => entry.type === 'battle_post_scoring_barrier_open');
     const resultIndex = session.logs.findIndex((entry) => entry.type === 'battle_result_event_dispatched' && entry.payload?.battlefieldId === 'shinto');
@@ -219,22 +220,22 @@ describe('P3-B16 battle-loss servant reveal', () => {
   });
 
   it('does not reveal Achilles when he wins instead of losing', () => {
-    const session = productionSession();
-    activateAttack(session, 'p3', 'basic.strength.5');
-    const p4Attack = session.state.cards.find((card) => card.ownerPlayerId === 'p4' && card.zone === 'attack_area')!;
-    p4Attack.definitionId = 'basic.strength.2';
+    const { session, achillesId, opponentId } = productionSession();
+    activateAttack(session, achillesId, 'basic.strength.5');
+    const opponentAttack = session.state.cards.find((card) => card.ownerPlayerId === opponentId && card.zone === 'attack_area')!;
+    opponentAttack.definitionId = 'basic.strength.2';
     resolveProductionBattle(session);
-    expect(session.state.abilityRuntime!.revealedServants).not.toContain('p3');
-    expect(session.state.abilityRuntime!.events.some((entry) => entry.type === 'servant_package_revealed' && entry.playerId === 'p3')).toBe(false);
+    expect(session.state.abilityRuntime!.revealedServants).not.toContain(achillesId);
+    expect(session.state.abilityRuntime!.events.some((entry) => entry.type === 'servant_package_revealed' && entry.playerId === achillesId)).toBe(false);
   });
 
   it('preserves frozen loss-trigger eligibility when scoring eliminates Achilles and does not duplicate on re-entry', () => {
-    const session = productionSession();
-    session.state.players.find((player) => player.id === 'p3')!.militaryResult = -7;
+    const { session, achillesId } = productionSession();
+    session.state.players.find((player) => player.id === achillesId)!.militaryResult = -7;
     resolveProductionBattle(session);
-    expect(session.state.players.find((player) => player.id === 'p3')?.status).toBe('eliminated');
-    expect(session.state.abilityRuntime!.revealedServants).toContain('p3');
-    const count = () => session.state.abilityRuntime!.events.filter((entry) => entry.type === 'servant_package_revealed' && entry.playerId === 'p3').length;
+    expect(session.state.players.find((player) => player.id === achillesId)?.status).toBe('eliminated');
+    expect(session.state.abilityRuntime!.revealedServants).toContain(achillesId);
+    const count = () => session.state.abilityRuntime!.events.filter((entry) => entry.type === 'servant_package_revealed' && entry.playerId === achillesId).length;
     expect(count()).toBe(1);
     session.state.round.activePhase = 'battle';
     resolveProductionBattle(session);

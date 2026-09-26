@@ -71,6 +71,37 @@ describe('MatchSession semi-auto runtime', () => {
     expect(session.projectToClientState('p1').logs.some((entry) => entry.type === 'workshop_deployment_mana_awarded')).toBe(true);
   });
 
+  it('keeps battlefield deployment triggers scoped while Sherlock alone receives the magic-workshop deployment residual', () => {
+    const session = createMatchSession({ seed: 1, humanPlayerId: 'p5', humanPlayerIds: ['p5'] });
+    const sherlock = session.pairings.find((pairing) => pairing.servant.id === 'servant.sherlock')!;
+    const ereshkigal = session.pairings.find((pairing) => pairing.servant.id === 'servant.ereshkigal')!;
+    expect(sherlock.playerId).toBe('p5');
+    expect(ereshkigal.playerId).toBe('p2');
+
+    for (const player of session.state.players) delete player.locationId;
+    session.state.round.activePhase = 'advance';
+    session.state.round.prioritySeat = sherlock.seat;
+    const activateSkill = (playerId: string, definitionId: string) => {
+      const card = session.state.cards.find((candidate) => candidate.ownerPlayerId === playerId && candidate.definitionId === definitionId)!;
+      card.zone = 'attack_area';
+      card.visibility = { scope: 'public' };
+      session.state.abilityRuntime!.cardState[card.instanceId] = { active: true, faceDown: false, playedRound: session.state.round.roundNumber };
+    };
+    activateSkill(sherlock.playerId, 'servant.sherlock.skill.sc-sherlock-2');
+    activateSkill(ereshkigal.playerId, 'servant.ereshkigal.skill.sc-ereshkigal-2');
+
+    const sherlockPlayer = session.state.players.find((player) => player.id === sherlock.playerId)!;
+    const ereshPlayer = session.state.players.find((player) => player.id === ereshkigal.playerId)!;
+    sherlockPlayer.mana = 4;
+    ereshPlayer.mana = 4;
+    const result = session.dispatchPlayerCommand(sherlock.playerId, { type: 'deploy_player', locationId: 'magic_workshop' });
+    expect(result.ok).toBe(true);
+    expect(session.state.players.find((player) => player.id === sherlock.playerId)!.mana).toBe(7); // +2 workshop reward +1 Sherlock residual
+    expect(session.state.players.find((player) => player.id === ereshkigal.playerId)!.mana).toBe(4); // no false battlefield deployment event
+    expect(session.state.abilityRuntime!.processedEvents.some((id) => id.includes('deploy-location'))).toBe(true);
+    expect(session.state.abilityRuntime!.processedEvents.some((id) => id.includes('deploy-battlefield') && id.includes(sherlock.playerId))).toBe(false);
+  });
+
   it('filters Kayneth deployment choices through Pride when a lower-VP lone battlefield is available', () => {
     const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
     const kayneth = session.pairings.find((pairing) => pairing.master.id === 'master.kayneth')!;
@@ -100,13 +131,8 @@ describe('MatchSession semi-auto runtime', () => {
     ]);
   });
 
-  it('instantiates Ereshkigal starting deck from the reviewed servant overview', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
-    const ereshPairing = session.pairings.find((pairing) => pairing.servant.id === 'servant.ereshkigal')!;
-    const ids = session.state.cards
-      .filter((card) => card.ownerPlayerId === ereshPairing.playerId && ['hand', 'deck'].includes(card.zone))
-      .map((card) => card.definitionId)
-      .sort();
+  it('preserves Ereshkigal starting deck from the reviewed servant overview in the production runtime pack', () => {
+    const ids = [...contentLibrary.rules.decks['servant.ereshkigal']!].sort();
 
     expect(ids).toEqual([
       'basic.agility.2',
@@ -146,9 +172,9 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('moves Surveil one step during its authored action-phase target window', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1', humanPlayerIds: ['p1'] });
-    const player = session.state.players.find((candidate) => candidate.id === 'p1')!;
-    const surveil = session.state.cards.find((card) => card.ownerPlayerId === 'p1' && card.definitionId === 'basic.surveil')!;
+    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
+    const surveil = session.state.cards.find((card) => card.definitionId === 'basic.surveil')!;
+    const player = session.state.players.find((candidate) => candidate.id === surveil.ownerPlayerId)!;
     player.locationId = 'miyama_town';
     session.state.round.activePhase = 'action';
     session.state.round.prioritySeat = player.seat;
@@ -156,24 +182,24 @@ describe('MatchSession semi-auto runtime', () => {
     surveil.visibility = { scope: 'public' };
     session.state.abilityRuntime!.cardState[surveil.instanceId] = { active: true, faceDown: false, playedRound: 1 };
 
-    const result = session.dispatchPlayerCommand('p1', {
+    const result = session.dispatchPlayerCommand(player.id, {
       type: 'activate_ability',
       cardInstanceId: surveil.instanceId,
       abilityId: 'basic.surveil.battle-dash',
     });
 
     expect(result.ok).toBe(true);
-    const window = session.projectToClientState('p1').interactionWindows.find((candidate) => candidate.kind === 'target');
+    const window = session.projectToClientState(player.id).interactionWindows.find((candidate) => candidate.kind === 'target');
     expect(window?.candidates?.map((candidate) => candidate.id)).toEqual(['shinto']);
 
-    const move = session.dispatchPlayerCommand('p1', {
+    const move = session.dispatchPlayerCommand(player.id, {
       type: 'choose_target',
       decisionId: window!.id,
       selectedIds: ['shinto'],
     });
 
     expect(move.ok).toBe(true);
-    expect(session.state.players.find((candidate) => candidate.id === 'p1')?.locationId).toBe('shinto');
+    expect(session.state.players.find((candidate) => candidate.id === player.id)?.locationId).toBe('shinto');
   });
 
   it('lets Luck stay in the attack area for battle power and ignore defeat effects', () => {
@@ -443,7 +469,11 @@ describe('MatchSession semi-auto runtime', () => {
     for (const player of session.state.players.filter((candidate) => !['p1', 'p2'].includes(candidate.id))) {
       player.locationId = 'recon';
     }
-    const p1Attack = session.state.cards.find((card) => card.ownerPlayerId === 'p1' && card.definitionId === 'servant.tomoe.skill.sc-tomoe-2')!;
+    const p1Attack = session.state.cards
+      .filter((card) => card.ownerPlayerId === 'p1' && ['hand', 'deck', 'skill'].includes(card.zone))
+      .map((card) => ({ card, power: Number(session.rawCards.get(card.definitionId)?.cardFace?.basePower ?? 0) }))
+      .filter((entry) => Number.isFinite(entry.power) && entry.power > 0)
+      .sort((left, right) => right.power - left.power)[0]!.card;
     p1Attack.zone = 'field';
     p1Attack.visibility = { scope: 'public' };
     session.state.abilityRuntime!.cardState[p1Attack.instanceId] = { active: true, faceDown: false, playedRound: 1 };

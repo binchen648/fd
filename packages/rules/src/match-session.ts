@@ -1,6 +1,7 @@
 import {
   advanceAbilityPhase,
   dispatchAbilityCommand,
+  effectiveCardPlayCost,
   initializeAbilityRuntime,
   isCanonicalGenericPendingDecisionForRestore,
   isDeferredAbilityRuntimeProvenanceValidForRestore,
@@ -30,6 +31,7 @@ import {
 import { hmacSha256Hex, sha256Hex } from './ability/portable-sha256';
 import { clearTransientCardTransformState } from './ability/card-instance-state';
 import { settleLinkedOwnerCardsAfterBattles } from './ability/linked-owner-combat';
+import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute } from './ability/deduction-record';
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from './ability/battle-terminal';
 import type {
@@ -489,6 +491,8 @@ function isRestoreSafeEvent(value: unknown): boolean {
   for (const key of ['delta','before','after','requestedDelta'] as const) if (value[key] !== undefined && !isRestoreFiniteNumber(value[key])) return false;
   for (const key of ['revision','movedCount'] as const) if (value[key] !== undefined && !isRestoreSafeInteger(value[key])) return false;
   if (value.qualifyingPlayerIds !== undefined && !isRestoreStringArray(value.qualifyingPlayerIds)) return false;
+  if (value.revealedCardDefinitionIds !== undefined && !isRestoreStringArray(value.revealedCardDefinitionIds)) return false;
+  if (value.revealedCardInstanceIds !== undefined && !isRestoreStringArray(value.revealedCardInstanceIds)) return false;
   return true;
 }
 
@@ -605,7 +609,20 @@ function isRestorePendingInteraction(value: unknown): boolean {
       const constraints = value.constraints;
       if (!hasExactRestoreKeys(constraints, ['kind', 'targetKind', 'min', 'max', 'distinct'])) return false;
       return isRestoreInteractionConstraints(constraints, ['card']) && constraints.min === 1 && constraints.max === 1;
-    }    default:
+    }
+    case 'deduction_record_choice_v1': {
+      if (!hasExactRestoreKeys(value, [
+        'kind', 'template', 'visibility', 'cancelPolicy', 'sourceCardInstanceId', 'abilityId', 'createdRevision', 'continuationRef',
+        'optional', 'definitionByAttribute', 'constraints',
+      ]) || typeof value.optional !== 'boolean' || !isRestoreRecord(value.definitionByAttribute)) return false;
+      const definitionByAttribute = value.definitionByAttribute;
+      if (!hasExactRestoreKeys(definitionByAttribute, [...DEDUCTION_RECORD_ATTRIBUTES]) ||
+          !DEDUCTION_RECORD_ATTRIBUTES.every((attribute) => typeof definitionByAttribute[attribute] === 'string')) return false;
+      const constraints = value.constraints;
+      if (!hasExactRestoreKeys(constraints, ['kind', 'targetKind', 'min', 'max', 'distinct'])) return false;
+      return isRestoreInteractionConstraints(constraints, ['attribute']) && constraints.min === (value.optional ? 0 : 1) && constraints.max === 1;
+    }
+    default:
       return false;
   }
 }
@@ -628,7 +645,7 @@ function isRestoreCardRuntimeState(value: unknown): boolean {
 
 function isRestoreAbilityDefinition(value: unknown): boolean {
   if (!isRestoreRecord(value) || typeof value.id !== 'string' || typeof value.kind !== 'string' ||
-      typeof value.printedClause !== 'string' || !isRestoreRecord(value.activation) ||
+      typeof value.printedClause !== 'string' || (value.markers !== undefined && !isRestoreStringArray(value.markers)) || !isRestoreRecord(value.activation) ||
       !Array.isArray(value.conditions) || !value.conditions.every(isRestoreRecord) ||
       !Array.isArray(value.targets) || !value.targets.every(isRestoreRecord) ||
       !Array.isArray(value.effects) || !value.effects.every(isRestoreRecord) ||
@@ -723,6 +740,9 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
   if (value.playerStatusKeysByPlayer !== undefined && !isRestoreStringArrayMap(value.playerStatusKeysByPlayer)) return false;
   if (value.structuredPlayerFlagsByPlayer !== undefined && !isRestoreStructuredPlayerFlags(value.structuredPlayerFlagsByPlayer)) return false;
   if (value.structuredRoundFlagKeysByPlayer !== undefined && !isRestoreStructuredRoundFlagKeys(value.structuredRoundFlagKeysByPlayer)) return false;
+  if (value.deductionRecordsByPlayer !== undefined && (!isRestoreRecord(value.deductionRecordsByPlayer) || !Object.values(value.deductionRecordsByPlayer).every((entry) =>
+      isRestoreRecord(entry) && typeof entry.definitionId === 'string' && DEDUCTION_RECORD_ATTRIBUTES.includes(entry.attribute as typeof DEDUCTION_RECORD_ATTRIBUTES[number]) && isRestoreSafeInteger(entry.recordedRound, 1)))) return false;
+  if (value.battleDefeatRoundByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.battleDefeatRoundByPlayer)) return false;
   if (value.combatWinRoundByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.combatWinRoundByPlayer)) return false;
   if (value.lifecycleTransitions !== undefined && (!Array.isArray(value.lifecycleTransitions) || !value.lifecycleTransitions.every(isRestoreLifecycleTransition))) return false;
   if (value.pendingDelayedActivations !== undefined && (!Array.isArray(value.pendingDelayedActivations) || !value.pendingDelayedActivations.every(isRestorePendingDelayedActivation))) return false;
@@ -942,10 +962,11 @@ function isRestoreAbilityRuntimeReferences(
   locationIds: Set<string>,
   cardsByInstance: Map<string, Record<string, unknown>>,
   pack: Record<string, unknown>,
+  servantRootByPlayer: Map<string, string>,
   eventPlacements: Array<Record<string, unknown>>,
 ): boolean {
   const playerKeyedMaps = [
-    'playerStatusKeysByPlayer','structuredPlayerFlagsByPlayer','structuredRoundFlagKeysByPlayer','combatWinRoundByPlayer','manaCaps','noblePhantasmCostsThisRound','movementDistanceThisRound',
+    'playerStatusKeysByPlayer','structuredPlayerFlagsByPlayer','structuredRoundFlagKeysByPlayer','deductionRecordsByPlayer','battleDefeatRoundByPlayer','combatWinRoundByPlayer','manaCaps','noblePhantasmCostsThisRound','movementDistanceThisRound',
     'battlefieldsPassedOrStayedThisRound',
   ] as const;
   for (const key of playerKeyedMaps) if (value[key] !== undefined && !restoreRecordKeysBelongTo(value[key], playerIds)) return false;
@@ -1005,6 +1026,18 @@ function isRestoreAbilityRuntimeReferences(
       restoreIdsBelongTo(entry.remainingDecisionPlayerIds, playerIds) &&
       (entry.qualifyingCardIds as string[]).every((id) => cardsByInstance.has(id)) &&
       Object.values(entry.qualifyingCardOwners as Record<string, unknown>).every((owner) => playerIds.has(owner as string)))) return false;
+  if (value.deductionRecordsByPlayer !== undefined) {
+    const cards = isRestoreRecord(pack.cards) ? pack.cards : {};
+    for (const [playerId, entry] of Object.entries(value.deductionRecordsByPlayer as Record<string, unknown>)) {
+      if (!isRestoreRecord(entry) || typeof entry.definitionId !== 'string') return false;
+      const servantRoot = servantRootByPlayer.get(playerId);
+      if (!servantRoot || !entry.definitionId.startsWith(`${servantRoot}.skill.`)) return false;
+      const definition = cards[entry.definitionId];
+      if (!isRestoreRecord(definition) || definition.initialPlacement !== 'outside_game') return false;
+      const attribute = deductionRecordAttribute(definition as unknown as ExecutableCardDefinition);
+      if (!attribute || attribute !== entry.attribute) return false;
+    }
+  }
   const pendingDecision = value.pendingDecision;
   if (isRestoreRecord(pendingDecision) && isRestoreRecord(pendingDecision.interaction) &&
       pendingDecision.interaction.kind === 'opponent_close_selected_one_non_residual_v1') {
@@ -1017,6 +1050,23 @@ function isRestoreAbilityRuntimeReferences(
         !restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, meta.sourceCardInstanceId as string, meta.abilityId as string) ||
         !candidateIds.every((id) => cardsByInstance.has(id) &&
           cardsByInstance.get(id)?.ownerPlayerId === owners[id] && owners[id] === meta.decisionPlayerId)) return false;
+  }
+  if (isRestoreRecord(pendingDecision) && isRestoreRecord(pendingDecision.interaction) &&
+      pendingDecision.interaction.kind === 'deduction_record_choice_v1') {
+    const meta = pendingDecision.interaction;
+    const controllerId = pendingDecision.controllerId as string;
+    const servantRoot = servantRootByPlayer.get(controllerId);
+    if (!servantRoot || !restoreSourceControllerMatches(cardsByInstance, eventPlacements, meta.sourceCardInstanceId as string, controllerId) ||
+        !restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, meta.sourceCardInstanceId as string, meta.abilityId as string) ||
+        !isRestoreRecord(meta.definitionByAttribute)) return false;
+    const cards = isRestoreRecord(pack.cards) ? pack.cards : {};
+    for (const attribute of DEDUCTION_RECORD_ATTRIBUTES) {
+      const definitionId = meta.definitionByAttribute[attribute];
+      if (typeof definitionId !== 'string' || !definitionId.startsWith(`${servantRoot}.skill.`)) return false;
+      const definition = cards[definitionId];
+      if (!isRestoreRecord(definition) || definition.initialPlacement !== 'outside_game' ||
+          deductionRecordAttribute(definition as unknown as ExecutableCardDefinition) !== attribute) return false;
+    }
   }
   if (value.pendingBattleTerminalEvent !== undefined && (!isRestoreRecord(value.pendingBattleTerminalEvent) ||
       !isRestoreAbilityEventReferences(value.pendingBattleTerminalEvent, playerIds, locationIds))) return false;
@@ -1096,8 +1146,9 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
 
   if (!value.eventPlacements.every((entry) => isRestoreEventPlacement(entry, locationIds, playerIds, eventIds))) return false;
   const cardsByInstance = new Map(cards.map((card) => [card.instanceId as string, card] as const));
+  const servantRootByPlayer = new Map(players.map((player) => [player.id as string, player.servantCardId as string] as const));
   const restoredEventPlacements = value.eventPlacements as Array<Record<string, unknown>>;
-  if (!isRestoreAbilityRuntimeReferences(abilityRuntime, playerIds, locationIds, cardsByInstance, pack, restoredEventPlacements)) return false;
+  if (!isRestoreAbilityRuntimeReferences(abilityRuntime, playerIds, locationIds, cardsByInstance, pack, servantRootByPlayer, restoredEventPlacements)) return false;
   if (value.eventDiscardPile !== undefined && (!Array.isArray(value.eventDiscardPile) ||
       !value.eventDiscardPile.every((entry) => isRestoreEventPlacement(entry, locationIds, playerIds, eventIds, true)))) return false;
   if (value.battleDeclarations !== undefined && (!Array.isArray(value.battleDeclarations) || !value.battleDeclarations.every((entry) =>
@@ -1582,7 +1633,7 @@ function projectInteractionWindows(state: GameState, viewerId: string): MatchInt
   const fixedPaymentAction = view.legalActions.find((action) => action.type === 'play_card' && !action.faceDown);
   if (fixedPaymentAction?.type === 'play_card') {
     const card = state.cards.find((candidate) => candidate.instanceId === fixedPaymentAction.cardInstanceId);
-    const cost = card ? Number(state.abilityRuntime?.pack.cards[card.definitionId]?.cardFace.cost ?? 0) : 0;
+    const cost = card ? effectiveCardPlayCost(state, viewerId, card.instanceId) : 0;
     if (cost > 0) {
       windows.push({
         id: `fixed-payment:${fixedPaymentAction.cardInstanceId}`,
@@ -1830,8 +1881,9 @@ export class MatchSession {
     const deployedLocation = getEnabledLocations(this.state.map, this.state.locationConfig).find((location) => location.id === locationId);
     if (deployedLocation?.tags.includes('battlefield')) {
       this.assignTerrainOnDeployment(playerId, locationId);
-      processAbilityEvent(this.state, { id: `deploy:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_battlefield', playerId, locationId });
+      processAbilityEvent(this.state, { id: `deploy-battlefield:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_battlefield', playerId, locationId });
     }
+    processAbilityEvent(this.state, { id: `deploy-location:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_location', playerId, locationId });
     this.consumeAppliedDirectives();
     this.advanceToNextDecision();
     this.checkpoint(`${playerId}:deploy_player`);
