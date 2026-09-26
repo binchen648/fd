@@ -4818,7 +4818,7 @@ Allowed B verdicts:
 ## TASK P3-A-F4-EXACT-50-COMPOSITION-02
 
 Owner: Codex A
-Status: `READY`
+Status: `EXACT_50_BATCH_BLOCKED`
 Base: exact `P3-A-MAIN-REPLAY-FB2-43-EVENT-LOCATION-EQUALS-CONTROLLER-ACCEPTANCE-SYNC` commit carrying this task block
 Read: `docs/reports/2026-09-26-p3-a-f4-exact-50-composition-02.md`
 
@@ -4837,3 +4837,76 @@ Hard requirements:
 Allowed final status:
 - `EXACT_50_BATCH_READY`
 - `EXACT_50_BATCH_BLOCKED`
+### Composition-02 result — 2026-09-26
+
+Mechanical exact-line rescan completed on accepted/synchronized PR #455 runtime. Historical accepted PR #441 authoring contains `288` frozen material identities; current exact line contains `135`; old-frontier-minus-current replay pool remains exactly `153`. Each replay identity was reduced to a one-card archive and re-run through current `loadAuthoringJson`; readiness requires an empty adapter report and every ability `execution.mode=automatic`.
+
+Result: `24 ready / 129 blocked`. This is the same 153-card loader-readiness measure used by Composition-01 and the post-#452 A synchronization. It is intentionally different from PR #455's stricter reconciliation/evidence subset metric (`17 -> 18`), so those numbers must not be conflated.
+
+Current loader-ready replay identities:
+
+1. `master.ciel.skill.s1`
+2. `master.ciel.skill.s1a`
+3. `master.darnic.skill.s1a`
+4. `master.fiore.skill.s1`
+5. `master.iliya.skill.s1`
+6. `master.leonardo.skill.s1a`
+7. `master.ophelia.skill.s1a`
+8. `master.peperoncino.skill.s1`
+9. `master.shiki-ryougi.skill.s1a`
+10. `master.shirou-emiya.skill.s1`
+11. `master.shirou-emiya.skill.s2`
+12. `master.shirou-emiya.skill.s3`
+13. `master.taiga.skill.s1`
+14. `master.zouken.skill.s1`
+15. `servant.darius.skill.sc-darius-1`
+16. `servant.darius.skill.sc-darius-2`
+17. `servant.donquixote.skill.sc-donquixote-2`
+18. `servant.gilles.skill.sc-gilles-2`
+19. `servant.lance.skill.sc-lance-2`
+20. `servant.medea.skill.sc-medea-2`
+21. `servant.mhx.skill.sc-mhx-3`
+22. `servant.muramasa.skill.sc-muramasa-1`
+23. `servant.siegfried.skill.sc-siegfried-2`
+24. `servant.sigurd.skill.sc-sigurd-3`
+
+Exact-50 remains blocked: at least `26` additional dependency-complete identities are still required before a non-tail S batch may freeze. Readiness alone is not S eligibility; final members still require source/provenance and semantic dependency closure.
+
+Fresh blocker clustering finds three historical identities with one common current blocker only: `servant.mash.skill.sc-mash-4`, `servant.sherlock.skill.sc-sherlock-4`, and `servant.sherlock.skill.sc-sherlock-5` are blocked only because current FB2-18 outside-game placement accepts an owned `master_skill` but not an owner-matching `servant_skill`. Historical accepted PR #441 Candidate `fc6d2f52f2d2cebbedc60e9e5d106744b347c8ff` independently accepted the identity-free extension and its owner-mismatch fail-closed regression; canonical same-attempt evidence is `https://github.com/binchen648/fd/pull/441#issuecomment-5825842148`.
+
+Next zero-credit B task: `P3-B-MAIN-REPLAY-OUTSIDE-GAME-OWNED-SERVANT-SKILL`.
+
+## TASK P3-B-MAIN-REPLAY-OUTSIDE-GAME-OWNED-SERVANT-SKILL
+
+Owner: Codex B
+Status: `READY`
+Base: exact Composition-02 A commit carrying this task block
+Historical accepted authority: PR #441 Candidate `fc6d2f52f2d2cebbedc60e9e5d106744b347c8ff`
+Canonical historical evidence: `https://github.com/binchen648/fd/pull/441#issuecomment-5825842148`
+Branch: `codex/b-p3-main-replay-outside-game-owned-servant-skill`
+
+Replay only the narrow identity-free outside-game representation extension that PR #441 added on top of accepted FB2-18:
+
+- retain exact `initialPlacement: "outside_game"` literal;
+- retain the existing exact owned `master_skill` behavior unchanged;
+- additionally admit only `cardType: "servant_skill"` when archive id starts `servant.`, authored owner is exactly `{type:"servant", id:<same archive id>}`, and ownership matches the archive root;
+- preserve the card in the compiled pack but assign no executable `initialZone`;
+- owner mismatch, non-servant archive, unsupported card type, malformed placement, and near-match forms fail closed;
+- loader and executable compiler must enforce the same bounded contract;
+- no Sherlock/Mash/card-id/name/printed-text routing, no deduction-record consumer behavior, no product registration, no `data/authoring/**`, no migration credit;
+- do not import unrelated M50-02 primitives from PR #441.
+
+Required verification:
+- focused FB2-18 outside-game regression, including owner-matching servant positive case and owner-mismatch/card-type near negatives;
+- executable-pack affected tests;
+- affected current loader/compiler tests;
+- typecheck and `git diff --check`;
+- production identity-routing audit and exact scope;
+- verify fixed Work is clean and exact-line compatible before any implementation. If it is dirty/incompatible, stop and report; do not reset/checkout/discard and do not create a fallback worktree.
+
+Expected planning effect after ACCEPTED + A-sync: the same 153-card loader scan should gain the three identified historical identities if no other exact blocker appears. This is readiness evidence only and remains zero-credit.
+
+Allowed B verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `MIGRATION_BLOCKED`
