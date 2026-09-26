@@ -41,6 +41,10 @@ export function ownerSelfMechanicIsWellFormed(value: RuleNode): boolean {
     default: return true;
   }
 }
+export function servantRevealSuppressedByTemporaryConcealment(state: GameState, playerId: string): boolean {
+  return state.abilityRuntime?.structuredPlayerFlagsByPlayer?.[playerId]?.__fd_temporary_servant_concealment_active === true;
+}
+
 export function playerCombatTotalPowerAdjustment(state: GameState, playerId: string): number {
   const runtime = state.abilityRuntime;
   if (!runtime) return 0;

@@ -17,7 +17,7 @@ import { setTerrainAdvantageOverride } from './terrain-advantage-override';
 import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute, deductionRecordDefinitionsForOwner, isDeductionRecordEffect, type DeductionRecordAttribute } from './deduction-record';
 import { activePlayerCountMinusRoundPlayCostAbility } from './dynamic-play-cost';
 import { playerIgnoresAbilityFromController } from './player-ability-immunity';
-import { isHideServantTrueNameUntilRoundEndEffect, isLoseVpEqualSourcePlayCountEffect, isRevealHandRoundPowerEffect, PLAYER_COMBAT_TOTAL_POWER_RULE } from './owner-self-mechanics';
+import { isHideServantTrueNameUntilRoundEndEffect, isLoseVpEqualSourcePlayCountEffect, isRevealHandRoundPowerEffect, PLAYER_COMBAT_TOTAL_POWER_RULE, servantRevealSuppressedByTemporaryConcealment } from './owner-self-mechanics';
 import {
   isAnyBattlefieldConstraint,
   isBattlefieldSourceCardPlayCostAuraAbility,
@@ -1369,9 +1369,8 @@ function cleanupOngoing(s: GameState): void {
 }
 function reveal(s: GameState, controllerId: string): void {
   const r = runtime(s);
-  const flags = r.structuredPlayerFlagsByPlayer?.[controllerId];
   if (r.revealedServants.includes(controllerId) || servantRevealForbiddenByNoCommandSeals(s, controllerId) ||
-      flags?.__fd_temporary_servant_concealment_active === true) return;
+      servantRevealSuppressedByTemporaryConcealment(s, controllerId)) return;
   r.revealedServants.push(controllerId); r.events.push({ type: 'servant_package_revealed', playerId: controllerId });
 }
 function checkFormulaTriggers(s: GameState): void {

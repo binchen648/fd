@@ -124,3 +124,31 @@ Successor validation after both fixes:
 - Production identity-routing audit under `packages/rules/src`: Siegfried identity/card-name/Chinese-text/SkillLib hits remain zero.
 
 No migration credit is claimed by this report; exact successor Candidate must receive fresh independent R and subsequent A-sync/accounting.
+
+## Successor R2 closure — typed servant reveal path
+
+Reviewed predecessor: `83c55fe676a7cd024056b955a34befac28228c14`.
+
+Fresh R reported one remaining exact-scope blocker: the interpreter reveal path respected temporary concealment, but `resolution-dataflow.ts::revealServantPackage()` still revealed the servant package during the same-round cloak window.
+
+Closure in this successor:
+
+- Added one generic shared predicate, `servantRevealSuppressedByTemporaryConcealment(state, playerId)`, in owner-self mechanics.
+- The ordinary interpreter reveal path and typed `reveal_servant_package` dataflow now consume the same temporary-concealment gate.
+- When concealment is active, typed reveal returns `no_op`, leaves `revealedServants` unchanged, and emits no `servant_package_revealed` event.
+- Round-end behavior is unchanged: the captured pre-cloak reveal baseline is restored exactly once after the concealment marker expires.
+- New focused regression covers revealed baseline -> cloak -> typed servant-package reveal -> still hidden/no reveal event -> round_end -> baseline revealed again.
+
+Successor verification before freeze:
+
+- focused Siegfried regression: `10/10 PASS`.
+- direct typed reveal/battle-loss/dataflow regression set: `3 files / 33 tests PASS`.
+- final affected serial chain including combat resolver, Siegfried, pack loader, authoring interpreter, compile CLI, executable pack, MatchSession, resolution dataflow, and battle-loss reveal: `9 files / 189 tests PASS`.
+- `npm run typecheck`: PASS.
+- `npm run content:validate`: PASS — `7 masters, 11 servants, 20 events, 0 blocking issues`.
+- `npm run content:compile`: PASS — same summary.
+- `npm run verify:generated-content`: PASS; deterministic hashes remain `95033ed3dcc75a47c3cc83c626cd8e53ce0a01c186466c0b91d66b33c1b1b58e` / `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057` / `69a2059bbbb60ee60e01982f0c49dfb82701739379121c2acc0b9db3211d0c12`.
+- `git diff --check`: PASS.
+- production identity-routing audit under `packages/rules/src`: Siegfried IDs/names/Chinese card names/SkillLib all `0` hits.
+
+Formal accounting remains `126/944` until this successor receives fresh independent `MIGRATION_ACCEPTED` and A-sync/accounting.

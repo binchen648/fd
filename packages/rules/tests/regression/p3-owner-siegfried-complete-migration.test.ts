@@ -13,6 +13,7 @@ import { deriveBattleParticipantsFromState } from '../../src/core/combat-resolve
 import type { AuthoringCard } from '../../src/ability/types';
 import type { GameState } from '../../src/schema/game';
 import { playerCombatTotalPowerAdjustment } from '../../src/ability/owner-self-mechanics';
+import { executeResolution } from '../../src/ability/resolution-dataflow';
 
 const archivePath = 'data/authoring/servants/servant.siegfried.json';
 const skill = (n: number) => `servant.siegfried.skill.sc-siegfried-${n}`;
@@ -149,6 +150,27 @@ describe('P3 owner-complete Siegfried migration', () => {
     expect(projectAbilityState(state,'p2').players.find((p)=>p.id==='p1')?.servantPackage).toBeUndefined();
     processAbilityEvent(state,{id:'round-end:siegfried-concealment-lock',type:'round_end'});
     expect(state.abilityRuntime!.revealedServants).toContain('p1');
+  });
+
+  it('keeps temporary concealment through typed servant-package reveal and restores the captured baseline at round end', () => {
+    const { state }=setup();
+    const cloak=addCard(state,skill(1),'p1','attack_area','p1',true);
+    state.abilityRuntime!.revealedServants.push('p1');
+    state.round.activePhase='action'; state.round.prioritySeat=1;
+    expect(dispatchAbilityCommand(state,'p1',{type:'activate_ability',cardInstanceId:cloak.instanceId,abilityId:'sc-siegfried-1.invisibility-cloak'}).ok).toBe(true);
+    expect(state.abilityRuntime!.revealedServants).not.toContain('p1');
+
+    const out=executeResolution({
+      state, controllerId:'p1', sourceCardId:cloak.instanceId, abilityId:'fixture.typed-reveal',
+      resolutionId:'fixture.typed-reveal-resolution',
+      effects:[{id:'fixture.typed-reveal-effect',type:'reveal_servant_package'}],
+    });
+    expect(out.nextState.abilityRuntime!.revealedServants).not.toContain('p1');
+    expect(out.results[0]?.status).toBe('no_op');
+    expect(out.emittedEvents.some((event)=>event.type==='servant_package_revealed')).toBe(false);
+
+    processAbilityEvent(out.nextState,{id:'round-end:siegfried-typed-concealment',type:'round_end'});
+    expect(out.nextState.abilityRuntime!.revealedServants).toContain('p1');
   });
 
   it('reveals Armor of Fafnir on play and closes it only when an opponent moves onto the engaged battlefield', () => {
