@@ -15,7 +15,7 @@ export interface AdapterReportEntry {
   reason: string; suggestedImplementation: string;
 }
 export interface AuthoringAbility {
-  id: string; kind: string; printedClause: string; activation: RuleNode;
+  id: string; kind: string; printedClause: string; markers?: string[]; activation: RuleNode;
   conditions: RuleNode[]; targets: RuleNode[]; effects: RuleNode[]; cost: RuleNode[];
   ruleModifiers: RuleNode[]; creates: RuleNode[]; lifecycle: RuleNode;
   responseWindow: RuleNode; limit: RuleNode; visibility: RuleNode;
@@ -146,8 +146,15 @@ export interface OpponentCloseSelectedOneInteractionMetadata {
   candidateIds: string[]; candidateOwners: Record<string, PlayerId>;
   constraints: { kind: 'target'; targetKind: 'card'; min: 1; max: 1; distinct: true };
 }
+export interface DeductionRecordChoiceInteractionMetadata {
+  kind: 'deduction_record_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  optional: boolean; definitionByAttribute: Record<string, string>;
+  constraints: { kind: 'target'; targetKind: 'attribute'; min: 0 | 1; max: 1; distinct: true };
+}
+export interface DeductionRecordState { definitionId: string; attribute: '力量' | '迅捷' | '魔术' | '特殊'; recordedRound: number }
 export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata |
-  OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata;
+  OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata | DeductionRecordChoiceInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -208,9 +215,11 @@ export interface SafeEvent {
   fromZone?: string;
   toZone?: string;
   movedCount?: number;
+  revealedCardDefinitionIds?: string[];
+  revealedCardInstanceIds?: string[];
 }
 export interface CardRuntimeState {
-  active: boolean; faceDown: boolean; playedRound: number;
+  active: boolean; faceDown: boolean; playedRound: number; paidManaOnPlay?: number;
   reversed?: boolean; attributeOverrides?: string[];
 }
 export interface AbilityRuntime {
@@ -220,6 +229,10 @@ export interface AbilityRuntime {
   structuredPlayerFlagsByPlayer?: Record<PlayerId, Record<string, boolean | string | number>>;
   /** Round marker for flags whose authored lifecycle is exactly this_round. */
   structuredRoundFlagKeysByPlayer?: Record<PlayerId, Record<string, number>>;
+  /** Server-owned one-per-player deduction record selected from exact outside-game marker definitions. */
+  deductionRecordsByPlayer?: Record<PlayerId, DeductionRecordState>;
+  /** Round marker for players defeated by a source-grounded effect for battle-winner eligibility. */
+  battleDefeatRoundByPlayer?: Record<PlayerId, number>;
   ongoingEffects: OngoingEffect[]; lifecycleTransitions?: LifecycleTransition[]; responseWindows: ResponseWindow[]; pendingDecision?: PendingDecision;
   pendingDelayedActivations?: PendingDelayedActivation[];
   /** Server-owned pre-scoring battle-local defeat requests staged by the exact Presence Concealment response. */

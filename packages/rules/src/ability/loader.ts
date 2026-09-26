@@ -5,6 +5,8 @@ import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPla
 import { isAcceptedControlledCardCloseForbidModifier } from './card-close-forbid';
 import { isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
 import { isLinkedOwnerCombatRule, isServantNoCommandSealsRule } from './linked-owner-combat';
+import { deductionRecordMechanicIsWellFormed, isDeductionRecordMarkerAbility, isEventLocationIsCondition, isSameLocationAsControllerConstraint } from './deduction-record';
+import { isActivePlayerCountMinusRoundPlayCostModifier } from './dynamic-play-cost';
 import {
   OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT,
   OPPONENT_CLOSE_ONE_NON_RESIDUAL_EFFECT,
@@ -78,6 +80,10 @@ const supportedTypes = new Set([
   'remove_advantage_position', 'noop', 'fail_invariant', 'install_rule_override', 'provision_skill_cards',
   'adjust_selected_player_terrain', 'lend_source_card', 'engaged_opponent_attack_power_modifier',
   'linked_owner_combat_rule', 'servant_no_command_seals_rule',
+  'deduction_record_present', 'deduction_record_absent', 'deduction_record_matches_event_basic_attack',
+  'choose_deduction_record', 'resolve_deduction_record_on_event', 'expire_deduction_record',
+  'reveal_selected_opponent_and_resolve_deduction', 'event_location_is', 'same_location_as_controller',
+  'play_cost_formula',
   OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT, OPPONENT_CLOSE_ONE_NON_RESIDUAL_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
@@ -109,6 +115,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'bind', 'expr', 'binding', 'field', 'valueType', 'ids', 'reason', 'message', 'enabled', 'regular', 'climax', 'threshold', 'phase', 'targetDefinitionIds',
   'add', 'multiply', 'until', 'hiddenAmount', 'revealedAmount', 'excludeLinkedOwnerRecipient', 'commandSealsAtMost', 'hideTrueName',
   'ignoreBattleLossEffects', 'shareMaximumCombatPower', 'closeIfOwnerAbsent', 'returnToOwnerAtBattleEnd', 'returnToOwnerHandOnOwnerLoss', 'ownerCommandSealsAtMost', 'basePowerMultiplier',
+  'locationId', 'vpGain', 'optionalNext', 'vpPenalty', 'defeatOnMatch', 'show',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -168,6 +175,25 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (str(n.type) === 'event_location_equals_controller') {
         if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Event-location relation condition is supported only as a direct ability condition', abilityId);
         if (!isAcceptedEventLocationEqualsControllerCondition(n)) issue(path, 'Event-location relation condition must contain only type', abilityId);
+      }
+      if (str(n.type) === 'event_location_is') {
+        if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Exact event-location condition is supported only as a direct ability condition', abilityId);
+        if (!isEventLocationIsCondition(n)) issue(path, 'Exact event-location condition requires only type and nonempty locationId', abilityId);
+      }
+      if (['deduction_record_present', 'deduction_record_absent', 'deduction_record_matches_event_basic_attack'].includes(str(n.type))) {
+        if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Deduction-record condition is supported only as a direct ability condition', abilityId);
+        if (!deductionRecordMechanicIsWellFormed(n)) issue(path, 'Unsupported deduction-record condition shape', abilityId);
+      }
+      if (['choose_deduction_record', 'resolve_deduction_record_on_event', 'expire_deduction_record', 'reveal_selected_opponent_and_resolve_deduction'].includes(str(n.type))) {
+        if (!/^effects\[\d+\]$/.test(path)) issue(path, 'Deduction-record operation is supported only as a direct ability effect', abilityId);
+        if (!deductionRecordMechanicIsWellFormed(n)) issue(path, 'Unsupported deduction-record effect shape', abilityId);
+      }
+      if (str(n.type) === 'same_location_as_controller') {
+        if (!/^targets\.constraints/.test(path)) issue(path, 'same_location_as_controller is supported only as a player target constraint', abilityId);
+        if (!isSameLocationAsControllerConstraint(n)) issue(path, 'same_location_as_controller must contain only type', abilityId);
+      }
+      if (str(n.type) === 'play_cost_formula' && !isActivePlayerCountMinusRoundPlayCostModifier(n)) {
+        issue(path, 'Unsupported dynamic play-cost modifier shape', abilityId);
       }
       if (['player_flag_equals', 'player_flag_number_at_least', 'player_flag_number_current_round', 'player_flag_number_not_current_round'].includes(str(n.type))) {
         if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Structured player-flag condition is supported only as a direct ability condition', abilityId);
@@ -362,15 +388,17 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       for (const m of nodes(a.ruleModifiers)) {
         const acceptedCardCloseForbid = mode === 'automatic' && lifecycle.duration === 'this_round' &&
           isAcceptedControlledCardCloseForbidModifier(m);
+        const acceptedDynamicPlayCost = isActivePlayerCountMinusRoundPlayCostModifier(m);
         const operationSupported = ['add', 'set', 'ignore', 'lock', 'exclude', 'forbid'].includes(str(m.operation));
         const ruleSupported = ['attack.currentPower', 'card.currentPower', 'effect_prevention', 'battlefield', 'terrain_and_external_effects', 'use_skill_card', 'play_card_attribute', 'enter_or_leave_current_battlefield', 'terrain_and_external_effects_for_controller_and_opponents', 'terrain_and_external_servant_or_npc_effects', 'situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least', 'netherworld_protection'].includes(str(m.rule)) ||
-          (acceptedCardCloseForbid && m.rule === 'card_close');
+          acceptedDynamicPlayCost || (acceptedCardCloseForbid && m.rule === 'card_close');
         if (!operationSupported || !ruleSupported) issue('ruleModifiers', 'Unmapped rule or operation', id);
+        if (m.rule === 'card.playCost' && !acceptedDynamicPlayCost) issue('ruleModifiers', 'Unsupported dynamic play-cost modifier', id);
         if (m.rule === 'card_close' && !acceptedCardCloseForbid) issue('ruleModifiers', 'Unsupported card-close forbid selector shape', id);
         if (m.rule === 'effect_prevention' && (m.operation !== 'ignore' || node(m.priority).tier !== 'explicit_exception')) issue('ruleModifiers.priority', 'Prevention exception requires explicit_exception', id);
         const ruleIsPlayException = m.operation === 'ignore' && ['situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least'].includes(str(m.rule));
         const ruleIsStaticException = m.operation === 'ignore' && m.rule === 'netherworld_protection';
-        if (m.rule !== 'effect_prevention' && !ruleIsPlayException && !ruleIsStaticException && !lifecycle.duration && !node(m.lifecycle).duration) issue('ruleModifiers.lifecycle', 'Modifier requires lifecycle', id);
+        if (m.rule !== 'effect_prevention' && !ruleIsPlayException && !ruleIsStaticException && !acceptedDynamicPlayCost && !lifecycle.duration && !node(m.lifecycle).duration) issue('ruleModifiers.lifecycle', 'Modifier requires lifecycle', id);
         scan(m.value, 'ruleModifiers.value', id); scan(node(m.scope).constraints, 'ruleModifiers.scope.constraints', id);
         scan(m.conditions, 'ruleModifiers.conditions', id);
         if (node(m.scope).object && !['source_card', 'this_card', 'attack_card', 'this_effect', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield', 'all_players'].includes(str(node(m.scope).object))) issue('ruleModifiers.scope.object', 'Unmapped modifier scope', id);
@@ -403,7 +431,8 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       const allowed = Array.isArray(requested) ? hostOperations.filter(op => requested.includes(op)) : defaultAllowed;
       if (Array.isArray(requested) && requested.some(op => !hostOperations.includes(op as typeof hostOperations[number]))) issue('execution.hostOps', 'Operation outside the host allowlist', id);
       if (mode !== 'automatic') issue('execution.mode', str(execution.reason) || mode, id, mode as ExecutionMode);
-      const candidateAbility: AuthoringAbility = { id, kind: str(a.kind), printedClause: str(a.printedClause), activation,
+      const candidateAbility: AuthoringAbility = { id, kind: str(a.kind), printedClause: str(a.printedClause),
+        ...(Array.isArray(a.markers) ? { markers: a.markers.filter((marker): marker is string => typeof marker === 'string') } : {}), activation,
         conditions: nodes(a.conditions), targets: nodes(a.targets), effects: nodes(a.effects),
         cost: Array.isArray(a.cost) ? nodes(a.cost) : a.cost ? [node(a.cost)] : [],
         ruleModifiers: nodes(a.ruleModifiers), creates: nodes(a.creates), lifecycle,
@@ -411,6 +440,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         limit, visibility: node(a.visibility), execution: { mode: mode as ExecutionMode, allowedOperations: allowed } };
       if (isPrivateOptionalHandPlayInteractionCandidate(candidateAbility) && !isPrivateOptionalHandPlayInteractionSemantic(candidateAbility)) {
         issue('interaction.gateway', 'Unsupported private optional hand-play interaction semantic shape', id);
+      }
+      if (Array.isArray(a.markers) && a.markers.some((marker) => String(marker).startsWith('deduction-'))) {
+        if (!isDeductionRecordMarkerAbility(candidateAbility)) issue('deductionRecord.gateway', 'Unsupported exact deduction-record marker ability shape', id);
       }
       if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'authoring') &&
           !isAcceptedOpponentCloseOneNonResidualAbility(a, 'authoring')) {
