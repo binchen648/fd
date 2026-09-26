@@ -640,7 +640,8 @@ function isRestoreCardRuntimeState(value: unknown): boolean {
     Number.isSafeInteger(value.playedRound) && (value.paidManaOnPlay === undefined ||
       (typeof value.paidManaOnPlay === 'number' && Number.isFinite(value.paidManaOnPlay))) &&
     (value.reversed === undefined || typeof value.reversed === 'boolean') &&
-    (value.attributeOverrides === undefined || isRestoreStringArray(value.attributeOverrides));
+    (value.attributeOverrides === undefined || isRestoreStringArray(value.attributeOverrides)) &&
+    (value.placedAtLocationId === undefined || typeof value.placedAtLocationId === 'string');
 }
 
 function isRestoreAbilityDefinition(value: unknown): boolean {
@@ -743,6 +744,10 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
   if (value.deductionRecordsByPlayer !== undefined && (!isRestoreRecord(value.deductionRecordsByPlayer) || !Object.values(value.deductionRecordsByPlayer).every((entry) =>
       isRestoreRecord(entry) && typeof entry.definitionId === 'string' && DEDUCTION_RECORD_ATTRIBUTES.includes(entry.attribute as typeof DEDUCTION_RECORD_ATTRIBUTES[number]) && isRestoreSafeInteger(entry.recordedRound, 1)))) return false;
   if (value.battleDefeatRoundByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.battleDefeatRoundByPlayer)) return false;
+  if (value.startingDeckSizeByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.startingDeckSizeByPlayer)) return false;
+  if (value.cardPlayCountByInstance !== undefined && !isRestoreNonNegativeIntegerMap(value.cardPlayCountByInstance)) return false;
+  if (value.grantedPerGamePlayLimitCardIds !== undefined && (!isRestoreStringArray(value.grantedPerGamePlayLimitCardIds) || new Set(value.grantedPerGamePlayLimitCardIds).size !== value.grantedPerGamePlayLimitCardIds.length)) return false;
+  if (value.grantedPerGamePlayLimitBaselineByCardId !== undefined && !isRestoreNonNegativeIntegerMap(value.grantedPerGamePlayLimitBaselineByCardId)) return false;
   if (value.combatWinRoundByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.combatWinRoundByPlayer)) return false;
   if (value.lifecycleTransitions !== undefined && (!Array.isArray(value.lifecycleTransitions) || !value.lifecycleTransitions.every(isRestoreLifecycleTransition))) return false;
   if (value.pendingDelayedActivations !== undefined && (!Array.isArray(value.pendingDelayedActivations) || !value.pendingDelayedActivations.every(isRestorePendingDelayedActivation))) return false;
@@ -967,7 +972,7 @@ function isRestoreAbilityRuntimeReferences(
 ): boolean {
   const playerKeyedMaps = [
     'playerStatusKeysByPlayer','structuredPlayerFlagsByPlayer','structuredRoundFlagKeysByPlayer','deductionRecordsByPlayer','battleDefeatRoundByPlayer','combatWinRoundByPlayer','manaCaps','noblePhantasmCostsThisRound','movementDistanceThisRound',
-    'battlefieldsPassedOrStayedThisRound',
+    'battlefieldsPassedOrStayedThisRound','startingDeckSizeByPlayer',
   ] as const;
   for (const key of playerKeyedMaps) if (value[key] !== undefined && !restoreRecordKeysBelongTo(value[key], playerIds)) return false;
   for (const key of ['revealedServants','manaGainBlocked'] as const) {
@@ -985,6 +990,22 @@ function isRestoreAbilityRuntimeReferences(
   if (!(value.hostRequests as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
   if (!(value.ongoingEffects as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
   if (!(value.responseWindows as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
+  if (value.cardPlayCountByInstance !== undefined && !Object.keys(value.cardPlayCountByInstance as Record<string, unknown>).every((id) => cardsByInstance.has(id))) return false;
+  if (value.grantedPerGamePlayLimitBaselineByCardId !== undefined && !Object.keys(value.grantedPerGamePlayLimitBaselineByCardId as Record<string, unknown>).every((id) => cardsByInstance.has(id))) return false;
+  if (value.grantedPerGamePlayLimitCardIds !== undefined && !(value.grantedPerGamePlayLimitCardIds as string[]).every((id) => cardsByInstance.has(id))) return false;
+  if (value.grantedPerGamePlayLimitCardIds !== undefined) {
+    const grantedIds = value.grantedPerGamePlayLimitCardIds as string[];
+    const baselines = value.grantedPerGamePlayLimitBaselineByCardId;
+    if (grantedIds.length > 0 && !isRestoreRecord(baselines)) return false;
+    if (isRestoreRecord(baselines) && (!grantedIds.every((id) => Object.prototype.hasOwnProperty.call(baselines, id)) ||
+        !Object.keys(baselines).every((id) => grantedIds.includes(id)))) return false;
+  } else if (isRestoreRecord(value.grantedPerGamePlayLimitBaselineByCardId) && Object.keys(value.grantedPerGamePlayLimitBaselineByCardId).length > 0) return false;
+  if (isRestoreRecord(value.cardState)) {
+    for (const [instanceId, state] of Object.entries(value.cardState)) {
+      if (!cardsByInstance.has(instanceId) || !isRestoreRecord(state)) return false;
+      if (state.placedAtLocationId !== undefined && (!locationIds.has(state.placedAtLocationId as string) || cardsByInstance.get(instanceId)?.zone !== 'field' || state.active !== true || state.faceDown !== false)) return false;
+    }
+  }
 
   if (value.pendingDelayedActivations !== undefined && !(value.pendingDelayedActivations as Array<Record<string, unknown>>).every((entry) =>
       playerIds.has(entry.controllerId as string) &&

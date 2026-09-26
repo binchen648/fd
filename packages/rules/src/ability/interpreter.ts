@@ -17,6 +17,18 @@ import { setTerrainAdvantageOverride } from './terrain-advantage-override';
 import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute, deductionRecordDefinitionsForOwner, isDeductionRecordEffect, type DeductionRecordAttribute } from './deduction-record';
 import { activePlayerCountMinusRoundPlayCostAbility } from './dynamic-play-cost';
 import {
+  isAnyBattlefieldConstraint,
+  isBattlefieldSourceCardPlayCostAuraAbility,
+  isBattlefieldSourceBattleEndRewardAbility,
+  isBattlefieldSourceGrantBasicLimitAbility,
+  isBattlefieldSourceRoundCleanupAbility,
+  isGrantBasicAttackPerGameLimitEffect,
+  isGrantSourceBattlefieldVpEffect,
+  isPlaceSourceAtBattlefieldEffect,
+  isRemoveStartingDeckFractionEffect,
+  isReturnSourceToSkillEffect,
+} from './battlefield-source-mechanics';
+import {
   isAcceptedOpponentCloseToOneAbility,
   isAcceptedOpponentCloseOneNonResidualAbility,
   isOpponentCloseToOneCandidate,
@@ -206,7 +218,10 @@ function context(s: GameState, sourceCardId: string, abilityId: string, event?: 
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-    cardState: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
+    cardState: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {},
+    startingDeckSizeByPlayer: Object.fromEntries(s.players.map((candidate) => [candidate.id, s.cards.filter((entry) => entry.ownerPlayerId === candidate.id && entry.zone === 'deck').length])),
+    cardPlayCountByInstance: {}, grantedPerGamePlayLimitCardIds: [], grantedPerGamePlayLimitBaselineByCardId: {},
+    ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
     events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [], roomMode: options.roomMode ?? 'standard',
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
@@ -460,6 +475,10 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
       .map(candidate => candidate.id);
   }
   if (target.type === 'location') {
+    const locationConstraints = nodes(target.constraints);
+    if (locationConstraints.length > 0 && locationConstraints.every(isAnyBattlefieldConstraint)) {
+      return getEnabledLocations(s.map, s.locationConfig).filter((location) => location.tags.includes('battlefield')).map((location) => location.id);
+    }
     if (persistentMovementLockBlocksTarget(s, ctx, target)) return [];
     if (nodes(target.constraints).some(c => c.type === 'any_enabled_location')) {
       const from = player(s, ctx.controllerId).locationId;
@@ -873,7 +892,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     Number((player(s, card(s, sourceId).controllerPlayerId) as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) return false;
   if (!isCommandSpellCard(s, sourceId) && a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber) return false;
   if (abilityLimitReached(s, sourceId, a)) return false;
-  if ((isPlayActionRouteCandidate(a) || isAddToAttackRouteCandidate(a) || isAnyLocationExceptWorkshopMovementSemantic(a)) &&
+  if ((isPlayActionRouteCandidate(a) || isAddToAttackRouteCandidate(a) || isAnyLocationExceptWorkshopMovementSemantic(a) ||
+      a.effects.some(isPlaceSourceAtBattlefieldEffect)) &&
     !hasMandatoryTargetAvailability(s, context(s, sourceId, a.id, event), a)) return false;
   if (isPlaySourceCardWithCostResponseRouteCandidate(a)) {
     const ctx = context(s, sourceId, a.id, event);
@@ -962,6 +982,27 @@ function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean
       isActivateCardByIdTrigger(ability) &&
       ability.effects.some((effect) => effect.type === 'activate_card_by_id' && effect.definitionId === definitionId)));
 }
+function battlefieldSourceCardPlayCostIncrease(s: GameState, playerId: string, sourceId: string): number {
+  const target = card(s, sourceId);
+  const targetDefinition = definition(s, sourceId);
+  if (!targetDefinition || !['hand', 'skill'].includes(target.zone)) return 0;
+  const targetPlayer = player(s, playerId);
+  if (!targetPlayer.locationId) return 0;
+  let total = 0;
+  for (const source of s.cards) {
+    if (source.controllerPlayerId === playerId || source.zone !== 'field') continue;
+    const sourceController = s.players.find((candidate) => candidate.id === source.controllerPlayerId);
+    if (!sourceController || sourceController.status !== 'active') continue;
+    const sourceState = runtime(s).cardState[source.instanceId];
+    if (!sourceState?.active || sourceState.faceDown || sourceState.placedAtLocationId !== targetPlayer.locationId) continue;
+    const sourceDefinition = runtime(s).pack.cards[source.definitionId];
+    if (!sourceDefinition) continue;
+    for (const ability of sourceDefinition.abilities) {
+      if (isBattlefieldSourceCardPlayCostAuraAbility(ability)) total += 2;
+    }
+  }
+  return total;
+}
 export function effectiveCardPlayCost(s: GameState, playerId: string, sourceId: string): number {
   const d = definition(s, sourceId);
   if (!d) reject('unsupported', 'Missing card definition');
@@ -969,18 +1010,19 @@ export function effectiveCardPlayCost(s: GameState, playerId: string, sourceId: 
   if (!Number.isFinite(base) || base < 0) reject('unsupported', 'Card play cost must be a nonnegative finite number');
   const dynamic = d.abilities.filter(activePlayerCountMinusRoundPlayCostAbility);
   if (dynamic.length > 1) reject('unsupported', 'Conflicting dynamic play-cost modifiers');
-  if (!dynamic.length) return base;
   const source = card(s, sourceId);
   if (source.controllerPlayerId !== playerId) reject('illegal_action', 'Card is not controlled by player');
-  const activePlayers = s.players.filter((candidate) => candidate.status === 'active').length;
-  return Math.max(0, activePlayers - s.round.roundNumber);
+  const baseCost = dynamic.length
+    ? Math.max(0, s.players.filter((candidate) => candidate.status === 'active').length - s.round.roundNumber)
+    : base;
+  return baseCost + battlefieldSourceCardPlayCostIncrease(s, playerId, sourceId);
 }
 
 function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false): string | undefined {
   const c = card(s, sourceId); const d = definition(s, sourceId); if (!d) return 'unsupported';
   if (d.mode !== 'automatic') return d.mode;
   if (c.controllerPlayerId !== p || !['hand', 'skill'].includes(c.zone) || player(s, p).status !== 'active') return 'illegal_action';
-  if (c.zone === 'skill' && isActivationOnlyDefinition(s, c.definitionId)) return 'activation_only';
+  if (c.zone === 'skill' && (isActivationOnlyDefinition(s, c.definitionId) || d.abilities.some((ability) => ability.effects.some(isPlaceSourceAtBattlefieldEffect)))) return 'activation_only';
   const hasLegacyAppendOnlyMarker = d.abilities.some(a => a.effects.some(effect => effect.type === 'append_only_rule' && effect.rule !== 'ignore_battle_loss_effects'));
   const requiredAdditionalPlay = hasRequiredAdditionalPlayMarker(d);
   if (hasLegacyAppendOnlyMarker && (!allowRequiredAdditionalPlay || !requiredAdditionalPlay)) return 'append_only';
@@ -990,6 +1032,11 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   if (forbidRules.some(rule => !hasPlayRuleException(d, rule))) return 'play_forbidden';
   const limit = perGamePlayLimit(d);
   if (limit && (runtime(s).abilityUsage[`play:${sourceId}:${limit.key}`] ?? 0) >= limit.uses) return 'card_limit_reached';
+  if ((runtime(s).grantedPerGamePlayLimitCardIds ?? []).includes(sourceId)) {
+    const baseline = runtime(s).grantedPerGamePlayLimitBaselineByCardId?.[sourceId];
+    if (!Number.isSafeInteger(baseline) || Number(baseline) < 0) return 'invalid_state';
+    if ((runtime(s).cardPlayCountByInstance?.[sourceId] ?? 0) - Number(baseline) >= 1) return 'card_limit_reached';
+  }
   if (!ignoreAttackLimit && attackPlayLimitReached(s, p, sourceId, ignoreStagedAttackLimit)) return 'attack_play_limit_reached';
   const requirements = d.playRequirements.concat(nodes(d.cardFace.requirements)).filter(r =>
     str(r.type) && !(str(r.type) === 'skill_zone_mana_at_least' && hasPlayRuleException(d, 'skill_zone_mana_at_least')));
@@ -1076,8 +1123,10 @@ function battleEventControllerEligibleAfterScoring(s: GameState, event: AbilityE
 export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): TriggeredAbility[] {
   const found: TriggeredAbility[] = [];
   for (const c of s.cards) {
-    if (!battleEventControllerEligibleAfterScoring(s, event, c.controllerPlayerId)) continue;
+    const controllerEligible = battleEventControllerEligibleAfterScoring(s, event, c.controllerPlayerId);
     for (const a of definition(s, c.instanceId)?.abilities ?? []) {
+      const eliminatedRoundCleanup = event.type === 'round_end' && isBattlefieldSourceRoundCleanupAbility(a);
+      if (!controllerEligible && !eliminatedRoundCleanup) continue;
       const matches = a.activation.trigger === event.type || (!a.activation.trigger && a.kind === 'phase_action' && a.activation.opens === event.type);
       if (event.type === 'while_active') {
         const transformed = runtime(s).transformedReturnSilenceSourceCardIds?.includes(c.instanceId) === true;
@@ -1119,7 +1168,10 @@ function moveCard(s: GameState, id: string, zone: string): number {
   const c = card(s, id); const moved = c.zone === zone ? 0 : 1; c.zone = zone;
   c.visibility = zone === 'field' || zone === 'attack_area' || zone === 'removed_from_game' ? { scope: 'public' } : { scope: 'owner_only', ownerPlayerId: c.ownerPlayerId };
   if (!['field', 'attack_area'].includes(zone)) {
-    if (runtime(s).cardState[id]) runtime(s).cardState[id]!.active = false;
+    if (runtime(s).cardState[id]) {
+      runtime(s).cardState[id]!.active = false;
+      delete runtime(s).cardState[id]!.placedAtLocationId;
+    }
     clearTransientCardTransformState(s, id);
     clearReturnSilenceTransformForSource(s, id);
   }
@@ -1374,6 +1426,99 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       if (!isServantNoCommandSealsRule(effect)) reject('unsupported', 'Unsupported no-command-seals servant rule shape');
       if (Number((p as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) {
         r.revealedServants = r.revealedServants.filter((id) => id !== p.id);
+      }
+      break;
+    }
+    case 'place_source_card_at_battlefield': {
+      if (!isPlaceSourceAtBattlefieldEffect(effect)) reject('unsupported', 'Unsupported battlefield source placement shape');
+      const targetId = ctx.selections[str(effect.target)]?.[0];
+      const source = card(s, ctx.sourceCardId);
+      const sourceState = r.cardState[source.instanceId];
+      if (!targetId || !isBattlefield(s, targetId) || source.ownerPlayerId !== ctx.controllerId ||
+          source.controllerPlayerId !== ctx.controllerId || source.zone !== 'skill' || sourceState?.active === true || sourceState?.faceDown === true) {
+        reject('invalid_target', 'Battlefield source placement requires a controller-owned skill card and one enabled battlefield');
+      }
+      moveCard(s, source.instanceId, 'field');
+      const nextState = r.cardState[source.instanceId] ??= { active: false, faceDown: false, playedRound: s.round.roundNumber };
+      nextState.active = true;
+      nextState.faceDown = false;
+      nextState.playedRound = s.round.roundNumber;
+      nextState.placedAtLocationId = targetId;
+      source.visibility = { scope: 'public' };
+      r.events.push({ type: 'source_card_placed_at_battlefield', playerId: ctx.controllerId, sourceCardId: source.instanceId, abilityId: ctx.abilityId, battlefieldId: targetId });
+      break;
+    }
+    case 'grant_per_game_play_limit_to_active_basic_attacks_at_source_battlefield': {
+      if (!isGrantBasicAttackPerGameLimitEffect(effect) || !isBattlefieldSourceGrantBasicLimitAbility(a)) {
+        reject('unsupported', 'Unsupported basic-attack per-game limit grant shape');
+      }
+      if (!p.locationId || !isBattlefield(s, p.locationId)) reject('invalid_state', 'Basic-attack limit grant requires the controller to be at a battlefield');
+      const granted = r.grantedPerGamePlayLimitCardIds ??= [];
+      const baselines = r.grantedPerGamePlayLimitBaselineByCardId ??= {};
+      for (const attack of s.cards.filter((candidate) => {
+        if (candidate.zone !== 'attack_area') return false;
+        const attackController = s.players.find((entry) => entry.id === candidate.controllerPlayerId);
+        if (!attackController || attackController.status !== 'active' || attackController.locationId !== p.locationId) return false;
+        const state = r.cardState[candidate.instanceId];
+        const d = r.pack.cards[candidate.definitionId];
+        return state?.active === true && state.faceDown !== true && d?.cardType === 'basic_attack';
+      })) {
+        if (!granted.includes(attack.instanceId)) {
+          granted.push(attack.instanceId);
+          baselines[attack.instanceId] = r.cardPlayCountByInstance?.[attack.instanceId] ?? 0;
+        }
+      }
+      break;
+    }
+    case 'grant_vp_to_players_at_source_battlefield': {
+      if (!isGrantSourceBattlefieldVpEffect(effect) || !isBattlefieldSourceBattleEndRewardAbility(a)) {
+        reject('unsupported', 'Unsupported battlefield-source VP reward shape');
+      }
+      const source = card(s, ctx.sourceCardId);
+      const sourceState = r.cardState[source.instanceId];
+      const locationId = sourceState?.placedAtLocationId;
+      if (!ctx.event || ctx.event.type !== 'after_battle_ended' || !ctx.event.battlePhaseResolutionId ||
+          source.zone !== 'field' || !sourceState?.active || !locationId || !isBattlefield(s, locationId)) {
+        reject('invalid_event', 'Battlefield-source VP reward requires a trusted battle terminal event and live source binding');
+      }
+      for (const target of s.players.filter((candidate) => candidate.status === 'active' && candidate.locationId === locationId)) {
+        if (!Number.isSafeInteger(target.vp) || target.vp < 0) reject('invalid_state', 'Victory points must be a nonnegative safe integer');
+        target.vp += Number(effect.amount);
+        if (!Number.isSafeInteger(target.vp)) reject('invalid_state', 'Victory points exceed safe integer range');
+        r.events.push({ type: 'victory_points_adjusted', playerId: target.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, delta: Number(effect.amount) });
+      }
+      break;
+    }
+    case 'return_source_card_to_skill': {
+      if (!isReturnSourceToSkillEffect(effect) || !isBattlefieldSourceRoundCleanupAbility(a)) {
+        reject('unsupported', 'Unsupported battlefield-source cleanup shape');
+      }
+      const source = card(s, ctx.sourceCardId);
+      const sourceState = r.cardState[source.instanceId];
+      if (source.ownerPlayerId !== ctx.controllerId || source.controllerPlayerId !== ctx.controllerId ||
+          source.zone !== 'field' || !sourceState?.active || !sourceState.placedAtLocationId) {
+        reject('invalid_state', 'Battlefield-source cleanup requires the live placed source');
+      }
+      moveCard(s, source.instanceId, 'skill');
+      break;
+    }
+    case 'remove_top_starting_deck_fraction_and_defeat_if_empty': {
+      if (!isRemoveStartingDeckFractionEffect(effect)) reject('unsupported', 'Unsupported starting-deck fraction removal shape');
+      const targetId = ctx.selections[str(effect.target)]?.[0];
+      const target = targetId ? s.players.find((candidate) => candidate.id === targetId && candidate.status === 'active') : undefined;
+      if (!target || target.id === ctx.controllerId || !p.locationId || !isBattlefield(s, p.locationId) || target.locationId !== p.locationId) {
+        reject('invalid_target', 'Starting-deck fraction removal requires an engaged active opponent at the same battlefield');
+      }
+      const starting = r.startingDeckSizeByPlayer?.[target.id];
+      if (!Number.isSafeInteger(starting) || Number(starting) <= 0) reject('invalid_state', 'Missing trusted starting deck size');
+      const removeCount = Math.ceil(Number(starting) * Number(effect.numerator) / Number(effect.denominator));
+      if (!Number.isSafeInteger(removeCount) || removeCount <= 0) reject('invalid_state', 'Invalid starting-deck fraction removal count');
+      const top = s.cards.filter((candidate) => candidate.ownerPlayerId === target.id && candidate.zone === 'deck').slice(0, removeCount);
+      for (const entry of top) moveCard(s, entry.instanceId, str(effect.destination));
+      r.events.push({ type: 'starting_deck_fraction_removed', playerId: target.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, movedCount: top.length, toZone: str(effect.destination) });
+      if (effect.defeatIfEmpty === true && !s.cards.some((candidate) => candidate.ownerPlayerId === target.id && candidate.zone === 'deck')) {
+        (r.battleDefeatRoundByPlayer ??= {})[target.id] = s.round.roundNumber;
+        r.events.push({ type: 'player_defeated_by_effect', playerId: target.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
       }
       break;
     }
@@ -3866,6 +4011,8 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     moveCard(s, c.cardInstanceId, cardPlayClassification(s, c.cardInstanceId).destinationZone);
     const limit = perGamePlayLimit(definition(s, c.cardInstanceId)!);
     if (limit) runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] = (runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] ?? 0) + 1;
+    const playCounts = runtime(s).cardPlayCountByInstance ??= {};
+    playCounts[c.cardInstanceId] = (playCounts[c.cardInstanceId] ?? 0) + 1;
     runtime(s).cardState[c.cardInstanceId] = { active: !c.faceDown, faceDown: !!c.faceDown, playedRound: s.round.roundNumber, paidManaOnPlay: paidCostByCard.get(c.cardInstanceId) ?? 0 };
     if (c.faceDown) card(s, c.cardInstanceId).visibility = { scope: 'owner_only', ownerPlayerId: playerId };
     

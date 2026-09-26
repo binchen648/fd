@@ -18,7 +18,8 @@
     "data/authoring/servants/servant.tomoe.json",
     "data/authoring/servants/servant.kintoki.json",
     "data/authoring/servants/servant.mash.json",
-    "data/authoring/servants/servant.sherlock.json"
+    "data/authoring/servants/servant.sherlock.json",
+    "data/authoring/servants/servant.shuten.json"
   ],
   "authoringMasterFiles": [
     "data/authoring/masters/master.kayneth.json",
