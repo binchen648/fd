@@ -48,8 +48,8 @@ describe('ExecutableCardPack compiler', () => {
     expect(executable.schemaVersion).toBe('fd-executable-card-pack-v1');
     expect(executable).not.toHaveProperty('archives');
     expect(executable.definitionHash).toMatch(/^[a-f0-9]{64}$/);
-    expect(Object.keys(executable.cards)).toHaveLength(71);
-    expect(Object.values(executable.decks)).toHaveLength(7);
+    expect(Object.keys(executable.cards)).toHaveLength(76);
+    expect(Object.values(executable.decks)).toHaveLength(8);
     expect(Object.values(executable.decks).every((deck) => deck.length === 12)).toBe(true);
     expect(executable.cards['servant.artoriac.skill.sc-artoriac-1']).toMatchObject({
       ownerId: 'servant.artoriac',
@@ -68,6 +68,16 @@ describe('ExecutableCardPack compiler', () => {
     const changedClassification = structuredClone(executable);
     changedClassification.cards['servant.artoriac.skill.sc-artoriac-1']!.destinationZone = 'field';
     expect(() => assertExecutableCardPack(changedClassification, input)).toThrow(/hash mismatch/);
+  });
+
+  it('rejects cross-owner servant-deck-card entries instead of accepting a globally registered foreign card', () => {
+    const input = sourceInput();
+    const mash = input.rules.archives.find((archive) => archive.id === 'servant.mash');
+    expect(mash).toBeDefined();
+    const guard = mash!.deck?.find((entry) => entry.cardId === 'card.x-guard');
+    expect(guard).toBeDefined();
+    guard!.cardId = 'servant.artoriac.skill.sc-artoriac-4';
+    expect(() => compileExecutableCardPack(input)).toThrow(/Foreign servant deck card for servant\.mash/);
   });
 
   it('registers master support archives without creating playable character, fallback spell, deck, or archive-order drift', () => {

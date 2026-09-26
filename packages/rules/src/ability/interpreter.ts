@@ -12,6 +12,8 @@ import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, insta
 import { node, nodes, str } from './loader';
 import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
+import { controllerHasLinkedOwnerCardFrom, isLinkedOwnerCombatRule, isServantNoCommandSealsRule, linkedOwnerBasePowerMultiplier, servantRevealForbiddenByNoCommandSeals } from './linked-owner-combat';
+import { setTerrainAdvantageOverride } from './terrain-advantage-override';
 import {
   isAcceptedOpponentCloseToOneAbility,
   isAcceptedOpponentCloseOneNonResidualAbility,
@@ -365,7 +367,13 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     return { value: persistentLock.value, lines: [{ label: 'persistent_situation_attribute_power_lock', value: persistentLock.value }] };
   }
   const result = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
+  const linkedOwnerMultiplier = linkedOwnerBasePowerMultiplier(s, source);
+  if (linkedOwnerMultiplier !== 1) {
+    result.value *= linkedOwnerMultiplier;
+    result.lines.push({ label: 'linked_owner_command_seal_base_power_multiplier', value: result.value });
+  }
   for (const modifier of ((source as unknown as { powerModifiers?: Array<Record<string, unknown>> }).powerModifiers ?? [])) {
+    if (modifier.lifecycle === 'until_leaves_active_area' && modifier.round !== s.round.roundNumber) continue;
     const value = Number(modifier.value ?? 0);
     if (!Number.isFinite(value)) reject('invalid_modifier', 'Card power modifier must be finite');
     if (modifier.kind === 'set') result.value = value;
@@ -653,6 +661,13 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
       return getEffectiveCardAttributes(s, played.instanceId).includes(str(c.attribute));
     }) ?? false;
     case 'controller_mana_at_least': case 'min_mana': return p.mana >= Number(c.value);
+    case 'controller_command_seals_at_least':
+    case 'controller_command_seals_at_most': {
+      if (!exactRuleNodeKeys(c, ['type', 'value']) || !Number.isSafeInteger(c.value) || Number(c.value) < 0)
+        reject('unsupported', 'Command-seal condition shape is invalid');
+      const seals = Number((p as unknown as { commandSpells?: number }).commandSpells ?? 3);
+      return c.type === 'controller_command_seals_at_least' ? seals >= Number(c.value) : seals <= Number(c.value);
+    }
     case 'source_card_in_zone': return card(s, ctx.sourceCardId).zone === c.zone || (c.zone === 'field' && card(s, ctx.sourceCardId).zone === 'attack_area');
     case 'card_not_on_board': return !s.cards.some(candidate => candidate.definitionId === c.cardId && candidate.zone === 'field');
     case 'controller_at_location_kind': return c.locationKind === '侦察' || c.locationKind === '侦查' ? p.locationId === 'recon' : false;
@@ -1253,7 +1268,7 @@ function cleanupOngoing(s: GameState): void {
   r.ongoingEffects = liveOngoing(s);
 }
 function reveal(s: GameState, controllerId: string): void {
-  const r = runtime(s); if (r.revealedServants.includes(controllerId)) return;
+  const r = runtime(s); if (r.revealedServants.includes(controllerId) || servantRevealForbiddenByNoCommandSeals(s, controllerId)) return;
   r.revealedServants.push(controllerId); r.events.push({ type: 'servant_package_revealed', playerId: controllerId });
 }
 function checkFormulaTriggers(s: GameState): void {
@@ -1268,6 +1283,64 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
   const unpreventable = a.ruleModifiers.some(m => m.rule === 'effect_prevention' && m.operation === 'ignore' && node(m.priority).tier === 'explicit_exception');
   if (r.preventEffects && !unpreventable) { r.events.push({ type: 'effect_prevented', playerId: p.id }); return; }
   switch (effect.type) {
+    case 'linked_owner_combat_rule': {
+      if (!isLinkedOwnerCombatRule(effect)) reject('unsupported', 'Unsupported linked-owner combat rule shape');
+      break;
+    }
+    case 'servant_no_command_seals_rule': {
+      if (!isServantNoCommandSealsRule(effect)) reject('unsupported', 'Unsupported no-command-seals servant rule shape');
+      if (Number((p as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) {
+        r.revealedServants = r.revealedServants.filter((id) => id !== p.id);
+      }
+      break;
+    }
+    case 'adjust_selected_player_terrain': {
+      if (!(str(effect.target) && Number(effect.add) === 2 && Number(effect.multiply) === 2 && effect.duration === 'this_round' &&
+        Object.keys(effect).every((key) => ['type','target','add','multiply','duration'].includes(key)))) {
+        reject('unsupported', 'Unsupported selected-player terrain adjustment shape');
+      }
+      if (!p.locationId || !isBattlefield(s, p.locationId)) reject('illegal_action', 'Terrain adjustment requires controller battlefield location');
+      const targetId = ctx.selections[str(effect.target)]?.[0];
+      const targetPlayer = targetId ? s.players.find((candidate) => candidate.id === targetId && candidate.status === 'active') : undefined;
+      if (!targetPlayer) reject('invalid_target', 'Terrain adjustment requires one active selected player');
+      setTerrainAdvantageOverride(s, targetPlayer.id, p.locationId, Number(effect.add), Number(effect.multiply), ctx.sourceCardId);
+      break;
+    }
+    case 'lend_source_card': {
+      if (!(str(effect.target) && effect.until === 'battle_phase_end' &&
+        Object.keys(effect).every((key) => ['type','target','until'].includes(key)))) reject('unsupported', 'Unsupported source-card lending shape');
+      const source = card(s, ctx.sourceCardId);
+      const targetId = ctx.selections[str(effect.target)]?.[0];
+      const targetPlayer = targetId ? s.players.find((candidate) => candidate.id === targetId && candidate.status === 'active') : undefined;
+      if (!targetPlayer || targetPlayer.id === ctx.controllerId || source.ownerPlayerId !== ctx.controllerId ||
+        source.controllerPlayerId !== ctx.controllerId || !active(s, source.instanceId)) reject('invalid_target', 'Source-card lending target/state is invalid');
+      source.controllerPlayerId = targetPlayer.id;
+      source.visibility = { scope: 'public' };
+      r.events.push({ type: 'card_control_transferred', playerId: targetPlayer.id, sourceCardId: source.instanceId });
+      break;
+    }
+    case 'engaged_opponent_attack_power_modifier': {
+      if (!(Number(effect.hiddenAmount) === -3 && Number(effect.revealedAmount) === -4 && effect.excludeLinkedOwnerRecipient === true &&
+        Object.keys(effect).every((key) => ['type','hiddenAmount','revealedAmount','excludeLinkedOwnerRecipient'].includes(key)))) {
+        reject('unsupported', 'Unsupported engaged-opponent attack modifier shape');
+      }
+      if (!p.locationId || !isBattlefield(s, p.locationId)) reject('illegal_action', 'Attack modifier requires a battlefield');
+      const amount = r.revealedServants.includes(p.id) ? Number(effect.revealedAmount) : Number(effect.hiddenAmount);
+      for (const target of s.players.filter((candidate) => candidate.status === 'active' && candidate.id !== p.id && candidate.locationId === p.locationId)) {
+        if (controllerHasLinkedOwnerCardFrom(s, target.id, p.id)) continue;
+        for (const attack of s.cards.filter((candidate) => candidate.controllerPlayerId === target.id && candidate.zone === 'attack_area' &&
+          r.cardState[candidate.instanceId]?.active === true && r.cardState[candidate.instanceId]?.faceDown !== true &&
+          classifyCardPlay(r.pack.cards[candidate.definitionId]).playKind === 'attack')) {
+          const carrier = attack as unknown as { powerModifiers?: Array<Record<string, unknown>> };
+          carrier.powerModifiers ??= [];
+          if (!carrier.powerModifiers.some((modifier) => modifier.sourceId === ctx.sourceCardId && modifier.id === ctx.abilityId)) {
+            carrier.powerModifiers.push({ kind: 'add', value: amount, sourceId: ctx.sourceCardId, id: ctx.abilityId,
+              lifecycle: 'until_leaves_active_area', round: s.round.roundNumber });
+          }
+        }
+      }
+      break;
+    }
     case 'defeat_highest_power_opponents': {
       if (!isPresenceConcealmentAssassinationSemantic(a)) reject('resolution_failed', 'Unsupported Presence Concealment semantic shape');
       const event = ctx.event;

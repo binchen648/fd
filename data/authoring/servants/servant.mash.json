@@ -1,0 +1,621 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.mash",
+  "name": "玛修·基列莱特",
+  "class": "Shielder",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "305adad2",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Mash semantics are source-grounded by the accepted Phase 3 source-evidence chain; locked Reference is used for static/deck metadata and behavioral cross-check only. Guard is a physical deck card while sc-mash-4 is retained as the outside-game frozen catalogue identity."
+  },
+  "deck": [
+    {
+      "cardId": "card.cardb1"
+    },
+    {
+      "cardId": "card.cardb2",
+      "count": 2
+    },
+    {
+      "cardId": "card.cardb3",
+      "count": 2
+    },
+    {
+      "cardId": "card.x-guard",
+      "count": 2
+    },
+    {
+      "cardId": "card.cardq1"
+    },
+    {
+      "cardId": "card.cardq2",
+      "count": 2
+    },
+    {
+      "cardId": "card.cardsurveil"
+    },
+    {
+      "cardId": "card.cardpreparation"
+    }
+  ],
+  "cards": [
+    {
+      "id": "servant.mash.skill.sc-mash-1",
+      "aliases": [
+        "sc_mash_1"
+      ],
+      "legacyId": "sc_mash_1",
+      "name": "已然遥远的理想之城",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.mash"
+      },
+      "printedText": "【真名解放】行动阶段：选择一名玩家，其获得你所在战场的+2地利。随后将他的地利翻倍。",
+      "cardFace": {
+        "typeLabel": "宝具",
+        "attributes": [
+          "宝具"
+        ],
+        "cost": 2,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "distant-utopia-terrain",
+          "kind": "phase_action",
+          "printedClause": "【真名解放】行动阶段：选择一名玩家，其获得你所在战场的+2地利。随后将他的地利翻倍。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "controller_at_battlefield"
+            },
+            {
+              "type": "controller_command_seals_at_least",
+              "value": 1
+            }
+          ],
+          "targets": [
+            {
+              "id": "chosen-player",
+              "type": "player",
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "constraints": []
+            }
+          ],
+          "effects": [
+            {
+              "type": "adjust_selected_player_terrain",
+              "target": "chosen-player",
+              "add": 2,
+              "multiply": 2,
+              "duration": "this_round"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "305adad2",
+        "f1AuditCommit": "df09aeab",
+        "f1ReviewCommit": "cd9d182f",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "玛修·基列莱特.htm",
+            "locator": "从者/盾兵/英文版/玛修·基列莱特.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/玛修·基列莱特.png",
+            "locator": "servant.mash/玛修·基列莱特"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "sourceAbilityId": "distant-utopia-terrain",
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[182].skills[0].text#line=1",
+            "sha256": "7324c8baca52c8b12f8c9716844216c5ab303ae4f06174453fe3b6dc743b838e"
+          }
+        ],
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_mash_1",
+          "class": "Shielder",
+          "cost": 2,
+          "basePower": 0,
+          "legacyRequirement": 8,
+          "typeLabel": "宝具"
+        }
+      }
+    },
+    {
+      "id": "servant.mash.skill.sc-mash-2",
+      "aliases": [
+        "sc_mash_2"
+      ],
+      "legacyId": "sc_mash_2",
+      "name": "雪花之壁",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.mash"
+      },
+      "printedText": "战斗阶段：将与你战斗的除了你给予【守护】的对手，每张攻击威力-3。如果你已经【真名解放】则改为-4。",
+      "cardFace": {
+        "typeLabel": "力量",
+        "attributes": [
+          "力量"
+        ],
+        "cost": 7,
+        "basePower": 2
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 7
+        }
+      ],
+      "abilities": [
+        {
+          "id": "snowflake-wall-attack-reduction",
+          "kind": "phase_action",
+          "printedClause": "战斗阶段：将与你战斗的除了你给予【守护】的对手，每张攻击威力-3。如果你已经【真名解放】则改为-4。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "controller_at_battlefield"
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "engaged_opponent_attack_power_modifier",
+              "hiddenAmount": -3,
+              "revealedAmount": -4,
+              "excludeLinkedOwnerRecipient": true
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "305adad2",
+        "f1AuditCommit": "df09aeab",
+        "f1ReviewCommit": "cd9d182f",
+        "f1ClauseSources": [
+          {
+            "sourceAbilityId": "snowflake-wall-attack-reduction",
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[182].skills[1].text#line=1",
+            "sha256": "263a0392db8ca229f737ed19ae375e02cb5c6d2ea86ecb4adae1dcaa30e38207"
+          }
+        ],
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_mash_2",
+          "class": "Shielder",
+          "cost": 7,
+          "basePower": 2,
+          "legacyRequirement": 7,
+          "typeLabel": "力量"
+        }
+      }
+    },
+    {
+      "id": "servant.mash.skill.sc-mash-3",
+      "aliases": [
+        "sc_mash_3"
+      ],
+      "legacyId": "sc_mash_3",
+      "name": "奥特瑙斯",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.mash"
+      },
+      "printedText": "被动：当你没有令咒时，你的从者真名隐藏。你不能再使用【已然遥远的理想之城】或出借【守护】。【守护】的基本威力翻倍。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "ortenaus-continuous-rule",
+          "kind": "passive",
+          "printedClause": "被动：当你没有令咒时，你的从者真名隐藏。你不能再使用【已然遥远的理想之城】或出借【守护】。【守护】的基本威力翻倍。",
+          "activation": {
+            "trigger": "while_active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "servant_no_command_seals_rule",
+              "commandSealsAtMost": 0,
+              "hideTrueName": true
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "ortenaus-game-start-hide",
+          "kind": "forced_trigger",
+          "printedClause": "当你没有令咒时，你的从者真名隐藏。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [
+            {
+              "type": "controller_command_seals_at_most",
+              "value": 0
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "hide_servant_true_name"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "ortenaus-empty-seals-hide",
+          "kind": "forced_trigger",
+          "printedClause": "当你没有令咒时，你的从者真名隐藏。",
+          "activation": {
+            "trigger": "after_controller_loses_all_command_seals"
+          },
+          "conditions": [
+            {
+              "type": "controller_command_seals_at_most",
+              "value": 0
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "hide_servant_true_name"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "305adad2",
+        "f1AuditCommit": "df09aeab",
+        "f1ReviewCommit": "cd9d182f",
+        "f1ClauseSources": [
+          {
+            "sourceAbilityId": "ortenaus-continuous-rule",
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[182].skills[2].text#line=1",
+            "sha256": "7a0f05b6f086d157c1a72a068376184be90f90c56a7b966760eb46b9c0d91bc8"
+          }
+        ],
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_mash_3",
+          "class": "Shielder",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": 0,
+          "typeLabel": "被动"
+        }
+      }
+    },
+    {
+      "id": "servant.mash.skill.sc-mash-4",
+      "aliases": [
+        "sc_mash_4"
+      ],
+      "legacyId": "sc_mash_4",
+      "name": "守护",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.mash"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "若玛修战败，将【守护】返还于玛修的手牌。若玛修未参与此战斗，则将此牌【关闭】。你和玛修无视【败北】效果，你们二人各自的合计威力变为你和玛修中合计威力最高的数值。\n行动阶段：玛修将【守护】借给一位对手直到战斗阶段结束。",
+      "cardFace": {
+        "typeLabel": "力量",
+        "attributes": [
+          "力量"
+        ],
+        "cost": 3,
+        "basePower": 5
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "guard-catalogue-marker",
+          "kind": "passive",
+          "printedClause": "守护是玛修牌库中的两张实体牌；此 frozen identity 仅作为 outside-game 目录标识。",
+          "activation": {
+            "trigger": "while_active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "noop",
+              "reason": "physical linked-owner Guard semantics are authored on card.x-guard"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "305adad2",
+        "f1AuditCommit": "df09aeab",
+        "f1ReviewCommit": "cd9d182f",
+        "f1ClauseSources": [
+          {
+            "sourceAbilityId": "guard-catalogue-marker",
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[182].skills[3].text#line=1",
+            "sha256": "798b0052a86d735048b1f27bedb4962492cc419dd6a0036e9d8dcc9dc5e503c0"
+          },
+          {
+            "sourceAbilityId": "guard-catalogue-marker",
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[182].skills[3].text#line=2",
+            "sha256": "ccc914e27a6745c83ae268242077147530ec968ca73c71107a24fc97ce7b4a56"
+          }
+        ],
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_mash_4",
+          "class": "Shielder",
+          "cost": 3,
+          "basePower": 5,
+          "legacyRequirement": 3,
+          "typeLabel": "力量"
+        },
+        "acceptedContracts": {
+          "outsideGameOwnedServantSkill": "PR#456:83cac6ef2a1334b823e37c873d0a1a2c8e819cb9"
+        }
+      }
+    },
+    {
+      "id": "card.x-guard",
+      "name": "守护",
+      "cardType": "servant_deck_card",
+      "owner": {
+        "type": "servant",
+        "id": "servant.mash"
+      },
+      "printedText": "行动阶段：将此牌借给一位对手直到战斗阶段结束。持有者与你在同一战场时，双方无视败北效果且合计威力取二者较高值；你不在其战斗时此牌关闭；你战败时返还手牌。无令咒时基础威力翻倍。",
+      "cardFace": {
+        "typeLabel": "力量",
+        "attributes": [
+          "力量"
+        ],
+        "cost": 3,
+        "basePower": 5
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "lend-linked-owner-card",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：将此牌借给一位对手直到战斗阶段结束。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "controller_command_seals_at_least",
+              "value": 1
+            }
+          ],
+          "targets": [
+            {
+              "id": "borrower",
+              "type": "player",
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "not_controller"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "lend_source_card",
+              "target": "borrower",
+              "until": "battle_phase_end"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "linked-owner-combat-rule",
+          "kind": "passive",
+          "printedClause": "守护的借用、败北免疫、合计威力联动、关闭与返还规则。",
+          "activation": {
+            "trigger": "while_active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "linked_owner_combat_rule",
+              "ignoreBattleLossEffects": true,
+              "shareMaximumCombatPower": true,
+              "closeIfOwnerAbsent": true,
+              "returnToOwnerAtBattleEnd": "discard",
+              "returnToOwnerHandOnOwnerLoss": true,
+              "ownerCommandSealsAtMost": 0,
+              "basePowerMultiplier": 2
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacyCardId": "card.x-guard",
+          "cost": 3,
+          "basePower": 5,
+          "typeLabel": "力量",
+          "quantity": 2
+        }
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": [
+        "../../Fate_Domination-开发版/images/servants/玛修·基列莱特.png",
+        "../../Fate_Domination-开发版/images/skills/sc_mash_1.png",
+        "../../Fate_Domination-开发版/images/skills/sc_mash_2.png",
+        "../../Fate_Domination-开发版/images/skills/sc_mash_3.png",
+        "../../Fate_Domination-开发版/images/cards/x_Guard.png",
+        "../../Fate_Domination-开发版/images/cards/x_Guard.png"
+      ]
+    }
+  ]
+}

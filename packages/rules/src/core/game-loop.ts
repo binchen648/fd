@@ -1,3 +1,4 @@
+import { settleLinkedOwnerCardsAfterBattles } from '../ability/linked-owner-combat';
 import starterPack from "../data/cards/starter-pack.json";
 import type { BattleDeclarationState, GameState, PhaseName } from "../schema/game";
 import { createRoundStartEventPlacements, type RoundStartEventDraw } from "./event-engine";
@@ -421,11 +422,12 @@ function runBattlePhase(state: GameState): GameState {
   if (hasPendingAbilityResolution(cleanedState)) return cleanedState;
 
   const resolvedBattles = structuredClone(cleanedState.battleResults);
+  const linkedOwnerSettledState = settleLinkedOwnerCardsAfterBattles(cleanedState, resolvedBattles);
   if (resolvedBattles.length === 0) {
-    queuePostScoringBattleResultEvents(cleanedState, resolvedBattles);
-    return flushPostScoringBattleResultEvents(cleanedState);
+    queuePostScoringBattleResultEvents(linkedOwnerSettledState, resolvedBattles);
+    return flushPostScoringBattleResultEvents(linkedOwnerSettledState);
   }
-  const scoredState = applyBattleScoring(cleanedState).nextState;
+  const scoredState = applyBattleScoring(linkedOwnerSettledState).nextState;
   queuePostScoringBattleResultEvents(scoredState, resolvedBattles);
   return flushPostScoringBattleResultEvents(scoredState);
 }

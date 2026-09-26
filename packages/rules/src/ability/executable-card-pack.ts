@@ -287,10 +287,21 @@ function defaultCommandSpellCard(masterId: string): AuthoringCard {
   };
 }
 
-function mapDeckEntry(cardId: string): string {
+function mapDeckEntry(cardId: string, archiveId: string, cards: Record<string, ExecutableCardDefinition>): string {
+  const direct = cards[cardId];
+  if (direct?.cardType === 'servant_deck_card') {
+    if (direct.ownerId !== archiveId) throw new Error(`Foreign servant deck card for ${archiveId}: ${cardId}`);
+    return cardId;
+  }
   const lower = cardId.toLowerCase();
   const named = namedLegacyDeckIds[lower];
-  if (named) return named;
+  if (named) {
+    const mapped = cards[named];
+    if (mapped?.cardType === 'servant_deck_card' && mapped.ownerId !== archiveId) {
+      throw new Error(`Foreign servant deck card for ${archiveId}: ${named}`);
+    }
+    return named;
+  }
   const match = /^card\.card([abq])([1-5])$/.exec(lower);
   if (!match) throw new Error(`Unknown deck entry: ${cardId}`);
   const attribute = basicAttributes[match[1] as keyof typeof basicAttributes];
@@ -630,11 +641,13 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
   validatePresentationReferences(input, cards);
 
   for (const archive of archives.filter((candidate) => candidate.id.startsWith('servant.'))) {
-    const skillCount = archive.cards.filter((card) => card.cardType === 'servant_skill').length;
-    if (skillCount !== 3) throw new Error(`${archive.id} must define exactly 3 servant skill cards; found ${skillCount}`);
+    const skillCards = archive.cards.filter((card) => card.cardType === 'servant_skill');
+    const inGameSkillCount = skillCards.filter((card) => card.initialPlacement !== 'outside_game').length;
+    const acceptedSkillShape = skillCards.length === 3 || inGameSkillCount === 3;
+    if (!acceptedSkillShape) throw new Error(`${archive.id} must define either exactly 3 servant skill cards or exactly 3 in-game servant skill cards plus explicit outside-game servant skills; found ${skillCards.length} total / ${inGameSkillCount} in-game`);
     const deck = (archive.deck ?? []).flatMap((entry) => {
       if (!Number.isSafeInteger(entry.count ?? 1) || (entry.count ?? 1) < 1) throw new Error(`Invalid deck count for ${archive.id}:${entry.cardId}`);
-      return Array.from({ length: entry.count ?? 1 }, () => mapDeckEntry(entry.cardId));
+      return Array.from({ length: entry.count ?? 1 }, () => mapDeckEntry(entry.cardId, archive.id, cards));
     });
     if (deck.length !== 12) throw new Error(`${archive.id} deck must contain exactly 12 cards; found ${deck.length}`);
     for (const cardId of deck) if (!cards[cardId]) throw new Error(`${archive.id} references missing card ${cardId}`);
