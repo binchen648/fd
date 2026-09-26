@@ -179,24 +179,25 @@ describe('P3 owner-complete Shuten migration', () => {
   });
 
   it('round-trips the trusted battlefield binding and new per-game bookkeeping through MatchSession restore', () => {
-    const session = createMatchSession({ seed: 1, humanPlayerId: 'p3', humanPlayerIds: ['p3'] });
-    const shuten = session.pairings.find((pairing) => pairing.servant.id === 'servant.shuten')!;
-    expect(shuten).toBeTruthy();
+    const session = createMatchSession({ seed: 1, humanPlayerId: 'p1', humanPlayerIds: ['p1'] });
+    const shutenPlayer = session.state.players.find((player) => player.id === 'p1')!;
     session.state.round.activePhase = 'preparation';
-    session.state.round.prioritySeat = shuten.seat;
-    const source = session.state.cards.find((card) => card.ownerPlayerId === shuten.playerId && card.definitionId === skill(1))!;
-    session.state.players.find((player) => player.id === shuten.playerId)!.mana = 12;
-    expect(session.dispatchPlayerAction(shuten.playerId, { type: 'activate_ability', cardInstanceId: source.instanceId, abilityId: 'sc-shuten-1.place-banquet' }).ok).toBe(true);
+    session.state.round.prioritySeat = shutenPlayer.seat;
+    const source = { instanceId: 'fixture:shuten-banquet', definitionId: skill(1), ownerPlayerId: shutenPlayer.id, controllerPlayerId: shutenPlayer.id, zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: shutenPlayer.id } } as any;
+    session.state.cards.push(source);
+    session.state.abilityRuntime!.cardState[source.instanceId] = { active: false, faceDown: false, playedRound: session.state.round.roundNumber };
+    shutenPlayer.mana = 12;
+    expect(session.dispatchPlayerAction(shutenPlayer.id, { type: 'activate_ability', cardInstanceId: source.instanceId, abilityId: 'sc-shuten-1.place-banquet' }).ok).toBe(true);
     const decision = session.state.abilityRuntime!.pendingDecision!;
-    expect(session.dispatchPlayerAction(shuten.playerId, { type: 'choose_target', decisionId: decision.id, selectedIds: ['shinto'] }).ok).toBe(true);
+    expect(session.dispatchPlayerAction(shutenPlayer.id, { type: 'choose_target', decisionId: decision.id, selectedIds: ['shinto'] }).ok).toBe(true);
     session.state.abilityRuntime!.cardPlayCountByInstance![source.instanceId] = 1;
     session.state.abilityRuntime!.grantedPerGamePlayLimitCardIds!.push(source.instanceId);
     session.state.abilityRuntime!.grantedPerGamePlayLimitBaselineByCardId![source.instanceId] = 1;
-    expect(session.state.abilityRuntime!.startingDeckSizeByPlayer?.[shuten.playerId]).toBe(12);
+    expect(session.state.abilityRuntime!.startingDeckSizeByPlayer?.[shutenPlayer.id]).toBe(12);
     const durable = session.serializeSession();
     const restored = restoreMatchSession(durable);
     expect(restored.state.abilityRuntime!.cardState[source.instanceId]?.placedAtLocationId).toBe('shinto');
-    expect(restored.state.abilityRuntime!.startingDeckSizeByPlayer?.[shuten.playerId]).toBe(12);
+    expect(restored.state.abilityRuntime!.startingDeckSizeByPlayer?.[shutenPlayer.id]).toBe(12);
     expect(restored.state.abilityRuntime!.cardPlayCountByInstance?.[source.instanceId]).toBe(1);
     expect(restored.state.abilityRuntime!.grantedPerGamePlayLimitCardIds).toContain(source.instanceId);
     expect(restored.state.abilityRuntime!.grantedPerGamePlayLimitBaselineByCardId?.[source.instanceId]).toBe(1);

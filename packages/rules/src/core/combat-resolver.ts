@@ -16,6 +16,7 @@ import { calculateCardPower, processAbilityEvent } from '../ability/interpreter'
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
 import { applyLinkedOwnerCombatPowerSharing, playerHasLinkedOwnerLossImmunity, prepareLinkedOwnerCardsForBattle } from '../ability/linked-owner-combat';
 import { applyTerrainAdvantageOverride } from '../ability/terrain-advantage-override';
+import { playerCombatTotalPowerAdjustment } from '../ability/owner-self-mechanics';
 import { logicalDayForPlayer } from './rule-overrides';
 
 export interface CombatParticipantInput {

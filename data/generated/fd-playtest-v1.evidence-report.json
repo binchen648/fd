@@ -3,7 +3,7 @@
   "packId": "fd-playtest-v1",
   "summary": {
     "masters": 7,
-    "servants": 10,
+    "servants": 11,
     "events": 20,
     "blockingIssues": 0
   },
@@ -1379,6 +1379,61 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/酒吞童子.htm",
       "imagePath": "../../Fate_Domination-开发版/images/servants/酒吞童子.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.siegfried",
+      "displayName": "齐格飞",
+      "entityKind": "servant",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/齐格飞.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/齐格飞.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.siegfried.overview",
+      "displayName": "齐格飞",
+      "entityKind": "servant_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/齐格飞.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/齐格飞.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.siegfried.skill.sc-siegfried-1",
+      "displayName": "隐身衣",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/齐格飞.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/齐格飞.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.siegfried.skill.sc-siegfried-2",
+      "displayName": "恶龙之血铠",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/齐格飞.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/齐格飞.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.siegfried.skill.sc-siegfried-3",
+      "displayName": "幻想大剑·天魔失坠",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/齐格飞.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/齐格飞.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
       "issueCodes": []

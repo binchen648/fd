@@ -48,8 +48,14 @@ describe('ExecutableCardPack compiler', () => {
     expect(executable.schemaVersion).toBe('fd-executable-card-pack-v1');
     expect(executable).not.toHaveProperty('archives');
     expect(executable.definitionHash).toMatch(/^[a-f0-9]{64}$/);
-    expect(Object.keys(executable.cards)).toHaveLength(86);
-    expect(Object.values(executable.decks)).toHaveLength(10);
+    const expectedArchiveCardIds = new Set(input.rules.archives.flatMap((archive) => archive.cards.map((card) => card.id)));
+    const expectedGeneratedBasics = 15 + Object.keys(input.dictionaries.basicAttacks).length + 1; // 3 attributes x powers 1..5 + named basics + card.luck alias
+    const expectedFallbackCommandSpells = input.rules.archives.filter((archive) =>
+      archive.id.startsWith('master.') && archive.archiveType !== 'master_support_definition_archive' &&
+      !archive.cards.some((card) => card.cardType === 'command_spell')).length;
+    const expectedServantDecks = input.rules.archives.filter((archive) => archive.archiveType === 'servant_skill_card_archive' && Array.isArray(archive.deck) && archive.deck.length > 0);
+    expect(Object.keys(executable.cards)).toHaveLength(expectedArchiveCardIds.size + expectedGeneratedBasics + expectedFallbackCommandSpells);
+    expect(Object.values(executable.decks)).toHaveLength(expectedServantDecks.length);
     expect(Object.values(executable.decks).every((deck) => deck.length === 12)).toBe(true);
     expect(executable.cards['servant.artoriac.skill.sc-artoriac-1']).toMatchObject({
       ownerId: 'servant.artoriac',
