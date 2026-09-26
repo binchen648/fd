@@ -641,6 +641,8 @@ function isRestoreCardRuntimeState(value: unknown): boolean {
       (typeof value.paidManaOnPlay === 'number' && Number.isFinite(value.paidManaOnPlay))) &&
     (value.reversed === undefined || typeof value.reversed === 'boolean') &&
     (value.attributeOverrides === undefined || isRestoreStringArray(value.attributeOverrides)) &&
+    (value.basePowerMultiplier === undefined || value.basePowerMultiplier === 2) &&
+    (value.removeAfterBattleRound === undefined || isRestoreSafeInteger(value.removeAfterBattleRound, 1)) &&
     (value.placedAtLocationId === undefined || typeof value.placedAtLocationId === 'string');
 }
 

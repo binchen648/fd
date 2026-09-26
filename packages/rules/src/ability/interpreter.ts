@@ -17,6 +17,7 @@ import { setTerrainAdvantageOverride } from './terrain-advantage-override';
 import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute, deductionRecordDefinitionsForOwner, isDeductionRecordEffect, type DeductionRecordAttribute } from './deduction-record';
 import { activePlayerCountMinusRoundPlayCostAbility } from './dynamic-play-cost';
 import { playerIgnoresAbilityFromController } from './player-ability-immunity';
+import { effectiveAbilitiesForPhysicalCard, isEventBattleOpponentAttackConstraint, isGainManaEqualSelectedPaidCostEffect, isGrantedBasicDoubleRemoveEffect, isSourceRevealedCondition, physicalCardWasRevealed } from './revealed-card-mechanics';
 import { isHideServantTrueNameUntilRoundEndEffect, isLoseVpEqualSourcePlayCountEffect, isRevealHandRoundPowerEffect, PLAYER_COMBAT_TOTAL_POWER_RULE, servantRevealSuppressedByTemporaryConcealment } from './owner-self-mechanics';
 import {
   isAnyBattlefieldConstraint,
@@ -89,7 +90,7 @@ function card(s: GameState, id: string): CardInstance {
 }
 function definition(s: GameState, id: string): AuthoringCard | undefined { return runtime(s).pack.cards[card(s, id).definitionId]; }
 function abilityDefinition(s: GameState, source: string, abilityId: string): AuthoringAbility {
-  const a = definition(s, source)?.abilities.find(a => a.id === abilityId);
+  const a = effectiveAbilitiesForPhysicalCard(s, source).find((ability) => ability.id === abilityId);
   if (!a) reject('illegal_action', 'Ability is not available'); return a;
 }
 function nextId(s: GameState, label: string): string { return `${label}-${++runtime(s).sequence}`; }
@@ -271,6 +272,15 @@ function constraint(s: GameState, ctx: EffectContext, candidate: CardInstance, c
     case 'has_attribute': return getEffectiveCardAttributes(s, candidate.instanceId).includes(str(c.attribute));
     case 'not_source_card': return candidate.instanceId !== ctx.sourceCardId;
     case 'played_this_round': return runtime(s).cardState[candidate.instanceId]?.playedRound === s.round.roundNumber;
+    case 'controlled_by_event_battle_opponent_at_controller_location': {
+      if (!isEventBattleOpponentAttackConstraint(c)) reject('unsupported', 'Unsupported battle-opponent target constraint shape');
+      const event = ctx.event; const controller = s.players.find((entry) => entry.id === ctx.controllerId);
+      const opponent = s.players.find((entry) => entry.id === candidate.controllerPlayerId);
+      return !!event?.battlePhaseResolutionId && event.type === 'after_battle_ended' &&
+        Array.isArray(event.battleParticipantIds) && event.battleParticipantIds.includes(ctx.controllerId) &&
+        event.battleParticipantIds.includes(candidate.controllerPlayerId) && candidate.controllerPlayerId !== ctx.controllerId &&
+        !!controller?.locationId && opponent?.locationId === controller.locationId;
+    }
     case 'not_card_type': return !!d && d.cardType !== c.cardType;
     case 'is_attack': return isAttack(d) && (c.face !== 'face_down' || runtime(s).cardState[candidate.instanceId]?.faceDown === true);
     case 'or': return nodes(c.conditions).some(x => constraint(s, ctx, candidate, x));
@@ -386,6 +396,12 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     return { value: persistentLock.value, lines: [{ label: 'persistent_situation_attribute_power_lock', value: persistentLock.value }] };
   }
   const result = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
+  const authoredBaseMultiplier = runtime(s).cardState[sourceId]?.basePowerMultiplier ?? 1;
+  if (authoredBaseMultiplier !== 1) {
+    if (authoredBaseMultiplier !== 2) reject('invalid_state', 'Unsupported authored base-power multiplier');
+    result.value *= authoredBaseMultiplier;
+    result.lines.push({ label: 'authored_base_power_multiplier', value: result.value });
+  }
   const linkedOwnerMultiplier = linkedOwnerBasePowerMultiplier(s, source);
   if (linkedOwnerMultiplier !== 1) {
     result.value *= linkedOwnerMultiplier;
@@ -721,6 +737,10 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'controller_at_location_kind': return c.locationKind === '侦察' || c.locationKind === '侦查' ? p.locationId === 'recon' : false;
     case 'controller_servant_revealed': return runtime(s).revealedServants.includes(ctx.controllerId);
     case 'source_reversed': return runtime(s).cardState[ctx.sourceCardId]?.reversed === true;
+    case 'source_revealed': {
+      if (!isSourceRevealedCondition(c)) reject('unsupported', 'Unsupported source_revealed condition shape');
+      return physicalCardWasRevealed(s, ctx.sourceCardId);
+    }
     case 'source_active':
     case 'source_owned': return sourceStateCondition(s, ctx, c);
     case 'event_player_won_combat':
@@ -916,7 +936,10 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   }
   if (isAcceptedOpponentCloseToOneAbility(a, 'compiled')) return canActivateAcceptedOpponentCloseToOne(s, sourceId, a);
   if (isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled')) return canActivateAcceptedOpponentCloseSelectedOne(s, sourceId, a);
-  return a.conditions.every(c => condition(s, context(s, sourceId, a.id, event), c));
+  const ctx = context(s, sourceId, a.id, event);
+  if (a.effects.some(isGrantedBasicDoubleRemoveEffect) && !hasAvailableManaForFixedCosts(s, ctx, a)) return false;
+  if (a.effects.some(isGainManaEqualSelectedPaidCostEffect) && !hasMandatoryTargetAvailability(s, ctx, a)) return false;
+  return a.conditions.every(c => condition(s, ctx, c));
 }
 function isGameStartRuleOverrideCandidate(a: AuthoringAbility): boolean {
   return a.effects.some((effect) => effect.type === 'install_rule_override');
@@ -1102,7 +1125,7 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
         result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId, faceDown: true });
       }
     }
-    for (const a of definition(s, c.instanceId)?.abilities ?? []) {
+    for (const a of effectiveAbilitiesForPhysicalCard(s, c.instanceId)) {
       const interaction = classifyAbilityInteraction(a);
       if (interaction.kind !== 'phase_activation' || effectiveActivationPhase(s, c.instanceId, a) !== phase(s) || s.round.prioritySeat !== p.seat || !canActivate(s, c.instanceId, a)) continue;
       const costs = a.cost.filter(x => x.type === 'pay_mana' && node(x.amount).var).map(x => ({ name: str(node(x.amount).var), min: 0, max: p.mana }));
@@ -1767,6 +1790,26 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       const next = current + Number(effect.amount);
       if (!Number.isSafeInteger(next)) reject('invalid_state', 'Structured numeric player flag would exceed safe integer range');
       setStructuredFlag(s, ctx.controllerId, str(effect.key), next, structuredFlagLifecycle(effect.lifecycle));
+      break;
+    }
+    case 'double_source_base_power_and_remove_after_battle': {
+      if (!isGrantedBasicDoubleRemoveEffect(effect)) reject('unsupported', 'Unsupported granted basic double/remove effect shape');
+      const source = card(s, ctx.sourceCardId); const sourceDef = definition(s, ctx.sourceCardId); const state = r.cardState[source.instanceId];
+      if (source.ownerPlayerId !== p.id || source.controllerPlayerId !== p.id || sourceDef?.cardType !== 'basic_attack' ||
+          source.zone !== 'attack_area' || !state?.active || state.faceDown) reject('invalid_state', 'Granted basic action requires a face-up active controller-owned basic attack');
+      state.basePowerMultiplier = 2;
+      state.removeAfterBattleRound = s.round.roundNumber;
+      r.events.push({ type: 'basic_attack_base_power_doubled_until_battle_end', playerId: p.id, sourceCardId: source.instanceId, abilityId: ctx.abilityId });
+      break;
+    }
+    case 'gain_mana_equal_selected_card_paid_cost': {
+      if (!isGainManaEqualSelectedPaidCostEffect(effect)) reject('unsupported', 'Unsupported selected paid-cost mana effect shape');
+      const selectedId = ctx.selections[str(effect.target)]?.[0];
+      if (!selectedId) reject('invalid_target', 'Paid-cost mana refund requires exactly one selected attack');
+      const selected = s.cards.find((candidate) => candidate.instanceId === selectedId); const selectedState = selected ? r.cardState[selected.instanceId] : undefined;
+      if (!selected || selectedState?.playedRound !== s.round.roundNumber || typeof selectedState.paidManaOnPlay !== 'number' ||
+          !Number.isFinite(selectedState.paidManaOnPlay) || selectedState.paidManaOnPlay < 0) reject('invalid_state', 'Selected attack has no trusted paid-mana play record for this round');
+      grantMana(s, p.id, selectedState.paidManaOnPlay, { source: 'generic' });
       break;
     }
     case 'adjust_mana': {
@@ -3717,6 +3760,15 @@ function processEvent(s: GameState, event: AbilityEvent): void {
       w.choices.push(t);
     } else executeAbility(s, context(s, t.cardInstanceId, t.abilityId, event));
   }
+  if (event.type === 'after_battle_ended') {
+    for (const candidate of [...s.cards]) {
+      const state = r.cardState[candidate.instanceId];
+      if (state?.removeAfterBattleRound !== s.round.roundNumber) continue;
+      moveCard(s, candidate.instanceId, 'removed_from_game');
+      delete r.cardState[candidate.instanceId]?.removeAfterBattleRound;
+      r.events.push({ type: 'card_removed_after_battle', playerId: candidate.ownerPlayerId, sourceCardId: candidate.instanceId });
+    }
+  }
   if (event.type === 'after_battle_result_determined' && event.battleResult) {
     const battleResult = createBattleResult(event.battleResult);
     const winners = battleResult.winners;
@@ -3746,13 +3798,15 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
   if (r.pendingDecision || r.responseWindows.length || r.hostRequests.length) reject('pending_resolution', 'Resolve the current decision before advancing');
   if (!Number.isInteger(round) || round < s.round.roundNumber) reject('invalid_round', 'Round cannot move backwards');
   const copy = structuredClone(s);
-  if (round > s.round.roundNumber) {
+  const startsNewRound = round > s.round.roundNumber;
+  if (startsNewRound) {
     runtime(copy).movementDistanceThisRound = {};
     runtime(copy).battlefieldsPassedOrStayedThisRound = {};
     runtime(copy).manaGainedThisRound = { round, byPlayer: {} };
     runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
   }
   copy.round.activePhase = next; copy.round.roundNumber = round; cleanupOngoing(copy);
+  if (startsNewRound) processEvent(copy, { id: nextId(copy, 'round-start'), type: 'round_start' });
   const type = next === 'battle' ? 'controller_combat_action_window' : next === 'action' ? 'controller_action_window' : next === 'round_end' ? 'round_end' : 'phase_changed';
   processEvent(copy, { id: nextId(copy, 'phase'), type }); runtime(copy).revision++; Object.assign(s, copy);
 }
