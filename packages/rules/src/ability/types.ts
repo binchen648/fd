@@ -47,8 +47,21 @@ export interface ServantPackage {
   skillCards: { id: string; name: string; printedText: string; cardFace: RuleNode }[];
   knownCardDefinitions: { id: string; name: string; printedText: string; cardFace: RuleNode }[];
 }
+export interface EventCatalogEntry {
+  id: string;
+  name?: string;
+  tags: string[];
+  eventSetIds: string[];
+  printedReward?: number;
+  applicableLocations?: string[];
+  battleModifiers?: Array<{ sourceId: string; targetTag: string; value: number; condition?: 'has_attribute' | 'lacks_attribute' | 'has_repeated_attribute' }>;
+  forbiddenAttributes?: string[];
+  returnsToEventDeck?: boolean;
+}
 export interface AbilityDefinitionPack {
   cards: Record<string, AuthoringCard>;
+  eventRules?: Record<string, AuthoringCard>;
+  eventCatalog?: Record<string, EventCatalogEntry>;
   schemaVersion?: string;
   characters?: Record<string, ExecutableCharacterDefinition>;
   servantPackage?: ServantPackage;
@@ -67,6 +80,8 @@ export interface CardPlayClassification {
 export interface RoundPlayCounters {
   round: number;
   cardsPlayedByPlayer: Record<PlayerId, number>;
+  /** Actual completed face-up plays in the authoritative round; optional for backward-compatible restored states. */
+  faceUpCardsPlayedByPlayer?: Record<PlayerId, number>;
   attacksDeclaredByPlayer: Record<PlayerId, number>;
 }
 export interface BattleResultData { winners: PlayerId[]; loserIds: PlayerId[] }
@@ -84,7 +99,7 @@ export interface AbilityEvent {
   /** Trusted frozen effective-Power snapshot for the exact pre-scoring battle response gateway. */
   battleParticipantPowers?: Record<PlayerId, number>;
   /** Frozen phase-terminal battle outcome facts used by exact terminal consumers. */
-  battleOutcomes?: Array<{ battlefieldId: string; winnerPlayerIds: PlayerId[] }>;
+  battleOutcomes?: Array<{ battlefieldId: string; participantPlayerIds?: PlayerId[]; winnerPlayerIds: PlayerId[] }>;
   battlefieldId?: string;
   lossOrdinal?: number;
   /** Trusted backend snapshot of the simultaneous play batch, never a client-supplied condition. */
@@ -115,6 +130,8 @@ export interface EffectContext {
   controllerId: PlayerId; sourceCardId: string; abilityId: string;
   variables: Record<string, number>; selections: Record<string, string[]>;
   event?: AbilityEvent;
+  /** Present only when sourceCardId is a server-owned EventPlacement ruleInstanceId. */
+  eventSource?: { ruleInstanceId: string; definitionId: string; locationId: string };
 }
 export interface PrivateOptionalHandPlayInteractionMetadata {
   kind: 'private_optional_hand_play_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
@@ -127,7 +144,52 @@ export interface AlterEgoAttributeChoiceInteractionMetadata {
   triggerEventId: string; targetCardInstanceId: string; variant: 'regular' | 'ex';
   constraints: { kind: 'target'; targetKind: 'attribute'; min: 0; max: 3; distinct: true };
 }
-export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata;
+export interface SameBattlefieldPrivateHandReturnInteractionMetadata {
+  kind: 'same_battlefield_private_hand_return_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  playerTargetId: string; selectedPlayerId: PlayerId;
+  constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: 1; distinct: true };
+}
+export interface RulerSealMoveInteractionMetadata {
+  kind: 'ruler_seal_move_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  sealId: string; issuerPlayerId: PlayerId; boundPlayerId: PlayerId; destinations: string[];
+  constraints: { kind: 'target'; targetKind: 'location'; min: 1; max: 1; distinct: true };
+}
+export interface RulerSealFreePlayInteractionMetadata {
+  kind: 'ruler_seal_free_play_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  sealId: string; issuerPlayerId: PlayerId; boundPlayerId: PlayerId; rewardVp: number;
+  constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: 1; distinct: true };
+}
+export interface CombatOpponentPowerVpRewardInteractionMetadata {
+  kind: 'combat_opponent_power_vp_reward_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string; triggerEventId: string;
+  battlePhaseResolutionId: string; battleId: string; resultId: string; battlefieldId: string;
+  participantIds: PlayerId[]; participantPowers: Record<PlayerId, number>; opponentIds: PlayerId[]; divisor: 5;
+  constraints: { kind: 'target'; targetKind: 'player'; min: 1; max: 1; distinct: true };
+}
+export interface PendingCombatOpponentPowerVpReward {
+  controllerId: PlayerId; sourceCardId: string; abilityId: string; triggerEventId: string;
+  battlePhaseResolutionId: string; battleId: string; resultId: string; battlefieldId: string;
+  participantIds: PlayerId[]; participantPowers: Record<PlayerId, number>; opponentIds: PlayerId[];
+}
+export interface OpponentCloseToOneInteractionMetadata {
+  kind: 'opponent_close_non_residual_to_one_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  initiatingControllerId: PlayerId; decisionPlayerId: PlayerId; battlefieldId: string; qualifyingCardIds: string[];
+  qualifyingCardOwners: Record<string, PlayerId>; remainingDecisionPlayerIds: PlayerId[];
+  constraints: { kind: 'target'; targetKind: 'card'; min: 1; max: 1; distinct: true };
+}
+export interface PendingOpponentCloseToOne {
+  initiatingControllerId: PlayerId; decisionPlayerId: PlayerId; sourceCardId: string; abilityId: string;
+  battlefieldId: string; qualifyingCardIds: string[]; qualifyingCardOwners: Record<string, PlayerId>;
+  remainingDecisionPlayerIds: PlayerId[];
+}
+export type PendingInteractionMetadata =
+  PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata | SameBattlefieldPrivateHandReturnInteractionMetadata |
+  RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata | CombatOpponentPowerVpRewardInteractionMetadata |
+  OpponentCloseToOneInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -136,6 +198,9 @@ export interface PendingDecision {
 export interface PendingPresenceConcealmentDefeat {
   controllerId: PlayerId; sourceCardId: string; abilityId: string; triggerEventId: string;
   resultId: string; battlefieldId: string; participantIds: PlayerId[]; participantPowers: Record<PlayerId, number>; targetPlayerIds: PlayerId[];
+}
+export interface PendingPreBattleDefeat {
+  round: number; battlefieldId: string; controllerId: PlayerId; sourceCardId: string; abilityId: string; targetPlayerIds: PlayerId[];
 }
 export interface PendingDelayedActivation {
   controllerId: PlayerId;
@@ -191,21 +256,68 @@ export interface SafeEvent {
 }
 export interface CardRuntimeState {
   active: boolean; faceDown: boolean; playedRound: number;
+  /** Actual mana charged for this physical card by its latest authoritative play. */
+  paidManaOnPlay?: number;
   reversed?: boolean; attributeOverrides?: string[];
+}
+export interface RulerSealBinding {
+  id: string; issuerPlayerId: PlayerId; boundPlayerId: PlayerId; sourceCardId: string; abilityId: string;
+  grantedRound: number; spent: boolean; spentRound?: number;
+}
+export interface PendingRulerSealReward {
+  sealId: string; issuerPlayerId: PlayerId; boundPlayerId: PlayerId; sourceCardId: string; abilityId: string;
+  round: number; rewardVp: number;
+}
+export interface PendingSourceCardReturn {
+  sourceCardId: string; abilityId: string; recipientPlayerId: PlayerId; round: number;
+}
+export interface TrustedBattleResultSnapshot {
+  battlePhaseResolutionId: string;
+  battleId: string;
+  resultId: string;
+  battlefieldId: string;
+  battleParticipantIds: PlayerId[];
+  battleParticipantPowers?: Record<PlayerId, number>;
+  winners: PlayerId[];
+  loserIds: PlayerId[];
 }
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
+  /** Server-owned opaque player-status keys. This is distinct from PlayerState active/eliminated status. */
+  playerStatusKeysByPlayer?: Record<PlayerId, string[]>;
+  /** Narrow identity-free last combat-win round ledger, written only from authoritative battle-result events. */
+  combatWinRoundByPlayer?: Record<PlayerId, number>;
   ongoingEffects: OngoingEffect[]; lifecycleTransitions?: LifecycleTransition[]; responseWindows: ResponseWindow[]; pendingDecision?: PendingDecision;
   pendingDelayedActivations?: PendingDelayedActivation[];
   /** Server-owned pre-scoring battle-local defeat requests staged by the exact Presence Concealment response. */
   pendingPresenceConcealmentDefeats?: PendingPresenceConcealmentDefeat[];
+  /** FB2-45 server-owned round+battlefield defeat intents, independent from frozen-Power Presence Concealment state. */
+  pendingPreBattleDefeats?: PendingPreBattleDefeat[];
   /** Server-owned post-scoring battle events waiting for Trigger Gateway settlement. */
   pendingPostBattleEvents?: AbilityEvent[];
+  /** FB2-47 immutable first-seen authoritative root result facts, keyed by exact result id. */
+  trustedBattleResultSnapshots?: Record<string, TrustedBattleResultSnapshot>;
+  /** FB2-48 serialized frozen-battle opponent-power rewards awaiting owner choice. */
+  pendingCombatOpponentPowerVpRewards?: PendingCombatOpponentPowerVpReward[];
+  /** FB2-49 serialized same-battlefield opponent keep-one card decisions. */
+  pendingOpponentCloseToOne?: PendingOpponentCloseToOne[];
   /** Server-owned once-per-battle-phase terminal event, staged until ordinary post-battle work is settled. */
   pendingBattleTerminalEvent?: AbilityEvent;
   /** Source-bound state for the exact Soul Drag -> Return Silence transform family. */
   transformedReturnSilenceSourceCardIds?: string[];
+  /** FB2-27 identity-free Ruler issuer -> bound-player relationship state. */
+  /** Monotonic invalidation counter for server-issued event-zone selection tokens. */
+  eventRuleZoneRevision: number;
+  rulerSealBindings: RulerSealBinding[];
+  /** Game-long bind counts scoped by issuer; spending a seal never decrements this history. */
+  rulerSealBindingHistory: Record<PlayerId, Record<PlayerId, number>>;
+  /** One-shot delayed rewards armed by the free-play Ruler seal branch. */
+  pendingRulerSealRewards: PendingRulerSealReward[];
+  /** Current-round identity-free total-power adjustments keyed by recipient. */
+  roundTotalPowerAdjustments: { round: number; byPlayer: Record<PlayerId, number> };
+  /** Physical source cards scheduled to return to a structural source-servant owner at battle terminal. */
+  pendingSourceCardReturns: PendingSourceCardReturn[];
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];
   events: SafeEvent[]; calculations: { controllerId: PlayerId; lines: CalculationLine[] }[];
   preventEffects: boolean; manaCaps: Record<PlayerId, number>; manaGainBlocked: PlayerId[];

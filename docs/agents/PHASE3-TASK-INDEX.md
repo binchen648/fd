@@ -4279,18 +4279,75 @@ Result: synchronize fresh R45 acceptance without product changes or frozen migra
 ## TASK P3-A-FM09-TARGET-DEPENDENCY-PLANNING
 
 Owner: Codex A
-Status: `READY`
-Base: exact P3-A-R45-FB2-17-R3-RECOVERY-SYNC commit carrying this task block
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fm09-target-dependency-planning`
+Base: exact post-R45 acceptance synchronization `575650f7be3dc9a3a61d5191d0a44829b6daf8ba`
+Read: `docs/reports/2026-09-18-p3-a-fm09-remaining-target-dependency-planning.md`
 
-Goal: freshly classify the remaining eleven frozen FM09 provisioning target definitions against F1/Reference provenance and current accepted runtime/representation seams, then dispatch only the narrowest next dependency. Historical downstream target work is planning evidence only.
+Result: fresh classification selects a shared identity-free terrain/deployment-bonus metric as the narrowest next prerequisite. No frozen target is migrated by planning.
 
-## Full-Roster Dispatch State After Fresh R45 Acceptance Synchronization
+## TASK P3-FB2-21-RECOVERY
 
-- FB2-17-R3 / R45 closes the non-frozen Shirou derived target dependency.
-- Material coverage is `99/134/233`, compiled `71/14/0`; frozen accepted overlap remains `111/944` because the Shirou derived card is outside the frozen denominator.
-- Eleven frozen FM09 provisioning targets remain absent and unresolved.
-- P3-A-FM09-TARGET-DEPENDENCY-PLANNING is READY; it must freshly select the next narrow dependency rather than inherit historical ordering.
-- P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 or broad Ciel task is dispatched.
+Owner: Codex B2
+Status: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Base: `98ce9b0c3967c598f9fb7d2736f418e15dcc5d30`
+Candidate: `92f2aa1b084b9ac9c2ee8f2f353cdfa13611f04a`
+PR: `#355` stacked on exact Base
+Read: `docs/reports/2026-09-18-p3-fb2-21-recovery-terrain-deployment-bonus-metric-result.md`
+
+Result: accepted zero-credit identity-free shared terrain/deployment-bonus metric infrastructure. Combat and exact controlled variable `controller.deployment_bonus` consume the same terrain truth. No authoring/generated/Ciel/frozen migration scope.
+
+## TASK P3-R46-RECOVERY
+
+Owner: Codex R
+Status: `REVIEW_ACCEPTED`
+Implementation Base: `98ce9b0c3967c598f9fb7d2736f418e15dcc5d30`
+Candidate B2 SHA: `92f2aa1b084b9ac9c2ee8f2f353cdfa13611f04a`
+Read: `docs/reports/2026-09-18-p3-r46-fb2-21-recovery-terrain-deployment-bonus-metric-review.md`
+Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Blocking findings: none.
+
+Fresh R46 independently verifies shared-helper single-source-of-truth behavior, exact controller metric routing, multiplier/Preparation/suppression semantics, explicit combat slot compatibility, non-battlefield/missing/invalid zero behavior, no mutation, identity-free scope, generated/accounting stability, official gates, performance evidence, and final cleanliness.
+
+## TASK P3-A-R46-FB2-21-RECOVERY-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r46-fb2-21-acceptance-sync-recovery`
+Base: exact FB2-21 Candidate `92f2aa1b084b9ac9c2ee8f2f353cdfa13611f04a`
+Read: `docs/reports/2026-09-18-p3-a-r46-fb2-21-recovery-acceptance-synchronization.md`
+
+Result: synchronize fresh R46 acceptance without product changes or frozen migration credit. The shared terrain/deployment-bonus metric prerequisite is closed; Ciel s2 is eligible only for a fresh single-target feasibility/source-grounding pass after this synchronization.
+
+## Full-Roster Dispatch State After R46 Acceptance Synchronization
+
+- Shirou derived support dependency remains accepted and zero-credit.
+- FB2-21 shared terrain/deployment-bonus metric infrastructure is accepted and zero-credit.
+- Eleven frozen FM09 target definitions remain absent; accepted overlap remains `111/944`.
+- The isolated generic metric prerequisite previously identified for Ciel s2 is closed. This A synchronization does not migrate Ciel and does not yet dispatch an implementation candidate.
+- Next coordinator work is fresh current-lineage Ciel s2 feasibility/source grounding, including exact F1 provenance, locked-Reference static metadata, and revalidation that all non-metric semantics already map to accepted generic routes.
+- P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.
+## TASK P3-FB2-22-RECOVERY
+
+Owner: Codex S
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Base: `52ea97e9371f5a2353b58ad948b232434c68abd8`
+Candidate: `35a2a59fd4bf77bdbbfac37031556617af94c47f`
+PR: `#356` stacked on exact Base
+Target: exactly `master.ciel.skill.s2`
+Read: `docs/reports/2026-09-18-p3-fb2-22-recovery-ciel-s2-support-definition-handoff.md`, `docs/reports/2026-09-18-p3-fb2-22-recovery-ciel-s2-support-definition-result.md`
+Fresh feasibility: `docs/reports/2026-09-18-p3-a-ciel-s2-recovery-feasibility.md`
+
+Result: exactly one frozen Ciel s2 support definition is materialized through the accepted outside-game + support-only channel, reusing only accepted generic semantics including R46-accepted `controller.deployment_bonus`. Candidate material overlap is `112/944`; accepted overlap remains `111/944` pending fresh R47. No rules/runtime/compiler source changes are present.
+
+## Full-Roster Dispatch State After Ciel S2 Feasibility
+
+- R46-accepted FB2-21 closes the last generic prerequisite found for Ciel s2.
+- `master.ciel.skill.s2` is now READY as an exact one-target recovery migration from Base `abc57f2...`.
+- Ten other frozen FM09 provisioning target definitions remain absent and are outside this dispatch.
+- Accepted overlap remains `111/944` at dispatch. A one-target Candidate may prove material `112/944`, but only fresh R47 may grant that additional accepted identity.
+- P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched and no stacked PR is merged by this task.
+
 ## Prompt Templates
 
 Codex A startup prompt:
@@ -4333,3 +4390,1469 @@ Do not merge independent card-action contracts for acceptance.
 Return findings first, then Gate judgment.
 Final status must be one of the statuses allowed by your TASK block.
 ```
+
+## TASK P3-A-FB2-22-RECOVERY-MATERIAL-SYNC
+
+Owner: Codex A
+Status: `MATERIAL_SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-22-ciel-s2-material-sync-current`
+Base: exact Candidate `35a2a59fd4bf77bdbbfac37031556617af94c47f`
+Read: `docs/reports/2026-09-18-p3-a-fb2-22-ciel-s2-material-synchronization.md`
+
+Result: independent mechanical synchronization reproduces exact six-file scope, the single frozen addition, `111/944 -> 112/944` material overlap, clean support-only product surface, deterministic generated output, and all official gates. A grants no semantic acceptance and no accepted overlap credit.
+
+## TASK P3-R47-RECOVERY
+
+Owner: Codex R
+Status: `MIGRATION_ACCEPTED`
+Implementation Base: `52ea97e9371f5a2353b58ad948b232434c68abd8`
+Candidate S SHA: `35a2a59fd4bf77bdbbfac37031556617af94c47f`
+A material synchronization: `cc0d86ffb15dafd4847448f572025c9054616083`
+PR: `#356`
+Read: `docs/reports/2026-09-18-p3-fb2-22-recovery-ciel-s2-support-definition-handoff.md`, `docs/reports/2026-09-18-p3-fb2-22-recovery-ciel-s2-support-definition-result.md`, `docs/reports/2026-09-18-p3-a-fb2-22-ciel-s2-material-synchronization.md`
+Verdict: `MIGRATION_ACCEPTED`
+Blocking findings: none.
+
+Fresh R47 independently accepts exactly frozen identity `master.ciel.skill.s2`, reproducing exact provenance, behavior, six-file scope, `111/944 -> 112/944` material accounting, deterministic outputs, full official validation, and final reviewer/Candidate cleanliness. R47 itself does not mutate acceptance documents; the following A synchronization records the accepted credit.
+
+## Full-Roster Dispatch State After FB2-22 Material Synchronization
+
+- Ciel s2 Candidate material is exactly `112/944`, adding only `master.ciel.skill.s2`; accepted overlap remains `111/944`.
+- Ten other frozen FM09 provisioning target definitions remain absent.
+- P3-R47-RECOVERY is the only next gate.
+- PR #356 remains stacked and must not be merged during review.
+- P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.
+## TASK P3-A-R47-FB2-22-RECOVERY-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r47-fb2-22-ciel-s2-acceptance-sync-recovery`
+Base: exact A material synchronization `cc0d86ffb15dafd4847448f572025c9054616083`
+Read: `docs/reports/2026-09-18-p3-a-r47-fb2-22-ciel-s2-recovery-acceptance-synchronization.md`
+
+Result: record fresh R47 `MIGRATION_ACCEPTED` for exactly `master.ciel.skill.s2`. Recovery-line accepted overlap is now `112/944` (`11.86%`), leaving `832/944`. Integrated `origin/main` remains at `553779e...` and therefore is not yet credited with this stacked migration.
+
+## Full-Roster Dispatch State After R47 Acceptance Synchronization
+
+- `master.ciel.skill.s2` is independently migration-accepted on the recovery lineage.
+- Recovery-line accepted overlap is `112/944` (`11.86%`), leaving `832/944`.
+- Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128`; its currently integrated accepted overlap remains `111/944` until coordinated integration.
+- Ten other FM09 provisioning target definitions remain absent and unresolved.
+- Next coordinator work is fresh current-lineage dependency/feasibility planning across those ten identities; historical ordering is not authority.
+- P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched and no stacked PR is merged by this task.
+## TASK P3-A-FM09-REMAINING10-DEPENDENCY-PLANNING
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fm09-remaining10-planning`
+Base: exact post-R47 acceptance synchronization `ee0c4a6d7bd771d7ca54c3ffc662225499c86c61`
+Read: `docs/reports/2026-09-18-p3-a-fm09-remaining10-dependency-planning.md`
+
+Result: fresh current-lineage comparison of all ten unresolved FM09 provisioning targets selects the same-battlefield private hand inspection / optional return-one interaction required by `master.shiki-ryougi.skill.s3` as the narrowest isolated generic prerequisite. Planning adds no frozen material; recovery-line accepted overlap stays `112/944`.
+
+## TASK P3-FB2-23-RECOVERY
+
+Owner: Codex B2
+Status: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Base: exact P3-A-FM09-REMAINING10-DEPENDENCY-PLANNING commit
+Read: `docs/reports/2026-09-18-p3-fb2-23-recovery-same-battlefield-private-hand-return-interaction-handoff.md`
+
+Goal: add only the identity-free same-battlefield player → controller-private selected-player hand snapshot → optional `0..1` return-to-owner-deck-and-shuffle interaction seam. No production identity/content, MatchSession source, frozen migration, or Ryougi-specific routing is authorized. Zero migration credit.
+
+## TASK P3-R48-RECOVERY
+
+Owner: Codex R
+Status: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Implementation Base: `077dac0d8f9ca7956554e3cb45511f8edf659156`
+Rejected R48-R1 Candidate: `92d72e6fc2faa820febb507da1d622d36c45134e`
+Accepted revised Candidate: `1cfd6000f5627a282e2549d23e5a176ba983384f`
+PR: `#358`
+Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Blocking findings: none.
+
+Fresh R48-R2 independently verified closure of the R48-R1 exact-envelope fail-open blocker, all original privacy/settlement/stale-state semantics, exact six-file scope, zero-credit accounting, deterministic product outputs, official full validation, and final reviewer/Candidate cleanliness.
+
+## TASK P3-A-R48-FB2-23-RECOVERY-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r48-fb2-23-acceptance-sync-recovery`
+Base: exact accepted revised Candidate `1cfd6000f5627a282e2549d23e5a176ba983384f`
+Read: `docs/reports/2026-09-18-p3-a-r48-fb2-23-recovery-acceptance-synchronization.md`
+
+Result: record fresh R48-R2 acceptance of FB2-23 as generic zero-credit infrastructure. Recovery-line accepted frozen overlap remains `112/944` (`11.86%`), leaving `832/944`; integrated main remains `111/944`. The next eligible coordinator action is a fresh single-target Ryougi s3 feasibility/migration dispatch using the accepted interaction seam.
+
+## Full-Roster Dispatch State After R48 Acceptance Synchronization
+
+- FB2-23 is independently accepted generic infrastructure on the recovery lineage and earns zero frozen credit.
+- Recovery-line accepted overlap remains `112/944` (`11.86%`), leaving `832/944`; integrated main remains `111/944`.
+- Ten FM09 provisioning frozen targets remain absent.
+- `master.shiki-ryougi.skill.s3` is now eligible for a fresh single-target feasibility/migration pass; it is not yet accepted or materialized by this synchronization.
+- P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched and no stacked PR is merged/retargeted.
+
+## TASK P3-A-RYOUGI-S3-RECOVERY-FEASIBILITY
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Base: exact post-R48 acceptance synchronization `e8c312986d9d01c9e28e3e70309c925f6f6a5f4b`
+Read: `docs/reports/2026-09-18-p3-a-ryougi-s3-recovery-feasibility.md`
+
+Result: fresh F1-grounded feasibility found no remaining runtime prerequisite for exactly `master.shiki-ryougi.skill.s3`. A temporary probe compiles and executes using accepted append-only, support-only/outside-game and FB2-23 interaction semantics; only aggregate executable count `72 -> 73` changes. Probe material is exactly `113/944`; accepted overlap remains `112/944`.
+
+## TASK P3-FB2-24-RECOVERY
+
+Owner: Codex S
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Base: `7e2925ed37f89b60dac2c2b13c68081af6e33fbe`
+Candidate: `8ff45c944ba810edfbfa93d17462d4c3cb6a4e16`
+PR: `#359` stacked on exact Base
+Target: exactly `master.shiki-ryougi.skill.s3`
+Read: `docs/reports/2026-09-18-p3-fb2-24-recovery-ryougi-s3-support-definition-handoff.md`, `docs/reports/2026-09-18-p3-fb2-24-recovery-ryougi-s3-support-definition-result.md`
+
+Result: corrected pre-R49 Candidate materializes exactly one frozen Ryougi s3 support definition with the Final Rules 9.4 skill-zone threshold `8`, accepted FB2-16 append-only semantics, and accepted FB2-23 private-hand interaction. Candidate material overlap is `113/944`; no `packages/rules/src/**` change is present.
+
+## TASK P3-R49-RECOVERY
+
+Owner: Codex R
+Status: `MIGRATION_ACCEPTED`
+Implementation Base: `7e2925ed37f89b60dac2c2b13c68081af6e33fbe`
+Candidate S SHA: `8ff45c944ba810edfbfa93d17462d4c3cb6a4e16`
+PR: `#359`
+Verdict: `MIGRATION_ACCEPTED`
+Blocking findings: none.
+
+Fresh R49 independently accepts exactly frozen identity `master.shiki-ryougi.skill.s3`, including the Final Rules 9.4 8-mana skill-zone gate, exact F1 provenance, support-only/outside-game shape, FB2-16/FB2-23 behavior, privacy/stale/replay boundaries, exact six-file scope, `112/944 -> 113/944` material accounting, deterministic outputs, full official validation, and final reviewer/Candidate cleanliness.
+
+## TASK P3-A-R49-FB2-24-RECOVERY-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r49-fb2-24-acceptance-sync-recovery`
+Base: exact accepted Candidate `8ff45c944ba810edfbfa93d17462d4c3cb6a4e16`
+Read: `docs/reports/2026-09-18-p3-a-r49-fb2-24-ryougi-s3-recovery-acceptance-synchronization.md`
+
+Result: record fresh R49 `MIGRATION_ACCEPTED` for exactly `master.shiki-ryougi.skill.s3`. Recovery-line accepted overlap is now `113/944` (`11.97%`), leaving `831/944`. Integrated `origin/main` remains at `553779e...` and therefore remains `111/944` until later coordinated integration.
+
+## Full-Roster Dispatch State After R49 Acceptance Synchronization
+
+- Recovery-line accepted overlap is `113/944`; the exact newly accepted identity is only `master.shiki-ryougi.skill.s3`.
+- Nine FM09 provisioning frozen targets remain absent.
+- Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / accepted `111/944`; PR #359 remains stacked and unmerged.
+- P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched by this synchronization.
+
+## TASK P3-A-R49-PROCESS-HYGIENE
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Base: exact post-R49 acceptance synchronization `ffe5afdcaa07cacdfac061010a542f0b4fb43ae8`
+Read: `docs/reports/2026-09-18-p3-a-r49-process-hygiene.md`
+
+Result: correct historical role metadata for the pure S migrations FB2-22 and FB2-24, normalize recovery PR contract metadata, mark superseded/rejected PRs as historical only, and correct PR #359 to its final R49-reviewed Candidate. No product/runtime change or frozen accounting change; recovery-line accepted remains `113/944` and integrated main remains `111/944`.
+
+## TASK P3-A-FM05-TERRITORY-VARIANT-EXTENSION-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Base: exact post-R49 process-hygiene `3b2d6bc6ac2eb6bfc7058a238d140995d0711e77`
+Read: `docs/reports/2026-09-18-p3-a-fm05-territory-variant-extension-dispatch.md`
+
+Result: full-944 semantic-signature delta refresh finds exactly one accepted/missing mixed signature: the R34-accepted Territory Creation semantic with two missing typography variants, `servant.gilles.skill.sc-gilles-2` and `servant.medea.skill.sc-medea-2`. Dispatch exactly these two to Codex S as an FM05 family extension with no runtime changes. Dispatch takes zero credit; accepted overlap remains `113/944`.
+
+## TASK P3-FM05-TERRITORY-VARIANT-EXTENSION-RECOVERY
+
+Owner: Codex S
+Status: `MIGRATION_COMPLETE_CANDIDATE`
+Base: exact A dispatch `40eaf45a64ecca0ddb6efe62a8bed35652420707`
+Candidate: `7f83a0cfba2cd7f781ab0c0491c9ed2607db02d6`
+PR: `#361` stacked on exact Base
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Targets: exactly `servant.gilles.skill.sc-gilles-2`, `servant.medea.skill.sc-medea-2`
+Read: `docs/agents/PHASE3-FULL-ROSTER-STARTUP-PROMPT.md`, `docs/agents/PHASE3-FULL-ROSTER-COLLABORATION-CONTRACT.md`, `docs/reports/2026-09-18-p3-a-fm05-territory-variant-extension-dispatch.md`, `docs/reports/2026-09-18-p3-fm05-territory-variant-extension-result.md`
+
+Result: Candidate materializes exactly the two missing Territory Creation typography variants using only accepted R33/R19/R34 semantics, with zero runtime/compiler/product hot-file diff. Candidate material overlap is exactly `115/944`; accepted overlap remains `113/944` until fresh R50 and post-review A synchronization.
+
+## TASK P3-R50-FM05-TERRITORY-VARIANT-EXTENSION
+
+Owner: Codex R
+Status: `MIGRATION_ACCEPTED`
+Implementation Base: `40eaf45a64ecca0ddb6efe62a8bed35652420707`
+Candidate S SHA: `7f83a0cfba2cd7f781ab0c0491c9ed2607db02d6`
+PR: `#361`
+Verdict: `MIGRATION_ACCEPTED`
+Blocking findings: none.
+
+Fresh R50 independently reconstructs the two frozen Territory Creation variants from F1/Reference, verifies exact four-file scope and zero runtime/product diff, probes both formula and deployment behavior, reproduces `113/944 -> 115/944` material accounting, and passes the official gates. The initial single fixed-5s full-CI timeout is investigated with unchanged Base/Candidate timing controls; Candidate subsequently passes unchanged full CI `134 files / 870 tests` and R50 finds no Candidate-specific performance regression.
+
+## TASK P3-A-R50-FM05-TERRITORY-VARIANT-EXTENSION-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r50-fm05-variant-acceptance-sync`
+Base: exact accepted Candidate `7f83a0cfba2cd7f781ab0c0491c9ed2607db02d6`
+Read: `docs/reports/2026-09-18-p3-a-r50-fm05-territory-variant-extension-acceptance-synchronization.md`
+
+Result: record fresh R50 `MIGRATION_ACCEPTED` for exactly `servant.gilles.skill.sc-gilles-2` and `servant.medea.skill.sc-medea-2`. Recovery-line accepted overlap is now `115/944` (`12.18%`), leaving `829/944`. Integrated `origin/main` remains `553779e...` / accepted `111/944`.
+
+## Full-Roster Dispatch State After R50 Acceptance Synchronization
+
+- Recovery-line accepted overlap is `115/944`; the exact newly accepted identities are Gilles s2 and Medea s2 Territory Creation variants.
+- Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / accepted `111/944`; PR #361 remains stacked and unmerged.
+- P3-FM09 remains `MIGRATION_BLOCKED` with the same nine provisioning targets; this FM05 extension is not FM10.
+- Next coordinator work is a fresh full-roster readiness refresh over the remaining `829` frozen identities against the accepted `115/944` recovery baseline; no further credit is pre-authorized.
+
+## TASK P3-FB2-25-GAME-START-FIXED-SET-MANA
+
+Owner: Codex B2
+Status: `READY`
+Base: exact post-R50 acceptance synchronization `fa27e9b132990a6fde164b8806443c533383375f` plus this A dispatch commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-18-p3-a-fb2-25-game-start-fixed-set-mana-dispatch.md`, FB2-05/R22 acceptance, FB2-14/R39 and FB2-15/R41 game-start acceptance evidence.
+
+Goal: add only the identity-free fail-closed `game_start + fixed controller literal set_mana` parent semantic. Exact future F1 consumers are Iliya s1 and Taiga s1; B2 must not add either identity or any authoring migration. Zero frozen credit; recovery accepted remains `115/944`.
+
+
+## TASK P3-R51-FB2-25-GAME-START-FIXED-SET-MANA
+
+Owner: Codex R
+Status: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Implementation Base: `c04e42ea8d002e974f8965218f915d642fe26ea5`
+Candidate B2 SHA: `101cb0d4e3fbd105cfadafda26585b3825616fe1`
+PR: `#362`
+Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Blocking findings: none.
+
+Fresh R51 independently accepts the identity-free exact `game_start + fixed-controller literal set_mana` parent semantic, verifies adversarial fail-closed behavior, runtime assignment/idempotency/rollback, identity-free production routing, exact three-file scope, and full gates. Frozen material remains `115/944`; no migration credit is granted.
+
+## TASK P3-A-R51-FB2-25-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r51-fb2-25-acceptance-sync`
+Base: exact accepted B2 Candidate `101cb0d4e3fbd105cfadafda26585b3825616fe1`
+Read: `docs/reports/2026-09-18-p3-a-r51-fb2-25-acceptance-synchronization.md`
+
+Result: accept FB2-25 as zero-credit runtime infrastructure. Recovery-line accepted overlap remains `115/944` (`12.18%`), leaving `829/944`; integrated main remains `111/944`. Exact future F1 consumers within the accepted envelope are Iliya s1 and Taiga s1, but both still require a fresh S feasibility/source-grounding dispatch before migration.
+
+
+## TASK P3-FB2-25-INITIAL-MANA-CONSUMER-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: exact post-R51 A synchronization plus this dispatch commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Accepted runtime: FB2-25 / R51 Candidate `101cb0d4e3fbd105cfadafda26585b3825616fe1`
+Targets: exactly `master.iliya.skill.s1`, `master.taiga.skill.s1`
+Read: `docs/agents/PHASE3-FULL-ROSTER-STARTUP-PROMPT.md`, `docs/agents/PHASE3-FULL-ROSTER-COLLABORATION-CONTRACT.md`, `docs/reports/2026-09-18-p3-a-fb2-25-consumer-migration-dispatch.md`.
+
+Goal: materialize exactly the two block-free initial-Mana skills as standalone `master_skill_card_archive` authoring, reusing only accepted FB2-05 + FB2-25/R51 semantics. Do not modify runtime, pack/generated product, or add other master skills. Candidate material may be `117/944`; accepted overlap remains `115/944` pending fresh R.
+
+## TASK P3-R52-FB2-25-INITIAL-MANA-CONSUMER-MIGRATION
+
+Owner: Codex R
+Status: `MIGRATION_ACCEPTED`
+Implementation Base: `bfa9087ab77223e40525fe36214509b1f2cdf9ff`
+Candidate S SHA: `0de67e5b5c4f403f04fa54868c6db09b980c90f8`
+PR: `#363`
+Verdict: `MIGRATION_ACCEPTED`
+Blocking findings: none.
+
+Fresh R52 independently reconstructs exactly `master.iliya.skill.s1` and `master.taiga.skill.s1` from F1/Reference, verifies exact four-file scope and zero runtime/product hot-file diff, proves trusted `game_start` controller Mana assignment `4 -> 6/3`, fail-closed near-match behavior, product isolation, and exact `115/944 -> 117/944` material accounting. All official gates pass and reviewer/Candidate/Reference finish clean.
+
+## TASK P3-A-R52-INITIAL-MANA-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r52-initial-mana-acceptance-sync`
+Base: exact accepted Candidate `0de67e5b5c4f403f04fa54868c6db09b980c90f8`
+Read: `docs/reports/2026-09-18-p3-a-r52-initial-mana-acceptance-synchronization.md`
+
+Result: record fresh R52 `MIGRATION_ACCEPTED` for exactly `master.iliya.skill.s1` and `master.taiga.skill.s1`. A independently reproduces Base `115/944` and Candidate `117/944`, exact two additions, zero removals, and zero duplicate frozen canonical IDs. Recovery-line accepted overlap is now `117/944` (`12.39%`), leaving `827/944`; integrated `origin/main` remains `111/944`.
+
+## Full-Roster Dispatch State After R52 Acceptance Synchronization
+
+- Recovery-line accepted overlap is `117/944` (`12.39%`); exact R52 additions are Iliya s1 and Taiga s1.
+- Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / accepted `111/944`; PR #363 remains OPEN and unmerged.
+- P3-FM09 remains `MIGRATION_BLOCKED` with the same nine provisioning targets; this initial-Mana batch is not FM10.
+- Next coordinator work is a fresh readiness overlay over the remaining `827` identities against accepted `117/944`; no further frozen credit is pre-authorized.
+
+## TASK P3-FM03-MHX-EXTENSION-RECOVERY
+
+Owner: Codex S
+Status: `READY`
+Base: exact post-R52 acceptance synchronization plus this dispatch commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Accepted contracts: P3-R12/B18 + P3-R13/B19 + P3-R29/FB2-10 + P3-R30/FM03
+Target: exactly `servant.mhx.skill.sc-mhx-3`
+Read: `docs/reports/2026-09-18-p3-a-mhx-fm03-extension-dispatch.md` plus the full-roster startup prompt and collaboration contract.
+
+Result: fresh `117/944` readiness overlay finds zero mixed exact F1 classification-signature groups but one source-complete accepted-family extension. MHX s3 has byte-identical printed text and all three clause hashes to accepted FM03 members, the same locked `core.saber-magic-resistance` family/static card shape, and an A in-memory production-loader/runtime probe proves exact accepted three-ability behavior with no runtime change. Dispatch takes zero credit; accepted remains `117/944`. Candidate material may be `118/944` pending fresh R.
+
+## TASK P3-R53-FM03-MHX-EXTENSION-REVIEW
+
+Owner: Codex R
+Status: `MIGRATION_ACCEPTED`
+Implementation Base: `362c799c9c3b92a1e2af3f1e4597d5cfcba532ac`
+Candidate S SHA: `edfe2ee2e21b484d2b01824f6117d364d1af835b`
+PR: `#364`
+Verdict: `MIGRATION_ACCEPTED`
+Blocking findings: none.
+
+Fresh R53 independently proves the MHX s3 F1 special label is classification drift rather than semantic divergence, verifies exact three-file scope and zero runtime/product drift, exercises all three accepted FM03 abilities through production runtime, confirms product isolation and deterministic hashes, and mechanically reproduces `117/944 -> 118/944` material accounting with one exact addition, zero removals, and zero duplicates.
+
+## TASK P3-A-R53-MHX-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r53-mhx-acceptance-sync`
+Base: exact accepted Candidate `edfe2ee2e21b484d2b01824f6117d364d1af835b`
+Read: `docs/reports/2026-09-18-p3-a-r53-mhx-acceptance-synchronization.md`
+
+Result: record fresh R53 `MIGRATION_ACCEPTED` for exactly `servant.mhx.skill.sc-mhx-3`. A independently reproduces Base `117/944` and Candidate `118/944`, exact one addition, zero removals, and zero duplicate frozen canonical IDs. Recovery-line accepted overlap is now `118/944` (`12.50%`), leaving `826/944`; integrated `origin/main` remains `111/944`.
+
+## Full-Roster Dispatch State After R53 Acceptance Synchronization
+
+- Recovery-line accepted overlap is `118/944` (`12.50%`); exact R53 addition is `servant.mhx.skill.sc-mhx-3`.
+- Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / accepted `111/944`; PR #364 remains OPEN and unmerged.
+- P3-FM09 remains `MIGRATION_BLOCKED` with the same nine provisioning targets; this FM03 extension is not FM10.
+- Next coordinator work is a throughput-oriented readiness overlay over the remaining `826` identities, prioritizing evidence-backed larger homogeneous batches rather than singleton cleanup; no further frozen credit is pre-authorized.
+
+## TASK P3-A-FB2-26-NONPLAYABLE-MASTER-RULE-ARCHIVE-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Base: exact post-R53 acceptance synchronization `cb6f1312d505ff8e3c9cca84bd8840866df0fa8d`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-18-p3-a-fb2-26-nonplayable-master-rule-archive-dispatch.md`
+
+Result: throughput-oriented readiness analysis finds exactly three FB2-15 provisioning source identities whose targets are already independently accepted: `master.ciel.skill.s1a`, `master.shiki-ryougi.skill.s1a`, and `master.shirou-emiya.skill.s2`. Their execution semantic is already accepted; the remaining blocker is representation because the same owner archives are exact FB2-19 support-only archives whose cards must all be `outside_game`. Dispatch one zero-credit generic rules-only mixed-master archive seam rather than creating duplicate owner archives, widening the support-only contract, or promoting these owners into the playable product roster. Accepted overlap remains `118/944`.
+
+## TASK P3-FB2-26-NONPLAYABLE-MASTER-RULE-ARCHIVE
+
+Owner: Codex B2
+Status: `READY`
+Base: exact A dispatch commit descended directly from `cb6f1312d505ff8e3c9cca84bd8840866df0fa8d`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Accepted dependencies: P3-R41/FB2-15, P3-R43/FB2-18, P3-R44-R2/FB2-19
+Read: `docs/reports/2026-09-18-p3-a-fb2-26-nonplayable-master-rule-archive-dispatch.md` plus the full-roster startup prompt and collaboration contract.
+
+Goal: add only the identity-free `authoringMasterRuleFiles` / `master_rule_definition_archive` channel for a non-playable master owner whose rules-only archive contains both an ordinary non-deferred `master_skill` and an exact `outside_game` `master_skill`. The archive must compile source/target rules with the same owner while emitting no playable master character, overview/presentation card, fallback command spell, deck, or fixture seat. Preserve the exact existing support-only and ordinary playable-master channels; malformed mixed shapes must fail closed. No production authoring/pack/generated change and no interpreter/MatchSession change is authorized.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `IMPLEMENTATION_BLOCKED`
+
+FB2-26 earns zero frozen migration credit and requires a fresh independent R review plus later A capability synchronization before any consumer migration.
+
+## Full-Roster Dispatch State After FB2-26 Dispatch
+
+- Recovery-line accepted overlap remains `118/944` (`12.50%`), leaving `826/944`; integrated main remains `111/944`.
+- No frozen identity is credited by FB2-26.
+- If FB2-26 is freshly accepted and synchronized, a separate S task may attempt exactly three ready FB2-15 consumers: `master.ciel.skill.s1a`, `master.shiki-ryougi.skill.s1a`, and `master.shirou-emiya.skill.s2`. Mechanical Candidate material would be `121/944`; formal accepted remains `118/944` until fresh migration review and A acceptance synchronization.
+- The historical P3-FM09 exact-ten recovery attempt remains blocked; nine unresolved provisioning target identities remain unchanged, and the other source identities receive no credit.
+- No FM10 is dispatched, and no existing stacked PR is merged or retargeted by this A task.
+
+## TASK P3-A-R55-FB2-26-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r55-fb2-26-acceptance-sync`
+Base: exact R55-accepted Revision Candidate `e4c703bf3755a5a9e865ca05f0ad93118b70f0e2`
+Prior rejected Candidate: `206cf5b96497bf9709cc230a3da66b8bfff2f6c6` / R54 `IMPLEMENTATION_NEEDS_REVISION`
+Read: `docs/reports/2026-09-19-p3-a-r55-fb2-26-acceptance-synchronization.md`
+
+Result: record fresh R55 `IMPLEMENTATION_ACCEPTED_CANDIDATE` for the corrected FB2-26 mixed rules-only master archive representation. A independently reproduces Base and Revision at `118/944`, with 141 authoring cards on both sides, zero frozen additions/removals, zero duplicate frozen canonical IDs, and zero `data/authoring/**` / `data/phase3/**` diff. FB2-26 is accepted as zero-credit capability infrastructure only.
+
+## Full-Roster Dispatch State After R55 / FB2-26 Acceptance Synchronization
+
+- Recovery-line accepted overlap remains `118/944` (`12.50%`), leaving `826/944`.
+- R54 rejected `206cf5b...`; R55 independently accepted corrected Revision `e4c703b...`.
+- PR #365 remains OPEN, unmerged, and unretargeted.
+- Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / accepted `111/944`.
+- FB2-26 now permits a fresh separate S dispatch attempt for exactly `master.ciel.skill.s1a`, `master.shiki-ryougi.skill.s1a`, and `master.shirou-emiya.skill.s2`; no migration credit is granted until fresh S/R/A completion.
+- Historical P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched by this synchronization.
+
+
+## TASK P3-FB2-26-CONSUMER-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: exact post-R55 A synchronization plus this dispatch commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Accepted dependencies: P3-R41/FB2-15, P3-R43/FB2-18, P3-R44-R2/FB2-19, P3-R45, P3-R47, P3-R49, P3-R55/FB2-26
+Targets: exactly `master.ciel.skill.s1a`, `master.shiki-ryougi.skill.s1a`, `master.shirou-emiya.skill.s2`
+Read: `docs/reports/2026-09-19-p3-a-fb2-26-consumer-migration-dispatch.md` plus startup prompt and collaboration contract.
+
+Goal: migrate exactly the three source-grounded `core.game-start-add-skill` source identities by converting their existing support-only owner archives into the accepted mixed rules-only archive representation, preserving already accepted outside-game targets, and moving exactly those owner files from `authoringMasterSupportFiles` to `authoringMasterRuleFiles`. Reuse FB2-15 unchanged; no runtime modification or unrelated migration is authorized. Candidate material may be `121/944`; formal accepted remains `118/944` pending fresh R migration review and later A synchronization.
+
+## TASK P3-R56-FB2-26-CONSUMER-MIGRATION-REVIEW
+
+Owner: Codex R
+Status: `MIGRATION_ACCEPTED`
+Implementation Base: `ddbbf36726d44eedcc808f5f6b4ab7d5e48d8e6e`
+Candidate S SHA: `beb472cd2c8e02d8d06bca5a6159865d16391aa5`
+PR: `#366`
+Verdict: `MIGRATION_ACCEPTED`
+Blocking findings: none.
+
+Fresh R56 independently verifies exact ten-file authorized scope, F1 text/hashes and source-to-target mappings, unchanged accepted targets, real FB2-15 production runtime plus replay idempotency, R55/FB2-26 mixed rules-only product isolation, deterministic generated-content changes, and exact mechanical `118/944 -> 121/944` accounting with only `master.ciel.skill.s1a`, `master.shiki-ryougi.skill.s1a`, and `master.shirou-emiya.skill.s2` added, zero removals, and zero duplicates. All official gates pass and reviewer/Candidate/Reference finish clean.
+
+## TASK P3-A-R56-FB2-26-CONSUMER-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r56-fb2-26-consumer-acceptance-sync`
+Base: exact accepted Candidate `beb472cd2c8e02d8d06bca5a6159865d16391aa5`
+Read: `docs/reports/2026-09-19-p3-a-r56-fb2-26-consumer-acceptance-synchronization.md`
+
+Result: record fresh R56 `MIGRATION_ACCEPTED` for exactly `master.ciel.skill.s1a`, `master.shiki-ryougi.skill.s1a`, and `master.shirou-emiya.skill.s2`. A independently reproduces Base `118/944` and Candidate `121/944`, exact three additions, zero removals, and zero duplicate frozen canonical IDs. Recovery-line accepted overlap is now `121/944` (`12.82%`), leaving `823/944`; integrated `origin/main` remains `111/944`.
+
+## Full-Roster Dispatch State After R56 Acceptance Synchronization
+
+- Recovery-line accepted overlap is `121/944` (`12.82%`); exact R56 additions are Ciel s1a, Ryougi s1a, and Shirou s2.
+- Integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / mechanically accepted `111/944`; PR #366 remains OPEN, unmerged, and unretargeted.
+- Historical P3-FM09 remains `MIGRATION_BLOCKED`; this three-source migration does not retroactively accept or unblock the historical exact-ten attempt, and no FM10 is dispatched.
+- Next coordinator work is a throughput-oriented readiness overlay over the remaining `823` frozen identities, prioritizing the largest honest homogeneous READY family; no further frozen credit is pre-authorized.
+
+## TASK P3-A-FB2-27-RULER-SEAL-SUBSYSTEM-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-27-ruler-seal-dispatch`
+Base: exact post-R56 acceptance synchronization `2772ac9904c2e99c19cb73f7b60147a329fb27a4`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-19-p3-a-fb2-27-ruler-seal-subsystem-dispatch.md`
+
+Result: fresh throughput overlay over the remaining `823` identities finds no honest direct `10+` homogeneous READY migration batch. The selected next prerequisite is the identity-free Ruler seal relationship subsystem: a narrower special subsystem than the larger Wodime/Wallachia families, intended to close one coherent runtime boundary and unlock exactly six frozen Ruler-family consumers. Dispatch grants zero frozen credit; accepted remains `121/944`.
+
+## TASK P3-FB2-27-RULER-SEAL-SUBSYSTEM
+
+Owner: Codex B2
+Status: `READY`
+Base: exact A dispatch commit descended directly from `2772ac9904c2e99c19cb73f7b60147a329fb27a4`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Affected future consumers: exactly `servant.amakusa.skill.sc-amakusa-3`, `servant.amor.skill.sc-amor-1`, `servant.jeanne.skill.sc-jeanne-1`, `servant.morgan.skill.sc-morgan-3`, `servant.oberon.skill.sc-oberon-3`, `servant.oberon.skill.sc-oberon-4`
+Read: `docs/reports/2026-09-19-p3-a-fb2-27-ruler-seal-subsystem-dispatch.md` plus startup prompt and collaboration contract.
+
+Goal: implement only the identity-free Ruler seal issuer→bound-player relationship subsystem, its game-long least-bound selection history, single-use seal ownership, structural move / round movement-lock / free-play+delayed-reward branches, replay idempotency, and explicit no-copy/no-steal structural marker. No production authoring, pack/generated product, unrelated special subsystem, identity/text/Reference-handler routing, or migration credit is authorized.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `IMPLEMENTATION_BLOCKED`
+
+FB2-27 earns zero frozen migration credit and requires fresh independent R review plus later A capability synchronization before any Ruler authoring migration.
+
+## Full-Roster Dispatch State After FB2-27 Dispatch
+
+- Recovery-line accepted overlap remains `121/944` (`12.82%`), leaving `823/944`.
+- FB2-27 is zero-credit runtime capability work.
+- If accepted and synchronized, a later S task may attempt exactly six Ruler-family identities; no migration credit is pre-authorized.
+- Historical P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.
+- Existing stacked PRs remain unmerged and unretargeted.
+
+
+## TASK P3-A-R58-FB2-27-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r58-fb2-27-acceptance-sync`
+Base: exact R58-accepted Revision Candidate `e30e7efef3cf9fc111236599441e5a869f4bc81a`
+Prior rejected Candidate: `f315f2e412399f3aca7971adf7ccd1812437e63f` / R57 `IMPLEMENTATION_NEEDS_REVISION`
+Read: `docs/reports/2026-09-19-p3-a-r58-fb2-27-acceptance-synchronization.md`
+
+Result: record fresh R58 `IMPLEMENTATION_ACCEPTED_CANDIDATE` for corrected FB2-27. The R57 unordered-pair blocker is closed: ordered Reference least-bound semantics accept p2->p3/p4 and reject p3->p2 mutation-free. A independently reproduces `121/944` from 144 unique authoring cards with zero duplicate frozen IDs. FB2-27 remains zero-credit runtime capability infrastructure.
+
+## Full-Roster Dispatch State After R58 / FB2-27 Acceptance Synchronization
+
+- Recovery-line accepted overlap remains `121/944` (`12.82%`), leaving `823/944`.
+- R57 rejected `f315f2e...`; R58 independently accepted corrected Revision `e30e7efe...`.
+- PR #367 remains OPEN, unmerged, and unretargeted; integrated main remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / mechanically `111/944`.
+- Exactly six Ruler-family consumers are now eligible for a fresh separate S dispatch: Amakusa s3, Amor s1, Jeanne s1, Morgan s3, Oberon s3, Oberon s4. No migration credit is granted until fresh S/R/A completion.
+- Historical P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.
+
+
+## TASK P3-RULER-CONSUMER-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: exact post-R58 A acceptance synchronization plus this dispatch commit
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Accepted dependency: R58 / FB2-27 Revision `e30e7efef3cf9fc111236599441e5a869f4bc81a`
+Targets: exactly Amakusa s3, Amor s1, Jeanne s1, Morgan s3, Oberon s3 and Oberon s4
+Read: `docs/reports/2026-09-19-p3-a-ruler-consumer-migration-dispatch.md` plus startup prompt and collaboration contract.
+
+Goal: migrate exactly six frozen Ruler-family definitions using the accepted FB2-27 identity-free structural contracts. Expected production authoring is five standalone servant-skill archives, with Oberon s3+s4 in one archive; no pack registration, generated product change, runtime change, unrelated Ruler card, FM09/FM10 state change, merge, or retarget is authorized. Candidate material may reach `127/944`; formal accepted remains `121/944` pending fresh R and later A synchronization.
+
+## TASK P3-R59-RULER-CONSUMER-MIGRATION-REVIEW
+
+Owner: Codex R
+Status: `MIGRATION_ACCEPTED`
+Implementation Base: `18c39c838fe84e26b4739a75efcd3f3efb8bb499`
+Candidate S SHA: `d4c0fce05255b1bf1956f1fd8079763bad05d602`
+PR: `#368`
+Verdict: `MIGRATION_ACCEPTED`
+Blocking findings: none.
+
+Fresh R59 independently verifies the exact six-card Ruler migration, authoritative F1 text/hashes, exact R58/FB2-27 structural reuse, ordered least-bound semantics, issuer-scoped seal behavior, movement/free-play/reward branches, standalone archive/product isolation, and mechanical `121/944 -> 127/944` accounting with zero removals and zero duplicates. Official gates and final cleanliness pass.
+
+## TASK P3-A-R59-RULER-CONSUMER-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r59-ruler-consumer-acceptance-sync`
+Base: exact accepted Candidate `d4c0fce05255b1bf1956f1fd8079763bad05d602`
+Read: `docs/reports/2026-09-19-p3-a-r59-ruler-consumer-acceptance-synchronization.md`
+
+Result: record fresh R59 `MIGRATION_ACCEPTED` for exactly Amakusa s3, Amor s1, Jeanne s1, Morgan s3, Oberon s3, and Oberon s4. A independently reproduces exact Base `121/944` and Candidate `127/944`, six additions, zero removals, and zero duplicate frozen canonical IDs.
+
+## Full-Roster Dispatch State After R59 Acceptance Synchronization
+
+- Formal recovery-line accepted overlap is now **`127/944` (`13.45%`)**, leaving **`817`** frozen identities.
+- PR #368 remains OPEN, unmerged, and unretargeted; integrated `origin/main` remains mechanically `111/944`.
+- Historical P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.
+- Next coordinator action is a read-only A readiness partition of all remaining `817` identities into direct READY, one-capability-away, and heavy multi-mechanic groups before any new dispatch.
+## TASK P3-A-FB2-28-EVENT-RULE-BRIDGE-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-28-event-rule-bridge-dispatch`
+Base: exact post-R59 acceptance synchronization `f80da896018f6d3cf1c2e4667d95f9c6f1ff4b14`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-19-p3-a-fb2-28-event-rule-executable-bridge-dispatch.md`
+
+Result: private read-only feasibility over the remaining `817` identities finds exactly `12` single-gap rows whose sole frozen blocker is `SPECIAL_EFFECT:event_card_rule`. Current runtime already owns event deck/discard/placement/visibility/VP/static-modifier lifecycle but lacks a rules-only executable event-definition/source bridge. Dispatch FB2-28 to implement only this identity-free event-card lifecycle and executable-rule boundary. The `12` is an unlock-yield upper bound, not one mixed migration batch and not migration credit.
+
+## TASK P3-FB2-28-EVENT-RULE-EXECUTABLE-BRIDGE
+
+Owner: Codex B2
+Status: `READY`
+Base: exact A dispatch commit descended directly from `f80da896018f6d3cf1c2e4667d95f9c6f1ff4b14`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Affected future consumers: exactly Hisui Detective s1, Kadoc ascension/s3/s4/s5, Kiara s4, Ophelia ascension/s4/s5/s6/s7, and Wodime s6 as enumerated in the dispatch report.
+
+Goal: add only a rules-only event-definition representation, generic event-card zone/lifecycle operations, and an authoritative event-placement executable source context sufficient to close `event_card_rule` without identity/name/text/Reference-handler routing. Do not implement Lostbelt expansion, Wodime state, prophecy, deduction, defeat-player, foreign-life, production consumer authoring, or migration credit.
+
+FB2-28 earns zero frozen migration credit. Formal recovery accepted remains `127/944` and historical P3-FM09 remains `MIGRATION_BLOCKED`.
+## TASK P3-A-R61-FB2-28-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r61-fb2-28-acceptance-sync`
+Base: exact accepted Revision Candidate `69f2fb09ca951957148f965df459bb3063323800`
+Read: `docs/reports/2026-09-19-p3-a-r61-fb2-28-acceptance-synchronization.md`
+
+Result: record fresh R61 `IMPLEMENTATION_ACCEPTED_CANDIDATE` for FB2-28. R60's battlefield-location round-trip blocker is closed; A independently reproduces `111 archives / 150 cards / 150 unique / 127/944 overlap / 0 duplicates`. FB2-28 is zero-credit infrastructure, so formal recovery accepted remains `127/944` with `817` remaining.
+
+Next coordinator action is private read-only dependency recomputation for the twelve `event_card_rule` single-gap rows. No downstream migration is credited or dispatched by this synchronization. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
+
+## TASK P3-A-FB2-29-OUTER-GOD-LIFE-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-29-outer-god-life-dispatch`
+Base: exact R61 FB2-28 acceptance sync `1c33320b468825dd7e37b5ede6645bb29e5ee333`
+Read: `docs/reports/2026-09-19-p3-a-fb2-29-outer-god-life-dispatch.md`
+
+Result: dispatch one narrow B2 structural family for the five homogeneous `core.outer-god-life` identities. Required behavior is source-owner relational, identity-free, current-round +6 total-power sharing with dedupe, battle-terminal return of the same physical source to the source servant owner's discard, and a structural reusable `outer_god_life` category marker. No downstream migration credit is taken.
+
+Formal accepted remains `127/944`, `817` remaining. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
+
+## TASK P3-A-FB2-30-MASTER-SKILL-DEFINITION-RETURN-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-30-card-definition-return-dispatch`
+Base: exact R68 acceptance synchronization `6718244a7e939afb57687dc8a1ac99ab03302c04`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-19-p3-a-fb2-30-master-skill-definition-return-dispatch.md`
+
+Result: after excluding the exact formal `136/944` union, `63` block-free `READY_GENERIC_EXTENSION` identities remain. Dispatch one narrow identity-free Card Zone component for controller-owned master-skill definition return/materialization. Arcueid s1 and Ciel s1b are the immediate source-grounded upper-bound consumers, but their different parent triggers/conditions are not accepted or migrated by FB2-30. B2 earns zero frozen credit.
+
+## TASK P3-FB2-30-MASTER-SKILL-DEFINITION-RETURN
+
+Owner: Codex B2
+Status: `READY`
+Base: exact A FB2-30 dispatch commit
+Read: `docs/reports/2026-09-19-p3-a-fb2-30-master-skill-definition-return-dispatch.md`
+
+Goal: implement only the exact structural `return_card_by_definition` component for a controller-owned `master_skill`, returning one existing physical instance to runtime `skill` or creating exactly one when missing. Fail closed on malformed shape, wrong owner/type, missing definition, or duplicate physical targets. Do not add parent trigger/condition routes, migrate F1 authoring, change KPI/taxonomy, merge, or retarget.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `IMPLEMENTATION_BLOCKED`
+
+Formal recovery accepted remains `136/944`; FB2-30 is zero-credit infrastructure and requires fresh independent R review plus later A capability synchronization.
+
+## TASK P3-A-FB2-31-EVENT-PLAYER-RELATION-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-31-event-player-relation-dispatch`
+Base: exact R69 / FB2-30 acceptance synchronization `75123154585aac49f4c1571a3ac23ac4f9279dca`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-19-p3-a-fb2-31-event-player-relation-dispatch.md`
+
+Result: dispatch one identity-free generic condition seam for trusted event actor relation: exact `event_player_is_controller` and `event_player_is_opponent` nodes. The remaining source-grounded inventory has 12 / 6 corresponding ability occurrences respectively. This task does not accept any parent trigger/effect route or consumer migration and earns zero frozen credit.
+
+## TASK P3-FB2-31-EVENT-PLAYER-RELATION
+
+Owner: Codex B2
+Status: `READY`
+Base: exact A FB2-31 dispatch commit
+Read: `docs/reports/2026-09-19-p3-a-fb2-31-event-player-relation-dispatch.md`
+
+Goal: implement only exact-shape, identity-free event-player controller/opponent condition evaluation over trusted `AbilityEvent.playerId`; fail closed on missing/unknown actor; do not broaden activation triggers, migrate consumers, change taxonomy/KPI, merge, or retarget.
+
+Completion status allowed:
+- `IMPLEMENTATION_COMPLETE_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+- `IMPLEMENTATION_BLOCKED`
+
+Formal recovery accepted remains `136/944`; FB2-31 is zero-credit infrastructure and requires fresh independent R review plus later A capability synchronization.
+
+## TASK P3-A-R70-FB2-31-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r70-fb2-31-acceptance-sync`
+Base: exact accepted Candidate `8d68f64aff1b37e4739ebc922ea4d7192714864c`
+Read: `docs/reports/2026-09-19-p3-a-r70-fb2-31-acceptance-synchronization.md`
+
+Result: record fresh R70 `IMPLEMENTATION_ACCEPTED_CANDIDATE` for FB2-31 from canonical PR #375 evidence `https://github.com/binchen648/fd/pull/375#issuecomment-5742361142`. A independently reproduces exact Base `26042ddf24284d2ecbe053ee70cb447c28f03cc2`, exact Candidate `8d68f64aff1b37e4739ebc922ea4d7192714864c`, one-commit ancestry, four-path authorized diff, clean Locked Reference, and zero frozen migration delta.
+
+Accepted capability is limited to the exact type-only identity-free conditions `event_player_is_controller` and `event_player_is_opponent`, with trusted known-player lookup, fail-closed missing/unknown actor behavior, read-only evaluation, and no trigger widening.
+
+Formal recovery accepted remains **`136/944`**, with **`808`** remaining. FB2-31 earns zero migration credit. PR #375 remains OPEN, unmerged, and unretargeted. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
+
+Next coordinator action is a fresh dependency overlay over the remaining source-grounded generic-extension rows; dispatch only an honestly complete homogeneous S family, otherwise select the next narrow B2 seam.
+
+## TASK P3-A-FB2-32-SOURCE-STATE-CONDITIONS-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-32-source-state-conditions-dispatch`
+Base: exact R70 FB2-31 acceptance synchronization `189d221cb7f11693edec8985e1b69af775896bf4`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-19-p3-a-fb2-32-source-state-conditions-dispatch.md`
+
+Result: fresh readiness overlay finds no homogeneous consumer family made fully S-ready solely by FB2-31. Dispatch the next narrow identity-free condition seam: exact type-only `source_active` and `source_owned`. They appear across 30 and 28 READY_GENERIC_EXTENSION identities respectively, while Locked Reference authoring shows only type-only structural occurrences. FB2-32 earns zero migration credit.
+
+## TASK P3-FB2-32-SOURCE-STATE-CONDITIONS
+
+Owner: Codex B2
+Status: `READY`
+Base: exact A FB2-32 dispatch commit
+Read: `docs/reports/2026-09-19-p3-a-fb2-32-source-state-conditions-dispatch.md`
+
+Goal: implement only identity-free exact-shape source-state conditions over the authoritative physical source card and current controller. `source_active` uses existing shared runtime active-state semantics; `source_owned` checks physical source owner == controller. Fail closed on malformed/stale source context. Do not broaden triggers/effects, migrate consumers, change KPI/taxonomy, merge, or retarget.
+
+Formal recovery accepted remains `136/944`; FB2-32 is zero-credit infrastructure and requires fresh independent R review plus later A capability synchronization.
+
+
+## TASK P3-A-R71-FB2-32-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r71-fb2-32-acceptance-sync`
+Base: exact accepted Candidate `ae80ed7fb759a35964bcf5d9f581dc4e52d49d49`
+Read: `docs/reports/2026-09-19-p3-a-r71-fb2-32-acceptance-synchronization.md`
+
+Result: record formal Reviewer transport verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE` for exact PR #376 Candidate `ae80ed7fb759a35964bcf5d9f581dc4e52d49d49`, backed by independent reviewer evidence commit `f1da3b4d0976cd80dbe4a3569bb9a216cf7dc441`. The persisted reviewer report uses the older accepted label `GATE_A_B_CANDIDATE_ACCEPTED`; transport normalization maps that same PR/Candidate/evidenceRef to the workflow token without re-review. Both prior blockers are independently re-probed closed: source-state nodes are condition-route-only, and nonphysical source context benignly fails false instead of throwing.
+
+Accepted capability remains only exact type-only `source_active` and `source_owned` generic conditions. FB2-32 earns zero migration credit; formal accepted remains **`136/944`**, with **`808`** remaining. PR #376 remains OPEN, unmerged, and unretargeted. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
+
+Next coordinator action is a fresh dependency overlay over remaining source-grounded generic-extension rows; dispatch S only for a fully complete homogeneous family, otherwise choose the next narrow B2 seam.
+
+
+## TASK P3-A-FB2-33-EVENT-COMBAT-OUTCOME-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-33-event-combat-outcome-dispatch`
+Base: exact R71 FB2-32 acceptance synchronization `8ca5037864fb11d98fe4a17d4ca8c9089bab2609`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-19-p3-a-fb2-33-event-combat-outcome-dispatch.md`
+
+Result: fresh post-R71 overlay yields no complete homogeneous S family. Dispatch one narrow identity-free condition seam for exact type-only `event_player_won_combat` and `event_player_lost_combat`, grounded only in trusted `AbilityEvent.playerId` plus `battleResult.winners/loserIds`. Locked Reference has 13 type-only occurrences across the pair. FB2-33 earns zero migration credit.
+
+## TASK P3-FB2-33-EVENT-COMBAT-OUTCOME
+
+Owner: Codex B2
+Status: `READY`
+Base: exact A FB2-33 dispatch commit
+Read: `docs/reports/2026-09-19-p3-a-fb2-33-event-combat-outcome-dispatch.md`
+
+Goal: implement only condition-route, exact-shape, identity-free event-player combat outcome evaluation over trusted `AbilityEvent.playerId` and `battleResult`. Missing/unknown/malformed/contradictory context fails closed. Do not broaden activation triggers/effects, migrate consumers, change taxonomy/KPI, merge, or retarget.
+
+Formal recovery accepted remains `136/944`; FB2-33 is zero-credit infrastructure and requires fresh independent R review plus later A capability synchronization.
+
+## TASK P3-A-R72-FB2-33-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r72-fb2-33-acceptance-sync`
+Base: exact accepted Candidate `5ccef0d682ce0673926e349eda1732419fc0792c`
+Read: `docs/reports/2026-09-20-p3-a-r72-fb2-33-acceptance-synchronization.md`
+
+Result: record formal Reviewer verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE` for exact PR #377 Candidate `5ccef0d682ce0673926e349eda1732419fc0792c`, with canonical evidence `https://github.com/binchen648/fd/pull/377#issuecomment-5743426456`. Additional repeated reviews of the same PR/Candidate are redundant evidence only and do not create new acceptance events.
+
+Accepted capability remains only exact type-only identity-free `event_player_won_combat` and `event_player_lost_combat` generic conditions over trusted `AbilityEvent.playerId` plus `battleResult`. FB2-33 earns zero migration credit; formal accepted remains **`136/944`**, with **`808`** remaining. PR #377 remains OPEN, unmerged, and unretargeted. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
+
+Next coordinator action is a fresh dependency overlay over remaining source-grounded generic-extension rows; dispatch S only for a fully complete homogeneous family, otherwise choose the next narrow B2 seam.
+
+## TASK P3-A-FB2-34-COMBAT-REWARD-DISTRIBUTION-DISPATCH
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-fb2-34-combat-reward-distribution-dispatch`
+Base: exact R72 FB2-33 acceptance synchronization `c6f9cede9423c29725daf93a59dcbf79d6bf1a08`
+F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
+Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Read: `docs/reports/2026-09-20-p3-a-fb2-34-combat-reward-distribution-dispatch.md`
+
+Result: migration-closure-first overlay identifies `servant.stheno.skill.sc-stheno-2` as the nearest honest closure target after FB2-33. Its only remaining formal capability gap is the exact static passive `combat_reward_distribution` replacement (`subject=controller`, `whenControllerWins=true`, `mode=full_reward_each`). Locked Reference has two occurrences of this modifier core, but the Napoleon occurrence is lifecycle/effect-installed and remains out of scope. FB2-34 earns zero migration credit.
+
+## TASK P3-FB2-34-COMBAT-REWARD-DISTRIBUTION
+
+Owner: Codex B2
+Status: `READY`
+Base: exact A FB2-34 dispatch commit
+Read: `docs/reports/2026-09-20-p3-a-fb2-34-combat-reward-distribution-dispatch.md`
+
+Goal: implement only the exact identity-free static passive `combat_reward_distribution: replace/full_reward_each` battle-scoring modifier over authoritative active source cards. Full-reward mode changes only split distribution of event/competition/location VP pools when a modifier controller is a winner; it must not change winner selection, battle Power, defeat/military settlement, individually assigned bonuses, lifecycle, or other modifier families. Near-matches fail closed. Do not migrate Stheno in B2.
+
+Formal recovery accepted remains `136/944`; FB2-34 is zero-credit infrastructure and requires fresh independent R review plus later A capability synchronization. On acceptance, A must immediately re-overlay and prefer Stheno S migration over another unrelated B2 seam.
+
+## TASK P3-A-R73-FB2-34-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r73-fb2-34-acceptance-sync`
+Base: exact accepted Candidate `99032d4458352ecdee26dd8964b46ce4e094c0f3`
+Read: `docs/reports/2026-09-20-p3-a-r73-fb2-34-acceptance-synchronization.md`
+
+Result: record formal Reviewer verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE` for exact PR #378 Candidate `99032d4458352ecdee26dd8964b46ce4e094c0f3`, with canonical evidence `https://github.com/binchen648/fd/pull/378#issuecomment-5744013376`. Later accepted comment `5744094298` is redundant evidence only and creates no additional acceptance event or credit. The prior Candidate `996e7a7c5b294f4d6208ca7ec473d0ef6adccf27` remains terminal `IMPLEMENTATION_NEEDS_REVISION` and is not re-reviewed.
+
+Accepted capability is limited to the exact identity-free static passive `combat_reward_distribution: replace/full_reward_each` envelope, including the corrected loader-to-compiled-runtime semantic preservation. FB2-34 earns zero migration credit; formal accepted remains **`136/944`**, with **`808`** remaining. PR #378 remains OPEN, unmerged, and unretargeted.
+
+Next coordinator action is mandatory migration-closure-first re-overlay for `servant.stheno.skill.sc-stheno-2`; if no new blocker is found, dispatch S immediately before any unrelated B2 seam.
+
+## TASK P3-S-R73-STHENO-CONSUMER-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: exact A R73 Stheno migration dispatch commit
+Read: `docs/reports/2026-09-20-p3-a-r73-stheno-consumer-migration-dispatch.md`
+
+Goal: migrate exactly `servant.stheno.skill.sc-stheno-2` as one standalone servant-skill archive using only already accepted structural semantics: true-name marker metadata, FB2-34 static `combat_reward_distribution: replace/full_reward_each`, and `forced_trigger + after_controller_wins_battle + adjust_victory_points(controller,+1)`. No runtime-source widening, no additional consumer, no pack/generated registration.
+
+Project formal migration accounting remains `136/944` until fresh independent R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A performs acceptance synchronization. This lineage material should move only `132 -> 133`.
+
+## TASK P3-A-R74-STHENO-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r74-stheno-migration-acceptance-sync`
+Base: exact accepted S Candidate `6b2a5860ebaac9adea0b6f945a611f01f21a7eeb`
+Read: `docs/reports/2026-09-20-p3-a-r74-stheno-migration-acceptance-synchronization.md`
+
+Result: record formal fresh R `MIGRATION_ACCEPTED` for PR #379 exact Candidate `6b2a5860ebaac9adea0b6f945a611f01f21a7eeb`, backed by canonical evidence `https://github.com/binchen648/fd/pull/379#issuecomment-5744243085`. The accepted migration adds exactly one frozen consumer, `servant.stheno.skill.sc-stheno-2`, preserves existing `sc-stheno-1`, changes no runtime source or product registration, and has zero removals / zero duplicates.
+
+Formal project migration accounting advances from **`136/944`** to **`137/944`**, with **`807`** remaining. PR #379 remains OPEN, unmerged, and unretargeted. Historical P3-FM09 remains `MIGRATION_BLOCKED`.
+
+Next coordinator action is a fresh migration-closure-first dependency overlay from `137/944`; prefer a fully S-ready homogeneous family, otherwise close only the nearest 1-2 narrow B2 blockers and immediately return to S migration.
+
+## TASK P3-A-FB2-35-ROUND-ACTIVE-ATTACK-PAID-COST-COMBAT-POWER-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-fb2-35-round-active-attack-paid-cost-combat-power-dispatch`
+Base: exact R74 Stheno migration acceptance sync `e93c3b03d82a3a579473a4da67124319ba9975ec`
+Read: `docs/reports/2026-09-20-p3-a-fb2-35-round-active-attack-paid-cost-combat-power-dispatch.md`
+
+Result: migration-closure-first overlay selects `servant.ibaraki.skill.sc-ibaraki-1` as the nearest closure target. Dispatch one narrow identity-free B2 seam for the exact permanent passive `combat_power:add(+6)` shape over `players_at_source_battlefield` whose current-round active-attack **actual paid mana** sum is tied highest. Add generic per-card authoritative paid-on-play provenance only as needed for that metric; do not substitute printed cost, do not support the different Twice shape, and do not migrate Ibaraki in B2.
+
+Formal migration remains **`137/944`**, remaining **`807`**. FB2-35 is zero-credit infrastructure. On fresh R acceptance plus A capability synchronization, immediately re-overlay and prefer Ibaraki S migration over any unrelated B2 seam.
+
+## TASK P3-A-R75-FB2-35-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r75-fb2-35-acceptance-sync`
+Base: exact accepted Candidate `70df7d3782b553e9f4c222289ebb6c66c619e1e0`
+Read: `docs/reports/2026-09-20-p3-a-r75-fb2-35-acceptance-synchronization.md`
+
+Result: record formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #380 exact Candidate `70df7d3782b553e9f4c222289ebb6c66c619e1e0`, backed by canonical evidence `https://github.com/binchen648/fd/pull/380#issuecomment-5744753519`. Earlier revision verdicts for historical Candidates are terminal evidence only and do not trigger rework or duplicate review.
+
+Accepted capability is limited to identity-free authoritative actual-paid-on-play provenance plus the exact permanent `source_owned` / current-round active authored-attack paid-cost-highest participant `combat_power:add(+6)` envelope. FB2-35 earns zero migration credit; formal accepted remains **`137/944`**, with **`807`** remaining. PR #380 remains OPEN, unmerged, and unretargeted.
+
+Next coordinator action is mandatory immediate re-overlay for `servant.ibaraki.skill.sc-ibaraki-1`; if no new blocker is found, dispatch S before any unrelated B2 seam.
+
+## TASK P3-A-FB2-36-SKILL-USE-FORBID-SELECTORS-DISPATCH
+
+Owner: Codex A
+Status: `DISPATCHED`
+Branch: `codex/a-p3-fb2-36-skill-use-forbid-selectors-dispatch`
+Base: `ef5c93db818a1f6ab3bf830a182e4f0281fec964`
+Read: `docs/reports/2026-09-20-p3-a-fb2-36-skill-use-forbid-selectors-dispatch.md`
+
+Result: dispatch one narrow identity-free B2 seam for exact `skill_use / forbid` play-permission selectors: (a) same-location players filtered by `notInAttack + trueNameRelease` under source-bound `while_active`, and (b) same-location opponents filtered by master/servant skill-zone + face-down state for `this_round`. Do not add generic `activate_ability` forbids, definition-ID selectors, consumer identities, or migration credit.
+
+Formal migration remains **`137/944`**, remaining **`807`**. PR #381 / Ibaraki remains pending migration review and is not part of this exact Base. After fresh B2 acceptance + A capability sync, immediately re-overlay and prefer newly S-ready consumers over unrelated infrastructure.
+
+## TASK P3-A-R76-FB2-36-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r76-fb2-36-acceptance-sync`
+Base: exact accepted Candidate `22731b5be697825bd6bfbc09faea3c333eb629b6`
+Read: `docs/reports/2026-09-20-p3-a-r76-fb2-36-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #382 exact Candidate `22731b5be697825bd6bfbc09faea3c333eb629b6`, backed by canonical evidence `https://github.com/binchen648/fd/pull/382#issuecomment-5745209825`. Accepted capability is limited to the two exact identity-free structural `skill_use / forbid` selectors and authoritative play-eligibility enforcement described by FB2-36.
+
+FB2-36 earns zero migration credit; formal migration remains **`137/944`**, with **`807`** remaining. PR #382 remains OPEN, unmerged, and unretargeted. Next action is immediate migration-closure-first re-overlay and S dispatch of the nearest homogeneous consumer target before unrelated runtime work.
+
+## TASK P3-A-R76-NURSERY-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r76-nursery-consumer-migration-dispatch`
+Base: `7bec7b8bf24150602f3c0b04edf53130de19c72e`
+Read: `docs/reports/2026-09-20-p3-a-r76-nursery-consumer-migration-dispatch.md`
+
+Result: migration-closure-first overlay dispatches exactly one homogeneous frozen identity, `servant.nursery.skill.sc-nursery-2`, now S-ready on formally accepted FB2-36. Author exactly one new standalone Nursery archive card plus focused migration evidence; no runtime production source change and no second consumer identity.
+
+Formal migration remains **`137/944`**, remaining **`807`** until fresh R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A synchronizes it. PR #381 / Ibaraki remains pending independently and is not part of this Base.
+
+## TASK P3-A-R77-NURSERY-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r77-nursery-migration-acceptance-sync`
+Base: exact accepted Candidate `ad3633676a2daca846d1982490253ca1e0ba8a05`
+Read: `docs/reports/2026-09-20-p3-a-r77-nursery-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #383 exact Candidate `ad3633676a2daca846d1982490253ca1e0ba8a05`, backed by canonical evidence `https://github.com/binchen648/fd/pull/383#issuecomment-5745315752`. Exact frozen addition is `servant.nursery.skill.sc-nursery-2`; independent Base→Candidate frozen overlap is `133/944 → 134/944`, with zero removals and zero duplicates.
+
+Formal project migration advances exactly one identity to **`138/944`**, with **`806`** remaining. PR #383 remains OPEN, unmerged, and unretargeted. PR #381 / Ibaraki remains pending independent migration review and receives no credit here. Next action is immediate closure-first re-overlay of the next S-ready consumer unlocked by accepted FB2-36.
+
+## TASK P3-A-R77-HELENA-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r77-helena-consumer-migration-dispatch`
+Base: `c0f864e5bbd6a1077d4641a78c5783832eded9c2`
+Read: `docs/reports/2026-09-20-p3-a-r77-helena-consumer-migration-dispatch.md`
+
+Result: migration-closure-first dispatches exactly one frozen identity, `servant.helena.skill.sc-helena-3`, S-ready on formally accepted FB2-36. Author exactly one standalone Helena archive card plus focused migration evidence; no runtime production source change and no second consumer identity.
+
+Formal migration remains **`138/944`**, remaining **`806`** until fresh R returns `MIGRATION_ACCEPTED` for the exact S Candidate and A synchronizes it. PR #381 / Ibaraki remains pending independently and is not part of this Base.
+## TASK P3-A-R78-HELENA-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r78-helena-migration-acceptance-sync`
+Base: exact accepted Candidate `ca8a4de1815c360ecc242f0563bf30e5e80eea5d`
+Read: `docs/reports/2026-09-20-p3-a-r78-helena-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #384 exact Candidate `ca8a4de1815c360ecc242f0563bf30e5e80eea5d`, backed by canonical evidence `https://github.com/binchen648/fd/pull/384#issuecomment-5745483145`. Exact frozen addition is `servant.helena.skill.sc-helena-3`; independent Base-to-Candidate frozen overlap is `134/944` to `135/944`, with zero removals and zero duplicates.
+
+Formal project migration advances exactly one identity to **`139/944`**, with **`805`** remaining. PR #384 remains OPEN, unmerged, and unretargeted. PR #381 / Ibaraki remains pending independent migration review and receives no credit here. Next action is immediate migration-closure-first re-overlay from the synchronized formal baseline.
+## TASK P3-A-FB2-37-DEPLOYMENT-DESTINATIONS-DISPATCH
+
+Owner: Codex A
+Status: `DISPATCHED`
+Branch: `codex/a-p3-fb2-37-deployment-destinations-dispatch`
+Base: exact R78 Helena migration acceptance sync `cebd96a34845c109b87ddb0d6563628cd906305d`
+Read: `docs/reports/2026-09-20-p3-a-fb2-37-deployment-destinations-dispatch.md`
+
+Result: closure-first overlay selects `master.kayneth.skill.s3` as the nearest one-seam target. Dispatch one narrow identity-free exact `deployment_destinations / replace` structural modifier over controller deployment to a lower-VP opponent who is the sole active occupant of an otherwise legal battlefield. Preserve the existing generic legacy product effect route only for compatibility; remove identity-bearing production helper naming and do not migrate any consumer in B2.
+
+FB2-37 earns zero migration credit. Formal migration remains **`139/944`**, with **`805`** remaining. On fresh R acceptance plus A synchronization, immediately dispatch Kayneth s3 S migration before unrelated runtime work.
+
+## TASK P3-A-R79-FB2-37-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r79-fb2-37-acceptance-sync`
+Base: exact accepted Candidate `36ed05d64c5f6c18b947789d018f461283f533e3`
+Read: `docs/reports/2026-09-20-p3-a-r79-fb2-37-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #385 exact Candidate `36ed05d64c5f6c18b947789d018f461283f533e3`, backed by canonical evidence `https://github.com/binchen648/fd/pull/385#issuecomment-5745681302`. Earlier Candidate `a87e05db6c7ab48163f51fb237d2cfc374b1087d` remains revision-only evidence. Accepted capability is the exact identity-free structural `deployment_destinations / replace` seam with runtime gating on the accepted containing ability.
+
+FB2-37 earns zero migration credit; formal migration remains **`139/944`**, with **`805`** remaining. PR #385 remains OPEN, unmerged, and unretargeted. Next action is immediate Kayneth s3 closure re-overlay and fresh S dispatch if no additional blocker appears.
+
+## TASK P3-A-R79-KAYNETH-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r79-kayneth-consumer-migration-dispatch`
+Base: exact R79 FB2-37 acceptance sync `0be87fd9bb48e596845ac7ece9d03f2d8bfd074d`
+Read: `docs/reports/2026-09-20-p3-a-r79-kayneth-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `master.kayneth.skill.s3`, now S-ready on accepted FB2-37. **Corrected container:** create isolated `data/authoring/masters/master.kayneth.p3-s3.json` following the Irisviel split-archive precedent; registered `master.kayneth.json` (including legacy `master.kayneth.skill.pride`) must remain byte-for-byte unchanged. No runtime production source, product pack/generated registration, or second consumer identity.
+
+Base frozen overlap is **`135/944`** and Candidate must be exactly `136/944`, exact +1 with zero removals/duplicates. Formal migration remains **`139/944`**, with **`805`** remaining until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
+
+## TASK P3-A-R80-KAYNETH-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r80-kayneth-migration-acceptance-sync`
+Base: exact accepted Candidate `9b64699d449ed69739ed7bdfbd56172c0d165698`
+Read: `docs/reports/2026-09-20-p3-a-r80-kayneth-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #386 exact Candidate `9b64699d449ed69739ed7bdfbd56172c0d165698`, backed by canonical evidence `https://github.com/binchen648/fd/pull/386#issuecomment-5745840642`. Exact frozen addition is `master.kayneth.skill.s3`; independent Base-to-Candidate frozen overlap is `135/944` to `136/944`, with zero removals and zero duplicates.
+
+Formal project migration advances exactly one identity to **`140/944`**, with **`804`** remaining. PR #386 remains OPEN, unmerged, and unretargeted. PR #381 / Ibaraki remains pending independent migration review and receives no credit here. Next action is immediate migration-closure-first re-overlay from the synchronized formal baseline.
+## TASK P3-A-FB2-38-CURRENT-ROUND-COMBAT-LOSS-CONDITION-DISPATCH
+
+Owner: Codex A
+Status: `DISPATCHED`
+Branch: `codex/a-p3-fb2-38-current-round-combat-loss-condition-dispatch`
+Base: exact R80 Kayneth migration acceptance sync `4ebbc438f13cb2ea3a9271332ce256f256dc2738`
+Read: `docs/reports/2026-09-20-p3-a-fb2-38-current-round-combat-loss-condition-dispatch.md`
+
+Result: closure-first overlay selects the nearest one-seam, no-missing-material target. Dispatch one narrow identity-free exact `{ type: player_flag_number_not_current_round, key: combatLossRound }` condition evaluated from authoritative `after_battle_ended` battle-phase provenance. Do not add generic player-flag state or consumer routing.
+
+FB2-38 earns zero migration credit. Formal migration remains **`140/944`**, with **`804`** remaining. On fresh R acceptance plus A synchronization, immediately re-overlay the intended closure target and dispatch S if the normalized whole card is zero-issue.
+
+## TASK P3-A-R81-FB2-38-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r81-fb2-38-acceptance-sync`
+Base: exact accepted Candidate `886313bea6d70f5b271aceeb5787dfe475c4b635`
+Read: `docs/reports/2026-09-20-p3-a-r81-fb2-38-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #387 exact Candidate `886313bea6d70f5b271aceeb5787dfe475c4b635`, backed by canonical evidence `https://github.com/binchen648/fd/pull/387#issuecomment-5746633189`. Earlier revision verdicts bind historical Candidates only. Accepted capability is the exact identity-free current-battle-phase terminal combat-loss-absence condition dispatched by FB2-38.
+
+FB2-38 earns zero migration credit; formal migration remains **`140/944`**, with **`804`** remaining. PR #387 remains OPEN, unmerged, and unretargeted. Next action is immediate Darius s1 whole-card re-overlay and S dispatch if zero-issue.
+
+## TASK P3-A-R81-DARIUS-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r81-darius-consumer-migration-dispatch`
+Base: exact R81 FB2-38 acceptance sync `1a57ee8443611e6c32fab4fee9ed8afd7e98c3d1`
+Read: `docs/reports/2026-09-20-p3-a-r81-darius-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `servant.darius.skill.sc-darius-1`, now S-ready on formally accepted FB2-38. Whole-card normalization is zero-issue: standard action play envelope with explicit mana threshold 0; residual `after_battle_ended`; exact `source_active` plus FB2-38 combat-loss-absence condition; `close_source_card`; `while_active/immediate/remain_active`. No runtime production source or second consumer identity.
+
+Base branch-local frozen overlap is **`136/944`** and Candidate must be exactly **`137/944`**, exact +1 with zero removals/duplicates. Formal migration remains **`140/944`**, remaining **`804`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
+
+## TASK P3-A-R81-DARIUS-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r81-darius-migration-acceptance-sync`
+Base: exact accepted Candidate `776ee46f5612481176a853dba099b489328b3236`
+Read: `docs/reports/2026-09-20-p3-a-r81-darius-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #388 exact Candidate `776ee46f5612481176a853dba099b489328b3236`, backed by canonical evidence `https://github.com/binchen648/fd/pull/388#issuecomment-5747146073`. Earlier reviewed Candidate `e6ac0c832914ba20911bbc2b461d5786a1577cb7` remains revision-only evidence and must not be re-reviewed. Exact frozen addition is `servant.darius.skill.sc-darius-1`; independent Base-to-Candidate frozen overlap is `136/944` to `137/944`, exact +1 with zero removals and zero duplicates.
+
+Formal project migration advances exactly one identity to **`141/944`**, with **`803`** remaining. PR #388 remains OPEN, unmerged, and unretargeted. PR #381 / Ibaraki remains an independent pending backlog item and receives no Darius credit. Under the frozen migration-credit-first scheduler, do not open FB2-39 while migration-ready work exists; next mechanically check PR #381 for fresh R evidence, then continue to the next `S_READY_NOW`.
+
+## TASK P3-A-FB2-39-GAME-START-STATUS-ASSIGNMENT-DISPATCH
+
+Owner: Codex A
+Status: `DISPATCHED`
+Branch: `codex/a-p3-fb2-39-game-start-status-assignment-dispatch`
+Base: exact R81 Darius migration acceptance sync `e523e10dd795c032a6b0e70627b7276213784604`; formal accounting reconciled through historical Ibaraki sync `51f8af150f10a249ba471aaa65d7d7b49cabc98e`
+Read: `docs/reports/2026-09-20-p3-a-fb2-39-game-start-status-assignment-dispatch.md`
+
+Result: migration-credit-first proof shows the current `S_READY_NOW` queue is zero at **`142/944`**. Dispatch one narrow identity-free B2 seam for authoritative `game_start` + exact `source_owned` player-status assignment to `controller` or exact `turn_order_next_player`, with server-owned deduplicated status keys and strict fail-closed shape validation. Intended closure target is `master.amakusa.skill.s1`; no consumer identity may appear in production routing and no consumer migration is authorized in B2.
+
+FB2-39 earns zero migration credit. Formal migration remains **`142/944`**, with **`802`** remaining. On fresh R acceptance plus A synchronization, immediately re-overlay the intended singleton consumer and dispatch S if zero-issue.
+
+## TASK P3-A-R82-FB2-39-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r82-fb2-39-acceptance-sync`
+Base: exact accepted Candidate `3ca21ec1c20cc7d6689b3fef6c28f982bb4ff93c`
+Read: `docs/reports/2026-09-20-p3-a-r82-fb2-39-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #389 exact Candidate `3ca21ec1c20cc7d6689b3fef6c28f982bb4ff93c`, backed by canonical evidence `https://github.com/binchen648/fd/pull/389#issuecomment-5747497720`. Accepted capability is the narrow identity-free authoritative `game_start` + exact `source_owned` player-status assignment seam to `controller` or exact `turn_order_next_player`, with server-owned deduplicated opaque status keys and fail-closed topology/shape validation.
+
+FB2-39 earns zero migration credit; formal migration remains **`142/944`**, with **`802`** remaining. PR #389 remains OPEN, unmerged, and unretargeted. Next action is immediate `master.amakusa.skill.s1` whole-card re-overlay and fresh singleton S dispatch if zero-issue.
+
+## TASK P3-A-R82-AMAKUSA-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r82-amakusa-consumer-migration-dispatch`
+Base: exact R82 FB2-39 acceptance sync `00edec31096190985a2e98f359c923a3ad913964`
+Read: `docs/reports/2026-09-20-p3-a-r82-amakusa-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `master.amakusa.skill.s1` (`教则`), now S-ready on formally accepted FB2-39. A temporary whole-card normalization probe returned loader `report=[]`, automatic mode, and exact FB2-39 semantic acceptance for authoritative `game_start` + exact `source_owned` + the three Reference-backed opaque status assignments. No additional runtime seam is required.
+
+Base frozen overlap is **`137/944`** and Candidate must be exactly **`138/944`**, exact +1 Amakusa s1 with zero removals/duplicates. Formal migration remains **`142/944`**, remaining **`802`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
+
+## TASK P3-A-R83-AMAKUSA-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r83-amakusa-migration-acceptance-sync`
+Base: exact accepted Candidate `f6be715b70ec02cc5632a2157ba96bfc853c9283`
+Read: `docs/reports/2026-09-20-p3-a-r83-amakusa-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #390 exact Candidate `f6be715b70ec02cc5632a2157ba96bfc853c9283`, backed by canonical evidence `https://github.com/binchen648/fd/pull/390#issuecomment-5747582266`. Exact frozen addition is `master.amakusa.skill.s1`; independent Base-to-Candidate frozen overlap is `137/944` to `138/944`, exact +1 with zero removals and zero duplicates. No production runtime or product registration changed.
+
+Formal project migration advances exactly one identity to **`143/944`**, with **`801`** remaining. PR #390 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted zero-gap whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
+
+## TASK P3-A-FB2-40-SOURCE-ACTIVE-ROUND-COUNT-DISPATCH
+
+Owner: Codex A
+Status: `DISPATCHED`
+Branch: `codex/a-p3-fb2-40-source-active-round-count-dispatch`
+Base: exact R83 Amakusa migration acceptance sync `e6441d15f5f735b78b8d56eee442b213ff7c981e`
+Read: `docs/reports/2026-09-20-p3-a-fb2-40-source-active-round-count-dispatch.md`
+
+Result: migration-credit-first delta proof shows the current `S_READY_NOW` queue is zero at **`143/944`**. FB2-39 could newly unlock only `master.amakusa.skill.s1`, which is now migrated and added no runtime capability. Dispatch one narrow identity-free controlled formula metric, exact `source_card_active_round_count`, derived from authoritative source-card `playedRound`. Intended closure target is Nero s1; its separate `combatWinRound` absence condition remains unsupported and is not in FB2-40 scope.
+
+FB2-40 earns zero migration credit; formal migration remains **`143/944`**, with **`801`** remaining. Fresh R is required before A synchronization; no merge/retarget.
+
+## TASK P3-A-R84-FB2-40-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r84-fb2-40-acceptance-sync`
+Base: exact accepted Candidate `0f344ad5edf3bced8f8e4fced4098346a9eb98cb`
+Read: `docs/reports/2026-09-20-p3-a-r84-fb2-40-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #391 exact Candidate `0f344ad5edf3bced8f8e4fced4098346a9eb98cb`, backed by canonical evidence `https://github.com/binchen648/fd/pull/391#issuecomment-5747670710`. Accepted capability is the narrow identity-free controlled formula metric `source_card_active_round_count`, derived from authoritative source-card `playedRound` with fail-closed source provenance validation.
+
+FB2-40 earns zero migration credit; formal migration remains **`143/944`**, with **`801`** remaining. PR #391 remains OPEN, unmerged, and unretargeted. Next action is immediate migration-credit-first re-overlay; Nero s1 still has its distinct exact `combatWinRound` absence-condition gap and receives no credit here.
+
+## TASK P3-A-FB2-41-CURRENT-ROUND-COMBAT-WIN-CONDITION-DISPATCH
+
+Owner: Codex A
+Status: `DISPATCHED`
+Branch: `codex/a-p3-fb2-41-current-round-combat-win-condition-dispatch`
+Base: exact R84 FB2-40 acceptance sync `0aa115cf06d9dc652af61b4484ab230baa239318`
+Read: `docs/reports/2026-09-20-p3-a-fb2-41-current-round-combat-win-condition-dispatch.md`
+
+Result: migration-credit-first delta proof shows the current `S_READY_NOW` queue remains zero at **`143/944`**. FB2-40's exact `source_card_active_round_count` metric appears only on Nero s1 in Locked Reference, and Nero s1 still has the separate exact `combatWinRound` current-round absence condition. Dispatch one narrow identity-free server-owned current-round combat-win ledger/condition seam; no generic player flags and no consumer routing.
+
+FB2-41 earns zero migration credit; formal migration remains **`143/944`**, with **`801`** remaining. Fresh R is required before A synchronization; no merge/retarget.
+
+## TASK P3-A-R85-FB2-41-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r85-fb2-41-acceptance-sync`
+Base: exact accepted Candidate `72b2e284f93beb2d6659496b28a90e5719c78c95`
+Read: `docs/reports/2026-09-20-p3-a-r85-fb2-41-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #392 exact revised Candidate `72b2e284f93beb2d6659496b28a90e5719c78c95`, backed by canonical evidence `https://github.com/binchen648/fd/pull/392#issuecomment-5747802266`. Accepted capability is the narrow identity-free authoritative current-round combat-win ledger plus exact `player_flag_number_not_current_round/combatWinRound` condition; the prior loss-effect-suppression blocker is fixed and covered through the real game-loop producer path.
+
+FB2-41 earns zero migration credit; formal migration remains **`143/944`**, with **`801`** remaining. PR #392 remains OPEN, unmerged, and unretargeted. Next action is immediate whole-card re-overlay of `servant.nero.skill.sc-nero-1`; dispatch S only if it is mechanically zero-gap.
+
+## TASK P3-A-R86-NERO-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r86-nero-consumer-migration-dispatch`
+Base: exact R85 FB2-41 acceptance sync `e8c58b7d8b4c822f8e658935bfde8b14cf78bdf2`
+Read: `docs/reports/2026-09-20-p3-a-r86-nero-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `servant.nero.skill.sc-nero-1` (`邀至心荡神驰的黄金剧场`), now mechanically `S_READY_NOW` after accepted FB2-40 + FB2-41. Whole-card temporary probes return loader `report=[]`, automatic execution, round-2 active-round reward = 2 VP after a controller win, authoritative `combatWinRound` recording, keep-open after a win, and close-on-round-end after no win. No additional runtime seam is required.
+
+Base frozen overlap is **`138/944`** and Candidate must be exactly **`139/944`**, exact +1 Nero s1 with zero removals/duplicates. Formal migration remains **`143/944`**, remaining **`801`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
+
+## TASK P3-A-R87-NERO-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r87-nero-migration-acceptance-sync`
+Base: exact accepted Candidate `868b543d7b508aece7da054a6b8a9a66b675efd9`
+Read: `docs/reports/2026-09-20-p3-a-r87-nero-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #393 exact Candidate `868b543d7b508aece7da054a6b8a9a66b675efd9`, backed by canonical evidence `https://github.com/binchen648/fd/pull/393#issuecomment-5747885450`. Exact frozen addition is `servant.nero.skill.sc-nero-1`; independent Base-to-Candidate frozen overlap is `138/944` to `139/944`, exact +1 with zero removals and zero duplicates. Existing FB2-40/FB2-41 capabilities fully execute the migrated card without a new runtime seam.
+
+Formal project migration advances exactly one identity to **`144/944`**, with **`800`** remaining. PR #393 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted zero-gap whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
+## TASK P3-A-FB2-42-CONTROLLED-CARD-CLOSE-FORBID-DISPATCH
+
+Owner: Codex A
+Status: `DISPATCHED`
+Branch: `codex/a-p3-fb2-42-card-close-forbid-dispatch`
+Base: exact R87 Nero migration acceptance sync `8cbd313373ce4e683d0454f10bdcb82116093724`
+Read: `docs/reports/2026-09-20-p3-a-fb2-42-controlled-card-close-forbid-dispatch.md`
+
+Result: migration-credit-first targeted re-probe finds the current `S_READY_NOW` queue zero at **`144/944`**. A fresh Darius s2 mechanical probe proves its +1 undead power clause is already expressible through existing identity-free `card.currentPower` + exact `has_card_id` this-round modifiers; its sole remaining whole-card gap is exact this-round `card_close` forbid for controller-owned cards selected by one structural definition id. Dispatch that bounded zero-credit seam only; no consumer routing or broad card-action prohibition DSL.
+
+FB2-42 earns zero migration credit; formal migration remains **`144/944`**, with **`800`** remaining. Fresh R is required before A synchronization; no merge/retarget. On acceptance, immediately re-overlay Darius s2 and dispatch singleton S only if whole-card zero-gap.
+
+## TASK P3-A-R88-FB2-42-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r88-fb2-42-acceptance-sync`
+Base: exact accepted Candidate `d082a90e194ee4cf1f528086f1ba01150a9ead41`
+Read: `docs/reports/2026-09-20-p3-a-r88-fb2-42-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #394 exact revised Candidate `d082a90e194ee4cf1f528086f1ba01150a9ead41`, backed by canonical evidence `https://github.com/binchen648/fd/pull/394#issuecomment-5748132070`. The prior Candidate `5fc30e258be7f007e979008d9d46a43a2917098a` was rejected for dead-source liveness; the accepted direct-child revision centralizes physical active-source detection and proves typed-path source closure drops the forbid before the target close.
+
+FB2-42 earns zero migration credit; formal migration remains **`144/944`**, with **`800`** remaining. PR #394 remains OPEN, unmerged, and unretargeted. Next action is immediate whole-card re-overlay of `servant.darius.skill.sc-darius-2`; dispatch singleton S only if it is mechanically zero-gap.
+
+
+## TASK P3-A-R88-DARIUS-S2-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r88-darius-s2-consumer-migration-dispatch`
+Base: exact R88 FB2-42 acceptance sync `6b0ae42dc48b42171a3895ee3ee40d95f743d2d2`
+Read: `docs/reports/2026-09-20-p3-a-r88-darius-s2-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `servant.darius.skill.sc-darius-2` (`巴比伦之门`), now mechanically `S_READY_NOW` after accepted FB2-42. Whole-card temporary probe returns loader `report=[]`, automatic execution, exact +1 power and close protection for all three normalized controller-owned undead definition ids, no effect on unrelated/opponent cards, and exact round expiry. No additional runtime seam is required.
+
+Base frozen overlap is **`139/944`** and Candidate must be exactly **`140/944`**, exact +1 Darius s2 with zero removals/duplicates. Formal migration remains **`144/944`**, remaining **`800`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
+
+## TASK P3-A-R89-DARIUS-S2-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r89-darius-s2-migration-acceptance-sync`
+Base: exact accepted Candidate `76023c8c852098679d05d4d2877af9ad92650a65`
+Read: `docs/reports/2026-09-20-p3-a-r89-darius-s2-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #395 exact Candidate `76023c8c852098679d05d4d2877af9ad92650a65`, backed by canonical evidence `https://github.com/binchen648/fd/pull/395#issuecomment-5748256383`. Exact frozen addition is `servant.darius.skill.sc-darius-2`; independent Base-to-Candidate frozen overlap is `139/944` to `140/944`, exact +1 with zero removals and zero duplicates. Existing Darius s1 remains semantically unchanged and no production runtime/product registration changed.
+
+Formal project migration advances exactly one identity to **`145/944`**, with **`799`** remaining. PR #395 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
+
+## TASK P3-A-FB2-43-EVENT-LOCATION-EQUALS-CONTROLLER-DISPATCH
+
+Owner: Codex A
+Status: `DISPATCHED`
+Branch: `codex/a-p3-fb2-43-event-location-equals-controller-dispatch`
+Base: `64b4bb7a8b1379dd858c746e77f503b271950ec1`
+Read: `docs/reports/2026-09-20-p3-a-fb2-43-event-location-equals-controller-dispatch.md`
+
+Result: migration-credit-first delta proof keeps the current `S_READY_NOW` queue zero at **`145/944`** after Darius s2: FB2-42's only newly admitted frozen modifier occurrence was Darius s2 itself, now migrated, and its S branch added no runtime capability. Targeted closure probing selects `servant.siegfried.skill.sc-siegfried-2`; every normalized whole-card contract is already accepted except exact type-only `event_location_equals_controller`. Dispatch only that identity-free movement-event relation condition. FB2-43 earns zero migration credit; formal state remains **`145/944`**, **`799` remaining**.
+
+## TASK P3-A-R90-FB2-43-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r90-fb2-43-acceptance-sync`
+Base: exact accepted Candidate `19ff09ed65e34f241d332250e1cc1370071ecf75`
+Read: `docs/reports/2026-09-20-p3-a-r90-fb2-43-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #396 exact Candidate `19ff09ed65e34f241d332250e1cc1370071ecf75`, backed by canonical evidence `https://github.com/binchen648/fd/pull/396#issuecomment-5748914327`. Accepted capability is the narrow identity-free exact type-only `event_location_equals_controller` condition for authoritative `after_controller_enters_location`, with fail-closed current-controller location equality and narrowly bounded opponent-event admission only when composed with accepted `event_player_is_opponent`.
+
+FB2-43 earns zero migration credit; formal migration remains **`145/944`**, with **`799`** remaining. PR #396 remains OPEN, unmerged, and unretargeted. Next action is immediate whole-card re-overlay of `servant.siegfried.skill.sc-siegfried-2`; dispatch singleton S only if it is mechanically zero-gap.
+
+## TASK P3-A-R90-SIEGFRIED-S2-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r90-siegfried-consumer-migration-dispatch`
+Base: exact R90 FB2-43 acceptance sync `dcaa4d6cd9e9125bccaa99a530ec92cf459a5591`
+Read: `docs/reports/2026-09-20-p3-a-r90-siegfried-s2-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `servant.siegfried.skill.sc-siegfried-2` (`恶龙之血铠`), now mechanically `S_READY_NOW` after accepted FB2-43. Whole-card read-only re-overlay on exact reviewed runtime returns loader `report=[]`, automatic execution, structural true-name release, real opponent movement to the controller battlefield closes the source, and self/elsewhere/unrevealed/non-battlefield/inactive negatives fail closed. No additional runtime seam is required.
+
+Base frozen overlap is **`140/944`**, duplicates `0`; Candidate must be exactly **`141/944`**, exact +1 Siegfried s2 with zero removals/duplicates and no second frozen identity. Formal migration remains **`145/944`**, remaining **`799`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
+
+
+## TASK P3-A-R91-SIEGFRIED-S2-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r91-siegfried-s2-migration-acceptance-sync`
+Base: exact accepted Candidate `edb92db571085b8059f203a504a9a39eb2d70e7e`
+Read: `docs/reports/2026-09-20-p3-a-r91-siegfried-s2-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #399 exact Candidate `edb92db571085b8059f203a504a9a39eb2d70e7e`, backed by canonical evidence `https://github.com/binchen648/fd/pull/399#issuecomment-5749092823`. Exact frozen addition is `servant.siegfried.skill.sc-siegfried-2`; independent Base-to-Candidate frozen overlap is `140/944` to `141/944`, exact +1 with zero removals and zero duplicate frozen ids. Existing accepted FB2-43 supplies the final identity-free event-location equality seam and no production runtime/product registration changed.
+
+Formal project migration advances exactly one identity to **`146/944`**, with **`798`** remaining. PR #399 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
+
+
+## TASK P3-FB2-44-FACE-UP-CARDS-PER-ROUND
+
+Owner: Codex B2
+Status: `DISPATCHED`
+Branch: `codex/b2-p3-fb2-44-face-up-cards-per-round`
+Base: `7cc689dba18779619efde79e9367e5dd55f05f4f`
+Read: `docs/reports/2026-09-20-p3-a-fb2-44-face-up-cards-per-round-dispatch.md`
+
+Result required: implement only the exact identity-free same-battlefield `face_up_cards_per_round=set(1)` while-active static rule envelope needed by the current-baseline whole-card probe for `servant.leonidas.skill.sc-leonidas-1`. Server-owned actual completed face-up plays must be counted per round; face-down plays do not count; all authoritative regular/batch/effect play gateways must fail closed when the live allowance is exhausted; inactive/non-battlefield source and players elsewhere are unaffected. Exact loader selector only; no identity-specific runtime logic and no generic arbitrary play-limit engine.
+
+This is zero-credit capability work: formal migration remains **`146/944`**, **`798`** remaining. After fresh R acceptance and A synchronization, immediately re-overlay the entire Leonidas s1 card before any singleton S dispatch.
+## TASK P3-A-R92-FB2-44-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r92-fb2-44-acceptance-sync`
+Base: exact accepted Candidate `fe0d89be242b46ee0834544573bede6f3c73be5d`
+Read: `docs/reports/2026-09-20-p3-a-r92-fb2-44-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #401 exact Candidate `fe0d89be242b46ee0834544573bede6f3c73be5d`, backed by canonical evidence `https://github.com/binchen648/fd/pull/401#issuecomment-5749622195`. Accepted capability is only the identity-free same-battlefield while-active exact `face_up_cards_per_round=set(1)` seam with server-owned completed face-up counting and authoritative fail-closed play gateways.
+
+FB2-44 earns zero migration credit; formal migration remains **`146/944`**, with **`798`** remaining. Current authoring overlap remains `141/944`, duplicates `0`, and Leonidas s1 remains absent. PR #401 remains OPEN, unmerged, and unretargeted. Next action is immediate whole-card re-overlay of `servant.leonidas.skill.sc-leonidas-1`; dispatch singleton S only if mechanically zero-gap.
+## TASK P3-A-R92-LEONIDAS-S1-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r92-leonidas-s1-consumer-migration-dispatch`
+Base: exact R92 FB2-44 acceptance sync `978e2e70588bf6f002c42b3a6b3d47cc7919eb91`
+Read: `docs/reports/2026-09-20-p3-a-r92-leonidas-s1-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `servant.leonidas.skill.sc-leonidas-1` (`炎门守护者`), now mechanically `S_READY_NOW` after accepted FB2-44. Whole-card read-only re-overlay returns loader `report=[]`, all-automatic execution, structural true-name declaration on use, exact same-battlefield one-face-up-per-round enforcement, face-down/outside-location negatives, and real authoritative controller movement closing the source while opponent movement does not. No additional runtime seam is required.
+
+Base frozen overlap is **`141/944`**, duplicates `0`; Candidate must be exactly **`142/944`**, exact +1 Leonidas s1 with zero removals/duplicates and no second frozen identity. Formal migration remains **`146/944`**, remaining **`798`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
+
+## TASK P3-A-R92-LEONIDAS-S1-CI-COMPATIBILITY-SCOPE-CORRECTION
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r92-leonidas-s1-ci-compatibility-scope-correction`
+Base: exact Leonidas S dispatch `048d87108cc44abbd2cefe44e52b24af9fdc2351`
+Read: `docs/reports/2026-09-20-p3-a-r92-leonidas-s1-ci-compatibility-scope-correction.md`
+
+Result: the authorized Leonidas +1 makes repository frozen authoring overlap exactly `142/944`, but historical `packages/rules/tests/siegfried-s2-consumer-migration.test.ts` still hard-codes the earlier global snapshot `141`. S is additionally authorized to change only that old test's unstable absolute global-overlap assertion into stable Siegfried invariants (frozen denominator `944`, zero duplicate frozen ids, Siegfried s2 authored exactly once). No Siegfried production semantics, runtime, product/generated registration, second frozen identity, merge, retarget, or migration credit is authorized.
+
+Formal migration remains **`146/944`**, **`798`** remaining. Leonidas Candidate must still prove exact current overlap **`142/944`** with exact +1 `servant.leonidas.skill.sc-leonidas-1`.
+
+## TASK P3-A-R93-LEONIDAS-S1-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r93-leonidas-s1-migration-acceptance-sync`
+Base: exact accepted Candidate `258df4fa845df6c0a8c0c2d135b0a3cda17020a3`
+Read: `docs/reports/2026-09-20-p3-a-r93-leonidas-s1-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #406 exact Candidate `258df4fa845df6c0a8c0c2d135b0a3cda17020a3`, backed by canonical evidence `https://github.com/binchen648/fd/pull/406#issuecomment-5749874874`. Exact frozen addition is `servant.leonidas.skill.sc-leonidas-1`; independent Base-to-Candidate frozen overlap is `141/944` to `142/944`, exact +1 with zero removals and zero duplicate frozen ids. The fourth Candidate file is only the A-authorized compatibility correction removing Siegfried s2's stale absolute repository-overlap snapshot; no second frozen identity or production semantic change is present.
+
+Formal project migration advances exactly one identity to **`147/944`**, with **`797`** remaining. PR #406 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
+## TASK P3-A-R93-DARNIC-S1A-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r93-darnic-s1a-consumer-migration-dispatch`
+Base: exact R93 Leonidas migration acceptance sync `0d27a0708019cb0b4d6854fefea6e273cc25b455`
+Read: `docs/reports/2026-09-20-p3-a-r93-darnic-s1a-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `master.darnic.skill.s1a` (`噬魂者`), mechanically `S_READY_NOW` on the current accepted baseline. Exact-ID whole-card probe returns loader `report=[]`, all-automatic execution, authoritative battle-win optional response with accept `mana -> 4` and decline no-op, plus exact round-end `mana <= 2` VP penalty positive/negative behavior. No new runtime seam is required.
+
+Base frozen overlap is **`142/944`**, duplicates `0`; Candidate must be exactly **`143/944`**, exact +1 Darnic s1a with zero removals/duplicates and no second frozen identity. S is additionally authorized only to replace Leonidas s1's stale repository-wide absolute `142` test assertion with stable Leonidas invariants; no Leonidas production change is authorized. Formal migration remains **`147/944`**, remaining **`797`** until fresh R `MIGRATION_ACCEPTED` plus A synchronization.
+## TASK P3-A-R94-DARNIC-S1A-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r94-darnic-s1a-migration-acceptance-sync`
+Base: exact accepted Candidate `98fd4b52c3c70943410b72a85aec4e7b612987d0`
+Read: `docs/reports/2026-09-20-p3-a-r94-darnic-s1a-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #407 exact Candidate `98fd4b52c3c70943410b72a85aec4e7b612987d0`, backed by canonical evidence `https://github.com/binchen648/fd/pull/407#issuecomment-5750144662`. Exact frozen addition is `master.darnic.skill.s1a`; independent Base-to-Candidate frozen overlap is `142/944` to `143/944`, exact +1 with zero removals and zero duplicate frozen ids. The fourth Candidate file is only the A-authorized compatibility correction removing Leonidas s1's stale absolute repository-overlap snapshot; no second frozen identity or production semantic change is present.
+
+Formal project migration advances exactly one identity to **`148/944`**, with **`796`** remaining. PR #407 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
+
+## TASK P3-FB2-45-PREBATTLE-DEFEAT-ROUND-ATTACK-ATTRIBUTE
+
+Owner: Codex B2
+Status: `DISPATCHED`
+Branch: `codex/b2-p3-fb2-45-prebattle-defeat-round-attack-attribute`
+Base: exact synchronized formal baseline `0ffcbdbb8f9e0dbdf796bd95de7fc9c0601821c2`
+Read: `docs/reports/2026-09-20-p3-a-fb2-45-prebattle-defeat-round-attack-attribute-dispatch.md`
+
+Result required: implement only the exact identity-free action-phase pre-battle `defeat_player` shape whose target is `engaged_opponents` with the sole predicate `no_attack_played_this_round_with_attribute(<attribute>)`. Use authoritative ordinary/add-to-attack `playedRound` provenance and a separate typed round+battlefield pre-battle defeat ledger consumed by battle settlement while honoring existing battle-loss immunity. Do not widen Presence Concealment, arbitrary defeat scopes/predicates, elimination, or identity-specific runtime routing.
+
+This is zero-credit capability work: formal migration remains **`148/944`**, **`796`** remaining. After fresh R acceptance and A synchronization, immediately re-overlay the complete `servant.medusa.skill.sc-medusa-2` card and dispatch singleton S only if it is mechanically zero-gap.
+
+## TASK P3-A-R95-FB2-45-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r95-fb2-45-acceptance-sync`
+Base: exact accepted Candidate `17685e678e758cb38032732bf15d47b07592d81e`
+Read: `docs/reports/2026-09-21-p3-a-r95-fb2-45-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #408 exact Candidate `17685e678e758cb38032732bf15d47b07592d81e`, backed by canonical evidence `https://github.com/binchen648/fd/pull/408#issuecomment-5752550000`. Accepted capability is only the bounded identity-free action-phase pre-battle `defeat_player` shape targeting `engaged_opponents` with the sole `no_attack_played_this_round_with_attribute(<attribute>)` predicate, authoritative current-round ordinary/add-to-attack provenance, a separate round+battlefield ledger, battle-loss immunity, matching-settlement consumption, and fail-closed whole-ability admission.
+
+FB2-45 earns zero migration credit; formal migration remains **`148/944`**, with **`796`** remaining. Current material authoring overlap remains **`143/944`**, duplicates **`0`**, and `servant.medusa.skill.sc-medusa-2` remains absent. PR #408 remains OPEN, unmerged, and unretargeted. Next action is immediate whole-card re-overlay of `servant.medusa.skill.sc-medusa-2`; dispatch singleton S only if it is mechanically zero-gap.
+
+## TASK P3-A-R95-MEDUSA-S2-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r95-medusa-s2-consumer-migration-dispatch`
+Base: exact R95 FB2-45 acceptance-sync `02d7a696658b639cdd7bfecc3e377dc4abebdbf0`
+Read: `docs/reports/2026-09-21-p3-a-r95-medusa-s2-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `servant.medusa.skill.sc-medusa-2` (`石化之魔眼`), after a fresh complete-card re-overlay on the synchronized FB2-45 runtime returned loader `report=[]`, all-automatic execution, accepted FB2-45 classifier, structural true-name release on ability declaration, real play cost/activation, exact no-current-round-`迅捷` defeat settlement, ordinary/face-down/add-to-attack `迅捷` protection, Luck immunity, idempotence and round cleanup. No additional B2 seam is required.
+
+Base frozen authoring overlap is **`143/944`**, duplicates **`0`**; Candidate must be exactly **`144/944`**, exact +1 Medusa s2 with zero removals/duplicates and no second frozen identity. No stale absolute `143` compatibility snapshot exists, so S has no compatibility-edit authorization. Formal migration remains **`148/944`**, **`796`** remaining until fresh R `MIGRATION_ACCEPTED` plus A synchronization. Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
+
+## TASK P3-A-R96-MEDUSA-S2-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r96-medusa-s2-migration-acceptance-sync`
+Base: exact accepted Candidate `b37828530d6a8cf8f0f04ae2057ed3587e1c23a4`
+Read: `docs/reports/2026-09-21-p3-a-r96-medusa-s2-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #409 exact Candidate `b37828530d6a8cf8f0f04ae2057ed3587e1c23a4`, backed by canonical evidence `https://github.com/binchen648/fd/pull/409#issuecomment-5752721739`. Exact frozen addition is `servant.medusa.skill.sc-medusa-2`; independent Base-to-Candidate frozen overlap is `143/944` to `144/944`, exact +1 with zero removals and zero duplicate frozen ids. Existing `servant.medusa.skill.sc-medusa-1` remains authored exactly once; no production semantic or product/generated change is present.
+
+Formal project migration advances exactly one identity to **`149/944`**, with **`795`** remaining. PR #409 remains OPEN, unmerged, and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
+
+## TASK P3-FB2-46-BATTLE-LOSS-VP-WINNER-REWARD
+
+Owner: Codex B2
+Status: `READY`
+Branch: `codex/b2-p3-fb2-46-battle-loss-vp-winner-reward`
+Base: exact A dispatch Candidate on `codex/a-p3-fb2-46-battle-loss-vp-winner-reward-dispatch`
+Read: `docs/reports/2026-09-21-p3-a-fb2-46-battle-loss-vp-winner-reward-dispatch.md`
+
+Result required: implement only the exact identity-free authoritative battle-loss VP transaction released by A: on a trusted `after_controller_loses_battle` event, deduct a fixed positive VP amount from the losing controller with floor zero; only when actual loss is positive, grant a fixed VP reward once to every winner from that same frozen `battleResult`. Fail closed on malformed ability shape or battle provenance. Do not add generic `lose_victory_points`, generic event-winner targeting, generic `thenIfAnyLost`, `player.defeated`, identity routing, consumer authoring, or unrelated VP/battle semantics.
+
+This is zero-credit capability work: formal migration remains **`149/944`**, **`795`** remaining. After exact fresh R acceptance and A synchronization, re-overlay the complete `servant.nobunaga.skill.sc-nobunaga-3`; singleton S is allowed only if the whole card is then mechanically zero-gap.
+
+## TASK P3-A-R97-FB2-46-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r97-fb2-46-acceptance-sync`
+Base: exact accepted Candidate `43ba2b1b7fc8dc53a9602b70dcf869f50784a58d`
+Read: `docs/reports/2026-09-21-p3-a-r97-fb2-46-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #410 exact Candidate `43ba2b1b7fc8dc53a9602b70dcf869f50784a58d`, backed by canonical evidence `https://github.com/binchen648/fd/pull/410#issuecomment-5753024529`. The prior Candidate `2c4d46f8a3df3ffdc9e48f992308ae5c7ecdfb49` was rejected only for the raw `markers` fail-closed gap; the accepted revision closes that exact finding without widening loader/runtime settlement behavior. Accepted capability remains only the bounded identity-free trusted battle-loss VP transaction: floor the losing controller's fixed VP loss at zero and, only on actual positive loss, grant a fixed reward once to every winner from the same frozen battle result.
+
+FB2-46 earns zero migration credit; formal migration remains **`149/944`**, with **`795`** remaining. Material authoring overlap remains **`144/944`**, duplicates **`0`**, and no consumer identity is added. PR #410 remains OPEN, unmerged and unretargeted. Next action is a fresh complete-card reconstruction of `servant.nobunaga.skill.sc-nobunaga-3` on this synchronized runtime; dispatch singleton S only if the full card is mechanically zero-gap, otherwise record the residual blocker and continue migration-credit-first probing.
+
+## TASK P3-FB2-47-CONTROLLER-DEFEATED-VP-REWARD
+
+Owner: Codex B2
+Status: `READY`
+Branch: `codex/b2-p3-fb2-47-controller-defeated-vp-reward`
+Base: exact A dispatch Candidate on `codex/a-p3-fb2-47-controller-defeated-vp-dispatch`
+Read: `docs/reports/2026-09-21-p3-a-fb2-47-controller-defeated-vp-reward-dispatch.md`
+
+Result required: implement only the exact identity-free authoritative controller-defeated fact -> fixed controller VP reward seam released by A. Add one trusted defeated trigger derived from the frozen unsuppressed loser fact and process it before that controller's `after_controller_loses_battle`; admit only the exact forced-trigger + `event_player_is_controller` + fixed positive controller `adjust_victory_points` envelope. Fail closed on malformed authoring or battle provenance. Do not add generic client `player.defeated`, generic `event_type_is`, persistent defeated state, generic defeat engine, identity routing, consumer authoring, or unrelated VP/battle semantics.
+
+This is zero-credit capability work: formal migration remains **`149/944`**, **`795`** remaining. After exact fresh R acceptance and A synchronization, freshly re-overlay the complete `servant.nobunaga.skill.sc-nobunaga-3`; singleton S is allowed only if both frozen clauses and their ordering are then mechanically zero-gap.
+
+## TASK P3-A-R98-FB2-47-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r98-fb2-47-acceptance-sync`
+Base: exact accepted Candidate `79e8c89202acef86b522aba4695d8b97961c71fd`
+Read: `docs/reports/2026-09-21-p3-a-r98-fb2-47-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #411 exact Candidate `79e8c89202acef86b522aba4695d8b97961c71fd`, backed by canonical evidence `https://github.com/binchen648/fd/pull/411#issuecomment-5753617134`. The prior Candidate `e4dd39b7afc5a5801ff4e2c855fdedf611895e8a` was rejected only for the frozen-root provenance substitution gap; the accepted revision binds controller-defeated facts to the immutable first authoritative battle-result snapshot without widening authoring or defeat semantics.
+
+FB2-47 earns zero migration credit; formal migration remains **`149/944`**, with **`795`** remaining. Material authoring overlap remains **`144/944`**, duplicates **`0`**, and no consumer identity is added. PR #411 remains OPEN, unmerged and unretargeted. Next action is a fresh complete-card reconstruction of `servant.nobunaga.skill.sc-nobunaga-3` on this synchronized runtime; dispatch singleton S only if both frozen clauses, their ordering, static metadata and full runtime behavior are mechanically zero-gap.
+
+## TASK P3-A-R98-NOBUNAGA-S3-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r98-nobunaga-s3-consumer-migration-dispatch`
+Base: exact R98 FB2-47 acceptance-sync `2da84659aeebc0a4043076425dac187e9af019bf`
+Read: `docs/reports/2026-09-21-p3-a-r98-nobunaga-s3-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `servant.nobunaga.skill.sc-nobunaga-3` (`尾张的大傻瓜`), after a fresh complete-card re-overlay on the synchronized FB2-47 runtime returned loader `report=[]`, both exact FB2-47/FB2-46 classifiers, Final Rules 9.4 7/8-mana play boundary with zero printed cost, exact defeat-before-loss `+3 -> -2 -> winners +2` ordering, no false non-loss payout and root replay idempotence. No additional B2 seam is required.
+
+Base frozen authoring overlap is **`144/944`**, duplicates **`0`**; Candidate must be exactly **`145/944`**, exact +1 Nobunaga s3 with zero removals/duplicates and no second frozen identity. No stale absolute `144` compatibility snapshot exists, so S has no compatibility-edit authorization. Formal migration remains **`149/944`**, **`795`** remaining until fresh R `MIGRATION_ACCEPTED` plus A synchronization. Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
+
+## TASK P3-A-R99-NOBUNAGA-S3-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r99-nobunaga-s3-migration-acceptance-sync`
+Base: exact accepted Candidate `bad696b11beb67cd2df88bdb2075e984f5965e1a`
+Read: `docs/reports/2026-09-21-p3-a-r99-nobunaga-s3-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #412 exact Candidate `bad696b11beb67cd2df88bdb2075e984f5965e1a`, backed by canonical evidence `https://github.com/binchen648/fd/pull/412#issuecomment-5753794601`. Exact frozen addition is `servant.nobunaga.skill.sc-nobunaga-3`; independent Base-to-Candidate frozen overlap is `144/944` to `145/944`, exact +1 with zero removals and zero duplicate frozen ids. No production runtime/product/generated change is present.
+
+Formal project migration advances exactly one identity to **`150/944`**, with **`794`** remaining. PR #412 remains OPEN, unmerged and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new FB2 seam while such a migration exists.
+
+## TASK P3-FB2-48-COMBAT-OPPONENT-POWER-VP-REWARD
+
+Owner: Codex B2
+Status: `READY`
+Branch: `codex/b2-p3-fb2-48-combat-opponent-power-vp-reward`
+Base: exact A dispatch Candidate on `codex/a-p3-fb2-48-combat-opponent-power-vp-reward-dispatch`
+Read: `docs/reports/2026-09-21-p3-a-fb2-48-combat-opponent-power-vp-reward-dispatch.md`
+
+Result required: implement only the exact identity-free authoritative combat-opponent-power VP transaction released by A. On the trusted resolved-battle root at the controller battlefield while the source is active, freeze exact participant ids/powers, offer a server-owned non-cancellable exactly-one choice from that battle's opponents, and reward the controller exactly `floor(selected frozen opponent power / 5)` VP. Fail closed on malformed authoring, battle provenance, pending metadata or stale/forged selection. Do not add generic player selection, generic `event_combat_opponents`, generic selected-player metrics, generic formula/floor-divide execution, identity routing, consumer authoring, or unrelated battle/resource semantics.
+
+This is zero-credit capability work: formal migration remains **`150/944`**, **`794`** remaining. After exact fresh R acceptance and A synchronization, freshly re-overlay the complete `servant.spartacus.skill.sc-spartacus-2`; singleton S is allowed only if the whole card is then mechanically zero-gap.
+
+## TASK P3-A-R100-FB2-48-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r100-fb2-48-acceptance-sync`
+Base: exact accepted Candidate `14c8688c201d4d39a85843470be6b79eec01853d`
+Read: `docs/reports/2026-09-21-p3-a-r100-fb2-48-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `IMPLEMENTATION_ACCEPTED_CANDIDATE` for PR #413 exact Candidate `14c8688c201d4d39a85843470be6b79eec01853d`, backed by canonical evidence `https://github.com/binchen648/fd/pull/413#issuecomment-5754051359`. Accepted capability remains only the bounded identity-free trusted resolved-battle snapshot -> exactly-one frozen combat opponent choice -> controller VP reward `floor(frozen opponent power / 5)` transaction; the authoritative root producers only add the frozen participant-power field and no generic selector/formula or identity routing is opened.
+
+FB2-48 earns zero migration credit; formal migration remains **`150/944`**, with **`794`** remaining. Material authoring overlap remains **`145/944`**, duplicates **`0`**, and no consumer identity is added. PR #413 remains OPEN, unmerged and unretargeted. Next action is a fresh complete-card reconstruction of `servant.spartacus.skill.sc-spartacus-2` on this synchronized runtime; dispatch singleton S only if the whole card is mechanically zero-gap.
+
+## TASK P3-A-R100-SPARTACUS-S2-CONSUMER-MIGRATION-DISPATCH
+
+Owner: Codex A
+Status: `READY`
+Branch: `codex/a-p3-r100-spartacus-s2-consumer-migration-dispatch`
+Base: exact R100 FB2-48 acceptance-sync `ff6aeba3cafa63e1be9002c549a94be9d54da2d5`
+Read: `docs/reports/2026-09-21-p3-a-r100-spartacus-s2-consumer-migration-dispatch.md`
+
+Result: dispatch exactly one frozen identity, `servant.spartacus.skill.sc-spartacus-2` (`伤兽的咆哮`), after fresh whole-card reconstruction on synchronized FB2-48 returned loader `report=[]`, compiled exact FB2-48 classifier acceptance, real 7/8-mana skill-zone boundary with printed cost 3, active-source/root-battlefield gating, exact frozen-opponent choice -> `floor(power/5)` VP settlement, negative source/location cases and replay idempotence. No additional B2 seam is required.
+
+Base frozen overlap is **`145/944`**, duplicates **`0`**; Candidate must be exactly **`146/944`**, exact +1 Spartacus s2 with zero removals/duplicates and no second frozen identity. S is additionally authorized to remove only Nobunaga s3's stale historical repository-wide `overlap===145` assertion while retaining denominator 944, zero duplicates and Nobunaga s3 authored exactly once. Formal migration remains **`150/944`**, **`794`** remaining until fresh R `MIGRATION_ACCEPTED` plus A synchronization. Long-term S rule: **S 完成 recertification 并提交 Exact Base/Candidate**。
+
+## TASK P3-A-R101-SPARTACUS-S2-MIGRATION-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-r101-spartacus-s2-migration-acceptance-sync`
+Base: exact accepted Candidate `58fffb751e25a9ccc2f28470a48255a07ba11493`
+Read: `docs/reports/2026-09-21-p3-a-r101-spartacus-s2-migration-acceptance-synchronization.md`
+
+Result: synchronize formal fresh R `MIGRATION_ACCEPTED` for PR #414 exact Candidate `58fffb751e25a9ccc2f28470a48255a07ba11493`, backed by canonical evidence `https://github.com/binchen648/fd/pull/414#issuecomment-5754190524`. Independent Base-to-Candidate frozen recount is `145/944` to `146/944`, exact +1 `servant.spartacus.skill.sc-spartacus-2`, zero removals and zero duplicate frozen ids. The fourth Candidate path is only the A-authorized compatibility removal of Nobunaga s3's stale repository-wide `overlap===145` snapshot; Nobunaga s3 remains authored exactly once and no production semantic/product/generated change is present.
+
+Formal project migration advances exactly one identity to **`151/944`**, with **`793`** remaining. PR #414 remains OPEN, unmerged and unretargeted. Next action is migration-credit-first targeted current-baseline whole-card probing for the first true `S_READY_NOW`; no new B2 seam while such a migration exists.
+
+## TASK P3-FB2-49-OPPONENT-CLOSE-TO-ONE-INTERACTION
+
+Owner: Codex B2
+Status: `READY`
+Branch: `codex/b2-p3-fb2-49-opponent-close-to-one-interaction`
+Base: exact A dispatch Candidate on `codex/a-p3-fb2-49-opponent-close-to-one-dispatch`
+Read: `docs/reports/2026-09-21-p3-a-fb2-49-opponent-close-to-one-dispatch.md`
+
+Result required: implement only the exact identity-free compound transaction released by A: a combat phase-action whose source is owned and controller is at a battlefield serializes one non-cancellable exactly-one “keep” decision for each same-battlefield opponent with at least two currently active, face-up, non-residual attack-area cards, then closes every other still-valid card from that opponent's frozen qualifying set. Fail closed atomically on malformed authoring, state/provenance drift or forged/stale selection. Do not expose generic `choose_each_player_cards`, generic `close_matching_cards_except_selected`, arbitrary each-player selectors/mass close, identity routing or consumer authoring.
+
+This is zero-credit capability work: formal migration remains **`151/944`**, **`793`** remaining. After exact fresh R acceptance and A synchronization, freshly re-overlay the complete `servant.astolfo.skill.sc-astolfo-1`; singleton S is allowed only if the whole card is then mechanically zero-gap.
+
+## TASK P3-A-R103-FB2-49-INDEPENDENT-REPAIR-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: SYNCHRONIZED
+Branch: codex/a-p3-r103-fb2-49-independent-repair-acceptance-sync
+Base: exact accepted PR #422 Candidate $candidate
+Read: $report
+
+Result: synchronize formal fresh R IMPLEMENTATION_ACCEPTED_CANDIDATE for PR #422 exact Candidate $candidate, backed by canonical evidence https://github.com/binchen648/fd/pull/422#issuecomment-5775423822 and machine-readable attestation commit $reviewSha. This synchronization grants zero migration credit, does not merge or retarget #422, and sends the accepted repair lineage to the repository-defined role-I Promotion gate from current main.

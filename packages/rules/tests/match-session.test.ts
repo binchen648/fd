@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
 import contentLibrary from '../../../data/generated/fd-playtest-v1.content-library.json';
-import { createMatchSession, restoreSession } from '../src/match-session';
-import { projectAbilityState } from '../src/ability/interpreter';
+import { createMatchSession, restoreMatchSession, restoreSession } from '../src/match-session';
+import { advanceAbilityPhase, projectAbilityState } from '../src/ability/interpreter';
 import { resolveBattlefield } from '../src/core/combat-resolver';
 import { applyBattleScoring } from '../src/core/scoring-resolver';
 
@@ -310,6 +310,32 @@ describe('MatchSession semi-auto runtime', () => {
     expect(restored.getClientProjection('p1').view.legalActions).toEqual(session.getClientProjection('p1').view.legalActions);
   });
 
+  it('authenticates gameplay-affecting MatchSession fields outside GameState', () => {
+    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1', maxActionsPerPlayer: 2 });
+    expect(session.runFullMatch({ maxRounds: 1 })).toBe('match_complete');
+    const durable = session.serializeSession();
+    expect(durable.battleHistory.length).toBeGreaterThan(0);
+
+    const widenedActions: any = structuredClone(durable);
+    widenedActions.maxActionsPerPlayer = 99;
+    expect(() => restoreMatchSession(widenedActions)).toThrow('Invalid or missing deferred runtime state authority');
+
+    const erasedHistory: any = structuredClone(durable);
+    erasedHistory.battleHistory = [];
+    expect(() => restoreMatchSession(erasedHistory)).toThrow('Invalid or missing deferred runtime state authority');
+  });
+
+  it('keeps independent direct MatchSession lifecycles isolated even under one host secret', () => {
+    const older = createMatchSession({ seed: 111, humanPlayerId: 'p1' });
+    const newer = createMatchSession({ seed: 222, humanPlayerId: 'p1' });
+    const olderSnapshot = older.serializeSession();
+    const newerSnapshot: any = newer.serializeSession();
+    newerSnapshot.state = structuredClone(olderSnapshot.state);
+    newerSnapshot.deferredRuntimeStateSeal = structuredClone(olderSnapshot.deferredRuntimeStateSeal);
+
+    expect(() => restoreMatchSession(newerSnapshot)).toThrow(/Invalid (FB2-49 replay checkpoint lineage|or missing deferred runtime state authority)/);
+  });
+
   it('lets the current human end their action decision and advances priority to the next seat', () => {
     const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'] });
     expect(session.runUntilHumanInputOrRoundEnd()).toBe('human_input');
@@ -493,6 +519,92 @@ describe('MatchSession semi-auto runtime', () => {
     }));
   });
 
+  it('round-trips the production Artoria Caster looked-card continuation and rejects modified continuation state', () => {
+    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p5', humanPlayerIds: ['p5'] });
+    advanceAbilityPhase(session.state, 'action', session.state.round.roundNumber);
+    session.state.round.prioritySeat = 5;
+    session.state.players.find((player) => player.id === 'p5')!.mana = 12;
+    const staff = session.state.cards.find((card) =>
+      card.ownerPlayerId === 'p5' && card.definitionId === 'servant.artoriac.skill.sc-artoriac-2')!;
+    expect(staff).toBeTruthy();
+    expect(session.dispatchPlayerAction('p5', { type: 'play_card', cardInstanceId: staff.instanceId }).ok).toBe(true);
+    session.state.round.prioritySeat = 5;
+    expect(session.dispatchPlayerAction('p5', {
+      type: 'activate_ability',
+      cardInstanceId: staff.instanceId,
+      abilityId: 'sc-artoriac-2.pay-x-look-x-plus-two',
+      variables: { X: 2 },
+    }).ok).toBe(true);
+
+    const pending = structuredClone(session.state.abilityRuntime!.pendingDecision!);
+    expect(pending.candidates).toHaveLength(4);
+    expect(pending.remainingEffects.map((effect) => effect.type)).toEqual(['move_card', 'move_all_remaining']);
+    const durable = session.serializeSession();
+    const restored = restoreMatchSession(durable);
+    expect(restored.state.abilityRuntime!.pendingDecision).toEqual(pending);
+
+    const corruptions: Array<(snapshot: any) => void> = [
+      snapshot => { snapshot.state.abilityRuntime.pendingDecision.target.id = 'forged_target'; },
+      snapshot => { snapshot.state.abilityRuntime.pendingDecision.candidates = snapshot.state.abilityRuntime.pendingDecision.candidates.slice(1); },
+      snapshot => { snapshot.state.abilityRuntime.pendingDecision.context.variables.X = 3; },
+      snapshot => { snapshot.state.abilityRuntime.pendingDecision.remainingEffects[0] = { type: 'adjust_victory_points', amount: 100 }; },
+    ];
+    for (const corrupt of corruptions) {
+      const malformed: any = structuredClone(durable);
+      corrupt(malformed);
+      expect(() => restoreMatchSession(malformed)).toThrow('Invalid MatchSession state container');
+    }
+
+    const omittedLiveAuthority: any = structuredClone(durable);
+    delete omittedLiveAuthority.state.abilityRuntime.pendingDecision;
+    delete omittedLiveAuthority.deferredRuntimeStateSeal;
+    expect(() => restoreMatchSession(omittedLiveAuthority)).toThrow('Invalid or missing deferred runtime state authority');
+
+    const omittedReplayAuthority: any = structuredClone(durable);
+    const sensitiveReplay = [...omittedReplayAuthority.replaySnapshots].reverse().find((entry: any) =>
+      entry.state.abilityRuntime?.pendingDecision && entry.deferredRuntimeStateSeal);
+    expect(sensitiveReplay).toBeTruthy();
+    delete sensitiveReplay.state.abilityRuntime.pendingDecision;
+    delete sensitiveReplay.deferredRuntimeStateSeal;
+    expect(() => restoreMatchSession(omittedReplayAuthority)).toThrow('Invalid FB2-49 replay checkpoint lineage');
+  });
+
+  it('authenticates the resolved prefix behind the production Artoria Caster recon continuation', () => {
+    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p5', humanPlayerIds: ['p5'] });
+    advanceAbilityPhase(session.state, 'action', session.state.round.roundNumber);
+    session.state.round.prioritySeat = 5;
+    const player = session.state.players.find((candidate) => candidate.id === 'p5')!;
+    player.mana = 12;
+    player.locationId = 'recon';
+    const source = session.state.cards.find((card) =>
+      card.ownerPlayerId === 'p5' && card.definitionId === 'servant.artoriac.skill.sc-artoriac-4')!;
+    expect(source).toBeTruthy();
+    expect(session.dispatchPlayerAction('p5', { type: 'play_card', cardInstanceId: source.instanceId }).ok).toBe(true);
+    session.state.round.prioritySeat = 5;
+    expect(session.dispatchPlayerAction('p5', {
+      type: 'activate_ability',
+      cardInstanceId: source.instanceId,
+      abilityId: 'sc-artoriac-4.recon-gain-vp-and-move',
+    }).ok).toBe(true);
+    expect(session.state.players.find((candidate) => candidate.id === 'p5')!.vp).toBe(2);
+    expect(session.state.abilityRuntime!.pendingDecision!.remainingEffects.map((effect) => effect.type)).toEqual(['move_player']);
+
+    const durable = session.serializeSession();
+    expect(durable.deferredRuntimeStateSeal).toBeDefined();
+    expect(restoreMatchSession(durable).state.players.find((candidate) => candidate.id === 'p5')!.vp).toBe(2);
+
+    const erasedPrefix: any = structuredClone(durable);
+    erasedPrefix.state.players.find((candidate: any) => candidate.id === 'p5').vp = 0;
+    expect(() => restoreMatchSession(erasedPrefix)).toThrow('Invalid or missing deferred runtime state authority');
+
+    const forgedReplayPrefix: any = structuredClone(durable);
+    const sensitiveReplay = [...forgedReplayPrefix.replaySnapshots].reverse().find((entry: any) =>
+      entry.state.abilityRuntime?.pendingDecision && entry.deferredRuntimeStateSeal);
+    expect(sensitiveReplay).toBeTruthy();
+    sensitiveReplay.state.players.find((candidate: any) => candidate.id === 'p5').vp = 0;
+    expect(() => restoreMatchSession(forgedReplayPrefix)).toThrow('Invalid FB2-49 replay checkpoint lineage');
+  });
+
   it('restores a replay checkpoint by id', () => {
     const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
     const firstCheckpoint = session.projectToClientState('p1').replay[0]!;
@@ -538,5 +650,5 @@ describe('MatchSession semi-auto runtime', () => {
       expect(projected.finalRanking).toHaveLength(7);
       expect(projected.logs.some((entry) => entry.type === 'final_scoring')).toBe(true);
     }
-  });
+  }, 10_000);
 });

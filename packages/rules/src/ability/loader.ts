@@ -1,7 +1,47 @@
 import type { AuthoringAbility, AuthoringCard, AuthoringPack, ExecutionMode, RuleNode, AdapterReportEntry } from './types';
 import { hostOperations } from './types';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID } from '../core/card-source-state';
-import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
+import {
+  isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic,
+  isSameBattlefieldPrivateHandReturnInteractionCandidate, isSameBattlefieldPrivateHandReturnInteractionSemantic,
+} from './interaction-gateway';
+import {
+  isRulerSealBindingCandidate, isRulerSealBindingSemantic,
+  isRulerSealUseCandidate, isRulerSealUseSemantic,
+} from './ruler-seal';
+import { isOuterGodLifeAbilityCandidate, isOuterGodLifeAbilitySemantic, OUTER_GOD_LIFE_CATEGORY } from './outer-god-life';
+import { classifyAcceptedSkillUseForbidModifier } from './skill-use-forbid';
+import { isAcceptedControlledCardCloseForbidModifier } from './card-close-forbid';
+import { isAcceptedStaticFaceUpCardsPerRoundAbility } from './face-up-cards-per-round';
+import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './deployment-destinations';
+import { isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
+import { isAcceptedCurrentRoundCombatWinAbsenceCondition } from './current-round-combat-win-condition';
+import { isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
+import { isAcceptedPreBattleDefeatAbility, isPreBattleDefeatCandidate } from './pre-battle-defeat';
+import {
+  BATTLE_LOSS_VP_WINNER_REWARD_EFFECT,
+  isAcceptedBattleLossVpWinnerRewardAbility,
+  isBattleLossVpWinnerRewardCandidate,
+} from './battle-loss-vp-winner-reward';
+import {
+  CONTROLLER_DEFEATED_TRIGGER,
+  isAcceptedControllerDefeatedVpRewardAbility,
+  isControllerDefeatedVpRewardCandidate,
+} from './controller-defeated-vp-reward';
+import {
+  COMBAT_OPPONENT_POWER_VP_REWARD_EFFECT,
+  isAcceptedCombatOpponentPowerVpRewardAbility,
+  isCombatOpponentPowerVpRewardCandidate,
+} from './combat-opponent-power-vp-reward';
+import {
+  OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT,
+  isAcceptedOpponentCloseToOneAbility,
+  isOpponentCloseToOneCandidate,
+} from './opponent-close-to-one';
+import {
+  isGameStartPlayerStatusAssignmentCandidate,
+  isGameStartPlayerStatusAssignmentSemantic,
+} from './game-start-player-status-assignment';
 
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
@@ -29,6 +69,106 @@ function isAcceptedMagicResistanceIndependentModifierLifecycle(rawAbility: RuleN
     str(lifecycle.duration) === 'this_round' && Object.keys(lifecycle).every((key) => key === 'duration') &&
     Object.keys(modifier).every((key) => ['id', 'printedClause', 'type', 'operation', 'rule', 'scope', 'value', 'lifecycle'].includes(key));
 }
+
+export function isAcceptedStaticCombatRewardDistributionAbility(
+  rawAbility: RuleNode,
+  form: 'authoring' | 'compiled' = 'authoring',
+): boolean {
+  if (str(rawAbility.kind) !== 'passive') return false;
+  const responseWindow = node(rawAbility.responseWindow);
+  const responseKeys = Object.keys(responseWindow);
+  const responseAccepted = form === 'authoring'
+    ? responseKeys.length === 0
+    : responseWindow.order === 'turn_order' && responseWindow.passBehavior === 'decline_this_window' &&
+      responseKeys.length === 2 && responseKeys.every((key) => ['order', 'passBehavior'].includes(key));
+  if (Object.keys(node(rawAbility.activation)).length !== 0 ||
+    nodes(rawAbility.conditions).length !== 0 || nodes(rawAbility.targets).length !== 0 ||
+    (Array.isArray(rawAbility.cost) ? nodes(rawAbility.cost).length !== 0 : rawAbility.cost !== undefined) ||
+    nodes(rawAbility.effects).length !== 0 || nodes(rawAbility.creates).length !== 0 ||
+    Object.keys(node(rawAbility.lifecycle)).length !== 0 || !responseAccepted ||
+    Object.keys(node(rawAbility.limit)).length !== 0 || Object.keys(node(rawAbility.visibility)).length !== 0 ||
+    (Array.isArray(rawAbility.markers) && rawAbility.markers.length !== 0) || rawAbility.copies !== undefined || rawAbility.transforms !== undefined) return false;
+  const modifiers = nodes(rawAbility.ruleModifiers);
+  if (modifiers.length !== 1) return false;
+  const modifier = modifiers[0]!;
+  const scope = node(modifier.scope);
+  if (modifier.operation !== 'replace' || modifier.rule !== 'combat_reward_distribution' ||
+    str(scope.subject) !== 'controller' || scope.whenControllerWins !== true || str(scope.mode) !== 'full_reward_each') return false;
+  if (!Object.keys(scope).every((key) => ['subject', 'whenControllerWins', 'mode'].includes(key))) return false;
+  if (!Object.keys(modifier).every((key) => ['id', 'printedClause', 'operation', 'rule', 'scope'].includes(key))) return false;
+  const execution = node(rawAbility.execution);
+  if (str(execution.mode || 'automatic') !== 'automatic' ||
+    !Object.keys(execution).every((key) => ['mode', 'hostOps', 'allowedOperations'].includes(key))) return false;
+  if (form === 'authoring') {
+    for (const key of ['hostOps', 'allowedOperations']) {
+      if (execution[key] !== undefined && (!Array.isArray(execution[key]) || (execution[key] as unknown[]).length !== 0)) return false;
+    }
+  } else {
+    if (execution.hostOps !== undefined) return false;
+    if (!Array.isArray(execution.allowedOperations)) return false;
+    const allowed = execution.allowedOperations as unknown[];
+    const isExplicitEmpty = allowed.length === 0;
+    const isLoaderDefault = allowed.length === hostOperations.length &&
+      hostOperations.every((operation, index) => allowed[index] === operation);
+    if (!isExplicitEmpty && !isLoaderDefault) return false;
+  }
+  return true;
+}
+
+export function isAcceptedRoundActiveAttackPaidCostCombatPowerAbility(
+  rawAbility: RuleNode,
+  form: 'authoring' | 'compiled' = 'authoring',
+): boolean {
+  if (str(rawAbility.kind) !== 'passive') return false;
+  const responseWindow = node(rawAbility.responseWindow);
+  const responseKeys = Object.keys(responseWindow);
+  const responseAccepted = form === 'authoring'
+    ? responseKeys.length === 0
+    : responseWindow.order === 'turn_order' && responseWindow.passBehavior === 'decline_this_window' &&
+      responseKeys.length === 2 && responseKeys.every((key) => ['order', 'passBehavior'].includes(key));
+  const conditions = nodes(rawAbility.conditions);
+  if (Object.keys(node(rawAbility.activation)).length !== 0 || conditions.length !== 1 ||
+    str(conditions[0]?.type) !== 'source_owned' || !Object.keys(conditions[0]!).every((key) => key === 'type') ||
+    nodes(rawAbility.targets).length !== 0 ||
+    (Array.isArray(rawAbility.cost) ? nodes(rawAbility.cost).length !== 0 : rawAbility.cost !== undefined) ||
+    nodes(rawAbility.effects).length !== 0 || nodes(rawAbility.creates).length !== 0 ||
+    Object.keys(node(rawAbility.lifecycle)).length !== 0 || !responseAccepted ||
+    Object.keys(node(rawAbility.limit)).length !== 0 || Object.keys(node(rawAbility.visibility)).length !== 0 ||
+    (Array.isArray(rawAbility.markers) && rawAbility.markers.length !== 0) || rawAbility.copies !== undefined || rawAbility.transforms !== undefined) return false;
+  const modifiers = nodes(rawAbility.ruleModifiers);
+  if (modifiers.length !== 1) return false;
+  const modifier = modifiers[0]!;
+  const scope = node(modifier.scope); const where = nodes(scope.where);
+  const value = node(modifier.value); const lifecycle = node(modifier.lifecycle); const priority = node(modifier.priority);
+  if (modifier.operation !== 'add' || modifier.rule !== 'combat_power' ||
+    str(scope.subject) !== 'players_at_source_battlefield' || where.length !== 1 ||
+    str(where[0]?.type) !== 'round_active_attack_paid_cost_sum_is_highest' ||
+    !Object.keys(where[0]!).every((key) => key === 'type') ||
+    str(value.type) !== 'constant' || typeof value.value !== 'number' || value.value !== 6 || !Number.isSafeInteger(value.value) ||
+    str(lifecycle.duration) !== 'permanent' || str(priority.tier) !== 'card_text' || str(priority.specificity) !== 'specific' ||
+    str(modifier.conflictPolicy) !== 'higher_priority_wins') return false;
+  if (!Object.keys(scope).every((key) => ['subject', 'where'].includes(key)) ||
+    !Object.keys(value).every((key) => ['type', 'value'].includes(key)) ||
+    !Object.keys(lifecycle).every((key) => key === 'duration') ||
+    !Object.keys(priority).every((key) => ['tier', 'specificity'].includes(key)) ||
+    !Object.keys(modifier).every((key) => ['id', 'printedClause', 'operation', 'rule', 'scope', 'value', 'lifecycle', 'priority', 'conflictPolicy'].includes(key))) return false;
+  const execution = node(rawAbility.execution);
+  if (str(execution.mode || 'automatic') !== 'automatic' ||
+    !Object.keys(execution).every((key) => ['mode', 'hostOps', 'allowedOperations'].includes(key))) return false;
+  if (form === 'authoring') {
+    for (const key of ['hostOps', 'allowedOperations']) {
+      if (execution[key] !== undefined && (!Array.isArray(execution[key]) || (execution[key] as unknown[]).length !== 0)) return false;
+    }
+  } else {
+    if (execution.hostOps !== undefined || !Array.isArray(execution.allowedOperations)) return false;
+    const allowed = execution.allowedOperations as unknown[];
+    const isExplicitEmpty = allowed.length === 0;
+    const isLoaderDefault = allowed.length === hostOperations.length && hostOperations.every((operation, index) => allowed[index] === operation);
+    if (!isExplicitEmpty && !isLoaderDefault) return false;
+  }
+  return true;
+}
+
 const supportedTypes = new Set([
   'controller_alone_at_battlefield', 'claim_and_discard_location_events', 'any_enabled_location',
   'skill_zone_mana_at_least', 'played_with_basic_attack', 'draw_cards', 'play_selected_cards', 'base_power_at_most',
@@ -53,20 +193,42 @@ const supportedTypes = new Set([
   'create_modifier', 'not_location_kind', 'power_bonus', 'card_not_on_board', 'not_card_id',
   // Master authoring adapters
   'record_master_directive', 'adjust_command_seals', 'set_mana', 'create_independent_deck',
-  'draw_from_independent_deck', 'activate_card_by_id', 'replace_card_in_deck',
+  'draw_from_independent_deck', 'activate_card_by_id', 'replace_card_in_deck', 'return_card_by_definition',
   'movement_rule_override', 'deployment_rule_override', 'play_source_card',
   'attach_card_to_player_attack', 'append_only_rule', 'transfer_vp_to_owner',
   'look_at_match_deck_bottoms', 'swap_revealed_with_deck_bottom',
   'soul_drag_power_bonus', 'transform_to_return_silence_on_loss', 'return_silence_battle_start',
   'false_attendant_book_replacement', 'existing_attack_controlled_by_target', 'not_controller', 'at_battlefield',
+  'same_battlefield_as_controller', 'inspect_target_hand_optional_return_one_to_owner_deck',
   // Phase 3A resolution/data-flow infrastructure
   'remove_advantage_position', 'noop', 'fail_invariant', 'install_rule_override', 'provision_skill_cards',
+  // FB2-27 Ruler seal relationship subsystem
+  'grant_ruler_seals', 'ruler_copy_steal_guard', 'use_ruler_seal', 'least_ruler_binding_count', 'bound_by_controller_ruler_seal',
+  // FB2-28 event-rule executable bridge
+  'event_location_is_source_event_battlefield', 'combat_occurs_at_source_event_battlefield', 'move_source_event',
+  'event_has_tag', 'event_in_set', 'move_event_card',
+  // FB2-31 event-player relation conditions
+  'event_player_is_controller', 'event_player_is_opponent',
+  // FB2-32 source-state conditions
+  'source_active', 'source_owned',
+  // FB2-33 event combat outcome conditions
+  'event_player_won_combat', 'event_player_lost_combat',
+  // FB2-43 exact movement-event location relation condition
+  'event_location_equals_controller',
+  // FB2-45 exact action-phase pre-battle defeat selector/effect tokens; gated by whole-ability classifier below.
+  'defeat_player', 'no_attack_played_this_round_with_attribute',
+  // FB2-46 exact battle-loss VP -> same-result winners transaction; gated by whole-ability classifier below.
+  BATTLE_LOSS_VP_WINNER_REWARD_EFFECT, COMBAT_OPPONENT_POWER_VP_REWARD_EFFECT, OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT,
+  // FB2-29 source-owner relational power/return primitives
+  'adjust_round_total_power', 'schedule_source_card_return',
+  // FB2-39 exact game-start player-status assignment
+  'add_status',
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
   'after_battle_result_determined', 'after_controller_wins_battle', 'after_controller_gains_victory', 'when_formula_condition_met',
   // New triggers for 5 servants
-  'after_controller_loses_battle', 'while_active', 'when_power_calculation_applied',
+  'after_controller_loses_battle', CONTROLLER_DEFEATED_TRIGGER, 'while_active', 'when_power_calculation_applied',
   'after_battle_ended', 'after_player_deployed_to_battlefield', 'when_play_requirements_checked',
   // Master triggers
   'game_start', 'after_controller_enters_location', 'after_controller_loses_all_command_seals',
@@ -74,6 +236,7 @@ const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_actio
   'before_situation_or_event_resolves', 'when_movement_options_requested',
 ]);
 const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject', 'owner', 'player', 'target', 'amount', 'count',
+  'lossAmount', 'winnerRewardAmount',
   'resultZone', 'visibility', 'to', 'from', 'optional', 'excluding', 'branches', 'if', 'then', 'else', 'cardId', 'zone',
   'var', 'op', 'args', 'left', 'right', 'formula', 'formulaRef', 'printedExpression', 'constraints', 'value', 'min', 'max',
   'targetRef', 'resultVar', 'optionalCost', 'uses', 'conditions', 'locationKind', 'maxSteps', 'cardType', 'face', 'attribute', 'sourceCard',
@@ -83,11 +246,21 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'options', 'label', 'condition', 'targets', 'duration', 'scope', 'statusId', 'choiceId', 'value',
   'modifier', 'kind', 'rule',
   // Master mechanic keys
-  'directive', 'payload', 'deckId', 'definitionId', 'quantity', 'rounding', 'targetPlayer',
+  'directive', 'payload', 'deckId', 'definitionId', 'linkedSkillId', 'destination', 'createIfMissing', 'active', 'quantity', 'rounding', 'targetPlayer',
   'oncePerRound', 'replacement', 'deckKinds', 'revealedKind', 'targetKind', 'controllerCannotWinStatus',
   'returnAtRoundEnd', 'preserveVictoryPoints', 'sakuraMasterId', 'fallbackServantPool',
   // Phase 3A resolution/data-flow infrastructure
   'bind', 'expr', 'binding', 'field', 'valueType', 'ids', 'reason', 'message', 'enabled', 'regular', 'climax', 'threshold', 'phase', 'targetDefinitionIds',
+  // FB2-27 Ruler seal structural fields
+  'policy', 'option', 'moveDestinations', 'rewardVp',
+  // FB2-28 event-rule source semantics
+  'eventController', 'locationId', 'locationRef', 'ruleControllerPlayerId', 'zones', 'tag', 'eventSetId',
+  // FB2-29 exact relational fields
+  'recipients', 'recipient', 'dedupe',
+  // FB2-39 opaque player-status key
+  'status',
+  // FB2-45 nested exact target predicate list.
+  'where',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -118,11 +291,25 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (Array.isArray(value)) { value.forEach((v, i) => scan(v, `${path}[${i}]`, abilityId)); return; }
       if (!value || typeof value !== 'object') return;
       const n = node(value);
+      if (n.type === 'player_flag_number_not_current_round') {
+        if (!path.startsWith('conditions')) issue(path, n.key === 'combatWinRound'
+          ? 'Current-round combat-win absence condition is supported only under ability conditions'
+          : 'Current-round combat-loss absence condition is supported only under ability conditions', abilityId);
+        else if (!isAcceptedCurrentRoundCombatLossAbsenceCondition(n) && !isAcceptedCurrentRoundCombatWinAbsenceCondition(n)) {
+          issue(path, n.key === 'combatWinRound'
+            ? 'Unsupported current-round combat-win absence condition shape'
+            : 'Unsupported current-round combat-loss absence condition shape', abilityId);
+        }
+        return;
+      }
+      if (n.type === 'add_status' && !path.startsWith('effects')) {
+        issue(path, 'Player-status assignment is supported only by the exact game-start effect envelope', abilityId);
+      }
       for (const key of Object.keys(n)) if (!mechanicKeys.has(key)) issue(`${path}.${key}`, 'Unmapped mechanic field', abilityId);
       if (n.type && !supportedTypes.has(str(n.type))) issue(`${path}.type`, `Unmapped type: ${str(n.type)}`, abilityId);
       if (n.op && !formulaOps.has(str(n.op))) issue(`${path}.op`, `Unmapped formula: ${str(n.op)}`, abilityId);
-      const serverMetric = ['controller.availableMana', 'consecutive_play_rounds', 'game.round_number',
-        'controller.movement_distance_this_round',
+      const serverMetric = ['controller.availableMana', 'controller.deployment_bonus', 'consecutive_play_rounds', 'game.round_number',
+        'source_card_active_round_count', 'controller.movement_distance_this_round',
         'controller.battlefields_passed_or_stayed_this_round'].includes(str(n.var ?? n.name));
       if ((n.var !== undefined || n.op === 'var') && !serverMetric &&
         !(abilityId && boundVariables.get(abilityId)?.includes(str(n.var ?? n.name)))) {
@@ -138,9 +325,36 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (n.resultVar && !/^[A-Za-z_][A-Za-z0-9_]*$/.test(str(n.resultVar))) issue(`${path}.resultVar`, 'Result variable must be a stable identifier', abilityId);
       if (n.type === 'move_player' && !str(n.to)) issue(`${path}.to`, 'Player movement requires a destination target reference', abilityId);
       if (n.type === 'draw_cards' && (!Number.isSafeInteger(n.count) || Number(n.count) < 0)) issue(`${path}.count`, 'Draw count must be a nonnegative integer', abilityId);
+      if (n.type === 'return_card_by_definition') {
+        const hasDefinitionId = typeof n.definitionId === 'string' && n.definitionId.length > 0;
+        const hasLinkedSkillId = typeof n.linkedSkillId === 'string' && n.linkedSkillId.length > 0;
+        if (hasDefinitionId === hasLinkedSkillId) issue(`${path}.definitionId`, 'Definition return requires exactly one definitionId or linkedSkillId', abilityId);
+        if (n.target !== 'controller' || n.destination !== 'master-skills' || n.createIfMissing !== true || n.face !== 'up' || n.active !== false) {
+          issue(path, 'Unsupported controller master-skill definition-return shape', abilityId);
+        }
+      }
+      if (['event_player_is_controller', 'event_player_is_opponent'].includes(str(n.type)) &&
+        !Object.keys(n).every((key) => key === 'type')) {
+        issue(path, 'Event-player relation condition must contain only type', abilityId);
+      }
+      if (['source_active', 'source_owned'].includes(str(n.type))) {
+        if (!path.startsWith('conditions')) issue(path, 'Source-state condition is supported only under ability conditions', abilityId);
+        if (!Object.keys(n).every((key) => key === 'type')) issue(path, 'Source-state condition must contain only type', abilityId);
+      }
+      if (['event_player_won_combat', 'event_player_lost_combat'].includes(str(n.type))) {
+        if (!path.startsWith('conditions')) issue(path, 'Event combat outcome condition is supported only under ability conditions', abilityId);
+        if (!Object.keys(n).every((key) => key === 'type')) issue(path, 'Event combat outcome condition must contain only type', abilityId);
+      }
+      if (str(n.type) === 'event_location_equals_controller') {
+        if (!path.startsWith('conditions')) issue(path, 'Event-location relation condition is supported only under ability conditions', abilityId);
+        if (!isAcceptedEventLocationEqualsControllerCondition(n)) issue(path, 'Event-location relation condition must contain only type', abilityId);
+      }
       if (n.type === 'base_power_at_most' && (typeof n.value !== 'number' || !Number.isFinite(n.value))) issue(`${path}.value`, 'Base power bound must be finite', abilityId);
       if (['move_card', 'move_source_card', 'move_all_remaining', 'create_card'].includes(str(n.type)) &&
         !['hand', 'deck', 'discard', 'field', 'skill', 'attack_area', 'removed_from_game'].includes(str(node(n.to).zone))) issue(`${path}.to.zone`, 'Unsupported or missing destination zone', abilityId);
+      if (['move_source_event', 'move_event_card'].includes(str(n.type)) && !['event_deck', 'event_discard', 'event_outside_game', 'event_battlefield'].includes(str(node(n.to).zone))) {
+        issue(`${path}.to.zone`, 'Unsupported or missing event destination zone', abilityId);
+      }
       if (n.optionalCost && str(node(n.optionalCost).type) !== 'pay_mana') issue(`${path}.optionalCost`, 'Only optional mana payment is supported', abilityId);
       if (n.type === 'look_at_deck_top' && (n.resultZone !== 'looked_cards' || n.count === undefined)) issue(`${path}.resultZone`, 'Deck look requires a count and looked_cards temporary zone', abilityId);
       if (n.type === 'set_zone_visibility' && (n.visibility !== 'public' || n.zone !== 'discard')) issue(`${path}.visibility`, 'Only continuous public discard visibility is supported', abilityId);
@@ -152,6 +366,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
     if (face.hasReversalEffect !== undefined && typeof face.hasReversalEffect !== 'boolean') issue('cardFace.hasReversalEffect', 'Expected boolean reversal metadata');
     if (face.revealsTrueNameOnReverse !== undefined && typeof face.revealsTrueNameOnReverse !== 'boolean') issue('cardFace.revealsTrueNameOnReverse', 'Expected boolean reverse reveal metadata');
     if (face.revealsTrueNameOnReverse === true && face.hasReversalEffect !== true) issue('cardFace.revealsTrueNameOnReverse', 'Reverse reveal requires an authored reversal effect');
+    if (face.semanticCategory !== undefined && face.semanticCategory !== OUTER_GOD_LIFE_CATEGORY) issue('cardFace.semanticCategory', 'Unsupported semantic card category');
     if (typeof face.basePower === 'string') issue('cardFace.basePower', 'String expressions are forbidden; provide a formula AST');
     scan(raw.playRequirements, 'playRequirements');
     if (face.cost !== undefined && (typeof face.cost !== 'number' || !Number.isFinite(face.cost) || face.cost < 0)) issue('cardFace.cost', 'Expected a nonnegative printed mana cost');
@@ -166,7 +381,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
     }
     if (node(raw.verification).implementationStatus && node(raw.verification).implementationStatus !== 'complete') issue('verification.implementationStatus', 'Archive explicitly marks this card as unfinished');
-    if (timing.phase !== 'action' || timing.window !== 'controller_play_card_window') issue('playTiming', 'Unsupported card play window');
+    if (str(raw.cardType) !== 'event' && (timing.phase !== 'action' || timing.window !== 'controller_play_card_window')) issue('playTiming', 'Unsupported card play window');
     const seen = new Set<string>();
     const abilities = nodes(raw.abilities).map((a): AuthoringAbility => {
       const id = str(a.id); if (!id || seen.has(id)) throw new Error('Invalid or duplicate ability id'); seen.add(id);
@@ -179,6 +394,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (activation.trigger && !triggers.has(str(activation.trigger))) issue('activation.trigger', 'Unmapped trigger', id);
       if (activation.phase && !['preparation', 'advance', 'action', 'combat'].includes(str(activation.phase))) issue('activation.phase', 'Unmapped phase', id);
       if (activation.requiresSourceState && activation.requiresSourceState !== 'active') issue('activation.requiresSourceState', 'Unmapped source state', id);
+      if (activation.eventController !== undefined && !['placement_controller', 'event_player'].includes(str(activation.eventController))) {
+        issue('activation.eventController', 'Unsupported event-rule controller source', id);
+      }
       if (activation.eventLocationId !== undefined && (!str(activation.eventLocationId) || !['after_controller_enters_location', 'after_player_deployed_to_battlefield'].includes(str(activation.trigger)))) issue('activation.eventLocationId', 'Event location requires a supported location-bearing trigger', id);
       if (a.kind === 'phase_action' && !['controller_action_window', 'controller_combat_action_window'].includes(str(activation.opens))) issue('activation.opens', 'Unsupported phase action window', id);
       if (activation.step) issue('activation.step', 'Subphase step mapping is not implemented', id);
@@ -211,9 +429,15 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (effect.type === 'play_selected_cards' && !nodes(a.targets).some(t => t.id === effect.target && t.type === 'card_instance' && node(t.scope).zone === 'hand')) {
           issue('effects.target', 'Effect play requires a declared hand-card target', id);
         }
+        if (effect.type === 'move_event_card' && !nodes(a.targets).some(t => t.id === effect.target && t.type === 'event_card')) {
+          issue('effects.target', 'Event movement requires a declared event-card target', id);
+        }
+        if (effect.type === 'move_source_event' && str(raw.cardType) !== 'event') {
+          issue('effects.type', 'move_source_event is valid only on an event rule definition', id);
+        }
       }
       for (const target of nodes(a.targets)) {
-        if (!['card_instance', 'location', 'choice', 'player'].includes(str(target.type))) issue('targets.type', 'Unmapped target type', id);
+        if (!['card_instance', 'location', 'choice', 'player', 'event_card'].includes(str(target.type))) issue('targets.type', 'Unmapped target type', id);
         if (target.type !== 'choice') {
           scan(target.constraints, 'targets.constraints', id);
           if (target.type === 'location' && nodes(target.constraints).some(c => c.type === 'any_enabled_location') &&
@@ -222,29 +446,69 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
           }
           const scope = node(target.scope);
           if (target.type === 'card_instance' && !['battle_area', 'attack_area', 'looked_cards', 'hand', 'deck', 'removed_from_game', 'discard', 'skill'].includes(str(scope.zone))) issue('targets.scope.zone', 'Unmapped target zone', id);
+          if (target.type === 'event_card') {
+            const rawZones = scope.zones;
+            const zones = Array.isArray(rawZones) ? rawZones.map((zone) => str(zone)) : [];
+            if (!zones.length || zones.some((zone) => !['event_deck', 'event_discard', 'event_outside_game', 'event_battlefield'].includes(zone))) {
+              issue('targets.scope.zones', 'Event-card target requires one or more supported event zones', id);
+            }
+            for (const eventConstraint of nodes(target.constraints)) {
+              if (eventConstraint.type === 'event_has_tag' && !str(eventConstraint.tag)) issue('targets.constraints.tag', 'Event tag constraint requires a nonempty tag', id);
+              else if (eventConstraint.type === 'event_in_set' && !str(eventConstraint.eventSetId)) issue('targets.constraints.eventSetId', 'Event-set constraint requires a nonempty eventSetId', id);
+              else if (!['event_has_tag', 'event_in_set'].includes(str(eventConstraint.type))) issue('targets.constraints', 'Unsupported event-card constraint', id);
+            }
+          }
           if (scope.owner && !['controller', 'any'].includes(str(scope.owner))) issue('targets.scope.owner', 'Only controller or any ownership is supported', id);
           if (scope.controller && !['self', 'any'].includes(str(scope.controller))) issue('targets.scope.controller', 'Only self or any controller targets are supported', id);
         }
         const count = node(target.count); const min = Number(count.min ?? 1); const max = Number(count.max ?? 1);
         if (!Number.isInteger(min) || !Number.isInteger(max) || min < 0 || min > max) issue('targets.count', 'Invalid target cardinality', id);
       }
+      const acceptedStaticCombatRewardDistribution = isAcceptedStaticCombatRewardDistributionAbility(a);
+      const acceptedPaidCostCombatPower = isAcceptedRoundActiveAttackPaidCostCombatPowerAbility(a);
+      const acceptedDeploymentDestinationReplacement = isAcceptedLowerVpLoneBattlefieldDeploymentAbility(a);
+      const acceptedFaceUpCardsPerRound = isAcceptedStaticFaceUpCardsPerRoundAbility(a, 'authoring');
       for (const m of nodes(a.ruleModifiers)) {
-        if (!['add', 'set', 'ignore', 'lock', 'exclude', 'forbid'].includes(str(m.operation)) || !['attack.currentPower', 'card.currentPower', 'effect_prevention', 'battlefield', 'terrain_and_external_effects', 'use_skill_card', 'play_card_attribute', 'enter_or_leave_current_battlefield', 'terrain_and_external_effects_for_controller_and_opponents', 'terrain_and_external_servant_or_npc_effects', 'situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least', 'netherworld_protection'].includes(str(m.rule))) issue('ruleModifiers', 'Unmapped rule or operation', id);
+        const acceptedRewardModifier = acceptedStaticCombatRewardDistribution && m === nodes(a.ruleModifiers)[0];
+        const acceptedPaidCostModifier = acceptedPaidCostCombatPower && m === nodes(a.ruleModifiers)[0];
+        const acceptedDeploymentModifier = acceptedDeploymentDestinationReplacement && m === nodes(a.ruleModifiers)[0];
+        const acceptedSkillUseForbid = classifyAcceptedSkillUseForbidModifier(m);
+        const acceptedCardCloseForbid = mode === 'automatic' && lifecycle.duration === 'this_round' &&
+          isAcceptedControlledCardCloseForbidModifier(m);
+        const acceptedFaceUpPlayLimit = acceptedFaceUpCardsPerRound && m === nodes(a.ruleModifiers)[0];
+        const operationSupported = ['add', 'set', 'ignore', 'lock', 'exclude', 'forbid'].includes(str(m.operation)) ||
+          (acceptedRewardModifier && m.operation === 'replace') ||
+          (acceptedDeploymentModifier && m.operation === 'replace');
+        const ruleSupported = ['attack.currentPower', 'card.currentPower', 'effect_prevention', 'battlefield', 'terrain_and_external_effects', 'use_skill_card', 'play_card_attribute', 'enter_or_leave_current_battlefield', 'terrain_and_external_effects_for_controller_and_opponents', 'terrain_and_external_servant_or_npc_effects', 'situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least', 'netherworld_protection'].includes(str(m.rule)) ||
+          (acceptedRewardModifier && m.rule === 'combat_reward_distribution') ||
+          (acceptedPaidCostModifier && m.rule === 'combat_power') ||
+          (acceptedDeploymentModifier && m.rule === 'deployment_destinations') ||
+          (acceptedSkillUseForbid !== undefined && m.rule === 'skill_use') ||
+          (acceptedCardCloseForbid && m.rule === 'card_close') ||
+          (acceptedFaceUpPlayLimit && m.rule === 'face_up_cards_per_round');
+        if (!operationSupported || !ruleSupported) issue('ruleModifiers', 'Unmapped rule or operation', id);
+        if (m.rule === 'skill_use' && acceptedSkillUseForbid === undefined) issue('ruleModifiers', 'Unsupported skill-use forbid selector shape', id);
+        if (m.rule === 'card_close' && !acceptedCardCloseForbid) issue('ruleModifiers', 'Unsupported card-close forbid selector shape', id);
+        if (m.rule === 'face_up_cards_per_round' && !acceptedFaceUpPlayLimit) issue('ruleModifiers', 'Unsupported face-up cards-per-round selector shape', id);
+        if (m.rule === 'deployment_destinations' && !acceptedDeploymentModifier) issue('ruleModifiers', 'Unsupported deployment-destination replacement shape', id);
+        if (m.rule === 'combat_reward_distribution' && !acceptedRewardModifier) issue('ruleModifiers', 'Unsupported combat reward distribution modifier shape', id);
         if (m.rule === 'effect_prevention' && (m.operation !== 'ignore' || node(m.priority).tier !== 'explicit_exception')) issue('ruleModifiers.priority', 'Prevention exception requires explicit_exception', id);
         const ruleIsPlayException = m.operation === 'ignore' && ['situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least'].includes(str(m.rule));
         const ruleIsStaticException = m.operation === 'ignore' && m.rule === 'netherworld_protection';
-        if (m.rule !== 'effect_prevention' && !ruleIsPlayException && !ruleIsStaticException && !lifecycle.duration && !node(m.lifecycle).duration) issue('ruleModifiers.lifecycle', 'Modifier requires lifecycle', id);
-        scan(m.value, 'ruleModifiers.value', id); scan(node(m.scope).constraints, 'ruleModifiers.scope.constraints', id);
+        if (m.rule !== 'effect_prevention' && !ruleIsPlayException && !ruleIsStaticException && !acceptedRewardModifier && !lifecycle.duration && !node(m.lifecycle).duration) issue('ruleModifiers.lifecycle', 'Modifier requires lifecycle', id);
+        if (!acceptedPaidCostModifier) scan(m.value, 'ruleModifiers.value', id);
+        scan(node(m.scope).constraints, 'ruleModifiers.scope.constraints', id);
         if (node(m.scope).object && !['source_card', 'this_card', 'attack_card', 'this_effect', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield', 'all_players'].includes(str(node(m.scope).object))) issue('ruleModifiers.scope.object', 'Unmapped modifier scope', id);
         if (node(m.scope).controller && !['self', 'controller', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield'].includes(str(node(m.scope).controller))) issue('ruleModifiers.scope.controller', 'Unmapped modifier controller', id);
         if (m.lifecycle && a.lifecycle && JSON.stringify(m.lifecycle) !== JSON.stringify(a.lifecycle) &&
-          !isAcceptedMagicResistanceIndependentModifierLifecycle(a, m)) {
+          !isAcceptedMagicResistanceIndependentModifierLifecycle(a, m) && !acceptedPaidCostModifier && !acceptedDeploymentModifier) {
           issue('ruleModifiers.lifecycle', 'Independent modifier lifecycles require a separate ongoing handler', id);
         }
       }
       const installsRuleOverride = nodes(a.effects).some(effect => effect.type === 'install_rule_override');
       const provisionsSkillCards = nodes(a.effects).some(effect => effect.type === 'provision_skill_cards');
-      if (installsRuleOverride || provisionsSkillCards) {
+      const assignsPlayerStatuses = nodes(a.effects).some(effect => effect.type === 'add_status');
+      if (installsRuleOverride || provisionsSkillCards || assignsPlayerStatuses) {
         const executionKeys = new Set(['mode', 'hostOps', 'allowedOperations']);
         for (const key of Object.keys(execution)) {
           if (!executionKeys.has(key)) issue(`execution.${key}`, 'Unmapped rule-override execution field', id);
@@ -259,9 +523,18 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
             issue(`execution.${operationsKey}`, 'Automatic rule-override execution authority must be an empty array when declared', id);
           }
         }
+        if (assignsPlayerStatuses) {
+          const responseKeys = Object.keys(response);
+          const exactStatusResponse = responseKeys.length === 0 || (
+            response.order === 'turn_order' && response.passBehavior === 'decline_this_window' &&
+            responseKeys.length === 2 && responseKeys.every((key) => ['order', 'passBehavior'].includes(key)));
+          if (!exactStatusResponse) {
+            issue('responseWindow', 'Game-start player-status assignment requires an empty or exact default response window', id);
+          }
+        }
       }
       const requested = execution.hostOps ?? execution.allowedOperations;
-      const defaultAllowed = mode === 'automatic' && (installsRuleOverride || provisionsSkillCards) ? [] : [...hostOperations];
+      const defaultAllowed = mode === 'automatic' && (installsRuleOverride || provisionsSkillCards || assignsPlayerStatuses) ? [] : [...hostOperations];
       const allowed = Array.isArray(requested) ? hostOperations.filter(op => requested.includes(op)) : defaultAllowed;
       if (Array.isArray(requested) && requested.some(op => !hostOperations.includes(op as typeof hostOperations[number]))) issue('execution.hostOps', 'Operation outside the host allowlist', id);
       if (mode !== 'automatic') issue('execution.mode', str(execution.reason) || mode, id, mode as ExecutionMode);
@@ -274,6 +547,36 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (isPrivateOptionalHandPlayInteractionCandidate(candidateAbility) && !isPrivateOptionalHandPlayInteractionSemantic(candidateAbility)) {
         issue('interaction.gateway', 'Unsupported private optional hand-play interaction semantic shape', id);
       }
+      if (isSameBattlefieldPrivateHandReturnInteractionCandidate(candidateAbility) && !isSameBattlefieldPrivateHandReturnInteractionSemantic(candidateAbility)) {
+        issue('interaction.gateway', 'Unsupported same-battlefield private hand-return interaction semantic shape', id);
+      }
+      if (isRulerSealBindingCandidate(candidateAbility) && !isRulerSealBindingSemantic(candidateAbility)) {
+        issue('rulerSeal.gateway', 'Unsupported Ruler seal binding semantic shape', id);
+      }
+      if (isRulerSealUseCandidate(candidateAbility) && !isRulerSealUseSemantic(candidateAbility)) {
+        issue('rulerSeal.gateway', 'Unsupported Ruler seal use semantic shape', id);
+      }
+      if (isOuterGodLifeAbilityCandidate(candidateAbility) && !isOuterGodLifeAbilitySemantic(candidateAbility)) {
+        issue('outerGodLife.gateway', 'Unsupported Outer-God-Life relational semantic shape', id);
+      }
+      if (isGameStartPlayerStatusAssignmentCandidate(candidateAbility) && !isGameStartPlayerStatusAssignmentSemantic(candidateAbility)) {
+        issue('gameStartPlayerStatus.gateway', 'Unsupported game-start player-status assignment semantic shape', id);
+      }
+      if (isPreBattleDefeatCandidate(a) && !isAcceptedPreBattleDefeatAbility(a, 'authoring')) {
+        issue('preBattleDefeat.gateway', 'Unsupported pre-battle defeat semantic shape', id);
+      }
+      if (isBattleLossVpWinnerRewardCandidate(a) && !isAcceptedBattleLossVpWinnerRewardAbility(a, 'authoring')) {
+        issue('battleLossVpWinnerReward.gateway', 'Unsupported battle-loss VP winner-reward semantic shape', id);
+      }
+      if (isControllerDefeatedVpRewardCandidate(a) && !isAcceptedControllerDefeatedVpRewardAbility(a, 'authoring')) {
+        issue('controllerDefeatedVpReward.gateway', 'Unsupported controller-defeated VP reward semantic shape', id);
+      }
+      if (isCombatOpponentPowerVpRewardCandidate(a) && !isAcceptedCombatOpponentPowerVpRewardAbility(a, 'authoring')) {
+        issue('combatOpponentPowerVpReward.gateway', 'Unsupported frozen combat-opponent power VP reward semantic shape', id);
+      }
+      if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'authoring')) {
+        issue('opponentCloseToOne.gateway', 'Unsupported opponent close-to-one interaction semantic shape', id);
+      }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;
       if (Array.isArray(a.markers) && a.markers.includes('真名解放') && !visibility.revealTiming) {
@@ -282,6 +585,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       return { ...candidateAbility, visibility,
         execution: { mode: failure ? 'unsupported' : mode as ExecutionMode, allowedOperations: allowed } };
     });
+    if (abilities.some(isOuterGodLifeAbilityCandidate) && face.semanticCategory !== OUTER_GOD_LIFE_CATEGORY) {
+      issue('cardFace.semanticCategory', 'Outer-God-Life relational abilities require semanticCategory=outer_god_life');
+    }
     cards[cardId] = { id: cardId, name: str(raw.name), cardType: str(raw.cardType), cardFace: face,
       playTiming: timing, playRequirements: nodes(raw.playRequirements), abilities,
       ...(initialPlacement === 'outside_game' && str(raw.cardType) === 'master_skill' && str(root.id).startsWith('master.')

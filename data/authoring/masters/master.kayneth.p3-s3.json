@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.kayneth",
+  "name": "肯尼斯",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Canonical s3 is isolated from the registered legacy Kayneth playtest archive so full-roster migration does not mutate generated product content."
+  },
+  "cards": [
+    {
+      "id": "master.kayneth.skill.s3",
+      "aliases": ["s3"],
+      "legacyId": "s3",
+      "name": "倨傲",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.kayneth" },
+      "printedText": "若你可以部署于一名战果低于你且独自位于战场的其他玩家所在的战场，则你必须部署。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "arrogant-forced-deployment",
+          "kind": "passive",
+          "printedClause": "若你可以部署于一名战果低于你且独自位于战场的其他玩家所在的战场，则你必须部署。",
+          "activation": {},
+          "conditions": [{ "type": "source_owned" }],
+          "targets": [],
+          "effects": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [
+            {
+              "id": "force-lone-lower-vp-battlefield",
+              "operation": "replace",
+              "rule": "deployment_destinations",
+              "scope": {
+                "subject": "controller",
+                "destinationFilter": {
+                  "locationKind": "battlefield",
+                  "opponentCountEquals": 1,
+                  "opponentVictoryPoints": "less_than_controller"
+                }
+              },
+              "lifecycle": { "duration": "permanent" },
+              "priority": { "tier": "card_text", "specificity": "explicit_exception" },
+              "conflictPolicy": "explicit_exception_over_general"
+            }
+          ],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[37].abilities[0].printedClause",
+            "sha256": "c3e30045f8b00e75f66735aace73f68594ac59d77c0782de75093dbaee31a294"
+          }
+        ],
+        "f1FullPrintedTextSha256": "c3e30045f8b00e75f66735aace73f68594ac59d77c0782de75093dbaee31a294",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s3",
+          "class": "Master",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": null,
+          "typeLabel": "被动",
+          "attributes": []
+        },
+        "acceptedContracts": {
+          "deploymentDestinationsReplacement": "P3-R79/FB2-37"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.abigail",
+  "name": "阿比盖尔·威廉姆斯",
+  "class": "Foreigner",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen F1 printed evidence plus accepted P3-R67/FB2-29 Outer-God-Life structural runtime semantics are authoritative. Locked Reference supplies static owner/card metadata only; Reference handler IDs are not runtime routing."
+  },
+  "cards": [
+    {
+      "id": "servant.abigail.skill.sc-abigail-4",
+      "aliases": [
+        "sc_abigail_4"
+      ],
+      "legacyId": "sc_abigail_4",
+      "name": "领域外生命",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.abigail"
+      },
+      "printedText": "【真名解放】\n你和阿比盖尔各获得+6合计威力（若你是阿比盖尔，该效果不会令你+12合计威力）。\n战斗阶段结束后，将此牌加入阿比盖尔的弃牌堆。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 1,
+        "basePower": 0,
+        "semanticCategory": "outer_god_life"
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-abigail-4.outer-god-life",
+          "kind": "phase_action",
+          "printedClause": "【真名解放】\n你和阿比盖尔各获得+6合计威力（若你是阿比盖尔，该效果不会令你+12合计威力）。\n战斗阶段结束后，将此牌加入阿比盖尔的弃牌堆。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "adjust_round_total_power",
+              "recipients": [
+                "controller",
+                "source_servant_owner"
+              ],
+              "amount": 6,
+              "dedupe": true
+            },
+            {
+              "type": "schedule_source_card_return",
+              "recipient": "source_servant_owner"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[178].skills[3].text#line=1",
+            "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[178].skills[3].text#line=2",
+            "sha256": "6a848e72c9475916be224140aae1bd920e23d7716e82ced6b7c039321ea54a60"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[178].skills[3].text#line=3",
+            "sha256": "04d91af3bd1b263a8e9a2ed8d6562257fc21cdb07810c9344230caa419ad1231"
+          }
+        ],
+        "sourceTextSha256": "c067eaf714c63dc3cb08957261a643c8107e21ebd66fc2981008ac075957e940",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_abigail_4",
+          "cost": 1,
+          "basePower": 0,
+          "legacyRequirement": 1,
+          "typeLabel": "特殊"
+        },
+        "acceptedContracts": {
+          "outerGodLifeSubsystem": "P3-R67/FB2-29"
+        }
+      }
+    }
+  ]
+}

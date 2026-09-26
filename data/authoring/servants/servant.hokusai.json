@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.hokusai",
+  "name": "葛饰北斋",
+  "class": "Foreigner",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen F1 printed evidence plus accepted P3-R67/FB2-29 Outer-God-Life structural runtime semantics are authoritative. Locked Reference supplies static owner/card metadata only; Reference handler IDs are not runtime routing."
+  },
+  "cards": [
+    {
+      "id": "servant.hokusai.skill.sc-hokusai-4",
+      "aliases": [
+        "sc_hokusai_4"
+      ],
+      "legacyId": "sc_hokusai_4",
+      "name": "领域外生命",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.hokusai"
+      },
+      "printedText": "【真名解放】\n你和葛饰北斋各获得+6合计威力（若你是葛饰北斋，该效果不会令你+12合计威力）。\n战斗阶段结束后，将此牌加入葛饰北斋的弃牌堆。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 1,
+        "basePower": 0,
+        "semanticCategory": "outer_god_life"
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-hokusai-4.outer-god-life",
+          "kind": "phase_action",
+          "printedClause": "【真名解放】\n你和葛饰北斋各获得+6合计威力（若你是葛饰北斋，该效果不会令你+12合计威力）。\n战斗阶段结束后，将此牌加入葛饰北斋的弃牌堆。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "adjust_round_total_power",
+              "recipients": [
+                "controller",
+                "source_servant_owner"
+              ],
+              "amount": 6,
+              "dedupe": true
+            },
+            {
+              "type": "schedule_source_card_return",
+              "recipient": "source_servant_owner"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[179].skills[3].text#line=1",
+            "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[179].skills[3].text#line=2",
+            "sha256": "eca6a45296b52d5da94a4fd8036b72128ba874fe83e86b7978c90e923323eacb"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[179].skills[3].text#line=3",
+            "sha256": "f2c68a69394fd0a22dd63b406a01604b8268b7aa03510e368bdcf97a9b8d307c"
+          }
+        ],
+        "sourceTextSha256": "e0c05d4411c50ccc67a2354a8d856c79014a6a6e63d41f32b59d364b471326f3",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_hokusai_4",
+          "cost": 1,
+          "basePower": 0,
+          "legacyRequirement": 1,
+          "typeLabel": "特殊"
+        },
+        "acceptedContracts": {
+          "outerGodLifeSubsystem": "P3-R67/FB2-29"
+        }
+      }
+    }
+  ]
+}

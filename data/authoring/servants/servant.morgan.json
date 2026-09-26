@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.morgan",
+  "name": "摩根",
+  "class": "Ruler",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen F1 printed evidence plus accepted P3-R58/FB2-27 Ruler seal runtime semantics are authoritative. Locked Reference supplies static owner/card metadata only; Reference handler IDs are not runtime routing."
+  },
+  "cards": [
+    {
+      "id": "servant.morgan.skill.sc-morgan-3",
+      "aliases": [
+        "sc_morgan_3"
+      ],
+      "legacyId": "sc_morgan_3",
+      "name": "裁决者",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.morgan"
+      },
+      "printedText": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 1,
+        "basePower": 1
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-morgan-3.ruler-binding",
+          "kind": "phase_action",
+          "printedClause": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [
+            {
+              "id": "bound_players",
+              "type": "player",
+              "count": {
+                "min": 2,
+                "max": 2
+              },
+              "constraints": [
+                {
+                  "type": "not_controller"
+                },
+                {
+                  "type": "least_ruler_binding_count"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "grant_ruler_seals",
+              "target": "bound_players"
+            },
+            {
+              "type": "ruler_copy_steal_guard",
+              "policy": "forbid_source_and_effects"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {
+            "type": "per_game",
+            "uses": 3,
+            "scope": "this_card"
+          },
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          {
+            "sha256": "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137",
+            "line": 1
+          }
+        ],
+        "sourceTextSha256": "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_morgan_3",
+          "cost": 1,
+          "basePower": 1,
+          "legacyRequirement": 1,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": {
+          "rulerSealSubsystem": "P3-R58/FB2-27"
+        }
+      }
+    }
+  ]
+}

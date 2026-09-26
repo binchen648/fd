@@ -1,0 +1,167 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.nobunaga",
+  "name": "织田信长",
+  "class": "Archer",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "6b09b635178822aa3f1e6bd6cd1c69672b09e8de",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from accepted F1 evidence plus accepted FB2-46/FB2-47 contracts; locked Reference is used only for owner/static metadata."
+  },
+  "cards": [
+    {
+      "id": "servant.nobunaga.skill.sc-nobunaga-3",
+      "aliases": [
+        "sc_nobunaga_3"
+      ],
+      "legacyId": "sc_nobunaga_3",
+      "name": "尾张的大傻瓜",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.nobunaga"
+      },
+      "printedText": "被动：当你被【败北】时，获得3点战果。\n无前之谋-若你输掉战斗，失去2点战果。若你因此效果失去了战果，所有你战斗中的胜者获得2点战果。",
+      "cardFace": {
+        "typeLabel": "力量",
+        "attributes": [
+          "力量"
+        ],
+        "cost": 0,
+        "basePower": 7
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "fool-defeat-reward",
+          "kind": "forced_trigger",
+          "printedClause": "被动：当你被【败北】时，获得3点战果",
+          "activation": {
+            "trigger": "after_controller_defeated"
+          },
+          "conditions": [
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "adjust_victory_points",
+              "player": "controller",
+              "amount": 3
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "reckless-strategy",
+          "kind": "forced_trigger",
+          "printedClause": "无前之谋-若你输掉战斗，失去2点战果。若你因此效果失去了战果，所有你战斗中的胜者获得2点战果",
+          "activation": {
+            "trigger": "after_controller_loses_battle"
+          },
+          "conditions": [
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "battle_loss_vp_then_reward_winners",
+              "lossAmount": 2,
+              "winnerRewardAmount": 2
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "6b09b635178822aa3f1e6bd6cd1c69672b09e8de",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "织田信长.htm",
+            "locator": "从者/弓兵/英文版/织田信长.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/织田信长.png",
+            "locator": "servant.nobunaga/织田信长"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "sourceAbilityId": "fool-defeat-reward",
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[7].abilities[0].printedClause",
+            "sha256": "6a43f81f9660f303c7bc3501dd12fb3d35140dab198f7d680ba213f28e7fa890"
+          },
+          {
+            "sourceAbilityId": "reckless-strategy",
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[7].abilities[1].printedClause",
+            "sha256": "ec51cf410c7eed80b2e6a4645a18096f294fdad6ff606f569ebfe2c380b0bd02"
+          }
+        ],
+        "f1FullPrintedTextSha256": "25ad641852b74800c2e2f77531d24e8b254b8b68d3221653488147fb38342d3c",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_nobunaga_3",
+          "class": "Archer",
+          "cost": 0,
+          "basePower": 7,
+          "legacyRequirement": 0,
+          "typeLabel": "力量",
+          "attributes": [
+            "力量"
+          ]
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4",
+          "note": "Historical Reference requirement 0 is retained as static evidence only and does not override the final-rule servant-skill threshold."
+        },
+        "acceptedContracts": {
+          "controllerDefeatedVpReward": "P3-R98/FB2-47",
+          "battleLossVpWinnerReward": "P3-R97/FB2-46",
+          "defeatBeforeLossOrdering": "P3-R98/FB2-47",
+          "skillZonePlayThreshold": "final_rules_9.4"
+        }
+      }
+    }
+  ]
+}

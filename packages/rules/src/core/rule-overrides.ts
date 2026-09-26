@@ -96,6 +96,18 @@ export function movementLockedByPersistentRule(state: GameState, playerId: strin
     ['action', 'battle'].includes(state.round.activePhase);
 }
 
+export function rulerSealMovementLocked(state: GameState, playerId: string): boolean {
+  return state.ruleOverrides?.rulerSealMovementLockRoundByPlayer?.[playerId] === state.round.roundNumber;
+}
+
+export function installRulerSealMovementLock(state: GameState, playerId: string): void {
+  const overrides = state.ruleOverrides ??= {};
+  overrides.rulerSealMovementLockRoundByPlayer = {
+    ...(overrides.rulerSealMovementLockRoundByPlayer ?? {}),
+    [playerId]: state.round.roundNumber,
+  };
+}
+
 export function commandSpellPhaseOverride(state: GameState, playerId: string): PhaseName | undefined {
   return state.ruleOverrides?.commandSpellPhaseOverrideByPlayer?.[playerId];
 }

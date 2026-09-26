@@ -935,3 +935,153 @@ Permitted final status:
 - The accepted dependency is exactly one non-frozen Shirou derived support definition. It preserves seven playable masters and fourteen characters and creates no Shirou playable character/fallback/deck/setup surface.
 - Frozen accepted overlap remains `111/944` (`11.76%`), leaving `833/944`; all eleven frozen FM09 target definitions remain absent.
 - The next legal step is fresh target-dependency planning across those eleven identities. P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 or broad Ciel migration is dispatched.
+## P3-A Remaining FM09 Target Dependency Planning / FB2-21 Dispatch - 2026-09-18
+
+- Post-R45 base `575650f7be3dc9a3a61d5191d0a44829b6daf8ba` closes the non-frozen Shirou derived dependency while frozen accepted overlap remains `111/944`.
+- Fresh comparison of the eleven absent frozen target definitions does not inherit historical ordering. Caules s2 has at least deployment-trigger plus turn-scoped defeat-ignore gaps; Caules s3 lacks generic per-game attribute declaration and attribute-filtered power-zero behavior; Fujino s3 has an absent transitive s2 definition; Ryougi s3 needs a new cross-player private-hand interaction contract.
+- Ciel s2's existing generic routes cover low-mana play exception, combat conditions, location condition, fixed mana gain and VP adjustment. The isolated missing value is the controller's effective authored terrain/deployment bonus.
+- P3-FB2-21-RECOVERY is dispatched only to extract current combat terrain truth into a shared identity-free helper and expose exact controlled metric `controller.deployment_bonus`. It takes zero migration credit and adds no Ciel identity/content.
+- Ciel s2 waits for FB2-21 candidate + fresh R46 + post-review A synchronization. P3-FM09 remains `MIGRATION_BLOCKED`; no FM10 is dispatched.
+
+## P3-A R46 / FB2-21 Recovery Acceptance Synchronization - 2026-09-18
+
+- Fresh R46 independently accepts FB2-21 candidate `92f2aa1b084b9ac9c2ee8f2f353cdfa13611f04a` over Base `98ce9b0c3967c598f9fb7d2736f418e15dcc5d30`, with no blocking semantic, scope, or performance finding.
+- R46 confirms one shared identity-free terrain/deployment-bonus truth for combat and exact controlled metric `controller.deployment_bonus`, with near-match fail-closed validation, controller-based evaluation, multiplier/Preparation/suppression correctness, explicit combat-slot compatibility, zero behavior outside battlefield/missing/invalid assignment, and pure reads.
+- Fresh official validation is focused `17/17`, full CI `842/842` across 130 files, rules core+regression `427/427`, client/content/determinism/Reference PASS, unchanged coverage `99/134/233` with compiled `71/14/0`, buckets `22/3/128/0/80/126`, and audit `128/3/80/20`.
+- Fresh Base/Candidate timing comparison shows the fixed 5-second eleven-round test is parallel-suite fragile but provides no evidence of Candidate production regression; isolated timings overlap while Candidate unchanged official CI passes.
+- FB2-21 takes zero frozen migration credit. Accepted overlap remains `111/944` (`11.76%`), leaving `833/944`.
+- The previously isolated Ciel s2 terrain/deployment-bonus prerequisite is now closed. Ciel still requires a fresh single-target feasibility/source-grounding pass before implementation; P3-FM09 remains `MIGRATION_BLOCKED`, no FM10 is dispatched, and PR #355 is not merged here.
+
+## P3-A Ciel S2 Recovery Feasibility / FB2-22 Dispatch - 2026-09-18
+
+- Post-R46 fresh feasibility closes `master.ciel.skill.s2` as an exact single frozen support-definition migration; no further generic runtime prerequisite was found.
+- F1 `59f145...` remains semantic/provenance authority; locked Reference `b2f9fa...` is restricted to stable static metadata/source locator. Historical Ciel commit `d019e50...` is technical evidence only.
+- Detached probe on exact `abc57f2...` passes typecheck, content validate/compile, Ciel behavior `3/3`, and after probe-only aggregate `71 -> 72`, Ciel+combat+compiler `62/62`.
+- Generated product adds only one Ciel rules card plus card/two-ability sourceMap entries. Playable masters/servants remain 7/7, executable characters 14, no Ciel character/fallback/deck/fixture surface appears, and the other ten frozen provisioning targets remain absent.
+- Predicted Candidate material is `100 archives / 135 cards / 235 abilities`, compiled `72/14/0`, buckets `22/3/130/0/80/127`, audit `130/3/80/20`; generated content-library hash `2ffde7a8...`, fixture/evidence hashes unchanged.
+- P3-FB2-22-RECOVERY is dispatched for exactly `master.ciel.skill.s2`. Candidate material overlap may be `112/944`; accepted overlap remains `111/944` until independent A material synchronization and fresh R47 acceptance.
+
+## P3-A FB2-22 Ciel S2 Recovery Material Synchronization / R47 Dispatch - 2026-09-18
+
+- Fresh Candidate `35a2a59fd4bf77bdbbfac37031556617af94c47f`, directly based on dispatch `52ea97e9371f5a2353b58ad948b232434c68abd8`, materializes exactly frozen target `master.ciel.skill.s2` with exact six-file scope and no `packages/rules/src/**` change.
+- Fresh A independently reproduces `111/944 -> 112/944` material overlap with exactly one frozen addition, zero removals, zero duplicate card ids, and all other ten frozen FM09 provisioning targets absent.
+- Product surface remains 7 playable masters / 7 servants / 72 executable cards / 14 characters / 7 decks / 0 blockers, with no Ciel character, fallback command spell, deck, fixture, evidence, or public master surface.
+- Independent A verification passes `npm ci --offline`, typecheck, focused `66/66`, content `7/7/20/0`, deterministic generation, unchanged official full CI `849/849`, rules core+regression `434/434`, client build, locked Reference verification, coverage, automation audit, and diff check.
+- Deterministic hashes are content library `2ffde7a8cf54611332456fe91b812ab6d36d98800f5b8d53f57394d65c05e572`, fixture `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`, evidence `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`.
+- Material counters are `100/135/235`, compiled `72/14/0`, buckets `22/3/130/0/80/127`, audit `130/3/80/20`; reporting artifact rewrites are restored before synchronization commit.
+- P3-R47-RECOVERY is READY for a fresh independent review. Accepted frozen overlap remains `111/944` throughout A synchronization and R47 review; no merge, FM09, FM10, or second target is authorized.
+## P3-A R47 / FB2-22 Ciel S2 Recovery Acceptance Synchronization - 2026-09-18
+
+- Fresh R47 independently returns `MIGRATION_ACCEPTED` for exact frozen identity `master.ciel.skill.s2` over Base `52ea97e...`, Candidate `35a2a59...`, and A material synchronization `cc0d86f...`, with no blocking semantic, provenance, scope, accounting, determinism, performance, or cleanliness finding.
+- R47 independently reproduces exact F1/Reference provenance, support-only/outside-game registration, Ciel behavior, shared terrain metric semantics, seven-master product isolation, exact one-ID frozen addition, deterministic hashes, and clean reviewer/Candidate worktrees.
+- Fresh official validation is focused `73/73` across the requested Ciel/combat/executable/terrain set, full CI `849/849`, rules core+regression `434/434`, client/content/determinism/Reference PASS, coverage/audit PASS, and diff check PASS.
+- Recovery-line frozen accepted overlap advances from `111/944` to **`112/944` (`11.86%`)**, leaving `832/944`; the exact accepted addition is only `master.ciel.skill.s2`.
+- Material counters remain `100 archives / 135 cards / 235 abilities`, compiled `72/14/0`, buckets `22/3/130/0/80/127`, audit `130/3/80/20`.
+- Integrated `origin/main` remains `553779e8ffcc926ae4763ee86a2ea937e090c128`, so the integrated-main accepted overlap is still `111/944` until a later coordinated integration of the stacked accepted lineage.
+- Ten FM09 provisioning target definitions remain unresolved. The next legal step is fresh dependency/feasibility planning across those ten targets; P3-FM09 remains `MIGRATION_BLOCKED`, no FM10 is dispatched, and PR #356 is not merged or retargeted here.
+## P3-A Remaining-10 FM09 Dependency Planning / FB2-23 Dispatch - 2026-09-18
+
+- Post-R47 accepted recovery lineage is `112/944`; integrated main remains `111/944` because the accepted stacked Ciel migration is not yet integrated.
+- Fresh current-lineage comparison rechecks all ten unresolved FM09 provisioning targets rather than inheriting historical order.
+- Bazett s2 still needs opponent/event-player card-play scope plus exact defeat targeting; Caules s2/s3, Nanaya s2, Ryougi s2, Tohno s2 and Zouken s3/s4 each retain multiple semantic gaps; Fujino s3 has an absent frozen s2 transitive dependency.
+- Ryougi s3 is the narrowest: required-additional play is already accepted, and the isolated remaining gap is one same-battlefield private hand inspection / optional return-one-to-owner-deck interaction.
+- P3-FB2-23-RECOVERY is dispatched as identity-free zero-credit infrastructure only. It may not add Ryougi or other content, modify MatchSession source, broaden hidden-card visibility, or change frozen accounting.
+- Recovery-line accepted overlap remains `112/944`; P3-FM09 remains `MIGRATION_BLOCKED`, R48 is required before any Ryougi s3 content attempt, and no FM10/merge/retarget is authorized.
+
+## P3-A R48-R2 / FB2-23 Recovery Acceptance Synchronization - 2026-09-18
+
+- Fresh R48-R2 independently accepts revised FB2-23 Candidate `1cfd6000f5627a282e2549d23e5a176ba983384f` over exact planning Base `077dac0d8f9ca7956554e3cb45511f8edf659156`; rejected R48-R1 Candidate `92d72e6...` is historical evidence only and is not in the revised Candidate ancestry.
+- R48-R2 closes the exact-envelope fail-open blocker and independently revalidates privacy, settlement, stale/forged rejection, replay, serialization, exact six-file scope, identity-free routing, and zero product/accounting drift.
+- Fresh official validation is focused `17/17`, full CI `860/860` across 132 files, rules core+regression `445/445`, client/content/determinism/Reference/coverage/audit PASS, and diff check PASS; the fixed-5s eleven-round test completes at about 4328 ms.
+- FB2-23 earns zero frozen migration credit. Recovery-line accepted overlap remains **`112/944` (`11.86%`)**, leaving `832/944`; integrated main remains `111/944`.
+- The accepted interaction seam removes the isolated runtime prerequisite for `master.shiki-ryougi.skill.s3`. The next legal action is fresh single-target Ryougi s3 feasibility/migration planning; P3-FM09 remains `MIGRATION_BLOCKED`, and no FM10/merge/retarget occurs here.
+
+## P3-A Ryougi S3 Recovery Feasibility / FB2-24 Dispatch - 2026-09-18
+
+- Exact post-R48 accepted base is `e8c312986d9d01c9e28e3e70309c925f6f6a5f4b`; recovery accepted overlap remains `112/944`.
+- Fresh F1 grounding confirms exactly `master.shiki-ryougi.skill.s3` / `死・紧握`: append-only plus one action-phase same-battlefield private hand inspection / optional return-one interaction. Locked Reference supplies only static metadata.
+- Fresh uncommitted feasibility probe uses only accepted generic contracts and passes typecheck/content validate+compile/determinism and FB2-23 runtime; the only expected test delta is executable aggregate `72 -> 73`, after which focused interaction+compiler is `60/60`.
+- Probe product is `101 archives / 136 cards / 237 abilities`, compiled `73/14/0`, buckets `22/3/131/0/81/130`, audit `131/3/81/20`, material overlap `113/944` with exactly one target addition.
+- P3-FB2-24-RECOVERY is dispatched for only Ryougi s3. Accepted overlap stays `112/944` until fresh R49 and post-review A synchronization; P3-FM09 remains blocked and no FM10/merge/retarget is authorized.
+
+## P3-A R49 / FB2-24 Ryougi S3 Recovery Acceptance Synchronization - 2026-09-18
+
+- Fresh R49 independently returns `MIGRATION_ACCEPTED` for corrected Candidate `8ff45c944ba810edfbfa93d17462d4c3cb6a4e16` over exact Base `7e2925ed37f89b60dac2c2b13c68081af6e33fbe`, with no blocking semantic, provenance, scope, accounting, determinism, performance, privacy, or cleanliness finding.
+- R49 independently verifies Final Rules 9.4 skill-zone threshold `8` rather than legacy Reference `requirement: 1`, including runtime probes at 7 versus 8 mana; exact F1 clause hashes; support-only/outside-game product shape; FB2-16 append-only and FB2-23 same-battlefield private-hand semantics; stale/forged/replay/serialization fail-closed behavior; and zero production rules-source diff.
+- Fresh official validation is focused `66/66`, unchanged full CI `866/866` across 133 files, rules core+regression `451/451` across 73 files, client/content/determinism/Reference/coverage/audit PASS, and diff check PASS; the eleven-round MatchSession case completes at about 4663 ms in fresh review.
+- Corrected deterministic hashes are library `03582e22b830c59ccfe03379159dd5e50aef19fd7bae3561469c000e56618a79`, fixture `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`, evidence `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`.
+- Material is `101 archives / 136 cards / 237 abilities`, compiled `73/14/0`, buckets `22/3/131/0/81/130`, audit `131/3/81/20`.
+- Recovery-line frozen accepted overlap advances from `112/944` to **`113/944` (`11.97%`)**, leaving `831/944`; the exact accepted addition is only `master.shiki-ryougi.skill.s3`, with zero removals and zero duplicate canonical authoring IDs.
+- Integrated `origin/main` remains `553779e8ffcc926ae4763ee86a2ea937e090c128`, so integrated-main accepted overlap remains `111/944`. Nine FM09 provisioning targets remain absent; P3-FM09 remains `MIGRATION_BLOCKED`; PR #359 is not merged or retargeted here.
+
+## P3-A R50 / FM05 Territory Variant Extension Acceptance Synchronization - 2026-09-18
+
+- Fresh R50 independently accepts Candidate `7f83a0cfba2cd7f781ab0c0491c9ed2607db02d6` over exact A dispatch Base `40eaf45a64ecca0ddb6efe62a8bed35652420707`, with no blocking semantic, provenance, scope, accounting, determinism, performance, or cleanliness finding.
+- Exact accepted frozen additions are only `servant.gilles.skill.sc-gilles-2` and `servant.medea.skill.sc-medea-2`; Base/Candidate material overlap is `113/944 -> 115/944`, with zero removals and zero duplicate canonical authoring IDs.
+- Both cards independently reproduce the accepted Territory Creation core: controlled round formula `16 - 2*round`, Magic Workshop controller deployment reward `+1 mana / +2 VP`, action/controller timing, and Final Rules 9.4 skill-zone threshold `8`. No runtime/compiler/product hot-file route is added.
+- Fresh official validation is focused `9/9`, unchanged Candidate full CI `870/870` across 134 files after explicit timing investigation, rules core+regression `451/451` across 73 files, client/content/determinism/Reference/coverage/audit PASS, and diff check PASS.
+- Material reporting is `103 archives / 138 cards / 241 abilities`, compiled `73/14/0`, buckets `22/3/133/0/83/130`, audit `133/3/83/20`.
+- Recovery-line frozen accepted overlap advances from `113/944` to **`115/944` (`12.18%`)**, leaving `829/944`. Integrated `origin/main` remains `553779e8ffcc926ae4763ee86a2ea937e090c128` / accepted `111/944`.
+- P3-FM09 remains `MIGRATION_BLOCKED` with its same nine provisioning targets. This accepted FM05 extension is not FM10; PR #361 is not merged or retargeted here. The next coordinator action is a fresh full-roster readiness refresh over the remaining `829` identities.
+
+## P3-A FB2-25 Game-Start Fixed Set-Mana Dispatch - 2026-09-18
+
+- Post-R50 recovery accepted baseline is `115/944`, leaving `829/944`; integrated main remains `111/944`.
+- Full readiness refresh finds no additional direct migration with an already accepted complete semantic signature. Okita remains excluded from Riding because its repeat-play semantics differ; Leonardo/Ophelia retain their documented FM08 completeness gaps.
+- The narrow reusable next gap is exactly `game.started -> SET_MANA` for two block-free F1 rows: `master.iliya.skill.s1` (6) and `master.taiga.skill.s1` (3). Zouken s1 is excluded because it additionally changes Mana capacity.
+- FB2-25 is dispatched as zero-credit B2 infrastructure: identity-free exact parent classifier/guard composing trusted `game_start` with accepted FB2-05 fixed-controller literal `set_mana`. No authoring migration, broad Trigger promotion, or FM10 dispatch is authorized.
+
+
+## P3-A R51 / FB2-25 Game-Start Fixed Set-Mana Acceptance Synchronization - 2026-09-18
+
+- Fresh R51 independently accepts B2 Candidate `101cb0d4e3fbd105cfadafda26585b3825616fe1` over exact A dispatch Base `c04e42ea8d002e974f8965218f915d642fe26ea5`, with no blocking semantic, scope, identity-routing, transaction, determinism, or cleanliness finding.
+- Accepted scope is one identity-free fail-closed composed parent semantic: exact automatic `forced_trigger + game_start + one fixed-controller literal set_mana`, with all other semantic axes empty/default. Near matches fail closed.
+- Reviewer probes confirm exact assignment 3/6, typed resource evidence, controller isolation, same-value no-op, replay idempotency, and over-cap transactional rollback. Production rules contain no Iliya/Taiga/name/text routing.
+- Fresh validation is focused `29/29`, full CI `875/875` across 135 files, rules core+regression `456/456` across 74 files, client/content/determinism/Reference/coverage/audit PASS, and diff check PASS.
+- Frozen material remains **`115/944` (`12.18%`)**, leaving `829/944`; FB2-25 earns zero migration credit. Integrated main remains `111/944`.
+- Exact F1 rows fully inside this new envelope are only `master.iliya.skill.s1` and `master.taiga.skill.s1`. This is planning evidence, not migration credit; fresh feasibility/source-grounding is required before S migration.
+
+
+## P3-A FB2-25 Consumer Migration Dispatch - Iliya S1 + Taiga S1 - 2026-09-18
+
+- Fresh post-R51 feasibility confirms exactly two F1 rows fully fit the accepted composed parent semantic: `master.iliya.skill.s1` (initial Mana 6) and `master.taiga.skill.s1` (initial Mana 3). Zouken s1 remains excluded due its additional Mana-capacity modifier.
+- F1 full-text hashes are `681da5ea...` and `ab00e7ec...`; locked Reference confirms owner/name, legacy s1, passive type, normalized 0/0 static values, and null legacy requirement.
+- A temporary raw-authoring probe with explicit empty host authority loads both cards with zero report, classifies under accepted FB2-25, and executes trusted game_start as 4->6 and 4->3 while leaving the other player unchanged.
+- The authorized container is the accepted FM08/R40 standalone `master_skill_card_archive` pattern. The two archives must not be added to the playtest pack and must not use outside-game support registration.
+- S is dispatched for exactly these two identities with no runtime/product hot-file change. Candidate material may become `117/944`; recovery accepted remains **`115/944`** until fresh independent migration review and A synchronization.
+
+## P3-A R52 / FB2-25 Initial-Mana Consumer Migration Acceptance Synchronization - 2026-09-18
+
+- Fresh R52 returns `MIGRATION_ACCEPTED` for exact Candidate `0de67e5b5c4f403f04fa54868c6db09b980c90f8` over Base `bfa9087ab77223e40525fe36214509b1f2cdf9ff`, with no blocking semantic, provenance, scope, accounting, product-isolation, determinism, or cleanliness finding.
+- Exact accepted frozen additions are only `master.iliya.skill.s1` and `master.taiga.skill.s1`; both are source-grounded `game.started -> SET_MANA(controller, literal)` consumers fully inside accepted FB2-05 + FB2-25/R51 semantics. Zouken s1 remains excluded due additional game-duration Mana-capacity semantics.
+- Candidate scope is exactly two standalone master-skill authoring archives, one focused regression, and one S result report, with zero `packages/rules/src/**`, pack, generated, app, script, or artifact diff. Runtime probes prove `4 -> 6/3`, controller isolation, typed evidence, no-op/replay behavior, and fail-closed near-match handling.
+- Fresh official validation is focused `21/21`, full CI `880/880` across 136 files, rules core+regression `456/456` across 74 files, client/content/determinism/Reference PASS, coverage/audit PASS, and diff check PASS. Product remains `73 cards / 14 characters / 0 blockers` with unchanged deterministic hashes.
+- A independently reproduces frozen material `115/944 -> 117/944`, exactly two additions, zero removals, zero duplicate canonical IDs. Recovery-line accepted overlap is now **`117/944` (`12.39%`)**, leaving **`827/944`**; integrated main remains `111/944`.
+- P3-FM09 remains `MIGRATION_BLOCKED` with the same nine provisioning targets. PR #363 remains open/unmerged; the next coordinator action is a fresh readiness overlay over the remaining `827` identities rather than a synthetic FM10 dispatch.
+
+## P3-A Post-R52 Readiness Overlay / MHX FM03 Extension Dispatch - 2026-09-18
+
+- Accepted recovery baseline is `117/944` (`12.39%`), leaving `827/944`; integrated main remains `111/944`.
+- Exact F1 signature refresh finds zero remaining mixed accepted/missing groups. A secondary source-complete family reconciliation finds exactly one clean direct extension: `servant.mhx.skill.sc-mhx-3`.
+- MHX s3 is F1-labeled special only by normalization classification, but its full printed SHA `8a6da48...`, all three clause hashes, Reference handler `core.saber-magic-resistance`, and locked `3/3` special-card metadata match accepted FM03 evidence. A's in-memory probe loads blocker-free, matches all three accepted classifiers/structures, executes Magic Resistance correctly, and resolves Noble Bloom as two independent +1 VP responses.
+- P3-FM03-MHX-EXTENSION-RECOVERY is dispatched to Codex S for exactly MHX s3, with no runtime/pack/generated/product changes authorized. Candidate material may become `118/944`; accepted remains **`117/944`** until fresh R and later A acceptance synchronization.
+- P3-FM09 remains blocked on the same nine targets; this work is not FM10.
+
+## P3-A R53 / MHX FM03 Extension Acceptance Synchronization - 2026-09-18
+
+- Fresh R53 returns `MIGRATION_ACCEPTED` for exact Candidate `edfe2ee2e21b484d2b01824f6117d364d1af835b` over exact A dispatch Base `362c799c9c3b92a1e2af3f1e4597d5cfcba532ac`, with no blocking semantic, provenance, scope, accounting, product-isolation, determinism, or cleanliness finding.
+- Exact accepted frozen addition is only `servant.mhx.skill.sc-mhx-3`. R53 independently proves the F1 `SPECIAL_HANDLER_CANDIDATE` label is normalization/classification drift: complete printed text and all three clause hashes match accepted FM03 evidence, while Candidate normalized abilities structurally reuse accepted B18/R12, B19/R13, and FB2-10/R29 behavior without identity routing.
+- Candidate scope is exactly one standalone servant-skill authoring archive, one focused regression, and one S result report, with zero runtime/compiler/pack/generated/app/script/artifact diff. Product remains `73 cards / 14 characters / 0 blockers` and deterministic hashes remain unchanged.
+- Fresh official validation is focused `26/26`, full CI `880/880` across 136 files, rules src+core+regression `468/468` across 78 files, client/content/determinism/Reference PASS, coverage `106/141/246` with compiled `73/14/0`, automation audit `135/3/86/20`, and diff check PASS.
+- A independently reproduces frozen material `117/944 -> 118/944`, exactly one addition, zero removals, and zero duplicate canonical IDs. Recovery-line accepted overlap is now **`118/944` (`12.50%`)**, leaving **`826/944`**; integrated main remains `111/944`.
+- P3-FM09 remains `MIGRATION_BLOCKED` with the same nine provisioning targets. PR #364 remains open/unmerged. The next coordinator action is a throughput-oriented readiness overlay over the remaining `826`, prioritizing larger evidence-backed homogeneous groups instead of additional singleton cleanup.
+
+## P3-A Post-R53 Throughput Overlay / FB2-26 Dispatch - 2026-09-18
+
+- Recovery accepted baseline is **`118/944` (`12.50%`)**, leaving **`826/944`**; integrated main remains `111/944`.
+- Exact remaining-family analysis finds no honest `10-40` member direct-ready migration batch. The highest-value already-accepted semantic opportunity is a three-source subset of the R41/FB2-15 game-start provisioning family whose target dependencies are now closed: `master.ciel.skill.s1a`, `master.shiki-ryougi.skill.s1a`, and `master.shirou-emiya.skill.s2`.
+- Their accepted targets are respectively `master.ciel.skill.s2` (R47), `master.shiki-ryougi.skill.s3` (R49), and `card.derived.master.shirou-emiya.ganjiang-moye` (R45). No new provisioning execution semantic is required.
+- Direct S migration is still blocked by representation: each owner currently uses exact FB2-19 `master_support_definition_archive`, whose cards must all be `outside_game`, while an FB2-15 source must be an ordinary non-deferred `master_skill` that compiles to `initialZone: skill`. Ordinary master registration would incorrectly create playable master/fallback surface, and duplicate compiled archive ids are rejected.
+- A therefore dispatches zero-credit **P3-FB2-26-NONPLAYABLE-MASTER-RULE-ARCHIVE**: a new exact `authoringMasterRuleFiles` / `master_rule_definition_archive` rules-only channel for a mixed same-owner ordinary source + outside-game target archive. It must not broaden FB2-19, create playable character/deck/fallback surface, or change interpreter/MatchSession behavior.
+- FB2-26 itself earns zero frozen credit. If freshly accepted and synchronized, the mechanically eligible next S tranche is exactly those three source identities, with potential Candidate material `118/944 -> 121/944`; formal accepted remains `118/944` until separate migration review and A synchronization.
+- Historical P3-FM09 exact-ten recovery remains blocked; the nine unresolved provisioning target identities are unchanged. No FM10, merge, or retarget is authorized.

@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.helena",
+  "name": "海伦娜·布拉瓦茨基",
+  "class": "Caster",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from frozen F1 plus accepted Phase-3 contracts; locked Reference is used only for owner/static metadata."
+  },
+  "cards": [
+    {
+      "id": "servant.helena.skill.sc-helena-3",
+      "aliases": [
+        "sc_helena_3"
+      ],
+      "legacyId": "sc_helena_3",
+      "name": "金星神·火炎天主",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.helena"
+      },
+      "printedText": "【真名解放】\n魔力同调-行动阶段：与你位于同一地点的对手技能区内的暗置技能无法被使用。",
+      "cardFace": {
+        "typeLabel": "魔术/宝具",
+        "attributes": [
+          "魔术",
+          "宝具"
+        ],
+        "cost": 3,
+        "basePower": 7
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "mana-synchronization",
+          "kind": "phase_action",
+          "printedClause": "魔力同调-行动阶段：与你位于同一地点的对手技能区内的暗置技能无法被使用",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "targets": [],
+          "effects": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [
+            {
+              "id": "forbid-facedown-skill-use",
+              "printedClause": "与你位于同一地点的对手技能区内的暗置技能无法被使用",
+              "operation": "forbid",
+              "rule": "skill_use",
+              "scope": {
+                "subject": "opponents_at_source_location",
+                "skillCard": {
+                  "zones": [
+                    "master-skills",
+                    "servant-skills"
+                  ],
+                  "face": "down"
+                }
+              },
+              "lifecycle": {
+                "duration": "this_round"
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round"
+          },
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[13].abilities[0].printedClause",
+            "sha256": "827a73ca8ea48bda73c2a252c0cda060db3cbb22b9c34cdc529723085e3f5497"
+          }
+        ],
+        "f1FullPrintedTextSha256": "ff3ff32a20b02a8a8504bcf2ddb2f3062c8a4ca091d6360f9897c60187bfc7a5",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_helena_3",
+          "class": "Caster",
+          "cost": 3,
+          "basePower": 7,
+          "legacyRequirement": 8,
+          "typeLabel": "魔术/宝具",
+          "attributes": [
+            "魔术",
+            "宝具"
+          ]
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4",
+          "note": "Legacy requirement is retained as evidence metadata only."
+        },
+        "acceptedContracts": {
+          "skillUseForbidSelectors": "P3-R76/FB2-36"
+        }
+      }
+    }
+  ]
+}

@@ -1,15 +1,107 @@
 {
   "schemaVersion": "fd-card-authoring-v1",
-  "archiveType": "master_support_definition_archive",
+  "archiveType": "master_rule_definition_archive",
   "id": "master.shirou-emiya",
   "name": "卫宫士郎",
   "class": "Master",
   "sourcePolicy": {
     "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
     "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
-    "note": "F1 is authoritative for the provisioning relationship; locked Reference supplies only stable identity, static metadata, and the source locator."
+    "note": "Frozen F1 is authoritative for source/target identity, printed clauses, and semantics. Accepted FB2-15 provides identity-free game-start provisioning; accepted R55/FB2-26 provides rules-only mixed-master registration. Locked Reference supplies stable identity/static metadata only; no identity-specific runtime routing is inherited."
   },
   "cards": [
+    {
+      "id": "master.shirou-emiya.skill.s2",
+      "aliases": [
+        "s2"
+      ],
+      "legacyId": "s2",
+      "name": "投影",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.shirou-emiya"
+      },
+      "printedText": "将【干将·莫邪】加入你的技能区。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": []
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "s2.game-start-skill-provisioning",
+          "kind": "forced_trigger",
+          "printedClause": "将【干将·莫邪】加入你的技能区。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "provision_skill_cards",
+              "player": "controller",
+              "targetDefinitionIds": [
+                "card.derived.master.shirou-emiya.ganjiang-moye"
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/卫宫士郎.png",
+            "locator": "master.shirou-emiya/卫宫士郎"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.shirou-emiya/s2"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "master.shirou-emiya.skill.s2",
+            "sha256": "a0ea1f45cedb3ac69c9d4050cfdadcf318cf32f62b749013a8454245535ca575"
+          }
+        ],
+        "sourceTextSha256": "a0ea1f45cedb3ac69c9d4050cfdadcf318cf32f62b749013a8454245535ca575",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s2",
+          "cost": null,
+          "basePower": null,
+          "legacyRequirement": null,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": {
+          "gameStartSkillProvisioning": "P3-R41/FB2-15",
+          "nonPlayableMasterRuleArchive": "P3-R55/FB2-26"
+        }
+      }
+    },
     {
       "id": "card.derived.master.shirou-emiya.ganjiang-moye",
       "name": "干将·莫邪",
