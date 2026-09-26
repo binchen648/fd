@@ -72,34 +72,27 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('keeps battlefield deployment triggers scoped while Sherlock alone receives the magic-workshop deployment residual', () => {
-    const session = createMatchSession({ seed: 9, humanPlayerId: 'p2', humanPlayerIds: ['p2'] });
-    const sherlock = session.pairings.find((pairing) => pairing.servant.id === 'servant.sherlock')!;
-    const ereshkigal = session.pairings.find((pairing) => pairing.servant.id === 'servant.ereshkigal')!;
-    expect(sherlock).toBeTruthy();
-    expect(ereshkigal).toBeTruthy();
-
+    const session = createMatchSession({ seed: 9, humanPlayerId: 'p1', humanPlayerIds: ['p1'] });
+    const sherlockPlayer = session.state.players.find((player) => player.id === 'p1')!;
+    const ereshPlayer = session.state.players.find((player) => player.id === 'p2')!;
     for (const player of session.state.players) delete player.locationId;
     session.state.round.activePhase = 'advance';
-    session.state.round.prioritySeat = sherlock.seat;
-    const activateSkill = (playerId: string, definitionId: string) => {
-      const card = session.state.cards.find((candidate) => candidate.ownerPlayerId === playerId && candidate.definitionId === definitionId)!;
-      card.zone = 'attack_area';
-      card.visibility = { scope: 'public' };
-      session.state.abilityRuntime!.cardState[card.instanceId] = { active: true, faceDown: false, playedRound: session.state.round.roundNumber };
+    session.state.round.prioritySeat = sherlockPlayer.seat;
+    const activateSkillFixture = (playerId: string, definitionId: string) => {
+      const instanceId = 'fixture:' + definitionId;
+      session.state.cards.push({ instanceId, definitionId, ownerPlayerId: playerId, controllerPlayerId: playerId, zone: 'attack_area', visibility: { scope: 'public' } });
+      session.state.abilityRuntime!.cardState[instanceId] = { active: true, faceDown: false, playedRound: session.state.round.roundNumber };
     };
-    activateSkill(sherlock.playerId, 'servant.sherlock.skill.sc-sherlock-2');
-    activateSkill(ereshkigal.playerId, 'servant.ereshkigal.skill.sc-ereshkigal-2');
-
-    const sherlockPlayer = session.state.players.find((player) => player.id === sherlock.playerId)!;
-    const ereshPlayer = session.state.players.find((player) => player.id === ereshkigal.playerId)!;
+    activateSkillFixture(sherlockPlayer.id, 'servant.sherlock.skill.sc-sherlock-2');
+    activateSkillFixture(ereshPlayer.id, 'servant.ereshkigal.skill.sc-ereshkigal-2');
     sherlockPlayer.mana = 4;
     ereshPlayer.mana = 4;
-    const result = session.dispatchPlayerCommand(sherlock.playerId, { type: 'deploy_player', locationId: 'magic_workshop' });
+    const result = session.dispatchPlayerCommand(sherlockPlayer.id, { type: 'deploy_player', locationId: 'magic_workshop' });
     expect(result.ok).toBe(true);
-    expect(session.state.players.find((player) => player.id === sherlock.playerId)!.mana).toBe(7); // +2 workshop reward +1 Sherlock residual
-    expect(session.state.players.find((player) => player.id === ereshkigal.playerId)!.mana).toBe(4); // no false battlefield deployment event
+    expect(session.state.players.find((player) => player.id === sherlockPlayer.id)!.mana).toBe(7); // +2 workshop reward +1 Sherlock residual
+    expect(session.state.players.find((player) => player.id === ereshPlayer.id)!.mana).toBe(4); // no false battlefield deployment event
     expect(session.state.abilityRuntime!.processedEvents.some((id) => id.includes('deploy-location'))).toBe(true);
-    expect(session.state.abilityRuntime!.processedEvents.some((id) => id.includes('deploy-battlefield') && id.includes(sherlock.playerId))).toBe(false);
+    expect(session.state.abilityRuntime!.processedEvents.some((id) => id.includes('deploy-battlefield') && id.includes(sherlockPlayer.id))).toBe(false);
   });
 
   it('filters Kayneth deployment choices through Pride when a lower-VP lone battlefield is available', () => {
@@ -211,7 +204,8 @@ describe('MatchSession semi-auto runtime', () => {
       player.locationId = ['p1', 'p2'].includes(player.id) ? 'miyama_town' : 'recon';
       player.militaryResult = 0;
     }
-    const luck = session.state.cards.find((card) => card.ownerPlayerId === 'p1' && card.definitionId === 'basic.luck')!;
+    const luck = session.state.cards.find((card) => card.ownerPlayerId === 'p1' && ['hand', 'deck'].includes(card.zone))!;
+    luck.definitionId = 'basic.luck';
     const strength = session.state.cards.find((card) => card.ownerPlayerId === 'p2' && ['hand', 'deck'].includes(card.zone))!;
     luck.zone = 'attack_area';
     luck.visibility = { scope: 'public' };
@@ -232,7 +226,8 @@ describe('MatchSession semi-auto runtime', () => {
 
   it('moves round attack-area basic cards to the owner discard pile at cleanup', () => {
     const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
-    const luck = session.state.cards.find((card) => card.ownerPlayerId === 'p1' && card.definitionId === 'basic.luck')!;
+    const luck = session.state.cards.find((card) => card.ownerPlayerId === 'p1' && ['hand', 'deck'].includes(card.zone))!;
+    luck.definitionId = 'basic.luck';
     luck.zone = 'attack_area';
     luck.visibility = { scope: 'public' };
     session.state.abilityRuntime!.cardState[luck.instanceId] = { active: true, faceDown: false, playedRound: 1 };

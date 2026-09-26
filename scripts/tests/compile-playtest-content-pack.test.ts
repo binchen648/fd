@@ -32,7 +32,8 @@ describe('compile playtest content pack CLI', () => {
       { cwd: resolve('.'), encoding: 'utf8' },
     );
 
-    expect(output.trim()).toBe('7 masters, 10 servants, 20 events, 0 blocking issues');
+    const manifest = JSON.parse(readFileSync(resolve('data/packs/fd-playtest-v1/pack.json'), 'utf8'));
+    expect(output.trim()).toBe(`${manifest.authoringMasterFiles.length} masters, ${manifest.authoringServantFiles.length} servants, 20 events, 0 blocking issues`);
   });
 
   it('rejects invalid source asset validation modes', () => {
@@ -89,7 +90,8 @@ describe('compile playtest content pack CLI', () => {
     expect(readFileSync(second.outputPaths.library, 'utf8')).toBe(firstLibrary);
     expect(readFileSync(second.outputPaths.fixture, 'utf8')).toBe(firstFixture);
     expect(readFileSync(second.outputPaths.evidence, 'utf8')).toBe(firstEvidence);
-    expect(first.summary).toEqual({ masters: 7, servants: 10, events: 20, blockingIssues: 0 });
+    const manifest = JSON.parse(readFileSync(resolve('data/packs/fd-playtest-v1/pack.json'), 'utf8'));
+    expect(first.summary).toEqual({ masters: manifest.authoringMasterFiles.length, servants: manifest.authoringServantFiles.length, events: 20, blockingIssues: 0 });
     expect(JSON.parse(firstLibrary).rules).toMatchObject({
       schemaVersion: 'fd-executable-card-pack-v1',
       definitionHash: expect.stringMatching(/^[a-f0-9]{64}$/),

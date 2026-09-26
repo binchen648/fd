@@ -4,6 +4,7 @@ import type { PlayerId, SafeEvent } from './types';
 import { clearTransientCardTransformState } from './card-instance-state';
 import { isCardCloseForbidden } from './card-close-forbid';
 import { grantMana } from '../core/rule-overrides';
+import { servantRevealSuppressedByTemporaryConcealment } from './owner-self-mechanics';
 
 export type EffectExecutionStatus = 'applied' | 'no_op';
 export type BindingFieldType = 'number' | 'player_ids' | 'boolean' | 'status';
@@ -1189,7 +1190,8 @@ function revealServantPackage(
   }
   const abilityRuntime = transaction.workingState.abilityRuntime;
   if (!abilityRuntime) throw new ResolutionRuntimeError('missing_ability_runtime', 'Ability runtime is missing.');
-  if (abilityRuntime.revealedServants.includes(transaction.context.controllerId)) {
+  if (abilityRuntime.revealedServants.includes(transaction.context.controllerId) ||
+      servantRevealSuppressedByTemporaryConcealment(transaction.workingState, transaction.context.controllerId)) {
     return {
       effectId: effect.id,
       effectType: 'reveal_servant_package',

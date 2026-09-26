@@ -16,6 +16,8 @@ import { controllerHasLinkedOwnerCardFrom, isLinkedOwnerCombatRule, isServantNoC
 import { setTerrainAdvantageOverride } from './terrain-advantage-override';
 import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute, deductionRecordDefinitionsForOwner, isDeductionRecordEffect, type DeductionRecordAttribute } from './deduction-record';
 import { activePlayerCountMinusRoundPlayCostAbility } from './dynamic-play-cost';
+import { playerIgnoresAbilityFromController } from './player-ability-immunity';
+import { isHideServantTrueNameUntilRoundEndEffect, isLoseVpEqualSourcePlayCountEffect, isRevealHandRoundPowerEffect, PLAYER_COMBAT_TOTAL_POWER_RULE, servantRevealSuppressedByTemporaryConcealment } from './owner-self-mechanics';
 import {
   isAnyBattlefieldConstraint,
   isBattlefieldSourceCardPlayCostAuraAbility,
@@ -402,8 +404,9 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
   const modifiers = liveOngoing(s).flatMap(o => o.ruleModifiers).sort((a, b) =>
     Number(node(a.definition.priority).tier === 'explicit_exception') - Number(node(b.definition.priority).tier === 'explicit_exception'));
   for (const modifier of modifiers) {
-    const m = modifier.definition; const scope = node(m.scope); if (m.rule === 'effect_prevention' || m.rule === 'card_close') continue;
+    const m = modifier.definition; const scope = node(m.scope); if (m.rule === 'effect_prevention' || m.rule === 'card_close' || m.rule === PLAYER_COMBAT_TOTAL_POWER_RULE) continue;
     if (!modifierControllerApplies(s, modifier.controllerId, source, scope)) continue;
+     if (playerIgnoresAbilityFromController(s, source.controllerPlayerId, modifier.controllerId)) continue;
     if (scope.object === 'source_card' && modifier.sourceCardId !== sourceId) continue;
     if (scope.object === 'attack_card' && !isAttack(d)) continue;
     const ctx = context(s, modifier.sourceCardId, '');
@@ -425,7 +428,7 @@ function lockedBattlefieldIdsForMovement(s: GameState, playerId: string): Set<st
       if (definition.operation !== 'forbid' || definition.rule !== 'enter_or_leave_current_battlefield') continue;
       const controllerLocation = player(s, modifier.controllerId).locationId;
       const source = card(s, modifier.sourceCardId);
-      if (!controllerLocation || !active(s, source.instanceId)) continue;
+      if (!controllerLocation || !active(s, source.instanceId) || playerIgnoresAbilityFromController(s, playerId, modifier.controllerId)) continue;
       const scope = node(definition.scope);
       const subject = scope.subject;
       const appliesToAll = subject === 'all_players';
@@ -456,6 +459,7 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
   if (target.type === 'player') {
     return s.players.filter(candidate =>
       candidate.status === 'active' &&
+      !playerIgnoresAbilityFromController(s, candidate.id, ctx.controllerId) &&
       nodes(target.constraints).every(c => {
         if (c.type === 'not_controller') return candidate.id !== ctx.controllerId;
         if (c.type === 'same_location_as_controller') {
@@ -531,12 +535,12 @@ function controllerIsStrictSecondBattlePower(event: AbilityEvent | undefined, co
   return !opponents.some((playerId) => snapshot.powers[playerId] !== highest && snapshot.powers[playerId]! > ownPower);
 }
 
-function highestPowerOpponents(event: AbilityEvent, controllerId: string): string[] {
+function highestPowerOpponents(s: GameState, event: AbilityEvent, controllerId: string): string[] {
   const snapshot = trustedBattlePowerSnapshot(event);
   if (!snapshot || !controllerIsStrictSecondBattlePower(event, controllerId)) reject('invalid_event', 'Presence Concealment requires a trusted strict-second battle Power snapshot');
   const opponents = snapshot.participantIds.filter((playerId) => playerId !== controllerId);
   const highest = Math.max(...opponents.map((playerId) => snapshot.powers[playerId]!));
-  return opponents.filter((playerId) => snapshot.powers[playerId] === highest);
+  return opponents.filter((playerId) => snapshot.powers[playerId] === highest && !playerIgnoresAbilityFromController(s, playerId, controllerId));
 }
 
 export function isSourceStateCondition(c: RuleNode): boolean {
@@ -592,7 +596,7 @@ function sameBattlefieldOpponentIds(s: GameState, ctx: EffectContext): string[] 
   const controller = s.players.find((candidate) => candidate.id === ctx.controllerId);
   if (!controller || controller.status !== 'active' || !controller.locationId || !isBattlefield(s, controller.locationId)) return null;
   return s.players.filter((candidate) => candidate.status === 'active' && candidate.id !== controller.id &&
-    candidate.locationId === controller.locationId).map((candidate) => candidate.id);
+    candidate.locationId === controller.locationId && !playerIgnoresAbilityFromController(s, candidate.id, ctx.controllerId)).map((candidate) => candidate.id);
 }
 
 function structuredFlagPrimitive(value: unknown): value is boolean | string | number {
@@ -810,6 +814,7 @@ function ongoingCardPlayForbidRules(s: GameState, playerId: string, sourceId: st
   const targetPlayer = player(s, playerId);
   const ongoingRules = liveOngoing(s).flatMap(o => o.ruleModifiers).flatMap(({ controllerId, definition: m }) => {
     const controller = player(s, controllerId); const scope = node(m.scope);
+    if (playerIgnoresAbilityFromController(s, playerId, controllerId)) return [];
     const appliesToSameBattlefieldOpponent = ['opponents_at_same_battlefield', 'engaged_opponents_same_battlefield'].includes(str(scope.subject)) ||
       ['opponents_at_same_battlefield', 'engaged_opponents_same_battlefield'].includes(str(scope.object));
     if (appliesToSameBattlefieldOpponent && (controllerId === playerId || !sameBattlefield(s, controller.locationId, targetPlayer.locationId))) return [];
@@ -1363,7 +1368,9 @@ function cleanupOngoing(s: GameState): void {
   r.ongoingEffects = liveOngoing(s);
 }
 function reveal(s: GameState, controllerId: string): void {
-  const r = runtime(s); if (r.revealedServants.includes(controllerId) || servantRevealForbiddenByNoCommandSeals(s, controllerId)) return;
+  const r = runtime(s);
+  if (r.revealedServants.includes(controllerId) || servantRevealForbiddenByNoCommandSeals(s, controllerId) ||
+      servantRevealSuppressedByTemporaryConcealment(s, controllerId)) return;
   r.revealedServants.push(controllerId); r.events.push({ type: 'servant_package_revealed', playerId: controllerId });
 }
 function checkFormulaTriggers(s: GameState): void {
@@ -1418,6 +1425,46 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
   const unpreventable = a.ruleModifiers.some(m => m.rule === 'effect_prevention' && m.operation === 'ignore' && node(m.priority).tier === 'explicit_exception');
   if (r.preventEffects && !unpreventable) { r.events.push({ type: 'effect_prevented', playerId: p.id }); return; }
   switch (effect.type) {
+    case 'lose_victory_points_equal_source_play_count': {
+      if (!isLoseVpEqualSourcePlayCountEffect(effect)) reject('unsupported', 'Unsupported source play-count VP loss shape');
+      const source = card(s, ctx.sourceCardId);
+      if (source.ownerPlayerId !== ctx.controllerId || source.controllerPlayerId !== ctx.controllerId) reject('invalid_state', 'Source play-count VP loss requires controller-owned source');
+      const count = r.cardPlayCountByInstance?.[source.instanceId];
+      if (!Number.isSafeInteger(count) || Number(count) < 1) reject('invalid_state', 'Source play-count VP loss requires trusted positive physical play count');
+      const before = p.vp;
+      p.vp = Math.max(0, p.vp - Number(count));
+      r.events.push({ type: 'victory_points_adjusted', playerId: p.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, delta: p.vp - before, before, after: p.vp });
+      break;
+    }
+    case 'hide_servant_true_name_until_round_end': {
+      if (!isHideServantTrueNameUntilRoundEndEffect(effect)) reject('unsupported', 'Unsupported temporary servant concealment shape');
+      const flags = structuredPlayerFlags(s, p.id);
+      if (flags.__fd_temporary_servant_concealment_active !== true) {
+        flags.__fd_temporary_servant_concealment_active = true;
+        flags.__fd_temporary_servant_concealment_was_revealed = r.revealedServants.includes(p.id);
+      }
+      r.revealedServants = r.revealedServants.filter((id) => id !== p.id);
+      r.events.push({ type: 'servant_true_name_temporarily_hidden', playerId: p.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+      break;
+    }
+    case 'reveal_hand_and_add_round_power_by_base_power': {
+      if (!isRevealHandRoundPowerEffect(effect)) reject('unsupported', 'Unsupported reveal-hand round-power shape');
+      const hand = s.cards.filter((candidate) => candidate.controllerPlayerId === p.id && candidate.zone === 'hand');
+      const qualifying = hand.filter((candidate) => {
+        const basePower = r.pack.cards[candidate.definitionId]?.cardFace.basePower;
+        return typeof basePower === 'number' && Number.isFinite(basePower) && basePower >= Number(effect.minBasePower);
+      });
+      r.events.push({ type: 'hand_revealed', playerId: p.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, revision: r.revision + 1,
+        revealedCardDefinitionIds: hand.map((candidate) => candidate.definitionId), revealedCardInstanceIds: hand.map((candidate) => candidate.instanceId) });
+      const amount = Math.min(Number(effect.max), qualifying.length * Number(effect.perCard));
+      if (amount > 0) r.ongoingEffects.push({
+        id: nextId(s, 'round-total-power'), sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, controllerId: p.id,
+        starts: 'immediate', duration: 'this_round', startRound: s.round.roundNumber, expiresAtRound: s.round.roundNumber + 1,
+        cleanup: 'expire_after_duration', publicZones: [], ruleModifiers: [{ sourceCardId: ctx.sourceCardId, controllerId: p.id,
+          definition: { operation: 'add', rule: PLAYER_COMBAT_TOTAL_POWER_RULE, scope: { controller: 'self' }, value: amount } }],
+      });
+      break;
+    }
     case 'linked_owner_combat_rule': {
       if (!isLinkedOwnerCombatRule(effect)) reject('unsupported', 'Unsupported linked-owner combat rule shape');
       break;
@@ -1458,7 +1505,8 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       for (const attack of s.cards.filter((candidate) => {
         if (candidate.zone !== 'attack_area') return false;
         const attackController = s.players.find((entry) => entry.id === candidate.controllerPlayerId);
-        if (!attackController || attackController.status !== 'active' || attackController.locationId !== p.locationId) return false;
+        if (!attackController || attackController.status !== 'active' || attackController.locationId !== p.locationId ||
+            playerIgnoresAbilityFromController(s, attackController.id, ctx.controllerId)) return false;
         const state = r.cardState[candidate.instanceId];
         const d = r.pack.cards[candidate.definitionId];
         return state?.active === true && state.faceDown !== true && d?.cardType === 'basic_attack';
@@ -1481,7 +1529,8 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
           source.zone !== 'field' || !sourceState?.active || !locationId || !isBattlefield(s, locationId)) {
         reject('invalid_event', 'Battlefield-source VP reward requires a trusted battle terminal event and live source binding');
       }
-      for (const target of s.players.filter((candidate) => candidate.status === 'active' && candidate.locationId === locationId)) {
+      for (const target of s.players.filter((candidate) => candidate.status === 'active' && candidate.locationId === locationId &&
+          !playerIgnoresAbilityFromController(s, candidate.id, ctx.controllerId))) {
         if (!Number.isSafeInteger(target.vp) || target.vp < 0) reject('invalid_state', 'Victory points must be a nonnegative safe integer');
         target.vp += Number(effect.amount);
         if (!Number.isSafeInteger(target.vp)) reject('invalid_state', 'Victory points exceed safe integer range');
@@ -1596,7 +1645,8 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       }
       if (!p.locationId || !isBattlefield(s, p.locationId)) reject('illegal_action', 'Attack modifier requires a battlefield');
       const amount = r.revealedServants.includes(p.id) ? Number(effect.revealedAmount) : Number(effect.hiddenAmount);
-      for (const target of s.players.filter((candidate) => candidate.status === 'active' && candidate.id !== p.id && candidate.locationId === p.locationId)) {
+      for (const target of s.players.filter((candidate) => candidate.status === 'active' && candidate.id !== p.id && candidate.locationId === p.locationId &&
+          !playerIgnoresAbilityFromController(s, candidate.id, ctx.controllerId))) {
         if (controllerHasLinkedOwnerCardFrom(s, target.id, p.id)) continue;
         for (const attack of s.cards.filter((candidate) => candidate.controllerPlayerId === target.id && candidate.zone === 'attack_area' &&
           r.cardState[candidate.instanceId]?.active === true && r.cardState[candidate.instanceId]?.faceDown !== true &&
@@ -1618,7 +1668,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       if (!event || event.type !== 'after_battle_power_calculated' || !event.resultId || !event.battlefieldId || !snapshot) {
         reject('invalid_event', 'Presence Concealment requires trusted pre-scoring battle identity and Power facts');
       }
-      const targetPlayerIds = highestPowerOpponents(event, ctx.controllerId);
+      const targetPlayerIds = highestPowerOpponents(s, event, ctx.controllerId);
       const pending = r.pendingPresenceConcealmentDefeats ??= [];
       if (!pending.some((entry) => entry.triggerEventId === event.id && entry.sourceCardId === ctx.sourceCardId && entry.abilityId === ctx.abilityId)) {
         pending.push({
@@ -3634,7 +3684,17 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   const r = runtime(s); if (r.processedEvents.includes(event.id)) return;
   if (!event.id) reject('invalid_event', 'Events require stable ids');
   r.processedEvents.push(event.id);
-  if (event.type === 'round_end') consumeDelayedActivations(s, event);
+  if (event.type === 'round_end') {
+    for (const candidate of s.players) {
+      const flags = structuredPlayerFlags(s, candidate.id);
+      if (flags.__fd_temporary_servant_concealment_active !== true) continue;
+      if (flags.__fd_temporary_servant_concealment_was_revealed === true && !r.revealedServants.includes(candidate.id)) r.revealedServants.push(candidate.id);
+      if (flags.__fd_temporary_servant_concealment_was_revealed !== true) r.revealedServants = r.revealedServants.filter((id) => id !== candidate.id);
+      delete flags.__fd_temporary_servant_concealment_active;
+      delete flags.__fd_temporary_servant_concealment_was_revealed;
+    }
+    consumeDelayedActivations(s, event);
+  }
   const triggered = collectTriggeredAbilities(s, event);
   for (const t of triggered) {
     const a = abilityDefinition(s, t.cardInstanceId, t.abilityId);
@@ -3744,7 +3804,9 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
   for (const c of s.cards) {
     if (c.zone === 'deck') continue;
     const privateZone = ['hand', 'skill', 'looked_cards'].includes(c.zone);
-    const isPublic = !privateZone && (c.visibility.scope === 'public' || ongoing.some(o => o.controllerId === c.ownerPlayerId && o.publicZones.includes(c.zone)));
+    const revealedByCurrentHandEvent = c.zone === 'hand' && r.events.some((event) => event.type === 'hand_revealed' && event.playerId === c.ownerPlayerId &&
+      event.revision === r.revision && event.revealedCardInstanceIds?.includes(c.instanceId));
+    const isPublic = revealedByCurrentHandEvent || (!privateZone && (c.visibility.scope === 'public' || ongoing.some(o => o.controllerId === c.ownerPlayerId && o.publicZones.includes(c.zone))));
     const own = c.ownerPlayerId === viewerId;
     if (!own && !isPublic && !['field', 'attack_area'].includes(c.zone)) continue;
     const hidden = !own && (!isPublic || runtime(s).cardState[c.instanceId]?.faceDown);

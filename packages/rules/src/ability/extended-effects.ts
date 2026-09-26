@@ -12,6 +12,7 @@ import type { GameState } from '../schema/game';
 import type { RuleNode } from './types';
 import { node, str } from './loader';
 import { clearTransientCardTransformState } from './card-instance-state';
+import { playerIgnoresAbilityFromController } from './player-ability-immunity';
 
 function modeState(state: GameState): Record<string, any> {
   (state as any).modeState = (state as any).modeState || {};
@@ -135,7 +136,8 @@ export function resolveExtendedEffect(
       const opponents = state.players.filter(pl =>
         pl.id !== controllerId &&
         pl.status === 'active' &&
-        pl.locationId === p.locationId
+        pl.locationId === p.locationId &&
+        !playerIgnoresAbilityFromController(state, pl.id, controllerId)
       );
       for (const opponent of opponents) {
         const handCards = state.cards.filter(c =>
@@ -178,7 +180,8 @@ export function resolveExtendedEffect(
         (state as any).modeState.terrainImmunity.push({
           locationId,
           immunePlayers: [controllerId, ...state.players
-            .filter(pl => pl.id !== controllerId && pl.status === 'active' && pl.locationId === locationId)
+            .filter(pl => pl.id !== controllerId && pl.status === 'active' && pl.locationId === locationId &&
+              !playerIgnoresAbilityFromController(state, pl.id, controllerId))
             .map(pl => pl.id)]
         });
       }
@@ -188,7 +191,8 @@ export function resolveExtendedEffect(
       const opponents = state.players.filter(pl =>
         pl.id !== controllerId &&
         pl.status === 'active' &&
-        pl.locationId === p.locationId
+        pl.locationId === p.locationId &&
+        !playerIgnoresAbilityFromController(state, pl.id, controllerId)
       );
       for (const opponent of opponents) {
         const attackCards = state.cards.filter(c =>
@@ -212,7 +216,8 @@ export function resolveExtendedEffect(
       const opponents = state.players.filter(pl =>
         pl.id !== controllerId &&
         pl.status === 'active' &&
-        pl.locationId === p.locationId
+        pl.locationId === p.locationId &&
+        !playerIgnoresAbilityFromController(state, pl.id, controllerId)
       );
       for (const opponent of opponents) {
         (state as any).modeState = (state as any).modeState || {};
@@ -566,7 +571,8 @@ export function resolveExtendedEffect(
       const opponents = state.players.filter(pl =>
         pl.id !== controllerId &&
         pl.status === 'active' &&
-        pl.locationId === p.locationId
+        pl.locationId === p.locationId &&
+        !playerIgnoresAbilityFromController(state, pl.id, controllerId)
       );
       for (const opponent of opponents) {
         // Check condition if specified
