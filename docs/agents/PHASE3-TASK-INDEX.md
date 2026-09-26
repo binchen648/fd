@@ -5091,3 +5091,64 @@ Allowed verdicts:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+
+## P3-A-OWNER-SHUTEN-ACCEPTANCE-SYNC
+
+- PR #459 exact successor Candidate `da831ab2dd399de974c881bc9ea6aa4336d5b093` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/459#issuecomment-5847236503`.
+- Accepted formal owner scope is exactly all three remaining Shuten frozen identities: `servant.shuten.skill.sc-shuten-1` through `servant.shuten.skill.sc-shuten-3`.
+- Predecessor findings are closed: eliminated-owner Banquet round-end cleanup/aura lifetime, non-retroactive dynamically granted OPG with authenticated grant baseline, and fail-closed malformed coverage for every new Shuten battlefield-source primitive.
+- Exact-Candidate Phase 3 Pre-Review Gate run `36249215831` succeeded.
+- Current-main strict formal accounting moves `123/944 -> 126/944`; remaining `818`.
+- Historical frontier formal/material (`219/944` / `265/944`) remains separate accepted evidence/replay history.
+- Owner-complete workflow remains authoritative: no fixed-50 requirement, no per-skill R split; only after an owner is ACCEPTED + A-synced/accounted may execution move to the next owner.
+- Detailed sync: `docs/reports/2026-09-26-p3-a-owner-shuten-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-SIEGFRIED-COMPLETE-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: exact Shuten acceptance-sync commit carrying this task block
+Owner root: `servant.siegfried`
+Formal owner scope: all three current-main remaining frozen Siegfried skills
+
+Frozen skills:
+- `servant.siegfried.skill.sc-siegfried-1` — 隐身衣
+- `servant.siegfried.skill.sc-siegfried-2` — 恶龙之血铠
+- `servant.siegfried.skill.sc-siegfried-3` — 幻想大剑·天魔失坠
+
+Source/provenance:
+- frozen inventory records locked confirmed overrides for all three;
+- source grounding is `FD全卡图鉴V2.0.chm` -> `从者/剑士/英文版/齐格飞.htm` plus development-image `Fate_Domination-开发版/images/servants/齐格飞.png`;
+- current current-main authoring/pack line contains no executable `servant.siegfried` archive/consumer;
+- historical `sc-siegfried-2` contract-mapped/loader-ready evidence is reusable evidence only and is not current-main consumer acceptance or standalone credit;
+- historical handlers `core.siegfried-invisibility-cloak`, `core.structured-skill`, and `core.reveal-hand-power-bonus` are evidence only, not authorization for identity-keyed production routing.
+
+Implementation requirements:
+- migrate all three current-main remaining Siegfried frozen skills in one owner-complete formal batch; do not finish a subset and move owners;
+- recertify exact source semantics mechanically from frozen inventory/contracts and historical accepted evidence before encoding each consumer;
+- preserve complete frozen semantics, including sc-siegfried-1 escalating VP loss on play plus end-of-round true-name concealment and same-location opponent-ability immunity, sc-siegfried-2 true-name-release/engaged movement-triggered close lifecycle, and sc-siegfried-3 hand reveal plus capped qualifying-card power bonus;
+- no `servant.siegfried` / card-id / card-name / printed-text / Chinese-text identity routing in production runtime;
+- no SkillLib fallback and no runtime source-text parsing;
+- any new runtime primitive must be generic, data-driven, fail closed, narrowly source-grounded, and covered by focused positive/negative tests;
+- reuse accepted generic capabilities when exact semantics match; do not copy historical identity-keyed handlers into current production runtime;
+- if a bounded zero-credit capability/readiness seam is required, complete and independently review that capability, A-sync/rescan, then return to this same Siegfried owner before moving on;
+- no merge, retarget, reset/discard, force push, or worktree proliferation.
+
+Verification:
+- exact frozen owner scope = all 3 Siegfried skills and no omitted current-main remaining Siegfried skill;
+- focused semantic tests covering all three consumers plus fail-closed paths for every newly introduced generic capability;
+- affected loader/interpreter/executable/combat/session/content tests based on diff;
+- typecheck + content validate/compile + generated determinism + `git diff --check`;
+- production identity-routing audit clean;
+- freeze exact Base/Candidate, clean fixed Work, PR, policy gate, and one fresh independent R for the whole owner batch.
+
+Accounting boundary:
+- Base strict formal accounting is `126/944` after Shuten synchronization;
+- no Siegfried credit before exact-Candidate `MIGRATION_ACCEPTED` + subsequent A-sync/accounting;
+- if all three are accepted and synchronized, the next strict accounting target is `129/944`.
+
+Allowed verdicts:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `MIGRATION_BLOCKED`
