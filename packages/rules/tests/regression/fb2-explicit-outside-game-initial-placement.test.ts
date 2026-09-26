@@ -23,6 +23,15 @@ function masterSkillFixture(input: ReturnType<typeof sourceInput>) {
   return { archive: archive!, source: skills[0]!, target: skills[1]! };
 }
 
+function servantSkillFixture(input: ReturnType<typeof sourceInput>) {
+  const archive = input.rules.archives.find((candidate) =>
+    candidate.id.startsWith('servant.') && candidate.cards.filter((card) => card.cardType === 'servant_skill').length === 3,
+  );
+  expect(archive).toBeDefined();
+  const target = archive!.cards.find((card) => card.cardType === 'servant_skill')!;
+  return { archive: archive!, target };
+}
+
 function provisioningAbility(targetDefinitionId: string) {
   return {
     id: 'fixture.fb2-18.provision',
@@ -74,6 +83,41 @@ describe('P3-FB2-18 recovery explicit outside-game initial placement', () => {
     const executable = compileExecutableCardPack(input);
     expect(executable.cards[target.id]!.initialPlacement).toBeUndefined();
     expect(executable.cards[target.id]!.initialZone).toBe('skill');
+  });
+
+  it('preserves an explicit owner-matching servant_skill outside the game without assigning an initial zone', () => {
+    const input = sourceInput();
+    const { archive, target } = servantSkillFixture(input);
+    (target as any).initialPlacement = 'outside_game';
+
+    const loaded = loadAuthoringJson(archive);
+    expect(loaded.report).toEqual([]);
+    expect(loaded.cards[target.id]!.initialPlacement).toBe('outside_game');
+
+    const executable = compileExecutableCardPack(input);
+    expect(executable.cards[target.id]).toMatchObject({
+      ownerId: archive.id,
+      cardType: 'servant_skill',
+      initialPlacement: 'outside_game',
+    });
+    expect(executable.cards[target.id]!.initialZone).toBeUndefined();
+  });
+
+  it('fails closed when a servant_skill outside-game declaration does not match its archive owner', () => {
+    const input = sourceInput();
+    const { target } = servantSkillFixture(input);
+    (target as any).initialPlacement = 'outside_game';
+    (target as any).owner = { type: 'servant', id: 'servant.other' };
+
+    expect(() => compileExecutableCardPack(input)).toThrow(/owner-matching servant_skill/);
+  });
+  it('fails closed when a servant_skill owner is only a near-match with extra fields', () => {
+    const input = sourceInput();
+    const { archive, target } = servantSkillFixture(input);
+    (target as any).initialPlacement = 'outside_game';
+    (target as any).owner = { type: 'servant', id: archive.id, extra: 'near-match' };
+
+    expect(() => compileExecutableCardPack(input)).toThrow(/owner-matching servant_skill/);
   });
 
   it.each([

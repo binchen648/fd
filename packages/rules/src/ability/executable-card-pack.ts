@@ -534,8 +534,10 @@ function deferredCardIds(cards: Record<string, ExecutableCardDefinition>): Set<s
   const deferred = new Set<string>();
   for (const card of Object.values(cards)) {
     if (card.initialPlacement !== 'outside_game') continue;
-    if (card.cardType !== 'master_skill' || !card.ownerId?.startsWith('master.')) {
-      throw new Error(`Outside-game initial placement requires an owned master_skill: ${card.id}`);
+    const ownedMasterSkill = card.cardType === 'master_skill' && card.ownerId?.startsWith('master.');
+    const ownedServantSkill = card.cardType === 'servant_skill' && card.ownerId?.startsWith('servant.');
+    if (!ownedMasterSkill && !ownedServantSkill) {
+      throw new Error(`Outside-game initial placement requires an owned master_skill or servant_skill: ${card.id}`);
     }
     deferred.add(card.id);
   }

@@ -258,12 +258,19 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
     if (face.cost !== undefined && (typeof face.cost !== 'number' || !Number.isFinite(face.cost) || face.cost < 0)) issue('cardFace.cost', 'Expected a nonnegative printed mana cost');
     const timing = node(raw.playTiming);
     const initialPlacement = raw.initialPlacement;
+    const owner = node(raw.owner);
+    const rootId = str(root.id);
+    const cardType = str(raw.cardType);
+    const ownedMasterSkill = cardType === 'master_skill' && rootId.startsWith('master.');
+    const exactOwnedServantSkill = cardType === 'servant_skill' && rootId.startsWith('servant.') &&
+      owner.type === 'servant' && owner.id === rootId &&
+      Object.keys(owner).length === 2 && Object.keys(owner).every((key) => key === 'type' || key === 'id');
     if (initialPlacement !== undefined) {
       if (typeof initialPlacement !== 'string' || initialPlacement !== 'outside_game') {
         issue('initialPlacement', 'Only outside_game initial placement is supported');
       }
-      if (str(raw.cardType) !== 'master_skill' || !str(root.id).startsWith('master.')) {
-        issue('initialPlacement', 'Outside-game initial placement is supported only for an owned master_skill');
+      if (!ownedMasterSkill && !exactOwnedServantSkill) {
+        issue('initialPlacement', 'Outside-game initial placement is supported only for an owned master_skill or owner-matching servant_skill');
       }
     }
     if (node(raw.verification).implementationStatus && node(raw.verification).implementationStatus !== 'complete') issue('verification.implementationStatus', 'Archive explicitly marks this card as unfinished');
@@ -397,7 +404,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
     });
     cards[cardId] = { id: cardId, name: str(raw.name), cardType: str(raw.cardType), cardFace: face,
       playTiming: timing, playRequirements: nodes(raw.playRequirements), abilities,
-      ...(initialPlacement === 'outside_game' && str(raw.cardType) === 'master_skill' && str(root.id).startsWith('master.')
+      ...(initialPlacement === 'outside_game' && (ownedMasterSkill || exactOwnedServantSkill)
         ? { initialPlacement: 'outside_game' as const }
         : {}),
       mode: report.some(r => r.cardId === cardId && !r.abilityId) ? 'unsupported' : 'automatic' };
