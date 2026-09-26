@@ -4802,3 +4802,38 @@ Allowed B verdicts:
 - Exact-50 readiness remains blocked; acceptance of this condition seam alone does not make a consumer migration-ready.
 - Next formal task: `P3-B-MAIN-REPLAY-FB2-43-EVENT-LOCATION-EQUALS-CONTROLLER`, replaying only the historically accepted exact type-only location relation condition from PR #396 / accepted Candidate `19ff09ed65e34f241d332250e1cc1370071ecf75` and canonical evidence `https://github.com/binchen648/fd/pull/396#issuecomment-5748914327`.
 - No merge, retarget, consumer authoring, or migration credit is authorized by this synchronization.
+## P3-A-MAIN-REPLAY-FB2-43-EVENT-LOCATION-EQUALS-CONTROLLER-ACCEPTANCE-SYNC
+
+- Exact accepted B Candidate: `6c18b429172ac671f918e4ae2c9291f347d3ee6b` (PR #455).
+- Canonical fresh-R evidence: `https://github.com/binchen648/fd/pull/455#issuecomment-5842632031`.
+- Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`; this comment is the Coordinator bounded relay of the same already-completed blocked-retry fresh review attempt after reviewer GitHub write 403.
+- Accepted capability is only exact type-only direct `ability.conditions[i]` node `event_location_equals_controller` over authoritative `after_controller_enters_location`; nonempty event/controller locations are required, equality is exact, and wrong/missing/stale context fails closed.
+- Player relation remains a separate accepted condition seam. The sole opponent-event opt-in remains `after_controller_enters_location` plus exact direct `event_player_is_opponent`; unrelated `after_controller_*` triggers are not widened.
+- Base-to-Candidate `data/authoring/**` is empty. Capability remains zero-credit: formal/material `112/944`, remaining `832`.
+- Exact Candidate readiness evidence changes the strict historical replay-pool loader-ready count `17 -> 18`, newly adding `servant.siegfried.skill.sc-siegfried-2`. Readiness is planning evidence only and grants no migration credit.
+- Non-tail F4 remains `EXACT_50_BATCH_BLOCKED`: fewer than 50 identities are mechanically dependency-complete under the current exact line.
+- Next formal task: `P3-A-F4-EXACT-50-COMPOSITION-02`, a fresh mechanical rescan of the same 153 historical old-frontier-minus-current identities against this exact synchronized runtime before choosing the next zero-credit capability seam.
+- No merge, retarget, consumer authoring, or migration credit is authorized by this synchronization.
+
+## TASK P3-A-F4-EXACT-50-COMPOSITION-02
+
+Owner: Codex A
+Status: `READY`
+Base: exact `P3-A-MAIN-REPLAY-FB2-43-EVENT-LOCATION-EQUALS-CONTROLLER-ACCEPTANCE-SYNC` commit carrying this task block
+Read: `docs/reports/2026-09-26-p3-a-f4-exact-50-composition-02.md`
+
+Goal: mechanically recompute the next exact-50 F4 composition state after accepted/synchronized PR #455. Re-run the same historical accepted PR #441 old-frontier-minus-current replay pool (`153` identities) individually through the current exact `loadAuthoringJson` boundary, then classify the exact loader-ready set, blocked set, recurring unsupported mechanic/type clusters, and source/provenance closure required for final S membership.
+
+Hard requirements:
+- frozen denominator remains `944 = 943 static + 1 dynamic`;
+- current formal/material remains `112/944` during this A planning task;
+- use the exact synchronized runtime lineage only; historical #440/#441/frontier material is source/planning evidence, not current acceptance lineage;
+- no runtime production edits and no `data/authoring/**` edits;
+- readiness requires empty adapter report and every ability `execution.mode=automatic`, then separate source/provenance and semantic dependency proof before final S freeze;
+- non-tail S may be dispatched only when exactly `50` unique frozen identities are dependency-complete; if fewer than 50 are ready, return `EXACT_50_BATCH_BLOCKED` and name the next narrow zero-credit capability seam with exact historical authority/evidence;
+- do not shrink to 1/2/5/10/20-card formal migration batches;
+- no merge, retarget, or migration credit.
+
+Allowed final status:
+- `EXACT_50_BATCH_READY`
+- `EXACT_50_BATCH_BLOCKED`
