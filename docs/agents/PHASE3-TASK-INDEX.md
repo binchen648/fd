@@ -5152,3 +5152,66 @@ Allowed verdicts:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+
+## P3-A-OWNER-SIEGFRIED-ACCEPTANCE-SYNC
+
+- PR #460 exact successor Candidate `e912ad973314cb032adb0e4eb1e0b9141cc322d9` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/460#issuecomment-5848118019`.
+- Accepted formal owner scope is exactly all three current-main remaining Siegfried frozen identities: `servant.siegfried.skill.sc-siegfried-1` through `servant.siegfried.skill.sc-siegfried-3`.
+- Final review closure includes the shared typed `reveal_servant_package`/battle-loss path respecting temporary concealment through round end.
+- Exact-Candidate Phase 3 Pre-Review Gate run `36256716229` succeeded.
+- Current-main strict formal accounting moves `126/944 -> 129/944`; remaining `815`.
+- Historical frontier formal/material (`219/944` / `265/944`) remains separate accepted evidence/replay history.
+- Owner-complete workflow remains authoritative: no fixed-50 requirement, no per-skill R split; only after an owner is ACCEPTED + A-synced/accounted may execution move to the next owner.
+- Detailed sync: `docs/reports/2026-09-27-p3-a-owner-siegfried-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-SIGURD-COMPLETE-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: exact Siegfried acceptance-sync commit carrying this task block
+Owner root: `servant.sigurd`
+Formal owner scope: all three current-main remaining frozen Sigurd skills
+
+Frozen skills:
+- `servant.sigurd.skill.sc-sigurd-1` — 破灭之黎明
+- `servant.sigurd.skill.sc-sigurd-2` — 坏劫之天轮
+- `servant.sigurd.skill.sc-sigurd-3` — 里迪尔·赫萝蒂
+
+Source/provenance:
+- frozen inventory records `hasConfirmedOverride=true`, `hasAuthoringCard=false` for all three;
+- shared source grounding: `FD全卡图鉴V2.0.chm` -> `从者/剑士/英文版/Sigurd.htm`, plus development image `Fate_Domination-开发版/images/servants/齐格鲁德.png`;
+- frozen phase3 classification is `SOURCE_EVIDENCE_REQUIRED` / `EXPLICIT_BLOCK`; S must mechanically recertify the locked source semantics before encoding the consumers;
+- historical handlers `core.sigurd-gram-ii`, `core.sigurd-bolverk-gram`, and `core.structured-skill` are evidence only, not authorization for identity-keyed production routing.
+
+Frozen semantic requirements to recertify and preserve:
+- sc-sigurd-1: true-name release; once revealed, lose 1 VP at each round start; residual after battle grants mana equal to the mana cost of one attack played this round by an opponent who fought Sigurd;
+- sc-sigurd-2: once revealed, lose 1 VP at each round start; all controller basic cards gain an action ability costing 2 mana that doubles that card's base power and removes it from the game after battle phase ends;
+- sc-sigurd-3: must be played as an additional play; gains swift attribute when sc-sigurd-2 is revealed and magic attribute when sc-sigurd-1 is revealed.
+
+Implementation requirements:
+- migrate all three Sigurd frozen skills in one owner-complete formal batch; do not finish a subset and move owners;
+- recertify exact semantics against locked source/confirmed override evidence before implementation;
+- no `servant.sigurd` / card-id / card-name / printed-text / Chinese-text identity routing in production runtime;
+- no SkillLib fallback and no runtime source-text parsing;
+- new runtime capability must be generic, data-driven, fail closed, narrowly source-grounded, and covered by focused positive/negative tests;
+- if a bounded zero-credit capability/readiness seam is required, complete/review/A-sync it and return to this same Sigurd owner before moving on;
+- no merge, retarget, reset/discard, force push, or worktree proliferation.
+
+Verification:
+- exact frozen owner scope = all 3 Sigurd skills;
+- focused semantic coverage for all three plus fail-closed paths for each new generic capability;
+- affected loader/interpreter/executable/combat/session/content tests dictated by the actual diff;
+- typecheck + content validate/compile + generated determinism + `git diff --check`;
+- production identity-routing audit clean;
+- freeze exact Base/Candidate, clean fixed Work, PR, policy gate, and one fresh independent R for the whole owner batch.
+
+Accounting boundary:
+- Base strict formal accounting is `129/944` after Siegfried synchronization;
+- no Sigurd credit before exact-Candidate `MIGRATION_ACCEPTED` + subsequent A-sync/accounting;
+- if all three are accepted and synchronized, next strict accounting target is `132/944`.
+
+Allowed verdicts:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `MIGRATION_BLOCKED`
