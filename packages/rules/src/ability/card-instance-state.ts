@@ -11,10 +11,17 @@ export function getEffectiveCardAttributes(state: GameState, cardInstanceId: str
   return Array.isArray(printed) ? printed.filter((attribute): attribute is string => typeof attribute === 'string') : [];
 }
 
-/** Reverse/attribute transforms are physical-card state and expire whenever that card leaves board zones. */
+/** Instance-scoped transforms expire whenever that physical card leaves active board zones. */
 export function clearTransientCardTransformState(state: GameState, cardInstanceId: string): void {
   const cardState = state.abilityRuntime?.cardState[cardInstanceId];
-  if (!cardState) return;
-  delete cardState.reversed;
-  delete cardState.attributeOverrides;
+  if (cardState) {
+    delete cardState.reversed;
+    delete cardState.attributeOverrides;
+  }
+  const card = state.cards.find((candidate) => candidate.instanceId === cardInstanceId);
+  if (!card) return;
+  const carrier = card as unknown as { powerModifiers?: Array<Record<string, unknown>> };
+  if (!Array.isArray(carrier.powerModifiers)) return;
+  carrier.powerModifiers = carrier.powerModifiers.filter((modifier) => modifier.lifecycle !== 'until_leaves_active_area');
+  if (carrier.powerModifiers.length === 0) delete carrier.powerModifiers;
 }

@@ -142,3 +142,37 @@ This Candidate is a **formal owner migration**, but this report does not award c
 - Do not select or implement the next owner until this exact owner Candidate is accepted and synchronized/accounted.
 
 The exact Candidate SHA is frozen by the commit containing this report and must be mechanically recorded in the PR/handoff evidence before fresh R.
+
+## R1 revision after fresh independent review
+
+Canonical predecessor review evidence: https://github.com/binchen648/fd/pull/457#issuecomment-5845070537
+
+Predecessor exact Candidate: `cd3e3abf7c1b0625484eda9910d29bf24cc8958c`. Fresh independent R returned `MIGRATION_NEEDS_REVISION` with four exact-scope findings. The successor revision closes all four together before a new fresh R:
+
+1. **Snowflake Wall transient power lifecycle** — its physical-card attack modifier now carries explicit `until_leaves_active_area` lifecycle plus originating round. Power calculation ignores stale-round instances, and ordinary card cleanup removes only explicitly transient power modifiers. Regression covers same-card next-round reuse plus discard/cleanup/replay.
+2. **Lord Camelot terrain composition** — the Mash effect now stores the structural transform `(base + 2) * 2` instead of a final absolute terrain value. The shared combat resolver applies that transform before the existing generic terrain multiplier pipeline, so active `basic.preparation` remains live. Interaction regression proves Miyama base 3 becomes 20 when both Lord Camelot and Preparation apply: `((3 + 2) * 2) * 2`.
+3. **Cross-owner servant deck fail-closed** — executable deck mapping now requires canonical `servant_deck_card.ownerId` to equal the current servant archive id. A foreign Artoria servant-deck card injected into Mash's deck is rejected by the compiler.
+4. **Guard owner-only lending projection** — the lending ability now includes the already-accepted generic direct `source_owned` condition, so the physical owner can project/activate lending while a borrower cannot see a re-lend legal action. Resolver ownership checks remain as a second boundary.
+
+### Successor validation before fresh R
+
+- focused five-file set: `5 files / 79 tests PASS`
+  - Mash owner regression: `8/8 PASS`
+  - executable-card-pack: `50/50 PASS`
+  - match-session regressions: `7/7 PASS`
+  - core combat resolver: `10/10 PASS`
+  - compile-playtest-content-pack: `4/4 PASS`
+- broader affected chain: `14 files / 176 tests PASS`
+- `npm run content:validate`: `PASS — 7 masters, 8 servants, 20 events, 0 blocking issues`
+- `npm run content:compile`: `PASS`
+- `npm run verify:generated-content`: `PASS`
+- `npm run typecheck`: `PASS`
+- `git diff --check`: `PASS`
+- successor generated hashes:
+  - content library: `dc44eb2af01de1a4c9a1d4876735e4c5e1f4939a17ffd99043d2ed2cd66288f0`
+  - fixture: `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`
+  - evidence report: `7596f87cf0f1f93eb9c1230af52405bf1365727416da946a117ea4a281f92133`
+
+Accounting remains unchanged before successor review: current-main formal/material `112/944`; no Mash credit is awarded until the successor exact Candidate receives `MIGRATION_ACCEPTED` and A synchronization/accounting. Historical frontier progress remains separate evidence/replay history.
+
+The exact successor Candidate SHA is frozen by the revision commit containing this section and is recorded in the PR/handoff evidence after commit.

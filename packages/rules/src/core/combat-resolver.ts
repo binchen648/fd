@@ -15,7 +15,7 @@ import { getLocationById } from "./map-engine";
 import { calculateCardPower, processAbilityEvent } from '../ability/interpreter';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
 import { applyLinkedOwnerCombatPowerSharing, playerHasLinkedOwnerLossImmunity, prepareLinkedOwnerCardsForBattle } from '../ability/linked-owner-combat';
-import { hasTerrainAdvantageOverride, terrainAdvantageAtLocation } from '../ability/terrain-advantage-override';
+import { applyTerrainAdvantageOverride } from '../ability/terrain-advantage-override';
 import { logicalDayForPlayer } from './rule-overrides';
 
 export interface CombatParticipantInput {
@@ -159,13 +159,13 @@ function getTerrainBreakdowns(
 ): BattleModifierBreakdown[] {
   const location = getLocationById(state.map, state.locationConfig, battlefieldId);
   if (isTerrainSuppressedByAuthoredDuel(state, battlefieldId, participant.playerId)) return [];
-  if (hasTerrainAdvantageOverride(state, participant.playerId, battlefieldId)) {
-    return [createTerrainBreakdown(battlefieldId, participant.terrainSlotIndex ?? 0, terrainAdvantageAtLocation(state, participant.playerId, battlefieldId))];
-  }
   if (!location?.terrainBonuses?.length || participant.terrainSlotIndex === undefined) return [];
 
   const baseValue = location.terrainBonuses[participant.terrainSlotIndex];
-  const value = typeof baseValue === "number" ? baseValue * terrainMultiplierForPlayer(state, participant.playerId) : baseValue;
+  const adjustedBase = typeof baseValue === "number"
+    ? applyTerrainAdvantageOverride(state, participant.playerId, battlefieldId, baseValue)
+    : baseValue;
+  const value = typeof adjustedBase === "number" ? adjustedBase * terrainMultiplierForPlayer(state, participant.playerId) : adjustedBase;
   if (typeof value !== "number") return [];
 
   return [createTerrainBreakdown(battlefieldId, participant.terrainSlotIndex, value)];

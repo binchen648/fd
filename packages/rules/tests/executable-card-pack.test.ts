@@ -70,6 +70,16 @@ describe('ExecutableCardPack compiler', () => {
     expect(() => assertExecutableCardPack(changedClassification, input)).toThrow(/hash mismatch/);
   });
 
+  it('rejects cross-owner servant-deck-card entries instead of accepting a globally registered foreign card', () => {
+    const input = sourceInput();
+    const mash = input.rules.archives.find((archive) => archive.id === 'servant.mash');
+    expect(mash).toBeDefined();
+    const guard = mash!.deck?.find((entry) => entry.cardId === 'card.x-guard');
+    expect(guard).toBeDefined();
+    guard!.cardId = 'servant.artoriac.skill.sc-artoriac-4';
+    expect(() => compileExecutableCardPack(input)).toThrow(/Foreign servant deck card for servant\.mash/);
+  });
+
   it('registers master support archives without creating playable character, fallback spell, deck, or archive-order drift', () => {
     const input = sourceInput();
     const baseline = compileExecutableCardPack(input);

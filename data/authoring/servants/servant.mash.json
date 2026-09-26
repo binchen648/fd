@@ -519,6 +519,9 @@
               "type": "source_active"
             },
             {
+              "type": "source_owned"
+            },
+            {
               "type": "controller_command_seals_at_least",
               "value": 1
             }

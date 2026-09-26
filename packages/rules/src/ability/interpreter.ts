@@ -13,7 +13,7 @@ import { node, nodes, str } from './loader';
 import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
 import { controllerHasLinkedOwnerCardFrom, isLinkedOwnerCombatRule, isServantNoCommandSealsRule, linkedOwnerBasePowerMultiplier, servantRevealForbiddenByNoCommandSeals } from './linked-owner-combat';
-import { setTerrainAdvantageOverride, terrainAdvantageAtLocation } from './terrain-advantage-override';
+import { setTerrainAdvantageOverride } from './terrain-advantage-override';
 import {
   isAcceptedOpponentCloseToOneAbility,
   isAcceptedOpponentCloseOneNonResidualAbility,
@@ -373,6 +373,7 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     result.lines.push({ label: 'linked_owner_command_seal_base_power_multiplier', value: result.value });
   }
   for (const modifier of ((source as unknown as { powerModifiers?: Array<Record<string, unknown>> }).powerModifiers ?? [])) {
+    if (modifier.lifecycle === 'until_leaves_active_area' && modifier.round !== s.round.roundNumber) continue;
     const value = Number(modifier.value ?? 0);
     if (!Number.isFinite(value)) reject('invalid_modifier', 'Card power modifier must be finite');
     if (modifier.kind === 'set') result.value = value;
@@ -1302,8 +1303,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       const targetId = ctx.selections[str(effect.target)]?.[0];
       const targetPlayer = targetId ? s.players.find((candidate) => candidate.id === targetId && candidate.status === 'active') : undefined;
       if (!targetPlayer) reject('invalid_target', 'Terrain adjustment requires one active selected player');
-      const before = terrainAdvantageAtLocation(s, targetPlayer.id, p.locationId);
-      setTerrainAdvantageOverride(s, targetPlayer.id, p.locationId, (before + 2) * 2, ctx.sourceCardId);
+      setTerrainAdvantageOverride(s, targetPlayer.id, p.locationId, Number(effect.add), Number(effect.multiply), ctx.sourceCardId);
       break;
     }
     case 'lend_source_card': {
@@ -1334,7 +1334,8 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
           const carrier = attack as unknown as { powerModifiers?: Array<Record<string, unknown>> };
           carrier.powerModifiers ??= [];
           if (!carrier.powerModifiers.some((modifier) => modifier.sourceId === ctx.sourceCardId && modifier.id === ctx.abilityId)) {
-            carrier.powerModifiers.push({ kind: 'add', value: amount, sourceId: ctx.sourceCardId, id: ctx.abilityId });
+            carrier.powerModifiers.push({ kind: 'add', value: amount, sourceId: ctx.sourceCardId, id: ctx.abilityId,
+              lifecycle: 'until_leaves_active_area', round: s.round.roundNumber });
           }
         }
       }

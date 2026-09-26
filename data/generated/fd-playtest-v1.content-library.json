@@ -9501,6 +9501,9 @@
                 "type": "source_active"
               },
               {
+                "type": "source_owned"
+              },
+              {
                 "type": "controller_command_seals_at_least",
                 "value": 1
               }
@@ -11268,11 +11271,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "ad796ae7e5b121402471e6d13a23cedc5536c8b088cdddffd6778dda9df1ffbe",
+    "definitionHash": "391884fefecf52ed5d8a9f162415c4ac64c82114cca12f8c58d6917fb7e9e642",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "ad796ae7e5b121402471e6d13a23cedc5536c8b088cdddffd6778dda9df1ffbe"
+      "definitionHash": "391884fefecf52ed5d8a9f162415c4ac64c82114cca12f8c58d6917fb7e9e642"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
