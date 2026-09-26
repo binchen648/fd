@@ -111,6 +111,14 @@ describe('P3-FB2-18 recovery explicit outside-game initial placement', () => {
 
     expect(() => compileExecutableCardPack(input)).toThrow(/owner-matching servant_skill/);
   });
+  it('fails closed when a servant_skill owner is only a near-match with extra fields', () => {
+    const input = sourceInput();
+    const { archive, target } = servantSkillFixture(input);
+    (target as any).initialPlacement = 'outside_game';
+    (target as any).owner = { type: 'servant', id: archive.id, extra: 'near-match' };
+
+    expect(() => compileExecutableCardPack(input)).toThrow(/owner-matching servant_skill/);
+  });
 
   it.each([
     ['wrong literal', 'skill'],

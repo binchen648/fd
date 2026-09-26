@@ -31,8 +31,8 @@ Owner mismatch, unsupported card type, malformed placement literal/value, and ma
 ## Validation
 
 - fixed Work recovered to the exact formal Base and verified clean before implementation; preserved pre-existing dirty material remains archived outside Work;
-- focused FB2-18 regression: `11/11 PASS`, including owner-matching servant positive coverage and owner-mismatch negative coverage;
-- affected loader/compiler chain: `3 files / 98 tests PASS` (`fb2-explicit-outside-game-initial-placement`, `executable-card-pack`, `authoring-interpreter`);
+- focused FB2-18 regression after R1 revision: `12/12 PASS`, including owner-matching servant positive coverage, owner-mismatch coverage, and an extra-field owner near-match rejection;
+- affected loader/compiler chain after R1 revision: `3 files / 99 tests PASS` (`fb2-explicit-outside-game-initial-placement`, `executable-card-pack`, `authoring-interpreter`);
 - `npm run typecheck`: `PASS`;
 - `git diff --check`: `PASS`;
 - Base-to-Candidate `data/authoring/**`: `EMPTY`;
@@ -45,6 +45,11 @@ This task is capability infrastructure and grants `0` migration credit. Formal/m
 
 After fresh-R ACCEPTED and A-sync, Composition must rerun the same historical `153`-identity loader-readiness scan. The task contract expects the three previously single-blocker identities (`servant.mash.skill.sc-mash-4`, `servant.sherlock.skill.sc-sherlock-4`, `servant.sherlock.skill.sc-sherlock-5`) to become loader-ready if no additional exact blocker appears. That planning effect is not formal migration credit and is not asserted as accepted until post-review A synchronization/rescan.
 
+## Fresh-R R1 revision
+
+Exact Candidate `10a22583f5e911ae4f812e82417b866006d6eaab` received `IMPLEMENTATION_NEEDS_REVISION`. Because Reviewer GitHub publication returned 403, Coordinator relayed the same already-completed attempt verbatim/bounded to canonical evidence `https://github.com/binchen648/fd/pull/456#issuecomment-5844121623` before modifying the Candidate.
+
+The single blocking finding was that the new servant owner gate accepted a near-match owner object carrying extra fields. The revision keeps the pre-existing master path unchanged and strengthens only the servant path so the authored owner must have exactly the two keys `type` and `id`, with values `servant` and the same `servant.*` archive root. A focused adversarial regression now proves `{ type: "servant", id: <root>, extra: "near-match" }` fails closed. No second finding was reported in R1.
 ## Freeze requirement
 
 Final Candidate scope is exactly the two production files, one focused regression file, and this result report. Before fresh R, verify exact Base/Candidate direct-parent lineage, `git diff --check`, authoring-empty scope, production identity-routing audit, and fixed Work cleanliness.

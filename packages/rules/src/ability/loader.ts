@@ -263,7 +263,8 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
     const cardType = str(raw.cardType);
     const ownedMasterSkill = cardType === 'master_skill' && rootId.startsWith('master.');
     const exactOwnedServantSkill = cardType === 'servant_skill' && rootId.startsWith('servant.') &&
-      owner.type === 'servant' && owner.id === rootId;
+      owner.type === 'servant' && owner.id === rootId &&
+      Object.keys(owner).length === 2 && Object.keys(owner).every((key) => key === 'type' || key === 'id');
     if (initialPlacement !== undefined) {
       if (typeof initialPlacement !== 'string' || initialPlacement !== 'outside_game') {
         issue('initialPlacement', 'Only outside_game initial placement is supported');
