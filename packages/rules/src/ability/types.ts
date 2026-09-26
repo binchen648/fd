@@ -221,6 +221,8 @@ export interface SafeEvent {
 export interface CardRuntimeState {
   active: boolean; faceDown: boolean; playedRound: number; paidManaOnPlay?: number;
   reversed?: boolean; attributeOverrides?: string[];
+  /** Trusted battlefield binding for source cards explicitly placed onto a battlefield. */
+  placedAtLocationId?: string;
 }
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
@@ -233,6 +235,12 @@ export interface AbilityRuntime {
   deductionRecordsByPlayer?: Record<PlayerId, DeductionRecordState>;
   /** Round marker for players defeated by a source-grounded effect for battle-winner eligibility. */
   battleDefeatRoundByPlayer?: Record<PlayerId, number>;
+  /** Immutable server-owned opening deck cardinality, captured before the first-round draw. */
+  startingDeckSizeByPlayer?: Record<PlayerId, number>;
+  /** Total physical plays by card instance, including plays before a dynamic per-game limit is granted. */
+  cardPlayCountByInstance?: Record<string, number>;
+  /** Physical cards that acquired a one-play-per-game limit from a source-grounded effect. */
+  grantedPerGamePlayLimitCardIds?: string[];
   ongoingEffects: OngoingEffect[]; lifecycleTransitions?: LifecycleTransition[]; responseWindows: ResponseWindow[]; pendingDecision?: PendingDecision;
   pendingDelayedActivations?: PendingDelayedActivation[];
   /** Server-owned pre-scoring battle-local defeat requests staged by the exact Presence Concealment response. */

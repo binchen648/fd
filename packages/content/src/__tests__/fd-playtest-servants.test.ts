@@ -9,7 +9,7 @@ const pack = loadPlaytestContentPack(resolve('data/packs/fd-playtest-v1/pack.jso
 });
 
 describe('fd-playtest-v1 servant content', () => {
-  it('loads the approved nine authoring servants through the playtest pack', () => {
+  it('loads the approved ten authoring servants through the playtest pack', () => {
     expect(pack.servants.map((servant) => servant.id)).toEqual([
       'servant.artoriac',
       'servant.drake',
@@ -20,6 +20,7 @@ describe('fd-playtest-v1 servant content', () => {
       'servant.kintoki',
       'servant.mash',
       'servant.sherlock',
+      'servant.shuten',
     ]);
   });
 

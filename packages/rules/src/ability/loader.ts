@@ -8,6 +8,12 @@ import { isLinkedOwnerCombatRule, isServantNoCommandSealsRule } from './linked-o
 import { deductionRecordMechanicIsWellFormed, isDeductionRecordMarkerAbility, isEventLocationIsCondition, isSameLocationAsControllerConstraint } from './deduction-record';
 import { isActivePlayerCountMinusRoundPlayCostModifier } from './dynamic-play-cost';
 import {
+  BATTLEFIELD_SOURCE_CARD_COST_AURA_TYPE, ANY_BATTLEFIELD_CONSTRAINT, PLACE_SOURCE_AT_BATTLEFIELD_EFFECT,
+  GRANT_BASIC_ATTACK_PER_GAME_LIMIT_EFFECT, GRANT_SOURCE_BATTLEFIELD_VP_EFFECT, RETURN_SOURCE_TO_SKILL_EFFECT,
+  REMOVE_STARTING_DECK_FRACTION_EFFECT, battlefieldSourceMechanicIsWellFormed,
+  isBattlefieldSourceCardPlayCostAuraModifier,
+} from './battlefield-source-mechanics';
+import {
   OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT,
   OPPONENT_CLOSE_ONE_NON_RESIDUAL_EFFECT,
   isAcceptedOpponentCloseToOneAbility,
@@ -84,6 +90,9 @@ const supportedTypes = new Set([
   'choose_deduction_record', 'resolve_deduction_record_on_event', 'expire_deduction_record',
   'reveal_selected_opponent_and_resolve_deduction', 'event_location_is', 'same_location_as_controller',
   'play_cost_formula',
+  ANY_BATTLEFIELD_CONSTRAINT, PLACE_SOURCE_AT_BATTLEFIELD_EFFECT, GRANT_BASIC_ATTACK_PER_GAME_LIMIT_EFFECT,
+  GRANT_SOURCE_BATTLEFIELD_VP_EFFECT, RETURN_SOURCE_TO_SKILL_EFFECT, REMOVE_STARTING_DECK_FRACTION_EFFECT,
+  BATTLEFIELD_SOURCE_CARD_COST_AURA_TYPE,
   OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT, OPPONENT_CLOSE_ONE_NON_RESIDUAL_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
@@ -116,6 +125,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'add', 'multiply', 'until', 'hiddenAmount', 'revealedAmount', 'excludeLinkedOwnerRecipient', 'commandSealsAtMost', 'hideTrueName',
   'ignoreBattleLossEffects', 'shareMaximumCombatPower', 'closeIfOwnerAbsent', 'returnToOwnerAtBattleEnd', 'returnToOwnerHandOnOwnerLoss', 'ownerCommandSealsAtMost', 'basePowerMultiplier',
   'locationId', 'vpGain', 'optionalNext', 'vpPenalty', 'defeatOnMatch', 'show', 'allowNoblePhantasmRevealException',
+  'zones', 'numerator', 'denominator', 'rounding', 'destination', 'defeatIfEmpty',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -194,6 +204,11 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (str(n.type) === 'play_cost_formula' && !isActivePlayerCountMinusRoundPlayCostModifier(n)) {
         issue(path, 'Unsupported dynamic play-cost modifier shape', abilityId);
+      }
+      if (([ANY_BATTLEFIELD_CONSTRAINT, PLACE_SOURCE_AT_BATTLEFIELD_EFFECT, GRANT_BASIC_ATTACK_PER_GAME_LIMIT_EFFECT,
+          GRANT_SOURCE_BATTLEFIELD_VP_EFFECT, RETURN_SOURCE_TO_SKILL_EFFECT, REMOVE_STARTING_DECK_FRACTION_EFFECT,
+          BATTLEFIELD_SOURCE_CARD_COST_AURA_TYPE] as readonly string[]).includes(str(n.type)) && !battlefieldSourceMechanicIsWellFormed(n)) {
+        issue(path, 'Unsupported battlefield-source mechanic shape', abilityId);
       }
       if (['player_flag_equals', 'player_flag_number_at_least', 'player_flag_number_current_round', 'player_flag_number_not_current_round'].includes(str(n.type))) {
         if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Structured player-flag condition is supported only as a direct ability condition', abilityId);
@@ -389,19 +404,20 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         const acceptedCardCloseForbid = mode === 'automatic' && lifecycle.duration === 'this_round' &&
           isAcceptedControlledCardCloseForbidModifier(m);
         const acceptedDynamicPlayCost = isActivePlayerCountMinusRoundPlayCostModifier(m);
+        const acceptedBattlefieldSourceCardCostAura = isBattlefieldSourceCardPlayCostAuraModifier(m);
         const operationSupported = ['add', 'set', 'ignore', 'lock', 'exclude', 'forbid'].includes(str(m.operation));
         const ruleSupported = ['attack.currentPower', 'card.currentPower', 'effect_prevention', 'battlefield', 'terrain_and_external_effects', 'use_skill_card', 'play_card_attribute', 'enter_or_leave_current_battlefield', 'terrain_and_external_effects_for_controller_and_opponents', 'terrain_and_external_servant_or_npc_effects', 'situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least', 'netherworld_protection'].includes(str(m.rule)) ||
-          acceptedDynamicPlayCost || (acceptedCardCloseForbid && m.rule === 'card_close');
+          acceptedDynamicPlayCost || acceptedBattlefieldSourceCardCostAura || (acceptedCardCloseForbid && m.rule === 'card_close');
         if (!operationSupported || !ruleSupported) issue('ruleModifiers', 'Unmapped rule or operation', id);
-        if (m.rule === 'card.playCost' && !acceptedDynamicPlayCost) issue('ruleModifiers', 'Unsupported dynamic play-cost modifier', id);
+        if (m.rule === 'card.playCost' && !acceptedDynamicPlayCost && !acceptedBattlefieldSourceCardCostAura) issue('ruleModifiers', 'Unsupported play-cost modifier', id);
         if (m.rule === 'card_close' && !acceptedCardCloseForbid) issue('ruleModifiers', 'Unsupported card-close forbid selector shape', id);
         if (m.rule === 'effect_prevention' && (m.operation !== 'ignore' || node(m.priority).tier !== 'explicit_exception')) issue('ruleModifiers.priority', 'Prevention exception requires explicit_exception', id);
         const ruleIsPlayException = m.operation === 'ignore' && ['situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least'].includes(str(m.rule));
         const ruleIsStaticException = m.operation === 'ignore' && m.rule === 'netherworld_protection';
-        if (m.rule !== 'effect_prevention' && !ruleIsPlayException && !ruleIsStaticException && !acceptedDynamicPlayCost && !lifecycle.duration && !node(m.lifecycle).duration) issue('ruleModifiers.lifecycle', 'Modifier requires lifecycle', id);
+        if (m.rule !== 'effect_prevention' && !ruleIsPlayException && !ruleIsStaticException && !acceptedDynamicPlayCost && !acceptedBattlefieldSourceCardCostAura && !lifecycle.duration && !node(m.lifecycle).duration) issue('ruleModifiers.lifecycle', 'Modifier requires lifecycle', id);
         scan(m.value, 'ruleModifiers.value', id); scan(node(m.scope).constraints, 'ruleModifiers.scope.constraints', id);
         scan(m.conditions, 'ruleModifiers.conditions', id);
-        if (node(m.scope).object && !['source_card', 'this_card', 'attack_card', 'this_effect', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield', 'all_players'].includes(str(node(m.scope).object))) issue('ruleModifiers.scope.object', 'Unmapped modifier scope', id);
+        if (node(m.scope).object && !['source_card', 'this_card', 'attack_card', 'playable_card', 'this_effect', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield', 'all_players'].includes(str(node(m.scope).object))) issue('ruleModifiers.scope.object', 'Unmapped modifier scope', id);
         if (node(m.scope).controller && !['self', 'controller', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield'].includes(str(node(m.scope).controller))) issue('ruleModifiers.scope.controller', 'Unmapped modifier controller', id);
         if (m.lifecycle && a.lifecycle && JSON.stringify(m.lifecycle) !== JSON.stringify(a.lifecycle) &&
           !isAcceptedMagicResistanceIndependentModifierLifecycle(a, m)) {

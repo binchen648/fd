@@ -3,7 +3,7 @@
   "packId": "fd-playtest-v1",
   "summary": {
     "masters": 7,
-    "servants": 9,
+    "servants": 10,
     "events": 20,
     "blockingIssues": 0
   },
@@ -1325,6 +1325,61 @@
       "htmPath": "chm-extract/夏洛克·福尔摩斯.htm",
       "imagePath": "../../Fate_Domination-开发版/images/servants/夏洛克·福尔摩斯.png",
       "imageIndex": 7,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.shuten",
+      "displayName": "酒吞童子",
+      "entityKind": "servant",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/酒吞童子.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/酒吞童子.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.shuten.overview",
+      "displayName": "酒吞童子",
+      "entityKind": "servant_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/酒吞童子.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/酒吞童子.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.shuten.skill.sc-shuten-1",
+      "displayName": "放荡之宴",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/酒吞童子.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/酒吞童子.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.shuten.skill.sc-shuten-2",
+      "displayName": "神便鬼毒酒",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/酒吞童子.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/酒吞童子.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.shuten.skill.sc-shuten-3",
+      "displayName": "百花缭乱·我爱你",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/酒吞童子.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/酒吞童子.png",
+      "imageIndex": 3,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

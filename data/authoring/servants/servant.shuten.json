@@ -1,0 +1,517 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.shuten",
+  "name": "酒吞童子",
+  "class": "Assassin",
+  "sourcePolicy": {
+    "phase3EvidenceBase": "0ea4c4d97225cab3931cdf13d8453b21116d760e",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics are frozen FULL confirmed overrides/source evidence; runtime remains generic, data-driven and fail closed."
+  },
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": [
+        "../../Fate_Domination-开发版/images/servants/酒吞童子.png",
+        "../../Fate_Domination-开发版/images/servants/酒吞童子.png",
+        "../../Fate_Domination-开发版/images/servants/酒吞童子.png",
+        "../../Fate_Domination-开发版/images/servants/酒吞童子.png"
+      ]
+    }
+  ],
+  "deck": [
+    {
+      "cardId": "card.cardb1",
+      "count": 1
+    },
+    {
+      "cardId": "card.cardb2",
+      "count": 1
+    },
+    {
+      "cardId": "card.cardb3",
+      "count": 1
+    },
+    {
+      "cardId": "card.cardb4",
+      "count": 1
+    },
+    {
+      "cardId": "card.cardq1",
+      "count": 1
+    },
+    {
+      "cardId": "card.cardq2",
+      "count": 1
+    },
+    {
+      "cardId": "card.carda1",
+      "count": 1
+    },
+    {
+      "cardId": "card.carda2",
+      "count": 1
+    },
+    {
+      "cardId": "card.carda4",
+      "count": 1
+    },
+    {
+      "cardId": "card.cardluck",
+      "count": 2
+    },
+    {
+      "cardId": "card.cardsurveil",
+      "count": 1
+    }
+  ],
+  "cards": [
+    {
+      "id": "servant.shuten.skill.sc-shuten-1",
+      "name": "放荡之宴",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.shuten"
+      },
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sc-shuten-1.place-banquet",
+          "kind": "phase_action",
+          "printedClause": "被动/准备阶段：花费2点魔力，将此牌放置于一处战场直至回合结束。",
+          "activation": {
+            "phase": "preparation",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [
+            {
+              "id": "banquet-battlefield",
+              "type": "location",
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "any_battlefield"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "place_source_card_at_battlefield",
+              "target": "banquet-battlefield"
+            }
+          ],
+          "cost": [
+            {
+              "type": "pay_mana",
+              "amount": 2
+            }
+          ],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {
+            "type": "per_round",
+            "uses": 1,
+            "scope": "this_card"
+          },
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "sc-shuten-1.cost-aura",
+          "kind": "passive",
+          "printedClause": "位于此地点的其他玩家的手牌及技能消耗+2。",
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "effects": [],
+          "cost": [],
+          "ruleModifiers": [
+            {
+              "type": "battlefield_source_card_play_cost_aura",
+              "operation": "add",
+              "rule": "card.playCost",
+              "scope": {
+                "subject": "other_players_at_source_battlefield",
+                "object": "playable_card",
+                "zones": [
+                  "hand",
+                  "skill"
+                ]
+              },
+              "value": 2
+            }
+          ],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "sc-shuten-1.battle-end-vp",
+          "kind": "forced_trigger",
+          "printedClause": "战斗阶段结束时所有位于此地点的玩家获得1点战果。",
+          "activation": {
+            "trigger": "after_battle_ended",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "grant_vp_to_players_at_source_battlefield",
+              "amount": 1
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "sc-shuten-1.round-cleanup",
+          "kind": "forced_trigger",
+          "printedClause": "直至回合结束。",
+          "activation": {
+            "trigger": "round_end",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "return_source_card_to_skill"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "printedText": "被动/准备阶段：花费2点魔力，将此牌放置于一处战场直至回合结束。位于此地点的其他玩家的手牌及技能消耗+2，战斗阶段结束时所有位于此地点的玩家获得1点战果。"
+    },
+    {
+      "id": "servant.shuten.skill.sc-shuten-2",
+      "name": "神便鬼毒酒",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.shuten"
+      },
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": [
+          "魔术"
+        ],
+        "cost": 2,
+        "basePower": 5
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-shuten-2.required-additional-play",
+          "kind": "passive",
+          "printedClause": "此牌需追加打出。",
+          "activation": {
+            "trigger": "while_active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "append_only_rule"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "sc-shuten-2.ignore-eight-mana",
+          "kind": "passive",
+          "printedClause": "你拥有的魔力少于8点也可打出此牌。",
+          "activation": {
+            "trigger": "when_play_requirements_checked"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [],
+          "cost": [],
+          "ruleModifiers": [
+            {
+              "id": "ignore_skill_zone_mana_requirement",
+              "printedClause": "你拥有的魔力少于8点也可打出此牌。",
+              "type": "exception",
+              "operation": "ignore",
+              "rule": "skill_zone_mana_requirement",
+              "scope": {
+                "subject": "controller",
+                "object": "this_card"
+              },
+              "priority": {
+                "tier": "card_text",
+                "specificity": "explicit_exception"
+              }
+            }
+          ],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "sc-shuten-2.delirium",
+          "kind": "forced_trigger",
+          "printedClause": "诡妄-战斗阶段开始时，你战斗中所有激活的基础攻击获得<每局游戏限一次>。",
+          "activation": {
+            "trigger": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "grant_per_game_play_limit_to_active_basic_attacks_at_source_battlefield"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "printedText": "此牌需追加打出且你拥有的魔力少于8点也可打出此牌。\n诡妄-战斗阶段开始时，你战斗中所有激活的基础攻击获得<每局游戏限一次>。"
+    },
+    {
+      "id": "servant.shuten.skill.sc-shuten-3",
+      "name": "百花缭乱·我爱你",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.shuten"
+      },
+      "cardFace": {
+        "typeLabel": "魔术/宝具",
+        "attributes": [
+          "魔术",
+          "宝具"
+        ],
+        "cost": 4,
+        "basePower": 7
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-shuten-3.true-name-release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "markers": [
+            "真名解放"
+          ],
+          "activation": {
+            "trigger": "on_use_declared"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "reveal_information",
+              "scope": "servant_package",
+              "subject": "controller.servant"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "sc-shuten-3.bone-collector",
+          "kind": "phase_action",
+          "printedClause": "战斗阶段：将一名交战对手牌堆顶的X张牌移除游戏，X为其游戏开始时牌库数量的四分之一（向上取整）。这之后，若其牌库为空，令其【败北】。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [
+            {
+              "id": "engaged-opponent",
+              "type": "player",
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "not_controller"
+                },
+                {
+                  "type": "same_location_as_controller"
+                },
+                {
+                  "type": "at_battlefield"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "remove_top_starting_deck_fraction_and_defeat_if_empty",
+              "target": "engaged-opponent",
+              "numerator": 1,
+              "denominator": 4,
+              "rounding": "ceil",
+              "destination": "removed_from_game",
+              "defeatIfEmpty": true
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {
+            "type": "per_round",
+            "uses": 1,
+            "scope": "this_card"
+          },
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "printedText": "【真名解放】\n战斗阶段：将一名交战对手牌堆顶的X张牌移除游戏，X为其游戏开始时牌库数量的四分之一（向上取整）。这之后，若其牌库为空，令其【败北】。"
+    }
+  ]
+}

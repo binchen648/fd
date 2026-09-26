@@ -48,8 +48,8 @@ describe('ExecutableCardPack compiler', () => {
     expect(executable.schemaVersion).toBe('fd-executable-card-pack-v1');
     expect(executable).not.toHaveProperty('archives');
     expect(executable.definitionHash).toMatch(/^[a-f0-9]{64}$/);
-    expect(Object.keys(executable.cards)).toHaveLength(83);
-    expect(Object.values(executable.decks)).toHaveLength(9);
+    expect(Object.keys(executable.cards)).toHaveLength(86);
+    expect(Object.values(executable.decks)).toHaveLength(10);
     expect(Object.values(executable.decks).every((deck) => deck.length === 12)).toBe(true);
     expect(executable.cards['servant.artoriac.skill.sc-artoriac-1']).toMatchObject({
       ownerId: 'servant.artoriac',

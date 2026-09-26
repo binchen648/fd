@@ -32,7 +32,7 @@ describe('compile playtest content pack CLI', () => {
       { cwd: resolve('.'), encoding: 'utf8' },
     );
 
-    expect(output.trim()).toBe('7 masters, 9 servants, 20 events, 0 blocking issues');
+    expect(output.trim()).toBe('7 masters, 10 servants, 20 events, 0 blocking issues');
   });
 
   it('rejects invalid source asset validation modes', () => {
@@ -89,7 +89,7 @@ describe('compile playtest content pack CLI', () => {
     expect(readFileSync(second.outputPaths.library, 'utf8')).toBe(firstLibrary);
     expect(readFileSync(second.outputPaths.fixture, 'utf8')).toBe(firstFixture);
     expect(readFileSync(second.outputPaths.evidence, 'utf8')).toBe(firstEvidence);
-    expect(first.summary).toEqual({ masters: 7, servants: 9, events: 20, blockingIssues: 0 });
+    expect(first.summary).toEqual({ masters: 7, servants: 10, events: 20, blockingIssues: 0 });
     expect(JSON.parse(firstLibrary).rules).toMatchObject({
       schemaVersion: 'fd-executable-card-pack-v1',
       definitionHash: expect.stringMatching(/^[a-f0-9]{64}$/),
