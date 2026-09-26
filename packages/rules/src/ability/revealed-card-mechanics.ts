@@ -40,6 +40,28 @@ export function isGrantedBasicDoubleRemoveEffect(value: RuleNode): boolean {
     exactKeys(value, ['type', 'basePowerMultiplier', 'removeAfter']);
 }
 
+function emptyRuleNode(value: RuleNode): boolean { return Object.keys(value).length === 0; }
+
+function isExactPassiveDerivedMarkerShell(ability: AuthoringAbility): boolean {
+  return ability.kind === 'passive' && ability.execution.mode === 'automatic' &&
+    ability.execution.allowedOperations.length === 0 && emptyRuleNode(ability.activation) &&
+    ability.conditions.length === 0 && ability.targets.length === 0 && ability.cost.length === 0 &&
+    ability.ruleModifiers.length === 0 && ability.creates.length === 0 && emptyRuleNode(ability.lifecycle) &&
+    emptyRuleNode(ability.limit) && emptyRuleNode(ability.visibility) &&
+    Object.keys(ability.responseWindow).length === 2 && ability.responseWindow.order === 'turn_order' &&
+    ability.responseWindow.passBehavior === 'decline_this_window';
+}
+
+export function isAcceptedRevealedBasicGrantMarkerAbility(ability: AuthoringAbility): boolean {
+  return isExactPassiveDerivedMarkerShell(ability) && ability.effects.length === 1 &&
+    isGrantBasicDoubleRemoveEffect(ability.effects[0]!);
+}
+
+export function isAcceptedConditionalRevealedAttributeMarkerAbility(ability: AuthoringAbility): boolean {
+  return isExactPassiveDerivedMarkerShell(ability) && ability.effects.length > 0 &&
+    ability.effects.every(isConditionalAttributeGrantEffect);
+}
+
 export function physicalCardWasRevealed(state: GameState, cardInstanceId: string): boolean {
   const runtime = state.abilityRuntime;
   const card = state.cards.find((candidate) => candidate.instanceId === cardInstanceId);
@@ -61,7 +83,7 @@ export function conditionalRevealedSourceAttributes(state: GameState, cardInstan
   if (!runtime || !card || !definition || definition.mode !== 'automatic') return [];
   const attributes: string[] = [];
   for (const ability of definition.abilities) {
-    if (ability.execution.mode !== 'automatic') continue;
+    if (!isAcceptedConditionalRevealedAttributeMarkerAbility(ability)) continue;
     for (const effect of ability.effects) {
       if (!isConditionalAttributeGrantEffect(effect)) continue;
       if (ownedDefinitionWasRevealed(state, card.controllerPlayerId, String(effect.definitionId))) {
@@ -80,8 +102,7 @@ function controllerHasRevealedGrantSource(state: GameState, controllerId: string
     const definition = runtime.pack.cards[candidate.definitionId];
     return candidate.ownerPlayerId === controllerId && candidate.controllerPlayerId === controllerId &&
       physicalCardWasRevealed(state, candidate.instanceId) && definition?.mode === 'automatic' &&
-      definition.abilities.some((ability) => ability.execution.mode === 'automatic' &&
-        ability.effects.some(isGrantBasicDoubleRemoveEffect));
+      definition.abilities.some(isAcceptedRevealedBasicGrantMarkerAbility);
   });
 }
 

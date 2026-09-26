@@ -8,7 +8,7 @@ import { isLinkedOwnerCombatRule, isServantNoCommandSealsRule } from './linked-o
 import { deductionRecordMechanicIsWellFormed, isDeductionRecordMarkerAbility, isEventLocationIsCondition, isSameLocationAsControllerConstraint } from './deduction-record';
 import { isActivePlayerCountMinusRoundPlayCostModifier } from './dynamic-play-cost';
 import { OTHER_PLAYER_ABILITY_EFFECT_IMMUNITY_RULE, isOtherPlayerAbilityEffectImmunityModifier } from './player-ability-immunity';
-import { isConditionalAttributeGrantEffect, isEventBattleOpponentAttackConstraint, isGainManaEqualSelectedPaidCostEffect, isGrantBasicDoubleRemoveEffect, isSourceRevealedCondition } from './revealed-card-mechanics';
+import { isAcceptedConditionalRevealedAttributeMarkerAbility, isAcceptedRevealedBasicGrantMarkerAbility, isConditionalAttributeGrantEffect, isEventBattleOpponentAttackConstraint, isGainManaEqualSelectedPaidCostEffect, isGrantBasicDoubleRemoveEffect, isSourceRevealedCondition } from './revealed-card-mechanics';
 import { LOSE_VP_EQUAL_SOURCE_PLAY_COUNT_EFFECT, HIDE_SERVANT_TRUE_NAME_UNTIL_ROUND_END_EFFECT, REVEAL_HAND_ROUND_POWER_EFFECT, ownerSelfMechanicIsWellFormed } from './owner-self-mechanics';
 import {
   BATTLEFIELD_SOURCE_CARD_COST_AURA_TYPE, ANY_BATTLEFIELD_CONSTRAINT, PLACE_SOURCE_AT_BATTLEFIELD_EFFECT,
@@ -480,6 +480,14 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'authoring') &&
           !isAcceptedOpponentCloseOneNonResidualAbility(a, 'authoring')) {
         issue('opponentCloseToOne.gateway', 'Unsupported opponent close-to-one interaction semantic shape', id);
+      }
+      if (candidateAbility.effects.some(isGrantBasicDoubleRemoveEffect) &&
+          !isAcceptedRevealedBasicGrantMarkerAbility(candidateAbility)) {
+        issue('revealedSource.gateway', 'Revealed-source basic-action marker requires the exact passive whole-ability semantic', id);
+      }
+      if (candidateAbility.effects.some(isConditionalAttributeGrantEffect) &&
+          !isAcceptedConditionalRevealedAttributeMarkerAbility(candidateAbility)) {
+        issue('revealedSource.gateway', 'Conditional revealed-attribute marker requires the exact passive whole-ability semantic', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

@@ -168,6 +168,47 @@ describe('P3 bounded revealed-source capability', () => {
     expect(getEffectiveCardAttributes(state, target.instanceId)).toHaveLength(1);
   });
 
+  it('fails closed on wrong-kind/trigger and false-condition enclosing semantics for derived markers', () => {
+    const buildState = (pack: ReturnType<typeof loadAuthoringJson>) => {
+      const state = createSeededGameState(); state.cards = [];
+      state.players[0]!.servantCardId = ROOT; state.players[0]!.locationId = 'shinto'; state.players[0]!.mana = 10;
+      initializeAbilityRuntime(state, pack, { seed: 20260927 });
+      state.round.activePhase = 'action'; state.round.prioritySeat = 1;
+      return state;
+    };
+
+    const wrongKind = archive();
+    wrongKind.cards[0].abilities[1].kind = 'forced_trigger';
+    wrongKind.cards[0].abilities[1].activation = { trigger: 'round_start' };
+    const wrongKindPack = loadAuthoringJson(wrongKind);
+    expect(wrongKindPack.report.some((entry) => entry.abilityId === 'fixture.grant-basic-action' && entry.status === 'unsupported')).toBe(true);
+    const wrongKindState = buildState(wrongKindPack);
+    const wrongKindSource = add(wrongKindState, SOURCE, 'p1', 'discard', false);
+    const wrongKindBasic = add(wrongKindState, BASIC, 'p1', 'attack_area', true);
+    markRevealed(wrongKindState, wrongKindSource.instanceId);
+    expect(getLegalActions(wrongKindState, 'p1').some((entry) => entry.type === 'activate_ability' && entry.cardInstanceId === wrongKindBasic.instanceId && entry.abilityId === GRANTED_BASIC_DOUBLE_REMOVE_ABILITY_ID)).toBe(false);
+
+    const falseGrant = archive();
+    falseGrant.cards[0].abilities[1].conditions = [{ type: 'controller_mana_at_least', amount: 999 }];
+    const falseGrantPack = loadAuthoringJson(falseGrant);
+    expect(falseGrantPack.report.some((entry) => entry.abilityId === 'fixture.grant-basic-action' && entry.status === 'unsupported')).toBe(true);
+    const falseGrantState = buildState(falseGrantPack);
+    const falseGrantSource = add(falseGrantState, SOURCE, 'p1', 'discard', false);
+    const falseGrantBasic = add(falseGrantState, BASIC, 'p1', 'attack_area', true);
+    markRevealed(falseGrantState, falseGrantSource.instanceId);
+    expect(getLegalActions(falseGrantState, 'p1').some((entry) => entry.type === 'activate_ability' && entry.cardInstanceId === falseGrantBasic.instanceId && entry.abilityId === GRANTED_BASIC_DOUBLE_REMOVE_ABILITY_ID)).toBe(false);
+
+    const falseAttribute = archive();
+    falseAttribute.cards[2].abilities[0].conditions = [{ type: 'controller_mana_at_least', amount: 999 }];
+    const falseAttributePack = loadAuthoringJson(falseAttribute);
+    expect(falseAttributePack.report.some((entry) => entry.abilityId === 'fixture.conditional-attributes' && entry.status === 'unsupported')).toBe(true);
+    const falseAttributeState = buildState(falseAttributePack);
+    const falseAttributeSource = add(falseAttributeState, SOURCE);
+    const falseAttributeTarget = add(falseAttributeState, CONDITIONAL);
+    markRevealed(falseAttributeState, falseAttributeSource.instanceId);
+    expect(getEffectiveCardAttributes(falseAttributeState, falseAttributeTarget.instanceId)).toHaveLength(1);
+  });
+
   it('offers exactly one same-battle opponent attack and refunds its trusted paid mana cost', () => {
     const { state } = setup(); const source = add(state, SOURCE, 'p1', 'discard', false); markRevealed(state, source.instanceId);
     const opponent = add(state, BASIC, 'p2', 'attack_area', true); state.abilityRuntime!.cardState[opponent.instanceId]!.paidManaOnPlay = 5;

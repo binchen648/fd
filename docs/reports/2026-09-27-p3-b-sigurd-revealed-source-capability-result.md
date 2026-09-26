@@ -81,3 +81,16 @@ Both exact-scope findings are closed in the successor revision:
 2. the remove-after-battle marker is consumed only by the canonical current-round battle terminal identity (matching `battlePhaseResolutionId` and terminal event id), so an unproven same-name event cannot remove the card.
 
 Successor-focused verification: revealed-source capability `6/6 PASS`; affected serial chain `7 files / 160 tests PASS`; typecheck/content validate/generated determinism/diff-check PASS. Formal accounting remains `129/944` because this task is zero-credit.
+
+## R2 revision closure
+
+Fresh R2 on predecessor `022fd9faa818feb1d4da56212f13adc7ee14d063` found that marker-local shape plus `execution.mode=automatic` was still too weak: wrong-kind/trigger or false-condition enclosing abilities could still drive derived revealed-source actions/attributes.
+
+This successor closes that exact finding by adding strict whole-ability gateways for both derived marker families:
+
+- revealed-source basic-action grant: exact passive shell, no activation/conditions/targets/cost/modifiers/creates/lifecycle/limit/visibility, no host operations, exactly one accepted grant marker;
+- conditional revealed-attribute grant: the same exact passive shell with one-or-more accepted conditional-attribute markers and no other effects.
+
+The loader now fails closed when either marker appears outside its accepted whole-ability semantic, and runtime derivation reuses the same strict gateways. New negative regression covers wrong-kind + round-start trigger, false enclosing condition for the synthetic grant, and false enclosing condition for conditional attributes.
+
+Verification after R2 closure: focused capability `7/7 PASS`; affected serial chain `7 files / 161 tests PASS`; typecheck PASS; content validate PASS; generated-content determinism PASS; git diff-check PASS; production Sigurd/Chinese identity/SkillLib routing audit remains clean. Formal accounting remains `129/944` because this task is zero-credit.
