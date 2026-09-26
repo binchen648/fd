@@ -4973,3 +4973,63 @@ Allowed verdicts:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+
+## P3-A-OWNER-MASH-ACCEPTANCE-SYNC
+
+- PR #457 exact Candidate `f52f458a192f363ffa0e6430e6639abc657e91e8` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/457#issuecomment-5845523544`.
+- Accepted formal owner scope is exactly all four remaining Mash frozen identities: `servant.mash.skill.sc-mash-1` through `servant.mash.skill.sc-mash-4`.
+- `card.x-guard` and shared runtime/content capability surfaces remain zero-credit support.
+- Current-main strict formal accounting moves `112/944 -> 116/944`; remaining `828`.
+- Historical frontier formal/material (`219/944` / `265/944`) remains separate accepted evidence/replay history; current-main accounting does not erase it.
+- Owner-complete workflow remains authoritative: no fixed-50 requirement, no per-skill R split; only after an owner is ACCEPTED + A-synced/accounted may execution move to the next owner.
+- Detailed sync: `docs/reports/2026-09-26-p3-a-owner-mash-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-SHERLOCK-COMPLETE-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: exact Mash acceptance-sync commit carrying this task block
+Owner root: `servant.sherlock`
+Formal owner scope: all seven remaining frozen Sherlock skills
+
+Frozen skills:
+- `servant.sherlock.skill.sc-sherlock-1` — 这是常识，我亲爱的朋友啊
+- `servant.sherlock.skill.sc-sherlock-2` — 空屋历险
+- `servant.sherlock.skill.sc-sherlock-3` — 逆推法
+- `servant.sherlock.skill.sc-sherlock-4` — 逆推法：力量
+- `servant.sherlock.skill.sc-sherlock-5` — 逆推法：迅捷
+- `servant.sherlock.skill.sc-sherlock-6` — 逆推法：魔术
+- `servant.sherlock.skill.sc-sherlock-7` — 逆推法：特殊
+
+Source/provenance:
+- frozen inventory mechanically reports all seven with `hasConfirmedOverride=true`, `hasAuthoringCard=false`;
+- all seven share source grounding in `FD全卡图鉴V2.0.chm`, locator `从者/裁定者/英文版/夏洛克·福尔摩斯.htm`, plus the development image source;
+- historical specific-handler evidence exists for `sc-sherlock-1/2/3`; `sc-sherlock-4/5/6/7` are historical shared rule-marker identities;
+- old-frontier accepted material plus current accepted PR #456 outside-game capability may be used as evidence for exact outside-game representation where applicable, but not as current formal acceptance of Sherlock consumers.
+
+Implementation requirements:
+- migrate all seven Sherlock frozen skills in one owner-complete formal batch; do not finish a subset and move owners;
+- recertify source semantics mechanically from frozen inventory/contracts and historical accepted evidence before encoding each consumer;
+- no `servant.sherlock` / card-id / card-name / printed-text / Chinese-text identity routing in production runtime;
+- no SkillLib fallback and no runtime source-text parsing;
+- any new runtime primitive must be generic, data-driven, fail closed, bounded to exact source semantics, and covered by focused positive/negative tests;
+- reuse accepted generic capabilities when exact semantics match; do not copy historical identity-keyed handlers into current production runtime;
+- no merge, retarget, reset/discard, force push, or worktree proliferation.
+
+Verification:
+- exact frozen owner scope = all 7 Sherlock skills and no omitted remaining Sherlock skill;
+- focused semantic tests covering all seven consumers plus fail-closed paths for each newly introduced generic capability;
+- affected loader/interpreter/executable/combat/session/content tests dictated by the actual diff;
+- typecheck + `git diff --check` + production identity-routing audit;
+- freeze exact Base/Candidate, clean fixed Work, PR, policy gate, and one fresh independent R for the whole owner batch.
+
+Accounting boundary:
+- Base strict formal accounting is `116/944` after Mash synchronization;
+- no Sherlock credit before exact-Candidate `MIGRATION_ACCEPTED` + subsequent A-sync/accounting;
+- if all seven are accepted and synchronized, the next strict accounting target is `123/944`.
+
+Allowed verdicts:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `MIGRATION_BLOCKED`
