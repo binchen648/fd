@@ -5033,3 +5033,61 @@ Allowed verdicts:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+
+
+## P3-A-OWNER-SHERLOCK-ACCEPTANCE-SYNC
+
+- PR #458 exact successor Candidate `cf8b8cc019c014cf0c1e187b6cbd2212c6e3a030` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/458#issuecomment-5846254073`.
+- Accepted formal owner scope is exactly all seven remaining Sherlock frozen identities: `servant.sherlock.skill.sc-sherlock-1` through `servant.sherlock.skill.sc-sherlock-7`.
+- Shared generic runtime/content capability surfaces remain support only and add no extra frozen identity.
+- Current-main strict formal accounting moves `116/944 -> 123/944`; remaining `821`.
+- Historical frontier formal/material (`219/944` / `265/944`) remains separate accepted evidence/replay history.
+- Owner-complete workflow remains authoritative: no fixed-50 requirement, no per-skill R split; only after an owner is ACCEPTED + A-synced/accounted may execution move to the next owner.
+- Detailed sync: `docs/reports/2026-09-26-p3-a-owner-sherlock-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-SHUTEN-COMPLETE-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: exact Sherlock acceptance-sync commit carrying this task block
+Owner root: `servant.shuten`
+Formal owner scope: all three remaining frozen Shuten skills
+
+Frozen skills:
+- `servant.shuten.skill.sc-shuten-1` — 放荡之宴
+- `servant.shuten.skill.sc-shuten-2` — 神便鬼毒酒
+- `servant.shuten.skill.sc-shuten-3` — 百花缭乱·我爱你
+
+Source/provenance:
+- frozen inventory mechanically reports all three with `hasConfirmedOverride=true`, `hasAuthoringCard=false`;
+- all three share CHM grounding in `FD全卡图鉴V2.0.chm`, locator `从者/暗匿者/英文版/酒吞童子1.htm`, plus the development image `Fate_Domination-开发版/images/servants/酒吞童子.png`;
+- historical specific-handler evidence is `core.shuten-debaucherous-banquet`, `core.shuten-noxious-sake`, and `core.shuten-bone-collector`; those handler names are evidence, not authorization for identity-keyed production routing.
+
+Implementation requirements:
+- migrate all three Shuten frozen skills in one owner-complete formal batch; do not finish a subset and move owners;
+- recertify exact source semantics mechanically from the frozen inventory/contracts and historical accepted evidence before encoding each consumer;
+- preserve the complete frozen text semantics, including timing, costs, location scope, lifecycle, additional-play requirements, once-per-game behavior, deck removal, true-name reveal, and defeat consequences where the source text requires them;
+- no `servant.shuten` / card-id / card-name / printed-text / Chinese-text identity routing in production runtime;
+- no SkillLib fallback and no runtime source-text parsing;
+- any new runtime primitive must be generic, data-driven, fail closed, narrowly source-grounded, and covered by focused positive/negative tests;
+- reuse accepted generic capabilities when exact semantics match; do not copy historical identity-keyed handlers into current production runtime;
+- if a bounded zero-credit capability/readiness seam is required, complete and independently review that capability, A-sync/rescan, then return to this same Shuten owner before moving on;
+- no merge, retarget, reset/discard, force push, or worktree proliferation.
+
+Verification:
+- exact frozen owner scope = all 3 Shuten skills and no omitted remaining Shuten skill;
+- focused semantic tests covering all three consumers plus fail-closed paths for every newly introduced generic capability;
+- affected loader/interpreter/executable/combat/session/content tests dictated by the actual diff;
+- typecheck + `git diff --check` + production identity-routing audit;
+- freeze exact Base/Candidate, clean fixed Work, PR, policy gate, and one fresh independent R for the whole owner batch.
+
+Accounting boundary:
+- Base strict formal accounting is `123/944` after Sherlock synchronization;
+- no Shuten credit before exact-Candidate `MIGRATION_ACCEPTED` + subsequent A-sync/accounting;
+- if all three are accepted and synchronized, the next strict accounting target is `126/944`.
+
+Allowed verdicts:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `MIGRATION_BLOCKED`
