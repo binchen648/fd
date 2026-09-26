@@ -4910,3 +4910,66 @@ Allowed B verdicts:
 - `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 - `IMPLEMENTATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+
+## P3-A-MAIN-REPLAY-OUTSIDE-GAME-OWNED-SERVANT-SKILL-ACCEPTANCE-SYNC
+
+- Exact accepted successor Candidate: `83cac6ef2a1334b823e37c873d0a1a2c8e819cb9` (PR #456), direct revision parent `10a22583f5e911ae4f812e82417b866006d6eaab`, formal Base `3b2d78ae931a0ded23f98ec1e513768dea9c78de`.
+- Canonical fresh-R evidence: `https://github.com/binchen648/fd/pull/456#issuecomment-5844312272`.
+- Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`.
+- Accepted capability: exact two-key owner-matching `servant_skill` may preserve exact `initialPlacement: "outside_game"`; extra/malformed/mismatched owner shapes fail closed; existing owned-master behavior is unchanged.
+- Base-to-Candidate `data/authoring/**` is empty. This remains zero-credit: formal/material `112/944`, remaining `832`.
+- Post-acceptance mechanical replay of the same `153` historical-diff identities is `27 ready / 126 blocked`; newly ready are exactly `servant.mash.skill.sc-mash-4`, `servant.sherlock.skill.sc-sherlock-4`, and `servant.sherlock.skill.sc-sherlock-5`.
+
+### Workflow supersession: owner-complete F4
+
+User's latest ruling supersedes the earlier fixed-50 cadence for future formal consumer migrations. From this synchronization forward:
+
+- formal F4 unit = one character/owner and **all of that owner's remaining frozen skills**;
+- owner batch size is whatever that owner actually has remaining; there is no fixed `50` requirement;
+- one owner-complete Base/Candidate -> one PR -> one fresh independent R -> one A-sync/accounting transaction;
+- only after the current owner is accepted and synchronized/accounted does execution move to the next owner;
+- bounded capability/readiness PRs may still be used to unblock the current owner, remain zero-credit, and return to the same owner after acceptance;
+- historical `EXACT_50_*` sections are retained as history/evidence but their fixed-50 future-dispatch requirement is superseded by this latest user ruling.
+
+## TASK P3-S-OWNER-MASH-COMPLETE-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: exact acceptance-sync commit carrying this task block
+Owner root: `servant.mash`
+Formal owner scope: all four remaining frozen skills
+
+Frozen skills:
+- `servant.mash.skill.sc-mash-1`
+- `servant.mash.skill.sc-mash-2`
+- `servant.mash.skill.sc-mash-3`
+- `servant.mash.skill.sc-mash-4`
+
+Source/provenance:
+- frozen inventory marks all four `FULL`, `hasConfirmedOverride=true`, `hasAuthoringCard=false`;
+- locked confirmed overrides are source-grounded by the frozen inventory;
+- shared source refs: CHM `从者/盾兵/英文版/玛修·基列莱特.htm` plus the development-image source;
+- `sc-mash-4` additionally has accepted outside-game capability authority from PR #456 / Candidate `83cac6ef2a1334b823e37c873d0a1a2c8e819cb9`.
+
+Implementation requirements:
+- migrate all four Mash frozen skills in this owner batch; do not finish only a subset and move to another owner;
+- preserve source semantics of the FULL confirmed overrides while mapping them to current clean-line generic authoring/runtime capabilities;
+- no `servant.mash` / card-name / printed-text / Chinese-text identity routing in production runtime;
+- no SkillLib fallback and no runtime parsing of source text;
+- `sc-mash-4` remains exact owner-matching `outside_game`, no executable `initialZone`;
+- handler-style historical overrides for `sc-mash-1/2/3` are evidence, not authorization to reintroduce identity-keyed handler routing; any new runtime primitive must be generic, data-driven, fail closed, and covered by focused tests;
+- owner batch should include all necessary authoring for these four skills plus only the generic runtime primitives required by their semantics;
+- no merge, retarget, reset/discard, force push, or worktree proliferation.
+
+Verification:
+- exact frozen owner scope = all 4 Mash skills and no omitted remaining Mash skill;
+- focused semantic tests for all four skills, including negative/fail-closed paths for any new generic capability;
+- affected loader/interpreter/executable/combat/session tests required by the actual diff;
+- typecheck + `git diff --check`;
+- production identity-routing audit (`servant.mash`, names, printed text, Chinese routing, SkillLib fallback) must be clean;
+- exact Base/Candidate lineage, clean fixed Work, and formal credit evidence must be frozen before fresh R.
+
+Allowed verdicts:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `MIGRATION_BLOCKED`
