@@ -77,12 +77,12 @@ Toolchain:
 
 Focused Sherlock owner regression:
 
-- `packages/rules/tests/regression/p3-owner-sherlock-complete-migration.test.ts`: `7/7 PASS`.
+- `packages/rules/tests/regression/p3-owner-sherlock-complete-migration.test.ts`: `9/9 PASS`.
 - Covers all 7 frozen identities, exact four outside-game record definitions, malformed marker fail-closed, dynamic paid cost, Memory Palace choice, Retroduction trusted-event trigger/expiry, and Elementary private reveal/defeat/re-record behavior.
 
 Affected chain final run:
 
-- 10 files / `183/183 PASS`:
+- 11 files / `220/220 PASS`:
   - Sherlock owner regression
   - executable card pack
   - MatchSession
@@ -102,7 +102,7 @@ Build/content checks:
 - `npm run content:compile`: PASS — same summary.
 - `npm run verify:generated-content`: PASS.
 - generated hashes:
-  - content library: `78e3d463ba8214615ffb1d6679096c5f4e6567466a1bc06470c275e23729ff43`
+  - content library: `29fea51bdc382ef8a234a312bc137a950d6d0c6e72ae95789c52538901b25c1c`
   - fixture: `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`
   - evidence report: `d71c4cd8699c8eaed24cf0eb63916b5201d90a0489a76d692185dbc3c58762a2`
 
@@ -117,6 +117,28 @@ Production identity-routing audit under `packages/rules/src` (tests excluded):
 Result: CLEAN.
 
 Development source asset paths for Sherlock overview and `sc_sherlock_1/2/3` were mechanically present under `E:\Codex\FD\Fate_Domination-开发版`.
+
+## Fresh-R R1 revision closure
+
+Fresh independent R on predecessor Candidate `88d693223e81887d550f5d9a37899229fb653bfb` returned `MIGRATION_NEEDS_REVISION`. Canonical Coordinator relay of that same review attempt after Reviewer GitHub-write 403:
+
+- `https://github.com/binchen648/fd/pull/458#issuecomment-5846079823`
+
+Both exact-scope blockers are closed in the successor represented by this report:
+
+1. **Retroduction Noble-Phantasm exception** — the frozen clause `*以宝具展示攻击的情况下，不局限于基础攻击。` is now encoded explicitly. The trusted matcher accepts either a matching face-up basic attack or, only when the exact authored exception flag is present, a matching non-basic attack that is itself a Noble-Phantasm attack. An ordinary matching non-basic play remains ineligible. The condition/effect shape is exact-key validated and widened near-matches fail closed.
+2. **Deployment event scope regression** — `after_player_deployed_to_battlefield` is once again emitted only for actual battlefields, preserving existing Ereshkigal consumers. A separate trusted `after_player_deployed_to_location` event feeds Sherlock's exact `magic_workshop` residual through `event_player_is_controller` + `event_location_is`. A real MatchSession regression proves a workshop deployment gives Sherlock the authored +1 residual while Ereshkigal's battlefield-only deployment reward does not fire.
+
+Revision validation on the final successor worktree:
+
+- Sherlock focused owner regression: `9/9 PASS` (including positive non-basic Noble-Phantasm exception, ordinary non-basic negative, and widened-exception fail-closed probe).
+- MatchSession: `33/33 PASS`, including the Sherlock/Ereshkigal workshop interaction regression.
+- Broader affected chain: `11 files / 220 tests PASS`.
+- `npm run typecheck`: PASS.
+- `npm run content:validate`: PASS — `7 masters, 9 servants, 20 events, 0 blocking issues`.
+- `npm run verify:generated-content`: PASS.
+- `git diff --check`: PASS.
+- Production identity-routing audit remains CLEAN.
 
 ## Existing source-asset baseline limitation
 

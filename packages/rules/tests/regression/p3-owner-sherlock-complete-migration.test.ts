@@ -62,6 +62,15 @@ describe('P3 owner-complete Sherlock migration', () => {
     expect(pack.report.some((entry) => entry.cardId === skill(4) && entry.path === 'deductionRecord.gateway' && entry.status === 'unsupported')).toBe(true);
   });
 
+  it('fails closed when the Noble-Phantasm deduction exception condition is widened', () => {
+    const { raw } = setup();
+    const trigger = raw.cards[2].abilities.find((ability: { id: string }) => ability.id === 'sc-sherlock-3.trigger');
+    const condition = trigger.conditions.find((entry: { type: string }) => entry.type === 'deduction_record_matches_event_attack');
+    condition.extra = 'near-match';
+    const pack = loadAuthoringJson(raw);
+    expect(pack.report.some((entry) => entry.cardId === skill(3) && entry.status === 'unsupported' && entry.reason.toLowerCase().includes('deduction-record'))).toBe(true);
+  });
+
   it('uses active player count minus round as Empty House play cost and records the paid cost', () => {
     const { state } = setup();
     const sc2 = addCard(state, skill(2), 'p1', 'skill');
@@ -99,6 +108,40 @@ describe('P3 owner-complete Sherlock migration', () => {
     const pending = state.abilityRuntime!.pendingDecision!;
     const decline = dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: pending.id, selectedIds: [] });
     expect(decline.ok).toBe(true);
+  });
+
+  it('Retroduction accepts a matching non-basic Noble-Phantasm attack but rejects an ordinary matching non-basic attack', () => {
+    const { state } = setup();
+    addCard(state, skill(2), 'p1', 'attack_area');
+    addCard(state, skill(3), 'p1', 'attack_area');
+    setRecord(state, '魔术');
+    state.round.activePhase = 'action';
+
+    const ordinaryDefinition: AuthoringCard = {
+      id: 'test.nonbasic.magecraft', name: 'ordinary non-basic', cardType: 'servant_skill',
+      cardFace: { attributes: ['魔术'], cost: 0, basePower: 3 },
+      playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], abilities: [], mode: 'automatic',
+    };
+    state.abilityRuntime!.pack.cards[ordinaryDefinition.id] = ordinaryDefinition;
+    const ordinary = addCard(state, ordinaryDefinition.id, 'p2', 'attack_area');
+    const before = state.players[0]!.vp;
+    processAbilityEvent(state, { id: 'p2:play:ordinary-nonbasic', type: 'on_card_played', playerId: 'p2', sourceCardId: ordinary.instanceId,
+      playedCards: [{ instanceId: ordinary.instanceId, controllerId: 'p2', cardType: 'servant_skill', faceDown: false }] });
+    expect(state.players[0]!.vp).toBe(before);
+    expect(state.abilityRuntime!.deductionRecordsByPlayer?.p1?.attribute).toBe('魔术');
+
+    const nobleDefinition: AuthoringCard = {
+      id: 'test.noble.magecraft', name: 'noble revealed attack', cardType: 'servant_skill',
+      cardFace: { attributes: ['魔术', '宝具'], cost: 0, basePower: 4 },
+      playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], abilities: [], mode: 'automatic',
+    };
+    state.abilityRuntime!.pack.cards[nobleDefinition.id] = nobleDefinition;
+    const noble = addCard(state, nobleDefinition.id, 'p2', 'attack_area');
+    processAbilityEvent(state, { id: 'p2:play:noble-nonbasic', type: 'on_card_played', playerId: 'p2', sourceCardId: noble.instanceId,
+      playedCards: [{ instanceId: noble.instanceId, controllerId: 'p2', cardType: 'servant_skill', faceDown: false }] });
+    expect(state.players[0]!.vp).toBe(before + 1);
+    expect(state.abilityRuntime!.deductionRecordsByPlayer?.p1).toBeUndefined();
+    expect(state.abilityRuntime!.pendingDecision?.interaction?.kind).toBe('deduction_record_choice_v1');
   });
 
   it('Retroduction ignores facedown/nonbasic event plays and unresolved record expires for 3 VP', () => {

@@ -10032,7 +10032,7 @@
             "kind": "residual",
             "printedClause": "残留：当你部署于魔术工房时，获得1点魔力。",
             "activation": {
-              "trigger": "after_player_deployed_to_battlefield",
+              "trigger": "after_player_deployed_to_location",
               "requiresSourceState": "active"
             },
             "conditions": [
@@ -10151,7 +10151,8 @@
                 "type": "event_player_is_opponent"
               },
               {
-                "type": "deduction_record_matches_event_basic_attack"
+                "type": "deduction_record_matches_event_attack",
+                "allowNoblePhantasmRevealException": true
               }
             ],
             "targets": [],
@@ -10159,7 +10160,8 @@
               {
                 "type": "resolve_deduction_record_on_event",
                 "vpGain": 1,
-                "optionalNext": true
+                "optionalNext": true,
+                "allowNoblePhantasmRevealException": true
               }
             ],
             "cost": [],
@@ -12134,11 +12136,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "a968ea8e1014f19b73e2801534814a7d2fd5c210c5e8814e4ad4aa0cf6928cb6",
+    "definitionHash": "d295c21440fc26b098093137dd011272d6e21f54304f3b80612a7a671517a1f4",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "a968ea8e1014f19b73e2801534814a7d2fd5c210c5e8814e4ad4aa0cf6928cb6"
+      "definitionHash": "d295c21440fc26b098093137dd011272d6e21f54304f3b80612a7a671517a1f4"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {

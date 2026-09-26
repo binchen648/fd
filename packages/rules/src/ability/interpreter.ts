@@ -646,7 +646,7 @@ function eventPlayerRelationCondition(s: GameState, ctx: EffectContext, c: RuleN
 function deductionRecordForPlayer(s: GameState, playerId: string) {
   return runtime(s).deductionRecordsByPlayer?.[playerId];
 }
-function eventMatchesDeductionRecordBasicAttack(s: GameState, ctx: EffectContext): boolean {
+function eventMatchesDeductionRecordAttack(s: GameState, ctx: EffectContext, allowNoblePhantasmRevealException: boolean): boolean {
   const record = deductionRecordForPlayer(s, ctx.controllerId);
   const event = ctx.event;
   if (!record || !event || event.type !== 'on_card_played' || !event.playerId || event.playerId === ctx.controllerId) return false;
@@ -655,7 +655,10 @@ function eventMatchesDeductionRecordBasicAttack(s: GameState, ctx: EffectContext
     const physical = s.cards.find((candidate) => candidate.instanceId === played.instanceId);
     if (!physical) return false;
     const d = runtime(s).pack.cards[physical.definitionId];
-    return d?.cardType === 'basic_attack' && getEffectiveCardAttributes(s, physical.instanceId).includes(record.attribute);
+    if (!d || !getEffectiveCardAttributes(s, physical.instanceId).includes(record.attribute)) return false;
+    if (d.cardType === 'basic_attack') return true;
+    return allowNoblePhantasmRevealException && getEffectiveCardAttributes(s, physical.instanceId).includes('宝具') &&
+      classifyCardPlay(d).playKind === 'attack';
   });
 }
 
@@ -708,7 +711,7 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'event_location_is': return !!ctx.event?.locationId && ctx.event.locationId === str(c.locationId);
     case 'deduction_record_present': return !!deductionRecordForPlayer(s, ctx.controllerId);
     case 'deduction_record_absent': return !deductionRecordForPlayer(s, ctx.controllerId);
-    case 'deduction_record_matches_event_basic_attack': return eventMatchesDeductionRecordBasicAttack(s, ctx);
+    case 'deduction_record_matches_event_attack': return eventMatchesDeductionRecordAttack(s, ctx, c.allowNoblePhantasmRevealException === true);
     case 'target_count_equals': {
       const targets = sameBattlefieldOpponentIds(s, ctx);
       return targets !== null && targets.length === Number(c.count);
@@ -1098,7 +1101,7 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
         !sourcePlayBasicAttackDrawEventScopeMatches(event, c.instanceId, c.controllerPlayerId)) continue;
       if (!matches || !canActivate(s, c.instanceId, a, event) || !triggerEventScopeMatches(a, event)) continue;
       if (['on_card_played', 'on_use_declared'].includes(event.type) && event.sourceCardId !== c.instanceId &&
-        !a.conditions.some((condition) => ['event_played_card_has_attribute', 'deduction_record_matches_event_basic_attack'].includes(str(condition.type))) &&
+        !a.conditions.some((condition) => ['event_played_card_has_attribute', 'deduction_record_matches_event_attack'].includes(str(condition.type))) &&
         !isAlterEgoTransformSemantic(a)) continue;
       const allowsOpponentMovementEvent = event.type === 'after_controller_enters_location' &&
         a.conditions.some((entry) => isEventPlayerRelationCondition(entry) && entry.type === 'event_player_is_opponent');
@@ -1381,7 +1384,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       break;
     }
     case 'resolve_deduction_record_on_event': {
-      if (!isDeductionRecordEffect(effect) || !eventMatchesDeductionRecordBasicAttack(s, ctx)) reject('invalid_event', 'Deduction hit requires matching trusted basic-attack event');
+      if (!isDeductionRecordEffect(effect) || !eventMatchesDeductionRecordAttack(s, ctx, effect.allowNoblePhantasmRevealException === true)) reject('invalid_event', 'Deduction hit requires a matching trusted basic attack or exact Noble-Phantasm reveal exception');
       clearDeductionRecord(s, ctx.controllerId);
       if (!Number.isSafeInteger(p.vp) || p.vp < 0) reject('invalid_state', 'Victory points must be a nonnegative safe integer');
       p.vp += Number(effect.vpGain);

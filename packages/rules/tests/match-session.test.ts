@@ -71,6 +71,37 @@ describe('MatchSession semi-auto runtime', () => {
     expect(session.projectToClientState('p1').logs.some((entry) => entry.type === 'workshop_deployment_mana_awarded')).toBe(true);
   });
 
+  it('keeps battlefield deployment triggers scoped while Sherlock alone receives the magic-workshop deployment residual', () => {
+    const session = createMatchSession({ seed: 1, humanPlayerId: 'p5', humanPlayerIds: ['p5'] });
+    const sherlock = session.pairings.find((pairing) => pairing.servant.id === 'servant.sherlock')!;
+    const ereshkigal = session.pairings.find((pairing) => pairing.servant.id === 'servant.ereshkigal')!;
+    expect(sherlock.playerId).toBe('p5');
+    expect(ereshkigal.playerId).toBe('p2');
+
+    for (const player of session.state.players) delete player.locationId;
+    session.state.round.activePhase = 'advance';
+    session.state.round.prioritySeat = sherlock.seat;
+    const activateSkill = (playerId: string, definitionId: string) => {
+      const card = session.state.cards.find((candidate) => candidate.ownerPlayerId === playerId && candidate.definitionId === definitionId)!;
+      card.zone = 'attack_area';
+      card.visibility = { scope: 'public' };
+      session.state.abilityRuntime!.cardState[card.instanceId] = { active: true, faceDown: false, playedRound: session.state.round.roundNumber };
+    };
+    activateSkill(sherlock.playerId, 'servant.sherlock.skill.sc-sherlock-2');
+    activateSkill(ereshkigal.playerId, 'servant.ereshkigal.skill.sc-ereshkigal-2');
+
+    const sherlockPlayer = session.state.players.find((player) => player.id === sherlock.playerId)!;
+    const ereshPlayer = session.state.players.find((player) => player.id === ereshkigal.playerId)!;
+    sherlockPlayer.mana = 4;
+    ereshPlayer.mana = 4;
+    const result = session.dispatchPlayerCommand(sherlock.playerId, { type: 'deploy_player', locationId: 'magic_workshop' });
+    expect(result.ok).toBe(true);
+    expect(session.state.players.find((player) => player.id === sherlock.playerId)!.mana).toBe(7); // +2 workshop reward +1 Sherlock residual
+    expect(session.state.players.find((player) => player.id === ereshkigal.playerId)!.mana).toBe(4); // no false battlefield deployment event
+    expect(session.state.abilityRuntime!.processedEvents.some((id) => id.includes('deploy-location'))).toBe(true);
+    expect(session.state.abilityRuntime!.processedEvents.some((id) => id.includes('deploy-battlefield') && id.includes(sherlock.playerId))).toBe(false);
+  });
+
   it('filters Kayneth deployment choices through Pride when a lower-VP lone battlefield is available', () => {
     const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
     const kayneth = session.pairings.find((pairing) => pairing.master.id === 'master.kayneth')!;

@@ -80,7 +80,7 @@ const supportedTypes = new Set([
   'remove_advantage_position', 'noop', 'fail_invariant', 'install_rule_override', 'provision_skill_cards',
   'adjust_selected_player_terrain', 'lend_source_card', 'engaged_opponent_attack_power_modifier',
   'linked_owner_combat_rule', 'servant_no_command_seals_rule',
-  'deduction_record_present', 'deduction_record_absent', 'deduction_record_matches_event_basic_attack',
+  'deduction_record_present', 'deduction_record_absent', 'deduction_record_matches_event_attack',
   'choose_deduction_record', 'resolve_deduction_record_on_event', 'expire_deduction_record',
   'reveal_selected_opponent_and_resolve_deduction', 'event_location_is', 'same_location_as_controller',
   'play_cost_formula',
@@ -91,7 +91,7 @@ const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_actio
   'after_battle_result_determined', 'after_controller_wins_battle', 'after_controller_gains_victory', 'when_formula_condition_met',
   // New triggers for 5 servants
   'after_controller_loses_battle', 'while_active', 'when_power_calculation_applied',
-  'after_battle_ended', 'after_player_deployed_to_battlefield', 'when_play_requirements_checked',
+  'after_battle_ended', 'after_player_deployed_to_battlefield', 'after_player_deployed_to_location', 'when_play_requirements_checked',
   // Master triggers
   'game_start', 'after_controller_enters_location', 'after_controller_loses_all_command_seals',
   'round_end', 'after_controller_first_loses_battle', 'after_battle_power_calculated',
@@ -115,7 +115,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'bind', 'expr', 'binding', 'field', 'valueType', 'ids', 'reason', 'message', 'enabled', 'regular', 'climax', 'threshold', 'phase', 'targetDefinitionIds',
   'add', 'multiply', 'until', 'hiddenAmount', 'revealedAmount', 'excludeLinkedOwnerRecipient', 'commandSealsAtMost', 'hideTrueName',
   'ignoreBattleLossEffects', 'shareMaximumCombatPower', 'closeIfOwnerAbsent', 'returnToOwnerAtBattleEnd', 'returnToOwnerHandOnOwnerLoss', 'ownerCommandSealsAtMost', 'basePowerMultiplier',
-  'locationId', 'vpGain', 'optionalNext', 'vpPenalty', 'defeatOnMatch', 'show',
+  'locationId', 'vpGain', 'optionalNext', 'vpPenalty', 'defeatOnMatch', 'show', 'allowNoblePhantasmRevealException',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -180,7 +180,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Exact event-location condition is supported only as a direct ability condition', abilityId);
         if (!isEventLocationIsCondition(n)) issue(path, 'Exact event-location condition requires only type and nonempty locationId', abilityId);
       }
-      if (['deduction_record_present', 'deduction_record_absent', 'deduction_record_matches_event_basic_attack'].includes(str(n.type))) {
+      if (['deduction_record_present', 'deduction_record_absent', 'deduction_record_matches_event_attack'].includes(str(n.type))) {
         if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Deduction-record condition is supported only as a direct ability condition', abilityId);
         if (!deductionRecordMechanicIsWellFormed(n)) issue(path, 'Unsupported deduction-record condition shape', abilityId);
       }

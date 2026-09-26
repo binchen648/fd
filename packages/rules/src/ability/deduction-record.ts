@@ -59,8 +59,9 @@ export function deductionRecordDefinitionsForOwner(pack: AbilityDefinitionPack, 
 }
 
 export function isDeductionRecordCondition(node: RuleNode): boolean {
-  return ['deduction_record_present', 'deduction_record_absent', 'deduction_record_matches_event_basic_attack'].includes(String(node.type ?? '')) &&
-    exactKeys(node, ['type']);
+  if (['deduction_record_present', 'deduction_record_absent'].includes(String(node.type ?? ''))) return exactKeys(node, ['type']);
+  return node.type === 'deduction_record_matches_event_attack' && node.allowNoblePhantasmRevealException === true &&
+    exactKeys(node, ['type', 'allowNoblePhantasmRevealException']);
 }
 
 export function isDeductionRecordEffect(node: RuleNode): boolean {
@@ -68,7 +69,8 @@ export function isDeductionRecordEffect(node: RuleNode): boolean {
     return typeof node.optional === 'boolean' && exactKeys(node, ['type', 'optional']);
   }
   if (node.type === 'resolve_deduction_record_on_event') {
-    return node.vpGain === 1 && node.optionalNext === true && exactKeys(node, ['type', 'vpGain', 'optionalNext']);
+    return node.vpGain === 1 && node.optionalNext === true && node.allowNoblePhantasmRevealException === true &&
+      exactKeys(node, ['type', 'vpGain', 'optionalNext', 'allowNoblePhantasmRevealException']);
   }
   if (node.type === 'expire_deduction_record') {
     return node.vpPenalty === 3 && exactKeys(node, ['type', 'vpPenalty']);
