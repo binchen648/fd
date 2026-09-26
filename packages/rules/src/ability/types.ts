@@ -221,6 +221,10 @@ export interface SafeEvent {
 export interface CardRuntimeState {
   active: boolean; faceDown: boolean; playedRound: number; paidManaOnPlay?: number;
   reversed?: boolean; attributeOverrides?: string[];
+  /** Instance-local base-power multiplier granted by a validated card action. */
+  basePowerMultiplier?: number;
+  /** Round whose battle-terminal event must remove this physical card from the game. */
+  removeAfterBattleRound?: number;
   /** Trusted battlefield binding for source cards explicitly placed onto a battlefield. */
   placedAtLocationId?: string;
 }

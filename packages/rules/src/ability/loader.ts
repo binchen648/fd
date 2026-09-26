@@ -8,6 +8,7 @@ import { isLinkedOwnerCombatRule, isServantNoCommandSealsRule } from './linked-o
 import { deductionRecordMechanicIsWellFormed, isDeductionRecordMarkerAbility, isEventLocationIsCondition, isSameLocationAsControllerConstraint } from './deduction-record';
 import { isActivePlayerCountMinusRoundPlayCostModifier } from './dynamic-play-cost';
 import { OTHER_PLAYER_ABILITY_EFFECT_IMMUNITY_RULE, isOtherPlayerAbilityEffectImmunityModifier } from './player-ability-immunity';
+import { isAcceptedConditionalRevealedAttributeMarkerAbility, isAcceptedRevealedBasicGrantMarkerAbility, isConditionalAttributeGrantEffect, isEventBattleOpponentAttackConstraint, isGainManaEqualSelectedPaidCostEffect, isGrantBasicDoubleRemoveEffect, isSourceRevealedCondition } from './revealed-card-mechanics';
 import { LOSE_VP_EQUAL_SOURCE_PLAY_COUNT_EFFECT, HIDE_SERVANT_TRUE_NAME_UNTIL_ROUND_END_EFFECT, REVEAL_HAND_ROUND_POWER_EFFECT, ownerSelfMechanicIsWellFormed } from './owner-self-mechanics';
 import {
   BATTLEFIELD_SOURCE_CARD_COST_AURA_TYPE, ANY_BATTLEFIELD_CONSTRAINT, PLACE_SOURCE_AT_BATTLEFIELD_EFFECT,
@@ -56,7 +57,7 @@ const supportedTypes = new Set([
   'create_card', 'pay_mana', 'move_source_card', 'integer', 'lte', 'gt', 'exists_target', 'played_this_round',
   'or', 'and', 'not', 'not_card_type', 'is_attack', 'has_attribute', 'not_source_card', 'has_card_id',
   'source_card_in_zone', 'controller_at_location_kind', 'reachable_along_arrows', 'can_adjust_mana',
-  'event_played_card_has_attribute', 'source_reversed', 'source_active', 'source_owned',
+  'event_played_card_has_attribute', 'source_reversed', 'source_active', 'source_owned', 'source_revealed',
   'event_player_won_combat', 'event_player_lost_combat',
   'event_player_is_controller', 'event_player_is_opponent', 'event_location_equals_controller',
   'controller_command_seals_at_least', 'controller_command_seals_at_most',
@@ -70,6 +71,8 @@ const supportedTypes = new Set([
   'create_status', 'terrain_multiplier', 'controller_seat_in_first_half',
   'reduce_opponents_power', 'move_card_from_zone_to_skill', 'controller_at_battlefield',
   'controller_servant_revealed', 'choice_is', 'hide_servant_true_name', 'close_source_card',
+  'grant_controller_basic_attack_double_base_remove_action_while_source_revealed', 'gain_attribute_if_owned_definition_revealed',
+  'gain_mana_equal_selected_card_paid_cost', 'controlled_by_event_battle_opponent_at_controller_location',
   'controller_at_battlefield_with_exactly_one_opponent',
   'reverse_situation_event_power_modifiers', 'reverse_situation_and_event_power_modifiers',
   'controller_played_highest_cost_noble_phantasm_in_battle_this_round',
@@ -106,7 +109,7 @@ const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_actio
   'after_battle_ended', 'after_player_deployed_to_battlefield', 'after_player_deployed_to_location', 'when_play_requirements_checked',
   // Master triggers
   'game_start', 'after_controller_enters_location', 'after_controller_loses_all_command_seals',
-  'round_end', 'after_controller_first_loses_battle', 'after_battle_power_calculated',
+  'round_end', 'round_start', 'after_controller_first_loses_battle', 'after_battle_power_calculated',
   'before_situation_or_event_resolves', 'when_movement_options_requested',
 ]);
 const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject', 'owner', 'player', 'target', 'amount', 'count',
@@ -128,6 +131,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'add', 'multiply', 'until', 'hiddenAmount', 'revealedAmount', 'excludeLinkedOwnerRecipient', 'commandSealsAtMost', 'hideTrueName',
   'ignoreBattleLossEffects', 'shareMaximumCombatPower', 'closeIfOwnerAbsent', 'returnToOwnerAtBattleEnd', 'returnToOwnerHandOnOwnerLoss', 'ownerCommandSealsAtMost', 'basePowerMultiplier',
   'locationId', 'vpGain', 'optionalNext', 'vpPenalty', 'defeatOnMatch', 'show', 'allowNoblePhantasmRevealException',
+  'manaCost', 'basePowerMultiplier', 'removeAfter',
   'zones', 'numerator', 'denominator', 'rounding', 'destination', 'defeatIfEmpty', 'minBasePower', 'perCard', 'sourcePlayers',
 ]);
 
@@ -257,6 +261,11 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
             (n.offset !== undefined && !Number.isSafeInteger(n.offset)))
           issue(path, 'current_round is supported only as an exact set_player_flag value', abilityId);
       }
+      if (n.type === 'source_revealed' && !isSourceRevealedCondition(n)) issue(path, 'source_revealed must use the exact no-argument condition shape', abilityId);
+      if (n.type === 'controlled_by_event_battle_opponent_at_controller_location' && !isEventBattleOpponentAttackConstraint(n)) issue(path, 'battle-opponent target constraint must use the exact shape', abilityId);
+      if (n.type === 'grant_controller_basic_attack_double_base_remove_action_while_source_revealed' && !isGrantBasicDoubleRemoveEffect(n)) issue(path, 'revealed-source basic-action grant must use the exact supported shape', abilityId);
+      if (n.type === 'gain_attribute_if_owned_definition_revealed' && !isConditionalAttributeGrantEffect(n)) issue(path, 'revealed-definition attribute grant must use the exact supported shape', abilityId);
+      if (n.type === 'gain_mana_equal_selected_card_paid_cost' && !isGainManaEqualSelectedPaidCostEffect(n)) issue(path, 'selected-card paid-cost mana effect must use the exact supported shape', abilityId);
       if (n.type === 'target_count_equals') {
         if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Exact target-count condition is supported only as a direct ability condition', abilityId);
         if (!Object.keys(n).every((key) => ['type', 'scope', 'count'].includes(key)) ||
@@ -471,6 +480,14 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'authoring') &&
           !isAcceptedOpponentCloseOneNonResidualAbility(a, 'authoring')) {
         issue('opponentCloseToOne.gateway', 'Unsupported opponent close-to-one interaction semantic shape', id);
+      }
+      if (candidateAbility.effects.some(isGrantBasicDoubleRemoveEffect) &&
+          !isAcceptedRevealedBasicGrantMarkerAbility(candidateAbility)) {
+        issue('revealedSource.gateway', 'Revealed-source basic-action marker requires the exact passive whole-ability semantic', id);
+      }
+      if (candidateAbility.effects.some(isConditionalAttributeGrantEffect) &&
+          !isAcceptedConditionalRevealedAttributeMarkerAbility(candidateAbility)) {
+        issue('revealedSource.gateway', 'Conditional revealed-attribute marker requires the exact passive whole-ability semantic', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

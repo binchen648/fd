@@ -5215,3 +5215,33 @@ Allowed verdicts:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+
+## TASK P3-B-SIGURD-REVEALED-SOURCE-CAPABILITY
+
+Owner: Codex B
+Status: `IMPLEMENTATION_CANDIDATE_READY_FOR_FRESH_R`
+Base: `fe37f27e17007af77573ab99e02b40870d62d532`
+Classification: bounded zero-credit capability/readiness prerequisite for current owner `servant.sigurd`
+
+Bounded scope:
+- generic physical-card revealed state, distinct from merely active state;
+- exact source-revealed round-start condition/trigger support;
+- exact generic revealed-source grant of a controller-basic card-local 2-mana / double-base / after-battle-remove Action;
+- exact generic conditional attribute grant keyed by another controller-owned physical definition being revealed;
+- exact generic after-battle selection/refund seam for one current-round opponent attack from the controller's fight, using trusted paid play cost;
+- bounded authenticated restore state for the granted physical-card transform/removal marker.
+
+Hard scope boundary:
+- zero consumer authoring and zero migration credit in this task;
+- no Sigurd/card-id/card-name/printed-text/Chinese-text identity routing in production runtime;
+- exact-shape fail-closed loader/runtime validation plus focused positive/negative tests;
+- shared-module regressions are in scope only where touched by this bounded seam;
+- ACCEPTED must A-sync/rescan and return to `P3-S-OWNER-SIGURD-COMPLETE-MIGRATION`; it cannot advance to the next owner.
+
+Evidence: `docs/reports/2026-09-27-p3-b-sigurd-revealed-source-capability-result.md`.
+
+R2 revision closure: derived revealed-source marker families now require strict accepted passive whole-ability semantics in both loader and runtime; wrong-kind/trigger and false-condition enclosing abilities fail closed. Focused capability `7/7 PASS`; affected serial chain `7 files / 161 tests PASS`.
+
+Formal accounting remains `129/944`; this task is permanently zero-credit.
+
+R1 predecessor `986b04be707911b8f741ffc4f7bf33da8f59fe50` -> `IMPLEMENTATION_NEEDS_REVISION`; canonical relay: `https://github.com/binchen648/fd/pull/461#issuecomment-5848501887`. Successor revision closes disabled/unsupported-derived capability leakage and requires canonical battle-terminal provenance for after-battle removal; fresh R is required on the successor exact Candidate.
