@@ -100,3 +100,27 @@ A supplementary broad `npm run test:ci` was also run. It is not currently green 
 ## Review boundary
 
 This report freezes implementation evidence only. It does not self-award migration credit. Fresh independent R must review the exact pushed Candidate. Until exact-Candidate `MIGRATION_ACCEPTED` and subsequent A-sync/accounting, strict formal accounting remains `126/944`.
+
+
+## Fresh R1 revision closure
+
+Canonical Coordinator bounded relay for the completed fresh R1 attempt: https://github.com/binchen648/fd/pull/460#issuecomment-5847738666
+
+R1 verdict on predecessor `def3c80f889f66c4fc942a83fe264449a138d441`: `MIGRATION_NEEDS_REVISION`. Both blocking findings are closed in the successor revision carried by this branch:
+
+- Combat-total bonus: `player.combatTotalPower` modifiers are excluded from per-card `calculateCardPower()` and consumed exactly once by `deriveBattleParticipantsFromState()` through the generic player-total adjustment. Focused regression now uses two simultaneous active authored 9-power cards plus three qualifying hand cards and proves 18 -> 24, not 30.
+- Temporary concealment: the shared true-name reveal path now honors the active generic temporary-concealment marker, so a same-round true-name release cannot reveal the servant early. Focused regression proves revealed baseline -> cloak hidden -> same-round Armor true-name release remains hidden -> round-end restores the revealed baseline.
+
+Successor validation after both fixes:
+
+- Siegfried focused regression: `9/9 PASS`.
+- Affected serial run: `7 files / 165 tests PASS` (combat resolver, Siegfried regression, playtest pack loader, authoring interpreter, compile-playtest-content-pack, executable-card-pack, MatchSession).
+- A prior parallel affected run had one compile CLI test exceed the 5s per-test timeout under contention; the same test passed `4/4` isolated and the full affected set passed `165/165` serially.
+- `npm run typecheck`: PASS.
+- `npm run content:validate`: PASS — `7 masters, 11 servants, 20 events, 0 blocking issues`.
+- `npm run content:compile`: PASS — same summary.
+- `npm run verify:generated-content`: PASS with the same deterministic hashes recorded above.
+- `git diff --check`: PASS.
+- Production identity-routing audit under `packages/rules/src`: Siegfried identity/card-name/Chinese-text/SkillLib hits remain zero.
+
+No migration credit is claimed by this report; exact successor Candidate must receive fresh independent R and subsequent A-sync/accounting.

@@ -136,6 +136,21 @@ describe('P3 owner-complete Siegfried migration', () => {
     expect(state.abilityRuntime!.revealedServants).not.toContain('p1');
   });
 
+  it('keeps temporary concealment active through same-round true-name release and restores the revealed baseline at round end', () => {
+    const { state }=setup();
+    const cloak=addCard(state,skill(1),'p1','attack_area','p1',true);
+    const armor=addCard(state,skill(2));
+    state.abilityRuntime!.revealedServants.push('p1');
+    state.round.activePhase='action'; state.round.prioritySeat=1;
+    expect(dispatchAbilityCommand(state,'p1',{type:'activate_ability',cardInstanceId:cloak.instanceId,abilityId:'sc-siegfried-1.invisibility-cloak'}).ok).toBe(true);
+    expect(state.abilityRuntime!.revealedServants).not.toContain('p1');
+    expect(dispatchAbilityCommand(state,'p1',{type:'play_card',cardInstanceId:armor.instanceId}).ok).toBe(true);
+    expect(state.abilityRuntime!.revealedServants).not.toContain('p1');
+    expect(projectAbilityState(state,'p2').players.find((p)=>p.id==='p1')?.servantPackage).toBeUndefined();
+    processAbilityEvent(state,{id:'round-end:siegfried-concealment-lock',type:'round_end'});
+    expect(state.abilityRuntime!.revealedServants).toContain('p1');
+  });
+
   it('reveals Armor of Fafnir on play and closes it only when an opponent moves onto the engaged battlefield', () => {
     const { state }=setup(); const armor=addCard(state,skill(2)); state.round.activePhase='action'; state.round.prioritySeat=1;
     expect(dispatchAbilityCommand(state,'p1',{type:'play_card',cardInstanceId:armor.instanceId}).ok).toBe(true);
@@ -149,18 +164,18 @@ describe('P3 owner-complete Siegfried migration', () => {
     expect(state.abilityRuntime!.cardState[armor.instanceId]!.active).toBe(false);
   });
 
-  it('reveals the current hand for one revision and grants +2 per base-power-4 card capped at +6 for this round', () => {
-    const { state }=setup(); const sword=addCard(state,skill(3)); const h1=addHandCard(state,'fixture.power4',4); const h2=addHandCard(state,'fixture.power5',5); const h3=addHandCard(state,'fixture.power6',6); addHandCard(state,'fixture.power3',3);
+  it('reveals the current hand for one revision and grants the capped bonus once to total power even with multiple active authored cards', () => {
+    const { state }=setup(); const armor=addCard(state,skill(2),'p1','attack_area','p1',true); const sword=addCard(state,skill(3)); const h1=addHandCard(state,'fixture.power4',4); const h2=addHandCard(state,'fixture.power5',5); const h3=addHandCard(state,'fixture.power6',6); addHandCard(state,'fixture.power3',3);
     state.round.activePhase='action'; state.round.prioritySeat=1;
     expect(dispatchAbilityCommand(state,'p1',{type:'play_card',cardInstanceId:sword.instanceId}).ok).toBe(true);
     expect(state.abilityRuntime!.revealedServants).toContain('p1');
-    expect(deriveBattleParticipantsFromState(state,'shinto').find((entry)=>entry.playerId==='p1')!.totalPower).toBe(9);
+    expect(deriveBattleParticipantsFromState(state,'shinto').find((entry)=>entry.playerId==='p1')!.totalPower).toBe(18);
     expect(dispatchAbilityCommand(state,'p1',{type:'activate_ability',cardInstanceId:sword.instanceId,abilityId:'sc-siegfried-3.reveal-hand-power'}).ok).toBe(true);
     expect(playerCombatTotalPowerAdjustment(state,'p1')).toBe(6);
     const opponentView=projectAbilityState(state,'p2');
     for(const card of [h1,h2,h3]) expect(opponentView.cards.some((entry)=>entry.instanceId===card.instanceId&&entry.definitionId===card.definitionId)).toBe(true);
     const participant=deriveBattleParticipantsFromState(state,'shinto').find((entry)=>entry.playerId==='p1')!;
-    expect(participant.totalPower).toBe(15);
+    expect(participant.totalPower).toBe(24);
     processAbilityEvent(state,{id:'revision-after-hand-reveal',type:'fixture_noop'});
     const nextView=projectAbilityState(state,'p2');
     expect(nextView.cards.some((entry)=>entry.ownerPlayerId==='p1'&&entry.zone==='hand')).toBe(false);

@@ -404,7 +404,7 @@ export function deriveBattleParticipantsFromState(
       }
       const participant = {
         playerId: player.id,
-        totalPower: definitions.filter(entry => !state.abilityRuntime?.pack.cards[entry.id]).reduce((sum, entry) => sum + (entry.basePower ?? 0), 0) + authoredPower + persistentPowerAdjustment,
+        totalPower: definitions.filter(entry => !state.abilityRuntime?.pack.cards[entry.id]).reduce((sum, entry) => sum + (entry.basePower ?? 0), 0) + authoredPower + persistentPowerAdjustment + playerCombatTotalPowerAdjustment(state, player.id),
         attackTags: definitions.flatMap((entry) => entry.tags).concat(authoredAttacks.flatMap(card =>
           getEffectiveCardAttributes(state, card.instanceId))),
         externalSkillEffects,

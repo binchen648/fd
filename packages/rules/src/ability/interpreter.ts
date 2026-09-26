@@ -404,7 +404,7 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
   const modifiers = liveOngoing(s).flatMap(o => o.ruleModifiers).sort((a, b) =>
     Number(node(a.definition.priority).tier === 'explicit_exception') - Number(node(b.definition.priority).tier === 'explicit_exception'));
   for (const modifier of modifiers) {
-    const m = modifier.definition; const scope = node(m.scope); if (m.rule === 'effect_prevention' || m.rule === 'card_close') continue;
+    const m = modifier.definition; const scope = node(m.scope); if (m.rule === 'effect_prevention' || m.rule === 'card_close' || m.rule === PLAYER_COMBAT_TOTAL_POWER_RULE) continue;
     if (!modifierControllerApplies(s, modifier.controllerId, source, scope)) continue;
      if (playerIgnoresAbilityFromController(s, source.controllerPlayerId, modifier.controllerId)) continue;
     if (scope.object === 'source_card' && modifier.sourceCardId !== sourceId) continue;
@@ -1368,7 +1368,10 @@ function cleanupOngoing(s: GameState): void {
   r.ongoingEffects = liveOngoing(s);
 }
 function reveal(s: GameState, controllerId: string): void {
-  const r = runtime(s); if (r.revealedServants.includes(controllerId) || servantRevealForbiddenByNoCommandSeals(s, controllerId)) return;
+  const r = runtime(s);
+  const flags = r.structuredPlayerFlagsByPlayer?.[controllerId];
+  if (r.revealedServants.includes(controllerId) || servantRevealForbiddenByNoCommandSeals(s, controllerId) ||
+      flags?.__fd_temporary_servant_concealment_active === true) return;
   r.revealedServants.push(controllerId); r.events.push({ type: 'servant_package_revealed', playerId: controllerId });
 }
 function checkFormulaTriggers(s: GameState): void {
