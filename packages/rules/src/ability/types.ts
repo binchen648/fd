@@ -237,10 +237,12 @@ export interface AbilityRuntime {
   battleDefeatRoundByPlayer?: Record<PlayerId, number>;
   /** Immutable server-owned opening deck cardinality, captured before the first-round draw. */
   startingDeckSizeByPlayer?: Record<PlayerId, number>;
-  /** Total physical plays by card instance, including plays before a dynamic per-game limit is granted. */
+  /** Total physical plays by card instance. */
   cardPlayCountByInstance?: Record<string, number>;
   /** Physical cards that acquired a one-play-per-game limit from a source-grounded effect. */
   grantedPerGamePlayLimitCardIds?: string[];
+  /** Play-count snapshot captured when a physical card first acquires the dynamic per-game limit. */
+  grantedPerGamePlayLimitBaselineByCardId?: Record<string, number>;
   ongoingEffects: OngoingEffect[]; lifecycleTransitions?: LifecycleTransition[]; responseWindows: ResponseWindow[]; pendingDecision?: PendingDecision;
   pendingDelayedActivations?: PendingDelayedActivation[];
   /** Server-owned pre-scoring battle-local defeat requests staged by the exact Presence Concealment response. */

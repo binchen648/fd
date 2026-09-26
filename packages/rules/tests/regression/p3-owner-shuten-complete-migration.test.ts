@@ -64,11 +64,22 @@ describe('P3 owner-complete Shuten migration', () => {
     expect([1,2,3].map((n) => pack.cards[skill(n)]?.name)).toEqual(['放荡之宴','神便鬼毒酒','百花缭乱·我爱你']);
   });
 
-  it('fails closed when a battlefield-source mechanic is widened', () => {
-    const raw = rawArchive();
-    raw.cards[0].abilities[0].effects[0].extra = 'near-match';
-    const pack = loadAuthoringJson(raw);
-    expect(pack.report.some((entry) => entry.cardId === skill(1) && entry.abilityId === 'sc-shuten-1.place-banquet' && entry.status === 'unsupported')).toBe(true);
+  it('fails closed on widened shapes for every newly introduced Shuten battlefield-source primitive', () => {
+    const cases: Array<{ label: string; abilityId: string; mutate: (raw: any) => void }> = [
+      { label: 'battlefield target constraint', abilityId: 'sc-shuten-1.place-banquet', mutate: (raw) => { raw.cards[0].abilities[0].targets[0].constraints[0].extra = 'near-match'; } },
+      { label: 'battlefield placement', abilityId: 'sc-shuten-1.place-banquet', mutate: (raw) => { raw.cards[0].abilities[0].effects[0].extra = 'near-match'; } },
+      { label: 'battlefield cost aura', abilityId: 'sc-shuten-1.cost-aura', mutate: (raw) => { raw.cards[0].abilities[1].ruleModifiers[0].extra = 'near-match'; } },
+      { label: 'battlefield terminal VP reward', abilityId: 'sc-shuten-1.battle-end-vp', mutate: (raw) => { raw.cards[0].abilities[2].effects[0].extra = 'near-match'; } },
+      { label: 'round-end source return', abilityId: 'sc-shuten-1.round-cleanup', mutate: (raw) => { raw.cards[0].abilities[3].effects[0].extra = 'near-match'; } },
+      { label: 'battle-start physical OPG grant', abilityId: 'sc-shuten-2.delirium', mutate: (raw) => { raw.cards[1].abilities[2].effects[0].extra = 'near-match'; } },
+      { label: 'starting-deck fraction removal', abilityId: 'sc-shuten-3.bone-collector', mutate: (raw) => { raw.cards[2].abilities[1].effects[0].extra = 'near-match'; } },
+    ];
+    for (const entry of cases) {
+      const raw = rawArchive();
+      entry.mutate(raw);
+      const pack = loadAuthoringJson(raw);
+      expect(pack.report.some((issue) => issue.abilityId === entry.abilityId && issue.status === 'unsupported'), entry.label).toBe(true);
+    }
   });
 
   it('places Banquet at one battlefield, taxes only other players there, rewards occupants, then returns at round end', () => {
@@ -105,6 +116,24 @@ describe('P3 owner-complete Shuten migration', () => {
     expect(state.abilityRuntime!.cardState[banquet.instanceId]!.placedAtLocationId).toBeUndefined();
   });
 
+  it('returns Banquet and clears its aura at round end even when Shuten was eliminated by battle scoring', () => {
+    const { state } = setup();
+    const banquet = addCard(state, skill(1));
+    const taxed = addSupport(state, 'support.shuten-eliminated-cleanup', 'p2', 'hand', 1);
+    state.round.activePhase = 'preparation'; state.round.prioritySeat = 1;
+    expect(dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: banquet.instanceId, abilityId: 'sc-shuten-1.place-banquet' }).ok).toBe(true);
+    const decision = state.abilityRuntime!.pendingDecision!;
+    expect(dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: decision.id, selectedIds: ['shinto'] }).ok).toBe(true);
+    expect(effectiveCardPlayCost(state, 'p2', taxed.instanceId)).toBe(3);
+    state.players[0]!.status = 'eliminated';
+    // The aura itself also fails closed once its source controller is no longer active.
+    expect(effectiveCardPlayCost(state, 'p2', taxed.instanceId)).toBe(1);
+    processAbilityEvent(state, { id: 'trusted:round-end:eliminated-shuten', type: 'round_end', playerId: 'p1' });
+    expect(state.cards.find((card) => card.instanceId === banquet.instanceId)!.zone).toBe('skill');
+    expect(state.abilityRuntime!.cardState[banquet.instanceId]!.active).toBe(false);
+    expect(state.abilityRuntime!.cardState[banquet.instanceId]!.placedAtLocationId).toBeUndefined();
+  });
+
   it('plays Noxious Sake only as an additional low-mana attack and grants one-play-per-game to every active basic attack in the fight', () => {
     const { state } = setup();
     const sake = addCard(state, skill(2), 'p1', 'skill');
@@ -118,7 +147,17 @@ describe('P3 owner-complete Shuten migration', () => {
     expect(state.cards.find((card) => card.instanceId === sake.instanceId)!.zone).toBe('attack_area');
     advanceAbilityPhase(state, 'battle');
     expect(state.abilityRuntime!.grantedPerGamePlayLimitCardIds).toEqual(expect.arrayContaining([ownBasic.instanceId, opposingBasic.instanceId]));
-    ownBasic.zone = 'hand'; ownBasic.visibility = { scope: 'owner_only', ownerPlayerId: 'p1' }; state.abilityRuntime!.cardState[ownBasic.instanceId]!.active = false;
+    expect(state.abilityRuntime!.grantedPerGamePlayLimitBaselineByCardId?.[ownBasic.instanceId]).toBe(1);
+    let liveOwnBasic = state.cards.find((card) => card.instanceId === ownBasic.instanceId)!;
+    liveOwnBasic.zone = 'hand'; liveOwnBasic.visibility = { scope: 'owner_only', ownerPlayerId: 'p1' }; state.abilityRuntime!.cardState[ownBasic.instanceId]!.active = false;
+    // A play before the limit was granted does not retroactively consume the newly acquired OPG use.
+    state.round.roundNumber += 1; state.round.activePhase = 'action'; state.round.prioritySeat = 1;
+    state.abilityRuntime!.playCounters = { round: state.round.roundNumber, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
+    expect(getLegalActions(state, 'p1').some((action) => action.type === 'play_card' && action.cardInstanceId === ownBasic.instanceId)).toBe(true);
+    expect(dispatchAbilityCommand(state, 'p1', { type: 'play_card', cardInstanceId: ownBasic.instanceId }).ok).toBe(true);
+    expect(state.abilityRuntime!.cardPlayCountByInstance?.[ownBasic.instanceId]).toBe(2);
+    liveOwnBasic = state.cards.find((card) => card.instanceId === ownBasic.instanceId)!;
+    liveOwnBasic.zone = 'hand'; liveOwnBasic.visibility = { scope: 'owner_only', ownerPlayerId: 'p1' }; state.abilityRuntime!.cardState[ownBasic.instanceId]!.active = false;
     expect(getLegalActions(state, 'p1').some((action) => action.type === 'play_card' && action.cardInstanceId === ownBasic.instanceId)).toBe(false);
   });
 
@@ -152,6 +191,7 @@ describe('P3 owner-complete Shuten migration', () => {
     expect(session.dispatchPlayerAction(shuten.playerId, { type: 'choose_target', decisionId: decision.id, selectedIds: ['shinto'] }).ok).toBe(true);
     session.state.abilityRuntime!.cardPlayCountByInstance![source.instanceId] = 1;
     session.state.abilityRuntime!.grantedPerGamePlayLimitCardIds!.push(source.instanceId);
+    session.state.abilityRuntime!.grantedPerGamePlayLimitBaselineByCardId![source.instanceId] = 1;
     expect(session.state.abilityRuntime!.startingDeckSizeByPlayer?.[shuten.playerId]).toBe(12);
     const durable = session.serializeSession();
     const restored = restoreMatchSession(durable);
@@ -159,9 +199,13 @@ describe('P3 owner-complete Shuten migration', () => {
     expect(restored.state.abilityRuntime!.startingDeckSizeByPlayer?.[shuten.playerId]).toBe(12);
     expect(restored.state.abilityRuntime!.cardPlayCountByInstance?.[source.instanceId]).toBe(1);
     expect(restored.state.abilityRuntime!.grantedPerGamePlayLimitCardIds).toContain(source.instanceId);
+    expect(restored.state.abilityRuntime!.grantedPerGamePlayLimitBaselineByCardId?.[source.instanceId]).toBe(1);
     const corrupted: any = structuredClone(durable);
     corrupted.state.abilityRuntime.cardState[source.instanceId].placedAtLocationId = 'forged-location';
     expect(() => restoreMatchSession(corrupted)).toThrow('Invalid MatchSession state container');
+    const forgedBaseline: any = structuredClone(durable);
+    forgedBaseline.state.abilityRuntime.grantedPerGamePlayLimitBaselineByCardId['p1-forged-card'] = 0;
+    expect(() => restoreMatchSession(forgedBaseline)).toThrow('Invalid MatchSession state container');
   });
 
   it('Bone Collector defeats when the post-removal deck is empty while still using the original starting cardinality', () => {

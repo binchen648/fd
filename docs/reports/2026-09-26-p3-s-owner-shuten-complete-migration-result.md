@@ -41,8 +41,8 @@ No production runtime route under `packages/rules/src` contains Shuten ids, Shut
 - The card is an exact required-additional-play card and cannot be played alone in a regular batch.
 - The explicit printed exception bypasses the ordinary 8-mana skill-zone gate; the card still pays its printed cost.
 - At battle start, while the card is active, every active face-up basic attack in the controller's current fight acquires a physical-card once-per-game play limit.
-- Server-owned per-instance play counts include plays that happened before the dynamic limit was granted, so an already-used physical card cannot evade the newly acquired limit.
-- Dynamic limit authority survives MatchSession serialization/restore.
+- The dynamic once-per-game limit snapshots the physical card play count at the moment the limit is first granted. Plays from before the grant do **not** retroactively consume the newly acquired use; exactly one post-grant play is allowed, and the following post-grant attempt is rejected.
+- Dynamic limit authority and its trusted grant baseline survive MatchSession serialization/restore; restored baseline keys must exactly match the granted physical-card set.
 
 ### sc-shuten-3 — 百花缭乱·我爱你
 
@@ -57,8 +57,9 @@ No production runtime route under `packages/rules/src` contains Shuten ids, Shut
 
 - Added identity-free `battlefield-source-mechanics.ts` exact classifiers for battlefield placement, location-bound cost aura, combat basic-card once-per-game grant, location reward, round cleanup, and starting-deck fraction removal.
 - Extended loader support only for those exact mechanic shapes; widened near-matches report `unsupported`.
-- Added trusted runtime state for battlefield source binding, immutable starting deck sizes, physical play counts, and dynamically granted per-game limits.
-- MatchSession restore validation authenticates the new map/list/card references and rejects forged bindings.
+- Added trusted runtime state for battlefield source binding, immutable starting deck sizes, physical play counts, dynamically granted per-game limits, and the non-retroactive per-card grant baseline.
+- MatchSession restore validation authenticates the new map/list/card references, requires the granted-limit baseline keyset to match the granted physical-card set, and rejects forged bindings.
+- Round-end battlefield-source cleanup is allowed to settle its exact source even if its controller was eliminated by battle scoring; the live cost aura separately requires an active source controller, so an eliminated owner cannot leave a stale tax behind.
 - Added Shuten authoring archive and playtest pack entry; compiled roster becomes 10 servants while keeping every starting deck at 12 cards.
 - Existing seed-dependent MatchSession regressions were moved to a deterministic seed that still includes their intended servants after the roster expansion; the long 11-round smoke receives an explicit 10s timeout because the expanded production roster pushed that pre-existing smoke to the old 5s boundary.
 
@@ -67,8 +68,8 @@ No production runtime route under `packages/rules/src` contains Shuten ids, Shut
 Actual final validation on the candidate worktree before commit:
 
 - `tools\verify-toolchain.cmd` — `FD_TOOLCHAIN_OK`.
-- Focused Shuten regression — `7/7 PASS`.
-- Affected green chain (Shuten + executable pack + MatchSession + authoring interpreter + pack loader + compile CLI) — `6 files / 153 tests PASS`.
+- Focused Shuten regression — `8/8 PASS`.
+- Affected green chain (Shuten + executable pack + MatchSession + authoring interpreter + pack loader + compile CLI) — `6 files / 154 tests PASS`.
 - Product-content non-asset cases — `3 PASS / 1 deliberately excluded source-asset existence case`.
 - `npm run typecheck` — PASS.
 - `npm run content:validate` — PASS: `7 masters, 10 servants, 20 events, 0 blocking issues`.
@@ -79,6 +80,30 @@ Actual final validation on the candidate worktree before commit:
   - evidence report SHA-256: `1ee2d108bdacee00c66bd15d9102632d09a90a084440c7b01d19cd9023d0c39b`
 - `git diff --check` — PASS.
 - Production identity-routing audit under `packages/rules/src` for `servant.shuten`, `sc-shuten`, `酒吞`, `core.shuten`, `SkillLib` — CLEAN.
+
+## Fresh-R R1 revision closure
+
+Fresh independent R on predecessor Candidate `1d7c58b0e9e4a368967798f5a894ed0400e0e078` returned `MIGRATION_NEEDS_REVISION`. Canonical Coordinator bounded relay of that same completed review attempt after Reviewer GitHub-write 403:
+
+- `https://github.com/binchen648/fd/pull/459#issuecomment-5846980781`
+
+All three exact-scope findings are closed in the successor represented by this report:
+
+1. **Banquet round-end cleanup after owner elimination** — trigger collection admits only the exact generic battlefield-source round cleanup on `round_end` for an eliminated controller; unrelated eliminated-player triggers remain excluded. The battlefield cost aura also requires the source controller to remain active. Focused regression places Banquet, verifies the tax, eliminates Shuten, verifies the tax disappears immediately, then verifies round-end returns the source to skill and clears its battlefield binding.
+2. **Noxious Sake non-retroactive OPG grant** — the runtime snapshots each physical card's play count when the dynamic OPG limit is first granted. Pre-grant plays therefore do not consume the new use. Focused regression proves a card played before the grant receives one post-grant play and then rejects the next attempt. MatchSession restore persists/authenticates the exact grant baseline.
+3. **Fail-closed coverage for every new Shuten primitive** — the focused suite now widens each newly introduced battlefield-source capability independently and requires loader rejection: battlefield target constraint, source placement, cost aura, battle-terminal VP reward, round-end source return, battle-start physical OPG grant, and starting-deck-fraction removal.
+
+Revision validation on the successor worktree:
+
+- Shuten focused: `8/8 PASS`.
+- Shuten + MatchSession recheck: `2 files / 41 tests PASS`.
+- Full affected chain: `6 files / 154 tests PASS`.
+- `npm run typecheck`: PASS.
+- `npm run content:validate`: PASS — `7 masters, 10 servants, 20 events, 0 blocking issues`.
+- `npm run content:compile`: PASS — same summary.
+- `npm run verify:generated-content`: PASS; generated hashes remain unchanged.
+- `git diff --check`: PASS.
+- Production identity-routing audit remains CLEAN.
 
 ## Environment-only source-asset baseline
 

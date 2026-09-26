@@ -220,7 +220,7 @@ export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPa
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
     cardState: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {},
     startingDeckSizeByPlayer: Object.fromEntries(s.players.map((candidate) => [candidate.id, s.cards.filter((entry) => entry.ownerPlayerId === candidate.id && entry.zone === 'deck').length])),
-    cardPlayCountByInstance: {}, grantedPerGamePlayLimitCardIds: [],
+    cardPlayCountByInstance: {}, grantedPerGamePlayLimitCardIds: [], grantedPerGamePlayLimitBaselineByCardId: {},
     ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
     events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [], roomMode: options.roomMode ?? 'standard',
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
@@ -991,6 +991,8 @@ function battlefieldSourceCardPlayCostIncrease(s: GameState, playerId: string, s
   let total = 0;
   for (const source of s.cards) {
     if (source.controllerPlayerId === playerId || source.zone !== 'field') continue;
+    const sourceController = s.players.find((candidate) => candidate.id === source.controllerPlayerId);
+    if (!sourceController || sourceController.status !== 'active') continue;
     const sourceState = runtime(s).cardState[source.instanceId];
     if (!sourceState?.active || sourceState.faceDown || sourceState.placedAtLocationId !== targetPlayer.locationId) continue;
     const sourceDefinition = runtime(s).pack.cards[source.definitionId];
@@ -1030,7 +1032,11 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   if (forbidRules.some(rule => !hasPlayRuleException(d, rule))) return 'play_forbidden';
   const limit = perGamePlayLimit(d);
   if (limit && (runtime(s).abilityUsage[`play:${sourceId}:${limit.key}`] ?? 0) >= limit.uses) return 'card_limit_reached';
-  if ((runtime(s).grantedPerGamePlayLimitCardIds ?? []).includes(sourceId) && (runtime(s).cardPlayCountByInstance?.[sourceId] ?? 0) >= 1) return 'card_limit_reached';
+  if ((runtime(s).grantedPerGamePlayLimitCardIds ?? []).includes(sourceId)) {
+    const baseline = runtime(s).grantedPerGamePlayLimitBaselineByCardId?.[sourceId];
+    if (!Number.isSafeInteger(baseline) || Number(baseline) < 0) return 'invalid_state';
+    if ((runtime(s).cardPlayCountByInstance?.[sourceId] ?? 0) - Number(baseline) >= 1) return 'card_limit_reached';
+  }
   if (!ignoreAttackLimit && attackPlayLimitReached(s, p, sourceId, ignoreStagedAttackLimit)) return 'attack_play_limit_reached';
   const requirements = d.playRequirements.concat(nodes(d.cardFace.requirements)).filter(r =>
     str(r.type) && !(str(r.type) === 'skill_zone_mana_at_least' && hasPlayRuleException(d, 'skill_zone_mana_at_least')));
@@ -1117,8 +1123,10 @@ function battleEventControllerEligibleAfterScoring(s: GameState, event: AbilityE
 export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): TriggeredAbility[] {
   const found: TriggeredAbility[] = [];
   for (const c of s.cards) {
-    if (!battleEventControllerEligibleAfterScoring(s, event, c.controllerPlayerId)) continue;
+    const controllerEligible = battleEventControllerEligibleAfterScoring(s, event, c.controllerPlayerId);
     for (const a of definition(s, c.instanceId)?.abilities ?? []) {
+      const eliminatedRoundCleanup = event.type === 'round_end' && isBattlefieldSourceRoundCleanupAbility(a);
+      if (!controllerEligible && !eliminatedRoundCleanup) continue;
       const matches = a.activation.trigger === event.type || (!a.activation.trigger && a.kind === 'phase_action' && a.activation.opens === event.type);
       if (event.type === 'while_active') {
         const transformed = runtime(s).transformedReturnSilenceSourceCardIds?.includes(c.instanceId) === true;
@@ -1446,6 +1454,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       }
       if (!p.locationId || !isBattlefield(s, p.locationId)) reject('invalid_state', 'Basic-attack limit grant requires the controller to be at a battlefield');
       const granted = r.grantedPerGamePlayLimitCardIds ??= [];
+      const baselines = r.grantedPerGamePlayLimitBaselineByCardId ??= {};
       for (const attack of s.cards.filter((candidate) => {
         if (candidate.zone !== 'attack_area') return false;
         const attackController = s.players.find((entry) => entry.id === candidate.controllerPlayerId);
@@ -1454,7 +1463,10 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
         const d = r.pack.cards[candidate.definitionId];
         return state?.active === true && state.faceDown !== true && d?.cardType === 'basic_attack';
       })) {
-        if (!granted.includes(attack.instanceId)) granted.push(attack.instanceId);
+        if (!granted.includes(attack.instanceId)) {
+          granted.push(attack.instanceId);
+          baselines[attack.instanceId] = r.cardPlayCountByInstance?.[attack.instanceId] ?? 0;
+        }
       }
       break;
     }
