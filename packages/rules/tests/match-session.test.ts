@@ -502,17 +502,18 @@ describe('MatchSession semi-auto runtime', () => {
     controller.startRound(1);
     session.state.round.activePhase = 'battle';
     session.state.eventPlacements = [];
-    session.state.players.find((player) => player.id === 'p6')!.locationId = 'miyama_town';
-    for (const card of session.state.cards.filter((card) => card.ownerPlayerId === 'p6' && ['servant.kintoki.skill.sc-kintoki-1', 'servant.kintoki.skill.sc-kintoki-2'].includes(card.definitionId))) {
+    const kintoki = session.pairings.find((pairing) => pairing.servant.id === 'servant.kintoki')!;
+    session.state.players.find((player) => player.id === kintoki.playerId)!.locationId = 'miyama_town';
+    for (const card of session.state.cards.filter((card) => card.ownerPlayerId === kintoki.playerId && ['servant.kintoki.skill.sc-kintoki-1', 'servant.kintoki.skill.sc-kintoki-2'].includes(card.definitionId))) {
       card.zone = 'field';
       card.visibility = { scope: 'public' };
       session.state.abilityRuntime!.cardState[card.instanceId] = { active: true, faceDown: false, playedRound: 1 };
     }
 
     const result = resolveBattlefield(session.state, { battlefieldId: 'miyama_town', revealHiddenEvents: true });
-    const p6 = result.nextState.battleResults.at(-1)?.participantBreakdowns.find((entry) => entry.playerId === 'p6');
+    const kintokiBreakdown = result.nextState.battleResults.at(-1)?.participantBreakdowns.find((entry) => entry.playerId === kintoki.playerId);
 
-    expect(p6?.modifiers).toContainEqual(expect.objectContaining({
+    expect(kintokiBreakdown?.modifiers).toContainEqual(expect.objectContaining({
       source: 'situation',
       label: 'situation.longing_for_future.same_attribute',
       value: 3,
@@ -520,16 +521,17 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('round-trips the production Artoria Caster looked-card continuation and rejects modified continuation state', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p5', humanPlayerIds: ['p5'] });
+    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
+    const artoria = session.pairings.find((pairing) => pairing.servant.id === 'servant.artoriac')!;
     advanceAbilityPhase(session.state, 'action', session.state.round.roundNumber);
-    session.state.round.prioritySeat = 5;
-    session.state.players.find((player) => player.id === 'p5')!.mana = 12;
+    session.state.round.prioritySeat = artoria.seat;
+    session.state.players.find((player) => player.id === artoria.playerId)!.mana = 12;
     const staff = session.state.cards.find((card) =>
-      card.ownerPlayerId === 'p5' && card.definitionId === 'servant.artoriac.skill.sc-artoriac-2')!;
+      card.ownerPlayerId === artoria.playerId && card.definitionId === 'servant.artoriac.skill.sc-artoriac-2')!;
     expect(staff).toBeTruthy();
-    expect(session.dispatchPlayerAction('p5', { type: 'play_card', cardInstanceId: staff.instanceId }).ok).toBe(true);
-    session.state.round.prioritySeat = 5;
-    expect(session.dispatchPlayerAction('p5', {
+    expect(session.dispatchPlayerAction(artoria.playerId, { type: 'play_card', cardInstanceId: staff.instanceId }).ok).toBe(true);
+    session.state.round.prioritySeat = artoria.seat;
+    expect(session.dispatchPlayerAction(artoria.playerId, {
       type: 'activate_ability',
       cardInstanceId: staff.instanceId,
       abilityId: 'sc-artoriac-2.pay-x-look-x-plus-two',
@@ -570,39 +572,94 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('authenticates the resolved prefix behind the production Artoria Caster recon continuation', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p5', humanPlayerIds: ['p5'] });
+    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
+    const artoria = session.pairings.find((pairing) => pairing.servant.id === 'servant.artoriac')!;
     advanceAbilityPhase(session.state, 'action', session.state.round.roundNumber);
-    session.state.round.prioritySeat = 5;
-    const player = session.state.players.find((candidate) => candidate.id === 'p5')!;
+    session.state.round.prioritySeat = artoria.seat;
+    const player = session.state.players.find((candidate) => candidate.id === artoria.playerId)!;
     player.mana = 12;
     player.locationId = 'recon';
     const source = session.state.cards.find((card) =>
-      card.ownerPlayerId === 'p5' && card.definitionId === 'servant.artoriac.skill.sc-artoriac-4')!;
+      card.ownerPlayerId === artoria.playerId && card.definitionId === 'servant.artoriac.skill.sc-artoriac-4')!;
     expect(source).toBeTruthy();
-    expect(session.dispatchPlayerAction('p5', { type: 'play_card', cardInstanceId: source.instanceId }).ok).toBe(true);
-    session.state.round.prioritySeat = 5;
-    expect(session.dispatchPlayerAction('p5', {
+    // Stable fixture: production deck shuffle may move this named card when the servant roster changes.
+    source.zone = 'hand';
+    source.visibility = { scope: 'owner_only', ownerPlayerId: artoria.playerId };
+    expect(session.dispatchPlayerAction(artoria.playerId, { type: 'play_card', cardInstanceId: source.instanceId }).ok).toBe(true);
+    session.state.round.prioritySeat = artoria.seat;
+    expect(session.dispatchPlayerAction(artoria.playerId, {
       type: 'activate_ability',
       cardInstanceId: source.instanceId,
       abilityId: 'sc-artoriac-4.recon-gain-vp-and-move',
     }).ok).toBe(true);
-    expect(session.state.players.find((candidate) => candidate.id === 'p5')!.vp).toBe(2);
+    expect(session.state.players.find((candidate) => candidate.id === artoria.playerId)!.vp).toBe(2);
     expect(session.state.abilityRuntime!.pendingDecision!.remainingEffects.map((effect) => effect.type)).toEqual(['move_player']);
 
     const durable = session.serializeSession();
     expect(durable.deferredRuntimeStateSeal).toBeDefined();
-    expect(restoreMatchSession(durable).state.players.find((candidate) => candidate.id === 'p5')!.vp).toBe(2);
+    expect(restoreMatchSession(durable).state.players.find((candidate) => candidate.id === artoria.playerId)!.vp).toBe(2);
 
     const erasedPrefix: any = structuredClone(durable);
-    erasedPrefix.state.players.find((candidate: any) => candidate.id === 'p5').vp = 0;
+    erasedPrefix.state.players.find((candidate: any) => candidate.id === artoria.playerId).vp = 0;
     expect(() => restoreMatchSession(erasedPrefix)).toThrow('Invalid or missing deferred runtime state authority');
 
     const forgedReplayPrefix: any = structuredClone(durable);
     const sensitiveReplay = [...forgedReplayPrefix.replaySnapshots].reverse().find((entry: any) =>
       entry.state.abilityRuntime?.pendingDecision && entry.deferredRuntimeStateSeal);
     expect(sensitiveReplay).toBeTruthy();
-    sensitiveReplay.state.players.find((candidate: any) => candidate.id === 'p5').vp = 0;
+    sensitiveReplay.state.players.find((candidate: any) => candidate.id === artoria.playerId).vp = 0;
     expect(() => restoreMatchSession(forgedReplayPrefix)).toThrow('Invalid FB2-49 replay checkpoint lineage');
+  });
+
+  it('settles borrowed Guard to Mash hand on owner loss through the real MatchSession battle path', () => {
+    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
+    const mash = session.pairings.find((pairing) => pairing.servant.id === 'servant.mash')!;
+    const borrower = session.pairings.find((pairing) => pairing.playerId !== mash.playerId)!;
+    const winner = session.pairings.find((pairing) => ![mash.playerId, borrower.playerId].includes(pairing.playerId))!;
+    for (const player of session.state.players) delete player.locationId;
+    for (const playerId of [mash.playerId, borrower.playerId, winner.playerId]) {
+      session.state.players.find((player) => player.id === playerId)!.locationId = 'miyama_town';
+    }
+    session.state.eventPlacements = [];
+    session.state.currentSituationCardId = undefined;
+    const guard = session.state.cards.find((card) => card.ownerPlayerId === mash.playerId && card.definitionId === 'card.x-guard')!;
+    guard.controllerPlayerId = borrower.playerId;
+    guard.zone = 'attack_area';
+    guard.visibility = { scope: 'public' };
+    session.state.abilityRuntime!.cardState[guard.instanceId] = { active: true, faceDown: false, playedRound: session.state.round.roundNumber };
+    const winnerCards = session.state.cards.filter((card) => card.ownerPlayerId === winner.playerId && ['hand', 'deck'].includes(card.zone)).slice(0, 4);
+    for (const card of winnerCards) {
+      card.zone = 'attack_area';
+      card.visibility = { scope: 'public' };
+      session.state.abilityRuntime!.cardState[card.instanceId] = { active: true, faceDown: false, playedRound: session.state.round.roundNumber };
+    }
+    session.state.round.activePhase = 'battle';
+    (session as unknown as { resolveBattlePhase: () => void }).resolveBattlePhase();
+    const settled = session.state.cards.find((card) => card.instanceId === guard.instanceId)!;
+    expect(settled.controllerPlayerId).toBe(mash.playerId);
+    expect(settled.zone).toBe('hand');
+  });
+
+  it('settles borrowed Guard to Mash discard after an ordinary real MatchSession battle end', () => {
+    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
+    const mash = session.pairings.find((pairing) => pairing.servant.id === 'servant.mash')!;
+    const borrower = session.pairings.find((pairing) => pairing.playerId !== mash.playerId)!;
+    for (const player of session.state.players) delete player.locationId;
+    for (const playerId of [mash.playerId, borrower.playerId]) {
+      session.state.players.find((player) => player.id === playerId)!.locationId = 'miyama_town';
+    }
+    session.state.eventPlacements = [];
+    session.state.currentSituationCardId = undefined;
+    const guard = session.state.cards.find((card) => card.ownerPlayerId === mash.playerId && card.definitionId === 'card.x-guard')!;
+    guard.controllerPlayerId = borrower.playerId;
+    guard.zone = 'attack_area';
+    guard.visibility = { scope: 'public' };
+    session.state.abilityRuntime!.cardState[guard.instanceId] = { active: true, faceDown: false, playedRound: session.state.round.roundNumber };
+    session.state.round.activePhase = 'battle';
+    (session as unknown as { resolveBattlePhase: () => void }).resolveBattlePhase();
+    const settled = session.state.cards.find((card) => card.instanceId === guard.instanceId)!;
+    expect(settled.controllerPlayerId).toBe(mash.playerId);
+    expect(settled.zone).toBe('discard');
   });
 
   it('restores a replay checkpoint by id', () => {

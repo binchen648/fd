@@ -29,6 +29,7 @@ import {
 } from './ability/opponent-close-to-one-authority';
 import { hmacSha256Hex, sha256Hex } from './ability/portable-sha256';
 import { clearTransientCardTransformState } from './ability/card-instance-state';
+import { settleLinkedOwnerCardsAfterBattles } from './ability/linked-owner-combat';
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from './ability/battle-terminal';
 import type {
@@ -2644,6 +2645,9 @@ export class MatchSession {
       this.autoResolveNonInteractiveWindows();
     }
     if (!this.state.abilityRuntime?.pendingDecision && !this.state.abilityRuntime?.responseWindows.length) {
+      // Linked-owner cards must settle while the resolved battle ledger is still available.
+      // applyBattleScoring consumes battleResults, so doing this afterwards would lose owner-loss information.
+      Object.assign(this.state, settleLinkedOwnerCardsAfterBattles(this.state, resolvedBattles));
       const scoringLogStart = this.state.log.length;
       Object.assign(this.state, applyBattleScoring(this.state).nextState);
       const freshScoringLogs = this.state.log.slice(scoringLogStart);

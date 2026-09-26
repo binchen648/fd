@@ -176,3 +176,26 @@ Predecessor exact Candidate: `cd3e3abf7c1b0625484eda9910d29bf24cc8958c`. Fresh i
 Accounting remains unchanged before successor review: current-main formal/material `112/944`; no Mash credit is awarded until the successor exact Candidate receives `MIGRATION_ACCEPTED` and A synchronization/accounting. Historical frontier progress remains separate evidence/replay history.
 
 The exact successor Candidate SHA is frozen by the revision commit containing this section and is recorded in the PR/handoff evidence after commit.
+## R2 revision after successor fresh R
+
+Canonical successor review evidence: https://github.com/binchen648/fd/pull/457#issuecomment-5845430482
+
+Reviewed predecessor: `ab5f88c191d0383bd57b44d876f2389ace121a4f`. The fresh blocked-retry review returned `MIGRATION_NEEDS_REVISION` with two exact-scope findings. This revision closes both together without changing the four-skill owner scope:
+
+1. **Real MatchSession Guard settlement** — `MatchSession.resolveBattlePhase()` now applies `settleLinkedOwnerCardsAfterBattles(...)` after all battlefield results are collected and before `applyBattleScoring(...)` consumes `battleResults`. Two real-session regressions cover owner-loss -> Mash hand and ordinary battle end -> Mash discard.
+2. **Roster-stable MatchSession fixtures** — affected tests no longer assume Kintoki/Artoria Caster occupy fixed p5/p6 seats after Mash expands the production roster. They locate the intended servant through `session.pairings`; the recon continuation additionally places its named source card in a stable hand fixture instead of depending on shuffled initial deck position.
+
+### R2 validation before fresh R
+
+- `packages/rules/tests/match-session.test.ts`: `32/32 PASS` (including the two new real Guard settlement regressions and the three roster-stable tests).
+- successor affected chain: `17 files / 221 tests PASS`.
+- Mash owner regression remains `8/8 PASS`.
+- executable-card-pack remains `50/50 PASS`.
+- `npm run typecheck`: PASS.
+- `npm run content:validate`: PASS — `7 masters, 8 servants, 20 events, 0 blocking issues`.
+- `npm run content:compile`: PASS.
+- `npm run verify:generated-content`: PASS.
+- `git diff --check`: PASS.
+- production identity-routing audit remains CLEAN for `servant.mash`, `sc-mash`, Mash/Guard Chinese-name routing and `SkillLib`.
+
+Accounting remains unchanged before this successor is independently accepted: current-main formal/material `112/944`; exactly four Mash frozen identities are still the only candidate credit. Historical frontier progress remains separate replay/evidence history.
