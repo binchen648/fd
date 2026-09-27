@@ -79,9 +79,16 @@ export function rulerSealBindingCount(state: GameState, issuerPlayerId: PlayerId
   return Number.isSafeInteger(value) && value >= 0 ? value : 0;
 }
 
-export function legalRulerSealBindingPairs(state: GameState, issuerPlayerId: PlayerId): Array<[PlayerId, PlayerId]> {
-  const opponents = state.players.filter((player) => player.status === 'active' && player.id !== issuerPlayerId);
-  if (opponents.length < 2) return [];
+export function legalRulerSealBindingPairs(
+  state: GameState,
+  issuerPlayerId: PlayerId,
+  eligibleOpponentIds?: readonly PlayerId[],
+): Array<[PlayerId, PlayerId]> {
+  const eligible = eligibleOpponentIds === undefined ? undefined : new Set(eligibleOpponentIds);
+  if (eligible && eligible.size !== eligibleOpponentIds!.length) return [];
+  const opponents = state.players.filter((player) =>
+    player.status === 'active' && player.id !== issuerPlayerId && (eligible === undefined || eligible.has(player.id)));
+  if (opponents.length < 2 || (eligible !== undefined && opponents.length !== eligible.size)) return [];
   const counts = new Map(opponents.map((player) => [player.id, rulerSealBindingCount(state, issuerPlayerId, player.id)]));
   const firstMinimum = Math.min(...counts.values());
   const pairs: Array<[PlayerId, PlayerId]> = [];
@@ -97,14 +104,25 @@ export function legalRulerSealBindingPairs(state: GameState, issuerPlayerId: Pla
   return pairs;
 }
 
-export function eligibleLeastBoundPlayerIds(state: GameState, issuerPlayerId: PlayerId, slots = 2): PlayerId[] {
+export function eligibleLeastBoundPlayerIds(
+  state: GameState,
+  issuerPlayerId: PlayerId,
+  slots = 2,
+  eligibleOpponentIds?: readonly PlayerId[],
+): PlayerId[] {
   if (slots !== 2) return [];
-  return [...new Set(legalRulerSealBindingPairs(state, issuerPlayerId).flat())];
+  return [...new Set(legalRulerSealBindingPairs(state, issuerPlayerId, eligibleOpponentIds).flat())];
 }
 
-export function isLeastBoundSelection(state: GameState, issuerPlayerId: PlayerId, selectedPlayerIds: PlayerId[], slots = 2): boolean {
+export function isLeastBoundSelection(
+  state: GameState,
+  issuerPlayerId: PlayerId,
+  selectedPlayerIds: PlayerId[],
+  slots = 2,
+  eligibleOpponentIds?: readonly PlayerId[],
+): boolean {
   if (slots !== 2 || selectedPlayerIds.length !== 2 || new Set(selectedPlayerIds).size !== 2) return false;
-  return legalRulerSealBindingPairs(state, issuerPlayerId).some((pair) =>
+  return legalRulerSealBindingPairs(state, issuerPlayerId, eligibleOpponentIds).some((pair) =>
     pair[0] === selectedPlayerIds[0] && pair[1] === selectedPlayerIds[1]);
 }
 

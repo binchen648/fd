@@ -53,13 +53,22 @@ The accepted dedicated modules are reconnected to the evolved current runtime th
 
 No `servant.spartacus`, Spartacus card ID/name, printed-text parser, Chinese-text runtime routing, or `SkillLib` fallback is introduced in production rules.
 
+## R1 revision closure
+
+Fresh independent R on predecessor Candidate `4a07140a75600f2128dab17cce264f78beae3ea4` returned `IMPLEMENTATION_NEEDS_REVISION`. Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/469#issuecomment-5857074164`.
+
+- Sole P1 CLOSED — least-bound discovery and final ordered settlement now use the same current-runtime Ruler eligibility domain after other-player ability immunity is applied.
+- The historical accepted least-bound algorithm remains unchanged when no explicit eligibility domain is supplied; current integration passes the exact immunity-filtered active-opponent domain into both candidate discovery and `isLeastBoundSelection()` settlement validation.
+- Focused reproduction uses the Reviewer shape `p2=0, p3=1, p4=1` with p2 immune to p1 at the supported same-location opponent boundary. p2 is absent from the pending decision, p3/p4 are the exposed eligible pair, and `[p3,p4]` settles successfully instead of being advertised then rejected.
+- No other recovery semantic is changed and no Spartacus consumer authoring is introduced.
+
 ## Verification
 
 Focused accepted-seam regressions:
 
-- FB2-27 Ruler seal subsystem: `12/12 PASS`;
+- FB2-27 Ruler seal subsystem: `13/13 PASS`;
 - FB2-48 combat-opponent-power VP reward: `10/10 PASS`;
-- combined focused: `2 files / 22 tests PASS`.
+- combined focused: `2 files / 23 tests PASS`.
 
 Affected current-runtime serial chain:
 
@@ -72,7 +81,7 @@ Affected current-runtime serial chain:
 - `packages/rules/tests/regression/fb2-any-location-except-workshop-movement.test.ts`;
 - `packages/rules/tests/core/combat-resolver.test.ts`.
 
-Result: `8 files / 175 tests PASS`.
+Result: `8 files / 176 tests PASS`.
 
 Static/content gates:
 

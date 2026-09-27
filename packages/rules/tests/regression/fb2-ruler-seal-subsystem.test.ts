@@ -200,6 +200,28 @@ describe('P3-FB2-27 Ruler seal relationship subsystem', () => {
     expect(useChoice).toBeTruthy();
   });
 
+  it('uses the same immunity-filtered opponent domain for least-bound discovery and ordered settlement', () => {
+    const state = setup();
+    state.abilityRuntime!.rulerSealBindingHistory = { p1: { p2: 0, p3: 1, p4: 1 } };
+    state.abilityRuntime!.ongoingEffects.push({
+      id: 'fixture.ruler.immunity.p2', sourceCardId: 'fixture.ruler.immunity.source', abilityId: 'fixture.ruler.immunity',
+      controllerId: 'p2', starts: 'immediate', duration: 'while_active', startRound: state.round.roundNumber,
+      cleanup: 'none', sourceMustRemainActive: false, publicZones: [],
+      ruleModifiers: [{
+        sourceCardId: 'fixture.ruler.immunity.source', controllerId: 'p2',
+        definition: { operation: 'ignore', rule: 'other_player_ability_effect',
+          scope: { subject: 'controller', sourcePlayers: 'same_location_opponents' } },
+      }],
+    } as any);
+
+    const pending = activate(state, 'p1', PARENT_INSTANCE, PARENT_ABILITY);
+    expect(pending.candidates).toEqual(expect.arrayContaining(['p3', 'p4']));
+    expect(pending.candidates).not.toContain('p2');
+    expect(rules.legalRulerSealBindingPairs(state, 'p1', ['p3', 'p4'])).toEqual(expect.arrayContaining([['p3', 'p4'], ['p4', 'p3']]));
+    expect(choose(state, 'p1', ['p3', 'p4']).ok).toBe(true);
+    expect(state.abilityRuntime!.rulerSealBindingHistory.p1).toMatchObject({ p2: 0, p3: 2, p4: 2 });
+  });
+
   it('matches the Reference sequential least-bound rule when the first binding still leaves the same player uniquely least-bound', () => {
     const state = setup();
     state.abilityRuntime!.rulerSealBindingHistory = { p1: { p2: 0, p3: 2, p4: 2 } };

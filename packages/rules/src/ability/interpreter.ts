@@ -502,6 +502,12 @@ function persistentMovementLockBlocksTarget(s: GameState, ctx: EffectContext, ta
   const isMovementTarget = a.effects.some((effect) => effect.type === 'move_player' && str(effect.to) === str(target.id));
   return isMovementTarget && !abilityExplicitlyIgnoresCardMovementRestrictions(a);
 }
+function rulerSealEligibleOpponentIds(s: GameState, issuerPlayerId: string): string[] {
+  return s.players.filter((candidate) =>
+    candidate.status === 'active' && candidate.id !== issuerPlayerId &&
+    !playerIgnoresAbilityFromController(s, candidate.id, issuerPlayerId)).map((candidate) => candidate.id);
+}
+
 function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[] {
   if (nodes(target.conditions).some(c => !condition(s, ctx, c))) return [];
   if (target.type === 'choice') {
@@ -510,12 +516,15 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
     return options.map((opt: any) => opt.id || '');
   }
   if (target.type === 'player') {
+    const rulerEligibleOpponents = nodes(target.constraints).some((c) => c.type === 'least_ruler_binding_count')
+      ? rulerSealEligibleOpponentIds(s, ctx.controllerId)
+      : undefined;
     return s.players.filter(candidate =>
       candidate.status === 'active' &&
       !playerIgnoresAbilityFromController(s, candidate.id, ctx.controllerId) &&
       nodes(target.constraints).every(c => {
         if (c.type === 'not_controller') return candidate.id !== ctx.controllerId;
-        if (c.type === 'least_ruler_binding_count') return eligibleLeastBoundPlayerIds(s, ctx.controllerId, 2).includes(candidate.id);
+        if (c.type === 'least_ruler_binding_count') return eligibleLeastBoundPlayerIds(s, ctx.controllerId, 2, rulerEligibleOpponents).includes(candidate.id);
         if (c.type === 'bound_by_controller_ruler_seal') return unspentRulerSealBindings(s, ctx.controllerId, candidate.id).length > 0;
         if (c.type === 'same_location_as_controller') {
           const controllerLocation = player(s, ctx.controllerId).locationId;
@@ -3614,7 +3623,8 @@ function rulerFreePlayCandidates(s: GameState, boundPlayerId: string): string[] 
 
 function grantRulerSealBindings(s: GameState, ctx: EffectContext): void {
   const selected = ctx.selections.bound_players ?? [];
-  if (!isLeastBoundSelection(s, ctx.controllerId, selected, 2)) reject('illegal_target', 'Ruler binding must select exactly the two least-bound eligible players');
+  const eligibleOpponents = rulerSealEligibleOpponentIds(s, ctx.controllerId);
+  if (!isLeastBoundSelection(s, ctx.controllerId, selected, 2, eligibleOpponents)) reject('illegal_target', 'Ruler binding must select exactly the two least-bound eligible players');
   const r = runtime(s);
   for (const boundPlayerId of selected) {
     const id = nextId(s, 'ruler-seal');

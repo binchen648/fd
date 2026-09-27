@@ -5678,9 +5678,12 @@ Recovery scope:
 - after fresh R acceptance, A-sync/rescan and return to `P3-S-OWNER-SPARTACUS-COMPLETE-MIGRATION`; do not advance owners.
 
 Verification evidence:
-- Ruler seal focused `12/12 PASS`;
+- Ruler seal focused `13/13 PASS`;
 - FB2-48 focused `10/10 PASS`;
-- affected serial `8 files / 175 tests PASS`;
+- affected serial `8 files / 176 tests PASS`;
+- R1 predecessor Candidate `4a07140a75600f2128dab17cce264f78beae3ea4` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt evidence `https://github.com/binchen648/fd/pull/469#issuecomment-5857074164`;
+- R1 P1 closed: least-bound discovery and final ordered settlement now consume one shared immunity-filtered active-opponent domain; historical default helper behavior remains unchanged when no explicit domain is provided;
+- focused immunity regression reproduces `p2=0,p3=1,p4=1` with immune p2, excludes p2 from the pending decision, exposes p3/p4, and successfully settles `[p3,p4]`;
 - typecheck PASS;
 - content validate/compile PASS — `7 masters / 12 servants / 20 events / 0 blocking issues`;
 - generated determinism PASS with unchanged hashes;
