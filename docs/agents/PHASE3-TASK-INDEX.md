@@ -5422,3 +5422,74 @@ R1 closure:
 - Current-main strict formal accounting remains `132/944`; remaining `812`.
 - Current owner remains `servant.sitonai`; execution returns immediately to `P3-S-OWNER-SITONAI-COMPLETE-MIGRATION` for sc-sitonai-1 + sc-sitonai-2 together. sc-sitonai-3 remains preserved and must not be re-credited. Do not advance owners.
 - Detailed sync: `docs/reports/2026-09-27-p3-a-sitonai-source-skill-attack-join-capability-acceptance-synchronization.md`.
+
+## P3-A-OWNER-SITONAI-ACCEPTANCE-SYNC
+
+- PR #465 exact Candidate `0e39b88803fd6091f85d13cfe9c959683ce2fe92` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/465#issuecomment-5853798231`.
+- Accepted formal owner scope is exactly `servant.sitonai.skill.sc-sitonai-1` + `servant.sitonai.skill.sc-sitonai-2`; previously accepted FM07/R38 `sc-sitonai-3` remains preservation-only and receives no duplicate credit.
+- Accepted prerequisite PR #463 and PR #464 remain permanently zero-credit capability/readiness seams.
+- Exact-Candidate Phase 3 Pre-Review Gate run `36301898126` succeeded.
+- Independent exact-Candidate closure: focused owner `6/6 PASS`; affected serial `8 files / 160 tests PASS`; typecheck/content validate/content compile/generated determinism/diff-check PASS; production `packages/rules/src` diff EMPTY; Sitonai/SkillLib identity-routing audit clean.
+- Current-main strict formal accounting moves `132/944 -> 134/944`; remaining `810`.
+- Owner-complete workflow remains authoritative: no fixed-50 requirement and no per-skill R split; only after an owner is ACCEPTED + A-synced/accounted may execution move to the next owner.
+- Mechanical frozen-inventory continuity selects `servant.skadi` next. Current canonical Skadi authoring is absent and targeted historical report search found no prior formal Skadi migration acceptance, so all three frozen Skadi identities are the next owner-complete scope.
+- Detailed sync: `docs/reports/2026-09-27-p3-a-owner-sitonai-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-SKADI-COMPLETE-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: exact Sitonai owner acceptance-sync commit carrying this task block
+Owner root: `servant.skadi`
+Formal owner scope: all three current-main remaining frozen Skadi skills together
+
+Remaining frozen skills:
+- `servant.skadi.skill.sc-skadi-1` — 大神的睿智
+- `servant.skadi.skill.sc-skadi-2` — 原初之卢恩
+- `servant.skadi.skill.sc-skadi-3` — 通往死亡满溢的魔境之门
+
+Source/provenance:
+- frozen inventory/reference records `hasConfirmedOverride=true`, `hasAuthoringCard=false` for all three Skadi identities;
+- all three are currently `SOURCE_EVIDENCE_REQUIRED / EXPLICIT_BLOCK`;
+- shared source grounding: `FD全卡图鉴V2.0.chm -> 从者/魔术师/英文版/斯卡哈·斯卡蒂.htm`, plus development image `Fate_Domination-开发版/images/servants/斯卡哈·斯卡蒂.png`;
+- canonical `data/authoring/servants/servant.skadi.json` is absent at this Base;
+- targeted historical report search excluding aggregate indexes found no prior formal `servant.skadi` migration-acceptance evidence;
+- historical handlers are evidence only and never authorize identity-keyed production routing.
+
+Locked Reference observations to mechanically recertify before encoding:
+- exact Reference commit `b2f9fa15fba07c63530bbf4612b03b8b704755f9`, class `Caster`;
+- exact 12-card deck: `card.cardq1`, `card.cardq2`, `card.cardq2`, `card.cardq4`, `card.carda2`, `card.carda2`, `card.carda3`, `card.carda4`, `card.carda4`, `card.cardluck`, `card.cardluck`, `card.cardpreparation`;
+- sc-skadi-1 static metadata: `被动`, printed cost `0`, legacy requirement `0`, base power `0`; observed outpost branch pays 1 mana, draws one, then returns/shuffles exactly two hand cards; observed Action branch pays 3 mana and resolves a rune combination derived from two current-round basic attacks;
+- source-defined rune combinations observed in Reference cover movement, playing a hand attack, arming a same-round combat defeat effect, same-location mana loss, terrain/deployment multiplication, and +4 VP; S must source-recertify exact pair-to-effect mapping and legality before authoring;
+- sc-skadi-2 static metadata: `被动`, printed cost `0`, legacy requirement `0`, base power `0`; observed combat branch consumes the armed same-round rune state and applies defeat when its source-defined battle/opponent condition is satisfied;
+- sc-skadi-3 static metadata: `魔术/宝具`, printed cost `10`, legacy requirement `10`, base power `0`, true-name release on play; observed residual branch blocks mana gain for opponents at the active source location, and its outpost branch chooses an attribute and doubles matching basic-attack base power for the round in the source-defined battle scope.
+
+Implementation requirements:
+- migrate all three remaining Skadi frozen skills together in one owner-complete formal batch; do not split the owner across independent migration PRs;
+- recertify source semantics against the locked source hierarchy before encoding; Reference runtime is observation/evidence, not canonical authority by itself;
+- no `servant.skadi` / card-id / card-name / printed-text / Chinese-text identity routing in production runtime;
+- no SkillLib fallback and no runtime source-text parsing;
+- any missing runtime capability must be generic, data-driven, fail closed, narrowly source-grounded, and focused-tested;
+- if bounded zero-credit capability/readiness work is required, complete/review/A-sync it and return to this same Skadi owner before moving on;
+- preserve exact Base/Candidate lineage; no merge, retarget, reset/discard, force push, or worktree proliferation.
+
+Verification:
+- exact frozen owner scope = all three Skadi identities;
+- source/static metadata/deck recertification against locked Reference and source hierarchy;
+- focused semantic coverage for every branch/rune effect that is encoded;
+- fail-closed coverage for every new privileged/generic capability shell;
+- affected loader/interpreter/executable/combat/session/content tests dictated by actual diff;
+- typecheck + content validate/compile + generated determinism + `git diff --check`;
+- production identity-routing audit clean;
+- freeze exact Base/Candidate, clean fixed Work, PR, policy gate, and one fresh independent R for the whole owner batch.
+
+Accounting boundary:
+- Base strict formal accounting is `134/944` after Sitonai synchronization;
+- no Skadi credit before exact-Candidate `MIGRATION_ACCEPTED` + subsequent A-sync/accounting;
+- because there is no prior Skadi formal migration credit, an accepted synchronized full owner batch can add exactly three identities and move the next strict target to `137/944`.
+
+Allowed verdicts:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `MIGRATION_BLOCKED`
