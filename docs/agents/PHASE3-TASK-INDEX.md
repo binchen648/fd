@@ -5595,7 +5595,8 @@ Allowed verdicts:
 - Current-main strict formal accounting moves `134/944 -> 137/944`; remaining `807`.
 - Owner-complete workflow remains authoritative: only after an owner is ACCEPTED + A-synced/accounted may execution move to the next owner.
 - Mechanical frozen-inventory continuity selects `servant.spartacus` next (`servant.skadi` first-occurrence owner index 235, `servant.spartacus` index 236 of 251 owners).
-- Spartacus has no prior formal migration acceptance and no current canonical owner archive. Inventory `hasAuthoringCard=true` for sc-spartacus-2 is historical structured source evidence, not Phase 3 migration credit; all three Spartacus frozen identities remain in the next formal owner scope.
+- Full Git-history/remote-branch recovery found prior formal `MIGRATION_ACCEPTED` for `servant.spartacus.skill.sc-spartacus-2`: PR #414, exact accepted Candidate `58fffb751e25a9ccc2f28470a48255a07ba11493`, canonical Reviewer evidence `https://github.com/binchen648/fd/pull/414#issuecomment-5754190524`, and acceptance-sync commit `b208ac5571c29f28b623f6462438649d9b151b54`.
+- The historical Spartacus S2 line is not an ancestor of the current line. Owner-complete replay must preserve its exact accepted semantics in the canonical Spartacus archive but must not grant duplicate credit. Newly creditable remaining identities are only sc-spartacus-1 and sc-spartacus-3.
 - Detailed sync: `docs/reports/2026-09-27-p3-a-owner-skadi-acceptance-synchronization.md`.
 
 ## TASK P3-S-OWNER-SPARTACUS-COMPLETE-MIGRATION
@@ -5604,18 +5605,21 @@ Owner: Codex S
 Status: `READY`
 Base: exact Skadi owner acceptance-sync commit carrying this task block
 Owner root: `servant.spartacus`
-Formal owner scope: all three current-main remaining frozen Spartacus skills together
+Canonical owner-complete consumer scope: all three Spartacus skills together
 
-Remaining frozen skills:
+Newly creditable remaining frozen skills:
 - `servant.spartacus.skill.sc-spartacus-1` — 反叛
-- `servant.spartacus.skill.sc-spartacus-2` — 伤兽的咆哮
 - `servant.spartacus.skill.sc-spartacus-3` — 不屈的意志
+
+Previously accepted preservation/replay identity:
+- `servant.spartacus.skill.sc-spartacus-2` — 伤兽的咆哮 — PR #414 / Candidate `58fffb751e25a9ccc2f28470a48255a07ba11493`; no duplicate credit.
 
 Source/provenance:
 - frozen inventory/reference records `hasConfirmedOverride=true` for all three Spartacus identities;
 - inventory records sc-spartacus-1/sc-spartacus-3 with `hasAuthoringCard=false` and sc-spartacus-2 with historical `hasAuthoringCard=true`;
 - canonical `data/authoring/servants/servant.spartacus.json` is absent and current `data/authoring/**` contains no sc-spartacus-2 entry;
-- targeted non-aggregate report search found no prior formal `MIGRATION_ACCEPTED` for `servant.spartacus` or sc-spartacus-2;
+- historical accepted S2 provenance: PR #414, Candidate `58fffb751e25a9ccc2f28470a48255a07ba11493`, canonical Reviewer evidence `https://github.com/binchen648/fd/pull/414#issuecomment-5754190524`, acceptance-sync `b208ac5571c29f28b623f6462438649d9b151b54`;
+- historical accepted S2 prerequisite is FB2-48 frozen combat-opponent-power VP reward / commit `14c8688c`; replay the accepted seam and do not re-credit it;
 - shared source grounding: `FD全卡图鉴V2.0.chm -> 从者/狂战士/英文版/斯巴达克斯.htm`, plus development image `Fate_Domination-开发版/images/servants/斯巴达克斯.png`;
 - historical handlers are evidence only and never authorize identity-keyed production routing.
 
@@ -5627,9 +5631,10 @@ Locked Reference observations to mechanically recertify before encoding:
 - sc-spartacus-3 static metadata: `被动`, printed cost `0`, legacy requirement `0`, base power `0`; observed Reference replaces normal/Ruler command-seal effects with `+4 aggregate power`, supports authoritative selection among multiple controlled Ruler seals, and applies an Action-stage power rule based on unused normal/Ruler seals held by engaged opponents.
 
 Implementation requirements:
-- migrate all three Spartacus frozen skills together in one owner-complete formal batch; do not split the owner across independent migration PRs;
+- produce one canonical Spartacus owner archive containing sc1 + accepted-preservation sc2 + sc3; do not split the owner across independent migration PRs;
+- preserve/replay the exact accepted sc2 whole-card semantics from PR #414 and do not re-review or re-credit sc2 as a new migration identity;
 - recertify source semantics against the locked source hierarchy before encoding; Reference runtime is observation/evidence, not canonical authority by itself;
-- do not treat inventory `hasAuthoringCard=true` as migration credit without exact formal acceptance evidence;
+- treat sc-spartacus-2 as historical formal accepted preservation because exact PR/Candidate/Reviewer/A-sync evidence now exists; do not infer any other credit from inventory labels alone;
 - no `servant.spartacus` / card-id / card-name / printed-text / Chinese-text identity routing in production runtime;
 - no SkillLib fallback and no runtime source-text parsing;
 - any missing runtime capability must be generic, data-driven, fail closed, narrowly source-grounded, and focused-tested;
@@ -5637,7 +5642,7 @@ Implementation requirements:
 - preserve exact Base/Candidate lineage; no merge, retarget, reset/discard, force push, or worktree proliferation.
 
 Verification:
-- exact frozen owner scope = all three Spartacus identities;
+- exact canonical owner scope = sc1 + sc2 + sc3, with new-credit set exactly sc1 + sc3 and sc2 preservation-only;
 - source/static metadata/deck recertification against locked Reference and source hierarchy;
 - focused semantic coverage for every encoded branch, including command-seal/Ruler-seal ownership and round-lifecycle boundaries;
 - fail-closed coverage for every new privileged/generic capability shell;
@@ -5648,8 +5653,9 @@ Verification:
 
 Accounting boundary:
 - Base strict formal accounting is `137/944` after Skadi synchronization; remaining `807`;
-- no Spartacus credit before exact-Candidate `MIGRATION_ACCEPTED` + subsequent A-sync/accounting;
-- because no prior Spartacus formal migration credit was found, an accepted synchronized full owner batch can add exactly three identities and move the next strict target to `140/944`, remaining `804`.
+- no new Spartacus credit before exact-Candidate `MIGRATION_ACCEPTED` + subsequent A-sync/accounting;
+- historical sc-spartacus-2 is already formal credit and receives no duplicate credit on this line;
+- an accepted synchronized owner batch can therefore add exactly two new identities (sc1 + sc3) and move the next strict target from `137/944` to `139/944`, remaining `805`.
 
 Allowed verdicts:
 - `MIGRATION_ACCEPTED`

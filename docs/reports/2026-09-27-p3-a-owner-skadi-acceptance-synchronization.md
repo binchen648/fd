@@ -85,13 +85,17 @@ Mechanical current-main/history checks for Spartacus found:
 - inventory records `sc-spartacus-1` and `sc-spartacus-3` with `hasAuthoringCard=false`, while `sc-spartacus-2` records `hasAuthoringCard=true` from historical structured source evidence;
 - current canonical `data/authoring/servants/servant.spartacus.json` is absent;
 - current `data/authoring/**` contains no `servant.spartacus.skill.sc-spartacus-2` entry;
-- targeted non-aggregate repository report search found no prior formal `MIGRATION_ACCEPTED` for `servant.spartacus` or sc-spartacus-2.
+- a full Git-history/remote-branch search found prior formal `MIGRATION_ACCEPTED` for `servant.spartacus.skill.sc-spartacus-2`: PR #414, exact accepted Candidate `58fffb751e25a9ccc2f28470a48255a07ba11493`, canonical Reviewer evidence `https://github.com/binchen648/fd/pull/414#issuecomment-5754190524`, and acceptance-sync commit `b208ac5571c29f28b623f6462438649d9b151b54`;
+- that accepted Spartacus S2 lineage is not an ancestor of the current main/recovery line, so its exact accepted consumer semantics must be replayed/preserved in the owner-complete canonical archive without duplicate migration credit;
+- its accepted prerequisite is the frozen combat-opponent-power VP reward seam from FB2-48 / commit `14c8688c`; do not reimplement or re-credit that seam.
 
-Therefore the historical `hasAuthoringCard=true` marker for sc-spartacus-2 is not Phase 3 migration credit, and the next owner-complete formal scope is all three frozen Spartacus identities together:
+Therefore the next owner-complete canonical consumer scope is all three Spartacus cards together, but the newly creditable remaining frozen identities are only sc-spartacus-1 and sc-spartacus-3:
 
-1. `servant.spartacus.skill.sc-spartacus-1` — 反叛
-2. `servant.spartacus.skill.sc-spartacus-2` — 伤兽的咆哮
-3. `servant.spartacus.skill.sc-spartacus-3` — 不屈的意志
+1. `servant.spartacus.skill.sc-spartacus-1` — 反叛 — **new formal credit if accepted**
+2. `servant.spartacus.skill.sc-spartacus-2` — 伤兽的咆哮 — **historical MIGRATION_ACCEPTED preservation/replay only; no duplicate credit**
+3. `servant.spartacus.skill.sc-spartacus-3` — 不屈的意志 — **new formal credit if accepted**
+
+Accordingly, a future accepted synchronized Spartacus owner batch can add exactly two new identities: `137 + 2 = 139/944`, remaining `805`. The already accepted sc-spartacus-2 stays formal preservation evidence and is not counted again.
 
 Shared frozen source grounding is `FD全卡图鉴V2.0.chm -> 从者/狂战士/英文版/斯巴达克斯.htm` plus development image `Fate_Domination-开发版/images/servants/斯巴达克斯.png`.
 
