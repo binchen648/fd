@@ -62,7 +62,7 @@ Both remaining identities have `hasConfirmedOverride=true`, `hasAuthoringCard=fa
 Locked Reference recertification records:
 
 - sc-sitonai-1: Action-phase combination join; if the controller's active attacks contain exactly one Strength and one Magic attack, pay 3 mana to add this card to the attack; reversal clause grants 4 VP when the controller wins the fight.
-- sc-sitonai-2: true-name release; Action-phase active-source effect prevents all players from drawing cards through the end of the next round; reversal clause changes the card's reversal behavior to the source-defined mana-gain branch.
+- sc-sitonai-2: true-name release; Action-phase active-source effect prevents all players from drawing cards through the end of the next round; reversed branch blocks all non-eliminated players from gaining mana through the end of the next round.
 - sc-sitonai-3 remains the already accepted FM07/R38 Alter Ego transform consumer and is evidence/support context only for this new owner batch, not a new migration identity.
 
 Historical handlers `core.sitonai-combination-attack` and `core.sitonai-pohjola-fimbul` are evidence only and do not authorize identity-keyed production routing.

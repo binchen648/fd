@@ -5293,7 +5293,7 @@ Source/provenance:
 
 Frozen semantic requirements to recertify and preserve:
 - sc-sitonai-1: reversal grants 4 VP if the controller wins the fight; passive/Action join allows paying 3 mana to add this card to the controller's attack exactly when the active attacks contain one Strength and one Magic attribute attack.
-- sc-sitonai-2: true-name release; Action effect while source active prevents all players from drawing cards through the end of the next round; reversal clause uses the source-defined mana-gain branch.
+- sc-sitonai-2: true-name release; Action effect while source active prevents all players from drawing cards through the end of the next round; reversed branch blocks all non-eliminated players from gaining mana through the end of the next round.
 - sc-sitonai-3 existing accepted Alter Ego transform authoring/runtime contract remains unchanged and must continue to work with the completed owner archive.
 
 Implementation requirements:
