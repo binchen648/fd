@@ -74,6 +74,10 @@ The two blocking findings are closed together in one successor revision:
 
 Focused negative regression proves empty-deck, 0-mana pay-1, and 2-mana pay-3 states are not advertised and direct activation is rejected without resource/continuation mutation.
 
+Fresh independent R on successor Candidate `102193c0fbf7aaa80772676e1fe2828e32e3ee0e` returned one additional exact-boundary finding. Canonical same-attempt Coordinator relay: `https://github.com/binchen648/fd/pull/466#issuecomment-5854627654`.
+
+- R2 P1 CLOSED: the pay-1 post-draw shuffle keeps authoritative pre-payment affordability in `canActivate`, but no longer requires the controller to still hold another mana after the fixed cost has already been paid. The execution-side nonempty-deck revalidation remains intact. Focused exact-boundary coverage proves a controller starting at exactly 1 mana is advertised the action, dispatches successfully, reaches the private exact-two-card continuation, and ends at 0 mana; the existing 0-mana and empty-deck negatives remain fail closed.
+
 ## Persistence / authority boundary
 
 - post-draw hand-shuffle continuation metadata is private, exact-shape restore-validated, and reauthenticated at settlement;
@@ -94,7 +98,7 @@ Focused negative regression proves empty-deck, 0-mana pay-1, and 2-mana pay-3 st
 
 Focused capability regression:
 
-- `packages/rules/tests/regression/p3-skadi-rune-castle-readiness-capability.test.ts`: `11/11 PASS`.
+- `packages/rules/tests/regression/p3-skadi-rune-castle-readiness-capability.test.ts`: `12/12 PASS`.
 - Covers exact whole-ability loader gates, current-round distinct basic-attack pair derivation, private draw/shuffle continuation, source-grounded nonempty-deck legality, pay-1/pay-3 fixed-cost legal-action affordability, same-location mana loss + once-per-round flag, armed unique-opponent defeat, dynamic source-location mana-gain aura, selected-attribute same-location base-power doubling + round expiry, tamper-resistant continuation/restore state, and runtime compiled-pack corruption.
 
 Affected serial chain:
@@ -110,7 +114,7 @@ Affected serial chain:
 - `packages/rules/tests/regression/p3-source-skill-attack-join-capability.test.ts`
 - `packages/rules/tests/regression/p3-skadi-rune-castle-readiness-capability.test.ts`
 
-Result: `10 files / 181 tests PASS`.
+Result: `10 files / 182 tests PASS`.
 
 Static/content gates:
 

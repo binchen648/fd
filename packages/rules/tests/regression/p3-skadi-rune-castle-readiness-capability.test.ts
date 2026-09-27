@@ -202,6 +202,24 @@ describe('P3 bounded Skadi source-location/rune/castle readiness capability', ()
     expect(state.cards.filter((card) => card.ownerPlayerId === 'p1' && card.zone === 'deck')).toHaveLength(2);
   });
 
+  it('advertises and executes the post-draw shuffle at the exact 1-mana affordability boundary', () => {
+    const { state } = setup();
+    state.round.activePhase = 'advance';
+    state.players[0]!.mana = 1;
+    const source = add(state, SHUFFLE, 'skill', false);
+    addSecret(state, 'secret.exact-one-hand-a', 'hand');
+    addSecret(state, 'secret.exact-one-hand-b', 'hand');
+    addSecret(state, 'secret.exact-one-deck', 'deck');
+    const legal = abilityAction(state, source.instanceId, 'fixture.post-draw-shuffle');
+    expect(legal).toBeTruthy();
+    expect(dispatchAbilityCommand(state, 'p1', legal!).ok).toBe(true);
+    expect(state.players[0]!.mana).toBe(0);
+    expect(state.abilityRuntime!.pendingDecision).toMatchObject({ controllerId: 'p1', min: 2, max: 2 });
+    expect(state.abilityRuntime!.pendingDecision!.interaction).toMatchObject({
+      kind: 'post_draw_hand_shuffle_v1', visibility: 'owner_only', cancelPolicy: 'forbidden',
+    });
+  });
+
   it('does not advertise or execute post-draw shuffle without both fixed mana and a nonempty deck', () => {
     const emptyDeck = setup();
     emptyDeck.state.round.activePhase = 'advance';

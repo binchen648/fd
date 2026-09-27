@@ -5530,7 +5530,9 @@ R1 closure:
 - predecessor Candidate `ae5647871bedf3c2fcc143975bbcd7854d8ff5aa` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt evidence `https://github.com/binchen648/fd/pull/466#issuecomment-5854462673`;
 - P1 closed: post-draw shuffle now requires a nonempty controller deck before activation and rechecks that source-grounded legality before draw/continuation staging, so generic discard reshuffle cannot substitute for the locked Reference nonempty-deck prerequisite;
 - P2 closed: authoritative `getLegalActions` now preflights the exact fixed mana cost for both pay-1 post-draw shuffle and pay-3 same-location mana-loss rune shells; unaffordable direct dispatch remains rejected;
-- focused closure `11/11 PASS`; affected serial closure `10 files / 181 tests PASS`.
+- R2 predecessor Candidate `102193c0fbf7aaa80772676e1fe2828e32e3ee0e` received one additional `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt evidence `https://github.com/binchen648/fd/pull/466#issuecomment-5854627654`;
+- R2 P1 closed: fixed-cost affordability remains pre-payment authority only; the post-draw execution path no longer asks for a second remaining mana after cost consumption, while nonempty-deck execution revalidation stays fail closed. Exactly 1 starting mana is now legal, executes to the private continuation, and ends at 0 mana;
+- focused closure `12/12 PASS`; affected serial closure `10 files / 182 tests PASS`.
 
 Typecheck/content validate/content compile/generated determinism/diff-check PASS; `data/authoring/**` delta empty; production Skadi/SkillLib identity audit clean.
 

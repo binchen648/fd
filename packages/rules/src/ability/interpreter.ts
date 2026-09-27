@@ -3560,7 +3560,6 @@ function executeFixedControllerManaCost(s: GameState, ctx: EffectContext, a: Aut
 
 function stagePostDrawHandShuffleInteraction(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
   if (!isAcceptedPostDrawHandShuffleAbility(a)) reject('resolution_failed', 'Unsupported post-draw hand-shuffle semantic shape');
-  if (!hasAvailableManaForFixedCosts(s, ctx, a)) reject('insufficient_resource', 'Post-draw hand shuffle mana cost is not affordable');
   if (!s.cards.some((candidate) => candidate.ownerPlayerId === ctx.controllerId && candidate.zone === 'deck'))
     reject('no_legal_target', 'Post-draw hand shuffle requires a nonempty controller deck');
   resolveEffect(s, ctx, { type: 'draw_cards', count: 1 });
