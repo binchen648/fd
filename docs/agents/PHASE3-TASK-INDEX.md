@@ -5352,6 +5352,6 @@ Source-grounded requirement:
 
 Evidence: `docs/reports/2026-09-27-p3-b-sitonai-combination-fimbul-capability-result.md`.
 
-Focused capability `6/6 PASS`; affected serial chain `7 files / 150 tests PASS`; typecheck/content validate/content compile/generated determinism/diff-check PASS; production identity audit clean; `data/authoring/**` delta empty.
+Focused capability `7/7 PASS`; affected serial chain `8 files / 162 tests PASS`; typecheck/content validate/content compile/generated determinism/diff-check PASS; production identity audit clean; `data/authoring/**` delta empty.
 
 Formal accounting remains `132/944`; remaining `812`. This task is permanently zero-credit.

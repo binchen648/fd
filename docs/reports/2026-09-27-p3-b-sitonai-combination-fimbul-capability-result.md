@@ -45,18 +45,26 @@ Ordinary draw suppression is enforced at every current clean-line ordinary draw 
 
 Timed mana suppression is consumed by the unified positive `grantMana` boundary and by the `can_adjust_mana` condition. Negative mana costs/adjustments are not blocked.
 
+## R1 revision closure
+
+Fresh independent R on predecessor `f2e2c8e727e2606d7d753c8ee6b164a2328cc39d` returned `IMPLEMENTATION_NEEDS_REVISION` with two bounded findings.
+
+- Nested suppression primitives now fail closed at the whole-ability boundary: a recursive detector finds the powerful timed-suppression primitive anywhere under the enclosing effects tree, and both loader admission and runtime activation require the exact accepted top-level whole-ability semantic. A nested `branch -> then -> suppress...` regression is rejected.
+- `draw_cards` validates its evaluated count before consulting timed draw suppression, so malformed negative/non-integer counts cannot become state-dependent no-ops while suppression is active. Focused regression covers the negative-count case under an active draw block.
+
 ## Focused / affected validation
 
 - `tools\verify-toolchain.cmd` => `FD_TOOLCHAIN_OK`.
-- focused bounded capability: `6/6 PASS`.
-- affected serial chain: `7 files / 150 tests PASS`:
-  - bounded capability 6
+- focused bounded capability: `7/7 PASS`.
+- affected serial chain: `8 files / 162 tests PASS`:
+  - bounded capability 7
   - authoring interpreter 38
   - executable-card-pack 50
   - MatchSession 33
   - resolution-dataflow 15
   - MatchSession regressions 7
   - all-card-types 1
+  - card-action-add-to-attack 11
 - `npm run typecheck`: PASS.
 - `npm run content:validate`: PASS — `7 masters / 12 servants / 20 events / 0 blocking issues`.
 - `npm run content:compile`: PASS — same summary.

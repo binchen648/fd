@@ -18,7 +18,7 @@ import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute, deductionRecordD
 import { activePlayerCountMinusRoundPlayCostAbility } from './dynamic-play-cost';
 import { playerIgnoresAbilityFromController } from './player-ability-immunity';
 import { effectiveAbilitiesForPhysicalCard, isEventBattleOpponentAttackConstraint, isGainManaEqualSelectedPaidCostEffect, isGrantedBasicDoubleRemoveEffect, isSourceRevealedCondition, physicalCardWasRevealed } from './revealed-card-mechanics';
-import { applyTimedGlobalResourceSuppression, controllerHasExactDistinctActiveAttackAttributePair, expireTimedResourceSuppressions, isAcceptedTimedGlobalResourceSuppressionAbility, isExactActiveAttackAttributePairCondition, isManaGainSuppressed, isNormalCardDrawSuppressed, isTimedGlobalResourceSuppressionEffect } from './timed-resource-suppression';
+import { applyTimedGlobalResourceSuppression, containsTimedGlobalResourceSuppressionNode, controllerHasExactDistinctActiveAttackAttributePair, expireTimedResourceSuppressions, isAcceptedTimedGlobalResourceSuppressionAbility, isExactActiveAttackAttributePairCondition, isManaGainSuppressed, isNormalCardDrawSuppressed, isTimedGlobalResourceSuppressionEffect } from './timed-resource-suppression';
 import { isHideServantTrueNameUntilRoundEndEffect, isLoseVpEqualSourcePlayCountEffect, isRevealHandRoundPowerEffect, PLAYER_COMBAT_TOTAL_POWER_RULE, servantRevealSuppressedByTemporaryConcealment } from './owner-self-mechanics';
 import {
   isAnyBattlefieldConstraint,
@@ -909,7 +909,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
   if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'compiled') &&
       !isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled')) return false;
-  if (a.effects.some(isTimedGlobalResourceSuppressionEffect) && !isAcceptedTimedGlobalResourceSuppressionAbility(a)) return false;
+  if (containsTimedGlobalResourceSuppressionNode(a.effects) && !isAcceptedTimedGlobalResourceSuppressionAbility(a)) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
@@ -1719,8 +1719,8 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
     }
     case 'draw_cards': {
       const count = numeric(s, ctx, effect.count);
-      if (isNormalCardDrawSuppressed(s, p.id)) break;
       if (!Number.isSafeInteger(count) || count < 0) reject('invalid_count', 'Invalid draw count');
+      if (isNormalCardDrawSuppressed(s, p.id)) break;
       for (let i = 0; i < count; i++) {
         if (!s.cards.some(c => c.ownerPlayerId === p.id && c.zone === 'deck')) {
           s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === 'discard').forEach(c => moveCard(s, c.instanceId, 'deck'));

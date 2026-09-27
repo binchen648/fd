@@ -78,6 +78,15 @@ describe('P3 bounded attack-pair and timed resource-suppression capability', () 
       (raw: any) => { raw.cards[1].abilities[0].effects[0].extra = true; },
       (raw: any) => { raw.cards[1].abilities[0].kind = 'forced_trigger'; raw.cards[1].abilities[0].activation = { trigger: 'round_start' }; },
       (raw: any) => { raw.cards[1].abilities[1].conditions = [{ type: 'controller_mana_at_least', value: 0 }]; },
+      (raw: any) => {
+        raw.cards[1].abilities[0].effects = [{
+          type: 'branch',
+          branches: [{
+            if: { type: 'can_adjust_mana', player: 'controller', amount: 1 },
+            then: [{ type: 'suppress_all_active_players_resource_through_round', resource: 'normal_card_draw', roundsAfterCurrent: 1 }],
+          }],
+        }];
+      },
     ];
     for (const mutate of mutations) {
       const raw = archive(); mutate(raw); const loaded = loadAuthoringJson(raw);
@@ -131,6 +140,16 @@ describe('P3 bounded attack-pair and timed resource-suppression capability', () 
 
     const typed = executeResolution({ state, controllerId: 'p1', sourceCardId: drawSource.instanceId, abilityId: 'fixture.typed-draw', resolutionId: 'fixture.typed-draw', effects: [{ id: 'draw', type: 'draw_cards', player: 'controller', count: 1 }] });
     expect(typed.results[0]).toMatchObject({ effectType: 'draw_cards', status: 'no_op', payload: { actualCount: 0, movedCardIds: [] } });
+  });
+
+  it('still rejects malformed draw counts while ordinary draw suppression is active', () => {
+    const { state } = setup();
+    const blocker = add(state, BLOCK, 'attack_area', true);
+    const drawSource = add(state, DRAW, 'attack_area', true);
+    expect(dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: blocker.instanceId, abilityId: 'fixture.draw-block' }).ok).toBe(true);
+    const ability = state.abilityRuntime!.pack.cards[DRAW]!.abilities.find((entry) => entry.id === 'fixture.draw-one')!;
+    ability.effects[0]!.count = -1;
+    expect(() => resolveEffect(state, { sourceCardId: drawSource.instanceId, abilityId: ability.id, controllerId: 'p1', variables: {}, selections: {} }, ability.effects[0]!)).toThrow('Invalid draw count');
   });
 
   it('applies draw suppression to the real MatchSession round-start draw and authenticates the timed maps on restore', () => {

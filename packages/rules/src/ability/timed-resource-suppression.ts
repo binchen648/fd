@@ -46,6 +46,15 @@ export function isTimedGlobalResourceSuppressionEffect(value: RuleNode): boolean
     exactKeys(value, ['type', 'resource', 'roundsAfterCurrent']);
 }
 
+/** Find any occurrence of the powerful suppression primitive, including nested wrapper nodes. */
+export function containsTimedGlobalResourceSuppressionNode(value: unknown): boolean {
+  if (Array.isArray(value)) return value.some(containsTimedGlobalResourceSuppressionNode);
+  if (value === null || typeof value !== 'object') return false;
+  const record = value as Record<string, unknown>;
+  if (record.type === TIMED_GLOBAL_RESOURCE_SUPPRESSION_EFFECT) return true;
+  return Object.values(record).some(containsTimedGlobalResourceSuppressionNode);
+}
+
 function isExactSourceReversalCondition(value: RuleNode): boolean {
   if (value.type !== 'source_reversed') return false;
   if (value.negated === undefined) return exactKeys(value, ['type']);

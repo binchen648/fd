@@ -9,7 +9,7 @@ import { deductionRecordMechanicIsWellFormed, isDeductionRecordMarkerAbility, is
 import { isActivePlayerCountMinusRoundPlayCostModifier } from './dynamic-play-cost';
 import { OTHER_PLAYER_ABILITY_EFFECT_IMMUNITY_RULE, isOtherPlayerAbilityEffectImmunityModifier } from './player-ability-immunity';
 import { isAcceptedConditionalRevealedAttributeMarkerAbility, isAcceptedRevealedBasicGrantMarkerAbility, isConditionalAttributeGrantEffect, isEventBattleOpponentAttackConstraint, isGainManaEqualSelectedPaidCostEffect, isGrantBasicDoubleRemoveEffect, isSourceRevealedCondition } from './revealed-card-mechanics';
-import { EXACT_ACTIVE_ATTACK_ATTRIBUTE_PAIR_CONDITION, TIMED_GLOBAL_RESOURCE_SUPPRESSION_EFFECT, isAcceptedTimedGlobalResourceSuppressionAbility, isExactActiveAttackAttributePairCondition, isTimedGlobalResourceSuppressionEffect } from './timed-resource-suppression';
+import { EXACT_ACTIVE_ATTACK_ATTRIBUTE_PAIR_CONDITION, TIMED_GLOBAL_RESOURCE_SUPPRESSION_EFFECT, containsTimedGlobalResourceSuppressionNode, isAcceptedTimedGlobalResourceSuppressionAbility, isExactActiveAttackAttributePairCondition, isTimedGlobalResourceSuppressionEffect } from './timed-resource-suppression';
 import { LOSE_VP_EQUAL_SOURCE_PLAY_COUNT_EFFECT, HIDE_SERVANT_TRUE_NAME_UNTIL_ROUND_END_EFFECT, REVEAL_HAND_ROUND_POWER_EFFECT, ownerSelfMechanicIsWellFormed } from './owner-self-mechanics';
 import {
   BATTLEFIELD_SOURCE_CARD_COST_AURA_TYPE, ANY_BATTLEFIELD_CONSTRAINT, PLACE_SOURCE_AT_BATTLEFIELD_EFFECT,
@@ -498,7 +498,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
           !isAcceptedConditionalRevealedAttributeMarkerAbility(candidateAbility)) {
         issue('revealedSource.gateway', 'Conditional revealed-attribute marker requires the exact passive whole-ability semantic', id);
       }
-      if (candidateAbility.effects.some(isTimedGlobalResourceSuppressionEffect) &&
+      if (containsTimedGlobalResourceSuppressionNode(candidateAbility.effects) &&
           !isAcceptedTimedGlobalResourceSuppressionAbility(candidateAbility)) {
         issue('timedResourceSuppression.gateway', 'Timed global resource suppression requires the exact phase-action whole-ability semantic', id);
       }
