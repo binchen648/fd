@@ -1096,7 +1096,10 @@ function createCard(
   }
 
   const existing = transaction.workingState.cards.filter((candidate) =>
-    candidate.ownerPlayerId === transaction.context.controllerId && candidate.definitionId === effect.cardId);
+    candidate.definitionId === effect.cardId &&
+    (candidate.ownerPlayerId === transaction.context.controllerId ||
+      candidate.controllerPlayerId === transaction.context.controllerId ||
+      candidate.generatedBy === transaction.context.sourceCardId));
   if (existing.length > 0) {
     if (existing.length !== 1 || !isCanonicalSetupSkillCard(
       existing[0]!,

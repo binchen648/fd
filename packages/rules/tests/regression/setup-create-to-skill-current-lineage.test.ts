@@ -107,7 +107,7 @@ describe('P3 setup create-to-skill current-lineage alignment', () => {
     expect(JSON.stringify(current.state)).toBe(before);
   });
 
-  it.each(['duplicate', 'public', 'active', 'face-down', 'missing-card-state'] as const)('rejects non-canonical existing setup material (%s) atomically', (variant) => {
+  it.each(['duplicate', 'wrong-owner', 'public', 'active', 'face-down', 'missing-card-state'] as const)('rejects non-canonical existing setup material (%s) atomically', (variant) => {
     const current = session();
     const { playerId } = setupSource(current, 'master.shinji', 'master.shinji.skill.useless-person');
     const created = current.state.cards.find((card) => card.ownerPlayerId === playerId && card.definitionId === 'master.shinji.skill.false-attendant-book')!;
@@ -115,6 +115,8 @@ describe('P3 setup create-to-skill current-lineage alignment', () => {
       const duplicate = { ...structuredClone(created), instanceId: `${created.instanceId}.duplicate` };
       current.state.cards.push(duplicate);
       current.state.abilityRuntime!.cardState[duplicate.instanceId] = structuredClone(current.state.abilityRuntime!.cardState[created.instanceId]!);
+    } else if (variant === 'wrong-owner') {
+      created.ownerPlayerId = 'p7' === playerId ? 'p6' : 'p7';
     } else if (variant === 'public') {
       created.visibility = { scope: 'public' };
     } else if (variant === 'active') {
