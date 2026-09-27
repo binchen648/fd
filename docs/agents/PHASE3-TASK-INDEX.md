@@ -5497,7 +5497,7 @@ Allowed verdicts:
 ## TASK P3-B-SKADI-RUNE-CASTLE-READINESS-CAPABILITY
 
 Owner: Codex B
-Status: `IMPLEMENTATION_CANDIDATE_READY_FOR_FRESH_R`
+Status: `IMPLEMENTATION_REVISION_READY_FOR_FRESH_R`
 Base: `44bf45f39c6adc2b419527f96d4257aea4080bb8`
 Classification: bounded zero-credit capability/readiness prerequisite for current owner `servant.skadi`
 
@@ -5526,6 +5526,12 @@ Source-grounded requirement:
 
 Evidence: `docs/reports/2026-09-27-p3-b-skadi-rune-castle-readiness-capability-result.md`.
 
-Focused capability `9/9 PASS`; affected serial chain `10 files / 179 tests PASS`; typecheck/content validate/content compile/generated determinism/diff-check PASS; `data/authoring/**` delta empty; production Skadi/SkillLib identity audit clean.
+R1 closure:
+- predecessor Candidate `ae5647871bedf3c2fcc143975bbcd7854d8ff5aa` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt evidence `https://github.com/binchen648/fd/pull/466#issuecomment-5854462673`;
+- P1 closed: post-draw shuffle now requires a nonempty controller deck before activation and rechecks that source-grounded legality before draw/continuation staging, so generic discard reshuffle cannot substitute for the locked Reference nonempty-deck prerequisite;
+- P2 closed: authoritative `getLegalActions` now preflights the exact fixed mana cost for both pay-1 post-draw shuffle and pay-3 same-location mana-loss rune shells; unaffordable direct dispatch remains rejected;
+- focused closure `11/11 PASS`; affected serial closure `10 files / 181 tests PASS`.
+
+Typecheck/content validate/content compile/generated determinism/diff-check PASS; `data/authoring/**` delta empty; production Skadi/SkillLib identity audit clean.
 
 Formal accounting remains `134/944`; remaining `810`. This task is permanently zero-credit.

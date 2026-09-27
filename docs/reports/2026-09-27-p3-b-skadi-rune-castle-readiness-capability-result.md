@@ -1,7 +1,7 @@
 # P3-B Skadi Rune / Castle Readiness Capability Result
 
 Role: Codex B
-Status: `IMPLEMENTATION_CANDIDATE_READY_FOR_FRESH_R`
+Status: `IMPLEMENTATION_REVISION_READY_FOR_FRESH_R`
 Date: 2026-09-27
 Base: `44bf45f39c6adc2b419527f96d4257aea4080bb8`
 Classification: bounded zero-credit capability/readiness prerequisite for current owner `servant.skadi`
@@ -63,6 +63,17 @@ Bounded capability surface:
 
 The loader recursively detects privileged nodes and rejects widened/nested near matches unless the entire ability matches one accepted whole-ability semantic. Runtime resolution rechecks the same whole-ability contract after compiled-pack corruption.
 
+## R1 revision closure
+
+Fresh independent Reviewer on predecessor Candidate `ae5647871bedf3c2fcc143975bbcd7854d8ff5aa` returned `IMPLEMENTATION_NEEDS_REVISION`. Canonical same-attempt Coordinator relay: `https://github.com/binchen648/fd/pull/466#issuecomment-5854462673`.
+
+The two blocking findings are closed together in one successor revision:
+
+- P1: the post-draw hand-shuffle action now requires a nonempty controller deck at authoritative activation time and rechecks the same condition before draw/continuation staging. An empty deck is illegal even if discard cards could otherwise be reshuffled by the generic draw primitive. This preserves the locked Reference legality boundary `deck nonempty -> pay 1 -> draw 1 -> shuffle exactly 2 hand cards`.
+- P2: `getLegalActions` now applies existing fixed-cost affordability preflight to both accepted privileged fixed-cost phase actions: pay-1 post-draw shuffle and pay-3 same-location mana-loss rune. Direct dispatch remains fail closed because it consumes the same legal-action authority before execution.
+
+Focused negative regression proves empty-deck, 0-mana pay-1, and 2-mana pay-3 states are not advertised and direct activation is rejected without resource/continuation mutation.
+
 ## Persistence / authority boundary
 
 - post-draw hand-shuffle continuation metadata is private, exact-shape restore-validated, and reauthenticated at settlement;
@@ -83,8 +94,8 @@ The loader recursively detects privileged nodes and rejects widened/nested near 
 
 Focused capability regression:
 
-- `packages/rules/tests/regression/p3-skadi-rune-castle-readiness-capability.test.ts`: `9/9 PASS`.
-- Covers exact whole-ability loader gates, current-round distinct basic-attack pair derivation, private draw/shuffle continuation, same-location mana loss + once-per-round flag, armed unique-opponent defeat, dynamic source-location mana-gain aura, selected-attribute same-location base-power doubling + round expiry, tamper-resistant continuation/restore state, and runtime compiled-pack corruption.
+- `packages/rules/tests/regression/p3-skadi-rune-castle-readiness-capability.test.ts`: `11/11 PASS`.
+- Covers exact whole-ability loader gates, current-round distinct basic-attack pair derivation, private draw/shuffle continuation, source-grounded nonempty-deck legality, pay-1/pay-3 fixed-cost legal-action affordability, same-location mana loss + once-per-round flag, armed unique-opponent defeat, dynamic source-location mana-gain aura, selected-attribute same-location base-power doubling + round expiry, tamper-resistant continuation/restore state, and runtime compiled-pack corruption.
 
 Affected serial chain:
 
@@ -99,7 +110,7 @@ Affected serial chain:
 - `packages/rules/tests/regression/p3-source-skill-attack-join-capability.test.ts`
 - `packages/rules/tests/regression/p3-skadi-rune-castle-readiness-capability.test.ts`
 
-Result: `10 files / 179 tests PASS`.
+Result: `10 files / 181 tests PASS`.
 
 Static/content gates:
 

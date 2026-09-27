@@ -202,6 +202,34 @@ describe('P3 bounded Skadi source-location/rune/castle readiness capability', ()
     expect(state.cards.filter((card) => card.ownerPlayerId === 'p1' && card.zone === 'deck')).toHaveLength(2);
   });
 
+  it('does not advertise or execute post-draw shuffle without both fixed mana and a nonempty deck', () => {
+    const emptyDeck = setup();
+    emptyDeck.state.round.activePhase = 'advance';
+    const emptySource = add(emptyDeck.state, SHUFFLE, 'skill', false);
+    addSecret(emptyDeck.state, 'secret.empty-hand-a', 'hand');
+    addSecret(emptyDeck.state, 'secret.empty-hand-b', 'hand');
+    const reshufflable = addSecret(emptyDeck.state, 'secret.empty-discard', 'deck');
+    reshufflable.zone = 'discard';
+    expect(abilityAction(emptyDeck.state, emptySource.instanceId, 'fixture.post-draw-shuffle')).toBeFalsy();
+    const emptyBefore = structuredClone(emptyDeck.state);
+    expect(dispatchAbilityCommand(emptyDeck.state, 'p1', {
+      type: 'activate_ability', cardInstanceId: emptySource.instanceId, abilityId: 'fixture.post-draw-shuffle',
+    }).ok).toBe(false);
+    expect(emptyDeck.state).toEqual(emptyBefore);
+
+    const noMana = setup();
+    noMana.state.round.activePhase = 'advance';
+    noMana.state.players[0]!.mana = 0;
+    const noManaSource = add(noMana.state, SHUFFLE, 'skill', false);
+    addSecret(noMana.state, 'secret.no-mana-deck', 'deck');
+    expect(abilityAction(noMana.state, noManaSource.instanceId, 'fixture.post-draw-shuffle')).toBeFalsy();
+    const noManaBefore = structuredClone(noMana.state);
+    expect(dispatchAbilityCommand(noMana.state, 'p1', {
+      type: 'activate_ability', cardInstanceId: noManaSource.instanceId, abilityId: 'fixture.post-draw-shuffle',
+    }).ok).toBe(false);
+    expect(noMana.state).toEqual(noManaBefore);
+  });
+
   it('applies same-location mana loss once per round and authenticates its exact rune pair shell', () => {
     const { state } = setup();
     const source = add(state, RUNE, 'skill', false);
@@ -217,6 +245,20 @@ describe('P3 bounded Skadi source-location/rune/castle readiness capability', ()
     expect(state.players[1]!.mana).toBe(3);
     expect(state.players[2]!.mana).toBe(5);
     expect(abilityAction(state, source.instanceId, 'fixture.isan')).toBeFalsy();
+  });
+
+  it('does not advertise or execute the fixed-3-mana same-location rune when mana is insufficient', () => {
+    const { state } = setup();
+    const source = add(state, RUNE, 'skill', false);
+    addBasic(state, 'basic.isan-low-a', ['魔术']);
+    addBasic(state, 'basic.isan-low-b', ['魔术']);
+    state.players[0]!.mana = 2;
+    expect(abilityAction(state, source.instanceId, 'fixture.isan')).toBeFalsy();
+    const before = structuredClone(state);
+    expect(dispatchAbilityCommand(state, 'p1', {
+      type: 'activate_ability', cardInstanceId: source.instanceId, abilityId: 'fixture.isan',
+    }).ok).toBe(false);
+    expect(state).toEqual(before);
   });
 
   it('consumes a current-round armed flag to defeat exactly one active battlefield opponent', () => {
