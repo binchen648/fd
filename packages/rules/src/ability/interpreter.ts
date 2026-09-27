@@ -1838,10 +1838,13 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
         reject('invalid_state', 'Attack join requires a controller-owned inactive face-up skill-zone source card');
       }
       moveCard(s, source.instanceId, 'attack_area');
-      const nextState = r.cardState[source.instanceId] ??= { active: false, faceDown: false, playedRound: s.round.roundNumber };
+      const nextState = r.cardState[source.instanceId] ??= {
+        active: false,
+        faceDown: false,
+        playedRound: Math.max(0, s.round.roundNumber - 1),
+      };
       nextState.active = true;
       nextState.faceDown = false;
-      nextState.playedRound = s.round.roundNumber;
       nextState.paidManaOnPlay = 0;
       source.visibility = { scope: 'public' };
       r.events.push({ type: 'source_skill_card_joined_attack', playerId: ctx.controllerId, sourceCardId: source.instanceId, abilityId: ctx.abilityId });

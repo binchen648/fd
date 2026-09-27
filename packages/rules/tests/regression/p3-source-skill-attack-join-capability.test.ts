@@ -48,6 +48,7 @@ function setup() {
   initializeAbilityRuntime(state, pack, { seed: 20260927 });
   state.round.activePhase = 'action'; state.round.prioritySeat = 1;
   const source = add(state, SOURCE, 'skill', false);
+  state.abilityRuntime!.cardState[source.instanceId]!.playedRound = Math.max(0, state.round.roundNumber - 1);
   addAttack(state, 'basic.join-strength', ['力量']);
   addAttack(state, 'basic.join-magic', ['魔术']);
   return { state, pack, source };
@@ -103,8 +104,23 @@ describe('P3 bounded source skill-card attack-join capability', () => {
     expect(joined.zone).toBe('attack_area');
     expect(joined.visibility).toEqual({ scope: 'public' });
     expect(state.abilityRuntime!.cardState[source.instanceId]).toMatchObject({ active: true, faceDown: false, paidManaOnPlay: 0 });
+    expect(state.abilityRuntime!.cardState[source.instanceId]!.playedRound).toBe(Math.max(0, state.round.roundNumber - 1));
+    expect(state.abilityRuntime!.cardState[source.instanceId]!.playedRound).not.toBe(state.round.roundNumber);
     expect(state.abilityRuntime!.cardPlayCountByInstance?.[source.instanceId] ?? 0).toBe(0);
     expect(state.abilityRuntime!.playCounters?.cardsPlayedByPlayer.p1 ?? 0).toBe(beforeCardsPlayed);
+  });
+
+  it('preserves genuine prior play provenance and initializes an untracked source with non-current provenance', () => {
+    const prior = setup();
+    prior.state.abilityRuntime!.cardState[prior.source.instanceId]!.playedRound = prior.state.round.roundNumber;
+    expect(dispatchAbilityCommand(prior.state, 'p1', { type: 'activate_ability', cardInstanceId: prior.source.instanceId, abilityId: ABILITY }).ok).toBe(true);
+    expect(prior.state.abilityRuntime!.cardState[prior.source.instanceId]!.playedRound).toBe(prior.state.round.roundNumber);
+
+    const untracked = setup();
+    delete untracked.state.abilityRuntime!.cardState[untracked.source.instanceId];
+    expect(dispatchAbilityCommand(untracked.state, 'p1', { type: 'activate_ability', cardInstanceId: untracked.source.instanceId, abilityId: ABILITY }).ok).toBe(true);
+    expect(untracked.state.abilityRuntime!.cardState[untracked.source.instanceId]!.playedRound).toBe(Math.max(0, untracked.state.round.roundNumber - 1));
+    expect(untracked.state.abilityRuntime!.cardState[untracked.source.instanceId]!.playedRound).not.toBe(untracked.state.round.roundNumber);
   });
 
   it('requires the exact distinct active attribute pair, enough mana, and the source to remain in its owned skill zone', () => {

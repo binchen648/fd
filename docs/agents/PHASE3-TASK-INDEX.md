@@ -5370,7 +5370,7 @@ Formal accounting remains `132/944`; remaining `812`. This task is permanently z
 ## TASK P3-B-SITONAI-SOURCE-SKILL-ATTACK-JOIN-CAPABILITY
 
 Owner: Codex B
-Status: `IMPLEMENTATION_CANDIDATE_READY_FOR_FRESH_R`
+Status: `IMPLEMENTATION_REVISION_READY_FOR_FRESH_R`
 Base: `e92cb3a08392619b0e8f47504f8e1c751b7b504d`
 Classification: bounded zero-credit capability/readiness prerequisite discovered while resuming current owner `servant.sitonai`
 
@@ -5395,3 +5395,10 @@ Hard scope boundary:
 Evidence: `docs/reports/2026-09-27-p3-b-sitonai-source-skill-attack-join-capability-result.md`.
 
 Formal accounting remains `132/944`; remaining `812`. This task is permanently zero-credit.
+
+R1 closure:
+- fresh Reviewer retry on exact predecessor Candidate `a79cff1d2e91515d5a638a2e063415cb340f3d08` returned `IMPLEMENTATION_NEEDS_REVISION`; canonical evidence `https://github.com/binchen648/fd/pull/464#issuecomment-5853233206`;
+- sole blocking finding was forged current-round `playedRound` provenance on attack join, which could incorrectly satisfy existing `played_this_round` consumers such as Sigurd's refund selector;
+- revision preserves any genuine prior `playedRound`, initializes a previously untracked skill-zone source with a non-current round, and never stamps current `playedRound` merely because the card joined an attack;
+- focused closure proves join cost/state/visibility/zero paid play cost/no ordinary play accounting while preserving non-play provenance; Sigurd-style regression proves a joined-but-not-played servant-skill attack is excluded from `played_this_round` candidates;
+- affected serial closure: `7 files / 155 tests PASS`; typecheck/content validate/content compile/generated determinism/diff-check PASS; `data/authoring/**` delta empty; production Sitonai/SkillLib identity-routing audit clean.

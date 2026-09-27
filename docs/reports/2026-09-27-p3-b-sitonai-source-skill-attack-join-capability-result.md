@@ -1,7 +1,7 @@
 # P3-B Sitonai Source Skill Attack Join Capability Result
 
 Role: Codex B
-Status: `IMPLEMENTATION_CANDIDATE_READY_FOR_FRESH_R`
+Status: `IMPLEMENTATION_REVISION_READY_FOR_FRESH_R`
 Date: 2026-09-27
 Base: `e92cb3a08392619b0e8f47504f8e1c751b7b504d`
 Classification: bounded zero-credit capability/readiness prerequisite for current owner `servant.sitonai`
@@ -37,6 +37,21 @@ The privileged primitive is recursively detected through nested wrappers. A malf
 
 At execution, the server requires an owned/controlled, inactive, face-up skill-zone physical source. The result is a public active attack-area card with `paidManaOnPlay=0`. It does not increment card-play counters or emit ordinary play events.
 
+## R1 revision closure
+
+Fresh independent Reviewer retry on predecessor Candidate `a79cff1d2e91515d5a638a2e063415cb340f3d08` returned `IMPLEMENTATION_NEEDS_REVISION` with one blocking shared-runtime finding (`https://github.com/binchen648/fd/pull/464#issuecomment-5853233206`).
+
+The predecessor join implementation stamped `playedRound=current` even though locked Reference explicitly distinguishes joining from card play. That could make the joined servant-skill attack satisfy existing `played_this_round` consumers, including the already-migrated Sigurd refund selector.
+
+The revision closes that finding without changing the bounded capability surface:
+
+- joining no longer writes current `playedRound`;
+- an existing genuine prior `playedRound` value is preserved exactly;
+- if runtime state for the skill-zone source is absent, the join creates a valid non-current `playedRound` state rather than forging current play provenance;
+- `paidManaOnPlay=0`, public/face-up/active attack state, authored ability mana payment, zero ordinary play count/counters, and absence of ordinary play events remain unchanged;
+- focused regression starts the skill-zone source with non-current provenance and asserts it remains non-current after join;
+- the existing Sigurd-style `played_this_round` regression now includes a joined-but-not-played servant-skill attack and proves it is excluded from refund candidates while a genuinely played same-battle attack remains eligible.
+
 ## Scope boundary
 
 - `data/authoring/**` remains unchanged; zero Sitonai consumer migration occurs in this task.
@@ -47,9 +62,10 @@ At execution, the server requires an owned/controlled, inactive, face-up skill-z
 
 ## Verification
 
-- focused source-skill attack-join capability: `4/4 PASS`;
+- focused source-skill attack-join capability: `5/5 PASS`;
 - adjacent capability/legacy play chain: `4 files / 22 tests PASS`;
-- affected serial chain (`authoring-interpreter`, `executable-card-pack`, `match-session`, `resolution-dataflow`, Sitonai readiness, join capability): `6 files / 147 tests PASS`;
+- R1 exact closure set (join capability + Sitonai readiness + Sigurd revealed-source): `3 files / 19 tests PASS`;
+- affected serial chain (`authoring-interpreter`, `executable-card-pack`, `match-session`, `resolution-dataflow`, Sitonai readiness, join capability, Sigurd revealed-source): `7 files / 155 tests PASS`;
 - typecheck: PASS;
 - content validate: PASS — `7 masters / 12 servants / 20 events / 0 blocking issues`;
 - content compile: PASS — same summary;

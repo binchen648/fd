@@ -213,11 +213,15 @@ describe('P3 bounded revealed-source capability', () => {
     const { state } = setup(); const source = add(state, SOURCE, 'p1', 'discard', false); markRevealed(state, source.instanceId);
     const opponent = add(state, BASIC, 'p2', 'attack_area', true); state.abilityRuntime!.cardState[opponent.instanceId]!.paidManaOnPlay = 5;
     state.abilityRuntime!.cardState[opponent.instanceId]!.playedRound = state.round.roundNumber;
+    const joinedNotPlayed = add(state, SOURCE, 'p2', 'attack_area', true);
+    state.abilityRuntime!.cardState[joinedNotPlayed.instanceId]!.paidManaOnPlay = 0;
+    state.abilityRuntime!.cardState[joinedNotPlayed.instanceId]!.playedRound = Math.max(0, state.round.roundNumber - 1);
     const otherBattle = add(state, BASIC, 'p3', 'attack_area', true); state.abilityRuntime!.cardState[otherBattle.instanceId]!.paidManaOnPlay = 9;
     state.players[0]!.mana = 1;
     processAbilityEvent(state, { id: 'battle-terminal:refund', type: 'after_battle_ended', battlePhaseResolutionId: 'battle-phase:1', battleParticipantIds: ['p1','p2','p3'] });
     const pending = state.abilityRuntime!.pendingDecision!;
     expect(pending.candidates).toEqual([opponent.instanceId]);
+    expect(pending.candidates).not.toContain(joinedNotPlayed.instanceId);
     expect(dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: pending.id, selectedIds: [opponent.instanceId] }).ok).toBe(true);
     expect(state.players[0]!.mana).toBe(6);
   });
