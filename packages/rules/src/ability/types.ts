@@ -275,6 +275,10 @@ export interface RulerSealBinding {
   id: string; issuerPlayerId: PlayerId; boundPlayerId: PlayerId; sourceCardId: string; abilityId: string;
   grantedRound: number; spent: boolean; spentRound?: number;
 }
+export interface NormalCommandSealUseRecord {
+  playerId: PlayerId; sourceCardId: string; abilityId: string;
+  round: number; before: number; after: number;
+}
 export interface PendingRulerSealReward {
   sealId: string; issuerPlayerId: PlayerId; boundPlayerId: PlayerId; sourceCardId: string; abilityId: string;
   round: number; rewardVp: number;
@@ -332,6 +336,8 @@ export interface AbilityRuntime {
   pendingRulerSealRewards: PendingRulerSealReward[];
   /** Authoritative round of the most recent ordinary Command Seal ability use by player. Paying a seal as a cost does not write this fact. */
   normalCommandSealUseRoundByPlayer?: Record<PlayerId, number>;
+  /** Append-only provenance for ordinary Command Seal ability/replacement use. */
+  normalCommandSealUseHistory?: NormalCommandSealUseRecord[];
   /** Authoritative round of the most recent Ruler Seal ability/replacement use by issuer. Paying a seal as a cost does not write this fact. */
   rulerCommandSealUseRoundByPlayer?: Record<PlayerId, number>;
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];

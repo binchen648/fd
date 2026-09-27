@@ -265,6 +265,7 @@ describe('P3 Spartacus seal-power readiness capability', () => {
   it('round-trips an exact owned-Ruler choice and rejects host-signed widened restore metadata', () => {
     const state = setup(); const source = add(state, POWER); const grantSource = add(state, RULER_GRANT);
     binding(state, 'seal-a', 'p1', 'p2', grantSource, RULER_GRANT_ID); binding(state, 'seal-b', 'p1', 'p3', grantSource, RULER_GRANT_ID);
+    state.abilityRuntime!.abilityUsage[`${grantSource}:${RULER_GRANT_ID}`] = 1;
     expect(activate(state, 'p1', source, RULER_ID).ok).toBe(true);
     const session = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1'], restorePackKind: 'trusted_authoring_fixture' }, false);
     session.state = state; session.logs = []; session.replay = []; session.replaySnapshots = []; session.battleHistory = [];
@@ -307,6 +308,69 @@ describe('P3 Spartacus seal-power readiness capability', () => {
       signer.state = state; signer.logs = []; signer.replay = []; signer.replaySnapshots = []; signer.battleHistory = [];
       expect(restoreMatchSession(signer.serializeSession(), { restorePackKind: 'trusted_authoring_fixture' }).state.players[0]).toMatchObject({ commandSpells: value });
     }
+  });
+
+  it('rejects an unreachable seventh restored Ruler seal beyond exact grant usage provenance', () => {
+    const state = setup(); const grantSource = add(state, RULER_GRANT);
+    state.abilityRuntime!.abilityUsage[`${grantSource}:${RULER_GRANT_ID}`] = 3;
+    for (let index = 0; index < 6; index++) binding(state, `legal-seal-${index}`, 'p1', index % 2 === 0 ? 'p2' : 'p3', grantSource, RULER_GRANT_ID);
+    const signer = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1'], restorePackKind: 'trusted_authoring_fixture' }, false);
+    signer.state = state; signer.logs = []; signer.replay = []; signer.replaySnapshots = []; signer.battleHistory = [];
+    expect(restoreMatchSession(signer.serializeSession(), { restorePackKind: 'trusted_authoring_fixture' }).state.abilityRuntime!.rulerSealBindings).toHaveLength(6);
+
+    binding(state, 'impossible-seventh', 'p1', 'p2', grantSource, RULER_GRANT_ID);
+    const forged = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1'], restorePackKind: 'trusted_authoring_fixture' }, false);
+    forged.state = state; forged.logs = []; forged.replay = []; forged.replaySnapshots = []; forged.battleHistory = [];
+    expect(() => restoreMatchSession(forged.serializeSession(), { restorePackKind: 'trusted_authoring_fixture' })).toThrow(/Invalid MatchSession state container/);
+  });
+
+  it('rejects forged persisted normal and Ruler seal-use round markers without underlying use provenance', () => {
+    for (const family of ['normal', 'ruler'] as const) {
+      const state = setup();
+      if (family === 'normal') state.abilityRuntime!.normalCommandSealUseRoundByPlayer!.p2 = state.round.roundNumber;
+      else state.abilityRuntime!.rulerCommandSealUseRoundByPlayer!.p2 = state.round.roundNumber;
+      const signer = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1'], restorePackKind: 'trusted_authoring_fixture' }, false);
+      signer.state = state; signer.logs = []; signer.replay = []; signer.replaySnapshots = []; signer.battleHistory = [];
+      expect(() => restoreMatchSession(signer.serializeSession(), { restorePackKind: 'trusted_authoring_fixture' })).toThrow(/Invalid MatchSession state container/);
+    }
+  });
+
+  it('round-trips real normal and Ruler seal-use provenance that backs the persisted current-round markers', () => {
+    const normalState = setup(); const command = add(normalState, COMMAND);
+    const commandAction = action(normalState, 'p1', command, 'command-spell.gain-mana');
+    expect(commandAction).toBeTruthy();
+    expect(rules.dispatchAbilityCommand(normalState, 'p1', commandAction!).ok).toBe(true);
+    expect(normalState.abilityRuntime!.normalCommandSealUseHistory).toHaveLength(1);
+    const normalSigner = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1'], restorePackKind: 'trusted_authoring_fixture' }, false);
+    normalSigner.state = normalState; normalSigner.logs = []; normalSigner.replay = []; normalSigner.replaySnapshots = []; normalSigner.battleHistory = [];
+    const normalRestored = restoreMatchSession(normalSigner.serializeSession(), { restorePackKind: 'trusted_authoring_fixture' });
+    expect(normalRestored.state.abilityRuntime!.normalCommandSealUseRoundByPlayer?.p1).toBe(normalState.round.roundNumber);
+
+    const rulerState = setup(); const grantSource = add(rulerState, RULER_GRANT); const rulerUse = add(rulerState, RULER_USE);
+    binding(rulerState, 'real-ruler-a', 'p1', 'p2', grantSource, RULER_GRANT_ID);
+    binding(rulerState, 'real-ruler-b', 'p1', 'p3', grantSource, RULER_GRANT_ID);
+    rulerState.abilityRuntime!.abilityUsage[`${grantSource}:${RULER_GRANT_ID}`] = 1;
+    expect(activate(rulerState, 'p1', rulerUse, RULER_USE_ID).ok).toBe(true);
+    const option = rulerState.abilityRuntime!.pendingDecision!;
+    expect(rules.dispatchAbilityCommand(rulerState, 'p1', { type: 'choose_target', decisionId: option.id, selectedIds: ['lock_movement'] }).ok).toBe(true);
+    const target = rulerState.abilityRuntime!.pendingDecision!;
+    expect(rules.dispatchAbilityCommand(rulerState, 'p1', { type: 'choose_target', decisionId: target.id, selectedIds: ['p2'] }).ok).toBe(true);
+    const rulerSigner = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1'], restorePackKind: 'trusted_authoring_fixture' }, false);
+    rulerSigner.state = rulerState; rulerSigner.logs = []; rulerSigner.replay = []; rulerSigner.replaySnapshots = []; rulerSigner.battleHistory = [];
+    const rulerRestored = restoreMatchSession(rulerSigner.serializeSession(), { restorePackKind: 'trusted_authoring_fixture' });
+    expect(rulerRestored.state.abilityRuntime!.rulerCommandSealUseRoundByPlayer?.p1).toBe(rulerState.round.roundNumber);
+  });
+
+  it('rejects forged normal use provenance that is not backed by authoritative execution usage', () => {
+    const state = setup(); const command = add(state, COMMAND);
+    state.abilityRuntime!.normalCommandSealUseHistory!.push({
+      playerId: 'p1', sourceCardId: command, abilityId: 'command-spell.gain-mana',
+      round: state.round.roundNumber, before: 3, after: 2,
+    });
+    state.abilityRuntime!.normalCommandSealUseRoundByPlayer!.p1 = state.round.roundNumber;
+    const signer = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1'], restorePackKind: 'trusted_authoring_fixture' }, false);
+    signer.state = state; signer.logs = []; signer.replay = []; signer.replaySnapshots = []; signer.battleHistory = [];
+    expect(() => restoreMatchSession(signer.serializeSession(), { restorePackKind: 'trusted_authoring_fixture' })).toThrow(/Invalid MatchSession state container/);
   });
 
   it('computes the combat formula from distinct engaged seal users only and ignores prior-round/far usage', () => {

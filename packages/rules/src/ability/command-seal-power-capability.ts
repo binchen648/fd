@@ -1,6 +1,6 @@
 import type { GameState } from '../schema/game';
 import { getEnabledLocations } from '../core/map-engine';
-import type { AuthoringAbility, PlayerId, RuleNode, RulerSealBinding } from './types';
+import type { AuthoringAbility, NormalCommandSealUseRecord, PlayerId, RuleNode, RulerSealBinding } from './types';
 
 export const ENGAGED_SEAL_USER_THIS_ROUND_CONDITION = 'controller_has_engaged_opponent_command_or_ruler_seal_user_this_round' as const;
 export const ADD_ENGAGED_SEAL_USER_FORMULA_POWER_EFFECT = 'add_controller_round_power_from_engaged_seal_users' as const;
@@ -126,11 +126,27 @@ function activeEngagedOpponentIds(state: GameState, controllerId: PlayerId): Pla
     .map((player) => player.id);
 }
 
-export function markNormalCommandSealUsedThisRound(state: GameState, playerId: PlayerId): void {
+export function markNormalCommandSealUsedThisRound(
+  state: GameState,
+  playerId: PlayerId,
+  provenance?: Pick<NormalCommandSealUseRecord, 'sourceCardId' | 'abilityId' | 'before' | 'after'>,
+): void {
   if (!state.players.some((player) => player.id === playerId)) return;
   const runtime = state.abilityRuntime;
   if (!runtime) return;
   (runtime.normalCommandSealUseRoundByPlayer ??= {})[playerId] = state.round.roundNumber;
+  if (provenance) {
+    (runtime.normalCommandSealUseHistory ??= []).push({
+      playerId,
+      sourceCardId: provenance.sourceCardId,
+      abilityId: provenance.abilityId,
+      round: state.round.roundNumber,
+      before: provenance.before,
+      after: provenance.after,
+    });
+    const usageKey = `normal-seal-use:${provenance.sourceCardId}:${provenance.abilityId}:round:${state.round.roundNumber}`;
+    runtime.abilityUsage[usageKey] = (runtime.abilityUsage[usageKey] ?? 0) + 1;
+  }
 }
 export function markRulerCommandSealUsedThisRound(state: GameState, playerId: PlayerId): void {
   if (!state.players.some((player) => player.id === playerId)) return;

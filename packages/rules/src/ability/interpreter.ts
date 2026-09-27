@@ -272,7 +272,7 @@ export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPa
     cardPlayCountByInstance: {}, grantedPerGamePlayLimitCardIds: [], grantedPerGamePlayLimitBaselineByCardId: {},
     ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [],
     rulerSealBindings: [], rulerSealBindingHistory: {}, pendingRulerSealRewards: [],
-    normalCommandSealUseRoundByPlayer: {}, rulerCommandSealUseRoundByPlayer: {},
+    normalCommandSealUseRoundByPlayer: {}, normalCommandSealUseHistory: [], rulerCommandSealUseRoundByPlayer: {},
     usedAbilities: {}, processedEvents: [], revealedServants: [],
     events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [], roomMode: options.roomMode ?? 'standard',
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
@@ -2033,7 +2033,9 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
         consumed: true,
       });
       if (directive === 'spend_command_spell' && amount === -1 && current > 0 && next === current - 1) {
-        markNormalCommandSealUsedThisRound(s, p.id);
+        markNormalCommandSealUsedThisRound(s, p.id, {
+          sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, before: current, after: next,
+        });
       }
       if (current > 0 && next === 0) {
         processEvent(s, { id: nextId(s, 'empty-seals'), type: 'after_controller_loses_all_command_seals', playerId: p.id });
@@ -3552,7 +3554,12 @@ function pushResourceDirectives(s: GameState, ctx: EffectContext, results: Known
     });
     if (directive === 'spend_command_spell' && result.payload.actualAmount === -1 &&
         result.payload.before > 0 && result.payload.after === result.payload.before - 1) {
-      markNormalCommandSealUsedThisRound(s, result.payload.playerId);
+      markNormalCommandSealUsedThisRound(s, result.payload.playerId, {
+        sourceCardId: ctx.sourceCardId,
+        abilityId: ctx.abilityId,
+        before: result.payload.before,
+        after: result.payload.after,
+      });
     }
     if (result.payload.before > 0 && result.payload.after === 0) {
       processEvent(s, { id: nextId(s, 'empty-seals'), type: 'after_controller_loses_all_command_seals', playerId: result.payload.playerId });
@@ -3685,7 +3692,9 @@ function executeNormalSealPowerReplacement(s: GameState, ctx: EffectContext, a: 
   const current = Number((p as unknown as { commandSpells?: number }).commandSpells ?? 3);
   if (!Number.isSafeInteger(current) || current <= 0) reject('insufficient_command_seals', 'No ordinary Command Seal is available');
   (p as unknown as { commandSpells: number }).commandSpells = current - 1;
-  markNormalCommandSealUsedThisRound(s, ctx.controllerId);
+  markNormalCommandSealUsedThisRound(s, ctx.controllerId, {
+    sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, before: current, after: current - 1,
+  });
   addControllerRoundCombatPower(s, ctx, 4, 'normal-command-seal-power');
   pushModeDirective(s, { controllerId: ctx.controllerId, directive: 'spend_command_spell', sourceCardId: ctx.sourceCardId,
     abilityId: ctx.abilityId, amount: -1, commandSpells: current - 1, consumed: true, replacement: 'round_power' });

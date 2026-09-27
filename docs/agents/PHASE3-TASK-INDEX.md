@@ -5687,15 +5687,18 @@ Hard scope boundary:
 - ACCEPTED must A-sync/rescan and return to `P3-S-OWNER-SPARTACUS-COMPLETE-MIGRATION`; it cannot advance owners.
 
 Verification evidence:
-- predecessor Candidate `f114f650516802e19e38cd882c341e83469d8021` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/470#issuecomment-5857767819`;
+- R1 predecessor Candidate `f114f650516802e19e38cd882c341e83469d8021` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/470#issuecomment-5857767819`;
 - R1 P1 closure: restored `rulerSealBindings` require unique resource ids, coherent issuer/bound/granted/spent facts, exact source-controller ownership, the exact named source ability must satisfy the accepted identity-free Ruler-seal grant semantic, and persisted `rulerSealBindingHistory` must exactly match the restored physical binding multiset;
 - R1 P1 closure: restored `player.commandSpells`, when present, must be a safe integer in the physical `0..3` domain; widened string/numeric/fractional values fail closed before MatchSession construction;
-- dedicated Spartacus seal-power readiness focused suite `15/15 PASS`;
-- affected serial `7 files / 166 tests PASS`;
+- R2 predecessor Candidate `7fd3e7b1ef942a569a36e4b36ff656751f8ca6bd` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/470#issuecomment-5858026355`;
+- R2 P1 closure: restored physical Ruler bindings are grouped by exact grant source/ability and must equal exactly two bindings per authenticated per-game grant use, with usage constrained to `1..3`; impossible seventh-seal snapshots fail closed;
+- R2 P1 closure: persisted normal/Ruler use-round markers require underlying use provenance — normal uses carry authenticated source/ability/before/after records cross-bound to dedicated `abilityUsage` execution counters, while Ruler markers must equal the latest authenticated physical binding `spentRound`; marker-only forgeries fail closed;
+- dedicated Spartacus seal-power readiness focused suite `19/19 PASS`;
+- affected serial `10 files / 226 tests PASS`;
 - typecheck PASS;
 - content validate/compile PASS — `7 masters / 12 servants / 20 events / 0 blocking issues`;
 - generated determinism PASS with unchanged hashes;
-- predecessor-to-worktree `git diff --check` PASS;
+- R2-predecessor-to-worktree `git diff --check` PASS;
 - `data/authoring/**` delta EMPTY;
 - production identity audit clean for Spartacus ids/names/card strings and `SkillLib`;
 - detailed result: `docs/reports/2026-09-28-p3-b-spartacus-seal-power-readiness-capability-result.md`.

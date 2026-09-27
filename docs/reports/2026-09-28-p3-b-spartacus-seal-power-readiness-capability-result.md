@@ -48,9 +48,20 @@ Both R1 P1 findings are closed in this successor line:
 
 Focused regressions reproduce the Reviewer counterexamples: an unrelated Ruler-use ability can no longer authenticate a forged restored seal even when the forged history is made coherent, and host-signed `commandSpells='999'` / `999` / `4` / `-1` / `1.5` are rejected while the legal boundaries `0` and `3` round-trip.
 
+## R2 fresh-review closure
+
+Predecessor Candidate `7fd3e7b1ef942a569a36e4b36ff656751f8ca6bd` received `IMPLEMENTATION_NEEDS_REVISION`. Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/470#issuecomment-5858026355`.
+
+Both R2 P1 findings are closed in this successor line:
+
+- restored Ruler-seal resources are reconciled against exact accepted grant execution provenance: bindings are grouped by exact `(sourceCardId, abilityId)`, the persisted per-game `abilityUsage` must be an integer `1..3`, and the physical binding cardinality must be exactly `2 * usage`; legal maximum usage therefore permits exactly six bindings and an impossible seventh binding fails closed;
+- persisted normal/Ruler use-round markers are no longer trusted independently. Normal Command Seal use now carries append-only source/ability/before/after/round provenance, each provenance record is cross-bound to the dedicated authoritative execution counter in `abilityUsage`, and the marker must equal the latest authenticated use record. Ruler use markers are reconstructed against actual issuer-owned physical bindings and their authenticated `spentRound`; marker-only forgeries fail closed.
+
+Focused regressions cover the legal six-binding maximum plus an impossible seventh restored seal, forged normal and Ruler marker-only snapshots, forged normal provenance lacking its execution counter, and successful round-trip of real normal and Ruler use provenance.
+
 ## Focused verification
 
-`packages/rules/tests/regression/p3-spartacus-seal-power-readiness-capability.test.ts`: **15/15 PASS**.
+`packages/rules/tests/regression/p3-spartacus-seal-power-readiness-capability.test.ts`: **19/19 PASS**.
 
 Coverage includes:
 
@@ -62,20 +73,27 @@ Coverage includes:
 - one issuer-owned Ruler seal auto-consumes; multiple seals require exact private selection;
 - corrupt live continuation rejects transactionally before seal spend/usage/power mutation;
 - exact multi-Ruler pending choice round-trips MatchSession while host-signed widened restore metadata is rejected;
+- accepted Ruler grant usage and physical binding cardinality round-trip at the legal maximum of six seals while a coherent impossible seventh seal is rejected;
+- forged persisted normal/Ruler current-round usage markers reject without backing provenance, while real normal command-spell use and real physical Ruler-seal spend round-trip with their markers;
 - sc1 formula deduplicates a player who used both seal types, excludes non-engaged/far players, and ignores prior-round use;
 - live unused-seal aura drops immediately when normal or issuer-owned Ruler seals are spent and expires next round;
 - authoritative `deriveBattleParticipantsFromState` includes the live dynamic aura in participant `totalPower`;
 - compiled-pack privileged corruption rejects before resource consumption or pending-decision staging.
 
-Affected serial verification: **7 files / 166 tests PASS**:
+Affected serial verification: **10 files / 226 tests PASS**:
 
-- Spartacus seal-power readiness `15`;
+- Spartacus seal-power readiness `19`;
 - FB2-27 Ruler seal `13`;
 - MatchSession `33`;
 - executable-card-pack `50`;
 - authoring-interpreter `38`;
 - combat-resolver `10`;
-- match-session regressions `7`.
+- match-session regressions `7`;
+- complex-skills regression `37`;
+- resolution-dataflow `15`;
+- fixed-controller command-seal component `4`.
+
+A broader local probe also invoked `seven-masters-authoring.test.ts`: its four targeted interpreter behavior tests passed, while seven source-fixture assertions failed only because they require external `D:/fd/chm-extract/*.htm` files outside the allowed `E:\Codex\FD` boundary. Those external files were not created or touched, and that unrelated fixture-only suite is not counted in the clean affected PASS above.
 
 Static/content gates:
 
@@ -86,7 +104,7 @@ Static/content gates:
   - content `b2c446488a28c5036ac36557e09b563b54b11018d5396233a53f37ffdbff6923`;
   - fixture `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`;
   - evidence `f4ae33de4dc2832766064bdf46e277d9559398d4d34b45d7d05a0eb76744cd14`;
-- Base-to-worktree `git diff --check`: PASS;
+- predecessor-to-worktree `git diff --check`: PASS;
 - `data/authoring/**` delta: EMPTY;
 - Base-to-worktree production identity audit: `servant.spartacus=0`, `sc-spartacus=0`, `斯巴达克斯=0`, `反叛=0`, `伤兽的咆哮=0`, `不屈的意志=0`, `SkillLib=0`.
 
