@@ -5569,7 +5569,10 @@ Current implementation evidence:
 - R1 P1 closed: all six Allfather wisdom-action rune outcomes share one current-round use flag; after any rune fully resolves the entire rune family is unavailable for the rest of that round and becomes available again next round with new current-round basics;
 - R1 P1 closed: generic authored terrain multipliers now carry creation round and `duration=this_round` is authoritatively filtered by round in both terrain-advantage and combat readers; Peorth x3 expires at next-round start;
 - historical PR #467 unguarded exact Raido contract remains accepted while an additional exact guarded variant supports the shared-use boundary without identity routing;
-- focused owner regression `11/11 PASS`; affected serial `12 files / 236 tests PASS` including terrain/combat readers;
+- focused owner regression `11/11 PASS`; Raido readiness regression `6/6 PASS`; affected serial `12 files / 238 tests PASS` including terrain/combat readers;
+- R2 predecessor Candidate `d92611690e22c6bdc1e402cd76213e1356ca6511` received `MIGRATION_NEEDS_REVISION`; canonical same-attempt evidence `https://github.com/binchen648/fd/pull/468#issuecomment-5855674407`;
+- R2 P2 closed as coverage-only: the guarded Raido whole-ability contract now has independent loader/runtime corruption regressions for mismatched guard/effect keys, extra condition/effect, and malformed current-round flag effects; all reject before mana spend, movement, pending decision, or shared-use flag mutation, while the original unguarded PR #467 contract remains accepted;
+- no production runtime change was required for R2; the existing guarded validator/execution boundary already failed all four corruption classes closed;
 - typecheck/content validate/content compile/generated determinism/diff-check PASS;
 - successor production runtime diff is generic-only and Skadi/card-name/SkillLib identity audit remains clean;
 - strict formal accounting remains `134/944`, remaining `810`, pending exact-Candidate fresh independent R and subsequent A-sync/accounting;

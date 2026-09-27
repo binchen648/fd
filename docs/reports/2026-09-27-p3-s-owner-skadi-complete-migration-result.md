@@ -90,6 +90,16 @@ Fresh independent R on predecessor Candidate `929c3b824a32b57c015131f2ae8fe90cf8
 - R1 P1 CLOSED — Peorth round lifecycle: generic terrain multipliers now record `round` and authoritative readers ignore stale `duration=this_round` entries. Focused owner coverage proves `shinto` baseline `3 -> 9` during the activation round and returns to `3` after round advance while the historical multiplier entry remains stored. `core/combat-resolver.test.ts` independently proves combat terrain `4 -> 12` in the activation round and back to `4` next round.
 - Historical prerequisite compatibility preserved: the original unguarded exact PR #467 Raido shell remains accepted and `p3-raido-movement-readiness-capability.test.ts` remains `4/4 PASS`; the guarded formal-consumer variant is an additional exact shape, not a replacement of the accepted capability contract.
 
+## R2 revision closure
+
+Fresh independent R on successor Candidate `d92611690e22c6bdc1e402cd76213e1356ca6511` returned one additional `MIGRATION_NEEDS_REVISION` coverage blocker. Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/468#issuecomment-5855674407`.
+
+- R2 P2 CLOSED — guarded Raido fail-closed coverage: the exact guarded PR #468 Raido shape now has independent loader and runtime corruption regressions in `p3-raido-movement-readiness-capability.test.ts`, while the historical unguarded PR #467 exact shell remains covered and accepted.
+- Loader coverage mutates the guarded whole-ability contract with mismatched guard/effect keys, an extra condition, an extra effect, and a malformed current-round flag effect; every variant compiles as unsupported at the movement gateway.
+- Runtime coverage begins from an exact accepted guarded compiled pack, applies the same four corruptions, and proves fail-closed rejection before mana spend, movement, pending-decision staging, or shared-use flag mutation.
+- No production runtime change was required for this closure; the existing guarded whole-ability validator and execution boundary already rejected all four corruption classes. This revision adds the missing exact-shell coverage only.
+- Raido readiness regression is now `6/6 PASS`; expanded affected serial is `12 files / 238 tests PASS`.
+
 ## Verification
 
 Focused formal owner regression:
@@ -112,7 +122,7 @@ Affected serial chain:
 - `packages/rules/tests/regression/p3-owner-mash-complete-migration.test.ts`
 - `packages/rules/tests/core/combat-resolver.test.ts`
 
-Result: `12 files / 236 tests PASS`.
+Result: `12 files / 238 tests PASS`.
 
 Static/content gates:
 
