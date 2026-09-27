@@ -26,7 +26,7 @@ The current line therefore must recover the already accepted generic seams befor
 - verdict recorded by that synchronization: `IMPLEMENTATION_ACCEPTED_CANDIDATE`;
 - zero migration credit.
 
-The current dedicated `packages/rules/src/ability/ruler-seal.ts` and `packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts` normalize byte-for-byte to the accepted `e30e7efe` versions after BOM/newline normalization. The recovered contract therefore preserves the accepted ordered least-bound selection, issuer-scoped history, issuer-owned single-use seals, movement / movement-lock / free-play+delayed-reward branches, and copy/steal guard rather than redefining them.
+The historical accepted Ruler contract remains grounded in accepted Revision Candidate `e30e7efe`, and the current recovery preserves its default ordered least-bound behavior, issuer-scoped history, issuer-owned single-use seals, movement / movement-lock / free-play+delayed-reward branches, and copy/steal guard. Successor integration is **not** byte-for-byte identical to `e30e7efe`: R1 added one optional explicit eligible-opponent-domain parameter to the least-bound helper APIs plus the focused immunity regression. When that optional domain is omitted, the historical/default active-opponent behavior remains unchanged; the evolved current-runtime interpreter supplies the same immunity-filtered active-opponent domain to both discovery and final ordered settlement so the accepted algorithm is applied consistently rather than redefined.
 
 ### FB2-48 combat-opponent-power VP reward
 
@@ -57,10 +57,19 @@ No `servant.spartacus`, Spartacus card ID/name, printed-text parser, Chinese-tex
 
 Fresh independent R on predecessor Candidate `4a07140a75600f2128dab17cce264f78beae3ea4` returned `IMPLEMENTATION_NEEDS_REVISION`. Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/469#issuecomment-5857074164`.
 
-- Sole P1 CLOSED — least-bound discovery and final ordered settlement now use the same current-runtime Ruler eligibility domain after other-player ability immunity is applied.
+- Sole R1 P1 CLOSED — least-bound discovery and final ordered settlement now use the same current-runtime Ruler eligibility domain after other-player ability immunity is applied.
 - The historical accepted least-bound algorithm remains unchanged when no explicit eligibility domain is supplied; current integration passes the exact immunity-filtered active-opponent domain into both candidate discovery and `isLeastBoundSelection()` settlement validation.
 - Focused reproduction uses the Reviewer shape `p2=0, p3=1, p4=1` with p2 immune to p1 at the supported same-location opponent boundary. p2 is absent from the pending decision, p3/p4 are the exposed eligible pair, and `[p3,p4]` settles successfully instead of being advertised then rejected.
 - No other recovery semantic is changed and no Spartacus consumer authoring is introduced.
+
+## R2 provenance correction
+
+Fresh independent R on successor Candidate `49d940a2536de55a7ed87fc26045557fc0c51358` returned `IMPLEMENTATION_NEEDS_REVISION` only because the report/PR prose still carried the predecessor-era byte-equivalence claim for the Ruler files. Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/469#issuecomment-5857199684`.
+
+- Sole R2 P1 CLOSED — the stale byte-for-byte claim is removed.
+- Accepted Revision `e30e7efe` remains the historical semantic baseline; the current successor preserves its default behavior when no explicit eligibility domain is supplied.
+- The only successor-specific Ruler extension is the bounded optional eligible-opponent-domain parameter required to make current-runtime immunity-filtered discovery and final ordered settlement consistent, plus its focused regression.
+- This correction changes provenance/evidence text only. Recovery remains zero-credit, `data/authoring/**` remains unchanged, and there is still no Spartacus consumer migration in this task.
 
 ## Verification
 
