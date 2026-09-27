@@ -5256,3 +5256,70 @@ R1 predecessor `986b04be707911b8f741ffc4f7bf33da8f59fe50` -> `IMPLEMENTATION_NEE
 - Current-main strict formal accounting remains `129/944`; remaining `815`.
 - Current owner remains `servant.sigurd`; execution returns to `P3-S-OWNER-SIGURD-COMPLETE-MIGRATION` for all three frozen Sigurd consumers together. Do not advance owners.
 - Detailed sync: `docs/reports/2026-09-27-p3-a-sigurd-revealed-source-capability-acceptance-synchronization.md`.
+
+
+## P3-A-OWNER-SIGURD-ACCEPTANCE-SYNC
+
+- PR #462 exact Candidate `0af5064fc9894e3db3896a631db8c9beb8fb1485` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/462#issuecomment-5851381115`.
+- Accepted formal owner scope is exactly all three current-main remaining Sigurd frozen identities: `servant.sigurd.skill.sc-sigurd-1` through `servant.sigurd.skill.sc-sigurd-3`.
+- Accepted prerequisite #461 remains zero-credit; no capability identity is added to migration accounting.
+- Exact-Candidate Phase 3 Pre-Review Gate run `36283064856` succeeded.
+- Current-main strict formal accounting moves `129/944 -> 132/944`; remaining `812`.
+- Owner-complete workflow remains authoritative: no fixed-50 requirement and no per-skill R split; only after an owner is ACCEPTED + A-synced/accounted may execution move to the next owner.
+- Mechanical frozen-inventory continuity selects `servant.sitonai` next. Its already accepted FM07/R38 `sc-sitonai-3` is not double-counted; only the two remaining frozen consumers are in the new formal scope.
+- Detailed sync: `docs/reports/2026-09-27-p3-a-owner-sigurd-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-SITONAI-COMPLETE-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: exact Sigurd owner acceptance-sync commit carrying this task block
+Owner root: `servant.sitonai`
+Formal owner scope: exactly the two current-main remaining frozen Sitonai skills; the already accepted FM07/R38 sc-sitonai-3 receives no duplicate credit
+
+Remaining frozen skills:
+- `servant.sitonai.skill.sc-sitonai-1` — 连携打击
+- `servant.sitonai.skill.sc-sitonai-2` — 冻结吧，天上的诸力
+
+Already accepted owner identity outside this batch:
+- `servant.sitonai.skill.sc-sitonai-3` — 他人格（Alter Ego Class） — independently migration-accepted in FM07/R38; preserve it and do not re-credit it.
+
+Source/provenance:
+- frozen inventory/reference records `hasConfirmedOverride=true`, `hasAuthoringCard=false` for sc-sitonai-1 and sc-sitonai-2;
+- shared source grounding: `FD全卡图鉴V2.0.chm -> 从者/他人格/英文版/志度内.htm`, plus development image `Fate_Domination-开发版/images/servants/志度内.png`;
+- frozen phase3 classification for both remaining identities is `SOURCE_EVIDENCE_REQUIRED / EXPLICIT_BLOCK`; S must mechanically recertify locked source semantics before encoding consumers;
+- historical handlers `core.sitonai-combination-attack` and `core.sitonai-pohjola-fimbul` are evidence only, not authorization for identity-keyed production routing.
+
+Frozen semantic requirements to recertify and preserve:
+- sc-sitonai-1: reversal grants 4 VP if the controller wins the fight; passive/Action join allows paying 3 mana to add this card to the controller's attack exactly when the active attacks contain one Strength and one Magic attribute attack.
+- sc-sitonai-2: true-name release; Action effect while source active prevents all players from drawing cards through the end of the next round; reversal clause uses the source-defined mana-gain branch.
+- sc-sitonai-3 existing accepted Alter Ego transform authoring/runtime contract remains unchanged and must continue to work with the completed owner archive.
+
+Implementation requirements:
+- migrate both remaining Sitonai frozen skills together in one owner-complete formal batch; do not split the two remaining identities or re-credit sc-sitonai-3;
+- preserve the already accepted sc-sitonai-3 FM07/R38 authoring and semantics;
+- no `servant.sitonai` / card-id / card-name / printed-text / Chinese-text identity routing in production runtime;
+- no SkillLib fallback and no runtime source-text parsing;
+- any new runtime capability must be generic, data-driven, fail closed, narrowly source-grounded, and focused-tested;
+- if a bounded zero-credit capability/readiness seam is required, complete/review/A-sync it and return to this same Sitonai owner before moving on;
+- no merge, retarget, reset/discard, force push, or worktree proliferation.
+
+Verification:
+- exact remaining frozen owner scope = sc-sitonai-1 + sc-sitonai-2; sc-sitonai-3 preserved and not double-counted;
+- focused semantic coverage for both remaining skills plus regression coverage preserving accepted sc-sitonai-3;
+- fail-closed paths for each new generic capability;
+- affected loader/interpreter/executable/combat/session/content tests dictated by actual diff;
+- typecheck + content validate/compile + generated determinism + `git diff --check`;
+- production identity-routing audit clean;
+- freeze exact Base/Candidate, clean fixed Work, PR, policy gate, and one fresh independent R for the whole remaining owner batch.
+
+Accounting boundary:
+- Base strict formal accounting is `132/944` after Sigurd synchronization;
+- no Sitonai credit before exact-Candidate `MIGRATION_ACCEPTED` + subsequent A-sync/accounting;
+- because sc-sitonai-3 is already accepted, this batch can add exactly two identities; if accepted and synchronized, next strict accounting target is `134/944`.
+
+Allowed verdicts:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `MIGRATION_BLOCKED`
