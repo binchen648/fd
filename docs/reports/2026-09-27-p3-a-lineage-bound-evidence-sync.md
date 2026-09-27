@@ -8,6 +8,16 @@
 
 本次 before/after consumer counts 相同，所有 delta 为零。历史的 consumer transition 单独记录为历史字段，不作为本次 burn-down 或 main coverage credit。92 ability 正式分母不变，main credit delta 为零。
 
+## Machine Evidence Binding
+
+source overlay 已随本次同步提交进入当前 lineage，并绑定以下可复算身份：
+
+- 路径：`artifacts/phase3-ledger-92-semantic-route-review-overlay-v2.json`
+- source commit：`9a982060c59484a1ebe40799eebd01b996b5f02e`
+- SHA-256：`7a8e96497648d1a6eebcf1974dc4f2a33b90bd7aab9aeb5b8f0aab9e741f34dd`
+
+packet 同时绑定 source overlay 的存在性、SHA-256 和 Reviewer B artifact SHA-256，避免依赖旧 A worktree 中不可见的文件。
+
 ## Review Boundary
 
 - Reviewer B 的 PASS 绑定到已接受 candidate 及其 reviewer artifact SHA。
