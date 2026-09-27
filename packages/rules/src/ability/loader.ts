@@ -2,6 +2,15 @@ import type { AuthoringAbility, AuthoringCard, AuthoringPack, ExecutionMode, Rul
 import { hostOperations } from './types';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID } from '../core/card-source-state';
 import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
+import {
+  isRulerSealBindingCandidate, isRulerSealBindingSemantic,
+  isRulerSealUseCandidate, isRulerSealUseSemantic,
+} from './ruler-seal';
+import {
+  COMBAT_OPPONENT_POWER_VP_REWARD_EFFECT,
+  isAcceptedCombatOpponentPowerVpRewardAbility,
+  isCombatOpponentPowerVpRewardCandidate,
+} from './combat-opponent-power-vp-reward';
 import { isAcceptedControlledCardCloseForbidModifier } from './card-close-forbid';
 import { isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
 import { isLinkedOwnerCombatRule, isServantNoCommandSealsRule } from './linked-owner-combat';
@@ -116,6 +125,9 @@ const supportedTypes = new Set([
   'remove_advantage_position', 'noop', 'fail_invariant', 'install_rule_override', 'provision_skill_cards',
   'adjust_selected_player_terrain', 'lend_source_card', 'engaged_opponent_attack_power_modifier',
   'linked_owner_combat_rule', 'servant_no_command_seals_rule',
+  // Accepted recovery seams: FB2-27 Ruler seals + FB2-48 frozen opponent-power reward.
+  'grant_ruler_seals', 'ruler_copy_steal_guard', 'use_ruler_seal', 'least_ruler_binding_count', 'bound_by_controller_ruler_seal',
+  COMBAT_OPPONENT_POWER_VP_REWARD_EFFECT,
   'deduction_record_present', 'deduction_record_absent', 'deduction_record_matches_event_attack',
   'choose_deduction_record', 'resolve_deduction_record_on_event', 'expire_deduction_record',
   'reveal_selected_opponent_and_resolve_deduction', 'event_location_is', 'same_location_as_controller',
@@ -146,6 +158,8 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'source', 'interpretation', 'name',
   // New mechanic keys for 5 servants
   'options', 'label', 'condition', 'targets', 'duration', 'scope', 'statusId', 'choiceId', 'value',
+  // Accepted FB2-27 Ruler seal structural fields.
+  'policy', 'option', 'moveDestinations', 'rewardVp',
   'modifier', 'kind', 'rule',
   // Master mechanic keys
   'directive', 'payload', 'deckId', 'definitionId', 'quantity', 'rounding', 'targetPlayer',
@@ -558,6 +572,16 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
           !isAcceptedLegacyAnyLocationExceptWorkshopMovementAbility(candidateAbility) &&
           !isAcceptedRuneAnyEnabledLocationMovementAbility(candidateAbility)) {
         issue('sourceLocationRune.movementGateway', 'Any-location movement requires one accepted exact whole-ability semantic', id);
+      }
+      if (isRulerSealBindingCandidate(candidateAbility) && !isRulerSealBindingSemantic(candidateAbility)) {
+        issue('rulerSeal.gateway', 'Unsupported Ruler seal binding semantic shape', id);
+      }
+      if (isRulerSealUseCandidate(candidateAbility) && !isRulerSealUseSemantic(candidateAbility)) {
+        issue('rulerSeal.gateway', 'Unsupported Ruler seal use semantic shape', id);
+      }
+      if (isCombatOpponentPowerVpRewardCandidate(a) &&
+          !isAcceptedCombatOpponentPowerVpRewardAbility(a, 'authoring')) {
+        issue('combatOpponentPowerVpReward.gateway', 'Unsupported frozen combat-opponent power VP reward semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;
