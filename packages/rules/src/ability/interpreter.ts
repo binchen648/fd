@@ -1275,6 +1275,7 @@ function installCreatedPowerModifier(s: GameState, ctx: EffectContext, effect: R
       sourceCardId: ctx.sourceCardId,
       abilityId: ctx.abilityId,
       duration: str(modifier.duration) || 'this_round',
+      round: s.round.roundNumber,
     });
     return;
   }
@@ -3633,7 +3634,12 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (isAnyLocationExceptWorkshopMovementSemantic(a) || isAcceptedRuneAnyEnabledLocationMovementAbility(a)) {
     const pending = findPendingTarget(s, ctx, a, effects);
     if (pending) { runtime(s).pendingDecision = pending; return; }
-    executeResolutionEffects(s, ctx, effects);
+    if (isAcceptedRuneAnyEnabledLocationMovementAbility(a)) {
+      executeResolutionEffects(s, ctx, [effects[0]!]);
+      for (const effect of effects.slice(1)) resolveEffect(s, ctx, effect);
+    } else {
+      executeResolutionEffects(s, ctx, effects);
+    }
     installOngoing(s, ctx, a);
     cleanupOngoing(s);
     return;
@@ -3802,7 +3808,10 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (isCardZoneCoreDirectActionRouteCandidate(a) || isFixedControllerAdvanceDrawActionSemantic(a) || isAnyLocationExceptWorkshopMovementSemantic(a) || isAcceptedRuneAnyEnabledLocationMovementAbility(a) || isPlayActionRouteCandidate(a) || isPlaySourceCardWithCostResponseStructuralCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a)) {
     try {
-      normalizeResolutionDataFlowNodes([...a.effects, ...a.creates], `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
+      const nodesToNormalize = isAcceptedRuneAnyEnabledLocationMovementAbility(a)
+        ? [a.effects[0]!]
+        : [...a.effects, ...a.creates];
+      normalizeResolutionDataFlowNodes(nodesToNormalize, `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
     } catch (error) {
       if (error instanceof DataFlowValidationError) reject('resolution_failed', error.message);
       throw error;

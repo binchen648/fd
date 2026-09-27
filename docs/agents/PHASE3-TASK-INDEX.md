@@ -5510,8 +5510,8 @@ Allowed verdicts:
 ## TASK P3-S-OWNER-SKADI-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `READY`
-Base: exact future Raido movement capability acceptance-sync commit carrying the refreshed task block
+Status: `MIGRATION_REVISION_READY_FOR_FRESH_R`
+Base: `bc4304ebbde331af6e2d00c4d33a1fedde6fbf79`
 Owner root: `servant.skadi`
 Formal owner scope: all three current-main remaining frozen Skadi skills together
 
@@ -5559,6 +5559,24 @@ Accounting boundary:
 - Base strict formal accounting is `134/944` after Sitonai synchronization;
 - no Skadi credit before exact-Candidate `MIGRATION_ACCEPTED` + subsequent A-sync/accounting;
 - because there is no prior Skadi formal migration credit, an accepted synchronized full owner batch can add exactly three identities and move the next strict target to `137/944`.
+
+Current implementation evidence:
+- exact formal Base is Raido capability A-sync `bc4304ebbde331af6e2d00c4d33a1fedde6fbf79`;
+- canonical `servant.skadi.json` contains exactly sc-skadi-1 / sc-skadi-2 / sc-skadi-3 plus the recertified 12-card deck;
+- source semantics were mechanically recertified against locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9` and frozen CHM/development evidence;
+- formal consumer code consumes accepted zero-credit prerequisites PR #466 (`f807936f...`) and PR #467 (`b94a44ee...`) without re-credit;
+- predecessor Candidate `929c3b824a32b57c015131f2ae8fe90cf81b2e5e` received `MIGRATION_NEEDS_REVISION`; canonical same-attempt evidence `https://github.com/binchen648/fd/pull/468#issuecomment-5855360486`;
+- R1 P1 closed: all six Allfather wisdom-action rune outcomes share one current-round use flag; after any rune fully resolves the entire rune family is unavailable for the rest of that round and becomes available again next round with new current-round basics;
+- R1 P1 closed: generic authored terrain multipliers now carry creation round and `duration=this_round` is authoritatively filtered by round in both terrain-advantage and combat readers; Peorth x3 expires at next-round start;
+- historical PR #467 unguarded exact Raido contract remains accepted while an additional exact guarded variant supports the shared-use boundary without identity routing;
+- focused owner regression `11/11 PASS`; Raido readiness regression `6/6 PASS`; affected serial `12 files / 238 tests PASS` including terrain/combat readers;
+- R2 predecessor Candidate `d92611690e22c6bdc1e402cd76213e1356ca6511` received `MIGRATION_NEEDS_REVISION`; canonical same-attempt evidence `https://github.com/binchen648/fd/pull/468#issuecomment-5855674407`;
+- R2 P2 closed as coverage-only: the guarded Raido whole-ability contract now has independent loader/runtime corruption regressions for mismatched guard/effect keys, extra condition/effect, and malformed current-round flag effects; all reject before mana spend, movement, pending decision, or shared-use flag mutation, while the original unguarded PR #467 contract remains accepted;
+- no production runtime change was required for R2; the existing guarded validator/execution boundary already failed all four corruption classes closed;
+- typecheck/content validate/content compile/generated determinism/diff-check PASS;
+- successor production runtime diff is generic-only and Skadi/card-name/SkillLib identity audit remains clean;
+- strict formal accounting remains `134/944`, remaining `810`, pending exact-Candidate fresh independent R and subsequent A-sync/accounting;
+- detailed result: `docs/reports/2026-09-27-p3-s-owner-skadi-complete-migration-result.md`.
 
 Allowed verdicts:
 - `MIGRATION_ACCEPTED`

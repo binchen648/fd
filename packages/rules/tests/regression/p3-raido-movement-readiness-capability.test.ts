@@ -12,6 +12,7 @@ import type { GameState } from '../../src/schema/game';
 
 const ROOT = 'servant.fixture-rune-movement';
 const SOURCE = `${ROOT}.skill.source`;
+const SHARED_FLAG = 'fixture.wisdom-action.round';
 
 function archive() {
   return {
@@ -34,8 +35,19 @@ function archive() {
   } as any;
 }
 
-function setup() {
-  const pack = loadAuthoringJson(archive());
+function guardedArchive() {
+  const raw = archive();
+  const ability = raw.cards[0].abilities[0];
+  ability.conditions.push({ type: 'player_flag_number_not_current_round', key: SHARED_FLAG });
+  ability.effects.push({
+    type: 'set_player_flag', target: 'controller', key: SHARED_FLAG,
+    value: { type: 'current_round' }, lifecycle: { duration: 'this_round' },
+  });
+  return raw;
+}
+
+function setup(raw = archive()) {
+  const pack = loadAuthoringJson(raw);
   const state = createSeededGameState();
   state.cards = [];
   state.players[0]!.servantCardId = ROOT;
@@ -92,6 +104,26 @@ describe('P3 bounded rune any-location movement readiness capability', () => {
     }
   });
 
+  it('accepts the exact guarded shared-use variant and rejects guarded near-matches at the loader gateway', () => {
+    expect(loadAuthoringJson(guardedArchive()).report.filter((entry) => entry.status === 'unsupported')).toEqual([]);
+    expect(loadAuthoringJson(archive()).report.filter((entry) => entry.status === 'unsupported')).toEqual([]);
+
+    const mutations: Array<[string, (raw: any) => void]> = [
+      ['mismatched-guard-effect-key', (raw) => { raw.cards[0].abilities[0].effects[1].key = `${SHARED_FLAG}.mismatch`; }],
+      ['extra-guarded-condition', (raw) => { raw.cards[0].abilities[0].conditions.push({ type: 'source_active' }); }],
+      ['extra-guarded-effect', (raw) => { raw.cards[0].abilities[0].effects.push({ type: 'adjust_victory_points', player: 'controller', amount: 1 }); }],
+      ['malformed-current-round-flag-effect', (raw) => { raw.cards[0].abilities[0].effects[1].value = { type: 'current_round', offset: 'bad' }; }],
+    ];
+
+    for (const [name, mutate] of mutations) {
+      const raw = guardedArchive(); mutate(raw);
+      const loaded = loadAuthoringJson(raw);
+      const compiled = loaded.cards[SOURCE]!.abilities[0]!;
+      const diagnostic = `candidate=${isRuneAnyEnabledLocationMovementCandidate(compiled)} accepted=${isAcceptedRuneAnyEnabledLocationMovementAbility(compiled)} report=${JSON.stringify(loaded.report)} compiled=${JSON.stringify(compiled)}`;
+      expect(loaded.report.some((entry) => entry.abilityId === 'fixture.rune-move' && entry.status === 'unsupported'), `${name}: ${diagnostic}`).toBe(true);
+    }
+  });
+
   it('advertises at exactly 3 mana, excludes the current location, pays 3, and moves to the chosen enabled destination', () => {
     const { state, source } = setup();
     const legal = action(state, source.instanceId);
@@ -136,5 +168,33 @@ describe('P3 bounded rune any-location movement readiness capability', () => {
     expect(widened.state.players[0]!.mana).toBe(beforeMana);
     expect(widened.state.players[0]!.locationId).toBe(beforeLocation);
     expect(widened.state.abilityRuntime!.pendingDecision).toBeUndefined();
+  });
+
+  it('fails guarded-Raido compiled-pack corruption before cost, movement, continuation, or shared-use mutation', () => {
+    const corruptions: Array<[string, (ability: any) => void]> = [
+      ['mismatched-guard-effect-key', (ability) => { ability.effects[1].key = `${SHARED_FLAG}.mismatch`; }],
+      ['extra-condition', (ability) => { ability.conditions.push({ type: 'source_active' }); }],
+      ['extra-effect', (ability) => { ability.effects.push({ type: 'adjust_victory_points', player: 'controller', amount: 1 }); }],
+      ['malformed-current-round-flag-effect', (ability) => { ability.effects[1].value = { type: 'current_round', offset: 'bad' }; }],
+    ];
+
+    for (const [name, corrupt] of corruptions) {
+      const { state, source } = setup(guardedArchive());
+      const ability = state.abilityRuntime!.pack.cards[SOURCE]!.abilities[0]!;
+      expect(isAcceptedRuneAnyEnabledLocationMovementAbility(ability), `${name}: guarded fixture should begin exact`).toBe(true);
+      corrupt(ability);
+
+      const beforeMana = state.players[0]!.mana;
+      const beforeLocation = state.players[0]!.locationId;
+      expect(action(state, source.instanceId), `${name}: corrupted guarded shell must not be advertised`).toBeFalsy();
+      const result = dispatchAbilityCommand(state, 'p1', {
+        type: 'activate_ability', cardInstanceId: source.instanceId, abilityId: 'fixture.rune-move',
+      });
+      expect(result.ok, `${name}: direct dispatch must fail closed`).toBe(false);
+      expect(state.players[0]!.mana, `${name}: mana`).toBe(beforeMana);
+      expect(state.players[0]!.locationId, `${name}: location`).toBe(beforeLocation);
+      expect(state.abilityRuntime!.pendingDecision, `${name}: pending decision`).toBeUndefined();
+      expect(state.abilityRuntime!.structuredPlayerFlagsByPlayer?.p1?.[SHARED_FLAG], `${name}: shared-use flag`).toBeUndefined();
+    }
   });
 });

@@ -256,8 +256,9 @@ function terrainMultiplierForPlayer(state: GameState, playerId: string): number 
   const entries = modeState(state).terrainMultipliers;
   const authoredMultiplier = !Array.isArray(entries) ? 1 : entries.reduce((multiplier, entry) => {
     if (!entry || typeof entry !== "object") return multiplier;
-    const candidate = entry as { playerId?: string; multiplier?: number };
-    return candidate.playerId === playerId && typeof candidate.multiplier === "number"
+    const candidate = entry as { playerId?: string; multiplier?: number; duration?: string; round?: number };
+    return candidate.playerId === playerId && typeof candidate.multiplier === "number" &&
+      (candidate.duration !== "this_round" || candidate.round === state.round.roundNumber)
       ? multiplier * candidate.multiplier
       : multiplier;
   }, 1);

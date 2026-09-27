@@ -1,0 +1,275 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.skadi",
+  "name": "斯卡哈·斯卡蒂",
+  "class": "Caster",
+  "sourcePolicy": {
+    "phase3EvidenceBase": "bc4304ebbde331af6e2d00c4d33a1fedde6fbf79",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "All three frozen Skadi consumers are source-grounded by the locked CHM/development source and mechanically recertified against locked Reference. Runtime behavior remains generic/data-driven through accepted PR #466 rune/castle readiness and PR #467 Raido movement readiness seams plus existing generic primitives."
+  },
+  "deck": [
+    { "cardId": "card.cardq1" },
+    { "cardId": "card.cardq2", "count": 2 },
+    { "cardId": "card.cardq4" },
+    { "cardId": "card.carda2", "count": 2 },
+    { "cardId": "card.carda3" },
+    { "cardId": "card.carda4", "count": 2 },
+    { "cardId": "card.cardluck", "count": 2 },
+    { "cardId": "card.cardpreparation" }
+  ],
+  "cards": [
+    {
+      "id": "servant.skadi.skill.sc-skadi-1",
+      "aliases": ["sc_skadi_1"],
+      "legacyId": "sc_skadi_1",
+      "name": "大神的睿智",
+      "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.skadi" },
+      "printedText": "被动/前哨阶段：花费1点魔力，抽一张牌，然后将2张手牌洗回牌库。\n被动/行动阶段：花费3点魔力，分别选择你本回合打出的2张基础攻击的一种属性，根据其属性组合获得【原初之卢恩】的相应效果。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sc-skadi-1.wisdom-outpost",
+          "kind": "phase_action",
+          "printedClause": "被动/前哨阶段：花费1点魔力，抽一张牌，然后将2张手牌洗回牌库。",
+          "activation": { "phase": "advance", "opens": "controller_action_window" },
+          "conditions": [], "targets": [],
+          "effects": [ { "type": "draw_then_shuffle_two_hand_cards_into_deck" } ],
+          "cost": [ { "type": "pay_mana", "amount": 1 } ],
+          "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-skadi-1.raido",
+          "kind": "phase_action",
+          "printedClause": "迅捷属性-远行 - 移动至任意地点。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "conditions": [
+            { "type": "controller_current_round_basic_attack_attribute_pair", "firstAttribute": "迅捷", "secondAttribute": "迅捷", "distinctCards": true },
+            { "type": "player_flag_number_not_current_round", "key": "skadi.wisdom-action.round" }
+          ],
+          "targets": [ { "id": "destination", "type": "location", "count": { "min": 1, "max": 1 }, "constraints": [ { "type": "any_enabled_location" } ] } ],
+          "effects": [
+            { "type": "move_player", "player": "controller", "to": "destination" },
+            { "type": "set_player_flag", "target": "controller", "key": "skadi.wisdom-action.round", "value": { "type": "current_round" }, "lifecycle": { "duration": "this_round" } }
+          ],
+          "cost": [ { "type": "pay_mana", "amount": 3 } ],
+          "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-skadi-1.haglaz",
+          "kind": "phase_action",
+          "printedClause": "迅捷和魔法属性-飓风 - 打出一张攻击。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "conditions": [
+            { "type": "controller_current_round_basic_attack_attribute_pair", "firstAttribute": "迅捷", "secondAttribute": "魔术", "distinctCards": true },
+            { "type": "player_flag_number_not_current_round", "key": "skadi.wisdom-action.round" }
+          ],
+          "targets": [ { "id": "attack", "type": "card_instance", "scope": { "zone": "hand", "owner": "controller" }, "count": { "min": 1, "max": 1 }, "constraints": [ { "type": "is_attack" } ] } ],
+          "effects": [
+            { "type": "play_selected_cards", "target": "attack", "face": "face_up" },
+            { "type": "set_player_flag", "target": "controller", "key": "skadi.wisdom-action.round", "value": { "type": "current_round" }, "lifecycle": { "duration": "this_round" } }
+          ],
+          "cost": [ { "type": "pay_mana", "amount": 3 } ],
+          "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-skadi-1.teiwaz-arm",
+          "kind": "phase_action",
+          "printedClause": "迅捷和特殊属性-死棘 - 战斗阶段：如果与你同一战场的有且仅有一名交战对手，使其【败北】。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "conditions": [
+            { "type": "controller_current_round_basic_attack_attribute_pair", "firstAttribute": "特殊", "secondAttribute": "迅捷", "distinctCards": true },
+            { "type": "player_flag_number_not_current_round", "key": "skadi.wisdom-action.round" }
+          ],
+          "targets": [],
+          "effects": [
+            { "type": "set_player_flag", "target": "controller", "key": "skadi.teiwaz.round", "value": { "type": "current_round" }, "lifecycle": { "duration": "this_round" } },
+            { "type": "set_player_flag", "target": "controller", "key": "skadi.wisdom-action.round", "value": { "type": "current_round" }, "lifecycle": { "duration": "this_round" } }
+          ],
+          "cost": [ { "type": "pay_mana", "amount": 3 } ],
+          "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-skadi-1.isan",
+          "kind": "phase_action",
+          "printedClause": "魔术属性-冰冻 - 你所在地点的其他玩家失去2点魔力。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "conditions": [
+            { "type": "controller_current_round_basic_attack_attribute_pair", "firstAttribute": "魔术", "secondAttribute": "魔术", "distinctCards": true },
+            { "type": "player_flag_number_not_current_round", "key": "skadi.wisdom-action.round" }
+          ],
+          "targets": [],
+          "effects": [
+            { "type": "adjust_other_active_players_at_source_location_mana" },
+            { "type": "set_player_flag", "target": "controller", "key": "skadi.wisdom-action.round", "value": { "type": "current_round" }, "lifecycle": { "duration": "this_round" } }
+          ],
+          "cost": [ { "type": "pay_mana", "amount": 3 } ],
+          "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-skadi-1.peorth",
+          "kind": "phase_action",
+          "printedClause": "魔术和特殊属性-秘仪 - 将你的地利变为3倍。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "conditions": [
+            { "type": "controller_current_round_basic_attack_attribute_pair", "firstAttribute": "特殊", "secondAttribute": "魔术", "distinctCards": true },
+            { "type": "player_flag_number_not_current_round", "key": "skadi.wisdom-action.round" }
+          ],
+          "targets": [],
+          "effects": [
+            { "type": "create_modifier", "modifier": { "type": "terrain_multiplier", "target": "controller", "value": 3, "duration": "this_round" } },
+            { "type": "set_player_flag", "target": "controller", "key": "skadi.wisdom-action.round", "value": { "type": "current_round" }, "lifecycle": { "duration": "this_round" } }
+          ],
+          "cost": [ { "type": "pay_mana", "amount": 3 } ],
+          "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-skadi-1.ansuz",
+          "kind": "phase_action",
+          "printedClause": "启明 - 获得4点战果。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "conditions": [
+            { "type": "controller_current_round_basic_attack_attribute_pair", "firstAttribute": "特殊", "secondAttribute": "特殊", "distinctCards": true },
+            { "type": "player_flag_number_not_current_round", "key": "skadi.wisdom-action.round" }
+          ],
+          "targets": [],
+          "effects": [
+            { "type": "adjust_victory_points", "player": "controller", "amount": 4 },
+            { "type": "set_player_flag", "target": "controller", "key": "skadi.wisdom-action.round", "value": { "type": "current_round" }, "lifecycle": { "duration": "this_round" } }
+          ],
+          "cost": [ { "type": "pay_mana", "amount": 3 } ],
+          "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" },
+      "phase3Evidence": {
+        "referenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "referenceHandler": "core.skadi-wisdom",
+        "sourceReferences": [
+          { "kind": "chm", "document": "FD全卡图鉴V2.0.chm", "locator": "从者/魔术师/英文版/斯卡哈·斯卡蒂.htm" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "locator": "servant.skadi/斯卡哈·斯卡蒂" }
+        ],
+        "acceptedCapability": "PR#466/f807936f26d3e61dc2454a59f918de073fcfeb4f + PR#467/b94a44ee9bf32f3fbd542df47d3a6b42d0e04876"
+      }
+    },
+    {
+      "id": "servant.skadi.skill.sc-skadi-2",
+      "aliases": ["sc_skadi_2"],
+      "legacyId": "sc_skadi_2",
+      "name": "原初之卢恩",
+      "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.skadi" },
+      "printedText": "迅捷属性-远行 - 移动至任意地点。 迅捷和魔法属性-飓风 - 打出一张攻击。\n迅捷和特殊属性-死棘 - 战斗阶段：如果与你同一战场的有且仅有一名交战对手，使其【败北】。\n魔术属性-冰冻 - 你所在地点的其他玩家失去2点魔力。\n魔术和特殊属性-秘仪 - 将你的地利变为3倍。 启明 - 获得4点战果。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sc-skadi-2.teiwaz-combat",
+          "kind": "phase_action",
+          "printedClause": "迅捷和特殊属性-死棘 - 战斗阶段：如果与你同一战场的有且仅有一名交战对手，使其【败北】。",
+          "activation": { "phase": "combat", "opens": "controller_combat_action_window" },
+          "conditions": [
+            { "type": "player_flag_number_current_round", "key": "skadi.teiwaz.round" },
+            { "type": "controller_at_battlefield_with_exactly_one_opponent" }
+          ],
+          "targets": [],
+          "effects": [
+            { "type": "defeat_single_active_opponent_at_controller_battlefield" },
+            { "type": "clear_player_flag", "target": "controller", "key": "skadi.teiwaz.round" }
+          ],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" },
+      "phase3Evidence": {
+        "referenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "referenceHandler": "core.skadi-runes",
+        "sourceReferences": [
+          { "kind": "chm", "document": "FD全卡图鉴V2.0.chm", "locator": "从者/魔术师/英文版/斯卡哈·斯卡蒂.htm" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "locator": "servant.skadi/斯卡哈·斯卡蒂" }
+        ],
+        "acceptedCapability": "PR#466/f807936f26d3e61dc2454a59f918de073fcfeb4f"
+      }
+    },
+    {
+      "id": "servant.skadi.skill.sc-skadi-3",
+      "aliases": ["sc_skadi_3"],
+      "legacyId": "sc_skadi_3",
+      "name": "通往死亡满溢的魔境之门",
+      "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.skadi" },
+      "printedText": "【真名解放】\n影之国-残留：位于你所在地点的对手无法获得魔力。\n前哨阶段：选择一种属性。在你的战斗中，所有具有你选择属性的基础攻击的基本威力翻倍。",
+      "cardFace": { "typeLabel": "魔术/宝具", "attributes": ["魔术", "宝具"], "cost": 10, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [ { "type": "skill_zone_mana_at_least", "value": 10 } ],
+      "abilities": [
+        {
+          "id": "sc-skadi-3.true-name-release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "markers": ["真名解放"],
+          "activation": { "trigger": "on_use_declared" },
+          "conditions": [], "targets": [],
+          "effects": [ { "type": "reveal_information", "scope": "servant_package", "subject": "controller.servant" } ],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-skadi-3.shadow-land-aura",
+          "kind": "residual",
+          "printedClause": "影之国-残留：位于你所在地点的对手无法获得魔力。",
+          "activation": { "trigger": "while_active", "requiresSourceState": "active" },
+          "conditions": [], "targets": [],
+          "effects": [ { "type": "forbid_other_players_at_active_source_location_mana_gain" } ],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-skadi-3.castle-power",
+          "kind": "phase_action",
+          "printedClause": "前哨阶段：选择一种属性。在你的战斗中，所有具有你选择属性的基础攻击的基本威力翻倍。",
+          "activation": { "phase": "advance", "opens": "controller_action_window", "requiresSourceState": "active" },
+          "conditions": [],
+          "targets": [ { "id": "attribute", "type": "choice", "count": { "min": 1, "max": 1 }, "options": [ { "id": "力量", "label": "力量" }, { "id": "迅捷", "label": "迅捷" }, { "id": "魔术", "label": "魔术" }, { "id": "特殊", "label": "特殊" } ] } ],
+          "effects": [ { "type": "set_source_location_basic_base_power_multiplier_from_choice", "target": "attribute" } ],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" },
+      "phase3Evidence": {
+        "referenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+        "referenceHandler": "core.skadi-castle",
+        "sourceReferences": [
+          { "kind": "chm", "document": "FD全卡图鉴V2.0.chm", "locator": "从者/魔术师/英文版/斯卡哈·斯卡蒂.htm" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "locator": "servant.skadi/斯卡哈·斯卡蒂" }
+        ],
+        "acceptedCapability": "PR#466/f807936f26d3e61dc2454a59f918de073fcfeb4f"
+      }
+    }
+  ]
+}

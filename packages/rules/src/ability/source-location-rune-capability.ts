@@ -104,15 +104,20 @@ export function isAcceptedLegacyAnyLocationExceptWorkshopMovementAbility(ability
 }
 
 export function isAcceptedRuneAnyEnabledLocationMovementAbility(ability: AuthoringAbility): boolean {
-  if (!isRuneAnyEnabledLocationMovementCandidate(ability) || !exactSingleAnyEnabledLocationTarget(ability.targets[0]!) ||
-      !automaticNoHost(ability) || !exactKeys(ability.activation, ['phase', 'opens']) || ability.conditions.length !== 1 ||
-      !isCurrentRoundBasicAttackAttributePairCondition(ability.conditions[0]!) ||
-      ability.conditions[0]!.firstAttribute !== '迅捷' || ability.conditions[0]!.secondAttribute !== '迅捷' ||
-      !fixedControllerManaCost(ability, 3) || ability.effects.length !== 1 || !commonEmptyAbilityParts(ability)) return false;
+  const pair = ability.conditions.find(isCurrentRoundBasicAttackAttributePairCondition);
+  const unused = ability.conditions.find((condition) => exactCurrentRoundFlagCondition(condition, 'player_flag_number_not_current_round'));
+  if (!pair || !isRuneAnyEnabledLocationMovementCandidate(ability) || !exactSingleAnyEnabledLocationTarget(ability.targets[0]!) ||
+      !automaticNoHost(ability) || !exactKeys(ability.activation, ['phase', 'opens']) ||
+      pair.firstAttribute !== '迅捷' || pair.secondAttribute !== '迅捷' ||
+      !fixedControllerManaCost(ability, 3) || !commonEmptyAbilityParts(ability)) return false;
   const targetId = String(ability.targets[0]!.id);
   const effect = ability.effects[0]!;
-  return effect.type === 'move_player' && effect.player === 'controller' && effect.to === targetId &&
+  const exactMovement = effect.type === 'move_player' && effect.player === 'controller' && effect.to === targetId &&
     exactKeys(effect, ['type', 'player', 'to']);
+  if (!exactMovement) return false;
+  if (ability.conditions.length === 1 && ability.effects.length === 1) return true;
+  if (!unused || ability.conditions.length !== 2 || ability.effects.length !== 2) return false;
+  return exactSetCurrentRoundFlagEffect(ability.effects[1]!, String(unused.key));
 }
 
 export function controllerHasCurrentRoundBasicAttackAttributePair(state: GameState, controllerId: string, value: RuleNode): boolean {
