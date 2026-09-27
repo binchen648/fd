@@ -262,6 +262,10 @@ export interface AbilityRuntime {
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];
   events: SafeEvent[]; calculations: { controllerId: PlayerId; lines: CalculationLine[] }[];
   preventEffects: boolean; manaCaps: Record<PlayerId, number>; manaGainBlocked: PlayerId[];
+  /** Inclusive round through which ordinary card draws are blocked for each player. */
+  normalCardDrawBlockedThroughRoundByPlayer?: Record<PlayerId, number>;
+  /** Inclusive round through which positive mana gains are blocked for each player. */
+  manaGainBlockedThroughRoundByPlayer?: Record<PlayerId, number>;
   hostRequests: { controllerId: PlayerId; sourceCardId: string; abilityId: string; allowedOperations: HostOperation[] }[];
   roomMode: 'standard' | 'development';
   // Usage tracking for per-game limits

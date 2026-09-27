@@ -1,5 +1,6 @@
 import starterPack from "../data/cards/starter-pack.json";
 import type { GameState } from "../schema/game";
+import { isNormalCardDrawSuppressed } from "../ability/timed-resource-suppression";
 
 import { getLocationById } from "./map-engine";
 
@@ -168,6 +169,8 @@ export function drawCard(
   if (!player || player.status !== "active") {
     return { nextState: state, playedCardIds: [] };
   }
+
+  if (isNormalCardDrawSuppressed(state, playerId)) return { nextState: state, playedCardIds: [] };
 
   const deckCards = state.cards.filter(
     (c) => c.zone === "deck" && c.ownerPlayerId === playerId,

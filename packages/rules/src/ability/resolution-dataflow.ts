@@ -5,6 +5,7 @@ import { clearTransientCardTransformState } from './card-instance-state';
 import { isCardCloseForbidden } from './card-close-forbid';
 import { grantMana } from '../core/rule-overrides';
 import { servantRevealSuppressedByTemporaryConcealment } from './owner-self-mechanics';
+import { isNormalCardDrawSuppressed } from './timed-resource-suppression';
 
 export type EffectExecutionStatus = 'applied' | 'no_op';
 export type BindingFieldType = 'number' | 'player_ids' | 'boolean' | 'status';
@@ -1227,6 +1228,10 @@ function drawCards(
 ): KnownEffectResult {
   const count = evaluateIntegerAmount(transaction, effect.count, 'draw_cards');
   if (count < 0) throw new ResolutionRuntimeError('invalid_count', 'Draw count must be nonnegative.');
+  if (isNormalCardDrawSuppressed(transaction.workingState, transaction.context.controllerId)) {
+    return { effectId: effect.id, effectType: 'draw_cards', status: 'no_op', affectedEntities: [],
+      payload: { playerId: transaction.context.controllerId, requestedCount: count, actualCount: 0, movedCardIds: [] }, emittedEventIds: [] };
+  }
   const movedCardIds: string[] = [];
   for (let index = 0; index < count; index += 1) {
     if (!transaction.workingState.cards.some((candidate) =>
