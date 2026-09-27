@@ -18,6 +18,7 @@ import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute, deductionRecordD
 import { activePlayerCountMinusRoundPlayCostAbility } from './dynamic-play-cost';
 import { playerIgnoresAbilityFromController } from './player-ability-immunity';
 import { effectiveAbilitiesForPhysicalCard, isEventBattleOpponentAttackConstraint, isGainManaEqualSelectedPaidCostEffect, isGrantedBasicDoubleRemoveEffect, isSourceRevealedCondition, physicalCardWasRevealed } from './revealed-card-mechanics';
+import { applyTimedGlobalResourceSuppression, containsTimedGlobalResourceSuppressionNode, controllerHasExactDistinctActiveAttackAttributePair, expireTimedResourceSuppressions, isAcceptedTimedGlobalResourceSuppressionAbility, isExactActiveAttackAttributePairCondition, isManaGainSuppressed, isNormalCardDrawSuppressed, isTimedGlobalResourceSuppressionEffect } from './timed-resource-suppression';
 import { isHideServantTrueNameUntilRoundEndEffect, isLoseVpEqualSourcePlayCountEffect, isRevealHandRoundPowerEffect, PLAYER_COMBAT_TOTAL_POWER_RULE, servantRevealSuppressedByTemporaryConcealment } from './owner-self-mechanics';
 import {
   isAnyBattlefieldConstraint,
@@ -737,6 +738,10 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'controller_at_location_kind': return c.locationKind === '侦察' || c.locationKind === '侦查' ? p.locationId === 'recon' : false;
     case 'controller_servant_revealed': return runtime(s).revealedServants.includes(ctx.controllerId);
     case 'source_reversed': return runtime(s).cardState[ctx.sourceCardId]?.reversed === true;
+    case 'controller_active_attacks_exact_distinct_attribute_pair': {
+      if (!isExactActiveAttackAttributePairCondition(c)) reject('unsupported', 'Unsupported exact active-attack attribute-pair condition shape');
+      return controllerHasExactDistinctActiveAttackAttributePair(s, ctx.controllerId, c);
+    }
     case 'source_revealed': {
       if (!isSourceRevealedCondition(c)) reject('unsupported', 'Unsupported source_revealed condition shape');
       return physicalCardWasRevealed(s, ctx.sourceCardId);
@@ -778,7 +783,7 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
       const equals = typeof current === 'number' && Number.isSafeInteger(current) && current === s.round.roundNumber;
       return c.type === 'player_flag_number_current_round' ? equals : !equals;
     }
-    case 'can_adjust_mana': return !runtime(s).manaGainBlocked.includes(p.id) && p.mana < (runtime(s).manaCaps[p.id] ?? 12);
+    case 'can_adjust_mana': return !isManaGainSuppressed(s, p.id) && p.mana < (runtime(s).manaCaps[p.id] ?? 12);
     case 'controller_strict_second_battle_power': return controllerIsStrictSecondBattlePower(ctx.event, p.id);
     case 'controller_won_battle': return ctx.event?.battleResult?.winners.includes(p.id) ?? false;
     case 'controller_loses_battle': return !(ctx.event?.battleResult?.winners.includes(p.id) ?? true);
@@ -904,6 +909,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
   if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'compiled') &&
       !isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled')) return false;
+  if (containsTimedGlobalResourceSuppressionNode(a.effects) && !isAcceptedTimedGlobalResourceSuppressionAbility(a)) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
@@ -1714,6 +1720,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
     case 'draw_cards': {
       const count = numeric(s, ctx, effect.count);
       if (!Number.isSafeInteger(count) || count < 0) reject('invalid_count', 'Invalid draw count');
+      if (isNormalCardDrawSuppressed(s, p.id)) break;
       for (let i = 0; i < count; i++) {
         if (!s.cards.some(c => c.ownerPlayerId === p.id && c.zone === 'deck')) {
           s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === 'discard').forEach(c => moveCard(s, c.instanceId, 'deck'));
@@ -1800,6 +1807,14 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       state.basePowerMultiplier = 2;
       state.removeAfterBattleRound = s.round.roundNumber;
       r.events.push({ type: 'basic_attack_base_power_doubled_until_battle_end', playerId: p.id, sourceCardId: source.instanceId, abilityId: ctx.abilityId });
+      break;
+    }
+    case 'suppress_all_active_players_resource_through_round': {
+      if (!isTimedGlobalResourceSuppressionEffect(effect) || !isAcceptedTimedGlobalResourceSuppressionAbility(a)) {
+        reject('unsupported', 'Unsupported timed global resource suppression semantic');
+      }
+      applyTimedGlobalResourceSuppression(s, effect);
+      r.events.push({ type: 'timed_resource_suppression_applied', playerId: p.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
       break;
     }
     case 'gain_mana_equal_selected_card_paid_cost': {
@@ -3808,7 +3823,7 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
     runtime(copy).manaGainedThisRound = { round, byPlayer: {} };
     runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
   }
-  copy.round.activePhase = next; copy.round.roundNumber = round; cleanupOngoing(copy);
+  copy.round.activePhase = next; copy.round.roundNumber = round; expireTimedResourceSuppressions(copy); cleanupOngoing(copy);
   if (startsNewRound) processEvent(copy, { id: nextId(copy, 'round-start'), type: 'round_start' });
   const type = next === 'battle' ? 'controller_combat_action_window' : next === 'action' ? 'controller_action_window' : next === 'round_end' ? 'round_end' : 'phase_changed';
   processEvent(copy, { id: nextId(copy, 'phase'), type }); runtime(copy).revision++; Object.assign(s, copy);

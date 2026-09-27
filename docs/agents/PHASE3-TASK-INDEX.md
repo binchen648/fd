@@ -5323,3 +5323,35 @@ Allowed verdicts:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+
+
+## TASK P3-B-SITONAI-COMBINATION-FIMBUL-CAPABILITY
+
+Owner: Codex B
+Status: `IMPLEMENTATION_CANDIDATE_READY_FOR_FRESH_R`
+Base: `508050bb701d2dd2fe425dc323eca2a970ec95c1`
+Classification: bounded zero-credit capability/readiness prerequisite for current owner `servant.sitonai`
+
+Bounded scope:
+- exact generic controller active-attack attribute-pair predicate: exactly one carrier of each requested attribute, two distinct physical active attack cards;
+- exact generic all-active-player timed resource suppression through the end of the next round for either ordinary card draw or positive mana gain;
+- exact source-reversal branch compatibility without character identity routing;
+- authenticated restore validation for timed suppression maps and player-key ownership;
+- shared ordinary draw boundaries and unified positive mana-grant boundary consume the timed state.
+
+Hard scope boundary:
+- zero Sitonai consumer authoring and zero migration credit in this task;
+- no `servant.sitonai` / skill-id / card-name / printed-text / Chinese-text identity routing in production runtime;
+- no SkillLib fallback or runtime source-text parsing;
+- exact-shape fail-closed loader/runtime validation and whole-ability gateway for timed global suppression;
+- ACCEPTED must A-sync/rescan and return to `P3-S-OWNER-SITONAI-COMPLETE-MIGRATION`; it cannot advance owners.
+
+Source-grounded requirement:
+- locked Reference combination join requires exactly one Strength carrier and one Magic carrier among controller active attacks and distinct physical cards;
+- locked Reference Fimbul applies through next round: unreversed blocks ordinary draws for all non-eliminated players, reversed blocks positive mana gains for all non-eliminated players.
+
+Evidence: `docs/reports/2026-09-27-p3-b-sitonai-combination-fimbul-capability-result.md`.
+
+Focused capability `7/7 PASS`; affected serial chain `8 files / 162 tests PASS`; typecheck/content validate/content compile/generated determinism/diff-check PASS; production identity audit clean; `data/authoring/**` delta empty.
+
+Formal accounting remains `132/944`; remaining `812`. This task is permanently zero-credit.

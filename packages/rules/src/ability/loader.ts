@@ -9,6 +9,7 @@ import { deductionRecordMechanicIsWellFormed, isDeductionRecordMarkerAbility, is
 import { isActivePlayerCountMinusRoundPlayCostModifier } from './dynamic-play-cost';
 import { OTHER_PLAYER_ABILITY_EFFECT_IMMUNITY_RULE, isOtherPlayerAbilityEffectImmunityModifier } from './player-ability-immunity';
 import { isAcceptedConditionalRevealedAttributeMarkerAbility, isAcceptedRevealedBasicGrantMarkerAbility, isConditionalAttributeGrantEffect, isEventBattleOpponentAttackConstraint, isGainManaEqualSelectedPaidCostEffect, isGrantBasicDoubleRemoveEffect, isSourceRevealedCondition } from './revealed-card-mechanics';
+import { EXACT_ACTIVE_ATTACK_ATTRIBUTE_PAIR_CONDITION, TIMED_GLOBAL_RESOURCE_SUPPRESSION_EFFECT, containsTimedGlobalResourceSuppressionNode, isAcceptedTimedGlobalResourceSuppressionAbility, isExactActiveAttackAttributePairCondition, isTimedGlobalResourceSuppressionEffect } from './timed-resource-suppression';
 import { LOSE_VP_EQUAL_SOURCE_PLAY_COUNT_EFFECT, HIDE_SERVANT_TRUE_NAME_UNTIL_ROUND_END_EFFECT, REVEAL_HAND_ROUND_POWER_EFFECT, ownerSelfMechanicIsWellFormed } from './owner-self-mechanics';
 import {
   BATTLEFIELD_SOURCE_CARD_COST_AURA_TYPE, ANY_BATTLEFIELD_CONSTRAINT, PLACE_SOURCE_AT_BATTLEFIELD_EFFECT,
@@ -58,6 +59,7 @@ const supportedTypes = new Set([
   'or', 'and', 'not', 'not_card_type', 'is_attack', 'has_attribute', 'not_source_card', 'has_card_id',
   'source_card_in_zone', 'controller_at_location_kind', 'reachable_along_arrows', 'can_adjust_mana',
   'event_played_card_has_attribute', 'source_reversed', 'source_active', 'source_owned', 'source_revealed',
+  EXACT_ACTIVE_ATTACK_ATTRIBUTE_PAIR_CONDITION, TIMED_GLOBAL_RESOURCE_SUPPRESSION_EFFECT,
   'event_player_won_combat', 'event_player_lost_combat',
   'event_player_is_controller', 'event_player_is_opponent', 'event_location_equals_controller',
   'controller_command_seals_at_least', 'controller_command_seals_at_most',
@@ -132,6 +134,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'ignoreBattleLossEffects', 'shareMaximumCombatPower', 'closeIfOwnerAbsent', 'returnToOwnerAtBattleEnd', 'returnToOwnerHandOnOwnerLoss', 'ownerCommandSealsAtMost', 'basePowerMultiplier',
   'locationId', 'vpGain', 'optionalNext', 'vpPenalty', 'defeatOnMatch', 'show', 'allowNoblePhantasmRevealException',
   'manaCost', 'basePowerMultiplier', 'removeAfter',
+  'firstAttribute', 'secondAttribute', 'distinctCards', 'resource', 'roundsAfterCurrent',
   'zones', 'numerator', 'denominator', 'rounding', 'destination', 'defeatIfEmpty', 'minBasePower', 'perCard', 'sourcePlayers',
 ]);
 
@@ -219,6 +222,12 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (([LOSE_VP_EQUAL_SOURCE_PLAY_COUNT_EFFECT, HIDE_SERVANT_TRUE_NAME_UNTIL_ROUND_END_EFFECT, REVEAL_HAND_ROUND_POWER_EFFECT] as readonly string[]).includes(str(n.type)) && !ownerSelfMechanicIsWellFormed(n)) {
         issue(path, 'Unsupported owner-self mechanic shape', abilityId);
+      }
+      if (n.type === EXACT_ACTIVE_ATTACK_ATTRIBUTE_PAIR_CONDITION && !isExactActiveAttackAttributePairCondition(n)) {
+        issue(path, 'Unsupported exact active-attack attribute-pair condition shape', abilityId);
+      }
+      if (n.type === TIMED_GLOBAL_RESOURCE_SUPPRESSION_EFFECT && !isTimedGlobalResourceSuppressionEffect(n)) {
+        issue(path, 'Unsupported timed global resource-suppression effect shape', abilityId);
       }
       if (['player_flag_equals', 'player_flag_number_at_least', 'player_flag_number_current_round', 'player_flag_number_not_current_round'].includes(str(n.type))) {
         if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Structured player-flag condition is supported only as a direct ability condition', abilityId);
@@ -488,6 +497,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (candidateAbility.effects.some(isConditionalAttributeGrantEffect) &&
           !isAcceptedConditionalRevealedAttributeMarkerAbility(candidateAbility)) {
         issue('revealedSource.gateway', 'Conditional revealed-attribute marker requires the exact passive whole-ability semantic', id);
+      }
+      if (containsTimedGlobalResourceSuppressionNode(candidateAbility.effects) &&
+          !isAcceptedTimedGlobalResourceSuppressionAbility(candidateAbility)) {
+        issue('timedResourceSuppression.gateway', 'Timed global resource suppression requires the exact phase-action whole-ability semantic', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

@@ -1,4 +1,5 @@
 import type { GameState, PlayerState } from "../schema/game";
+import { isNormalCardDrawSuppressed } from "../ability/timed-resource-suppression";
 import { grantMana } from "../core/rule-overrides";
 
 export interface PreparationPhaseContext {
@@ -79,6 +80,7 @@ function drawCardsToHandLimit(state: GameState): GameState {
  * 为单个玩家补充手牌
  */
 function drawCardsForPlayer(state: GameState, playerId: string): GameState {
+  if (isNormalCardDrawSuppressed(state, playerId)) return state;
   const HAND_LIMIT = 3;
   
   // 计算当前手中的卡牌数

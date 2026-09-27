@@ -1,5 +1,6 @@
 import type { GameState, PhaseName } from '../schema/game';
 import type { RuleNode } from '../ability/types';
+import { isManaGainSuppressed } from '../ability/timed-resource-suppression';
 
 export type GameStartRuleOverrideName =
   | 'first_logical_day_total_power_adjustment'
@@ -165,7 +166,7 @@ export function grantMana(state: GameState, playerId: string, requestedAmount: n
     }
   }
   const storageCap = runtime?.manaCaps[playerId] ?? 12;
-  const blocked = runtime?.manaGainBlocked.includes(playerId) === true;
+  const blocked = isManaGainSuppressed(state, playerId);
   const after = blocked ? before : Math.min(storageCap, before + cappedRequestAmount);
   player.mana = after;
   const actualAmount = after - before;

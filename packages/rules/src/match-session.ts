@@ -30,6 +30,7 @@ import {
 } from './ability/opponent-close-to-one-authority';
 import { hmacSha256Hex, sha256Hex } from './ability/portable-sha256';
 import { clearTransientCardTransformState } from './ability/card-instance-state';
+import { isNormalCardDrawSuppressed } from './ability/timed-resource-suppression';
 import { settleLinkedOwnerCardsAfterBattles } from './ability/linked-owner-combat';
 import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute } from './ability/deduction-record';
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
@@ -727,7 +728,10 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       !isRestoreStringArray(value.revealedServants) || !Array.isArray(value.events) || !value.events.every(isRestoreSafeEvent) ||
       !Array.isArray(value.calculations) || !value.calculations.every(isRestoreCalculation) ||
       typeof value.preventEffects !== 'boolean' || !isRestoreFiniteNumberMap(value.manaCaps) ||
-      !isRestoreStringArray(value.manaGainBlocked) || !Array.isArray(value.hostRequests) || !value.hostRequests.every((entry) =>
+      !isRestoreStringArray(value.manaGainBlocked) ||
+      (value.normalCardDrawBlockedThroughRoundByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.normalCardDrawBlockedThroughRoundByPlayer)) ||
+      (value.manaGainBlockedThroughRoundByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.manaGainBlockedThroughRoundByPlayer)) ||
+      !Array.isArray(value.hostRequests) || !value.hostRequests.every((entry) =>
         isRestoreRecord(entry) && typeof entry.controllerId === 'string' && typeof entry.sourceCardId === 'string' &&
         typeof entry.abilityId === 'string' && isRestoreStringArray(entry.allowedOperations) && entry.allowedOperations.every((op) =>
           ['adjust-mana','adjust-victory-points','move-card','create-status','skip-ability'].includes(op))) ||
@@ -974,7 +978,7 @@ function isRestoreAbilityRuntimeReferences(
 ): boolean {
   const playerKeyedMaps = [
     'playerStatusKeysByPlayer','structuredPlayerFlagsByPlayer','structuredRoundFlagKeysByPlayer','deductionRecordsByPlayer','battleDefeatRoundByPlayer','combatWinRoundByPlayer','manaCaps','noblePhantasmCostsThisRound','movementDistanceThisRound',
-    'battlefieldsPassedOrStayedThisRound','startingDeckSizeByPlayer',
+    'battlefieldsPassedOrStayedThisRound','startingDeckSizeByPlayer','normalCardDrawBlockedThroughRoundByPlayer','manaGainBlockedThroughRoundByPlayer',
   ] as const;
   for (const key of playerKeyedMaps) if (value[key] !== undefined && !restoreRecordKeysBelongTo(value[key], playerIds)) return false;
   for (const key of ['revealedServants','manaGainBlocked'] as const) {
@@ -2508,6 +2512,7 @@ export class MatchSession {
   }
 
   private drawToHandLimit(targetState: GameState, playerId: string, limit = 3): void {
+    if (isNormalCardDrawSuppressed(targetState, playerId)) return;
     const handCount = targetState.cards.filter((card) => card.ownerPlayerId === playerId && card.zone === 'hand').length;
     const drawCount = Math.max(0, limit - handCount);
     if (!drawCount) return;
