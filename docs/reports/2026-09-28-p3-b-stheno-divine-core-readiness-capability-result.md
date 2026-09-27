@@ -1,0 +1,100 @@
+# P3-B Stheno Divine Core Readiness Capability Result
+
+Role: Codex B
+Status: `IMPLEMENTATION_CANDIDATE_READY_FOR_FRESH_R`
+Date: 2026-09-28
+Task: `P3-B-STHENO-DIVINE-CORE-READINESS-CAPABILITY`
+Exact Base: `e3c61d74be6b02b186875e31191e416fc364e179`
+Owner root: `servant.stheno`
+Classification: bounded zero-credit owner-readiness prerequisite
+
+## Complete owner-readiness preflight
+
+The Stheno owner was preflighted as one complete owner before formal consumer authoring.
+
+- sc1 has historical formal acceptance in FM06 Presence Concealment; no new capability is required and any later owner-complete consumer must preserve that accepted semantic without duplicate credit.
+- sc2 is already expressible through accepted generic battle-result/resource vocabulary. The current loader/interpreter contains `after_controller_wins_battle`, `event_player_won_combat`, and `adjust_victory_points`, with existing regressions for combat-outcome conditions and VP adjustment; no new privileged shell is required.
+- sc3 is the sole currently discoverable missing generic readiness family: active-source combat Luck discard -> per-engaged-opponent close/refund/draw -> optional turn-order immediate play of the exact drawn card, with temporary combat permission for that drawn card's Action ability.
+
+No second Stheno readiness task is authorized by this preflight. ACCEPTED must A-sync/rescan and return to the same Stheno formal owner; it cannot advance owners.
+
+## Locked source grounding
+
+Locked Reference was mechanically read at exact commit `b2f9fa15fba07c63530bbf4612b03b8b704755f9`.
+
+For sc3 / Divine Core, the observed source contract requires an active card during combat and does not infer a per-game limit. The exact bounded generic shell implemented here is identity-free and source-grounded:
+
+- authoring phase `combat`, controller combat action window, active source required;
+- discard exactly one owned `幸运` card;
+- process engaged opponents in turn order;
+- for each opponent, optionally close at most one eligible non-`per_game` attack;
+- refund that opponent mana equal to the effective play cost of the closed card;
+- draw exactly one card for that opponent;
+- in turn order, optionally immediately play that exact drawn card;
+- an immediately played drawn card receives only the source-grounded current-round permission needed for its Action ability during combat.
+
+The privileged envelope is accepted only as one exact whole-ability shape. Widened effect fields, extra conditions, compiled-pack widening, stale/private continuation corruption, and forged combat-action permission fail closed.
+
+## Implementation boundary
+
+Generic production support is implemented without Stheno identity routing through:
+
+- `packages/rules/src/ability/divine-core-capability.ts`;
+- exact loader gateway wiring;
+- interpreter availability/transaction/settlement logic;
+- typed private interaction and transaction state;
+- MatchSession structural/reference/provenance validation;
+- public generic export surface.
+
+No `data/authoring/**` consumer is changed in this readiness task. Production runtime contains no `servant.stheno`, `sc-stheno`, Stheno Chinese owner/card-name routing, runtime source-text parsing, or `SkillLib` fallback.
+
+## Focused verification
+
+`packages/rules/tests/regression/p3-stheno-divine-core-readiness-capability.test.ts`: **8/8 PASS**.
+
+Coverage proves:
+
+1. exact whole-ability shell accepted and widened/near-match mutations rejected;
+2. availability requires a genuinely active battlefield source, owned Luck, and at least one engaged opponent;
+3. multi-Luck selection, opponent turn order, per-game exclusion, close/refund/draw, skip, exact drawn-card immediate play, and combat Action permission;
+4. the sole Luck card auto-discards and every opponent may be skipped;
+5. a mid-transaction private close choice round-trips MatchSession while widened host-signed interaction metadata is rejected;
+6. forged combat Action permission without exact immediate-play provenance is rejected on restore;
+7. completed exact immediate-play provenance round-trips while a mismatched source is rejected;
+8. compiled-pack widening rejects transactionally before Luck discard or decision staging.
+
+Fixture corrections made while validating restore did not broaden production semantics: the GameState battle phase is `battle` while authoring activation remains `combat`; helper definitions are installed into the trusted fixture pack before runtime initialization; UTF-8 source attributes remain exact.
+
+## Affected verification
+
+Affected serial: **8 files / 198 tests PASS**:
+
+- Stheno Divine Core readiness `8`;
+- MatchSession `33`;
+- executable-card-pack `50`;
+- authoring-interpreter `38`;
+- combat-resolver `10`;
+- resolution-dataflow `15`;
+- MatchSession regressions `7`;
+- complex-skills regression `37`.
+
+Static/content gates:
+
+- `npm run typecheck`: PASS;
+- `npm run content:validate`: PASS — `7 masters / 12 servants / 20 events / 0 blocking issues`;
+- `npm run content:compile`: PASS — same summary;
+- `npm run verify:generated-content`: PASS with unchanged hashes:
+  - content `b2c446488a28c5036ac36557e09b563b54b11018d5396233a53f37ffdbff6923`;
+  - fixture `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`;
+  - evidence `f4ae33de4dc2832766064bdf46e277d9559398d4d34b45d7d05a0eb76744cd14`;
+- `git diff --check`: PASS;
+- `data/authoring/**` delta: EMPTY;
+- production identity audit: `servant.stheno=0`, `sc-stheno=0`, `斯忒诺=0`, `女神的绮想=0`, `SkillLib=0`.
+
+## Accounting / continuation
+
+This readiness task is permanently zero-credit. Strict formal accounting remains **`139/944`**, remaining **`805`**.
+
+After exact-Candidate `IMPLEMENTATION_ACCEPTED_CANDIDATE` + A-sync/rescan, return to the same Stheno owner and perform one owner-complete formal migration containing every Stheno frozen skill together, preserving historical sc1 acceptance and granting new credit only where mechanically justified by the frozen accounting/evidence line.
+
+Allowed verdicts: `IMPLEMENTATION_ACCEPTED_CANDIDATE` / `IMPLEMENTATION_NEEDS_REVISION`.

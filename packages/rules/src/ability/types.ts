@@ -188,10 +188,40 @@ export interface PendingCombatOpponentPowerVpReward {
   participantIds: PlayerId[]; participantPowers: Record<PlayerId, number>; opponentIds: PlayerId[];
 }
 export interface DeductionRecordState { definitionId: string; attribute: '力量' | '迅捷' | '魔术' | '特殊'; recordedRound: number }
+export interface BattleLuckDiscardInteractionMetadata {
+  kind: 'battle_luck_discard_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; luckCardIds: string[];
+  constraints: { kind: 'target'; targetKind: 'card'; min: 1; max: 1; distinct: true };
+}
+export interface BattleOpponentCloseRewardInteractionMetadata {
+  kind: 'battle_opponent_close_reward_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; opponentId: PlayerId; candidateIds: string[];
+  constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: 1; distinct: true };
+}
+export interface BattleDrawnCardOptionalPlayInteractionMetadata {
+  kind: 'battle_drawn_card_optional_play_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  playerId: PlayerId; drawnCardId: string;
+  constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: 1; distinct: true };
+}
+export interface BattleCloseDrawPlayReward {
+  playerId: PlayerId; closedCardId: string; refundMana: number; drawnCardId?: string;
+}
+export interface BattleCloseDrawImmediatePlayRecord {
+  controllerId: PlayerId; playerId: PlayerId; cardInstanceId: string; sourceCardId: string; abilityId: string; round: number;
+}
+export interface PendingBattleCloseDrawPlayTransaction {
+  controllerId: PlayerId; sourceCardId: string; abilityId: string; round: number; battlefieldId: string;
+  discardedLuckCardId?: string;
+  opponentIds: PlayerId[]; closeIndex: number; playIndex: number; rewards: BattleCloseDrawPlayReward[];
+}
 export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata |
   OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata | DeductionRecordChoiceInteractionMetadata |
   PostDrawHandShuffleInteractionMetadata | RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata |
-  OwnedRulerSealPowerInteractionMetadata | CombatOpponentPowerVpRewardInteractionMetadata;
+  OwnedRulerSealPowerInteractionMetadata | CombatOpponentPowerVpRewardInteractionMetadata | BattleLuckDiscardInteractionMetadata |
+  BattleOpponentCloseRewardInteractionMetadata | BattleDrawnCardOptionalPlayInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -265,6 +295,8 @@ export interface CardRuntimeState {
   /** Trusted battlefield binding for source cards explicitly placed onto a battlefield. */
   placedAtLocationId?: string;
   /** Source-bound current-round choice that doubles matching basic-card base Power at the source controller's location. */
+  /** Exact physical card granted this-round permission to use authored action-phase abilities during combat. */
+  actionAbilityAllowedInCombatRound?: number;
   sourceLocationBasicBasePowerMultiplier?: {
     attribute: '力量' | '迅捷' | '魔术' | '特殊';
     multiplier: 2;
@@ -324,6 +356,10 @@ export interface AbilityRuntime {
   pendingCombatOpponentPowerVpRewards?: PendingCombatOpponentPowerVpReward[];
   /** FB2-49 serialized same-battlefield opponent keep-one card decisions. */
   pendingOpponentCloseToOne?: PendingOpponentCloseToOne[];
+  /** Identity-free server-owned transaction for battle close/refund/draw/optional-immediate-play resolution. */
+  pendingBattleCloseDrawPlayTransaction?: PendingBattleCloseDrawPlayTransaction;
+  /** Provenance for exact drawn cards whose action-phase abilities are permitted in combat for one round. */
+  battleCloseDrawImmediatePlayHistory?: BattleCloseDrawImmediatePlayRecord[];
   /** Server-owned once-per-battle-phase terminal event, staged until ordinary post-battle work is settled. */
   pendingBattleTerminalEvent?: AbilityEvent;
   /** Source-bound state for the exact Soul Drag -> Return Silence transform family. */

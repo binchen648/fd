@@ -5837,3 +5837,48 @@ R1 closure:
 Typecheck/content validate/content compile/generated determinism/diff-check PASS; `data/authoring/**` delta empty; production Skadi/SkillLib identity audit clean.
 
 Formal accounting remains `134/944`; remaining `810`. This task is permanently zero-credit.
+## TASK P3-B-STHENO-DIVINE-CORE-READINESS-CAPABILITY
+
+Owner: Codex B
+Status: `IMPLEMENTATION_CANDIDATE_READY_FOR_FRESH_R`
+Base: `e3c61d74be6b02b186875e31191e416fc364e179`
+Classification: bounded zero-credit owner-readiness prerequisite for current owner `servant.stheno`
+
+Complete owner-readiness preflight:
+- sc1 has historical formal FM06 Presence Concealment acceptance and requires no new readiness capability;
+- sc2 is already expressible by accepted generic `after_controller_wins_battle` / `event_player_won_combat` / `adjust_victory_points` runtime vocabulary and requires no new privileged shell;
+- sc3 Divine Core is the sole currently discoverable new gap and is closed by this one identity-free battle Luck-close/refund/draw/immediate-play family;
+- no second Stheno readiness/capability batch is currently justified by the complete preflight.
+
+Bounded scope:
+- exact active-source combat whole-ability gateway;
+- one owned Luck discard, deterministic engaged-opponent turn order, at most one eligible non-per-game attack close per opponent;
+- refund each affected opponent the closed card effective cost and draw exactly one;
+- optional turn-order immediate play of the exact drawn card plus bounded current-round combat permission for that card's Action ability;
+- private transaction/continuation serialization, restore authentication, exact completed-play provenance, corruption fail-closed, and compiled-pack fail-closed;
+- no Stheno consumer authoring and zero migration credit.
+
+Hard boundary:
+- `data/authoring/**` delta EMPTY;
+- no `servant.stheno`, `sc-stheno`, card-name/printed-text/Chinese identity routing in production runtime;
+- no runtime source-text parsing and no `SkillLib` fallback;
+- ACCEPTED must A-sync/rescan and return to the same Stheno formal owner; do not advance owners.
+
+Verification evidence:
+- focused Divine Core readiness `8/8 PASS`;
+- affected serial `8 files / 198 tests PASS`;
+- typecheck PASS;
+- content validate/compile PASS — `7 masters / 12 servants / 20 events / 0 blocking issues`;
+- generated determinism PASS with unchanged hashes;
+- `git diff --check` PASS;
+- `data/authoring/**` delta EMPTY;
+- production identity audit clean for Stheno ids/names and `SkillLib`;
+- detailed result: `docs/reports/2026-09-28-p3-b-stheno-divine-core-readiness-capability-result.md`.
+
+Accounting:
+- strict formal accounting remains `139/944`, remaining `805`;
+- this readiness task is permanently zero-credit.
+
+Allowed verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`

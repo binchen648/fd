@@ -658,7 +658,28 @@ function isRestorePendingInteraction(value: unknown): boolean {
       if (!hasExactRestoreKeys(constraints, ['kind', 'targetKind', 'min', 'max', 'distinct'])) return false;
       return isRestoreInteractionConstraints(constraints, ['attribute']) && constraints.min === (value.optional ? 0 : 1) && constraints.max === 1;
     }
-    default:
+    case 'battle_luck_discard_choice_v1':
+      return hasExactRestoreKeys(value, [
+        'kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'controllerId','luckCardIds','constraints',
+      ]) && typeof value.controllerId === 'string' && isRestoreStringArray(value.luckCardIds) && value.luckCardIds.length >= 2 &&
+        new Set(value.luckCardIds).size === value.luckCardIds.length && isRestoreInteractionConstraints(value.constraints, ['card']) &&
+        (value.constraints as Record<string, unknown>).min === 1 && (value.constraints as Record<string, unknown>).max === 1;
+    case 'battle_opponent_close_reward_choice_v1':
+      return hasExactRestoreKeys(value, [
+        'kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'controllerId','opponentId','candidateIds','constraints',
+      ]) && typeof value.controllerId === 'string' && typeof value.opponentId === 'string' && value.opponentId !== value.controllerId &&
+        isRestoreStringArray(value.candidateIds) && value.candidateIds.length >= 1 && new Set(value.candidateIds).size === value.candidateIds.length &&
+        isRestoreInteractionConstraints(value.constraints, ['card']) && (value.constraints as Record<string, unknown>).min === 0 &&
+        (value.constraints as Record<string, unknown>).max === 1;
+    case 'battle_drawn_card_optional_play_v1':
+      return hasExactRestoreKeys(value, [
+        'kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'playerId','drawnCardId','constraints',
+      ]) && typeof value.playerId === 'string' && typeof value.drawnCardId === 'string' &&
+        isRestoreInteractionConstraints(value.constraints, ['card']) && (value.constraints as Record<string, unknown>).min === 0 &&
+        (value.constraints as Record<string, unknown>).max === 1;    default:
       return false;
   }
 }
@@ -685,6 +706,7 @@ function isRestoreCardRuntimeState(value: unknown): boolean {
     (value.attributeOverrides === undefined || isRestoreStringArray(value.attributeOverrides)) &&
     (value.basePowerMultiplier === undefined || value.basePowerMultiplier === 2) &&
     (value.removeAfterBattleRound === undefined || isRestoreSafeInteger(value.removeAfterBattleRound, 1)) &&
+    (value.actionAbilityAllowedInCombatRound === undefined || isRestoreSafeInteger(value.actionAbilityAllowedInCombatRound, 1)) &&
     (value.placedAtLocationId === undefined || typeof value.placedAtLocationId === 'string') &&
     (value.sourceLocationBasicBasePowerMultiplier === undefined ||
       isRestoreSourceLocationBasicBasePowerMultiplier(value.sourceLocationBasicBasePowerMultiplier));
@@ -759,6 +781,30 @@ function isRestoreRoundPlayCounters(value: unknown): boolean {
     (value.faceUpCardsPlayedByPlayer === undefined || isCountMap(value.faceUpCardsPlayedByPlayer));
 }
 
+function isRestoreBattleCloseDrawPlayReward(value: unknown): boolean {
+  if (!isRestoreRecord(value)) return false;
+  const required = ['playerId','closedCardId','refundMana'];
+  if (!(hasExactRestoreKeys(value, required) || hasExactRestoreKeys(value, [...required,'drawnCardId']))) return false;
+  return typeof value.playerId === 'string' && typeof value.closedCardId === 'string' && isRestoreSafeInteger(value.refundMana, 0) &&
+    (value.drawnCardId === undefined || typeof value.drawnCardId === 'string');
+}
+function isRestoreBattleCloseDrawPlayTransaction(value: unknown): boolean {
+  if (!isRestoreRecord(value)) return false;
+  const required = ['controllerId','sourceCardId','abilityId','round','battlefieldId','opponentIds','closeIndex','playIndex','rewards'];
+  if (!(hasExactRestoreKeys(value, required) || hasExactRestoreKeys(value, [...required,'discardedLuckCardId']))) return false;
+  return typeof value.controllerId === 'string' && typeof value.sourceCardId === 'string' && typeof value.abilityId === 'string' &&
+    typeof value.battlefieldId === 'string' && isRestoreSafeInteger(value.round, 1) && isRestoreStringArray(value.opponentIds) &&
+    value.opponentIds.length >= 1 && new Set(value.opponentIds).size === value.opponentIds.length &&
+    isRestoreSafeInteger(value.closeIndex, 0) && (value.closeIndex as number) <= value.opponentIds.length &&
+    isRestoreSafeInteger(value.playIndex, 0) && (value.playIndex as number) <= value.opponentIds.length &&
+    Array.isArray(value.rewards) && value.rewards.every(isRestoreBattleCloseDrawPlayReward) &&
+    (value.discardedLuckCardId === undefined || typeof value.discardedLuckCardId === 'string');
+}
+function isRestoreBattleCloseDrawImmediatePlayRecord(value: unknown): boolean {
+  return hasExactRestoreKeys(value, ['controllerId','playerId','cardInstanceId','sourceCardId','abilityId','round']) &&
+    typeof value.controllerId === 'string' && typeof value.playerId === 'string' && typeof value.cardInstanceId === 'string' && typeof value.sourceCardId === 'string' &&
+    typeof value.abilityId === 'string' && isRestoreSafeInteger(value.round, 1);
+}
 function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionRestorePackKind): boolean {
   if (value === undefined) return true;
   if (!isRestoreRecord(value) || !isRestoreAbilityPack(value.pack, packKind) || !isRestoreRecord(value.cardState) ||
@@ -801,6 +847,9 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       !value.normalCommandSealUseHistory.every(isRestoreNormalCommandSealUseRecord))) return false;
   if (value.rulerCommandSealUseRoundByPlayer !== undefined && !isRestorePositiveIntegerMap(value.rulerCommandSealUseRoundByPlayer)) return false;
   if (value.startingDeckSizeByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.startingDeckSizeByPlayer)) return false;
+  if (value.pendingBattleCloseDrawPlayTransaction !== undefined && !isRestoreBattleCloseDrawPlayTransaction(value.pendingBattleCloseDrawPlayTransaction)) return false;
+  if (value.battleCloseDrawImmediatePlayHistory !== undefined && (!Array.isArray(value.battleCloseDrawImmediatePlayHistory) ||
+      !value.battleCloseDrawImmediatePlayHistory.every(isRestoreBattleCloseDrawImmediatePlayRecord))) return false;
   if (value.cardPlayCountByInstance !== undefined && !isRestoreNonNegativeIntegerMap(value.cardPlayCountByInstance)) return false;
   if (value.grantedPerGamePlayLimitCardIds !== undefined && (!isRestoreStringArray(value.grantedPerGamePlayLimitCardIds) || new Set(value.grantedPerGamePlayLimitCardIds).size !== value.grantedPerGamePlayLimitCardIds.length)) return false;
   if (value.grantedPerGamePlayLimitBaselineByCardId !== undefined && !isRestoreNonNegativeIntegerMap(value.grantedPerGamePlayLimitBaselineByCardId)) return false;
