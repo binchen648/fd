@@ -5274,7 +5274,7 @@ R1 predecessor `986b04be707911b8f741ffc4f7bf33da8f59fe50` -> `IMPLEMENTATION_NEE
 
 Owner: Codex S
 Status: `READY`
-Base: exact Sigurd owner acceptance-sync commit carrying this task block
+Base: exact Sitonai source-skill attack-join capability acceptance-sync commit carrying this refreshed task block
 Owner root: `servant.sitonai`
 Formal owner scope: exactly the two current-main remaining frozen Sitonai skills; the already accepted FM07/R38 sc-sitonai-3 receives no duplicate credit
 
@@ -5402,3 +5402,15 @@ R1 closure:
 - revision preserves any genuine prior `playedRound`, initializes a previously untracked skill-zone source with a non-current round, and never stamps current `playedRound` merely because the card joined an attack;
 - focused closure proves join cost/state/visibility/zero paid play cost/no ordinary play accounting while preserving non-play provenance; Sigurd-style regression proves a joined-but-not-played servant-skill attack is excluded from `played_this_round` candidates;
 - affected serial closure: `7 files / 155 tests PASS`; typecheck/content validate/content compile/generated determinism/diff-check PASS; `data/authoring/**` delta empty; production Sitonai/SkillLib identity-routing audit clean.
+
+## P3-A-SITONAI-SOURCE-SKILL-ATTACK-JOIN-CAPABILITY-ACCEPTANCE-SYNC
+
+- PR #464 exact successor Candidate `c68bfe1246c06a2a0f67728d5539a3710a355933` received `IMPLEMENTATION_ACCEPTED_CANDIDATE` from fresh independent R.
+- Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/464#issuecomment-5853397996`.
+- Accepted scope is the bounded generic source-skill attack-join capability only; Sitonai consumer authoring delta remains empty and this synchronization grants zero migration credit.
+- Final review closure confirms join does not forge current-round `playedRound`; genuine prior play provenance is preserved and joined-but-not-played attacks remain excluded from existing `played_this_round` consumers.
+- Exact-Candidate Phase 3 Pre-Review Gate run `36299648124` succeeded.
+- Mechanical A rescan confirms frozen sc-sitonai-1/sc-sitonai-2 still have `hasConfirmedOverride=true`, `hasAuthoringCard=false`, while canonical Sitonai authoring still contains only already accepted sc-sitonai-3.
+- Current-main strict formal accounting remains `132/944`; remaining `812`.
+- Current owner remains `servant.sitonai`; execution returns immediately to `P3-S-OWNER-SITONAI-COMPLETE-MIGRATION` for sc-sitonai-1 + sc-sitonai-2 together. sc-sitonai-3 remains preserved and must not be re-credited. Do not advance owners.
+- Detailed sync: `docs/reports/2026-09-27-p3-a-sitonai-source-skill-attack-join-capability-acceptance-synchronization.md`.
