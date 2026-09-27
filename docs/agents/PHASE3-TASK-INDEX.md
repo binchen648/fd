@@ -5495,10 +5495,22 @@ Allowed verdicts:
 - `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 - `IMPLEMENTATION_NEEDS_REVISION`
 
+## P3-A-SKADI-RAIDO-MOVEMENT-READINESS-CAPABILITY-ACCEPTANCE-SYNC
+
+- PR #467 exact successor Candidate `b94a44ee9bf32f3fbd542df47d3a6b42d0e04876` received `IMPLEMENTATION_ACCEPTED_CANDIDATE` from fresh independent R.
+- Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/467#issuecomment-5855166720`.
+- Accepted scope is the bounded Raido movement generic capability only; `data/authoring/**` remains unchanged and this synchronization grants zero migration credit.
+- R1 closure confirms selector removal/replacement can no longer bypass the loader gateway; exact acceptance still requires the original single `any_enabled_location` target and runtime compiled-pack corruption remains fail closed.
+- Exact-Candidate Phase 3 Pre-Review Gate run `36312899164` succeeded.
+- Mechanical A rescan confirms all three Skadi identities remain the formal owner-complete scope, canonical `servant.skadi.json` is still absent, and no prior formal Skadi migration acceptance exists.
+- Current-main strict formal accounting remains `134/944`; remaining `810`.
+- Current owner remains `servant.skadi`; execution returns immediately to `P3-S-OWNER-SKADI-COMPLETE-MIGRATION` for all three skills together. Do not advance owners.
+- Detailed sync: `docs/reports/2026-09-27-p3-a-skadi-raido-movement-readiness-capability-acceptance-synchronization.md`.
+
 ## TASK P3-S-OWNER-SKADI-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `BLOCKED_ON_BOUNDED_CAPABILITY`
+Status: `READY`
 Base: exact future Raido movement capability acceptance-sync commit carrying the refreshed task block
 Owner root: `servant.skadi`
 Formal owner scope: all three current-main remaining frozen Skadi skills together
