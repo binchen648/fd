@@ -1,7 +1,7 @@
 # P3-B Skadi Raido Movement Readiness Capability Result
 
 Role: Codex B
-Status: `IMPLEMENTATION_CANDIDATE_READY_FOR_FRESH_R`
+Status: `IMPLEMENTATION_REVISION_READY_FOR_FRESH_R`
 Date: 2026-09-27
 Task: `P3-B-SKADI-RAIDO-MOVEMENT-READINESS-CAPABILITY`
 Exact Base: `abda8c845133bd12bce47f624808a3ead9d95510`
@@ -42,7 +42,7 @@ No card/servant identity is part of the runtime semantic.
 1. the existing legacy FB2-09 free active-source `any_enabled_location + not workshop` shape, represented in the shared loader gateway so loader/runtime agree;
 2. the new exact rune movement shape: one exact current-round distinct `迅捷/迅捷` basic-attack pair condition, one fixed pay-3 controller mana cost, one exact single `any_enabled_location` destination target, and one exact controller `move_player` effect.
 
-Candidate detection is intentionally broader than acceptance. Action `any_enabled_location + move_player` candidates enter the loader gateway; only one of the two exact whole-ability contracts is accepted.
+Candidate detection is intentionally broader than acceptance. Action location-movement candidates enter the loader gateway when they either carry `any_enabled_location` or retain the Raido rune-pair + mana-cost signature, so removing/replacing the required selector cannot evade the gateway; only one of the two exact whole-ability contracts is accepted.
 
 `packages/rules/src/ability/loader.ts` now fails malformed movement candidates closed before runtime construction. This is stricter than the older FB2-09 regression, which previously allowed one malformed near-match through the loader solely to prove runtime rejection. That regression is updated to assert the stronger loader rejection while preserving its legal movement coverage.
 
@@ -56,6 +56,14 @@ Candidate detection is intentionally broader than acceptance. Action `any_enable
 - typed direct-action/data-flow normalization route.
 
 The normal generic movement implementation remains unchanged.
+
+## R1 revision closure
+
+Fresh independent R on predecessor Candidate `eb06cac542e6bd1cb54eacaaa0cc4ec6a18c444a` returned one exact-scope blocker. Canonical same-attempt Coordinator relay: `https://github.com/binchen648/fd/pull/467#issuecomment-5855009517`.
+
+- R1 P1 CLOSED: removing or replacing the required `any_enabled_location` selector no longer drops an otherwise Raido-shaped Action movement shell out of the loader candidate class. The detector now also recognizes the identity-free rune-pair + mana-cost movement signature, while exact whole-ability acceptance still requires the original single `any_enabled_location` target. Therefore widened target near-matches are rejected by the loader instead of bypassing it.
+- Runtime remains fail closed after compiled-pack corruption: removing the selector from an already compiled pack cannot complete movement, cannot spend mana, cannot change location, and cannot leave a pending decision.
+- The legacy FB2-09 free active-source `any_enabled_location + not workshop` contract remains unchanged and is still covered by its regression suite; ordinary arrow movement is not routed into the new Raido candidate path.
 
 ## Scope boundary
 
@@ -76,8 +84,8 @@ Focused generic regression:
 - Exact contract loads and moves at exactly 3 mana.
 - Current location is excluded from destination candidates.
 - 2 mana is not advertised and direct dispatch is rejected without mana/location/continuation mutation.
-- wrong cost, extra condition, widened target constraint, widened effect, and wrong rune pair fail closed at the loader gateway.
-- compiled-pack corruption fails closed at runtime.
+- wrong cost, extra condition, missing/replaced/extra target selector, widened effect, and wrong rune pair fail closed at the loader gateway.
+- compiled-pack corruption, including removal of the required selector, fails closed at runtime.
 
 Affected serial chain:
 

@@ -78,8 +78,12 @@ export function isRuneAnyEnabledLocationMovementCandidate(ability: AuthoringAbil
   const target = ability.targets[0]!;
   const constraints = Array.isArray(target.constraints) ? target.constraints.filter((entry): entry is RuleNode =>
     !!entry && typeof entry === 'object' && !Array.isArray(entry)) : [];
-  return target.type === 'location' && constraints.some((constraint) => constraint.type === 'any_enabled_location') &&
-    ability.effects.some((effect) => effect.type === 'move_player');
+  const hasAnyEnabledSelector = constraints.some((constraint) => constraint.type === 'any_enabled_location');
+  const hasRunePairMarker = ability.conditions.some((condition) =>
+    condition.type === CURRENT_ROUND_BASIC_ATTACK_ATTRIBUTE_PAIR_CONDITION);
+  const hasManaCostMarker = ability.cost.some((cost) => cost.type === 'pay_mana');
+  return target.type === 'location' && ability.effects.some((effect) => effect.type === 'move_player') &&
+    (hasAnyEnabledSelector || (hasRunePairMarker && hasManaCostMarker));
 }
 
 export function isAcceptedLegacyAnyLocationExceptWorkshopMovementAbility(ability: AuthoringAbility): boolean {

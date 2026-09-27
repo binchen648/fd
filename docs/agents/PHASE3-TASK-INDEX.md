@@ -5451,7 +5451,7 @@ R1 closure:
 ## TASK P3-B-SKADI-RAIDO-MOVEMENT-READINESS-CAPABILITY
 
 Owner: Codex B
-Status: `IMPLEMENTATION_CANDIDATE_READY_FOR_FRESH_R`
+Status: `IMPLEMENTATION_REVISION_READY_FOR_FRESH_R`
 Base: `abda8c845133bd12bce47f624808a3ead9d95510`
 Classification: bounded zero-credit capability/readiness prerequisite discovered while completing current owner `servant.skadi`
 
@@ -5484,6 +5484,12 @@ Verification:
 - `data/authoring/**` delta EMPTY;
 - production Skadi/SkillLib identity audit clean;
 - strict formal accounting remains `134/944`, remaining `810`; task permanently zero-credit.
+
+R1 closure:
+- predecessor Candidate `eb06cac542e6bd1cb54eacaaa0cc4ec6a18c444a` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt evidence `https://github.com/binchen648/fd/pull/467#issuecomment-5855009517`;
+- P1 closed: the loader movement candidate detector now also catches the identity-free Raido rune-pair + mana-cost movement signature when `any_enabled_location` is removed or replaced, while exact acceptance still requires the original selector;
+- loader/runtime fail closed are both covered for selector removal/replacement; runtime corruption cannot spend mana, move, or leave a pending decision;
+- focused closure remains `4/4 PASS`; affected serial closure remains `8 files / 170 tests PASS`.
 
 Allowed verdicts:
 - `IMPLEMENTATION_ACCEPTED_CANDIDATE`

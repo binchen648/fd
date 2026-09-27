@@ -77,6 +77,8 @@ describe('P3 bounded rune any-location movement readiness capability', () => {
     const mutations: Array<[string, (raw: any) => void]> = [
       ['wrong-cost', (raw) => { raw.cards[0].abilities[0].cost[0].amount = 2; }],
       ['extra-condition', (raw) => { raw.cards[0].abilities[0].conditions.push({ type: 'source_active' }); }],
+      ['missing-any-enabled-target-constraint', (raw) => { raw.cards[0].abilities[0].targets[0].constraints = []; }],
+      ['replaced-any-enabled-target-constraint', (raw) => { raw.cards[0].abilities[0].targets[0].constraints = [{ type: 'not_location_kind', locationKind: 'workshop' }]; }],
       ['extra-target-constraint', (raw) => { raw.cards[0].abilities[0].targets[0].constraints.push({ type: 'not_location_kind', locationKind: 'workshop' }); }],
       ['widened-effect', (raw) => { raw.cards[0].abilities[0].effects[0].extra = true; }],
       ['wrong-rune-pair', (raw) => { raw.cards[0].abilities[0].conditions[0].firstAttribute = '魔术'; }],
@@ -122,5 +124,17 @@ describe('P3 bounded rune any-location movement readiness capability', () => {
     ability.cost[0]!.amount = 2;
     expect(action(state, source.instanceId)).toBeFalsy();
     expect(dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: source.instanceId, abilityId: 'fixture.rune-move' }).ok).toBe(false);
+
+    const widened = setup();
+    const widenedAbility = widened.state.abilityRuntime!.pack.cards[SOURCE]!.abilities[0]!;
+    widenedAbility.targets[0]!.constraints = [];
+    const beforeMana = widened.state.players[0]!.mana;
+    const beforeLocation = widened.state.players[0]!.locationId;
+    expect(dispatchAbilityCommand(widened.state, 'p1', {
+      type: 'activate_ability', cardInstanceId: widened.source.instanceId, abilityId: 'fixture.rune-move',
+    }).ok).toBe(false);
+    expect(widened.state.players[0]!.mana).toBe(beforeMana);
+    expect(widened.state.players[0]!.locationId).toBe(beforeLocation);
+    expect(widened.state.abilityRuntime!.pendingDecision).toBeUndefined();
   });
 });
