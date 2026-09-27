@@ -5366,3 +5366,39 @@ Formal accounting remains `132/944`; remaining `812`. This task is permanently z
 - Current-main strict formal accounting remains `132/944`; remaining `812`.
 - Current owner remains `servant.sitonai`; execution returns to `P3-S-OWNER-SITONAI-COMPLETE-MIGRATION` for `sc-sitonai-1 + sc-sitonai-2` together. Already accepted FM07/R38 `sc-sitonai-3` remains preserved and must not be re-credited. Do not advance owners.
 - Detailed sync: `docs/reports/2026-09-27-p3-a-sitonai-combination-fimbul-capability-acceptance-synchronization.md`.
+
+## TASK P3-B-SITONAI-SOURCE-SKILL-ATTACK-JOIN-CAPABILITY
+
+Owner: Codex B
+Status: `IMPLEMENTATION_REVISION_READY_FOR_FRESH_R`
+Base: `e92cb3a08392619b0e8f47504f8e1c751b7b504d`
+Classification: bounded zero-credit capability/readiness prerequisite discovered while resuming current owner `servant.sitonai`
+
+Bounded scope:
+- generic source-owned skill-zone card join to controller attack as a face-up active physical attack;
+- fixed positive authored mana ability cost, exact data-driven active-attack attribute-pair predicate, and exact phase-action whole-ability gateway;
+- joining is not a card play: no `on_use_declared` / `on_card_played`, no ordinary play-count increment, and trusted `paidManaOnPlay=0`;
+- source ownership/controller/zone/state and available mana are checked server-side before the join;
+- nested/widened privileged join primitives fail closed in both loader and runtime.
+
+Why the seam is required:
+- locked Reference `joinOwnedCardToAttack` for Sitonai's combination skill explicitly moves the owned skill-zone physical card to attack, makes it face-up/active, charges the ability mana cost, records zero paid play cost, and does not fire ordinary card-play triggers;
+- current generic `move_source_card` moves only the zone and does not activate the card;
+- current generic `play_source_card` is hand-only and intentionally emits ordinary play events, so composing either existing primitive would change source-grounded rules.
+
+Hard scope boundary:
+- zero Sitonai consumer authoring and zero migration credit in this task;
+- no `servant.sitonai` / skill-id / card-name / printed-text / Chinese-text identity routing in production runtime;
+- no SkillLib fallback or runtime source-text parsing;
+- ACCEPTED must A-sync/rescan and return to `P3-S-OWNER-SITONAI-COMPLETE-MIGRATION`; it cannot advance owners.
+
+Evidence: `docs/reports/2026-09-27-p3-b-sitonai-source-skill-attack-join-capability-result.md`.
+
+Formal accounting remains `132/944`; remaining `812`. This task is permanently zero-credit.
+
+R1 closure:
+- fresh Reviewer retry on exact predecessor Candidate `a79cff1d2e91515d5a638a2e063415cb340f3d08` returned `IMPLEMENTATION_NEEDS_REVISION`; canonical evidence `https://github.com/binchen648/fd/pull/464#issuecomment-5853233206`;
+- sole blocking finding was forged current-round `playedRound` provenance on attack join, which could incorrectly satisfy existing `played_this_round` consumers such as Sigurd's refund selector;
+- revision preserves any genuine prior `playedRound`, initializes a previously untracked skill-zone source with a non-current round, and never stamps current `playedRound` merely because the card joined an attack;
+- focused closure proves join cost/state/visibility/zero paid play cost/no ordinary play accounting while preserving non-play provenance; Sigurd-style regression proves a joined-but-not-played servant-skill attack is excluded from `played_this_round` candidates;
+- affected serial closure: `7 files / 155 tests PASS`; typecheck/content validate/content compile/generated determinism/diff-check PASS; `data/authoring/**` delta empty; production Sitonai/SkillLib identity-routing audit clean.

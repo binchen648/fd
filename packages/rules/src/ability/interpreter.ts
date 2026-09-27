@@ -19,6 +19,7 @@ import { activePlayerCountMinusRoundPlayCostAbility } from './dynamic-play-cost'
 import { playerIgnoresAbilityFromController } from './player-ability-immunity';
 import { effectiveAbilitiesForPhysicalCard, isEventBattleOpponentAttackConstraint, isGainManaEqualSelectedPaidCostEffect, isGrantedBasicDoubleRemoveEffect, isSourceRevealedCondition, physicalCardWasRevealed } from './revealed-card-mechanics';
 import { applyTimedGlobalResourceSuppression, containsTimedGlobalResourceSuppressionNode, controllerHasExactDistinctActiveAttackAttributePair, expireTimedResourceSuppressions, isAcceptedTimedGlobalResourceSuppressionAbility, isExactActiveAttackAttributePairCondition, isManaGainSuppressed, isNormalCardDrawSuppressed, isTimedGlobalResourceSuppressionEffect } from './timed-resource-suppression';
+import { containsSourceSkillAttackJoinNode, isAcceptedSourceSkillAttackJoinAbility, isSourceSkillAttackJoinEffect } from './source-skill-attack-join';
 import { isHideServantTrueNameUntilRoundEndEffect, isLoseVpEqualSourcePlayCountEffect, isRevealHandRoundPowerEffect, PLAYER_COMBAT_TOTAL_POWER_RULE, servantRevealSuppressedByTemporaryConcealment } from './owner-self-mechanics';
 import {
   isAnyBattlefieldConstraint,
@@ -910,6 +911,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'compiled') &&
       !isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled')) return false;
   if (containsTimedGlobalResourceSuppressionNode(a.effects) && !isAcceptedTimedGlobalResourceSuppressionAbility(a)) return false;
+  if (containsSourceSkillAttackJoinNode(a.effects) && !isAcceptedSourceSkillAttackJoinAbility(a)) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
@@ -943,6 +945,13 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAcceptedOpponentCloseToOneAbility(a, 'compiled')) return canActivateAcceptedOpponentCloseToOne(s, sourceId, a);
   if (isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled')) return canActivateAcceptedOpponentCloseSelectedOne(s, sourceId, a);
   const ctx = context(s, sourceId, a.id, event);
+  if (isAcceptedSourceSkillAttackJoinAbility(a)) {
+    const source = card(s, sourceId);
+    const sourceState = runtime(s).cardState[sourceId];
+    const fixedCost = Number(a.cost[0]?.amount);
+    if (source.ownerPlayerId !== ctx.controllerId || source.controllerPlayerId !== ctx.controllerId || source.zone !== 'skill' ||
+        sourceState?.active === true || sourceState?.faceDown === true || player(s, ctx.controllerId).mana < fixedCost) return false;
+  }
   if (a.effects.some(isGrantedBasicDoubleRemoveEffect) && !hasAvailableManaForFixedCosts(s, ctx, a)) return false;
   if (a.effects.some(isGainManaEqualSelectedPaidCostEffect) && !hasMandatoryTargetAvailability(s, ctx, a)) return false;
   return a.conditions.every(c => condition(s, ctx, c));
@@ -1056,7 +1065,8 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   const c = card(s, sourceId); const d = definition(s, sourceId); if (!d) return 'unsupported';
   if (d.mode !== 'automatic') return d.mode;
   if (c.controllerPlayerId !== p || !['hand', 'skill'].includes(c.zone) || player(s, p).status !== 'active') return 'illegal_action';
-  if (c.zone === 'skill' && (isActivationOnlyDefinition(s, c.definitionId) || d.abilities.some((ability) => ability.effects.some(isPlaceSourceAtBattlefieldEffect)))) return 'activation_only';
+  if (c.zone === 'skill' && (isActivationOnlyDefinition(s, c.definitionId) || d.abilities.some((ability) =>
+    ability.effects.some((effect) => isPlaceSourceAtBattlefieldEffect(effect) || isSourceSkillAttackJoinEffect(effect))))) return 'activation_only';
   const hasLegacyAppendOnlyMarker = d.abilities.some(a => a.effects.some(effect => effect.type === 'append_only_rule' && effect.rule !== 'ignore_battle_loss_effects'));
   const requiredAdditionalPlay = hasRequiredAdditionalPlayMarker(d);
   if (hasLegacyAppendOnlyMarker && (!allowRequiredAdditionalPlay || !requiredAdditionalPlay)) return 'append_only';
@@ -1815,6 +1825,29 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       }
       applyTimedGlobalResourceSuppression(s, effect);
       r.events.push({ type: 'timed_resource_suppression_applied', playerId: p.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+      break;
+    }
+    case 'join_source_skill_card_to_attack': {
+      if (!isSourceSkillAttackJoinEffect(effect) || !isAcceptedSourceSkillAttackJoinAbility(a)) {
+        reject('unsupported', 'Unsupported source skill-card attack-join semantic');
+      }
+      const source = card(s, ctx.sourceCardId);
+      const sourceState = r.cardState[source.instanceId];
+      if (source.ownerPlayerId !== ctx.controllerId || source.controllerPlayerId !== ctx.controllerId || source.zone !== 'skill' ||
+          sourceState?.active === true || sourceState?.faceDown === true) {
+        reject('invalid_state', 'Attack join requires a controller-owned inactive face-up skill-zone source card');
+      }
+      moveCard(s, source.instanceId, 'attack_area');
+      const nextState = r.cardState[source.instanceId] ??= {
+        active: false,
+        faceDown: false,
+        playedRound: Math.max(0, s.round.roundNumber - 1),
+      };
+      nextState.active = true;
+      nextState.faceDown = false;
+      nextState.paidManaOnPlay = 0;
+      source.visibility = { scope: 'public' };
+      r.events.push({ type: 'source_skill_card_joined_attack', playerId: ctx.controllerId, sourceCardId: source.instanceId, abilityId: ctx.abilityId });
       break;
     }
     case 'gain_mana_equal_selected_card_paid_cost': {
