@@ -561,6 +561,7 @@ export function resolveExtendedEffect(
         playerId: controllerId,
         multiplier,
         duration: 'this_round',
+        round: state.round.roundNumber,
         ...directiveContext(context),
       });
       break;

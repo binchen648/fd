@@ -731,7 +731,7 @@ describe("combat resolver", () => {
       log: [],
     };
 
-    const result = resolveBattlefield(state, {
+    const result = resolveBattlefield(structuredClone(state), {
       battlefieldId: "moon_holy_grail",
       participants: [
         { playerId: "p1", totalPower: 4, terrainSlotIndex: 0 },
@@ -745,6 +745,36 @@ describe("combat resolver", () => {
       vpReward: 2,
     });
     expect(result.nextState.battleResults[0]?.participantBreakdowns[0]).toMatchObject({
+      playerId: "p1",
+      totalModifier: 4,
+      effectivePower: 8,
+    });
+
+    (state as unknown as { modeState?: Record<string, unknown> }).modeState = {
+      terrainMultipliers: [{ playerId: "p1", multiplier: 3, duration: "this_round", round: 1 }],
+    };
+    const multiplied = resolveBattlefield(structuredClone(state), {
+      battlefieldId: "moon_holy_grail",
+      participants: [
+        { playerId: "p1", totalPower: 4, terrainSlotIndex: 0 },
+        { playerId: "p2", totalPower: 7 },
+      ],
+    });
+    expect(multiplied.nextState.battleResults[0]?.participantBreakdowns[0]).toMatchObject({
+      playerId: "p1",
+      totalModifier: 12,
+      effectivePower: 16,
+    });
+
+    state.round.roundNumber = 2;
+    const expired = resolveBattlefield(state, {
+      battlefieldId: "moon_holy_grail",
+      participants: [
+        { playerId: "p1", totalPower: 4, terrainSlotIndex: 0 },
+        { playerId: "p2", totalPower: 7 },
+      ],
+    });
+    expect(expired.nextState.battleResults[0]?.participantBreakdowns[0]).toMatchObject({
       playerId: "p1",
       totalModifier: 4,
       effectivePower: 8,

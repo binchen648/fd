@@ -9,6 +9,7 @@ import {
   initializeAbilityRuntime,
 } from '../../src/ability/interpreter';
 import { isManaGainSuppressed } from '../../src/ability/timed-resource-suppression';
+import { terrainAdvantageAtLocation } from '../../src/ability/terrain-advantage-override';
 import { grantMana } from '../../src/core/rule-overrides';
 import type { AuthoringCard } from '../../src/ability/types';
 import type { GameState } from '../../src/schema/game';
@@ -73,7 +74,8 @@ function action(state: GameState, cardInstanceId: string, abilityId: string) {
 function activate(state: GameState, sourceId: string, abilityId: string) {
   const legal = action(state, sourceId, abilityId);
   expect(legal).toBeTruthy();
-  expect(dispatchAbilityCommand(state, 'p1', legal!).ok).toBe(true);
+  const dispatched = dispatchAbilityCommand(state, 'p1', legal!);
+  expect(dispatched, JSON.stringify(dispatched)).toMatchObject({ ok: true });
 }
 
 describe('P3 owner-complete Skadi migration', () => {
@@ -130,7 +132,8 @@ describe('P3 owner-complete Skadi migration', () => {
     expect(moveDecision.candidates.length).toBeGreaterThan(0);
     const destination = moveDecision.candidates[0]!;
     expect(destination).not.toBe('shinto');
-    expect(dispatchAbilityCommand(raido.state, 'p1', { type: 'choose_target', decisionId: moveDecision.id, selectedIds: [destination] }).ok).toBe(true);
+    const moved = dispatchAbilityCommand(raido.state, 'p1', { type: 'choose_target', decisionId: moveDecision.id, selectedIds: [destination] });
+    expect(moved, JSON.stringify(moved)).toMatchObject({ ok: true });
     expect(raido.state.players[0]!.locationId).toBe(destination);
   });
 
@@ -182,6 +185,64 @@ describe('P3 owner-complete Skadi migration', () => {
     addBasic(ansuz.state, 'skadi.special-a', ['特殊']); addBasic(ansuz.state, 'skadi.special-b', ['特殊']);
     activate(ansuz.state, ansuzSource.instanceId, 'sc-skadi-1.ansuz');
     expect(ansuz.state.players[0]!.vp).toBe(14);
+  });
+
+  it('shares one Allfather wisdom-action use boundary across all six rune outcomes', () => {
+    const runeIds = [
+      'sc-skadi-1.raido', 'sc-skadi-1.haglaz', 'sc-skadi-1.teiwaz-arm',
+      'sc-skadi-1.isan', 'sc-skadi-1.peorth', 'sc-skadi-1.ansuz',
+    ];
+
+    for (const runeId of runeIds) {
+      const { state } = setup();
+      const source = add(state, SC1, 'skill', false);
+      addBasic(state, `skadi.all-runes-a.${runeId}`, ['迅捷', '魔术', '特殊']);
+      addBasic(state, `skadi.all-runes-b.${runeId}`, ['迅捷', '魔术', '特殊']);
+      addHandAttack(state, `skadi.haglaz-target.${runeId}`, 0);
+
+      const before = getLegalActions(state, 'p1').filter((entry) =>
+        entry.type === 'activate_ability' && entry.cardInstanceId === source.instanceId && runeIds.includes(entry.abilityId));
+      expect(new Set(before.map((entry: any) => entry.abilityId))).toEqual(new Set(runeIds));
+
+      activate(state, source.instanceId, runeId);
+      const pending = state.abilityRuntime!.pendingDecision;
+      if (pending) {
+        const selected = pending.candidates[0]!;
+        const resolved = dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: pending.id, selectedIds: [selected] });
+        expect(resolved, JSON.stringify(resolved)).toMatchObject({ ok: true });
+      }
+
+      expect(state.abilityRuntime!.structuredPlayerFlagsByPlayer?.p1?.['skadi.wisdom-action.round']).toBe(state.round.roundNumber);
+      const after = getLegalActions(state, 'p1').filter((entry) =>
+        entry.type === 'activate_ability' && entry.cardInstanceId === source.instanceId && runeIds.includes(entry.abilityId));
+      expect(after).toEqual([]);
+
+      state.round.roundNumber += 1;
+      addBasic(state, `skadi.next-round-a.${runeId}`, ['迅捷', '魔术', '特殊']);
+      addBasic(state, `skadi.next-round-b.${runeId}`, ['迅捷', '魔术', '特殊']);
+      const nextRound = getLegalActions(state, 'p1').filter((entry) =>
+        entry.type === 'activate_ability' && entry.cardInstanceId === source.instanceId && runeIds.includes(entry.abilityId));
+      expect(nextRound.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('expires Peorth terrain x3 after its activation round at authoritative terrain readers', () => {
+    const { state } = setup();
+    const source = add(state, SC1, 'skill', false);
+    addBasic(state, 'skadi.peorth-special', ['特殊']);
+    addBasic(state, 'skadi.peorth-magic', ['魔术']);
+    (state as any).modeState = { ...((state as any).modeState ?? {}), terrainAssignments: { shinto: ['p1'] } };
+
+    const baseline = terrainAdvantageAtLocation(state, 'p1', 'shinto');
+    expect(baseline).toBe(3);
+    activate(state, source.instanceId, 'sc-skadi-1.peorth');
+    expect(terrainAdvantageAtLocation(state, 'p1', 'shinto')).toBe(baseline * 3);
+    expect((state as any).modeState.terrainMultipliers).toContainEqual(expect.objectContaining({
+      playerId: 'p1', multiplier: 3, duration: 'this_round', round: state.round.roundNumber,
+    }));
+
+    state.round.roundNumber += 1;
+    expect(terrainAdvantageAtLocation(state, 'p1', 'shinto')).toBe(baseline);
   });
 
   it('reveals true name when sc-skadi-3 is played and applies its live same-location mana-gain aura', () => {

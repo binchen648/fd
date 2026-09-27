@@ -13,7 +13,7 @@ interface TerrainOverrideEntry {
 
 type TerrainModeState = {
   terrainAssignments?: Partial<Record<LocationId, string[]>>;
-  terrainMultipliers?: Array<{ playerId?: string; multiplier?: number }>;
+  terrainMultipliers?: Array<{ playerId?: string; multiplier?: number; duration?: string; round?: number }>;
   terrainAdvantageOverrides?: TerrainOverrideEntry[];
 };
 
@@ -54,7 +54,9 @@ export function applyTerrainAdvantageOverride(
 export function terrainAdvantageAtLocation(state: GameState, playerId: string, locationId: LocationId): number {
   const adjusted = applyTerrainAdvantageOverride(state, playerId, locationId, rawTerrain(state, playerId, locationId));
   return (mode(state).terrainMultipliers ?? []).reduce((value, entry) =>
-    entry.playerId === playerId && typeof entry.multiplier === 'number' ? value * entry.multiplier : value, adjusted);
+    entry.playerId === playerId && typeof entry.multiplier === 'number' &&
+      (entry.duration !== 'this_round' || entry.round === state.round.roundNumber)
+      ? value * entry.multiplier : value, adjusted);
 }
 
 export function hasTerrainAdvantageOverride(state: GameState, playerId: string, locationId: LocationId): boolean {

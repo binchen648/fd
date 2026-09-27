@@ -1,7 +1,7 @@
 # P3-S Owner Skadi Complete Migration Result
 
 Role: Codex S
-Status: `MIGRATION_CANDIDATE_READY_FOR_FRESH_R`
+Status: `MIGRATION_REVISION_READY_FOR_FRESH_R`
 Date: 2026-09-27
 Task: `P3-S-OWNER-SKADI-COMPLETE-MIGRATION`
 Exact Base: `bc4304ebbde331af6e2d00c4d33a1fedde6fbf79`
@@ -67,20 +67,35 @@ The implementation is fully generic/data-driven:
 - Raido uses the accepted PR #467 pay-3 exact `any_enabled_location` movement shell;
 - Haglaz uses generic selected hand-attack play;
 - Teiwaz uses generic structured current-round player flags plus accepted unique-opponent defeat seam;
-- Isan uses accepted same-location mana-loss + once-round flag shell;
+- all six sc1 rune outcomes share one source-grounded wisdom-action once-per-round boundary through the existing structured current-round player-flag mechanism;
+- Isan uses accepted same-location mana-loss + the same shared wisdom-action once-round flag shell;
 - Peorth uses generic terrain multiplier;
 - Ansuz uses generic VP adjustment;
 - sc2 consumes the Teiwaz arm through the accepted combat defeat shell;
 - sc3 uses existing true-name declaration reveal plus accepted live source-location mana suppression and source-location selected-attribute base-power multiplier shells.
 
-No `packages/rules/src` production runtime file changes in this formal migration.
+The initial formal Candidate had no `packages/rules/src` production runtime diff. Fresh independent R on that Candidate found two generic correctness blockers. The successor therefore contains narrowly scoped generic runtime fixes only:
+
+- the accepted Raido whole-ability gateway continues to accept the original PR #467 exact shell and additionally accepts an exact guarded variant carrying one matching `player_flag_number_not_current_round` condition plus one matching current-round flag effect; this lets the formal consumer share one wisdom-action use boundary without identity routing;
+- Raido direct-action/data-flow normalization remains limited to the exact movement effect while the validated shared-use flag is executed through the ordinary effect executor;
+- authored `terrain_multiplier` entries now persist their creation round, and both terrain-advantage and combat terrain readers apply `duration=this_round` entries only when that round matches the live round.
+
+No production runtime branch contains a Skadi/card identity, card name, printed text, Chinese-text parser, or SkillLib fallback.
+
+## R1 revision closure
+
+Fresh independent R on predecessor Candidate `929c3b824a32b57c015131f2ae8fe90cf81b2e5e` returned `MIGRATION_NEEDS_REVISION`. Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/468#issuecomment-5855360486`.
+
+- R1 P1 CLOSED — shared Allfather wisdom-action use boundary: the six rune outcomes no longer behave as six independent once-per-round actions. They share one `skadi.wisdom-action.round` current-round flag in authoring. A focused loop constructs all six rune outcomes as simultaneously legal, fully resolves each outcome from a fresh state (including Raido/Haglaz target continuations), and proves that after any one outcome resolves all six rune IDs disappear from the legal-action surface for the rest of that round. The next round, with new current-round basics, rune legality returns.
+- R1 P1 CLOSED — Peorth round lifecycle: generic terrain multipliers now record `round` and authoritative readers ignore stale `duration=this_round` entries. Focused owner coverage proves `shinto` baseline `3 -> 9` during the activation round and returns to `3` after round advance while the historical multiplier entry remains stored. `core/combat-resolver.test.ts` independently proves combat terrain `4 -> 12` in the activation round and back to `4` next round.
+- Historical prerequisite compatibility preserved: the original unguarded exact PR #467 Raido shell remains accepted and `p3-raido-movement-readiness-capability.test.ts` remains `4/4 PASS`; the guarded formal-consumer variant is an additional exact shape, not a replacement of the accepted capability contract.
 
 ## Verification
 
 Focused formal owner regression:
 
-- `packages/rules/tests/regression/p3-owner-skadi-complete-migration.test.ts`: `9/9 PASS`.
-- Covers exact three-card identity/static metadata/deck, privileged-shell fail-closed widening, exact 1-mana outpost continuation, all six rune mappings, Teiwaz cross-card arm/consume defeat, sc3 true-name/mana aura, and current-round castle attribute x2 base-power behavior.
+- `packages/rules/tests/regression/p3-owner-skadi-complete-migration.test.ts`: `11/11 PASS`.
+- Covers exact three-card identity/static metadata/deck, privileged-shell fail-closed widening, exact 1-mana outpost continuation, all six rune mappings, shared one-use wisdom-action boundary across every rune outcome, Peorth round expiry, Teiwaz cross-card arm/consume defeat, sc3 true-name/mana aura, and current-round castle attribute x2 base-power behavior.
 
 Affected serial chain:
 
@@ -93,8 +108,11 @@ Affected serial chain:
 - `packages/rules/tests/executable-card-pack.test.ts`
 - `packages/rules/tests/match-session.test.ts`
 - `packages/rules/tests/regression/resolution-dataflow.test.ts`
+- `packages/rules/tests/regression/complex-skills-regression.test.ts`
+- `packages/rules/tests/regression/p3-owner-mash-complete-migration.test.ts`
+- `packages/rules/tests/core/combat-resolver.test.ts`
 
-Result: `9 files / 179 tests PASS`.
+Result: `12 files / 236 tests PASS`.
 
 Static/content gates:
 
@@ -105,18 +123,18 @@ Static/content gates:
   - content `b2c446488a28c5036ac36557e09b563b54b11018d5396233a53f37ffdbff6923`;
   - fixture `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`;
   - evidence `f4ae33de4dc2832766064bdf46e277d9559398d4d34b45d7d05a0eb76744cd14`;
-- Base-to-worktree `git diff --check`: PASS before Candidate freeze.
+- Base-to-worktree and predecessor-to-worktree `git diff --check`: PASS before successor freeze.
 
 Scope/identity audit:
 
-- Base-to-worktree `packages/rules/src` production diff: EMPTY;
-- production diff identity hits: `servant.skadi=0`, `sc-skadi=0`, `斯卡哈=0`, `大神的睿智=0`, `原初之卢恩=0`, `通往死亡满溢的魔境之门=0`, `SkillLib=0`;
+- successor `packages/rules/src` production diff is generic-only: shared-use guarded Raido validation/execution plus authored terrain-multiplier round scoping;
+- successor production diff identity hits: `servant.skadi=0`, `sc-skadi=0`, `斯卡哈=0`, `大神的睿智=0`, `原初之卢恩=0`, `通往死亡满溢的魔境之门=0`, `SkillLib=0`;
 - canonical authoring IDs are exactly sc-skadi-1 / sc-skadi-2 / sc-skadi-3;
 - authoring `phase3EvidenceBase` is exact `bc4304ebbde331af6e2d00c4d33a1fedde6fbf79`;
 - sc1 evidence binds both PR #466 and PR #467 accepted seams; sc2/sc3 bind PR #466 as their actual privileged prerequisite.
 
 ## Review boundary
 
-This report does not grant migration credit. Freeze one exact Candidate from Base `bc4304ebbde331af6e2d00c4d33a1fedde6fbf79`, push one formal owner PR, pass the exact-Candidate Phase 3 policy gate, then request one fresh independent R for the whole three-skill Skadi owner batch.
+This report does not grant migration credit. Freeze one successor Candidate on the existing PR #468 lineage from Base `bc4304ebbde331af6e2d00c4d33a1fedde6fbf79`, pass the exact-Candidate Phase 3 policy gate, then request one fresh independent R for the whole three-skill Skadi owner batch.
 
 Allowed formal verdicts are `MIGRATION_ACCEPTED`, `MIGRATION_NEEDS_REVISION`, or `MIGRATION_BLOCKED`.

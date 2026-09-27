@@ -49,9 +49,15 @@
           "kind": "phase_action",
           "printedClause": "迅捷属性-远行 - 移动至任意地点。",
           "activation": { "phase": "action", "opens": "controller_action_window" },
-          "conditions": [ { "type": "controller_current_round_basic_attack_attribute_pair", "firstAttribute": "迅捷", "secondAttribute": "迅捷", "distinctCards": true } ],
+          "conditions": [
+            { "type": "controller_current_round_basic_attack_attribute_pair", "firstAttribute": "迅捷", "secondAttribute": "迅捷", "distinctCards": true },
+            { "type": "player_flag_number_not_current_round", "key": "skadi.wisdom-action.round" }
+          ],
           "targets": [ { "id": "destination", "type": "location", "count": { "min": 1, "max": 1 }, "constraints": [ { "type": "any_enabled_location" } ] } ],
-          "effects": [ { "type": "move_player", "player": "controller", "to": "destination" } ],
+          "effects": [
+            { "type": "move_player", "player": "controller", "to": "destination" },
+            { "type": "set_player_flag", "target": "controller", "key": "skadi.wisdom-action.round", "value": { "type": "current_round" }, "lifecycle": { "duration": "this_round" } }
+          ],
           "cost": [ { "type": "pay_mana", "amount": 3 } ],
           "ruleModifiers": [], "creates": [], "lifecycle": {},
           "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
@@ -62,9 +68,15 @@
           "kind": "phase_action",
           "printedClause": "迅捷和魔法属性-飓风 - 打出一张攻击。",
           "activation": { "phase": "action", "opens": "controller_action_window" },
-          "conditions": [ { "type": "controller_current_round_basic_attack_attribute_pair", "firstAttribute": "迅捷", "secondAttribute": "魔术", "distinctCards": true } ],
+          "conditions": [
+            { "type": "controller_current_round_basic_attack_attribute_pair", "firstAttribute": "迅捷", "secondAttribute": "魔术", "distinctCards": true },
+            { "type": "player_flag_number_not_current_round", "key": "skadi.wisdom-action.round" }
+          ],
           "targets": [ { "id": "attack", "type": "card_instance", "scope": { "zone": "hand", "owner": "controller" }, "count": { "min": 1, "max": 1 }, "constraints": [ { "type": "is_attack" } ] } ],
-          "effects": [ { "type": "play_selected_cards", "target": "attack", "face": "face_up" } ],
+          "effects": [
+            { "type": "play_selected_cards", "target": "attack", "face": "face_up" },
+            { "type": "set_player_flag", "target": "controller", "key": "skadi.wisdom-action.round", "value": { "type": "current_round" }, "lifecycle": { "duration": "this_round" } }
+          ],
           "cost": [ { "type": "pay_mana", "amount": 3 } ],
           "ruleModifiers": [], "creates": [], "lifecycle": {},
           "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
@@ -75,9 +87,15 @@
           "kind": "phase_action",
           "printedClause": "迅捷和特殊属性-死棘 - 战斗阶段：如果与你同一战场的有且仅有一名交战对手，使其【败北】。",
           "activation": { "phase": "action", "opens": "controller_action_window" },
-          "conditions": [ { "type": "controller_current_round_basic_attack_attribute_pair", "firstAttribute": "特殊", "secondAttribute": "迅捷", "distinctCards": true } ],
+          "conditions": [
+            { "type": "controller_current_round_basic_attack_attribute_pair", "firstAttribute": "特殊", "secondAttribute": "迅捷", "distinctCards": true },
+            { "type": "player_flag_number_not_current_round", "key": "skadi.wisdom-action.round" }
+          ],
           "targets": [],
-          "effects": [ { "type": "set_player_flag", "target": "controller", "key": "skadi.teiwaz.round", "value": { "type": "current_round" }, "lifecycle": { "duration": "this_round" } } ],
+          "effects": [
+            { "type": "set_player_flag", "target": "controller", "key": "skadi.teiwaz.round", "value": { "type": "current_round" }, "lifecycle": { "duration": "this_round" } },
+            { "type": "set_player_flag", "target": "controller", "key": "skadi.wisdom-action.round", "value": { "type": "current_round" }, "lifecycle": { "duration": "this_round" } }
+          ],
           "cost": [ { "type": "pay_mana", "amount": 3 } ],
           "ruleModifiers": [], "creates": [], "lifecycle": {},
           "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
@@ -90,12 +108,12 @@
           "activation": { "phase": "action", "opens": "controller_action_window" },
           "conditions": [
             { "type": "controller_current_round_basic_attack_attribute_pair", "firstAttribute": "魔术", "secondAttribute": "魔术", "distinctCards": true },
-            { "type": "player_flag_number_not_current_round", "key": "skadi.isan.round" }
+            { "type": "player_flag_number_not_current_round", "key": "skadi.wisdom-action.round" }
           ],
           "targets": [],
           "effects": [
             { "type": "adjust_other_active_players_at_source_location_mana" },
-            { "type": "set_player_flag", "target": "controller", "key": "skadi.isan.round", "value": { "type": "current_round" }, "lifecycle": { "duration": "this_round" } }
+            { "type": "set_player_flag", "target": "controller", "key": "skadi.wisdom-action.round", "value": { "type": "current_round" }, "lifecycle": { "duration": "this_round" } }
           ],
           "cost": [ { "type": "pay_mana", "amount": 3 } ],
           "ruleModifiers": [], "creates": [], "lifecycle": {},
@@ -107,9 +125,15 @@
           "kind": "phase_action",
           "printedClause": "魔术和特殊属性-秘仪 - 将你的地利变为3倍。",
           "activation": { "phase": "action", "opens": "controller_action_window" },
-          "conditions": [ { "type": "controller_current_round_basic_attack_attribute_pair", "firstAttribute": "特殊", "secondAttribute": "魔术", "distinctCards": true } ],
+          "conditions": [
+            { "type": "controller_current_round_basic_attack_attribute_pair", "firstAttribute": "特殊", "secondAttribute": "魔术", "distinctCards": true },
+            { "type": "player_flag_number_not_current_round", "key": "skadi.wisdom-action.round" }
+          ],
           "targets": [],
-          "effects": [ { "type": "create_modifier", "modifier": { "type": "terrain_multiplier", "target": "controller", "value": 3, "duration": "this_round" } } ],
+          "effects": [
+            { "type": "create_modifier", "modifier": { "type": "terrain_multiplier", "target": "controller", "value": 3, "duration": "this_round" } },
+            { "type": "set_player_flag", "target": "controller", "key": "skadi.wisdom-action.round", "value": { "type": "current_round" }, "lifecycle": { "duration": "this_round" } }
+          ],
           "cost": [ { "type": "pay_mana", "amount": 3 } ],
           "ruleModifiers": [], "creates": [], "lifecycle": {},
           "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
@@ -120,9 +144,15 @@
           "kind": "phase_action",
           "printedClause": "启明 - 获得4点战果。",
           "activation": { "phase": "action", "opens": "controller_action_window" },
-          "conditions": [ { "type": "controller_current_round_basic_attack_attribute_pair", "firstAttribute": "特殊", "secondAttribute": "特殊", "distinctCards": true } ],
+          "conditions": [
+            { "type": "controller_current_round_basic_attack_attribute_pair", "firstAttribute": "特殊", "secondAttribute": "特殊", "distinctCards": true },
+            { "type": "player_flag_number_not_current_round", "key": "skadi.wisdom-action.round" }
+          ],
           "targets": [],
-          "effects": [ { "type": "adjust_victory_points", "player": "controller", "amount": 4 } ],
+          "effects": [
+            { "type": "adjust_victory_points", "player": "controller", "amount": 4 },
+            { "type": "set_player_flag", "target": "controller", "key": "skadi.wisdom-action.round", "value": { "type": "current_round" }, "lifecycle": { "duration": "this_round" } }
+          ],
           "cost": [ { "type": "pay_mana", "amount": 3 } ],
           "ruleModifiers": [], "creates": [], "lifecycle": {},
           "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
