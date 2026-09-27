@@ -53,6 +53,15 @@ import {
   isAcceptedOpponentCloseOneNonResidualAbility,
   isOpponentCloseToOneCandidate,
 } from './opponent-close-to-one';
+import {
+  ADD_ENGAGED_SEAL_USER_FORMULA_POWER_EFFECT,
+  ENABLE_ENGAGED_OPPONENT_UNUSED_SEAL_POWER_EFFECT,
+  ENGAGED_SEAL_USER_THIS_ROUND_CONDITION,
+  SPEND_NORMAL_SEAL_FOR_ROUND_POWER_EFFECT,
+  SPEND_OWNED_RULER_SEAL_FOR_ROUND_POWER_EFFECT,
+  containsCommandSealPowerPrivilegedNode,
+  isAcceptedCommandSealPowerPrivilegedAbility,
+} from './command-seal-power-capability';
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
 }
@@ -128,6 +137,9 @@ const supportedTypes = new Set([
   // Accepted recovery seams: FB2-27 Ruler seals + FB2-48 frozen opponent-power reward.
   'grant_ruler_seals', 'ruler_copy_steal_guard', 'use_ruler_seal', 'least_ruler_binding_count', 'bound_by_controller_ruler_seal',
   COMBAT_OPPONENT_POWER_VP_REWARD_EFFECT,
+  ENGAGED_SEAL_USER_THIS_ROUND_CONDITION, ADD_ENGAGED_SEAL_USER_FORMULA_POWER_EFFECT,
+  SPEND_NORMAL_SEAL_FOR_ROUND_POWER_EFFECT, SPEND_OWNED_RULER_SEAL_FOR_ROUND_POWER_EFFECT,
+  ENABLE_ENGAGED_OPPONENT_UNUSED_SEAL_POWER_EFFECT,
   'deduction_record_present', 'deduction_record_absent', 'deduction_record_matches_event_attack',
   'choose_deduction_record', 'resolve_deduction_record_on_event', 'expire_deduction_record',
   'reveal_selected_opponent_and_resolve_deduction', 'event_location_is', 'same_location_as_controller',
@@ -160,6 +172,8 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'options', 'label', 'condition', 'targets', 'duration', 'scope', 'statusId', 'choiceId', 'value',
   // Accepted FB2-27 Ruler seal structural fields.
   'policy', 'option', 'moveDestinations', 'rewardVp',
+  // Command/Ruler seal round-Power capability fields.
+  'includeRulerSeals', 'basePerOpponent', 'ownNormalSealMultiplier', 'perSeal',
   'modifier', 'kind', 'rule',
   // Master mechanic keys
   'directive', 'payload', 'deckId', 'definitionId', 'quantity', 'rounding', 'targetPlayer',
@@ -582,6 +596,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (isCombatOpponentPowerVpRewardCandidate(a) &&
           !isAcceptedCombatOpponentPowerVpRewardAbility(a, 'authoring')) {
         issue('combatOpponentPowerVpReward.gateway', 'Unsupported frozen combat-opponent power VP reward semantic shape', id);
+      }
+      if (containsCommandSealPowerPrivilegedNode(candidateAbility) &&
+          !isAcceptedCommandSealPowerPrivilegedAbility(candidateAbility)) {
+        issue('commandSealPower.gateway', 'Command/Ruler seal Power mechanics require an accepted exact whole-ability semantic', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

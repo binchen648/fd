@@ -34,6 +34,14 @@ import { isNormalCardDrawSuppressed } from './ability/timed-resource-suppression
 import { settleLinkedOwnerCardsAfterBattles } from './ability/linked-owner-combat';
 import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute } from './ability/deduction-record';
 import { SOURCE_LOCATION_BASE_POWER_ATTRIBUTES, isAcceptedPostDrawHandShuffleAbility, isAcceptedSourceLocationBasicPowerAbility } from './ability/source-location-rune-capability';
+import { isRulerSealBindingSemantic } from './ability/ruler-seal';
+import {
+  DYNAMIC_UNUSED_SEAL_POWER_RULE,
+  isAcceptedNormalSealPowerReplacementAbility,
+  isAcceptedRulerSealPowerReplacementAbility,
+  isAcceptedUnusedEngagedSealPowerAbility,
+  isDynamicUnusedEngagedSealPowerModifier,
+} from './ability/command-seal-power-capability';
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from './ability/battle-terminal';
 import type {
@@ -368,6 +376,7 @@ function isRestorePlayerState(value: unknown): boolean {
     typeof value.vp === 'number' && Number.isFinite(value.vp) &&
     typeof value.militaryResult === 'number' && Number.isFinite(value.militaryResult) &&
     typeof value.mana === 'number' && Number.isFinite(value.mana) &&
+    (value.commandSpells === undefined || (Number.isSafeInteger(value.commandSpells) && (value.commandSpells as number) >= 0 && (value.commandSpells as number) <= 3)) &&
     (value.eliminationOrder === undefined || Number.isSafeInteger(value.eliminationOrder));
 }
 
@@ -408,6 +417,9 @@ function isRestoreFiniteNumberMap(value: unknown): value is Record<string, numbe
 
 function isRestoreNonNegativeIntegerMap(value: unknown): value is Record<string, number> {
   return isRestoreRecord(value) && Object.values(value).every((entry) => isRestoreSafeInteger(entry));
+}
+function isRestorePositiveIntegerMap(value: unknown): value is Record<string, number> {
+  return isRestoreRecord(value) && Object.values(value).every((entry) => isRestoreSafeInteger(entry, 1));
 }
 
 function isRestoreStringArrayMap(value: unknown): value is Record<string, string[]> {
@@ -511,6 +523,14 @@ function isRestoreRulerSealBinding(value: unknown): boolean {
     (value.spentRound === undefined || isRestoreSafeInteger(value.spentRound, 1));
 }
 
+function isRestoreNormalCommandSealUseRecord(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.playerId === 'string' && typeof value.sourceCardId === 'string' &&
+    typeof value.abilityId === 'string' && isRestoreSafeInteger(value.round, 1) &&
+    isRestoreSafeInteger(value.before) && (value.before as number) >= 1 && (value.before as number) <= 3 &&
+    isRestoreSafeInteger(value.after) && (value.after as number) >= 0 && (value.after as number) <= 2 &&
+    (value.before as number) === (value.after as number) + 1;
+}
+
 function isRestoreRulerSealReward(value: unknown): boolean {
   return isRestoreRecord(value) && typeof value.sealId === 'string' && typeof value.issuerPlayerId === 'string' &&
     typeof value.boundPlayerId === 'string' && typeof value.sourceCardId === 'string' && typeof value.abilityId === 'string' &&
@@ -593,6 +613,14 @@ function isRestorePendingInteraction(value: unknown): boolean {
     case 'ruler_seal_free_play_v1':
       return typeof value.sealId === 'string' && typeof value.issuerPlayerId === 'string' && typeof value.boundPlayerId === 'string' &&
         isRestoreFiniteNumber(value.rewardVp) && isRestoreInteractionConstraints(value.constraints, ['card']);
+    case 'owned_ruler_seal_power_v1':
+      return hasExactRestoreKeys(value, [
+        'kind', 'template', 'visibility', 'cancelPolicy', 'sourceCardInstanceId', 'abilityId', 'createdRevision', 'continuationRef',
+        'issuerPlayerId', 'sealIds', 'amount', 'constraints',
+      ]) && typeof value.issuerPlayerId === 'string' && isRestoreStringArray(value.sealIds) && value.sealIds.length >= 2 &&
+        new Set(value.sealIds).size === value.sealIds.length && value.amount === 4 &&
+        isRestoreInteractionConstraints(value.constraints, ['ruler_seal']) &&
+        (value.constraints as Record<string, unknown>).min === 1 && (value.constraints as Record<string, unknown>).max === 1;
     case 'combat_opponent_power_vp_reward_v1':
       return typeof value.triggerEventId === 'string' && typeof value.battlePhaseResolutionId === 'string' && typeof value.battleId === 'string' &&
         typeof value.resultId === 'string' && typeof value.battlefieldId === 'string' && isRestoreStringArray(value.participantIds) &&
@@ -742,6 +770,9 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       !isRestoreNonNegativeIntegerMap(value.usedAbilities) || !isRestoreStringArray(value.processedEvents) ||
       !isRestoreStringArray(value.revealedServants) || !Array.isArray(value.events) || !value.events.every(isRestoreSafeEvent) ||
       !Array.isArray(value.calculations) || !value.calculations.every(isRestoreCalculation) ||
+      !Array.isArray(value.rulerSealBindings) || !value.rulerSealBindings.every(isRestoreRulerSealBinding) ||
+      !isRestoreNestedNonNegativeIntegerMap(value.rulerSealBindingHistory) ||
+      !Array.isArray(value.pendingRulerSealRewards) || !value.pendingRulerSealRewards.every(isRestoreRulerSealReward) ||
       typeof value.preventEffects !== 'boolean' || !isRestoreFiniteNumberMap(value.manaCaps) ||
       !isRestoreStringArray(value.manaGainBlocked) ||
       (value.normalCardDrawBlockedThroughRoundByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.normalCardDrawBlockedThroughRoundByPlayer)) ||
@@ -765,6 +796,10 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
   if (value.deductionRecordsByPlayer !== undefined && (!isRestoreRecord(value.deductionRecordsByPlayer) || !Object.values(value.deductionRecordsByPlayer).every((entry) =>
       isRestoreRecord(entry) && typeof entry.definitionId === 'string' && DEDUCTION_RECORD_ATTRIBUTES.includes(entry.attribute as typeof DEDUCTION_RECORD_ATTRIBUTES[number]) && isRestoreSafeInteger(entry.recordedRound, 1)))) return false;
   if (value.battleDefeatRoundByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.battleDefeatRoundByPlayer)) return false;
+  if (value.normalCommandSealUseRoundByPlayer !== undefined && !isRestorePositiveIntegerMap(value.normalCommandSealUseRoundByPlayer)) return false;
+  if (value.normalCommandSealUseHistory !== undefined && (!Array.isArray(value.normalCommandSealUseHistory) ||
+      !value.normalCommandSealUseHistory.every(isRestoreNormalCommandSealUseRecord))) return false;
+  if (value.rulerCommandSealUseRoundByPlayer !== undefined && !isRestorePositiveIntegerMap(value.rulerCommandSealUseRoundByPlayer)) return false;
   if (value.startingDeckSizeByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.startingDeckSizeByPlayer)) return false;
   if (value.cardPlayCountByInstance !== undefined && !isRestoreNonNegativeIntegerMap(value.cardPlayCountByInstance)) return false;
   if (value.grantedPerGamePlayLimitCardIds !== undefined && (!isRestoreStringArray(value.grantedPerGamePlayLimitCardIds) || new Set(value.grantedPerGamePlayLimitCardIds).size !== value.grantedPerGamePlayLimitCardIds.length)) return false;
@@ -958,6 +993,39 @@ function restoreSourceHasAcceptedAbility(
     isRestoreRecord(ability) && predicate(ability as unknown as AuthoringAbility));
 }
 
+function restoreSourceHasAcceptedAbilityId(
+  pack: Record<string, unknown>,
+  cardsByInstance: Map<string, Record<string, unknown>>,
+  eventPlacements: Array<Record<string, unknown>>,
+  sourceCardId: string,
+  abilityId: string,
+  predicate: (ability: AuthoringAbility) => boolean,
+): boolean {
+  const definition = restoreSourceDefinition(pack, cardsByInstance, eventPlacements, sourceCardId);
+  return !!definition && Array.isArray(definition.abilities) && definition.abilities.some((ability) =>
+    isRestoreRecord(ability) && ability.id === abilityId && predicate(ability as unknown as AuthoringAbility));
+}
+
+function restoreSourceHasNormalSealUseAbility(
+  pack: Record<string, unknown>,
+  cardsByInstance: Map<string, Record<string, unknown>>,
+  eventPlacements: Array<Record<string, unknown>>,
+  sourceCardId: string,
+  abilityId: string,
+): boolean {
+  const definition = restoreSourceDefinition(pack, cardsByInstance, eventPlacements, sourceCardId);
+  if (!definition || !Array.isArray(definition.abilities)) return false;
+  return definition.abilities.some((ability) => {
+    if (!isRestoreRecord(ability) || ability.id !== abilityId) return false;
+    if (isAcceptedNormalSealPowerReplacementAbility(ability as unknown as AuthoringAbility)) return true;
+    if (definition.cardType !== 'command_spell' || !Array.isArray(ability.effects)) return false;
+    return ability.effects.some((effect) =>
+      isRestoreRecord(effect) && effect.type === 'adjust_command_seals' && effect.amount === -1 &&
+      effect.directive === 'spend_command_spell' && (effect.player === undefined || effect.player === 'controller') &&
+      Object.keys(effect).every((key) => ['type', 'amount', 'directive', 'player'].includes(key)));
+  });
+}
+
 function restoreSourceControllerMatches(
   cardsByInstance: Map<string, Record<string, unknown>>,
   eventPlacements: Array<Record<string, unknown>>,
@@ -1002,10 +1070,12 @@ function isRestoreAbilityRuntimeReferences(
   pack: Record<string, unknown>,
   servantRootByPlayer: Map<string, string>,
   eventPlacements: Array<Record<string, unknown>>,
+  currentRound: number,
 ): boolean {
   const playerKeyedMaps = [
     'playerStatusKeysByPlayer','structuredPlayerFlagsByPlayer','structuredRoundFlagKeysByPlayer','deductionRecordsByPlayer','battleDefeatRoundByPlayer','combatWinRoundByPlayer','manaCaps','noblePhantasmCostsThisRound','movementDistanceThisRound',
     'battlefieldsPassedOrStayedThisRound','startingDeckSizeByPlayer','normalCardDrawBlockedThroughRoundByPlayer','manaGainBlockedThroughRoundByPlayer',
+    'normalCommandSealUseRoundByPlayer','rulerCommandSealUseRoundByPlayer',
   ] as const;
   for (const key of playerKeyedMaps) if (value[key] !== undefined && !restoreRecordKeysBelongTo(value[key], playerIds)) return false;
   for (const key of ['revealedServants','manaGainBlocked'] as const) {
@@ -1022,7 +1092,101 @@ function isRestoreAbilityRuntimeReferences(
   if (!(value.calculations as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
   if (!(value.hostRequests as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
   if (!(value.ongoingEffects as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
+  for (const ongoing of value.ongoingEffects as Array<Record<string, unknown>>) {
+    const modifiers = ongoing.ruleModifiers as Array<Record<string, unknown>>;
+    const dynamic = modifiers.filter((entry) => isRestoreRecord(entry.definition) && entry.definition.rule === DYNAMIC_UNUSED_SEAL_POWER_RULE);
+    if (!dynamic.length) continue;
+    if (dynamic.length !== 1 || modifiers.length !== 1 || ongoing.duration !== 'this_round' || ongoing.cleanup !== 'expire_after_duration' ||
+        ongoing.sourceMustRemainActive !== false || ongoing.expiresAtRound !== Number(ongoing.startRound) + 1 ||
+        !isDynamicUnusedEngagedSealPowerModifier(dynamic[0]!.definition as Record<string, unknown>) ||
+        dynamic[0]!.sourceCardId !== ongoing.sourceCardId || dynamic[0]!.controllerId !== ongoing.controllerId ||
+        !restoreSourceControllerMatches(cardsByInstance, eventPlacements, ongoing.sourceCardId as string, ongoing.controllerId as string) ||
+        !restoreSourceHasAcceptedAbility(pack, cardsByInstance, eventPlacements, ongoing.sourceCardId as string, isAcceptedUnusedEngagedSealPowerAbility)) return false;
+  }
   if (!(value.responseWindows as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
+  const normalUseHistory = (value.normalCommandSealUseHistory ?? []) as Array<Record<string, unknown>>;
+  if (!normalUseHistory.every((entry) => playerIds.has(entry.playerId as string) && (entry.round as number) <= currentRound &&
+      restoreSourceControllerMatches(cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.playerId as string) &&
+      restoreSourceHasNormalSealUseAbility(pack, cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.abilityId as string))) return false;
+  const latestNormalUseRoundByPlayer: Record<string, number> = {};
+  const normalUseCounts = new Map<string, number>();
+  for (const entry of normalUseHistory) {
+    const playerId = entry.playerId as string;
+    latestNormalUseRoundByPlayer[playerId] = Math.max(latestNormalUseRoundByPlayer[playerId] ?? 0, entry.round as number);
+    const usageKey = `normal-seal-use:${entry.sourceCardId as string}:${entry.abilityId as string}:round:${entry.round as number}`;
+    normalUseCounts.set(usageKey, (normalUseCounts.get(usageKey) ?? 0) + 1);
+  }
+  const restoredAbilityUsage = value.abilityUsage as Record<string, unknown>;
+  if ([...normalUseCounts].some(([key, count]) => restoredAbilityUsage[key] !== count)) return false;
+  if (Object.entries(restoredAbilityUsage).some(([key, count]) => key.startsWith('normal-seal-use:') && normalUseCounts.get(key) !== count)) return false;
+  const restoredNormalUseMarkers = (value.normalCommandSealUseRoundByPlayer ?? {}) as Record<string, unknown>;
+  if (Object.entries(restoredNormalUseMarkers).some(([playerId, round]) => latestNormalUseRoundByPlayer[playerId] !== round) ||
+      Object.entries(latestNormalUseRoundByPlayer).some(([playerId, round]) => restoredNormalUseMarkers[playerId] !== round)) return false;
+  const restoredRulerBindings = value.rulerSealBindings as Array<Record<string, unknown>>;
+  if (new Set(restoredRulerBindings.map((entry) => entry.id as string)).size !== restoredRulerBindings.length) return false;
+  if (!restoredRulerBindings.every((entry) => playerIds.has(entry.issuerPlayerId as string) && playerIds.has(entry.boundPlayerId as string) &&
+      entry.issuerPlayerId !== entry.boundPlayerId && (entry.grantedRound as number) <= currentRound &&
+      ((entry.spent === false && entry.spentRound === undefined) ||
+        (entry.spent === true && isRestoreSafeInteger(entry.spentRound, entry.grantedRound as number) && (entry.spentRound as number) <= currentRound)) &&
+      restoreSourceControllerMatches(cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.issuerPlayerId as string) &&
+      restoreSourceHasAcceptedAbilityId(pack, cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.abilityId as string, isRulerSealBindingSemantic))) return false;
+  const restoredBindingHistory = value.rulerSealBindingHistory as Record<string, unknown>;
+  const restoredBindingCounts: Record<string, Record<string, number>> = {};
+  for (const binding of restoredRulerBindings) {
+    const issuerId = binding.issuerPlayerId as string;
+    const boundId = binding.boundPlayerId as string;
+    const issuerCounts = restoredBindingCounts[issuerId] ??= {};
+    issuerCounts[boundId] = (issuerCounts[boundId] ?? 0) + 1;
+  }
+  for (const [issuerId, counts] of Object.entries(restoredBindingHistory)) {
+    if (!playerIds.has(issuerId) || !isRestoreRecord(counts) || Object.keys(counts).some((boundId) => !playerIds.has(boundId))) return false;
+    for (const [boundId, count] of Object.entries(counts)) {
+      if (issuerId === boundId || count !== (restoredBindingCounts[issuerId]?.[boundId] ?? 0)) return false;
+    }
+  }
+  for (const [issuerId, counts] of Object.entries(restoredBindingCounts)) {
+    const history = restoredBindingHistory[issuerId];
+    if (!isRestoreRecord(history) || Object.entries(counts).some(([boundId, count]) => history[boundId] !== count)) return false;
+  }
+  const grantBindingCounts = new Map<string, Map<string, number>>();
+  const latestRulerUseRoundByPlayer: Record<string, number> = {};
+  for (const binding of restoredRulerBindings) {
+    const sourceId = binding.sourceCardId as string;
+    const abilityId = binding.abilityId as string;
+    const byAbility = grantBindingCounts.get(sourceId) ?? new Map<string, number>();
+    byAbility.set(abilityId, (byAbility.get(abilityId) ?? 0) + 1);
+    grantBindingCounts.set(sourceId, byAbility);
+    if (binding.spent === true) {
+      const issuerId = binding.issuerPlayerId as string;
+      latestRulerUseRoundByPlayer[issuerId] = Math.max(latestRulerUseRoundByPlayer[issuerId] ?? 0, binding.spentRound as number);
+    }
+  }
+  for (const [sourceId, byAbility] of grantBindingCounts) {
+    for (const [abilityId, bindingCount] of byAbility) {
+      const usage = restoredAbilityUsage[`${sourceId}:${abilityId}`];
+      if (!Number.isSafeInteger(usage) || (usage as number) < 1 || (usage as number) > 3 || bindingCount !== (usage as number) * 2) return false;
+    }
+  }
+  for (const [sourceId, physical] of cardsByInstance) {
+    const definition = isRestoreRecord(pack.cards) ? pack.cards[physical.definitionId as string] : undefined;
+    if (!isRestoreRecord(definition) || !Array.isArray(definition.abilities)) continue;
+    for (const ability of definition.abilities) {
+      if (!isRestoreRecord(ability) || !isRulerSealBindingSemantic(ability as unknown as AuthoringAbility)) continue;
+      const usage = restoredAbilityUsage[`${sourceId}:${ability.id as string}`];
+      if (usage === undefined || usage === 0) continue;
+      const bindingCount = grantBindingCounts.get(sourceId)?.get(ability.id as string) ?? 0;
+      if (!Number.isSafeInteger(usage) || (usage as number) < 1 || (usage as number) > 3 || bindingCount !== (usage as number) * 2) return false;
+    }
+  }
+  const restoredRulerUseMarkers = (value.rulerCommandSealUseRoundByPlayer ?? {}) as Record<string, unknown>;
+  if (Object.entries(restoredRulerUseMarkers).some(([playerId, round]) => latestRulerUseRoundByPlayer[playerId] !== round) ||
+      Object.entries(latestRulerUseRoundByPlayer).some(([playerId, round]) => restoredRulerUseMarkers[playerId] !== round)) return false;
+  if (!(value.pendingRulerSealRewards as Array<Record<string, unknown>>).every((entry) =>
+      playerIds.has(entry.issuerPlayerId as string) && playerIds.has(entry.boundPlayerId as string) &&
+      restoredRulerBindings.some((binding) => binding.id === entry.sealId && binding.issuerPlayerId === entry.issuerPlayerId &&
+        binding.boundPlayerId === entry.boundPlayerId && binding.spent === true) &&
+      restoreSourceControllerMatches(cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.issuerPlayerId as string) &&
+      restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.abilityId as string))) return false;
   if (value.cardPlayCountByInstance !== undefined && !Object.keys(value.cardPlayCountByInstance as Record<string, unknown>).every((id) => cardsByInstance.has(id))) return false;
   if (value.grantedPerGamePlayLimitBaselineByCardId !== undefined && !Object.keys(value.grantedPerGamePlayLimitBaselineByCardId as Record<string, unknown>).every((id) => cardsByInstance.has(id))) return false;
   if (value.grantedPerGamePlayLimitCardIds !== undefined && !(value.grantedPerGamePlayLimitCardIds as string[]).every((id) => cardsByInstance.has(id))) return false;
@@ -1113,6 +1277,29 @@ function isRestoreAbilityRuntimeReferences(
         pendingDecision.target.type !== 'card_instance' || !Array.isArray(pendingDecision.remainingEffects) || pendingDecision.remainingEffects.length !== 0 ||
         !isRestoreStringArray(pendingCandidates) || pendingCandidates.length !== currentHand.length ||
         currentHand.some((id, index) => pendingCandidates[index] !== id)) return false;
+  }
+  if (isRestoreRecord(pendingDecision) && isRestoreRecord(pendingDecision.interaction) &&
+      pendingDecision.interaction.kind === 'owned_ruler_seal_power_v1') {
+    const meta = pendingDecision.interaction;
+    const controllerId = pendingDecision.controllerId as string;
+    const sealIds = meta.sealIds as string[];
+    const currentSealIds = restoredRulerBindings
+      .filter((binding) => binding.issuerPlayerId === controllerId && binding.spent === false)
+      .map((binding) => binding.id as string).sort((left, right) => left.localeCompare(right));
+    const target = pendingDecision.target;
+    const context = pendingDecision.context;
+    if (!playerIds.has(controllerId) || meta.issuerPlayerId !== controllerId || meta.amount !== 4 ||
+        !restoreSourceControllerMatches(cardsByInstance, eventPlacements, meta.sourceCardInstanceId as string, controllerId) ||
+        !restoreSourceHasAcceptedAbility(pack, cardsByInstance, eventPlacements, meta.sourceCardInstanceId as string, isAcceptedRulerSealPowerReplacementAbility) ||
+        !isRestoreRecord(context) || context.controllerId !== controllerId || context.sourceCardId !== meta.sourceCardInstanceId ||
+        context.abilityId !== meta.abilityId || !isRestoreRecord(target) || target.id !== 'owned_ruler_seal' || target.type !== 'choice' ||
+        !isRestoreRecord(target.count) || target.count.min !== 1 || target.count.max !== 1 ||
+        !Array.isArray(target.options) || target.options.length !== sealIds.length || target.options.some((option, index) =>
+          !isRestoreRecord(option) || option.id !== sealIds[index] || Object.keys(option).length !== 1) ||
+        pendingDecision.min !== 1 || pendingDecision.max !== 1 || !isRestoreStringArray(pendingDecision.candidates) ||
+        pendingDecision.candidates.length !== sealIds.length || pendingDecision.candidates.some((id, index) => id !== sealIds[index]) ||
+        currentSealIds.length !== sealIds.length || currentSealIds.some((id, index) => id !== sealIds[index]) ||
+        !Array.isArray(pendingDecision.remainingEffects) || pendingDecision.remainingEffects.length !== 0) return false;
   }
   if (isRestoreRecord(pendingDecision) && isRestoreRecord(pendingDecision.interaction) &&
       pendingDecision.interaction.kind === 'opponent_close_selected_one_non_residual_v1') {
@@ -1223,7 +1410,7 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
   const cardsByInstance = new Map(cards.map((card) => [card.instanceId as string, card] as const));
   const servantRootByPlayer = new Map(players.map((player) => [player.id as string, player.servantCardId as string] as const));
   const restoredEventPlacements = value.eventPlacements as Array<Record<string, unknown>>;
-  if (!isRestoreAbilityRuntimeReferences(abilityRuntime, playerIds, locationIds, cardsByInstance, pack, servantRootByPlayer, restoredEventPlacements)) return false;
+  if (!isRestoreAbilityRuntimeReferences(abilityRuntime, playerIds, locationIds, cardsByInstance, pack, servantRootByPlayer, restoredEventPlacements, round.roundNumber as number)) return false;
   if (value.eventDiscardPile !== undefined && (!Array.isArray(value.eventDiscardPile) ||
       !value.eventDiscardPile.every((entry) => isRestoreEventPlacement(entry, locationIds, playerIds, eventIds, true)))) return false;
   if (value.battleDeclarations !== undefined && (!Array.isArray(value.battleDeclarations) || !value.battleDeclarations.every((entry) =>
