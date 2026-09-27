@@ -1,0 +1,164 @@
+{
+  "schemaVersion": "fd-phase3-review-packet-setup-current-main-v1",
+  "task": "P3-E04-S00-A2",
+  "controlEpoch": "FD-P3-2026-09-23-04",
+  "status": "READY_FOR_REVIEW",
+  "currentMain": "0e943a94e8bdab6335e34818278ecc90760015f0",
+  "previousCandidate": "6976617004b99c31ab3dd1c362aa0fd1cbd26745",
+  "candidateCommit": "34a43694f59d08a392e18e7eaa49acefd012dc61",
+  "candidateParent": "72c7db3f5f9ea8c4a93e61b16224edd06e2e95b4",
+  "candidateInCurrentMain": false,
+  "currentMainAlignment": "ALIGNED",
+  "reviewerVerdict": "PASS",
+  "reviewerArtifact": {
+    "commit": "db466181b1e527ccf39f2c96d7ef3d62612173e5",
+    "path": "artifacts/reviewer-evidence/2026-09-27-setup-create-to-skill-current-main-review.json",
+    "sha256": "9b272aa8fc59a642145b261225fa78231760e28cc487917c582b4c52b0124952"
+  },
+  "authorizedAbilityIds": [
+    "astronomical-science.has-chaldeas",
+    "military.has-support-shot",
+    "useless-person.setup"
+  ],
+  "stateTransition": {
+    "before": "REVIEWER_ACCEPTED_CANDIDATE / WAITING_CURRENT_MAIN_ALIGNMENT",
+    "after": "REVIEWER_ACCEPTED_CANDIDATE / CURRENT_MAIN_ALIGNED",
+    "mainState": "NOT_PROMOTED_ON_MAIN",
+    "legacyFallback": "CLOSED"
+  },
+  "consumerCounts": {
+    "before": {
+      "NEW_RUNTIME_SEMANTIC_ROUTED": 12,
+      "LEGACY_RESOLVE_EFFECT": 49,
+      "LEGACY_EXECUTE_ABILITY": 3,
+      "NOT_CLASSIFIABLE": 28,
+      "totalAbilities": 92
+    },
+    "after": {
+      "NEW_RUNTIME_SEMANTIC_ROUTED": 12,
+      "LEGACY_RESOLVE_EFFECT": 49,
+      "LEGACY_EXECUTE_ABILITY": 3,
+      "NOT_CLASSIFIABLE": 28,
+      "totalAbilities": 92
+    },
+    "delta": {
+      "NEW_RUNTIME_SEMANTIC_ROUTED": 0,
+      "LEGACY_RESOLVE_EFFECT": 0,
+      "LEGACY_EXECUTE_ABILITY": 0,
+      "NOT_CLASSIFIABLE": 0
+    }
+  },
+  "historicalConsumerTransition": {
+    "before": {
+      "NEW_RUNTIME_SEMANTIC_ROUTED": 9,
+      "LEGACY_RESOLVE_EFFECT": 52,
+      "LEGACY_EXECUTE_ABILITY": 3,
+      "NOT_CLASSIFIABLE": 28,
+      "totalAbilities": 92
+    },
+    "after": {
+      "NEW_RUNTIME_SEMANTIC_ROUTED": 12,
+      "LEGACY_RESOLVE_EFFECT": 49,
+      "LEGACY_EXECUTE_ABILITY": 3,
+      "NOT_CLASSIFIABLE": 28,
+      "totalAbilities": 92
+    },
+    "delta": {
+      "NEW_RUNTIME_SEMANTIC_ROUTED": 3,
+      "LEGACY_RESOLVE_EFFECT": -3,
+      "LEGACY_EXECUTE_ABILITY": 0,
+      "NOT_CLASSIFIABLE": 0
+    }
+  },
+  "mainCoverageDelta": 0,
+  "changedAbilityCount": 3,
+  "changedRows": [
+    {
+      "abilityKey": "master.maiya/master.maiya.skill.military/military.has-support-shot",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "NOT_VERIFIED",
+      "rVerdict": "REVIEWER_ACCEPTED_CANDIDATE",
+      "nextOwner": "R",
+      "abilityState": "REVIEWER_ACCEPTED_CANDIDATE",
+      "mainStatus": "NOT_PROMOTED_ON_MAIN",
+      "legacyFallback": "CLOSED",
+      "formalMainCredit": "NOT_COUNTED_ON_MAIN",
+      "exactImplementationLineage": {
+        "candidateCommit": "34a43694f59d08a392e18e7eaa49acefd012dc61",
+        "candidateParent": "72c7db3f5f9ea8c4a93e61b16224edd06e2e95b4",
+        "reviewerArtifact": "artifacts/reviewer-evidence/2026-09-27-setup-create-to-skill-current-main-review.json",
+        "reviewerArtifactSha256": "9b272aa8fc59a642145b261225fa78231760e28cc487917c582b4c52b0124952",
+        "semanticContract": "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL_CURRENT_LINEAGE_REPAIR",
+        "previousCandidateCommit": "6976617004b99c31ab3dd1c362aa0fd1cbd26745",
+        "candidateBase": "0e943a94e8bdab6335e34818278ecc90760015f0",
+        "reviewerArtifactCommit": "db466181b1e527ccf39f2c96d7ef3d62612173e5"
+      },
+      "currentMainAlignment": "ALIGNED",
+      "candidateInCurrentMain": false
+    },
+    {
+      "abilityKey": "master.olga-marie/master.olga-marie.skill.astronomical-science/astronomical-science.has-chaldeas",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "NOT_VERIFIED",
+      "rVerdict": "REVIEWER_ACCEPTED_CANDIDATE",
+      "nextOwner": "R",
+      "abilityState": "REVIEWER_ACCEPTED_CANDIDATE",
+      "mainStatus": "NOT_PROMOTED_ON_MAIN",
+      "legacyFallback": "CLOSED",
+      "formalMainCredit": "NOT_COUNTED_ON_MAIN",
+      "exactImplementationLineage": {
+        "candidateCommit": "34a43694f59d08a392e18e7eaa49acefd012dc61",
+        "candidateParent": "72c7db3f5f9ea8c4a93e61b16224edd06e2e95b4",
+        "reviewerArtifact": "artifacts/reviewer-evidence/2026-09-27-setup-create-to-skill-current-main-review.json",
+        "reviewerArtifactSha256": "9b272aa8fc59a642145b261225fa78231760e28cc487917c582b4c52b0124952",
+        "semanticContract": "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL_CURRENT_LINEAGE_REPAIR",
+        "previousCandidateCommit": "6976617004b99c31ab3dd1c362aa0fd1cbd26745",
+        "candidateBase": "0e943a94e8bdab6335e34818278ecc90760015f0",
+        "reviewerArtifactCommit": "db466181b1e527ccf39f2c96d7ef3d62612173e5"
+      },
+      "currentMainAlignment": "ALIGNED",
+      "candidateInCurrentMain": false
+    },
+    {
+      "abilityKey": "master.shinji/master.shinji.skill.useless-person/useless-person.setup",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "NOT_VERIFIED",
+      "rVerdict": "REVIEWER_ACCEPTED_CANDIDATE",
+      "nextOwner": "R",
+      "abilityState": "REVIEWER_ACCEPTED_CANDIDATE",
+      "mainStatus": "NOT_PROMOTED_ON_MAIN",
+      "legacyFallback": "CLOSED",
+      "formalMainCredit": "NOT_COUNTED_ON_MAIN",
+      "exactImplementationLineage": {
+        "candidateCommit": "34a43694f59d08a392e18e7eaa49acefd012dc61",
+        "candidateParent": "72c7db3f5f9ea8c4a93e61b16224edd06e2e95b4",
+        "reviewerArtifact": "artifacts/reviewer-evidence/2026-09-27-setup-create-to-skill-current-main-review.json",
+        "reviewerArtifactSha256": "9b272aa8fc59a642145b261225fa78231760e28cc487917c582b4c52b0124952",
+        "semanticContract": "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL_CURRENT_LINEAGE_REPAIR",
+        "previousCandidateCommit": "6976617004b99c31ab3dd1c362aa0fd1cbd26745",
+        "candidateBase": "0e943a94e8bdab6335e34818278ecc90760015f0",
+        "reviewerArtifactCommit": "db466181b1e527ccf39f2c96d7ef3d62612173e5"
+      },
+      "currentMainAlignment": "ALIGNED",
+      "candidateInCurrentMain": false
+    }
+  ],
+  "machineEvidence": {
+    "overlay": "artifacts/phase3-ledger-92-semantic-route-review-overlay-v3.json",
+    "sourceOverlay": "artifacts/phase3-ledger-92-semantic-route-review-overlay-v2.json",
+    "reviewerArtifact": "artifacts/reviewer-evidence/2026-09-27-setup-create-to-skill-current-main-review.json"
+  },
+  "nextReviewer": "Reviewer A",
+  "nonClaims": [
+    "This overlay does not promote the candidate to main.",
+    "No main coverage credit or denominator change is granted.",
+    "Gate C remains NOT_VERIFIED for these three rows.",
+    "No unrelated ability receives state or coverage credit."
+  ]
+}
