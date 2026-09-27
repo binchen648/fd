@@ -5273,8 +5273,8 @@ R1 predecessor `986b04be707911b8f741ffc4f7bf33da8f59fe50` -> `IMPLEMENTATION_NEE
 ## TASK P3-S-OWNER-SITONAI-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `READY`
-Base: exact Sitonai source-skill attack-join capability acceptance-sync commit carrying this refreshed task block
+Status: `MIGRATION_CANDIDATE_READY_FOR_FRESH_R`
+Base: `3748e7341ecdfd26ccd56bbde75fbd6502e1f233`
 Owner root: `servant.sitonai`
 Formal owner scope: exactly the two current-main remaining frozen Sitonai skills; the already accepted FM07/R38 sc-sitonai-3 receives no duplicate credit
 
@@ -5323,6 +5323,14 @@ Allowed verdicts:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+
+Current implementation evidence:
+- canonical Sitonai authoring now contains sc-sitonai-1 + sc-sitonai-2 together while preserving the previously accepted sc-sitonai-3 object unchanged;
+- locked Reference recertified at `b2f9fa15fba07c63530bbf4612b03b8b704755f9`;
+- focused owner semantics `6/6 PASS`; owner/prerequisite/sc3 chain `4 files / 24 tests PASS`; affected serial chain `8 files / 160 tests PASS`;
+- typecheck/content validate/content compile/generated determinism/diff-check PASS; production `packages/rules/src` diff EMPTY and Sitonai/SkillLib identity audit clean;
+- strict formal accounting remains `132/944` pending exact-Candidate fresh independent R and subsequent A-sync/accounting; an accepted synchronized batch adds exactly two identities;
+- detailed result: `docs/reports/2026-09-27-p3-s-owner-sitonai-complete-migration-result.md`.
 
 
 ## TASK P3-B-SITONAI-COMBINATION-FIMBUL-CAPABILITY

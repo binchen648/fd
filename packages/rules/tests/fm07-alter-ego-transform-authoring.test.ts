@@ -94,14 +94,15 @@ function choose(state: GameState, selectedIds: string[]) {
 }
 
 describe('P3-FM07 exact ten-member Alter Ego transform migration', () => {
-  it('contains exactly the ten authorized minimal archives with locked owner/static identity', () => {
+  it('contains exactly the ten authorized identities with locked owner/static identity even after owner archives expand', () => {
     expect(new Set(members.map(([, cardId]) => cardId)).size).toBe(10);
     for (const [ownerId, cardId, ownerType, expectedClass, legacyId, typeLabel] of members) {
       const raw = readArchive(ownerId, ownerType);
       expect(raw.id).toBe(ownerId);
       expect(raw.class).toBe(expectedClass);
-      expect(raw.cards).toHaveLength(1);
-      const selected = raw.cards[0];
+      const selectedCards = raw.cards.filter((card: any) => card.id === cardId);
+      expect(selectedCards).toHaveLength(1);
+      const selected = selectedCards[0];
       expect(selected.id).toBe(cardId);
       expect(selected.legacyId).toBe(legacyId);
       expect(selected.aliases).toContain(legacyId);
