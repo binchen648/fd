@@ -1,6 +1,6 @@
 import type { GameState, PlayerState } from '../schema/game';
 import type { LocationId } from '../schema/location';
-import type { PlayerId, SafeEvent } from './types';
+import type { AbilityRuntime, PlayerId, SafeEvent } from './types';
 import { clearTransientCardTransformState } from './card-instance-state';
 import { isCardCloseForbidden } from './card-close-forbid';
 import { grantMana } from '../core/rule-overrides';
@@ -1098,10 +1098,12 @@ function createCard(
   const existing = transaction.workingState.cards.filter((candidate) =>
     candidate.ownerPlayerId === transaction.context.controllerId && candidate.definitionId === effect.cardId);
   if (existing.length > 0) {
-    if (existing.some((candidate) =>
-      candidate.controllerPlayerId !== transaction.context.controllerId ||
-      candidate.zone !== 'skill' ||
-      candidate.generatedBy !== transaction.context.sourceCardId)) {
+    if (existing.length !== 1 || !isCanonicalSetupSkillCard(
+      existing[0]!,
+      runtime,
+      transaction.context.controllerId,
+      transaction.context.sourceCardId,
+    )) {
       throw new ResolutionRuntimeError('duplicate_created_card', `Card definition '${effect.cardId}' already exists without matching provenance.`);
     }
     return {
@@ -1161,6 +1163,28 @@ function createCard(
     },
     emittedEventIds: [eventId],
   };
+}
+
+function isCanonicalSetupSkillCard(
+  card: GameState['cards'][number],
+  runtime: AbilityRuntime,
+  controllerId: PlayerId,
+  sourceCardId: string,
+): boolean {
+  if (card.ownerPlayerId !== controllerId ||
+    card.controllerPlayerId !== controllerId ||
+    card.zone !== 'skill' ||
+    card.generatedBy !== sourceCardId ||
+    Object.keys(card.visibility).length !== 2 ||
+    card.visibility.scope !== 'owner_only' ||
+    card.visibility.ownerPlayerId !== controllerId) return false;
+
+  const cardState = runtime.cardState[card.instanceId];
+  return !!cardState &&
+    typeof cardState.active === 'boolean' && cardState.active === false &&
+    typeof cardState.faceDown === 'boolean' && cardState.faceDown === false &&
+    Number.isInteger(cardState.playedRound) && cardState.playedRound >= 0 &&
+    Object.keys(cardState).every((key) => ['active', 'faceDown', 'playedRound'].includes(key));
 }
 
 function moveAllRemaining(

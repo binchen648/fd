@@ -107,6 +107,30 @@ describe('P3 setup create-to-skill current-lineage alignment', () => {
     expect(JSON.stringify(current.state)).toBe(before);
   });
 
+  it.each(['duplicate', 'public', 'active', 'face-down', 'missing-card-state'] as const)('rejects non-canonical existing setup material (%s) atomically', (variant) => {
+    const current = session();
+    const { playerId } = setupSource(current, 'master.shinji', 'master.shinji.skill.useless-person');
+    const created = current.state.cards.find((card) => card.ownerPlayerId === playerId && card.definitionId === 'master.shinji.skill.false-attendant-book')!;
+    if (variant === 'duplicate') {
+      const duplicate = { ...structuredClone(created), instanceId: `${created.instanceId}.duplicate` };
+      current.state.cards.push(duplicate);
+      current.state.abilityRuntime!.cardState[duplicate.instanceId] = structuredClone(current.state.abilityRuntime!.cardState[created.instanceId]!);
+    } else if (variant === 'public') {
+      created.visibility = { scope: 'public' };
+    } else if (variant === 'active') {
+      current.state.abilityRuntime!.cardState[created.instanceId]!.active = true;
+    } else if (variant === 'face-down') {
+      current.state.abilityRuntime!.cardState[created.instanceId]!.faceDown = true;
+    } else {
+      delete current.state.abilityRuntime!.cardState[created.instanceId];
+    }
+    const before = JSON.stringify(current.state);
+
+    expect(() => processAbilityEvent(current.state, { id: `non-canonical-${variant}`, type: 'game_start' }))
+      .toThrow(/duplicate_created_card|matching provenance/i);
+    expect(JSON.stringify(current.state)).toBe(before);
+  });
+
   it('rejects a corrupted routed graph without legacy fallback or partial mutation', () => {
     const current = session();
     const { playerId } = setupSource(current, 'master.maiya', 'master.maiya.skill.military');
