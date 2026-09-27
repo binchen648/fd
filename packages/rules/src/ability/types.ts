@@ -169,6 +169,12 @@ export interface RulerSealFreePlayInteractionMetadata {
   sealId: string; issuerPlayerId: PlayerId; boundPlayerId: PlayerId; rewardVp: number;
   constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: 1; distinct: true };
 }
+export interface OwnedRulerSealPowerInteractionMetadata {
+  kind: 'owned_ruler_seal_power_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  issuerPlayerId: PlayerId; sealIds: string[]; amount: 4;
+  constraints: { kind: 'target'; targetKind: 'ruler_seal'; min: 1; max: 1; distinct: true };
+}
 export interface CombatOpponentPowerVpRewardInteractionMetadata {
   kind: 'combat_opponent_power_vp_reward_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
   sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string; triggerEventId: string;
@@ -185,7 +191,7 @@ export interface DeductionRecordState { definitionId: string; attribute: '力量
 export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata |
   OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata | DeductionRecordChoiceInteractionMetadata |
   PostDrawHandShuffleInteractionMetadata | RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata |
-  CombatOpponentPowerVpRewardInteractionMetadata;
+  OwnedRulerSealPowerInteractionMetadata | CombatOpponentPowerVpRewardInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -324,6 +330,10 @@ export interface AbilityRuntime {
   rulerSealBindingHistory: Record<PlayerId, Record<PlayerId, number>>;
   /** One-shot delayed rewards armed by the free-play Ruler seal branch. */
   pendingRulerSealRewards: PendingRulerSealReward[];
+  /** Authoritative round of the most recent ordinary Command Seal ability use by player. Paying a seal as a cost does not write this fact. */
+  normalCommandSealUseRoundByPlayer?: Record<PlayerId, number>;
+  /** Authoritative round of the most recent Ruler Seal ability/replacement use by issuer. Paying a seal as a cost does not write this fact. */
+  rulerCommandSealUseRoundByPlayer?: Record<PlayerId, number>;
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];
   events: SafeEvent[]; calculations: { controllerId: PlayerId; lines: CalculationLine[] }[];
   preventEffects: boolean; manaCaps: Record<PlayerId, number>; manaGainBlocked: PlayerId[];

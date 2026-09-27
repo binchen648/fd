@@ -5602,8 +5602,8 @@ Allowed verdicts:
 ## TASK P3-S-OWNER-SPARTACUS-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `READY`
-Base: exact Spartacus accepted-seam recovery A-sync commit carrying this task block
+Status: `BLOCKED_ON_SEAL_POWER_READINESS`
+Base: exact future Spartacus seal-power readiness A-sync commit carrying this task block
 Owner root: `servant.spartacus`
 Canonical owner-complete consumer scope: all three Spartacus skills together
 
@@ -5661,6 +5661,50 @@ Allowed verdicts:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+
+## TASK P3-B-SPARTACUS-SEAL-POWER-READINESS-CAPABILITY
+
+Owner: Codex B
+Status: `IMPLEMENTATION_CANDIDATE_READY_FOR_FRESH_R`
+Base: `7f0dc16fec89bcbbd78681e7cfc3036616a5c68b`
+Classification: bounded zero-credit owner-readiness prerequisite for current owner `servant.spartacus`
+
+Owner-readiness-first gap set:
+- current-round distinct engaged-opponent usage tracking across normal Command Seals and issuer-owned Ruler Seals;
+- exact combat formula shell for source-defined `engaged user count * (6 - 2 * controller remaining normal seals)`;
+- repeatable normal Command Seal replacement: consume one remaining normal seal and grant +4 current-round combat total power;
+- issuer-owned/distributed Ruler Seal replacement: auto-consume one seal or select the exact seal when multiple remain, then grant +4 current-round combat total power;
+- Action-stage live +1 current-round combat total power per unused normal / issuer-owned Ruler seal held by each engaged opponent;
+- original normal/Ruler actions remain unchanged with no replacement provider and are suppressed only while an exact controlled replacement provider exists;
+- authenticated restore/fail-closed validation for the private multi-Ruler continuation and widened compiled/persisted corruption.
+
+Hard scope boundary:
+- this one batch closes all currently discoverable sc1/sc3 generic seal-power gaps found by the complete Spartacus owner preflight; sc2 already has accepted FB2-48 support and is not reimplemented here;
+- zero Spartacus consumer authoring and zero migration credit;
+- `data/authoring/**` delta must remain empty;
+- no `servant.spartacus`, skill-id, card-name, printed-text, or Chinese-text identity routing in production runtime;
+- no SkillLib fallback and no runtime source-text parsing;
+- ACCEPTED must A-sync/rescan and return to `P3-S-OWNER-SPARTACUS-COMPLETE-MIGRATION`; it cannot advance owners.
+
+Verification evidence:
+- dedicated Spartacus seal-power readiness focused suite `13/13 PASS`;
+- affected serial `7 files / 164 tests PASS`;
+- typecheck PASS;
+- content validate/compile PASS — `7 masters / 12 servants / 20 events / 0 blocking issues`;
+- generated determinism PASS with unchanged hashes;
+- Base-to-worktree `git diff --check` PASS;
+- `data/authoring/**` delta EMPTY;
+- production identity audit clean for Spartacus ids/names/card strings and `SkillLib`;
+- detailed result: `docs/reports/2026-09-28-p3-b-spartacus-seal-power-readiness-capability-result.md`.
+
+Accounting:
+- strict formal accounting remains `137/944`, remaining `807`;
+- historical Spartacus S2 remains preservation-only and is not re-counted;
+- this readiness task is permanently zero-credit.
+
+Allowed verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
 
 ## TASK P3-B-SPARTACUS-ACCEPTED-SEAM-RECOVERY
 

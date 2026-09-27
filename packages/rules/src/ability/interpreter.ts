@@ -67,6 +67,22 @@ import {
   isOpponentCloseToOneCandidate,
 } from './opponent-close-to-one';
 import {
+  DYNAMIC_UNUSED_SEAL_POWER_RULE,
+  containsCommandSealPowerPrivilegedNode,
+  controllerHasSealPowerReplacementProvider,
+  controllerHasEngagedSealUserThisRound,
+  engagedSealUserFormulaPower,
+  isAcceptedCommandSealPowerPrivilegedAbility,
+  isAcceptedEngagedSealUserFormulaPowerAbility,
+  isAcceptedNormalSealPowerReplacementAbility,
+  isAcceptedRulerSealPowerReplacementAbility,
+  isAcceptedUnusedEngagedSealPowerAbility,
+  isRepeatableSealPowerReplacementAbility,
+  markNormalCommandSealUsedThisRound,
+  markRulerCommandSealUsedThisRound,
+  unspentOwnedRulerSealBindings,
+} from './command-seal-power-capability';
+import {
   advanceOpponentCloseToOneServerAuthority,
   clearOpponentCloseToOneServerAuthority,
   copyOpponentCloseToOneServerAuthority,
@@ -256,6 +272,7 @@ export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPa
     cardPlayCountByInstance: {}, grantedPerGamePlayLimitCardIds: [], grantedPerGamePlayLimitBaselineByCardId: {},
     ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [],
     rulerSealBindings: [], rulerSealBindingHistory: {}, pendingRulerSealRewards: [],
+    normalCommandSealUseRoundByPlayer: {}, rulerCommandSealUseRoundByPlayer: {},
     usedAbilities: {}, processedEvents: [], revealedServants: [],
     events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [], roomMode: options.roomMode ?? 'standard',
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
@@ -789,6 +806,8 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
       if (!isCurrentRoundBasicAttackAttributePairCondition(c)) reject('unsupported', 'Unsupported current-round basic-attack attribute-pair condition shape');
       return controllerHasCurrentRoundBasicAttackAttributePair(s, ctx.controllerId, c);
     }
+    case 'controller_has_engaged_opponent_command_or_ruler_seal_user_this_round':
+      return controllerHasEngagedSealUserThisRound(s, ctx.controllerId, c);
     case 'controller_active_attacks_exact_distinct_attribute_pair': {
       if (!isExactActiveAttackAttributePairCondition(c)) reject('unsupported', 'Unsupported exact active-attack attribute-pair condition shape');
       return controllerHasExactDistinctActiveAttackAttributePair(s, ctx.controllerId, c);
@@ -969,6 +988,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsTimedGlobalResourceSuppressionNode(a.effects) && !isAcceptedTimedGlobalResourceSuppressionAbility(a)) return false;
   if (containsSourceSkillAttackJoinNode(a.effects) && !isAcceptedSourceSkillAttackJoinAbility(a)) return false;
   if (containsSourceLocationRunePrivilegedNode(a) && !isAcceptedSourceLocationRunePrivilegedAbility(a)) return false;
+  if (containsCommandSealPowerPrivilegedNode(a) && !isAcceptedCommandSealPowerPrivilegedAbility(a)) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
@@ -978,9 +998,13 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (activationPhase && activationPhase !== phase(s)) return false;
   if (definition(s, sourceId)?.cardType === 'command_spell' &&
     Number((player(s, card(s, sourceId).controllerPlayerId) as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) return false;
+  const sourceControllerId = card(s, sourceId).controllerPlayerId;
+  if (isCommandSpellCard(s, sourceId) && controllerHasSealPowerReplacementProvider(s, sourceControllerId, 'normal')) return false;
+  if (isRulerSealUseSemantic(a) && controllerHasSealPowerReplacementProvider(s, sourceControllerId, 'ruler')) return false;
   if (isBattleLossResourceTriggerSemantic(a) &&
     Number((player(s, card(s, sourceId).controllerPlayerId) as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) return false;
-  if (!isRulerSealUseSemantic(a) && !isCommandSpellCard(s, sourceId) && a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber) return false;
+  if (!isRulerSealUseSemantic(a) && !isCommandSpellCard(s, sourceId) && !isRepeatableSealPowerReplacementAbility(a) &&
+      a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber) return false;
   if (abilityLimitReached(s, sourceId, a)) return false;
   if ((isPlayActionRouteCandidate(a) || isAddToAttackRouteCandidate(a) || isAnyLocationExceptWorkshopMovementSemantic(a) ||
       isAcceptedRuneAnyEnabledLocationMovementAbility(a) || isRulerSealBindingSemantic(a) || isRulerSealUseSemantic(a) ||
@@ -1010,6 +1034,9 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   }
   if (isAcceptedSameLocationManaLossAbility(a) && !hasAvailableManaForFixedCosts(s, ctx, a)) return false;
   if (isAcceptedRuneAnyEnabledLocationMovementAbility(a) && !hasAvailableManaForFixedCosts(s, ctx, a)) return false;
+  if (isAcceptedNormalSealPowerReplacementAbility(a) &&
+      Number((player(s, ctx.controllerId) as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) return false;
+  if (isAcceptedRulerSealPowerReplacementAbility(a) && unspentOwnedRulerSealBindings(s, ctx.controllerId).length === 0) return false;
   if (isAcceptedSourceSkillAttackJoinAbility(a)) {
     const source = card(s, sourceId);
     const sourceState = runtime(s).cardState[sourceId];
@@ -1995,15 +2022,19 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       const amount = numeric(s, ctx, effect.amount);
       const next = Math.max(0, current + amount);
       (p as unknown as { commandSpells: number }).commandSpells = next;
+      const directive = str(effect.directive) || 'adjust_command_seals';
       pushModeDirective(s, {
         controllerId: p.id,
-        directive: str(effect.directive) || 'adjust_command_seals',
+        directive,
         sourceCardId: ctx.sourceCardId,
         abilityId: ctx.abilityId,
         amount,
         commandSpells: next,
         consumed: true,
       });
+      if (directive === 'spend_command_spell' && amount === -1 && current > 0 && next === current - 1) {
+        markNormalCommandSealUsedThisRound(s, p.id);
+      }
       if (current > 0 && next === 0) {
         processEvent(s, { id: nextId(s, 'empty-seals'), type: 'after_controller_loses_all_command_seals', playerId: p.id });
       }
@@ -3519,6 +3550,10 @@ function pushResourceDirectives(s: GameState, ctx: EffectContext, results: Known
       commandSpells: result.payload.after,
       consumed: true,
     });
+    if (directive === 'spend_command_spell' && result.payload.actualAmount === -1 &&
+        result.payload.before > 0 && result.payload.after === result.payload.before - 1) {
+      markNormalCommandSealUsedThisRound(s, result.payload.playerId);
+    }
     if (result.payload.before > 0 && result.payload.after === 0) {
       processEvent(s, { id: nextId(s, 'empty-seals'), type: 'after_controller_loses_all_command_seals', playerId: result.payload.playerId });
     }
@@ -3621,6 +3656,80 @@ function rulerFreePlayCandidates(s: GameState, boundPlayerId: string): string[] 
     !playFailure(s, boundPlayerId, candidate.instanceId, false, true, true, true, false, true)).map((candidate) => candidate.instanceId);
 }
 
+function addControllerRoundCombatPower(s: GameState, ctx: EffectContext, amount: number, reason: string): void {
+  if (!Number.isSafeInteger(amount) || amount < 0) reject('resolution_failed', 'Round combat Power adjustment must be a nonnegative safe integer');
+  const r = runtime(s);
+  r.ongoingEffects.push({
+    id: nextId(s, reason), sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, controllerId: ctx.controllerId,
+    starts: 'immediate', duration: 'this_round', startRound: s.round.roundNumber, expiresAtRound: s.round.roundNumber + 1,
+    cleanup: 'expire_after_duration', publicZones: [], sourceMustRemainActive: false,
+    ruleModifiers: [{ sourceCardId: ctx.sourceCardId, controllerId: ctx.controllerId,
+      definition: { operation: 'add', rule: PLAYER_COMBAT_TOTAL_POWER_RULE, scope: { controller: 'self' }, value: amount } }],
+  });
+}
+
+function spendOwnedRulerSealForRoundPower(s: GameState, ctx: EffectContext, sealId: string): void {
+  const r = runtime(s);
+  const binding = r.rulerSealBindings.find((entry) => entry.id === sealId);
+  if (!binding || binding.spent || binding.issuerPlayerId !== ctx.controllerId) reject('illegal_target', 'Owned Ruler seal is no longer available');
+  binding.spent = true; binding.spentRound = s.round.roundNumber;
+  markRulerCommandSealUsedThisRound(s, ctx.controllerId);
+  addControllerRoundCombatPower(s, ctx, 4, 'owned-ruler-seal-power');
+  r.events.push({ type: 'ruler_seal_spent', playerId: binding.boundPlayerId, controllerId: ctx.controllerId,
+    sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+}
+
+function executeNormalSealPowerReplacement(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isAcceptedNormalSealPowerReplacementAbility(a)) reject('unsupported', 'Unsupported ordinary Command Seal Power replacement');
+  const p = player(s, ctx.controllerId);
+  const current = Number((p as unknown as { commandSpells?: number }).commandSpells ?? 3);
+  if (!Number.isSafeInteger(current) || current <= 0) reject('insufficient_command_seals', 'No ordinary Command Seal is available');
+  (p as unknown as { commandSpells: number }).commandSpells = current - 1;
+  markNormalCommandSealUsedThisRound(s, ctx.controllerId);
+  addControllerRoundCombatPower(s, ctx, 4, 'normal-command-seal-power');
+  pushModeDirective(s, { controllerId: ctx.controllerId, directive: 'spend_command_spell', sourceCardId: ctx.sourceCardId,
+    abilityId: ctx.abilityId, amount: -1, commandSpells: current - 1, consumed: true, replacement: 'round_power' });
+  if (current === 1) processEvent(s, { id: nextId(s, 'empty-seals'), type: 'after_controller_loses_all_command_seals', playerId: ctx.controllerId });
+}
+
+function executeRulerSealPowerReplacement(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isAcceptedRulerSealPowerReplacementAbility(a)) reject('unsupported', 'Unsupported owned Ruler Seal Power replacement');
+  const bindings = unspentOwnedRulerSealBindings(s, ctx.controllerId);
+  if (bindings.length === 0) reject('illegal_action', 'No owned Ruler seal is available');
+  if (bindings.length === 1) { spendOwnedRulerSealForRoundPower(s, ctx, bindings[0]!.id); return; }
+  const r = runtime(s); const sealIds = bindings.map((binding) => binding.id); const id = nextId(s, 'owned-ruler-seal-power-choice');
+  r.pendingDecision = {
+    id, controllerId: ctx.controllerId,
+    target: { id: 'owned_ruler_seal', type: 'choice', count: { min: 1, max: 1 }, options: sealIds.map((sealId) => ({ id: sealId })) },
+    candidates: sealIds, min: 1, max: 1, context: structuredClone(ctx), remainingEffects: [],
+    interaction: {
+      kind: 'owned_ruler_seal_power_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: r.revision + 1,
+      continuationRef: `${id}:continuation`, issuerPlayerId: ctx.controllerId, sealIds, amount: 4,
+      constraints: { kind: 'target', targetKind: 'ruler_seal', min: 1, max: 1, distinct: true },
+    },
+  };
+}
+
+function enableDynamicUnusedEngagedSealPower(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isAcceptedUnusedEngagedSealPowerAbility(a)) reject('unsupported', 'Unsupported unused engaged-opponent seal Power ability');
+  const r = runtime(s);
+  r.ongoingEffects.push({
+    id: nextId(s, 'engaged-unused-seal-power'), sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, controllerId: ctx.controllerId,
+    starts: 'immediate', duration: 'this_round', startRound: s.round.roundNumber, expiresAtRound: s.round.roundNumber + 1,
+    cleanup: 'expire_after_duration', publicZones: [], sourceMustRemainActive: false,
+    ruleModifiers: [{ sourceCardId: ctx.sourceCardId, controllerId: ctx.controllerId,
+      definition: { operation: 'add', rule: DYNAMIC_UNUSED_SEAL_POWER_RULE, scope: { controller: 'self' }, perSeal: 1 } }],
+  });
+}
+
+function executeEngagedSealUserFormulaPower(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isAcceptedEngagedSealUserFormulaPowerAbility(a)) reject('unsupported', 'Unsupported engaged seal-user formula Power ability');
+  const amount = engagedSealUserFormulaPower(s, ctx.controllerId);
+  if (amount === undefined) reject('illegal_action', 'No qualifying engaged Command/Ruler Seal user exists this round');
+  addControllerRoundCombatPower(s, ctx, amount, 'engaged-seal-user-power');
+}
+
 function grantRulerSealBindings(s: GameState, ctx: EffectContext): void {
   const selected = ctx.selections.bound_players ?? [];
   const eligibleOpponents = rulerSealEligibleOpponentIds(s, ctx.controllerId);
@@ -3687,6 +3796,7 @@ function settleRulerSealUse(s: GameState, ctx: EffectContext, a: AuthoringAbilit
       },
     };
   } else reject('resolution_failed', 'Unsupported Ruler seal option');
+  markRulerCommandSealUsedThisRound(s, ctx.controllerId);
   r.events.push({ type: 'ruler_seal_spent', playerId: boundPlayerId, controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
 }
 
@@ -3748,6 +3858,15 @@ function stageCombatOpponentPowerVpReward(s: GameState, ctx: EffectContext, a: A
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (containsCommandSealPowerPrivilegedNode(a)) {
+    if (!isAcceptedCommandSealPowerPrivilegedAbility(a)) reject('resolution_failed', 'Unsupported Command/Ruler seal Power semantic shape');
+    if (isAcceptedEngagedSealUserFormulaPowerAbility(a)) executeEngagedSealUserFormulaPower(s, ctx, a);
+    else if (isAcceptedNormalSealPowerReplacementAbility(a)) executeNormalSealPowerReplacement(s, ctx, a);
+    else if (isAcceptedRulerSealPowerReplacementAbility(a)) executeRulerSealPowerReplacement(s, ctx, a);
+    else if (isAcceptedUnusedEngagedSealPowerAbility(a)) enableDynamicUnusedEngagedSealPower(s, ctx, a);
+    else reject('resolution_failed', 'Unsupported Command/Ruler seal Power semantic shape');
+    return;
+  }
   if (isRulerSealBindingCandidate(a)) {
     if (!isRulerSealBindingSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal binding semantic shape');
     const pending = findPendingTarget(s, ctx, a, effects);
@@ -4036,7 +4155,8 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (names.length) runtime(s).calculations.push({ controllerId: p.id, lines: names.map(name => ({ label: name, value: ctx.variables[name]! })) });
   for (const cost of a.cost.filter(c => c.type === 'move_source_card')) moveCard(s, ctx.sourceCardId, str(node(cost.to).zone));
   if (a.visibility.revealTiming === 'on_use_declared') reveal(s, p.id);
-  if (!isRulerSealUseSemantic(a) && !isCommandSpellCard(s, ctx.sourceCardId) && classifyAbilityInteraction(a).kind === 'phase_activation') runtime(s).usedAbilities[`${ctx.sourceCardId}:${a.id}`] = s.round.roundNumber;
+  if (!isRulerSealUseSemantic(a) && !isCommandSpellCard(s, ctx.sourceCardId) && !isRepeatableSealPowerReplacementAbility(a) &&
+      classifyAbilityInteraction(a).kind === 'phase_activation') runtime(s).usedAbilities[`${ctx.sourceCardId}:${a.id}`] = s.round.roundNumber;
   
   // Update usage count
   if (limitType === 'per_game' || limitType === 'per_round') {
@@ -4375,6 +4495,32 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           r.events.push({ type: 'victory_points_adjusted', playerId: d.controllerId, sourceCardId: meta.sourceCardInstanceId,
             abilityId: meta.abilityId, delta: rewardVp, before, after: recipient.vp, triggerEventId: meta.triggerEventId });
           stageNextCombatOpponentPowerVpRewardDecision(s);
+          break;
+        }
+        if (meta.kind === 'owned_ruler_seal_power_v1') {
+          const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+          const ability = source ? abilityDefinition(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
+          const currentSealIds = unspentOwnedRulerSealBindings(s, meta.issuerPlayerId).map((binding) => binding.id);
+          const target = d.target; const count = node(target.count);
+          const options = Array.isArray(target.options) ? target.options.map(node) : [];
+          if (!source || source.controllerPlayerId !== meta.issuerPlayerId || d.controllerId !== meta.issuerPlayerId ||
+              d.context.controllerId !== meta.issuerPlayerId || d.context.sourceCardId !== meta.sourceCardInstanceId ||
+              d.context.abilityId !== meta.abilityId || !ability || !isAcceptedRulerSealPowerReplacementAbility(ability) ||
+              meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
+              meta.continuationRef !== `${d.id}:continuation` || meta.createdRevision !== r.revision || meta.amount !== 4 ||
+              meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'ruler_seal' || meta.constraints.min !== 1 ||
+              meta.constraints.max !== 1 || meta.constraints.distinct !== true || target.id !== 'owned_ruler_seal' || target.type !== 'choice' ||
+              count.min !== 1 || count.max !== 1 || Object.keys(count).length !== 2 || options.length !== meta.sealIds.length ||
+              options.some((option, index) => option.id !== meta.sealIds[index] || Object.keys(option).length !== 1) ||
+              meta.sealIds.length < 2 || new Set(meta.sealIds).size !== meta.sealIds.length ||
+              currentSealIds.length !== meta.sealIds.length || currentSealIds.some((id, index) => id !== meta.sealIds[index]) ||
+              d.min !== 1 || d.max !== 1 || d.candidates.length !== meta.sealIds.length ||
+              d.candidates.some((id, index) => id !== meta.sealIds[index]) || d.remainingEffects.length !== 0 ||
+              !Array.isArray(selected) || selected.length !== 1 || !meta.sealIds.includes(selected[0]!)) {
+            reject('resolution_failed', 'Corrupt or stale owned Ruler seal Power interaction state');
+          }
+          delete r.pendingDecision;
+          spendOwnedRulerSealForRoundPower(s, d.context, selected[0]!);
           break;
         }
         if (meta.kind === 'ruler_seal_move_v1') {
