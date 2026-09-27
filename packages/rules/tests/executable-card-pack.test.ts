@@ -335,6 +335,12 @@ describe('ExecutableCardPack compiler', () => {
       ability.creates = ability.effects.splice(0);
       ability.creates[0].to = { zone: 'deck' };
     }],
+    ['nested branch create_card and deck', (ability: any) => {
+      ability.effects = [{
+        type: 'branch',
+        branches: [{ else: [{ type: 'create_card', cardId: ability.effects[0].cardId, to: { zone: 'deck' } }] }],
+      }];
+    }],
   ])('rejects malformed setup create-to-skill %s before executable output', (_name, mutate) => {
     const input = sourceInput();
     const ability = input.rules.archives.find((archive) => archive.id === 'master.maiya')!

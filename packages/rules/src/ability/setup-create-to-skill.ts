@@ -12,10 +12,20 @@ function isCreateCardEffect(effect: RuleNode | undefined): boolean {
   return effect?.type === 'create_card';
 }
 
+function containsCreateCard(value: unknown, seen = new Set<object>()): boolean {
+  if (!value || typeof value !== 'object') return false;
+  if (seen.has(value)) return false;
+  seen.add(value);
+  if (Array.isArray(value)) return value.some((entry) => containsCreateCard(entry, seen));
+  const node = value as Record<string, unknown>;
+  if (node.type === 'create_card') return true;
+  return Object.values(node).some((entry) => containsCreateCard(entry, seen));
+}
+
 // Claim malformed members of this family before the legacy executor can see them.
 export function isSetupCreateToSkillCandidate(ability: AuthoringAbility): boolean {
-  return ability.effects.some(isCreateCardEffect) ||
-    (ability.activation.trigger === 'game_start' && ability.creates.some(isCreateCardEffect));
+  return containsCreateCard(ability.effects) ||
+    (ability.activation.trigger === 'game_start' && containsCreateCard(ability.creates));
 }
 
 export function isSetupCreateToSkillSemantic(ability: AuthoringAbility): boolean {
