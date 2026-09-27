@@ -5602,8 +5602,8 @@ Allowed verdicts:
 ## TASK P3-S-OWNER-SPARTACUS-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `BLOCKED_ON_ACCEPTED_SEAM_RECOVERY`
-Base: exact future Spartacus accepted-seam recovery A-sync commit carrying this task block
+Status: `READY`
+Base: exact Spartacus accepted-seam recovery A-sync commit carrying this task block
 Owner root: `servant.spartacus`
 Canonical owner-complete consumer scope: all three Spartacus skills together
 
@@ -5665,7 +5665,7 @@ Allowed verdicts:
 ## TASK P3-B-SPARTACUS-ACCEPTED-SEAM-RECOVERY
 
 Owner: Codex B
-Status: `IMPLEMENTATION_REVISION_READY_FOR_FRESH_R`
+Status: `SYNCHRONIZED`
 Base: `128089a18341b41b663244f6b8b23088d237f6d8`
 Classification: bounded zero-credit recovery/readiness prerequisite for current owner `servant.spartacus`
 
@@ -5686,6 +5686,8 @@ Verification evidence:
 - focused immunity regression reproduces `p2=0,p3=1,p4=1` with immune p2, excludes p2 from the pending decision, exposes p3/p4, and successfully settles `[p3,p4]`;
 - R2 predecessor Candidate `49d940a2536de55a7ed87fc26045557fc0c51358` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt evidence `https://github.com/binchen648/fd/pull/469#issuecomment-5857199684`;
 - R2 P1 closed: stale byte-equivalence provenance is removed; `e30e7efe` remains the accepted semantic baseline, while the current successor truthfully records the bounded optional eligibility-domain extension added by R1 and preserves zero-credit/no-consumer scope;
+- final accepted successor Candidate `d12596998bc4d3a45494e84b107e2577d8e445c4` received `IMPLEMENTATION_ACCEPTED_CANDIDATE`; canonical same-attempt evidence `https://github.com/binchen648/fd/pull/469#issuecomment-5857358441`;
+- acceptance synchronization: `docs/reports/2026-09-27-p3-a-spartacus-accepted-seam-recovery-acceptance-synchronization.md`;
 - typecheck PASS;
 - content validate/compile PASS — `7 masters / 12 servants / 20 events / 0 blocking issues`;
 - generated determinism PASS with unchanged hashes;
