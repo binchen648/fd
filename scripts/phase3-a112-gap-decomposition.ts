@@ -138,6 +138,8 @@ interface Decomposition {
   gapCounts: Record<GapCode, number>;
   primaryGapCounts: Record<string, number>;
   registryDiagnosisCounts: Record<string, number>;
+  registryDiagnosisEvaluated: string[];
+  registryDiagnosisNotEvaluated: string[];
   familySummaries: FamilySummary[];
   identities: DecomposedIdentity[];
   accounting: {
@@ -164,10 +166,14 @@ const GAP_CODES: GapCode[] = [
   'REVIEW_ARTIFACT_MISSING',
 ];
 
-const REGISTRY_DIAGNOSIS_CODES = [
+const EXPECTED_A111_MATRIX_SHA256 = '34ce9258e94e9bf44243cdd76be223f599d4776c13e2ef623382ae44a2f4f965';
+const REGISTRY_DIAGNOSIS_EVALUATED = [
+  'AUTHORING_SOURCE_NOT_FOUND',
   'AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK',
-  'RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK',
   'PACK_SOURCE_LISTED_BUT_NOT_EMITTED',
+] as const;
+const REGISTRY_DIAGNOSIS_NOT_EVALUATED = [
+  'RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK',
   'AUTHORING_SHAPE_UNSUPPORTED',
   'RUNTIME_CAPABILITY_MISSING',
   'LEGACY_HANDLER_DEPENDENCY_ONLY',
@@ -196,10 +202,10 @@ const FAMILY_CONTRACTS: Record<string, { contract: string; owner: string; review
     order: 1,
   },
   GAME_START_RULE_OVERRIDES: {
-    contract: 'FB2-14/R39: game_start RuleOverride installation; rules-only boundary',
-    owner: 'Codex S for rules-only registration; Codex B only if execution gap is proven',
+    contract: 'FB2-14/R39: game_start RuleOverride installation; registry boundary not established by A112',
+    owner: 'Codex A/R for registry evidence; Codex S if an explicit rules-only boundary is provided',
     reviewer: 'Reviewer R / rules-only boundary reviewer',
-    slice: 'A112-RULES-ONLY-BOUNDARY: confirm no playtest registry obligation for FM08',
+    slice: 'A112-RULES-ONLY-BOUNDARY: locate explicit boundary evidence; otherwise retain pack-excluded status',
     order: 1,
   },
   INDEPENDENT_ACTION: {
@@ -399,13 +405,6 @@ function classifyRegistry(
     diagnosis: 'AUTHORING_SOURCE_NOT_FOUND',
     gaps: [buildGapDetail('GENERATED_REGISTRY_MISSING', identity.acceptedFamilyId, ['A111 authoringPresent=false'])],
   };
-  if (identity.acceptedFamilyId === 'GAME_START_RULE_OVERRIDES' && card.cardType === 'master_skill') {
-    return {
-      status: 'RULES_ONLY_NOT_IN_PLAYTEST_PACK',
-      diagnosis: 'RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK',
-      gaps: [buildGapDetail('GENERATED_REGISTRY_MISSING', identity.acceptedFamilyId, ['FM08 family contract is rules-only', 'authoring source is outside current playtest card registry'])],
-    };
-  }
   if (listedSources.has(card.filePath)) {
     return {
       status: 'PACK_SOURCE_LISTED_BUT_NOT_EMITTED',
@@ -513,8 +512,23 @@ export function buildA112Decomposition(options: { workspaceRoot?: string; matrix
   const matrixPath = options.matrixPath ?? DEFAULT_MATRIX;
   const fullMatrixPath = resolve(workspaceRoot, matrixPath);
   const matrix = readJson<MatrixArtifact>(fullMatrixPath);
-  if (matrix.frozenDenominator !== 944 || matrix.acceptedIdentityCount !== 111 || matrix.identities.length !== 111 || matrix.remainingIdentityCount !== 833) {
-    throw new Error('ACCEPTED_BASELINE_DRIFT: A111 matrix is not the required 111/944 baseline');
+  const sourceMatrixSha256 = sha256File(fullMatrixPath);
+  const acceptedIds = matrix.identities.map((identity) => identity.canonicalIdentityId);
+  const duplicateIds = acceptedIds.filter((id, index) => acceptedIds.indexOf(id) !== index);
+  if (sourceMatrixSha256 !== EXPECTED_A111_MATRIX_SHA256) {
+    throw new Error(`A111_SOURCE_MATRIX_MISMATCH: expected ${EXPECTED_A111_MATRIX_SHA256}, got ${sourceMatrixSha256}`);
+  }
+  if (
+    matrix.taskId !== 'P3-E04-A111'
+    || matrix.controlEpoch !== CONTROL_EPOCH
+    || matrix.mainSha !== '0e943a94e8bdab6335e34818278ecc90760015f0'
+    || matrix.frozenDenominator !== 944
+    || matrix.acceptedIdentityCount !== 111
+    || matrix.identities.length !== 111
+    || matrix.remainingIdentityCount !== 833
+    || duplicateIds.length > 0
+  ) {
+    throw new Error('ACCEPTED_BASELINE_DRIFT: A111 identity, control, main, or accounting fields are not the accepted baseline');
   }
   const coverage = readJson<JsonRecord>(resolve(workspaceRoot, 'artifacts/phase3-skill-coverage.json'));
   const generated = readJson<GeneratedContent>(resolve(workspaceRoot, 'data/generated/fd-playtest-v1.content-library.json'));
@@ -534,7 +548,7 @@ export function buildA112Decomposition(options: { workspaceRoot?: string; matrix
   const primaryGapCounts = countBy(identities.flatMap((identity) => identity.primaryGap ? [identity.primaryGap] : []));
   const observedRegistryDiagnosisCounts = countBy(identities.filter((identity) => !identity.generatedRegistryPresent).map((identity) => identity.registryDiagnosis));
   const registryDiagnosisCounts = Object.fromEntries(
-    REGISTRY_DIAGNOSIS_CODES.map((diagnosis) => [diagnosis, observedRegistryDiagnosisCounts[diagnosis] ?? 0]),
+    REGISTRY_DIAGNOSIS_EVALUATED.map((diagnosis) => [diagnosis, observedRegistryDiagnosisCounts[diagnosis] ?? 0]),
   );
   return {
     taskId: TASK_ID,
@@ -542,13 +556,15 @@ export function buildA112Decomposition(options: { workspaceRoot?: string; matrix
     mainSha: matrix.mainSha,
     generatedAt: options.generatedAt ?? new Date().toISOString(),
     sourceMatrixArtifact: matrixPath,
-    sourceMatrixSha256: sha256File(fullMatrixPath),
+    sourceMatrixSha256,
     frozenDenominator: matrix.frozenDenominator,
     acceptedIdentityCount: matrix.acceptedIdentityCount,
     remainingIdentityCount: matrix.remainingIdentityCount,
     gapCounts,
     primaryGapCounts,
     registryDiagnosisCounts,
+    registryDiagnosisEvaluated: [...REGISTRY_DIAGNOSIS_EVALUATED],
+    registryDiagnosisNotEvaluated: [...REGISTRY_DIAGNOSIS_NOT_EVALUATED],
     familySummaries: buildFamilySummaries(identities),
     identities,
     accounting: {
@@ -599,11 +615,14 @@ function renderReport(value: Decomposition, outputPath: string): string {
     '',
     ...Object.entries(value.registryDiagnosisCounts).map(([diagnosis, count]) => `- \`${diagnosis}\`: ${count}`),
     '',
-    'The 87 missing generated identities are not treated as one B runtime batch. The current result distinguishes active-pack exclusion, rules-only content, and source-listed-but-not-emitted drift.',
+    `- evaluated diagnoses: ${value.registryDiagnosisEvaluated.join(', ')}`,
+    `- not evaluated: ${value.registryDiagnosisNotEvaluated.join(', ')}`,
     '',
-    '- `AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK` is the observed diagnosis for 77 identities; no generator failure is inferred.',
-    '- `RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK` accounts for 10 FM08 rules-only identities; these are not automatically playtest registry obligations.',
-    '- `PACK_SOURCE_LISTED_BUT_NOT_EMITTED`, `AUTHORING_SHAPE_UNSUPPORTED`, `RUNTIME_CAPABILITY_MISSING`, and `LEGACY_HANDLER_DEPENDENCY_ONLY` are explicitly zero in this registry diagnosis. Legacy/runtime gaps remain separate identity diagnostics.',
+    'The 87 missing generated identities are not treated as one B runtime batch. No explicit rules-only artifact was found in the A112 evidence inputs, so FM08 identities are retained as ordinary pack-excluded identities rather than being inferred as rules-only.',
+    '',
+    '- `AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK` is the observed diagnosis for all 87 missing identities; no generator failure is inferred.',
+    '- `PACK_SOURCE_LISTED_BUT_NOT_EMITTED` and `AUTHORING_SOURCE_NOT_FOUND` are evaluated and currently zero.',
+    '- Rules-only boundary, authoring-shape support, runtime capability, and legacy-handler-only causes are `NOT_EVALUATED` by this registry audit; no zero count is claimed for them.',
     '- `COMPILER_UNSUPPORTED` is derived from coverage classification signals only; it is not a runtime defect finding. Any runtime defect requires a Codex B reproduction and a separate handoff.',
     '',
     '## Family Decomposition',

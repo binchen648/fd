@@ -23,13 +23,21 @@
     "RUNTIME_CONTRACT_UNBOUND": 24
   },
   "registryDiagnosisCounts": {
-    "AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK": 77,
-    "RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK": 10,
-    "PACK_SOURCE_LISTED_BUT_NOT_EMITTED": 0,
-    "AUTHORING_SHAPE_UNSUPPORTED": 0,
-    "RUNTIME_CAPABILITY_MISSING": 0,
-    "LEGACY_HANDLER_DEPENDENCY_ONLY": 0
+    "AUTHORING_SOURCE_NOT_FOUND": 0,
+    "AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK": 87,
+    "PACK_SOURCE_LISTED_BUT_NOT_EMITTED": 0
   },
+  "registryDiagnosisEvaluated": [
+    "AUTHORING_SOURCE_NOT_FOUND",
+    "AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK",
+    "PACK_SOURCE_LISTED_BUT_NOT_EMITTED"
+  ],
+  "registryDiagnosisNotEvaluated": [
+    "RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK",
+    "AUTHORING_SHAPE_UNSUPPORTED",
+    "RUNTIME_CAPABILITY_MISSING",
+    "LEGACY_HANDLER_DEPENDENCY_ONLY"
+  ],
   "familySummaries": [
     {
       "family": "ALTER_EGO_TRANSFORM",
@@ -211,9 +219,9 @@
         "master.waver.skill.s1",
         "master.zouken.skill.s5"
       ],
-      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; rules-only boundary",
+      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; registry boundary not established by A112",
       "registryStatus": [
-        "RULES_ONLY_NOT_IN_PLAYTEST_PACK"
+        "PACK_SOURCE_EXCLUDED"
       ],
       "gapCounts": {
         "COMPILER_UNSUPPORTED": 10,
@@ -522,15 +530,15 @@
       "cardType": "master_skill",
       "authoringPresent": true,
       "generatedRegistryPresent": false,
-      "registryStatus": "RULES_ONLY_NOT_IN_PLAYTEST_PACK",
-      "registryDiagnosis": "RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK",
+      "registryStatus": "PACK_SOURCE_EXCLUDED",
+      "registryDiagnosis": "AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK",
       "coverageRoutes": [
         "NOT_CLASSIFIABLE"
       ],
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
       ],
-      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; rules-only boundary",
+      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; registry boundary not established by A112",
       "acceptedRuntimeContracts": [
         "gameStartRuleOverrides:P3-R39/FB2-14"
       ],
@@ -567,8 +575,8 @@
         {
           "code": "GENERATED_REGISTRY_MISSING",
           "evidence": [
-            "FM08 family contract is rules-only",
-            "authoring source is outside current playtest card registry"
+            "pack does not list data/authoring/masters/master.bazett.json",
+            "no generator failure inferred"
           ],
           "owner": "Codex S / Content Pack Owner",
           "smallestRepairSlice": "Decide active-pack inclusion versus explicit rules-only boundary; do not bulk-register identities.",
@@ -613,15 +621,15 @@
       "cardType": "master_skill",
       "authoringPresent": true,
       "generatedRegistryPresent": false,
-      "registryStatus": "RULES_ONLY_NOT_IN_PLAYTEST_PACK",
-      "registryDiagnosis": "RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK",
+      "registryStatus": "PACK_SOURCE_EXCLUDED",
+      "registryDiagnosis": "AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK",
       "coverageRoutes": [
         "NOT_CLASSIFIABLE"
       ],
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
       ],
-      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; rules-only boundary",
+      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; registry boundary not established by A112",
       "acceptedRuntimeContracts": [
         "gameStartRuleOverrides:P3-R39/FB2-14"
       ],
@@ -658,8 +666,8 @@
         {
           "code": "GENERATED_REGISTRY_MISSING",
           "evidence": [
-            "FM08 family contract is rules-only",
-            "authoring source is outside current playtest card registry"
+            "pack does not list data/authoring/masters/master.caules.json",
+            "no generator failure inferred"
           ],
           "owner": "Codex S / Content Pack Owner",
           "smallestRepairSlice": "Decide active-pack inclusion versus explicit rules-only boundary; do not bulk-register identities.",
@@ -704,15 +712,15 @@
       "cardType": "master_skill",
       "authoringPresent": true,
       "generatedRegistryPresent": false,
-      "registryStatus": "RULES_ONLY_NOT_IN_PLAYTEST_PACK",
-      "registryDiagnosis": "RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK",
+      "registryStatus": "PACK_SOURCE_EXCLUDED",
+      "registryDiagnosis": "AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK",
       "coverageRoutes": [
         "NOT_CLASSIFIABLE"
       ],
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
       ],
-      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; rules-only boundary",
+      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; registry boundary not established by A112",
       "acceptedRuntimeContracts": [
         "gameStartRuleOverrides:P3-R39/FB2-14"
       ],
@@ -749,8 +757,8 @@
         {
           "code": "GENERATED_REGISTRY_MISSING",
           "evidence": [
-            "FM08 family contract is rules-only",
-            "authoring source is outside current playtest card registry"
+            "pack does not list data/authoring/masters/master.fiore.json",
+            "no generator failure inferred"
           ],
           "owner": "Codex S / Content Pack Owner",
           "smallestRepairSlice": "Decide active-pack inclusion versus explicit rules-only boundary; do not bulk-register identities.",
@@ -795,15 +803,15 @@
       "cardType": "master_skill",
       "authoringPresent": true,
       "generatedRegistryPresent": false,
-      "registryStatus": "RULES_ONLY_NOT_IN_PLAYTEST_PACK",
-      "registryDiagnosis": "RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK",
+      "registryStatus": "PACK_SOURCE_EXCLUDED",
+      "registryDiagnosis": "AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK",
       "coverageRoutes": [
         "NOT_CLASSIFIABLE"
       ],
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
       ],
-      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; rules-only boundary",
+      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; registry boundary not established by A112",
       "acceptedRuntimeContracts": [
         "gameStartRuleOverrides:P3-R39/FB2-14"
       ],
@@ -840,8 +848,8 @@
         {
           "code": "GENERATED_REGISTRY_MISSING",
           "evidence": [
-            "FM08 family contract is rules-only",
-            "authoring source is outside current playtest card registry"
+            "pack does not list data/authoring/masters/master.fiore.json",
+            "no generator failure inferred"
           ],
           "owner": "Codex S / Content Pack Owner",
           "smallestRepairSlice": "Decide active-pack inclusion versus explicit rules-only boundary; do not bulk-register identities.",
@@ -886,15 +894,15 @@
       "cardType": "master_skill",
       "authoringPresent": true,
       "generatedRegistryPresent": false,
-      "registryStatus": "RULES_ONLY_NOT_IN_PLAYTEST_PACK",
-      "registryDiagnosis": "RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK",
+      "registryStatus": "PACK_SOURCE_EXCLUDED",
+      "registryDiagnosis": "AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK",
       "coverageRoutes": [
         "NOT_CLASSIFIABLE"
       ],
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
       ],
-      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; rules-only boundary",
+      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; registry boundary not established by A112",
       "acceptedRuntimeContracts": [
         "gameStartRuleOverrides:P3-R39/FB2-14"
       ],
@@ -931,8 +939,8 @@
         {
           "code": "GENERATED_REGISTRY_MISSING",
           "evidence": [
-            "FM08 family contract is rules-only",
-            "authoring source is outside current playtest card registry"
+            "pack does not list data/authoring/masters/master.fiore.json",
+            "no generator failure inferred"
           ],
           "owner": "Codex S / Content Pack Owner",
           "smallestRepairSlice": "Decide active-pack inclusion versus explicit rules-only boundary; do not bulk-register identities.",
@@ -977,15 +985,15 @@
       "cardType": "master_skill",
       "authoringPresent": true,
       "generatedRegistryPresent": false,
-      "registryStatus": "RULES_ONLY_NOT_IN_PLAYTEST_PACK",
-      "registryDiagnosis": "RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK",
+      "registryStatus": "PACK_SOURCE_EXCLUDED",
+      "registryDiagnosis": "AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK",
       "coverageRoutes": [
         "NOT_CLASSIFIABLE"
       ],
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
       ],
-      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; rules-only boundary",
+      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; registry boundary not established by A112",
       "acceptedRuntimeContracts": [
         "gameStartRuleOverrides:P3-R39/FB2-14"
       ],
@@ -1022,8 +1030,8 @@
         {
           "code": "GENERATED_REGISTRY_MISSING",
           "evidence": [
-            "FM08 family contract is rules-only",
-            "authoring source is outside current playtest card registry"
+            "pack does not list data/authoring/masters/master.irisviel.fm08.json",
+            "no generator failure inferred"
           ],
           "owner": "Codex S / Content Pack Owner",
           "smallestRepairSlice": "Decide active-pack inclusion versus explicit rules-only boundary; do not bulk-register identities.",
@@ -1068,15 +1076,15 @@
       "cardType": "master_skill",
       "authoringPresent": true,
       "generatedRegistryPresent": false,
-      "registryStatus": "RULES_ONLY_NOT_IN_PLAYTEST_PACK",
-      "registryDiagnosis": "RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK",
+      "registryStatus": "PACK_SOURCE_EXCLUDED",
+      "registryDiagnosis": "AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK",
       "coverageRoutes": [
         "NOT_CLASSIFIABLE"
       ],
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
       ],
-      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; rules-only boundary",
+      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; registry boundary not established by A112",
       "acceptedRuntimeContracts": [
         "gameStartRuleOverrides:P3-R39/FB2-14"
       ],
@@ -1113,8 +1121,8 @@
         {
           "code": "GENERATED_REGISTRY_MISSING",
           "evidence": [
-            "FM08 family contract is rules-only",
-            "authoring source is outside current playtest card registry"
+            "pack does not list data/authoring/masters/master.peperoncino.json",
+            "no generator failure inferred"
           ],
           "owner": "Codex S / Content Pack Owner",
           "smallestRepairSlice": "Decide active-pack inclusion versus explicit rules-only boundary; do not bulk-register identities.",
@@ -1159,15 +1167,15 @@
       "cardType": "master_skill",
       "authoringPresent": true,
       "generatedRegistryPresent": false,
-      "registryStatus": "RULES_ONLY_NOT_IN_PLAYTEST_PACK",
-      "registryDiagnosis": "RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK",
+      "registryStatus": "PACK_SOURCE_EXCLUDED",
+      "registryDiagnosis": "AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK",
       "coverageRoutes": [
         "NOT_CLASSIFIABLE"
       ],
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
       ],
-      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; rules-only boundary",
+      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; registry boundary not established by A112",
       "acceptedRuntimeContracts": [
         "gameStartRuleOverrides:P3-R39/FB2-14"
       ],
@@ -1204,8 +1212,8 @@
         {
           "code": "GENERATED_REGISTRY_MISSING",
           "evidence": [
-            "FM08 family contract is rules-only",
-            "authoring source is outside current playtest card registry"
+            "pack does not list data/authoring/masters/master.sieg.json",
+            "no generator failure inferred"
           ],
           "owner": "Codex S / Content Pack Owner",
           "smallestRepairSlice": "Decide active-pack inclusion versus explicit rules-only boundary; do not bulk-register identities.",
@@ -1352,15 +1360,15 @@
       "cardType": "master_skill",
       "authoringPresent": true,
       "generatedRegistryPresent": false,
-      "registryStatus": "RULES_ONLY_NOT_IN_PLAYTEST_PACK",
-      "registryDiagnosis": "RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK",
+      "registryStatus": "PACK_SOURCE_EXCLUDED",
+      "registryDiagnosis": "AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK",
       "coverageRoutes": [
         "NOT_CLASSIFIABLE"
       ],
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
       ],
-      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; rules-only boundary",
+      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; registry boundary not established by A112",
       "acceptedRuntimeContracts": [
         "gameStartRuleOverrides:P3-R39/FB2-14"
       ],
@@ -1397,8 +1405,8 @@
         {
           "code": "GENERATED_REGISTRY_MISSING",
           "evidence": [
-            "FM08 family contract is rules-only",
-            "authoring source is outside current playtest card registry"
+            "pack does not list data/authoring/masters/master.waver.json",
+            "no generator failure inferred"
           ],
           "owner": "Codex S / Content Pack Owner",
           "smallestRepairSlice": "Decide active-pack inclusion versus explicit rules-only boundary; do not bulk-register identities.",
@@ -1443,15 +1451,15 @@
       "cardType": "master_skill",
       "authoringPresent": true,
       "generatedRegistryPresent": false,
-      "registryStatus": "RULES_ONLY_NOT_IN_PLAYTEST_PACK",
-      "registryDiagnosis": "RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK",
+      "registryStatus": "PACK_SOURCE_EXCLUDED",
+      "registryDiagnosis": "AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK",
       "coverageRoutes": [
         "NOT_CLASSIFIABLE"
       ],
       "unclassifiedReasons": [
         "NOT_CLASSIFIABLE:unknown_effect_primitive:install_rule_override"
       ],
-      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; rules-only boundary",
+      "sharedRuntimeContract": "FB2-14/R39: game_start RuleOverride installation; registry boundary not established by A112",
       "acceptedRuntimeContracts": [
         "gameStartRuleOverrides:P3-R39/FB2-14"
       ],
@@ -1488,8 +1496,8 @@
         {
           "code": "GENERATED_REGISTRY_MISSING",
           "evidence": [
-            "FM08 family contract is rules-only",
-            "authoring source is outside current playtest card registry"
+            "pack does not list data/authoring/masters/master.zouken.json",
+            "no generator failure inferred"
           ],
           "owner": "Codex S / Content Pack Owner",
           "smallestRepairSlice": "Decide active-pack inclusion versus explicit rules-only boundary; do not bulk-register identities.",

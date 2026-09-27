@@ -31,18 +31,18 @@ Gap counts are overlapping identity diagnostics. `primaryGapCounts` is the non-o
 
 ## Registry Diagnosis
 
-- `AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK`: 77
-- `RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK`: 10
+- `AUTHORING_SOURCE_NOT_FOUND`: 0
+- `AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK`: 87
 - `PACK_SOURCE_LISTED_BUT_NOT_EMITTED`: 0
-- `AUTHORING_SHAPE_UNSUPPORTED`: 0
-- `RUNTIME_CAPABILITY_MISSING`: 0
-- `LEGACY_HANDLER_DEPENDENCY_ONLY`: 0
 
-The 87 missing generated identities are not treated as one B runtime batch. The current result distinguishes active-pack exclusion, rules-only content, and source-listed-but-not-emitted drift.
+- evaluated diagnoses: AUTHORING_SOURCE_NOT_FOUND, AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK, PACK_SOURCE_LISTED_BUT_NOT_EMITTED
+- not evaluated: RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK, AUTHORING_SHAPE_UNSUPPORTED, RUNTIME_CAPABILITY_MISSING, LEGACY_HANDLER_DEPENDENCY_ONLY
 
-- `AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK` is the observed diagnosis for 77 identities; no generator failure is inferred.
-- `RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK` accounts for 10 FM08 rules-only identities; these are not automatically playtest registry obligations.
-- `PACK_SOURCE_LISTED_BUT_NOT_EMITTED`, `AUTHORING_SHAPE_UNSUPPORTED`, `RUNTIME_CAPABILITY_MISSING`, and `LEGACY_HANDLER_DEPENDENCY_ONLY` are explicitly zero in this registry diagnosis. Legacy/runtime gaps remain separate identity diagnostics.
+The 87 missing generated identities are not treated as one B runtime batch. No explicit rules-only artifact was found in the A112 evidence inputs, so FM08 identities are retained as ordinary pack-excluded identities rather than being inferred as rules-only.
+
+- `AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK` is the observed diagnosis for all 87 missing identities; no generator failure is inferred.
+- `PACK_SOURCE_LISTED_BUT_NOT_EMITTED` and `AUTHORING_SOURCE_NOT_FOUND` are evaluated and currently zero.
+- Rules-only boundary, authoring-shape support, runtime capability, and legacy-handler-only causes are `NOT_EVALUATED` by this registry audit; no zero count is claimed for them.
 - `COMPILER_UNSUPPORTED` is derived from coverage classification signals only; it is not a runtime defect finding. Any runtime defect requires a Codex B reproduction and a separate handoff.
 
 ## Family Decomposition
@@ -86,8 +86,8 @@ The 87 missing generated identities are not treated as one B runtime batch. The 
 ### GAME_START_RULE_OVERRIDES
 
 - identity count: 10
-- shared runtime contract: FB2-14/R39: game_start RuleOverride installation; rules-only boundary
-- registry status: RULES_ONLY_NOT_IN_PLAYTEST_PACK
+- shared runtime contract: FB2-14/R39: game_start RuleOverride installation; registry boundary not established by A112
+- registry status: PACK_SOURCE_EXCLUDED
 - gap counts: {"COMPILER_UNSUPPORTED":10,"GATE_C_PENDING":10,"GENERATED_REGISTRY_MISSING":10}
 - gap owner: Codex B / Compiler Owner; Codex B for runtime path plus Codex A for evidence packet; Codex S / Content Pack Owner
 - smallest repair slice: Add one typed compiler contract and negative tests for the exact primitive shape.; Decide active-pack inclusion versus explicit rules-only boundary; do not bulk-register identities.; Select one representative Gate C path with browser/WS/reconnect/stale evidence before widening.
