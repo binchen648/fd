@@ -361,6 +361,36 @@ describe('P3 Spartacus seal-power readiness capability', () => {
     expect(rulerRestored.state.abilityRuntime!.rulerCommandSealUseRoundByPlayer?.p1).toBe(rulerState.round.roundNumber);
   });
 
+  it('rejects restored snapshots that drop a real normal or Ruler usage marker while authenticated provenance remains', () => {
+    const normalState = setup(); normalState.round.prioritySeat = 2;
+    const command = add(normalState, COMMAND, 'p2');
+    const commandAction = action(normalState, 'p2', command, 'command-spell.gain-mana');
+    expect(commandAction).toBeTruthy();
+    expect(rules.dispatchAbilityCommand(normalState, 'p2', commandAction!).ok).toBe(true);
+    expect(rules.engagedSealUserIdsThisRound(normalState, 'p1')).toEqual(['p2']);
+    expect(normalState.abilityRuntime!.normalCommandSealUseHistory).toHaveLength(1);
+    delete normalState.abilityRuntime!.normalCommandSealUseRoundByPlayer!.p2;
+    const normalSigner = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1'], restorePackKind: 'trusted_authoring_fixture' }, false);
+    normalSigner.state = normalState; normalSigner.logs = []; normalSigner.replay = []; normalSigner.replaySnapshots = []; normalSigner.battleHistory = [];
+    expect(() => restoreMatchSession(normalSigner.serializeSession(), { restorePackKind: 'trusted_authoring_fixture' })).toThrow(/Invalid MatchSession state container/);
+
+    const rulerState = setup(); rulerState.round.prioritySeat = 2;
+    const grantSource = add(rulerState, RULER_GRANT, 'p2');
+    const rulerUse = add(rulerState, RULER_USE, 'p2');
+    binding(rulerState, 'real-ruler-a', 'p2', 'p1', grantSource, RULER_GRANT_ID);
+    binding(rulerState, 'real-ruler-b', 'p2', 'p3', grantSource, RULER_GRANT_ID);
+    rulerState.abilityRuntime!.abilityUsage[`${grantSource}:${RULER_GRANT_ID}`] = 1;
+    expect(activate(rulerState, 'p2', rulerUse, RULER_USE_ID).ok).toBe(true);
+    const option = rulerState.abilityRuntime!.pendingDecision!;
+    expect(rules.dispatchAbilityCommand(rulerState, 'p2', { type: 'choose_target', decisionId: option.id, selectedIds: ['lock_movement'] }).ok).toBe(true);
+    const target = rulerState.abilityRuntime!.pendingDecision!;
+    expect(rules.dispatchAbilityCommand(rulerState, 'p2', { type: 'choose_target', decisionId: target.id, selectedIds: ['p1'] }).ok).toBe(true);
+    expect(rules.engagedSealUserIdsThisRound(rulerState, 'p1')).toEqual(['p2']);
+    delete rulerState.abilityRuntime!.rulerCommandSealUseRoundByPlayer!.p2;
+    const rulerSigner = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1'], restorePackKind: 'trusted_authoring_fixture' }, false);
+    rulerSigner.state = rulerState; rulerSigner.logs = []; rulerSigner.replay = []; rulerSigner.replaySnapshots = []; rulerSigner.battleHistory = [];
+    expect(() => restoreMatchSession(rulerSigner.serializeSession(), { restorePackKind: 'trusted_authoring_fixture' })).toThrow(/Invalid MatchSession state container/);
+  });
   it('rejects forged normal use provenance that is not backed by authoritative execution usage', () => {
     const state = setup(); const command = add(state, COMMAND);
     state.abilityRuntime!.normalCommandSealUseHistory!.push({

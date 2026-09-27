@@ -5693,12 +5693,14 @@ Verification evidence:
 - R2 predecessor Candidate `7fd3e7b1ef942a569a36e4b36ff656751f8ca6bd` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/470#issuecomment-5858026355`;
 - R2 P1 closure: restored physical Ruler bindings are grouped by exact grant source/ability and must equal exactly two bindings per authenticated per-game grant use, with usage constrained to `1..3`; impossible seventh-seal snapshots fail closed;
 - R2 P1 closure: persisted normal/Ruler use-round markers require underlying use provenance — normal uses carry authenticated source/ability/before/after records cross-bound to dedicated `abilityUsage` execution counters, while Ruler markers must equal the latest authenticated physical binding `spentRound`; marker-only forgeries fail closed;
-- dedicated Spartacus seal-power readiness focused suite `19/19 PASS`;
-- affected serial `10 files / 226 tests PASS`;
+- R3 predecessor Candidate `2a057640c066ef47b82e90fa66df6bb31e89969a` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/470#issuecomment-5858346066`;
+- R3 P1 closure: normal and Ruler persisted use-round marker reconciliation is bidirectional — every marker must equal the latest authenticated provenance round and every provenance-backed player/issuer must have that exact marker; deleting only the marker from a real authenticated use now fails closed before sc1 eligibility can undercount;
+- dedicated Spartacus seal-power readiness focused suite `20/20 PASS`;
+- affected serial `10 files / 227 tests PASS`;
 - typecheck PASS;
 - content validate/compile PASS — `7 masters / 12 servants / 20 events / 0 blocking issues`;
 - generated determinism PASS with unchanged hashes;
-- R2-predecessor-to-worktree `git diff --check` PASS;
+- R3-predecessor-to-worktree `git diff --check` PASS;
 - `data/authoring/**` delta EMPTY;
 - production identity audit clean for Spartacus ids/names/card strings and `SkillLib`;
 - detailed result: `docs/reports/2026-09-28-p3-b-spartacus-seal-power-readiness-capability-result.md`.

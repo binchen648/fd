@@ -59,9 +59,21 @@ Both R2 P1 findings are closed in this successor line:
 
 Focused regressions cover the legal six-binding maximum plus an impossible seventh restored seal, forged normal and Ruler marker-only snapshots, forged normal provenance lacking its execution counter, and successful round-trip of real normal and Ruler use provenance.
 
+## R3 fresh-review closure
+
+Predecessor Candidate `2a057640c066ef47b82e90fa66df6bb31e89969a` received `IMPLEMENTATION_NEEDS_REVISION`. Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/470#issuecomment-5858346066`.
+
+The sole R3 P1 is closed by exact bidirectional marker/provenance reconciliation for both families:
+
+- for ordinary Command Seals, every persisted marker must map to the latest authenticated normal-use provenance round and every provenance-backed player must have that exact marker;
+- for Ruler Seals, every persisted marker must map to the latest authenticated physical binding `spentRound` and every issuer with authenticated spent-binding provenance must have that exact marker;
+- deleting only a real normal or Ruler marker from an otherwise valid host-signed snapshot now fails closed before restored state can undercount sc1 engaged-user eligibility.
+
+The focused regression performs real p2 normal and Ruler uses while p2 is engaged with p1, confirms p2 is visible to `engagedSealUserIdsThisRound(...)` before corruption, deletes only the corresponding marker, and verifies restore rejection while the underlying authoritative provenance remains intact.
+
 ## Focused verification
 
-`packages/rules/tests/regression/p3-spartacus-seal-power-readiness-capability.test.ts`: **19/19 PASS**.
+`packages/rules/tests/regression/p3-spartacus-seal-power-readiness-capability.test.ts`: **20/20 PASS**.
 
 Coverage includes:
 
@@ -75,14 +87,15 @@ Coverage includes:
 - exact multi-Ruler pending choice round-trips MatchSession while host-signed widened restore metadata is rejected;
 - accepted Ruler grant usage and physical binding cardinality round-trip at the legal maximum of six seals while a coherent impossible seventh seal is rejected;
 - forged persisted normal/Ruler current-round usage markers reject without backing provenance, while real normal command-spell use and real physical Ruler-seal spend round-trip with their markers;
+- deleting only the normal or Ruler persisted marker from otherwise valid real-use provenance is rejected, so restore cannot silently lose a real sc1 engaged-user fact;
 - sc1 formula deduplicates a player who used both seal types, excludes non-engaged/far players, and ignores prior-round use;
 - live unused-seal aura drops immediately when normal or issuer-owned Ruler seals are spent and expires next round;
 - authoritative `deriveBattleParticipantsFromState` includes the live dynamic aura in participant `totalPower`;
 - compiled-pack privileged corruption rejects before resource consumption or pending-decision staging.
 
-Affected serial verification: **10 files / 226 tests PASS**:
+Affected serial verification: **10 files / 227 tests PASS**:
 
-- Spartacus seal-power readiness `19`;
+- Spartacus seal-power readiness `20`;
 - FB2-27 Ruler seal `13`;
 - MatchSession `33`;
 - executable-card-pack `50`;

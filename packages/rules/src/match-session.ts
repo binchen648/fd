@@ -1120,7 +1120,8 @@ function isRestoreAbilityRuntimeReferences(
   if ([...normalUseCounts].some(([key, count]) => restoredAbilityUsage[key] !== count)) return false;
   if (Object.entries(restoredAbilityUsage).some(([key, count]) => key.startsWith('normal-seal-use:') && normalUseCounts.get(key) !== count)) return false;
   const restoredNormalUseMarkers = (value.normalCommandSealUseRoundByPlayer ?? {}) as Record<string, unknown>;
-  if (Object.entries(restoredNormalUseMarkers).some(([playerId, round]) => latestNormalUseRoundByPlayer[playerId] !== round)) return false;
+  if (Object.entries(restoredNormalUseMarkers).some(([playerId, round]) => latestNormalUseRoundByPlayer[playerId] !== round) ||
+      Object.entries(latestNormalUseRoundByPlayer).some(([playerId, round]) => restoredNormalUseMarkers[playerId] !== round)) return false;
   const restoredRulerBindings = value.rulerSealBindings as Array<Record<string, unknown>>;
   if (new Set(restoredRulerBindings.map((entry) => entry.id as string)).size !== restoredRulerBindings.length) return false;
   if (!restoredRulerBindings.every((entry) => playerIds.has(entry.issuerPlayerId as string) && playerIds.has(entry.boundPlayerId as string) &&
@@ -1178,7 +1179,8 @@ function isRestoreAbilityRuntimeReferences(
     }
   }
   const restoredRulerUseMarkers = (value.rulerCommandSealUseRoundByPlayer ?? {}) as Record<string, unknown>;
-  if (Object.entries(restoredRulerUseMarkers).some(([playerId, round]) => latestRulerUseRoundByPlayer[playerId] !== round)) return false;
+  if (Object.entries(restoredRulerUseMarkers).some(([playerId, round]) => latestRulerUseRoundByPlayer[playerId] !== round) ||
+      Object.entries(latestRulerUseRoundByPlayer).some(([playerId, round]) => restoredRulerUseMarkers[playerId] !== round)) return false;
   if (!(value.pendingRulerSealRewards as Array<Record<string, unknown>>).every((entry) =>
       playerIds.has(entry.issuerPlayerId as string) && playerIds.has(entry.boundPlayerId as string) &&
       restoredRulerBindings.some((binding) => binding.id === entry.sealId && binding.issuerPlayerId === entry.issuerPlayerId &&
