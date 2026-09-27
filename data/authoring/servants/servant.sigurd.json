@@ -1,0 +1,198 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.sigurd",
+  "name": "齐格鲁德",
+  "class": "Saber",
+  "sourcePolicy": {
+    "phase3EvidenceBase": "8f2c8141c33da0ac30a3468a068c9ab1715e15ce",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "All three frozen Sigurd consumers are source-grounded by the locked CHM/confirmed overrides. Runtime behavior is generic/data-driven through the accepted revealed-source capability."
+  },
+  "sources": [
+    {
+      "id": "sigurd_locked_sources",
+      "type": "development_image_set",
+      "htmPath": "chm-extract/Sigurd.htm",
+      "imageOrder": [
+        "../../Fate_Domination-开发版/images/servants/齐格鲁德.png",
+        "../../Fate_Domination-开发版/images/servants/齐格鲁德.png",
+        "../../Fate_Domination-开发版/images/servants/齐格鲁德.png",
+        "../../Fate_Domination-开发版/images/servants/齐格鲁德.png"
+      ]
+    }
+  ],
+  "deck": [
+    { "cardId": "card.cardb2", "count": 2 },
+    { "cardId": "card.cardb3" },
+    { "cardId": "card.cardq1" },
+    { "cardId": "card.cardq2", "count": 2 },
+    { "cardId": "card.cardq3", "count": 2 },
+    { "cardId": "card.cardq4" },
+    { "cardId": "card.cardluck" },
+    { "cardId": "card.cardsurveil", "count": 2 }
+  ],
+  "cards": [
+    {
+      "id": "servant.sigurd.skill.sc-sigurd-1",
+      "aliases": ["sc_sigurd_1"],
+      "legacyId": "sc_sigurd_1",
+      "name": "破灭之黎明",
+      "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.sigurd" },
+      "cardFace": {
+        "typeLabel": "力量/魔术/宝具",
+        "attributes": ["力量", "魔术", "宝具"],
+        "cost": 11,
+        "basePower": 3
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [ { "type": "skill_zone_mana_at_least", "value": 11 } ],
+      "abilities": [
+        {
+          "id": "sc-sigurd-1.true-name-release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "markers": ["真名解放"],
+          "activation": { "trigger": "on_use_declared" },
+          "conditions": [], "targets": [],
+          "effects": [ { "type": "reveal_information", "scope": "servant_package", "subject": "controller.servant" } ],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-sigurd-1.curse",
+          "kind": "forced_trigger",
+          "printedClause": "诅咒-被动：此牌展示后，每个回合开始时失去1点战果。",
+          "activation": { "trigger": "round_start" },
+          "conditions": [ { "type": "source_revealed" } ],
+          "targets": [],
+          "effects": [ { "type": "adjust_victory_points", "player": "controller", "amount": -1 } ],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-sigurd-1.after-battle-refund",
+          "kind": "residual",
+          "printedClause": "残留：战斗阶段结束后获得X点魔力，X为与你交战的一名对手本回合打出的一张攻击的魔力消耗。",
+          "activation": { "trigger": "after_battle_ended" },
+          "conditions": [ { "type": "source_revealed" } ],
+          "targets": [
+            {
+              "id": "refund-attack",
+              "type": "card_instance",
+              "count": { "min": 1, "max": 1 },
+              "scope": { "zone": "attack_area", "owner": "any", "controller": "any" },
+              "constraints": [
+                { "type": "is_attack" },
+                { "type": "played_this_round" },
+                { "type": "controlled_by_event_battle_opponent_at_controller_location" }
+              ]
+            }
+          ],
+          "effects": [ { "type": "gain_mana_equal_selected_card_paid_cost", "target": "refund-attack" } ],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" },
+      "printedText": "【真名解放】\n诅咒-被动：此牌展示后，每个回合开始时失去1点战果。\n残留：战斗阶段结束后获得X点魔力，X为与你交战的一名对手本回合打出的一张攻击的魔力消耗。"
+    },
+    {
+      "id": "servant.sigurd.skill.sc-sigurd-2",
+      "aliases": ["sc_sigurd_2"],
+      "legacyId": "sc_sigurd_2",
+      "name": "坏劫之天轮",
+      "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.sigurd" },
+      "cardFace": {
+        "typeLabel": "迅捷/宝具",
+        "attributes": ["迅捷", "宝具"],
+        "cost": 0,
+        "basePower": 5
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [ { "type": "skill_zone_mana_at_least", "value": 8 } ],
+      "abilities": [
+        {
+          "id": "sc-sigurd-2.curse",
+          "kind": "forced_trigger",
+          "printedClause": "诅咒-被动：此牌展示后，每个回合开始时失去1点战果。",
+          "activation": { "trigger": "round_start" },
+          "conditions": [ { "type": "source_revealed" } ],
+          "targets": [],
+          "effects": [ { "type": "adjust_victory_points", "player": "controller", "amount": -1 } ],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-sigurd-2.blade-storm",
+          "kind": "passive",
+          "printedClause": "剑刃风暴-被动：你所有的基础牌获得以下效果：行动阶段：花费2点魔力，将此牌的基本威力翻倍，战斗阶段结束后将此牌移除游戏。",
+          "activation": {}, "conditions": [], "targets": [],
+          "effects": [
+            {
+              "type": "grant_controller_basic_attack_double_base_remove_action_while_source_revealed",
+              "manaCost": 2,
+              "basePowerMultiplier": 2,
+              "removeAfter": "after_battle_ended"
+            }
+          ],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" },
+      "printedText": "诅咒-被动：此牌展示后，每个回合开始时失去1点战果。\n剑刃风暴-被动：你所有的的基础牌获得以下效果：‘行动阶段：花费2点魔力，将此牌的基本威力翻倍，战斗阶段结束后将此牌移除游戏。’"
+    },
+    {
+      "id": "servant.sigurd.skill.sc-sigurd-3",
+      "aliases": ["sc_sigurd_3"],
+      "legacyId": "sc_sigurd_3",
+      "name": "里迪尔·赫萝蒂",
+      "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.sigurd" },
+      "cardFace": {
+        "typeLabel": "力量",
+        "attributes": ["力量"],
+        "cost": 3,
+        "basePower": 5
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [ { "type": "skill_zone_mana_at_least", "value": 3 } ],
+      "abilities": [
+        {
+          "id": "sc-sigurd-3.required-additional-play",
+          "kind": "passive",
+          "printedClause": "此牌需追加打出。",
+          "activation": { "trigger": "while_active" },
+          "conditions": [], "targets": [],
+          "effects": [ { "type": "append_only_rule" } ],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-sigurd-3.revealed-attributes",
+          "kind": "passive",
+          "printedClause": "当【坏劫之天轮】展示后，此牌获得迅捷属性。当【破灭之黎明】展示后，此牌获得魔术属性。",
+          "activation": {}, "conditions": [], "targets": [],
+          "effects": [
+            { "type": "gain_attribute_if_owned_definition_revealed", "definitionId": "servant.sigurd.skill.sc-sigurd-2", "attribute": "迅捷" },
+            { "type": "gain_attribute_if_owned_definition_revealed", "definitionId": "servant.sigurd.skill.sc-sigurd-1", "attribute": "魔术" }
+          ],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" },
+      "printedText": "此牌需追加打出。\n当【坏劫之天轮】展示后，此牌获得迅捷属性。\n当【破灭之黎明】展示后，此牌获得魔术属性。"
+    }
+  ]
+}

@@ -6,6 +6,14 @@ import { advanceAbilityPhase, projectAbilityState } from '../src/ability/interpr
 import { resolveBattlefield } from '../src/core/combat-resolver';
 import { applyBattleScoring } from '../src/core/scoring-resolver';
 
+function createSessionIncludingServant(servantId: string) {
+  for (let seed = 1; seed <= 256; seed += 1) {
+    const session = createMatchSession({ seed, humanPlayerId: 'p1' });
+    if (session.pairings.some((pairing) => pairing.servant.id === servantId)) return session;
+  }
+  throw new Error('Unable to build deterministic fixture containing ' + servantId);
+}
+
 describe('MatchSession semi-auto runtime', () => {
   it('starts a 7-player match and exposes the first human decision', () => {
     const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
@@ -521,7 +529,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('adds same-attribute situation power in battle breakdowns', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
+    const session = createSessionIncludingServant('servant.kintoki');
     const controller = session as unknown as { startRound: (round: number) => void };
     session.state.situationDeck = ['situation.longing_for_future'];
     controller.startRound(1);
@@ -637,7 +645,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('settles borrowed Guard to Mash hand on owner loss through the real MatchSession battle path', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
+    const session = createSessionIncludingServant('servant.mash');
     const mash = session.pairings.find((pairing) => pairing.servant.id === 'servant.mash')!;
     const borrower = session.pairings.find((pairing) => pairing.playerId !== mash.playerId)!;
     const winner = session.pairings.find((pairing) => ![mash.playerId, borrower.playerId].includes(pairing.playerId))!;
@@ -666,7 +674,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('settles borrowed Guard to Mash discard after an ordinary real MatchSession battle end', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
+    const session = createSessionIncludingServant('servant.mash');
     const mash = session.pairings.find((pairing) => pairing.servant.id === 'servant.mash')!;
     const borrower = session.pairings.find((pairing) => pairing.playerId !== mash.playerId)!;
     for (const player of session.state.players) delete player.locationId;

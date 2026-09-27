@@ -5168,8 +5168,8 @@ Allowed verdicts:
 ## TASK P3-S-OWNER-SIGURD-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `READY`
-Base: exact Siegfried acceptance-sync commit carrying this task block
+Status: `MIGRATION_CANDIDATE_READY_FOR_FRESH_R`
+Base: `8f2c8141c33da0ac30a3468a068c9ab1715e15ce` — accepted Sigurd capability A-sync; zero-credit; current owner unchanged
 Owner root: `servant.sigurd`
 Formal owner scope: all three current-main remaining frozen Sigurd skills
 
