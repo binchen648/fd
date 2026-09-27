@@ -205,20 +205,22 @@ describe('P3-FB2-09 any-location-except-workshop movement', () => {
     expect(activation(locked)).toBeUndefined();
   });
 
-  it('fails a recognized malformed near-match closed before legacy movement or usage mutation', () => {
-    const state = setup({
+  it('fails a recognized malformed near-match closed at the loader gateway before runtime construction', () => {
+    const pack = rules.loadAuthoringJson(rawArchive({
       targets: [{
         id: 'destination', type: 'location', count: { min: 1, max: 1 },
         constraints: [{ type: 'any_enabled_location' }],
       }],
-    });
-    const ability = state.abilityRuntime!.pack.cards[definitionId]!.abilities[0]!;
+    }));
+    expect(pack.report).toContainEqual(expect.objectContaining({
+      abilityId,
+      path: 'sourceLocationRune.movementGateway',
+      status: 'unsupported',
+    }));
+    const ability = pack.cards[definitionId]!.abilities[0]!;
     expect(rules.isAnyLocationExceptWorkshopMovementCandidate(ability)).toBe(true);
     expect(rules.isAnyLocationExceptWorkshopMovementSemantic(ability)).toBe(false);
-    expect(activation(state)).toBeUndefined();
-    const before = JSON.stringify(state);
-    expect(() => rules.executeAbility(state, directContext())).toThrow('Unsupported any-location-except-workshop movement semantic shape');
-    expect(JSON.stringify(state)).toBe(before);
+    expect(ability.execution.mode).toBe('unsupported');
   });
 
   it('does not absorb one-step arrow movement into the accepted contract', () => {

@@ -19,6 +19,8 @@ import {
   FORBID_OTHER_PLAYERS_AT_ACTIVE_SOURCE_LOCATION_MANA_GAIN_EFFECT,
   SET_SOURCE_LOCATION_BASIC_BASE_POWER_MULTIPLIER_FROM_CHOICE_EFFECT,
   containsSourceLocationRunePrivilegedNode,
+  isAcceptedLegacyAnyLocationExceptWorkshopMovementAbility,
+  isAcceptedRuneAnyEnabledLocationMovementAbility,
   isAcceptedSourceLocationRunePrivilegedAbility,
   isAdjustOtherPlayersAtSourceLocationManaEffect,
   isCurrentRoundBasicAttackAttributePairCondition,
@@ -26,6 +28,7 @@ import {
   isDrawThenShuffleTwoHandEffect,
   isForbidOtherPlayersAtActiveSourceLocationManaGainEffect,
   isSetSourceLocationBasicBasePowerMultiplierEffect,
+  isRuneAnyEnabledLocationMovementCandidate,
 } from './source-location-rune-capability';
 import { LOSE_VP_EQUAL_SOURCE_PLAY_COUNT_EFFECT, HIDE_SERVANT_TRUE_NAME_UNTIL_ROUND_END_EFFECT, REVEAL_HAND_ROUND_POWER_EFFECT, ownerSelfMechanicIsWellFormed } from './owner-self-mechanics';
 import {
@@ -550,6 +553,11 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (containsSourceLocationRunePrivilegedNode(candidateAbility) &&
           !isAcceptedSourceLocationRunePrivilegedAbility(candidateAbility)) {
         issue('sourceLocationRune.gateway', 'Source-location/rune privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (isRuneAnyEnabledLocationMovementCandidate(candidateAbility) &&
+          !isAcceptedLegacyAnyLocationExceptWorkshopMovementAbility(candidateAbility) &&
+          !isAcceptedRuneAnyEnabledLocationMovementAbility(candidateAbility)) {
+        issue('sourceLocationRune.movementGateway', 'Any-location movement requires one accepted exact whole-ability semantic', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

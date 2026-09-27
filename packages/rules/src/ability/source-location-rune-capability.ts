@@ -61,6 +61,60 @@ export function isCurrentRoundBasicAttackAttributePairCondition(value: RuleNode)
     value.distinctCards === true && exactKeys(value, ['type', 'firstAttribute', 'secondAttribute', 'distinctCards']);
 }
 
+function exactSingleAnyEnabledLocationTarget(value: RuleNode): boolean {
+  if (value.type !== 'location' || typeof value.id !== 'string' || value.id.length === 0) return false;
+  const count = value.count && typeof value.count === 'object' && !Array.isArray(value.count) ? value.count as RuleNode : {};
+  const constraints = Array.isArray(value.constraints) ? value.constraints.filter((entry): entry is RuleNode =>
+    !!entry && typeof entry === 'object' && !Array.isArray(entry)) : [];
+  return count.min === 1 && count.max === 1 && exactKeys(count, ['min', 'max']) &&
+    constraints.length === 1 && constraints[0]!.type === 'any_enabled_location' && exactKeys(constraints[0]!, ['type']) &&
+    exactKeys(value, ['id', 'type', 'count', 'constraints']);
+}
+
+export function isRuneAnyEnabledLocationMovementCandidate(ability: AuthoringAbility): boolean {
+  const activation = ability.activation;
+  if (ability.kind !== 'phase_action' || activation.phase !== 'action' || activation.opens !== 'controller_action_window' ||
+      ability.targets.length !== 1) return false;
+  const target = ability.targets[0]!;
+  const constraints = Array.isArray(target.constraints) ? target.constraints.filter((entry): entry is RuleNode =>
+    !!entry && typeof entry === 'object' && !Array.isArray(entry)) : [];
+  const hasAnyEnabledSelector = constraints.some((constraint) => constraint.type === 'any_enabled_location');
+  const hasRunePairMarker = ability.conditions.some((condition) =>
+    condition.type === CURRENT_ROUND_BASIC_ATTACK_ATTRIBUTE_PAIR_CONDITION);
+  const hasManaCostMarker = ability.cost.some((cost) => cost.type === 'pay_mana');
+  return target.type === 'location' && ability.effects.some((effect) => effect.type === 'move_player') &&
+    (hasAnyEnabledSelector || (hasRunePairMarker && hasManaCostMarker));
+}
+
+export function isAcceptedLegacyAnyLocationExceptWorkshopMovementAbility(ability: AuthoringAbility): boolean {
+  if (!isRuneAnyEnabledLocationMovementCandidate(ability) || ability.activation.requiresSourceState !== 'active' ||
+      ability.conditions.length !== 0 || ability.cost.length !== 0 || ability.creates.length !== 0 ||
+      ability.ruleModifiers.length !== 0 || !emptyRecord(ability.lifecycle) || ability.responseWindow.opens !== undefined ||
+      !emptyRecord(ability.limit) || !emptyRecord(ability.visibility) || ability.effects.length !== 1) return false;
+  const target = ability.targets[0]!;
+  const count = target.count && typeof target.count === 'object' && !Array.isArray(target.count) ? target.count as RuleNode : {};
+  const constraints = Array.isArray(target.constraints) ? target.constraints.filter((entry): entry is RuleNode =>
+    !!entry && typeof entry === 'object' && !Array.isArray(entry)) : [];
+  const effect = ability.effects[0]!;
+  return count.min === 1 && count.max === 1 && constraints.length === 2 &&
+    constraints.filter((constraint) => constraint.type === 'any_enabled_location').length === 1 &&
+    constraints.filter((constraint) => constraint.type === 'not_location_kind' && constraint.locationKind === 'workshop').length === 1 &&
+    (!Array.isArray(target.conditions) || target.conditions.length === 0) && effect.type === 'move_player' &&
+    effect.to === target.id && (effect.player === undefined || effect.player === 'controller');
+}
+
+export function isAcceptedRuneAnyEnabledLocationMovementAbility(ability: AuthoringAbility): boolean {
+  if (!isRuneAnyEnabledLocationMovementCandidate(ability) || !exactSingleAnyEnabledLocationTarget(ability.targets[0]!) ||
+      !automaticNoHost(ability) || !exactKeys(ability.activation, ['phase', 'opens']) || ability.conditions.length !== 1 ||
+      !isCurrentRoundBasicAttackAttributePairCondition(ability.conditions[0]!) ||
+      ability.conditions[0]!.firstAttribute !== '迅捷' || ability.conditions[0]!.secondAttribute !== '迅捷' ||
+      !fixedControllerManaCost(ability, 3) || ability.effects.length !== 1 || !commonEmptyAbilityParts(ability)) return false;
+  const targetId = String(ability.targets[0]!.id);
+  const effect = ability.effects[0]!;
+  return effect.type === 'move_player' && effect.player === 'controller' && effect.to === targetId &&
+    exactKeys(effect, ['type', 'player', 'to']);
+}
+
 export function controllerHasCurrentRoundBasicAttackAttributePair(state: GameState, controllerId: string, value: RuleNode): boolean {
   if (!isCurrentRoundBasicAttackAttributePairCondition(value)) return false;
   const runtime = state.abilityRuntime;

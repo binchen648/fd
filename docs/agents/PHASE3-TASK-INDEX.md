@@ -5448,11 +5448,58 @@ R1 closure:
 - Current owner remains `servant.skadi`; execution returns immediately to `P3-S-OWNER-SKADI-COMPLETE-MIGRATION` for all three skills together. Do not advance owners.
 - Detailed sync: `docs/reports/2026-09-27-p3-a-skadi-rune-castle-readiness-capability-acceptance-synchronization.md`.
 
+## TASK P3-B-SKADI-RAIDO-MOVEMENT-READINESS-CAPABILITY
+
+Owner: Codex B
+Status: `IMPLEMENTATION_REVISION_READY_FOR_FRESH_R`
+Base: `abda8c845133bd12bce47f624808a3ead9d95510`
+Classification: bounded zero-credit capability/readiness prerequisite discovered while completing current owner `servant.skadi`
+
+Bounded scope:
+- add one identity-free exact whole-ability contract for Action-phase `迅捷+迅捷` current-round basic-attack pair + fixed pay-3 + one `any_enabled_location` target + controller `move_player`;
+- preserve the existing FB2-09 free active-source `any_enabled_location + not workshop` movement contract;
+- make loader/runtime agree by routing Action any-enabled-location movement candidates through a shared fail-closed gateway that accepts only one of those exact contracts;
+- preserve existing target authority for current-location exclusion, disabled locations, movement locks, occupancy, movement history, and normal movement events.
+
+Hard scope boundary:
+- zero Skadi consumer authoring and zero migration credit;
+- `data/authoring/**` delta must remain empty;
+- no `servant.skadi` / skill-id / card-name / printed-text / Chinese-text identity routing in production runtime;
+- no SkillLib fallback and no runtime source-text parsing;
+- no new movement effect primitive and no broadening of ordinary arrow movement;
+- widened cost/condition/target/effect/rune-pair near matches must fail closed at loader and runtime boundaries;
+- ACCEPTED must A-sync/rescan and return to the same Skadi owner formal task; it cannot advance owners.
+
+Formal consumer preservation:
+- pre-capability owner work is preserved as local-only WIP commit `1c3546bb01d4d20820282f671e5045050d4b879e` on `codex/s-p3-owner-skadi-complete-migration-r2`;
+- that WIP is not pushed, not a Candidate, not reviewed, and grants no credit;
+- after capability ACCEPTED + A-sync, formal work must resume from the new exact A-sync Base and carry forward the preserved consumer content rather than reviewing the WIP lineage.
+
+Evidence: `docs/reports/2026-09-27-p3-b-skadi-raido-movement-readiness-capability-result.md`.
+
+Verification:
+- focused generic capability `4/4 PASS`;
+- affected serial chain `8 files / 170 tests PASS`, including FB2-09 legacy movement `7/7` and accepted #466 Skadi readiness `12/12`;
+- typecheck/content validate/content compile/generated determinism/diff-check PASS;
+- `data/authoring/**` delta EMPTY;
+- production Skadi/SkillLib identity audit clean;
+- strict formal accounting remains `134/944`, remaining `810`; task permanently zero-credit.
+
+R1 closure:
+- predecessor Candidate `eb06cac542e6bd1cb54eacaaa0cc4ec6a18c444a` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt evidence `https://github.com/binchen648/fd/pull/467#issuecomment-5855009517`;
+- P1 closed: the loader movement candidate detector now also catches the identity-free Raido rune-pair + mana-cost movement signature when `any_enabled_location` is removed or replaced, while exact acceptance still requires the original selector;
+- loader/runtime fail closed are both covered for selector removal/replacement; runtime corruption cannot spend mana, move, or leave a pending decision;
+- focused closure remains `4/4 PASS`; affected serial closure remains `8 files / 170 tests PASS`.
+
+Allowed verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
 ## TASK P3-S-OWNER-SKADI-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `READY`
-Base: exact Skadi rune/castle capability acceptance-sync commit carrying this refreshed task block
+Status: `BLOCKED_ON_BOUNDED_CAPABILITY`
+Base: exact future Raido movement capability acceptance-sync commit carrying the refreshed task block
 Owner root: `servant.skadi`
 Formal owner scope: all three current-main remaining frozen Skadi skills together
 

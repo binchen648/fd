@@ -25,6 +25,7 @@ import {
   containsSourceLocationRunePrivilegedNode,
   controllerHasCurrentRoundBasicAttackAttributePair,
   isAcceptedPostDrawHandShuffleAbility,
+  isAcceptedRuneAnyEnabledLocationMovementAbility,
   isAcceptedSameLocationManaLossAbility,
   isAcceptedSourceLocationBasicPowerAbility,
   isAcceptedSourceLocationRunePrivilegedAbility,
@@ -930,7 +931,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isPlaySourceCardWithCostResponseStructuralCandidate(a) && !isPlaySourceCardWithCostResponseRouteCandidate(a)) return false;
   if (isAddToAttackStructuralCandidate(a) && !isAddToAttackRouteCandidate(a)) return false;
   if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) return false;
-  if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a)) return false;
+  if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a) &&
+      !isAcceptedRuneAnyEnabledLocationMovementAbility(a)) return false;
   if (isMagicResistancePowerModifierCandidate(a) && !isMagicResistancePowerModifierSemantic(a)) return false;
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
@@ -953,7 +955,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (!isCommandSpellCard(s, sourceId) && a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber) return false;
   if (abilityLimitReached(s, sourceId, a)) return false;
   if ((isPlayActionRouteCandidate(a) || isAddToAttackRouteCandidate(a) || isAnyLocationExceptWorkshopMovementSemantic(a) ||
-      a.effects.some(isPlaceSourceAtBattlefieldEffect)) &&
+      isAcceptedRuneAnyEnabledLocationMovementAbility(a) || a.effects.some(isPlaceSourceAtBattlefieldEffect)) &&
     !hasMandatoryTargetAvailability(s, context(s, sourceId, a.id, event), a)) return false;
   if (isPlaySourceCardWithCostResponseRouteCandidate(a)) {
     const ctx = context(s, sourceId, a.id, event);
@@ -977,6 +979,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     if (!s.cards.some((candidate) => candidate.ownerPlayerId === ctx.controllerId && candidate.zone === 'deck')) return false;
   }
   if (isAcceptedSameLocationManaLossAbility(a) && !hasAvailableManaForFixedCosts(s, ctx, a)) return false;
+  if (isAcceptedRuneAnyEnabledLocationMovementAbility(a) && !hasAvailableManaForFixedCosts(s, ctx, a)) return false;
   if (isAcceptedSourceSkillAttackJoinAbility(a)) {
     const source = card(s, sourceId);
     const sourceState = runtime(s).cardState[sourceId];
@@ -3627,7 +3630,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     for (const effect of effects) resolveEffect(s, ctx, effect);
     return;
   }
-  if (isAnyLocationExceptWorkshopMovementSemantic(a)) {
+  if (isAnyLocationExceptWorkshopMovementSemantic(a) || isAcceptedRuneAnyEnabledLocationMovementAbility(a)) {
     const pending = findPendingTarget(s, ctx, a, effects);
     if (pending) { runtime(s).pendingDecision = pending; return; }
     executeResolutionEffects(s, ctx, effects);
@@ -3638,7 +3641,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (isPresenceConcealmentAssassinationCandidate(a)) {
     if (!isPresenceConcealmentAssassinationSemantic(a)) reject('resolution_failed', 'Unsupported Presence Concealment semantic shape');
   }
-  if (isAnyLocationExceptWorkshopMovementCandidate(a)) reject('resolution_failed', 'Unsupported any-location-except-workshop movement semantic shape');
+  if (isAnyLocationExceptWorkshopMovementCandidate(a)) reject('resolution_failed', 'Unsupported any-location movement semantic shape');
   if (isMagicResistancePowerModifierCandidate(a)) reject('resolution_failed', 'Unsupported magic-resistance power modifier semantic shape');
   if (isResourceNumericTriggerCandidate(a)) reject('resolution_failed', 'Unsupported trigger resource semantic shape');
   if (isSourcePlayBasicAttackDrawTriggerCandidate(a)) reject('resolution_failed', 'Unsupported source-play basic-attack draw trigger semantic shape');
@@ -3735,8 +3738,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) {
     reject('resolution_failed', 'Unsupported fixed controller advance-draw semantic shape');
   }
-  if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a)) {
-    reject('resolution_failed', 'Unsupported any-location-except-workshop movement semantic shape');
+  if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a) &&
+      !isAcceptedRuneAnyEnabledLocationMovementAbility(a)) {
+    reject('resolution_failed', 'Unsupported any-location movement semantic shape');
   }
   if (isMagicResistancePowerModifierCandidate(a) && !isMagicResistancePowerModifierSemantic(a)) {
     reject('resolution_failed', 'Unsupported magic-resistance power modifier semantic shape');
@@ -3796,7 +3800,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     });
     return;
   }
-  if (isCardZoneCoreDirectActionRouteCandidate(a) || isFixedControllerAdvanceDrawActionSemantic(a) || isAnyLocationExceptWorkshopMovementSemantic(a) || isPlayActionRouteCandidate(a) || isPlaySourceCardWithCostResponseStructuralCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a)) {
+  if (isCardZoneCoreDirectActionRouteCandidate(a) || isFixedControllerAdvanceDrawActionSemantic(a) || isAnyLocationExceptWorkshopMovementSemantic(a) || isAcceptedRuneAnyEnabledLocationMovementAbility(a) || isPlayActionRouteCandidate(a) || isPlaySourceCardWithCostResponseStructuralCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a)) {
     try {
       normalizeResolutionDataFlowNodes([...a.effects, ...a.creates], `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
     } catch (error) {
