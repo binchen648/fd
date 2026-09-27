@@ -3,7 +3,7 @@
   "packId": "fd-playtest-v1",
   "summary": {
     "masters": 7,
-    "servants": 11,
+    "servants": 12,
     "events": 20,
     "blockingIssues": 0
   },
@@ -1434,6 +1434,61 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/齐格飞.htm",
       "imagePath": "../../Fate_Domination-开发版/images/servants/齐格飞.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.sigurd",
+      "displayName": "齐格鲁德",
+      "entityKind": "servant",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/Sigurd.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/齐格鲁德.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.sigurd.overview",
+      "displayName": "齐格鲁德",
+      "entityKind": "servant_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/Sigurd.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/齐格鲁德.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.sigurd.skill.sc-sigurd-1",
+      "displayName": "破灭之黎明",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/Sigurd.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/齐格鲁德.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.sigurd.skill.sc-sigurd-2",
+      "displayName": "坏劫之天轮",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/Sigurd.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/齐格鲁德.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.sigurd.skill.sc-sigurd-3",
+      "displayName": "里迪尔·赫萝蒂",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/Sigurd.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/齐格鲁德.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
       "issueCodes": []

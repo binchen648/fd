@@ -1138,6 +1138,89 @@
       }
     },
     {
+      "id": "servant.sigurd",
+      "name": "齐格鲁德",
+      "classTag": "Saber",
+      "overviewCardId": "servant.sigurd.overview",
+      "startingDeck": {
+        "size": 12,
+        "entries": [
+          {
+            "entryType": "basic",
+            "attribute": "strength",
+            "printedValue": 2,
+            "copies": 2
+          },
+          {
+            "entryType": "basic",
+            "attribute": "strength",
+            "printedValue": 3,
+            "copies": 1
+          },
+          {
+            "entryType": "basic",
+            "attribute": "agility",
+            "printedValue": 1,
+            "copies": 1
+          },
+          {
+            "entryType": "basic",
+            "attribute": "agility",
+            "printedValue": 2,
+            "copies": 2
+          },
+          {
+            "entryType": "basic",
+            "attribute": "agility",
+            "printedValue": 3,
+            "copies": 2
+          },
+          {
+            "entryType": "basic",
+            "attribute": "agility",
+            "printedValue": 4,
+            "copies": 1
+          },
+          {
+            "entryType": "named",
+            "attribute": "special",
+            "cardId": "basic.luck",
+            "copies": 1
+          },
+          {
+            "entryType": "named",
+            "attribute": "special",
+            "cardId": "basic.surveil",
+            "copies": 2
+          }
+        ],
+        "attributeCounts": {
+          "strength": 3,
+          "agility": 6,
+          "magecraft": 0,
+          "special": 3
+        }
+      },
+      "skillCardIds": [
+        "servant.sigurd.skill.sc-sigurd-1",
+        "servant.sigurd.skill.sc-sigurd-2",
+        "servant.sigurd.skill.sc-sigurd-3"
+      ],
+      "linkedCards": {
+        "generated": []
+      },
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Authoring servant converted for seven-player product playtest."
+      },
+      "source": {
+        "htmPath": "chm-extract/Sigurd.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/servants/齐格鲁德.png",
+        "imageIndex": 0,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
       "id": "servant.tomoe",
       "name": "巴御前",
       "classTag": "Archer",
@@ -3787,6 +3870,97 @@
       "source": {
         "htmPath": "chm-extract/齐格飞.htm",
         "imagePath": "../../Fate_Domination-开发版/images/servants/齐格飞.png",
+        "imageIndex": 3,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "servant.sigurd.overview",
+      "name": "齐格鲁德",
+      "cardType": "servant_overview",
+      "capability": {
+        "status": "FULL"
+      },
+      "source": {
+        "htmPath": "chm-extract/Sigurd.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/servants/齐格鲁德.png",
+        "imageIndex": 0,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "servant.sigurd.skill.sc-sigurd-1",
+      "name": "破灭之黎明",
+      "cardType": "servant_skill",
+      "attribute": "strength",
+      "attributes": [
+        "strength",
+        "magecraft",
+        "special"
+      ],
+      "printedValue": 3,
+      "printedCost": 11,
+      "printedText": "【真名解放】\n诅咒-被动：此牌展示后，每个回合开始时失去1点战果。\n残留：战斗阶段结束后获得X点魔力，X为与你交战的一名对手本回合打出的一张攻击的魔力消耗。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/Sigurd.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/servants/齐格鲁德.png",
+        "imageIndex": 1,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "servant.sigurd.skill.sc-sigurd-2",
+      "name": "坏劫之天轮",
+      "cardType": "servant_skill",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 5,
+      "printedCost": 0,
+      "printedText": "诅咒-被动：此牌展示后，每个回合开始时失去1点战果。\n剑刃风暴-被动：你所有的的基础牌获得以下效果：‘行动阶段：花费2点魔力，将此牌的基本威力翻倍，战斗阶段结束后将此牌移除游戏。’",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/Sigurd.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/servants/齐格鲁德.png",
+        "imageIndex": 2,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "servant.sigurd.skill.sc-sigurd-3",
+      "name": "里迪尔·赫萝蒂",
+      "cardType": "servant_skill",
+      "attribute": "strength",
+      "attributes": [
+        "strength"
+      ],
+      "printedValue": 5,
+      "printedCost": 3,
+      "printedText": "此牌需追加打出。\n当【坏劫之天轮】展示后，此牌获得迅捷属性。\n当【破灭之黎明】展示后，此牌获得魔术属性。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/Sigurd.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/servants/齐格鲁德.png",
         "imageIndex": 3,
         "reviewedAgainstImage": true
       }
@@ -11563,6 +11737,359 @@
         "destinationZone": "attack_area",
         "initialZone": "skill"
       },
+      "servant.sigurd.skill.sc-sigurd-1": {
+        "id": "servant.sigurd.skill.sc-sigurd-1",
+        "name": "破灭之黎明",
+        "cardType": "servant_skill",
+        "cardFace": {
+          "typeLabel": "力量/魔术/宝具",
+          "attributes": [
+            "力量",
+            "魔术",
+            "宝具"
+          ],
+          "cost": 11,
+          "basePower": 3
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 11
+          }
+        ],
+        "abilities": [
+          {
+            "id": "sc-sigurd-1.true-name-release",
+            "kind": "declaration_reveal",
+            "printedClause": "【真名解放】",
+            "markers": [
+              "真名解放"
+            ],
+            "activation": {
+              "trigger": "on_use_declared"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "reveal_information",
+                "scope": "servant_package",
+                "subject": "controller.servant"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {
+              "revealsTrueName": true,
+              "revealTiming": "on_use_declared",
+              "revealScope": "servant_package"
+            },
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "sc-sigurd-1.curse",
+            "kind": "forced_trigger",
+            "printedClause": "诅咒-被动：此牌展示后，每个回合开始时失去1点战果。",
+            "activation": {
+              "trigger": "round_start"
+            },
+            "conditions": [
+              {
+                "type": "source_revealed"
+              }
+            ],
+            "targets": [],
+            "effects": [
+              {
+                "type": "adjust_victory_points",
+                "player": "controller",
+                "amount": -1
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "sc-sigurd-1.after-battle-refund",
+            "kind": "residual",
+            "printedClause": "残留：战斗阶段结束后获得X点魔力，X为与你交战的一名对手本回合打出的一张攻击的魔力消耗。",
+            "activation": {
+              "trigger": "after_battle_ended"
+            },
+            "conditions": [
+              {
+                "type": "source_revealed"
+              }
+            ],
+            "targets": [
+              {
+                "id": "refund-attack",
+                "type": "card_instance",
+                "count": {
+                  "min": 1,
+                  "max": 1
+                },
+                "scope": {
+                  "zone": "attack_area",
+                  "owner": "any",
+                  "controller": "any"
+                },
+                "constraints": [
+                  {
+                    "type": "is_attack"
+                  },
+                  {
+                    "type": "played_this_round"
+                  },
+                  {
+                    "type": "controlled_by_event_battle_opponent_at_controller_location"
+                  }
+                ]
+              }
+            ],
+            "effects": [
+              {
+                "type": "gain_mana_equal_selected_card_paid_cost",
+                "target": "refund-attack"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "servant.sigurd",
+        "playKind": "attack",
+        "destinationZone": "attack_area",
+        "initialZone": "skill"
+      },
+      "servant.sigurd.skill.sc-sigurd-2": {
+        "id": "servant.sigurd.skill.sc-sigurd-2",
+        "name": "坏劫之天轮",
+        "cardType": "servant_skill",
+        "cardFace": {
+          "typeLabel": "迅捷/宝具",
+          "attributes": [
+            "迅捷",
+            "宝具"
+          ],
+          "cost": 0,
+          "basePower": 5
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 8
+          }
+        ],
+        "abilities": [
+          {
+            "id": "sc-sigurd-2.curse",
+            "kind": "forced_trigger",
+            "printedClause": "诅咒-被动：此牌展示后，每个回合开始时失去1点战果。",
+            "activation": {
+              "trigger": "round_start"
+            },
+            "conditions": [
+              {
+                "type": "source_revealed"
+              }
+            ],
+            "targets": [],
+            "effects": [
+              {
+                "type": "adjust_victory_points",
+                "player": "controller",
+                "amount": -1
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "sc-sigurd-2.blade-storm",
+            "kind": "passive",
+            "printedClause": "剑刃风暴-被动：你所有的基础牌获得以下效果：行动阶段：花费2点魔力，将此牌的基本威力翻倍，战斗阶段结束后将此牌移除游戏。",
+            "activation": {},
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "grant_controller_basic_attack_double_base_remove_action_while_source_revealed",
+                "manaCost": 2,
+                "basePowerMultiplier": 2,
+                "removeAfter": "after_battle_ended"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "servant.sigurd",
+        "playKind": "attack",
+        "destinationZone": "attack_area",
+        "initialZone": "skill"
+      },
+      "servant.sigurd.skill.sc-sigurd-3": {
+        "id": "servant.sigurd.skill.sc-sigurd-3",
+        "name": "里迪尔·赫萝蒂",
+        "cardType": "servant_skill",
+        "cardFace": {
+          "typeLabel": "力量",
+          "attributes": [
+            "力量"
+          ],
+          "cost": 3,
+          "basePower": 5
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 3
+          }
+        ],
+        "abilities": [
+          {
+            "id": "sc-sigurd-3.required-additional-play",
+            "kind": "passive",
+            "printedClause": "此牌需追加打出。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "append_only_rule"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "sc-sigurd-3.revealed-attributes",
+            "kind": "passive",
+            "printedClause": "当【坏劫之天轮】展示后，此牌获得迅捷属性。当【破灭之黎明】展示后，此牌获得魔术属性。",
+            "activation": {},
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "gain_attribute_if_owned_definition_revealed",
+                "definitionId": "servant.sigurd.skill.sc-sigurd-2",
+                "attribute": "迅捷"
+              },
+              {
+                "type": "gain_attribute_if_owned_definition_revealed",
+                "definitionId": "servant.sigurd.skill.sc-sigurd-1",
+                "attribute": "魔术"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "servant.sigurd",
+        "playKind": "attack",
+        "destinationZone": "attack_area",
+        "initialZone": "skill"
+      },
       "card.derived.master.shirou-emiya.ganjiang-moye": {
         "id": "card.derived.master.shirou-emiya.ganjiang-moye",
         "name": "干将·莫邪",
@@ -13152,6 +13679,18 @@
           "servant.siegfried.skill.sc-siegfried-3"
         ],
         "publicInformation": {}
+      },
+      "servant.sigurd": {
+        "id": "servant.sigurd",
+        "name": "齐格鲁德",
+        "class": "Saber",
+        "kind": "servant",
+        "cardIds": [
+          "servant.sigurd.skill.sc-sigurd-1",
+          "servant.sigurd.skill.sc-sigurd-2",
+          "servant.sigurd.skill.sc-sigurd-3"
+        ],
+        "publicInformation": {}
       }
     },
     "decks": {
@@ -13308,6 +13847,20 @@
         "basic.magecraft.1",
         "basic.luck",
         "basic.surveil"
+      ],
+      "servant.sigurd": [
+        "basic.strength.2",
+        "basic.strength.2",
+        "basic.strength.3",
+        "basic.agility.1",
+        "basic.agility.2",
+        "basic.agility.2",
+        "basic.agility.3",
+        "basic.agility.3",
+        "basic.agility.4",
+        "basic.luck",
+        "basic.surveil",
+        "basic.surveil"
       ]
     },
     "fallbackCommandSpells": {
@@ -13317,11 +13870,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "8eaf2626a2d3e926fdb0e316c7fcfe7356e0664140738a3d4f6d92162ba9c451",
+    "definitionHash": "421ca1bc2735fa723fb8e74bf55e4719235364c60864d2ce5f6e3c5be9961fee",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "8eaf2626a2d3e926fdb0e316c7fcfe7356e0664140738a3d4f6d92162ba9c451"
+      "definitionHash": "421ca1bc2735fa723fb8e74bf55e4719235364c60864d2ce5f6e3c5be9961fee"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
@@ -14583,18 +15136,85 @@
         "abilityIndex": 1,
         "path": "archives[17].cards[2].abilities[1]"
       },
-      "card.derived.master.shirou-emiya.ganjiang-moye": {
-        "archiveId": "master.shirou-emiya",
+      "servant.sigurd.skill.sc-sigurd-1": {
+        "archiveId": "servant.sigurd",
         "archiveIndex": 18,
         "cardIndex": 0,
         "path": "archives[18].cards[0]"
       },
-      "card.derived.master.shirou-emiya.ganjiang-moye#ganjiang-moye.append-only": {
-        "archiveId": "master.shirou-emiya",
+      "servant.sigurd.skill.sc-sigurd-1#sc-sigurd-1.true-name-release": {
+        "archiveId": "servant.sigurd",
         "archiveIndex": 18,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[18].cards[0].abilities[0]"
+      },
+      "servant.sigurd.skill.sc-sigurd-1#sc-sigurd-1.curse": {
+        "archiveId": "servant.sigurd",
+        "archiveIndex": 18,
+        "cardIndex": 0,
+        "abilityIndex": 1,
+        "path": "archives[18].cards[0].abilities[1]"
+      },
+      "servant.sigurd.skill.sc-sigurd-1#sc-sigurd-1.after-battle-refund": {
+        "archiveId": "servant.sigurd",
+        "archiveIndex": 18,
+        "cardIndex": 0,
+        "abilityIndex": 2,
+        "path": "archives[18].cards[0].abilities[2]"
+      },
+      "servant.sigurd.skill.sc-sigurd-2": {
+        "archiveId": "servant.sigurd",
+        "archiveIndex": 18,
+        "cardIndex": 1,
+        "path": "archives[18].cards[1]"
+      },
+      "servant.sigurd.skill.sc-sigurd-2#sc-sigurd-2.curse": {
+        "archiveId": "servant.sigurd",
+        "archiveIndex": 18,
+        "cardIndex": 1,
+        "abilityIndex": 0,
+        "path": "archives[18].cards[1].abilities[0]"
+      },
+      "servant.sigurd.skill.sc-sigurd-2#sc-sigurd-2.blade-storm": {
+        "archiveId": "servant.sigurd",
+        "archiveIndex": 18,
+        "cardIndex": 1,
+        "abilityIndex": 1,
+        "path": "archives[18].cards[1].abilities[1]"
+      },
+      "servant.sigurd.skill.sc-sigurd-3": {
+        "archiveId": "servant.sigurd",
+        "archiveIndex": 18,
+        "cardIndex": 2,
+        "path": "archives[18].cards[2]"
+      },
+      "servant.sigurd.skill.sc-sigurd-3#sc-sigurd-3.required-additional-play": {
+        "archiveId": "servant.sigurd",
+        "archiveIndex": 18,
+        "cardIndex": 2,
+        "abilityIndex": 0,
+        "path": "archives[18].cards[2].abilities[0]"
+      },
+      "servant.sigurd.skill.sc-sigurd-3#sc-sigurd-3.revealed-attributes": {
+        "archiveId": "servant.sigurd",
+        "archiveIndex": 18,
+        "cardIndex": 2,
+        "abilityIndex": 1,
+        "path": "archives[18].cards[2].abilities[1]"
+      },
+      "card.derived.master.shirou-emiya.ganjiang-moye": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 19,
+        "cardIndex": 0,
+        "path": "archives[19].cards[0]"
+      },
+      "card.derived.master.shirou-emiya.ganjiang-moye#ganjiang-moye.append-only": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 19,
+        "cardIndex": 0,
+        "abilityIndex": 0,
+        "path": "archives[19].cards[0].abilities[0]"
       }
     }
   }

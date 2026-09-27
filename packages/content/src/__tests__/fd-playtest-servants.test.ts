@@ -9,7 +9,7 @@ const pack = loadPlaytestContentPack(resolve('data/packs/fd-playtest-v1/pack.jso
 });
 
 describe('fd-playtest-v1 servant content', () => {
-  it('loads the approved eleven authoring servants through the playtest pack', () => {
+  it('loads the approved twelve authoring servants through the playtest pack', () => {
     expect(pack.servants.map((servant) => servant.id)).toEqual([
       'servant.artoriac',
       'servant.drake',
@@ -22,6 +22,7 @@ describe('fd-playtest-v1 servant content', () => {
       'servant.sherlock',
       'servant.shuten',
       'servant.siegfried',
+      'servant.sigurd',
     ]);
   });
 
@@ -60,7 +61,7 @@ describe('fd-playtest-v1 servant content', () => {
 
     for (const card of cards) {
       expect(card.source.htmPath.length, card.id).toBeGreaterThan(0);
-      if (card.id.startsWith('servant.mash') || card.id.startsWith('servant.sherlock') || card.id.startsWith('servant.siegfried')) {
+      if (card.id.startsWith('servant.mash') || card.id.startsWith('servant.sherlock') || card.id.startsWith('servant.siegfried') || card.id.startsWith('servant.sigurd')) {
         expect(card.source.imagePath).toMatch(/^\.\.\/\.\.\/Fate_Domination-开发版\/images\//);
       } else {
         expect(card.source.htmPath).toMatch(/^chm-extract\//);
