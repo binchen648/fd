@@ -33,12 +33,14 @@ import { clearTransientCardTransformState } from './ability/card-instance-state'
 import { isNormalCardDrawSuppressed } from './ability/timed-resource-suppression';
 import { settleLinkedOwnerCardsAfterBattles } from './ability/linked-owner-combat';
 import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute } from './ability/deduction-record';
+import { SOURCE_LOCATION_BASE_POWER_ATTRIBUTES, isAcceptedPostDrawHandShuffleAbility, isAcceptedSourceLocationBasicPowerAbility } from './ability/source-location-rune-capability';
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from './ability/battle-terminal';
 import type {
   AbilityCommand,
   AbilityEvent,
   AbilityPlayerView,
+  AuthoringAbility,
   DispatchResult,
   ExecutableCardDefinition,
   ExecutableCharacterDefinition,
@@ -572,6 +574,11 @@ function isRestorePendingInteraction(value: unknown): boolean {
       typeof value.kind !== 'string' || typeof value.sourceCardInstanceId !== 'string' || typeof value.abilityId !== 'string' ||
       !isRestoreSafeInteger(value.createdRevision) || typeof value.continuationRef !== 'string') return false;
   switch (value.kind) {
+    case 'post_draw_hand_shuffle_v1':
+      return hasExactRestoreKeys(value, [
+        'kind', 'template', 'visibility', 'cancelPolicy', 'sourceCardInstanceId', 'abilityId', 'createdRevision', 'continuationRef', 'constraints',
+      ]) && isRestoreInteractionConstraints(value.constraints, ['card']) &&
+        (value.constraints as Record<string, unknown>).min === 2 && (value.constraints as Record<string, unknown>).max === 2;
     case 'private_optional_hand_play_v1':
       return isRestoreInteractionConstraints(value.constraints, ['card']);
     case 'alter_ego_attribute_choice_v1':
@@ -636,6 +643,12 @@ function isRestoreEffectContext(value: unknown): boolean {
     typeof value.eventSource.definitionId === 'string' && typeof value.eventSource.locationId === 'string');
 }
 
+function isRestoreSourceLocationBasicBasePowerMultiplier(value: unknown): boolean {
+  return hasExactRestoreKeys(value, ['attribute', 'multiplier', 'round']) &&
+    SOURCE_LOCATION_BASE_POWER_ATTRIBUTES.includes(value.attribute as typeof SOURCE_LOCATION_BASE_POWER_ATTRIBUTES[number]) &&
+    value.multiplier === 2 && isRestoreSafeInteger(value.round, 1);
+}
+
 function isRestoreCardRuntimeState(value: unknown): boolean {
   return isRestoreRecord(value) && typeof value.active === 'boolean' && typeof value.faceDown === 'boolean' &&
     Number.isSafeInteger(value.playedRound) && (value.paidManaOnPlay === undefined ||
@@ -644,7 +657,9 @@ function isRestoreCardRuntimeState(value: unknown): boolean {
     (value.attributeOverrides === undefined || isRestoreStringArray(value.attributeOverrides)) &&
     (value.basePowerMultiplier === undefined || value.basePowerMultiplier === 2) &&
     (value.removeAfterBattleRound === undefined || isRestoreSafeInteger(value.removeAfterBattleRound, 1)) &&
-    (value.placedAtLocationId === undefined || typeof value.placedAtLocationId === 'string');
+    (value.placedAtLocationId === undefined || typeof value.placedAtLocationId === 'string') &&
+    (value.sourceLocationBasicBasePowerMultiplier === undefined ||
+      isRestoreSourceLocationBasicBasePowerMultiplier(value.sourceLocationBasicBasePowerMultiplier));
 }
 
 function isRestoreAbilityDefinition(value: unknown): boolean {
@@ -931,6 +946,18 @@ function restoreSourceHasAbility(
     isRestoreRecord(ability) && ability.id === abilityId);
 }
 
+function restoreSourceHasAcceptedAbility(
+  pack: Record<string, unknown>,
+  cardsByInstance: Map<string, Record<string, unknown>>,
+  eventPlacements: Array<Record<string, unknown>>,
+  sourceCardId: string,
+  predicate: (ability: AuthoringAbility) => boolean,
+): boolean {
+  const definition = restoreSourceDefinition(pack, cardsByInstance, eventPlacements, sourceCardId);
+  return !!definition && Array.isArray(definition.abilities) && definition.abilities.some((ability) =>
+    isRestoreRecord(ability) && predicate(ability as unknown as AuthoringAbility));
+}
+
 function restoreSourceControllerMatches(
   cardsByInstance: Map<string, Record<string, unknown>>,
   eventPlacements: Array<Record<string, unknown>>,
@@ -1010,6 +1037,9 @@ function isRestoreAbilityRuntimeReferences(
     for (const [instanceId, state] of Object.entries(value.cardState)) {
       if (!cardsByInstance.has(instanceId) || !isRestoreRecord(state)) return false;
       if (state.placedAtLocationId !== undefined && (!locationIds.has(state.placedAtLocationId as string) || cardsByInstance.get(instanceId)?.zone !== 'field' || state.active !== true || state.faceDown !== false)) return false;
+      if (state.sourceLocationBasicBasePowerMultiplier !== undefined &&
+          (cardsByInstance.get(instanceId)?.zone !== 'attack_area' || state.active !== true || state.faceDown !== false ||
+            !restoreSourceHasAcceptedAbility(pack, cardsByInstance, eventPlacements, instanceId, isAcceptedSourceLocationBasicPowerAbility))) return false;
     }
   }
 
@@ -1066,6 +1096,24 @@ function isRestoreAbilityRuntimeReferences(
     }
   }
   const pendingDecision = value.pendingDecision;
+  if (isRestoreRecord(pendingDecision) && isRestoreRecord(pendingDecision.interaction) &&
+      pendingDecision.interaction.kind === 'post_draw_hand_shuffle_v1') {
+    const meta = pendingDecision.interaction;
+    const controllerId = pendingDecision.controllerId as string;
+    const pendingCandidates = pendingDecision.candidates;
+    const currentHand = [...cardsByInstance.entries()]
+      .filter(([, card]) => card.ownerPlayerId === controllerId && card.controllerPlayerId === controllerId && card.zone === 'hand')
+      .map(([instanceId]) => instanceId);
+    if (!playerIds.has(controllerId) || pendingDecision.min !== 2 || pendingDecision.max !== 2 ||
+        !restoreSourceControllerMatches(cardsByInstance, eventPlacements, meta.sourceCardInstanceId as string, controllerId) ||
+        !restoreSourceHasAcceptedAbility(pack, cardsByInstance, eventPlacements, meta.sourceCardInstanceId as string, isAcceptedPostDrawHandShuffleAbility) ||
+        !isRestoreRecord(pendingDecision.context) || pendingDecision.context.controllerId !== controllerId ||
+        pendingDecision.context.sourceCardId !== meta.sourceCardInstanceId || pendingDecision.context.abilityId !== meta.abilityId ||
+        !isRestoreRecord(pendingDecision.target) || pendingDecision.target.id !== 'post-draw-hand-shuffle' ||
+        pendingDecision.target.type !== 'card_instance' || !Array.isArray(pendingDecision.remainingEffects) || pendingDecision.remainingEffects.length !== 0 ||
+        !isRestoreStringArray(pendingCandidates) || pendingCandidates.length !== currentHand.length ||
+        currentHand.some((id, index) => pendingCandidates[index] !== id)) return false;
+  }
   if (isRestoreRecord(pendingDecision) && isRestoreRecord(pendingDecision.interaction) &&
       pendingDecision.interaction.kind === 'opponent_close_selected_one_non_residual_v1') {
     const meta = pendingDecision.interaction;

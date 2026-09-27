@@ -20,6 +20,7 @@ export function clearTransientCardTransformState(state: GameState, cardInstanceI
     delete cardState.reversed;
     delete cardState.attributeOverrides;
     delete cardState.basePowerMultiplier;
+    delete cardState.sourceLocationBasicBasePowerMultiplier;
   }
   const card = state.cards.find((candidate) => candidate.instanceId === cardInstanceId);
   if (!card) return;

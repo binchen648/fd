@@ -1,5 +1,6 @@
 import type { GameState } from '../schema/game';
 import { getEffectiveCardAttributes } from './card-instance-state';
+import { isManaGainForbiddenByActiveSourceLocationAura } from './source-location-rune-capability';
 import type { AuthoringAbility, PlayerId, RuleNode } from './types';
 
 export const EXACT_ACTIVE_ATTACK_ATTRIBUTE_PAIR_CONDITION = 'controller_active_attacks_exact_distinct_attribute_pair';
@@ -101,6 +102,7 @@ export function isNormalCardDrawSuppressed(state: GameState, playerId: string): 
 
 export function isManaGainSuppressed(state: GameState, playerId: string): boolean {
   if (state.abilityRuntime?.manaGainBlocked.includes(playerId)) return true;
+  if (isManaGainForbiddenByActiveSourceLocationAura(state, playerId)) return true;
   const throughRound = state.abilityRuntime?.manaGainBlockedThroughRoundByPlayer?.[playerId];
   return Number.isSafeInteger(throughRound) && Number(throughRound) >= state.round.roundNumber;
 }

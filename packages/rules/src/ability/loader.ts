@@ -11,6 +11,22 @@ import { OTHER_PLAYER_ABILITY_EFFECT_IMMUNITY_RULE, isOtherPlayerAbilityEffectIm
 import { isAcceptedConditionalRevealedAttributeMarkerAbility, isAcceptedRevealedBasicGrantMarkerAbility, isConditionalAttributeGrantEffect, isEventBattleOpponentAttackConstraint, isGainManaEqualSelectedPaidCostEffect, isGrantBasicDoubleRemoveEffect, isSourceRevealedCondition } from './revealed-card-mechanics';
 import { EXACT_ACTIVE_ATTACK_ATTRIBUTE_PAIR_CONDITION, TIMED_GLOBAL_RESOURCE_SUPPRESSION_EFFECT, containsTimedGlobalResourceSuppressionNode, isAcceptedTimedGlobalResourceSuppressionAbility, isExactActiveAttackAttributePairCondition, isTimedGlobalResourceSuppressionEffect } from './timed-resource-suppression';
 import { SOURCE_SKILL_ATTACK_JOIN_EFFECT, containsSourceSkillAttackJoinNode, isAcceptedSourceSkillAttackJoinAbility, isSourceSkillAttackJoinEffect } from './source-skill-attack-join';
+import {
+  ADJUST_OTHER_ACTIVE_PLAYERS_AT_SOURCE_LOCATION_MANA_EFFECT,
+  CURRENT_ROUND_BASIC_ATTACK_ATTRIBUTE_PAIR_CONDITION,
+  DEFEAT_SINGLE_ACTIVE_OPPONENT_AT_CONTROLLER_BATTLEFIELD_EFFECT,
+  DRAW_THEN_SHUFFLE_TWO_HAND_EFFECT,
+  FORBID_OTHER_PLAYERS_AT_ACTIVE_SOURCE_LOCATION_MANA_GAIN_EFFECT,
+  SET_SOURCE_LOCATION_BASIC_BASE_POWER_MULTIPLIER_FROM_CHOICE_EFFECT,
+  containsSourceLocationRunePrivilegedNode,
+  isAcceptedSourceLocationRunePrivilegedAbility,
+  isAdjustOtherPlayersAtSourceLocationManaEffect,
+  isCurrentRoundBasicAttackAttributePairCondition,
+  isDefeatSingleOpponentAtControllerBattlefieldEffect,
+  isDrawThenShuffleTwoHandEffect,
+  isForbidOtherPlayersAtActiveSourceLocationManaGainEffect,
+  isSetSourceLocationBasicBasePowerMultiplierEffect,
+} from './source-location-rune-capability';
 import { LOSE_VP_EQUAL_SOURCE_PLAY_COUNT_EFFECT, HIDE_SERVANT_TRUE_NAME_UNTIL_ROUND_END_EFFECT, REVEAL_HAND_ROUND_POWER_EFFECT, ownerSelfMechanicIsWellFormed } from './owner-self-mechanics';
 import {
   BATTLEFIELD_SOURCE_CARD_COST_AURA_TYPE, ANY_BATTLEFIELD_CONSTRAINT, PLACE_SOURCE_AT_BATTLEFIELD_EFFECT,
@@ -61,6 +77,9 @@ const supportedTypes = new Set([
   'source_card_in_zone', 'controller_at_location_kind', 'reachable_along_arrows', 'can_adjust_mana',
   'event_played_card_has_attribute', 'source_reversed', 'source_active', 'source_owned', 'source_revealed',
   EXACT_ACTIVE_ATTACK_ATTRIBUTE_PAIR_CONDITION, TIMED_GLOBAL_RESOURCE_SUPPRESSION_EFFECT, SOURCE_SKILL_ATTACK_JOIN_EFFECT,
+  CURRENT_ROUND_BASIC_ATTACK_ATTRIBUTE_PAIR_CONDITION, DRAW_THEN_SHUFFLE_TWO_HAND_EFFECT,
+  ADJUST_OTHER_ACTIVE_PLAYERS_AT_SOURCE_LOCATION_MANA_EFFECT, DEFEAT_SINGLE_ACTIVE_OPPONENT_AT_CONTROLLER_BATTLEFIELD_EFFECT,
+  FORBID_OTHER_PLAYERS_AT_ACTIVE_SOURCE_LOCATION_MANA_GAIN_EFFECT, SET_SOURCE_LOCATION_BASIC_BASE_POWER_MULTIPLIER_FROM_CHOICE_EFFECT,
   'event_player_won_combat', 'event_player_lost_combat',
   'event_player_is_controller', 'event_player_is_opponent', 'event_location_equals_controller',
   'controller_command_seals_at_least', 'controller_command_seals_at_most',
@@ -232,6 +251,24 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (n.type === SOURCE_SKILL_ATTACK_JOIN_EFFECT && !isSourceSkillAttackJoinEffect(n)) {
         issue(path, 'Unsupported source skill-card attack-join effect shape', abilityId);
+      }
+      if (n.type === CURRENT_ROUND_BASIC_ATTACK_ATTRIBUTE_PAIR_CONDITION && !isCurrentRoundBasicAttackAttributePairCondition(n)) {
+        issue(path, 'Unsupported current-round basic-attack attribute-pair condition shape', abilityId);
+      }
+      if (n.type === DRAW_THEN_SHUFFLE_TWO_HAND_EFFECT && !isDrawThenShuffleTwoHandEffect(n)) {
+        issue(path, 'Unsupported post-draw hand-shuffle effect shape', abilityId);
+      }
+      if (n.type === ADJUST_OTHER_ACTIVE_PLAYERS_AT_SOURCE_LOCATION_MANA_EFFECT && !isAdjustOtherPlayersAtSourceLocationManaEffect(n)) {
+        issue(path, 'Unsupported source-location mana-loss effect shape', abilityId);
+      }
+      if (n.type === DEFEAT_SINGLE_ACTIVE_OPPONENT_AT_CONTROLLER_BATTLEFIELD_EFFECT && !isDefeatSingleOpponentAtControllerBattlefieldEffect(n)) {
+        issue(path, 'Unsupported unique-opponent defeat effect shape', abilityId);
+      }
+      if (n.type === FORBID_OTHER_PLAYERS_AT_ACTIVE_SOURCE_LOCATION_MANA_GAIN_EFFECT && !isForbidOtherPlayersAtActiveSourceLocationManaGainEffect(n)) {
+        issue(path, 'Unsupported active source-location mana-gain forbid effect shape', abilityId);
+      }
+      if (n.type === SET_SOURCE_LOCATION_BASIC_BASE_POWER_MULTIPLIER_FROM_CHOICE_EFFECT && !isSetSourceLocationBasicBasePowerMultiplierEffect(n)) {
+        issue(path, 'Unsupported source-location basic base-Power multiplier effect shape', abilityId);
       }
       if (['player_flag_equals', 'player_flag_number_at_least', 'player_flag_number_current_round', 'player_flag_number_not_current_round'].includes(str(n.type))) {
         if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Structured player-flag condition is supported only as a direct ability condition', abilityId);
@@ -509,6 +546,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (containsSourceSkillAttackJoinNode(candidateAbility.effects) &&
           !isAcceptedSourceSkillAttackJoinAbility(candidateAbility)) {
         issue('sourceSkillAttackJoin.gateway', 'Source skill-card attack join requires the exact phase-action whole-ability semantic', id);
+      }
+      if (containsSourceLocationRunePrivilegedNode(candidateAbility) &&
+          !isAcceptedSourceLocationRunePrivilegedAbility(candidateAbility)) {
+        issue('sourceLocationRune.gateway', 'Source-location/rune privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;
