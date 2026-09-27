@@ -5602,8 +5602,8 @@ Allowed verdicts:
 ## TASK P3-S-OWNER-SPARTACUS-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `BLOCKED_ON_SEAL_POWER_READINESS`
-Base: exact future Spartacus seal-power readiness A-sync commit carrying this task block
+Status: `READY`
+Base: exact Spartacus seal-power readiness A-sync commit; formal Candidate must mechanically bind the synchronization commit as its Base
 Owner root: `servant.spartacus`
 Canonical owner-complete consumer scope: all three Spartacus skills together
 
@@ -5665,7 +5665,7 @@ Allowed verdicts:
 ## TASK P3-B-SPARTACUS-SEAL-POWER-READINESS-CAPABILITY
 
 Owner: Codex B
-Status: `IMPLEMENTATION_CANDIDATE_READY_FOR_FRESH_R`
+Status: `SYNCHRONIZED`
 Base: `7f0dc16fec89bcbbd78681e7cfc3036616a5c68b`
 Classification: bounded zero-credit owner-readiness prerequisite for current owner `servant.spartacus`
 
@@ -5695,6 +5695,10 @@ Verification evidence:
 - R2 P1 closure: persisted normal/Ruler use-round markers require underlying use provenance — normal uses carry authenticated source/ability/before/after records cross-bound to dedicated `abilityUsage` execution counters, while Ruler markers must equal the latest authenticated physical binding `spentRound`; marker-only forgeries fail closed;
 - R3 predecessor Candidate `2a057640c066ef47b82e90fa66df6bb31e89969a` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/470#issuecomment-5858346066`;
 - R3 P1 closure: normal and Ruler persisted use-round marker reconciliation is bidirectional — every marker must equal the latest authenticated provenance round and every provenance-backed player/issuer must have that exact marker; deleting only the marker from a real authenticated use now fails closed before sc1 eligibility can undercount;
+- final accepted Candidate `c5c418a0c1227924abdac5de6707ebeacbe074a0` received `IMPLEMENTATION_ACCEPTED_CANDIDATE`; canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/470#issuecomment-5858470246`;
+- exact-Candidate Phase 3 Pre-Review Gate run `36339293812` succeeded;
+- acceptance synchronization: `docs/reports/2026-09-28-p3-a-spartacus-seal-power-readiness-capability-acceptance-synchronization.md`;
+- A-rescan confirms this batch closed the complete currently discoverable Spartacus sc1/sc3 generic seal-power gap set; sc2 remains covered by accepted FB2-48 and no additional owner-readiness blocker is present before formal consumer authoring;
 - dedicated Spartacus seal-power readiness focused suite `20/20 PASS`;
 - affected serial `10 files / 227 tests PASS`;
 - typecheck PASS;
@@ -5714,6 +5718,17 @@ Allowed verdicts:
 - `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 - `IMPLEMENTATION_NEEDS_REVISION`
 
+## P3-A-SPARTACUS-SEAL-POWER-READINESS-CAPABILITY-ACCEPTANCE-SYNC
+
+- PR #470 exact successor Candidate `c5c418a0c1227924abdac5de6707ebeacbe074a0` received `IMPLEMENTATION_ACCEPTED_CANDIDATE` from fresh independent R.
+- Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/470#issuecomment-5858470246`.
+- Accepted scope is the complete bounded zero-credit Spartacus sc1/sc3 seal-power readiness family only; `data/authoring/**` remains unchanged and no migration credit is added.
+- R1/R2/R3 closure collectively authenticates physical normal/Ruler seal resources, grant/use provenance, exact marker reconciliation, replacement behavior, live aura, formula power, round lifecycle, and persisted corruption fail-closed boundaries.
+- Exact-Candidate Phase 3 Pre-Review Gate run `36339293812` succeeded.
+- Mechanical A-rescan finds no additional currently discoverable readiness gap for the three-skill Spartacus owner batch: sc1/sc3 now have accepted generic seal-power support and sc2 retains accepted FB2-48 support.
+- Strict formal accounting remains `137/944`, remaining `807`; this readiness transaction is permanently zero-credit.
+- Current owner remains `servant.spartacus`; execution returns immediately to `P3-S-OWNER-SPARTACUS-COMPLETE-MIGRATION` for sc1 + preservation-only sc2 + sc3 together. Do not advance owners.
+- Detailed sync: `docs/reports/2026-09-28-p3-a-spartacus-seal-power-readiness-capability-acceptance-synchronization.md`.
 ## TASK P3-B-SPARTACUS-ACCEPTED-SEAM-RECOVERY
 
 Owner: Codex B
