@@ -140,6 +140,20 @@ describe('P3 setup create-to-skill current-lineage alignment', () => {
     expect(JSON.stringify(current.state)).toBe(before);
   });
 
+  it('rejects creates plus a non-skill destination without legacy fallback or mutation', () => {
+    const current = session();
+    const definition = current.state.abilityRuntime!.pack.cards['master.maiya.skill.military']!;
+    const ability = definition.abilities.find((candidate) => candidate.id === 'military.has-support-shot')!;
+    ability.creates = ability.effects.splice(0);
+    ability.creates[0]!.to = { zone: 'deck' };
+    current.state.cards = current.state.cards.filter((card) => card.definitionId !== 'master.maiya.deck.support-shot');
+    const before = JSON.stringify(current.state);
+
+    expect(() => processAbilityEvent(current.state, { id: 'create-card-in-creates-deck', type: 'game_start' }))
+      .toThrow(/resolution_failed|unsupported/i);
+    expect(JSON.stringify(current.state)).toBe(before);
+  });
+
   it('rejects an unknown target definition before creation and preserves the transaction', () => {
     const current = session();
     const definition = current.state.abilityRuntime!.pack.cards['master.olga-marie.skill.astronomical-science']!;
