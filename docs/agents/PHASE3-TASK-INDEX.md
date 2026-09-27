@@ -5510,8 +5510,8 @@ Allowed verdicts:
 ## TASK P3-S-OWNER-SKADI-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `READY`
-Base: exact future Raido movement capability acceptance-sync commit carrying the refreshed task block
+Status: `MIGRATION_CANDIDATE_READY_FOR_FRESH_R`
+Base: `bc4304ebbde331af6e2d00c4d33a1fedde6fbf79`
 Owner root: `servant.skadi`
 Formal owner scope: all three current-main remaining frozen Skadi skills together
 
@@ -5559,6 +5559,17 @@ Accounting boundary:
 - Base strict formal accounting is `134/944` after Sitonai synchronization;
 - no Skadi credit before exact-Candidate `MIGRATION_ACCEPTED` + subsequent A-sync/accounting;
 - because there is no prior Skadi formal migration credit, an accepted synchronized full owner batch can add exactly three identities and move the next strict target to `137/944`.
+
+Current implementation evidence:
+- exact formal Base is Raido capability A-sync `bc4304ebbde331af6e2d00c4d33a1fedde6fbf79`;
+- canonical `servant.skadi.json` contains exactly sc-skadi-1 / sc-skadi-2 / sc-skadi-3 plus the recertified 12-card deck;
+- source semantics were mechanically recertified against locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9` and frozen CHM/development evidence;
+- formal consumer code consumes accepted zero-credit prerequisites PR #466 (`f807936f...`) and PR #467 (`b94a44ee...`) without re-credit;
+- focused owner regression `9/9 PASS`; affected serial `9 files / 179 tests PASS`;
+- typecheck/content validate/content compile/generated determinism/diff-check PASS;
+- Base-to-worktree production `packages/rules/src` diff EMPTY; Skadi/card-name/SkillLib identity audit clean;
+- strict formal accounting remains `134/944`, remaining `810`, pending exact-Candidate fresh independent R and subsequent A-sync/accounting;
+- detailed result: `docs/reports/2026-09-27-p3-s-owner-skadi-complete-migration-result.md`.
 
 Allowed verdicts:
 - `MIGRATION_ACCEPTED`
