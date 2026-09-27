@@ -5436,11 +5436,23 @@ R1 closure:
 - Mechanical frozen-inventory continuity selects `servant.skadi` next. Current canonical Skadi authoring is absent and targeted historical report search found no prior formal Skadi migration acceptance, so all three frozen Skadi identities are the next owner-complete scope.
 - Detailed sync: `docs/reports/2026-09-27-p3-a-owner-sitonai-acceptance-synchronization.md`.
 
+## P3-A-SKADI-RUNE-CASTLE-READINESS-CAPABILITY-ACCEPTANCE-SYNC
+
+- PR #466 exact successor Candidate `f807936f26d3e61dc2454a59f918de073fcfeb4f` received `IMPLEMENTATION_ACCEPTED_CANDIDATE` from fresh independent R.
+- Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/466#issuecomment-5854715176`.
+- Accepted scope is the bounded Skadi rune/castle generic capability only; `data/authoring/**` remains unchanged and this synchronization grants zero migration credit.
+- Final review closure confirms exact pay-1 legality: authoritative pre-payment affordability remains, the post-payment path does not demand a second mana, nonempty-deck execution revalidation remains fail closed, and exactly 1 starting mana reaches the private continuation at 0 mana.
+- Exact-Candidate Phase 3 Pre-Review Gate run `36309515122` succeeded.
+- Mechanical A rescan confirms all three frozen Skadi identities still have `hasConfirmedOverride=true`, `hasAuthoringCard=false`, canonical `servant.skadi.json` is still absent, and no prior formal Skadi migration acceptance exists.
+- Current-main strict formal accounting remains `134/944`; remaining `810`.
+- Current owner remains `servant.skadi`; execution returns immediately to `P3-S-OWNER-SKADI-COMPLETE-MIGRATION` for all three skills together. Do not advance owners.
+- Detailed sync: `docs/reports/2026-09-27-p3-a-skadi-rune-castle-readiness-capability-acceptance-synchronization.md`.
+
 ## TASK P3-S-OWNER-SKADI-COMPLETE-MIGRATION
 
 Owner: Codex S
 Status: `READY`
-Base: exact Sitonai owner acceptance-sync commit carrying this task block
+Base: exact Skadi rune/castle capability acceptance-sync commit carrying this refreshed task block
 Owner root: `servant.skadi`
 Formal owner scope: all three current-main remaining frozen Skadi skills together
 
