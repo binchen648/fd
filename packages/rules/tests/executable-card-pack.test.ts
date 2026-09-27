@@ -330,6 +330,7 @@ describe('ExecutableCardPack compiler', () => {
     ['extra target', (ability: any) => { ability.targets = [{ id: 'target', type: 'player' }]; }],
     ['nested continuation', (ability: any) => { ability.effects[0].then = [{ type: 'draw_cards', count: 1 }]; }],
     ['wrong destination', (ability: any) => { ability.effects[0].to = { zone: 'deck' }; }],
+    ['non-master-skill target definition', (ability: any) => { ability.effects[0].cardId = 'basic.strength.1'; }],
     ['create_card moved to creates', (ability: any) => { ability.creates = ability.effects.splice(0); }],
     ['create_card moved to creates and deck', (ability: any) => {
       ability.creates = ability.effects.splice(0);
@@ -348,7 +349,7 @@ describe('ExecutableCardPack compiler', () => {
       .abilities!.find((candidate) => candidate.id === 'military.has-support-shot')!;
     mutate(ability);
 
-    expect(() => compileExecutableCardPack(input)).toThrow(/Unsupported setup create-to-skill semantic shape|Executable compilation rejected unsupported semantics/);
+    expect(() => compileExecutableCardPack(input)).toThrow(/Unsupported setup create-to-skill semantic shape|Invalid setup create-to-skill target definition|Executable compilation rejected unsupported semantics/);
   });
 
   it('rejects a setup create-to-skill target absent from the compiled pack', () => {

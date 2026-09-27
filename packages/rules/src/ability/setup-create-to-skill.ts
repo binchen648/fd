@@ -1,4 +1,4 @@
-import type { AuthoringAbility } from './types';
+import type { AuthoringAbility, ExecutableCardDefinition } from './types';
 
 function record(value: unknown): Record<string, unknown> {
   return value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : {};
@@ -44,4 +44,20 @@ export function isSetupCreateToSkillSemantic(ability: AuthoringAbility): boolean
     effect.owner === undefined &&
     effect.then === undefined &&
     Object.keys(effect).every((key) => ['type', 'cardId', 'to'].includes(key));
+}
+
+/**
+ * Setup creation may only point at a deferred, automatic master skill owned by
+ * the same master definition as the source. `initialPlacement: outside_game`
+ * is the authoring marker for that deferred entry and is intentionally allowed;
+ * `initialZone` is the compiled marker for cards that would enter at setup.
+ */
+export function isSetupCreateToSkillTargetDefinition(
+  source: ExecutableCardDefinition | undefined,
+  target: ExecutableCardDefinition | undefined,
+): boolean {
+  return !!source && !!target &&
+    source.cardType === 'master_skill' && typeof source.ownerId === 'string' &&
+    target.cardType === 'master_skill' && target.mode === 'automatic' &&
+    target.ownerId === source.ownerId && target.initialZone === undefined;
 }

@@ -1,9 +1,10 @@
 import type { GameState, PlayerState } from '../schema/game';
 import type { LocationId } from '../schema/location';
-import type { AbilityRuntime, PlayerId, SafeEvent } from './types';
+import type { AbilityRuntime, ExecutableCardDefinition, PlayerId, SafeEvent } from './types';
 import { clearTransientCardTransformState } from './card-instance-state';
 import { isCardCloseForbidden } from './card-close-forbid';
 import { grantMana } from '../core/rule-overrides';
+import { isSetupCreateToSkillSemantic, isSetupCreateToSkillTargetDefinition } from './setup-create-to-skill';
 
 export type EffectExecutionStatus = 'applied' | 'no_op';
 export type BindingFieldType = 'number' | 'player_ids' | 'boolean' | 'status';
@@ -1094,18 +1095,41 @@ function createCard(
   if (!runtime || !runtime.pack.cards[effect.cardId]) {
     throw new ResolutionRuntimeError('missing_created_card_definition', `Missing created card definition '${effect.cardId}'.`);
   }
-
-  const existing = transaction.workingState.cards.filter((candidate) =>
-    candidate.definitionId === effect.cardId &&
-    (candidate.ownerPlayerId === transaction.context.controllerId ||
-      candidate.controllerPlayerId === transaction.context.controllerId ||
-      candidate.generatedBy === transaction.context.sourceCardId));
+  const source = transaction.workingState.cards.find((candidate) => candidate.instanceId === transaction.context.sourceCardId);
+  const sourceDefinition = source ? runtime?.pack.cards[source.definitionId] as ExecutableCardDefinition | undefined : undefined;
+  const sourceAbility = sourceDefinition?.abilities.find((candidate) => candidate.id === transaction.context.abilityId);
+  // Authoring-only synthetic fixtures do not carry executable ownership
+  // metadata. Production packs always carry contentIdentity/ownerId, so only
+  // those packs enter the setup authority contract.
+  const isExecutableSetupRoute = !!sourceDefinition && !!sourceAbility &&
+    isSetupCreateToSkillSemantic(sourceAbility) &&
+    (sourceDefinition.ownerId !== undefined || runtime.pack.contentIdentity !== undefined);
+  let existing: GameState['cards'][number][];
+  if (isExecutableSetupRoute) {
+    const controller = transaction.workingState.players.find((candidate) => candidate.id === transaction.context.controllerId);
+    const targetDefinition = runtime.pack.cards[effect.cardId] as ExecutableCardDefinition | undefined;
+    if (!source || !controller || !sourceDefinition ||
+      !isCanonicalSetupSourceCard(transaction, source, sourceDefinition, controller.masterCardId) ||
+      !isSetupCreateToSkillTargetDefinition(sourceDefinition, targetDefinition)) {
+      throw new ResolutionRuntimeError('invalid_setup_source', 'Setup create-to-skill source or target is not canonical.');
+    }
+    // Cardinality is global for the owner-specific definition. Do not filter
+    // by mutable provenance fields before checking whether a duplicate exists.
+    existing = transaction.workingState.cards.filter((candidate) => candidate.definitionId === effect.cardId);
+  } else {
+    existing = transaction.workingState.cards.filter((candidate) =>
+      candidate.definitionId === effect.cardId &&
+      (candidate.ownerPlayerId === transaction.context.controllerId ||
+        candidate.controllerPlayerId === transaction.context.controllerId ||
+        candidate.generatedBy === transaction.context.sourceCardId));
+  }
   if (existing.length > 0) {
     if (existing.length !== 1 || !isCanonicalSetupSkillCard(
       existing[0]!,
       runtime,
       transaction.context.controllerId,
       transaction.context.sourceCardId,
+      transaction.workingState.round.roundNumber,
     )) {
       throw new ResolutionRuntimeError('duplicate_created_card', `Card definition '${effect.cardId}' already exists without matching provenance.`);
     }
@@ -1173,6 +1197,7 @@ function isCanonicalSetupSkillCard(
   runtime: AbilityRuntime,
   controllerId: PlayerId,
   sourceCardId: string,
+  currentRound: number,
 ): boolean {
   if (card.ownerPlayerId !== controllerId ||
     card.controllerPlayerId !== controllerId ||
@@ -1182,12 +1207,41 @@ function isCanonicalSetupSkillCard(
     card.visibility.scope !== 'owner_only' ||
     card.visibility.ownerPlayerId !== controllerId) return false;
 
-  const cardState = runtime.cardState[card.instanceId];
+  return isCanonicalSetupCardState(runtime, card.instanceId, currentRound);
+}
+
+function isCanonicalSetupCardState(runtime: AbilityRuntime, cardInstanceId: string, currentRound: number): boolean {
+  const cardState = runtime.cardState[cardInstanceId];
   return !!cardState &&
     typeof cardState.active === 'boolean' && cardState.active === false &&
     typeof cardState.faceDown === 'boolean' && cardState.faceDown === false &&
     Number.isInteger(cardState.playedRound) && cardState.playedRound >= 0 &&
+    cardState.playedRound <= currentRound &&
     Object.keys(cardState).every((key) => ['active', 'faceDown', 'playedRound'].includes(key));
+}
+
+function isCanonicalSetupSourceCard(
+  transaction: AbilityResolutionTransaction,
+  source: GameState['cards'][number],
+  sourceDefinition: ExecutableCardDefinition,
+  controllerMasterId: string,
+): boolean {
+  const controllerId = transaction.context.controllerId;
+  return source.ownerPlayerId === controllerId &&
+    source.controllerPlayerId === controllerId &&
+    source.zone === 'skill' &&
+    source.generatedBy === undefined &&
+    Object.keys(source.visibility).length === 2 &&
+    source.visibility.scope === 'owner_only' &&
+    source.visibility.ownerPlayerId === controllerId &&
+    sourceDefinition.cardType === 'master_skill' &&
+    sourceDefinition.mode === 'automatic' &&
+    sourceDefinition.ownerId === controllerMasterId &&
+    isCanonicalSetupCardState(
+      transaction.workingState.abilityRuntime!,
+      source.instanceId,
+      transaction.workingState.round.roundNumber,
+    );
 }
 
 function moveAllRemaining(

@@ -107,7 +107,7 @@ describe('P3 setup create-to-skill current-lineage alignment', () => {
     expect(JSON.stringify(current.state)).toBe(before);
   });
 
-  it.each(['duplicate', 'wrong-owner', 'public', 'active', 'face-down', 'missing-card-state'] as const)('rejects non-canonical existing setup material (%s) atomically', (variant) => {
+  it.each(['duplicate', 'wrong-owner', 'coordinated-identity', 'public', 'active', 'face-down', 'future-round', 'missing-card-state'] as const)('rejects non-canonical existing setup material (%s) atomically', (variant) => {
     const current = session();
     const { playerId } = setupSource(current, 'master.shinji', 'master.shinji.skill.useless-person');
     const created = current.state.cards.find((card) => card.ownerPlayerId === playerId && card.definitionId === 'master.shinji.skill.false-attendant-book')!;
@@ -117,12 +117,19 @@ describe('P3 setup create-to-skill current-lineage alignment', () => {
       current.state.abilityRuntime!.cardState[duplicate.instanceId] = structuredClone(current.state.abilityRuntime!.cardState[created.instanceId]!);
     } else if (variant === 'wrong-owner') {
       created.ownerPlayerId = 'p7' === playerId ? 'p6' : 'p7';
+    } else if (variant === 'coordinated-identity') {
+      const foreignPlayerId = 'p7' === playerId ? 'p6' : 'p7';
+      created.ownerPlayerId = foreignPlayerId;
+      created.controllerPlayerId = foreignPlayerId;
+      created.generatedBy = 'unrelated-source';
     } else if (variant === 'public') {
       created.visibility = { scope: 'public' };
     } else if (variant === 'active') {
       current.state.abilityRuntime!.cardState[created.instanceId]!.active = true;
     } else if (variant === 'face-down') {
       current.state.abilityRuntime!.cardState[created.instanceId]!.faceDown = true;
+    } else if (variant === 'future-round') {
+      current.state.abilityRuntime!.cardState[created.instanceId]!.playedRound = current.state.round.roundNumber + 99;
     } else {
       delete current.state.abilityRuntime!.cardState[created.instanceId];
     }
@@ -132,6 +139,47 @@ describe('P3 setup create-to-skill current-lineage alignment', () => {
       .toThrow(/duplicate_created_card|matching provenance/i);
     expect(JSON.stringify(current.state)).toBe(before);
   });
+
+  it('rejects a non-master-skill target definition before any card is created', () => {
+    const current = session();
+    const definition = current.state.abilityRuntime!.pack.cards['master.maiya.skill.military']!;
+    const ability = definition.abilities.find((candidate) => candidate.id === 'military.has-support-shot')!;
+    ability.effects[0]!.cardId = 'basic.strength.1';
+    const before = JSON.stringify(current.state);
+
+    expect(() => processAbilityEvent(current.state, { id: 'invalid-setup-target-definition', type: 'game_start' }))
+      .toThrow(/invalid_setup_source|resolution_failed|canonical/i);
+    expect(JSON.stringify(current.state)).toBe(before);
+  });
+
+  it.each(['source-hand', 'source-wrong-owner', 'source-wrong-controller', 'source-definition-owner', 'source-missing-card-state'] as const)(
+    'rejects a non-canonical setup source (%s) atomically',
+    (variant) => {
+      const current = session();
+      const { playerId, source } = setupSource(current, 'master.maiya', 'master.maiya.skill.military');
+      const targetId = 'master.maiya.deck.support-shot';
+      current.state.cards = current.state.cards.filter((card) => card.definitionId !== targetId);
+      if (variant === 'source-hand') {
+        source.zone = 'hand';
+      } else if (variant === 'source-wrong-owner') {
+        const foreignPlayerId = playerId === 'p7' ? 'p6' : 'p7';
+        source.ownerPlayerId = foreignPlayerId;
+      } else if (variant === 'source-wrong-controller') {
+        const foreignPlayerId = playerId === 'p7' ? 'p6' : 'p7';
+        source.controllerPlayerId = foreignPlayerId;
+      } else if (variant === 'source-definition-owner') {
+        current.state.abilityRuntime!.pack.cards[source.definitionId]!.ownerId = 'master.other';
+      } else {
+        delete current.state.abilityRuntime!.cardState[source.instanceId];
+      }
+      const before = JSON.stringify(current.state);
+
+      expect(() => processAbilityEvent(current.state, { id: `invalid-setup-source-${variant}`, type: 'game_start' }))
+        .toThrow(/invalid_setup_source|resolution_failed|canonical/i);
+      expect(JSON.stringify(current.state)).toBe(before);
+      expect(current.state.cards.some((card) => card.definitionId === targetId)).toBe(false);
+    },
+  );
 
   it('rejects a corrupted routed graph without legacy fallback or partial mutation', () => {
     const current = session();

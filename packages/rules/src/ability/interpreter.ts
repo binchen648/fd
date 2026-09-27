@@ -274,6 +274,19 @@ export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPa
     manaGainedThisRound: { round: s.round.roundNumber, byPlayer: {} },
     playRulesVersion: options.playRulesVersion ?? 'explicit-v1',
     playCounters: { round: s.round.roundNumber, cardsPlayedByPlayer: {}, faceUpCardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} } };
+  // Setup sources are already present in the initial card state, so give only
+  // this semantic family an explicit canonical runtime state before game_start.
+  // This lets the setup preflight distinguish a valid source from a deleted or
+  // malformed card-state record without changing unrelated card initialization.
+  for (const instance of s.cards) {
+    const definition = pack.cards[instance.definitionId];
+    if (!definition?.abilities.some(isSetupCreateToSkillCandidate)) continue;
+    s.abilityRuntime.cardState[instance.instanceId] = {
+      active: false,
+      faceDown: false,
+      playedRound: s.round.roundNumber,
+    };
+  }
   initializeEventRulePlacements(s, pack);
 }
 export function createBattleResult(data: BattleResultData): BattleResult {
