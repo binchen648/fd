@@ -5583,6 +5583,79 @@ Allowed verdicts:
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
 
+## P3-A-OWNER-SKADI-ACCEPTANCE-SYNC
+
+- PR #468 exact successor Candidate `7a0e4c4087a01f1c37f4676dc1e62e69d8423e15` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/468#issuecomment-5855787772`.
+- Accepted formal owner scope is exactly all three current-main remaining Skadi identities: `servant.skadi.skill.sc-skadi-1` through `servant.skadi.skill.sc-skadi-3`.
+- Accepted prerequisite PR #466 and PR #467 remain permanently zero-credit capability/readiness seams.
+- Final review closure confirms shared Allfather wisdom-action once-per-round gating, Peorth `this_round` terrain expiry, guarded-Raido loader/runtime fail-closed coverage, and preservation of the historical unguarded PR #467 Raido contract.
+- Exact-Candidate Phase 3 Pre-Review Gate run `36318276531` succeeded.
+- Independent exact-Candidate closure: owner focused `11/11 PASS`; Raido readiness `6/6 PASS`; affected serial `12 files / 238 tests PASS`; typecheck/content validate/content compile/generated determinism/diff-check PASS; production Skadi/card-name/SkillLib identity-routing audit clean.
+- Current-main strict formal accounting moves `134/944 -> 137/944`; remaining `807`.
+- Owner-complete workflow remains authoritative: only after an owner is ACCEPTED + A-synced/accounted may execution move to the next owner.
+- Mechanical frozen-inventory continuity selects `servant.spartacus` next (`servant.skadi` first-occurrence owner index 235, `servant.spartacus` index 236 of 251 owners).
+- Spartacus has no prior formal migration acceptance and no current canonical owner archive. Inventory `hasAuthoringCard=true` for sc-spartacus-2 is historical structured source evidence, not Phase 3 migration credit; all three Spartacus frozen identities remain in the next formal owner scope.
+- Detailed sync: `docs/reports/2026-09-27-p3-a-owner-skadi-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-SPARTACUS-COMPLETE-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: exact Skadi owner acceptance-sync commit carrying this task block
+Owner root: `servant.spartacus`
+Formal owner scope: all three current-main remaining frozen Spartacus skills together
+
+Remaining frozen skills:
+- `servant.spartacus.skill.sc-spartacus-1` — 反叛
+- `servant.spartacus.skill.sc-spartacus-2` — 伤兽的咆哮
+- `servant.spartacus.skill.sc-spartacus-3` — 不屈的意志
+
+Source/provenance:
+- frozen inventory/reference records `hasConfirmedOverride=true` for all three Spartacus identities;
+- inventory records sc-spartacus-1/sc-spartacus-3 with `hasAuthoringCard=false` and sc-spartacus-2 with historical `hasAuthoringCard=true`;
+- canonical `data/authoring/servants/servant.spartacus.json` is absent and current `data/authoring/**` contains no sc-spartacus-2 entry;
+- targeted non-aggregate report search found no prior formal `MIGRATION_ACCEPTED` for `servant.spartacus` or sc-spartacus-2;
+- shared source grounding: `FD全卡图鉴V2.0.chm -> 从者/狂战士/英文版/斯巴达克斯.htm`, plus development image `Fate_Domination-开发版/images/servants/斯巴达克斯.png`;
+- historical handlers are evidence only and never authorize identity-keyed production routing.
+
+Locked Reference observations to mechanically recertify before encoding:
+- exact Reference commit `b2f9fa15fba07c63530bbf4612b03b8b704755f9`, class `Berserker`;
+- exact 12-card deck: `card.cardb1`, `card.cardb2`, `card.cardb4`, `card.cardb4`, `card.cardb4`, `card.cardb5`, `card.cardb5`, `card.cardb6`, `card.cardq1`, `card.cardq1`, `card.cardq2`, `card.cardluck`;
+- sc-spartacus-1 static metadata: `力量`, printed cost `4`, legacy requirement `4`, base power `6`, true-name release on play; observed combat formula counts engaged opponents who used normal/Ruler command seals this round and applies the source-defined `6 - 2X` power formula where X is Spartacus's remaining normal command-seal count;
+- sc-spartacus-2 static metadata: `宝具`, printed cost `3`, legacy requirement `8`, base power `4`; source text grants post-battle VP equal to one engaged opponent's aggregate power divided by five, rounded down; S must recertify exact target/timing selection before encoding;
+- sc-spartacus-3 static metadata: `被动`, printed cost `0`, legacy requirement `0`, base power `0`; observed Reference replaces normal/Ruler command-seal effects with `+4 aggregate power`, supports authoritative selection among multiple controlled Ruler seals, and applies an Action-stage power rule based on unused normal/Ruler seals held by engaged opponents.
+
+Implementation requirements:
+- migrate all three Spartacus frozen skills together in one owner-complete formal batch; do not split the owner across independent migration PRs;
+- recertify source semantics against the locked source hierarchy before encoding; Reference runtime is observation/evidence, not canonical authority by itself;
+- do not treat inventory `hasAuthoringCard=true` as migration credit without exact formal acceptance evidence;
+- no `servant.spartacus` / card-id / card-name / printed-text / Chinese-text identity routing in production runtime;
+- no SkillLib fallback and no runtime source-text parsing;
+- any missing runtime capability must be generic, data-driven, fail closed, narrowly source-grounded, and focused-tested;
+- if bounded zero-credit capability/readiness work is required, complete/review/A-sync it and return to this same Spartacus owner before moving on;
+- preserve exact Base/Candidate lineage; no merge, retarget, reset/discard, force push, or worktree proliferation.
+
+Verification:
+- exact frozen owner scope = all three Spartacus identities;
+- source/static metadata/deck recertification against locked Reference and source hierarchy;
+- focused semantic coverage for every encoded branch, including command-seal/Ruler-seal ownership and round-lifecycle boundaries;
+- fail-closed coverage for every new privileged/generic capability shell;
+- affected loader/interpreter/combat/session/content tests dictated by actual diff;
+- typecheck + content validate/compile + generated determinism + `git diff --check`;
+- production identity-routing audit clean;
+- freeze exact Base/Candidate, clean fixed Work, PR, policy gate, and one fresh independent R for the whole owner batch.
+
+Accounting boundary:
+- Base strict formal accounting is `137/944` after Skadi synchronization; remaining `807`;
+- no Spartacus credit before exact-Candidate `MIGRATION_ACCEPTED` + subsequent A-sync/accounting;
+- because no prior Spartacus formal migration credit was found, an accepted synchronized full owner batch can add exactly three identities and move the next strict target to `140/944`, remaining `804`.
+
+Allowed verdicts:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `MIGRATION_BLOCKED`
+
 ## TASK P3-B-SKADI-RUNE-CASTLE-READINESS-CAPABILITY
 
 Owner: Codex B
