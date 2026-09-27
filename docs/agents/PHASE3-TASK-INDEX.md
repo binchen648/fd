@@ -5602,8 +5602,8 @@ Allowed verdicts:
 ## TASK P3-S-OWNER-SPARTACUS-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `READY`
-Base: exact Spartacus seal-power readiness A-sync commit; formal Candidate must mechanically bind the synchronization commit as its Base
+Status: `MIGRATION_CANDIDATE_READY_FOR_FRESH_R`
+Base: `20a59b9dd3fad4d4e0f49c22176d42941bd8daab` (exact accepted Spartacus seal-power readiness A-sync)
 Owner root: `servant.spartacus`
 Canonical owner-complete consumer scope: all three Spartacus skills together
 
@@ -5650,6 +5650,19 @@ Verification:
 - typecheck + content validate/compile + generated determinism + `git diff --check`;
 - production identity-routing audit clean;
 - freeze exact Base/Candidate, clean fixed Work, PR, policy gate, and one fresh independent R for the whole owner batch.
+
+Formal Candidate preparation evidence:
+- accepted readiness input: PR #470 final Candidate `c5c418a0c1227924abdac5de6707ebeacbe074a0`, canonical acceptance `https://github.com/binchen648/fd/pull/470#issuecomment-5858470246`, zero-credit A-sync/Base `20a59b9dd3fad4d4e0f49c22176d42941bd8daab`;
+- canonical owner archive adds all three frozen Spartacus cards together; sc2 card object is structurally identical to historical accepted PR #414 Candidate `58fffb751e25a9ccc2f28470a48255a07ba11493` and remains preservation-only;
+- frozen material overlap mechanically changes `137 -> 140`, with sc1/sc2/sc3 each exactly once and duplicate frozen count `0`; candidate migration credit remains exactly `2` because sc2 was already formally credited;
+- focused owner-complete regression `8/8 PASS`;
+- affected serial chain `12 files / 245 tests PASS`, including final readiness `20/20`, FB2-48 `10/10`, FB2-27 Ruler `13/13`, MatchSession `33/33`, executable pack `50/50`, authoring interpreter `38/38`, combat resolver `10/10`, resolution-dataflow `15/15`, MatchSession regressions `7/7`, complex-skills `37/37`, fixed-controller command-seal `4/4`;
+- typecheck PASS; content validate/compile PASS (`7 masters / 12 servants / 20 events / 0 blocking issues`); generated determinism PASS with unchanged hashes;
+- official `npm run test:ci -- --maxWorkers=2` probe produced `1141 PASS / 15 FAIL`; exact Base independently reproduces all `10` tracked failures in five unchanged historical test files, while the additional five failures come from ignored/untracked `packages/rules/tests/.fd-shiki-runtime-debug.test.ts` (`DEBUG_TRACKED=false`). No Spartacus focused/affected test fails;
+- complementary full-suite-minus-mechanically-reproduced-Base-debt run: `152 files / 1127 tests PASS`;
+- exact Base Astolfo stale material assertion already fails at `137` against hard-coded `112`; formal material correctly advances the observed overlap to `140` by adding all three owner cards, without duplicates;
+- `packages/rules/src` production runtime delta is EMPTY; no new identity routing, SkillLib fallback, or source-text parsing is introduced;
+- detailed result: `docs/reports/2026-09-28-p3-s-owner-spartacus-complete-migration-result.md`.
 
 Accounting boundary:
 - Base strict formal accounting is `137/944` after Skadi synchronization; remaining `807`;
