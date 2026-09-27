@@ -5355,3 +5355,14 @@ Evidence: `docs/reports/2026-09-27-p3-b-sitonai-combination-fimbul-capability-re
 Focused capability `7/7 PASS`; affected serial chain `8 files / 162 tests PASS`; typecheck/content validate/content compile/generated determinism/diff-check PASS; production identity audit clean; `data/authoring/**` delta empty.
 
 Formal accounting remains `132/944`; remaining `812`. This task is permanently zero-credit.
+
+## P3-A-SITONAI-COMBINATION-FIMBUL-CAPABILITY-ACCEPTANCE-SYNC
+
+- PR #463 exact successor Candidate `8789fcad58867b999a9d713b83342f602fa3f775` received `IMPLEMENTATION_ACCEPTED_CANDIDATE` from fresh independent R.
+- Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/463#issuecomment-5852281710`.
+- Accepted scope is the bounded Sitonai combination/Fimbul generic capability only; Sitonai consumer authoring delta remains empty and this synchronization grants zero migration credit.
+- Final review closure confirms recursive nested timed-suppression whole-ability gating and validates draw-card counts before suppression; malformed nested wrappers and negative draw counts fail closed.
+- Exact-Candidate Phase 3 Pre-Review Gate run `36286037213` succeeded.
+- Current-main strict formal accounting remains `132/944`; remaining `812`.
+- Current owner remains `servant.sitonai`; execution returns to `P3-S-OWNER-SITONAI-COMPLETE-MIGRATION` for `sc-sitonai-1 + sc-sitonai-2` together. Already accepted FM07/R38 `sc-sitonai-3` remains preserved and must not be re-credited. Do not advance owners.
+- Detailed sync: `docs/reports/2026-09-27-p3-a-sitonai-combination-fimbul-capability-acceptance-synchronization.md`.
