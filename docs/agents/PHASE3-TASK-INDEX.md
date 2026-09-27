@@ -5602,8 +5602,8 @@ Allowed verdicts:
 ## TASK P3-S-OWNER-SPARTACUS-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `READY`
-Base: exact Skadi owner acceptance-sync commit carrying this task block
+Status: `BLOCKED_ON_ACCEPTED_SEAM_RECOVERY`
+Base: exact future Spartacus accepted-seam recovery A-sync commit carrying this task block
 Owner root: `servant.spartacus`
 Canonical owner-complete consumer scope: all three Spartacus skills together
 
@@ -5661,6 +5661,47 @@ Allowed verdicts:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+
+## TASK P3-B-SPARTACUS-ACCEPTED-SEAM-RECOVERY
+
+Owner: Codex B
+Status: `IMPLEMENTATION_REVISION_READY_FOR_FRESH_R`
+Base: `128089a18341b41b663244f6b8b23088d237f6d8`
+Classification: bounded zero-credit recovery/readiness prerequisite for current owner `servant.spartacus`
+
+Recovery scope:
+- restore the historically accepted FB2-27 identity-free Ruler seal subsystem from accepted Revision Candidate `e30e7efef3cf9fc111236599441e5a869f4bc81a` / acceptance sync `1ef03961`;
+- restore the historically accepted FB2-48 identity-free combat-opponent frozen-power VP reward from accepted Candidate `14c8688c201d4d39a85843470be6b79eec01853d` / canonical reviewer evidence `https://github.com/binchen648/fd/pull/413#issuecomment-5754051359` / acceptance sync `ff6aeba3`;
+- adapt only the generic integration wiring required by the evolved current runtime; do not redefine either accepted dedicated semantic envelope;
+- keep `data/authoring/**` unchanged and grant zero migration credit;
+- no Spartacus identity/name/printed-text routing, no runtime Chinese parsing, and no SkillLib fallback;
+- after fresh R acceptance, A-sync/rescan and return to `P3-S-OWNER-SPARTACUS-COMPLETE-MIGRATION`; do not advance owners.
+
+Verification evidence:
+- Ruler seal focused `13/13 PASS`;
+- FB2-48 focused `10/10 PASS`;
+- affected serial `8 files / 176 tests PASS`;
+- R1 predecessor Candidate `4a07140a75600f2128dab17cce264f78beae3ea4` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt evidence `https://github.com/binchen648/fd/pull/469#issuecomment-5857074164`;
+- R1 P1 closed: least-bound discovery and final ordered settlement now consume one shared immunity-filtered active-opponent domain; historical default helper behavior remains unchanged when no explicit domain is provided;
+- focused immunity regression reproduces `p2=0,p3=1,p4=1` with immune p2, excludes p2 from the pending decision, exposes p3/p4, and successfully settles `[p3,p4]`;
+- R2 predecessor Candidate `49d940a2536de55a7ed87fc26045557fc0c51358` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt evidence `https://github.com/binchen648/fd/pull/469#issuecomment-5857199684`;
+- R2 P1 closed: stale byte-equivalence provenance is removed; `e30e7efe` remains the accepted semantic baseline, while the current successor truthfully records the bounded optional eligibility-domain extension added by R1 and preserves zero-credit/no-consumer scope;
+- typecheck PASS;
+- content validate/compile PASS — `7 masters / 12 servants / 20 events / 0 blocking issues`;
+- generated determinism PASS with unchanged hashes;
+- Base-to-worktree `git diff --check` PASS;
+- `data/authoring/**` delta EMPTY;
+- production identity audit clean for `servant.spartacus`, `sc-spartacus`, Chinese owner/card names, and `SkillLib`;
+- detailed result: `docs/reports/2026-09-27-p3-b-spartacus-accepted-seam-recovery-result.md`.
+
+Accounting:
+- strict formal accounting remains `137/944`, remaining `807`;
+- historical Spartacus S2 credit remains preservation-only and is not re-counted;
+- this recovery task is permanently zero-credit.
+
+Allowed verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
 
 ## TASK P3-B-SKADI-RUNE-CASTLE-READINESS-CAPABILITY
 

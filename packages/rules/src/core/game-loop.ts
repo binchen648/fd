@@ -296,6 +296,7 @@ function queuePostScoringBattleResultEvents(
     resultIds.push(resultId);
     const loserIds = battleResultLoserIds(result);
     const participants = result.participantBreakdowns.map((participant) => participant.playerId);
+    const participantPowers = Object.fromEntries(result.participantBreakdowns.map((participant) => [participant.playerId, participant.effectivePower]));
     battleParticipantIds.push(...participants);
     if (!runtime.processedEvents.includes(resultId) && !pending.some((event) => event.id === resultId)) {
       pending.push({
@@ -305,6 +306,7 @@ function queuePostScoringBattleResultEvents(
         battleId,
         resultId,
         battleParticipantIds: participants,
+        battleParticipantPowers: participantPowers,
         battlefieldId: result.battlefieldId,
         battleResult: { winners: [...result.winnerPlayerIds], loserIds },
       });

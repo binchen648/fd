@@ -31,6 +31,8 @@ export * from './ability/interpreter';
 export * from './ability/card-instance-state';
 export * from './ability/card-close-forbid';
 export * from './ability/opponent-close-to-one';
+export * from './ability/ruler-seal';
+export * from './ability/combat-opponent-power-vp-reward';
 export * from './ability/report';
 export * from './ability/resolution-dataflow';
 
