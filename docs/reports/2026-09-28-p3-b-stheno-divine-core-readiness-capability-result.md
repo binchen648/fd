@@ -1,7 +1,7 @@
 # P3-B Stheno Divine Core Readiness Capability Result
 
 Role: Codex B
-Status: `IMPLEMENTATION_CANDIDATE_READY_FOR_FRESH_R`
+Status: `IMPLEMENTATION_REVISION_READY_FOR_FRESH_R`
 Date: 2026-09-28
 Task: `P3-B-STHENO-DIVINE-CORE-READINESS-CAPABILITY`
 Exact Base: `e3c61d74be6b02b186875e31191e416fc364e179`
@@ -40,6 +40,7 @@ The privileged envelope is accepted only as one exact whole-ability shape. Widen
 Generic production support is implemented without Stheno identity routing through:
 
 - `packages/rules/src/ability/divine-core-capability.ts`;
+- `packages/rules/src/ability/battle-close-draw-play-authority.ts` for host-secret authenticated draw/immediate-play provenance;
 - exact loader gateway wiring;
 - interpreter availability/transaction/settlement logic;
 - typed private interaction and transaction state;
@@ -50,7 +51,7 @@ No `data/authoring/**` consumer is changed in this readiness task. Production ru
 
 ## Focused verification
 
-`packages/rules/tests/regression/p3-stheno-divine-core-readiness-capability.test.ts`: **8/8 PASS**.
+`packages/rules/tests/regression/p3-stheno-divine-core-readiness-capability.test.ts`: **12/12 PASS**.
 
 Coverage proves:
 
@@ -61,15 +62,19 @@ Coverage proves:
 5. a mid-transaction private close choice round-trips MatchSession while widened host-signed interaction metadata is rejected;
 6. forged combat Action permission without exact immediate-play provenance is rejected on restore;
 7. completed exact immediate-play provenance round-trips while a mismatched source is rejected;
-8. compiled-pack widening rejects transactionally before Luck discard or decision staging.
+8. compiled-pack widening rejects transactionally before Luck discard or decision staging;
+9. a host-signed pending transaction cannot substitute another hand card for the exact Divine Core draw even when its pending interaction/candidate metadata is forged to match;
+10. a forged completed immediate-play history row plus a forged combat Action permission is rejected without the external authenticated authority;
+11. an immediately played card that opens ordinary on-card-played response and nested decision work pauses Divine Core and resumes only after that work settles;
+12. immediate-play provenance/permission retire on the next authoritative round, and the same physical card can be legally replayed in round two and subsequently restored.
 
 Fixture corrections made while validating restore did not broaden production semantics: the GameState battle phase is `battle` while authoring activation remains `combat`; helper definitions are installed into the trusted fixture pack before runtime initialization; UTF-8 source attributes remain exact.
 
 ## Affected verification
 
-Affected serial: **8 files / 198 tests PASS**:
+Affected serial: **8 files / 202 tests PASS**:
 
-- Stheno Divine Core readiness `8`;
+- Stheno Divine Core readiness `12`;
 - MatchSession `33`;
 - executable-card-pack `50`;
 - authoring-interpreter `38`;
@@ -90,6 +95,18 @@ Static/content gates:
 - `git diff --check`: PASS;
 - `data/authoring/**` delta: EMPTY;
 - production identity audit: `servant.stheno=0`, `sc-stheno=0`, `斯忒诺=0`, `女神的绮想=0`, `SkillLib=0`.
+
+## R1 fresh-review closure
+
+Predecessor Candidate `31e607db8be27d505d808d380cee22a0a92769a5` received `IMPLEMENTATION_NEEDS_REVISION`. Reviewer GitHub publication returned explicit 403; canonical bounded same-attempt Coordinator relay is `https://github.com/binchen648/fd/pull/472#issuecomment-5859558471`. No re-review of that exact Candidate was performed.
+
+All findings were closed together in one successor work item:
+
+- **P1 exact draw / combat-permission provenance:** new server-only authority records the exact closed-card/refund/drawn-card tuple and exact immediate-play record outside serializable GameState. Current/replay/checkpoint persistence seals this authority using the existing host secret and room scope. Restore requires the mutable transaction/history/permission state to match that authenticated authority exactly. Regressions forge `rewards[].drawnCardId` plus matching interaction metadata and forge completed history plus the permission flag; both fail closed.
+- **P1 continuation safety:** the immediate-play transaction no longer stages over ordinary nested work. Its stage/resume path blocks while a pending decision, response window, or host request exists, and ordinary command settlement re-enters the Divine Core continuation only after nested work is clear. A regression immediately plays a card that opens an `on_card_played` response followed by a nested choice and proves the Divine Core transaction remains pending until that work resolves.
+- **P2 round-bounded lifetime:** starting a later authoritative round retires prior-round immediate-play history, temporary combat Action permission, and external authority. A two-round regression legally replays the same physical card and proves later MatchSession restore remains valid.
+
+The revision remains identity-free readiness only: `data/authoring/**` is unchanged and formal accounting remains `139/944`, remaining `805`.
 
 ## Accounting / continuation
 

@@ -28,6 +28,12 @@ import {
   type OpponentCloseToOneReplayManifestSeal,
   type OpponentCloseToOneServerAuthoritySeal,
 } from './ability/opponent-close-to-one-authority';
+import {
+  isBattleCloseDrawPlayServerAuthorityConsistent,
+  persistBattleCloseDrawPlayServerAuthority,
+  restoreBattleCloseDrawPlayServerAuthority,
+  type BattleCloseDrawPlayServerAuthoritySeal,
+} from './ability/battle-close-draw-play-authority';
 import { hmacSha256Hex, sha256Hex } from './ability/portable-sha256';
 import { clearTransientCardTransformState } from './ability/card-instance-state';
 import { isNormalCardDrawSuppressed } from './ability/timed-resource-suppression';
@@ -197,6 +203,8 @@ export interface MatchReplayStateSnapshot {
   deferredRuntimeStateSeal?: DeferredRuntimeStateSeal;
   /** Authenticated FB2-49 frozen continuation; sealing secret is outside this snapshot. */
   opponentCloseToOneServerAuthority?: OpponentCloseToOneServerAuthoritySeal;
+  /** Authenticated Divine Core draw/immediate-play authority; sealing secret is outside this snapshot. */
+  battleCloseDrawPlayServerAuthority?: BattleCloseDrawPlayServerAuthoritySeal;
   logs: MatchSessionLogEntry[];
   battleHistory: GameState['battleResults'];
   consumedDirectiveCount: number;
@@ -215,6 +223,8 @@ export interface MatchSessionSnapshot {
   deferredRuntimeStateSeal?: DeferredRuntimeStateSeal;
   /** Authenticated FB2-49 frozen continuation; sealing secret is outside this snapshot. */
   opponentCloseToOneServerAuthority?: OpponentCloseToOneServerAuthoritySeal;
+  /** Authenticated Divine Core draw/immediate-play authority; sealing secret is outside this snapshot. */
+  battleCloseDrawPlayServerAuthority?: BattleCloseDrawPlayServerAuthoritySeal;
   /** Authenticated replay membership for durable host/room persistence; host scope and secret remain external. */
   opponentCloseToOneReplayManifest?: OpponentCloseToOneReplayManifestSeal;
   logs: MatchSessionLogEntry[];
@@ -243,6 +253,16 @@ function persistedOpponentCloseToOneAuthorityField(
 ): { opponentCloseToOneServerAuthority?: OpponentCloseToOneServerAuthoritySeal } {
   const seal = persistOpponentCloseToOneServerAuthority(state, persistenceSecret, persistenceScope, replayCheckpointId);
   return seal ? { opponentCloseToOneServerAuthority: seal } : {};
+}
+
+function persistedBattleCloseDrawPlayAuthorityField(
+  state: GameState,
+  persistenceSecret: string,
+  persistenceScope: string,
+  replayCheckpointId?: string,
+): { battleCloseDrawPlayServerAuthority?: BattleCloseDrawPlayServerAuthoritySeal } {
+  const seal = persistBattleCloseDrawPlayServerAuthority(state, persistenceSecret, persistenceScope, replayCheckpointId);
+  return seal ? { battleCloseDrawPlayServerAuthority: seal } : {};
 }
 
 function deferredRuntimeStateSealPayload(
@@ -2422,6 +2442,7 @@ export class MatchSession {
 
   serializeSession(): MatchSessionSnapshot {
     const authorityField = persistedOpponentCloseToOneAuthorityField(this.state, this.persistenceSecret, this.persistenceScope);
+    const battleAuthorityField = persistedBattleCloseDrawPlayAuthorityField(this.state, this.persistenceSecret, this.persistenceScope);
     const currentSeal = authorityField.opponentCloseToOneServerAuthority;
     const replayEntries = replayManifestEntries(this.replaySnapshots);
     rememberOpponentCloseToOneTrustedReplayLineage(this.persistenceScope, this.state, replayEntries);
@@ -2434,6 +2455,7 @@ export class MatchSession {
       maxActionsPerPlayer: this.maxActionsPerPlayer,
       state: structuredClone(this.state),
       ...authorityField,
+      ...battleAuthorityField,
       ...(replaySensitive ? {
         opponentCloseToOneReplayManifest: persistOpponentCloseToOneReplayManifest(
           this.state,
@@ -2506,6 +2528,13 @@ export class MatchSession {
       checkpointId,
       checkpointDigest,
     )) return false;
+    if (!restoreBattleCloseDrawPlayServerAuthority(
+      candidateState,
+      snapshot.battleCloseDrawPlayServerAuthority,
+      this.persistenceSecret,
+      this.persistenceScope,
+      checkpointId,
+    ) || !isBattleCloseDrawPlayServerAuthorityConsistent(candidateState)) return false;
     this.state = candidateState;
     this.logs = candidateLogs;
     this.battleHistory = candidateBattleHistory;
@@ -3164,6 +3193,7 @@ export class MatchSession {
       checkpointId: checkpoint.id,
       state: structuredClone(state),
       ...persistedOpponentCloseToOneAuthorityField(state, this.persistenceSecret, this.persistenceScope, checkpoint.id),
+      ...persistedBattleCloseDrawPlayAuthorityField(state, this.persistenceSecret, this.persistenceScope, checkpoint.id),
       logs: structuredClone(this.logs),
       battleHistory: structuredClone(this.battleHistory),
       consumedDirectiveCount: this.consumedDirectiveCount,
@@ -3238,6 +3268,14 @@ export function restoreMatchSession(
     persistenceSecret,
     persistenceScope,
   )) throw new Error('Invalid or missing FB2-49 persisted authority');
+  if (!restoreBattleCloseDrawPlayServerAuthority(
+    candidateState,
+    snapshot.battleCloseDrawPlayServerAuthority,
+    persistenceSecret,
+    persistenceScope,
+  ) || !isBattleCloseDrawPlayServerAuthorityConsistent(candidateState)) {
+    throw new Error('Invalid or missing battle close/draw/play persisted authority');
+  }
   const replayCheckpointIds = snapshot.replaySnapshots.map((entry) => entry.checkpointId);
   const replayEntries = replayManifestEntries(snapshot.replaySnapshots);
   const suppliedReplayManifest = snapshot.opponentCloseToOneReplayManifest !== undefined;
@@ -3278,6 +3316,18 @@ export function restoreMatchSession(
     persistenceScope,
     entry.checkpointId,
   ))) throw new Error('Invalid or missing replay deferred runtime state authority');
+  for (const entry of snapshot.replaySnapshots) {
+    const replayState = structuredClone(entry.state);
+    if (!restoreBattleCloseDrawPlayServerAuthority(
+      replayState,
+      entry.battleCloseDrawPlayServerAuthority,
+      persistenceSecret,
+      persistenceScope,
+      entry.checkpointId,
+    ) || !isBattleCloseDrawPlayServerAuthorityConsistent(replayState)) {
+      throw new Error('Invalid or missing replay battle close/draw/play persisted authority');
+    }
+  }
   const session = new MatchSession({
     seed: snapshot.seed,
     humanPlayerId: snapshot.humanPlayerId,

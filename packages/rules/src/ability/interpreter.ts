@@ -68,6 +68,12 @@ import {
 } from './opponent-close-to-one';
 import { BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT, containsBattleLuckCloseDrawPlayNode, isAcceptedBattleLuckCloseDrawPlayAbility } from './divine-core-capability';
 import {
+  copyBattleCloseDrawPlayServerAuthority,
+  rememberBattleCloseDrawImmediatePlayAuthority,
+  rememberBattleCloseDrawPlayDrawAuthority,
+  retireBattleCloseDrawPlayServerAuthorityBeforeRound,
+} from './battle-close-draw-play-authority';
+import {
   DYNAMIC_UNUSED_SEAL_POWER_RULE,
   containsCommandSealPowerPrivilegedNode,
   controllerHasSealPowerReplacementProvider,
@@ -2657,7 +2663,8 @@ function stageNextBattleCloseDrawPlayCloseChoice(s: GameState): void {
   stageNextBattleCloseDrawPlayPlayChoice(s);
 }
 function stageNextBattleCloseDrawPlayPlayChoice(s: GameState): void {
-  const r = runtime(s); const tx = r.pendingBattleCloseDrawPlayTransaction; if (!tx || r.pendingDecision) return;
+  const r = runtime(s); const tx = r.pendingBattleCloseDrawPlayTransaction;
+  if (!tx || r.pendingDecision || r.responseWindows.length || r.hostRequests.length) return;
   while (tx.playIndex < tx.opponentIds.length) {
     const playerId = tx.opponentIds[tx.playIndex]!; const reward = tx.rewards.find((entry) => entry.playerId === playerId);
     if (!reward?.drawnCardId) { tx.playIndex++; continue; }
@@ -2674,6 +2681,12 @@ function stageNextBattleCloseDrawPlayPlayChoice(s: GameState): void {
     return;
   }
   delete r.pendingBattleCloseDrawPlayTransaction;
+}
+function resumeBattleCloseDrawPlayAfterNestedWork(s: GameState): void {
+  const r = runtime(s); const tx = r.pendingBattleCloseDrawPlayTransaction;
+  if (!tx || r.pendingDecision || r.responseWindows.length || r.hostRequests.length) return;
+  if (tx.closeIndex < tx.opponentIds.length) stageNextBattleCloseDrawPlayCloseChoice(s);
+  else stageNextBattleCloseDrawPlayPlayChoice(s);
 }
 function startBattleCloseDrawPlay(s: GameState, ctx: EffectContext): void {
   const r = runtime(s); const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
@@ -4530,11 +4543,17 @@ export function processAbilitySystemEvent(s: GameState, label: string, event: Om
 }
 export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.round.roundNumber): void {
   const r = runtime(s);
-  if (r.pendingDecision || r.responseWindows.length || r.hostRequests.length) reject('pending_resolution', 'Resolve the current decision before advancing');
+  if (r.pendingDecision || r.responseWindows.length || r.hostRequests.length || r.pendingBattleCloseDrawPlayTransaction) reject('pending_resolution', 'Resolve the current decision before advancing');
   if (!Number.isInteger(round) || round < s.round.roundNumber) reject('invalid_round', 'Round cannot move backwards');
   const copy = structuredClone(s);
+  copyBattleCloseDrawPlayServerAuthority(s, copy);
   const startsNewRound = round > s.round.roundNumber;
   if (startsNewRound) {
+    runtime(copy).battleCloseDrawImmediatePlayHistory = [];
+    for (const state of Object.values(runtime(copy).cardState)) {
+      if (state.actionAbilityAllowedInCombatRound !== undefined && state.actionAbilityAllowedInCombatRound < round) delete state.actionAbilityAllowedInCombatRound;
+    }
+    retireBattleCloseDrawPlayServerAuthorityBeforeRound(copy, round);
     runtime(copy).movementDistanceThisRound = {};
     runtime(copy).battlefieldsPassedOrStayedThisRound = {};
     runtime(copy).pendingRulerSealRewards = runtime(copy).pendingRulerSealRewards.filter((reward) => reward.round >= round);
@@ -4545,6 +4564,7 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
   if (startsNewRound) processEvent(copy, { id: nextId(copy, 'round-start'), type: 'round_start' });
   const type = next === 'battle' ? 'controller_combat_action_window' : next === 'action' ? 'controller_action_window' : next === 'round_end' ? 'round_end' : 'phase_changed';
   processEvent(copy, { id: nextId(copy, 'phase'), type }); runtime(copy).revision++; Object.assign(s, copy);
+  copyBattleCloseDrawPlayServerAuthority(copy, s);
 }
 
 export function projectAbilityState(s: GameState, viewerId: string): AbilityPlayerView {
@@ -4724,6 +4744,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
             closeBattleCloseDrawPlayCard(s, opponentId!, selectedCardId);
             grantMana(s, opponentId!, refundMana, { source: 'generic' });
             const drawnCardId = drawOneBattleCloseDrawPlayCard(s, opponentId!);
+            if (drawnCardId) rememberBattleCloseDrawPlayDrawAuthority(s, {
+              controllerId: tx.controllerId, sourceCardId: tx.sourceCardId, abilityId: tx.abilityId, round: tx.round,
+              playerId: opponentId!, closedCardId: selectedCardId, refundMana, drawnCardId,
+            });
             tx.rewards.push({ playerId: opponentId!, closedCardId: selectedCardId, refundMana, ...(drawnCardId ? { drawnCardId } : {}) });
             r.events.push({ type: 'battle_opponent_attack_closed_with_refund_draw', playerId: opponentId!, controllerId: tx.controllerId,
               sourceCardId: tx.sourceCardId, abilityId: tx.abilityId, cardInstanceId: selectedCardId });
@@ -4756,9 +4780,11 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
             playBatch(s, currentPlayerId!, [{ type: 'play_card', cardInstanceId: drawn.instanceId }], 'effect');
             const playedState = r.cardState[drawn.instanceId];
             if (!playedState || playedState.playedRound !== s.round.roundNumber || playedState.faceDown !== false) reject('resolution_failed', 'Immediate drawn card did not enter authoritative played state');
+            const immediatePlayRecord = { controllerId: tx.controllerId, playerId: currentPlayerId!, cardInstanceId: drawn.instanceId,
+              sourceCardId: tx.sourceCardId, abilityId: tx.abilityId, round: s.round.roundNumber };
+            rememberBattleCloseDrawImmediatePlayAuthority(s, immediatePlayRecord);
             playedState.actionAbilityAllowedInCombatRound = s.round.roundNumber;
-            (r.battleCloseDrawImmediatePlayHistory ??= []).push({ controllerId: tx.controllerId, playerId: currentPlayerId!, cardInstanceId: drawn.instanceId,
-              sourceCardId: tx.sourceCardId, abilityId: tx.abilityId, round: s.round.roundNumber });
+            (r.battleCloseDrawImmediatePlayHistory ??= []).push(immediatePlayRecord);
             r.events.push({ type: 'battle_drawn_card_immediate_played', playerId: currentPlayerId!, sourceCardId: tx.sourceCardId,
               abilityId: tx.abilityId, cardInstanceId: drawn.instanceId });
           }
@@ -5062,7 +5088,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
     }
     default: reject('illegal_action', 'Unsupported client command');
   }
-  cleanupOngoing(s); checkFormulaTriggers(s);
+  cleanupOngoing(s); checkFormulaTriggers(s); resumeBattleCloseDrawPlayAfterNestedWork(s);
 }
 /** All eligibility/costs are checked against the pre-payment state; all cards activate before triggers. */
 function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false): void {
@@ -5156,9 +5182,11 @@ export function playAbilityCardBatch(s: GameState, playerId: string, choices: Om
 export function dispatchAbilityCommand(s: GameState, playerId: string, command: AbilityCommand): DispatchResult {
   const before = runtime(s).events.length; const beforeCalculations = runtime(s).calculations.length; const copy = structuredClone(s);
   copyOpponentCloseToOneServerAuthority(s, copy);
+  copyBattleCloseDrawPlayServerAuthority(s, copy);
   try {
     dispatch(copy, playerId, command); runtime(copy).revision++; Object.assign(s, copy);
     copyOpponentCloseToOneServerAuthority(copy, s);
+    copyBattleCloseDrawPlayServerAuthority(copy, s);
     return { ok: true, view: projectAbilityState(s, playerId),
       events: runtime(s).events.slice(before).filter(e => !e.visibility || e.visibility === playerId).map(({ visibility: _, ...e }) => e),
       calculations: runtime(s).calculations.slice(beforeCalculations).filter(c => c.controllerId === playerId).flatMap(c => c.lines) };

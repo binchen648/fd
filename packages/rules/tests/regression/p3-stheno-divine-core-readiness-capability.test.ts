@@ -14,6 +14,7 @@ const P3_ATTACK = 'fixture.p3-attack';
 const P2_DRAW = 'fixture.p2-draw';
 const P3_DRAW = 'fixture.p3-draw';
 const DRAW_ACTION = 'fixture.drawn.action';
+const DRAW_RESPONSE = 'fixture.drawn.on-played-response';
 
 function exactAbility() {
   return {
@@ -46,6 +47,17 @@ function simpleAbility(id: string, patch: any = {}) {
     activation: { phase: 'action', opens: 'controller_action_window', requiresSourceState: 'active' },
     conditions: [], targets: [], effects: [{ type: 'adjust_mana', amount: 1 }], cost: [], ruleModifiers: [], creates: [], lifecycle: {},
     responseWindow: {}, limit: {}, visibility: {}, execution: { mode: 'automatic', allowedOperations: [] }, ...patch,
+  } as any;
+}
+function onPlayedChoiceResponseAbility() {
+  return {
+    id: DRAW_RESPONSE, kind: 'optional_trigger', printedClause: DRAW_RESPONSE,
+    activation: { trigger: 'on_card_played', requiresSourceState: 'active' },
+    conditions: [],
+    targets: [{ id: 'followup_choice', type: 'choice', options: [{ id: 'continue' }], count: { min: 1, max: 1 } }],
+    effects: [{ type: 'adjust_mana', amount: 1 }], cost: [], ruleModifiers: [], creates: [], lifecycle: {},
+    responseWindow: { opens: 'on_card_played', order: 'turn_order', passBehavior: 'decline_this_window' },
+    limit: {}, visibility: {}, execution: { mode: 'automatic', allowedOperations: [] },
   } as any;
 }
 function definition(id: string, cost: number, attributes: string[] = ['力量'], abilities: any[] = []) {
@@ -216,6 +228,84 @@ describe('P3 Stheno Divine Core readiness capability', () => {
     const corrupt = structuredClone(state);
     corrupt.abilityRuntime!.battleCloseDrawImmediatePlayHistory![0]!.sourceCardId = b.p2Attack;
     expect(() => restoreMatchSession(sessionFor(corrupt).serializeSession(), { restorePackKind: 'trusted_authoring_fixture' })).toThrow(/Invalid MatchSession state container/);
+  });
+
+  it('rejects a host-signed pending draw substitution even when interaction metadata is forged to match it', () => {
+    const state = setup(); const b = sourceAndBoard(state, false);
+    const forgedHand = add(state, P3_DRAW, 'p2', 'hand');
+    expect(activate(state, b.source).ok).toBe(true);
+    expect(choose(state, 'p1', [b.p2Attack]).ok).toBe(true);
+    expect(choose(state, 'p1', []).ok).toBe(true);
+    const tx = state.abilityRuntime!.pendingBattleCloseDrawPlayTransaction!;
+    const decision = state.abilityRuntime!.pendingDecision!;
+    expect(decision.interaction).toMatchObject({ kind: 'battle_drawn_card_optional_play_v1', drawnCardId: b.p2Draw });
+    tx.rewards[0]!.drawnCardId = forgedHand;
+    (decision.interaction as any).drawnCardId = forgedHand;
+    decision.candidates = [forgedHand];
+    expect(() => restoreMatchSession(sessionFor(state).serializeSession(), { restorePackKind: 'trusted_authoring_fixture' }))
+      .toThrow('Invalid or missing battle close/draw/play persisted authority');
+  });
+
+  it('rejects host-signed forged completed history plus a forged combat Action permission', () => {
+    const state = setup(); const b = sourceAndBoard(state, false);
+    expect(activate(state, b.source).ok).toBe(true);
+    expect(choose(state, 'p1', [b.p2Attack]).ok).toBe(true);
+    expect(choose(state, 'p1', []).ok).toBe(true);
+    expect(choose(state, 'p2', [b.p2Draw]).ok).toBe(true);
+    const round = state.round.roundNumber;
+    const history = state.abilityRuntime!.battleCloseDrawImmediatePlayHistory!;
+    history[0]!.cardInstanceId = b.p2Attack;
+    delete state.abilityRuntime!.cardState[b.p2Draw]!.actionAbilityAllowedInCombatRound;
+    state.abilityRuntime!.cardState[b.p2Attack]!.actionAbilityAllowedInCombatRound = round;
+    expect(() => restoreMatchSession(sessionFor(state).serializeSession(), { restorePackKind: 'trusted_authoring_fixture' }))
+      .toThrow('Invalid or missing battle close/draw/play persisted authority');
+  });
+
+  it('resumes Divine Core only after an immediately played card finishes its on-card-played response and nested decision', () => {
+    const state = setup(); const b = sourceAndBoard(state, false);
+    state.abilityRuntime!.pack.cards[P2_DRAW]!.abilities.push(onPlayedChoiceResponseAbility());
+    expect(activate(state, b.source).ok).toBe(true);
+    expect(choose(state, 'p1', [b.p2Attack]).ok).toBe(true);
+    expect(choose(state, 'p1', []).ok).toBe(true);
+    expect(choose(state, 'p2', [b.p2Draw]).ok).toBe(true);
+
+    const window = state.abilityRuntime!.responseWindows[0]!;
+    expect(window).toBeTruthy();
+    expect(state.abilityRuntime!.pendingBattleCloseDrawPlayTransaction).toBeTruthy();
+    expect(state.abilityRuntime!.pendingDecision).toBeUndefined();
+    const resolve = rules.dispatchAbilityCommand(state, 'p2', {
+      type: 'resolve_response', windowId: window.id, cardInstanceId: b.p2Draw, abilityId: DRAW_RESPONSE,
+    });
+    expect(resolve.ok).toBe(true);
+    expect(state.abilityRuntime!.pendingBattleCloseDrawPlayTransaction).toBeTruthy();
+    expect(state.abilityRuntime!.pendingDecision).toBeTruthy();
+    expect(state.abilityRuntime!.pendingDecision!.candidates).toEqual(['continue']);
+    expect(choose(state, 'p2', ['continue']).ok).toBe(true);
+    expect(state.abilityRuntime!.pendingDecision).toBeUndefined();
+    expect(state.abilityRuntime!.responseWindows).toHaveLength(0);
+    expect(state.abilityRuntime!.pendingBattleCloseDrawPlayTransaction).toBeUndefined();
+  });
+
+  it('retires immediate-play provenance at the next round and restores after the same physical card is legally played again', () => {
+    const state = setup(); const b = sourceAndBoard(state, false);
+    expect(activate(state, b.source).ok).toBe(true);
+    expect(choose(state, 'p1', [b.p2Attack]).ok).toBe(true);
+    expect(choose(state, 'p1', []).ok).toBe(true);
+    expect(choose(state, 'p2', [b.p2Draw]).ok).toBe(true);
+    expect(state.abilityRuntime!.battleCloseDrawImmediatePlayHistory).toHaveLength(1);
+
+    rules.advanceAbilityPhase(state, 'action', state.round.roundNumber + 1);
+    expect(state.abilityRuntime!.battleCloseDrawImmediatePlayHistory).toEqual([]);
+    expect(state.abilityRuntime!.cardState[b.p2Draw]!.actionAbilityAllowedInCombatRound).toBeUndefined();
+    state.round.prioritySeat = 2;
+    const physical = state.cards.find((entry) => entry.instanceId === b.p2Draw)!;
+    physical.zone = 'hand'; physical.visibility = { scope: 'owner_only', ownerPlayerId: 'p2' };
+    state.abilityRuntime!.cardState[b.p2Draw] = { active: false, faceDown: false, playedRound: state.round.roundNumber - 1 };
+    const replay = rules.dispatchAbilityCommand(state, 'p2', { type: 'play_card', cardInstanceId: b.p2Draw });
+    expect(replay.ok).toBe(true);
+    expect(state.abilityRuntime!.cardState[b.p2Draw]!.playedRound).toBe(state.round.roundNumber);
+    expect(state.abilityRuntime!.cardState[b.p2Draw]!.actionAbilityAllowedInCombatRound).toBeUndefined();
+    expect(() => restoreMatchSession(sessionFor(state).serializeSession(), { restorePackKind: 'trusted_authoring_fixture' })).not.toThrow();
   });
 
   it('rejects compiled-pack widening transactionally before Luck discard or decision staging', () => {

@@ -5219,7 +5219,7 @@ Allowed verdicts:
 ## TASK P3-B-SIGURD-REVEALED-SOURCE-CAPABILITY
 
 Owner: Codex B
-Status: `IMPLEMENTATION_CANDIDATE_READY_FOR_FRESH_R`
+Status: `IMPLEMENTATION_REVISION_READY_FOR_FRESH_R`
 Base: `fe37f27e17007af77573ab99e02b40870d62d532`
 Classification: bounded zero-credit capability/readiness prerequisite for current owner `servant.sigurd`
 
@@ -5865,14 +5865,18 @@ Hard boundary:
 - ACCEPTED must A-sync/rescan and return to the same Stheno formal owner; do not advance owners.
 
 Verification evidence:
-- focused Divine Core readiness `8/8 PASS`;
-- affected serial `8 files / 198 tests PASS`;
+- focused Divine Core readiness `12/12 PASS`;
+- affected serial `8 files / 202 tests PASS`;
 - typecheck PASS;
 - content validate/compile PASS — `7 masters / 12 servants / 20 events / 0 blocking issues`;
 - generated determinism PASS with unchanged hashes;
 - `git diff --check` PASS;
 - `data/authoring/**` delta EMPTY;
 - production identity audit clean for Stheno ids/names and `SkillLib`;
+- predecessor Candidate `31e607db8be27d505d808d380cee22a0a92769a5` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt Coordinator relay after Reviewer 403: `https://github.com/binchen648/fd/pull/472#issuecomment-5859558471`;
+- P1 restore-provenance closure: Divine Core draw/immediate-play authority is now host-secret HMAC sealed outside mutable GameState, pending rewards/history/combat permission must exactly match that authority on current/replay/checkpoint restore, and forged pending-draw substitution plus forged completed-history/permission regressions fail closed;
+- P1 continuation closure: immediately played cards may open ordinary on-card-played response/nested decision work; Divine Core pauses while pending decisions/response windows/host requests exist and resumes only after ordinary work settles;
+- P2 lifetime closure: immediate-play history, combat Action permission, and corresponding authority retire at the next authoritative round; a two-round replay of the same physical card restores successfully after ordinary legal replay;
 - detailed result: `docs/reports/2026-09-28-p3-b-stheno-divine-core-readiness-capability-result.md`.
 
 Accounting:
