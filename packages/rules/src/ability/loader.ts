@@ -10,6 +10,7 @@ import { isActivePlayerCountMinusRoundPlayCostModifier } from './dynamic-play-co
 import { OTHER_PLAYER_ABILITY_EFFECT_IMMUNITY_RULE, isOtherPlayerAbilityEffectImmunityModifier } from './player-ability-immunity';
 import { isAcceptedConditionalRevealedAttributeMarkerAbility, isAcceptedRevealedBasicGrantMarkerAbility, isConditionalAttributeGrantEffect, isEventBattleOpponentAttackConstraint, isGainManaEqualSelectedPaidCostEffect, isGrantBasicDoubleRemoveEffect, isSourceRevealedCondition } from './revealed-card-mechanics';
 import { EXACT_ACTIVE_ATTACK_ATTRIBUTE_PAIR_CONDITION, TIMED_GLOBAL_RESOURCE_SUPPRESSION_EFFECT, containsTimedGlobalResourceSuppressionNode, isAcceptedTimedGlobalResourceSuppressionAbility, isExactActiveAttackAttributePairCondition, isTimedGlobalResourceSuppressionEffect } from './timed-resource-suppression';
+import { SOURCE_SKILL_ATTACK_JOIN_EFFECT, containsSourceSkillAttackJoinNode, isAcceptedSourceSkillAttackJoinAbility, isSourceSkillAttackJoinEffect } from './source-skill-attack-join';
 import { LOSE_VP_EQUAL_SOURCE_PLAY_COUNT_EFFECT, HIDE_SERVANT_TRUE_NAME_UNTIL_ROUND_END_EFFECT, REVEAL_HAND_ROUND_POWER_EFFECT, ownerSelfMechanicIsWellFormed } from './owner-self-mechanics';
 import {
   BATTLEFIELD_SOURCE_CARD_COST_AURA_TYPE, ANY_BATTLEFIELD_CONSTRAINT, PLACE_SOURCE_AT_BATTLEFIELD_EFFECT,
@@ -59,7 +60,7 @@ const supportedTypes = new Set([
   'or', 'and', 'not', 'not_card_type', 'is_attack', 'has_attribute', 'not_source_card', 'has_card_id',
   'source_card_in_zone', 'controller_at_location_kind', 'reachable_along_arrows', 'can_adjust_mana',
   'event_played_card_has_attribute', 'source_reversed', 'source_active', 'source_owned', 'source_revealed',
-  EXACT_ACTIVE_ATTACK_ATTRIBUTE_PAIR_CONDITION, TIMED_GLOBAL_RESOURCE_SUPPRESSION_EFFECT,
+  EXACT_ACTIVE_ATTACK_ATTRIBUTE_PAIR_CONDITION, TIMED_GLOBAL_RESOURCE_SUPPRESSION_EFFECT, SOURCE_SKILL_ATTACK_JOIN_EFFECT,
   'event_player_won_combat', 'event_player_lost_combat',
   'event_player_is_controller', 'event_player_is_opponent', 'event_location_equals_controller',
   'controller_command_seals_at_least', 'controller_command_seals_at_most',
@@ -228,6 +229,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (n.type === TIMED_GLOBAL_RESOURCE_SUPPRESSION_EFFECT && !isTimedGlobalResourceSuppressionEffect(n)) {
         issue(path, 'Unsupported timed global resource-suppression effect shape', abilityId);
+      }
+      if (n.type === SOURCE_SKILL_ATTACK_JOIN_EFFECT && !isSourceSkillAttackJoinEffect(n)) {
+        issue(path, 'Unsupported source skill-card attack-join effect shape', abilityId);
       }
       if (['player_flag_equals', 'player_flag_number_at_least', 'player_flag_number_current_round', 'player_flag_number_not_current_round'].includes(str(n.type))) {
         if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Structured player-flag condition is supported only as a direct ability condition', abilityId);
@@ -501,6 +505,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (containsTimedGlobalResourceSuppressionNode(candidateAbility.effects) &&
           !isAcceptedTimedGlobalResourceSuppressionAbility(candidateAbility)) {
         issue('timedResourceSuppression.gateway', 'Timed global resource suppression requires the exact phase-action whole-ability semantic', id);
+      }
+      if (containsSourceSkillAttackJoinNode(candidateAbility.effects) &&
+          !isAcceptedSourceSkillAttackJoinAbility(candidateAbility)) {
+        issue('sourceSkillAttackJoin.gateway', 'Source skill-card attack join requires the exact phase-action whole-ability semantic', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;
