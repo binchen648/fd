@@ -5245,3 +5245,14 @@ R2 revision closure: derived revealed-source marker families now require strict 
 Formal accounting remains `129/944`; this task is permanently zero-credit.
 
 R1 predecessor `986b04be707911b8f741ffc4f7bf33da8f59fe50` -> `IMPLEMENTATION_NEEDS_REVISION`; canonical relay: `https://github.com/binchen648/fd/pull/461#issuecomment-5848501887`. Successor revision closes disabled/unsupported-derived capability leakage and requires canonical battle-terminal provenance for after-battle removal; fresh R is required on the successor exact Candidate.
+
+## P3-A-SIGURD-REVEALED-SOURCE-CAPABILITY-ACCEPTANCE-SYNC
+
+- PR #461 exact successor Candidate `20f7c6d3262b00ca072554fc07be5fc2ba89e7ab` received `IMPLEMENTATION_ACCEPTED_CANDIDATE` from fresh independent R.
+- Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/461#issuecomment-5851169420`.
+- Accepted scope is the bounded revealed-source generic capability only; Sigurd consumer authoring delta remains empty and this synchronization grants zero migration credit.
+- Final review closure requires strict accepted passive whole-ability gateways for derived revealed-source markers, canonical battle-terminal provenance for physical-card removal, and fail-closed wrong-kind/trigger/false-condition/unsupported/disabled/widened enclosing semantics.
+- Exact-Candidate Phase 3 Pre-Review Gate run `36261977400` succeeded.
+- Current-main strict formal accounting remains `129/944`; remaining `815`.
+- Current owner remains `servant.sigurd`; execution returns to `P3-S-OWNER-SIGURD-COMPLETE-MIGRATION` for all three frozen Sigurd consumers together. Do not advance owners.
+- Detailed sync: `docs/reports/2026-09-27-p3-a-sigurd-revealed-source-capability-acceptance-synchronization.md`.
