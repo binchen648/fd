@@ -152,9 +152,15 @@ export interface DeductionRecordChoiceInteractionMetadata {
   optional: boolean; definitionByAttribute: Record<string, string>;
   constraints: { kind: 'target'; targetKind: 'attribute'; min: 0 | 1; max: 1; distinct: true };
 }
+export interface PostDrawHandShuffleInteractionMetadata {
+  kind: 'post_draw_hand_shuffle_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  constraints: { kind: 'target'; targetKind: 'card'; min: 2; max: 2; distinct: true };
+}
 export interface DeductionRecordState { definitionId: string; attribute: '力量' | '迅捷' | '魔术' | '特殊'; recordedRound: number }
 export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata |
-  OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata | DeductionRecordChoiceInteractionMetadata;
+  OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata | DeductionRecordChoiceInteractionMetadata |
+  PostDrawHandShuffleInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -227,6 +233,12 @@ export interface CardRuntimeState {
   removeAfterBattleRound?: number;
   /** Trusted battlefield binding for source cards explicitly placed onto a battlefield. */
   placedAtLocationId?: string;
+  /** Source-bound current-round choice that doubles matching basic-card base Power at the source controller's location. */
+  sourceLocationBasicBasePowerMultiplier?: {
+    attribute: '力量' | '迅捷' | '魔术' | '特殊';
+    multiplier: 2;
+    round: number;
+  };
 }
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;

@@ -5493,3 +5493,39 @@ Allowed verdicts:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+
+## TASK P3-B-SKADI-RUNE-CASTLE-READINESS-CAPABILITY
+
+Owner: Codex B
+Status: `IMPLEMENTATION_CANDIDATE_READY_FOR_FRESH_R`
+Base: `44bf45f39c6adc2b419527f96d4257aea4080bb8`
+Classification: bounded zero-credit capability/readiness prerequisite for current owner `servant.skadi`
+
+Bounded scope:
+- exact generic current-round two-distinct-basic-attack attribute-pair predicate for the rune attributes 迅捷 / 魔术 / 特殊;
+- exact private outpost continuation: fixed 1-mana cost, draw one, then choose exactly two controller hand cards and shuffle them into deck;
+- exact fixed-3-mana same-location other-active-player mana-loss shell with once-this-round structured-flag gating;
+- exact armed same-round combat shell that defeats the unique active opponent at the controller battlefield and consumes the structured arm flag;
+- exact residual active-source location aura that forbids positive mana gain for other active players at that live source location;
+- exact active-source outpost attribute choice that applies a source-bound current-round x2 base-power multiplier to matching basic attacks at the live source location;
+- authenticated restore/settlement validation for the private continuation and source-bound multiplier state.
+
+Hard scope boundary:
+- zero Skadi consumer authoring and zero migration credit in this task;
+- `data/authoring/**` delta must remain empty;
+- no `servant.skadi` / skill-id / card-name / printed-text / Chinese-text identity routing in production runtime;
+- no SkillLib fallback and no runtime source-text parsing;
+- widened/nested privileged primitives and compiled-pack corruption fail closed via exact whole-ability loader/runtime gates;
+- ACCEPTED must A-sync/rescan and return to `P3-S-OWNER-SKADI-COMPLETE-MIGRATION` for all three Skadi identities together; it cannot advance owners.
+
+Source-grounded requirement:
+- frozen CHM-derived source text and locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9` were mechanically re-read;
+- sc-skadi-1 outpost is pay 1 mana -> draw one -> shuffle exactly two hand cards into deck;
+- sc-skadi-1 Action rune selection derives combinations from two distinct current-round basic attacks and pays 3 mana;
+- missing generic seams are limited to same-location -2 mana, same-round armed unique-opponent defeat, active-source same-location mana-gain forbid, and source-location selected-attribute basic base-power x2; movement, hand attack play, terrain/deployment multiplication, and +4 VP remain outside this capability because existing generic primitives can express them.
+
+Evidence: `docs/reports/2026-09-27-p3-b-skadi-rune-castle-readiness-capability-result.md`.
+
+Focused capability `9/9 PASS`; affected serial chain `10 files / 179 tests PASS`; typecheck/content validate/content compile/generated determinism/diff-check PASS; `data/authoring/**` delta empty; production Skadi/SkillLib identity audit clean.
+
+Formal accounting remains `134/944`; remaining `810`. This task is permanently zero-credit.

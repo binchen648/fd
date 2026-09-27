@@ -20,6 +20,22 @@ import { playerIgnoresAbilityFromController } from './player-ability-immunity';
 import { effectiveAbilitiesForPhysicalCard, isEventBattleOpponentAttackConstraint, isGainManaEqualSelectedPaidCostEffect, isGrantedBasicDoubleRemoveEffect, isSourceRevealedCondition, physicalCardWasRevealed } from './revealed-card-mechanics';
 import { applyTimedGlobalResourceSuppression, containsTimedGlobalResourceSuppressionNode, controllerHasExactDistinctActiveAttackAttributePair, expireTimedResourceSuppressions, isAcceptedTimedGlobalResourceSuppressionAbility, isExactActiveAttackAttributePairCondition, isManaGainSuppressed, isNormalCardDrawSuppressed, isTimedGlobalResourceSuppressionEffect } from './timed-resource-suppression';
 import { containsSourceSkillAttackJoinNode, isAcceptedSourceSkillAttackJoinAbility, isSourceSkillAttackJoinEffect } from './source-skill-attack-join';
+import {
+  SOURCE_LOCATION_BASE_POWER_ATTRIBUTES,
+  containsSourceLocationRunePrivilegedNode,
+  controllerHasCurrentRoundBasicAttackAttributePair,
+  isAcceptedPostDrawHandShuffleAbility,
+  isAcceptedSourceLocationBasicPowerAbility,
+  isAcceptedSourceLocationRunePrivilegedAbility,
+  isAdjustOtherPlayersAtSourceLocationManaEffect,
+  isCurrentRoundBasicAttackAttributePairCondition,
+  isDefeatSingleOpponentAtControllerBattlefieldEffect,
+  isDrawThenShuffleTwoHandEffect,
+  isForbidOtherPlayersAtActiveSourceLocationManaGainEffect,
+  isSetSourceLocationBasicBasePowerMultiplierEffect,
+  sourceLocationBasicAttackBasePowerMultiplier,
+  type SourceLocationBasePowerAttribute,
+} from './source-location-rune-capability';
 import { isHideServantTrueNameUntilRoundEndEffect, isLoseVpEqualSourcePlayCountEffect, isRevealHandRoundPowerEffect, PLAYER_COMBAT_TOTAL_POWER_RULE, servantRevealSuppressedByTemporaryConcealment } from './owner-self-mechanics';
 import {
   isAnyBattlefieldConstraint,
@@ -398,6 +414,11 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     return { value: persistentLock.value, lines: [{ label: 'persistent_situation_attribute_power_lock', value: persistentLock.value }] };
   }
   const result = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
+  const sourceLocationMultiplier = sourceLocationBasicAttackBasePowerMultiplier(s, sourceId);
+  if (sourceLocationMultiplier !== 1) {
+    result.value *= sourceLocationMultiplier;
+    result.lines.push({ label: 'source_location_basic_base_power_multiplier', value: result.value });
+  }
   const authoredBaseMultiplier = runtime(s).cardState[sourceId]?.basePowerMultiplier ?? 1;
   if (authoredBaseMultiplier !== 1) {
     if (authoredBaseMultiplier !== 2) reject('invalid_state', 'Unsupported authored base-power multiplier');
@@ -739,6 +760,10 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'controller_at_location_kind': return c.locationKind === '侦察' || c.locationKind === '侦查' ? p.locationId === 'recon' : false;
     case 'controller_servant_revealed': return runtime(s).revealedServants.includes(ctx.controllerId);
     case 'source_reversed': return runtime(s).cardState[ctx.sourceCardId]?.reversed === true;
+    case 'controller_current_round_basic_attack_attribute_pair': {
+      if (!isCurrentRoundBasicAttackAttributePairCondition(c)) reject('unsupported', 'Unsupported current-round basic-attack attribute-pair condition shape');
+      return controllerHasCurrentRoundBasicAttackAttributePair(s, ctx.controllerId, c);
+    }
     case 'controller_active_attacks_exact_distinct_attribute_pair': {
       if (!isExactActiveAttackAttributePairCondition(c)) reject('unsupported', 'Unsupported exact active-attack attribute-pair condition shape');
       return controllerHasExactDistinctActiveAttackAttributePair(s, ctx.controllerId, c);
@@ -912,6 +937,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
       !isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled')) return false;
   if (containsTimedGlobalResourceSuppressionNode(a.effects) && !isAcceptedTimedGlobalResourceSuppressionAbility(a)) return false;
   if (containsSourceSkillAttackJoinNode(a.effects) && !isAcceptedSourceSkillAttackJoinAbility(a)) return false;
+  if (containsSourceLocationRunePrivilegedNode(a) && !isAcceptedSourceLocationRunePrivilegedAbility(a)) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
@@ -1464,6 +1490,60 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
   const unpreventable = a.ruleModifiers.some(m => m.rule === 'effect_prevention' && m.operation === 'ignore' && node(m.priority).tier === 'explicit_exception');
   if (r.preventEffects && !unpreventable) { r.events.push({ type: 'effect_prevented', playerId: p.id }); return; }
   switch (effect.type) {
+    case 'adjust_other_active_players_at_source_location_mana': {
+      if (!isAdjustOtherPlayersAtSourceLocationManaEffect(effect) || !isAcceptedSourceLocationRunePrivilegedAbility(a)) {
+        reject('unsupported', 'Unsupported source-location mana-loss effect');
+      }
+      if (!p.locationId) reject('invalid_state', 'Source-location mana loss requires a controller location');
+      for (const target of s.players) {
+        if (target.id === p.id || target.status !== 'active' || target.locationId !== p.locationId ||
+            playerIgnoresAbilityFromController(s, target.id, p.id)) continue;
+        const before = target.mana;
+        target.mana = Math.max(0, target.mana - 2);
+        r.events.push({ type: 'mana_adjusted', playerId: target.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+          resource: 'mana', requestedDelta: -2, delta: target.mana - before, before, after: target.mana });
+      }
+      break;
+    }
+    case 'defeat_single_active_opponent_at_controller_battlefield': {
+      if (!isDefeatSingleOpponentAtControllerBattlefieldEffect(effect) || !isAcceptedSourceLocationRunePrivilegedAbility(a)) {
+        reject('unsupported', 'Unsupported unique-opponent defeat effect');
+      }
+      if (!p.locationId || !isBattlefield(s, p.locationId)) reject('invalid_state', 'Unique-opponent defeat requires a battlefield');
+      const opponents = s.players.filter((target) => target.id !== p.id && target.status === 'active' && target.locationId === p.locationId &&
+        !playerIgnoresAbilityFromController(s, target.id, p.id));
+      if (opponents.length !== 1) reject('invalid_target', 'Unique-opponent defeat requires exactly one eligible opponent');
+      const target = opponents[0]!;
+      (r.battleDefeatRoundByPlayer ??= {})[target.id] = s.round.roundNumber;
+      r.events.push({ type: 'player_defeated_by_effect', playerId: target.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+      break;
+    }
+    case 'forbid_other_players_at_active_source_location_mana_gain': {
+      if (!isForbidOtherPlayersAtActiveSourceLocationManaGainEffect(effect) || !isAcceptedSourceLocationRunePrivilegedAbility(a)) {
+        reject('unsupported', 'Unsupported active source-location mana-gain forbid effect');
+      }
+      // Dynamic aura is consumed by isManaGainSuppressed; resolution itself stores no player-keyed snapshot.
+      break;
+    }
+    case 'set_source_location_basic_base_power_multiplier_from_choice': {
+      if (!isSetSourceLocationBasicBasePowerMultiplierEffect(effect) || !isAcceptedSourceLocationBasicPowerAbility(a)) {
+        reject('unsupported', 'Unsupported source-location basic base-Power multiplier effect');
+      }
+      const selected = ctx.selections[str(effect.target)] ?? [];
+      if (selected.length !== 1 || !SOURCE_LOCATION_BASE_POWER_ATTRIBUTES.includes(selected[0] as SourceLocationBasePowerAttribute)) {
+        reject('invalid_target', 'Source-location base-Power multiplier requires one supported attribute');
+      }
+      const sourceState = r.cardState[ctx.sourceCardId];
+      if (!sourceState || !active(s, ctx.sourceCardId) || sourceState.faceDown) reject('invalid_state', 'Source-location base-Power multiplier requires an active face-up source');
+      sourceState.sourceLocationBasicBasePowerMultiplier = {
+        attribute: selected[0] as SourceLocationBasePowerAttribute,
+        multiplier: 2,
+        round: s.round.roundNumber,
+      };
+      break;
+    }
+    case 'draw_then_shuffle_two_hand_cards_into_deck':
+      reject('resolution_failed', 'Post-draw hand shuffle must execute through its authenticated continuation gateway');
     case 'lose_victory_points_equal_source_play_count': {
       if (!isLoseVpEqualSourcePlayCountEffect(effect)) reject('unsupported', 'Unsupported source play-count VP loss shape');
       const source = card(s, ctx.sourceCardId);
@@ -3472,8 +3552,35 @@ function executeFixedControllerManaCost(s: GameState, ctx: EffectContext, a: Aut
   executeResolutionEffects(s, ctx, a.cost);
 }
 
+function stagePostDrawHandShuffleInteraction(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isAcceptedPostDrawHandShuffleAbility(a)) reject('resolution_failed', 'Unsupported post-draw hand-shuffle semantic shape');
+  resolveEffect(s, ctx, { type: 'draw_cards', count: 1 });
+  const hand = s.cards.filter((candidate) => candidate.ownerPlayerId === ctx.controllerId && candidate.controllerPlayerId === ctx.controllerId && candidate.zone === 'hand')
+    .map((candidate) => candidate.instanceId);
+  if (hand.length < 2) reject('no_legal_target', 'Post-draw hand shuffle requires two cards in hand');
+  const id = nextId(s, 'interaction');
+  const target: RuleNode = {
+    id: 'post-draw-hand-shuffle', type: 'card_instance', scope: { zone: 'hand', owner: 'controller', controller: 'self' },
+    count: { min: 2, max: 2 }, constraints: [], visibility: 'private_to_controller',
+  };
+  runtime(s).pendingDecision = {
+    id, controllerId: ctx.controllerId, target, candidates: [...hand], min: 2, max: 2,
+    context: structuredClone(ctx), remainingEffects: [],
+    interaction: {
+      kind: 'post_draw_hand_shuffle_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: runtime(s).revision + 1,
+      continuationRef: `${id}:continuation`, constraints: { kind: 'target', targetKind: 'card', min: 2, max: 2, distinct: true },
+    },
+  };
+}
+
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (isAcceptedPostDrawHandShuffleAbility(a)) {
+    if (effects.length !== 1 || !isDrawThenShuffleTwoHandEffect(effects[0]!)) reject('resolution_failed', 'Corrupt post-draw hand-shuffle continuation');
+    stagePostDrawHandShuffleInteraction(s, ctx, a);
+    return;
+  }
   if (isAcceptedOpponentCloseToOneAbility(a, 'compiled')) { stageOpponentCloseToOne(s, ctx, a); return; }
   if (isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled')) {
     runtime(s).pendingDecision = createOpponentCloseSelectedOneDecision(s, ctx, a);
@@ -3632,6 +3739,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'compiled') &&
       !isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled')) {
     reject('resolution_failed', 'Unsupported opponent close-to-one interaction semantic shape');
+  }
+  if (containsSourceLocationRunePrivilegedNode(a) && !isAcceptedSourceLocationRunePrivilegedAbility(a)) {
+    reject('resolution_failed', 'Unsupported source-location/rune privileged semantic shape');
   }
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) {
     reject('resolution_failed', 'Unsupported persistent RuleOverride semantic shape');
@@ -3992,6 +4102,33 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const selected = command.selectedIds;
       if (d.interaction) {
         const meta = d.interaction;
+        if (meta.kind === 'post_draw_hand_shuffle_v1') {
+          const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+          const ability = source ? abilityDefinition(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
+          const currentHand = s.cards.filter((candidate) => candidate.ownerPlayerId === playerId && candidate.controllerPlayerId === playerId && candidate.zone === 'hand')
+            .map((candidate) => candidate.instanceId);
+          const target = d.target; const scope = node(target.scope); const count = node(target.count);
+          if (!source || source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId || !ability ||
+              !isAcceptedPostDrawHandShuffleAbility(ability) || d.controllerId !== playerId || d.context.controllerId !== playerId ||
+              d.context.sourceCardId !== meta.sourceCardInstanceId || d.context.abilityId !== meta.abilityId ||
+              meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
+              meta.continuationRef !== `${d.id}:continuation` || meta.createdRevision !== r.revision ||
+              meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'card' || meta.constraints.min !== 2 || meta.constraints.max !== 2 || meta.constraints.distinct !== true ||
+              d.min !== 2 || d.max !== 2 || target.id !== 'post-draw-hand-shuffle' || target.type !== 'card_instance' ||
+              scope.zone !== 'hand' || scope.owner !== 'controller' || scope.controller !== 'self' || count.min !== 2 || count.max !== 2 ||
+              !Array.isArray(target.constraints) || target.constraints.length !== 0 || target.visibility !== 'private_to_controller' ||
+              d.remainingEffects.length !== 0 || currentHand.length !== d.candidates.length ||
+              currentHand.some((id, index) => d.candidates[index] !== id) || !Array.isArray(selected) || selected.length !== 2 ||
+              new Set(selected).size !== 2 || selected.some((id) => !d.candidates.includes(id) || !currentHand.includes(id))) {
+            reject('resolution_failed', 'Corrupt or stale post-draw hand-shuffle interaction state');
+          }
+          for (const instanceId of selected) moveCard(s, instanceId, 'deck');
+          shuffle(s, playerId);
+          delete r.pendingDecision;
+          r.events.push({ type: 'post_draw_hand_cards_shuffled_into_deck', playerId, sourceCardId: meta.sourceCardInstanceId,
+            abilityId: meta.abilityId, movedCount: selected.length });
+          break;
+        }
         if (meta.kind === 'deduction_record_choice_v1') {
           const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
           if (!source || source.controllerPlayerId !== playerId || d.controllerId !== playerId || meta.visibility !== 'owner_only' ||
