@@ -330,6 +330,7 @@ describe('ExecutableCardPack compiler', () => {
     ['extra target', (ability: any) => { ability.targets = [{ id: 'target', type: 'player' }]; }],
     ['nested continuation', (ability: any) => { ability.effects[0].then = [{ type: 'draw_cards', count: 1 }]; }],
     ['wrong destination', (ability: any) => { ability.effects[0].to = { zone: 'deck' }; }],
+    ['create_card moved to creates', (ability: any) => { ability.creates = ability.effects.splice(0); }],
   ])('rejects malformed setup create-to-skill %s before executable output', (_name, mutate) => {
     const input = sourceInput();
     const ability = input.rules.archives.find((archive) => archive.id === 'master.maiya')!

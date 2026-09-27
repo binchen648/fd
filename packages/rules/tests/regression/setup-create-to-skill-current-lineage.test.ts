@@ -121,6 +121,25 @@ describe('P3 setup create-to-skill current-lineage alignment', () => {
     expect(current.state.cards.some((card) => card.ownerPlayerId === playerId && card.definitionId === 'master.maiya.deck.support-shot')).toBe(false);
   });
 
+  it('rejects create_card moved to creates without legacy fallback or mutation', () => {
+    const current = session();
+    const definition = current.state.abilityRuntime!.pack.cards['master.maiya.skill.military']!;
+    const ability = definition.abilities.find((candidate) => candidate.id === 'military.has-support-shot')!;
+    ability.creates = ability.effects.splice(0);
+    current.state.cards = current.state.cards.filter((card) => card.definitionId !== 'master.maiya.deck.support-shot');
+    const beforeCards = structuredClone(current.state.cards);
+    const beforeEvents = structuredClone(current.state.abilityRuntime!.events);
+    const beforeRevision = current.state.abilityRuntime!.revision;
+    const before = JSON.stringify(current.state);
+
+    expect(() => processAbilityEvent(current.state, { id: 'create-card-in-creates', type: 'game_start' }))
+      .toThrow(/resolution_failed|unsupported/i);
+    expect(current.state.cards).toEqual(beforeCards);
+    expect(current.state.abilityRuntime!.events).toEqual(beforeEvents);
+    expect(current.state.abilityRuntime!.revision).toBe(beforeRevision);
+    expect(JSON.stringify(current.state)).toBe(before);
+  });
+
   it('rejects an unknown target definition before creation and preserves the transaction', () => {
     const current = session();
     const definition = current.state.abilityRuntime!.pack.cards['master.olga-marie.skill.astronomical-science']!;
