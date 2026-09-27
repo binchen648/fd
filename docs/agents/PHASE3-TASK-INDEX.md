@@ -5602,7 +5602,7 @@ Allowed verdicts:
 ## TASK P3-S-OWNER-SPARTACUS-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `MIGRATION_CANDIDATE_READY_FOR_FRESH_R`
+Status: `SYNCHRONIZED`
 Base: `20a59b9dd3fad4d4e0f49c22176d42941bd8daab` (exact accepted Spartacus seal-power readiness A-sync)
 Owner root: `servant.spartacus`
 Canonical owner-complete consumer scope: all three Spartacus skills together
@@ -5675,6 +5675,15 @@ Allowed verdicts:
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
 
+Acceptance synchronization:
+- PR #471 exact Candidate `ab009a6074f2c71b7eaf1204880d71fffd670bea` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/471#issuecomment-5858838041`.
+- Exact-Candidate Phase 3 Pre-Review Gate `36342038836` succeeded.
+- Accepted owner-complete scope is exactly sc1 + sc2 + sc3; sc1/sc3 are newly creditable and sc2 remains historical accepted preservation/replay only.
+- Formal accounting moves `137/944 -> 139/944`; remaining `805`; sc2 receives no duplicate credit.
+- Acceptance synchronization report: `docs/reports/2026-09-28-p3-a-owner-spartacus-acceptance-synchronization.md`.
+- Mechanical first-occurrence owner ordering selects `servant.stheno` next: Spartacus index `236`, Stheno index `237` of `251` owners.
+- Owner-readiness-first remains mandatory: complete one full Stheno preflight before any Stheno formal consumer migration.
 ## TASK P3-B-SPARTACUS-SEAL-POWER-READINESS-CAPABILITY
 
 Owner: Codex B
