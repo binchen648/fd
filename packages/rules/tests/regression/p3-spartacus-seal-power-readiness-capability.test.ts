@@ -11,11 +11,13 @@ const ROOT = 'servant.fixture-seal-power';
 const POWER = `${ROOT}.skill.power`;
 const FORMULA = `${ROOT}.skill.formula`;
 const RULER_USE = `${ROOT}.skill.ruler-use`;
+const RULER_GRANT = `${ROOT}.skill.ruler-grant`;
 const NORMAL_ID = 'fixture.normal-seal-power';
 const RULER_ID = 'fixture.ruler-seal-power';
 const AURA_ID = 'fixture.unused-seal-aura';
 const FORMULA_ID = 'fixture.engaged-seal-user-formula';
 const RULER_USE_ID = 'fixture.ruler-use';
+const RULER_GRANT_ID = 'fixture.ruler-grant';
 const COMMAND = 'master.fixture.command-spell';
 
 function baseAbility(id: string, phase: 'action' | 'combat' = 'action') {
@@ -69,6 +71,20 @@ function rulerUseAbility() {
   } as any;
 }
 
+function rulerGrantAbility() {
+  const a = baseAbility(RULER_GRANT_ID);
+  a.targets = [{
+    id: 'bound_players', type: 'player', count: { min: 2, max: 2 },
+    constraints: [{ type: 'not_controller' }, { type: 'least_ruler_binding_count' }],
+  }];
+  a.effects = [
+    { type: 'grant_ruler_seals', target: 'bound_players' },
+    { type: 'ruler_copy_steal_guard', policy: 'forbid_source_and_effects' },
+  ];
+  a.limit = { type: 'per_game', uses: 3, scope: 'this_card' };
+  return a;
+}
+
 function archive() {
   const card = (id: string, abilities: any[]) => ({
     id, name: id, cardType: 'servant_skill', owner: { type: 'servant', id: ROOT },
@@ -78,7 +94,12 @@ function archive() {
   });
   return {
     schemaVersion: 'fd-card-authoring-v1', id: ROOT,
-    cards: [card(POWER, [normalAbility(), rulerPowerAbility(), auraAbility()]), card(FORMULA, [formulaAbility()]), card(RULER_USE, [rulerUseAbility()])],
+    cards: [
+      card(POWER, [normalAbility(), rulerPowerAbility(), auraAbility()]),
+      card(FORMULA, [formulaAbility()]),
+      card(RULER_USE, [rulerUseAbility()]),
+      card(RULER_GRANT, [rulerGrantAbility()]),
+    ],
   } as any;
 }
 
@@ -122,6 +143,8 @@ function binding(state: GameState, id: string, issuer: string, bound: string, so
     id, issuerPlayerId: issuer, boundPlayerId: bound, sourceCardId, abilityId,
     grantedRound: state.round.roundNumber, spent: false,
   });
+  const history = state.abilityRuntime!.rulerSealBindingHistory[issuer] ??= {};
+  history[bound] = (history[bound] ?? 0) + 1;
 }
 function action(state: GameState, playerId: string, source: string, abilityId: string) {
   return rules.getLegalActions(state, playerId).find((entry) =>
@@ -240,8 +263,8 @@ describe('P3 Spartacus seal-power readiness capability', () => {
   });
 
   it('round-trips an exact owned-Ruler choice and rejects host-signed widened restore metadata', () => {
-    const state = setup(); const source = add(state, POWER);
-    binding(state, 'seal-a', 'p1', 'p2', source, RULER_ID); binding(state, 'seal-b', 'p1', 'p3', source, RULER_ID);
+    const state = setup(); const source = add(state, POWER); const grantSource = add(state, RULER_GRANT);
+    binding(state, 'seal-a', 'p1', 'p2', grantSource, RULER_GRANT_ID); binding(state, 'seal-b', 'p1', 'p3', grantSource, RULER_GRANT_ID);
     expect(activate(state, 'p1', source, RULER_ID).ok).toBe(true);
     const session = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1'], restorePackKind: 'trusted_authoring_fixture' }, false);
     session.state = state; session.logs = []; session.replay = []; session.replaySnapshots = []; session.battleHistory = [];
@@ -254,6 +277,36 @@ describe('P3 Spartacus seal-power readiness capability', () => {
     const signer = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1'], restorePackKind: 'trusted_authoring_fixture' }, false);
     signer.state = corrupt; signer.logs = []; signer.replay = []; signer.replaySnapshots = []; signer.battleHistory = [];
     expect(() => restoreMatchSession(signer.serializeSession(), { restorePackKind: 'trusted_authoring_fixture' })).toThrow(/Invalid MatchSession state container/);
+  });
+
+  it('rejects a host-signed forged Ruler binding whose named source ability is not an accepted grant semantic', () => {
+    const state = setup();
+    const powerSource = add(state, POWER);
+    const unrelatedSource = add(state, RULER_USE);
+    binding(state, 'forged-seal', 'p1', 'p2', unrelatedSource, RULER_USE_ID);
+    expect(rules.unspentOwnedRulerSealBindings(state, 'p1').map((entry) => entry.id)).toEqual(['forged-seal']);
+    expect(action(state, 'p1', powerSource, RULER_ID)).toBeTruthy();
+
+    const signer = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1'], restorePackKind: 'trusted_authoring_fixture' }, false);
+    signer.state = state; signer.logs = []; signer.replay = []; signer.replaySnapshots = []; signer.battleHistory = [];
+    expect(() => restoreMatchSession(signer.serializeSession(), { restorePackKind: 'trusted_authoring_fixture' })).toThrow(/Invalid MatchSession state container/);
+  });
+
+  it('rejects host-signed widened Command Seal values outside the physical 0..3 integer domain', () => {
+    for (const value of ['999', 999, 4, -1, 1.5]) {
+      const state = setup();
+      (state.players[0] as any).commandSpells = value;
+      const signer = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1'], restorePackKind: 'trusted_authoring_fixture' }, false);
+      signer.state = state; signer.logs = []; signer.replay = []; signer.replaySnapshots = []; signer.battleHistory = [];
+      expect(() => restoreMatchSession(signer.serializeSession(), { restorePackKind: 'trusted_authoring_fixture' })).toThrow(/Invalid MatchSession state container/);
+    }
+    for (const value of [0, 3]) {
+      const state = setup();
+      (state.players[0] as any).commandSpells = value;
+      const signer = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1'], restorePackKind: 'trusted_authoring_fixture' }, false);
+      signer.state = state; signer.logs = []; signer.replay = []; signer.replaySnapshots = []; signer.battleHistory = [];
+      expect(restoreMatchSession(signer.serializeSession(), { restorePackKind: 'trusted_authoring_fixture' }).state.players[0]).toMatchObject({ commandSpells: value });
+    }
   });
 
   it('computes the combat formula from distinct engaged seal users only and ignores prior-round/far usage', () => {

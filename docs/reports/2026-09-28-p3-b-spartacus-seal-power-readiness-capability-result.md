@@ -37,9 +37,20 @@ The new identity-free `command-seal-power-capability` family provides exact fail
 
 Existing Ruler seal ownership remains issuer-scoped. No identity/name/printed-text runtime parser, Chinese-text routing, or SkillLib fallback is introduced.
 
+## R1 fresh-review closure
+
+Predecessor Candidate `f114f650516802e19e38cd882c341e83469d8021` received `IMPLEMENTATION_NEEDS_REVISION`. Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/470#issuecomment-5857767819`.
+
+Both R1 P1 findings are closed in this successor line:
+
+- restored `rulerSealBindings` now require unique resource IDs, valid issuer/bound players, non-self binding, coherent granted/spent rounds, exact source-controller ownership, and the exact named source ability must satisfy the accepted identity-free Ruler-seal grant semantic; persisted `rulerSealBindingHistory` must exactly match the restored physical binding multiset per issuer/bound pair;
+- restored `player.commandSpells`, when present, must be a safe integer in the physical `0..3` domain; widened strings, values above three, negative values, and fractional values fail closed before MatchSession construction.
+
+Focused regressions reproduce the Reviewer counterexamples: an unrelated Ruler-use ability can no longer authenticate a forged restored seal even when the forged history is made coherent, and host-signed `commandSpells='999'` / `999` / `4` / `-1` / `1.5` are rejected while the legal boundaries `0` and `3` round-trip.
+
 ## Focused verification
 
-`packages/rules/tests/regression/p3-spartacus-seal-power-readiness-capability.test.ts`: **13/13 PASS**.
+`packages/rules/tests/regression/p3-spartacus-seal-power-readiness-capability.test.ts`: **15/15 PASS**.
 
 Coverage includes:
 
@@ -56,9 +67,9 @@ Coverage includes:
 - authoritative `deriveBattleParticipantsFromState` includes the live dynamic aura in participant `totalPower`;
 - compiled-pack privileged corruption rejects before resource consumption or pending-decision staging.
 
-Affected serial verification: **7 files / 164 tests PASS**:
+Affected serial verification: **7 files / 166 tests PASS**:
 
-- Spartacus seal-power readiness `13`;
+- Spartacus seal-power readiness `15`;
 - FB2-27 Ruler seal `13`;
 - MatchSession `33`;
 - executable-card-pack `50`;
