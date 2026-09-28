@@ -5976,3 +5976,45 @@ Allowed verdicts:
 - Strict formal accounting remains `139/944`, remaining `805`; this readiness transaction is permanently zero-credit.
 - Current owner remains `servant.stheno`; execution returns immediately to `P3-S-OWNER-STHENO-COMPLETE-MIGRATION` for sc1 + sc2 + sc3 together. sc1 is preservation-only; sc2/sc3 are the only newly creditable identities. Do not advance owners.
 - Detailed sync: `docs/reports/2026-09-28-p3-a-stheno-full-reward-each-readiness-capability-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-STHENO-COMPLETE-MIGRATION
+
+Owner: Codex S
+Status: `MIGRATION_CANDIDATE_READY_FOR_FRESH_R`
+Base: `9fd9036c6d74427f88b3b268f9ef2916cf3f3beb`
+Classification: formal owner-complete migration for current owner `servant.stheno`
+
+Formal owner scope:
+- `servant.stheno.skill.sc-stheno-1` — historical FM06 accepted preservation only; no duplicate credit;
+- `servant.stheno.skill.sc-stheno-2` — newly creditable;
+- `servant.stheno.skill.sc-stheno-3` — newly creditable;
+- one owner archive, one formal Candidate, one PR, one fresh R, then one A-sync/accounting transaction.
+
+Accepted prerequisites:
+- sc1 historical FM06 S Candidate `ebc1ca575fcef0e3894b13ec10613801e4227970`, independently accepted by R36 on A-synchronized lineage `34f891a7739e86b835bc78e65aa58fdf5f4e955a`;
+- sc2 full-reward-each readiness PR #474 exact accepted Candidate `4dd8eca5746d63d72c7906716cb7118e2569872a`, canonical relay `https://github.com/binchen648/fd/pull/474#issuecomment-5871992188`;
+- sc3 Divine Core readiness PR #472 final accepted Candidate `5d7ec79524b577dcd729ae7bc93d905343bd3e1f`, canonical accepted-candidate evidence correction `https://github.com/binchen648/fd/pull/472#issuecomment-5867235240`;
+- exact formal Base `9fd9036c6d74427f88b3b268f9ef2916cf3f3beb` is the post-#474 zero-credit A-sync/rescan and closes the complete discoverable Stheno readiness gap set.
+
+Implementation/evidence:
+- canonical `data/authoring/servants/servant.stheno.json` contains exactly sc1 + sc2 + sc3;
+- sc1 card object is exact JSON-object-equal to Base; SHA-256 `201bbac3a5181d19d4d162936bcc0b5bc422a0aef341657bb2ac028a2aa97229`;
+- material overlap `140 -> 142`, exact additions sc2 + sc3, removals `0`, duplicate frozen identities `0`;
+- formal credit claim remains exactly `+2` (sc2 + sc3) because sc1 is historical accepted preservation and material overlap is not the formal ledger;
+- focused/affected serial `8 files / 147 tests PASS`;
+- typecheck PASS; content validate/compile PASS (`7 masters / 12 servants / 20 events / 0 blocking issues`); generated determinism PASS; `git diff --check` PASS;
+- `packages/rules/src/**` production runtime delta EMPTY; no identity routing, runtime source-text parsing, or `SkillLib` fallback added;
+- official full probe: Candidate worktree `1166 PASS / 17 FAIL`; exact Base independently reproduces the `12` tracked failures, while the additional five failures are from ignored/untracked `.fd-shiki-runtime-debug.test.ts` and are not Candidate content;
+- complementary run excluding only the seven mechanically reproduced Base-debt files plus the ignored debug file: `153 files / 1084 tests PASS`;
+- detailed result: `docs/reports/2026-09-29-p3-s-owner-stheno-complete-migration-result.md`.
+
+Accounting boundary:
+- strict formal accounting is still `139/944`, remaining `805` before fresh R and A-sync;
+- no credit before exact-Candidate `MIGRATION_ACCEPTED` plus subsequent A-sync/accounting;
+- accepted synchronized outcome may add exactly sc2 + sc3 and move strict formal accounting to `141/944`, remaining `803`;
+- do not advance owners before this owner batch is reviewed and synchronized.
+
+Allowed verdicts:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `MIGRATION_BLOCKED`
