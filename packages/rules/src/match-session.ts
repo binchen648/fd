@@ -37,6 +37,7 @@ import {
 import { hmacSha256Hex, sha256Hex } from './ability/portable-sha256';
 import { clearTransientCardTransformState } from './ability/card-instance-state';
 import { isNormalCardDrawSuppressed } from './ability/timed-resource-suppression';
+import { isAcceptedDiscardBasicReplayCounterAbility, isAcceptedPhysicalCardReplayGrowthAbility } from './ability/deck-recycle-replay-growth-capability';
 import { settleLinkedOwnerCardsAfterBattles } from './ability/linked-owner-combat';
 import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute } from './ability/deduction-record';
 import { SOURCE_LOCATION_BASE_POWER_ATTRIBUTES, isAcceptedPostDrawHandShuffleAbility, isAcceptedSourceLocationBasicPowerAbility } from './ability/source-location-rune-capability';
@@ -614,6 +615,32 @@ function isRestorePendingInteraction(value: unknown): boolean {
       typeof value.kind !== 'string' || typeof value.sourceCardInstanceId !== 'string' || typeof value.abilityId !== 'string' ||
       !isRestoreSafeInteger(value.createdRevision) || typeof value.continuationRef !== 'string') return false;
   switch (value.kind) {
+    case 'automatic_recycle_keep_v1':
+      return hasExactRestoreKeys(value, [
+        'kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'controllerId','counterKey','candidateIds','keepMax','gain','remainingDraws','constraints',
+      ]) && typeof value.controllerId === 'string' && typeof value.counterKey === 'string' && isRestoreStringArray(value.candidateIds) &&
+        new Set(value.candidateIds).size === value.candidateIds.length && value.keepMax === 3 && value.gain === 1 &&
+        isRestoreSafeInteger(value.remainingDraws, 1) && isRestoreInteractionConstraints(value.constraints, ['card']) &&
+        (value.constraints as Record<string, unknown>).min === 0 && Number.isSafeInteger((value.constraints as Record<string, unknown>).max) &&
+        Number((value.constraints as Record<string, unknown>).max) >= 0 && Number((value.constraints as Record<string, unknown>).max) <= 3;
+    case 'counter_spend_choice_v1':
+      return hasExactRestoreKeys(value, [
+        'kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'controllerId','counterKey','maxSpend','baseCount','options','constraints',
+      ]) && typeof value.controllerId === 'string' && typeof value.counterKey === 'string' && value.maxSpend === 2 && value.baseCount === 3 &&
+        isRestoreStringArray(value.options) && value.options.length >= 1 && value.options.length <= 3 &&
+        isRestoreInteractionConstraints(value.constraints, ['choice']) && (value.constraints as Record<string, unknown>).min === 1 &&
+        (value.constraints as Record<string, unknown>).max === 1;
+    case 'discard_basic_replay_choice_v1':
+      return hasExactRestoreKeys(value, [
+        'kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'controllerId','counterKey','counterSpent','baseCount','candidateIds','constraints',
+      ]) && typeof value.controllerId === 'string' && typeof value.counterKey === 'string' && isRestoreSafeInteger(value.counterSpent, 0) &&
+        value.counterSpent <= 2 && value.baseCount === 3 && isRestoreStringArray(value.candidateIds) &&
+        new Set(value.candidateIds).size === value.candidateIds.length && isRestoreInteractionConstraints(value.constraints, ['card']) &&
+        (value.constraints as Record<string, unknown>).min === 0 && Number.isSafeInteger((value.constraints as Record<string, unknown>).max) &&
+        Number((value.constraints as Record<string, unknown>).max) >= 0 && Number((value.constraints as Record<string, unknown>).max) <= 5;
     case 'post_draw_hand_shuffle_v1':
       return hasExactRestoreKeys(value, [
         'kind', 'template', 'visibility', 'cancelPolicy', 'sourceCardInstanceId', 'abilityId', 'createdRevision', 'continuationRef', 'constraints',
@@ -729,7 +756,14 @@ function isRestoreCardRuntimeState(value: unknown): boolean {
     (value.actionAbilityAllowedInCombatRound === undefined || isRestoreSafeInteger(value.actionAbilityAllowedInCombatRound, 1)) &&
     (value.placedAtLocationId === undefined || typeof value.placedAtLocationId === 'string') &&
     (value.sourceLocationBasicBasePowerMultiplier === undefined ||
-      isRestoreSourceLocationBasicBasePowerMultiplier(value.sourceLocationBasicBasePowerMultiplier));
+      isRestoreSourceLocationBasicBasePowerMultiplier(value.sourceLocationBasicBasePowerMultiplier)) &&
+    (value.returnToDeckAfterBattle === undefined || (isRestoreRecord(value.returnToDeckAfterBattle) &&
+      hasExactRestoreKeys(value.returnToDeckAfterBattle, ['round','controllerId','sourceCardId','abilityId']) &&
+      isRestoreSafeInteger(value.returnToDeckAfterBattle.round, 1) && typeof value.returnToDeckAfterBattle.controllerId === 'string' &&
+      typeof value.returnToDeckAfterBattle.sourceCardId === 'string' && typeof value.returnToDeckAfterBattle.abilityId === 'string')) &&
+    (value.roundPowerBonus === undefined || (isRestoreRecord(value.roundPowerBonus) &&
+      hasExactRestoreKeys(value.roundPowerBonus, ['round','amount','sourceAbilityId']) && isRestoreSafeInteger(value.roundPowerBonus.round, 1) &&
+      isRestoreSafeInteger(value.roundPowerBonus.amount, 0) && typeof value.roundPowerBonus.sourceAbilityId === 'string'));
 }
 
 function isRestoreAbilityDefinition(value: unknown): boolean {
@@ -863,6 +897,7 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
   if (value.deductionRecordsByPlayer !== undefined && (!isRestoreRecord(value.deductionRecordsByPlayer) || !Object.values(value.deductionRecordsByPlayer).every((entry) =>
       isRestoreRecord(entry) && typeof entry.definitionId === 'string' && DEDUCTION_RECORD_ATTRIBUTES.includes(entry.attribute as typeof DEDUCTION_RECORD_ATTRIBUTES[number]) && isRestoreSafeInteger(entry.recordedRound, 1)))) return false;
   if (value.battleDefeatRoundByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.battleDefeatRoundByPlayer)) return false;
+  if (value.battleLossIgnoreRoundByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.battleLossIgnoreRoundByPlayer)) return false;
   if (value.normalCommandSealUseRoundByPlayer !== undefined && !isRestorePositiveIntegerMap(value.normalCommandSealUseRoundByPlayer)) return false;
   if (value.normalCommandSealUseHistory !== undefined && (!Array.isArray(value.normalCommandSealUseHistory) ||
       !value.normalCommandSealUseHistory.every(isRestoreNormalCommandSealUseRecord))) return false;
@@ -1143,7 +1178,7 @@ function isRestoreAbilityRuntimeReferences(
   currentRound: number,
 ): boolean {
   const playerKeyedMaps = [
-    'playerStatusKeysByPlayer','structuredPlayerFlagsByPlayer','structuredRoundFlagKeysByPlayer','deductionRecordsByPlayer','battleDefeatRoundByPlayer','combatWinRoundByPlayer','manaCaps','noblePhantasmCostsThisRound','movementDistanceThisRound',
+    'playerStatusKeysByPlayer','structuredPlayerFlagsByPlayer','structuredRoundFlagKeysByPlayer','deductionRecordsByPlayer','battleDefeatRoundByPlayer','battleLossIgnoreRoundByPlayer','combatWinRoundByPlayer','manaCaps','noblePhantasmCostsThisRound','movementDistanceThisRound',
     'battlefieldsPassedOrStayedThisRound','startingDeckSizeByPlayer','normalCardDrawBlockedThroughRoundByPlayer','manaGainBlockedThroughRoundByPlayer',
     'normalCommandSealUseRoundByPlayer','rulerCommandSealUseRoundByPlayer',
   ] as const;
@@ -1274,6 +1309,13 @@ function isRestoreAbilityRuntimeReferences(
       if (state.sourceLocationBasicBasePowerMultiplier !== undefined &&
           (cardsByInstance.get(instanceId)?.zone !== 'attack_area' || state.active !== true || state.faceDown !== false ||
             !restoreSourceHasAcceptedAbility(pack, cardsByInstance, eventPlacements, instanceId, isAcceptedSourceLocationBasicPowerAbility))) return false;
+      if (state.returnToDeckAfterBattle !== undefined) {
+        const marker = state.returnToDeckAfterBattle as Record<string, unknown>;
+        if (cardsByInstance.get(instanceId)?.ownerPlayerId !== marker.controllerId || cardsByInstance.get(instanceId)?.controllerPlayerId !== marker.controllerId ||
+            !restoreSourceControllerMatches(cardsByInstance, eventPlacements, marker.sourceCardId as string, marker.controllerId as string) ||
+            !restoreSourceHasAcceptedAbilityId(pack, cardsByInstance, eventPlacements, marker.sourceCardId as string, marker.abilityId as string, isAcceptedDiscardBasicReplayCounterAbility)) return false;
+      }
+      if (state.roundPowerBonus !== undefined && !restoreSourceHasAcceptedAbilityId(pack, cardsByInstance, eventPlacements, instanceId, (state.roundPowerBonus as Record<string, unknown>).sourceAbilityId as string, isAcceptedPhysicalCardReplayGrowthAbility)) return false;
     }
   }
 

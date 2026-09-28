@@ -68,6 +68,14 @@ import {
 } from './opponent-close-to-one';
 import { BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT, containsBattleLuckCloseDrawPlayNode, isAcceptedBattleLuckCloseDrawPlayAbility } from './divine-core-capability';
 import {
+  containsDeckRecycleReplayGrowthPrivilegedNode,
+  isAcceptedDeckRecycleReplayGrowthAbility,
+  isAcceptedAutomaticRecycleKeepGainCounterAbility,
+  isAcceptedSpendCounterIgnoreBattleLossAbility,
+  isAcceptedDiscardBasicReplayCounterAbility,
+  isAcceptedPhysicalCardReplayGrowthAbility,
+} from './deck-recycle-replay-growth-capability';
+import {
   copyBattleCloseDrawPlayServerAuthority,
   rememberBattleCloseDrawImmediatePlayAuthority,
   rememberBattleCloseDrawPlayDrawAuthority,
@@ -275,7 +283,7 @@ function context(s: GameState, sourceCardId: string, abilityId: string, event?: 
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-    cardState: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {},
+    cardState: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, battleLossIgnoreRoundByPlayer: {},
     startingDeckSizeByPlayer: Object.fromEntries(s.players.map((candidate) => [candidate.id, s.cards.filter((entry) => entry.ownerPlayerId === candidate.id && entry.zone === 'deck').length])),
     cardPlayCountByInstance: {}, grantedPerGamePlayLimitCardIds: [], grantedPerGamePlayLimitBaselineByCardId: {},
     ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [],
@@ -468,6 +476,12 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
   if (linkedOwnerMultiplier !== 1) {
     result.value *= linkedOwnerMultiplier;
     result.lines.push({ label: 'linked_owner_command_seal_base_power_multiplier', value: result.value });
+  }
+  const roundPowerBonus = runtime(s).cardState[sourceId]?.roundPowerBonus;
+  if (roundPowerBonus?.round === s.round.roundNumber) {
+    if (!Number.isSafeInteger(roundPowerBonus.amount) || roundPowerBonus.amount < 0) reject('invalid_state', 'Round card-Power bonus is invalid');
+    result.value += roundPowerBonus.amount;
+    result.lines.push({ label: roundPowerBonus.sourceAbilityId || 'round_card_power_bonus', value: result.value });
   }
   for (const modifier of ((source as unknown as { powerModifiers?: Array<Record<string, unknown>> }).powerModifiers ?? [])) {
     if (modifier.lifecycle === 'until_leaves_active_area' && modifier.round !== s.round.roundNumber) continue;
@@ -719,7 +733,112 @@ function setStructuredFlag(s: GameState, playerId: PlayerId, key: string, value:
   if (thisRound) roundKeys[key] = s.round.roundNumber;
   else delete roundKeys[key];
 }
-function exactRuleNodeKeys(value: RuleNode, allowed: readonly string[]): boolean {
+function structuredCounterValue(s: GameState, playerId: PlayerId, key: string): number {
+  const value = structuredFlagValue(s, playerId, key);
+  if (value === undefined) return 0;
+  if (!Number.isSafeInteger(value) || Number(value) < 0) reject('invalid_state', 'Structured counter is invalid');
+  return Number(value);
+}
+function setStructuredCounter(s: GameState, playerId: PlayerId, key: string, value: number): void {
+  if (!Number.isSafeInteger(value) || value < 0) reject('invalid_state', 'Structured counter is invalid');
+  setStructuredFlag(s, playerId, key, value, false);
+}
+function acceptedRecycleProvider(s: GameState, controllerId: PlayerId): { sourceCardId: string; ability: AuthoringAbility; counterKey: string } | undefined {
+  const found: Array<{ sourceCardId: string; ability: AuthoringAbility; counterKey: string }> = [];
+  for (const physical of s.cards) {
+    if (physical.controllerPlayerId !== controllerId || physical.zone !== 'skill') continue;
+    const d = runtime(s).pack.cards[physical.definitionId];
+    if (!d) continue;
+    for (const ability of d.abilities) {
+      if (!isAcceptedAutomaticRecycleKeepGainCounterAbility(ability)) continue;
+      found.push({ sourceCardId: physical.instanceId, ability, counterKey: str(ability.effects[0]?.counterKey) });
+    }
+  }
+  if (found.length > 1) reject('resolution_failed', 'Conflicting automatic recycle providers');
+  return found[0];
+}
+function controllerDiscardBasicAttackIds(s: GameState, controllerId: PlayerId): string[] {
+  return s.cards.filter((physical) => physical.ownerPlayerId === controllerId && physical.controllerPlayerId === controllerId &&
+    physical.zone === 'discard' && runtime(s).pack.cards[physical.definitionId]?.cardType === 'basic_attack').map((physical) => physical.instanceId);
+}
+function stageAutomaticRecycleKeepDecision(s: GameState, ctx: EffectContext, remainingDraws: number, remainingEffects: RuleNode[]): boolean {
+  const provider = acceptedRecycleProvider(s, ctx.controllerId);
+  const candidates = s.cards.filter((physical) => physical.ownerPlayerId === ctx.controllerId && physical.zone === 'discard').map((physical) => physical.instanceId);
+  if (!provider || candidates.length === 0) return false;
+  const max = Math.min(3, Math.max(0, candidates.length - 1));
+  const id = nextId(s, 'automatic-recycle-keep');
+  runtime(s).pendingDecision = {
+    id, controllerId: ctx.controllerId,
+    target: { id: 'recycle_keep', type: 'card_instance', scope: { zone: 'discard', owner: 'controller' }, count: { min: 0, max } },
+    candidates, min: 0, max, context: structuredClone(ctx), remainingEffects: structuredClone(remainingEffects),
+    interaction: {
+      kind: 'automatic_recycle_keep_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: provider.sourceCardId, abilityId: provider.ability.id, createdRevision: runtime(s).revision + 1,
+      continuationRef: `${id}:continuation`, controllerId: ctx.controllerId, counterKey: provider.counterKey,
+      candidateIds: [...candidates], keepMax: 3, gain: 1, remainingDraws,
+      constraints: { kind: 'target', targetKind: 'card', min: 0, max, distinct: true },
+    },
+  };
+  return true;
+}
+function drawCardsWithAutomaticRecycle(s: GameState, ctx: EffectContext, count: number, remainingEffects: RuleNode[]): boolean {
+  for (let remaining = count; remaining > 0; remaining--) {
+    if (!s.cards.some((physical) => physical.ownerPlayerId === ctx.controllerId && physical.zone === 'deck')) {
+      const discard = s.cards.filter((physical) => physical.ownerPlayerId === ctx.controllerId && physical.zone === 'discard');
+      if (discard.length === 0) return false;
+      if (stageAutomaticRecycleKeepDecision(s, ctx, remaining, remainingEffects)) return true;
+      for (const physical of discard) moveCard(s, physical.instanceId, 'deck');
+      shuffle(s, ctx.controllerId);
+    }
+    const top = s.cards.find((physical) => physical.ownerPlayerId === ctx.controllerId && physical.zone === 'deck');
+    if (!top) return false;
+    moveCard(s, top.instanceId, 'hand');
+  }
+  return false;
+}
+function stageDiscardBasicReplayCounterDecision(s: GameState, ctx: EffectContext, ability: AuthoringAbility): void {
+  const effect = ability.effects[0]!;
+  const key = str(effect.counterKey);
+  const available = Math.min(2, structuredCounterValue(s, ctx.controllerId, key));
+  const options = Array.from({ length: available + 1 }, (_, index) => `counter:${index}`);
+  const id = nextId(s, 'counter-spend-choice');
+  runtime(s).pendingDecision = {
+    id, controllerId: ctx.controllerId,
+    target: { id: 'counter_spend', type: 'choice', options: options.map((option) => ({ id: option })), count: { min: 1, max: 1 } },
+    candidates: options, min: 1, max: 1, context: structuredClone(ctx), remainingEffects: [],
+    interaction: {
+      kind: 'counter_spend_choice_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: runtime(s).revision + 1,
+      continuationRef: `${id}:continuation`, controllerId: ctx.controllerId, counterKey: key, maxSpend: 2, baseCount: 3,
+      options: [...options], constraints: { kind: 'target', targetKind: 'choice', min: 1, max: 1, distinct: true },
+    },
+  };
+}
+function executePhysicalReplayGrowth(s: GameState, ctx: EffectContext, ability: AuthoringAbility): void {
+  const event = ctx.event;
+  const source = card(s, ctx.sourceCardId);
+  const sourceState = runtime(s).cardState[ctx.sourceCardId];
+  if (!event || event.type !== 'on_card_played' || event.sourceCardId !== ctx.sourceCardId || event.playerId !== ctx.controllerId ||
+      source.controllerPlayerId !== ctx.controllerId || source.zone !== 'attack_area' || sourceState?.active !== true || sourceState.faceDown === true) {
+    reject('invalid_event', 'Physical replay-growth requires the exact live played source');
+  }
+  const playCount = runtime(s).cardPlayCountByInstance?.[ctx.sourceCardId] ?? 0;
+  if (!Number.isSafeInteger(playCount) || playCount < 1) reject('invalid_state', 'Physical replay-growth play count is invalid');
+  const currentCost = effectiveCardPlayCost(s, ctx.controllerId, ctx.sourceCardId);
+  if (!Number.isSafeInteger(currentCost) || currentCost < 0) reject('invalid_state', 'Physical replay-growth current cost is invalid');
+  const top = s.cards.filter((physical) => physical.ownerPlayerId === ctx.controllerId && physical.zone === 'deck').slice(0, 3);
+  let matched = false;
+  for (const physical of top) {
+    const d = runtime(s).pack.cards[physical.definitionId];
+    const printed = Number(d?.cardFace.basePower);
+    if (Number.isFinite(printed) && printed === 4) matched = true;
+    moveCard(s, physical.instanceId, 'discard');
+    physical.visibility = { scope: 'public' };
+    runtime(s).events.push({ type: 'card_revealed_and_discarded', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId, cardInstanceId: physical.instanceId });
+  }
+  if (matched) sourceState.roundPowerBonus = { round: s.round.roundNumber, amount: currentCost, sourceAbilityId: ability.id };
+}function exactRuleNodeKeys(value: RuleNode, allowed: readonly string[]): boolean {
   return Object.keys(value).every((key) => allowed.includes(key));
 }
 function structuredFlagLifecycle(value: unknown): boolean {
@@ -1000,6 +1119,11 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsCommandSealPowerPrivilegedNode(a) && !isAcceptedCommandSealPowerPrivilegedAbility(a)) return false;
   if (containsBattleLuckCloseDrawPlayNode(a) && !isAcceptedBattleLuckCloseDrawPlayAbility(a)) return false;
   if (isAcceptedBattleLuckCloseDrawPlayAbility(a) && !canActivateBattleCloseDrawPlay(s, sourceId, a)) return false;
+  if (containsDeckRecycleReplayGrowthPrivilegedNode(a) && !isAcceptedDeckRecycleReplayGrowthAbility(a)) return false;
+  if (isAcceptedSpendCounterIgnoreBattleLossAbility(a)) {
+    const key = str(a.effects[0]?.counterKey);
+    if (structuredCounterValue(s, card(s, sourceId).controllerPlayerId, key) < 1) return false;
+  }
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
@@ -1161,13 +1285,17 @@ export function effectiveCardPlayCost(s: GameState, playerId: string, sourceId: 
   const baseCost = dynamic.length
     ? Math.max(0, s.players.filter((candidate) => candidate.status === 'active').length - s.round.roundNumber)
     : base;
-  return baseCost + battlefieldSourceCardPlayCostIncrease(s, playerId, sourceId);
+  const replayGrowth = d.abilities.filter(isAcceptedPhysicalCardReplayGrowthAbility);
+  if (replayGrowth.length > 1) reject('unsupported', 'Conflicting physical replay-growth cost modifiers');
+  const replayIncrease = replayGrowth.length === 1 ? (runtime(s).cardPlayCountByInstance?.[sourceId] ?? 0) : 0;
+  if (!Number.isSafeInteger(replayIncrease) || replayIncrease < 0) reject('invalid_state', 'Physical replay-growth count is invalid');
+  return baseCost + replayIncrease + battlefieldSourceCardPlayCostIncrease(s, playerId, sourceId);
 }
 
-function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false, ignoreManaCost = false): string | undefined {
+function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false, ignoreManaCost = false, allowedSourceZones: readonly string[] = ['hand', 'skill']): string | undefined {
   const c = card(s, sourceId); const d = definition(s, sourceId); if (!d) return 'unsupported';
   if (d.mode !== 'automatic') return d.mode;
-  if (c.controllerPlayerId !== p || !['hand', 'skill'].includes(c.zone) || player(s, p).status !== 'active') return 'illegal_action';
+  if (c.controllerPlayerId !== p || !allowedSourceZones.includes(c.zone) || player(s, p).status !== 'active') return 'illegal_action';
   if (c.zone === 'skill' && (isActivationOnlyDefinition(s, c.definitionId) || d.abilities.some((ability) =>
     ability.effects.some((effect) => isPlaceSourceAtBattlefieldEffect(effect) || isSourceSkillAttackJoinEffect(effect))))) return 'activation_only';
   const hasLegacyAppendOnlyMarker = d.abilities.some(a => a.effects.some(effect => effect.type === 'append_only_rule' && effect.rule !== 'ignore_battle_loss_effects'));
@@ -2213,9 +2341,49 @@ function inputVariableCalculationsMatch(s: GameState, ability: AuthoringAbility,
   const latest = [...runtime(s).calculations].reverse().find((entry) => entry.controllerId === ctx.controllerId && entry.lines.length === names.length && entry.lines.every((line, index) => line.label === names[index]));
   return !!latest && latest.lines.every((line) => ctx.variables[line.label] === line.value);
 }
-export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decision: PendingDecision): boolean {
+function isDeckRecycleReplayGrowthPendingDecisionLiveValid(s: GameState, decision: PendingDecision): boolean {
+  const meta = decision.interaction;
+  if (!meta || !['automatic_recycle_keep_v1','counter_spend_choice_v1','discard_basic_replay_choice_v1'].includes(meta.kind)) return false;
+  if (decision.controllerId !== decision.context.controllerId || meta.createdRevision !== runtime(s).revision ||
+      meta.continuationRef !== `${decision.id}:continuation`) return false;
+  if (meta.kind === 'automatic_recycle_keep_v1') {
+    const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+    const ability = source ? restoredAbility(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
+    const currentCandidates = s.cards.filter((physical) => physical.ownerPlayerId === meta.controllerId && physical.zone === 'discard').map((physical) => physical.instanceId);
+    const max = Math.min(3, Math.max(0, currentCandidates.length - 1));
+    return !!source && source.controllerPlayerId === meta.controllerId && source.zone === 'skill' && !!ability &&
+      isAcceptedAutomaticRecycleKeepGainCounterAbility(ability) && str(ability.effects[0]?.counterKey) === meta.counterKey &&
+      meta.controllerId === decision.controllerId && meta.remainingDraws >= 1 && Number.isSafeInteger(meta.remainingDraws) &&
+      meta.keepMax === 3 && meta.gain === 1 && exactPlayerArray(meta.candidateIds, currentCandidates) &&
+      exactPlayerArray(decision.candidates, currentCandidates) && decision.min === 0 && decision.max === max &&
+      meta.constraints.kind === 'target' && meta.constraints.targetKind === 'card' && meta.constraints.min === 0 && meta.constraints.max === max;
+  }
+  if (meta.kind !== 'counter_spend_choice_v1' && meta.kind !== 'discard_basic_replay_choice_v1') return false;
+  const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+  const ability = source ? restoredAbility(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
+  if (!source || source.controllerPlayerId !== meta.controllerId || !ability || !isAcceptedDiscardBasicReplayCounterAbility(ability) ||
+      decision.context.sourceCardId !== meta.sourceCardInstanceId || decision.context.abilityId !== meta.abilityId ||
+      str(ability.effects[0]?.counterKey) !== meta.counterKey) return false;
+  const currentCounter = structuredCounterValue(s, meta.controllerId, meta.counterKey);
+  if (meta.kind === 'counter_spend_choice_v1') {
+    const expected = Array.from({ length: Math.min(2, currentCounter) + 1 }, (_, index) => `counter:${index}`);
+    return meta.maxSpend === 2 && meta.baseCount === 3 && exactPlayerArray(meta.options, expected) && exactPlayerArray(decision.candidates, expected) &&
+      decision.min === 1 && decision.max === 1 && meta.constraints.kind === 'target' && meta.constraints.targetKind === 'choice' &&
+      meta.constraints.min === 1 && meta.constraints.max === 1;
+  }
+  if (meta.kind !== 'discard_basic_replay_choice_v1') return false;
+  const expectedCandidates = controllerDiscardBasicAttackIds(s, meta.controllerId);
+  const max = Math.min(3 + meta.counterSpent, expectedCandidates.length);
+  return Number.isSafeInteger(meta.counterSpent) && meta.counterSpent >= 0 && meta.counterSpent <= 2 && currentCounter >= meta.counterSpent &&
+    meta.baseCount === 3 && exactPlayerArray(meta.candidateIds, expectedCandidates) && exactPlayerArray(decision.candidates, expectedCandidates) &&
+    decision.min === 0 && decision.max === max && meta.constraints.kind === 'target' && meta.constraints.targetKind === 'card' &&
+    meta.constraints.min === 0 && meta.constraints.max === max;
+}export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decision: PendingDecision): boolean {
   if (decision.interaction && ['battle_luck_discard_choice_v1','battle_opponent_close_reward_choice_v1','battle_drawn_card_optional_play_v1'].includes(decision.interaction.kind)) {
     return isBattleCloseDrawPlayPendingDecisionLiveValid(s, decision);
+  }
+  if (decision.interaction && ['automatic_recycle_keep_v1','counter_spend_choice_v1','discard_basic_replay_choice_v1'].includes(decision.interaction.kind)) {
+    return isDeckRecycleReplayGrowthPendingDecisionLiveValid(s, decision);
   }
   if (decision.interaction) return true;
   try {
@@ -4093,7 +4261,27 @@ function stageCombatOpponentPowerVpReward(s: GameState, ctx: EffectContext, a: A
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
-  if (containsCommandSealPowerPrivilegedNode(a)) {
+  if (containsDeckRecycleReplayGrowthPrivilegedNode(a) && !isAcceptedDeckRecycleReplayGrowthAbility(a)) {
+    reject('resolution_failed', 'Unsupported deck recycle/replay/growth semantic shape');
+  }
+  if (isAcceptedSpendCounterIgnoreBattleLossAbility(a)) {
+    const key = str(a.effects[0]?.counterKey);
+    const current = structuredCounterValue(s, ctx.controllerId, key);
+    if (current < 1) reject('insufficient_resource', 'Counter is required');
+    setStructuredCounter(s, ctx.controllerId, key, current - 1);
+    (runtime(s).battleLossIgnoreRoundByPlayer ??= {})[ctx.controllerId] = s.round.roundNumber;
+    runtime(s).events.push({ type: 'battle_loss_effects_ignored_this_round', playerId: ctx.controllerId,
+      sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+    return;
+  }
+  if (isAcceptedDiscardBasicReplayCounterAbility(a)) {
+    stageDiscardBasicReplayCounterDecision(s, ctx, a);
+    return;
+  }
+  if (isAcceptedPhysicalCardReplayGrowthAbility(a)) {
+    executePhysicalReplayGrowth(s, ctx, a);
+    return;
+  }  if (containsCommandSealPowerPrivilegedNode(a)) {
     if (!isAcceptedCommandSealPowerPrivilegedAbility(a)) reject('resolution_failed', 'Unsupported Command/Ruler seal Power semantic shape');
     if (isAcceptedEngagedSealUserFormulaPowerAbility(a)) executeEngagedSealUserFormulaPower(s, ctx, a);
     else if (isAcceptedNormalSealPowerReplacementAbility(a)) executeNormalSealPowerReplacement(s, ctx, a);
@@ -4260,6 +4448,12 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
       if (branch) executeEffects(s, ctx, [...nodes(branch.then ?? branch.else), ...effects.slice(i + 1)]);
       return;
     }
+    if (effect.type === 'draw_cards') {
+      const count = numeric(s, ctx, effect.count);
+      if (!Number.isSafeInteger(count) || count < 0) reject('invalid_count', 'Invalid draw count');
+      if (!isNormalCardDrawSuppressed(s, ctx.controllerId) && drawCardsWithAutomaticRecycle(s, ctx, count, effects.slice(i + 1))) return;
+      if (!isNormalCardDrawSuppressed(s, ctx.controllerId)) continue;
+    }
     resolveEffect(s, ctx, effect);
   }
   installOngoing(s, ctx, a);
@@ -4304,6 +4498,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (isAcceptedBattleLuckCloseDrawPlayAbility(a)) {
     startBattleCloseDrawPlay(s, ctx);
     return;
+  }
+  if (containsDeckRecycleReplayGrowthPrivilegedNode(a) && !isAcceptedDeckRecycleReplayGrowthAbility(a)) {
+    reject('resolution_failed', 'Unsupported deck recycle/replay/growth semantic shape');
   }
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) {
     reject('resolution_failed', 'Unsupported persistent RuleOverride semantic shape');
@@ -4485,7 +4682,22 @@ function processEvent(s: GameState, event: AbilityEvent): void {
     }
     consumeDelayedActivations(s, event);
   }
-  const triggered = collectTriggeredAbilities(s, event);
+  if (event.type === 'after_battle_ended') {
+    const shuffleControllers = new Set<PlayerId>();
+    for (const physical of [...s.cards]) {
+      const state = r.cardState[physical.instanceId];
+      const marker = state?.returnToDeckAfterBattle;
+      if (!marker || marker.round !== s.round.roundNumber) continue;
+      if (physical.ownerPlayerId !== marker.controllerId || physical.controllerPlayerId !== marker.controllerId) {
+        reject('invalid_state', 'Battle-return marker controller no longer matches physical card');
+      }
+      delete state!.returnToDeckAfterBattle;
+      if (physical.zone === 'removed_from_game') continue;
+      moveCard(s, physical.instanceId, 'deck');
+      shuffleControllers.add(marker.controllerId);
+    }
+    for (const controllerId of shuffleControllers) shuffle(s, controllerId);
+  }  const triggered = collectTriggeredAbilities(s, event);
   for (const t of triggered) {
     const a = abilityDefinition(s, t.cardInstanceId, t.abilityId);
     if (a.kind === 'phase_action') continue; // phase windows expose a choice, never auto-spend a phase ability
@@ -4705,7 +4917,97 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const selected = command.selectedIds;
       if (d.interaction) {
         const meta = d.interaction;
-        if (meta.kind === 'battle_luck_discard_choice_v1') {
+        if (meta.kind === 'automatic_recycle_keep_v1') {
+          const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+          const ability = source ? abilityDefinition(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
+          const currentCandidates = s.cards.filter((physical) => physical.ownerPlayerId === meta.controllerId && physical.zone === 'discard').map((physical) => physical.instanceId);
+          const effect = ability?.effects[0];
+          const expectedMax = Math.min(3, Math.max(0, currentCandidates.length - 1));
+          if (!source || source.controllerPlayerId !== meta.controllerId || source.zone !== 'skill' || !ability ||
+              !isAcceptedAutomaticRecycleKeepGainCounterAbility(ability) || str(effect?.counterKey) !== meta.counterKey ||
+              d.controllerId !== meta.controllerId || playerId !== meta.controllerId || d.context.controllerId !== meta.controllerId ||
+              meta.createdRevision !== r.revision || meta.continuationRef !== `${d.id}:continuation` || meta.keepMax !== 3 || meta.gain !== 1 ||
+              meta.remainingDraws < 1 || !Number.isSafeInteger(meta.remainingDraws) || meta.constraints.kind !== 'target' ||
+              meta.constraints.targetKind !== 'card' || meta.constraints.min !== 0 || meta.constraints.max !== expectedMax ||
+              d.min !== 0 || d.max !== expectedMax || !exactPlayerArray(meta.candidateIds, currentCandidates) ||
+              !exactPlayerArray(d.candidates, currentCandidates) || !Array.isArray(selected) || selected.length > expectedMax ||
+              new Set(selected).size !== selected.length || selected.some((id) => !currentCandidates.includes(id))) {
+            reject('resolution_failed', 'Corrupt or stale automatic-recycle keep interaction state');
+          }
+          const kept = new Set(selected);
+          for (const instanceId of currentCandidates) if (!kept.has(instanceId)) moveCard(s, instanceId, 'deck');
+          if (currentCandidates.length > kept.size) shuffle(s, meta.controllerId);
+          setStructuredCounter(s, meta.controllerId, meta.counterKey, structuredCounterValue(s, meta.controllerId, meta.counterKey) + 1);
+          delete r.pendingDecision;
+          if (!drawCardsWithAutomaticRecycle(s, d.context, meta.remainingDraws, d.remainingEffects)) {
+            executeEffects(s, d.context, d.remainingEffects);
+          }
+          break;
+        }
+        if (meta.kind === 'counter_spend_choice_v1') {
+          const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+          const ability = source ? abilityDefinition(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
+          const effect = ability?.effects[0];
+          const currentCounter = structuredCounterValue(s, meta.controllerId, meta.counterKey);
+          const expectedOptions = Array.from({ length: Math.min(2, currentCounter) + 1 }, (_, index) => `counter:${index}`);
+          if (!source || source.controllerPlayerId !== meta.controllerId || !ability || !isAcceptedDiscardBasicReplayCounterAbility(ability) ||
+              str(effect?.counterKey) !== meta.counterKey || d.controllerId !== meta.controllerId || playerId !== meta.controllerId ||
+              d.context.controllerId !== meta.controllerId || d.context.sourceCardId !== meta.sourceCardInstanceId || d.context.abilityId !== meta.abilityId ||
+              meta.createdRevision !== r.revision || meta.continuationRef !== `${d.id}:continuation` || meta.maxSpend !== 2 || meta.baseCount !== 3 ||
+              meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'choice' || meta.constraints.min !== 1 || meta.constraints.max !== 1 ||
+              !exactPlayerArray(meta.options, expectedOptions) || !exactPlayerArray(d.candidates, expectedOptions) ||
+              !Array.isArray(selected) || selected.length !== 1 || !expectedOptions.includes(selected[0]!)) {
+            reject('resolution_failed', 'Corrupt or stale counter-spend interaction state');
+          }
+          const counterSpent = Number(selected[0]!.slice('counter:'.length));
+          const candidateIds = controllerDiscardBasicAttackIds(s, meta.controllerId);
+          const max = Math.min(3 + counterSpent, candidateIds.length);
+          const id = nextId(s, 'discard-basic-replay-choice');
+          r.pendingDecision = {
+            id, controllerId: meta.controllerId,
+            target: { id: 'discard_basic_replay', type: 'card_instance', scope: { zone: 'discard', owner: 'controller' }, count: { min: 0, max } },
+            candidates: [...candidateIds], min: 0, max, context: structuredClone(d.context), remainingEffects: [],
+            interaction: {
+              kind: 'discard_basic_replay_choice_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+              sourceCardInstanceId: meta.sourceCardInstanceId, abilityId: meta.abilityId, createdRevision: r.revision + 1,
+              continuationRef: `${id}:continuation`, controllerId: meta.controllerId, counterKey: meta.counterKey,
+              counterSpent, baseCount: 3, candidateIds: [...candidateIds],
+              constraints: { kind: 'target', targetKind: 'card', min: 0, max, distinct: true },
+            },
+          };
+          break;
+        }
+        if (meta.kind === 'discard_basic_replay_choice_v1') {
+          const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+          const ability = source ? abilityDefinition(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
+          const effect = ability?.effects[0];
+          const currentCounter = structuredCounterValue(s, meta.controllerId, meta.counterKey);
+          const currentCandidates = controllerDiscardBasicAttackIds(s, meta.controllerId);
+          const expectedMax = Math.min(3 + meta.counterSpent, currentCandidates.length);
+          if (!source || source.controllerPlayerId !== meta.controllerId || !ability || !isAcceptedDiscardBasicReplayCounterAbility(ability) ||
+              str(effect?.counterKey) !== meta.counterKey || meta.counterSpent < 0 || meta.counterSpent > 2 || currentCounter < meta.counterSpent ||
+              d.controllerId !== meta.controllerId || playerId !== meta.controllerId || d.context.controllerId !== meta.controllerId ||
+              d.context.sourceCardId !== meta.sourceCardInstanceId || d.context.abilityId !== meta.abilityId || meta.createdRevision !== r.revision ||
+              meta.continuationRef !== `${d.id}:continuation` || meta.baseCount !== 3 || meta.constraints.kind !== 'target' ||
+              meta.constraints.targetKind !== 'card' || meta.constraints.min !== 0 || meta.constraints.max !== expectedMax || d.min !== 0 || d.max !== expectedMax ||
+              !exactPlayerArray(meta.candidateIds, currentCandidates) || !exactPlayerArray(d.candidates, currentCandidates) ||
+              !Array.isArray(selected) || selected.length > expectedMax || new Set(selected).size !== selected.length ||
+              selected.some((id) => !currentCandidates.includes(id))) {
+            reject('resolution_failed', 'Corrupt or stale discard-basic replay interaction state');
+          }
+          delete r.pendingDecision;
+          setStructuredCounter(s, meta.controllerId, meta.counterKey, currentCounter - meta.counterSpent);
+          if (selected.length > 0) {
+            playBatch(s, meta.controllerId, selected.map((instanceId) => ({ type: 'play_card', cardInstanceId: instanceId })), 'effect', false, ['discard']);
+            for (const instanceId of selected) {
+              const state = r.cardState[instanceId];
+              if (!state || state.active !== true || state.faceDown === true) reject('resolution_failed', 'Discard replay did not enter active state');
+              state.returnToDeckAfterBattle = { round: s.round.roundNumber, controllerId: meta.controllerId,
+                sourceCardId: meta.sourceCardInstanceId, abilityId: meta.abilityId };
+            }
+          }
+          break;
+        }        if (meta.kind === 'battle_luck_discard_choice_v1') {
           const tx = r.pendingBattleCloseDrawPlayTransaction;
           const liveLuckIds = tx ? battleCloseDrawPlayLuckCardIds(s, tx.controllerId) : [];
           const count = node(d.target.count);
@@ -5099,7 +5401,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
   cleanupOngoing(s); checkFormulaTriggers(s); resumeBattleCloseDrawPlayAfterNestedWork(s);
 }
 /** All eligibility/costs are checked against the pre-payment state; all cards activate before triggers. */
-function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false): void {
+function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false, allowedSourceZones: readonly string[] = ['hand', 'skill']): void {
   if (new Set(choices.map(c => c.cardInstanceId)).size !== choices.length) reject('illegal_action', 'Duplicate card in play batch');
   const requiredAdditionalIds = new Set(choices
     .filter(c => isRequiredAdditionalPlayCard(s, c.cardInstanceId))
@@ -5116,7 +5418,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   const paidCostByCard = new Map<string, number>();
   for (const c of choices) {
     const allowRequiredAdditional = quota === 'regular' && requiredAdditionalIds.has(c.cardInstanceId) && regularAttackChoices > 0;
-    const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost);
+    const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost, allowedSourceZones);
     if (failure) reject(failure, 'Card cannot be played in this batch');
     const cardCost = c.faceDown || waiveManaCost ? 0 : effectiveCardPlayCost(s, playerId, c.cardInstanceId);
     paidCostByCard.set(c.cardInstanceId, cardCost);

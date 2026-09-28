@@ -6028,3 +6028,45 @@ Acceptance synchronization:
 - Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-owner-stheno-acceptance-synchronization.md`.
 - Mechanical first-occurrence owner ordering selects `servant.suzuka` next: Stheno index `237`, Suzuka index `238` of `251` owners.
 - Owner-readiness-first remains mandatory: complete one full Suzuka preflight before any Suzuka formal consumer migration.
+
+## TASK P3-B-SUZUKA-OWNER-READINESS-CAPABILITY
+
+Owner: Codex B
+Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Base: `f47b3354e9dfe5c9b4777d2fbd40dd9e06f2a1a3`
+Classification: bounded zero-credit owner-readiness capability for current owner `servant.suzuka`
+
+Full-owner preflight:
+- frozen F1 owner set is exactly sc1 + sc2 + sc3;
+- at Base all three are `currentRoute=none` with no inherited/partial accepted current contract and no canonical authoring consumer;
+- the locked Reference identity handler `core.suzuka-package` is evidence only and must not be restored into production;
+- one complete compatible readiness gap set is closed together, not one skill/one PR.
+
+Readiness scope:
+- exact automatic recycle/keep-up-to-three + named-counter gain semantic;
+- exact spend-one-counter/current-round battle-loss-ignore semantic;
+- exact X=0..2 discard-basic replay/pay-normal-cost/physical-card battle-return semantic;
+- exact physical-card permanent replay-cost growth + top-three printed-Power-4/current-cost round-Power semantic;
+- exact loader fail-closed gateways, interaction persistence/provenance, battle settlement integration, and identity audit;
+- no `data/authoring/**` consumer migration in this task.
+
+Verification:
+- focused `8/8 PASS`;
+- directly affected `7 files / 169 tests PASS`;
+- `FD_TOOLCHAIN_OK`;
+- typecheck PASS;
+- content validate/compile PASS (`7 masters / 12 servants / 20 events / 0 blocking issues`);
+- generated determinism PASS with unchanged hashes;
+- `data/authoring/**` delta EMPTY;
+- production identity audit CLEAN;
+- `git diff --check` PASS;
+- detailed result: `docs/reports/2026-09-29-p3-b-suzuka-owner-readiness-capability-result.md`.
+
+Accounting:
+- strict formal accounting remains `141/944`, remaining `803`;
+- this task is permanently zero-credit;
+- accepted readiness must A-sync/rescan and return immediately to `servant.suzuka` for one owner-complete formal sc1+sc2+sc3 Candidate.
+
+Allowed verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
