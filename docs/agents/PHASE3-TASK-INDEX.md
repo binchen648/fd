@@ -5840,15 +5840,15 @@ Formal accounting remains `134/944`; remaining `810`. This task is permanently z
 ## TASK P3-B-STHENO-DIVINE-CORE-READINESS-CAPABILITY
 
 Owner: Codex B
-Status: `IMPLEMENTATION_REVISION_READY_FOR_FRESH_R`
+Status: `SYNCHRONIZED`
 Base: `e3c61d74be6b02b186875e31191e416fc364e179`
 Classification: bounded zero-credit owner-readiness prerequisite for current owner `servant.stheno`
 
 Complete owner-readiness preflight:
 - sc1 has historical formal FM06 Presence Concealment acceptance and requires no new readiness capability;
-- sc2 is already expressible by accepted generic `after_controller_wins_battle` / `event_player_won_combat` / `adjust_victory_points` runtime vocabulary and requires no new privileged shell;
-- sc3 Divine Core is the sole currently discoverable new gap and is closed by this one identity-free battle Luck-close/refund/draw/immediate-play family;
-- no second Stheno readiness/capability batch is currently justified by the complete preflight.
+- sc2 has generic support for its separate `after_controller_wins_battle` / `event_player_won_combat` / `adjust_victory_points` +1 VP branch, but locked Reference also requires authoritative winner reward replacement (`operation=replace`, `rule=combat_reward_distribution`, `mode=full_reward_each`);
+- sc3 Divine Core is accepted by this identity-free battle Luck-close/refund/draw/immediate-play readiness family;
+- mandatory post-acceptance A-rescan supersedes the earlier assumption above: exact accepted Candidate `5d7ec79524b577dcd729ae7bc93d905343bd3e1f` still lacks an accepted `combat_reward_distribution/full_reward_each` settlement seam, so formal Stheno migration remains blocked on one final bounded sc2 readiness capability.
 
 Bounded scope:
 - exact active-source combat whole-ability gateway;
@@ -5883,11 +5883,64 @@ Verification evidence:
 - successor Candidate `54baf0b188114c2fe9f690a339a71a0a620379a1` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt Coordinator relay after Reviewer 403: `https://github.com/binchen648/fd/pull/472#issuecomment-5866671116`;
 - R3 P1 ordinary-new-round closure: `stepGameLoop` now passes the previous root round into `advanceAbilityPhase`, so normal `round_end -> round_start` retires prior-round Divine Core immediate-play history, temporary combat Action permission, and server-only authority exactly once before persistence validation; the production-path regression advances legal Divine Core state through battle -> cleanup -> round_end -> round_start and restores successfully;
 - R3 verification: focused `15/15 PASS`; affected `7 files / 105 tests PASS`; typecheck/content validate/content compile/generated determinism/diff-check PASS; `data/authoring/**` delta EMPTY.
+- final accepted Candidate `5d7ec79524b577dcd729ae7bc93d905343bd3e1f` received `IMPLEMENTATION_ACCEPTED_CANDIDATE`; canonical bounded same-attempt evidence-reference correction: `https://github.com/binchen648/fd/pull/472#issuecomment-5867235240`;
+- exact-Candidate Phase 3 Pre-Review Gate run `36402342635` succeeded;
+- acceptance synchronization: `docs/reports/2026-09-28-p3-a-stheno-divine-core-readiness-capability-acceptance-synchronization.md`;
+- A-rescan mechanically confirms sc2 `combat_reward_distribution/full_reward_each` remains a real owner-local readiness gap on the accepted runtime; formal consumer authoring is not yet authorized.
 - detailed result: `docs/reports/2026-09-28-p3-b-stheno-divine-core-readiness-capability-result.md`.
 
 Accounting:
 - strict formal accounting remains `139/944`, remaining `805`;
 - this readiness task is permanently zero-credit.
+
+Allowed verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
+
+## P3-A-STHENO-DIVINE-CORE-READINESS-CAPABILITY-ACCEPTANCE-SYNC
+
+- PR #472 exact successor Candidate `5d7ec79524b577dcd729ae7bc93d905343bd3e1f` received `IMPLEMENTATION_ACCEPTED_CANDIDATE` from the already-completed fresh independent R.
+- Canonical same-attempt evidence-reference correction: `https://github.com/binchen648/fd/pull/472#issuecomment-5867235240`; the Reviewer-returned URL `#issuecomment-5866671116` mechanically resolves to predecessor `54baf0b...` `IMPLEMENTATION_NEEDS_REVISION` and is not used as accepted-Candidate evidence.
+- Accepted scope is only the bounded zero-credit Stheno sc3 Divine Core readiness family; `data/authoring/**` remains unchanged and no migration credit is added.
+- Exact-Candidate Phase 3 Pre-Review Gate run `36402342635` succeeded.
+- Helper prework `.fd-helper-reports/latest.md` was read as non-authoritative planning material and mechanically revalidated against locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9` plus the accepted runtime.
+- Mechanical A-rescan confirms sc1 remains historical FM06 accepted; sc3 is now readiness-accepted; sc2's separate +1 VP branch is already expressible, but its source-grounded winner reward replacement is not.
+- Locked Reference sc2 uses exact `operation=replace`, `rule=combat_reward_distribution`, `scope.whenControllerWins=true`, `scope.mode=full_reward_each`; Reference combat settlement applies that semantic before reward splitting.
+- Accepted current runtime has no `combat_reward_distribution` / `full_reward_each` seam: loader ruleModifier operation allowlist excludes `replace`, rule allowlist excludes `combat_reward_distribution`, and current combat resolver splits event/competition/location reward pools per winner before post-result ability events.
+- Therefore direct Stheno owner-complete consumer authoring remains blocked. The remaining complete owner-local readiness gap set contains exactly one bounded sc2 reward-distribution family.
+- Strict formal accounting remains `139/944`, remaining `805`; this readiness synchronization is permanently zero-credit.
+- Current owner remains `servant.stheno`; do not advance owners. Next task is `P3-B-STHENO-FULL-REWARD-EACH-READINESS-CAPABILITY`. After that capability is ACCEPTED + A-sync/rescan, return to one formal Stheno owner-complete migration containing sc1 + sc2 + sc3 together.
+- Detailed sync: `docs/reports/2026-09-28-p3-a-stheno-divine-core-readiness-capability-acceptance-synchronization.md`.
+
+## TASK P3-B-STHENO-FULL-REWARD-EACH-READINESS-CAPABILITY
+
+Owner: Codex B
+Status: `READY`
+Base: exact Stheno Divine Core readiness A-sync commit; the implementation Candidate must mechanically bind that synchronization commit as its exact Base
+Classification: bounded zero-credit owner-readiness prerequisite for current owner `servant.stheno`
+
+Complete remaining owner-local gap:
+- add one identity-free exact reward-distribution replacement seam matching locked Reference sc2 semantics: when an eligible controller is among battle winners, all winners receive the full corresponding battle reward instead of splitting it;
+- preserve the separate already-supported Stheno +1 VP win branch outside this capability;
+- integrate at authoritative combat reward calculation before per-winner split so event, competition, and location reward components match source-grounded full-reward-each semantics;
+- reductions/forbids that legally apply after reward calculation must remain effective; do not implement this as a fixed post-scoring VP bonus;
+- exact whole-shape loader/runtime validation must fail closed for wrong operation/rule/mode/controller-win scope or widened near-match shapes.
+
+Hard boundary:
+- identity-free generic runtime only; no Stheno consumer authoring and zero migration credit;
+- `data/authoring/**` delta must remain empty;
+- no `servant.stheno`, `sc-stheno`, card-name, printed-text, or Chinese identity routing in production runtime;
+- no runtime source-text parsing and no `SkillLib` fallback;
+- this is the sole remaining gap discovered by the complete accepted-runtime A-rescan; do not split it into smaller review loops;
+- ACCEPTED must A-sync/rescan and return to the same Stheno formal owner; do not advance owners.
+
+Required verification:
+- exact Reference-shaped loader acceptance and widened/near-match rejection;
+- multi-winner battle proves every winner receives the unsplit reward while default battles continue to split normally;
+- provider/controller must actually satisfy the source-grounded winner/source eligibility boundary;
+- event/competition/location reward components are covered, including interaction with existing reward adjustments/reductions where applicable;
+- affected focused tests, typecheck, content validate/compile, generated determinism, production identity audit, and `git diff --check`;
+- exact Candidate Phase 3 gate and fresh independent R.
 
 Allowed verdicts:
 - `IMPLEMENTATION_ACCEPTED_CANDIDATE`
