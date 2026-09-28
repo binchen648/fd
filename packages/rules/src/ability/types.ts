@@ -188,6 +188,24 @@ export interface PendingCombatOpponentPowerVpReward {
   participantIds: PlayerId[]; participantPowers: Record<PlayerId, number>; opponentIds: PlayerId[];
 }
 export interface DeductionRecordState { definitionId: string; attribute: '力量' | '迅捷' | '魔术' | '特殊'; recordedRound: number }
+export interface AutomaticRecycleKeepInteractionMetadata {
+  kind: 'automatic_recycle_keep_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; counterKey: string; candidateIds: string[]; keepMax: 3; gain: 1; remainingDraws: number;
+  constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: number; distinct: true };
+}
+export interface CounterSpendChoiceInteractionMetadata {
+  kind: 'counter_spend_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; counterKey: string; maxSpend: 2; baseCount: 3; options: string[];
+  constraints: { kind: 'target'; targetKind: 'choice'; min: 1; max: 1; distinct: true };
+}
+export interface DiscardBasicReplayChoiceInteractionMetadata {
+  kind: 'discard_basic_replay_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; counterKey: string; counterSpent: number; baseCount: 3; candidateIds: string[];
+  constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: number; distinct: true };
+}
 export interface BattleLuckDiscardInteractionMetadata {
   kind: 'battle_luck_discard_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
   sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
@@ -220,7 +238,8 @@ export interface PendingBattleCloseDrawPlayTransaction {
 export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata |
   OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata | DeductionRecordChoiceInteractionMetadata |
   PostDrawHandShuffleInteractionMetadata | RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata |
-  OwnedRulerSealPowerInteractionMetadata | CombatOpponentPowerVpRewardInteractionMetadata | BattleLuckDiscardInteractionMetadata |
+  OwnedRulerSealPowerInteractionMetadata | CombatOpponentPowerVpRewardInteractionMetadata | AutomaticRecycleKeepInteractionMetadata |
+  CounterSpendChoiceInteractionMetadata | DiscardBasicReplayChoiceInteractionMetadata | BattleLuckDiscardInteractionMetadata |
   BattleOpponentCloseRewardInteractionMetadata | BattleDrawnCardOptionalPlayInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
@@ -302,6 +321,10 @@ export interface CardRuntimeState {
     multiplier: 2;
     round: number;
   };
+  /** Exact physical-card marker for cards replayed from discard that must return to deck after this battle. */
+  returnToDeckAfterBattle?: { round: number; controllerId: PlayerId; sourceCardId: string; abilityId: string };
+  /** Source-card current-round Power bonus, persisted by physical instance. */
+  roundPowerBonus?: { round: number; amount: number; sourceAbilityId: string };
 }
 export interface RulerSealBinding {
   id: string; issuerPlayerId: PlayerId; boundPlayerId: PlayerId; sourceCardId: string; abilityId: string;
@@ -336,6 +359,8 @@ export interface AbilityRuntime {
   deductionRecordsByPlayer?: Record<PlayerId, DeductionRecordState>;
   /** Round marker for players defeated by a source-grounded effect for battle-winner eligibility. */
   battleDefeatRoundByPlayer?: Record<PlayerId, number>;
+  /** Round marker for players whose battle-loss effects are ignored by an accepted paid ability. */
+  battleLossIgnoreRoundByPlayer?: Record<PlayerId, number>;
   /** Immutable server-owned opening deck cardinality, captured before the first-round draw. */
   startingDeckSizeByPlayer?: Record<PlayerId, number>;
   /** Total physical plays by card instance. */

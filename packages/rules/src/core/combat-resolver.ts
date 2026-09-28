@@ -213,7 +213,8 @@ function hasActiveBasicCardAtBattlefield(
 }
 
 function ignoresBattleLossEffects(state: GameState, playerId: string, battlefieldId: CombatResolutionInput["battlefieldId"]): boolean {
-  return hasActiveBasicCardAtBattlefield(state, playerId, battlefieldId, "basic.luck") ||
+  return state.abilityRuntime?.battleLossIgnoreRoundByPlayer?.[playerId] === state.round.roundNumber ||
+    hasActiveBasicCardAtBattlefield(state, playerId, battlefieldId, "basic.luck") ||
     playerHasLinkedOwnerLossImmunity(state, playerId, battlefieldId);
 }
 

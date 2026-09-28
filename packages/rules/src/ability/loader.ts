@@ -54,6 +54,14 @@ import {
   isOpponentCloseToOneCandidate,
 } from './opponent-close-to-one';
 import { BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT, containsBattleLuckCloseDrawPlayNode, isAcceptedBattleLuckCloseDrawPlayAbility } from './divine-core-capability';
+import {
+  AUTOMATIC_RECYCLE_KEEP_GAIN_COUNTER_EFFECT,
+  SPEND_COUNTER_IGNORE_BATTLE_LOSS_EFFECT,
+  DISCARD_BASIC_REPLAY_COUNTER_EFFECT,
+  PHYSICAL_CARD_REPLAY_GROWTH_EFFECT,
+  containsDeckRecycleReplayGrowthPrivilegedNode,
+  isAcceptedDeckRecycleReplayGrowthAbility,
+} from './deck-recycle-replay-growth-capability';
 import { COMBAT_REWARD_DISTRIBUTION_RULE, isAcceptedFullRewardEachAbility } from './combat-reward-distribution';
 import {
   ADD_ENGAGED_SEAL_USER_FORMULA_POWER_EFFECT,
@@ -151,6 +159,7 @@ const supportedTypes = new Set([
   BATTLEFIELD_SOURCE_CARD_COST_AURA_TYPE,
   LOSE_VP_EQUAL_SOURCE_PLAY_COUNT_EFFECT, HIDE_SERVANT_TRUE_NAME_UNTIL_ROUND_END_EFFECT, REVEAL_HAND_ROUND_POWER_EFFECT,
   OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT, OPPONENT_CLOSE_ONE_NON_RESIDUAL_EFFECT, BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT,
+  AUTOMATIC_RECYCLE_KEEP_GAIN_COUNTER_EFFECT, SPEND_COUNTER_IGNORE_BATTLE_LOSS_EFFECT, DISCARD_BASIC_REPLAY_COUNTER_EFFECT, PHYSICAL_CARD_REPLAY_GROWTH_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -171,6 +180,8 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'object', 'controller', 'location', 'negated', 'tier', 'specificity',
   'source', 'interpretation', 'name',
   'discardAttribute', 'maxClosePerOpponent', 'excludePerGame', 'refund', 'drawCount', 'playDrawnCard', 'immediatePlayQuota', 'actionAbilityPermission',
+  'counterKey', 'keepMax', 'gain', 'maxSpend', 'baseCount', 'sourceZone', 'cardKind', 'payCardCosts', 'returnAfter',
+  'costIncreasePerPlay', 'costDuration', 'revealDiscardTop', 'printedPowerEquals', 'powerBonus', 'powerDuration',
   // New mechanic keys for 5 servants
   'options', 'label', 'condition', 'targets', 'duration', 'scope', 'statusId', 'choiceId', 'value',
   // Accepted FB2-27 Ruler seal structural fields.
@@ -609,6 +620,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsBattleLuckCloseDrawPlayNode(candidateAbility) && !isAcceptedBattleLuckCloseDrawPlayAbility(candidateAbility)) {
         issue('battleCloseDrawPlay.gateway', 'Battle close/refund/draw/immediate-play mechanics require the exact accepted whole-ability semantic', id);
+      }
+      if (containsDeckRecycleReplayGrowthPrivilegedNode(candidateAbility) && !isAcceptedDeckRecycleReplayGrowthAbility(candidateAbility)) {
+        issue('deckRecycleReplayGrowth.gateway', 'Deck recycle/replay/growth mechanics require the exact accepted whole-ability semantic', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;
