@@ -5980,7 +5980,7 @@ Allowed verdicts:
 ## TASK P3-S-OWNER-STHENO-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `MIGRATION_CANDIDATE_READY_FOR_FRESH_R`
+Status: `SYNCHRONIZED`
 Base: `9fd9036c6d74427f88b3b268f9ef2916cf3f3beb`
 Classification: formal owner-complete migration for current owner `servant.stheno`
 
@@ -6018,3 +6018,13 @@ Allowed verdicts:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+
+Acceptance synchronization:
+- PR #475 exact Candidate `fe4653d1013110555881585db3a447880dd463d3` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/475#issuecomment-5875080153`.
+- Exact-Candidate Phase 3 Pre-Review Gate `36452063768` succeeded.
+- Accepted owner-complete scope is exactly sc1 + sc2 + sc3; sc1 remains historical FM06 preservation-only and sc2/sc3 are the only newly creditable identities.
+- Formal accounting moves `139/944 -> 141/944`; remaining `803`; sc1 receives no duplicate credit.
+- Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-owner-stheno-acceptance-synchronization.md`.
+- Mechanical first-occurrence owner ordering selects `servant.suzuka` next: Stheno index `237`, Suzuka index `238` of `251` owners.
+- Owner-readiness-first remains mandatory: complete one full Suzuka preflight before any Suzuka formal consumer migration.
