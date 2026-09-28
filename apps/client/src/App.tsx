@@ -21,9 +21,22 @@ const WATCHER_CLIENT_ID = 'watcher';
 const STORAGE_KEY = 'fd.local.match-room.snapshot';
 const PAUSE_SNAPSHOT_KEY = 'fd.local.match-room.pause-snapshot';
 const REMOTE_STORAGE_KEY = 'fd.remote.match-room.connection';
+const PLAYTEST_MASTER_IDS = ['master.kayneth', 'master.shinji', 'master.kiritsugu', 'master.maiya', 'master.gatou', 'master.irisviel', 'master.olga-marie'];
+const PLAYTEST_SERVANT_IDS = ['servant.artoriac', 'servant.drake', 'servant.achilles', 'servant.artoria-alt', 'servant.ereshkigal', 'servant.tomoe', 'servant.kintoki'];
 
 function createLocalRoom(): MatchRoom {
-  const room = createMatchRoom({ seed: 20260905, hostClientId: HOST_CLIENT_ID, hostName: '房主' });
+  const params = typeof window === 'undefined' ? new URLSearchParams() : new URLSearchParams(window.location.search);
+  const masterId = params.get('master') ?? undefined;
+  const servantId = params.get('servant') ?? undefined;
+  const preferredPlayerIdentities = masterId || servantId ? [{ playerId: 'p1', masterId, servantId }] : undefined;
+  const room = createMatchRoom({
+    seed: 20260905,
+    hostClientId: HOST_CLIENT_ID,
+    hostName: '房主',
+    preferredPlayerIdentities,
+    allowedMasterIds: PLAYTEST_MASTER_IDS,
+    allowedServantIds: PLAYTEST_SERVANT_IDS,
+  });
   PLAYER_CLIENT_IDS.forEach((clientId, index) => {
     if (clientId !== HOST_CLIENT_ID) room.joinRoom({ clientId, displayName: `玩家 ${index + 1}` });
     room.selectSeat(clientId, index + 1);
@@ -175,7 +188,8 @@ function LocalRoomApp() {
   };
 
   const endTurn = () => {
-    room.endClientTurn(activeClientId);
+    if (roomProjection.match?.phase === 'round_end') room.continueAfterRoundEnd(HOST_CLIENT_ID);
+    else room.endClientTurn(activeClientId);
     refreshRoom();
   };
 

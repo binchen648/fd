@@ -123,6 +123,7 @@ export default function MatchTable({
   const miyama = fixture.locations.find((location) => location.id === 'miyama_town');
   const shinto = fixture.locations.find((location) => location.id === 'shinto');
   const recon = fixture.locations.find((location) => location.id === 'recon');
+  const isRoundEnd = fixture.match.phase === '回合结束';
   const decisionPhaseLabel = fixture.match.phase.includes('准备')
     ? '准备'
     : fixture.match.phase.includes('前哨')
@@ -130,8 +131,8 @@ export default function MatchTable({
       : fixture.match.phase.includes('战斗')
         ? '战斗'
         : '行动';
-  const decisionTitle = `完成本次${decisionPhaseLabel}`;
-  const endDecisionLabel = decisionPhaseLabel === '行动' ? '结束行动' : `完成${decisionPhaseLabel}`;
+  const decisionTitle = isRoundEnd ? '本回合结算完成' : `完成本次${decisionPhaseLabel}`;
+  const endDecisionLabel = isRoundEnd ? '开始下一回合' : decisionPhaseLabel === '行动' ? '结束行动' : `完成${decisionPhaseLabel}`;
   const renderOccupantToken = (playerId: string, className?: string) => {
     const player = fixture.players.find((candidate) => candidate.id === playerId);
     return (
@@ -268,7 +269,7 @@ export default function MatchTable({
     });
   };
   const endTurn = () => {
-    if (fixture.optionalAbilityReminder) {
+    if (!isRoundEnd && fixture.optionalAbilityReminder) {
       setShowReminder(true);
       return;
     }

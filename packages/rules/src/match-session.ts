@@ -104,6 +104,13 @@ export interface MatchSessionConfig {
   seed?: number;
   humanPlayerId?: string;
   humanPlayerIds?: string[];
+  preferredPlayerIdentities?: Array<{
+    playerId: string;
+    masterId?: string;
+    servantId?: string;
+  }>;
+  allowedMasterIds?: string[];
+  allowedServantIds?: string[];
   maxActionsPerPlayer?: number;
   /** Server/local-host persistence secret; never serialized inside MatchSessionSnapshot. */
   persistenceSecret?: string;
@@ -555,11 +562,6 @@ function isRestoreRulerSealReward(value: unknown): boolean {
   return isRestoreRecord(value) && typeof value.sealId === 'string' && typeof value.issuerPlayerId === 'string' &&
     typeof value.boundPlayerId === 'string' && typeof value.sourceCardId === 'string' && typeof value.abilityId === 'string' &&
     isRestoreSafeInteger(value.round, 1) && isRestoreFiniteNumber(value.rewardVp);
-}
-
-function isRestoreSourceCardReturn(value: unknown): boolean {
-  return isRestoreRecord(value) && typeof value.sourceCardId === 'string' && typeof value.abilityId === 'string' &&
-    typeof value.recipientPlayerId === 'string' && isRestoreSafeInteger(value.round, 1);
 }
 
 function isRestorePendingDelayedActivation(value: unknown): boolean {
@@ -2027,6 +2029,9 @@ export class MatchSession {
   readonly humanPlayerId: string;
   readonly humanPlayerIds: string[];
   readonly maxActionsPerPlayer: number;
+  private readonly preferredPlayerIdentities: NonNullable<MatchSessionConfig['preferredPlayerIdentities']>;
+  private readonly allowedMasterIds: Set<string> | undefined;
+  private readonly allowedServantIds: Set<string> | undefined;
   private readonly persistenceSecret: string;
   private readonly persistenceScope: string;
   private readonly restorePackKind: MatchSessionRestorePackKind;
@@ -2052,6 +2057,9 @@ export class MatchSession {
     this.humanPlayerId = config.humanPlayerId ?? 'p1';
     this.humanPlayerIds = [...new Set(config.humanPlayerIds ?? [this.humanPlayerId])];
     this.maxActionsPerPlayer = config.maxActionsPerPlayer ?? 2;
+    this.preferredPlayerIdentities = config.preferredPlayerIdentities?.map((identity) => ({ ...identity })) ?? [];
+    this.allowedMasterIds = config.allowedMasterIds ? new Set(config.allowedMasterIds) : undefined;
+    this.allowedServantIds = config.allowedServantIds ? new Set(config.allowedServantIds) : undefined;
     this.persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
     this.persistenceScope = config.persistenceScope ?? createOpponentCloseToOnePersistenceScope();
     this.restorePackKind = config.restorePackKind ?? 'production_executable';
@@ -2348,6 +2356,19 @@ export class MatchSession {
     return this.pause('state_loop');
   }
 
+  continueAfterRoundEnd(): MatchPauseReason {
+    if (this.state.round.activePhase !== 'round_end') {
+      throw new Error('Round can only continue after round_end');
+    }
+    if (this.state.round.roundNumber >= 11) {
+      this.ensureFinalScoring();
+      return this.pause('match_complete');
+    }
+    this.state.round.roundNumber += 1;
+    this.startRound(this.state.round.roundNumber);
+    return this.runUntilHumanInputOrRoundEnd();
+  }
+
   runFullMatch(options: { maxRounds?: number } = {}): MatchPauseReason {
     const maxRounds = options.maxRounds ?? 11;
     for (let guard = 0; guard < 2000; guard++) {
@@ -2548,8 +2569,27 @@ export class MatchSession {
   }
 
   private buildInitialState(): { state: GameState; pairings: MatchSession['pairings']; rawCards: MatchSession['rawCards'] } {
-    const masters = shuffle(masterCharacters, this.seed);
-    const servants = shuffle(servantCharacters, this.seed ^ 0x9e3779b9);
+    const masterPool = this.allowedMasterIds ? masterCharacters.filter((character) => this.allowedMasterIds!.has(character.id)) : masterCharacters;
+    const servantPool = this.allowedServantIds ? servantCharacters.filter((character) => this.allowedServantIds!.has(character.id)) : servantCharacters;
+    const masters = shuffle(masterPool, this.seed).slice(0, 7);
+    const servants = shuffle(servantPool, this.seed ^ 0x9e3779b9).slice(0, 7);
+    if (masters.length !== 7 || servants.length !== 7) throw new Error('MatchSession requires seven allowed masters and seven allowed servants');
+    for (const identity of this.preferredPlayerIdentities) {
+      const targetIndex = Number.parseInt(identity.playerId.slice(1), 10) - 1;
+      if (!Number.isInteger(targetIndex) || targetIndex < 0 || targetIndex >= masters.length) continue;
+      if (identity.masterId) {
+        const sourceIndex = masters.findIndex((character) => character.id === identity.masterId);
+        if (sourceIndex >= 0 && sourceIndex !== targetIndex) {
+          [masters[targetIndex], masters[sourceIndex]] = [masters[sourceIndex]!, masters[targetIndex]!];
+        }
+      }
+      if (identity.servantId) {
+        const sourceIndex = servants.findIndex((character) => character.id === identity.servantId);
+        if (sourceIndex >= 0 && sourceIndex !== targetIndex) {
+          [servants[targetIndex], servants[sourceIndex]] = [servants[sourceIndex]!, servants[targetIndex]!];
+        }
+      }
+    }
     const pairings = masters.map((master, index) => ({ playerId: `p${index + 1}`, seat: index + 1, master, servant: servants[index]! }));
     const pack = runtimeContent.rules;
     const rawCards = new Map<string, RuntimeRawCard>(Object.values(pack.cards).map((card) => [card.id, card] as const));
