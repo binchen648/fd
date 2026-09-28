@@ -1,0 +1,396 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.suzuka",
+  "name": "铃鹿御前",
+  "class": "Saber",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "792f6d7080151a64de82bdb17765599e0f015186",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from frozen F1 plus accepted PR #476 generic Suzuka owner-readiness capability. Locked Reference supplies owner/static metadata; no legacy identity handler is restored."
+  },
+  "cards": [
+    {
+      "id": "servant.suzuka.skill.sc-suzuka-1",
+      "aliases": [
+        "sc_suzuka_1"
+      ],
+      "legacyId": "sc_suzuka_1",
+      "name": "才智的祝福",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.suzuka"
+      },
+      "printedText": "被动：当你重洗牌库时，你获得1点【才智】且可选择至多3张弃牌堆中的牌不返回牌库。\n被动/前哨阶段：花费1点【才智】，你本回合无视【败北】效果。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "phase3Evidence": {
+        "f1Commit": "792f6d7080151a64de82bdb17765599e0f015186",
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[35].skills[0].text#line=1",
+            "sha256": "4b8d5212b8752f6f94cde34c192e9695706bed44b7b26535918c1dbcf89b114b"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[35].skills[0].text#line=2",
+            "sha256": "5812363da1d8e24af66a3d477a66b1b9bcb47a45a7ed729a2ffacb7bc67550c6"
+          }
+        ],
+        "sourceTextSha256": "cd69a157df7f2ee4c13c1fcbad23c2603f55c3ec4f8ef2cbcdb12fae58b547ff",
+        "sourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "铃鹿御前.htm",
+            "locator": "从者/剑士/英文版/铃鹿御前.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/铃鹿御前.png",
+            "locator": "servant.suzuka/铃鹿御前"
+          }
+        ],
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_suzuka_1",
+          "class": "Saber",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": 0,
+          "typeLabel": "被动",
+          "attributes": []
+        },
+        "acceptedCapability": "PR#476/104fcf4e5b2a2e19ca1222b0fe89b0ed78b309b5"
+      },
+      "abilities": [
+        {
+          "id": "sc-suzuka-1.wisdom-recycle",
+          "kind": "passive",
+          "printedClause": "被动：当你重洗牌库时，你获得1点【才智】且可选择至多3张弃牌堆中的牌不返回牌库。",
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "activation": {},
+          "effects": [
+            {
+              "type": "automatic_recycle_keep_gain_counter",
+              "counterKey": "servant.suzuka:wisdom",
+              "keepMax": 3,
+              "gain": 1,
+              "reason": "automatic_recycle"
+            }
+          ]
+        },
+        {
+          "id": "sc-suzuka-1.ignore-defeat",
+          "kind": "phase_action",
+          "printedClause": "被动/前哨阶段：花费1点【才智】，你本回合无视【败北】效果。",
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "activation": {
+            "phase": "advance",
+            "opens": "controller_action_window"
+          },
+          "effects": [
+            {
+              "type": "spend_counter_ignore_battle_loss_this_round",
+              "counterKey": "servant.suzuka:wisdom",
+              "amount": 1,
+              "duration": "this_round"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "servant.suzuka.skill.sc-suzuka-2",
+      "aliases": [
+        "sc_suzuka_2"
+      ],
+      "legacyId": "sc_suzuka_2",
+      "name": "天鬼雨",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.suzuka"
+      },
+      "printedText": "【真名解放】\n行动阶段：花费X点【才智】（至多为2），从你的弃牌堆打出至多3+X张基础攻击。战斗阶段结束后，改为将它们洗回你的牌库",
+      "cardFace": {
+        "typeLabel": "力量/宝具",
+        "attributes": [
+          "力量",
+          "宝具"
+        ],
+        "cost": 5,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "phase3Evidence": {
+        "f1Commit": "792f6d7080151a64de82bdb17765599e0f015186",
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[35].skills[1].text#line=1",
+            "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[35].skills[1].text#line=2",
+            "sha256": "041d3904d44fdb704890d346c75143240c6e4dc2c26e017daab11c2aea1b8473"
+          }
+        ],
+        "sourceTextSha256": "d9f5e7b4d3518899acd71d736d3f71635812ab39f75e3bb1eaf91c4bbaff5d6d",
+        "sourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "铃鹿御前.htm",
+            "locator": "从者/剑士/英文版/铃鹿御前.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/铃鹿御前.png",
+            "locator": "servant.suzuka/铃鹿御前"
+          }
+        ],
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_suzuka_2",
+          "class": "Saber",
+          "cost": 5,
+          "basePower": 0,
+          "legacyRequirement": 8,
+          "typeLabel": "力量/宝具",
+          "attributes": [
+            "力量",
+            "宝具"
+          ]
+        },
+        "acceptedCapability": "PR#476/104fcf4e5b2a2e19ca1222b0fe89b0ed78b309b5"
+      },
+      "abilities": [
+        {
+          "id": "true-name-release",
+          "kind": "passive",
+          "printedClause": "【真名解放】",
+          "markers": [
+            "真名解放"
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-suzuka-2.tenkiame-replay",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：花费X点【才智】（至多为2），从你的弃牌堆打出至多3+X张基础攻击。战斗阶段结束后，改为将它们洗回你的牌库",
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "effects": [
+            {
+              "type": "discard_basic_attacks_with_counter_return_after_battle",
+              "counterKey": "servant.suzuka:wisdom",
+              "maxSpend": 2,
+              "baseCount": 3,
+              "sourceZone": "discard",
+              "cardKind": "basic_attack",
+              "payCardCosts": true,
+              "returnAfter": "after_battle_ended"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "servant.suzuka.skill.sc-suzuka-3",
+      "aliases": [
+        "sc_suzuka_3"
+      ],
+      "legacyId": "sc_suzuka_3",
+      "name": "三千大千世界",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.suzuka"
+      },
+      "printedText": "打出时：此牌+1魔力消耗（可叠加）直至游戏结束。然后展示并弃置你牌堆顶的3张牌，若你以此法弃置了任意印刷威力为4的牌，此牌+X威力，X为此牌的魔力消耗。",
+      "cardFace": {
+        "typeLabel": "迅捷",
+        "attributes": [
+          "迅捷"
+        ],
+        "cost": 0,
+        "basePower": 5
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "phase3Evidence": {
+        "f1Commit": "792f6d7080151a64de82bdb17765599e0f015186",
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[35].skills[2].text#line=1",
+            "sha256": "a55a092d54ce61769a8236c78ac50bd0a9558de44007b2b726718efb7a5ab13d"
+          }
+        ],
+        "sourceTextSha256": "a55a092d54ce61769a8236c78ac50bd0a9558de44007b2b726718efb7a5ab13d",
+        "sourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "铃鹿御前.htm",
+            "locator": "从者/剑士/英文版/铃鹿御前.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/铃鹿御前.png",
+            "locator": "servant.suzuka/铃鹿御前"
+          }
+        ],
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_suzuka_3",
+          "class": "Saber",
+          "cost": 0,
+          "basePower": 5,
+          "legacyRequirement": 0,
+          "typeLabel": "迅捷",
+          "attributes": [
+            "迅捷"
+          ]
+        },
+        "acceptedCapability": "PR#476/104fcf4e5b2a2e19ca1222b0fe89b0ed78b309b5"
+      },
+      "abilities": [
+        {
+          "id": "sc-suzuka-3.three-thousand-worlds",
+          "kind": "forced_trigger",
+          "printedClause": "打出时：此牌+1魔力消耗（可叠加）直至游戏结束。然后展示并弃置你牌堆顶的3张牌，若你以此法弃置了任意印刷威力为4的牌，此牌+X威力，X为此牌的魔力消耗。",
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "activation": {
+            "trigger": "on_card_played",
+            "requiresSourceState": "active"
+          },
+          "effects": [
+            {
+              "type": "physical_card_replay_cost_top_deck_power",
+              "costIncreasePerPlay": 1,
+              "costDuration": "game",
+              "revealDiscardTop": 3,
+              "printedPowerEquals": 4,
+              "powerBonus": "effective_play_cost",
+              "powerDuration": "this_round"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
