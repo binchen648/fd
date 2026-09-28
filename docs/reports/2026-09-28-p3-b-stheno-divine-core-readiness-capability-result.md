@@ -51,7 +51,7 @@ No `data/authoring/**` consumer is changed in this readiness task. Production ru
 
 ## Focused verification
 
-`packages/rules/tests/regression/p3-stheno-divine-core-readiness-capability.test.ts`: **12/12 PASS**.
+`packages/rules/tests/regression/p3-stheno-divine-core-readiness-capability.test.ts`: **14/14 PASS**.
 
 Coverage proves:
 
@@ -66,15 +66,17 @@ Coverage proves:
 9. a host-signed pending transaction cannot substitute another hand card for the exact Divine Core draw even when its pending interaction/candidate metadata is forged to match;
 10. a forged completed immediate-play history row plus a forged combat Action permission is rejected without the external authenticated authority;
 11. an immediately played card that opens ordinary on-card-played response and nested decision work pauses Divine Core and resumes only after that work settles;
-12. immediate-play provenance/permission retire on the next authoritative round, and the same physical card can be legally replayed in round two and subsequently restored.
+12. immediate-play provenance/permission retire on the next authoritative round, and the same physical card can be legally replayed in round two and subsequently restored;
+13. draw authority is bound to an exact activation transaction, a second legal same-round activation round-trips without inheriting the first activation's draw authority, and forged removal of an unresolved transaction/decision leaves orphan draw authority that restore rejects;
+14. completed immediate-play authority survives the ordinary `stepGameLoop` root replacement path and continues to round-trip through MatchSession persistence.
 
 Fixture corrections made while validating restore did not broaden production semantics: the GameState battle phase is `battle` while authoring activation remains `combat`; helper definitions are installed into the trusted fixture pack before runtime initialization; UTF-8 source attributes remain exact.
 
 ## Affected verification
 
-Affected serial: **8 files / 202 tests PASS**:
+Affected serial: **8 files / 204 tests PASS**:
 
-- Stheno Divine Core readiness `12`;
+- Stheno Divine Core readiness `14`;
 - MatchSession `33`;
 - executable-card-pack `50`;
 - authoring-interpreter `38`;
@@ -107,6 +109,17 @@ All findings were closed together in one successor work item:
 - **P2 round-bounded lifetime:** starting a later authoritative round retires prior-round immediate-play history, temporary combat Action permission, and external authority. A two-round regression legally replays the same physical card and proves later MatchSession restore remains valid.
 
 The revision remains identity-free readiness only: `data/authoring/**` is unchanged and formal accounting remains `139/944`, remaining `805`.
+
+## R2 fresh-review closure
+
+Successor Candidate `dfa48bf26697a717fa6e8101a5a44e489b5e6552` received `IMPLEMENTATION_NEEDS_REVISION`. Reviewer GitHub publication again returned explicit 403; canonical bounded same-attempt Coordinator relay is `https://github.com/binchen648/fd/pull/472#issuecomment-5862289311`. No re-review of that exact Candidate was performed.
+
+Both blocking findings were closed together in one successor revision:
+
+- **P1 transaction-scoped draw authority / orphan rejection:** each Divine Core activation now receives an exact persisted `transactionId`; every close/refund/draw authority row is bound to that transaction, and draw authority is retired when that transaction fully settles. Persistence consistency requires all current-round draw authority to belong to the live transaction and rejects any draw authority when no transaction remains. This permits a second legal same-round activation without inheriting first-activation draws, while forged removal of both the unresolved transaction and its pending decision leaves authenticated orphan authority and fails restore.
+- **P1 core-loop root replacement:** `stepGameLoop` now carries the server-only authority across each task-relevant GameState root replacement before `advanceAbilityPhase`. A completed Divine Core immediate play can advance through normal battle -> cleanup and still round-trip history/permission plus authenticated authority.
+
+Focused verification is now `14/14 PASS`; the same affected 8-file serial suite is `204/204 PASS`; typecheck, content validate/compile, generated-content determinism, `git diff --check`, zero `data/authoring/**` delta, and the production Stheno/SkillLib identity audit remain green.
 
 ## Accounting / continuation
 

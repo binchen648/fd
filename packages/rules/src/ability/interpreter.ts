@@ -71,6 +71,7 @@ import {
   copyBattleCloseDrawPlayServerAuthority,
   rememberBattleCloseDrawImmediatePlayAuthority,
   rememberBattleCloseDrawPlayDrawAuthority,
+  retireBattleCloseDrawPlayDrawAuthorityForTransaction,
   retireBattleCloseDrawPlayServerAuthorityBeforeRound,
 } from './battle-close-draw-play-authority';
 import {
@@ -2680,6 +2681,7 @@ function stageNextBattleCloseDrawPlayPlayChoice(s: GameState): void {
       } };
     return;
   }
+  retireBattleCloseDrawPlayDrawAuthorityForTransaction(s, tx.transactionId);
   delete r.pendingBattleCloseDrawPlayTransaction;
 }
 function resumeBattleCloseDrawPlayAfterNestedWork(s: GameState): void {
@@ -2692,7 +2694,7 @@ function startBattleCloseDrawPlay(s: GameState, ctx: EffectContext): void {
   const r = runtime(s); const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (!canActivateBattleCloseDrawPlay(s, ctx.sourceCardId, ability) || r.pendingBattleCloseDrawPlayTransaction || r.pendingDecision) reject('resolution_failed', 'Battle close/draw/play preflight failed');
   const controller = player(s, ctx.controllerId); const opponentIds = battleCloseDrawPlayOpponentIds(s, ctx.controllerId);
-  const tx: PendingBattleCloseDrawPlayTransaction = { controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+  const tx: PendingBattleCloseDrawPlayTransaction = { transactionId: nextId(s, 'battle-close-draw-play'), controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
     round: s.round.roundNumber, battlefieldId: controller.locationId!, opponentIds, closeIndex: 0, playIndex: 0, rewards: [] };
   r.pendingBattleCloseDrawPlayTransaction = tx; stageBattleCloseDrawPlayLuckChoice(s, tx);
 }
@@ -2701,7 +2703,7 @@ function battleCloseDrawPlayTransactionLiveValid(s: GameState, tx: PendingBattle
   const r = runtime(s); const source = s.cards.find((candidate) => candidate.instanceId === tx.sourceCardId);
   const controller = s.players.find((candidate) => candidate.id === tx.controllerId);
   const ability = source ? r.pack.cards[source.definitionId]?.abilities.find((candidate) => candidate.id === tx.abilityId) : undefined;
-  if (!source || !controller || !ability || !isAcceptedBattleLuckCloseDrawPlayAbility(ability) ||
+  if (!tx.transactionId || !/^battle-close-draw-play-\d+$/.test(tx.transactionId) || !source || !controller || !ability || !isAcceptedBattleLuckCloseDrawPlayAbility(ability) ||
       source.ownerPlayerId !== tx.controllerId || source.controllerPlayerId !== tx.controllerId ||
       controller.status !== 'active' || controller.locationId !== tx.battlefieldId || !isBattlefield(s, tx.battlefieldId) ||
       tx.round !== s.round.roundNumber || r.cardState[source.instanceId]?.active !== true || r.cardState[source.instanceId]?.faceDown !== false ||
@@ -4745,7 +4747,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
             grantMana(s, opponentId!, refundMana, { source: 'generic' });
             const drawnCardId = drawOneBattleCloseDrawPlayCard(s, opponentId!);
             if (drawnCardId) rememberBattleCloseDrawPlayDrawAuthority(s, {
-              controllerId: tx.controllerId, sourceCardId: tx.sourceCardId, abilityId: tx.abilityId, round: tx.round,
+              transactionId: tx.transactionId, controllerId: tx.controllerId, sourceCardId: tx.sourceCardId, abilityId: tx.abilityId, round: tx.round,
               playerId: opponentId!, closedCardId: selectedCardId, refundMana, drawnCardId,
             });
             tx.rewards.push({ playerId: opponentId!, closedCardId: selectedCardId, refundMana, ...(drawnCardId ? { drawnCardId } : {}) });

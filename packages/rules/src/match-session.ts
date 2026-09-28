@@ -810,9 +810,10 @@ function isRestoreBattleCloseDrawPlayReward(value: unknown): boolean {
 }
 function isRestoreBattleCloseDrawPlayTransaction(value: unknown): boolean {
   if (!isRestoreRecord(value)) return false;
-  const required = ['controllerId','sourceCardId','abilityId','round','battlefieldId','opponentIds','closeIndex','playIndex','rewards'];
+  const required = ['transactionId','controllerId','sourceCardId','abilityId','round','battlefieldId','opponentIds','closeIndex','playIndex','rewards'];
   if (!(hasExactRestoreKeys(value, required) || hasExactRestoreKeys(value, [...required,'discardedLuckCardId']))) return false;
-  return typeof value.controllerId === 'string' && typeof value.sourceCardId === 'string' && typeof value.abilityId === 'string' &&
+  return typeof value.transactionId === 'string' && /^battle-close-draw-play-\d+$/.test(value.transactionId) &&
+    typeof value.controllerId === 'string' && typeof value.sourceCardId === 'string' && typeof value.abilityId === 'string' &&
     typeof value.battlefieldId === 'string' && isRestoreSafeInteger(value.round, 1) && isRestoreStringArray(value.opponentIds) &&
     value.opponentIds.length >= 1 && new Set(value.opponentIds).size === value.opponentIds.length &&
     isRestoreSafeInteger(value.closeIndex, 0) && (value.closeIndex as number) <= value.opponentIds.length &&

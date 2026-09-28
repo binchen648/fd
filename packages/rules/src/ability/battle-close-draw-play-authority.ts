@@ -3,6 +3,7 @@ import { hmacSha256Hex, sha256Hex } from './portable-sha256';
 import type { BattleCloseDrawImmediatePlayRecord, BattleCloseDrawPlayReward } from './types';
 
 export interface BattleCloseDrawPlayDrawAuthorityRecord {
+  transactionId: string;
   controllerId: string;
   sourceCardId: string;
   abilityId: string;
@@ -67,8 +68,8 @@ function isRefund(value: unknown): value is number {
 
 function isDrawRecord(value: unknown): value is BattleCloseDrawPlayDrawAuthorityRecord {
   return isPlainRecord(value) && exactKeys(value, [
-    'controllerId', 'sourceCardId', 'abilityId', 'round', 'playerId', 'closedCardId', 'refundMana', 'drawnCardId',
-  ]) && typeof value.controllerId === 'string' && typeof value.sourceCardId === 'string' && typeof value.abilityId === 'string' &&
+    'transactionId', 'controllerId', 'sourceCardId', 'abilityId', 'round', 'playerId', 'closedCardId', 'refundMana', 'drawnCardId',
+  ]) && typeof value.transactionId === 'string' && /^battle-close-draw-play-\d+$/.test(value.transactionId) && typeof value.controllerId === 'string' && typeof value.sourceCardId === 'string' && typeof value.abilityId === 'string' &&
     isRound(value.round) && typeof value.playerId === 'string' && typeof value.closedCardId === 'string' && isRefund(value.refundMana) &&
     typeof value.drawnCardId === 'string';
 }
@@ -84,7 +85,7 @@ function isAuthoritySnapshot(value: unknown): value is BattleCloseDrawPlayServer
   if (!isPlainRecord(value) || !exactKeys(value, ['draws', 'immediatePlays']) ||
       !Array.isArray(value.draws) || !value.draws.every(isDrawRecord) ||
       !Array.isArray(value.immediatePlays) || !value.immediatePlays.every(isImmediatePlayRecord)) return false;
-  const drawKeys = value.draws.map((entry) => `${entry.controllerId}:${entry.sourceCardId}:${entry.abilityId}:${entry.round}:${entry.playerId}:${entry.closedCardId}`);
+  const drawKeys = value.draws.map((entry) => `${entry.transactionId}:${entry.playerId}:${entry.closedCardId}`);
   const playKeys = value.immediatePlays.map((entry) => `${entry.controllerId}:${entry.sourceCardId}:${entry.abilityId}:${entry.round}:${entry.playerId}:${entry.cardInstanceId}`);
   return new Set(drawKeys).size === drawKeys.length && new Set(playKeys).size === playKeys.length;
 }
@@ -144,9 +145,9 @@ export function rememberBattleCloseDrawPlayDrawAuthority(
   record: BattleCloseDrawPlayDrawAuthorityRecord,
 ): void {
   const value = authority(state);
-  const key = `${record.controllerId}:${record.sourceCardId}:${record.abilityId}:${record.round}:${record.playerId}:${record.closedCardId}`;
+  const key = `${record.transactionId}:${record.playerId}:${record.closedCardId}`;
   const existing = value.draws.find((entry) =>
-    `${entry.controllerId}:${entry.sourceCardId}:${entry.abilityId}:${entry.round}:${entry.playerId}:${entry.closedCardId}` === key);
+    `${entry.transactionId}:${entry.playerId}:${entry.closedCardId}` === key);
   if (existing) {
     if (JSON.stringify(existing) !== JSON.stringify(record)) throw new Error('Conflicting battle close/draw authority');
     return;
@@ -176,6 +177,13 @@ export function copyBattleCloseDrawPlayServerAuthority(from: GameState, to: Game
     return;
   }
   authorityByState.set(to, cloneAuthority(value));
+}
+
+export function retireBattleCloseDrawPlayDrawAuthorityForTransaction(state: GameState, transactionId: string): void {
+  const value = authorityByState.get(state);
+  if (!value) return;
+  value.draws = value.draws.filter((entry) => entry.transactionId !== transactionId);
+  if (value.draws.length === 0 && value.immediatePlays.length === 0) authorityByState.delete(state);
 }
 
 export function retireBattleCloseDrawPlayServerAuthorityBeforeRound(state: GameState, round: number): void {
@@ -256,8 +264,11 @@ export function isBattleCloseDrawPlayServerAuthorityConsistent(state: GameState)
   const draws = value.draws.filter((entry) => entry.round === round);
   const plays = value.immediatePlays.filter((entry) => entry.round === round);
   const tx = runtime.pendingBattleCloseDrawPlayTransaction;
-  if (tx) {
-    const txDraws = draws.filter((entry) => entry.controllerId === tx.controllerId && entry.sourceCardId === tx.sourceCardId && entry.abilityId === tx.abilityId && entry.round === tx.round);
+  if (!tx) {
+    if (draws.length > 0) return false;
+  } else {
+    const txDraws = draws.filter((entry) => entry.transactionId === tx.transactionId);
+    if (txDraws.length !== draws.length) return false;
     const rewardDraws = tx.rewards.filter((entry) => entry.drawnCardId !== undefined);
     if (txDraws.length !== rewardDraws.length || rewardDraws.some((reward) =>
       !txDraws.some((entry) => exactRewardMatchesDraw(reward, entry, tx.controllerId, tx.sourceCardId, tx.abilityId, tx.round)))) return false;

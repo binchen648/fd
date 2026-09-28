@@ -5840,7 +5840,7 @@ Formal accounting remains `134/944`; remaining `810`. This task is permanently z
 ## TASK P3-B-STHENO-DIVINE-CORE-READINESS-CAPABILITY
 
 Owner: Codex B
-Status: `IMPLEMENTATION_CANDIDATE_READY_FOR_FRESH_R`
+Status: `IMPLEMENTATION_REVISION_READY_FOR_FRESH_R`
 Base: `e3c61d74be6b02b186875e31191e416fc364e179`
 Classification: bounded zero-credit owner-readiness prerequisite for current owner `servant.stheno`
 
@@ -5865,8 +5865,8 @@ Hard boundary:
 - ACCEPTED must A-sync/rescan and return to the same Stheno formal owner; do not advance owners.
 
 Verification evidence:
-- focused Divine Core readiness `12/12 PASS`;
-- affected serial `8 files / 202 tests PASS`;
+- focused Divine Core readiness `14/14 PASS`;
+- affected serial `8 files / 204 tests PASS`;
 - typecheck PASS;
 - content validate/compile PASS — `7 masters / 12 servants / 20 events / 0 blocking issues`;
 - generated determinism PASS with unchanged hashes;
@@ -5877,6 +5877,9 @@ Verification evidence:
 - P1 restore-provenance closure: Divine Core draw/immediate-play authority is now host-secret HMAC sealed outside mutable GameState, pending rewards/history/combat permission must exactly match that authority on current/replay/checkpoint restore, and forged pending-draw substitution plus forged completed-history/permission regressions fail closed;
 - P1 continuation closure: immediately played cards may open ordinary on-card-played response/nested decision work; Divine Core pauses while pending decisions/response windows/host requests exist and resumes only after ordinary work settles;
 - P2 lifetime closure: immediate-play history, combat Action permission, and corresponding authority retire at the next authoritative round; a two-round replay of the same physical card restores successfully after ordinary legal replay;
+- successor Candidate `dfa48bf26697a717fa6e8101a5a44e489b5e6552` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt Coordinator relay after Reviewer 403: `https://github.com/binchen648/fd/pull/472#issuecomment-5862289311`;
+- R2 P1 transaction closure: draw authority now carries exact per-activation transaction identity, retires at settlement, permits a second legal same-round activation, and rejects authenticated orphan draw authority if unresolved transaction/decision state is forged away;
+- R2 P1 root-replacement closure: `stepGameLoop` carries the server-only authority across task-relevant GameState root replacements; completed Divine Core history/permission survives battle -> cleanup and MatchSession round-trip;
 - detailed result: `docs/reports/2026-09-28-p3-b-stheno-divine-core-readiness-capability-result.md`.
 
 Accounting:

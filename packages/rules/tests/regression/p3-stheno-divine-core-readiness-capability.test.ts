@@ -308,6 +308,48 @@ describe('P3 Stheno Divine Core readiness capability', () => {
     expect(() => restoreMatchSession(sessionFor(state).serializeSession(), { restorePackKind: 'trusted_authoring_fixture' })).not.toThrow();
   });
 
+  it('scopes draw authority to each activation, permits a second same-round activation, and rejects orphan pending-draw authority', () => {
+    const state = setup(); const b = sourceAndBoard(state, true);
+    expect(activate(state, b.source).ok).toBe(true);
+    expect(choose(state, 'p1', [b.luckA]).ok).toBe(true);
+    expect(choose(state, 'p1', [b.p2Attack]).ok).toBe(true);
+    expect(choose(state, 'p1', []).ok).toBe(true);
+    expect(choose(state, 'p2', [b.p2Draw]).ok).toBe(true);
+    expect(state.abilityRuntime!.pendingBattleCloseDrawPlayTransaction).toBeUndefined();
+
+    expect(activate(state, b.source).ok).toBe(true);
+    const secondTx = state.abilityRuntime!.pendingBattleCloseDrawPlayTransaction!;
+    expect(secondTx.transactionId).toMatch(/^battle-close-draw-play-\d+$/);
+    expect(secondTx.rewards).toEqual([]);
+    expect(() => restoreMatchSession(sessionFor(state).serializeSession(), { restorePackKind: 'trusted_authoring_fixture' })).not.toThrow();
+
+    expect(choose(state, 'p1', []).ok).toBe(true);
+    expect(choose(state, 'p1', [b.p3Attack]).ok).toBe(true);
+    const pendingDrawTx = state.abilityRuntime!.pendingBattleCloseDrawPlayTransaction!;
+    expect(pendingDrawTx.rewards[0]?.drawnCardId).toBe(b.p3Draw);
+    const forged = structuredClone(state);
+    delete forged.abilityRuntime!.pendingBattleCloseDrawPlayTransaction;
+    delete forged.abilityRuntime!.pendingDecision;
+    expect(() => restoreMatchSession(sessionFor(forged).serializeSession(), { restorePackKind: 'trusted_authoring_fixture' }))
+      .toThrow('Invalid or missing battle close/draw/play persisted authority');
+  });
+
+  it('preserves completed Divine Core authority through stepGameLoop root replacement and persistence', () => {
+    const state = setup(); const b = sourceAndBoard(state, false);
+    expect(activate(state, b.source).ok).toBe(true);
+    expect(choose(state, 'p1', [b.p2Attack]).ok).toBe(true);
+    expect(choose(state, 'p1', []).ok).toBe(true);
+    expect(choose(state, 'p2', [b.p2Draw]).ok).toBe(true);
+    expect(state.abilityRuntime!.battleCloseDrawImmediatePlayHistory).toHaveLength(1);
+    expect(state.abilityRuntime!.cardState[b.p2Draw]!.actionAbilityAllowedInCombatRound).toBe(state.round.roundNumber);
+
+    const stepped = rules.stepGameLoop(state).nextState;
+    expect(stepped.round.activePhase).toBe('cleanup');
+    expect(stepped.abilityRuntime!.battleCloseDrawImmediatePlayHistory).toHaveLength(1);
+    expect(stepped.abilityRuntime!.cardState[b.p2Draw]!.actionAbilityAllowedInCombatRound).toBe(state.round.roundNumber);
+    expect(() => restoreMatchSession(sessionFor(stepped).serializeSession(), { restorePackKind: 'trusted_authoring_fixture' })).not.toThrow();
+  });
+
   it('rejects compiled-pack widening transactionally before Luck discard or decision staging', () => {
     const state = setup(); const b = sourceAndBoard(state, true);
     const ability = state.abilityRuntime!.pack.cards[SOURCE]!.abilities.find((entry) => entry.id === ABILITY)!;

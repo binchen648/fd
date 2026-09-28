@@ -213,7 +213,7 @@ export interface BattleCloseDrawImmediatePlayRecord {
   controllerId: PlayerId; playerId: PlayerId; cardInstanceId: string; sourceCardId: string; abilityId: string; round: number;
 }
 export interface PendingBattleCloseDrawPlayTransaction {
-  controllerId: PlayerId; sourceCardId: string; abilityId: string; round: number; battlefieldId: string;
+  transactionId: string; controllerId: PlayerId; sourceCardId: string; abilityId: string; round: number; battlefieldId: string;
   discardedLuckCardId?: string;
   opponentIds: PlayerId[]; closeIndex: number; playIndex: number; rewards: BattleCloseDrawPlayReward[];
 }
