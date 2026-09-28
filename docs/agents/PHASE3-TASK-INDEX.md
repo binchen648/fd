@@ -6181,3 +6181,45 @@ Acceptance synchronization:
 - sc1 remains historical accepted preservation-only; sc2 + sc3 are the only newly creditable identities in the upcoming formal owner batch.
 - Next task is `P3-S-OWNER-TAISUI-COMPLETE-MIGRATION`, containing preserved sc1 + new sc2 + sc3 together in one formal Candidate/PR/fresh R/A-sync sequence.
 - Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-taisui-owner-readiness-capability-acceptance-synchronization.md`.
+## TASK P3-S-OWNER-TAISUI-COMPLETE-MIGRATION
+
+Owner: Codex S
+Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Base: `75df6b701feb5d614184ba235517b67eea283260`
+Classification: formal owner-complete migration for current owner `servant.taisui`
+
+Formal owner scope:
+- `servant.taisui.skill.sc-taisui-1` — historical FM07 preservation-only, no new credit;
+- `servant.taisui.skill.sc-taisui-2` — newly creditable;
+- `servant.taisui.skill.sc-taisui-3` — newly creditable;
+- one owner archive, one formal Candidate, one PR, one fresh R, then one A-sync/accounting transaction.
+
+Accepted prerequisite:
+- readiness PR #478 exact Candidate `3f6bc546406aa7efc7d5229cd3255109db218026`;
+- fresh-R verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE`;
+- canonical same-attempt bounded relay `https://github.com/binchen648/fd/pull/478#issuecomment-5878360467`;
+- exact zero-credit A-sync/formal Base `75df6b701feb5d614184ba235517b67eea283260` closes the complete currently discoverable Taisui readiness gap set.
+
+Implementation/evidence:
+- canonical `data/authoring/servants/servant.taisui.json` contains preserved sc1 plus new sc2 + sc3;
+- sc1 JSON object is byte-semantically preserved from Base;
+- frozen material overlap `145 -> 147`, exact additions sc2 + sc3, removals `0`, duplicate frozen identities `0`;
+- formal credit claim is exactly `+2` only after fresh R + A-sync;
+- focused owner-complete `6/6 PASS`;
+- directly affected serial `10 files / 171 tests PASS`;
+- timeout probes `match-session 33/33` + `complex-skills 37/37` PASS standalone;
+- typecheck PASS; content validate/compile PASS (`7 masters / 12 servants / 20 events / 0 blocking issues`); generated determinism PASS; `git diff --check` PASS;
+- `packages/rules/src/**` production runtime delta EMPTY; no identity routing, runtime source-text parsing, legacy Taisui handler, or `SkillLib` fallback added;
+- exact Base A/B reproduces all stable full-suite failures; Candidate-only extra failures are from local ignored `.fd-shiki-runtime-debug.test.ts`, not Candidate content;
+- detailed result: `docs/reports/2026-09-29-p3-s-owner-taisui-complete-migration-result.md`.
+
+Accounting boundary:
+- strict formal accounting remains `144/944`, remaining `800` before fresh R and A-sync;
+- no credit before exact-Candidate `MIGRATION_ACCEPTED` plus subsequent A-sync/accounting;
+- accepted synchronized outcome may add exactly sc2 + sc3 and move strict formal accounting to `146/944`, remaining `798`;
+- do not advance owners before this owner batch is reviewed and synchronized.
+
+Allowed verdicts:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `MIGRATION_BLOCKED`
