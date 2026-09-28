@@ -5915,7 +5915,7 @@ Allowed verdicts:
 ## TASK P3-B-STHENO-FULL-REWARD-EACH-READINESS-CAPABILITY
 
 Owner: Codex B
-Status: `IMPLEMENTATION_READY_FOR_FRESH_R`
+Status: `SYNCHRONIZED`
 Base: `f2029ede09c7dbe61119836c4c349fce3753d8fb`
 Classification: bounded zero-credit owner-readiness prerequisite for current owner `servant.stheno`
 
@@ -5964,3 +5964,15 @@ Accounting:
 Allowed verdicts:
 - `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 - `IMPLEMENTATION_NEEDS_REVISION`
+
+## P3-A-STHENO-FULL-REWARD-EACH-READINESS-CAPABILITY-ACCEPTANCE-SYNC
+
+- PR #474 exact Candidate `4dd8eca5746d63d72c7906716cb7118e2569872a` received `IMPLEMENTATION_ACCEPTED_CANDIDATE` from fresh independent R.
+- Canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/474#issuecomment-5871992188`.
+- Accepted scope is only the bounded zero-credit `combat_reward_distribution/full_reward_each` readiness seam; `data/authoring/**` remains unchanged and no migration credit is added.
+- Exact-Candidate Phase 3 Pre-Review Gate run `36420973246` succeeded.
+- Mechanical A-rescan closes the complete currently discoverable Stheno readiness gap set: sc1 remains historical FM06 accepted; sc2 now has accepted generic win/+1 plus accepted full-reward-each settlement support; sc3 has accepted Divine Core readiness from PR #472.
+- Helper PRE-R material is auxiliary only and grants no verdict/credit; fresh R accepted the exact PR #474 Candidate with no exact-scope blocker.
+- Strict formal accounting remains `139/944`, remaining `805`; this readiness transaction is permanently zero-credit.
+- Current owner remains `servant.stheno`; execution returns immediately to `P3-S-OWNER-STHENO-COMPLETE-MIGRATION` for sc1 + sc2 + sc3 together. sc1 is preservation-only; sc2/sc3 are the only newly creditable identities. Do not advance owners.
+- Detailed sync: `docs/reports/2026-09-28-p3-a-stheno-full-reward-each-readiness-capability-acceptance-synchronization.md`.
