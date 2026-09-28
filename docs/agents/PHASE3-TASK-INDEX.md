@@ -6083,7 +6083,7 @@ Acceptance synchronization:
 ## TASK P3-S-OWNER-SUZUKA-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `MIGRATION_CANDIDATE_READY_FOR_FRESH_R`
+Status: `SYNCHRONIZED`
 Base: `d5bd1da1f812f6def3b243a91d09f418067157bc`
 Classification: formal owner-complete migration for current owner `servant.suzuka`
 
@@ -6120,3 +6120,12 @@ Allowed verdicts:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+Acceptance synchronization:
+- PR #477 exact Candidate `86a5e01dfe685405800ca43dc3c8e29e1b1ea8dd` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/477#issuecomment-5877443591`.
+- Exact-Candidate Phase 3 Pre-Review Gate `36475123257` succeeded.
+- Accepted owner-complete scope is exactly Suzuka sc1 + sc2 + sc3; all three are newly creditable.
+- Formal accounting moves `141/944 -> 144/944`; remaining `800`.
+- Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-owner-suzuka-acceptance-synchronization.md`.
+- Mechanical first-occurrence owner ordering selects `servant.taisui` next: Suzuka index `238`, Taisui index `239` of `251` owners.
+- Owner-readiness-first remains mandatory: complete one full Taisui preflight before any Taisui formal consumer migration.
