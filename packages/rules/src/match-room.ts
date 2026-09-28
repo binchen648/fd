@@ -2,7 +2,6 @@ import {
   createMatchSession,
   restoreMatchSession,
   type MatchClientState,
-  type MatchPauseReason,
   type MatchSession,
   type MatchSessionConfig,
   type MatchSessionSnapshot,
@@ -93,9 +92,6 @@ export class MatchRoom {
   private readonly persistenceSecret: string;
   private readonly persistenceScope: string;
   private readonly restorePackKind: NonNullable<MatchSessionConfig['restorePackKind']>;
-  private readonly preferredPlayerIdentities: NonNullable<MatchSessionConfig['preferredPlayerIdentities']>;
-  private readonly allowedMasterIds: string[] | undefined;
-  private readonly allowedServantIds: string[] | undefined;
 
   constructor(config: MatchRoomConfig = {}) {
     this.roomId = config.roomId ?? `fd-room-${config.seed ?? 20260904}`;
@@ -104,9 +100,6 @@ export class MatchRoom {
     this.persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
     this.persistenceScope = config.persistenceScope ?? rotateOpponentCloseToOnePersistenceScope(this.roomId);
     this.restorePackKind = config.restorePackKind ?? 'production_executable';
-    this.preferredPlayerIdentities = config.preferredPlayerIdentities?.map((identity) => ({ ...identity })) ?? [];
-    this.allowedMasterIds = config.allowedMasterIds ? [...config.allowedMasterIds] : undefined;
-    this.allowedServantIds = config.allowedServantIds ? [...config.allowedServantIds] : undefined;
     this.clients = [{
       id: this.hostClientId,
       displayName: config.hostName ?? '房主',
@@ -179,9 +172,6 @@ export class MatchRoom {
       humanPlayerIds: humanPlayerIds.length ? humanPlayerIds : [primaryHuman],
       persistenceSecret: this.persistenceSecret,
       persistenceScope: this.persistenceScope,
-      preferredPlayerIdentities: this.preferredPlayerIdentities,
-      allowedMasterIds: this.allowedMasterIds,
-      allowedServantIds: this.allowedServantIds,
     });
     this.status = 'running';
     this.session.runUntilHumanInputOrRoundEnd();
@@ -225,14 +215,6 @@ export class MatchRoom {
       if (this.session.stopReason === 'match_complete') this.status = 'ended';
     }
     return result;
-  }
-
-  continueAfterRoundEnd(clientId: string): MatchPauseReason {
-    this.requireHost(clientId);
-    if (!this.session) throw new Error('Match has not started');
-    const reason = this.session.continueAfterRoundEnd();
-    if (reason === 'match_complete') this.status = 'ended';
-    return reason;
   }
 
   consumeDirective(clientId: string, directiveId: string): boolean {

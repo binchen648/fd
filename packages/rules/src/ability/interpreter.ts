@@ -24,7 +24,7 @@ import {
 } from './combat-opponent-power-vp-reward';
 import { controllerHasLinkedOwnerCardFrom, isLinkedOwnerCombatRule, isServantNoCommandSealsRule, linkedOwnerBasePowerMultiplier, servantRevealForbiddenByNoCommandSeals } from './linked-owner-combat';
 import { setTerrainAdvantageOverride } from './terrain-advantage-override';
-import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordDefinitionsForOwner, isDeductionRecordEffect, type DeductionRecordAttribute } from './deduction-record';
+import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute, deductionRecordDefinitionsForOwner, isDeductionRecordEffect, type DeductionRecordAttribute } from './deduction-record';
 import { activePlayerCountMinusRoundPlayCostAbility } from './dynamic-play-cost';
 import { playerIgnoresAbilityFromController } from './player-ability-immunity';
 import { effectiveAbilitiesForPhysicalCard, isEventBattleOpponentAttackConstraint, isGainManaEqualSelectedPaidCostEffect, isGrantedBasicDoubleRemoveEffect, isSourceRevealedCondition, physicalCardWasRevealed } from './revealed-card-mechanics';

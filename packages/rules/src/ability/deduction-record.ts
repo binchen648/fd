@@ -7,6 +7,9 @@ export type DeductionRecordAttribute = typeof DEDUCTION_RECORD_ATTRIBUTES[number
 const structuredMarker = 'm50_structured_v1';
 const knownAttributes = new Set<string>(DEDUCTION_RECORD_ATTRIBUTES);
 
+function record(value: unknown): RuleNode {
+  return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
+}
 function exactKeys(value: RuleNode, allowed: readonly string[]): boolean {
   const keys = Object.keys(value);
   return keys.length === allowed.length && keys.every((key) => allowed.includes(key));
