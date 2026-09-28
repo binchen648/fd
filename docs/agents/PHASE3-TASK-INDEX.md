@@ -6129,3 +6129,46 @@ Acceptance synchronization:
 - Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-owner-suzuka-acceptance-synchronization.md`.
 - Mechanical first-occurrence owner ordering selects `servant.taisui` next: Suzuka index `238`, Taisui index `239` of `251` owners.
 - Owner-readiness-first remains mandatory: complete one full Taisui preflight before any Taisui formal consumer migration.
+
+## TASK P3-B-TAISUI-OWNER-READINESS-CAPABILITY
+
+Owner: Codex B
+Status: `READY`
+Base: `9eed6f832fbc7ec00368e688b43d0020b04f804d`
+Classification: bounded zero-credit owner-readiness capability for current owner `servant.taisui`
+
+Full-owner preflight:
+- frozen owner set is exactly sc1 + sc2 + sc3;
+- sc1 is historical accepted FM07 material and preservation-only;
+- sc2 + sc3 have no canonical consumer at Base;
+- one compatible location-marker readiness family blocks sc2 + sc3 and must be closed together before formal migration.
+
+Readiness scope:
+- authoritative persisted per-controller/source location marker keyed by validated semantic marker key;
+- opponent-departure marker follow with exact previous-location provenance and live owned source;
+- normal +3 marker-bound terrain branch and reversed per-player 1 VP transfer branch;
+- normal Outpost marker placement;
+- reversed Action graph-distance-2 unique-midpoint convergence, true-name reveal and ordinary defeatable Defeat;
+- exact restore/provenance/revision validation, stale/repeat fail-closed behavior, root-state persistence and identity-free loader gateway;
+- no Taisui consumer authoring, no card/character IDs or printed-text parsing in production runtime.
+
+Verification:
+- focused `10/10 PASS`;
+- directly affected `10 files / 171 tests PASS`;
+- `FD_TOOLCHAIN_OK`;
+- typecheck PASS;
+- content validate/compile PASS (`7 masters / 12 servants / 20 events / 0 blocking issues`);
+- generated determinism PASS;
+- `data/authoring/**` delta EMPTY;
+- production identity audit CLEAN;
+- `git diff --check` PASS;
+- detailed result: `docs/reports/2026-09-29-p3-b-taisui-owner-readiness-capability-result.md`.
+
+Accounting:
+- strict formal accounting remains `144/944`, remaining `800`;
+- this task is permanently zero-credit;
+- ACCEPTED must A-sync/rescan and return to the same Taisui owner for one owner-complete formal batch containing preserved sc1 + new sc2 + sc3.
+
+Allowed verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`

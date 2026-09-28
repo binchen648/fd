@@ -64,6 +64,10 @@ import {
 } from './deck-recycle-replay-growth-capability';
 import { COMBAT_REWARD_DISTRIBUTION_RULE, isAcceptedFullRewardEachAbility } from './combat-reward-distribution';
 import {
+  LOCATION_MARKER_FOLLOW_EFFECT, LOCATION_MARKER_COMBAT_BRANCH_EFFECT, LOCATION_MARKER_PLACE_EFFECT, LOCATION_MARKER_MIDPOINT_DEFEAT_EFFECT,
+  containsLocationMarkerPrivilegedNode, isAcceptedLocationMarkerAbility,
+} from './location-marker-capability';
+import {
   ADD_ENGAGED_SEAL_USER_FORMULA_POWER_EFFECT,
   ENABLE_ENGAGED_OPPONENT_UNUSED_SEAL_POWER_EFFECT,
   ENGAGED_SEAL_USER_THIS_ROUND_CONDITION,
@@ -160,6 +164,7 @@ const supportedTypes = new Set([
   LOSE_VP_EQUAL_SOURCE_PLAY_COUNT_EFFECT, HIDE_SERVANT_TRUE_NAME_UNTIL_ROUND_END_EFFECT, REVEAL_HAND_ROUND_POWER_EFFECT,
   OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT, OPPONENT_CLOSE_ONE_NON_RESIDUAL_EFFECT, BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT,
   AUTOMATIC_RECYCLE_KEEP_GAIN_COUNTER_EFFECT, SPEND_COUNTER_IGNORE_BATTLE_LOSS_EFFECT, DISCARD_BASIC_REPLAY_COUNTER_EFFECT, PHYSICAL_CARD_REPLAY_GROWTH_EFFECT,
+  LOCATION_MARKER_FOLLOW_EFFECT, LOCATION_MARKER_COMBAT_BRANCH_EFFECT, LOCATION_MARKER_PLACE_EFFECT, LOCATION_MARKER_MIDPOINT_DEFEAT_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -182,6 +187,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'discardAttribute', 'maxClosePerOpponent', 'excludePerGame', 'refund', 'drawCount', 'playDrawnCard', 'immediatePlayQuota', 'actionAbilityPermission',
   'counterKey', 'keepMax', 'gain', 'maxSpend', 'baseCount', 'sourceZone', 'cardKind', 'payCardCosts', 'returnAfter',
   'costIncreasePerPlay', 'costDuration', 'revealDiscardTop', 'printedPowerEquals', 'powerBonus', 'powerDuration',
+  'markerKey', 'terrainAmount', 'vpTransferAmount', 'distance',
   // New mechanic keys for 5 servants
   'options', 'label', 'condition', 'targets', 'duration', 'scope', 'statusId', 'choiceId', 'value',
   // Accepted FB2-27 Ruler seal structural fields.
@@ -623,6 +629,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsDeckRecycleReplayGrowthPrivilegedNode(candidateAbility) && !isAcceptedDeckRecycleReplayGrowthAbility(candidateAbility)) {
         issue('deckRecycleReplayGrowth.gateway', 'Deck recycle/replay/growth mechanics require the exact accepted whole-ability semantic', id);
+      }
+      if (containsLocationMarkerPrivilegedNode(candidateAbility) && !isAcceptedLocationMarkerAbility(candidateAbility)) {
+        issue('locationMarker.gateway', 'Location-marker privileged mechanics require the exact accepted whole-ability semantic', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

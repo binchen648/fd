@@ -92,6 +92,9 @@ export interface AbilityEvent {
   revealedKind?: 'situation' | 'event';
   revealedId?: string;
   locationId?: string;
+  /** Trusted movement provenance for location-enter events. */
+  previousLocationId?: string;
+  movementKind?: 'normal' | 'effect';
 }
 export interface TriggeredAbility { cardInstanceId: string; abilityId: string; controllerId: PlayerId }
 export interface UniqueTriggerGroup { groupId: string; policy: 'only_one_effect_may_activate_per_window' }
@@ -338,6 +341,10 @@ export interface PendingRulerSealReward {
   sealId: string; issuerPlayerId: PlayerId; boundPlayerId: PlayerId; sourceCardId: string; abilityId: string;
   round: number; rewardVp: number;
 }
+export interface LocationMarkerState {
+  markerKey: string; controllerId: PlayerId; providerSourceCardId: string; providerAbilityId: string;
+  locationId: string; placedRevision: number; updatedRevision: number;
+}
 export interface TrustedBattleResultSnapshot {
   battlePhaseResolutionId: string;
   battleId: string;
@@ -351,6 +358,8 @@ export interface TrustedBattleResultSnapshot {
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
+  /** Identity-free authoritative location markers, keyed by controller + authored marker key. */
+  locationMarkers?: Record<string, LocationMarkerState>;
   /** Identity-free server-owned structured player flags. */
   structuredPlayerFlagsByPlayer?: Record<PlayerId, Record<string, boolean | string | number>>;
   /** Round marker for flags whose authored lifecycle is exactly this_round. */
