@@ -5219,7 +5219,7 @@ Allowed verdicts:
 ## TASK P3-B-SIGURD-REVEALED-SOURCE-CAPABILITY
 
 Owner: Codex B
-Status: `IMPLEMENTATION_CANDIDATE_READY_FOR_FRESH_R`
+Status: `IMPLEMENTATION_REVISION_READY_FOR_FRESH_R`
 Base: `fe37f27e17007af77573ab99e02b40870d62d532`
 Classification: bounded zero-credit capability/readiness prerequisite for current owner `servant.sigurd`
 
@@ -5837,3 +5837,58 @@ R1 closure:
 Typecheck/content validate/content compile/generated determinism/diff-check PASS; `data/authoring/**` delta empty; production Skadi/SkillLib identity audit clean.
 
 Formal accounting remains `134/944`; remaining `810`. This task is permanently zero-credit.
+## TASK P3-B-STHENO-DIVINE-CORE-READINESS-CAPABILITY
+
+Owner: Codex B
+Status: `IMPLEMENTATION_REVISION_READY_FOR_FRESH_R`
+Base: `e3c61d74be6b02b186875e31191e416fc364e179`
+Classification: bounded zero-credit owner-readiness prerequisite for current owner `servant.stheno`
+
+Complete owner-readiness preflight:
+- sc1 has historical formal FM06 Presence Concealment acceptance and requires no new readiness capability;
+- sc2 is already expressible by accepted generic `after_controller_wins_battle` / `event_player_won_combat` / `adjust_victory_points` runtime vocabulary and requires no new privileged shell;
+- sc3 Divine Core is the sole currently discoverable new gap and is closed by this one identity-free battle Luck-close/refund/draw/immediate-play family;
+- no second Stheno readiness/capability batch is currently justified by the complete preflight.
+
+Bounded scope:
+- exact active-source combat whole-ability gateway;
+- one owned Luck discard, deterministic engaged-opponent turn order, at most one eligible non-per-game attack close per opponent;
+- refund each affected opponent the closed card effective cost and draw exactly one;
+- optional turn-order immediate play of the exact drawn card plus bounded current-round combat permission for that card's Action ability;
+- private transaction/continuation serialization, restore authentication, exact completed-play provenance, corruption fail-closed, and compiled-pack fail-closed;
+- no Stheno consumer authoring and zero migration credit.
+
+Hard boundary:
+- `data/authoring/**` delta EMPTY;
+- no `servant.stheno`, `sc-stheno`, card-name/printed-text/Chinese identity routing in production runtime;
+- no runtime source-text parsing and no `SkillLib` fallback;
+- ACCEPTED must A-sync/rescan and return to the same Stheno formal owner; do not advance owners.
+
+Verification evidence:
+- focused Divine Core readiness `15/15 PASS`;
+- current R3 affected serial `7 files / 105 tests PASS`;
+- typecheck PASS;
+- content validate/compile PASS — `7 masters / 12 servants / 20 events / 0 blocking issues`;
+- generated determinism PASS with unchanged hashes;
+- `git diff --check` PASS;
+- `data/authoring/**` delta EMPTY;
+- production identity audit clean for Stheno ids/names and `SkillLib`;
+- predecessor Candidate `31e607db8be27d505d808d380cee22a0a92769a5` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt Coordinator relay after Reviewer 403: `https://github.com/binchen648/fd/pull/472#issuecomment-5859558471`;
+- P1 restore-provenance closure: Divine Core draw/immediate-play authority is now host-secret HMAC sealed outside mutable GameState, pending rewards/history/combat permission must exactly match that authority on current/replay/checkpoint restore, and forged pending-draw substitution plus forged completed-history/permission regressions fail closed;
+- P1 continuation closure: immediately played cards may open ordinary on-card-played response/nested decision work; Divine Core pauses while pending decisions/response windows/host requests exist and resumes only after ordinary work settles;
+- P2 lifetime closure: immediate-play history, combat Action permission, and corresponding authority retire at the next authoritative round; a two-round replay of the same physical card restores successfully after ordinary legal replay;
+- successor Candidate `dfa48bf26697a717fa6e8101a5a44e489b5e6552` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt Coordinator relay after Reviewer 403: `https://github.com/binchen648/fd/pull/472#issuecomment-5862289311`;
+- R2 P1 transaction closure: draw authority now carries exact per-activation transaction identity, retires at settlement, permits a second legal same-round activation, and rejects authenticated orphan draw authority if unresolved transaction/decision state is forged away;
+- R2 P1 root-replacement closure: `stepGameLoop` carries the server-only authority across task-relevant GameState root replacements; completed Divine Core history/permission survives battle -> cleanup and MatchSession round-trip;
+- successor Candidate `54baf0b188114c2fe9f690a339a71a0a620379a1` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt Coordinator relay after Reviewer 403: `https://github.com/binchen648/fd/pull/472#issuecomment-5866671116`;
+- R3 P1 ordinary-new-round closure: `stepGameLoop` now passes the previous root round into `advanceAbilityPhase`, so normal `round_end -> round_start` retires prior-round Divine Core immediate-play history, temporary combat Action permission, and server-only authority exactly once before persistence validation; the production-path regression advances legal Divine Core state through battle -> cleanup -> round_end -> round_start and restores successfully;
+- R3 verification: focused `15/15 PASS`; affected `7 files / 105 tests PASS`; typecheck/content validate/content compile/generated determinism/diff-check PASS; `data/authoring/**` delta EMPTY.
+- detailed result: `docs/reports/2026-09-28-p3-b-stheno-divine-core-readiness-capability-result.md`.
+
+Accounting:
+- strict formal accounting remains `139/944`, remaining `805`;
+- this readiness task is permanently zero-credit.
+
+Allowed verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`

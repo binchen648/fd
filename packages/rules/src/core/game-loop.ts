@@ -20,6 +20,7 @@ import { resolveBattlefield } from "./combat-resolver";
 import { resolveEffectsForWindow } from "./effect-resolver";
 import { getEnabledLocations } from "./map-engine";
 import { advanceAbilityPhase, processAbilityEvent, processAbilitySystemEvent } from '../ability/interpreter';
+import { copyBattleCloseDrawPlayServerAuthority } from '../ability/battle-close-draw-play-authority';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from '../ability/battle-terminal';
 
 function hasPendingAbilityResolution(state: GameState): boolean {
@@ -46,6 +47,11 @@ export interface ActionPlayInput {
   playerId: string;
   cardInstanceIds: string[];
   revealedCardInstanceIds: string[];
+}
+
+function carryBattleCloseDrawPlayAuthority(from: GameState, to: GameState): GameState {
+  if (from !== to) copyBattleCloseDrawPlayServerAuthority(from, to);
+  return to;
 }
 
 export interface GameLoopInput {
@@ -453,7 +459,7 @@ export function stepGameLoop(
       ? state.round.roundNumber + 1
       : state.round.roundNumber;
 
-  let nextState: GameState = {
+  let nextState: GameState = carryBattleCloseDrawPlayAuthority(state, {
     ...state,
     round: {
       ...state.round,
@@ -464,12 +470,14 @@ export function stepGameLoop(
       type: "phase_transition",
       message: `${transition.from} -> ${transition.to}`,
     }),
-  };
+  });
 
   if (transition.to === "round_start") {
-    nextState = runRoundStartSystems(nextState, input);
-    const { nextState: afterPlacement } = assignInitialPlayerLocations(nextState);
-    nextState = afterPlacement;
+    const beforeRoundStartSystems = nextState;
+    nextState = carryBattleCloseDrawPlayAuthority(beforeRoundStartSystems, runRoundStartSystems(beforeRoundStartSystems, input));
+    const beforePlacement = nextState;
+    const { nextState: afterPlacement } = assignInitialPlayerLocations(beforePlacement);
+    nextState = carryBattleCloseDrawPlayAuthority(beforePlacement, afterPlacement);
   }
 
   if (state.round.activePhase === "action" && input?.action?.type === "move") {
@@ -478,7 +486,7 @@ export function stepGameLoop(
       to: input.action.to,
       movementKind: input.action.movementKind,
     });
-    nextState = movement.nextState;
+    nextState = carryBattleCloseDrawPlayAuthority(state, movement.nextState);
     if (movement.moved && nextState.abilityRuntime) {
       processAbilitySystemEvent(nextState, 'enter-location', {
         type: 'after_controller_enters_location',
@@ -486,7 +494,7 @@ export function stepGameLoop(
         locationId: input.action.to,
       });
     }
-    nextState = {
+    nextState = carryBattleCloseDrawPlayAuthority(nextState, {
       ...nextState,
       round: {
         ...nextState.round,
@@ -497,16 +505,16 @@ export function stepGameLoop(
         type: "phase_transition",
         message: `${transition.from} -> ${transition.to}`,
       }),
-    };
+    });
   }
 
   if (state.round.activePhase === "action" && input?.action?.type === "play") {
-    nextState = playServantCardPair(state, {
+    nextState = carryBattleCloseDrawPlayAuthority(state, playServantCardPair(state, {
       playerId: input.action.playerId,
       cardInstanceIds: input.action.cardInstanceIds,
       revealedCardInstanceIds: input.action.revealedCardInstanceIds,
-    }).nextState;
-    nextState = {
+    }).nextState);
+    nextState = carryBattleCloseDrawPlayAuthority(nextState, {
       ...nextState,
       round: {
         ...nextState.round,
@@ -517,13 +525,13 @@ export function stepGameLoop(
         type: "phase_transition",
         message: `${transition.from} -> ${transition.to}`,
       }),
-    };
+    });
   }
 
   if (state.round.activePhase === "battle") {
-    nextState = runBattlePhase(state);
+    nextState = carryBattleCloseDrawPlayAuthority(state, runBattlePhase(state));
     if (hasPendingAbilityResolution(nextState)) return { nextState, transition: { from: 'battle', to: 'battle' } };
-    nextState = {
+    nextState = carryBattleCloseDrawPlayAuthority(nextState, {
       ...nextState,
       round: {
         ...nextState.round,
@@ -534,12 +542,12 @@ export function stepGameLoop(
         type: "phase_transition",
         message: `${transition.from} -> ${transition.to}`,
       }),
-    };
+    });
   }
 
   if (state.round.activePhase === "cleanup") {
-    nextState = runCleanupPhase(state);
-    nextState = {
+    nextState = carryBattleCloseDrawPlayAuthority(state, runCleanupPhase(state));
+    nextState = carryBattleCloseDrawPlayAuthority(nextState, {
       ...nextState,
       round: {
         ...nextState.round,
@@ -550,10 +558,12 @@ export function stepGameLoop(
         type: "phase_transition",
         message: `${transition.from} -> ${transition.to}`,
       }),
-    };
+    });
   }
 
-  if (nextState.abilityRuntime) advanceAbilityPhase(nextState, nextState.round.activePhase, nextState.round.roundNumber);
+  if (nextState.abilityRuntime) {
+    advanceAbilityPhase(nextState, nextState.round.activePhase, nextState.round.roundNumber, state.round.roundNumber);
+  }
   return {
     nextState,
     transition,

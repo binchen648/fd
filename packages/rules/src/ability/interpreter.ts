@@ -66,6 +66,14 @@ import {
   isAcceptedOpponentCloseOneNonResidualAbility,
   isOpponentCloseToOneCandidate,
 } from './opponent-close-to-one';
+import { BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT, containsBattleLuckCloseDrawPlayNode, isAcceptedBattleLuckCloseDrawPlayAbility } from './divine-core-capability';
+import {
+  copyBattleCloseDrawPlayServerAuthority,
+  rememberBattleCloseDrawImmediatePlayAuthority,
+  rememberBattleCloseDrawPlayDrawAuthority,
+  retireBattleCloseDrawPlayDrawAuthorityForTransaction,
+  retireBattleCloseDrawPlayServerAuthorityBeforeRound,
+} from './battle-close-draw-play-authority';
 import {
   DYNAMIC_UNUSED_SEAL_POWER_RULE,
   containsCommandSealPowerPrivilegedNode,
@@ -100,7 +108,7 @@ import {
 import type {
   AbilityCommand, AbilityDefinitionPack, AbilityEvent, AbilityPlayerView, AbilityRuntime, AuthoringAbility, AuthoringCard,
   BattleResult, BattleResultData, CalculationLine, CardPlayClassification, CardRuntimeState, DispatchResult, EffectContext, ExecutableCardDefinition,
-  LegalAction, OngoingEffect, PendingDecision, PendingOpponentCloseToOne, PlayerId, RuleNode, TriggeredAbility,
+  LegalAction, OngoingEffect, PendingDecision, PendingOpponentCloseToOne, PendingBattleCloseDrawPlayTransaction, PlayerId, RuleNode, TriggeredAbility,
   AbilityInteractionClassification,
   PlayCardAction,
 } from './types';
@@ -940,6 +948,7 @@ function abilityLimitReached(s: GameState, sourceId: string, a: AuthoringAbility
 }
 function effectiveActivationPhase(s: GameState, sourceId: string, a: AuthoringAbility): string {
   const basePhase = str(a.activation.phase);
+  if (basePhase === 'action' && runtime(s).cardState[sourceId]?.actionAbilityAllowedInCombatRound === s.round.roundNumber) return 'combat';
   if (definition(s, sourceId)?.cardType !== 'command_spell' || basePhase !== 'action') return basePhase;
   const controllerId = card(s, sourceId).controllerPlayerId;
   const persistentPhase = commandSpellPhaseOverride(s, controllerId);
@@ -989,6 +998,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsSourceSkillAttackJoinNode(a.effects) && !isAcceptedSourceSkillAttackJoinAbility(a)) return false;
   if (containsSourceLocationRunePrivilegedNode(a) && !isAcceptedSourceLocationRunePrivilegedAbility(a)) return false;
   if (containsCommandSealPowerPrivilegedNode(a) && !isAcceptedCommandSealPowerPrivilegedAbility(a)) return false;
+  if (containsBattleLuckCloseDrawPlayNode(a) && !isAcceptedBattleLuckCloseDrawPlayAbility(a)) return false;
+  if (isAcceptedBattleLuckCloseDrawPlayAbility(a) && !canActivateBattleCloseDrawPlay(s, sourceId, a)) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
@@ -1557,6 +1568,11 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
   const unpreventable = a.ruleModifiers.some(m => m.rule === 'effect_prevention' && m.operation === 'ignore' && node(m.priority).tier === 'explicit_exception');
   if (r.preventEffects && !unpreventable) { r.events.push({ type: 'effect_prevented', playerId: p.id }); return; }
   switch (effect.type) {
+    case BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT: {
+      if (!isAcceptedBattleLuckCloseDrawPlayAbility(a)) reject('unsupported', 'Unsupported battle close/refund/draw/immediate-play effect');
+      startBattleCloseDrawPlay(s, ctx);
+      break;
+    }
     case 'adjust_other_active_players_at_source_location_mana': {
       if (!isAdjustOtherPlayersAtSourceLocationManaEffect(effect) || !isAcceptedSourceLocationRunePrivilegedAbility(a)) {
         reject('unsupported', 'Unsupported source-location mana-loss effect');
@@ -2198,6 +2214,9 @@ function inputVariableCalculationsMatch(s: GameState, ability: AuthoringAbility,
   return !!latest && latest.lines.every((line) => ctx.variables[line.label] === line.value);
 }
 export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decision: PendingDecision): boolean {
+  if (decision.interaction && ['battle_luck_discard_choice_v1','battle_opponent_close_reward_choice_v1','battle_drawn_card_optional_play_v1'].includes(decision.interaction.kind)) {
+    return isBattleCloseDrawPlayPendingDecisionLiveValid(s, decision);
+  }
   if (decision.interaction) return true;
   try {
     if (decision.controllerId !== decision.context.controllerId) return false;
@@ -2239,7 +2258,11 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState):
       const source = restoredPhysicalSource(s, entry.sourceCardId, entry.initiatingControllerId); const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
       return !!source && source.ownerPlayerId === entry.initiatingControllerId && !!ability && isAcceptedOpponentCloseToOneAbility(ability, 'compiled') && locationIds.has(entry.battlefieldId) && playerIds.has(entry.decisionPlayerId) && hasPlayers(entry.remainingDecisionPlayerIds);
     })) return false;
-    if ((r.transformedReturnSilenceSourceCardIds ?? []).some((id) => !s.cards.some((card) => card.instanceId === id))) return false;
+    const battleTx = r.pendingBattleCloseDrawPlayTransaction;
+    if (battleTx !== undefined) {
+      if (!battleCloseDrawPlayTransactionLiveValid(s, battleTx) || !r.pendingDecision || !isBattleCloseDrawPlayPendingDecisionLiveValid(s, r.pendingDecision)) return false;
+    } else if (r.pendingDecision?.interaction && ['battle_luck_discard_choice_v1','battle_opponent_close_reward_choice_v1','battle_drawn_card_optional_play_v1'].includes(r.pendingDecision.interaction.kind)) return false;
+    if (!battleCloseDrawImmediatePlayHistoryValidForRestore(s)) return false;    if ((r.transformedReturnSilenceSourceCardIds ?? []).some((id) => !s.cards.some((card) => card.instanceId === id))) return false;
     return true;
   } catch { return false; }
 }
@@ -2562,7 +2585,210 @@ function closeOpponentCardForCloseToOne(s: GameState, decisionPlayerId: string, 
   }
 }
 
+function battleCloseDrawPlayLuckCardIds(s: GameState, controllerId: PlayerId): string[] {
+  return s.cards.filter((candidate) => candidate.controllerPlayerId === controllerId && candidate.ownerPlayerId === controllerId && candidate.zone === 'hand' &&
+    getEffectiveCardAttributes(s, candidate.instanceId).includes('幸运')).map((candidate) => candidate.instanceId).sort();
+}
+function battleCloseDrawPlayOpponentIds(s: GameState, controllerId: PlayerId): PlayerId[] {
+  const controller = s.players.find((candidate) => candidate.id === controllerId && candidate.status === 'active');
+  if (!controller?.locationId || !isBattlefield(s, controller.locationId)) return [];
+  return s.players.filter((candidate) => candidate.id !== controllerId && candidate.status === 'active' && candidate.locationId === controller.locationId)
+    .sort((left, right) => left.seat - right.seat).map((candidate) => candidate.id);
+}
+function battleCloseDrawPlayCloseCandidateIds(s: GameState, opponentId: PlayerId): string[] {
+  const r = runtime(s);
+  return s.cards.filter((candidate) => {
+    if (candidate.controllerPlayerId !== opponentId || candidate.zone !== 'attack_area') return false;
+    const definition = r.pack.cards[candidate.definitionId]; const state = r.cardState[candidate.instanceId];
+    if (!definition || !state || state.active !== true || state.faceDown !== false || cardPlayClassification(s, candidate.instanceId).playKind !== 'attack') return false;
+    if (perGamePlayLimit(definition) || (r.grantedPerGamePlayLimitCardIds ?? []).includes(candidate.instanceId)) return false;
+    return !isCardCloseForbidden(s, candidate.instanceId);
+  }).map((candidate) => candidate.instanceId).sort();
+}
+function canActivateBattleCloseDrawPlay(s: GameState, sourceId: string, ability: AuthoringAbility): boolean {
+  if (!isAcceptedBattleLuckCloseDrawPlayAbility(ability) || runtime(s).pendingBattleCloseDrawPlayTransaction) return false;
+  const source = s.cards.find((candidate) => candidate.instanceId === sourceId); if (!source) return false;
+  const controller = s.players.find((candidate) => candidate.id === source.controllerPlayerId);
+  return !!controller && controller.status === 'active' && !!controller.locationId && isBattlefield(s, controller.locationId) &&
+    source.ownerPlayerId === controller.id && runtime(s).cardState[sourceId]?.active === true && runtime(s).cardState[sourceId]?.faceDown === false &&
+    battleCloseDrawPlayLuckCardIds(s, controller.id).length > 0 && battleCloseDrawPlayOpponentIds(s, controller.id).length > 0;
+}
+function drawOneBattleCloseDrawPlayCard(s: GameState, playerId: PlayerId): string | undefined {
+  if (isNormalCardDrawSuppressed(s, playerId)) return undefined;
+  if (!s.cards.some((candidate) => candidate.ownerPlayerId === playerId && candidate.zone === 'deck')) {
+    s.cards.filter((candidate) => candidate.ownerPlayerId === playerId && candidate.zone === 'discard').forEach((candidate) => moveCard(s, candidate.instanceId, 'deck'));
+    shuffle(s, playerId);
+  }
+  const top = s.cards.find((candidate) => candidate.ownerPlayerId === playerId && candidate.zone === 'deck');
+  if (!top) return undefined;
+  moveCard(s, top.instanceId, 'hand');
+  return top.instanceId;
+}
+function closeBattleCloseDrawPlayCard(s: GameState, opponentId: PlayerId, instanceId: string): void {
+  if (!battleCloseDrawPlayCloseCandidateIds(s, opponentId).includes(instanceId)) reject('resolution_failed', 'Battle close/draw/play target is no longer eligible');
+  const target = card(s, instanceId); const definition = runtime(s).pack.cards[target.definitionId]!; const state = runtime(s).cardState[instanceId]!;
+  state.active = false; clearTransientCardTransformState(s, instanceId);
+  if (['servant_skill', 'master_skill'].includes(definition.cardType)) {
+    target.zone = 'skill'; target.controllerPlayerId = target.ownerPlayerId; target.visibility = { scope: 'owner_only', ownerPlayerId: target.ownerPlayerId }; state.faceDown = false;
+  } else { state.faceDown = true; target.visibility = { scope: 'owner_only', ownerPlayerId: target.ownerPlayerId }; }
+}
+function battleCloseDrawPlayContext(tx: PendingBattleCloseDrawPlayTransaction): EffectContext {
+  return { controllerId: tx.controllerId, sourceCardId: tx.sourceCardId, abilityId: tx.abilityId, variables: {}, selections: {} };
+}
+function stageBattleCloseDrawPlayLuckChoice(s: GameState, tx: PendingBattleCloseDrawPlayTransaction): void {
+  const r = runtime(s); const luckIds = battleCloseDrawPlayLuckCardIds(s, tx.controllerId);
+  if (luckIds.length === 0) reject('resolution_failed', 'Battle close/draw/play lost its required Luck discard');
+  if (luckIds.length === 1) { tx.discardedLuckCardId = luckIds[0]!; moveCard(s, luckIds[0]!, 'discard'); stageNextBattleCloseDrawPlayCloseChoice(s); return; }
+  const id = nextId(s, 'battle-luck-discard');
+  r.pendingDecision = { id, controllerId: tx.controllerId, target: { id: 'luck_to_discard', type: 'card_instance', count: { min: 1, max: 1 } }, candidates: luckIds,
+    min: 1, max: 1, context: battleCloseDrawPlayContext(tx), remainingEffects: [], interaction: {
+      kind: 'battle_luck_discard_choice_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden', sourceCardInstanceId: tx.sourceCardId,
+      abilityId: tx.abilityId, createdRevision: r.revision + 1, continuationRef: `${id}:continuation`, controllerId: tx.controllerId, luckCardIds: [...luckIds],
+      constraints: { kind: 'target', targetKind: 'card', min: 1, max: 1, distinct: true },
+    } };
+}
+function stageNextBattleCloseDrawPlayCloseChoice(s: GameState): void {
+  const r = runtime(s); const tx = r.pendingBattleCloseDrawPlayTransaction; if (!tx || r.pendingDecision) return;
+  while (tx.closeIndex < tx.opponentIds.length) {
+    const opponentId = tx.opponentIds[tx.closeIndex]!; const candidates = battleCloseDrawPlayCloseCandidateIds(s, opponentId);
+    if (candidates.length === 0) { tx.closeIndex++; continue; }
+    const id = nextId(s, 'battle-close-reward');
+    r.pendingDecision = { id, controllerId: tx.controllerId, target: { id: 'opponent_attack_to_close', type: 'card_instance', count: { min: 0, max: 1 } }, candidates,
+      min: 0, max: 1, context: battleCloseDrawPlayContext(tx), remainingEffects: [], interaction: {
+        kind: 'battle_opponent_close_reward_choice_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden', sourceCardInstanceId: tx.sourceCardId,
+        abilityId: tx.abilityId, createdRevision: r.revision + 1, continuationRef: `${id}:continuation`, controllerId: tx.controllerId, opponentId,
+        candidateIds: [...candidates], constraints: { kind: 'target', targetKind: 'card', min: 0, max: 1, distinct: true },
+      } };
+    return;
+  }
+  stageNextBattleCloseDrawPlayPlayChoice(s);
+}
+function stageNextBattleCloseDrawPlayPlayChoice(s: GameState): void {
+  const r = runtime(s); const tx = r.pendingBattleCloseDrawPlayTransaction;
+  if (!tx || r.pendingDecision || r.responseWindows.length || r.hostRequests.length) return;
+  while (tx.playIndex < tx.opponentIds.length) {
+    const playerId = tx.opponentIds[tx.playIndex]!; const reward = tx.rewards.find((entry) => entry.playerId === playerId);
+    if (!reward?.drawnCardId) { tx.playIndex++; continue; }
+    const drawn = s.cards.find((candidate) => candidate.instanceId === reward.drawnCardId);
+    if (!drawn || drawn.ownerPlayerId !== playerId || drawn.controllerPlayerId !== playerId || drawn.zone !== 'hand' ||
+        playFailure(s, playerId, drawn.instanceId, false, true, true, true)) { tx.playIndex++; continue; }
+    const id = nextId(s, 'battle-drawn-play');
+    r.pendingDecision = { id, controllerId: playerId, target: { id: 'drawn_card_optional_play', type: 'card_instance', count: { min: 0, max: 1 } },
+      candidates: [drawn.instanceId], min: 0, max: 1, context: battleCloseDrawPlayContext(tx), remainingEffects: [], interaction: {
+        kind: 'battle_drawn_card_optional_play_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden', sourceCardInstanceId: tx.sourceCardId,
+        abilityId: tx.abilityId, createdRevision: r.revision + 1, continuationRef: `${id}:continuation`, playerId, drawnCardId: drawn.instanceId,
+        constraints: { kind: 'target', targetKind: 'card', min: 0, max: 1, distinct: true },
+      } };
+    return;
+  }
+  retireBattleCloseDrawPlayDrawAuthorityForTransaction(s, tx.transactionId);
+  delete r.pendingBattleCloseDrawPlayTransaction;
+}
+function resumeBattleCloseDrawPlayAfterNestedWork(s: GameState): void {
+  const r = runtime(s); const tx = r.pendingBattleCloseDrawPlayTransaction;
+  if (!tx || r.pendingDecision || r.responseWindows.length || r.hostRequests.length) return;
+  if (tx.closeIndex < tx.opponentIds.length) stageNextBattleCloseDrawPlayCloseChoice(s);
+  else stageNextBattleCloseDrawPlayPlayChoice(s);
+}
+function startBattleCloseDrawPlay(s: GameState, ctx: EffectContext): void {
+  const r = runtime(s); const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (!canActivateBattleCloseDrawPlay(s, ctx.sourceCardId, ability) || r.pendingBattleCloseDrawPlayTransaction || r.pendingDecision) reject('resolution_failed', 'Battle close/draw/play preflight failed');
+  const controller = player(s, ctx.controllerId); const opponentIds = battleCloseDrawPlayOpponentIds(s, ctx.controllerId);
+  const tx: PendingBattleCloseDrawPlayTransaction = { transactionId: nextId(s, 'battle-close-draw-play'), controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+    round: s.round.roundNumber, battlefieldId: controller.locationId!, opponentIds, closeIndex: 0, playIndex: 0, rewards: [] };
+  r.pendingBattleCloseDrawPlayTransaction = tx; stageBattleCloseDrawPlayLuckChoice(s, tx);
+}
 
+function battleCloseDrawPlayTransactionLiveValid(s: GameState, tx: PendingBattleCloseDrawPlayTransaction): boolean {
+  const r = runtime(s); const source = s.cards.find((candidate) => candidate.instanceId === tx.sourceCardId);
+  const controller = s.players.find((candidate) => candidate.id === tx.controllerId);
+  const ability = source ? r.pack.cards[source.definitionId]?.abilities.find((candidate) => candidate.id === tx.abilityId) : undefined;
+  if (!tx.transactionId || !/^battle-close-draw-play-\d+$/.test(tx.transactionId) || !source || !controller || !ability || !isAcceptedBattleLuckCloseDrawPlayAbility(ability) ||
+      source.ownerPlayerId !== tx.controllerId || source.controllerPlayerId !== tx.controllerId ||
+      controller.status !== 'active' || controller.locationId !== tx.battlefieldId || !isBattlefield(s, tx.battlefieldId) ||
+      tx.round !== s.round.roundNumber || r.cardState[source.instanceId]?.active !== true || r.cardState[source.instanceId]?.faceDown !== false ||
+      !Number.isSafeInteger(tx.closeIndex) || tx.closeIndex < 0 || tx.closeIndex > tx.opponentIds.length ||
+      !Number.isSafeInteger(tx.playIndex) || tx.playIndex < 0 || tx.playIndex > tx.opponentIds.length ||
+      !exactPlayerArray(tx.opponentIds, battleCloseDrawPlayOpponentIds(s, tx.controllerId)) || new Set(tx.opponentIds).size !== tx.opponentIds.length) return false;
+  if (tx.discardedLuckCardId !== undefined) {
+    const luck = s.cards.find((candidate) => candidate.instanceId === tx.discardedLuckCardId);
+    if (!luck || luck.ownerPlayerId !== tx.controllerId || luck.controllerPlayerId !== tx.controllerId || luck.zone !== 'discard' ||
+        !getEffectiveCardAttributes(s, luck.instanceId).includes('幸运')) return false;
+  }
+  const rewardPlayers = new Set<string>();
+  for (const reward of tx.rewards) {
+    const opponentIndex = tx.opponentIds.indexOf(reward.playerId);
+    if (opponentIndex < 0 || opponentIndex >= tx.closeIndex || rewardPlayers.has(reward.playerId) ||
+        !Number.isSafeInteger(reward.refundMana) || reward.refundMana < 0) return false;
+    rewardPlayers.add(reward.playerId);
+    const closed = s.cards.find((candidate) => candidate.instanceId === reward.closedCardId);
+    const closedState = closed ? r.cardState[closed.instanceId] : undefined;
+    if (!closed || closed.controllerPlayerId !== reward.playerId || !closedState || closedState.active !== false) return false;
+    if (reward.drawnCardId !== undefined) {
+      const drawn = s.cards.find((candidate) => candidate.instanceId === reward.drawnCardId);
+      if (!drawn || drawn.ownerPlayerId !== reward.playerId || drawn.controllerPlayerId !== reward.playerId) return false;
+    }
+  }
+  return true;
+}
+function isBattleCloseDrawPlayPendingDecisionLiveValid(s: GameState, decision: PendingDecision): boolean {
+  const r = runtime(s); const tx = r.pendingBattleCloseDrawPlayTransaction; const meta = decision.interaction;
+  if (!tx || !meta || !battleCloseDrawPlayTransactionLiveValid(s, tx) || decision.remainingEffects.length !== 0 ||
+      decision.context.controllerId !== tx.controllerId || decision.context.sourceCardId !== tx.sourceCardId || decision.context.abilityId !== tx.abilityId ||
+      meta.sourceCardInstanceId !== tx.sourceCardId || meta.abilityId !== tx.abilityId || meta.template !== 'target' ||
+      meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' || meta.continuationRef !== `${decision.id}:continuation` ||
+      meta.createdRevision !== r.revision) return false;
+  const count = node(decision.target.count);
+  if (meta.kind === 'battle_luck_discard_choice_v1') {
+    const live = battleCloseDrawPlayLuckCardIds(s, tx.controllerId);
+    return tx.discardedLuckCardId === undefined && tx.closeIndex === 0 && tx.playIndex === 0 && tx.rewards.length === 0 &&
+      decision.controllerId === tx.controllerId && meta.controllerId === tx.controllerId && decision.target.id === 'luck_to_discard' &&
+      decision.target.type === 'card_instance' && count.min === 1 && count.max === 1 && decision.min === 1 && decision.max === 1 &&
+      exactPlayerArray(meta.luckCardIds, live) && exactPlayerArray(decision.candidates, live);
+  }
+  if (meta.kind === 'battle_opponent_close_reward_choice_v1') {
+    const opponentId = tx.opponentIds[tx.closeIndex]; if (!opponentId) return false;
+    const live = battleCloseDrawPlayCloseCandidateIds(s, opponentId);
+    return !!tx.discardedLuckCardId && tx.playIndex === 0 && decision.controllerId === tx.controllerId && meta.controllerId === tx.controllerId &&
+      meta.opponentId === opponentId && decision.target.id === 'opponent_attack_to_close' && decision.target.type === 'card_instance' &&
+      count.min === 0 && count.max === 1 && decision.min === 0 && decision.max === 1 &&
+      exactPlayerArray(meta.candidateIds, live) && exactPlayerArray(decision.candidates, live);
+  }
+  if (meta.kind === 'battle_drawn_card_optional_play_v1') {
+    if (tx.closeIndex !== tx.opponentIds.length) return false;
+    const playerId = tx.opponentIds[tx.playIndex]; const reward = tx.rewards.find((entry) => entry.playerId === playerId);
+    const drawn = reward?.drawnCardId ? s.cards.find((candidate) => candidate.instanceId === reward.drawnCardId) : undefined;
+    return !!playerId && !!drawn && drawn.ownerPlayerId === playerId && drawn.controllerPlayerId === playerId && drawn.zone === 'hand' &&
+      decision.controllerId === playerId && meta.playerId === playerId && meta.drawnCardId === drawn.instanceId &&
+      decision.target.id === 'drawn_card_optional_play' && decision.target.type === 'card_instance' && count.min === 0 && count.max === 1 &&
+      decision.min === 0 && decision.max === 1 && decision.candidates.length === 1 && decision.candidates[0] === drawn.instanceId;
+  }
+  return false;
+}
+function battleCloseDrawImmediatePlayHistoryValidForRestore(s: GameState): boolean {
+  const r = runtime(s); const history = r.battleCloseDrawImmediatePlayHistory ?? [];
+  const seen = new Set<string>();
+  for (const entry of history) {
+    const key = `${entry.cardInstanceId}:${entry.round}`; if (seen.has(key) || !Number.isSafeInteger(entry.round) || entry.round < 1 || entry.round > s.round.roundNumber) return false;
+    seen.add(key);
+    const source = s.cards.find((candidate) => candidate.instanceId === entry.sourceCardId);
+    const cardEntry = s.cards.find((candidate) => candidate.instanceId === entry.cardInstanceId);
+    const ability = source ? r.pack.cards[source.definitionId]?.abilities.find((candidate) => candidate.id === entry.abilityId) : undefined;
+    const cardState = cardEntry ? r.cardState[cardEntry.instanceId] : undefined;
+    if (!source || !ability || !isAcceptedBattleLuckCloseDrawPlayAbility(ability) || source.ownerPlayerId !== entry.controllerId || source.controllerPlayerId !== entry.controllerId ||
+        !cardEntry || cardEntry.ownerPlayerId !== entry.playerId ||
+        cardEntry.controllerPlayerId !== entry.playerId || !cardState || cardState.playedRound !== entry.round ||
+        cardState.actionAbilityAllowedInCombatRound !== entry.round) return false;
+  }
+  for (const [cardInstanceId, state] of Object.entries(r.cardState)) {
+    if (state.actionAbilityAllowedInCombatRound === undefined) continue;
+    const cardEntry = s.cards.find((candidate) => candidate.instanceId === cardInstanceId);
+    if (!cardEntry) return false;
+    const matches = history.filter((entry) => entry.cardInstanceId === cardInstanceId && entry.round === state.actionAbilityAllowedInCombatRound && entry.playerId === cardEntry.ownerPlayerId);
+    if (matches.length !== 1) return false;
+  }
+  return true;
+}
 const directResourcePrimitiveTypes = new Set(['adjust_mana', 'adjust_victory_points']);
 const fixedControllerResourcePrimitiveTypes = new Set(['adjust_mana', 'adjust_victory_points']);
 
@@ -4072,6 +4298,13 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (containsSourceLocationRunePrivilegedNode(a) && !isAcceptedSourceLocationRunePrivilegedAbility(a)) {
     reject('resolution_failed', 'Unsupported source-location/rune privileged semantic shape');
   }
+  if (containsBattleLuckCloseDrawPlayNode(a) && !isAcceptedBattleLuckCloseDrawPlayAbility(a)) {
+    reject('resolution_failed', 'Unsupported battle close/refund/draw/immediate-play semantic shape');
+  }
+  if (isAcceptedBattleLuckCloseDrawPlayAbility(a)) {
+    startBattleCloseDrawPlay(s, ctx);
+    return;
+  }
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) {
     reject('resolution_failed', 'Unsupported persistent RuleOverride semantic shape');
   }
@@ -4310,13 +4543,25 @@ export function processAbilitySystemEvent(s: GameState, label: string, event: Om
   runtime(copy).revision++;
   Object.assign(s, copy);
 }
-export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.round.roundNumber): void {
+export function advanceAbilityPhase(
+  s: GameState,
+  next: PhaseName,
+  round = s.round.roundNumber,
+  previousRound = s.round.roundNumber,
+): void {
   const r = runtime(s);
-  if (r.pendingDecision || r.responseWindows.length || r.hostRequests.length) reject('pending_resolution', 'Resolve the current decision before advancing');
+  if (r.pendingDecision || r.responseWindows.length || r.hostRequests.length || r.pendingBattleCloseDrawPlayTransaction) reject('pending_resolution', 'Resolve the current decision before advancing');
   if (!Number.isInteger(round) || round < s.round.roundNumber) reject('invalid_round', 'Round cannot move backwards');
+  if (!Number.isInteger(previousRound) || previousRound > round) reject('invalid_round', 'Previous round cannot exceed next round');
   const copy = structuredClone(s);
-  const startsNewRound = round > s.round.roundNumber;
+  copyBattleCloseDrawPlayServerAuthority(s, copy);
+  const startsNewRound = round > previousRound;
   if (startsNewRound) {
+    runtime(copy).battleCloseDrawImmediatePlayHistory = [];
+    for (const state of Object.values(runtime(copy).cardState)) {
+      if (state.actionAbilityAllowedInCombatRound !== undefined && state.actionAbilityAllowedInCombatRound < round) delete state.actionAbilityAllowedInCombatRound;
+    }
+    retireBattleCloseDrawPlayServerAuthorityBeforeRound(copy, round);
     runtime(copy).movementDistanceThisRound = {};
     runtime(copy).battlefieldsPassedOrStayedThisRound = {};
     runtime(copy).pendingRulerSealRewards = runtime(copy).pendingRulerSealRewards.filter((reward) => reward.round >= round);
@@ -4327,6 +4572,7 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
   if (startsNewRound) processEvent(copy, { id: nextId(copy, 'round-start'), type: 'round_start' });
   const type = next === 'battle' ? 'controller_combat_action_window' : next === 'action' ? 'controller_action_window' : next === 'round_end' ? 'round_end' : 'phase_changed';
   processEvent(copy, { id: nextId(copy, 'phase'), type }); runtime(copy).revision++; Object.assign(s, copy);
+  copyBattleCloseDrawPlayServerAuthority(copy, s);
 }
 
 export function projectAbilityState(s: GameState, viewerId: string): AbilityPlayerView {
@@ -4459,6 +4705,101 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const selected = command.selectedIds;
       if (d.interaction) {
         const meta = d.interaction;
+        if (meta.kind === 'battle_luck_discard_choice_v1') {
+          const tx = r.pendingBattleCloseDrawPlayTransaction;
+          const liveLuckIds = tx ? battleCloseDrawPlayLuckCardIds(s, tx.controllerId) : [];
+          const count = node(d.target.count);
+          if (!tx || !battleCloseDrawPlayTransactionLiveValid(s, tx) || tx.discardedLuckCardId !== undefined || tx.closeIndex !== 0 || tx.playIndex !== 0 || tx.rewards.length !== 0 ||
+              d.controllerId !== tx.controllerId || playerId !== tx.controllerId || d.context.controllerId !== tx.controllerId ||
+              d.context.sourceCardId !== tx.sourceCardId || d.context.abilityId !== tx.abilityId ||
+              meta.controllerId !== tx.controllerId || meta.sourceCardInstanceId !== tx.sourceCardId || meta.abilityId !== tx.abilityId ||
+              meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' || meta.createdRevision !== r.revision ||
+              meta.continuationRef !== `${d.id}:continuation` || meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'card' ||
+              meta.constraints.min !== 1 || meta.constraints.max !== 1 || meta.constraints.distinct !== true || d.target.id !== 'luck_to_discard' ||
+              d.target.type !== 'card_instance' || count.min !== 1 || count.max !== 1 || d.min !== 1 || d.max !== 1 || d.remainingEffects.length !== 0 ||
+              !exactPlayerArray(meta.luckCardIds, liveLuckIds) || !exactPlayerArray(d.candidates, liveLuckIds) ||
+              !Array.isArray(selected) || selected.length !== 1 || !liveLuckIds.includes(selected[0]!)) {
+            reject('resolution_failed', 'Corrupt or stale battle Luck discard interaction state');
+          }
+          delete r.pendingDecision;
+          tx.discardedLuckCardId = selected[0]!;
+          moveCard(s, selected[0]!, 'discard');
+          stageNextBattleCloseDrawPlayCloseChoice(s);
+          break;
+        }
+        if (meta.kind === 'battle_opponent_close_reward_choice_v1') {
+          const tx = r.pendingBattleCloseDrawPlayTransaction;
+          const opponentId = tx?.opponentIds[tx.closeIndex];
+          const liveCandidates = opponentId ? battleCloseDrawPlayCloseCandidateIds(s, opponentId) : [];
+          const count = node(d.target.count);
+          if (!tx || !battleCloseDrawPlayTransactionLiveValid(s, tx) || !tx.discardedLuckCardId || tx.closeIndex >= tx.opponentIds.length ||
+              tx.playIndex !== 0 || opponentId !== meta.opponentId || d.controllerId !== tx.controllerId || playerId !== tx.controllerId ||
+              d.context.controllerId !== tx.controllerId || d.context.sourceCardId !== tx.sourceCardId || d.context.abilityId !== tx.abilityId ||
+              meta.controllerId !== tx.controllerId || meta.sourceCardInstanceId !== tx.sourceCardId || meta.abilityId !== tx.abilityId ||
+              meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' || meta.createdRevision !== r.revision ||
+              meta.continuationRef !== `${d.id}:continuation` || meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'card' ||
+              meta.constraints.min !== 0 || meta.constraints.max !== 1 || meta.constraints.distinct !== true || d.target.id !== 'opponent_attack_to_close' ||
+              d.target.type !== 'card_instance' || count.min !== 0 || count.max !== 1 || d.min !== 0 || d.max !== 1 || d.remainingEffects.length !== 0 ||
+              !exactPlayerArray(meta.candidateIds, liveCandidates) || !exactPlayerArray(d.candidates, liveCandidates) ||
+              !Array.isArray(selected) || selected.length > 1 || new Set(selected).size !== selected.length || selected.some((id) => !liveCandidates.includes(id))) {
+            reject('resolution_failed', 'Corrupt or stale battle opponent close/reward interaction state');
+          }
+          delete r.pendingDecision;
+          if (selected.length === 1) {
+            const selectedCardId = selected[0]!;
+            const refundMana = effectiveCardPlayCost(s, opponentId!, selectedCardId);
+            if (!Number.isSafeInteger(refundMana) || refundMana < 0) reject('resolution_failed', 'Battle close/refund cost is invalid');
+            closeBattleCloseDrawPlayCard(s, opponentId!, selectedCardId);
+            grantMana(s, opponentId!, refundMana, { source: 'generic' });
+            const drawnCardId = drawOneBattleCloseDrawPlayCard(s, opponentId!);
+            if (drawnCardId) rememberBattleCloseDrawPlayDrawAuthority(s, {
+              transactionId: tx.transactionId, controllerId: tx.controllerId, sourceCardId: tx.sourceCardId, abilityId: tx.abilityId, round: tx.round,
+              playerId: opponentId!, closedCardId: selectedCardId, refundMana, drawnCardId,
+            });
+            tx.rewards.push({ playerId: opponentId!, closedCardId: selectedCardId, refundMana, ...(drawnCardId ? { drawnCardId } : {}) });
+            r.events.push({ type: 'battle_opponent_attack_closed_with_refund_draw', playerId: opponentId!, controllerId: tx.controllerId,
+              sourceCardId: tx.sourceCardId, abilityId: tx.abilityId, cardInstanceId: selectedCardId });
+          }
+          tx.closeIndex++;
+          stageNextBattleCloseDrawPlayCloseChoice(s);
+          break;
+        }
+        if (meta.kind === 'battle_drawn_card_optional_play_v1') {
+          const tx = r.pendingBattleCloseDrawPlayTransaction;
+          const currentPlayerId = tx?.opponentIds[tx.playIndex];
+          const reward = tx?.rewards.find((entry) => entry.playerId === currentPlayerId);
+          const drawn = reward?.drawnCardId ? s.cards.find((candidate) => candidate.instanceId === reward.drawnCardId) : undefined;
+          const count = node(d.target.count);
+          if (!tx || !battleCloseDrawPlayTransactionLiveValid(s, tx) || tx.closeIndex !== tx.opponentIds.length || tx.playIndex >= tx.opponentIds.length ||
+              currentPlayerId !== meta.playerId || reward?.drawnCardId !== meta.drawnCardId || !drawn || drawn.ownerPlayerId !== currentPlayerId ||
+              drawn.controllerPlayerId !== currentPlayerId || drawn.zone !== 'hand' || d.controllerId !== currentPlayerId || playerId !== currentPlayerId ||
+              d.context.controllerId !== tx.controllerId || d.context.sourceCardId !== tx.sourceCardId || d.context.abilityId !== tx.abilityId ||
+              meta.sourceCardInstanceId !== tx.sourceCardId || meta.abilityId !== tx.abilityId || meta.template !== 'target' || meta.visibility !== 'owner_only' ||
+              meta.cancelPolicy !== 'forbidden' || meta.createdRevision !== r.revision || meta.continuationRef !== `${d.id}:continuation` ||
+              meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'card' || meta.constraints.min !== 0 || meta.constraints.max !== 1 ||
+              meta.constraints.distinct !== true || d.target.id !== 'drawn_card_optional_play' || d.target.type !== 'card_instance' || count.min !== 0 || count.max !== 1 ||
+              d.min !== 0 || d.max !== 1 || d.remainingEffects.length !== 0 || d.candidates.length !== 1 || d.candidates[0] !== drawn.instanceId ||
+              !Array.isArray(selected) || selected.length > 1 || new Set(selected).size !== selected.length || selected.some((id) => id !== drawn.instanceId) ||
+              (selected.length === 1 && !!playFailure(s, currentPlayerId!, drawn.instanceId, false, true, true, true))) {
+            reject('resolution_failed', 'Corrupt or stale drawn-card immediate-play interaction state');
+          }
+          delete r.pendingDecision;
+          if (selected.length === 1) {
+            playBatch(s, currentPlayerId!, [{ type: 'play_card', cardInstanceId: drawn.instanceId }], 'effect');
+            const playedState = r.cardState[drawn.instanceId];
+            if (!playedState || playedState.playedRound !== s.round.roundNumber || playedState.faceDown !== false) reject('resolution_failed', 'Immediate drawn card did not enter authoritative played state');
+            const immediatePlayRecord = { controllerId: tx.controllerId, playerId: currentPlayerId!, cardInstanceId: drawn.instanceId,
+              sourceCardId: tx.sourceCardId, abilityId: tx.abilityId, round: s.round.roundNumber };
+            rememberBattleCloseDrawImmediatePlayAuthority(s, immediatePlayRecord);
+            playedState.actionAbilityAllowedInCombatRound = s.round.roundNumber;
+            (r.battleCloseDrawImmediatePlayHistory ??= []).push(immediatePlayRecord);
+            r.events.push({ type: 'battle_drawn_card_immediate_played', playerId: currentPlayerId!, sourceCardId: tx.sourceCardId,
+              abilityId: tx.abilityId, cardInstanceId: drawn.instanceId });
+          }
+          tx.playIndex++;
+          stageNextBattleCloseDrawPlayPlayChoice(s);
+          break;
+        }
         if (meta.kind === 'combat_opponent_power_vp_reward_v1') {
           const pendingQueue = r.pendingCombatOpponentPowerVpRewards;
           const pending = pendingQueue?.[0];
@@ -4755,7 +5096,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
     }
     default: reject('illegal_action', 'Unsupported client command');
   }
-  cleanupOngoing(s); checkFormulaTriggers(s);
+  cleanupOngoing(s); checkFormulaTriggers(s); resumeBattleCloseDrawPlayAfterNestedWork(s);
 }
 /** All eligibility/costs are checked against the pre-payment state; all cards activate before triggers. */
 function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false): void {
@@ -4849,9 +5190,11 @@ export function playAbilityCardBatch(s: GameState, playerId: string, choices: Om
 export function dispatchAbilityCommand(s: GameState, playerId: string, command: AbilityCommand): DispatchResult {
   const before = runtime(s).events.length; const beforeCalculations = runtime(s).calculations.length; const copy = structuredClone(s);
   copyOpponentCloseToOneServerAuthority(s, copy);
+  copyBattleCloseDrawPlayServerAuthority(s, copy);
   try {
     dispatch(copy, playerId, command); runtime(copy).revision++; Object.assign(s, copy);
     copyOpponentCloseToOneServerAuthority(copy, s);
+    copyBattleCloseDrawPlayServerAuthority(copy, s);
     return { ok: true, view: projectAbilityState(s, playerId),
       events: runtime(s).events.slice(before).filter(e => !e.visibility || e.visibility === playerId).map(({ visibility: _, ...e }) => e),
       calculations: runtime(s).calculations.slice(beforeCalculations).filter(c => c.controllerId === playerId).flatMap(c => c.lines) };

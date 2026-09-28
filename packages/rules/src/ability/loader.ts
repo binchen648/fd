@@ -53,6 +53,7 @@ import {
   isAcceptedOpponentCloseOneNonResidualAbility,
   isOpponentCloseToOneCandidate,
 } from './opponent-close-to-one';
+import { BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT, containsBattleLuckCloseDrawPlayNode, isAcceptedBattleLuckCloseDrawPlayAbility } from './divine-core-capability';
 import {
   ADD_ENGAGED_SEAL_USER_FORMULA_POWER_EFFECT,
   ENABLE_ENGAGED_OPPONENT_UNUSED_SEAL_POWER_EFFECT,
@@ -148,7 +149,7 @@ const supportedTypes = new Set([
   GRANT_SOURCE_BATTLEFIELD_VP_EFFECT, RETURN_SOURCE_TO_SKILL_EFFECT, REMOVE_STARTING_DECK_FRACTION_EFFECT,
   BATTLEFIELD_SOURCE_CARD_COST_AURA_TYPE,
   LOSE_VP_EQUAL_SOURCE_PLAY_COUNT_EFFECT, HIDE_SERVANT_TRUE_NAME_UNTIL_ROUND_END_EFFECT, REVEAL_HAND_ROUND_POWER_EFFECT,
-  OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT, OPPONENT_CLOSE_ONE_NON_RESIDUAL_EFFECT,
+  OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT, OPPONENT_CLOSE_ONE_NON_RESIDUAL_EFFECT, BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -168,6 +169,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'countTarget', 'amountPerTarget',
   'object', 'controller', 'location', 'negated', 'tier', 'specificity',
   'source', 'interpretation', 'name',
+  'discardAttribute', 'maxClosePerOpponent', 'excludePerGame', 'refund', 'drawCount', 'playDrawnCard', 'immediatePlayQuota', 'actionAbilityPermission',
   // New mechanic keys for 5 servants
   'options', 'label', 'condition', 'targets', 'duration', 'scope', 'statusId', 'choiceId', 'value',
   // Accepted FB2-27 Ruler seal structural fields.
@@ -600,6 +602,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (containsCommandSealPowerPrivilegedNode(candidateAbility) &&
           !isAcceptedCommandSealPowerPrivilegedAbility(candidateAbility)) {
         issue('commandSealPower.gateway', 'Command/Ruler seal Power mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsBattleLuckCloseDrawPlayNode(candidateAbility) && !isAcceptedBattleLuckCloseDrawPlayAbility(candidateAbility)) {
+        issue('battleCloseDrawPlay.gateway', 'Battle close/refund/draw/immediate-play mechanics require the exact accepted whole-ability semantic', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;
