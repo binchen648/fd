@@ -6032,7 +6032,7 @@ Acceptance synchronization:
 ## TASK P3-B-SUZUKA-OWNER-READINESS-CAPABILITY
 
 Owner: Codex B
-Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Status: `SYNCHRONIZED`
 Base: `f47b3354e9dfe5c9b4777d2fbd40dd9e06f2a1a3`
 Classification: bounded zero-credit owner-readiness capability for current owner `servant.suzuka`
 
@@ -6070,3 +6070,13 @@ Accounting:
 Allowed verdicts:
 - `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 - `IMPLEMENTATION_NEEDS_REVISION`
+Acceptance synchronization:
+- exact accepted Candidate: `104fcf4e5b2a2e19ca1222b0fe89b0ed78b309b5`;
+- canonical fresh-R evidence: `https://github.com/binchen648/fd/pull/476#issuecomment-5876614417`;
+- verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`;
+- exact Base -> Candidate lineage and Phase 3 Gate remain accepted;
+- full-owner readiness rescan closes the complete currently discoverable Suzuka gap set across sc1 + sc2 + sc3;
+- no additional bounded readiness PR is authorized unless owner-complete formal mechanically exposes a genuinely new source-grounded blocker;
+- formal accounting remains `141/944`, remaining `803` because readiness is zero-credit;
+- next task is `P3-S-OWNER-SUZUKA-COMPLETE-MIGRATION` with sc1 + sc2 + sc3 together in one formal Candidate/PR/fresh R/A-sync sequence;
+- acceptance synchronization report: `docs/reports/2026-09-29-p3-a-suzuka-owner-readiness-capability-acceptance-synchronization.md`.
