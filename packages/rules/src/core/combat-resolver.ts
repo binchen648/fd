@@ -18,6 +18,7 @@ import { applyLinkedOwnerCombatPowerSharing, playerHasLinkedOwnerLossImmunity, p
 import { applyTerrainAdvantageOverride } from '../ability/terrain-advantage-override';
 import { playerCombatTotalPowerAdjustment } from '../ability/owner-self-mechanics';
 import { dynamicUnusedEngagedSealPowerAdjustment } from '../ability/command-seal-power-capability';
+import { shouldEachBattleWinnerReceiveFullReward } from '../ability/combat-reward-distribution';
 import { logicalDayForPlayer } from './rule-overrides';
 
 export interface CombatParticipantInput {
@@ -487,10 +488,15 @@ function buildBattleResultFromRanked(
   const hasLocationReward = location?.rewardHooks.includes("location_rewards") === true &&
     typeof location.vpRewardRules?.location === "number";
   const locationVpPool = hasLocationReward ? location!.vpRewardRules!.location! : 0;
-  const baseVpPerWinner = splitVpPoolPerWinner(eventVpPool + competitionVpPool, winnerPlayerIds.length);
-  const vpReward = Math.min(splitVpPoolPerWinner(eventVpPool, winnerPlayerIds.length), baseVpPerWinner);
-  const competitionVpPerWinner = Math.max(0, baseVpPerWinner - vpReward);
-  const locationVpPerWinner = splitVpPoolPerWinner(locationVpPool, winnerPlayerIds.length);
+  const fullRewardEach = shouldEachBattleWinnerReceiveFullReward(state, winnerPlayerIds);
+  const baseVpPerWinner = fullRewardEach
+    ? eventVpPool + competitionVpPool
+    : splitVpPoolPerWinner(eventVpPool + competitionVpPool, winnerPlayerIds.length);
+  const vpReward = fullRewardEach
+    ? eventVpPool
+    : Math.min(splitVpPoolPerWinner(eventVpPool, winnerPlayerIds.length), baseVpPerWinner);
+  const competitionVpPerWinner = fullRewardEach ? competitionVpPool : Math.max(0, baseVpPerWinner - vpReward);
+  const locationVpPerWinner = fullRewardEach ? locationVpPool : splitVpPoolPerWinner(locationVpPool, winnerPlayerIds.length);
   const defaultVpAdjustments = buildDefaultVpAdjustments(
     location, battlefieldId, winnerPlayerIds, competitionVpPerWinner, locationVpPerWinner,
   );

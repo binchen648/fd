@@ -5915,8 +5915,8 @@ Allowed verdicts:
 ## TASK P3-B-STHENO-FULL-REWARD-EACH-READINESS-CAPABILITY
 
 Owner: Codex B
-Status: `READY`
-Base: exact Stheno Divine Core readiness A-sync commit; the implementation Candidate must mechanically bind that synchronization commit as its exact Base
+Status: `IMPLEMENTATION_READY_FOR_FRESH_R`
+Base: `f2029ede09c7dbe61119836c4c349fce3753d8fb`
 Classification: bounded zero-credit owner-readiness prerequisite for current owner `servant.stheno`
 
 Complete remaining owner-local gap:
@@ -5942,6 +5942,25 @@ Required verification:
 - affected focused tests, typecheck, content validate/compile, generated determinism, production identity audit, and `git diff --check`;
 - exact Candidate Phase 3 gate and fresh independent R.
 
+Verification evidence:
+- locked Reference HEAD mechanically confirmed `b2f9fa15fba07c63530bbf4612b03b8b704755f9` and exact sc2 `replace / combat_reward_distribution / controller+winner / full_reward_each` source shape re-read;
+- focused full-reward-each readiness `7/7 PASS`;
+- directly affected serial `5 files / 138 tests PASS` with one worker: focused `7`, combat-resolver `10`, authoring-interpreter `38`, executable-card-pack `50`, MatchSession `33`;
+- typecheck PASS;
+- content validate/compile PASS — `7 masters / 12 servants / 20 events / 0 blocking issues`;
+- generated determinism PASS with unchanged hashes;
+- `FD_TOOLCHAIN_OK`;
+- `git diff --check` PASS;
+- `data/authoring/**` delta EMPTY;
+- production identity audit CLEAN for `servant.stheno`, `sc-stheno`, Stheno/printed-name routing, and `SkillLib` in changed runtime files;
+- exact Reference-minimal raw passive shape loads, while wrong operation/rule/mode/controller-win scope, missing modifier identity, widened scope/execution, extra conditions/effects, non-passive kind, and nonempty host operations fail closed;
+- authoritative multi-winner settlement proves full event + competition + location pools for every winner; absent/losing/face-down/inactive providers preserve ordinary split behavior;
+- downstream negative `vpAdjustments` still apply after full-reward replacement, preserving the existing reduction/adjustment path instead of bypassing it;
+- detailed result: `docs/reports/2026-09-28-p3-b-stheno-full-reward-each-readiness-capability-result.md`.
+
+Accounting:
+- strict formal accounting remains `139/944`, remaining `805`;
+- this readiness task is permanently zero-credit.
 Allowed verdicts:
 - `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 - `IMPLEMENTATION_NEEDS_REVISION`

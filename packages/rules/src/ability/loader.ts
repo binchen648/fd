@@ -54,6 +54,7 @@ import {
   isOpponentCloseToOneCandidate,
 } from './opponent-close-to-one';
 import { BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT, containsBattleLuckCloseDrawPlayNode, isAcceptedBattleLuckCloseDrawPlayAbility } from './divine-core-capability';
+import { COMBAT_REWARD_DISTRIBUTION_RULE, isAcceptedFullRewardEachAbility } from './combat-reward-distribution';
 import {
   ADD_ENGAGED_SEAL_USER_FORMULA_POWER_EFFECT,
   ENABLE_ENGAGED_OPPONENT_UNUSED_SEAL_POWER_EFFECT,
@@ -504,9 +505,12 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         const acceptedDynamicPlayCost = isActivePlayerCountMinusRoundPlayCostModifier(m);
         const acceptedBattlefieldSourceCardCostAura = isBattlefieldSourceCardPlayCostAuraModifier(m);
         const acceptedOtherPlayerAbilityImmunity = isOtherPlayerAbilityEffectImmunityModifier(m);
-        const operationSupported = ['add', 'set', 'ignore', 'lock', 'exclude', 'forbid'].includes(str(m.operation));
+        const acceptedFullRewardEach = isAcceptedFullRewardEachAbility(a);
+        const operationSupported = ['add', 'set', 'ignore', 'lock', 'exclude', 'forbid'].includes(str(m.operation)) ||
+          (acceptedFullRewardEach && m.operation === 'replace');
         const ruleSupported = ['attack.currentPower', 'card.currentPower', 'effect_prevention', 'battlefield', 'terrain_and_external_effects', 'use_skill_card', 'play_card_attribute', 'enter_or_leave_current_battlefield', 'terrain_and_external_effects_for_controller_and_opponents', 'terrain_and_external_servant_or_npc_effects', 'situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least', 'netherworld_protection'].includes(str(m.rule)) || str(m.rule) === OTHER_PLAYER_ABILITY_EFFECT_IMMUNITY_RULE ||
-          acceptedDynamicPlayCost || acceptedBattlefieldSourceCardCostAura || acceptedOtherPlayerAbilityImmunity || (acceptedCardCloseForbid && m.rule === 'card_close');
+          acceptedDynamicPlayCost || acceptedBattlefieldSourceCardCostAura || acceptedOtherPlayerAbilityImmunity || (acceptedCardCloseForbid && m.rule === 'card_close') ||
+          (acceptedFullRewardEach && m.rule === COMBAT_REWARD_DISTRIBUTION_RULE);
         if (!operationSupported || !ruleSupported) issue('ruleModifiers', 'Unmapped rule or operation', id);
         if (m.rule === 'card.playCost' && !acceptedDynamicPlayCost && !acceptedBattlefieldSourceCardCostAura) issue('ruleModifiers', 'Unsupported play-cost modifier', id);
         if (m.rule === 'card_close' && !acceptedCardCloseForbid) issue('ruleModifiers', 'Unsupported card-close forbid selector shape', id);
@@ -514,7 +518,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (m.rule === 'effect_prevention' && (m.operation !== 'ignore' || node(m.priority).tier !== 'explicit_exception')) issue('ruleModifiers.priority', 'Prevention exception requires explicit_exception', id);
         const ruleIsPlayException = m.operation === 'ignore' && ['situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least'].includes(str(m.rule));
         const ruleIsStaticException = m.operation === 'ignore' && m.rule === 'netherworld_protection';
-        if (m.rule !== 'effect_prevention' && !ruleIsPlayException && !ruleIsStaticException && !acceptedDynamicPlayCost && !acceptedBattlefieldSourceCardCostAura && !acceptedOtherPlayerAbilityImmunity && !lifecycle.duration && !node(m.lifecycle).duration) issue('ruleModifiers.lifecycle', 'Modifier requires lifecycle', id);
+        if (m.rule !== 'effect_prevention' && !ruleIsPlayException && !ruleIsStaticException && !acceptedDynamicPlayCost && !acceptedBattlefieldSourceCardCostAura && !acceptedOtherPlayerAbilityImmunity && !acceptedFullRewardEach && !lifecycle.duration && !node(m.lifecycle).duration) issue('ruleModifiers.lifecycle', 'Modifier requires lifecycle', id);
         scan(m.value, 'ruleModifiers.value', id); scan(node(m.scope).constraints, 'ruleModifiers.scope.constraints', id);
         scan(m.conditions, 'ruleModifiers.conditions', id);
         if (node(m.scope).object && !['source_card', 'this_card', 'attack_card', 'playable_card', 'this_effect', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield', 'all_players'].includes(str(node(m.scope).object))) issue('ruleModifiers.scope.object', 'Unmapped modifier scope', id);
