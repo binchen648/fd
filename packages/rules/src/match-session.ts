@@ -38,6 +38,7 @@ import { hmacSha256Hex, sha256Hex } from './ability/portable-sha256';
 import { clearTransientCardTransformState } from './ability/card-instance-state';
 import { isNormalCardDrawSuppressed } from './ability/timed-resource-suppression';
 import { isAcceptedDiscardBasicReplayCounterAbility, isAcceptedPhysicalCardReplayGrowthAbility } from './ability/deck-recycle-replay-growth-capability';
+import { isAcceptedLocationMarkerPlaceAbility, isValidLocationMarkerKey, locationMarkerKeyFromAbility } from './ability/location-marker-capability';
 import { settleLinkedOwnerCardsAfterBattles } from './ability/linked-owner-combat';
 import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute } from './ability/deduction-record';
 import { SOURCE_LOCATION_BASE_POWER_ATTRIBUTES, isAcceptedPostDrawHandShuffleAbility, isAcceptedSourceLocationBasicPowerAbility } from './ability/source-location-rune-capability';
@@ -466,9 +467,10 @@ function isRestoreRoundByPlayerNumberState(value: unknown): boolean {
 
 function isRestoreAbilityEvent(value: unknown): boolean {
   if (!isRestoreRecord(value) || typeof value.id !== 'string' || typeof value.type !== 'string') return false;
-  const optionalStrings = ['playerId', 'sourceCardId', 'battlePhaseResolutionId', 'battleId', 'resultId', 'battlefieldId', 'revealedId', 'locationId'];
+  const optionalStrings = ['playerId', 'sourceCardId', 'battlePhaseResolutionId', 'battleId', 'resultId', 'battlefieldId', 'revealedId', 'locationId', 'previousLocationId'];
   if (optionalStrings.some((key) => value[key] !== undefined && typeof value[key] !== 'string')) return false;
   if (value.revealedKind !== undefined && value.revealedKind !== 'situation' && value.revealedKind !== 'event') return false;
+  if (value.movementKind !== undefined && value.movementKind !== 'normal' && value.movementKind !== 'effect') return false;
   if (value.lossOrdinal !== undefined && !isRestoreSafeInteger(value.lossOrdinal)) return false;
   for (const key of ['battleIds', 'resultIds', 'scoringReceiptIds', 'battleParticipantIds'] as const) {
     if (value[key] !== undefined && !isRestoreStringArray(value[key])) return false;
@@ -855,6 +857,14 @@ function isRestoreBattleCloseDrawPlayTransaction(value: unknown): boolean {
     Array.isArray(value.rewards) && value.rewards.every(isRestoreBattleCloseDrawPlayReward) &&
     (value.discardedLuckCardId === undefined || typeof value.discardedLuckCardId === 'string');
 }
+function isRestoreLocationMarkerState(value: unknown): boolean {
+  return hasExactRestoreKeys(value, ['markerKey','controllerId','providerSourceCardId','providerAbilityId','locationId','placedRevision','updatedRevision']) &&
+    isValidLocationMarkerKey((value as Record<string, unknown>).markerKey) && typeof (value as Record<string, unknown>).controllerId === 'string' &&
+    typeof (value as Record<string, unknown>).providerSourceCardId === 'string' && typeof (value as Record<string, unknown>).providerAbilityId === 'string' &&
+    typeof (value as Record<string, unknown>).locationId === 'string' && isRestoreSafeInteger((value as Record<string, unknown>).placedRevision) &&
+    isRestoreSafeInteger((value as Record<string, unknown>).updatedRevision) &&
+    Number((value as Record<string, unknown>).updatedRevision) >= Number((value as Record<string, unknown>).placedRevision);
+}
 function isRestoreBattleCloseDrawImmediatePlayRecord(value: unknown): boolean {
   return hasExactRestoreKeys(value, ['controllerId','playerId','cardInstanceId','sourceCardId','abilityId','round']) &&
     typeof value.controllerId === 'string' && typeof value.playerId === 'string' && typeof value.cardInstanceId === 'string' && typeof value.sourceCardId === 'string' &&
@@ -891,6 +901,7 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       (value.playRulesVersion !== 'legacy-v0' && value.playRulesVersion !== 'explicit-v1') ||
       !isRestoreRoundPlayCounters(value.playCounters)) return false;
 
+  if (value.locationMarkers !== undefined && (!isRestoreRecord(value.locationMarkers) || !Object.values(value.locationMarkers).every(isRestoreLocationMarkerState))) return false;
   if (value.playerStatusKeysByPlayer !== undefined && !isRestoreStringArrayMap(value.playerStatusKeysByPlayer)) return false;
   if (value.structuredPlayerFlagsByPlayer !== undefined && !isRestoreStructuredPlayerFlags(value.structuredPlayerFlagsByPlayer)) return false;
   if (value.structuredRoundFlagKeysByPlayer !== undefined && !isRestoreStructuredRoundFlagKeys(value.structuredRoundFlagKeysByPlayer)) return false;
@@ -1155,6 +1166,7 @@ function isRestoreAbilityEventReferences(
   if (event.playerId !== undefined && !playerIds.has(event.playerId as string)) return false;
   if (event.battlefieldId !== undefined && !locationIds.has(event.battlefieldId as string)) return false;
   if (event.locationId !== undefined && !locationIds.has(event.locationId as string)) return false;
+  if (event.previousLocationId !== undefined && !locationIds.has(event.previousLocationId as string)) return false;
   if (event.battleParticipantIds !== undefined && !restoreIdsBelongTo(event.battleParticipantIds, playerIds)) return false;
   if (event.battleParticipantPowers !== undefined && (!isRestoreFiniteNumberMap(event.battleParticipantPowers) ||
       !restoreRecordKeysBelongTo(event.battleParticipantPowers, playerIds))) return false;
@@ -1193,6 +1205,15 @@ function isRestoreAbilityRuntimeReferences(
     for (const child of children) {
       if (container[child] !== undefined && !restoreRecordKeysBelongTo(container[child], playerIds)) return false;
     }
+  }
+  const restoredLocationMarkers = (value.locationMarkers ?? {}) as Record<string, unknown>;
+  for (const [runtimeId, raw] of Object.entries(restoredLocationMarkers)) {
+    if (!isRestoreRecord(raw) || !playerIds.has(raw.controllerId as string) || !locationIds.has(raw.locationId as string) ||
+        runtimeId !== `${raw.controllerId as string}:${raw.markerKey as string}` || Number(raw.placedRevision) > Number(value.revision) ||
+        Number(raw.updatedRevision) > Number(value.revision) ||
+        !restoreSourceControllerMatches(cardsByInstance, eventPlacements, raw.providerSourceCardId as string, raw.controllerId as string) ||
+        !restoreSourceHasAcceptedAbilityId(pack, cardsByInstance, eventPlacements, raw.providerSourceCardId as string, raw.providerAbilityId as string,
+          (ability) => isAcceptedLocationMarkerPlaceAbility(ability) && locationMarkerKeyFromAbility(ability) === raw.markerKey)) return false;
   }
   if (!(value.calculations as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
   if (!(value.hostRequests as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;

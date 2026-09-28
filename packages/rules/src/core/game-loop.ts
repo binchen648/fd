@@ -481,8 +481,10 @@ export function stepGameLoop(
   }
 
   if (state.round.activePhase === "action" && input?.action?.type === "move") {
+    const movingPlayerId = input.action.playerId;
+    const previousLocationId = state.players.find((entry) => entry.id === movingPlayerId)?.locationId;
     const movement = movePlayer(state, {
-      playerId: input.action.playerId,
+      playerId: movingPlayerId,
       to: input.action.to,
       movementKind: input.action.movementKind,
     });
@@ -490,8 +492,10 @@ export function stepGameLoop(
     if (movement.moved && nextState.abilityRuntime) {
       processAbilitySystemEvent(nextState, 'enter-location', {
         type: 'after_controller_enters_location',
-        playerId: input.action.playerId,
+        playerId: movingPlayerId,
+        ...(previousLocationId ? { previousLocationId } : {}),
         locationId: input.action.to,
+        movementKind: input.action.movementKind,
       });
     }
     nextState = carryBattleCloseDrawPlayAuthority(nextState, {

@@ -22,7 +22,7 @@ import {
   isCombatOpponentPowerVpRewardCandidate,
   trustedCombatOpponentPowerRewardFacts,
 } from './combat-opponent-power-vp-reward';
-import { controllerHasLinkedOwnerCardFrom, isLinkedOwnerCombatRule, isServantNoCommandSealsRule, linkedOwnerBasePowerMultiplier, servantRevealForbiddenByNoCommandSeals } from './linked-owner-combat';
+import { controllerHasLinkedOwnerCardFrom, isLinkedOwnerCombatRule, isServantNoCommandSealsRule, linkedOwnerBasePowerMultiplier, playerHasLinkedOwnerLossImmunity, servantRevealForbiddenByNoCommandSeals } from './linked-owner-combat';
 import { setTerrainAdvantageOverride } from './terrain-advantage-override';
 import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute, deductionRecordDefinitionsForOwner, isDeductionRecordEffect, type DeductionRecordAttribute } from './deduction-record';
 import { activePlayerCountMinusRoundPlayCostAbility } from './dynamic-play-cost';
@@ -67,6 +67,13 @@ import {
   isOpponentCloseToOneCandidate,
 } from './opponent-close-to-one';
 import { BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT, containsBattleLuckCloseDrawPlayNode, isAcceptedBattleLuckCloseDrawPlayAbility } from './divine-core-capability';
+import {
+  LOCATION_MARKER_FOLLOW_EFFECT, LOCATION_MARKER_COMBAT_BRANCH_EFFECT, LOCATION_MARKER_PLACE_EFFECT, LOCATION_MARKER_MIDPOINT_DEFEAT_EFFECT,
+  containsLocationMarkerPrivilegedNode, isAcceptedLocationMarkerAbility, isAcceptedLocationMarkerCombatAbility,
+  isAcceptedLocationMarkerFollowAbility, isAcceptedLocationMarkerMidpointDefeatAbility, isAcceptedLocationMarkerPlaceAbility,
+  isLocationMarkerCombatBranchEffect, isLocationMarkerFollowEffect, isLocationMarkerMidpointDefeatEffect, isLocationMarkerPlaceEffect,
+  isValidLocationMarkerKey,
+} from './location-marker-capability';
 import {
   containsDeckRecycleReplayGrowthPrivilegedNode,
   isAcceptedDeckRecycleReplayGrowthAbility,
@@ -277,13 +284,81 @@ function isBattlefield(s: GameState, locationId: string | undefined): boolean {
 function sameBattlefield(s: GameState, a: string | undefined, b: string | undefined): boolean {
   return !!a && a === b && isBattlefield(s, a);
 }
+function markerRuntimeId(controllerId: string, markerKey: string): string { return `${controllerId}:${markerKey}`; }
+function locationMarker(s: GameState, controllerId: string, markerKey: string) {
+  if (!isValidLocationMarkerKey(markerKey)) return undefined;
+  const marker = runtime(s).locationMarkers?.[markerRuntimeId(controllerId, markerKey)];
+  if (!marker || marker.controllerId !== controllerId || marker.markerKey !== markerKey) return undefined;
+  return getEnabledLocations(s.map, s.locationConfig).some((entry) => entry.id === marker.locationId) ? marker : undefined;
+}
+function liveOwnedSource(s: GameState, sourceCardId: string, controllerId: string): boolean {
+  const physical = s.cards.find((entry) => entry.instanceId === sourceCardId);
+  return !!physical && physical.ownerPlayerId === controllerId && physical.controllerPlayerId === controllerId &&
+    active(s, sourceCardId) && runtime(s).cardState[sourceCardId]?.faceDown !== true;
+}
+function playerIgnoresDefeatEffectAtLocation(s: GameState, playerId: string, locationId: string): boolean {
+  if (runtime(s).battleLossIgnoreRoundByPlayer?.[playerId] === s.round.roundNumber) return true;
+  if (playerHasLinkedOwnerLossImmunity(s, playerId, locationId)) return true;
+  const playerAtLocation = s.players.some((entry) => entry.id === playerId && entry.status === 'active' && entry.locationId === locationId);
+  if (!playerAtLocation) return false;
+  return s.cards.some((candidate) => {
+    if (candidate.controllerPlayerId !== playerId || !['field','attack_area'].includes(candidate.zone) || !active(s, candidate.instanceId) ||
+        runtime(s).cardState[candidate.instanceId]?.faceDown === true) return false;
+    const d = definition(s, candidate.instanceId);
+    return !!d && d.abilities.some((ability) => ability.effects.some((effect) =>
+      effect.type === 'append_only_rule' && effect.rule === 'ignore_battle_loss_effects'));
+  });
+}
+function uniqueUndirectedMiddleLocation(s: GameState, first: string | undefined, second: string | undefined): LocationId | undefined {
+  if (!first || !second || first === second) return undefined;
+  const enabled = getEnabledLocations(s.map, s.locationConfig); const ids = new Set(enabled.map((entry) => entry.id));
+  if (!ids.has(first as LocationId) || !ids.has(second as LocationId)) return undefined;
+  const adjacent = (left: string, right: string) => {
+    const a = enabled.find((entry) => entry.id === left); const b = enabled.find((entry) => entry.id === right);
+    return !!a && !!b && (a.movementLinks.includes(right as LocationId) || b.movementLinks.includes(left as LocationId));
+  };
+  const middle = enabled.filter((entry) => adjacent(first, entry.id) && adjacent(entry.id, second)).map((entry) => entry.id);
+  return middle.length === 1 ? middle[0] : undefined;
+}
+function markerMidpointLegal(s: GameState, controllerId: string, markerKey: string): boolean {
+  const p = s.players.find((entry) => entry.id === controllerId && entry.status === 'active'); const marker = locationMarker(s, controllerId, markerKey);
+  if (!p?.locationId || !marker || movementLockedByPersistentRule(s, controllerId) || rulerSealMovementLocked(s, controllerId)) return false;
+  const target = uniqueUndirectedMiddleLocation(s, p.locationId, marker.locationId); if (!target) return false;
+  const occupyingPlayerIds = s.players.filter((entry) => entry.id !== controllerId && entry.status === 'active' && entry.locationId === target).map((entry) => entry.id);
+  return canOccupyLocation({ map: s.map, config: s.locationConfig, locationId: target, movingPlayerId: controllerId, occupyingPlayerIds,
+    ...(s.ruleOverrides ? { ruleOverrides: s.ruleOverrides } : {}) });
+}
+function canActivateLocationMarkerAbility(s: GameState, sourceCardId: string, ability: AuthoringAbility, event?: AbilityEvent): boolean {
+  const physical = s.cards.find((entry) => entry.instanceId === sourceCardId); if (!physical) return false;
+  const controllerId = physical.controllerPlayerId; if (!liveOwnedSource(s, sourceCardId, controllerId)) return false;
+  const markerKey = String(ability.effects[0]?.markerKey ?? ''); const marker = locationMarker(s, controllerId, markerKey);
+  const controller = s.players.find((entry) => entry.id === controllerId && entry.status === 'active'); if (!controller) return false;
+  const reversed = runtime(s).cardState[sourceCardId]?.reversed === true;
+  if (isAcceptedLocationMarkerFollowAbility(ability)) {
+    return !!marker && !!event && event.type === 'after_controller_enters_location' && !!event.playerId && event.playerId !== controllerId &&
+      event.previousLocationId === marker.locationId && !!event.locationId && event.movementKind !== undefined &&
+      getEnabledLocations(s.map, s.locationConfig).some((entry) => entry.id === event.locationId);
+  }
+  if (isAcceptedLocationMarkerPlaceAbility(ability)) {
+    const current = controller.locationId;
+    const existing = marker;
+    return !reversed && !!current && getEnabledLocations(s.map, s.locationConfig).some((entry) => entry.id === current) &&
+      (!existing || existing.providerSourceCardId === sourceCardId);
+  }
+  if (isAcceptedLocationMarkerCombatAbility(ability)) {
+    if (!marker || !controller.locationId) return false;
+    return reversed ? controller.locationId !== marker.locationId : controller.locationId === marker.locationId;
+  }
+  if (isAcceptedLocationMarkerMidpointDefeatAbility(ability)) return reversed && markerMidpointLegal(s, controllerId, markerKey);
+  return false;
+}
 function context(s: GameState, sourceCardId: string, abilityId: string, event?: AbilityEvent): EffectContext {
   return { sourceCardId, abilityId, controllerId: card(s, sourceCardId).controllerPlayerId, variables: {}, selections: {}, ...(event ? { event } : {}) };
 }
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-    cardState: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, battleLossIgnoreRoundByPlayer: {},
+    cardState: {}, locationMarkers: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, battleLossIgnoreRoundByPlayer: {},
     startingDeckSizeByPlayer: Object.fromEntries(s.players.map((candidate) => [candidate.id, s.cards.filter((entry) => entry.ownerPlayerId === candidate.id && entry.zone === 'deck').length])),
     cardPlayCountByInstance: {}, grantedPerGamePlayLimitCardIds: [], grantedPerGamePlayLimitBaselineByCardId: {},
     ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [],
@@ -1120,6 +1195,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsBattleLuckCloseDrawPlayNode(a) && !isAcceptedBattleLuckCloseDrawPlayAbility(a)) return false;
   if (isAcceptedBattleLuckCloseDrawPlayAbility(a) && !canActivateBattleCloseDrawPlay(s, sourceId, a)) return false;
   if (containsDeckRecycleReplayGrowthPrivilegedNode(a) && !isAcceptedDeckRecycleReplayGrowthAbility(a)) return false;
+  if (containsLocationMarkerPrivilegedNode(a) && !isAcceptedLocationMarkerAbility(a)) return false;
+  if (isAcceptedLocationMarkerAbility(a) && !canActivateLocationMarkerAbility(s, sourceId, a, event)) return false;
   if (isAcceptedSpendCounterIgnoreBattleLossAbility(a)) {
     const key = str(a.effects[0]?.counterKey);
     if (structuredCounterValue(s, card(s, sourceId).controllerPlayerId, key) < 1) return false;
@@ -1696,6 +1773,71 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
   const unpreventable = a.ruleModifiers.some(m => m.rule === 'effect_prevention' && m.operation === 'ignore' && node(m.priority).tier === 'explicit_exception');
   if (r.preventEffects && !unpreventable) { r.events.push({ type: 'effect_prevented', playerId: p.id }); return; }
   switch (effect.type) {
+    case LOCATION_MARKER_FOLLOW_EFFECT: {
+      if (!isLocationMarkerFollowEffect(effect) || !isAcceptedLocationMarkerFollowAbility(a)) reject('unsupported', 'Unsupported location-marker follow shape');
+      const marker = locationMarker(s, ctx.controllerId, String(effect.markerKey)); const event = ctx.event;
+      if (!marker || !event || event.type !== 'after_controller_enters_location' || !event.playerId || event.playerId === ctx.controllerId ||
+          event.previousLocationId !== marker.locationId || !event.locationId || event.movementKind === undefined ||
+          !liveOwnedSource(s, ctx.sourceCardId, ctx.controllerId) ||
+          !getEnabledLocations(s.map, s.locationConfig).some((entry) => entry.id === event.locationId)) {
+        reject('invalid_event', 'Location-marker follow requires a trusted opponent departure from the exact marker location');
+      }
+      marker.locationId = event.locationId; marker.updatedRevision = r.revision;
+      r.events.push({ type: 'location_marker_moved', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+      break;
+    }
+    case LOCATION_MARKER_COMBAT_BRANCH_EFFECT: {
+      if (!isLocationMarkerCombatBranchEffect(effect) || !isAcceptedLocationMarkerCombatAbility(a)) reject('unsupported', 'Unsupported location-marker combat branch shape');
+      const marker = locationMarker(s, ctx.controllerId, String(effect.markerKey)); const sourceState = r.cardState[ctx.sourceCardId];
+      if (!marker || !p.locationId || !liveOwnedSource(s, ctx.sourceCardId, ctx.controllerId)) reject('invalid_state', 'Location-marker combat branch requires a live marker and source');
+      if (sourceState?.reversed === true) {
+        if (p.locationId === marker.locationId) reject('invalid_state', 'Reversed location-marker combat branch requires controller away from marker');
+        for (const target of s.players) {
+          if (target.id === p.id || target.status !== 'active' || target.locationId !== marker.locationId) continue;
+          if (!Number.isSafeInteger(target.vp) || target.vp < 0 || !Number.isSafeInteger(p.vp) || p.vp < 0) reject('invalid_state', 'Victory points must be nonnegative safe integers');
+          const amount = Math.min(Number(effect.vpTransferAmount), target.vp); if (amount <= 0) continue;
+          const targetBefore = target.vp; const controllerBefore = p.vp; target.vp -= amount; p.vp += amount;
+          r.events.push({ type: 'victory_points_adjusted', playerId: target.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, delta: -amount, before: targetBefore, after: target.vp });
+          r.events.push({ type: 'victory_points_adjusted', playerId: p.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, delta: amount, before: controllerBefore, after: p.vp });
+        }
+      } else {
+        if (p.locationId !== marker.locationId) reject('invalid_state', 'Normal location-marker combat branch requires controller at marker');
+        setTerrainAdvantageOverride(s, p.id, marker.locationId as LocationId, Number(effect.terrainAmount), 1, ctx.sourceCardId);
+      }
+      break;
+    }
+    case LOCATION_MARKER_PLACE_EFFECT: {
+      if (!isLocationMarkerPlaceEffect(effect) || !isAcceptedLocationMarkerPlaceAbility(a)) reject('unsupported', 'Unsupported location-marker placement shape');
+      if (r.cardState[ctx.sourceCardId]?.reversed === true || !p.locationId || !liveOwnedSource(s, ctx.sourceCardId, ctx.controllerId) ||
+          !getEnabledLocations(s.map, s.locationConfig).some((entry) => entry.id === p.locationId)) reject('invalid_state', 'Location-marker placement requires a normal live source and enabled controller location');
+      const key = String(effect.markerKey); const id = markerRuntimeId(ctx.controllerId, key); const existing = r.locationMarkers?.[id];
+      if (existing && existing.providerSourceCardId !== ctx.sourceCardId) reject('invalid_state', 'Conflicting location-marker provider');
+      (r.locationMarkers ??= {})[id] = {
+        markerKey: key, controllerId: ctx.controllerId, providerSourceCardId: ctx.sourceCardId, providerAbilityId: ctx.abilityId,
+        locationId: p.locationId, placedRevision: existing?.placedRevision ?? r.revision, updatedRevision: r.revision,
+      };
+      r.events.push({ type: 'location_marker_moved', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+      break;
+    }
+    case LOCATION_MARKER_MIDPOINT_DEFEAT_EFFECT: {
+      if (!isLocationMarkerMidpointDefeatEffect(effect) || !isAcceptedLocationMarkerMidpointDefeatAbility(a)) reject('unsupported', 'Unsupported location-marker midpoint defeat shape');
+      const marker = locationMarker(s, ctx.controllerId, String(effect.markerKey));
+      if (!marker || r.cardState[ctx.sourceCardId]?.reversed !== true || !p.locationId || !liveOwnedSource(s, ctx.sourceCardId, ctx.controllerId) ||
+          !markerMidpointLegal(s, ctx.controllerId, String(effect.markerKey))) reject('invalid_state', 'Location-marker midpoint convergence preflight failed');
+      const from = p.locationId; const target = uniqueUndirectedMiddleLocation(s, from, marker.locationId);
+      if (!target) reject('invalid_state', 'Location-marker midpoint must be unique and exactly two edges away');
+      p.locationId = target; marker.locationId = target; marker.updatedRevision = r.revision;
+      recordMovementForAbilityRuntime(s, p.id, from, target);
+      processEvent(s, { id: nextId(s, 'marker-midpoint-enter'), type: 'after_controller_enters_location', playerId: p.id,
+        previousLocationId: from, locationId: target, movementKind: 'effect' });
+      for (const targetPlayer of s.players) {
+        if (targetPlayer.id === p.id || targetPlayer.status !== 'active' || targetPlayer.locationId !== target ||
+            playerIgnoresAbilityFromController(s, targetPlayer.id, p.id) || playerIgnoresDefeatEffectAtLocation(s, targetPlayer.id, target)) continue;
+        (r.battleDefeatRoundByPlayer ??= {})[targetPlayer.id] = s.round.roundNumber;
+        r.events.push({ type: 'player_defeated_by_effect', playerId: targetPlayer.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+      }
+      break;
+    }
     case BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT: {
       if (!isAcceptedBattleLuckCloseDrawPlayAbility(a)) reject('unsupported', 'Unsupported battle close/refund/draw/immediate-play effect');
       startBattleCloseDrawPlay(s, ctx);
@@ -3984,7 +4126,7 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
           movingPlayer.locationId = toLocationId as LocationId;
           recordMovementForAbilityRuntime(state, playerId, fromLocationId, toLocationId);
           const enterEventId = nextId(state, 'enter-location');
-          processEvent(state, { id: enterEventId, type: 'after_controller_enters_location', playerId, locationId: toLocationId });
+          processEvent(state, { id: enterEventId, type: 'after_controller_enters_location', playerId, previousLocationId: fromLocationId, locationId: toLocationId, movementKind: 'effect' });
           return { fromLocationId, toLocationId, movedCount: 1, emittedEventIds: [enterEventId] };
         },
         playSelectedCards: ({ state, playerId, cardInstanceIds, faceDown }) => {
@@ -5198,7 +5340,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           if (!canOccupyLocation({ map: s.map, config: s.locationConfig, locationId: to, movingPlayerId: meta.boundPlayerId, occupyingPlayerIds,
             ...(s.ruleOverrides ? { ruleOverrides: s.ruleOverrides } : {}) })) reject('illegal_target', 'Ruler seal movement destination is not occupiable');
           delete r.pendingDecision; targetPlayer.locationId = to; recordMovementForAbilityRuntime(s, meta.boundPlayerId, from, to);
-          processEvent(s, { id: nextId(s, 'ruler-seal-enter-location'), type: 'after_controller_enters_location', playerId: meta.boundPlayerId, locationId: to });
+          processEvent(s, { id: nextId(s, 'ruler-seal-enter-location'), type: 'after_controller_enters_location', playerId: meta.boundPlayerId, previousLocationId: from, locationId: to, movementKind: 'effect' });
           break;
         }
         if (meta.kind === 'ruler_seal_free_play_v1') {
