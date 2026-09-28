@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "fd-phase3-e04-statistics-freeze-v1",
+  "freezeId": "FD-P3-E04-STATISTICS-FREEZE-2026-09-28",
+  "controlEpoch": "FD-P3-2026-09-23-04",
+  "policy": {
+    "statisticsImmutable": true,
+    "migrationCreditImmutable": true,
+    "runtimeChangesAllowedInFrozenRefs": false,
+    "newWorkRequiresNewTask": true,
+    "a112MustConsumeExactA111Matrix": true
+  },
+  "checkpoints": {
+    "A111": {
+      "taskId": "P3-E04-A111",
+      "sourceBranch": "codex/a-p3-e04-a111",
+      "contentCommit": "b7f88c7197859e7203eada1dad4f4ac4e9f1d6fa",
+      "frozenRef": "refs/heads/codex/a-p3-e04-a111-frozen",
+      "mainSha": "0e943a94e8bdab6335e34818278ecc90760015f0",
+      "controlEpoch": "FD-P3-2026-09-23-04",
+      "matrixArtifact": "artifacts/phase3-e04-current-main-accepted-111-execution-matrix.json",
+      "matrixSha256": "34ce9258e94e9bf44243cdd76be223f599d4776c13e2ef623382ae44a2f4f965",
+      "reportArtifact": "docs/reports/2026-09-27-p3-e04-a111-current-main-execution-reattestation.md",
+      "reportSha256": "50772f9662207c9e413af8a744ae1854d9b677d9bb0b26e7c58694450109ec17",
+      "accounting": {
+        "accepted": 111,
+        "denominator": 944,
+        "remaining": 833,
+        "duplicateAcceptedIds": 0,
+        "missingAcceptedIds": 0,
+        "mainCoverageCreditDelta": 0
+      }
+    },
+    "A112": {
+      "taskId": "P3-E04-A112",
+      "sourceBranch": "codex/a-p3-e04-a111",
+      "contentCommit": "79f5ebaaaa4f2a89ab8b953afbaa7c7c82e8b681",
+      "frozenRef": "refs/heads/codex/a-p3-e04-a112-frozen",
+      "mainSha": "0e943a94e8bdab6335e34818278ecc90760015f0",
+      "controlEpoch": "FD-P3-2026-09-23-04",
+      "matrixArtifact": "artifacts/phase3-e04-current-main-accepted-111-execution-matrix.json",
+      "matrixSha256": "34ce9258e94e9bf44243cdd76be223f599d4776c13e2ef623382ae44a2f4f965",
+      "decompositionArtifact": "artifacts/phase3-e04-a112-accepted-111-gap-decomposition.json",
+      "decompositionSha256": "935760f7e448f1d7e3ee84ea07021a14ab9c7e5fc54e0fcf195b4ddc999a4c5c",
+      "reportArtifact": "docs/reports/2026-09-27-p3-e04-a112-accepted-111-gap-decomposition.md",
+      "reportSha256": "2f744a5b01aab29d2a51d97273bb16e3f16f0ac99e20128fe1ef86c556fc3182",
+      "accounting": {
+        "accepted": 111,
+        "denominator": 944,
+        "remaining": 833,
+        "mainCoverageCreditDelta": 0,
+        "creditChange": "NONE",
+        "migrationAcceptanceChange": "NONE"
+      },
+      "gapCounts": {
+        "GENERATED_REGISTRY_MISSING": 87,
+        "RUNTIME_CONTRACT_UNBOUND": 49,
+        "TEST_EVIDENCE_UNBOUND": 76,
+        "GATE_C_PENDING": 111,
+        "LEGACY_ONLY": 65,
+        "COMPILER_UNSUPPORTED": 68,
+        "AUTHORING_GENERATION_DRIFT": 0,
+        "REVIEW_ARTIFACT_MISSING": 0
+      },
+      "primaryGapCounts": {
+        "GENERATED_REGISTRY_MISSING": 87,
+        "RUNTIME_CONTRACT_UNBOUND": 24
+      },
+      "registryDiagnosisCounts": {
+        "AUTHORING_SOURCE_NOT_FOUND": 0,
+        "AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK": 87,
+        "PACK_SOURCE_LISTED_BUT_NOT_EMITTED": 0
+      },
+      "registryDiagnosisNotEvaluated": [
+        "RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK",
+        "AUTHORING_SHAPE_UNSUPPORTED",
+        "RUNTIME_CAPABILITY_MISSING",
+        "LEGACY_HANDLER_DEPENDENCY_ONLY"
+      ]
+    }
+  }
+}
