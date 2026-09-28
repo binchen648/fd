@@ -51,7 +51,7 @@ No `data/authoring/**` consumer is changed in this readiness task. Production ru
 
 ## Focused verification
 
-`packages/rules/tests/regression/p3-stheno-divine-core-readiness-capability.test.ts`: **14/14 PASS**.
+`packages/rules/tests/regression/p3-stheno-divine-core-readiness-capability.test.ts`: **15/15 PASS**.
 
 Coverage proves:
 
@@ -69,21 +69,25 @@ Coverage proves:
 12. immediate-play provenance/permission retire on the next authoritative round, and the same physical card can be legally replayed in round two and subsequently restored;
 13. draw authority is bound to an exact activation transaction, a second legal same-round activation round-trips without inheriting the first activation's draw authority, and forged removal of an unresolved transaction/decision leaves orphan draw authority that restore rejects;
 14. completed immediate-play authority survives the ordinary `stepGameLoop` root replacement path and continues to round-trip through MatchSession persistence.
+15. the ordinary production `round_end -> round_start` path retires prior-round immediate-play history, temporary combat Action permission, and corresponding server-only authority exactly once, then MatchSession persistence round-trips successfully in round two.
 
 Fixture corrections made while validating restore did not broaden production semantics: the GameState battle phase is `battle` while authoring activation remains `combat`; helper definitions are installed into the trusted fixture pack before runtime initialization; UTF-8 source attributes remain exact.
 
 ## Affected verification
 
-Affected serial: **8 files / 204 tests PASS**:
+Current R3 affected serial: **7 files / 105 tests PASS**:
 
-- Stheno Divine Core readiness `14`;
-- MatchSession `33`;
-- executable-card-pack `50`;
+- Stheno Divine Core readiness `15`;
 - authoring-interpreter `38`;
-- combat-resolver `10`;
-- resolution-dataflow `15`;
-- MatchSession regressions `7`;
-- complex-skills regression `37`.
+- MatchSession `33`;
+- game-loop battle/cleanup `10`;
+- game-loop round-start `4`;
+- phase-machine `3`;
+- game-loop action `2`.
+
+The predecessor R2 evidence had already passed the broader **8 files / 204 tests** serial. For R3, the exact directly affected production/session/game-loop chain above was rerun after the ordinary new-round retirement fix.
+
+A diagnostic `npm run test:ci` A/B comparison was also run rather than treating repository-wide failures as new regressions. Exact predecessor `54baf0b188114c2fe9f690a339a71a0a620379a1` in the clean detached Reviewer environment had 12 pre-existing failures (1153/1165 PASS). The Work run had those same baseline failures plus five failures from the local ignored `.fd-shiki-runtime-debug.test.ts`; no additional tracked-suite failure was introduced by this revision. This diagnostic is not represented as a green full-suite gate.
 
 Static/content gates:
 
@@ -119,7 +123,17 @@ Both blocking findings were closed together in one successor revision:
 - **P1 transaction-scoped draw authority / orphan rejection:** each Divine Core activation now receives an exact persisted `transactionId`; every close/refund/draw authority row is bound to that transaction, and draw authority is retired when that transaction fully settles. Persistence consistency requires all current-round draw authority to belong to the live transaction and rejects any draw authority when no transaction remains. This permits a second legal same-round activation without inheriting first-activation draws, while forged removal of both the unresolved transaction and its pending decision leaves authenticated orphan authority and fails restore.
 - **P1 core-loop root replacement:** `stepGameLoop` now carries the server-only authority across each task-relevant GameState root replacement before `advanceAbilityPhase`. A completed Divine Core immediate play can advance through normal battle -> cleanup and still round-trip history/permission plus authenticated authority.
 
-Focused verification is now `14/14 PASS`; the same affected 8-file serial suite is `204/204 PASS`; typecheck, content validate/compile, generated-content determinism, `git diff --check`, zero `data/authoring/**` delta, and the production Stheno/SkillLib identity audit remain green.
+Historical R2 focused verification was `14/14 PASS` with the broader affected 8-file / 204-test serial green before R3.
+
+## R3 fresh-review closure
+
+Successor Candidate `54baf0b188114c2fe9f690a339a71a0a620379a1` received `IMPLEMENTATION_NEEDS_REVISION`. Reviewer GitHub publication returned explicit 403; the canonical bounded same-attempt Coordinator relay is `https://github.com/binchen648/fd/pull/472#issuecomment-5866671116`. No re-review of that exact Candidate was performed.
+
+The sole blocking finding was closed in the same bounded revision:
+
+- **P1 ordinary new-round retirement:** normal `stepGameLoop` advances the root round number before ability-phase cleanup. The revision preserves that previous/new round distinction explicitly by passing the previous root round to `advanceAbilityPhase`; `startsNewRound` therefore becomes true on the real `round_end -> round_start` transition even though the replacement state already contains the new round number. Existing retirement code then clears prior-round `battleCloseDrawImmediatePlayHistory`, temporary `actionAbilityAllowedInCombatRound`, and corresponding server-only authority exactly once. A production-path regression completes legal Divine Core immediate play, advances battle -> cleanup -> round_end -> round_start, proves history/permission retirement, and successfully MatchSession serializes/restores the round-two state.
+
+Current verification: focused `15/15 PASS`; affected `7 files / 105 tests PASS`; typecheck, content validate/compile, generated determinism and `git diff --check` PASS; `data/authoring/**` remains unchanged. The `test:ci` A/B diagnostic is recorded above and shows no new tracked-suite failure relative to exact predecessor.
 
 ## Accounting / continuation
 
