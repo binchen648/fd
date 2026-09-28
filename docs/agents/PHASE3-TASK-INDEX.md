@@ -6133,7 +6133,7 @@ Acceptance synchronization:
 ## TASK P3-B-TAISUI-OWNER-READINESS-CAPABILITY
 
 Owner: Codex B
-Status: `READY`
+Status: `SYNCHRONIZED`
 Base: `9eed6f832fbc7ec00368e688b43d0020b04f804d`
 Classification: bounded zero-credit owner-readiness capability for current owner `servant.taisui`
 
@@ -6172,3 +6172,12 @@ Accounting:
 Allowed verdicts:
 - `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 - `IMPLEMENTATION_NEEDS_REVISION`
+Acceptance synchronization:
+- PR #478 exact Candidate `3f6bc546406aa7efc7d5229cd3255109db218026` received `IMPLEMENTATION_ACCEPTED_CANDIDATE` from fresh independent R.
+- Canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/478#issuecomment-5878360467`.
+- Exact-Candidate Phase 3 Pre-Review Gate `36481379018` succeeded.
+- Accepted readiness remains permanently zero-credit; strict formal accounting stays `144/944`, remaining `800`.
+- Full-owner A-rescan confirms no additional currently discoverable Taisui readiness gap remains beyond the accepted location-marker family.
+- sc1 remains historical accepted preservation-only; sc2 + sc3 are the only newly creditable identities in the upcoming formal owner batch.
+- Next task is `P3-S-OWNER-TAISUI-COMPLETE-MIGRATION`, containing preserved sc1 + new sc2 + sc3 together in one formal Candidate/PR/fresh R/A-sync sequence.
+- Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-taisui-owner-readiness-capability-acceptance-synchronization.md`.
