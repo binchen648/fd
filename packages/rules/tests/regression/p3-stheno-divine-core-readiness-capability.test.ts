@@ -350,6 +350,29 @@ describe('P3 Stheno Divine Core readiness capability', () => {
     expect(() => restoreMatchSession(sessionFor(stepped).serializeSession(), { restorePackKind: 'trusted_authoring_fixture' })).not.toThrow();
   });
 
+  it('retires Divine Core provenance on normal round_end to round_start progression and restores', () => {
+    const state = setup(); const b = sourceAndBoard(state, false);
+    expect(activate(state, b.source).ok).toBe(true);
+    expect(choose(state, 'p1', [b.p2Attack]).ok).toBe(true);
+    expect(choose(state, 'p1', []).ok).toBe(true);
+    expect(choose(state, 'p2', [b.p2Draw]).ok).toBe(true);
+    expect(state.round.activePhase).toBe('battle');
+    expect(state.round.roundNumber).toBe(1);
+    expect(state.abilityRuntime!.battleCloseDrawImmediatePlayHistory).toHaveLength(1);
+    expect(state.abilityRuntime!.cardState[b.p2Draw]!.actionAbilityAllowedInCombatRound).toBe(1);
+
+    const cleanup = rules.stepGameLoop(state).nextState;
+    expect(cleanup.round.activePhase).toBe('cleanup');
+    const roundEnd = rules.stepGameLoop(cleanup).nextState;
+    expect(roundEnd.round.activePhase).toBe('round_end');
+    expect(roundEnd.round.roundNumber).toBe(1);
+    const roundStart = rules.stepGameLoop(roundEnd).nextState;
+    expect(roundStart.round.activePhase).toBe('round_start');
+    expect(roundStart.round.roundNumber).toBe(2);
+    expect(roundStart.abilityRuntime!.battleCloseDrawImmediatePlayHistory).toEqual([]);
+    expect(roundStart.abilityRuntime!.cardState[b.p2Draw]!.actionAbilityAllowedInCombatRound).toBeUndefined();
+    expect(() => restoreMatchSession(sessionFor(roundStart).serializeSession(), { restorePackKind: 'trusted_authoring_fixture' })).not.toThrow();
+  });
   it('rejects compiled-pack widening transactionally before Luck discard or decision staging', () => {
     const state = setup(); const b = sourceAndBoard(state, true);
     const ability = state.abilityRuntime!.pack.cards[SOURCE]!.abilities.find((entry) => entry.id === ABILITY)!;

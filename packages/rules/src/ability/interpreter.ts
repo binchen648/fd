@@ -4543,13 +4543,19 @@ export function processAbilitySystemEvent(s: GameState, label: string, event: Om
   runtime(copy).revision++;
   Object.assign(s, copy);
 }
-export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.round.roundNumber): void {
+export function advanceAbilityPhase(
+  s: GameState,
+  next: PhaseName,
+  round = s.round.roundNumber,
+  previousRound = s.round.roundNumber,
+): void {
   const r = runtime(s);
   if (r.pendingDecision || r.responseWindows.length || r.hostRequests.length || r.pendingBattleCloseDrawPlayTransaction) reject('pending_resolution', 'Resolve the current decision before advancing');
   if (!Number.isInteger(round) || round < s.round.roundNumber) reject('invalid_round', 'Round cannot move backwards');
+  if (!Number.isInteger(previousRound) || previousRound > round) reject('invalid_round', 'Previous round cannot exceed next round');
   const copy = structuredClone(s);
   copyBattleCloseDrawPlayServerAuthority(s, copy);
-  const startsNewRound = round > s.round.roundNumber;
+  const startsNewRound = round > previousRound;
   if (startsNewRound) {
     runtime(copy).battleCloseDrawImmediatePlayHistory = [];
     for (const state of Object.values(runtime(copy).cardState)) {

@@ -561,7 +561,9 @@ export function stepGameLoop(
     });
   }
 
-  if (nextState.abilityRuntime) advanceAbilityPhase(nextState, nextState.round.activePhase, nextState.round.roundNumber);
+  if (nextState.abilityRuntime) {
+    advanceAbilityPhase(nextState, nextState.round.activePhase, nextState.round.roundNumber, state.round.roundNumber);
+  }
   return {
     nextState,
     transition,
