@@ -41,6 +41,7 @@ import { isAcceptedDiscardBasicReplayCounterAbility, isAcceptedPhysicalCardRepla
 import { isAcceptedLocationMarkerPlaceAbility, isValidLocationMarkerKey, locationMarkerKeyFromAbility } from './ability/location-marker-capability';
 import { isAcceptedAfterBattleSealAbility, isAcceptedPlaySealedAttacksAbility, isAcceptedRoundDefinitionAttributeReplacementAbility, isValidSealedCardMagicKey, sealedCardMagicKeyFromAbility } from './ability/sealed-card-magic-capability';
 import { isValidBattlePlunderRecordKey } from './ability/battle-plunder-replay-capability';
+import { isAcceptedSelfManaOverflowPowerCloseAbility } from './ability/mana-transaction-capability';
 import { settleLinkedOwnerCardsAfterBattles } from './ability/linked-owner-combat';
 import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute } from './ability/deduction-record';
 import { SOURCE_LOCATION_BASE_POWER_ATTRIBUTES, isAcceptedPostDrawHandShuffleAbility, isAcceptedSourceLocationBasicPowerAbility } from './ability/source-location-rune-capability';
@@ -817,7 +818,10 @@ function isRestoreCardRuntimeState(value: unknown): boolean {
       typeof value.returnToDeckAfterBattle.sourceCardId === 'string' && typeof value.returnToDeckAfterBattle.abilityId === 'string')) &&
     (value.roundPowerBonus === undefined || (isRestoreRecord(value.roundPowerBonus) &&
       hasExactRestoreKeys(value.roundPowerBonus, ['round','amount','sourceAbilityId']) && isRestoreSafeInteger(value.roundPowerBonus.round, 1) &&
-      isRestoreSafeInteger(value.roundPowerBonus.amount, 0) && typeof value.roundPowerBonus.sourceAbilityId === 'string'));
+      isRestoreSafeInteger(value.roundPowerBonus.amount, 0) && typeof value.roundPowerBonus.sourceAbilityId === 'string')) &&
+    (value.manaOverflowCloseAfterBattle === undefined || (isRestoreRecord(value.manaOverflowCloseAfterBattle) &&
+      hasExactRestoreKeys(value.manaOverflowCloseAfterBattle, ['round','sourceAbilityId']) &&
+      isRestoreSafeInteger(value.manaOverflowCloseAfterBattle.round, 1) && typeof value.manaOverflowCloseAfterBattle.sourceAbilityId === 'string'));
 }
 
 function isRestoreAbilityDefinition(value: unknown): boolean {
@@ -1467,6 +1471,15 @@ function isRestoreAbilityRuntimeReferences(
             !restoreSourceHasAcceptedAbilityId(pack, cardsByInstance, eventPlacements, marker.sourceCardId as string, marker.abilityId as string, isAcceptedDiscardBasicReplayCounterAbility)) return false;
       }
       if (state.roundPowerBonus !== undefined && !restoreSourceHasAcceptedAbilityId(pack, cardsByInstance, eventPlacements, instanceId, (state.roundPowerBonus as Record<string, unknown>).sourceAbilityId as string, isAcceptedPhysicalCardReplayGrowthAbility)) return false;
+      if (state.manaOverflowCloseAfterBattle !== undefined) {
+        const marker = state.manaOverflowCloseAfterBattle as Record<string, unknown>;
+        const physical = cardsByInstance.get(instanceId);
+        if (marker.round !== currentRound || state.active !== true || state.faceDown !== false || !physical ||
+            !['field', 'attack_area'].includes(physical.zone as string) || physical.ownerPlayerId !== physical.controllerPlayerId ||
+            !playerIds.has(physical.controllerPlayerId as string) ||
+            !restoreSourceHasAcceptedAbilityId(pack, cardsByInstance, eventPlacements, instanceId,
+              marker.sourceAbilityId as string, isAcceptedSelfManaOverflowPowerCloseAbility)) return false;
+      }
     }
   }
 

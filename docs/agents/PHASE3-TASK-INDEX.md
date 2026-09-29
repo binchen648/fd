@@ -6462,3 +6462,52 @@ Acceptance synchronization:
 - Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-owner-teach-acceptance-synchronization.md`.
 - Mechanical first-occurrence owner ordering selects `servant.tesla` next: Teach index `241`, Tesla index `242` of `251` owners.
 - Owner-readiness-first remains mandatory: complete one full Tesla preflight across sc1 + sc2 + sc3 before any Tesla formal consumer migration.
+
+## TASK P3-B-TESLA-OWNER-READINESS-CAPABILITY
+
+Owner: Codex B
+Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Base: `7131b216d78dc04f21390e63b9d0ce0f28139a82`
+Classification: bounded zero-credit owner-readiness capability for current owner `servant.tesla`
+
+Full-owner preflight:
+- frozen owner scope is exactly `servant.tesla.skill.sc-tesla-1`, `servant.tesla.skill.sc-tesla-2`, `servant.tesla.skill.sc-tesla-3`;
+- no current `data/authoring/servants/servant.tesla.json` exists and Git history contains no prior formal Tesla authoring migration, so no preservation-only Tesla identity is currently discovered;
+- F1 source evidence is globally closed at `944/944`, blocked `0`, unclassified `0`; locked Reference remains static/non-authoritative evidence only;
+- preflight found one complete currently discoverable generic readiness family spanning authoritative mana spend, storage-cap overflow, round total-Power growth, post-battle source close, opponent overflow defeat, lose-all-mana Power conversion, and mandatory same-location opponent mana grants;
+- `data/authoring/**` remains unchanged in this readiness Candidate.
+
+Implementation/evidence:
+- added identity-free exact whole-ability `mana-transaction-capability` gateway for the complete discovered Tesla family;
+- paid-mana observation covers accepted interpreter costs, resolution-dataflow mana payment, batch/legacy card play and normal movement; movement spend resolves at the authoritative origin location;
+- storage-cap overflow is mechanically separated from existing public requested-minus-actual `overflowAmount`, so round/situation gain caps and mana suppression do not spuriously trigger Tesla overflow semantics;
+- self overflow adds stackable current-round `player.combatTotalPower +5`, arms a source-bound canonical battle-terminal close marker, and restore validates exact accepted source/current round/live provenance;
+- opponent overflow defeat reuses generic other-player ability immunity and battle-loss immunity seams;
+- lose-all-mana conversion is resource loss, not paid-mana spend, and adds exactly the lost amount to current-round total Power;
+- same-location opponent grants flow through normal `grantMana`, so real storage overflow composes with the generic overflow reaction family;
+- no Tesla/card-name/printed-text runtime parser, legacy `core.tesla-*` route, or `SkillLib` fallback is introduced.
+
+Verification:
+- focused Tesla readiness `10/10 PASS`;
+- Tesla + core movement `2 files / 13 tests PASS`;
+- directly affected green set `17 files / 245 tests PASS`;
+- resource-numeric direct-action relevant subset `3/3 PASS`; its unrelated Tomoe pairing test is a mechanically reproduced pre-existing predecessor failure and is not Candidate-caused;
+- `FD_TOOLCHAIN_OK`;
+- typecheck PASS;
+- content validate/compile PASS (`7 masters / 12 servants / 20 events / 0 blocking issues`);
+- generated determinism PASS with unchanged hashes;
+- production identity audit CLEAN;
+- locked Reference clean/exact;
+- `data/authoring/**` delta EMPTY;
+- `git diff --check` PASS;
+- detailed result: `docs/reports/2026-09-29-p3-b-tesla-owner-readiness-capability-result.md`.
+
+Accounting:
+- strict formal accounting remains `151/944`, remaining `793`;
+- this readiness task is permanently zero-credit;
+- ACCEPTED must A-sync/rescan and stay on `servant.tesla`;
+- if rescan finds no additional readiness gap, the later single owner-complete formal batch contains sc1 + sc2 + sc3 together; only a later `MIGRATION_ACCEPTED` plus A-sync may add the three Tesla identities and move `151/944 -> 154/944`, remaining `790`.
+
+Allowed verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`

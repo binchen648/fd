@@ -1,6 +1,7 @@
 import type { GameState, PhaseName } from '../schema/game';
 import type { RuleNode } from '../ability/types';
 import { isManaGainSuppressed } from '../ability/timed-resource-suppression';
+import { applyStorageManaOverflowReactions, collectSameLocationManaSpendRewards } from '../ability/mana-transaction-capability';
 
 export type GameStartRuleOverrideName =
   | 'first_logical_day_total_power_adjustment'
@@ -143,6 +144,12 @@ export interface ManaGrantResult {
   before: number;
   after: number;
 }
+export interface ManaSpendResult {
+  requestedAmount: number;
+  actualAmount: number;
+  before: number;
+  after: number;
+}
 
 function isClimaxRound(state: GameState, explicit: boolean | undefined): boolean {
   if (explicit !== undefined) return explicit;
@@ -179,6 +186,7 @@ export function grantMana(state: GameState, playerId: string, requestedAmount: n
   }
   const storageCap = runtime?.manaCaps[playerId] ?? 12;
   const blocked = isManaGainSuppressed(state, playerId);
+  const storageOverflowAmount = blocked ? 0 : Math.max(0, before + cappedRequestAmount - storageCap);
   const after = blocked ? before : Math.min(storageCap, before + cappedRequestAmount);
   player.mana = after;
   const actualAmount = after - before;
@@ -187,7 +195,40 @@ export function grantMana(state: GameState, playerId: string, requestedAmount: n
     if (ledger.round !== state.round.roundNumber) { ledger.round = state.round.roundNumber; ledger.byPlayer = {}; }
     ledger.byPlayer[playerId] = (ledger.byPlayer[playerId] ?? 0) + actualAmount;
   }
+  if (runtime && requestedAmount > 0) {
+    runtime.events.push({ type: 'mana_granted', playerId, resource: 'mana', requestedDelta: requestedAmount,
+      delta: actualAmount, before, after });
+    applyStorageManaOverflowReactions(state, playerId, storageOverflowAmount);
+  }
   return { requestedAmount, cappedRequestAmount, actualAmount, overflowAmount: requestedAmount - actualAmount, before, after };
+}
+
+/** Records one authoritative paid-mana transaction after an external pure reducer has already applied it. */
+export function notifyManaSpent(state: GameState, playerId: string, amount: number): void {
+  if (!Number.isSafeInteger(amount) || amount < 0) throw new Error('Mana spend must be a nonnegative safe integer.');
+  if (amount === 0 || !state.abilityRuntime) return;
+  const player = state.players.find((candidate) => candidate.id === playerId);
+  if (!player) throw new Error(`Unknown mana spender: ${playerId}`);
+  state.abilityRuntime.events.push({ type: 'mana_spent', playerId, resource: 'mana', requestedDelta: -amount, delta: -amount, after: player.mana });
+  const rewards = collectSameLocationManaSpendRewards(state, playerId, amount);
+  for (const reward of rewards) {
+    const result = grantMana(state, reward.controllerId, reward.amount, { source: 'generic' });
+    state.abilityRuntime.events.push({ type: 'same_location_mana_spend_reward', playerId: reward.controllerId,
+      sourceCardId: reward.sourceCardId, abilityId: reward.abilityId, resource: 'mana', requestedDelta: reward.amount,
+      delta: result.actualAmount, before: result.before, after: result.after });
+  }
+}
+
+/** Pays mana and emits the generic paid-mana transaction consumed by resource observers. */
+export function spendMana(state: GameState, playerId: string, amount: number): ManaSpendResult {
+  if (!Number.isSafeInteger(amount) || amount < 0) throw new Error('Mana spend must be a nonnegative safe integer.');
+  const player = state.players.find((candidate) => candidate.id === playerId);
+  if (!player) throw new Error(`Unknown mana spender: ${playerId}`);
+  const before = player.mana;
+  if (amount > before) throw new Error('Insufficient mana.');
+  player.mana = before - amount;
+  notifyManaSpent(state, playerId, amount);
+  return { requestedAmount: amount, actualAmount: amount, before, after: player.mana };
 }
 
 export function resetManaGainLedgerForRound(state: GameState, round: number): void {

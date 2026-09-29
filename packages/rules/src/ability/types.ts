@@ -356,6 +356,8 @@ export interface CardRuntimeState {
   returnToDeckAfterBattle?: { round: number; controllerId: PlayerId; sourceCardId: string; abilityId: string };
   /** Source-card current-round Power bonus, persisted by physical instance. */
   roundPowerBonus?: { round: number; amount: number; sourceAbilityId: string };
+  /** Source-owned mana-overflow close request for the canonical battle terminal. */
+  manaOverflowCloseAfterBattle?: { round: number; sourceAbilityId: string };
 }
 export interface RulerSealBinding {
   id: string; issuerPlayerId: PlayerId; boundPlayerId: PlayerId; sourceCardId: string; abilityId: string;

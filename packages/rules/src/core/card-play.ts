@@ -1,6 +1,7 @@
 import starterPack from "../data/cards/starter-pack.json";
 import type { GameState } from "../schema/game";
 import { isNormalCardDrawSuppressed } from "../ability/timed-resource-suppression";
+import { notifyManaSpent } from './rule-overrides';
 
 import { getLocationById } from "./map-engine";
 
@@ -103,6 +104,7 @@ export function playServantCardPair(
       },
     ),
   };
+  if (totalCost > 0 && nextState.abilityRuntime) notifyManaSpent(nextState, input.playerId, totalCost);
 
   return {
     nextState,

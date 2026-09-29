@@ -8,7 +8,7 @@ import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPla
 import { isCardCloseForbidden } from './card-close-forbid';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
-import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, installRulerSealMovementLock, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, rulerSealMovementLocked, situationForbidsAttribute } from '../core/rule-overrides';
+import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, installRulerSealMovementLock, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, rulerSealMovementLocked, situationForbidsAttribute, spendMana } from '../core/rule-overrides';
 import { node, nodes, str } from './loader';
 import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
@@ -84,6 +84,12 @@ import {
   battlePlunderRecordKeyFromAbility, battlePlunderSourcePresent, containsBattlePlunderReplayPrivilegedNode,
   isAcceptedBattleCompetitionPlunderAbility, isAcceptedBattlePlunderReplayAbility, isAcceptedPlayRecordedRemovedCardAbility,
 } from './battle-plunder-replay-capability';
+import {
+  GRANT_SAME_LOCATION_OPPONENTS_MANA_EFFECT, LOSE_ALL_MANA_ROUND_POWER_EFFECT,
+  acceptedManaTransactionAbilityAtSource, isAcceptedGrantSameLocationOpponentsManaAbility,
+  isAcceptedLoseAllManaRoundPowerAbility, isAcceptedSelfManaOverflowPowerCloseAbility,
+  isGrantSameLocationOpponentsManaEffect, isLoseAllManaRoundPowerEffect,
+} from './mana-transaction-capability';
 import {
   containsDeckRecycleReplayGrowthPrivilegedNode,
   isAcceptedDeckRecycleReplayGrowthAbility,
@@ -1876,6 +1882,9 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
         !battleLossStateTransformTriggerEligible(s, c.instanceId)) continue;
       if (event.type === 'on_card_played' && isSourcePlayBasicAttackDrawTriggerCandidate(a) &&
         !sourcePlayBasicAttackDrawEventScopeMatches(event, c.instanceId, c.controllerPlayerId)) continue;
+      if (event.type === 'on_card_played' &&
+          (isAcceptedLoseAllManaRoundPowerAbility(a) || (a.kind === 'forced_trigger' && isAcceptedGrantSameLocationOpponentsManaAbility(a))) &&
+          (event.sourceCardId !== c.instanceId || event.playerId !== c.controllerPlayerId)) continue;
       if (!matches || !canActivate(s, c.instanceId, a, event) || !triggerEventScopeMatches(a, event)) continue;
       if (['on_card_played', 'on_use_declared'].includes(event.type) && event.sourceCardId !== c.instanceId &&
         !a.conditions.some((condition) => ['event_played_card_has_attribute', 'deduction_record_matches_event_attack'].includes(str(condition.type))) &&
@@ -1957,7 +1966,7 @@ function payEffectCost(s: GameState, ctx: EffectContext, cost: RuleNode, selecte
   const p = player(s, ctx.controllerId);
   const value = numeric(s, ctx, cost.amount);
   if (!Number.isSafeInteger(value) || value < 0 || value > p.mana) reject('insufficient_mana', 'Cannot pay optional mana cost');
-  p.mana -= value;
+  spendMana(s, p.id, value);
 }
 function shuffle(s: GameState, ownerId: string): void {
   const r = runtime(s); const indexes = s.cards.map((c, i) => c.ownerPlayerId === ownerId && c.zone === 'deck' ? i : -1).filter(i => i >= 0);
@@ -2669,6 +2678,32 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       grantMana(s, p.id, selectedState.paidManaOnPlay, { source: 'generic' });
       break;
     }
+    case LOSE_ALL_MANA_ROUND_POWER_EFFECT: {
+      if (!isLoseAllManaRoundPowerEffect(effect) || !isAcceptedLoseAllManaRoundPowerAbility(a)) {
+        reject('unsupported', 'Unsupported lose-all-mana round-Power semantic');
+      }
+      const lost = p.mana;
+      if (!Number.isSafeInteger(lost) || lost < 0) reject('invalid_state', 'Controller mana must be a nonnegative safe integer');
+      p.mana = 0;
+      if (lost > 0) addControllerRoundCombatPower(s, ctx, lost, 'lost-mana-round-power');
+      r.events.push({ type: 'controller_mana_lost_for_round_power', playerId: p.id, sourceCardId: ctx.sourceCardId,
+        abilityId: ctx.abilityId, resource: 'mana', requestedDelta: -lost, delta: -lost, before: lost, after: 0 });
+      break;
+    }
+    case GRANT_SAME_LOCATION_OPPONENTS_MANA_EFFECT: {
+      if (!isGrantSameLocationOpponentsManaEffect(effect) || !isAcceptedGrantSameLocationOpponentsManaAbility(a)) {
+        reject('unsupported', 'Unsupported same-location opponent mana grant semantic');
+      }
+      if (!p.locationId) reject('invalid_state', 'Same-location opponent mana grant requires a controller location');
+      const opponents = s.players.filter((target) => target.id !== p.id && target.status === 'active' && target.locationId === p.locationId);
+      for (const target of opponents) {
+        const result = grantMana(s, target.id, 2, { source: 'generic' });
+        r.events.push({ type: 'same_location_opponent_mana_granted', playerId: target.id, controllerId: p.id,
+          sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, resource: 'mana', requestedDelta: 2,
+          delta: result.actualAmount, before: result.before, after: result.after });
+      }
+      break;
+    }
     case 'adjust_mana': {
       const amount = numeric(s, ctx, effect.amount);
       if (amount > 0) grantMana(s, p.id, amount, { source: 'generic' });
@@ -2707,7 +2742,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
     case 'pay_mana': {
       const amount = numeric(s, ctx, effect.amount);
       if (!Number.isSafeInteger(amount) || amount < 0 || amount > p.mana) reject('insufficient_mana', 'Cannot pay mana');
-      p.mana -= amount;
+      spendMana(s, p.id, amount);
       break;
     }
     case 'gain_victory_points_per_target': {
@@ -5174,7 +5209,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (manaCost > p.mana) reject('insufficient_mana', 'Insufficient mana');
   if (fixedControllerManaCost && isFixedControllerAdvanceDrawActionSemantic(a) &&
     !hasAvailableManaForFixedCosts(s, ctx, a)) reject('insufficient_mana', 'Insufficient mana');
-  p.mana -= manaCost;
+  if (manaCost > 0) spendMana(s, p.id, manaCost);
   if (fixedControllerManaCost && isAddToAttackRouteCandidate(a)) executeFixedControllerManaCost(s, ctx, a);
   if (names.length) runtime(s).calculations.push({ controllerId: p.id, lines: names.map(name => ({ label: name, value: ctx.variables[name]! })) });
   for (const cost of a.cost.filter(c => c.type === 'move_source_card')) moveCard(s, ctx.sourceCardId, str(node(cost.to).zone));
@@ -5316,6 +5351,32 @@ function processEvent(s: GameState, event: AbilityEvent): void {
       moveCard(s, candidate.instanceId, 'removed_from_game');
       delete r.cardState[candidate.instanceId]?.removeAfterBattleRound;
       r.events.push({ type: 'card_removed_after_battle', playerId: candidate.ownerPlayerId, sourceCardId: candidate.instanceId });
+    }
+    for (const candidate of [...s.cards]) {
+      const state = r.cardState[candidate.instanceId];
+      const marker = state?.manaOverflowCloseAfterBattle;
+      if (!marker || marker.round !== s.round.roundNumber) continue;
+      const accepted = acceptedManaTransactionAbilityAtSource(
+        s, candidate.instanceId, marker.sourceAbilityId, isAcceptedSelfManaOverflowPowerCloseAbility,
+      );
+      if (!accepted) reject('invalid_state', 'Mana-overflow close marker has no accepted source ability');
+      delete state!.manaOverflowCloseAfterBattle;
+      if (!state!.active || state!.faceDown || !['field', 'attack_area'].includes(candidate.zone) || isCardCloseForbidden(s, candidate.instanceId)) continue;
+      const d = definition(s, candidate.instanceId);
+      if (!d) reject('invalid_state', 'Mana-overflow close source definition is missing');
+      state!.active = false;
+      clearTransientCardTransformState(s, candidate.instanceId);
+      if (['servant_skill', 'master_skill'].includes(d.cardType)) {
+        candidate.zone = 'skill';
+        candidate.controllerPlayerId = candidate.ownerPlayerId;
+        candidate.visibility = { scope: 'owner_only', ownerPlayerId: candidate.ownerPlayerId };
+        state!.faceDown = false;
+      } else {
+        state!.faceDown = true;
+        candidate.visibility = { scope: 'owner_only', ownerPlayerId: candidate.ownerPlayerId };
+      }
+      r.events.push({ type: 'mana_overflow_source_closed_after_battle', playerId: candidate.ownerPlayerId,
+        sourceCardId: candidate.instanceId, abilityId: marker.sourceAbilityId });
     }
   }
   if (event.type === 'after_battle_result_determined' && event.battleResult) {
@@ -5646,7 +5707,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
             reject('resolution_failed', 'Corrupt or stale sealed-card disposition interaction state');
           }
           delete r.pendingDecision;
-          controller.mana -= selected.length;
+          if (selected.length > 0) spendMana(s, controller.id, selected.length);
           const reseal = new Set(selected);
           for (const replay of group) {
             if (reseal.has(replay.cardInstanceId)) resealReplayCard(s, replay);
@@ -6179,7 +6240,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   if (cost > player(s, playerId).mana) reject('insufficient_mana', 'Cannot pay aggregate batch cost');
   const playedCards = choices.map(c => ({ instanceId: c.cardInstanceId, controllerId: playerId,
     cardType: definition(s, c.cardInstanceId)!.cardType, faceDown: !!c.faceDown }));
-  player(s, playerId).mana -= cost;
+  if (cost > 0) spendMana(s, playerId, cost);
   for (const c of choices) {
     moveCard(s, c.cardInstanceId, cardPlayClassification(s, c.cardInstanceId).destinationZone);
     const limit = perGamePlayLimit(definition(s, c.cardInstanceId)!);

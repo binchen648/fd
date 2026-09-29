@@ -2,7 +2,7 @@ import type { GameState } from "../schema/game";
 import type { LocationId, MapDefinition, MatchLocationConfig } from "../schema/location";
 
 import { canOccupyLocation, getLocationById } from "./map-engine";
-import { movementLockedByPersistentRule, rulerSealMovementLocked } from "./rule-overrides";
+import { movementLockedByPersistentRule, notifyManaSpent, rulerSealMovementLocked } from "./rule-overrides";
 
 const STARTING_LOCATION_BY_SEAT: Record<number, LocationId> = {
   1: "miyama_town",
@@ -156,6 +156,15 @@ export function movePlayer(state: GameState, input: MovePlayerInput): MovePlayer
       },
     }),
   };
+  if (manaSpent > 0 && nextState.abilityRuntime) {
+    // Movement cost is paid before the player leaves the origin; spend observers resolve at that exact location.
+    const movedPlayer = nextState.players.find((entry) => entry.id === input.playerId)!;
+    const destination = movedPlayer.locationId;
+    const origin = player.locationId;
+    movedPlayer.locationId = origin;
+    notifyManaSpent(nextState, input.playerId, manaSpent);
+    if (destination) movedPlayer.locationId = destination;
+  }
 
   return {
     nextState,
