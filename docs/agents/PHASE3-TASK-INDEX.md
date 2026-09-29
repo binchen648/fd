@@ -6411,3 +6411,45 @@ Acceptance synchronization:
 - sc3 remains historical FM01 preservation-only; sc1 + sc2 are the only newly creditable identities in the upcoming formal owner batch.
 - Next task is `P3-S-OWNER-TEACH-COMPLETE-MIGRATION`, containing preserved sc3 + new sc1 + sc2 together in one formal Candidate/PR/fresh R/A-sync sequence.
 - Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-teach-owner-readiness-capability-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-TEACH-COMPLETE-MIGRATION
+
+Owner: Codex S
+Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Base: `8c89f948db0edcaa8042df578410ba17a8f298b4`
+Classification: formal owner-complete migration for current owner `servant.teach`
+
+Formal owner scope:
+- `servant.teach.skill.sc-teach-1` — newly creditable;
+- `servant.teach.skill.sc-teach-2` — newly creditable;
+- `servant.teach.skill.sc-teach-3` — historical FM01 preservation-only, no duplicate credit;
+- one owner archive, one formal Candidate, one PR, one fresh R, then one A-sync/accounting transaction.
+
+Accepted prerequisite:
+- readiness PR #483 exact Candidate `964db288d809cabd9150afdcf08dc3f306b9ab4e`;
+- fresh-R verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE`;
+- canonical same-attempt bounded relay `https://github.com/binchen648/fd/pull/483#issuecomment-5883800548`;
+- exact zero-credit A-sync/formal Base `8c89f948db0edcaa8042df578410ba17a8f298b4` closes the complete currently discoverable Teach readiness gap set.
+
+Implementation/evidence:
+- canonical `data/authoring/servants/servant.teach.json` contains new sc1 + sc2 plus preserved sc3;
+- sc1 uses only accepted `battle_competition_reward_plunder` with exact authoritative-loser/top-three/remove/reorder/printed-Power-cap semantics;
+- sc2 uses only accepted `play_recorded_removed_card` with exact recorded physical-card provenance, normal cost floored to 2, ownership preservation, true-name reveal, and post-battle source removal;
+- sc3 parsed object is semantically unchanged from exact Base (`SC3_SEMANTIC_PRESERVED=True`);
+- formal credit claim is exactly `+2` only after fresh R + A-sync;
+- focused owner-complete `6/6 PASS`;
+- directly affected green set `13 files / 269 tests PASS`;
+- `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`7 masters / 12 servants / 20 events / 0 blocking issues`); generated determinism PASS; `git diff --check` PASS;
+- formal `packages/rules/src/**` production runtime delta EMPTY; no Teach identity routing, runtime source-text parsing, legacy `core.teach-*` handler, or `SkillLib` fallback added;
+- detailed result: `docs/reports/2026-09-29-p3-s-owner-teach-complete-migration-result.md`.
+
+Accounting boundary:
+- strict formal accounting remains `149/944`, remaining `795` before fresh R and A-sync;
+- no credit before exact-Candidate `MIGRATION_ACCEPTED` plus subsequent A-sync/accounting;
+- accepted synchronized outcome may add exactly sc1 + sc2 and move strict formal accounting to `151/944`, remaining `793`;
+- sc3 remains preservation-only `+0`; do not advance owners before this owner batch is reviewed and synchronized.
+
+Allowed verdicts:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `MIGRATION_BLOCKED`

@@ -7,9 +7,90 @@
   "sourcePolicy": {
     "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
     "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
-    "note": "Semantics come from accepted F1 evidence/contracts; locked Reference is used only for static card metadata."
+    "note": "Semantics come from accepted F1 evidence/contracts plus accepted PR #483 generic Teach battle-plunder/recorded-replay owner-readiness capability. Locked Reference supplies static card metadata only; legacy Teach identity handlers are not restored."
   },
   "cards": [
+    {
+      "id": "servant.teach.skill.sc-teach-1",
+      "aliases": ["sc_teach_1"],
+      "legacyId": "sc_teach_1",
+      "name": "绅士之爱",
+      "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.teach" },
+      "printedText": "被动：当你赢得一场争夺战时，你不获得竞争战果，而是选择一名该场战斗的败者并抽取其牌库顶的三张牌，然后将其中一张移除并将剩余的牌以任意顺序放回其牌堆顶。你获得X点战果，X为因此效果被移除的卡的印刷基本威力且至多为5。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "verification": { "implementationStatus": "complete" },
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[93].skills[0].text#line=1", "sha256": "c7c5ab7dddc31990dc68a5088b4f159e949791232ee8213a6f313d9b93324cb3" }
+        ],
+        "sourceReferences": [
+          { "kind": "chm", "document": "FD全卡图鉴V2.0.chm", "category": "servant/english", "page": "爱德华·蒂奇.htm", "locator": "从者/骑兵/英文版/爱德华·蒂奇.htm" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "servant", "page": "images/servants/爱德华·蒂奇.png", "locator": "servant.teach/爱德华·蒂奇" }
+        ],
+        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "sc_teach_1", "class": "Rider", "cost": 0, "basePower": 0, "legacyRequirement": 0, "typeLabel": "被动", "attributes": [] },
+        "acceptedCapability": "PR#483/964db288d809cabd9150afdcf08dc3f306b9ab4e"
+      },
+      "abilities": [
+        {
+          "id": "sc-teach-1.gentleman-love",
+          "kind": "forced_trigger",
+          "printedClause": "被动：当你赢得一场争夺战时，你不获得竞争战果，而是选择一名该场战斗的败者并抽取其牌库顶的三张牌，然后将其中一张移除并将剩余的牌以任意顺序放回其牌堆顶。你获得X点战果，X为因此效果被移除的卡的印刷基本威力且至多为5。",
+          "activation": { "trigger": "after_controller_wins_battle" },
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "battle_competition_reward_plunder", "recordKey": "servant.teach:gentleman-love", "competitionReward": "replace", "peekCount": 3, "vpCap": 5, "removedZone": "removed_from_game", "trigger": "after_controller_wins_battle" }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ]
+    },
+    {
+      "id": "servant.teach.skill.sc-teach-2",
+      "aliases": ["sc_teach_2"],
+      "legacyId": "sc_teach_2",
+      "name": "安妮女王之复仇",
+      "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.teach" },
+      "printedText": "【真名解放】\n行动阶段：打出一张你以【绅士之爱】移除的牌（若该牌魔力消耗低于2，将其增加至2）。并于战斗阶段结束后将此牌移除游戏。",
+      "cardFace": { "typeLabel": "力量/宝具", "attributes": ["力量", "宝具"], "cost": 4, "basePower": 8 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [{ "type": "skill_zone_mana_at_least", "value": 8 }],
+      "verification": { "implementationStatus": "complete" },
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[93].skills[1].text#line=1", "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c" },
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[93].skills[1].text#line=2", "sha256": "2872e3857b9629aad26a9bbad7a0a43b00812bf914a0684ed70ffca1f2b861cf" }
+        ],
+        "sourceReferences": [
+          { "kind": "chm", "document": "FD全卡图鉴V2.0.chm", "category": "servant/english", "page": "爱德华·蒂奇.htm", "locator": "从者/骑兵/英文版/爱德华·蒂奇.htm" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "servant", "page": "images/servants/爱德华·蒂奇.png", "locator": "servant.teach/爱德华·蒂奇" }
+        ],
+        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "sc_teach_2", "class": "Rider", "cost": 4, "basePower": 8, "legacyRequirement": 8, "typeLabel": "力量/宝具", "attributes": ["力量", "宝具"] },
+        "canonicalSkillZoneManaRequirement": { "value": 8, "authority": "final_rules_9.4", "note": "Legacy requirement already equals the final skill-zone threshold." },
+        "acceptedCapability": "PR#483/964db288d809cabd9150afdcf08dc3f306b9ab4e"
+      },
+      "abilities": [
+        {
+          "id": "sc-teach-2.queen-anne-revenge",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：打出一张你以【绅士之爱】移除的牌（若该牌魔力消耗低于2，将其增加至2）。并于战斗阶段结束后将此牌移除游戏。",
+          "activation": { "phase": "action", "opens": "controller_action_window", "requiresSourceState": "active" },
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "play_recorded_removed_card", "recordKey": "servant.teach:gentleman-love", "sourceZone": "removed_from_game", "minimumManaCost": 2, "removeSourceAfterBattle": true }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": { "revealsTrueName": true, "revealTiming": "on_use_declared", "revealScope": "servant_package" },
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ]
+    },
     {
       "id": "servant.teach.skill.sc-teach-3",
       "aliases": [
