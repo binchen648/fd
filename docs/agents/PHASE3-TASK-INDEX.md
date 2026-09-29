@@ -6591,3 +6591,49 @@ Acceptance synchronization:
 - Mechanical next owner is `servant.tezcat`; frozen scope is sc1 + sc2 + sc3.
 - Owner-readiness-first remains mandatory before any Tezcat formal consumer migration.
 - Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-owner-tesla-acceptance-synchronization.md`.
+
+## TASK P3-B-TEZCAT-OWNER-READINESS-CAPABILITY
+
+Owner: Codex B
+Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Base: `bbf17412961e24b1cb6453e7b406bf9522dc4db6`
+Classification: complete currently discoverable Tezcat owner-readiness/capability batch, permanently zero migration credit
+
+Frozen owner scope:
+- `servant.tezcat.skill.sc-tezcat-1`;
+- `servant.tezcat.skill.sc-tezcat-2`;
+- `servant.tezcat.skill.sc-tezcat-3`.
+
+Source authority:
+- accepted F1/source-evidence closure ends at independent review `59f145434695d29bdd17e4cb3adc887e84182377`;
+- all three Tezcat identities are source-grounded from `Fate_Domination-开发版/batch_caster_assassin.js`;
+- locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9` remains static/observed metadata only and is not semantic authority.
+
+Readiness gap set closed in one compatible identity-free family:
+- sc1: exact required-additional sibling-attack modifier: every other jointly played attack gets +2 paid mana cost and +1 current-round Power;
+- sc2: exact once-per-round same-battlefield turn-order optional paid attack transaction with authenticated decision/restore state, actual-participant battle settlement, loser -2 VP, and conditional controller +2 VP;
+- sc3: exact one ordinary Command Seal card-play cost plus exact combat defeat of all eligible active same-battlefield opponents;
+- all privileged nodes are whole-ability exact/fail-closed and carry no Tezcat/card-name/printed-text/legacy handler identity routing.
+
+Verification:
+- focused Tezcat readiness `7/7 PASS`;
+- affected green set `8 files / 114 tests PASS` including full MatchSession `33/33`, authoring interpreter `38/38`, required-additional play `8/8`, attack-play classifier `11/11`, card-action play `4/4`, game-loop action play `9/9`, and fixed-controller Command Seal component `4/4`;
+- `FD_TOOLCHAIN_OK`;
+- typecheck PASS;
+- content validate/compile PASS: `7 masters / 12 servants / 20 events / 0 blocking issues`;
+- generated-content determinism PASS;
+- `data/authoring/**` Base..Candidate delta EMPTY;
+- production identity audit CLEAN;
+- `git diff --check` PASS;
+- detailed result: `docs/reports/2026-09-29-p3-b-tezcat-owner-readiness-capability-result.md`.
+
+Accounting / next step:
+- strict formal accounting remains `154/944`, remaining `790`;
+- readiness is permanently zero-credit;
+- exact Candidate requires one fresh independent R;
+- ACCEPTED -> one A-sync/full-owner rescan, remain on `servant.tezcat`; only then, if no new gap exists, create one formal owner-complete sc1 + sc2 + sc3 migration Candidate;
+- NEEDS_REVISION -> close all exact findings in one successor Candidate, then one fresh R.
+
+Allowed verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`

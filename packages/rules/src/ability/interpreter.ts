@@ -91,6 +91,14 @@ import {
   isGrantSameLocationOpponentsManaEffect, isLoseAllManaRoundPowerEffect,
 } from './mana-transaction-capability';
 import {
+  CARD_PLAY_COMMAND_SEAL_COST_EFFECT, DEFEAT_ALL_ENGAGED_OPPONENTS_EFFECT,
+  JOINT_OTHER_ATTACK_MODIFIER_EFFECT, SAME_BATTLEFIELD_TURN_ORDER_ATTACK_EFFECT,
+  cardPlayCommandSealCost, isAcceptedCardPlayCommandSealCostAbility,
+  isAcceptedDefeatAllEngagedOpponentsAbility, isAcceptedJointOtherAttackModifierAbility,
+  isAcceptedSameBattlefieldTurnOrderAttackAbility, isDefeatAllEngagedOpponentsEffect,
+  isSameBattlefieldTurnOrderAttackEffect, jointOtherAttackModifier,
+} from './joint-battlefield-attack-capability';
+import {
   containsDeckRecycleReplayGrowthPrivilegedNode,
   isAcceptedDeckRecycleReplayGrowthAbility,
   isAcceptedAutomaticRecycleKeepGainCounterAbility,
@@ -139,7 +147,8 @@ import {
 import type {
   AbilityCommand, AbilityDefinitionPack, AbilityEvent, AbilityPlayerView, AbilityRuntime, AuthoringAbility, AuthoringCard,
   BattleResult, BattleResultData, CalculationLine, CardPlayClassification, CardRuntimeState, DispatchResult, EffectContext, ExecutableCardDefinition,
-  LegalAction, OngoingEffect, PendingDecision, PendingOpponentCloseToOne, PendingBattleCloseDrawPlayTransaction, PlayerId, RuleNode, TriggeredAbility,
+  LegalAction, OngoingEffect, PendingDecision, PendingOpponentCloseToOne, PendingBattleCloseDrawPlayTransaction,
+  PendingBattlefieldAttackOfferTransaction, PlayerId, RuleNode, TriggeredAbility,
   AbilityInteractionClassification,
   PlayCardAction,
 } from './types';
@@ -1579,6 +1588,16 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsBattlePlunderReplayPrivilegedNode(a) && !isAcceptedBattlePlunderReplayAbility(a)) return false;
   if (isAcceptedBattleCompetitionPlunderAbility(a) && !trustedBattlePlunderFacts(s, card(s, sourceId).controllerPlayerId, event)) return false;
   if (isAcceptedPlayRecordedRemovedCardAbility(a) && !canActivateRecordedRemovedReplay(s, sourceId, a)) return false;
+  if (isAcceptedSameBattlefieldTurnOrderAttackAbility(a)) {
+    const controller = s.players.find((candidate) => candidate.id === card(s, sourceId).controllerPlayerId && candidate.status === 'active');
+    if (!controller?.locationId || !isBattlefield(s, controller.locationId) || runtime(s).pendingBattlefieldAttackOfferTransaction) return false;
+  }
+  if (isAcceptedDefeatAllEngagedOpponentsAbility(a)) {
+    const controller = s.players.find((candidate) => candidate.id === card(s, sourceId).controllerPlayerId && candidate.status === 'active');
+    if (!controller?.locationId || !isBattlefield(s, controller.locationId) || !s.players.some((candidate) =>
+      candidate.id !== controller.id && candidate.status === 'active' && candidate.locationId === controller.locationId &&
+      !playerIgnoresAbilityFromController(s, candidate.id, controller.id) && !playerIgnoresDefeatEffectAtLocation(s, candidate.id, controller.locationId!))) return false;
+  }
   if (isAcceptedSpendCounterIgnoreBattleLossAbility(a)) {
     const key = str(a.effects[0]?.counterKey);
     if (structuredCounterValue(s, card(s, sourceId).controllerPlayerId, key) < 1) return false;
@@ -1777,6 +1796,8 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   if (!requirements.every(r => condition(s, context(s, sourceId, ''), r))) return 'play_requirement';
   
   if (!faceDown && !ignoreManaCost && player(s, p).mana < effectiveCardPlayCost(s, p, sourceId)) return 'insufficient_mana';
+  const sealCost = !faceDown ? cardPlayCommandSealCost(d) : undefined;
+  if (sealCost && Number((player(s, p) as unknown as { commandSpells?: number }).commandSpells ?? 3) < sealCost.amount) return 'insufficient_command_seals';
   const unconfirmed = d.abilities.find(a => ['unsupported', 'text_unconfirmed'].includes(a.execution.mode));
   if (unconfirmed) return unconfirmed.execution.mode;
   if (!faceDown) {
@@ -2729,6 +2750,33 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       }
       break;
     }
+    case JOINT_OTHER_ATTACK_MODIFIER_EFFECT:
+      if (!isAcceptedJointOtherAttackModifierAbility(a)) reject('unsupported', 'Unsupported joint-play sibling modifier semantic');
+      reject('resolution_failed', 'Joint-play sibling modifier is a card-play marker and is not directly executable');
+    case CARD_PLAY_COMMAND_SEAL_COST_EFFECT:
+      if (!isAcceptedCardPlayCommandSealCostAbility(a)) reject('unsupported', 'Unsupported card-play Command Seal cost semantic');
+      reject('resolution_failed', 'Card-play Command Seal cost is a card-play marker and is not directly executable');
+    case SAME_BATTLEFIELD_TURN_ORDER_ATTACK_EFFECT: {
+      if (!isSameBattlefieldTurnOrderAttackEffect(effect) || !isAcceptedSameBattlefieldTurnOrderAttackAbility(a)) {
+        reject('unsupported', 'Unsupported same-battlefield turn-order attack semantic');
+      }
+      startBattlefieldAttackOffer(s, ctx, a);
+      break;
+    }
+    case DEFEAT_ALL_ENGAGED_OPPONENTS_EFFECT: {
+      if (!isDefeatAllEngagedOpponentsEffect(effect) || !isAcceptedDefeatAllEngagedOpponentsAbility(a)) {
+        reject('unsupported', 'Unsupported engaged-opponent defeat semantic');
+      }
+      if (!p.locationId || !isBattlefield(s, p.locationId)) reject('invalid_state', 'Engaged-opponent defeat requires a controller battlefield');
+      for (const target of s.players) {
+        if (target.id === p.id || target.status !== 'active' || target.locationId !== p.locationId ||
+            playerIgnoresAbilityFromController(s, target.id, p.id) || playerIgnoresDefeatEffectAtLocation(s, target.id, p.locationId)) continue;
+        (r.battleDefeatRoundByPlayer ??= {})[target.id] = s.round.roundNumber;
+        r.events.push({ type: 'player_defeated_by_effect', playerId: target.id, controllerId: p.id,
+          sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+      }
+      break;
+    }
     case 'adjust_mana': {
       const amount = numeric(s, ctx, effect.amount);
       if (amount > 0) grantMana(s, p.id, amount, { source: 'generic' });
@@ -3004,6 +3052,23 @@ function isDeckRecycleReplayGrowthPendingDecisionLiveValid(s: GameState, decisio
     exactPlayerArray(decision.candidates, meta.keptCardIds) && meta.constraints.targetKind === 'card' &&
     meta.constraints.min === meta.keptCardIds.length && meta.constraints.max === meta.keptCardIds.length;
 }
+function isBattlefieldAttackOfferPendingDecisionLiveValid(s: GameState, decision: PendingDecision): boolean {
+  const meta = decision.interaction; const tx = runtime(s).pendingBattlefieldAttackOfferTransaction;
+  if (!meta || meta.kind !== 'battlefield_attack_offer_choice_v1' || !tx || !battlefieldAttackOfferTransactionLiveValid(s, tx)) return false;
+  const currentPlayerId = tx.orderPlayerIds[tx.nextIndex];
+  const candidates = currentPlayerId ? battlefieldAttackOfferCandidateIds(s, currentPlayerId) : [];
+  const count = node(decision.target.count);
+  return currentPlayerId === meta.decisionPlayerId && decision.controllerId === meta.decisionPlayerId &&
+    decision.context.controllerId === meta.initiatingControllerId && decision.context.sourceCardId === meta.sourceCardInstanceId &&
+    decision.context.abilityId === meta.abilityId && meta.initiatingControllerId === tx.controllerId &&
+    meta.sourceCardInstanceId === tx.sourceCardId && meta.abilityId === tx.abilityId && meta.battlefieldId === tx.battlefieldId &&
+    meta.round === tx.round && meta.template === 'target' && meta.visibility === 'owner_only' && meta.cancelPolicy === 'forbidden' &&
+    meta.createdRevision === runtime(s).revision && meta.continuationRef === `${decision.id}:continuation` &&
+    meta.constraints.kind === 'target' && meta.constraints.targetKind === 'card' && meta.constraints.min === 0 && meta.constraints.max === 1 &&
+    meta.constraints.distinct === true && decision.target.id === 'battlefield_attack_offer_card' && decision.target.type === 'card_instance' &&
+    count.min === 0 && count.max === 1 && decision.min === 0 && decision.max === 1 && decision.remainingEffects.length === 0 &&
+    exactPlayerArray(meta.candidateIds, candidates) && exactPlayerArray(decision.candidates, candidates);
+}
 export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decision: PendingDecision): boolean {
   if (decision.interaction && ['battle_luck_discard_choice_v1','battle_opponent_close_reward_choice_v1','battle_drawn_card_optional_play_v1'].includes(decision.interaction.kind)) {
     return isBattleCloseDrawPlayPendingDecisionLiveValid(s, decision);
@@ -3014,6 +3079,7 @@ export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decisi
   if (decision.interaction && ['battle_plunder_choice_v1','recorded_removed_replay_choice_v1'].includes(decision.interaction.kind)) {
     return isBattlePlunderReplayPendingDecisionLiveValid(s, decision);
   }
+  if (decision.interaction?.kind === 'battlefield_attack_offer_choice_v1') return isBattlefieldAttackOfferPendingDecisionLiveValid(s, decision);
   if (decision.interaction) return true;
   try {
     if (decision.controllerId !== decision.context.controllerId) return false;
@@ -3059,6 +3125,19 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState):
     if (battleTx !== undefined) {
       if (!battleCloseDrawPlayTransactionLiveValid(s, battleTx) || !r.pendingDecision || !isBattleCloseDrawPlayPendingDecisionLiveValid(s, r.pendingDecision)) return false;
     } else if (r.pendingDecision?.interaction && ['battle_luck_discard_choice_v1','battle_opponent_close_reward_choice_v1','battle_drawn_card_optional_play_v1'].includes(r.pendingDecision.interaction.kind)) return false;
+    const offerTx = r.pendingBattlefieldAttackOfferTransaction;
+    if (offerTx !== undefined) {
+      if (!battlefieldAttackOfferTransactionLiveValid(s, offerTx)) return false;
+      if (r.pendingDecision?.interaction?.kind === 'battlefield_attack_offer_choice_v1' &&
+          !isBattlefieldAttackOfferPendingDecisionLiveValid(s, r.pendingDecision)) return false;
+    } else if (r.pendingDecision?.interaction?.kind === 'battlefield_attack_offer_choice_v1') return false;
+    if (!(r.battlefieldAttackOfferSettlements ?? []).every((entry) => {
+      const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
+      const ability = source ? restoredAbility(s, entry.sourceCardId, entry.abilityId) : undefined;
+      return !!source && source.ownerPlayerId === entry.controllerId && !!ability && isAcceptedSameBattlefieldTurnOrderAttackAbility(ability) &&
+        entry.round === s.round.roundNumber && locationIds.has(entry.battlefieldId) && hasPlayers(entry.playedPlayerIds) &&
+        entry.playedPlayerIds.length > 0;
+    })) return false;
     if (!battleCloseDrawImmediatePlayHistoryValidForRestore(s)) return false;
     if (r.recordedRemovedCards !== undefined && Object.entries(r.recordedRemovedCards).some(([instanceId, record]) =>
       instanceId !== record.cardInstanceId || !s.players.some((candidate) => candidate.id === record.controllerId) ||
@@ -3384,6 +3463,126 @@ function closeOpponentCardForCloseToOne(s: GameState, decisionPlayerId: string, 
     state.faceDown = true;
     target.visibility = { scope: 'owner_only', ownerPlayerId: target.ownerPlayerId };
   }
+}
+
+function battlefieldAttackOfferOrder(s: GameState, battlefieldId: string): PlayerId[] {
+  const active = s.players.filter((candidate) => candidate.status === 'active' && candidate.locationId === battlefieldId)
+    .sort((left, right) => left.seat - right.seat);
+  const start = active.findIndex((candidate) => candidate.seat === s.round.prioritySeat);
+  return start < 0 ? active.map((candidate) => candidate.id)
+    : [...active.slice(start), ...active.slice(0, start)].map((candidate) => candidate.id);
+}
+function battlefieldAttackOfferCandidateIds(s: GameState, playerId: PlayerId): string[] {
+  return s.cards.filter((candidate) => {
+    if (candidate.controllerPlayerId !== playerId || !['hand', 'skill'].includes(candidate.zone)) return false;
+    const definition = runtime(s).pack.cards[candidate.definitionId];
+    if (!definition || hasRequiredAdditionalPlayMarker(definition) || cardPlayClassification(s, candidate.instanceId).playKind !== 'attack') return false;
+    return !playFailure(s, playerId, candidate.instanceId, false, true, true, true, false, false, ['hand', 'skill']);
+  }).map((candidate) => candidate.instanceId).sort();
+}
+function battlefieldAttackOfferTransactionLiveValid(s: GameState, tx: PendingBattlefieldAttackOfferTransaction): boolean {
+  const r = runtime(s); const source = s.cards.find((candidate) => candidate.instanceId === tx.sourceCardId);
+  const controller = s.players.find((candidate) => candidate.id === tx.controllerId);
+  const ability = source ? r.pack.cards[source.definitionId]?.abilities.find((candidate) => candidate.id === tx.abilityId) : undefined;
+  return !!source && !!controller && !!ability && isAcceptedSameBattlefieldTurnOrderAttackAbility(ability) &&
+    source.ownerPlayerId === tx.controllerId && source.controllerPlayerId === tx.controllerId &&
+    r.cardState[source.instanceId]?.active === true && r.cardState[source.instanceId]?.faceDown === false &&
+    controller.status === 'active' && controller.locationId === tx.battlefieldId && isBattlefield(s, tx.battlefieldId) &&
+    tx.round === s.round.roundNumber && Number.isSafeInteger(tx.nextIndex) && tx.nextIndex >= 0 && tx.nextIndex <= tx.orderPlayerIds.length &&
+    new Set(tx.orderPlayerIds).size === tx.orderPlayerIds.length && new Set(tx.playedPlayerIds).size === tx.playedPlayerIds.length &&
+    tx.playedPlayerIds.every((id) => tx.orderPlayerIds.includes(id));
+}
+function battlefieldAttackOfferContext(tx: PendingBattlefieldAttackOfferTransaction): EffectContext {
+  return { controllerId: tx.controllerId, sourceCardId: tx.sourceCardId, abilityId: tx.abilityId, variables: {}, selections: {} };
+}
+function finishBattlefieldAttackOffer(s: GameState, tx: PendingBattlefieldAttackOfferTransaction): void {
+  const r = runtime(s);
+  if (tx.playedPlayerIds.length > 0) {
+    const settlements = r.battlefieldAttackOfferSettlements ??= [];
+    settlements.push({ controllerId: tx.controllerId, sourceCardId: tx.sourceCardId, abilityId: tx.abilityId,
+      round: tx.round, battlefieldId: tx.battlefieldId, playedPlayerIds: [...tx.playedPlayerIds] });
+  }
+  delete r.pendingBattlefieldAttackOfferTransaction;
+}
+function stageNextBattlefieldAttackOfferDecision(s: GameState): void {
+  const r = runtime(s); const tx = r.pendingBattlefieldAttackOfferTransaction;
+  if (!tx || r.pendingDecision || r.responseWindows.length || r.hostRequests.length) return;
+  if (!battlefieldAttackOfferTransactionLiveValid(s, tx)) reject('resolution_failed', 'Battlefield attack-offer transaction lost authoritative provenance');
+  while (tx.nextIndex < tx.orderPlayerIds.length) {
+    const decisionPlayerId = tx.orderPlayerIds[tx.nextIndex]!;
+    const decisionPlayer = s.players.find((candidate) => candidate.id === decisionPlayerId && candidate.status === 'active' && candidate.locationId === tx.battlefieldId);
+    if (!decisionPlayer) { tx.nextIndex++; continue; }
+    const candidates = battlefieldAttackOfferCandidateIds(s, decisionPlayerId);
+    if (candidates.length === 0) { tx.nextIndex++; continue; }
+    const id = nextId(s, 'battlefield-attack-offer');
+    r.pendingDecision = { id, controllerId: decisionPlayerId,
+      target: { id: 'battlefield_attack_offer_card', type: 'card_instance', count: { min: 0, max: 1 } },
+      candidates, min: 0, max: 1, context: battlefieldAttackOfferContext(tx), remainingEffects: [], interaction: {
+        kind: 'battlefield_attack_offer_choice_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+        sourceCardInstanceId: tx.sourceCardId, abilityId: tx.abilityId, createdRevision: r.revision + 1,
+        continuationRef: `${id}:continuation`, initiatingControllerId: tx.controllerId, decisionPlayerId,
+        battlefieldId: tx.battlefieldId, round: tx.round, candidateIds: [...candidates],
+        constraints: { kind: 'target', targetKind: 'card', min: 0, max: 1, distinct: true },
+      } };
+    return;
+  }
+  finishBattlefieldAttackOffer(s, tx);
+}
+function resumeBattlefieldAttackOfferAfterNestedWork(s: GameState): void {
+  const r = runtime(s); const tx = r.pendingBattlefieldAttackOfferTransaction;
+  if (!tx || r.pendingDecision || r.responseWindows.length || r.hostRequests.length) return;
+  stageNextBattlefieldAttackOfferDecision(s);
+}
+function startBattlefieldAttackOffer(s: GameState, ctx: EffectContext, ability: AuthoringAbility): void {
+  const r = runtime(s); const source = s.cards.find((candidate) => candidate.instanceId === ctx.sourceCardId);
+  const controller = s.players.find((candidate) => candidate.id === ctx.controllerId && candidate.status === 'active');
+  if (!source || !controller?.locationId || !isBattlefield(s, controller.locationId) || !isAcceptedSameBattlefieldTurnOrderAttackAbility(ability) ||
+      source.ownerPlayerId !== ctx.controllerId || source.controllerPlayerId !== ctx.controllerId ||
+      r.cardState[source.instanceId]?.active !== true || r.cardState[source.instanceId]?.faceDown !== false ||
+      r.pendingBattlefieldAttackOfferTransaction || r.pendingDecision || r.responseWindows.length || r.hostRequests.length) {
+    reject('resolution_failed', 'Battlefield attack-offer preflight failed');
+  }
+  const orderPlayerIds = battlefieldAttackOfferOrder(s, controller.locationId);
+  const tx: PendingBattlefieldAttackOfferTransaction = { controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+    round: s.round.roundNumber, battlefieldId: controller.locationId, orderPlayerIds, nextIndex: 0, playedPlayerIds: [] };
+  r.pendingBattlefieldAttackOfferTransaction = tx;
+  stageNextBattlefieldAttackOfferDecision(s);
+}
+function settleBattlefieldAttackOffers(s: GameState, event: AbilityEvent): void {
+  const r = runtime(s);
+  if (event.type === 'round_end') {
+    r.battlefieldAttackOfferSettlements = (r.battlefieldAttackOfferSettlements ?? []).filter((entry) => entry.round > s.round.roundNumber);
+    return;
+  }
+  if (event.type !== 'after_battle_result_determined' || !event.battlefieldId || !Array.isArray(event.battleParticipantIds) ||
+      !Array.isArray(event.battleResult?.loserIds)) return;
+  const settlements = r.battlefieldAttackOfferSettlements ?? [];
+  const matching = settlements.filter((entry) => entry.round === s.round.roundNumber && entry.battlefieldId === event.battlefieldId);
+  if (!matching.length) return;
+  const participants = new Set(event.battleParticipantIds); const losers = new Set(event.battleResult.loserIds);
+  for (const entry of matching) {
+    const source = s.cards.find((candidate) => candidate.instanceId === entry.sourceCardId);
+    const ability = source ? r.pack.cards[source.definitionId]?.abilities.find((candidate) => candidate.id === entry.abilityId) : undefined;
+    if (!source || !ability || !isAcceptedSameBattlefieldTurnOrderAttackAbility(ability) || source.ownerPlayerId !== entry.controllerId) {
+      reject('resolution_failed', 'Battlefield attack-offer settlement lost source provenance');
+    }
+    let opponentLostVp = false;
+    for (const playerId of entry.playedPlayerIds) {
+      if (!participants.has(playerId) || !losers.has(playerId)) continue;
+      const target = player(s, playerId); const before = target.vp; target.vp = Math.max(0, target.vp - 2);
+      const delta = target.vp - before;
+      if (delta !== 0) r.events.push({ type: 'victory_points_adjusted', playerId, controllerId: entry.controllerId,
+        sourceCardId: entry.sourceCardId, abilityId: entry.abilityId, delta, before, after: target.vp, triggerEventId: event.id });
+      if (playerId !== entry.controllerId && delta < 0) opponentLostVp = true;
+    }
+    if (opponentLostVp) {
+      const controller = player(s, entry.controllerId); const before = controller.vp; controller.vp += 2;
+      r.events.push({ type: 'victory_points_adjusted', playerId: controller.id, sourceCardId: entry.sourceCardId,
+        abilityId: entry.abilityId, delta: 2, before, after: controller.vp, triggerEventId: event.id });
+    }
+  }
+  const settledSet = new Set(matching);
+  r.battlefieldAttackOfferSettlements = settlements.filter((entry) => !settledSet.has(entry));
 }
 
 function battleCloseDrawPlayLuckCardIds(s: GameState, controllerId: PlayerId): string[] {
@@ -5315,6 +5514,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   if (!event.id) reject('invalid_event', 'Events require stable ids');
   r.processedEvents.push(event.id);
   rememberTrustedBattleResultSnapshot(r, event);
+  settleBattlefieldAttackOffers(s, event);
   settlePendingRulerSealRewards(s, event);
   if (event.type === 'round_end') {
     for (const candidate of s.players) {
@@ -5599,6 +5799,36 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const selected = command.selectedIds;
       if (d.interaction) {
         const meta = d.interaction;
+        if (meta.kind === 'battlefield_attack_offer_choice_v1') {
+          const tx = r.pendingBattlefieldAttackOfferTransaction;
+          const currentPlayerId = tx?.orderPlayerIds[tx.nextIndex];
+          const currentCandidates = currentPlayerId ? battlefieldAttackOfferCandidateIds(s, currentPlayerId) : [];
+          const count = node(d.target.count);
+          if (!tx || !battlefieldAttackOfferTransactionLiveValid(s, tx) || currentPlayerId !== meta.decisionPlayerId ||
+              d.controllerId !== meta.decisionPlayerId || playerId !== meta.decisionPlayerId ||
+              d.context.controllerId !== meta.initiatingControllerId || d.context.sourceCardId !== meta.sourceCardInstanceId ||
+              d.context.abilityId !== meta.abilityId || meta.initiatingControllerId !== tx.controllerId ||
+              meta.sourceCardInstanceId !== tx.sourceCardId || meta.abilityId !== tx.abilityId ||
+              meta.battlefieldId !== tx.battlefieldId || meta.round !== tx.round ||
+              meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
+              meta.createdRevision !== r.revision || meta.continuationRef !== `${d.id}:continuation` ||
+              meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'card' || meta.constraints.min !== 0 ||
+              meta.constraints.max !== 1 || meta.constraints.distinct !== true || d.target.id !== 'battlefield_attack_offer_card' ||
+              d.target.type !== 'card_instance' || count.min !== 0 || count.max !== 1 || d.min !== 0 || d.max !== 1 ||
+              d.remainingEffects.length !== 0 || !exactPlayerArray(meta.candidateIds, currentCandidates) ||
+              !exactPlayerArray(d.candidates, currentCandidates) || !Array.isArray(selected) || selected.length > 1 ||
+              new Set(selected).size !== selected.length || selected.some((id) => !currentCandidates.includes(id))) {
+            reject('resolution_failed', 'Corrupt or stale battlefield attack-offer interaction state');
+          }
+          delete r.pendingDecision;
+          if (selected.length === 1) {
+            playBatch(s, meta.decisionPlayerId, [{ type: 'play_card', cardInstanceId: selected[0]! }], 'effect', false, ['hand', 'skill']);
+            tx.playedPlayerIds.push(meta.decisionPlayerId);
+          }
+          tx.nextIndex++;
+          stageNextBattlefieldAttackOfferDecision(s);
+          break;
+        }
         if (meta.kind === 'automatic_recycle_keep_v1') {
           const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
           const ability = source ? abilityDefinition(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
@@ -6244,7 +6474,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
     }
     default: reject('illegal_action', 'Unsupported client command');
   }
-  cleanupOngoing(s); checkFormulaTriggers(s); resumeBattleCloseDrawPlayAfterNestedWork(s);
+  cleanupOngoing(s); checkFormulaTriggers(s); resumeBattleCloseDrawPlayAfterNestedWork(s); resumeBattlefieldAttackOfferAfterNestedWork(s);
 }
 /** All eligibility/costs are checked against the pre-payment state; all cards activate before triggers. */
 function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false, allowedSourceZones: readonly string[] = ['hand', 'skill'], minimumManaCost = 0): void {
@@ -6261,20 +6491,46 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   if (quota === 'regular' && attacksDeclaredThisRound(s, playerId) + regularAttackChoices > attackPlayAllowance(s, playerId)) {
     reject('attack_play_limit_reached', 'Attack play limit reached for this round');
   }
+  const jointSources = choices.filter((choice) => !choice.faceDown).flatMap((choice) => {
+    const def = definition(s, choice.cardInstanceId);
+    const modifier = jointOtherAttackModifier(def);
+    return modifier && hasRequiredAdditionalPlayMarker(def) && entersAttackArea(s, choice.cardInstanceId)
+      ? [{ sourceCardId: choice.cardInstanceId, abilityId: modifier.abilityId, manaCostIncrease: modifier.manaCostIncrease, powerBonus: modifier.powerBonus }]
+      : [];
+  });
+  const jointCostIncreaseByCard = new Map<string, number>();
+  for (const choice of choices) {
+    if (choice.faceDown || !entersAttackArea(s, choice.cardInstanceId)) continue;
+    const increase = jointSources.filter((source) => source.sourceCardId !== choice.cardInstanceId)
+      .reduce((sum, source) => sum + source.manaCostIncrease, 0);
+    if (increase > 0) jointCostIncreaseByCard.set(choice.cardInstanceId, increase);
+  }
   let cost = 0;
+  let commandSealCost = 0;
   const paidCostByCard = new Map<string, number>();
   for (const c of choices) {
     const allowRequiredAdditional = quota === 'regular' && requiredAdditionalIds.has(c.cardInstanceId) && regularAttackChoices > 0;
     const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost, allowedSourceZones);
     if (failure) reject(failure, 'Card cannot be played in this batch');
-    const cardCost = c.faceDown || waiveManaCost ? 0 : Math.max(minimumManaCost, effectiveCardPlayCost(s, playerId, c.cardInstanceId));
+    const cardCost = c.faceDown || waiveManaCost ? 0 : Math.max(minimumManaCost,
+      effectiveCardPlayCost(s, playerId, c.cardInstanceId) + (jointCostIncreaseByCard.get(c.cardInstanceId) ?? 0));
     paidCostByCard.set(c.cardInstanceId, cardCost);
     cost += cardCost;
+    if (!c.faceDown) commandSealCost += cardPlayCommandSealCost(definition(s, c.cardInstanceId))?.amount ?? 0;
   }
   if (cost > player(s, playerId).mana) reject('insufficient_mana', 'Cannot pay aggregate batch cost');
+  const sealCarrier = player(s, playerId) as unknown as { commandSpells?: number };
+  const availableSeals = Number(sealCarrier.commandSpells ?? 3);
+  if (!Number.isSafeInteger(availableSeals) || availableSeals < commandSealCost) reject('insufficient_command_seals', 'Cannot pay aggregate Command Seal card-play cost');
   const playedCards = choices.map(c => ({ instanceId: c.cardInstanceId, controllerId: playerId,
     cardType: definition(s, c.cardInstanceId)!.cardType, faceDown: !!c.faceDown }));
   if (cost > 0) spendMana(s, playerId, cost);
+  if (commandSealCost > 0) {
+    const before = availableSeals; const after = before - commandSealCost;
+    sealCarrier.commandSpells = after;
+    runtime(s).events.push({ type: 'command_seals_adjusted', playerId, resource: 'command_seals', delta: -commandSealCost, before, after });
+    if (before > 0 && after === 0) processEvent(s, { id: nextId(s, 'empty-seals-card-play'), type: 'after_controller_loses_all_command_seals', playerId });
+  }
   for (const c of choices) {
     moveCard(s, c.cardInstanceId, cardPlayClassification(s, c.cardInstanceId).destinationZone);
     const limit = perGamePlayLimit(definition(s, c.cardInstanceId)!);
@@ -6321,6 +6577,18 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   counters.cardsPlayedByPlayer[playerId] = (counters.cardsPlayedByPlayer[playerId] ?? 0) + choices.length;
   if (quota === 'regular') {
     counters.attacksDeclaredByPlayer[playerId] = (counters.attacksDeclaredByPlayer[playerId] ?? 0) + regularAttackChoices;
+  }
+  for (const source of jointSources) {
+    for (const target of choices) {
+      if (target.faceDown || target.cardInstanceId === source.sourceCardId || !entersAttackArea(s, target.cardInstanceId)) continue;
+      const physical = card(s, target.cardInstanceId) as unknown as { powerModifiers?: Array<Record<string, unknown>> };
+      physical.powerModifiers ??= [];
+      const id = `joint-play:${s.round.roundNumber}:${source.sourceCardId}:${source.abilityId}:${target.cardInstanceId}`;
+      if (!physical.powerModifiers.some((modifier) => modifier.id === id)) physical.powerModifiers.push({
+        id, sourceId: source.sourceCardId, controllerId: playerId, kind: 'add', value: source.powerBonus,
+        lifecycle: 'until_leaves_active_area', round: s.round.roundNumber,
+      });
+    }
   }
   for (const c of choices.filter(c => !c.faceDown)) {
     processEvent(s, { id: nextId(s, 'declare'), type: 'on_use_declared', playerId, sourceCardId: c.cardInstanceId, playedCards });
