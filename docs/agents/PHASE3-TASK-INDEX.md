@@ -6334,3 +6334,13 @@ Allowed verdicts:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+
+Acceptance synchronization:
+- PR #482 exact Candidate `dafdcba73248a9f5d4cd13065e32e813c7f91346` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/482#issuecomment-5882815287`.
+- Exact-Candidate Phase 3 Pre-Review Gate `36514612258` succeeded.
+- Accepted owner-complete scope is exactly Tamamo sc1 + sc2 + sc3; all three are newly creditable.
+- Formal accounting moves `146/944 -> 149/944`; remaining `795`; readiness credit remains `0`.
+- Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-owner-tamamo-acceptance-synchronization.md`.
+- Mechanical first-occurrence owner ordering selects `servant.teach` next: Tamamo index `240`, Teach index `241` of `251` owners.
+- Owner-readiness-first remains mandatory: complete one full Teach preflight before any Teach formal consumer migration.
