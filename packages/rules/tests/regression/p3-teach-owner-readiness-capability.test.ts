@@ -128,6 +128,26 @@ describe('P3 Teach owner-readiness generic battle-plunder/replay capability', ()
     expect(adjustment('p1', 'location_vp')).toBeGreaterThan(0);
   });
 
+  it('keeps competition VP when every contested participant is a winner and no authoritative loser exists', () => {
+    const { state } = setup(); state.round.activePhase = 'battle';
+    const location = state.map.locations.find((entry) => entry.id === 'miyama_town')! as any;
+    location.rewardHooks = ['battle_rewards', 'competition_rewards', 'location_rewards']; location.vpRewardRules = { battle: 2, competition: 3, location: 4 };
+    const resolved = rules.resolveBattlefield(state, { battlefieldId: 'miyama_town', participants: [
+      { playerId: 'p1', totalPower: 5 }, { playerId: 'p2', totalPower: 5 },
+    ] }).nextState;
+    const result = resolved.battleResults.at(-1)!;
+    const adjustment = (playerId: string, source: string) => result.vpAdjustments?.find((entry) => entry.playerId === playerId && entry.source === source)?.delta ?? 0;
+    expect(result.winnerPlayerIds).toEqual(['p1', 'p2']);
+    expect(adjustment('p1', 'competition_vp')).toBeGreaterThan(0);
+    expect(resolved.abilityRuntime!.pendingDecision).toBeUndefined();
+    expect(() => rules.processAbilityEvent(resolved, {
+      id: 'all-winner-result', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:tie', battleId: 'battle-tie', resultId: 'all-winner-result',
+      battlefieldId: 'miyama_town', battleParticipantIds: ['p1', 'p2'], battleParticipantPowers: { p1: 5, p2: 5 },
+      battleResult: { winners: ['p1', 'p2'], loserIds: [] },
+    })).not.toThrow();
+    expect(resolved.abilityRuntime!.pendingDecision).toBeUndefined();
+  });
+
   it('uses authoritative winner/loser facts, removes one physical top-three card, caps printed Power at 5, and preserves chosen deck order', () => {
     const { state, cards } = setup(); rootBattle(state);
     expect(state.abilityRuntime!.pendingDecision?.interaction).toMatchObject({ kind: 'battle_plunder_choice_v1', stage: 'loser', loserIds: ['p2'] });
@@ -136,7 +156,13 @@ describe('P3 Teach owner-readiness generic battle-plunder/replay capability', ()
     choose(state, [cards[1]!]);
     expect(state.players[0]!.vp).toBe(5);
     expect(state.cards.find((card) => card.instanceId === cards[1])!.zone).toBe('removed_from_game');
-    expect(state.abilityRuntime!.recordedRemovedCards?.[cards[1]!]).toMatchObject({ recordKey: RECORD, controllerId: 'p1', originalOwnerPlayerId: 'p2', triggerResultId: 'result-1' });
+    expect(state.abilityRuntime!.recordedRemovedCards?.[cards[1]!]).toMatchObject({
+      recordKey: RECORD, controllerId: 'p1', originalOwnerPlayerId: 'p2', triggerResultId: 'result-1', triggerEventId: 'result-1:win:p1',
+    });
+    expect(state.abilityRuntime!.events.find((event) => event.type === 'battle_plunder_card_removed')).toMatchObject({
+      controllerId: 'p1', cardInstanceId: cards[1], resultId: 'result-1', triggerEventId: 'result-1:win:p1',
+      fromZone: 'deck', toZone: 'removed_from_game', qualifyingPlayerIds: ['p2'], revealedCardInstanceIds: cards.slice(0, 3),
+    });
     expect(state.abilityRuntime!.pendingDecision?.interaction).toMatchObject({ kind: 'battle_plunder_choice_v1', stage: 'reorder', keptCardIds: [cards[0], cards[2]] });
     choose(state, [cards[2]!, cards[0]!]);
     const deck = state.cards.filter((card) => card.ownerPlayerId === 'p2' && card.zone === 'deck').map((card) => card.instanceId);
@@ -181,6 +207,15 @@ describe('P3 Teach owner-readiness generic battle-plunder/replay capability', ()
     const forged = JSON.parse(JSON.stringify(sessionFor(state).serializeSession()));
     forged.state.abilityRuntime.recordedRemovedCards[cards[1]].recordKey = 'forged:key';
     expect(() => rules.restoreMatchSession(forged, { restorePackKind: 'trusted_authoring_fixture' })).toThrow();
+
+    const decoyId = add(state, BASIC4, 'p2', 'p2-decoy-removed', 'removed_from_game');
+    const forgedState = structuredClone(state);
+    const realRecord = forgedState.abilityRuntime!.recordedRemovedCards![cards[1]!]!;
+    delete forgedState.abilityRuntime!.recordedRemovedCards![cards[1]!];
+    forgedState.abilityRuntime!.recordedRemovedCards![decoyId] = { ...realRecord, cardInstanceId: decoyId };
+    expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(forgedState)).toBe(false);
+    const independentlySealedForged = JSON.parse(JSON.stringify(sessionFor(forgedState).serializeSession()));
+    expect(() => rules.restoreMatchSession(independentlySealedForged, { restorePackKind: 'trusted_authoring_fixture' })).toThrow();
   });
 
   it('keeps the production implementation identity-free', () => {

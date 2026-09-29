@@ -6361,17 +6361,17 @@ Full-owner preflight:
 - complete currently discoverable missing Teach scope reduces to one compatible identity-free battle-plunder/recorded-replay capability family; sc3 reuses its historical accepted FM01 seams.
 
 Readiness scope:
-- authoritative contested-win competition-VP replacement for the accepted provider controller only, preserving all unrelated event/location/other-winner reward branches;
+- authoritative contested-win competition-VP replacement for the accepted provider controller only when an authoritative loser exists, preserving all unrelated event/location/other-winner reward branches and leaving all-winner contested ties on ordinary competition scoring;
 - choose one authoritative loser, expose physical top three deck cards (recycling discard only when required), remove exactly one, gain printed base Power capped at 5, and arbitrarily order the remaining exposed top cards;
-- persist exact physical removed-card authority bound to controller/source/ability/original-owner/trusted battle result/record key/revision;
+- persist exact physical removed-card authority bound to controller/source/ability/original-owner/trusted battle result/winning trigger/record key/revision plus server-created top-three removal evidence;
 - Action replay of exactly one recorded removed physical card with normal play semantics and a 2-mana minimum paid cost, borrowed-card original ownership preserved while controller changes for play;
 - remove the active replay-source skill after the battle terminal;
 - exact pending-decision and persisted-authority restore/provenance validation; malformed/widened/stale/forged metadata fails closed;
 - identity-free loader/runtime gateway only; no Teach/card-name/printed-text parsing, legacy identity-handler routing, or `SkillLib` fallback.
 
 Verification:
-- focused Teach readiness `6/6 PASS`;
-- directly affected green set `12 files / 260 tests PASS`;
+- focused Teach readiness `7/7 PASS`;
+- directly affected green set `12 files / 261 tests PASS`;
 - `FD_TOOLCHAIN_OK`;
 - typecheck PASS;
 - content validate/compile PASS (`7 masters / 12 servants / 20 events / 0 blocking issues`);
@@ -6381,6 +6381,12 @@ Verification:
 - locked Reference clean/exact;
 - `git diff --check` PASS;
 - detailed result: `docs/reports/2026-09-29-p3-b-teach-owner-readiness-capability-result.md`.
+
+Revision closure:
+- predecessor Candidate `f8a10e61fef647a129f6c8bdc0309099b281d3b4` received `IMPLEMENTATION_NEEDS_REVISION` from fresh independent R;
+- canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/483#issuecomment-5883235407`;
+- P1 all-winner tie closure gates reward replacement on an authoritative loser and adds a no-loser contested-tie regression;
+- P1 persisted-authority closure binds every replayable removed card to exact server-created removal evidence and rejects an exact-looking substitution of another loser-owned removed physical card even when the forged state is independently sealed for restore.
 
 Accounting:
 - strict formal accounting remains `149/944`, remaining `795`;

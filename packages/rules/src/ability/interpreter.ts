@@ -659,10 +659,19 @@ function recordedRemovedRecordIsAuthoritative(s: GameState, record: NonNullable<
   const source = s.cards.find((candidate) => candidate.instanceId === record.sourceCardId);
   const ability = source ? restoredAbility(s, record.sourceCardId, record.sourceAbilityId) : undefined;
   const root = runtime(s).trustedBattleResultSnapshots?.[record.triggerResultId];
+  const removalEvidence = runtime(s).events.filter((event) =>
+    event.type === 'battle_plunder_card_removed' && event.playerId === record.controllerId && event.controllerId === record.controllerId &&
+    event.sourceCardId === record.sourceCardId && event.abilityId === record.sourceAbilityId && event.cardInstanceId === record.cardInstanceId &&
+    event.resultId === record.triggerResultId && event.triggerEventId === record.triggerEventId && event.revision === record.removedRevision &&
+    event.fromZone === 'deck' && event.toZone === 'removed_from_game' && event.visibility === record.controllerId &&
+    Array.isArray(event.qualifyingPlayerIds) && event.qualifyingPlayerIds.length === 1 && event.qualifyingPlayerIds[0] === record.originalOwnerPlayerId &&
+    Array.isArray(event.revealedCardInstanceIds) && event.revealedCardInstanceIds.length >= 1 && event.revealedCardInstanceIds.length <= 3 &&
+    new Set(event.revealedCardInstanceIds).size === event.revealedCardInstanceIds.length && event.revealedCardInstanceIds.includes(record.cardInstanceId));
   return !!physical && physical.ownerPlayerId === record.originalOwnerPlayerId && !!source && source.ownerPlayerId === record.controllerId &&
     source.controllerPlayerId === record.controllerId && !!ability && isAcceptedBattleCompetitionPlunderAbility(ability) &&
     battlePlunderRecordKeyFromAbility(ability) === record.recordKey && record.originalOwnerPlayerId !== record.controllerId &&
-    !!root && root.winners.includes(record.controllerId) && root.loserIds.includes(record.originalOwnerPlayerId);
+    !!root && root.winners.includes(record.controllerId) && root.loserIds.includes(record.originalOwnerPlayerId) &&
+    runtime(s).processedEvents.includes(record.triggerEventId) && removalEvidence.length === 1;
 }
 function recordedRemovedReplayCandidateIds(s: GameState, controllerId: string, recordKey: string): string[] {
   const records = runtime(s).recordedRemovedCards ?? {};
@@ -2991,18 +3000,9 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState):
       if (!battleCloseDrawPlayTransactionLiveValid(s, battleTx) || !r.pendingDecision || !isBattleCloseDrawPlayPendingDecisionLiveValid(s, r.pendingDecision)) return false;
     } else if (r.pendingDecision?.interaction && ['battle_luck_discard_choice_v1','battle_opponent_close_reward_choice_v1','battle_drawn_card_optional_play_v1'].includes(r.pendingDecision.interaction.kind)) return false;
     if (!battleCloseDrawImmediatePlayHistoryValidForRestore(s)) return false;
-    if (r.recordedRemovedCards !== undefined && Object.entries(r.recordedRemovedCards).some(([instanceId, record]) => {
-      if (instanceId !== record.cardInstanceId || !Number.isSafeInteger(record.removedRevision) || record.removedRevision < 1 || record.removedRevision > r.revision) return true;
-      const physical = s.cards.find((candidate) => candidate.instanceId === record.cardInstanceId);
-      const source = s.cards.find((candidate) => candidate.instanceId === record.sourceCardId);
-      const ability = source ? restoredAbility(s, record.sourceCardId, record.sourceAbilityId) : undefined;
-      const root = r.trustedBattleResultSnapshots?.[record.triggerResultId];
-      return !physical || physical.ownerPlayerId !== record.originalOwnerPlayerId || !source || source.ownerPlayerId !== record.controllerId ||
-        source.controllerPlayerId !== record.controllerId || !ability || !isAcceptedBattleCompetitionPlunderAbility(ability) ||
-        battlePlunderRecordKeyFromAbility(ability) !== record.recordKey || !s.players.some((candidate) => candidate.id === record.controllerId) ||
-        !s.players.some((candidate) => candidate.id === record.originalOwnerPlayerId) || record.originalOwnerPlayerId === record.controllerId ||
-        !root || !root.winners.includes(record.controllerId) || !root.loserIds.includes(record.originalOwnerPlayerId);
-    })) return false;
+    if (r.recordedRemovedCards !== undefined && Object.entries(r.recordedRemovedCards).some(([instanceId, record]) =>
+      instanceId !== record.cardInstanceId || !s.players.some((candidate) => candidate.id === record.controllerId) ||
+      !s.players.some((candidate) => candidate.id === record.originalOwnerPlayerId) || !recordedRemovedRecordIsAuthoritative(s, record))) return false;
     if ((r.transformedReturnSilenceSourceCardIds ?? []).some((id) => !s.cards.some((card) => card.instanceId === id))) return false;
     return true;
   } catch { return false; }
@@ -5700,12 +5700,15 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
             (r.recordedRemovedCards ??= {})[removedId] = {
               recordKey: meta.recordKey, controllerId: meta.controllerId, sourceCardId: meta.sourceCardInstanceId,
               sourceAbilityId: meta.abilityId, cardInstanceId: removedId, originalOwnerPlayerId: targetPlayerId,
-              removedRevision: r.revision + 1, triggerResultId: meta.resultId,
+              removedRevision: r.revision + 1, triggerResultId: meta.resultId, triggerEventId: meta.triggerEventId,
             };
             const reward = Math.min(5, Math.max(0, printed)); const recipient = player(s, meta.controllerId); const before = recipient.vp;
             recipient.vp += reward;
-            r.events.push({ type: 'battle_plunder_card_removed', playerId: meta.controllerId, sourceCardId: meta.sourceCardInstanceId,
-              abilityId: meta.abilityId, cardInstanceId: removedId, delta: reward, before, after: recipient.vp, triggerEventId: meta.resultId });
+            r.events.push({ type: 'battle_plunder_card_removed', playerId: meta.controllerId, controllerId: meta.controllerId,
+              sourceCardId: meta.sourceCardInstanceId, abilityId: meta.abilityId, cardInstanceId: removedId,
+              delta: reward, before, after: recipient.vp, resultId: meta.resultId, triggerEventId: meta.triggerEventId,
+              revision: r.revision + 1, fromZone: 'deck', toZone: 'removed_from_game', visibility: meta.controllerId,
+              qualifyingPlayerIds: [targetPlayerId], revealedCardInstanceIds: [...meta.topCardIds!] });
             const keptCardIds = meta.topCardIds!.filter((id) => id !== removedId);
             delete r.pendingDecision;
             if (keptCardIds.length <= 1) break;

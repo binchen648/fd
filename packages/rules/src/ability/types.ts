@@ -390,7 +390,7 @@ export interface SealedCardReplayState {
 }
 export interface RecordedRemovedCardState {
   recordKey: string; controllerId: PlayerId; sourceCardId: string; sourceAbilityId: string; cardInstanceId: string;
-  originalOwnerPlayerId: PlayerId; removedRevision: number; triggerResultId: string;
+  originalOwnerPlayerId: PlayerId; removedRevision: number; triggerResultId: string; triggerEventId: string;
 }
 export interface TrustedBattleResultSnapshot {
   battlePhaseResolutionId: string;

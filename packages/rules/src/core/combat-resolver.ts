@@ -425,6 +425,7 @@ function buildDefaultVpAdjustments(
   winnerPlayerIds: string[],
   competitionVpPerWinner: number,
   locationVpPerWinner: number,
+  hasAuthoritativeLoser: boolean,
 ): VpAdjustment[] | undefined {
   if (!location || winnerPlayerIds.length === 0) {
     return undefined;
@@ -435,7 +436,7 @@ function buildDefaultVpAdjustments(
 
   if (competitionVpPerWinner > 0 && hooks.has("competition_rewards")) {
     for (const playerId of winnerPlayerIds) {
-      if (controllerHasCompetitionRewardPlunderReplacement(state, playerId)) continue;
+      if (hasAuthoritativeLoser && controllerHasCompetitionRewardPlunderReplacement(state, playerId)) continue;
       adjustments.push({
         playerId,
         delta: competitionVpPerWinner,
@@ -501,8 +502,9 @@ function buildBattleResultFromRanked(
     : Math.min(splitVpPoolPerWinner(eventVpPool, winnerPlayerIds.length), baseVpPerWinner);
   const competitionVpPerWinner = fullRewardEach ? competitionVpPool : Math.max(0, baseVpPerWinner - vpReward);
   const locationVpPerWinner = fullRewardEach ? locationVpPool : splitVpPoolPerWinner(locationVpPool, winnerPlayerIds.length);
+  const hasAuthoritativeLoser = eligible.some((participant) => !winnerPlayerIds.includes(participant.playerId));
   const defaultVpAdjustments = buildDefaultVpAdjustments(
-    state, location, battlefieldId, winnerPlayerIds, competitionVpPerWinner, locationVpPerWinner,
+    state, location, battlefieldId, winnerPlayerIds, competitionVpPerWinner, locationVpPerWinner, hasAuthoritativeLoser,
   );
   const remoteOperationVpAdjustment = winnerPlayerIds
     .filter((playerId) => hasRemoteOperationBonus(state, playerId, battlefieldId))

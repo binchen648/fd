@@ -943,10 +943,11 @@ function isRestoreSealedCardReplayState(value: unknown): boolean {
     isRestoreSafeInteger(value.playedRevision);
 }
 function isRestoreRecordedRemovedCardState(value: unknown): boolean {
-  return hasExactRestoreKeys(value, ['recordKey','controllerId','sourceCardId','sourceAbilityId','cardInstanceId','originalOwnerPlayerId','removedRevision','triggerResultId']) &&
+  return hasExactRestoreKeys(value, ['recordKey','controllerId','sourceCardId','sourceAbilityId','cardInstanceId','originalOwnerPlayerId','removedRevision','triggerResultId','triggerEventId']) &&
     isValidBattlePlunderRecordKey(value.recordKey) && typeof value.controllerId === 'string' && typeof value.sourceCardId === 'string' &&
     typeof value.sourceAbilityId === 'string' && typeof value.cardInstanceId === 'string' && typeof value.originalOwnerPlayerId === 'string' &&
-    value.originalOwnerPlayerId !== value.controllerId && isRestoreSafeInteger(value.removedRevision, 1) && typeof value.triggerResultId === 'string';
+    value.originalOwnerPlayerId !== value.controllerId && isRestoreSafeInteger(value.removedRevision, 1) &&
+    typeof value.triggerResultId === 'string' && typeof value.triggerEventId === 'string';
 }
 function isRestoreBattleCloseDrawImmediatePlayRecord(value: unknown): boolean {
   return hasExactRestoreKeys(value, ['controllerId','playerId','cardInstanceId','sourceCardId','abilityId','round']) &&
