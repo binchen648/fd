@@ -1,0 +1,201 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.tesla",
+  "name": "尼古拉·特斯拉",
+  "class": "Archer",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from accepted F1 evidence/contracts plus accepted PR #485 generic Tesla mana-transaction owner-readiness capability. Locked Reference supplies static card metadata only; legacy Tesla identity handlers are not restored."
+  },
+  "cards": [
+    {
+      "id": "servant.tesla.skill.sc-tesla-1",
+      "aliases": ["sc_tesla_1"],
+      "legacyId": "sc_tesla_1",
+      "name": "雷电之手",
+      "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.tesla" },
+      "printedText": "残留：与你位于同一地点的其他玩家花费2点或更多的魔力时，你获得2点魔力。每当你获得魔力超过上限时，合计威力+5，然后于战斗阶段结束时关闭此牌。",
+      "cardFace": { "typeLabel": "特殊", "attributes": ["特殊"], "cost": 6, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [{ "type": "skill_zone_mana_at_least", "value": 8 }],
+      "verification": { "implementationStatus": "complete" },
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[44].skills[0].text#line=1", "sha256": "194e48dddeeca6572784bf75bf20031e29c74f5158eb3cfbcfa2c6413b4d0e62" }
+        ],
+        "sourceReferences": [
+          { "kind": "chm", "document": "FD全卡图鉴V2.0.chm", "category": "servant/english", "page": "尼古拉·特斯拉.htm", "locator": "从者/弓兵/英文版/尼古拉·特斯拉.htm" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "servant", "page": "images/servants/尼古拉·特斯拉.png", "locator": "servant.tesla/尼古拉·特斯拉" }
+        ],
+        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "sc_tesla_1", "class": "Archer", "cost": 6, "basePower": 0, "legacyRequirement": 6, "typeLabel": "特殊", "attributes": ["特殊"] },
+        "canonicalSkillZoneManaRequirement": { "value": 8, "authority": "final_rules_9.4", "note": "Legacy requirement 6 is retained as metadata only; final servant skill-zone threshold is 8." },
+        "acceptedCapability": "PR#485/e55c6727889f2c96c9ece71a1490b4edae58788d"
+      },
+      "abilities": [
+        {
+          "id": "sc-tesla-1.spend-reward",
+          "kind": "residual",
+          "printedClause": "残留：与你位于同一地点的其他玩家花费2点或更多的魔力时，你获得2点魔力。",
+          "activation": { "trigger": "after_player_spends_mana", "requiresSourceState": "active" },
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "same_location_other_player_mana_spend_reward", "minimumSpent": 2, "rewardMana": 2 }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-tesla-1.overflow-power-close",
+          "kind": "residual",
+          "printedClause": "每当你获得魔力超过上限时，合计威力+5，然后于战斗阶段结束时关闭此牌。",
+          "activation": { "trigger": "after_controller_mana_overflow", "requiresSourceState": "active" },
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "self_mana_overflow_round_power_close", "powerBonus": 5, "closeAfterBattle": true }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ]
+    },
+    {
+      "id": "servant.tesla.skill.sc-tesla-2",
+      "aliases": ["sc_tesla_2"],
+      "legacyId": "sc_tesla_2",
+      "name": "人类神话·雷电降临",
+      "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.tesla" },
+      "printedText": "【真名解放】\n过载-被动：当一名位于你所在战场的对手获得的魔力超过其上限时，令其【败北】。\n打出时：失去你的所有魔力，本回合你每失去一点魔力便+1合计威力。",
+      "cardFace": { "typeLabel": "宝具", "attributes": ["宝具"], "cost": 0, "basePower": 3 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [{ "type": "skill_zone_mana_at_least", "value": 8 }],
+      "verification": { "implementationStatus": "complete" },
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[44].skills[1].text#line=1", "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c" },
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[44].skills[1].text#line=2", "sha256": "279eccf5247b6f62b62a0da277b85d39e64d37e4d1dbda4676afa1a300301e77" },
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[44].skills[1].text#line=3", "sha256": "308657056aefc17031c0a9d2703dd452698389f0a11a10c67e8dd006c6c280d0" }
+        ],
+        "sourceReferences": [
+          { "kind": "chm", "document": "FD全卡图鉴V2.0.chm", "category": "servant/english", "page": "尼古拉·特斯拉.htm", "locator": "从者/弓兵/英文版/尼古拉·特斯拉.htm" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "servant", "page": "images/servants/尼古拉·特斯拉.png", "locator": "servant.tesla/尼古拉·特斯拉" }
+        ],
+        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "sc_tesla_2", "class": "Archer", "cost": 0, "basePower": 3, "legacyRequirement": 8, "typeLabel": "宝具", "attributes": ["宝具"] },
+        "canonicalSkillZoneManaRequirement": { "value": 8, "authority": "final_rules_9.4", "note": "Legacy requirement already equals the final skill-zone threshold." },
+        "acceptedCapability": "PR#485/e55c6727889f2c96c9ece71a1490b4edae58788d"
+      },
+      "abilities": [
+        {
+          "id": "sc-tesla-2.true-name-release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "markers": ["真名解放"],
+          "activation": { "trigger": "on_use_declared" },
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "reveal_information", "scope": "servant_package", "subject": "controller.servant" }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-tesla-2.overload-defeat",
+          "kind": "passive",
+          "printedClause": "过载-被动：当一名位于你所在战场的对手获得的魔力超过其上限时，令其【败北】。",
+          "activation": { "trigger": "after_player_mana_overflow", "requiresSourceState": "active" },
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "opponent_mana_overflow_defeat", "sameBattlefield": true }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-tesla-2.lose-all-power",
+          "kind": "forced_trigger",
+          "printedClause": "打出时：失去你的所有魔力，本回合你每失去一点魔力便+1合计威力。",
+          "activation": { "trigger": "on_card_played", "requiresSourceState": "active" },
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "lose_all_controller_mana_add_round_power", "powerPerMana": 1, "duration": "this_round" }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ]
+    },
+    {
+      "id": "servant.tesla.skill.sc-tesla-3",
+      "aliases": ["sc_tesla_3"],
+      "legacyId": "sc_tesla_3",
+      "name": "人类神话·雷电降临",
+      "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.tesla" },
+      "printedText": "【真名解放】\n打出时：与你位于同一地点的对手获得2点魔力。\n战斗阶段：与你位于同一地点的对手获得2点魔力，此效果具有强制性。",
+      "cardFace": { "typeLabel": "魔术/宝具", "attributes": ["魔术", "宝具"], "cost": 5, "basePower": 12 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [{ "type": "skill_zone_mana_at_least", "value": 8 }],
+      "verification": { "implementationStatus": "complete" },
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[44].skills[2].text#line=1", "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c" },
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[44].skills[2].text#line=2", "sha256": "2208728e12160685ed2d3beaf82dbae604dc3515fad27319f5ccf965a3ce0017" },
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[44].skills[2].text#line=3", "sha256": "daf5a2acef7c19e7dae26df7c86058914ba10113c91b753c6c26dc767dc87550" }
+        ],
+        "sourceReferences": [
+          { "kind": "chm", "document": "FD全卡图鉴V2.0.chm", "category": "servant/english", "page": "尼古拉·特斯拉.htm", "locator": "从者/弓兵/英文版/尼古拉·特斯拉.htm" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "servant", "page": "images/servants/尼古拉·特斯拉.png", "locator": "servant.tesla/尼古拉·特斯拉" }
+        ],
+        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "sc_tesla_3", "class": "Archer", "cost": 5, "basePower": 12, "legacyRequirement": 8, "typeLabel": "魔术/宝具", "attributes": ["魔术", "宝具"] },
+        "canonicalSkillZoneManaRequirement": { "value": 8, "authority": "final_rules_9.4", "note": "Legacy requirement already equals the final skill-zone threshold." },
+        "acceptedCapability": "PR#485/e55c6727889f2c96c9ece71a1490b4edae58788d"
+      },
+      "abilities": [
+        {
+          "id": "sc-tesla-3.true-name-release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "markers": ["真名解放"],
+          "activation": { "trigger": "on_use_declared" },
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "reveal_information", "scope": "servant_package", "subject": "controller.servant" }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-tesla-3.on-play-grant",
+          "kind": "forced_trigger",
+          "printedClause": "打出时：与你位于同一地点的对手获得2点魔力。",
+          "activation": { "trigger": "on_card_played", "requiresSourceState": "active" },
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "grant_same_location_opponents_mana", "amount": 2, "mandatory": true }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-tesla-3.combat-grant",
+          "kind": "phase_action",
+          "printedClause": "战斗阶段：与你位于同一地点的对手获得2点魔力，此效果具有强制性。",
+          "activation": { "phase": "combat", "opens": "controller_combat_action_window", "requiresSourceState": "active" },
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "grant_same_location_opponents_mana", "amount": 2, "mandatory": true }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": { "revealsTrueName": true, "revealTiming": "on_use_declared", "revealScope": "servant_package" },
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ]
+    }
+  ]
+}
