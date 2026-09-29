@@ -1,4 +1,4 @@
-# Phase 3 Task Index
+﻿# Phase 3 Task Index
 
 - Version: P3-TI-1.39
 - Status: ACTIVE
@@ -6415,7 +6415,7 @@ Acceptance synchronization:
 ## TASK P3-S-OWNER-TEACH-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Status: `SYNCHRONIZED`
 Base: `8c89f948db0edcaa8042df578410ba17a8f298b4`
 Classification: formal owner-complete migration for current owner `servant.teach`
 
@@ -6453,3 +6453,12 @@ Allowed verdicts:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+Acceptance synchronization:
+- PR #484 exact Candidate `59049a2edb41ba2aeb34dd0ddfc42d230823b338` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/484#issuecomment-5884435718`.
+- Exact-Candidate Phase 3 Pre-Review Gate `36524389340` succeeded.
+- Accepted owner-complete scope is exactly Teach sc1 + sc2 + sc3; sc1 + sc2 are newly creditable and historical FM01 sc3 remains preservation-only `+0`.
+- Formal accounting moves `149/944 -> 151/944`; remaining `793`; readiness remains permanently zero-credit and sc3 receives no duplicate credit.
+- Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-owner-teach-acceptance-synchronization.md`.
+- Mechanical first-occurrence owner ordering selects `servant.tesla` next: Teach index `241`, Tesla index `242` of `251` owners.
+- Owner-readiness-first remains mandatory: complete one full Tesla preflight across sc1 + sc2 + sc3 before any Tesla formal consumer migration.
