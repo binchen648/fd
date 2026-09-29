@@ -6466,7 +6466,7 @@ Acceptance synchronization:
 ## TASK P3-B-TESLA-OWNER-READINESS-CAPABILITY
 
 Owner: Codex B
-Status: `REVISION_IMPLEMENTED_AWAITING_SUCCESSOR_REVIEW`
+Status: `SYNCHRONIZED`
 Base: `7131b216d78dc04f21390e63b9d0ce0f28139a82`
 Classification: bounded zero-credit owner-readiness capability for current owner `servant.tesla`
 
@@ -6529,3 +6529,12 @@ Accounting:
 Allowed verdicts:
 - `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 - `IMPLEMENTATION_NEEDS_REVISION`
+Acceptance synchronization:
+- PR #485 exact Candidate `e55c6727889f2c96c9ece71a1490b4edae58788d` received `IMPLEMENTATION_ACCEPTED_CANDIDATE` from fresh independent R.
+- Canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/485#issuecomment-5888328096`.
+- Exact-Candidate Phase 3 Pre-Review Gate `36553298350` succeeded.
+- Accepted readiness remains permanently zero-credit; strict formal accounting stays `151/944`, remaining `793`.
+- Full-owner A-rescan confirms no additional currently discoverable Tesla readiness gap remains beyond the accepted mana-transaction family.
+- sc1 + sc2 + sc3 are all newly creditable only in the upcoming formal owner-complete consumer migration; none has current or historical canonical Tesla authoring.
+- Next task is `P3-S-OWNER-TESLA-COMPLETE-MIGRATION`, containing sc1 + sc2 + sc3 together in one formal Candidate/PR/fresh R/A-sync sequence.
+- Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-tesla-owner-readiness-capability-acceptance-synchronization.md`.
