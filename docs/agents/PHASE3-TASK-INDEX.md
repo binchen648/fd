@@ -6488,9 +6488,9 @@ Implementation/evidence:
 - no Tesla/card-name/printed-text runtime parser, legacy `core.tesla-*` route, or `SkillLib` fallback is introduced.
 
 Verification:
-- focused Tesla readiness `10/10 PASS`;
-- Tesla + core movement `2 files / 13 tests PASS`;
-- directly affected green set `17 files / 245 tests PASS`;
+- focused Tesla readiness `12/12 PASS`;
+- Tesla + core movement `15/15 PASS`;
+- affected interpreter/session/resource/play set `9 files / 83 tests PASS`, including full MatchSession `33/33 PASS`;
 - resource-numeric direct-action relevant subset `3/3 PASS`; its unrelated Tomoe pairing test is a mechanically reproduced pre-existing predecessor failure and is not Candidate-caused;
 - `FD_TOOLCHAIN_OK`;
 - typecheck PASS;
@@ -6507,8 +6507,18 @@ Successor revision state:
 - the preserved relay lacks the textual blocking-findings section, so no missing Reviewer finding is reconstructed or invented;
 - FORMAL independently reproduced a Candidate-introduced pure-reducer mutation leak in both normal movement and legacy pair-play paid-mana observation and recorded the reproduction at `https://github.com/binchen648/fd/pull/485#issuecomment-5887455935`;
 - revision detaches all player objects plus `abilityRuntime` before external spend observers run, preserving next-state reward semantics without mutating the input state;
-- revision coverage: Tesla + movement `14/14 PASS`; broader focused mana/resource/movement/play set `18 files / 134 tests PASS` with one historical FM01 lineage assertion mechanically pre-existing on exact Base; resource-numeric relevant subset `3/3 PASS`; typecheck + diff-check PASS;
+- revision coverage at that predecessor step: Tesla + movement `14/14 PASS`; an exploratory broader run contained one historical FM01 lineage assertion mechanically pre-existing on exact Base and is not represented as an all-green gate; resource-numeric relevant subset `3/3 PASS`; typecheck + diff-check PASS;
 - successor must receive one fresh independent R over the whole bounded Tesla readiness scope; this independent closure is not represented as recovered predecessor Reviewer prose.
+
+Current P1 revision state:
+- exact Candidate `b3ff56a6e15bf97c01b10d8b9a76ad9f4f3ca34b` received `IMPLEMENTATION_NEEDS_REVISION`; Reviewer GitHub write failed 403 and canonical same-attempt bounded relay is `https://github.com/binchen648/fd/pull/485#issuecomment-5887827682`;
+- the sole exact-scope blocker is Tesla sc3's frozen mandatory combat grant: ordinary phase-action choice + unrestricted battle pass could previously omit the required same-location opponent +2 mana grant;
+- authoritative `controller_combat_action_window` processing now automatically executes only the exact accepted mandatory grant shape, while existing `canActivate` / `usedAbilities` preserves once-per-round behavior;
+- MatchSession decision progression additionally resolves any still-live current-priority mandatory combat grant before advancing, covering direct/manual/restored battle-decision pass paths;
+- all non-matching phase actions remain optional; grants still flow through normal `grantMana` and compose with genuine storage overflow reactions;
+- new coverage proves canonical phase entry cannot omit or duplicate the grant and `passPriority` cannot bypass a live mandatory grant;
+- current verification: Tesla `12/12`, movement `3/3`, affected interpreter/session/resource/play set `9 files / 83 tests`, resource-numeric relevant subset `3/3`, toolchain/typecheck/content/determinism/identity/diff gates PASS;
+- one successor Candidate is required, followed by one fresh independent R over the whole bounded Tesla readiness scope.
 
 Accounting:
 - strict formal accounting remains `151/944`, remaining `793`;

@@ -53,9 +53,9 @@ Self overflow adds stackable `player.combatTotalPower +5` modifiers for the curr
 
 ## Verification
 
-- focused Tesla readiness regression: `10/10 PASS`;
+- focused Tesla readiness regression: `12/12 PASS`;
 - movement focused companion: `3/3 PASS`;
-- directly affected green set: `17 files / 245 tests PASS`;
+- affected interpreter/session/resource/play set: `9 files / 83 tests PASS`;
 - resource-numeric direct-action relevant subset: `3/3 PASS` (one unrelated Tomoe direct-VP pairing test was excluded after reproducing the same failure on the unchanged fixed Reviewer predecessor, so it is a pre-existing fixture failure rather than Candidate regression);
 - `FD_TOOLCHAIN_OK`;
 - `npm run typecheck`: PASS;
@@ -84,12 +84,43 @@ The revision detaches every player object and `abilityRuntime` before invoking a
 Revision verification:
 
 - Tesla readiness + core movement: `2 files / 14 tests PASS` (`11/11` Tesla + `3/3` movement);
-- broader mana/resource/movement/play focused set: `18 files / 134 tests PASS`; one FM01 authoring-lineage assertion was excluded as historical/pre-existing after exact Base mechanically showed `servant.teach.json` already contains 3 cards while the unchanged Base test still expects `1`;
+- a broader exploratory mana/resource/movement/play run exposed one FM01 authoring-lineage assertion that is mechanically historical/pre-existing on exact Base (Base already has three Teach cards while the unchanged test expects one), so that run is not represented as an all-green Candidate gate;
 - resource-numeric direct-action relevant subset: `3/3 PASS` with the known unrelated Tomoe case skipped;
 - `npm run typecheck`: PASS;
 - `git diff --check`: PASS.
 
 This independent closure is not claimed to be a reconstruction of the missing predecessor Reviewer finding. The successor exact Candidate must receive a fresh independent R across the whole bounded Tesla readiness scope.
+
+## Mandatory combat scheduling revision
+
+Exact Candidate `b3ff56a6e15bf97c01b10d8b9a76ad9f4f3ca34b` received `IMPLEMENTATION_NEEDS_REVISION`. Reviewer GitHub publication failed with explicit 403; the Coordinator published the same already-completed review attempt as canonical bounded relay at `https://github.com/binchen648/fd/pull/485#issuecomment-5887827682`.
+
+The single exact-scope blocker was `[P1]` Tesla sc3 mandatory combat scheduling. The accepted authoring shape already requires `mandatory === true`, but the runtime previously exposed the combat `phase_action` as an ordinary activation and allowed battle decision progression to omit it.
+
+The revision closes both authoritative entry and defensive progression paths without introducing Tesla identity routing:
+
+- the authoritative `controller_combat_action_window` event now automatically executes only the exact accepted mandatory same-location opponent mana-grant phase-action shape;
+- the normal `canActivate` / `usedAbilities` guard remains authoritative, so the mandatory combat effect still resolves at most once per source per round;
+- MatchSession decision progression has a defensive current-priority fallback for live mandatory combat grants, so a manually/restored battle decision cannot bypass the effect by `passPriority` or another direct advance path;
+- all other phase actions remain optional and continue to be exposed as choices rather than being globally auto-executed;
+- the effect still uses normal `grantMana`, preserving storage-cap overflow reactions and the existing generic Tesla readiness family.
+
+New regressions prove both required seams: canonical battle entry automatically grants the same-location opponent +2 mana and a repeated same-round combat window does not duplicate the grant; a live manually/restored-style battle decision can be passed, but progression first resolves the mandatory +2 grant exactly once.
+
+Current revision verification:
+
+- Tesla readiness `12/12 PASS` plus core movement `3/3 PASS`;
+- affected interpreter/session/resource/play set `9 files / 83 tests PASS`, including full `match-session.test.ts` `33/33 PASS`;
+- resource-numeric relevant subset `3/3 PASS` with the documented unrelated Tomoe case excluded;
+- `FD_TOOLCHAIN_OK`;
+- `npm run typecheck` PASS;
+- content validate/compile PASS: `7 masters / 12 servants / 20 events / 0 blocking issues`;
+- generated-content determinism PASS with unchanged hashes;
+- `data/authoring/**` exact-Base delta EMPTY;
+- production Tesla / `SkillLib` identity audit CLEAN;
+- `git diff --check` PASS.
+
+The next exact successor Candidate must receive one fresh independent review of the whole bounded readiness scope. No migration credit is available from this task.
 
 ## Accounting and next step
 

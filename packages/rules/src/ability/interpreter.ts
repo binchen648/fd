@@ -1841,6 +1841,31 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
   return result;
 }
 
+/**
+ * Trusted scheduler fallback for the accepted mandatory combat mana-grant phase action.
+ *
+ * Canonical battle entry resolves this action from the authoritative
+ * `controller_combat_action_window` event below. This fallback closes direct/session
+ * battle-decision paths (including restored/manual battle states) so advancing the
+ * current controller cannot silently skip an otherwise-live mandatory action.
+ */
+export function resolveMandatoryCombatPhaseActionsForPlayer(s: GameState, playerId: string): number {
+  if (phase(s) !== 'combat') return 0;
+  const controller = s.players.find((candidate) => candidate.id === playerId && candidate.status === 'active');
+  if (!controller || s.round.prioritySeat !== controller.seat) return 0;
+
+  let resolved = 0;
+  for (const source of s.cards.filter((candidate) => candidate.controllerPlayerId === playerId)) {
+    for (const ability of effectiveAbilitiesForPhysicalCard(s, source.instanceId)) {
+      if (ability.kind !== 'phase_action' || !isAcceptedGrantSameLocationOpponentsManaAbility(ability)) continue;
+      if (!canActivate(s, source.instanceId, ability)) continue;
+      executeAbility(s, context(s, source.instanceId, ability.id));
+      resolved += 1;
+    }
+  }
+  return resolved;
+}
+
 export function triggerEventScopeMatches(a: AuthoringAbility, event: AbilityEvent): boolean {
   const eventLocationId = str(a.activation.eventLocationId);
   if (eventLocationId && event.locationId !== eventLocationId) return false;
@@ -5322,7 +5347,16 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   const triggered = collectTriggeredAbilities(s, event);
   for (const t of triggered) {
     const a = abilityDefinition(s, t.cardInstanceId, t.abilityId);
-    if (a.kind === 'phase_action') continue; // phase windows expose a choice, never auto-spend a phase ability
+    if (a.kind === 'phase_action') {
+      // Most phase actions remain optional choices. The accepted combat mana-grant
+      // shape is explicitly mandatory in frozen source text, so the authoritative
+      // combat-action-window event schedules it automatically. `canActivate` in
+      // collectTriggeredAbilities preserves the existing once-per-round guard.
+      if (event.type === 'controller_combat_action_window' && isAcceptedGrantSameLocationOpponentsManaAbility(a)) {
+        executeAbility(s, context(s, t.cardInstanceId, t.abilityId, event));
+      }
+      continue;
+    }
     if (event.type === 'after_controller_first_loses_battle' && isActivateCardByIdTrigger(a)) {
       stageDelayedActivation(s, t, a, event);
       continue;

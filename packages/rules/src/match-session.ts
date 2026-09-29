@@ -7,6 +7,7 @@ import {
   isDeferredAbilityRuntimeProvenanceValidForRestore,
   processAbilityEvent,
   projectAbilityState,
+  resolveMandatoryCombatPhaseActionsForPlayer,
 } from './ability/interpreter';
 import {
   createOpponentCloseToOnePersistenceScope,
@@ -2591,6 +2592,11 @@ export class MatchSession {
   advanceToNextDecision(): void {
     if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length || this.pendingHostDirectives().length) return;
     if (interactivePhases.includes(this.state.round.activePhase)) {
+      if (this.state.round.activePhase === 'battle') {
+        const priority = this.priorityPlayer();
+        if (priority) resolveMandatoryCombatPhaseActionsForPlayer(this.state, priority.id);
+        if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length || this.pendingHostDirectives().length) return;
+      }
       if (this.advanceToNextActiveSeat()) return;
       if (this.state.round.activePhase === 'preparation') {
         this.state.round.activePhase = 'advance';

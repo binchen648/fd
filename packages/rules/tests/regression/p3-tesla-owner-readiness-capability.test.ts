@@ -194,15 +194,38 @@ describe('P3 Tesla owner-readiness generic mana-transaction capability', () => {
     expect(state.players[1]!.mana).toBe(1);
   });
 
-  it('grants every active same-location opponent 2 mana on play and on the mandatory combat action, allowing real overflow reactions', () => {
+  it('grants every active same-location opponent 2 mana on play and automatically schedules the mandatory combat action', () => {
     const { state } = setup(); add(state, SC2, 'p1', 'active-overload', 'attack_area', true);
     const sc3 = add(state, SC3, 'p1', 'grant-sc3', 'skill', false); state.players[1]!.mana = 11; state.players[2]!.mana = 7;
     rules.playAbilityCardBatch(state, 'p1', [{ cardInstanceId: sc3 }]);
     expect(state.players[1]!.mana).toBe(12); expect(state.players[2]!.mana).toBe(7);
     expect(state.abilityRuntime!.battleDefeatRoundByPlayer?.p2).toBe(state.round.roundNumber);
-    delete state.abilityRuntime!.battleDefeatRoundByPlayer!.p2; state.players[1]!.mana = 10;
-    state.round.activePhase = 'battle'; state.round.prioritySeat = 1; activate(state, 'p1', sc3, 'resource-grant-combat');
-    expect(state.players[1]!.mana).toBe(12); expect(state.abilityRuntime!.revealedServants).toContain('p1');
+    delete state.abilityRuntime!.battleDefeatRoundByPlayer!.p2; state.players[1]!.mana = 8;
+    state.round.prioritySeat = 1; rules.advanceAbilityPhase(state, 'battle', state.round.roundNumber);
+    expect(state.players[1]!.mana).toBe(10); expect(state.abilityRuntime!.revealedServants).toContain('p1');
+    expect(state.abilityRuntime!.usedAbilities[`${sc3}:resource-grant-combat`]).toBe(state.round.roundNumber);
+    expect(rules.getLegalActions(state, 'p1').some((action) => action.type === 'activate_ability' && action.cardInstanceId === sc3 && action.abilityId === 'resource-grant-combat')).toBe(false);
+    const combatGrantEvents = () => state.abilityRuntime!.events.filter((event) => event.type === 'mana_granted' && event.playerId === 'p2').length;
+    const afterFirstCombatGrant = combatGrantEvents();
+    rules.advanceAbilityPhase(state, 'battle', state.round.roundNumber);
+    expect(state.players[1]!.mana).toBe(10);
+    expect(combatGrantEvents()).toBe(afterFirstCombatGrant);
+  });
+
+  it('cannot bypass the live mandatory combat grant by passing the battle decision', () => {
+    const { state } = setup(); const sc3 = add(state, SC3, 'p1', 'pass-grant-sc3', 'attack_area', true);
+    state.round.activePhase = 'battle'; state.round.prioritySeat = 1;
+    state.players[0]!.locationId = 'miyama_town'; state.players[1]!.locationId = 'miyama_town';
+    state.players[1]!.mana = 10;
+    expect(rules.getLegalActions(state, 'p1').some((action) => action.type === 'activate_ability' && action.cardInstanceId === sc3 && action.abilityId === 'resource-grant-combat')).toBe(true);
+
+    const session = sessionFor(state);
+    const passed = session.passPriority('p1');
+
+    expect(passed.ok).toBe(true);
+    expect(session.state.players[1]!.mana).toBe(12);
+    expect(session.state.abilityRuntime!.usedAbilities[`${sc3}:resource-grant-combat`]).toBe(state.round.roundNumber);
+    expect(session.state.abilityRuntime!.events.filter((event) => event.type === 'mana_granted' && event.playerId === 'p2')).toHaveLength(1);
   });
 
   it('round-trips armed overflow-close provenance and rejects a forged source ability id', () => {
