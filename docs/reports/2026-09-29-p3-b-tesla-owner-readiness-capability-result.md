@@ -1,7 +1,7 @@
 # P3-B Tesla Owner Readiness Capability — Result
 
 Role: Codex B
-Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Status: `REVISION_IMPLEMENTED_AWAITING_SUCCESSOR_REVIEW`
 Date: 2026-09-29
 Base: `7131b216d78dc04f21390e63b9d0ce0f28139a82`
 Classification: complete currently discoverable bounded zero-credit owner-readiness capability for current owner `servant.tesla`
@@ -68,6 +68,28 @@ Self overflow adds stackable `player.combatTotalPower +5` modifiers for the curr
 - production identity audit: CLEAN.
 
 Focused coverage includes exact privileged-shape rejection, real paid card cost, normal movement spend at origin, storage-overflow stacking and battle-terminal close, cap/suppression non-overflow, same-battlefield opponent defeat plus loss immunity, lose-all-mana round Power without false spend observation, mandatory same-location grants feeding real overflow reactions, restore round-trip, forged ability/round rejection, and production identity audit.
+
+## Successor revision after predecessor review transport loss
+
+Predecessor exact Candidate `4961a7c432bece612758b7a344981a0ddf1347f6` received `IMPLEMENTATION_NEEDS_REVISION`. Reviewer GitHub publication failed with explicit 403; Coordinator published the same-attempt bounded relay at `https://github.com/binchen648/fd/pull/485#issuecomment-5885532817`. The supplied Reviewer payload did not preserve the textual blocking-findings section, so this report does not reconstruct or attribute any missing finding.
+
+A subsequent FORMAL/Coordinator mechanical audit independently reproduced a concrete Candidate-introduced regression and recorded it at `https://github.com/binchen648/fd/pull/485#issuecomment-5887455935`:
+
+- `movePlayer` called `notifyManaSpent` on a shallow reducer result, so successful paid movement with `abilityRuntime` mutated the input state's shared runtime; probe evidence was `sameRuntime=true`, original event ledger `0 -> 1`;
+- `playServantCardPair` had the same shared-state leak; with a same-location spend-reward provider, the input state's provider mana mutated `4 -> 6` and its shared runtime event ledger mutated `0 -> 3`;
+- Base..Candidate diff shows both mutation paths were introduced by the readiness Candidate's new external paid-mana observer calls.
+
+The revision detaches every player object and `abilityRuntime` before invoking an external paid-mana observer from these two pure reducers. This preserves the returned-state Tesla reward behavior while keeping the reducer input state unchanged. Regression coverage now asserts input players/cards/runtime immutability for both normal movement and legacy pair play.
+
+Revision verification:
+
+- Tesla readiness + core movement: `2 files / 14 tests PASS` (`11/11` Tesla + `3/3` movement);
+- broader mana/resource/movement/play focused set: `18 files / 134 tests PASS`; one FM01 authoring-lineage assertion was excluded as historical/pre-existing after exact Base mechanically showed `servant.teach.json` already contains 3 cards while the unchanged Base test still expects `1`;
+- resource-numeric direct-action relevant subset: `3/3 PASS` with the known unrelated Tomoe case skipped;
+- `npm run typecheck`: PASS;
+- `git diff --check`: PASS.
+
+This independent closure is not claimed to be a reconstruction of the missing predecessor Reviewer finding. The successor exact Candidate must receive a fresh independent R across the whole bounded Tesla readiness scope.
 
 ## Accounting and next step
 

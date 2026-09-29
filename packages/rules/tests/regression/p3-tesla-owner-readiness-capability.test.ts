@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import * as rules from '../../src/index';
 import { playerCombatTotalPowerAdjustment } from '../../src/ability/owner-self-mechanics';
+import { playServantCardPair } from '../../src/core/card-play';
 import { createSeededGameState } from '../../src/tools/seeded-state';
 import type { GameState } from '../../src/schema/game';
 
@@ -109,14 +110,48 @@ describe('P3 Tesla owner-readiness generic mana-transaction capability', () => {
     state.players[1]!.locationId = 'shinto'; rules.spendMana(state, 'p2', 2); expect(state.players[0]!.mana).toBe(before);
   });
 
-  it('observes normal movement cost at the authoritative pre-move origin location', () => {
+  it('observes normal movement cost at the authoritative pre-move origin location without mutating the reducer input', () => {
     const { state } = setup(); add(state, SC1, 'p1', 'movement-sc1', 'attack_area', true);
     state.players[0]!.locationId = 'magic_workshop'; state.players[0]!.mana = 4;
     state.players[2]!.locationId = 'magic_workshop'; state.players[2]!.mana = 10;
+    const originalRuntime = structuredClone(state.abilityRuntime!);
     const moved = rules.movePlayer(state, { playerId: 'p3', to: 'recon', movementKind: 'normal' });
     expect(moved).toMatchObject({ moved: true, manaSpent: 5 });
     expect(moved.nextState.players.find((player) => player.id === 'p3')).toMatchObject({ locationId: 'recon', mana: 5 });
     expect(moved.nextState.players.find((player) => player.id === 'p1')?.mana).toBe(6);
+    expect(state.players[0]).toMatchObject({ locationId: 'magic_workshop', mana: 4 });
+    expect(state.players[2]).toMatchObject({ locationId: 'magic_workshop', mana: 10 });
+    expect(state.abilityRuntime).toEqual(originalRuntime);
+    expect(moved.nextState.abilityRuntime).not.toBe(state.abilityRuntime);
+    expect(moved.nextState.players.find((player) => player.id === 'p1')).not.toBe(state.players[0]);
+  });
+
+  it('keeps legacy pair-play spend observation on the returned state without mutating the reducer input', () => {
+    const loaded = pack();
+    const state = createSeededGameState({ activeSeats: [1, 2, 3] });
+    state.round.activePhase = 'action';
+    state.players[0]!.locationId = 'magic_workshop'; state.players[0]!.mana = 4;
+    state.players[1]!.locationId = 'magic_workshop'; state.players[1]!.mana = 10;
+    rules.initializeAbilityRuntime(state, loaded, { seed: 20260929 });
+    add(state, SC1, 'p1', 'legacy-pair-sc1', 'attack_area', true);
+    const originalRuntime = structuredClone(state.abilityRuntime!);
+    const originalCards = structuredClone(state.cards);
+
+    const played = playServantCardPair(state, {
+      playerId: 'p2',
+      cardInstanceIds: ['servant-2a-instance', 'servant-2b-instance'],
+    });
+
+    expect(played.playedCardIds).toEqual(['servant-2a-instance', 'servant-2b-instance']);
+    expect(state.players[0]!.mana).toBe(4);
+    expect(state.players[1]!.mana).toBe(10);
+    expect(state.cards).toEqual(originalCards);
+    expect(state.abilityRuntime).toEqual(originalRuntime);
+    expect(played.nextState.players[0]!.mana).toBe(6);
+    expect(played.nextState.players[1]!.mana).toBe(7);
+    expect(played.nextState.abilityRuntime).not.toBe(state.abilityRuntime);
+    expect(played.nextState.players[0]).not.toBe(state.players[0]);
+    expect(played.nextState.abilityRuntime!.events.some((event) => event.type === 'same_location_mana_spend_reward' && event.sourceCardId === 'legacy-pair-sc1')).toBe(true);
   });
 
   it('turns only storage-cap overflow into stacking +5 round Power and closes the armed source at the canonical battle terminal', () => {

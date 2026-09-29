@@ -104,7 +104,16 @@ export function playServantCardPair(
       },
     ),
   };
-  if (totalCost > 0 && nextState.abilityRuntime) notifyManaSpent(nextState, input.playerId, totalCost);
+  if (totalCost > 0 && nextState.abilityRuntime) {
+    // Legacy pair play is a pure reducer. Spend observers can reward a different
+    // player and mutate runtime ledgers, so detach all branches they may touch.
+    nextState = {
+      ...nextState,
+      players: nextState.players.map((entry) => ({ ...entry })),
+      abilityRuntime: structuredClone(nextState.abilityRuntime),
+    };
+    notifyManaSpent(nextState, input.playerId, totalCost);
+  }
 
   return {
     nextState,

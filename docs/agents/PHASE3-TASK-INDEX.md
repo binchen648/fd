@@ -6466,7 +6466,7 @@ Acceptance synchronization:
 ## TASK P3-B-TESLA-OWNER-READINESS-CAPABILITY
 
 Owner: Codex B
-Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Status: `REVISION_IMPLEMENTED_AWAITING_SUCCESSOR_REVIEW`
 Base: `7131b216d78dc04f21390e63b9d0ce0f28139a82`
 Classification: bounded zero-credit owner-readiness capability for current owner `servant.tesla`
 
@@ -6501,6 +6501,14 @@ Verification:
 - `data/authoring/**` delta EMPTY;
 - `git diff --check` PASS;
 - detailed result: `docs/reports/2026-09-29-p3-b-tesla-owner-readiness-capability-result.md`.
+
+Successor revision state:
+- predecessor exact Candidate `4961a7c432bece612758b7a344981a0ddf1347f6` received `IMPLEMENTATION_NEEDS_REVISION`; Reviewer GitHub write failed 403 and canonical same-attempt relay is `https://github.com/binchen648/fd/pull/485#issuecomment-5885532817`;
+- the preserved relay lacks the textual blocking-findings section, so no missing Reviewer finding is reconstructed or invented;
+- FORMAL independently reproduced a Candidate-introduced pure-reducer mutation leak in both normal movement and legacy pair-play paid-mana observation and recorded the reproduction at `https://github.com/binchen648/fd/pull/485#issuecomment-5887455935`;
+- revision detaches all player objects plus `abilityRuntime` before external spend observers run, preserving next-state reward semantics without mutating the input state;
+- revision coverage: Tesla + movement `14/14 PASS`; broader focused mana/resource/movement/play set `18 files / 134 tests PASS` with one historical FM01 lineage assertion mechanically pre-existing on exact Base; resource-numeric relevant subset `3/3 PASS`; typecheck + diff-check PASS;
+- successor must receive one fresh independent R over the whole bounded Tesla readiness scope; this independent closure is not represented as recovered predecessor Reviewer prose.
 
 Accounting:
 - strict formal accounting remains `151/944`, remaining `793`;
