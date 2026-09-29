@@ -6660,8 +6660,8 @@ Acceptance synchronization:
 ## TASK P3-S-OWNER-TEZCAT-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `READY`
-Base: exact Tezcat readiness A-sync commit
+Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Base: `424aea116baf4ca1afddffbcaecf77e13f69de65`
 Classification: formal owner-complete migration for current owner `servant.tezcat`
 
 Formal owner scope:
@@ -6674,7 +6674,18 @@ Accepted prerequisite:
 - readiness PR #487 exact Candidate `69c03692ad62e6f2e002b3601ea31992c535d2c9`;
 - fresh-R verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE`;
 - canonical same-attempt bounded relay `https://github.com/binchen648/fd/pull/487#issuecomment-5891046194`;
-- accepted zero-credit A-sync/rescan confirms the complete currently discoverable Tezcat readiness gap set is closed.
+- accepted zero-credit A-sync `424aea116baf4ca1afddffbcaecf77e13f69de65` / rescan confirms the complete currently discoverable Tezcat readiness gap set is closed.
+
+Implementation / evidence:
+- canonical `data/authoring/servants/servant.tezcat.json` contains the complete frozen sc1 + sc2 + sc3 owner set;
+- sc1 consumes only the accepted additional-play sibling cost/Power modifier;
+- sc2 consumes only the accepted authenticated same-battlefield turn-order paid-attack / participant settlement family;
+- sc3 consumes only the accepted ordinary Command Seal card-play cost and engaged-opponent defeat family, with separate canonical true-name declaration reveal;
+- focused owner-complete regression `5/5 PASS`; accepted readiness regression `8/8 PASS`;
+- directly affected green set `9 files / 120 tests PASS`, including full MatchSession `33/33` and authoring interpreter `38/38`;
+- `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`7 masters / 12 servants / 20 events / 0 blocking issues`); generated determinism PASS; `git diff --check` PASS;
+- formal `packages/rules/src/**` production runtime delta from Base is EMPTY and production Tezcat/card-name/legacy-handler/`SkillLib` identity audit is CLEAN;
+- detailed result: `docs/reports/2026-09-29-p3-s-owner-tezcat-complete-migration-result.md`.
 
 Accounting boundary:
 - strict formal accounting remains `154/944`, remaining `790` before fresh R and A-sync;

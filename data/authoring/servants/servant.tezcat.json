@@ -1,0 +1,174 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.tezcat",
+  "name": "泰兹卡特里波卡",
+  "class": "Assassin",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from accepted F1 evidence/contracts plus accepted PR #487 identity-free Tezcat owner-readiness capability. Locked Reference supplies static card metadata only; legacy Tezcat identity handlers are not restored."
+  },
+  "cards": [
+    {
+      "id": "servant.tezcat.skill.sc-tezcat-1",
+      "aliases": ["sc_tezcat_1"],
+      "legacyId": "sc_tezcat_1",
+      "name": "群豹之王",
+      "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.tezcat" },
+      "printedText": "此牌需追加打出。\n山之心脏-所有与此牌一同打出的其他攻击获得+1威力并+2魔力消耗（包括一同打出时）。",
+      "cardFace": { "typeLabel": "力量", "attributes": ["力量"], "cost": 0, "basePower": 3 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [{ "type": "skill_zone_mana_at_least", "value": 8 }],
+      "verification": { "implementationStatus": "complete" },
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[141].skills[0].text#line=1", "sha256": "b8948b29606c56ee673f234c17afe98448ae3986ee1a6155b5b827e23096a239" },
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[141].skills[0].text#line=2", "sha256": "14ef54db663e2e862ccc7f73f3bb38819f0de7c6ac05cabb3cb9dc5d32280dec" }
+        ],
+        "sourceReferences": [
+          { "kind": "chm", "document": "FD全卡图鉴V2.0.chm", "category": "servant/english", "page": "泰兹卡特里波卡.htm", "locator": "从者/暗匿者/英文版/泰兹卡特里波卡.htm" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "servant", "page": "images/servants/泰兹卡特里波卡.png", "locator": "servant.tezcat/泰兹卡特里波卡" }
+        ],
+        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "sc_tezcat_1", "class": "Assassin", "cost": 0, "basePower": 3, "legacyRequirement": 0, "typeLabel": "力量", "attributes": ["力量"] },
+        "canonicalSkillZoneManaRequirement": { "value": 8, "authority": "final_rules_9.4", "note": "Legacy requirement 0 is retained as metadata only; final servant skill-zone threshold is 8." },
+        "acceptedCapability": "PR#487/69c03692ad62e6f2e002b3601ea31992c535d2c9"
+      },
+      "abilities": [
+        {
+          "id": "sc-tezcat-1.required-additional",
+          "kind": "passive",
+          "printedClause": "此牌需追加打出。",
+          "activation": { "trigger": "while_active" },
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "append_only_rule" }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": {}, "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-tezcat-1.joint-other-modifier",
+          "kind": "passive",
+          "printedClause": "山之心脏-所有与此牌一同打出的其他攻击获得+1威力并+2魔力消耗（包括一同打出时）。",
+          "activation": { "trigger": "while_active" },
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "joint_play_other_attacks_cost_power_modifier", "manaCostIncrease": 2, "powerBonus": 1 }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": {}, "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ]
+    },
+    {
+      "id": "servant.tezcat.skill.sc-tezcat-2",
+      "aliases": ["sc_tezcat_2"],
+      "legacyId": "sc_tezcat_2",
+      "name": "战士之司",
+      "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.tezcat" },
+      "printedText": "斗争的魅力-行动阶段：与你位于同一战场的所有玩家可以按回合顺位依次打出一张攻击，以此效果打出了攻击的玩家若战败，失去2点战果。每回合限一次，若有对手因此效果失去了战果，你获得2点战果。",
+      "cardFace": { "typeLabel": "力量", "attributes": ["力量"], "cost": 2, "basePower": 4 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [{ "type": "skill_zone_mana_at_least", "value": 8 }],
+      "verification": { "implementationStatus": "complete" },
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[141].skills[1].text#line=1", "sha256": "817df99f3e9e3a329710d9905f4ff3a01a3a1762c2017bab03feb3558fd6a1b6" }
+        ],
+        "sourceReferences": [
+          { "kind": "chm", "document": "FD全卡图鉴V2.0.chm", "category": "servant/english", "page": "泰兹卡特里波卡.htm", "locator": "从者/暗匿者/英文版/泰兹卡特里波卡.htm" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "servant", "page": "images/servants/泰兹卡特里波卡.png", "locator": "servant.tezcat/泰兹卡特里波卡" }
+        ],
+        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "sc_tezcat_2", "class": "Assassin", "cost": 2, "basePower": 4, "legacyRequirement": 2, "typeLabel": "力量", "attributes": ["力量"] },
+        "canonicalSkillZoneManaRequirement": { "value": 8, "authority": "final_rules_9.4", "note": "Legacy requirement 2 is retained as metadata only; final servant skill-zone threshold is 8." },
+        "acceptedCapability": "PR#487/69c03692ad62e6f2e002b3601ea31992c535d2c9"
+      },
+      "abilities": [
+        {
+          "id": "sc-tezcat-2.battlefield-offer",
+          "kind": "phase_action",
+          "printedClause": "斗争的魅力-行动阶段：与你位于同一战场的所有玩家可以按回合顺位依次打出一张攻击，以此效果打出了攻击的玩家若战败，失去2点战果。每回合限一次，若有对手因此效果失去了战果，你获得2点战果。",
+          "activation": { "phase": "action", "opens": "controller_action_window", "requiresSourceState": "active" },
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "same_battlefield_turn_order_optional_attack_with_loss_vp", "lossVp": 2, "rewardVp": 2 }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": {},
+          "limit": { "type": "per_round", "uses": 1, "scope": "this_card" },
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ]
+    },
+    {
+      "id": "servant.tezcat.skill.sc-tezcat-3",
+      "aliases": ["sc_tezcat_3"],
+      "legacyId": "sc_tezcat_3",
+      "name": "第一太阳纪",
+      "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.tezcat" },
+      "printedText": "【真名解放】 <每局游戏限一次>\n你需花费一枚令咒来打出此牌。\n黑色太阳-战斗阶段：令你的所有交战对手【败北】。",
+      "cardFace": { "typeLabel": "宝具", "attributes": ["宝具"], "cost": 5, "basePower": 5 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [{ "type": "skill_zone_mana_at_least", "value": 8 }],
+      "verification": { "implementationStatus": "complete" },
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[141].skills[2].text#line=1", "sha256": "1aa9d9b7b2f87932c2fc7a2f884cd211434215006a66ab244e578d6790142aa8" },
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[141].skills[2].text#line=2", "sha256": "2b0c78009445d036a681d01007577667ff65431e3e1f46972b7e83ed617521b2" },
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[141].skills[2].text#line=3", "sha256": "3cc25679e7d50905771c7388f3ef554a1753fb0d9f87c064046b34e1b6749203" }
+        ],
+        "sourceReferences": [
+          { "kind": "chm", "document": "FD全卡图鉴V2.0.chm", "category": "servant/english", "page": "泰兹卡特里波卡.htm", "locator": "从者/暗匿者/英文版/泰兹卡特里波卡.htm" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "servant", "page": "images/servants/泰兹卡特里波卡.png", "locator": "servant.tezcat/泰兹卡特里波卡" }
+        ],
+        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "sc_tezcat_3", "class": "Assassin", "cost": 5, "basePower": 5, "legacyRequirement": 8, "typeLabel": "宝具", "attributes": ["宝具"] },
+        "canonicalSkillZoneManaRequirement": { "value": 8, "authority": "final_rules_9.4", "note": "Legacy requirement already equals the final skill-zone threshold." },
+        "acceptedCapability": "PR#487/69c03692ad62e6f2e002b3601ea31992c535d2c9"
+      },
+      "abilities": [
+        {
+          "id": "sc-tezcat-3.true-name-release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "markers": ["真名解放"],
+          "activation": { "trigger": "on_use_declared" },
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "reveal_information", "scope": "servant_package", "subject": "controller.servant" }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-tezcat-3.seal-play-cost",
+          "kind": "passive",
+          "printedClause": "你需花费一枚令咒来打出此牌。",
+          "activation": { "trigger": "while_active" },
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "card_play_command_seal_cost", "amount": 1 }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": {},
+          "limit": { "type": "per_game", "uses": 1, "scope": "this_card" },
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-tezcat-3.defeat-engaged",
+          "kind": "phase_action",
+          "printedClause": "黑色太阳-战斗阶段：令你的所有交战对手【败北】。",
+          "activation": { "phase": "combat", "opens": "controller_combat_action_window", "requiresSourceState": "active" },
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "defeat_all_engaged_opponents" }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": {}, "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ]
+    }
+  ]
+}
