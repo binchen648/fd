@@ -3,7 +3,7 @@ import type { LocationId } from '../schema/location';
 import type { PlayerId, SafeEvent } from './types';
 import { clearTransientCardTransformState } from './card-instance-state';
 import { isCardCloseForbidden } from './card-close-forbid';
-import { grantMana } from '../core/rule-overrides';
+import { grantMana, spendMana } from '../core/rule-overrides';
 import { servantRevealSuppressedByTemporaryConcealment } from './owner-self-mechanics';
 import { isNormalCardDrawSuppressed } from './timed-resource-suppression';
 
@@ -1615,7 +1615,7 @@ function payMana(
   const player = findPlayer(transaction.workingState, transaction.context.controllerId);
   const before = player.mana;
   if (amount > before) throw new ResolutionRuntimeError('insufficient_mana', 'Cannot pay mana.');
-  player.mana = before - amount;
+  if (amount > 0) spendMana(transaction.workingState, player.id, amount);
   const eventId = `${transaction.context.resolutionId}.${effect.id}.mana_paid`;
   transaction.emittedEvents.push(resourceEvent(transaction, eventId, 'mana_paid', player.id, 'mana', -amount, before, player.mana));
   return {

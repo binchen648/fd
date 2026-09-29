@@ -6462,3 +6462,70 @@ Acceptance synchronization:
 - Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-owner-teach-acceptance-synchronization.md`.
 - Mechanical first-occurrence owner ordering selects `servant.tesla` next: Teach index `241`, Tesla index `242` of `251` owners.
 - Owner-readiness-first remains mandatory: complete one full Tesla preflight across sc1 + sc2 + sc3 before any Tesla formal consumer migration.
+
+## TASK P3-B-TESLA-OWNER-READINESS-CAPABILITY
+
+Owner: Codex B
+Status: `REVISION_IMPLEMENTED_AWAITING_SUCCESSOR_REVIEW`
+Base: `7131b216d78dc04f21390e63b9d0ce0f28139a82`
+Classification: bounded zero-credit owner-readiness capability for current owner `servant.tesla`
+
+Full-owner preflight:
+- frozen owner scope is exactly `servant.tesla.skill.sc-tesla-1`, `servant.tesla.skill.sc-tesla-2`, `servant.tesla.skill.sc-tesla-3`;
+- no current `data/authoring/servants/servant.tesla.json` exists and Git history contains no prior formal Tesla authoring migration, so no preservation-only Tesla identity is currently discovered;
+- F1 source evidence is globally closed at `944/944`, blocked `0`, unclassified `0`; locked Reference remains static/non-authoritative evidence only;
+- preflight found one complete currently discoverable generic readiness family spanning authoritative mana spend, storage-cap overflow, round total-Power growth, post-battle source close, opponent overflow defeat, lose-all-mana Power conversion, and mandatory same-location opponent mana grants;
+- `data/authoring/**` remains unchanged in this readiness Candidate.
+
+Implementation/evidence:
+- added identity-free exact whole-ability `mana-transaction-capability` gateway for the complete discovered Tesla family;
+- paid-mana observation covers accepted interpreter costs, resolution-dataflow mana payment, batch/legacy card play and normal movement; movement spend resolves at the authoritative origin location;
+- storage-cap overflow is mechanically separated from existing public requested-minus-actual `overflowAmount`, so round/situation gain caps and mana suppression do not spuriously trigger Tesla overflow semantics;
+- self overflow adds stackable current-round `player.combatTotalPower +5`, arms a source-bound canonical battle-terminal close marker, and restore validates exact accepted source/current round/live provenance;
+- opponent overflow defeat reuses generic other-player ability immunity and battle-loss immunity seams;
+- lose-all-mana conversion is resource loss, not paid-mana spend, and adds exactly the lost amount to current-round total Power;
+- same-location opponent grants flow through normal `grantMana`, so real storage overflow composes with the generic overflow reaction family;
+- no Tesla/card-name/printed-text runtime parser, legacy `core.tesla-*` route, or `SkillLib` fallback is introduced.
+
+Verification:
+- focused Tesla readiness `12/12 PASS`;
+- Tesla + core movement `15/15 PASS`;
+- affected interpreter/session/resource/play set `9 files / 83 tests PASS`, including full MatchSession `33/33 PASS`;
+- resource-numeric direct-action relevant subset `3/3 PASS`; its unrelated Tomoe pairing test is a mechanically reproduced pre-existing predecessor failure and is not Candidate-caused;
+- `FD_TOOLCHAIN_OK`;
+- typecheck PASS;
+- content validate/compile PASS (`7 masters / 12 servants / 20 events / 0 blocking issues`);
+- generated determinism PASS with unchanged hashes;
+- production identity audit CLEAN;
+- locked Reference clean/exact;
+- `data/authoring/**` delta EMPTY;
+- `git diff --check` PASS;
+- detailed result: `docs/reports/2026-09-29-p3-b-tesla-owner-readiness-capability-result.md`.
+
+Successor revision state:
+- predecessor exact Candidate `4961a7c432bece612758b7a344981a0ddf1347f6` received `IMPLEMENTATION_NEEDS_REVISION`; Reviewer GitHub write failed 403 and canonical same-attempt relay is `https://github.com/binchen648/fd/pull/485#issuecomment-5885532817`;
+- the preserved relay lacks the textual blocking-findings section, so no missing Reviewer finding is reconstructed or invented;
+- FORMAL independently reproduced a Candidate-introduced pure-reducer mutation leak in both normal movement and legacy pair-play paid-mana observation and recorded the reproduction at `https://github.com/binchen648/fd/pull/485#issuecomment-5887455935`;
+- revision detaches all player objects plus `abilityRuntime` before external spend observers run, preserving next-state reward semantics without mutating the input state;
+- revision coverage at that predecessor step: Tesla + movement `14/14 PASS`; an exploratory broader run contained one historical FM01 lineage assertion mechanically pre-existing on exact Base and is not represented as an all-green gate; resource-numeric relevant subset `3/3 PASS`; typecheck + diff-check PASS;
+- successor must receive one fresh independent R over the whole bounded Tesla readiness scope; this independent closure is not represented as recovered predecessor Reviewer prose.
+
+Current P1 revision state:
+- exact Candidate `b3ff56a6e15bf97c01b10d8b9a76ad9f4f3ca34b` received `IMPLEMENTATION_NEEDS_REVISION`; Reviewer GitHub write failed 403 and canonical same-attempt bounded relay is `https://github.com/binchen648/fd/pull/485#issuecomment-5887827682`;
+- the sole exact-scope blocker is Tesla sc3's frozen mandatory combat grant: ordinary phase-action choice + unrestricted battle pass could previously omit the required same-location opponent +2 mana grant;
+- authoritative `controller_combat_action_window` processing now automatically executes only the exact accepted mandatory grant shape, while existing `canActivate` / `usedAbilities` preserves once-per-round behavior;
+- MatchSession decision progression additionally resolves any still-live current-priority mandatory combat grant before advancing, covering direct/manual/restored battle-decision pass paths;
+- all non-matching phase actions remain optional; grants still flow through normal `grantMana` and compose with genuine storage overflow reactions;
+- new coverage proves canonical phase entry cannot omit or duplicate the grant and `passPriority` cannot bypass a live mandatory grant;
+- current verification: Tesla `12/12`, movement `3/3`, affected interpreter/session/resource/play set `9 files / 83 tests`, resource-numeric relevant subset `3/3`, toolchain/typecheck/content/determinism/identity/diff gates PASS;
+- one successor Candidate is required, followed by one fresh independent R over the whole bounded Tesla readiness scope.
+
+Accounting:
+- strict formal accounting remains `151/944`, remaining `793`;
+- this readiness task is permanently zero-credit;
+- ACCEPTED must A-sync/rescan and stay on `servant.tesla`;
+- if rescan finds no additional readiness gap, the later single owner-complete formal batch contains sc1 + sc2 + sc3 together; only a later `MIGRATION_ACCEPTED` plus A-sync may add the three Tesla identities and move `151/944 -> 154/944`, remaining `790`.
+
+Allowed verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
