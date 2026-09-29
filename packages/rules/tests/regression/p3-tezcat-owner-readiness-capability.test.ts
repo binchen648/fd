@@ -127,7 +127,8 @@ describe('P3 Tezcat owner-readiness generic joint/battlefield attack capability'
     expect(state.cards.find((entry) => entry.instanceId === 'offer-p2-basic')?.zone).toBe('attack_area');
     expect(state.players[1]!.mana).toBe(6);
     expect(state.abilityRuntime!.pendingBattlefieldAttackOfferTransaction).toBeUndefined();
-    expect(state.abilityRuntime!.battlefieldAttackOfferSettlements).toEqual([{ controllerId: 'p1', sourceCardId: sc2, abilityId: 'battlefield-offer', round: state.round.roundNumber, battlefieldId: 'miyama_town', playedPlayerIds: ['p2'] }]);
+    expect(state.abilityRuntime!.battlefieldAttackOfferSettlements).toMatchObject([{ controllerId: 'p1', sourceCardId: sc2, abilityId: 'battlefield-offer', round: state.round.roundNumber, battlefieldId: 'miyama_town', playedPlayerIds: ['p2'] }]);
+    expect(state.abilityRuntime!.battlefieldAttackOfferSettlements?.[0]?.transactionId).toMatch(/^battlefield-attack-offer-tx-\d+$/);
     rules.processAbilityEvent(state, { id: 'fixture-battle-result', type: 'after_battle_result_determined', battlefieldId: 'miyama_town',
       battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] } } as any);
     expect(state.players[1]!.vp).toBe(3); expect(state.players[0]!.vp).toBe(3);
@@ -146,6 +147,29 @@ describe('P3 Tezcat owner-readiness generic joint/battlefield attack capability'
     forged.state.abilityRuntime.pendingDecision.candidates.push('forged-card');
     forged.state.abilityRuntime.pendingDecision.interaction.candidateIds.push('forged-card');
     expect(() => rules.restoreMatchSession(forged, { restorePackKind: 'trusted_authoring_fixture' })).toThrow();
+
+    const forgedOrder = JSON.parse(JSON.stringify(serialized));
+    expect(forgedOrder.state.abilityRuntime.pendingBattlefieldAttackOfferTransaction.orderPlayerIds).toEqual(['p1', 'p2']);
+    forgedOrder.state.abilityRuntime.pendingBattlefieldAttackOfferTransaction.orderPlayerIds = ['p1'];
+    expect(() => rules.restoreMatchSession(forgedOrder, { restorePackKind: 'trusted_authoring_fixture' })).toThrow(/battlefield attack-offer persisted authority/);
+  });
+
+  it('rejects a restored completed offer whose participant set was replaced by another existing player', () => {
+    const { state } = setup(); const sc2 = add(state, SC2, 'p1', 'settlement-auth-source', 'attack_area', true);
+    add(state, BASIC, 'p1', 'settlement-p1-basic', 'hand', false);
+    add(state, BASIC, 'p2', 'settlement-p2-basic', 'hand', false);
+    state.players[1]!.mana = 8;
+    activate(state, 'p1', sc2, 'battlefield-offer');
+    choose(state, 'p1', []);
+    choose(state, 'p2', ['settlement-p2-basic']);
+    expect(state.abilityRuntime!.pendingBattlefieldAttackOfferTransaction).toBeUndefined();
+    expect(state.abilityRuntime!.battlefieldAttackOfferSettlements).toMatchObject([{ playedPlayerIds: ['p2'] }]);
+
+    const serialized = JSON.parse(JSON.stringify(sessionFor(state).serializeSession()));
+    expect(rules.restoreMatchSession(serialized, { restorePackKind: 'trusted_authoring_fixture' }).state.abilityRuntime!.battlefieldAttackOfferSettlements).toMatchObject([{ playedPlayerIds: ['p2'] }]);
+    const forged = JSON.parse(JSON.stringify(serialized));
+    forged.state.abilityRuntime.battlefieldAttackOfferSettlements[0].playedPlayerIds = ['p3'];
+    expect(() => rules.restoreMatchSession(forged, { restorePackKind: 'trusted_authoring_fixture' })).toThrow(/battlefield attack-offer persisted authority/);
   });
 
   it('charges exactly one ordinary Command Seal as a card-play cost without recording a Command Seal ability use and enforces the physical card per-game limit', () => {
@@ -172,8 +196,9 @@ describe('P3 Tezcat owner-readiness generic joint/battlefield attack capability'
 
   it('keeps the readiness runtime identity-free', () => {
     const production = [
-      'packages/rules/src/ability/joint-battlefield-attack-capability.ts', 'packages/rules/src/ability/interpreter.ts',
-      'packages/rules/src/ability/loader.ts', 'packages/rules/src/ability/types.ts',
+      'packages/rules/src/ability/joint-battlefield-attack-capability.ts', 'packages/rules/src/ability/battlefield-attack-offer-authority.ts',
+      'packages/rules/src/ability/interpreter.ts', 'packages/rules/src/ability/loader.ts', 'packages/rules/src/ability/types.ts',
+      'packages/rules/src/match-session.ts',
     ].map((path) => readFileSync(path, 'utf8')).join('\n');
     for (const needle of ['servant.tezcat', 'sc-tezcat', '泰兹卡特里波卡', '群豹之王', '战士之司', '第一太阳纪', 'core.tezcat-', 'SkillLib']) expect(production).not.toContain(needle);
   });

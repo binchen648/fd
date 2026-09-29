@@ -5495,6 +5495,16 @@ Allowed verdicts:
 - `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 - `IMPLEMENTATION_NEEDS_REVISION`
 
+Fresh-R predecessor / successor closure:
+- predecessor exact Candidate `51a7d5735628b77403467eb0908ff451b4254205` received `IMPLEMENTATION_NEEDS_REVISION`;
+- canonical Coordinator bounded same-attempt relay: `https://github.com/binchen648/fd/pull/487#issuecomment-5890536697`;
+- [P1] restored sc2 transaction order/progress was not authenticated; [P1] completed settlement participants were not authenticated;
+- successor introduces a dedicated HMAC-sealed server-owned battlefield attack-offer authority snapshot, transaction ids, frozen activation order/progress, and physical-card participation provenance;
+- MatchSession current/replay restore requires the authority seal and exact consistency; malformed order/progress or settlement participant substitutions fail closed;
+- new regressions cover `[p1,p2] -> [p1]` restored-order truncation and completed settlement `['p2'] -> ['p3']` participant substitution;
+- successor verification: Tezcat `8/8 PASS`, affected `8 files / 115 tests PASS`, MatchSession `33/33`, toolchain/typecheck/content/determinism/identity/diff gates PASS;
+- readiness remains zero-credit and strict accounting stays `154/944`, remaining `790` until later formal owner migration acceptance + A-sync.
+
 ## P3-A-SKADI-RAIDO-MOVEMENT-READINESS-CAPABILITY-ACCEPTANCE-SYNC
 
 - PR #467 exact successor Candidate `b94a44ee9bf32f3fbd542df47d3a6b42d0e04876` received `IMPLEMENTATION_ACCEPTED_CANDIDATE` from fresh independent R.
@@ -6595,7 +6605,7 @@ Acceptance synchronization:
 ## TASK P3-B-TEZCAT-OWNER-READINESS-CAPABILITY
 
 Owner: Codex B
-Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Status: `REVISION_IMPLEMENTED_AWAITING_SUCCESSOR_REVIEW`
 Base: `bbf17412961e24b1cb6453e7b406bf9522dc4db6`
 Classification: complete currently discoverable Tezcat owner-readiness/capability batch, permanently zero migration credit
 

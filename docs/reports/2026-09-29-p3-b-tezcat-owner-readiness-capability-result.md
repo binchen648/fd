@@ -80,4 +80,26 @@ Static gates:
 
 This task is permanently zero-credit. Strict formal accounting remains **`154/944`**, remaining **`790`** regardless of readiness acceptance.
 
-Exact Candidate must receive one fresh independent readiness review. If accepted, FORMAL performs one A-sync/rescan of the complete Tezcat owner. Only if that rescan finds no additional gap may the later single owner-complete formal migration author sc1 + sc2 + sc3 together in one Candidate/PR/fresh R/A-sync sequence.
+Predecessor exact Candidate `51a7d5735628b77403467eb0908ff451b4254205` received `IMPLEMENTATION_NEEDS_REVISION`. Reviewer GitHub publication failed with explicit 403; Coordinator published the same-attempt bounded relay at `https://github.com/binchen648/fd/pull/487#issuecomment-5890536697` before any revision work.
+
+The two exact-scope sc2 blockers are closed together in the successor revision:
+
+- restored `orderPlayerIds` / progress are now bound to a dedicated server-owned authority record keyed by an authenticated transaction id. Authority records freeze the activation-time order and advance progress only through canonical server transitions. MatchSession current/replay persistence carries an HMAC-sealed authority snapshot bound to the exact serialized state, persistence scope, and checkpoint;
+- completed settlement `playedPlayerIds` are reconstructed/bound to server-owned participation records written only after a real physical attack successfully passes authoritative `playBatch`. The sealed authority retains the participating physical card ids and exact participant sequence until the matching settlement is consumed;
+- dispatch/staging reject live transaction metadata that disagrees with server authority, and settlement rejects participant substitutions. Authority is copied across transactional state clones and retired after settlement/round lifecycle;
+- restore regression now mutates a legitimate live order `[p1,p2]` to `[p1]` while leaving the current p1 decision otherwise valid and proves rejection by the battlefield attack-offer persisted-authority gate;
+- restore regression also mutates a legitimate completed settlement participant set from `['p2']` to another existing player `['p3']` and proves rejection by the same dedicated authority gate.
+
+Successor verification after both closures:
+
+- focused Tezcat readiness `8/8 PASS`;
+- affected set `8 files / 115 tests PASS`, including MatchSession `33/33`;
+- `FD_TOOLCHAIN_OK`;
+- `npm run typecheck` PASS;
+- content validate/compile PASS: `7 masters / 12 servants / 20 events / 0 blocking issues`;
+- generated-content determinism PASS with unchanged hashes;
+- `data/authoring/**` Base..working successor delta remains EMPTY;
+- production identity audit including the new authority module and MatchSession is CLEAN;
+- `git diff --check` PASS.
+
+This task remains permanently zero-credit. The successor exact Candidate must receive one fresh independent readiness review over the whole bounded Tezcat readiness family. If accepted, FORMAL performs one A-sync/rescan of the complete Tezcat owner. Only if that rescan finds no additional gap may the later single owner-complete formal migration author sc1 + sc2 + sc3 together in one Candidate/PR/fresh R/A-sync sequence.

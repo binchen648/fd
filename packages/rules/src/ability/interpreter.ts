@@ -114,6 +114,16 @@ import {
   retireBattleCloseDrawPlayServerAuthorityBeforeRound,
 } from './battle-close-draw-play-authority';
 import {
+  copyBattlefieldAttackOfferServerAuthority,
+  rememberBattlefieldAttackOfferCompletedAuthority,
+  rememberBattlefieldAttackOfferParticipationAuthority,
+  rememberBattlefieldAttackOfferProgressAuthority,
+  rememberBattlefieldAttackOfferStartAuthority,
+  isBattlefieldAttackOfferServerAuthorityConsistent,
+  retireBattlefieldAttackOfferAuthority,
+  retireBattlefieldAttackOfferAuthorityBeforeRound,
+} from './battlefield-attack-offer-authority';
+import {
   DYNAMIC_UNUSED_SEAL_POWER_RULE,
   containsCommandSealPowerPrivilegedNode,
   controllerHasSealPowerReplacementProvider,
@@ -3484,7 +3494,7 @@ function battlefieldAttackOfferTransactionLiveValid(s: GameState, tx: PendingBat
   const r = runtime(s); const source = s.cards.find((candidate) => candidate.instanceId === tx.sourceCardId);
   const controller = s.players.find((candidate) => candidate.id === tx.controllerId);
   const ability = source ? r.pack.cards[source.definitionId]?.abilities.find((candidate) => candidate.id === tx.abilityId) : undefined;
-  return !!source && !!controller && !!ability && isAcceptedSameBattlefieldTurnOrderAttackAbility(ability) &&
+  return /^battlefield-attack-offer-tx-\d+$/.test(tx.transactionId) && !!source && !!controller && !!ability && isAcceptedSameBattlefieldTurnOrderAttackAbility(ability) &&
     source.ownerPlayerId === tx.controllerId && source.controllerPlayerId === tx.controllerId &&
     r.cardState[source.instanceId]?.active === true && r.cardState[source.instanceId]?.faceDown === false &&
     controller.status === 'active' && controller.locationId === tx.battlefieldId && isBattlefield(s, tx.battlefieldId) &&
@@ -3499,21 +3509,25 @@ function finishBattlefieldAttackOffer(s: GameState, tx: PendingBattlefieldAttack
   const r = runtime(s);
   if (tx.playedPlayerIds.length > 0) {
     const settlements = r.battlefieldAttackOfferSettlements ??= [];
-    settlements.push({ controllerId: tx.controllerId, sourceCardId: tx.sourceCardId, abilityId: tx.abilityId,
+    rememberBattlefieldAttackOfferCompletedAuthority(s, tx);
+    settlements.push({ transactionId: tx.transactionId, controllerId: tx.controllerId, sourceCardId: tx.sourceCardId, abilityId: tx.abilityId,
       round: tx.round, battlefieldId: tx.battlefieldId, playedPlayerIds: [...tx.playedPlayerIds] });
+  } else {
+    rememberBattlefieldAttackOfferCompletedAuthority(s, tx);
+    retireBattlefieldAttackOfferAuthority(s, tx.transactionId);
   }
   delete r.pendingBattlefieldAttackOfferTransaction;
 }
 function stageNextBattlefieldAttackOfferDecision(s: GameState): void {
   const r = runtime(s); const tx = r.pendingBattlefieldAttackOfferTransaction;
   if (!tx || r.pendingDecision || r.responseWindows.length || r.hostRequests.length) return;
-  if (!battlefieldAttackOfferTransactionLiveValid(s, tx)) reject('resolution_failed', 'Battlefield attack-offer transaction lost authoritative provenance');
+  if (!battlefieldAttackOfferTransactionLiveValid(s, tx) || !isBattlefieldAttackOfferServerAuthorityConsistent(s)) reject('resolution_failed', 'Battlefield attack-offer transaction lost authoritative provenance');
   while (tx.nextIndex < tx.orderPlayerIds.length) {
     const decisionPlayerId = tx.orderPlayerIds[tx.nextIndex]!;
     const decisionPlayer = s.players.find((candidate) => candidate.id === decisionPlayerId && candidate.status === 'active' && candidate.locationId === tx.battlefieldId);
-    if (!decisionPlayer) { tx.nextIndex++; continue; }
+    if (!decisionPlayer) { tx.nextIndex++; rememberBattlefieldAttackOfferProgressAuthority(s, tx); continue; }
     const candidates = battlefieldAttackOfferCandidateIds(s, decisionPlayerId);
-    if (candidates.length === 0) { tx.nextIndex++; continue; }
+    if (candidates.length === 0) { tx.nextIndex++; rememberBattlefieldAttackOfferProgressAuthority(s, tx); continue; }
     const id = nextId(s, 'battlefield-attack-offer');
     r.pendingDecision = { id, controllerId: decisionPlayerId,
       target: { id: 'battlefield_attack_offer_card', type: 'card_instance', count: { min: 0, max: 1 } },
@@ -3543,19 +3557,23 @@ function startBattlefieldAttackOffer(s: GameState, ctx: EffectContext, ability: 
     reject('resolution_failed', 'Battlefield attack-offer preflight failed');
   }
   const orderPlayerIds = battlefieldAttackOfferOrder(s, controller.locationId);
-  const tx: PendingBattlefieldAttackOfferTransaction = { controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+  const tx: PendingBattlefieldAttackOfferTransaction = { transactionId: nextId(s, 'battlefield-attack-offer-tx'), controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
     round: s.round.roundNumber, battlefieldId: controller.locationId, orderPlayerIds, nextIndex: 0, playedPlayerIds: [] };
   r.pendingBattlefieldAttackOfferTransaction = tx;
+  rememberBattlefieldAttackOfferStartAuthority(s, tx);
   stageNextBattlefieldAttackOfferDecision(s);
 }
 function settleBattlefieldAttackOffers(s: GameState, event: AbilityEvent): void {
   const r = runtime(s);
   if (event.type === 'round_end') {
+    const expired = (r.battlefieldAttackOfferSettlements ?? []).filter((entry) => entry.round <= s.round.roundNumber);
+    for (const entry of expired) retireBattlefieldAttackOfferAuthority(s, entry.transactionId);
     r.battlefieldAttackOfferSettlements = (r.battlefieldAttackOfferSettlements ?? []).filter((entry) => entry.round > s.round.roundNumber);
     return;
   }
   if (event.type !== 'after_battle_result_determined' || !event.battlefieldId || !Array.isArray(event.battleParticipantIds) ||
       !Array.isArray(event.battleResult?.loserIds)) return;
+  if (!isBattlefieldAttackOfferServerAuthorityConsistent(s)) reject('resolution_failed', 'Battlefield attack-offer settlement lost server authority');
   const settlements = r.battlefieldAttackOfferSettlements ?? [];
   const matching = settlements.filter((entry) => entry.round === s.round.roundNumber && entry.battlefieldId === event.battlefieldId);
   if (!matching.length) return;
@@ -3582,6 +3600,7 @@ function settleBattlefieldAttackOffers(s: GameState, event: AbilityEvent): void 
     }
   }
   const settledSet = new Set(matching);
+  for (const entry of matching) retireBattlefieldAttackOfferAuthority(s, entry.transactionId);
   r.battlefieldAttackOfferSettlements = settlements.filter((entry) => !settledSet.has(entry));
 }
 
@@ -5627,15 +5646,17 @@ function processEvent(s: GameState, event: AbilityEvent): void {
 /** Trusted backend event hook. Events are not part of AbilityCommand. */
 export function processAbilityEvent(s: GameState, event: AbilityEvent): void {
   if (runtime(s).processedEvents.includes(event.id)) return;
-  const copy = structuredClone(s); processEvent(copy, event); runtime(copy).revision++;
-  Object.assign(s, copy);
+  const copy = structuredClone(s); copyBattlefieldAttackOfferServerAuthority(s, copy); processEvent(copy, event); runtime(copy).revision++;
+  Object.assign(s, copy); copyBattlefieldAttackOfferServerAuthority(copy, s);
 }
 /** Trusted backend producer helper. Allocates event identity inside the same cloned transaction. */
 export function processAbilitySystemEvent(s: GameState, label: string, event: Omit<AbilityEvent, 'id'>): void {
   const copy = structuredClone(s);
+  copyBattlefieldAttackOfferServerAuthority(s, copy);
   processEvent(copy, { ...event, id: nextId(copy, label) });
   runtime(copy).revision++;
   Object.assign(s, copy);
+  copyBattlefieldAttackOfferServerAuthority(copy, s);
 }
 export function advanceAbilityPhase(
   s: GameState,
@@ -5644,11 +5665,12 @@ export function advanceAbilityPhase(
   previousRound = s.round.roundNumber,
 ): void {
   const r = runtime(s);
-  if (r.pendingDecision || r.responseWindows.length || r.hostRequests.length || r.pendingBattleCloseDrawPlayTransaction) reject('pending_resolution', 'Resolve the current decision before advancing');
+  if (r.pendingDecision || r.responseWindows.length || r.hostRequests.length || r.pendingBattleCloseDrawPlayTransaction || r.pendingBattlefieldAttackOfferTransaction) reject('pending_resolution', 'Resolve the current decision before advancing');
   if (!Number.isInteger(round) || round < s.round.roundNumber) reject('invalid_round', 'Round cannot move backwards');
   if (!Number.isInteger(previousRound) || previousRound > round) reject('invalid_round', 'Previous round cannot exceed next round');
   const copy = structuredClone(s);
   copyBattleCloseDrawPlayServerAuthority(s, copy);
+  copyBattlefieldAttackOfferServerAuthority(s, copy);
   const startsNewRound = round > previousRound;
   if (startsNewRound) {
     runtime(copy).battleCloseDrawImmediatePlayHistory = [];
@@ -5656,6 +5678,7 @@ export function advanceAbilityPhase(
       if (state.actionAbilityAllowedInCombatRound !== undefined && state.actionAbilityAllowedInCombatRound < round) delete state.actionAbilityAllowedInCombatRound;
     }
     retireBattleCloseDrawPlayServerAuthorityBeforeRound(copy, round);
+    retireBattlefieldAttackOfferAuthorityBeforeRound(copy, round);
     runtime(copy).movementDistanceThisRound = {};
     runtime(copy).battlefieldsPassedOrStayedThisRound = {};
     runtime(copy).pendingRulerSealRewards = runtime(copy).pendingRulerSealRewards.filter((reward) => reward.round >= round);
@@ -5667,6 +5690,7 @@ export function advanceAbilityPhase(
   const type = next === 'battle' ? 'controller_combat_action_window' : next === 'action' ? 'controller_action_window' : next === 'round_end' ? 'round_end' : 'phase_changed';
   processEvent(copy, { id: nextId(copy, 'phase'), type }); runtime(copy).revision++; Object.assign(s, copy);
   copyBattleCloseDrawPlayServerAuthority(copy, s);
+  copyBattlefieldAttackOfferServerAuthority(copy, s);
 }
 
 export function projectAbilityState(s: GameState, viewerId: string): AbilityPlayerView {
@@ -5804,7 +5828,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           const currentPlayerId = tx?.orderPlayerIds[tx.nextIndex];
           const currentCandidates = currentPlayerId ? battlefieldAttackOfferCandidateIds(s, currentPlayerId) : [];
           const count = node(d.target.count);
-          if (!tx || !battlefieldAttackOfferTransactionLiveValid(s, tx) || currentPlayerId !== meta.decisionPlayerId ||
+          if (!tx || !battlefieldAttackOfferTransactionLiveValid(s, tx) || !isBattlefieldAttackOfferServerAuthorityConsistent(s) || currentPlayerId !== meta.decisionPlayerId ||
               d.controllerId !== meta.decisionPlayerId || playerId !== meta.decisionPlayerId ||
               d.context.controllerId !== meta.initiatingControllerId || d.context.sourceCardId !== meta.sourceCardInstanceId ||
               d.context.abilityId !== meta.abilityId || meta.initiatingControllerId !== tx.controllerId ||
@@ -5823,9 +5847,11 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           delete r.pendingDecision;
           if (selected.length === 1) {
             playBatch(s, meta.decisionPlayerId, [{ type: 'play_card', cardInstanceId: selected[0]! }], 'effect', false, ['hand', 'skill']);
+            rememberBattlefieldAttackOfferParticipationAuthority(s, tx, meta.decisionPlayerId, selected[0]!);
             tx.playedPlayerIds.push(meta.decisionPlayerId);
           }
           tx.nextIndex++;
+          rememberBattlefieldAttackOfferProgressAuthority(s, tx);
           stageNextBattlefieldAttackOfferDecision(s);
           break;
         }
@@ -6600,18 +6626,22 @@ export function playAbilityCardBatch(s: GameState, playerId: string, choices: Om
   const r = runtime(s);
   if (r.pendingDecision || r.responseWindows.length || r.hostRequests.length) reject('pending_resolution', 'Resolve current decision first');
   const copy = structuredClone(s);
+  copyBattlefieldAttackOfferServerAuthority(s, copy);
   playBatch(copy, playerId, choices.map(c => ({ ...c, type: 'play_card' })));
   runtime(copy).revision++; Object.assign(s, copy);
+  copyBattlefieldAttackOfferServerAuthority(copy, s);
 }
 /** Transactional mutation of server state; only a safe DTO is returned, even on rejection. */
 export function dispatchAbilityCommand(s: GameState, playerId: string, command: AbilityCommand): DispatchResult {
   const before = runtime(s).events.length; const beforeCalculations = runtime(s).calculations.length; const copy = structuredClone(s);
   copyOpponentCloseToOneServerAuthority(s, copy);
   copyBattleCloseDrawPlayServerAuthority(s, copy);
+  copyBattlefieldAttackOfferServerAuthority(s, copy);
   try {
     dispatch(copy, playerId, command); runtime(copy).revision++; Object.assign(s, copy);
     copyOpponentCloseToOneServerAuthority(copy, s);
     copyBattleCloseDrawPlayServerAuthority(copy, s);
+    copyBattlefieldAttackOfferServerAuthority(copy, s);
     return { ok: true, view: projectAbilityState(s, playerId),
       events: runtime(s).events.slice(before).filter(e => !e.visibility || e.visibility === playerId).map(({ visibility: _, ...e }) => e),
       calculations: runtime(s).calculations.slice(beforeCalculations).filter(c => c.controllerId === playerId).flatMap(c => c.lines) };
@@ -6627,6 +6657,7 @@ export function dispatchAbilityCommand(s: GameState, playerId: string, command: 
 /** The transport should expose only dispatch/view; phase and event hooks are trusted server operations. */
 export function createAbilitySession(initialState: GameState) {
   const authority = structuredClone(initialState);
+  copyBattlefieldAttackOfferServerAuthority(initialState, authority);
   return {
     dispatch: (authenticatedPlayerId: string, command: AbilityCommand) => dispatchAbilityCommand(authority, authenticatedPlayerId, command),
     view: (authenticatedPlayerId: string) => projectAbilityState(authority, authenticatedPlayerId),

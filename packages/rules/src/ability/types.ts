@@ -260,11 +260,11 @@ export interface BattlefieldAttackOfferChoiceInteractionMetadata {
   constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: 1; distinct: true };
 }
 export interface PendingBattlefieldAttackOfferTransaction {
-  controllerId: PlayerId; sourceCardId: string; abilityId: string; round: number; battlefieldId: string;
+  transactionId: string; controllerId: PlayerId; sourceCardId: string; abilityId: string; round: number; battlefieldId: string;
   orderPlayerIds: PlayerId[]; nextIndex: number; playedPlayerIds: PlayerId[];
 }
 export interface BattlefieldAttackOfferSettlement {
-  controllerId: PlayerId; sourceCardId: string; abilityId: string; round: number; battlefieldId: string; playedPlayerIds: PlayerId[];
+  transactionId: string; controllerId: PlayerId; sourceCardId: string; abilityId: string; round: number; battlefieldId: string; playedPlayerIds: PlayerId[];
 }
 export interface BattleCloseDrawPlayReward {
   playerId: PlayerId; closedCardId: string; refundMana: number; drawnCardId?: string;
