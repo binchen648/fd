@@ -184,9 +184,12 @@ function assignedTerrainSlotIndex(state: GameState, battlefieldId: CombatResolut
   if (!assignments || typeof assignments !== "object") return undefined;
   const assigned = (assignments as Partial<Record<string, string[]>>)[battlefieldId];
   if (!Array.isArray(assigned)) return undefined;
+  const location = getLocationById(state.map, state.locationConfig, battlefieldId);
+  const overrideStore = modeState(state).terrainAssignmentSlots as Partial<Record<string, Record<string, number>>> | undefined;
+  const override = overrideStore?.[battlefieldId]?.[playerId];
+  if (Number.isSafeInteger(override) && Number(override) >= 0 && Number(override) < (location?.terrainBonuses?.length ?? 0)) return Number(override);
   const index = assigned.indexOf(playerId);
   if (index < 0) return undefined;
-  const location = getLocationById(state.map, state.locationConfig, battlefieldId);
   return index < (location?.terrainBonuses?.length ?? 0) ? index : undefined;
 }
 

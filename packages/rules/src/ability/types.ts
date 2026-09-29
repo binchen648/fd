@@ -259,6 +259,13 @@ export interface BattlefieldAttackOfferChoiceInteractionMetadata {
   initiatingControllerId: PlayerId; decisionPlayerId: PlayerId; battlefieldId: string; round: number; candidateIds: string[];
   constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: 1; distinct: true };
 }
+export interface DeploymentTerrainVpChoiceInteractionMetadata {
+  kind: 'deployment_terrain_vp_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  sourceControllerId: PlayerId; decisionPlayerId: PlayerId; battlefieldId: string; round: number; statusCreatedRound: number;
+  maxSpend: 5; options: string[];
+  constraints: { kind: 'target'; targetKind: 'choice'; min: 1; max: 1; distinct: true };
+}
 export interface PendingBattlefieldAttackOfferTransaction {
   transactionId: string; controllerId: PlayerId; sourceCardId: string; abilityId: string; round: number; battlefieldId: string;
   orderPlayerIds: PlayerId[]; nextIndex: number; playedPlayerIds: PlayerId[];
@@ -284,7 +291,8 @@ export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetad
   CounterSpendChoiceInteractionMetadata | DiscardBasicReplayChoiceInteractionMetadata | SealedCardChoiceInteractionMetadata |
   SealedCardDispositionInteractionMetadata | BattlePlunderChoiceInteractionMetadata | RecordedRemovedReplayChoiceInteractionMetadata |
   BattleLuckDiscardInteractionMetadata | BattleOpponentCloseRewardInteractionMetadata |
-  BattleDrawnCardOptionalPlayInteractionMetadata | BattlefieldAttackOfferChoiceInteractionMetadata;
+  BattleDrawnCardOptionalPlayInteractionMetadata | BattlefieldAttackOfferChoiceInteractionMetadata |
+  DeploymentTerrainVpChoiceInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];

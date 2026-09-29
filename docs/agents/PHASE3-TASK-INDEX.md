@@ -6714,3 +6714,57 @@ Acceptance synchronization:
 - Mechanical next owner is `servant.tomoe`; frozen inventory immediately after Tezcat contains sc-tomoe-1 + sc-tomoe-2 + sc-tomoe-3.
 - Tomoe has historical accepted/canonical material, so owner-readiness-first must perform a full current-lineage/history rescan before deciding preservation-only versus newly creditable identities; no Tomoe credit is claimed by this A-sync.
 - Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-owner-tezcat-acceptance-synchronization.md`.
+
+## TASK P3-B-TOMOE-OWNER-READINESS-CAPABILITY
+
+Owner: Codex B
+Status: `IMPLEMENTED_AWAITING_REVIEW`
+Base: `973719b7c0c29a1ff74462eaf5c2cf08e5160e5b`
+Classification: complete currently discoverable Tomoe owner-readiness/capability batch, permanently zero migration credit
+
+Frozen owner scope:
+- `servant.tomoe.skill.sc-tomoe-1`;
+- `servant.tomoe.skill.sc-tomoe-2`;
+- `servant.tomoe.skill.sc-tomoe-3`.
+
+Source / accepted-lineage authority:
+- frozen F1 evidence remains independently accepted at `59f145434695d29bdd17e4cb3adc887e84182377` (`944/944`, blocked `0`, unclassified `0`);
+- canonical `data/authoring/servants/servant.tomoe.json` already exists and is the current owner archive; this readiness task does not edit authoring or claim migration credit;
+- P3-B21 / R15 already accepts the exact Tomoe sc1 post-loss unpreventable `-5 VP` family, and FM04/R32 explicitly treats Tomoe Independent Action as the pre-existing canonical representative while adding only sibling archives;
+- locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9` remains static/observed metadata only and is not semantic authority.
+
+Full-owner preflight result:
+- sc1 current seams are already usable: first-half action `+3 VP` and forced post-loss unpreventable `-5 VP` need no new readiness runtime;
+- sc2 terrain doubling is already executable, but its `next_round` battlefield deployment status had no consumer at all, so the printed `0..5 VP` terrain-slot restriction was inert;
+- sc3 true-name declaration/reveal is already executable, but Rain of Fire had regressed to an explicit `assume opponent has no terrain` shortcut and did not respect authoritative terrain ownership;
+- these are the complete currently discoverable owner-local gaps; they are closed together in one zero-credit readiness Candidate and must not be split into per-skill review units.
+
+Implemented generic readiness family:
+- exact `next_round` / `opponents_deploying_to_this_battlefield` status shapes now carry source-card, ability, source-controller, location, and created-round provenance; malformed/widened shapes fail closed;
+- when an opponent deploys to that battlefield in exactly the following round, deployment pauses before terrain assignment and opens one owner-only mandatory choice `0..min(5,current VP)`; the chosen amount is paid as VP and only free terrain slots whose printed terrain value is `<= paid VP` remain eligible;
+- explicit `terrainAssignmentSlots` authority preserves non-dense choices (for example paying `1` may take the `+1` slot while leaving `+3` free for a later payer) and is consumed by combat/terrain multiplier math; round rollover clears the mapping;
+- restore validates terrain assignment + exact-slot consistency and the pending deployment-payment interaction against live player/round/priority/status/source facts; malformed or stale state fails closed;
+- exact `reduce_opponents_power(amount=5, condition=opponent_has_no_terrain, scope=same_battlefield)` now reads authoritative terrain assignments; opponents with terrain are excluded, opponents without terrain receive the round `-5`, and malformed terrain authority fails closed;
+- production runtime contains no Tomoe/card-name/printed-text/`sc-tomoe-*`/`inferno_fire` identity routing.
+
+Verification:
+- Tomoe/MatchSession focused green set: `3 files / 80 tests PASS` (`match-session-regressions 9/9`, full MatchSession `33/33`, complex skills `38/38`);
+- `FD_TOOLCHAIN_OK`;
+- typecheck PASS;
+- content validate/compile PASS: `7 masters / 13 servants / 20 events / 0 blocking issues`;
+- generated-content determinism PASS;
+- `data/authoring/**` Base..working-tree delta EMPTY;
+- production identity audit CLEAN;
+- `git diff --check` PASS;
+- detailed result: `docs/reports/2026-09-30-p3-b-tomoe-owner-readiness-capability-result.md`.
+
+Accounting / next step:
+- strict formal accounting remains `157/944`, remaining `787`;
+- this readiness task is permanently zero-credit;
+- exact Candidate requires one fresh independent R;
+- ACCEPTED -> one A-sync/full-owner rescan, remain on `servant.tomoe`; only that rescan may decide which Tomoe identities are preservation-only/already credited versus still newly creditable before any formal owner-complete migration Candidate;
+- NEEDS_REVISION -> close all exact findings in one successor Candidate, then one fresh R.
+
+Allowed verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
