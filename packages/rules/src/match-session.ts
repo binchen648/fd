@@ -40,6 +40,7 @@ import { isNormalCardDrawSuppressed } from './ability/timed-resource-suppression
 import { isAcceptedDiscardBasicReplayCounterAbility, isAcceptedPhysicalCardReplayGrowthAbility } from './ability/deck-recycle-replay-growth-capability';
 import { isAcceptedLocationMarkerPlaceAbility, isValidLocationMarkerKey, locationMarkerKeyFromAbility } from './ability/location-marker-capability';
 import { isAcceptedAfterBattleSealAbility, isAcceptedPlaySealedAttacksAbility, isAcceptedRoundDefinitionAttributeReplacementAbility, isValidSealedCardMagicKey, sealedCardMagicKeyFromAbility } from './ability/sealed-card-magic-capability';
+import { isValidBattlePlunderRecordKey } from './ability/battle-plunder-replay-capability';
 import { settleLinkedOwnerCardsAfterBattles } from './ability/linked-owner-combat';
 import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute } from './ability/deduction-record';
 import { SOURCE_LOCATION_BASE_POWER_ATTRIBUTES, isAcceptedPostDrawHandShuffleAbility, isAcceptedSourceLocationBasicPowerAbility } from './ability/source-location-rune-capability';
@@ -725,6 +726,39 @@ function isRestorePendingInteraction(value: unknown): boolean {
       if (!hasExactRestoreKeys(constraints, ['kind', 'targetKind', 'min', 'max', 'distinct'])) return false;
       return isRestoreInteractionConstraints(constraints, ['attribute']) && constraints.min === (value.optional ? 0 : 1) && constraints.max === 1;
     }
+    case 'battle_plunder_choice_v1': {
+      if (!hasExactRestoreKeys(value, [
+        'kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'controllerId','recordKey','stage','triggerEventId','battlePhaseResolutionId','battleId','resultId','battlefieldId','loserIds',
+        ...(value.targetPlayerId === undefined ? [] : ['targetPlayerId']), ...(value.topCardIds === undefined ? [] : ['topCardIds']),
+        ...(value.keptCardIds === undefined ? [] : ['keptCardIds']), 'constraints',
+      ])) return false;
+      if (typeof value.controllerId !== 'string' || !isValidBattlePlunderRecordKey(value.recordKey) ||
+          !['loser','remove','reorder'].includes(String(value.stage)) || typeof value.triggerEventId !== 'string' ||
+          typeof value.battlePhaseResolutionId !== 'string' || typeof value.battleId !== 'string' || typeof value.resultId !== 'string' ||
+          typeof value.battlefieldId !== 'string' || !isRestoreStringArray(value.loserIds) || value.loserIds.length < 1 ||
+          new Set(value.loserIds).size !== value.loserIds.length || !isRestoreInteractionConstraints(value.constraints, ['player','card'])) return false;
+      if (value.stage === 'loser') return value.targetPlayerId === undefined && value.topCardIds === undefined && value.keptCardIds === undefined &&
+        (value.constraints as Record<string, unknown>).targetKind === 'player' && (value.constraints as Record<string, unknown>).min === 1 &&
+        (value.constraints as Record<string, unknown>).max === 1;
+      if (typeof value.targetPlayerId !== 'string' || !isRestoreStringArray(value.topCardIds) || value.topCardIds.length < 1 ||
+          value.topCardIds.length > 3 || new Set(value.topCardIds).size !== value.topCardIds.length) return false;
+      if (value.stage === 'remove') return value.keptCardIds === undefined && (value.constraints as Record<string, unknown>).targetKind === 'card' &&
+        (value.constraints as Record<string, unknown>).min === 1 && (value.constraints as Record<string, unknown>).max === 1;
+      return isRestoreStringArray(value.keptCardIds) && value.keptCardIds.length >= 2 && value.keptCardIds.length <= 2 &&
+        new Set(value.keptCardIds).size === value.keptCardIds.length && value.keptCardIds.every((id) => (value.topCardIds as string[]).includes(id)) &&
+        (value.constraints as Record<string, unknown>).targetKind === 'card' &&
+        (value.constraints as Record<string, unknown>).min === value.keptCardIds.length &&
+        (value.constraints as Record<string, unknown>).max === value.keptCardIds.length;
+    }
+    case 'recorded_removed_replay_choice_v1':
+      return hasExactRestoreKeys(value, [
+        'kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'controllerId','recordKey','candidateIds','minimumManaCost','constraints',
+      ]) && typeof value.controllerId === 'string' && isValidBattlePlunderRecordKey(value.recordKey) &&
+        isRestoreStringArray(value.candidateIds) && value.candidateIds.length >= 1 && new Set(value.candidateIds).size === value.candidateIds.length &&
+        value.minimumManaCost === 2 && isRestoreInteractionConstraints(value.constraints, ['card']) &&
+        (value.constraints as Record<string, unknown>).min === 1 && (value.constraints as Record<string, unknown>).max === 1;
     case 'battle_luck_discard_choice_v1':
       return hasExactRestoreKeys(value, [
         'kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
@@ -908,6 +942,13 @@ function isRestoreSealedCardReplayState(value: unknown): boolean {
     typeof value.cardInstanceId === 'string' && typeof value.originalOwnerPlayerId === 'string' && isRestoreSafeInteger(value.round, 1) &&
     isRestoreSafeInteger(value.playedRevision);
 }
+function isRestoreRecordedRemovedCardState(value: unknown): boolean {
+  return hasExactRestoreKeys(value, ['recordKey','controllerId','sourceCardId','sourceAbilityId','cardInstanceId','originalOwnerPlayerId','removedRevision','triggerResultId','triggerEventId']) &&
+    isValidBattlePlunderRecordKey(value.recordKey) && typeof value.controllerId === 'string' && typeof value.sourceCardId === 'string' &&
+    typeof value.sourceAbilityId === 'string' && typeof value.cardInstanceId === 'string' && typeof value.originalOwnerPlayerId === 'string' &&
+    value.originalOwnerPlayerId !== value.controllerId && isRestoreSafeInteger(value.removedRevision, 1) &&
+    typeof value.triggerResultId === 'string' && typeof value.triggerEventId === 'string';
+}
 function isRestoreBattleCloseDrawImmediatePlayRecord(value: unknown): boolean {
   return hasExactRestoreKeys(value, ['controllerId','playerId','cardInstanceId','sourceCardId','abilityId','round']) &&
     typeof value.controllerId === 'string' && typeof value.playerId === 'string' && typeof value.cardInstanceId === 'string' && typeof value.sourceCardId === 'string' &&
@@ -949,6 +990,7 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
   if (value.sealedCardBindings !== undefined && (!isRestoreRecord(value.sealedCardBindings) || !Object.values(value.sealedCardBindings).every(isRestoreSealedCardBindingState))) return false;
   if (value.armedSealedCardActions !== undefined && (!Array.isArray(value.armedSealedCardActions) || !value.armedSealedCardActions.every(isRestoreArmedSealedCardActionState))) return false;
   if (value.sealedCardReplays !== undefined && (!isRestoreRecord(value.sealedCardReplays) || !Object.values(value.sealedCardReplays).every(isRestoreSealedCardReplayState))) return false;
+  if (value.recordedRemovedCards !== undefined && (!isRestoreRecord(value.recordedRemovedCards) || !Object.values(value.recordedRemovedCards).every(isRestoreRecordedRemovedCardState))) return false;
   if (value.playerStatusKeysByPlayer !== undefined && !isRestoreStringArrayMap(value.playerStatusKeysByPlayer)) return false;
   if (value.structuredPlayerFlagsByPlayer !== undefined && !isRestoreStructuredPlayerFlags(value.structuredPlayerFlagsByPlayer)) return false;
   if (value.structuredRoundFlagKeysByPlayer !== undefined && !isRestoreStructuredRoundFlagKeys(value.structuredRoundFlagKeysByPlayer)) return false;

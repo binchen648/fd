@@ -73,6 +73,10 @@ import {
   containsSealedCardMagicPrivilegedNode, isAcceptedSealedCardMagicAbility,
 } from './sealed-card-magic-capability';
 import {
+  BATTLE_COMPETITION_PLUNDER_EFFECT, PLAY_RECORDED_REMOVED_CARD_EFFECT,
+  containsBattlePlunderReplayPrivilegedNode, isAcceptedBattlePlunderReplayAbility,
+} from './battle-plunder-replay-capability';
+import {
   ADD_ENGAGED_SEAL_USER_FORMULA_POWER_EFFECT,
   ENABLE_ENGAGED_OPPONENT_UNUSED_SEAL_POWER_EFFECT,
   ENGAGED_SEAL_USER_THIS_ROUND_CONDITION,
@@ -171,6 +175,7 @@ const supportedTypes = new Set([
   AUTOMATIC_RECYCLE_KEEP_GAIN_COUNTER_EFFECT, SPEND_COUNTER_IGNORE_BATTLE_LOSS_EFFECT, DISCARD_BASIC_REPLAY_COUNTER_EFFECT, PHYSICAL_CARD_REPLAY_GROWTH_EFFECT,
   LOCATION_MARKER_FOLLOW_EFFECT, LOCATION_MARKER_COMBAT_BRANCH_EFFECT, LOCATION_MARKER_PLACE_EFFECT, LOCATION_MARKER_MIDPOINT_DEFEAT_EFFECT,
   ROUND_DEFINITION_ATTRIBUTE_REPLACEMENT_EFFECT, ATTACK_ATTRIBUTE_OTHER_PLAYER_PROTECTION_EFFECT, ARM_AFTER_BATTLE_SEAL_EFFECT, PLAY_SEALED_ATTACKS_EFFECT,
+  BATTLE_COMPETITION_PLUNDER_EFFECT, PLAY_RECORDED_REMOVED_CARD_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -195,6 +200,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'costIncreasePerPlay', 'costDuration', 'revealDiscardTop', 'printedPowerEquals', 'powerBonus', 'powerDuration',
   'markerKey', 'terrainAmount', 'vpTransferAmount', 'distance',
   'targetDefinitionIds', 'replaceAttributes', 'sourcePlayers', 'prevent', 'sealKey', 'cardKind', 'eligibleAttribute', 'eligibleDefinitionIds', 'sameLocation', 'trigger', 'payCardCosts', 'resealMana', 'discardDestination', 'dispositionTrigger',
+  'recordKey', 'competitionReward', 'peekCount', 'vpCap', 'removedZone', 'sourceZone', 'minimumManaCost', 'removeSourceAfterBattle',
   // New mechanic keys for 5 servants
   'options', 'label', 'condition', 'targets', 'duration', 'scope', 'statusId', 'choiceId', 'value',
   // Accepted FB2-27 Ruler seal structural fields.
@@ -642,6 +648,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsSealedCardMagicPrivilegedNode(candidateAbility) && !isAcceptedSealedCardMagicAbility(candidateAbility)) {
         issue('sealedCardMagic.gateway', 'Sealed-card/Magic privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsBattlePlunderReplayPrivilegedNode(candidateAbility) && !isAcceptedBattlePlunderReplayAbility(candidateAbility)) {
+        issue('battlePlunderReplay.gateway', 'Battle-plunder/replay privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

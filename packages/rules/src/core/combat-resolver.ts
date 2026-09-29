@@ -19,6 +19,7 @@ import { applyTerrainAdvantageOverride } from '../ability/terrain-advantage-over
 import { playerCombatTotalPowerAdjustment } from '../ability/owner-self-mechanics';
 import { dynamicUnusedEngagedSealPowerAdjustment } from '../ability/command-seal-power-capability';
 import { shouldEachBattleWinnerReceiveFullReward } from '../ability/combat-reward-distribution';
+import { controllerHasCompetitionRewardPlunderReplacement } from '../ability/battle-plunder-replay-capability';
 import { logicalDayForPlayer } from './rule-overrides';
 
 export interface CombatParticipantInput {
@@ -418,11 +419,13 @@ export function deriveBattleParticipantsFromState(
 }
 
 function buildDefaultVpAdjustments(
+  state: GameState,
   location: LocationDefinition | undefined,
   battlefieldId: CombatResolutionInput["battlefieldId"],
   winnerPlayerIds: string[],
   competitionVpPerWinner: number,
   locationVpPerWinner: number,
+  hasAuthoritativeLoser: boolean,
 ): VpAdjustment[] | undefined {
   if (!location || winnerPlayerIds.length === 0) {
     return undefined;
@@ -433,6 +436,7 @@ function buildDefaultVpAdjustments(
 
   if (competitionVpPerWinner > 0 && hooks.has("competition_rewards")) {
     for (const playerId of winnerPlayerIds) {
+      if (hasAuthoritativeLoser && controllerHasCompetitionRewardPlunderReplacement(state, playerId)) continue;
       adjustments.push({
         playerId,
         delta: competitionVpPerWinner,
@@ -498,8 +502,18 @@ function buildBattleResultFromRanked(
     : Math.min(splitVpPoolPerWinner(eventVpPool, winnerPlayerIds.length), baseVpPerWinner);
   const competitionVpPerWinner = fullRewardEach ? competitionVpPool : Math.max(0, baseVpPerWinner - vpReward);
   const locationVpPerWinner = fullRewardEach ? locationVpPool : splitVpPoolPerWinner(locationVpPool, winnerPlayerIds.length);
+  const lossEffectSuppressedPlayerIds = ranked
+    .filter((participant) => !winnerPlayerIds.includes(participant.playerId))
+    .filter((participant) => ignoresBattleLossEffects(state, participant.playerId, battlefieldId))
+    .map((participant) => participant.playerId);
+  const lossEffectSuppressed = new Set(lossEffectSuppressedPlayerIds);
+  // Keep reward replacement on the exact loser semantics later emitted by
+  // GameLoop/MatchSession: every physical participant that did not win, minus
+  // participants whose battle-loss effects are authoritatively suppressed.
+  const hasAuthoritativeLoser = ranked.some((participant) =>
+    !winnerPlayerIds.includes(participant.playerId) && !lossEffectSuppressed.has(participant.playerId));
   const defaultVpAdjustments = buildDefaultVpAdjustments(
-    location, battlefieldId, winnerPlayerIds, competitionVpPerWinner, locationVpPerWinner,
+    state, location, battlefieldId, winnerPlayerIds, competitionVpPerWinner, locationVpPerWinner, hasAuthoritativeLoser,
   );
   const remoteOperationVpAdjustment = winnerPlayerIds
     .filter((playerId) => hasRemoteOperationBonus(state, playerId, battlefieldId))
@@ -507,10 +521,6 @@ function buildBattleResultFromRanked(
       playerId, delta: 2, source: "battle_vp" as const, label: "basic.preparation.win_bonus",
     }));
   const vpAdjustments = [...(defaultVpAdjustments ?? []), ...remoteOperationVpAdjustment];
-  const lossEffectSuppressedPlayerIds = ranked
-    .filter((participant) => !winnerPlayerIds.includes(participant.playerId))
-    .filter((participant) => ignoresBattleLossEffects(state, participant.playerId, battlefieldId))
-    .map((participant) => participant.playerId);
 
   return {
     battlefieldId, winnerPlayerIds, tied,
