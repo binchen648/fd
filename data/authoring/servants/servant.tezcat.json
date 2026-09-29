@@ -9,6 +9,27 @@
     "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
     "note": "Semantics come from accepted F1 evidence/contracts plus accepted PR #487 identity-free Tezcat owner-readiness capability. Locked Reference supplies static card metadata only; legacy Tezcat identity handlers are not restored."
   },
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": [
+        "../../Fate_Domination-开发版/images/servants/泰兹卡特里波卡.png",
+        "../../Fate_Domination-开发版/images/servants/泰兹卡特里波卡.png",
+        "../../Fate_Domination-开发版/images/servants/泰兹卡特里波卡.png",
+        "../../Fate_Domination-开发版/images/servants/泰兹卡特里波卡.png"
+      ]
+    }
+  ],
+  "deck": [
+    { "cardId": "card.cardb2", "count": 2 },
+    { "cardId": "card.cardb5" },
+    { "cardId": "card.cardq1", "count": 2 },
+    { "cardId": "card.cardq3", "count": 2 },
+    { "cardId": "card.carda4", "count": 2 },
+    { "cardId": "card.cardluck", "count": 2 },
+    { "cardId": "card.cardsurveil" }
+  ],
   "cards": [
     {
       "id": "servant.tezcat.skill.sc-tezcat-1",

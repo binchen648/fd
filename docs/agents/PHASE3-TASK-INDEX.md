@@ -6660,7 +6660,7 @@ Acceptance synchronization:
 ## TASK P3-S-OWNER-TEZCAT-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Status: `REVISION_IMPLEMENTED_AWAITING_SUCCESSOR_REVIEW`
 Base: `424aea116baf4ca1afddffbcaecf77e13f69de65`
 Classification: formal owner-complete migration for current owner `servant.tezcat`
 
@@ -6682,10 +6682,18 @@ Implementation / evidence:
 - sc2 consumes only the accepted authenticated same-battlefield turn-order paid-attack / participant settlement family;
 - sc3 consumes only the accepted ordinary Command Seal card-play cost and engaged-opponent defeat family, with separate canonical true-name declaration reveal;
 - focused owner-complete regression `5/5 PASS`; accepted readiness regression `8/8 PASS`;
-- directly affected green set `9 files / 120 tests PASS`, including full MatchSession `33/33` and authoring interpreter `38/38`;
-- `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`7 masters / 12 servants / 20 events / 0 blocking issues`); generated determinism PASS; `git diff --check` PASS;
+- successor directly affected green set `10 files / 141 tests PASS`, including full MatchSession `33/33`, authoring interpreter `38/38`, and canonical playtest-pack loader `21/21`; targeted pack-roster and twelve-card-deck assertions also PASS;
+- `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`7 masters / 13 servants / 20 events / 0 blocking issues`); generated determinism PASS; `git diff --check` PASS;
 - formal `packages/rules/src/**` production runtime delta from Base is EMPTY and production Tezcat/card-name/legacy-handler/`SkillLib` identity audit is CLEAN;
 - detailed result: `docs/reports/2026-09-29-p3-s-owner-tezcat-complete-migration-result.md`.
+
+First fresh-R revision closure:
+- exact Candidate `224e4dcd6b3a51acdd089242d4d0b6eb5a269dd4` received `MIGRATION_NEEDS_REVISION`;
+- canonical same-attempt relay: `https://github.com/binchen648/fd/pull/488#issuecomment-5891839711`;
+- [P1] canonical pack omitted `servant.tezcat.json`, so shipped/normal content never loaded sc1/sc2/sc3;
+- [P1] the archive omitted the required twelve-card starting deck;
+- successor revision adds the archive to `data/packs/fd-playtest-v1/pack.json`, records the exact Reference static twelve-card deck, refreshes canonical generated content, and adds loader/compiled-library assertions for owner + all three skill IDs;
+- direct formal/readiness semantics remain unchanged; no additional sc1/sc2/sc3 semantic blocker was reported in the first review.
 
 Accounting boundary:
 - strict formal accounting remains `154/944`, remaining `790` before fresh R and A-sync;

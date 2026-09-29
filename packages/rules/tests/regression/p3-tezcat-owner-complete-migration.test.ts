@@ -58,8 +58,18 @@ function choose(state: GameState, playerId: string, selectedIds: string[]) {
 
 describe('P3 Tezcat owner-complete migration', () => {
   it('loads the exact three-card owner archive with final skill-zone thresholds and accepted generic shapes', () => {
-    const loaded = rules.loadAuthoringJson(archive());
+    const raw = archive();
+    const loaded = rules.loadAuthoringJson(raw);
     expect(loaded.report).toEqual([]);
+    expect(raw.deck).toEqual([
+      { cardId: 'card.cardb2', count: 2 },
+      { cardId: 'card.cardb5' },
+      { cardId: 'card.cardq1', count: 2 },
+      { cardId: 'card.cardq3', count: 2 },
+      { cardId: 'card.carda4', count: 2 },
+      { cardId: 'card.cardluck', count: 2 },
+      { cardId: 'card.cardsurveil' },
+    ]);
     expect(Object.keys(loaded.cards).sort()).toEqual([SC1, SC2, SC3].sort());
     expect(loaded.cards[SC1]!.cardFace).toMatchObject({ cost: 0, basePower: 3, attributes: ['力量'] });
     expect(loaded.cards[SC2]!.cardFace).toMatchObject({ cost: 2, basePower: 4, attributes: ['力量'] });

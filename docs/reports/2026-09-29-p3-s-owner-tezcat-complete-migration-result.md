@@ -33,17 +33,36 @@ No Tezcat/card-name/printed-text runtime parser, Reference identity handler, leg
 
 Focused formal owner-complete regression: `5/5 PASS`.
 Accepted readiness regression: `8/8 PASS`.
-Directly affected green verification: `9 files / 120 tests PASS`, covering formal Tezcat, Tezcat readiness, authoring interpreter, full MatchSession, game-loop action play, attack classifier, card action play, required-additional play, and fixed-controller Command Seal component.
+Successor directly affected green verification: `10 files / 141 tests PASS`, covering formal Tezcat, Tezcat readiness, authoring interpreter, full MatchSession, game-loop action play, attack classifier, card action play, required-additional play, fixed-controller Command Seal component, and canonical playtest-pack loader. Tezcat pack-roster and twelve-card-deck assertions additionally pass in targeted `fd-playtest-servants` runs.
 
 Static gates:
 - `FD_TOOLCHAIN_OK`;
 - `npm run typecheck` PASS;
-- `npm run content:validate` PASS — `7 masters / 12 servants / 20 events / 0 blocking issues`;
+- `npm run content:validate` PASS — `7 masters / 13 servants / 20 events / 0 blocking issues`;
 - `npm run content:compile` PASS with the same result;
-- `npm run verify:generated-content` PASS with deterministic hashes unchanged;
+- `npm run verify:generated-content` PASS with canonical generated content now including `servant.tezcat` plus sc1/sc2/sc3;
 - locked Reference remains clean/exact at `b2f9fa15fba07c63530bbf4612b03b8b704755f9`;
 - `git diff --check` PASS;
 - formal `packages/rules/src/**` production runtime delta from Base is EMPTY.
+
+## Revision closure after first fresh R
+
+Exact Candidate `224e4dcd6b3a51acdd089242d4d0b6eb5a269dd4` received `MIGRATION_NEEDS_REVISION`; canonical same-attempt Coordinator relay is `https://github.com/binchen648/fd/pull/488#issuecomment-5891839711`.
+
+The review reported two integration blockers and no additional sc1/sc2/sc3 semantic blocker:
+
+1. the Tezcat archive was orphaned from `data/packs/fd-playtest-v1/pack.json`, so canonical playtest loading/compilation never included the owner;
+2. the Tezcat archive omitted the required twelve-card starting deck, which would have made canonical servant loading fail once the pack referenced it.
+
+The successor revision closes both together:
+
+- `data/packs/fd-playtest-v1/pack.json` now includes `data/authoring/servants/servant.tezcat.json`;
+- the archive carries the exact static twelve-card deck from locked Reference metadata: `card.cardb2 x2`, `card.cardb5 x1`, `card.cardq1 x2`, `card.cardq3 x2`, `card.carda4 x2`, `card.cardluck x2`, `card.cardsurveil x1`;
+- canonical loader/compiled-library integration assertions prove `servant.tezcat` and all three skill IDs are present;
+- generated canonical content is refreshed and deterministic with Tezcat included;
+- focused direct archive behavior remains green and production `packages/rules/src/**` remains unchanged.
+
+One broader `fd-playtest-servants.test.ts` source-asset existence assertion for pre-existing `servant.artoriac.overview` still fails in this local checkout because that unrelated image path is absent; the Tezcat-specific roster/deck assertions and full canonical pack-loader integration test pass independently. This pre-existing asset-fixture issue is not used as support for the successor Candidate.
 
 ## Accounting boundary
 

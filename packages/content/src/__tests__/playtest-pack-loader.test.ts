@@ -130,6 +130,7 @@ describe('playtest pack loader', () => {
   it('loads the complete approved roster with no blocking issues', () => {
     const loaded = loadPlaytestContentPack(packPath, { workspaceRoot });
     const issues = validateLoadedPlaytestPack(loaded, { workspaceRoot });
+    const compiled = compileLoadedPlaytestPack(loaded, issues);
 
     expect(loaded.servants).toHaveLength(
       loaded.manifest.servantFiles.length + (loaded.manifest.authoringServantFiles?.length ?? 0),
@@ -138,6 +139,18 @@ describe('playtest pack loader', () => {
     expect(loaded.eventSets).toHaveLength(1);
     expect(loaded.eventSets[0]!.cardIds).toHaveLength(20);
     expect(loaded.eventCards).toHaveLength(18);
+    expect(loaded.servants.map((servant) => servant.id)).toContain('servant.tezcat');
+    expect([
+      'servant.tezcat.skill.sc-tezcat-1',
+      'servant.tezcat.skill.sc-tezcat-2',
+      'servant.tezcat.skill.sc-tezcat-3',
+    ].every((id) => loaded.cards.some((card) => card.id === id))).toBe(true);
+    expect(compiled.library.servants.map((servant) => servant.id)).toContain('servant.tezcat');
+    expect([
+      'servant.tezcat.skill.sc-tezcat-1',
+      'servant.tezcat.skill.sc-tezcat-2',
+      'servant.tezcat.skill.sc-tezcat-3',
+    ].every((id) => compiled.library.cards.some((card) => card.id === id))).toBe(true);
     expect(issues.filter((issue) => issue.blocking)).toEqual([]);
     expect(issues).toContainEqual(expect.objectContaining({
       code: 'SOURCE_ASSET_UNVERIFIED',
