@@ -36,6 +36,12 @@ import {
   type BattleCloseDrawPlayServerAuthoritySeal,
 } from './ability/battle-close-draw-play-authority';
 import { hmacSha256Hex, sha256Hex } from './ability/portable-sha256';
+import {
+  isBattlefieldAttackOfferServerAuthorityConsistent,
+  persistBattlefieldAttackOfferServerAuthority,
+  restoreBattlefieldAttackOfferServerAuthority,
+  type BattlefieldAttackOfferServerAuthoritySeal,
+} from './ability/battlefield-attack-offer-authority';
 import { clearTransientCardTransformState } from './ability/card-instance-state';
 import { isNormalCardDrawSuppressed } from './ability/timed-resource-suppression';
 import { isAcceptedDiscardBasicReplayCounterAbility, isAcceptedPhysicalCardReplayGrowthAbility } from './ability/deck-recycle-replay-growth-capability';
@@ -211,6 +217,8 @@ export interface MatchReplayStateSnapshot {
   opponentCloseToOneServerAuthority?: OpponentCloseToOneServerAuthoritySeal;
   /** Authenticated Divine Core draw/immediate-play authority; sealing secret is outside this snapshot. */
   battleCloseDrawPlayServerAuthority?: BattleCloseDrawPlayServerAuthoritySeal;
+  /** Authenticated Tezcat-style battlefield attack-offer order/progress/participation authority. */
+  battlefieldAttackOfferServerAuthority?: BattlefieldAttackOfferServerAuthoritySeal;
   logs: MatchSessionLogEntry[];
   battleHistory: GameState['battleResults'];
   consumedDirectiveCount: number;
@@ -231,6 +239,8 @@ export interface MatchSessionSnapshot {
   opponentCloseToOneServerAuthority?: OpponentCloseToOneServerAuthoritySeal;
   /** Authenticated Divine Core draw/immediate-play authority; sealing secret is outside this snapshot. */
   battleCloseDrawPlayServerAuthority?: BattleCloseDrawPlayServerAuthoritySeal;
+  /** Authenticated Tezcat-style battlefield attack-offer order/progress/participation authority. */
+  battlefieldAttackOfferServerAuthority?: BattlefieldAttackOfferServerAuthoritySeal;
   /** Authenticated replay membership for durable host/room persistence; host scope and secret remain external. */
   opponentCloseToOneReplayManifest?: OpponentCloseToOneReplayManifestSeal;
   logs: MatchSessionLogEntry[];
@@ -269,6 +279,16 @@ function persistedBattleCloseDrawPlayAuthorityField(
 ): { battleCloseDrawPlayServerAuthority?: BattleCloseDrawPlayServerAuthoritySeal } {
   const seal = persistBattleCloseDrawPlayServerAuthority(state, persistenceSecret, persistenceScope, replayCheckpointId);
   return seal ? { battleCloseDrawPlayServerAuthority: seal } : {};
+}
+
+function persistedBattlefieldAttackOfferAuthorityField(
+  state: GameState,
+  persistenceSecret: string,
+  persistenceScope: string,
+  replayCheckpointId?: string,
+): { battlefieldAttackOfferServerAuthority?: BattlefieldAttackOfferServerAuthoritySeal } {
+  const seal = persistBattlefieldAttackOfferServerAuthority(state, persistenceSecret, persistenceScope, replayCheckpointId);
+  return seal ? { battlefieldAttackOfferServerAuthority: seal } : {};
 }
 
 function deferredRuntimeStateSealPayload(
@@ -782,7 +802,17 @@ function isRestorePendingInteraction(value: unknown): boolean {
         'playerId','drawnCardId','constraints',
       ]) && typeof value.playerId === 'string' && typeof value.drawnCardId === 'string' &&
         isRestoreInteractionConstraints(value.constraints, ['card']) && (value.constraints as Record<string, unknown>).min === 0 &&
-        (value.constraints as Record<string, unknown>).max === 1;    default:
+        (value.constraints as Record<string, unknown>).max === 1;
+    case 'battlefield_attack_offer_choice_v1':
+      return hasExactRestoreKeys(value, [
+        'kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'initiatingControllerId','decisionPlayerId','battlefieldId','round','candidateIds','constraints',
+      ]) && typeof value.initiatingControllerId === 'string' && typeof value.decisionPlayerId === 'string' &&
+        typeof value.battlefieldId === 'string' && isRestoreSafeInteger(value.round, 1) && isRestoreStringArray(value.candidateIds) &&
+        value.candidateIds.length >= 1 && new Set(value.candidateIds).size === value.candidateIds.length &&
+        isRestoreInteractionConstraints(value.constraints, ['card']) && (value.constraints as Record<string, unknown>).min === 0 &&
+        (value.constraints as Record<string, unknown>).max === 1;
+    default:
       return false;
   }
 }
@@ -914,6 +944,25 @@ function isRestoreBattleCloseDrawPlayTransaction(value: unknown): boolean {
     Array.isArray(value.rewards) && value.rewards.every(isRestoreBattleCloseDrawPlayReward) &&
     (value.discardedLuckCardId === undefined || typeof value.discardedLuckCardId === 'string');
 }
+function isRestoreBattlefieldAttackOfferTransaction(value: unknown): boolean {
+  if (!hasExactRestoreKeys(value, ['transactionId','controllerId','sourceCardId','abilityId','round','battlefieldId','orderPlayerIds','nextIndex','playedPlayerIds'])) return false;
+  const record = value as Record<string, unknown>;
+  if (typeof record.transactionId !== 'string' || !/^battlefield-attack-offer-tx-\d+$/.test(record.transactionId) ||
+      typeof record.controllerId !== 'string' || typeof record.sourceCardId !== 'string' || typeof record.abilityId !== 'string' ||
+      typeof record.battlefieldId !== 'string' || !isRestoreSafeInteger(record.round, 1) || !isRestoreStringArray(record.orderPlayerIds) ||
+      record.orderPlayerIds.length < 1 || new Set(record.orderPlayerIds).size !== record.orderPlayerIds.length ||
+      !isRestoreSafeInteger(record.nextIndex, 0) || Number(record.nextIndex) > record.orderPlayerIds.length ||
+      !isRestoreStringArray(record.playedPlayerIds) || new Set(record.playedPlayerIds).size !== record.playedPlayerIds.length) return false;
+  return record.playedPlayerIds.every((id) => (record.orderPlayerIds as string[]).includes(id));
+}
+function isRestoreBattlefieldAttackOfferSettlement(value: unknown): boolean {
+  if (!hasExactRestoreKeys(value, ['transactionId','controllerId','sourceCardId','abilityId','round','battlefieldId','playedPlayerIds'])) return false;
+  const record = value as Record<string, unknown>;
+  return typeof record.transactionId === 'string' && /^battlefield-attack-offer-tx-\d+$/.test(record.transactionId) &&
+    typeof record.controllerId === 'string' && typeof record.sourceCardId === 'string' && typeof record.abilityId === 'string' &&
+    typeof record.battlefieldId === 'string' && isRestoreSafeInteger(record.round, 1) && isRestoreStringArray(record.playedPlayerIds) &&
+    record.playedPlayerIds.length >= 1 && new Set(record.playedPlayerIds).size === record.playedPlayerIds.length;
+}
 function isRestoreLocationMarkerState(value: unknown): boolean {
   return hasExactRestoreKeys(value, ['markerKey','controllerId','providerSourceCardId','providerAbilityId','locationId','placedRevision','updatedRevision']) &&
     isValidLocationMarkerKey((value as Record<string, unknown>).markerKey) && typeof (value as Record<string, unknown>).controllerId === 'string' &&
@@ -1009,6 +1058,9 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
   if (value.rulerCommandSealUseRoundByPlayer !== undefined && !isRestorePositiveIntegerMap(value.rulerCommandSealUseRoundByPlayer)) return false;
   if (value.startingDeckSizeByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.startingDeckSizeByPlayer)) return false;
   if (value.pendingBattleCloseDrawPlayTransaction !== undefined && !isRestoreBattleCloseDrawPlayTransaction(value.pendingBattleCloseDrawPlayTransaction)) return false;
+  if (value.pendingBattlefieldAttackOfferTransaction !== undefined && !isRestoreBattlefieldAttackOfferTransaction(value.pendingBattlefieldAttackOfferTransaction)) return false;
+  if (value.battlefieldAttackOfferSettlements !== undefined && (!Array.isArray(value.battlefieldAttackOfferSettlements) ||
+      !value.battlefieldAttackOfferSettlements.every(isRestoreBattlefieldAttackOfferSettlement))) return false;
   if (value.battleCloseDrawImmediatePlayHistory !== undefined && (!Array.isArray(value.battleCloseDrawImmediatePlayHistory) ||
       !value.battleCloseDrawImmediatePlayHistory.every(isRestoreBattleCloseDrawImmediatePlayRecord))) return false;
   if (value.cardPlayCountByInstance !== undefined && !isRestoreNonNegativeIntegerMap(value.cardPlayCountByInstance)) return false;
@@ -2650,6 +2702,7 @@ export class MatchSession {
   serializeSession(): MatchSessionSnapshot {
     const authorityField = persistedOpponentCloseToOneAuthorityField(this.state, this.persistenceSecret, this.persistenceScope);
     const battleAuthorityField = persistedBattleCloseDrawPlayAuthorityField(this.state, this.persistenceSecret, this.persistenceScope);
+    const battlefieldOfferAuthorityField = persistedBattlefieldAttackOfferAuthorityField(this.state, this.persistenceSecret, this.persistenceScope);
     const currentSeal = authorityField.opponentCloseToOneServerAuthority;
     const replayEntries = replayManifestEntries(this.replaySnapshots);
     rememberOpponentCloseToOneTrustedReplayLineage(this.persistenceScope, this.state, replayEntries);
@@ -2663,6 +2716,7 @@ export class MatchSession {
       state: structuredClone(this.state),
       ...authorityField,
       ...battleAuthorityField,
+      ...battlefieldOfferAuthorityField,
       ...(replaySensitive ? {
         opponentCloseToOneReplayManifest: persistOpponentCloseToOneReplayManifest(
           this.state,
@@ -2742,6 +2796,13 @@ export class MatchSession {
       this.persistenceScope,
       checkpointId,
     ) || !isBattleCloseDrawPlayServerAuthorityConsistent(candidateState)) return false;
+    if (!restoreBattlefieldAttackOfferServerAuthority(
+      candidateState,
+      snapshot.battlefieldAttackOfferServerAuthority,
+      this.persistenceSecret,
+      this.persistenceScope,
+      checkpointId,
+    ) || !isBattlefieldAttackOfferServerAuthorityConsistent(candidateState)) return false;
     this.state = candidateState;
     this.logs = candidateLogs;
     this.battleHistory = candidateBattleHistory;
@@ -3401,6 +3462,7 @@ export class MatchSession {
       state: structuredClone(state),
       ...persistedOpponentCloseToOneAuthorityField(state, this.persistenceSecret, this.persistenceScope, checkpoint.id),
       ...persistedBattleCloseDrawPlayAuthorityField(state, this.persistenceSecret, this.persistenceScope, checkpoint.id),
+      ...persistedBattlefieldAttackOfferAuthorityField(state, this.persistenceSecret, this.persistenceScope, checkpoint.id),
       logs: structuredClone(this.logs),
       battleHistory: structuredClone(this.battleHistory),
       consumedDirectiveCount: this.consumedDirectiveCount,
@@ -3483,6 +3545,14 @@ export function restoreMatchSession(
   ) || !isBattleCloseDrawPlayServerAuthorityConsistent(candidateState)) {
     throw new Error('Invalid or missing battle close/draw/play persisted authority');
   }
+  if (!restoreBattlefieldAttackOfferServerAuthority(
+    candidateState,
+    snapshot.battlefieldAttackOfferServerAuthority,
+    persistenceSecret,
+    persistenceScope,
+  ) || !isBattlefieldAttackOfferServerAuthorityConsistent(candidateState)) {
+    throw new Error('Invalid or missing battlefield attack-offer persisted authority');
+  }
   const replayCheckpointIds = snapshot.replaySnapshots.map((entry) => entry.checkpointId);
   const replayEntries = replayManifestEntries(snapshot.replaySnapshots);
   const suppliedReplayManifest = snapshot.opponentCloseToOneReplayManifest !== undefined;
@@ -3533,6 +3603,15 @@ export function restoreMatchSession(
       entry.checkpointId,
     ) || !isBattleCloseDrawPlayServerAuthorityConsistent(replayState)) {
       throw new Error('Invalid or missing replay battle close/draw/play persisted authority');
+    }
+    if (!restoreBattlefieldAttackOfferServerAuthority(
+      replayState,
+      entry.battlefieldAttackOfferServerAuthority,
+      persistenceSecret,
+      persistenceScope,
+      entry.checkpointId,
+    ) || !isBattlefieldAttackOfferServerAuthorityConsistent(replayState)) {
+      throw new Error('Invalid or missing replay battlefield attack-offer persisted authority');
     }
   }
   const session = new MatchSession({

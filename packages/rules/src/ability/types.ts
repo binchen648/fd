@@ -253,6 +253,19 @@ export interface BattleDrawnCardOptionalPlayInteractionMetadata {
   playerId: PlayerId; drawnCardId: string;
   constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: 1; distinct: true };
 }
+export interface BattlefieldAttackOfferChoiceInteractionMetadata {
+  kind: 'battlefield_attack_offer_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  initiatingControllerId: PlayerId; decisionPlayerId: PlayerId; battlefieldId: string; round: number; candidateIds: string[];
+  constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: 1; distinct: true };
+}
+export interface PendingBattlefieldAttackOfferTransaction {
+  transactionId: string; controllerId: PlayerId; sourceCardId: string; abilityId: string; round: number; battlefieldId: string;
+  orderPlayerIds: PlayerId[]; nextIndex: number; playedPlayerIds: PlayerId[];
+}
+export interface BattlefieldAttackOfferSettlement {
+  transactionId: string; controllerId: PlayerId; sourceCardId: string; abilityId: string; round: number; battlefieldId: string; playedPlayerIds: PlayerId[];
+}
 export interface BattleCloseDrawPlayReward {
   playerId: PlayerId; closedCardId: string; refundMana: number; drawnCardId?: string;
 }
@@ -271,7 +284,7 @@ export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetad
   CounterSpendChoiceInteractionMetadata | DiscardBasicReplayChoiceInteractionMetadata | SealedCardChoiceInteractionMetadata |
   SealedCardDispositionInteractionMetadata | BattlePlunderChoiceInteractionMetadata | RecordedRemovedReplayChoiceInteractionMetadata |
   BattleLuckDiscardInteractionMetadata | BattleOpponentCloseRewardInteractionMetadata |
-  BattleDrawnCardOptionalPlayInteractionMetadata;
+  BattleDrawnCardOptionalPlayInteractionMetadata | BattlefieldAttackOfferChoiceInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -451,6 +464,10 @@ export interface AbilityRuntime {
   pendingOpponentCloseToOne?: PendingOpponentCloseToOne[];
   /** Identity-free server-owned transaction for battle close/refund/draw/optional-immediate-play resolution. */
   pendingBattleCloseDrawPlayTransaction?: PendingBattleCloseDrawPlayTransaction;
+  /** Identity-free serialized same-battlefield turn-order optional attack transaction. */
+  pendingBattlefieldAttackOfferTransaction?: PendingBattlefieldAttackOfferTransaction;
+  /** Completed attack-offer participation awaiting authoritative battle-result settlement. */
+  battlefieldAttackOfferSettlements?: BattlefieldAttackOfferSettlement[];
   /** Provenance for exact drawn cards whose action-phase abilities are permitted in combat for one round. */
   battleCloseDrawImmediatePlayHistory?: BattleCloseDrawImmediatePlayRecord[];
   /** Server-owned once-per-battle-phase terminal event, staged until ordinary post-battle work is settled. */

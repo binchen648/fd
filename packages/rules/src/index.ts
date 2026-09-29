@@ -39,6 +39,7 @@ export * from './ability/location-marker-capability';
 export * from './ability/sealed-card-magic-capability';
 export * from './ability/battle-plunder-replay-capability';
 export * from './ability/mana-transaction-capability';
+export * from './ability/joint-battlefield-attack-capability';
 export * from './ability/combat-reward-distribution';
 export * from './ability/combat-opponent-power-vp-reward';
 export * from './ability/report';

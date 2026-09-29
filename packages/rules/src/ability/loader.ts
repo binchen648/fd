@@ -82,6 +82,11 @@ import {
   containsManaTransactionPrivilegedNode, isAcceptedManaTransactionAbility,
 } from './mana-transaction-capability';
 import {
+  JOINT_OTHER_ATTACK_MODIFIER_EFFECT, SAME_BATTLEFIELD_TURN_ORDER_ATTACK_EFFECT,
+  CARD_PLAY_COMMAND_SEAL_COST_EFFECT, DEFEAT_ALL_ENGAGED_OPPONENTS_EFFECT,
+  containsJointBattlefieldAttackPrivilegedNode, isAcceptedJointBattlefieldAttackAbility,
+} from './joint-battlefield-attack-capability';
+import {
   ADD_ENGAGED_SEAL_USER_FORMULA_POWER_EFFECT,
   ENABLE_ENGAGED_OPPONENT_UNUSED_SEAL_POWER_EFFECT,
   ENGAGED_SEAL_USER_THIS_ROUND_CONDITION,
@@ -183,6 +188,8 @@ const supportedTypes = new Set([
   BATTLE_COMPETITION_PLUNDER_EFFECT, PLAY_RECORDED_REMOVED_CARD_EFFECT,
   SAME_LOCATION_MANA_SPEND_REWARD_EFFECT, SELF_MANA_OVERFLOW_POWER_CLOSE_EFFECT, OPPONENT_MANA_OVERFLOW_DEFEAT_EFFECT,
   LOSE_ALL_MANA_ROUND_POWER_EFFECT, GRANT_SAME_LOCATION_OPPONENTS_MANA_EFFECT,
+  JOINT_OTHER_ATTACK_MODIFIER_EFFECT, SAME_BATTLEFIELD_TURN_ORDER_ATTACK_EFFECT,
+  CARD_PLAY_COMMAND_SEAL_COST_EFFECT, DEFEAT_ALL_ENGAGED_OPPONENTS_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -210,6 +217,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'targetDefinitionIds', 'replaceAttributes', 'sourcePlayers', 'prevent', 'sealKey', 'cardKind', 'eligibleAttribute', 'eligibleDefinitionIds', 'sameLocation', 'trigger', 'payCardCosts', 'resealMana', 'discardDestination', 'dispositionTrigger',
   'recordKey', 'competitionReward', 'peekCount', 'vpCap', 'removedZone', 'sourceZone', 'minimumManaCost', 'removeSourceAfterBattle',
   'minimumSpent', 'rewardMana', 'powerBonus', 'closeAfterBattle', 'powerPerMana', 'mandatory', 'sameBattlefield',
+  'manaCostIncrease', 'lossVp',
   // New mechanic keys for 5 servants
   'options', 'label', 'condition', 'targets', 'duration', 'scope', 'statusId', 'choiceId', 'value',
   // Accepted FB2-27 Ruler seal structural fields.
@@ -663,6 +671,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsManaTransactionPrivilegedNode(candidateAbility) && !isAcceptedManaTransactionAbility(candidateAbility)) {
         issue('manaTransaction.gateway', 'Mana-transaction privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsJointBattlefieldAttackPrivilegedNode(candidateAbility) && !isAcceptedJointBattlefieldAttackAbility(candidateAbility)) {
+        issue('jointBattlefieldAttack.gateway', 'Joint/battlefield attack privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;
