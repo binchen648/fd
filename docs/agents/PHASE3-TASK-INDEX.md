@@ -6344,3 +6344,50 @@ Acceptance synchronization:
 - Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-owner-tamamo-acceptance-synchronization.md`.
 - Mechanical first-occurrence owner ordering selects `servant.teach` next: Tamamo index `240`, Teach index `241` of `251` owners.
 - Owner-readiness-first remains mandatory: complete one full Teach preflight before any Teach formal consumer migration.
+
+## TASK P3-B-TEACH-OWNER-READINESS-CAPABILITY
+
+Owner: Codex B
+Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Base: `1987bfe9e23037c2e682fba15bc83fbff8cf33c0`
+Classification: bounded zero-credit owner-readiness capability for current owner `servant.teach`
+
+Full-owner preflight:
+- frozen owner set is exactly sc1 + sc2 + sc3;
+- `servant.teach.skill.sc-teach-3` is historical accepted FM01 authoring (`6203b70c5bc2a81ceecca31008dc2b71246519a9`) and is preservation-only with no duplicate credit;
+- sc1 + sc2 have no canonical authoring consumer at Base and are the only newly creditable Teach identities after later formal acceptance;
+- frozen source evidence was grounded by `80aaa029ff20448b92afc4fd115080cd3f34a60c`, independently audited by `4961de83468716cc748f16faf9f03212c47a8713`, accepted by `9d92b036332fc22df07ccb8f26af0bc69c066b34`, with final F1 evidence closure `59f145434695d29bdd17e4cb3adc887e84182377`;
+- locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9` is evidence only; legacy `core.teach-gentleman-love` / `core.teach-queen-anne` identity handlers must not be restored;
+- complete currently discoverable missing Teach scope reduces to one compatible identity-free battle-plunder/recorded-replay capability family; sc3 reuses its historical accepted FM01 seams.
+
+Readiness scope:
+- authoritative contested-win competition-VP replacement for the accepted provider controller only, preserving all unrelated event/location/other-winner reward branches;
+- choose one authoritative loser, expose physical top three deck cards (recycling discard only when required), remove exactly one, gain printed base Power capped at 5, and arbitrarily order the remaining exposed top cards;
+- persist exact physical removed-card authority bound to controller/source/ability/original-owner/trusted battle result/record key/revision;
+- Action replay of exactly one recorded removed physical card with normal play semantics and a 2-mana minimum paid cost, borrowed-card original ownership preserved while controller changes for play;
+- remove the active replay-source skill after the battle terminal;
+- exact pending-decision and persisted-authority restore/provenance validation; malformed/widened/stale/forged metadata fails closed;
+- identity-free loader/runtime gateway only; no Teach/card-name/printed-text parsing, legacy identity-handler routing, or `SkillLib` fallback.
+
+Verification:
+- focused Teach readiness `6/6 PASS`;
+- directly affected green set `12 files / 260 tests PASS`;
+- `FD_TOOLCHAIN_OK`;
+- typecheck PASS;
+- content validate/compile PASS (`7 masters / 12 servants / 20 events / 0 blocking issues`);
+- generated determinism PASS with unchanged hashes;
+- `data/authoring/**` delta EMPTY;
+- production identity audit CLEAN for Teach/name/legacy-handler routes;
+- locked Reference clean/exact;
+- `git diff --check` PASS;
+- detailed result: `docs/reports/2026-09-29-p3-b-teach-owner-readiness-capability-result.md`.
+
+Accounting:
+- strict formal accounting remains `149/944`, remaining `795`;
+- this readiness task is permanently zero-credit;
+- ACCEPTED must A-sync/rescan and return immediately to the same `servant.teach` owner for one owner-complete formal batch containing preserved sc3 + new sc1 + sc2 together;
+- only sc1 + sc2 may receive new formal credit; synchronized accepted formal target is `151/944`, remaining `793`.
+
+Allowed verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`

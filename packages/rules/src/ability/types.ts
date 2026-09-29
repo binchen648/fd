@@ -221,6 +221,20 @@ export interface SealedCardDispositionInteractionMetadata {
   controllerId: PlayerId; sealKey: string; hostSourceCardId: string; candidateIds: string[]; resealMana: 1;
   constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: number; distinct: true };
 }
+export interface BattlePlunderChoiceInteractionMetadata {
+  kind: 'battle_plunder_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; recordKey: string; stage: 'loser' | 'remove' | 'reorder'; triggerEventId: string;
+  battlePhaseResolutionId: string; battleId: string; resultId: string; battlefieldId: string;
+  loserIds: PlayerId[]; targetPlayerId?: PlayerId; topCardIds?: string[]; keptCardIds?: string[];
+  constraints: { kind: 'target'; targetKind: 'player' | 'card'; min: number; max: number; distinct: true };
+}
+export interface RecordedRemovedReplayChoiceInteractionMetadata {
+  kind: 'recorded_removed_replay_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; recordKey: string; candidateIds: string[]; minimumManaCost: 2;
+  constraints: { kind: 'target'; targetKind: 'card'; min: 1; max: 1; distinct: true };
+}
 export interface BattleLuckDiscardInteractionMetadata {
   kind: 'battle_luck_discard_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
   sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
@@ -255,7 +269,8 @@ export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetad
   PostDrawHandShuffleInteractionMetadata | RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata |
   OwnedRulerSealPowerInteractionMetadata | CombatOpponentPowerVpRewardInteractionMetadata | AutomaticRecycleKeepInteractionMetadata |
   CounterSpendChoiceInteractionMetadata | DiscardBasicReplayChoiceInteractionMetadata | SealedCardChoiceInteractionMetadata |
-  SealedCardDispositionInteractionMetadata | BattleLuckDiscardInteractionMetadata | BattleOpponentCloseRewardInteractionMetadata |
+  SealedCardDispositionInteractionMetadata | BattlePlunderChoiceInteractionMetadata | RecordedRemovedReplayChoiceInteractionMetadata |
+  BattleLuckDiscardInteractionMetadata | BattleOpponentCloseRewardInteractionMetadata |
   BattleDrawnCardOptionalPlayInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
@@ -373,6 +388,10 @@ export interface SealedCardReplayState {
   sealKey: string; controllerId: PlayerId; cascadeSourceCardId: string; cascadeAbilityId: string; hostSourceCardId: string; sealAbilityId: string;
   cardInstanceId: string; originalOwnerPlayerId: PlayerId; round: number; playedRevision: number;
 }
+export interface RecordedRemovedCardState {
+  recordKey: string; controllerId: PlayerId; sourceCardId: string; sourceAbilityId: string; cardInstanceId: string;
+  originalOwnerPlayerId: PlayerId; removedRevision: number; triggerResultId: string;
+}
 export interface TrustedBattleResultSnapshot {
   battlePhaseResolutionId: string;
   battleId: string;
@@ -396,6 +415,8 @@ export interface AbilityRuntime {
   armedSealedCardActions?: ArmedSealedCardActionState[];
   /** Identity-free current-round replay provenance for cards released from a seal. */
   sealedCardReplays?: Record<string, SealedCardReplayState>;
+  /** Identity-free physical cards removed by an accepted battle-plunder record, keyed by physical card instance. */
+  recordedRemovedCards?: Record<string, RecordedRemovedCardState>;
   /** Identity-free server-owned structured player flags. */
   structuredPlayerFlagsByPlayer?: Record<PlayerId, Record<string, boolean | string | number>>;
   /** Round marker for flags whose authored lifecycle is exactly this_round. */

@@ -19,6 +19,7 @@ import { applyTerrainAdvantageOverride } from '../ability/terrain-advantage-over
 import { playerCombatTotalPowerAdjustment } from '../ability/owner-self-mechanics';
 import { dynamicUnusedEngagedSealPowerAdjustment } from '../ability/command-seal-power-capability';
 import { shouldEachBattleWinnerReceiveFullReward } from '../ability/combat-reward-distribution';
+import { controllerHasCompetitionRewardPlunderReplacement } from '../ability/battle-plunder-replay-capability';
 import { logicalDayForPlayer } from './rule-overrides';
 
 export interface CombatParticipantInput {
@@ -418,6 +419,7 @@ export function deriveBattleParticipantsFromState(
 }
 
 function buildDefaultVpAdjustments(
+  state: GameState,
   location: LocationDefinition | undefined,
   battlefieldId: CombatResolutionInput["battlefieldId"],
   winnerPlayerIds: string[],
@@ -433,6 +435,7 @@ function buildDefaultVpAdjustments(
 
   if (competitionVpPerWinner > 0 && hooks.has("competition_rewards")) {
     for (const playerId of winnerPlayerIds) {
+      if (controllerHasCompetitionRewardPlunderReplacement(state, playerId)) continue;
       adjustments.push({
         playerId,
         delta: competitionVpPerWinner,
@@ -499,7 +502,7 @@ function buildBattleResultFromRanked(
   const competitionVpPerWinner = fullRewardEach ? competitionVpPool : Math.max(0, baseVpPerWinner - vpReward);
   const locationVpPerWinner = fullRewardEach ? locationVpPool : splitVpPoolPerWinner(locationVpPool, winnerPlayerIds.length);
   const defaultVpAdjustments = buildDefaultVpAdjustments(
-    location, battlefieldId, winnerPlayerIds, competitionVpPerWinner, locationVpPerWinner,
+    state, location, battlefieldId, winnerPlayerIds, competitionVpPerWinner, locationVpPerWinner,
   );
   const remoteOperationVpAdjustment = winnerPlayerIds
     .filter((playerId) => hasRemoteOperationBonus(state, playerId, battlefieldId))

@@ -81,6 +81,10 @@ import {
   isAcceptedSealedCardMagicAbility, isValidSealedCardMagicKey, sealedCardMagicKeyFromAbility, sourcePresentForAcceptedCapability,
 } from './sealed-card-magic-capability';
 import {
+  battlePlunderRecordKeyFromAbility, battlePlunderSourcePresent, containsBattlePlunderReplayPrivilegedNode,
+  isAcceptedBattleCompetitionPlunderAbility, isAcceptedBattlePlunderReplayAbility, isAcceptedPlayRecordedRemovedCardAbility,
+} from './battle-plunder-replay-capability';
+import {
   containsDeckRecycleReplayGrowthPrivilegedNode,
   isAcceptedDeckRecycleReplayGrowthAbility,
   isAcceptedAutomaticRecycleKeepGainCounterAbility,
@@ -575,13 +579,138 @@ function settleSealedCardBattleEnd(s: GameState, event: AbilityEvent): void {
   if (event.type !== 'after_battle_ended' || !event.battlePhaseResolutionId) return;
   stageNextSealedCardBattleDecision(s);
 }
+
+function trustedBattlePlunderFacts(s: GameState, controllerId: string, event: AbilityEvent | undefined) {
+  if (!event || event.type !== 'after_controller_wins_battle' || event.playerId !== controllerId ||
+      typeof event.resultId !== 'string' || typeof event.battlePhaseResolutionId !== 'string' ||
+      typeof event.battleId !== 'string' || typeof event.battlefieldId !== 'string') return undefined;
+  const root = runtime(s).trustedBattleResultSnapshots?.[event.resultId];
+  if (!root || root.battlePhaseResolutionId !== event.battlePhaseResolutionId || root.battleId !== event.battleId ||
+      root.resultId !== event.resultId || root.battlefieldId !== event.battlefieldId || !root.winners.includes(controllerId) ||
+      root.battleParticipantIds.length < 2) return undefined;
+  const loserIds = root.loserIds.filter((id) => !root.winners.includes(id));
+  if (!loserIds.length || loserIds.some((id) => !root.battleParticipantIds.includes(id) || !s.players.some((p) => p.id === id))) return undefined;
+  return { root, loserIds };
+}
+function acceptedBattlePlunderAbilityAtSource(
+  s: GameState, sourceCardId: string, abilityId: string,
+  predicate: (ability: AuthoringAbility) => boolean,
+): AuthoringAbility | undefined {
+  const source = s.cards.find((candidate) => candidate.instanceId === sourceCardId);
+  if (!source) return undefined;
+  const ability = runtime(s).pack.cards[source.definitionId]?.abilities.find((entry) => entry.id === abilityId);
+  return ability && predicate(ability) ? ability : undefined;
+}
+function ownerDeckIds(s: GameState, ownerId: string): string[] {
+  return s.cards.filter((physical) => physical.ownerPlayerId === ownerId && physical.zone === 'deck').map((physical) => physical.instanceId);
+}
+function deterministicShuffleIds(s: GameState, ids: readonly string[]): string[] {
+  const values = [...ids]; const r = runtime(s);
+  for (let i = values.length - 1; i > 0; i--) {
+    let x = r.randomState; x ^= x << 13; x ^= x >>> 17; x ^= x << 5; r.randomState = x >>> 0;
+    const j = Math.floor((r.randomState / 0x100000000) * (i + 1)); [values[i], values[j]] = [values[j]!, values[i]!];
+  }
+  return values;
+}
+function setOwnerDeckOrder(s: GameState, ownerId: string, orderedIds: readonly string[]): void {
+  const positions = s.cards.map((physical, index) => physical.ownerPlayerId === ownerId && physical.zone === 'deck' ? index : -1).filter((index) => index >= 0);
+  if (positions.length !== orderedIds.length || new Set(orderedIds).size !== orderedIds.length) reject('invalid_state', 'Deck ordering authority is inconsistent');
+  const byId = new Map(s.cards.map((physical) => [physical.instanceId, physical] as const));
+  if (orderedIds.some((id) => byId.get(id)?.ownerPlayerId !== ownerId || byId.get(id)?.zone !== 'deck')) reject('invalid_state', 'Deck ordering contains an invalid physical card');
+  positions.forEach((position, index) => { s.cards[position] = byId.get(orderedIds[index]!)!; });
+}
+function ensureBattlePlunderTopCards(s: GameState, targetPlayerId: string, count = 3): string[] {
+  let deck = ownerDeckIds(s, targetPlayerId);
+  if (deck.length < count) {
+    const discard = s.cards.filter((physical) => physical.ownerPlayerId === targetPlayerId && physical.zone === 'discard').map((physical) => physical.instanceId);
+    if (discard.length) {
+      const shuffled = deterministicShuffleIds(s, discard);
+      for (const id of discard) moveCard(s, id, 'deck');
+      setOwnerDeckOrder(s, targetPlayerId, [...deck, ...shuffled]);
+      deck = ownerDeckIds(s, targetPlayerId);
+    }
+  }
+  return deck.slice(0, count);
+}
+function stageBattlePlunder(s: GameState, ctx: EffectContext, ability: AuthoringAbility): void {
+  if (!isAcceptedBattleCompetitionPlunderAbility(ability)) reject('resolution_failed', 'Unsupported battle-plunder semantic shape');
+  if (!battlePlunderSourcePresent(s, ctx.sourceCardId, ctx.controllerId)) reject('resolution_failed', 'Battle-plunder source is not present');
+  const facts = trustedBattlePlunderFacts(s, ctx.controllerId, ctx.event);
+  if (!facts) reject('invalid_event', 'Battle-plunder requires an authoritative contested win');
+  if (runtime(s).pendingDecision) reject('pending_resolution', 'Resolve current decision first');
+  const key = battlePlunderRecordKeyFromAbility(ability); if (!key) reject('resolution_failed', 'Invalid battle-plunder record key');
+  const event = ctx.event!; const id = nextId(s, 'battle-plunder-loser');
+  runtime(s).pendingDecision = {
+    id, controllerId: ctx.controllerId,
+    target: { id: 'battle_plunder_loser', type: 'player', count: { min: 1, max: 1 } },
+    candidates: [...facts.loserIds], min: 1, max: 1, context: structuredClone(ctx), remainingEffects: [],
+    interaction: {
+      kind: 'battle_plunder_choice_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: runtime(s).revision + 1,
+      continuationRef: `${id}:continuation`, controllerId: ctx.controllerId, recordKey: key, stage: 'loser', triggerEventId: event.id,
+      battlePhaseResolutionId: event.battlePhaseResolutionId!, battleId: event.battleId!, resultId: event.resultId!, battlefieldId: event.battlefieldId!,
+      loserIds: [...facts.loserIds], constraints: { kind: 'target', targetKind: 'player', min: 1, max: 1, distinct: true },
+    },
+  };
+}
+function recordedRemovedRecordIsAuthoritative(s: GameState, record: NonNullable<AbilityRuntime['recordedRemovedCards']>[string]): boolean {
+  if (!Number.isSafeInteger(record.removedRevision) || record.removedRevision < 1 || record.removedRevision > runtime(s).revision) return false;
+  const physical = s.cards.find((candidate) => candidate.instanceId === record.cardInstanceId);
+  const source = s.cards.find((candidate) => candidate.instanceId === record.sourceCardId);
+  const ability = source ? restoredAbility(s, record.sourceCardId, record.sourceAbilityId) : undefined;
+  const root = runtime(s).trustedBattleResultSnapshots?.[record.triggerResultId];
+  return !!physical && physical.ownerPlayerId === record.originalOwnerPlayerId && !!source && source.ownerPlayerId === record.controllerId &&
+    source.controllerPlayerId === record.controllerId && !!ability && isAcceptedBattleCompetitionPlunderAbility(ability) &&
+    battlePlunderRecordKeyFromAbility(ability) === record.recordKey && record.originalOwnerPlayerId !== record.controllerId &&
+    !!root && root.winners.includes(record.controllerId) && root.loserIds.includes(record.originalOwnerPlayerId);
+}
+function recordedRemovedReplayCandidateIds(s: GameState, controllerId: string, recordKey: string): string[] {
+  const records = runtime(s).recordedRemovedCards ?? {};
+  return Object.values(records).filter((record) => record.controllerId === controllerId && record.recordKey === recordKey && recordedRemovedRecordIsAuthoritative(s, record))
+    .filter((record) => {
+      const physical = s.cards.find((candidate) => candidate.instanceId === record.cardInstanceId);
+      return !!physical && physical.zone === 'removed_from_game';
+    }).sort((a, b) => a.removedRevision - b.removedRevision || a.cardInstanceId.localeCompare(b.cardInstanceId))
+    .map((record) => record.cardInstanceId);
+}
+function canActivateRecordedRemovedReplay(s: GameState, sourceId: string, ability: AuthoringAbility): boolean {
+  if (!isAcceptedPlayRecordedRemovedCardAbility(ability)) return false;
+  const source = s.cards.find((candidate) => candidate.instanceId === sourceId); if (!source) return false;
+  const key = battlePlunderRecordKeyFromAbility(ability); if (!key) return false;
+  const ids = recordedRemovedReplayCandidateIds(s, source.controllerPlayerId, key);
+  if (!ids.length || player(s, source.controllerPlayerId).mana < 2) return false;
+  return ids.some((id) => {
+    const draft = structuredClone(s) as GameState;
+    const physical = draft.cards.find((candidate) => candidate.instanceId === id); if (!physical) return false;
+    physical.controllerPlayerId = source.controllerPlayerId;
+    try { return player(s, source.controllerPlayerId).mana >= Math.max(2, effectiveCardPlayCost(draft, source.controllerPlayerId, id)); } catch { return false; }
+  });
+}
+function stageRecordedRemovedReplay(s: GameState, ctx: EffectContext, ability: AuthoringAbility): void {
+  if (!isAcceptedPlayRecordedRemovedCardAbility(ability)) reject('resolution_failed', 'Unsupported recorded-card replay semantic shape');
+  const key = battlePlunderRecordKeyFromAbility(ability); if (!key) reject('resolution_failed', 'Invalid recorded-card replay key');
+  const candidates = recordedRemovedReplayCandidateIds(s, ctx.controllerId, key);
+  if (!candidates.length) reject('no_legal_target', 'No recorded removed card is available');
+  const id = nextId(s, 'recorded-removed-replay');
+  runtime(s).pendingDecision = {
+    id, controllerId: ctx.controllerId,
+    target: { id: 'recorded_removed_card', type: 'card_instance', count: { min: 1, max: 1 } },
+    candidates: [...candidates], min: 1, max: 1, context: structuredClone(ctx), remainingEffects: [],
+    interaction: {
+      kind: 'recorded_removed_replay_choice_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: runtime(s).revision + 1,
+      continuationRef: `${id}:continuation`, controllerId: ctx.controllerId, recordKey: key, candidateIds: [...candidates], minimumManaCost: 2,
+      constraints: { kind: 'target', targetKind: 'card', min: 1, max: 1, distinct: true },
+    },
+  };
+}
 function context(s: GameState, sourceCardId: string, abilityId: string, event?: AbilityEvent): EffectContext {
   return { sourceCardId, abilityId, controllerId: card(s, sourceCardId).controllerPlayerId, variables: {}, selections: {}, ...(event ? { event } : {}) };
 }
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-    cardState: {}, locationMarkers: {}, roundDefinitionAttributeReplacements: {}, sealedCardBindings: {}, armedSealedCardActions: [], sealedCardReplays: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, battleLossIgnoreRoundByPlayer: {},
+    cardState: {}, locationMarkers: {}, roundDefinitionAttributeReplacements: {}, sealedCardBindings: {}, armedSealedCardActions: [], sealedCardReplays: {}, recordedRemovedCards: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, battleLossIgnoreRoundByPlayer: {},
     startingDeckSizeByPlayer: Object.fromEntries(s.players.map((candidate) => [candidate.id, s.cards.filter((entry) => entry.ownerPlayerId === candidate.id && entry.zone === 'deck').length])),
     cardPlayCountByInstance: {}, grantedPerGamePlayLimitCardIds: [], grantedPerGamePlayLimitBaselineByCardId: {},
     ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [],
@@ -1432,6 +1561,9 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAcceptedLocationMarkerAbility(a) && !canActivateLocationMarkerAbility(s, sourceId, a, event)) return false;
   if (containsSealedCardMagicPrivilegedNode(a) && !isAcceptedSealedCardMagicAbility(a)) return false;
   if (isAcceptedSealedCardMagicAbility(a) && !canActivateSealedCardMagicAbility(s, sourceId, a)) return false;
+  if (containsBattlePlunderReplayPrivilegedNode(a) && !isAcceptedBattlePlunderReplayAbility(a)) return false;
+  if (isAcceptedBattleCompetitionPlunderAbility(a) && !trustedBattlePlunderFacts(s, card(s, sourceId).controllerPlayerId, event)) return false;
+  if (isAcceptedPlayRecordedRemovedCardAbility(a) && !canActivateRecordedRemovedReplay(s, sourceId, a)) return false;
   if (isAcceptedSpendCounterIgnoreBattleLossAbility(a)) {
     const key = str(a.effects[0]?.counterKey);
     if (structuredCounterValue(s, card(s, sourceId).controllerPlayerId, key) < 1) return false;
@@ -2755,12 +2887,63 @@ function isDeckRecycleReplayGrowthPendingDecisionLiveValid(s: GameState, decisio
     meta.baseCount === 3 && exactPlayerArray(meta.candidateIds, expectedCandidates) && exactPlayerArray(decision.candidates, expectedCandidates) &&
     decision.min === 0 && decision.max === max && meta.constraints.kind === 'target' && meta.constraints.targetKind === 'card' &&
     meta.constraints.min === 0 && meta.constraints.max === max;
-}export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decision: PendingDecision): boolean {
+}function isBattlePlunderReplayPendingDecisionLiveValid(s: GameState, decision: PendingDecision): boolean {
+  const meta = decision.interaction;
+  if (!meta || (meta.kind !== 'battle_plunder_choice_v1' && meta.kind !== 'recorded_removed_replay_choice_v1')) return false;
+  if (decision.controllerId !== meta.controllerId || decision.context.controllerId !== meta.controllerId ||
+      decision.context.sourceCardId !== meta.sourceCardInstanceId || decision.context.abilityId !== meta.abilityId ||
+      meta.createdRevision !== runtime(s).revision || meta.continuationRef !== `${decision.id}:continuation` ||
+      meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden') return false;
+  const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+  const ability = source ? restoredAbility(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
+  if (!source || source.ownerPlayerId !== meta.controllerId || source.controllerPlayerId !== meta.controllerId || !ability ||
+      battlePlunderRecordKeyFromAbility(ability) !== meta.recordKey) return false;
+  const count = node(decision.target.count);
+  if (meta.kind === 'recorded_removed_replay_choice_v1') {
+    const expected = recordedRemovedReplayCandidateIds(s, meta.controllerId, meta.recordKey);
+    return isAcceptedPlayRecordedRemovedCardAbility(ability) && active(s, source.instanceId) && meta.minimumManaCost === 2 &&
+      decision.target.id === 'recorded_removed_card' && decision.target.type === 'card_instance' && count.min === 1 && count.max === 1 &&
+      decision.min === 1 && decision.max === 1 && decision.remainingEffects.length === 0 && exactPlayerArray(meta.candidateIds, expected) &&
+      exactPlayerArray(decision.candidates, expected) && meta.constraints.kind === 'target' && meta.constraints.targetKind === 'card' &&
+      meta.constraints.min === 1 && meta.constraints.max === 1 && meta.constraints.distinct === true;
+  }
+  if (!isAcceptedBattleCompetitionPlunderAbility(ability) || !battlePlunderSourcePresent(s, source.instanceId, meta.controllerId)) return false;
+  const facts = trustedBattlePlunderFacts(s, meta.controllerId, decision.context.event);
+  const event = decision.context.event;
+  if (!facts || !event || event.id !== meta.triggerEventId || event.battlePhaseResolutionId !== meta.battlePhaseResolutionId ||
+      event.battleId !== meta.battleId || event.resultId !== meta.resultId || event.battlefieldId !== meta.battlefieldId ||
+      !exactPlayerArray(meta.loserIds, facts.loserIds) || meta.constraints.kind !== 'target' || meta.constraints.distinct !== true ||
+      decision.remainingEffects.length !== 0) return false;
+  if (meta.stage === 'loser') {
+    return meta.targetPlayerId === undefined && meta.topCardIds === undefined && meta.keptCardIds === undefined &&
+      decision.target.id === 'battle_plunder_loser' && decision.target.type === 'player' && count.min === 1 && count.max === 1 &&
+      decision.min === 1 && decision.max === 1 && exactPlayerArray(decision.candidates, facts.loserIds) &&
+      meta.constraints.targetKind === 'player' && meta.constraints.min === 1 && meta.constraints.max === 1;
+  }
+  if (!meta.targetPlayerId || !facts.loserIds.includes(meta.targetPlayerId) || !Array.isArray(meta.topCardIds)) return false;
+  const currentTop = ownerDeckIds(s, meta.targetPlayerId).slice(0, meta.topCardIds.length);
+  if (meta.stage === 'remove') {
+    return meta.topCardIds.length >= 1 && meta.topCardIds.length <= 3 && meta.keptCardIds === undefined &&
+      exactPlayerArray(currentTop, meta.topCardIds) && decision.target.id === 'battle_plunder_remove' && decision.target.type === 'card_instance' &&
+      count.min === 1 && count.max === 1 && decision.min === 1 && decision.max === 1 && exactPlayerArray(decision.candidates, meta.topCardIds) &&
+      meta.constraints.targetKind === 'card' && meta.constraints.min === 1 && meta.constraints.max === 1;
+  }
+  if (meta.stage !== 'reorder' || !Array.isArray(meta.keptCardIds) || meta.keptCardIds.length < 2 || meta.keptCardIds.length > 2) return false;
+  return meta.keptCardIds.every((id) => meta.topCardIds!.includes(id)) && exactPlayerArray(currentTop.slice(0, meta.keptCardIds.length), meta.keptCardIds) &&
+    decision.target.id === 'battle_plunder_reorder' && decision.target.type === 'card_instance' && count.min === meta.keptCardIds.length &&
+    count.max === meta.keptCardIds.length && decision.min === meta.keptCardIds.length && decision.max === meta.keptCardIds.length &&
+    exactPlayerArray(decision.candidates, meta.keptCardIds) && meta.constraints.targetKind === 'card' &&
+    meta.constraints.min === meta.keptCardIds.length && meta.constraints.max === meta.keptCardIds.length;
+}
+export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decision: PendingDecision): boolean {
   if (decision.interaction && ['battle_luck_discard_choice_v1','battle_opponent_close_reward_choice_v1','battle_drawn_card_optional_play_v1'].includes(decision.interaction.kind)) {
     return isBattleCloseDrawPlayPendingDecisionLiveValid(s, decision);
   }
   if (decision.interaction && ['automatic_recycle_keep_v1','counter_spend_choice_v1','discard_basic_replay_choice_v1'].includes(decision.interaction.kind)) {
     return isDeckRecycleReplayGrowthPendingDecisionLiveValid(s, decision);
+  }
+  if (decision.interaction && ['battle_plunder_choice_v1','recorded_removed_replay_choice_v1'].includes(decision.interaction.kind)) {
+    return isBattlePlunderReplayPendingDecisionLiveValid(s, decision);
   }
   if (decision.interaction) return true;
   try {
@@ -2807,7 +2990,20 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState):
     if (battleTx !== undefined) {
       if (!battleCloseDrawPlayTransactionLiveValid(s, battleTx) || !r.pendingDecision || !isBattleCloseDrawPlayPendingDecisionLiveValid(s, r.pendingDecision)) return false;
     } else if (r.pendingDecision?.interaction && ['battle_luck_discard_choice_v1','battle_opponent_close_reward_choice_v1','battle_drawn_card_optional_play_v1'].includes(r.pendingDecision.interaction.kind)) return false;
-    if (!battleCloseDrawImmediatePlayHistoryValidForRestore(s)) return false;    if ((r.transformedReturnSilenceSourceCardIds ?? []).some((id) => !s.cards.some((card) => card.instanceId === id))) return false;
+    if (!battleCloseDrawImmediatePlayHistoryValidForRestore(s)) return false;
+    if (r.recordedRemovedCards !== undefined && Object.entries(r.recordedRemovedCards).some(([instanceId, record]) => {
+      if (instanceId !== record.cardInstanceId || !Number.isSafeInteger(record.removedRevision) || record.removedRevision < 1 || record.removedRevision > r.revision) return true;
+      const physical = s.cards.find((candidate) => candidate.instanceId === record.cardInstanceId);
+      const source = s.cards.find((candidate) => candidate.instanceId === record.sourceCardId);
+      const ability = source ? restoredAbility(s, record.sourceCardId, record.sourceAbilityId) : undefined;
+      const root = r.trustedBattleResultSnapshots?.[record.triggerResultId];
+      return !physical || physical.ownerPlayerId !== record.originalOwnerPlayerId || !source || source.ownerPlayerId !== record.controllerId ||
+        source.controllerPlayerId !== record.controllerId || !ability || !isAcceptedBattleCompetitionPlunderAbility(ability) ||
+        battlePlunderRecordKeyFromAbility(ability) !== record.recordKey || !s.players.some((candidate) => candidate.id === record.controllerId) ||
+        !s.players.some((candidate) => candidate.id === record.originalOwnerPlayerId) || record.originalOwnerPlayerId === record.controllerId ||
+        !root || !root.winners.includes(record.controllerId) || !root.loserIds.includes(record.originalOwnerPlayerId);
+    })) return false;
+    if ((r.transformedReturnSilenceSourceCardIds ?? []).some((id) => !s.cards.some((card) => card.instanceId === id))) return false;
     return true;
   } catch { return false; }
 }
@@ -4645,6 +4841,11 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (isAcceptedAttackAttributeOtherPlayerProtectionAbility(a)) return;
   if (isAcceptedAfterBattleSealAbility(a)) { armAfterBattleSeal(s, ctx, a); return; }
   if (isAcceptedPlaySealedAttacksAbility(a)) { playAllSealedAttacks(s, ctx, a); return; }
+  if (containsBattlePlunderReplayPrivilegedNode(a) && !isAcceptedBattlePlunderReplayAbility(a)) {
+    reject('resolution_failed', 'Unsupported battle-plunder/replay semantic shape');
+  }
+  if (isAcceptedBattleCompetitionPlunderAbility(a)) { stageBattlePlunder(s, ctx, a); return; }
+  if (isAcceptedPlayRecordedRemovedCardAbility(a)) { stageRecordedRemovedReplay(s, ctx, a); return; }
   if (containsDeckRecycleReplayGrowthPrivilegedNode(a) && !isAcceptedDeckRecycleReplayGrowthAbility(a)) {
     reject('resolution_failed', 'Unsupported deck recycle/replay/growth semantic shape');
   }
@@ -5456,6 +5657,104 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           stageNextSealedCardBattleDecision(s);
           break;
         }
+        if (meta.kind === 'battle_plunder_choice_v1') {
+          if (!isBattlePlunderReplayPendingDecisionLiveValid(s, d) || !Array.isArray(selected) || selected.length < d.min ||
+              selected.length > d.max || new Set(selected).size !== selected.length || selected.some((id) => !d.candidates.includes(id))) {
+            reject('resolution_failed', 'Corrupt or stale battle-plunder interaction state');
+          }
+          const baseMeta = {
+            controllerId: meta.controllerId, recordKey: meta.recordKey, triggerEventId: meta.triggerEventId,
+            battlePhaseResolutionId: meta.battlePhaseResolutionId, battleId: meta.battleId, resultId: meta.resultId,
+            battlefieldId: meta.battlefieldId, loserIds: [...meta.loserIds],
+          };
+          if (meta.stage === 'loser') {
+            const targetPlayerId = selected[0]!;
+            const topCardIds = ensureBattlePlunderTopCards(s, targetPlayerId, 3);
+            delete r.pendingDecision;
+            if (!topCardIds.length) {
+              r.events.push({ type: 'battle_plunder_no_card_available', playerId: meta.controllerId,
+                sourceCardId: meta.sourceCardInstanceId, abilityId: meta.abilityId, triggerEventId: meta.resultId });
+              break;
+            }
+            const id = nextId(s, 'battle-plunder-remove');
+            r.pendingDecision = {
+              id, controllerId: meta.controllerId,
+              target: { id: 'battle_plunder_remove', type: 'card_instance', count: { min: 1, max: 1 } },
+              candidates: [...topCardIds], min: 1, max: 1, context: structuredClone(d.context), remainingEffects: [],
+              interaction: {
+                kind: 'battle_plunder_choice_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+                sourceCardInstanceId: meta.sourceCardInstanceId, abilityId: meta.abilityId, createdRevision: r.revision + 1,
+                continuationRef: `${id}:continuation`, ...baseMeta, stage: 'remove', targetPlayerId, topCardIds: [...topCardIds],
+                constraints: { kind: 'target', targetKind: 'card', min: 1, max: 1, distinct: true },
+              },
+            };
+            break;
+          }
+          if (meta.stage === 'remove') {
+            const targetPlayerId = meta.targetPlayerId!; const removedId = selected[0]!;
+            const physical = card(s, removedId); const removedDefinition = definition(s, removedId);
+            if (!removedDefinition || physical.ownerPlayerId !== targetPlayerId || physical.zone !== 'deck') reject('resolution_failed', 'Battle-plunder card changed before removal');
+            const printed = evaluateFormula(removedDefinition.cardFace.basePower ?? 0, s, targetPlayerId, removedId).value;
+            if (!Number.isSafeInteger(printed)) reject('resolution_failed', 'Battle-plunder printed base Power must be a safe integer');
+            moveCard(s, removedId, 'removed_from_game');
+            (r.recordedRemovedCards ??= {})[removedId] = {
+              recordKey: meta.recordKey, controllerId: meta.controllerId, sourceCardId: meta.sourceCardInstanceId,
+              sourceAbilityId: meta.abilityId, cardInstanceId: removedId, originalOwnerPlayerId: targetPlayerId,
+              removedRevision: r.revision + 1, triggerResultId: meta.resultId,
+            };
+            const reward = Math.min(5, Math.max(0, printed)); const recipient = player(s, meta.controllerId); const before = recipient.vp;
+            recipient.vp += reward;
+            r.events.push({ type: 'battle_plunder_card_removed', playerId: meta.controllerId, sourceCardId: meta.sourceCardInstanceId,
+              abilityId: meta.abilityId, cardInstanceId: removedId, delta: reward, before, after: recipient.vp, triggerEventId: meta.resultId });
+            const keptCardIds = meta.topCardIds!.filter((id) => id !== removedId);
+            delete r.pendingDecision;
+            if (keptCardIds.length <= 1) break;
+            const id = nextId(s, 'battle-plunder-reorder');
+            r.pendingDecision = {
+              id, controllerId: meta.controllerId,
+              target: { id: 'battle_plunder_reorder', type: 'card_instance', count: { min: keptCardIds.length, max: keptCardIds.length } },
+              candidates: [...keptCardIds], min: keptCardIds.length, max: keptCardIds.length, context: structuredClone(d.context), remainingEffects: [],
+              interaction: {
+                kind: 'battle_plunder_choice_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+                sourceCardInstanceId: meta.sourceCardInstanceId, abilityId: meta.abilityId, createdRevision: r.revision + 1,
+                continuationRef: `${id}:continuation`, ...baseMeta, stage: 'reorder', targetPlayerId,
+                topCardIds: [...meta.topCardIds!], keptCardIds: [...keptCardIds],
+                constraints: { kind: 'target', targetKind: 'card', min: keptCardIds.length, max: keptCardIds.length, distinct: true },
+              },
+            };
+            break;
+          }
+          const targetPlayerId = meta.targetPlayerId!; const kept = meta.keptCardIds!;
+          if (selected.length !== kept.length || selected.some((id) => !kept.includes(id))) reject('illegal_target', 'Battle-plunder deck order is invalid');
+          const currentDeck = ownerDeckIds(s, targetPlayerId);
+          setOwnerDeckOrder(s, targetPlayerId, [...selected, ...currentDeck.filter((id) => !kept.includes(id))]);
+          delete r.pendingDecision;
+          r.events.push({ type: 'battle_plunder_deck_reordered', playerId: meta.controllerId, sourceCardId: meta.sourceCardInstanceId,
+            abilityId: meta.abilityId, movedCount: selected.length, triggerEventId: meta.resultId });
+          break;
+        }
+        if (meta.kind === 'recorded_removed_replay_choice_v1') {
+          if (!isBattlePlunderReplayPendingDecisionLiveValid(s, d) || !Array.isArray(selected) || selected.length !== 1 ||
+              !d.candidates.includes(selected[0]!)) reject('resolution_failed', 'Corrupt or stale recorded-card replay interaction state');
+          const instanceId = selected[0]!; const physical = card(s, instanceId);
+          const record = r.recordedRemovedCards?.[instanceId];
+          if (!record || record.recordKey !== meta.recordKey || record.controllerId !== meta.controllerId ||
+              physical.zone !== 'removed_from_game' || physical.ownerPlayerId !== record.originalOwnerPlayerId ||
+              record.originalOwnerPlayerId === meta.controllerId) reject('resolution_failed', 'Recorded-card replay provenance changed');
+          const draft = structuredClone(s) as GameState;
+          const draftPhysical = draft.cards.find((candidate) => candidate.instanceId === instanceId)!;
+          draftPhysical.controllerPlayerId = meta.controllerId;
+          playBatch(draft, meta.controllerId, [{ type: 'play_card', cardInstanceId: instanceId }], 'effect', false, ['removed_from_game'], 2);
+          delete r.pendingDecision;
+          physical.controllerPlayerId = meta.controllerId;
+          playBatch(s, meta.controllerId, [{ type: 'play_card', cardInstanceId: instanceId }], 'effect', false, ['removed_from_game'], 2);
+          const sourceState = r.cardState[meta.sourceCardInstanceId];
+          if (!sourceState?.active || sourceState.faceDown) reject('resolution_failed', 'Recorded-card replay source is no longer active');
+          sourceState.removeAfterBattleRound = s.round.roundNumber;
+          r.events.push({ type: 'recorded_removed_card_replayed', playerId: meta.controllerId, sourceCardId: meta.sourceCardInstanceId,
+            abilityId: meta.abilityId, cardInstanceId: instanceId });
+          break;
+        }
         if (meta.kind === 'battle_luck_discard_choice_v1') {
           const tx = r.pendingBattleCloseDrawPlayTransaction;
           const liveLuckIds = tx ? battleCloseDrawPlayLuckCardIds(s, tx.controllerId) : [];
@@ -5850,7 +6149,8 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
   cleanupOngoing(s); checkFormulaTriggers(s); resumeBattleCloseDrawPlayAfterNestedWork(s);
 }
 /** All eligibility/costs are checked against the pre-payment state; all cards activate before triggers. */
-function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false, allowedSourceZones: readonly string[] = ['hand', 'skill']): void {
+function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false, allowedSourceZones: readonly string[] = ['hand', 'skill'], minimumManaCost = 0): void {
+  if (!Number.isSafeInteger(minimumManaCost) || minimumManaCost < 0) reject('unsupported', 'Minimum play cost must be a nonnegative safe integer');
   if (new Set(choices.map(c => c.cardInstanceId)).size !== choices.length) reject('illegal_action', 'Duplicate card in play batch');
   const requiredAdditionalIds = new Set(choices
     .filter(c => isRequiredAdditionalPlayCard(s, c.cardInstanceId))
@@ -5869,7 +6169,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     const allowRequiredAdditional = quota === 'regular' && requiredAdditionalIds.has(c.cardInstanceId) && regularAttackChoices > 0;
     const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost, allowedSourceZones);
     if (failure) reject(failure, 'Card cannot be played in this batch');
-    const cardCost = c.faceDown || waiveManaCost ? 0 : effectiveCardPlayCost(s, playerId, c.cardInstanceId);
+    const cardCost = c.faceDown || waiveManaCost ? 0 : Math.max(minimumManaCost, effectiveCardPlayCost(s, playerId, c.cardInstanceId));
     paidCostByCard.set(c.cardInstanceId, cardCost);
     cost += cardCost;
   }
