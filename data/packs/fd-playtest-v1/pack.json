@@ -21,7 +21,8 @@
     "data/authoring/servants/servant.sherlock.json",
     "data/authoring/servants/servant.shuten.json",
     "data/authoring/servants/servant.siegfried.json",
-    "data/authoring/servants/servant.sigurd.json"
+    "data/authoring/servants/servant.sigurd.json",
+    "data/authoring/servants/servant.tezcat.json"
   ],
   "authoringMasterFiles": [
     "data/authoring/masters/master.kayneth.json",

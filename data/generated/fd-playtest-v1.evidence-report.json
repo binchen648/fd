@@ -3,7 +3,7 @@
   "packId": "fd-playtest-v1",
   "summary": {
     "masters": 7,
-    "servants": 12,
+    "servants": 13,
     "events": 20,
     "blockingIssues": 0
   },
@@ -1489,6 +1489,61 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/Sigurd.htm",
       "imagePath": "../../Fate_Domination-开发版/images/servants/齐格鲁德.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.tezcat",
+      "displayName": "泰兹卡特里波卡",
+      "entityKind": "servant",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "泰兹卡特里波卡.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/泰兹卡特里波卡.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.tezcat.overview",
+      "displayName": "泰兹卡特里波卡",
+      "entityKind": "servant_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "泰兹卡特里波卡.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/泰兹卡特里波卡.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.tezcat.skill.sc-tezcat-1",
+      "displayName": "群豹之王",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "泰兹卡特里波卡.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/泰兹卡特里波卡.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.tezcat.skill.sc-tezcat-2",
+      "displayName": "战士之司",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "泰兹卡特里波卡.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/泰兹卡特里波卡.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.tezcat.skill.sc-tezcat-3",
+      "displayName": "第一太阳纪",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "泰兹卡特里波卡.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/泰兹卡特里波卡.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
       "issueCodes": []
