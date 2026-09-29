@@ -6542,7 +6542,7 @@ Acceptance synchronization:
 ## TASK P3-S-OWNER-TESLA-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Status: `SYNCHRONIZED`
 Base: `f2aaf28bc1f967c6b1197424b9647321e85d7703`
 Classification: formal owner-complete migration for current owner `servant.tesla`
 
@@ -6581,3 +6581,13 @@ Allowed verdicts:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+
+Acceptance synchronization:
+- PR #486 exact Candidate `75eb419d8dbcf55db07967d3c3e5235eaf3fcde2` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/486#issuecomment-5888744133`.
+- Exact-Candidate Phase 3 Pre-Review Gate `36557082116` succeeded.
+- Accepted owner-complete scope is exactly Tesla sc1 + sc2 + sc3; all three are newly creditable.
+- Formal accounting moves `151/944 -> 154/944`; remaining `790`; readiness remains permanently zero-credit.
+- Mechanical next owner is `servant.tezcat`; frozen scope is sc1 + sc2 + sc3.
+- Owner-readiness-first remains mandatory before any Tezcat formal consumer migration.
+- Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-owner-tesla-acceptance-synchronization.md`.
