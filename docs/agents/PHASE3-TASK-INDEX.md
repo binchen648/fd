@@ -6348,7 +6348,7 @@ Acceptance synchronization:
 ## TASK P3-B-TEACH-OWNER-READINESS-CAPABILITY
 
 Owner: Codex B
-Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Status: `SYNCHRONIZED`
 Base: `1987bfe9e23037c2e682fba15bc83fbff8cf33c0`
 Classification: bounded zero-credit owner-readiness capability for current owner `servant.teach`
 
@@ -6402,3 +6402,12 @@ Accounting:
 Allowed verdicts:
 - `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 - `IMPLEMENTATION_NEEDS_REVISION`
+Acceptance synchronization:
+- PR #483 exact Candidate `964db288d809cabd9150afdcf08dc3f306b9ab4e` received `IMPLEMENTATION_ACCEPTED_CANDIDATE` from fresh independent R.
+- Canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/483#issuecomment-5883800548`.
+- Exact-Candidate Phase 3 Pre-Review Gate `36522217489` succeeded.
+- Accepted readiness remains permanently zero-credit; strict formal accounting stays `149/944`, remaining `795`.
+- Full-owner A-rescan confirms no additional currently discoverable Teach readiness gap remains beyond the accepted battle-plunder/recorded-replay family.
+- sc3 remains historical FM01 preservation-only; sc1 + sc2 are the only newly creditable identities in the upcoming formal owner batch.
+- Next task is `P3-S-OWNER-TEACH-COMPLETE-MIGRATION`, containing preserved sc3 + new sc1 + sc2 together in one formal Candidate/PR/fresh R/A-sync sequence.
+- Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-teach-owner-readiness-capability-acceptance-synchronization.md`.
