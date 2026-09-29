@@ -6236,7 +6236,7 @@ Acceptance synchronization:
 ## TASK P3-B-TAMAMO-OWNER-READINESS-CAPABILITY
 
 Owner: Codex B
-Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Status: `SYNCHRONIZED`
 Base: `93b5536c8a4a02d79fe9b525e450e2883056cdad`
 Classification: bounded zero-credit owner-readiness capability for current owner `servant.tamamo`
 
@@ -6283,3 +6283,13 @@ Accounting:
 Allowed verdicts:
 - `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 - `IMPLEMENTATION_NEEDS_REVISION`
+Acceptance synchronization:
+- PR #481 successor exact Candidate `472d7d7cb6ed16a0d526ff91a68de0e1fe12d3da` received `IMPLEMENTATION_ACCEPTED_CANDIDATE` from fresh independent R.
+- Predecessor Candidate `6c91b25e2b6a0d7c5af2f5964584ddd5e7171c18` had one P1 and is superseded.
+- Canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/481#issuecomment-5882572670`.
+- Exact successor Phase 3 Pre-Review Gate `36512899227` succeeded.
+- Accepted readiness remains permanently zero-credit; strict formal accounting stays `146/944`, remaining `798`.
+- Full-owner A-rescan confirms no additional currently discoverable Tamamo readiness gap remains beyond the accepted sealed-card/Magic family.
+- sc1 + sc2 + sc3 are all newly creditable only in the upcoming formal owner-complete consumer migration.
+- Next task is `P3-S-OWNER-TAMAMO-COMPLETE-MIGRATION`, containing sc1 + sc2 + sc3 together in one formal Candidate/PR/fresh R/A-sync sequence.
+- Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-tamamo-owner-readiness-capability-acceptance-synchronization.md`.
