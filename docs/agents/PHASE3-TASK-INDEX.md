@@ -6605,7 +6605,7 @@ Acceptance synchronization:
 ## TASK P3-B-TEZCAT-OWNER-READINESS-CAPABILITY
 
 Owner: Codex B
-Status: `REVISION_IMPLEMENTED_AWAITING_SUCCESSOR_REVIEW`
+Status: `SYNCHRONIZED`
 Base: `bbf17412961e24b1cb6453e7b406bf9522dc4db6`
 Classification: complete currently discoverable Tezcat owner-readiness/capability batch, permanently zero migration credit
 
@@ -6647,3 +6647,42 @@ Accounting / next step:
 Allowed verdicts:
 - `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 - `IMPLEMENTATION_NEEDS_REVISION`
+
+Acceptance synchronization:
+- PR #487 exact Candidate `69c03692ad62e6f2e002b3601ea31992c535d2c9` received `IMPLEMENTATION_ACCEPTED_CANDIDATE` from fresh independent R.
+- Canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/487#issuecomment-5891046194`.
+- Exact-Candidate Phase 3 Pre-Review Gate `36571827932` succeeded.
+- Accepted readiness remains permanently zero-credit; strict formal accounting stays `154/944`, remaining `790`.
+- Full-owner A-rescan confirms no additional currently discoverable Tezcat readiness gap remains beyond the accepted joint/battlefield-attack family.
+- No Tezcat canonical consumer authoring exists yet; sc1 + sc2 + sc3 are all newly creditable only in the upcoming formal owner-complete migration.
+- Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-tezcat-owner-readiness-capability-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-TEZCAT-COMPLETE-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: exact Tezcat readiness A-sync commit
+Classification: formal owner-complete migration for current owner `servant.tezcat`
+
+Formal owner scope:
+- `servant.tezcat.skill.sc-tezcat-1` — newly creditable;
+- `servant.tezcat.skill.sc-tezcat-2` — newly creditable;
+- `servant.tezcat.skill.sc-tezcat-3` — newly creditable;
+- one owner archive, one formal Candidate, one PR, one fresh independent R, then one A-sync/accounting transaction.
+
+Accepted prerequisite:
+- readiness PR #487 exact Candidate `69c03692ad62e6f2e002b3601ea31992c535d2c9`;
+- fresh-R verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE`;
+- canonical same-attempt bounded relay `https://github.com/binchen648/fd/pull/487#issuecomment-5891046194`;
+- accepted zero-credit A-sync/rescan confirms the complete currently discoverable Tezcat readiness gap set is closed.
+
+Accounting boundary:
+- strict formal accounting remains `154/944`, remaining `790` before fresh R and A-sync;
+- no credit before exact-Candidate `MIGRATION_ACCEPTED` plus subsequent A-sync/accounting;
+- accepted synchronized outcome may add exactly sc1 + sc2 + sc3 and move strict formal accounting to `157/944`, remaining `787`;
+- do not advance owners before this owner batch is reviewed and synchronized.
+
+Allowed verdicts:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `MIGRATION_BLOCKED`
