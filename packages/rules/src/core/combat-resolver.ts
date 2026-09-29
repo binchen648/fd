@@ -502,7 +502,16 @@ function buildBattleResultFromRanked(
     : Math.min(splitVpPoolPerWinner(eventVpPool, winnerPlayerIds.length), baseVpPerWinner);
   const competitionVpPerWinner = fullRewardEach ? competitionVpPool : Math.max(0, baseVpPerWinner - vpReward);
   const locationVpPerWinner = fullRewardEach ? locationVpPool : splitVpPoolPerWinner(locationVpPool, winnerPlayerIds.length);
-  const hasAuthoritativeLoser = eligible.some((participant) => !winnerPlayerIds.includes(participant.playerId));
+  const lossEffectSuppressedPlayerIds = ranked
+    .filter((participant) => !winnerPlayerIds.includes(participant.playerId))
+    .filter((participant) => ignoresBattleLossEffects(state, participant.playerId, battlefieldId))
+    .map((participant) => participant.playerId);
+  const lossEffectSuppressed = new Set(lossEffectSuppressedPlayerIds);
+  // Keep reward replacement on the exact loser semantics later emitted by
+  // GameLoop/MatchSession: every physical participant that did not win, minus
+  // participants whose battle-loss effects are authoritatively suppressed.
+  const hasAuthoritativeLoser = ranked.some((participant) =>
+    !winnerPlayerIds.includes(participant.playerId) && !lossEffectSuppressed.has(participant.playerId));
   const defaultVpAdjustments = buildDefaultVpAdjustments(
     state, location, battlefieldId, winnerPlayerIds, competitionVpPerWinner, locationVpPerWinner, hasAuthoritativeLoser,
   );
@@ -512,10 +521,6 @@ function buildBattleResultFromRanked(
       playerId, delta: 2, source: "battle_vp" as const, label: "basic.preparation.win_bonus",
     }));
   const vpAdjustments = [...(defaultVpAdjustments ?? []), ...remoteOperationVpAdjustment];
-  const lossEffectSuppressedPlayerIds = ranked
-    .filter((participant) => !winnerPlayerIds.includes(participant.playerId))
-    .filter((participant) => ignoresBattleLossEffects(state, participant.playerId, battlefieldId))
-    .map((participant) => participant.playerId);
 
   return {
     battlefieldId, winnerPlayerIds, tied,

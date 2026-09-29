@@ -6370,8 +6370,10 @@ Readiness scope:
 - identity-free loader/runtime gateway only; no Teach/card-name/printed-text parsing, legacy identity-handler routing, or `SkillLib` fallback.
 
 Verification:
-- focused Teach readiness `7/7 PASS`;
-- directly affected green set `12 files / 261 tests PASS`;
+- focused Teach readiness `9/9 PASS`;
+- focused Teach + combat resolver `2 files / 19 tests PASS`;
+- shared Teach + Suzuka readiness + MatchSession `3 files / 50 tests PASS`;
+- directly affected green set `12 files / 263 tests PASS`;
 - `FD_TOOLCHAIN_OK`;
 - typecheck PASS;
 - content validate/compile PASS (`7 masters / 12 servants / 20 events / 0 blocking issues`);
@@ -6387,6 +6389,9 @@ Revision closure:
 - canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/483#issuecomment-5883235407`;
 - P1 all-winner tie closure gates reward replacement on an authoritative loser and adds a no-loser contested-tie regression;
 - P1 persisted-authority closure binds every replayable removed card to exact server-created removal evidence and rejects an exact-looking substitution of another loser-owned removed physical card even when the forged state is independently sealed for restore.
+- successor Candidate `bf33b3d76c6241592987cc0204c7be056f4d203d` then received `IMPLEMENTATION_NEEDS_REVISION` with one remaining loser-semantics P1; canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/483#issuecomment-5883633664`;
+- that P1 is closed by deriving competition-VP replacement eligibility from the same authoritative post-scoring loser relation used by GameLoop/MatchSession: all battle participant non-winners minus `lossEffectSuppressedPlayerIds`, instead of `eligible.some(nonwinner)`;
+- focused regression proves a sole loss-suppressed non-winner keeps ordinary competition VP and opens no plunder; a reverse regression proves an excluded-from-winning but unsuppressed participant remains an authoritative loser and still enables replacement/plunder.
 
 Accounting:
 - strict formal accounting remains `149/944`, remaining `795`;

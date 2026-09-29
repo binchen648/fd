@@ -41,8 +41,10 @@ Added the generic identity-free `battle-plunder-replay` capability and exact loa
 
 ## Verification
 
-- focused Teach readiness regression: `7/7 PASS`;
-- directly affected green set: `12 files / 261 tests PASS`;
+- focused Teach readiness regression: `9/9 PASS`;
+- focused Teach + combat resolver: `2 files / 19 tests PASS`;
+- shared Teach + Suzuka readiness + MatchSession set: `3 files / 50 tests PASS`;
+- directly affected green set: `12 files / 263 tests PASS`;
 - focused coverage includes exact gateway negatives, competition-VP replacement isolation, authoritative winner/loser facts, physical top-three removal, printed-Power cap, arbitrary reorder, recorded physical replay, minimum-cost floor, ownership preservation, source post-battle removal, pending decision restore, durable provenance restore, forged provenance rejection, and production identity audit;
 - `FD_TOOLCHAIN_OK`;
 - `npm.cmd run typecheck`: PASS;
@@ -65,7 +67,11 @@ Both P1 findings are closed together in this successor:
 - all-winner contested ties now gate competition-VP replacement on the existence of an authoritative loser, matching the trigger gateway and preventing reward suppression with no legal plunder target; a dedicated two-winner/no-loser regression is green;
 - recorded removed-card authority now requires exact server-created removal evidence that binds the selected physical card to the validated top-three set, exact winning trigger/result, source/ability, owner/controller and revision; a regression substitutes a different loser-owned removed physical card while keeping otherwise-valid source/key/result provenance, independently seals that forged state, and restore rejects it.
 
-The latest HELPER report available during this task is Epoch 7 for already synchronized Tamamo and is stale auxiliary evidence only; it grants no Teach verdict, scope, or credit.
+The next fresh review of exact Candidate `bf33b3d76c6241592987cc0204c7be056f4d203d` returned `IMPLEMENTATION_NEEDS_REVISION` with one P1. Canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403 is `https://github.com/binchen648/fd/pull/483#issuecomment-5883633664`. The prior literal no-loser tie and removed-card substitution findings remain closed; the new blocker was narrower: reward replacement used `eligible.some(nonwinner)` while authoritative post-scoring loser semantics are all participant breakdown non-winners minus `lossEffectSuppressedPlayerIds`.
+
+This successor revision closes that remaining mismatch by computing `lossEffectSuppressedPlayerIds` first and deriving the replacement gate from the exact same participant/winner/suppression relation consumed by GameLoop and MatchSession. Added regressions prove both directions: a sole lower-power non-winner with authoritative battle-loss suppression keeps ordinary competition VP and opens no plunder, while an excluded-from-winning participant that is not loss-suppressed remains an authoritative loser and still enables the replacement/plunder path.
+
+The latest HELPER report read before this revision is Epoch 9 PRE-R for exact predecessor `bf33b3d7...`; it is auxiliary read-only evidence only and grants no verdict, scope change, or credit. Its tie-semantics consistency risk is revalidated by the two focused direction tests above.
 
 ## Accounting and next step
 

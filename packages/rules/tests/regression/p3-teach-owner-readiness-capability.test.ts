@@ -148,6 +148,51 @@ describe('P3 Teach owner-readiness generic battle-plunder/replay capability', ()
     expect(resolved.abilityRuntime!.pendingDecision).toBeUndefined();
   });
 
+  it('keeps competition VP when every non-winner is authoritatively loss-suppressed', () => {
+    const { state } = setup(); state.round.activePhase = 'battle';
+    state.abilityRuntime!.battleLossIgnoreRoundByPlayer = { p2: state.round.roundNumber };
+    const location = state.map.locations.find((entry) => entry.id === 'miyama_town')! as any;
+    location.rewardHooks = ['battle_rewards', 'competition_rewards', 'location_rewards']; location.vpRewardRules = { battle: 2, competition: 3, location: 4 };
+    const resolved = rules.resolveBattlefield(state, { battlefieldId: 'miyama_town', participants: [
+      { playerId: 'p1', totalPower: 5 }, { playerId: 'p2', totalPower: 1 },
+    ] }).nextState;
+    const result = resolved.battleResults.at(-1)!;
+    const adjustment = (playerId: string, source: string) => result.vpAdjustments?.find((entry) => entry.playerId === playerId && entry.source === source)?.delta ?? 0;
+    expect(result.winnerPlayerIds).toEqual(['p1']);
+    expect(result.lossEffectSuppressedPlayerIds).toEqual(['p2']);
+    expect(adjustment('p1', 'competition_vp')).toBeGreaterThan(0);
+    expect(() => rules.processAbilityEvent(resolved, {
+      id: 'suppressed-loser-result', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:suppressed',
+      battleId: 'battle-suppressed', resultId: 'suppressed-loser-result', battlefieldId: 'miyama_town',
+      battleParticipantIds: ['p1', 'p2'], battleParticipantPowers: { p1: 5, p2: 1 },
+      battleResult: { winners: ['p1'], loserIds: [] },
+    })).not.toThrow();
+    expect(resolved.abilityRuntime!.pendingDecision).toBeUndefined();
+  });
+
+  it('still replaces competition VP when a non-winner is excluded from winning but remains an authoritative loser', () => {
+    const { state } = setup(); state.round.activePhase = 'battle';
+    state.abilityRuntime!.battleDefeatRoundByPlayer = { p2: state.round.roundNumber };
+    const location = state.map.locations.find((entry) => entry.id === 'miyama_town')! as any;
+    location.rewardHooks = ['battle_rewards', 'competition_rewards', 'location_rewards']; location.vpRewardRules = { battle: 2, competition: 3, location: 4 };
+    const resolved = rules.resolveBattlefield(state, { battlefieldId: 'miyama_town', participants: [
+      { playerId: 'p1', totalPower: 3 }, { playerId: 'p2', totalPower: 7 },
+    ] }).nextState;
+    const result = resolved.battleResults.at(-1)!;
+    const adjustment = (playerId: string, source: string) => result.vpAdjustments?.find((entry) => entry.playerId === playerId && entry.source === source)?.delta ?? 0;
+    expect(result.winnerPlayerIds).toEqual(['p1']);
+    expect(result.excludedPlayerIds).toContain('p2');
+    expect(result.lossEffectSuppressedPlayerIds ?? []).not.toContain('p2');
+    expect(adjustment('p1', 'competition_vp')).toBe(0);
+    rules.processAbilityEvent(resolved, {
+      id: 'excluded-loser-result', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:excluded',
+      battleId: 'battle-excluded', resultId: 'excluded-loser-result', battlefieldId: 'miyama_town',
+      battleParticipantIds: ['p1', 'p2'], battleParticipantPowers: { p1: 3, p2: 7 },
+      battleResult: { winners: ['p1'], loserIds: ['p2'] },
+    });
+    expect(resolved.abilityRuntime!.pendingDecision?.interaction).toMatchObject({ kind: 'battle_plunder_choice_v1', stage: 'loser', loserIds: ['p2'] });
+  });
+
   it('uses authoritative winner/loser facts, removes one physical top-three card, caps printed Power at 5, and preserves chosen deck order', () => {
     const { state, cards } = setup(); rootBattle(state);
     expect(state.abilityRuntime!.pendingDecision?.interaction).toMatchObject({ kind: 'battle_plunder_choice_v1', stage: 'loser', loserIds: ['p2'] });
