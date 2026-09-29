@@ -1,0 +1,150 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.tamamo",
+  "name": "玉藻前",
+  "class": "Caster",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from frozen F1 plus accepted PR #481 generic Tamamo sealed-card/Magic owner-readiness capability. Locked Reference supplies owner/static metadata only; legacy Tamamo identity handlers are not restored."
+  },
+  "cards": [
+    {
+      "id": "servant.tamamo.skill.sc-tamamo-1",
+      "aliases": ["sc_tamamo_1"],
+      "legacyId": "sc_tamamo_1",
+      "name": "水天日光天照八野镇石",
+      "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.tamamo" },
+      "printedText": "【真名解放】\n倾注-行动阶段：将所有【封印】牌打出，支付其花费。每一张【解封】的牌可选择以下两种处理方式之一：战后支付1魔力，重新【封印】此牌或将此牌置于你的弃牌堆。",
+      "cardFace": { "typeLabel": "魔术/宝具", "attributes": ["魔术", "宝具"], "cost": 1, "basePower": 1 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [{ "type": "skill_zone_mana_at_least", "value": 8 }],
+      "verification": { "implementationStatus": "complete" },
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[100].skills[0].text#line=1", "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c" },
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[100].skills[0].text#line=2", "sha256": "6214f5d0b7ed372a0b1b4c49569067996c09bff6ddb6037f551c1fe40d5cf182" }
+        ],
+        "sourceReferences": [
+          { "kind": "chm", "document": "FD全卡图鉴V2.0.chm", "category": "servant/english", "page": "玉藻前1.htm", "locator": "从者/魔术师/英文版/玉藻前1.htm" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "servant", "page": "images/servants/玉藻前.png", "locator": "servant.tamamo/玉藻前" }
+        ],
+        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "sc_tamamo_1", "class": "Caster", "cost": 1, "basePower": 1, "legacyRequirement": 8, "typeLabel": "魔术/宝具", "attributes": ["魔术", "宝具"] },
+        "canonicalSkillZoneManaRequirement": { "value": 8, "authority": "final_rules_9.4", "note": "Legacy requirement already equals the final skill-zone threshold." },
+        "acceptedCapability": "PR#481/472d7d7cb6ed16a0d526ff91a68de0e1fe12d3da"
+      },
+      "abilities": [
+        {
+          "id": "sc-tamamo-1.cascade",
+          "kind": "phase_action",
+          "printedClause": "倾注-行动阶段：将所有【封印】牌打出，支付其花费。每一张【解封】的牌可选择以下两种处理方式之一：战后支付1魔力，重新【封印】此牌或将此牌置于你的弃牌堆。",
+          "activation": { "phase": "action", "opens": "controller_action_window", "requiresSourceState": "active" },
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "play_all_sealed_attacks", "sealKey": "servant.tamamo:sealed-attacks", "payCardCosts": true, "resealMana": 1, "discardDestination": "controller_discard", "dispositionTrigger": "after_battle_ended" }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": { "revealsTrueName": true, "revealTiming": "on_use_declared", "revealScope": "servant_package" },
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ]
+    },
+    {
+      "id": "servant.tamamo.skill.sc-tamamo-2",
+      "aliases": ["sc_tamamo_2"],
+      "legacyId": "sc_tamamo_2",
+      "name": "荼枳尼天法",
+      "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.tamamo" },
+      "printedText": "变化-被动/行动阶段：本回合你的【远隔操作】和【幸运】牌失去特殊属性，获得魔术属性。\n广日照-被动：你的魔术属性攻击不能被无效化，它们的威力不能被减少。",
+      "cardFace": { "typeLabel": "魔术", "attributes": ["魔术"], "cost": 0, "basePower": 4 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "verification": { "implementationStatus": "complete" },
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[100].skills[1].text#line=1", "sha256": "8461020ffd61f81e1949cd455d6a41d6340bf9cc35334f1129520274c0fe1938" },
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[100].skills[1].text#line=2", "sha256": "2d97857fa616bb62a787ea367f8d12e572f2b5ff82407cf480e7e7a0213a21e1" }
+        ],
+        "sourceReferences": [
+          { "kind": "chm", "document": "FD全卡图鉴V2.0.chm", "category": "servant/english", "page": "玉藻前1.htm", "locator": "从者/魔术师/英文版/玉藻前1.htm" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "servant", "page": "images/servants/玉藻前.png", "locator": "servant.tamamo/玉藻前" }
+        ],
+        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "sc_tamamo_2", "class": "Caster", "cost": 0, "basePower": 4, "legacyRequirement": 0, "typeLabel": "魔术", "attributes": ["魔术"] },
+        "acceptedCapability": "PR#481/472d7d7cb6ed16a0d526ff91a68de0e1fe12d3da"
+      },
+      "abilities": [
+        {
+          "id": "sc-tamamo-2.weirding-hex",
+          "kind": "phase_action",
+          "printedClause": "变化-被动/行动阶段：本回合你的【远隔操作】和【幸运】牌失去特殊属性，获得魔术属性。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "round_definition_attribute_replacement", "targetDefinitionIds": ["card.cardpreparation", "card.cardluck"], "replaceAttributes": ["魔术"], "duration": "this_round" }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-tamamo-2.magic-penetration",
+          "kind": "passive",
+          "printedClause": "广日照-被动：你的魔术属性攻击不能被无效化，它们的威力不能被减少。",
+          "activation": {},
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "attack_attribute_other_player_protection", "attribute": "魔术", "sourcePlayers": "other_players", "prevent": ["deactivation", "power_reduction"], "duration": "while_source_present" }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ]
+    },
+    {
+      "id": "servant.tamamo.skill.sc-tamamo-3",
+      "aliases": ["sc_tamamo_3"],
+      "legacyId": "sc_tamamo_3",
+      "name": "水天日光天照八野镇石",
+      "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.tamamo" },
+      "printedText": "【真名解放】\n超然-战斗阶段：战斗阶段结束后，选择一张与你位于同一地点的玩家激活的魔术，【幸运】或【远隔操作】的基础攻击【封印】至此牌下直至你使用倾注。",
+      "cardFace": { "typeLabel": "魔术", "attributes": ["魔术"], "cost": 3, "basePower": 6 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [{ "type": "skill_zone_mana_at_least", "value": 8 }],
+      "verification": { "implementationStatus": "complete" },
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1ClauseSources": [
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[100].skills[2].text#line=1", "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c" },
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[100].skills[2].text#line=2", "sha256": "358d51c100845b6f257702d91f99240826c50e5c952c29c793f31d2530e1afc5" }
+        ],
+        "sourceReferences": [
+          { "kind": "chm", "document": "FD全卡图鉴V2.0.chm", "category": "servant/english", "page": "玉藻前1.htm", "locator": "从者/魔术师/英文版/玉藻前1.htm" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "servant", "page": "images/servants/玉藻前.png", "locator": "servant.tamamo/玉藻前" }
+        ],
+        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "sc_tamamo_3", "class": "Caster", "cost": 3, "basePower": 6, "legacyRequirement": 3, "typeLabel": "魔术", "attributes": ["魔术"] },
+        "canonicalSkillZoneManaRequirement": { "value": 8, "authority": "final_rules_9.4", "note": "Legacy requirement is retained as evidence metadata only; the final skill-zone play threshold is 8 mana." },
+        "acceptedCapability": "PR#481/472d7d7cb6ed16a0d526ff91a68de0e1fe12d3da"
+      },
+      "abilities": [
+        {
+          "id": "sc-tamamo-3.transcendence",
+          "kind": "phase_action",
+          "printedClause": "超然-战斗阶段：战斗阶段结束后，选择一张与你位于同一地点的玩家激活的魔术，【幸运】或【远隔操作】的基础攻击【封印】至此牌下直至你使用倾注。",
+          "activation": { "phase": "combat", "opens": "controller_combat_action_window", "requiresSourceState": "active" },
+          "conditions": [], "targets": [],
+          "effects": [{ "type": "arm_after_battle_seal_basic_attack", "sealKey": "servant.tamamo:sealed-attacks", "cardKind": "basic_attack", "eligibleAttribute": "魔术", "eligibleDefinitionIds": ["card.cardluck", "card.cardpreparation"], "sameLocation": true, "trigger": "after_battle_ended" }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": { "revealsTrueName": true, "revealTiming": "on_use_declared", "revealScope": "servant_package" },
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ]
+    }
+  ]
+}

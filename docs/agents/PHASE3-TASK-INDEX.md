@@ -6293,3 +6293,44 @@ Acceptance synchronization:
 - sc1 + sc2 + sc3 are all newly creditable only in the upcoming formal owner-complete consumer migration.
 - Next task is `P3-S-OWNER-TAMAMO-COMPLETE-MIGRATION`, containing sc1 + sc2 + sc3 together in one formal Candidate/PR/fresh R/A-sync sequence.
 - Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-tamamo-owner-readiness-capability-acceptance-synchronization.md`.
+## TASK P3-S-OWNER-TAMAMO-COMPLETE-MIGRATION
+
+Owner: Codex S
+Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Base: `9b138e98ecc10492d93cc3bebbe0066484ee0c37`
+Classification: formal owner-complete migration for current owner `servant.tamamo`
+
+Formal owner scope:
+- `servant.tamamo.skill.sc-tamamo-1` — newly creditable;
+- `servant.tamamo.skill.sc-tamamo-2` — newly creditable;
+- `servant.tamamo.skill.sc-tamamo-3` — newly creditable;
+- one owner archive, one formal Candidate, one PR, one fresh R, then one A-sync/accounting transaction.
+
+Accepted prerequisite:
+- readiness PR #481 exact successor Candidate `472d7d7cb6ed16a0d526ff91a68de0e1fe12d3da`;
+- fresh-R verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE`;
+- canonical same-attempt bounded relay `https://github.com/binchen648/fd/pull/481#issuecomment-5882572670`;
+- exact zero-credit A-sync/formal Base `9b138e98ecc10492d93cc3bebbe0066484ee0c37` closes the complete currently discoverable Tamamo readiness gap set.
+
+Implementation/evidence:
+- canonical `data/authoring/servants/servant.tamamo.json` contains sc1 + sc2 + sc3 together;
+- exact F1 text/static metadata for all three frozen identities is preserved;
+- sc1 Cascade uses accepted sealed replay/reseal/discard semantic; sc2 uses accepted round attribute replacement plus other-player Magic close/Power protection; sc3 uses accepted after-battle physical seal semantic;
+- sc1/sc3 use final Rule 9.4 8-mana skill-zone gate; sc2 retains its authoritative zero requirement;
+- formal credit claim is exactly `+3` only after fresh R + A-sync;
+- focused owner-complete `6/6 PASS`;
+- directly affected serial `11 files / 262 tests PASS`;
+- `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`7 masters / 12 servants / 20 events / 0 blocking issues`); generated determinism PASS; `git diff --check` PASS;
+- `packages/rules/src/**` formal delta EMPTY; no Tamamo/card-name/printed-text runtime parsing, legacy Tamamo handler routing, or `SkillLib` fallback added;
+- detailed result: `docs/reports/2026-09-29-p3-s-owner-tamamo-complete-migration-result.md`.
+
+Accounting boundary:
+- strict formal accounting remains `146/944`, remaining `798` before fresh R and A-sync;
+- no credit before exact-Candidate `MIGRATION_ACCEPTED` plus subsequent A-sync/accounting;
+- accepted synchronized outcome may add exactly sc1 + sc2 + sc3 and move strict formal accounting to `149/944`, remaining `795`;
+- do not advance owners before this owner batch is reviewed and synchronized.
+
+Allowed verdicts:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `MIGRATION_BLOCKED`
