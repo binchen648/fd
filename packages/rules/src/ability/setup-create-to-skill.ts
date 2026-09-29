@@ -1,4 +1,4 @@
-import type { AuthoringAbility, RuleNode } from './types';
+import type { AuthoringAbility } from './types';
 
 function record(value: unknown): Record<string, unknown> {
   return value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : {};
@@ -6,10 +6,6 @@ function record(value: unknown): Record<string, unknown> {
 
 function isEmptyRecord(value: unknown): boolean {
   return Object.keys(record(value)).length === 0;
-}
-
-function isCreateCardEffect(effect: RuleNode | undefined): boolean {
-  return effect?.type === 'create_card';
 }
 
 function containsCreateCard(value: unknown, seen = new Set<object>()): boolean {
