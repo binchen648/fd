@@ -6660,7 +6660,7 @@ Acceptance synchronization:
 ## TASK P3-S-OWNER-TEZCAT-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `REVISION_IMPLEMENTED_AWAITING_SUCCESSOR_REVIEW`
+Status: `SYNCHRONIZED`
 Base: `424aea116baf4ca1afddffbcaecf77e13f69de65`
 Classification: formal owner-complete migration for current owner `servant.tezcat`
 
@@ -6705,3 +6705,12 @@ Allowed verdicts:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+Acceptance synchronization:
+- PR #488 exact successor Candidate `27e297e1e75a0b89b01948a2298c812c224feb87` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator bounded relay after Work-chat rollover interrupted normal result delivery: `https://github.com/binchen648/fd/pull/488#issuecomment-5893825709`.
+- Exact-Candidate Phase 3 Pre-Review Gate `36586224266` succeeded.
+- Accepted owner-complete scope is exactly Tezcat sc1 + sc2 + sc3; all three are newly creditable.
+- Formal accounting moves `154/944 -> 157/944`; remaining `787`; readiness remains permanently zero-credit.
+- Mechanical next owner is `servant.tomoe`; frozen inventory immediately after Tezcat contains sc-tomoe-1 + sc-tomoe-2 + sc-tomoe-3.
+- Tomoe has historical accepted/canonical material, so owner-readiness-first must perform a full current-lineage/history rescan before deciding preservation-only versus newly creditable identities; no Tomoe credit is claimed by this A-sync.
+- Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-owner-tezcat-acceptance-synchronization.md`.
