@@ -6538,3 +6538,46 @@ Acceptance synchronization:
 - sc1 + sc2 + sc3 are all newly creditable only in the upcoming formal owner-complete consumer migration; none has current or historical canonical Tesla authoring.
 - Next task is `P3-S-OWNER-TESLA-COMPLETE-MIGRATION`, containing sc1 + sc2 + sc3 together in one formal Candidate/PR/fresh R/A-sync sequence.
 - Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-tesla-owner-readiness-capability-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-TESLA-COMPLETE-MIGRATION
+
+Owner: Codex S
+Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Base: `f2aaf28bc1f967c6b1197424b9647321e85d7703`
+Classification: formal owner-complete migration for current owner `servant.tesla`
+
+Formal owner scope:
+- `servant.tesla.skill.sc-tesla-1` — newly creditable;
+- `servant.tesla.skill.sc-tesla-2` — newly creditable;
+- `servant.tesla.skill.sc-tesla-3` — newly creditable;
+- one owner archive, one formal Candidate, one PR, one fresh R, then one A-sync/accounting transaction.
+
+Accepted prerequisite:
+- readiness PR #485 exact Candidate `e55c6727889f2c96c9ece71a1490b4edae58788d`;
+- fresh-R verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE`;
+- canonical same-attempt bounded relay `https://github.com/binchen648/fd/pull/485#issuecomment-5888328096`;
+- exact zero-credit A-sync/formal Base `f2aaf28bc1f967c6b1197424b9647321e85d7703` closes the complete currently discoverable Tesla readiness gap set.
+
+Implementation/evidence:
+- canonical `data/authoring/servants/servant.tesla.json` contains the complete frozen sc1 + sc2 + sc3 owner set;
+- sc1 consumes only accepted same-location spend reward plus true storage-overflow Power/terminal-close semantics;
+- sc2 consumes only accepted same-battlefield overflow defeat plus lose-all-mana current-round Power conversion semantics;
+- sc3 consumes only accepted same-location normal mana grants on play and mandatory combat scheduling with once-per-round protection;
+- sc2/sc3 true-name release uses separate canonical `declaration_reveal` abilities so privileged mana-transaction shapes remain exact/fail-closed;
+- all three final skill-zone thresholds are `8`; sc1 legacy requirement `6` is retained only as locked-Reference static metadata;
+- focused owner-complete `7/7 PASS`;
+- directly affected green set `8 files / 156 tests PASS`;
+- `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`7 masters / 12 servants / 20 events / 0 blocking issues`); generated determinism PASS; `git diff --check` PASS;
+- formal `packages/rules/src/**` production runtime delta from Base is EMPTY; no Tesla identity routing, runtime source-text parsing, legacy `core.tesla-*` handler, or `SkillLib` fallback is added;
+- detailed result: `docs/reports/2026-09-29-p3-s-owner-tesla-complete-migration-result.md`.
+
+Accounting boundary:
+- strict formal accounting remains `151/944`, remaining `793` before fresh R and A-sync;
+- no credit before exact-Candidate `MIGRATION_ACCEPTED` plus subsequent A-sync/accounting;
+- accepted synchronized outcome may add exactly sc1 + sc2 + sc3 and move strict formal accounting to `154/944`, remaining `790`;
+- do not advance owners before this owner batch is reviewed and synchronized.
+
+Allowed verdicts:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `MIGRATION_BLOCKED`
