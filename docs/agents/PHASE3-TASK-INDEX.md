@@ -6232,3 +6232,54 @@ Acceptance synchronization:
 - Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-owner-taisui-acceptance-synchronization.md`.
 - Mechanical first-occurrence owner ordering selects `servant.tamamo` next: Taisui index `239`, Tamamo index `240` of `251` owners.
 - Owner-readiness-first remains mandatory: complete one full Tamamo preflight before any Tamamo formal consumer migration.
+
+## TASK P3-B-TAMAMO-OWNER-READINESS-CAPABILITY
+
+Owner: Codex B
+Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Base: `93b5536c8a4a02d79fe9b525e450e2883056cdad`
+Classification: bounded zero-credit owner-readiness capability for current owner `servant.tamamo`
+
+Full-owner preflight:
+- frozen owner set is exactly sc1 + sc2 + sc3; all three are currently `currentRoute=none` with no canonical authoring consumer at Base;
+- F1 source text and clause hashes define one compatible sealed-card/Magic readiness family spanning all three skills;
+- locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9` is evidence only: legacy `core.tamamo-cascade`, `core.tamamo-witchcraft`, and `core.tamamo-transcendence` identity handlers must not be restored;
+- this task closes only the generic capability gap required before one Tamamo owner-complete formal consumer batch; no skill receives formal credit here.
+
+Readiness scope:
+- current-round definition-attribute replacement for an exact authored definition set, used to replace the affected basic definitions with Magic for the current round only;
+- while-source-present protection for effective Magic attacks against other-player deactivation/close and power reduction, without protecting self-originating effects;
+- combat arming followed by after-battle selection of exactly one qualifying same-location active face-up basic Magic/Luck/Remote-operation physical attack and persistent seal provenance under an authored host;
+- Action replay of every sealed physical card at normal aggregate cost, atomically failing if total cost is unaffordable, preserving borrowed-card provenance while played;
+- post-battle disposition with per-card 1-mana reseal choice and discard transfer for the remainder, including borrowed physical-card ownership transfer into the controller discard;
+- exact restore/provenance/revision validation for pending seal/disposition decisions, sealed bindings, armed actions and replay state; malformed/widened metadata fails closed;
+- identity-free loader/runtime gateway only; no Tamamo/card-name/printed-text parsing, no legacy identity-handler routing, no `SkillLib` fallback.
+
+Verification:
+- focused Tamamo readiness `9/9 PASS`;
+- directly affected green set `10 files / 256 tests PASS` (Tamamo readiness, authoring interpreter, executable pack, MatchSession, card-close, FB2-49 close interaction, Steno Divine Core readiness, Suzuka readiness, Taisui location-marker readiness, complex-skills production regressions);
+- historical `m50-02-opponent-close-one-non-residual` remains the already-known current-main debt (`6` failures) and is outside this task; this task does not modify that test or the opponent-close capability family;
+- `FD_TOOLCHAIN_OK`;
+- typecheck PASS;
+- content validate/compile PASS (`7 masters / 12 servants / 20 events / 0 blocking issues`);
+- generated determinism PASS with unchanged hashes;
+- `data/authoring/**` delta EMPTY;
+- production identity audit CLEAN for Tamamo/name/legacy-handler routes;
+- locked Reference clean/exact;
+- `git diff --check` PASS;
+- detailed result: `docs/reports/2026-09-29-p3-b-tamamo-owner-readiness-capability-result.md`.
+
+Revision history:
+- predecessor Candidate `6c91b25e2b6a0d7c5af2f5964584ddd5e7171c18` received `IMPLEMENTATION_NEEDS_REVISION` from fresh R;
+- canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/481#issuecomment-5882423372`;
+- sole P1 closure preserves authoritative `controllerId` plus concrete source-card provenance for production `set_opponent_power_to_zero` / `reduce_opponents_power`, and `calculateCardPower` now consumes that provenance; self-originating reduction remains unprotected;
+- added regression coverage executes both production extended-effect reducer handlers; no additional blocker was reported in that review attempt.
+
+Accounting:
+- strict formal accounting remains `146/944`, remaining `798`;
+- this readiness task is permanently zero-credit;
+- ACCEPTED must A-sync/rescan and return immediately to the same `servant.tamamo` owner for one owner-complete formal batch containing sc1 + sc2 + sc3 together.
+
+Allowed verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`

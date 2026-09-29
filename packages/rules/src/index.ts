@@ -36,6 +36,7 @@ export * from './ability/command-seal-power-capability';
 export * from './ability/divine-core-capability';
 export * from './ability/deck-recycle-replay-growth-capability';
 export * from './ability/location-marker-capability';
+export * from './ability/sealed-card-magic-capability';
 export * from './ability/combat-reward-distribution';
 export * from './ability/combat-opponent-power-vp-reward';
 export * from './ability/report';

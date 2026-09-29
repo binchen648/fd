@@ -1,5 +1,6 @@
 import type { GameState } from '../schema/game';
 import { conditionalRevealedSourceAttributes } from './revealed-card-mechanics';
+import { roundDefinitionReplacementForCard } from './sealed-card-magic-capability';
 
 /** Current physical-card attributes after instance-scoped transforms. Printed definitions remain immutable. */
 export function getEffectiveCardAttributes(state: GameState, cardInstanceId: string): string[] {
@@ -7,7 +8,8 @@ export function getEffectiveCardAttributes(state: GameState, cardInstanceId: str
   if (!card) return [];
   const runtime = state.abilityRuntime;
   const override = runtime?.cardState[cardInstanceId]?.attributeOverrides;
-  const printed = override !== undefined ? override : runtime?.pack.cards[card.definitionId]?.cardFace.attributes;
+  const replacement = roundDefinitionReplacementForCard(state, cardInstanceId);
+  const printed = replacement ?? (override !== undefined ? override : runtime?.pack.cards[card.definitionId]?.cardFace.attributes);
   const result = Array.isArray(printed) ? printed.filter((attribute): attribute is string => typeof attribute === 'string') : [];
   for (const attribute of conditionalRevealedSourceAttributes(state, cardInstanceId)) if (!result.includes(attribute)) result.push(attribute);
   return result;

@@ -1,6 +1,8 @@
 import type { GameState } from '../schema/game';
 import { isActiveCardSource } from '../core/card-source-state';
 import type { RuleNode } from './types';
+import { getEffectiveCardAttributes } from './card-instance-state';
+import { controllerHasOtherPlayerAttackProtection } from './sealed-card-magic-capability';
 
 function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
@@ -33,11 +35,14 @@ export function isAcceptedControlledCardCloseForbidModifier(modifier: RuleNode):
 }
 
 /** Server-owned runtime query used immediately before a close-source mutation. */
-export function isCardCloseForbidden(state: GameState, cardInstanceId: string): boolean {
+export function isCardCloseForbidden(state: GameState, cardInstanceId: string, effectControllerId?: string): boolean {
   const runtime = state.abilityRuntime;
   if (!runtime) return false;
   const target = state.cards.find((candidate) => candidate.instanceId === cardInstanceId);
   if (!target) return false;
+  if (effectControllerId && controllerHasOtherPlayerAttackProtection(
+    state, cardInstanceId, effectControllerId, getEffectiveCardAttributes(state, cardInstanceId),
+  )) return true;
   const currentRound = state.round.roundNumber;
   if (!Number.isSafeInteger(currentRound) || currentRound < 1) return false;
 

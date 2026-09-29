@@ -75,6 +75,12 @@ import {
   isValidLocationMarkerKey,
 } from './location-marker-capability';
 import {
+  containsSealedCardMagicPrivilegedNode, controllerHasOtherPlayerAttackProtection,
+  isAcceptedAfterBattleSealAbility, isAcceptedAttackAttributeOtherPlayerProtectionAbility,
+  isAcceptedPlaySealedAttacksAbility, isAcceptedRoundDefinitionAttributeReplacementAbility,
+  isAcceptedSealedCardMagicAbility, isValidSealedCardMagicKey, sealedCardMagicKeyFromAbility, sourcePresentForAcceptedCapability,
+} from './sealed-card-magic-capability';
+import {
   containsDeckRecycleReplayGrowthPrivilegedNode,
   isAcceptedDeckRecycleReplayGrowthAbility,
   isAcceptedAutomaticRecycleKeepGainCounterAbility,
@@ -352,13 +358,230 @@ function canActivateLocationMarkerAbility(s: GameState, sourceCardId: string, ab
   if (isAcceptedLocationMarkerMidpointDefeatAbility(ability)) return reversed && markerMidpointLegal(s, controllerId, markerKey);
   return false;
 }
+function acceptedSealedAbilityAtSource(
+  s: GameState, sourceCardId: string, abilityId: string, predicate: (ability: AuthoringAbility) => boolean,
+): AuthoringAbility | undefined {
+  try {
+    const ability = abilityDefinition(s, sourceCardId, abilityId);
+    return predicate(ability) ? ability : undefined;
+  } catch { return undefined; }
+}
+function sealedBindingsForControllerKey(s: GameState, controllerId: string, sealKey: string) {
+  if (!isValidSealedCardMagicKey(sealKey)) return [];
+  const bindings = Object.values(runtime(s).sealedCardBindings ?? {}).filter((binding) =>
+    binding.controllerId === controllerId && binding.sealKey === sealKey);
+  return bindings.filter((binding) => {
+    const physical = s.cards.find((candidate) => candidate.instanceId === binding.cardInstanceId);
+    if (!physical || physical.zone !== 'sealed' || physical.ownerPlayerId !== binding.originalOwnerPlayerId) return false;
+    if (!sourcePresentForAcceptedCapability(s, binding.hostSourceCardId, controllerId)) return false;
+    const hostAbility = acceptedSealedAbilityAtSource(s, binding.hostSourceCardId, binding.sealAbilityId, isAcceptedAfterBattleSealAbility);
+    return !!hostAbility && sealedCardMagicKeyFromAbility(hostAbility) === sealKey;
+  }).sort((left, right) => left.sealedRevision - right.sealedRevision || left.cardInstanceId.localeCompare(right.cardInstanceId));
+}
+function sealCandidateIds(s: GameState, controllerId: string, sourceCardId: string, ability: AuthoringAbility): string[] {
+  if (!isAcceptedAfterBattleSealAbility(ability) || !sourcePresentForAcceptedCapability(s, sourceCardId, controllerId)) return [];
+  const p = s.players.find((candidate) => candidate.id === controllerId && candidate.status === 'active');
+  if (!p?.locationId) return [];
+  const effect = ability.effects[0]!;
+  const eligibleDefinitionIds = Array.isArray(effect.eligibleDefinitionIds) ? effect.eligibleDefinitionIds.filter((id): id is string => typeof id === 'string') : [];
+  const eligibleAttribute = String(effect.eligibleAttribute ?? '');
+  return s.cards.filter((candidate) => {
+    const owner = s.players.find((entry) => entry.id === candidate.controllerPlayerId && entry.status === 'active');
+    const state = runtime(s).cardState[candidate.instanceId];
+    const d = runtime(s).pack.cards[candidate.definitionId];
+    if (!owner || owner.locationId !== p.locationId || candidate.zone !== 'attack_area' || !state?.active || state.faceDown === true || !d) return false;
+    const basic = d.cardType === 'basic_attack' || (d.cardType === 'servant_attack' && candidate.definitionId.startsWith('card.'));
+    if (!basic) return false;
+    return eligibleDefinitionIds.includes(candidate.definitionId) || getEffectiveCardAttributes(s, candidate.instanceId).includes(eligibleAttribute);
+  }).map((candidate) => candidate.instanceId).sort();
+}
+function sealPhysicalCardUnderSource(s: GameState, controllerId: string, sourceCardId: string, abilityId: string, sealKey: string, instanceId: string): void {
+  const r = runtime(s); const physical = s.cards.find((candidate) => candidate.instanceId === instanceId);
+  if (!physical || physical.zone !== 'attack_area' || !r.cardState[instanceId]?.active || r.cardState[instanceId]?.faceDown === true) {
+    reject('resolution_failed', 'Sealed-card target is no longer an active face-up attack');
+  }
+  const ability = acceptedSealedAbilityAtSource(s, sourceCardId, abilityId, isAcceptedAfterBattleSealAbility);
+  if (!ability || sealedCardMagicKeyFromAbility(ability) !== sealKey || !sourcePresentForAcceptedCapability(s, sourceCardId, controllerId) ||
+      !sealCandidateIds(s, controllerId, sourceCardId, ability).includes(instanceId)) {
+    reject('resolution_failed', 'Sealed-card target or source provenance changed');
+  }
+  const originalOwnerPlayerId = physical.ownerPlayerId;
+  moveCard(s, instanceId, 'sealed');
+  physical.visibility = { scope: 'public' };
+  const state = r.cardState[instanceId] ??= { active: false, faceDown: false, playedRound: s.round.roundNumber };
+  state.active = false; state.faceDown = false;
+  delete (r.sealedCardReplays ?? {})[instanceId];
+  (r.sealedCardBindings ??= {})[instanceId] = {
+    sealKey, controllerId, hostSourceCardId: sourceCardId, sealAbilityId: abilityId,
+    cardInstanceId: instanceId, originalOwnerPlayerId, sealedRevision: r.revision + 1,
+  };
+  r.events.push({ type: 'physical_card_sealed_under_source', playerId: controllerId, sourceCardId, abilityId, cardInstanceId: instanceId });
+}
+function armAfterBattleSeal(s: GameState, ctx: EffectContext, ability: AuthoringAbility): void {
+  if (!isAcceptedAfterBattleSealAbility(ability)) reject('resolution_failed', 'Unsupported after-battle seal semantic shape');
+  const sealKey = sealedCardMagicKeyFromAbility(ability); if (!sealKey) reject('resolution_failed', 'Invalid sealed-card key');
+  if (!liveOwnedSource(s, ctx.sourceCardId, ctx.controllerId)) reject('invalid_state', 'Seal arming requires an active owned source');
+  const r = runtime(s); const arms = r.armedSealedCardActions ??= [];
+  if (arms.some((entry) => entry.sourceCardId === ctx.sourceCardId && entry.abilityId === ctx.abilityId && entry.round === s.round.roundNumber)) return;
+  arms.push({ sealKey, controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+    round: s.round.roundNumber, createdRevision: r.revision + 1 });
+  r.events.push({ type: 'after_battle_seal_armed', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+}
+function installRoundDefinitionAttributeReplacement(s: GameState, ctx: EffectContext, ability: AuthoringAbility): void {
+  if (!isAcceptedRoundDefinitionAttributeReplacementAbility(ability)) reject('resolution_failed', 'Unsupported round definition-attribute replacement shape');
+  const effect = ability.effects[0]!; const targetDefinitionIds = effect.targetDefinitionIds as string[]; const replaceAttributes = effect.replaceAttributes as string[];
+  (runtime(s).roundDefinitionAttributeReplacements ??= {})[ctx.controllerId] = {
+    controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, round: s.round.roundNumber,
+    targetDefinitionIds: [...targetDefinitionIds], replaceAttributes: [...replaceAttributes], createdRevision: runtime(s).revision + 1,
+  };
+  runtime(s).events.push({ type: 'round_definition_attributes_replaced', playerId: ctx.controllerId,
+    sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+}
+function canActivateSealedCardMagicAbility(s: GameState, sourceCardId: string, ability: AuthoringAbility): boolean {
+  if (!isAcceptedSealedCardMagicAbility(ability)) return false;
+  const source = s.cards.find((candidate) => candidate.instanceId === sourceCardId); if (!source) return false;
+  const controllerId = source.controllerPlayerId;
+  if (isAcceptedPlaySealedAttacksAbility(ability)) {
+    const key = sealedCardMagicKeyFromAbility(ability);
+    return !!key && sealedBindingsForControllerKey(s, controllerId, key).length > 0;
+  }
+  return true;
+}
+function playAllSealedAttacks(s: GameState, ctx: EffectContext, ability: AuthoringAbility): void {
+  if (!isAcceptedPlaySealedAttacksAbility(ability)) reject('resolution_failed', 'Unsupported sealed-card replay semantic shape');
+  const sealKey = sealedCardMagicKeyFromAbility(ability); if (!sealKey) reject('resolution_failed', 'Invalid sealed-card key');
+  const bindings = sealedBindingsForControllerKey(s, ctx.controllerId, sealKey);
+  if (!bindings.length) reject('no_legal_target', 'No sealed attacks are available');
+  const instanceIds = bindings.map((binding) => binding.cardInstanceId);
+  const draft = structuredClone(s) as GameState;
+  for (const instanceId of instanceIds) {
+    const physical = draft.cards.find((candidate) => candidate.instanceId === instanceId);
+    if (!physical) reject('resolution_failed', 'Sealed-card physical instance disappeared');
+    physical.controllerPlayerId = ctx.controllerId;
+  }
+  playBatch(draft, ctx.controllerId, instanceIds.map((cardInstanceId) => ({ type: 'play_card', cardInstanceId })), 'effect', false, ['sealed']);
+  const r = runtime(s);
+  for (const instanceId of instanceIds) {
+    const physical = s.cards.find((candidate) => candidate.instanceId === instanceId);
+    if (!physical) reject('resolution_failed', 'Sealed-card physical instance disappeared');
+    physical.controllerPlayerId = ctx.controllerId;
+  }
+  for (const instanceId of instanceIds) delete (r.sealedCardBindings ?? {})[instanceId];
+  playBatch(s, ctx.controllerId, instanceIds.map((cardInstanceId) => ({ type: 'play_card', cardInstanceId })), 'effect', false, ['sealed']);
+  for (const binding of bindings) {
+    (r.sealedCardReplays ??= {})[binding.cardInstanceId] = {
+      sealKey, controllerId: ctx.controllerId, cascadeSourceCardId: ctx.sourceCardId, cascadeAbilityId: ctx.abilityId,
+      hostSourceCardId: binding.hostSourceCardId, sealAbilityId: binding.sealAbilityId, cardInstanceId: binding.cardInstanceId,
+      originalOwnerPlayerId: binding.originalOwnerPlayerId, round: s.round.roundNumber, playedRevision: r.revision + 1,
+    };
+  }
+  r.events.push({ type: 'sealed_attacks_replayed', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+    abilityId: ctx.abilityId });
+}
+function transferReplayToControllerDiscard(s: GameState, controllerId: string, instanceId: string): void {
+  const physical = s.cards.find((candidate) => candidate.instanceId === instanceId); if (!physical) reject('resolution_failed', 'Replay card disappeared');
+  physical.ownerPlayerId = controllerId; physical.controllerPlayerId = controllerId; moveCard(s, instanceId, 'discard');
+  delete (runtime(s).sealedCardReplays ?? {})[instanceId];
+}
+function resealReplayCard(s: GameState, replay: NonNullable<AbilityRuntime['sealedCardReplays']>[string]): void {
+  const hostAbility = acceptedSealedAbilityAtSource(s, replay.hostSourceCardId, replay.sealAbilityId, isAcceptedAfterBattleSealAbility);
+  if (!hostAbility || sealedCardMagicKeyFromAbility(hostAbility) !== replay.sealKey ||
+      !sourcePresentForAcceptedCapability(s, replay.hostSourceCardId, replay.controllerId)) reject('resolution_failed', 'Sealed-card host provenance is stale');
+  const physical = s.cards.find((candidate) => candidate.instanceId === replay.cardInstanceId); if (!physical) reject('resolution_failed', 'Replay card disappeared');
+  physical.ownerPlayerId = replay.originalOwnerPlayerId;
+  moveCard(s, replay.cardInstanceId, 'sealed'); physical.controllerPlayerId = replay.controllerId; physical.visibility = { scope: 'public' };
+  const state = runtime(s).cardState[replay.cardInstanceId]; if (state) { state.active = false; state.faceDown = false; }
+  (runtime(s).sealedCardBindings ??= {})[replay.cardInstanceId] = {
+    sealKey: replay.sealKey, controllerId: replay.controllerId, hostSourceCardId: replay.hostSourceCardId,
+    sealAbilityId: hostAbility.id, cardInstanceId: replay.cardInstanceId, originalOwnerPlayerId: replay.originalOwnerPlayerId,
+    sealedRevision: runtime(s).revision + 1,
+  };
+  delete (runtime(s).sealedCardReplays ?? {})[replay.cardInstanceId];
+}
+function liveReplayGroup(s: GameState) {
+  const entries = Object.values(runtime(s).sealedCardReplays ?? {}).filter((replay) => replay.round === s.round.roundNumber)
+    .sort((left, right) => left.playedRevision - right.playedRevision || left.cardInstanceId.localeCompare(right.cardInstanceId));
+  const first = entries[0]; if (!first) return undefined;
+  const group = entries.filter((entry) => entry.controllerId === first.controllerId && entry.sealKey === first.sealKey &&
+    entry.cascadeSourceCardId === first.cascadeSourceCardId && entry.cascadeAbilityId === first.cascadeAbilityId && entry.hostSourceCardId === first.hostSourceCardId);
+  return { first, group };
+}
+function stageNextSealedCardBattleDecision(s: GameState): void {
+  const r = runtime(s); if (r.pendingDecision) return;
+  r.armedSealedCardActions ??= [];
+  while (true) {
+    const armIndex = r.armedSealedCardActions.findIndex((entry) => entry.round === s.round.roundNumber);
+    if (armIndex < 0) break;
+    const arm = r.armedSealedCardActions[armIndex]!;
+    const ability = acceptedSealedAbilityAtSource(s, arm.sourceCardId, arm.abilityId, isAcceptedAfterBattleSealAbility);
+    if (!ability || sealedCardMagicKeyFromAbility(ability) !== arm.sealKey) reject('resolution_failed', 'Corrupt armed sealed-card provenance');
+    if (!sourcePresentForAcceptedCapability(s, arm.sourceCardId, arm.controllerId)) { r.armedSealedCardActions.splice(armIndex, 1); continue; }
+    const candidateIds = sealCandidateIds(s, arm.controllerId, arm.sourceCardId, ability);
+    if (candidateIds.length === 0) { r.armedSealedCardActions.splice(armIndex, 1); continue; }
+    if (candidateIds.length === 1) {
+      sealPhysicalCardUnderSource(s, arm.controllerId, arm.sourceCardId, arm.abilityId, arm.sealKey, candidateIds[0]!);
+      r.armedSealedCardActions.splice(armIndex, 1); continue;
+    }
+    const id = nextId(s, 'sealed-card-choice');
+    r.pendingDecision = {
+      id, controllerId: arm.controllerId,
+      target: { id: 'sealed_card_target', type: 'card_instance', count: { min: 1, max: 1 } },
+      candidates: [...candidateIds], min: 1, max: 1,
+      context: { controllerId: arm.controllerId, sourceCardId: arm.sourceCardId, abilityId: arm.abilityId, variables: {}, selections: {} },
+      remainingEffects: [], interaction: {
+        kind: 'sealed_card_choice_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+        sourceCardInstanceId: arm.sourceCardId, abilityId: arm.abilityId, createdRevision: r.revision + 1,
+        continuationRef: `${id}:continuation`, controllerId: arm.controllerId, sealKey: arm.sealKey, candidateIds: [...candidateIds],
+        constraints: { kind: 'target', targetKind: 'card', min: 1, max: 1, distinct: true },
+      },
+    };
+    return;
+  }
+  while (!r.pendingDecision) {
+    const grouped = liveReplayGroup(s); if (!grouped) return;
+    const { first, group } = grouped;
+    const cascadeAbility = acceptedSealedAbilityAtSource(s, first.cascadeSourceCardId, first.cascadeAbilityId, isAcceptedPlaySealedAttacksAbility);
+    if (!cascadeAbility || sealedCardMagicKeyFromAbility(cascadeAbility) !== first.sealKey) reject('resolution_failed', 'Corrupt sealed-card replay provenance');
+    const liveCards = group.filter((entry) => {
+      const physical = s.cards.find((candidate) => candidate.instanceId === entry.cardInstanceId);
+      return !!physical && physical.zone === 'attack_area' && physical.controllerPlayerId === first.controllerId;
+    });
+    if (liveCards.length !== group.length) reject('resolution_failed', 'Sealed-card replay state no longer matches physical cards');
+    const hostPresent = sourcePresentForAcceptedCapability(s, first.hostSourceCardId, first.controllerId);
+    const controller = player(s, first.controllerId);
+    if (!hostPresent || controller.mana <= 0) {
+      for (const entry of group) transferReplayToControllerDiscard(s, first.controllerId, entry.cardInstanceId);
+      continue;
+    }
+    const max = Math.min(group.length, controller.mana);
+    const id = nextId(s, 'sealed-card-disposition'); const candidateIds = group.map((entry) => entry.cardInstanceId);
+    r.pendingDecision = {
+      id, controllerId: first.controllerId,
+      target: { id: 'sealed_card_reseal', type: 'card_instance', count: { min: 0, max } },
+      candidates: [...candidateIds], min: 0, max,
+      context: { controllerId: first.controllerId, sourceCardId: first.cascadeSourceCardId, abilityId: first.cascadeAbilityId, variables: {}, selections: {} },
+      remainingEffects: [], interaction: {
+        kind: 'sealed_card_disposition_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+        sourceCardInstanceId: first.cascadeSourceCardId, abilityId: first.cascadeAbilityId, createdRevision: r.revision + 1,
+        continuationRef: `${id}:continuation`, controllerId: first.controllerId, sealKey: first.sealKey,
+        hostSourceCardId: first.hostSourceCardId, candidateIds: [...candidateIds], resealMana: 1,
+        constraints: { kind: 'target', targetKind: 'card', min: 0, max, distinct: true },
+      },
+    };
+    return;
+  }
+}
+function settleSealedCardBattleEnd(s: GameState, event: AbilityEvent): void {
+  if (event.type !== 'after_battle_ended' || !event.battlePhaseResolutionId) return;
+  stageNextSealedCardBattleDecision(s);
+}
 function context(s: GameState, sourceCardId: string, abilityId: string, event?: AbilityEvent): EffectContext {
   return { sourceCardId, abilityId, controllerId: card(s, sourceCardId).controllerPlayerId, variables: {}, selections: {}, ...(event ? { event } : {}) };
 }
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-    cardState: {}, locationMarkers: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, battleLossIgnoreRoundByPlayer: {},
+    cardState: {}, locationMarkers: {}, roundDefinitionAttributeReplacements: {}, sealedCardBindings: {}, armedSealedCardActions: [], sealedCardReplays: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, battleLossIgnoreRoundByPlayer: {},
     startingDeckSizeByPlayer: Object.fromEntries(s.players.map((candidate) => [candidate.id, s.cards.filter((entry) => entry.ownerPlayerId === candidate.id && entry.zone === 'deck').length])),
     cardPlayCountByInstance: {}, grantedPerGamePlayLimitCardIds: [], grantedPerGamePlayLimitBaselineByCardId: {},
     ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [],
@@ -562,6 +785,12 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     if (modifier.lifecycle === 'until_leaves_active_area' && modifier.round !== s.round.roundNumber) continue;
     const value = Number(modifier.value ?? 0);
     if (!Number.isFinite(value)) reject('invalid_modifier', 'Card power modifier must be finite');
+    const effectSource = typeof modifier.sourceId === 'string' ? s.cards.find((candidate) => candidate.instanceId === modifier.sourceId) : undefined;
+    const effectControllerId = typeof modifier.controllerId === 'string' ? modifier.controllerId : effectSource?.controllerPlayerId;
+    const wouldReduce = (modifier.kind === 'set' && value < result.value) || (modifier.kind === 'add' && value < 0);
+    if (wouldReduce && effectControllerId && controllerHasOtherPlayerAttackProtection(
+      s, sourceId, effectControllerId, getEffectiveCardAttributes(s, sourceId),
+    )) continue;
     if (modifier.kind === 'set') result.value = value;
     else if (modifier.kind === 'add') result.value += value;
     else if (modifier.kind === 'reverse_situation_event') continue;
@@ -579,6 +808,10 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     const ctx = context(s, modifier.sourceCardId, '');
     if (!nodes(scope.constraints).every(c => constraint(s, ctx, source, c))) continue;
     const amount = numeric(s, ctx, m.value);
+    const wouldReduce = (m.operation === 'set' && amount < result.value) || (m.operation === 'add' && amount < 0);
+    if (wouldReduce && controllerHasOtherPlayerAttackProtection(
+      s, sourceId, modifier.controllerId, getEffectiveCardAttributes(s, sourceId),
+    )) continue;
     if (m.operation === 'set') result.value = amount;
     else if (m.operation === 'add') result.value += amount;
     else reject('unsupported', 'Unsupported power operation');
@@ -1197,6 +1430,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsDeckRecycleReplayGrowthPrivilegedNode(a) && !isAcceptedDeckRecycleReplayGrowthAbility(a)) return false;
   if (containsLocationMarkerPrivilegedNode(a) && !isAcceptedLocationMarkerAbility(a)) return false;
   if (isAcceptedLocationMarkerAbility(a) && !canActivateLocationMarkerAbility(s, sourceId, a, event)) return false;
+  if (containsSealedCardMagicPrivilegedNode(a) && !isAcceptedSealedCardMagicAbility(a)) return false;
+  if (isAcceptedSealedCardMagicAbility(a) && !canActivateSealedCardMagicAbility(s, sourceId, a)) return false;
   if (isAcceptedSpendCounterIgnoreBattleLossAbility(a)) {
     const key = str(a.effects[0]?.counterKey);
     if (structuredCounterValue(s, card(s, sourceId).controllerPlayerId, key) < 1) return false;
@@ -1516,7 +1751,7 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
   return found.sort((a, b) => ordered.findIndex(p => p.id === a.controllerId) - ordered.findIndex(p => p.id === b.controllerId));
 }
 function moveCard(s: GameState, id: string, zone: string): number {
-  if (!['hand', 'deck', 'discard', 'field', 'skill', 'attack_area', 'removed_from_game', 'looked_cards'].includes(zone)) reject('unsupported', 'Unmapped destination zone');
+  if (!['hand', 'deck', 'discard', 'field', 'skill', 'attack_area', 'removed_from_game', 'looked_cards', 'sealed'].includes(zone)) reject('unsupported', 'Unmapped destination zone');
   const c = card(s, id); const moved = c.zone === zone ? 0 : 1; c.zone = zone;
   c.visibility = zone === 'field' || zone === 'attack_area' || zone === 'removed_from_game' ? { scope: 'public' } : { scope: 'owner_only', ownerPlayerId: c.ownerPlayerId };
   if (!['field', 'attack_area'].includes(zone)) {
@@ -2737,7 +2972,7 @@ function isExactOpponentCloseToOneQueue(s: GameState, value: unknown): value is 
     const decisionPlayer = s.players.find((candidate) => candidate.id === entry.decisionPlayerId);
     if (!decisionPlayer || decisionPlayer.status !== 'active' || decisionPlayer.locationId !== entry.battlefieldId ||
         decisionPlayer.seat <= priorSeat ||
-        !exactFrozenCardIdList(qualifyingOpponentCloseToOneCardIds(s, entry.decisionPlayerId), entry.qualifyingCardIds) ||
+        !exactFrozenCardIdList(qualifyingOpponentCloseToOneCardIds(s, entry.decisionPlayerId, entry.initiatingControllerId), entry.qualifyingCardIds) ||
         !livePlayerOwnersMatchFrozen(s, entry.qualifyingCardOwners, entry.qualifyingCardIds)) return false;
     priorSeat = decisionPlayer.seat;
     decisionPlayerIds.add(entry.decisionPlayerId);
@@ -2753,7 +2988,7 @@ function isResidualAttackCardDefinition(cardDefinition: AuthoringCard | undefine
     ability.kind === 'residual' && !['discard_at_round_end', 'close_at_round_end'].includes(str(ability.lifecycle?.cleanup)));
 }
 
-function qualifyingOpponentCloseToOneCardIds(s: GameState, decisionPlayerId: string): string[] {
+function qualifyingOpponentCloseToOneCardIds(s: GameState, decisionPlayerId: string, effectControllerId?: string): string[] {
   const r = runtime(s);
   return s.cards.filter((candidate) => {
     if (candidate.controllerPlayerId !== decisionPlayerId || candidate.zone !== 'attack_area') return false;
@@ -2763,7 +2998,7 @@ function qualifyingOpponentCloseToOneCardIds(s: GameState, decisionPlayerId: str
     if (!isValidOpponentCloseToOneSourceCardState(state)) {
       reject('resolution_failed', 'Malformed opponent close-to-one qualifying card runtime state');
     }
-    return state.active === true && state.faceDown === false;
+    return state.active === true && state.faceDown === false && !isCardCloseForbidden(s, candidate.instanceId, effectControllerId);
   }).map((candidate) => candidate.instanceId);
 }
 
@@ -2779,7 +3014,7 @@ function opponentCloseSelectedOneFacts(s: GameState, sourceId: string): {
     candidate.locationId === controller.locationId).sort((left, right) => left.seat - right.seat);
   if (opponents.length !== 1) return undefined;
   const decisionPlayerId = opponents[0]!.id;
-  const candidateIds = qualifyingOpponentCloseToOneCardIds(s, decisionPlayerId).filter((instanceId) => {
+  const candidateIds = qualifyingOpponentCloseToOneCardIds(s, decisionPlayerId, controller.id).filter((instanceId) => {
     const physical = s.cards.find((candidate) => candidate.instanceId === instanceId);
     return !!physical && physical.ownerPlayerId === decisionPlayerId && !isCardCloseForbidden(s, instanceId);
   });
@@ -2857,7 +3092,7 @@ function stageOpponentCloseToOne(s: GameState, ctx: EffectContext, a: AuthoringA
     candidate.locationId === battlefieldId).sort((left, right) => left.seat - right.seat);
   const frozenEntries: Array<Omit<PendingOpponentCloseToOne, 'remainingDecisionPlayerIds'>> = [];
   for (const opponent of opponents) {
-    const qualifyingCardIds = qualifyingOpponentCloseToOneCardIds(s, opponent.id);
+    const qualifyingCardIds = qualifyingOpponentCloseToOneCardIds(s, opponent.id, controller.id);
     if (qualifyingCardIds.length < 2) continue;
     const qualifyingCardOwners = Object.fromEntries(qualifyingCardIds.map((instanceId) =>
       [instanceId, card(s, instanceId).ownerPlayerId]));
@@ -2872,14 +3107,14 @@ function stageOpponentCloseToOne(s: GameState, ctx: EffectContext, a: AuthoringA
   stageNextOpponentCloseToOneDecision(s);
 }
 
-function closeOpponentCardForCloseToOne(s: GameState, decisionPlayerId: string, instanceId: string): void {
+function closeOpponentCardForCloseToOne(s: GameState, decisionPlayerId: string, instanceId: string, effectControllerId: string): void {
   const target = card(s, instanceId);
   const r = runtime(s);
   const cardDefinition = r.pack.cards[target.definitionId];
   const state: unknown = r.cardState[instanceId];
   if (target.controllerPlayerId !== decisionPlayerId || target.zone !== 'attack_area' || !cardDefinition ||
       !isValidOpponentCloseToOneSourceCardState(state) || state.active !== true || state.faceDown !== false ||
-      isResidualAttackCardDefinition(cardDefinition) || isCardCloseForbidden(s, instanceId)) {
+      isResidualAttackCardDefinition(cardDefinition) || isCardCloseForbidden(s, instanceId, effectControllerId)) {
     reject('resolution_failed', 'Opponent close-to-one target can no longer be closed');
   }
   state.active = false;
@@ -2905,14 +3140,14 @@ function battleCloseDrawPlayOpponentIds(s: GameState, controllerId: PlayerId): P
   return s.players.filter((candidate) => candidate.id !== controllerId && candidate.status === 'active' && candidate.locationId === controller.locationId)
     .sort((left, right) => left.seat - right.seat).map((candidate) => candidate.id);
 }
-function battleCloseDrawPlayCloseCandidateIds(s: GameState, opponentId: PlayerId): string[] {
+function battleCloseDrawPlayCloseCandidateIds(s: GameState, opponentId: PlayerId, effectControllerId: PlayerId): string[] {
   const r = runtime(s);
   return s.cards.filter((candidate) => {
     if (candidate.controllerPlayerId !== opponentId || candidate.zone !== 'attack_area') return false;
     const definition = r.pack.cards[candidate.definitionId]; const state = r.cardState[candidate.instanceId];
     if (!definition || !state || state.active !== true || state.faceDown !== false || cardPlayClassification(s, candidate.instanceId).playKind !== 'attack') return false;
     if (perGamePlayLimit(definition) || (r.grantedPerGamePlayLimitCardIds ?? []).includes(candidate.instanceId)) return false;
-    return !isCardCloseForbidden(s, candidate.instanceId);
+    return !isCardCloseForbidden(s, candidate.instanceId, effectControllerId);
   }).map((candidate) => candidate.instanceId).sort();
 }
 function canActivateBattleCloseDrawPlay(s: GameState, sourceId: string, ability: AuthoringAbility): boolean {
@@ -2934,8 +3169,8 @@ function drawOneBattleCloseDrawPlayCard(s: GameState, playerId: PlayerId): strin
   moveCard(s, top.instanceId, 'hand');
   return top.instanceId;
 }
-function closeBattleCloseDrawPlayCard(s: GameState, opponentId: PlayerId, instanceId: string): void {
-  if (!battleCloseDrawPlayCloseCandidateIds(s, opponentId).includes(instanceId)) reject('resolution_failed', 'Battle close/draw/play target is no longer eligible');
+function closeBattleCloseDrawPlayCard(s: GameState, opponentId: PlayerId, instanceId: string, effectControllerId: PlayerId): void {
+  if (!battleCloseDrawPlayCloseCandidateIds(s, opponentId, effectControllerId).includes(instanceId)) reject('resolution_failed', 'Battle close/draw/play target is no longer eligible');
   const target = card(s, instanceId); const definition = runtime(s).pack.cards[target.definitionId]!; const state = runtime(s).cardState[instanceId]!;
   state.active = false; clearTransientCardTransformState(s, instanceId);
   if (['servant_skill', 'master_skill'].includes(definition.cardType)) {
@@ -2960,7 +3195,7 @@ function stageBattleCloseDrawPlayLuckChoice(s: GameState, tx: PendingBattleClose
 function stageNextBattleCloseDrawPlayCloseChoice(s: GameState): void {
   const r = runtime(s); const tx = r.pendingBattleCloseDrawPlayTransaction; if (!tx || r.pendingDecision) return;
   while (tx.closeIndex < tx.opponentIds.length) {
-    const opponentId = tx.opponentIds[tx.closeIndex]!; const candidates = battleCloseDrawPlayCloseCandidateIds(s, opponentId);
+    const opponentId = tx.opponentIds[tx.closeIndex]!; const candidates = battleCloseDrawPlayCloseCandidateIds(s, opponentId, tx.controllerId);
     if (candidates.length === 0) { tx.closeIndex++; continue; }
     const id = nextId(s, 'battle-close-reward');
     r.pendingDecision = { id, controllerId: tx.controllerId, target: { id: 'opponent_attack_to_close', type: 'card_instance', count: { min: 0, max: 1 } }, candidates,
@@ -3058,7 +3293,7 @@ function isBattleCloseDrawPlayPendingDecisionLiveValid(s: GameState, decision: P
   }
   if (meta.kind === 'battle_opponent_close_reward_choice_v1') {
     const opponentId = tx.opponentIds[tx.closeIndex]; if (!opponentId) return false;
-    const live = battleCloseDrawPlayCloseCandidateIds(s, opponentId);
+    const live = battleCloseDrawPlayCloseCandidateIds(s, opponentId, tx.controllerId);
     return !!tx.discardedLuckCardId && tx.playIndex === 0 && decision.controllerId === tx.controllerId && meta.controllerId === tx.controllerId &&
       meta.opponentId === opponentId && decision.target.id === 'opponent_attack_to_close' && decision.target.type === 'card_instance' &&
       count.min === 0 && count.max === 1 && decision.min === 0 && decision.max === 1 &&
@@ -4403,6 +4638,13 @@ function stageCombatOpponentPowerVpReward(s: GameState, ctx: EffectContext, a: A
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (containsSealedCardMagicPrivilegedNode(a) && !isAcceptedSealedCardMagicAbility(a)) {
+    reject('resolution_failed', 'Unsupported sealed-card/Magic semantic shape');
+  }
+  if (isAcceptedRoundDefinitionAttributeReplacementAbility(a)) { installRoundDefinitionAttributeReplacement(s, ctx, a); return; }
+  if (isAcceptedAttackAttributeOtherPlayerProtectionAbility(a)) return;
+  if (isAcceptedAfterBattleSealAbility(a)) { armAfterBattleSeal(s, ctx, a); return; }
+  if (isAcceptedPlaySealedAttacksAbility(a)) { playAllSealedAttacks(s, ctx, a); return; }
   if (containsDeckRecycleReplayGrowthPrivilegedNode(a) && !isAcceptedDeckRecycleReplayGrowthAbility(a)) {
     reject('resolution_failed', 'Unsupported deck recycle/replay/growth semantic shape');
   }
@@ -4839,7 +5081,9 @@ function processEvent(s: GameState, event: AbilityEvent): void {
       shuffleControllers.add(marker.controllerId);
     }
     for (const controllerId of shuffleControllers) shuffle(s, controllerId);
-  }  const triggered = collectTriggeredAbilities(s, event);
+  }
+  settleSealedCardBattleEnd(s, event);
+  const triggered = collectTriggeredAbilities(s, event);
   for (const t of triggered) {
     const a = abilityDefinition(s, t.cardInstanceId, t.abilityId);
     if (a.kind === 'phase_action') continue; // phase windows expose a choice, never auto-spend a phase ability
@@ -5149,7 +5393,70 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
             }
           }
           break;
-        }        if (meta.kind === 'battle_luck_discard_choice_v1') {
+        }
+        if (meta.kind === 'sealed_card_choice_v1') {
+          const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+          const ability = source ? acceptedSealedAbilityAtSource(s, meta.sourceCardInstanceId, meta.abilityId, isAcceptedAfterBattleSealAbility) : undefined;
+          const armIndex = (r.armedSealedCardActions ?? []).findIndex((entry) => entry.controllerId === meta.controllerId &&
+            entry.sourceCardId === meta.sourceCardInstanceId && entry.abilityId === meta.abilityId && entry.sealKey === meta.sealKey &&
+            entry.round === s.round.roundNumber);
+          const currentCandidates = ability ? sealCandidateIds(s, meta.controllerId, meta.sourceCardInstanceId, ability) : [];
+          const targetCount = node(d.target.count);
+          if (!source || !ability || sealedCardMagicKeyFromAbility(ability) !== meta.sealKey || armIndex < 0 ||
+              d.controllerId !== meta.controllerId || playerId !== meta.controllerId || d.context.controllerId !== meta.controllerId ||
+              d.context.sourceCardId !== meta.sourceCardInstanceId || d.context.abilityId !== meta.abilityId ||
+              meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
+              meta.createdRevision !== r.revision || meta.continuationRef !== `${d.id}:continuation` ||
+              meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'card' || meta.constraints.min !== 1 || meta.constraints.max !== 1 ||
+              meta.constraints.distinct !== true || d.target.id !== 'sealed_card_target' || d.target.type !== 'card_instance' ||
+              targetCount.min !== 1 || targetCount.max !== 1 || d.min !== 1 || d.max !== 1 || d.remainingEffects.length !== 0 ||
+              !exactPlayerArray(meta.candidateIds, currentCandidates) || !exactPlayerArray(d.candidates, currentCandidates) ||
+              !Array.isArray(selected) || selected.length !== 1 || !currentCandidates.includes(selected[0]!)) {
+            reject('resolution_failed', 'Corrupt or stale sealed-card choice interaction state');
+          }
+          delete r.pendingDecision;
+          sealPhysicalCardUnderSource(s, meta.controllerId, meta.sourceCardInstanceId, meta.abilityId, meta.sealKey, selected[0]!);
+          r.armedSealedCardActions!.splice(armIndex, 1);
+          stageNextSealedCardBattleDecision(s);
+          break;
+        }
+        if (meta.kind === 'sealed_card_disposition_v1') {
+          const grouped = liveReplayGroup(s);
+          const first = grouped?.first; const group = grouped?.group ?? [];
+          const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+          const ability = source ? acceptedSealedAbilityAtSource(s, meta.sourceCardInstanceId, meta.abilityId, isAcceptedPlaySealedAttacksAbility) : undefined;
+          const candidateIds = group.map((entry) => entry.cardInstanceId);
+          const controller = s.players.find((candidate) => candidate.id === meta.controllerId && candidate.status === 'active');
+          const expectedMax = controller ? Math.min(candidateIds.length, controller.mana) : -1;
+          const targetCount = node(d.target.count);
+          if (!first || !source || !ability || !controller || first.controllerId !== meta.controllerId || first.sealKey !== meta.sealKey ||
+              first.cascadeSourceCardId !== meta.sourceCardInstanceId || first.cascadeAbilityId !== meta.abilityId ||
+              first.hostSourceCardId !== meta.hostSourceCardId || sealedCardMagicKeyFromAbility(ability) !== meta.sealKey ||
+              !sourcePresentForAcceptedCapability(s, meta.hostSourceCardId, meta.controllerId) || d.controllerId !== meta.controllerId ||
+              playerId !== meta.controllerId || d.context.controllerId !== meta.controllerId || d.context.sourceCardId !== meta.sourceCardInstanceId ||
+              d.context.abilityId !== meta.abilityId || meta.template !== 'target' || meta.visibility !== 'owner_only' ||
+              meta.cancelPolicy !== 'forbidden' || meta.createdRevision !== r.revision || meta.continuationRef !== `${d.id}:continuation` ||
+              meta.resealMana !== 1 || meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'card' ||
+              meta.constraints.min !== 0 || meta.constraints.max !== expectedMax || meta.constraints.distinct !== true ||
+              d.target.id !== 'sealed_card_reseal' || d.target.type !== 'card_instance' || targetCount.min !== 0 || targetCount.max !== expectedMax ||
+              d.min !== 0 || d.max !== expectedMax || d.remainingEffects.length !== 0 || !exactPlayerArray(meta.candidateIds, candidateIds) ||
+              !exactPlayerArray(d.candidates, candidateIds) || !Array.isArray(selected) || selected.length > expectedMax ||
+              new Set(selected).size !== selected.length || selected.some((id) => !candidateIds.includes(id))) {
+            reject('resolution_failed', 'Corrupt or stale sealed-card disposition interaction state');
+          }
+          delete r.pendingDecision;
+          controller.mana -= selected.length;
+          const reseal = new Set(selected);
+          for (const replay of group) {
+            if (reseal.has(replay.cardInstanceId)) resealReplayCard(s, replay);
+            else transferReplayToControllerDiscard(s, meta.controllerId, replay.cardInstanceId);
+          }
+          r.events.push({ type: 'sealed_attack_disposition_resolved', playerId: meta.controllerId, sourceCardId: meta.sourceCardInstanceId,
+            abilityId: meta.abilityId });
+          stageNextSealedCardBattleDecision(s);
+          break;
+        }
+        if (meta.kind === 'battle_luck_discard_choice_v1') {
           const tx = r.pendingBattleCloseDrawPlayTransaction;
           const liveLuckIds = tx ? battleCloseDrawPlayLuckCardIds(s, tx.controllerId) : [];
           const count = node(d.target.count);
@@ -5174,7 +5481,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
         if (meta.kind === 'battle_opponent_close_reward_choice_v1') {
           const tx = r.pendingBattleCloseDrawPlayTransaction;
           const opponentId = tx?.opponentIds[tx.closeIndex];
-          const liveCandidates = opponentId ? battleCloseDrawPlayCloseCandidateIds(s, opponentId) : [];
+          const liveCandidates = opponentId ? battleCloseDrawPlayCloseCandidateIds(s, opponentId, tx!.controllerId) : [];
           const count = node(d.target.count);
           if (!tx || !battleCloseDrawPlayTransactionLiveValid(s, tx) || !tx.discardedLuckCardId || tx.closeIndex >= tx.opponentIds.length ||
               tx.playIndex !== 0 || opponentId !== meta.opponentId || d.controllerId !== tx.controllerId || playerId !== tx.controllerId ||
@@ -5193,7 +5500,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
             const selectedCardId = selected[0]!;
             const refundMana = effectiveCardPlayCost(s, opponentId!, selectedCardId);
             if (!Number.isSafeInteger(refundMana) || refundMana < 0) reject('resolution_failed', 'Battle close/refund cost is invalid');
-            closeBattleCloseDrawPlayCard(s, opponentId!, selectedCardId);
+            closeBattleCloseDrawPlayCard(s, opponentId!, selectedCardId, tx.controllerId);
             grantMana(s, opponentId!, refundMana, { source: 'generic' });
             const drawnCardId = drawOneBattleCloseDrawPlayCard(s, opponentId!);
             if (drawnCardId) rememberBattleCloseDrawPlayDrawAuthority(s, {
@@ -5444,7 +5751,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
             reject('resolution_failed', 'Corrupt or stale opponent close-selected-one interaction state');
           }
           const selectedCardId = selected[0]!;
-          closeOpponentCardForCloseToOne(s, meta.decisionPlayerId, selectedCardId);
+          closeOpponentCardForCloseToOne(s, meta.decisionPlayerId, selectedCardId, meta.initiatingControllerId);
           delete r.pendingDecision;
           const closed = card(s, selectedCardId);
           r.events.push({ type: 'opponent_card_closed_selected_one', playerId: meta.decisionPlayerId, controllerId: meta.initiatingControllerId,
@@ -5477,12 +5784,12 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
               meta.continuationRef !== d.id + ':continuation' || meta.createdRevision !== r.revision || meta.sourceCardInstanceId !== decisionContext.sourceCardId || meta.abilityId !== decisionContext.abilityId ||
               !isExactOpponentCloseToOneConstraints(metaConstraints) || !Array.isArray(d.remainingEffects) || d.remainingEffects.length !== 0 || d.min !== 1 || d.max !== 1 ||
               !exactFrozenCardIdList(decisionCandidates, metaQualifyingCardIds) || !Array.isArray(selected) || selected.length !== 1 || !d.candidates.includes(selected[0]!) ||
-              !exactFrozenCardIdList(qualifyingOpponentCloseToOneCardIds(s, meta.decisionPlayerId), metaQualifyingCardIds) || !livePlayerOwnersMatchFrozen(s, meta.qualifyingCardOwners, metaQualifyingCardIds)) {
+              !exactFrozenCardIdList(qualifyingOpponentCloseToOneCardIds(s, meta.decisionPlayerId, meta.initiatingControllerId), metaQualifyingCardIds) || !livePlayerOwnersMatchFrozen(s, meta.qualifyingCardOwners, metaQualifyingCardIds)) {
             reject('resolution_failed', 'Corrupt or stale opponent close-to-one interaction state');
           }
           const selectedCardId = selected[0]!; const closeIds = meta.qualifyingCardIds.filter((instanceId) => instanceId !== selectedCardId);
-          if (closeIds.some((instanceId) => isCardCloseForbidden(s, instanceId))) reject('resolution_failed', 'Opponent close-to-one contains a card protected from closing');
-          for (const instanceId of closeIds) closeOpponentCardForCloseToOne(s, meta.decisionPlayerId, instanceId);
+          if (closeIds.some((instanceId) => isCardCloseForbidden(s, instanceId, meta.initiatingControllerId))) reject('resolution_failed', 'Opponent close-to-one contains a card protected from closing');
+          for (const instanceId of closeIds) closeOpponentCardForCloseToOne(s, meta.decisionPlayerId, instanceId, meta.initiatingControllerId);
           delete r.pendingDecision; pendingQueue.shift(); advanceOpponentCloseToOneServerAuthority(s); if (pendingQueue.length === 0) clearOpponentCloseToOneServerAuthority(s);
           for (const instanceId of closeIds) { const closed = card(s, instanceId); r.events.push({ type: 'opponent_card_closed_to_one', playerId: meta.decisionPlayerId, controllerId: meta.initiatingControllerId, sourceCardId: meta.sourceCardInstanceId, abilityId: meta.abilityId, cardInstanceId: instanceId, toZone: closed.zone }); }
           stageNextOpponentCloseToOneDecision(s); break;
