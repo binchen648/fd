@@ -132,13 +132,16 @@ describe('P3-FB2-15 identity-free game-start skill provisioning', () => {
     }
   });
 
-  it('does not change B10 generic create-to-skill compatibility', () => {
+  it('rejects the legacy B10 create-to-skill creates entry atomically', () => {
     const b10Ability = {
       ...setupAbility(), effects: [], creates: [{ type: 'create_card', cardId: TARGET_ONE, to: { zone: 'skill' } }],
     };
     const state = setup(b10Ability);
-    start(state);
-    expect(provisioned(state, TARGET_ONE)).toHaveLength(1);
+    const before = JSON.stringify(state);
+
+    expect(() => start(state)).toThrow(/resolution_failed|unsupported/i);
+    expect(JSON.stringify(state)).toBe(before);
+    expect(provisioned(state, TARGET_ONE)).toHaveLength(0);
   });
 
   it('routes solely by shape, not a source identity, name, or printed text', () => {

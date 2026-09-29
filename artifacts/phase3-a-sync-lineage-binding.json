@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "fd-phase3-a-sync-lineage-binding-v1",
+  "controlEpoch": "FD-P3-2026-09-23-04",
+  "taskId": "P3-E04-S00-A2",
+  "syncRole": "Codex A",
+  "currentMain": "0e943a94e8bdab6335e34818278ecc90760015f0",
+  "candidate": {
+    "sha": "34a43694f59d08a392e18e7eaa49acefd012dc61",
+    "branch": "codex/b-p3-setup-create-to-skill-align-epoch04",
+    "base": "0e943a94e8bdab6335e34818278ecc90760015f0",
+    "directParent": "72c7db3f5f9ea8c4a93e61b16224edd06e2e95b4",
+    "inCurrentMain": false
+  },
+  "reviewerB": {
+    "verdict": "PASS",
+    "reviewedSha": "34a43694f59d08a392e18e7eaa49acefd012dc61",
+    "artifactCommit": "db466181b1e527ccf39f2c96d7ef3d62612173e5",
+    "artifactPath": "artifacts/reviewer-evidence/2026-09-27-setup-create-to-skill-current-main-review.json",
+    "artifactSha256": "9b272aa8fc59a642145b261225fa78231760e28cc487917c582b4c52b0124952"
+  },
+  "scope": {
+    "authorizedConsumerCount": 3,
+    "state": "REVIEWER_ACCEPTED_CANDIDATE",
+    "legacyFallback": "CLOSED",
+    "gateC": "NOT_VERIFIED",
+    "mainStatus": "NOT_PROMOTED_ON_MAIN"
+  },
+  "consumerCounts": {
+    "before": {
+      "NEW_RUNTIME_SEMANTIC_ROUTED": 12,
+      "LEGACY_RESOLVE_EFFECT": 49,
+      "LEGACY_EXECUTE_ABILITY": 3,
+      "NOT_CLASSIFIABLE": 28,
+      "totalAbilities": 92
+    },
+    "after": {
+      "NEW_RUNTIME_SEMANTIC_ROUTED": 12,
+      "LEGACY_RESOLVE_EFFECT": 49,
+      "LEGACY_EXECUTE_ABILITY": 3,
+      "NOT_CLASSIFIABLE": 28,
+      "totalAbilities": 92
+    },
+    "delta": {
+      "NEW_RUNTIME_SEMANTIC_ROUTED": 0,
+      "LEGACY_RESOLVE_EFFECT": 0,
+      "LEGACY_EXECUTE_ABILITY": 0,
+      "NOT_CLASSIFIABLE": 0,
+      "totalAbilities": 0
+    },
+    "historicalTransition": {
+      "newRuntime": "9 -> 12",
+      "legacyResolveEffect": "52 -> 49",
+      "mainCreditDelta": 0
+    }
+  },
+  "mainCoverage": {
+    "denominatorBefore": 92,
+    "denominatorAfter": 92,
+    "denominatorDelta": 0,
+    "creditDelta": 0,
+    "promotedOnMain": false
+  },
+  "previousSync": {
+    "sha": "60b808076f1e7f2cf28ed41cd909e91b51d3122d",
+    "status": "NOT_USED_FOR_PROMOTION",
+    "reason": "not a descendant of the accepted candidate"
+  },
+  "machineEvidence": {
+    "sourceOverlayPath": "artifacts/phase3-ledger-92-semantic-route-review-overlay-v2.json",
+    "sourceOverlayCommit": "9a982060c59484a1ebe40799eebd01b996b5f02e",
+    "sourceOverlaySha256": "7a8e96497648d1a6eebcf1974dc4f2a33b90bd7aab9aeb5b8f0aab9e741f34dd",
+    "sourceOverlayPresentInThisSync": true,
+    "packetPath": "artifacts/phase3-review-packet-p3-a-setup-current-main-sync.json",
+    "reviewerArtifactPath": "artifacts/reviewer-evidence/2026-09-27-setup-create-to-skill-current-main-review.json",
+    "reviewerArtifactSha256": "9b272aa8fc59a642145b261225fa78231760e28cc487917c582b4c52b0124952"
+  },
+  "lineage": {
+    "thisSyncMustBeDescendantOf": "34a43694f59d08a392e18e7eaa49acefd012dc61",
+    "reviewerA": "PENDING_RE_REVIEW",
+    "reviewerAIdentity": null,
+    "promotionPr": null
+  },
+  "status": "READY_FOR_REVIEW",
+  "nonClaims": [
+    "This sync does not promote the candidate to main.",
+    "This sync does not increase main coverage or the formal denominator.",
+    "This sync does not change runtime behavior.",
+    "Gate C remains NOT_VERIFIED."
+  ]
+}
