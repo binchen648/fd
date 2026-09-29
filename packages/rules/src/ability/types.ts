@@ -209,6 +209,18 @@ export interface DiscardBasicReplayChoiceInteractionMetadata {
   controllerId: PlayerId; counterKey: string; counterSpent: number; baseCount: 3; candidateIds: string[];
   constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: number; distinct: true };
 }
+export interface SealedCardChoiceInteractionMetadata {
+  kind: 'sealed_card_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; sealKey: string; candidateIds: string[];
+  constraints: { kind: 'target'; targetKind: 'card'; min: 1; max: 1; distinct: true };
+}
+export interface SealedCardDispositionInteractionMetadata {
+  kind: 'sealed_card_disposition_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; sealKey: string; hostSourceCardId: string; candidateIds: string[]; resealMana: 1;
+  constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: number; distinct: true };
+}
 export interface BattleLuckDiscardInteractionMetadata {
   kind: 'battle_luck_discard_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
   sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
@@ -242,8 +254,9 @@ export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetad
   OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata | DeductionRecordChoiceInteractionMetadata |
   PostDrawHandShuffleInteractionMetadata | RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata |
   OwnedRulerSealPowerInteractionMetadata | CombatOpponentPowerVpRewardInteractionMetadata | AutomaticRecycleKeepInteractionMetadata |
-  CounterSpendChoiceInteractionMetadata | DiscardBasicReplayChoiceInteractionMetadata | BattleLuckDiscardInteractionMetadata |
-  BattleOpponentCloseRewardInteractionMetadata | BattleDrawnCardOptionalPlayInteractionMetadata;
+  CounterSpendChoiceInteractionMetadata | DiscardBasicReplayChoiceInteractionMetadata | SealedCardChoiceInteractionMetadata |
+  SealedCardDispositionInteractionMetadata | BattleLuckDiscardInteractionMetadata | BattleOpponentCloseRewardInteractionMetadata |
+  BattleDrawnCardOptionalPlayInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -345,6 +358,21 @@ export interface LocationMarkerState {
   markerKey: string; controllerId: PlayerId; providerSourceCardId: string; providerAbilityId: string;
   locationId: string; placedRevision: number; updatedRevision: number;
 }
+export interface RoundDefinitionAttributeReplacementState {
+  controllerId: PlayerId; sourceCardId: string; abilityId: string; round: number;
+  targetDefinitionIds: string[]; replaceAttributes: string[]; createdRevision: number;
+}
+export interface SealedCardBindingState {
+  sealKey: string; controllerId: PlayerId; hostSourceCardId: string; sealAbilityId: string;
+  cardInstanceId: string; originalOwnerPlayerId: PlayerId; sealedRevision: number;
+}
+export interface ArmedSealedCardActionState {
+  sealKey: string; controllerId: PlayerId; sourceCardId: string; abilityId: string; round: number; createdRevision: number;
+}
+export interface SealedCardReplayState {
+  sealKey: string; controllerId: PlayerId; cascadeSourceCardId: string; cascadeAbilityId: string; hostSourceCardId: string; sealAbilityId: string;
+  cardInstanceId: string; originalOwnerPlayerId: PlayerId; round: number; playedRevision: number;
+}
 export interface TrustedBattleResultSnapshot {
   battlePhaseResolutionId: string;
   battleId: string;
@@ -360,6 +388,14 @@ export interface AbilityRuntime {
   cardState: Record<string, CardRuntimeState>;
   /** Identity-free authoritative location markers, keyed by controller + authored marker key. */
   locationMarkers?: Record<string, LocationMarkerState>;
+  /** Identity-free current-round definition-level attribute replacements, keyed by controller. */
+  roundDefinitionAttributeReplacements?: Record<PlayerId, RoundDefinitionAttributeReplacementState>;
+  /** Identity-free physical cards sealed under an authored source, keyed by physical card instance. */
+  sealedCardBindings?: Record<string, SealedCardBindingState>;
+  /** Identity-free combat actions armed to seal one qualifying card after battle. */
+  armedSealedCardActions?: ArmedSealedCardActionState[];
+  /** Identity-free current-round replay provenance for cards released from a seal. */
+  sealedCardReplays?: Record<string, SealedCardReplayState>;
   /** Identity-free server-owned structured player flags. */
   structuredPlayerFlagsByPlayer?: Record<PlayerId, Record<string, boolean | string | number>>;
   /** Round marker for flags whose authored lifecycle is exactly this_round. */
