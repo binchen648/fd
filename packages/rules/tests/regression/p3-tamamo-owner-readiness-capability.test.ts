@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import * as rules from '../../src/index';
+import { resolveExtendedEffect } from '../../src/ability/extended-effects';
 import { createSeededGameState } from '../../src/tools/seeded-state';
 import type { GameState } from '../../src/schema/game';
 
@@ -105,6 +106,32 @@ describe('P3 Tamamo owner-readiness generic sealed-card/Magic capability', () =>
     expect(rules.isCardCloseForbidden(state, attack, 'p2')).toBe(false);
   });
 
+  it('preserves production extended-effect controller provenance for opponent Power reducers while self-origin reductions remain unprotected', () => {
+    const { state } = setup();
+    const attack = add(state, MAGIC, 'p1', 'magic-production-target');
+    const enemySource = add(state, PLAIN, 'p2', 'enemy-production-source');
+    const carrier = state.cards.find((entry) => entry.instanceId === attack) as any;
+
+    resolveExtendedEffect(state, 'p2', { type: 'reduce_opponents_power', amount: 3, condition: 'opponent_has_no_terrain', scope: 'same_battlefield' },
+      { sourceCardId: enemySource, abilityId: 'fixture.enemy-reduce' });
+    expect(carrier.powerModifiers).toContainEqual(expect.objectContaining({
+      sourceId: enemySource, controllerId: 'p2', kind: 'add', value: -3,
+    }));
+    expect(rules.calculateCardPower(state, attack).value).toBe(5);
+
+    carrier.powerModifiers = [];
+    resolveExtendedEffect(state, 'p2', { type: 'set_opponent_power_to_zero', condition: 'not_luck_or_agility' },
+      { sourceCardId: enemySource, abilityId: 'fixture.enemy-zero' });
+    expect(carrier.powerModifiers).toContainEqual(expect.objectContaining({
+      sourceId: enemySource, controllerId: 'p2', kind: 'set', value: 0,
+    }));
+    expect(rules.calculateCardPower(state, attack).value).toBe(5);
+
+    carrier.powerModifiers = [{
+      id: 'self-reduction', sourceId: 'fixture-hex', controllerId: 'p1', kind: 'add', value: -2, duration: 'round',
+    }];
+    expect(rules.calculateCardPower(state, attack).value).toBe(3);
+  });
   it('arms in combat and after battle seals one qualifying same-location active basic attack under the authored host', () => {
     const { state, host } = setup(); const magic = add(state, MAGIC, 'p2', 'opponent-magic'); const luck = add(state, LUCK, 'p1', 'controller-luck');
     state.round.activePhase = 'battle'; activate(state, host, 'fixture.seal');

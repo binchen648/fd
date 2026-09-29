@@ -786,9 +786,10 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     const value = Number(modifier.value ?? 0);
     if (!Number.isFinite(value)) reject('invalid_modifier', 'Card power modifier must be finite');
     const effectSource = typeof modifier.sourceId === 'string' ? s.cards.find((candidate) => candidate.instanceId === modifier.sourceId) : undefined;
+    const effectControllerId = typeof modifier.controllerId === 'string' ? modifier.controllerId : effectSource?.controllerPlayerId;
     const wouldReduce = (modifier.kind === 'set' && value < result.value) || (modifier.kind === 'add' && value < 0);
-    if (wouldReduce && effectSource && controllerHasOtherPlayerAttackProtection(
-      s, sourceId, effectSource.controllerPlayerId, getEffectiveCardAttributes(s, sourceId),
+    if (wouldReduce && effectControllerId && controllerHasOtherPlayerAttackProtection(
+      s, sourceId, effectControllerId, getEffectiveCardAttributes(s, sourceId),
     )) continue;
     if (modifier.kind === 'set') result.value = value;
     else if (modifier.kind === 'add') result.value += value;

@@ -203,7 +203,8 @@ export function resolveExtendedEffect(
           (card as any).powerModifiers = (card as any).powerModifiers || [];
           (card as any).powerModifiers.push({
             id: `zero-${controllerId}-${card.instanceId}`,
-            sourceId: 'extended-effect',
+            sourceId: typeof context?.sourceCardId === 'string' ? context.sourceCardId : 'extended-effect',
+            controllerId,
             kind: 'set',
             value: 0,
             duration: 'round'
@@ -587,7 +588,8 @@ export function resolveExtendedEffect(
             (card as any).powerModifiers = (card as any).powerModifiers || [];
             (card as any).powerModifiers.push({
               id: `reduce-${controllerId}-${card.instanceId}`,
-              sourceId: 'extended-effect',
+              sourceId: typeof context?.sourceCardId === 'string' ? context.sourceCardId : 'extended-effect',
+              controllerId,
               kind: 'add',
               value: -amount,
               duration: 'round'

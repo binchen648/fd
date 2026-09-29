@@ -41,9 +41,9 @@ Production code contains no Tamamo identity, card-name, printed-text, or legacy-
 
 ## Behavior verification
 
-Focused regression: `8/8 PASS`. It covers exact-gateway acceptance and near-match rejection, round attribute replacement expiry, Magic close/power protection, combat arm + after-battle physical seal, atomic replay/reseal/discard behavior including borrowed cards and aggregate-cost failure, trusted MatchSession round-trip, forged host/key rejection, and production identity audit.
+Focused regression: `9/9 PASS`. It covers exact-gateway acceptance and near-match rejection, round attribute replacement expiry, Magic close/power protection, the real production `reduce_opponents_power` / `set_opponent_power_to_zero` extended-effect paths with authoritative effect-controller provenance and self-origin reduction remaining unprotected, combat arm + after-battle physical seal, atomic replay/reseal/discard behavior including borrowed cards and aggregate-cost failure, trusted MatchSession round-trip, forged host/key rejection, and production identity audit.
 
-Directly affected green verification: `9 files / 218 tests PASS`:
+Directly affected green verification: `10 files / 256 tests PASS`:
 
 - Tamamo readiness;
 - authoring interpreter;
@@ -53,7 +53,8 @@ Directly affected green verification: `9 files / 218 tests PASS`:
 - FB2-49 opponent-close interaction;
 - Steno Divine Core readiness;
 - Suzuka owner readiness;
-- Taisui location-marker readiness.
+- Taisui location-marker readiness;
+- complex-skills production regressions, including existing Achilles/Tomoe content paths.
 
 The separately probed `m50-02-opponent-close-one-non-residual` test retains its pre-existing current-main debt (6 failures). The same debt was already mechanically recorded before Tamamo readiness; this change does not modify `opponent-close-to-one.ts` or that test. Its failures therefore are not used as Tamamo green evidence and are not represented as Candidate-caused regressions.
 
@@ -70,6 +71,14 @@ Static gates:
 - `git diff --check` PASS;
 - locked Reference clean at exact `b2f9fa15fba07c63530bbf4612b03b8b704755f9`;
 - `data/authoring/**` delta EMPTY.
+
+## Revision closure after fresh R
+
+Fresh independent R reviewed predecessor Candidate `6c91b25e2b6a0d7c5af2f5964584ddd5e7171c18` and returned `IMPLEMENTATION_NEEDS_REVISION`. The Reviewer GitHub write failed with HTTP 403, so the same completed attempt was relayed by Coordinator and mechanically verified at canonical evidence `https://github.com/binchen648/fd/pull/481#issuecomment-5882423372`.
+
+The single P1 finding was that production `set_opponent_power_to_zero` and `reduce_opponents_power` stamped anonymous `sourceId: extended-effect`, so `calculateCardPower` could not identify the other-player controller and Magic protection was bypassed. The successor revision closes that finding by persisting the authoritative `controllerId` on both production extended-effect power modifiers, preserving the concrete source-card instance when available, and making `calculateCardPower` consume explicit effect-controller provenance before falling back to physical-source provenance. Regression coverage executes both real production extended-effect reducer handlers and verifies self-originating Power reduction is still applied.
+
+Revision verification: focused `9/9 PASS`; affected green set `10 files / 256 tests PASS`; no `data/authoring/**` delta; formal accounting remains unchanged because this readiness task is permanently zero-credit.
 
 ## Accounting boundary
 

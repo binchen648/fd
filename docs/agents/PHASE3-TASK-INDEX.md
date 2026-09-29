@@ -6256,8 +6256,8 @@ Readiness scope:
 - identity-free loader/runtime gateway only; no Tamamo/card-name/printed-text parsing, no legacy identity-handler routing, no `SkillLib` fallback.
 
 Verification:
-- focused Tamamo readiness `8/8 PASS`;
-- directly affected green set `9 files / 218 tests PASS` (Tamamo readiness, authoring interpreter, executable pack, MatchSession, card-close, FB2-49 close interaction, Steno Divine Core readiness, Suzuka readiness, Taisui location-marker readiness);
+- focused Tamamo readiness `9/9 PASS`;
+- directly affected green set `10 files / 256 tests PASS` (Tamamo readiness, authoring interpreter, executable pack, MatchSession, card-close, FB2-49 close interaction, Steno Divine Core readiness, Suzuka readiness, Taisui location-marker readiness, complex-skills production regressions);
 - historical `m50-02-opponent-close-one-non-residual` remains the already-known current-main debt (`6` failures) and is outside this task; this task does not modify that test or the opponent-close capability family;
 - `FD_TOOLCHAIN_OK`;
 - typecheck PASS;
@@ -6268,6 +6268,12 @@ Verification:
 - locked Reference clean/exact;
 - `git diff --check` PASS;
 - detailed result: `docs/reports/2026-09-29-p3-b-tamamo-owner-readiness-capability-result.md`.
+
+Revision history:
+- predecessor Candidate `6c91b25e2b6a0d7c5af2f5964584ddd5e7171c18` received `IMPLEMENTATION_NEEDS_REVISION` from fresh R;
+- canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/481#issuecomment-5882423372`;
+- sole P1 closure preserves authoritative `controllerId` plus concrete source-card provenance for production `set_opponent_power_to_zero` / `reduce_opponents_power`, and `calculateCardPower` now consumes that provenance; self-originating reduction remains unprotected;
+- added regression coverage executes both production extended-effect reducer handlers; no additional blocker was reported in that review attempt.
 
 Accounting:
 - strict formal accounting remains `146/944`, remaining `798`;
