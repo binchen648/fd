@@ -6184,7 +6184,7 @@ Acceptance synchronization:
 ## TASK P3-S-OWNER-TAISUI-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `IMPLEMENTED_AWAITING_CANDIDATE_REVIEW`
+Status: `SYNCHRONIZED`
 Base: `75df6b701feb5d614184ba235517b67eea283260`
 Classification: formal owner-complete migration for current owner `servant.taisui`
 
@@ -6223,3 +6223,12 @@ Allowed verdicts:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+Acceptance synchronization:
+- PR #479 exact Candidate `8a61b92476ee588f8b5c051a57a7f34988a78e5b` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/479#issuecomment-5881546976`.
+- Exact-Candidate Phase 3 Pre-Review Gate `36484122047` succeeded.
+- Accepted owner-complete scope is exactly Taisui sc1 + sc2 + sc3; sc1 remains historical FM07 preservation-only and sc2/sc3 are the only newly creditable identities.
+- Formal accounting moves `144/944 -> 146/944`; remaining `798`; sc1 receives no duplicate credit.
+- Acceptance synchronization report: `docs/reports/2026-09-29-p3-a-owner-taisui-acceptance-synchronization.md`.
+- Mechanical first-occurrence owner ordering selects `servant.tamamo` next: Taisui index `239`, Tamamo index `240` of `251` owners.
+- Owner-readiness-first remains mandatory: complete one full Tamamo preflight before any Tamamo formal consumer migration.
