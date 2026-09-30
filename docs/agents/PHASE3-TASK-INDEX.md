@@ -7431,7 +7431,7 @@ Revision evidence for `P3-B-AKASHA-OWNER-READINESS-CAPABILITY` after predecessor
 ## TASK P3-S-OWNER-AKASHA-COMPLETE-MIGRATION
 
 Owner: Codex S / FORMAL
-Status: `READY`
+Status: `BLOCKED_BY_READINESS_FOLLOWUP`
 Classification: formal owner-complete migration for `master.akasha`
 
 Frozen owner scope:
@@ -7457,3 +7457,38 @@ Formal materialization requirements:
 - integrate Akasha exactly once in the stable master content order;
 - add focused owner-complete migration regression proving canonical authoring/pack presence plus accepted generic runtime shapes;
 - Base for this formal task is the Akasha readiness acceptance-sync commit produced by this transaction.
+
+### Akasha formal-preflight readiness correction
+
+- Formal materialization preflight after readiness A-sync `d57ceeb3b1796db1a2069e446b7841b5763ae367` exposed one additional generic gap in frozen `s1【命理】`: each enabled battlefield needs a temporary `s6【过负荷】` physical copy carrying authoritative `placedAtLocationId` provenance.
+- Existing generic `create_card` can create a zone card but cannot bind a generated card to a battlefield location; the later accepted `【沸腾】` exact-location join therefore cannot consume such a card safely.
+- Formal Akasha consumer migration is paused before any `data/authoring/**` write; no formal Candidate was created.
+- New bounded zero-credit follow-up task: `P3-B-AKASHA-OWNER-READINESS-LOCATION-PROVISIONING`.
+
+## TASK P3-B-AKASHA-OWNER-READINESS-LOCATION-PROVISIONING
+
+Owner: Codex B / FORMAL readiness follow-up
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Classification: bounded zero-credit generic location-provisioning closure for the complete current `master.akasha` owner preflight
+
+Scope boundary:
+- add one identity-free exact `vessel_cycle_game_start_battlefield_provision` shape;
+- target exact authoring-supplied definition at every enabled battlefield with physical `generatedBy` + `placedAtLocationId` provenance;
+- repeated game-start delivery is idempotent; duplicate matching source/location state fails closed;
+- reuse existing `provision_skill_cards` for the separate skill-zone copy;
+- no `data/authoring/**` delta, no Akasha identity routing, permanently zero credit.
+
+Accounting boundary:
+- strict formal accounting remains `173/944`, remaining `771`;
+- Akasha 8-identity formal owner-complete task remains blocked until exact follow-up acceptance + A-sync/rescan.
+
+Verification:
+- Akasha focused `17/17 PASS`;
+- provisioning/outside-game/executable-pack group included in `86/86 PASS`;
+- authoring/content/complex `131/131 PASS`;
+- MatchSession + restore `44/44 PASS`;
+- affected aggregate **`261/261 PASS`**;
+- toolchain/typecheck/content/generated/identity-audit/diff-check all PASS;
+- `data/authoring/**` delta EMPTY.
+
+Detailed report: `docs/reports/2026-10-01-p3-b-akasha-owner-readiness-location-provisioning-result.md`.
