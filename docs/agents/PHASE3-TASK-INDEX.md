@@ -7135,3 +7135,13 @@ Accounting boundary:
 - readiness is permanently zero-credit;
 - one owner / all currently discoverable readiness gaps / one Candidate / one PR / one fresh R / one A-sync-rescan;
 - do not split per skill and do not advance owner until Vlad readiness plus subsequent owner-complete migration close.
+Implementation evidence for `P3-B-VLAD-OWNER-READINESS-CAPABILITY`:
+- Base: `896911354f9833b8437f5f9a231eeba81e8d1584` (accepted Valkyrie owner A-sync/accounting; strict `164/944`, remaining `780`).
+- Frozen scope remains sc1 + sc2 + sc3 together; readiness is permanently zero-credit.
+- Current-lineage rescan: sc3 already has canonical F1 authoring and is preservation-only; sc1/sc2 remain formal-migration pending.
+- Generic structural capability closes terrain doubling, moved-in battlefield fortification + exact next-round deployment, and normal first / terrain-gated paid second hand effect-play.
+- No `data/authoring/**` delta and no Vlad/card-name/legacy-handler production routing.
+- Focused `11/11 PASS`; complex `38/38`; MatchSession `33/33`; generic MatchSession `11/11`; affected aggregate `93/93 PASS`.
+- `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`7 masters / 16 servants / 20 events / 0 blocking issues`); generated determinism PASS; identity audit CLEAN; diff-check PASS.
+- Detailed report: `docs/reports/2026-09-30-p3-b-vlad-owner-readiness-capability-result.md`.
+- Current disposition: `IMPLEMENTATION_COMPLETE_CANDIDATE`; freeze one Candidate / one PR / one fresh R. No migration credit before later formal owner acceptance + A-sync/accounting.

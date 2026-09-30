@@ -2,6 +2,8 @@ import {
   advanceAbilityPhase,
   dispatchAbilityCommand,
   effectiveCardPlayCost,
+  forcedDeploymentLocationForPlayer,
+  consumeForcedDeploymentLocationForPlayer,
   initializeAbilityRuntime,
   isCanonicalGenericPendingDecisionForRestore,
   isDeferredAbilityRuntimeProvenanceValidForRestore,
@@ -2643,7 +2645,9 @@ export class MatchSession {
       });
     const prideLocations = this.kaynethPrideDeploymentLocations(playerId, legalLocations.map((location) => location.id));
     const mustBattlefield = this.state.ruleOverrides?.mustDeployToBattlefieldPlayerIds?.includes(playerId);
-    const filteredLocations = mustBattlefield ? legalLocations.filter((location) => location.tags.includes('battlefield')) : legalLocations;
+    const forcedLocation = forcedDeploymentLocationForPlayer(this.state, playerId);
+    let filteredLocations = mustBattlefield ? legalLocations.filter((location) => location.tags.includes('battlefield')) : legalLocations;
+    if (forcedLocation) filteredLocations = filteredLocations.filter((location) => location.id === forcedLocation);
     return (prideLocations.length
       ? filteredLocations.filter((location) => prideLocations.includes(location.id))
       : filteredLocations)
@@ -2776,6 +2780,7 @@ export class MatchSession {
       processAbilityEvent(this.state, { id: `deploy-battlefield:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_battlefield', playerId, locationId });
     }
     processAbilityEvent(this.state, { id: `deploy-location:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_location', playerId, locationId });
+    consumeForcedDeploymentLocationForPlayer(this.state, playerId, locationId);
     this.consumeAppliedDirectives();
     this.advanceToNextDecision();
     this.checkpoint(`${playerId}:deploy_player`);
