@@ -6888,3 +6888,53 @@ Acceptance synchronization:
 - Mechanical next owner is `servant.ushiwakamaru`; frozen scope is sc1 + sc2 + sc3.
 - Owner-readiness-first remains mandatory before any Ushiwakamaru formal consumer migration.
 - Acceptance synchronization report: `docs/reports/2026-09-30-p3-a-owner-tristan-acceptance-synchronization.md`.
+
+## TASK P3-B-USHIWAKAMARU-OWNER-READINESS-CAPABILITY
+
+Owner: Codex B
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Base: `7624c6cecd9a0c910477737a5eeaa1035cd55a2d`
+Classification: complete currently discoverable Ushiwakamaru owner-readiness/capability batch; permanently zero migration credit
+
+Frozen owner scope:
+- `servant.ushiwakamaru.skill.sc-ushiwakamaru-1`;
+- `servant.ushiwakamaru.skill.sc-ushiwakamaru-2`;
+- `servant.ushiwakamaru.skill.sc-ushiwakamaru-3`.
+
+Current-lineage reconciliation:
+- strict formal accounting entering readiness is `159/944`, remaining `785`;
+- canonical authoring currently contains only accepted FM01/R26 `sc-ushiwakamaru-3`, which is preservation-only / no duplicate credit;
+- sc1 + sc2 are absent from canonical authoring and form the complete currently discoverable owner-local readiness gap set;
+- readiness changes no `data/authoring/**` file and grants zero migration credit.
+
+Implemented generic readiness family:
+- sc1 source-bound cross-phase bridge permits ordinary action abilities during combat only while the exact live provider remains active/owned/controlled, without resetting ordinary usage authority;
+- sc1 unique combat reuse binds one exact already-used action/combat ability on a live owned/controlled attack to one physical provider source; multiple eligible abilities on one attack open a second exact owner-only ability choice instead of excluding the attack; consuming the grant leaves the original usage counter unchanged and consumes only the grant; provider/target/provenance/restore validation fails closed;
+- sc2 compares current authoritative player total Power through the existing combat breakdown projection without firing battle triggers and proceeds only on strict `>`;
+- sc2 atomically preflights both destinations plus durable terrain occupant/slot authority, swaps only the chosen pair, preserves physical terrain slots, and rejects illegal endpoints with zero partial mutation;
+- successful sc2 effect redeployment applies ordinary destination consequences once to each incoming player, including Magic Workshop deployment mana and the existing deployment location/battlefield event hooks; same-location is a no-op;
+- sc3 remains untouched preservation-only under accepted FM01/R26.
+
+Verification before Candidate creation:
+- Ushiwakamaru readiness `14/14 PASS`;
+- complex skills `38/38 PASS`;
+- full MatchSession `33/33 PASS`;
+- generic MatchSession regressions `11/11 PASS`;
+- affected aggregate `96/96 PASS`;
+- `FD_TOOLCHAIN_OK`; typecheck PASS;
+- content validate/compile PASS (`7 masters / 14 servants / 20 events / 0 blocking issues`);
+- generated-content determinism PASS;
+- `data/authoring/**` delta EMPTY; production identity audit CLEAN; `git diff --check` PASS;
+- detailed report: `docs/reports/2026-09-30-p3-b-ushiwakamaru-owner-readiness-capability-result.md`.
+
+Accounting / next step:
+- strict formal accounting remains `159/944`, remaining `785`;
+- readiness is permanently zero-credit;
+- exact Candidate requires one fresh independent R;
+- ACCEPTED -> one A-sync/full-owner rescan while remaining on `servant.ushiwakamaru`; that rescan decides the exact newly creditable owner-complete migration set while preserving sc3;
+- NEEDS_REVISION -> close all exact findings in one successor Candidate, then one fresh R;
+- no per-skill review split.
+
+Allowed verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`

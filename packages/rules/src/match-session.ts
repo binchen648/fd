@@ -53,6 +53,7 @@ import { settleLinkedOwnerCardsAfterBattles } from './ability/linked-owner-comba
 import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute } from './ability/deduction-record';
 import { SOURCE_LOCATION_BASE_POWER_ATTRIBUTES, isAcceptedPostDrawHandShuffleAbility, isAcceptedSourceLocationBasicPowerAbility } from './ability/source-location-rune-capability';
 import { isAcceptedDiscardShuffleSourceXAbility } from './ability/battle-discard-binding-capability';
+import { isAcceptedOneShotUsedAttackAbilityReuseAbility } from './ability/cross-phase-redeployment-capability';
 import { isRulerSealBindingSemantic } from './ability/ruler-seal';
 import {
   DYNAMIC_UNUSED_SEAL_POWER_RULE,
@@ -834,6 +835,15 @@ function isRestorePendingInteraction(value: unknown): boolean {
         value.options.every((option, index) => option === `vp:${index}`) &&
         isRestoreInteractionConstraints(value.constraints, ['choice']) && (value.constraints as Record<string, unknown>).min === 1 &&
         (value.constraints as Record<string, unknown>).max === 1;
+    case 'one_shot_ability_reuse_choice_v1':
+      return hasExactRestoreKeys(value, [
+        'kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'controllerId','targetCardId','candidateAbilityIds','constraints',
+      ]) && typeof value.controllerId === 'string' && typeof value.targetCardId === 'string' &&
+        isRestoreStringArray(value.candidateAbilityIds) && value.candidateAbilityIds.length > 1 &&
+        new Set(value.candidateAbilityIds).size === value.candidateAbilityIds.length &&
+        isRestoreInteractionConstraints(value.constraints, ['ability']) && (value.constraints as Record<string, unknown>).min === 1 &&
+        (value.constraints as Record<string, unknown>).max === 1;
     default:
       return false;
   }
@@ -1035,6 +1045,11 @@ function isRestoreBattleCloseDrawImmediatePlayRecord(value: unknown): boolean {
     typeof value.controllerId === 'string' && typeof value.playerId === 'string' && typeof value.cardInstanceId === 'string' && typeof value.sourceCardId === 'string' &&
     typeof value.abilityId === 'string' && isRestoreSafeInteger(value.round, 1);
 }
+function isRestoreOneShotAbilityReuseGrant(value: unknown): boolean {
+  return hasExactRestoreKeys(value, ['controllerId','providerSourceCardId','providerSourceAbilityId','targetCardId','targetAbilityId','round','consumed']) &&
+    typeof value.controllerId === 'string' && typeof value.providerSourceCardId === 'string' && typeof value.providerSourceAbilityId === 'string' &&
+    typeof value.targetCardId === 'string' && typeof value.targetAbilityId === 'string' && isRestoreSafeInteger(value.round, 1) && typeof value.consumed === 'boolean';
+}
 function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionRestorePackKind): boolean {
   if (value === undefined) return true;
   if (!isRestoreRecord(value) || !isRestoreAbilityPack(value.pack, packKind) || !isRestoreRecord(value.cardState) ||
@@ -1072,6 +1087,9 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
   if (value.armedSealedCardActions !== undefined && (!Array.isArray(value.armedSealedCardActions) || !value.armedSealedCardActions.every(isRestoreArmedSealedCardActionState))) return false;
   if (value.sealedCardReplays !== undefined && (!isRestoreRecord(value.sealedCardReplays) || !Object.values(value.sealedCardReplays).every(isRestoreSealedCardReplayState))) return false;
   if (value.recordedRemovedCards !== undefined && (!isRestoreRecord(value.recordedRemovedCards) || !Object.values(value.recordedRemovedCards).every(isRestoreRecordedRemovedCardState))) return false;
+  if (value.crossPhaseActionProviders !== undefined && (!Array.isArray(value.crossPhaseActionProviders) || value.crossPhaseActionProviders.length !== 0)) return false;
+  if (value.oneShotAbilityReuseGrants !== undefined && (!Array.isArray(value.oneShotAbilityReuseGrants) ||
+      !value.oneShotAbilityReuseGrants.every(isRestoreOneShotAbilityReuseGrant))) return false;
   if (value.playerStatusKeysByPlayer !== undefined && !isRestoreStringArrayMap(value.playerStatusKeysByPlayer)) return false;
   if (value.structuredPlayerFlagsByPlayer !== undefined && !isRestoreStructuredPlayerFlags(value.structuredPlayerFlagsByPlayer)) return false;
   if (value.structuredRoundFlagKeysByPlayer !== undefined && !isRestoreStructuredRoundFlagKeys(value.structuredRoundFlagKeysByPlayer)) return false;
@@ -1428,6 +1446,36 @@ function isRestoreAbilityRuntimeReferences(
         !restoreSourceControllerMatches(cardsByInstance, eventPlacements, raw.hostSourceCardId as string, raw.controllerId as string) ||
         !restoreSourceHasAcceptedAbilityId(pack, cardsByInstance, eventPlacements, raw.hostSourceCardId as string, raw.sealAbilityId as string,
           (ability) => isAcceptedAfterBattleSealAbility(ability) && sealedCardMagicKeyFromAbility(ability) === raw.sealKey)) return false;
+  }
+  const restoredReuseGrants = (value.oneShotAbilityReuseGrants ?? []) as Array<Record<string, unknown>>;
+  const restoredCardState = value.cardState as Record<string, unknown>;
+  const restoredUsedAbilities = value.usedAbilities as Record<string, unknown>;
+  for (const grant of restoredReuseGrants) {
+    const controllerId = grant.controllerId as string;
+    const providerSourceCardId = grant.providerSourceCardId as string;
+    const providerSourceAbilityId = grant.providerSourceAbilityId as string;
+    const targetCardId = grant.targetCardId as string;
+    const targetAbilityId = grant.targetAbilityId as string;
+    const provider = cardsByInstance.get(providerSourceCardId);
+    const target = cardsByInstance.get(targetCardId);
+    const providerState = restoredCardState[providerSourceCardId];
+    const targetState = restoredCardState[targetCardId];
+    const targetDefinition = target && isRestoreRecord(pack.cards) ? pack.cards[target.definitionId as string] : undefined;
+    const targetAbility = isRestoreRecord(targetDefinition) && Array.isArray(targetDefinition.abilities)
+      ? targetDefinition.abilities.find((ability) => isRestoreRecord(ability) && ability.id === targetAbilityId)
+      : undefined;
+    if (!playerIds.has(controllerId) || grant.round !== currentRound || !provider || !target ||
+        provider.ownerPlayerId !== controllerId || target.ownerPlayerId !== controllerId ||
+        !restoreSourceHasAcceptedAbilityId(pack, cardsByInstance, eventPlacements, providerSourceCardId, providerSourceAbilityId,
+          isAcceptedOneShotUsedAttackAbilityReuseAbility) ||
+        target.zone !== 'attack_area' || target.controllerPlayerId !== controllerId || !isRestoreRecord(targetState) ||
+        targetState.active !== true || targetState.faceDown !== false || !isRestoreRecord(targetAbility) ||
+        targetAbility.kind !== 'phase_action' || !isRestoreRecord(targetAbility.activation) ||
+        !['action','combat'].includes(targetAbility.activation.phase as string) ||
+        restoredUsedAbilities[`${targetCardId}:${targetAbilityId}`] !== currentRound) return false;
+    if (grant.consumed === false) {
+      if (provider.controllerPlayerId !== controllerId || !isRestoreRecord(providerState) || providerState.active !== true || providerState.faceDown !== false) return false;
+    }
   }
   if (!(value.calculations as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
   if (!(value.hostRequests as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;

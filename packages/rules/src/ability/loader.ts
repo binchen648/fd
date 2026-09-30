@@ -104,6 +104,13 @@ import {
   isDiscardShuffleSourceXBindingEffect,
   isDuplicateBasePowerCloseEffect,
 } from './battle-discard-binding-capability';
+import {
+  CROSS_PHASE_ACTION_PROVIDER_EFFECT,
+  ONE_SHOT_USED_ATTACK_ABILITY_REUSE_EFFECT,
+  STRICT_POWER_REDEPLOY_SWAP_EFFECT,
+  containsCrossPhaseRedeploymentPrivilegedNode,
+  isAcceptedCrossPhaseRedeploymentPrivilegedAbility,
+} from './cross-phase-redeployment-capability';
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
 }
@@ -144,6 +151,7 @@ const supportedTypes = new Set([
   ADJUST_OTHER_ACTIVE_PLAYERS_AT_SOURCE_LOCATION_MANA_EFFECT, DEFEAT_SINGLE_ACTIVE_OPPONENT_AT_CONTROLLER_BATTLEFIELD_EFFECT,
   FORBID_OTHER_PLAYERS_AT_ACTIVE_SOURCE_LOCATION_MANA_GAIN_EFFECT, SET_SOURCE_LOCATION_BASIC_BASE_POWER_MULTIPLIER_FROM_CHOICE_EFFECT,
   DUPLICATE_BASE_POWER_CLOSE_EFFECT, DISCARD_SHUFFLE_SOURCE_X_BINDING_EFFECT,
+  CROSS_PHASE_ACTION_PROVIDER_EFFECT, ONE_SHOT_USED_ATTACK_ABILITY_REUSE_EFFECT, STRICT_POWER_REDEPLOY_SWAP_EFFECT,
   'event_player_won_combat', 'event_player_lost_combat',
   'event_player_is_controller', 'event_player_is_opponent', 'event_location_equals_controller',
   'controller_command_seals_at_least', 'controller_command_seals_at_most',
@@ -624,6 +632,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         limit, visibility: node(a.visibility), execution: { mode: mode as ExecutionMode, allowedOperations: allowed } };
       if (isPrivateOptionalHandPlayInteractionCandidate(candidateAbility) && !isPrivateOptionalHandPlayInteractionSemantic(candidateAbility)) {
         issue('interaction.gateway', 'Unsupported private optional hand-play interaction semantic shape', id);
+      }
+      if (containsCrossPhaseRedeploymentPrivilegedNode(candidateAbility) &&
+          !isAcceptedCrossPhaseRedeploymentPrivilegedAbility(candidateAbility)) {
+        issue('crossPhaseRedeployment.gateway', 'Cross-phase/redeployment privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       if (Array.isArray(a.markers) && a.markers.some((marker) => String(marker).startsWith('deduction-'))) {
         if (!isDeductionRecordMarkerAbility(candidateAbility)) issue('deductionRecord.gateway', 'Unsupported exact deduction-record marker ability shape', id);

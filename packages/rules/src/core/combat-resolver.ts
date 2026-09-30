@@ -421,6 +421,17 @@ export function deriveBattleParticipantsFromState(
     });
 }
 
+export function projectCurrentPlayerTotalPower(
+  state: GameState,
+  playerId: string,
+): BattleParticipantBreakdown | undefined {
+  const player = state.players.find((candidate) => candidate.id === playerId && candidate.status === "active");
+  if (!player?.locationId) return undefined;
+  const locationId = player.locationId as CombatResolutionInput["battlefieldId"];
+  const participant = deriveBattleParticipantsFromState(state, locationId).find((candidate) => candidate.playerId === playerId);
+  return participant ? buildParticipantBreakdown(state, locationId, participant) : undefined;
+}
+
 function buildDefaultVpAdjustments(
   state: GameState,
   location: LocationDefinition | undefined,
