@@ -7109,3 +7109,29 @@ Revision round 1 closure for PR #496:
 - post-fix MatchSession `33/33 PASS`; exact affected aggregate `118/118 PASS`;
 - produce exactly one successor Candidate and request one fresh R; do not re-review predecessor `0470d2b0...`;
 - strict formal accounting remains `161/944`, remaining `783` until successor `MIGRATION_ACCEPTED` plus A-sync/accounting.
+Acceptance synchronization after successor review:
+- PR #496 successor Candidate `aa0a717e4d76001b169c346b5438bfaee7f117ae` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/496#issuecomment-5908085086`.
+- Predecessor P1 is closed; successor MatchSession is `33/33 PASS` and affected aggregate is `118/118 PASS`.
+- Exact successor Phase 3 Pre-Review Gate run `36694005188` / job `109817532695` succeeded.
+- Accepted formal accounting adds exactly Valkyrie sc1 + sc2 + sc3 (`+3`); Commander dependencies remain zero-credit.
+- Strict formal accounting moves `161/944 -> 164/944`; remaining `783 -> 780`.
+- Acceptance synchronization report: `docs/reports/2026-09-30-p3-a-owner-valkyrie-acceptance-synchronization.md`.
+- Mechanical frozen-roster next owner is `servant.vlad` with frozen scope sc1 + sc2 + sc3.
+
+## TASK P3-B-VLAD-OWNER-READINESS-CAPABILITY
+
+Owner: Codex S
+Status: `READY`
+Classification: zero-credit owner-readiness/capability batch for current owner `servant.vlad`
+
+Frozen owner scope:
+- `servant.vlad.skill.sc-vlad-1`
+- `servant.vlad.skill.sc-vlad-2`
+- `servant.vlad.skill.sc-vlad-3`
+
+Accounting boundary:
+- strict formal accounting is `164/944`, remaining `780`;
+- readiness is permanently zero-credit;
+- one owner / all currently discoverable readiness gaps / one Candidate / one PR / one fresh R / one A-sync-rescan;
+- do not split per skill and do not advance owner until Vlad readiness plus subsequent owner-complete migration close.
