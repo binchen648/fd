@@ -6938,7 +6938,7 @@ Acceptance synchronization:
 ## TASK P3-S-OWNER-USHIWAKAMARU-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Base: `3b3a57cc7c9e766f66d9349453c6f1703b3b8815`
 Classification: formal owner-complete migration for current owner `servant.ushiwakamaru`
 
@@ -6978,5 +6978,7 @@ Implementation / evidence:
 
 Current disposition:
 - ready for one exact-Candidate Phase 3 gate and one fresh independent formal migration review;
-- accounting remains 159/944, remaining 785 before MIGRATION_ACCEPTED + A-sync/accounting;
-- only sc1 + sc2 may receive new credit; sc3 remains preservation-only.
+- accounting is synchronized at 161/944, remaining 783 after exact MIGRATION_ACCEPTED + A-sync/accounting;
+- sc1 + sc2 received exactly +2 new credit; sc3 remains preservation-only / +0.
+- canonical accepted evidence: https://github.com/binchen648/fd/pull/494#issuecomment-5906305747.
+- mechanical next owner is servant.valkyrie; frozen scope is sc-valkyrie-1 + sc-valkyrie-2 + sc-valkyrie-3; owner-readiness-first is mandatory.
