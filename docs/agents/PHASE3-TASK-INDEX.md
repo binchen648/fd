@@ -7220,3 +7220,41 @@ Implementation evidence for `P3-B-VOYAGER-OWNER-READINESS-CAPABILITY`:
 - Successor verification: `10/10 + 38/38 + 33/33 + 11/11 = 92/92 PASS`; typecheck/content validate/content compile/generated determinism/diff-check PASS; `data/authoring/**` delta EMPTY.
 - Readiness remains permanently zero-credit; strict formal accounting stays `166/944`, remaining `778`.
 - Freeze exactly one successor Candidate on PR #499 and request one fresh independent R; do not re-review predecessor Candidate.
+
+### Voyager readiness acceptance synchronization
+
+- Accepted successor Candidate: `c0e0fb4f506145a2a93a3ce330fdd9cef3fd6aa8`.
+- Canonical same-attempt acceptance evidence: `https://github.com/binchen648/fd/pull/499#issuecomment-5913743850`.
+- Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`; exact gate run `36730891403` / job `109939873769` `SUCCESS`.
+- Readiness A-sync/full-owner rescan finds no canonical Voyager servant authoring; sc1 + sc2 + sc3 + sc4 are all absent from `data/authoring/**` and all four remain newly creditable.
+- No preservation-only duplicate Voyager skill exists in the current canonical authoring lineage.
+- No additional currently discoverable Voyager owner-local readiness gap remains after the accepted successor closure.
+- Readiness remains zero-credit; strict accounting stays `166/944`, remaining `778`.
+- Next legal FORMAL task: `P3-S-OWNER-VOYAGER-COMPLETE-MIGRATION`, frozen sc1 + sc2 + sc3 + sc4 together; all four are creditable only after formal acceptance + A-sync/accounting.
+- Detailed A-sync report: `docs/reports/2026-09-30-p3-a-voyager-owner-readiness-capability-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-VOYAGER-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `READY`
+Classification: formal owner-complete migration for `servant.voyager`
+
+Frozen owner scope:
+- `servant.voyager.skill.sc-voyager-1`
+- `servant.voyager.skill.sc-voyager-2`
+- `servant.voyager.skill.sc-voyager-3`
+- `servant.voyager.skill.sc-voyager-4`
+
+Accounting boundary:
+- strict formal accounting remains `166/944`, remaining `778` before formal acceptance;
+- all four frozen identities are absent from canonical `data/authoring/**` and are newly creditable;
+- successful exact formal `MIGRATION_ACCEPTED` plus A-sync/accounting may add exactly `+4` (`166 -> 170`), leaving `774`;
+- one owner / all four remaining frozen skills / one formal Candidate / one PR / one fresh R / one A-sync-accounting;
+- consume the accepted identity-free readiness runtime; do not add Voyager/card-name/printed-text/legacy identity routing to production runtime.
+
+Formal materialization requirements:
+- create one canonical `data/authoring/servants/servant.voyager.json` owner archive containing sc1 + sc2 + sc3 + sc4 together;
+- preserve the frozen 12-card Voyager deck declared by the owner source evidence;
+- integrate Voyager exactly once in `fd-playtest-v1` after Vlad in stable owner order;
+- add focused owner-complete migration regression proving authoring/pack presence and accepted generic runtime shapes;
+- Base for this formal task is the Voyager readiness acceptance-sync commit produced by this transaction.
