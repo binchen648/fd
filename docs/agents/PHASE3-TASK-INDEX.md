@@ -7591,7 +7591,7 @@ Detailed report: `docs/reports/2026-10-01-p3-b-akasha-owner-readiness-seven-play
 ## TASK P3-B-AKIHA-OWNER-READINESS-CAPABILITY
 
 Owner: Codex B / FORMAL readiness
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_SUCCESSOR_CANDIDATE`
 Classification: bounded zero-credit owner-readiness/capability batch for the complete current `master.akiha` frozen scope
 
 Frozen owner scope:
@@ -7615,3 +7615,23 @@ Required disposition:
 - fresh independent R, then A-sync/full-owner rescan;
 - only after readiness closure may `P3-S-OWNER-AKIHA-COMPLETE-MIGRATION` be created;
 - do not split per skill and do not grant credit from readiness.
+
+### Akiha owner-readiness implementation evidence
+
+- Exact Base: `d55f1bd56cfb156819c2d64c55259b75ab23d4c6` (accepted Akasha formal A-sync; strict `181/944`, remaining `763`).
+- All five frozen source semantics were mechanically recertified together; locked Reference `core.akiha-bloodlust` is corroboration only.
+- New identity-free Bloodlust family closes structured resource tracking, explicit same-battlefield mana contribution, deterministic battle-end decay, threshold 5/10/15 rules, transform resource/mana/VP/seal semantics and ascension cost/Power/plunder provenance.
+- Card and ordinary ability positive mana transactions consume explicit server-validated contributor choices atomically; physical card plays seal exact contributor provenance for restore and ascension plunder.
+- Restore re-resolves provider/transform authority, exact 15 lock, VP baseline, contribution players and the source-bound current-round +2 Power authority; forged state fails closed.
+- The neighboring Maiya test fixture was corrected from a stale hard-coded `p2` target to the actual legal pending target after the accepted eight-Master pool changed deterministic seats; production fixed-cost behavior remains unchanged.
+- Verification: Akiha focused `11/11`; neighboring/shared affected aggregate **`232/232 PASS`**; `FD_TOOLCHAIN_OK`; typecheck/content/generated/identity-audit/diff-check all PASS.
+- `data/authoring/**` delta EMPTY; readiness remains permanently zero-credit; strict accounting stays `181/944`, remaining `763`.
+- Detailed report: `docs/reports/2026-10-01-p3-b-akiha-owner-readiness-capability-result.md`.
+- Predecessor Candidate `2e2288a51ed8a71831fd7f0633b9b7150f2d786d` -> `IMPLEMENTATION_NEEDS_REVISION`; canonical relay `https://github.com/binchen648/fd/pull/507#issuecomment-5920958682`.
+- Successor closes all three P1s together: same-transaction VP half-floor at both authoritative VP mutation routes; all-prefix Bloodlust restore-family validation; server-owned physical mana-contribution seal required for restore and ascension plunder.
+- Successor verification: direct closure `16/16 PASS`; broad affected `250/251` with one parallel-only 5s MatchSession timeout, exact isolated rerun `11/11 PASS`; toolchain/typecheck/content/generated/identity/diff-check green.
+- Current disposition: freeze one exact successor Candidate on PR #507 and request one fresh independent R. No Akiha formal consumer migration before successor acceptance + FORMAL A-sync/full-owner rescan.
+- Successor 1f7f60f65b614a7d9f23db78f926776e4bb4e02 -> IMPLEMENTATION_NEEDS_REVISION; canonical relay https://github.com/binchen648/fd/pull/507#issuecomment-5921120983.
+- Remaining P1 closed by replacing serialized playManaContributionSeal with hidden WeakMap server authority plus secret-backed HMAC persistence/restore; visible contribution fields alone no longer authorize plunder.
+- Second-successor verification: Akiha focused 12/12, shared non-MatchSession 189/189, MatchSession 33/33, restore 11/11; unique affected 233/233 PASS; static/content/generated/identity/diff gates green.
+- Current disposition: freeze one new exact successor Candidate on PR #507 and request one fresh independent R; readiness remains zero-credit.

@@ -44,6 +44,12 @@ import {
   restoreBattlefieldAttackOfferServerAuthority,
   type BattlefieldAttackOfferServerAuthoritySeal,
 } from './ability/battlefield-attack-offer-authority';
+import {
+  isBloodlustContributionServerAuthorityConsistent,
+  persistBloodlustContributionServerAuthority,
+  restoreBloodlustContributionServerAuthority,
+  type BloodlustContributionServerAuthoritySeal,
+} from './ability/bloodlust-contribution-authority';
 import { clearTransientCardTransformState } from './ability/card-instance-state';
 import { isNormalCardDrawSuppressed } from './ability/timed-resource-suppression';
 import { isAcceptedDiscardBasicReplayCounterAbility, isAcceptedPhysicalCardReplayGrowthAbility } from './ability/deck-recycle-replay-growth-capability';
@@ -225,6 +231,8 @@ export interface MatchReplayStateSnapshot {
   battleCloseDrawPlayServerAuthority?: BattleCloseDrawPlayServerAuthoritySeal;
   /** Authenticated Tezcat-style battlefield attack-offer order/progress/participation authority. */
   battlefieldAttackOfferServerAuthority?: BattlefieldAttackOfferServerAuthoritySeal;
+  /** Authenticated hidden Bloodlust physical mana-contribution authority. */
+  bloodlustContributionServerAuthority?: BloodlustContributionServerAuthoritySeal;
   logs: MatchSessionLogEntry[];
   battleHistory: GameState['battleResults'];
   consumedDirectiveCount: number;
@@ -247,6 +255,8 @@ export interface MatchSessionSnapshot {
   battleCloseDrawPlayServerAuthority?: BattleCloseDrawPlayServerAuthoritySeal;
   /** Authenticated Tezcat-style battlefield attack-offer order/progress/participation authority. */
   battlefieldAttackOfferServerAuthority?: BattlefieldAttackOfferServerAuthoritySeal;
+  /** Authenticated hidden Bloodlust physical mana-contribution authority. */
+  bloodlustContributionServerAuthority?: BloodlustContributionServerAuthoritySeal;
   /** Authenticated replay membership for durable host/room persistence; host scope and secret remain external. */
   opponentCloseToOneReplayManifest?: OpponentCloseToOneReplayManifestSeal;
   logs: MatchSessionLogEntry[];
@@ -295,6 +305,16 @@ function persistedBattlefieldAttackOfferAuthorityField(
 ): { battlefieldAttackOfferServerAuthority?: BattlefieldAttackOfferServerAuthoritySeal } {
   const seal = persistBattlefieldAttackOfferServerAuthority(state, persistenceSecret, persistenceScope, replayCheckpointId);
   return seal ? { battlefieldAttackOfferServerAuthority: seal } : {};
+}
+
+function persistedBloodlustContributionAuthorityField(
+  state: GameState,
+  persistenceSecret: string,
+  persistenceScope: string,
+  replayCheckpointId?: string,
+): { bloodlustContributionServerAuthority?: BloodlustContributionServerAuthoritySeal } {
+  const seal = persistBloodlustContributionServerAuthority(state, persistenceSecret, persistenceScope, replayCheckpointId);
+  return seal ? { bloodlustContributionServerAuthority: seal } : {};
 }
 
 function deferredRuntimeStateSealPayload(
@@ -870,6 +890,8 @@ function isRestoreCardRuntimeState(value: unknown): boolean {
   return isRestoreRecord(value) && typeof value.active === 'boolean' && typeof value.faceDown === 'boolean' &&
     Number.isSafeInteger(value.playedRound) && (value.paidManaOnPlay === undefined ||
       (typeof value.paidManaOnPlay === 'number' && Number.isFinite(value.paidManaOnPlay))) &&
+    (value.playManaContributions === undefined || (Array.isArray(value.playManaContributions) && value.playManaContributions.every((entry) =>
+      isRestoreRecord(entry) && hasExactRestoreKeys(entry, ['playerId','amount']) && typeof entry.playerId === 'string' && isRestoreSafeInteger(entry.amount, 1)))) &&
     (value.reversed === undefined || typeof value.reversed === 'boolean') &&
     (value.attributeOverrides === undefined || isRestoreStringArray(value.attributeOverrides)) &&
     (value.basePowerMultiplier === undefined || value.basePowerMultiplier === 2) &&
@@ -1876,7 +1898,7 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
   if (!value.effectStack.every((entry) => isRestoreEffectStackItem(entry, playerIds))) return false;
   const restoredState = value as unknown as GameState;
   if (!terrainAssignmentAuthorityConsistentForRestore(restoredState)) return false;
-  if (!isDeferredAbilityRuntimeProvenanceValidForRestore(restoredState)) return false;
+  if (!isDeferredAbilityRuntimeProvenanceValidForRestore(restoredState, { deferBloodlustContributionAuthority: true })) return false;
   if (restoredState.abilityRuntime?.pendingDecision?.interaction?.kind === 'deployment_terrain_vp_choice_v1' &&
       !deploymentTerrainVpDecisionLiveValid(restoredState, restoredState.abilityRuntime.pendingDecision)) return false;
   if (restoredState.abilityRuntime?.pendingDecision &&
@@ -3033,6 +3055,7 @@ export class MatchSession {
     const authorityField = persistedOpponentCloseToOneAuthorityField(this.state, this.persistenceSecret, this.persistenceScope);
     const battleAuthorityField = persistedBattleCloseDrawPlayAuthorityField(this.state, this.persistenceSecret, this.persistenceScope);
     const battlefieldOfferAuthorityField = persistedBattlefieldAttackOfferAuthorityField(this.state, this.persistenceSecret, this.persistenceScope);
+    const bloodlustContributionAuthorityField = persistedBloodlustContributionAuthorityField(this.state, this.persistenceSecret, this.persistenceScope);
     const currentSeal = authorityField.opponentCloseToOneServerAuthority;
     const replayEntries = replayManifestEntries(this.replaySnapshots);
     rememberOpponentCloseToOneTrustedReplayLineage(this.persistenceScope, this.state, replayEntries);
@@ -3047,6 +3070,7 @@ export class MatchSession {
       ...authorityField,
       ...battleAuthorityField,
       ...battlefieldOfferAuthorityField,
+      ...bloodlustContributionAuthorityField,
       ...(replaySensitive ? {
         opponentCloseToOneReplayManifest: persistOpponentCloseToOneReplayManifest(
           this.state,
@@ -3133,6 +3157,14 @@ export class MatchSession {
       this.persistenceScope,
       checkpointId,
     ) || !isBattlefieldAttackOfferServerAuthorityConsistent(candidateState)) return false;
+    if (!restoreBloodlustContributionServerAuthority(
+      candidateState,
+      snapshot.bloodlustContributionServerAuthority,
+      this.persistenceSecret,
+      this.persistenceScope,
+      checkpointId,
+    ) || !isBloodlustContributionServerAuthorityConsistent(candidateState) ||
+        !isDeferredAbilityRuntimeProvenanceValidForRestore(candidateState)) return false;
     this.state = candidateState;
     this.logs = candidateLogs;
     this.battleHistory = candidateBattleHistory;
@@ -3797,6 +3829,7 @@ export class MatchSession {
       ...persistedOpponentCloseToOneAuthorityField(state, this.persistenceSecret, this.persistenceScope, checkpoint.id),
       ...persistedBattleCloseDrawPlayAuthorityField(state, this.persistenceSecret, this.persistenceScope, checkpoint.id),
       ...persistedBattlefieldAttackOfferAuthorityField(state, this.persistenceSecret, this.persistenceScope, checkpoint.id),
+      ...persistedBloodlustContributionAuthorityField(state, this.persistenceSecret, this.persistenceScope, checkpoint.id),
       logs: structuredClone(this.logs),
       battleHistory: structuredClone(this.battleHistory),
       consumedDirectiveCount: this.consumedDirectiveCount,
@@ -3887,6 +3920,15 @@ export function restoreMatchSession(
   ) || !isBattlefieldAttackOfferServerAuthorityConsistent(candidateState)) {
     throw new Error('Invalid or missing battlefield attack-offer persisted authority');
   }
+  if (!restoreBloodlustContributionServerAuthority(
+    candidateState,
+    snapshot.bloodlustContributionServerAuthority,
+    persistenceSecret,
+    persistenceScope,
+  ) || !isBloodlustContributionServerAuthorityConsistent(candidateState) ||
+      !isDeferredAbilityRuntimeProvenanceValidForRestore(candidateState)) {
+    throw new Error('Invalid or missing Bloodlust contribution persisted authority');
+  }
   const replayCheckpointIds = snapshot.replaySnapshots.map((entry) => entry.checkpointId);
   const replayEntries = replayManifestEntries(snapshot.replaySnapshots);
   const suppliedReplayManifest = snapshot.opponentCloseToOneReplayManifest !== undefined;
@@ -3946,6 +3988,16 @@ export function restoreMatchSession(
       entry.checkpointId,
     ) || !isBattlefieldAttackOfferServerAuthorityConsistent(replayState)) {
       throw new Error('Invalid or missing replay battlefield attack-offer persisted authority');
+    }
+    if (!restoreBloodlustContributionServerAuthority(
+      replayState,
+      entry.bloodlustContributionServerAuthority,
+      persistenceSecret,
+      persistenceScope,
+      entry.checkpointId,
+    ) || !isBloodlustContributionServerAuthorityConsistent(replayState) ||
+        !isDeferredAbilityRuntimeProvenanceValidForRestore(replayState)) {
+      throw new Error('Invalid or missing replay Bloodlust contribution persisted authority');
     }
   }
   const session = new MatchSession({

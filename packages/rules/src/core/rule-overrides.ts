@@ -1,5 +1,6 @@
 import type { GameState, PhaseName } from '../schema/game';
-import type { RuleNode } from '../ability/types';
+import type { ManaContributionChoice, RuleNode } from '../ability/types';
+import { bloodlustManaGainMultiplier, commitBloodlustManaPayment, notifyBloodlustManaSpent, resolveBloodlustManaPayment } from '../ability/bloodlust-cycle-capability';
 import { isManaGainSuppressed } from '../ability/timed-resource-suppression';
 import { applyStorageManaOverflowReactions, collectSameLocationManaSpendRewards } from '../ability/mana-transaction-capability';
 
@@ -163,7 +164,10 @@ export function grantMana(state: GameState, playerId: string, requestedAmount: n
   const player = state.players.find((candidate) => candidate.id === playerId);
   if (!player) throw new Error(`Unknown mana recipient: ${playerId}`);
   const before = player.mana;
-  let cappedRequestAmount = requestedAmount;
+  const gainMultiplier = bloodlustManaGainMultiplier(state, playerId);
+  const effectiveRequestedAmount = requestedAmount * gainMultiplier;
+  if (!Number.isSafeInteger(effectiveRequestedAmount) || effectiveRequestedAmount < 0) throw new Error('Mana grant multiplier produced an invalid amount.');
+  let cappedRequestAmount = effectiveRequestedAmount;
   const overrides = state.ruleOverrides;
   const climax = isClimaxRound(state, options.isClimaxSituation);
   if (options.source === 'situation' && !climax) {
@@ -195,12 +199,12 @@ export function grantMana(state: GameState, playerId: string, requestedAmount: n
     if (ledger.round !== state.round.roundNumber) { ledger.round = state.round.roundNumber; ledger.byPlayer = {}; }
     ledger.byPlayer[playerId] = (ledger.byPlayer[playerId] ?? 0) + actualAmount;
   }
-  if (runtime && requestedAmount > 0) {
-    runtime.events.push({ type: 'mana_granted', playerId, resource: 'mana', requestedDelta: requestedAmount,
+  if (runtime && effectiveRequestedAmount > 0) {
+    runtime.events.push({ type: 'mana_granted', playerId, resource: 'mana', requestedDelta: effectiveRequestedAmount,
       delta: actualAmount, before, after });
     applyStorageManaOverflowReactions(state, playerId, storageOverflowAmount);
   }
-  return { requestedAmount, cappedRequestAmount, actualAmount, overflowAmount: requestedAmount - actualAmount, before, after };
+  return { requestedAmount, cappedRequestAmount, actualAmount, overflowAmount: effectiveRequestedAmount - actualAmount, before, after };
 }
 
 /** Records one authoritative paid-mana transaction after an external pure reducer has already applied it. */
@@ -210,6 +214,7 @@ export function notifyManaSpent(state: GameState, playerId: string, amount: numb
   const player = state.players.find((candidate) => candidate.id === playerId);
   if (!player) throw new Error(`Unknown mana spender: ${playerId}`);
   state.abilityRuntime.events.push({ type: 'mana_spent', playerId, resource: 'mana', requestedDelta: -amount, delta: -amount, after: player.mana });
+  notifyBloodlustManaSpent(state, playerId, amount);
   const rewards = collectSameLocationManaSpendRewards(state, playerId, amount);
   for (const reward of rewards) {
     const result = grantMana(state, reward.controllerId, reward.amount, { source: 'generic' });
@@ -220,14 +225,17 @@ export function notifyManaSpent(state: GameState, playerId: string, amount: numb
 }
 
 /** Pays mana and emits the generic paid-mana transaction consumed by resource observers. */
-export function spendMana(state: GameState, playerId: string, amount: number): ManaSpendResult {
+export function spendMana(state: GameState, playerId: string, amount: number, contributions?: readonly ManaContributionChoice[]): ManaSpendResult {
   if (!Number.isSafeInteger(amount) || amount < 0) throw new Error('Mana spend must be a nonnegative safe integer.');
   const player = state.players.find((candidate) => candidate.id === playerId);
   if (!player) throw new Error(`Unknown mana spender: ${playerId}`);
   const before = player.mana;
-  if (amount > before) throw new Error('Insufficient mana.');
-  player.mana = before - amount;
-  notifyManaSpent(state, playerId, amount);
+  const plan = resolveBloodlustManaPayment(state, playerId, amount, contributions);
+  if (plan.payerAmount > before) throw new Error('Insufficient mana.');
+  player.mana = before - plan.payerAmount;
+  commitBloodlustManaPayment(state, playerId, plan);
+  if (plan.payerAmount > 0) notifyManaSpent(state, playerId, plan.payerAmount);
+  for (const contribution of plan.contributions) notifyManaSpent(state, contribution.contributorPlayerId, contribution.amount);
   return { requestedAmount: amount, actualAmount: amount, before, after: player.mana };
 }
 

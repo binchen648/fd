@@ -134,14 +134,15 @@ describe('P3-FB2-01 fixed controller mana cost component', () => {
     }));
 
     const targetAction = session.getPlayerView(playerId).legalActions.find((action) =>
-      action.type === 'choose_target' && action.candidates.includes('p2'))!;
+      action.type === 'choose_target' && action.candidates.length > 0)!;
+    const targetId = targetAction.candidates[0]!;
     const eventsAfterActivation = session.state.abilityRuntime!.events.length;
-    session.state.players.find((candidate) => candidate.id === 'p2')!.status = 'eliminated';
+    session.state.players.find((candidate) => candidate.id === targetId)!.status = 'eliminated';
 
     const rejectedTarget = session.dispatchPlayerAction(playerId, {
       type: 'choose_target',
       decisionId: targetAction.decisionId,
-      selectedIds: ['p2'],
+      selectedIds: [targetId],
     });
 
     expect(rejectedTarget.ok).toBe(false);
