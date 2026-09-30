@@ -872,6 +872,12 @@ function isRestoreCardRuntimeState(value: unknown): boolean {
       (typeof value.paidManaOnPlay === 'number' && Number.isFinite(value.paidManaOnPlay))) &&
     (value.playManaContributions === undefined || (Array.isArray(value.playManaContributions) && value.playManaContributions.every((entry) =>
       isRestoreRecord(entry) && hasExactRestoreKeys(entry, ['playerId','amount']) && typeof entry.playerId === 'string' && isRestoreSafeInteger(entry.amount, 1)))) &&
+    (value.playManaContributionSeal === undefined || (isRestoreRecord(value.playManaContributionSeal) &&
+      hasExactRestoreKeys(value.playManaContributionSeal, ['beneficiaryPlayerId','resourceKey','providerSourceCardId','providerAbilityId','round','contributors']) &&
+      typeof value.playManaContributionSeal.beneficiaryPlayerId === 'string' && typeof value.playManaContributionSeal.resourceKey === 'string' &&
+      typeof value.playManaContributionSeal.providerSourceCardId === 'string' && typeof value.playManaContributionSeal.providerAbilityId === 'string' &&
+      isRestoreSafeInteger(value.playManaContributionSeal.round,1) && Array.isArray(value.playManaContributionSeal.contributors) &&
+      value.playManaContributionSeal.contributors.every((entry)=>isRestoreRecord(entry)&&hasExactRestoreKeys(entry,['playerId','amount'])&&typeof entry.playerId==='string'&&entry.amount===1))) &&
     (value.reversed === undefined || typeof value.reversed === 'boolean') &&
     (value.attributeOverrides === undefined || isRestoreStringArray(value.attributeOverrides)) &&
     (value.basePowerMultiplier === undefined || value.basePowerMultiplier === 2) &&

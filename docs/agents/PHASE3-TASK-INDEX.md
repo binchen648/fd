@@ -7591,7 +7591,7 @@ Detailed report: `docs/reports/2026-10-01-p3-b-akasha-owner-readiness-seven-play
 ## TASK P3-B-AKIHA-OWNER-READINESS-CAPABILITY
 
 Owner: Codex B / FORMAL readiness
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `IMPLEMENTATION_COMPLETE_SUCCESSOR_CANDIDATE`
 Classification: bounded zero-credit owner-readiness/capability batch for the complete current `master.akiha` frozen scope
 
 Frozen owner scope:
@@ -7627,4 +7627,7 @@ Required disposition:
 - Verification: Akiha focused `11/11`; neighboring/shared affected aggregate **`232/232 PASS`**; `FD_TOOLCHAIN_OK`; typecheck/content/generated/identity-audit/diff-check all PASS.
 - `data/authoring/**` delta EMPTY; readiness remains permanently zero-credit; strict accounting stays `181/944`, remaining `763`.
 - Detailed report: `docs/reports/2026-10-01-p3-b-akiha-owner-readiness-capability-result.md`.
-- Current disposition: freeze one exact zero-credit readiness Candidate / one PR / one fresh independent R. No Akiha formal consumer migration before acceptance + FORMAL A-sync/full-owner rescan.
+- Predecessor Candidate `2e2288a51ed8a71831fd7f0633b9b7150f2d786d` -> `IMPLEMENTATION_NEEDS_REVISION`; canonical relay `https://github.com/binchen648/fd/pull/507#issuecomment-5920958682`.
+- Successor closes all three P1s together: same-transaction VP half-floor at both authoritative VP mutation routes; all-prefix Bloodlust restore-family validation; server-owned physical mana-contribution seal required for restore and ascension plunder.
+- Successor verification: direct closure `16/16 PASS`; broad affected `250/251` with one parallel-only 5s MatchSession timeout, exact isolated rerun `11/11 PASS`; toolchain/typecheck/content/generated/identity/diff-check green.
+- Current disposition: freeze one exact successor Candidate on PR #507 and request one fresh independent R. No Akiha formal consumer migration before successor acceptance + FORMAL A-sync/full-owner rescan.

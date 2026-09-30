@@ -114,7 +114,7 @@ import { BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT, containsBattleLuckCloseDrawPlayNode
 import {
   bloodlustAscensionAdjustments, bloodlustMaximumContributionAmount, bloodlustPlayRequirementWaived, bloodlustSkillPowerBonus,
   canExecuteBloodlustEffect, containsBloodlustPrivilegedNode, isAcceptedBloodlustAbility, isBloodlustRuntimeProvenanceValidForRestore,
-  reconcileBloodlustVictoryPoints, resolveBloodlustEffect, resolveBloodlustManaPayment, bloodlustContributorPenalty, isBloodlustActionEffect,
+  reconcileBloodlustVictoryPoints, resolveBloodlustEffect, resolveBloodlustManaPayment, bloodlustContributorPenalty, isBloodlustActionEffect, bloodlustVpGainAdjustment, buildBloodlustPlayContributionSeal,
 } from './bloodlust-cycle-capability';
 import {
   canExecuteVesselCycleEffect, containsVesselCyclePrivilegedNode, isAcceptedVesselCycleAbility,
@@ -3449,7 +3449,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       }]);
       return;
     }
-    case 'adjust_victory_points': p.vp = Math.max(0, p.vp + numeric(s, ctx, effect.amount)); break;
+    case 'adjust_victory_points': { const raw=numeric(s,ctx,effect.amount); const adjusted=bloodlustVpGainAdjustment(s,p.id,raw); p.vp=Math.max(0,p.vp+adjusted); break; }
     case 'move_player': {
       const to = ctx.selections[str(effect.to)]?.[0];
       if (to) {
@@ -7619,7 +7619,8 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     if (limit) runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] = (runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] ?? 0) + 1;
     const playCounts = runtime(s).cardPlayCountByInstance ??= {};
     playCounts[c.cardInstanceId] = (playCounts[c.cardInstanceId] ?? 0) + 1;
-    runtime(s).cardState[c.cardInstanceId] = { active: !c.faceDown, faceDown: !!c.faceDown, playedRound: s.round.roundNumber, paidManaOnPlay: paidCostByCard.get(c.cardInstanceId) ?? 0, ...(c.manaContributions?.length ? { playManaContributions: c.manaContributions.map((entry) => ({ playerId: entry.contributorPlayerId, amount: entry.amount })) } : {}) };
+    const contributionSeal = c.manaContributions?.length ? buildBloodlustPlayContributionSeal(s, playerId, c.manaContributions) : undefined;
+    runtime(s).cardState[c.cardInstanceId] = { active: !c.faceDown, faceDown: !!c.faceDown, playedRound: s.round.roundNumber, paidManaOnPlay: paidCostByCard.get(c.cardInstanceId) ?? 0, ...(c.manaContributions?.length ? { playManaContributions: c.manaContributions.map((entry) => ({ playerId: entry.contributorPlayerId, amount: entry.amount })), ...(contributionSeal ? { playManaContributionSeal: contributionSeal } : {}) } : {}) };
     if (!c.faceDown) rememberVesselCyclePlayProvenance(s, playerId, c.cardInstanceId, prePaymentMana);
     if (c.faceDown) card(s, c.cardInstanceId).visibility = { scope: 'owner_only', ownerPlayerId: playerId };
 

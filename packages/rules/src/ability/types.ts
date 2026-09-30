@@ -388,6 +388,11 @@ export interface CardRuntimeState {
   active: boolean; faceDown: boolean; playedRound: number; paidManaOnPlay?: number;
   /** Exact linked-player mana contributions consumed by this physical play. */
   playManaContributions?: Array<{ playerId: PlayerId; amount: number }>;
+  /** Server-owned Bloodlust payment authority sealed at commit time for restore verification. */
+  playManaContributionSeal?: {
+    beneficiaryPlayerId: PlayerId; resourceKey: string; providerSourceCardId: string; providerAbilityId: string; round: number;
+    contributors: Array<{ playerId: PlayerId; amount: 1 }>;
+  };
   reversed?: boolean; attributeOverrides?: string[];
   /** Instance-local base-power multiplier granted by a validated card action. */
   basePowerMultiplier?: number;

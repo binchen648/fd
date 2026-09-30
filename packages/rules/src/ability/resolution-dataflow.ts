@@ -6,6 +6,7 @@ import { isCardCloseForbidden } from './card-close-forbid';
 import { grantMana, spendMana } from '../core/rule-overrides';
 import { servantRevealSuppressedByTemporaryConcealment } from './owner-self-mechanics';
 import { isNormalCardDrawSuppressed } from './timed-resource-suppression';
+import { bloodlustVpGainAdjustment } from './bloodlust-cycle-capability';
 
 export type EffectExecutionStatus = 'applied' | 'no_op';
 export type BindingFieldType = 'number' | 'player_ids' | 'boolean' | 'status';
@@ -1528,7 +1529,8 @@ function adjustVictoryPoints(
   const amount = evaluateIntegerAmount(transaction, effect.amount, 'adjust_victory_points');
   const player = findPlayer(transaction.workingState, transaction.context.controllerId);
   const before = player.vp;
-  player.vp = Math.max(0, before + amount);
+  const adjustedAmount = bloodlustVpGainAdjustment(transaction.workingState, player.id, amount);
+  player.vp = Math.max(0, before + adjustedAmount);
   const actualAmount = player.vp - before;
   const eventId = `${transaction.context.resolutionId}.${effect.id}.vp_adjusted`;
   transaction.emittedEvents.push(resourceEvent(transaction, eventId, 'victory_points_adjusted', player.id, 'victory_points', actualAmount, before, player.vp));

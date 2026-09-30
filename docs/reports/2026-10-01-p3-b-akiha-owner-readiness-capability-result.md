@@ -122,3 +122,41 @@ The existing Maiya fixed-controller-mana-cost test hard-coded `p2` as a pending 
 Freeze one exact readiness Candidate / one PR / one fresh independent Reviewer for all five Akiha frozen identities together. This transaction is permanently zero-credit.
 
 ACCEPTED -> one FORMAL-only A-sync/full-owner rescan while remaining on `master.akiha`; only that rescan may authorize one later five-identity owner-complete formal migration Candidate.
+
+## Successor closure after PR #507 review
+
+Predecessor exact Candidate `2e2288a51ed8a71831fd7f0633b9b7150f2d786d` received `IMPLEMENTATION_NEEDS_REVISION`.
+Canonical same-attempt relay: `https://github.com/binchen648/fd/pull/507#issuecomment-5920958682`.
+
+All three blocking P1 findings were closed together in one successor transaction:
+
+1. **Authoritative transformed VP adjustment**
+   - both interpreter `adjust_victory_points` and resolution-dataflow `adjust_victory_points` now call the shared identity-free `bloodlustVpGainAdjustment()` at the mutation transaction;
+   - positive transformed gain is therefore floor-halved before commit, while loss remains unchanged;
+   - real `dispatchAbilityCommand()` regression proves `+5` commits immediately as `+2` with no synthetic follow-up event.
+
+2. **Orphan Bloodlust restore rejection**
+   - restore now derives resource families from every `__fd_bloodlust:*` key in both structured player flags and round-key state, not only `:value` roots;
+   - unknown prefixed suffixes and families missing required value/provider/baseline provenance fail closed;
+   - explicit orphan `:transformed` regression is rejected.
+
+3. **Server-owned physical contribution seal**
+   - real card-play contribution commit now seals beneficiary/resource/provider source/provider ability/round/exact contributors in `playManaContributionSeal` alongside the public physical `playManaContributions` projection;
+   - restore re-resolves the accepted contribution provider and requires exact contributor equality plus the authoritative same-round contribution markers;
+   - ascension contributor penalty trusts only the validated server seal, not the user-visible contribution projection alone;
+   - an existing real player forged into `playManaContributions` without the seal is rejected and yields no `-3` penalty.
+
+Successor verification:
+- direct Akiha + fixed-controller closure set: `16/16 PASS`;
+- broad shared affected run: `250/251`, with the sole failure the known parallel 5-second timeout in the heavy MatchSession regression;
+- that exact MatchSession regression file rerun isolated: `11/11 PASS` (heavy first case completes in ~4.5s);
+- therefore all tests in the broad affected set are semantically green after isolated timeout rerun;
+- `npm run typecheck`: PASS;
+- `npm run content:validate`: PASS — `8 masters / 19 servants / 20 events / 0 blocking issues`;
+- `npm run content:compile`: PASS — same counts;
+- `npm run verify:generated-content`: PASS with unchanged hashes;
+- Base..working-tree `data/authoring/**` delta: EMPTY;
+- production Akiha identity audit: CLEAN;
+- `git diff --check`: PASS.
+
+Readiness remains permanently zero-credit. Strict accounting remains `181/944`, remaining `763`. Successor must receive a fresh independent review before any A-sync/full-owner rescan or Akiha formal consumer migration.
