@@ -91,11 +91,11 @@ No sc3 runtime change or migration credit is introduced by this readiness Candid
 
 ## Verification
 
-- Vlad readiness focused regression: `11/11 PASS`;
+- Vlad readiness focused regression: `13/13 PASS`;
 - complex skills regression: `38/38 PASS`;
 - MatchSession: `33/33 PASS`;
 - generic MatchSession regressions: `11/11 PASS`;
-- affected aggregate: **`93/93 PASS`**;
+- affected aggregate: **`95/95 PASS`**;
 - `E:\Codex\FD\binchen648_fd\tools\verify-toolchain.cmd`: `FD_TOOLCHAIN_OK`;
 - `npm run typecheck`: PASS;
 - `npm run content:validate`: PASS — `7 masters / 16 servants / 20 events / 0 blocking issues`;
@@ -113,3 +113,32 @@ No sc3 runtime change or migration credit is introduced by this readiness Candid
 Freeze one exact readiness Candidate / one PR / one fresh independent Reviewer for sc1 + sc2 + sc3 together. This readiness transaction is permanently zero-credit.
 
 ACCEPTED -> one A-sync/full-owner rescan while remaining on `servant.vlad`; only then may one formal owner-complete Candidate be produced for still-unmigrated frozen identities. sc3 remains preservation-only.
+
+## Review revision closure — successor after exact Candidate `d008527ebee8c638baed9b711c0aaa3ea0480968`
+
+Fresh independent Reviewer verdict on the predecessor exact Candidate was `IMPLEMENTATION_NEEDS_REVISION`; canonical bounded same-attempt relay: `https://github.com/binchen648/fd/pull/497#issuecomment-5910358128`.
+
+The sole P1 finding was a real production MatchSession round-transition durability gap: `roundPlayerPowerAdjustments` and unconsumed `pendingBattlefieldFortifications` were round-local, but `MatchSession.startRound()` overwrote the round number before calling `advanceAbilityPhase`, so `startsNewRound` was false and stale round-N state could survive into round N+1 and invalidate otherwise legitimate restore provenance.
+
+Closure:
+- `MatchSession.startRound()` now captures `previousRound` before mutating `targetState.round` and passes it explicitly to `advanceAbilityPhase(..., round, previousRound)`;
+- the existing generic `startsNewRound` cleanup retires `roundPlayerPowerAdjustments` and `pendingBattlefieldFortifications` entries older than the entering round;
+- `forcedDeploymentLocations` is intentionally untouched so valid exact next-round forced-deployment authority survives;
+- regression covers fortification -> authoritative win -> real `MatchSession.startRound()` -> next-round checkpoint/restore, including survival of the legitimate forced deployment;
+- a second regression covers a fortification left pending with no battle-result consumption and proves real next-round transition retires the stale pending authority before serialization/restore.
+
+Successor verification:
+- Vlad readiness focused regression: `13/13 PASS`;
+- complex skills regression: `38/38 PASS`;
+- MatchSession: `33/33 PASS`;
+- generic MatchSession regressions: `11/11 PASS`;
+- affected aggregate: **`95/95 PASS`**;
+- `FD_TOOLCHAIN_OK`;
+- typecheck PASS;
+- content validate/compile PASS: `7 masters / 16 servants / 20 events / 0 blocking issues`;
+- generated-content determinism unchanged and PASS;
+- `data/authoring/**` delta remains EMPTY;
+- production Vlad/card-name/legacy-handler identity audit remains CLEAN;
+- `git diff --check` PASS.
+
+This revision remains readiness-only and permanently zero-credit. No Vlad consumer migration is included.

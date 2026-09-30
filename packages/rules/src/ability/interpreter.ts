@@ -6229,6 +6229,8 @@ export function advanceAbilityPhase(
     retireBattlefieldAttackOfferAuthorityBeforeRound(copy, round);
     runtime(copy).movementDistanceThisRound = {};
     runtime(copy).battlefieldsPassedOrStayedThisRound = {};
+    runtime(copy).roundPlayerPowerAdjustments = (runtime(copy).roundPlayerPowerAdjustments ?? []).filter((entry) => entry.round >= round);
+    runtime(copy).pendingBattlefieldFortifications = (runtime(copy).pendingBattlefieldFortifications ?? []).filter((entry) => entry.round >= round);
     runtime(copy).pendingRulerSealRewards = runtime(copy).pendingRulerSealRewards.filter((reward) => reward.round >= round);
     runtime(copy).manaGainedThisRound = { round, byPlayer: {} };
     runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };

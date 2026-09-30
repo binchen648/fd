@@ -7,7 +7,7 @@ import {
 } from '../../src/ability/interpreter';
 import { terrainAdvantageAtLocation } from '../../src/ability/terrain-advantage-override';
 import type { GameState } from '../../src/schema/game';
-import { createMatchSession } from '../../src/match-session';
+import { createMatchSession, restoreMatchSession } from '../../src/match-session';
 
 const ROOT = 'servant.fixture-terrain-fortification';
 const TERRAIN_SOURCE = `${ROOT}.skill.terrain`;
@@ -160,6 +160,72 @@ describe('P3 owner-readiness terrain fortification + extra hand-play capability'
     expect(state.abilityRuntime!.processedEvents).toContain(`deploy-battlefield:${state.round.roundNumber}:p1`);
     expect(state.abilityRuntime!.processedEvents).toContain(`deploy-location:${state.round.roundNumber}:p1`);
   });
+  it('cleans fortification round-local state on the real MatchSession round transition and keeps next-round deployment restore-valid', () => {
+    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1', restorePackKind: 'trusted_authoring_fixture' });
+    const state = session.state; const controller = state.players.find((candidate) => candidate.id === 'p1')!; const moved = state.players.find((candidate) => candidate.id === 'p2')!;
+    controller.locationId = 'miyama_town'; moved.locationId = 'miyama_town'; controller.mana = 10;
+    state.round.activePhase = 'combat'; state.round.prioritySeat = controller.seat;
+    const definitionId = 'fixture.round-transition-fortification.provider'; const instanceId = 'fixture-round-transition-fortification-provider';
+    const ability = baseAbility(FORTIFY); ability.activation = { phase: 'combat', opens: 'controller_combat_action_window' };
+    ability.conditions = [{ type: 'source_owned' }]; ability.cost = [{ type: 'pay_mana', amount: 1 }];
+    ability.effects = [{ type: 'fortify_moved_in_battlefield_and_arm_next_round_deployment', movedPlayerPowerAdjustment: -4, winDeployment: 'same_battlefield_next_round' }];
+    state.abilityRuntime!.pack.cards[definitionId] = { id: definitionId, name: definitionId, cardType: 'servant_skill', cardFace: { attributes: ['特殊'], cost: 1, basePower: 1 },
+      playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], abilities: [ability], mode: 'automatic' } as any;
+    state.cards.push({ instanceId, definitionId, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: 'p1' } } as any);
+    state.abilityRuntime!.cardState[instanceId] = { active: false, faceDown: false, playedRound: state.round.roundNumber };
+
+    const round = state.round.roundNumber;
+    processAbilityEvent(state, { id: 'round-transition-move-p2', type: 'after_controller_enters_location', playerId: 'p2', previousLocationId: 'shinto', locationId: 'miyama_town', movementKind: 'normal' });
+    expect(dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: instanceId, abilityId: FORTIFY }).ok).toBe(true);
+    expect(state.abilityRuntime!.roundPlayerPowerAdjustments).toMatchObject([{ playerId: 'p2', amount: -4, round }]);
+    expect(state.abilityRuntime!.pendingBattlefieldFortifications).toMatchObject([{ controllerId: 'p1', battlefieldId: 'miyama_town', round }]);
+
+    processAbilityEvent(state, { id: `battle-phase:${round}:battle:miyama_town:round-transition:result`, type: 'after_battle_result_determined', battlePhaseResolutionId: `battle-phase:${round}`,
+      battleId: `battle-phase:${round}:battle:miyama_town:round-transition`, resultId: `battle-phase:${round}:battle:miyama_town:round-transition:result`, battlefieldId: 'miyama_town',
+      battleParticipantIds: ['p1','p2'], battleParticipantPowers: { p1: 8, p2: 4 }, battleResult: { winners: ['p1'], loserIds: ['p2'] } });
+    expect(state.abilityRuntime!.forcedDeploymentLocations).toMatchObject([{ playerId: 'p1', locationId: 'miyama_town', round: round + 1, sourceCardId: instanceId, abilityId: FORTIFY }]);
+
+    (session as unknown as { startRound: (nextRound: number) => void }).startRound(round + 1);
+    expect(state.abilityRuntime!.roundPlayerPowerAdjustments ?? []).toEqual([]);
+    expect(state.abilityRuntime!.pendingBattlefieldFortifications ?? []).toEqual([]);
+    expect(state.abilityRuntime!.forcedDeploymentLocations).toMatchObject([{ playerId: 'p1', locationId: 'miyama_town', round: round + 1, sourceCardId: instanceId, abilityId: FORTIFY }]);
+    expect(isDeferredAbilityRuntimeProvenanceValidForRestore(state)).toBe(true);
+
+    const snapshot = session.serializeSession();
+    const restored = restoreMatchSession(snapshot, { restorePackKind: 'trusted_authoring_fixture' });
+    expect(restored.state.round.roundNumber).toBe(round + 1);
+    expect(restored.state.abilityRuntime!.roundPlayerPowerAdjustments ?? []).toEqual([]);
+    expect(restored.state.abilityRuntime!.pendingBattlefieldFortifications ?? []).toEqual([]);
+    expect(forcedDeploymentLocationForPlayer(restored.state, 'p1')).toBe('miyama_town');
+  });
+
+  it('retires an unconsumed stale pending fortification on the real next-round MatchSession path', () => {
+    const session = createMatchSession({ seed: 20260905, humanPlayerId: 'p1', restorePackKind: 'trusted_authoring_fixture' });
+    const state = session.state; const controller = state.players.find((candidate) => candidate.id === 'p1')!; const moved = state.players.find((candidate) => candidate.id === 'p2')!;
+    controller.locationId = 'miyama_town'; moved.locationId = 'miyama_town'; controller.mana = 10;
+    state.round.activePhase = 'combat'; state.round.prioritySeat = controller.seat;
+    const definitionId = 'fixture.stale-pending-fortification.provider'; const instanceId = 'fixture-stale-pending-fortification-provider';
+    const ability = baseAbility(FORTIFY); ability.activation = { phase: 'combat', opens: 'controller_combat_action_window' };
+    ability.conditions = [{ type: 'source_owned' }]; ability.cost = [{ type: 'pay_mana', amount: 1 }];
+    ability.effects = [{ type: 'fortify_moved_in_battlefield_and_arm_next_round_deployment', movedPlayerPowerAdjustment: -4, winDeployment: 'same_battlefield_next_round' }];
+    state.abilityRuntime!.pack.cards[definitionId] = { id: definitionId, name: definitionId, cardType: 'servant_skill', cardFace: { attributes: ['特殊'], cost: 1, basePower: 1 },
+      playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], abilities: [ability], mode: 'automatic' } as any;
+    state.cards.push({ instanceId, definitionId, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: 'p1' } } as any);
+    state.abilityRuntime!.cardState[instanceId] = { active: false, faceDown: false, playedRound: state.round.roundNumber };
+
+    const round = state.round.roundNumber;
+    processAbilityEvent(state, { id: 'stale-pending-move-p2', type: 'after_controller_enters_location', playerId: 'p2', previousLocationId: 'shinto', locationId: 'miyama_town', movementKind: 'normal' });
+    expect(dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: instanceId, abilityId: FORTIFY }).ok).toBe(true);
+    expect(state.abilityRuntime!.roundPlayerPowerAdjustments).toHaveLength(1);
+    expect(state.abilityRuntime!.pendingBattlefieldFortifications).toHaveLength(1);
+
+    (session as unknown as { startRound: (nextRound: number) => void }).startRound(round + 1);
+    expect(state.abilityRuntime!.roundPlayerPowerAdjustments ?? []).toEqual([]);
+    expect(state.abilityRuntime!.pendingBattlefieldFortifications ?? []).toEqual([]);
+    expect(isDeferredAbilityRuntimeProvenanceValidForRestore(state)).toBe(true);
+    expect(() => restoreMatchSession(session.serializeSession(), { restorePackKind: 'trusted_authoring_fixture' })).not.toThrow();
+  });
+
   it('keeps the existing canonical third frozen skill automatic and generic', () => {
     const existing = loadAuthoringJson(JSON.parse(require('node:fs').readFileSync('data/authoring/servants/servant.vlad.json', 'utf8')));
     expect(existing.report.filter((entry) => entry.status === 'unsupported')).toEqual([]);

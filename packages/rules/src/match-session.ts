@@ -3440,6 +3440,7 @@ export class MatchSession {
   }
 
   private startRound(round: number, targetState = this.state): void {
+    const previousRound = targetState.round.roundNumber;
     targetState.round = { roundNumber: round, activePhase: 'preparation', prioritySeat: 1 };
     for (const player of targetState.players) {
       delete player.locationId;
@@ -3453,7 +3454,7 @@ export class MatchSession {
     for (const player of targetState.players) {
       if (player.status === 'active') this.drawToHandLimit(targetState, player.id);
     }
-    if (targetState.abilityRuntime) advanceAbilityPhase(targetState, 'preparation', round);
+    if (targetState.abilityRuntime) advanceAbilityPhase(targetState, 'preparation', round, previousRound);
     this.record('round_start', `round ${round} started`, { situation: targetState.currentSituationCardId, events: targetState.eventPlacements, closedLocations: modeStateOf(targetState).closedLocations }, targetState);
     this.checkpoint(`round ${round} start`, targetState);
   }
