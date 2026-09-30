@@ -149,3 +149,21 @@ Allowed verdicts:
 - `MIGRATION_BLOCKED`
 
 ACCEPTED -> one A-sync/accounting transaction adds exactly sc1 + sc2 + sc3 (+3), then mechanical frozen-roster owner selection proceeds.
+## Fresh-R revision closure — predecessor 0470d2b0
+
+Fresh independent review of predecessor Candidate `0470d2b098b641f616990312857378644ce8745d` returned `MIGRATION_NEEDS_REVISION` with one P1 shared-regression finding. Canonical same-attempt Coordinator relay: `https://github.com/binchen648/fd/pull/496#issuecomment-5907846507`.
+
+The finding was not a Valkyrie skill-semantic failure. Adding a legitimate sixteenth servant changed fixed-seed pairing selection used by two production Artoria Caster continuation tests. Exact Base ran the MatchSession file `33/33`, while the predecessor Candidate ran `31/33`; both failing tests dereferenced a missing Artoria Caster pairing.
+
+Revision closure is deliberately test-fixture-only:
+
+- both Artoria Caster continuation tests now call the existing `createSessionIncludingServant('servant.artoriac')` helper;
+- the tests therefore provision the production servant contract they actually exercise instead of depending on a roster-size-sensitive seed;
+- no production runtime, Valkyrie authoring, deck, Commander dependency, generated content, or accounting behavior is changed by this revision.
+
+Post-fix verification:
+
+- MatchSession: `33/33 PASS`, including both exact predecessor failures;
+- exact affected aggregate: `118/118 PASS`.
+
+The successor Candidate must receive one fresh independent formal migration review; the predecessor Candidate must not be reviewed again.

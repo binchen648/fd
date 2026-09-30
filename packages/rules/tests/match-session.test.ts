@@ -554,7 +554,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('round-trips the production Artoria Caster looked-card continuation and rejects modified continuation state', () => {
-    const session = createMatchSession({ seed: 9, humanPlayerId: 'p3' });
+    const session = createSessionIncludingServant('servant.artoriac');
     const artoria = session.pairings.find((pairing) => pairing.servant.id === 'servant.artoriac')!;
     advanceAbilityPhase(session.state, 'action', session.state.round.roundNumber);
     session.state.round.prioritySeat = artoria.seat;
@@ -605,7 +605,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('authenticates the resolved prefix behind the production Artoria Caster recon continuation', () => {
-    const session = createMatchSession({ seed: 9, humanPlayerId: 'p3' });
+    const session = createSessionIncludingServant('servant.artoriac');
     const artoria = session.pairings.find((pairing) => pairing.servant.id === 'servant.artoriac')!;
     advanceAbilityPhase(session.state, 'action', session.state.round.roundNumber);
     session.state.round.prioritySeat = artoria.seat;

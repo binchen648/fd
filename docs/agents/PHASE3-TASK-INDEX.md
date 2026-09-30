@@ -7100,3 +7100,12 @@ Current disposition:
 - implementation is ready to freeze one exact formal Candidate / one PR / one fresh independent migration review;
 - strict formal accounting remains `161/944`, remaining `783` until `MIGRATION_ACCEPTED` plus A-sync/accounting;
 - only sc1 + sc2 + sc3 receive potential new credit (+3); Commander dependencies are zero-credit.
+Revision round 1 closure for PR #496:
+- predecessor Candidate `0470d2b098b641f616990312857378644ce8745d` received `MIGRATION_NEEDS_REVISION`;
+- canonical same-attempt Coordinator relay: `https://github.com/binchen648/fd/pull/496#issuecomment-5907846507`;
+- sole P1 finding: adding Valkyrie changed production servant-pool seed selection, causing two Artoria Caster continuation regressions to miss `servant.artoriac` (`31/33` on predecessor vs `33/33` on exact Base);
+- closure is bounded to `packages/rules/tests/match-session.test.ts`: both tests now use existing deterministic `createSessionIncludingServant('servant.artoriac')` fixture authority;
+- no production runtime or Valkyrie semantic/content change in the revision;
+- post-fix MatchSession `33/33 PASS`; exact affected aggregate `118/118 PASS`;
+- produce exactly one successor Candidate and request one fresh R; do not re-review predecessor `0470d2b0...`;
+- strict formal accounting remains `161/944`, remaining `783` until successor `MIGRATION_ACCEPTED` plus A-sync/accounting.
