@@ -52,6 +52,7 @@ import { isAcceptedSelfManaOverflowPowerCloseAbility } from './ability/mana-tran
 import { settleLinkedOwnerCardsAfterBattles } from './ability/linked-owner-combat';
 import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute } from './ability/deduction-record';
 import { SOURCE_LOCATION_BASE_POWER_ATTRIBUTES, isAcceptedPostDrawHandShuffleAbility, isAcceptedSourceLocationBasicPowerAbility } from './ability/source-location-rune-capability';
+import { isAcceptedDiscardShuffleSourceXAbility } from './ability/battle-discard-binding-capability';
 import { isRulerSealBindingSemantic } from './ability/ruler-seal';
 import {
   DYNAMIC_UNUSED_SEAL_POWER_RULE,
@@ -690,6 +691,14 @@ function isRestorePendingInteraction(value: unknown): boolean {
         'kind', 'template', 'visibility', 'cancelPolicy', 'sourceCardInstanceId', 'abilityId', 'createdRevision', 'continuationRef', 'constraints',
       ]) && isRestoreInteractionConstraints(value.constraints, ['card']) &&
         (value.constraints as Record<string, unknown>).min === 2 && (value.constraints as Record<string, unknown>).max === 2;
+    case 'discard_shuffle_source_x_v1':
+      return hasExactRestoreKeys(value, [
+        'kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'controllerId','candidateIds','base','constraints',
+      ]) && typeof value.controllerId === 'string' && value.base === 2 && isRestoreStringArray(value.candidateIds) &&
+        new Set(value.candidateIds).size === value.candidateIds.length && isRestoreInteractionConstraints(value.constraints, ['card']) &&
+        (value.constraints as Record<string, unknown>).min === 0 &&
+        (value.constraints as Record<string, unknown>).max === value.candidateIds.length;
     case 'private_optional_hand_play_v1':
       return isRestoreInteractionConstraints(value.constraints, ['card']);
     case 'alter_ego_attribute_choice_v1':
@@ -865,7 +874,12 @@ function isRestoreCardRuntimeState(value: unknown): boolean {
       isRestoreSafeInteger(value.roundPowerBonus.amount, 0) && typeof value.roundPowerBonus.sourceAbilityId === 'string')) &&
     (value.manaOverflowCloseAfterBattle === undefined || (isRestoreRecord(value.manaOverflowCloseAfterBattle) &&
       hasExactRestoreKeys(value.manaOverflowCloseAfterBattle, ['round','sourceAbilityId']) &&
-      isRestoreSafeInteger(value.manaOverflowCloseAfterBattle.round, 1) && typeof value.manaOverflowCloseAfterBattle.sourceAbilityId === 'string'));
+      isRestoreSafeInteger(value.manaOverflowCloseAfterBattle.round, 1) && typeof value.manaOverflowCloseAfterBattle.sourceAbilityId === 'string')) &&
+    (value.sourceBoundX === undefined || (isRestoreRecord(value.sourceBoundX) &&
+      hasExactRestoreKeys(value.sourceBoundX, ['value','controllerId','sourceAbilityId']) &&
+      isRestoreSafeInteger(value.sourceBoundX.value, 2) && typeof value.sourceBoundX.controllerId === 'string' &&
+      typeof value.sourceBoundX.sourceAbilityId === 'string')) &&
+    (value.sourceBoundXBattleUpkeepRound === undefined || isRestoreSafeInteger(value.sourceBoundXBattleUpkeepRound, 1));
 }
 
 function isRestoreAbilityDefinition(value: unknown): boolean {
@@ -1546,6 +1560,16 @@ function isRestoreAbilityRuntimeReferences(
             !restoreSourceHasAcceptedAbilityId(pack, cardsByInstance, eventPlacements, instanceId,
               marker.sourceAbilityId as string, isAcceptedSelfManaOverflowPowerCloseAbility)) return false;
       }
+      if (state.sourceBoundX !== undefined) {
+        const binding = state.sourceBoundX as Record<string, unknown>;
+        const physical = cardsByInstance.get(instanceId);
+        if (!physical || binding.controllerId !== physical.ownerPlayerId || binding.controllerId !== physical.controllerPlayerId ||
+            !playerIds.has(binding.controllerId as string) || state.active !== true || state.faceDown !== false ||
+            !['field', 'attack_area'].includes(physical.zone as string) ||
+            !restoreSourceHasAcceptedAbilityId(pack, cardsByInstance, eventPlacements, instanceId,
+              binding.sourceAbilityId as string, isAcceptedDiscardShuffleSourceXAbility)) return false;
+        if (state.sourceBoundXBattleUpkeepRound !== undefined && Number(state.sourceBoundXBattleUpkeepRound) > currentRound) return false;
+      } else if (state.sourceBoundXBattleUpkeepRound !== undefined) return false;
     }
   }
 
@@ -1619,6 +1643,45 @@ function isRestoreAbilityRuntimeReferences(
         pendingDecision.target.type !== 'card_instance' || !Array.isArray(pendingDecision.remainingEffects) || pendingDecision.remainingEffects.length !== 0 ||
         !isRestoreStringArray(pendingCandidates) || pendingCandidates.length !== currentHand.length ||
         currentHand.some((id, index) => pendingCandidates[index] !== id)) return false;
+  }
+  if (isRestoreRecord(pendingDecision) && isRestoreRecord(pendingDecision.interaction) &&
+      pendingDecision.interaction.kind === 'discard_shuffle_source_x_v1') {
+    const meta = pendingDecision.interaction;
+    const controllerId = pendingDecision.controllerId as string;
+    const pendingCandidates = pendingDecision.candidates;
+    const metaCandidateIds = meta.candidateIds;
+    const currentDiscard = [...cardsByInstance.entries()]
+      .filter(([, card]) => card.ownerPlayerId === controllerId && card.controllerPlayerId === controllerId && card.zone === 'discard')
+      .map(([instanceId]) => instanceId);
+    const target = pendingDecision.target;
+    const targetScope = isRestoreRecord(target) ? target.scope : undefined;
+    const targetCount = isRestoreRecord(target) ? target.count : undefined;
+    if (!playerIds.has(controllerId) || meta.controllerId !== controllerId || meta.base !== 2 ||
+        pendingDecision.min !== 0 || pendingDecision.max !== currentDiscard.length ||
+        !restoreSourceControllerMatches(cardsByInstance, eventPlacements, meta.sourceCardInstanceId as string, controllerId) ||
+        !restoreSourceHasAcceptedAbility(pack, cardsByInstance, eventPlacements, meta.sourceCardInstanceId as string, isAcceptedDiscardShuffleSourceXAbility) ||
+        !isRestoreRecord(pendingDecision.context) || pendingDecision.context.controllerId !== controllerId ||
+        pendingDecision.context.sourceCardId !== meta.sourceCardInstanceId || pendingDecision.context.abilityId !== meta.abilityId ||
+        !isRestoreRecord(target) || target.id !== 'discard-cards-for-source-x' || target.type !== 'card_instance' ||
+        !isRestoreRecord(targetScope) || targetScope.zone !== 'discard' || targetScope.owner !== 'controller' || targetScope.controller !== 'self' ||
+        !isRestoreRecord(targetCount) || targetCount.min !== 0 || targetCount.max !== currentDiscard.length || target.visibility !== 'private_to_controller' ||
+        !Array.isArray(pendingDecision.remainingEffects) || pendingDecision.remainingEffects.length !== 0 ||
+        !isRestoreStringArray(pendingCandidates) || !isRestoreStringArray(metaCandidateIds) ||
+        pendingCandidates.length !== currentDiscard.length || metaCandidateIds.length !== currentDiscard.length ||
+        currentDiscard.some((id, index) => pendingCandidates[index] !== id || metaCandidateIds[index] !== id)) return false;
+  }
+  if (isRestoreRecord(value.cardState)) {
+    for (const [instanceId, physical] of cardsByInstance.entries()) {
+      const state = value.cardState[instanceId];
+      if (!isRestoreRecord(state) || state.active !== true || state.faceDown !== false ||
+          !['field', 'attack_area'].includes(physical.zone as string) ||
+          !restoreSourceHasAcceptedAbility(pack, cardsByInstance, eventPlacements, instanceId, isAcceptedDiscardShuffleSourceXAbility)) continue;
+      const openChoice = isRestoreRecord(pendingDecision) && isRestoreRecord(pendingDecision.interaction) &&
+        pendingDecision.interaction.kind === 'discard_shuffle_source_x_v1' &&
+        pendingDecision.interaction.sourceCardInstanceId === instanceId;
+      if (state.sourceBoundX === undefined && !openChoice) return false;
+      if (state.sourceBoundX !== undefined && openChoice) return false;
+    }
   }
   if (isRestoreRecord(pendingDecision) && isRestoreRecord(pendingDecision.interaction) &&
       pendingDecision.interaction.kind === 'owned_ruler_seal_power_v1') {
