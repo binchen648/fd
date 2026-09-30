@@ -56,5 +56,10 @@ export function playerCombatTotalPowerAdjustment(state: GameState, playerId: str
       total += Number(modifier.definition.value);
     }
   }
+  for (const adjustment of runtime.roundPlayerPowerAdjustments ?? []) {
+    if (adjustment.playerId === playerId && adjustment.round === state.round.roundNumber && Number.isFinite(adjustment.amount)) {
+      total += adjustment.amount;
+    }
+  }
   return total;
 }

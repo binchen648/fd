@@ -7135,3 +7135,17 @@ Accounting boundary:
 - readiness is permanently zero-credit;
 - one owner / all currently discoverable readiness gaps / one Candidate / one PR / one fresh R / one A-sync-rescan;
 - do not split per skill and do not advance owner until Vlad readiness plus subsequent owner-complete migration close.
+Implementation evidence for `P3-B-VLAD-OWNER-READINESS-CAPABILITY`:
+- Base: `896911354f9833b8437f5f9a231eeba81e8d1584` (accepted Valkyrie owner A-sync/accounting; strict `164/944`, remaining `780`).
+- Frozen scope remains sc1 + sc2 + sc3 together; readiness is permanently zero-credit.
+- Current-lineage rescan: sc3 already has canonical F1 authoring and is preservation-only; sc1/sc2 remain formal-migration pending.
+- Generic structural capability closes terrain doubling, moved-in battlefield fortification + exact next-round deployment, and normal first / terrain-gated paid second hand effect-play.
+- No `data/authoring/**` delta and no Vlad/card-name/legacy-handler production routing.
+- Focused `13/13 PASS`; complex `38/38`; MatchSession `33/33`; generic MatchSession `11/11`; affected aggregate `95/95 PASS`.
+- `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`7 masters / 16 servants / 20 events / 0 blocking issues`); generated determinism PASS; identity audit CLEAN; diff-check PASS.
+- Detailed report: `docs/reports/2026-09-30-p3-b-vlad-owner-readiness-capability-result.md`.
+- Current disposition: `IMPLEMENTATION_COMPLETE_CANDIDATE`; freeze one Candidate / one PR / one fresh R. No migration credit before later formal owner acceptance + A-sync/accounting.
+- Fresh R on predecessor Candidate `d008527ebee8c638baed9b711c0aaa3ea0480968` returned `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt relay: `https://github.com/binchen648/fd/pull/497#issuecomment-5910358128`.
+- Sole P1 closure: production `MatchSession.startRound()` now preserves the previous round when entering `advanceAbilityPhase`, generic new-round cleanup retires stale `roundPlayerPowerAdjustments` + `pendingBattlefieldFortifications`, and valid `forcedDeploymentLocations` remain intact for the exact next round.
+- Added real MatchSession regressions for (a) fortification -> authoritative win -> next round -> checkpoint/restore with forced-deployment authority preserved, and (b) unconsumed pending fortification -> next round -> stale authority retired before restore.
+- Successor verification is `13/13 + 38/38 + 33/33 + 11/11 = 95/95 PASS`; toolchain/typecheck/content/generated/diff/identity gates remain green; readiness remains zero-credit.

@@ -2,6 +2,8 @@ import {
   advanceAbilityPhase,
   dispatchAbilityCommand,
   effectiveCardPlayCost,
+  forcedDeploymentLocationForPlayer,
+  consumeForcedDeploymentLocationForPlayer,
   initializeAbilityRuntime,
   isCanonicalGenericPendingDecisionForRestore,
   isDeferredAbilityRuntimeProvenanceValidForRestore,
@@ -2643,7 +2645,9 @@ export class MatchSession {
       });
     const prideLocations = this.kaynethPrideDeploymentLocations(playerId, legalLocations.map((location) => location.id));
     const mustBattlefield = this.state.ruleOverrides?.mustDeployToBattlefieldPlayerIds?.includes(playerId);
-    const filteredLocations = mustBattlefield ? legalLocations.filter((location) => location.tags.includes('battlefield')) : legalLocations;
+    const forcedLocation = forcedDeploymentLocationForPlayer(this.state, playerId);
+    let filteredLocations = mustBattlefield ? legalLocations.filter((location) => location.tags.includes('battlefield')) : legalLocations;
+    if (forcedLocation) filteredLocations = filteredLocations.filter((location) => location.id === forcedLocation);
     return (prideLocations.length
       ? filteredLocations.filter((location) => prideLocations.includes(location.id))
       : filteredLocations)
@@ -2776,6 +2780,7 @@ export class MatchSession {
       processAbilityEvent(this.state, { id: `deploy-battlefield:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_battlefield', playerId, locationId });
     }
     processAbilityEvent(this.state, { id: `deploy-location:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_location', playerId, locationId });
+    consumeForcedDeploymentLocationForPlayer(this.state, playerId, locationId);
     this.consumeAppliedDirectives();
     this.advanceToNextDecision();
     this.checkpoint(`${playerId}:deploy_player`);
@@ -3435,6 +3440,7 @@ export class MatchSession {
   }
 
   private startRound(round: number, targetState = this.state): void {
+    const previousRound = targetState.round.roundNumber;
     targetState.round = { roundNumber: round, activePhase: 'preparation', prioritySeat: 1 };
     for (const player of targetState.players) {
       delete player.locationId;
@@ -3448,7 +3454,7 @@ export class MatchSession {
     for (const player of targetState.players) {
       if (player.status === 'active') this.drawToHandLimit(targetState, player.id);
     }
-    if (targetState.abilityRuntime) advanceAbilityPhase(targetState, 'preparation', round);
+    if (targetState.abilityRuntime) advanceAbilityPhase(targetState, 'preparation', round, previousRound);
     this.record('round_start', `round ${round} started`, { situation: targetState.currentSituationCardId, events: targetState.eventPlacements, closedLocations: modeStateOf(targetState).closedLocations }, targetState);
     this.checkpoint(`round ${round} start`, targetState);
   }

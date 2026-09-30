@@ -485,6 +485,14 @@ export interface AbilityRuntime {
   grantedPerGamePlayLimitCardIds?: string[];
   /** Play-count snapshot captured when a physical card first acquires the dynamic per-game limit. */
   grantedPerGamePlayLimitBaselineByCardId?: Record<string, number>;
+  /** Actual movement-entry rounds by player/location; deployments do not write this authority. */
+  locationEntryRoundByPlayer?: Record<PlayerId, Record<string, number>>;
+  /** Round-local generic total-Power adjustments produced by accepted structural abilities. */
+  roundPlayerPowerAdjustments?: Array<{ playerId: PlayerId; amount: number; round: number; sourceCardId: string; abilityId: string }>;
+  /** Armed same-battlefield win checks created by an accepted fortification action. */
+  pendingBattlefieldFortifications?: Array<{ controllerId: PlayerId; battlefieldId: string; round: number; sourceCardId: string; abilityId: string }>;
+  /** Exact next-round deployment destination authority created by an accepted fortification win. */
+  forcedDeploymentLocations?: Array<{ playerId: PlayerId; locationId: string; round: number; sourceCardId: string; abilityId: string }>;
   ongoingEffects: OngoingEffect[]; lifecycleTransitions?: LifecycleTransition[]; responseWindows: ResponseWindow[]; pendingDecision?: PendingDecision;
   pendingDelayedActivations?: PendingDelayedActivation[];
   /** Server-owned pre-scoring battle-local defeat requests staged by the exact Presence Concealment response. */

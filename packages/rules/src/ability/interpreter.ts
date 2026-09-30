@@ -25,7 +25,7 @@ import {
   trustedCombatOpponentPowerRewardFacts,
 } from './combat-opponent-power-vp-reward';
 import { controllerHasLinkedOwnerCardFrom, isLinkedOwnerCombatRule, isServantNoCommandSealsRule, linkedOwnerBasePowerMultiplier, playerHasLinkedOwnerLossImmunity, servantRevealForbiddenByNoCommandSeals } from './linked-owner-combat';
-import { setTerrainAdvantageOverride } from './terrain-advantage-override';
+import { setTerrainAdvantageOverride, terrainAdvantageAtLocation } from './terrain-advantage-override';
 import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute, deductionRecordDefinitionsForOwner, isDeductionRecordEffect, type DeductionRecordAttribute } from './deduction-record';
 import { activePlayerCountMinusRoundPlayCostAbility } from './dynamic-play-cost';
 import { playerIgnoresAbilityFromController } from './player-ability-immunity';
@@ -74,6 +74,12 @@ import {
   isAcceptedRetriggerActiveDefinitionSetAbility,
   isDefinitionSetActiveCardCountAtLeastCondition,
 } from './commander-card-lifecycle-capability';
+import {
+  DOUBLE_CONTROLLER_TERRAIN_EFFECT, FORTIFY_MOVED_IN_BATTLEFIELD_EFFECT, PLAY_HAND_CARDS_WITH_TERRAIN_EXTRA_EFFECT,
+  containsTerrainFortificationExtraPlayPrivilegedNode, isAcceptedDoubleControllerTerrainAbility,
+  isAcceptedFortifyMovedInBattlefieldAbility, isAcceptedTerrainExtraHandPlayAbility,
+  isAcceptedTerrainFortificationExtraPlayAbility, isControllerHasPositiveTerrainCondition, isEffectPlayableFaceUpConstraint,
+} from './terrain-fortification-extra-play-capability';
 import { isHideServantTrueNameUntilRoundEndEffect, isLoseVpEqualSourcePlayCountEffect, isRevealHandRoundPowerEffect, PLAYER_COMBAT_TOTAL_POWER_RULE, servantRevealSuppressedByTemporaryConcealment } from './owner-self-mechanics';
 import {
   isAnyBattlefieldConstraint,
@@ -784,6 +790,20 @@ export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPa
     playRulesVersion: options.playRulesVersion ?? 'explicit-v1',
     playCounters: { round: s.round.roundNumber, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} } };
 }
+
+export function forcedDeploymentLocationForPlayer(s: GameState, playerId: string): string | undefined {
+  const r = runtime(s); const matches = (r.forcedDeploymentLocations ?? []).filter((entry) => entry.playerId === playerId && entry.round === s.round.roundNumber);
+  if (matches.length > 1) reject('invalid_state', 'Multiple forced deployment locations are armed for one player/round');
+  const entry = matches[0]; if (!entry) return undefined;
+  const source = s.cards.find((candidate) => candidate.instanceId === entry.sourceCardId); const ability = source ? restoredAbility(s, entry.sourceCardId, entry.abilityId) : undefined;
+  if (!source || source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId || !ability || !isAcceptedFortifyMovedInBattlefieldAbility(ability) || !s.map.locations.some((location) => location.id === entry.locationId)) reject('invalid_state', 'Forced deployment authority lost exact provenance');
+  return entry.locationId;
+}
+export function consumeForcedDeploymentLocationForPlayer(s: GameState, playerId: string, locationId: string): void {
+  const expected = forcedDeploymentLocationForPlayer(s, playerId); if (!expected) return; if (expected !== locationId) reject('invalid_state', 'Forced deployment destination mismatch');
+  runtime(s).forcedDeploymentLocations = (runtime(s).forcedDeploymentLocations ?? []).filter((entry) => !(entry.playerId === playerId && entry.round === s.round.roundNumber));
+}
+
 export function createBattleResult(data: BattleResultData): BattleResult {
   const winners = [...new Set(data.winners)]; const loserIds = [...new Set(data.loserIds)];
   return { winners, loserIds, didWin: id => winners.includes(id), isSoleWinner: id => winners.length === 1 && winners[0] === id };
@@ -823,6 +843,10 @@ function constraint(s: GameState, ctx: EffectContext, candidate: CardInstance, c
     case 'not_card_id': return candidate.definitionId !== c.cardId;
     case 'has_attribute': return getEffectiveCardAttributes(s, candidate.instanceId).includes(str(c.attribute));
     case 'not_source_card': return candidate.instanceId !== ctx.sourceCardId;
+    case 'effect_playable_face_up': {
+      if (!isEffectPlayableFaceUpConstraint(c) || candidate.zone !== 'hand' || candidate.ownerPlayerId !== ctx.controllerId || candidate.controllerPlayerId !== ctx.controllerId) return false;
+      return !playFailure(s, ctx.controllerId, candidate.instanceId, false, true, true, true, false, false, ['hand']);
+    }
     case 'played_this_round': return runtime(s).cardState[candidate.instanceId]?.playedRound === s.round.roundNumber;
     case 'controlled_by_event_battle_opponent_at_controller_location': {
       if (!isEventBattleOpponentAttackConstraint(c)) reject('unsupported', 'Unsupported battle-opponent target constraint shape');
@@ -1432,6 +1456,10 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
       return getEffectiveCardAttributes(s, played.instanceId).includes(str(c.attribute));
     }) ?? false;
     case 'controller_mana_at_least': case 'min_mana': return p.mana >= Number(c.value);
+    case 'controller_has_positive_terrain': {
+      if (!isControllerHasPositiveTerrainCondition(c) || !p.locationId) return false;
+      return terrainAdvantageAtLocation(s, p.id, p.locationId as LocationId) > 0;
+    }
     case 'controller_command_seals_at_least':
     case 'controller_command_seals_at_most': {
       if (!exactRuleNodeKeys(c, ['type', 'value']) || !Number.isSafeInteger(c.value) || Number(c.value) < 0)
@@ -1716,6 +1744,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsDeckRecycleReplayGrowthPrivilegedNode(a) && !isAcceptedDeckRecycleReplayGrowthAbility(a)) return false;
   if (containsCrossPhaseRedeploymentPrivilegedNode(a) && !isAcceptedCrossPhaseRedeploymentPrivilegedAbility(a)) return false;
   if (containsCommanderLifecyclePrivilegedNode(a) && !isAcceptedCommanderLifecyclePrivilegedAbility(a)) return false;
+  if (containsTerrainFortificationExtraPlayPrivilegedNode(a) && !isAcceptedTerrainFortificationExtraPlayAbility(a)) return false;
   if (containsLocationMarkerPrivilegedNode(a) && !isAcceptedLocationMarkerAbility(a)) return false;
   if (isAcceptedLocationMarkerAbility(a) && !canActivateLocationMarkerAbility(s, sourceId, a, event)) return false;
   if (containsSealedCardMagicPrivilegedNode(a) && !isAcceptedSealedCardMagicAbility(a)) return false;
@@ -1756,6 +1785,18 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
       a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber && !activeReuseGrant) return false;
   if (abilityLimitReached(s, sourceId, a) && !activeReuseGrant) return false;
   if (isAcceptedDefinitionSetRelocationAbility(a) && !definitionSetRelocationPreflight(s, sourceControllerId, a)) return false;
+  if (isAcceptedDoubleControllerTerrainAbility(a) || isAcceptedFortifyMovedInBattlefieldAbility(a)) {
+    const source = card(s, sourceId); const sourceState = runtime(s).cardState[sourceId]; const controller = player(s, sourceControllerId);
+    if (source.ownerPlayerId !== sourceControllerId || source.controllerPlayerId !== sourceControllerId || source.zone !== 'skill' ||
+        sourceState?.active === true || sourceState?.faceDown === true || !controller.locationId || controller.mana < 1) return false;
+    if (isAcceptedDoubleControllerTerrainAbility(a) && terrainAdvantageAtLocation(s, sourceControllerId, controller.locationId as LocationId) <= 0) return false;
+    if (isAcceptedFortifyMovedInBattlefieldAbility(a) && !isBattlefield(s, controller.locationId)) return false;
+  }
+  if (isAcceptedTerrainExtraHandPlayAbility(a)) {
+    const source = card(s, sourceId); const sourceState = runtime(s).cardState[sourceId];
+    if (source.ownerPlayerId !== sourceControllerId || source.controllerPlayerId !== sourceControllerId || !['field','attack_area'].includes(source.zone) ||
+        sourceState?.active !== true || sourceState.faceDown === true || candidates(s, context(s, sourceId, a.id), a.targets[0]!).length < 1) return false;
+  }
   if (isAcceptedRecallActiveDefinitionJoinSourceAbility(a)) {
     const source = card(s, sourceId); const sourceState = runtime(s).cardState[sourceId];
     const cost = effectiveCardPlayCost(s, sourceControllerId, sourceId);
@@ -3146,6 +3187,34 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       for (const next of nodes(effect.then)) resolveEffect(s, ctx, next); break;
     }
     case 'create_modifier': installCreatedPowerModifier(s, ctx, effect); break;
+    case 'double_controller_terrain_this_round': {
+      if (!isAcceptedDoubleControllerTerrainAbility(abilityDefinition(s, ctx.sourceCardId, ctx.abilityId))) reject('resolution_failed', 'Unsupported terrain doubling source ability');
+      if (!p.locationId || terrainAdvantageAtLocation(s, p.id, p.locationId as LocationId) <= 0) reject('resolution_failed', 'Terrain doubling requires positive terrain');
+      const store = s as unknown as { modeState?: { terrainMultipliers?: Array<Record<string, unknown>> } }; store.modeState ??= {}; store.modeState.terrainMultipliers ??= [];
+      store.modeState.terrainMultipliers.push({ playerId: p.id, multiplier: 2, duration: 'this_round', round: s.round.roundNumber, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+      break;
+    }
+    case 'fortify_moved_in_battlefield_and_arm_next_round_deployment': {
+      const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId); if (!isAcceptedFortifyMovedInBattlefieldAbility(a) || !p.locationId || !isBattlefield(s, p.locationId)) reject('resolution_failed', 'Fortification requires accepted battlefield source ability');
+      const r = runtime(s); const locationId = p.locationId; const entries = r.locationEntryRoundByPlayer ?? {};
+      r.roundPlayerPowerAdjustments ??= [];
+      r.roundPlayerPowerAdjustments = r.roundPlayerPowerAdjustments.filter((entry) => !(entry.sourceCardId === ctx.sourceCardId && entry.abilityId === ctx.abilityId && entry.round === s.round.roundNumber));
+      for (const target of s.players.filter((candidate) => candidate.status === 'active' && candidate.locationId === locationId && entries[candidate.id]?.[locationId] === s.round.roundNumber)) {
+        r.roundPlayerPowerAdjustments.push({ playerId: target.id, amount: -4, round: s.round.roundNumber, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+      }
+      r.pendingBattlefieldFortifications ??= [];
+      r.pendingBattlefieldFortifications = r.pendingBattlefieldFortifications.filter((entry) => !(entry.sourceCardId === ctx.sourceCardId && entry.abilityId === ctx.abilityId && entry.round === s.round.roundNumber));
+      r.pendingBattlefieldFortifications.push({ controllerId: p.id, battlefieldId: locationId, round: s.round.roundNumber, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+      break;
+    }
+    case 'play_hand_cards_with_terrain_optional_second': {
+      const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId); if (!isAcceptedTerrainExtraHandPlayAbility(a)) reject('resolution_failed', 'Unsupported terrain extra-play source ability');
+      const first = ctx.selections[String(effect.firstTarget)] ?? []; const second = ctx.selections[String(effect.secondTarget)] ?? [];
+      if (first.length !== 1 || second.length > 1) reject('illegal_target', 'Terrain extra-play requires one first card and at most one second card');
+      if (second.length && (!p.locationId || terrainAdvantageAtLocation(s, p.id, p.locationId as LocationId) <= 0)) reject('resolution_failed', 'Second hand play requires positive terrain');
+      playBatch(s, p.id, [...first, ...second].map((cardInstanceId) => ({ type: 'play_card', cardInstanceId })), 'effect', false, ['hand'], 0, second.length ? 2 : 0);
+      break;
+    }
     default: {
       if (effect.type === 'close_source_card' && isCardCloseForbidden(s, ctx.sourceCardId)) {
         reject('resolution_failed', 'Close source card is forbidden by a live rule modifier.');
@@ -3186,6 +3255,17 @@ function findPendingTargetRestoreSpec(s: GameState, ctx: EffectContext, a: Autho
     if (effect.type === 'branch') {
       const branch = nodes(effect.branches).find(b => b.else !== undefined || condition(s, ctx, node(b.if)));
       return branch ? findPendingTargetRestoreSpec(s, ctx, a, nodes(branch.then ?? branch.else)) : undefined;
+    }
+    if (effect.type === PLAY_HAND_CARDS_WITH_TERRAIN_EXTRA_EFFECT && isAcceptedTerrainExtraHandPlayAbility(a)) {
+      for (const targetRef of [str(effect.firstTarget), str(effect.secondTarget)]) {
+        const target = a.targets.find((candidate) => candidate.id === targetRef);
+        if (!target || Object.prototype.hasOwnProperty.call(ctx.selections, targetRef)) continue;
+        const count = node(target.count); const min = Number(count.min ?? 1); const max = Number(count.max ?? 1);
+        const choices = candidates(s, ctx, target);
+        if (choices.length < min) reject('no_legal_target', 'No legal target remains');
+        return { target, candidates: choices, min, max, remainingEffects: effects };
+      }
+      return undefined;
     }
     const targetRef = effect.type === 'move_player' ? str(effect.to) : str(effect.target);
     const target = a.targets.find(t => t.id === targetRef);
@@ -3455,6 +3535,21 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState):
       instanceId !== record.cardInstanceId || !s.players.some((candidate) => candidate.id === record.controllerId) ||
       !s.players.some((candidate) => candidate.id === record.originalOwnerPlayerId) || !recordedRemovedRecordIsAuthoritative(s, record))) return false;
     if ((r.transformedReturnSilenceSourceCardIds ?? []).some((id) => !s.cards.some((card) => card.instanceId === id))) return false;
+    if (r.locationEntryRoundByPlayer !== undefined && Object.entries(r.locationEntryRoundByPlayer).some(([playerId, byLocation]) =>
+      !playerIds.has(playerId) || Object.entries(byLocation).some(([locationId, round]) => !locationIds.has(locationId) || !Number.isSafeInteger(round) || round < 1 || round > s.round.roundNumber))) return false;
+    if (!(r.roundPlayerPowerAdjustments ?? []).every((entry) => {
+      const source = restoredPhysicalSource(s, entry.sourceCardId, s.cards.find((candidate) => candidate.instanceId === entry.sourceCardId)?.controllerPlayerId ?? '');
+      const ability = source ? restoredAbility(s, entry.sourceCardId, entry.abilityId) : undefined;
+      return playerIds.has(entry.playerId) && entry.amount === -4 && entry.round === s.round.roundNumber && !!source && !!ability && isAcceptedFortifyMovedInBattlefieldAbility(ability);
+    })) return false;
+    if (!(r.pendingBattlefieldFortifications ?? []).every((entry) => {
+      const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId); const ability = source ? restoredAbility(s, entry.sourceCardId, entry.abilityId) : undefined;
+      return playerIds.has(entry.controllerId) && locationIds.has(entry.battlefieldId) && entry.round === s.round.roundNumber && !!source && !!ability && isAcceptedFortifyMovedInBattlefieldAbility(ability);
+    })) return false;
+    if (!(r.forcedDeploymentLocations ?? []).every((entry) => {
+      const source = restoredPhysicalSource(s, entry.sourceCardId, entry.playerId); const ability = source ? restoredAbility(s, entry.sourceCardId, entry.abilityId) : undefined;
+      return playerIds.has(entry.playerId) && locationIds.has(entry.locationId) && entry.round >= s.round.roundNumber && entry.round <= s.round.roundNumber + 1 && !!source && !!ability && isAcceptedFortifyMovedInBattlefieldAbility(ability);
+    })) return false;
     return true;
   } catch { return false; }
 }
@@ -5417,6 +5512,9 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (containsCommanderLifecyclePrivilegedNode(a) && !isAcceptedCommanderLifecyclePrivilegedAbility(a)) {
     reject('resolution_failed', 'Unsupported definition-set relocation/recall/retrigger semantic shape');
   }
+  if (containsTerrainFortificationExtraPlayPrivilegedNode(a) && !isAcceptedTerrainFortificationExtraPlayAbility(a)) {
+    reject('resolution_failed', 'Unsupported terrain/fortification/extra-play privileged semantic shape');
+  }
   if (isAcceptedDefinitionSetRelocationAbility(a)) {
     if (!definitionSetRelocationPreflight(s, ctx.controllerId, a)) reject('resolution_failed', 'Definition-set relocation preflight failed');
     const pending = findPendingTarget(s, ctx, a, effects);
@@ -5963,6 +6061,23 @@ function rememberTrustedBattleResultSnapshot(r: AbilityRuntime, event: AbilityEv
 
 function processEvent(s: GameState, event: AbilityEvent): void {
   const r = runtime(s); if (r.processedEvents.includes(event.id)) return;
+  if (event.type === 'after_controller_enters_location' && event.playerId && event.locationId && (event.movementKind === 'normal' || event.movementKind === 'effect')) {
+    r.locationEntryRoundByPlayer ??= {}; r.locationEntryRoundByPlayer[event.playerId] ??= {}; r.locationEntryRoundByPlayer[event.playerId]![event.locationId] = s.round.roundNumber;
+  }
+  if (event.type === 'after_battle_result_determined' && event.battlefieldId && event.resultId && event.battlePhaseResolutionId && event.battleResult && Array.isArray(event.battleParticipantIds)) {
+    const pending = r.pendingBattlefieldFortifications ?? []; const remaining = [];
+    for (const entry of pending) {
+      if (entry.round !== s.round.roundNumber || entry.battlefieldId !== event.battlefieldId) { remaining.push(entry); continue; }
+      const source = s.cards.find((candidate) => candidate.instanceId === entry.sourceCardId); const ability = source ? restoredAbility(s, entry.sourceCardId, entry.abilityId) : undefined;
+      if (!source || source.ownerPlayerId !== entry.controllerId || source.controllerPlayerId !== entry.controllerId || !ability || !isAcceptedFortifyMovedInBattlefieldAbility(ability)) reject('invalid_state', 'Fortification authority lost exact source provenance');
+      if (!event.battleParticipantIds.includes(entry.controllerId)) continue;
+      if (event.battleResult.winners.includes(entry.controllerId)) {
+        r.forcedDeploymentLocations ??= []; r.forcedDeploymentLocations = r.forcedDeploymentLocations.filter((forced) => !(forced.playerId === entry.controllerId && forced.round === s.round.roundNumber + 1));
+        r.forcedDeploymentLocations.push({ playerId: entry.controllerId, locationId: entry.battlefieldId, round: s.round.roundNumber + 1, sourceCardId: entry.sourceCardId, abilityId: entry.abilityId });
+      }
+    }
+    r.pendingBattlefieldFortifications = remaining;
+  }
   if (!event.id) reject('invalid_event', 'Events require stable ids');
   r.processedEvents.push(event.id);
   rememberTrustedBattleResultSnapshot(r, event);
@@ -6114,6 +6229,8 @@ export function advanceAbilityPhase(
     retireBattlefieldAttackOfferAuthorityBeforeRound(copy, round);
     runtime(copy).movementDistanceThisRound = {};
     runtime(copy).battlefieldsPassedOrStayedThisRound = {};
+    runtime(copy).roundPlayerPowerAdjustments = (runtime(copy).roundPlayerPowerAdjustments ?? []).filter((entry) => entry.round >= round);
+    runtime(copy).pendingBattlefieldFortifications = (runtime(copy).pendingBattlefieldFortifications ?? []).filter((entry) => entry.round >= round);
     runtime(copy).pendingRulerSealRewards = runtime(copy).pendingRulerSealRewards.filter((reward) => reward.round >= round);
     runtime(copy).manaGainedThisRound = { round, byPlayer: {} };
     runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
@@ -6978,8 +7095,9 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
   cleanupOngoing(s); checkFormulaTriggers(s); resumeBattleCloseDrawPlayAfterNestedWork(s); resumeBattlefieldAttackOfferAfterNestedWork(s);
 }
 /** All eligibility/costs are checked against the pre-payment state; all cards activate before triggers. */
-function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false, allowedSourceZones: readonly string[] = ['hand', 'skill'], minimumManaCost = 0): void {
+function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false, allowedSourceZones: readonly string[] = ['hand', 'skill'], minimumManaCost = 0, additionalManaCost = 0): void {
   if (!Number.isSafeInteger(minimumManaCost) || minimumManaCost < 0) reject('unsupported', 'Minimum play cost must be a nonnegative safe integer');
+  if (!Number.isSafeInteger(additionalManaCost) || additionalManaCost < 0) reject('unsupported', 'Additional play cost must be a nonnegative safe integer');
   if (new Set(choices.map(c => c.cardInstanceId)).size !== choices.length) reject('illegal_action', 'Duplicate card in play batch');
   const requiredAdditionalIds = new Set(choices
     .filter(c => isRequiredAdditionalPlayCard(s, c.cardInstanceId))
@@ -7019,6 +7137,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     cost += cardCost;
     if (!c.faceDown) commandSealCost += cardPlayCommandSealCost(definition(s, c.cardInstanceId))?.amount ?? 0;
   }
+  cost += additionalManaCost;
   if (cost > player(s, playerId).mana) reject('insufficient_mana', 'Cannot pay aggregate batch cost');
   const sealCarrier = player(s, playerId) as unknown as { commandSpells?: number };
   const availableSeals = Number(sealCarrier.commandSpells ?? 3);

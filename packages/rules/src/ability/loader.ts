@@ -118,6 +118,15 @@ import {
   containsCommanderLifecyclePrivilegedNode,
   isAcceptedCommanderLifecyclePrivilegedAbility,
 } from './commander-card-lifecycle-capability';
+import {
+  CONTROLLER_HAS_POSITIVE_TERRAIN_CONDITION,
+  EFFECT_PLAYABLE_FACE_UP_CONSTRAINT,
+  DOUBLE_CONTROLLER_TERRAIN_EFFECT,
+  FORTIFY_MOVED_IN_BATTLEFIELD_EFFECT,
+  PLAY_HAND_CARDS_WITH_TERRAIN_EXTRA_EFFECT,
+  containsTerrainFortificationExtraPlayPrivilegedNode,
+  isAcceptedTerrainFortificationExtraPlayAbility,
+} from './terrain-fortification-extra-play-capability';
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
 }
@@ -160,6 +169,8 @@ const supportedTypes = new Set([
   DUPLICATE_BASE_POWER_CLOSE_EFFECT, DISCARD_SHUFFLE_SOURCE_X_BINDING_EFFECT,
   CROSS_PHASE_ACTION_PROVIDER_EFFECT, ONE_SHOT_USED_ATTACK_ABILITY_REUSE_EFFECT, STRICT_POWER_REDEPLOY_SWAP_EFFECT,
   RELOCATE_DEFINITION_SET_WITHOUT_PLAY_EFFECT, RECALL_ACTIVE_DEFINITION_AND_JOIN_SOURCE_EFFECT, RETRIGGER_ACTIVE_DEFINITION_SET_PLAY_EFFECTS,
+  CONTROLLER_HAS_POSITIVE_TERRAIN_CONDITION, EFFECT_PLAYABLE_FACE_UP_CONSTRAINT, DOUBLE_CONTROLLER_TERRAIN_EFFECT,
+  FORTIFY_MOVED_IN_BATTLEFIELD_EFFECT, PLAY_HAND_CARDS_WITH_TERRAIN_EXTRA_EFFECT,
   'card_count_at_least',
   'event_player_won_combat', 'event_player_lost_combat',
   'event_player_is_controller', 'event_player_is_opponent', 'event_location_equals_controller',
@@ -257,7 +268,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'directive', 'payload', 'deckId', 'definitionId', 'quantity', 'rounding', 'targetPlayer',
   'oncePerRound', 'replacement', 'deckKinds', 'revealedKind', 'targetKind', 'controllerCannotWinStatus',
   'returnAtRoundEnd', 'preserveVictoryPoints', 'sakuraMasterId', 'fallbackServantPool',
-  'definitionIds', 'activeOnly', 'destinationZone',
+  'definitionIds', 'activeOnly', 'destinationZone', 'firstTarget', 'secondTarget', 'extraSecondMana', 'multiplier', 'movedPlayerPowerAdjustment', 'winDeployment',
   // Phase 3A resolution/data-flow infrastructure
   'bind', 'expr', 'binding', 'field', 'valueType', 'ids', 'reason', 'message', 'enabled', 'regular', 'climax', 'threshold', 'phase', 'targetDefinitionIds',
   'add', 'multiply', 'until', 'hiddenAmount', 'revealedAmount', 'excludeLinkedOwnerRecipient', 'commandSealsAtMost', 'hideTrueName',
@@ -650,6 +661,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (containsCommanderLifecyclePrivilegedNode(candidateAbility) &&
           !isAcceptedCommanderLifecyclePrivilegedAbility(candidateAbility)) {
         issue('commanderLifecycle.gateway', 'Definition-set relocation/recall/retrigger mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsTerrainFortificationExtraPlayPrivilegedNode(candidateAbility) &&
+          !isAcceptedTerrainFortificationExtraPlayAbility(candidateAbility)) {
+        issue('terrainFortification.gateway', 'Terrain/fortification/extra-play privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       if (Array.isArray(a.markers) && a.markers.some((marker) => String(marker).startsWith('deduction-'))) {
         if (!isDeductionRecordMarkerAbility(candidateAbility)) issue('deductionRecord.gateway', 'Unsupported exact deduction-record marker ability shape', id);
