@@ -66,6 +66,14 @@ import {
   isAcceptedOneShotUsedAttackAbilityReuseAbility,
   isAcceptedStrictPowerRedeploySwapAbility,
 } from './cross-phase-redeployment-capability';
+import {
+  containsCommanderLifecyclePrivilegedNode,
+  isAcceptedCommanderLifecyclePrivilegedAbility,
+  isAcceptedDefinitionSetRelocationAbility,
+  isAcceptedRecallActiveDefinitionJoinSourceAbility,
+  isAcceptedRetriggerActiveDefinitionSetAbility,
+  isDefinitionSetActiveCardCountAtLeastCondition,
+} from './commander-card-lifecycle-capability';
 import { isHideServantTrueNameUntilRoundEndEffect, isLoseVpEqualSourcePlayCountEffect, isRevealHandRoundPowerEffect, PLAYER_COMBAT_TOTAL_POWER_RULE, servantRevealSuppressedByTemporaryConcealment } from './owner-self-mechanics';
 import {
   isAnyBattlefieldConstraint,
@@ -1116,12 +1124,15 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
   const reuseTargetFilter = target.id === 'reused_attack_ability_source' && currentAbility && isAcceptedOneShotUsedAttackAbilityReuseAbility(currentAbility)
     ? (candidateId: string) => eligibleUsedAttackAbilityIds(s, ctx.controllerId, candidateId, ctx.sourceCardId, ctx.abilityId).length >= 1
     : (_candidateId: string) => true;
+  const recallTargetIds = target.id === 'active_definition_card' && currentAbility && isAcceptedRecallActiveDefinitionJoinSourceAbility(currentAbility)
+    ? new Set(recallDefinitionSetCandidateIds(s, ctx.controllerId, currentAbility)) : undefined;
   return s.cards.filter(c =>
     !alreadySelected.has(c.instanceId) &&
     (scope.controller === 'any' || c.controllerPlayerId === ctx.controllerId) &&
     (scope.owner === 'any' || c.ownerPlayerId === ctx.controllerId || !scope.owner) &&
     c.zone === zone &&
     reuseTargetFilter(c.instanceId) &&
+    (!recallTargetIds || recallTargetIds.has(c.instanceId)) &&
     nodes(target.constraints).every(x => constraint(s, ctx, c, x))).map(c => c.instanceId);
 }
 function trustedBattlePowerSnapshot(event: AbilityEvent | undefined): { participantIds: string[]; powers: Record<string, number> } | undefined {
@@ -1449,6 +1460,7 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     }
     case 'source_active':
     case 'source_owned': return sourceStateCondition(s, ctx, c);
+    case 'card_count_at_least': return definitionSetActiveCountCondition(s, ctx, c);
     case 'event_player_won_combat':
     case 'event_player_lost_combat': return eventCombatOutcomeCondition(s, ctx, c);
     case 'event_player_is_controller':
@@ -1623,6 +1635,29 @@ function liveReuseGrantForAbility(s: GameState, controllerId: string, targetCard
     return runtime(s).usedAbilities[`${targetCardId}:${targetAbilityId}`] === s.round.roundNumber;
   });
 }
+function definitionIdsFromNode(value: unknown): string[] {
+  return Array.isArray(value) ? value.filter((entry): entry is string => typeof entry === 'string' && entry.length > 0) : [];
+}
+function liveOwnedDefinitionSetCards(s: GameState, controllerId: string, definitionIds: readonly string[]): CardInstance[] {
+  return s.cards.filter((physical) => physical.ownerPlayerId === controllerId && physical.controllerPlayerId === controllerId &&
+    physical.zone === 'attack_area' && definitionIds.includes(physical.definitionId) &&
+    runtime(s).cardState[physical.instanceId]?.active === true && runtime(s).cardState[physical.instanceId]?.faceDown !== true);
+}
+function recallDefinitionSetCandidateIds(s: GameState, controllerId: string, ability: AuthoringAbility): string[] {
+  if (!isAcceptedRecallActiveDefinitionJoinSourceAbility(ability)) return [];
+  return liveOwnedDefinitionSetCards(s, controllerId, definitionIdsFromNode(ability.effects[0]?.definitionIds)).map((entry) => entry.instanceId);
+}
+function definitionSetRelocationPreflight(s: GameState, controllerId: string, ability: AuthoringAbility): boolean {
+  if (!isAcceptedDefinitionSetRelocationAbility(ability)) return false;
+  const ids = definitionIdsFromNode(ability.effects[0]?.definitionIds);
+  return ids.every((definitionId) => s.cards.filter((physical) => physical.definitionId === definitionId &&
+    physical.ownerPlayerId === controllerId && physical.controllerPlayerId === controllerId).length === 1);
+}
+function definitionSetActiveCountCondition(s: GameState, ctx: EffectContext, value: RuleNode): boolean {
+  if (!isDefinitionSetActiveCardCountAtLeastCondition(value)) reject('unsupported', 'Unsupported definition-set active-card count condition');
+  return liveOwnedDefinitionSetCards(s, ctx.controllerId, definitionIdsFromNode(value.definitionIds)).length >= Number(value.value);
+}
+
 function effectiveActivationPhase(s: GameState, sourceId: string, a: AuthoringAbility): string {
   const basePhase = str(a.activation.phase);
   if (basePhase === 'action' && (runtime(s).cardState[sourceId]?.actionAbilityAllowedInCombatRound === s.round.roundNumber ||
@@ -1680,6 +1715,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAcceptedBattleLuckCloseDrawPlayAbility(a) && !canActivateBattleCloseDrawPlay(s, sourceId, a)) return false;
   if (containsDeckRecycleReplayGrowthPrivilegedNode(a) && !isAcceptedDeckRecycleReplayGrowthAbility(a)) return false;
   if (containsCrossPhaseRedeploymentPrivilegedNode(a) && !isAcceptedCrossPhaseRedeploymentPrivilegedAbility(a)) return false;
+  if (containsCommanderLifecyclePrivilegedNode(a) && !isAcceptedCommanderLifecyclePrivilegedAbility(a)) return false;
   if (containsLocationMarkerPrivilegedNode(a) && !isAcceptedLocationMarkerAbility(a)) return false;
   if (isAcceptedLocationMarkerAbility(a) && !canActivateLocationMarkerAbility(s, sourceId, a, event)) return false;
   if (containsSealedCardMagicPrivilegedNode(a) && !isAcceptedSealedCardMagicAbility(a)) return false;
@@ -1719,6 +1755,14 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (!isRulerSealUseSemantic(a) && !isCommandSpellCard(s, sourceId) && !isRepeatableSealPowerReplacementAbility(a) &&
       a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber && !activeReuseGrant) return false;
   if (abilityLimitReached(s, sourceId, a) && !activeReuseGrant) return false;
+  if (isAcceptedDefinitionSetRelocationAbility(a) && !definitionSetRelocationPreflight(s, sourceControllerId, a)) return false;
+  if (isAcceptedRecallActiveDefinitionJoinSourceAbility(a)) {
+    const source = card(s, sourceId); const sourceState = runtime(s).cardState[sourceId];
+    const cost = effectiveCardPlayCost(s, sourceControllerId, sourceId);
+    if (source.ownerPlayerId !== sourceControllerId || source.controllerPlayerId !== sourceControllerId || source.zone !== 'skill' ||
+        sourceState?.active === true || sourceState?.faceDown === true || !Number.isSafeInteger(cost) || cost < 0 ||
+        player(s, sourceControllerId).mana < cost || recallDefinitionSetCandidateIds(s, sourceControllerId, a).length < 1) return false;
+  }
   if (isAcceptedOneShotUsedAttackAbilityReuseAbility(a)) {
     const providerSource = card(s, sourceId);
     if (providerSource.ownerPlayerId !== sourceControllerId || providerSource.controllerPlayerId !== sourceControllerId ||
@@ -5370,6 +5414,72 @@ function stageCombatOpponentPowerVpReward(s: GameState, ctx: EffectContext, a: A
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (containsCommanderLifecyclePrivilegedNode(a) && !isAcceptedCommanderLifecyclePrivilegedAbility(a)) {
+    reject('resolution_failed', 'Unsupported definition-set relocation/recall/retrigger semantic shape');
+  }
+  if (isAcceptedDefinitionSetRelocationAbility(a)) {
+    if (!definitionSetRelocationPreflight(s, ctx.controllerId, a)) reject('resolution_failed', 'Definition-set relocation preflight failed');
+    const pending = findPendingTarget(s, ctx, a, effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    const ids = definitionIdsFromNode(a.effects[0]?.definitionIds);
+    const selected = ctx.selections.definition_destinations ?? [];
+    if (selected.length !== ids.length || new Set(selected).size !== selected.length) reject('invalid_target', 'Definition destinations require one distinct selection per definition');
+    const destinations = new Map<string, 'hand' | 'attack_area'>();
+    for (const entry of selected) {
+      const split = entry.lastIndexOf('::'); if (split <= 0) reject('invalid_target', 'Invalid definition destination');
+      const definitionId = entry.slice(0, split); const destination = entry.slice(split + 2);
+      if (!ids.includes(definitionId) || !['hand','attack_area'].includes(destination) || destinations.has(definitionId)) reject('invalid_target', 'Invalid or duplicate definition destination');
+      destinations.set(definitionId, destination as 'hand' | 'attack_area');
+    }
+    if (destinations.size !== ids.length) reject('invalid_target', 'Every definition requires exactly one destination');
+    const physicalByDefinition = new Map(ids.map((definitionId) => [definitionId, s.cards.find((physical) =>
+      physical.definitionId === definitionId && physical.ownerPlayerId === ctx.controllerId && physical.controllerPlayerId === ctx.controllerId)!]));
+    for (const definitionId of ids) {
+      const physical = physicalByDefinition.get(definitionId)!; const destination = destinations.get(definitionId)!;
+      moveCard(s, physical.instanceId, destination);
+      const state = runtime(s).cardState[physical.instanceId] ??= { active: false, faceDown: false, playedRound: s.round.roundNumber };
+      state.faceDown = false;
+      if (destination === 'attack_area') {
+        physical.visibility = { scope: 'public' }; state.active = true; state.playedRound = s.round.roundNumber; state.paidManaOnPlay = 0;
+      } else { state.active = false; delete state.paidManaOnPlay; }
+      runtime(s).events.push({ type: 'definition_set_card_relocated_without_play', playerId: ctx.controllerId,
+        sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: physical.instanceId, toZone: destination, movedCount: 1 });
+    }
+    return;
+  }
+  if (isAcceptedRecallActiveDefinitionJoinSourceAbility(a)) {
+    const pending = findPendingTarget(s, ctx, a, effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    const targetId = ctx.selections.active_definition_card?.[0];
+    const eligible = recallDefinitionSetCandidateIds(s, ctx.controllerId, a);
+    if (!targetId || !eligible.includes(targetId)) reject('invalid_target', 'Recall requires one current live definition-set card');
+    const source = card(s, ctx.sourceCardId); const sourceState = runtime(s).cardState[source.instanceId] ??= { active: false, faceDown: false, playedRound: s.round.roundNumber };
+    const cost = effectiveCardPlayCost(s, ctx.controllerId, source.instanceId); const controller = player(s, ctx.controllerId);
+    if (source.ownerPlayerId !== ctx.controllerId || source.controllerPlayerId !== ctx.controllerId || source.zone !== 'skill' || sourceState.active || sourceState.faceDown ||
+        !Number.isSafeInteger(cost) || cost < 0 || controller.mana < cost) reject('resolution_failed', 'Recall/source-join preflight failed');
+    spendMana(s, ctx.controllerId, cost);
+    const target = card(s, targetId); moveCard(s, targetId, 'hand');
+    const targetState = runtime(s).cardState[targetId] ??= { active: false, faceDown: false, playedRound: s.round.roundNumber };
+    targetState.active = false; targetState.faceDown = false; delete targetState.paidManaOnPlay;
+    moveCard(s, source.instanceId, 'attack_area'); source.visibility = { scope: 'public' };
+    sourceState.active = true; sourceState.faceDown = false; sourceState.playedRound = s.round.roundNumber; sourceState.paidManaOnPlay = 0;
+    runtime(s).events.push({ type: 'active_definition_recalled_source_joined_without_play', playerId: ctx.controllerId,
+      sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: targetId, toZone: 'hand', movedCount: 1, resource: 'mana', requestedDelta: -cost, delta: -cost });
+    return;
+  }
+  if (isAcceptedRetriggerActiveDefinitionSetAbility(a)) {
+    const ids = definitionIdsFromNode(a.effects[0]?.definitionIds);
+    const targets = liveOwnedDefinitionSetCards(s, ctx.controllerId, ids);
+    if (!targets.length) reject('resolution_failed', 'No live definition-set card remains for play-effect retrigger');
+    for (const target of targets) {
+      const d = runtime(s).pack.cards[target.definitionId]; if (!d) reject('resolution_failed', 'Retrigger target definition is unavailable');
+      processEvent(s, { id: nextId(s, 'retrigger-play'), type: 'on_card_played', playerId: ctx.controllerId,
+        sourceCardId: target.instanceId, playedCards: [{ instanceId: target.instanceId, controllerId: ctx.controllerId, cardType: d.cardType, faceDown: false }] });
+    }
+    runtime(s).events.push({ type: 'active_definition_set_play_effects_retriggered', playerId: ctx.controllerId,
+      sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, movedCount: targets.length });
+    return;
+  }
   if (containsCrossPhaseRedeploymentPrivilegedNode(a) && !isAcceptedCrossPhaseRedeploymentPrivilegedAbility(a)) {
     reject('resolution_failed', 'Unsupported cross-phase/redeployment privileged semantic shape');
   }

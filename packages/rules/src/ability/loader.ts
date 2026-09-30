@@ -111,6 +111,13 @@ import {
   containsCrossPhaseRedeploymentPrivilegedNode,
   isAcceptedCrossPhaseRedeploymentPrivilegedAbility,
 } from './cross-phase-redeployment-capability';
+import {
+  RELOCATE_DEFINITION_SET_WITHOUT_PLAY_EFFECT,
+  RECALL_ACTIVE_DEFINITION_AND_JOIN_SOURCE_EFFECT,
+  RETRIGGER_ACTIVE_DEFINITION_SET_PLAY_EFFECTS,
+  containsCommanderLifecyclePrivilegedNode,
+  isAcceptedCommanderLifecyclePrivilegedAbility,
+} from './commander-card-lifecycle-capability';
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
 }
@@ -152,6 +159,8 @@ const supportedTypes = new Set([
   FORBID_OTHER_PLAYERS_AT_ACTIVE_SOURCE_LOCATION_MANA_GAIN_EFFECT, SET_SOURCE_LOCATION_BASIC_BASE_POWER_MULTIPLIER_FROM_CHOICE_EFFECT,
   DUPLICATE_BASE_POWER_CLOSE_EFFECT, DISCARD_SHUFFLE_SOURCE_X_BINDING_EFFECT,
   CROSS_PHASE_ACTION_PROVIDER_EFFECT, ONE_SHOT_USED_ATTACK_ABILITY_REUSE_EFFECT, STRICT_POWER_REDEPLOY_SWAP_EFFECT,
+  RELOCATE_DEFINITION_SET_WITHOUT_PLAY_EFFECT, RECALL_ACTIVE_DEFINITION_AND_JOIN_SOURCE_EFFECT, RETRIGGER_ACTIVE_DEFINITION_SET_PLAY_EFFECTS,
+  'card_count_at_least',
   'event_player_won_combat', 'event_player_lost_combat',
   'event_player_is_controller', 'event_player_is_opponent', 'event_location_equals_controller',
   'controller_command_seals_at_least', 'controller_command_seals_at_most',
@@ -248,6 +257,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'directive', 'payload', 'deckId', 'definitionId', 'quantity', 'rounding', 'targetPlayer',
   'oncePerRound', 'replacement', 'deckKinds', 'revealedKind', 'targetKind', 'controllerCannotWinStatus',
   'returnAtRoundEnd', 'preserveVictoryPoints', 'sakuraMasterId', 'fallbackServantPool',
+  'definitionIds', 'activeOnly', 'destinationZone',
   // Phase 3A resolution/data-flow infrastructure
   'bind', 'expr', 'binding', 'field', 'valueType', 'ids', 'reason', 'message', 'enabled', 'regular', 'climax', 'threshold', 'phase', 'targetDefinitionIds',
   'add', 'multiply', 'until', 'hiddenAmount', 'revealedAmount', 'excludeLinkedOwnerRecipient', 'commandSealsAtMost', 'hideTrueName',
@@ -636,6 +646,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (containsCrossPhaseRedeploymentPrivilegedNode(candidateAbility) &&
           !isAcceptedCrossPhaseRedeploymentPrivilegedAbility(candidateAbility)) {
         issue('crossPhaseRedeployment.gateway', 'Cross-phase/redeployment privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsCommanderLifecyclePrivilegedNode(candidateAbility) &&
+          !isAcceptedCommanderLifecyclePrivilegedAbility(candidateAbility)) {
+        issue('commanderLifecycle.gateway', 'Definition-set relocation/recall/retrigger mechanics require an accepted exact whole-ability semantic', id);
       }
       if (Array.isArray(a.markers) && a.markers.some((marker) => String(marker).startsWith('deduction-'))) {
         if (!isDeductionRecordMarkerAbility(candidateAbility)) issue('deductionRecord.gateway', 'Unsupported exact deduction-record marker ability shape', id);
