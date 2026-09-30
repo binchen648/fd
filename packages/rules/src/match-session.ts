@@ -91,6 +91,7 @@ type RuntimeRawCard = ExecutableCardDefinition;
 
 const interactivePhases: PhaseName[] = ['preparation', 'advance', 'action', 'battle'];
 const workshopDeploymentManaSlots = [2, 1, 1, 1] as const;
+const SEVEN_PLAYER_SEATS = [1, 2, 3, 4, 5, 6, 7] as const;
 
 type LocationId = GameState['players'][number]['locationId'] & string;
 
@@ -2184,6 +2185,24 @@ function shuffle<T>(items: T[], seed: number): T[] {
   return result;
 }
 
+export function buildSevenPlayerCharacterPairings(
+  masters: readonly ExecutableCharacterDefinition[],
+  servants: readonly ExecutableCharacterDefinition[],
+  seed: number,
+): Array<{ playerId: string; seat: number; master: ExecutableCharacterDefinition; servant: ExecutableCharacterDefinition }> {
+  const required = SEVEN_PLAYER_SEATS.length;
+  if (masters.length < required || servants.length < required) {
+    throw new Error(`Seven-player MatchSession requires at least ${required} masters and ${required} servants`);
+  }
+  const selectedMasters = shuffle([...masters], seed).slice(0, required);
+  const selectedServants = shuffle([...servants], seed ^ 0x9e3779b9).slice(0, required);
+  return selectedMasters.map((master, index) => ({
+    playerId: `p${SEVEN_PLAYER_SEATS[index]}`,
+    seat: SEVEN_PLAYER_SEATS[index]!,
+    master,
+    servant: selectedServants[index]!,
+  }));
+}
 function modeStateOf(state: GameState): Record<string, unknown> {
   const carrier = state as unknown as { modeState?: Record<string, unknown> };
   carrier.modeState ??= {};
@@ -3126,12 +3145,10 @@ export class MatchSession {
   }
 
   private buildInitialState(): { state: GameState; pairings: MatchSession['pairings']; rawCards: MatchSession['rawCards'] } {
-    const masters = shuffle(masterCharacters, this.seed);
-    const servants = shuffle(servantCharacters, this.seed ^ 0x9e3779b9);
-    const pairings = masters.map((master, index) => ({ playerId: `p${index + 1}`, seat: index + 1, master, servant: servants[index]! }));
+    const pairings = buildSevenPlayerCharacterPairings(masterCharacters, servantCharacters, this.seed);
     const pack = runtimeContent.rules;
     const rawCards = new Map<string, RuntimeRawCard>(Object.values(pack.cards).map((card) => [card.id, card] as const));
-    const state = createSeededGameState({ activeSeats: [1, 2, 3, 4, 5, 6, 7] });
+    const state = createSeededGameState({ activeSeats: [...SEVEN_PLAYER_SEATS] });
     state.cards = [];
     state.round = { roundNumber: 1, activePhase: 'preparation', prioritySeat: 1 };
     state.id = 'fd-semi-auto-7p';
