@@ -79,3 +79,30 @@ Generic structural capability now supports:
 Freeze one exact readiness Candidate / one PR / one fresh independent Reviewer for sc1 + sc2 + sc3 + sc4 together. This readiness transaction is permanently zero-credit.
 
 ACCEPTED -> one A-sync/full-owner rescan while remaining on `servant.voyager`; only then may one formal owner-complete Candidate be produced for still-unmigrated frozen identities.
+
+## Review revision closure — successor after exact Candidate `30748e6fed5276c4cb8c6161ce3869d0fb2d39c5`
+
+Fresh independent Reviewer verdict on the predecessor exact Candidate was `IMPLEMENTATION_NEEDS_REVISION`; canonical Coordinator bounded same-attempt relay after explicit Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/499#issuecomment-5913302549`.
+
+Both P1 findings are closed in one successor revision:
+
+1. Generated-card +6 restore provenance now seals the exact generated-card controller as `generatedControllerPlayerId`, requires the live physical card controller to remain identical, recomputes the exact deduplicated recipient set from that sealed controller plus the exact generator owner, and requires both the marker recipients and the corresponding +6 adjustment recipients to match exactly without extras or omissions. Battle-end return now retires the consumed marker and its matching +6 round adjustments. Regression forges the physical controller, marker recipient, and +6 adjustment together and requires restore validation to fail.
+2. `global_definition_reveal_reward_v1` and `discard_definition_play_all_v1` pending continuations now bind the physical source to the initiating/controller player and require the source to remain an active, face-up live source both during restore validation and again at dispatch. Regressions cover disabled, face-down, and moved-out-of-play reveal sources plus an inactive discard-play source; restore and dispatch both fail closed with no VP mutation.
+
+Successor verification:
+- Voyager readiness focused regression: `10/10 PASS`;
+- complex-skills-regression: `38/38 PASS`;
+- MatchSession: `33/33 PASS`;
+- MatchSession regressions: `11/11 PASS`;
+- affected aggregate: **`92/92 PASS`**;
+- `npm run typecheck`: PASS;
+- `npm run content:validate`: PASS — `7 masters / 17 servants / 20 events / 0 blocking issues`;
+- `npm run content:compile`: PASS — same counts;
+- `npm run verify:generated-content`: PASS:
+  - content library `611cfdc5735708fb37e7e9b014d779ae1e8dc90843ce1f4d387fc881985900d4`;
+  - fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`;
+  - evidence report `9b06437e4dafbf23aab3dd08f7e2a87821055693820e4ddee95b5405b0026669`;
+- `data/authoring/**` predecessor-Candidate..working-tree delta: EMPTY;
+- `git diff --check`: PASS.
+
+This revision remains readiness-only and permanently zero-credit. No Voyager consumer migration is included.

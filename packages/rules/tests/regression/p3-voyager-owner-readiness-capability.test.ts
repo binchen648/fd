@@ -74,8 +74,35 @@ describe('P3 Voyager owner-readiness matching-definition generic capability', ()
     expect(state.abilityRuntime!.roundPlayerPowerAdjustments).toEqual(expect.arrayContaining([
       expect.objectContaining({ playerId: 'p2', amount: 6, sourceCardId: generated, abilityId: POWER }), expect.objectContaining({ playerId: 'p1', amount: 6, sourceCardId: generated, abilityId: POWER }),
     ])); expect(isDeferredAbilityRuntimeProvenanceValidForRestore(state)).toBe(true);
+    const forgedRecipients = structuredClone(state); const forgedPhysical = forgedRecipients.cards.find((c) => c.instanceId === generated)!; forgedPhysical.controllerPlayerId = 'p3';
+    const forgedMarker = forgedRecipients.abilityRuntime!.cardState[generated]!.generatedCardReturnAfterBattle!; forgedMarker.powerRecipientPlayerIds = ['p3','p1'];
+    forgedRecipients.abilityRuntime!.roundPlayerPowerAdjustments!.find((entry) => entry.sourceCardId === generated && entry.playerId === 'p2')!.playerId = 'p3';
+    expect(isDeferredAbilityRuntimeProvenanceValidForRestore(forgedRecipients)).toBe(false);
     processAbilityEvent(state, { id: 'battle-end-voyager-fixture', type: 'after_battle_ended', battleParticipantIds: ['p1','p2'] });
     const physical = state.cards.find((c) => c.instanceId === generated)!; expect(physical.zone).toBe('discard'); expect(physical.ownerPlayerId).toBe('p1'); expect(physical.controllerPlayerId).toBe('p1'); expect(isDeferredAbilityRuntimeProvenanceValidForRestore(state)).toBe(true);
+  });
+
+  it('rejects reveal continuations on restore and dispatch when the required active source is disabled, face-down, or moved out of play', () => {
+    const { state, s1 } = setup(); const matching = add(state, FOREIGN, 'p2', 'hand', false, s1); state.round.activePhase = 'action';
+    expect(activate(state, s1, REVEAL).ok).toBe(true); const pending = state.abilityRuntime!.pendingDecision!; expect(pending.controllerId).toBe('p2');
+    const mutations: Array<(copy: GameState) => void> = [
+      (copy) => { copy.abilityRuntime!.cardState[s1]!.active = false; },
+      (copy) => { copy.abilityRuntime!.cardState[s1]!.faceDown = true; },
+      (copy) => { copy.cards.find((c) => c.instanceId === s1)!.zone = 'discard' as any; },
+    ];
+    for (const mutate of mutations) {
+      const copy = structuredClone(state); mutate(copy); const before = copy.players[1]!.vp;
+      expect(isCanonicalGenericPendingDecisionForRestore(copy, copy.abilityRuntime!.pendingDecision!)).toBe(false);
+      expect(choose(copy, 'p2', [matching]).ok).toBe(false); expect(copy.players[1]!.vp).toBe(before);
+    }
+  });
+
+  it('rejects discard play-all continuation when its required active source is no longer live', () => {
+    const { state, s1, s3 } = setup(); state.round.activePhase = 'action'; add(state, FOREIGN, 'p2', 'discard', false, s1);
+    expect(activate(state, s3, DISCARD).ok).toBe(true); expect(choose(state, 'p1', ['p2']).ok).toBe(true);
+    state.abilityRuntime!.cardState[s3]!.active = false; const before1 = state.players[0]!.vp; const before2 = state.players[1]!.vp;
+    expect(isCanonicalGenericPendingDecisionForRestore(state, state.abilityRuntime!.pendingDecision!)).toBe(false);
+    expect(choose(state, 'p1', ['play_all']).ok).toBe(false); expect(state.players[0]!.vp).toBe(before1); expect(state.players[1]!.vp).toBe(before2);
   });
   it('dedupes +6 when generated-card controller is also the exact generator owner and rejects forged restore provenance', () => {
     const { state, s1 } = setup(); const generated = add(state, FOREIGN, 'p1', 'hand', false, s1); state.round.activePhase = 'action'; playAbilityCardBatch(state, 'p1', [{ cardInstanceId: generated }]);

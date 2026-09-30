@@ -2665,7 +2665,8 @@ function applyLinkedGeneratedCardRoundPower(s: GameState, ctx: EffectContext, ab
     }
   }
   sourceState.generatedCardReturnAfterBattle = { round: s.round.roundNumber, generatorSourceCardId: source.generatedBy,
-    generatorOwnerPlayerId: generatorSource.ownerPlayerId, sourceAbilityId: ctx.abilityId, powerRecipientPlayerIds: [...recipients] };
+    generatorOwnerPlayerId: generatorSource.ownerPlayerId, generatedControllerPlayerId: source.controllerPlayerId,
+    sourceAbilityId: ctx.abilityId, powerRecipientPlayerIds: [...recipients] };
 }
 function returnLinkedGeneratedCardAfterBattle(s: GameState, ctx: EffectContext, ability: AuthoringAbility, effect: RuleNode): void {
   if (!isReturnLinkedGeneratedCardAfterBattleEffect(effect) || !isAcceptedLinkedGeneratedCardReturnAbility(ability))
@@ -2677,6 +2678,9 @@ function returnLinkedGeneratedCardAfterBattle(s: GameState, ctx: EffectContext, 
   if (!generator || generator.ownerPlayerId !== marker.generatorOwnerPlayerId) reject('invalid_state', 'Generated-card owner provenance changed');
   physical.ownerPlayerId = marker.generatorOwnerPlayerId; physical.controllerPlayerId = marker.generatorOwnerPlayerId;
   moveCard(s, physical.instanceId, 'discard');
+  delete state!.generatedCardReturnAfterBattle;
+  runtime(s).roundPlayerPowerAdjustments = (runtime(s).roundPlayerPowerAdjustments ?? []).filter((entry) =>
+    !(entry.sourceCardId === physical.instanceId && entry.abilityId === marker.sourceAbilityId && entry.round === marker.round && entry.amount === 6));
   runtime(s).events.push({ type: 'generated_card_returned_to_generator_owner_discard', playerId: marker.generatorOwnerPlayerId,
     sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: physical.instanceId, toZone: 'discard' });
 }
@@ -3634,12 +3638,12 @@ function isMatchingDefinitionPendingDecisionLiveValid(s: GameState, decision: Pe
     if (!meta || !['global_definition_reveal_reward_v1', 'discard_definition_play_all_v1'].includes(meta.kind)) return false;
     const r = runtime(s);
     if (meta.kind === 'global_definition_reveal_reward_v1') {
-      const source = s.cards.find((entry) => entry.instanceId === meta.sourceCardInstanceId);
+      const source = restoredPhysicalSource(s, meta.sourceCardInstanceId, meta.initiatingControllerId);
       const ability = source ? restoredAbility(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
       const effect = ability?.effects[0]; const count = node(decision.target.count);
       const order = activePlayerIdsInSeatOrder(s); const decisionPlayerId = meta.decisionPlayerIds[meta.nextIndex];
       const liveCandidates = decisionPlayerId ? definitionIdsInZone(s, decisionPlayerId, 'hand', meta.definitionId) : [];
-      return !!source && !!ability && !!effect && isAcceptedGlobalRevealRewardAbility(ability) &&
+      return !!source && active(s, source.instanceId) && !!ability && !!effect && isAcceptedGlobalRevealRewardAbility(ability) &&
         isGlobalOptionalDefinitionRevealRewardEffect(effect) && str(effect.definitionId) === meta.definitionId &&
         meta.rewardVp === 2 && exactStringArray(meta.decisionPlayerIds, order) && !!decisionPlayerId &&
         decision.controllerId === decisionPlayerId && decision.context.controllerId === meta.initiatingControllerId &&
@@ -3652,14 +3656,14 @@ function isMatchingDefinitionPendingDecisionLiveValid(s: GameState, decision: Pe
         exactStringArray(meta.candidateIds, liveCandidates) && exactStringArray(decision.candidates, liveCandidates);
     }
     if (meta.kind !== 'discard_definition_play_all_v1') return false;
-    const source = s.cards.find((entry) => entry.instanceId === meta.sourceCardInstanceId);
+    const source = restoredPhysicalSource(s, meta.sourceCardInstanceId, meta.controllerId);
     const ability = source ? restoredAbility(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
     const effect = ability?.effects[0]; if (!ability || !effect) return false;
     const targetSelection = decision.context.selections[str(effect.target)];
     const revealedDiscardIds = s.cards.filter((entry) => entry.ownerPlayerId === meta.targetPlayerId && entry.zone === 'discard').map((entry) => entry.instanceId);
     const matchingCardIds = revealedDiscardIds.filter((id) => card(s, id).definitionId === meta.definitionId);
     const count = node(decision.target.count);
-    return !!source && isAcceptedOpponentDiscardPlayAllAbility(ability) && isOpponentDiscardFreePlayAllMatchingEffect(effect) &&
+    return !!source && active(s, source.instanceId) && isAcceptedOpponentDiscardPlayAllAbility(ability) && isOpponentDiscardFreePlayAllMatchingEffect(effect) &&
       str(effect.definitionId) === meta.definitionId && meta.transferVp === 2 &&
       Array.isArray(targetSelection) && targetSelection.length === 1 && targetSelection[0] === meta.targetPlayerId &&
       decision.controllerId === meta.controllerId && decision.context.controllerId === meta.controllerId &&
@@ -3760,10 +3764,10 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState):
       if (entry.amount === 6 && isAcceptedLinkedGeneratedCardPowerAbility(ability) && source.generatedBy) {
         const generator = s.cards.find((candidate) => candidate.instanceId === source.generatedBy);
         const marker = r.cardState[source.instanceId]?.generatedCardReturnAfterBattle;
+        const expectedRecipients = generator ? [...new Set([marker?.generatedControllerPlayerId ?? '', generator.ownerPlayerId])] : [];
         return !!generator && !!marker && marker.round === entry.round && marker.generatorSourceCardId === source.generatedBy &&
-          marker.generatorOwnerPlayerId === generator.ownerPlayerId && marker.sourceAbilityId === entry.abilityId &&
-          exactStringArray(marker.powerRecipientPlayerIds, [...new Set(marker.powerRecipientPlayerIds)]) &&
-          marker.powerRecipientPlayerIds.includes(entry.playerId);
+          marker.generatorOwnerPlayerId === generator.ownerPlayerId && marker.generatedControllerPlayerId === source.controllerPlayerId && marker.sourceAbilityId === entry.abilityId &&
+          exactStringArray(marker.powerRecipientPlayerIds, expectedRecipients) && marker.powerRecipientPlayerIds.includes(entry.playerId);
       }
       return false;
     })) return false;
@@ -3776,11 +3780,13 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState):
       const physical = s.cards.find((entry) => entry.instanceId === instanceId);
       const generator = s.cards.find((entry) => entry.instanceId === marker.generatorSourceCardId);
       const ability = physical ? restoredAbility(s, instanceId, marker.sourceAbilityId) : undefined;
+      const expectedRecipients = physical && generator ? [...new Set([marker.generatedControllerPlayerId, generator.ownerPlayerId])] : [];
+      const powerRecipients = r.roundPlayerPowerAdjustments?.filter((entry) => entry.sourceCardId === instanceId && entry.abilityId === marker.sourceAbilityId &&
+        entry.round === marker.round && entry.amount === 6).map((entry) => entry.playerId) ?? [];
       return !physical || !generator || physical.generatedBy !== marker.generatorSourceCardId ||
-        generator.ownerPlayerId !== marker.generatorOwnerPlayerId || marker.round !== s.round.roundNumber ||
-        !Array.isArray(marker.powerRecipientPlayerIds) || marker.powerRecipientPlayerIds.length < 1 || marker.powerRecipientPlayerIds.length > 2 ||
-        !exactStringArray(marker.powerRecipientPlayerIds, [...new Set(marker.powerRecipientPlayerIds)]) ||
-        marker.powerRecipientPlayerIds.some((id) => !playerIds.has(id)) || !marker.powerRecipientPlayerIds.includes(marker.generatorOwnerPlayerId) ||
+        generator.ownerPlayerId !== marker.generatorOwnerPlayerId || physical.controllerPlayerId !== marker.generatedControllerPlayerId || marker.round !== s.round.roundNumber ||
+        !Array.isArray(marker.powerRecipientPlayerIds) || !exactStringArray(marker.powerRecipientPlayerIds, expectedRecipients) ||
+        !exactStringArray(powerRecipients, expectedRecipients) || marker.powerRecipientPlayerIds.some((id) => !playerIds.has(id)) ||
         !ability || !isAcceptedLinkedGeneratedCardPowerAbility(ability);
     })) return false;
     if (!(r.forcedDeploymentLocations ?? []).every((entry) => {
@@ -6654,14 +6660,14 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           break;
         }
         if (meta.kind === 'global_definition_reveal_reward_v1') {
-          const source = s.cards.find((entry) => entry.instanceId === meta.sourceCardInstanceId);
+          const source = restoredPhysicalSource(s, meta.sourceCardInstanceId, meta.initiatingControllerId);
           const ability = source ? restoredAbility(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
           const effect = ability?.effects[0];
           const activeOrder = activePlayerIdsInSeatOrder(s);
           const expectedPlayerId = meta.decisionPlayerIds[meta.nextIndex];
           const liveCandidates = expectedPlayerId ? definitionIdsInZone(s, expectedPlayerId, 'hand', meta.definitionId) : [];
           const count = node(d.target.count);
-          if (!source || !ability || !effect || !isAcceptedGlobalRevealRewardAbility(ability) ||
+          if (!source || !active(s, source.instanceId) || !ability || !effect || !isAcceptedGlobalRevealRewardAbility(ability) ||
               !isGlobalOptionalDefinitionRevealRewardEffect(effect) || str(effect.definitionId) !== meta.definitionId ||
               meta.rewardVp !== 2 || !exactStringArray(meta.decisionPlayerIds, activeOrder) || expectedPlayerId !== d.controllerId ||
               playerId !== expectedPlayerId || d.context.controllerId !== meta.initiatingControllerId ||
@@ -6687,14 +6693,14 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           break;
         }
         if (meta.kind === 'discard_definition_play_all_v1') {
-          const source = s.cards.find((entry) => entry.instanceId === meta.sourceCardInstanceId);
+          const source = restoredPhysicalSource(s, meta.sourceCardInstanceId, meta.controllerId);
           const ability = source ? restoredAbility(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
           const effect = ability?.effects[0];
           const targetSelection = effect ? d.context.selections[str(effect.target)] : undefined;
           const revealedDiscardIds = s.cards.filter((entry) => entry.ownerPlayerId === meta.targetPlayerId && entry.zone === 'discard').map((entry) => entry.instanceId);
           const matchingCardIds = revealedDiscardIds.filter((id) => card(s, id).definitionId === meta.definitionId);
           const count = node(d.target.count);
-          if (!source || !ability || !effect || !isAcceptedOpponentDiscardPlayAllAbility(ability) ||
+          if (!source || !active(s, source.instanceId) || !ability || !effect || !isAcceptedOpponentDiscardPlayAllAbility(ability) ||
               !isOpponentDiscardFreePlayAllMatchingEffect(effect) || str(effect.definitionId) !== meta.definitionId || meta.transferVp !== 2 ||
               !Array.isArray(targetSelection) || targetSelection.length !== 1 || targetSelection[0] !== meta.targetPlayerId ||
               d.controllerId !== meta.controllerId || playerId !== meta.controllerId || d.context.controllerId !== meta.controllerId ||

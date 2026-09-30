@@ -400,7 +400,7 @@ export interface CardRuntimeState {
     round: number;
   };
   /** Source-provenance marker for a generated card that returns to its exact generator owner's discard after battle. */
-  generatedCardReturnAfterBattle?: { round: number; generatorSourceCardId: string; generatorOwnerPlayerId: PlayerId; sourceAbilityId: string; powerRecipientPlayerIds: PlayerId[] };
+  generatedCardReturnAfterBattle?: { round: number; generatorSourceCardId: string; generatorOwnerPlayerId: PlayerId; generatedControllerPlayerId: PlayerId; sourceAbilityId: string; powerRecipientPlayerIds: PlayerId[] };
   /** Exact physical-card marker for cards replayed from discard that must return to deck after this battle. */
   returnToDeckAfterBattle?: { round: number; controllerId: PlayerId; sourceCardId: string; abilityId: string };
   /** Source-card current-round Power bonus, persisted by physical instance. */
