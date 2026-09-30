@@ -1,4 +1,4 @@
-# Phase 3 Task Index
+﻿# Phase 3 Task Index
 
 - Version: P3-TI-1.39
 - Status: ACTIVE
@@ -7431,7 +7431,7 @@ Revision evidence for `P3-B-AKASHA-OWNER-READINESS-CAPABILITY` after predecessor
 ## TASK P3-S-OWNER-AKASHA-COMPLETE-MIGRATION
 
 Owner: Codex S / FORMAL
-Status: `BLOCKED_BY_READINESS_FOLLOWUP`
+Status: `READY`
 Classification: formal owner-complete migration for `master.akasha`
 
 Frozen owner scope:
@@ -7492,3 +7492,15 @@ Verification:
 - `data/authoring/**` delta EMPTY.
 
 Detailed report: `docs/reports/2026-10-01-p3-b-akasha-owner-readiness-location-provisioning-result.md`.
+
+### Akasha location-provisioning readiness acceptance synchronization
+
+- Accepted Candidate: `ff26b046be5ea5e3ef2302e756e52fcbcd919a6c`.
+- Canonical same-attempt bounded acceptance evidence: `https://github.com/binchen648/fd/pull/504#issuecomment-5916944435`.
+- Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`; exact gate run `36755548497` / job `110024740882` `SUCCESS`.
+- Full-owner rescan confirms canonical `data/authoring/**` still contains `0/8` frozen Akasha identities; all eight remain newly creditable and none is preservation-only.
+- The follow-up closes the last currently discoverable `s1` generic gap: one temporary target-definition physical card at each enabled battlefield with exact `generatedBy` + authoritative `placedAtLocationId` provenance, while the separate skill-zone copy continues to use accepted `provision_skill_cards`.
+- No additional currently discoverable Akasha owner-local readiness gap remains after exact #504 acceptance.
+- Readiness remains zero-credit; strict accounting stays `173/944`, remaining `771`.
+- `P3-S-OWNER-AKASHA-COMPLETE-MIGRATION` is unblocked and `READY`; all 8 frozen identities must migrate together in one formal Candidate / one PR / one fresh R / one A-sync-accounting.
+- Detailed A-sync report: `docs/reports/2026-10-01-p3-a-akasha-owner-readiness-location-provisioning-acceptance-synchronization.md`.
