@@ -2903,7 +2903,7 @@ Completion status allowed:
 
 - FB2-06 candidate `3f1080a7cb4f68e7c08af91b349680a6536cd362` is independently accepted by R23 `0dc6619eba6f2ff67c96b6ec9c3ff736cae66740`.
 - Accepted component scope is fixed positive controller ordinary-deck draw; exact F1 component alignment is 23 identities. Parent-only qualifiers remain independently gated.
-- Accepted complete direct route is only the structural `advance/outpost + fixed pay 1 Mana + draw 2` family. At current F1 membership this yields one complete representative (`master.waver.skill.s2`) pending separate S migration; it does not create a 10閳?0 F4 batch.
+- Accepted complete direct route is only the structural `advance/outpost + fixed pay 1 Mana + draw 2` family. At current F1 membership this yields one complete representative (`master.waver.skill.s2`) pending separate S migration; it does not create a 10闁?0 F4 batch.
 - The 14-identity servant draw/play family remains blocked by the `on_card_played` Trigger-owned draw clause; TO13 already covers the optional low-power hand-play half, but TO03 is specification-only and broad Trigger runtime is not accepted.
 - Fresh A coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; compiled definition hash remains `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, with 70 cards, 14 characters, and 0 blocking issues.
 - Generated coverage drift is only timestamp/static source line numbers and is intentionally not committed.
@@ -3061,7 +3061,7 @@ Completion status allowed:
 - Fresh A coverage remains `new=12 / legacyExecute=3 / legacyResolve=49 / dual=0 / notClassifiable=28 / taxonomyWarnings=79`; compiled definition hash remains `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, 70 cards, 14 characters, 0 blocking issues.
 - Frozen-F1 recheck proves 14/14 selected servant rows have `blockedBy=[]`, exact required capabilities `[CARD_ACTION_PLAY, GENERIC_CARD_ZONE]`, no additional semantic axes, and an identical source overlay.
 - TO13 accepts the private optional `0..3` controller-hand/base-power-at-most-3 play half; FB2-06 accepts the typed controller draw primitive; FB2-08 accepts the missing exact source-play/basic-attack draw trigger half.
-- The first 10閳?0 F4 batch gate is therefore met at 14 exact IDs. P3-FM01 is dispatched as `READY`; Okita remains excluded.
+- The first 10闁?0 F4 batch gate is therefore met at 14 exact IDs. P3-FM01 is dispatched as `READY`; Okita remains excluded.
 
 ## TASK P3-FM01
 
@@ -3296,7 +3296,7 @@ Base: exact P3-FB2-10 A-owned handoff commit
 F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Read: `docs/reports/2026-09-16-p3-fb2-10-saber-magic-resistance-handoff.md`
 
-Goal: accept exactly one identity-free TO15 Power sub-contract for the ten remaining Saber-family `鐎靛綊鐡熼崝娌?cards: combat-phase Magic Resistance sets same-battlefield engaged opponents' Magic-attribute attack-card current Power to zero for this round. Do not promote broad Power/Modifier runtime.
+Goal: accept exactly one identity-free TO15 Power sub-contract for the ten remaining Saber-family `閻庨潧缍婇悺鐔煎礉濞?cards: combat-phase Magic Resistance sets same-battlefield engaged opponents' Magic-attribute attack-card current Power to zero for this round. Do not promote broad Power/Modifier runtime.
 
 Exact accepted semantic shape only:
 - `phase_action`; activation phase `combat`; opens `controller_combat_action_window`; `requiresSourceState=active`;
@@ -3304,7 +3304,7 @@ Exact accepted semantic shape only:
 - exactly one `ruleModifier`;
 - modifier type `combat_power_modifier`; operation `set`; rule `attack.currentPower`; value exactly `0`;
 - scope controller exactly `engaged_opponents_same_battlefield`; object exactly `attack_card`;
-- exactly one scope constraint `has_attribute(attribute=姒勬梹婀?`;
+- exactly one scope constraint `has_attribute(attribute=濮掑嫭姊瑰﹢?`;
 - modifier lifecycle duration exactly `this_round`;
 - routing/classification is structural and identity-free.
 
@@ -3462,7 +3462,7 @@ Permitted final status:
 - Fresh frozen-F1 reconciliation is `10/10 PASS`: every selected identity is `CONTRACT_MAPPED`, `READY_GENERIC_EXTENSION`, `blockedBy=[]`, requires exactly `GENERIC_POWER + GENERIC_RESOURCE_NUMERIC`, uses Reference handler `core.saber-magic-resistance`, and has the same normalized two-operation source overlay.
 - B18/R12 and B19/R13 independently cover the two Noble Bloom Resource siblings; R29/FB2-10 covers the only missing Magic Resistance Power sibling.
 - Current frozen-F1 canonical-authoring overlap remains `49/944`; none of the ten FM03 identities currently has canonical authoring (`0/10`).
-- Locked Reference metadata is uniform for all ten selected cards: `cost=3`, `basePower=3`, `typeLabel=閻楄鐣ー, historical `requirement=3`. Final rule 9.4 still requires 8 mana from the skill zone.
+- Locked Reference metadata is uniform for all ten selected cards: `cost=3`, `basePower=3`, `typeLabel=闁绘顫夐悾銉? historical `requirement=3`. Final rule 9.4 still requires 8 mana from the skill zone.
 - Source/printed text is not globally identical: F1 preserves three source-hash variants (`8a6da48...`, `b2b1bc7c...`, `0cdfc3fa...`) and S must preserve the per-card text exactly rather than normalize wording.
 - Fresh coverage remains archives `39`, cards `71`, abilities `130`, raw `new=12 / legacyExecute=3 / legacyResolve=87 / dual=0 / notClassifiable=28 / taxonomyWarnings=104`, compiled definition hash `37551fd5f5b0a968f9143dee0698adf8582a0a26d8edabef55907cf78d374333`, 70 compiled cards / 14 characters / 0 blocking issues. Regenerated artifact drift is only generatedAt/static source-line movement and is intentionally not committed.
 - P3-FM03 is therefore READY at the normal F4 minimum batch size 10.
@@ -3858,7 +3858,7 @@ F1 evidence: `59f145434695d29bdd17e4cb3adc887e84182377`
 Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
 Read: `docs/reports/2026-09-16-p3-a-fm07-migration-synchronization.md`, `docs/reports/2026-09-16-p3-fm07-alter-ego-transform-migration.md`, and `docs/reports/2026-09-16-p3-r37-fb2-13-alter-ego-transform-review.md`
 
-Goal: independently review the exact ten-member FM07 Alter Ego migration without implementing fixes. Required checks: exact 10-ID addition/no removals; nine regular source-text SHA plus distinct Sion EX SHA; locked owner/class/legacy/static metadata including Passionlip's distinct `閻楄鐣ー metadata and Sion `Master`; final 8-mana skill-zone gate kept separate from printed card cost and Sion's triggered 3-mana payment; exact FB2-13 regular/EX structural conformance; real migrated regular and EX execution; A burn-down/material coverage integrity; no runtime diff; focused/migration/rules/content/determinism/full CI/diff check.
+Goal: independently review the exact ten-member FM07 Alter Ego migration without implementing fixes. Required checks: exact 10-ID addition/no removals; nine regular source-text SHA plus distinct Sion EX SHA; locked owner/class/legacy/static metadata including Passionlip's distinct `闁绘顫夐悾銉?metadata and Sion `Master`; final 8-mana skill-zone gate kept separate from printed card cost and Sion's triggered 3-mana payment; exact FB2-13 regular/EX structural conformance; real migrated regular and EX execution; A burn-down/material coverage integrity; no runtime diff; focused/migration/rules/content/determinism/full CI/diff check.
 
 Permitted final status:
 - `MIGRATION_ACCEPTED`
@@ -4512,8 +4512,8 @@ Locked Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
 Goal: replay exactly one frozen consumer identity, `servant.astolfo.skill.sc-astolfo-1`, onto the synchronized current-main FB2-49 runtime. Treat historical PR #423 as source/semantic/test evidence only; do not transplant its ancestry. Reconstruct the complete card against current-main and preserve the accepted `opponent_close_non_residual_to_one` whole-ability envelope, final skill-zone play threshold/cost behavior, source ownership/battlefield conditions, combat timing, true-name reveal, private per-opponent keep-one settlement, authenticated persistence/replay boundaries, and malformed/stale fail-closed behavior.
 
 Authorized scope:
-- `data/authoring/servants/servant.astolfo.json` 鈥?exactly the one dispatched frozen card;
-- `packages/rules/tests/astolfo-s1-consumer-migration.test.ts` 鈥?current-main focused whole-card/runtime/persistence/accounting evidence;
+- `data/authoring/servants/servant.astolfo.json` 閳?exactly the one dispatched frozen card;
+- `packages/rules/tests/astolfo-s1-consumer-migration.test.ts` 閳?current-main focused whole-card/runtime/persistence/accounting evidence;
 - one S result report for this task;
 - a pre-existing test may receive only the minimum accounting-baseline compatibility edit if current-main absolute-count coupling mechanically requires it; do not port historical compatibility edits speculatively.
 
@@ -4532,7 +4532,7 @@ Accounting contract:
 
 Required validation before fresh R: complete-card source/printed-clause provenance recheck; loader admission with zero report for the exact authoring; 7/8-mana play boundary and printed cost 4; combat timing/true-name/source ownership/battlefield positives and negatives; exact FB2-49 settlement + forged/stale/replay/persistence negatives; focused Astolfo + FB2-49 + FB2-42 coverage; `npm.cmd run typecheck`; official `npm.cmd run test:ci -- --maxWorkers=2`; `npm.cmd run content:validate`; generated-content determinism; `git diff --check`; frozen rescan proving Base `111/944` -> Candidate `112/944`, exact +1, zero removals/duplicates.
 
-Long-term S rule: **S 瀹屾垚 recertification 骞舵彁浜?Exact Base/Candidate**銆?
+Long-term S rule: **S 鐎瑰本鍨?recertification 楠炶埖褰佹禍?Exact Base/Candidate**閵?
 Allowed final status:
 - `MIGRATION_COMPLETE_CANDIDATE`
 - `MIGRATION_BLOCKED`
@@ -4836,7 +4836,7 @@ Hard requirements:
 Allowed final status:
 - `EXACT_50_BATCH_READY`
 - `EXACT_50_BATCH_BLOCKED`
-### Composition-02 result 鈥?2026-09-26
+### Composition-02 result 閳?2026-09-26
 
 Mechanical exact-line rescan completed on accepted/synchronized PR #455 runtime. Historical accepted PR #441 authoring contains `288` frozen material identities; current exact line contains `135`; old-frontier-minus-current replay pool remains exactly `153`. Each replay identity was reduced to a one-card archive and re-run through current `loadAuthoringJson`; readiness requires an empty adapter report and every ability `execution.mode=automatic`.
 
@@ -4947,7 +4947,7 @@ Frozen skills:
 Source/provenance:
 - frozen inventory marks all four `FULL`, `hasConfirmedOverride=true`, `hasAuthoringCard=false`;
 - locked confirmed overrides are source-grounded by the frozen inventory;
-- shared source refs: CHM `浠庤€?鐩惧叺/鑻辨枃鐗?鐜涗慨路鍩哄垪鑾辩壒.htm` plus the development-image source;
+- shared source refs: CHM `娴犲氦鈧?閻╂儳鍙?閼昏鲸鏋冮悧?閻滄稐鎱ㄨ矾閸╁搫鍨懢杈╁.htm` plus the development-image source;
 - `sc-mash-4` additionally has accepted outside-game capability authority from PR #456 / Candidate `83cac6ef2a1334b823e37c873d0a1a2c8e819cb9`.
 
 Implementation requirements:
@@ -4993,16 +4993,16 @@ Owner root: `servant.sherlock`
 Formal owner scope: all seven remaining frozen Sherlock skills
 
 Frozen skills:
-- `servant.sherlock.skill.sc-sherlock-1` 鈥?杩欐槸甯歌瘑锛屾垜浜茬埍鐨勬湅鍙嬪晩
-- `servant.sherlock.skill.sc-sherlock-2` 鈥?绌哄眿鍘嗛櫓
-- `servant.sherlock.skill.sc-sherlock-3` 鈥?閫嗘帹娉?- `servant.sherlock.skill.sc-sherlock-4` 鈥?閫嗘帹娉曪細鍔涢噺
-- `servant.sherlock.skill.sc-sherlock-5` 鈥?閫嗘帹娉曪細杩呮嵎
-- `servant.sherlock.skill.sc-sherlock-6` 鈥?閫嗘帹娉曪細榄旀湳
-- `servant.sherlock.skill.sc-sherlock-7` 鈥?閫嗘帹娉曪細鐗规畩
+- `servant.sherlock.skill.sc-sherlock-1` 閳?鏉╂瑦妲哥敮姝岀槕閿涘本鍨滄禍鑼煃閻ㄥ嫭婀呴崣瀣櫓
+- `servant.sherlock.skill.sc-sherlock-2` 閳?缁屽搫鐪块崢鍡涙珦
+- `servant.sherlock.skill.sc-sherlock-3` 閳?闁棙甯瑰▔?- `servant.sherlock.skill.sc-sherlock-4` 閳?闁棙甯瑰▔鏇窗閸旀盯鍣?
+- `servant.sherlock.skill.sc-sherlock-5` 閳?闁棙甯瑰▔鏇窗鏉╁懏宓?
+- `servant.sherlock.skill.sc-sherlock-6` 閳?闁棙甯瑰▔鏇窗姒勬梹婀?
+- `servant.sherlock.skill.sc-sherlock-7` 閳?闁棙甯瑰▔鏇窗閻楄鐣?
 
 Source/provenance:
 - frozen inventory mechanically reports all seven with `hasConfirmedOverride=true`, `hasAuthoringCard=false`;
-- all seven share source grounding in `FD鍏ㄥ崱鍥鹃壌V2.0.chm`, locator `浠庤€?瑁佸畾鑰?鑻辨枃鐗?澶忔礇鍏嬄风灏旀懇鏂?htm`, plus the development image source;
+- all seven share source grounding in `FD閸忋劌宕遍崶楣冨V2.0.chm`, locator `娴犲氦鈧?鐟佷礁鐣鹃懓?閼昏鲸鏋冮悧?婢跺繑绀囬崗瀣勯顩寸亸鏃€鎳囬弬?htm`, plus the development image source;
 - historical specific-handler evidence exists for `sc-sherlock-1/2/3`; `sc-sherlock-4/5/6/7` are historical shared rule-marker identities;
 - old-frontier accepted material plus current accepted PR #456 outside-game capability may be used as evidence for exact outside-game representation where applicable, but not as current formal acceptance of Sherlock consumers.
 
@@ -5053,11 +5053,11 @@ Owner root: `servant.shuten`
 Formal owner scope: all three remaining frozen Shuten skills
 
 Frozen skills:
-- `servant.shuten.skill.sc-shuten-1` 鈥?鏀捐崱涔嬪
-- `servant.shuten.skill.sc-shuten-2` 鈥?绁炰究楝兼瘨閰?- `servant.shuten.skill.sc-shuten-3` 鈥?鐧捐姳缂贡路鎴戠埍浣?
+- `servant.shuten.skill.sc-shuten-1` 閳?閺€鎹愬幢娑斿顔?
+- `servant.shuten.skill.sc-shuten-2` 閳?缁佺偘绌舵鍏肩槰闁?- `servant.shuten.skill.sc-shuten-3` 閳?閻ф崘濮崇紓顓濊础璺幋鎴犲煃娴?
 Source/provenance:
 - frozen inventory mechanically reports all three with `hasConfirmedOverride=true`, `hasAuthoringCard=false`;
-- all three share CHM grounding in `FD鍏ㄥ崱鍥鹃壌V2.0.chm`, locator `浠庤€?鏆楀尶鑰?鑻辨枃鐗?閰掑悶绔ュ瓙1.htm`, plus the development image `Fate_Domination-寮€鍙戠増/images/servants/閰掑悶绔ュ瓙.png`;
+- all three share CHM grounding in `FD閸忋劌宕遍崶楣冨V2.0.chm`, locator `娴犲氦鈧?閺嗘灏堕懓?閼昏鲸鏋冮悧?闁版帒鎮剁粩銉ョ摍1.htm`, plus the development image `Fate_Domination-瀵偓閸欐垹澧?images/servants/闁版帒鎮剁粩銉ョ摍.png`;
 - historical specific-handler evidence is `core.shuten-debaucherous-banquet`, `core.shuten-noxious-sake`, and `core.shuten-bone-collector`; those handler names are evidence, not authorization for identity-keyed production routing.
 
 Implementation requirements:
@@ -5109,11 +5109,11 @@ Owner root: `servant.siegfried`
 Formal owner scope: all three current-main remaining frozen Siegfried skills
 
 Frozen skills:
-- `servant.siegfried.skill.sc-siegfried-1` 鈥?闅愯韩琛?- `servant.siegfried.skill.sc-siegfried-2` 鈥?鎭堕緳涔嬭閾?- `servant.siegfried.skill.sc-siegfried-3` 鈥?骞绘兂澶у墤路澶╅瓟澶卞潬
+- `servant.siegfried.skill.sc-siegfried-1` 閳?闂呮劘闊╃悰?- `servant.siegfried.skill.sc-siegfried-2` 閳?閹爼绶虫稊瀣攨闁?- `servant.siegfried.skill.sc-siegfried-3` 閳?楠炵粯鍏傛径褍澧よ矾婢垛晠鐡熸径鍗炴浆
 
 Source/provenance:
 - frozen inventory records locked confirmed overrides for all three;
-- source grounding is `FD鍏ㄥ崱鍥鹃壌V2.0.chm` -> `浠庤€?鍓戝＋/鑻辨枃鐗?榻愭牸椋?htm` plus development-image `Fate_Domination-寮€鍙戠増/images/servants/榻愭牸椋?png`;
+- source grounding is `FD閸忋劌宕遍崶楣冨V2.0.chm` -> `娴犲氦鈧?閸撴垵锛?閼昏鲸鏋冮悧?姒绘劖鐗告?htm` plus development-image `Fate_Domination-瀵偓閸欐垹澧?images/servants/姒绘劖鐗告?png`;
 - current current-main authoring/pack line contains no executable `servant.siegfried` archive/consumer;
 - historical `sc-siegfried-2` contract-mapped/loader-ready evidence is reusable evidence only and is not current-main consumer acceptance or standalone credit;
 - historical handlers `core.siegfried-invisibility-cloak`, `core.structured-skill`, and `core.reveal-hand-power-bonus` are evidence only, not authorization for identity-keyed production routing.
@@ -5163,16 +5163,16 @@ Allowed verdicts:
 
 Owner: Codex S
 Status: `MIGRATION_CANDIDATE_READY_FOR_FRESH_R`
-Base: `8f2c8141c33da0ac30a3468a068c9ab1715e15ce` 鈥?accepted Sigurd capability A-sync; zero-credit; current owner unchanged
+Base: `8f2c8141c33da0ac30a3468a068c9ab1715e15ce` 閳?accepted Sigurd capability A-sync; zero-credit; current owner unchanged
 Owner root: `servant.sigurd`
 Formal owner scope: all three current-main remaining frozen Sigurd skills
 
 Frozen skills:
-- `servant.sigurd.skill.sc-sigurd-1` 鈥?鐮寸伃涔嬮粠鏄?- `servant.sigurd.skill.sc-sigurd-2` 鈥?鍧忓姭涔嬪ぉ杞?- `servant.sigurd.skill.sc-sigurd-3` 鈥?閲岃开灏斅疯但钀濊拏
+- `servant.sigurd.skill.sc-sigurd-1` 閳?閻浼冩稊瀣矤閺?- `servant.sigurd.skill.sc-sigurd-2` 閳?閸у繐濮稊瀣亯鏉?- `servant.sigurd.skill.sc-sigurd-3` 閳?闁插矁寮€鐏忔枀鐤絾閽€婵婃嫃
 
 Source/provenance:
 - frozen inventory records `hasConfirmedOverride=true`, `hasAuthoringCard=false` for all three;
-- shared source grounding: `FD鍏ㄥ崱鍥鹃壌V2.0.chm` -> `浠庤€?鍓戝＋/鑻辨枃鐗?Sigurd.htm`, plus development image `Fate_Domination-寮€鍙戠増/images/servants/榻愭牸椴佸痉.png`;
+- shared source grounding: `FD閸忋劌宕遍崶楣冨V2.0.chm` -> `娴犲氦鈧?閸撴垵锛?閼昏鲸鏋冮悧?Sigurd.htm`, plus development image `Fate_Domination-瀵偓閸欐垹澧?images/servants/姒绘劖鐗告ご浣哥棄.png`;
 - frozen phase3 classification is `SOURCE_EVIDENCE_REQUIRED` / `EXPLICIT_BLOCK`; S must mechanically recertify the locked source semantics before encoding the consumers;
 - historical handlers `core.sigurd-gram-ii`, `core.sigurd-bolverk-gram`, and `core.structured-skill` are evidence only, not authorization for identity-keyed production routing.
 
@@ -5271,14 +5271,14 @@ Owner root: `servant.sitonai`
 Formal owner scope: exactly the two current-main remaining frozen Sitonai skills; the already accepted FM07/R38 sc-sitonai-3 receives no duplicate credit
 
 Remaining frozen skills:
-- `servant.sitonai.skill.sc-sitonai-1` 鈥?杩炴惡鎵撳嚮
-- `servant.sitonai.skill.sc-sitonai-2` 鈥?鍐荤粨鍚э紝澶╀笂鐨勮鍔?
+- `servant.sitonai.skill.sc-sitonai-1` 閳?鏉╃偞鎯￠幍鎾冲毊
+- `servant.sitonai.skill.sc-sitonai-2` 閳?閸愯崵绮ㄩ崥褝绱濇径鈺€绗傞惃鍕嚟閸?
 Already accepted owner identity outside this batch:
-- `servant.sitonai.skill.sc-sitonai-3` 鈥?浠栦汉鏍硷紙Alter Ego Class锛?鈥?independently migration-accepted in FM07/R38; preserve it and do not re-credit it.
+- `servant.sitonai.skill.sc-sitonai-3` 閳?娴犳牔姹夐弽纭风礄Alter Ego Class閿?閳?independently migration-accepted in FM07/R38; preserve it and do not re-credit it.
 
 Source/provenance:
 - frozen inventory/reference records `hasConfirmedOverride=true`, `hasAuthoringCard=false` for sc-sitonai-1 and sc-sitonai-2;
-- shared source grounding: `FD鍏ㄥ崱鍥鹃壌V2.0.chm -> 浠庤€?浠栦汉鏍?鑻辨枃鐗?蹇楀害鍐?htm`, plus development image `Fate_Domination-寮€鍙戠増/images/servants/蹇楀害鍐?png`;
+- shared source grounding: `FD閸忋劌宕遍崶楣冨V2.0.chm -> 娴犲氦鈧?娴犳牔姹夐弽?閼昏鲸鏋冮悧?韫囨瀹抽崘?htm`, plus development image `Fate_Domination-瀵偓閸欐垹澧?images/servants/韫囨瀹抽崘?png`;
 - frozen phase3 classification for both remaining identities is `SOURCE_EVIDENCE_REQUIRED / EXPLICIT_BLOCK`; S must mechanically recertify locked source semantics before encoding consumers;
 - historical handlers `core.sitonai-combination-attack` and `core.sitonai-pohjola-fimbul` are evidence only, not authorization for identity-keyed production routing.
 
@@ -5447,7 +5447,7 @@ Base: `abda8c845133bd12bce47f624808a3ead9d95510`
 Classification: bounded zero-credit capability/readiness prerequisite discovered while completing current owner `servant.skadi`
 
 Bounded scope:
-- add one identity-free exact whole-ability contract for Action-phase `杩呮嵎+杩呮嵎` current-round basic-attack pair + fixed pay-3 + one `any_enabled_location` target + controller `move_player`;
+- add one identity-free exact whole-ability contract for Action-phase `鏉╁懏宓?鏉╁懏宓巂 current-round basic-attack pair + fixed pay-3 + one `any_enabled_location` target + controller `move_player`;
 - preserve the existing FB2-09 free active-source `any_enabled_location + not workshop` movement contract;
 - make loader/runtime agree by routing Action any-enabled-location movement candidates through a shared fail-closed gateway that accepts only one of those exact contracts;
 - preserve existing target authority for current-location exclusion, disabled locations, movement locks, occupancy, movement history, and normal movement events.
@@ -5517,11 +5517,11 @@ Owner root: `servant.skadi`
 Formal owner scope: all three current-main remaining frozen Skadi skills together
 
 Remaining frozen skills:
-- `servant.skadi.skill.sc-skadi-1` 鈥?澶х鐨勭澘鏅?- `servant.skadi.skill.sc-skadi-2` 鈥?鍘熷垵涔嬪崲鎭?- `servant.skadi.skill.sc-skadi-3` 鈥?閫氬線姝讳骸婊℃孩鐨勯瓟澧冧箣闂?
+- `servant.skadi.skill.sc-skadi-1` 閳?婢堆咁殻閻ㄥ嫮婢橀弲?- `servant.skadi.skill.sc-skadi-2` 閳?閸樼喎鍨垫稊瀣床閹?- `servant.skadi.skill.sc-skadi-3` 閳?闁艾绶氬璁抽濠娾剝瀛╅惃鍕摕婢у啩绠ｉ梻?
 Source/provenance:
 - frozen inventory/reference records `hasConfirmedOverride=true`, `hasAuthoringCard=false` for all three Skadi identities;
 - all three are currently `SOURCE_EVIDENCE_REQUIRED / EXPLICIT_BLOCK`;
-- shared source grounding: `FD鍏ㄥ崱鍥鹃壌V2.0.chm -> 浠庤€?榄旀湳甯?鑻辨枃鐗?鏂崱鍝埪锋柉鍗¤拏.htm`, plus development image `Fate_Domination-寮€鍙戠増/images/servants/鏂崱鍝埪锋柉鍗¤拏.png`;
+- shared source grounding: `FD閸忋劌宕遍崶楣冨V2.0.chm -> 娴犲氦鈧?姒勬梹婀崇敮?閼昏鲸鏋冮悧?閺傤垰宕遍崫鍩攱鏌夐崡陇鎷?htm`, plus development image `Fate_Domination-瀵偓閸欐垹澧?images/servants/閺傤垰宕遍崫鍩攱鏌夐崡陇鎷?png`;
 - canonical `data/authoring/servants/servant.skadi.json` is absent at this Base;
 - targeted historical report search excluding aggregate indexes found no prior formal `servant.skadi` migration-acceptance evidence;
 - historical handlers are evidence only and never authorize identity-keyed production routing.
@@ -5529,10 +5529,10 @@ Source/provenance:
 Locked Reference observations to mechanically recertify before encoding:
 - exact Reference commit `b2f9fa15fba07c63530bbf4612b03b8b704755f9`, class `Caster`;
 - exact 12-card deck: `card.cardq1`, `card.cardq2`, `card.cardq2`, `card.cardq4`, `card.carda2`, `card.carda2`, `card.carda3`, `card.carda4`, `card.carda4`, `card.cardluck`, `card.cardluck`, `card.cardpreparation`;
-- sc-skadi-1 static metadata: `琚姩`, printed cost `0`, legacy requirement `0`, base power `0`; observed outpost branch pays 1 mana, draws one, then returns/shuffles exactly two hand cards; observed Action branch pays 3 mana and resolves a rune combination derived from two current-round basic attacks;
+- sc-skadi-1 static metadata: `鐞氼偄濮ー, printed cost `0`, legacy requirement `0`, base power `0`; observed outpost branch pays 1 mana, draws one, then returns/shuffles exactly two hand cards; observed Action branch pays 3 mana and resolves a rune combination derived from two current-round basic attacks;
 - source-defined rune combinations observed in Reference cover movement, playing a hand attack, arming a same-round combat defeat effect, same-location mana loss, terrain/deployment multiplication, and +4 VP; S must source-recertify exact pair-to-effect mapping and legality before authoring;
-- sc-skadi-2 static metadata: `琚姩`, printed cost `0`, legacy requirement `0`, base power `0`; observed combat branch consumes the armed same-round rune state and applies defeat when its source-defined battle/opponent condition is satisfied;
-- sc-skadi-3 static metadata: `榄旀湳/瀹濆叿`, printed cost `10`, legacy requirement `10`, base power `0`, true-name release on play; observed residual branch blocks mana gain for opponents at the active source location, and its outpost branch chooses an attribute and doubles matching basic-attack base power for the round in the source-defined battle scope.
+- sc-skadi-2 static metadata: `鐞氼偄濮ー, printed cost `0`, legacy requirement `0`, base power `0`; observed combat branch consumes the armed same-round rune state and applies defeat when its source-defined battle/opponent condition is satisfied;
+- sc-skadi-3 static metadata: `姒勬梹婀?鐎规繂鍙縛, printed cost `10`, legacy requirement `10`, base power `0`, true-name release on play; observed residual branch blocks mana gain for opponents at the active source location, and its outpost branch chooses an attribute and doubles matching basic-attack base power for the round in the source-defined battle scope.
 
 Implementation requirements:
 - migrate all three remaining Skadi frozen skills together in one owner-complete formal batch; do not split the owner across independent migration PRs;
@@ -5606,10 +5606,10 @@ Owner root: `servant.spartacus`
 Canonical owner-complete consumer scope: all three Spartacus skills together
 
 Newly creditable remaining frozen skills:
-- `servant.spartacus.skill.sc-spartacus-1` 鈥?鍙嶅彌
-- `servant.spartacus.skill.sc-spartacus-3` 鈥?涓嶅眻鐨勬剰蹇?
+- `servant.spartacus.skill.sc-spartacus-1` 閳?閸欏秴褰?
+- `servant.spartacus.skill.sc-spartacus-3` 閳?娑撳秴鐪婚惃鍕壈韫?
 Previously accepted preservation/replay identity:
-- `servant.spartacus.skill.sc-spartacus-2` 鈥?浼ゅ吔鐨勫拞鍝?鈥?PR #414 / Candidate `58fffb751e25a9ccc2f28470a48255a07ba11493`; no duplicate credit.
+- `servant.spartacus.skill.sc-spartacus-2` 閳?娴笺倕鍚旈惃鍕嫗閸?閳?PR #414 / Candidate `58fffb751e25a9ccc2f28470a48255a07ba11493`; no duplicate credit.
 
 Source/provenance:
 - frozen inventory/reference records `hasConfirmedOverride=true` for all three Spartacus identities;
@@ -5617,15 +5617,15 @@ Source/provenance:
 - canonical `data/authoring/servants/servant.spartacus.json` is absent and current `data/authoring/**` contains no sc-spartacus-2 entry;
 - historical accepted S2 provenance: PR #414, Candidate `58fffb751e25a9ccc2f28470a48255a07ba11493`, canonical Reviewer evidence `https://github.com/binchen648/fd/pull/414#issuecomment-5754190524`, acceptance-sync `b208ac5571c29f28b623f6462438649d9b151b54`;
 - historical accepted S2 prerequisite is FB2-48 frozen combat-opponent-power VP reward / commit `14c8688c`; replay the accepted seam and do not re-credit it;
-- shared source grounding: `FD鍏ㄥ崱鍥鹃壌V2.0.chm -> 浠庤€?鐙傛垬澹?鑻辨枃鐗?鏂反杈惧厠鏂?htm`, plus development image `Fate_Domination-寮€鍙戠増/images/servants/鏂反杈惧厠鏂?png`;
+- shared source grounding: `FD閸忋劌宕遍崶楣冨V2.0.chm -> 娴犲氦鈧?閻欏倹鍨竟?閼昏鲸鏋冮悧?閺傤垰鍙嶆潏鎯у帬閺?htm`, plus development image `Fate_Domination-瀵偓閸欐垹澧?images/servants/閺傤垰鍙嶆潏鎯у帬閺?png`;
 - historical handlers are evidence only and never authorize identity-keyed production routing.
 
 Locked Reference observations to mechanically recertify before encoding:
 - exact Reference commit `b2f9fa15fba07c63530bbf4612b03b8b704755f9`, class `Berserker`;
 - exact 12-card deck: `card.cardb1`, `card.cardb2`, `card.cardb4`, `card.cardb4`, `card.cardb4`, `card.cardb5`, `card.cardb5`, `card.cardb6`, `card.cardq1`, `card.cardq1`, `card.cardq2`, `card.cardluck`;
-- sc-spartacus-1 static metadata: `鍔涢噺`, printed cost `4`, legacy requirement `4`, base power `6`, true-name release on play; observed combat formula counts engaged opponents who used normal/Ruler command seals this round and applies the source-defined `6 - 2X` power formula where X is Spartacus's remaining normal command-seal count;
-- sc-spartacus-2 static metadata: `瀹濆叿`, printed cost `3`, legacy requirement `8`, base power `4`; source text grants post-battle VP equal to one engaged opponent's aggregate power divided by five, rounded down; S must recertify exact target/timing selection before encoding;
-- sc-spartacus-3 static metadata: `琚姩`, printed cost `0`, legacy requirement `0`, base power `0`; observed Reference replaces normal/Ruler command-seal effects with `+4 aggregate power`, supports authoritative selection among multiple controlled Ruler seals, and applies an Action-stage power rule based on unused normal/Ruler seals held by engaged opponents.
+- sc-spartacus-1 static metadata: `閸旀盯鍣篳, printed cost `4`, legacy requirement `4`, base power `6`, true-name release on play; observed combat formula counts engaged opponents who used normal/Ruler command seals this round and applies the source-defined `6 - 2X` power formula where X is Spartacus's remaining normal command-seal count;
+- sc-spartacus-2 static metadata: `鐎规繂鍙縛, printed cost `3`, legacy requirement `8`, base power `4`; source text grants post-battle VP equal to one engaged opponent's aggregate power divided by five, rounded down; S must recertify exact target/timing selection before encoding;
+- sc-spartacus-3 static metadata: `鐞氼偄濮ー, printed cost `0`, legacy requirement `0`, base power `0`; observed Reference replaces normal/Ruler command-seal effects with `+4 aggregate power`, supports authoritative selection among multiple controlled Ruler seals, and applies an Action-stage power rule based on unused normal/Ruler seals held by engaged opponents.
 
 Implementation requirements:
 - produce one canonical Spartacus owner archive containing sc1 + accepted-preservation sc2 + sc3; do not split the owner across independent migration PRs;
@@ -5711,9 +5711,9 @@ Verification evidence:
 - R1 P1 closure: restored `player.commandSpells`, when present, must be a safe integer in the physical `0..3` domain; widened string/numeric/fractional values fail closed before MatchSession construction;
 - R2 predecessor Candidate `7fd3e7b1ef942a569a36e4b36ff656751f8ca6bd` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/470#issuecomment-5858026355`;
 - R2 P1 closure: restored physical Ruler bindings are grouped by exact grant source/ability and must equal exactly two bindings per authenticated per-game grant use, with usage constrained to `1..3`; impossible seventh-seal snapshots fail closed;
-- R2 P1 closure: persisted normal/Ruler use-round markers require underlying use provenance 鈥?normal uses carry authenticated source/ability/before/after records cross-bound to dedicated `abilityUsage` execution counters, while Ruler markers must equal the latest authenticated physical binding `spentRound`; marker-only forgeries fail closed;
+- R2 P1 closure: persisted normal/Ruler use-round markers require underlying use provenance 閳?normal uses carry authenticated source/ability/before/after records cross-bound to dedicated `abilityUsage` execution counters, while Ruler markers must equal the latest authenticated physical binding `spentRound`; marker-only forgeries fail closed;
 - R3 predecessor Candidate `2a057640c066ef47b82e90fa66df6bb31e89969a` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/470#issuecomment-5858346066`;
-- R3 P1 closure: normal and Ruler persisted use-round marker reconciliation is bidirectional 鈥?every marker must equal the latest authenticated provenance round and every provenance-backed player/issuer must have that exact marker; deleting only the marker from a real authenticated use now fails closed before sc1 eligibility can undercount;
+- R3 P1 closure: normal and Ruler persisted use-round marker reconciliation is bidirectional 閳?every marker must equal the latest authenticated provenance round and every provenance-backed player/issuer must have that exact marker; deleting only the marker from a real authenticated use now fails closed before sc1 eligibility can undercount;
 - final accepted Candidate `c5c418a0c1227924abdac5de6707ebeacbe074a0` received `IMPLEMENTATION_ACCEPTED_CANDIDATE`; canonical same-attempt Coordinator relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/470#issuecomment-5858470246`;
 - exact-Candidate Phase 3 Pre-Review Gate run `36339293812` succeeded;
 - acceptance synchronization: `docs/reports/2026-09-28-p3-a-spartacus-seal-power-readiness-capability-acceptance-synchronization.md`;
@@ -5721,7 +5721,7 @@ Verification evidence:
 - dedicated Spartacus seal-power readiness focused suite `20/20 PASS`;
 - affected serial `10 files / 227 tests PASS`;
 - typecheck PASS;
-- content validate/compile PASS 鈥?`7 masters / 12 servants / 20 events / 0 blocking issues`;
+- content validate/compile PASS 閳?`7 masters / 12 servants / 20 events / 0 blocking issues`;
 - generated determinism PASS with unchanged hashes;
 - R3-predecessor-to-worktree `git diff --check` PASS;
 - `data/authoring/**` delta EMPTY;
@@ -5775,7 +5775,7 @@ Verification evidence:
 - final accepted successor Candidate `d12596998bc4d3a45494e84b107e2577d8e445c4` received `IMPLEMENTATION_ACCEPTED_CANDIDATE`; canonical same-attempt evidence `https://github.com/binchen648/fd/pull/469#issuecomment-5857358441`;
 - acceptance synchronization: `docs/reports/2026-09-27-p3-a-spartacus-accepted-seam-recovery-acceptance-synchronization.md`;
 - typecheck PASS;
-- content validate/compile PASS 鈥?`7 masters / 12 servants / 20 events / 0 blocking issues`;
+- content validate/compile PASS 閳?`7 masters / 12 servants / 20 events / 0 blocking issues`;
 - generated determinism PASS with unchanged hashes;
 - Base-to-worktree `git diff --check` PASS;
 - `data/authoring/**` delta EMPTY;
@@ -5799,7 +5799,7 @@ Base: `44bf45f39c6adc2b419527f96d4257aea4080bb8`
 Classification: bounded zero-credit capability/readiness prerequisite for current owner `servant.skadi`
 
 Bounded scope:
-- exact generic current-round two-distinct-basic-attack attribute-pair predicate for the rune attributes 杩呮嵎 / 榄旀湳 / 鐗规畩;
+- exact generic current-round two-distinct-basic-attack attribute-pair predicate for the rune attributes 鏉╁懏宓?/ 姒勬梹婀?/ 閻楄鐣?
 - exact private outpost continuation: fixed 1-mana cost, draw one, then choose exactly two controller hand cards and shuffle them into deck;
 - exact fixed-3-mana same-location other-active-player mana-loss shell with once-this-round structured-flag gating;
 - exact armed same-round combat shell that defeats the unique active opponent at the controller battlefield and consumes the structured arm flag;
@@ -5865,7 +5865,7 @@ Verification evidence:
 - focused Divine Core readiness `15/15 PASS`;
 - current R3 affected serial `7 files / 105 tests PASS`;
 - typecheck PASS;
-- content validate/compile PASS 鈥?`7 masters / 12 servants / 20 events / 0 blocking issues`;
+- content validate/compile PASS 閳?`7 masters / 12 servants / 20 events / 0 blocking issues`;
 - generated determinism PASS with unchanged hashes;
 - `git diff --check` PASS;
 - `data/authoring/**` delta EMPTY;
@@ -5944,7 +5944,7 @@ Verification evidence:
 - focused full-reward-each readiness `7/7 PASS`;
 - directly affected serial `5 files / 138 tests PASS` with one worker: focused `7`, combat-resolver `10`, authoring-interpreter `38`, executable-card-pack `50`, MatchSession `33`;
 - typecheck PASS;
-- content validate/compile PASS 鈥?`7 masters / 12 servants / 20 events / 0 blocking issues`;
+- content validate/compile PASS 閳?`7 masters / 12 servants / 20 events / 0 blocking issues`;
 - generated determinism PASS with unchanged hashes;
 - `FD_TOOLCHAIN_OK`;
 - `git diff --check` PASS;
@@ -5982,9 +5982,9 @@ Base: `9fd9036c6d74427f88b3b268f9ef2916cf3f3beb`
 Classification: formal owner-complete migration for current owner `servant.stheno`
 
 Formal owner scope:
-- `servant.stheno.skill.sc-stheno-1` 鈥?historical FM06 accepted preservation only; no duplicate credit;
-- `servant.stheno.skill.sc-stheno-2` 鈥?newly creditable;
-- `servant.stheno.skill.sc-stheno-3` 鈥?newly creditable;
+- `servant.stheno.skill.sc-stheno-1` 閳?historical FM06 accepted preservation only; no duplicate credit;
+- `servant.stheno.skill.sc-stheno-2` 閳?newly creditable;
+- `servant.stheno.skill.sc-stheno-3` 閳?newly creditable;
 - one owner archive, one formal Candidate, one PR, one fresh R, then one A-sync/accounting transaction.
 
 Accepted prerequisites:
@@ -6085,9 +6085,9 @@ Base: `d5bd1da1f812f6def3b243a91d09f418067157bc`
 Classification: formal owner-complete migration for current owner `servant.suzuka`
 
 Formal owner scope:
-- `servant.suzuka.skill.sc-suzuka-1` 鈥?newly creditable;
-- `servant.suzuka.skill.sc-suzuka-2` 鈥?newly creditable;
-- `servant.suzuka.skill.sc-suzuka-3` 鈥?newly creditable;
+- `servant.suzuka.skill.sc-suzuka-1` 閳?newly creditable;
+- `servant.suzuka.skill.sc-suzuka-2` 閳?newly creditable;
+- `servant.suzuka.skill.sc-suzuka-3` 閳?newly creditable;
 - one owner archive, one formal Candidate, one PR, one fresh R, then one A-sync/accounting transaction.
 
 Accepted prerequisite:
@@ -6186,9 +6186,9 @@ Base: `75df6b701feb5d614184ba235517b67eea283260`
 Classification: formal owner-complete migration for current owner `servant.taisui`
 
 Formal owner scope:
-- `servant.taisui.skill.sc-taisui-1` 鈥?historical FM07 preservation-only, no new credit;
-- `servant.taisui.skill.sc-taisui-2` 鈥?newly creditable;
-- `servant.taisui.skill.sc-taisui-3` 鈥?newly creditable;
+- `servant.taisui.skill.sc-taisui-1` 閳?historical FM07 preservation-only, no new credit;
+- `servant.taisui.skill.sc-taisui-2` 閳?newly creditable;
+- `servant.taisui.skill.sc-taisui-3` 閳?newly creditable;
 - one owner archive, one formal Candidate, one PR, one fresh R, then one A-sync/accounting transaction.
 
 Accepted prerequisite:
@@ -6298,9 +6298,9 @@ Base: `9b138e98ecc10492d93cc3bebbe0066484ee0c37`
 Classification: formal owner-complete migration for current owner `servant.tamamo`
 
 Formal owner scope:
-- `servant.tamamo.skill.sc-tamamo-1` 鈥?newly creditable;
-- `servant.tamamo.skill.sc-tamamo-2` 鈥?newly creditable;
-- `servant.tamamo.skill.sc-tamamo-3` 鈥?newly creditable;
+- `servant.tamamo.skill.sc-tamamo-1` 閳?newly creditable;
+- `servant.tamamo.skill.sc-tamamo-2` 閳?newly creditable;
+- `servant.tamamo.skill.sc-tamamo-3` 閳?newly creditable;
 - one owner archive, one formal Candidate, one PR, one fresh R, then one A-sync/accounting transaction.
 
 Accepted prerequisite:
@@ -6417,9 +6417,9 @@ Base: `8c89f948db0edcaa8042df578410ba17a8f298b4`
 Classification: formal owner-complete migration for current owner `servant.teach`
 
 Formal owner scope:
-- `servant.teach.skill.sc-teach-1` 鈥?newly creditable;
-- `servant.teach.skill.sc-teach-2` 鈥?newly creditable;
-- `servant.teach.skill.sc-teach-3` 鈥?historical FM01 preservation-only, no duplicate credit;
+- `servant.teach.skill.sc-teach-1` 閳?newly creditable;
+- `servant.teach.skill.sc-teach-2` 閳?newly creditable;
+- `servant.teach.skill.sc-teach-3` 閳?historical FM01 preservation-only, no duplicate credit;
 - one owner archive, one formal Candidate, one PR, one fresh R, then one A-sync/accounting transaction.
 
 Accepted prerequisite:
@@ -6544,9 +6544,9 @@ Base: `f2aaf28bc1f967c6b1197424b9647321e85d7703`
 Classification: formal owner-complete migration for current owner `servant.tesla`
 
 Formal owner scope:
-- `servant.tesla.skill.sc-tesla-1` 鈥?newly creditable;
-- `servant.tesla.skill.sc-tesla-2` 鈥?newly creditable;
-- `servant.tesla.skill.sc-tesla-3` 鈥?newly creditable;
+- `servant.tesla.skill.sc-tesla-1` 閳?newly creditable;
+- `servant.tesla.skill.sc-tesla-2` 閳?newly creditable;
+- `servant.tesla.skill.sc-tesla-3` 閳?newly creditable;
 - one owner archive, one formal Candidate, one PR, one fresh R, then one A-sync/accounting transaction.
 
 Accepted prerequisite:
@@ -6603,7 +6603,7 @@ Frozen owner scope:
 
 Source authority:
 - accepted F1/source-evidence closure ends at independent review `59f145434695d29bdd17e4cb3adc887e84182377`;
-- all three Tezcat identities are source-grounded from `Fate_Domination-寮€鍙戠増/batch_caster_assassin.js`;
+- all three Tezcat identities are source-grounded from `Fate_Domination-瀵偓閸欐垹澧?batch_caster_assassin.js`;
 - locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9` remains static/observed metadata only and is not semantic authority.
 
 Readiness gap set closed in one compatible identity-free family:
@@ -6652,9 +6652,9 @@ Base: `424aea116baf4ca1afddffbcaecf77e13f69de65`
 Classification: formal owner-complete migration for current owner `servant.tezcat`
 
 Formal owner scope:
-- `servant.tezcat.skill.sc-tezcat-1` 鈥?newly creditable;
-- `servant.tezcat.skill.sc-tezcat-2` 鈥?newly creditable;
-- `servant.tezcat.skill.sc-tezcat-3` 鈥?newly creditable;
+- `servant.tezcat.skill.sc-tezcat-1` 閳?newly creditable;
+- `servant.tezcat.skill.sc-tezcat-2` 閳?newly creditable;
+- `servant.tezcat.skill.sc-tezcat-3` 閳?newly creditable;
 - one owner archive, one formal Candidate, one PR, one fresh independent R, then one A-sync/accounting transaction.
 
 Accepted prerequisite:
@@ -6819,9 +6819,9 @@ Base: `d577b1ebca780ec0332440901486320e7bc04e58`
 Classification: formal owner-complete migration for current owner `servant.tristan`
 
 Formal owner scope:
-- `servant.tristan.skill.sc-tristan-1` 鈥?newly creditable;
-- `servant.tristan.skill.sc-tristan-2` 鈥?newly creditable;
-- `servant.tristan.skill.sc-tristan-3` 鈥?preservation-only / already accounted by accepted FM04 migration;
+- `servant.tristan.skill.sc-tristan-1` 閳?newly creditable;
+- `servant.tristan.skill.sc-tristan-2` 閳?newly creditable;
+- `servant.tristan.skill.sc-tristan-3` 閳?preservation-only / already accounted by accepted FM04 migration;
 - one existing owner archive, one formal Candidate, one PR, one fresh independent R, then one A-sync/accounting transaction.
 
 Accepted prerequisite:
@@ -6943,9 +6943,9 @@ Base: `3b3a57cc7c9e766f66d9349453c6f1703b3b8815`
 Classification: formal owner-complete migration for current owner `servant.ushiwakamaru`
 
 Formal owner scope:
-- `servant.ushiwakamaru.skill.sc-ushiwakamaru-1` 鈥?newly creditable;
-- `servant.ushiwakamaru.skill.sc-ushiwakamaru-2` 鈥?newly creditable;
-- `servant.ushiwakamaru.skill.sc-ushiwakamaru-3` 鈥?preservation-only / already accounted by accepted FM01/R26 migration;
+- `servant.ushiwakamaru.skill.sc-ushiwakamaru-1` 閳?newly creditable;
+- `servant.ushiwakamaru.skill.sc-ushiwakamaru-2` 閳?newly creditable;
+- `servant.ushiwakamaru.skill.sc-ushiwakamaru-3` 閳?preservation-only / already accounted by accepted FM01/R26 migration;
 - one existing owner archive, one formal Candidate, one PR, one fresh independent R, then one A-sync/accounting transaction.
 
 Accepted prerequisite:
@@ -7050,9 +7050,9 @@ Status: `READY`
 Classification: formal owner-complete migration for current owner `servant.valkyrie`
 
 Formal owner scope:
-- `servant.valkyrie.skill.sc-valkyrie-1` — newly creditable;
-- `servant.valkyrie.skill.sc-valkyrie-2` — newly creditable;
-- `servant.valkyrie.skill.sc-valkyrie-3` — newly creditable;
+- `servant.valkyrie.skill.sc-valkyrie-1` 鈥?newly creditable;
+- `servant.valkyrie.skill.sc-valkyrie-2` 鈥?newly creditable;
+- `servant.valkyrie.skill.sc-valkyrie-3` 鈥?newly creditable;
 - one owner archive, one formal Candidate, one PR, one fresh independent R, then one A-sync/accounting transaction.
 
 Accepted prerequisite:
@@ -7348,7 +7348,7 @@ Formal materialization requirements:
 Implementation evidence for `P3-S-OWNER-XIANGYU-COMPLETE-MIGRATION`:
 - Exact Base: `946d8dcd4c81308d062bfd19aeb4bb63936484ff` (accepted Xiang Yu readiness A-sync/rescan; strict `170/944`, remaining `774`).
 - Canonical owner archive `data/authoring/servants/servant.xiangyu.json` materializes frozen sc1 + sc2 + sc3 together; all three were absent at Base and remain newly creditable only after formal acceptance + A-sync/accounting.
-- Static metadata: sc1 战术躯体 = 被动 / 0 / 0; sc2 霸王之武 = 被动 / 0 / 0; sc3 力拔山兮气盖世 = 迅捷/宝具 / cost 6 / base Power 7 / 真名解放.
+- Static metadata: sc1 鎴樻湳韬綋 = 琚姩 / 0 / 0; sc2 闇哥帇涔嬫 = 琚姩 / 0 / 0; sc3 鍔涙嫈灞卞叜姘旂洊涓?= 杩呮嵎/瀹濆叿 / cost 6 / base Power 7 / 鐪熷悕瑙ｆ斁.
 - Frozen 12-card deck is b1, b2, b3, b4, b5x2, q1, q2, q5x2, luck, surveil.
 - `fd-playtest-v1` integrates Xiang Yu exactly once immediately after Voyager in stable frozen-owner order.
 - Formal regression `6/6 PASS`; accepted readiness `11/11 PASS`; Tezcat Command-Seal neighboring `8/8`; complex `38/38`; MatchSession `33/33`; MatchSession regressions `11/11`; base-Power/revealed-source neighboring `27/27`; pack loader `21/21`; affected total `155/155 PASS`.
@@ -7431,7 +7431,7 @@ Revision evidence for `P3-B-AKASHA-OWNER-READINESS-CAPABILITY` after predecessor
 ## TASK P3-S-OWNER-AKASHA-COMPLETE-MIGRATION
 
 Owner: Codex S / FORMAL
-Status: `BLOCKED_BY_READINESS_FOLLOWUP`
+Status: `READY`
 Classification: formal owner-complete migration for `master.akasha`
 
 Frozen owner scope:
@@ -7460,8 +7460,8 @@ Formal materialization requirements:
 
 ### Akasha formal-preflight readiness correction
 
-- Formal materialization preflight after readiness A-sync `d57ceeb3b1796db1a2069e446b7841b5763ae367` exposed one additional generic gap in frozen `s1【命理】`: each enabled battlefield needs a temporary `s6【过负荷】` physical copy carrying authoritative `placedAtLocationId` provenance.
-- Existing generic `create_card` can create a zone card but cannot bind a generated card to a battlefield location; the later accepted `【沸腾】` exact-location join therefore cannot consume such a card safely.
+- Formal materialization preflight after readiness A-sync `d57ceeb3b1796db1a2069e446b7841b5763ae367` exposed one additional generic gap in frozen `s1銆愬懡鐞嗐€慲: each enabled battlefield needs a temporary `s6銆愯繃璐熻嵎銆慲 physical copy carrying authoritative `placedAtLocationId` provenance.
+- Existing generic `create_card` can create a zone card but cannot bind a generated card to a battlefield location; the later accepted `銆愭哺鑵俱€慲 exact-location join therefore cannot consume such a card safely.
 - Formal Akasha consumer migration is paused before any `data/authoring/**` write; no formal Candidate was created.
 - New bounded zero-credit follow-up task: `P3-B-AKASHA-OWNER-READINESS-LOCATION-PROVISIONING`.
 
@@ -7515,7 +7515,7 @@ Detailed report: `docs/reports/2026-10-01-p3-b-akasha-owner-readiness-location-p
 ## TASK P3-B-AKASHA-OWNER-READINESS-SEVEN-PLAYER-MASTER-POOL
 
 Owner: Codex B / FORMAL readiness follow-up
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 Classification: bounded zero-credit generic seven-player playable-character pool closure discovered by Akasha formal preflight
 
 Exact Base:
@@ -7548,3 +7548,14 @@ Accounting boundary:
 - `P3-S-OWNER-AKASHA-COMPLETE-MIGRATION` remains blocked until exact follow-up acceptance + FORMAL A-sync/full-owner rescan.
 
 Detailed report: `docs/reports/2026-10-01-p3-b-akasha-owner-readiness-seven-player-master-pool-result.md`.
+### Akasha seven-player master-pool readiness acceptance synchronization
+
+- Accepted Candidate: `5f1a37d53fa0e6b2c2b21a13c3df39cec03ff0ec`.
+- Canonical same-attempt bounded acceptance evidence: `https://github.com/binchen648/fd/pull/505#issuecomment-5917276459`.
+- Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`; exact gate run `36758262351` / job `110033947596` `SUCCESS`.
+- Full-owner rescan confirms canonical `data/authoring/**` still contains `0/8` frozen Akasha identities; all eight remain newly creditable and none is preservation-only.
+- The accepted follow-up closes the shared seven-player pool-size gap: MatchSession now selects exactly seven deterministic Master/Servant pairings from larger playable pools, fails closed below seven, and never creates `p8` authority.
+- No additional currently discoverable Akasha owner-local readiness gap remains after exact #505 acceptance.
+- Readiness remains zero-credit; strict accounting stays `173/944`, remaining `771`.
+- `P3-S-OWNER-AKASHA-COMPLETE-MIGRATION` is unblocked and `READY`; all 8 frozen identities must migrate together in one formal Candidate / one PR / one fresh R / one A-sync-accounting.
+- Detailed A-sync report: `docs/reports/2026-10-01-p3-a-akasha-owner-readiness-seven-player-master-pool-acceptance-synchronization.md`.
