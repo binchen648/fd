@@ -2287,6 +2287,28 @@ function terrainSlotOverridesOf(state: GameState): Partial<Record<LocationId, Re
   return store.terrainAssignmentSlots;
 }
 
+function reconcileTerrainAssignmentsForActivePlayers(state: GameState): void {
+  const assignments = terrainAssignmentsOf(state);
+  const slots = terrainSlotOverridesOf(state);
+  for (const locationId of Object.keys(assignments) as LocationId[]) {
+    const current = assignments[locationId] ?? [];
+    const retained = current.filter((playerId) =>
+      state.players.some((player) => player.id === playerId && player.status === 'active' && player.locationId === locationId));
+    if (retained.length) assignments[locationId] = retained;
+    else delete assignments[locationId];
+
+    const slotMap = slots[locationId];
+    if (!slotMap) continue;
+    for (const playerId of Object.keys(slotMap)) {
+      if (!retained.includes(playerId)) delete slotMap[playerId];
+    }
+    if (!retained.length || Object.keys(slotMap).length === 0) delete slots[locationId];
+  }
+  for (const locationId of Object.keys(slots) as LocationId[]) {
+    if (!Object.prototype.hasOwnProperty.call(assignments, locationId)) delete slots[locationId];
+  }
+}
+
 function effectiveTerrainSlotIndex(state: GameState, locationId: LocationId, playerId: string): number | undefined {
   const override = terrainSlotOverridesOf(state)[locationId]?.[playerId];
   if (Number.isSafeInteger(override) && Number(override) >= 0 && Number(override) < terrainSlotCount(state, locationId)) return Number(override);
@@ -3548,6 +3570,10 @@ export class MatchSession {
       Object.assign(this.state, settleLinkedOwnerCardsAfterBattles(this.state, resolvedBattles));
       const scoringLogStart = this.state.log.length;
       Object.assign(this.state, applyBattleScoring(this.state).nextState);
+      // Scoring may eliminate players after terrain slots were assigned during deployment.
+      // Keep durable terrain authority aligned with the restore contract: only active players
+      // still located at that battlefield may remain assigned, and stale slot overrides vanish.
+      reconcileTerrainAssignmentsForActivePlayers(this.state);
       const freshScoringLogs = this.state.log.slice(scoringLogStart);
       this.queuePostScoringBattleEvents(resolvedBattles, freshScoringLogs);
       this.flushPostScoringBattleEvents();
