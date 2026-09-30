@@ -11,6 +11,371 @@
   },
   "cards": [
     {
+      "id": "servant.ushiwakamaru.skill.sc-ushiwakamaru-1",
+      "aliases": [
+        "sc_ushiwakamaru_1"
+      ],
+      "legacyId": "sc_ushiwakamaru_1",
+      "name": "喜见城·冰柱削",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.ushiwakamaru"
+      },
+      "printedText": "【真名解放】\n战斗阶段：你可以于战斗阶段使用牛若丸的行动阶段能力。（仍遵循每种能力每回合仅可使用一次的限制。）\n唯一/战斗阶段：再次使用一项攻击上的行动阶段或战斗阶段能力（由该能力使用，不计入原能力次数限制）。",
+      "cardFace": {
+        "typeLabel": "力量/迅捷",
+        "attributes": [
+          "力量",
+          "迅捷"
+        ],
+        "cost": 3,
+        "basePower": 3
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-ushiwakamaru-1.true-name-release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "markers": [
+            "真名解放"
+          ],
+          "activation": {
+            "trigger": "on_use_declared"
+          },
+          "targets": [],
+          "effects": [
+            {
+              "type": "reveal_information",
+              "scope": "servant_package",
+              "subject": "controller.servant"
+            }
+          ],
+          "lifecycle": {},
+          "limit": {},
+          "conditions": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "sc-ushiwakamaru-1.cross-phase-action",
+          "kind": "passive",
+          "printedClause": "战斗阶段：你可以于战斗阶段使用牛若丸的行动阶段能力。（仍遵循每种能力每回合仅可使用一次的限制。）",
+          "activation": {
+            "trigger": "while_active",
+            "requiresSourceState": "active"
+          },
+          "targets": [],
+          "effects": [
+            {
+              "type": "grant_controller_action_abilities_in_combat_while_source_active"
+            }
+          ],
+          "lifecycle": {
+            "starts": "immediate",
+            "duration": "while_card_active",
+            "cleanup": "when_card_leaves_active_area",
+            "sourceValidity": {
+              "kind": "accepted_source_state_policy",
+              "owner": "card_zone_source_state",
+              "policyId": "fd.card-zone.active-card-source.v1"
+            }
+          },
+          "limit": {},
+          "conditions": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "sc-ushiwakamaru-1.whirling-slashes",
+          "kind": "phase_action",
+          "printedClause": "唯一/战斗阶段：再次使用一项攻击上的行动阶段或战斗阶段能力（由该能力使用，不计入原能力次数限制）。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "targets": [
+            {
+              "id": "reused_attack_ability_source",
+              "type": "card_instance",
+              "scope": {
+                "zone": "attack_area",
+                "controller": "self",
+                "owner": "controller"
+              },
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "visibility": "public",
+              "constraints": [
+                {
+                  "type": "is_attack"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "grant_one_extra_used_attack_ability_activation_this_round",
+              "target": "reused_attack_ability_source"
+            }
+          ],
+          "lifecycle": {},
+          "limit": {
+            "type": "unique",
+            "scope": "unique_keyword_group",
+            "groupId": "ushiwakamaru-whirling-slashes",
+            "window": "controller_combat_action_window",
+            "conflictPolicy": "only_one_effect_may_activate_per_window"
+          },
+          "conditions": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "牛若丸.htm",
+            "locator": "从者/骑兵/英文版/牛若丸.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/牛若丸.png",
+            "locator": "servant.ushiwakamaru/牛若丸"
+          }
+        ],
+        "sourceTextSha256": "1abe7f64ee84099ea56ec0affece666647869535b3853091cd0f0002081ae506",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_ushiwakamaru_1",
+          "cost": 3,
+          "basePower": 3,
+          "legacyRequirement": 3,
+          "typeLabel": "力量/迅捷",
+          "attributes": [
+            "力量",
+            "迅捷"
+          ],
+          "revealsTrueNameOnPlay": true
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4",
+          "note": "Legacy requirement is static metadata only; final servant skill-zone threshold remains 8."
+        },
+        "acceptedContracts": {
+          "crossPhaseRedeployment": "PR#493/2cc5fe6a13d6519f564076c5e1b7897b062f513d",
+          "skillZonePlayThreshold": "final_rules_9.4"
+        }
+      }
+    },
+    {
+      "id": "servant.ushiwakamaru.skill.sc-ushiwakamaru-2",
+      "aliases": [
+        "sc_ushiwakamaru_2"
+      ],
+      "legacyId": "sc_ushiwakamaru_2",
+      "name": "坛之浦·八艘跳",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.ushiwakamaru"
+      },
+      "printedText": "【真名解放】\n行动阶段：和一名其他玩家比较合计威力大小（不计算未触发的战斗阶段的能力加成）。若你高于对手，将两人重新部署在对方的位置。",
+      "cardFace": {
+        "typeLabel": "迅捷/宝具",
+        "attributes": [
+          "迅捷",
+          "宝具"
+        ],
+        "cost": 2,
+        "basePower": 6
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-ushiwakamaru-2.true-name-release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "markers": [
+            "真名解放"
+          ],
+          "activation": {
+            "trigger": "on_use_declared"
+          },
+          "targets": [],
+          "effects": [
+            {
+              "type": "reveal_information",
+              "scope": "servant_package",
+              "subject": "controller.servant"
+            }
+          ],
+          "lifecycle": {},
+          "limit": {},
+          "conditions": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "sc-ushiwakamaru-2.eight-boat-leap",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：和一名其他玩家比较合计威力大小（不计算未触发的战斗阶段的能力加成）。若你高于对手，将两人重新部署在对方的位置。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "targets": [
+            {
+              "id": "power_comparison_opponent",
+              "type": "player",
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "visibility": "public",
+              "constraints": [
+                {
+                  "type": "not_controller"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "compare_current_total_power_and_swap_locations_if_strictly_higher",
+              "target": "power_comparison_opponent"
+            }
+          ],
+          "lifecycle": {},
+          "limit": {},
+          "conditions": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "牛若丸.htm",
+            "locator": "从者/骑兵/英文版/牛若丸.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/牛若丸.png",
+            "locator": "servant.ushiwakamaru/牛若丸"
+          }
+        ],
+        "sourceTextSha256": "e4b6eba748dd03f9652507ce3b9e58014b15705aa6807e5b5f1731f83382ccc2",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_ushiwakamaru_2",
+          "cost": 2,
+          "basePower": 6,
+          "legacyRequirement": 8,
+          "typeLabel": "迅捷/宝具",
+          "attributes": [
+            "迅捷",
+            "宝具"
+          ],
+          "revealsTrueNameOnPlay": true
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4"
+        },
+        "acceptedContracts": {
+          "crossPhaseRedeployment": "PR#493/2cc5fe6a13d6519f564076c5e1b7897b062f513d",
+          "skillZonePlayThreshold": "final_rules_9.4"
+        }
+      }
+    },
+    {
       "id": "servant.ushiwakamaru.skill.sc-ushiwakamaru-3",
       "aliases": [
         "sc_ushiwakamaru_3"
@@ -143,6 +508,48 @@
           "note": "Legacy requirement is retained as metadata only and does not override the final-rule skill-zone threshold."
         }
       }
+    }
+  ],
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": [
+        "../../Fate_Domination-开发版/images/servants/牛若丸.png",
+        "../../Fate_Domination-开发版/images/servants/牛若丸.png",
+        "../../Fate_Domination-开发版/images/servants/牛若丸.png",
+        "../../Fate_Domination-开发版/images/servants/牛若丸.png"
+      ]
+    }
+  ],
+  "deck": [
+    {
+      "cardId": "card.cardb1"
+    },
+    {
+      "cardId": "card.cardb2"
+    },
+    {
+      "cardId": "card.cardq1",
+      "count": 2
+    },
+    {
+      "cardId": "card.cardq2",
+      "count": 2
+    },
+    {
+      "cardId": "card.cardq3"
+    },
+    {
+      "cardId": "card.cardq4"
+    },
+    {
+      "cardId": "card.cardsurveil",
+      "count": 2
+    },
+    {
+      "cardId": "card.cardpreparation",
+      "count": 2
     }
   ]
 }
