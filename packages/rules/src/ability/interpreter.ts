@@ -1,4 +1,4 @@
-import type { GameState, PhaseName } from '../schema/game';
+﻿import type { GameState, PhaseName } from '../schema/game';
 import { eventLocationEqualsController, isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
 import type { CardInstance } from '../schema/card';
 import type { LocationId } from '../schema/location';
@@ -111,6 +111,11 @@ import {
   isOpponentCloseToOneCandidate,
 } from './opponent-close-to-one';
 import { BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT, containsBattleLuckCloseDrawPlayNode, isAcceptedBattleLuckCloseDrawPlayAbility } from './divine-core-capability';
+import {
+  canExecuteVesselCycleEffect, containsVesselCyclePrivilegedNode, isAcceptedVesselCycleAbility,
+  reconcileVesselCycleVictoryPoints, rememberVesselCyclePlayProvenance, resolveVesselCycleEffect,
+  vesselCyclePlayRequirementWaived, vesselCycleSkillAura, vesselCycleCardPowerAdjustment, isVesselCycleRuntimeProvenanceValidForRestore,
+} from './vessel-cycle-capability';
 import {
   LOCATION_MARKER_FOLLOW_EFFECT, LOCATION_MARKER_COMBAT_BRANCH_EFFECT, LOCATION_MARKER_PLACE_EFFECT, LOCATION_MARKER_MIDPOINT_DEFEAT_EFFECT,
   containsLocationMarkerPrivilegedNode, isAcceptedLocationMarkerAbility, isAcceptedLocationMarkerCombatAbility,
@@ -993,6 +998,11 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     return { value: persistentLock.value, lines: [{ label: 'persistent_situation_attribute_power_lock', value: persistentLock.value }] };
   }
   const result = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
+  const vesselPowerAura = vesselCycleSkillAura(s, source.controllerPlayerId, d?.id ?? source.definitionId, d?.cardType ?? '');
+  if (vesselPowerAura.powerDelta !== 0) {
+    result.value += vesselPowerAura.powerDelta;
+    result.lines.push({ label: 'vessel_cycle_skill_aura', value: result.value });
+  }
   const acceptedSourceX = d ? abilityHasAcceptedDiscardShuffleSourceX(d.abilities) : undefined;
   const sourceXBinding = runtime(s).cardState[sourceId]?.sourceBoundX;
   if (acceptedSourceX && sourceXBinding) {
@@ -1014,6 +1024,9 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     result.value *= authoredBaseMultiplier;
     result.lines.push({ label: 'authored_base_power_multiplier', value: result.value });
   }
+  const vesselCardPower = vesselCycleCardPowerAdjustment(s, source.controllerPlayerId, sourceId);
+  if (vesselCardPower.multiplier !== 1) { result.value *= vesselCardPower.multiplier; result.lines.push({ label: 'vessel_cycle_base_power_multiplier', value: result.value }); }
+  if (vesselCardPower.bonus !== 0) { result.value += vesselCardPower.bonus; result.lines.push({ label: 'vessel_cycle_round_power_bonus', value: result.value }); }
   const linkedOwnerMultiplier = linkedOwnerBasePowerMultiplier(s, source);
   if (linkedOwnerMultiplier !== 1) {
     result.value *= linkedOwnerMultiplier;
@@ -1828,6 +1841,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsTerrainFortificationExtraPlayPrivilegedNode(a) && !isAcceptedTerrainFortificationExtraPlayAbility(a) && !isAcceptedReactionCounterPlayHandAbility(a)) return false;
   if (containsMatchingDefinitionCapabilityNode(a) && !isAcceptedMatchingDefinitionCapabilityAbility(a)) return false;
   if (containsReactionCounterPrivilegedNode(a) && !isAcceptedReactionCounterCapabilityAbility(a)) return false;
+  if (containsVesselCyclePrivilegedNode(a) && !isAcceptedVesselCycleAbility(a)) return false;
+  if (isAcceptedVesselCycleAbility(a) && !canExecuteVesselCycleEffect(s, context(s, sourceId, a.id, event), a.effects[0]!)) return false;
   if (containsLocationMarkerPrivilegedNode(a) && !isAcceptedLocationMarkerAbility(a)) return false;
   if (isAcceptedLocationMarkerAbility(a) && !canActivateLocationMarkerAbility(s, sourceId, a, event)) return false;
   if (containsSealedCardMagicPrivilegedNode(a) && !isAcceptedSealedCardMagicAbility(a)) return false;
@@ -2054,7 +2069,8 @@ export function effectiveCardPlayCost(s: GameState, playerId: string, sourceId: 
   if (replayGrowth.length > 1) reject('unsupported', 'Conflicting physical replay-growth cost modifiers');
   const replayIncrease = replayGrowth.length === 1 ? (runtime(s).cardPlayCountByInstance?.[sourceId] ?? 0) : 0;
   if (!Number.isSafeInteger(replayIncrease) || replayIncrease < 0) reject('invalid_state', 'Physical replay-growth count is invalid');
-  return baseCost + replayIncrease + battlefieldSourceCardPlayCostIncrease(s, playerId, sourceId);
+  const vesselAura = vesselCycleSkillAura(s, playerId, d.id, d.cardType);
+  return Math.max(0, baseCost + replayIncrease + battlefieldSourceCardPlayCostIncrease(s, playerId, sourceId) + vesselAura.costDelta);
 }
 
 function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false, ignoreManaCost = false, allowedSourceZones: readonly string[] = ['hand', 'skill']): string | undefined {
@@ -3795,6 +3811,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState):
     const r = runtime(s); const playerIds = new Set(s.players.map((candidate) => candidate.id));
     const locationIds = new Set<string>(s.map.locations.map((candidate) => candidate.id));
     const hasPlayers = (ids: readonly string[]) => ids.every((id) => playerIds.has(id)) && new Set(ids).size === ids.length;
+    if (!isVesselCycleRuntimeProvenanceValidForRestore(s)) return false;
     if (!(r.pendingDelayedActivations ?? []).every((entry) => {
       const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
       const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
@@ -6196,6 +6213,10 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
+  if (containsVesselCyclePrivilegedNode(a)) {
+    if (!isAcceptedVesselCycleAbility(a) || !resolveVesselCycleEffect(s, ctx, a, a.effects[0]!)) reject('resolution_failed', 'Unsupported vessel-cycle semantic');
+    return;
+  }
   if (isRulerSealBindingCandidate(a) && !isRulerSealBindingSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal binding semantic shape');
   if (isRulerSealUseCandidate(a) && !isRulerSealUseSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal use semantic shape');
   if (isCombatOpponentPowerVpRewardCandidate(a) && !isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled')) {
@@ -6401,7 +6422,8 @@ function rememberTrustedBattleResultSnapshot(r: AbilityRuntime, event: AbilityEv
 }
 
 function processEvent(s: GameState, event: AbilityEvent): void {
-  const r = runtime(s); if (r.processedEvents.includes(event.id)) return;
+  const r = runtime(s);
+  reconcileVesselCycleVictoryPoints(s); if (r.processedEvents.includes(event.id)) return;
   if (event.type === 'after_controller_enters_location' && event.playerId && event.locationId && (event.movementKind === 'normal' || event.movementKind === 'effect')) {
     r.locationEntryRoundByPlayer ??= {}; r.locationEntryRoundByPlayer[event.playerId] ??= {}; r.locationEntryRoundByPlayer[event.playerId]![event.locationId] = s.round.roundNumber;
   }
@@ -7562,6 +7584,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   const playedCards = choices.map(c => ({ instanceId: c.cardInstanceId, controllerId: playerId,
     cardType: definition(s, c.cardInstanceId)!.cardType, faceDown: !!c.faceDown }));
   if (cost > 0) spendMana(s, playerId, cost);
+  for (const c of choices.filter((choice) => !choice.faceDown)) rememberVesselCyclePlayProvenance(s, playerId, c.cardInstanceId);
   if (commandSealCost > 0) {
     const before = availableSeals; const after = before - commandSealCost;
     sealCarrier.commandSpells = after;
