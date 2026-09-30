@@ -296,6 +296,19 @@ export interface PendingBattleCloseDrawPlayTransaction {
   discardedLuckCardId?: string;
   opponentIds: PlayerId[]; closeIndex: number; playIndex: number; rewards: BattleCloseDrawPlayReward[];
 }
+export interface GlobalDefinitionRevealRewardInteractionMetadata {
+  kind: 'global_definition_reveal_reward_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  initiatingControllerId: PlayerId; definitionId: string; rewardVp: 2; decisionPlayerIds: PlayerId[]; nextIndex: number; candidateIds: string[];
+  constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: 1; distinct: true };
+}
+export interface DiscardDefinitionPlayAllInteractionMetadata {
+  kind: 'discard_definition_play_all_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; targetPlayerId: PlayerId; definitionId: string; transferVp: 2;
+  revealedDiscardIds: string[]; matchingCardIds: string[]; options: ['skip', 'play_all'];
+  constraints: { kind: 'target'; targetKind: 'choice'; min: 1; max: 1; distinct: true };
+}
 export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata |
   OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata | DeductionRecordChoiceInteractionMetadata |
   PostDrawHandShuffleInteractionMetadata | DiscardShuffleSourceXInteractionMetadata | RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata |
@@ -304,7 +317,8 @@ export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetad
   SealedCardDispositionInteractionMetadata | BattlePlunderChoiceInteractionMetadata | RecordedRemovedReplayChoiceInteractionMetadata |
   BattleLuckDiscardInteractionMetadata | BattleOpponentCloseRewardInteractionMetadata |
   BattleDrawnCardOptionalPlayInteractionMetadata | BattlefieldAttackOfferChoiceInteractionMetadata |
-  DeploymentTerrainVpChoiceInteractionMetadata | OneShotAbilityReuseChoiceInteractionMetadata;
+  DeploymentTerrainVpChoiceInteractionMetadata | OneShotAbilityReuseChoiceInteractionMetadata |
+  GlobalDefinitionRevealRewardInteractionMetadata | DiscardDefinitionPlayAllInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -385,6 +399,8 @@ export interface CardRuntimeState {
     multiplier: 2;
     round: number;
   };
+  /** Source-provenance marker for a generated card that returns to its exact generator owner's discard after battle. */
+  generatedCardReturnAfterBattle?: { round: number; generatorSourceCardId: string; generatorOwnerPlayerId: PlayerId; generatedControllerPlayerId: PlayerId; sourceAbilityId: string; powerRecipientPlayerIds: PlayerId[] };
   /** Exact physical-card marker for cards replayed from discard that must return to deck after this battle. */
   returnToDeckAfterBattle?: { round: number; controllerId: PlayerId; sourceCardId: string; abilityId: string };
   /** Source-card current-round Power bonus, persisted by physical instance. */

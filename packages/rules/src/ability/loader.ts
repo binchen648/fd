@@ -119,6 +119,12 @@ import {
   isAcceptedCommanderLifecyclePrivilegedAbility,
 } from './commander-card-lifecycle-capability';
 import {
+  CREATE_EVENT_PLAYER_DEFINITION_COPIES_EFFECT, GLOBAL_OPTIONAL_DEFINITION_REVEAL_REWARD_EFFECT,
+  REVEAL_ALL_HANDS_ZERO_MATCHING_ATTACKS_EFFECT, OPPONENT_DISCARD_FREE_PLAY_ALL_MATCHING_EFFECT,
+  LINK_GENERATED_CARD_POWER_EFFECT, RETURN_LINKED_GENERATED_CARD_AFTER_BATTLE_EFFECT,
+  containsMatchingDefinitionCapabilityNode, isAcceptedMatchingDefinitionCapabilityAbility, matchingDefinitionCapabilityNodeIsWellFormed,
+} from './matching-definition-card-capability';
+import {
   CONTROLLER_HAS_POSITIVE_TERRAIN_CONDITION,
   EFFECT_PLAYABLE_FACE_UP_CONSTRAINT,
   DOUBLE_CONTROLLER_TERRAIN_EFFECT,
@@ -171,6 +177,9 @@ const supportedTypes = new Set([
   RELOCATE_DEFINITION_SET_WITHOUT_PLAY_EFFECT, RECALL_ACTIVE_DEFINITION_AND_JOIN_SOURCE_EFFECT, RETRIGGER_ACTIVE_DEFINITION_SET_PLAY_EFFECTS,
   CONTROLLER_HAS_POSITIVE_TERRAIN_CONDITION, EFFECT_PLAYABLE_FACE_UP_CONSTRAINT, DOUBLE_CONTROLLER_TERRAIN_EFFECT,
   FORTIFY_MOVED_IN_BATTLEFIELD_EFFECT, PLAY_HAND_CARDS_WITH_TERRAIN_EXTRA_EFFECT,
+  CREATE_EVENT_PLAYER_DEFINITION_COPIES_EFFECT, GLOBAL_OPTIONAL_DEFINITION_REVEAL_REWARD_EFFECT,
+  REVEAL_ALL_HANDS_ZERO_MATCHING_ATTACKS_EFFECT, OPPONENT_DISCARD_FREE_PLAY_ALL_MATCHING_EFFECT,
+  LINK_GENERATED_CARD_POWER_EFFECT, RETURN_LINKED_GENERATED_CARD_AFTER_BATTLE_EFFECT,
   'card_count_at_least',
   'event_player_won_combat', 'event_player_lost_combat',
   'event_player_is_controller', 'event_player_is_opponent', 'event_location_equals_controller',
@@ -277,6 +286,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'manaCost', 'basePowerMultiplier', 'removeAfter',
   'firstAttribute', 'secondAttribute', 'distinctCards', 'resource', 'roundsAfterCurrent',
   'zones', 'numerator', 'denominator', 'rounding', 'destination', 'defeatIfEmpty', 'minBasePower', 'perCard', 'sourcePlayers',
+  'toZone', 'provenance', 'revealMax', 'power', 'transferVp', 'playCost', 'mode', 'generator', 'dedupeSamePlayer',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -554,7 +564,11 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       else if (limit.type === 'per_round' && (!Number.isInteger(limit.uses) || Number(limit.uses) < 1 || str(limit.scope) !== 'this_card')) issue('limit', 'Per-round limits require positive uses and this_card scope', id);
       else if (limit.type && !['unique', 'per_game', 'per_round'].includes(str(limit.type))) issue('limit', 'Unmapped activation limit', id);
       for (const field of ['effects', 'conditions', 'cost', 'creates']) scan(a[field], field, id);
+      if (containsMatchingDefinitionCapabilityNode(a as unknown as AuthoringAbility) && !isAcceptedMatchingDefinitionCapabilityAbility(a as unknown as AuthoringAbility)) {
+        issue('effects', 'Unsupported matching-definition card capability semantic shape', id);
+      }
       for (const effect of nodes(a.effects)) {
+        if (!matchingDefinitionCapabilityNodeIsWellFormed(effect)) issue('effects', 'Malformed matching-definition capability node', id);
         if (effect.type === 'linked_owner_combat_rule' && !isLinkedOwnerCombatRule(effect)) issue('effects', 'Unsupported linked-owner combat rule shape', id);
         if (effect.type === 'servant_no_command_seals_rule' && !isServantNoCommandSealsRule(effect)) issue('effects', 'Unsupported no-command-seals servant rule shape', id);
         if (effect.type === 'adjust_selected_player_terrain' && !(

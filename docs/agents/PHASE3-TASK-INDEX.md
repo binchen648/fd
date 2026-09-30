@@ -7202,3 +7202,21 @@ Accounting boundary:
 - readiness is permanently zero-credit;
 - one owner / all currently discoverable readiness gaps / one Candidate / one PR / one fresh R / one A-sync-rescan;
 - do not split per skill and do not advance owner until Voyager readiness plus subsequent owner-complete migration close.
+Implementation evidence for `P3-B-VOYAGER-OWNER-READINESS-CAPABILITY`:
+- Base: `b4dbc40e4ecd48da82f6304b427811b24c00f68c` (accepted Vlad owner A-sync/accounting; strict `166/944`, remaining `778`).
+- Frozen scope remains sc1 + sc2 + sc3 + sc4 together; readiness is permanently zero-credit.
+- Complete current owner-local gap set is covered by one identity-free matching-definition capability family: exact event-player definition provisioning, global optional reveal/+2 VP, matching hand extra-play, global reveal/attack-zero, opponent discard reveal/free play-all/+2 VP transfer, and generated-card +6/link/return provenance.
+- No `data/authoring/**` delta and no Voyager/card-name/legacy-handler production routing.
+- Focused `8/8 PASS`; affected Voyager + complex + MatchSession aggregate `79/79 PASS`.
+- `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`7 masters / 17 servants / 20 events / 0 blocking issues`); generated determinism PASS; identity audit CLEAN; diff-check PASS.
+- Detailed report: `docs/reports/2026-09-30-p3-b-voyager-owner-readiness-capability-result.md`.
+- Current disposition: `IMPLEMENTATION_COMPLETE_CANDIDATE`; freeze one Candidate / one PR / one fresh R. No migration credit before later formal owner acceptance + A-sync/accounting.
+
+### Voyager readiness review revision closure
+- Predecessor exact Candidate `30748e6fed5276c4cb8c6161ce3869d0fb2d39c5`: `IMPLEMENTATION_NEEDS_REVISION`.
+- Canonical same-attempt bounded evidence relay: `https://github.com/binchen648/fd/pull/499#issuecomment-5913302549`.
+- P1 closure 1: generated-card controller is now sealed in provenance; marker and +6 adjustment recipients must exactly match sealed controller + generator owner; forged controller/recipient/adjustment snapshots fail restore; consumed battle-end marker/+6 authority is retired.
+- P1 closure 2: matching-definition reveal/discard pending interactions revalidate exact controller binding plus live active face-up source both at restore and dispatch; disabled/face-down/moved source continuations fail closed without reward/play mutation.
+- Successor verification: `10/10 + 38/38 + 33/33 + 11/11 = 92/92 PASS`; typecheck/content validate/content compile/generated determinism/diff-check PASS; `data/authoring/**` delta EMPTY.
+- Readiness remains permanently zero-credit; strict formal accounting stays `166/944`, remaining `778`.
+- Freeze exactly one successor Candidate on PR #499 and request one fresh independent R; do not re-review predecessor Candidate.
