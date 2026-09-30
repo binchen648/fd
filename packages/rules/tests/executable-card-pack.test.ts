@@ -78,7 +78,7 @@ describe('ExecutableCardPack compiler', () => {
       archiveId: 'servant.artoriac',
       archiveIndex: archiveIndexById(input, 'servant.artoriac'),
       cardIndex: 0,
-      path: rchives[].cards[0],
+      path: `archives[${archiveIndexById(input, 'servant.artoriac')}].cards[0]`,
     });
     expect(() => assertExecutableCardPack(executable, input)).not.toThrow();
     expect(() => assertExecutableCardPack({ ...executable, definitionHash: '0'.repeat(64) }, input)).toThrow(/hash mismatch/);

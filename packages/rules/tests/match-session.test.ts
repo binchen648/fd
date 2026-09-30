@@ -341,7 +341,7 @@ describe('MatchSession semi-auto runtime', () => {
 
   it('authenticates gameplay-affecting MatchSession fields outside GameState', () => {
     // Keep this durability fixture on a bounded one-round roster path as the production servant pool grows.
-    const session = createMatchSession({ seed: 20260880, humanPlayerId: 'p1', maxActionsPerPlayer: 2 });
+    const session = createMatchSession({ seed: 20207105, humanPlayerId: 'p1', maxActionsPerPlayer: 2 });
     expect(session.runFullMatch({ maxRounds: 1 })).toBe('match_complete');
     const durable = session.serializeSession();
     expect(durable.battleHistory.length).toBeGreaterThan(0);
@@ -709,7 +709,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('runs a three-round event smoke with revealable battle breakdowns', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
+    const session = createMatchSession({ seed: 3685325, humanPlayerId: 'p1' });
     const reason = session.runFullMatch({ maxRounds: 3 });
     const projected = session.projectToClientState('p1');
 

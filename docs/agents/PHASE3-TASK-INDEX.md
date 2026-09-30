@@ -7431,7 +7431,7 @@ Revision evidence for `P3-B-AKASHA-OWNER-READINESS-CAPABILITY` after predecessor
 ## TASK P3-S-OWNER-AKASHA-COMPLETE-MIGRATION
 
 Owner: Codex S / FORMAL
-Status: `READY`
+Status: `MIGRATION_COMPLETE_CANDIDATE`
 Classification: formal owner-complete migration for `master.akasha`
 
 Frozen owner scope:
@@ -7559,3 +7559,17 @@ Detailed report: `docs/reports/2026-10-01-p3-b-akasha-owner-readiness-seven-play
 - Readiness remains zero-credit; strict accounting stays `173/944`, remaining `771`.
 - `P3-S-OWNER-AKASHA-COMPLETE-MIGRATION` is unblocked and `READY`; all 8 frozen identities must migrate together in one formal Candidate / one PR / one fresh R / one A-sync-accounting.
 - Detailed A-sync report: `docs/reports/2026-10-01-p3-a-akasha-owner-readiness-seven-player-master-pool-acceptance-synchronization.md`.
+
+### Akasha formal owner-complete implementation evidence
+
+- Exact formal Base: `e2e79392c78dadbd17d53da9e48c9af5000592a9` (accepted seven-player readiness A-sync; strict `173/944`, remaining `771`).
+- One canonical `master.akasha` archive materializes all 8 frozen identities together; all eight were absent at Base and remain newly creditable only after exact formal acceptance + A-sync/accounting.
+- The consumer uses accepted #503/#504/#505 identity-free capability contracts; Base..Candidate production runtime delta is EMPTY and production Akasha identity audit is CLEAN.
+- Akasha is integrated exactly once as the eighth canonical playable Master; existing seven Master order is preserved.
+- Shared fixture updates remove hard-coded seven-master/archive-index assumptions and mechanically realign only the deterministic MatchSession scenarios affected by the accepted >7 pool selection contract.
+- Verification: formal `6/6`, readiness `17/17`, seven-player `3/3`, provisioning `7/7`, outside-game `12/12`, complex `38/38`, executable pack `50/50`, pack loader `21/21`, MatchSession `33/33`, restore `11/11`; affected aggregate **`198/198 PASS`**.
+- `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`8 masters / 19 servants / 20 events / 0 blocking issues`); generated determinism PASS; diff-check PASS.
+- Supplemental source-assets-required check still reports 93 pre-existing unrelated missing assets; Akasha is not in the missing set.
+- Generated hashes: content-library `9bded243cd7dddf19f7896c2f1af6f79b917e9a28d76fd13071529cbdd8d316e`; fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`; evidence-report `fd3081d8fadf2f81a7e070feff815ac893e2188cb5d3b18efdd74cc1b8460f8c`.
+- Detailed report: `docs/reports/2026-10-01-p3-s-owner-akasha-complete-migration-result.md`.
+- Current disposition: `MIGRATION_COMPLETE_CANDIDATE`; freeze one exact formal Candidate / one PR / one fresh independent R. No credit before `MIGRATION_ACCEPTED` + A-sync/accounting.

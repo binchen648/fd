@@ -62,7 +62,7 @@
       },
       "source": {
         "htmPath": "chm-extract/阿卡夏之蛇.htm",
-        "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
@@ -2943,7 +2943,7 @@
       },
       "source": {
         "htmPath": "chm-extract/阿卡夏之蛇.htm",
-        "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
@@ -2964,7 +2964,7 @@
       },
       "source": {
         "htmPath": "chm-extract/阿卡夏之蛇.htm",
-        "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
         "imageIndex": 8,
         "reviewedAgainstImage": true
       }
@@ -2985,7 +2985,7 @@
       },
       "source": {
         "htmPath": "chm-extract/阿卡夏之蛇.htm",
-        "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
         "imageIndex": 1,
         "reviewedAgainstImage": true
       }
@@ -3006,7 +3006,7 @@
       },
       "source": {
         "htmPath": "chm-extract/阿卡夏之蛇.htm",
-        "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
         "imageIndex": 2,
         "reviewedAgainstImage": true
       }
@@ -3027,7 +3027,7 @@
       },
       "source": {
         "htmPath": "chm-extract/阿卡夏之蛇.htm",
-        "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
         "imageIndex": 3,
         "reviewedAgainstImage": true
       }
@@ -3048,7 +3048,7 @@
       },
       "source": {
         "htmPath": "chm-extract/阿卡夏之蛇.htm",
-        "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
         "imageIndex": 4,
         "reviewedAgainstImage": true
       }
@@ -3069,7 +3069,7 @@
       },
       "source": {
         "htmPath": "chm-extract/阿卡夏之蛇.htm",
-        "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
         "imageIndex": 5,
         "reviewedAgainstImage": true
       }
@@ -3090,7 +3090,7 @@
       },
       "source": {
         "htmPath": "chm-extract/阿卡夏之蛇.htm",
-        "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
         "imageIndex": 6,
         "reviewedAgainstImage": true
       }
@@ -3111,7 +3111,7 @@
       },
       "source": {
         "htmPath": "chm-extract/阿卡夏之蛇.htm",
-        "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
         "imageIndex": 7,
         "reviewedAgainstImage": true
       }
@@ -19071,11 +19071,11 @@
       "master.irisviel": "master.irisviel.command-spell",
       "master.akasha": "master.akasha.command-spell"
     },
-    "definitionHash": "33cfbbdbc7a0fd2f77ef7b8413f57cbf2217be6d871a2190db4ea147047ff6b2",
+    "definitionHash": "781ee5acb6cbcae3de62028a1d34ec5f783d66cc419a29eb59f35b9eadab9153",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "33cfbbdbc7a0fd2f77ef7b8413f57cbf2217be6d871a2190db4ea147047ff6b2"
+      "definitionHash": "781ee5acb6cbcae3de62028a1d34ec5f783d66cc419a29eb59f35b9eadab9153"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
