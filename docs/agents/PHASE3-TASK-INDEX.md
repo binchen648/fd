@@ -7414,3 +7414,46 @@ Revision evidence for `P3-B-AKASHA-OWNER-READINESS-CAPABILITY` after predecessor
 - real `playAbilityCardBatch()` regressions cover non-final-Vessel 7-mana rejection, exact final-Vessel 7-mana low-mana success, and 8-mana normal-play non-misclassification;
 - successor verification: focused `15/15`, neighboring `80/80`, authoring/content/complex `131/131`, MatchSession/restore `44/44`, aggregate **`255/255 PASS`**; typecheck/content/generated/diff-check PASS; `data/authoring/**` EMPTY; production identity audit CLEAN;
 - readiness remains zero-credit at `173/944`, remaining `771`; one successor Candidate / one fresh R required.
+
+### Akasha readiness acceptance synchronization
+
+- Accepted successor Candidate: `214e77133d9f7c006123f950ac834df693c90130`.
+- Canonical same-attempt bounded acceptance evidence: `https://github.com/binchen648/fd/pull/503#issuecomment-5916640287`.
+- Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`; exact successor gate run `36753465480` / job `110017671338` `SUCCESS`.
+- The user-visible Reviewer relay prose was truncated after the accounting line; the canonical Coordinator relay intentionally preserves only the exact terminal facts that were visibly supported.
+- Readiness A-sync/full-owner rescan finds no canonical Akasha authoring; all 8 frozen identities remain absent from `data/authoring/**` and all eight remain newly creditable.
+- No preservation-only duplicate Akasha identity exists in the current canonical authoring lineage.
+- No additional currently discoverable Akasha owner-local readiness gap remains after accepted successor closure.
+- Readiness remains zero-credit; strict accounting stays `173/944`, remaining `771`.
+- Next legal FORMAL task: `P3-S-OWNER-AKASHA-COMPLETE-MIGRATION`, all 8 frozen identities together; all eight are creditable only after formal acceptance + A-sync/accounting.
+- Detailed A-sync report: `docs/reports/2026-10-01-p3-a-akasha-owner-readiness-capability-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-AKASHA-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `READY`
+Classification: formal owner-complete migration for `master.akasha`
+
+Frozen owner scope:
+- `master.akasha.skill.ascension`
+- `master.akasha.skill.s1`
+- `master.akasha.skill.s1a`
+- `master.akasha.skill.s2`
+- `master.akasha.skill.s3`
+- `master.akasha.skill.s4`
+- `master.akasha.skill.s5`
+- `master.akasha.skill.s6`
+
+Accounting boundary:
+- strict formal accounting remains `173/944`, remaining `771` before formal acceptance;
+- all eight frozen identities are absent from canonical `data/authoring/**` and are newly creditable;
+- successful exact formal `MIGRATION_ACCEPTED` plus A-sync/accounting may add exactly `+8` (`173 -> 181`), leaving `763`;
+- one owner / all eight frozen identities / one formal Candidate / one PR / one fresh R / one A-sync-accounting;
+- consume the accepted identity-free Vessel-cycle readiness runtime; do not add Akasha/card-name/printed-text/legacy identity routing to production runtime.
+
+Formal materialization requirements:
+- create one canonical Akasha master owner archive containing the complete 8-identity frozen scope together;
+- preserve frozen source/static metadata and the accepted Vessel-cycle semantic contract;
+- integrate Akasha exactly once in the stable master content order;
+- add focused owner-complete migration regression proving canonical authoring/pack presence plus accepted generic runtime shapes;
+- Base for this formal task is the Akasha readiness acceptance-sync commit produced by this transaction.
