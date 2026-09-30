@@ -276,7 +276,7 @@ describe('match session gameplay regressions', () => {
   });
 
   it('offers dash movement in action phase only after the special card is active', () => {
-    const session = createMatchSession({ seed: 20260906, humanPlayerId: 'p1' });
+    const session = createMatchSession({ seed: 20260908, humanPlayerId: 'p1' });
     const state = mutableState(session);
     setPriority(state, 'p1', 'action');
     (state as unknown as { modeState?: { cardPlayForbids?: unknown[] } }).modeState ??= {};

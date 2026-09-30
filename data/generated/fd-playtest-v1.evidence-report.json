@@ -3,7 +3,7 @@
   "packId": "fd-playtest-v1",
   "summary": {
     "masters": 7,
-    "servants": 17,
+    "servants": 18,
     "events": 20,
     "blockingIssues": 0
   },
@@ -1863,6 +1863,72 @@
       "htmPath": "弗拉德三世.htm",
       "imagePath": "../../Fate_Domination-开发版/images/servants/弗拉德三世.png",
       "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.voyager",
+      "displayName": "旅行者",
+      "entityKind": "servant",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "旅行者.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/旅行者.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.voyager.overview",
+      "displayName": "旅行者",
+      "entityKind": "servant_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "旅行者.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/旅行者.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.voyager.skill.sc-voyager-1",
+      "displayName": "讯息：希望",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "旅行者.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/旅行者.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.voyager.skill.sc-voyager-2",
+      "displayName": "讯息：和平",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "旅行者.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/旅行者.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.voyager.skill.sc-voyager-3",
+      "displayName": "遥远的蓝色星球啊",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "旅行者.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/旅行者.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.voyager.skill.sc-voyager-4",
+      "displayName": "领域外生命",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "旅行者.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/旅行者.png",
+      "imageIndex": 4,
       "reviewedAgainstImage": true,
       "issueCodes": []
     }

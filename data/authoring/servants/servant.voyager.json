@@ -1,0 +1,632 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.voyager",
+  "name": "旅行者",
+  "class": "Foreigner",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "acceptedReadinessContract": "PR#499/c0e0fb4f506145a2a93a3ce330fdd9cef3fd6aa8",
+    "note": "Semantics come from frozen source evidence plus the accepted identity-free matching-definition readiness contract; locked Reference is used only for static card metadata and bounded behavior corroboration."
+  },
+  "cards": [
+    {
+      "id": "servant.voyager.skill.sc-voyager-1",
+      "aliases": [
+        "sc_voyager_1"
+      ],
+      "legacyId": "sc_voyager_1",
+      "name": "讯息：希望",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.voyager"
+      },
+      "printedText": "群星低吟-被动：当一名玩家进入侦查，将两张游戏外的【降临者】加入其手牌。\n行动阶段：所有玩家可以展示他们手牌中的【降临者】。若如此做，其获得2点战果。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-voyager-1.voices-of-stars",
+          "kind": "forced_trigger",
+          "printedClause": "群星低吟-被动：当一名玩家进入侦查，将两张游戏外的【降临者】加入其手牌。",
+          "activation": {
+            "trigger": "after_controller_enters_location",
+            "eventLocationId": "recon"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "create_event_player_definition_copies",
+              "definitionId": "servant.voyager.skill.sc-voyager-4",
+              "target": "event_player",
+              "toZone": "hand",
+              "count": 2,
+              "provenance": "source_card"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "sc-voyager-1.hope-reveal",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：所有玩家可以展示他们手牌中的【降临者】。若如此做，其获得2点战果。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "global_optional_definition_reveal_reward",
+              "definitionId": "servant.voyager.skill.sc-voyager-4",
+              "rewardVp": 2,
+              "revealMax": 1
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "旅行者.htm",
+            "locator": "从者/降临者/英文版/旅行者.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/旅行者.png",
+            "locator": "servant.voyager/旅行者"
+          }
+        ],
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_voyager_1",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": 0,
+          "typeLabel": "特殊"
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4"
+        },
+        "acceptedContracts": {
+          "matchingDefinitionReadiness": "PR#499/c0e0fb4f506145a2a93a3ce330fdd9cef3fd6aa8"
+        }
+      }
+    },
+    {
+      "id": "servant.voyager.skill.sc-voyager-2",
+      "aliases": [
+        "sc_voyager_2"
+      ],
+      "legacyId": "sc_voyager_2",
+      "name": "讯息：和平",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.voyager"
+      },
+      "printedText": "深空奏鸣-行动阶段：从手牌中打出至多2张【降临者】和至多2张暗置牌。\n战斗阶段：展示所有玩家的手牌。将因此效果展示了【降临者】的玩家的攻击威力降低至0。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 2,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-voyager-2.peace-action",
+          "kind": "phase_action",
+          "printedClause": "深空奏鸣-行动阶段：从手牌中打出至多2张【降临者】和至多2张暗置牌。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "targets": [
+            {
+              "id": "matching",
+              "type": "card_instance",
+              "scope": {
+                "zone": "hand",
+                "owner": "controller",
+                "controller": "self"
+              },
+              "count": {
+                "min": 0,
+                "max": 2
+              },
+              "constraints": [
+                {
+                  "type": "has_card_id",
+                  "cardId": "servant.voyager.skill.sc-voyager-4"
+                }
+              ]
+            },
+            {
+              "id": "hidden",
+              "type": "card_instance",
+              "scope": {
+                "zone": "hand",
+                "owner": "controller",
+                "controller": "self"
+              },
+              "count": {
+                "min": 0,
+                "max": 2
+              },
+              "constraints": []
+            }
+          ],
+          "effects": [
+            {
+              "type": "play_selected_cards",
+              "target": "matching",
+              "face": "face_up"
+            },
+            {
+              "type": "play_selected_cards",
+              "target": "hidden",
+              "face": "face_down"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "sc-voyager-2.peace-combat",
+          "kind": "phase_action",
+          "printedClause": "战斗阶段：展示所有玩家的手牌。将因此效果展示了【降临者】的玩家的攻击威力降低至0。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "reveal_all_hands_zero_matching_attacks",
+              "definitionId": "servant.voyager.skill.sc-voyager-4",
+              "power": 0,
+              "duration": "this_round"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "旅行者.htm",
+            "locator": "从者/降临者/英文版/旅行者.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/旅行者.png",
+            "locator": "servant.voyager/旅行者"
+          }
+        ],
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_voyager_2",
+          "cost": 2,
+          "basePower": 0,
+          "legacyRequirement": 0,
+          "typeLabel": "特殊"
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4"
+        },
+        "acceptedContracts": {
+          "matchingDefinitionReadiness": "PR#499/c0e0fb4f506145a2a93a3ce330fdd9cef3fd6aa8"
+        }
+      }
+    },
+    {
+      "id": "servant.voyager.skill.sc-voyager-3",
+      "aliases": [
+        "sc_voyager_3"
+      ],
+      "legacyId": "sc_voyager_3",
+      "name": "遥远的蓝色星球啊",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.voyager"
+      },
+      "printedText": "【真名解放】未知的世界，温暖的风-行动阶段：选择一名对手展示其弃牌堆，你可以免费打出所有因此效果展示的【降临者】。若你因此打出了至少一张【降临者】，偷取该对手2点战果。",
+      "cardFace": {
+        "typeLabel": "宝具",
+        "attributes": [
+          "宝具"
+        ],
+        "cost": 5,
+        "basePower": 8
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-voyager-3.pale-blue-dot",
+          "kind": "phase_action",
+          "printedClause": "【真名解放】未知的世界，温暖的风-行动阶段：选择一名对手展示其弃牌堆，你可以免费打出所有因此效果展示的【降临者】。若你因此打出了至少一张【降临者】，偷取该对手2点战果。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "targets": [
+            {
+              "id": "opponent",
+              "type": "player",
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "not_controller"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "opponent_discard_free_play_all_matching",
+              "target": "opponent",
+              "definitionId": "servant.voyager.skill.sc-voyager-4",
+              "transferVp": 2,
+              "playCost": 0,
+              "mode": "all_or_none"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "旅行者.htm",
+            "locator": "从者/降临者/英文版/旅行者.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/旅行者.png",
+            "locator": "servant.voyager/旅行者"
+          }
+        ],
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_voyager_3",
+          "cost": 5,
+          "basePower": 8,
+          "legacyRequirement": 8,
+          "typeLabel": "宝具",
+          "revealsTrueNameOnPlay": true
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4"
+        },
+        "acceptedContracts": {
+          "matchingDefinitionReadiness": "PR#499/c0e0fb4f506145a2a93a3ce330fdd9cef3fd6aa8"
+        }
+      }
+    },
+    {
+      "id": "servant.voyager.skill.sc-voyager-4",
+      "aliases": [
+        "sc_voyager_4"
+      ],
+      "legacyId": "sc_voyager_4",
+      "name": "领域外生命",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.voyager"
+      },
+      "printedText": "【真名解放】\n你和旅行者各获得+6合计威力（若你是旅行者，该效果不会令你+12合计威力）。\n战斗阶段结束后，将此牌加入旅行者的弃牌堆。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 1,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-voyager-4.outer-god-life-power",
+          "kind": "forced_trigger",
+          "printedClause": "【真名解放】你和旅行者各获得+6合计威力（若你是旅行者，该效果不会令你+12合计威力）。",
+          "activation": {
+            "trigger": "on_card_played",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "link_generated_card_round_power",
+              "amount": 6,
+              "duration": "this_round",
+              "generator": "generated_by_source_card",
+              "dedupeSamePlayer": true
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "sc-voyager-4.outer-god-life-return",
+          "kind": "forced_trigger",
+          "printedClause": "战斗阶段结束后，将此牌加入旅行者的弃牌堆。",
+          "activation": {
+            "trigger": "after_battle_ended",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "return_linked_generated_card_after_battle",
+              "destination": "generator_owner_discard",
+              "generator": "generated_by_source_card"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "旅行者.htm",
+            "locator": "从者/降临者/英文版/旅行者.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/旅行者.png",
+            "locator": "servant.voyager/旅行者"
+          }
+        ],
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_voyager_4",
+          "cost": 1,
+          "basePower": 0,
+          "legacyRequirement": 0,
+          "typeLabel": "特殊",
+          "revealsTrueNameOnPlay": true
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4"
+        },
+        "acceptedContracts": {
+          "matchingDefinitionReadiness": "PR#499/c0e0fb4f506145a2a93a3ce330fdd9cef3fd6aa8"
+        }
+      },
+      "initialPlacement": "outside_game"
+    }
+  ],
+  "deck": [
+    {
+      "cardId": "card.cardq1"
+    },
+    {
+      "cardId": "card.cardq2",
+      "count": 2
+    },
+    {
+      "cardId": "card.cardq3",
+      "count": 3
+    },
+    {
+      "cardId": "card.carda2",
+      "count": 2
+    },
+    {
+      "cardId": "card.carda3"
+    },
+    {
+      "cardId": "card.cardluck"
+    },
+    {
+      "cardId": "card.cardsurveil",
+      "count": 2
+    }
+  ],
+  "sources": [
+    {
+      "id": "development_overview_image",
+      "type": "original_card_image",
+      "path": "../../Fate_Domination-开发版/images/servants/旅行者.png",
+      "interpretedAs": "servant_overview",
+      "priority": "original_card_image",
+      "reviewStatus": "reviewed_against_development_image"
+    }
+  ]
+}

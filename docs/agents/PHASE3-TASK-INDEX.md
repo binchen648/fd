@@ -7258,3 +7258,16 @@ Formal materialization requirements:
 - integrate Voyager exactly once in `fd-playtest-v1` after Vlad in stable owner order;
 - add focused owner-complete migration regression proving authoring/pack presence and accepted generic runtime shapes;
 - Base for this formal task is the Voyager readiness acceptance-sync commit produced by this transaction.
+
+Implementation evidence for `P3-S-OWNER-VOYAGER-COMPLETE-MIGRATION`:
+- Exact Base: `8cbfbf25c958eb9f9647163c077f85224f02827e` (accepted Voyager readiness A-sync/rescan; strict `166/944`, remaining `778`).
+- Canonical owner archive `data/authoring/servants/servant.voyager.json` materializes frozen sc1 + sc2 + sc3 + sc4 together; all four were absent at Base and are newly creditable only after formal acceptance + A-sync/accounting.
+- sc4 is explicitly `initialPlacement: outside_game`, preserving exactly three in-game skill cards while serving as the generated matching-definition card consumed by sc1/sc2/sc3 and its own accepted generic +6/return contract.
+- Frozen 12-card deck is q1, q2x2, q3x3, a2x2, a3, luck, surveilx2.
+- `fd-playtest-v1` integrates Voyager exactly once immediately after Vlad in stable owner order.
+- Formal regression `6/6 PASS`; readiness `10/10 PASS`; complex `38/38 PASS`; MatchSession `33/33 PASS`; MatchSession regressions `11/11 PASS`; pack loader `21/21 PASS`; affected total `119/119 PASS`.
+- Roster expansion changed deterministic sampling for two legacy MatchSession fixtures only; their seeds were minimally rebound while preserving assertions. No production runtime implementation behavior is changed by this formal Candidate.
+- `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`7 masters / 18 servants / 20 events / 0 blocking issues`); generated determinism PASS; production identity audit CLEAN; diff-check PASS.
+- Generated hashes: content-library `b001533b86c695069982a85ffa35ec4de3a30b623b41554f4f6441972d65f50e`; fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`; evidence-report `8346639085dad774da89824712814cf56ffd58b91bf407155871aefd255060e6`.
+- Detailed result: `docs/reports/2026-09-30-p3-s-owner-voyager-complete-migration-result.md`.
+- Current disposition: `MIGRATION_COMPLETE_CANDIDATE`; freeze one exact Candidate / one PR / one fresh R. Accounting remains `166/944`, remaining `778` until `MIGRATION_ACCEPTED` + A-sync/accounting; accepted credit would be exactly `+4` -> `170/944`, remaining `774`.
