@@ -7202,3 +7202,12 @@ Accounting boundary:
 - readiness is permanently zero-credit;
 - one owner / all currently discoverable readiness gaps / one Candidate / one PR / one fresh R / one A-sync-rescan;
 - do not split per skill and do not advance owner until Voyager readiness plus subsequent owner-complete migration close.
+Implementation evidence for `P3-B-VOYAGER-OWNER-READINESS-CAPABILITY`:
+- Base: `b4dbc40e4ecd48da82f6304b427811b24c00f68c` (accepted Vlad owner A-sync/accounting; strict `166/944`, remaining `778`).
+- Frozen scope remains sc1 + sc2 + sc3 + sc4 together; readiness is permanently zero-credit.
+- Complete current owner-local gap set is covered by one identity-free matching-definition capability family: exact event-player definition provisioning, global optional reveal/+2 VP, matching hand extra-play, global reveal/attack-zero, opponent discard reveal/free play-all/+2 VP transfer, and generated-card +6/link/return provenance.
+- No `data/authoring/**` delta and no Voyager/card-name/legacy-handler production routing.
+- Focused `8/8 PASS`; affected Voyager + complex + MatchSession aggregate `79/79 PASS`.
+- `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`7 masters / 17 servants / 20 events / 0 blocking issues`); generated determinism PASS; identity audit CLEAN; diff-check PASS.
+- Detailed report: `docs/reports/2026-09-30-p3-b-voyager-owner-readiness-capability-result.md`.
+- Current disposition: `IMPLEMENTATION_COMPLETE_CANDIDATE`; freeze one Candidate / one PR / one fresh R. No migration credit before later formal owner acceptance + A-sync/accounting.
