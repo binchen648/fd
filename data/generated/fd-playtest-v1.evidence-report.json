@@ -3,11 +3,44 @@
   "packId": "fd-playtest-v1",
   "summary": {
     "masters": 7,
-    "servants": 15,
+    "servants": 16,
     "events": 20,
     "blockingIssues": 0
   },
   "entities": [
+    {
+      "entityId": "card.x-commanderhildr",
+      "displayName": "???????",
+      "entityKind": "generated",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "瓦尔基里.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/瓦尔基里.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "card.x-commanderortlinde",
+      "displayName": "????????",
+      "entityKind": "generated",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "瓦尔基里.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/瓦尔基里.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "card.x-commanderthrud",
+      "displayName": "???????",
+      "entityKind": "generated",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "瓦尔基里.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/瓦尔基里.png",
+      "imageIndex": 6,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
     {
       "entityId": "card.x-guard",
       "displayName": "守护",
@@ -1719,6 +1752,61 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "牛若丸.htm",
       "imagePath": "../../Fate_Domination-开发版/images/servants/牛若丸.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.valkyrie",
+      "displayName": "瓦尔基里",
+      "entityKind": "servant",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "瓦尔基里.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/瓦尔基里.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.valkyrie.overview",
+      "displayName": "瓦尔基里",
+      "entityKind": "servant_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "瓦尔基里.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/瓦尔基里.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.valkyrie.skill.sc-valkyrie-1",
+      "displayName": "终末幻想·少女降临",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "瓦尔基里.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/瓦尔基里.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.valkyrie.skill.sc-valkyrie-2",
+      "displayName": "天鹅礼装",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "瓦尔基里.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/瓦尔基里.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.valkyrie.skill.sc-valkyrie-3",
+      "displayName": "伪·大神宣言",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "瓦尔基里.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/瓦尔基里.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
       "issueCodes": []

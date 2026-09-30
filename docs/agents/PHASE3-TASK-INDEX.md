@@ -7071,3 +7071,32 @@ Allowed verdicts:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+
+Implementation / evidence:
+- canonical `servant.valkyrie` owner archive adds newly creditable sc1 + sc2 + sc3 together;
+- canonical frozen 12-card starting deck is integrated immediately after Ushiwakamaru in `fd-playtest-v1`;
+- three Commander named deck definitions are zero-credit bounded dependencies so the owner deck and sc1/sc2/sc3 definition references are physical/canonical;
+- Commander dependency automation is bounded to explicit on-play Power +2/+3/+6 behavior consumed by sc3 and uses existing generic round Power modifiers; no claim is made for their other printed clauses;
+- sc1 consumes accepted PR #495 definition-set relocation/no-play/per-game/restore authority;
+- sc2 movement reuses existing one-arrow map authority and Steel Shield consumes accepted current-cost recall/source-join/no-play authority;
+- sc3 consumes source-grounded `retrigger_card_play_effects` and real Commander on-play Power effects;
+- Base..Candidate `packages/rules/src/**` runtime delta must remain EMPTY and production Valkyrie identity audit CLEAN.
+
+Verification before Candidate freeze:
+- formal `5/5 PASS`;
+- readiness `10/10 PASS`;
+- complex skills `38/38 PASS`;
+- MatchSession `33/33 PASS`;
+- generic MatchSession `11/11 PASS`;
+- playtest pack loader `21/21 PASS`;
+- affected aggregate `118/118 PASS`;
+- `FD_TOOLCHAIN_OK`; typecheck PASS;
+- content validate/compile PASS (`7 masters / 16 servants / 20 events / 0 blocking issues`);
+- generated-content determinism PASS;
+- Base..working-tree rules-runtime delta EMPTY; production identity audit CLEAN; `git diff --check` PASS;
+- detailed report: `docs/reports/2026-09-30-p3-s-owner-valkyrie-complete-migration-result.md`.
+
+Current disposition:
+- implementation is ready to freeze one exact formal Candidate / one PR / one fresh independent migration review;
+- strict formal accounting remains `161/944`, remaining `783` until `MIGRATION_ACCEPTED` plus A-sync/accounting;
+- only sc1 + sc2 + sc3 receive potential new credit (+3); Commander dependencies are zero-credit.
