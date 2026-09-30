@@ -53,7 +53,7 @@ The accepted generic residual shape provides:
 - selected physical cards move discard -> deck and the deck is deterministically shuffled when at least one card was selected;
 - exact physical-source binding `X = selected count + 2`, including the zero-selection boundary `X=2`;
 - the same physical-source binding overrides that source's base Power while live;
-- during a battle round in which the controller actually participates with an active attack, each live bound source pays exactly X mana once for that round; insufficient mana closes that exact source without allowing negative mana;
+- during a battle round, an active controller located at the battlefield is a participant even with zero active attacks; each live bound source pays exactly X mana once for that round, and insufficient mana closes that exact source without allowing negative mana;
 - unrelated battles do not charge the upkeep;
 - physical-source close/lifecycle cleanup removes both X and its round-upkeep marker;
 - restore boundary validates the interaction shape, exact discard candidates, source/controller provenance, source-X structure, accepted source ability, live source state, and non-future upkeep round.

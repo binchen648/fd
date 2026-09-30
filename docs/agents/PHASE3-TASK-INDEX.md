@@ -6789,7 +6789,7 @@ Implemented generic readiness family:
 - sc1 exact combat action snapshots same-battlefield non-residual attacks by authoritative base-Power axis, excludes its source, closes every member of duplicate-Power groups, and only when no qualifying group exists discards up to the top three controller deck cards;
 - sc1 grouping deliberately ignores modified combat total; accepted physical source-X binding is recognized only as that physical card's authoritative base Power;
 - sc2 exact live-source on-play residual opens one private owner-only `0..N` current-discard choice, authenticates frozen physical candidates at resolution, moves selected discard cards into deck, deterministically shuffles when nonempty, and binds physical-source `X = selected count + 2` including zero-selection `X=2`;
-- sc2 source X is also the live source's base Power and is charged exactly once in each battle round the controller actually participates; insufficient mana closes that physical source with no negative mana;
+- sc2 source X is also the live source's base Power; authoritative battle participation is location-based, so an active controller located at the battlefield participates even with zero active attacks, pays X exactly once for that round, and insufficient mana closes that physical source with no negative mana;
 - source close clears X/upkeep state; restore validation covers interaction shape, frozen discard candidates, source/controller/accepted-ability provenance, live source-X structure, and non-future upkeep round;
 - malformed/widened privileged semantics fail closed at the loader gateway;
 - production runtime contains no Tristan/card-name/`sc-tristan-*` identity routing.
