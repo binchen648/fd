@@ -7149,3 +7149,15 @@ Implementation evidence for `P3-B-VLAD-OWNER-READINESS-CAPABILITY`:
 - Sole P1 closure: production `MatchSession.startRound()` now preserves the previous round when entering `advanceAbilityPhase`, generic new-round cleanup retires stale `roundPlayerPowerAdjustments` + `pendingBattlefieldFortifications`, and valid `forcedDeploymentLocations` remain intact for the exact next round.
 - Added real MatchSession regressions for (a) fortification -> authoritative win -> next round -> checkpoint/restore with forced-deployment authority preserved, and (b) unconsumed pending fortification -> next round -> stale authority retired before restore.
 - Successor verification is `13/13 + 38/38 + 33/33 + 11/11 = 95/95 PASS`; toolchain/typecheck/content/generated/diff/identity gates remain green; readiness remains zero-credit.
+
+### Vlad readiness acceptance synchronization
+
+- Accepted successor Candidate: `0b93b10e62eb793a3e04aeff163a92ce7e3cc2a8`.
+- Canonical same-attempt acceptance evidence: `https://github.com/binchen648/fd/pull/497#issuecomment-5910603956`.
+- Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`; exact gate run `36710215605` / job `109869949685` `SUCCESS`.
+- Readiness A-sync/full-owner rescan finds canonical sc3 only; sc1/sc2 remain absent from `data/authoring/**` and are the only newly creditable Vlad identities.
+- sc3 remains preservation-only / zero duplicate credit.
+- No additional currently discoverable Vlad owner-local readiness gap remains after the accepted successor closure.
+- Readiness remains zero-credit; strict accounting stays `164/944`, remaining `780`.
+- Next legal FORMAL task: `P3-S-OWNER-VLAD-COMPLETE-MIGRATION`, frozen sc1 + sc2 + sc3 together, with only sc1/sc2 creditable after formal acceptance + A-sync/accounting.
+- Detailed A-sync report: `docs/reports/2026-09-30-p3-a-vlad-owner-readiness-capability-acceptance-synchronization.md`.
