@@ -41,6 +41,7 @@ export * from './ability/battle-plunder-replay-capability';
 export * from './ability/mana-transaction-capability';
 export * from './ability/joint-battlefield-attack-capability';
 export * from './ability/reaction-counter-capability';
+export * from './ability/bloodlust-cycle-capability';
 export * from './ability/vessel-cycle-capability';
 export * from './ability/combat-reward-distribution';
 export * from './ability/combat-opponent-power-vp-reward';

@@ -69,6 +69,11 @@ import {
   containsReactionCounterPrivilegedNode, isAcceptedReactionCounterCapabilityAbility, isAcceptedReactionCounterPlayHandAbility,
 } from './reaction-counter-capability';
 import {
+  BLOODLUST_INITIALIZE_EFFECT, BLOODLUST_CAGING_CONTRIBUTION_EFFECT, BLOODLUST_SPEND_TRACKER_EFFECT, BLOODLUST_COMBAT_DECAY_EFFECT,
+  BLOODLUST_THRESHOLD_EFFECT, BLOODLUST_ACTION_EFFECT, BLOODLUST_TRANSFORM_EFFECT, BLOODLUST_ASCENSION_EFFECT,
+  containsBloodlustPrivilegedNode, isAcceptedBloodlustAbility,
+} from './bloodlust-cycle-capability';
+import {
   VESSEL_CYCLE_INITIALIZE_EFFECT, VESSEL_CYCLE_SCHEDULE_EFFECT, VESSEL_CYCLE_RESOLVE_EFFECT,
   VESSEL_CYCLE_RECON_BONUS_EFFECT, VESSEL_CYCLE_SKILL_AURA_EFFECT, VESSEL_CYCLE_PLAY_EXCEPTION_EFFECT,
   VESSEL_CYCLE_DOUBLE_ACTIVE_EFFECT, VESSEL_CYCLE_PLAYED_DEFINITION_EFFECT, VESSEL_CYCLE_JOIN_LOCATION_EFFECT, VESSEL_CYCLE_ASCENSION_EFFECT, VESSEL_CYCLE_GAME_START_BATTLEFIELD_PROVISION_EFFECT,
@@ -255,6 +260,8 @@ const supportedTypes = new Set([
   VESSEL_CYCLE_INITIALIZE_EFFECT, VESSEL_CYCLE_SCHEDULE_EFFECT, VESSEL_CYCLE_RESOLVE_EFFECT,
   VESSEL_CYCLE_RECON_BONUS_EFFECT, VESSEL_CYCLE_SKILL_AURA_EFFECT, VESSEL_CYCLE_PLAY_EXCEPTION_EFFECT,
   VESSEL_CYCLE_DOUBLE_ACTIVE_EFFECT, VESSEL_CYCLE_PLAYED_DEFINITION_EFFECT, VESSEL_CYCLE_JOIN_LOCATION_EFFECT, VESSEL_CYCLE_ASCENSION_EFFECT, VESSEL_CYCLE_GAME_START_BATTLEFIELD_PROVISION_EFFECT,
+  BLOODLUST_INITIALIZE_EFFECT, BLOODLUST_CAGING_CONTRIBUTION_EFFECT, BLOODLUST_SPEND_TRACKER_EFFECT, BLOODLUST_COMBAT_DECAY_EFFECT,
+  BLOODLUST_THRESHOLD_EFFECT, BLOODLUST_ACTION_EFFECT, BLOODLUST_TRANSFORM_EFFECT, BLOODLUST_ASCENSION_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -309,6 +316,10 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'cycleKey', 'initialVessel', 'middleVessel', 'finalVessel', 'firstMaxVp', 'middleMaxVp', 'firstVpMultiplier', 'middleVpDivisor',
   'middleVpRounding', 'repeatPenaltyVp', 'lossMargin', 'temporaryDefinitionId', 'ascensionDefinitionId', 'temporaryKeep', 'vessel', 'requiredDefinitionId', 'targetDefinitionId',
   'targetCardType', 'costDelta', 'powerDelta', 'requirementType', 'lowManaThreshold', 'lowManaPowerBonus', 'normalClose', 'createTemporaryAtControllerLocation', 'requiresPositiveTerrain', 'temporaryAtEachBattlefield',
+  'resourceKey', 'initial', 'amountPerOpponentPerRound', 'minimumOpponentMana', 'requireSameBattlefield', 'gainPerManaSpent',
+  'minLoss', 'maxLoss', 'workshopMultiplier', 'skillPowerThreshold', 'skillPowerBonus', 'playWaiverThreshold', 'playRequirementType', 'playRequirementValue', 'transformThreshold',
+  'maximumResourceExclusive', 'manaGain', 'roundPowerGain', 'resourceGain', 'blockDecayThisRound', 'lockValue', 'removeAllCommandSeals', 'manaGainMultiplier',
+  'vpGainNumerator', 'vpGainDenominator', 'vpRounding', 'transformedCostAdd', 'transformedPowerAdd', 'contributorPowerPenalty',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -708,6 +719,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsVesselCyclePrivilegedNode(candidateAbility) && !isAcceptedVesselCycleAbility(candidateAbility)) {
         issue('vesselCycle.gateway', 'Vessel-cycle privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsBloodlustPrivilegedNode(candidateAbility) && !isAcceptedBloodlustAbility(candidateAbility)) {
+        issue('bloodlust.gateway', 'Bloodlust privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       if (Array.isArray(a.markers) && a.markers.some((marker) => String(marker).startsWith('deduction-'))) {
         if (!isDeductionRecordMarkerAbility(candidateAbility)) issue('deductionRecord.gateway', 'Unsupported exact deduction-record marker ability shape', id);

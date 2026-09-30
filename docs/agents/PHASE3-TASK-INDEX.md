@@ -7591,7 +7591,7 @@ Detailed report: `docs/reports/2026-10-01-p3-b-akasha-owner-readiness-seven-play
 ## TASK P3-B-AKIHA-OWNER-READINESS-CAPABILITY
 
 Owner: Codex B / FORMAL readiness
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: bounded zero-credit owner-readiness/capability batch for the complete current `master.akiha` frozen scope
 
 Frozen owner scope:
@@ -7615,3 +7615,16 @@ Required disposition:
 - fresh independent R, then A-sync/full-owner rescan;
 - only after readiness closure may `P3-S-OWNER-AKIHA-COMPLETE-MIGRATION` be created;
 - do not split per skill and do not grant credit from readiness.
+
+### Akiha owner-readiness implementation evidence
+
+- Exact Base: `d55f1bd56cfb156819c2d64c55259b75ab23d4c6` (accepted Akasha formal A-sync; strict `181/944`, remaining `763`).
+- All five frozen source semantics were mechanically recertified together; locked Reference `core.akiha-bloodlust` is corroboration only.
+- New identity-free Bloodlust family closes structured resource tracking, explicit same-battlefield mana contribution, deterministic battle-end decay, threshold 5/10/15 rules, transform resource/mana/VP/seal semantics and ascension cost/Power/plunder provenance.
+- Card and ordinary ability positive mana transactions consume explicit server-validated contributor choices atomically; physical card plays seal exact contributor provenance for restore and ascension plunder.
+- Restore re-resolves provider/transform authority, exact 15 lock, VP baseline, contribution players and the source-bound current-round +2 Power authority; forged state fails closed.
+- The neighboring Maiya test fixture was corrected from a stale hard-coded `p2` target to the actual legal pending target after the accepted eight-Master pool changed deterministic seats; production fixed-cost behavior remains unchanged.
+- Verification: Akiha focused `11/11`; neighboring/shared affected aggregate **`232/232 PASS`**; `FD_TOOLCHAIN_OK`; typecheck/content/generated/identity-audit/diff-check all PASS.
+- `data/authoring/**` delta EMPTY; readiness remains permanently zero-credit; strict accounting stays `181/944`, remaining `763`.
+- Detailed report: `docs/reports/2026-10-01-p3-b-akiha-owner-readiness-capability-result.md`.
+- Current disposition: freeze one exact zero-credit readiness Candidate / one PR / one fresh independent R. No Akiha formal consumer migration before acceptance + FORMAL A-sync/full-owner rescan.

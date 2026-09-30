@@ -114,9 +114,11 @@ export interface LifecycleTransition {
   transitionId: string; lifecycleId: string; kind: 'install' | 'source_invalidated';
   causationId: string; createdRevision: number; roundId: number;
 }
+export interface ManaContributionChoice { contributorPlayerId: PlayerId; amount: number; sourceCardInstanceId?: string }
 export interface EffectContext {
   controllerId: PlayerId; sourceCardId: string; abilityId: string;
   variables: Record<string, number>; selections: Record<string, string[]>;
+  manaContributions?: ManaContributionChoice[];
   event?: AbilityEvent;
 }
 export interface PrivateOptionalHandPlayInteractionMetadata {
@@ -384,6 +386,8 @@ export interface SafeEvent {
 }
 export interface CardRuntimeState {
   active: boolean; faceDown: boolean; playedRound: number; paidManaOnPlay?: number;
+  /** Exact linked-player mana contributions consumed by this physical play. */
+  playManaContributions?: Array<{ playerId: PlayerId; amount: number }>;
   reversed?: boolean; attributeOverrides?: string[];
   /** Instance-local base-power multiplier granted by a validated card action. */
   basePowerMultiplier?: number;
@@ -567,11 +571,11 @@ export interface AbilityRuntime {
   playRulesVersion: PlayRulesVersion;
   playCounters: RoundPlayCounters;
 }
-export interface PlayCardAction { type: 'play_card'; cardInstanceId: string; faceDown?: boolean }
+export interface PlayCardAction { type: 'play_card'; cardInstanceId: string; faceDown?: boolean; manaContributions?: ManaContributionChoice[] }
 export interface StageAttackCardAction { type: 'stage_attack_card'; cardInstanceId: string; faceDown?: boolean }
 export interface ConfirmStagedAttackAction { type: 'confirm_staged_attack' }
 export interface CancelStagedAttackAction { type: 'cancel_staged_attack' }
-export interface ActivateAbilityAction { type: 'activate_ability'; cardInstanceId: string; abilityId: string; variableCosts?: { name: string; min: number; max: number }[] }
+export interface ActivateAbilityAction { type: 'activate_ability'; cardInstanceId: string; abilityId: string; variableCosts?: { name: string; min: number; max: number }[]; manaContributions?: ManaContributionChoice[] }
 export interface ChooseTargetAction { type: 'choose_target'; decisionId: string; candidates: string[]; min: number; max: number }
 export interface ResolveResponseAction { type: 'resolve_response'; windowId: string; cardInstanceId: string; abilityId: string }
 export interface DeclineWindowAction { type: 'decline_this_window'; windowId: string }

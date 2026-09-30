@@ -112,6 +112,11 @@ import {
 } from './opponent-close-to-one';
 import { BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT, containsBattleLuckCloseDrawPlayNode, isAcceptedBattleLuckCloseDrawPlayAbility } from './divine-core-capability';
 import {
+  bloodlustAscensionAdjustments, bloodlustMaximumContributionAmount, bloodlustPlayRequirementWaived, bloodlustSkillPowerBonus,
+  canExecuteBloodlustEffect, containsBloodlustPrivilegedNode, isAcceptedBloodlustAbility, isBloodlustRuntimeProvenanceValidForRestore,
+  reconcileBloodlustVictoryPoints, resolveBloodlustEffect, resolveBloodlustManaPayment, bloodlustContributorPenalty, isBloodlustActionEffect,
+} from './bloodlust-cycle-capability';
+import {
   canExecuteVesselCycleEffect, containsVesselCyclePrivilegedNode, isAcceptedVesselCycleAbility,
   reconcileVesselCycleVictoryPoints, rememberVesselCyclePlayProvenance, resolveVesselCycleEffect,
   vesselCyclePlayRequirementWaived, vesselCycleSkillAura, vesselCycleCardPowerAdjustment, isVesselCycleRuntimeProvenanceValidForRestore,
@@ -998,6 +1003,10 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     return { value: persistentLock.value, lines: [{ label: 'persistent_situation_attribute_power_lock', value: persistentLock.value }] };
   }
   const result = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
+  const bloodlustSkillBonus = runtime(s).cardState[sourceId]?.active === true && ['master_skill','servant_skill'].includes(d?.cardType ?? '') ? bloodlustSkillPowerBonus(s, source.controllerPlayerId) : 0;
+  if (bloodlustSkillBonus !== 0) { result.value += bloodlustSkillBonus; result.lines.push({ label: 'bloodlust_skill_power_bonus', value: result.value }); }
+  const bloodlustAscension = bloodlustAscensionAdjustments(s, source.controllerPlayerId, d?.id ?? source.definitionId);
+  if (bloodlustAscension?.powerAdd) { result.value += bloodlustAscension.powerAdd; result.lines.push({ label: 'bloodlust_ascension_power', value: result.value }); }
   const vesselPowerAura = vesselCycleSkillAura(s, source.controllerPlayerId, d?.id ?? source.definitionId, d?.cardType ?? '');
   if (vesselPowerAura.powerDelta !== 0) {
     result.value += vesselPowerAura.powerDelta;
@@ -1534,7 +1543,7 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   switch (c.type) {
     case 'skill_zone_mana_at_least': {
       const cardDef = definition(s, ctx.sourceCardId);
-      if (cardDef && (hasPlayRuleException(cardDef, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, ctx.controllerId, cardDef.id, 'skill_zone_mana_at_least', Number(c.value)))) return true;
+      if (cardDef && (hasPlayRuleException(cardDef, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, ctx.controllerId, cardDef.id, 'skill_zone_mana_at_least', Number(c.value)) || bloodlustPlayRequirementWaived(s, ctx.controllerId, 'skill_zone_mana_at_least', Number(c.value)))) return true;
       return card(s, ctx.sourceCardId).zone !== 'skill' || p.mana >= Number(c.value);
     }
     case 'controller_at_battlefield': return isBattlefield(s, p.locationId);
@@ -1843,6 +1852,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsReactionCounterPrivilegedNode(a) && !isAcceptedReactionCounterCapabilityAbility(a)) return false;
   if (containsVesselCyclePrivilegedNode(a) && !isAcceptedVesselCycleAbility(a)) return false;
   if (isAcceptedVesselCycleAbility(a) && !canExecuteVesselCycleEffect(s, context(s, sourceId, a.id, event), a.effects[0]!)) return false;
+  if (containsBloodlustPrivilegedNode(a) && !isAcceptedBloodlustAbility(a)) return false;
+  if (isAcceptedBloodlustAbility(a) && !canExecuteBloodlustEffect(s, card(s, sourceId).controllerPlayerId, a)) return false;
   if (containsLocationMarkerPrivilegedNode(a) && !isAcceptedLocationMarkerAbility(a)) return false;
   if (isAcceptedLocationMarkerAbility(a) && !canActivateLocationMarkerAbility(s, sourceId, a, event)) return false;
   if (containsSealedCardMagicPrivilegedNode(a) && !isAcceptedSealedCardMagicAbility(a)) return false;
@@ -2070,7 +2081,8 @@ export function effectiveCardPlayCost(s: GameState, playerId: string, sourceId: 
   const replayIncrease = replayGrowth.length === 1 ? (runtime(s).cardPlayCountByInstance?.[sourceId] ?? 0) : 0;
   if (!Number.isSafeInteger(replayIncrease) || replayIncrease < 0) reject('invalid_state', 'Physical replay-growth count is invalid');
   const vesselAura = vesselCycleSkillAura(s, playerId, d.id, d.cardType);
-  return Math.max(0, baseCost + replayIncrease + battlefieldSourceCardPlayCostIncrease(s, playerId, sourceId) + vesselAura.costDelta);
+  const bloodlustAscension = bloodlustAscensionAdjustments(s, playerId, d.id);
+  return Math.max(0, baseCost + replayIncrease + battlefieldSourceCardPlayCostIncrease(s, playerId, sourceId) + vesselAura.costDelta + (bloodlustAscension?.costAdd ?? 0));
 }
 
 function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false, ignoreManaCost = false, allowedSourceZones: readonly string[] = ['hand', 'skill']): string | undefined {
@@ -2095,10 +2107,10 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   }
   if (!ignoreAttackLimit && attackPlayLimitReached(s, p, sourceId, ignoreStagedAttackLimit)) return 'attack_play_limit_reached';
   const requirements = d.playRequirements.concat(nodes(d.cardFace.requirements)).filter(r =>
-    str(r.type) && !(str(r.type) === 'skill_zone_mana_at_least' && (hasPlayRuleException(d, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)))));
+    str(r.type) && !(str(r.type) === 'skill_zone_mana_at_least' && (hasPlayRuleException(d, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)) || bloodlustPlayRequirementWaived(s, p, 'skill_zone_mana_at_least', Number(r.value)))));
   if (!requirements.every(r => condition(s, context(s, sourceId, ''), r))) return 'play_requirement';
 
-  if (!faceDown && !ignoreManaCost && player(s, p).mana < effectiveCardPlayCost(s, p, sourceId)) return 'insufficient_mana';
+  if (!faceDown && !ignoreManaCost && player(s, p).mana + bloodlustMaximumContributionAmount(s, p) < effectiveCardPlayCost(s, p, sourceId)) return 'insufficient_mana';
   const sealCost = !faceDown ? cardPlayCommandSealCost(d) : undefined;
   if (sealCost && Number((player(s, p) as unknown as { commandSpells?: number }).commandSpells ?? 3) < sealCost.amount) return 'insufficient_command_seals';
   const unconfirmed = d.abilities.find(a => ['unsupported', 'text_unconfirmed'].includes(a.execution.mode));
@@ -3812,6 +3824,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState):
     const locationIds = new Set<string>(s.map.locations.map((candidate) => candidate.id));
     const hasPlayers = (ids: readonly string[]) => ids.every((id) => playerIds.has(id)) && new Set(ids).size === ids.length;
     if (!isVesselCycleRuntimeProvenanceValidForRestore(s)) return false;
+    if (!isBloodlustRuntimeProvenanceValidForRestore(s)) return false;
     if (!(r.pendingDelayedActivations ?? []).every((entry) => {
       const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
       const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
@@ -3862,6 +3875,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState):
       const ability = source ? restoredAbility(s, entry.sourceCardId, entry.abilityId) : undefined;
       if (!playerIds.has(entry.playerId) || entry.round !== s.round.roundNumber || !source || !ability) return false;
       if (entry.amount === -4 && isAcceptedFortifyMovedInBattlefieldAbility(ability)) return true;
+      if (entry.amount === 2 && isAcceptedBloodlustAbility(ability) && isBloodlustActionEffect(ability.effects[0]!) && source.controllerPlayerId === entry.playerId) return true;
       if (entry.amount === 6 && isAcceptedLinkedGeneratedCardPowerAbility(ability) && source.generatedBy) {
         const generator = s.cards.find((candidate) => candidate.instanceId === source.generatedBy);
         const marker = r.cardState[source.instanceId]?.generatedCardReturnAfterBattle;
@@ -5453,7 +5467,7 @@ function hasAvailableManaForFixedCosts(s: GameState, ctx: EffectContext, a: Auth
     ? Number(definition(s, ctx.sourceCardId)?.cardFace.cost ?? 0)
     : 0;
   const total = abilityCost + printedPlayCost;
-  return Number.isSafeInteger(total) && player(s, ctx.controllerId).mana >= total;
+  return Number.isSafeInteger(total) && player(s, ctx.controllerId).mana + bloodlustMaximumContributionAmount(s, ctx.controllerId) >= total;
 }
 
 function hasMandatoryTargetAvailability(s: GameState, ctx: EffectContext, a: AuthoringAbility): boolean {
@@ -6217,6 +6231,10 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     if (!isAcceptedVesselCycleAbility(a) || !resolveVesselCycleEffect(s, ctx, a, a.effects[0]!)) reject('resolution_failed', 'Unsupported vessel-cycle semantic');
     return;
   }
+  if (containsBloodlustPrivilegedNode(a)) {
+    if (!isAcceptedBloodlustAbility(a) || !resolveBloodlustEffect(s, ctx.controllerId, ctx.sourceCardId, a)) reject('resolution_failed', 'Unsupported bloodlust semantic');
+    return;
+  }
   if (isRulerSealBindingCandidate(a) && !isRulerSealBindingSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal binding semantic shape');
   if (isRulerSealUseCandidate(a) && !isRulerSealUseSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal use semantic shape');
   if (isCombatOpponentPowerVpRewardCandidate(a) && !isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled')) {
@@ -6331,7 +6349,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     }
     if (cost.type === 'pay_mana') {
       const value = numeric(s, ctx, cost.amount);
-      if (!Number.isSafeInteger(value) || value < 0 || value > p.mana) reject('invalid_cost', 'Variable cost must be an integer within available mana');
+      if (!Number.isSafeInteger(value) || value < 0 || value > p.mana + bloodlustMaximumContributionAmount(s, p.id)) reject('invalid_cost', 'Variable cost must be an integer within available mana');
       for (const c of nodes(node(cost.amount).constraints)) {
         if (c.type === 'integer' && (value < Number(c.min ?? 0) || (c.max !== undefined && value > Number(c.max)))) reject('invalid_cost', 'Variable outside allowed range');
         if (c.type === 'lte' && !condition(s, ctx, c)) reject('invalid_cost', 'Variable exceeds available mana');
@@ -6341,10 +6359,11 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
       if (card(s, ctx.sourceCardId).zone !== node(cost.from).zone) reject('invalid_cost', 'Source is not in required zone');
     } else reject('unsupported', 'Unsupported ability cost');
   }
-  if (manaCost > p.mana) reject('insufficient_mana', 'Insufficient mana');
+  const bloodlustPlan = resolveBloodlustManaPayment(s, p.id, manaCost, ctx.manaContributions);
+  if (bloodlustPlan.payerAmount > p.mana) reject('insufficient_mana', 'Insufficient mana');
   if (fixedControllerManaCost && isFixedControllerAdvanceDrawActionSemantic(a) &&
     !hasAvailableManaForFixedCosts(s, ctx, a)) reject('insufficient_mana', 'Insufficient mana');
-  if (manaCost > 0) spendMana(s, p.id, manaCost);
+  if (manaCost > 0) spendMana(s, p.id, manaCost, ctx.manaContributions);
   if (fixedControllerManaCost && isAddToAttackRouteCandidate(a)) executeFixedControllerManaCost(s, ctx, a);
   if (names.length) runtime(s).calculations.push({ controllerId: p.id, lines: names.map(name => ({ label: name, value: ctx.variables[name]! })) });
   for (const cost of a.cost.filter(c => c.type === 'move_source_card')) moveCard(s, ctx.sourceCardId, str(node(cost.to).zone));
@@ -6423,7 +6442,7 @@ function rememberTrustedBattleResultSnapshot(r: AbilityRuntime, event: AbilityEv
 
 function processEvent(s: GameState, event: AbilityEvent): void {
   const r = runtime(s);
-  reconcileVesselCycleVictoryPoints(s); if (r.processedEvents.includes(event.id)) return;
+  reconcileVesselCycleVictoryPoints(s); reconcileBloodlustVictoryPoints(s); if (r.processedEvents.includes(event.id)) return;
   if (event.type === 'after_controller_enters_location' && event.playerId && event.locationId && (event.movementKind === 'normal' || event.movementKind === 'effect')) {
     r.locationEntryRoundByPlayer ??= {}; r.locationEntryRoundByPlayer[event.playerId] ??= {}; r.locationEntryRoundByPlayer[event.playerId]![event.locationId] = s.round.roundNumber;
   }
@@ -6553,6 +6572,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
     for (const id of winners) processEvent(s, { ...event, id: `${event.id}:victory:${id}`, type: 'after_controller_gains_victory', playerId: id });
     for (const id of losers) processEvent(s, { ...event, id: `${event.id}:lose:${id}`, type: 'after_controller_loses_battle', playerId: id });
   }
+  reconcileBloodlustVictoryPoints(s);
   checkFormulaTriggers(s);
 }
 /** Trusted backend event hook. Events are not part of AbilityCommand. */
@@ -6729,7 +6749,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
     }
     case 'activate_ability': {
       if (!legal.some(a => a.type === command.type && a.cardInstanceId === command.cardInstanceId && a.abilityId === command.abilityId)) reject('illegal_action', 'Ability is not available');
-      const ctx = context(s, command.cardInstanceId, command.abilityId); ctx.variables = command.variables ?? {};
+      const ctx = context(s, command.cardInstanceId, command.abilityId); ctx.variables = command.variables ?? {}; if (command.manaContributions?.length) ctx.manaContributions = structuredClone(command.manaContributions);
       executeAbility(s, ctx); break;
     }
     case 'choose_target': {
@@ -7577,14 +7597,16 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     if (!c.faceDown) commandSealCost += cardPlayCommandSealCost(definition(s, c.cardInstanceId))?.amount ?? 0;
   }
   cost += additionalManaCost;
-  if (cost > player(s, playerId).mana) reject('insufficient_mana', 'Cannot pay aggregate batch cost');
+  const explicitContributions = choices.flatMap((choice) => choice.manaContributions ?? []);
+  let paymentPlan; try { paymentPlan = resolveBloodlustManaPayment(s, playerId, cost, explicitContributions); } catch { reject('insufficient_mana', 'Cannot pay aggregate batch cost with requested contributions'); }
+  if (paymentPlan!.payerAmount > player(s, playerId).mana) reject('insufficient_mana', 'Cannot pay aggregate batch cost');
   const sealCarrier = player(s, playerId) as unknown as { commandSpells?: number };
   const availableSeals = Number(sealCarrier.commandSpells ?? 3);
   if (!Number.isSafeInteger(availableSeals) || availableSeals < commandSealCost) reject('insufficient_command_seals', 'Cannot pay aggregate Command Seal card-play cost');
   const playedCards = choices.map(c => ({ instanceId: c.cardInstanceId, controllerId: playerId,
     cardType: definition(s, c.cardInstanceId)!.cardType, faceDown: !!c.faceDown }));
   const prePaymentMana = player(s, playerId).mana;
-  if (cost > 0) spendMana(s, playerId, cost);
+  if (cost > 0) spendMana(s, playerId, cost, explicitContributions);
   if (commandSealCost > 0) {
     const before = availableSeals; const after = before - commandSealCost;
     sealCarrier.commandSpells = after;
@@ -7597,7 +7619,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     if (limit) runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] = (runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] ?? 0) + 1;
     const playCounts = runtime(s).cardPlayCountByInstance ??= {};
     playCounts[c.cardInstanceId] = (playCounts[c.cardInstanceId] ?? 0) + 1;
-    runtime(s).cardState[c.cardInstanceId] = { active: !c.faceDown, faceDown: !!c.faceDown, playedRound: s.round.roundNumber, paidManaOnPlay: paidCostByCard.get(c.cardInstanceId) ?? 0 };
+    runtime(s).cardState[c.cardInstanceId] = { active: !c.faceDown, faceDown: !!c.faceDown, playedRound: s.round.roundNumber, paidManaOnPlay: paidCostByCard.get(c.cardInstanceId) ?? 0, ...(c.manaContributions?.length ? { playManaContributions: c.manaContributions.map((entry) => ({ playerId: entry.contributorPlayerId, amount: entry.amount })) } : {}) };
     if (!c.faceDown) rememberVesselCyclePlayProvenance(s, playerId, c.cardInstanceId, prePaymentMana);
     if (c.faceDown) card(s, c.cardInstanceId).visibility = { scope: 'owner_only', ownerPlayerId: playerId };
 
