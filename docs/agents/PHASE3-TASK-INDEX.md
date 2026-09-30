@@ -6982,3 +6982,53 @@ Current disposition:
 - sc1 + sc2 received exactly +2 new credit; sc3 remains preservation-only / +0.
 - canonical accepted evidence: https://github.com/binchen648/fd/pull/494#issuecomment-5906305747.
 - mechanical next owner is servant.valkyrie; frozen scope is sc-valkyrie-1 + sc-valkyrie-2 + sc-valkyrie-3; owner-readiness-first is mandatory.
+
+
+## TASK P3-B-VALKYRIE-OWNER-READINESS-CAPABILITY
+
+Owner: Codex B
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Base: `d7dc60c4f51f28651494d2f39677037803287280`
+Classification: complete currently discoverable Valkyrie owner-readiness/capability batch; permanently zero migration credit
+
+Frozen owner scope:
+- `servant.valkyrie.skill.sc-valkyrie-1`;
+- `servant.valkyrie.skill.sc-valkyrie-2`;
+- `servant.valkyrie.skill.sc-valkyrie-3`.
+
+Mechanical accounting / preflight:
+- strict formal accounting remains `161/944`, remaining `783`;
+- no canonical Valkyrie owner archive exists at Base, so all three identities remain formal-migration pending;
+- readiness changes no `data/authoring/**` file and grants zero migration credit;
+- locked Reference is NON_AUTHORITATIVE for rules semantics.
+
+Implemented generic readiness family:
+- sc1 exact definition-set relocation from any current physical zone to independently chosen hand/attack destinations, without normal card-play triggers or counters; per-game usage and decision provenance remain authoritative;
+- sc2 action/combat one-arrow movement reuses existing map-arrow/location legality rather than adding a special handler;
+- sc2 Steel Shield shape pays current source cost, returns one current live definition-set attack card to hand, then joins the exact resting source to attack without a play event; physical state and mana are preflighted before mutation;
+- sc3 preserves the source-grounded `retrigger_card_play_effects` effect name, adds exact active definition-set count authority, and retriggers each current live matching physical card's `on_card_played` event without replay/play-count mutation;
+- whole-ability loader gateway is structural/fail-closed and production runtime contains no Valkyrie/name/legacy-handler routing.
+
+Verification before Candidate creation:
+- Valkyrie readiness `10/10 PASS`;
+- complex skills `38/38 PASS`;
+- MatchSession `33/33 PASS`;
+- generic MatchSession regressions `11/11 PASS`;
+- affected aggregate `92/92 PASS`;
+- `FD_TOOLCHAIN_OK`; typecheck PASS;
+- content validate/compile PASS (`7 masters / 15 servants / 20 events / 0 blocking issues`);
+- generated-content determinism PASS;
+- `data/authoring/**` delta EMPTY; production identity audit CLEAN; `git diff --check` PASS;
+- detailed report: `docs/reports/2026-09-30-p3-b-valkyrie-owner-readiness-capability-result.md`.
+
+Accounting / next step:
+- strict formal accounting remains `161/944`, remaining `783`;
+- readiness is permanently zero-credit;
+- exact Candidate requires one fresh independent R;
+- ACCEPTED -> one A-sync/full-owner rescan while remaining on `servant.valkyrie`;
+- NEEDS_REVISION -> close all exact findings in one successor Candidate, then one fresh R;
+- no per-skill review split.
+
+Allowed verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`
