@@ -7175,3 +7175,30 @@ Detailed report: `docs/reports/2026-09-30-p3-s-owner-vlad-complete-migration-res
 Fresh R required before any migration credit.
 
 Formal pre-review verification for `P3-S-OWNER-VLAD-COMPLETE-MIGRATION`: `5/5 + 13/13 + 38/38 + 33/33 + 11/11 + 21/21 = 121/121 PASS`; `FD_TOOLCHAIN_OK`; typecheck/content validate/content compile/generated determinism/diff-check PASS; content count `7 masters / 17 servants / 20 events / 0 blocking issues`; Base..Candidate runtime-source delta EMPTY; production Vlad identity audit CLEAN.
+
+Acceptance synchronization after formal review:
+- PR #498 exact Candidate `6c6dacebac12166b301206fb6cfd977c66035089` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/498#issuecomment-5911849272`.
+- Exact Phase 3 Pre-Review Gate run `36713752437` / job `109882214761` succeeded.
+- Accepted formal accounting adds exactly Vlad sc1 + sc2 (`+2`); sc3 remains preservation-only / zero duplicate credit.
+- Strict formal accounting moves `164/944 -> 166/944`; remaining `780 -> 778`.
+- Acceptance synchronization report: `docs/reports/2026-09-30-p3-a-owner-vlad-acceptance-synchronization.md`.
+- Mechanical frozen-roster next owner is `servant.voyager` with frozen scope sc1 + sc2 + sc3 + sc4.
+
+## TASK P3-B-VOYAGER-OWNER-READINESS-CAPABILITY
+
+Owner: Codex S
+Status: `READY`
+Classification: zero-credit owner-readiness/capability batch for current owner `servant.voyager`
+
+Frozen owner scope:
+- `servant.voyager.skill.sc-voyager-1`
+- `servant.voyager.skill.sc-voyager-2`
+- `servant.voyager.skill.sc-voyager-3`
+- `servant.voyager.skill.sc-voyager-4`
+
+Accounting boundary:
+- strict formal accounting is `166/944`, remaining `778`;
+- readiness is permanently zero-credit;
+- one owner / all currently discoverable readiness gaps / one Candidate / one PR / one fresh R / one A-sync-rescan;
+- do not split per skill and do not advance owner until Voyager readiness plus subsequent owner-complete migration close.
