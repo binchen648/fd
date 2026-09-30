@@ -9,7 +9,339 @@
     "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
     "note": "Semantics come from accepted F1 evidence/contracts; locked Reference is used only for static card metadata."
   },
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": [
+        "../../Fate_Domination-开发版/images/servants/崔斯坦.png",
+        "../../Fate_Domination-开发版/images/servants/崔斯坦.png",
+        "../../Fate_Domination-开发版/images/servants/崔斯坦.png",
+        "../../Fate_Domination-开发版/images/servants/崔斯坦.png"
+      ]
+    }
+  ],
+  "deck": [
+    {
+      "cardId": "card.cardb1",
+      "count": 2
+    },
+    {
+      "cardId": "card.cardb2"
+    },
+    {
+      "cardId": "card.cardq1"
+    },
+    {
+      "cardId": "card.cardq2",
+      "count": 2
+    },
+    {
+      "cardId": "card.cardq3",
+      "count": 2
+    },
+    {
+      "cardId": "card.cardq4"
+    },
+    {
+      "cardId": "card.carda1"
+    },
+    {
+      "cardId": "card.cardsurveil"
+    },
+    {
+      "cardId": "card.cardpreparation"
+    }
+  ],
   "cards": [
+    {
+      "id": "servant.tristan.skill.sc-tristan-1",
+      "aliases": [
+        "sc_tristan_1"
+      ],
+      "legacyId": "sc_tristan_1",
+      "name": "痛哭幻奏",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.tristan"
+      },
+      "printedText": "【真名解放】\n悲叹共鸣-战斗阶段：关闭你战斗中除此牌外的，所有与另一张攻击具有相同基本威力的非残留攻击。若没有，更改为弃置你牌库顶的三张牌。",
+      "cardFace": {
+        "typeLabel": "迅捷/宝具",
+        "attributes": [
+          "迅捷",
+          "宝具"
+        ],
+        "cost": 5,
+        "basePower": 7
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-tristan-1.true-name-release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "markers": [
+            "真名解放"
+          ],
+          "activation": {
+            "trigger": "on_use_declared"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "reveal_information",
+              "scope": "servant_package",
+              "subject": "controller.servant"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "sc-tristan-1.lament-resonance",
+          "kind": "phase_action",
+          "printedClause": "悲叹共鸣-战斗阶段：关闭你战斗中除此牌外的，所有与另一张攻击具有相同基本威力的非残留攻击。若没有，更改为弃置你牌库顶的三张牌。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "close_duplicate_base_power_non_residual_or_discard_top",
+              "scope": "controller_battlefield",
+              "excludeSource": true,
+              "discardTop": 3
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "崔斯坦.htm",
+            "locator": "从者/弓兵/英文版/崔斯坦.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/崔斯坦.png",
+            "locator": "servant.tristan/崔斯坦"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[48].skills[0].text#line=1",
+            "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[48].skills[0].text#line=2",
+            "sha256": "b4d891ef62f233988eeb2ca0c2e8c51a20a95ec9f24d0f59cf8c51a1e8d385ec"
+          }
+        ],
+        "sourceTextSha256": "778a206e13d82a0be79c92273404968006c7e1a393ce88212f876160a42487e3",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_tristan_1",
+          "cost": 5,
+          "basePower": 7,
+          "legacyRequirement": 8,
+          "typeLabel": "迅捷/宝具",
+          "attributes": [
+            "迅捷",
+            "宝具"
+          ],
+          "revealsTrueNameOnPlay": true
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4"
+        },
+        "acceptedContracts": {
+          "battleDiscardBinding": "PR#490/5fb8f59539c17bc868e00d628d50ee5f05bf9812",
+          "skillZonePlayThreshold": "final_rules_9.4"
+        }
+      }
+    },
+    {
+      "id": "servant.tristan.skill.sc-tristan-2",
+      "aliases": [
+        "sc_tristan_2"
+      ],
+      "legacyId": "sc_tristan_2",
+      "name": "高声颂爱",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.tristan"
+      },
+      "printedText": "打出时：将你弃牌堆内任意数量的牌洗回牌库。\nX为你以此效果洗回的牌的数量+2直至此牌关闭。\n记忆渐熄-残留：你进行战斗的战斗阶段需花费X点魔力，否则关闭此牌。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": [
+          "魔术"
+        ],
+        "cost": 2,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-tristan-2.memory-fades",
+          "kind": "residual",
+          "printedClause": "打出时：将你弃牌堆内任意数量的牌洗回牌库。\nX为你以此效果洗回的牌的数量+2直至此牌关闭。\n记忆渐熄-残留：你进行战斗的战斗阶段需花费X点魔力，否则关闭此牌。",
+          "activation": {
+            "trigger": "on_card_played",
+            "opens": "immediate",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "discard_shuffle_source_x_binding",
+              "base": 2,
+              "selectionZone": "discard",
+              "shuffleInto": "deck",
+              "upkeep": "controller_battle"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "崔斯坦.htm",
+            "locator": "从者/弓兵/英文版/崔斯坦.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/崔斯坦.png",
+            "locator": "servant.tristan/崔斯坦"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[48].skills[1].text#line=1",
+            "sha256": "3f101ad805a6672eb1ffe83302ba5f4a14a84df70bd81dd0ad58e9d59859cb86"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[48].skills[1].text#line=2",
+            "sha256": "8b1b946c4bf0b9bce69a1b833c1c6d3ca38dfcc11e0d89732e48c5692649b6da"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[48].skills[1].text#line=3",
+            "sha256": "3acfbb37d1e9df38cd71af97b809aa2a8644c3ca46074979ed4d691c68da58cd"
+          }
+        ],
+        "sourceTextSha256": "f9746f59500104bdf2fe8c0db78dc60f514629e372e92c4ed82f211578264ade",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_tristan_2",
+          "cost": 2,
+          "basePower": "X",
+          "legacyRequirement": 2,
+          "typeLabel": "魔术",
+          "attributes": [
+            "魔术"
+          ]
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4",
+          "note": "Legacy requirement is static metadata only; final servant skill-zone threshold remains 8."
+        },
+        "runtimeBasePowerBinding": {
+          "printedBasePower": "X",
+          "authoringSeed": 0,
+          "authority": "accepted physical sourceBoundX from PR#490",
+          "note": "The live accepted source-X binding overrides this numeric seed before combat Power use."
+        },
+        "acceptedContracts": {
+          "battleDiscardBinding": "PR#490/5fb8f59539c17bc868e00d628d50ee5f05bf9812",
+          "skillZonePlayThreshold": "final_rules_9.4"
+        }
+      }
+    },
     {
       "id": "servant.tristan.skill.sc-tristan-3",
       "aliases": [

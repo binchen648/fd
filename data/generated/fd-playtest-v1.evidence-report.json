@@ -3,7 +3,7 @@
   "packId": "fd-playtest-v1",
   "summary": {
     "masters": 7,
-    "servants": 13,
+    "servants": 14,
     "events": 20,
     "blockingIssues": 0
   },
@@ -1612,6 +1612,61 @@
       "issueCodes": [
         "SOURCE_ASSET_UNVERIFIED"
       ]
+    },
+    {
+      "entityId": "servant.tristan",
+      "displayName": "崔斯坦",
+      "entityKind": "servant",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "崔斯坦.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/崔斯坦.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.tristan.overview",
+      "displayName": "崔斯坦",
+      "entityKind": "servant_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "崔斯坦.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/崔斯坦.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.tristan.skill.sc-tristan-1",
+      "displayName": "痛哭幻奏",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "崔斯坦.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/崔斯坦.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.tristan.skill.sc-tristan-2",
+      "displayName": "高声颂爱",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "崔斯坦.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/崔斯坦.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.tristan.skill.sc-tristan-3",
+      "displayName": "单独行动（Archer Class）",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "崔斯坦.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/崔斯坦.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
     }
   ],
   "issues": [

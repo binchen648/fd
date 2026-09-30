@@ -24,6 +24,22 @@ function moveDeckCardsToHand(state: GameState, playerId: string, count: number):
 }
 
 describe('match session gameplay regressions', () => {
+  it('drops eliminated players from durable terrain assignment authority after scoring', () => {
+    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1', maxActionsPerPlayer: 2 });
+    expect(session.runFullMatch({ maxRounds: 1 })).toBe('match_complete');
+    const durable = session.serializeSession();
+    const mode = (durable.state as unknown as { modeState?: { terrainAssignments?: Record<string, string[]>; terrainAssignmentSlots?: Record<string, Record<string, number>> } }).modeState;
+    const active = new Set(durable.state.players.filter((player) => player.status === 'active').map((player) => player.id));
+    for (const [locationId, assigned] of Object.entries(mode?.terrainAssignments ?? {})) {
+      for (const playerId of assigned) {
+        expect(active.has(playerId)).toBe(true);
+        expect(durable.state.players.find((player) => player.id === playerId)?.locationId).toBe(locationId);
+      }
+      expect(Object.keys(mode?.terrainAssignmentSlots?.[locationId] ?? {}).every((playerId) => assigned.includes(playerId))).toBe(true);
+    }
+    expect(() => restoreMatchSession(durable)).not.toThrow();
+  });
+
   it('projects correct basic special attack costs and power', () => {
     const session = createMatchSession({ seed: 20260906 });
     const pack = mutableState(session).abilityRuntime!.pack.cards;

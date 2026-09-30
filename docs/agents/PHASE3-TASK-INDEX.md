@@ -6827,8 +6827,8 @@ Acceptance synchronization:
 ## TASK P3-S-OWNER-TRISTAN-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `READY`
-Base: `5fb8f59539c17bc868e00d628d50ee5f05bf9812`
+Status: `IMPLEMENTED_AWAITING_REVIEW`
+Base: `d577b1ebca780ec0332440901486320e7bc04e58`
 Classification: formal owner-complete migration for current owner `servant.tristan`
 
 Formal owner scope:
@@ -6854,3 +6854,28 @@ Allowed verdicts:
 - `MIGRATION_ACCEPTED`
 - `MIGRATION_NEEDS_REVISION`
 - `MIGRATION_BLOCKED`
+
+Implementation:
+- completes existing `servant.tristan` authoring archive with newly creditable sc1 + sc2 while preserving already-accounted sc3;
+- adds locked-reference 12-card Tristan starting deck and explicit source-image declaration;
+- wires Tristan into canonical `fd-playtest-v1` immediately after Tomoe to preserve frozen first-occurrence owner order;
+- sc1 consumes accepted duplicate-base-Power close / top-three discard capability and separates canonical true-name declaration from the privileged exact effect shape;
+- sc2 consumes accepted private discard-shuffle / physical source-X / location-based battle-upkeep capability; printed Power `X` remains evidence metadata while live `sourceBoundX` is authoritative;
+- canonical roster expansion exposed stale eliminated terrain occupants in durable MatchSession authority; generic post-scoring reconciliation now removes non-active/non-present terrain assignments and their stale slots without identity routing;
+- no Tristan/card-name/printed-text legacy handler routing is introduced.
+
+Verification:
+- Tristan formal `5/5 PASS`;
+- Tristan readiness `11/11 PASS`;
+- complex skills `38/38 PASS`;
+- MatchSession `33/33 PASS`;
+- generic MatchSession regressions `11/11 PASS`;
+- playtest pack loader `21/21 PASS`;
+- affected aggregate `119/119 PASS`;
+- `FD_TOOLCHAIN_OK`, typecheck PASS, content validate/compile PASS (`7 masters / 14 servants / 20 events / 0 blocking issues`), generated-content determinism PASS, production identity audit CLEAN, `git diff --check` PASS.
+- result report: `docs/reports/2026-09-30-p3-s-owner-tristan-complete-migration-result.md`.
+
+Current disposition:
+- implementation is ready for one exact-Candidate Phase 3 gate and one fresh independent formal migration review;
+- accounting remains `157/944`, remaining `787` until `MIGRATION_ACCEPTED` plus A-sync/accounting;
+- only sc1 + sc2 may receive new credit; sc3 remains preservation-only.

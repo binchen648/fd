@@ -730,6 +730,7 @@ describe('MatchSession semi-auto runtime', () => {
 
     expect([
       'match_complete',
+      'human_input',
       'host_directive',
       'backend_rejection',
       'state_loop',
