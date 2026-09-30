@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "fd-phase3-current-candidate-evidence-sync-v1",
+  "controlEpoch": "FD-P3-2026-09-23-04",
+  "taskId": "P3-E04-S00-A2",
+  "syncRole": "Codex A",
+  "generatedAt": "2026-09-29T00:00:00.000Z",
+  "sourceMainSha": "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
+  "candidate": {
+    "sha": "30be3b74258c817ede1cb857ace947505b62d8ed",
+    "branch": "codex/i-p3-P3-E04-S00-A2-promotion",
+    "parentSha": "5edd7b6e781e2fc81ca18112e900528d8109ea54",
+    "mainAncestor": true,
+    "worktreeStatus": "CLEAN"
+  },
+  "review": {
+    "suppliedVerdict": "PASS",
+    "verdict": "PASS",
+    "reviewerIdentity": "Codex Reviewer B",
+    "reviewedCandidateSha": "30be3b74258c817ede1cb857ace947505b62d8ed",
+    "reviewEvidenceBinding": "EXACT_ARTIFACT_BOUND",
+    "reviewCommit": "73733de713e0deb833241417a04f061faf3ce8a3",
+    "reviewCommitParent": "30be3b74258c817ede1cb857ace947505b62d8ed",
+    "reviewArtifactPath": "artifacts/reviewer-evidence/2026-09-29-p3-e04-s00-a2-reviewer-b.json",
+    "reviewArtifactSha256": "FD988E5544AF230D148FE9CD94E218293D54BFFB05BCFA3AE7C09B3970D66C67",
+    "supersededArtifact": {
+      "candidateSha": "34a43694f59d08a392e18e7eaa49acefd012dc61",
+      "path": "artifacts/reviewer-evidence/2026-09-27-setup-create-to-skill-current-main-review.json",
+      "sha256": "9b272aa8fc59a642145b261225fa78231760e28cc487917c582b4c52b0124952"
+    },
+    "note": "Reviewer B's exact artifact, review commit, reviewed candidate, and artifact SHA are bound. The old 34a4369 artifact is intentionally not reused. Reviewer B explicitly does not grant Gate A/B/C promotion or main promotion."
+  },
+  "scope": {
+    "mechanicFamily": "SETUP_CARD_CREATION_MINIMAL",
+    "contract": "CREATE_TO_SKILL_CURRENT_LINEAGE_REPAIR",
+    "authorizedAbilities": [
+      "military.has-support-shot",
+      "astronomical-science.has-chaldeas",
+      "useless-person.setup"
+    ],
+    "legacyFallbackStatus": "CLOSED_EXACT_ARTIFACT_BOUND",
+    "runtimeSemanticDelta": "NONE_DURING_PROMOTION"
+  },
+  "evidenceClaims": {
+    "productionPaths": [
+      "packages/rules/src/ability/setup-create-to-skill.ts",
+      "packages/rules/src/ability/resolution-dataflow.ts",
+      "packages/rules/tests/regression/setup-create-to-skill-current-lineage.test.ts"
+    ],
+    "negativeEvidence": [
+      "duplicate_created_card: full state unchanged",
+      "invalid_setup_source: no card created",
+      "source in hand: no card created"
+    ],
+    "reviewerReportedVerification": {
+      "focused": "5 files / 184 tests PASS",
+      "typecheck": "PASS",
+      "clientBuild": "PASS",
+      "testCi": "181 files / 1405 tests PASS with --testTimeout=15000",
+      "independentNegativeCases": "3/3 fail-closed with atomic state preservation",
+      "gitDiffCheck": "PASS"
+    }
+  },
+  "gateEvidence": {
+    "gateA": {
+      "status": "REVIEWER_EVIDENCE_BOUND_CANDIDATE",
+      "promotionStatus": "NOT_PROMOTED"
+    },
+    "gateB": {
+      "status": "REVIEWER_EVIDENCE_BOUND_CANDIDATE",
+      "promotionStatus": "NOT_PROMOTED"
+    },
+    "gateC": {
+      "status": "NOT_VERIFIED",
+      "reason": "Current supplied review does not provide exact Gate C evidence binding."
+    }
+  },
+  "consumerCounts": {
+    "before": {
+      "NEW_RUNTIME_SEMANTIC_ROUTED": 12,
+      "LEGACY_RESOLVE_EFFECT": 49,
+      "LEGACY_EXECUTE_ABILITY": 3,
+      "NOT_CLASSIFIABLE": 28,
+      "totalAbilities": 92
+    },
+    "after": {
+      "NEW_RUNTIME_SEMANTIC_ROUTED": 12,
+      "LEGACY_RESOLVE_EFFECT": 49,
+      "LEGACY_EXECUTE_ABILITY": 3,
+      "NOT_CLASSIFIABLE": 28,
+      "totalAbilities": 92
+    },
+    "delta": {
+      "NEW_RUNTIME_SEMANTIC_ROUTED": 0,
+      "LEGACY_RESOLVE_EFFECT": 0,
+      "LEGACY_EXECUTE_ABILITY": 0,
+      "NOT_CLASSIFIABLE": 0,
+      "totalAbilities": 0
+    },
+    "mainCoverageCreditDelta": 0,
+    "mainDenominatorDelta": 0,
+    "migrationCreditDelta": 0,
+    "promotedOnMain": false
+  },
+  "governance": {
+    "githubBoundReviewerAttestation": "MISSING",
+    "promotionAllowed": false,
+    "note": "Governance Owner must provide a current-candidate GitHub-bound review identity before promotion preparation can proceed."
+  },
+  "syncStatus": "REVIEWER_ACCEPTED_CANDIDATE",
+  "nextOwner": "Reviewer A / Governance Owner",
+  "nonClaims": [
+    "No Gate A/B/C acceptance is created by this sync.",
+    "No main coverage credit or denominator change is created.",
+    "No migration acceptance or PROMOTED_ON_MAIN status is created.",
+    "No Phase 3, Full Roster, or Release Gate completion is claimed."
+  ]
+}
