@@ -71,6 +71,7 @@ import type {
   ExecutableCardDefinition,
   ExecutableCharacterDefinition,
   LegalAction,
+  PendingDecision,
 } from './ability/types';
 import type { GameState, PhaseName } from './schema/game';
 import type { CompiledPlaytestContentLibrary } from '@fd/content';
@@ -811,6 +812,18 @@ function isRestorePendingInteraction(value: unknown): boolean {
         typeof value.battlefieldId === 'string' && isRestoreSafeInteger(value.round, 1) && isRestoreStringArray(value.candidateIds) &&
         value.candidateIds.length >= 1 && new Set(value.candidateIds).size === value.candidateIds.length &&
         isRestoreInteractionConstraints(value.constraints, ['card']) && (value.constraints as Record<string, unknown>).min === 0 &&
+        (value.constraints as Record<string, unknown>).max === 1;
+    case 'deployment_terrain_vp_choice_v1':
+      return hasExactRestoreKeys(value, [
+        'kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'sourceControllerId','decisionPlayerId','battlefieldId','round','statusCreatedRound','maxSpend','options','constraints',
+      ]) && typeof value.sourceControllerId === 'string' && typeof value.decisionPlayerId === 'string' &&
+        value.sourceControllerId !== value.decisionPlayerId && typeof value.battlefieldId === 'string' &&
+        isRestoreSafeInteger(value.round, 1) && isRestoreSafeInteger(value.statusCreatedRound, 1) &&
+        value.statusCreatedRound + 1 === value.round && value.maxSpend === 5 && isRestoreStringArray(value.options) &&
+        value.options.length >= 1 && value.options.length <= 6 && new Set(value.options).size === value.options.length &&
+        value.options.every((option, index) => option === `vp:${index}`) &&
+        isRestoreInteractionConstraints(value.constraints, ['choice']) && (value.constraints as Record<string, unknown>).min === 1 &&
         (value.constraints as Record<string, unknown>).max === 1;
     default:
       return false;
@@ -1748,7 +1761,10 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
   if (value.ruleOverrides !== undefined && !isRestoreRuleOverrides(value.ruleOverrides, playerIds, locationIds)) return false;
   if (!value.effectStack.every((entry) => isRestoreEffectStackItem(entry, playerIds))) return false;
   const restoredState = value as unknown as GameState;
+  if (!terrainAssignmentAuthorityConsistentForRestore(restoredState)) return false;
   if (!isDeferredAbilityRuntimeProvenanceValidForRestore(restoredState)) return false;
+  if (restoredState.abilityRuntime?.pendingDecision?.interaction?.kind === 'deployment_terrain_vp_choice_v1' &&
+      !deploymentTerrainVpDecisionLiveValid(restoredState, restoredState.abilityRuntime.pendingDecision)) return false;
   if (restoredState.abilityRuntime?.pendingDecision &&
       !isCanonicalGenericPendingDecisionForRestore(restoredState, restoredState.abilityRuntime.pendingDecision)) return false;
   return true;
@@ -2197,6 +2213,104 @@ function assignedTerrainOccupants(state: GameState, locationId: LocationId): str
     state.players.some((player) => player.id === playerId && player.status === 'active' && player.locationId === locationId));
 }
 
+type DeploymentTerrainStatus = {
+  id: string; sourceControllerId: string; sourceCardInstanceId: string; abilityId: string;
+  duration: 'next_round'; scope: 'opponents_deploying_to_this_battlefield'; locationId: LocationId; createdRound: number;
+};
+
+function terrainSlotOverridesOf(state: GameState): Partial<Record<LocationId, Record<string, number>>> {
+  const store = modeStateOf(state) as { terrainAssignmentSlots?: Partial<Record<LocationId, Record<string, number>>> };
+  store.terrainAssignmentSlots ??= {};
+  return store.terrainAssignmentSlots;
+}
+
+function effectiveTerrainSlotIndex(state: GameState, locationId: LocationId, playerId: string): number | undefined {
+  const override = terrainSlotOverridesOf(state)[locationId]?.[playerId];
+  if (Number.isSafeInteger(override) && Number(override) >= 0 && Number(override) < terrainSlotCount(state, locationId)) return Number(override);
+  const index = (terrainAssignmentsOf(state)[locationId] ?? []).indexOf(playerId);
+  return index >= 0 && index < terrainSlotCount(state, locationId) ? index : undefined;
+}
+
+function activeDeploymentTerrainStatus(state: GameState, decisionPlayerId: string, locationId: LocationId): DeploymentTerrainStatus | undefined {
+  const statuses = (state as unknown as { activeStatuses?: Array<Record<string, unknown>> }).activeStatuses ?? [];
+  const matches = statuses.filter((status) => status.duration === 'next_round' &&
+    status.scope === 'opponents_deploying_to_this_battlefield' && status.locationId === locationId &&
+    status.sourceControllerId !== decisionPlayerId && status.createdRound === state.round.roundNumber - 1);
+  if (!matches.length) return undefined;
+  if (matches.length !== 1) throw new Error('Multiple deployment terrain-payment statuses target the same deployment');
+  const status = matches[0]!;
+  const statusKeys = Object.keys(status).sort();
+  const expectedStatusKeys = ['abilityId','createdRound','duration','id','locationId','scope','sourceCardInstanceId','sourceControllerId'];
+  if (statusKeys.length !== expectedStatusKeys.length || statusKeys.some((key, index) => key !== expectedStatusKeys[index]) ||
+      typeof status.id !== 'string' || typeof status.sourceControllerId !== 'string' ||
+      typeof status.sourceCardInstanceId !== 'string' || typeof status.abilityId !== 'string' ||
+      !Number.isSafeInteger(status.createdRound)) throw new Error('Malformed deployment terrain-payment status authority');
+  const source = state.cards.find((card) => card.instanceId === status.sourceCardInstanceId);
+  const ability = source ? state.abilityRuntime?.pack.cards[source.definitionId]?.abilities.find((candidate) => candidate.id === status.abilityId) : undefined;
+  const effect = ability?.effects.find((candidate) => candidate.type === 'create_status');
+  const exact = effect && Object.keys(effect).sort().join('|') === ['duration','scope','statusId','type'].join('|') &&
+    effect.duration === 'next_round' && effect.scope === 'opponents_deploying_to_this_battlefield' && effect.statusId === status.id;
+  if (!source || source.controllerPlayerId !== status.sourceControllerId || !ability || !exact) throw new Error('Deployment terrain-payment status has no accepted source ability');
+  return status as unknown as DeploymentTerrainStatus;
+}
+
+function deploymentTerrainVpDecisionLiveValid(state: GameState, decision: PendingDecision): boolean {
+  try {
+    const meta = decision.interaction;
+    if (meta?.kind !== 'deployment_terrain_vp_choice_v1') return false;
+    const player = state.players.find((candidate) => candidate.id === meta.decisionPlayerId && candidate.status === 'active');
+    if (!player || player.locationId || state.round.activePhase !== 'advance' || state.round.roundNumber !== meta.round ||
+        state.players.find((candidate) => candidate.seat === state.round.prioritySeat)?.id !== meta.decisionPlayerId) return false;
+    const status = activeDeploymentTerrainStatus(state, meta.decisionPlayerId, meta.battlefieldId as LocationId);
+    if (!status || status.sourceControllerId !== meta.sourceControllerId || status.sourceCardInstanceId !== meta.sourceCardInstanceId ||
+        status.abilityId !== meta.abilityId || status.createdRound !== meta.statusCreatedRound) return false;
+    const max = Math.min(5, player.vp);
+    const expected = Array.from({ length: max + 1 }, (_, value) => `vp:${value}`);
+    return decision.controllerId === meta.decisionPlayerId && decision.min === 1 && decision.max === 1 &&
+      decision.target.id === 'deployment_terrain_vp' && decision.target.type === 'choice' &&
+      decision.remainingEffects.length === 0 && meta.maxSpend === 5 &&
+      meta.options.length === expected.length && meta.options.every((option, index) => option === expected[index]) &&
+      decision.candidates.length === expected.length && decision.candidates.every((option, index) => option === expected[index]);
+  } catch { return false; }
+}
+
+function terrainAssignmentAuthorityConsistentForRestore(state: GameState): boolean {
+  try {
+    const carrier = state as unknown as { modeState?: Record<string, unknown> };
+    const mode = carrier.modeState;
+    if (!mode) return true;
+    const assignmentsRaw = mode.terrainAssignments;
+    const slotsRaw = mode.terrainAssignmentSlots;
+    if (assignmentsRaw !== undefined && (typeof assignmentsRaw !== 'object' || assignmentsRaw === null || Array.isArray(assignmentsRaw))) return false;
+    if (slotsRaw !== undefined && (typeof slotsRaw !== 'object' || slotsRaw === null || Array.isArray(slotsRaw))) return false;
+    const assignments = (assignmentsRaw ?? {}) as Record<string, unknown>;
+    const slots = (slotsRaw ?? {}) as Record<string, unknown>;
+    const validLocations = new Set<string>(getEnabledLocations(state.map, state.locationConfig).map((location) => location.id));
+    const activePlayers = new Map(state.players.filter((player) => player.status === 'active').map((player) => [player.id, player]));
+    for (const [locationId, rawAssigned] of Object.entries(assignments)) {
+      if (!validLocations.has(locationId) || !Array.isArray(rawAssigned) || rawAssigned.some((id) => typeof id !== 'string') ||
+          new Set(rawAssigned).size !== rawAssigned.length) return false;
+      const location = getEnabledLocations(state.map, state.locationConfig).find((candidate) => candidate.id === locationId);
+      const slotCount = location?.terrainBonuses?.length ?? 0;
+      if (rawAssigned.length > slotCount || rawAssigned.some((id) => activePlayers.get(id)?.locationId !== locationId)) return false;
+      const rawSlotMap = slots[locationId];
+      if (rawSlotMap !== undefined && (typeof rawSlotMap !== 'object' || rawSlotMap === null || Array.isArray(rawSlotMap))) return false;
+      const slotMap = (rawSlotMap ?? {}) as Record<string, unknown>;
+      if (Object.keys(slotMap).some((id) => !rawAssigned.includes(id))) return false;
+      const used = new Set<number>();
+      for (let index = 0; index < rawAssigned.length; index++) {
+        const playerId = rawAssigned[index] as string;
+        const explicit = slotMap[playerId];
+        const slot = explicit === undefined ? index : Number(explicit);
+        if (!Number.isSafeInteger(slot) || slot < 0 || slot >= slotCount || used.has(slot)) return false;
+        used.add(slot);
+      }
+    }
+    if (Object.keys(slots).some((locationId) => !Object.prototype.hasOwnProperty.call(assignments, locationId))) return false;
+    return true;
+  } catch { return false; }
+}
+
 function projectInteractionWindows(state: GameState, viewerId: string): MatchInteractionWindow[] {
   const view = projectAbilityState(state, viewerId);
   const windows: MatchInteractionWindow[] = [];
@@ -2347,6 +2461,9 @@ export class MatchSession {
 
   dispatchPlayerAction(playerId: string, command: AbilityCommand): DispatchResult {
     if (command.type === 'deploy_player') return this.dispatchDeployPlayer(playerId, command.locationId as LocationId);
+    if (command.type === 'choose_target' && this.state.abilityRuntime?.pendingDecision?.interaction?.kind === 'deployment_terrain_vp_choice_v1') {
+      return this.dispatchDeploymentTerrainVpChoice(playerId, command.decisionId, command.selectedIds);
+    }
     const privateInteractionMutation = command.type === 'choose_target' &&
       this.state.abilityRuntime?.pendingDecision?.interaction?.visibility === 'owner_only';
     const result = dispatchAbilityCommand(this.state, playerId, command);
@@ -2458,38 +2575,94 @@ export class MatchSession {
     if (!this.legalDeploymentActions(playerId).some((action) => action.type === 'deploy_player' && action.locationId === locationId)) {
       return rejection('illegal_deployment', 'Selected deployment location is not legal');
     }
+    const deployedLocation = getEnabledLocations(this.state.map, this.state.locationConfig).find((location) => location.id === locationId);
+    if (deployedLocation?.tags.includes('battlefield')) {
+      let status: DeploymentTerrainStatus | undefined;
+      try { status = activeDeploymentTerrainStatus(this.state, playerId, locationId); }
+      catch { return rejection('invalid_state', 'Deployment terrain-payment authority is malformed'); }
+      if (status) {
+        const player = this.state.players.find((candidate) => candidate.id === playerId)!;
+        const max = Math.min(5, player.vp);
+        const options = Array.from({ length: max + 1 }, (_, value) => `vp:${value}`);
+        const runtime = this.state.abilityRuntime!;
+        const id = `deployment-terrain-vp:${this.state.round.roundNumber}:${playerId}:${runtime.sequence + 1}`;
+        runtime.pendingDecision = {
+          id, controllerId: playerId,
+          target: { id: 'deployment_terrain_vp', type: 'choice', options: options.map((id) => ({ id })), count: { min: 1, max: 1 } },
+          candidates: [...options], min: 1, max: 1,
+          context: { controllerId: playerId, sourceCardId: status.sourceCardInstanceId, abilityId: status.abilityId, variables: {}, selections: {} },
+          remainingEffects: [],
+          interaction: {
+            kind: 'deployment_terrain_vp_choice_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+            sourceCardInstanceId: status.sourceCardInstanceId, abilityId: status.abilityId, createdRevision: runtime.revision,
+            continuationRef: `${id}:continuation`, sourceControllerId: status.sourceControllerId, decisionPlayerId: playerId,
+            battlefieldId: locationId, round: this.state.round.roundNumber, statusCreatedRound: status.createdRound, maxSpend: 5,
+            options: [...options], constraints: { kind: 'target', targetKind: 'choice', min: 1, max: 1, distinct: true },
+          },
+        };
+        this.rejection = undefined;
+        this.record('deployment_terrain_vp_choice_opened', `${playerId}:choose VP before terrain`, { playerId, locationId, max });
+        this.checkpoint(`${playerId}:deployment_terrain_vp_choice`);
+        return { ok: true, view: view(), events: runtime.events, calculations: runtime.calculations.find((entry) => entry.controllerId === playerId)?.lines ?? [] };
+      }
+    }
+    return this.completeDeployment(playerId, locationId);
+  }
+
+  private dispatchDeploymentTerrainVpChoice(playerId: string, decisionId: string, selectedIds: string[]): DispatchResult {
+    const runtime = this.state.abilityRuntime;
+    const decision = runtime?.pendingDecision;
+    const meta = decision?.interaction;
+    const rejectChoice = (code: string, message: string): DispatchResult => {
+      this.rejection = { code, message };
+      this.record('dispatch_rejected', `${playerId}:deployment_terrain_vp_choice`, { rejection: this.rejection });
+      return { ok: false, view: this.projectAbilityView(playerId), events: runtime?.events ?? [], calculations: runtime?.calculations.find((entry) => entry.controllerId === playerId)?.lines ?? [], rejection: this.rejection };
+    };
+    if (!decision || meta?.kind !== 'deployment_terrain_vp_choice_v1' || decision.id !== decisionId ||
+        !deploymentTerrainVpDecisionLiveValid(this.state, decision)) return rejectChoice('invalid_state', 'Deployment terrain-payment choice is stale or malformed');
+    if (playerId !== meta.decisionPlayerId || selectedIds.length !== 1 || !decision.candidates.includes(selectedIds[0]!)) return rejectChoice('illegal_target', 'Select exactly one legal VP payment');
+    const paid = Number(selectedIds[0]!.slice(3));
+    const player = this.state.players.find((candidate) => candidate.id === playerId)!;
+    if (!Number.isSafeInteger(paid) || paid < 0 || paid > 5 || paid > player.vp) return rejectChoice('invalid_payment', 'VP payment is no longer affordable');
+    delete runtime!.pendingDecision;
+    const before = player.vp; player.vp -= paid;
+    runtime!.events.push({ type: 'victory_points_adjusted', playerId, sourceCardId: meta.sourceCardInstanceId, abilityId: meta.abilityId, delta: -paid, before, after: player.vp });
+    this.record('deployment_terrain_vp_paid', `${playerId}:terrain VP -${paid}`, { playerId, locationId: meta.battlefieldId, paid });
+    return this.completeDeployment(playerId, meta.battlefieldId as LocationId, paid);
+  }
+
+  private completeDeployment(playerId: string, locationId: LocationId, maximumTerrainValue?: number): DispatchResult {
     const player = this.state.players.find((candidate) => candidate.id === playerId)!;
     player.locationId = locationId;
     this.rejection = undefined;
-    this.record('player_deployed', `${playerId}:deployed to ${locationId}`, { playerId, locationId });
+    this.record('player_deployed', `${playerId}:deployed to ${locationId}`, { playerId, locationId, ...(maximumTerrainValue !== undefined ? { terrainVpPaid: maximumTerrainValue } : {}) });
     this.applyDeploymentLocationReward(playerId, locationId);
     const deployedLocation = getEnabledLocations(this.state.map, this.state.locationConfig).find((location) => location.id === locationId);
     if (deployedLocation?.tags.includes('battlefield')) {
-      this.assignTerrainOnDeployment(playerId, locationId);
+      this.assignTerrainOnDeployment(playerId, locationId, maximumTerrainValue);
       processAbilityEvent(this.state, { id: `deploy-battlefield:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_battlefield', playerId, locationId });
     }
     processAbilityEvent(this.state, { id: `deploy-location:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_location', playerId, locationId });
     this.consumeAppliedDirectives();
     this.advanceToNextDecision();
     this.checkpoint(`${playerId}:deploy_player`);
-    return {
-      ok: true,
-      view: view(),
-      events: this.state.abilityRuntime?.events ?? [],
-      calculations: this.state.abilityRuntime?.calculations.find((entry) => entry.controllerId === playerId)?.lines ?? [],
-    };
+    return { ok: true, view: this.projectAbilityView(playerId), events: this.state.abilityRuntime?.events ?? [], calculations: this.state.abilityRuntime?.calculations.find((entry) => entry.controllerId === playerId)?.lines ?? [] };
   }
 
-  private assignTerrainOnDeployment(playerId: string, locationId: LocationId): void {
-    const slotCount = terrainSlotCount(this.state, locationId);
-    if (!slotCount) return;
+  private assignTerrainOnDeployment(playerId: string, locationId: LocationId, maximumTerrainValue?: number): void {
+    const location = getEnabledLocations(this.state.map, this.state.locationConfig).find((candidate) => candidate.id === locationId);
+    const bonuses = location?.terrainBonuses ?? [];
+    if (!bonuses.length) return;
     const assignments = terrainAssignmentsOf(this.state);
-    const current = assignedTerrainOccupants(this.state, locationId).slice(0, slotCount);
-    if (current.includes(playerId) || current.length >= slotCount) {
-      assignments[locationId] = current;
-      return;
-    }
+    const current = assignedTerrainOccupants(this.state, locationId);
+    if (current.includes(playerId)) return;
+    const used = new Set(current.map((id) => effectiveTerrainSlotIndex(this.state, locationId, id)).filter((slot): slot is number => slot !== undefined));
+    const slot = bonuses.findIndex((value, index) => !used.has(index) && (maximumTerrainValue === undefined || value <= maximumTerrainValue));
+    if (slot < 0) return;
     assignments[locationId] = [...current, playerId];
+    const slotMap = terrainSlotOverridesOf(this.state);
+    slotMap[locationId] ??= {};
+    slotMap[locationId]![playerId] = slot;
   }
 
   passPriority(playerId: string): DispatchResult {
@@ -3134,7 +3307,8 @@ export class MatchSession {
       delete player.locationId;
     }
     terrainAssignmentsOf(targetState);
-    (modeStateOf(targetState) as { terrainAssignments?: Partial<Record<LocationId, string[]>> }).terrainAssignments = {};
+    (modeStateOf(targetState) as { terrainAssignments?: Partial<Record<LocationId, string[]>>; terrainAssignmentSlots?: Partial<Record<LocationId, Record<string, number>>> }).terrainAssignments = {};
+    (modeStateOf(targetState) as { terrainAssignmentSlots?: Partial<Record<LocationId, Record<string, number>>> }).terrainAssignmentSlots = {};
     const situation = this.applySituation(targetState, round);
     this.applySituationModeState(targetState, situation);
     this.placeRoundEvents(targetState, situation, round);

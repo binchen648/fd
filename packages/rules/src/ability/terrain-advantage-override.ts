@@ -13,6 +13,7 @@ interface TerrainOverrideEntry {
 
 type TerrainModeState = {
   terrainAssignments?: Partial<Record<LocationId, string[]>>;
+  terrainAssignmentSlots?: Partial<Record<LocationId, Record<string, number>>>;
   terrainMultipliers?: Array<{ playerId?: string; multiplier?: number; duration?: string; round?: number }>;
   terrainAdvantageOverrides?: TerrainOverrideEntry[];
 };
@@ -25,7 +26,8 @@ function mode(state: GameState): TerrainModeState {
 
 function rawTerrain(state: GameState, playerId: string, locationId: LocationId): number {
   const assignments = mode(state).terrainAssignments?.[locationId] ?? [];
-  const slot = assignments.indexOf(playerId);
+  const override = mode(state).terrainAssignmentSlots?.[locationId]?.[playerId];
+  const slot = Number.isSafeInteger(override) ? Number(override) : assignments.indexOf(playerId);
   if (slot < 0) return 0;
   const location = getLocationById(state.map, state.locationConfig, locationId);
   const base = location?.terrainBonuses?.[slot];

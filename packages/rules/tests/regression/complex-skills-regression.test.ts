@@ -1068,6 +1068,40 @@ describe('complex servant skill regressions', () => {
     expect(activate(state, rain, 'sc-tomoe-3.rain-of-fire').ok).toBe(true);
     expect(rules.calculateCardPower(state, opponentAttack).value).toBe(1);
   });
+
+  it('keeps rain of fire off opponents with authoritative terrain and fails closed on malformed terrain authority', () => {
+    const raw = archive('data/authoring/servants/servant.tomoe.json');
+    raw.cards.push({
+      id: 'fixture.terrain-attack', name: 'fixture', cardType: 'basic_attack',
+      cardFace: { cost: 0, basePower: 6, attributes: ['鍔涢噺'] },
+      playTiming: { phase: 'action', window: 'controller_play_card_window' }, abilities: [],
+    } as never);
+
+    const withTerrain = setup(raw, { phase: 'action', servantId: raw.id });
+    withTerrain.players[0]!.locationId = 'miyama_town';
+    withTerrain.players[1]!.locationId = 'miyama_town';
+    const source = add(withTerrain, 'servant.tomoe.skill.sc-tomoe-3', 'skill');
+    const attack = add(withTerrain, 'fixture.terrain-attack', 'field', 'p2');
+    withTerrain.abilityRuntime!.cardState[attack] = { active: true, faceDown: false, playedRound: 1 };
+    (withTerrain as unknown as { modeState?: { terrainAssignments?: Record<string, string[]> } }).modeState = {
+      terrainAssignments: { miyama_town: ['p2'] },
+    };
+    expect(play(withTerrain, source).ok).toBe(true);
+    rules.advanceAbilityPhase(withTerrain, 'battle');
+    expect(activate(withTerrain, source, 'sc-tomoe-3.rain-of-fire').ok).toBe(true);
+    expect(rules.calculateCardPower(withTerrain, attack).value).toBe(6);
+
+    const malformed = setup(raw, { phase: 'action', servantId: raw.id });
+    malformed.players[0]!.locationId = 'miyama_town';
+    malformed.players[1]!.locationId = 'miyama_town';
+    const malformedSource = add(malformed, 'servant.tomoe.skill.sc-tomoe-3', 'skill');
+    const malformedAttack = add(malformed, 'fixture.terrain-attack', 'field', 'p2');
+    malformed.abilityRuntime!.cardState[malformedAttack] = { active: true, faceDown: false, playedRound: 1 };
+    (malformed as unknown as { modeState?: Record<string, unknown> }).modeState = { terrainAssignments: { miyama_town: 'forged' } };
+    expect(play(malformed, malformedSource).ok).toBe(true);
+    rules.advanceAbilityPhase(malformed, 'battle');
+    expect(activate(malformed, malformedSource, 'sc-tomoe-3.rain-of-fire').ok).toBe(false);
+  });
 });
 
 describe('complex master and session regressions', () => {

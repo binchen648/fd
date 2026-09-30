@@ -234,12 +234,26 @@ export function resolveExtendedEffect(
     case 'create_status': {
       const statusId = str(effect.statusId);
       const duration = str(effect.duration) || 'this_round';
+      const scope = str(effect.scope);
+      if (scope === 'opponents_deploying_to_this_battlefield') {
+        const keys = Object.keys(effect).sort();
+        const expected = ['duration', 'scope', 'statusId', 'type'];
+        if (keys.length !== expected.length || keys.some((key, index) => key !== expected[index]) ||
+            !statusId || duration !== 'next_round' || !p.locationId ||
+            !context?.sourceCardId || !context?.abilityId) {
+          throw new Error('Unsupported next-round battlefield deployment terrain-payment status shape');
+        }
+      }
       (state as any).activeStatuses = (state as any).activeStatuses || [];
       (state as any).activeStatuses.push({
         id: statusId,
         sourceControllerId: controllerId,
         duration,
-        locationId: p.locationId
+        ...(scope ? { scope } : {}),
+        locationId: p.locationId,
+        createdRound: state.round.roundNumber,
+        ...(context?.sourceCardId ? { sourceCardInstanceId: context.sourceCardId } : {}),
+        ...(context?.abilityId ? { abilityId: context.abilityId } : {})
       });
       break;
     }
@@ -570,31 +584,42 @@ export function resolveExtendedEffect(
     case 'reduce_opponents_power': {
       const amount = Number(effect.amount ?? 0);
       const condition = str(effect.condition);
+      const scope = str(effect.scope);
+      const keys = Object.keys(effect).sort();
+      const expected = ['amount', 'condition', 'scope', 'type'];
+      if (keys.length !== expected.length || keys.some((key, index) => key !== expected[index]) ||
+          amount !== 5 || condition !== 'opponent_has_no_terrain' || scope !== 'same_battlefield') {
+        throw new Error('Unsupported same-battlefield no-terrain power reduction shape');
+      }
+      const mode = (state as unknown as { modeState?: Record<string, unknown> }).modeState;
+      const assignments = mode?.terrainAssignments;
+      if (assignments !== undefined && (typeof assignments !== 'object' || assignments === null || Array.isArray(assignments))) {
+        throw new Error('Malformed terrain assignment authority');
+      }
+      const terrainByLocation = (assignments ?? {}) as Record<string, unknown>;
+      for (const [locationId, assigned] of Object.entries(terrainByLocation)) {
+        if (!Array.isArray(assigned) || assigned.some((id) => typeof id !== 'string') ||
+            assigned.some((id) => id && !state.players.some((player) => player.id === id)) ||
+            !state.map.locations.some((location) => location.id === locationId)) {
+          throw new Error('Malformed terrain assignment authority');
+        }
+      }
       const opponents = state.players.filter(pl =>
-        pl.id !== controllerId &&
-        pl.status === 'active' &&
-        pl.locationId === p.locationId &&
+        pl.id !== controllerId && pl.status === 'active' && pl.locationId === p.locationId &&
         !playerIgnoresAbilityFromController(state, pl.id, controllerId)
       );
       for (const opponent of opponents) {
-        // Check condition if specified
-        if (condition === 'opponent_has_no_terrain') {
-          // Simplified: assume opponent has no terrain for now
-          const attackCards = state.cards.filter(c =>
-            c.ownerPlayerId === opponent.id &&
-            isActiveFieldCard(state, c)
-          );
-          for (const card of attackCards) {
-            (card as any).powerModifiers = (card as any).powerModifiers || [];
-            (card as any).powerModifiers.push({
-              id: `reduce-${controllerId}-${card.instanceId}`,
-              sourceId: typeof context?.sourceCardId === 'string' ? context.sourceCardId : 'extended-effect',
-              controllerId,
-              kind: 'add',
-              value: -amount,
-              duration: 'round'
-            });
-          }
+        const assigned = opponent.locationId ? terrainByLocation[opponent.locationId] : undefined;
+        const hasTerrain = Array.isArray(assigned) && assigned.includes(opponent.id);
+        if (hasTerrain) continue;
+        const attackCards = state.cards.filter(c => c.ownerPlayerId === opponent.id && isActiveFieldCard(state, c));
+        for (const card of attackCards) {
+          (card as any).powerModifiers = (card as any).powerModifiers || [];
+          (card as any).powerModifiers.push({
+            id: `reduce-${controllerId}-${card.instanceId}`,
+            sourceId: typeof context?.sourceCardId === 'string' ? context.sourceCardId : 'extended-effect',
+            controllerId, kind: 'add', value: -amount, duration: 'round'
+          });
         }
       }
       break;
