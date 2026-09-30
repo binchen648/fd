@@ -7406,3 +7406,11 @@ Implementation evidence for `P3-B-AKASHA-OWNER-READINESS-CAPABILITY`:
 - `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`7 masters / 19 servants / 20 events / 0 blocking issues`); generated determinism PASS; identity audit CLEAN; diff-check PASS.
 - Detailed report: `docs/reports/2026-10-01-p3-b-akasha-owner-readiness-capability-result.md`.
 - Current disposition: `IMPLEMENTATION_COMPLETE_CANDIDATE`; freeze one Candidate / one PR / one fresh R. Accounting remains `173/944`, remaining `771`.
+
+Revision evidence for `P3-B-AKASHA-OWNER-READINESS-CAPABILITY` after predecessor review:
+- predecessor Candidate `b480e516e6e990f3a64abef151e92ce903a4cf60` -> `IMPLEMENTATION_NEEDS_REVISION`;
+- canonical bounded same-attempt evidence: `https://github.com/binchen648/fd/pull/503#issuecomment-5916399748`;
+- both P1 findings closed in one successor revision: real play requirement-gate wiring for exact Vessel-cycle threshold exception, plus pre-payment low-mana provenance sealed through real play state construction;
+- real `playAbilityCardBatch()` regressions cover non-final-Vessel 7-mana rejection, exact final-Vessel 7-mana low-mana success, and 8-mana normal-play non-misclassification;
+- successor verification: focused `15/15`, neighboring `80/80`, authoring/content/complex `131/131`, MatchSession/restore `44/44`, aggregate **`255/255 PASS`**; typecheck/content/generated/diff-check PASS; `data/authoring/**` EMPTY; production identity audit CLEAN;
+- readiness remains zero-credit at `173/944`, remaining `771`; one successor Candidate / one fresh R required.

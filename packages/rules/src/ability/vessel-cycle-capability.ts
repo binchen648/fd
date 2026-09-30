@@ -1,4 +1,4 @@
-﻿import type { GameState } from '../schema/game';
+import type { GameState } from '../schema/game';
 import type { AuthoringAbility, EffectContext, PlayerId, RuleNode } from './types';
 import { terrainAdvantageAtLocation } from './terrain-advantage-override';
 
@@ -186,14 +186,15 @@ function controlsDefinition(state:GameState,p:PlayerId,definitionId:string):bool
 export function vesselCycleSkillAura(state:GameState,controllerId:PlayerId,definitionId:string,cardType:string):{costDelta:number;powerDelta:number}{
   let costDelta=0,powerDelta=0; for(const m of matchingMarkerAbilities(state,controllerId,isVesselCycleSkillAuraEffect)){const e=m.effect; if(cardType!==e.targetCardType||current(state,controllerId,String(e.cycleKey))!==e.vessel||!controlsDefinition(state,controllerId,String(e.requiredDefinitionId)))continue; costDelta+=Number(e.costDelta);powerDelta+=Number(e.powerDelta);} return {costDelta,powerDelta};
 }
-export function vesselCyclePlayRequirementWaived(state:GameState,controllerId:PlayerId,definitionId:string,requirementType:string):boolean {
-  return matchingMarkerAbilities(state,controllerId,isVesselCyclePlayExceptionEffect).some(m=>m.effect.targetDefinitionId===definitionId&&m.effect.requirementType===requirementType&&current(state,controllerId,String(m.effect.cycleKey))===m.effect.vessel);
+export function vesselCyclePlayRequirementWaived(state:GameState,controllerId:PlayerId,definitionId:string,requirementType:string,requirementValue:number):boolean {
+  return Number.isSafeInteger(requirementValue) && matchingMarkerAbilities(state,controllerId,isVesselCyclePlayExceptionEffect).some(m=>m.effect.targetDefinitionId===definitionId&&m.effect.requirementType===requirementType&&Number(m.effect.threshold)===requirementValue&&current(state,controllerId,String(m.effect.cycleKey))===m.effect.vessel);
 }
-export function rememberVesselCyclePlayProvenance(state:GameState,controllerId:PlayerId,instanceId:string):void {
+export function rememberVesselCyclePlayProvenance(state:GameState,controllerId:PlayerId,instanceId:string,prePaymentMana:number):void {
+  if(!Number.isSafeInteger(prePaymentMana)||prePaymentMana<0) throw new Error('VESSEL_CYCLE_PREPAY_MANA_INVALID');
   const c=state.cards.find(x=>x.instanceId===instanceId); if(!c)return;
   for(const m of matchingMarkerAbilities(state,controllerId,isVesselCyclePlayExceptionEffect)){
     if(m.effect.targetDefinitionId!==c.definitionId||current(state,controllerId,String(m.effect.cycleKey))!==m.effect.vessel)continue;
-    if(state.players.find(p=>p.id===controllerId)!.mana<Number(m.effect.threshold)) setCardMarker(state,controllerId,String(m.effect.cycleKey),'lowMana',instanceId,1,m.sourceId,m.ability.id,c.definitionId);
+    if(prePaymentMana<Number(m.effect.threshold)) setCardMarker(state,controllerId,String(m.effect.cycleKey),'lowMana',instanceId,1,m.sourceId,m.ability.id,c.definitionId);
   }
 }
 function temporaryCards(state:GameState,p:PlayerId,definitionId:string){ return state.cards.filter(c=>c.ownerPlayerId===p&&c.definitionId===definitionId&&!!c.generatedBy&&!['removed_from_game'].includes(c.zone)); }

@@ -99,3 +99,34 @@ Low-mana +3, deployment +2, and Square x2 authority are stored with exact round/
 Freeze one exact readiness Candidate / one PR / one fresh independent Reviewer for the full eight-identity Akasha owner scope. This transaction is permanently zero-credit.
 
 ACCEPTED -> one FORMAL-only A-sync/full-owner rescan while remaining on `master.akasha`; only that rescan may authorize the later one-owner / all remaining frozen identities / one formal Candidate migration transaction.
+
+## Revision after fresh R predecessor
+
+Predecessor Candidate `b480e516e6e990f3a64abef151e92ce903a4cf60` received `IMPLEMENTATION_NEEDS_REVISION` on PR #503. Coordinator bounded same-attempt evidence is canonical at:
+`https://github.com/binchen648/fd/pull/503#issuecomment-5916399748`.
+
+Both P1 findings are closed in one successor revision:
+
+1. The accepted exact Vessel-cycle play exception is now wired into both real `skill_zone_mana_at_least` gates: direct condition evaluation and `playFailure()` requirement filtering. The bypass additionally binds the exact requirement value to the accepted effect threshold, so unrelated requirements are not widened.
+2. Low-mana provenance is sealed from the pre-payment play state. `playBatch()` captures `prePaymentMana`, completes normal payment/card-state construction, then writes the exact Vessel-cycle marker into the new physical card state before `on_card_played` processing. This avoids both post-payment misclassification and marker loss during card-state replacement.
+
+Real-play regression now uses `playAbilityCardBatch()` and proves:
+- at 7 mana outside the configured final Vessel, the same card still fails its play requirement;
+- at 7 mana in the exact final Vessel, the exact target definition plays successfully, pays 2 mana, remains open, and receives only the intended current-round +3;
+- at 8 mana in the exact final Vessel, the normal play succeeds but does not receive low-mana provenance after payment drops mana below 8; it follows the normal close/generated-copy lifecycle.
+
+Successor verification:
+- focused Akasha readiness: `15/15 PASS` (helper-only play check replaced by real play API coverage);
+- real play/cost/scoring/neighboring group: `80/80 PASS`;
+- authoring/content/complex group: `131/131 PASS`;
+- MatchSession + restore groups: `44/44 PASS`;
+- affected aggregate: **`255/255 PASS`**;
+- `FD_TOOLCHAIN_OK`;
+- typecheck PASS;
+- content validate/compile PASS: `7 masters / 19 servants / 20 events / 0 blocking issues`;
+- generated determinism PASS with unchanged declared hashes;
+- `data/authoring/**` delta EMPTY;
+- production Akasha identity audit CLEAN;
+- `git diff --check` PASS.
+
+Accounting remains `173/944`, remaining `771`; this readiness task remains permanently zero-credit. Freeze exactly one successor Candidate and request one fresh independent review of that successor only.

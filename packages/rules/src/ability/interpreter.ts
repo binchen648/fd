@@ -1,4 +1,4 @@
-﻿import type { GameState, PhaseName } from '../schema/game';
+import type { GameState, PhaseName } from '../schema/game';
 import { eventLocationEqualsController, isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
 import type { CardInstance } from '../schema/card';
 import type { LocationId } from '../schema/location';
@@ -1534,7 +1534,7 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   switch (c.type) {
     case 'skill_zone_mana_at_least': {
       const cardDef = definition(s, ctx.sourceCardId);
-      if (cardDef && hasPlayRuleException(cardDef, 'skill_zone_mana_at_least')) return true;
+      if (cardDef && (hasPlayRuleException(cardDef, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, ctx.controllerId, cardDef.id, 'skill_zone_mana_at_least', Number(c.value)))) return true;
       return card(s, ctx.sourceCardId).zone !== 'skill' || p.mana >= Number(c.value);
     }
     case 'controller_at_battlefield': return isBattlefield(s, p.locationId);
@@ -2095,9 +2095,9 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   }
   if (!ignoreAttackLimit && attackPlayLimitReached(s, p, sourceId, ignoreStagedAttackLimit)) return 'attack_play_limit_reached';
   const requirements = d.playRequirements.concat(nodes(d.cardFace.requirements)).filter(r =>
-    str(r.type) && !(str(r.type) === 'skill_zone_mana_at_least' && hasPlayRuleException(d, 'skill_zone_mana_at_least')));
+    str(r.type) && !(str(r.type) === 'skill_zone_mana_at_least' && (hasPlayRuleException(d, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)))));
   if (!requirements.every(r => condition(s, context(s, sourceId, ''), r))) return 'play_requirement';
-  
+
   if (!faceDown && !ignoreManaCost && player(s, p).mana < effectiveCardPlayCost(s, p, sourceId)) return 'insufficient_mana';
   const sealCost = !faceDown ? cardPlayCommandSealCost(d) : undefined;
   if (sealCost && Number((player(s, p) as unknown as { commandSpells?: number }).commandSpells ?? 3) < sealCost.amount) return 'insufficient_command_seals';
@@ -6316,13 +6316,13 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   const p = player(s, ctx.controllerId); let manaCost = 0;
   const fixedControllerManaCost = usesAcceptedFixedControllerManaCostComponent(a);
   const reuseGrant = liveReuseGrantForAbility(s, ctx.controllerId, ctx.sourceCardId, a.id);
-  
+
   // Check usage limits; one accepted reuse grant authorizes exactly one extra activation without mutating the original counter.
   const limitType = str(a.limit?.type);
   if ((limitType === 'per_game' || limitType === 'per_round') && abilityLimitReached(s, ctx.sourceCardId, a) && !reuseGrant) {
     reject('ability_limit_reached', 'Ability has been used the maximum number of times this game');
   }
-  
+
   const names = a.cost.filter(c => c.type === 'pay_mana').map(c => str(node(c.amount).var)).filter(Boolean);
   if (Object.keys(ctx.variables).some(name => !names.includes(name))) reject('invalid_variable', 'Unexpected variable');
   for (const cost of a.cost) {
@@ -6352,13 +6352,13 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (reuseGrant) reuseGrant.consumed = true;
   if (!isRulerSealUseSemantic(a) && !isCommandSpellCard(s, ctx.sourceCardId) && !isRepeatableSealPowerReplacementAbility(a) && !isAcceptedReactionCounterCapabilityAbility(a) &&
       classifyAbilityInteraction(a).kind === 'phase_activation') runtime(s).usedAbilities[`${ctx.sourceCardId}:${a.id}`] = s.round.roundNumber;
-  
+
   // A one-shot reuse consumes its provenance grant instead of incrementing the original ability usage counter.
   if (!reuseGrant && (limitType === 'per_game' || limitType === 'per_round')) {
     const usageKey = limitType === 'per_round' ? `${ctx.sourceCardId}:${a.id}:round:${s.round.roundNumber}` : `${ctx.sourceCardId}:${a.id}`;
     runtime(s).abilityUsage[usageKey] = (runtime(s).abilityUsage[usageKey] ?? 0) + 1;
   }
-  
+
   installOngoing(s, ctx, a);
   executeEffects(s, ctx, [...a.effects, ...a.creates]);
 }
@@ -6548,7 +6548,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
     const battleResult = createBattleResult(event.battleResult);
     const winners = battleResult.winners;
     const losers = battleResult.loserIds.filter(id => !winners.includes(id));
-    
+
     for (const id of winners) processEvent(s, { ...event, id: `${event.id}:win:${id}`, type: 'after_controller_wins_battle', playerId: id });
     for (const id of winners) processEvent(s, { ...event, id: `${event.id}:victory:${id}`, type: 'after_controller_gains_victory', playerId: id });
     for (const id of losers) processEvent(s, { ...event, id: `${event.id}:lose:${id}`, type: 'after_controller_loses_battle', playerId: id });
@@ -7583,8 +7583,8 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   if (!Number.isSafeInteger(availableSeals) || availableSeals < commandSealCost) reject('insufficient_command_seals', 'Cannot pay aggregate Command Seal card-play cost');
   const playedCards = choices.map(c => ({ instanceId: c.cardInstanceId, controllerId: playerId,
     cardType: definition(s, c.cardInstanceId)!.cardType, faceDown: !!c.faceDown }));
+  const prePaymentMana = player(s, playerId).mana;
   if (cost > 0) spendMana(s, playerId, cost);
-  for (const c of choices.filter((choice) => !choice.faceDown)) rememberVesselCyclePlayProvenance(s, playerId, c.cardInstanceId);
   if (commandSealCost > 0) {
     const before = availableSeals; const after = before - commandSealCost;
     sealCarrier.commandSpells = after;
@@ -7598,8 +7598,9 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     const playCounts = runtime(s).cardPlayCountByInstance ??= {};
     playCounts[c.cardInstanceId] = (playCounts[c.cardInstanceId] ?? 0) + 1;
     runtime(s).cardState[c.cardInstanceId] = { active: !c.faceDown, faceDown: !!c.faceDown, playedRound: s.round.roundNumber, paidManaOnPlay: paidCostByCard.get(c.cardInstanceId) ?? 0 };
+    if (!c.faceDown) rememberVesselCyclePlayProvenance(s, playerId, c.cardInstanceId, prePaymentMana);
     if (c.faceDown) card(s, c.cardInstanceId).visibility = { scope: 'owner_only', ownerPlayerId: playerId };
-    
+
     // Track noble phantasm costs for cards with 宝具 attribute
     const d = definition(s, c.cardInstanceId);
     if (d && !c.faceDown) {
