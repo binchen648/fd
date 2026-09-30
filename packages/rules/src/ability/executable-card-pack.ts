@@ -5,7 +5,7 @@ import type {
 
 import { loadAuthoringJson, node, nodes, str } from './loader';
 import { gameStartSkillProvisioningTargetDefinitionIds, isGameStartSkillProvisioningCandidate } from './game-start-skill-provisioning';
-import { isSetupCreateToSkillCandidate, isSetupCreateToSkillSemantic } from './setup-create-to-skill';
+import { isSetupCreateToSkillCandidate, isSetupCreateToSkillSemantic, isSetupCreateToSkillTargetDefinition } from './setup-create-to-skill';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
 import { sha256Hex } from './portable-sha256';
 import {
@@ -484,8 +484,12 @@ function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition, cards
     }
     if (isSetupCreateToSkillSemantic(ability)) {
       const targetDefinitionId = ability.effects[0]!.cardId;
-      if (typeof targetDefinitionId !== 'string' || !cards[targetDefinitionId]) {
-        throw new Error(`Missing setup create-to-skill target definition '${String(targetDefinitionId)}' at ${path}`);
+      const target = typeof targetDefinitionId === 'string' ? cards[targetDefinitionId] : undefined;
+      if (!target || !isSetupCreateToSkillTargetDefinition(card, target)) {
+        if (!target) {
+          throw new Error(`Missing setup create-to-skill target definition '${String(targetDefinitionId)}' at ${path}`);
+        }
+        throw new Error(`Invalid setup create-to-skill target definition '${String(targetDefinitionId)}' at ${path}`);
       }
     }
     if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isBattleLossResourceTriggerRouteCandidate(ability) && !isBattleLossServantRevealRouteCandidate(ability) && !isSharedVictoryVpTriggerRouteCandidate(ability) && !isBattleEndSourceReturnRouteCandidate(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isPlayActionRouteCandidate(ability) && !isPlaySourceCardWithCostResponseStructuralCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability) && !isSetupCreateToSkillSemantic(ability)) continue;

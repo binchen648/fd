@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-E04-S00-A2",
+  "reviewer": "github:binchen648",
+  "reviewThread": "https://github.com/binchen648/fd/pull/491#issuecomment-5903399534",
+  "candidateSha": "30be3b74258c817ede1cb857ace947505b62d8ed",
+  "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "reviewMode": "process_separated_exact_sha_review",
+  "scope": {
+    "mechanicFamily": "SETUP_CARD_CREATION_MINIMAL",
+    "contract": "CREATE_TO_SKILL_CURRENT_LINEAGE_REPAIR",
+    "authorizedAbilities": [
+      "military.has-support-shot",
+      "astronomical-science.has-chaldeas",
+      "useless-person.setup"
+    ]
+  },
+  "checks": {
+    "genericRoute": "PASS",
+    "identityFree": "PASS",
+    "typedCreateCardToSkill": "PASS",
+    "sourceAuthority": "PASS",
+    "targetDefinitionAuthority": "PASS",
+    "globalCardinality": "PASS",
+    "failClosed": "PASS",
+    "atomicFailure": "PASS",
+    "idempotency": "PASS",
+    "legacyFallback": "CLOSED",
+    "scopeExpansion": "NOT_FOUND"
+  },
+  "verification": {
+    "focused": "PASS: 5 files / 184 tests",
+    "typecheck": "PASS",
+    "clientBuild": "PASS",
+    "testCi": "PASS: 181 files / 1405 tests with --testTimeout=15000",
+    "independentAdversarialCases": "PASS: 3/3 fail-closed with full state preservation",
+    "diffCheck": "PASS"
+  },
+  "nonClaims": [
+    "No Gate A/B/C promotion is granted.",
+    "No Phase 3 or Full Roster completion is granted.",
+    "No Release Gate or mainline credit is granted.",
+    "The GitHub distinct-account independent-approval requirement remains open because the reviewer login is also the PR author."
+  ]
+}
