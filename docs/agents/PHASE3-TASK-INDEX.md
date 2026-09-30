@@ -7307,3 +7307,40 @@ Implementation evidence for `P3-B-XIANGYU-OWNER-READINESS-CAPABILITY`:
 - `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`7 masters / 18 servants / 20 events / 0 blocking issues`); generated determinism PASS; identity audit CLEAN; diff-check PASS.
 - Detailed report: `docs/reports/2026-09-30-p3-b-xiangyu-owner-readiness-capability-result.md`.
 - Current disposition: `IMPLEMENTATION_COMPLETE_CANDIDATE`; freeze one Candidate / one PR / one fresh R. Accounting remains `170/944`, remaining `774`.
+
+### Xiang Yu readiness acceptance synchronization
+
+- Accepted Candidate: 74e824238bd96a6679648376cf8c3d6ce48125c.
+- Canonical same-attempt bounded acceptance evidence: $evidence.
+- Verdict: IMPLEMENTATION_ACCEPTED_CANDIDATE; exact gate run $gateRun / job $gateJob SUCCESS.
+- Readiness A-sync/full-owner rescan finds no canonical Xiang Yu servant authoring; sc1 + sc2 + sc3 are all absent from data/authoring/** and all three remain newly creditable.
+- No preservation-only duplicate Xiang Yu skill exists in current canonical authoring lineage.
+- No additional currently discoverable Xiang Yu owner-local readiness gap remains after accepted readiness closure.
+- Readiness remains zero-credit; strict accounting stays 170/944, remaining 774.
+- Next legal FORMAL task: P3-S-OWNER-XIANGYU-COMPLETE-MIGRATION, frozen sc1 + sc2 + sc3 together; all three are creditable only after formal acceptance + A-sync/accounting.
+- Detailed A-sync report: $report.
+
+## TASK P3-S-OWNER-XIANGYU-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: READY
+Classification: formal owner-complete migration for servant.xiangyu
+
+Frozen owner scope:
+- servant.xiangyu.skill.sc-xiangyu-1
+- servant.xiangyu.skill.sc-xiangyu-2
+- servant.xiangyu.skill.sc-xiangyu-3
+
+Accounting boundary:
+- strict formal accounting remains 170/944, remaining 774 before formal acceptance;
+- all three frozen identities are absent from canonical data/authoring/** and are newly creditable;
+- successful exact formal MIGRATION_ACCEPTED plus A-sync/accounting may add exactly +3 (170 -> 173), leaving 771;
+- one owner / all three remaining frozen skills / one formal Candidate / one PR / one fresh R / one A-sync-accounting;
+- consume the accepted identity-free Reaction readiness runtime; do not add Xiang Yu/card-name/printed-text/legacy identity routing to production runtime.
+
+Formal materialization requirements:
+- create one canonical data/authoring/servants/servant.xiangyu.json owner archive containing sc1 + sc2 + sc3 together;
+- preserve the frozen 12-card Xiang Yu deck from locked source evidence: b1, b2, b3, b4, b5x2, q1, q2, q5x2, luck, surveil;
+- integrate Xiang Yu exactly once after Voyager in stable owner order;
+- add focused owner-complete migration regression proving authoring/pack presence and accepted generic runtime shapes;
+- Base for this formal task is this Xiang Yu readiness acceptance-sync commit.
