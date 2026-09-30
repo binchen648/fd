@@ -6827,7 +6827,7 @@ Acceptance synchronization:
 ## TASK P3-S-OWNER-TRISTAN-COMPLETE-MIGRATION
 
 Owner: Codex S
-Status: `IMPLEMENTED_AWAITING_REVIEW`
+Status: `SYNCHRONIZED`
 Base: `d577b1ebca780ec0332440901486320e7bc04e58`
 Classification: formal owner-complete migration for current owner `servant.tristan`
 
@@ -6879,3 +6879,12 @@ Current disposition:
 - implementation is ready for one exact-Candidate Phase 3 gate and one fresh independent formal migration review;
 - accounting remains `157/944`, remaining `787` until `MIGRATION_ACCEPTED` plus A-sync/accounting;
 - only sc1 + sc2 may receive new credit; sc3 remains preservation-only.
+Acceptance synchronization:
+- PR #492 exact Candidate `aad7adad30aa30e3a8545733dca1d04b69ed867c` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/492#issuecomment-5904895847`.
+- Exact-Candidate Phase 3 Pre-Review Gate run `36672454283` succeeded.
+- Accepted owner-complete scope is exactly Tristan sc1 + sc2 + sc3; only sc1 + sc2 are newly creditable and sc3 remains preservation-only / already accounted.
+- Formal accounting moves `157/944 -> 159/944`; remaining `785`; readiness and the generic MatchSession durability closure remain zero-credit.
+- Mechanical next owner is `servant.ushiwakamaru`; frozen scope is sc1 + sc2 + sc3.
+- Owner-readiness-first remains mandatory before any Ushiwakamaru formal consumer migration.
+- Acceptance synchronization report: `docs/reports/2026-09-30-p3-a-owner-tristan-acceptance-synchronization.md`.
