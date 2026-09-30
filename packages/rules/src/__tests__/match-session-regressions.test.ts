@@ -154,6 +154,42 @@ describe('match session gameplay regressions', () => {
       .toContainEqual(expect.objectContaining({ source: 'location', value: 3 }));
   });
 
+  it('keeps a zero-VP deployment paused until the mandatory vp:0 choice resolves', () => {
+    const session = createMatchSession({ seed: 20260906, humanPlayerId: 'p2' });
+    const state = mutableState(session);
+    state.round.roundNumber = 2;
+    setPriority(state, 'p2', 'advance');
+    const p1 = state.players.find((player) => player.id === 'p1')!;
+    const p2 = state.players.find((player) => player.id === 'p2')!;
+    p1.locationId = 'miyama_town';
+    delete p2.locationId;
+    p2.vp = 0;
+    state.cards.push({
+      instanceId: 'tomoe-zero-vp-inferno-source', definitionId: 'servant.tomoe.skill.sc-tomoe-2',
+      ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'skill', visibility: { scope: 'public' },
+    });
+    (state as unknown as { activeStatuses?: Array<Record<string, unknown>> }).activeStatuses = [{
+      id: 'inferno_fire', sourceControllerId: 'p1', sourceCardInstanceId: 'tomoe-zero-vp-inferno-source', abilityId: 'sc-tomoe-2.inferno-fire',
+      duration: 'next_round', scope: 'opponents_deploying_to_this_battlefield', locationId: 'miyama_town', createdRound: 1,
+    }];
+
+    const staged = session.dispatchPlayerAction('p2', { type: 'deploy_player', locationId: 'miyama_town' });
+    expect(staged.ok).toBe(true);
+    expect(p2.locationId).toBeUndefined();
+    expect(p2.vp).toBe(0);
+    const decision = state.abilityRuntime!.pendingDecision!;
+    expect(decision.interaction?.kind).toBe('deployment_terrain_vp_choice_v1');
+    expect(decision.candidates).toEqual(['vp:0']);
+
+    const resolved = session.dispatchPlayerAction('p2', { type: 'choose_target', decisionId: decision.id, selectedIds: ['vp:0'] });
+    expect(resolved.ok).toBe(true);
+    expect(state.abilityRuntime!.pendingDecision).toBeUndefined();
+    expect(p2.vp).toBe(0);
+    expect(p2.locationId).toBe('miyama_town');
+    expect((state as unknown as { modeState?: { terrainAssignments?: Record<string, string[]>; terrainAssignmentSlots?: Record<string, Record<string, number>> } }).modeState?.terrainAssignments?.miyama_town ?? []).not.toContain('p2');
+    expect((state as unknown as { modeState?: { terrainAssignmentSlots?: Record<string, Record<string, number>> } }).modeState?.terrainAssignmentSlots?.miyama_town?.p2).toBeUndefined();
+  });
+
   it('expires the deployment terrain-payment status after its exact next round', () => {
     const session = createMatchSession({ seed: 20260906, humanPlayerId: 'p2' });
     const state = mutableState(session);

@@ -6741,14 +6741,14 @@ Full-owner preflight result:
 
 Implemented generic readiness family:
 - exact `next_round` / `opponents_deploying_to_this_battlefield` status shapes now carry source-card, ability, source-controller, location, and created-round provenance; malformed/widened shapes fail closed;
-- when an opponent deploys to that battlefield in exactly the following round, deployment pauses before terrain assignment and opens one owner-only mandatory choice `0..min(5,current VP)`; the chosen amount is paid as VP and only free terrain slots whose printed terrain value is `<= paid VP` remain eligible;
+- when an opponent deploys to that battlefield in exactly the following round, deployment pauses before terrain assignment and opens one owner-only mandatory choice `0..min(5,current VP)`; this remains a real single-option `['vp:0']` interaction at `current VP = 0`; the chosen amount is paid as VP and only free terrain slots whose printed terrain value is `<= paid VP` remain eligible;
 - explicit `terrainAssignmentSlots` authority preserves non-dense choices (for example paying `1` may take the `+1` slot while leaving `+3` free for a later payer) and is consumed by combat/terrain multiplier math; round rollover clears the mapping;
 - restore validates terrain assignment + exact-slot consistency and the pending deployment-payment interaction against live player/round/priority/status/source facts; malformed or stale state fails closed;
 - exact `reduce_opponents_power(amount=5, condition=opponent_has_no_terrain, scope=same_battlefield)` now reads authoritative terrain assignments; opponents with terrain are excluded, opponents without terrain receive the round `-5`, and malformed terrain authority fails closed;
 - production runtime contains no Tomoe/card-name/printed-text/`sc-tomoe-*`/`inferno_fire` identity routing.
 
 Verification:
-- Tomoe/MatchSession focused green set: `3 files / 80 tests PASS` (`match-session-regressions 9/9`, full MatchSession `33/33`, complex skills `38/38`);
+- Tomoe/MatchSession focused green set: `3 files / 81 tests PASS` (`match-session-regressions 10/10`, full MatchSession `33/33`, complex skills `38/38`);
 - `FD_TOOLCHAIN_OK`;
 - typecheck PASS;
 - content validate/compile PASS: `7 masters / 13 servants / 20 events / 0 blocking issues`;

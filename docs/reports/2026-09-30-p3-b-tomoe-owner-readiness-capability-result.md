@@ -55,6 +55,8 @@ During the following round's ordinary battlefield deployment, an affected oppone
 
 `0 .. min(5, current VP)`.
 
+This interaction is mandatory even at `current VP = 0`: the exact candidate set is then `['vp:0']`, deployment remains paused until that choice resolves, and no positive terrain slot can be acquired from a zero payment.
+
 After choosing:
 
 - the exact amount is deducted from VP;
@@ -93,13 +95,14 @@ The privileged implementation is structural. Production rules contain no `Tomoe`
 
 Focused/affected tests:
 
-- `packages/rules/src/__tests__/match-session-regressions.test.ts` — `9/9 PASS`;
+- `packages/rules/src/__tests__/match-session-regressions.test.ts` — `10/10 PASS`;
 - `packages/rules/tests/match-session.test.ts` — `33/33 PASS`;
 - `packages/rules/tests/regression/complex-skills-regression.test.ts` — `38/38 PASS`;
-- affected total — **`3 files / 80 tests PASS`**.
+- affected total — **`3 files / 81 tests PASS`**.
 
 New regression coverage includes:
 
+- a `0 VP` affected deployer remaining paused behind the mandatory `['vp:0']` interaction until resolution, then deploying with 0 VP paid and no positive terrain slot;
 - a `1 VP` payer taking the `+1` terrain slot while the `+3` slot remains available;
 - a later `3 VP` payer taking that still-free `+3` slot;
 - exact next-round expiry (a round-1 status does not affect round 3);

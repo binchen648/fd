@@ -2583,7 +2583,6 @@ export class MatchSession {
       if (status) {
         const player = this.state.players.find((candidate) => candidate.id === playerId)!;
         const max = Math.min(5, player.vp);
-        if (max === 0) return this.completeDeployment(playerId, locationId, 0);
         const options = Array.from({ length: max + 1 }, (_, value) => `vp:${value}`);
         const runtime = this.state.abilityRuntime!;
         const id = `deployment-terrain-vp:${this.state.round.roundNumber}:${playerId}:${runtime.sequence + 1}`;
