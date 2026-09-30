@@ -6718,7 +6718,7 @@ Acceptance synchronization:
 ## TASK P3-B-TOMOE-OWNER-READINESS-CAPABILITY
 
 Owner: Codex B
-Status: `IMPLEMENTED_AWAITING_REVIEW`
+Status: `SYNCHRONIZED`
 Base: `973719b7c0c29a1ff74462eaf5c2cf08e5160e5b`
 Classification: complete currently discoverable Tomoe owner-readiness/capability batch, permanently zero migration credit
 
@@ -6758,13 +6758,31 @@ Verification:
 - `git diff --check` PASS;
 - detailed result: `docs/reports/2026-09-30-p3-b-tomoe-owner-readiness-capability-result.md`.
 
-Accounting / next step:
-- strict formal accounting remains `157/944`, remaining `787`;
-- this readiness task is permanently zero-credit;
-- exact Candidate requires one fresh independent R;
-- ACCEPTED -> one A-sync/full-owner rescan, remain on `servant.tomoe`; only that rescan may decide which Tomoe identities are preservation-only/already credited versus still newly creditable before any formal owner-complete migration Candidate;
-- NEEDS_REVISION -> close all exact findings in one successor Candidate, then one fresh R.
+Acceptance synchronization:
+- PR #489 successor Candidate `f932f3f825eb8258771808a3671054b4931b158c` received `IMPLEMENTATION_ACCEPTED_CANDIDATE` from one fresh independent R.
+- Canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/489#issuecomment-5902818985`.
+- Exact-Candidate Phase 3 Pre-Review Gate run `36659186727` / job `109709936248` succeeded.
+- Readiness remains permanently zero-credit; strict formal accounting stays `157/944`, remaining `787`.
+- Full-owner A-rescan mechanically confirms Tomoe sc1 + sc2 + sc3 all existed in the repository initial canonical lineage and in the exact pre-FM04 `59/944` canonical overlap; FM04 added only ten non-Tomoe siblings and Tomoe had zero diff.
+- Therefore all three frozen Tomoe identities are preservation-only / already accounted; no Tomoe formal migration Candidate is legal and no Tomoe credit is added now.
+- Mechanical next owner is `servant.tristan`, exact frozen scope sc1 + sc2 + sc3.
+- Acceptance synchronization report: `docs/reports/2026-09-30-p3-a-tomoe-owner-readiness-capability-acceptance-synchronization.md`.
 
-Allowed verdicts:
-- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
-- `IMPLEMENTATION_NEEDS_REVISION`
+## TASK P3-B-TRISTAN-OWNER-READINESS-CAPABILITY
+
+Owner: Codex B
+Status: `READY`
+Base: `PENDING_TOMOE_A_SYNC_COMMIT`
+Classification: owner-readiness-first for mechanical next owner `servant.tristan`, permanently zero migration credit
+
+Frozen owner scope:
+- `servant.tristan.skill.sc-tristan-1`;
+- `servant.tristan.skill.sc-tristan-2`;
+- `servant.tristan.skill.sc-tristan-3`.
+
+Dispatch rule:
+- mechanically re-read frozen/source/current-lineage evidence from the synchronized Tomoe A-sync base;
+- close all currently discoverable owner-local readiness/capability gaps for sc1 + sc2 + sc3 together;
+- do not split per skill;
+- readiness itself is zero-credit;
+- one Candidate / one PR / one fresh independent R / one A-sync-rescan before any newly creditable formal owner-complete migration transaction.
