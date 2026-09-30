@@ -7370,7 +7370,7 @@ Acceptance synchronization after formal review:
 ## TASK P3-B-AKASHA-OWNER-READINESS-CAPABILITY
 
 Owner: Codex S / FORMAL
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: zero-credit owner-readiness/capability batch for current owner `master.akasha`
 
 Frozen owner scope:
@@ -7395,3 +7395,22 @@ Mechanical preflight facts:
 - frozen Akasha scope is exactly 8 identities;
 - `master.akasha.skill.s1` is currently `CONTRACT_MAPPED`; the other seven inventory entries are currently `EXPLICIT_BLOCK` / source-evidence-required and must be mechanically reconciled against current repo evidence before implementation;
 - production identity-specific Reference handlers are evidence only and must not be copied into new owner-specific runtime routing without a current generic capability contract.
+
+Implementation evidence for `P3-B-AKASHA-OWNER-READINESS-CAPABILITY`:
+- Exact Base: `3b82108ac397d8fb9010a5691f28fd3e24008e12` (accepted Xiang Yu owner A-sync/accounting; strict `173/944`, remaining `771`).
+- The seven source-evidence-blocked Akasha rows were mechanically recertified against frozen source text; locked Reference identity handlers are corroboration only.
+- One identity-free `vessel-cycle-capability` family closes the currently discoverable owner-local gaps: three-stage Vessel lifecycle, authoritative earned-VP accounting, battle-loss/defeat scheduling, next-round reincarnation, Roa Recon bonus, Elesia conditional skill aura, Shiki play exception/Square, Overload close/copy/terrain join lifecycle, final-form provisioning, and once-per-Climax placement.
+- Restore rejects forged Vessel/provider/card-round provenance. Low-mana +3, terrain-join +2, and Square x2 are exact round/source/ability/definition-bound and expire next round.
+- No `data/authoring/**` delta and no Akasha/card-name/legacy-handler production identity routing.
+- Focused `15/15 PASS`; directly affected `133/133 PASS`; complex `38/38`; MatchSession `33/33`; MatchSession restore regressions `11/11`; affected aggregate **`230/230 PASS`**.
+- `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`7 masters / 19 servants / 20 events / 0 blocking issues`); generated determinism PASS; identity audit CLEAN; diff-check PASS.
+- Detailed report: `docs/reports/2026-10-01-p3-b-akasha-owner-readiness-capability-result.md`.
+- Current disposition: `IMPLEMENTATION_COMPLETE_CANDIDATE`; freeze one Candidate / one PR / one fresh R. Accounting remains `173/944`, remaining `771`.
+
+Revision evidence for `P3-B-AKASHA-OWNER-READINESS-CAPABILITY` after predecessor review:
+- predecessor Candidate `b480e516e6e990f3a64abef151e92ce903a4cf60` -> `IMPLEMENTATION_NEEDS_REVISION`;
+- canonical bounded same-attempt evidence: `https://github.com/binchen648/fd/pull/503#issuecomment-5916399748`;
+- both P1 findings closed in one successor revision: real play requirement-gate wiring for exact Vessel-cycle threshold exception, plus pre-payment low-mana provenance sealed through real play state construction;
+- real `playAbilityCardBatch()` regressions cover non-final-Vessel 7-mana rejection, exact final-Vessel 7-mana low-mana success, and 8-mana normal-play non-misclassification;
+- successor verification: focused `15/15`, neighboring `80/80`, authoring/content/complex `131/131`, MatchSession/restore `44/44`, aggregate **`255/255 PASS`**; typecheck/content/generated/diff-check PASS; `data/authoring/**` EMPTY; production identity audit CLEAN;
+- readiness remains zero-credit at `173/944`, remaining `771`; one successor Candidate / one fresh R required.

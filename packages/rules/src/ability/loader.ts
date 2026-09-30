@@ -1,4 +1,4 @@
-import type { AuthoringAbility, AuthoringCard, AuthoringPack, ExecutionMode, RuleNode, AdapterReportEntry } from './types';
+﻿import type { AuthoringAbility, AuthoringCard, AuthoringPack, ExecutionMode, RuleNode, AdapterReportEntry } from './types';
 import { hostOperations } from './types';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID } from '../core/card-source-state';
 import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
@@ -68,6 +68,12 @@ import {
   PAY_MANA_GAIN_REACTION_COUNTER_EFFECT, DOUBLE_SOURCE_BASE_POWER_IF_MOVED_EFFECT,
   containsReactionCounterPrivilegedNode, isAcceptedReactionCounterCapabilityAbility, isAcceptedReactionCounterPlayHandAbility,
 } from './reaction-counter-capability';
+import {
+  VESSEL_CYCLE_INITIALIZE_EFFECT, VESSEL_CYCLE_SCHEDULE_EFFECT, VESSEL_CYCLE_RESOLVE_EFFECT,
+  VESSEL_CYCLE_RECON_BONUS_EFFECT, VESSEL_CYCLE_SKILL_AURA_EFFECT, VESSEL_CYCLE_PLAY_EXCEPTION_EFFECT,
+  VESSEL_CYCLE_DOUBLE_ACTIVE_EFFECT, VESSEL_CYCLE_PLAYED_DEFINITION_EFFECT, VESSEL_CYCLE_JOIN_LOCATION_EFFECT, VESSEL_CYCLE_ASCENSION_EFFECT,
+  containsVesselCyclePrivilegedNode, isAcceptedVesselCycleAbility,
+} from './vessel-cycle-capability';
 import { COMBAT_REWARD_DISTRIBUTION_RULE, isAcceptedFullRewardEachAbility } from './combat-reward-distribution';
 import {
   LOCATION_MARKER_FOLLOW_EFFECT, LOCATION_MARKER_COMBAT_BRANCH_EFFECT, LOCATION_MARKER_PLACE_EFFECT, LOCATION_MARKER_MIDPOINT_DEFEAT_EFFECT,
@@ -246,6 +252,9 @@ const supportedTypes = new Set([
   ARM_OPPONENT_ACTION_REACTION_COUNTER_EFFECT, HALVE_REACTION_COUNTER_AFTER_BATTLE_EFFECT,
   SPEND_REACTION_COUNTER_MOVE_ONE_EFFECT, SPEND_REACTION_COUNTER_PLAY_TOP_EFFECT, SPEND_REACTION_COUNTER_PLAY_HAND_FREE_EFFECT,
   PAY_MANA_GAIN_REACTION_COUNTER_EFFECT, DOUBLE_SOURCE_BASE_POWER_IF_MOVED_EFFECT,
+  VESSEL_CYCLE_INITIALIZE_EFFECT, VESSEL_CYCLE_SCHEDULE_EFFECT, VESSEL_CYCLE_RESOLVE_EFFECT,
+  VESSEL_CYCLE_RECON_BONUS_EFFECT, VESSEL_CYCLE_SKILL_AURA_EFFECT, VESSEL_CYCLE_PLAY_EXCEPTION_EFFECT,
+  VESSEL_CYCLE_DOUBLE_ACTIVE_EFFECT, VESSEL_CYCLE_PLAYED_DEFINITION_EFFECT, VESSEL_CYCLE_JOIN_LOCATION_EFFECT, VESSEL_CYCLE_ASCENSION_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -297,6 +306,9 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'firstAttribute', 'secondAttribute', 'distinctCards', 'resource', 'roundsAfterCurrent',
   'zones', 'numerator', 'denominator', 'rounding', 'destination', 'defeatIfEmpty', 'minBasePower', 'perCard', 'sourcePlayers',
   'toZone', 'provenance', 'revealMax', 'power', 'transferVp', 'playCost', 'mode', 'generator', 'dedupeSamePlayer',
+  'cycleKey', 'initialVessel', 'middleVessel', 'finalVessel', 'firstMaxVp', 'middleMaxVp', 'firstVpMultiplier', 'middleVpDivisor',
+  'middleVpRounding', 'repeatPenaltyVp', 'lossMargin', 'temporaryDefinitionId', 'ascensionDefinitionId', 'temporaryKeep', 'vessel', 'requiredDefinitionId', 'targetDefinitionId',
+  'targetCardType', 'costDelta', 'powerDelta', 'requirementType', 'lowManaThreshold', 'lowManaPowerBonus', 'normalClose', 'createTemporaryAtControllerLocation', 'requiresPositiveTerrain',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -693,6 +705,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (containsReactionCounterPrivilegedNode(candidateAbility) &&
           !isAcceptedReactionCounterCapabilityAbility(candidateAbility)) {
         issue('reactionCounter.gateway', 'Reaction-counter privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsVesselCyclePrivilegedNode(candidateAbility) && !isAcceptedVesselCycleAbility(candidateAbility)) {
+        issue('vesselCycle.gateway', 'Vessel-cycle privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       if (Array.isArray(a.markers) && a.markers.some((marker) => String(marker).startsWith('deduction-'))) {
         if (!isDeductionRecordMarkerAbility(candidateAbility)) issue('deductionRecord.gateway', 'Unsupported exact deduction-record marker ability shape', id);

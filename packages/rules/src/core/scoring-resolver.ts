@@ -1,6 +1,7 @@
 import type { GameState, PlayerScoringBreakdown } from "../schema/game";
 import type { ResolverResult } from "./resolver-contracts";
 import { resolveEliminationBatch } from "./elimination-resolver";
+import { vesselCycleReconBonus } from '../ability/vessel-cycle-capability';
 
 export const ELIMINATION_MILITARY_THRESHOLD = -8;
 
@@ -66,10 +67,12 @@ export function applyOccupiedLocationRewards(state: GameState): ResolverResult {
     }
 
     if (location.rewardHooks.includes("recon_rewards") && location.vpRewardRules?.recon) {
-      vpDelta += location.vpRewardRules.recon;
+      const reconBonus = vesselCycleReconBonus(state, player.id);
+      const reconValue = location.vpRewardRules.recon + reconBonus;
+      vpDelta += reconValue;
       reasons.push({
         source: "recon_vp",
-        value: location.vpRewardRules.recon,
+        value: reconValue,
         label: `${location.id}.scout`,
       });
     }
