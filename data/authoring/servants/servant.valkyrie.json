@@ -1,0 +1,838 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.valkyrie",
+  "name": "瓦尔基里",
+  "class": "Lancer",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "acceptedReadinessContract": "PR#495/6352b1fcfca193cb2c4dfefa9481cecfd4acabcf",
+    "note": "Semantics come from frozen source evidence plus the accepted generic readiness contract; locked Reference is used only for static card metadata and bounded behavior observation."
+  },
+  "cards": [
+    {
+      "id": "servant.valkyrie.skill.sc-valkyrie-1",
+      "aliases": [
+        "sc_valkyrie_1"
+      ],
+      "legacyId": "sc_valkyrie_1",
+      "name": "终末幻想·少女降临",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.valkyrie"
+      },
+      "printedText": "【真名解放】<每局游戏限一次>\n被动/前哨阶段：从任意处（包括游戏外）将3张【指挥官】加入手牌或攻击。（不触发“打出时”效果）",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-valkyrie-1.maiden-descent",
+          "kind": "phase_action",
+          "printedClause": "被动/前哨阶段：从任意处（包括游戏外）将3张【指挥官】加入手牌或攻击。（不触发“打出时”效果）",
+          "activation": {
+            "phase": "advance",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "targets": [
+            {
+              "id": "definition_destinations",
+              "type": "choice",
+              "options": [
+                {
+                  "id": "card.x-commanderortlinde::hand",
+                  "label": "奥特琳德 → 手牌"
+                },
+                {
+                  "id": "card.x-commanderortlinde::attack_area",
+                  "label": "奥特琳德 → 攻击"
+                },
+                {
+                  "id": "card.x-commanderhildr::hand",
+                  "label": "希露德 → 手牌"
+                },
+                {
+                  "id": "card.x-commanderhildr::attack_area",
+                  "label": "希露德 → 攻击"
+                },
+                {
+                  "id": "card.x-commanderthrud::hand",
+                  "label": "斯露德 → 手牌"
+                },
+                {
+                  "id": "card.x-commanderthrud::attack_area",
+                  "label": "斯露德 → 攻击"
+                }
+              ],
+              "count": {
+                "min": 3,
+                "max": 3
+              },
+              "visibility": "owner_only"
+            }
+          ],
+          "effects": [
+            {
+              "type": "relocate_definition_set_without_play_triggers",
+              "target": "definition_destinations",
+              "definitionIds": [
+                "card.x-commanderortlinde",
+                "card.x-commanderhildr",
+                "card.x-commanderthrud"
+              ]
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {
+            "type": "per_game",
+            "uses": 1,
+            "scope": "this_card"
+          },
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "瓦尔基里.htm",
+            "locator": "从者/枪兵/英文版/瓦尔基里.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/瓦尔基里.png",
+            "locator": "servant.valkyrie/瓦尔基里"
+          }
+        ],
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_valkyrie_1",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": 0,
+          "typeLabel": "被动",
+          "revealsTrueNameOnPlay": true
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4",
+          "note": "Legacy requirement is metadata only."
+        },
+        "acceptedContracts": {
+          "commanderLifecycle": "PR#495/6352b1fcfca193cb2c4dfefa9481cecfd4acabcf"
+        }
+      }
+    },
+    {
+      "id": "servant.valkyrie.skill.sc-valkyrie-2",
+      "aliases": [
+        "sc_valkyrie_2"
+      ],
+      "legacyId": "sc_valkyrie_2",
+      "name": "天鹅礼装",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.valkyrie"
+      },
+      "printedText": "行动阶段：沿着箭头移动至下一地点。\n战斗阶段：沿着箭头移动至下一地点。\n钢铁之盾-被动/战斗阶段：支付此牌的魔力消耗，将一张你激活的【指挥官】加入手牌，并将此牌加入攻击。",
+      "cardFace": {
+        "typeLabel": "宝具",
+        "attributes": [
+          "宝具"
+        ],
+        "cost": 2,
+        "basePower": 1
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-valkyrie-2.forward-action",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：沿着箭头移动至下一地点。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [
+            {
+              "id": "destination",
+              "type": "location",
+              "scope": {
+                "board": "current"
+              },
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "required": true,
+              "constraints": [
+                {
+                  "type": "reachable_along_arrows",
+                  "from": "controller.currentLocation",
+                  "maxSteps": 1
+                }
+              ],
+              "visibility": "public"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_player",
+              "player": "controller",
+              "to": "destination"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "sc-valkyrie-2.forward-combat",
+          "kind": "phase_action",
+          "printedClause": "战斗阶段：沿着箭头移动至下一地点。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [
+            {
+              "id": "destination",
+              "type": "location",
+              "scope": {
+                "board": "current"
+              },
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "required": true,
+              "constraints": [
+                {
+                  "type": "reachable_along_arrows",
+                  "from": "controller.currentLocation",
+                  "maxSteps": 1
+                }
+              ],
+              "visibility": "public"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_player",
+              "player": "controller",
+              "to": "destination"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "sc-valkyrie-2.steel-shield",
+          "kind": "phase_action",
+          "printedClause": "钢铁之盾-被动/战斗阶段：支付此牌的魔力消耗，将一张你激活的【指挥官】加入手牌，并将此牌加入攻击。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "targets": [
+            {
+              "id": "active_definition_card",
+              "type": "card_instance",
+              "scope": {
+                "zone": "attack_area",
+                "controller": "self",
+                "owner": "controller"
+              },
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "visibility": "public",
+              "constraints": [
+                {
+                  "type": "or",
+                  "conditions": [
+                    {
+                      "type": "has_card_id",
+                      "cardId": "card.x-commanderortlinde"
+                    },
+                    {
+                      "type": "has_card_id",
+                      "cardId": "card.x-commanderhildr"
+                    },
+                    {
+                      "type": "has_card_id",
+                      "cardId": "card.x-commanderthrud"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "pay_source_current_cost_recall_active_definition_and_join_source",
+              "target": "active_definition_card",
+              "definitionIds": [
+                "card.x-commanderortlinde",
+                "card.x-commanderhildr",
+                "card.x-commanderthrud"
+              ],
+              "sourceZone": "skill",
+              "destinationZone": "attack_area"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "瓦尔基里.htm",
+            "locator": "从者/枪兵/英文版/瓦尔基里.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/瓦尔基里.png",
+            "locator": "servant.valkyrie/瓦尔基里"
+          }
+        ],
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_valkyrie_2",
+          "cost": 2,
+          "basePower": 1,
+          "legacyRequirement": 8,
+          "typeLabel": "宝具"
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4"
+        },
+        "acceptedContracts": {
+          "commanderLifecycle": "PR#495/6352b1fcfca193cb2c4dfefa9481cecfd4acabcf",
+          "directedMovement": "existing generic reachable_along_arrows authority"
+        }
+      }
+    },
+    {
+      "id": "servant.valkyrie.skill.sc-valkyrie-3",
+      "aliases": [
+        "sc_valkyrie_3"
+      ],
+      "legacyId": "sc_valkyrie_3",
+      "name": "伪·大神宣言",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.valkyrie"
+      },
+      "printedText": "【真名解放】\n行动阶段：重新触发你所有激活的【指挥官】的“打出时”效果。",
+      "cardFace": {
+        "typeLabel": "迅捷/宝具",
+        "attributes": [
+          "迅捷",
+          "宝具"
+        ],
+        "cost": 6,
+        "basePower": 6
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "false-gungnir-retrigger-commanders",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：重新触发你所有激活的【指挥官】的“打出时”效果。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            },
+            {
+              "type": "card_count_at_least",
+              "target": "controller",
+              "zone": "attack",
+              "activeOnly": true,
+              "face": "up",
+              "definitionIds": [
+                "card.x-commanderortlinde",
+                "card.x-commanderhildr",
+                "card.x-commanderthrud"
+              ],
+              "value": 1
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "retrigger_card_play_effects",
+              "definitionIds": [
+                "card.x-commanderortlinde",
+                "card.x-commanderhildr",
+                "card.x-commanderthrud"
+              ]
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {
+            "revealsTrueName": true,
+            "revealTiming": "on_use_declared",
+            "revealScope": "servant_package"
+          },
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "瓦尔基里.htm",
+            "locator": "从者/枪兵/英文版/瓦尔基里.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/瓦尔基里.png",
+            "locator": "servant.valkyrie/瓦尔基里"
+          }
+        ],
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_valkyrie_3",
+          "cost": 6,
+          "basePower": 6,
+          "legacyRequirement": 8,
+          "typeLabel": "迅捷/宝具",
+          "attributes": [
+            "迅捷",
+            "宝具"
+          ],
+          "revealsTrueNameOnPlay": true
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4"
+        },
+        "acceptedContracts": {
+          "commanderLifecycle": "PR#495/6352b1fcfca193cb2c4dfefa9481cecfd4acabcf",
+          "sourceGroundedEffect": "retrigger_card_play_effects"
+        }
+      }
+    },
+    {
+      "id": "card.x-commanderortlinde",
+      "name": "????????",
+      "cardType": "servant_deck_card",
+      "owner": {
+        "type": "servant",
+        "id": "servant.valkyrie"
+      },
+      "printedText": "?????????+2???????",
+      "cardFace": {
+        "typeLabel": "??",
+        "attributes": [
+          "??"
+        ],
+        "cost": 0,
+        "basePower": 2
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "card.x-commanderortlinde.on-play-power",
+          "kind": "forced_trigger",
+          "printedClause": "?????????+2???????",
+          "activation": {
+            "trigger": "on_card_played",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [
+            {
+              "type": "create_modifier",
+              "modifier": {
+                "type": "power_bonus",
+                "target": "this_card",
+                "amount": 2,
+                "duration": "this_round"
+              }
+            }
+          ],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "dependencyScope": "Valkyrie owner-complete consumer dependency; zero frozen-roster credit",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "cost": 0,
+          "basePower": 2,
+          "typeLabel": "??"
+        },
+        "observedPlayPowerBonus": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "source": "src/content/content-package.ts#CONFIRMED_PLAY_POWER_BONUSES",
+          "value": 2
+        },
+        "acceptedConsumerContract": "PR#495/6352b1fcfca193cb2c4dfefa9481cecfd4acabcf",
+        "nonClaim": "Other Commander printed clauses are outside this bounded formal dependency scope."
+      },
+      "verification": {
+        "implementationStatus": "complete",
+        "completion": "bounded_valkyrie_consumer_dependency"
+      }
+    },
+    {
+      "id": "card.x-commanderhildr",
+      "name": "???????",
+      "cardType": "servant_deck_card",
+      "owner": {
+        "type": "servant",
+        "id": "servant.valkyrie"
+      },
+      "printedText": "?????????+3???????",
+      "cardFace": {
+        "typeLabel": "??",
+        "attributes": [
+          "??"
+        ],
+        "cost": 2,
+        "basePower": 3
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "card.x-commanderhildr.on-play-power",
+          "kind": "forced_trigger",
+          "printedClause": "?????????+3???????",
+          "activation": {
+            "trigger": "on_card_played",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [
+            {
+              "type": "create_modifier",
+              "modifier": {
+                "type": "power_bonus",
+                "target": "this_card",
+                "amount": 3,
+                "duration": "this_round"
+              }
+            }
+          ],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "dependencyScope": "Valkyrie owner-complete consumer dependency; zero frozen-roster credit",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "cost": 2,
+          "basePower": 3,
+          "typeLabel": "??"
+        },
+        "observedPlayPowerBonus": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "source": "src/content/content-package.ts#CONFIRMED_PLAY_POWER_BONUSES",
+          "value": 3
+        },
+        "acceptedConsumerContract": "PR#495/6352b1fcfca193cb2c4dfefa9481cecfd4acabcf",
+        "nonClaim": "Other Commander printed clauses are outside this bounded formal dependency scope."
+      },
+      "verification": {
+        "implementationStatus": "complete",
+        "completion": "bounded_valkyrie_consumer_dependency"
+      }
+    },
+    {
+      "id": "card.x-commanderthrud",
+      "name": "???????",
+      "cardType": "servant_deck_card",
+      "owner": {
+        "type": "servant",
+        "id": "servant.valkyrie"
+      },
+      "printedText": "?????????+6???????",
+      "cardFace": {
+        "typeLabel": "??",
+        "attributes": [
+          "??"
+        ],
+        "cost": 6,
+        "basePower": 4
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "card.x-commanderthrud.on-play-power",
+          "kind": "forced_trigger",
+          "printedClause": "?????????+6???????",
+          "activation": {
+            "trigger": "on_card_played",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [
+            {
+              "type": "create_modifier",
+              "modifier": {
+                "type": "power_bonus",
+                "target": "this_card",
+                "amount": 6,
+                "duration": "this_round"
+              }
+            }
+          ],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "dependencyScope": "Valkyrie owner-complete consumer dependency; zero frozen-roster credit",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "cost": 6,
+          "basePower": 4,
+          "typeLabel": "??"
+        },
+        "observedPlayPowerBonus": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "source": "src/content/content-package.ts#CONFIRMED_PLAY_POWER_BONUSES",
+          "value": 6
+        },
+        "acceptedConsumerContract": "PR#495/6352b1fcfca193cb2c4dfefa9481cecfd4acabcf",
+        "nonClaim": "Other Commander printed clauses are outside this bounded formal dependency scope."
+      },
+      "verification": {
+        "implementationStatus": "complete",
+        "completion": "bounded_valkyrie_consumer_dependency"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": [
+        "../../Fate_Domination-开发版/images/servants/瓦尔基里.png",
+        "../../Fate_Domination-开发版/images/servants/瓦尔基里.png",
+        "../../Fate_Domination-开发版/images/servants/瓦尔基里.png",
+        "../../Fate_Domination-开发版/images/servants/瓦尔基里.png"
+      ]
+    }
+  ],
+  "deck": [
+    {
+      "cardId": "card.cardb1"
+    },
+    {
+      "cardId": "card.cardb2"
+    },
+    {
+      "cardId": "card.cardq1",
+      "count": 2
+    },
+    {
+      "cardId": "card.cardq3"
+    },
+    {
+      "cardId": "card.x-commanderortlinde"
+    },
+    {
+      "cardId": "card.x-commanderhildr"
+    },
+    {
+      "cardId": "card.x-commanderthrud"
+    },
+    {
+      "cardId": "card.carda1"
+    },
+    {
+      "cardId": "card.carda2"
+    },
+    {
+      "cardId": "card.cardluck",
+      "count": 2
+    }
+  ]
+}
