@@ -7032,3 +7032,42 @@ Accounting / next step:
 Allowed verdicts:
 - `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 - `IMPLEMENTATION_NEEDS_REVISION`
+
+Acceptance synchronization:
+- PR #495 exact Candidate `6352b1fcfca193cb2c4dfefa9481cecfd4acabcf` received `IMPLEMENTATION_ACCEPTED_CANDIDATE` from fresh independent R.
+- Canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/495#issuecomment-5907322400`.
+- Exact-Candidate Phase 3 Pre-Review Gate run `36689318682` / job `109802495094` succeeded.
+- Readiness remains permanently zero-credit; strict formal accounting stays `161/944`, remaining `783`.
+- Full-owner A-rescan confirms no canonical `data/authoring/servants/servant.valkyrie.json` exists and repository-wide `data/authoring/**` contains no `sc-valkyrie-*` identity.
+- All three frozen Valkyrie identities sc1 + sc2 + sc3 therefore remain newly creditable for one later formal owner-complete migration.
+- No additional currently discoverable Valkyrie readiness gap remains beyond the accepted readiness family.
+- Acceptance synchronization report: `docs/reports/2026-09-30-p3-a-valkyrie-owner-readiness-capability-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-VALKYRIE-COMPLETE-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Classification: formal owner-complete migration for current owner `servant.valkyrie`
+
+Formal owner scope:
+- `servant.valkyrie.skill.sc-valkyrie-1` — newly creditable;
+- `servant.valkyrie.skill.sc-valkyrie-2` — newly creditable;
+- `servant.valkyrie.skill.sc-valkyrie-3` — newly creditable;
+- one owner archive, one formal Candidate, one PR, one fresh independent R, then one A-sync/accounting transaction.
+
+Accepted prerequisite:
+- readiness PR #495 exact Candidate `6352b1fcfca193cb2c4dfefa9481cecfd4acabcf`;
+- fresh-R verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE`;
+- canonical same-attempt bounded relay `https://github.com/binchen648/fd/pull/495#issuecomment-5907322400`;
+- accepted zero-credit A-sync/rescan confirms sc1 + sc2 + sc3 are the complete newly creditable Valkyrie set.
+
+Accounting boundary:
+- strict formal accounting remains `161/944`, remaining `783` before formal fresh R and A-sync/accounting;
+- no credit before exact formal Candidate receives `MIGRATION_ACCEPTED` plus subsequent A-sync/accounting;
+- accepted synchronized outcome may add exactly sc1 + sc2 + sc3 and move strict formal accounting to `164/944`, remaining `780`;
+- do not advance owners before this Valkyrie owner batch is reviewed and synchronized.
+
+Allowed verdicts:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `MIGRATION_BLOCKED`
