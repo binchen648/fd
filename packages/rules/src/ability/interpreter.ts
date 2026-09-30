@@ -1905,12 +1905,10 @@ export function resolveMandatoryCombatPhaseActionsForPlayer(s: GameState, player
   if (!controller || s.round.prioritySeat !== controller.seat) return 0;
 
   let resolved = 0;
-  const participates = !!controller.locationId && isBattlefield(s, controller.locationId) && s.cards.some((candidate) => {
-    if (candidate.controllerPlayerId !== playerId || candidate.zone !== 'attack_area') return false;
-    const state = runtime(s).cardState[candidate.instanceId];
-    return state?.active === true && state.faceDown !== true && !!definition(s, candidate.instanceId) &&
-      cardPlayClassification(s, candidate.instanceId).playKind === 'attack';
-  });
+  // Canonical battle participation is location-based: every active player at the
+  // battlefield participates even with zero active attacks. Do not gate upkeep
+  // on attack presence.
+  const participates = !!controller.locationId && isBattlefield(s, controller.locationId);
   if (participates) {
     for (const source of [...s.cards].filter((candidate) => candidate.controllerPlayerId === playerId)) {
       const d = definition(s, source.instanceId); const ability = d ? abilityHasAcceptedDiscardShuffleSourceX(d.abilities) : undefined;

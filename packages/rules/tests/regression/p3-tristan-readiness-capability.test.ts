@@ -140,23 +140,24 @@ describe('P3 Tristan owner-readiness generic battle/discard binding capability',
     expect(state).toEqual(before);
   });
 
-  it('charges X once per participating battle round and closes the source instead of making mana negative when insufficient', () => {
-    const paid = setup(); const source = addSkill(paid, LOVE, 'field'); addDefinition(paid, 'fixture.attack', 3); add(paid, 'fixture.attack', 'p1');
+  it('charges X once for a battlefield participant even with zero active attacks and closes on insufficient mana', () => {
+    const paid = setup(); const source = addSkill(paid, LOVE, 'field');
     paid.abilityRuntime!.cardState[source.instanceId]!.sourceBoundX = { value: 4, controllerId: 'p1', sourceAbilityId: 'fixture.discard-shuffle-x' };
     paid.players[0]!.mana = 6; resolveMandatoryCombatPhaseActionsForPlayer(paid, 'p1'); expect(paid.players[0]!.mana).toBe(2);
     resolveMandatoryCombatPhaseActionsForPlayer(paid, 'p1'); expect(paid.players[0]!.mana).toBe(2);
     expect(paid.abilityRuntime!.cardState[source.instanceId]!.sourceBoundXBattleUpkeepRound).toBe(paid.round.roundNumber);
 
-    const closed = setup(); const source2 = addSkill(closed, LOVE, 'field'); addDefinition(closed, 'fixture.attack2', 3); add(closed, 'fixture.attack2', 'p1');
+    const closed = setup(); const source2 = addSkill(closed, LOVE, 'field');
     closed.abilityRuntime!.cardState[source2.instanceId]!.sourceBoundX = { value: 4, controllerId: 'p1', sourceAbilityId: 'fixture.discard-shuffle-x' };
     closed.players[0]!.mana = 3; resolveMandatoryCombatPhaseActionsForPlayer(closed, 'p1');
-    expect(closed.players[0]!.mana).toBe(3); expect(source2.zone).toBe('skill');
+    expect(closed.players[0]!.mana).toBe(3); expect(closed.cards.find((card) => card.instanceId === source2.instanceId)!.zone).toBe('skill');
     expect(closed.abilityRuntime!.cardState[source2.instanceId]!.sourceBoundX).toBeUndefined();
   });
 
-  it('does not charge source-X upkeep without actual controller battle participation', () => {
+  it('does not charge source-X upkeep when the controller is outside a battlefield', () => {
     const state = setup(); const source = addSkill(state, LOVE, 'field'); state.abilityRuntime!.cardState[source.instanceId]!.sourceBoundX = { value: 5, controllerId: 'p1', sourceAbilityId: 'fixture.discard-shuffle-x' };
-    state.players[0]!.mana = 8; resolveMandatoryCombatPhaseActionsForPlayer(state, 'p1'); expect(state.players[0]!.mana).toBe(8); expect(source.zone).toBe('field');
+    state.players[0]!.locationId = 'recon';
+    state.players[0]!.mana = 8; resolveMandatoryCombatPhaseActionsForPlayer(state, 'p1'); expect(state.players[0]!.mana).toBe(8); expect(state.cards.find((card) => card.instanceId === source.instanceId)!.zone).toBe('field');
   });
 
   it('fails closed at loader gateway for widened privileged mechanics', () => {
