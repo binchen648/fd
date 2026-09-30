@@ -1,6 +1,7 @@
 import type { GameState } from '../schema/game';
 import { getEnabledLocations } from '../core/map-engine';
 import type { AuthoringAbility, NormalCommandSealUseRecord, PlayerId, RuleNode, RulerSealBinding } from './types';
+import { notifyReactionCounterCommandSealUse } from './reaction-counter-capability';
 
 export const ENGAGED_SEAL_USER_THIS_ROUND_CONDITION = 'controller_has_engaged_opponent_command_or_ruler_seal_user_this_round' as const;
 export const ADD_ENGAGED_SEAL_USER_FORMULA_POWER_EFFECT = 'add_controller_round_power_from_engaged_seal_users' as const;
@@ -135,6 +136,7 @@ export function markNormalCommandSealUsedThisRound(
   const runtime = state.abilityRuntime;
   if (!runtime) return;
   (runtime.normalCommandSealUseRoundByPlayer ??= {})[playerId] = state.round.roundNumber;
+  notifyReactionCounterCommandSealUse(state, playerId);
   if (provenance) {
     (runtime.normalCommandSealUseHistory ??= []).push({
       playerId,
@@ -153,6 +155,7 @@ export function markRulerCommandSealUsedThisRound(state: GameState, playerId: Pl
   const runtime = state.abilityRuntime;
   if (!runtime) return;
   (runtime.rulerCommandSealUseRoundByPlayer ??= {})[playerId] = state.round.roundNumber;
+  notifyReactionCounterCommandSealUse(state, playerId);
 }
 export function engagedSealUserIdsThisRound(state: GameState, controllerId: PlayerId, includeRulerSeals = true): PlayerId[] {
   const runtime = state.abilityRuntime;

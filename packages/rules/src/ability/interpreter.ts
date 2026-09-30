@@ -143,6 +143,15 @@ import {
   isSameBattlefieldTurnOrderAttackEffect, jointOtherAttackModifier,
 } from './joint-battlefield-attack-capability';
 import {
+  ARM_OPPONENT_ACTION_REACTION_COUNTER_EFFECT, HALVE_REACTION_COUNTER_AFTER_BATTLE_EFFECT,
+  SPEND_REACTION_COUNTER_MOVE_ONE_EFFECT, SPEND_REACTION_COUNTER_PLAY_TOP_EFFECT, SPEND_REACTION_COUNTER_PLAY_HAND_FREE_EFFECT,
+  PAY_MANA_GAIN_REACTION_COUNTER_EFFECT, DOUBLE_SOURCE_BASE_POWER_IF_MOVED_EFFECT,
+  armReactionCounter, containsReactionCounterPrivilegedNode, isAcceptedMovedSourceDoubleAbility,
+  isAcceptedReactionCounterArmAbility, isAcceptedReactionCounterCapabilityAbility, isAcceptedReactionCounterGainAbility,
+  isAcceptedReactionCounterHalveAbility, isAcceptedReactionCounterMoveAbility, isAcceptedReactionCounterPlayHandAbility,
+  isAcceptedReactionCounterPlayTopAbility, reactionCounterValue, setReactionCounterValue, settleReactionCounterEvent,
+} from './reaction-counter-capability';
+import {
   containsDeckRecycleReplayGrowthPrivilegedNode,
   isAcceptedDeckRecycleReplayGrowthAbility,
   isAcceptedAutomaticRecycleKeepGainCounterAbility,
@@ -999,7 +1008,7 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     result.value *= sourceLocationMultiplier;
     result.lines.push({ label: 'source_location_basic_base_power_multiplier', value: result.value });
   }
-  const authoredBaseMultiplier = runtime(s).cardState[sourceId]?.basePowerMultiplier ?? 1;
+  const authoredBaseMultiplier = runtime(s).cardState[sourceId]?.active === true ? (runtime(s).cardState[sourceId]?.basePowerMultiplier ?? 1) : 1;
   if (authoredBaseMultiplier !== 1) {
     if (authoredBaseMultiplier !== 2) reject('invalid_state', 'Unsupported authored base-power multiplier');
     result.value *= authoredBaseMultiplier;
@@ -1293,6 +1302,66 @@ function structuredCounterValue(s: GameState, playerId: PlayerId, key: string): 
 function setStructuredCounter(s: GameState, playerId: PlayerId, key: string, value: number): void {
   if (!Number.isSafeInteger(value) || value < 0) reject('invalid_state', 'Structured counter is invalid');
   setStructuredFlag(s, playerId, key, value, false);
+}
+
+function reactionCounterSpend(s: GameState, playerId: PlayerId, key: string, amount: number): void {
+  const current = reactionCounterValue(s, playerId, key);
+  if (current < amount) reject('insufficient_resource', 'Reaction counter is insufficient');
+  setReactionCounterValue(s, playerId, key, current - amount);
+}
+function reactionMoveDestination(s: GameState, controllerId: PlayerId, direction: 'forward' | 'backward'): LocationId | undefined {
+  const route: LocationId[] = ['magic_workshop', 'miyama_town', 'shinto', 'recon'];
+  const controller = player(s, controllerId); if (!controller.locationId) return undefined;
+  const index = route.indexOf(controller.locationId as LocationId); if (index < 0) return undefined;
+  const target = route[index + (direction === 'forward' ? 1 : -1)]; if (!target) return undefined;
+  if (!getEnabledLocations(s.map, s.locationConfig).some((entry) => entry.id === target)) return undefined;
+  const occupants = s.players.filter((entry) => entry.status === 'active' && entry.id !== controllerId && entry.locationId === target).map((entry) => entry.id);
+  if (!canOccupyLocation({ map: s.map, config: s.locationConfig, locationId: target, movingPlayerId: controllerId, occupyingPlayerIds: occupants, ...(s.ruleOverrides ? { ruleOverrides: s.ruleOverrides } : {}) })) return undefined;
+  if (movementLockedByPersistentRule(s, controllerId) || rulerSealMovementLocked(s, controllerId)) return undefined;
+  return target;
+}
+function executeReactionCounterCapability(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isAcceptedReactionCounterCapabilityAbility(a)) reject('resolution_failed', 'Unsupported reaction-counter semantic shape');
+  const effect = a.effects[0]!; const controller = player(s, ctx.controllerId); const key = str(effect.counterKey);
+  if (isAcceptedReactionCounterArmAbility(a)) { armReactionCounter(s, ctx.controllerId, ctx.sourceCardId, a); return; }
+  if (isAcceptedReactionCounterHalveAbility(a)) {
+    const current = reactionCounterValue(s, ctx.controllerId, key); const lost = Math.ceil(current / 2);
+    setReactionCounterValue(s, ctx.controllerId, key, current - lost);
+    runtime(s).events.push({ type: 'reaction_counter_halved_after_battle', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, before: current, after: current - lost, delta: -lost });
+    return;
+  }
+  if (isAcceptedReactionCounterGainAbility(a)) {
+    if (controller.mana < 1) reject('insufficient_mana', 'Cannot pay reaction-counter mana cost');
+    spendMana(s, ctx.controllerId, 1); setReactionCounterValue(s, ctx.controllerId, key, reactionCounterValue(s, ctx.controllerId, key) + 2);
+    runtime(s).events.push({ type: 'reaction_counter_gained', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, delta: 2 }); return;
+  }
+  if (isAcceptedReactionCounterMoveAbility(a)) {
+    const direction = effect.direction as 'forward' | 'backward'; const target = reactionMoveDestination(s, ctx.controllerId, direction);
+    if (!target) reject('illegal_movement', 'No legal one-step reaction movement exists');
+    reactionCounterSpend(s, ctx.controllerId, key, Number(effect.amount)); const from = controller.locationId; controller.locationId = target;
+    recordMovementForAbilityRuntime(s, ctx.controllerId, from, target);
+    processEvent(s, { id: nextId(s, 'reaction-move'), type: 'after_controller_enters_location', playerId: ctx.controllerId, ...(from ? { previousLocationId: from } : {}), locationId: target, movementKind: 'effect' });
+    runtime(s).events.push({ type: 'reaction_counter_spent_for_movement', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, delta: -Number(effect.amount) }); return;
+  }
+  if (isAcceptedReactionCounterPlayTopAbility(a)) {
+    const top = s.cards.find((entry) => entry.ownerPlayerId === ctx.controllerId && entry.controllerPlayerId === ctx.controllerId && entry.zone === 'deck');
+    if (!top) reject('no_legal_target', 'No deck-top card is available');
+    reactionCounterSpend(s, ctx.controllerId, key, 4);
+    playBatch(s, ctx.controllerId, [{ type: 'play_card', cardInstanceId: top.instanceId }], 'effect', false, ['deck']); return;
+  }
+  if (isAcceptedReactionCounterPlayHandAbility(a)) {
+    const pending = findPendingTarget(s, ctx, a, a.effects); if (pending) { runtime(s).pendingDecision = pending; return; }
+    const targetId = ctx.selections[str(effect.target)]?.[0];
+    if (!targetId || !s.cards.some((entry) => entry.instanceId === targetId && entry.ownerPlayerId === ctx.controllerId && entry.controllerPlayerId === ctx.controllerId && entry.zone === 'hand')) reject('invalid_target', 'Selected reaction free-play card is no longer in hand');
+    reactionCounterSpend(s, ctx.controllerId, key, 7);
+    playBatch(s, ctx.controllerId, [{ type: 'play_card', cardInstanceId: targetId }], 'effect', true, ['hand']); return;
+  }
+  if (isAcceptedMovedSourceDoubleAbility(a)) {
+    if ((runtime(s).movementDistanceThisRound[ctx.controllerId] ?? 0) < 3) reject('illegal_action', 'Movement distance requirement is not met');
+    const source = card(s, ctx.sourceCardId); const state = runtime(s).cardState[source.instanceId];
+    if (!state?.active || state.faceDown || !['field','attack_area'].includes(source.zone)) reject('invalid_state', 'Source must be active for base-power doubling');
+    state.basePowerMultiplier = 2; runtime(s).events.push({ type: 'source_base_power_doubled_after_movement', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId }); return;
+  }
 }
 function acceptedRecycleProvider(s: GameState, controllerId: PlayerId): { sourceCardId: string; ability: AuthoringAbility; counterKey: string } | undefined {
   const found: Array<{ sourceCardId: string; ability: AuthoringAbility; counterKey: string }> = [];
@@ -1756,8 +1825,9 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsDeckRecycleReplayGrowthPrivilegedNode(a) && !isAcceptedDeckRecycleReplayGrowthAbility(a)) return false;
   if (containsCrossPhaseRedeploymentPrivilegedNode(a) && !isAcceptedCrossPhaseRedeploymentPrivilegedAbility(a)) return false;
   if (containsCommanderLifecyclePrivilegedNode(a) && !isAcceptedCommanderLifecyclePrivilegedAbility(a)) return false;
-  if (containsTerrainFortificationExtraPlayPrivilegedNode(a) && !isAcceptedTerrainFortificationExtraPlayAbility(a)) return false;
+  if (containsTerrainFortificationExtraPlayPrivilegedNode(a) && !isAcceptedTerrainFortificationExtraPlayAbility(a) && !isAcceptedReactionCounterPlayHandAbility(a)) return false;
   if (containsMatchingDefinitionCapabilityNode(a) && !isAcceptedMatchingDefinitionCapabilityAbility(a)) return false;
+  if (containsReactionCounterPrivilegedNode(a) && !isAcceptedReactionCounterCapabilityAbility(a)) return false;
   if (containsLocationMarkerPrivilegedNode(a) && !isAcceptedLocationMarkerAbility(a)) return false;
   if (isAcceptedLocationMarkerAbility(a) && !canActivateLocationMarkerAbility(s, sourceId, a, event)) return false;
   if (containsSealedCardMagicPrivilegedNode(a) && !isAcceptedSealedCardMagicAbility(a)) return false;
@@ -1779,6 +1849,20 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     const key = str(a.effects[0]?.counterKey);
     if (structuredCounterValue(s, card(s, sourceId).controllerPlayerId, key) < 1) return false;
   }
+  if (isAcceptedReactionCounterCapabilityAbility(a)) {
+    const effect = a.effects[0]!; const controllerId = card(s, sourceId).controllerPlayerId; const key = str(effect.counterKey);
+    if (isAcceptedReactionCounterGainAbility(a) && player(s, controllerId).mana < 1) return false;
+    if (isAcceptedReactionCounterMoveAbility(a)) {
+      if (reactionCounterValue(s, controllerId, key) < Number(effect.amount) || !reactionMoveDestination(s, controllerId, effect.direction as 'forward' | 'backward')) return false;
+    }
+    if (isAcceptedReactionCounterPlayTopAbility(a)) {
+      if (reactionCounterValue(s, controllerId, key) < 4) return false;
+      const top = s.cards.find((entry) => entry.ownerPlayerId === controllerId && entry.controllerPlayerId === controllerId && entry.zone === 'deck'); if (!top) return false;
+      try { const draft = structuredClone(s); playBatch(draft, controllerId, [{ type: 'play_card', cardInstanceId: top.instanceId }], 'effect', false, ['deck']); } catch { return false; }
+    }
+    if (isAcceptedReactionCounterPlayHandAbility(a) && reactionCounterValue(s, controllerId, key) < 7) return false;
+    if (isAcceptedMovedSourceDoubleAbility(a) && ((runtime(s).movementDistanceThisRound[controllerId] ?? 0) < 3 || !active(s, sourceId))) return false;
+  }
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
@@ -1794,7 +1878,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isBattleLossResourceTriggerSemantic(a) &&
     Number((player(s, card(s, sourceId).controllerPlayerId) as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) return false;
   const activeReuseGrant = liveReuseGrantForAbility(s, sourceControllerId, sourceId, a.id);
-  if (!isRulerSealUseSemantic(a) && !isCommandSpellCard(s, sourceId) && !isRepeatableSealPowerReplacementAbility(a) &&
+  if (!isRulerSealUseSemantic(a) && !isCommandSpellCard(s, sourceId) && !isRepeatableSealPowerReplacementAbility(a) && !isAcceptedReactionCounterCapabilityAbility(a) &&
       a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber && !activeReuseGrant) return false;
   if (abilityLimitReached(s, sourceId, a) && !activeReuseGrant) return false;
   if (isAcceptedDefinitionSetRelocationAbility(a) && !definitionSetRelocationPreflight(s, sourceControllerId, a)) return false;
@@ -5755,8 +5839,12 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (containsCommanderLifecyclePrivilegedNode(a) && !isAcceptedCommanderLifecyclePrivilegedAbility(a)) {
     reject('resolution_failed', 'Unsupported definition-set relocation/recall/retrigger semantic shape');
   }
-  if (containsTerrainFortificationExtraPlayPrivilegedNode(a) && !isAcceptedTerrainFortificationExtraPlayAbility(a)) {
+  if (containsTerrainFortificationExtraPlayPrivilegedNode(a) && !isAcceptedTerrainFortificationExtraPlayAbility(a) && !isAcceptedReactionCounterPlayHandAbility(a)) {
     reject('resolution_failed', 'Unsupported terrain/fortification/extra-play privileged semantic shape');
+  }
+  if (containsReactionCounterPrivilegedNode(a)) {
+    if (!isAcceptedReactionCounterCapabilityAbility(a)) reject('resolution_failed', 'Unsupported reaction-counter privileged semantic shape');
+    executeReactionCounterCapability(s, ctx, a); return;
   }
   if (containsMatchingDefinitionCapabilityNode(a)) {
     if (!isAcceptedMatchingDefinitionCapabilityAbility(a)) reject('resolution_failed', 'Unsupported matching-definition card capability semantic shape');
@@ -6241,7 +6329,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   for (const cost of a.cost.filter(c => c.type === 'move_source_card')) moveCard(s, ctx.sourceCardId, str(node(cost.to).zone));
   if (a.visibility.revealTiming === 'on_use_declared') reveal(s, p.id);
   if (reuseGrant) reuseGrant.consumed = true;
-  if (!isRulerSealUseSemantic(a) && !isCommandSpellCard(s, ctx.sourceCardId) && !isRepeatableSealPowerReplacementAbility(a) &&
+  if (!isRulerSealUseSemantic(a) && !isCommandSpellCard(s, ctx.sourceCardId) && !isRepeatableSealPowerReplacementAbility(a) && !isAcceptedReactionCounterCapabilityAbility(a) &&
       classifyAbilityInteraction(a).kind === 'phase_activation') runtime(s).usedAbilities[`${ctx.sourceCardId}:${a.id}`] = s.round.roundNumber;
   
   // A one-shot reuse consumes its provenance grant instead of incrementing the original ability usage counter.
@@ -6334,6 +6422,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   if (!event.id) reject('invalid_event', 'Events require stable ids');
   r.processedEvents.push(event.id);
   rememberTrustedBattleResultSnapshot(r, event);
+  settleReactionCounterEvent(s, event);
   settleBattlefieldAttackOffers(s, event);
   settlePendingRulerSealRewards(s, event);
   if (event.type === 'round_end') {

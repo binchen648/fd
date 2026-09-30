@@ -62,6 +62,12 @@ import {
   containsDeckRecycleReplayGrowthPrivilegedNode,
   isAcceptedDeckRecycleReplayGrowthAbility,
 } from './deck-recycle-replay-growth-capability';
+import {
+  ARM_OPPONENT_ACTION_REACTION_COUNTER_EFFECT, HALVE_REACTION_COUNTER_AFTER_BATTLE_EFFECT,
+  SPEND_REACTION_COUNTER_MOVE_ONE_EFFECT, SPEND_REACTION_COUNTER_PLAY_TOP_EFFECT, SPEND_REACTION_COUNTER_PLAY_HAND_FREE_EFFECT,
+  PAY_MANA_GAIN_REACTION_COUNTER_EFFECT, DOUBLE_SOURCE_BASE_POWER_IF_MOVED_EFFECT,
+  containsReactionCounterPrivilegedNode, isAcceptedReactionCounterCapabilityAbility, isAcceptedReactionCounterPlayHandAbility,
+} from './reaction-counter-capability';
 import { COMBAT_REWARD_DISTRIBUTION_RULE, isAcceptedFullRewardEachAbility } from './combat-reward-distribution';
 import {
   LOCATION_MARKER_FOLLOW_EFFECT, LOCATION_MARKER_COMBAT_BRANCH_EFFECT, LOCATION_MARKER_PLACE_EFFECT, LOCATION_MARKER_MIDPOINT_DEFEAT_EFFECT,
@@ -237,6 +243,9 @@ const supportedTypes = new Set([
   LOSE_ALL_MANA_ROUND_POWER_EFFECT, GRANT_SAME_LOCATION_OPPONENTS_MANA_EFFECT,
   JOINT_OTHER_ATTACK_MODIFIER_EFFECT, SAME_BATTLEFIELD_TURN_ORDER_ATTACK_EFFECT,
   CARD_PLAY_COMMAND_SEAL_COST_EFFECT, DEFEAT_ALL_ENGAGED_OPPONENTS_EFFECT,
+  ARM_OPPONENT_ACTION_REACTION_COUNTER_EFFECT, HALVE_REACTION_COUNTER_AFTER_BATTLE_EFFECT,
+  SPEND_REACTION_COUNTER_MOVE_ONE_EFFECT, SPEND_REACTION_COUNTER_PLAY_TOP_EFFECT, SPEND_REACTION_COUNTER_PLAY_HAND_FREE_EFFECT,
+  PAY_MANA_GAIN_REACTION_COUNTER_EFFECT, DOUBLE_SOURCE_BASE_POWER_IF_MOVED_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -259,6 +268,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'source', 'interpretation', 'name',
   'discardAttribute', 'maxClosePerOpponent', 'excludePerGame', 'refund', 'drawCount', 'playDrawnCard', 'immediatePlayQuota', 'actionAbilityPermission',
   'counterKey', 'keepMax', 'gain', 'maxSpend', 'baseCount', 'base', 'sourceZone', 'cardKind', 'payCardCosts', 'returnAfter',
+  'skillPlayGain', 'commandSealUseGain', 'moveToControllerBattlefieldGain', 'moveAwardOncePerPlayerPerRound', 'rounding', 'direction', 'manaCost', 'minimumMovementDistance', 'multiplier',
   'discardTop', 'excludeSource', 'selectionZone', 'shuffleInto', 'upkeep',
   'costIncreasePerPlay', 'costDuration', 'revealDiscardTop', 'printedPowerEquals', 'powerBonus', 'powerDuration',
   'markerKey', 'terrainAmount', 'vpTransferAmount', 'distance',
@@ -677,8 +687,12 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         issue('commanderLifecycle.gateway', 'Definition-set relocation/recall/retrigger mechanics require an accepted exact whole-ability semantic', id);
       }
       if (containsTerrainFortificationExtraPlayPrivilegedNode(candidateAbility) &&
-          !isAcceptedTerrainFortificationExtraPlayAbility(candidateAbility)) {
+          !isAcceptedTerrainFortificationExtraPlayAbility(candidateAbility) && !isAcceptedReactionCounterPlayHandAbility(candidateAbility)) {
         issue('terrainFortification.gateway', 'Terrain/fortification/extra-play privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsReactionCounterPrivilegedNode(candidateAbility) &&
+          !isAcceptedReactionCounterCapabilityAbility(candidateAbility)) {
+        issue('reactionCounter.gateway', 'Reaction-counter privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       if (Array.isArray(a.markers) && a.markers.some((marker) => String(marker).startsWith('deduction-'))) {
         if (!isDeductionRecordMarkerAbility(candidateAbility)) issue('deductionRecord.gateway', 'Unsupported exact deduction-record marker ability shape', id);

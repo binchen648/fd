@@ -7297,3 +7297,13 @@ Accounting boundary:
 - readiness is permanently zero-credit;
 - one owner / all currently discoverable readiness gaps / one Candidate / one PR / one fresh R / one A-sync-rescan;
 - do not split per skill and do not advance beyond Xiang Yu until readiness plus subsequent owner-complete migration close.
+Implementation evidence for `P3-B-XIANGYU-OWNER-READINESS-CAPABILITY`:
+- Exact Base: `f79cab7c4d3580f838bf117a22f7d92bd30eed92` (accepted Voyager owner A-sync/accounting; strict `170/944`, remaining `774`).
+- Frozen scope remains sc1 + sc2 + sc3 together; readiness is permanently zero-credit.
+- Complete current owner-local gap set is covered by one identity-free reaction-counter capability family: exact round arm/provenance, opponent own-action skill/Seal/move observation, battle-end ceil-half decay, repeatable 1/2/4/7 reaction purchases, 1-mana -> 2-reaction conversion, and movement-distance-gated physical-source base-Power doubling.
+- Card-play Seal costs are explicitly excluded from Seal-use observation; skill batch events use exact physical event source identity to prevent double counting.
+- No `data/authoring/**` delta and no Xiang Yu/card-name/legacy-handler production routing.
+- Focused `11/11 PASS`; neighboring/complex/MatchSession/base-Power affected aggregate **`128/128 PASS`**.
+- `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`7 masters / 18 servants / 20 events / 0 blocking issues`); generated determinism PASS; identity audit CLEAN; diff-check PASS.
+- Detailed report: `docs/reports/2026-09-30-p3-b-xiangyu-owner-readiness-capability-result.md`.
+- Current disposition: `IMPLEMENTATION_COMPLETE_CANDIDATE`; freeze one Candidate / one PR / one fresh R. Accounting remains `170/944`, remaining `774`.
