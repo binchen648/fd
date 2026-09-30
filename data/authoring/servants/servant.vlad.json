@@ -5,11 +5,314 @@
   "name": "弗拉德三世",
   "class": "Lancer",
   "sourcePolicy": {
-    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "phase3EvidenceCommit": "9cf5f0b4450ae27d42f7ed4a07bb9d0256fc64f7",
     "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
-    "note": "Semantics come from accepted F1 evidence/contracts; locked Reference is used only for static card metadata."
+    "acceptedReadinessContract": "PR#497/0b93b10e62eb793a3e04aeff163a92ce7e3cc2a8",
+    "note": "Semantics come from accepted F1/source evidence plus the accepted generic readiness contract; locked Reference is used only for static metadata and bounded behavior observation."
   },
   "cards": [
+    {
+      "id": "servant.vlad.skill.sc-vlad-1",
+      "aliases": [
+        "sc_vlad_1"
+      ],
+      "legacyId": "sc_vlad_1",
+      "name": "护国鬼将",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.vlad"
+      },
+      "printedText": "被动/行动阶段：花费1点魔力，将你的地利变为2倍。\n被动/战斗阶段：花费1点魔力，移动进入此战场的玩家合计威力-4。若你赢得本次战斗，下回合开始时，你部署于此战场。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-vlad-1.terrain-doubling",
+          "kind": "phase_action",
+          "printedClause": "被动/行动阶段：花费1点魔力，将你的地利变为2倍。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "double_controller_terrain_this_round",
+              "multiplier": 2,
+              "duration": "this_round"
+            }
+          ],
+          "cost": [
+            {
+              "type": "pay_mana",
+              "amount": 1
+            }
+          ],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "sc-vlad-1.fortification",
+          "kind": "phase_action",
+          "printedClause": "被动/战斗阶段：花费1点魔力，移动进入此战场的玩家合计威力-4。若你赢得本次战斗，下回合开始时，你部署于此战场。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "fortify_moved_in_battlefield_and_arm_next_round_deployment",
+              "movedPlayerPowerAdjustment": -4,
+              "winDeployment": "same_battlefield_next_round"
+            }
+          ],
+          "cost": [
+            {
+              "type": "pay_mana",
+              "amount": 1
+            }
+          ],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "弗拉德三世.htm",
+            "locator": "从者/枪兵/英文版/弗拉德三世.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/弗拉德三世.png",
+            "locator": "servant.vlad/弗拉德三世"
+          }
+        ],
+        "sourceTextSha256": "43564c30fa5217ad312918f66b8b2766071e383e126e54ef90e24e1850a8e1b0",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_vlad_1",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": 0,
+          "typeLabel": "被动"
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4",
+          "note": "Legacy requirement is metadata only."
+        },
+        "acceptedContracts": {
+          "terrainFortification": "PR#497/0b93b10e62eb793a3e04aeff163a92ce7e3cc2a8"
+        }
+      }
+    },
+    {
+      "id": "servant.vlad.skill.sc-vlad-2",
+      "aliases": [
+        "sc_vlad_2"
+      ],
+      "legacyId": "sc_vlad_2",
+      "name": "极刑王",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.vlad"
+      },
+      "printedText": "【真名解放】\n行动阶段：从手牌中打出一张牌。若你持有地利，可以额外花费2点魔力再打出一张牌。",
+      "cardFace": {
+        "typeLabel": "迅捷/宝具",
+        "attributes": [
+          "迅捷",
+          "宝具"
+        ],
+        "cost": 3,
+        "basePower": 5
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-vlad-2.kazikli-bey",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：从手牌中打出一张牌。若你持有地利，可以额外花费2点魔力再打出一张牌。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "targets": [
+            {
+              "id": "first_hand_card",
+              "type": "card_instance",
+              "scope": {
+                "zone": "hand",
+                "owner": "controller",
+                "controller": "self"
+              },
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "visibility": "owner_only",
+              "constraints": [
+                {
+                  "type": "effect_playable_face_up"
+                }
+              ]
+            },
+            {
+              "id": "second_hand_card",
+              "type": "card_instance",
+              "scope": {
+                "zone": "hand",
+                "owner": "controller",
+                "controller": "self"
+              },
+              "count": {
+                "min": 0,
+                "max": 1
+              },
+              "visibility": "owner_only",
+              "constraints": [
+                {
+                  "type": "effect_playable_face_up"
+                }
+              ],
+              "conditions": [
+                {
+                  "type": "controller_has_positive_terrain"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "play_hand_cards_with_terrain_optional_second",
+              "firstTarget": "first_hand_card",
+              "secondTarget": "second_hand_card",
+              "extraSecondMana": 2
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "弗拉德三世.htm",
+            "locator": "从者/枪兵/英文版/弗拉德三世.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/弗拉德三世.png",
+            "locator": "servant.vlad/弗拉德三世"
+          }
+        ],
+        "sourceTextSha256": "b69c32e2b7fdc33eb2964237c1c350301568b1b90f2ec71cbcf19a1d85620151",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_vlad_2",
+          "cost": 3,
+          "basePower": 5,
+          "legacyRequirement": 8,
+          "typeLabel": "迅捷/宝具",
+          "revealsTrueNameOnPlay": true
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4",
+          "note": "Legacy requirement matches the final skill-zone threshold."
+        },
+        "acceptedContracts": {
+          "terrainFortification": "PR#497/0b93b10e62eb793a3e04aeff163a92ce7e3cc2a8"
+        }
+      }
+    },
     {
       "id": "servant.vlad.skill.sc-vlad-3",
       "aliases": [
@@ -119,6 +422,48 @@
           "note": "Legacy requirement is retained as metadata only and does not override the final-rule skill-zone threshold."
         }
       }
+    }
+  ],
+  "deck": [
+    {
+      "cardId": "card.cardb1",
+      "count": 2
+    },
+    {
+      "cardId": "card.cardb2"
+    },
+    {
+      "cardId": "card.cardq1",
+      "count": 2
+    },
+    {
+      "cardId": "card.cardq2"
+    },
+    {
+      "cardId": "card.cardq3"
+    },
+    {
+      "cardId": "card.cardq4"
+    },
+    {
+      "cardId": "card.cardluck"
+    },
+    {
+      "cardId": "card.cardsurveil"
+    },
+    {
+      "cardId": "card.cardpreparation",
+      "count": 2
+    }
+  ],
+  "sources": [
+    {
+      "id": "development_overview_image",
+      "type": "original_card_image",
+      "path": "../../Fate_Domination-开发版/images/servants/弗拉德三世.png",
+      "interpretedAs": "servant_overview",
+      "priority": "original_card_image",
+      "reviewStatus": "reviewed_against_development_image"
     }
   ]
 }

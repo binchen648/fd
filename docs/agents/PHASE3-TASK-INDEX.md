@@ -7161,3 +7161,17 @@ Implementation evidence for `P3-B-VLAD-OWNER-READINESS-CAPABILITY`:
 - Readiness remains zero-credit; strict accounting stays `164/944`, remaining `780`.
 - Next legal FORMAL task: `P3-S-OWNER-VLAD-COMPLETE-MIGRATION`, frozen sc1 + sc2 + sc3 together, with only sc1/sc2 creditable after formal acceptance + A-sync/accounting.
 - Detailed A-sync report: `docs/reports/2026-09-30-p3-a-vlad-owner-readiness-capability-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-VLAD-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `MIGRATION_COMPLETE_CANDIDATE`
+Base: `a41cc21459db8067d48344f4ae10aa8b1390264e`
+Scope: exact frozen owner `servant.vlad`, sc1 + sc2 + sc3 together.
+Accounting: current `164/944`, remaining `780`; only sc1 + sc2 are newly creditable (+2 after `MIGRATION_ACCEPTED` + A-sync/accounting); sc3 preservation-only +0.
+Accepted readiness: PR #497 successor `0b93b10e62eb793a3e04aeff163a92ce7e3cc2a8`, canonical evidence `https://github.com/binchen648/fd/pull/497#issuecomment-5910603956`, readiness A-sync `a41cc21459db8067d48344f4ae10aa8b1390264e`.
+Formal materialization: extend existing Vlad owner archive with sc1/sc2, preserve sc3, add frozen 12-card deck, integrate Vlad exactly once after Valkyrie, consume accepted identity-free readiness runtime with no new runtime source changes.
+Detailed report: `docs/reports/2026-09-30-p3-s-owner-vlad-complete-migration-result.md`.
+Fresh R required before any migration credit.
+
+Formal pre-review verification for `P3-S-OWNER-VLAD-COMPLETE-MIGRATION`: `5/5 + 13/13 + 38/38 + 33/33 + 11/11 + 21/21 = 121/121 PASS`; `FD_TOOLCHAIN_OK`; typecheck/content validate/content compile/generated determinism/diff-check PASS; content count `7 masters / 17 servants / 20 events / 0 blocking issues`; Base..Candidate runtime-source delta EMPTY; production Vlad identity audit CLEAN.
