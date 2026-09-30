@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 7,
+    "masters": 8,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -294,6 +294,136 @@
       "htmPath": "chm-extract/盈月之仪.htm",
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211302_297.png",
       "imageIndex": 11,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.akasha",
+      "displayName": "阿卡夏之蛇",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.akasha.overview",
+      "displayName": "阿卡夏之蛇",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.akasha.skill.ascension",
+      "displayName": "最终形态",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 8,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.akasha.skill.s1",
+      "displayName": "命理",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.akasha.skill.s1a",
+      "displayName": "无限转生者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.akasha.skill.s2",
+      "displayName": "转生",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.akasha.skill.s3",
+      "displayName": "米切尔·罗亚·巴尔丹姆杨",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.akasha.skill.s4",
+      "displayName": "艾蕾西亚",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.akasha.skill.s5",
+      "displayName": "远野四季（容器）",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 6,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.akasha.skill.s6",
+      "displayName": "过负荷",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 7,
       "reviewedAgainstImage": true,
       "issueCodes": [
         "SOURCE_ASSET_UNVERIFIED"
@@ -2119,6 +2249,76 @@
       "code": "SOURCE_ASSET_UNVERIFIED",
       "message": "event.waxing_moon_ritual.yokosuka source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211302_297.png",
       "entityId": "event.waxing_moon_ritual.yokosuka",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.akasha source image was not verified in this checkout: Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "entityId": "master.akasha",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.akasha.overview source image was not verified in this checkout: Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "entityId": "master.akasha.overview",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.akasha.skill.ascension source image was not verified in this checkout: Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "entityId": "master.akasha.skill.ascension",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.akasha.skill.s1 source image was not verified in this checkout: Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "entityId": "master.akasha.skill.s1",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.akasha.skill.s1a source image was not verified in this checkout: Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "entityId": "master.akasha.skill.s1a",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.akasha.skill.s2 source image was not verified in this checkout: Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "entityId": "master.akasha.skill.s2",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.akasha.skill.s3 source image was not verified in this checkout: Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "entityId": "master.akasha.skill.s3",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.akasha.skill.s4 source image was not verified in this checkout: Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "entityId": "master.akasha.skill.s4",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.akasha.skill.s5 source image was not verified in this checkout: Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "entityId": "master.akasha.skill.s5",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.akasha.skill.s6 source image was not verified in this checkout: Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "entityId": "master.akasha.skill.s6",
       "field": "source.imagePath",
       "blocking": false
     },

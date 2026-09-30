@@ -1,0 +1,1009 @@
+{
+    "schemaVersion":  "fd-card-authoring-v1",
+    "archiveType":  "master_skill_card_archive",
+    "id":  "master.akasha",
+    "name":  "阿卡夏之蛇",
+    "class":  "Master",
+    "publicInformation":  {
+                              "type":  "master_package",
+                              "initialMana":  4
+                          },
+    "sourcePolicy":  {
+                         "phase3EvidenceCommit":  "b2b224f17c1fb6cd835654d7b80ce54bd6d0b05c",
+                         "referenceMetadataCommit":  "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+                         "note":  "Frozen source text is authoritative. Accepted #503/#504 identity-free Vessel-cycle and provisioning contracts provide runtime authority; locked Reference is corroboration only."
+                     },
+    "cards":  [
+                  {
+                      "id":  "master.akasha.skill.s1",
+                      "aliases":  [
+                                      "s1"
+                                  ],
+                      "legacyId":  "s1",
+                      "name":  "命理",
+                      "cardType":  "master_skill",
+                      "owner":  {
+                                    "type":  "master",
+                                    "id":  "master.akasha"
+                                },
+                      "printedText":  "将【过负荷】加入你的技能区，并在每个战场创造一张其临时复制。",
+                      "cardFace":  {
+                                       "typeLabel":  "被动",
+                                       "attributes":  [
+
+                                                      ],
+                                       "cost":  0,
+                                       "basePower":  0
+                                   },
+                      "playTiming":  {
+                                         "phase":  "action",
+                                         "window":  "controller_play_card_window"
+                                     },
+                      "playRequirements":  [
+
+                                           ],
+                      "abilities":  [
+                                        {
+                                            "id":  "akasha.s1.skill-zone-provision",
+                                            "kind":  "forced_trigger",
+                                            "printedClause":  "将【过负荷】加入你的技能区。",
+                                            "activation":  {
+                                                               "trigger":  "game_start"
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "creates":  [
+
+                                                        ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "effects":  [
+                                                            {
+                                                                "type":  "provision_skill_cards",
+                                                                "player":  "controller",
+                                                                "targetDefinitionIds":  [
+                                                                                            "master.akasha.skill.s6"
+                                                                                        ]
+                                                            }
+                                                        ],
+                                            "execution":  {
+                                                              "mode":  "automatic",
+                                                              "allowedOperations":  [
+
+                                                                                    ]
+                                                          }
+                                        },
+                                        {
+                                            "id":  "akasha.s1.battlefield-provision",
+                                            "kind":  "forced_trigger",
+                                            "printedClause":  "并在每个战场创造一张其临时复制。",
+                                            "activation":  {
+                                                               "trigger":  "game_start"
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "creates":  [
+
+                                                        ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+                                                                   "order":  "turn_order",
+                                                                   "passBehavior":  "decline_this_window"
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "effects":  [
+                                                            {
+                                                                "type":  "vessel_cycle_game_start_battlefield_provision",
+                                                                "cycleKey":  "akasha.vessel-cycle",
+                                                                "targetDefinitionId":  "master.akasha.skill.s6",
+                                                                "temporaryAtEachBattlefield":  true
+                                                            }
+                                                        ],
+                                            "execution":  {
+                                                              "mode":  "automatic",
+                                                              "allowedOperations":  [
+
+                                                                                    ]
+                                                          }
+                                        }
+                                    ],
+                      "phase3Evidence":  {
+                                             "referenceStaticMetadata":  {
+                                                                             "commit":  "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+                                                                             "legacySkillId":  "s1",
+                                                                             "typeLabel":  "被动",
+                                                                             "cost":  0,
+                                                                             "basePower":  0
+                                                                         },
+                                             "acceptedContracts":  {
+                                                                       "skillZoneProvisioning":  "P3-FB2-15",
+                                                                       "battlefieldProvisioning":  "P3-B-AKASHA-OWNER-READINESS-LOCATION-PROVISIONING"
+                                                                   }
+                                         }
+                  },
+                  {
+                      "id":  "master.akasha.skill.s1a",
+                      "aliases":  [
+                                      "s1a"
+                                  ],
+                      "legacyId":  "s1a",
+                      "name":  "无限转生者",
+                      "cardType":  "master_skill",
+                      "owner":  {
+                                    "type":  "master",
+                                    "id":  "master.akasha"
+                                },
+                      "printedText":  "你的首个【容器】是【米切尔·罗亚】。当你以5点及以上的战力差距被击败或【败北】时，转生。",
+                      "cardFace":  {
+                                       "typeLabel":  "被动",
+                                       "attributes":  [
+
+                                                      ],
+                                       "cost":  0,
+                                       "basePower":  0
+                                   },
+                      "playTiming":  {
+                                         "phase":  "action",
+                                         "window":  "controller_play_card_window"
+                                     },
+                      "playRequirements":  [
+
+                                           ],
+                      "abilities":  [
+                                        {
+                                            "id":  "akasha.s1a.initialize",
+                                            "kind":  "forced_trigger",
+                                            "printedClause":  "你的首个【容器】是【米切尔·罗亚】。",
+                                            "activation":  {
+                                                               "trigger":  "game_start"
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "creates":  [
+
+                                                        ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+                                                                   "order":  "turn_order",
+                                                                   "passBehavior":  "decline_this_window"
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "effects":  [
+                                                            {
+                                                                "type":  "vessel_cycle_initialize",
+                                                                "cycleKey":  "akasha.vessel-cycle",
+                                                                "initialVessel":  "roa",
+                                                                "middleVessel":  "elesia",
+                                                                "finalVessel":  "shiki",
+                                                                "firstMaxVp":  5,
+                                                                "middleMaxVp":  10,
+                                                                "firstVpMultiplier":  2,
+                                                                "middleVpDivisor":  2,
+                                                                "middleVpRounding":  "ceil",
+                                                                "repeatPenaltyVp":  3,
+                                                                "lossMargin":  5,
+                                                                "temporaryDefinitionId":  "master.akasha.skill.s6",
+                                                                "ascensionDefinitionId":  "master.akasha.skill.ascension",
+                                                                "temporaryKeep":  2
+                                                            }
+                                                        ],
+                                            "execution":  {
+                                                              "mode":  "automatic",
+                                                              "allowedOperations":  [
+
+                                                                                    ]
+                                                          }
+                                        },
+                                        {
+                                            "id":  "akasha.s1a.schedule",
+                                            "kind":  "forced_trigger",
+                                            "printedClause":  "当你以5点及以上的战力差距被击败或【败北】时，转生。",
+                                            "activation":  {
+                                                               "trigger":  "after_controller_loses_battle"
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "creates":  [
+
+                                                        ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+                                                                   "order":  "turn_order",
+                                                                   "passBehavior":  "decline_this_window"
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "effects":  [
+                                                            {
+                                                                "type":  "vessel_cycle_schedule_reincarnation",
+                                                                "cycleKey":  "akasha.vessel-cycle"
+                                                            }
+                                                        ],
+                                            "execution":  {
+                                                              "mode":  "automatic",
+                                                              "allowedOperations":  [
+
+                                                                                    ]
+                                                          }
+                                        }
+                                    ],
+                      "phase3Evidence":  {
+                                             "acceptedContracts":  {
+                                                                       "vesselCycle":  "P3-B-AKASHA-OWNER-READINESS-CAPABILITY"
+                                                                   }
+                                         }
+                  },
+                  {
+                      "id":  "master.akasha.skill.s2",
+                      "aliases":  [
+                                      "s2"
+                                  ],
+                      "legacyId":  "s2",
+                      "name":  "转生",
+                      "cardType":  "master_skill",
+                      "owner":  {
+                                    "type":  "master",
+                                    "id":  "master.akasha"
+                                },
+                      "printedText":  "在下个回合开始时，根据你以当前【容器】获得的战果数转生为新的【容器】，然后移除所有临时的【过负荷】直至仅剩2张。若你转生为相同的【容器】，失去3点战果。",
+                      "cardFace":  {
+                                       "typeLabel":  "被动",
+                                       "attributes":  [
+
+                                                      ],
+                                       "cost":  0,
+                                       "basePower":  0
+                                   },
+                      "playTiming":  {
+                                         "phase":  "action",
+                                         "window":  "controller_play_card_window"
+                                     },
+                      "playRequirements":  [
+
+                                           ],
+                      "abilities":  [
+                                        {
+                                            "id":  "akasha.s2.resolve",
+                                            "kind":  "forced_trigger",
+                                            "printedClause":  "在下个回合开始时，根据你以当前【容器】获得的战果数转生。",
+                                            "activation":  {
+                                                               "trigger":  "round_start"
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "creates":  [
+
+                                                        ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+                                                                   "order":  "turn_order",
+                                                                   "passBehavior":  "decline_this_window"
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "effects":  [
+                                                            {
+                                                                "type":  "vessel_cycle_resolve_reincarnation",
+                                                                "cycleKey":  "akasha.vessel-cycle"
+                                                            }
+                                                        ],
+                                            "execution":  {
+                                                              "mode":  "automatic",
+                                                              "allowedOperations":  [
+
+                                                                                    ]
+                                                          }
+                                        }
+                                    ],
+                      "phase3Evidence":  {
+                                             "acceptedContracts":  {
+                                                                       "vesselCycle":  "P3-B-AKASHA-OWNER-READINESS-CAPABILITY"
+                                                                   }
+                                         }
+                  },
+                  {
+                      "id":  "master.akasha.skill.s3",
+                      "aliases":  [
+                                      "s3"
+                                  ],
+                      "legacyId":  "s3",
+                      "name":  "米切尔·罗亚·巴尔丹姆杨",
+                      "cardType":  "master_skill",
+                      "owner":  {
+                                    "type":  "master",
+                                    "id":  "master.akasha"
+                                },
+                      "printedText":  "【容器：0~5战果】\n诡计-你作为【罗亚】获得的战果仅在转生时双倍计算。\n神职特权-你从侦查获得的战果+1。",
+                      "cardFace":  {
+                                       "typeLabel":  "被动",
+                                       "attributes":  [
+
+                                                      ],
+                                       "cost":  0,
+                                       "basePower":  0
+                                   },
+                      "playTiming":  {
+                                         "phase":  "action",
+                                         "window":  "controller_play_card_window"
+                                     },
+                      "playRequirements":  [
+
+                                           ],
+                      "abilities":  [
+                                        {
+                                            "id":  "akasha.s3.recon",
+                                            "kind":  "passive",
+                                            "printedClause":  "神职特权-你从侦查获得的战果+1。",
+                                            "activation":  {
+
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "creates":  [
+
+                                                        ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+                                                                   "order":  "turn_order",
+                                                                   "passBehavior":  "decline_this_window"
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "effects":  [
+                                                            {
+                                                                "type":  "vessel_cycle_recon_vp_bonus",
+                                                                "cycleKey":  "akasha.vessel-cycle",
+                                                                "vessel":  "roa",
+                                                                "amount":  1
+                                                            }
+                                                        ],
+                                            "execution":  {
+                                                              "mode":  "automatic",
+                                                              "allowedOperations":  [
+
+                                                                                    ]
+                                                          }
+                                        }
+                                    ],
+                      "phase3Evidence":  {
+                                             "acceptedContracts":  {
+                                                                       "vesselCycle":  "P3-B-AKASHA-OWNER-READINESS-CAPABILITY"
+                                                                   }
+                                         }
+                  },
+                  {
+                      "id":  "master.akasha.skill.s4",
+                      "aliases":  [
+                                      "s4"
+                                  ],
+                      "legacyId":  "s4",
+                      "name":  "艾蕾西亚",
+                      "cardType":  "master_skill",
+                      "owner":  {
+                                    "type":  "master",
+                                    "id":  "master.akasha"
+                                },
+                      "printedText":  "【容器：6~10战果】\n不稳定凭依-你作为【艾蕾西亚】获得的战果仅在转生时减半计算（向上取整）。\n满月-若你控制【过负荷】，你的技能获得+1威力且-1魔力消耗。",
+                      "cardFace":  {
+                                       "typeLabel":  "被动",
+                                       "attributes":  [
+
+                                                      ],
+                                       "cost":  0,
+                                       "basePower":  0
+                                   },
+                      "playTiming":  {
+                                         "phase":  "action",
+                                         "window":  "controller_play_card_window"
+                                     },
+                      "playRequirements":  [
+
+                                           ],
+                      "abilities":  [
+                                        {
+                                            "id":  "akasha.s4.aura",
+                                            "kind":  "passive",
+                                            "printedClause":  "满月-若你控制【过负荷】，你的技能获得+1威力且-1魔力消耗。",
+                                            "activation":  {
+
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "creates":  [
+
+                                                        ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+                                                                   "order":  "turn_order",
+                                                                   "passBehavior":  "decline_this_window"
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "effects":  [
+                                                            {
+                                                                "type":  "vessel_cycle_skill_aura",
+                                                                "cycleKey":  "akasha.vessel-cycle",
+                                                                "vessel":  "elesia",
+                                                                "requiredDefinitionId":  "master.akasha.skill.s6",
+                                                                "targetCardType":  "master_skill",
+                                                                "costDelta":  -1,
+                                                                "powerDelta":  1
+                                                            }
+                                                        ],
+                                            "execution":  {
+                                                              "mode":  "automatic",
+                                                              "allowedOperations":  [
+
+                                                                                    ]
+                                                          }
+                                        }
+                                    ],
+                      "phase3Evidence":  {
+                                             "acceptedContracts":  {
+                                                                       "vesselCycle":  "P3-B-AKASHA-OWNER-READINESS-CAPABILITY"
+                                                                   }
+                                         }
+                  },
+                  {
+                      "id":  "master.akasha.skill.s5",
+                      "aliases":  [
+                                      "s5"
+                                  ],
+                      "legacyId":  "s5",
+                      "name":  "远野四季（容器）",
+                      "cardType":  "master_skill",
+                      "owner":  {
+                                    "type":  "master",
+                                    "id":  "master.akasha"
+                                },
+                      "printedText":  "【容器：11+战果】\n奋迅-你拥有的魔力少于8点也可以打出【过负荷】，若如此做，令其+3威力且不关闭。\n见方-行动阶段：花费你激活的【过负荷】魔力消耗的魔力令它们的威力翻倍。",
+                      "cardFace":  {
+                                       "typeLabel":  "被动",
+                                       "attributes":  [
+
+                                                      ],
+                                       "cost":  0,
+                                       "basePower":  0
+                                   },
+                      "playTiming":  {
+                                         "phase":  "action",
+                                         "window":  "controller_play_card_window"
+                                     },
+                      "playRequirements":  [
+
+                                           ],
+                      "abilities":  [
+                                        {
+                                            "id":  "akasha.s5.exception",
+                                            "kind":  "passive",
+                                            "printedClause":  "奋迅-你拥有的魔力少于8点也可以打出【过负荷】。",
+                                            "activation":  {
+
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "creates":  [
+
+                                                        ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+                                                                   "order":  "turn_order",
+                                                                   "passBehavior":  "decline_this_window"
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "effects":  [
+                                                            {
+                                                                "type":  "vessel_cycle_definition_play_exception",
+                                                                "cycleKey":  "akasha.vessel-cycle",
+                                                                "vessel":  "shiki",
+                                                                "targetDefinitionId":  "master.akasha.skill.s6",
+                                                                "requirementType":  "skill_zone_mana_at_least",
+                                                                "threshold":  8
+                                                            }
+                                                        ],
+                                            "execution":  {
+                                                              "mode":  "automatic",
+                                                              "allowedOperations":  [
+
+                                                                                    ]
+                                                          }
+                                        },
+                                        {
+                                            "id":  "akasha.s5.square",
+                                            "kind":  "phase_action",
+                                            "printedClause":  "见方-行动阶段：花费你激活的【过负荷】魔力消耗的魔力令它们的威力翻倍。",
+                                            "activation":  {
+                                                               "phase":  "action",
+                                                               "opens":  "controller_action_window"
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "creates":  [
+
+                                                        ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+                                                                   "order":  "turn_order",
+                                                                   "passBehavior":  "decline_this_window"
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "effects":  [
+                                                            {
+                                                                "type":  "vessel_cycle_double_active_definition_base_power",
+                                                                "cycleKey":  "akasha.vessel-cycle",
+                                                                "vessel":  "shiki",
+                                                                "targetDefinitionId":  "master.akasha.skill.s6",
+                                                                "multiplier":  2
+                                                            }
+                                                        ],
+                                            "execution":  {
+                                                              "mode":  "automatic",
+                                                              "allowedOperations":  [
+
+                                                                                    ]
+                                                          }
+                                        }
+                                    ],
+                      "phase3Evidence":  {
+                                             "acceptedContracts":  {
+                                                                       "vesselCycle":  "P3-B-AKASHA-OWNER-READINESS-CAPABILITY"
+                                                                   }
+                                         }
+                  },
+                  {
+                      "id":  "master.akasha.skill.s6",
+                      "aliases":  [
+                                      "s6"
+                                  ],
+                      "legacyId":  "s6",
+                      "name":  "过负荷",
+                      "cardType":  "master_skill",
+                      "owner":  {
+                                    "type":  "master",
+                                    "id":  "master.akasha"
+                                },
+                      "initialPlacement":  "outside_game",
+                      "printedText":  "（你的魔力需要达到8点才能从技能区打出此牌）\n此牌需追加打出。\n沸腾-被动：当你部署于地利位置时，你可以选择将所有此地点的【过负荷】加入你的攻击或不加入，若加入，令它们获得+2威力。\n凝结-打出时：关闭此牌。若你关闭，将一张此牌的临时复制放置于你所在的地点。",
+                      "cardFace":  {
+                                       "typeLabel":  "魔术",
+                                       "attributes":  [
+
+                                                      ],
+                                       "cost":  1,
+                                       "basePower":  0
+                                   },
+                      "playTiming":  {
+                                         "phase":  "action",
+                                         "window":  "controller_play_card_window"
+                                     },
+                      "playRequirements":  [
+                                               {
+                                                   "type":  "skill_zone_mana_at_least",
+                                                   "value":  8
+                                               }
+                                           ],
+                      "abilities":  [
+                                        {
+                                            "id":  "akasha.s6.append-only",
+                                            "kind":  "passive",
+                                            "printedClause":  "此牌需追加打出。",
+                                            "activation":  {
+                                                               "trigger":  "while_active"
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "creates":  [
+
+                                                        ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+                                                                   "order":  "turn_order",
+                                                                   "passBehavior":  "decline_this_window"
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "effects":  [
+                                                            {
+                                                                "type":  "append_only_rule"
+                                                            }
+                                                        ],
+                                            "execution":  {
+                                                              "mode":  "automatic",
+                                                              "allowedOperations":  [
+
+                                                                                    ]
+                                                          }
+                                        },
+                                        {
+                                            "id":  "akasha.s6.lifecycle",
+                                            "kind":  "forced_trigger",
+                                            "printedClause":  "凝结-打出时：关闭此牌。若你关闭，将一张此牌的临时复制放置于你所在的地点。",
+                                            "activation":  {
+                                                               "trigger":  "on_card_played"
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "creates":  [
+
+                                                        ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+                                                                   "order":  "turn_order",
+                                                                   "passBehavior":  "decline_this_window"
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "effects":  [
+                                                            {
+                                                                "type":  "vessel_cycle_played_definition_lifecycle",
+                                                                "cycleKey":  "akasha.vessel-cycle",
+                                                                "vessel":  "shiki",
+                                                                "targetDefinitionId":  "master.akasha.skill.s6",
+                                                                "lowManaThreshold":  8,
+                                                                "lowManaPowerBonus":  3,
+                                                                "normalClose":  true,
+                                                                "createTemporaryAtControllerLocation":  true
+                                                            }
+                                                        ],
+                                            "execution":  {
+                                                              "mode":  "automatic",
+                                                              "allowedOperations":  [
+
+                                                                                    ]
+                                                          }
+                                        },
+                                        {
+                                            "id":  "akasha.s6.boil",
+                                            "kind":  "optional_trigger",
+                                            "printedClause":  "沸腾-被动：当你部署于地利位置时，你可以选择将所有此地点的【过负荷】加入你的攻击或不加入，若加入，令它们获得+2威力。",
+                                            "activation":  {
+                                                               "trigger":  "after_player_deployed_to_battlefield"
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "creates":  [
+
+                                                        ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+                                                                   "opens":  "after_player_deployed_to_battlefield",
+                                                                   "order":  "turn_order",
+                                                                   "passBehavior":  "decline_this_window"
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "effects":  [
+                                                            {
+                                                                "type":  "vessel_cycle_join_location_definition_cards",
+                                                                "cycleKey":  "akasha.vessel-cycle",
+                                                                "targetDefinitionId":  "master.akasha.skill.s6",
+                                                                "powerBonus":  2,
+                                                                "requiresPositiveTerrain":  true
+                                                            }
+                                                        ],
+                                            "execution":  {
+                                                              "mode":  "automatic",
+                                                              "allowedOperations":  [
+
+                                                                                    ]
+                                                          }
+                                        }
+                                    ],
+                      "phase3Evidence":  {
+                                             "referenceStaticMetadata":  {
+                                                                             "commit":  "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+                                                                             "legacySkillId":  "s6",
+                                                                             "typeLabel":  "魔术",
+                                                                             "cost":  1,
+                                                                             "basePower":  0
+                                                                         },
+                                             "acceptedContracts":  {
+                                                                       "requiredAdditionalPlay":  "existing append-only generic",
+                                                                       "vesselCycle":  "P3-B-AKASHA-OWNER-READINESS-CAPABILITY"
+                                                                   }
+                                         }
+                  },
+                  {
+                      "id":  "master.akasha.skill.ascension",
+                      "aliases":  [
+                                      "ascension"
+                                  ],
+                      "legacyId":  "ascension",
+                      "name":  "最终形态",
+                      "cardType":  "master_skill",
+                      "owner":  {
+                                    "type":  "master",
+                                    "id":  "master.akasha"
+                                },
+                      "initialPlacement":  "outside_game",
+                      "printedText":  "若你在本局游戏已转生为所有【容器】过，你停止转生且同时视为所有【容器】。\n每个高潮回合开始时，将一张临时的【过负荷】放置于一处你选择的战场。",
+                      "cardFace":  {
+                                       "typeLabel":  "升华技",
+                                       "attributes":  [
+
+                                                      ],
+                                       "cost":  0,
+                                       "basePower":  0
+                                   },
+                      "playTiming":  {
+                                         "phase":  "action",
+                                         "window":  "controller_play_card_window"
+                                     },
+                      "playRequirements":  [
+
+                                           ],
+                      "abilities":  [
+                                        {
+                                            "id":  "akasha.ascension.climax",
+                                            "kind":  "optional_trigger",
+                                            "printedClause":  "每个高潮回合开始时，将一张临时的【过负荷】放置于一处你选择的战场。",
+                                            "activation":  {
+                                                               "trigger":  "round_start"
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+                                                            {
+                                                                "id":  "battlefield",
+                                                                "type":  "location",
+                                                                "count":  {
+                                                                              "min":  1,
+                                                                              "max":  1
+                                                                          },
+                                                                "constraints":  [
+                                                                                    {
+                                                                                        "type":  "any_battlefield"
+                                                                                    }
+                                                                                ]
+                                                            }
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "creates":  [
+
+                                                        ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+                                                                   "opens":  "round_start",
+                                                                   "order":  "turn_order",
+                                                                   "passBehavior":  "decline_this_window"
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "effects":  [
+                                                            {
+                                                                "type":  "vessel_cycle_ascension_round_start",
+                                                                "cycleKey":  "akasha.vessel-cycle",
+                                                                "targetDefinitionId":  "master.akasha.skill.s6",
+                                                                "target":  "battlefield",
+                                                                "oncePerRound":  true
+                                                            }
+                                                        ],
+                                            "execution":  {
+                                                              "mode":  "automatic",
+                                                              "allowedOperations":  [
+
+                                                                                    ]
+                                                          }
+                                        }
+                                    ],
+                      "phase3Evidence":  {
+                                             "acceptedContracts":  {
+                                                                       "vesselCycle":  "P3-B-AKASHA-OWNER-READINESS-CAPABILITY"
+                                                                   }
+                                         }
+                  }
+              ],
+    "overviewImage":  "Fate_Domination-开发版/images/masters/阿卡夏之蛇.png"
+}

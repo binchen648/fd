@@ -15,7 +15,18 @@ function sourceInput() {
 }
 
 function installResolutionFixture(input: ReturnType<typeof sourceInput>, effects: ResolutionEffectNode[]): void {
-  input.rules.archives[7]!.cards[0]!.abilities![0]!.effects = effects;
+  archiveById(input, 'servant.artoriac').cards[0]!.abilities![0]!.effects = effects;
+}
+function archiveById(input: ReturnType<typeof sourceInput>, id: string) {
+  const archive = input.rules.archives.find((candidate) => candidate.id === id);
+  if (!archive) throw new Error(`Missing test archive ${id}`);
+  return archive;
+}
+
+function archiveIndexById(input: ReturnType<typeof sourceInput>, id: string): number {
+  const index = input.rules.archives.findIndex((candidate) => candidate.id === id);
+  if (index < 0) throw new Error(`Missing test archive ${id}`);
+  return index;
 }
 
 function masterSupportArchive(mutate?: (archive: any) => void): any {
@@ -65,9 +76,9 @@ describe('ExecutableCardPack compiler', () => {
     });
     expect(executable.sourceMap['servant.artoriac.skill.sc-artoriac-1']).toEqual({
       archiveId: 'servant.artoriac',
-      archiveIndex: 7,
+      archiveIndex: archiveIndexById(input, 'servant.artoriac'),
       cardIndex: 0,
-      path: 'archives[7].cards[0]',
+      path: rchives[].cards[0],
     });
     expect(() => assertExecutableCardPack(executable, input)).not.toThrow();
     expect(() => assertExecutableCardPack({ ...executable, definitionHash: '0'.repeat(64) }, input)).toThrow(/hash mismatch/);
@@ -105,7 +116,7 @@ describe('ExecutableCardPack compiler', () => {
     expect(executable.fallbackCommandSpells['master.support-owner']).toBeUndefined();
     expect(executable.cards['master.support-owner.command-spell']).toBeUndefined();
     expect(executable.decks['master.support-owner']).toBeUndefined();
-    expect(executable.sourceMap['servant.artoriac.skill.sc-artoriac-1']!.archiveIndex).toBe(7);
+    expect(executable.sourceMap['servant.artoriac.skill.sc-artoriac-1']!.archiveIndex).toBe(archiveIndexById(input, 'servant.artoriac'));
     expect(() => assertExecutableCardPack(executable, input)).not.toThrow();
   });
 
@@ -251,10 +262,10 @@ describe('ExecutableCardPack compiler', () => {
 
   it.each([
     ['requirement', (input: ReturnType<typeof sourceInput>) => {
-      input.rules.archives[7]!.cards[0]!.playRequirements![0]!.value = 9;
+      archiveById(input, 'servant.artoriac').cards[0]!.playRequirements![0]!.value = 9;
     }],
     ['effect parameter', (input: ReturnType<typeof sourceInput>) => {
-      input.rules.archives[7]!.cards[0]!.abilities![2]!.effects![0]!.to = { zone: 'discard', owner: 'controller' };
+      archiveById(input, 'servant.artoriac').cards[0]!.abilities![2]!.effects![0]!.to = { zone: 'discard', owner: 'controller' };
     }],
   ])('changes definitionHash when golden-card %s changes', (_name, mutate) => {
     const baseline = compileExecutableCardPack(sourceInput()).definitionHash;
@@ -265,37 +276,37 @@ describe('ExecutableCardPack compiler', () => {
 
   it.each([
     ['unsupported mechanic', (input: ReturnType<typeof sourceInput>) => {
-      input.rules.archives[7]!.cards[0]!.abilities![0]!.effects = [{ type: 'unknown_phase_2_effect' }];
+      archiveById(input, 'servant.artoriac').cards[0]!.abilities![0]!.effects = [{ type: 'unknown_phase_2_effect' }];
     }, /Unmapped type/],
     ['duplicate card id', (input: ReturnType<typeof sourceInput>) => {
-      input.rules.archives[8]!.cards[0]!.id = input.rules.archives[7]!.cards[0]!.id;
+      archiveById(input, 'servant.drake').cards[0]!.id = archiveById(input, 'servant.artoriac').cards[0]!.id;
     }, /Duplicate card definition/],
     ['dangling skillCardId', (input: ReturnType<typeof sourceInput>) => {
       input.servants[0]!.skillCardIds[0] = 'servant.missing.skill.card';
     }, /references missing skill card/],
     ['unknown deck entry', (input: ReturnType<typeof sourceInput>) => {
-      input.rules.archives[7]!.deck![0]!.cardId = 'card.guessed-fallback';
+      archiveById(input, 'servant.artoriac').deck![0]!.cardId = 'card.guessed-fallback';
     }, /Unknown deck entry/],
     ['11-card deck', (input: ReturnType<typeof sourceInput>) => {
-      input.rules.archives[7]!.deck![0]!.count = input.rules.archives[7]!.deck![0]!.count! - 1;
+      archiveById(input, 'servant.artoriac').deck![0]!.count = archiveById(input, 'servant.artoriac').deck![0]!.count! - 1;
     }, /exactly 12 cards; found 11/],
     ['13-card deck', (input: ReturnType<typeof sourceInput>) => {
-      input.rules.archives[7]!.deck![0]!.count = input.rules.archives[7]!.deck![0]!.count! + 1;
+      archiveById(input, 'servant.artoriac').deck![0]!.count = archiveById(input, 'servant.artoriac').deck![0]!.count! + 1;
     }, /exactly 12 cards/],
     ['invalid primitive parameter', (input: ReturnType<typeof sourceInput>) => {
-      input.rules.archives[7]!.cards[0]!.abilities![0]!.effects = [{ type: 'draw_cards', count: 'two' }];
+      archiveById(input, 'servant.artoriac').cards[0]!.abilities![0]!.effects = [{ type: 'draw_cards', count: 'two' }];
     }, /Draw count must be a nonnegative integer/],
     ['missing named reference', (input: ReturnType<typeof sourceInput>) => {
-      input.rules.archives[7]!.cards = input.rules.archives[7]!.cards.filter((card) =>
+      archiveById(input, 'servant.artoriac').cards = archiveById(input, 'servant.artoriac').cards.filter((card) =>
         card.id !== 'servant.artoriac.skill.sc-artoriac-4');
     }, /references missing card/],
     ['dangling rule reference', (input: ReturnType<typeof sourceInput>) => {
-      const card = input.rules.archives[7]!.cards.find((candidate) =>
+      const card = archiveById(input, 'servant.artoriac').cards.find((candidate) =>
         candidate.id === 'servant.artoriac.skill.sc-artoriac-4')!;
       card.abilities![0]!.creates = [{ type: 'create_card', cardId: 'card.missing', to: { zone: 'deck', owner: 'controller' } }];
     }, /references missing card/],
     ['missing target reference', (input: ReturnType<typeof sourceInput>) => {
-      input.rules.archives[7]!.cards[0]!.abilities![2]!.effects![0]!.target = 'missing_target';
+      archiveById(input, 'servant.artoriac').cards[0]!.abilities![2]!.effects![0]!.target = 'missing_target';
     }, /references missing target/],
     ['invalid direct resource amount', (input: ReturnType<typeof sourceInput>) => {
       input.rules.archives.flatMap((archive) => archive.cards).find((card) => card.cardType === 'command_spell')!.abilities![0]!.effects![0]!.amount = 'four';
