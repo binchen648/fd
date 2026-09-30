@@ -3,7 +3,7 @@
   "packId": "fd-playtest-v1",
   "summary": {
     "masters": 7,
-    "servants": 16,
+    "servants": 17,
     "events": 20,
     "blockingIssues": 0
   },
@@ -1807,6 +1807,61 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "瓦尔基里.htm",
       "imagePath": "../../Fate_Domination-开发版/images/servants/瓦尔基里.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.vlad",
+      "displayName": "弗拉德三世",
+      "entityKind": "servant",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "弗拉德三世.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/弗拉德三世.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.vlad.overview",
+      "displayName": "弗拉德三世",
+      "entityKind": "servant_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "弗拉德三世.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/弗拉德三世.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.vlad.skill.sc-vlad-1",
+      "displayName": "护国鬼将",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "弗拉德三世.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/弗拉德三世.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.vlad.skill.sc-vlad-2",
+      "displayName": "极刑王",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "弗拉德三世.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/弗拉德三世.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.vlad.skill.sc-vlad-3",
+      "displayName": "战斗续行（Lancer Class）",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "弗拉德三世.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/弗拉德三世.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
       "issueCodes": []
