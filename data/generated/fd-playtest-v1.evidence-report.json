@@ -3,7 +3,7 @@
   "packId": "fd-playtest-v1",
   "summary": {
     "masters": 7,
-    "servants": 14,
+    "servants": 15,
     "events": 20,
     "blockingIssues": 0
   },
@@ -1664,6 +1664,61 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "崔斯坦.htm",
       "imagePath": "../../Fate_Domination-开发版/images/servants/崔斯坦.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.ushiwakamaru",
+      "displayName": "牛若丸",
+      "entityKind": "servant",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "牛若丸.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/牛若丸.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.ushiwakamaru.overview",
+      "displayName": "牛若丸",
+      "entityKind": "servant_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "牛若丸.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/牛若丸.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-1",
+      "displayName": "喜见城·冰柱削",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "牛若丸.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/牛若丸.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-2",
+      "displayName": "坛之浦·八艘跳",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "牛若丸.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/牛若丸.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.ushiwakamaru.skill.sc-ushiwakamaru-3",
+      "displayName": "骑乘（Rider Class）",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "牛若丸.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/牛若丸.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
       "issueCodes": []
