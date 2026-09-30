@@ -6771,7 +6771,7 @@ Acceptance synchronization:
 ## TASK P3-B-TRISTAN-OWNER-READINESS-CAPABILITY
 
 Owner: Codex B
-Status: `IMPLEMENTED_AWAITING_REVIEW`
+Status: `SYNCHRONIZED`
 Base: `f067d70514a702327d24b94d9bc1327eb3ae7881`
 Classification: complete currently discoverable Tristan owner-readiness/capability batch, permanently zero migration credit
 
@@ -6813,3 +6813,44 @@ Accounting / next step:
 Allowed verdicts:
 - `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 - `IMPLEMENTATION_NEEDS_REVISION`
+
+Acceptance synchronization:
+- PR #490 exact Candidate `5fb8f59539c17bc868e00d628d50ee5f05bf9812` received `IMPLEMENTATION_ACCEPTED_CANDIDATE` from fresh independent R after one transport-only BLOCKED attempt on the same unchanged Candidate.
+- Canonical successful same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/490#issuecomment-5903982665`.
+- Prior transport-only BLOCKED relay: `https://github.com/binchen648/fd/pull/490#issuecomment-5903923637`; it created no code finding and no successor Candidate.
+- Exact-Candidate Phase 3 Pre-Review Gate run `36666587166` / job `109732446443` succeeded.
+- Readiness remains permanently zero-credit; strict formal accounting stays `157/944`, remaining `787`.
+- Full-owner A-rescan confirms current canonical Tristan authoring contains only previously accepted FM04 `sc-tristan-3`; `sc-tristan-1` and `sc-tristan-2` remain absent and are the only newly creditable frozen identities.
+- No additional currently discoverable Tristan readiness gap remains beyond the accepted readiness family.
+- Acceptance synchronization report: `docs/reports/2026-09-30-p3-a-tristan-owner-readiness-capability-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-TRISTAN-COMPLETE-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: `5fb8f59539c17bc868e00d628d50ee5f05bf9812`
+Classification: formal owner-complete migration for current owner `servant.tristan`
+
+Formal owner scope:
+- `servant.tristan.skill.sc-tristan-1` — newly creditable;
+- `servant.tristan.skill.sc-tristan-2` — newly creditable;
+- `servant.tristan.skill.sc-tristan-3` — preservation-only / already accounted by accepted FM04 migration;
+- one existing owner archive, one formal Candidate, one PR, one fresh independent R, then one A-sync/accounting transaction.
+
+Accepted prerequisite:
+- readiness PR #490 exact Candidate `5fb8f59539c17bc868e00d628d50ee5f05bf9812`;
+- fresh-R verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE`;
+- canonical same-attempt bounded relay `https://github.com/binchen648/fd/pull/490#issuecomment-5903982665`;
+- accepted zero-credit A-sync/rescan confirms sc1 + sc2 are the complete newly creditable Tristan set and sc3 must be preserved without duplicate credit.
+
+Accounting boundary:
+- strict formal accounting remains `157/944`, remaining `787` before formal fresh R and A-sync/accounting;
+- no credit before exact formal Candidate receives `MIGRATION_ACCEPTED` plus subsequent A-sync/accounting;
+- accepted synchronized outcome may add exactly sc1 + sc2 and move strict formal accounting to `159/944`, remaining `785`;
+- sc3 must not be counted again;
+- do not advance owners before this Tristan owner batch is reviewed and synchronized.
+
+Allowed verdicts:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `MIGRATION_BLOCKED`
