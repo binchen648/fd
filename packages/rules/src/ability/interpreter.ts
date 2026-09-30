@@ -116,6 +116,7 @@ import {
   canExecuteBloodlustEffect, containsBloodlustPrivilegedNode, isAcceptedBloodlustAbility, isBloodlustRuntimeProvenanceValidForRestore,
   reconcileBloodlustVictoryPoints, resolveBloodlustEffect, resolveBloodlustManaPayment, bloodlustContributorPenalty, isBloodlustActionEffect, bloodlustVpGainAdjustment, buildBloodlustPlayContributionSeal,
 } from './bloodlust-cycle-capability';
+import { copyBloodlustContributionServerAuthority, rememberBloodlustContributionAuthority } from './bloodlust-contribution-authority';
 import {
   canExecuteVesselCycleEffect, containsVesselCyclePrivilegedNode, isAcceptedVesselCycleAbility,
   reconcileVesselCycleVictoryPoints, rememberVesselCyclePlayProvenance, resolveVesselCycleEffect,
@@ -3818,13 +3819,13 @@ export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decisi
     return !!expected && decision.min === expected.min && decision.max === expected.max && exactRestoreValue(decision.target, expected.target) && exactRestoreValue(decision.candidates, expected.candidates) && exactRestoreValue(decision.remainingEffects, expected.remainingEffects);
   } catch { return false; }
 }
-export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState): boolean {
+export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, options: { deferBloodlustContributionAuthority?: boolean } = {}): boolean {
   try {
     const r = runtime(s); const playerIds = new Set(s.players.map((candidate) => candidate.id));
     const locationIds = new Set<string>(s.map.locations.map((candidate) => candidate.id));
     const hasPlayers = (ids: readonly string[]) => ids.every((id) => playerIds.has(id)) && new Set(ids).size === ids.length;
     if (!isVesselCycleRuntimeProvenanceValidForRestore(s)) return false;
-    if (!isBloodlustRuntimeProvenanceValidForRestore(s)) return false;
+    if (!isBloodlustRuntimeProvenanceValidForRestore(s, !options.deferBloodlustContributionAuthority)) return false;
     if (!(r.pendingDelayedActivations ?? []).every((entry) => {
       const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
       const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
@@ -6578,17 +6579,21 @@ function processEvent(s: GameState, event: AbilityEvent): void {
 /** Trusted backend event hook. Events are not part of AbilityCommand. */
 export function processAbilityEvent(s: GameState, event: AbilityEvent): void {
   if (runtime(s).processedEvents.includes(event.id)) return;
-  const copy = structuredClone(s); copyBattlefieldAttackOfferServerAuthority(s, copy); processEvent(copy, event); runtime(copy).revision++;
+  const copy = structuredClone(s); copyBattlefieldAttackOfferServerAuthority(s, copy);
+  copyBloodlustContributionServerAuthority(s, copy); processEvent(copy, event); runtime(copy).revision++;
   Object.assign(s, copy); copyBattlefieldAttackOfferServerAuthority(copy, s);
+  copyBloodlustContributionServerAuthority(copy, s);
 }
 /** Trusted backend producer helper. Allocates event identity inside the same cloned transaction. */
 export function processAbilitySystemEvent(s: GameState, label: string, event: Omit<AbilityEvent, 'id'>): void {
   const copy = structuredClone(s);
   copyBattlefieldAttackOfferServerAuthority(s, copy);
+  copyBloodlustContributionServerAuthority(s, copy);
   processEvent(copy, { ...event, id: nextId(copy, label) });
   runtime(copy).revision++;
   Object.assign(s, copy);
   copyBattlefieldAttackOfferServerAuthority(copy, s);
+  copyBloodlustContributionServerAuthority(copy, s);
 }
 export function advanceAbilityPhase(
   s: GameState,
@@ -6603,6 +6608,7 @@ export function advanceAbilityPhase(
   const copy = structuredClone(s);
   copyBattleCloseDrawPlayServerAuthority(s, copy);
   copyBattlefieldAttackOfferServerAuthority(s, copy);
+  copyBloodlustContributionServerAuthority(s, copy);
   const startsNewRound = round > previousRound;
   if (startsNewRound) {
     runtime(copy).battleCloseDrawImmediatePlayHistory = [];
@@ -6626,6 +6632,7 @@ export function advanceAbilityPhase(
   processEvent(copy, { id: nextId(copy, 'phase'), type }); runtime(copy).revision++; Object.assign(s, copy);
   copyBattleCloseDrawPlayServerAuthority(copy, s);
   copyBattlefieldAttackOfferServerAuthority(copy, s);
+  copyBloodlustContributionServerAuthority(copy, s);
 }
 
 export function projectAbilityState(s: GameState, viewerId: string): AbilityPlayerView {
@@ -7620,7 +7627,8 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     const playCounts = runtime(s).cardPlayCountByInstance ??= {};
     playCounts[c.cardInstanceId] = (playCounts[c.cardInstanceId] ?? 0) + 1;
     const contributionSeal = c.manaContributions?.length ? buildBloodlustPlayContributionSeal(s, playerId, c.manaContributions) : undefined;
-    runtime(s).cardState[c.cardInstanceId] = { active: !c.faceDown, faceDown: !!c.faceDown, playedRound: s.round.roundNumber, paidManaOnPlay: paidCostByCard.get(c.cardInstanceId) ?? 0, ...(c.manaContributions?.length ? { playManaContributions: c.manaContributions.map((entry) => ({ playerId: entry.contributorPlayerId, amount: entry.amount })), ...(contributionSeal ? { playManaContributionSeal: contributionSeal } : {}) } : {}) };
+    runtime(s).cardState[c.cardInstanceId] = { active: !c.faceDown, faceDown: !!c.faceDown, playedRound: s.round.roundNumber, paidManaOnPlay: paidCostByCard.get(c.cardInstanceId) ?? 0, ...(c.manaContributions?.length ? { playManaContributions: c.manaContributions.map((entry) => ({ playerId: entry.contributorPlayerId, amount: entry.amount })) } : {}) };
+    rememberBloodlustContributionAuthority(s, contributionSeal ? { cardInstanceId: c.cardInstanceId, ...contributionSeal } : undefined, c.cardInstanceId);
     if (!c.faceDown) rememberVesselCyclePlayProvenance(s, playerId, c.cardInstanceId, prePaymentMana);
     if (c.faceDown) card(s, c.cardInstanceId).visibility = { scope: 'owner_only', ownerPlayerId: playerId };
 
@@ -7685,9 +7693,11 @@ export function playAbilityCardBatch(s: GameState, playerId: string, choices: Om
   if (r.pendingDecision || r.responseWindows.length || r.hostRequests.length) reject('pending_resolution', 'Resolve current decision first');
   const copy = structuredClone(s);
   copyBattlefieldAttackOfferServerAuthority(s, copy);
+  copyBloodlustContributionServerAuthority(s, copy);
   playBatch(copy, playerId, choices.map(c => ({ ...c, type: 'play_card' })));
   runtime(copy).revision++; Object.assign(s, copy);
   copyBattlefieldAttackOfferServerAuthority(copy, s);
+  copyBloodlustContributionServerAuthority(copy, s);
 }
 /** Transactional mutation of server state; only a safe DTO is returned, even on rejection. */
 export function dispatchAbilityCommand(s: GameState, playerId: string, command: AbilityCommand): DispatchResult {
@@ -7695,11 +7705,13 @@ export function dispatchAbilityCommand(s: GameState, playerId: string, command: 
   copyOpponentCloseToOneServerAuthority(s, copy);
   copyBattleCloseDrawPlayServerAuthority(s, copy);
   copyBattlefieldAttackOfferServerAuthority(s, copy);
+  copyBloodlustContributionServerAuthority(s, copy);
   try {
     dispatch(copy, playerId, command); runtime(copy).revision++; Object.assign(s, copy);
     copyOpponentCloseToOneServerAuthority(copy, s);
     copyBattleCloseDrawPlayServerAuthority(copy, s);
     copyBattlefieldAttackOfferServerAuthority(copy, s);
+  copyBloodlustContributionServerAuthority(copy, s);
     return { ok: true, view: projectAbilityState(s, playerId),
       events: runtime(s).events.slice(before).filter(e => !e.visibility || e.visibility === playerId).map(({ visibility: _, ...e }) => e),
       calculations: runtime(s).calculations.slice(beforeCalculations).filter(c => c.controllerId === playerId).flatMap(c => c.lines) };
@@ -7716,6 +7728,7 @@ export function dispatchAbilityCommand(s: GameState, playerId: string, command: 
 export function createAbilitySession(initialState: GameState) {
   const authority = structuredClone(initialState);
   copyBattlefieldAttackOfferServerAuthority(initialState, authority);
+  copyBloodlustContributionServerAuthority(initialState, authority);
   return {
     dispatch: (authenticatedPlayerId: string, command: AbilityCommand) => dispatchAbilityCommand(authority, authenticatedPlayerId, command),
     view: (authenticatedPlayerId: string) => projectAbilityState(authority, authenticatedPlayerId),

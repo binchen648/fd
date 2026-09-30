@@ -7631,3 +7631,7 @@ Required disposition:
 - Successor closes all three P1s together: same-transaction VP half-floor at both authoritative VP mutation routes; all-prefix Bloodlust restore-family validation; server-owned physical mana-contribution seal required for restore and ascension plunder.
 - Successor verification: direct closure `16/16 PASS`; broad affected `250/251` with one parallel-only 5s MatchSession timeout, exact isolated rerun `11/11 PASS`; toolchain/typecheck/content/generated/identity/diff-check green.
 - Current disposition: freeze one exact successor Candidate on PR #507 and request one fresh independent R. No Akiha formal consumer migration before successor acceptance + FORMAL A-sync/full-owner rescan.
+- Successor 1f7f60f65b614a7d9f23db78f926776e4bb4e02 -> IMPLEMENTATION_NEEDS_REVISION; canonical relay https://github.com/binchen648/fd/pull/507#issuecomment-5921120983.
+- Remaining P1 closed by replacing serialized playManaContributionSeal with hidden WeakMap server authority plus secret-backed HMAC persistence/restore; visible contribution fields alone no longer authorize plunder.
+- Second-successor verification: Akiha focused 12/12, shared non-MatchSession 189/189, MatchSession 33/33, restore 11/11; unique affected 233/233 PASS; static/content/generated/identity/diff gates green.
+- Current disposition: freeze one new exact successor Candidate on PR #507 and request one fresh independent R; readiness remains zero-credit.

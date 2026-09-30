@@ -1,5 +1,6 @@
 import type { GameState } from '../schema/game';
 import type { AuthoringAbility, ManaContributionChoice, PlayerId, RuleNode } from './types';
+import { getBloodlustContributionAuthority, isBloodlustContributionServerAuthorityConsistent } from './bloodlust-contribution-authority';
 
 export const BLOODLUST_INITIALIZE_EFFECT = 'bloodlust_initialize' as const;
 export const BLOODLUST_CAGING_CONTRIBUTION_EFFECT = 'bloodlust_same_battlefield_mana_contribution' as const;
@@ -100,7 +101,7 @@ export function commitBloodlustManaPayment(s:GameState,beneficiary:PlayerId,plan
   for(const part of plan.contributions){const contributor=s.players.find(p=>p.id===part.contributorPlayerId);if(!contributor||contributor.mana<part.amount)throw new Error('BLOODLUST_CONTRIBUTOR_STATE_CHANGED');}
   for(const part of plan.contributions){const contributor=s.players.find(p=>p.id===part.contributorPlayerId)!;contributor.mana-=part.amount;markBloodlustContribution(s,beneficiary,part.contributorPlayerId,part.resourceKey);}
 }
-export function bloodlustContributorPenalty(s:GameState,p:PlayerId):number{ let total=0; const r=runtime(s); if(!r)return 0; for(const source of s.cards){if(!['field','attack_area'].includes(source.zone))continue;const st=r.cardState[source.instanceId];if(!st?.active||st.faceDown)continue;const def=r.pack.cards[source.definitionId];if(!def)continue;for(const ability of def.abilities){const e=ability.effects[0];if(!e||!isAcceptedBloodlustAbility(ability)||!isBloodlustAscensionEffect(e))continue;const resource=String(e.resourceKey);if(bloodlustTransformed(s,source.controllerPlayerId,resource))continue;const seal=st.playManaContributionSeal;if(!seal||seal.beneficiaryPlayerId!==source.controllerPlayerId)continue;const contributors=[...new Set(seal.contributors.map(x=>x.playerId))];if(contributors.includes(p))total+=Number(e.contributorPowerPenalty);}}return total; }
+export function bloodlustContributorPenalty(s:GameState,p:PlayerId):number{ let total=0; const r=runtime(s); if(!r)return 0; for(const source of s.cards){if(!['field','attack_area'].includes(source.zone))continue;const st=r.cardState[source.instanceId];if(!st?.active||st.faceDown)continue;const def=r.pack.cards[source.definitionId];if(!def)continue;for(const ability of def.abilities){const e=ability.effects[0];if(!e||!isAcceptedBloodlustAbility(ability)||!isBloodlustAscensionEffect(e))continue;const resource=String(e.resourceKey);if(bloodlustTransformed(s,source.controllerPlayerId,resource))continue;const seal=getBloodlustContributionAuthority(s,source.instanceId);if(!seal||seal.beneficiaryPlayerId!==source.controllerPlayerId)continue;const contributors=[...new Set(seal.contributors.map(x=>x.playerId))];if(contributors.includes(p))total+=Number(e.contributorPowerPenalty);}}return total; }
 export function bloodlustTransformIfEligible(s:GameState,p:PlayerId,sourceCardId:string,a:AuthoringAbility):boolean{ const e=a.effects[0]!; if(!isBloodlustTransformEffect(e))return false; const resource=String(e.resourceKey); if(bloodlustTransformed(s,p,resource)||bloodlustValue(s,p,resource)<Number(e.threshold))return false; const b=bag(s,p); const player=s.players.find(x=>x.id===p); if(!player)return false; b[k(resource,'transformed')]=true;b[k(resource,'value')]=Number(e.lockValue);b[k(resource,'transformSource')]=sourceCardId;b[k(resource,'transformAbility')]=a.id;b[k(resource,'vpBaseline')]=player.vp; const carrier=player as unknown as {commandSpells?:number}; const before=Number(carrier.commandSpells??3); if(Number.isSafeInteger(before)&&before>0){carrier.commandSpells=0;runtime(s)?.events.push({type:'command_seals_adjusted',playerId:p,resource:'command_seals',delta:-before,before,after:0});} return true; }
 export function useBloodlustAction(s:GameState,p:PlayerId,sourceCardId:string,a:AuthoringAbility):boolean{ const e=a.effects[0]!; if(!isBloodlustActionEffect(e))return false; const resource=String(e.resourceKey); if(bloodlustTransformed(s,p,resource)||bloodlustValue(s,p,resource)>=Number(e.maximumResourceExclusive))return false; const player=s.players.find(x=>x.id===p); if(!player)return false; player.mana+=Number(e.manaGain); setBloodlustValue(s,p,resource,bloodlustValue(s,p,resource)+Number(e.resourceGain)); const r=runtime(s); if(r){r.roundPlayerPowerAdjustments??=[];r.roundPlayerPowerAdjustments=r.roundPlayerPowerAdjustments.filter(x=>!(x.sourceCardId===sourceCardId&&x.abilityId===a.id&&x.round===s.round.roundNumber));r.roundPlayerPowerAdjustments.push({playerId:p,amount:Number(e.roundPowerGain),round:s.round.roundNumber,sourceCardId,abilityId:a.id});} const rk=k(resource,'decayBlocked');bag(s,p)[rk]=true;rounds(s,p)[rk]=s.round.roundNumber; return true; }
 export function settleBloodlustDecay(s:GameState,p:PlayerId,a:AuthoringAbility):number{ const e=a.effects[0]!; if(!isBloodlustCombatDecayEffect(e))return 0; const resource=String(e.resourceKey); if(bloodlustTransformed(s,p,resource))return 0; const blocked=rounds(s,p)[k(resource,'decayBlocked')]===s.round.roundNumber; if(blocked)return 0; const player=s.players.find(x=>x.id===p);const r=runtime(s); if(!player||!r)return 0; let x=r.randomState>>>0;x^=x<<13;x^=x>>>17;x^=x<<5;r.randomState=x>>>0; const span=Number(e.maxLoss)-Number(e.minLoss)+1; const roll=Number(e.minLoss)+(r.randomState%span); const loss=roll*(player.locationId==='magic_workshop'?Number(e.workshopMultiplier):1); setBloodlustValue(s,p,resource,Math.max(0,bloodlustValue(s,p,resource)-loss)); return loss; }
@@ -114,7 +115,7 @@ function bloodlustResourceFromPrefixedKey(name:string):string|undefined{
   const contrib=tail.lastIndexOf(':contrib:'); if(contrib>0&&tail.slice(contrib+9).length>0)return tail.slice(0,contrib);
   return undefined;
 }
-export function isBloodlustRuntimeProvenanceValidForRestore(s:GameState):boolean{
+export function isBloodlustRuntimeProvenanceValidForRestore(s:GameState, requireContributionAuthority=true):boolean{
   const r=runtime(s); if(!r)return true; const playerIds=new Set(s.players.map(p=>p.id));
   for(const p of s.players){
     const b=r.structuredPlayerFlagsByPlayer?.[p.id]??{}; const roundBag=r.structuredRoundFlagKeysByPlayer?.[p.id]??{};
@@ -143,16 +144,18 @@ export function isBloodlustRuntimeProvenanceValidForRestore(s:GameState):boolean
     }
   }
   for(const [instanceId,st] of Object.entries(r.cardState)){
-    if(!st.playManaContributions?.length){if(st.playManaContributionSeal!==undefined)return false;continue;} const physical=s.cards.find(c=>c.instanceId===instanceId); if(!physical)return false;
+    if(!st.playManaContributions?.length)continue; const physical=s.cards.find(c=>c.instanceId===instanceId); if(!physical)return false;
     const ids=st.playManaContributions.map(x=>x.playerId); if(new Set(ids).size!==ids.length)return false;
     if(st.playManaContributions.some(x=>!playerIds.has(x.playerId)||x.playerId===physical.controllerPlayerId||x.amount!==1))return false;
-    const seal=st.playManaContributionSeal; if(!seal||seal.beneficiaryPlayerId!==physical.controllerPlayerId||seal.round!==st.playedRound||seal.contributors.length!==st.playManaContributions.length)return false;
+    if(!requireContributionAuthority)continue;
+    const seal=getBloodlustContributionAuthority(s,instanceId); if(!seal||seal.beneficiaryPlayerId!==physical.controllerPlayerId||seal.round!==st.playedRound||seal.contributors.length!==st.playManaContributions.length)return false;
     if(seal.contributors.some((x,i)=>x.playerId!==st.playManaContributions![i]!.playerId||x.amount!==1))return false;
     const providerPhysical=s.cards.find(c=>c.instanceId===seal.providerSourceCardId&&c.ownerPlayerId===seal.beneficiaryPlayerId&&c.controllerPlayerId===seal.beneficiaryPlayerId&&presentSourceZones(c.zone));
     const providerAbility=providerPhysical?r.pack.cards[providerPhysical.definitionId]?.abilities.find(a=>a.id===seal.providerAbilityId):undefined;
     if(!providerPhysical||!providerAbility||!isAcceptedBloodlustAbility(providerAbility)||!isBloodlustCagingContributionEffect(providerAbility.effects[0]!)||String(providerAbility.effects[0]!.resourceKey)!==seal.resourceKey)return false;
     for(const x of seal.contributors){if(rounds(s,seal.beneficiaryPlayerId)[k(seal.resourceKey,'contrib:'+x.playerId)]!==seal.round||bag(s,seal.beneficiaryPlayerId)[k(seal.resourceKey,'contrib:'+x.playerId)]!==true)return false;}
   }
+  if(requireContributionAuthority&&!isBloodlustContributionServerAuthorityConsistent(s))return false;
   for(const [pid,roundsByKey] of Object.entries(r.structuredRoundFlagKeysByPlayer??{})){
     if(!playerIds.has(pid))return false; for(const [name,round] of Object.entries(roundsByKey)){if(name.startsWith(PREFIX)&&(!Number.isSafeInteger(round)||round<1||round>s.round.roundNumber))return false;}
   }
