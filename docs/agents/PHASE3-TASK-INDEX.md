@@ -6938,3 +6938,43 @@ Accounting / next step:
 Allowed verdicts:
 - `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 - `IMPLEMENTATION_NEEDS_REVISION`
+
+Acceptance synchronization:
+- PR #493 exact Candidate `2cc5fe6a13d6519f564076c5e1b7897b062f513d` received `IMPLEMENTATION_ACCEPTED_CANDIDATE` from fresh independent R.
+- Canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/493#issuecomment-5906025243`.
+- Exact-Candidate Phase 3 Pre-Review Gate run `36681315366` / job `109777161286` succeeded.
+- Readiness remains permanently zero-credit; strict formal accounting stays `159/944`, remaining `785`.
+- Full-owner A-rescan confirms current canonical Ushiwakamaru authoring contains only accepted FM01/R26 `sc-ushiwakamaru-3`; `sc-ushiwakamaru-1` and `sc-ushiwakamaru-2` remain absent and are the only newly creditable frozen identities.
+- No additional currently discoverable Ushiwakamaru readiness gap remains beyond the accepted readiness family.
+- Acceptance synchronization report: `docs/reports/2026-09-30-p3-a-ushiwakamaru-owner-readiness-capability-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-USHIWAKAMARU-COMPLETE-MIGRATION
+
+Owner: Codex S
+Status: `READY`
+Base: `PENDING_A_SYNC_COMMIT`
+Classification: formal owner-complete migration for current owner `servant.ushiwakamaru`
+
+Formal owner scope:
+- `servant.ushiwakamaru.skill.sc-ushiwakamaru-1` — newly creditable;
+- `servant.ushiwakamaru.skill.sc-ushiwakamaru-2` — newly creditable;
+- `servant.ushiwakamaru.skill.sc-ushiwakamaru-3` — preservation-only / already accounted by accepted FM01/R26 migration;
+- one existing owner archive, one formal Candidate, one PR, one fresh independent R, then one A-sync/accounting transaction.
+
+Accepted prerequisite:
+- readiness PR #493 exact Candidate `2cc5fe6a13d6519f564076c5e1b7897b062f513d`;
+- fresh-R verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE`;
+- canonical same-attempt bounded relay `https://github.com/binchen648/fd/pull/493#issuecomment-5906025243`;
+- accepted zero-credit A-sync/rescan confirms sc1 + sc2 are the complete newly creditable Ushiwakamaru set and sc3 must be preserved without duplicate credit.
+
+Accounting boundary:
+- strict formal accounting remains `159/944`, remaining `785` before formal fresh R and A-sync/accounting;
+- no credit before exact formal Candidate receives `MIGRATION_ACCEPTED` plus subsequent A-sync/accounting;
+- accepted synchronized outcome may add exactly sc1 + sc2 and move strict formal accounting to `161/944`, remaining `783`;
+- sc3 must not be counted again;
+- do not advance owners before this Ushiwakamaru owner batch is reviewed and synchronized.
+
+Allowed verdicts:
+- `MIGRATION_ACCEPTED`
+- `MIGRATION_NEEDS_REVISION`
+- `MIGRATION_BLOCKED`
