@@ -71,7 +71,7 @@ import {
 import {
   VESSEL_CYCLE_INITIALIZE_EFFECT, VESSEL_CYCLE_SCHEDULE_EFFECT, VESSEL_CYCLE_RESOLVE_EFFECT,
   VESSEL_CYCLE_RECON_BONUS_EFFECT, VESSEL_CYCLE_SKILL_AURA_EFFECT, VESSEL_CYCLE_PLAY_EXCEPTION_EFFECT,
-  VESSEL_CYCLE_DOUBLE_ACTIVE_EFFECT, VESSEL_CYCLE_PLAYED_DEFINITION_EFFECT, VESSEL_CYCLE_JOIN_LOCATION_EFFECT, VESSEL_CYCLE_ASCENSION_EFFECT,
+  VESSEL_CYCLE_DOUBLE_ACTIVE_EFFECT, VESSEL_CYCLE_PLAYED_DEFINITION_EFFECT, VESSEL_CYCLE_JOIN_LOCATION_EFFECT, VESSEL_CYCLE_ASCENSION_EFFECT, VESSEL_CYCLE_GAME_START_BATTLEFIELD_PROVISION_EFFECT,
   containsVesselCyclePrivilegedNode, isAcceptedVesselCycleAbility,
 } from './vessel-cycle-capability';
 import { COMBAT_REWARD_DISTRIBUTION_RULE, isAcceptedFullRewardEachAbility } from './combat-reward-distribution';
@@ -254,7 +254,7 @@ const supportedTypes = new Set([
   PAY_MANA_GAIN_REACTION_COUNTER_EFFECT, DOUBLE_SOURCE_BASE_POWER_IF_MOVED_EFFECT,
   VESSEL_CYCLE_INITIALIZE_EFFECT, VESSEL_CYCLE_SCHEDULE_EFFECT, VESSEL_CYCLE_RESOLVE_EFFECT,
   VESSEL_CYCLE_RECON_BONUS_EFFECT, VESSEL_CYCLE_SKILL_AURA_EFFECT, VESSEL_CYCLE_PLAY_EXCEPTION_EFFECT,
-  VESSEL_CYCLE_DOUBLE_ACTIVE_EFFECT, VESSEL_CYCLE_PLAYED_DEFINITION_EFFECT, VESSEL_CYCLE_JOIN_LOCATION_EFFECT, VESSEL_CYCLE_ASCENSION_EFFECT,
+  VESSEL_CYCLE_DOUBLE_ACTIVE_EFFECT, VESSEL_CYCLE_PLAYED_DEFINITION_EFFECT, VESSEL_CYCLE_JOIN_LOCATION_EFFECT, VESSEL_CYCLE_ASCENSION_EFFECT, VESSEL_CYCLE_GAME_START_BATTLEFIELD_PROVISION_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -308,7 +308,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'toZone', 'provenance', 'revealMax', 'power', 'transferVp', 'playCost', 'mode', 'generator', 'dedupeSamePlayer',
   'cycleKey', 'initialVessel', 'middleVessel', 'finalVessel', 'firstMaxVp', 'middleMaxVp', 'firstVpMultiplier', 'middleVpDivisor',
   'middleVpRounding', 'repeatPenaltyVp', 'lossMargin', 'temporaryDefinitionId', 'ascensionDefinitionId', 'temporaryKeep', 'vessel', 'requiredDefinitionId', 'targetDefinitionId',
-  'targetCardType', 'costDelta', 'powerDelta', 'requirementType', 'lowManaThreshold', 'lowManaPowerBonus', 'normalClose', 'createTemporaryAtControllerLocation', 'requiresPositiveTerrain',
+  'targetCardType', 'costDelta', 'powerDelta', 'requirementType', 'lowManaThreshold', 'lowManaPowerBonus', 'normalClose', 'createTemporaryAtControllerLocation', 'requiresPositiveTerrain', 'temporaryAtEachBattlefield',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */

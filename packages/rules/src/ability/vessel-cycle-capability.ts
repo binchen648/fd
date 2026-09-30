@@ -1,4 +1,5 @@
 import type { GameState } from '../schema/game';
+import { getEnabledLocations } from '../core/map-engine';
 import type { AuthoringAbility, EffectContext, PlayerId, RuleNode } from './types';
 import { terrainAdvantageAtLocation } from './terrain-advantage-override';
 
@@ -12,13 +13,14 @@ export const VESSEL_CYCLE_DOUBLE_ACTIVE_EFFECT = 'vessel_cycle_double_active_def
 export const VESSEL_CYCLE_PLAYED_DEFINITION_EFFECT = 'vessel_cycle_played_definition_lifecycle' as const;
 export const VESSEL_CYCLE_JOIN_LOCATION_EFFECT = 'vessel_cycle_join_location_definition_cards' as const;
 export const VESSEL_CYCLE_ASCENSION_EFFECT = 'vessel_cycle_ascension_round_start' as const;
+export const VESSEL_CYCLE_GAME_START_BATTLEFIELD_PROVISION_EFFECT = 'vessel_cycle_game_start_battlefield_provision' as const;
 
 const PREFIX = '__fd_vessel_cycle:';
 const privilegedTypes = new Set<string>([
   VESSEL_CYCLE_INITIALIZE_EFFECT, VESSEL_CYCLE_SCHEDULE_EFFECT, VESSEL_CYCLE_RESOLVE_EFFECT,
   VESSEL_CYCLE_RECON_BONUS_EFFECT, VESSEL_CYCLE_SKILL_AURA_EFFECT, VESSEL_CYCLE_PLAY_EXCEPTION_EFFECT,
   VESSEL_CYCLE_DOUBLE_ACTIVE_EFFECT, VESSEL_CYCLE_PLAYED_DEFINITION_EFFECT,
-  VESSEL_CYCLE_JOIN_LOCATION_EFFECT, VESSEL_CYCLE_ASCENSION_EFFECT,
+  VESSEL_CYCLE_JOIN_LOCATION_EFFECT, VESSEL_CYCLE_ASCENSION_EFFECT, VESSEL_CYCLE_GAME_START_BATTLEFIELD_PROVISION_EFFECT,
 ]);
 
 function exactKeys(value: RuleNode, allowed: readonly string[]): boolean {
@@ -66,6 +68,11 @@ function ascensionShape(a: AuthoringAbility): boolean {
     (t.constraints[0] as RuleNode).type === 'any_battlefield' && exactKeys(t.constraints[0] as RuleNode, ['type']);
 }
 
+export function isVesselCycleGameStartBattlefieldProvisionEffect(e: RuleNode): boolean {
+  return e.type === VESSEL_CYCLE_GAME_START_BATTLEFIELD_PROVISION_EFFECT && key(e.cycleKey) && id(e.targetDefinitionId) &&
+    e.temporaryAtEachBattlefield === true &&
+    exactKeys(e, ['type','cycleKey','targetDefinitionId','temporaryAtEachBattlefield']);
+}
 export function isVesselCycleInitializeEffect(e: RuleNode): boolean {
   return e.type === VESSEL_CYCLE_INITIALIZE_EFFECT && key(e.cycleKey) && id(e.initialVessel) && id(e.middleVessel) && id(e.finalVessel) &&
     e.firstMaxVp === 5 && e.middleMaxVp === 10 && e.firstVpMultiplier === 2 && e.middleVpDivisor === 2 && e.middleVpRounding === 'ceil' &&
@@ -108,6 +115,7 @@ export function isVesselCycleAscensionEffect(e: RuleNode): boolean {
 
 export function isAcceptedVesselCycleAbility(a: AuthoringAbility): boolean {
   const e=a.effects[0]; if(!e) return false;
+  if (isVesselCycleGameStartBattlefieldProvisionEffect(e)) return forced(a,'game_start');
   if (isVesselCycleInitializeEffect(e)) return forced(a,'game_start');
   if (isVesselCycleScheduleEffect(e)) return forced(a,'after_controller_loses_battle');
   if (isVesselCycleResolveEffect(e)) return forced(a,'round_start');
@@ -206,6 +214,7 @@ function createTemp(state:GameState,p:PlayerId,cycle:string,definitionId:string,
 function closeToSkill(state:GameState,instanceId:string){ const c=state.cards.find(x=>x.instanceId===instanceId); const st=state.abilityRuntime?.cardState[instanceId]; if(!c||!st)return; c.zone='skill';c.controllerPlayerId=c.ownerPlayerId;c.visibility={scope:'owner_only',ownerPlayerId:c.ownerPlayerId};st.active=false;st.faceDown=false;delete st.basePowerMultiplier; }
 
 export function canExecuteVesselCycleEffect(state:GameState,ctx:EffectContext,e:RuleNode):boolean {
+  if(isVesselCycleGameStartBattlefieldProvisionEffect(e)) return true;
   if(!key(e.cycleKey)||!provider(state,ctx.controllerId,String(e.cycleKey)))return false;
   if(isVesselCycleDoubleActiveEffect(e)) return current(state,ctx.controllerId,String(e.cycleKey))===e.vessel && state.cards.some(c=>c.controllerPlayerId===ctx.controllerId&&c.definitionId===e.targetDefinitionId&&c.zone==='attack_area'&&state.abilityRuntime?.cardState[c.instanceId]?.active===true);
   if(isVesselCycleAscensionEffect(e)) return boolFlag(state,ctx.controllerId,String(e.cycleKey),'ultimate') && Number(flags(state,ctx.controllerId)[k(String(e.cycleKey),'climaxRound')]??0)!==state.round.roundNumber && ((state as unknown as {modeState?:{currentSituationIsClimax?:boolean}}).modeState?.currentSituationIsClimax===true || state.round.roundNumber>=9);
@@ -215,6 +224,16 @@ export function canExecuteVesselCycleEffect(state:GameState,ctx:EffectContext,e:
 export function resolveVesselCycleEffect(state:GameState,ctx:EffectContext,a:AuthoringAbility,e:RuleNode):boolean {
   if(!privilegedTypes.has(String(e.type)))return false; if(!isAcceptedVesselCycleAbility(a))throw new Error('VESSEL_CYCLE_ABILITY_INVALID');
   const p=state.players.find(x=>x.id===ctx.controllerId); if(!p)throw new Error('VESSEL_CYCLE_CONTROLLER_MISSING');
+  if(isVesselCycleGameStartBattlefieldProvisionEffect(e)){
+    const cycle=String(e.cycleKey), definitionId=String(e.targetDefinitionId);
+    const battlefields=getEnabledLocations(state.map,state.locationConfig).filter((location)=>location.tags.includes('battlefield'));
+    for(const location of battlefields){
+      const existing=state.cards.filter((card)=>card.ownerPlayerId===p.id&&card.definitionId===definitionId&&card.generatedBy===ctx.sourceCardId&&card.zone==='field'&&state.abilityRuntime?.cardState[card.instanceId]?.placedAtLocationId===location.id);
+      if(existing.length>1) throw new Error('VESSEL_CYCLE_INITIAL_BATTLEFIELD_DUPLICATE');
+      if(existing.length===0) createTemp(state,p.id,cycle,definitionId,ctx.sourceCardId,location.id);
+    }
+    return true;
+  }
   if(isVesselCycleInitializeEffect(e)){
     const bag=flags(state,p.id), cycle=String(e.cycleKey); bag[k(cycle,'current')]=String(e.initialVessel);bag[k(cycle,'points')]=0;bag[k(cycle,'vpBaseline')]=p.vp;bag[k(cycle,'providerSource')]=ctx.sourceCardId;bag[k(cycle,'providerAbility')]=ctx.abilityId;setVisited(state,p.id,cycle,String(e.initialVessel));return true;
   }
