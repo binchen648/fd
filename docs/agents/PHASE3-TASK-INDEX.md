@@ -1,4 +1,4 @@
-﻿# Phase 3 Task Index
+# Phase 3 Task Index
 
 - Version: P3-TI-1.39
 - Status: ACTIVE
@@ -7431,7 +7431,7 @@ Revision evidence for `P3-B-AKASHA-OWNER-READINESS-CAPABILITY` after predecessor
 ## TASK P3-S-OWNER-AKASHA-COMPLETE-MIGRATION
 
 Owner: Codex S / FORMAL
-Status: `READY`
+Status: `BLOCKED_BY_READINESS_FOLLOWUP`
 Classification: formal owner-complete migration for `master.akasha`
 
 Frozen owner scope:
@@ -7504,3 +7504,47 @@ Detailed report: `docs/reports/2026-10-01-p3-b-akasha-owner-readiness-location-p
 - Readiness remains zero-credit; strict accounting stays `173/944`, remaining `771`.
 - `P3-S-OWNER-AKASHA-COMPLETE-MIGRATION` is unblocked and `READY`; all 8 frozen identities must migrate together in one formal Candidate / one PR / one fresh R / one A-sync-accounting.
 - Detailed A-sync report: `docs/reports/2026-10-01-p3-a-akasha-owner-readiness-location-provisioning-acceptance-synchronization.md`.
+### Akasha formal-preflight seven-player master-pool correction
+
+- Formal materialization from exact A-sync Base `b2b224f17c1fb6cd835654d7b80ce54bd6d0b05c` successfully loaded the 8-identity Akasha consumer and content pipeline, then exposed one additional identity-free runtime gap: `MatchSession.buildInitialState()` mapped the complete playable Master pool to player IDs while the session creates exactly seven active seats.
+- The pre-existing seven-master pack masked this coupling. Adding Akasha as the eighth playable Master caused an eighth pairing (`p8`) to target no active player and fail before normal session startup.
+- The partially materialized formal consumer was preserved locally at `4e35b7d4cf35f76e8e71caff47b648e3c7c10e50`; it was not pushed, no PR was created, and it is not a formal Candidate.
+- Formal Akasha migration is paused again before Candidate publication; no migration credit was granted.
+- New bounded zero-credit follow-up task: `P3-B-AKASHA-OWNER-READINESS-SEVEN-PLAYER-MASTER-POOL`.
+
+## TASK P3-B-AKASHA-OWNER-READINESS-SEVEN-PLAYER-MASTER-POOL
+
+Owner: Codex B / FORMAL readiness follow-up
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Classification: bounded zero-credit generic seven-player playable-character pool closure discovered by Akasha formal preflight
+
+Exact Base:
+- `b2b224f17c1fb6cd835654d7b80ce54bd6d0b05c` (accepted Akasha location-provisioning readiness A-sync; strict accounting `173/944`, remaining `771`).
+
+Scope boundary:
+- keep the product/session player boundary exactly seven seats (`p1..p7`);
+- when playable Master/Servant pools contain more than seven definitions, deterministically seeded-shuffle and select exactly seven of each;
+- fail closed when either playable pool contains fewer than seven definitions;
+- do not mutate the caller pools;
+- do not introduce owner/card-name/printed-text routing;
+- no `data/authoring/**` delta, no Akasha consumer materialization in this readiness Candidate, permanently zero migration credit.
+
+Verification:
+- seven-player pool focused regression `3/3 PASS`;
+- MatchSession `33/33 PASS`;
+- MatchSession restore regressions `11/11 PASS`;
+- complex shared regressions `38/38 PASS`;
+- executable-card-pack `50/50 PASS`;
+- playtest-pack-loader `21/21 PASS`;
+- affected aggregate **`156/156 PASS`**;
+- `FD_TOOLCHAIN_OK`; typecheck PASS;
+- content validate/compile PASS (`7 masters / 19 servants / 20 events / 0 blocking issues`);
+- generated determinism PASS with unchanged hashes;
+- `data/authoring/**` delta EMPTY; production Akasha identity audit CLEAN; `git diff --check` PASS.
+
+Accounting boundary:
+- readiness remains permanently zero-credit;
+- strict formal accounting remains `173/944`, remaining `771`;
+- `P3-S-OWNER-AKASHA-COMPLETE-MIGRATION` remains blocked until exact follow-up acceptance + FORMAL A-sync/full-owner rescan.
+
+Detailed report: `docs/reports/2026-10-01-p3-b-akasha-owner-readiness-seven-player-master-pool-result.md`.
