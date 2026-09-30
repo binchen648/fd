@@ -272,6 +272,12 @@ export interface DeploymentTerrainVpChoiceInteractionMetadata {
   maxSpend: 5; options: string[];
   constraints: { kind: 'target'; targetKind: 'choice'; min: 1; max: 1; distinct: true };
 }
+export interface OneShotAbilityReuseChoiceInteractionMetadata {
+  kind: 'one_shot_ability_reuse_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; targetCardId: string; candidateAbilityIds: string[];
+  constraints: { kind: 'target'; targetKind: 'ability'; min: 1; max: 1; distinct: true };
+}
 export interface PendingBattlefieldAttackOfferTransaction {
   transactionId: string; controllerId: PlayerId; sourceCardId: string; abilityId: string; round: number; battlefieldId: string;
   orderPlayerIds: PlayerId[]; nextIndex: number; playedPlayerIds: PlayerId[];
@@ -298,7 +304,7 @@ export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetad
   SealedCardDispositionInteractionMetadata | BattlePlunderChoiceInteractionMetadata | RecordedRemovedReplayChoiceInteractionMetadata |
   BattleLuckDiscardInteractionMetadata | BattleOpponentCloseRewardInteractionMetadata |
   BattleDrawnCardOptionalPlayInteractionMetadata | BattlefieldAttackOfferChoiceInteractionMetadata |
-  DeploymentTerrainVpChoiceInteractionMetadata;
+  DeploymentTerrainVpChoiceInteractionMetadata | OneShotAbilityReuseChoiceInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -425,6 +431,13 @@ export interface RecordedRemovedCardState {
   recordKey: string; controllerId: PlayerId; sourceCardId: string; sourceAbilityId: string; cardInstanceId: string;
   originalOwnerPlayerId: PlayerId; removedRevision: number; triggerResultId: string; triggerEventId: string;
 }
+export interface CrossPhaseActionProviderRecord {
+  controllerId: PlayerId; sourceCardId: string; sourceAbilityId: string; round: number;
+}
+export interface OneShotAbilityReuseGrantRecord {
+  controllerId: PlayerId; providerSourceCardId: string; providerSourceAbilityId: string;
+  targetCardId: string; targetAbilityId: string; round: number; consumed: boolean;
+}
 export interface TrustedBattleResultSnapshot {
   battlePhaseResolutionId: string;
   battleId: string;
@@ -438,6 +451,10 @@ export interface TrustedBattleResultSnapshot {
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
+  /** Live source-bound providers that permit the controller's action abilities during combat. */
+  crossPhaseActionProviders?: CrossPhaseActionProviderRecord[];
+  /** One-shot exact physical-card + ability reuse grants with source provenance. */
+  oneShotAbilityReuseGrants?: OneShotAbilityReuseGrantRecord[];
   /** Identity-free authoritative location markers, keyed by controller + authored marker key. */
   locationMarkers?: Record<string, LocationMarkerState>;
   /** Identity-free current-round definition-level attribute replacements, keyed by controller. */

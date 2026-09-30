@@ -3,6 +3,8 @@ import { eventLocationEqualsController, isAcceptedEventLocationEqualsControllerC
 import type { CardInstance } from '../schema/card';
 import type { LocationId } from '../schema/location';
 import { canOccupyLocation, getEnabledLocations } from '../core/map-engine';
+import { projectCurrentPlayerTotalPower } from '../core/combat-resolver';
+import { swapActivePlayerDeploymentPositions } from '../core/atomic-redeployment';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID, evaluateCardSourceValidity, isActiveCardSource } from '../core/card-source-state';
 import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
 import { isCardCloseForbidden } from './card-close-forbid';
@@ -57,6 +59,13 @@ import {
   isDiscardShuffleSourceXBindingEffect,
   isDuplicateBasePowerCloseEffect,
 } from './battle-discard-binding-capability';
+import {
+  containsCrossPhaseRedeploymentPrivilegedNode,
+  isAcceptedCrossPhaseActionProviderAbility,
+  isAcceptedCrossPhaseRedeploymentPrivilegedAbility,
+  isAcceptedOneShotUsedAttackAbilityReuseAbility,
+  isAcceptedStrictPowerRedeploySwapAbility,
+} from './cross-phase-redeployment-capability';
 import { isHideServantTrueNameUntilRoundEndEffect, isLoseVpEqualSourcePlayCountEffect, isRevealHandRoundPowerEffect, PLAYER_COMBAT_TOTAL_POWER_RULE, servantRevealSuppressedByTemporaryConcealment } from './owner-self-mechanics';
 import {
   isAnyBattlefieldConstraint,
@@ -1103,11 +1112,16 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
   }
   const scope = node(target.scope); const zone = scope.zone === 'battle_area' ? 'attack_area' : scope.zone;
   const alreadySelected = new Set(Object.values(ctx.selections).flat());
+  const currentAbility = restoredAbility(s, ctx.sourceCardId, ctx.abilityId);
+  const reuseTargetFilter = target.id === 'reused_attack_ability_source' && currentAbility && isAcceptedOneShotUsedAttackAbilityReuseAbility(currentAbility)
+    ? (candidateId: string) => eligibleUsedAttackAbilityIds(s, ctx.controllerId, candidateId, ctx.sourceCardId, ctx.abilityId).length >= 1
+    : (_candidateId: string) => true;
   return s.cards.filter(c =>
     !alreadySelected.has(c.instanceId) &&
     (scope.controller === 'any' || c.controllerPlayerId === ctx.controllerId) &&
     (scope.owner === 'any' || c.ownerPlayerId === ctx.controllerId || !scope.owner) &&
     c.zone === zone &&
+    reuseTargetFilter(c.instanceId) &&
     nodes(target.constraints).every(x => constraint(s, ctx, c, x))).map(c => c.instanceId);
 }
 function trustedBattlePowerSnapshot(event: AbilityEvent | undefined): { participantIds: string[]; powers: Record<string, number> } | undefined {
@@ -1555,9 +1569,64 @@ function abilityLimitReached(s: GameState, sourceId: string, a: AuthoringAbility
   const usageKey = limitType === 'per_round' ? `${sourceId}:${a.id}:round:${s.round.roundNumber}` : `${sourceId}:${a.id}`;
   return (runtime(s).abilityUsage[usageKey] ?? 0) >= Number(a.limit?.uses ?? 1);
 }
+function liveAcceptedCrossPhaseProvider(s: GameState, controllerId: string): boolean {
+  return s.cards.some((source) => {
+    if (source.ownerPlayerId !== controllerId || source.controllerPlayerId !== controllerId || !active(s, source.instanceId) ||
+        runtime(s).cardState[source.instanceId]?.faceDown === true) return false;
+    return effectiveAbilitiesForPhysicalCard(s, source.instanceId).some(isAcceptedCrossPhaseActionProviderAbility);
+  });
+}
+function eligibleUsedAttackAbilityIds(s: GameState, controllerId: string, targetCardId: string, providerSourceCardId?: string, providerAbilityId?: string): string[] {
+  const target = s.cards.find((candidate) => candidate.instanceId === targetCardId);
+  const targetState = target ? runtime(s).cardState[target.instanceId] : undefined;
+  if (!target || target.ownerPlayerId !== controllerId || target.controllerPlayerId !== controllerId || target.zone !== 'attack_area' ||
+      targetState?.active !== true || targetState.faceDown === true || !isAttack(definition(s, target.instanceId))) return [];
+  return effectiveAbilitiesForPhysicalCard(s, target.instanceId).filter((ability) => {
+    if (ability.kind !== 'phase_action' || !['action', 'combat'].includes(str(ability.activation.phase))) return false;
+    if (targetCardId === providerSourceCardId && ability.id === providerAbilityId) return false;
+    return runtime(s).usedAbilities[`${targetCardId}:${ability.id}`] === s.round.roundNumber;
+  }).map((ability) => ability.id);
+}
+const WORKSHOP_DEPLOYMENT_MANA_SLOTS = [2, 1, 1, 1] as const;
+function applyEffectRedeploymentDestinationConsequences(s: GameState, playerId: string, locationId: string, ctx: EffectContext): void {
+  if (locationId === 'magic_workshop') {
+    const workshopPlayers = s.players.filter((candidate) => candidate.status === 'active' && candidate.locationId === 'magic_workshop')
+      .sort((left, right) => left.seat - right.seat);
+    const slotIndex = workshopPlayers.findIndex((candidate) => candidate.id === playerId);
+    const manaReward = WORKSHOP_DEPLOYMENT_MANA_SLOTS[slotIndex] ?? 0;
+    if (manaReward > 0) {
+      const result = grantMana(s, playerId, manaReward, { source: 'deployment' });
+      runtime(s).events.push({ type: 'deployment_location_mana_awarded', playerId, controllerId: ctx.controllerId,
+        sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, resource: 'mana', requestedDelta: manaReward,
+        delta: result.actualAmount, before: result.before, after: result.after });
+    }
+  }
+  if (isBattlefield(s, locationId)) {
+    processEvent(s, { id: nextId(s, 'effect-redeploy-battlefield'), type: 'after_player_deployed_to_battlefield', playerId, locationId });
+  }
+  processEvent(s, { id: nextId(s, 'effect-redeploy-location'), type: 'after_player_deployed_to_location', playerId, locationId });
+}
+function liveReuseGrantForAbility(s: GameState, controllerId: string, targetCardId: string, targetAbilityId: string) {
+  return (runtime(s).oneShotAbilityReuseGrants ?? []).find((grant) => {
+    if (grant.consumed || grant.round !== s.round.roundNumber || grant.controllerId !== controllerId ||
+        grant.targetCardId !== targetCardId || grant.targetAbilityId !== targetAbilityId) return false;
+    const provider = s.cards.find((candidate) => candidate.instanceId === grant.providerSourceCardId);
+    if (!provider || provider.ownerPlayerId !== controllerId || provider.controllerPlayerId !== controllerId ||
+        !active(s, provider.instanceId) || runtime(s).cardState[provider.instanceId]?.faceDown === true) return false;
+    const providerAbility = effectiveAbilitiesForPhysicalCard(s, provider.instanceId).find((ability) => ability.id === grant.providerSourceAbilityId);
+    if (!providerAbility || !isAcceptedOneShotUsedAttackAbilityReuseAbility(providerAbility)) return false;
+    const target = s.cards.find((candidate) => candidate.instanceId === targetCardId);
+    const targetAbility = target ? effectiveAbilitiesForPhysicalCard(s, targetCardId).find((ability) => ability.id === targetAbilityId) : undefined;
+    if (!target || target.ownerPlayerId !== controllerId || target.controllerPlayerId !== controllerId || target.zone !== 'attack_area' ||
+        runtime(s).cardState[targetCardId]?.active !== true || runtime(s).cardState[targetCardId]?.faceDown === true ||
+        !targetAbility || targetAbility.kind !== 'phase_action' || !['action', 'combat'].includes(str(targetAbility.activation.phase))) return false;
+    return runtime(s).usedAbilities[`${targetCardId}:${targetAbilityId}`] === s.round.roundNumber;
+  });
+}
 function effectiveActivationPhase(s: GameState, sourceId: string, a: AuthoringAbility): string {
   const basePhase = str(a.activation.phase);
-  if (basePhase === 'action' && runtime(s).cardState[sourceId]?.actionAbilityAllowedInCombatRound === s.round.roundNumber) return 'combat';
+  if (basePhase === 'action' && (runtime(s).cardState[sourceId]?.actionAbilityAllowedInCombatRound === s.round.roundNumber ||
+      (phase(s) === 'combat' && liveAcceptedCrossPhaseProvider(s, card(s, sourceId).controllerPlayerId)))) return 'combat';
   if (definition(s, sourceId)?.cardType !== 'command_spell' || basePhase !== 'action') return basePhase;
   const controllerId = card(s, sourceId).controllerPlayerId;
   const persistentPhase = commandSpellPhaseOverride(s, controllerId);
@@ -1610,6 +1679,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsBattleLuckCloseDrawPlayNode(a) && !isAcceptedBattleLuckCloseDrawPlayAbility(a)) return false;
   if (isAcceptedBattleLuckCloseDrawPlayAbility(a) && !canActivateBattleCloseDrawPlay(s, sourceId, a)) return false;
   if (containsDeckRecycleReplayGrowthPrivilegedNode(a) && !isAcceptedDeckRecycleReplayGrowthAbility(a)) return false;
+  if (containsCrossPhaseRedeploymentPrivilegedNode(a) && !isAcceptedCrossPhaseRedeploymentPrivilegedAbility(a)) return false;
   if (containsLocationMarkerPrivilegedNode(a) && !isAcceptedLocationMarkerAbility(a)) return false;
   if (isAcceptedLocationMarkerAbility(a) && !canActivateLocationMarkerAbility(s, sourceId, a, event)) return false;
   if (containsSealedCardMagicPrivilegedNode(a) && !isAcceptedSealedCardMagicAbility(a)) return false;
@@ -1645,9 +1715,15 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isRulerSealUseSemantic(a) && controllerHasSealPowerReplacementProvider(s, sourceControllerId, 'ruler')) return false;
   if (isBattleLossResourceTriggerSemantic(a) &&
     Number((player(s, card(s, sourceId).controllerPlayerId) as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) return false;
+  const activeReuseGrant = liveReuseGrantForAbility(s, sourceControllerId, sourceId, a.id);
   if (!isRulerSealUseSemantic(a) && !isCommandSpellCard(s, sourceId) && !isRepeatableSealPowerReplacementAbility(a) &&
-      a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber) return false;
-  if (abilityLimitReached(s, sourceId, a)) return false;
+      a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber && !activeReuseGrant) return false;
+  if (abilityLimitReached(s, sourceId, a) && !activeReuseGrant) return false;
+  if (isAcceptedOneShotUsedAttackAbilityReuseAbility(a)) {
+    const providerSource = card(s, sourceId);
+    if (providerSource.ownerPlayerId !== sourceControllerId || providerSource.controllerPlayerId !== sourceControllerId ||
+        !s.cards.some((candidate) => eligibleUsedAttackAbilityIds(s, sourceControllerId, candidate.instanceId, sourceId, a.id).length >= 1)) return false;
+  }
   if ((isPlayActionRouteCandidate(a) || isAddToAttackRouteCandidate(a) || isAnyLocationExceptWorkshopMovementSemantic(a) ||
       isAcceptedRuneAnyEnabledLocationMovementAbility(a) || isRulerSealBindingSemantic(a) || isRulerSealUseSemantic(a) ||
       a.effects.some(isPlaceSourceAtBattlefieldEffect)) &&
@@ -3238,6 +3314,28 @@ function isBattlefieldAttackOfferPendingDecisionLiveValid(s: GameState, decision
     count.min === 0 && count.max === 1 && decision.min === 0 && decision.max === 1 && decision.remainingEffects.length === 0 &&
     exactPlayerArray(meta.candidateIds, candidates) && exactPlayerArray(decision.candidates, candidates);
 }
+function isOneShotAbilityReuseChoicePendingDecisionLiveValid(s: GameState, decision: PendingDecision): boolean {
+  const meta = decision.interaction;
+  if (meta?.kind !== 'one_shot_ability_reuse_choice_v1') return false;
+  const source = restoredPhysicalSource(s, meta.sourceCardInstanceId, meta.controllerId);
+  const ability = source ? restoredAbility(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
+  const selectedTarget = decision.context.selections.reused_attack_ability_source;
+  const currentCandidates = eligibleUsedAttackAbilityIds(s, meta.controllerId, meta.targetCardId, meta.sourceCardInstanceId, meta.abilityId);
+  const count = node(decision.target.count);
+  return !!source && !!ability && isAcceptedOneShotUsedAttackAbilityReuseAbility(ability) &&
+    source.ownerPlayerId === meta.controllerId && source.controllerPlayerId === meta.controllerId && active(s, source.instanceId) &&
+    runtime(s).cardState[source.instanceId]?.faceDown !== true &&
+    decision.controllerId === meta.controllerId && decision.context.controllerId === meta.controllerId &&
+    decision.context.sourceCardId === meta.sourceCardInstanceId && decision.context.abilityId === meta.abilityId &&
+    Array.isArray(selectedTarget) && selectedTarget.length === 1 && selectedTarget[0] === meta.targetCardId &&
+    meta.template === 'target' && meta.visibility === 'owner_only' && meta.cancelPolicy === 'forbidden' &&
+    meta.createdRevision === runtime(s).revision && meta.continuationRef === `${decision.id}:continuation` &&
+    meta.constraints.kind === 'target' && meta.constraints.targetKind === 'ability' && meta.constraints.min === 1 &&
+    meta.constraints.max === 1 && meta.constraints.distinct === true &&
+    decision.target.id === 'reused_attack_ability_id' && decision.target.type === 'choice' && count.min === 1 && count.max === 1 &&
+    decision.min === 1 && decision.max === 1 && exactPlayerArray(meta.candidateAbilityIds, currentCandidates) &&
+    exactPlayerArray(decision.candidates, currentCandidates) && currentCandidates.length > 1;
+}
 export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decision: PendingDecision): boolean {
   if (decision.interaction && ['battle_luck_discard_choice_v1','battle_opponent_close_reward_choice_v1','battle_drawn_card_optional_play_v1'].includes(decision.interaction.kind)) {
     return isBattleCloseDrawPlayPendingDecisionLiveValid(s, decision);
@@ -3249,6 +3347,7 @@ export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decisi
     return isBattlePlunderReplayPendingDecisionLiveValid(s, decision);
   }
   if (decision.interaction?.kind === 'battlefield_attack_offer_choice_v1') return isBattlefieldAttackOfferPendingDecisionLiveValid(s, decision);
+  if (decision.interaction?.kind === 'one_shot_ability_reuse_choice_v1') return isOneShotAbilityReuseChoicePendingDecisionLiveValid(s, decision);
   if (decision.interaction) return true;
   try {
     if (decision.controllerId !== decision.context.controllerId) return false;
@@ -5271,6 +5370,69 @@ function stageCombatOpponentPowerVpReward(s: GameState, ctx: EffectContext, a: A
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (containsCrossPhaseRedeploymentPrivilegedNode(a) && !isAcceptedCrossPhaseRedeploymentPrivilegedAbility(a)) {
+    reject('resolution_failed', 'Unsupported cross-phase/redeployment privileged semantic shape');
+  }
+  if (isAcceptedCrossPhaseActionProviderAbility(a)) return;
+  if (isAcceptedStrictPowerRedeploySwapAbility(a)) {
+    const pending = findPendingTarget(s, ctx, a, effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    const opponentId = ctx.selections.power_comparison_opponent?.[0];
+    if (!opponentId || opponentId === ctx.controllerId) reject('invalid_target', 'Power comparison requires one other active player');
+    const controller = s.players.find((candidate) => candidate.id === ctx.controllerId && candidate.status === 'active');
+    const opponent = s.players.find((candidate) => candidate.id === opponentId && candidate.status === 'active');
+    if (!controller?.locationId || !opponent?.locationId) reject('invalid_target', 'Power comparison requires deployed active players');
+    const controllerPower = projectCurrentPlayerTotalPower(s, ctx.controllerId);
+    const opponentPower = projectCurrentPlayerTotalPower(s, opponentId);
+    if (!controllerPower || !opponentPower) reject('resolution_failed', 'Current total Power projection is unavailable');
+    runtime(s).events.push({ type: 'current_total_power_compared', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId, qualifyingPlayerIds: [ctx.controllerId, opponentId], before: controllerPower.effectivePower, after: opponentPower.effectivePower });
+    if (controllerPower.effectivePower <= opponentPower.effectivePower || controller.locationId === opponent.locationId) return;
+    const swap = swapActivePlayerDeploymentPositions(s, ctx.controllerId, opponentId);
+    if (!swap?.swapped) reject('resolution_failed', 'Atomic redeployment swap preflight failed');
+    applyEffectRedeploymentDestinationConsequences(s, ctx.controllerId, swap.rightFromLocationId!, ctx);
+    applyEffectRedeploymentDestinationConsequences(s, opponentId, swap.leftFromLocationId!, ctx);
+    runtime(s).events.push({ type: 'players_redeployed_by_power_comparison', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId, qualifyingPlayerIds: [ctx.controllerId, opponentId] });
+    return;
+  }
+  if (isAcceptedOneShotUsedAttackAbilityReuseAbility(a)) {
+    const pending = findPendingTarget(s, ctx, a, effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    const targetId = ctx.selections.reused_attack_ability_source?.[0];
+    if (!targetId) reject('invalid_target', 'Ability reuse requires one attack source');
+    const targetAbilityIds = eligibleUsedAttackAbilityIds(s, ctx.controllerId, targetId, ctx.sourceCardId, ctx.abilityId);
+    if (targetAbilityIds.length < 1) reject('invalid_target', 'Ability reuse requires an eligible already-used phase action');
+    let targetAbilityId = ctx.selections.reused_attack_ability_id?.[0];
+    if (!targetAbilityId && targetAbilityIds.length > 1) {
+      const id = nextId(s, 'decision');
+      runtime(s).pendingDecision = {
+        id, controllerId: ctx.controllerId,
+        target: { id: 'reused_attack_ability_id', type: 'choice', count: { min: 1, max: 1 } },
+        candidates: [...targetAbilityIds], min: 1, max: 1, context: structuredClone(ctx), remainingEffects: effects,
+        interaction: {
+          kind: 'one_shot_ability_reuse_choice_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+          sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: runtime(s).revision + 1,
+          continuationRef: `${id}:continuation`, controllerId: ctx.controllerId, targetCardId: targetId,
+          candidateAbilityIds: [...targetAbilityIds],
+          constraints: { kind: 'target', targetKind: 'ability', min: 1, max: 1, distinct: true },
+        },
+      };
+      return;
+    }
+    targetAbilityId ??= targetAbilityIds[0]!;
+    if (!targetAbilityIds.includes(targetAbilityId)) reject('invalid_target', 'Selected reuse ability is not currently eligible');
+    const grants = runtime(s).oneShotAbilityReuseGrants ??= [];
+    if (grants.some((grant) => !grant.consumed && grant.round === s.round.roundNumber &&
+        grant.providerSourceCardId === ctx.sourceCardId && grant.providerSourceAbilityId === ctx.abilityId)) {
+      reject('invalid_state', 'Reuse provider already has a live grant this round');
+    }
+    grants.push({ controllerId: ctx.controllerId, providerSourceCardId: ctx.sourceCardId, providerSourceAbilityId: ctx.abilityId,
+      targetCardId: targetId, targetAbilityId, round: s.round.roundNumber, consumed: false });
+    runtime(s).events.push({ type: 'one_shot_ability_reuse_granted', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId, cardInstanceId: targetId, sourceAbilityId: targetAbilityId });
+    return;
+  }
   if (containsSealedCardMagicPrivilegedNode(a) && !isAcceptedSealedCardMagicAbility(a)) {
     reject('resolution_failed', 'Unsupported sealed-card/Magic semantic shape');
   }
@@ -5583,10 +5745,11 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (isAddToAttackRouteCandidate(a)) assertAddToAttackSupportAvailable(s, ctx, a);
   const p = player(s, ctx.controllerId); let manaCost = 0;
   const fixedControllerManaCost = usesAcceptedFixedControllerManaCostComponent(a);
+  const reuseGrant = liveReuseGrantForAbility(s, ctx.controllerId, ctx.sourceCardId, a.id);
   
-  // Check usage limits
+  // Check usage limits; one accepted reuse grant authorizes exactly one extra activation without mutating the original counter.
   const limitType = str(a.limit?.type);
-  if ((limitType === 'per_game' || limitType === 'per_round') && abilityLimitReached(s, ctx.sourceCardId, a)) {
+  if ((limitType === 'per_game' || limitType === 'per_round') && abilityLimitReached(s, ctx.sourceCardId, a) && !reuseGrant) {
     reject('ability_limit_reached', 'Ability has been used the maximum number of times this game');
   }
   
@@ -5616,11 +5779,12 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (names.length) runtime(s).calculations.push({ controllerId: p.id, lines: names.map(name => ({ label: name, value: ctx.variables[name]! })) });
   for (const cost of a.cost.filter(c => c.type === 'move_source_card')) moveCard(s, ctx.sourceCardId, str(node(cost.to).zone));
   if (a.visibility.revealTiming === 'on_use_declared') reveal(s, p.id);
+  if (reuseGrant) reuseGrant.consumed = true;
   if (!isRulerSealUseSemantic(a) && !isCommandSpellCard(s, ctx.sourceCardId) && !isRepeatableSealPowerReplacementAbility(a) &&
       classifyAbilityInteraction(a).kind === 'phase_activation') runtime(s).usedAbilities[`${ctx.sourceCardId}:${a.id}`] = s.round.roundNumber;
   
-  // Update usage count
-  if (limitType === 'per_game' || limitType === 'per_round') {
+  // A one-shot reuse consumes its provenance grant instead of incrementing the original ability usage counter.
+  if (!reuseGrant && (limitType === 'per_game' || limitType === 'per_round')) {
     const usageKey = limitType === 'per_round' ? `${ctx.sourceCardId}:${a.id}:round:${s.round.roundNumber}` : `${ctx.sourceCardId}:${a.id}`;
     runtime(s).abilityUsage[usageKey] = (runtime(s).abilityUsage[usageKey] ?? 0) + 1;
   }
@@ -6638,6 +6802,17 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           stageNextOpponentCloseToOneDecision(s); break;
         }
         const a = abilityDefinition(s, d.context.sourceCardId, d.context.abilityId);
+        if (meta.kind === 'one_shot_ability_reuse_choice_v1') {
+          const currentCandidates = eligibleUsedAttackAbilityIds(s, meta.controllerId, meta.targetCardId, meta.sourceCardInstanceId, meta.abilityId);
+          if (!isOneShotAbilityReuseChoicePendingDecisionLiveValid(s, d) || !Array.isArray(selected) || selected.length !== 1 ||
+              !currentCandidates.includes(selected[0]!) || !d.candidates.includes(selected[0]!)) {
+            reject('resolution_failed', 'Corrupt or stale one-shot ability reuse choice state');
+          }
+          d.context.selections.reused_attack_ability_id = [...selected];
+          delete r.pendingDecision;
+          executeEffects(s, d.context, d.remainingEffects);
+          break;
+        }
         if (meta.kind === 'alter_ego_attribute_choice_v1') {
           const variant = classifyAlterEgoTransformVariant(a);
           const target = alterEgoTriggerTarget(s, d.context.sourceCardId, d.context.event);
