@@ -48,6 +48,15 @@ import {
   sourceLocationBasicAttackBasePowerMultiplier,
   type SourceLocationBasePowerAttribute,
 } from './source-location-rune-capability';
+import {
+  DISCARD_SHUFFLE_SOURCE_X_BINDING_EFFECT,
+  DUPLICATE_BASE_POWER_CLOSE_EFFECT,
+  abilityHasAcceptedDiscardShuffleSourceX,
+  isAcceptedDiscardShuffleSourceXAbility,
+  isAcceptedDuplicateBasePowerCloseAbility,
+  isDiscardShuffleSourceXBindingEffect,
+  isDuplicateBasePowerCloseEffect,
+} from './battle-discard-binding-capability';
 import { isHideServantTrueNameUntilRoundEndEffect, isLoseVpEqualSourcePlayCountEffect, isRevealHandRoundPowerEffect, PLAYER_COMBAT_TOTAL_POWER_RULE, servantRevealSuppressedByTemporaryConcealment } from './owner-self-mechanics';
 import {
   isAnyBattlefieldConstraint,
@@ -922,6 +931,16 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     return { value: persistentLock.value, lines: [{ label: 'persistent_situation_attribute_power_lock', value: persistentLock.value }] };
   }
   const result = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
+  const acceptedSourceX = d ? abilityHasAcceptedDiscardShuffleSourceX(d.abilities) : undefined;
+  const sourceXBinding = runtime(s).cardState[sourceId]?.sourceBoundX;
+  if (acceptedSourceX && sourceXBinding) {
+    if (!Number.isSafeInteger(sourceXBinding.value) || sourceXBinding.value < 2 ||
+        sourceXBinding.controllerId !== source.controllerPlayerId || sourceXBinding.sourceAbilityId !== acceptedSourceX.id) {
+      reject('invalid_state', 'Source-X base-Power binding is malformed');
+    }
+    result.value = sourceXBinding.value;
+    result.lines.push({ label: 'source_bound_x_base_power', value: result.value });
+  }
   const sourceLocationMultiplier = sourceLocationBasicAttackBasePowerMultiplier(s, sourceId);
   if (sourceLocationMultiplier !== 1) {
     result.value *= sourceLocationMultiplier;
@@ -1886,6 +1905,44 @@ export function resolveMandatoryCombatPhaseActionsForPlayer(s: GameState, player
   if (!controller || s.round.prioritySeat !== controller.seat) return 0;
 
   let resolved = 0;
+  const participates = !!controller.locationId && isBattlefield(s, controller.locationId) && s.cards.some((candidate) => {
+    if (candidate.controllerPlayerId !== playerId || candidate.zone !== 'attack_area') return false;
+    const state = runtime(s).cardState[candidate.instanceId];
+    return state?.active === true && state.faceDown !== true && !!definition(s, candidate.instanceId) &&
+      cardPlayClassification(s, candidate.instanceId).playKind === 'attack';
+  });
+  if (participates) {
+    for (const source of [...s.cards].filter((candidate) => candidate.controllerPlayerId === playerId)) {
+      const d = definition(s, source.instanceId); const ability = d ? abilityHasAcceptedDiscardShuffleSourceX(d.abilities) : undefined;
+      if (!ability) continue;
+      const state = runtime(s).cardState[source.instanceId];
+      if (source.ownerPlayerId !== playerId || !['field', 'attack_area'].includes(source.zone) || !state?.active || state.faceDown) continue;
+      if (state.sourceBoundXBattleUpkeepRound === s.round.roundNumber) continue;
+      const binding = state.sourceBoundX;
+      if (!binding || !Number.isSafeInteger(binding.value) || binding.value < 2 || binding.controllerId !== playerId ||
+          binding.sourceAbilityId !== ability.id) {
+        moveCard(s, source.instanceId, 'skill');
+        runtime(s).events.push({ type: 'source_bound_x_battle_upkeep_closed', playerId, sourceCardId: source.instanceId,
+          abilityId: ability.id, resource: 'mana', requestedDelta: 0, delta: 0 });
+        resolved += 1;
+        continue;
+      }
+      const before = controller.mana;
+      if (before >= binding.value) {
+        spendMana(s, playerId, binding.value);
+        state.sourceBoundXBattleUpkeepRound = s.round.roundNumber;
+        runtime(s).events.push({ type: 'source_bound_x_battle_upkeep_paid', playerId, sourceCardId: source.instanceId,
+          abilityId: ability.id, resource: 'mana', requestedDelta: -binding.value, delta: -binding.value,
+          before, after: controller.mana });
+      } else {
+        const required = binding.value;
+        moveCard(s, source.instanceId, 'skill');
+        runtime(s).events.push({ type: 'source_bound_x_battle_upkeep_closed', playerId, sourceCardId: source.instanceId,
+          abilityId: ability.id, resource: 'mana', requestedDelta: -required, delta: 0, before, after: controller.mana });
+      }
+      resolved += 1;
+    }
+  }
   for (const source of s.cards.filter((candidate) => candidate.controllerPlayerId === playerId)) {
     for (const ability of effectiveAbilitiesForPhysicalCard(s, source.instanceId)) {
       if (ability.kind !== 'phase_action' || !isAcceptedGrantSameLocationOpponentsManaAbility(ability)) continue;
@@ -2208,12 +2265,116 @@ function shownOpponentCards(s: GameState, opponentId: string): CardInstance[] {
     (candidate.zone === 'hand' || (candidate.zone === 'attack_area' && runtime(s).cardState[candidate.instanceId]?.faceDown === true)));
 }
 
+function acceptedSourceXAbilityForCard(s: GameState, instanceId: string): AuthoringAbility | undefined {
+  const d = definition(s, instanceId);
+  return d ? abilityHasAcceptedDiscardShuffleSourceX(d.abilities) : undefined;
+}
+
+function authoritativeBasePowerAxis(s: GameState, instanceId: string): number {
+  const physical = card(s, instanceId);
+  const d = definition(s, instanceId);
+  if (!d) reject('invalid_state', 'Base-Power comparison requires a compiled card definition');
+  const acceptedX = acceptedSourceXAbilityForCard(s, instanceId);
+  const binding = runtime(s).cardState[instanceId]?.sourceBoundX;
+  if (acceptedX && binding) {
+    if (!Number.isSafeInteger(binding.value) || binding.value < 2 || binding.controllerId !== physical.controllerPlayerId ||
+        binding.sourceAbilityId !== acceptedX.id) reject('invalid_state', 'Source-X base-Power binding is malformed');
+    return binding.value;
+  }
+  const evaluated = evaluateFormula(d.cardFace.basePower ?? 0, s, physical.controllerPlayerId, instanceId).value;
+  if (!Number.isFinite(evaluated)) reject('invalid_state', 'Base-Power comparison produced a non-finite value');
+  return evaluated;
+}
+
+function closeActiveAttackForDuplicatePower(s: GameState, instanceId: string, effectControllerId: string): void {
+  const target = card(s, instanceId); const d = definition(s, instanceId); const state = runtime(s).cardState[instanceId];
+  if (!d || target.zone !== 'attack_area' || !state?.active || state.faceDown || isResidualAttackCardDefinition(d) ||
+      isCardCloseForbidden(s, instanceId, effectControllerId)) reject('resolution_failed', 'Duplicate-base-Power target is no longer closable');
+  state.active = false;
+  clearTransientCardTransformState(s, instanceId);
+  if (['servant_skill', 'master_skill'].includes(d.cardType)) {
+    target.zone = 'skill'; target.controllerPlayerId = target.ownerPlayerId;
+    target.visibility = { scope: 'owner_only', ownerPlayerId: target.ownerPlayerId };
+    state.faceDown = false;
+  } else {
+    state.faceDown = true;
+    target.visibility = { scope: 'owner_only', ownerPlayerId: target.ownerPlayerId };
+  }
+}
+
+function resolveDuplicateBasePowerCloseOrDiscard(s: GameState, ctx: EffectContext, effect: RuleNode, ability: AuthoringAbility): void {
+  if (!isDuplicateBasePowerCloseEffect(effect) || !isAcceptedDuplicateBasePowerCloseAbility(ability)) {
+    reject('unsupported', 'Unsupported duplicate-base-Power close/fallback shape');
+  }
+  const controller = player(s, ctx.controllerId); const source = card(s, ctx.sourceCardId); const sourceState = runtime(s).cardState[source.instanceId];
+  if (!controller.locationId || !isBattlefield(s, controller.locationId) || source.ownerPlayerId !== ctx.controllerId ||
+      source.controllerPlayerId !== ctx.controllerId || !sourceState?.active || sourceState.faceDown) {
+    reject('invalid_state', 'Duplicate-base-Power close requires a live controller source at a battlefield');
+  }
+  const candidates = s.cards.filter((candidate) => {
+    if (candidate.instanceId === ctx.sourceCardId || candidate.zone !== 'attack_area') return false;
+    const owner = s.players.find((entry) => entry.id === candidate.controllerPlayerId && entry.status === 'active');
+    const state = runtime(s).cardState[candidate.instanceId]; const d = definition(s, candidate.instanceId);
+    return !!owner && owner.locationId === controller.locationId && !!d && !!state?.active && !state.faceDown &&
+      !isResidualAttackCardDefinition(d) && !isCardCloseForbidden(s, candidate.instanceId, ctx.controllerId);
+  });
+  const byPower = new Map<number, string[]>();
+  for (const candidate of candidates) {
+    const power = authoritativeBasePowerAxis(s, candidate.instanceId);
+    const list = byPower.get(power) ?? []; list.push(candidate.instanceId); byPower.set(power, list);
+  }
+  const qualifying = [...byPower.values()].filter((ids) => ids.length >= 2).flat();
+  if (qualifying.length > 0) {
+    // Snapshot first; then close the exact frozen set so mutations cannot change later grouping.
+    for (const instanceId of qualifying) closeActiveAttackForDuplicatePower(s, instanceId, ctx.controllerId);
+    runtime(s).events.push({ type: 'duplicate_base_power_attacks_closed', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId, movedCount: qualifying.length });
+    return;
+  }
+  const top = ownerDeckIds(s, ctx.controllerId).slice(0, Number(effect.discardTop));
+  for (const instanceId of top) moveCard(s, instanceId, 'discard');
+  runtime(s).events.push({ type: 'duplicate_base_power_fallback_discarded', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+    abilityId: ctx.abilityId, movedCount: top.length });
+}
+
+function stageDiscardShuffleSourceXDecision(s: GameState, ctx: EffectContext, effect: RuleNode, ability: AuthoringAbility): void {
+  if (!isDiscardShuffleSourceXBindingEffect(effect) || !isAcceptedDiscardShuffleSourceXAbility(ability)) {
+    reject('unsupported', 'Unsupported discard-shuffle source-X binding shape');
+  }
+  const r = runtime(s); if (r.pendingDecision) reject('pending_resolution', 'Resolve current decision first');
+  const source = card(s, ctx.sourceCardId); const state = r.cardState[source.instanceId]; const event = ctx.event;
+  if (!event || event.type !== 'on_card_played' || event.sourceCardId !== ctx.sourceCardId || event.playerId !== ctx.controllerId ||
+      source.ownerPlayerId !== ctx.controllerId || source.controllerPlayerId !== ctx.controllerId || !state?.active || state.faceDown) {
+    reject('invalid_event', 'Discard-shuffle source-X binding requires the exact live source play event');
+  }
+  const candidateIds = s.cards.filter((candidate) => candidate.ownerPlayerId === ctx.controllerId &&
+    candidate.controllerPlayerId === ctx.controllerId && candidate.zone === 'discard').map((candidate) => candidate.instanceId);
+  const id = nextId(s, 'discard-shuffle-source-x');
+  r.pendingDecision = {
+    id, controllerId: ctx.controllerId,
+    target: { id: 'discard-cards-for-source-x', type: 'card_instance', scope: { zone: 'discard', owner: 'controller', controller: 'self' },
+      count: { min: 0, max: candidateIds.length }, visibility: 'private_to_controller' },
+    candidates: [...candidateIds], min: 0, max: candidateIds.length,
+    context: structuredClone(ctx), remainingEffects: [],
+    interaction: {
+      kind: 'discard_shuffle_source_x_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: r.revision + 1,
+      continuationRef: `${id}:continuation`, controllerId: ctx.controllerId, candidateIds: [...candidateIds], base: 2,
+      constraints: { kind: 'target', targetKind: 'card', min: 0, max: candidateIds.length, distinct: true },
+    },
+  };
+}
+
 /** Executes one validated effect; continuation and choices are managed by executeEffects. Server-only. */
 export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode): void {
   const p = player(s, ctx.controllerId); const r = runtime(s); const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   const unpreventable = a.ruleModifiers.some(m => m.rule === 'effect_prevention' && m.operation === 'ignore' && node(m.priority).tier === 'explicit_exception');
   if (r.preventEffects && !unpreventable) { r.events.push({ type: 'effect_prevented', playerId: p.id }); return; }
   switch (effect.type) {
+    case DUPLICATE_BASE_POWER_CLOSE_EFFECT:
+      resolveDuplicateBasePowerCloseOrDiscard(s, ctx, effect, a); break;
+    case DISCARD_SHUFFLE_SOURCE_X_BINDING_EFFECT:
+      stageDiscardShuffleSourceXDecision(s, ctx, effect, a); break;
     case LOCATION_MARKER_FOLLOW_EFFECT: {
       if (!isLocationMarkerFollowEffect(effect) || !isAcceptedLocationMarkerFollowAbility(a)) reject('unsupported', 'Unsupported location-marker follow shape');
       const marker = locationMarker(s, ctx.controllerId, String(effect.markerKey)); const event = ctx.event;
@@ -6346,6 +6507,37 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           delete r.pendingDecision;
           r.events.push({ type: 'post_draw_hand_cards_shuffled_into_deck', playerId, sourceCardId: meta.sourceCardInstanceId,
             abilityId: meta.abilityId, movedCount: selected.length });
+          break;
+        }
+        if (meta.kind === 'discard_shuffle_source_x_v1') {
+          const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+          const ability = source ? abilityDefinition(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
+          const sourceState = source ? r.cardState[source.instanceId] : undefined;
+          const currentDiscard = s.cards.filter((candidate) => candidate.ownerPlayerId === playerId &&
+            candidate.controllerPlayerId === playerId && candidate.zone === 'discard').map((candidate) => candidate.instanceId);
+          const target = d.target; const scope = node(target.scope); const count = node(target.count);
+          if (!source || source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId || !sourceState?.active || sourceState.faceDown ||
+              !ability || !isAcceptedDiscardShuffleSourceXAbility(ability) || d.controllerId !== playerId || d.context.controllerId !== playerId ||
+              d.context.sourceCardId !== meta.sourceCardInstanceId || d.context.abilityId !== meta.abilityId ||
+              meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' || meta.controllerId !== playerId || meta.base !== 2 ||
+              meta.continuationRef !== `${d.id}:continuation` || meta.createdRevision !== r.revision ||
+              meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'card' || meta.constraints.min !== 0 ||
+              meta.constraints.max !== currentDiscard.length || meta.constraints.distinct !== true || d.min !== 0 || d.max !== currentDiscard.length ||
+              target.id !== 'discard-cards-for-source-x' || target.type !== 'card_instance' || scope.zone !== 'discard' || scope.owner !== 'controller' ||
+              scope.controller !== 'self' || count.min !== 0 || count.max !== currentDiscard.length || target.visibility !== 'private_to_controller' ||
+              d.remainingEffects.length !== 0 || currentDiscard.length !== d.candidates.length || currentDiscard.length !== meta.candidateIds.length ||
+              currentDiscard.some((id, index) => d.candidates[index] !== id || meta.candidateIds[index] !== id) ||
+              !Array.isArray(selected) || selected.length > currentDiscard.length || new Set(selected).size !== selected.length ||
+              selected.some((id) => !currentDiscard.includes(id))) {
+            reject('resolution_failed', 'Corrupt or stale discard-shuffle source-X interaction state');
+          }
+          for (const instanceId of selected) moveCard(s, instanceId, 'deck');
+          if (selected.length > 0) shuffle(s, playerId);
+          sourceState.sourceBoundX = { value: selected.length + 2, controllerId: playerId, sourceAbilityId: meta.abilityId };
+          delete sourceState.sourceBoundXBattleUpkeepRound;
+          delete r.pendingDecision;
+          r.events.push({ type: 'discard_cards_shuffled_source_x_bound', playerId, sourceCardId: meta.sourceCardInstanceId,
+            abilityId: meta.abilityId, movedCount: selected.length, delta: selected.length + 2 });
           break;
         }
         if (meta.kind === 'deduction_record_choice_v1') {

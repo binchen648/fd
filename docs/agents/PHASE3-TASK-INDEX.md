@@ -6771,18 +6771,45 @@ Acceptance synchronization:
 ## TASK P3-B-TRISTAN-OWNER-READINESS-CAPABILITY
 
 Owner: Codex B
-Status: `READY`
-Base: `PENDING_TOMOE_A_SYNC_COMMIT`
-Classification: owner-readiness-first for mechanical next owner `servant.tristan`, permanently zero migration credit
+Status: `IMPLEMENTED_AWAITING_REVIEW`
+Base: `f067d70514a702327d24b94d9bc1327eb3ae7881`
+Classification: complete currently discoverable Tristan owner-readiness/capability batch, permanently zero migration credit
 
 Frozen owner scope:
 - `servant.tristan.skill.sc-tristan-1`;
 - `servant.tristan.skill.sc-tristan-2`;
 - `servant.tristan.skill.sc-tristan-3`.
 
-Dispatch rule:
-- mechanically re-read frozen/source/current-lineage evidence from the synchronized Tomoe A-sync base;
-- close all currently discoverable owner-local readiness/capability gaps for sc1 + sc2 + sc3 together;
-- do not split per skill;
-- readiness itself is zero-credit;
-- one Candidate / one PR / one fresh independent R / one A-sync-rescan before any newly creditable formal owner-complete migration transaction.
+Current-lineage reconciliation:
+- canonical authoring currently contains only sc3; sc3 is the accepted FM04 Independent Action member and is preservation-only/no duplicate credit;
+- sc1 and sc2 are absent from canonical authoring and are the current owner-local readiness pressure points;
+- readiness implementation remains identity-free and changes no `data/authoring/**` file.
+
+Implemented generic readiness family:
+- sc1 exact combat action snapshots same-battlefield non-residual attacks by authoritative base-Power axis, excludes its source, closes every member of duplicate-Power groups, and only when no qualifying group exists discards up to the top three controller deck cards;
+- sc1 grouping deliberately ignores modified combat total; accepted physical source-X binding is recognized only as that physical card's authoritative base Power;
+- sc2 exact live-source on-play residual opens one private owner-only `0..N` current-discard choice, authenticates frozen physical candidates at resolution, moves selected discard cards into deck, deterministically shuffles when nonempty, and binds physical-source `X = selected count + 2` including zero-selection `X=2`;
+- sc2 source X is also the live source's base Power and is charged exactly once in each battle round the controller actually participates; insufficient mana closes that physical source with no negative mana;
+- source close clears X/upkeep state; restore validation covers interaction shape, frozen discard candidates, source/controller/accepted-ability provenance, live source-X structure, and non-future upkeep round;
+- malformed/widened privileged semantics fail closed at the loader gateway;
+- production runtime contains no Tristan/card-name/`sc-tristan-*` identity routing.
+
+Verification before Candidate creation:
+- Tristan readiness focused `11/11 PASS`;
+- complex-skills regression `38/38 PASS`;
+- MatchSession regression `33/33 PASS`;
+- affected total `3 files / 82 tests PASS`;
+- typecheck PASS;
+- detailed report: `docs/reports/2026-09-30-p3-b-tristan-owner-readiness-capability-result.md`.
+
+Accounting / next step:
+- strict formal accounting remains `157/944`, remaining `787`;
+- readiness is permanently zero-credit;
+- exact Candidate requires one fresh independent R after final gates;
+- ACCEPTED -> one A-sync/full-owner rescan while staying on `servant.tristan`; that rescan preserves sc3 and decides the exact newly creditable owner-complete migration set;
+- NEEDS_REVISION -> close all exact findings in one successor Candidate, then one fresh R;
+- no per-skill review split.
+
+Allowed verdicts:
+- `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- `IMPLEMENTATION_NEEDS_REVISION`

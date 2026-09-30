@@ -95,6 +95,15 @@ import {
   containsCommandSealPowerPrivilegedNode,
   isAcceptedCommandSealPowerPrivilegedAbility,
 } from './command-seal-power-capability';
+import {
+  DISCARD_SHUFFLE_SOURCE_X_BINDING_EFFECT,
+  DUPLICATE_BASE_POWER_CLOSE_EFFECT,
+  containsBattleDiscardBindingPrivilegedNode,
+  isAcceptedDiscardShuffleSourceXAbility,
+  isAcceptedDuplicateBasePowerCloseAbility,
+  isDiscardShuffleSourceXBindingEffect,
+  isDuplicateBasePowerCloseEffect,
+} from './battle-discard-binding-capability';
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
 }
@@ -134,6 +143,7 @@ const supportedTypes = new Set([
   CURRENT_ROUND_BASIC_ATTACK_ATTRIBUTE_PAIR_CONDITION, DRAW_THEN_SHUFFLE_TWO_HAND_EFFECT,
   ADJUST_OTHER_ACTIVE_PLAYERS_AT_SOURCE_LOCATION_MANA_EFFECT, DEFEAT_SINGLE_ACTIVE_OPPONENT_AT_CONTROLLER_BATTLEFIELD_EFFECT,
   FORBID_OTHER_PLAYERS_AT_ACTIVE_SOURCE_LOCATION_MANA_GAIN_EFFECT, SET_SOURCE_LOCATION_BASIC_BASE_POWER_MULTIPLIER_FROM_CHOICE_EFFECT,
+  DUPLICATE_BASE_POWER_CLOSE_EFFECT, DISCARD_SHUFFLE_SOURCE_X_BINDING_EFFECT,
   'event_player_won_combat', 'event_player_lost_combat',
   'event_player_is_controller', 'event_player_is_opponent', 'event_location_equals_controller',
   'controller_command_seals_at_least', 'controller_command_seals_at_most',
@@ -211,7 +221,8 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'object', 'controller', 'location', 'negated', 'tier', 'specificity',
   'source', 'interpretation', 'name',
   'discardAttribute', 'maxClosePerOpponent', 'excludePerGame', 'refund', 'drawCount', 'playDrawnCard', 'immediatePlayQuota', 'actionAbilityPermission',
-  'counterKey', 'keepMax', 'gain', 'maxSpend', 'baseCount', 'sourceZone', 'cardKind', 'payCardCosts', 'returnAfter',
+  'counterKey', 'keepMax', 'gain', 'maxSpend', 'baseCount', 'base', 'sourceZone', 'cardKind', 'payCardCosts', 'returnAfter',
+  'discardTop', 'excludeSource', 'selectionZone', 'shuffleInto', 'upkeep',
   'costIncreasePerPlay', 'costDuration', 'revealDiscardTop', 'printedPowerEquals', 'powerBonus', 'powerDuration',
   'markerKey', 'terrainAmount', 'vpTransferAmount', 'distance',
   'targetDefinitionIds', 'replaceAttributes', 'sourcePlayers', 'prevent', 'sealKey', 'cardKind', 'eligibleAttribute', 'eligibleDefinitionIds', 'sameLocation', 'trigger', 'payCardCosts', 'resealMana', 'discardDestination', 'dispositionTrigger',
@@ -338,6 +349,12 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (n.type === DRAW_THEN_SHUFFLE_TWO_HAND_EFFECT && !isDrawThenShuffleTwoHandEffect(n)) {
         issue(path, 'Unsupported post-draw hand-shuffle effect shape', abilityId);
+      }
+      if (n.type === DUPLICATE_BASE_POWER_CLOSE_EFFECT && !isDuplicateBasePowerCloseEffect(n)) {
+        issue(path, 'Unsupported duplicate-base-power close/fallback effect shape', abilityId);
+      }
+      if (n.type === DISCARD_SHUFFLE_SOURCE_X_BINDING_EFFECT && !isDiscardShuffleSourceXBindingEffect(n)) {
+        issue(path, 'Unsupported discard-shuffle source-X binding effect shape', abilityId);
       }
       if (n.type === ADJUST_OTHER_ACTIVE_PLAYERS_AT_SOURCE_LOCATION_MANA_EFFECT && !isAdjustOtherPlayersAtSourceLocationManaEffect(n)) {
         issue(path, 'Unsupported source-location mana-loss effect shape', abilityId);
@@ -634,6 +651,11 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (containsSourceLocationRunePrivilegedNode(candidateAbility) &&
           !isAcceptedSourceLocationRunePrivilegedAbility(candidateAbility)) {
         issue('sourceLocationRune.gateway', 'Source-location/rune privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsBattleDiscardBindingPrivilegedNode(candidateAbility) &&
+          !isAcceptedDuplicateBasePowerCloseAbility(candidateAbility) &&
+          !isAcceptedDiscardShuffleSourceXAbility(candidateAbility)) {
+        issue('battleDiscardBinding.gateway', 'Battle duplicate-close/discard-binding mechanics require an accepted exact whole-ability semantic', id);
       }
       if (isRuneAnyEnabledLocationMovementCandidate(candidateAbility) &&
           !isAcceptedLegacyAnyLocationExceptWorkshopMovementAbility(candidateAbility) &&

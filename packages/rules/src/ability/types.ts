@@ -160,6 +160,12 @@ export interface PostDrawHandShuffleInteractionMetadata {
   sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
   constraints: { kind: 'target'; targetKind: 'card'; min: 2; max: 2; distinct: true };
 }
+export interface DiscardShuffleSourceXInteractionMetadata {
+  kind: 'discard_shuffle_source_x_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; candidateIds: string[]; base: 2;
+  constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: number; distinct: true };
+}
 export interface RulerSealMoveInteractionMetadata {
   kind: 'ruler_seal_move_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
   sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
@@ -286,7 +292,7 @@ export interface PendingBattleCloseDrawPlayTransaction {
 }
 export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata |
   OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata | DeductionRecordChoiceInteractionMetadata |
-  PostDrawHandShuffleInteractionMetadata | RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata |
+  PostDrawHandShuffleInteractionMetadata | DiscardShuffleSourceXInteractionMetadata | RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata |
   OwnedRulerSealPowerInteractionMetadata | CombatOpponentPowerVpRewardInteractionMetadata | AutomaticRecycleKeepInteractionMetadata |
   CounterSpendChoiceInteractionMetadata | DiscardBasicReplayChoiceInteractionMetadata | SealedCardChoiceInteractionMetadata |
   SealedCardDispositionInteractionMetadata | BattlePlunderChoiceInteractionMetadata | RecordedRemovedReplayChoiceInteractionMetadata |
@@ -379,6 +385,10 @@ export interface CardRuntimeState {
   roundPowerBonus?: { round: number; amount: number; sourceAbilityId: string };
   /** Source-owned mana-overflow close request for the canonical battle terminal. */
   manaOverflowCloseAfterBattle?: { round: number; sourceAbilityId: string };
+  /** Physical-source binding created from an authenticated discard->deck selection. */
+  sourceBoundX?: { value: number; controllerId: PlayerId; sourceAbilityId: string };
+  /** Round whose battle participation upkeep for sourceBoundX has already settled. */
+  sourceBoundXBattleUpkeepRound?: number;
 }
 export interface RulerSealBinding {
   id: string; issuerPlayerId: PlayerId; boundPlayerId: PlayerId; sourceCardId: string; abilityId: string;
