@@ -7271,3 +7271,29 @@ Implementation evidence for `P3-S-OWNER-VOYAGER-COMPLETE-MIGRATION`:
 - Generated hashes: content-library `b001533b86c695069982a85ffa35ec4de3a30b623b41554f4f6441972d65f50e`; fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`; evidence-report `8346639085dad774da89824712814cf56ffd58b91bf407155871aefd255060e6`.
 - Detailed result: `docs/reports/2026-09-30-p3-s-owner-voyager-complete-migration-result.md`.
 - Current disposition: `MIGRATION_COMPLETE_CANDIDATE`; freeze one exact Candidate / one PR / one fresh R. Accounting remains `166/944`, remaining `778` until `MIGRATION_ACCEPTED` + A-sync/accounting; accepted credit would be exactly `+4` -> `170/944`, remaining `774`.
+
+Acceptance synchronization after formal review:
+- PR #500 exact Candidate `712f9e86ba09da723ebbaa7d2f91f3dd8462dc20` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/500#issuecomment-5914373925`.
+- Exact Phase 3 Pre-Review Gate run `36734879053` / job `109953848402` succeeded.
+- Accepted formal accounting adds exactly Voyager sc1 + sc2 + sc3 + sc4 (`+4`); no preservation-only duplicate exists.
+- Strict formal accounting moves `166/944 -> 170/944`; remaining `778 -> 774`.
+- Acceptance synchronization report: `docs/reports/2026-09-30-p3-a-owner-voyager-acceptance-synchronization.md`.
+- Mechanical frozen-roster next owner is `servant.xiangyu` with frozen scope sc1 + sc2 + sc3.
+
+## TASK P3-B-XIANGYU-OWNER-READINESS-CAPABILITY
+
+Owner: Codex S
+Status: `READY`
+Classification: zero-credit owner-readiness/capability batch for current owner `servant.xiangyu`
+
+Frozen owner scope:
+- `servant.xiangyu.skill.sc-xiangyu-1`
+- `servant.xiangyu.skill.sc-xiangyu-2`
+- `servant.xiangyu.skill.sc-xiangyu-3`
+
+Accounting boundary:
+- strict formal accounting is `170/944`, remaining `774`;
+- readiness is permanently zero-credit;
+- one owner / all currently discoverable readiness gaps / one Candidate / one PR / one fresh R / one A-sync-rescan;
+- do not split per skill and do not advance beyond Xiang Yu until readiness plus subsequent owner-complete migration close.
