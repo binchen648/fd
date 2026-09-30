@@ -7344,3 +7344,15 @@ Formal materialization requirements:
 - integrate Xiang Yu exactly once after Voyager in stable owner order;
 - add focused owner-complete migration regression proving authoring/pack presence and accepted generic runtime shapes;
 - Base for this formal task is this Xiang Yu readiness acceptance-sync commit.
+
+Implementation evidence for `P3-S-OWNER-XIANGYU-COMPLETE-MIGRATION`:
+- Exact Base: `946d8dcd4c81308d062bfd19aeb4bb63936484ff` (accepted Xiang Yu readiness A-sync/rescan; strict `170/944`, remaining `774`).
+- Canonical owner archive `data/authoring/servants/servant.xiangyu.json` materializes frozen sc1 + sc2 + sc3 together; all three were absent at Base and remain newly creditable only after formal acceptance + A-sync/accounting.
+- Static metadata: sc1 战术躯体 = 被动 / 0 / 0; sc2 霸王之武 = 被动 / 0 / 0; sc3 力拔山兮气盖世 = 迅捷/宝具 / cost 6 / base Power 7 / 真名解放.
+- Frozen 12-card deck is b1, b2, b3, b4, b5x2, q1, q2, q5x2, luck, surveil.
+- `fd-playtest-v1` integrates Xiang Yu exactly once immediately after Voyager in stable frozen-owner order.
+- Formal regression `6/6 PASS`; accepted readiness `11/11 PASS`; Tezcat Command-Seal neighboring `8/8`; complex `38/38`; MatchSession `33/33`; MatchSession regressions `11/11`; base-Power/revealed-source neighboring `27/27`; pack loader `21/21`; affected total `155/155 PASS`.
+- `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`7 masters / 19 servants / 20 events / 0 blocking issues`); generated determinism PASS; Base..working-tree production runtime delta EMPTY; Xiang Yu production identity audit CLEAN; diff-check PASS.
+- Generated hashes: content-library `eea4a067812644adb41989b3519fceddd0b11ba5985856e3f0fd525ffb713d52`; fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`; evidence-report `fe7a7388fda1eaa0fcab6b80dbb08104cabc2e27ccc0285be535045267cfb6f2`.
+- Detailed result: `docs/reports/2026-10-01-p3-s-owner-xiangyu-complete-migration-result.md`.
+- Current disposition: `MIGRATION_COMPLETE_CANDIDATE`; freeze one exact Candidate / one PR / one fresh R. Accounting remains `170/944`, remaining `774` until `MIGRATION_ACCEPTED` + A-sync/accounting; accepted credit would be exactly `+3` -> `173/944`, remaining `771`.
