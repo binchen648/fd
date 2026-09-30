@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.xiangyu",
+  "name": "项羽",
+  "class": "Berserker",
+  "sourcePolicy": {
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "acceptedReadinessContract": "PR#501/f74e824238bd96a6679648376cf8c3d6ce48125c",
+    "note": "Semantics come from frozen source evidence plus the accepted identity-free Reaction readiness contract; locked Reference is used only for static metadata and bounded behavior corroboration."
+  },
+  "cards": [
+    {
+      "id": "servant.xiangyu.skill.sc-xiangyu-1",
+      "aliases": ["sc_xiangyu_1"],
+      "legacyId": "sc_xiangyu_1",
+      "name": "战术躯体",
+      "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.xiangyu" },
+      "printedText": "被动：战斗阶段结束后，你失去一半【反应】（向上取整）。被动/行动阶段：使用此效果后，每名对手的回合结束时，其每满足以下条件，你便获得1枚【反应】：\n1.每打出一张技能\n2.每使用一枚令咒\n3.移动至你所在的战场\n你可于你的战斗阶段花费【反应】使用【霸王之武】的效果。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [{ "type": "skill_zone_mana_at_least", "value": 8 }],
+      "abilities": [
+        {
+          "id": "sc-xiangyu-1.arm-matrix", "kind": "phase_action", "printedClause": "被动/行动阶段：使用此效果后，开始记录对手本回合满足的【反应】条件。",
+          "activation": { "phase": "action", "opens": "controller_action_window" }, "conditions": [], "targets": [],
+          "effects": [{ "type": "arm_opponent_action_reaction_counter", "counterKey": "xiangyu.reaction", "skillPlayGain": 1, "commandSealUseGain": 1, "moveToControllerBattlefieldGain": 1, "moveAwardOncePerPlayerPerRound": true }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" }, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "sc-xiangyu-1.battle-end-decay", "kind": "forced_trigger", "printedClause": "被动：战斗阶段结束后，你失去一半【反应】（向上取整）。",
+          "activation": { "trigger": "after_battle_ended" }, "conditions": [], "targets": [],
+          "effects": [{ "type": "halve_reaction_counter_after_battle", "counterKey": "xiangyu.reaction", "rounding": "ceil_loss" }],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" }, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "phase3Evidence": {
+        "f1SourceReferences": [
+          { "kind": "chm", "document": "FD全卡图鉴V2.0.chm", "category": "servant/english", "page": "项羽.htm", "locator": "从者/狂战士/英文版/项羽.htm" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "servant", "page": "images/servants/项羽.png", "locator": "servant.xiangyu/项羽" }
+        ],
+        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "sc_xiangyu_1", "cost": 0, "basePower": 0, "legacyRequirement": 0, "typeLabel": "被动" },
+        "canonicalSkillZoneManaRequirement": { "value": 8, "authority": "final_rules_9.4" },
+        "acceptedContracts": { "reactionCounterReadiness": "PR#501/f74e824238bd96a6679648376cf8c3d6ce48125c" }
+      }
+    },
+    {
+      "id": "servant.xiangyu.skill.sc-xiangyu-2",
+      "aliases": ["sc_xiangyu_2"], "legacyId": "sc_xiangyu_2", "name": "霸王之武", "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.xiangyu" },
+      "printedText": "支付【反应】启动任意种效果：\n1反应：逆着箭头移动一步。\n2反应：沿着箭头移动一步。\n4反应：打出牌库顶的牌（支付魔力）。\n7反应：免费打出1张手牌。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [{ "type": "skill_zone_mana_at_least", "value": 8 }],
+      "abilities": [
+        { "id": "sc-xiangyu-2.backward-one", "kind": "phase_action", "printedClause": "1反应：逆着箭头移动一步。", "activation": { "phase": "combat", "opens": "controller_combat_action_window" }, "conditions": [], "targets": [], "effects": [{ "type": "spend_reaction_counter_move_one", "counterKey": "xiangyu.reaction", "amount": 1, "direction": "backward" }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" }, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } },
+        { "id": "sc-xiangyu-2.forward-one", "kind": "phase_action", "printedClause": "2反应：沿着箭头移动一步。", "activation": { "phase": "combat", "opens": "controller_combat_action_window" }, "conditions": [], "targets": [], "effects": [{ "type": "spend_reaction_counter_move_one", "counterKey": "xiangyu.reaction", "amount": 2, "direction": "forward" }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" }, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } },
+        { "id": "sc-xiangyu-2.play-top", "kind": "phase_action", "printedClause": "4反应：打出牌库顶的牌（支付魔力）。", "activation": { "phase": "combat", "opens": "controller_combat_action_window" }, "conditions": [], "targets": [], "effects": [{ "type": "spend_reaction_counter_play_top", "counterKey": "xiangyu.reaction", "amount": 4, "sourceZone": "deck", "payCardCosts": true }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" }, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } },
+        { "id": "sc-xiangyu-2.play-hand-free", "kind": "phase_action", "printedClause": "7反应：免费打出1张手牌。", "activation": { "phase": "combat", "opens": "controller_combat_action_window" }, "conditions": [], "targets": [{ "id": "hand_card", "type": "card_instance", "scope": { "zone": "hand", "owner": "controller" }, "count": { "min": 1, "max": 1 }, "constraints": [{ "type": "effect_playable_face_up" }] }], "effects": [{ "type": "spend_reaction_counter_play_hand_free", "counterKey": "xiangyu.reaction", "amount": 7, "sourceZone": "hand", "payCardCosts": false, "target": "hand_card" }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" }, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } }
+      ],
+      "phase3Evidence": {
+        "f1SourceReferences": [
+          { "kind": "chm", "document": "FD全卡图鉴V2.0.chm", "category": "servant/english", "page": "项羽.htm", "locator": "从者/狂战士/英文版/项羽.htm" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "servant", "page": "images/servants/项羽.png", "locator": "servant.xiangyu/项羽" }
+        ],
+        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "sc_xiangyu_2", "cost": 0, "basePower": 0, "legacyRequirement": 0, "typeLabel": "被动" },
+        "canonicalSkillZoneManaRequirement": { "value": 8, "authority": "final_rules_9.4" },
+        "acceptedContracts": { "reactionCounterReadiness": "PR#501/f74e824238bd96a6679648376cf8c3d6ce48125c" }
+      }
+    },
+    {
+      "id": "servant.xiangyu.skill.sc-xiangyu-3",
+      "aliases": ["sc_xiangyu_3"], "legacyId": "sc_xiangyu_3", "name": "力拔山兮气盖世", "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.xiangyu" },
+      "printedText": "【真名解放】被动/行动阶段：花费1点魔力，获得2个【反应】。战斗阶段：若你于本回合移动了合计至少3个地点，将此牌的基本威力翻倍。",
+      "cardFace": { "typeLabel": "迅捷/宝具", "attributes": ["迅捷", "宝具"], "cost": 6, "basePower": 7 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [{ "type": "skill_zone_mana_at_least", "value": 8 }],
+      "revealsTrueNameOnPlay": true,
+      "abilities": [
+        { "id": "sc-xiangyu-3.gain-reaction", "kind": "phase_action", "printedClause": "【真名解放】被动/行动阶段：花费1点魔力，获得2个【反应】。", "activation": { "phase": "action", "opens": "controller_action_window" }, "conditions": [], "targets": [], "effects": [{ "type": "pay_mana_gain_reaction_counter", "counterKey": "xiangyu.reaction", "manaCost": 1, "gain": 2 }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" }, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } },
+        { "id": "sc-xiangyu-3.unstoppable-force", "kind": "phase_action", "printedClause": "战斗阶段：若你于本回合移动了合计至少3个地点，将此牌的基本威力翻倍。", "activation": { "phase": "combat", "opens": "controller_combat_action_window" }, "conditions": [], "targets": [], "effects": [{ "type": "double_source_base_power_if_moved_at_least", "minimumMovementDistance": 3, "multiplier": 2, "duration": "while_source_active" }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" }, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } }
+      ],
+      "phase3Evidence": {
+        "f1SourceReferences": [
+          { "kind": "chm", "document": "FD全卡图鉴V2.0.chm", "category": "servant/english", "page": "项羽.htm", "locator": "从者/狂战士/英文版/项羽.htm" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "servant", "page": "images/servants/项羽.png", "locator": "servant.xiangyu/项羽" }
+        ],
+        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "sc_xiangyu_3", "cost": 6, "basePower": 7, "legacyRequirement": 8, "typeLabel": "迅捷/宝具", "revealsTrueNameOnPlay": true },
+        "canonicalSkillZoneManaRequirement": { "value": 8, "authority": "final_rules_9.4" },
+        "acceptedContracts": { "reactionCounterReadiness": "PR#501/f74e824238bd96a6679648376cf8c3d6ce48125c" }
+      }
+    }
+  ],
+  "deck": [
+    { "cardId": "card.cardb1" }, { "cardId": "card.cardb2" }, { "cardId": "card.cardb3" }, { "cardId": "card.cardb4" }, { "cardId": "card.cardb5", "count": 2 },
+    { "cardId": "card.cardq1" }, { "cardId": "card.cardq2" }, { "cardId": "card.cardq5", "count": 2 }, { "cardId": "card.cardluck" }, { "cardId": "card.cardsurveil" }
+  ],
+  "sources": [{ "id": "development_overview_image", "type": "original_card_image", "path": "../../Fate_Domination-开发版/images/servants/项羽.png", "interpretedAs": "servant_overview", "priority": "original_card_image", "reviewStatus": "reviewed_against_development_image" }]
+}

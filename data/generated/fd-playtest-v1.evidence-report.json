@@ -3,7 +3,7 @@
   "packId": "fd-playtest-v1",
   "summary": {
     "masters": 7,
-    "servants": 18,
+    "servants": 19,
     "events": 20,
     "blockingIssues": 0
   },
@@ -1929,6 +1929,61 @@
       "htmPath": "旅行者.htm",
       "imagePath": "../../Fate_Domination-开发版/images/servants/旅行者.png",
       "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.xiangyu",
+      "displayName": "项羽",
+      "entityKind": "servant",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "项羽.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/项羽.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.xiangyu.overview",
+      "displayName": "项羽",
+      "entityKind": "servant_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "项羽.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/项羽.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.xiangyu.skill.sc-xiangyu-1",
+      "displayName": "战术躯体",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "项羽.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/项羽.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.xiangyu.skill.sc-xiangyu-2",
+      "displayName": "霸王之武",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "项羽.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/项羽.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "servant.xiangyu.skill.sc-xiangyu-3",
+      "displayName": "力拔山兮气盖世",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "项羽.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/servants/项羽.png",
+      "imageIndex": 3,
       "reviewedAgainstImage": true,
       "issueCodes": []
     }
