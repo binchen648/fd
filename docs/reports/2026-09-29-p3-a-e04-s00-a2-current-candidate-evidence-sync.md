@@ -5,10 +5,11 @@
 - Control Epoch: `FD-P3-2026-09-23-04`
 - Task: `P3-E04-S00-A2`
 - Candidate: `30be3b74258c817ede1cb857ace947505b62d8ed`
+- Stable candidate branch: `codex/b-p3-e04-s00-a2-current-candidate`
 - Source main: `4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27`
 - Sync status: `REVIEWER_ACCEPTED_CANDIDATE`
 - Machine artifact: `artifacts/phase3-e04-s00-a2-current-candidate-sync.json`
-- Machine artifact SHA-256: `4122DE1A2161C0E1620F96F972C85AD67FA8C7C641F826EAE60594DC23CDDE31`
+- Machine artifact SHA-256: `EBC56094F744CE7DE5FA1D6700DF57B92EFE66B0AF9A7A8B411FDFA11080F157`
 
 ## Exact candidate boundary
 

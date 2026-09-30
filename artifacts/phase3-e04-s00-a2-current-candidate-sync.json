@@ -7,7 +7,7 @@
   "sourceMainSha": "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
   "candidate": {
     "sha": "30be3b74258c817ede1cb857ace947505b62d8ed",
-    "branch": "codex/i-p3-P3-E04-S00-A2-promotion",
+    "branch": "codex/b-p3-e04-s00-a2-current-candidate",
     "parentSha": "5edd7b6e781e2fc81ca18112e900528d8109ea54",
     "mainAncestor": true,
     "worktreeStatus": "CLEAN"
