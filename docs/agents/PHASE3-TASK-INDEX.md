@@ -7310,15 +7310,15 @@ Implementation evidence for `P3-B-XIANGYU-OWNER-READINESS-CAPABILITY`:
 
 ### Xiang Yu readiness acceptance synchronization
 
-- Accepted Candidate: 74e824238bd96a6679648376cf8c3d6ce48125c.
-- Canonical same-attempt bounded acceptance evidence: $evidence.
-- Verdict: IMPLEMENTATION_ACCEPTED_CANDIDATE; exact gate run $gateRun / job $gateJob SUCCESS.
+- Accepted Candidate: `f74e824238bd96a6679648376cf8c3d6ce48125c`.
+- Canonical same-attempt bounded acceptance evidence: `https://github.com/binchen648/fd/pull/501#issuecomment-5915261626`.
+- Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`; exact gate run `36740790785` / job `109974331534` `SUCCESS`.
 - Readiness A-sync/full-owner rescan finds no canonical Xiang Yu servant authoring; sc1 + sc2 + sc3 are all absent from data/authoring/** and all three remain newly creditable.
 - No preservation-only duplicate Xiang Yu skill exists in current canonical authoring lineage.
 - No additional currently discoverable Xiang Yu owner-local readiness gap remains after accepted readiness closure.
 - Readiness remains zero-credit; strict accounting stays 170/944, remaining 774.
 - Next legal FORMAL task: P3-S-OWNER-XIANGYU-COMPLETE-MIGRATION, frozen sc1 + sc2 + sc3 together; all three are creditable only after formal acceptance + A-sync/accounting.
-- Detailed A-sync report: $report.
+- Detailed A-sync report: `docs/reports/2026-09-30-p3-a-xiangyu-owner-readiness-capability-acceptance-synchronization.md`.
 
 ## TASK P3-S-OWNER-XIANGYU-COMPLETE-MIGRATION
 
@@ -7356,3 +7356,42 @@ Implementation evidence for `P3-S-OWNER-XIANGYU-COMPLETE-MIGRATION`:
 - Generated hashes: content-library `eea4a067812644adb41989b3519fceddd0b11ba5985856e3f0fd525ffb713d52`; fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`; evidence-report `fe7a7388fda1eaa0fcab6b80dbb08104cabc2e27ccc0285be535045267cfb6f2`.
 - Detailed result: `docs/reports/2026-10-01-p3-s-owner-xiangyu-complete-migration-result.md`.
 - Current disposition: `MIGRATION_COMPLETE_CANDIDATE`; freeze one exact Candidate / one PR / one fresh R. Accounting remains `170/944`, remaining `774` until `MIGRATION_ACCEPTED` + A-sync/accounting; accepted credit would be exactly `+3` -> `173/944`, remaining `771`.
+
+Acceptance synchronization after formal review:
+- PR #502 exact Candidate `acde60a437d27f963fa061c81836e65d86b1f3ba` received `MIGRATION_ACCEPTED` from fresh independent R.
+- Canonical same-attempt Coordinator bounded relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/502#issuecomment-5915589848`.
+- Exact Phase 3 Pre-Review Gate run `36744941005` / job `109988630721` succeeded.
+- Accepted formal accounting adds exactly Xiang Yu sc1 + sc2 + sc3 (`+3`); no preservation-only duplicate exists.
+- Strict formal accounting moves `170/944 -> 173/944`; remaining `774 -> 771`.
+- Acceptance synchronization report: `docs/reports/2026-10-01-p3-a-owner-xiangyu-acceptance-synchronization.md`.
+- Xiang Yu is the final owner in stable first-occurrence frozen-owner ordering. Mechanical wrap-around to the first globally incomplete owner selects `master.akasha`.
+- Material presence and strict accepted accounting remain distinct: canonical frozen material currently contains `179/944`, while strict independently accepted accounting after this transaction is `173/944`; no unreviewed material is credited.
+
+## TASK P3-B-AKASHA-OWNER-READINESS-CAPABILITY
+
+Owner: Codex S / FORMAL
+Status: `READY`
+Classification: zero-credit owner-readiness/capability batch for current owner `master.akasha`
+
+Frozen owner scope:
+- `master.akasha.skill.ascension`
+- `master.akasha.skill.s1`
+- `master.akasha.skill.s1a`
+- `master.akasha.skill.s2`
+- `master.akasha.skill.s3`
+- `master.akasha.skill.s4`
+- `master.akasha.skill.s5`
+- `master.akasha.skill.s6`
+
+Accounting boundary:
+- strict formal accounting is `173/944`, remaining `771`;
+- readiness is permanently zero-credit;
+- current canonical `data/authoring/**` contains `0/8` frozen Akasha identities;
+- one owner / all currently discoverable readiness gaps / one Candidate / one PR / one fresh R / one A-sync-rescan;
+- do not split per skill and do not grant migration credit from readiness work.
+
+Mechanical preflight facts:
+- stable frozen inventory contains 251 owners; `servant.xiangyu` is owner 251/251 and `master.akasha` is the first globally incomplete owner on wrap-around;
+- frozen Akasha scope is exactly 8 identities;
+- `master.akasha.skill.s1` is currently `CONTRACT_MAPPED`; the other seven inventory entries are currently `EXPLICIT_BLOCK` / source-evidence-required and must be mechanically reconciled against current repo evidence before implementation;
+- production identity-specific Reference handlers are evidence only and must not be copied into new owner-specific runtime routing without a current generic capability contract.
