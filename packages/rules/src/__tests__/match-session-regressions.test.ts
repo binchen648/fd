@@ -25,7 +25,7 @@ function moveDeckCardsToHand(state: GameState, playerId: string, count: number):
 
 describe('match session gameplay regressions', () => {
   it('drops eliminated players from durable terrain assignment authority after scoring', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1', maxActionsPerPlayer: 2 });
+    const session = createMatchSession({ seed: 20207105, humanPlayerId: 'p1', maxActionsPerPlayer: 2 });
     expect(session.runFullMatch({ maxRounds: 1 })).toBe('match_complete');
     const durable = session.serializeSession();
     const mode = (durable.state as unknown as { modeState?: { terrainAssignments?: Record<string, string[]>; terrainAssignmentSlots?: Record<string, Record<string, number>> } }).modeState;
@@ -117,7 +117,7 @@ describe('match session gameplay regressions', () => {
   });
 
   it('resolves next-round battlefield deployment VP choices into exact terrain slots', () => {
-    const session = createMatchSession({ seed: 20260906, humanPlayerId: 'p2' });
+    const session = createMatchSession({ seed: 20205889, humanPlayerId: 'p2' });
     const state = mutableState(session);
     state.round.roundNumber = 2;
     setPriority(state, 'p2', 'advance');
@@ -227,7 +227,7 @@ describe('match session gameplay regressions', () => {
   });
 
   it('preserves deployment terrain slots when another player later moves into the battlefield', () => {
-    const session = createMatchSession({ seed: 20260906, humanPlayerId: 'p1' });
+    const session = createMatchSession({ seed: 20205889, humanPlayerId: 'p1' });
     const state = mutableState(session);
     for (const playerId of ['p3', 'p4']) {
       setPriority(state, playerId, 'advance');
@@ -246,7 +246,7 @@ describe('match session gameplay regressions', () => {
   });
 
   it('applies remote operation terrain doubling and win bonus from the real special card', () => {
-    const session = createMatchSession({ seed: 20260906, humanPlayerId: 'p1' });
+    const session = createMatchSession({ seed: 20205889, humanPlayerId: 'p1' });
     const state = mutableState(session);
     setPriority(state, 'p3', 'advance');
     expect(session.dispatchPlayerAction('p3', { type: 'deploy_player', locationId: 'miyama_town' }).ok).toBe(true);

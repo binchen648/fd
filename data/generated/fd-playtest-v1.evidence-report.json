@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 7,
+    "masters": 8,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -298,6 +298,116 @@
       "issueCodes": [
         "SOURCE_ASSET_UNVERIFIED"
       ]
+    },
+    {
+      "entityId": "master.akasha",
+      "displayName": "阿卡夏之蛇",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.akasha.overview",
+      "displayName": "阿卡夏之蛇",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.akasha.skill.ascension",
+      "displayName": "最终形态",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 8,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.akasha.skill.s1",
+      "displayName": "命理",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.akasha.skill.s1a",
+      "displayName": "无限转生者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.akasha.skill.s2",
+      "displayName": "转生",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.akasha.skill.s3",
+      "displayName": "米切尔·罗亚·巴尔丹姆杨",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.akasha.skill.s4",
+      "displayName": "艾蕾西亚",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.akasha.skill.s5",
+      "displayName": "远野四季（容器）",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 6,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.akasha.skill.s6",
+      "displayName": "过负荷",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿卡夏之蛇.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
+      "imageIndex": 7,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
     },
     {
       "entityId": "master.gatou",

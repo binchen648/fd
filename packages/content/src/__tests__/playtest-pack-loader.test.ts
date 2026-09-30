@@ -135,7 +135,9 @@ describe('playtest pack loader', () => {
     expect(loaded.servants).toHaveLength(
       loaded.manifest.servantFiles.length + (loaded.manifest.authoringServantFiles?.length ?? 0),
     );
-    expect(loaded.masters).toHaveLength(7);
+    expect(loaded.masters).toHaveLength(
+      loaded.manifest.masterFiles.length + (loaded.manifest.authoringMasterFiles?.length ?? 0),
+    );
     expect(loaded.eventSets).toHaveLength(1);
     expect(loaded.eventSets[0]!.cardIds).toHaveLength(20);
     expect(loaded.eventCards).toHaveLength(18);
