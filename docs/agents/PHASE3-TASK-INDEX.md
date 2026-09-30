@@ -7431,7 +7431,7 @@ Revision evidence for `P3-B-AKASHA-OWNER-READINESS-CAPABILITY` after predecessor
 ## TASK P3-S-OWNER-AKASHA-COMPLETE-MIGRATION
 
 Owner: Codex S / FORMAL
-Status: `MIGRATION_COMPLETE_CANDIDATE`
+Status: `MIGRATION_ACCEPTED`
 Classification: formal owner-complete migration for `master.akasha`
 
 Frozen owner scope:
@@ -7573,3 +7573,45 @@ Detailed report: `docs/reports/2026-10-01-p3-b-akasha-owner-readiness-seven-play
 - Generated hashes: content-library `9bded243cd7dddf19f7896c2f1af6f79b917e9a28d76fd13071529cbdd8d316e`; fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`; evidence-report `fd3081d8fadf2f81a7e070feff815ac893e2188cb5d3b18efdd74cc1b8460f8c`.
 - Detailed report: `docs/reports/2026-10-01-p3-s-owner-akasha-complete-migration-result.md`.
 - Current disposition: `MIGRATION_COMPLETE_CANDIDATE`; freeze one exact formal Candidate / one PR / one fresh independent R. No credit before `MIGRATION_ACCEPTED` + A-sync/accounting.
+
+### Akasha formal owner acceptance synchronization
+
+- PR #506 exact Candidate: `baa4418719cbca0e98cb393791eecb580113316f`.
+- Exact Base: `e2e79392c78dadbd17d53da9e48c9af5000592a9`.
+- Canonical same-attempt bounded acceptance evidence: `https://github.com/binchen648/fd/pull/506#issuecomment-5917599345`.
+- Verdict: `MIGRATION_ACCEPTED`; exact fresh edited Phase 3 gate run `36760689494` / job `110042171521` = `SUCCESS`.
+- All eight frozen Akasha identities were absent from canonical authoring at Base and are newly creditable; preservation-only count is zero.
+- Formal accounting moves exactly `+8`: `173/944 -> 181/944`, remaining `771 -> 763`.
+- No duplicate readiness credit is added. #503/#504/#505 remain zero-credit readiness lineage only.
+- Mechanical stable owner ordering wraps from the prior end-of-roster servant sequence to the first globally incomplete owner. After Akasha closes, the next globally incomplete owner is `master.akiha`.
+- Canonical `data/authoring/**` contains `0/5` frozen Akiha identities and Task Index contains no prior Akiha migration/readiness credit.
+- Inventory classifies all five Akiha identities as `SOURCE_EVIDENCE_REQUIRED / EXPLICIT_BLOCK` with current route `none`; therefore the next legal FORMAL transaction is owner-readiness-first.
+- Detailed A-sync report: `docs/reports/2026-10-01-p3-a-owner-akasha-acceptance-synchronization.md`.
+
+## TASK P3-B-AKIHA-OWNER-READINESS-CAPABILITY
+
+Owner: Codex B / FORMAL readiness
+Status: `READY`
+Classification: bounded zero-credit owner-readiness/capability batch for the complete current `master.akiha` frozen scope
+
+Frozen owner scope:
+- `master.akiha.skill.ascension`
+- `master.akiha.skill.s1`
+- `master.akiha.skill.s1a`
+- `master.akiha.skill.s2`
+- `master.akiha.skill.s3`
+
+Accounting boundary:
+- strict formal accounting after Akasha synchronization: `181/944`, remaining `763`;
+- readiness is permanently zero migration credit;
+- canonical `data/authoring/**` currently contains `0/5` frozen Akiha identities;
+- all five inventory rows are `SOURCE_EVIDENCE_REQUIRED / EXPLICIT_BLOCK`, current route `none`;
+- locked Reference handler `core.akiha-bloodlust` is corroboration only and must not be copied as owner/card-name identity routing.
+
+Required disposition:
+- recertify all five frozen printed/source semantics together;
+- scan the complete owner for currently discoverable generic capability gaps before any consumer migration;
+- close all discovered readiness gaps in one bounded owner-readiness batch where compatible;
+- fresh independent R, then A-sync/full-owner rescan;
+- only after readiness closure may `P3-S-OWNER-AKIHA-COMPLETE-MIGRATION` be created;
+- do not split per skill and do not grant credit from readiness.
