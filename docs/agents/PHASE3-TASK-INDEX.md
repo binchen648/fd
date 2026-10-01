@@ -8007,7 +8007,7 @@ This Candidate does NOT close the parent owner-readiness task. Fresh R acceptanc
 ## TASK P3-S-OWNER-AMAKUSA-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `ACCEPTED`
 Classification: formal owner-complete migration for the complete current `master.amakusa` frozen scope
 
 Frozen owner scope:
@@ -8085,3 +8085,31 @@ Detailed report: docs/reports/2026-10-01-p3-b-amakusa-owner-readiness-source-def
 - The sole P1 is shared replay-lineage behavior exposed by the larger Amakusa production action/checkpoint count: restore succeeded but retained future checkpoints, so the restored checkpoint could fall outside the last-40 client projection.
 - Successor revision rewinds replay + replaySnapshots to the restored checkpoint and prunes future replay trust; the regression is strengthened rather than weakened.
 - No Amakusa authoring/rule semantic was changed by this revision; accounting remains `189/944`, remaining `755` pending fresh exact successor review.
+### Amakusa formal acceptance synchronization
+
+- Accepted exact Candidate: `1d26eec6e1830ae46ef8a6f40b2cde744d433a83`.
+- Fresh independent verdict: `MIGRATION_ACCEPTED`.
+- Canonical Coordinator bounded relay: `https://github.com/binchen648/fd/pull/517#issuecomment-5925865140`.
+- Exact Base: `ceffceb3df7a9739726cf0eb52f97c31761af8e5`; Base rescan confirms all five Amakusa frozen identities were absent from canonical authoring.
+- Candidate rescan confirms `ascension + s1 + s1a + s2 + s3` each exist exactly once in canonical authoring.
+- Newly creditable: `5`; preservation-only: `0`.
+- Strict formal accounting advances `189/944 -> 194/944`; remaining `755 -> 750`.
+- Next mechanical owner is `master.araya` (荒耶宗莲), frozen scope ascension + s1 + s1a (`3` identities).
+- Acceptance synchronization report: `docs/reports/2026-10-01-p3-a-owner-amakusa-acceptance-synchronization.md`.
+
+## TASK P3-B-ARAYA-OWNER-READINESS-CAPABILITY
+
+Owner: FORMAL readiness
+Status: `READY`
+Classification: parent zero-credit owner-readiness preflight for complete current `master.araya` frozen scope
+
+Frozen owner scope:
+- `master.araya.skill.ascension`
+- `master.araya.skill.s1`
+- `master.araya.skill.s1a`
+
+Accounting boundary:
+- strict formal accounting after accepted Amakusa A-sync is `194/944`, remaining `750`;
+- Araya readiness and every readiness subtask are permanently zero migration credit;
+- FORMAL must mechanically rescan canonical `data/authoring/**` and frozen source, identify all currently discoverable generic capability gaps, close/accept them, then complete one full-owner A-sync/rescan before any Araya consumer migration;
+- no Araya formal migration credit is granted by readiness work.
