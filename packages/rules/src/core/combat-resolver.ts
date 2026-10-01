@@ -12,7 +12,7 @@ import type { LocationDefinition } from "../schema/location";
 import type { VisibilityState } from "../schema/visibility";
 import type { ResolverResult } from "./resolver-contracts";
 import { getLocationById } from "./map-engine";
-import { calculateCardPower, processAbilityEvent } from '../ability/interpreter';
+import { calculateCardPower, processAbilityEvent, processAbilitySystemEvent } from '../ability/interpreter';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
 import { isPlayerPresentAtLocation, multiPresenceTerrainAdvantageAtLocation } from '../ability/multi-presence-player-capability';
 import { applyLinkedOwnerCombatPowerSharing, playerHasLinkedOwnerLossImmunity, prepareLinkedOwnerCardsForBattle } from '../ability/linked-owner-combat';
@@ -590,7 +590,8 @@ export function resolveBattlefield(
 
   state = prepareLinkedOwnerCardsForBattle(state, input.battlefieldId);
 
-  const nextPlacements = state.eventPlacements.map((placement) => {
+  const newlyActivatedEvents: Array<{ eventCardId: string; ruleInstanceId: string; locationId: string }> = [];
+  const nextPlacements = state.eventPlacements.map((placement, placementIndex) => {
     if (placement.locationId !== input.battlefieldId || !input.revealHiddenEvents) {
       return placement;
     }
@@ -604,11 +605,19 @@ export function resolveBattlefield(
       revealReason: `battle:${input.battlefieldId}`,
     };
 
+    const ruleInstanceId = placement.ruleInstanceId ?? ('event-placement:' + state.round.roundNumber + ':' + placement.locationId + ':' + placement.eventCardId + ':' + placementIndex);
+    newlyActivatedEvents.push({ eventCardId: placement.eventCardId, ruleInstanceId, locationId: placement.locationId });
     return {
       ...placement,
+      ruleInstanceId,
       visibility,
     };
   });
+  if (newlyActivatedEvents.length) {
+    const activatedState = structuredClone(state); activatedState.eventPlacements = nextPlacements;
+    for (const entry of newlyActivatedEvents) processAbilitySystemEvent(activatedState, 'event-activated', { type: 'event_activated', sourceCardId: entry.ruleInstanceId, revealedKind: 'event', revealedId: entry.eventCardId, locationId: entry.locationId });
+    state = activatedState;
+  } else if (nextPlacements !== state.eventPlacements) { state = { ...state, eventPlacements: nextPlacements }; }
 
   const participants = input.participants ?? deriveBattleParticipantsFromState(state, input.battlefieldId);
   const returnSilenceSource = returnSilenceSources(state).find(({ playerId }) =>

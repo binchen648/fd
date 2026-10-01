@@ -7979,7 +7979,7 @@ This Candidate does NOT close ascension readiness and does NOT close the parent 
 ## TASK P3-B-AMAKUSA-OWNER-READINESS-ASCENSION-EVENT-POWER
 
 Owner: FORMAL readiness follow-up
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: bounded zero-credit generic ascension-unlock terminal + named-event basic-card Power authority for Amakusa ascension
 
 Required frozen source closure:
@@ -7988,3 +7988,7 @@ Required frozen source closure:
 - no card-name/Master identity routing in production; restore and replay provenance must fail closed.
 
 No migration credit; do not start before linked-role core exact acceptance + FORMAL A-sync.
+
+Detailed report: `docs/reports/2026-10-01-p3-b-amakusa-owner-readiness-ascension-event-power-result.md`.
+
+This Candidate does NOT close the parent owner-readiness task. Fresh R acceptance must be followed by one FORMAL full-owner readiness A-sync/rescan before consumer migration.

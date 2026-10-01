@@ -111,6 +111,7 @@ import {
   isOpponentCloseToOneCandidate,
 } from './opponent-close-to-one';
 import { canExecuteMasterAscensionUnlock, containsMasterAscensionUnlockPrivilegedNode, isAcceptedMasterAscensionUnlockAbility, resolveMasterAscensionUnlock } from './master-ascension-unlock-capability';
+import { cleanupMasterAscensionEventPowerAtRoundEnd, containsMasterAscensionEventPowerPrivilegedNode, isAcceptedMasterAscensionEventPowerAbility, isMasterAscensionEventPowerRuntimeProvenanceValidForRestore, masterAscensionNamedEventBasicPowerBonus, reconcileMasterAscensionEventPowerAuthority, resolveMasterAscensionEventPowerEffect } from './master-ascension-event-power-capability';
 import {
   MULTI_PRESENCE_SACRIFICE_DEFEAT_EFFECT, canExecuteMultiPresenceEffect, containsMultiPresencePrivilegedNode,
   isAcceptedMultiPresenceAbility, isMultiPresenceRuntimeProvenanceValidForRestore, multiPresenceSacrificeTargets,
@@ -1080,6 +1081,8 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
   const vesselCardPower = vesselCycleCardPowerAdjustment(s, source.controllerPlayerId, sourceId);
   if (vesselCardPower.multiplier !== 1) { result.value *= vesselCardPower.multiplier; result.lines.push({ label: 'vessel_cycle_base_power_multiplier', value: result.value }); }
   if (vesselCardPower.bonus !== 0) { result.value += vesselCardPower.bonus; result.lines.push({ label: 'vessel_cycle_round_power_bonus', value: result.value }); }
+  const ascensionEventBonus = masterAscensionNamedEventBasicPowerBonus(s, sourceId);
+  if (ascensionEventBonus !== 0) { result.value += ascensionEventBonus; result.lines.push({ label: 'master_ascension_named_event_basic_power_bonus', value: result.value }); }
   const linkedOwnerMultiplier = linkedOwnerBasePowerMultiplier(s, source);
   if (linkedOwnerMultiplier !== 1) {
     result.value *= linkedOwnerMultiplier;
@@ -2318,6 +2321,8 @@ export function resolveMandatoryCombatPhaseActionsForPlayer(s: GameState, player
 export function triggerEventScopeMatches(a: AuthoringAbility, event: AbilityEvent): boolean {
   const eventLocationId = str(a.activation.eventLocationId);
   if (eventLocationId && event.locationId !== eventLocationId) return false;
+  const eventDefinitionId = str(a.activation.eventDefinitionId);
+  if (eventDefinitionId && (event.revealedKind !== 'event' || event.revealedId !== eventDefinitionId)) return false;
   return true;
 }
 function battleEventControllerEligibleAfterScoring(s: GameState, event: AbilityEvent, controllerId: string): boolean {
@@ -3280,6 +3285,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       r.calculations.push({ controllerId: p.id, lines: [{ label: '当前战场事件牌战果合计', value: total }] });
       s.eventDiscardPile = [...(s.eventDiscardPile ?? []), ...placements];
       s.eventPlacements = s.eventPlacements.filter(e => e.locationId !== p.locationId);
+      reconcileMasterAscensionEventPowerAuthority(s);
       break;
     }
     case 'draw_cards': {
@@ -3914,6 +3920,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
     if (!isMultiPresenceRuntimeProvenanceValidForRestore(s)) return false;
     if (!isLinkedRoleCoreRuntimeProvenanceValidForRestore(s)) return false;
     if (!isLinkedRoleMemberSkillCopyRuntimeProvenanceValidForRestore(s)) return false;
+    if (!isMasterAscensionEventPowerRuntimeProvenanceValidForRestore(s)) return false;
     if (!(r.pendingDelayedActivations ?? []).every((entry) => {
       const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
       const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
@@ -4410,6 +4417,7 @@ function startBattlefieldAttackOffer(s: GameState, ctx: EffectContext, ability: 
 function settleBattlefieldAttackOffers(s: GameState, event: AbilityEvent): void {
   const r = runtime(s);
   if (event.type === 'round_end') {
+    cleanupMasterAscensionEventPowerAtRoundEnd(s);
     const expired = (r.battlefieldAttackOfferSettlements ?? []).filter((entry) => entry.round <= s.round.roundNumber);
     for (const entry of expired) retireBattlefieldAttackOfferAuthority(s, entry.transactionId);
     r.battlefieldAttackOfferSettlements = (r.battlefieldAttackOfferSettlements ?? []).filter((entry) => entry.round > s.round.roundNumber);
@@ -6316,7 +6324,18 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (!commitLinkedRoleCopiedSkillUse(s, ctx.sourceCardId, ctx.controllerId)) reject('invalid_state', 'Copied linked-role servant skill lost source provenance');
   if (stageMultiPresenceLocationContext(s, ctx, a)) return;
   if (containsMasterAscensionUnlockPrivilegedNode(a)) {
-    if (!isAcceptedMasterAscensionUnlockAbility(a) || !resolveMasterAscensionUnlock(s, ctx, a)) reject('resolution_failed', 'Unsupported master-ascension unlock semantic');
+    if (!isAcceptedMasterAscensionUnlockAbility(a)) reject('resolution_failed', 'Unsupported master-ascension unlock semantic');
+    const before = new Set(s.cards.map((entry) => entry.instanceId));
+    if (!resolveMasterAscensionUnlock(s, ctx, a)) reject('resolution_failed', 'Unsupported master-ascension unlock semantic');
+    const created = s.cards.find((entry) => !before.has(entry.instanceId) && entry.generatedBy === ctx.sourceCardId && entry.ownerPlayerId === ctx.controllerId && entry.definitionId === player(s, ctx.controllerId).masterCardId + '.skill.ascension');
+    if (created) processEvent(s, { id: nextId(s, 'master-ascension-unlocked'), type: 'after_master_ascension_unlocked', playerId: ctx.controllerId, sourceCardId: created.instanceId });
+    return;
+  }
+  if (containsMasterAscensionEventPowerPrivilegedNode(a)) {
+    if (!isAcceptedMasterAscensionEventPowerAbility(a)) reject('resolution_failed', 'Unsupported master-ascension event-power semantic');
+    const zeroed = resolveMasterAscensionEventPowerEffect(s, ctx, a);
+    if (!zeroed) reject('resolution_failed', 'Master-ascension event-power resolution failed');
+    for (const opponentId of zeroed) processEvent(s, { id: nextId(s, 'empty-seals-ascension'), type: 'after_controller_loses_all_command_seals', playerId: opponentId, sourceCardId: ctx.sourceCardId });
     return;
   }
   if (containsLinkedRoleCorePrivilegedNode(a)) {

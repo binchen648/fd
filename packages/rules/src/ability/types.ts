@@ -492,6 +492,10 @@ export interface LinkedRoleSkillCopyState {
   copyCardInstanceId: string; originalCardInstanceId: string; originalOwnerPlayerId: PlayerId; leaderPlayerId: PlayerId;
   relationshipKey: string; providerSourceCardId: string; providerAbilityId: string; round: number; used: boolean;
 }
+export interface MasterAscensionEventPowerState {
+  controllerId: PlayerId; sourceCardId: string; sourceAbilityId: string; eventDefinitionId: string; eventRuleInstanceId: string;
+  locationId: string; triggerEventId: string; round: number; amount: 4;
+}
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
@@ -519,6 +523,8 @@ export interface AbilityRuntime {
   linkedRoleSkillCopies?: Record<string, LinkedRoleSkillCopyState>;
   /** Current-round use lock on the exact original physical servant-skill card after its copy is used. */
   linkedRoleOriginalSkillLocks?: Record<string, number>;
+  /** Source-bound current-round +4 basic-card Power authority from an exact activated event. */
+  masterAscensionEventPowerByPlayer?: Record<PlayerId, MasterAscensionEventPowerState>;
   /** Identity-free server-owned structured player flags. */
   structuredPlayerFlagsByPlayer?: Record<PlayerId, Record<string, boolean | string | number>>;
   /** Round marker for flags whose authored lifecycle is exactly this_round. */

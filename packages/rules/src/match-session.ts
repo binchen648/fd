@@ -8,6 +8,7 @@ import {
   isCanonicalGenericPendingDecisionForRestore,
   isDeferredAbilityRuntimeProvenanceValidForRestore,
   processAbilityEvent,
+  processAbilitySystemEvent,
   projectAbilityState,
   resolveMandatoryCombatPhaseActionsForPlayer,
 } from './ability/interpreter';
@@ -3302,15 +3303,18 @@ export class MatchSession {
   private placeEvent(targetState: GameState, locationId: LocationId, visibility: 'public' | 'hidden'): void {
     const eventCardId = this.drawEventCard(targetState);
     if (!eventCardId) return;
+    const ruleInstanceId = 'event-placement:' + targetState.round.roundNumber + ':' + locationId + ':' + eventCardId + ':' + targetState.eventPlacements.length;
     const placement = {
       locationId,
       eventCardId,
+      ruleInstanceId,
       visibility: visibility === 'public' ? { scope: 'public' as const } : { scope: 'hidden_until_trigger' as const },
       battleModifiers: eventBattleModifiers(eventCardId),
     };
     const victoryPoints = eventVictoryPoints(eventCardId);
     if (victoryPoints !== undefined) Object.assign(placement, { victoryPoints });
     targetState.eventPlacements.push(placement);
+    if (placement.visibility.scope === 'public') processAbilitySystemEvent(targetState, 'event-activated', { type: 'event_activated', sourceCardId: ruleInstanceId, revealedKind: 'event', revealedId: eventCardId, locationId });
     this.record('event_placed', `${locationId}:${eventCardId}`, { placement }, targetState);
     if (eventHasHostAdjudicatedEffects(eventCardId)) {
       const modeState = modeStateOf(targetState);
@@ -3389,12 +3393,14 @@ export class MatchSession {
   }
 
   private revealShintoEventsAtActionStart(targetState: GameState): void {
-    let revealed = 0;
+    let revealed = 0; const activated: Array<{eventCardId:string;ruleInstanceId:string;locationId:LocationId}> = [];
     targetState.eventPlacements = targetState.eventPlacements.map((placement) => {
       if (placement.locationId !== 'shinto' || placement.visibility.scope !== 'hidden_until_trigger') return placement;
-      revealed++;
-      return { ...placement, visibility: { scope: 'public' as const, revealReason: 'action_start' } };
+      revealed++; const ruleInstanceId = placement.ruleInstanceId ?? ('event-placement:' + targetState.round.roundNumber + ':' + placement.locationId + ':' + placement.eventCardId + ':' + revealed);
+      activated.push({ eventCardId: placement.eventCardId, ruleInstanceId, locationId: placement.locationId });
+      return { ...placement, ruleInstanceId, visibility: { scope: 'public' as const, revealReason: 'action_start' } };
     });
+    for (const entry of activated) processAbilitySystemEvent(targetState, 'event-activated', { type: 'event_activated', sourceCardId: entry.ruleInstanceId, revealedKind: 'event', revealedId: entry.eventCardId, locationId: entry.locationId });
     if (revealed) this.record('event_revealed', 'shinto action start reveal', { locationId: 'shinto', count: revealed }, targetState);
     this.refreshEventForbids(targetState);
   }
