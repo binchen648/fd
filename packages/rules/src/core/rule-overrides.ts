@@ -1,6 +1,7 @@
 import type { GameState, PhaseName } from '../schema/game';
 import type { ManaContributionChoice, RuleNode } from '../ability/types';
-import { bloodlustManaGainMultiplier, commitBloodlustManaPayment, notifyBloodlustManaSpent, resolveBloodlustManaPayment } from '../ability/bloodlust-cycle-capability';
+import { bloodlustCanContribute, bloodlustManaGainMultiplier, commitBloodlustManaPayment, notifyBloodlustManaSpent, resolveBloodlustManaPayment } from '../ability/bloodlust-cycle-capability';
+import { commitLinkedRoleContributions, linkedRoleCanContribute, resolveLinkedRoleContributionChoices } from '../ability/linked-role-core-capability';
 import { isManaGainSuppressed } from '../ability/timed-resource-suppression';
 import { applyStorageManaOverflowReactions, collectSameLocationManaSpendRewards } from '../ability/mana-transaction-capability';
 
@@ -224,18 +225,44 @@ export function notifyManaSpent(state: GameState, playerId: string, amount: numb
   }
 }
 
+export interface ManaContributionClassification { bloodlust: ManaContributionChoice[]; linkedRole: ManaContributionChoice[] }
+export function classifyManaContributionChoices(state: GameState, beneficiaryPlayerId: string, contributions?: readonly ManaContributionChoice[]): ManaContributionClassification {
+  const out: ManaContributionClassification = { bloodlust: [], linkedRole: [] };
+  for (const raw of contributions ?? []) {
+    if (!raw || typeof raw.contributorPlayerId !== 'string' || raw.contributorPlayerId === beneficiaryPlayerId || raw.amount !== 1 ||
+        (raw.sourceCardInstanceId !== undefined && (typeof raw.sourceCardInstanceId !== 'string' || raw.sourceCardInstanceId.length === 0))) {
+      throw new Error('MANA_CONTRIBUTION_INVALID');
+    }
+    const bloodlust = bloodlustCanContribute(state, beneficiaryPlayerId, raw.contributorPlayerId);
+    const linkedRole = linkedRoleCanContribute(state, beneficiaryPlayerId, raw.contributorPlayerId);
+    if ((bloodlust ? 1 : 0) + (linkedRole ? 1 : 0) !== 1) throw new Error(bloodlust && linkedRole ? 'MANA_CONTRIBUTION_CONFLICT' : 'MANA_CONTRIBUTION_NOT_ALLOWED');
+    (bloodlust ? out.bloodlust : out.linkedRole).push({ ...raw });
+  }
+  return out;
+}
+export function resolveManaContributionPaymentPlan(state: GameState, playerId: string, amount: number, contributions?: readonly ManaContributionChoice[]) {
+  if (!Number.isSafeInteger(amount) || amount < 0) throw new Error('Mana spend must be a nonnegative safe integer.');
+  const classified = classifyManaContributionChoices(state, playerId, contributions);
+  const bloodlustPlan = resolveBloodlustManaPayment(state, playerId, amount, classified.bloodlust);
+  const linkedRoleParts = resolveLinkedRoleContributionChoices(state, playerId, classified.linkedRole);
+  const linkedAmount = linkedRoleParts.reduce((sum, entry) => sum + entry.amount, 0);
+  const payerAmount = bloodlustPlan.payerAmount - linkedAmount;
+  const player = state.players.find((candidate) => candidate.id === playerId);
+  if (!player || payerAmount < 0 || payerAmount > player.mana) throw new Error('Insufficient mana.');
+  return { payerAmount, bloodlustPlan, linkedRoleParts, classified };
+}
 /** Pays mana and emits the generic paid-mana transaction consumed by resource observers. */
 export function spendMana(state: GameState, playerId: string, amount: number, contributions?: readonly ManaContributionChoice[]): ManaSpendResult {
-  if (!Number.isSafeInteger(amount) || amount < 0) throw new Error('Mana spend must be a nonnegative safe integer.');
   const player = state.players.find((candidate) => candidate.id === playerId);
   if (!player) throw new Error(`Unknown mana spender: ${playerId}`);
   const before = player.mana;
-  const plan = resolveBloodlustManaPayment(state, playerId, amount, contributions);
-  if (plan.payerAmount > before) throw new Error('Insufficient mana.');
+  const plan = resolveManaContributionPaymentPlan(state, playerId, amount, contributions);
   player.mana = before - plan.payerAmount;
-  commitBloodlustManaPayment(state, playerId, plan);
+  commitBloodlustManaPayment(state, playerId, plan.bloodlustPlan);
+  commitLinkedRoleContributions(state, playerId, plan.linkedRoleParts);
   if (plan.payerAmount > 0) notifyManaSpent(state, playerId, plan.payerAmount);
-  for (const contribution of plan.contributions) notifyManaSpent(state, contribution.contributorPlayerId, contribution.amount);
+  for (const contribution of plan.bloodlustPlan.contributions) notifyManaSpent(state, contribution.contributorPlayerId, contribution.amount);
+  for (const contribution of plan.linkedRoleParts) notifyManaSpent(state, contribution.contributorPlayerId, contribution.amount);
   return { requestedAmount: amount, actualAmount: amount, before, after: player.mana };
 }
 

@@ -20,6 +20,7 @@ import { resolveBattlefield } from "./combat-resolver";
 import { resolveEffectsForWindow } from "./effect-resolver";
 import { getEnabledLocations } from "./map-engine";
 import { advanceAbilityPhase, processAbilityEvent, processAbilitySystemEvent } from '../ability/interpreter';
+import type { ManaContributionChoice } from '../ability/types';
 import { copyBattleCloseDrawPlayServerAuthority } from '../ability/battle-close-draw-play-authority';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from '../ability/battle-terminal';
 
@@ -40,6 +41,7 @@ export interface ActionMovementInput {
   playerId: string;
   to: "miyama_town" | "shinto" | "magic_workshop" | "recon" | "moon_holy_grail";
   movementKind: "normal" | "effect";
+  manaContributions?: ManaContributionChoice[];
 }
 
 export interface ActionPlayInput {
@@ -487,6 +489,7 @@ export function stepGameLoop(
       playerId: movingPlayerId,
       to: input.action.to,
       movementKind: input.action.movementKind,
+      ...(input.action.manaContributions?.length ? { manaContributions: input.action.manaContributions } : {}),
     });
     nextState = carryBattleCloseDrawPlayAuthority(state, movement.nextState);
     if (movement.moved && nextState.abilityRuntime) {

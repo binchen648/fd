@@ -7906,8 +7906,8 @@ Required disposition:
 ## TASK P3-B-AMAKUSA-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `READY`
-Classification: bounded zero-credit owner-readiness capability for complete current `master.amakusa` frozen scope
+Status: `WAIT_READINESS_SUBTASKS`
+Classification: parent zero-credit owner-readiness closure for complete current `master.amakusa` frozen scope
 
 Frozen owner scope:
 - `master.amakusa.skill.ascension`
@@ -7918,11 +7918,69 @@ Frozen owner scope:
 
 Accounting boundary:
 - strict formal accounting after accepted Alice A-sync is `189/944`, remaining `755`;
-- this readiness task is permanently zero migration credit;
-- canonical `data/authoring/**` currently contains `0/5` Amakusa frozen identities;
-- no Amakusa formal consumer may be created until complete full-owner readiness scan closes all currently discoverable source-grounded gaps and receives fresh independent acceptance + FORMAL A-sync/rescan.
+- Amakusa readiness and every readiness subtask are permanently zero migration credit;
+- canonical `data/authoring/**` contains `0/5` Amakusa frozen identities;
+- no Amakusa formal consumer migration may start until every currently discoverable readiness subtask is ACCEPTED and FORMAL completes one full-owner A-sync/rescan.
 
-Mechanical preflight:
-- roster order places `master.amakusa` immediately after `master.alice`;
-- catalog marks ascension + s3 as `SOURCE_EVIDENCE_REQUIRED`; s1/s1a/s2 expose generic-extension axes but have no canonical consumer;
-- one owner-complete readiness scan must recertify all five together before deciding whether one or more bounded generic capability batches are required.
+Frozen source recertification separates three generic readiness families:
+1. `P3-B-AMAKUSA-OWNER-READINESS-LINKED-ROLE-CORE`: s1/s2/s3 leader-member lifecycle, dynamic Command-Seal recruitment/entry, linked mana contribution and cross-battle reward authority.
+2. `P3-B-AMAKUSA-OWNER-READINESS-MEMBER-SKILL-COPY`: s1a revealed servant-skill temporary copy, original-skill round lock, and member-status removal after copied use.
+3. `P3-B-AMAKUSA-OWNER-READINESS-ASCENSION-EVENT-POWER`: ascension unlock terminal opponent Command-Seal loss plus exact named-event basic-card +4 Power authority.
+
+Locked Reference identity handlers remain corroboration only and must not be restored into production routing.
+
+## TASK P3-B-AMAKUSA-OWNER-READINESS-LINKED-ROLE-CORE
+
+Owner: FORMAL readiness
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Classification: bounded zero-credit identity-free linked-role core foundation for current Amakusa owner-readiness
+
+Exact Base: `e00f0d6b7b9d7c9db987bb7e1e510a6bc1d8d930`.
+Accounting: strict `189/944`, remaining `755`; permanently zero migration credit.
+
+Bounded source closure:
+- s1 / 教则: game start establishes one leader and the next-seat active player as initial member with permanent ever-member history;
+- s2 / 红队领袖: Action recruitment costs X Command Seals where X=1+current active member count, target must never have been a member and must have fewer Command Seals before spend, membership applies next round start;
+- s3 / 神仆: pre-climax ordinary entry into leader battlefield costs one Command Seal; once per round while member and leader occupy different battlefields, member may use exactly 1 leader mana toward a positive payment; if leader and member win different battlefields in one authoritative battle terminal, both gain 1 VP.
+
+Generic implementation remains identity-free and provides exact whole-ability privileged gateways, runtime provenance, restore validation, movement/deployment entry hooks, linked contribution payment authority and authoritative battle-terminal reward binding.
+
+Verification:
+- linked-role focused `10/10 PASS`;
+- directly affected/shared aggregate `169/169 PASS`;
+- `FD_TOOLCHAIN_OK`; typecheck PASS;
+- content validate PASS: `10 masters / 19 servants / 20 events / 0 blocking issues`;
+- generated determinism PASS with unchanged hashes;
+- `data/authoring/**` delta EMPTY; production Amakusa identity audit CLEAN; `git diff --check` PASS.
+
+Detailed report: `docs/reports/2026-10-01-p3-b-amakusa-owner-readiness-linked-role-core-result.md`.
+
+This Candidate does NOT close s1a or ascension and does NOT close the parent owner-readiness task.
+
+## TASK P3-B-AMAKUSA-OWNER-READINESS-MEMBER-SKILL-COPY
+
+Owner: FORMAL readiness follow-up
+Status: `WAIT_CORE_ACCEPTANCE`
+Classification: bounded zero-credit generic temporary revealed servant-skill copy / original-use lock / linked-member removal closure for Amakusa s1a
+
+Required frozen source closure:
+- choose one currently linked member's revealed servant skill;
+- create a temporary controller-owned copy in the leader skill zone until round end;
+- original member cannot use the copied original skill for the remainder of that round once leader uses the copy;
+- the copied skill use removes that player from active linked-member status while preserving ever-member history;
+- hidden/revealed information, copied physical/definition provenance, use-lock and restore state must fail closed without Amakusa identity routing.
+
+No migration credit; do not start before linked-role core exact acceptance + FORMAL A-sync.
+
+## TASK P3-B-AMAKUSA-OWNER-READINESS-ASCENSION-EVENT-POWER
+
+Owner: FORMAL readiness follow-up
+Status: `WAIT_CORE_ACCEPTANCE`
+Classification: bounded zero-credit generic ascension-unlock terminal + named-event basic-card Power authority for Amakusa ascension
+
+Required frozen source closure:
+- when the outside-game ascension is authoritatively unlocked, every opponent immediately loses exactly 2 ordinary Command Seals without going below zero;
+- when the exact authored named event clause is activated, the controller's basic cards gain +4 Power under a source-bound event/result authority;
+- no card-name/Master identity routing in production; restore and replay provenance must fail closed.
+
+No migration credit; do not start before linked-role core exact acceptance + FORMAL A-sync.
