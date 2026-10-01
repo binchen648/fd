@@ -46,6 +46,15 @@ function providerValid(state: GameState, ctx: EffectContext, ability: AuthoringA
     definition.cardType === 'master_skill' && (definition as unknown as { ownerId?: string }).ownerId === state.players.find((player) => player.id === ctx.controllerId)?.masterCardId;
 }
 
+function originalServantSkillProvenanceValid(state: GameState, originalCardInstanceId: string, originalOwnerPlayerId: string): boolean {
+  const original = state.cards.find((card) => card.instanceId === originalCardInstanceId);
+  const owner = state.players.find((player) => player.id === originalOwnerPlayerId);
+  const definition = original && runtime(state).pack.cards[original.definitionId];
+  return !!original && !!owner && !!definition && original.ownerPlayerId === originalOwnerPlayerId &&
+    original.controllerPlayerId === originalOwnerPlayerId && definition.cardType === 'servant_skill' &&
+    (definition as unknown as { ownerId?: string }).ownerId === owner.servantCardId;
+}
+
 export function linkedRoleEligibleRevealedMemberServantSkillIds(state: GameState, ctx: EffectContext, ability: AuthoringAbility): string[] {
   if (!providerValid(state, ctx, ability)) return [];
   const rel = relationship(effectOf(ability)); if (!rel) return [];
@@ -97,8 +106,8 @@ export function commitLinkedRoleCopiedSkillUse(state: GameState, copyCardInstanc
   const original = state.cards.find((card) => card.instanceId === copy.originalCardInstanceId);
   const provider = state.cards.find((card) => card.instanceId === copy.providerSourceCardId);
   if (!physical || !original || !provider || physical.ownerPlayerId !== controllerId || physical.controllerPlayerId !== controllerId ||
-      physical.generatedBy !== copy.providerSourceCardId || original.ownerPlayerId !== copy.originalOwnerPlayerId ||
-      original.controllerPlayerId !== copy.originalOwnerPlayerId || provider.ownerPlayerId !== controllerId || provider.controllerPlayerId !== controllerId || provider.zone !== 'skill') return false;
+      physical.generatedBy !== copy.providerSourceCardId || !originalServantSkillProvenanceValid(state, copy.originalCardInstanceId, copy.originalOwnerPlayerId) ||
+      provider.ownerPlayerId !== controllerId || provider.controllerPlayerId !== controllerId || provider.zone !== 'skill') return false;
   const providerAbility = runtime(state).pack.cards[provider.definitionId]?.abilities.find((ability) => ability.id === copy.providerAbilityId);
   if (!providerAbility || !isAcceptedLinkedRoleMemberSkillCopyAbility(providerAbility) || relationship(effectOf(providerAbility)) !== copy.relationshipKey) return false;
   if (!linkedRoleActiveMemberIds(state, controllerId, copy.relationshipKey).includes(copy.originalOwnerPlayerId)) return false;
@@ -131,7 +140,8 @@ export function isLinkedRoleMemberSkillCopyRuntimeProvenanceValidForRestore(stat
       const physical = state.cards.find((card) => card.instanceId === copyId); const original = state.cards.find((card) => card.instanceId === copy.originalCardInstanceId);
       const provider = state.cards.find((card) => card.instanceId === copy.providerSourceCardId);
       if (!physical || !original || !provider || physical.definitionId !== original.definitionId || physical.ownerPlayerId !== copy.leaderPlayerId ||
-          physical.controllerPlayerId !== copy.leaderPlayerId || physical.generatedBy !== copy.providerSourceCardId || original.ownerPlayerId !== copy.originalOwnerPlayerId ||
+          physical.controllerPlayerId !== copy.leaderPlayerId || physical.generatedBy !== copy.providerSourceCardId ||
+          !originalServantSkillProvenanceValid(state, copy.originalCardInstanceId, copy.originalOwnerPlayerId) ||
           provider.ownerPlayerId !== copy.leaderPlayerId || provider.controllerPlayerId !== copy.leaderPlayerId || provider.zone !== 'skill') return false;
       const providerAbility = r.pack.cards[provider.definitionId]?.abilities.find((ability) => ability.id === copy.providerAbilityId);
       if (!providerAbility || !isAcceptedLinkedRoleMemberSkillCopyAbility(providerAbility) || relationship(effectOf(providerAbility)) !== copy.relationshipKey) return false;

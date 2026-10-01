@@ -53,3 +53,27 @@ Production implementation contains no `master.amakusa`, Amakusa printed names, `
 ## Disposition
 
 `IMPLEMENTATION_COMPLETE_CANDIDATE` for the bounded member-skill-copy readiness layer only. No migration credit is granted. Parent Amakusa readiness remains open, and `P3-B-AMAKUSA-OWNER-READINESS-ASCENSION-EVENT-POWER` remains mandatory after exact acceptance + FORMAL A-sync of this Candidate. Formal Amakusa consumer migration remains forbidden until all readiness families are accepted and the full-owner readiness A-sync/rescan is complete.
+## Reviewer revision closure
+
+PR #514 first fresh review returned `IMPLEMENTATION_NEEDS_REVISION` on exact Candidate `e2bbc51470165776a799bf0d2bc4c7bf037854b4` with one P1 restore-provenance finding.
+
+Successor closure adds exact original servant-skill provenance validation shared by live copied-use commit and restore validation:
+
+- original physical `controllerPlayerId` must still equal the recorded original owner;
+- original definition must still be `servant_skill`;
+- original definition owner must still equal that player's current `servantCardId`.
+
+Focused negative coverage now explicitly rejects forged controller, non-servant definition substitution and current-servant owner drift.
+
+Post-fix verification:
+
+- member-skill-copy + predecessor linked-role-core: **17/17 PASS**;
+- authoring-interpreter + executable-card-pack + MatchSession: **121/121 PASS**;
+- `npm run typecheck`: PASS;
+- content validate: `10 masters / 19 servants / 20 events / 0 blocking issues`;
+- generated determinism: PASS with unchanged hashes;
+- `data/authoring/**` delta EMPTY;
+- changed-production Amakusa identity audit CLEAN;
+- `git diff --check`: PASS.
+
+This remains bounded zero-credit readiness. Parent Amakusa readiness is still open and ASCENSION-EVENT-POWER remains mandatory after exact acceptance + FORMAL A-sync.
