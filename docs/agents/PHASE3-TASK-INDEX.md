@@ -7756,7 +7756,7 @@ Required disposition: one zero-credit Candidate / PR / fresh R; after acceptance
 ## TASK P3-B-ALICE-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `WAIT_READINESS_SUBTASKS`
+Status: `SYNCHRONIZED`
 Classification: parent zero-credit owner-readiness closure for the complete current `master.alice` frozen scope
 
 Frozen owner scope:
@@ -7820,7 +7820,7 @@ Detailed report: `docs/reports/2026-10-01-p3-b-alice-owner-readiness-multi-prese
 ## TASK P3-B-ALICE-OWNER-READINESS-PRESENCE-CONTEXT
 
 Owner: FORMAL readiness follow-up
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `ACCEPTED`
 Classification: bounded zero-credit generic presence-context interaction/movement closure required by frozen Alice source
 
 Exact Base: `165cbb738c03eb1df382ca8eaabcda64656c5c9b`
@@ -7835,3 +7835,43 @@ Required source-authored closure:
 - fail closed without broad global rewriting or Alice identity checks.
 
 No formal Alice consumer and no migration credit until this follow-up is accepted and the parent full-owner readiness A-sync/rescan is complete.
+
+### Alice readiness acceptance synchronization
+
+- Accepted successor Candidate: `49e2afa5554a380b644adc7fbfe035ba8278525d`.
+- PR #511 fresh independent verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`.
+- Canonical same-attempt Coordinator bounded relay: `https://github.com/binchen648/fd/pull/511#issuecomment-5923961799`.
+- Predecessor `bba1e169e36093ecc6b9f1c0886b5130c6475d09` P1 is superseded; successor binds staged candidates and restore/live validation to the same eligible physical-presence contexts used by activation preflight.
+- Core prerequisite PR #510 remains accepted at Candidate `29cece96ef155c76899a1e14673923405b1a870b`, canonical evidence `https://github.com/binchen648/fd/pull/510#issuecomment-5923495992`.
+- Full-owner readiness rescan: canonical `data/authoring/**` still contains `0/3` Alice frozen identities and no additional currently discoverable readiness gap remains beyond the two accepted subtasks.
+- Readiness remains permanently zero-credit; strict accounting stays `186/944`, remaining `758`.
+- Parent Alice readiness is synchronized. Next legal task is one owner-complete formal Candidate for all three frozen identities together.
+- Acceptance synchronization report: `docs/reports/2026-10-01-p3-a-alice-owner-readiness-capability-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-ALICE-COMPLETE-MIGRATION
+
+Owner: FORMAL
+Status: `READY`
+Classification: formal owner-complete migration for the complete current `master.alice` frozen scope
+
+Frozen owner scope:
+- `master.alice.skill.ascension`
+- `master.alice.skill.s1`
+- `master.alice.skill.s2`
+
+Accounting boundary:
+- strict accounting before Alice formal migration remains `186/944`, remaining `758`;
+- all three frozen Alice identities are absent from canonical authoring at readiness A-sync and are provisionally newly creditable;
+- no credit is granted until exact formal Candidate receives `MIGRATION_ACCEPTED` and FORMAL completes A-sync/accounting;
+- maximum possible increment is `+3` -> `189/944`, remaining `755`, only if final acceptance rescan confirms all three remain newly creditable.
+
+Accepted prerequisites:
+- #510 multi-presence core Candidate `29cece96ef155c76899a1e14673923405b1a870b`;
+- #511 presence-context successor Candidate `49e2afa5554a380b644adc7fbfe035ba8278525d`;
+- both readiness layers are identity-free and permanently zero-credit.
+
+Required disposition:
+- materialize all three Alice frozen identities together in one canonical owner archive;
+- consume only accepted generic readiness capabilities;
+- introduce no Alice/card-name/Reference identity routing in production runtime;
+- one formal Candidate / one PR / one fresh R / one A-sync-accounting transaction.
