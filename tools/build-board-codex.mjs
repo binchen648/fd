@@ -13,7 +13,7 @@ const situations = source.situations.map(card => ({
 const events = [];
 const basics = source.cards.filter(card => /^card\.card[abq]\d+$/.test(card.id)).flatMap(card => {
   const code = card.id.slice('card.card'.length), image = `../assets/cards/deck/card${code[0].toUpperCase()}${code.slice(1)}.png`;
-  if (!fs.existsSync(path.resolve(root, 'ui-preview', image))) return [];
+  if (!fs.existsSync(path.resolve(root, 'ui-preview', image))) throw new Error(`Missing basic card art: ${card.id}`);
   const type = { a: '魔术', b: '力量', q: '敏捷' }[code[0]];
   return [{ id: card.id, name: `${type}攻击 ${card.basePower}`, type, image, cost: card.cost, basePower: card.basePower, text: `以基础威力 ${card.basePower} 参与战斗。` }];
 });

@@ -302,6 +302,24 @@ window.FDBoardCodexData={
       "text": "以基础威力 5 参与战斗。"
     },
     {
+      "id": "card.carda5",
+      "name": "魔术攻击 7",
+      "type": "魔术",
+      "image": "../assets/cards/deck/cardA5.png",
+      "cost": 3,
+      "basePower": 7,
+      "text": "以基础威力 7 参与战斗。"
+    },
+    {
+      "id": "card.carda6",
+      "name": "魔术攻击 9",
+      "type": "魔术",
+      "image": "../assets/cards/deck/cardA6.png",
+      "cost": 5,
+      "basePower": 9,
+      "text": "以基础威力 9 参与战斗。"
+    },
+    {
       "id": "card.cardb1",
       "name": "力量攻击 2",
       "type": "力量",
@@ -399,6 +417,15 @@ window.FDBoardCodexData={
       "cost": 3,
       "basePower": 7,
       "text": "以基础威力 7 参与战斗。"
+    },
+    {
+      "id": "card.cardq6",
+      "name": "敏捷攻击 9",
+      "type": "敏捷",
+      "image": "../assets/cards/deck/cardQ6.png",
+      "cost": 5,
+      "basePower": 9,
+      "text": "以基础威力 9 参与战斗。"
     }
   ]
 };
