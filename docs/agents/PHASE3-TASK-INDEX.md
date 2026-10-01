@@ -7650,7 +7650,8 @@ Required disposition:
 
 ## TASK P3-S-OWNER-AKIHA-COMPLETE-MIGRATION
 
-Owner: FORMAL`r`nStatus: `READY`
+Owner: FORMAL
+Status: `READY`
 Classification: formal owner-complete migration for the complete current `master.akiha` frozen scope
 
 Frozen owner scope:
@@ -7674,7 +7675,8 @@ Required disposition:
 
 ## TASK P3-B-AKIHA-OWNER-READINESS-MASTER-ASCENSION-UNLOCK
 
-Owner: Codex B / FORMAL readiness follow-up`r`nStatus: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+Owner: Codex B / FORMAL readiness follow-up
+Status: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 Classification: bounded zero-credit generic Master-ascension unlock capability discovered during Akiha formal materialization preflight
 
 Exact Base: `d7f49dacd751b73264088c9b6fd0566b4ae7c9d5`
