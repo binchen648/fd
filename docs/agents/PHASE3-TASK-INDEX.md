@@ -7906,7 +7906,7 @@ Required disposition:
 ## TASK P3-B-AMAKUSA-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `WAIT_READINESS_SUBTASKS`
+Status: `SYNCHRONIZED`
 Classification: parent zero-credit owner-readiness closure for complete current `master.amakusa` frozen scope
 
 Frozen owner scope:
@@ -7979,7 +7979,7 @@ This Candidate does NOT close ascension readiness and does NOT close the parent 
 ## TASK P3-B-AMAKUSA-OWNER-READINESS-ASCENSION-EVENT-POWER
 
 Owner: FORMAL readiness follow-up
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `ACCEPTED`
 Classification: bounded zero-credit generic ascension-unlock terminal + named-event basic-card Power authority for Amakusa ascension
 
 Required frozen source closure:
@@ -7992,3 +7992,40 @@ No migration credit; do not start before linked-role core exact acceptance + FOR
 Detailed report: `docs/reports/2026-10-01-p3-b-amakusa-owner-readiness-ascension-event-power-result.md`.
 
 This Candidate does NOT close the parent owner-readiness task. Fresh R acceptance must be followed by one FORMAL full-owner readiness A-sync/rescan before consumer migration.
+### Amakusa full-owner readiness acceptance synchronization
+
+- Linked-role core accepted Candidate `a0555d2790d583a115d9ebc66c4aa41878b9c7bc`; canonical relay: `https://github.com/binchen648/fd/pull/513#issuecomment-5924736106`.
+- Member-skill-copy accepted successor Candidate `01a00558d299bf1f88368bee118b6ea9c7b9d5c9`; canonical relay: `https://github.com/binchen648/fd/pull/514#issuecomment-5925040814`.
+- Ascension/event-power accepted Candidate `6503ce83f3b621110f60b6623da1144340a49499`; canonical relay: `https://github.com/binchen648/fd/pull/515#issuecomment-5925285924`.
+- Exact #515 Phase 3 Pre-Review Gate after PR-manifest repair: run `36819672494` / job `110232319420` = `SUCCESS`; Candidate SHA unchanged.
+- Full-owner rescan confirms canonical `data/authoring/**` still contains `0/5` frozen Amakusa identities; all five remain newly creditable and none is preservation-only.
+- All three currently discoverable readiness families are accepted; no additional current owner-local readiness blocker is exposed by this rescan.
+- Readiness remains permanently zero-credit; strict accounting stays `189/944`, remaining `755`.
+- `P3-S-OWNER-AMAKUSA-COMPLETE-MIGRATION` is now unblocked and `READY`; ascension + s1 + s1a + s2 + s3 must migrate together in one formal Candidate / one PR / one fresh R / one A-sync-accounting.
+- Detailed A-sync report: `docs/reports/2026-10-01-p3-a-amakusa-owner-readiness-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-AMAKUSA-COMPLETE-MIGRATION
+
+Owner: FORMAL
+Status: `READY`
+Classification: formal owner-complete migration for the complete current `master.amakusa` frozen scope
+
+Frozen owner scope:
+- `master.amakusa.skill.ascension`
+- `master.amakusa.skill.s1`
+- `master.amakusa.skill.s1a`
+- `master.amakusa.skill.s2`
+- `master.amakusa.skill.s3`
+
+Accounting boundary:
+- strict formal accounting before Amakusa formal migration remains `189/944`, remaining `755`;
+- all five frozen identities are absent from canonical `data/authoring/**` at readiness A-sync and are provisionally newly creditable;
+- no migration credit is granted until exact formal `MIGRATION_ACCEPTED` plus FORMAL A-sync/accounting;
+- expected maximum owner-complete increment is `+5` only if formal acceptance rescan confirms all five remain newly creditable.
+
+Required disposition:
+- materialize all five frozen Amakusa identities together in one canonical owner archive;
+- consume only the accepted identity-free linked-role, member-skill-copy, Master-ascension-unlock and ascension/event-power capabilities;
+- introduce no Amakusa/card-name/printed-text/locked-Reference identity routing in production runtime;
+- run owner formal/focused tests plus affected shared regressions, toolchain/typecheck/content/generated/identity/diff gates;
+- freeze one exact formal Candidate, one PR, one fresh independent R, then one A-sync/accounting.
