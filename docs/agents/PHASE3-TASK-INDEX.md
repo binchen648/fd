@@ -8100,7 +8100,7 @@ Detailed report: docs/reports/2026-10-01-p3-b-amakusa-owner-readiness-source-def
 ## TASK P3-B-ARAYA-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `READY`
+Status: `WAIT_READINESS_SUBTASKS`
 Classification: parent zero-credit owner-readiness preflight for complete current `master.araya` frozen scope
 
 Frozen owner scope:
@@ -8113,3 +8113,40 @@ Accounting boundary:
 - Araya readiness and every readiness subtask are permanently zero migration credit;
 - FORMAL must mechanically rescan canonical `data/authoring/**` and frozen source, identify all currently discoverable generic capability gaps, close/accept them, then complete one full-owner A-sync/rescan before any Araya consumer migration;
 - no Araya formal migration credit is granted by readiness work.
+### Araya owner-readiness preflight
+
+- Canonical `data/authoring/**` rescan: `0/3` frozen Araya identities.
+- `master.araya.skill.s1a` is already source-grounded and routed through shared structured semantics; no new identity-specific runtime seam is required for that clause.
+- `master.araya.skill.s1` and `master.araya.skill.ascension` remain frozen as legacy specific-handler semantics and require generic readiness closure before formal owner migration.
+- Readiness is split into two bounded zero-credit families: persistent terrain replacement/layers first, then effective-workshop + same-location restrictions dependent on that accepted terrain authority.
+
+## TASK P3-B-ARAYA-OWNER-READINESS-PERSISTENT-TERRAIN
+
+Owner: FORMAL readiness
+Status: `READY`
+Classification: bounded zero-credit identity-free persistent per-location terrain-replacement authority
+
+Required frozen closure:
+- authoritative deployment into a battlefield terrain slot replaces the printed terrain gain with a persistent +1 layer for that player/location/source;
+- layers are per-location, permanent for the game, capped at 5, and become active only while that player is physically at that location;
+- leaving and later returning reactivates the accumulated layer value;
+- deployment after all terrain slots are already occupied does not add a layer;
+- restore/replay/source provenance must fail closed;
+- no Araya identity/card-name/printed-text routing and no migration credit.
+
+## TASK P3-B-ARAYA-OWNER-READINESS-EFFECTIVE-WORKSHOP-RESTRICTIONS
+
+Owner: FORMAL readiness
+Status: `WAIT_CORE_ACCEPTANCE`
+Classification: bounded zero-credit identity-free effective-location and same-location restriction authority
+
+Dependency: accepted `P3-B-ARAYA-OWNER-READINESS-PERSISTENT-TERRAIN`.
+
+Required frozen closure:
+- when an authored source is active and its bound persistent-terrain authority reaches at least 5 at the controller's actual location, only that controller is additionally treated as being at the authored effective location `workshop`;
+- opponents at the same actual location do not inherit the virtual workshop identity;
+- while active, same-location opponents cannot leave through ordinary/effect movement routes covered by the authoritative movement layer;
+- affected opponents' standard attack commitment must include at least one face-down attack;
+- source removal/invalidity immediately disables both effective-location and restriction authority;
+- restore/replay/source/controller/location provenance must fail closed;
+- no Araya identity/card-name/printed-text routing and no migration credit.
