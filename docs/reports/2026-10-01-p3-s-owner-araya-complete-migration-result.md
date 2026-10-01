@@ -48,8 +48,26 @@ Base canonical coverage was 0/3. Candidate canonical coverage is 3/3. No partial
 - Phase 3 automation audit command: PASS.
 - FD_TOOLCHAIN_OK.
 - git diff --check: PASS.
-- Base..Candidate production runtime delta: EMPTY.
+- Initial owner Candidate production runtime delta: EMPTY. Successor shared runtime delta is limited to the identity-free linked-role restore-provenance repair required by the predecessor MatchSession regression; Araya authoring semantics are unchanged.
 
 ## Accounting
 
 This Candidate itself does not change formal accounting. Strict accounting remains 194/944, remaining 750 until exact fresh independent `MIGRATION_ACCEPTED` evidence is A-synced. If accepted, this owner contributes exactly +3 migration credit.
+## Predecessor review finding closure
+
+Predecessor Candidate `b93f73422a0be273a8c8fdae6c743c5b9313e34b` received `MIGRATION_NEEDS_REVISION`; canonical evidence: `https://github.com/binchen648/fd/pull/521#issuecomment-5927224944`.
+
+Two Candidate-induced shared MatchSession regressions were reproduced and closed without changing any of the three Araya canonical skill definitions:
+
+1. The Kayneth Pride deployment test no longer assumes that fixed seed `20260904` must contain `master.kayneth` after the canonical master roster grows. It deterministically searches the bounded pairing seed space for a real pairing containing Kayneth, then runs the unchanged Pride behavior assertion.
+2. The expanded roster exposed a linked-role restore provenance bug: a legitimate game-start initializer could later be played from `skill` to `field`, while the restore validator incorrectly required that initializer provider to remain in `skill`. Restore now accepts the same owned/controlled accepted initializer definition after that legitimate zone transition, while other linked-role providers remain subject to their existing live-zone checks. A dedicated regression proves this legitimate state restores.
+3. The MatchSession authentication regression now first asserts that the untampered durable snapshot restores, then preserves the existing assertion that tampering `maxActionsPerPlayer` reaches and reports the deferred-runtime-authority rejection rather than being masked by an unrelated container rejection.
+
+Successor verification after closure:
+- predecessor reviewer reproductions: 2/2 PASS;
+- MatchSession: 33/33 PASS;
+- Araya formal + readiness focused: 27/27 PASS;
+- linked-role core regression: 11/11 PASS;
+- directly affected shared aggregate: 132/132 PASS;
+- typecheck: PASS;
+- git diff --check: PASS.

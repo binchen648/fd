@@ -8213,9 +8213,12 @@ Implementation evidence:
 - formal canonical regression: `6/6 PASS`; full Araya readiness predecessors: `21/21 PASS`; combined Araya focused: `27/27 PASS`;
 - directly affected shared aggregate: `132/132 PASS`; explicit focused + shared aggregate: `159/159 PASS`;
 - `FD_TOOLCHAIN_OK`; typecheck/content/generated/diff gates PASS; Phase 3 coverage + automation audit commands PASS;
-- Base..Candidate production runtime delta is EMPTY; no `core.araya-*` identity handler routing is introduced;
+- predecessor `b93f73422a0be273a8c8fdae6c743c5b9313e34b` received `MIGRATION_NEEDS_REVISION` for two Candidate-induced shared MatchSession regressions; successor keeps Araya authoring unchanged and limits shared runtime delta to identity-free linked-role restore provenance repair plus seed-stable MatchSession fixture coverage; no `core.araya-*` identity handler routing is introduced;
 - strict migration accounting remains `194/944`, remaining `750` until fresh-R `MIGRATION_ACCEPTED` + FORMAL A-sync/accounting.
 - Detailed report: `docs/reports/2026-10-01-p3-s-owner-araya-complete-migration-result.md`.
+- Predecessor canonical reviewer evidence: `https://github.com/binchen648/fd/pull/521#issuecomment-5927224944`.
+- Predecessor P1 closure: Kayneth deployment test now derives a deterministic seed that actually contains `master.kayneth`; legitimate linked-role game-start initializer provenance remains restorable after that source physical later moves from skill to field; untampered durable session restore is asserted before external-field tamper rejection.
+- Successor verification: reviewer reproductions 2/2 PASS; MatchSession 33/33 PASS; Araya focused 27/27 PASS; linked-role restore regression 11/11 PASS; directly affected shared 132/132 PASS; typecheck + git diff --check PASS.
 
 ## TASK P3-B-ARAYA-OWNER-READINESS-ORIGIN-STILLNESS-PRINTED-COST
 
