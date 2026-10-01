@@ -49,3 +49,5 @@ export * from './ability/report';
 export * from './ability/resolution-dataflow';
 
 export * from './ability/event-location-equals-controller';
+
+export * from './ability/master-ascension-unlock-capability';
