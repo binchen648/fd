@@ -112,6 +112,7 @@ import {
 } from './opponent-close-to-one';
 import { canExecuteMasterAscensionUnlock, containsMasterAscensionUnlockPrivilegedNode, isAcceptedMasterAscensionUnlockAbility, resolveMasterAscensionUnlock } from './master-ascension-unlock-capability';
 import { cleanupMasterAscensionEventPowerAtRoundEnd, containsMasterAscensionEventPowerPrivilegedNode, isAcceptedMasterAscensionEventPowerAbility, isAcceptedMasterAscensionSourceDefinitionPowerAbility, isMasterAscensionEventPowerRuntimeProvenanceValidForRestore, masterAscensionNamedEventBasicPowerBonus, masterAscensionSourceDefinitionTriggerMatches, reconcileMasterAscensionEventPowerAuthority, resolveMasterAscensionEventPowerEffect, retireMasterAscensionSourceDefinitionPowerByTrigger } from './master-ascension-event-power-capability';
+import { canExecutePersistentLocationTerrainEffect, containsPersistentLocationTerrainPrivilegedNode, isAcceptedPersistentLocationTerrainAbility, isPersistentLocationTerrainRuntimeProvenanceValidForRestore, resolvePersistentLocationTerrainEffect } from './persistent-location-terrain-capability';
 import {
   MULTI_PRESENCE_SACRIFICE_DEFEAT_EFFECT, canExecuteMultiPresenceEffect, containsMultiPresencePrivilegedNode,
   isAcceptedMultiPresenceAbility, isMultiPresenceRuntimeProvenanceValidForRestore, multiPresenceSacrificeTargets,
@@ -1932,6 +1933,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsReactionCounterPrivilegedNode(a) && !isAcceptedReactionCounterCapabilityAbility(a)) return false;
   if (containsMasterAscensionUnlockPrivilegedNode(a) && !isAcceptedMasterAscensionUnlockAbility(a)) return false;
   if (isAcceptedMasterAscensionUnlockAbility(a) && !canExecuteMasterAscensionUnlock(s, context(s, sourceId, a.id, event), a)) return false;
+  if (containsPersistentLocationTerrainPrivilegedNode(a) && !isAcceptedPersistentLocationTerrainAbility(a)) return false;
+  if (isAcceptedPersistentLocationTerrainAbility(a) && !canExecutePersistentLocationTerrainEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsLinkedRoleCorePrivilegedNode(a) && !isAcceptedLinkedRoleCoreAbility(a)) return false;
   if (isAcceptedLinkedRoleCoreAbility(a) && !canExecuteLinkedRoleCoreEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsLinkedRoleMemberSkillCopyPrivilegedNode(a) && !isAcceptedLinkedRoleMemberSkillCopyAbility(a)) return false;
@@ -3924,6 +3927,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
     if (!isLinkedRoleCoreRuntimeProvenanceValidForRestore(s)) return false;
     if (!isLinkedRoleMemberSkillCopyRuntimeProvenanceValidForRestore(s)) return false;
     if (!isMasterAscensionEventPowerRuntimeProvenanceValidForRestore(s)) return false;
+    if (!isPersistentLocationTerrainRuntimeProvenanceValidForRestore(s)) return false;
     if (!(r.pendingDelayedActivations ?? []).every((entry) => {
       const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
       const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
@@ -6339,6 +6343,11 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     const zeroed = resolveMasterAscensionEventPowerEffect(s, ctx, a);
     if (!zeroed) reject('resolution_failed', 'Master-ascension event-power resolution failed');
     for (const opponentId of zeroed) processEvent(s, { id: nextId(s, 'empty-seals-ascension'), type: 'after_controller_loses_all_command_seals', playerId: opponentId, sourceCardId: ctx.sourceCardId });
+    return;
+  }
+  if (containsPersistentLocationTerrainPrivilegedNode(a)) {
+    if (!isAcceptedPersistentLocationTerrainAbility(a)) reject('resolution_failed', 'Unsupported persistent location-terrain semantic');
+    if (!resolvePersistentLocationTerrainEffect(s, ctx, a)) reject('resolution_failed', 'Persistent location-terrain resolution failed');
     return;
   }
   if (containsLinkedRoleCorePrivilegedNode(a)) {

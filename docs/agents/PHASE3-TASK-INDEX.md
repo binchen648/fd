@@ -8123,7 +8123,7 @@ Accounting boundary:
 ## TASK P3-B-ARAYA-OWNER-READINESS-PERSISTENT-TERRAIN
 
 Owner: FORMAL readiness
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: bounded zero-credit identity-free persistent per-location terrain-replacement authority
 
 Required frozen closure:
@@ -8133,6 +8133,14 @@ Required frozen closure:
 - deployment after all terrain slots are already occupied does not add a layer;
 - restore/replay/source provenance must fail closed;
 - no Araya identity/card-name/printed-text routing and no migration credit.
+
+Implementation evidence:
+- focused persistent-terrain readiness regression: 7/7 PASS;
+- directly affected shared regression aggregate: 132/132 PASS;
+- explicit focused + shared aggregate: 139/139 PASS;
+- FD_TOOLCHAIN_OK; typecheck/content/generated/diff gates PASS; data/authoring/** delta EMPTY; production Araya identity audit CLEAN.
+- Detailed report: docs/reports/2026-10-01-p3-b-araya-owner-readiness-persistent-terrain-result.md.
+- This Candidate remains permanently zero migration credit; dependent effective-workshop restrictions remain WAIT_CORE_ACCEPTANCE.
 
 ## TASK P3-B-ARAYA-OWNER-READINESS-EFFECTIVE-WORKSHOP-RESTRICTIONS
 
@@ -8150,3 +8158,11 @@ Required frozen closure:
 - source removal/invalidity immediately disables both effective-location and restriction authority;
 - restore/replay/source/controller/location provenance must fail closed;
 - no Araya identity/card-name/printed-text routing and no migration credit.
+
+Implementation evidence:
+- focused persistent-terrain readiness regression: 7/7 PASS;
+- directly affected shared regression aggregate: 132/132 PASS;
+- explicit focused + shared aggregate: 139/139 PASS;
+- FD_TOOLCHAIN_OK; typecheck/content/generated/diff gates PASS; data/authoring/** delta EMPTY; production Araya identity audit CLEAN.
+- Detailed report: docs/reports/2026-10-01-p3-b-araya-owner-readiness-persistent-terrain-result.md.
+- This Candidate remains permanently zero migration credit; dependent effective-workshop restrictions remain WAIT_CORE_ACCEPTANCE.

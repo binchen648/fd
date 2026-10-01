@@ -1129,6 +1129,12 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
   if (value.oneShotAbilityReuseGrants !== undefined && (!Array.isArray(value.oneShotAbilityReuseGrants) ||
       !value.oneShotAbilityReuseGrants.every(isRestoreOneShotAbilityReuseGrant))) return false;
   if (value.playerStatusKeysByPlayer !== undefined && !isRestoreStringArrayMap(value.playerStatusKeysByPlayer)) return false;
+  if (value.persistentLocationTerrainByPlayer !== undefined && (!isRestoreRecord(value.persistentLocationTerrainByPlayer) ||
+      !Object.values(value.persistentLocationTerrainByPlayer).every((locationMap) => isRestoreRecord(locationMap) && Object.values(locationMap).every((entry) =>
+        hasExactRestoreKeys(entry, ['playerId','locationId','sourceCardId','abilityId','value','triggerEventIds']) &&
+        typeof entry.playerId === 'string' && typeof entry.locationId === 'string' && typeof entry.sourceCardId === 'string' && typeof entry.abilityId === 'string' &&
+        isRestoreSafeInteger(entry.value, 1) && Number(entry.value) <= 5 && isRestoreStringArray(entry.triggerEventIds) &&
+        entry.triggerEventIds.length === Number(entry.value) && new Set(entry.triggerEventIds).size === entry.triggerEventIds.length)))) return false;
   if (value.structuredPlayerFlagsByPlayer !== undefined && !isRestoreStructuredPlayerFlags(value.structuredPlayerFlagsByPlayer)) return false;
   if (value.structuredRoundFlagKeysByPlayer !== undefined && !isRestoreStructuredRoundFlagKeys(value.structuredRoundFlagKeysByPlayer)) return false;
   if (value.deductionRecordsByPlayer !== undefined && (!isRestoreRecord(value.deductionRecordsByPlayer) || !Object.values(value.deductionRecordsByPlayer).every((entry) =>
