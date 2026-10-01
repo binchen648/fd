@@ -7851,7 +7851,7 @@ No formal Alice consumer and no migration credit until this follow-up is accepte
 ## TASK P3-S-OWNER-ALICE-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `READY`
+Status: `MIGRATION_COMPLETE_CANDIDATE`
 Classification: formal owner-complete migration for the complete current `master.alice` frozen scope
 
 Frozen owner scope:
@@ -7875,3 +7875,17 @@ Required disposition:
 - consume only accepted generic readiness capabilities;
 - introduce no Alice/card-name/Reference identity routing in production runtime;
 - one formal Candidate / one PR / one fresh R / one A-sync-accounting transaction.
+
+### Alice formal owner-complete implementation evidence
+
+- Exact formal Base: `d27b48301ea11f8743e62e7222b5006169b88e31`; strict accounting `186/944`, remaining `758`.
+- One canonical `master.alice` archive materializes all three frozen identities together; all three were absent at Base and remain provisional until exact formal acceptance + A-sync/accounting.
+- Consumer uses only accepted #510/#511 identity-free multi-presence contracts; production runtime delta under `packages/rules/src/**` is EMPTY and production identity audit is CLEAN.
+- `Queenside Castle` is `outside_game`, frozen static metadata 魔术 / cost 5 / requirement 5 / Power 1; explicit development-image source evidence is declared.
+- Alice is integrated exactly once immediately after Akiha in canonical playable Master order.
+- Real canonical regression exercises Cyber Ghost deployment, Phantom Alice one-logical-player presence semantics, Queenside terrain sharing and sacrifice through accepted runtime.
+- Verification: Alice formal `7/7 PASS`; Alice readiness `10/10 PASS`; directly affected/shared aggregate `210/210 PASS`.
+- `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`10 masters / 19 servants / 20 events / 0 blocking issues`); generated determinism PASS; production identity audit CLEAN; diff-check PASS.
+- Generated hashes: content-library `cde732266c8ca18995ddacb54a4fd1f273379c4ea2497fdf672218949edd0e3b`; fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`; evidence-report `d49a5ca87cf614cbba8140b1890225a51548c11479551577033f37615407c7a2`.
+- Detailed report: `docs/reports/2026-10-01-p3-s-owner-alice-complete-migration-result.md`.
+- No credit before exact `MIGRATION_ACCEPTED` + FORMAL A-sync/accounting.

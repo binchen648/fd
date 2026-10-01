@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 9,
+    "masters": 10,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -483,6 +483,61 @@
       "htmPath": "chm-extract/远野秋叶.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/远野秋叶.png",
       "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.alice",
+      "displayName": "爱丽丝",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/爱丽丝.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/爱丽丝.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.alice.overview",
+      "displayName": "爱丽丝",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/爱丽丝.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/爱丽丝.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.alice.skill.ascension",
+      "displayName": "Queenside Castle",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/爱丽丝.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/爱丽丝.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.alice.skill.s1",
+      "displayName": "赛博幽灵",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/爱丽丝.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/爱丽丝.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.alice.skill.s2",
+      "displayName": "幻影爱丽丝",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/爱丽丝.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/爱丽丝.png",
+      "imageIndex": 2,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },
