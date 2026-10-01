@@ -7677,7 +7677,7 @@ Required disposition:
 
 - Exact formal Base: `5bdd8032cb41989be495406a9489b373f09a2324` (accepted #508 readiness A-sync; strict `181/944`, remaining `763`).
 - One canonical `master.akiha` archive materializes all five frozen identities together; all five were absent at Base and remain only provisionally newly creditable until exact formal acceptance + A-sync/accounting.
-- Consumer uses accepted #507 identity-free Bloodlust contracts plus accepted #508 generic Master-ascension unlock authority; Base..Candidate production `packages/rules/src/**` delta is EMPTY and production identity audit is CLEAN.
+- Consumer uses accepted #507 identity-free Bloodlust contracts plus accepted #508 generic Master-ascension unlock authority; production runtime delta under `packages/rules/src/**` excluding `__tests__` is EMPTY and production identity audit is CLEAN.
 - `璀璨空想` is `outside_game`, with frozen static metadata 魔术 / cost 3 / requirement 3 / Power 6; explicit development-image source evidence is declared.
 - Akiha is integrated exactly once immediately after Akasha in canonical playable Master order.
 - Formal runtime regression uses the real Akiha consumer definitions for Bloodlust init/action, 5+/10+ thresholds, 15+ transform, transformed ascension cost/Power, mana doubling, and actual contributed-play Plunder provenance.
@@ -7686,6 +7686,15 @@ Required disposition:
 - Generated hashes: content-library `7d3972f7df836b16af8ab37dbe373eaa3a6e4ecde5bcb238cee53a7b852db53d`; fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`; evidence-report `e05fd6874e44104611a6900d1723d59d6275f9b9305b4f9464825fdba69ef902`.
 - Detailed report: `docs/reports/2026-10-01-p3-s-owner-akiha-complete-migration-result.md`.
 - Current disposition: `MIGRATION_COMPLETE_CANDIDATE`; freeze one exact Candidate / one PR / one fresh R. Accounting remains `181/944`, remaining `763`; potential accepted credit is exactly `+5` -> `186/944`, remaining `758`, subject to final acceptance rescan.
+### PR #509 NEEDS_REVISION closure
+
+- Reviewed Candidate: `0a1e1994781ea97ccf9433aa291fbfad11c39e76`.
+- Fresh R verdict: `MIGRATION_NEEDS_REVISION`; canonical bounded same-attempt evidence: `https://github.com/binchen648/fd/pull/509#issuecomment-5922572014`.
+- Blocking reproduction was exactly 5 shared MatchSession failures: four caused by newly legal Akasha Overload response windows entering old deterministic deployment fixtures, plus one default-5s durability timeout after the Master pool grew.
+- Revision changes no production runtime and does not change the formal Akiha consumer. It preserves original seeds and behavior assertions, legally declines unrelated response windows in terrain fixtures, and raises only the two bounded long-running test timeouts to `10_000ms`.
+- Exact Reviewer commands now pass: `match-session-regressions.test.ts` `11/11`; `match-session.test.ts` `33/33`.
+- Full affected aggregate rerun: `186/186 PASS`; toolchain/typecheck/content/generated/identity/diff gates green; generated hashes unchanged.
+- Produce exactly one successor Candidate on the same PR, update the Phase 3 manifest to that SHA, require a fresh successful Gate and one fresh independent R. Accounting remains `181/944`, remaining `763`.
 
 ## TASK P3-B-AKIHA-OWNER-READINESS-MASTER-ASCENSION-UNLOCK
 
