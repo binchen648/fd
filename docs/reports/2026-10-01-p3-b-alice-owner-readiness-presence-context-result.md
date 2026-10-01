@@ -52,3 +52,19 @@ This Candidate closes those gaps generically. It does not add Alice consumer aut
 ## Governance
 
 This is the second Alice readiness subtask, not a formal migration. The parent `P3-B-ALICE-OWNER-READINESS-CAPABILITY` remains `WAIT_READINESS_SUBTASKS` until this exact Candidate is fresh-reviewed and FORMAL performs zero-credit A-sync/full-owner rescan. Only after that rescan may one Alice owner-complete formal consumer Candidate for all three frozen identities be created.
+
+## Reviewer revision closure
+
+Fresh review of predecessor Candidate `bba1e169e36093ecc6b9f1c0886b5130c6475d09` returned `IMPLEMENTATION_NEEDS_REVISION` with canonical bounded relay:
+`https://github.com/binchen648/fd/pull/511#issuecomment-5923842640`.
+
+Blocking P1: the staged `multi_presence_location_context_v1` decision exposed every authoritative presence location even when only a subset satisfied the same ability activation requirements that made the ability legal. This allowed a battlefield-gated ability to become legal because the phantom satisfied the condition, then resume from the primary non-battlefield location.
+
+Closure in the successor Candidate:
+- one shared `eligibleMultiPresenceResolutionContexts(...)` derives live physical-location contexts that satisfy the same location-sensitive activation requirements;
+- `canActivate`, staged presence candidates, restore-live validation, and continuation authority all consume that shared result;
+- decision metadata/candidates are therefore the exact eligible subset, not the full presence-authority set;
+- if live eligibility changes while the decision is pending, canonical pending-decision validation fails closed;
+- focused regression now proves the concrete review case: with primary at `magic_workshop` and phantom at battlefield `miyama_town`, the decision offers only `miyama_town`; choosing `magic_workshop` is rejected with no mana change, while choosing `miyama_town` resolves exactly once.
+
+Revision verification: Alice focused `10/10 PASS`; directly affected/shared `185/185 PASS`; typecheck PASS; `git diff --check` PASS. Accounting remains `186/944`, remaining `758`; zero migration credit.
