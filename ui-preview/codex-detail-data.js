@@ -292,7 +292,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 2,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ1.png",
           "count": 2
         },
         {
@@ -303,7 +303,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 3,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ2.png",
           "count": 1
         },
         {
@@ -314,7 +314,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 2,
-          "image": "",
+          "image": "../assets/cards/deck/cardA1.png",
           "count": 1
         },
         {
@@ -325,7 +325,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 3,
-          "image": "",
+          "image": "../assets/cards/deck/cardA2.png",
           "count": 2
         },
         {
@@ -336,7 +336,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 4,
-          "image": "",
+          "image": "../assets/cards/deck/cardA3.png",
           "count": 2
         },
         {
@@ -347,7 +347,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 5,
-          "image": "",
+          "image": "../assets/cards/deck/cardA4.png",
           "count": 1
         },
         {
@@ -432,7 +432,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 2,
-          "image": "",
+          "image": "../assets/cards/deck/cardB1.png",
           "count": 1
         },
         {
@@ -443,7 +443,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 3,
-          "image": "",
+          "image": "../assets/cards/deck/cardB2.png",
           "count": 2
         },
         {
@@ -454,7 +454,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 2,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ1.png",
           "count": 1
         },
         {
@@ -465,7 +465,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 3,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ2.png",
           "count": 2
         },
         {
@@ -476,7 +476,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 4,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ3.png",
           "count": 1
         },
         {
@@ -487,7 +487,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 5,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ4.png",
           "count": 1
         },
         {
@@ -561,7 +561,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 2,
-          "image": "",
+          "image": "../assets/cards/deck/cardB1.png",
           "count": 1
         },
         {
@@ -572,7 +572,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 3,
-          "image": "",
+          "image": "../assets/cards/deck/cardB2.png",
           "count": 1
         },
         {
@@ -583,7 +583,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 4,
-          "image": "",
+          "image": "../assets/cards/deck/cardB3.png",
           "count": 1
         },
         {
@@ -594,7 +594,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 5,
-          "image": "",
+          "image": "../assets/cards/deck/cardB4.png",
           "count": 1
         },
         {
@@ -605,7 +605,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 2,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ1.png",
           "count": 1
         },
         {
@@ -616,7 +616,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 3,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ2.png",
           "count": 1
         },
         {
@@ -627,7 +627,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 4,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ3.png",
           "count": 2
         },
         {
@@ -638,7 +638,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 5,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ4.png",
           "count": 1
         },
         {
@@ -712,7 +712,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 2,
-          "image": "",
+          "image": "../assets/cards/deck/cardB1.png",
           "count": 1
         },
         {
@@ -723,7 +723,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 3,
-          "image": "",
+          "image": "../assets/cards/deck/cardB2.png",
           "count": 1
         },
         {
@@ -734,7 +734,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 4,
-          "image": "",
+          "image": "../assets/cards/deck/cardB3.png",
           "count": 1
         },
         {
@@ -745,7 +745,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 5,
-          "image": "",
+          "image": "../assets/cards/deck/cardB4.png",
           "count": 3
         },
         {
@@ -756,7 +756,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 2,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ1.png",
           "count": 1
         },
         {
@@ -767,7 +767,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 2,
-          "image": "",
+          "image": "../assets/cards/deck/cardA1.png",
           "count": 2
         },
         {
@@ -778,7 +778,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 3,
-          "image": "",
+          "image": "../assets/cards/deck/cardA2.png",
           "count": 1
         },
         {
@@ -852,7 +852,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 2,
-          "image": "",
+          "image": "../assets/cards/deck/cardB1.png",
           "count": 1
         },
         {
@@ -863,7 +863,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 4,
-          "image": "",
+          "image": "../assets/cards/deck/cardB3.png",
           "count": 1
         },
         {
@@ -874,7 +874,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 2,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ1.png",
           "count": 1
         },
         {
@@ -885,7 +885,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 3,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ2.png",
           "count": 2
         },
         {
@@ -896,7 +896,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 4,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ3.png",
           "count": 1
         },
         {
@@ -907,7 +907,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 2,
-          "image": "",
+          "image": "../assets/cards/deck/cardA1.png",
           "count": 1
         },
         {
@@ -918,7 +918,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 4,
-          "image": "",
+          "image": "../assets/cards/deck/cardA3.png",
           "count": 1
         },
         {
@@ -929,7 +929,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 5,
-          "image": "",
+          "image": "../assets/cards/deck/cardA4.png",
           "count": 1
         },
         {
@@ -1003,7 +1003,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 3,
-          "image": "",
+          "image": "../assets/cards/deck/cardB2.png",
           "count": 1
         },
         {
@@ -1014,7 +1014,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 4,
-          "image": "",
+          "image": "../assets/cards/deck/cardB3.png",
           "count": 1
         },
         {
@@ -1025,7 +1025,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 5,
-          "image": "",
+          "image": "../assets/cards/deck/cardB4.png",
           "count": 2
         },
         {
@@ -1036,7 +1036,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 2,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ1.png",
           "count": 2
         },
         {
@@ -1047,7 +1047,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 3,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ2.png",
           "count": 2
         },
         {
@@ -1058,7 +1058,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 4,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ3.png",
           "count": 1
         },
         {
@@ -1143,7 +1143,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 2,
-          "image": "",
+          "image": "../assets/cards/deck/cardB1.png",
           "count": 1
         },
         {
@@ -1154,7 +1154,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 3,
-          "image": "",
+          "image": "../assets/cards/deck/cardB2.png",
           "count": 1
         },
         {
@@ -1165,7 +1165,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 5,
-          "image": "",
+          "image": "../assets/cards/deck/cardB4.png",
           "count": 4
         },
         {
@@ -1176,7 +1176,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 2,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ1.png",
           "count": 2
         },
         {
@@ -1187,7 +1187,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 4,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ3.png",
           "count": 1
         },
         {
@@ -1198,7 +1198,7 @@ window.FDCodexDetailData={
           "cost": 0,
           "requirement": null,
           "basePower": 5,
-          "image": "",
+          "image": "../assets/cards/deck/cardQ4.png",
           "count": 1
         },
         {

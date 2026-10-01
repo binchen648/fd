@@ -74,6 +74,8 @@ function cardView(id) {
   const face = card.cardFace || {};
   const type = face.typeLabel || cardTypeNames[card.cardType] || '卡牌';
   const asset = manifest.cards[id];
+  const basicMatch = id.match(/^basic\.(strength|agility|magecraft)\.(\d+)$/);
+  const basicArt = basicMatch ? `../assets/cards/deck/card${{strength:'B',agility:'Q',magecraft:'A'}[basicMatch[1]]}${Number(basicMatch[2])-1}.png` : '';
   return {
     id,
     name: card.name,
@@ -82,7 +84,7 @@ function cardView(id) {
     cost: card.printedCost ?? face.cost ?? null,
     requirement: card.requirement ?? null,
     basePower: card.printedValue ?? face.basePower ?? null,
-    image: asset ? localAsset(asset) : (basicImages[id] || ''),
+    image: asset ? localAsset(asset) : (basicImages[id] || basicArt),
   };
 }
 
