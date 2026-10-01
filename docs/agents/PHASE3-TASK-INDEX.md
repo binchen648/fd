@@ -7756,8 +7756,8 @@ Required disposition: one zero-credit Candidate / PR / fresh R; after acceptance
 ## TASK P3-B-ALICE-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `READY`
-Classification: bounded zero-credit owner-readiness/capability batch for the complete current `master.alice` frozen scope
+Status: `WAIT_READINESS_SUBTASKS`
+Classification: parent zero-credit owner-readiness closure for the complete current `master.alice` frozen scope
 
 Frozen owner scope:
 - `master.alice.skill.ascension`
@@ -7766,11 +7766,66 @@ Frozen owner scope:
 
 Accounting boundary:
 - strict formal accounting after accepted Akiha A-sync is `186/944`, remaining `758`;
-- this readiness task is permanently zero migration credit;
-- canonical `data/authoring/**` contains `0/3` Alice frozen identities at task registration;
-- all three inventory rows are `SOURCE_EVIDENCE_REQUIRED / EXPLICIT_BLOCK`, current route `none`, with locked Reference handler `core.alice-phantom-player` as corroboration only.
+- Alice readiness and all readiness subtasks are permanently zero migration credit;
+- canonical `data/authoring/**` contains `0/3` Alice frozen identities;
+- no Alice formal consumer migration may start until every currently discoverable readiness subtask is ACCEPTED and FORMAL completes one full-owner A-sync/rescan.
 
-Required disposition:
-- recertify all three frozen Alice identities together from source evidence;
-- scan and close the complete owner-local generic capability/readiness gap set before any Alice formal consumer migration;
-- no Alice consumer authoring, no migration credit, and no owner advance until readiness ACCEPTED + FORMAL A-sync/full-owner rescan.
+Source recertification discovered two separable generic layers:
+1. `P3-B-ALICE-OWNER-READINESS-MULTI-PRESENCE-CORE`: extra-presence deployment/state/combat/terrain/mirror/tax/sacrifice/restore foundation.
+2. `P3-B-ALICE-OWNER-READINESS-PRESENCE-CONTEXT`: explicit location/battle effect-location choice for separated presences plus authoritative extra-presence movement so movement of either physical presence can trigger the same mirror rule.
+
+The locked Reference `core.alice-phantom-player` is corroboration only. Reference exposes a location-options helper but has no production caller for that source-authored clause, so helper existence alone is not readiness closure.
+
+## TASK P3-B-ALICE-OWNER-READINESS-MULTI-PRESENCE-CORE
+
+Owner: FORMAL readiness
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Classification: bounded zero-credit generic multi-presence core foundation for current Alice owner-readiness
+
+Exact Base: `0ad0e05d79a738aa55f43ea9c87ef5db5ef2acb9`
+Accounting: strict `186/944`, remaining `758`; permanently zero migration credit.
+
+Accepted Candidate scope must remain identity-free and cover only the generic core:
+- server-owned extra physical presence state with source/ability/round provenance;
+- preparation deployment with previous-round battle-loss gate;
+- one logical player/opponent identity across primary + extra presence for presence discovery and combat participant discovery;
+- shared active-card/passive logical-player authority without duplicate player identity;
+- independent per-location combat participation / terrain projection;
+- primary movement -> extra-presence same-direction/equal-distance mirror when legal and unengaged;
+- post-card-batch mana loss from actual paid card mana, ceil(1/2);
+- terrain sharing across presences;
+- sacrifice removes the extra presence first, then defeats eligible players remaining at its old location;
+- restore rejects forged extra-presence/source provenance;
+- no Alice/card-name/Reference-handler production identity routing.
+
+Verification:
+- focused synthetic multi-presence regression `8/8 PASS`;
+- directly affected/shared aggregate `218/218 PASS`;
+- core combat no-AbilityRuntime compatibility preserved;
+- `FD_TOOLCHAIN_OK`; typecheck PASS;
+- content validate/compile PASS: `9 masters / 19 servants / 20 events / 0 blocking issues`;
+- generated determinism PASS with unchanged hashes;
+- `data/authoring/**` delta EMPTY; production identity audit CLEAN; `git diff --check` PASS.
+
+Known non-Candidate baseline evidence:
+- `golden-flow-2-combat-power-winner-vp.test.ts` restore currently fails on exact Base `0ad0e05d...` with the same stale `placedAtLocationId` restore invariant; byte-for-byte temporary HEAD replay reproduced the failure before Alice WIP, so it is not counted as an Alice regression or Alice closure item.
+
+This core Candidate does NOT close the parent Alice owner-readiness task. After exact core ACCEPTED + A-sync, the presence-context follow-up below remains mandatory.
+
+Detailed report: `docs/reports/2026-10-01-p3-b-alice-owner-readiness-multi-presence-core-result.md`.
+
+## TASK P3-B-ALICE-OWNER-READINESS-PRESENCE-CONTEXT
+
+Owner: FORMAL readiness follow-up
+Status: `WAIT_CORE_ACCEPTANCE`
+Classification: bounded zero-credit generic presence-context interaction/movement closure required by frozen Alice source
+
+Required source-authored closure:
+- when one logical player has separated presences and one of its abilities is structurally location/battle-related, the controller chooses exactly one presence location for that ability transaction;
+- the choice is server-owned, transaction-bound, restore-safe, and cannot cause the ability to trigger twice;
+- generic location/battle consumers must read the selected presence context rather than silently defaulting to primary `PlayerState.locationId`;
+- movement of either physical presence, including an externally moved extra presence, can invoke the same legal same-direction/equal-distance mirror rule;
+- engagement, occupancy and movement legality remain enforced;
+- fail closed without broad global rewriting or Alice identity checks.
+
+No formal Alice consumer and no migration credit until this follow-up is accepted and the parent full-owner readiness A-sync/rescan is complete.

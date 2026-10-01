@@ -51,3 +51,4 @@ export * from './ability/resolution-dataflow';
 export * from './ability/event-location-equals-controller';
 
 export * from './ability/master-ascension-unlock-capability';
+export * from './ability/multi-presence-player-capability';

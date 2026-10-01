@@ -468,9 +468,25 @@ export interface TrustedBattleResultSnapshot {
   winners: PlayerId[];
   loserIds: PlayerId[];
 }
+export interface MultiPresenceState {
+  id: string;
+  playerId: PlayerId;
+  presenceKey: string;
+  locationId: string;
+  deployedAtLocationId: string;
+  terrainAdvantage: number;
+  sourceCardId: string;
+  sourceAbilityId: string;
+  createdRound: number;
+  updatedRevision: number;
+}
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
+  /** Identity-free extra physical presences owned by one logical player. */
+  extraPlayerPresences?: MultiPresenceState[];
+  /** Last authoritative battle-loss round recorded by structural multi-presence providers. */
+  multiPresenceLastBattleLossRoundByPlayer?: Record<PlayerId, Record<string, number>>;
   /** Live source-bound providers that permit the controller's action abilities during combat. */
   crossPhaseActionProviders?: CrossPhaseActionProviderRecord[];
   /** One-shot exact physical-card + ability reuse grants with source provenance. */
