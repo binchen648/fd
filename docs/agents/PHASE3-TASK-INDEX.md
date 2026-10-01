@@ -7651,7 +7651,7 @@ Required disposition:
 ## TASK P3-S-OWNER-AKIHA-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `READY`
+Status: `MIGRATION_COMPLETE_CANDIDATE`
 Classification: formal owner-complete migration for the complete current `master.akiha` frozen scope
 
 Frozen owner scope:
@@ -7672,6 +7672,20 @@ Required disposition:
 - consume only accepted identity-free readiness capabilities and introduce no Akiha/card-name/printed-text/legacy identity routing in production runtime;
 - run the owner formal/focused suite plus affected shared regressions, toolchain/typecheck/content/generated/identity/diff gates;
 - freeze one exact formal Candidate, one PR, one fresh independent R, then one A-sync/accounting.
+
+### Akiha formal owner-complete implementation evidence
+
+- Exact formal Base: `5bdd8032cb41989be495406a9489b373f09a2324` (accepted #508 readiness A-sync; strict `181/944`, remaining `763`).
+- One canonical `master.akiha` archive materializes all five frozen identities together; all five were absent at Base and remain only provisionally newly creditable until exact formal acceptance + A-sync/accounting.
+- Consumer uses accepted #507 identity-free Bloodlust contracts plus accepted #508 generic Master-ascension unlock authority; Base..Candidate production `packages/rules/src/**` delta is EMPTY and production identity audit is CLEAN.
+- `璀璨空想` is `outside_game`, with frozen static metadata 魔术 / cost 3 / requirement 3 / Power 6; explicit development-image source evidence is declared.
+- Akiha is integrated exactly once immediately after Akasha in canonical playable Master order.
+- Formal runtime regression uses the real Akiha consumer definitions for Bloodlust init/action, 5+/10+ thresholds, 15+ transform, transformed ascension cost/Power, mana doubling, and actual contributed-play Plunder provenance.
+- Verification: formal `9/9`, readiness `12/12`, ascension-unlock `5/5`, executable pack `50/50`, pack loader `21/21`, provisioning `7/7`, complex `38/38`, MatchSession `33/33`, restore `11/11`; unique affected aggregate **`186/186 PASS`**.
+- `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`9 masters / 19 servants / 20 events / 0 blocking issues`); generated determinism PASS; identity audit CLEAN; diff-check PASS.
+- Generated hashes: content-library `7d3972f7df836b16af8ab37dbe373eaa3a6e4ecde5bcb238cee53a7b852db53d`; fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`; evidence-report `e05fd6874e44104611a6900d1723d59d6275f9b9305b4f9464825fdba69ef902`.
+- Detailed report: `docs/reports/2026-10-01-p3-s-owner-akiha-complete-migration-result.md`.
+- Current disposition: `MIGRATION_COMPLETE_CANDIDATE`; freeze one exact Candidate / one PR / one fresh R. Accounting remains `181/944`, remaining `763`; potential accepted credit is exactly `+5` -> `186/944`, remaining `758`, subject to final acceptance rescan.
 
 ## TASK P3-B-AKIHA-OWNER-READINESS-MASTER-ASCENSION-UNLOCK
 

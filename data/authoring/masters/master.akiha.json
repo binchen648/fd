@@ -1,0 +1,423 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.akiha",
+  "name": "远野秋叶",
+  "class": "Master",
+  "publicInformation": {
+    "type": "master_package",
+    "initialMana": 4
+  },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "4761a2f88fe9fccae4f5d972174f45b9bfb9dd48",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen source text is authoritative. Accepted #507 identity-free Bloodlust capability and #508 generic Master-ascension unlock capability provide runtime authority; locked Reference is corroboration only."
+  },
+  "cards": [
+    {
+      "id": "master.akiha.skill.s1",
+      "aliases": [
+        "s1"
+      ],
+      "legacyId": "s1",
+      "name": "槛发",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.akiha"
+      },
+      "printedText": "你每回合可以从与你位于同一战场且拥有6点及以上魔力的对手处各花费1点魔力（用于出牌、使用能力等）。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "akiha.s1.caging",
+          "kind": "passive",
+          "printedClause": "你每回合可以从与你位于同一战场且拥有6点及以上魔力的对手处各花费1点魔力（用于出牌、使用能力等）。",
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "bloodlust_same_battlefield_mana_contribution",
+              "resourceKey": "akiha.bloodlust",
+              "amountPerOpponentPerRound": 1,
+              "minimumOpponentMana": 6,
+              "requireSameBattlefield": true
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.akiha.skill.s1a",
+      "aliases": [
+        "s1a"
+      ],
+      "legacyId": "s1a",
+      "name": "鬼之血脉",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.akiha"
+      },
+      "printedText": "每当你花费魔力时，获得等量的【杀戮冲动】并根据其数量获得相应效果。战斗阶段结束后，你随机失去1-3点【杀戮冲动】，若你位于魔术工房则将失去值翻倍。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "akiha.s1a.initialize",
+          "kind": "forced_trigger",
+          "printedClause": "【杀戮冲动】初始为0。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "bloodlust_initialize",
+              "resourceKey": "akiha.bloodlust",
+              "initial": 0
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "akiha.s1a.spend",
+          "kind": "passive",
+          "printedClause": "每当你花费魔力时，获得等量的【杀戮冲动】并根据其数量获得相应效果。",
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "bloodlust_track_controller_mana_spend",
+              "resourceKey": "akiha.bloodlust",
+              "gainPerManaSpent": 1
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "akiha.s1a.decay",
+          "kind": "forced_trigger",
+          "printedClause": "战斗阶段结束后，你随机失去1-3点【杀戮冲动】，若你位于魔术工房则将失去值翻倍。",
+          "activation": {
+            "trigger": "after_battle_ended"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "bloodlust_decay_after_battle",
+              "resourceKey": "akiha.bloodlust",
+              "minLoss": 1,
+              "maxLoss": 3,
+              "workshopMultiplier": 2
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.akiha.skill.s2",
+      "aliases": [
+        "s2"
+      ],
+      "legacyId": "s2",
+      "name": "红赤朱",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.akiha"
+      },
+      "printedText": "人格反转-你的【杀戮冲动】永远为15点，你失去所有令咒。你获得的战果点数减半（向下取整），获得的魔力翻倍。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "akiha.s2.transform",
+          "kind": "forced_trigger",
+          "printedClause": "人格反转-你的【杀戮冲动】永远为15点，你失去所有令咒。你获得的战果点数减半（向下取整），获得的魔力翻倍。",
+          "activation": {
+            "trigger": "round_end"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "bloodlust_transform_at_round_end",
+              "resourceKey": "akiha.bloodlust",
+              "threshold": 15,
+              "lockValue": 15,
+              "removeAllCommandSeals": true,
+              "manaGainMultiplier": 2,
+              "vpGainNumerator": 1,
+              "vpGainDenominator": 2,
+              "vpRounding": "floor"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.akiha.skill.s3",
+      "aliases": [
+        "s3"
+      ],
+      "legacyId": "s3",
+      "name": "鬼之血脉",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.akiha"
+      },
+      "printedText": "<5：行动阶段：获得1点魔力，+2合计威力和3点【杀戮冲动】，你本回合无法失去【杀戮冲动】。\n5+：你的技能攻击被激活时+1威力。\n10+：你拥有的魔力少于8点也可以打出技能牌。\n15+：回合结束时，将【远野秋叶】转换为【红赤朱】。",
+      "cardFace": {
+        "typeLabel": "行动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "akiha.s3.thresholds",
+          "kind": "passive",
+          "printedClause": "5+：你的技能攻击被激活时+1威力。\n10+：你拥有的魔力少于8点也可以打出技能牌。\n15+：回合结束时，将【远野秋叶】转换为【红赤朱】。",
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "bloodlust_threshold_rules",
+              "resourceKey": "akiha.bloodlust",
+              "skillPowerThreshold": 5,
+              "skillPowerBonus": 1,
+              "playWaiverThreshold": 10,
+              "playRequirementType": "skill_zone_mana_at_least",
+              "playRequirementValue": 8,
+              "transformThreshold": 15
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "akiha.s3.low-action",
+          "kind": "phase_action",
+          "printedClause": "<5：行动阶段：获得1点魔力，+2合计威力和3点【杀戮冲动】，你本回合无法失去【杀戮冲动】。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "bloodlust_low_threshold_action",
+              "resourceKey": "akiha.bloodlust",
+              "maximumResourceExclusive": 5,
+              "manaGain": 1,
+              "roundPowerGain": 2,
+              "resourceGain": 3,
+              "blockDecayThisRound": true
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.akiha.skill.ascension",
+      "aliases": [
+        "ascension"
+      ],
+      "legacyId": "ascension",
+      "name": "璀璨空想",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.akiha"
+      },
+      "printedText": "（将此牌加入你的技能区）\n红赤休术-被动：若你是红赤朱，此牌+3魔力消耗且+4威力。\n掠夺-若你是远野秋叶，被你偷取魔力用于打出此牌的玩家-3合计威力。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": [
+          "魔术"
+        ],
+        "cost": 3,
+        "basePower": 6
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 3
+        }
+      ],
+      "abilities": [
+        {
+          "id": "akiha.ascension.bloodlust",
+          "kind": "passive",
+          "printedClause": "红赤休术-被动：若你是红赤朱，此牌+3魔力消耗且+4威力。\n掠夺-若你是远野秋叶，被你偷取魔力用于打出此牌的玩家-3合计威力。",
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "bloodlust_ascension_modifier_and_plunder",
+              "resourceKey": "akiha.bloodlust",
+              "transformedCostAdd": 3,
+              "transformedPowerAdd": 4,
+              "contributorPowerPenalty": -3
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "initialPlacement": "outside_game"
+    }
+  ],
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": [
+        "../../Fate_Domination-开发版/images/masters/远野秋叶.png"
+      ]
+    }
+  ]
+}
