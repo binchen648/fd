@@ -8100,7 +8100,7 @@ Detailed report: docs/reports/2026-10-01-p3-b-amakusa-owner-readiness-source-def
 ## TASK P3-B-ARAYA-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `WAIT_READINESS_SUBTASKS`
+Status: `SYNCHRONIZED`
 Classification: parent zero-credit owner-readiness preflight for complete current `master.araya` frozen scope
 
 Frozen owner scope:
@@ -8145,7 +8145,7 @@ Implementation evidence:
 ## TASK P3-B-ARAYA-OWNER-READINESS-EFFECTIVE-WORKSHOP-RESTRICTIONS
 
 Owner: FORMAL readiness
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `ACCEPTED`
 Classification: bounded zero-credit identity-free effective-location and same-location restriction authority
 
 Dependency: accepted `P3-B-ARAYA-OWNER-READINESS-PERSISTENT-TERRAIN`.
@@ -8184,3 +8184,26 @@ Implementation evidence:
 - `FD_TOOLCHAIN_OK`; typecheck/content/generated/diff gates PASS; `data/authoring/**` delta EMPTY.
 - Detailed report: `docs/reports/2026-10-01-p3-b-araya-owner-readiness-effective-workshop-restrictions-result.md`.
 - This Candidate is permanently zero migration credit; parent readiness remains open until fresh-R acceptance + FORMAL full-owner A-sync/rescan.
+### Araya full-owner readiness synchronization
+
+- Persistent-terrain readiness accepted: PR #518 / 07de26c74c2b7e585a981c77327e30920ca560a4.
+- Effective-workshop/restrictions readiness accepted: PR #519 / 1a34da223fe3f18c0cd7c7fcf1964713f8eb1e8d.
+- Canonical Araya authoring rescan remains 0/3 for ascension + s1 + s1a.
+- s1a remains source-grounded by existing shared structured effects; no additional readiness family is discovered.
+- Parent readiness is now SYNCHRONIZED; strict accounting remains 194/944, remaining 750.
+- Formal owner-complete migration is now READY and must materialize all three frozen identities in one Candidate.
+- Acceptance synchronization report: docs/reports/2026-10-01-p3-a-araya-full-owner-readiness-synchronization.md.
+
+## TASK P3-S-OWNER-ARAYA-COMPLETE-MIGRATION
+
+Owner: FORMAL
+Status: `READY`
+Classification: formal owner-complete migration for current owner `master.araya`
+
+Frozen owner scope:
+- `master.araya.skill.ascension`
+- `master.araya.skill.s1`
+- `master.araya.skill.s1a`
+
+Formal rule: materialize all three identities in one Candidate/one PR/one fresh independent R; no partial credit.
+
