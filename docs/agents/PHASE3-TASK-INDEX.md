@@ -7631,7 +7631,44 @@ Required disposition:
 - Successor closes all three P1s together: same-transaction VP half-floor at both authoritative VP mutation routes; all-prefix Bloodlust restore-family validation; server-owned physical mana-contribution seal required for restore and ascension plunder.
 - Successor verification: direct closure `16/16 PASS`; broad affected `250/251` with one parallel-only 5s MatchSession timeout, exact isolated rerun `11/11 PASS`; toolchain/typecheck/content/generated/identity/diff-check green.
 - Current disposition: freeze one exact successor Candidate on PR #507 and request one fresh independent R. No Akiha formal consumer migration before successor acceptance + FORMAL A-sync/full-owner rescan.
-- Successor 1f7f60f65b614a7d9f23db78f926776e4bb4e02 -> IMPLEMENTATION_NEEDS_REVISION; canonical relay https://github.com/binchen648/fd/pull/507#issuecomment-5921120983.
+- Successor a1f7f60f65b614a7d9f23db78f926776e4bb4e02 -> IMPLEMENTATION_NEEDS_REVISION; canonical relay https://github.com/binchen648/fd/pull/507#issuecomment-5921120983.
 - Remaining P1 closed by replacing serialized playManaContributionSeal with hidden WeakMap server authority plus secret-backed HMAC persistence/restore; visible contribution fields alone no longer authorize plunder.
 - Second-successor verification: Akiha focused 12/12, shared non-MatchSession 189/189, MatchSession 33/33, restore 11/11; unique affected 233/233 PASS; static/content/generated/identity/diff gates green.
 - Current disposition: freeze one new exact successor Candidate on PR #507 and request one fresh independent R; readiness remains zero-credit.
+
+### Akiha owner-readiness capability acceptance synchronization
+
+- PR #507 exact accepted readiness Candidate: `4761a2f88fe9fccae4f5d972174f45b9bfb9dd48`.
+- Exact Base: `d55f1bd56cfb156819c2d64c55259b75ab23d4c6`.
+- Canonical Coordinator bounded same-attempt acceptance evidence: `https://github.com/binchen648/fd/pull/507#issuecomment-5922028179`.
+- Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`; exact fresh gate run `36789102737` / job `110137479988` = `SUCCESS`.
+- Full-owner rescan confirms canonical `data/authoring/**` still contains `0/5` frozen Akiha identities; all five remain newly creditable and none is preservation-only.
+- Accepted readiness closes the complete current Akiha generic Bloodlust capability family, including server-owned hidden contribution authority and authenticated persistence/restore; no additional currently discoverable Akiha owner-local readiness gap remains.
+- Readiness remains permanently zero-credit; strict accounting stays `181/944`, remaining `763`.
+- `P3-S-OWNER-AKIHA-COMPLETE-MIGRATION` is now unblocked and `READY`; all 5 frozen identities must migrate together in one formal Candidate / one PR / one fresh R / one A-sync-accounting.
+- Detailed A-sync report: `docs/reports/2026-10-01-p3-a-akiha-owner-readiness-capability-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-AKIHA-COMPLETE-MIGRATION
+
+Owner: FORMAL
+Status: `READY`
+Classification: formal owner-complete migration for the complete current `master.akiha` frozen scope
+
+Frozen owner scope:
+- `master.akiha.skill.ascension`
+- `master.akiha.skill.s1`
+- `master.akiha.skill.s1a`
+- `master.akiha.skill.s2`
+- `master.akiha.skill.s3`
+
+Accounting boundary:
+- strict formal accounting before Akiha formal migration remains `181/944`, remaining `763`;
+- all five frozen identities are absent from canonical `data/authoring/**` at readiness A-sync and are provisionally newly creditable;
+- no credit is granted until the exact formal owner Candidate receives `MIGRATION_ACCEPTED` and FORMAL completes A-sync/accounting;
+- expected maximum owner-complete increment is `+5` only if the formal acceptance rescan confirms all five remain newly creditable.
+
+Required disposition:
+- materialize all five frozen Akiha identities together in one canonical owner archive;
+- consume only accepted identity-free readiness capabilities and introduce no Akiha/card-name/printed-text/legacy identity routing in production runtime;
+- run the owner formal/focused suite plus affected shared regressions, toolchain/typecheck/content/generated/identity/diff gates;
+- freeze one exact formal Candidate, one PR, one fresh independent R, then one A-sync/accounting.
