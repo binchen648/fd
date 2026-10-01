@@ -72,6 +72,7 @@ import { MASTER_ASCENSION_UNLOCK_EFFECT, containsMasterAscensionUnlockPrivileged
 import { ASCENSION_UNLOCK_OPPONENT_SEAL_LOSS_EFFECT, NAMED_EVENT_BASIC_POWER_BONUS_EFFECT, SOURCE_DEFINITION_BASIC_POWER_BONUS_EFFECT, containsMasterAscensionEventPowerPrivilegedNode, isAcceptedMasterAscensionEventPowerAbility } from './master-ascension-event-power-capability';
 import { PERSISTENT_LOCATION_TERRAIN_REPLACE_INCREMENT_EFFECT, containsPersistentLocationTerrainPrivilegedNode, isAcceptedPersistentLocationTerrainAbility } from './persistent-location-terrain-capability';
 import { EFFECTIVE_LOCATION_SAME_LOCATION_RESTRICTIONS_EFFECT, containsEffectiveLocationRestrictionPrivilegedNode, isAcceptedEffectiveLocationRestrictionAbility } from './effective-location-restriction-capability';
+import { RECYCLE_ACTIVE_BASIC_FOR_PRINTED_COST_MANA_EFFECT, containsOriginStillnessPrintedCostPrivilegedNode, isAcceptedOriginStillnessPrintedCostAbility } from './origin-stillness-printed-cost-capability';
 import {
   MULTI_PRESENCE_RECORD_LOSS_EFFECT, MULTI_PRESENCE_DEPLOY_EFFECT, MULTI_PRESENCE_MIRROR_MOVE_EFFECT,
   MULTI_PRESENCE_POST_PLAY_MANA_LOSS_EFFECT, MULTI_PRESENCE_SHARED_PLAYER_EFFECT, MULTI_PRESENCE_SHARE_TERRAIN_EFFECT,
@@ -209,6 +210,7 @@ const supportedTypes = new Set([
   ASCENSION_UNLOCK_OPPONENT_SEAL_LOSS_EFFECT, NAMED_EVENT_BASIC_POWER_BONUS_EFFECT, SOURCE_DEFINITION_BASIC_POWER_BONUS_EFFECT,
   PERSISTENT_LOCATION_TERRAIN_REPLACE_INCREMENT_EFFECT,
   EFFECTIVE_LOCATION_SAME_LOCATION_RESTRICTIONS_EFFECT,
+  RECYCLE_ACTIVE_BASIC_FOR_PRINTED_COST_MANA_EFFECT,
   ADJUST_OTHER_ACTIVE_PLAYERS_AT_SOURCE_LOCATION_MANA_EFFECT, DEFEAT_SINGLE_ACTIVE_OPPONENT_AT_CONTROLLER_BATTLEFIELD_EFFECT,
   FORBID_OTHER_PLAYERS_AT_ACTIVE_SOURCE_LOCATION_MANA_GAIN_EFFECT, SET_SOURCE_LOCATION_BASIC_BASE_POWER_MULTIPLIER_FROM_CHOICE_EFFECT,
   DUPLICATE_BASE_POWER_CLOSE_EFFECT, DISCARD_SHUFFLE_SOURCE_X_BINDING_EFFECT,
@@ -338,6 +340,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'manaCost', 'basePowerMultiplier', 'removeAfter',
   'firstAttribute', 'secondAttribute', 'distinctCards', 'resource', 'roundsAfterCurrent',
   'zones', 'numerator', 'denominator', 'rounding', 'destination', 'defeatIfEmpty', 'minBasePower', 'perCard', 'sourcePlayers',
+  'printedCostMultiplier',
   'toZone', 'provenance', 'revealMax', 'power', 'transferVp', 'playCost', 'mode', 'generator', 'dedupeSamePlayer',
   'cycleKey', 'initialVessel', 'middleVessel', 'finalVessel', 'firstMaxVp', 'middleMaxVp', 'firstVpMultiplier', 'middleVpDivisor',
   'middleVpRounding', 'repeatPenaltyVp', 'lossMargin', 'temporaryDefinitionId', 'ascensionDefinitionId', 'temporaryKeep', 'vessel', 'requiredDefinitionId', 'targetDefinitionId',
@@ -757,6 +760,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsEffectiveLocationRestrictionPrivilegedNode(candidateAbility) && !isAcceptedEffectiveLocationRestrictionAbility(candidateAbility)) {
         issue('effectiveLocationRestriction.gateway', 'Effective-location restriction privileged mechanic requires an accepted exact whole-ability semantic', id);
+      }
+      if (containsOriginStillnessPrintedCostPrivilegedNode(candidateAbility) && !isAcceptedOriginStillnessPrintedCostAbility(candidateAbility)) {
+        issue('originStillnessPrintedCost.gateway', 'Origin-stillness printed-cost privileged mechanic requires an accepted exact whole-ability semantic', id);
       }
       if (containsMultiPresencePrivilegedNode(candidateAbility) && !isAcceptedMultiPresenceAbility(candidateAbility)) {
         issue('multiPresence.gateway', 'Multi-presence privileged mechanics require an accepted exact whole-ability semantic', id);
