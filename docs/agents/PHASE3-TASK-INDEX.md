@@ -7960,7 +7960,7 @@ This Candidate does NOT close s1a or ascension and does NOT close the parent own
 ## TASK P3-B-AMAKUSA-OWNER-READINESS-MEMBER-SKILL-COPY
 
 Owner: FORMAL readiness follow-up
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: bounded zero-credit generic temporary revealed servant-skill copy / original-use lock / linked-member removal closure for Amakusa s1a
 
 Required frozen source closure:
@@ -7971,6 +7971,10 @@ Required frozen source closure:
 - hidden/revealed information, copied physical/definition provenance, use-lock and restore state must fail closed without Amakusa identity routing.
 
 No migration credit; do not start before linked-role core exact acceptance + FORMAL A-sync.
+
+Detailed report: `docs/reports/2026-10-01-p3-b-amakusa-owner-readiness-member-skill-copy-result.md`.
+
+This Candidate does NOT close ascension readiness and does NOT close the parent owner-readiness task.
 
 ## TASK P3-B-AMAKUSA-OWNER-READINESS-ASCENSION-EVENT-POWER
 

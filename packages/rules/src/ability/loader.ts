@@ -79,6 +79,7 @@ import {
   LINKED_ROLE_MEMBER_RULES_EFFECT, LINKED_ROLE_BATTLE_REWARD_EFFECT,
   containsLinkedRoleCorePrivilegedNode, isAcceptedLinkedRoleCoreAbility,
 } from './linked-role-core-capability';
+import { LINKED_ROLE_COPY_REVEALED_MEMBER_SERVANT_SKILL_EFFECT, containsLinkedRoleMemberSkillCopyPrivilegedNode, isAcceptedLinkedRoleMemberSkillCopyAbility } from './linked-role-member-skill-copy-capability';
 import {
   BLOODLUST_INITIALIZE_EFFECT, BLOODLUST_CAGING_CONTRIBUTION_EFFECT, BLOODLUST_SPEND_TRACKER_EFFECT, BLOODLUST_COMBAT_DECAY_EFFECT,
   BLOODLUST_THRESHOLD_EFFECT, BLOODLUST_ACTION_EFFECT, BLOODLUST_TRANSFORM_EFFECT, BLOODLUST_ASCENSION_EFFECT,
@@ -201,6 +202,7 @@ const supportedTypes = new Set([
   MULTI_PRESENCE_RECORD_LOSS_EFFECT, MULTI_PRESENCE_DEPLOY_EFFECT, MULTI_PRESENCE_MIRROR_MOVE_EFFECT,
   MULTI_PRESENCE_POST_PLAY_MANA_LOSS_EFFECT, MULTI_PRESENCE_SHARED_PLAYER_EFFECT, MULTI_PRESENCE_SHARE_TERRAIN_EFFECT, MULTI_PRESENCE_SACRIFICE_DEFEAT_EFFECT,
   LINKED_ROLE_INITIALIZE_EFFECT, LINKED_ROLE_SCHEDULE_MEMBER_EFFECT, LINKED_ROLE_APPLY_SCHEDULED_EFFECT, LINKED_ROLE_MEMBER_RULES_EFFECT, LINKED_ROLE_BATTLE_REWARD_EFFECT,
+  LINKED_ROLE_COPY_REVEALED_MEMBER_SERVANT_SKILL_EFFECT,
   ADJUST_OTHER_ACTIVE_PLAYERS_AT_SOURCE_LOCATION_MANA_EFFECT, DEFEAT_SINGLE_ACTIVE_OPPONENT_AT_CONTROLLER_BATTLEFIELD_EFFECT,
   FORBID_OTHER_PLAYERS_AT_ACTIVE_SOURCE_LOCATION_MANA_GAIN_EFFECT, SET_SOURCE_LOCATION_BASIC_BASE_POWER_MULTIPLIER_FROM_CHOICE_EFFECT,
   DUPLICATE_BASE_POWER_CLOSE_EFFECT, DISCARD_SHUFFLE_SOURCE_X_BINDING_EFFECT,
@@ -744,6 +746,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsLinkedRoleCorePrivilegedNode(candidateAbility) && !isAcceptedLinkedRoleCoreAbility(candidateAbility)) {
         issue('linkedRole.gateway', 'Linked-role privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsLinkedRoleMemberSkillCopyPrivilegedNode(candidateAbility) && !isAcceptedLinkedRoleMemberSkillCopyAbility(candidateAbility)) {
+        issue('linkedRole.copy.gateway', 'Linked-role member skill-copy privileged mechanic requires the accepted exact whole-ability semantic', id);
       }
       if (containsBloodlustPrivilegedNode(candidateAbility) && !isAcceptedBloodlustAbility(candidateAbility)) {
         issue('bloodlust.gateway', 'Bloodlust privileged mechanics require an accepted exact whole-ability semantic', id);
