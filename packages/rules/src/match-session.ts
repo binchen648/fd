@@ -667,6 +667,11 @@ function isRestorePendingInteraction(value: unknown): boolean {
       typeof value.kind !== 'string' || typeof value.sourceCardInstanceId !== 'string' || typeof value.abilityId !== 'string' ||
       !isRestoreSafeInteger(value.createdRevision) || typeof value.continuationRef !== 'string') return false;
   switch (value.kind) {
+    case 'multi_presence_location_context_v1':
+      return hasExactRestoreKeys(value, ['kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef','controllerId','presenceKey','candidateLocationIds','constraints']) &&
+        typeof value.controllerId === 'string' && typeof value.presenceKey === 'string' && value.presenceKey.length > 0 &&
+        isRestoreStringArray(value.candidateLocationIds) && value.candidateLocationIds.length > 1 && new Set(value.candidateLocationIds).size === value.candidateLocationIds.length &&
+        isRestoreInteractionConstraints(value.constraints,['location']) && (value.constraints as Record<string,unknown>).min===1 && (value.constraints as Record<string,unknown>).max===1;
     case 'automatic_recycle_keep_v1':
       return hasExactRestoreKeys(value, [
         'kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
@@ -876,6 +881,7 @@ function isRestoreEffectContext(value: unknown): boolean {
   if (!isRestoreRecord(value) || typeof value.controllerId !== 'string' || typeof value.sourceCardId !== 'string' ||
       typeof value.abilityId !== 'string' || !isRestoreFiniteNumberMap(value.variables) || !isRestoreStringArrayMap(value.selections)) return false;
   if (value.event !== undefined && !isRestoreAbilityEvent(value.event)) return false;
+  if (value.resolutionLocationId !== undefined && typeof value.resolutionLocationId !== 'string') return false;
   return value.eventSource === undefined || (isRestoreRecord(value.eventSource) && typeof value.eventSource.ruleInstanceId === 'string' &&
     typeof value.eventSource.definitionId === 'string' && typeof value.eventSource.locationId === 'string');
 }
