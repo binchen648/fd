@@ -1,0 +1,228 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.araya",
+  "name": "荒耶宗莲",
+  "class": "Master",
+  "publicInformation": {
+    "type": "master_package",
+    "initialMana": 4
+  },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "54c89d6172b0cb39fdae82c89027428963f41d65",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen source text is authoritative. Accepted #518 persistent-terrain, #519 effective-workshop/restrictions, and #520 Origin Stillness printed-cost capabilities provide identity-free runtime authority; locked Reference supplies corroboration/static metadata."
+  },
+  "cards": [
+    {
+      "id": "master.araya.skill.s1",
+      "aliases": [
+        "s1"
+      ],
+      "legacyId": "s1",
+      "name": "三重结界",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.araya"
+      },
+      "printedText": "你部署于一处地利位置时不获得原本的地利，改为令你位于此地点时获得+1地利直至游戏结束（至多为5）。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "araya.s1.terrain",
+          "kind": "forced_trigger",
+          "printedClause": "你部署于一处地利位置时不获得原本的地利，改为令你位于此地点时获得+1地利直至游戏结束（至多为5）。",
+          "activation": {
+            "trigger": "after_player_deployed_to_battlefield"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "persistent_location_terrain_replace_increment",
+              "amount": 1,
+              "max": 5
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.araya.skill.s1a",
+      "aliases": [
+        "s1a"
+      ],
+      "legacyId": "s1a",
+      "name": "起源：静止",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.araya"
+      },
+      "printedText": "战斗阶段结束后，将一张你激活的基础攻击洗回牌库，然后你获得该牌印刷魔力消耗两倍的魔力。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "araya.s1a.origin-stillness",
+          "kind": "forced_trigger",
+          "printedClause": "战斗阶段结束后，将一张你激活的基础攻击洗回牌库，然后你获得该牌印刷魔力消耗两倍的魔力。",
+          "activation": {
+            "trigger": "after_battle_ended"
+          },
+          "conditions": [],
+          "targets": [
+            {
+              "id": "active_basic_attack",
+              "type": "card_instance",
+              "scope": {
+                "zone": "attack_area",
+                "owner": "controller",
+                "controller": "self"
+              },
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "constraints": []
+            }
+          ],
+          "effects": [
+            {
+              "type": "recycle_active_basic_for_printed_cost_mana",
+              "target": "active_basic_attack",
+              "printedCostMultiplier": 2
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.araya.skill.ascension",
+      "aliases": [
+        "ascension"
+      ],
+      "legacyId": "ascension",
+      "name": "矛盾螺旋",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.araya"
+      },
+      "printedText": "当你部署于一处因三重结界拥有5点或更多的地利的位置时，将你所在的地点同时视为魔术工房。\n当你位于魔术工房时，你的对手无法离开你所在的地点且其于常规出牌时必须打出一张暗置攻击。",
+      "cardFace": {
+        "typeLabel": "升华技",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "araya.ascension.restrictions",
+          "kind": "passive",
+          "printedClause": "当你部署于一处因三重结界拥有5点或更多的地利的位置时，将你所在的地点同时视为魔术工房。\n当你位于魔术工房时，你的对手无法离开你所在的地点且其于常规出牌时必须打出一张暗置攻击。",
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "effective_location_same_location_restrictions",
+              "effectiveLocationKind": "workshop",
+              "persistentTerrainMinimum": 5,
+              "persistentTerrainProviderDefinitionId": "master.araya.skill.s1",
+              "persistentTerrainProviderAbilityId": "araya.s1.terrain",
+              "blockOpponentExit": true,
+              "requireFaceDownStandardAttack": true
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "initialPlacement": "outside_game"
+    }
+  ],
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": [
+        "../../Fate_Domination-开发版/images/masters/荒耶宗莲.png"
+      ]
+    }
+  ]
+}

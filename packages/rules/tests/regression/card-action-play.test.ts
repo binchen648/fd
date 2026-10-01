@@ -1,9 +1,21 @@
 import { describe, expect, it } from 'vitest';
 
-import { createMatchSession } from '../../src/match-session';
+import contentLibrary from '../../../../data/generated/fd-playtest-v1.content-library.json';
+import { buildSevenPlayerCharacterPairings, createMatchSession } from '../../src/match-session';
 import { isPlayActionDirectAction } from '../../src/ability/interpreter';
 import type { AuthoringAbility } from '../../src/ability/types';
 
+function createSessionIncludingMaster(masterId: string) {
+  const characters = Object.values(contentLibrary.rules.characters);
+  const masters = characters.filter((character) => character.kind === 'master');
+  const servants = characters.filter((character) => character.kind === 'servant');
+  for (let seed = 1; seed <= 65_536; seed += 1) {
+    if (buildSevenPlayerCharacterPairings(masters, servants, seed).some((pairing) => pairing.master.id === masterId)) {
+      return createMatchSession({ seed, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    }
+  }
+  throw new Error('Unable to build deterministic fixture containing ' + masterId);
+}
 function prepareKiritsuguAction(session: ReturnType<typeof createMatchSession>): {
   playerId: string;
   timeAlter: string;
@@ -32,7 +44,7 @@ function prepareKiritsuguAction(session: ReturnType<typeof createMatchSession>):
 
 describe('CARD_ACTION_SEMANTICS_MINIMAL_PLAY', () => {
   it('routes Time Alter by executable semantic form through data-flow and shared playBatch', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createSessionIncludingMaster('master.kiritsugu');
     const { playerId, timeAlter, handAttack, deckTop } = prepareKiritsuguAction(session);
 
     const activation = session.dispatchPlayerAction(playerId, {
@@ -78,7 +90,7 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_PLAY', () => {
   });
 
   it('does not offer Time Alter when no controller hand attack is available', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createSessionIncludingMaster('master.kiritsugu');
     const { playerId, timeAlter } = prepareKiritsuguAction(session);
     for (const card of session.state.cards.filter((candidate) => candidate.ownerPlayerId === playerId && candidate.zone === 'hand')) {
       card.zone = 'deck';
@@ -105,7 +117,7 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_PLAY', () => {
   });
 
   it('fails closed without legacy fallback when a migrated Time Alter graph is corrupted', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createSessionIncludingMaster('master.kiritsugu');
     const { playerId, timeAlter, handAttack, deckTop } = prepareKiritsuguAction(session);
     const ability = session.state.abilityRuntime!.pack.cards['master.kiritsugu.skill.time-alter']!.abilities
       .find((candidate) => candidate.id === 'time-alter.action')!;
