@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 10,
+    "masters": 11,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -538,6 +538,83 @@
       "htmPath": "chm-extract/爱丽丝.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/爱丽丝.png",
       "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.amakusa",
+      "displayName": "天草四郎",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/天草四郎.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/天草四郎.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.amakusa.overview",
+      "displayName": "天草四郎",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/天草四郎.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/天草四郎.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.amakusa.skill.ascension",
+      "displayName": "过去的裁定者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/天草四郎.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/天草四郎.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.amakusa.skill.s1",
+      "displayName": "教则",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/天草四郎.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/天草四郎.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.amakusa.skill.s1a",
+      "displayName": "绝罚",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/天草四郎.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/天草四郎.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.amakusa.skill.s2",
+      "displayName": "红队领袖",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/天草四郎.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/天草四郎.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.amakusa.skill.s3",
+      "displayName": "神仆",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/天草四郎.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/天草四郎.png",
+      "imageIndex": 4,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

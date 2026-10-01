@@ -8007,7 +8007,7 @@ This Candidate does NOT close the parent owner-readiness task. Fresh R acceptanc
 ## TASK P3-S-OWNER-AMAKUSA-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: formal owner-complete migration for the complete current `master.amakusa` frozen scope
 
 Frozen owner scope:
@@ -8069,3 +8069,13 @@ Detailed report: docs/reports/2026-10-01-p3-b-amakusa-owner-readiness-source-def
 - `P3-S-OWNER-AMAKUSA-COMPLETE-MIGRATION` returns to `READY`; ascension + s1 + s1a + s2 + s3 must materialize together in one formal Candidate / one PR / one fresh R / one A-sync-accounting.
 - Strict formal accounting remains `189/944`, remaining `755`; this synchronization grants no migration credit.
 - Detailed report: `docs/reports/2026-10-01-p3-a-amakusa-source-definition-power-acceptance-synchronization.md`.
+### Amakusa formal owner-complete implementation Candidate
+
+- Exact formal Base: `ceffceb3df7a9739726cf0eb52f97c31761af8e5`.
+- Materializes all five frozen identities together in `data/authoring/masters/master.amakusa.json` and integrates the owner exactly once after Alice.
+- Consumes only accepted identity-free linked-role, member-skill-copy, ascension unlock/seal-loss, and source-definition Power capabilities; production runtime delta is empty in this formal Candidate.
+- Canonical `data/authoring/**` moves from `0/5` to `5/5` Amakusa frozen identities inside this Candidate; all five remain only provisionally newly creditable until exact `MIGRATION_ACCEPTED` plus FORMAL A-sync/accounting.
+- Amakusa formal + readiness focused `38/38 PASS`; directly affected shared `121/121 PASS`; explicit aggregate `159/159 PASS`.
+- content validate/compile: `11 masters / 19 servants / 20 events / 0 blocking issues`; generated determinism, typecheck, toolchain, identity audit and diff-check PASS.
+- Strict formal accounting remains `189/944`, remaining `755` before acceptance; maximum post-acceptance A-sync increment is `+5`.
+- Detailed report: `docs/reports/2026-10-01-p3-s-owner-amakusa-complete-migration-result.md`.

@@ -1,0 +1,471 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.amakusa",
+  "name": "天草四郎",
+  "class": "Master",
+  "publicInformation": {
+    "type": "master_package",
+    "initialMana": 4
+  },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "4251da171eacdca6059ffd347510fefcebe10f24",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen source text is authoritative. Accepted #513 linked-role core, #514 member-skill-copy, #515 ascension/event-power, and #516 source-definition Power capabilities provide identity-free runtime authority; locked Reference is corroboration/static metadata only."
+  },
+  "cards": [
+    {
+      "id": "master.amakusa.skill.s1",
+      "aliases": [
+        "s1"
+      ],
+      "legacyId": "s1",
+      "name": "教则",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.amakusa"
+      },
+      "printedText": "游戏开始时，你是【红队领袖】，你后置位的那名玩家成为【神仆】.",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "amakusa.s1.initialize",
+          "kind": "forced_trigger",
+          "printedClause": "游戏开始时，你是【红队领袖】，你后置位的那名玩家成为【神仆】。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "linked_role_initialize",
+              "relationshipKey": "amakusa.vassal",
+              "leaderRoleKey": "red_team_leader",
+              "memberRoleKey": "vassal",
+              "memberSelector": "next_seat"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.amakusa.skill.s1a",
+      "aliases": [
+        "s1a"
+      ],
+      "legacyId": "s1a",
+      "name": "绝罚",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.amakusa"
+      },
+      "printedText": "行动阶段：将一名【神仆】已展示的从者技能的临时复制加入你的技能区直至回合结束。他本回合无法使用你使用了其复制的原技能牌且其不再为【神仆】。",
+      "cardFace": {
+        "typeLabel": "行动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "amakusa.s1a.copy",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：将一名【神仆】已展示的从者技能的临时复制加入你的技能区直至回合结束。他本回合无法使用你使用了其复制的原技能牌且其不再为【神仆】。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [
+            {
+              "id": "member_revealed_servant_skill",
+              "type": "card_instance",
+              "scope": {
+                "zone": "skill",
+                "owner": "any",
+                "controller": "any"
+              },
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "constraints": []
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "linked_role_copy_revealed_member_servant_skill",
+              "relationshipKey": "amakusa.vassal",
+              "target": "member_revealed_servant_skill"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.amakusa.skill.s2",
+      "aliases": [
+        "s2"
+      ],
+      "legacyId": "s2",
+      "name": "红队领袖",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.amakusa"
+      },
+      "printedText": "臣属-行动阶段：花费X枚令咒，选择一名本局游戏未成为过【神仆】且在你花费令咒前令咒数少于你的玩家，下回合开始时他成为【神仆】，X为1+【神仆】数。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "amakusa.s2.vassalize",
+          "kind": "phase_action",
+          "printedClause": "臣属-行动阶段：花费X枚令咒，选择一名本局游戏未成为过【神仆】且在你花费令咒前令咒数少于你的玩家，下回合开始时他成为【神仆】，X为1+【神仆】数。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [
+            {
+              "id": "member",
+              "type": "player",
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "constraints": []
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "linked_role_schedule_member",
+              "relationshipKey": "amakusa.vassal",
+              "leaderRoleKey": "red_team_leader",
+              "memberRoleKey": "vassal",
+              "target": "member",
+              "baseCommandSealCost": 1,
+              "perActiveMemberCommandSealCost": 1,
+              "activateAt": "next_round_start",
+              "requireNeverMember": true,
+              "requireFewerSealsBeforeSpend": true
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "amakusa.s2.resolve",
+          "kind": "forced_trigger",
+          "printedClause": "下回合开始时，他成为【神仆】。",
+          "activation": {
+            "trigger": "round_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "linked_role_apply_scheduled_members",
+              "relationshipKey": "amakusa.vassal",
+              "leaderRoleKey": "red_team_leader",
+              "memberRoleKey": "vassal"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.amakusa.skill.s3",
+      "aliases": [
+        "s3"
+      ],
+      "legacyId": "s3",
+      "name": "神仆",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.amakusa"
+      },
+      "printedText": "非高潮回合，你需花费一枚令咒才可进入天草四郎所在的战场。每回合限一次，若你与天草四郎同时位于不同的战场，你花费魔力时，可以将天草四郎的1点魔力加入支付。若你与天草四郎于同一回合赢得了不同的战斗，你与其各获得1点战果。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "amakusa.s3.rules",
+          "kind": "passive",
+          "printedClause": "非高潮回合进入领袖所在战场需额外花费一枚令咒；异地时每回合一次可由领袖贡献1点魔力。",
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "linked_role_member_rules",
+              "relationshipKey": "amakusa.vassal",
+              "leaderRoleKey": "red_team_leader",
+              "memberRoleKey": "vassal",
+              "entryCommandSealCost": 1,
+              "entryOnlyBeforeClimax": true,
+              "manaContributionAmount": 1,
+              "manaContributionMaxPerRound": 1,
+              "requireDifferentBattlefields": true
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "amakusa.s3.reward",
+          "kind": "forced_trigger",
+          "printedClause": "若你与天草四郎于同一回合赢得不同的战斗，你与其各获得1点战果。",
+          "activation": {
+            "trigger": "after_battle_ended"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "linked_role_battle_reward",
+              "relationshipKey": "amakusa.vassal",
+              "leaderRoleKey": "red_team_leader",
+              "memberRoleKey": "vassal",
+              "vpEach": 1,
+              "requireDifferentBattlefields": true
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.amakusa.skill.ascension",
+      "aliases": [
+        "ascension"
+      ],
+      "legacyId": "ascension",
+      "name": "过去的裁定者",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.amakusa"
+      },
+      "printedText": "解锁此牌后所有对手立即失去2枚令咒。\n【开演之时已至，此处应有雷鸣般的喝彩】激活时，你的基础牌获得威力+4。",
+      "cardFace": {
+        "typeLabel": "升华技",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "amakusa.ascension.seals",
+          "kind": "forced_trigger",
+          "printedClause": "解锁此牌后所有对手立即失去2枚令咒。",
+          "activation": {
+            "trigger": "after_master_ascension_unlocked"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "ascension_unlock_opponents_lose_command_seals",
+              "amount": 2,
+              "floor": 0
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "amakusa.ascension.applause",
+          "kind": "forced_trigger",
+          "printedClause": "【开演之时已至，此处应有雷鸣般的喝彩】激活时，你的基础牌获得威力+4。",
+          "activation": {
+            "trigger": "on_card_played",
+            "sourceDefinitionId": "servant.shakespeare.skill.sc-shakespeare-3"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "source_definition_basic_attack_power_bonus",
+              "amount": 4,
+              "duration": "while_source_active"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "initialPlacement": "outside_game"
+    }
+  ],
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": [
+        "../../Fate_Domination-开发版/images/masters/天草四郎.png"
+      ]
+    }
+  ]
+}
