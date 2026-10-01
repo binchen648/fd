@@ -11,6 +11,7 @@ const manifestSource = fs.readFileSync(manifestPath, 'utf8');
 const manifestMatch = manifestSource.match(/=\s*({[\s\S]*})\s*as const;/);
 if (!manifestMatch) throw new Error(`无法解析资源清单：${manifestPath}`);
 const manifest = JSON.parse(manifestMatch[1]);
+const printedBasics = JSON.parse(fs.readFileSync(path.join(projectRoot, 'src/content/generated/legacy-content.json'), 'utf8')).cards.filter(card => /^card\.card[abq]\d+$/.test(card.id));
 
 const masterIds = [
   'master.kayneth',
@@ -75,7 +76,8 @@ function cardView(id) {
   const type = face.typeLabel || cardTypeNames[card.cardType] || '卡牌';
   const asset = manifest.cards[id];
   const basicMatch = id.match(/^basic\.(strength|agility|magecraft)\.(\d+)$/);
-  const basicArt = basicMatch ? `../assets/cards/deck/card${{strength:'B',agility:'Q',magecraft:'A'}[basicMatch[1]]}${Number(basicMatch[2])-1}.png` : '';
+  const basicCode = basicMatch ? printedBasics.find(card => card.id.startsWith(`card.card${{strength:'b',agility:'q',magecraft:'a'}[basicMatch[1]]}`) && card.basePower === Number(basicMatch[2]))?.id.slice('card.card'.length) : '';
+  const basicArt = basicCode ? `../assets/cards/deck/card${basicCode[0].toUpperCase()}${basicCode.slice(1)}.png` : '';
   return {
     id,
     name: card.name,

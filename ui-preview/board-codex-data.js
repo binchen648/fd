@@ -263,5 +263,142 @@ window.FDBoardCodexData={
       "group": "冬木",
       "count": 2
     }
+  ],
+  "basics": [
+    {
+      "id": "card.carda1",
+      "name": "魔术攻击 2",
+      "type": "魔术",
+      "image": "../assets/cards/deck/cardA1.png",
+      "cost": 0,
+      "basePower": 2,
+      "text": "以基础威力 2 参与战斗。"
+    },
+    {
+      "id": "card.carda2",
+      "name": "魔术攻击 3",
+      "type": "魔术",
+      "image": "../assets/cards/deck/cardA2.png",
+      "cost": 0,
+      "basePower": 3,
+      "text": "以基础威力 3 参与战斗。"
+    },
+    {
+      "id": "card.carda3",
+      "name": "魔术攻击 4",
+      "type": "魔术",
+      "image": "../assets/cards/deck/cardA3.png",
+      "cost": 0,
+      "basePower": 4,
+      "text": "以基础威力 4 参与战斗。"
+    },
+    {
+      "id": "card.carda4",
+      "name": "魔术攻击 5",
+      "type": "魔术",
+      "image": "../assets/cards/deck/cardA4.png",
+      "cost": 1,
+      "basePower": 5,
+      "text": "以基础威力 5 参与战斗。"
+    },
+    {
+      "id": "card.cardb1",
+      "name": "力量攻击 2",
+      "type": "力量",
+      "image": "../assets/cards/deck/cardB1.png",
+      "cost": 0,
+      "basePower": 2,
+      "text": "以基础威力 2 参与战斗。"
+    },
+    {
+      "id": "card.cardb2",
+      "name": "力量攻击 3",
+      "type": "力量",
+      "image": "../assets/cards/deck/cardB2.png",
+      "cost": 0,
+      "basePower": 3,
+      "text": "以基础威力 3 参与战斗。"
+    },
+    {
+      "id": "card.cardb3",
+      "name": "力量攻击 4",
+      "type": "力量",
+      "image": "../assets/cards/deck/cardB3.png",
+      "cost": 0,
+      "basePower": 4,
+      "text": "以基础威力 4 参与战斗。"
+    },
+    {
+      "id": "card.cardb4",
+      "name": "力量攻击 5",
+      "type": "力量",
+      "image": "../assets/cards/deck/cardB4.png",
+      "cost": 1,
+      "basePower": 5,
+      "text": "以基础威力 5 参与战斗。"
+    },
+    {
+      "id": "card.cardb5",
+      "name": "力量攻击 7",
+      "type": "力量",
+      "image": "../assets/cards/deck/cardB5.png",
+      "cost": 3,
+      "basePower": 7,
+      "text": "以基础威力 7 参与战斗。"
+    },
+    {
+      "id": "card.cardb6",
+      "name": "力量攻击 9",
+      "type": "力量",
+      "image": "../assets/cards/deck/cardB6.png",
+      "cost": 5,
+      "basePower": 9,
+      "text": "以基础威力 9 参与战斗。"
+    },
+    {
+      "id": "card.cardq1",
+      "name": "敏捷攻击 2",
+      "type": "敏捷",
+      "image": "../assets/cards/deck/cardQ1.png",
+      "cost": 0,
+      "basePower": 2,
+      "text": "以基础威力 2 参与战斗。"
+    },
+    {
+      "id": "card.cardq2",
+      "name": "敏捷攻击 3",
+      "type": "敏捷",
+      "image": "../assets/cards/deck/cardQ2.png",
+      "cost": 0,
+      "basePower": 3,
+      "text": "以基础威力 3 参与战斗。"
+    },
+    {
+      "id": "card.cardq3",
+      "name": "敏捷攻击 4",
+      "type": "敏捷",
+      "image": "../assets/cards/deck/cardQ3.png",
+      "cost": 0,
+      "basePower": 4,
+      "text": "以基础威力 4 参与战斗。"
+    },
+    {
+      "id": "card.cardq4",
+      "name": "敏捷攻击 5",
+      "type": "敏捷",
+      "image": "../assets/cards/deck/cardQ4.png",
+      "cost": 1,
+      "basePower": 5,
+      "text": "以基础威力 5 参与战斗。"
+    },
+    {
+      "id": "card.cardq5",
+      "name": "敏捷攻击 7",
+      "type": "敏捷",
+      "image": "../assets/cards/deck/cardQ5.png",
+      "cost": 3,
+      "basePower": 7,
+      "text": "以基础威力 7 参与战斗。"
+    }
   ]
 };

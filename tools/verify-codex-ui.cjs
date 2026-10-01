@@ -4,7 +4,7 @@ const root=path.resolve(__dirname,'..'),data={window:{}};
 for(const name of ['codex-detail-data.js','board-codex-data.js'])vm.runInNewContext(fs.readFileSync(path.join(root,'ui-preview',name),'utf8'),data);
 const roles=data.window.FDCodexDetailData,board=data.window.FDBoardCodexData;
 const passed=[];function check(value,name){if(!value)throw Error(name);passed.push(name)}
-for(const card of [...Object.values(roles.masters),...Object.values(roles.servants),...board.situations,...board.events]){
+for(const card of [...Object.values(roles.masters),...Object.values(roles.servants),...board.situations,...board.events,...board.basics]){
  check(fs.existsSync(path.resolve(root,'ui-preview',card.image)),`主卡图存在 ${card.name}`);
  for(const child of [...(card.skills||[]),...(card.deck||[])]){
   check(Boolean(child.name&&child.text),`文案完整 ${card.name}/${child.name}`);
@@ -37,6 +37,11 @@ for(const [kind,bucket] of [['master',roles.masters],['servant',roles.servants]]
 await click('[data-tab="master"]');check(await page.locator('.codex-card').count()===7,'御主筛选');
 for(const cls of ['Saber','Archer','Lancer','Rider','Caster','Berserker']){await click(`[data-class="${cls}"]`);check(await page.locator('.codex-card').count()===Object.values(roles.servants).filter(c=>c.class===cls).length,`职阶筛选 ${cls}`)}
 await click('[data-tab="all"]');
+await click('[data-codex-section="basic"]');check(await page.locator('.codex-card').count()===board.basics.length,'基础攻击分类数量');check(await images('.codex-card img'),'基础攻击分类卡图');
+for(const type of ['力量','敏捷','魔术']){await click(`[data-board-filter="${type}"]`);check(await page.locator('.codex-card').count()===board.basics.filter(c=>c.type===type).length,`基础攻击筛选 ${type}`)}
+await click('[data-board-filter="all"]');
+for(const card of board.basics){await click(`[data-entry="${card.id}"]`);check(await images('.codex-detail-art img'),`基础攻击详情卡图 ${card.id}`);const t=await page.locator('.codex-detail-content').innerText();check(t.includes('魔耗 '+card.cost)&&t.includes('基础威力 '+card.basePower),`基础攻击详情数值 ${card.id}`);await click('.back')}
+await click('[data-codex-section="characters"]');await page.evaluate(()=>{const s=Object.values(window.FDCodexDetailData.servants).find(s=>s.name==='埃列什基伽勒');s.deck.filter(c=>/^basic\.(strength|agility|magecraft)\./.test(c.id)).forEach(c=>c.image='')});await click('[data-entry="埃列什基伽勒"]');await click('[data-codex-detail-tab="deck"]');check(await images('.codex-deck-art img'),'旧卡组数据缺少路径时仍显示全部卡图');check(await page.locator('.codex-deck-art img').count()===roles.servants['埃列什基伽勒'].deck.length,'旧卡组无空白卡位');await click('.back');
 for(const [section,cards] of [['situation',board.situations],['event',board.events]]){
  await click(`[data-codex-section="${section}"]`);check(await page.locator('.codex-card').count()===cards.length,`分类数量 ${section}`);check(await images('.codex-card img'),`分类卡图 ${section}`);
  for(const card of cards){await click(`[data-entry="${card.id}"]`);check((await page.locator('.codex-detail-content').innerText()).includes(card.text),`效果文案 ${card.id}`);check(await page.locator('.codex-detail-id strong').innerText()===card.name,`卡牌名称 ${card.id}`);check(await images('.codex-detail-art img'),`卡牌详情图片 ${card.id}`);await click('.back')}
