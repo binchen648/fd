@@ -1,4 +1,4 @@
-# Phase 3 Task Index
+﻿# Phase 3 Task Index
 
 - Version: P3-TI-1.39
 - Status: ACTIVE
@@ -7650,8 +7650,7 @@ Required disposition:
 
 ## TASK P3-S-OWNER-AKIHA-COMPLETE-MIGRATION
 
-Owner: FORMAL
-Status: `BLOCKED_BY_READINESS_FOLLOWUP`
+Owner: FORMAL`r`nStatus: `READY`
 Classification: formal owner-complete migration for the complete current `master.akiha` frozen scope
 
 Frozen owner scope:
@@ -7675,8 +7674,7 @@ Required disposition:
 
 ## TASK P3-B-AKIHA-OWNER-READINESS-MASTER-ASCENSION-UNLOCK
 
-Owner: Codex B / FORMAL readiness follow-up
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Owner: Codex B / FORMAL readiness follow-up`r`nStatus: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 Classification: bounded zero-credit generic Master-ascension unlock capability discovered during Akiha formal materialization preflight
 
 Exact Base: `d7f49dacd751b73264088c9b6fd0566b4ae7c9d5`
@@ -7707,3 +7705,16 @@ Verification:
 Detailed report: `docs/reports/2026-10-01-p3-b-akiha-owner-readiness-master-ascension-unlock-result.md`.
 
 Required disposition: one zero-credit Candidate / PR / fresh R; after acceptance FORMAL must A-sync/full-owner rescan before resuming `P3-S-OWNER-AKIHA-COMPLETE-MIGRATION`.
+### Akiha Master-ascension unlock readiness acceptance synchronization
+
+- PR #508 exact accepted Candidate: `9f66ae72ea54aa15a30e6a417f943a49800ab6a8`.
+- Exact Base: `d7f49dacd751b73264088c9b6fd0566b4ae7c9d5`.
+- Canonical Coordinator bounded same-attempt acceptance evidence: `https://github.com/binchen648/fd/pull/508#issuecomment-5922283932`.
+- Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`; fresh Phase 3 gate run `36796296601` / job `110160398441` = `SUCCESS`.
+- Accepted seam is generic `unlock_controller_master_ascension`; it adds no Akiha consumer, no Shakespeare sc2 consumer, and no `data/authoring/**` delta.
+- Full-owner rescan confirms canonical `data/authoring/**` still contains `0/5` frozen Akiha identities; all five remain provisionally newly creditable and none is preservation-only.
+- The shared Master-ascension unlock blocker discovered during formal preflight is closed; no additional currently discoverable Akiha owner-local readiness gap remains.
+- Readiness remains permanently zero-credit; strict accounting stays `181/944`, remaining `763`.
+- `P3-S-OWNER-AKIHA-COMPLETE-MIGRATION` is restored to `READY`; all 5 frozen identities must migrate together in one formal Candidate / one PR / one fresh R / one A-sync-accounting.
+- Detailed A-sync report: `docs/reports/2026-10-01-p3-a-akiha-owner-readiness-master-ascension-unlock-acceptance-synchronization.md`.
+
