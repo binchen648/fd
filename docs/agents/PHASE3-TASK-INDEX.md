@@ -8197,7 +8197,7 @@ Implementation evidence:
 ## TASK P3-S-OWNER-ARAYA-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: formal owner-complete migration for current owner `master.araya`
 
 Frozen owner scope:
@@ -8206,6 +8206,16 @@ Frozen owner scope:
 - `master.araya.skill.s1a`
 
 Formal rule: materialize all three identities in one Candidate/one PR/one fresh independent R; no partial credit.
+
+Implementation evidence:
+- exact frozen owner scope materialized together: `master.araya.skill.ascension`, `master.araya.skill.s1`, `master.araya.skill.s1a`;
+- canonical authoring Base `fd13c70c8df32d8ce64d4f6b32282a1f2f16cf66`: `0/3`; Candidate worktree: `3/3`;
+- formal canonical regression: `6/6 PASS`; full Araya readiness predecessors: `21/21 PASS`; combined Araya focused: `27/27 PASS`;
+- directly affected shared aggregate: `132/132 PASS`; explicit focused + shared aggregate: `159/159 PASS`;
+- `FD_TOOLCHAIN_OK`; typecheck/content/generated/diff gates PASS; Phase 3 coverage + automation audit commands PASS;
+- Base..Candidate production runtime delta is EMPTY; no `core.araya-*` identity handler routing is introduced;
+- strict migration accounting remains `194/944`, remaining `750` until fresh-R `MIGRATION_ACCEPTED` + FORMAL A-sync/accounting.
+- Detailed report: `docs/reports/2026-10-01-p3-s-owner-araya-complete-migration-result.md`.
 
 ## TASK P3-B-ARAYA-OWNER-READINESS-ORIGIN-STILLNESS-PRINTED-COST
 
