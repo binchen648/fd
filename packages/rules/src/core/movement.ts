@@ -1,8 +1,10 @@
 import type { GameState } from "../schema/game";
+import type { ManaContributionChoice } from '../ability/types';
 import type { LocationId, MapDefinition, MatchLocationConfig } from "../schema/location";
 
 import { canOccupyLocation, getLocationById } from "./map-engine";
-import { movementLockedByPersistentRule, notifyManaSpent, rulerSealMovementLocked } from "./rule-overrides";
+import { movementLockedByPersistentRule, resolveManaContributionPaymentPlan, rulerSealMovementLocked, spendMana } from "./rule-overrides";
+import { applyLinkedRoleEntrySealCost, linkedRoleEntrySealAuthority } from '../ability/linked-role-core-capability';
 
 const STARTING_LOCATION_BY_SEAT: Record<number, LocationId> = {
   1: "miyama_town",
@@ -25,6 +27,8 @@ export interface MovePlayerInput {
   movementKind: "normal" | "effect";
   /** Explicit trusted exception for an already-authorized effect that ignores card movement restrictions. */
   ignoreCardMovementRestrictions?: boolean;
+  /** Explicit server-validated linked mana contribution choices for this positive movement payment. */
+  manaContributions?: ManaContributionChoice[];
 }
 
 export interface MovePlayerResult extends MovementResult {
@@ -39,6 +43,7 @@ export interface MovePlayerResult extends MovementResult {
     | "movement_locked"
     | "invalid_path"
     | "insufficient_mana"
+    | "insufficient_command_seals"
     | "destination_blocked";
 }
 
@@ -112,8 +117,15 @@ export function movePlayer(state: GameState, input: MovePlayerInput): MovePlayer
     ? calculateMovementCost(state.map, state.locationConfig, path)
     : 0;
 
-  if (input.movementKind === "normal" && player.mana < manaSpent) {
-    return failure(state, "insufficient_mana");
+  let paymentPlan: ReturnType<typeof resolveManaContributionPaymentPlan> | undefined;
+  if (input.movementKind === "normal" && manaSpent > 0) {
+    try { paymentPlan = resolveManaContributionPaymentPlan(state, player.id, manaSpent, input.manaContributions); }
+    catch { return failure(state, "insufficient_mana"); }
+  } else if (input.manaContributions?.length) return failure(state, "insufficient_mana");
+  const entrySealAuthority = input.movementKind === "normal" ? linkedRoleEntrySealAuthority(state, player.id, input.to) : undefined;
+  if (entrySealAuthority) {
+    const available = Number((player as typeof player & { commandSpells?: number }).commandSpells ?? 3);
+    if (!Number.isSafeInteger(available) || available < entrySealAuthority.cost) return failure(state, "insufficient_command_seals");
   }
 
   const occupyingPlayerIds = state.players
@@ -140,7 +152,7 @@ export function movePlayer(state: GameState, input: MovePlayerInput): MovePlayer
         ? {
             ...entry,
             locationId: input.to,
-            mana: input.movementKind === "normal" ? entry.mana - manaSpent : entry.mana,
+            mana: entry.mana,
           }
         : entry,
     ),
@@ -156,20 +168,21 @@ export function movePlayer(state: GameState, input: MovePlayerInput): MovePlayer
       },
     }),
   };
-  if (manaSpent > 0 && nextState.abilityRuntime) {
-    // `movePlayer` is a pure reducer. Spend observers can mutate runtime ledgers and
-    // reward another player, so detach every mutable branch they may touch first.
+  if (manaSpent > 0 || entrySealAuthority) {
+    // `movePlayer` is a pure reducer. Payment observers and linked-role seal tax can mutate
+    // runtime/player ledgers, so detach every mutable branch they may touch first.
     nextState = {
       ...nextState,
       players: nextState.players.map((entry) => ({ ...entry })),
-      abilityRuntime: structuredClone(nextState.abilityRuntime),
+      ...(nextState.abilityRuntime ? { abilityRuntime: structuredClone(nextState.abilityRuntime) } : {}),
     };
-    // Movement cost is paid before the player leaves the origin; spend observers resolve at that exact location.
+    // Both costs settle while the entrant is still at the authoritative origin.
     const movedPlayer = nextState.players.find((entry) => entry.id === input.playerId)!;
     const destination = movedPlayer.locationId;
     const origin = player.locationId;
     movedPlayer.locationId = origin;
-    notifyManaSpent(nextState, input.playerId, manaSpent);
+    if (entrySealAuthority) applyLinkedRoleEntrySealCost(nextState, input.playerId, input.to);
+    if (manaSpent > 0) spendMana(nextState, input.playerId, manaSpent, input.manaContributions);
     if (destination) movedPlayer.locationId = destination;
   }
 

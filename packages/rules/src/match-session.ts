@@ -62,6 +62,7 @@ import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute } from './ability
 import { SOURCE_LOCATION_BASE_POWER_ATTRIBUTES, isAcceptedPostDrawHandShuffleAbility, isAcceptedSourceLocationBasicPowerAbility } from './ability/source-location-rune-capability';
 import { isAcceptedDiscardShuffleSourceXAbility } from './ability/battle-discard-binding-capability';
 import { isAcceptedOneShotUsedAttackAbilityReuseAbility } from './ability/cross-phase-redeployment-capability';
+import { applyLinkedRoleEntrySealCost, linkedRoleEntrySealAuthority } from './ability/linked-role-core-capability';
 import { isRulerSealBindingSemantic } from './ability/ruler-seal';
 import {
   DYNAMIC_UNUSED_SEAL_POWER_RULE,
@@ -2681,6 +2682,11 @@ export class MatchSession {
       .filter((location) => !closedLocations.has(location.id))
       .filter((location) => location.id !== 'recon')
       .filter((location) => {
+        const entrySeal = linkedRoleEntrySealAuthority(this.state, playerId, location.id);
+        if (entrySeal) {
+          const available = Number((player as typeof player & { commandSpells?: number }).commandSpells ?? 3);
+          if (!Number.isSafeInteger(available) || available < entrySeal.cost) return false;
+        }
         const occupyingPlayerIds = this.state.players
           .filter((candidate) => candidate.id !== playerId && candidate.status === 'active' && candidate.locationId === location.id)
           .map((candidate) => candidate.id);
@@ -2822,6 +2828,20 @@ export class MatchSession {
 
   private completeDeployment(playerId: string, locationId: LocationId, maximumTerrainValue?: number): DispatchResult {
     const player = this.state.players.find((candidate) => candidate.id === playerId)!;
+    const entrySeal = linkedRoleEntrySealAuthority(this.state, playerId, locationId);
+    if (entrySeal) {
+      const available = Number((player as typeof player & { commandSpells?: number }).commandSpells ?? 3);
+      if (!Number.isSafeInteger(available) || available < entrySeal.cost) {
+        this.rejection = { code: 'insufficient_command_seals', message: 'Linked-role battlefield entry requires one Command Seal' };
+        this.record('dispatch_rejected', `${playerId}:deploy_player`, { locationId, rejection: this.rejection });
+        return { ok: false, view: this.projectAbilityView(playerId), events: this.state.abilityRuntime?.events ?? [], calculations: this.state.abilityRuntime?.calculations.find((entry) => entry.controllerId === playerId)?.lines ?? [], rejection: this.rejection };
+      }
+      try { applyLinkedRoleEntrySealCost(this.state, playerId, locationId); }
+      catch {
+        this.rejection = { code: 'invalid_state', message: 'Linked-role entry-seal authority changed before deployment commit' };
+        return { ok: false, view: this.projectAbilityView(playerId), events: this.state.abilityRuntime?.events ?? [], calculations: this.state.abilityRuntime?.calculations.find((entry) => entry.controllerId === playerId)?.lines ?? [], rejection: this.rejection };
+      }
+    }
     player.locationId = locationId;
     this.rejection = undefined;
     this.record('player_deployed', `${playerId}:deployed to ${locationId}`, { playerId, locationId, ...(maximumTerrainValue !== undefined ? { terrainVpPaid: maximumTerrainValue } : {}) });

@@ -10,7 +10,7 @@ import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPla
 import { isCardCloseForbidden } from './card-close-forbid';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
-import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, installRulerSealMovementLock, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, rulerSealMovementLocked, situationForbidsAttribute, spendMana } from '../core/rule-overrides';
+import { classifyManaContributionChoices, commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, installRulerSealMovementLock, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, resolveManaContributionPaymentPlan, rulerSealMovementLocked, situationForbidsAttribute, spendMana } from '../core/rule-overrides';
 import { node, nodes, str } from './loader';
 import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
@@ -117,11 +117,15 @@ import {
   isMultiPresenceLocationBattleAbility, multiPresenceLocationContextAuthority, moveMultiPresenceExtraPresence,
   resolveMultiPresenceEffect,
 } from './multi-presence-player-capability';
+import {
+  canExecuteLinkedRoleCoreEffect, containsLinkedRoleCorePrivilegedNode, isAcceptedLinkedRoleCoreAbility,
+  isLinkedRoleCoreRuntimeProvenanceValidForRestore, linkedRoleEligibleScheduleTargetIds, linkedRoleMaximumContributionAmount, resolveLinkedRoleCoreEffect,
+} from './linked-role-core-capability';
 import { BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT, containsBattleLuckCloseDrawPlayNode, isAcceptedBattleLuckCloseDrawPlayAbility } from './divine-core-capability';
 import {
   bloodlustAscensionAdjustments, bloodlustMaximumContributionAmount, bloodlustPlayRequirementWaived, bloodlustSkillPowerBonus,
   canExecuteBloodlustEffect, containsBloodlustPrivilegedNode, isAcceptedBloodlustAbility, isBloodlustRuntimeProvenanceValidForRestore,
-  reconcileBloodlustVictoryPoints, resolveBloodlustEffect, resolveBloodlustManaPayment, bloodlustContributorPenalty, isBloodlustActionEffect, bloodlustVpGainAdjustment, buildBloodlustPlayContributionSeal,
+  reconcileBloodlustVictoryPoints, resolveBloodlustEffect, bloodlustContributorPenalty, isBloodlustActionEffect, bloodlustVpGainAdjustment, buildBloodlustPlayContributionSeal,
 } from './bloodlust-cycle-capability';
 import { copyBloodlustContributionServerAuthority, rememberBloodlustContributionAuthority } from './bloodlust-contribution-authority';
 import {
@@ -1163,6 +1167,11 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
     return options.map((opt: any) => opt.id || '');
   }
   if (target.type === 'player') {
+    const sourceAbility = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+    if (isAcceptedLinkedRoleCoreAbility(sourceAbility) && sourceAbility.effects[0]?.target === target.id) {
+      const eligible = linkedRoleEligibleScheduleTargetIds(s, ctx, sourceAbility);
+      if (eligible.length || sourceAbility.effects[0]?.type === 'linked_role_schedule_member') return eligible;
+    }
     const rulerEligibleOpponents = nodes(target.constraints).some((c) => c.type === 'least_ruler_binding_count')
       ? rulerSealEligibleOpponentIds(s, ctx.controllerId)
       : undefined;
@@ -1907,6 +1916,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsReactionCounterPrivilegedNode(a) && !isAcceptedReactionCounterCapabilityAbility(a)) return false;
   if (containsMasterAscensionUnlockPrivilegedNode(a) && !isAcceptedMasterAscensionUnlockAbility(a)) return false;
   if (isAcceptedMasterAscensionUnlockAbility(a) && !canExecuteMasterAscensionUnlock(s, context(s, sourceId, a.id, event), a)) return false;
+  if (containsLinkedRoleCorePrivilegedNode(a) && !isAcceptedLinkedRoleCoreAbility(a)) return false;
+  if (isAcceptedLinkedRoleCoreAbility(a) && !canExecuteLinkedRoleCoreEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsMultiPresencePrivilegedNode(a) && !isAcceptedMultiPresenceAbility(a)) return false;
   if (isAcceptedMultiPresenceAbility(a) && !canExecuteMultiPresenceEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsVesselCyclePrivilegedNode(a) && !isAcceptedVesselCycleAbility(a)) return false;
@@ -2160,7 +2171,7 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
     str(r.type) && !(str(r.type) === 'skill_zone_mana_at_least' && (hasPlayRuleException(d, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)) || bloodlustPlayRequirementWaived(s, p, 'skill_zone_mana_at_least', Number(r.value)))));
   if (!requirements.every(r => condition(s, context(s, sourceId, ''), r))) return 'play_requirement';
 
-  if (!faceDown && !ignoreManaCost && player(s, p).mana + bloodlustMaximumContributionAmount(s, p) < effectiveCardPlayCost(s, p, sourceId)) return 'insufficient_mana';
+  if (!faceDown && !ignoreManaCost && player(s, p).mana + bloodlustMaximumContributionAmount(s, p) + linkedRoleMaximumContributionAmount(s, p) < effectiveCardPlayCost(s, p, sourceId)) return 'insufficient_mana';
   const sealCost = !faceDown ? cardPlayCommandSealCost(d) : undefined;
   if (sealCost && Number((player(s, p) as unknown as { commandSpells?: number }).commandSpells ?? 3) < sealCost.amount) return 'insufficient_command_seals';
   const unconfirmed = d.abilities.find(a => ['unsupported', 'text_unconfirmed'].includes(a.execution.mode));
@@ -3546,6 +3557,12 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
     }
     default: {
       const sourceAbility = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+      if (containsLinkedRoleCorePrivilegedNode(sourceAbility)) {
+        if (!isAcceptedLinkedRoleCoreAbility(sourceAbility) || sourceAbility.effects.length !== 1 || sourceAbility.effects[0]?.type !== effect.type || !resolveLinkedRoleCoreEffect(s, ctx, sourceAbility)) {
+          reject('resolution_failed', 'Unsupported linked-role continuation semantic');
+        }
+        break;
+      }
       if (containsMultiPresencePrivilegedNode(sourceAbility)) {
         if (!isAcceptedMultiPresenceAbility(sourceAbility) || sourceAbility.effects.length !== 1 || sourceAbility.effects[0]?.type !== effect.type || !resolveMultiPresenceEffect(s, ctx, sourceAbility)) {
           reject('resolution_failed', 'Unsupported multi-presence continuation semantic');
@@ -3879,6 +3896,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
     if (!isVesselCycleRuntimeProvenanceValidForRestore(s)) return false;
     if (!isBloodlustRuntimeProvenanceValidForRestore(s, !options.deferBloodlustContributionAuthority)) return false;
     if (!isMultiPresenceRuntimeProvenanceValidForRestore(s)) return false;
+    if (!isLinkedRoleCoreRuntimeProvenanceValidForRestore(s)) return false;
     if (!(r.pendingDelayedActivations ?? []).every((entry) => {
       const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
       const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
@@ -6283,6 +6301,13 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     if (!isAcceptedMasterAscensionUnlockAbility(a) || !resolveMasterAscensionUnlock(s, ctx, a)) reject('resolution_failed', 'Unsupported master-ascension unlock semantic');
     return;
   }
+  if (containsLinkedRoleCorePrivilegedNode(a)) {
+    if (!isAcceptedLinkedRoleCoreAbility(a)) reject('resolution_failed', 'Unsupported linked-role semantic');
+    const pending = findPendingTarget(s, ctx, a, a.effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    if (!resolveLinkedRoleCoreEffect(s, ctx, a)) reject('resolution_failed', 'Linked-role resolution failed');
+    return;
+  }
   if (containsMultiPresencePrivilegedNode(a)) {
     if (!isAcceptedMultiPresenceAbility(a)) reject('resolution_failed', 'Unsupported multi-presence semantic');
     const pending = findPendingTarget(s, ctx, a, a.effects);
@@ -6425,7 +6450,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     }
     if (cost.type === 'pay_mana') {
       const value = numeric(s, ctx, cost.amount);
-      if (!Number.isSafeInteger(value) || value < 0 || value > p.mana + bloodlustMaximumContributionAmount(s, p.id)) reject('invalid_cost', 'Variable cost must be an integer within available mana');
+      if (!Number.isSafeInteger(value) || value < 0 || value > p.mana + bloodlustMaximumContributionAmount(s, p.id) + linkedRoleMaximumContributionAmount(s, p.id)) reject('invalid_cost', 'Variable cost must be an integer within available mana');
       for (const c of nodes(node(cost.amount).constraints)) {
         if (c.type === 'integer' && (value < Number(c.min ?? 0) || (c.max !== undefined && value > Number(c.max)))) reject('invalid_cost', 'Variable outside allowed range');
         if (c.type === 'lte' && !condition(s, ctx, c)) reject('invalid_cost', 'Variable exceeds available mana');
@@ -6435,8 +6460,8 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
       if (card(s, ctx.sourceCardId).zone !== node(cost.from).zone) reject('invalid_cost', 'Source is not in required zone');
     } else reject('unsupported', 'Unsupported ability cost');
   }
-  const bloodlustPlan = resolveBloodlustManaPayment(s, p.id, manaCost, ctx.manaContributions);
-  if (bloodlustPlan.payerAmount > p.mana) reject('insufficient_mana', 'Insufficient mana');
+  let contributionPlan; try { contributionPlan = resolveManaContributionPaymentPlan(s, p.id, manaCost, ctx.manaContributions); } catch { reject('insufficient_mana', 'Insufficient mana or invalid mana contribution'); }
+  if (contributionPlan!.payerAmount > p.mana) reject('insufficient_mana', 'Insufficient mana');
   if (fixedControllerManaCost && isFixedControllerAdvanceDrawActionSemantic(a) &&
     !hasAvailableManaForFixedCosts(s, ctx, a)) reject('insufficient_mana', 'Insufficient mana');
   if (manaCost > 0) spendMana(s, p.id, manaCost, ctx.manaContributions);
@@ -7684,7 +7709,10 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   }
   cost += additionalManaCost;
   const explicitContributions = choices.flatMap((choice) => choice.manaContributions ?? []);
-  let paymentPlan; try { paymentPlan = resolveBloodlustManaPayment(s, playerId, cost, explicitContributions); } catch { reject('insufficient_mana', 'Cannot pay aggregate batch cost with requested contributions'); }
+  const contributionClassificationByCard = new Map<string, ReturnType<typeof classifyManaContributionChoices>>();
+  try { for (const choice of choices) if (choice.manaContributions?.length) contributionClassificationByCard.set(choice.cardInstanceId, classifyManaContributionChoices(s, playerId, choice.manaContributions)); }
+  catch { reject('insufficient_mana', 'Cannot classify requested card-play contributions'); }
+  let paymentPlan; try { paymentPlan = resolveManaContributionPaymentPlan(s, playerId, cost, explicitContributions); } catch { reject('insufficient_mana', 'Cannot pay aggregate batch cost with requested contributions'); }
   if (paymentPlan!.payerAmount > player(s, playerId).mana) reject('insufficient_mana', 'Cannot pay aggregate batch cost');
   const sealCarrier = player(s, playerId) as unknown as { commandSpells?: number };
   const availableSeals = Number(sealCarrier.commandSpells ?? 3);
@@ -7705,8 +7733,9 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     if (limit) runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] = (runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] ?? 0) + 1;
     const playCounts = runtime(s).cardPlayCountByInstance ??= {};
     playCounts[c.cardInstanceId] = (playCounts[c.cardInstanceId] ?? 0) + 1;
-    const contributionSeal = c.manaContributions?.length ? buildBloodlustPlayContributionSeal(s, playerId, c.manaContributions) : undefined;
-    runtime(s).cardState[c.cardInstanceId] = { active: !c.faceDown, faceDown: !!c.faceDown, playedRound: s.round.roundNumber, paidManaOnPlay: paidCostByCard.get(c.cardInstanceId) ?? 0, ...(c.manaContributions?.length ? { playManaContributions: c.manaContributions.map((entry) => ({ playerId: entry.contributorPlayerId, amount: entry.amount })) } : {}) };
+    const bloodlustContributions = contributionClassificationByCard.get(c.cardInstanceId)?.bloodlust ?? [];
+    const contributionSeal = bloodlustContributions.length ? buildBloodlustPlayContributionSeal(s, playerId, bloodlustContributions) : undefined;
+    runtime(s).cardState[c.cardInstanceId] = { active: !c.faceDown, faceDown: !!c.faceDown, playedRound: s.round.roundNumber, paidManaOnPlay: paidCostByCard.get(c.cardInstanceId) ?? 0, ...(bloodlustContributions.length ? { playManaContributions: bloodlustContributions.map((entry) => ({ playerId: entry.contributorPlayerId, amount: entry.amount })) } : {}) };
     rememberBloodlustContributionAuthority(s, contributionSeal ? { cardInstanceId: c.cardInstanceId, ...contributionSeal } : undefined, c.cardInstanceId);
     if (!c.faceDown) rememberVesselCyclePlayProvenance(s, playerId, c.cardInstanceId, prePaymentMana);
     if (c.faceDown) card(s, c.cardInstanceId).visibility = { scope: 'owner_only', ownerPlayerId: playerId };
