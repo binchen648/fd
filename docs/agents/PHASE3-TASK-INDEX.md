@@ -8210,7 +8210,7 @@ Formal rule: materialize all three identities in one Candidate/one PR/one fresh 
 ## TASK P3-B-ARAYA-OWNER-READINESS-ORIGIN-STILLNESS-PRINTED-COST
 
 Owner: FORMAL readiness
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: bounded zero-credit identity-free battle-end active-basic recycle + printed-cost mana authority
 
 Formal preflight correction:
@@ -8218,3 +8218,12 @@ Formal preflight correction:
 - existing `gain_mana_equal_selected_card_paid_cost` uses actual paid-mana provenance and is not semantically equivalent to printed cost x2;
 - no Araya consumer materialization is allowed until this exact gap is accepted + FORMAL A-sync/rescan.
 - permanently zero migration credit; strict accounting remains 194/944, remaining 750.
+
+Implementation evidence for Origin Stillness printed-cost readiness:
+- focused regression: 6/6 PASS;
+- full Araya readiness aggregate: 21/21 PASS;
+- directly affected shared aggregate: 132/132 PASS;
+- explicit aggregate: 153/153 PASS;
+- FD_TOOLCHAIN_OK; typecheck/content/generated/diff gates PASS; data/authoring/** delta EMPTY; production Araya identity audit CLEAN.
+- Detailed report: docs/reports/2026-10-01-p3-b-araya-owner-readiness-origin-stillness-printed-cost-result.md.
+- This Candidate is permanently zero migration credit; formal owner remains WAIT_READINESS_FOLLOWUP pending fresh R + FORMAL A-sync.

@@ -114,6 +114,7 @@ import { canExecuteMasterAscensionUnlock, containsMasterAscensionUnlockPrivilege
 import { cleanupMasterAscensionEventPowerAtRoundEnd, containsMasterAscensionEventPowerPrivilegedNode, isAcceptedMasterAscensionEventPowerAbility, isAcceptedMasterAscensionSourceDefinitionPowerAbility, isMasterAscensionEventPowerRuntimeProvenanceValidForRestore, masterAscensionNamedEventBasicPowerBonus, masterAscensionSourceDefinitionTriggerMatches, reconcileMasterAscensionEventPowerAuthority, resolveMasterAscensionEventPowerEffect, retireMasterAscensionSourceDefinitionPowerByTrigger } from './master-ascension-event-power-capability';
 import { canExecutePersistentLocationTerrainEffect, containsPersistentLocationTerrainPrivilegedNode, isAcceptedPersistentLocationTerrainAbility, isPersistentLocationTerrainRuntimeProvenanceValidForRestore, resolvePersistentLocationTerrainEffect } from './persistent-location-terrain-capability';
 import { containsEffectiveLocationRestrictionPrivilegedNode, effectiveLocationRestrictionRequiresFaceDownStandardAttack, isAcceptedEffectiveLocationRestrictionAbility, isEffectiveLocationRestrictionRuntimeProvenanceValidForRestore, isPlayerAtEffectiveLocationKind } from './effective-location-restriction-capability';
+import { containsOriginStillnessPrintedCostPrivilegedNode, isAcceptedOriginStillnessPrintedCostAbility, originStillnessEligibleActiveBasicIds, originStillnessPrintedManaGain } from './origin-stillness-printed-cost-capability';
 import {
   MULTI_PRESENCE_SACRIFICE_DEFEAT_EFFECT, canExecuteMultiPresenceEffect, containsMultiPresencePrivilegedNode,
   isAcceptedMultiPresenceAbility, isMultiPresenceRuntimeProvenanceValidForRestore, multiPresenceSacrificeTargets,
@@ -1253,6 +1254,8 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
     : (_candidateId: string) => true;
   const recallTargetIds = target.id === 'active_definition_card' && currentAbility && isAcceptedRecallActiveDefinitionJoinSourceAbility(currentAbility)
     ? new Set(recallDefinitionSetCandidateIds(s, ctx.controllerId, currentAbility)) : undefined;
+  const originStillnessTargetIds = target.id === 'active_basic_attack' && currentAbility && isAcceptedOriginStillnessPrintedCostAbility(currentAbility)
+    ? new Set(originStillnessEligibleActiveBasicIds(s, ctx, currentAbility)) : undefined;
   return s.cards.filter(c =>
     !alreadySelected.has(c.instanceId) &&
     (scope.controller === 'any' || c.controllerPlayerId === ctx.controllerId) &&
@@ -1260,6 +1263,7 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
     c.zone === zone &&
     reuseTargetFilter(c.instanceId) &&
     (!recallTargetIds || recallTargetIds.has(c.instanceId)) &&
+    (!originStillnessTargetIds || originStillnessTargetIds.has(c.instanceId)) &&
     nodes(target.constraints).every(x => constraint(s, ctx, c, x))).map(c => c.instanceId);
 }
 function trustedBattlePowerSnapshot(event: AbilityEvent | undefined): { participantIds: string[]; powers: Record<string, number> } | undefined {
@@ -1936,6 +1940,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAcceptedMasterAscensionUnlockAbility(a) && !canExecuteMasterAscensionUnlock(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsPersistentLocationTerrainPrivilegedNode(a) && !isAcceptedPersistentLocationTerrainAbility(a)) return false;
   if (containsEffectiveLocationRestrictionPrivilegedNode(a) && !isAcceptedEffectiveLocationRestrictionAbility(a)) return false;
+  if (containsOriginStillnessPrintedCostPrivilegedNode(a) && !isAcceptedOriginStillnessPrintedCostAbility(a)) return false;
+  if (isAcceptedOriginStillnessPrintedCostAbility(a) && originStillnessEligibleActiveBasicIds(s, context(s, sourceId, a.id, event), a).length===0) return false;
   if (isAcceptedPersistentLocationTerrainAbility(a) && !canExecutePersistentLocationTerrainEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsLinkedRoleCorePrivilegedNode(a) && !isAcceptedLinkedRoleCoreAbility(a)) return false;
   if (isAcceptedLinkedRoleCoreAbility(a) && !canExecuteLinkedRoleCoreEffect(s, context(s, sourceId, a.id, event), a)) return false;
@@ -3420,6 +3426,14 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       nextState.paidManaOnPlay = 0;
       source.visibility = { scope: 'public' };
       r.events.push({ type: 'source_skill_card_joined_attack', playerId: ctx.controllerId, sourceCardId: source.instanceId, abilityId: ctx.abilityId });
+      break;
+    }
+    case 'recycle_active_basic_for_printed_cost_mana': {
+      const ability=abilityDefinition(s,ctx.sourceCardId,ctx.abilityId);
+      if(!isAcceptedOriginStillnessPrintedCostAbility(ability)) reject('unsupported','Unsupported origin-stillness printed-cost semantic');
+      const selected=ctx.selections[str(effect.target)]?.[0]; if(!selected) reject('invalid_target','Origin-stillness requires one active basic attack');
+      const gain=originStillnessPrintedManaGain(s,ctx,ability,selected); if(gain===undefined) reject('invalid_target','Origin-stillness selected attack lost provenance');
+      moveCard(s,selected,'deck'); shuffle(s,ctx.controllerId); grantMana(s,ctx.controllerId,gain,{source:'generic'});
       break;
     }
     case 'gain_mana_equal_selected_card_paid_cost': {
@@ -6354,6 +6368,14 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (containsPersistentLocationTerrainPrivilegedNode(a)) {
     if (!isAcceptedPersistentLocationTerrainAbility(a)) reject('resolution_failed', 'Unsupported persistent location-terrain semantic');
     if (!resolvePersistentLocationTerrainEffect(s, ctx, a)) reject('resolution_failed', 'Persistent location-terrain resolution failed');
+    return;
+  }
+  if (containsOriginStillnessPrintedCostPrivilegedNode(a)) {
+    if (!isAcceptedOriginStillnessPrintedCostAbility(a)) reject('resolution_failed', 'Unsupported origin-stillness printed-cost semantic');
+    const pending=findPendingTarget(s,ctx,a,a.effects); if(pending){runtime(s).pendingDecision=pending; return;}
+    const selected=ctx.selections.active_basic_attack?.[0]; if(!selected) reject('invalid_target','Origin-stillness requires one active basic attack');
+    const gain=originStillnessPrintedManaGain(s,ctx,a,selected); if(gain===undefined) reject('invalid_target','Origin-stillness selected attack lost provenance');
+    moveCard(s,selected,'deck'); shuffle(s,ctx.controllerId); grantMana(s,ctx.controllerId,gain,{source:'generic'});
     return;
   }
   if (containsLinkedRoleCorePrivilegedNode(a)) {
