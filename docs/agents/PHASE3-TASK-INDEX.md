@@ -1,4 +1,4 @@
-﻿# Phase 3 Task Index
+# Phase 3 Task Index
 
 - Version: P3-TI-1.39
 - Status: ACTIVE
@@ -7651,7 +7651,7 @@ Required disposition:
 ## TASK P3-S-OWNER-AKIHA-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `MIGRATION_COMPLETE_CANDIDATE`
+Status: `MIGRATION_ACCEPTED`
 Classification: formal owner-complete migration for the complete current `master.akiha` frozen scope
 
 Frozen owner scope:
@@ -7685,7 +7685,7 @@ Required disposition:
 - `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`9 masters / 19 servants / 20 events / 0 blocking issues`); generated determinism PASS; identity audit CLEAN; diff-check PASS.
 - Generated hashes: content-library `7d3972f7df836b16af8ab37dbe373eaa3a6e4ecde5bcb238cee53a7b852db53d`; fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`; evidence-report `e05fd6874e44104611a6900d1723d59d6275f9b9305b4f9464825fdba69ef902`.
 - Detailed report: `docs/reports/2026-10-01-p3-s-owner-akiha-complete-migration-result.md`.
-- Current disposition: `MIGRATION_COMPLETE_CANDIDATE`; freeze one exact Candidate / one PR / one fresh R. Accounting remains `181/944`, remaining `763`; potential accepted credit is exactly `+5` -> `186/944`, remaining `758`, subject to final acceptance rescan.
+- Final disposition: `MIGRATION_ACCEPTED`; exact successor `3457e786960eb4eb5380f311c3278c583dd5ea74` passed fresh R and acceptance rescan. Formal accounting is now `186/944`, remaining `758`; all five Akiha identities are newly credited and preservation-only count is `0`.
 ### PR #509 NEEDS_REVISION closure
 
 - Reviewed Candidate: `0a1e1994781ea97ccf9433aa291fbfad11c39e76`.
@@ -7696,6 +7696,16 @@ Required disposition:
 - Full affected aggregate rerun: `186/186 PASS`; toolchain/typecheck/content/generated/identity/diff gates green; generated hashes unchanged.
 - Produce exactly one successor Candidate on the same PR, update the Phase 3 manifest to that SHA, require a fresh successful Gate and one fresh independent R. Accounting remains `181/944`, remaining `763`.
 
+### Akiha formal acceptance synchronization
+
+- Accepted exact successor Candidate: `3457e786960eb4eb5380f311c3278c583dd5ea74`.
+- Fresh independent verdict: `MIGRATION_ACCEPTED`.
+- Canonical Coordinator bounded same-attempt relay: `https://github.com/binchen648/fd/pull/509#issuecomment-5922703846`.
+- Acceptance rescan confirms all five frozen Akiha identities were absent at exact formal Base `5bdd8032cb41989be495406a9489b373f09a2324` and are present exactly once in the accepted owner archive.
+- Newly creditable: `5`; preservation-only: `0`.
+- Strict formal accounting advances `181/944 -> 186/944`; remaining `763 -> 758`.
+- #507 and #508 readiness work remains permanently zero-credit.
+- Detailed acceptance synchronization: `docs/reports/2026-10-01-p3-a-owner-akiha-acceptance-synchronization.md`.
 ## TASK P3-B-AKIHA-OWNER-READINESS-MASTER-ASCENSION-UNLOCK
 
 Owner: Codex B / FORMAL readiness follow-up
@@ -7743,3 +7753,24 @@ Required disposition: one zero-credit Candidate / PR / fresh R; after acceptance
 - `P3-S-OWNER-AKIHA-COMPLETE-MIGRATION` is restored to `READY`; all 5 frozen identities must migrate together in one formal Candidate / one PR / one fresh R / one A-sync-accounting.
 - Detailed A-sync report: `docs/reports/2026-10-01-p3-a-akiha-owner-readiness-master-ascension-unlock-acceptance-synchronization.md`.
 
+## TASK P3-B-ALICE-OWNER-READINESS-CAPABILITY
+
+Owner: FORMAL readiness
+Status: `READY`
+Classification: bounded zero-credit owner-readiness/capability batch for the complete current `master.alice` frozen scope
+
+Frozen owner scope:
+- `master.alice.skill.ascension`
+- `master.alice.skill.s1`
+- `master.alice.skill.s2`
+
+Accounting boundary:
+- strict formal accounting after accepted Akiha A-sync is `186/944`, remaining `758`;
+- this readiness task is permanently zero migration credit;
+- canonical `data/authoring/**` contains `0/3` Alice frozen identities at task registration;
+- all three inventory rows are `SOURCE_EVIDENCE_REQUIRED / EXPLICIT_BLOCK`, current route `none`, with locked Reference handler `core.alice-phantom-player` as corroboration only.
+
+Required disposition:
+- recertify all three frozen Alice identities together from source evidence;
+- scan and close the complete owner-local generic capability/readiness gap set before any Alice formal consumer migration;
+- no Alice consumer authoring, no migration credit, and no owner advance until readiness ACCEPTED + FORMAL A-sync/full-owner rescan.
