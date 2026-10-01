@@ -14,6 +14,7 @@ import type { ResolverResult } from "./resolver-contracts";
 import { getLocationById } from "./map-engine";
 import { calculateCardPower, processAbilityEvent } from '../ability/interpreter';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
+import { isPlayerPresentAtLocation, multiPresenceTerrainAdvantageAtLocation } from '../ability/multi-presence-player-capability';
 import { applyLinkedOwnerCombatPowerSharing, playerHasLinkedOwnerLossImmunity, prepareLinkedOwnerCardsForBattle } from '../ability/linked-owner-combat';
 import { applyTerrainAdvantageOverride } from '../ability/terrain-advantage-override';
 import { playerCombatTotalPowerAdjustment } from '../ability/owner-self-mechanics';
@@ -28,6 +29,7 @@ export interface CombatParticipantInput {
   attackTags?: string[];
   externalSkillEffects?: ExternalSkillEffect[];
   terrainSlotIndex?: number;
+  terrainValueOverride?: number;
 }
 
 export interface CombatResolutionInput {
@@ -163,16 +165,20 @@ function getTerrainBreakdowns(
 ): BattleModifierBreakdown[] {
   const location = getLocationById(state.map, state.locationConfig, battlefieldId);
   if (isTerrainSuppressedByAuthoredDuel(state, battlefieldId, participant.playerId)) return [];
-  if (!location?.terrainBonuses?.length || participant.terrainSlotIndex === undefined) return [];
-
-  const baseValue = location.terrainBonuses[participant.terrainSlotIndex];
+  if (!location?.terrainBonuses?.length) return [];
+  const baseValue = participant.terrainValueOverride !== undefined
+    ? participant.terrainValueOverride
+    : participant.terrainSlotIndex === undefined ? undefined : location.terrainBonuses[participant.terrainSlotIndex];
   const adjustedBase = typeof baseValue === "number"
     ? applyTerrainAdvantageOverride(state, participant.playerId, battlefieldId, baseValue)
     : baseValue;
   const value = typeof adjustedBase === "number" ? adjustedBase * terrainMultiplierForPlayer(state, participant.playerId) : adjustedBase;
-  if (typeof value !== "number") return [];
-
-  return [createTerrainBreakdown(battlefieldId, participant.terrainSlotIndex, value)];
+  if (typeof value !== "number" || value === 0) return [];
+  if (participant.terrainValueOverride !== undefined && participant.terrainSlotIndex === undefined) return [{
+    source: "location", label: `${battlefieldId}.multi_presence_terrain`, value,
+    payload: { kind: "modifier", sourceType: "location", sourceId: `${battlefieldId}.multi_presence_terrain`, targetTag: "terrain" },
+  }];
+  return [createTerrainBreakdown(battlefieldId, participant.terrainSlotIndex ?? 0, value)];
 }
 
 function modeState(state: GameState): Record<string, unknown> {
@@ -211,7 +217,7 @@ function hasActiveBasicCardAtBattlefield(
     card.controllerPlayerId === playerId &&
     card.definitionId === definitionId &&
     card.zone === "attack_area" &&
-    state.players.some((player) => player.id === playerId && player.locationId === battlefieldId) &&
+    isPlayerPresentAtLocation(state, playerId, battlefieldId) &&
     state.abilityRuntime?.cardState[card.instanceId]?.active === true &&
     state.abilityRuntime.cardState[card.instanceId]?.faceDown !== true);
 }
@@ -293,7 +299,7 @@ function isTerrainSuppressedByAuthoredDuel(
     if (!blocksTerrain) continue;
     if (playerId === ongoing.controllerId) return true;
     const player = state.players.find((candidate) => candidate.id === playerId);
-    if (player?.locationId === battlefieldId) return true;
+    if (player && isPlayerPresentAtLocation(state, playerId, battlefieldId)) return true;
   }
   return false;
 }
@@ -349,7 +355,7 @@ export function deriveBattleParticipantsFromState(
   battlefieldId: CombatResolutionInput["battlefieldId"],
 ): CombatParticipantInput[] {
   return state.players
-    .filter((player) => player.status === "active" && player.locationId === battlefieldId)
+    .filter((player) => player.status === "active" && isPlayerPresentAtLocation(state, player.id, battlefieldId))
     .map((player) => {
       const publicAttackCards = state.cards.filter((card) => {
         if (card.controllerPlayerId !== player.id || !isCombatCardZone(state, card)) {
@@ -401,13 +407,16 @@ export function deriveBattleParticipantsFromState(
       const authoredPower = authoredAttacks.reduce((sum, card) => sum + calculateCardPower(state, card.instanceId).value, 0);
 
       const terrainSlotIndex = assignedTerrainSlotIndex(state, battlefieldId, player.id);
+      const presenceTerrainValue = multiPresenceTerrainAdvantageAtLocation(state, player.id, battlefieldId);
+      const ordinaryTerrainValue = terrainSlotIndex === undefined ? 0 : Number(getLocationById(state.map, state.locationConfig, battlefieldId)?.terrainBonuses?.[terrainSlotIndex] ?? 0);
+      const terrainValueOverride = presenceTerrainValue !== ordinaryTerrainValue ? presenceTerrainValue : undefined;
       let persistentPowerAdjustment = 0;
       if (logicalDayForPlayer(state, player.id) === 1) {
         persistentPowerAdjustment += state.ruleOverrides?.firstLogicalDayTotalPowerAdjustmentByPlayer?.[player.id] ?? 0;
       }
       const lowerVpAdjustment = state.ruleOverrides?.lowerVpBattleTotalPowerAdjustmentByPlayer?.[player.id];
       if (typeof lowerVpAdjustment === 'number' && state.players.some((other) =>
-        other.id !== player.id && other.status === 'active' && other.locationId === battlefieldId && other.vp < player.vp)) {
+        other.id !== player.id && other.status === 'active' && isPlayerPresentAtLocation(state, other.id, battlefieldId) && other.vp < player.vp)) {
         persistentPowerAdjustment += lowerVpAdjustment;
       }
       const participant = {
@@ -417,7 +426,7 @@ export function deriveBattleParticipantsFromState(
           getEffectiveCardAttributes(state, card.instanceId))),
         externalSkillEffects,
       };
-      return terrainSlotIndex === undefined ? participant : { ...participant, terrainSlotIndex };
+      return { ...participant, ...(terrainSlotIndex === undefined ? {} : { terrainSlotIndex }), ...(terrainValueOverride === undefined ? {} : { terrainValueOverride }) };
     });
 }
 
@@ -603,7 +612,7 @@ export function resolveBattlefield(
 
   const participants = input.participants ?? deriveBattleParticipantsFromState(state, input.battlefieldId);
   const returnSilenceSource = returnSilenceSources(state).find(({ playerId }) =>
-    state.players.some((player) => player.id === playerId && player.status === "active" && player.locationId === input.battlefieldId));
+    state.players.some((player) => player.id === playerId && player.status === "active" && isPlayerPresentAtLocation(state, playerId, input.battlefieldId)));
   if (returnSilenceSource && participants.length > 1) {
     const { playerId: returnSilenceController, sourceCardId } = returnSilenceSource;
     const ranked = [...participants]

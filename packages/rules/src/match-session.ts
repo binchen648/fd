@@ -1106,6 +1106,11 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       (value.playRulesVersion !== 'legacy-v0' && value.playRulesVersion !== 'explicit-v1') ||
       !isRestoreRoundPlayCounters(value.playCounters)) return false;
 
+  if (value.extraPlayerPresences !== undefined && (!Array.isArray(value.extraPlayerPresences) || !value.extraPlayerPresences.every((entry) =>
+      isRestoreRecord(entry) && typeof entry.id === 'string' && typeof entry.playerId === 'string' && typeof entry.presenceKey === 'string' &&
+      typeof entry.locationId === 'string' && typeof entry.deployedAtLocationId === 'string' && isRestoreSafeInteger(entry.terrainAdvantage, 0) &&
+      typeof entry.sourceCardId === 'string' && typeof entry.sourceAbilityId === 'string' && isRestoreSafeInteger(entry.createdRound, 1) && isRestoreSafeInteger(entry.updatedRevision, 0)))) return false;
+  if (value.multiPresenceLastBattleLossRoundByPlayer !== undefined && !isRestoreNestedNonNegativeIntegerMap(value.multiPresenceLastBattleLossRoundByPlayer)) return false;
   if (value.locationMarkers !== undefined && (!isRestoreRecord(value.locationMarkers) || !Object.values(value.locationMarkers).every(isRestoreLocationMarkerState))) return false;
   if (value.roundDefinitionAttributeReplacements !== undefined && (!isRestoreRecord(value.roundDefinitionAttributeReplacements) || !Object.values(value.roundDefinitionAttributeReplacements).every(isRestoreRoundDefinitionAttributeReplacementState))) return false;
   if (value.sealedCardBindings !== undefined && (!isRestoreRecord(value.sealedCardBindings) || !Object.values(value.sealedCardBindings).every(isRestoreSealedCardBindingState))) return false;

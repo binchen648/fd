@@ -111,6 +111,11 @@ import {
   isOpponentCloseToOneCandidate,
 } from './opponent-close-to-one';
 import { canExecuteMasterAscensionUnlock, containsMasterAscensionUnlockPrivilegedNode, isAcceptedMasterAscensionUnlockAbility, resolveMasterAscensionUnlock } from './master-ascension-unlock-capability';
+import {
+  MULTI_PRESENCE_SACRIFICE_DEFEAT_EFFECT, canExecuteMultiPresenceEffect, containsMultiPresencePrivilegedNode,
+  isAcceptedMultiPresenceAbility, isMultiPresenceRuntimeProvenanceValidForRestore, multiPresenceSacrificeTargets,
+  resolveMultiPresenceEffect,
+} from './multi-presence-player-capability';
 import { BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT, containsBattleLuckCloseDrawPlayNode, isAcceptedBattleLuckCloseDrawPlayAbility } from './divine-core-capability';
 import {
   bloodlustAscensionAdjustments, bloodlustMaximumContributionAmount, bloodlustPlayRequirementWaived, bloodlustSkillPowerBonus,
@@ -809,7 +814,7 @@ function context(s: GameState, sourceCardId: string, abilityId: string, event?: 
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-    cardState: {}, locationMarkers: {}, roundDefinitionAttributeReplacements: {}, sealedCardBindings: {}, armedSealedCardActions: [], sealedCardReplays: {}, recordedRemovedCards: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, battleLossIgnoreRoundByPlayer: {},
+    cardState: {}, extraPlayerPresences: [], multiPresenceLastBattleLossRoundByPlayer: {}, locationMarkers: {}, roundDefinitionAttributeReplacements: {}, sealedCardBindings: {}, armedSealedCardActions: [], sealedCardReplays: {}, recordedRemovedCards: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, battleLossIgnoreRoundByPlayer: {},
     startingDeckSizeByPlayer: Object.fromEntries(s.players.map((candidate) => [candidate.id, s.cards.filter((entry) => entry.ownerPlayerId === candidate.id && entry.zone === 'deck').length])),
     cardPlayCountByInstance: {}, grantedPerGamePlayLimitCardIds: [], grantedPerGamePlayLimitBaselineByCardId: {},
     ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [],
@@ -1854,6 +1859,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsReactionCounterPrivilegedNode(a) && !isAcceptedReactionCounterCapabilityAbility(a)) return false;
   if (containsMasterAscensionUnlockPrivilegedNode(a) && !isAcceptedMasterAscensionUnlockAbility(a)) return false;
   if (isAcceptedMasterAscensionUnlockAbility(a) && !canExecuteMasterAscensionUnlock(s, context(s, sourceId, a.id, event), a)) return false;
+  if (containsMultiPresencePrivilegedNode(a) && !isAcceptedMultiPresenceAbility(a)) return false;
+  if (isAcceptedMultiPresenceAbility(a) && !canExecuteMultiPresenceEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsVesselCyclePrivilegedNode(a) && !isAcceptedVesselCycleAbility(a)) return false;
   if (isAcceptedVesselCycleAbility(a) && !canExecuteVesselCycleEffect(s, context(s, sourceId, a.id, event), a.effects[0]!)) return false;
   if (containsBloodlustPrivilegedNode(a) && !isAcceptedBloodlustAbility(a)) return false;
@@ -3460,7 +3467,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
         const from = p.locationId;
         p.locationId = to as LocationId;
         recordMovementForAbilityRuntime(s, p.id, from, to);
-        processEvent(s, { id: nextId(s, 'enter-location'), type: 'after_controller_enters_location', playerId: p.id, locationId: to });
+        processEvent(s, { id: nextId(s, 'enter-location'), type: 'after_controller_enters_location', playerId: p.id, ...(from ? { previousLocationId: from } : {}), locationId: to, movementKind: 'effect' });
       }
       break;
     }
@@ -3504,6 +3511,13 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       break;
     }
     default: {
+      const sourceAbility = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+      if (containsMultiPresencePrivilegedNode(sourceAbility)) {
+        if (!isAcceptedMultiPresenceAbility(sourceAbility) || sourceAbility.effects.length !== 1 || sourceAbility.effects[0]?.type !== effect.type || !resolveMultiPresenceEffect(s, ctx, sourceAbility)) {
+          reject('resolution_failed', 'Unsupported multi-presence continuation semantic');
+        }
+        break;
+      }
       if (effect.type === 'close_source_card' && isCardCloseForbidden(s, ctx.sourceCardId)) {
         reject('resolution_failed', 'Close source card is forbidden by a live rule modifier.');
       }
@@ -3829,6 +3843,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
     const hasPlayers = (ids: readonly string[]) => ids.every((id) => playerIds.has(id)) && new Set(ids).size === ids.length;
     if (!isVesselCycleRuntimeProvenanceValidForRestore(s)) return false;
     if (!isBloodlustRuntimeProvenanceValidForRestore(s, !options.deferBloodlustContributionAuthority)) return false;
+    if (!isMultiPresenceRuntimeProvenanceValidForRestore(s)) return false;
     if (!(r.pendingDelayedActivations ?? []).every((entry) => {
       const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
       const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
@@ -6235,6 +6250,26 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     if (!isAcceptedMasterAscensionUnlockAbility(a) || !resolveMasterAscensionUnlock(s, ctx, a)) reject('resolution_failed', 'Unsupported master-ascension unlock semantic');
     return;
   }
+  if (containsMultiPresencePrivilegedNode(a)) {
+    if (!isAcceptedMultiPresenceAbility(a)) reject('resolution_failed', 'Unsupported multi-presence semantic');
+    const pending = findPendingTarget(s, ctx, a, a.effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    if (!canExecuteMultiPresenceEffect(s, ctx, a)) reject('resolution_failed', 'Unsupported multi-presence semantic');
+    const effect = a.effects[0]!;
+    if (effect.type === MULTI_PRESENCE_SACRIFICE_DEFEAT_EFFECT) {
+      const result = multiPresenceSacrificeTargets(s, ctx.controllerId, String(effect.presenceKey));
+      if (!result) reject('resolution_failed', 'Multi-presence sacrifice requires a live extra presence');
+      for (const targetId of result.targetPlayerIds) {
+        const target = s.players.find((candidate) => candidate.id === targetId && candidate.status === 'active');
+        if (!target || playerIgnoresAbilityFromController(s, targetId, ctx.controllerId) || playerIgnoresDefeatEffectAtLocation(s, targetId, result.locationId)) continue;
+        (runtime(s).battleDefeatRoundByPlayer ??= {})[targetId] = s.round.roundNumber;
+        runtime(s).events.push({ type: 'player_defeated_by_effect', playerId: targetId, controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+      }
+      return;
+    }
+    if (!resolveMultiPresenceEffect(s, ctx, a)) reject('resolution_failed', 'Multi-presence resolution failed');
+    return;
+  }
   if (containsVesselCyclePrivilegedNode(a)) {
     if (!isAcceptedVesselCycleAbility(a) || !resolveVesselCycleEffect(s, ctx, a, a.effects[0]!)) reject('resolution_failed', 'Unsupported vessel-cycle semantic');
     return;
@@ -7693,6 +7728,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     processEvent(s, { id: nextId(s, 'declare'), type: 'on_use_declared', playerId, sourceCardId: c.cardInstanceId, playedCards });
     processEvent(s, { id: nextId(s, 'play'), type: 'on_card_played', playerId, sourceCardId: c.cardInstanceId, playedCards });
   }
+  if (choices.length > 0) processEvent(s, { id: nextId(s, 'play-batch'), type: 'after_card_batch_played', playerId, playedCards });
 }
 /** Trusted server hook after the enclosing action validates its normal/effect play quota. Not an AbilityCommand. */
 export function playAbilityCardBatch(s: GameState, playerId: string, choices: Omit<PlayCardAction, 'type'>[]): void {

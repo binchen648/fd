@@ -1,4 +1,4 @@
-﻿import type { AuthoringAbility, AuthoringCard, AuthoringPack, ExecutionMode, RuleNode, AdapterReportEntry } from './types';
+import type { AuthoringAbility, AuthoringCard, AuthoringPack, ExecutionMode, RuleNode, AdapterReportEntry } from './types';
 import { hostOperations } from './types';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID } from '../core/card-source-state';
 import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
@@ -69,6 +69,11 @@ import {
   containsReactionCounterPrivilegedNode, isAcceptedReactionCounterCapabilityAbility, isAcceptedReactionCounterPlayHandAbility,
 } from './reaction-counter-capability';
 import { MASTER_ASCENSION_UNLOCK_EFFECT, containsMasterAscensionUnlockPrivilegedNode, isAcceptedMasterAscensionUnlockAbility } from './master-ascension-unlock-capability';
+import {
+  MULTI_PRESENCE_RECORD_LOSS_EFFECT, MULTI_PRESENCE_DEPLOY_EFFECT, MULTI_PRESENCE_MIRROR_MOVE_EFFECT,
+  MULTI_PRESENCE_POST_PLAY_MANA_LOSS_EFFECT, MULTI_PRESENCE_SHARED_PLAYER_EFFECT, MULTI_PRESENCE_SHARE_TERRAIN_EFFECT,
+  MULTI_PRESENCE_SACRIFICE_DEFEAT_EFFECT, containsMultiPresencePrivilegedNode, isAcceptedMultiPresenceAbility,
+} from './multi-presence-player-capability';
 import {
   BLOODLUST_INITIALIZE_EFFECT, BLOODLUST_CAGING_CONTRIBUTION_EFFECT, BLOODLUST_SPEND_TRACKER_EFFECT, BLOODLUST_COMBAT_DECAY_EFFECT,
   BLOODLUST_THRESHOLD_EFFECT, BLOODLUST_ACTION_EFFECT, BLOODLUST_TRANSFORM_EFFECT, BLOODLUST_ASCENSION_EFFECT,
@@ -188,6 +193,8 @@ const supportedTypes = new Set([
   'event_played_card_has_attribute', 'source_reversed', 'source_active', 'source_owned', 'source_revealed',
   EXACT_ACTIVE_ATTACK_ATTRIBUTE_PAIR_CONDITION, TIMED_GLOBAL_RESOURCE_SUPPRESSION_EFFECT, SOURCE_SKILL_ATTACK_JOIN_EFFECT,
   CURRENT_ROUND_BASIC_ATTACK_ATTRIBUTE_PAIR_CONDITION, DRAW_THEN_SHUFFLE_TWO_HAND_EFFECT,
+  MULTI_PRESENCE_RECORD_LOSS_EFFECT, MULTI_PRESENCE_DEPLOY_EFFECT, MULTI_PRESENCE_MIRROR_MOVE_EFFECT,
+  MULTI_PRESENCE_POST_PLAY_MANA_LOSS_EFFECT, MULTI_PRESENCE_SHARED_PLAYER_EFFECT, MULTI_PRESENCE_SHARE_TERRAIN_EFFECT, MULTI_PRESENCE_SACRIFICE_DEFEAT_EFFECT,
   ADJUST_OTHER_ACTIVE_PLAYERS_AT_SOURCE_LOCATION_MANA_EFFECT, DEFEAT_SINGLE_ACTIVE_OPPONENT_AT_CONTROLLER_BATTLEFIELD_EFFECT,
   FORBID_OTHER_PLAYERS_AT_ACTIVE_SOURCE_LOCATION_MANA_GAIN_EFFECT, SET_SOURCE_LOCATION_BASIC_BASE_POWER_MULTIPLIER_FROM_CHOICE_EFFECT,
   DUPLICATE_BASE_POWER_CLOSE_EFFECT, DISCARD_SHUFFLE_SOURCE_X_BINDING_EFFECT,
@@ -275,7 +282,7 @@ const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_actio
   // Master triggers
   'game_start', 'after_controller_enters_location', 'after_controller_loses_all_command_seals',
   'round_end', 'round_start', 'after_controller_first_loses_battle', 'after_battle_power_calculated',
-  'before_situation_or_event_resolves', 'when_movement_options_requested',
+  'before_situation_or_event_resolves', 'when_movement_options_requested', 'after_card_batch_played',
 ]);
 const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject', 'owner', 'player', 'target', 'amount', 'count',
   'resultZone', 'visibility', 'to', 'from', 'optional', 'excluding', 'branches', 'if', 'then', 'else', 'cardId', 'zone',
@@ -305,7 +312,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'directive', 'payload', 'deckId', 'definitionId', 'quantity', 'rounding', 'targetPlayer',
   'oncePerRound', 'replacement', 'deckKinds', 'revealedKind', 'targetKind', 'controllerCannotWinStatus',
   'returnAtRoundEnd', 'preserveVictoryPoints', 'sakuraMasterId', 'fallbackServantPool',
-  'definitionIds', 'activeOnly', 'destinationZone', 'firstTarget', 'secondTarget', 'extraSecondMana', 'multiplier', 'movedPlayerPowerAdjustment', 'winDeployment',
+  'presenceKey', 'numerator', 'denominator', 'definitionIds', 'activeOnly', 'destinationZone', 'firstTarget', 'secondTarget', 'extraSecondMana', 'multiplier', 'movedPlayerPowerAdjustment', 'winDeployment',
   // Phase 3A resolution/data-flow infrastructure
   'bind', 'expr', 'binding', 'field', 'valueType', 'ids', 'reason', 'message', 'enabled', 'regular', 'climax', 'threshold', 'phase', 'targetDefinitionIds',
   'add', 'multiply', 'until', 'hiddenAmount', 'revealedAmount', 'excludeLinkedOwnerRecipient', 'commandSealsAtMost', 'hideTrueName',
@@ -724,6 +731,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsMasterAscensionUnlockPrivilegedNode(candidateAbility) && !isAcceptedMasterAscensionUnlockAbility(candidateAbility)) {
         issue('masterAscensionUnlock.gateway', 'Master-ascension unlock privileged mechanic requires an accepted exact whole-ability semantic', id);
+      }
+      if (containsMultiPresencePrivilegedNode(candidateAbility) && !isAcceptedMultiPresenceAbility(candidateAbility)) {
+        issue('multiPresence.gateway', 'Multi-presence privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       if (containsBloodlustPrivilegedNode(candidateAbility) && !isAcceptedBloodlustAbility(candidateAbility)) {
         issue('bloodlust.gateway', 'Bloodlust privileged mechanics require an accepted exact whole-ability semantic', id);
