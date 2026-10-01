@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 8,
+    "masters": 9,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -406,6 +406,83 @@
       "htmPath": "chm-extract/阿卡夏之蛇.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/阿卡夏之蛇.png",
       "imageIndex": 7,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.akiha",
+      "displayName": "远野秋叶",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野秋叶.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野秋叶.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.akiha.overview",
+      "displayName": "远野秋叶",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/远野秋叶.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野秋叶.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.akiha.skill.ascension",
+      "displayName": "璀璨空想",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野秋叶.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野秋叶.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.akiha.skill.s1",
+      "displayName": "槛发",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野秋叶.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野秋叶.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.akiha.skill.s1a",
+      "displayName": "鬼之血脉",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野秋叶.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野秋叶.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.akiha.skill.s2",
+      "displayName": "红赤朱",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野秋叶.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野秋叶.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.akiha.skill.s3",
+      "displayName": "鬼之血脉",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野秋叶.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野秋叶.png",
+      "imageIndex": 4,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

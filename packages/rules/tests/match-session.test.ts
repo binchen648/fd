@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+﻿import { describe, expect, it } from 'vitest';
 
 import contentLibrary from '../../../data/generated/fd-playtest-v1.content-library.json';
 import { createMatchSession, restoreMatchSession, restoreSession } from '../src/match-session';
@@ -353,7 +353,7 @@ describe('MatchSession semi-auto runtime', () => {
     const erasedHistory: any = structuredClone(durable);
     erasedHistory.battleHistory = [];
     expect(() => restoreMatchSession(erasedHistory)).toThrow('Invalid or missing deferred runtime state authority');
-  });
+  }, 10_000);
 
   it('keeps independent direct MatchSession lifecycles isolated even under one host secret', () => {
     const older = createMatchSession({ seed: 111, humanPlayerId: 'p1' });

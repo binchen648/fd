@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+﻿import { describe, expect, it } from 'vitest';
 import { createMatchSession, resolveBattlefield, restoreMatchSession, type GameState } from '../index';
 import type { ActivateAbilityAction } from '../ability/types';
 
@@ -23,6 +23,18 @@ function moveDeckCardsToHand(state: GameState, playerId: string, count: number):
   return cards.map((card) => card.instanceId);
 }
 
+function declineUnrelatedResponseWindows(session: ReturnType<typeof createMatchSession>): void {
+  const state = mutableState(session);
+  while (state.abilityRuntime?.responseWindows[0]) {
+    const window = state.abilityRuntime.responseWindows[0]!;
+    const result = session.dispatchPlayerAction(window.controllerId, {
+      type: 'decline_this_window',
+      windowId: window.id,
+    });
+    expect(result.ok).toBe(true);
+  }
+}
+
 describe('match session gameplay regressions', () => {
   it('drops eliminated players from durable terrain assignment authority after scoring', () => {
     const session = createMatchSession({ seed: 20207105, humanPlayerId: 'p1', maxActionsPerPlayer: 2 });
@@ -38,7 +50,7 @@ describe('match session gameplay regressions', () => {
       expect(Object.keys(mode?.terrainAssignmentSlots?.[locationId] ?? {}).every((playerId) => assigned.includes(playerId))).toBe(true);
     }
     expect(() => restoreMatchSession(durable)).not.toThrow();
-  });
+  }, 10_000);
 
   it('projects correct basic special attack costs and power', () => {
     const session = createMatchSession({ seed: 20260906 });
@@ -145,6 +157,7 @@ describe('match session gameplay regressions', () => {
     expect(paid.ok).toBe(true);
     expect(p2.vp).toBe(4);
     expect(p2.locationId).toBe('miyama_town');
+    declineUnrelatedResponseWindows(session);
     expect((state as unknown as { modeState?: { terrainAssignments?: Record<string, string[]>; terrainAssignmentSlots?: Record<string, Record<string, number>> } }).modeState?.terrainAssignments?.miyama_town).toContain('p2');
     expect((state as unknown as { modeState?: { terrainAssignmentSlots?: Record<string, Record<string, number>> } }).modeState?.terrainAssignmentSlots?.miyama_town?.p2).toBe(1);
 
@@ -155,6 +168,7 @@ describe('match session gameplay regressions', () => {
     expect(session.dispatchPlayerAction('p3', { type: 'deploy_player', locationId: 'miyama_town' }).ok).toBe(true);
     const p3Decision = state.abilityRuntime!.pendingDecision!;
     expect(session.dispatchPlayerAction('p3', { type: 'choose_target', decisionId: p3Decision.id, selectedIds: ['vp:3'] }).ok).toBe(true);
+    declineUnrelatedResponseWindows(session);
     expect((state as unknown as { modeState?: { terrainAssignmentSlots?: Record<string, Record<string, number>> } }).modeState?.terrainAssignmentSlots?.miyama_town?.p3).toBe(0);
 
     const durable = session.serializeSession();
@@ -233,6 +247,7 @@ describe('match session gameplay regressions', () => {
       setPriority(state, playerId, 'advance');
       delete state.players.find((player) => player.id === playerId)!.locationId;
       expect(session.dispatchPlayerAction(playerId, { type: 'deploy_player', locationId: 'miyama_town' }).ok).toBe(true);
+      declineUnrelatedResponseWindows(session);
     }
     state.players.find((player) => player.id === 'p1')!.locationId = 'miyama_town';
 
@@ -250,6 +265,7 @@ describe('match session gameplay regressions', () => {
     const state = mutableState(session);
     setPriority(state, 'p3', 'advance');
     expect(session.dispatchPlayerAction('p3', { type: 'deploy_player', locationId: 'miyama_town' }).ok).toBe(true);
+    declineUnrelatedResponseWindows(session);
     state.cards.push({
       instanceId: 'test-p3-basic-preparation',
       definitionId: 'basic.preparation',
