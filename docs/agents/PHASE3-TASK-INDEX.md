@@ -8145,7 +8145,7 @@ Implementation evidence:
 ## TASK P3-B-ARAYA-OWNER-READINESS-EFFECTIVE-WORKSHOP-RESTRICTIONS
 
 Owner: FORMAL readiness
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: bounded zero-credit identity-free effective-location and same-location restriction authority
 
 Dependency: accepted `P3-B-ARAYA-OWNER-READINESS-PERSISTENT-TERRAIN`.
@@ -8176,3 +8176,11 @@ Implementation evidence:
 - `P3-B-ARAYA-OWNER-READINESS-EFFECTIVE-WORKSHOP-RESTRICTIONS` is now unblocked and `READY`.
 - Parent `P3-B-ARAYA-OWNER-READINESS-CAPABILITY` remains `WAIT_READINESS_SUBTASKS`; no Araya consumer migration is allowed yet.
 - Acceptance synchronization report: `docs/reports/2026-10-01-p3-a-araya-persistent-terrain-acceptance-synchronization.md`.
+Implementation evidence:
+- effective-workshop/restrictions focused regression: `8/8 PASS`;
+- Araya readiness focused aggregate including accepted persistent-terrain predecessor: `15/15 PASS`;
+- directly affected shared aggregate: `132/132 PASS`;
+- explicit focused + shared aggregate: `147/147 PASS`;
+- `FD_TOOLCHAIN_OK`; typecheck/content/generated/diff gates PASS; `data/authoring/**` delta EMPTY.
+- Detailed report: `docs/reports/2026-10-01-p3-b-araya-owner-readiness-effective-workshop-restrictions-result.md`.
+- This Candidate is permanently zero migration credit; parent readiness remains open until fresh-R acceptance + FORMAL full-owner A-sync/rescan.

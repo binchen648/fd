@@ -71,6 +71,7 @@ import {
 import { MASTER_ASCENSION_UNLOCK_EFFECT, containsMasterAscensionUnlockPrivilegedNode, isAcceptedMasterAscensionUnlockAbility } from './master-ascension-unlock-capability';
 import { ASCENSION_UNLOCK_OPPONENT_SEAL_LOSS_EFFECT, NAMED_EVENT_BASIC_POWER_BONUS_EFFECT, SOURCE_DEFINITION_BASIC_POWER_BONUS_EFFECT, containsMasterAscensionEventPowerPrivilegedNode, isAcceptedMasterAscensionEventPowerAbility } from './master-ascension-event-power-capability';
 import { PERSISTENT_LOCATION_TERRAIN_REPLACE_INCREMENT_EFFECT, containsPersistentLocationTerrainPrivilegedNode, isAcceptedPersistentLocationTerrainAbility } from './persistent-location-terrain-capability';
+import { EFFECTIVE_LOCATION_SAME_LOCATION_RESTRICTIONS_EFFECT, containsEffectiveLocationRestrictionPrivilegedNode, isAcceptedEffectiveLocationRestrictionAbility } from './effective-location-restriction-capability';
 import {
   MULTI_PRESENCE_RECORD_LOSS_EFFECT, MULTI_PRESENCE_DEPLOY_EFFECT, MULTI_PRESENCE_MIRROR_MOVE_EFFECT,
   MULTI_PRESENCE_POST_PLAY_MANA_LOSS_EFFECT, MULTI_PRESENCE_SHARED_PLAYER_EFFECT, MULTI_PRESENCE_SHARE_TERRAIN_EFFECT,
@@ -207,6 +208,7 @@ const supportedTypes = new Set([
   LINKED_ROLE_COPY_REVEALED_MEMBER_SERVANT_SKILL_EFFECT,
   ASCENSION_UNLOCK_OPPONENT_SEAL_LOSS_EFFECT, NAMED_EVENT_BASIC_POWER_BONUS_EFFECT, SOURCE_DEFINITION_BASIC_POWER_BONUS_EFFECT,
   PERSISTENT_LOCATION_TERRAIN_REPLACE_INCREMENT_EFFECT,
+  EFFECTIVE_LOCATION_SAME_LOCATION_RESTRICTIONS_EFFECT,
   ADJUST_OTHER_ACTIVE_PLAYERS_AT_SOURCE_LOCATION_MANA_EFFECT, DEFEAT_SINGLE_ACTIVE_OPPONENT_AT_CONTROLLER_BATTLEFIELD_EFFECT,
   FORBID_OTHER_PLAYERS_AT_ACTIVE_SOURCE_LOCATION_MANA_GAIN_EFFECT, SET_SOURCE_LOCATION_BASIC_BASE_POWER_MULTIPLIER_FROM_CHOICE_EFFECT,
   DUPLICATE_BASE_POWER_CLOSE_EFFECT, DISCARD_SHUFFLE_SOURCE_X_BINDING_EFFECT,
@@ -316,6 +318,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'manaCostIncrease', 'lossVp',
   // New mechanic keys for 5 servants
   'options', 'label', 'condition', 'targets', 'duration', 'scope', 'statusId', 'choiceId', 'value', 'floor',
+  'effectiveLocationKind', 'persistentTerrainMinimum', 'persistentTerrainProviderDefinitionId', 'persistentTerrainProviderAbilityId', 'blockOpponentExit', 'requireFaceDownStandardAttack',
   // Accepted FB2-27 Ruler seal structural fields.
   'policy', 'option', 'moveDestinations', 'rewardVp',
   // Command/Ruler seal round-Power capability fields.
@@ -751,6 +754,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsPersistentLocationTerrainPrivilegedNode(candidateAbility) && !isAcceptedPersistentLocationTerrainAbility(candidateAbility)) {
         issue('persistentLocationTerrain.gateway', 'Persistent location-terrain privileged mechanic requires an accepted exact whole-ability semantic', id);
+      }
+      if (containsEffectiveLocationRestrictionPrivilegedNode(candidateAbility) && !isAcceptedEffectiveLocationRestrictionAbility(candidateAbility)) {
+        issue('effectiveLocationRestriction.gateway', 'Effective-location restriction privileged mechanic requires an accepted exact whole-ability semantic', id);
       }
       if (containsMultiPresencePrivilegedNode(candidateAbility) && !isAcceptedMultiPresenceAbility(candidateAbility)) {
         issue('multiPresence.gateway', 'Multi-presence privileged mechanics require an accepted exact whole-ability semantic', id);

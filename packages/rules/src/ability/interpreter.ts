@@ -113,6 +113,7 @@ import {
 import { canExecuteMasterAscensionUnlock, containsMasterAscensionUnlockPrivilegedNode, isAcceptedMasterAscensionUnlockAbility, resolveMasterAscensionUnlock } from './master-ascension-unlock-capability';
 import { cleanupMasterAscensionEventPowerAtRoundEnd, containsMasterAscensionEventPowerPrivilegedNode, isAcceptedMasterAscensionEventPowerAbility, isAcceptedMasterAscensionSourceDefinitionPowerAbility, isMasterAscensionEventPowerRuntimeProvenanceValidForRestore, masterAscensionNamedEventBasicPowerBonus, masterAscensionSourceDefinitionTriggerMatches, reconcileMasterAscensionEventPowerAuthority, resolveMasterAscensionEventPowerEffect, retireMasterAscensionSourceDefinitionPowerByTrigger } from './master-ascension-event-power-capability';
 import { canExecutePersistentLocationTerrainEffect, containsPersistentLocationTerrainPrivilegedNode, isAcceptedPersistentLocationTerrainAbility, isPersistentLocationTerrainRuntimeProvenanceValidForRestore, resolvePersistentLocationTerrainEffect } from './persistent-location-terrain-capability';
+import { containsEffectiveLocationRestrictionPrivilegedNode, effectiveLocationRestrictionRequiresFaceDownStandardAttack, isAcceptedEffectiveLocationRestrictionAbility, isEffectiveLocationRestrictionRuntimeProvenanceValidForRestore, isPlayerAtEffectiveLocationKind } from './effective-location-restriction-capability';
 import {
   MULTI_PRESENCE_SACRIFICE_DEFEAT_EFFECT, canExecuteMultiPresenceEffect, containsMultiPresencePrivilegedNode,
   isAcceptedMultiPresenceAbility, isMultiPresenceRuntimeProvenanceValidForRestore, multiPresenceSacrificeTargets,
@@ -1631,7 +1632,7 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     }
     case 'source_card_in_zone': return card(s, ctx.sourceCardId).zone === c.zone || (c.zone === 'field' && card(s, ctx.sourceCardId).zone === 'attack_area');
     case 'card_not_on_board': return !s.cards.some(candidate => candidate.definitionId === c.cardId && candidate.zone === 'field');
-    case 'controller_at_location_kind': return c.locationKind === '侦察' || c.locationKind === '侦查' ? resolutionLocation === 'recon' : false;
+    case 'controller_at_location_kind': return c.locationKind === '侦察' || c.locationKind === '侦查' ? resolutionLocation === 'recon' : c.locationKind === 'workshop' ? isPlayerAtEffectiveLocationKind(s, ctx.controllerId, 'workshop') : false;
     case 'controller_servant_revealed': return runtime(s).revealedServants.includes(ctx.controllerId);
     case 'source_reversed': return runtime(s).cardState[ctx.sourceCardId]?.reversed === true;
     case 'controller_current_round_basic_attack_attribute_pair': {
@@ -1934,6 +1935,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsMasterAscensionUnlockPrivilegedNode(a) && !isAcceptedMasterAscensionUnlockAbility(a)) return false;
   if (isAcceptedMasterAscensionUnlockAbility(a) && !canExecuteMasterAscensionUnlock(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsPersistentLocationTerrainPrivilegedNode(a) && !isAcceptedPersistentLocationTerrainAbility(a)) return false;
+  if (containsEffectiveLocationRestrictionPrivilegedNode(a) && !isAcceptedEffectiveLocationRestrictionAbility(a)) return false;
   if (isAcceptedPersistentLocationTerrainAbility(a) && !canExecutePersistentLocationTerrainEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsLinkedRoleCorePrivilegedNode(a) && !isAcceptedLinkedRoleCoreAbility(a)) return false;
   if (isAcceptedLinkedRoleCoreAbility(a) && !canExecuteLinkedRoleCoreEffect(s, context(s, sourceId, a.id, event), a)) return false;
@@ -2222,7 +2224,10 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
   const result: LegalAction[] = [];
   const staged = stagedAttacks(s)[playerId] ?? [];
   if (staged.length && s.round.prioritySeat === p.seat) {
-    result.push({ type: 'confirm_staged_attack' }, { type: 'cancel_staged_attack' });
+    const faceDownRequired = effectiveLocationRestrictionRequiresFaceDownStandardAttack(s, playerId);
+    const faceDownSatisfied = staged.some((entry) => entry.faceDown === true && entersAttackArea(s, entry.cardInstanceId));
+    if (!faceDownRequired || faceDownSatisfied) result.push({ type: 'confirm_staged_attack' });
+    result.push({ type: 'cancel_staged_attack' });
     const hasOrdinaryStagedAttack = staged.some((entry) =>
       entersAttackArea(s, entry.cardInstanceId) && !isRequiredAdditionalPlayCard(s, entry.cardInstanceId));
     for (const c of s.cards.filter(c => c.controllerPlayerId === playerId && !staged.some(entry => entry.cardInstanceId === c.instanceId))) {
@@ -3928,6 +3933,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
     if (!isLinkedRoleMemberSkillCopyRuntimeProvenanceValidForRestore(s)) return false;
     if (!isMasterAscensionEventPowerRuntimeProvenanceValidForRestore(s)) return false;
     if (!isPersistentLocationTerrainRuntimeProvenanceValidForRestore(s)) return false;
+    if (!isEffectiveLocationRestrictionRuntimeProvenanceValidForRestore(s)) return false;
     if (!(r.pendingDelayedActivations ?? []).every((entry) => {
       const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
       const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
@@ -6901,6 +6907,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
     case 'confirm_staged_attack': {
       const staged = stagedAttacks(s);
       const choices = staged[playerId] ?? [];
+      if (effectiveLocationRestrictionRequiresFaceDownStandardAttack(s, playerId) && !choices.some((entry) => entry.faceDown === true && entersAttackArea(s, entry.cardInstanceId))) reject('play_requirement', 'Standard attack must include a face-down attack');
       if (!choices.length || !legal.some(a => a.type === 'confirm_staged_attack')) reject('illegal_action', 'No staged attack can be confirmed');
       playBatch(s, playerId, choices);
       delete staged[playerId];
