@@ -496,6 +496,10 @@ export interface MasterAscensionEventPowerState {
   controllerId: PlayerId; sourceCardId: string; sourceAbilityId: string; eventDefinitionId: string; eventRuleInstanceId: string;
   locationId: string; triggerEventId: string; round: number; amount: 4;
 }
+export interface MasterAscensionSourceDefinitionPowerState {
+  controllerId: PlayerId; providerSourceCardId: string; providerAbilityId: string; triggerCardInstanceId: string; sourceDefinitionId: string;
+  triggerEventId: string; round: number; playCount: number; amount: 4;
+}
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
@@ -525,6 +529,8 @@ export interface AbilityRuntime {
   linkedRoleOriginalSkillLocks?: Record<string, number>;
   /** Source-bound current-round +4 basic-card Power authority from an exact activated event. */
   masterAscensionEventPowerByPlayer?: Record<PlayerId, MasterAscensionEventPowerState>;
+  /** Exact played-definition +4 basic-card Power authority while the bound physical source remains active. */
+  masterAscensionSourceDefinitionPowerByPlayer?: Record<PlayerId, MasterAscensionSourceDefinitionPowerState>;
   /** Identity-free server-owned structured player flags. */
   structuredPlayerFlagsByPlayer?: Record<PlayerId, Record<string, boolean | string | number>>;
   /** Round marker for flags whose authored lifecycle is exactly this_round. */

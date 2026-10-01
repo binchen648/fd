@@ -8042,7 +8042,7 @@ Required disposition:
 ## TASK P3-B-AMAKUSA-OWNER-READINESS-SOURCE-DEFINITION-POWER
 
 Owner: FORMAL readiness follow-up
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: bounded zero-credit exact source-definition play -> basic-card Power authority discovered by Amakusa formal preflight
 
 Scope boundary:
@@ -8055,3 +8055,5 @@ Scope boundary:
 
 Formal dependency:
 - `P3-S-OWNER-AMAKUSA-COMPLETE-MIGRATION` stays `WAIT_READINESS_FOLLOWUP` until this exact follow-up is fresh-R accepted plus FORMAL A-sync/rescan.
+
+Detailed report: docs/reports/2026-10-01-p3-b-amakusa-owner-readiness-source-definition-power-result.md.

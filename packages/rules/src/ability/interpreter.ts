@@ -111,7 +111,7 @@ import {
   isOpponentCloseToOneCandidate,
 } from './opponent-close-to-one';
 import { canExecuteMasterAscensionUnlock, containsMasterAscensionUnlockPrivilegedNode, isAcceptedMasterAscensionUnlockAbility, resolveMasterAscensionUnlock } from './master-ascension-unlock-capability';
-import { cleanupMasterAscensionEventPowerAtRoundEnd, containsMasterAscensionEventPowerPrivilegedNode, isAcceptedMasterAscensionEventPowerAbility, isMasterAscensionEventPowerRuntimeProvenanceValidForRestore, masterAscensionNamedEventBasicPowerBonus, reconcileMasterAscensionEventPowerAuthority, resolveMasterAscensionEventPowerEffect } from './master-ascension-event-power-capability';
+import { cleanupMasterAscensionEventPowerAtRoundEnd, containsMasterAscensionEventPowerPrivilegedNode, isAcceptedMasterAscensionEventPowerAbility, isAcceptedMasterAscensionSourceDefinitionPowerAbility, isMasterAscensionEventPowerRuntimeProvenanceValidForRestore, masterAscensionNamedEventBasicPowerBonus, masterAscensionSourceDefinitionTriggerMatches, reconcileMasterAscensionEventPowerAuthority, resolveMasterAscensionEventPowerEffect, retireMasterAscensionSourceDefinitionPowerByTrigger } from './master-ascension-event-power-capability';
 import {
   MULTI_PRESENCE_SACRIFICE_DEFEAT_EFFECT, canExecuteMultiPresenceEffect, containsMultiPresencePrivilegedNode,
   isAcceptedMultiPresenceAbility, isMultiPresenceRuntimeProvenanceValidForRestore, multiPresenceSacrificeTargets,
@@ -2365,9 +2365,11 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
           (isAcceptedLoseAllManaRoundPowerAbility(a) || (a.kind === 'forced_trigger' && isAcceptedGrantSameLocationOpponentsManaAbility(a))) &&
           (event.sourceCardId !== c.instanceId || event.playerId !== c.controllerPlayerId)) continue;
       if (!matches || !canActivate(s, c.instanceId, a, event) || !triggerEventScopeMatches(a, event)) continue;
+      if (event.type === 'on_card_played' && isAcceptedMasterAscensionSourceDefinitionPowerAbility(a) &&
+          !masterAscensionSourceDefinitionTriggerMatches(s, c.controllerPlayerId, a, event)) continue;
       if (['on_card_played', 'on_use_declared'].includes(event.type) && event.sourceCardId !== c.instanceId &&
         !a.conditions.some((condition) => ['event_played_card_has_attribute', 'deduction_record_matches_event_attack'].includes(str(condition.type))) &&
-        !isAlterEgoTransformSemantic(a)) continue;
+        !isAlterEgoTransformSemantic(a) && !isAcceptedMasterAscensionSourceDefinitionPowerAbility(a)) continue;
       const allowsOpponentMovementEvent = event.type === 'after_controller_enters_location' &&
         a.conditions.some((entry) => isEventPlayerRelationCondition(entry) && entry.type === 'event_player_is_opponent');
       const allowsAnyPlayerMovementEvent = event.type === 'after_controller_enters_location' && isAcceptedDefinitionProvisionAbility(a);
@@ -2390,6 +2392,7 @@ function moveCard(s: GameState, id: string, zone: string): number {
       delete runtime(s).cardState[id]!.placedAtLocationId;
     }
     clearTransientCardTransformState(s, id);
+    retireMasterAscensionSourceDefinitionPowerByTrigger(s, id);
     clearReturnSilenceTransformForSource(s, id);
   }
   return moved;
@@ -2658,7 +2661,7 @@ function closeActiveAttackForDuplicatePower(s: GameState, instanceId: string, ef
   if (!d || target.zone !== 'attack_area' || !state?.active || state.faceDown || isResidualAttackCardDefinition(d) ||
       isCardCloseForbidden(s, instanceId, effectControllerId)) reject('resolution_failed', 'Duplicate-base-Power target is no longer closable');
   state.active = false;
-  clearTransientCardTransformState(s, instanceId);
+  clearTransientCardTransformState(s, instanceId); retireMasterAscensionSourceDefinitionPowerByTrigger(s, instanceId);
   if (['servant_skill', 'master_skill'].includes(d.cardType)) {
     target.zone = 'skill'; target.controllerPlayerId = target.ownerPlayerId;
     target.visibility = { scope: 'owner_only', ownerPlayerId: target.ownerPlayerId };
@@ -4314,7 +4317,7 @@ function closeOpponentCardForCloseToOne(s: GameState, decisionPlayerId: string, 
     reject('resolution_failed', 'Opponent close-to-one target can no longer be closed');
   }
   state.active = false;
-  clearTransientCardTransformState(s, instanceId);
+  clearTransientCardTransformState(s, instanceId); retireMasterAscensionSourceDefinitionPowerByTrigger(s, instanceId);
   if (['servant_skill', 'master_skill'].includes(cardDefinition.cardType)) {
     target.zone = 'skill';
     target.controllerPlayerId = target.ownerPlayerId;
@@ -4498,7 +4501,7 @@ function drawOneBattleCloseDrawPlayCard(s: GameState, playerId: PlayerId): strin
 function closeBattleCloseDrawPlayCard(s: GameState, opponentId: PlayerId, instanceId: string, effectControllerId: PlayerId): void {
   if (!battleCloseDrawPlayCloseCandidateIds(s, opponentId, effectControllerId).includes(instanceId)) reject('resolution_failed', 'Battle close/draw/play target is no longer eligible');
   const target = card(s, instanceId); const definition = runtime(s).pack.cards[target.definitionId]!; const state = runtime(s).cardState[instanceId]!;
-  state.active = false; clearTransientCardTransformState(s, instanceId);
+  state.active = false; clearTransientCardTransformState(s, instanceId); retireMasterAscensionSourceDefinitionPowerByTrigger(s, instanceId);
   if (['servant_skill', 'master_skill'].includes(definition.cardType)) {
     target.zone = 'skill'; target.controllerPlayerId = target.ownerPlayerId; target.visibility = { scope: 'owner_only', ownerPlayerId: target.ownerPlayerId }; state.faceDown = false;
   } else { state.faceDown = true; target.visibility = { scope: 'owner_only', ownerPlayerId: target.ownerPlayerId }; }
@@ -6696,6 +6699,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
       if (!d) reject('invalid_state', 'Mana-overflow close source definition is missing');
       state!.active = false;
       clearTransientCardTransformState(s, candidate.instanceId);
+      retireMasterAscensionSourceDefinitionPowerByTrigger(s, candidate.instanceId);
       if (['servant_skill', 'master_skill'].includes(d.cardType)) {
         candidate.zone = 'skill';
         candidate.controllerPlayerId = candidate.ownerPlayerId;
