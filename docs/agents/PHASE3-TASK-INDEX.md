@@ -8123,7 +8123,7 @@ Accounting boundary:
 ## TASK P3-B-ARAYA-OWNER-READINESS-PERSISTENT-TERRAIN
 
 Owner: FORMAL readiness
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `ACCEPTED`
 Classification: bounded zero-credit identity-free persistent per-location terrain-replacement authority
 
 Required frozen closure:
@@ -8145,7 +8145,7 @@ Implementation evidence:
 ## TASK P3-B-ARAYA-OWNER-READINESS-EFFECTIVE-WORKSHOP-RESTRICTIONS
 
 Owner: FORMAL readiness
-Status: `WAIT_CORE_ACCEPTANCE`
+Status: `READY`
 Classification: bounded zero-credit identity-free effective-location and same-location restriction authority
 
 Dependency: accepted `P3-B-ARAYA-OWNER-READINESS-PERSISTENT-TERRAIN`.
@@ -8166,3 +8166,13 @@ Implementation evidence:
 - FD_TOOLCHAIN_OK; typecheck/content/generated/diff gates PASS; data/authoring/** delta EMPTY; production Araya identity audit CLEAN.
 - Detailed report: docs/reports/2026-10-01-p3-b-araya-owner-readiness-persistent-terrain-result.md.
 - This Candidate remains permanently zero migration credit; dependent effective-workshop restrictions remain WAIT_CORE_ACCEPTANCE.
+### Araya persistent-terrain acceptance synchronization
+
+- Accepted exact Candidate: `07de26c74c2b7e585a981c77327e30920ca560a4`.
+- Fresh independent verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`.
+- Canonical Coordinator bounded relay: `https://github.com/binchen648/fd/pull/518#issuecomment-5926159494`.
+- Exact Base: `c71b67e6ea78c891bc0e494600cc2c7ef7ca6529`; Base..Candidate `data/authoring/**` delta is EMPTY.
+- This readiness remains permanently zero-credit; strict accounting stays `194/944`, remaining `750`.
+- `P3-B-ARAYA-OWNER-READINESS-EFFECTIVE-WORKSHOP-RESTRICTIONS` is now unblocked and `READY`.
+- Parent `P3-B-ARAYA-OWNER-READINESS-CAPABILITY` remains `WAIT_READINESS_SUBTASKS`; no Araya consumer migration is allowed yet.
+- Acceptance synchronization report: `docs/reports/2026-10-01-p3-a-araya-persistent-terrain-acceptance-synchronization.md`.
