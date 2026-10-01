@@ -7820,8 +7820,11 @@ Detailed report: `docs/reports/2026-10-01-p3-b-alice-owner-readiness-multi-prese
 ## TASK P3-B-ALICE-OWNER-READINESS-PRESENCE-CONTEXT
 
 Owner: FORMAL readiness follow-up
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: bounded zero-credit generic presence-context interaction/movement closure required by frozen Alice source
+
+Exact Base: `165cbb738c03eb1df382ca8eaabcda64656c5c9b`
+Accounting: strict `186/944`, remaining `758`; permanently zero migration credit.
 
 Required source-authored closure:
 - when one logical player has separated presences and one of its abilities is structurally location/battle-related, the controller chooses exactly one presence location for that ability transaction;

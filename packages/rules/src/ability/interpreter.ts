@@ -114,6 +114,7 @@ import { canExecuteMasterAscensionUnlock, containsMasterAscensionUnlockPrivilege
 import {
   MULTI_PRESENCE_SACRIFICE_DEFEAT_EFFECT, canExecuteMultiPresenceEffect, containsMultiPresencePrivilegedNode,
   isAcceptedMultiPresenceAbility, isMultiPresenceRuntimeProvenanceValidForRestore, multiPresenceSacrificeTargets,
+  isMultiPresenceLocationBattleAbility, multiPresenceLocationContextAuthority, moveMultiPresenceExtraPresence,
   resolveMultiPresenceEffect,
 } from './multi-presence-player-capability';
 import { BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT, containsBattleLuckCloseDrawPlayNode, isAcceptedBattleLuckCloseDrawPlayAbility } from './divine-core-capability';
@@ -240,6 +241,32 @@ function reject(code: string, message: string): never { throw new RuleRejection(
 function runtime(s: GameState): AbilityRuntime {
   if (!s.abilityRuntime) reject('not_initialized', 'Ability runtime is not initialized');
   return s.abilityRuntime;
+}
+function moveControllerResolutionPresence(s: GameState, ctx: EffectContext, toLocationId: string): {fromLocationId:string;toLocationId:string;extraPresence:boolean} {
+  const p=player(s,ctx.controllerId); const from=controllerResolutionLocation(s,ctx); if(!from||from===toLocationId)reject('resolution_failed','Movement requires a different current location.');
+  if(ctx.resolutionLocationId!==undefined&&ctx.resolutionLocationId!==p.locationId){ const authority=multiPresenceLocationContextAuthority(s,ctx.controllerId); if(!authority||!authority.locationIds.includes(from))reject('invalid_state','Selected extra presence is no longer authoritative'); const moved=moveMultiPresenceExtraPresence(s,ctx.controllerId,authority.presenceKey,toLocationId); if(!moved)reject('resolution_failed','Selected extra presence cannot move to destination'); recordMovementForAbilityRuntime(s,p.id,from,toLocationId); return {fromLocationId:from,toLocationId,extraPresence:true}; }
+  p.locationId=toLocationId as LocationId; recordMovementForAbilityRuntime(s,p.id,from,toLocationId); const enterEventId=nextId(s,'enter-location'); processEvent(s,{id:enterEventId,type:'after_controller_enters_location',playerId:p.id,previousLocationId:from,locationId:toLocationId,movementKind:'effect'}); return {fromLocationId:from,toLocationId,extraPresence:false};
+}
+function controllerResolutionLocation(s: GameState, ctx: EffectContext): string|undefined {
+  const primary=player(s,ctx.controllerId).locationId; if(!ctx.resolutionLocationId)return primary;
+  const ability=abilityDefinition(s,ctx.sourceCardId,ctx.abilityId); const authority=multiPresenceLocationContextAuthority(s,ctx.controllerId);
+  if(!isMultiPresenceLocationBattleAbility(ability)||containsMultiPresencePrivilegedNode(ability)||!authority||!authority.locationIds.includes(ctx.resolutionLocationId)) reject('invalid_state','Multi-presence resolution location lost server authority');
+  return ctx.resolutionLocationId;
+}
+function stageMultiPresenceLocationContext(s: GameState, ctx: EffectContext, ability: AuthoringAbility): boolean {
+  if(ctx.resolutionLocationId!==undefined||containsMultiPresencePrivilegedNode(ability)||!isMultiPresenceLocationBattleAbility(ability))return false;
+  const authority=multiPresenceLocationContextAuthority(s,ctx.controllerId); if(!authority)return false;
+  const eligibleLocationIds=eligibleMultiPresenceResolutionContexts(s,ctx.sourceCardId,ability,ctx.event).map((candidateCtx)=>candidateCtx.resolutionLocationId).filter((id): id is string=>typeof id==='string');
+  if(!eligibleLocationIds.length)reject('no_legal_target','No multi-presence resolution location satisfies the ability activation requirements');
+  const r=runtime(s); if(r.pendingDecision)reject('pending_resolution','Resolve current decision first'); const id=nextId(s,'multi-presence-location-context');
+  r.pendingDecision={id,controllerId:ctx.controllerId,target:{id:'multi_presence_resolution_location',type:'location',count:{min:1,max:1}},candidates:[...eligibleLocationIds],min:1,max:1,context:structuredClone(ctx),remainingEffects:[],interaction:{kind:'multi_presence_location_context_v1',template:'target',visibility:'owner_only',cancelPolicy:'forbidden',sourceCardInstanceId:ctx.sourceCardId,abilityId:ctx.abilityId,createdRevision:r.revision+1,continuationRef:`${id}:continuation`,controllerId:ctx.controllerId,presenceKey:authority.presenceKey,candidateLocationIds:[...eligibleLocationIds],constraints:{kind:'target',targetKind:'location',min:1,max:1,distinct:true}}};
+  return true;
+}
+function multiPresenceLocationContextDecisionLiveValid(s: GameState, d: PendingDecision): boolean {
+  try{const meta=d.interaction;if(meta?.kind!=='multi_presence_location_context_v1')return false; const source=restoredPhysicalSource(s,meta.sourceCardInstanceId,meta.controllerId); const ability=source?restoredAbility(s,meta.sourceCardInstanceId,meta.abilityId):undefined; const authority=multiPresenceLocationContextAuthority(s,meta.controllerId); const count=node(d.target.count);
+    const eligibleLocationIds=source&&ability?eligibleMultiPresenceResolutionContexts(s,meta.sourceCardInstanceId,ability,d.context.event).map((candidateCtx)=>candidateCtx.resolutionLocationId).filter((id): id is string=>typeof id==='string'):[];
+    return !!source&&!!ability&&!containsMultiPresencePrivilegedNode(ability)&&isMultiPresenceLocationBattleAbility(ability)&&!!authority&&authority.presenceKey===meta.presenceKey&&eligibleLocationIds.length>0&&d.controllerId===meta.controllerId&&d.context.controllerId===meta.controllerId&&d.context.sourceCardId===meta.sourceCardInstanceId&&d.context.abilityId===meta.abilityId&&d.context.resolutionLocationId===undefined&&meta.createdRevision===runtime(s).revision&&meta.continuationRef===`${d.id}:continuation`&&meta.template==='target'&&meta.visibility==='owner_only'&&meta.cancelPolicy==='forbidden'&&meta.constraints.kind==='target'&&meta.constraints.targetKind==='location'&&meta.constraints.min===1&&meta.constraints.max===1&&meta.constraints.distinct===true&&d.target.id==='multi_presence_resolution_location'&&d.target.type==='location'&&count.min===1&&count.max===1&&d.min===1&&d.max===1&&d.remainingEffects.length===0&&exactPlayerArray(meta.candidateLocationIds,eligibleLocationIds)&&exactPlayerArray(d.candidates,eligibleLocationIds);
+  }catch{return false;}
 }
 function modeState(s: GameState): Record<string, any> {
   const carrier = s as unknown as { modeState?: Record<string, any> };
@@ -893,7 +920,7 @@ function constraint(s: GameState, ctx: EffectContext, candidate: CardInstance, c
       return !!event?.battlePhaseResolutionId && event.type === 'after_battle_ended' &&
         Array.isArray(event.battleParticipantIds) && event.battleParticipantIds.includes(ctx.controllerId) &&
         event.battleParticipantIds.includes(candidate.controllerPlayerId) && candidate.controllerPlayerId !== ctx.controllerId &&
-        !!controller?.locationId && opponent?.locationId === controller.locationId;
+        !!controllerResolutionLocation(s,ctx) && opponent?.locationId === controllerResolutionLocation(s,ctx);
     }
     case 'not_card_type': return !!d && d.cardType !== c.cardType;
     case 'is_attack': return isAttack(d) && (c.face !== 'face_down' || runtime(s).cardState[candidate.instanceId]?.faceDown === true);
@@ -1147,7 +1174,7 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
         if (c.type === 'least_ruler_binding_count') return eligibleLeastBoundPlayerIds(s, ctx.controllerId, 2, rulerEligibleOpponents).includes(candidate.id);
         if (c.type === 'bound_by_controller_ruler_seal') return unspentRulerSealBindings(s, ctx.controllerId, candidate.id).length > 0;
         if (c.type === 'same_location_as_controller') {
-          const controllerLocation = player(s, ctx.controllerId).locationId;
+          const controllerLocation = controllerResolutionLocation(s, ctx);
           return !!controllerLocation && candidate.locationId === controllerLocation;
         }
         if (c.type === 'at_battlefield') return isBattlefield(s, candidate.locationId);
@@ -1169,7 +1196,7 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
     }
     if (persistentMovementLockBlocksTarget(s, ctx, target)) return [];
     if (nodes(target.constraints).some(c => c.type === 'any_enabled_location')) {
-      const from = player(s, ctx.controllerId).locationId;
+      const from = controllerResolutionLocation(s, ctx);
       const enabled = getEnabledLocations(s.map, s.locationConfig);
       if (!from || !enabled.some(l => l.id === from)) return [];
       const locked = lockedBattlefieldIdsForMovement(s, ctx.controllerId);
@@ -1184,9 +1211,9 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
     const path = nodes(target.constraints).find(c => c.type === 'reachable_along_arrows');
     if (!path) reject('unsupported', 'Location selection requires a path constraint');
     const locked = lockedBattlefieldIdsForMovement(s, ctx.controllerId);
-    const from = player(s, ctx.controllerId).locationId ?? '';
+    const from = controllerResolutionLocation(s, ctx) ?? '';
     if (locked.has(from)) return [];
-    return getReachableLocationsAlongArrows(s, player(s, ctx.controllerId).locationId ?? '', Number(path.maxSteps), ctx.controllerId)
+    return getReachableLocationsAlongArrows(s, from, Number(path.maxSteps), ctx.controllerId)
       .filter(id => { const l = s.map.locations.find(l => l.id === id)!;
         if (locked.has(id)) return false;
         return !l.occupancyLimit || s.players.filter(p => p.status === 'active' && p.id !== ctx.controllerId && p.locationId === id).length < l.occupancyLimit;
@@ -1285,10 +1312,10 @@ export function isGainVictoryPointsPerTargetEffect(effect: RuleNode): boolean {
 }
 
 function sameBattlefieldOpponentIds(s: GameState, ctx: EffectContext): string[] | null {
-  const controller = s.players.find((candidate) => candidate.id === ctx.controllerId);
-  if (!controller || controller.status !== 'active' || !controller.locationId || !isBattlefield(s, controller.locationId)) return null;
+  const controller = s.players.find((candidate) => candidate.id === ctx.controllerId); const locationId=controllerResolutionLocation(s,ctx);
+  if (!controller || controller.status !== 'active' || !locationId || !isBattlefield(s, locationId)) return null;
   return s.players.filter((candidate) => candidate.status === 'active' && candidate.id !== controller.id &&
-    candidate.locationId === controller.locationId && !playerIgnoresAbilityFromController(s, candidate.id, ctx.controllerId)).map((candidate) => candidate.id);
+    candidate.locationId === locationId && !playerIgnoresAbilityFromController(s, candidate.id, ctx.controllerId)).map((candidate) => candidate.id);
 }
 
 function structuredFlagPrimitive(value: unknown): value is boolean | string | number {
@@ -1546,18 +1573,18 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   if (!c || typeof c !== 'object') reject('unsupported', 'Unsupported condition');
   if (c.type === 'target_count_equals' && !isTargetCountEqualsCondition(c)) reject('unsupported', 'Unsupported exact target-count condition shape');
   if (c.negated === true) return !condition(s, ctx, { ...c, negated: undefined });
-  const p = player(s, ctx.controllerId);
+  const p = player(s, ctx.controllerId); const resolutionLocation=controllerResolutionLocation(s,ctx);
   switch (c.type) {
     case 'skill_zone_mana_at_least': {
       const cardDef = definition(s, ctx.sourceCardId);
       if (cardDef && (hasPlayRuleException(cardDef, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, ctx.controllerId, cardDef.id, 'skill_zone_mana_at_least', Number(c.value)) || bloodlustPlayRequirementWaived(s, ctx.controllerId, 'skill_zone_mana_at_least', Number(c.value)))) return true;
       return card(s, ctx.sourceCardId).zone !== 'skill' || p.mana >= Number(c.value);
     }
-    case 'controller_at_battlefield': return isBattlefield(s, p.locationId);
-    case 'controller_at_battlefield_with_exactly_one_opponent': return isBattlefield(s, p.locationId) &&
-      s.players.filter(other => other.id !== p.id && other.status === 'active' && sameBattlefield(s, p.locationId, other.locationId)).length === 1;
-    case 'controller_alone_at_battlefield': return isBattlefield(s, p.locationId) &&
-      !s.players.some(other => other.id !== p.id && other.status === 'active' && other.locationId === p.locationId) &&
+    case 'controller_at_battlefield': return isBattlefield(s, resolutionLocation);
+    case 'controller_at_battlefield_with_exactly_one_opponent': return isBattlefield(s, resolutionLocation) &&
+      s.players.filter(other => other.id !== p.id && other.status === 'active' && sameBattlefield(s, resolutionLocation, other.locationId)).length === 1;
+    case 'controller_alone_at_battlefield': return isBattlefield(s, resolutionLocation) &&
+      !s.players.some(other => other.id !== p.id && other.status === 'active' && other.locationId === resolutionLocation) &&
       !s.ruleOverrides?.engagedPlayerIds?.includes(p.id);
     case 'played_with_basic_attack': return ctx.event?.playedCards?.some(c => c.instanceId !== ctx.sourceCardId &&
       c.controllerId === ctx.controllerId && c.cardType === 'basic_attack' && !c.faceDown) ?? false;
@@ -1567,8 +1594,8 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     }) ?? false;
     case 'controller_mana_at_least': case 'min_mana': return p.mana >= Number(c.value);
     case 'controller_has_positive_terrain': {
-      if (!isControllerHasPositiveTerrainCondition(c) || !p.locationId) return false;
-      return terrainAdvantageAtLocation(s, p.id, p.locationId as LocationId) > 0;
+      if (!isControllerHasPositiveTerrainCondition(c) || !resolutionLocation) return false;
+      return terrainAdvantageAtLocation(s, p.id, resolutionLocation as LocationId) > 0;
     }
     case 'controller_command_seals_at_least':
     case 'controller_command_seals_at_most': {
@@ -1579,7 +1606,7 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     }
     case 'source_card_in_zone': return card(s, ctx.sourceCardId).zone === c.zone || (c.zone === 'field' && card(s, ctx.sourceCardId).zone === 'attack_area');
     case 'card_not_on_board': return !s.cards.some(candidate => candidate.definitionId === c.cardId && candidate.zone === 'field');
-    case 'controller_at_location_kind': return c.locationKind === '侦察' || c.locationKind === '侦查' ? p.locationId === 'recon' : false;
+    case 'controller_at_location_kind': return c.locationKind === '侦察' || c.locationKind === '侦查' ? resolutionLocation === 'recon' : false;
     case 'controller_servant_revealed': return runtime(s).revealedServants.includes(ctx.controllerId);
     case 'source_reversed': return runtime(s).cardState[ctx.sourceCardId]?.reversed === true;
     case 'controller_current_round_basic_attack_attribute_pair': {
@@ -1653,7 +1680,7 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'or': return nodes(c.conditions).some(x => condition(s, ctx, x));
     case 'and': return nodes(c.conditions).every(x => condition(s, ctx, x));
     case 'not_controller': return true;
-    case 'at_battlefield': return isBattlefield(s, p.locationId);
+    case 'at_battlefield': return isBattlefield(s, resolutionLocation);
     case 'selected_count_at_least': return (ctx.selections[str(c.targetRef)] ?? []).length >= Number(c.value ?? 1);
     case 'choice_is': return (ctx.selections[str(c.choiceId)] ?? []).includes(str(c.value));
     case 'controller_played_highest_cost_noble_phantasm_in_battle_this_round': {
@@ -1827,6 +1854,27 @@ function canActivateAcceptedOpponentCloseToOne(s: GameState, sourceId: string, a
 function canActivateAcceptedOpponentCloseSelectedOne(s: GameState, sourceId: string, a: AuthoringAbility): boolean {
   return isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled') && !!opponentCloseSelectedOneFacts(s, sourceId);
 }
+function activationResolutionContexts(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): EffectContext[] {
+  const base=context(s,sourceId,a.id,event);
+  if(containsMultiPresencePrivilegedNode(a)||!isMultiPresenceLocationBattleAbility(a))return[base];
+  const authority=multiPresenceLocationContextAuthority(s,base.controllerId);
+  if(!authority)return[base];
+  return authority.locationIds.map((resolutionLocationId)=>({...base,resolutionLocationId}));
+}
+function locationContextSatisfiesActivationRequirements(s: GameState, sourceId: string, a: AuthoringAbility, ctx: EffectContext): boolean {
+  if(!a.conditions.every((c)=>condition(s,ctx,c)))return false;
+  const controllerId=card(s,sourceId).controllerPlayerId;
+  if(isAcceptedSameBattlefieldTurnOrderAttackAbility(a))return !runtime(s).pendingBattlefieldAttackOfferTransaction&&isBattlefield(s,controllerResolutionLocation(s,ctx));
+  if(isAcceptedDefeatAllEngagedOpponentsAbility(a)){const locationId=controllerResolutionLocation(s,ctx);return !!locationId&&isBattlefield(s,locationId)&&s.players.some((candidate)=>candidate.id!==controllerId&&candidate.status==='active'&&candidate.locationId===locationId&&!playerIgnoresAbilityFromController(s,candidate.id,controllerId)&&!playerIgnoresDefeatEffectAtLocation(s,candidate.id,locationId));}
+  if(isAcceptedDoubleControllerTerrainAbility(a)){const locationId=controllerResolutionLocation(s,ctx);return !!locationId&&terrainAdvantageAtLocation(s,controllerId,locationId as LocationId)>0;}
+  if(isAcceptedFortifyMovedInBattlefieldAbility(a))return isBattlefield(s,controllerResolutionLocation(s,ctx));
+  if(isAcceptedTerrainExtraHandPlayAbility(a))return candidates(s,ctx,a.targets[0]!).length>=1;
+  if((isPlayActionRouteCandidate(a)||isAddToAttackRouteCandidate(a)||isAnyLocationExceptWorkshopMovementSemantic(a)||isAcceptedRuneAnyEnabledLocationMovementAbility(a)||isRulerSealBindingSemantic(a)||isRulerSealUseSemantic(a)||a.effects.some(isPlaceSourceAtBattlefieldEffect)||a.effects.some(isGainManaEqualSelectedPaidCostEffect))&&!hasMandatoryTargetAvailability(s,ctx,a))return false;
+  return true;
+}
+function eligibleMultiPresenceResolutionContexts(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): EffectContext[] {
+  return activationResolutionContexts(s,sourceId,a,event).filter((candidateCtx)=>locationContextSatisfiesActivationRequirements(s,sourceId,a,candidateCtx));
+}
 function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
   if (a.execution.mode !== 'automatic') return false;
   if (isPlayActionStructuralCandidate(a) && !isPlayActionRouteCandidate(a)) return false;
@@ -1872,16 +1920,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsBattlePlunderReplayPrivilegedNode(a) && !isAcceptedBattlePlunderReplayAbility(a)) return false;
   if (isAcceptedBattleCompetitionPlunderAbility(a) && !trustedBattlePlunderFacts(s, card(s, sourceId).controllerPlayerId, event)) return false;
   if (isAcceptedPlayRecordedRemovedCardAbility(a) && !canActivateRecordedRemovedReplay(s, sourceId, a)) return false;
-  if (isAcceptedSameBattlefieldTurnOrderAttackAbility(a)) {
-    const controller = s.players.find((candidate) => candidate.id === card(s, sourceId).controllerPlayerId && candidate.status === 'active');
-    if (!controller?.locationId || !isBattlefield(s, controller.locationId) || runtime(s).pendingBattlefieldAttackOfferTransaction) return false;
-  }
-  if (isAcceptedDefeatAllEngagedOpponentsAbility(a)) {
-    const controller = s.players.find((candidate) => candidate.id === card(s, sourceId).controllerPlayerId && candidate.status === 'active');
-    if (!controller?.locationId || !isBattlefield(s, controller.locationId) || !s.players.some((candidate) =>
-      candidate.id !== controller.id && candidate.status === 'active' && candidate.locationId === controller.locationId &&
-      !playerIgnoresAbilityFromController(s, candidate.id, controller.id) && !playerIgnoresDefeatEffectAtLocation(s, candidate.id, controller.locationId!))) return false;
-  }
+  if ((isAcceptedSameBattlefieldTurnOrderAttackAbility(a) || isAcceptedDefeatAllEngagedOpponentsAbility(a)) &&
+      eligibleMultiPresenceResolutionContexts(s,sourceId,a,event).length===0) return false;
   if (isAcceptedSpendCounterIgnoreBattleLossAbility(a)) {
     const key = str(a.effects[0]?.counterKey);
     if (structuredCounterValue(s, card(s, sourceId).controllerPlayerId, key) < 1) return false;
@@ -1922,14 +1962,13 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAcceptedDoubleControllerTerrainAbility(a) || isAcceptedFortifyMovedInBattlefieldAbility(a)) {
     const source = card(s, sourceId); const sourceState = runtime(s).cardState[sourceId]; const controller = player(s, sourceControllerId);
     if (source.ownerPlayerId !== sourceControllerId || source.controllerPlayerId !== sourceControllerId || source.zone !== 'skill' ||
-        sourceState?.active === true || sourceState?.faceDown === true || !controller.locationId || controller.mana < 1) return false;
-    if (isAcceptedDoubleControllerTerrainAbility(a) && terrainAdvantageAtLocation(s, sourceControllerId, controller.locationId as LocationId) <= 0) return false;
-    if (isAcceptedFortifyMovedInBattlefieldAbility(a) && !isBattlefield(s, controller.locationId)) return false;
+        sourceState?.active === true || sourceState?.faceDown === true || controller.mana < 1) return false;
+    if (eligibleMultiPresenceResolutionContexts(s,sourceId,a,event).length===0) return false;
   }
   if (isAcceptedTerrainExtraHandPlayAbility(a)) {
     const source = card(s, sourceId); const sourceState = runtime(s).cardState[sourceId];
     if (source.ownerPlayerId !== sourceControllerId || source.controllerPlayerId !== sourceControllerId || !['field','attack_area'].includes(source.zone) ||
-        sourceState?.active !== true || sourceState.faceDown === true || candidates(s, context(s, sourceId, a.id), a.targets[0]!).length < 1) return false;
+        sourceState?.active !== true || sourceState.faceDown === true || eligibleMultiPresenceResolutionContexts(s,sourceId,a,event).length===0) return false;
   }
   if (isAcceptedRecallActiveDefinitionJoinSourceAbility(a)) {
     const source = card(s, sourceId); const sourceState = runtime(s).cardState[sourceId];
@@ -1946,7 +1985,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if ((isPlayActionRouteCandidate(a) || isAddToAttackRouteCandidate(a) || isAnyLocationExceptWorkshopMovementSemantic(a) ||
       isAcceptedRuneAnyEnabledLocationMovementAbility(a) || isRulerSealBindingSemantic(a) || isRulerSealUseSemantic(a) ||
       a.effects.some(isPlaceSourceAtBattlefieldEffect)) &&
-    !hasMandatoryTargetAvailability(s, context(s, sourceId, a.id, event), a)) return false;
+    eligibleMultiPresenceResolutionContexts(s,sourceId,a,event).length===0) return false;
   if (isPlaySourceCardWithCostResponseRouteCandidate(a)) {
     const ctx = context(s, sourceId, a.id, event);
     if (!hasPlayableSourceCardInHand(s, ctx)) return false;
@@ -1983,7 +2022,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   }
   if (a.effects.some(isGrantedBasicDoubleRemoveEffect) && !hasAvailableManaForFixedCosts(s, ctx, a)) return false;
   if (a.effects.some(isGainManaEqualSelectedPaidCostEffect) && !hasMandatoryTargetAvailability(s, ctx, a)) return false;
-  return a.conditions.every(c => condition(s, ctx, c));
+  return eligibleMultiPresenceResolutionContexts(s,sourceId,a,event).length>0;
 }
 function isGameStartRuleOverrideCandidate(a: AuthoringAbility): boolean {
   return a.effects.some((effect) => effect.type === 'install_rule_override');
@@ -3463,12 +3502,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
     case 'adjust_victory_points': { const raw=numeric(s,ctx,effect.amount); const adjusted=bloodlustVpGainAdjustment(s,p.id,raw); p.vp=Math.max(0,p.vp+adjusted); break; }
     case 'move_player': {
       const to = ctx.selections[str(effect.to)]?.[0];
-      if (to) {
-        const from = p.locationId;
-        p.locationId = to as LocationId;
-        recordMovementForAbilityRuntime(s, p.id, from, to);
-        processEvent(s, { id: nextId(s, 'enter-location'), type: 'after_controller_enters_location', playerId: p.id, ...(from ? { previousLocationId: from } : {}), locationId: to, movementKind: 'effect' });
-      }
+      if (to) moveControllerResolutionPresence(s,ctx,to);
       break;
     }
     case 'shuffle_zone_into_deck':
@@ -3809,6 +3843,7 @@ function isMatchingDefinitionPendingDecisionLiveValid(s: GameState, decision: Pe
 }
 
 export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decision: PendingDecision): boolean {
+  if (decision.interaction?.kind === 'multi_presence_location_context_v1') return multiPresenceLocationContextDecisionLiveValid(s, decision);
   if (decision.interaction && ['battle_luck_discard_choice_v1','battle_opponent_close_reward_choice_v1','battle_drawn_card_optional_play_v1'].includes(decision.interaction.kind)) {
     return isBattleCloseDrawPlayPendingDecisionLiveValid(s, decision);
   }
@@ -5603,14 +5638,11 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
           if (!movementTarget || movementTarget.type !== 'location') reject('resolution_failed', 'Movement target definition is missing.');
           const liveCandidates = candidates(state, { ...ctx, controllerId: playerId }, movementTarget);
           if (!liveCandidates.includes(toLocationId)) reject('resolution_failed', 'Movement destination is no longer legal.');
-          const movingPlayer = player(state, playerId);
-          const fromLocationId = movingPlayer.locationId;
-          if (!fromLocationId || fromLocationId === toLocationId) reject('resolution_failed', 'Movement requires a different current location.');
-          movingPlayer.locationId = toLocationId as LocationId;
-          recordMovementForAbilityRuntime(state, playerId, fromLocationId, toLocationId);
-          const enterEventId = nextId(state, 'enter-location');
-          processEvent(state, { id: enterEventId, type: 'after_controller_enters_location', playerId, previousLocationId: fromLocationId, locationId: toLocationId, movementKind: 'effect' });
-          return { fromLocationId, toLocationId, movedCount: 1, emittedEventIds: [enterEventId] };
+          if(playerId!==ctx.controllerId) {
+            const movingPlayer=player(state,playerId); const fromLocationId=movingPlayer.locationId; if(!fromLocationId||fromLocationId===toLocationId)reject('resolution_failed','Movement requires a different current location.'); movingPlayer.locationId=toLocationId as LocationId; recordMovementForAbilityRuntime(state,playerId,fromLocationId,toLocationId); const enterEventId=nextId(state,'enter-location'); processEvent(state,{id:enterEventId,type:'after_controller_enters_location',playerId,previousLocationId:fromLocationId,locationId:toLocationId,movementKind:'effect'}); return {fromLocationId,toLocationId,movedCount:1,emittedEventIds:[enterEventId]};
+          }
+          const moved=moveControllerResolutionPresence(state,ctx,toLocationId);
+          return {fromLocationId:moved.fromLocationId,toLocationId,movedCount:1,emittedEventIds:[]};
         },
         playSelectedCards: ({ state, playerId, cardInstanceIds, faceDown }) => {
           playBatch(state, playerId, cardInstanceIds.map((cardInstanceId) => ({ type: 'play_card', cardInstanceId, faceDown })), 'effect');
@@ -6246,6 +6278,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
+  if (stageMultiPresenceLocationContext(s, ctx, a)) return;
   if (containsMasterAscensionUnlockPrivilegedNode(a)) {
     if (!isAcceptedMasterAscensionUnlockAbility(a) || !resolveMasterAscensionUnlock(s, ctx, a)) reject('resolution_failed', 'Unsupported master-ascension unlock semantic');
     return;
@@ -6807,6 +6840,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const selected = command.selectedIds;
       if (d.interaction) {
         const meta = d.interaction;
+        if (meta.kind === 'multi_presence_location_context_v1') {
+          if (!multiPresenceLocationContextDecisionLiveValid(s,d) || !Array.isArray(selected) || selected.length!==1 || !d.candidates.includes(selected[0]!)) reject('resolution_failed','Corrupt or stale multi-presence location-context interaction state');
+          const resumed=structuredClone(d.context); resumed.resolutionLocationId=selected[0]!; delete r.pendingDecision; executeAbility(s,resumed); break;
+        }
         if (meta.kind === 'battlefield_attack_offer_choice_v1') {
           const tx = r.pendingBattlefieldAttackOfferTransaction;
           const currentPlayerId = tx?.orderPlayerIds[tx.nextIndex];

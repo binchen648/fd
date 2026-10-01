@@ -109,6 +109,15 @@ export function multiPresenceResolutionLocationOptions(state: GameState, playerI
   if(!multiPresenceSharedPlayerEnabled(state,playerId,presenceKey))return state.players.find((entry)=>entry.id===playerId)?.locationId?[state.players.find((entry)=>entry.id===playerId)!.locationId!]:[];
   return getPlayerPresenceLocationIds(state,playerId);
 }
+export function isMultiPresenceLocationBattleAbility(ability: AuthoringAbility): boolean {
+  return /交战|地点|战斗|战场/.test(ability.printedClause);
+}
+export function multiPresenceLocationContextAuthority(state: GameState, playerId: string): { presenceKey: string; locationIds: string[] }|undefined {
+  const live=getPlayerExtraPresences(state,playerId).filter((entry)=>multiPresenceSharedPlayerEnabled(state,playerId,entry.presenceKey));
+  const keys=[...new Set(live.map((entry)=>entry.presenceKey))]; if(keys.length!==1)return undefined;
+  const presenceKey=keys[0]!; const locationIds=multiPresenceResolutionLocationOptions(state,playerId,presenceKey);
+  return locationIds.length>1?{presenceKey,locationIds}:undefined;
+}
 function primaryTerrainAdvantage(state: GameState, playerId: string, locationId: string): number { const slot=primaryTerrainSlot(state,playerId,locationId); const loc=enabledLocation(state,locationId); return slot===undefined?0:Number(loc?.terrainBonuses?.[slot]??0); }
 export function multiPresenceTerrainAdvantageAtLocation(state: GameState, playerId: string, locationId: string): number {
   const player=state.players.find((entry)=>entry.id===playerId); if(!player)return 0;
@@ -127,6 +136,16 @@ function mirroredTarget(state: GameState, current: string, from: string, to: str
   const backward=shortestDirected(state,to,from); if(!backward)return undefined; let target=current; for(let i=1;i<backward.length;i+=1){ const predecessors=getEnabledLocations(state.map,state.locationConfig).filter((loc)=>loc.movementLinks.includes(target as NonNullable<GameState['players'][number]['locationId']>)); if(predecessors.length!==1)return undefined; target=predecessors[0]!.id; } return target;
 }
 function canPresenceOccupy(state: GameState, playerId: string, locationId: string): boolean { const occupying=getPlayerIdsPresentAtLocation(state,locationId).filter((id)=>id!==playerId); return canOccupyLocation({map:state.map,config:state.locationConfig,locationId: locationId as NonNullable<GameState['players'][number]['locationId']>,movingPlayerId:playerId,occupyingPlayerIds:occupying,...(state.ruleOverrides?{ruleOverrides:state.ruleOverrides}:{})}); }
+function primaryPresenceEngaged(state: GameState, playerId: string): boolean { const primary=state.players.find((entry)=>entry.id===playerId&&entry.status==='active'); return !!primary?.locationId&&isBattlefield(state,primary.locationId)&&getPlayerIdsPresentAtLocation(state,primary.locationId).some((id)=>id!==playerId); }
+export function moveMultiPresenceExtraPresence(state: GameState, playerId: string, presenceKey: string, toLocationId: string): { fromLocationId:string; toLocationId:string; mirroredPrimary:boolean }|undefined {
+  const presence=liveMultiPresenceFor(state,playerId,presenceKey); const primary=state.players.find((entry)=>entry.id===playerId&&entry.status==='active');
+  if(!presence||!primary?.locationId||!multiPresenceSharedPlayerEnabled(state,playerId,presenceKey)||presence.locationId===toLocationId||!enabledLocation(state,toLocationId)||!canPresenceOccupy(state,playerId,toLocationId))return undefined;
+  const fromLocationId=presence.locationId; presence.locationId=toLocationId; presence.updatedRevision=runtime(state).revision;
+  let mirroredPrimary=false;
+  if(!primaryPresenceEngaged(state,playerId)){ const mirror=mirroredTarget(state,primary.locationId,fromLocationId,toLocationId); if(mirror&&mirror!==primary.locationId&&enabledLocation(state,mirror)&&canPresenceOccupy(state,playerId,mirror)){ primary.locationId=mirror as NonNullable<GameState['players'][number]['locationId']>; mirroredPrimary=true; } }
+  runtime(state).events.push({type:'extra_player_presence_moved',playerId,sourceCardId:presence.sourceCardId,abilityId:presence.sourceAbilityId});
+  return {fromLocationId,toLocationId,mirroredPrimary};
+}
 function removePresence(state: GameState, playerId: string, presenceKey: string): MultiPresenceState|undefined { const r=runtime(state); const found=(r.extraPlayerPresences??[]).find((entry)=>entry.playerId===playerId&&entry.presenceKey===presenceKey); if(!found)return undefined; r.extraPlayerPresences=(r.extraPlayerPresences??[]).filter((entry)=>entry!==found); return found; }
 export function multiPresenceSacrificeTargets(state: GameState, playerId: string, presenceKey: string): {locationId:string;targetPlayerIds:string[]}|undefined { const removed=removePresence(state,playerId,presenceKey); if(!removed)return undefined; return {locationId:removed.locationId,targetPlayerIds:getPlayerIdsPresentAtLocation(state,removed.locationId)}; }
 

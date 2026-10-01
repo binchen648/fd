@@ -118,6 +118,8 @@ export interface ManaContributionChoice { contributorPlayerId: PlayerId; amount:
 export interface EffectContext {
   controllerId: PlayerId; sourceCardId: string; abilityId: string;
   variables: Record<string, number>; selections: Record<string, string[]>;
+  /** Server-owned selected physical presence location for one location/battle-related ability transaction. */
+  resolutionLocationId?: string;
   manaContributions?: ManaContributionChoice[];
   event?: AbilityEvent;
 }
@@ -311,6 +313,12 @@ export interface DiscardDefinitionPlayAllInteractionMetadata {
   revealedDiscardIds: string[]; matchingCardIds: string[]; options: ['skip', 'play_all'];
   constraints: { kind: 'target'; targetKind: 'choice'; min: 1; max: 1; distinct: true };
 }
+export interface MultiPresenceLocationContextInteractionMetadata {
+  kind: 'multi_presence_location_context_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; presenceKey: string; candidateLocationIds: string[];
+  constraints: { kind: 'target'; targetKind: 'location'; min: 1; max: 1; distinct: true };
+}
 export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata |
   OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata | DeductionRecordChoiceInteractionMetadata |
   PostDrawHandShuffleInteractionMetadata | DiscardShuffleSourceXInteractionMetadata | RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata |
@@ -320,7 +328,7 @@ export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetad
   BattleLuckDiscardInteractionMetadata | BattleOpponentCloseRewardInteractionMetadata |
   BattleDrawnCardOptionalPlayInteractionMetadata | BattlefieldAttackOfferChoiceInteractionMetadata |
   DeploymentTerrainVpChoiceInteractionMetadata | OneShotAbilityReuseChoiceInteractionMetadata |
-  GlobalDefinitionRevealRewardInteractionMetadata | DiscardDefinitionPlayAllInteractionMetadata;
+  GlobalDefinitionRevealRewardInteractionMetadata | DiscardDefinitionPlayAllInteractionMetadata | MultiPresenceLocationContextInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
