@@ -46,6 +46,8 @@ export interface GameLogEntry {
 export interface EventPlacementState {
   locationId: LocationId;
   eventCardId: string;
+  /** Stable server-owned identity for this physical event placement. */
+  ruleInstanceId?: string;
   /** Authoritative printed VP from the content layer; missing is unknown, never zero. */
   victoryPoints?: number;
   visibility: VisibilityState;

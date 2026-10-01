@@ -69,6 +69,7 @@ import {
   containsReactionCounterPrivilegedNode, isAcceptedReactionCounterCapabilityAbility, isAcceptedReactionCounterPlayHandAbility,
 } from './reaction-counter-capability';
 import { MASTER_ASCENSION_UNLOCK_EFFECT, containsMasterAscensionUnlockPrivilegedNode, isAcceptedMasterAscensionUnlockAbility } from './master-ascension-unlock-capability';
+import { ASCENSION_UNLOCK_OPPONENT_SEAL_LOSS_EFFECT, NAMED_EVENT_BASIC_POWER_BONUS_EFFECT, containsMasterAscensionEventPowerPrivilegedNode, isAcceptedMasterAscensionEventPowerAbility } from './master-ascension-event-power-capability';
 import {
   MULTI_PRESENCE_RECORD_LOSS_EFFECT, MULTI_PRESENCE_DEPLOY_EFFECT, MULTI_PRESENCE_MIRROR_MOVE_EFFECT,
   MULTI_PRESENCE_POST_PLAY_MANA_LOSS_EFFECT, MULTI_PRESENCE_SHARED_PLAYER_EFFECT, MULTI_PRESENCE_SHARE_TERRAIN_EFFECT,
@@ -203,6 +204,7 @@ const supportedTypes = new Set([
   MULTI_PRESENCE_POST_PLAY_MANA_LOSS_EFFECT, MULTI_PRESENCE_SHARED_PLAYER_EFFECT, MULTI_PRESENCE_SHARE_TERRAIN_EFFECT, MULTI_PRESENCE_SACRIFICE_DEFEAT_EFFECT,
   LINKED_ROLE_INITIALIZE_EFFECT, LINKED_ROLE_SCHEDULE_MEMBER_EFFECT, LINKED_ROLE_APPLY_SCHEDULED_EFFECT, LINKED_ROLE_MEMBER_RULES_EFFECT, LINKED_ROLE_BATTLE_REWARD_EFFECT,
   LINKED_ROLE_COPY_REVEALED_MEMBER_SERVANT_SKILL_EFFECT,
+  ASCENSION_UNLOCK_OPPONENT_SEAL_LOSS_EFFECT, NAMED_EVENT_BASIC_POWER_BONUS_EFFECT,
   ADJUST_OTHER_ACTIVE_PLAYERS_AT_SOURCE_LOCATION_MANA_EFFECT, DEFEAT_SINGLE_ACTIVE_OPPONENT_AT_CONTROLLER_BATTLEFIELD_EFFECT,
   FORBID_OTHER_PLAYERS_AT_ACTIVE_SOURCE_LOCATION_MANA_GAIN_EFFECT, SET_SOURCE_LOCATION_BASIC_BASE_POWER_MULTIPLIER_FROM_CHOICE_EFFECT,
   DUPLICATE_BASE_POWER_CLOSE_EFFECT, DISCARD_SHUFFLE_SOURCE_X_BINDING_EFFECT,
@@ -291,6 +293,7 @@ const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_actio
   'game_start', 'after_controller_enters_location', 'after_controller_loses_all_command_seals',
   'round_end', 'round_start', 'after_controller_first_loses_battle', 'after_battle_power_calculated',
   'before_situation_or_event_resolves', 'when_movement_options_requested', 'after_card_batch_played',
+  'after_master_ascension_unlocked', 'event_activated',
 ]);
 const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject', 'owner', 'player', 'target', 'amount', 'count',
   'resultZone', 'visibility', 'to', 'from', 'optional', 'excluding', 'branches', 'if', 'then', 'else', 'cardId', 'zone',
@@ -310,7 +313,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'minimumSpent', 'rewardMana', 'powerBonus', 'closeAfterBattle', 'powerPerMana', 'mandatory', 'sameBattlefield',
   'manaCostIncrease', 'lossVp',
   // New mechanic keys for 5 servants
-  'options', 'label', 'condition', 'targets', 'duration', 'scope', 'statusId', 'choiceId', 'value',
+  'options', 'label', 'condition', 'targets', 'duration', 'scope', 'statusId', 'choiceId', 'value', 'floor',
   // Accepted FB2-27 Ruler seal structural fields.
   'policy', 'option', 'moveDestinations', 'rewardVp',
   // Command/Ruler seal round-Power capability fields.
@@ -740,6 +743,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsMasterAscensionUnlockPrivilegedNode(candidateAbility) && !isAcceptedMasterAscensionUnlockAbility(candidateAbility)) {
         issue('masterAscensionUnlock.gateway', 'Master-ascension unlock privileged mechanic requires an accepted exact whole-ability semantic', id);
+      }
+      if (containsMasterAscensionEventPowerPrivilegedNode(candidateAbility) && !isAcceptedMasterAscensionEventPowerAbility(candidateAbility)) {
+        issue('masterAscensionEventPower.gateway', 'Master-ascension event/seal privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       if (containsMultiPresencePrivilegedNode(candidateAbility) && !isAcceptedMultiPresenceAbility(candidateAbility)) {
         issue('multiPresence.gateway', 'Multi-presence privileged mechanics require an accepted exact whole-ability semantic', id);
