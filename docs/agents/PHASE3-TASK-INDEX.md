@@ -7851,7 +7851,7 @@ No formal Alice consumer and no migration credit until this follow-up is accepte
 ## TASK P3-S-OWNER-ALICE-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `MIGRATION_COMPLETE_CANDIDATE`
+Status: `MIGRATION_ACCEPTED`
 Classification: formal owner-complete migration for the complete current `master.alice` frozen scope
 
 Frozen owner scope:
@@ -7889,3 +7889,40 @@ Required disposition:
 - Generated hashes: content-library `cde732266c8ca18995ddacb54a4fd1f273379c4ea2497fdf672218949edd0e3b`; fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`; evidence-report `d49a5ca87cf614cbba8140b1890225a51548c11479551577033f37615407c7a2`.
 - Detailed report: `docs/reports/2026-10-01-p3-s-owner-alice-complete-migration-result.md`.
 - No credit before exact `MIGRATION_ACCEPTED` + FORMAL A-sync/accounting.
+
+
+### Alice formal acceptance synchronization
+
+- Accepted exact Candidate: `88ce8ecf32c6aaef077938cd9677143d2a0872a5`.
+- Fresh independent verdict: `MIGRATION_ACCEPTED`.
+- Canonical Coordinator bounded relay: `https://github.com/binchen648/fd/pull/512#issuecomment-5924134571`.
+- Exact Base: `d27b48301ea11f8743e62e7222b5006169b88e31`; Base rescan confirms all three Alice frozen identities were absent.
+- Candidate rescan confirms `ascension + s1 + s2` each exist exactly once in canonical authoring.
+- Newly creditable: `3`; preservation-only: `0`.
+- Strict formal accounting advances `186/944 -> 189/944`; remaining `758 -> 755`.
+- Next mechanical owner is `master.amakusa`, frozen scope ascension + s1 + s1a + s2 + s3.
+- Acceptance synchronization report: `docs/reports/2026-10-01-p3-a-owner-alice-acceptance-synchronization.md`.
+
+## TASK P3-B-AMAKUSA-OWNER-READINESS-CAPABILITY
+
+Owner: FORMAL readiness
+Status: `READY`
+Classification: bounded zero-credit owner-readiness capability for complete current `master.amakusa` frozen scope
+
+Frozen owner scope:
+- `master.amakusa.skill.ascension`
+- `master.amakusa.skill.s1`
+- `master.amakusa.skill.s1a`
+- `master.amakusa.skill.s2`
+- `master.amakusa.skill.s3`
+
+Accounting boundary:
+- strict formal accounting after accepted Alice A-sync is `189/944`, remaining `755`;
+- this readiness task is permanently zero migration credit;
+- canonical `data/authoring/**` currently contains `0/5` Amakusa frozen identities;
+- no Amakusa formal consumer may be created until complete full-owner readiness scan closes all currently discoverable source-grounded gaps and receives fresh independent acceptance + FORMAL A-sync/rescan.
+
+Mechanical preflight:
+- roster order places `master.amakusa` immediately after `master.alice`;
+- catalog marks ascension + s3 as `SOURCE_EVIDENCE_REQUIRED`; s1/s1a/s2 expose generic-extension axes but have no canonical consumer;
+- one owner-complete readiness scan must recertify all five together before deciding whether one or more bounded generic capability batches are required.
