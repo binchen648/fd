@@ -8007,7 +8007,7 @@ This Candidate does NOT close the parent owner-readiness task. Fresh R acceptanc
 ## TASK P3-S-OWNER-AMAKUSA-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `WAIT_READINESS_FOLLOWUP`
+Status: `READY`
 Classification: formal owner-complete migration for the complete current `master.amakusa` frozen scope
 
 Frozen owner scope:
@@ -8042,7 +8042,7 @@ Required disposition:
 ## TASK P3-B-AMAKUSA-OWNER-READINESS-SOURCE-DEFINITION-POWER
 
 Owner: FORMAL readiness follow-up
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `ACCEPTED`
 Classification: bounded zero-credit exact source-definition play -> basic-card Power authority discovered by Amakusa formal preflight
 
 Scope boundary:
@@ -8057,3 +8057,15 @@ Formal dependency:
 - `P3-S-OWNER-AMAKUSA-COMPLETE-MIGRATION` stays `WAIT_READINESS_FOLLOWUP` until this exact follow-up is fresh-R accepted plus FORMAL A-sync/rescan.
 
 Detailed report: docs/reports/2026-10-01-p3-b-amakusa-owner-readiness-source-definition-power-result.md.
+### Amakusa source-definition Power readiness acceptance synchronization
+
+- Accepted follow-up Candidate `4251da171eacdca6059ffd347510fefcebe10f24` on PR #516.
+- Canonical Coordinator bounded same-attempt evidence: `https://github.com/binchen648/fd/pull/516#issuecomment-5925559800`.
+- Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`; readiness credit remains permanently `+0`.
+- Exact #516 Phase 3 Pre-Review Gate: run `36821029132` / job `110236428111` = `SUCCESS` on Candidate `4251da171eacdca6059ffd347510fefcebe10f24`.
+- Full-owner rescan confirms all five frozen `master.amakusa` identities remain absent from canonical `data/authoring/**` (`0/5`), so all remain provisionally newly creditable and none is preservation-only.
+- Discoverable Amakusa readiness set is now fully accepted: linked-role core, member-skill-copy, ascension/event-power, and source-definition Power follow-up.
+- No additional current owner-local readiness blocker is exposed by this rescan.
+- `P3-S-OWNER-AMAKUSA-COMPLETE-MIGRATION` returns to `READY`; ascension + s1 + s1a + s2 + s3 must materialize together in one formal Candidate / one PR / one fresh R / one A-sync-accounting.
+- Strict formal accounting remains `189/944`, remaining `755`; this synchronization grants no migration credit.
+- Detailed report: `docs/reports/2026-10-01-p3-a-amakusa-source-definition-power-acceptance-synchronization.md`.
