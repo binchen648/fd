@@ -7960,7 +7960,7 @@ This Candidate does NOT close s1a or ascension and does NOT close the parent own
 ## TASK P3-B-AMAKUSA-OWNER-READINESS-MEMBER-SKILL-COPY
 
 Owner: FORMAL readiness follow-up
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `ACCEPTED`
 Classification: bounded zero-credit generic temporary revealed servant-skill copy / original-use lock / linked-member removal closure for Amakusa s1a
 
 Required frozen source closure:
@@ -7979,7 +7979,7 @@ This Candidate does NOT close ascension readiness and does NOT close the parent 
 ## TASK P3-B-AMAKUSA-OWNER-READINESS-ASCENSION-EVENT-POWER
 
 Owner: FORMAL readiness follow-up
-Status: `WAIT_CORE_ACCEPTANCE`
+Status: `READY`
 Classification: bounded zero-credit generic ascension-unlock terminal + named-event basic-card Power authority for Amakusa ascension
 
 Required frozen source closure:
