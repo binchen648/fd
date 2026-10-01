@@ -8197,7 +8197,7 @@ Implementation evidence:
 ## TASK P3-S-OWNER-ARAYA-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `READY`
+Status: `WAIT_READINESS_FOLLOWUP`
 Classification: formal owner-complete migration for current owner `master.araya`
 
 Frozen owner scope:
@@ -8206,3 +8206,15 @@ Frozen owner scope:
 - `master.araya.skill.s1a`
 
 Formal rule: materialize all three identities in one Candidate/one PR/one fresh independent R; no partial credit.
+
+## TASK P3-B-ARAYA-OWNER-READINESS-ORIGIN-STILLNESS-PRINTED-COST
+
+Owner: FORMAL readiness
+Status: `READY`
+Classification: bounded zero-credit identity-free battle-end active-basic recycle + printed-cost mana authority
+
+Formal preflight correction:
+- frozen `master.araya.skill.s1a` requires selecting one controller-owned active basic attack after battle ends, shuffling that exact physical card into deck, then gaining mana equal to twice its printed mana cost;
+- existing `gain_mana_equal_selected_card_paid_cost` uses actual paid-mana provenance and is not semantically equivalent to printed cost x2;
+- no Araya consumer materialization is allowed until this exact gap is accepted + FORMAL A-sync/rescan.
+- permanently zero migration credit; strict accounting remains 194/944, remaining 750.
