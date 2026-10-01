@@ -70,6 +70,7 @@ import {
 } from './reaction-counter-capability';
 import { MASTER_ASCENSION_UNLOCK_EFFECT, containsMasterAscensionUnlockPrivilegedNode, isAcceptedMasterAscensionUnlockAbility } from './master-ascension-unlock-capability';
 import { ASCENSION_UNLOCK_OPPONENT_SEAL_LOSS_EFFECT, NAMED_EVENT_BASIC_POWER_BONUS_EFFECT, SOURCE_DEFINITION_BASIC_POWER_BONUS_EFFECT, containsMasterAscensionEventPowerPrivilegedNode, isAcceptedMasterAscensionEventPowerAbility } from './master-ascension-event-power-capability';
+import { PERSISTENT_LOCATION_TERRAIN_REPLACE_INCREMENT_EFFECT, containsPersistentLocationTerrainPrivilegedNode, isAcceptedPersistentLocationTerrainAbility } from './persistent-location-terrain-capability';
 import {
   MULTI_PRESENCE_RECORD_LOSS_EFFECT, MULTI_PRESENCE_DEPLOY_EFFECT, MULTI_PRESENCE_MIRROR_MOVE_EFFECT,
   MULTI_PRESENCE_POST_PLAY_MANA_LOSS_EFFECT, MULTI_PRESENCE_SHARED_PLAYER_EFFECT, MULTI_PRESENCE_SHARE_TERRAIN_EFFECT,
@@ -205,6 +206,7 @@ const supportedTypes = new Set([
   LINKED_ROLE_INITIALIZE_EFFECT, LINKED_ROLE_SCHEDULE_MEMBER_EFFECT, LINKED_ROLE_APPLY_SCHEDULED_EFFECT, LINKED_ROLE_MEMBER_RULES_EFFECT, LINKED_ROLE_BATTLE_REWARD_EFFECT,
   LINKED_ROLE_COPY_REVEALED_MEMBER_SERVANT_SKILL_EFFECT,
   ASCENSION_UNLOCK_OPPONENT_SEAL_LOSS_EFFECT, NAMED_EVENT_BASIC_POWER_BONUS_EFFECT, SOURCE_DEFINITION_BASIC_POWER_BONUS_EFFECT,
+  PERSISTENT_LOCATION_TERRAIN_REPLACE_INCREMENT_EFFECT,
   ADJUST_OTHER_ACTIVE_PLAYERS_AT_SOURCE_LOCATION_MANA_EFFECT, DEFEAT_SINGLE_ACTIVE_OPPONENT_AT_CONTROLLER_BATTLEFIELD_EFFECT,
   FORBID_OTHER_PLAYERS_AT_ACTIVE_SOURCE_LOCATION_MANA_GAIN_EFFECT, SET_SOURCE_LOCATION_BASIC_BASE_POWER_MULTIPLIER_FROM_CHOICE_EFFECT,
   DUPLICATE_BASE_POWER_CLOSE_EFFECT, DISCARD_SHUFFLE_SOURCE_X_BINDING_EFFECT,
@@ -746,6 +748,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsMasterAscensionEventPowerPrivilegedNode(candidateAbility) && !isAcceptedMasterAscensionEventPowerAbility(candidateAbility)) {
         issue('masterAscensionEventPower.gateway', 'Master-ascension event/seal privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsPersistentLocationTerrainPrivilegedNode(candidateAbility) && !isAcceptedPersistentLocationTerrainAbility(candidateAbility)) {
+        issue('persistentLocationTerrain.gateway', 'Persistent location-terrain privileged mechanic requires an accepted exact whole-ability semantic', id);
       }
       if (containsMultiPresencePrivilegedNode(candidateAbility) && !isAcceptedMultiPresenceAbility(candidateAbility)) {
         issue('multiPresence.gateway', 'Multi-presence privileged mechanics require an accepted exact whole-ability semantic', id);

@@ -500,6 +500,9 @@ export interface MasterAscensionSourceDefinitionPowerState {
   controllerId: PlayerId; providerSourceCardId: string; providerAbilityId: string; triggerCardInstanceId: string; sourceDefinitionId: string;
   triggerEventId: string; round: number; playCount: number; amount: 4;
 }
+export interface PersistentLocationTerrainState {
+  playerId: PlayerId; locationId: string; sourceCardId: string; abilityId: string; value: number; triggerEventIds: string[];
+}
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
@@ -531,6 +534,8 @@ export interface AbilityRuntime {
   masterAscensionEventPowerByPlayer?: Record<PlayerId, MasterAscensionEventPowerState>;
   /** Exact played-definition +4 basic-card Power authority while the bound physical source remains active. */
   masterAscensionSourceDefinitionPowerByPlayer?: Record<PlayerId, MasterAscensionSourceDefinitionPowerState>;
+  /** Identity-free permanent per-location terrain replacement layers with exact source/event provenance. */
+  persistentLocationTerrainByPlayer?: Record<PlayerId, Record<string, PersistentLocationTerrainState>>;
   /** Identity-free server-owned structured player flags. */
   structuredPlayerFlagsByPlayer?: Record<PlayerId, Record<string, boolean | string | number>>;
   /** Round marker for flags whose authored lifecycle is exactly this_round. */
