@@ -71,3 +71,24 @@ Successor verification after closure:
 - directly affected shared aggregate: 132/132 PASS;
 - typecheck: PASS;
 - git diff --check: PASS.
+## Successor-2 fixed-seed fixture stabilization
+
+The exact fresh-Reviewer relay for Candidate `618d1d57e2b04da33d303a1cbd3f4049f37ac2ef` was truncated in the user-visible handoff after stating that both predecessor P1 findings were CLOSED. No omitted Reviewer wording is inferred or fabricated here.
+
+Coordinator full-suite reproduction on the exact Candidate mechanically isolated one additional Candidate-induced roster-sensitive regression:
+- `packages/rules/tests/regression/card-action-play.test.ts` hard-coded seed `20260909` and then required `master.kiritsugu`.
+- With the exact formal Base roster (11 masters), that seed contains Kiritsugu; after adding Araya as the 12th canonical master, the same seed no longer contains Kiritsugu.
+- The three Time Alter behavior tests therefore crashed before reaching their assertions.
+
+The fixture now uses a bounded deterministic search for a legal seven-player pairing containing `master.kiritsugu`, following the same roster-stable pattern already used for other targeted character regressions. No Time Alter semantic assertion was removed or weakened.
+
+Reverification after this fixture stabilization:
+- Time Alter direct-action regression: 4/4 PASS.
+- Araya formal + readiness focused: 27/27 PASS.
+- MatchSession: 33/33 PASS.
+- Amakusa linked-role restore regression: 11/11 PASS.
+- Directly affected shared aggregate: 132/132 PASS.
+- typecheck: PASS.
+- git diff --check: PASS.
+
+This follow-up does not change Araya canonical authoring or migration accounting. Accounting remains 194/944, remaining 750 until an exact fresh independent `MIGRATION_ACCEPTED` verdict is A-synced.
