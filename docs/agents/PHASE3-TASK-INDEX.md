@@ -8007,7 +8007,7 @@ This Candidate does NOT close the parent owner-readiness task. Fresh R acceptanc
 ## TASK P3-S-OWNER-AMAKUSA-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `READY`
+Status: `WAIT_READINESS_FOLLOWUP`
 Classification: formal owner-complete migration for the complete current `master.amakusa` frozen scope
 
 Frozen owner scope:
@@ -8029,3 +8029,29 @@ Required disposition:
 - introduce no Amakusa/card-name/printed-text/locked-Reference identity routing in production runtime;
 - run owner formal/focused tests plus affected shared regressions, toolchain/typecheck/content/generated/identity/diff gates;
 - freeze one exact formal Candidate, one PR, one fresh independent R, then one A-sync/accounting.
+
+### Amakusa formal-preflight source-definition correction
+
+- Formal materialization preflight from readiness A-sync `670366deb02bf265d4daf867ace4120bc0d84ec4` resolved the frozen ascension clause name `【开演之时已至，此处应有雷鸣般的喝彩】` against locked source evidence.
+- The referenced object is not an event card. It is the servant skill definition `servant.shakespeare.skill.sc-shakespeare-3` (`魔术/宝具`, cost 6, requirement 8, base Power 1).
+- Accepted #515 readiness intentionally exposed an exact `event_activated + eventDefinitionId` authority. That authority cannot be consumed by the real Shakespeare servant-skill play path without inventing a false event definition, so formal Amakusa consumer materialization is paused before any `data/authoring/**` write.
+- Existing authoritative card-play events already expose the played physical `sourceCardId`; runtime can mechanically recover its exact definition from the executable pack. The missing seam is therefore a bounded identity-free exact source-definition play authority, not a Shakespeare migration.
+- New zero-credit follow-up: `P3-B-AMAKUSA-OWNER-READINESS-SOURCE-DEFINITION-POWER`.
+- Strict accounting remains `189/944`, remaining `755`; all five Amakusa identities remain absent from canonical authoring and no formal Candidate exists.
+
+## TASK P3-B-AMAKUSA-OWNER-READINESS-SOURCE-DEFINITION-POWER
+
+Owner: FORMAL readiness follow-up
+Status: `READY`
+Classification: bounded zero-credit exact source-definition play -> basic-card Power authority discovered by Amakusa formal preflight
+
+Scope boundary:
+- preserve the already accepted #515 event-placement authority unchanged;
+- add one identity-free whole-ability shape that watches an authoring-supplied `sourceDefinitionId` on authoritative `on_card_played`;
+- the triggering physical card must be face-up, controlled by the same controller, have exactly the authored definition, and remain an active attack/field source according to its normal play lifecycle;
+- while that exact physical source remains active, the controller's owned/controlled `basic_attack` cards receive exactly +4 Power;
+- source close/removal, round cleanup, replay/restore drift, controller drift, definition substitution, or stale provider provenance must fail closed / retire authority;
+- no Shakespeare/Amakusa/card-name/printed-text identity routing in production; no Shakespeare canonical consumer materialization; no `data/authoring/**` delta; zero migration credit.
+
+Formal dependency:
+- `P3-S-OWNER-AMAKUSA-COMPLETE-MIGRATION` stays `WAIT_READINESS_FOLLOWUP` until this exact follow-up is fresh-R accepted plus FORMAL A-sync/rescan.
