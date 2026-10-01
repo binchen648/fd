@@ -705,6 +705,8 @@ describe('MatchSession semi-auto runtime', () => {
 
     expect(restored).toBe(true);
     expect(session.projectToClientState('p1').replay).toContainEqual(firstCheckpoint);
+    expect(session.projectToClientState('p1').replay).toEqual([firstCheckpoint]);
+    expect(session.replaySnapshots.map((entry) => entry.checkpointId)).toEqual([firstCheckpoint.id]);
     expect(session.projectToClientState('p1').logs.at(-1)?.type).toBe('replay_restored');
   });
 

@@ -3153,8 +3153,9 @@ export class MatchSession {
   }
 
   restoreToCheckpoint(checkpointId: string): boolean {
-    const snapshot = this.replaySnapshots.find((candidate) => candidate.checkpointId === checkpointId);
-    if (!snapshot) return false;
+    const snapshotIndex = this.replaySnapshots.findIndex((candidate) => candidate.checkpointId === checkpointId);
+    if (snapshotIndex < 0) return false;
+    const snapshot = this.replaySnapshots[snapshotIndex]!;
     if (!verifyDeferredRuntimeStateSeal(
       replayDeferredAuthorityPayload(snapshot),
       snapshot.deferredRuntimeStateSeal,
@@ -3203,6 +3204,15 @@ export class MatchSession {
     this.consumedDirectiveCount = snapshot.consumedDirectiveCount;
     this.stopReason = snapshot.stopReason;
     this.rejection = candidateRejection;
+    // Restoring a checkpoint rewinds the authoritative replay lineage. Keeping future
+    // checkpoints would expose states that are no longer descendants of the restored state
+    // and can also cause checkpoint ids to collide when play resumes from this branch.
+    this.replay = this.replay.slice(0, snapshotIndex + 1);
+    this.replaySnapshots = this.replaySnapshots.slice(0, snapshotIndex + 1);
+    pruneOpponentCloseToOneTrustedReplayTransactions(
+      this.persistenceScope,
+      this.replaySnapshots.map((candidate) => candidate.checkpointId),
+    );
     synchronizeOpponentCloseToOneCurrentTrust(this.state, this.persistenceScope);
     this.record('replay_restored', checkpointId);
     return true;

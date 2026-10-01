@@ -8079,3 +8079,9 @@ Detailed report: docs/reports/2026-10-01-p3-b-amakusa-owner-readiness-source-def
 - content validate/compile: `11 masters / 19 servants / 20 events / 0 blocking issues`; generated determinism, typecheck, toolchain, identity audit and diff-check PASS.
 - Strict formal accounting remains `189/944`, remaining `755` before acceptance; maximum post-acceptance A-sync increment is `+5`.
 - Detailed report: `docs/reports/2026-10-01-p3-s-owner-amakusa-complete-migration-result.md`.
+### Amakusa formal replay-checkpoint revision closure
+
+- PR #517 predecessor Candidate `e2fa9d4298e204362367ae74684b86dedf3e40fc` received `MIGRATION_NEEDS_REVISION`; canonical relay evidence: `https://github.com/binchen648/fd/pull/517#issuecomment-5925732349`.
+- The sole P1 is shared replay-lineage behavior exposed by the larger Amakusa production action/checkpoint count: restore succeeded but retained future checkpoints, so the restored checkpoint could fall outside the last-40 client projection.
+- Successor revision rewinds replay + replaySnapshots to the restored checkpoint and prunes future replay trust; the regression is strengthened rather than weakened.
+- No Amakusa authoring/rule semantic was changed by this revision; accounting remains `189/944`, remaining `755` pending fresh exact successor review.

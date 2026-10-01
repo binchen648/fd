@@ -25,7 +25,7 @@ All five are absent at Base and materialized together in one canonical owner arc
 - `s3` consumes accepted pre-climax entry seal tax, one-mana linked contribution and different-battlefield VP reward.
 - `s1a` consumes accepted revealed active-member servant-skill temporary copy, original-use round lock and active-member removal while preserving ever-member history.
 - Ascension consumes accepted opponent -2 Command-Seal unlock terminal plus exact `servant.shakespeare.skill.sc-shakespeare-3` physical play -> controller basic-card +4 Power authority.
-- No Amakusa/Shakespeare/card-name/printed-text/legacy-handler routing is added to production runtime; production runtime delta from exact Base is empty.
+- No Amakusa/Shakespeare/card-name/printed-text/legacy-handler routing is added. The successor revision adds one identity-free shared MatchSession replay-checkpoint rewind fix required by formal review.
 
 ## Canonical behavior coverage
 
@@ -48,7 +48,7 @@ All five are absent at Base and materialized together in one canonical owner arc
 - content validate/compile: `11 masters / 19 servants / 20 events / 0 blocking issues`.
 - generated determinism PASS.
 - Phase 3 coverage and automation-audit commands completed successfully; their transient audit artifacts were not added to the owner Candidate because those repository artifacts are not versioned per owner migration.
-- production runtime delta EMPTY against exact Base.
+- production runtime delta against exact Base is limited to the identity-free MatchSession replay-checkpoint rewind fix required by formal review.
 - production Amakusa/Shakespeare identity audit CLEAN.
 - `git diff --check` PASS.
 - generated hashes:
@@ -59,3 +59,12 @@ All five are absent at Base and materialized together in one canonical owner arc
 ## Governance
 
 This is the one formal owner-complete Amakusa Candidate for the current frozen 5-identity scope. Implementation and Reviewer acceptance alone grant no credit. Only exact `MIGRATION_ACCEPTED` followed by FORMAL A-sync/accounting may add `+5`, moving strict accounting from `189/944` to `194/944`, remaining `750`.
+## Reviewer revision closure
+
+- Predecessor Candidate `e2fa9d4298e204362367ae74684b86dedf3e40fc` received `MIGRATION_NEEDS_REVISION` on PR #517.
+- Canonical bounded relay evidence: `https://github.com/binchen648/fd/pull/517#issuecomment-5925732349`.
+- P1 root cause: `projectToClientState()` exposes only the last 40 replay entries. The Amakusa-integrated seed produced 41 checkpoints, exposing that `restoreToCheckpoint()` restored state/logs but kept future replay checkpoints. The restored first checkpoint was therefore trimmed from projection even though restore returned success.
+- Successor fix is identity-free: after all checkpoint authority validation succeeds, restore rewinds both `replay` and `replaySnapshots` to the restored checkpoint, prunes future replay trust, then records `replay_restored`.
+- The existing regression is not weakened; it is strengthened to require the authoritative replay lineage and snapshot lineage to end exactly at the restored checkpoint.
+- Post-fix verification: focused failing reproduction PASS; full MatchSession `33/33 PASS`; complete Amakusa formal + readiness `38/38 PASS`; typecheck/content/generated/toolchain/diff gates PASS.
+- Migration accounting remains `189/944`, remaining `755` pending fresh review of the successor Candidate.
