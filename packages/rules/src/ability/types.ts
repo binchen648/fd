@@ -488,6 +488,10 @@ export interface MultiPresenceState {
   createdRound: number;
   updatedRevision: number;
 }
+export interface LinkedRoleSkillCopyState {
+  copyCardInstanceId: string; originalCardInstanceId: string; originalOwnerPlayerId: PlayerId; leaderPlayerId: PlayerId;
+  relationshipKey: string; providerSourceCardId: string; providerAbilityId: string; round: number; used: boolean;
+}
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
@@ -511,6 +515,10 @@ export interface AbilityRuntime {
   sealedCardReplays?: Record<string, SealedCardReplayState>;
   /** Identity-free physical cards removed by an accepted battle-plunder record, keyed by physical card instance. */
   recordedRemovedCards?: Record<string, RecordedRemovedCardState>;
+  /** Identity-free temporary copied servant-skill physical cards, keyed by generated copy instance. */
+  linkedRoleSkillCopies?: Record<string, LinkedRoleSkillCopyState>;
+  /** Current-round use lock on the exact original physical servant-skill card after its copy is used. */
+  linkedRoleOriginalSkillLocks?: Record<string, number>;
   /** Identity-free server-owned structured player flags. */
   structuredPlayerFlagsByPlayer?: Record<PlayerId, Record<string, boolean | string | number>>;
   /** Round marker for flags whose authored lifecycle is exactly this_round. */

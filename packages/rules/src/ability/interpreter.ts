@@ -121,6 +121,12 @@ import {
   canExecuteLinkedRoleCoreEffect, containsLinkedRoleCorePrivilegedNode, isAcceptedLinkedRoleCoreAbility,
   isLinkedRoleCoreRuntimeProvenanceValidForRestore, linkedRoleEligibleScheduleTargetIds, linkedRoleMaximumContributionAmount, resolveLinkedRoleCoreEffect,
 } from './linked-role-core-capability';
+import {
+  canExecuteLinkedRoleMemberSkillCopy, cleanupLinkedRoleSkillCopiesAtRoundEnd, commitLinkedRoleCopiedSkillUse,
+  containsLinkedRoleMemberSkillCopyPrivilegedNode, isAcceptedLinkedRoleMemberSkillCopyAbility,
+  isLinkedRoleMemberSkillCopyRuntimeProvenanceValidForRestore, linkedRoleEligibleRevealedMemberServantSkillIds, linkedRoleOriginalSkillUseLocked,
+  resolveLinkedRoleMemberSkillCopy,
+} from './linked-role-member-skill-copy-capability';
 import { BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT, containsBattleLuckCloseDrawPlayNode, isAcceptedBattleLuckCloseDrawPlayAbility } from './divine-core-capability';
 import {
   bloodlustAscensionAdjustments, bloodlustMaximumContributionAmount, bloodlustPlayRequirementWaived, bloodlustSkillPowerBonus,
@@ -1166,6 +1172,12 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
     const options = Array.isArray(target.options) ? target.options : [];
     return options.map((opt: any) => opt.id || '');
   }
+  if (target.type === 'card_instance') {
+    const sourceAbility = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+    if (isAcceptedLinkedRoleMemberSkillCopyAbility(sourceAbility) && sourceAbility.effects[0]?.target === target.id) {
+      return linkedRoleEligibleRevealedMemberServantSkillIds(s, ctx, sourceAbility);
+    }
+  }
   if (target.type === 'player') {
     const sourceAbility = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
     if (isAcceptedLinkedRoleCoreAbility(sourceAbility) && sourceAbility.effects[0]?.target === target.id) {
@@ -1886,6 +1898,7 @@ function eligibleMultiPresenceResolutionContexts(s: GameState, sourceId: string,
 }
 function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
   if (a.execution.mode !== 'automatic') return false;
+  if (linkedRoleOriginalSkillUseLocked(s, sourceId, card(s, sourceId).controllerPlayerId)) return false;
   if (isPlayActionStructuralCandidate(a) && !isPlayActionRouteCandidate(a)) return false;
   if (isPlaySourceCardWithCostResponseStructuralCandidate(a) && !isPlaySourceCardWithCostResponseRouteCandidate(a)) return false;
   if (isAddToAttackStructuralCandidate(a) && !isAddToAttackRouteCandidate(a)) return false;
@@ -1918,6 +1931,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAcceptedMasterAscensionUnlockAbility(a) && !canExecuteMasterAscensionUnlock(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsLinkedRoleCorePrivilegedNode(a) && !isAcceptedLinkedRoleCoreAbility(a)) return false;
   if (isAcceptedLinkedRoleCoreAbility(a) && !canExecuteLinkedRoleCoreEffect(s, context(s, sourceId, a.id, event), a)) return false;
+  if (containsLinkedRoleMemberSkillCopyPrivilegedNode(a) && !isAcceptedLinkedRoleMemberSkillCopyAbility(a)) return false;
+  if (isAcceptedLinkedRoleMemberSkillCopyAbility(a) && !canExecuteLinkedRoleMemberSkillCopy(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsMultiPresencePrivilegedNode(a) && !isAcceptedMultiPresenceAbility(a)) return false;
   if (isAcceptedMultiPresenceAbility(a) && !canExecuteMultiPresenceEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsVesselCyclePrivilegedNode(a) && !isAcceptedVesselCycleAbility(a)) return false;
@@ -2148,6 +2163,7 @@ export function effectiveCardPlayCost(s: GameState, playerId: string, sourceId: 
 
 function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false, ignoreManaCost = false, allowedSourceZones: readonly string[] = ['hand', 'skill']): string | undefined {
   const c = card(s, sourceId); const d = definition(s, sourceId); if (!d) return 'unsupported';
+  if (linkedRoleOriginalSkillUseLocked(s, sourceId, p)) return 'skill_use_forbidden';
   if (d.mode !== 'automatic') return d.mode;
   if (c.controllerPlayerId !== p || !allowedSourceZones.includes(c.zone) || player(s, p).status !== 'active') return 'illegal_action';
   if (c.zone === 'skill' && (isActivationOnlyDefinition(s, c.definitionId) || d.abilities.some((ability) =>
@@ -3897,6 +3913,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
     if (!isBloodlustRuntimeProvenanceValidForRestore(s, !options.deferBloodlustContributionAuthority)) return false;
     if (!isMultiPresenceRuntimeProvenanceValidForRestore(s)) return false;
     if (!isLinkedRoleCoreRuntimeProvenanceValidForRestore(s)) return false;
+    if (!isLinkedRoleMemberSkillCopyRuntimeProvenanceValidForRestore(s)) return false;
     if (!(r.pendingDelayedActivations ?? []).every((entry) => {
       const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
       const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
@@ -6296,6 +6313,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
+  if (!commitLinkedRoleCopiedSkillUse(s, ctx.sourceCardId, ctx.controllerId)) reject('invalid_state', 'Copied linked-role servant skill lost source provenance');
   if (stageMultiPresenceLocationContext(s, ctx, a)) return;
   if (containsMasterAscensionUnlockPrivilegedNode(a)) {
     if (!isAcceptedMasterAscensionUnlockAbility(a) || !resolveMasterAscensionUnlock(s, ctx, a)) reject('resolution_failed', 'Unsupported master-ascension unlock semantic');
@@ -6306,6 +6324,13 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     const pending = findPendingTarget(s, ctx, a, a.effects);
     if (pending) { runtime(s).pendingDecision = pending; return; }
     if (!resolveLinkedRoleCoreEffect(s, ctx, a)) reject('resolution_failed', 'Linked-role resolution failed');
+    return;
+  }
+  if (containsLinkedRoleMemberSkillCopyPrivilegedNode(a)) {
+    if (!isAcceptedLinkedRoleMemberSkillCopyAbility(a)) reject('resolution_failed', 'Unsupported linked-role member skill-copy semantic');
+    const pending = findPendingTarget(s, ctx, a, a.effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    if (!resolveLinkedRoleMemberSkillCopy(s, ctx, a)) reject('resolution_failed', 'Linked-role member skill-copy resolution failed');
     return;
   }
   if (containsMultiPresencePrivilegedNode(a)) {
@@ -6568,6 +6593,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   settleBattlefieldAttackOffers(s, event);
   settlePendingRulerSealRewards(s, event);
   if (event.type === 'round_end') {
+    cleanupLinkedRoleSkillCopiesAtRoundEnd(s);
     for (const candidate of s.players) {
       const flags = structuredPlayerFlags(s, candidate.id);
       if (flags.__fd_temporary_servant_concealment_active !== true) continue;
@@ -7649,6 +7675,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
         if (!Array.isArray(selected) || selected.length < d.min || selected.length > d.max || new Set(selected).size !== selected.length || selected.some(id => !allowed.includes(id))) reject('illegal_target', 'Selected targets are not legal');
       }
       d.context.selections[str(d.target.id)] = selected; delete r.pendingDecision;
+      if (isAcceptedLinkedRoleMemberSkillCopyAbility(abilityDefinition(s, d.context.sourceCardId, d.context.abilityId))) { executeAbility(s, d.context); break; }
       executeEffects(s, d.context, d.remainingEffects); break;
     }
     case 'resolve_response': {
@@ -7717,6 +7744,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   const sealCarrier = player(s, playerId) as unknown as { commandSpells?: number };
   const availableSeals = Number(sealCarrier.commandSpells ?? 3);
   if (!Number.isSafeInteger(availableSeals) || availableSeals < commandSealCost) reject('insufficient_command_seals', 'Cannot pay aggregate Command Seal card-play cost');
+  for (const choice of choices) if (!commitLinkedRoleCopiedSkillUse(s, choice.cardInstanceId, playerId)) reject('invalid_state', 'Copied linked-role servant skill lost source provenance');
   const playedCards = choices.map(c => ({ instanceId: c.cardInstanceId, controllerId: playerId,
     cardType: definition(s, c.cardInstanceId)!.cardType, faceDown: !!c.faceDown }));
   const prePaymentMana = player(s, playerId).mana;
