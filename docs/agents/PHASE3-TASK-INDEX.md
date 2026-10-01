@@ -7651,7 +7651,7 @@ Required disposition:
 ## TASK P3-S-OWNER-AKIHA-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `READY`
+Status: `BLOCKED_BY_READINESS_FOLLOWUP`
 Classification: formal owner-complete migration for the complete current `master.akiha` frozen scope
 
 Frozen owner scope:
@@ -7672,3 +7672,38 @@ Required disposition:
 - consume only accepted identity-free readiness capabilities and introduce no Akiha/card-name/printed-text/legacy identity routing in production runtime;
 - run the owner formal/focused suite plus affected shared regressions, toolchain/typecheck/content/generated/identity/diff gates;
 - freeze one exact formal Candidate, one PR, one fresh independent R, then one A-sync/accounting.
+
+## TASK P3-B-AKIHA-OWNER-READINESS-MASTER-ASCENSION-UNLOCK
+
+Owner: Codex B / FORMAL readiness follow-up
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Classification: bounded zero-credit generic Master-ascension unlock capability discovered during Akiha formal materialization preflight
+
+Exact Base: `d7f49dacd751b73264088c9b6fd0566b4ae7c9d5`
+Accounting: strict `181/944`, remaining `763`; permanently zero migration credit.
+
+Discovery:
+- Akiha frozen ascension `master.akiha.skill.ascension` / 【璀璨空想】 is an outside-game Master Skill.
+- Development source proves Master ascension unlock is owned by Shakespeare's frozen `servant.shakespeare.skill.sc-shakespeare-2` clause 【角色颠倒】: if Shakespeare is your servant, unlock your Master ascension.
+- Current canonical Shakespeare archive contains only sc1; current production has no generic servant-to-current-Master ascension-unlock authority.
+- Akiha formal therefore remains blocked; this follow-up must not migrate Shakespeare sc2 or any Akiha consumer.
+
+Accepted implementation boundary:
+- new identity-free privileged effect `unlock_controller_master_ascension`;
+- source must be an exact controller-owned skill-zone `servant_skill` whose definition owner equals the controller's current `servantCardId`;
+- target is derived only from the controller's current `masterCardId`: exact canonical `<masterCardId>.skill.ascension`, `master_skill`, owner-matching, `initialPlacement=outside_game`, automatic definition;
+- forced `round_start` and exact Action phase activation shapes are accepted; widened shapes fail loader admission;
+- target provisioning is idempotent, owner/controller-bound and never resurrects or duplicates an already-existing physical ascension card;
+- implementation contains no Akiha/Shakespeare/printed-name identity routing.
+
+Verification:
+- focused real round/action regression `5/5 PASS`;
+- first affected group `105/105 PASS`;
+- provisioning/Shakespeare-neighboring/complex/MatchSession group `96/96 PASS`;
+- unique affected aggregate `201/201 PASS`;
+- `FD_TOOLCHAIN_OK`; typecheck PASS; content validate/compile PASS (`8 masters / 19 servants / 20 events / 0 blocking issues`); generated determinism PASS with unchanged hashes;
+- `data/authoring/**` delta EMPTY; production identity audit CLEAN; `git diff --check` PASS.
+
+Detailed report: `docs/reports/2026-10-01-p3-b-akiha-owner-readiness-master-ascension-unlock-result.md`.
+
+Required disposition: one zero-credit Candidate / PR / fresh R; after acceptance FORMAL must A-sync/full-owner rescan before resuming `P3-S-OWNER-AKIHA-COMPLETE-MIGRATION`.

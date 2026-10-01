@@ -110,6 +110,7 @@ import {
   isAcceptedOpponentCloseOneNonResidualAbility,
   isOpponentCloseToOneCandidate,
 } from './opponent-close-to-one';
+import { canExecuteMasterAscensionUnlock, containsMasterAscensionUnlockPrivilegedNode, isAcceptedMasterAscensionUnlockAbility, resolveMasterAscensionUnlock } from './master-ascension-unlock-capability';
 import { BATTLE_LUCK_CLOSE_DRAW_PLAY_EFFECT, containsBattleLuckCloseDrawPlayNode, isAcceptedBattleLuckCloseDrawPlayAbility } from './divine-core-capability';
 import {
   bloodlustAscensionAdjustments, bloodlustMaximumContributionAmount, bloodlustPlayRequirementWaived, bloodlustSkillPowerBonus,
@@ -1851,6 +1852,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsTerrainFortificationExtraPlayPrivilegedNode(a) && !isAcceptedTerrainFortificationExtraPlayAbility(a) && !isAcceptedReactionCounterPlayHandAbility(a)) return false;
   if (containsMatchingDefinitionCapabilityNode(a) && !isAcceptedMatchingDefinitionCapabilityAbility(a)) return false;
   if (containsReactionCounterPrivilegedNode(a) && !isAcceptedReactionCounterCapabilityAbility(a)) return false;
+  if (containsMasterAscensionUnlockPrivilegedNode(a) && !isAcceptedMasterAscensionUnlockAbility(a)) return false;
+  if (isAcceptedMasterAscensionUnlockAbility(a) && !canExecuteMasterAscensionUnlock(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsVesselCyclePrivilegedNode(a) && !isAcceptedVesselCycleAbility(a)) return false;
   if (isAcceptedVesselCycleAbility(a) && !canExecuteVesselCycleEffect(s, context(s, sourceId, a.id, event), a.effects[0]!)) return false;
   if (containsBloodlustPrivilegedNode(a) && !isAcceptedBloodlustAbility(a)) return false;
@@ -6228,6 +6231,10 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
+  if (containsMasterAscensionUnlockPrivilegedNode(a)) {
+    if (!isAcceptedMasterAscensionUnlockAbility(a) || !resolveMasterAscensionUnlock(s, ctx, a)) reject('resolution_failed', 'Unsupported master-ascension unlock semantic');
+    return;
+  }
   if (containsVesselCyclePrivilegedNode(a)) {
     if (!isAcceptedVesselCycleAbility(a) || !resolveVesselCycleEffect(s, ctx, a, a.effects[0]!)) reject('resolution_failed', 'Unsupported vessel-cycle semantic');
     return;
