@@ -7779,10 +7779,13 @@ The locked Reference `core.alice-phantom-player` is corroboration only. Referenc
 ## TASK P3-B-ALICE-OWNER-READINESS-MULTI-PRESENCE-CORE
 
 Owner: FORMAL readiness
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `ACCEPTED`
 Classification: bounded zero-credit generic multi-presence core foundation for current Alice owner-readiness
 
 Exact Base: `0ad0e05d79a738aa55f43ea9c87ef5db5ef2acb9`
+Accepted Candidate: `29cece96ef155c76899a1e14673923405b1a870b`
+Canonical evidence: `https://github.com/binchen648/fd/pull/510#issuecomment-5923495992`
+Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
 Accounting: strict `186/944`, remaining `758`; permanently zero migration credit.
 
 Accepted Candidate scope must remain identity-free and cover only the generic core:
@@ -7817,7 +7820,7 @@ Detailed report: `docs/reports/2026-10-01-p3-b-alice-owner-readiness-multi-prese
 ## TASK P3-B-ALICE-OWNER-READINESS-PRESENCE-CONTEXT
 
 Owner: FORMAL readiness follow-up
-Status: `WAIT_CORE_ACCEPTANCE`
+Status: `READY`
 Classification: bounded zero-credit generic presence-context interaction/movement closure required by frozen Alice source
 
 Required source-authored closure:
