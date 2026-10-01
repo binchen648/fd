@@ -7932,7 +7932,7 @@ Locked Reference identity handlers remain corroboration only and must not be res
 ## TASK P3-B-AMAKUSA-OWNER-READINESS-LINKED-ROLE-CORE
 
 Owner: FORMAL readiness
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `ACCEPTED`
 Classification: bounded zero-credit identity-free linked-role core foundation for current Amakusa owner-readiness
 
 Exact Base: `e00f0d6b7b9d7c9db987bb7e1e510a6bc1d8d930`.
@@ -7960,7 +7960,7 @@ This Candidate does NOT close s1a or ascension and does NOT close the parent own
 ## TASK P3-B-AMAKUSA-OWNER-READINESS-MEMBER-SKILL-COPY
 
 Owner: FORMAL readiness follow-up
-Status: `WAIT_CORE_ACCEPTANCE`
+Status: `READY`
 Classification: bounded zero-credit generic temporary revealed servant-skill copy / original-use lock / linked-member removal closure for Amakusa s1a
 
 Required frozen source closure:
