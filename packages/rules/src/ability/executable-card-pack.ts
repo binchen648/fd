@@ -10,6 +10,8 @@ import { sha256Hex } from './portable-sha256';
 import {
   DataFlowValidationError,
   hasResolutionDataFlowSyntax,
+  isResultBindingProductionBridgeRouteCandidate,
+  isResultBindingProductionBridgeSemantic,
   validateResolutionDataFlowNodes,
 } from './resolution-dataflow';
 import type {
@@ -477,6 +479,9 @@ function validateAbilityTargetReferences(card: ExecutableCardDefinition, cards: 
 function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition): void {
   for (const ability of card.abilities) {
     const effects = [...ability.effects, ...ability.creates];
+    if (isResultBindingProductionBridgeRouteCandidate(ability) && !isResultBindingProductionBridgeSemantic(ability)) {
+      throw new Error(`Unsupported result-binding production bridge semantic shape: ${card.id}:${ability.id}`);
+    }
     if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isBattleLossResourceTriggerRouteCandidate(ability) && !isBattleLossServantRevealRouteCandidate(ability) && !isSharedVictoryVpTriggerRouteCandidate(ability) && !isBattleEndSourceReturnRouteCandidate(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isPlayActionRouteCandidate(ability) && !isPlaySourceCardWithCostResponseStructuralCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability)) continue;
     const path = `cards.${card.id}.abilities.${ability.id}.effects`;
     try {

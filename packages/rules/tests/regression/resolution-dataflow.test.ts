@@ -124,6 +124,8 @@ function producerFor(effectType: keyof typeof resultSchemas, binding: string): R
       return { id: `produce-${binding}`, type: 'remove_advantage_position', target: { expr: 'same_battlefield_opponents' }, bind: binding };
     case 'move_all_remaining':
       return { id: `produce-${binding}`, type: 'move_all_remaining', owner: 'controller', from: 'hand', to: 'discard', bind: binding };
+    case 'move_card':
+      return { id: `produce-${binding}`, type: 'move_card', target: 'selected_cards', from: 'removed_from_game', to: 'skill', bind: binding };
     case 'move_source_card':
       return { id: `produce-${binding}`, type: 'move_source_card', to: 'skill', bind: binding };
     case 'move_player':
@@ -375,6 +377,9 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
           source.definitionId = 'fixture.skill.source';
           source.zone = effectType === 'move_source_card' ? 'attack_area' : 'field';
           source.visibility = { scope: 'public' };
+        }
+        if (effectType === 'move_card') {
+          state.cards.find((card) => card.instanceId === 'support-shot')!.zone = 'removed_from_game';
         }
         if (effectType === 'move_source_card' || effectType === 'reveal_servant_package') {
           state.abilityRuntime = {
