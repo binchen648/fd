@@ -1807,6 +1807,20 @@ function payMana(
   const amount = evaluateIntegerAmount(transaction, effect.amount, 'pay_mana');
   if (amount < 0) throw new ResolutionRuntimeError('invalid_amount', 'Mana payment amount must be nonnegative.');
   const player = findPlayer(transaction.workingState, transaction.context.controllerId);
+  if (effect.selection !== undefined) {
+    const selected = transaction.context.selections[effect.selection];
+    if (!selected) throw new ResolutionRuntimeError('missing_selection', `Missing payment selection '${effect.selection}'.`);
+    if (selected.length === 0) {
+      return {
+        effectId: effect.id,
+        effectType: 'pay_mana',
+        status: 'no_op',
+        affectedEntities: [],
+        payload: { playerId: player.id, requestedAmount: amount, actualAmount: 0, before: player.mana, after: player.mana },
+        emittedEventIds: [],
+      };
+    }
+  }
   const before = player.mana;
   if (amount > before) throw new ResolutionRuntimeError('insufficient_mana', 'Cannot pay mana.');
   player.mana = before - amount;

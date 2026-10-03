@@ -120,6 +120,65 @@ describe('P3-B11 result binding production bridge', () => {
     expect(session.state.players.find((player) => player.id === 'p1')).toMatchObject({ mana: 6, vp: 2 });
   });
 
+  it('does not pay when the owner declines an available optional second target', () => {
+    const { session, sourceInstanceId, firstTargetInstanceId, secondTargetInstanceId } = installGoldenFixture();
+    expect(session.dispatchPlayerAction('p1', {
+      type: 'activate_ability', cardInstanceId: sourceInstanceId, abilityId: goldenAbilityId,
+    }).ok).toBe(true);
+    expect(session.dispatchPlayerAction('p1', {
+      type: 'choose_target', decisionId: session.getPlayerView('p1').pendingDecision!.id, selectedIds: [firstTargetInstanceId],
+    }).ok).toBe(true);
+
+    const beforeDecline = structuredClone(session.state);
+    const decline = session.dispatchPlayerAction('p1', {
+      type: 'choose_target', decisionId: session.getPlayerView('p1').pendingDecision!.id, selectedIds: [],
+    });
+    expect(decline.ok).toBe(true);
+    expect(session.state.cards.find((card) => card.instanceId === secondTargetInstanceId)?.zone).toBe('removed_from_game');
+    expect(session.state.players.find((player) => player.id === 'p1')).toMatchObject({ mana: 12, vp: 2 });
+    expect(session.state.abilityRuntime!.events.slice(beforeDecline.abilityRuntime!.events.length)).not.toContainEqual(expect.objectContaining({ type: 'mana_paid' }));
+  });
+
+  it('rolls back the complete first-stage command when a later staged node fails', () => {
+    const { session, sourceInstanceId, firstTargetInstanceId, secondTargetInstanceId } = installGoldenFixture();
+    expect(session.dispatchPlayerAction('p1', {
+      type: 'activate_ability', cardInstanceId: sourceInstanceId, abilityId: goldenAbilityId,
+    }).ok).toBe(true);
+    session.state.cards = session.state.cards.filter((card) => card.instanceId !== secondTargetInstanceId);
+    session.state.abilityRuntime!.pendingDecision!.remainingEffects.push({
+      id: 'forced-first-stage-failure', type: 'fail_invariant', message: 'test failure after first-stage prefix',
+    } as any);
+    const before = structuredClone(session.state);
+
+    const result = session.dispatchPlayerAction('p1', {
+      type: 'choose_target', decisionId: session.getPlayerView('p1').pendingDecision!.id, selectedIds: [firstTargetInstanceId],
+    });
+    expect(result.ok).toBe(false);
+    expect(result.rejection?.code).toBe('resolution_failed');
+    expect(session.state).toEqual(before);
+  });
+
+  it('rolls back only the second-stage command after payment and movement fail', () => {
+    const { session, sourceInstanceId, firstTargetInstanceId, secondTargetInstanceId } = installGoldenFixture();
+    expect(session.dispatchPlayerAction('p1', {
+      type: 'activate_ability', cardInstanceId: sourceInstanceId, abilityId: goldenAbilityId,
+    }).ok).toBe(true);
+    session.state.abilityRuntime!.pendingDecision!.remainingEffects.push({
+      id: 'forced-second-stage-failure', type: 'fail_invariant', message: 'test failure after second-stage payment',
+    } as any);
+    expect(session.dispatchPlayerAction('p1', {
+      type: 'choose_target', decisionId: session.getPlayerView('p1').pendingDecision!.id, selectedIds: [firstTargetInstanceId],
+    }).ok).toBe(true);
+    const afterFirstStage = structuredClone(session.state);
+
+    const result = session.dispatchPlayerAction('p1', {
+      type: 'choose_target', decisionId: session.getPlayerView('p1').pendingDecision!.id, selectedIds: [secondTargetInstanceId],
+    });
+    expect(result.ok).toBe(false);
+    expect(result.rejection?.code).toBe('resolution_failed');
+    expect(session.state).toEqual(afterFirstStage);
+  });
+
   it('does not offer activation when the mandatory first target is absent', () => {
     const { session, sourceInstanceId, firstTargetInstanceId, secondTargetInstanceId } = installGoldenFixture();
     session.state.cards = session.state.cards.filter((card) => ![firstTargetInstanceId, secondTargetInstanceId].includes(card.instanceId));
