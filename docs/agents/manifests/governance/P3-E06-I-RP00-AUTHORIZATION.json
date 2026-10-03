@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "fd-phase3-integration-authorization-v1",
+  "controlEpoch": "FD-P3-2026-09-23-06",
+  "taskId": "P3-E06-I-RP00-PROMOTION",
+  "status": "AUTHORIZED_TO_CREATE_PROMOTION_PR",
+  "owner": "Codex I",
+  "authoritativeMain": "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
+  "runtimeCandidateSha": "30be3b74258c817ede1cb857ace947505b62d8ed",
+  "governanceCarrierSha": "054726e90ce7e65a181f07ce151f614f677ce970",
+  "aSyncLineageHeadSha": "3af8509693cdae285051c75e499bbcef3e9a8a96",
+  "governanceAttestation": {
+    "verdict": "GOVERNANCE_INPUT_COMPLETE",
+    "manifestPath": "docs/agents/manifests/governance/P3-E06-G-OVERRIDE-ATTESTATION.json",
+    "manifestSha256": "B88CB5C0D16F4D6243BC0C484037478ECB74778001D5BE5EE50DD138775AAE31",
+    "reportPath": "docs/reports/2026-10-03-p3-e06-g-governance-override-attestation.md",
+    "reportSha256": "A5D1E209FD0F4B5A6DB40AD6F32EF985FEF08CF60EC161D18222D88112123CC6"
+  },
+  "recommendedBranch": "codex/i-p3-e06-rp00-setup-create-to-skill-promotion",
+  "prBase": "main",
+  "prCreationAuthorized": true,
+  "mergeAuthorized": false,
+  "humanApprover": "github:binchen648",
+  "requiredPromotionHeadAncestors": [
+    "30be3b74258c817ede1cb857ace947505b62d8ed",
+    "054726e90ce7e65a181f07ce151f614f677ce970",
+    "3af8509693cdae285051c75e499bbcef3e9a8a96"
+  ],
+  "forbiddenLineage": "abbf1ae6419719462ff34fb3ce46f4c97f7407a4",
+  "forbiddenPullRequestReuse": 480,
+  "requiredPolicyState": "PASS",
+  "creditBeforeMerge": {
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "mainDenominatorDelta": 0,
+    "gateC": "UNCHANGED",
+    "promotedOnMain": false
+  },
+  "allowedResult": "PROMOTION_PR_CREATED_WAIT_HUMAN_APPROVAL"
+}

@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "fd-phase3-governance-override-attestation-v1",
+  "controlEpoch": "FD-P3-2026-09-23-06",
+  "taskId": "P3-E06-G-OVERRIDE-01",
+  "repository": "https://github.com/binchen648/fd",
+  "plannerOverride": {
+    "path": "docs/agents/manifests/governance/P3-E06-DISTINCT-ACCOUNT-OVERRIDE.json",
+    "sha256": "A6C856B70BF72FAD82BA99424C8B17CE87734BD4FE1EFD59B65E02D8A3B7EC94",
+    "independentGithubAccountRequired": false,
+    "independentRoleArtifactsRequired": true,
+    "exactShaBindingRequired": true,
+    "immutableStageOrderingRequired": true,
+    "promotionPolicyMustPass": true,
+    "humanApprovalRequired": true
+  },
+  "governanceOwner": {
+    "role": "Codex G / Promotion Governance Owner",
+    "identity": "github:binchen648",
+    "githubAccountId": 201342173,
+    "profileUrl": "https://github.com/binchen648",
+    "authenticationSource": "gh-api-keyring",
+    "distinctAccountCheckRequired": false,
+    "identityVerified": true,
+    "verificationTimestamp": "2026-10-03T10:37:47.2670874+08:00"
+  },
+  "authoritativeMain": {
+    "ref": "origin/main",
+    "sha": "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
+    "verified": true
+  },
+  "runtimeCandidate": {
+    "sha": "30be3b74258c817ede1cb857ace947505b62d8ed",
+    "tree": "2cf691c41ebab24e1d35ea5c96a85ff8881d764b"
+  },
+  "governanceCarrier": {
+    "sha": "054726e90ce7e65a181f07ce151f614f677ce970",
+    "branch": "codex/b-p3-e04-s00-a2-current-candidate",
+    "pullRequest": 491,
+    "pullRequestUrl": "https://github.com/binchen648/fd/pull/491",
+    "remoteHeadVerified": true,
+    "candidateIsAncestor": true,
+    "runtimeOrAuthoringDeltaFromCandidate": false,
+    "changedPaths": [
+      "artifacts/reviewer-evidence/2026-09-29-p3-e04-s00-a2-reviewer-b.json",
+      "docs/reviews/phase3/P3-E04-S00-A2-review.json"
+    ]
+  },
+  "runtimeReview": {
+    "reviewerRole": "Reviewer B",
+    "identity": "github:binchen648",
+    "reviewedCandidateSha": "30be3b74258c817ede1cb857ace947505b62d8ed",
+    "verdict": "PASS",
+    "artifactCommit": "73733de713e0deb833241417a04f061faf3ce8a3",
+    "artifactPath": "artifacts/reviewer-evidence/2026-09-29-p3-e04-s00-a2-reviewer-b.json",
+    "artifactSha256": "FD988E5544AF230D148FE9CD94E218293D54BFFB05BCFA3AE7C09B3970D66C67",
+    "githubRecordCommit": "054726e90ce7e65a181f07ce151f614f677ce970",
+    "githubRecordPath": "docs/reviews/phase3/P3-E04-S00-A2-review.json",
+    "githubRecordSha256": "C0ADB21C7358E4F6F1A03FF9888F323AA9A88811B1632133D182AEB4E5961F04",
+    "githubThread": "https://github.com/binchen648/fd/pull/491#issuecomment-5903399534",
+    "githubObjectId": 5903399534
+  },
+  "evidenceSync": {
+    "ownerRole": "Codex A",
+    "reviewedSyncSha": "00add371a1d32d09ed9c09ca3856490a1fa6ad6a",
+    "lineageHeadSha": "3af8509693cdae285051c75e499bbcef3e9a8a96",
+    "branch": "codex/a-p3-e04-s00-a2-current-candidate-sync",
+    "artifactPath": "artifacts/phase3-e04-s00-a2-current-candidate-sync.json",
+    "artifactSha256": "EBC56094F744CE7DE5FA1D6700DF57B92EFE66B0AF9A7A8B411FDFA11080F157",
+    "candidateBindingMatches": true,
+    "carrierIsAncestorOfLineageHead": true,
+    "runtimeOrAuthoringDelta": false
+  },
+  "evidenceReview": {
+    "reviewerRole": "Reviewer A",
+    "identity": "Codex Reviewer A",
+    "verdict": "PASS",
+    "reviewedSyncSha": "00add371a1d32d09ed9c09ca3856490a1fa6ad6a",
+    "bindingCommit": "3af8509693cdae285051c75e499bbcef3e9a8a96",
+    "bindingArtifactPath": "artifacts/phase3-e04-s00-a2-reviewer-a-sync-binding.json",
+    "bindingArtifactSha256": "4E92FEF7AB33C025AB13170DB1F5A24B7AEADDBC9A6A5C1EEEB81AE3ED7A0A31",
+    "syncArtifactSha256": "EBC56094F744CE7DE5FA1D6700DF57B92EFE66B0AF9A7A8B411FDFA11080F157",
+    "exactBindingVerified": true
+  },
+  "policyEvidence": {
+    "workflowRunId": 37088881513,
+    "jobId": 111104751814,
+    "url": "https://github.com/binchen648/fd/actions/runs/37088881513",
+    "headBranch": "codex/b-p3-e04-s00-a2-current-candidate",
+    "headSha": "054726e90ce7e65a181f07ce151f614f677ce970",
+    "conclusion": "success",
+    "output": "PHASE_3_GOVERNANCE_PASSED",
+    "exactCarrierVerified": true
+  },
+  "replacementIndependenceControls": {
+    "completedRoleStagesThroughCodexGVerified": true,
+    "separateArtifactsVerified": true,
+    "chronologicalStageOrderingVerified": true,
+    "candidateCarrierSeparationVerified": true,
+    "artifactHashesVerified": true,
+    "freshPolicyRunVerified": true,
+    "crossRoleArtifactRewriteDetected": false,
+    "codexIStageReservedAndNotExecuted": true,
+    "humanApprovalStageReservedAndNotExecuted": true,
+    "finalHumanApprovalStillRequired": true
+  },
+  "accounting": {
+    "mainCoverageCreditDelta": 0,
+    "mainDenominatorDelta": 0,
+    "migrationCreditDelta": 0,
+    "promotedOnMain": false
+  },
+  "supersededLineage": {
+    "candidateSha": "abbf1ae6419719462ff34fb3ce46f4c97f7407a4",
+    "status": "SUPERSEDED_BY_USER_APPROVED_LINEAGE_OVERRIDE",
+    "mayBeMixedIntoPromotion": false
+  },
+  "governanceResult": {
+    "lineageVerified": true,
+    "immutableProvenanceVerified": true,
+    "overridePolicySatisfied": true,
+    "verdict": "GOVERNANCE_INPUT_COMPLETE",
+    "allowedNextOwner": "Planner",
+    "codexIAuthorized": false
+  },
+  "forbiddenClaims": [
+    "PROMOTED_ON_MAIN",
+    "MAIN_COVERAGE_CREDIT",
+    "MIGRATION_CREDIT",
+    "GATE_C_PASS",
+    "PHASE3_COMPLETE",
+    "RELEASE_READY",
+    "CODEX_I_AUTHORIZED"
+  ]
+}
