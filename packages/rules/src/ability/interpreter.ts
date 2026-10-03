@@ -4256,6 +4256,15 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       break;
     }
     case 'activate_ability': {
+      const requestedSource = s.cards.find((candidate) =>
+        candidate.instanceId === command.cardInstanceId && candidate.controllerPlayerId === playerId);
+      const requestedAbility = requestedSource
+        ? definition(s, requestedSource.instanceId)?.abilities.find((ability) => ability.id === command.abilityId)
+        : undefined;
+      if (requestedAbility && isResultBindingProductionBridgeRouteCandidate(requestedAbility) &&
+          !isResultBindingProductionBridgeSemantic(requestedAbility)) {
+        reject('resolution_failed', 'Unsupported result-binding production bridge semantic shape.');
+      }
       if (!legal.some(a => a.type === command.type && a.cardInstanceId === command.cardInstanceId && a.abilityId === command.abilityId)) reject('illegal_action', 'Ability is not available');
       const ctx = context(s, command.cardInstanceId, command.abilityId); ctx.variables = command.variables ?? {};
       executeAbility(s, ctx); break;

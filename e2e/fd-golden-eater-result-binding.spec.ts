@@ -129,7 +129,9 @@ test('routes Golden Eater through browser, staged pending reconnect, projection,
   expect(latestSelfPlayer(projections)?.mana).toBe(12);
 
   const secondPendingRevision = projections.at(-1)?.match?.view.revision;
+  const secondDecisionId = latestPendingDecision(projections)?.id;
   expect(secondPendingRevision).toEqual(expect.any(Number));
+  expect(secondDecisionId).toEqual(expect.any(String));
   await page.reload();
   await expect(page.getByLabel('远程对局房间')).toContainText('running');
   await expect.poll(() => latestPendingDecision(projections)?.candidates).toEqual([goldenEaterSecondTargetInstanceId]);
@@ -137,11 +139,28 @@ test('routes Golden Eater through browser, staged pending reconnect, projection,
   await secondTargetWindow.getByRole('button', { name: /黄金冲击/ }).click();
   await secondTargetWindow.getByRole('button', { name: 'choose_target' }).click();
 
+  const secondStageCommand = sentMessages.find((message) =>
+    message.type === 'client:dispatch_command' &&
+    message.command.type === 'choose_target' &&
+    message.command.decisionId === secondDecisionId &&
+    message.command.selectedIds.includes(goldenEaterSecondTargetInstanceId),
+  );
+  expect(secondStageCommand).toMatchObject({
+    type: 'client:dispatch_command',
+    expectedRevision: secondPendingRevision,
+    command: {
+      type: 'choose_target',
+      decisionId: secondDecisionId,
+      selectedIds: [goldenEaterSecondTargetInstanceId],
+    },
+  });
+
   await expect.poll(() => latestPendingDecision(projections)).toBeUndefined();
   await expect.poll(() => projectedCardZone(projections.at(-1), goldenEaterSecondTargetInstanceId)).toBe('skill');
   await expect.poll(() => latestSelfPlayer(projections)?.mana).toBe(5);
   await expect.poll(() => latestSelfPlayer(projections)?.vp).toBe(4);
   const settledRevision = projections.at(-1)?.match?.view.revision;
+  const settledLogs = structuredClone(projections.at(-1)?.match?.logs ?? []);
   expect(settledRevision).toEqual(expect.any(Number));
   expect(secondPendingRevision).toEqual(expect.any(Number));
 
@@ -154,7 +173,7 @@ test('routes Golden Eater through browser, staged pending reconnect, projection,
     roomId: room.roomId,
     clientId: room.clientId,
     token: room.reconnectToken,
-    message: { ...activationCommand!, expectedRevision: initialRevision },
+    message: secondStageCommand!,
   });
   await expect.poll(() => serverErrors.length).toBeGreaterThan(staleErrorCount);
   expect(serverErrors.at(-1)).toMatchObject({
@@ -164,7 +183,11 @@ test('routes Golden Eater through browser, staged pending reconnect, projection,
   });
   await expect.poll(() => latestSelfPlayer(projections)?.mana).toBe(5);
   expect(latestSelfPlayer(projections)?.vp).toBe(4);
+  expect(projectedCardZone(projections.at(-1), goldenEaterFirstTargetInstanceId)).toBe('skill');
+  expect(projectedCardZone(projections.at(-1), goldenEaterSecondTargetInstanceId)).toBe('skill');
+  expect(latestPendingDecision(projections)).toBeUndefined();
   expect(projections.at(-1)?.match?.view.revision).toBe(settledRevision);
+  expect(projections.at(-1)?.match?.logs).toEqual(settledLogs);
 });
 
 async function openRemoteRoom(page: Page, response: Pick<RoomHttpResponse, 'roomId' | 'clientId' | 'reconnectToken'>): Promise<void> {

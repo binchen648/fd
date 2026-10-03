@@ -193,6 +193,8 @@ describe('P3-B11 result binding production bridge', () => {
     });
     expect(result.ok).toBe(false);
     expect(result.rejection?.code).toBe('illegal_action');
+    expect(result.events).toEqual([]);
+    expect(session.state.abilityRuntime?.revision).toBe(before.abilityRuntime?.revision);
     expect(session.state).toEqual(before);
   });
 
@@ -224,7 +226,9 @@ describe('P3-B11 result binding production bridge', () => {
       type: 'activate_ability', cardInstanceId: sourceInstanceId, abilityId: goldenAbilityId,
     });
     expect(result.ok).toBe(false);
-    expect(result.rejection?.code).toBe('illegal_action');
+    expect(result.rejection?.code).toBe('resolution_failed');
+    expect(result.events).toEqual([]);
+    expect(session.state.abilityRuntime?.revision).toBe(before.abilityRuntime?.revision);
     expect(session.state).toEqual(before);
   });
 
@@ -239,7 +243,9 @@ describe('P3-B11 result binding production bridge', () => {
       type: 'activate_ability', cardInstanceId: sourceInstanceId, abilityId: goldenAbilityId,
     });
     expect(result.ok).toBe(false);
-    expect(result.rejection?.code).toBe('illegal_action');
+    expect(result.rejection?.code).toBe('resolution_failed');
+    expect(result.events).toEqual([]);
+    expect(session.state.abilityRuntime?.revision).toBe(before.abilityRuntime?.revision);
     expect(session.state).toEqual(before);
   });
 });
