@@ -12,6 +12,7 @@ import {
   projectAbilityState,
   resolveMandatoryCombatPhaseActionsForPlayer,
 } from './ability/interpreter';
+import { sourceBoundDefinitionResidualGranted } from './ability/logical-day-countermeasure-capability';
 import {
   createOpponentCloseToOnePersistenceScope,
   hasOpponentCloseToOneOmittedTrustedReplayAuthority,
@@ -3489,7 +3490,8 @@ export class MatchSession {
       const shouldRemainActive = abilities.some((ability) =>
         ability.kind === 'residual' &&
         !['discard_at_round_end', 'close_at_round_end'].includes(String(ability.lifecycle?.cleanup ?? ''))) ?? false;
-      if (shouldRemainActive) continue;
+      const dynamicallyResidual = sourceBoundDefinitionResidualGranted(this.state, card.ownerPlayerId, card.definitionId);
+      if (shouldRemainActive || dynamicallyResidual) continue;
       card.zone = 'discard';
       card.controllerPlayerId = card.ownerPlayerId;
       card.visibility = visibleScope('discard', card.ownerPlayerId);

@@ -95,6 +95,13 @@ import {
   VESSEL_CYCLE_DOUBLE_ACTIVE_EFFECT, VESSEL_CYCLE_PLAYED_DEFINITION_EFFECT, VESSEL_CYCLE_JOIN_LOCATION_EFFECT, VESSEL_CYCLE_ASCENSION_EFFECT, VESSEL_CYCLE_GAME_START_BATTLEFIELD_PROVISION_EFFECT,
   containsVesselCyclePrivilegedNode, isAcceptedVesselCycleAbility,
 } from './vessel-cycle-capability';
+import {
+  LOGICAL_DAY_CYCLE_INITIALIZE_EFFECT, LOGICAL_DAY_CYCLE_ADVANCE_EFFECT, LOGICAL_DAY_CYCLE_SCHEDULE_RESET_EFFECT,
+  LOGICAL_DAY_CYCLE_RESOLVE_RESET_EFFECT, LOGICAL_DAY_CYCLE_AWAKEN_EFFECT, LOGICAL_DAY_DEFINITION_PLAY_OVERRIDE_EFFECT,
+  SOURCE_BOUND_DEFINITION_PERSISTENCE_OVERRIDE_EFFECT, ARM_NEXT_OPPONENT_ATTRIBUTE_USE_DEFEAT_EFFECT,
+  RESTORE_COMMAND_SEALS_RETURN_DEFINITION_EFFECT, JOIN_SOURCE_SKILL_TO_ATTACK_ZERO_COST_EFFECT,
+  containsLogicalDayCountermeasurePrivilegedNode, isAcceptedLogicalDayCountermeasureAbility,
+} from './logical-day-countermeasure-capability';
 import { COMBAT_REWARD_DISTRIBUTION_RULE, isAcceptedFullRewardEachAbility } from './combat-reward-distribution';
 import {
   LOCATION_MARKER_FOLLOW_EFFECT, LOCATION_MARKER_COMBAT_BRANCH_EFFECT, LOCATION_MARKER_PLACE_EFFECT, LOCATION_MARKER_MIDPOINT_DEFEAT_EFFECT,
@@ -201,6 +208,7 @@ const supportedTypes = new Set([
   'or', 'and', 'not', 'not_card_type', 'is_attack', 'has_attribute', 'not_source_card', 'has_card_id',
   'source_card_in_zone', 'controller_at_location_kind', 'reachable_along_arrows', 'can_adjust_mana',
   'event_played_card_has_attribute', 'source_reversed', 'source_active', 'source_owned', 'source_revealed',
+  'event_source_card_is_source', 'logical_day_is', 'logical_cycle_awake_is', 'round_is_climax',
   EXACT_ACTIVE_ATTACK_ATTRIBUTE_PAIR_CONDITION, TIMED_GLOBAL_RESOURCE_SUPPRESSION_EFFECT, SOURCE_SKILL_ATTACK_JOIN_EFFECT,
   CURRENT_ROUND_BASIC_ATTACK_ATTRIBUTE_PAIR_CONDITION, DRAW_THEN_SHUFFLE_TWO_HAND_EFFECT,
   MULTI_PRESENCE_RECORD_LOSS_EFFECT, MULTI_PRESENCE_DEPLOY_EFFECT, MULTI_PRESENCE_MIRROR_MOVE_EFFECT,
@@ -284,6 +292,10 @@ const supportedTypes = new Set([
   VESSEL_CYCLE_INITIALIZE_EFFECT, VESSEL_CYCLE_SCHEDULE_EFFECT, VESSEL_CYCLE_RESOLVE_EFFECT,
   VESSEL_CYCLE_RECON_BONUS_EFFECT, VESSEL_CYCLE_SKILL_AURA_EFFECT, VESSEL_CYCLE_PLAY_EXCEPTION_EFFECT,
   VESSEL_CYCLE_DOUBLE_ACTIVE_EFFECT, VESSEL_CYCLE_PLAYED_DEFINITION_EFFECT, VESSEL_CYCLE_JOIN_LOCATION_EFFECT, VESSEL_CYCLE_ASCENSION_EFFECT, VESSEL_CYCLE_GAME_START_BATTLEFIELD_PROVISION_EFFECT,
+  LOGICAL_DAY_CYCLE_INITIALIZE_EFFECT, LOGICAL_DAY_CYCLE_ADVANCE_EFFECT, LOGICAL_DAY_CYCLE_SCHEDULE_RESET_EFFECT,
+  LOGICAL_DAY_CYCLE_RESOLVE_RESET_EFFECT, LOGICAL_DAY_CYCLE_AWAKEN_EFFECT, LOGICAL_DAY_DEFINITION_PLAY_OVERRIDE_EFFECT,
+  SOURCE_BOUND_DEFINITION_PERSISTENCE_OVERRIDE_EFFECT, ARM_NEXT_OPPONENT_ATTRIBUTE_USE_DEFEAT_EFFECT,
+  RESTORE_COMMAND_SEALS_RETURN_DEFINITION_EFFECT, JOIN_SOURCE_SKILL_TO_ATTACK_ZERO_COST_EFFECT,
   BLOODLUST_INITIALIZE_EFFECT, BLOODLUST_CAGING_CONTRIBUTION_EFFECT, BLOODLUST_SPEND_TRACKER_EFFECT, BLOODLUST_COMBAT_DECAY_EFFECT,
   BLOODLUST_THRESHOLD_EFFECT, BLOODLUST_ACTION_EFFECT, BLOODLUST_TRANSFORM_EFFECT, BLOODLUST_ASCENSION_EFFECT,
   MASTER_ASCENSION_UNLOCK_EFFECT,
@@ -298,6 +310,7 @@ const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_actio
   // Master triggers
   'game_start', 'after_controller_enters_location', 'after_controller_loses_all_command_seals',
   'round_end', 'round_start', 'after_controller_first_loses_battle', 'after_battle_power_calculated',
+  'after_logical_day_cycle_awakened',
   'before_situation_or_event_resolves', 'when_movement_options_requested', 'after_card_batch_played',
   'after_master_ascension_unlocked', 'event_activated',
 ]);
@@ -349,6 +362,8 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'minLoss', 'maxLoss', 'workshopMultiplier', 'skillPowerThreshold', 'skillPowerBonus', 'playWaiverThreshold', 'playRequirementType', 'playRequirementValue', 'transformThreshold',
   'maximumResourceExclusive', 'manaGain', 'roundPowerGain', 'resourceGain', 'blockDecayThisRound', 'lockValue', 'removeAllCommandSeals', 'manaGainMultiplier',
   'vpGainNumerator', 'vpGainDenominator', 'vpRounding', 'transformedCostAdd', 'transformedPowerAdd', 'contributorPowerPenalty',
+  'initialDay', 'maxDay', 'stageDefinitionId', 'stageDay', 'awakenDefinitionId', 'day', 'rewardVp', 'closeDefinitionId',
+  'requirementValue', 'ignorePerGamePlayLimit', 'grantResidual', 'requireSameLocation', 'commandSeals', 'expected',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -748,6 +763,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsVesselCyclePrivilegedNode(candidateAbility) && !isAcceptedVesselCycleAbility(candidateAbility)) {
         issue('vesselCycle.gateway', 'Vessel-cycle privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsLogicalDayCountermeasurePrivilegedNode(candidateAbility) && !isAcceptedLogicalDayCountermeasureAbility(candidateAbility)) {
+        issue('logicalDayCountermeasure.gateway', 'Logical-day/countermeasure privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       if (containsMasterAscensionUnlockPrivilegedNode(candidateAbility) && !isAcceptedMasterAscensionUnlockAbility(candidateAbility)) {
         issue('masterAscensionUnlock.gateway', 'Master-ascension unlock privileged mechanic requires an accepted exact whole-ability semantic', id);
