@@ -8317,7 +8317,7 @@ Implementation evidence:
 ## TASK P3-S-OWNER-BAZETT-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `ACCEPTED`
+Status: `IMPLEMENTATION_BLOCKED`
 Classification: formal owner-complete migration for current owner `master.bazett`
 
 Frozen owner scope: all ten Bazett identities listed by the accepted parent readiness task.
@@ -8344,3 +8344,13 @@ Bazett owner-complete implementation evidence:
 - Caren frozen scope is exactly `master.caren.skill.ascension`, `master.caren.skill.s1`, `master.caren.skill.s1a`, `master.caren.skill.s2`, `master.caren.skill.s3` (`5` identities); canonical `data/authoring/masters/master.caren.json` is absent and no historical Caren owner-migration/A-sync evidence was found in repo history, so current canonical coverage is `0/5` with no preservation-only credit discovered.
 - The next legal FORMAL entry is a complete Caren owner-readiness preflight/gap-set transaction; readiness remains permanently zero-credit before any owner-complete consumer migration.
 - Acceptance synchronization report: `docs/reports/2026-10-05-p3-a-owner-bazett-acceptance-synchronization.md`.
+
+### Bazett post-return promotion correction
+
+- The fresh Reviewer verdict for exact Candidate `9a457a38aa9118cecee410f6b4c133a1d10fac5c` remains historically `MIGRATION_ACCEPTED`; canonical relay remains `https://github.com/binchen648/fd/pull/523#issuecomment-5982980953`.
+- Before lawful promotion/accounting, FORMAL re-read HELPER Epoch 47 and mechanically reproduced a concrete semantic contradiction: Bazett Day-3 staging/restaging/join writes current-round `playedRound`, while the previously accepted generic source-skill attack-join contract requires non-play joins not to forge current-round play provenance.
+- Existing runtime condition `played_this_round` directly consumes `cardState.playedRound === current round`; therefore the exact accepted Candidate can expose a staged/joined-but-not-played Day-3 source as ordinary current-round play to unrelated generic consumers.
+- This post-return finding is independently confirmed from production code and accepted Sitonai source-skill attack-join acceptance evidence; it is not a second review and it does not rewrite the historical Reviewer verdict.
+- The earlier A-sync commit `ac38ec7a594559e5d8aab918873aca0bb4f8c5ef` is superseded before promotion and is not valid migration-accounting evidence.
+- Strict formal accounting therefore remains `197/944`, remaining `747`; Caren does not begin until Bazett receives a corrected successor Candidate + fresh independent review + lawful A-sync.
+- Required closure: preserve genuine prior `playedRound` when present, otherwise use valid non-current provenance for first Day-3 staging, discard-to-skill restaging, and zero-cost attack join; add a real Bazett cross-consumer regression proving joined/restaged Day-3 is not `played_this_round`.

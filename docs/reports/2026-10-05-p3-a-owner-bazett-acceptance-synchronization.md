@@ -61,4 +61,22 @@ Caren frozen scope is exactly five identities:
 
 Mechanical repository rescan found no canonical `data/authoring/masters/master.caren.json`, no Caren owner-migration acceptance report, and no Caren owner acceptance-sync commit/report in current history. Therefore current canonical Caren coverage is `0/5`; no preservation-only credit is established by current repo evidence.
 
-The next legal FORMAL transaction is a complete owner-readiness preflight/gap set for all five Caren identities together. Any readiness capability work is permanently zero migration credit; only after all currently discoverable readiness gaps are accepted + synchronized may one Caren owner-complete Candidate materialize the frozen owner scope.
+The next legal FORMAL transaction would be a complete owner-readiness preflight/gap set for all five Caren identities together, but that owner transition is not promoted while the Bazett post-return provenance blocker below remains unresolved.
+
+## Post-return promotion correction
+
+This report records the historical accepted review event, but its initial accounting conclusion is superseded before promotion.
+
+After the review returned, FORMAL read HELPER Epoch 47 and mechanically reproduced a concrete provenance contradiction in exact Candidate `9a457a38aa9118cecee410f6b4c133a1d10fac5c`:
+
+- first Day-3 staging sets `playedRound` to the current round;
+- discard-to-skill Day-3 restaging sets `playedRound` to the current round;
+- Day-3 zero-cost skill-to-attack join overwrites `playedRound` to the current round and writes `paidManaOnPlay=0`;
+- the previously accepted generic source-skill attack-join contract explicitly requires a joined-but-not-played source to remain non-current for `playedRound`, preserving genuine prior play provenance only when it actually exists;
+- production `played_this_round` consumers compare `cardState.playedRound` directly to the current round.
+
+Therefore the exact Candidate can classify a non-play Day-3 staging/join as a current-round play. The Reviewer acceptance remains a historical review fact, but promotion/accounting is blocked by this independently confirmed post-return formal verification.
+
+The earlier synchronization commit `ac38ec7a594559e5d8aab918873aca0bb4f8c5ef` is superseded before promotion and is not canonical migration-credit evidence. Strict formal accounting remains `197/944`, remaining `747`. `master.caren` is not yet the active owner.
+
+Bazett must produce a successor Candidate that reconciles Day-3 provenance with the accepted generic source-skill attack-join policy, adds a real cross-consumer `played_this_round` regression, reruns affected gates, and receives a fresh independent review before a new lawful A-sync/accounting transaction.
