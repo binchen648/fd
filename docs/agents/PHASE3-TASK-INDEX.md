@@ -8317,7 +8317,7 @@ Implementation evidence:
 ## TASK P3-S-OWNER-BAZETT-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `ACCEPTED`
 Classification: formal owner-complete migration for current owner `master.bazett`
 
 Frozen owner scope: all ten Bazett identities listed by the accepted parent readiness task.
@@ -8332,3 +8332,15 @@ Bazett owner-complete implementation evidence:
 - FD_TOOLCHAIN_OK; typecheck/content/generated/coverage/audit/identity/diff gates PASS; production Bazett identity routing CLEAN;
 - report: `docs/reports/2026-10-05-p3-s-owner-bazett-complete-migration-result.md`;
 - strict accounting remains `197/944`, remaining `747` until fresh-R acceptance + A-sync; acceptance would add exactly 9 -> `206/944`, remaining `738`.
+### Bazett formal acceptance synchronization
+
+- Accepted exact Candidate: `9a457a38aa9118cecee410f6b4c133a1d10fac5c`.
+- Fresh independent verdict: `MIGRATION_ACCEPTED`.
+- Canonical bounded relay: `https://github.com/binchen648/fd/pull/523#issuecomment-5982980953`.
+- Exact Base: `84e2fab939de6ce1b1cc307488b749b80ce8cc92`; Base canonical authoring contains only historical credited `master.bazett.skill.s1b` (`1/10`).
+- Accepted Candidate contains the exact frozen Bazett scope `10/10`; `s1b` remains preservation-only and exactly nine identities are newly creditable.
+- Strict formal accounting advances `197/944 -> 206/944`; remaining `747 -> 738`.
+- Stable first-occurrence owner ordering places `master.caren` immediately after `master.bazett` (Bazett index `7`, Caren index `8` of `251` owners).
+- Caren frozen scope is exactly `master.caren.skill.ascension`, `master.caren.skill.s1`, `master.caren.skill.s1a`, `master.caren.skill.s2`, `master.caren.skill.s3` (`5` identities); canonical `data/authoring/masters/master.caren.json` is absent and no historical Caren owner-migration/A-sync evidence was found in repo history, so current canonical coverage is `0/5` with no preservation-only credit discovered.
+- The next legal FORMAL entry is a complete Caren owner-readiness preflight/gap-set transaction; readiness remains permanently zero-credit before any owner-complete consumer migration.
+- Acceptance synchronization report: `docs/reports/2026-10-05-p3-a-owner-bazett-acceptance-synchronization.md`.
