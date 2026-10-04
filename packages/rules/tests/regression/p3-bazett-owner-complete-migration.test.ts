@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { loadAuthoringJson } from '../../src/ability/loader';
+import { createSeededGameState } from '../../src/tools/seeded-state';
+import { dispatchAbilityCommand, executeAbility, initializeAbilityRuntime, processAbilityEvent } from '../../src/ability/interpreter';
 
 const ROOT='master.bazett';
 const IDS=[
@@ -12,6 +14,44 @@ const raw=JSON.parse(readFileSync(path,'utf8'));
 const loaded=loadAuthoringJson(raw);
 const card=(id:string)=>loaded.cards[id]!;
 const effectTypes=(id:string)=>card(id).abilities.flatMap((ability)=>ability.effects.map((effect)=>effect.type));
+const PLAYED_PROBE='master.bazett.test.played-probe';
+const PLAYED_PROBE_ABILITY='bazett.test.played-probe';
+
+function actualBazettPlayedProbeState(){
+  const withProbe=structuredClone(raw);
+  withProbe.cards.push({
+    id:PLAYED_PROBE,aliases:['test-played-probe'],legacyId:'test-played-probe',name:'Bazett played_this_round probe',cardType:'master_skill',
+    owner:{type:'master',id:ROOT},printedText:'test-only provenance probe',cardFace:{typeLabel:'被动',attributes:[],cost:0,basePower:0},
+    playTiming:{phase:'action',window:'controller_play_card_window'},playRequirements:[],
+    abilities:[{
+      id:PLAYED_PROBE_ABILITY,kind:'phase_action',printedClause:'test-only provenance probe',activation:{phase:'action',opens:'controller_action_window'},
+      conditions:[],targets:[{id:'played-card',type:'card_instance',count:{min:1,max:1},scope:{zone:'attack_area',owner:'any',controller:'any'},constraints:[{type:'played_this_round'}]}],
+      effects:[{type:'move_card',target:'played-card',to:{zone:'discard'}}],cost:[],creates:[],ruleModifiers:[],lifecycle:{},responseWindow:{order:'turn_order',passBehavior:'decline_this_window'},limit:{},visibility:{},
+      execution:{mode:'automatic',allowedOperations:[]},
+    }],verification:{implementationStatus:'complete'},
+  });
+  const pack=loadAuthoringJson(withProbe);
+  expect(pack.report.filter((entry)=>entry.status==='unsupported')).toEqual([]);
+  const state=createSeededGameState({activeSeats:[1,2,3]}); state.cards=[];
+  initializeAbilityRuntime(state,pack,{seed:20261005});
+  const p1=state.players[0]!; p1.masterCardId=ROOT; p1.locationId='miyama_town'; p1.mana=20;
+  const add=(definitionId:string,zone='skill',active=false)=>{
+    const instanceId=`bazett-real:${definitionId}:${state.cards.length}`;
+    state.cards.push({instanceId,definitionId,ownerPlayerId:'p1',controllerPlayerId:'p1',zone,visibility:['field','attack_area'].includes(zone)?{scope:'public'}:{scope:'owner_only',ownerPlayerId:'p1'}} as any);
+    state.abilityRuntime!.cardState[instanceId]={active,faceDown:false,playedRound:state.round.roundNumber};
+    return instanceId;
+  };
+  add('master.bazett.skill.s1a');
+  const probe=add(PLAYED_PROBE);
+  const currentRoundAttack=add('master.bazett.skill.s1b','attack_area',true);
+  processAbilityEvent(state,{id:'bazett-real-game-start',type:'game_start',playerId:'p1'});
+  processAbilityEvent(state,{id:'bazett-real-day2',type:'round_end',playerId:'p1'});
+  processAbilityEvent(state,{id:'bazett-real-day3',type:'round_end',playerId:'p1'});
+  const day3=state.cards.find((entry)=>entry.definitionId==='master.bazett.skill.s5'&&entry.ownerPlayerId==='p1')!;
+  state.round.activePhase='action'; state.round.prioritySeat=p1.seat;
+  executeAbility(state,{controllerId:'p1',sourceCardId:day3.instanceId,abilityId:'bazett.s5.join',variables:{},selections:{}});
+  return {state,probe,currentRoundAttack,day3};
+}
 
 describe('P3 Bazett owner-complete migration',()=>{
   it('materializes exactly the frozen 10-identity owner scope with one historical preservation identity',()=>{
@@ -84,6 +124,24 @@ describe('P3 Bazett owner-complete migration',()=>{
     expect(day2.conditions).toEqual([{type:'logical_day_is',cycleKey:'bazett.lost-in-time',day:2}]); expect(day2.effects[0]).toEqual({type:'adjust_victory_points',amount:2});
     const day3=card('master.bazett.skill.s5').abilities[1]!;
     expect(day3.conditions).toEqual([{type:'logical_day_is',cycleKey:'bazett.lost-in-time',day:3}]); expect(day3.effects[0]).toEqual({type:'adjust_victory_points',amount:3});
+  });
+
+  it('keeps the real Bazett Day3 join out of generic played_this_round consumers',()=>{
+    const {state,probe,currentRoundAttack,day3}=actualBazettPlayedProbeState();
+    expect(day3.zone).toBe('attack_area');
+    expect(state.abilityRuntime!.cardState[day3.instanceId]).toMatchObject({active:true,faceDown:false,paidManaOnPlay:0});
+    expect(state.abilityRuntime!.cardState[day3.instanceId]!.playedRound).not.toBe(state.round.roundNumber);
+    expect(state.abilityRuntime!.cardState[currentRoundAttack]!.playedRound).toBe(state.round.roundNumber);
+
+    const buggy=structuredClone(state);
+    buggy.abilityRuntime!.cardState[day3.instanceId]!.playedRound=buggy.round.roundNumber;
+    expect(dispatchAbilityCommand(buggy,'p1',{type:'activate_ability',cardInstanceId:probe,abilityId:PLAYED_PROBE_ABILITY}).ok).toBe(true);
+    expect(buggy.abilityRuntime!.pendingDecision!.candidates).toContain(day3.instanceId);
+
+    expect(dispatchAbilityCommand(state,'p1',{type:'activate_ability',cardInstanceId:probe,abilityId:PLAYED_PROBE_ABILITY}).ok).toBe(true);
+    const pending=state.abilityRuntime!.pendingDecision!;
+    expect(pending.candidates).toContain(currentRoundAttack);
+    expect(pending.candidates).not.toContain(day3.instanceId);
   });
 
   it('integrates Bazett exactly once in the canonical playtest master sequence',()=>{

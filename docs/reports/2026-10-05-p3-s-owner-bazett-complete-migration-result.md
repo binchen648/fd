@@ -53,15 +53,41 @@ Static names/card-face metadata are corroborated by locked Reference `b2f9fa15fb
 
 The 13-master roster changed deterministic pairings for three old MatchSession fixtures. No production behavior was modified. The tests now use the existing bounded master-inclusion seed helper for Irisviel/Kiritsugu and a mechanically verified current-roster seed `1` for the one-round auto-run; all original behavior assertions remain intact.
 
+## Post-return provenance finding and successor closure
+
+Exact Candidate `9a457a38aa9118cecee410f6b4c133a1d10fac5c` received historical fresh Reviewer verdict `MIGRATION_ACCEPTED`; its bounded same-attempt evidence relay is https://github.com/binchen648/fd/pull/523#issuecomment-5982980953. That review result remains a historical fact and was not repeated.
+
+Before lawful promotion/accounting, FORMAL read HELPER Epoch 47 and independently reproduced a cross-capability provenance contradiction in the accepted Candidate:
+- first Day-3 staging wrote current-round `playedRound` despite not being a card play;
+- discard-to-skill second-cycle restaging rewrote `playedRound` to the current round;
+- zero-cost Day-3 skill-to-attack join rewrote `playedRound` to the current round;
+- accepted generic source-skill attack-join policy preserves genuine prior play provenance and otherwise initializes non-current provenance;
+- generic `played_this_round` target consumers directly compare `cardState.playedRound` with the current round.
+
+The premature A-sync commit `ac38ec7a594559e5d8aab918873aca0bb4f8c5ef` was superseded before promotion by correction commit `177fc4986dc4d50b80f2a2bd7ebd598fde4280df`; neither changes the historical Reviewer verdict, and neither awards Bazett migration credit. Effective accounting remains `197/944`, remaining `747`.
+
+This successor closes the finding structurally and identity-free:
+- new Day-3 physical staging initializes `playedRound` to `max(0, currentRound - 1)`;
+- discard-to-skill restaging preserves any existing `playedRound`; if runtime state is absent it initializes non-current provenance;
+- restaging clears stale `paidManaOnPlay` while leaving genuine historical play provenance untouched;
+- zero-cost skill-to-attack join preserves existing `playedRound`; absent state initializes non-current provenance, then sets only active/face-up/`paidManaOnPlay=0`;
+- a real Bazett authoring regression proves real `master.bazett.skill.s5` is excluded from a generic `played_this_round` target window after Day-3 staging/join, while a current-round control remains eligible; a bug-control clone proves the same Day-3 physical would become eligible if `playedRound` were forged current.
+
+No Bazett identity branch was added to production runtime.
+
 ## Verification
 
 Focused consumer:
-- Bazett owner-complete: `9/9 PASS`.
-- accepted Bazett readiness: `13/13 PASS`.
+- Bazett owner-complete: `10/10 PASS` (includes real-authoring `played_this_round` cross-consumer regression).
+- accepted Bazett readiness: `15/15 PASS` (includes first-stage/join provenance, second-cycle restage preservation, genuine prior-play preservation, and cross-consumer target filtering).
+- accepted generic source-skill attack-join: `5/5 PASS`.
+- Sigurd revealed-source / `played_this_round` consumer: `7/7 PASS`.
 
-Affected aggregate: `174/174 PASS`:
-- Bazett formal 9;
-- Bazett readiness 13;
+Affected aggregate: `189/189 PASS`:
+- Bazett formal 10;
+- Bazett readiness 15;
+- generic source-skill attack-join 5;
+- Sigurd revealed-source 7;
 - MatchSession 33;
 - authoring-interpreter 38;
 - executable-card-pack 50;

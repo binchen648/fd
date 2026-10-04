@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { createSeededGameState } from '../../src/tools/seeded-state';
 import { loadAuthoringJson } from '../../src/ability/loader';
 import {
+  dispatchAbilityCommand,
   executeAbility,
   initializeAbilityRuntime,
   isDeferredAbilityRuntimeProvenanceValidForRestore,
@@ -27,6 +28,8 @@ const COUNTER = `${ROOT}.counter`;
 const ASC = `${ROOT}.ascension`;
 const AWAKE = `${ROOT}.awake`;
 const OPP_NP = 'servant.fixture-opponent.skill.np';
+const PLAYED_PROBE = `${ROOT}.played-probe`;
+const PLAYED_BASIC = 'basic.fixture-logical-day-played';
 
 const INIT = 'fixture.logical-day.init';
 const ADVANCE = 'fixture.logical-day.advance';
@@ -41,6 +44,7 @@ const JOIN = 'fixture.logical-day.join-zero';
 const LIMIT = 'fixture.logical-day.counter-limit';
 const CLIMAX_REWARD = 'fixture.logical-day.climax-reward';
 const OPP_ABILITY = 'fixture.opponent-np.action';
+const PLAYED_PROBE_ABILITY = 'fixture.logical-day.played-probe';
 
 function base(id: string, kind = 'passive') {
   return {
@@ -92,6 +96,12 @@ function archive() {
   const climaxReward = forced(CLIMAX_REWARD, 'after_controller_wins_battle', { type: 'adjust_victory_points', amount: 2 },
     [{ type: 'logical_day_is', cycleKey: CYCLE, day: 2 }, { type: 'round_is_climax' }]);
   const opponentAbility = phaseAction(OPP_ABILITY, { type: 'adjust_mana', amount: 0 });
+  const playedProbe = phaseAction(PLAYED_PROBE_ABILITY, { type: 'move_card', target: 'played-card', to: { zone: 'discard' } });
+  playedProbe.targets = [{
+    id: 'played-card', type: 'card_instance', count: { min: 1, max: 1 },
+    scope: { zone: 'attack_area', owner: 'any', controller: 'any' },
+    constraints: [{ type: 'played_this_round' }],
+  }];
   return {
     schemaVersion: 'fd-card-authoring-v1', id: ROOT,
     cards: [
@@ -103,6 +113,13 @@ function archive() {
       card(ASC, [asc]),
       card(AWAKE, [awake]),
       card(OPP_NP, [opponentAbility], { attributes: ['宝具'] }),
+      card(PLAYED_PROBE, [playedProbe]),
+      {
+        id: PLAYED_BASIC, name: PLAYED_BASIC, cardType: 'basic_attack',
+        cardFace: { attributes: ['力量'], cost: 0, basePower: 2 },
+        playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], abilities: [],
+        verification: { implementationStatus: 'complete' },
+      },
     ],
   } as any;
 }
@@ -126,7 +143,7 @@ function setup() {
   p2.locationId = 'miyama_town';
   const ids = {
     track: add(state, TRACK), reset: add(state, RESET), day4: add(state, DAY4), counter: add(state, COUNTER),
-    asc: add(state, ASC), opponentNp: add(state, OPP_NP, 'p2', 'skill'),
+    asc: add(state, ASC), opponentNp: add(state, OPP_NP, 'p2', 'skill'), playedProbe: add(state, PLAYED_PROBE),
   };
   processAbilityEvent(state, { id: 'fixture-game-start', type: 'game_start', playerId: 'p1' });
   return { state, pack, ids };
@@ -162,11 +179,16 @@ describe('P3 Bazett owner-readiness complete identity-free gap set', () => {
     expect(logicalDayCycleMatches(state, 'p1', CYCLE, 3)).toBe(true);
     const staged = state.cards.find((entry) => entry.ownerPlayerId === 'p1' && entry.definitionId === DAY3 && entry.zone === 'skill');
     expect(staged).toBeTruthy();
+    const stagedPlayedRound = state.abilityRuntime!.cardState[staged!.instanceId]!.playedRound;
+    expect(stagedPlayedRound).toBe(Math.max(0, state.round.roundNumber - 1));
+    expect(stagedPlayedRound).not.toBe(state.round.roundNumber);
     state.round.activePhase = 'action'; state.round.prioritySeat = state.players[0]!.seat;
     expect(() => playAbilityCardBatch(state, 'p1', [{ cardInstanceId: staged!.instanceId }])).toThrow(/Card cannot be played/);
     exec(state, staged!.instanceId, JOIN);
     expect(state.cards.find((entry) => entry.instanceId === staged!.instanceId)).toMatchObject({ zone: 'attack_area' });
     expect(state.abilityRuntime!.cardState[staged!.instanceId]).toMatchObject({ active: true, faceDown: false, paidManaOnPlay: 0 });
+    expect(state.abilityRuntime!.cardState[staged!.instanceId]!.playedRound).toBe(stagedPlayedRound);
+    expect(state.abilityRuntime!.cardState[staged!.instanceId]!.playedRound).not.toBe(state.round.roundNumber);
   });
 
   it('restages the same Day3 physical from discard on the second Lost-in-Time cycle', () => {
@@ -175,7 +197,9 @@ describe('P3 Bazett owner-readiness complete identity-free gap set', () => {
     roundEnd(state, 'cycle1-to-day3');
     const first = state.cards.find((entry) => entry.ownerPlayerId === 'p1' && entry.definitionId === DAY3 && entry.zone === 'skill');
     expect(first).toBeTruthy();
+    const firstPlayedRound = state.abilityRuntime!.cardState[first!.instanceId]!.playedRound;
     exec(state, first!.instanceId, JOIN);
+    expect(state.abilityRuntime!.cardState[first!.instanceId]!.playedRound).toBe(firstPlayedRound);
     expect(state.cards.find((entry) => entry.instanceId === first!.instanceId)!.zone).toBe('attack_area');
 
     const used = state.cards.find((entry) => entry.instanceId === first!.instanceId)!;
@@ -196,7 +220,62 @@ describe('P3 Bazett owner-readiness complete identity-free gap set', () => {
     const restaged = state.cards.find((entry) => entry.instanceId === first!.instanceId)!;
     expect(restaged).toMatchObject({ zone: 'skill', controllerPlayerId: 'p1', generatedBy: state.cards.find((entry) => entry.definitionId === TRACK)!.instanceId });
     expect(state.cards.filter((entry) => entry.ownerPlayerId === 'p1' && entry.definitionId === DAY3 && entry.zone !== 'removed_from_game')).toHaveLength(1);
-    expect(state.abilityRuntime!.cardState[restaged.instanceId]).toMatchObject({ active: false, faceDown: false, playedRound: state.round.roundNumber });
+    expect(state.abilityRuntime!.cardState[restaged.instanceId]).toMatchObject({ active: false, faceDown: false, playedRound: firstPlayedRound });
+    expect(state.abilityRuntime!.cardState[restaged.instanceId]!.playedRound).not.toBe(state.round.roundNumber);
+    expect(state.abilityRuntime!.cardState[restaged.instanceId]!.paidManaOnPlay).toBeUndefined();
+  });
+
+  it('preserves genuine prior play provenance instead of rewriting it during Day3 restage and join', () => {
+    const { state } = setup();
+    roundEnd(state, 'genuine-to-day2');
+    roundEnd(state, 'genuine-to-day3');
+    const staged = state.cards.find((entry) => entry.ownerPlayerId === 'p1' && entry.definitionId === DAY3 && entry.zone === 'skill')!;
+    state.abilityRuntime!.cardState[staged.instanceId]!.playedRound = state.round.roundNumber;
+    exec(state, staged.instanceId, JOIN);
+    expect(state.abilityRuntime!.cardState[staged.instanceId]!.playedRound).toBe(state.round.roundNumber);
+
+    staged.zone = 'discard';
+    staged.visibility = { scope: 'public' };
+    state.abilityRuntime!.cardState[staged.instanceId]!.active = false;
+    roundEnd(state, 'genuine-to-day4');
+    loss(state, 'genuine-day4-loss');
+    state.round.roundNumber += 1;
+    processAbilityEvent(state, { id: 'genuine-reset-start', type: 'round_start', playerId: 'p1' });
+    roundEnd(state, 'genuine-cycle2-day2');
+    roundEnd(state, 'genuine-cycle2-day3');
+    expect(state.cards.find((entry) => entry.instanceId === staged.instanceId)!.zone).toBe('skill');
+    expect(state.abilityRuntime!.cardState[staged.instanceId]!.playedRound).toBe(state.round.roundNumber - 1);
+  });
+
+  it('keeps a real Day3 join out of played_this_round while a genuinely played attack remains eligible', () => {
+    const { state } = setup();
+    roundEnd(state, 'cross-to-day2');
+    roundEnd(state, 'cross-to-day3');
+    const day3 = state.cards.find((entry) => entry.ownerPlayerId === 'p1' && entry.definitionId === DAY3 && entry.zone === 'skill')!;
+    state.round.activePhase = 'action'; state.round.prioritySeat = state.players[0]!.seat;
+    exec(state, day3.instanceId, JOIN);
+    expect(state.abilityRuntime!.cardState[day3.instanceId]!.playedRound).not.toBe(state.round.roundNumber);
+
+    const basicId = add(state, PLAYED_BASIC, 'p1', 'hand');
+    playAbilityCardBatch(state, 'p1', [{ cardInstanceId: basicId }]);
+    expect(state.cards.find((entry) => entry.instanceId === basicId)!.zone).toBe('attack_area');
+    expect(state.abilityRuntime!.cardState[basicId]!.playedRound).toBe(state.round.roundNumber);
+    const wouldBeBuggy = structuredClone(state);
+    wouldBeBuggy.abilityRuntime!.cardState[day3.instanceId]!.playedRound = wouldBeBuggy.round.roundNumber;
+    const buggyProbe = wouldBeBuggy.cards.find((entry) => entry.definitionId === PLAYED_PROBE && entry.ownerPlayerId === 'p1')!;
+    expect(dispatchAbilityCommand(wouldBeBuggy, 'p1', {
+      type: 'activate_ability', cardInstanceId: buggyProbe.instanceId, abilityId: PLAYED_PROBE_ABILITY,
+    }).ok).toBe(true);
+    expect(wouldBeBuggy.abilityRuntime!.pendingDecision!.candidates).toContain(day3.instanceId);
+
+    const probe = state.cards.find((entry) => entry.definitionId === PLAYED_PROBE && entry.ownerPlayerId === 'p1')!;
+    expect(dispatchAbilityCommand(state, 'p1', {
+      type: 'activate_ability', cardInstanceId: probe.instanceId, abilityId: PLAYED_PROBE_ABILITY,
+    }).ok).toBe(true);
+    const pending = state.abilityRuntime!.pendingDecision!;
+    expect(pending).toBeTruthy();
+    expect(pending.candidates).toContain(basicId);
+    expect(pending.candidates).not.toContain(day3.instanceId);
   });
 
   it('fails closed if an existing staged definition has foreign provenance or a live non-discard zone', () => {

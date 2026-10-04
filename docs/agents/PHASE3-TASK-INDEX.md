@@ -8326,9 +8326,12 @@ Formal rule: preserve historical accepted `master.bazett.skill.s1b`; materialize
 
 Bazett owner-complete implementation evidence:
 - exact Base `84e2fab939de6ce1b1cc307488b749b80ce8cc92`: canonical authoring `1/10`, only historical credited `s1b`; worktree `10/10`, newly materialized exactly 9, `s1bPreserved=true`;
-- formal consumer regression `9/9 PASS`; accepted readiness `13/13 PASS`; affected shared aggregate `174/174 PASS`;
-- content pack expands `12 -> 13` masters and includes Bazett exactly once; generated content refreshed deterministically;
-- roster-growth-only MatchSession fixture stabilization preserves original Irisviel/Kiritsugu/one-round behavior assertions; no production runtime semantic change;
+- original Candidate `9a457a38aa9118cecee410f6b4c133a1d10fac5c` historically received `MIGRATION_ACCEPTED` with bounded relay `https://github.com/binchen648/fd/pull/523#issuecomment-5982980953`, but before promotion FORMAL independently reproduced HELPER Epoch 47's Day-3 play-provenance contradiction; that Candidate is not re-reviewed and its premature A-sync was superseded before credit;
+- successor preserves existing/genuine `playedRound` on Day-3 restage/join and initializes absent non-play provenance as `max(0,currentRound-1)`; restage clears stale `paidManaOnPlay`; no Bazett identity branch added;
+- formal consumer regression `10/10 PASS`; accepted readiness `15/15 PASS`; accepted generic source-skill join `5/5 PASS`; Sigurd `played_this_round` consumer `7/7 PASS`; affected shared aggregate `189/189 PASS`;
+- real Bazett authoring cross-consumer regression proves `master.bazett.skill.s5` after Day-3 stage/join is excluded from generic `played_this_round`, while a current-round control remains eligible; bug-control proves forged-current provenance would expose Day3 to the consumer;
+- content pack remains `13` masters and includes Bazett exactly once; generated content remains deterministic;
+- roster-growth-only MatchSession fixture stabilization preserves original Irisviel/Kiritsugu/one-round behavior assertions;
 - FD_TOOLCHAIN_OK; typecheck/content/generated/coverage/audit/identity/diff gates PASS; production Bazett identity routing CLEAN;
 - report: `docs/reports/2026-10-05-p3-s-owner-bazett-complete-migration-result.md`;
-- strict accounting remains `197/944`, remaining `747` until fresh-R acceptance + A-sync; acceptance would add exactly 9 -> `206/944`, remaining `738`.
+- strict accounting remains `197/944`, remaining `747` until the successor receives fresh-R `MIGRATION_ACCEPTED` + lawful A-sync; then newly creditable is exactly 9 -> `206/944`, remaining `738`.

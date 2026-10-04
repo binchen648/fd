@@ -204,7 +204,14 @@ function ensureDefinitionInSkill(state: GameState, controllerId: PlayerId, defin
     if (physical.zone !== 'discard') throw new Error('LOGICAL_DAY_STAGE_ZONE_INVALID');
     physical.zone = 'skill';
     physical.visibility = { scope: 'owner_only', ownerPlayerId: controllerId };
-    r.cardState[physical.instanceId] = { active: false, faceDown: false, playedRound: state.round.roundNumber };
+    const cardState = r.cardState[physical.instanceId] ??= {
+      active: false,
+      faceDown: false,
+      playedRound: Math.max(0, state.round.roundNumber - 1),
+    };
+    cardState.active = false;
+    cardState.faceDown = false;
+    delete cardState.paidManaOnPlay;
     return;
   }
   const instanceId = `${controllerId}:logical-day:${definitionId}`;
@@ -213,7 +220,11 @@ function ensureDefinitionInSkill(state: GameState, controllerId: PlayerId, defin
     instanceId, definitionId, ownerPlayerId: controllerId, controllerPlayerId: controllerId, zone: 'skill',
     visibility: { scope: 'owner_only', ownerPlayerId: controllerId }, generatedBy,
   });
-  r.cardState[instanceId] = { active: false, faceDown: false, playedRound: state.round.roundNumber };
+  r.cardState[instanceId] = {
+    active: false,
+    faceDown: false,
+    playedRound: Math.max(0, state.round.roundNumber - 1),
+  };
 }
 function closeOwnedDefinitionToSkill(state: GameState, controllerId: PlayerId, definitionId: string): void {
   const r = runtime(state);
@@ -309,7 +320,14 @@ export function resolveLogicalDayCountermeasureEffect(state: GameState, ctx: Eff
     const definition = physical ? runtime(state).pack.cards[physical.definitionId] : undefined;
     if (!physical || !definition || definition.cardType !== 'master_skill' || physical.ownerPlayerId !== controller.id || physical.controllerPlayerId !== controller.id || physical.zone !== 'skill') throw new Error('LOGICAL_DAY_SOURCE_JOIN_INVALID');
     physical.zone = 'attack_area'; physical.visibility = { scope: 'public' };
-    runtime(state).cardState[physical.instanceId] = { active: true, faceDown: false, playedRound: state.round.roundNumber, paidManaOnPlay: 0 };
+    const cardState = runtime(state).cardState[physical.instanceId] ??= {
+      active: false,
+      faceDown: false,
+      playedRound: Math.max(0, state.round.roundNumber - 1),
+    };
+    cardState.active = true;
+    cardState.faceDown = false;
+    cardState.paidManaOnPlay = 0;
     return 'handled';
   }
   // Marker-only definition overrides are queried by shared play/cleanup gates.
