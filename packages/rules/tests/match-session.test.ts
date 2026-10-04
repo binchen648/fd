@@ -1,7 +1,7 @@
 ﻿import { describe, expect, it } from 'vitest';
 
 import contentLibrary from '../../../data/generated/fd-playtest-v1.content-library.json';
-import { createMatchSession, restoreMatchSession, restoreSession } from '../src/match-session';
+import { buildSevenPlayerCharacterPairings, createMatchSession, restoreMatchSession, restoreSession } from '../src/match-session';
 import { advanceAbilityPhase, projectAbilityState } from '../src/ability/interpreter';
 import { resolveBattlefield } from '../src/core/combat-resolver';
 import { applyBattleScoring } from '../src/core/scoring-resolver';
@@ -13,7 +13,17 @@ function createSessionIncludingServant(servantId: string) {
   }
   throw new Error('Unable to build deterministic fixture containing ' + servantId);
 }
-
+function createSessionIncludingMaster(masterId: string) {
+  const characters = Object.values(contentLibrary.rules.characters);
+  const masters = characters.filter((character) => character.kind === 'master');
+  const servants = characters.filter((character) => character.kind === 'servant');
+  for (let seed = 1; seed <= 65_536; seed += 1) {
+    if (buildSevenPlayerCharacterPairings(masters, servants, seed).some((pairing) => pairing.master.id === masterId)) {
+      return createMatchSession({ seed, humanPlayerId: 'p1' });
+    }
+  }
+  throw new Error('Unable to build deterministic fixture containing ' + masterId);
+}
 describe('MatchSession semi-auto runtime', () => {
   it('starts a 7-player match and exposes the first human decision', () => {
     const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
@@ -104,7 +114,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('filters Kayneth deployment choices through Pride when a lower-VP lone battlefield is available', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
+    const session = createSessionIncludingMaster('master.kayneth');
     const kayneth = session.pairings.find((pairing) => pairing.master.id === 'master.kayneth')!;
     session.state.round.activePhase = 'advance';
     session.state.round.prioritySeat = kayneth.seat;
@@ -340,11 +350,18 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('authenticates gameplay-affecting MatchSession fields outside GameState', () => {
-    // Keep this durability fixture on a bounded one-round roster path as the production servant pool grows.
+    // Keep this durability fixture on a direct production battle path instead of a full AI round.
     const session = createMatchSession({ seed: 20207105, humanPlayerId: 'p1', maxActionsPerPlayer: 2 });
-    expect(session.runFullMatch({ maxRounds: 1 })).toBe('match_complete');
+    for (const player of session.state.players) delete player.locationId;
+    session.state.players[0]!.locationId = 'miyama_town';
+    session.state.players[1]!.locationId = 'miyama_town';
+    session.state.eventPlacements = [];
+    session.state.currentSituationCardId = undefined;
+    session.state.round.activePhase = 'battle';
+    (session as unknown as { resolveBattlePhase: () => void }).resolveBattlePhase();
     const durable = session.serializeSession();
     expect(durable.battleHistory.length).toBeGreaterThan(0);
+    expect(() => restoreMatchSession(structuredClone(durable))).not.toThrow();
 
     const widenedActions: any = structuredClone(durable);
     widenedActions.maxActionsPerPlayer = 99;
