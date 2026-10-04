@@ -8269,7 +8269,7 @@ Implementation evidence for Origin Stillness printed-cost readiness:
 ## TASK P3-B-BAZETT-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `ACCEPTED`
 Classification: parent zero-credit owner-readiness preflight for complete current `master.bazett` frozen scope
 
 Frozen owner scope:
@@ -8302,3 +8302,24 @@ Implementation evidence:
 - Detailed report: `docs/reports/2026-10-05-p3-b-bazett-owner-readiness-complete-gap-set-result.md`;
 - predecessor Candidate `f4234d18baf7235375f3634808a118abf97f912b` received `IMPLEMENTATION_NEEDS_REVISION`; canonical bounded relay `https://github.com/binchen648/fd/pull/522#issuecomment-5982661723`. P1 closure restages the same Day-3 physical from discard on the second Lost-in-Time cycle, preserves exact generator provenance, rejects live-zone/forged alternatives, and adds the explicit second-cycle regression plus fail-closed negatives.
 - permanently zero migration credit; strict accounting remains `197/944`, remaining `747` pending fresh independent readiness acceptance + FORMAL A-sync/rescan.
+
+
+### Bazett readiness acceptance synchronization
+
+- Accepted exact Candidate: `566c086f168b23883a1c064ec35f598404fed8df`.
+- Fresh independent verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`.
+- Canonical bounded relay: https://github.com/binchen648/fd/pull/522#issuecomment-5982765629.
+- Canonical authoring rescan is `1/10`: only `master.bazett.skill.s1b` exists and it is preservation-only from accepted FM08; nine frozen identities remain uncredited.
+- No additional readiness gap remains after the accepted complete gap set; `P3-S-OWNER-BAZETT-COMPLETE-MIGRATION` is `READY`.
+- Readiness remains zero-credit; strict accounting stays `197/944`, remaining `747`.
+- Acceptance synchronization report: `docs/reports/2026-10-05-p3-a-bazett-owner-readiness-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-BAZETT-COMPLETE-MIGRATION
+
+Owner: FORMAL
+Status: `READY`
+Classification: formal owner-complete migration for current owner `master.bazett`
+
+Frozen owner scope: all ten Bazett identities listed by the accepted parent readiness task.
+
+Formal rule: preserve historical accepted `master.bazett.skill.s1b`; materialize the other nine frozen identities in one Candidate / one PR / one fresh independent R. No partial credit. Strict accounting remains `197/944` until `MIGRATION_ACCEPTED` + FORMAL A-sync; then newly creditable is exactly 9.
