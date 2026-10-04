@@ -144,6 +144,12 @@ import {
   vesselCyclePlayRequirementWaived, vesselCycleSkillAura, vesselCycleCardPowerAdjustment, isVesselCycleRuntimeProvenanceValidForRestore,
 } from './vessel-cycle-capability';
 import {
+  armedAttributeUseDefeatCandidate, canExecuteLogicalDayCountermeasureEffect, consumeArmedAttributeUseDefeat, containsLogicalDayCountermeasurePrivilegedNode,
+  isAcceptedLogicalDayCountermeasureAbility, isLogicalDayCountermeasureRuntimeProvenanceValidForRestore,
+  isJoinSourceSkillToAttackZeroCostEffect, logicalDayCycleAwake, logicalDayCycleMatches, logicalDayDefinitionPerGamePlayLimitIgnored,
+  logicalDayDefinitionPlayRequirementWaived, resolveLogicalDayCountermeasureEffect, sourceBoundDefinitionResidualGranted,
+} from './logical-day-countermeasure-capability';
+import {
   LOCATION_MARKER_FOLLOW_EFFECT, LOCATION_MARKER_COMBAT_BRANCH_EFFECT, LOCATION_MARKER_PLACE_EFFECT, LOCATION_MARKER_MIDPOINT_DEFEAT_EFFECT,
   containsLocationMarkerPrivilegedNode, isAcceptedLocationMarkerAbility, isAcceptedLocationMarkerCombatAbility,
   isAcceptedLocationMarkerFollowAbility, isAcceptedLocationMarkerMidpointDefeatAbility, isAcceptedLocationMarkerPlaceAbility,
@@ -1607,7 +1613,7 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   switch (c.type) {
     case 'skill_zone_mana_at_least': {
       const cardDef = definition(s, ctx.sourceCardId);
-      if (cardDef && (hasPlayRuleException(cardDef, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, ctx.controllerId, cardDef.id, 'skill_zone_mana_at_least', Number(c.value)) || bloodlustPlayRequirementWaived(s, ctx.controllerId, 'skill_zone_mana_at_least', Number(c.value)))) return true;
+      if (cardDef && (hasPlayRuleException(cardDef, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, ctx.controllerId, cardDef.id, 'skill_zone_mana_at_least', Number(c.value)) || bloodlustPlayRequirementWaived(s, ctx.controllerId, 'skill_zone_mana_at_least', Number(c.value)) || logicalDayDefinitionPlayRequirementWaived(s, ctx.controllerId, cardDef.id, 'skill_zone_mana_at_least', Number(c.value)))) return true;
       return card(s, ctx.sourceCardId).zone !== 'skill' || p.mana >= Number(c.value);
     }
     case 'controller_at_battlefield': return isBattlefield(s, resolutionLocation);
@@ -1655,6 +1661,25 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     }
     case 'source_active':
     case 'source_owned': return sourceStateCondition(s, ctx, c);
+    case 'event_source_card_is_source': {
+      if (!exactRuleNodeKeys(c, ['type'])) reject('unsupported', 'event_source_card_is_source shape is invalid');
+      return ctx.event?.sourceCardId === ctx.sourceCardId;
+    }
+    case 'logical_day_is': {
+      if (!exactRuleNodeKeys(c, ['type', 'cycleKey', 'day']) || !str(c.cycleKey) || !Number.isSafeInteger(c.day) || Number(c.day) < 1)
+        reject('unsupported', 'logical_day_is shape is invalid');
+      return logicalDayCycleMatches(s, ctx.controllerId, str(c.cycleKey), Number(c.day));
+    }
+    case 'logical_cycle_awake_is': {
+      if (!exactRuleNodeKeys(c, ['type', 'cycleKey', 'expected']) || !str(c.cycleKey) || typeof c.expected !== 'boolean')
+        reject('unsupported', 'logical_cycle_awake_is shape is invalid');
+      return logicalDayCycleAwake(s, ctx.controllerId, str(c.cycleKey)) === c.expected;
+    }
+    case 'round_is_climax': {
+      if (!exactRuleNodeKeys(c, ['type'])) reject('unsupported', 'round_is_climax shape is invalid');
+      const carrier = s as unknown as { modeState?: { currentSituationIsClimax?: boolean } };
+      return typeof carrier.modeState?.currentSituationIsClimax === 'boolean' ? carrier.modeState.currentSituationIsClimax : s.round.roundNumber >= 9;
+    }
     case 'card_count_at_least': return definitionSetActiveCountCondition(s, ctx, c);
     case 'event_player_won_combat':
     case 'event_player_lost_combat': return eventCombatOutcomeCondition(s, ctx, c);
@@ -1951,6 +1976,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAcceptedMultiPresenceAbility(a) && !canExecuteMultiPresenceEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsVesselCyclePrivilegedNode(a) && !isAcceptedVesselCycleAbility(a)) return false;
   if (isAcceptedVesselCycleAbility(a) && !canExecuteVesselCycleEffect(s, context(s, sourceId, a.id, event), a.effects[0]!)) return false;
+  if (containsLogicalDayCountermeasurePrivilegedNode(a) && !isAcceptedLogicalDayCountermeasureAbility(a)) return false;
+  if (isAcceptedLogicalDayCountermeasureAbility(a) && !canExecuteLogicalDayCountermeasureEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsBloodlustPrivilegedNode(a) && !isAcceptedBloodlustAbility(a)) return false;
   if (isAcceptedBloodlustAbility(a) && !canExecuteBloodlustEffect(s, card(s, sourceId).controllerPlayerId, a)) return false;
   if (containsLocationMarkerPrivilegedNode(a) && !isAcceptedLocationMarkerAbility(a)) return false;
@@ -2181,7 +2208,7 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   if (d.mode !== 'automatic') return d.mode;
   if (c.controllerPlayerId !== p || !allowedSourceZones.includes(c.zone) || player(s, p).status !== 'active') return 'illegal_action';
   if (c.zone === 'skill' && (isActivationOnlyDefinition(s, c.definitionId) || d.abilities.some((ability) =>
-    ability.effects.some((effect) => isPlaceSourceAtBattlefieldEffect(effect) || isSourceSkillAttackJoinEffect(effect))))) return 'activation_only';
+    ability.effects.some((effect) => isPlaceSourceAtBattlefieldEffect(effect) || isSourceSkillAttackJoinEffect(effect) || isJoinSourceSkillToAttackZeroCostEffect(effect))))) return 'activation_only';
   const hasLegacyAppendOnlyMarker = d.abilities.some(a => a.effects.some(effect => effect.type === 'append_only_rule' && effect.rule !== 'ignore_battle_loss_effects'));
   const requiredAdditionalPlay = hasRequiredAdditionalPlayMarker(d);
   if (hasLegacyAppendOnlyMarker && (!allowRequiredAdditionalPlay || !requiredAdditionalPlay)) return 'append_only';
@@ -2190,7 +2217,8 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   const forbidRules = ongoingCardPlayForbidRules(s, p, sourceId);
   if (forbidRules.some(rule => !hasPlayRuleException(d, rule))) return 'play_forbidden';
   const limit = perGamePlayLimit(d);
-  if (limit && (runtime(s).abilityUsage[`play:${sourceId}:${limit.key}`] ?? 0) >= limit.uses) return 'card_limit_reached';
+  if (limit && !logicalDayDefinitionPerGamePlayLimitIgnored(s, p, d.id) &&
+      (runtime(s).abilityUsage[`play:${sourceId}:${limit.key}`] ?? 0) >= limit.uses) return 'card_limit_reached';
   if ((runtime(s).grantedPerGamePlayLimitCardIds ?? []).includes(sourceId)) {
     const baseline = runtime(s).grantedPerGamePlayLimitBaselineByCardId?.[sourceId];
     if (!Number.isSafeInteger(baseline) || Number(baseline) < 0) return 'invalid_state';
@@ -2198,7 +2226,7 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   }
   if (!ignoreAttackLimit && attackPlayLimitReached(s, p, sourceId, ignoreStagedAttackLimit)) return 'attack_play_limit_reached';
   const requirements = d.playRequirements.concat(nodes(d.cardFace.requirements)).filter(r =>
-    str(r.type) && !(str(r.type) === 'skill_zone_mana_at_least' && (hasPlayRuleException(d, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)) || bloodlustPlayRequirementWaived(s, p, 'skill_zone_mana_at_least', Number(r.value)))));
+    str(r.type) && !(str(r.type) === 'skill_zone_mana_at_least' && (hasPlayRuleException(d, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)) || bloodlustPlayRequirementWaived(s, p, 'skill_zone_mana_at_least', Number(r.value)) || logicalDayDefinitionPlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)))));
   if (!requirements.every(r => condition(s, context(s, sourceId, ''), r))) return 'play_requirement';
 
   if (!faceDown && !ignoreManaCost && player(s, p).mana + bloodlustMaximumContributionAmount(s, p) + linkedRoleMaximumContributionAmount(s, p) < effectiveCardPlayCost(s, p, sourceId)) return 'insufficient_mana';
@@ -2672,7 +2700,7 @@ function authoritativeBasePowerAxis(s: GameState, instanceId: string): number {
 
 function closeActiveAttackForDuplicatePower(s: GameState, instanceId: string, effectControllerId: string): void {
   const target = card(s, instanceId); const d = definition(s, instanceId); const state = runtime(s).cardState[instanceId];
-  if (!d || target.zone !== 'attack_area' || !state?.active || state.faceDown || isResidualAttackCardDefinition(d) ||
+  if (!d || target.zone !== 'attack_area' || !state?.active || state.faceDown || isResidualAttackCard(s, instanceId, d) ||
       isCardCloseForbidden(s, instanceId, effectControllerId)) reject('resolution_failed', 'Duplicate-base-Power target is no longer closable');
   state.active = false;
   clearTransientCardTransformState(s, instanceId); retireMasterAscensionSourceDefinitionPowerByTrigger(s, instanceId);
@@ -2700,7 +2728,7 @@ function resolveDuplicateBasePowerCloseOrDiscard(s: GameState, ctx: EffectContex
     const owner = s.players.find((entry) => entry.id === candidate.controllerPlayerId && entry.status === 'active');
     const state = runtime(s).cardState[candidate.instanceId]; const d = definition(s, candidate.instanceId);
     return !!owner && owner.locationId === controller.locationId && !!d && !!state?.active && !state.faceDown &&
-      !isResidualAttackCardDefinition(d) && !isCardCloseForbidden(s, candidate.instanceId, ctx.controllerId);
+      !isResidualAttackCard(s, candidate.instanceId, d) && !isCardCloseForbidden(s, candidate.instanceId, ctx.controllerId);
   });
   const byPower = new Map<number, string[]>();
   for (const candidate of candidates) {
@@ -3941,6 +3969,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
     const locationIds = new Set<string>(s.map.locations.map((candidate) => candidate.id));
     const hasPlayers = (ids: readonly string[]) => ids.every((id) => playerIds.has(id)) && new Set(ids).size === ids.length;
     if (!isVesselCycleRuntimeProvenanceValidForRestore(s)) return false;
+    if (!isLogicalDayCountermeasureRuntimeProvenanceValidForRestore(s)) return false;
     if (!isBloodlustRuntimeProvenanceValidForRestore(s, !options.deferBloodlustContributionAuthority)) return false;
     if (!isMultiPresenceRuntimeProvenanceValidForRestore(s)) return false;
     if (!isLinkedRoleCoreRuntimeProvenanceValidForRestore(s)) return false;
@@ -4210,13 +4239,18 @@ function isResidualAttackCardDefinition(cardDefinition: AuthoringCard | undefine
   return !!cardDefinition && cardDefinition.abilities.some((ability) =>
     ability.kind === 'residual' && !['discard_at_round_end', 'close_at_round_end'].includes(str(ability.lifecycle?.cleanup)));
 }
+function isResidualAttackCard(s: GameState, instanceId: string, cardDefinition: AuthoringCard | undefined): boolean {
+  const physical = s.cards.find((candidate) => candidate.instanceId === instanceId);
+  return isResidualAttackCardDefinition(cardDefinition) ||
+    (!!physical && sourceBoundDefinitionResidualGranted(s, physical.ownerPlayerId, physical.definitionId));
+}
 
 function qualifyingOpponentCloseToOneCardIds(s: GameState, decisionPlayerId: string, effectControllerId?: string): string[] {
   const r = runtime(s);
   return s.cards.filter((candidate) => {
     if (candidate.controllerPlayerId !== decisionPlayerId || candidate.zone !== 'attack_area') return false;
     const cardDefinition = r.pack.cards[candidate.definitionId];
-    if (!cardDefinition || isResidualAttackCardDefinition(cardDefinition)) return false;
+    if (!cardDefinition || isResidualAttackCard(s, candidate.instanceId, cardDefinition)) return false;
     const state: unknown = r.cardState[candidate.instanceId];
     if (!isValidOpponentCloseToOneSourceCardState(state)) {
       reject('resolution_failed', 'Malformed opponent close-to-one qualifying card runtime state');
@@ -4337,7 +4371,7 @@ function closeOpponentCardForCloseToOne(s: GameState, decisionPlayerId: string, 
   const state: unknown = r.cardState[instanceId];
   if (target.controllerPlayerId !== decisionPlayerId || target.zone !== 'attack_area' || !cardDefinition ||
       !isValidOpponentCloseToOneSourceCardState(state) || state.active !== true || state.faceDown !== false ||
-      isResidualAttackCardDefinition(cardDefinition) || isCardCloseForbidden(s, instanceId, effectControllerId)) {
+      isResidualAttackCard(s, instanceId, cardDefinition) || isCardCloseForbidden(s, instanceId, effectControllerId)) {
     reject('resolution_failed', 'Opponent close-to-one target can no longer be closed');
   }
   state.active = false;
@@ -6349,6 +6383,10 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
   if (!commitLinkedRoleCopiedSkillUse(s, ctx.sourceCardId, ctx.controllerId)) reject('invalid_state', 'Copied linked-role servant skill lost source provenance');
+  const useInteraction = classifyAbilityInteraction(a);
+  if (['phase_activation', 'response_window'].includes(useInteraction.kind) && ctx.event?.type !== 'on_ability_used') {
+    processEvent(s, { id: nextId(s, 'ability-used'), type: 'on_ability_used', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+  }
   if (stageMultiPresenceLocationContext(s, ctx, a)) return;
   if (containsMasterAscensionUnlockPrivilegedNode(a)) {
     if (!isAcceptedMasterAscensionUnlockAbility(a)) reject('resolution_failed', 'Unsupported master-ascension unlock semantic');
@@ -6414,6 +6452,15 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (containsVesselCyclePrivilegedNode(a)) {
     if (!isAcceptedVesselCycleAbility(a) || !resolveVesselCycleEffect(s, ctx, a, a.effects[0]!)) reject('resolution_failed', 'Unsupported vessel-cycle semantic');
+    return;
+  }
+  if (containsLogicalDayCountermeasurePrivilegedNode(a)) {
+    if (!isAcceptedLogicalDayCountermeasureAbility(a)) reject('resolution_failed', 'Unsupported logical-day/countermeasure semantic');
+    const result = resolveLogicalDayCountermeasureEffect(s, ctx, a);
+    if (result === 'not_handled') reject('resolution_failed', 'Unsupported logical-day/countermeasure semantic');
+    if (result === 'awakened') {
+      processEvent(s, { id: nextId(s, 'logical-day-awakened'), type: 'after_logical_day_cycle_awakened', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+    }
     return;
   }
   if (containsBloodlustPrivilegedNode(a)) {
@@ -6625,6 +6672,37 @@ function rememberTrustedBattleResultSnapshot(r: AbilityRuntime, event: AbilityEv
   };
 }
 
+function settleArmedAttributeUseDefeat(s: GameState, event: AbilityEvent): void {
+  const candidate = armedAttributeUseDefeatCandidate(s, event, (instanceId) => getEffectiveCardAttributes(s, instanceId));
+  if (!candidate) return;
+  const controller = s.players.find((entry) => entry.id === candidate.controllerId && entry.status === 'active');
+  const target = s.players.find((entry) => entry.id === candidate.targetPlayerId && entry.status === 'active');
+  if (!controller || !target || !controller.locationId || controller.locationId !== target.locationId) {
+    reject('invalid_state', 'Armed attribute-use defeat lost same-location provenance');
+  }
+  const source = s.cards.find((entry) => entry.instanceId === candidate.sourceCardId);
+  const sourceDefinition = source ? definition(s, source.instanceId) : undefined;
+  const sourceState = source ? runtime(s).cardState[source.instanceId] : undefined;
+  if (!source || !sourceDefinition || source.ownerPlayerId !== controller.id || source.controllerPlayerId !== controller.id ||
+      !['field', 'attack_area'].includes(source.zone) || sourceState?.active !== true || sourceState.faceDown) {
+    reject('invalid_state', 'Armed attribute-use defeat source is no longer authoritative');
+  }
+  consumeArmedAttributeUseDefeat(s, candidate);
+  if (!playerIgnoresAbilityFromController(s, target.id, controller.id) &&
+      !playerIgnoresDefeatEffectAtLocation(s, target.id, controller.locationId)) {
+    (runtime(s).battleDefeatRoundByPlayer ??= {})[target.id] = s.round.roundNumber;
+    runtime(s).events.push({ type: 'player_defeated_by_effect', playerId: target.id, controllerId: controller.id,
+      sourceCardId: source.instanceId, abilityId: candidate.abilityId });
+  }
+  if (sourceBoundDefinitionResidualGranted(s, controller.id, source.definitionId)) {
+    source.zone = 'skill';
+    source.controllerPlayerId = source.ownerPlayerId;
+    source.visibility = { scope: 'owner_only', ownerPlayerId: source.ownerPlayerId };
+    sourceState.active = false; sourceState.faceDown = false; delete sourceState.paidManaOnPlay;
+    clearTransientCardTransformState(s, source.instanceId);
+  }
+}
+
 function processEvent(s: GameState, event: AbilityEvent): void {
   const r = runtime(s);
   reconcileVesselCycleVictoryPoints(s); reconcileBloodlustVictoryPoints(s); if (r.processedEvents.includes(event.id)) return;
@@ -6648,6 +6726,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   if (!event.id) reject('invalid_event', 'Events require stable ids');
   r.processedEvents.push(event.id);
   rememberTrustedBattleResultSnapshot(r, event);
+  settleArmedAttributeUseDefeat(s, event);
   settleReactionCounterEvent(s, event);
   settleBattlefieldAttackOffers(s, event);
   settlePendingRulerSealRewards(s, event);
@@ -7818,8 +7897,11 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   }
   for (const c of choices) {
     moveCard(s, c.cardInstanceId, cardPlayClassification(s, c.cardInstanceId).destinationZone);
-    const limit = perGamePlayLimit(definition(s, c.cardInstanceId)!);
-    if (limit) runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] = (runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] ?? 0) + 1;
+    const playedDefinition = definition(s, c.cardInstanceId)!;
+    const limit = perGamePlayLimit(playedDefinition);
+    if (limit && !logicalDayDefinitionPerGamePlayLimitIgnored(s, playerId, playedDefinition.id)) {
+      runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] = (runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] ?? 0) + 1;
+    }
     const playCounts = runtime(s).cardPlayCountByInstance ??= {};
     playCounts[c.cardInstanceId] = (playCounts[c.cardInstanceId] ?? 0) + 1;
     const bloodlustContributions = contributionClassificationByCard.get(c.cardInstanceId)?.bloodlust ?? [];

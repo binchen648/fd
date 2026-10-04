@@ -8269,7 +8269,7 @@ Implementation evidence for Origin Stillness printed-cost readiness:
 ## TASK P3-B-BAZETT-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: parent zero-credit owner-readiness preflight for complete current `master.bazett` frozen scope
 
 Frozen owner scope:
@@ -8290,3 +8290,15 @@ Accounting boundary:
 - the other nine Bazett frozen identities remain uncredited pending owner-complete readiness + formal migration;
 - Bazett readiness and every readiness subtask are permanently zero migration credit;
 - FORMAL must mechanically rescan all ten frozen identities against locked source/reference and currently accepted generic runtime seams, produce one complete owner-local gap set, close/accept compatible readiness, then migrate all remaining uncredited identities in one owner-complete Candidate/PR/fresh R.
+
+Implementation evidence:
+- complete owner-local preflight reused accepted Bazett F1 source normalization (`0dcc1f94297f2198f0f4152742c585032931390a` / `ec37b2a0`) and rechecked all ten frozen identities against current runtime + locked Reference;
+- one complete identity-free readiness gap set closes logical-day progression/reset/Awake, exact definition-scoped play+persistence overrides, next-opponent attribute-use defeat, Awake seal/definition settlement, and Day-3 zero-cost source-skill attack join;
+- existing generic seams remain reused for game-start provisioning (`s1`), preservation-only Day-1 modifier (`s1b`), and ordinary trigger/resource arithmetic; no per-skill readiness split is intentionally deferred;
+- focused Bazett readiness regression: `13/13 PASS`;
+- affected shared aggregate: `165/165 PASS` (MatchSession 33, authoring-interpreter 38, executable-card-pack 50, Akasha 17, Alice 10, card-action-play 4, Bazett readiness 13);
+- `FD_TOOLCHAIN_OK`; typecheck/content/generated/diff gates PASS; Phase-3 coverage/audit commands PASS via scratch `--out`; `data/authoring/**` delta EMPTY;
+- production capability module is identity-free and exact-shape fail-closed; forged provider/armed provenance is rejected by restore validation;
+- Detailed report: `docs/reports/2026-10-05-p3-b-bazett-owner-readiness-complete-gap-set-result.md`;
+- predecessor Candidate `f4234d18baf7235375f3634808a118abf97f912b` received `IMPLEMENTATION_NEEDS_REVISION`; canonical bounded relay `https://github.com/binchen648/fd/pull/522#issuecomment-5982661723`. P1 closure restages the same Day-3 physical from discard on the second Lost-in-Time cycle, preserves exact generator provenance, rejects live-zone/forged alternatives, and adds the explicit second-cycle regression plus fail-closed negatives.
+- permanently zero migration credit; strict accounting remains `197/944`, remaining `747` pending fresh independent readiness acceptance + FORMAL A-sync/rescan.
