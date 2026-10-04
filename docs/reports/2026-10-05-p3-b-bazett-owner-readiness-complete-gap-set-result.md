@@ -102,17 +102,17 @@ Dynamic definition persistence is consulted by real MatchSession round-end attac
 ## Verification
 
 Focused readiness regression:
-- `packages/rules/tests/regression/p3-bazett-owner-readiness-complete-gap-set.test.ts`: `11/11 PASS`.
+- `packages/rules/tests/regression/p3-bazett-owner-readiness-complete-gap-set.test.ts`: `13/13 PASS`.
 
 Affected shared aggregate:
-- Bazett readiness: `11/11 PASS`;
+- Bazett readiness: `13/13 PASS`;
 - MatchSession: `33/33 PASS`;
 - authoring-interpreter: `38/38 PASS`;
 - executable-card-pack: `50/50 PASS`;
 - Akasha vessel-cycle readiness: `17/17 PASS`;
 - Alice readiness: `10/10 PASS`;
 - card-action-play: `4/4 PASS`;
-- aggregate: `163/163 PASS`.
+- aggregate: `165/165 PASS`.
 
 Repository gates:
 - `FD_TOOLCHAIN_OK`;
@@ -125,6 +125,21 @@ Repository gates:
 - `git diff --check`: PASS.
 
 Large Phase-3 coverage/audit JSON was intentionally written under untracked `.fd-bazett-readiness/` scratch rather than overwriting the repository's tracked historical artifacts during verification.
+
+## Fresh-R revision closure
+
+Predecessor Candidate `f4234d18baf7235375f3634808a118abf97f912b` received `IMPLEMENTATION_NEEDS_REVISION`. Canonical bounded same-attempt relay: `https://github.com/binchen648/fd/pull/522#issuecomment-5982661723`.
+
+The exact P1 finding was that the Day-3 stage failed on the second Lost-in-Time cycle: after the first Day-3 physical was used and normally reached discard, `ensureDefinitionInSkill()` detected the existing physical and returned without restoring it to skill.
+
+Successor closure:
+- an existing exact staged physical in `discard` is now restored to `skill`, owner-controlled and owner-visible, with inactive/face-up runtime state reset for the new stage;
+- an existing physical must retain the exact original `generatedBy` provider provenance; forged provenance fails closed;
+- an existing physical in a live/non-discard zone fails closed instead of being silently moved or duplicated;
+- regression now exercises first Day3 use -> discard -> Day4 loss/reset -> second Day3 and proves the same physical instance is restaged without duplication;
+- focused Bazett readiness: `13/13 PASS`; affected shared aggregate: `165/165 PASS`; FD_TOOLCHAIN_OK; typecheck/content/generated/data-authoring/identity/diff gates PASS.
+
+The Reviewer transport exposed only this exact P1 finding before truncating its trailing reproduction JSON. No omitted finding text is reconstructed or invented.
 
 ## Formal next gate
 

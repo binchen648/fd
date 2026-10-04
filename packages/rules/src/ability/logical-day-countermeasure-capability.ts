@@ -197,7 +197,16 @@ function ensureDefinitionInSkill(state: GameState, controllerId: PlayerId, defin
   if (!definition || definition.cardType !== 'master_skill') throw new Error('LOGICAL_DAY_STAGE_DEFINITION_INVALID');
   const existing = state.cards.filter((card) => card.ownerPlayerId === controllerId && card.definitionId === definitionId && card.zone !== 'removed_from_game');
   if (existing.length > 1) throw new Error('LOGICAL_DAY_STAGE_DUPLICATE');
-  if (existing.length === 1) return;
+  if (existing.length === 1) {
+    const physical = existing[0]!;
+    if (physical.controllerPlayerId !== controllerId || physical.generatedBy !== generatedBy) throw new Error('LOGICAL_DAY_STAGE_PROVENANCE_INVALID');
+    if (physical.zone === 'skill') return;
+    if (physical.zone !== 'discard') throw new Error('LOGICAL_DAY_STAGE_ZONE_INVALID');
+    physical.zone = 'skill';
+    physical.visibility = { scope: 'owner_only', ownerPlayerId: controllerId };
+    r.cardState[physical.instanceId] = { active: false, faceDown: false, playedRound: state.round.roundNumber };
+    return;
+  }
   const instanceId = `${controllerId}:logical-day:${definitionId}`;
   if (state.cards.some((card) => card.instanceId === instanceId)) throw new Error('LOGICAL_DAY_STAGE_INSTANCE_CONFLICT');
   state.cards.push({

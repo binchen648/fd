@@ -169,6 +169,50 @@ describe('P3 Bazett owner-readiness complete identity-free gap set', () => {
     expect(state.abilityRuntime!.cardState[staged!.instanceId]).toMatchObject({ active: true, faceDown: false, paidManaOnPlay: 0 });
   });
 
+  it('restages the same Day3 physical from discard on the second Lost-in-Time cycle', () => {
+    const { state } = setup();
+    roundEnd(state, 'cycle1-to-day2');
+    roundEnd(state, 'cycle1-to-day3');
+    const first = state.cards.find((entry) => entry.ownerPlayerId === 'p1' && entry.definitionId === DAY3 && entry.zone === 'skill');
+    expect(first).toBeTruthy();
+    exec(state, first!.instanceId, JOIN);
+    expect(state.cards.find((entry) => entry.instanceId === first!.instanceId)!.zone).toBe('attack_area');
+
+    const used = state.cards.find((entry) => entry.instanceId === first!.instanceId)!;
+    used.zone = 'discard';
+    used.controllerPlayerId = 'p1';
+    used.visibility = { scope: 'public' };
+    state.abilityRuntime!.cardState[used.instanceId]!.active = false;
+
+    roundEnd(state, 'cycle1-to-day4');
+    loss(state, 'cycle1-day4-loss');
+    state.round.roundNumber += 1;
+    processAbilityEvent(state, { id: 'cycle1-reset-start', type: 'round_start', playerId: 'p1' });
+    expect(logicalDayCycleMatches(state, 'p1', CYCLE, 1)).toBe(true);
+
+    roundEnd(state, 'cycle2-to-day2');
+    roundEnd(state, 'cycle2-to-day3');
+    expect(logicalDayCycleMatches(state, 'p1', CYCLE, 3)).toBe(true);
+    const restaged = state.cards.find((entry) => entry.instanceId === first!.instanceId)!;
+    expect(restaged).toMatchObject({ zone: 'skill', controllerPlayerId: 'p1', generatedBy: state.cards.find((entry) => entry.definitionId === TRACK)!.instanceId });
+    expect(state.cards.filter((entry) => entry.ownerPlayerId === 'p1' && entry.definitionId === DAY3 && entry.zone !== 'removed_from_game')).toHaveLength(1);
+    expect(state.abilityRuntime!.cardState[restaged.instanceId]).toMatchObject({ active: false, faceDown: false, playedRound: state.round.roundNumber });
+  });
+
+  it('fails closed if an existing staged definition has foreign provenance or a live non-discard zone', () => {
+    const foreign = setup();
+    roundEnd(foreign.state, 'foreign-to-day2');
+    const fakeId = add(foreign.state, DAY3, 'p1', 'discard');
+    foreign.state.cards.find((entry) => entry.instanceId === fakeId)!.generatedBy = 'forged-provider';
+    expect(() => roundEnd(foreign.state, 'foreign-to-day3')).toThrow(/LOGICAL_DAY_STAGE_PROVENANCE_INVALID/);
+
+    const live = setup();
+    roundEnd(live.state, 'live-to-day2');
+    const liveId = add(live.state, DAY3, 'p1', 'field', true);
+    live.state.cards.find((entry) => entry.instanceId === liveId)!.generatedBy = live.ids.track;
+    expect(() => roundEnd(live.state, 'live-to-day3')).toThrow(/LOGICAL_DAY_STAGE_ZONE_INVALID/);
+  });
+
   it('schedules loss reset for the next round, returns to Day1, gains exactly 1 VP, and closes the configured counter definition', () => {
     const { state, ids } = setup();
     roundEnd(state, 'to-day2'); roundEnd(state, 'to-day3');
