@@ -50,7 +50,8 @@
                                  "data/authoring/masters/master.akiha.json",
                                  "data/authoring/masters/master.alice.json",
                                  "data/authoring/masters/master.amakusa.json",
-                                 "data/authoring/masters/master.araya.json"
+                                 "data/authoring/masters/master.araya.json",
+                                 "data/authoring/masters/master.bazett.json"
                              ],
     "authoringMasterSupportFiles":  [
                                         "data/authoring/masters/master.shirou-emiya.json"

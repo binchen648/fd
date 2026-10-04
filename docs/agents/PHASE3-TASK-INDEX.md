@@ -8317,9 +8317,18 @@ Implementation evidence:
 ## TASK P3-S-OWNER-BAZETT-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: formal owner-complete migration for current owner `master.bazett`
 
 Frozen owner scope: all ten Bazett identities listed by the accepted parent readiness task.
 
 Formal rule: preserve historical accepted `master.bazett.skill.s1b`; materialize the other nine frozen identities in one Candidate / one PR / one fresh independent R. No partial credit. Strict accounting remains `197/944` until `MIGRATION_ACCEPTED` + FORMAL A-sync; then newly creditable is exactly 9.
+
+Bazett owner-complete implementation evidence:
+- exact Base `84e2fab939de6ce1b1cc307488b749b80ce8cc92`: canonical authoring `1/10`, only historical credited `s1b`; worktree `10/10`, newly materialized exactly 9, `s1bPreserved=true`;
+- formal consumer regression `9/9 PASS`; accepted readiness `13/13 PASS`; affected shared aggregate `174/174 PASS`;
+- content pack expands `12 -> 13` masters and includes Bazett exactly once; generated content refreshed deterministically;
+- roster-growth-only MatchSession fixture stabilization preserves original Irisviel/Kiritsugu/one-round behavior assertions; no production runtime semantic change;
+- FD_TOOLCHAIN_OK; typecheck/content/generated/coverage/audit/identity/diff gates PASS; production Bazett identity routing CLEAN;
+- report: `docs/reports/2026-10-05-p3-s-owner-bazett-complete-migration-result.md`;
+- strict accounting remains `197/944`, remaining `747` until fresh-R acceptance + A-sync; acceptance would add exactly 9 -> `206/944`, remaining `738`.

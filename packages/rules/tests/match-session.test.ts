@@ -13,13 +13,13 @@ function createSessionIncludingServant(servantId: string) {
   }
   throw new Error('Unable to build deterministic fixture containing ' + servantId);
 }
-function createSessionIncludingMaster(masterId: string) {
+function createSessionIncludingMaster(masterId: string, humanPlayerId = 'p1') {
   const characters = Object.values(contentLibrary.rules.characters);
   const masters = characters.filter((character) => character.kind === 'master');
   const servants = characters.filter((character) => character.kind === 'servant');
   for (let seed = 1; seed <= 65_536; seed += 1) {
     if (buildSevenPlayerCharacterPairings(masters, servants, seed).some((pairing) => pairing.master.id === masterId)) {
-      return createMatchSession({ seed, humanPlayerId: 'p1' });
+      return createMatchSession({ seed, humanPlayerId });
     }
   }
   throw new Error('Unable to build deterministic fixture containing ' + masterId);
@@ -258,7 +258,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('uses Irisviel proxy text to expose command spells during the advance phase', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
+    const session = createSessionIncludingMaster('master.irisviel');
     const pairing = session.pairings.find((candidate) => candidate.master.id === 'master.irisviel')!;
     const player = session.state.players.find((candidate) => candidate.id === pairing.playerId)!;
     const commandSpell = session.state.cards.find((card) =>
@@ -275,7 +275,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('lets Kiritsugu choose one deck card to replace with Origin Bullet during preparation', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p6' });
+    const session = createSessionIncludingMaster('master.kiritsugu', 'p6');
     const kiritsuguPairing = session.pairings.find((pairing) => pairing.master.id === 'master.kiritsugu')!;
     session.state.round.prioritySeat = kiritsuguPairing.seat;
     const skill = session.state.cards.find((card) =>
@@ -327,7 +327,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('runs one semi-auto round through the same dispatch path', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
+    const session = createMatchSession({ seed: 1, humanPlayerId: 'p1' });
     const reason = session.runFullMatch({ maxRounds: 1 });
     const projected = session.projectToClientState('p1');
 

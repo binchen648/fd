@@ -4,45 +4,892 @@
   "id": "master.bazett",
   "name": "巴泽特·弗拉加·马克雷米兹",
   "class": "Master",
+  "publicInformation": {
+    "type": "master_package",
+    "initialMana": 4
+  },
   "sourcePolicy": {
-    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "phase3EvidenceCommit": "566c086f168b23883a1c064ec35f598404fed8df",
     "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
-    "note": "Semantics come from frozen F1 plus accepted FB2-14/R39; locked Reference is used only for owner/static metadata."
+    "note": "Frozen F1 Bazett source evidence is authoritative. Accepted PR #522 complete identity-free logical-day/countermeasure readiness provides runtime authority; locked Reference supplies corroboration/static metadata. Historical accepted FM08 s1b is preserved without duplicate credit."
   },
   "cards": [
     {
+      "id": "master.bazett.skill.s1",
+      "aliases": [
+        "s1"
+      ],
+      "legacyId": "s1",
+      "name": "传承保菌者",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.bazett"
+      },
+      "printedText": "将【佛拉格拉克】加入你的技能区。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "bazett.s1.provision",
+          "kind": "forced_trigger",
+          "printedClause": "将【佛拉格拉克】加入你的技能区。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "provision_skill_cards",
+              "player": "controller",
+              "targetDefinitionIds": [
+                "master.bazett.skill.s2"
+              ]
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.bazett.skill.s1a",
+      "aliases": [
+        "s1a"
+      ],
+      "legacyId": "s1a",
+      "name": "时间迷失",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.bazett"
+      },
+      "printedText": "游戏开始时，你处于【第一天】，每回合结束时，推进一天。当你战败时【再启动】。高潮阶段的每回合结束时，若你未【觉醒】，失去5点战果。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "bazett.s1a.initialize",
+          "kind": "forced_trigger",
+          "printedClause": "游戏开始时，你处于【第一天】。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "logical_day_cycle_initialize",
+              "cycleKey": "bazett.lost-in-time",
+              "initialDay": 1,
+              "maxDay": 4,
+              "stageDefinitionId": "master.bazett.skill.s5",
+              "stageDay": 3,
+              "awakenDefinitionId": "master.bazett.skill.s4"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "bazett.s1a.advance",
+          "kind": "forced_trigger",
+          "printedClause": "每回合结束时，推进一天。",
+          "activation": {
+            "trigger": "round_end"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "logical_day_cycle_advance",
+              "cycleKey": "bazett.lost-in-time"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "bazett.s1a.loss-reset",
+          "kind": "forced_trigger",
+          "printedClause": "当你战败时【再启动】。",
+          "activation": {
+            "trigger": "after_controller_loses_battle"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "logical_day_cycle_schedule_reset",
+              "cycleKey": "bazett.lost-in-time"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "bazett.s1a.climax-penalty",
+          "kind": "forced_trigger",
+          "printedClause": "高潮阶段的每回合结束时，若你未【觉醒】，失去5点战果。",
+          "activation": {
+            "trigger": "round_end"
+          },
+          "conditions": [
+            {
+              "type": "round_is_climax"
+            },
+            {
+              "type": "logical_cycle_awake_is",
+              "cycleKey": "bazett.lost-in-time",
+              "expected": false
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "adjust_victory_points",
+              "amount": -5
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
       "id": "master.bazett.skill.s1b",
-      "aliases": ["s1b"],
+      "aliases": [
+        "s1b"
+      ],
       "legacyId": "s1b",
       "name": "第一天",
       "cardType": "master_skill",
-      "owner": { "type": "master", "id": "master.bazett" },
+      "owner": {
+        "type": "master",
+        "id": "master.bazett"
+      },
       "printedText": "彷徨-你-2合计威力。",
-      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
-      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
       "playRequirements": [],
       "abilities": [
         {
           "id": "bazett.day1.dazed",
           "kind": "forced_trigger",
           "printedClause": "彷徨-你-2合计威力。",
-          "activation": { "trigger": "game_start" },
-          "conditions": [], "targets": [], "cost": [], "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
-          "effects": [{ "type": "install_rule_override", "player": "controller", "rule": "first_logical_day_total_power_adjustment", "value": -2 }],
-          "execution": { "mode": "automatic" }
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "install_rule_override",
+              "player": "controller",
+              "rule": "first_logical_day_total_power_adjustment",
+              "value": -2
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
         }
       ],
       "phase3Evidence": {
         "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
         "f1SourceReferences": [
-          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/巴泽特·弗拉加·马克雷米兹.png", "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹" },
-          { "kind": "legacy", "document": "legacy-content.json", "locator": "master/master.bazett/s1b" }
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/巴泽特·弗拉加·马克雷米兹.png",
+            "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.bazett/s1b"
+          }
         ],
-        "f1ClauseSources": [{ "document": "src/content/generated/legacy-content.json", "locator": "masters[16].skills[2].text#line=1", "sha256": "9847f0953309d542a783f1553153ccbf2bf08a3c008674caadd067ef2b9e7071" }],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[16].skills[2].text#line=1",
+            "sha256": "9847f0953309d542a783f1553153ccbf2bf08a3c008674caadd067ef2b9e7071"
+          }
+        ],
         "sourceTextSha256": "9847f0953309d542a783f1553153ccbf2bf08a3c008674caadd067ef2b9e7071",
-        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "s1b", "cost": 0, "basePower": 0, "legacyRequirement": null, "typeLabel": "被动" },
-        "acceptedContracts": { "gameStartRuleOverrides": "P3-R39/FB2-14" }
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s1b",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": null,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": {
+          "gameStartRuleOverrides": "P3-R39/FB2-14"
+        }
       }
+    },
+    {
+      "id": "master.bazett.skill.s1c",
+      "aliases": [
+        "s1c"
+      ],
+      "legacyId": "s1c",
+      "name": "第二天",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.bazett"
+      },
+      "printedText": "你拥有的魔力少于8点也可以打出【佛拉格拉克】且其于本回合失去<每局游戏限一次>。战斗阶段：若你获胜，获得2点战果。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "bazett.s1c.fragarach-window",
+          "kind": "passive",
+          "printedClause": "你拥有的魔力少于8点也可以打出【佛拉格拉克】且其于本回合失去<每局游戏限一次>。",
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "logical_day_definition_play_override",
+              "cycleKey": "bazett.lost-in-time",
+              "day": 2,
+              "targetDefinitionId": "master.bazett.skill.s2",
+              "requirementType": "skill_zone_mana_at_least",
+              "requirementValue": 8,
+              "ignorePerGamePlayLimit": true
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "bazett.s1c.win-vp",
+          "kind": "forced_trigger",
+          "printedClause": "战斗阶段：若你获胜，获得2点战果。",
+          "activation": {
+            "trigger": "after_controller_wins_battle"
+          },
+          "conditions": [
+            {
+              "type": "logical_day_is",
+              "cycleKey": "bazett.lost-in-time",
+              "day": 2
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "adjust_victory_points",
+              "amount": 2
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.bazett.skill.s1d",
+      "aliases": [
+        "s1d"
+      ],
+      "legacyId": "s1d",
+      "name": "第四天",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.bazett"
+      },
+      "printedText": "若你于本回合获胜，【觉醒】。若你于回合结束时未【觉醒】，【再启动】。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "bazett.s1d.awaken",
+          "kind": "forced_trigger",
+          "printedClause": "若你于本回合获胜，【觉醒】。",
+          "activation": {
+            "trigger": "after_controller_wins_battle"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "logical_day_cycle_awaken",
+              "cycleKey": "bazett.lost-in-time",
+              "day": 4
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.bazett.skill.s2",
+      "aliases": [
+        "s2"
+      ],
+      "legacyId": "s2",
+      "name": "佛拉格拉克",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.bazett"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "<每局游戏限一次>\n先发后至-下一次一名与你位于同一战场的对手使用宝具时，令其【败北】。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": [
+          "魔术"
+        ],
+        "cost": 1,
+        "basePower": 4
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "bazett.s2.ultimate-counter",
+          "kind": "forced_trigger",
+          "printedClause": "先发后至-下一次一名与你位于同一战场的对手使用宝具时，令其【败北】。",
+          "activation": {
+            "trigger": "on_card_played"
+          },
+          "conditions": [
+            {
+              "type": "source_active"
+            },
+            {
+              "type": "event_source_card_is_source"
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "arm_next_opponent_attribute_use_defeat",
+              "attribute": "宝具",
+              "requireSameLocation": true
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "bazett.s2.once-per-game",
+          "kind": "passive",
+          "printedClause": "<每局游戏限一次>",
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "effects": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {
+            "type": "per_game",
+            "scope": "this_card",
+            "uses": 1
+          },
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.bazett.skill.s3",
+      "aliases": [
+        "s3"
+      ],
+      "legacyId": "s3",
+      "name": "再启动",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.bazett"
+      },
+      "printedText": "下回合开始时，你返回【第一天】并获得1点战果。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "bazett.s3.reset",
+          "kind": "forced_trigger",
+          "printedClause": "下回合开始时，你返回【第一天】并获得1点战果。",
+          "activation": {
+            "trigger": "round_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "logical_day_cycle_resolve_reset",
+              "cycleKey": "bazett.lost-in-time",
+              "rewardVp": 1,
+              "closeDefinitionId": "master.bazett.skill.s2"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.bazett.skill.s4",
+      "aliases": [
+        "s4"
+      ],
+      "legacyId": "s4",
+      "name": "觉醒",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.bazett"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "你失去时间迷失并恢复所有令咒，然后令【佛拉格拉克】返回你的技能区。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "bazett.s4.awake-settlement",
+          "kind": "forced_trigger",
+          "printedClause": "你失去时间迷失并恢复所有令咒，然后令【佛拉格拉克】返回你的技能区。",
+          "activation": {
+            "trigger": "after_logical_day_cycle_awakened"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "restore_command_seals_return_definition_to_skill",
+              "cycleKey": "bazett.lost-in-time",
+              "definitionId": "master.bazett.skill.s2",
+              "commandSeals": 3
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.bazett.skill.s5",
+      "aliases": [
+        "s5"
+      ],
+      "legacyId": "s5",
+      "name": "第三天",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.bazett"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "（此牌于第三天加入你的技能区）\n被动/行动阶段：将此牌加入攻击。\n战斗阶段：若你获胜，获得3点战果。",
+      "cardFace": {
+        "typeLabel": "力量",
+        "attributes": [
+          "力量"
+        ],
+        "cost": 0,
+        "basePower": 5
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "bazett.s5.join",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：将此牌加入攻击。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "join_source_skill_card_to_attack_zero_cost",
+              "cycleKey": "bazett.lost-in-time",
+              "day": 3
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "bazett.s5.win-vp",
+          "kind": "forced_trigger",
+          "printedClause": "战斗阶段：若你获胜，获得3点战果。",
+          "activation": {
+            "trigger": "after_controller_wins_battle"
+          },
+          "conditions": [
+            {
+              "type": "logical_day_is",
+              "cycleKey": "bazett.lost-in-time",
+              "day": 3
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "adjust_victory_points",
+              "amount": 3
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.bazett.skill.ascension",
+      "aliases": [
+        "ascension"
+      ],
+      "legacyId": "ascension",
+      "name": "无懈可击",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.bazett"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "【佛拉格拉克】失去<每局游戏限一次>并获得：“残留：此牌持续激活至你触发先发后至或再启动。”",
+      "cardFace": {
+        "typeLabel": "升华技",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "bazett.ascension.fragarach-persistence",
+          "kind": "passive",
+          "printedClause": "【佛拉格拉克】失去<每局游戏限一次>并获得残留。",
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "source_bound_definition_persistence_override",
+              "targetDefinitionId": "master.bazett.skill.s2",
+              "ignorePerGamePlayLimit": true,
+              "grantResidual": true
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": [
+        "../../Fate_Domination-开发版/images/masters/巴泽特·弗拉加·马克雷米兹.png"
+      ]
     }
   ]
 }
