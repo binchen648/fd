@@ -8197,7 +8197,7 @@ Implementation evidence:
 ## TASK P3-S-OWNER-ARAYA-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `ACCEPTED`
 Classification: formal owner-complete migration for current owner `master.araya`
 
 Frozen owner scope:
@@ -8253,3 +8253,40 @@ Implementation evidence for Origin Stillness printed-cost readiness:
 - Full-owner rescan remains `0/3` canonical Araya identities; no additional owner-local readiness gap is discoverable after accepted persistent-terrain, effective-workshop/restrictions, and Origin Stillness printed-cost closures.
 - Formal `P3-S-OWNER-ARAYA-COMPLETE-MIGRATION` is restored to `READY`; all three frozen identities must be materialized in one Candidate.
 - This readiness remains permanently zero-credit; strict accounting stays `194/944`, remaining `750`.
+
+### Araya formal acceptance synchronization
+
+- Accepted exact Candidate: `c4e3aeea56d670747aaeb37e83f2e2f41458e5a9`.
+- Fresh independent verdict: `MIGRATION_ACCEPTED`.
+- Canonical Coordinator bounded relay: `https://github.com/binchen648/fd/pull/521#issuecomment-5982236310`.
+- Exact Base: `fd13c70c8df32d8ce64d4f6b32282a1f2f16cf66`; Base canonical authoring contains `0/3` frozen Araya identities.
+- Accepted Candidate contains `master.araya.skill.ascension + master.araya.skill.s1 + master.araya.skill.s1a` exactly once each (`3/3`).
+- Newly creditable: `3`; preservation-only: `0`.
+- Strict formal accounting advances `194/944 -> 197/944`; remaining `750 -> 747`.
+- Next mechanical owner is `master.bazett`, frozen scope `10` identities. Historical accepted FM08 already credited `master.bazett.skill.s1b`, so Bazett begins with `1` preservation-only identity and `9` remaining uncredited frozen identities.
+- Acceptance synchronization report: `docs/reports/2026-10-05-p3-a-owner-araya-acceptance-synchronization.md`.
+
+## TASK P3-B-BAZETT-OWNER-READINESS-CAPABILITY
+
+Owner: FORMAL readiness
+Status: `READY`
+Classification: parent zero-credit owner-readiness preflight for complete current `master.bazett` frozen scope
+
+Frozen owner scope:
+- `master.bazett.skill.ascension`
+- `master.bazett.skill.s1`
+- `master.bazett.skill.s1a`
+- `master.bazett.skill.s1b`
+- `master.bazett.skill.s1c`
+- `master.bazett.skill.s1d`
+- `master.bazett.skill.s2`
+- `master.bazett.skill.s3`
+- `master.bazett.skill.s4`
+- `master.bazett.skill.s5`
+
+Accounting boundary:
+- strict formal accounting after accepted Araya A-sync is `197/944`, remaining `747`;
+- `master.bazett.skill.s1b` is preservation-only because it was already accepted and credited in FM08; it must not be counted again;
+- the other nine Bazett frozen identities remain uncredited pending owner-complete readiness + formal migration;
+- Bazett readiness and every readiness subtask are permanently zero migration credit;
+- FORMAL must mechanically rescan all ten frozen identities against locked source/reference and currently accepted generic runtime seams, produce one complete owner-local gap set, close/accept compatible readiness, then migrate all remaining uncredited identities in one owner-complete Candidate/PR/fresh R.
