@@ -350,9 +350,15 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('authenticates gameplay-affecting MatchSession fields outside GameState', () => {
-    // Keep this durability fixture on a bounded one-round roster path as the production servant pool grows.
+    // Keep this durability fixture on a direct production battle path instead of a full AI round.
     const session = createMatchSession({ seed: 20207105, humanPlayerId: 'p1', maxActionsPerPlayer: 2 });
-    expect(session.runFullMatch({ maxRounds: 1 })).toBe('match_complete');
+    for (const player of session.state.players) delete player.locationId;
+    session.state.players[0]!.locationId = 'miyama_town';
+    session.state.players[1]!.locationId = 'miyama_town';
+    session.state.eventPlacements = [];
+    session.state.currentSituationCardId = undefined;
+    session.state.round.activePhase = 'battle';
+    (session as unknown as { resolveBattlePhase: () => void }).resolveBattlePhase();
     const durable = session.serializeSession();
     expect(durable.battleHistory.length).toBeGreaterThan(0);
     expect(() => restoreMatchSession(structuredClone(durable))).not.toThrow();

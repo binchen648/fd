@@ -92,3 +92,18 @@ Reverification after this fixture stabilization:
 - git diff --check: PASS.
 
 This follow-up does not change Araya canonical authoring or migration accounting. Accounting remains 194/944, remaining 750 until an exact fresh independent `MIGRATION_ACCEPTED` verdict is A-synced.
+
+## Successor-3 deferred-runtime fixture timeout closure
+
+Fresh blocked-retry review of exact Candidate `b17aa62c671134acd3d9d758e497d333b043f5f5` returned `MIGRATION_NEEDS_REVISION`; canonical Coordinator relay: `https://github.com/binchen648/fd/pull/521#issuecomment-5982023213`.
+
+The single P1 was release stability of `packages/rules/tests/match-session.test.ts` test `authenticates gameplay-affecting MatchSession fields outside GameState`: the prior fixture drove an entire semi-auto round and could exceed its explicit `10_000ms` timeout in the fixed Reviewer environment.
+
+Closure keeps every authority assertion unchanged while replacing the unrelated full-AI-round setup with a direct real `MatchSession.resolveBattlePhase()` fixture. Two real players are placed at one battlefield, the production battle resolver produces non-empty `battleHistory`, the untampered snapshot still restores, and tampering either `maxActionsPerPlayer` or `battleHistory` still fails with `Invalid or missing deferred runtime state authority`. No production runtime or Araya authoring semantics changed.
+
+Reverification after closure:
+- exact P1 regression repeated 3 times: PASS at 953ms / 946ms / 944ms;
+- Reviewer affected aggregate: 163/163 PASS, including MatchSession 33/33, Araya formal 6/6, Araya readiness 21/21, Amakusa linked-role 11/11, Time Alter 4/4, authoring-interpreter 38/38, executable-card-pack 50/50;
+- in the combined aggregate, the former P1 completed in 882ms;
+- typecheck PASS; content validate PASS (12 masters / 19 servants / 20 events / 0 blocking issues); git diff --check PASS;
+- migration accounting remains 194/944, remaining 750 until fresh independent `MIGRATION_ACCEPTED` + FORMAL A-sync/accounting.
