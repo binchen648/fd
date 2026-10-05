@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 12,
+    "masters": 13,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -670,6 +670,138 @@
       "htmPath": "chm-extract/荒耶宗莲.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/荒耶宗莲.png",
       "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.bazett",
+      "displayName": "巴泽特·弗拉加·马克雷米兹",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/巴泽特·弗拉加·马克雷米兹.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/巴泽特·弗拉加·马克雷米兹.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.bazett.overview",
+      "displayName": "巴泽特·弗拉加·马克雷米兹",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/巴泽特·弗拉加·马克雷米兹.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/巴泽特·弗拉加·马克雷米兹.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.bazett.skill.ascension",
+      "displayName": "无懈可击",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/巴泽特·弗拉加·马克雷米兹.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/巴泽特·弗拉加·马克雷米兹.png",
+      "imageIndex": 10,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.bazett.skill.s1",
+      "displayName": "传承保菌者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/巴泽特·弗拉加·马克雷米兹.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/巴泽特·弗拉加·马克雷米兹.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.bazett.skill.s1a",
+      "displayName": "时间迷失",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/巴泽特·弗拉加·马克雷米兹.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/巴泽特·弗拉加·马克雷米兹.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.bazett.skill.s1b",
+      "displayName": "第一天",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/巴泽特·弗拉加·马克雷米兹.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/巴泽特·弗拉加·马克雷米兹.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.bazett.skill.s1c",
+      "displayName": "第二天",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/巴泽特·弗拉加·马克雷米兹.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/巴泽特·弗拉加·马克雷米兹.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.bazett.skill.s1d",
+      "displayName": "第四天",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/巴泽特·弗拉加·马克雷米兹.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/巴泽特·弗拉加·马克雷米兹.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.bazett.skill.s2",
+      "displayName": "佛拉格拉克",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/巴泽特·弗拉加·马克雷米兹.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/巴泽特·弗拉加·马克雷米兹.png",
+      "imageIndex": 6,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.bazett.skill.s3",
+      "displayName": "再启动",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/巴泽特·弗拉加·马克雷米兹.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/巴泽特·弗拉加·马克雷米兹.png",
+      "imageIndex": 7,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.bazett.skill.s4",
+      "displayName": "觉醒",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/巴泽特·弗拉加·马克雷米兹.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/巴泽特·弗拉加·马克雷米兹.png",
+      "imageIndex": 8,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.bazett.skill.s5",
+      "displayName": "第三天",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/巴泽特·弗拉加·马克雷米兹.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/巴泽特·弗拉加·马克雷米兹.png",
+      "imageIndex": 9,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

@@ -1,9 +1,30 @@
 import { describe, expect, it } from 'vitest';
 
+import contentLibrary from '../../../../data/generated/fd-playtest-v1.content-library.json';
 import { processAbilityEvent } from '../../src/ability/interpreter';
-import { createMatchSession } from '../../src/match-session';
+import { buildSevenPlayerCharacterPairings, createMatchSession } from '../../src/match-session';
 import { isPlaySourceCardWithCostResponse } from '../../src/ability/interpreter';
 import type { AuthoringAbility } from '../../src/ability/types';
+
+const HUMAN_PLAYER_IDS = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'];
+
+function seedIncludingMaster(masterId: string) {
+  const characters = Object.values(contentLibrary.rules.characters);
+  const masters = characters.filter((character) => character.kind === 'master');
+  const servants = characters.filter((character) => character.kind === 'servant');
+  for (let seed = 1; seed <= 65_536; seed += 1) {
+    if (buildSevenPlayerCharacterPairings(masters, servants, seed).some((pairing) => pairing.master.id === masterId)) {
+      return seed;
+    }
+  }
+  throw new Error('Unable to build deterministic fixture containing ' + masterId);
+}
+
+const KAYNETH_FIXTURE_SEED = seedIncludingMaster('master.kayneth');
+
+function createKaynethSession() {
+  return createMatchSession({ seed: KAYNETH_FIXTURE_SEED, humanPlayerIds: HUMAN_PLAYER_IDS });
+}
 
 function prepareVolumenResponse(session: ReturnType<typeof createMatchSession>, options: { mana?: number; sourceZone?: string } = {}) {
   const pairing = session.pairings.find((candidate) => candidate.master.id === 'master.kayneth')!;
@@ -34,7 +55,7 @@ function responseAction(session: ReturnType<typeof createMatchSession>, playerId
 
 describe('CARD_ACTION_SEMANTICS_MINIMAL_PLAY_SOURCE_CARD_WITH_COST_RESPONSE', () => {
   it('routes Volumen response source-card play through data-flow', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createKaynethSession();
     const { playerId, volumen } = prepareVolumenResponse(session);
     const action = responseAction(session, playerId, volumen);
 
@@ -75,17 +96,17 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_PLAY_SOURCE_CARD_WITH_COST_RESPONSE', ()
   });
 
   it('does not offer Volumen when mana is insufficient or source card is no longer in hand', () => {
-    const lowMana = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const lowMana = createKaynethSession();
     const lowManaSetup = prepareVolumenResponse(lowMana, { mana: 1 });
     expect(responseAction(lowMana, lowManaSetup.playerId, lowManaSetup.volumen)).toBeUndefined();
 
-    const movedSource = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const movedSource = createKaynethSession();
     const movedSetup = prepareVolumenResponse(movedSource, { sourceZone: 'discard' });
     expect(responseAction(movedSource, movedSetup.playerId, movedSetup.volumen)).toBeUndefined();
   });
 
   it('revalidates source hand state at dispatch time without charging mana', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createKaynethSession();
     const { playerId, volumen } = prepareVolumenResponse(session);
     const action = responseAction(session, playerId, volumen)!;
     session.state.cards.find((card) => card.instanceId === volumen)!.zone = 'discard';
@@ -101,7 +122,7 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_PLAY_SOURCE_CARD_WITH_COST_RESPONSE', ()
   });
 
   it('revalidates fixed mana at dispatch time without committing stale response actions', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createKaynethSession();
     const { playerId, volumen } = prepareVolumenResponse(session);
     const action = responseAction(session, playerId, volumen)!;
     session.state.players.find((player) => player.id === playerId)!.mana = 1;
@@ -121,7 +142,7 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_PLAY_SOURCE_CARD_WITH_COST_RESPONSE', ()
   });
 
   it('revalidates shared card-play forbids before resolving the response', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createKaynethSession();
     const { playerId, volumen } = prepareVolumenResponse(session);
     const action = responseAction(session, playerId, volumen)!;
     const modeState = (session.state as unknown as { modeState?: { cardPlayForbids?: unknown[] } }).modeState ??= {};
