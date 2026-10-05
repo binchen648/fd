@@ -13,6 +13,7 @@ import {
   resolveMandatoryCombatPhaseActionsForPlayer,
 } from './ability/interpreter';
 import { sourceBoundDefinitionResidualGranted } from './ability/logical-day-countermeasure-capability';
+import { returnDefinitionSideDeckCardToDiscard, settleDefinitionSideDeckManaEvents } from './ability/definition-side-deck-capability';
 import {
   createOpponentCloseToOnePersistenceScope,
   hasOpponentCloseToOneOmittedTrustedReplayAuthority,
@@ -3402,6 +3403,7 @@ export class MatchSession {
         });
       }
     }
+    settleDefinitionSideDeckManaEvents(targetState);
     this.record('situation_applied', resolvedSituation.id, {
       name: resolvedSituation.name,
       mana: resolvedSituation.mana,
@@ -3523,6 +3525,10 @@ export class MatchSession {
 
   private discardRoundAttackAreaCards(): void {
     for (const card of this.state.cards.filter((candidate) => candidate.zone === 'attack_area')) {
+      if (returnDefinitionSideDeckCardToDiscard(this.state, card.instanceId)) {
+        this.record('definition_side_deck_card_returned', `${card.instanceId}:side-discard`, { cardInstanceId: card.instanceId, definitionId: card.definitionId });
+        continue;
+      }
       const definition = this.rawCards.get(card.definitionId);
       const abilities = (Array.isArray(definition?.abilities) ? definition.abilities : []) as Array<{ kind?: string; lifecycle?: { cleanup?: string } }>;
       const shouldRemainActive = abilities.some((ability) =>
@@ -3568,6 +3574,7 @@ export class MatchSession {
     const manaReward = workshopDeploymentManaSlots[slotIndex] ?? 0;
     if (!manaReward) return;
     const result = grantMana(this.state, playerId, manaReward, { source: 'deployment' });
+    settleDefinitionSideDeckManaEvents(this.state);
     this.record('workshop_deployment_mana_awarded', `${playerId}:magic_workshop mana +${result.actualAmount}`, {
       playerId,
       locationId,

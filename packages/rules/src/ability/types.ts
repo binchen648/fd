@@ -332,6 +332,14 @@ export interface WitherPainStakeInteractionMetadata {
   statusKey: string; manaCost: 2; discardPolicy: 'all_hand';
   constraints: { kind: 'target'; targetKind: 'choice'; min: 1; max: 1; distinct: true };
 }
+export interface DefinitionSideDeckInteractionMetadata {
+  kind: 'definition_side_deck_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; deckKey: string;
+  stage: 'play' | 'payment' | 'discard_for_mana' | 'delayed_discard' | 'one_shot_choice' | 'defeat_target' | 'rush_choice' | 'event_discard';
+  selectedCardInstanceId?: string; paymentCount?: number; candidateIds: string[];
+  constraints: { kind: 'target'; targetKind: 'card' | 'choice'; min: number; max: number; distinct: true };
+}
 export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata |
   OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata | DeductionRecordChoiceInteractionMetadata |
   PostDrawHandShuffleInteractionMetadata | DiscardShuffleSourceXInteractionMetadata | RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata |
@@ -342,7 +350,7 @@ export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetad
   BattleDrawnCardOptionalPlayInteractionMetadata | BattlefieldAttackOfferChoiceInteractionMetadata |
   DeploymentTerrainVpChoiceInteractionMetadata | OneShotAbilityReuseChoiceInteractionMetadata |
   GlobalDefinitionRevealRewardInteractionMetadata | DiscardDefinitionPlayAllInteractionMetadata | MultiPresenceLocationContextInteractionMetadata |
-  BoundOpponentRoundRuleInteractionMetadata | WitherPainStakeInteractionMetadata;
+  BoundOpponentRoundRuleInteractionMetadata | WitherPainStakeInteractionMetadata | DefinitionSideDeckInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -388,6 +396,8 @@ export interface SafeEvent {
   delta?: number;
   before?: number;
   after?: number;
+  /** Exact generic resource-producer marker used by isolated side-deck observers. */
+  definitionSideDeckDrawSuppressed?: boolean;
   requestedDelta?: number;
   qualifyingPlayerIds?: PlayerId[];
   battlePhaseResolutionId?: string;
@@ -529,6 +539,15 @@ export interface DefinitionSkillVariantState {
 export interface RoundCardAttributePowerBonusState {
   controllerId: PlayerId; attribute: string; amount: number; round: number; sourceCardId: string; abilityId: string;
 }
+export interface DefinitionSideDeckState {
+  deckKey: string; controllerId: PlayerId; providerSourceCardId: string; providerAbilityId: string;
+  definitionIds: string[]; drawPile: string[]; hand: string[]; discardPile: string[]; recycleDiscard: boolean;
+  initializedRevision: number; lastObservedManaEventIndex: number;
+  playUseRound?: number; playUsesThisRound?: number; bonusPlayRound?: number;
+  delayedDrawDiscard?: { targetRound: number; drawCount: number; discardCount: number; sourceCardId: string; abilityId: string };
+  oneShotAvailable?: boolean; battleWinRewardRound?: number;
+  virtualCommandSealSourceCardId?: string;
+}
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
@@ -562,6 +581,10 @@ export interface AbilityRuntime {
   masterAscensionSourceDefinitionPowerByPlayer?: Record<PlayerId, MasterAscensionSourceDefinitionPowerState>;
   /** Identity-free permanent per-location terrain replacement layers with exact source/event provenance. */
   persistentLocationTerrainByPlayer?: Record<PlayerId, Record<string, PersistentLocationTerrainState>>;
+  /** Identity-free isolated definition side decks keyed by controller + authored deck key. */
+  definitionSideDecks?: Record<string, DefinitionSideDeckState>;
+  /** Round in which any ordinary Command Seal was paid or used, including card-play costs. */
+  commandSealSpentOrUsedRoundByPlayer?: Record<PlayerId, number>;
   /** Identity-free server-owned structured player flags. */
   structuredPlayerFlagsByPlayer?: Record<PlayerId, Record<string, boolean | string | number>>;
   /** Round marker for flags whose authored lifecycle is exactly this_round. */

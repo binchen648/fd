@@ -8749,7 +8749,7 @@ Implementation evidence:
 ## TASK P3-B-CHAOS-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: zero-credit complete-owner readiness/preflight for `master.chaos`
 
 Frozen owner scope: exactly `18` identities (`ascension`, `s1`, `s2` through `s17`).
@@ -8765,3 +8765,18 @@ Formal gate:
 - close the complete owner-local readiness gap set in compatible identity-free capability families before any consumer migration Candidate;
 - no per-skill review split; one complete owner readiness transaction, then one owner-complete consumer migration for all remaining frozen identities;
 - HELPER remains read-only and may prepare the complete gap set but may not implement, publish formal PRs, or count credit.
+
+Implementation evidence:
+- Exact Base: `87a0a9d15e5799742d8c41c6a11cbd7e64ffa3c9` (accepted Celenike migration A-sync/accounting; strict accounting `223/944`, remaining `721`);
+- complete 18-identity Chaos scan is closed through one identity-free definition-side-deck capability family rather than owner-name or per-skill runtime branches;
+- the runtime family covers one isolated 15-definition Beast deck/hand/discard, mana-gain draw coupling, Beast-only printed-cost payments, delayed draw/discard, battle loss/win consumers, entering-opponent round Power penalty, terrain doubling reuse, virtual Command Seal conversion/closure, arrow movement + source Power, exact event-VP discard, Noble-Phantasm Power bonus, no-seal-spend/use opponent penalty, discard-all source Power, once-per-game four-way replacement, ascension unlimited Beast play, and pay-4 draw;
+- exact trusted battle provenance is required for loss/win consumers, and accepted side-deck loss semantics are isolated from the legacy command-seal battle-loss resource gate;
+- side-deck physical cards remain owner-only in deck/hand/discard projections and public only after actual Beast play; restore provenance validates exact deck membership, zones, provider source, pending decision, event cursor, virtual seal source, and spent/use markers;
+- focused complete-owner readiness regression `14/14 PASS`, including private projection, forged restore rejection, delayed lifecycle, s2-s17 behavior, once-per-game exclusivity, adjacent movement, and win reward;
+- stable task-relevant affected aggregate `137/137 PASS` across 10 files, including MatchSession `34/34`, authoring interpreter `38/38`, Spartacus seal-power readiness `20/20`, movement, terrain, ascension, Resource Numeric and fixed command-seal/resource components;
+- broader exploratory historical-fixture sweep found only pre-existing/stale fixed-pool/seed assumptions and legacy simulation/restore fixtures outside this zero-authoring readiness delta; no such unrelated test is modified or claimed green by this Candidate;
+- `npm run typecheck` PASS; content validation PASS (`17 masters / 19 servants / 20 events / 0 blocking issues`); generated determinism PASS with content-library hash `071a195543ddf1b5ebddfc0fe6e48e8d29e7cf41d8873ea20284ab8839c14c2b`, fixture hash `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`, evidence-report hash `607542ffb2e1b165665c7df9a5c2be2e82312854e0a91cd2260ae8c7ccd2c219`;
+- Phase-3 coverage completed with `archives=122`, `cards=251`, `abilities=446`, `compiledCards=179`, `compiledCharacters=36`, `blockingIssues=0`, `newRuntimeSemanticRouted=22`; automation audit completed with `legacyResolveEffect=158`, `legacyExecuteAbility=3`, `notClassifiable=263`, `promotionFindings=20`; verification-only artifacts were restored byte-for-byte from Exact Base;
+- `data/authoring/**` delta remains EMPTY, production runtime Chaos identity/text/legacy-handler audit is CLEAN, and `git diff --check` PASS; readiness remains permanently zero-credit, so accounting stays `223/944`, remaining `721`;
+- detailed result: `docs/reports/2026-10-06-p3-b-chaos-owner-readiness-complete-gap-set-result.md`;
+- one fresh independent exact Base/Candidate review is required before zero-credit FORMAL A-sync/rescan can release the Chaos owner-complete consumer migration.

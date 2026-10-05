@@ -128,6 +128,13 @@ import {
   reconcileBattleWitherVictoryPoints, resolveBattleWitherEffect, resolveWitherPainStakeDecision,
 } from './battle-wither-capability';
 import {
+  canExecuteDefinitionSideDeckEffect, containsDefinitionSideDeckPrivilegedNode, definitionSideDeckCardPowerAdjustment,
+  isAcceptedDefinitionSideDeckAbility, isDefinitionSideDeckPendingDecisionLiveValid, isDefinitionSideDeckPlayEffect,
+  isDefinitionSideDeckRuntimeProvenanceValidForRestore, markDefinitionSideDeckCommandSealSpentOrUsed,
+  resolveDefinitionSideDeckDecision, resolveDefinitionSideDeckEffect, returnDefinitionSideDeckCardToDiscard,
+  settleDefinitionSideDeckBattleEvent, settleDefinitionSideDeckManaEvents, settleDefinitionSideDeckRoundStart,
+} from './definition-side-deck-capability';
+import {
   canExecuteLinkedRoleCoreEffect, containsLinkedRoleCorePrivilegedNode, isAcceptedLinkedRoleCoreAbility,
   isLinkedRoleCoreRuntimeProvenanceValidForRestore, linkedRoleEligibleScheduleTargetIds, linkedRoleMaximumContributionAmount, resolveLinkedRoleCoreEffect,
 } from './linked-role-core-capability';
@@ -1134,6 +1141,11 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     result.value += variantBatteryPowerBonus;
     result.lines.push({ label: 'definition_variant_battery_round_attribute_power', value: result.value });
   }
+  const definitionSideDeckPower = definitionSideDeckCardPowerAdjustment(s, sourceId);
+  if (definitionSideDeckPower.add !== 0) {
+    result.value += definitionSideDeckPower.add;
+    result.lines.push({ label: 'definition_side_deck_card_power', value: result.value });
+  }
   for (const modifier of ((source as unknown as { powerModifiers?: Array<Record<string, unknown>> }).powerModifiers ?? [])) {
     if (modifier.lifecycle === 'until_leaves_active_area' && modifier.round !== s.round.roundNumber) continue;
     const value = Number(modifier.value ?? 0);
@@ -1169,6 +1181,10 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     else if (m.operation === 'add') result.value += amount;
     else reject('unsupported', 'Unsupported power operation');
     result.lines.push({ label: str(m.printedClause) || str(m.id), value: result.value });
+  }
+  if (definitionSideDeckPower.forceZero && result.value !== 0) {
+    result.value = 0;
+    result.lines.push({ label: 'definition_side_deck_forced_zero', value: 0 });
   }
   return result;
 }
@@ -2015,6 +2031,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAcceptedMultiPresenceAbility(a) && !canExecuteMultiPresenceEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsBattleWitherPrivilegedNode(a) && !isAcceptedBattleWitherAbility(a)) return false;
   if (isAcceptedBattleWitherAbility(a) && !canExecuteBattleWitherEffect(s, context(s, sourceId, a.id, event), a)) return false;
+  if (containsDefinitionSideDeckPrivilegedNode(a) && !isAcceptedDefinitionSideDeckAbility(a)) return false;
+  if (isAcceptedDefinitionSideDeckAbility(a) && !canExecuteDefinitionSideDeckEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsVesselCyclePrivilegedNode(a) && !isAcceptedVesselCycleAbility(a)) return false;
   if (isAcceptedVesselCycleAbility(a) && !canExecuteVesselCycleEffect(s, context(s, sourceId, a.id, event), a.effects[0]!)) return false;
   if (containsLogicalDayCountermeasurePrivilegedNode(a) && !isAcceptedLogicalDayCountermeasureAbility(a)) return false;
@@ -2068,11 +2086,12 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (['phase_activation', 'response_window'].includes(sourceInteraction.kind) && definitionVariantAbilityActivationBlocked(s, sourceId)) return false;
   if (isCommandSpellCard(s, sourceId) && controllerHasSealPowerReplacementProvider(s, sourceControllerId, 'normal')) return false;
   if (isRulerSealUseSemantic(a) && controllerHasSealPowerReplacementProvider(s, sourceControllerId, 'ruler')) return false;
-  if (isBattleLossResourceTriggerSemantic(a) &&
+  if (!isAcceptedDefinitionSideDeckAbility(a) && isBattleLossResourceTriggerSemantic(a) &&
     Number((player(s, card(s, sourceId).controllerPlayerId) as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) return false;
   const activeReuseGrant = liveReuseGrantForAbility(s, sourceControllerId, sourceId, a.id);
+  const definitionSideDeckOwnUsage = isAcceptedDefinitionSideDeckAbility(a) && !!a.effects[0] && isDefinitionSideDeckPlayEffect(a.effects[0]!);
   if (!isRulerSealUseSemantic(a) && !isCommandSpellCard(s, sourceId) && !isRepeatableSealPowerReplacementAbility(a) && !isAcceptedReactionCounterCapabilityAbility(a) &&
-      a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber && !activeReuseGrant) return false;
+      !definitionSideDeckOwnUsage && a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber && !activeReuseGrant) return false;
   if (abilityLimitReached(s, sourceId, a) && !activeReuseGrant) return false;
   if (isAcceptedDefinitionSetRelocationAbility(a) && !definitionSetRelocationPreflight(s, sourceControllerId, a)) return false;
   if (isAcceptedDoubleControllerTerrainAbility(a) || isAcceptedFortifyMovedInBattlefieldAbility(a)) {
@@ -3621,6 +3640,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
           sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, before: current, after: next,
         });
       }
+      if (next < current) markDefinitionSideDeckCommandSealSpentOrUsed(s, p.id);
       if (current > 0 && next === 0) {
         processEvent(s, { id: nextId(s, 'empty-seals'), type: 'after_controller_loses_all_command_seals', playerId: p.id });
       }
@@ -4048,6 +4068,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
     if (!isBloodlustRuntimeProvenanceValidForRestore(s, !options.deferBloodlustContributionAuthority)) return false;
     if (!isMultiPresenceRuntimeProvenanceValidForRestore(s)) return false;
     if (!isBattleWitherRuntimeProvenanceValidForRestore(s)) return false;
+    if (!isDefinitionSideDeckRuntimeProvenanceValidForRestore(s)) return false;
     if (!isLinkedRoleCoreRuntimeProvenanceValidForRestore(s)) return false;
     if (!isLinkedRoleMemberSkillCopyRuntimeProvenanceValidForRestore(s)) return false;
     if (!isMasterAscensionEventPowerRuntimeProvenanceValidForRestore(s)) return false;
@@ -5796,6 +5817,7 @@ function pushResourceDirectives(s: GameState, ctx: EffectContext, results: Known
         after: result.payload.after,
       });
     }
+    if (result.payload.after < result.payload.before) markDefinitionSideDeckCommandSealSpentOrUsed(s, result.payload.playerId);
     if (result.payload.before > 0 && result.payload.after === 0) {
       processEvent(s, { id: nextId(s, 'empty-seals'), type: 'after_controller_loses_all_command_seals', playerId: result.payload.playerId });
     }
@@ -5927,6 +5949,7 @@ function executeNormalSealPowerReplacement(s: GameState, ctx: EffectContext, a: 
   markNormalCommandSealUsedThisRound(s, ctx.controllerId, {
     sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, before: current, after: current - 1,
   });
+  markDefinitionSideDeckCommandSealSpentOrUsed(s, ctx.controllerId);
   addControllerRoundCombatPower(s, ctx, 4, 'normal-command-seal-power');
   pushModeDirective(s, { controllerId: ctx.controllerId, directive: 'spend_command_spell', sourceCardId: ctx.sourceCardId,
     abilityId: ctx.abilityId, amount: -1, commandSpells: current - 1, consumed: true, replacement: 'round_power' });
@@ -6531,6 +6554,33 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     if (!isAcceptedBattleWitherAbility(a) || !resolveBattleWitherEffect(s, ctx, a)) reject('resolution_failed', 'Unsupported battle-wither semantic');
     return;
   }
+  if (containsDefinitionSideDeckPrivilegedNode(a)) {
+    if (!isAcceptedDefinitionSideDeckAbility(a)) reject('resolution_failed', 'Unsupported definition side-deck semantic');
+    const resolved = resolveDefinitionSideDeckEffect(s, ctx, a, {
+      grantMana: (playerId, amount, provenance) => grantMana(s, playerId, amount, {
+        source: 'generic', controllerId: provenance.controllerId, sourceCardId: provenance.sourceCardId,
+        abilityId: provenance.abilityId, ...(provenance.suppressDefinitionSideDeckDraw ? { suppressDefinitionSideDeckDraw: true } : {}),
+      }).actualAmount,
+      spendMana: (playerId, amount) => {
+        try { spendMana(s, playerId, amount); return true; } catch { return false; }
+      },
+      movePlayer: (playerId, toLocationId, sourceCardId, abilityId) => {
+        const moving = s.players.find((entry) => entry.id === playerId && entry.status === 'active');
+        const target = getEnabledLocations(s.map, s.locationConfig).find((entry) => entry.id === toLocationId);
+        if (!moving?.locationId || !target || moving.locationId === target.id) return false;
+        const from = moving.locationId; moving.locationId = target.id; recordMovementForAbilityRuntime(s, playerId, from, target.id);
+        processEvent(s, { id: nextId(s, 'definition-side-deck-move'), type: 'after_controller_enters_location', playerId,
+          previousLocationId: from, locationId: target.id, movementKind: 'effect', sourceCardId, abilityId });
+        return true;
+      },
+      emitCardPlayed: (playerId, cardInstanceId) => {
+        processEvent(s, { id: nextId(s, 'definition-side-deck-play'), type: 'on_card_played', playerId, sourceCardId: cardInstanceId });
+      },
+    });
+    if (!resolved) reject('resolution_failed', 'Definition side-deck resolution failed');
+    settleDefinitionSideDeckManaEvents(s);
+    return;
+  }
   if (containsVesselCyclePrivilegedNode(a)) {
     if (!isAcceptedVesselCycleAbility(a) || !resolveVesselCycleEffect(s, ctx, a, a.effects[0]!)) reject('resolution_failed', 'Unsupported vessel-cycle semantic');
     return;
@@ -6827,6 +6877,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   if (!event.id) reject('invalid_event', 'Events require stable ids');
   r.processedEvents.push(event.id);
   rememberTrustedBattleResultSnapshot(r, event);
+  settleDefinitionSideDeckBattleEvent(s, event);
   settleArmedAttributeUseDefeat(s, event);
   settleReactionCounterEvent(s, event);
   settleBattlefieldAttackOffers(s, event);
@@ -6942,6 +6993,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   }
   reconcileBloodlustVictoryPoints(s);
   reconcileBattleWitherVictoryPoints(s);
+  if (event.type === 'round_start') settleDefinitionSideDeckRoundStart(s);
   checkFormulaTriggers(s);
 }
 /** Trusted backend event hook. Events are not part of AbilityCommand. */
@@ -6949,7 +7001,7 @@ export function processAbilityEvent(s: GameState, event: AbilityEvent): void {
   if (runtime(s).processedEvents.includes(event.id)) return;
   const eventStart = runtime(s).events.length;
   const copy = structuredClone(s); copyBattlefieldAttackOfferServerAuthority(s, copy);
-  copyBloodlustContributionServerAuthority(s, copy); processEvent(copy, event); settleDefinitionResourceEvent(copy, event); settleDefinitionResourceAuditEvents(copy, eventStart); runtime(copy).revision++;
+  copyBloodlustContributionServerAuthority(s, copy); processEvent(copy, event); settleDefinitionResourceEvent(copy, event); settleDefinitionResourceAuditEvents(copy, eventStart); settleDefinitionSideDeckManaEvents(copy); runtime(copy).revision++;
   Object.assign(s, copy); copyBattlefieldAttackOfferServerAuthority(copy, s);
   copyBloodlustContributionServerAuthority(copy, s);
 }
@@ -6963,6 +7015,7 @@ export function processAbilitySystemEvent(s: GameState, label: string, event: Om
   processEvent(copy, systemEvent);
   settleDefinitionResourceEvent(copy, systemEvent);
   settleDefinitionResourceAuditEvents(copy, eventStart);
+  settleDefinitionSideDeckManaEvents(copy);
   runtime(copy).revision++;
   Object.assign(s, copy);
   copyBattlefieldAttackOfferServerAuthority(copy, s);
@@ -7005,7 +7058,7 @@ export function advanceAbilityPhase(
   if (startsNewRound) applyDueExactDeckRebuilds(copy, round);
   if (startsNewRound) processEvent(copy, { id: nextId(copy, 'round-start'), type: 'round_start' });
   const type = next === 'battle' ? 'controller_combat_action_window' : next === 'action' ? 'controller_action_window' : next === 'round_end' ? 'round_end' : 'phase_changed';
-  processEvent(copy, { id: nextId(copy, 'phase'), type }); settleDefinitionResourceAuditEvents(copy, eventStart); runtime(copy).revision++; Object.assign(s, copy);
+  processEvent(copy, { id: nextId(copy, 'phase'), type }); settleDefinitionResourceAuditEvents(copy, eventStart); settleDefinitionSideDeckManaEvents(copy); runtime(copy).revision++; Object.assign(s, copy);
   copyBattleCloseDrawPlayServerAuthority(copy, s);
   copyBattlefieldAttackOfferServerAuthority(copy, s);
   copyBloodlustContributionServerAuthority(copy, s);
@@ -7161,6 +7214,26 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
         }
         if (meta.kind === 'wither_pain_stake_v1') {
           if (!Array.isArray(selected) || !resolveWitherPainStakeDecision(s, playerId, d, selected)) reject('resolution_failed', 'Corrupt or stale wither pain-stake interaction state');
+          break;
+        }
+        if (meta.kind === 'definition_side_deck_v1') {
+          if (!Array.isArray(selected) || !isDefinitionSideDeckPendingDecisionLiveValid(s, d) || !resolveDefinitionSideDeckDecision(s, playerId, d, selected, {
+            grantMana: (targetId, amount, provenance) => grantMana(s, targetId, amount, {
+              source: 'generic', controllerId: provenance.controllerId, sourceCardId: provenance.sourceCardId,
+              abilityId: provenance.abilityId, ...(provenance.suppressDefinitionSideDeckDraw ? { suppressDefinitionSideDeckDraw: true } : {}),
+            }).actualAmount,
+            spendMana: (targetId, amount) => { try { spendMana(s, targetId, amount); return true; } catch { return false; } },
+            movePlayer: (targetId, toLocationId, sourceCardId, abilityId) => {
+              const moving = s.players.find((entry) => entry.id === targetId && entry.status === 'active');
+              const target = getEnabledLocations(s.map, s.locationConfig).find((entry) => entry.id === toLocationId);
+              if (!moving?.locationId || !target || moving.locationId === target.id) return false;
+              const from = moving.locationId; moving.locationId = target.id; recordMovementForAbilityRuntime(s, targetId, from, target.id);
+              processEvent(s, { id: nextId(s, 'definition-side-deck-move'), type: 'after_controller_enters_location', playerId: targetId,
+                previousLocationId: from, locationId: target.id, movementKind: 'effect', sourceCardId, abilityId }); return true;
+            },
+            emitCardPlayed: (targetId, cardInstanceId) => processEvent(s, { id: nextId(s, 'definition-side-deck-play'), type: 'on_card_played', playerId: targetId, sourceCardId: cardInstanceId }),
+          })) reject('resolution_failed', 'Corrupt or stale definition side-deck interaction state');
+          settleDefinitionSideDeckManaEvents(s);
           break;
         }
         if (meta.kind === 'battlefield_attack_offer_choice_v1') {
@@ -8035,6 +8108,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     const before = availableSeals; const after = before - commandSealCost;
     sealCarrier.commandSpells = after;
     runtime(s).events.push({ type: 'command_seals_adjusted', playerId, resource: 'command_seals', delta: -commandSealCost, before, after });
+    markDefinitionSideDeckCommandSealSpentOrUsed(s, playerId);
     if (before > 0 && after === 0) processEvent(s, { id: nextId(s, 'empty-seals-card-play'), type: 'after_controller_loses_all_command_seals', playerId });
   }
   for (const c of choices) {
@@ -8120,6 +8194,7 @@ export function playAbilityCardBatch(s: GameState, playerId: string, choices: Om
   copyBloodlustContributionServerAuthority(s, copy);
   playBatch(copy, playerId, choices.map(c => ({ ...c, type: 'play_card' })));
   settleDefinitionResourceAuditEvents(copy, eventStart);
+  settleDefinitionSideDeckManaEvents(copy);
   runtime(copy).revision++; Object.assign(s, copy);
   copyBattlefieldAttackOfferServerAuthority(copy, s);
   copyBloodlustContributionServerAuthority(copy, s);
@@ -8132,7 +8207,7 @@ export function dispatchAbilityCommand(s: GameState, playerId: string, command: 
   copyBattlefieldAttackOfferServerAuthority(s, copy);
   copyBloodlustContributionServerAuthority(s, copy);
   try {
-    dispatch(copy, playerId, command); settleDefinitionResourceAuditEvents(copy, before); runtime(copy).revision++; Object.assign(s, copy);
+    dispatch(copy, playerId, command); settleDefinitionResourceAuditEvents(copy, before); settleDefinitionSideDeckManaEvents(copy); runtime(copy).revision++; Object.assign(s, copy);
     copyOpponentCloseToOneServerAuthority(copy, s);
     copyBattleCloseDrawPlayServerAuthority(copy, s);
     copyBattlefieldAttackOfferServerAuthority(copy, s);

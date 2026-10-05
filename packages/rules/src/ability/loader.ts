@@ -84,6 +84,16 @@ import {
   containsBattleWitherPrivilegedNode, isAcceptedBattleWitherAbility,
 } from './battle-wither-capability';
 import {
+  DEFINITION_SIDE_DECK_SETUP_EFFECT, DEFINITION_SIDE_DECK_MANA_DRAW_RULE_EFFECT, DEFINITION_SIDE_DECK_PLAY_EFFECT,
+  SOURCE_OPPONENT_COUNT_POWER_EFFECT, DEFINITION_SIDE_DECK_DISCARD_FOR_MANA_EFFECT, DEFINITION_SIDE_DECK_DELAYED_DRAW_DISCARD_EFFECT,
+  ENTERING_OPPONENT_POWER_PENALTY_EFFECT, DEFINITION_SIDE_DECK_BATTLE_LOSS_DRAW_EFFECT, BATTLE_WIN_VP_SWING_EFFECT,
+  DEFEAT_ENGAGED_DEFINITION_CONTROLLER_EFFECT, SAME_BATTLEFIELD_DEFINITION_POWER_ZERO_EFFECT, DEFINITION_SIDE_DECK_VIRTUAL_COMMAND_SEAL_EFFECT,
+  FORWARD_MOVE_SOURCE_POWER_EFFECT, DISCARD_LOCATION_EVENT_BY_VP_EFFECT, CONTROLLER_ATTRIBUTE_POWER_BONUS_EFFECT,
+  UNSEALED_ENGAGED_OPPONENT_POWER_PENALTY_EFFECT, DEFINITION_SIDE_DECK_DISCARD_ALL_SOURCE_POWER_EFFECT,
+  DEFINITION_SIDE_DECK_ONE_SHOT_CHOICE_EFFECT, DEFINITION_SIDE_DECK_UNLIMITED_PLAY_EFFECT, DEFINITION_SIDE_DECK_PAY_MANA_DRAW_EFFECT,
+  containsDefinitionSideDeckPrivilegedNode, isAcceptedDefinitionSideDeckAbility,
+} from './definition-side-deck-capability';
+import {
   LINKED_ROLE_INITIALIZE_EFFECT, LINKED_ROLE_SCHEDULE_MEMBER_EFFECT, LINKED_ROLE_APPLY_SCHEDULED_EFFECT,
   LINKED_ROLE_MEMBER_RULES_EFFECT, LINKED_ROLE_BATTLE_REWARD_EFFECT,
   containsLinkedRoleCorePrivilegedNode, isAcceptedLinkedRoleCoreAbility,
@@ -236,6 +246,13 @@ const supportedTypes = new Set([
   MULTI_PRESENCE_RECORD_LOSS_EFFECT, MULTI_PRESENCE_DEPLOY_EFFECT, MULTI_PRESENCE_MIRROR_MOVE_EFFECT,
   MULTI_PRESENCE_POST_PLAY_MANA_LOSS_EFFECT, MULTI_PRESENCE_SHARED_PLAYER_EFFECT, MULTI_PRESENCE_SHARE_TERRAIN_EFFECT, MULTI_PRESENCE_SACRIFICE_DEFEAT_EFFECT,
   BATTLE_WITHER_APPLY_WINNERS_EFFECT, BATTLE_WITHER_STEAL_PARTICIPANTS_EFFECT, WITHER_PAIN_STAKE_ACTION_EFFECT, LOCATION_BATTLE_END_RESOURCE_ADJUSTMENT_EFFECT,
+  DEFINITION_SIDE_DECK_SETUP_EFFECT, DEFINITION_SIDE_DECK_MANA_DRAW_RULE_EFFECT, DEFINITION_SIDE_DECK_PLAY_EFFECT,
+  SOURCE_OPPONENT_COUNT_POWER_EFFECT, DEFINITION_SIDE_DECK_DISCARD_FOR_MANA_EFFECT, DEFINITION_SIDE_DECK_DELAYED_DRAW_DISCARD_EFFECT,
+  ENTERING_OPPONENT_POWER_PENALTY_EFFECT, DEFINITION_SIDE_DECK_BATTLE_LOSS_DRAW_EFFECT, BATTLE_WIN_VP_SWING_EFFECT,
+  DEFEAT_ENGAGED_DEFINITION_CONTROLLER_EFFECT, SAME_BATTLEFIELD_DEFINITION_POWER_ZERO_EFFECT, DEFINITION_SIDE_DECK_VIRTUAL_COMMAND_SEAL_EFFECT,
+  FORWARD_MOVE_SOURCE_POWER_EFFECT, DISCARD_LOCATION_EVENT_BY_VP_EFFECT, CONTROLLER_ATTRIBUTE_POWER_BONUS_EFFECT,
+  UNSEALED_ENGAGED_OPPONENT_POWER_PENALTY_EFFECT, DEFINITION_SIDE_DECK_DISCARD_ALL_SOURCE_POWER_EFFECT,
+  DEFINITION_SIDE_DECK_ONE_SHOT_CHOICE_EFFECT, DEFINITION_SIDE_DECK_UNLIMITED_PLAY_EFFECT, DEFINITION_SIDE_DECK_PAY_MANA_DRAW_EFFECT,
   LINKED_ROLE_INITIALIZE_EFFECT, LINKED_ROLE_SCHEDULE_MEMBER_EFFECT, LINKED_ROLE_APPLY_SCHEDULED_EFFECT, LINKED_ROLE_MEMBER_RULES_EFFECT, LINKED_ROLE_BATTLE_REWARD_EFFECT,
   LINKED_ROLE_COPY_REVEALED_MEMBER_SERVANT_SKILL_EFFECT,
   ASCENSION_UNLOCK_OPPONENT_SEAL_LOSS_EFFECT, NAMED_EVENT_BASIC_POWER_BONUS_EFFECT, SOURCE_DEFINITION_BASIC_POWER_BONUS_EFFECT,
@@ -404,6 +421,12 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'batteryDefinitionId', 'sharedUsageKey', 'accessProviderDefinitionId', 'enhancedProviderDefinitionId', 'enhancedAttribute', 'enhancedPowerBonus',
   'vpTargetId', 'manaBase', 'manaPerVp', 'variantDefinitionId', 'variantTargetId', 'variants', 'excludeDefinitionIds', 'excludeCardTypes',
   'statusKey', 'clearRoundVpGainThreshold', 'vpLoss', 'discardPolicy',
+  'deckKey', 'shuffle', 'recycleDiscard', 'replaceOrdinaryCommandSealsWithVirtual', 'divisor', 'excludedSourceDefinitionIds',
+  'usageKey', 'maxUsesPerRound', 'costSource', 'amountPerOpponent', 'maxDiscard', 'manaPerCard', 'suppressManaDrawObserver', 'delayRounds', 'discardCount',
+  'controllerGain', 'loserLoss', 'requiredControlledDefinitionId', 'targetCount', 'closeSourceAfterUse',
+  'minX', 'maxX', 'powerBase', 'powerPerX', 'followMovementArrows', 'minimumX', 'vpOffset', 'requireControllerLocation',
+  'requireNoCommandSealSpendOrUseThisRound', 'maximum', 'oncePerGame', 'directDraw', 'victoryPointReward', 'allowAdjacentMove',
+  'allowBonusSideDeckPlay', 'unlimited',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -836,6 +859,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsBattleWitherPrivilegedNode(candidateAbility) && !isAcceptedBattleWitherAbility(candidateAbility)) {
         issue('battleWither.gateway', 'Battle-wither privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsDefinitionSideDeckPrivilegedNode(candidateAbility) && !isAcceptedDefinitionSideDeckAbility(candidateAbility)) {
+        issue('definitionSideDeck.gateway', 'Definition side-deck privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       if (containsLinkedRoleCorePrivilegedNode(candidateAbility) && !isAcceptedLinkedRoleCoreAbility(candidateAbility)) {
         issue('linkedRole.gateway', 'Linked-role privileged mechanics require an accepted exact whole-ability semantic', id);
