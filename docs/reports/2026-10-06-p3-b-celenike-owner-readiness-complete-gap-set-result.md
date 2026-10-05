@@ -48,7 +48,7 @@ One shared `battle-wither-capability.ts` closes the complete currently reproduce
 - `wither_pain_stake_action`;
 - `location_battle_end_resource_adjustment`.
 
-The runtime stores Wither and its source provenance in structured player flags, with per-source round/gross-VP tracking. Positive VP delta reconciliation clears only the appropriate source controller's Wither at the 4-VP threshold and resets the gross counter on a new round.
+The runtime stores Wither and its source provenance in structured player flags, with per-status/per-source round/gross-VP tracking. Positive VP delta reconciliation clears only the appropriate source controller's Wither at the 4-VP threshold and resets the gross counter on a new round. All consumer checks are keyed by the active effect's `statusKey`, so an independently accepted battle-wither family cannot satisfy another family's VP-steal or Pain Stake predicates while multiple source players for the same `statusKey` remain compatible.
 
 Pain Stake uses a server-authored `wither_pain_stake_v1` pending interaction. The pending choice is projected only to the target player, validates live source/status/revision provenance on resolution and restore, pays through canonical `spendMana`, and discards the complete target hand to the ordinary owner-private discard zone. Forged source/status or pending-interaction state fails restore validation.
 
@@ -56,9 +56,9 @@ The battle-end resource branch uses canonical `grantMana`, preserving normal sto
 
 ## Verification
 
-Focused Celenike readiness regression: `7/7 PASS`.
+Focused Celenike readiness regression after review repair: `8/8 PASS`.
 
-Task-relevant affected aggregate: `225/225 PASS` across 18 files with `--maxWorkers=1`, including authoring interpreter/compiler, MatchSession, Resource Numeric, battle result/terminal consumers, current accepted owner/readiness suites, and ascension/deployment compatibility.
+Initial Candidate verification recorded `225/225 PASS` across its affected 18-file aggregate. After the independent review repair, a fresh affected shared rerun is `186/186 PASS` across 18 targeted files with `--maxWorkers=1`, including authoring interpreter, MatchSession, Resource Numeric/deployment, trigger/battle result/terminal consumers, current accepted Caules/Caren owner-readiness/migration suites, and ascension compatibility.
 
 Repository gates:
 
@@ -74,6 +74,16 @@ Repository gates:
 - production Celenike identity/text audit: CLEAN;
 - `data/authoring/**` delta: EMPTY;
 - `git diff --check`: PASS.
+
+## Independent review repair
+
+Exact initial Candidate `581e45116a5b1faed06354237790fade9c1ce106` received `IMPLEMENTATION_NEEDS_REVISION` on PR #531. Reviewer publication failed with explicit HTTP 403 only after the review completed; Coordinator bounded same-attempt evidence is canonical at `https://github.com/binchen648/fd/pull/531#issuecomment-6001025236`.
+
+The sole blocking finding was a P1 capability-isolation defect: consumer predicates treated any `__fd_battle_wither:*:from:*` flag as Wither, allowing an accepted family using `statusKey=A` to steal from or force Pain Stake choices on a player carrying only unrelated `statusKey=B`.
+
+The successor repair makes the exported/runtime Wither predicate require the active `statusKey` and threads that exact key through VP-steal filtering, Pain Stake activation eligibility, target ordering/staging, and serialized pending-decision live validation. The focused suite now includes two independently accepted status families and proves that family A neither steals from nor targets B-only state, while two distinct source players for family A remain simultaneously valid.
+
+No authoring migration is introduced by this repair; `data/authoring/**` remains empty and strict accounting remains `220/944`, remaining `724`.
 
 ## Formal disposition
 

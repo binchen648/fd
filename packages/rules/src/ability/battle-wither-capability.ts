@@ -110,9 +110,10 @@ function sourceAbilityValid(state: GameState, controllerId: string, sourceCardId
     ability && isAcceptedBattleWitherAbility(ability) ? ability : undefined;
 }
 
-export function isPlayerBattleWithered(state: GameState, playerId: string): boolean {
+export function isPlayerBattleWithered(state: GameState, playerId: string, statusKey: string): boolean {
   const flags = runtime(state).structuredPlayerFlagsByPlayer?.[playerId] ?? {};
-  return Object.entries(flags).some(([name, value]) => name.startsWith(PREFIX) && name.includes(':from:') && value === true);
+  const prefix = `${PREFIX}${statusKey}:from:`;
+  return Object.entries(flags).some(([name, value]) => name.startsWith(prefix) && value === true);
 }
 function clearStatusFromSource(state: GameState, statusKey: string, sourcePlayerId: string): void {
   const name = sourceKey(statusKey, sourcePlayerId);
@@ -161,7 +162,7 @@ function trustedBattleFacts(state: GameState, event: AbilityEvent | undefined, c
 }
 function stagePainDecision(state: GameState, ctx: EffectContext, effect: RuleNode, remaining: string[]): boolean {
   const r = runtime(state); const statusKey = String(effect.statusKey); const manaCost = Number(effect.manaCost);
-  const live = remaining.filter((id) => state.players.some((player) => player.id === id && player.status === 'active') && isPlayerBattleWithered(state, id));
+  const live = remaining.filter((id) => state.players.some((player) => player.id === id && player.status === 'active') && isPlayerBattleWithered(state, id, statusKey));
   if (!live.length) { delete r.pendingDecision; return true; }
   const targetPlayerId = live[0]!; const target = state.players.find((player) => player.id === targetPlayerId)!;
   const candidates = target.mana >= manaCost ? ['pay_mana', 'discard_all'] : ['discard_all']; const id = `${ctx.sourceCardId}:${ctx.abilityId}:pain:${r.sequence++}`;
@@ -185,7 +186,7 @@ export function isWitherPainStakePendingDecisionLiveValid(state: GameState, deci
     const ability = sourceAbilityValid(state, meta.initiatingControllerId, meta.sourceCardInstanceId, meta.abilityId);
     const effect = ability?.effects[0]; const target = state.players.find((entry) => entry.id === meta.targetPlayerId && entry.status === 'active');
     if (!ability || !effect || !isWitherPainStakeActionEffect(effect) || effect.statusKey !== meta.statusKey || !target ||
-        !isPlayerBattleWithered(state, target.id) || decision.controllerId !== target.id || decision.context.controllerId !== meta.initiatingControllerId ||
+        !isPlayerBattleWithered(state, target.id, meta.statusKey) || decision.controllerId !== target.id || decision.context.controllerId !== meta.initiatingControllerId ||
         decision.context.sourceCardId !== meta.sourceCardInstanceId || decision.context.abilityId !== meta.abilityId ||
         meta.createdRevision !== runtime(state).revision || meta.continuationRef !== `${decision.id}:continuation` || meta.manaCost !== 2 ||
         meta.discardPolicy !== 'all_hand' || meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
@@ -220,7 +221,7 @@ export function canExecuteBattleWitherEffect(state: GameState, ctx: EffectContex
   const effect = ability.effects[0]!; const event = ctx.event;
   if (isBattleWitherApplyWinnersEffect(effect)) return !!trustedBattleFacts(state, event, ctx.controllerId, 'after_controller_loses_battle')?.winners.length;
   if (isBattleWitherStealParticipantsEffect(effect)) return !!trustedBattleFacts(state, event, ctx.controllerId, 'after_controller_wins_battle');
-  if (isWitherPainStakeActionEffect(effect)) return state.players.some((entry) => entry.status === 'active' && isPlayerBattleWithered(state, entry.id));
+  if (isWitherPainStakeActionEffect(effect)) return state.players.some((entry) => entry.status === 'active' && isPlayerBattleWithered(state, entry.id, String(effect.statusKey)));
   if (isLocationBattleEndResourceAdjustmentEffect(effect)) return event?.type === 'after_battle_ended' && typeof event.battlePhaseResolutionId === 'string' &&
     state.players.find((entry) => entry.id === ctx.controllerId)?.locationId === effect.locationId;
   return false;
@@ -237,7 +238,7 @@ export function resolveBattleWitherEffect(state: GameState, ctx: EffectContext, 
   if (isBattleWitherStealParticipantsEffect(effect)) {
     const facts = trustedBattleFacts(state, event, ctx.controllerId, 'after_controller_wins_battle'); if (!facts) return false;
     const controller = state.players.find((entry) => entry.id === ctx.controllerId); if (!controller) return false;
-    for (const targetId of facts.battleParticipantIds.filter((id) => id !== ctx.controllerId && isPlayerBattleWithered(state, id))) {
+    for (const targetId of facts.battleParticipantIds.filter((id) => id !== ctx.controllerId && isPlayerBattleWithered(state, id, String(effect.statusKey)))) {
       const target = state.players.find((entry) => entry.id === targetId); if (!target) continue;
       const amount = Math.min(Number(effect.amount), Math.max(0, target.vp)); if (amount <= 0) continue;
       const targetBefore = target.vp; const controllerBefore = controller.vp; target.vp -= amount; controller.vp += amount;
@@ -247,7 +248,7 @@ export function resolveBattleWitherEffect(state: GameState, ctx: EffectContext, 
     reconcileBattleWitherVictoryPoints(state); return true;
   }
   if (isWitherPainStakeActionEffect(effect)) {
-    const order = state.players.filter((entry) => entry.status === 'active' && isPlayerBattleWithered(state, entry.id)).sort((a, b) => a.seat - b.seat).map((entry) => entry.id);
+    const order = state.players.filter((entry) => entry.status === 'active' && isPlayerBattleWithered(state, entry.id, String(effect.statusKey))).sort((a, b) => a.seat - b.seat).map((entry) => entry.id);
     return stagePainDecision(state, ctx, effect, order);
   }
   if (isLocationBattleEndResourceAdjustmentEffect(effect)) {

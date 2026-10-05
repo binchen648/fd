@@ -10,7 +10,10 @@ const ROOT = 'master.fixture-battle-wither';
 const S1 = `${ROOT}.skill.s1`;
 const S1A = `${ROOT}.skill.s1a`;
 const ASC = `${ROOT}.skill.ascension`;
+const S1B = `${ROOT}.skill.s1b`;
+const ASCB = `${ROOT}.skill.ascension-b`;
 const STATUS = 'fixture.wither';
+const STATUS_B = 'fixture.wither-b';
 
 function base(id: string, kind = 'forced_trigger'): AuthoringAbility {
   return {
@@ -50,6 +53,17 @@ function archive() {
       })]),
       card(ASC, [action('fixture.wither.pain', {
         type: 'wither_pain_stake_action', statusKey: STATUS, manaCost: 2, discardPolicy: 'all_hand',
+      })]),
+      card(S1B, [
+        forced('fixture.wither-b.apply', 'after_controller_loses_battle', {
+          type: 'battle_wither_apply_to_winners', statusKey: STATUS_B, clearRoundVpGainThreshold: 4,
+        }),
+        forced('fixture.wither-b.steal', 'after_controller_wins_battle', {
+          type: 'battle_wither_steal_from_participants', statusKey: STATUS_B, amount: 2,
+        }),
+      ]),
+      card(ASCB, [action('fixture.wither-b.pain', {
+        type: 'wither_pain_stake_action', statusKey: STATUS_B, manaCost: 2, discardPolicy: 'all_hand',
       })]),
     ],
   } as any;
@@ -97,8 +111,8 @@ describe('P3 Celenike owner-readiness complete identity-free gap set', () => {
   it('marks every winner on loss and steals the actual up-to-two VP from withered battle participants on a later win', () => {
     const { state } = setup();
     loss(state);
-    expect(rules.isPlayerBattleWithered(state, 'p2')).toBe(true);
-    expect(rules.isPlayerBattleWithered(state, 'p3')).toBe(true);
+    expect(rules.isPlayerBattleWithered(state, 'p2', STATUS)).toBe(true);
+    expect(rules.isPlayerBattleWithered(state, 'p3', STATUS)).toBe(true);
     battleResult(state, ['p1'], ['p2', 'p3']);
     expect(state.players.slice(0, 3).map((player) => player.vp)).toEqual([3, 3, 0]);
     expect(state.abilityRuntime!.events.filter((event) => event.type === 'victory_points_adjusted')).toHaveLength(4);
@@ -109,11 +123,11 @@ describe('P3 Celenike owner-readiness complete identity-free gap set', () => {
     loss(state, ['p2']);
     const otherS1 = add(state, S1, 'p3');
     battleResult(state, ['p2'], ['p3'], 'battlefield_b');
-    expect(rules.isPlayerBattleWithered(state, 'p2')).toBe(true);
+    expect(rules.isPlayerBattleWithered(state, 'p2', STATUS)).toBe(true);
     state.players[0]!.vp += 3; rules.processAbilityEvent(state, { id: 'vp-check-3', type: 'phase_changed' });
-    expect(rules.isPlayerBattleWithered(state, 'p2')).toBe(true);
+    expect(rules.isPlayerBattleWithered(state, 'p2', STATUS)).toBe(true);
     state.players[0]!.vp += 1; rules.processAbilityEvent(state, { id: 'vp-check-4', type: 'phase_changed' });
-    expect(rules.isPlayerBattleWithered(state, 'p2')).toBe(true); // p3's independent source remains
+    expect(rules.isPlayerBattleWithered(state, 'p2', STATUS)).toBe(true); // p3's independent source remains
     const p2Flags = state.abilityRuntime!.structuredPlayerFlagsByPlayer!.p2!;
     expect(Object.keys(p2Flags).some((key) => key.endsWith(':from:p1'))).toBe(false);
     expect(Object.keys(p2Flags).some((key) => key.endsWith(':from:p3'))).toBe(true);
@@ -121,6 +135,39 @@ describe('P3 Celenike owner-readiness complete identity-free gap set', () => {
     state.players[0]!.vp += 3; rules.processAbilityEvent(state, { id: 'next-round-3', type: 'phase_changed' });
     expect(state.abilityRuntime!.structuredPlayerFlagsByPlayer!.p2![`__fd_battle_wither:${STATUS}:from:p3`]).toBe(true);
     expect(otherS1).toBeTruthy();
+  });
+
+  it('isolates distinct statusKey families while preserving multiple sources of the same family', () => {
+    const { state, asc } = setup();
+    const bSource = add(state, S1B, 'p3');
+
+    // p3's B-family source loses to p2, so p2 carries only STATUS_B.
+    battleResult(state, ['p2'], ['p3'], 'battlefield_b');
+    expect(rules.isPlayerBattleWithered(state, 'p2', STATUS_B)).toBe(true);
+    expect(rules.isPlayerBattleWithered(state, 'p2', STATUS)).toBe(false);
+
+    // A-family VP steal must not consume B-family Wither.
+    const before = state.players[1]!.vp;
+    battleResult(state, ['p1'], ['p2'], 'battlefield_c');
+    expect(state.players[1]!.vp).toBe(before);
+
+    // A-family Pain Stake must not target a player carrying only B-family Wither.
+    expect(rules.dispatchAbilityCommand(state, 'p1', {
+      type: 'activate_ability', cardInstanceId: asc, abilityId: 'fixture.wither.pain',
+    }).ok).toBe(false);
+    expect(state.abilityRuntime!.pendingDecision).toBeUndefined();
+
+    // Two independent A-family sources remain compatible and are both preserved.
+    loss(state, ['p2']);
+    const aSource2 = add(state, S1, 'p3');
+    battleResult(state, ['p2'], ['p3'], 'battlefield_d');
+    expect(rules.isPlayerBattleWithered(state, 'p2', STATUS)).toBe(true);
+    const flags = state.abilityRuntime!.structuredPlayerFlagsByPlayer!.p2!;
+    expect(flags[`__fd_battle_wither:${STATUS}:from:p1`]).toBe(true);
+    expect(flags[`__fd_battle_wither:${STATUS}:from:p3`]).toBe(true);
+    expect(flags[`__fd_battle_wither:${STATUS_B}:from:p3`]).toBe(true);
+    expect(bSource).toBeTruthy();
+    expect(aSource2).toBeTruthy();
   });
 
   it('serializes pain-stake choices to each withered player: pay two mana or discard the entire hand', () => {
