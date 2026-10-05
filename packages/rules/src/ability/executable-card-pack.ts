@@ -6,6 +6,7 @@ import type {
 import { loadAuthoringJson, node, nodes, str } from './loader';
 import { gameStartSkillProvisioningTargetDefinitionIds, isGameStartSkillProvisioningCandidate } from './game-start-skill-provisioning';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
+import { hasDefinitionVariantAttackMarker } from './definition-variant-battery-capability';
 import { sha256Hex } from './portable-sha256';
 import {
   DataFlowValidationError,
@@ -167,7 +168,7 @@ export function assertExecutableCardPack(value: unknown, content: ContentIdentit
 }
 
 function classifyCard(card: AuthoringCard): Pick<ExecutableCardDefinition, 'playKind' | 'destinationZone'> {
-  const attack = hasRequiredAdditionalPlayMarker(card) ||
+  const attack = hasRequiredAdditionalPlayMarker(card) || hasDefinitionVariantAttackMarker(card) ||
     ['servant_skill', 'servant_deck_card', 'servant_attack', 'basic_attack', 'master_deck_card'].includes(card.cardType);
   return attack
     ? { playKind: 'attack', destinationZone: 'attack_area' }

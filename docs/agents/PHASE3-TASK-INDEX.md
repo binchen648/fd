@@ -8569,7 +8569,7 @@ Implementation evidence:
 ## TASK P3-B-CAULES-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: zero-credit owner-readiness preflight for the complete remaining `master.caules` frozen scope
 
 Frozen owner scope:
@@ -8590,3 +8590,20 @@ Formal gate:
 - use F1 frozen evidence, accepted FM08 preservation lineage, current repo runtime contracts, and locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9` as inputs;
 - produce one complete owner-local preflight/gap set; bundle compatible identity-free readiness seams rather than splitting per skill;
 - only after all required readiness is independently accepted plus FORMAL A-sync/rescan may one owner-complete migration materialize the four remaining identities while preserving `s1a` without duplicate credit.
+
+Implementation evidence:
+- Exact Base: `80c6e55f6d8f3bbaa3c8305b205c6c765cf45e86` (accepted Caules Yggdmillennia A-sync/accounting);
+- one identity-free definition-variant/Battery capability closes the mechanically reproduced complete current owner-local gap set for `s1 + s2 + s3 + ascension`, while `s1a` remains untouched preservation-only FM08 authoring;
+- Battery access is bound to the live provider plus `magic_workshop`; recharge spends chosen VP and grants `2X+1` mana, overhaul pays exactly `2` mana for current-round defeat-ignore, and overload shares the same once-per-round Battery use group;
+- overload creates one chosen not-yet-created Thunder variant face-down/private in the skill zone; exact variants are Strength/Agility/Magic/Special/Typeless, each once per game;
+- active Thunder variants block matching-attribute phase/response ability activation for same-location players, with the frozen Luck exclusion for Special and Command-Spell exclusion for Typeless;
+- ascension stocks/reveals all five variants, removes overload eligibility through live ascension-provider authority, and successful Battery use grants `+2` to controller Magic attack Power for the current round;
+- trusted restore provenance validates generated variants and temporary round-Power records fail-closed;
+- production runtime routing is identity/text-free; `data/authoring/**` delta is EMPTY;
+- focused Caules readiness regression `10/10 PASS`; task-relevant affected aggregate `206/206 PASS` across 14 files;
+- `FD_TOOLCHAIN_OK`; typecheck PASS; content validation PASS (`15 masters / 19 servants / 20 events / 0 blocking issues`); generated determinism PASS;
+- generated hashes remain content library `c69f9df2ae06627e4e2daddf3b5f0078dde9e7294b88d3973c35961fbfd0e6a0`, fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`, evidence report `9bcf081cc00a45806d55a379cfc6af68618d9258e92df9f8d96351955adda50e`;
+- Phase-3 coverage PASS (`archives=121`, `cards=244`, `abilities=436`, `compiledCards=169`, `compiledCharacters=34`, `blockingIssues=0`); automation audit completed (`legacyResolveEffect=158`, `legacyExecuteAbility=3`, `notClassifiable=253`, `promotionFindings=20`); verification-only artifacts restored from Base;
+- `git diff --check` PASS;
+- detailed result: `docs/reports/2026-10-06-p3-b-caules-owner-readiness-complete-gap-set-result.md`;
+- permanently zero migration credit; strict accounting remains `216/944`, remaining `728`; fresh independent exact review is required before any consumer migration release.

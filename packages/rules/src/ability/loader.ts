@@ -113,6 +113,12 @@ import {
   ZERO_MATCHING_OPPONENT_BASIC_ATTACKS_EFFECT, DECLARATION_SECRET_REWRITE_EFFECT, SCHEDULE_DECK_REBUILD_AFTER_UNLOCK_EFFECT,
   REVEAL_SECRET_DECLARATIONS_EFFECT, containsDefinitionDeclarationDeckPrivilegedNode, isAcceptedDefinitionDeclarationDeckAbility,
 } from './definition-declaration-deck-capability';
+import {
+  DEFINITION_VARIANT_BATTERY_ACCESS_EFFECT, DEFINITION_VARIANT_BATTERY_RECHARGE_EFFECT,
+  DEFINITION_VARIANT_BATTERY_IGNORE_DEFEAT_EFFECT, DEFINITION_VARIANT_BATTERY_OVERLOAD_EFFECT,
+  DEFINITION_VARIANT_ACTIVATION_LOCK_EFFECT, DEFINITION_VARIANT_ASCENSION_STOCK_EFFECT,
+  containsDefinitionVariantBatteryPrivilegedNode, isAcceptedDefinitionVariantBatteryAbility,
+} from './definition-variant-battery-capability';
 import { COMBAT_REWARD_DISTRIBUTION_RULE, isAcceptedFullRewardEachAbility } from './combat-reward-distribution';
 import {
   LOCATION_MARKER_FOLLOW_EFFECT, LOCATION_MARKER_COMBAT_BRANCH_EFFECT, LOCATION_MARKER_PLACE_EFFECT, LOCATION_MARKER_MIDPOINT_DEFEAT_EFFECT,
@@ -240,6 +246,9 @@ const supportedTypes = new Set([
   CREATE_EVENT_PLAYER_DEFINITION_COPIES_EFFECT, GLOBAL_OPTIONAL_DEFINITION_REVEAL_REWARD_EFFECT,
   REVEAL_ALL_HANDS_ZERO_MATCHING_ATTACKS_EFFECT, OPPONENT_DISCARD_FREE_PLAY_ALL_MATCHING_EFFECT,
   LINK_GENERATED_CARD_POWER_EFFECT, RETURN_LINKED_GENERATED_CARD_AFTER_BATTLE_EFFECT,
+  DEFINITION_VARIANT_BATTERY_ACCESS_EFFECT, DEFINITION_VARIANT_BATTERY_RECHARGE_EFFECT,
+  DEFINITION_VARIANT_BATTERY_IGNORE_DEFEAT_EFFECT, DEFINITION_VARIANT_BATTERY_OVERLOAD_EFFECT,
+  DEFINITION_VARIANT_ACTIVATION_LOCK_EFFECT, DEFINITION_VARIANT_ASCENSION_STOCK_EFFECT,
   'card_count_at_least',
   'event_player_won_combat', 'event_player_lost_combat',
   'event_player_is_controller', 'event_player_is_opponent', 'event_location_equals_controller',
@@ -386,6 +395,8 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'requirementValue', 'ignorePerGamePlayLimit', 'grantResidual', 'requireSameLocation', 'commandSeals', 'expected',
   'createIfMissing', 'firstCrossing', 'qualifyingSourceCardTypes', 'controllerManaLossPerPreventedVp', 'controllerVpPerActualManaLost',
   'minimumPowerPenalty', 'maximumPowerPenalty', 'blockOwnTurnMovement', 'removeSourceIfTargetLosesThisRound',
+  'batteryDefinitionId', 'sharedUsageKey', 'accessProviderDefinitionId', 'enhancedProviderDefinitionId', 'enhancedAttribute', 'enhancedPowerBonus',
+  'vpTargetId', 'manaBase', 'manaPerVp', 'variantDefinitionId', 'variantTargetId', 'variants', 'excludeDefinitionIds', 'excludeCardTypes',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -794,6 +805,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsDefinitionDeclarationDeckPrivilegedNode(candidateAbility) && !isAcceptedDefinitionDeclarationDeckAbility(candidateAbility)) {
         issue('definitionDeclarationDeck.gateway', 'Definition declaration/deck privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsDefinitionVariantBatteryPrivilegedNode(candidateAbility) && !isAcceptedDefinitionVariantBatteryAbility(candidateAbility)) {
+        issue('definitionVariantBattery.gateway', 'Definition variant/battery privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       if (containsMasterAscensionUnlockPrivilegedNode(candidateAbility) && !isAcceptedMasterAscensionUnlockAbility(candidateAbility)) {
         issue('masterAscensionUnlock.gateway', 'Master-ascension unlock privileged mechanic requires an accepted exact whole-ability semantic', id);

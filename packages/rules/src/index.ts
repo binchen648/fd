@@ -54,3 +54,4 @@ export * from './ability/master-ascension-unlock-capability';
 export * from './ability/multi-presence-player-capability';
 export * from './ability/linked-role-core-capability';
 export * from './ability/definition-declaration-deck-capability';
+export * from './ability/definition-variant-battery-capability';
