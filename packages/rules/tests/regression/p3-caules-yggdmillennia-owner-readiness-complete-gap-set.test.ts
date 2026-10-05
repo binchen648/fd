@@ -213,6 +213,24 @@ describe('P3 Caules Yggdmillennia owner-readiness complete identity-free gap set
     expect(asc).toBeTruthy();
   });
 
+  it('keeps staged declared attributes owner-private while preserving the shared staged action shape', () => {
+    const { state, s3 } = setup();
+    add(state, ASC, 'p1', 'skill');
+    state.abilityRuntime!.cardState[s3.instanceId]!.active = true;
+    state.round.activePhase = 'action'; state.round.prioritySeat = state.players[0]!.seat;
+    const publicAttack = add(state, BASIC, 'p1', 'attack_area', true);
+    const basic = add(state, BASIC, 'p1', 'hand');
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'stage_attack_card', cardInstanceId: basic }).ok).toBe(true);
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'stage_attack_card', cardInstanceId: s3.instanceId, declaredAttribute: '力量' }).ok).toBe(true);
+
+    const ownerStaged = rules.projectAbilityState(state, 'p1').stagedAttacks?.find((entry) => entry.playerId === 'p1')?.cards.find((entry) => entry.cardInstanceId === s3.instanceId);
+    const opponentStaged = rules.projectAbilityState(state, 'p2').stagedAttacks?.find((entry) => entry.playerId === 'p1')?.cards.find((entry) => entry.cardInstanceId === s3.instanceId);
+    expect(ownerStaged).toMatchObject({ type: 'play_card', cardInstanceId: s3.instanceId, declaredAttribute: '力量' });
+    expect(opponentStaged).toMatchObject({ type: 'play_card', cardInstanceId: s3.instanceId });
+    expect(opponentStaged).not.toHaveProperty('declaredAttribute');
+    expect(publicAttack).toBeTruthy();
+  });
+
   it('rebuilds exactly hand + deck + discard while preserving field, attack-area, and skill cards', () => {
     const { state, s3 } = setup(); const asc = add(state, ASC, 'p1', 'skill');
     const oldHand = add(state, BASIC, 'p1', 'hand');
