@@ -8464,8 +8464,10 @@ Implementation evidence:
 - exact privileged semantic shapes fail closed at loader + interpreter boundaries; malformed/widened shapes and forged restore provenance are rejected;
 - predecessor Candidate `e8f2362c4df24222655c3719723a434b63da4672` returned `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt 403 relay evidence is `https://github.com/binchen648/fd/pull/526#issuecomment-5991657853`;
 - successor revision closes both deck-rebuild P1s together: shared deterministic runtime shuffle after exact rebuild, and replacement scope restricted to owned `hand + deck + discard` while preserving `field + attack_area + skill`;
-- focused readiness regression: `11/11 PASS`;
-- task-relevant affected aggregate: `192/192 PASS` across 13 files;
+- successor Candidate `62f1bcbea3e700a5f7d831997602b52631c354db` then returned `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt 403 relay evidence is `https://github.com/binchen648/fd/pull/526#issuecomment-5992037707`;
+- current successor revision closes the shared secret-declaration telemetry P1 centrally: secret events omit raw attribute, shared MatchSession telemetry strips `declaredAttribute` across human/AI records, and client log projection defensively redacts restored/legacy payloads while owner-only card projection/reveal semantics remain intact;
+- focused readiness regression: `11/11 PASS`; MatchSession: `34/34 PASS`;
+- task-relevant affected aggregate: `193/193 PASS` across 13 files;
 - typecheck PASS; content validation PASS (`14 masters / 19 servants / 20 events / 0 blocking issues`); generated determinism PASS;
 - Phase-3 coverage PASS (`compiledCards=163`, `compiledCharacters=33`, `blockingIssues=0`, `newRuntimeSemanticRouted=22`); automation audit command completed;
 - coverage/audit tracked-output verification side effects were restored byte-for-byte from Exact Base/HEAD and are not Candidate changes;

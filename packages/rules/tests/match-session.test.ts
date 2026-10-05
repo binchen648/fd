@@ -65,6 +65,40 @@ describe('MatchSession semi-auto runtime', () => {
     expect(projected.view.legalActions).not.toContainEqual({ type: 'deploy_player', locationId: 'magic_workshop' });
   });
 
+  it('redacts declared-attribute secrets from stored and projected shared telemetry', () => {
+    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'] });
+    const recorder = session as unknown as {
+      record: (type: string, message: string, payload?: Record<string, unknown>) => void;
+    };
+    recorder.record('ai_decision', 'p1:stage_attack_card', {
+      type: 'stage_attack_card', cardInstanceId: 'fixture-secret', declaredAttribute: '力量',
+    });
+    recorder.record('dispatch_ok', 'p1:stage_attack_card', {
+      command: { type: 'stage_attack_card', cardInstanceId: 'fixture-secret', declaredAttribute: '力量' },
+      events: [
+        { type: 'card_attribute_declared_secret', playerId: 'p1', sourceCardId: 'fixture-secret', attribute: '力量' },
+        { type: 'card_attribute_declared', playerId: 'p2', sourceCardId: 'fixture-public', attribute: '迅捷' },
+      ],
+    });
+    const newlyStored = JSON.stringify(session.logs.slice(-2));
+    expect(newlyStored).not.toContain('力量');
+    expect(newlyStored).toContain('迅捷');
+
+    session.logs.push({
+      id: 'log:legacy-secret', round: 1, phase: 'action', type: 'dispatch_ok', message: 'legacy secret fixture',
+      payload: {
+        command: { type: 'play_card', cardInstanceId: 'fixture-secret', declaredAttribute: '力量' },
+        events: [{ type: 'card_attribute_declared_secret', playerId: 'p1', sourceCardId: 'fixture-secret', attribute: '力量' }],
+      },
+    });
+    const projectedLegacy = session.projectToClientState('p2').logs.find((entry) => entry.id === 'log:legacy-secret');
+    expect(JSON.stringify(projectedLegacy)).not.toContain('力量');
+    expect(projectedLegacy?.payload).toEqual({
+      command: { type: 'play_card', cardInstanceId: 'fixture-secret' },
+      events: [{ type: 'card_attribute_declared_secret', playerId: 'p1', sourceCardId: 'fixture-secret' }],
+    });
+  });
+
   it('only exposes deployment during the advance phase and awards magic workshop mana', () => {
     const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'] });
     expect(session.runUntilHumanInputOrRoundEnd()).toBe('human_input');

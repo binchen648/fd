@@ -47,7 +47,7 @@ The deck rebuild definition is exactly:
 
 Focused Caules Yggdmillennia readiness regression: `11/11 PASS`.
 
-Task-relevant affected aggregate: `192/192 PASS` across 13 files, covering required-additional play, deployment resource routing, Caren shared definition/resource capability, MatchSession restore and projection, executable authoring, ascension unlock, resource numeric paths, and existing Suzuka battle-loss-ignore consumers.
+Task-relevant affected aggregate: `193/193 PASS` across 13 files, covering required-additional play, deployment resource routing, Caren shared definition/resource capability, MatchSession restore and projection, executable authoring, ascension unlock, resource numeric paths, and existing Suzuka battle-loss-ignore consumers.
 
 Repository gates:
 
@@ -61,7 +61,7 @@ Repository gates:
 - `data/authoring/**` delta: EMPTY.
 - `git diff --check`: PASS.
 
-A supplemental direct `core/combat-resolver.test.ts` probe exposed its existing no-AbilityRuntime fixture (`Ability runtime is not initialized`) while the other 9 tests in that file passed. This task does not modify that fixture or `core/combat-resolver.ts`; the green 192-test affected aggregate above exercises the accepted battle-loss-ignore consumers through initialized production runtime paths and keeps unrelated convergence debt out of this readiness Candidate.
+A supplemental direct `core/combat-resolver.test.ts` probe exposed its existing no-AbilityRuntime fixture (`Ability runtime is not initialized`) while the other 9 tests in that file passed. This task does not modify that fixture or `core/combat-resolver.ts`; the green 193-test affected aggregate above exercises the accepted battle-loss-ignore consumers through initialized production runtime paths and keeps unrelated convergence debt out of this readiness Candidate.
 
 ## Fresh Reviewer P1 revision closure
 
@@ -74,6 +74,20 @@ The successor revision closes both reproduced deck-rebuild blockers together:
 - focused regression now validates exact 12-card multiset/counts, same-seed deterministic shuffle, different-seed order variation, old hand/deck/discard removal, and field/attack-area/skill preservation instead of asserting source-array deck order.
 
 Revision verification: focused `11/11 PASS`, affected `192/192 PASS`, typecheck PASS, content validation PASS, generated-content determinism PASS, `data/authoring/**` delta EMPTY, and `git diff --check` PASS.
+
+## Second fresh Reviewer P1 revision closure
+
+Exact Candidate `62f1bcbea3e700a5f7d831997602b52631c354db` returned `IMPLEMENTATION_NEEDS_REVISION`. Its completed 403 attempt is canonically anchored by Coordinator bounded same-attempt relay at `https://github.com/binchen648/fd/pull/526#issuecomment-5992037707`.
+
+The successor revision closes the shared telemetry leak without exposing Caules identity or printed text in production routing:
+
+- secret declaration events no longer carry the raw declared attribute while `declaredAttributeRevealed=false`;
+- MatchSession now recursively removes `declaredAttribute` from all shared telemetry payloads, which covers human dispatch commands and pre-dispatch AI decision records through the common `record(...)` seam;
+- `card_attribute_declared_secret` telemetry also removes any legacy/raw `attribute`, while ordinary public `card_attribute_declared` events keep their public attribute;
+- client projection defensively re-redacts stored logs, preventing restored/legacy shared log payloads from exposing a secret before reveal;
+- owner card projection still sees its private declaration, opponent card projection remains hidden until combat reveal, and reveal semantics remain unchanged.
+
+Revision verification: focused Caules `11/11 PASS`; MatchSession `34/34 PASS`; task-relevant affected aggregate `193/193 PASS` across 13 files; typecheck PASS; content validation PASS; generated-content determinism PASS; `data/authoring/**` delta EMPTY; `git diff --check` PASS.
 
 ## Gate
 

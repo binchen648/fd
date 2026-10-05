@@ -209,8 +209,9 @@ export function commitDeclaredAttributePlay(state: GameState, playerId: string, 
   cardState.declaredAttributeRevealed = !declaration.secret;
   const history = declarationHistory(state, playerId, physical.definitionId);
   if (!history.includes(declaration.attribute)) history.push(declaration.attribute);
-  runtime(state).events.push({ type: declaration.secret ? 'card_attribute_declared_secret' : 'card_attribute_declared', playerId,
-    sourceCardId: cardInstanceId, attribute: declaration.attribute });
+  runtime(state).events.push(declaration.secret
+    ? { type: 'card_attribute_declared_secret', playerId, sourceCardId: cardInstanceId }
+    : { type: 'card_attribute_declared', playerId, sourceCardId: cardInstanceId, attribute: declaration.attribute });
 }
 
 export function canExecuteDefinitionDeclarationDeckEffect(state: GameState, ctx: EffectContext, ability: AuthoringAbility): boolean {

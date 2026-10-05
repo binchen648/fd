@@ -201,6 +201,9 @@ describe('P3 Caules Yggdmillennia owner-readiness complete identity-free gap set
     const basic = add(state, BASIC, 'p1', 'hand');
     rules.playAbilityCardBatch(state, 'p1', [{ cardInstanceId: basic }, { cardInstanceId: s3.instanceId, declaredAttribute: '力量' }]);
     expect(state.abilityRuntime!.cardState[s3.instanceId]!.declaredAttributeRevealed).toBe(false);
+    const secretEvent = state.abilityRuntime!.events.findLast((event) => event.type === 'card_attribute_declared_secret');
+    expect(secretEvent).toMatchObject({ type: 'card_attribute_declared_secret', playerId: 'p1', sourceCardId: s3.instanceId });
+    expect(secretEvent).not.toHaveProperty('attribute');
     expect(rules.projectAbilityState(state, 'p1').cards.find((card) => card.instanceId === s3.instanceId)?.declaredAttribute).toBe('力量');
     expect(rules.projectAbilityState(state, 'p2').cards.find((card) => card.instanceId === s3.instanceId)?.declaredAttribute).toBeUndefined();
     state.round.activePhase = 'battle'; state.round.prioritySeat = state.players[0]!.seat;

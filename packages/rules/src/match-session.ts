@@ -159,6 +159,25 @@ export interface MatchSessionLogEntry {
   payload?: Record<string, unknown>;
 }
 
+function redactSharedTelemetryValue(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(redactSharedTelemetryValue);
+  if (value === null || typeof value !== 'object') return value;
+  const source = value as Record<string, unknown>;
+  const secretDeclarationEvent = source.type === 'card_attribute_declared_secret';
+  const result: Record<string, unknown> = {};
+  for (const [key, entry] of Object.entries(source)) {
+    if (key === 'declaredAttribute' || (secretDeclarationEvent && key === 'attribute')) continue;
+    result[key] = redactSharedTelemetryValue(entry);
+  }
+  return result;
+}
+function redactSharedTelemetryPayload(payload: Record<string, unknown>): Record<string, unknown> {
+  return redactSharedTelemetryValue(payload) as Record<string, unknown>;
+}
+function redactSharedTelemetryLogEntry(entry: MatchSessionLogEntry): MatchSessionLogEntry {
+  return entry.payload ? { ...entry, payload: redactSharedTelemetryPayload(entry.payload) } : { ...entry };
+}
+
 export interface MatchDirectiveView {
   id: string;
   controllerId?: string;
@@ -3100,7 +3119,7 @@ export class MatchSession {
       interactionWindows: projectInteractionWindows(this.state, playerId),
       directives: this.directiveViews(),
       zones: this.projectZones(playerId),
-      logs: this.logs.slice(-80),
+      logs: this.logs.slice(-80).map(redactSharedTelemetryLogEntry),
       replay: this.replay.slice(-40),
       battleBreakdowns: this.battleHistory,
       finalRanking: this.finalRanking(),
@@ -3882,7 +3901,7 @@ export class MatchSession {
       phase: state?.round.activePhase ?? 'action',
       type,
       message,
-      ...(payload ? { payload } : {}),
+      ...(payload ? { payload: redactSharedTelemetryPayload(payload) } : {}),
     });
   }
 
