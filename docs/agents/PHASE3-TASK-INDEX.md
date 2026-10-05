@@ -8515,7 +8515,7 @@ Formal dependency:
 ## TASK P3-B-CAULES-YGGDMILLENNIA-OWNER-READINESS-STAGED-DECLARATION-PRIVACY
 
 Owner: FORMAL readiness follow-up
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: bounded zero-credit shared client-projection privacy seam discovered by full-owner A-sync/rescan
 
 Scope boundary:
@@ -8528,3 +8528,14 @@ Scope boundary:
 - add focused pre-reveal owner/opponent staged-projection regression, post-reveal/public regression, and affected shared projection tests, then fresh independent exact review.
 
 Detailed preflight/A-sync evidence: `docs/reports/2026-10-05-p3-a-caules-yggdmillennia-owner-readiness-acceptance-synchronization.md`.
+
+Implementation evidence:
+- Exact Base is zero-credit readiness A-sync `4a0270b19db4bd60049bbaddd08f65bf120ba05d`;
+- `projectAbilityState(...)` now strips only `declaredAttribute` from non-owner staged entries while preserving the staged action/card shape and the owner's full staged choice;
+- focused regression uses the real `dispatchAbilityCommand(...)` staging path and reproduces the previously exposed non-owner staged projection boundary;
+- focused Caules readiness regression: `12/12 PASS`; MatchSession: `34/34 PASS`; authoring interpreter: `38/38 PASS`;
+- task-relevant affected aggregate: `194/194 PASS` across 13 files;
+- typecheck PASS; content validation PASS (`14 masters / 19 servants / 20 events / 0 blocking issues`); generated determinism PASS;
+- `data/authoring/**` delta EMPTY; production runtime diff contains no Caules/Yggdmillennia identity routing; `git diff --check` PASS;
+- detailed result: `docs/reports/2026-10-05-p3-b-caules-yggdmillennia-owner-readiness-staged-declaration-privacy-result.md`;
+- permanently zero migration credit; fresh independent exact review plus another FORMAL A-sync/full-owner rescan are required before owner-complete consumer migration.
