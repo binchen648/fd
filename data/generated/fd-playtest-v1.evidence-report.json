@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 16,
+    "masters": 17,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -1033,6 +1033,61 @@
       "htmPath": "chm-extract/考列斯·弗尔维吉.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/考列斯·弗尔维吉.png",
       "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.celenike",
+      "displayName": "赛蕾妮可·艾斯科",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/赛蕾妮可·艾斯科.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/赛蕾妮可·艾斯科.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.celenike.overview",
+      "displayName": "赛蕾妮可·艾斯科",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/赛蕾妮可·艾斯科.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/赛蕾妮可·艾斯科.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.celenike.skill.ascension",
+      "displayName": "宵泣之铁桩",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/赛蕾妮可·艾斯科.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/赛蕾妮可·艾斯科.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.celenike.skill.s1",
+      "displayName": "诅咒师",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/赛蕾妮可·艾斯科.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/赛蕾妮可·艾斯科.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.celenike.skill.s1a",
+      "displayName": "纵欲",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/赛蕾妮可·艾斯科.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/赛蕾妮可·艾斯科.png",
+      "imageIndex": 2,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

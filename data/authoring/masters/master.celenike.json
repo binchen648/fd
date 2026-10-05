@@ -1,0 +1,182 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.celenike",
+  "name": "赛蕾妮可·艾斯科",
+  "class": "Master",
+  "publicInformation": {
+    "type": "master_package",
+    "initialMana": 4
+  },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "f428cd81ebbbf2b27f4a2d3d75e079a55fa9b85d",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen Celenike source evidence is authoritative. Accepted PR #531 identity-free exact-status battle-wither readiness provides runtime authority; locked Reference corroborates static metadata and printed behavior only."
+  },
+  "cards": [
+    {
+      "id": "master.celenike.skill.s1",
+      "aliases": ["s1"],
+      "legacyId": "s1",
+      "name": "诅咒师",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.celenike" },
+      "printedText": "当你战败时，令此战斗的所有胜者【枯萎】直至你于一回合内获得了4点及以上的战果。当你获胜时，偷取该战斗中所有【枯萎】的玩家各2点战果。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "celenike.s1.apply-wither",
+          "kind": "forced_trigger",
+          "printedClause": "当你战败时，令此战斗的所有胜者【枯萎】直至你于一回合内获得了4点及以上的战果。",
+          "activation": { "trigger": "after_controller_loses_battle" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "battle_wither_apply_to_winners",
+              "statusKey": "celenike.wither",
+              "clearRoundVpGainThreshold": 4
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "celenike.s1.steal-withered-vp",
+          "kind": "forced_trigger",
+          "printedClause": "当你获胜时，偷取该战斗中所有【枯萎】的玩家各2点战果。",
+          "activation": { "trigger": "after_controller_wins_battle" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "battle_wither_steal_from_participants",
+              "statusKey": "celenike.wither",
+              "amount": 2
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.celenike.skill.s1a",
+      "aliases": ["s1a"],
+      "legacyId": "s1a",
+      "name": "纵欲",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.celenike" },
+      "printedText": "战斗阶段结束后，若你位于魔术工房，获得2点魔力并失去1点战果。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "celenike.s1a.indulgence",
+          "kind": "forced_trigger",
+          "printedClause": "战斗阶段结束后，若你位于魔术工房，获得2点魔力并失去1点战果。",
+          "activation": { "trigger": "after_battle_ended" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "location_battle_end_resource_adjustment",
+              "locationId": "magic_workshop",
+              "manaGain": 2,
+              "vpLoss": 1
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.celenike.skill.ascension",
+      "aliases": ["ascension"],
+      "legacyId": "ascension",
+      "name": "宵泣之铁桩",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.celenike" },
+      "initialPlacement": "outside_game",
+      "printedText": "（将此牌加入你的技能区）\n痛苦钉刺-行动阶段：令【枯萎】的玩家选择花费2点魔力或弃置所有手牌。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": ["魔术"],
+        "cost": 6,
+        "basePower": 9
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [
+        { "type": "skill_zone_mana_at_least", "value": 6 }
+      ],
+      "abilities": [
+        {
+          "id": "celenike.ascension.pain-stake",
+          "kind": "phase_action",
+          "printedClause": "痛苦钉刺-行动阶段：令【枯萎】的玩家选择花费2点魔力或弃置所有手牌。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "wither_pain_stake_action",
+              "statusKey": "celenike.wither",
+              "manaCost": 2,
+              "discardPolicy": "all_hand"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    }
+  ],
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": ["../../Fate_Domination-开发版/images/masters/赛蕾妮可·艾斯科.png"]
+    }
+  ]
+}
