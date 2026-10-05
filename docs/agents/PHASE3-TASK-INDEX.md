@@ -8439,7 +8439,7 @@ Formal rule: all five frozen identities are one Candidate / one PR / one fresh i
 ## TASK P3-B-CAULES-YGGDMILLENNIA-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Classification: parent zero-credit owner-readiness preflight for complete current `master.caules-yggdmillennia` frozen scope
 
 Frozen owner scope:
@@ -8473,4 +8473,58 @@ Implementation evidence:
 - coverage/audit tracked-output verification side effects were restored byte-for-byte from Exact Base/HEAD and are not Candidate changes;
 - production Caules identity/text routing audit CLEAN; `git diff --check` PASS;
 - detailed report: `docs/reports/2026-10-05-p3-b-caules-yggdmillennia-owner-readiness-complete-gap-set-result.md`;
-- permanently zero migration credit; strict accounting remains `211/944`, remaining `733` pending fresh independent readiness acceptance + FORMAL A-sync/rescan.
+- accepted successor Candidate `baeb8610c409f2e0bffecf1735be5b8286696757` received `IMPLEMENTATION_ACCEPTED_CANDIDATE`; canonical Coordinator bounded same-attempt evidence is `https://github.com/binchen648/fd/pull/526#issuecomment-5992238581`;
+- permanently zero migration credit; strict accounting remains `211/944`, remaining `733` after FORMAL A-sync/rescan.
+
+### Caules Yggdmillennia readiness acceptance synchronization
+
+- Accepted readiness Candidate: `baeb8610c409f2e0bffecf1735be5b8286696757` on PR #526.
+- Canonical Coordinator bounded same-attempt evidence: `https://github.com/binchen648/fd/pull/526#issuecomment-5992238581`.
+- Exact Candidate Phase 3 Pre-Review Gate run `37293120563` = `SUCCESS`.
+- Full-owner rescan confirms canonical `data/authoring/**` still contains `0/5` frozen Caules Yggdmillennia identities; all five remain provisionally newly creditable and none is preservation-only.
+- Locked Reference remains exactly `b2f9fa15fba07c63530bbf4612b03b8b704755f9`; PR #126 exact head remains source-evidence only.
+- HELPER Epoch 56 was read only as PRE-R guidance and was not used as credit authority.
+- Rescan mechanically confirms one additional privacy gap: `stage_attack_card` can store raw `declaredAttribute` in `modeState.stagedAttacks`, while `projectAbilityState(...)` can clone another player's staged entries verbatim once that player has a qualifying public `attack_area` card. A secret ascension declaration can therefore leak before authoritative combat reveal through `AbilityPlayerView.stagedAttacks` even though shared MatchSession telemetry is now redacted.
+- Readiness remains permanently zero-credit; strict accounting stays `211/944`, remaining `733`.
+- `P3-S-OWNER-CAULES-YGGDMILLENNIA-COMPLETE-MIGRATION` is `WAIT_READINESS_FOLLOWUP` until the staged-declaration privacy follow-up is fresh-R accepted plus another FORMAL A-sync/rescan.
+- Detailed A-sync report: `docs/reports/2026-10-05-p3-a-caules-yggdmillennia-owner-readiness-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-CAULES-YGGDMILLENNIA-COMPLETE-MIGRATION
+
+Owner: FORMAL
+Status: `WAIT_READINESS_FOLLOWUP`
+Classification: formal owner-complete migration for the complete current `master.caules-yggdmillennia` frozen scope
+
+Frozen owner scope:
+- `master.caules-yggdmillennia.skill.ascension`
+- `master.caules-yggdmillennia.skill.s1`
+- `master.caules-yggdmillennia.skill.s1a`
+- `master.caules-yggdmillennia.skill.s2`
+- `master.caules-yggdmillennia.skill.s3`
+
+Accounting boundary:
+- strict formal accounting before Caules Yggdmillennia formal migration remains `211/944`, remaining `733`;
+- all five frozen identities remain absent from canonical `data/authoring/**` and are provisionally newly creditable;
+- no migration credit is granted until exact formal `MIGRATION_ACCEPTED` plus FORMAL A-sync/accounting;
+- expected maximum owner-complete increment is `+5` only if formal acceptance rescan confirms all five remain newly creditable.
+
+Formal dependency:
+- do not create the formal consumer Candidate while staged-declaration privacy readiness remains unresolved;
+- after all readiness is accepted+A-synced, materialize all five frozen identities together in one canonical owner archive, consume only accepted identity-free runtime seams, and use one formal Candidate / one PR / one fresh R / one A-sync-accounting.
+
+## TASK P3-B-CAULES-YGGDMILLENNIA-OWNER-READINESS-STAGED-DECLARATION-PRIVACY
+
+Owner: FORMAL readiness follow-up
+Status: `READY`
+Classification: bounded zero-credit shared client-projection privacy seam discovered by full-owner A-sync/rescan
+
+Scope boundary:
+- keep ascension-secret `declaredAttribute` owner-private before the authoritative `controller_combat_action_window` reveal;
+- redact or omit the secret attribute from non-owner `stagedAttacks` projection while preserving the staged card/action shape needed by clients;
+- preserve owner staged projection and normal post-reveal/public declaration behavior;
+- cover both `play_card`/`stage_attack_card` declaration semantics without introducing Caules/card-name/printed-text identity routing;
+- keep accepted MatchSession telemetry redaction and secret-event behavior unchanged;
+- keep `data/authoring/**` delta empty and grant zero migration credit;
+- add focused pre-reveal owner/opponent staged-projection regression, post-reveal/public regression, and affected shared projection tests, then fresh independent exact review.
+
+Detailed preflight/A-sync evidence: `docs/reports/2026-10-05-p3-a-caules-yggdmillennia-owner-readiness-acceptance-synchronization.md`.
