@@ -8707,7 +8707,7 @@ Implementation evidence:
 ## TASK P3-S-OWNER-CELENIKE-COMPLETE-MIGRATION
 
 Owner: FORMAL migration
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Classification: owner-complete migration for the complete frozen `master.celenike` scope
 
 Frozen owner scope:
@@ -8739,4 +8739,29 @@ Implementation evidence:
 - Phase-3 coverage run completed with `archives=122`, `cards=251`, `abilities=446`, `compiledCards=179`, `compiledCharacters=36`, `blockingIssues=0`, `newRuntimeSemanticRouted=22`; automation audit completed with `legacyResolveEffect=158`, `legacyExecuteAbility=3`, `notClassifiable=263`, `promotionFindings=20`; verification-only coverage/audit artifacts were restored byte-for-byte from Exact Base;
 - production runtime identity/text/legacy-handler audit for Celenike is CLEAN; authoring delta is exactly one canonical owner archive containing the three frozen identities; `git diff --check` PASS;
 - detailed result: `docs/reports/2026-10-06-p3-s-owner-celenike-complete-migration-result.md`;
-- fresh independent exact Base/Candidate migration review is required before any `+3` accounting.
+- fresh independent exact Base/Candidate review returned `MIGRATION_ACCEPTED` for Candidate `a1dbdb1eb43302569aca4695853858adf7b3cba2` on PR #532;
+- canonical GitHub evidence: `https://github.com/binchen648/fd/pull/532#issuecomment-6001515458` (Coordinator bounded relay / same already-completed review attempt after Reviewer HTTP 403);
+- lawful FORMAL acceptance rescan reconfirms Exact Base authoring `0/3` and accepted Candidate authoring `3/3`, with all three frozen identities newly creditable and no prior migration-credit overlap;
+- lawful FORMAL A-sync/accounting advances strict accounting `220/944 -> 223/944`; remaining `724 -> 721`;
+- acceptance synchronization report: `docs/reports/2026-10-06-p3-a-owner-celenike-acceptance-synchronization.md`;
+- next mechanical owner in stable full-roster first-occurrence order is `master.chaos`, frozen scope `18`; canonical `data/authoring/masters/master.chaos.json` is absent. Historical FB2-03 membership of `master.chaos.skill.s7` is reusable Resource Numeric component evidence only and grants no parent-route or migration credit.
+
+## TASK P3-B-CHAOS-OWNER-READINESS-CAPABILITY
+
+Owner: FORMAL readiness
+Status: `READY`
+Classification: zero-credit complete-owner readiness/preflight for `master.chaos`
+
+Frozen owner scope: exactly `18` identities (`ascension`, `s1`, `s2` through `s17`).
+
+Accounting boundary:
+- strict formal accounting after accepted Celenike A-sync is `223/944`, remaining `721`;
+- canonical `data/authoring/masters/master.chaos.json` is absent, so current canonical owner coverage is `0/18`;
+- historical FB2-03 membership of `master.chaos.skill.s7` is component evidence only and must not be counted as migration credit;
+- readiness/capability work is permanently zero-credit; no Chaos migration credit may be granted before one later owner-complete migration fresh R plus FORMAL A-sync/accounting.
+
+Formal gate:
+- mechanically scan all 18 frozen Chaos identities once against F1 frozen evidence, current repo contracts, accepted reusable components, and locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9`; do not restart whole-roster classification;
+- close the complete owner-local readiness gap set in compatible identity-free capability families before any consumer migration Candidate;
+- no per-skill review split; one complete owner readiness transaction, then one owner-complete consumer migration for all remaining frozen identities;
+- HELPER remains read-only and may prepare the complete gap set but may not implement, publish formal PRs, or count credit.
