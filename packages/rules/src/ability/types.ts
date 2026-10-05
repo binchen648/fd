@@ -398,6 +398,7 @@ export interface SafeEvent {
   movedCount?: number;
   revealedCardDefinitionIds?: string[];
   revealedCardInstanceIds?: string[];
+  attribute?: string;
 }
 export interface CardRuntimeState {
   active: boolean; faceDown: boolean; playedRound: number; paidManaOnPlay?: number;
@@ -430,6 +431,10 @@ export interface CardRuntimeState {
   sourceBoundX?: { value: number; controllerId: PlayerId; sourceAbilityId: string };
   /** Round whose battle participation upkeep for sourceBoundX has already settled. */
   sourceBoundXBattleUpkeepRound?: number;
+  /** Exact declaration bound to a physical definition-driven skill play. */
+  declaredAttribute?: string;
+  /** False while an accepted rewrite keeps that declaration secret until combat. */
+  declaredAttributeRevealed?: boolean;
 }
 export interface RulerSealBinding {
   id: string; issuerPlayerId: PlayerId; boundPlayerId: PlayerId; sourceCardId: string; abilityId: string;
@@ -553,6 +558,12 @@ export interface AbilityRuntime {
   battleDefeatRoundByPlayer?: Record<PlayerId, number>;
   /** Round marker for players whose battle-loss effects are ignored by an accepted paid ability. */
   battleLossIgnoreRoundByPlayer?: Record<PlayerId, number>;
+  /** Game-long, per-definition declaration history for accepted declaration-play rules. */
+  declaredAttributesByPlayerDefinition?: Record<PlayerId, Record<string, string[]>>;
+  /** Exact next-round deck rebuilds scheduled by accepted definition-driven ascension rules. */
+  pendingExactDeckRebuilds?: Array<{
+    controllerId: PlayerId; sourceCardId: string; abilityId: string; targetRound: number; definitionIds: string[];
+  }>;
   /** Immutable server-owned opening deck cardinality, captured before the first-round draw. */
   startingDeckSizeByPlayer?: Record<PlayerId, number>;
   /** Total physical plays by card instance. */
@@ -627,8 +638,8 @@ export interface AbilityRuntime {
   playRulesVersion: PlayRulesVersion;
   playCounters: RoundPlayCounters;
 }
-export interface PlayCardAction { type: 'play_card'; cardInstanceId: string; faceDown?: boolean; manaContributions?: ManaContributionChoice[] }
-export interface StageAttackCardAction { type: 'stage_attack_card'; cardInstanceId: string; faceDown?: boolean }
+export interface PlayCardAction { type: 'play_card'; cardInstanceId: string; faceDown?: boolean; manaContributions?: ManaContributionChoice[]; declaredAttribute?: string }
+export interface StageAttackCardAction { type: 'stage_attack_card'; cardInstanceId: string; faceDown?: boolean; declaredAttribute?: string }
 export interface ConfirmStagedAttackAction { type: 'confirm_staged_attack' }
 export interface CancelStagedAttackAction { type: 'cancel_staged_attack' }
 export interface ActivateAbilityAction { type: 'activate_ability'; cardInstanceId: string; abilityId: string; variableCosts?: { name: string; min: number; max: number }[]; manaContributions?: ManaContributionChoice[] }
@@ -644,7 +655,7 @@ export type AbilityCommand = PlayCardAction | (ActivateAbilityAction & { variabl
 export interface AbilityPlayerView {
   revision: number; phase: PhaseName; round: number; legalActions: LegalAction[];
   players: { id: PlayerId; seat: number; mana: number; vp: number; commandSpells?: number; locationId?: string; masterCardId: string; handCount: number; deckCount: number; servantPackage?: ServantPackage }[];
-  cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean; reversed?: boolean; attributeOverrides?: string[] }[];
+  cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean; reversed?: boolean; attributeOverrides?: string[]; declaredAttribute?: string }[];
   stagedAttacks?: { playerId: PlayerId; cards: PlayCardAction[] }[];
   pendingDecision?: {
     id: string; candidates: string[]; min: number; max: number;

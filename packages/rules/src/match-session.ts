@@ -573,7 +573,7 @@ function isRestoreResponseWindow(value: unknown): boolean {
 
 function isRestoreSafeEvent(value: unknown): boolean {
   if (!isRestoreRecord(value) || typeof value.type !== 'string') return false;
-  for (const key of ['playerId','sourceCardId','abilityId','visibility','sourceAbilityId','controllerId','battlePhaseResolutionId','battleId','battlefieldId','resultId','triggerEventId','fromState','toState','cardInstanceId','fromZone','toZone'] as const) {
+  for (const key of ['playerId','sourceCardId','abilityId','visibility','sourceAbilityId','controllerId','battlePhaseResolutionId','battleId','battlefieldId','resultId','triggerEventId','fromState','toState','cardInstanceId','fromZone','toZone','attribute'] as const) {
     if (value[key] !== undefined && typeof value[key] !== 'string') return false;
   }
   if (value.unpreventable !== undefined && typeof value.unpreventable !== 'boolean') return false;
@@ -933,7 +933,9 @@ function isRestoreCardRuntimeState(value: unknown): boolean {
       hasExactRestoreKeys(value.sourceBoundX, ['value','controllerId','sourceAbilityId']) &&
       isRestoreSafeInteger(value.sourceBoundX.value, 2) && typeof value.sourceBoundX.controllerId === 'string' &&
       typeof value.sourceBoundX.sourceAbilityId === 'string')) &&
-    (value.sourceBoundXBattleUpkeepRound === undefined || isRestoreSafeInteger(value.sourceBoundXBattleUpkeepRound, 1));
+    (value.sourceBoundXBattleUpkeepRound === undefined || isRestoreSafeInteger(value.sourceBoundXBattleUpkeepRound, 1)) &&
+    (value.declaredAttribute === undefined || typeof value.declaredAttribute === 'string') &&
+    (value.declaredAttributeRevealed === undefined || typeof value.declaredAttributeRevealed === 'boolean');
 }
 
 function isRestoreAbilityDefinition(value: unknown): boolean {
@@ -1152,6 +1154,13 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       isRestoreRecord(entry) && typeof entry.definitionId === 'string' && DEDUCTION_RECORD_ATTRIBUTES.includes(entry.attribute as typeof DEDUCTION_RECORD_ATTRIBUTES[number]) && isRestoreSafeInteger(entry.recordedRound, 1)))) return false;
   if (value.battleDefeatRoundByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.battleDefeatRoundByPlayer)) return false;
   if (value.battleLossIgnoreRoundByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.battleLossIgnoreRoundByPlayer)) return false;
+  if (value.declaredAttributesByPlayerDefinition !== undefined && (!isRestoreRecord(value.declaredAttributesByPlayerDefinition) ||
+      !Object.values(value.declaredAttributesByPlayerDefinition).every((byDefinition) => isRestoreRecord(byDefinition) &&
+        Object.values(byDefinition).every((attributes) => isRestoreStringArray(attributes) && new Set(attributes).size === attributes.length)))) return false;
+  if (value.pendingExactDeckRebuilds !== undefined && (!Array.isArray(value.pendingExactDeckRebuilds) ||
+      !value.pendingExactDeckRebuilds.every((entry) => hasExactRestoreKeys(entry, ['controllerId','sourceCardId','abilityId','targetRound','definitionIds']) &&
+        typeof entry.controllerId === 'string' && typeof entry.sourceCardId === 'string' && typeof entry.abilityId === 'string' &&
+        isRestoreSafeInteger(entry.targetRound, 1) && isRestoreStringArray(entry.definitionIds) && entry.definitionIds.length > 0))) return false;
   if (value.normalCommandSealUseRoundByPlayer !== undefined && !isRestorePositiveIntegerMap(value.normalCommandSealUseRoundByPlayer)) return false;
   if (value.normalCommandSealUseHistory !== undefined && (!Array.isArray(value.normalCommandSealUseHistory) ||
       !value.normalCommandSealUseHistory.every(isRestoreNormalCommandSealUseRecord))) return false;
