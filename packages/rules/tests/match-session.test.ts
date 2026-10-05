@@ -361,7 +361,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('runs one semi-auto round through the same dispatch path', () => {
-    const session = createMatchSession({ seed: 3, humanPlayerId: 'p1' });
+    const session = createMatchSession({ seed: 4, humanPlayerId: 'p1' });
     const reason = session.runFullMatch({ maxRounds: 1 });
     const projected = session.projectToClientState('p1');
 
@@ -762,7 +762,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('runs a three-round event smoke with revealable battle breakdowns', () => {
-    const session = createMatchSession({ seed: 3, humanPlayerId: 'p1' });
+    const session = createMatchSession({ seed: 5, humanPlayerId: 'p1' });
     const reason = session.runFullMatch({ maxRounds: 3 });
     const projected = session.projectToClientState('p1');
 
