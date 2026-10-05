@@ -8492,7 +8492,7 @@ Implementation evidence:
 ## TASK P3-S-OWNER-CAULES-YGGDMILLENNIA-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `ACCEPTED`
 Classification: formal owner-complete migration for the complete current `master.caules-yggdmillennia` frozen scope
 
 Frozen owner scope:
@@ -8526,7 +8526,12 @@ Implementation evidence:
 - automation audit completed: `legacyResolveEffect=158`, `legacyExecuteAbility=3`, `notClassifiable=253`, `promotionFindings=20`; verification-only audit/coverage artifacts restored byte-for-byte from Base and are not Candidate changes;
 - `git diff --check` PASS;
 - detailed result: `docs/reports/2026-10-06-p3-s-owner-caules-yggdmillennia-complete-migration-result.md`;
-- migration credit remains `0` at Candidate publication; strict accounting stays `211/944`, remaining `733` until exact formal `MIGRATION_ACCEPTED` plus FORMAL A-sync/accounting.
+- exact fresh independent review returned `MIGRATION_ACCEPTED` for Candidate `d655fd0d869855bd49221d533193a3dd2cdd6f79` on PR #528;
+- canonical Coordinator bounded same-attempt evidence: `https://github.com/binchen648/fd/pull/528#issuecomment-5998630054`;
+- acceptance rescan reconfirms Base authoring `0/5` and Candidate authoring exactly `5/5`, so all five identities are newly creditable with no preservation-only overlap;
+- lawful FORMAL A-sync/accounting advances strict accounting `211/944 -> 216/944`; remaining `733 -> 728`;
+- acceptance synchronization report: `docs/reports/2026-10-06-p3-a-owner-caules-yggdmillennia-acceptance-synchronization.md`;
+- next mechanical owner is `master.caules`, frozen scope `5`; accepted FM08 already credited `master.caules.skill.s1a`, so current canonical coverage is `1/5` preservation-only and exactly `4` frozen identities remain uncredited.
 
 ## TASK P3-B-CAULES-YGGDMILLENNIA-OWNER-READINESS-STAGED-DECLARATION-PRIVACY
 
@@ -8560,3 +8565,28 @@ Implementation evidence:
 - second FORMAL full-owner rescan confirms canonical authoring remains `0/5`, all five frozen identities remain newly creditable, and no remaining owner-local readiness blocker is mechanically reproduced;
 - permanently zero migration credit; strict accounting remains `211/944`, remaining `733`;
 - owner-complete task `P3-S-OWNER-CAULES-YGGDMILLENNIA-COMPLETE-MIGRATION` is released to `READY`.
+
+## TASK P3-B-CAULES-OWNER-READINESS-CAPABILITY
+
+Owner: FORMAL readiness
+Status: `READY`
+Classification: zero-credit owner-readiness preflight for the complete remaining `master.caules` frozen scope
+
+Frozen owner scope:
+- `master.caules.skill.ascension`
+- `master.caules.skill.s1`
+- `master.caules.skill.s1a`
+- `master.caules.skill.s2`
+- `master.caules.skill.s3`
+
+Accounting boundary:
+- strict formal accounting after accepted Caules Yggdmillennia A-sync is `216/944`, remaining `728`;
+- canonical `data/authoring/masters/master.caules.json` currently contains exactly `1/5`: `master.caules.skill.s1a`;
+- `master.caules.skill.s1a` is preservation-only because it was already accepted and credited in FM08; it must not be counted again;
+- exactly four frozen identities remain uncredited: ascension + s1 + s2 + s3;
+- readiness/capability work is permanently zero-credit and must scan the complete five-identity owner contract once before any formal consumer Candidate.
+
+Formal gate:
+- use F1 frozen evidence, accepted FM08 preservation lineage, current repo runtime contracts, and locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9` as inputs;
+- produce one complete owner-local preflight/gap set; bundle compatible identity-free readiness seams rather than splitting per skill;
+- only after all required readiness is independently accepted plus FORMAL A-sync/rescan may one owner-complete migration materialize the four remaining identities while preserving `s1a` without duplicate credit.
