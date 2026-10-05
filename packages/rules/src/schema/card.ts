@@ -35,4 +35,6 @@ export interface CardInstance {
   zone: string;
   visibility: VisibilityState;
   generatedBy?: string;
+  /** Identity-free membership in one server-owned isolated definition side deck. */
+  definitionSideDeckKey?: string;
 }

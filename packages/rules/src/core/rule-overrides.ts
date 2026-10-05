@@ -138,6 +138,10 @@ export interface ManaGrantOptions {
   source?: 'generic' | 'situation' | 'deployment' | 'event';
   isClimaxSituation?: boolean;
   bypassRoundGainCap?: boolean;
+  controllerId?: string;
+  sourceCardId?: string;
+  abilityId?: string;
+  suppressDefinitionSideDeckDraw?: boolean;
 }
 export interface ManaGrantResult {
   requestedAmount: number;
@@ -203,7 +207,11 @@ export function grantMana(state: GameState, playerId: string, requestedAmount: n
   }
   if (runtime && effectiveRequestedAmount > 0) {
     runtime.events.push({ type: 'mana_granted', playerId, resource: 'mana', requestedDelta: effectiveRequestedAmount,
-      delta: actualAmount, before, after });
+      delta: actualAmount, before, after,
+      ...(options.controllerId ? { controllerId: options.controllerId } : {}),
+      ...(options.sourceCardId ? { sourceCardId: options.sourceCardId } : {}),
+      ...(options.abilityId ? { abilityId: options.abilityId } : {}),
+      ...(options.suppressDefinitionSideDeckDraw ? { definitionSideDeckDrawSuppressed: true } : {}) });
     applyStorageManaOverflowReactions(state, playerId, storageOverflowAmount);
   }
   return { requestedAmount, cappedRequestAmount, actualAmount, overflowAmount: effectiveRequestedAmount - actualAmount, before, after };

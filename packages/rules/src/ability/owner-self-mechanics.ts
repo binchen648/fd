@@ -1,6 +1,7 @@
 import type { GameState } from '../schema/game';
 import type { RuleNode } from './types';
 import { bloodlustContributorPenalty } from './bloodlust-cycle-capability';
+import { definitionSideDeckPlayerPowerAdjustment } from './definition-side-deck-capability';
 
 export const LOSE_VP_EQUAL_SOURCE_PLAY_COUNT_EFFECT = 'lose_victory_points_equal_source_play_count' as const;
 export const HIDE_SERVANT_TRUE_NAME_UNTIL_ROUND_END_EFFECT = 'hide_servant_true_name_until_round_end' as const;
@@ -49,7 +50,7 @@ export function servantRevealSuppressedByTemporaryConcealment(state: GameState, 
 export function playerCombatTotalPowerAdjustment(state: GameState, playerId: string): number {
   const runtime = state.abilityRuntime;
   if (!runtime) return 0;
-  let total = bloodlustContributorPenalty(state, playerId);
+  let total = bloodlustContributorPenalty(state, playerId) + definitionSideDeckPlayerPowerAdjustment(state, playerId);
   for (const ongoing of runtime.ongoingEffects) {
     if (ongoing.controllerId !== playerId || (ongoing.expiresAtRound !== undefined && state.round.roundNumber >= ongoing.expiresAtRound)) continue;
     for (const modifier of ongoing.ruleModifiers) {
