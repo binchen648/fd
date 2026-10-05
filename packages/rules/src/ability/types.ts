@@ -515,6 +515,13 @@ export interface MasterAscensionSourceDefinitionPowerState {
 export interface PersistentLocationTerrainState {
   playerId: PlayerId; locationId: string; sourceCardId: string; abilityId: string; value: number; triggerEventIds: string[];
 }
+export interface DefinitionSkillVariantState {
+  controllerId: PlayerId; definitionId: string; variantId: string; attribute: string;
+  sourceCardId: string; sourceAbilityId: string; createdRound: number;
+}
+export interface RoundCardAttributePowerBonusState {
+  controllerId: PlayerId; attribute: string; amount: number; round: number; sourceCardId: string; abilityId: string;
+}
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
@@ -558,6 +565,10 @@ export interface AbilityRuntime {
   battleDefeatRoundByPlayer?: Record<PlayerId, number>;
   /** Round marker for players whose battle-loss effects are ignored by an accepted paid ability. */
   battleLossIgnoreRoundByPlayer?: Record<PlayerId, number>;
+  /** Identity-free physical variants generated from one definition-driven skill. */
+  definitionSkillVariants?: Record<string, DefinitionSkillVariantState>;
+  /** Identity-free current-round attack-card Power bonuses scoped by effective card attribute. */
+  roundCardAttributePowerBonuses?: RoundCardAttributePowerBonusState[];
   /** Game-long, per-definition declaration history for accepted declaration-play rules. */
   declaredAttributesByPlayerDefinition?: Record<PlayerId, Record<string, string[]>>;
   /** Exact next-round deck rebuilds scheduled by accepted definition-driven ascension rules. */
@@ -655,7 +666,7 @@ export type AbilityCommand = PlayCardAction | (ActivateAbilityAction & { variabl
 export interface AbilityPlayerView {
   revision: number; phase: PhaseName; round: number; legalActions: LegalAction[];
   players: { id: PlayerId; seat: number; mana: number; vp: number; commandSpells?: number; locationId?: string; masterCardId: string; handCount: number; deckCount: number; servantPackage?: ServantPackage }[];
-  cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean; reversed?: boolean; attributeOverrides?: string[]; declaredAttribute?: string }[];
+  cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean; reversed?: boolean; attributeOverrides?: string[]; declaredAttribute?: string; definitionVariantId?: string }[];
   stagedAttacks?: { playerId: PlayerId; cards: PlayCardAction[] }[];
   pendingDecision?: {
     id: string; candidates: string[]; min: number; max: number;

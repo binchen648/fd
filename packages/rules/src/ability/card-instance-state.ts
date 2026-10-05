@@ -9,7 +9,9 @@ export function getEffectiveCardAttributes(state: GameState, cardInstanceId: str
   const runtime = state.abilityRuntime;
   const override = runtime?.cardState[cardInstanceId]?.attributeOverrides;
   const replacement = roundDefinitionReplacementForCard(state, cardInstanceId);
-  const printed = replacement ?? (override !== undefined ? override : runtime?.pack.cards[card.definitionId]?.cardFace.attributes);
+  const variantAttribute = runtime?.definitionSkillVariants?.[cardInstanceId]?.attribute;
+  const variantAttributes = variantAttribute === undefined ? undefined : variantAttribute === '无属性' ? [] : [variantAttribute];
+  const printed = replacement ?? variantAttributes ?? (override !== undefined ? override : runtime?.pack.cards[card.definitionId]?.cardFace.attributes);
   const result = Array.isArray(printed) ? printed.filter((attribute): attribute is string => typeof attribute === 'string') : [];
   for (const attribute of conditionalRevealedSourceAttributes(state, cardInstanceId)) if (!result.includes(attribute)) result.push(attribute);
   return result;

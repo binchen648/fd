@@ -163,6 +163,14 @@ import {
   legalDeclaredAttributes, resolveDefinitionDeclarationDeckEffect, validateDeclaredAttributePlay,
 } from './definition-declaration-deck-capability';
 import {
+  canExecuteDefinitionVariantBatteryEffect, containsDefinitionVariantBatteryPrivilegedNode,
+  definitionVariantAbilityActivationBlocked, definitionVariantBatteryChoiceCandidates,
+  definitionVariantBatteryRuntimeValidForRestore, definitionVariantRoundCardPowerBonus,
+  hasDefinitionVariantAttackMarker, isAcceptedDefinitionVariantBatteryAbility,
+  isDefinitionVariantBatteryOverloadEffect, isDefinitionVariantBatteryRechargeEffect,
+  resolveDefinitionVariantBatteryEffect,
+} from './definition-variant-battery-capability';
+import {
   LOCATION_MARKER_FOLLOW_EFFECT, LOCATION_MARKER_COMBAT_BRANCH_EFFECT, LOCATION_MARKER_PLACE_EFFECT, LOCATION_MARKER_MIDPOINT_DEFEAT_EFFECT,
   containsLocationMarkerPrivilegedNode, isAcceptedLocationMarkerAbility, isAcceptedLocationMarkerCombatAbility,
   isAcceptedLocationMarkerFollowAbility, isAcceptedLocationMarkerMidpointDefeatAbility, isAcceptedLocationMarkerPlaceAbility,
@@ -334,7 +342,7 @@ function active(s: GameState, id: string): boolean {
 }
 function phase(s: GameState): string { return s.round.activePhase === 'battle' ? 'combat' : s.round.activePhase; }
 function isAttack(d: AuthoringCard | undefined): boolean {
-  return !!d && ['servant_skill', 'servant_deck_card', 'servant_attack', 'basic_attack'].includes(d.cardType);
+  return !!d && (hasDefinitionVariantAttackMarker(d) || ['servant_skill', 'servant_deck_card', 'servant_attack', 'basic_attack'].includes(d.cardType));
 }
 function legacyCardPlayClassification(d: AuthoringCard | undefined): CardPlayClassification {
   if (!d) return { playKind: 'support', destinationZone: 'field' };
@@ -349,7 +357,7 @@ function legacyCardPlayClassification(d: AuthoringCard | undefined): CardPlayCla
 }
 /** Stable play classification. Card type, rather than power or effects, owns destination semantics. */
 export function classifyCardPlay(d: AuthoringCard | undefined): CardPlayClassification {
-  if (hasRequiredAdditionalPlayMarker(d)) return { playKind: 'attack', destinationZone: 'attack_area' };
+  if (hasRequiredAdditionalPlayMarker(d) || hasDefinitionVariantAttackMarker(d)) return { playKind: 'attack', destinationZone: 'attack_area' };
   if (d && 'playKind' in d && 'destinationZone' in d) {
     return {
       playKind: d.playKind as CardPlayClassification['playKind'],
@@ -1116,6 +1124,11 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     result.value += roundPowerBonus.amount;
     result.lines.push({ label: roundPowerBonus.sourceAbilityId || 'round_card_power_bonus', value: result.value });
   }
+  const variantBatteryPowerBonus = definitionVariantRoundCardPowerBonus(s, sourceId);
+  if (variantBatteryPowerBonus !== 0) {
+    result.value += variantBatteryPowerBonus;
+    result.lines.push({ label: 'definition_variant_battery_round_attribute_power', value: result.value });
+  }
   for (const modifier of ((source as unknown as { powerModifiers?: Array<Record<string, unknown>> }).powerModifiers ?? [])) {
     if (modifier.lifecycle === 'until_leaves_active_area' && modifier.round !== s.round.roundNumber) continue;
     const value = Number(modifier.value ?? 0);
@@ -1196,6 +1209,10 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
     const sourceAbility = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
     if (isAcceptedDefinitionDeclarationDeckAbility(sourceAbility) && isDeploymentBatteryChoiceEffect(sourceAbility.effects[0]!)) {
       return deploymentBatteryChoiceCandidates(s, ctx.controllerId, sourceAbility);
+    }
+    if (isAcceptedDefinitionVariantBatteryAbility(sourceAbility) &&
+        (isDefinitionVariantBatteryRechargeEffect(sourceAbility.effects[0]!) || isDefinitionVariantBatteryOverloadEffect(sourceAbility.effects[0]!))) {
+      return definitionVariantBatteryChoiceCandidates(s, ctx.controllerId, sourceAbility);
     }
     // Return the option IDs as candidates
     const options = Array.isArray(target.options) ? target.options : [];
@@ -1999,6 +2016,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAcceptedDefinitionResourceBindingAbility(a) && !canExecuteDefinitionResourceBindingEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsDefinitionDeclarationDeckPrivilegedNode(a) && !isAcceptedDefinitionDeclarationDeckAbility(a)) return false;
   if (isAcceptedDefinitionDeclarationDeckAbility(a) && a.kind !== 'passive' && !canExecuteDefinitionDeclarationDeckEffect(s, context(s, sourceId, a.id, event), a)) return false;
+  if (containsDefinitionVariantBatteryPrivilegedNode(a) && !isAcceptedDefinitionVariantBatteryAbility(a)) return false;
+  if (isAcceptedDefinitionVariantBatteryAbility(a) && a.kind !== 'passive' && !canExecuteDefinitionVariantBatteryEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsBloodlustPrivilegedNode(a) && !isAcceptedBloodlustAbility(a)) return false;
   if (isAcceptedBloodlustAbility(a) && !canExecuteBloodlustEffect(s, card(s, sourceId).controllerPlayerId, a)) return false;
   if (containsLocationMarkerPrivilegedNode(a) && !isAcceptedLocationMarkerAbility(a)) return false;
@@ -2038,6 +2057,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (definition(s, sourceId)?.cardType === 'command_spell' &&
     Number((player(s, card(s, sourceId).controllerPlayerId) as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) return false;
   const sourceControllerId = card(s, sourceId).controllerPlayerId;
+  const sourceInteraction = classifyAbilityInteraction(a);
+  if (['phase_activation', 'response_window'].includes(sourceInteraction.kind) && definitionVariantAbilityActivationBlocked(s, sourceId)) return false;
   if (isCommandSpellCard(s, sourceId) && controllerHasSealPowerReplacementProvider(s, sourceControllerId, 'normal')) return false;
   if (isRulerSealUseSemantic(a) && controllerHasSealPowerReplacementProvider(s, sourceControllerId, 'ruler')) return false;
   if (isBattleLossResourceTriggerSemantic(a) &&
@@ -4015,6 +4036,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
     if (!isLogicalDayCountermeasureRuntimeProvenanceValidForRestore(s)) return false;
     if (!definitionResourceBindingRuntimeValidForRestore(s)) return false;
     if (!definitionDeclarationDeckRuntimeValidForRestore(s)) return false;
+    if (!definitionVariantBatteryRuntimeValidForRestore(s)) return false;
     if (!isBloodlustRuntimeProvenanceValidForRestore(s, !options.deferBloodlustContributionAuthority)) return false;
     if (!isMultiPresenceRuntimeProvenanceValidForRestore(s)) return false;
     if (!isLinkedRoleCoreRuntimeProvenanceValidForRestore(s)) return false;
@@ -6522,6 +6544,13 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     if (!resolveDefinitionDeclarationDeckEffect(s, ctx, a)) reject('resolution_failed', 'Definition declaration/deck resolution failed');
     return;
   }
+  if (containsDefinitionVariantBatteryPrivilegedNode(a)) {
+    if (!isAcceptedDefinitionVariantBatteryAbility(a)) reject('resolution_failed', 'Unsupported definition variant/battery semantic');
+    const pending = findPendingTarget(s, ctx, a, a.effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    if (!resolveDefinitionVariantBatteryEffect(s, ctx, a)) reject('resolution_failed', 'Definition variant/battery resolution failed');
+    return;
+  }
   if (containsBloodlustPrivilegedNode(a)) {
     if (!isAcceptedBloodlustAbility(a) || !resolveBloodlustEffect(s, ctx.controllerId, ctx.sourceCardId, a)) reject('resolution_failed', 'Unsupported bloodlust semantic');
     return;
@@ -7028,9 +7057,11 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
     const hidden = !own && (!isPublic || runtime(s).cardState[c.instanceId]?.faceDown);
     // Opaque battlefield slot ids do not reveal definition ids embedded in legacy instance ids.
     const physicalState = runtime(s).cardState[c.instanceId];
+    const variantState = runtime(s).definitionSkillVariants?.[c.instanceId];
     view.cards.push({ instanceId: hidden ? `hidden-field-${s.cards.indexOf(c)}` : c.instanceId,
       ...(!hidden && (own || isPublic) ? { definitionId: c.definitionId } : {}), ownerPlayerId: c.ownerPlayerId, zone: c.zone,
       ...(physicalState?.faceDown ? { faceDown: true } : {}),
+      ...(!hidden && variantState ? { definitionVariantId: variantState.variantId } : {}),
       ...(!hidden && physicalState?.reversed ? { reversed: true } : {}),
       ...(!hidden && physicalState?.attributeOverrides !== undefined ? { attributeOverrides: [...physicalState.attributeOverrides] } : {}),
       ...(!hidden && physicalState?.declaredAttribute !== undefined && (own || physicalState.declaredAttributeRevealed === true)
@@ -7895,7 +7926,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       }
       d.context.selections[str(d.target.id)] = selected; delete r.pendingDecision;
       const resumedAbility = abilityDefinition(s, d.context.sourceCardId, d.context.abilityId);
-      if (isAcceptedLinkedRoleMemberSkillCopyAbility(resumedAbility) || isAcceptedDefinitionDeclarationDeckAbility(resumedAbility)) { executeAbility(s, d.context); break; }
+      if (isAcceptedLinkedRoleMemberSkillCopyAbility(resumedAbility) || isAcceptedDefinitionDeclarationDeckAbility(resumedAbility) || isAcceptedDefinitionVariantBatteryAbility(resumedAbility)) { executeAbility(s, d.context); break; }
       executeEffects(s, d.context, d.remainingEffects); break;
     }
     case 'resolve_response': {
