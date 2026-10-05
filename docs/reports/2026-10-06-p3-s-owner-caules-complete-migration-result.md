@@ -40,7 +40,9 @@ Focused migration/predecessor verification:
 - Caules accepted readiness: `10/10 PASS`.
 - FM08 game-start RuleOverride preservation: `5/5 PASS`.
 
-Task-relevant affected aggregate: `220/220 PASS` across 16 files, including Caules/Caules Yggdmillennia/Caren owner and readiness suites, FM08 preservation, authoring interpreter, executable-card pack, MatchSession, master-ascension readiness, resource-numeric/deployment-reward seams, and Suzuka regression coverage.
+Task-relevant affected aggregate: `220/220 PASS` across 16 files with `--maxWorkers=1` (single-worker only to remove local parallel timeout variance), including Caules/Caules Yggdmillennia/Caren owner and readiness suites, FM08 preservation, authoring interpreter, executable-card pack, MatchSession, master-ascension readiness, resource-numeric/deployment-reward seams, and Suzuka regression coverage.
+
+The owner regression now includes an explicit consumer-level proof that the Special variant does not block canonical asic.luck and the Typeless variant does not block command_spell definitions. Expanding the canonical pool to 16 Masters also shifted two deterministic MatchSession smoke fixtures; only their test seeds are changed (3 -> 4 for the one-round smoke and 3 -> 5 for the three-round event smoke) so the original scenarios remain stable without runtime semantic changes.
 
 Repository gates:
 

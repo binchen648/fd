@@ -188,6 +188,28 @@ describe('P3 Caules owner-complete migration', () => {
     expect(rules.definitionVariantAbilityActivationBlocked(state, magic)).toBe(false);
   });
 
+  it('preserves canonical Special/Luck and Typeless/Command-Spell activation-lock exclusions', () => {
+    const { state } = setup();
+    installActionDefinition(state, 'basic.luck', 'basic_attack', ['\u7279\u6b8a'], 4);
+    installActionDefinition(state, 'fixture.caules.special', 'basic_attack', ['\u7279\u6b8a'], 3);
+    installActionDefinition(state, 'fixture.caules.command', 'command_spell', [], 0);
+    installActionDefinition(state, 'fixture.caules.typeless', 'master_skill', [], 0);
+    const luck = add(state, 'basic.luck', 'p2', 'skill');
+    const special = add(state, 'fixture.caules.special', 'p2', 'skill');
+    const command = add(state, 'fixture.caules.command', 'p2', 'skill');
+    const typeless = add(state, 'fixture.caules.typeless', 'p2', 'skill');
+    const treeSpecial = add(state, S3, 'p1', 'attack_area', true);
+    const treeTypeless = add(state, S3, 'p1', 'attack_area', true);
+    const sourceAbilityId = card(S3).abilities[0]!.id;
+    state.abilityRuntime!.definitionSkillVariants = {
+      [treeSpecial]: { controllerId: 'p1', definitionId: S3, variantId: 'special', attribute: '\u7279\u6b8a', sourceCardId: treeSpecial, sourceAbilityId, createdRound: state.round.roundNumber },
+      [treeTypeless]: { controllerId: 'p1', definitionId: S3, variantId: 'typeless', attribute: '\u65e0\u5c5e\u6027', sourceCardId: treeTypeless, sourceAbilityId, createdRound: state.round.roundNumber },
+    };
+    expect(rules.definitionVariantAbilityActivationBlocked(state, luck)).toBe(false);
+    expect(rules.definitionVariantAbilityActivationBlocked(state, special)).toBe(true);
+    expect(rules.definitionVariantAbilityActivationBlocked(state, command)).toBe(false);
+    expect(rules.definitionVariantAbilityActivationBlocked(state, typeless)).toBe(true);
+  });
   it('unlocks the canonical Caules ascension through the accepted generic master-ascension path and stocks all five variants', () => {
     const { state, ids } = setup();
     installUnlockDefinition(state);

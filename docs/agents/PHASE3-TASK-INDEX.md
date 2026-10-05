@@ -1,4 +1,4 @@
-# Phase 3 Task Index
+﻿# Phase 3 Task Index
 
 - Version: P3-TI-1.39
 - Status: ACTIVE
@@ -8644,7 +8644,8 @@ Implementation evidence:
 - one canonical archive now consumes only the accepted identity-free definition-variant/Battery readiness family for Bio-Electromancer, Recharge/Overhaul/Overload, five Crafted Tree variants, activation locks, and ascension stock/current-round Magic +2;
 - the archive is integrated exactly once immediately after `master.caules-yggdmillennia` in `fd-playtest-v1` and checked-in generated content/evidence artifacts are regenerated;
 - owner-complete regression `9/9 PASS`; accepted readiness regression `10/10 PASS`; FM08 preservation regression `5/5 PASS`;
-- task-relevant affected aggregate `220/220 PASS` across 16 files;
+- task-relevant affected aggregate `220/220 PASS` across 16 files with `--maxWorkers=1` to avoid unrelated MatchSession timeout variance under local parallel CPU contention;
+- 16-master pool expansion shifted two generic MatchSession deterministic smoke fixtures; bounded test-only seeds converge from `3 -> 4` for the one-round smoke and `3 -> 5` for the three-round event smoke, preserving the original assertions with no production runtime change;`r`n- owner consumer regression explicitly proves Special preserves the `basic.luck` exception and Typeless preserves the `command_spell` exception through the canonical activation-lock path;
 - `FD_TOOLCHAIN_OK`; typecheck PASS; content validation PASS (`16 masters / 19 servants / 20 events / 0 blocking issues`);
 - generated determinism PASS with content-library hash `3a41527740651f400a18619d5b1f8993858c32a704be47fe77ae22f11f38c82f`, fixture hash `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`, evidence-report hash `7fb41d5b2e24e0482b818d2cfc52ef544e4638920d48687300a353fba5c7b0e5`;
 - Phase-3 coverage run completed with `archives=121`, `cards=248`, `abilities=442`, `compiledCards=175`, `compiledCharacters=35`, `blockingIssues=0`, `newRuntimeSemanticRouted=22`; automation audit completed with `legacyResolveEffect=158`, `legacyExecuteAbility=3`, `notClassifiable=259`, `promotionFindings=20`; verification-only coverage/audit artifacts were restored from Exact Base and are not Candidate changes;
