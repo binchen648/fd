@@ -54,4 +54,30 @@ Other HELPER notes remain advisory only: the accepted Candidate closed the raw s
 
 The follow-up must keep staged declared attributes owner-private before authoritative reveal, preserve owner visibility and post-reveal public visibility, cover human and AI/client projection paths as applicable, add no Caules/card-name/printed-text identity routing, keep `data/authoring/**` unchanged, and pass focused plus affected shared regressions before fresh independent review.
 
-`P3-S-OWNER-CAULES-YGGDMILLENNIA-COMPLETE-MIGRATION` is `WAIT_READINESS_FOLLOWUP`; no formal owner consumer Candidate may be created until the follow-up is fresh-R accepted and FORMAL performs another zero-credit A-sync/full-owner rescan.
+`P3-S-OWNER-CAULES-YGGDMILLENNIA-COMPLETE-MIGRATION` was `WAIT_READINESS_FOLLOWUP` at the first A-sync boundary.
+
+## Follow-up acceptance synchronization
+
+The staged-declaration privacy follow-up is now independently accepted:
+
+- PR: `#527`
+- Exact Base: `4a0270b19db4bd60049bbaddd08f65bf120ba05d`
+- Accepted Candidate: `98dada24df0630eb28bed2c33a512102697e9435`
+- ReviewJobKey: `pr527:98dada24df0630eb28bed2c33a512102697e9435:blocked-retry-cloudflare-1`
+- Verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`
+- Canonical Coordinator bounded same-attempt evidence: `https://github.com/binchen648/fd/pull/527#issuecomment-5998140814`
+- Exact-Candidate Phase 3 Pre-Review Gate: run `37294887721` = `SUCCESS`.
+
+Independent fresh R confirmed the projection-only privacy seam closes the staged pre-reveal leak while preserving owner-private declaration state and normal authoritative reveal behavior. Verification was Caules `12/12`, MatchSession `34/34`, authoring interpreter `38/38`, combined `84/84`, plus typecheck/content/generated/diff-check PASS.
+
+Second FORMAL full-owner rescan mechanically confirms:
+
+- canonical `data/authoring/masters/master.caules-yggdmillennia.json` remains absent, so owner coverage is still `0/5`;
+- all five frozen identities remain newly creditable and none is preservation-only;
+- locked Reference remains exact `b2f9fa15fba07c63530bbf4612b03b8b704755f9`;
+- source-evidence PR #126 exact head `9d59040a5a7fa9ba356dfc12c1ef8950fce05e78` remains evidence-only;
+- the accepted parent readiness plus accepted staged-declaration follow-up now cover the complete mechanically reproduced owner-local readiness gap set; no further owner-local readiness blocker is reproduced by this rescan.
+
+This second synchronization remains permanently zero-credit. Strict accounting stays `211/944`, remaining `733`.
+
+`P3-S-OWNER-CAULES-YGGDMILLENNIA-COMPLETE-MIGRATION` is now `READY`: materialize all five frozen identities together in one canonical owner archive, consume only the accepted identity-free runtime seams, then freeze one formal Candidate for one fresh independent exact review.
