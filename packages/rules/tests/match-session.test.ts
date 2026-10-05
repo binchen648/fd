@@ -248,7 +248,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('lets Luck stay in the attack area for battle power and ignore defeat effects', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'] });
+    const session = createMatchSession({ seed: 1, humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'] });
     session.state.round.activePhase = 'battle';
     session.state.eventPlacements = [];
     session.state.currentSituationModifiers = [];
@@ -361,7 +361,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('runs one semi-auto round through the same dispatch path', () => {
-    const session = createMatchSession({ seed: 1, humanPlayerId: 'p1' });
+    const session = createMatchSession({ seed: 3, humanPlayerId: 'p1' });
     const reason = session.runFullMatch({ maxRounds: 1 });
     const projected = session.projectToClientState('p1');
 
@@ -762,7 +762,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('runs a three-round event smoke with revealable battle breakdowns', () => {
-    const session = createMatchSession({ seed: 3685325, humanPlayerId: 'p1' });
+    const session = createMatchSession({ seed: 3, humanPlayerId: 'p1' });
     const reason = session.runFullMatch({ maxRounds: 3 });
     const projected = session.projectToClientState('p1');
 

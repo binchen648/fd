@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 14,
+    "masters": 15,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -878,6 +878,83 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/卡莲·奥尔黛西亚.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/卡莲·奥尔黛西亚.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caules-yggdmillennia",
+      "displayName": "考列斯·千界树",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/考列斯·千界树.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/考列斯·千界树.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caules-yggdmillennia.overview",
+      "displayName": "考列斯·千界树",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/考列斯·千界树.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/考列斯·千界树.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caules-yggdmillennia.skill.ascension",
+      "displayName": "最后的叙述者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/考列斯·千界树.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/考列斯·千界树.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caules-yggdmillennia.skill.s1",
+      "displayName": "电气魔术",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/考列斯·千界树.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/考列斯·千界树.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caules-yggdmillennia.skill.s1a",
+      "displayName": "电流术理",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/考列斯·千界树.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/考列斯·千界树.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caules-yggdmillennia.skill.s2",
+      "displayName": "巴格达电池",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/考列斯·千界树.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/考列斯·千界树.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caules-yggdmillennia.skill.s3",
+      "displayName": "绞首刑之雷",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/考列斯·千界树.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/考列斯·千界树.png",
       "imageIndex": 4,
       "reviewedAgainstImage": true,
       "issueCodes": []

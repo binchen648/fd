@@ -120,7 +120,8 @@ describe('P3 Caren owner-complete migration', () => {
   it('integrates Caren exactly once after Bazett in the canonical playtest master sequence', () => {
     const pack = JSON.parse(readFileSync('data/packs/fd-playtest-v1/pack.json', 'utf8'));
     expect(pack.authoringMasterFiles.filter((entry: string) => entry === PATH)).toHaveLength(1);
-    expect(pack.authoringMasterFiles.slice(-2)).toEqual(['data/authoring/masters/master.bazett.json', PATH]);
+    const index = pack.authoringMasterFiles.indexOf(PATH);
+    expect(pack.authoringMasterFiles[index - 1]).toBe('data/authoring/masters/master.bazett.json');
   });
 
   it('provisions Spiritual Masochism and removes it on the first authoritative >1 to <=1 crossing', () => {
