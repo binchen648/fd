@@ -1,6 +1,7 @@
 import type { GameState } from '../schema/game';
 import { grantMana, spendMana } from '../core/rule-overrides';
 import { getEffectiveCardAttributes } from './card-instance-state';
+import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
 import type { AuthoringAbility, AuthoringCard, EffectContext, ExecutableCardDefinition, RuleNode } from './types';
 
 export const SET_OWNED_DEFINITION_SKILL_ACTIVE_EFFECT = 'set_owned_definition_skill_active' as const;
@@ -303,7 +304,7 @@ export function applyDueExactDeckRebuilds(state: GameState, round: number): void
   const due = pending.filter((entry) => entry.targetRound === round); if (!due.length) return;
   for (const entry of due) {
     const player = state.players.find((candidate) => candidate.id === entry.controllerId); if (!player) throw new Error('EXACT_DECK_REBUILD_PLAYER_MISSING');
-    for (const physical of state.cards.filter((card) => card.ownerPlayerId === entry.controllerId && ['hand','deck','discard','field','attack_area'].includes(card.zone))) {
+    for (const physical of state.cards.filter((card) => card.ownerPlayerId === entry.controllerId && ['hand','deck','discard'].includes(card.zone))) {
       physical.zone = 'removed_from_game'; physical.visibility = { scope: 'public' };
       const cardState = r.cardState[physical.instanceId]; if (cardState) { cardState.active = false; cardState.faceDown = false; }
     }
@@ -315,6 +316,7 @@ export function applyDueExactDeckRebuilds(state: GameState, round: number): void
         zone: 'deck', visibility: { scope: 'owner_only', ownerPlayerId: entry.controllerId }, generatedBy: entry.sourceCardId });
       r.cardState[instanceId] = { active: false, faceDown: false, playedRound: Math.max(0, round - 1) };
     });
+    shuffleOwnedDeckDeterministically(state, entry.controllerId);
     r.events.push({ type: 'exact_deck_rebuilt', playerId: entry.controllerId, sourceCardId: entry.sourceCardId, abilityId: entry.abilityId,
       movedCount: entry.definitionIds.length });
   }

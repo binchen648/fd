@@ -45,9 +45,9 @@ The deck rebuild definition is exactly:
 
 ## Verification
 
-Focused Caules Yggdmillennia readiness regression: `10/10 PASS`.
+Focused Caules Yggdmillennia readiness regression: `11/11 PASS`.
 
-Task-relevant affected aggregate: `191/191 PASS` across 13 files, covering required-additional play, deployment resource routing, Caren shared definition/resource capability, MatchSession restore and projection, executable authoring, ascension unlock, resource numeric paths, and existing Suzuka battle-loss-ignore consumers.
+Task-relevant affected aggregate: `192/192 PASS` across 13 files, covering required-additional play, deployment resource routing, Caren shared definition/resource capability, MatchSession restore and projection, executable authoring, ascension unlock, resource numeric paths, and existing Suzuka battle-loss-ignore consumers.
 
 Repository gates:
 
@@ -61,7 +61,19 @@ Repository gates:
 - `data/authoring/**` delta: EMPTY.
 - `git diff --check`: PASS.
 
-A supplemental direct `core/combat-resolver.test.ts` probe exposed its existing no-AbilityRuntime fixture (`Ability runtime is not initialized`) while the other 9 tests in that file passed. This task does not modify that fixture or `core/combat-resolver.ts`; the green 191-test affected aggregate above exercises the accepted battle-loss-ignore consumers through initialized production runtime paths and keeps unrelated convergence debt out of this readiness Candidate.
+A supplemental direct `core/combat-resolver.test.ts` probe exposed its existing no-AbilityRuntime fixture (`Ability runtime is not initialized`) while the other 9 tests in that file passed. This task does not modify that fixture or `core/combat-resolver.ts`; the green 192-test affected aggregate above exercises the accepted battle-loss-ignore consumers through initialized production runtime paths and keeps unrelated convergence debt out of this readiness Candidate.
+
+## Fresh Reviewer P1 revision closure
+
+Exact Candidate `e8f2362c4df24222655c3719723a434b63da4672` returned `IMPLEMENTATION_NEEDS_REVISION`. The completed attempt's 403 evidence was relayed without re-review and is canonically anchored at `https://github.com/binchen648/fd/pull/526#issuecomment-5991657853`.
+
+The successor revision closes both reproduced deck-rebuild blockers together:
+
+- replacement deck order now goes through the shared authoritative xorshift32/Fisher-Yates ability-runtime RNG seam, so same runtime seed yields the same shuffled order while different seeds can yield different orders;
+- exact rebuild removal scope is restricted to owned `hand + deck + discard`, preserving `field`, `attack_area`, and `skill` physical cards exactly as the locked Reference boundary requires;
+- focused regression now validates exact 12-card multiset/counts, same-seed deterministic shuffle, different-seed order variation, old hand/deck/discard removal, and field/attack-area/skill preservation instead of asserting source-array deck order.
+
+Revision verification: focused `11/11 PASS`, affected `192/192 PASS`, typecheck PASS, content validation PASS, generated-content determinism PASS, `data/authoring/**` delta EMPTY, and `git diff --check` PASS.
 
 ## Gate
 

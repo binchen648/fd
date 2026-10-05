@@ -8462,8 +8462,10 @@ Implementation evidence:
 - frozen source evidence is PR #126 exact head `9d59040a5a7fa9ba356dfc12c1ef8950fce05e78`, F1 inventory/rule evidence, and locked Reference corroboration;
 - one complete identity-free capability closes definition-bound activation/deactivation, workshop deployment `+1 mana` vs paid current-round battle-loss-ignore choice, active required-additional declaration play, game-long declaration history, same-battlefield matching-basic Power-zero authority, ascension secret/repeat declaration rewrite, combat reveal, and exact next-round 12-card deck rebuild;
 - exact privileged semantic shapes fail closed at loader + interpreter boundaries; malformed/widened shapes and forged restore provenance are rejected;
-- focused readiness regression: `10/10 PASS`;
-- task-relevant affected aggregate: `191/191 PASS` across 13 files;
+- predecessor Candidate `e8f2362c4df24222655c3719723a434b63da4672` returned `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt 403 relay evidence is `https://github.com/binchen648/fd/pull/526#issuecomment-5991657853`;
+- successor revision closes both deck-rebuild P1s together: shared deterministic runtime shuffle after exact rebuild, and replacement scope restricted to owned `hand + deck + discard` while preserving `field + attack_area + skill`;
+- focused readiness regression: `11/11 PASS`;
+- task-relevant affected aggregate: `192/192 PASS` across 13 files;
 - typecheck PASS; content validation PASS (`14 masters / 19 servants / 20 events / 0 blocking issues`); generated determinism PASS;
 - Phase-3 coverage PASS (`compiledCards=163`, `compiledCharacters=33`, `blockingIssues=0`, `newRuntimeSemanticRouted=22`); automation audit command completed;
 - coverage/audit tracked-output verification side effects were restored byte-for-byte from Exact Base/HEAD and are not Candidate changes;

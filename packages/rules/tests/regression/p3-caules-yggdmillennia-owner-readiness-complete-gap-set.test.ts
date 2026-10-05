@@ -118,6 +118,14 @@ function setup() {
 function deployEvent(state: GameState, type: 'after_player_deployed_to_location' | 'after_player_deployed_to_battlefield', locationId: string) {
   rules.processAbilityEvent(state, { id: `deploy-${type}-${state.abilityRuntime!.sequence}`, type, playerId: 'p1', locationId });
 }
+function rebuiltDeckOrder(randomState: number): string[] {
+  const { state } = setup(); const asc = add(state, ASC, 'p1', 'skill');
+  add(state, BASIC, 'p1', 'hand'); add(state, BASIC, 'p1', 'deck'); add(state, BASIC, 'p1', 'discard');
+  rules.processAbilityEvent(state, { id: 'fixture-asc-unlock', type: 'after_master_ascension_unlocked', playerId: 'p1', sourceCardId: asc });
+  state.abilityRuntime!.randomState = randomState >>> 0 || 1;
+  rules.advanceAbilityPhase(state, 'preparation', 2, 1);
+  return state.cards.filter((card) => card.ownerPlayerId === 'p1' && card.zone === 'deck').map((card) => card.definitionId);
+}
 
 describe('P3 Caules Yggdmillennia owner-readiness complete identity-free gap set', () => {
   it('accepts exact shapes and fails closed on widened privileged mechanics', () => {
@@ -202,18 +210,39 @@ describe('P3 Caules Yggdmillennia owner-readiness complete identity-free gap set
     expect(asc).toBeTruthy();
   });
 
-  it('schedules and performs the exact next-round 12-card deck rebuild while preserving the skill zone', () => {
+  it('rebuilds exactly hand + deck + discard while preserving field, attack-area, and skill cards', () => {
     const { state, s3 } = setup(); const asc = add(state, ASC, 'p1', 'skill');
-    add(state, BASIC, 'p1', 'hand'); add(state, BASIC, 'p1', 'deck'); add(state, BASIC, 'p1', 'discard');
+    const oldHand = add(state, BASIC, 'p1', 'hand');
+    const oldDeck = add(state, BASIC, 'p1', 'deck');
+    const oldDiscard = add(state, BASIC, 'p1', 'discard');
+    const field = add(state, BASIC, 'p1', 'field', true);
+    const attack = add(state, BASIC, 'p1', 'attack_area', true);
     rules.processAbilityEvent(state, { id: 'fixture-asc-unlock', type: 'after_master_ascension_unlocked', playerId: 'p1', sourceCardId: asc });
     expect(state.abilityRuntime!.pendingExactDeckRebuilds).toHaveLength(1);
     expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(state)).toBe(true);
+    state.abilityRuntime!.randomState = 0x12345678;
     rules.advanceAbilityPhase(state, 'preparation', 2, 1);
     const deck = state.cards.filter((card) => card.ownerPlayerId === 'p1' && card.zone === 'deck').map((card) => card.definitionId);
-    expect(deck).toEqual(DECK); expect(deck).toHaveLength(12);
+    expect(deck).toHaveLength(12);
+    expect([...deck].sort()).toEqual([...DECK].sort());
+    expect([oldHand, oldDeck, oldDiscard].map((instanceId) => state.cards.find((card) => card.instanceId === instanceId)?.zone))
+      .toEqual(['removed_from_game','removed_from_game','removed_from_game']);
+    expect(state.cards.find((card) => card.instanceId === field)?.zone).toBe('field');
+    expect(state.cards.find((card) => card.instanceId === attack)?.zone).toBe('attack_area');
     expect(state.cards.find((card) => card.instanceId === s3.instanceId)?.zone).toBe('skill');
     expect(state.cards.find((card) => card.instanceId === asc)?.zone).toBe('skill');
     expect(state.abilityRuntime!.pendingExactDeckRebuilds).toEqual([]);
+  });
+
+  it('shuffles the exact rebuilt multiset deterministically through runtime randomState', () => {
+    const first = rebuiltDeckOrder(0x12345678);
+    const sameSeed = rebuiltDeckOrder(0x12345678);
+    const otherSeed = rebuiltDeckOrder(0x9abcdef0);
+    expect(first).toEqual(sameSeed);
+    expect(first).not.toEqual(DECK);
+    expect(otherSeed).not.toEqual(first);
+    expect([...first].sort()).toEqual([...DECK].sort());
+    expect([...otherSeed].sort()).toEqual([...DECK].sort());
   });
 
   it('fails restore closed for forged declaration history or scheduled deck provenance', () => {

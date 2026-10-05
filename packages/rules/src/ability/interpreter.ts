@@ -10,6 +10,7 @@ import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPla
 import { isCardCloseForbidden } from './card-close-forbid';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
+import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
 import { classifyManaContributionChoices, commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, installRulerSealMovementLock, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, resolveManaContributionPaymentPlan, rulerSealMovementLocked, situationForbidsAttribute, spendMana } from '../core/rule-overrides';
 import { node, nodes, str } from './loader';
 import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
@@ -2529,13 +2530,7 @@ function payEffectCost(s: GameState, ctx: EffectContext, cost: RuleNode, selecte
   spendMana(s, p.id, value);
 }
 function shuffle(s: GameState, ownerId: string): void {
-  const r = runtime(s); const indexes = s.cards.map((c, i) => c.ownerPlayerId === ownerId && c.zone === 'deck' ? i : -1).filter(i => i >= 0);
-  const deck = indexes.map(i => s.cards[i]!);
-  for (let i = deck.length - 1; i > 0; i--) {
-    let x = r.randomState; x ^= x << 13; x ^= x >>> 17; x ^= x << 5; r.randomState = x >>> 0;
-    const j = Math.floor((r.randomState / 0x100000000) * (i + 1)); [deck[i], deck[j]] = [deck[j]!, deck[i]!];
-  }
-  indexes.forEach((index, i) => { s.cards[index] = deck[i]!; });
+  shuffleOwnedDeckDeterministically(s, ownerId);
 }
 function shortestPath(s: GameState, from: string, to: string): string[] {
   if (from === to) return [from];
