@@ -8663,7 +8663,7 @@ Implementation evidence:
 ## TASK P3-B-CELENIKE-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: zero-credit complete-owner readiness/preflight for `master.celenike`
 
 Frozen owner scope:
@@ -8683,3 +8683,20 @@ Formal gate:
 - scan the complete three-identity owner once and close the complete owner-local source/readiness gap set before any consumer migration Candidate;
 - preserve identity-free runtime authority; bundle compatible readiness seams instead of per-skill review splits;
 - readiness/capability work is permanently zero-credit; only a later owner-complete migration fresh R plus FORMAL A-sync/accounting may grant credit.
+
+Implementation evidence:
+- Exact Base: `1b793b97f6aca6d3b8d9e1d77ff498e1aa6e2c78` (accepted Caules owner A-sync/accounting, strict accounting `220/944`, remaining `724`);
+- complete owner scan closes the currently reproduced `ascension + s1 + s1a` source/readiness gap set through one identity-free battle-wither capability instead of per-skill runtime branches;
+- `s1` uses authoritative battle result events: controller loss applies status-keyed, source-scoped Wither to every winner; a later controller win transfers the actual up-to-2 VP only from participants carrying that exact accepted `statusKey`; source-scoped Wither clears only after that source controller has gained at least 4 gross VP in the same round and the tracker resets at the round boundary;
+- ascension Pain Stake is a server-authored sequential owner-only interaction: each active Withered player chooses to pay exactly 2 mana when affordable or discard their entire hand, with the target player owning the choice and restore provenance failing closed on forged interaction/state;
+- `s1a` consumes the authoritative `after_battle_ended` terminal event and, only at `magic_workshop`, grants 2 mana through canonical `grantMana` and loses up to 1 VP with the normal VP floor; historical FB2-03 Resource Numeric membership remains component evidence only and grants no migration credit;
+- privileged loader/interpreter routing is whole-ability structural and production runtime contains no `master.celenike`, owner/skill text, or `core.celenike-*` identity routing;
+- initial Candidate focused Celenike readiness regression `7/7 PASS`; initial affected aggregate `225/225 PASS` across 18 files with `--maxWorkers=1`;
+- exact initial Candidate `581e45116a5b1faed06354237790fade9c1ce106` received `IMPLEMENTATION_NEEDS_REVISION`; canonical Coordinator bounded same-attempt evidence is `https://github.com/binchen648/fd/pull/531#issuecomment-6001025236`;
+- the P1 cross-status isolation finding is closed by requiring the active `statusKey` for VP-steal and Pain Stake eligibility/staging/live validation/ordering while preserving multiple source-player provenance within the same status family;
+- successor-focused Celenike readiness regression `8/8 PASS`, including two distinct accepted `statusKey` families proving A cannot consume/target B-only Wither and that two independent A-family sources remain compatible; fresh affected shared rerun `186/186 PASS` across 18 targeted files with `--maxWorkers=1`;
+- typecheck PASS; content validation PASS (`16 masters / 19 servants / 20 events / 0 blocking issues`); generated determinism PASS with content-library hash `3a41527740651f400a18619d5b1f8993858c32a704be47fe77ae22f11f38c82f`, fixture hash `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`, evidence-report hash `7fb41d5b2e24e0482b818d2cfc52ef544e4638920d48687300a353fba5c7b0e5`;
+- Phase-3 coverage completed with `archives=121`, `cards=248`, `abilities=442`, `compiledCards=175`, `compiledCharacters=35`, `blockingIssues=0`, `newRuntimeSemanticRouted=22`; automation audit completed with `legacyResolveEffect=158`, `legacyExecuteAbility=3`, `notClassifiable=259`, `promotionFindings=20`; verification-only artifacts were restored from Exact Base;
+- `data/authoring/**` remains unchanged and readiness is permanently zero-credit, so strict accounting stays `220/944`, remaining `724` pending a later owner-complete migration acceptance+A-sync;
+- `git diff --check` PASS; detailed result: `docs/reports/2026-10-06-p3-b-celenike-owner-readiness-complete-gap-set-result.md`;
+- fresh independent exact Base/Candidate review is required before zero-credit FORMAL readiness A-sync/rescan may release the one owner-complete Celenike migration Candidate.

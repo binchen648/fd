@@ -79,6 +79,11 @@ import {
   MULTI_PRESENCE_SACRIFICE_DEFEAT_EFFECT, containsMultiPresencePrivilegedNode, isAcceptedMultiPresenceAbility,
 } from './multi-presence-player-capability';
 import {
+  BATTLE_WITHER_APPLY_WINNERS_EFFECT, BATTLE_WITHER_STEAL_PARTICIPANTS_EFFECT,
+  WITHER_PAIN_STAKE_ACTION_EFFECT, LOCATION_BATTLE_END_RESOURCE_ADJUSTMENT_EFFECT,
+  containsBattleWitherPrivilegedNode, isAcceptedBattleWitherAbility,
+} from './battle-wither-capability';
+import {
   LINKED_ROLE_INITIALIZE_EFFECT, LINKED_ROLE_SCHEDULE_MEMBER_EFFECT, LINKED_ROLE_APPLY_SCHEDULED_EFFECT,
   LINKED_ROLE_MEMBER_RULES_EFFECT, LINKED_ROLE_BATTLE_REWARD_EFFECT,
   containsLinkedRoleCorePrivilegedNode, isAcceptedLinkedRoleCoreAbility,
@@ -230,6 +235,7 @@ const supportedTypes = new Set([
   CURRENT_ROUND_BASIC_ATTACK_ATTRIBUTE_PAIR_CONDITION, DRAW_THEN_SHUFFLE_TWO_HAND_EFFECT,
   MULTI_PRESENCE_RECORD_LOSS_EFFECT, MULTI_PRESENCE_DEPLOY_EFFECT, MULTI_PRESENCE_MIRROR_MOVE_EFFECT,
   MULTI_PRESENCE_POST_PLAY_MANA_LOSS_EFFECT, MULTI_PRESENCE_SHARED_PLAYER_EFFECT, MULTI_PRESENCE_SHARE_TERRAIN_EFFECT, MULTI_PRESENCE_SACRIFICE_DEFEAT_EFFECT,
+  BATTLE_WITHER_APPLY_WINNERS_EFFECT, BATTLE_WITHER_STEAL_PARTICIPANTS_EFFECT, WITHER_PAIN_STAKE_ACTION_EFFECT, LOCATION_BATTLE_END_RESOURCE_ADJUSTMENT_EFFECT,
   LINKED_ROLE_INITIALIZE_EFFECT, LINKED_ROLE_SCHEDULE_MEMBER_EFFECT, LINKED_ROLE_APPLY_SCHEDULED_EFFECT, LINKED_ROLE_MEMBER_RULES_EFFECT, LINKED_ROLE_BATTLE_REWARD_EFFECT,
   LINKED_ROLE_COPY_REVEALED_MEMBER_SERVANT_SKILL_EFFECT,
   ASCENSION_UNLOCK_OPPONENT_SEAL_LOSS_EFFECT, NAMED_EVENT_BASIC_POWER_BONUS_EFFECT, SOURCE_DEFINITION_BASIC_POWER_BONUS_EFFECT,
@@ -397,6 +403,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'minimumPowerPenalty', 'maximumPowerPenalty', 'blockOwnTurnMovement', 'removeSourceIfTargetLosesThisRound',
   'batteryDefinitionId', 'sharedUsageKey', 'accessProviderDefinitionId', 'enhancedProviderDefinitionId', 'enhancedAttribute', 'enhancedPowerBonus',
   'vpTargetId', 'manaBase', 'manaPerVp', 'variantDefinitionId', 'variantTargetId', 'variants', 'excludeDefinitionIds', 'excludeCardTypes',
+  'statusKey', 'clearRoundVpGainThreshold', 'vpLoss', 'discardPolicy',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -826,6 +833,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsMultiPresencePrivilegedNode(candidateAbility) && !isAcceptedMultiPresenceAbility(candidateAbility)) {
         issue('multiPresence.gateway', 'Multi-presence privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsBattleWitherPrivilegedNode(candidateAbility) && !isAcceptedBattleWitherAbility(candidateAbility)) {
+        issue('battleWither.gateway', 'Battle-wither privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       if (containsLinkedRoleCorePrivilegedNode(candidateAbility) && !isAcceptedLinkedRoleCoreAbility(candidateAbility)) {
         issue('linkedRole.gateway', 'Linked-role privileged mechanics require an accepted exact whole-ability semantic', id);

@@ -325,6 +325,13 @@ export interface BoundOpponentRoundRuleInteractionMetadata {
   controllerId: PlayerId; round: number; opponentIds: PlayerId[]; options: string[];
   constraints: { kind: 'target'; targetKind: 'choice'; min: 1; max: 1; distinct: true };
 }
+export interface WitherPainStakeInteractionMetadata {
+  kind: 'wither_pain_stake_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  initiatingControllerId: PlayerId; targetPlayerId: PlayerId; remainingTargetPlayerIds: PlayerId[];
+  statusKey: string; manaCost: 2; discardPolicy: 'all_hand';
+  constraints: { kind: 'target'; targetKind: 'choice'; min: 1; max: 1; distinct: true };
+}
 export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata |
   OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata | DeductionRecordChoiceInteractionMetadata |
   PostDrawHandShuffleInteractionMetadata | DiscardShuffleSourceXInteractionMetadata | RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata |
@@ -335,7 +342,7 @@ export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetad
   BattleDrawnCardOptionalPlayInteractionMetadata | BattlefieldAttackOfferChoiceInteractionMetadata |
   DeploymentTerrainVpChoiceInteractionMetadata | OneShotAbilityReuseChoiceInteractionMetadata |
   GlobalDefinitionRevealRewardInteractionMetadata | DiscardDefinitionPlayAllInteractionMetadata | MultiPresenceLocationContextInteractionMetadata |
-  BoundOpponentRoundRuleInteractionMetadata;
+  BoundOpponentRoundRuleInteractionMetadata | WitherPainStakeInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
