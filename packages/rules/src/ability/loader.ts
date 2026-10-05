@@ -108,6 +108,11 @@ import {
   GRANT_OPPONENT_BATTLE_WINNERS_VP_EFFECT, containsDefinitionResourceBindingPrivilegedNode,
   isAcceptedDefinitionResourceBindingAbility,
 } from './definition-resource-binding-capability';
+import {
+  SET_OWNED_DEFINITION_SKILL_ACTIVE_EFFECT, DEPLOYMENT_BATTERY_CHOICE_EFFECT, DECLARED_ATTRIBUTE_PLAY_RULE_EFFECT,
+  ZERO_MATCHING_OPPONENT_BASIC_ATTACKS_EFFECT, DECLARATION_SECRET_REWRITE_EFFECT, SCHEDULE_DECK_REBUILD_AFTER_UNLOCK_EFFECT,
+  REVEAL_SECRET_DECLARATIONS_EFFECT, containsDefinitionDeclarationDeckPrivilegedNode, isAcceptedDefinitionDeclarationDeckAbility,
+} from './definition-declaration-deck-capability';
 import { COMBAT_REWARD_DISTRIBUTION_RULE, isAcceptedFullRewardEachAbility } from './combat-reward-distribution';
 import {
   LOCATION_MARKER_FOLLOW_EFFECT, LOCATION_MARKER_COMBAT_BRANCH_EFFECT, LOCATION_MARKER_PLACE_EFFECT, LOCATION_MARKER_MIDPOINT_DEFEAT_EFFECT,
@@ -305,6 +310,9 @@ const supportedTypes = new Set([
   PROVISION_DEFINITION_SKILL_EFFECT, REMOVE_DEFINITION_SKILL_ON_FIRST_MANA_CROSSING_EFFECT,
   REACTIVE_OPPONENT_VP_MANA_CONVERSION_EFFECT, BIND_ENGAGED_OPPONENT_ROUND_RULE_EFFECT,
   GRANT_OPPONENT_BATTLE_WINNERS_VP_EFFECT,
+  SET_OWNED_DEFINITION_SKILL_ACTIVE_EFFECT, DEPLOYMENT_BATTERY_CHOICE_EFFECT, DECLARED_ATTRIBUTE_PLAY_RULE_EFFECT,
+  ZERO_MATCHING_OPPONENT_BASIC_ATTACKS_EFFECT, DECLARATION_SECRET_REWRITE_EFFECT, SCHEDULE_DECK_REBUILD_AFTER_UNLOCK_EFFECT,
+  REVEAL_SECRET_DECLARATIONS_EFFECT,
   BLOODLUST_INITIALIZE_EFFECT, BLOODLUST_CAGING_CONTRIBUTION_EFFECT, BLOODLUST_SPEND_TRACKER_EFFECT, BLOODLUST_COMBAT_DECAY_EFFECT,
   BLOODLUST_THRESHOLD_EFFECT, BLOODLUST_ACTION_EFFECT, BLOODLUST_TRANSFORM_EFFECT, BLOODLUST_ASCENSION_EFFECT,
   MASTER_ASCENSION_UNLOCK_EFFECT,
@@ -341,6 +349,8 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'recordKey', 'competitionReward', 'peekCount', 'vpCap', 'removedZone', 'sourceZone', 'minimumManaCost', 'removeSourceAfterBattle',
   'minimumSpent', 'rewardMana', 'powerBonus', 'closeAfterBattle', 'powerPerMana', 'mandatory', 'sameBattlefield',
   'manaCostIncrease', 'lossVp',
+  'definitionId', 'active', 'allowedAttributes', 'uniquePerGame', 'requiresActiveSkillSource', 'basicOnly', 'allowRepeat',
+  'targetRoundOffset', 'definitionIds', 'workshopLocationId', 'battlefieldDefinitionId', 'manaGain', 'ignoreDefeatManaCost',
   // New mechanic keys for 5 servants
   'options', 'label', 'condition', 'targets', 'duration', 'scope', 'statusId', 'choiceId', 'value', 'floor',
   'effectiveLocationKind', 'persistentTerrainMinimum', 'persistentTerrainProviderDefinitionId', 'persistentTerrainProviderAbilityId', 'blockOpponentExit', 'requireFaceDownStandardAttack',
@@ -781,6 +791,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsDefinitionResourceBindingPrivilegedNode(candidateAbility) && !isAcceptedDefinitionResourceBindingAbility(candidateAbility)) {
         issue('definitionResourceBinding.gateway', 'Definition/resource/bound-opponent privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsDefinitionDeclarationDeckPrivilegedNode(candidateAbility) && !isAcceptedDefinitionDeclarationDeckAbility(candidateAbility)) {
+        issue('definitionDeclarationDeck.gateway', 'Definition declaration/deck privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       if (containsMasterAscensionUnlockPrivilegedNode(candidateAbility) && !isAcceptedMasterAscensionUnlockAbility(candidateAbility)) {
         issue('masterAscensionUnlock.gateway', 'Master-ascension unlock privileged mechanic requires an accepted exact whole-ability semantic', id);
