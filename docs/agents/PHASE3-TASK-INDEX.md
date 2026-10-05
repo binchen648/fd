@@ -8616,7 +8616,7 @@ Implementation evidence:
 ## TASK P3-S-OWNER-CAULES-COMPLETE-MIGRATION
 
 Owner: FORMAL migration
-Status: `READY`
+Status: `MIGRATION_COMPLETE_CANDIDATE`
 Classification: owner-complete migration for the complete remaining `master.caules` frozen scope
 
 Frozen owner scope:
@@ -8637,3 +8637,17 @@ Formal gate:
 - consumer authoring must route only through accepted identity-free readiness seams and preserve the already-accepted `s1a` contract;
 - before review run focused/affected tests, typecheck, content validation, generated determinism, identity audit, authoring delta audit, and `git diff --check`;
 - after Candidate freeze require one fresh independent exact Base/Candidate review; only `MIGRATION_ACCEPTED` permits `+4` accounting.
+
+Implementation evidence:
+- Exact Base: `b2aeca6afb18b64762fb49635390f7fc2273e9d9` (accepted zero-credit Caules readiness A-sync);
+- canonical `master.caules` authoring expands mechanically from Base `1/5` to Candidate `5/5`; `master.caules.skill.s1a` is byte-equivalent as a parsed JSON object to its Base FM08 preservation record, while exactly four identities are newly materialized: ascension + s1 + s2 + s3;
+- one canonical archive now consumes only the accepted identity-free definition-variant/Battery readiness family for Bio-Electromancer, Recharge/Overhaul/Overload, five Crafted Tree variants, activation locks, and ascension stock/current-round Magic +2;
+- the archive is integrated exactly once immediately after `master.caules-yggdmillennia` in `fd-playtest-v1` and checked-in generated content/evidence artifacts are regenerated;
+- owner-complete regression `9/9 PASS`; accepted readiness regression `10/10 PASS`; FM08 preservation regression `5/5 PASS`;
+- task-relevant affected aggregate `220/220 PASS` across 16 files;
+- `FD_TOOLCHAIN_OK`; typecheck PASS; content validation PASS (`16 masters / 19 servants / 20 events / 0 blocking issues`);
+- generated determinism PASS with content-library hash `3a41527740651f400a18619d5b1f8993858c32a704be47fe77ae22f11f38c82f`, fixture hash `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`, evidence-report hash `7fb41d5b2e24e0482b818d2cfc52ef544e4638920d48687300a353fba5c7b0e5`;
+- Phase-3 coverage run completed with `archives=121`, `cards=248`, `abilities=442`, `compiledCards=175`, `compiledCharacters=35`, `blockingIssues=0`, `newRuntimeSemanticRouted=22`; automation audit completed with `legacyResolveEffect=158`, `legacyExecuteAbility=3`, `notClassifiable=259`, `promotionFindings=20`; verification-only coverage/audit artifacts were restored from Exact Base and are not Candidate changes;
+- production runtime delta identity/text audit for `master.caules`, owner/skill names, and legacy handler id is CLEAN; `git diff --check` PASS;
+- detailed result: `docs/reports/2026-10-06-p3-s-owner-caules-complete-migration-result.md`;
+- review publication itself grants no credit: strict accounting remains `216/944`, remaining `728` until fresh independent exact `MIGRATION_ACCEPTED` plus lawful FORMAL A-sync/accounting.

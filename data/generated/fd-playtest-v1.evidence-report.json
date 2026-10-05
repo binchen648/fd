@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 15,
+    "masters": 16,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -883,6 +883,17 @@
       "issueCodes": []
     },
     {
+      "entityId": "master.caules",
+      "displayName": "考列斯·弗尔维吉",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/考列斯·弗尔维吉.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/考列斯·弗尔维吉.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
       "entityId": "master.caules-yggdmillennia",
       "displayName": "考列斯·千界树",
       "entityKind": "master",
@@ -955,6 +966,72 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/考列斯·千界树.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/考列斯·千界树.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caules.overview",
+      "displayName": "考列斯·弗尔维吉",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/考列斯·弗尔维吉.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/考列斯·弗尔维吉.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caules.skill.ascension",
+      "displayName": "回路增强",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/考列斯·弗尔维吉.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/考列斯·弗尔维吉.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caules.skill.s1",
+      "displayName": "生物电学",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/考列斯·弗尔维吉.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/考列斯·弗尔维吉.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caules.skill.s1a",
+      "displayName": "资质平庸",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/考列斯·弗尔维吉.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/考列斯·弗尔维吉.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caules.skill.s2",
+      "displayName": "巴格达电池",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/考列斯·弗尔维吉.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/考列斯·弗尔维吉.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caules.skill.s3",
+      "displayName": "绞首刑之雷",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/考列斯·弗尔维吉.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/考列斯·弗尔维吉.png",
       "imageIndex": 4,
       "reviewedAgainstImage": true,
       "issueCodes": []

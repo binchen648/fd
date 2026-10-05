@@ -53,7 +53,8 @@
                                  "data/authoring/masters/master.araya.json",
                                  "data/authoring/masters/master.bazett.json",
                                  "data/authoring/masters/master.caren.json",
-                                 "data/authoring/masters/master.caules-yggdmillennia.json"
+                                 "data/authoring/masters/master.caules-yggdmillennia.json",
+                                 "data/authoring/masters/master.caules.json"
                              ],
     "authoringMasterSupportFiles":  [
                                         "data/authoring/masters/master.shirou-emiya.json"

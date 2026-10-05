@@ -83,9 +83,10 @@ describe('P3-FM08 exact ten-member game-start RuleOverride migration', () => {
         typeLabel: '被动',
       });
     }
-    expect(archiveCards.get('master.fiore.json')).toHaveLength(3);
     for (const [fileName, cardIds] of archiveCards) {
-      if (fileName !== 'master.fiore.json') expect(cardIds).toHaveLength(1);
+      const authorizedIds = members.filter(([memberFile]) => memberFile === fileName).map(([, , cardId]) => cardId);
+      expect(authorizedIds.length).toBeGreaterThan(0);
+      for (const cardId of authorizedIds) expect(cardIds).toContain(cardId);
     }
   });
 

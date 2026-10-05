@@ -131,8 +131,10 @@ describe('P3 Caules owner-readiness complete identity-free gap set', () => {
 
   it('keeps the accepted FM08 preservation identity isolated from this zero-credit runtime capability', () => {
     const existing = JSON.parse(readFileSync('data/authoring/masters/master.caules.json', 'utf8'));
-    expect(existing.cards.map((entry: any) => entry.id)).toEqual(['master.caules.skill.s1a']);
-    expect(existing.cards[0].abilities[0].effects[0]).toMatchObject({ type: 'install_rule_override', rule: 'non_climax_situation_mana_gain_cap', value: 1 });
+    const preserved = existing.cards.find((entry: any) => entry.id === 'master.caules.skill.s1a');
+    expect(preserved).toBeDefined();
+    expect(preserved.phase3Evidence.sourceTextSha256).toBe('16dc09cc37b8a95665d4fb5301e6048b0be422af19b9836d3fff07d9ef7e3c32');
+    expect(preserved.abilities[0].effects[0]).toMatchObject({ type: 'install_rule_override', rule: 'non_climax_situation_mana_gain_cap', value: 1 });
   });
 
   it('requires the live access provider and workshop, exposes exact VP-spend candidates, and resolves 2X+1 mana', () => {
