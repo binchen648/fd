@@ -8569,7 +8569,7 @@ Implementation evidence:
 ## TASK P3-B-CAULES-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Classification: zero-credit owner-readiness preflight for the complete remaining `master.caules` frozen scope
 
 Frozen owner scope:
@@ -8606,4 +8606,34 @@ Implementation evidence:
 - Phase-3 coverage PASS (`archives=121`, `cards=244`, `abilities=436`, `compiledCards=169`, `compiledCharacters=34`, `blockingIssues=0`); automation audit completed (`legacyResolveEffect=158`, `legacyExecuteAbility=3`, `notClassifiable=253`, `promotionFindings=20`); verification-only artifacts restored from Base;
 - `git diff --check` PASS;
 - detailed result: `docs/reports/2026-10-06-p3-b-caules-owner-readiness-complete-gap-set-result.md`;
-- permanently zero migration credit; strict accounting remains `216/944`, remaining `728`; fresh independent exact review is required before any consumer migration release.
+- fresh independent exact review `pr529:6932fec00c9e3a3e3a09521c24875eef98a7e10d` returned `IMPLEMENTATION_ACCEPTED_CANDIDATE` for exact Candidate `6932fec00c9e3a3e3a09521c24875eef98a7e10d`;
+- canonical Coordinator bounded same-attempt evidence: `https://github.com/binchen648/fd/pull/529#issuecomment-5999415406`;
+- lawful zero-credit FORMAL acceptance rescan reconfirms canonical authoring exactly `1/5` with only already-credited `master.caules.skill.s1a`; exactly four identities remain uncredited: ascension + s1 + s2 + s3;
+- acceptance synchronization report: `docs/reports/2026-10-06-p3-a-caules-owner-readiness-acceptance-synchronization.md`;
+- permanently zero migration credit; strict accounting remains `216/944`, remaining `728`;
+- owner-complete task `P3-S-OWNER-CAULES-COMPLETE-MIGRATION` is released to `READY`.
+
+## TASK P3-S-OWNER-CAULES-COMPLETE-MIGRATION
+
+Owner: FORMAL migration
+Status: `READY`
+Classification: owner-complete migration for the complete remaining `master.caules` frozen scope
+
+Frozen owner scope:
+- `master.caules.skill.ascension`
+- `master.caules.skill.s1`
+- `master.caules.skill.s1a`
+- `master.caules.skill.s2`
+- `master.caules.skill.s3`
+
+Accounting boundary:
+- strict formal accounting before this migration is `216/944`, remaining `728`;
+- accepted FM08 already credited `master.caules.skill.s1a`, so it is preservation-only and must not be counted again;
+- exact maximum lawful migration increment is `+4`: ascension + s1 + s2 + s3;
+- one owner-complete Candidate must preserve `s1a` while materializing all four remaining identities together; no per-skill review split.
+
+Formal gate:
+- use accepted readiness Candidate `6932fec00c9e3a3e3a09521c24875eef98a7e10d`, canonical evidence `https://github.com/binchen648/fd/pull/529#issuecomment-5999415406`, F1 frozen evidence, FM08 preservation lineage, and locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9`;
+- consumer authoring must route only through accepted identity-free readiness seams and preserve the already-accepted `s1a` contract;
+- before review run focused/affected tests, typecheck, content validation, generated determinism, identity audit, authoring delta audit, and `git diff --check`;
+- after Candidate freeze require one fresh independent exact Base/Candidate review; only `MIGRATION_ACCEPTED` permits `+4` accounting.
