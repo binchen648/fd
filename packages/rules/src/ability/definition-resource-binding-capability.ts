@@ -280,7 +280,11 @@ function settleVpConversionEvent(state: GameState, event: SafeEvent): void {
   }
 }
 export function settleDefinitionResourceEvent(state: GameState, event: SafeEvent): void {
-  if (event.type === 'mana_spent' || event.type === 'mana_adjusted') settleManaCrossingEvent(state, event);
+  // The crossing rule is cause-independent. Consume any authoritative typed mana
+  // transaction with coherent before/after/delta provenance instead of narrowing
+  // observation to two event names. Existing resource producers use several
+  // specialized event types (for example lose-all-mana and post-play mana loss).
+  if (event.resource === 'mana') settleManaCrossingEvent(state, event);
   if (event.type === 'victory_points_adjusted') settleVpConversionEvent(state, event);
 }
 export function settleDefinitionResourceAuditEvents(state: GameState, startIndex: number): void {

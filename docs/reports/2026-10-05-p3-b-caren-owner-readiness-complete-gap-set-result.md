@@ -32,9 +32,9 @@ Production integration is through exact semantic shape and runtime provenance on
 
 ## Verification
 
-Focused Caren readiness regression: `10/10 PASS`.
+Focused Caren readiness regression after R1 revision: `12/12 PASS`.
 
-Task-relevant affected scoped aggregate: `198/198 PASS` across 14 files:
+Task-relevant affected scoped aggregate: `199/199 PASS` across 14 files:
 - `p3-caren-owner-readiness-complete-gap-set.test.ts`
 - `authoring-interpreter.test.ts`
 - `executable-card-pack.test.ts`
@@ -50,6 +50,8 @@ Task-relevant affected scoped aggregate: `198/198 PASS` across 14 files:
 - `fb2-fixed-controller-resource-component.test.ts`
 - `card-action-activate.test.ts`
 
+Additional routes touched by the R1 closure are green in an isolated supplemental aggregate: `30/30 PASS` across `core/effect-resolver.test.ts`, `fb2-fixed-controller-set-mana.test.ts`, and `p3-akasha-owner-readiness-capability.test.ts`. The Reviewer-parity Shuten regression is `8/8 PASS`; `resource-numeric-room-boundary` is `1/1 PASS`.
+
 The roster-sensitive `resource-numeric-room-boundary` fixture now derives a deterministic current-roster seed that places `master.gatou` at the asserted seat; gameplay assertions remain unchanged.
 
 Repository gates:
@@ -64,6 +66,20 @@ Repository gates:
 - `git diff --check` PASS.
 
 A broader package sweep still exposes inherited roster-sensitive/raw-archive fixtures, including fixed seeds that resolve a different historical owner before this new Caren capability can execute and the historical FM02 exact-12 archive assertion. They are not promoted into this owner-readiness Candidate; the sprint policy leaves those unrelated baseline hazards for F5 convergence rather than widening this zero-credit task.
+
+## R1 revision closure
+
+Predecessor Candidate `0132a76e79f2bfedbd5741d3d2400adbae3ae423` received `IMPLEMENTATION_NEEDS_REVISION`. The Reviewer transport failed with explicit GitHub 403, and the Coordinator published the bounded same-attempt relay at `https://github.com/binchen648/fd/pull/524#issuecomment-5989922121`. No second review was manufactured.
+
+R1 P1 was that Caren s1 observed only the event names `mana_spent` / `mana_adjusted`, while the frozen first `>1 -> <=1` crossing is cause-independent. The successor closes the complete mechanically discovered current-runtime decrease surface without identity routing:
+- definition-resource settlement now accepts any authenticated typed `resource=mana` transaction with coherent integer `before/after/delta` provenance, so specialized loss events such as lose-all-mana and post-play mana loss are no longer missed by event-name filtering;
+- a shared non-payment mana-adjustment notifier now publishes and settles authoritative direct mutations used by legacy `set_mana` and the core negative effect-resolver route;
+- the Vessel-cycle direct mana cost now uses the existing paid-mana observer path instead of mutating mana silently;
+- already-authoritative payment, linked-role/Bloodlust contribution, direct `adjust_mana`, pair-play, data-flow, and Caren conversion routes continue through their existing typed observers.
+
+New focused regressions prove a specialized typed mana-loss event and the direct `set_mana` route both remove the provisioned definition on the first valid crossing. Exact malformed/wrong-direction/current-state guards remain fail closed, and the one-time crossing marker still prevents a second removal.
+
+The historical `p3-akasha-owner-complete-migration` pack-order assertion remains an inherited current-Base hazard: it expects Akasha to be the final authoring master while the accepted current pack ends in Bazett. This revision changes neither that test nor the pack authoring list; the directly affected Akasha Vessel readiness suite is independently `17/17 PASS`.
 
 ## Review gate
 

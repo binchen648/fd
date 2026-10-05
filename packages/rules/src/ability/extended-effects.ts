@@ -13,6 +13,7 @@ import type { RuleNode } from './types';
 import { node, str } from './loader';
 import { clearTransientCardTransformState } from './card-instance-state';
 import { playerIgnoresAbilityFromController } from './player-ability-immunity';
+import { notifyManaAdjusted } from '../core/rule-overrides';
 
 function modeState(state: GameState): Record<string, any> {
   (state as any).modeState = (state as any).modeState || {};
@@ -292,7 +293,14 @@ export function resolveExtendedEffect(
     }
     case 'set_mana': {
       const amount = Number(effect.amount ?? 0);
+      const before = p.mana;
       p.mana = Math.max(0, amount);
+      notifyManaAdjusted(state, controllerId, before, p.mana, {
+        controllerId,
+        sourceCardId: sourceCardId(context),
+        abilityId: str(context?.abilityId),
+        requestedDelta: p.mana - before,
+      });
       pushMasterDirective(state, controllerId, effect, { ...directiveContext(context), amount });
       break;
     }

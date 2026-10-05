@@ -229,6 +229,32 @@ export function notifyManaSpent(state: GameState, playerId: string, amount: numb
   }
 }
 
+/** Records an authoritative non-payment mana mutation for resource observers. */
+export function notifyManaAdjusted(
+  state: GameState,
+  playerId: string,
+  before: number,
+  after: number,
+  provenance: { controllerId?: string; sourceCardId?: string; abilityId?: string; requestedDelta?: number } = {},
+): void {
+  if (!Number.isSafeInteger(before) || before < 0 || !Number.isSafeInteger(after) || after < 0) {
+    throw new Error('Mana adjustment bounds must be nonnegative safe integers.');
+  }
+  const player = state.players.find((candidate) => candidate.id === playerId);
+  if (!player || player.mana !== after) throw new Error(`Mana adjustment state mismatch: ${playerId}`);
+  const delta = after - before;
+  if (delta === 0 || !state.abilityRuntime) return;
+  const eventStart = state.abilityRuntime.events.length;
+  state.abilityRuntime.events.push({
+    type: 'mana_adjusted', playerId, resource: 'mana',
+    requestedDelta: provenance.requestedDelta ?? delta, delta, before, after,
+    ...(provenance.controllerId ? { controllerId: provenance.controllerId } : {}),
+    ...(provenance.sourceCardId ? { sourceCardId: provenance.sourceCardId } : {}),
+    ...(provenance.abilityId ? { abilityId: provenance.abilityId } : {}),
+  });
+  settleDefinitionResourceAuditEvents(state, eventStart);
+}
+
 export interface ManaContributionClassification { bloodlust: ManaContributionChoice[]; linkedRole: ManaContributionChoice[] }
 export function classifyManaContributionChoices(state: GameState, beneficiaryPlayerId: string, contributions?: readonly ManaContributionChoice[]): ManaContributionClassification {
   const out: ManaContributionClassification = { bloodlust: [], linkedRole: [] };

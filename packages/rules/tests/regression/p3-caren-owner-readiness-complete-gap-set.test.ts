@@ -12,6 +12,7 @@ import {
 } from '../../src/ability/interpreter';
 import { movePlayer } from '../../src/core/movement';
 import { spendMana } from '../../src/core/rule-overrides';
+import { resolveExtendedEffect } from '../../src/ability/extended-effects';
 import { createSeededGameState } from '../../src/tools/seeded-state';
 import type { GameState } from '../../src/schema/game';
 
@@ -132,6 +133,41 @@ describe('P3 Caren owner-readiness complete identity-free gap set', () => {
     first[0]!.zone = 'skill'; state.players[0]!.mana = 3;
     spendMana(state, 'p1', 2);
     expect(first[0]!.zone).toBe('skill');
+  });
+
+  it('observes an authoritative specialized mana-loss transaction instead of requiring a particular event name', () => {
+    const { state } = setup();
+    const s2 = state.cards.find((entry) => entry.ownerPlayerId === 'p1' && entry.definitionId === S2)!;
+    state.players[0]!.mana = 1;
+    processAbilityEvent(state, {
+      id: 'fixture-specialized-mana-loss',
+      type: 'controller_mana_lost_for_round_power',
+      playerId: 'p1',
+      resource: 'mana',
+      requestedDelta: -3,
+      delta: -3,
+      before: 4,
+      after: 1,
+    });
+    expect(state.cards.find((entry) => entry.instanceId === s2.instanceId)!.zone).toBe('removed_from_game');
+    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({
+      type: 'definition_skill_removed_on_first_mana_crossing', playerId: 'p1', before: 4, after: 1,
+    }));
+  });
+
+  it('observes the legacy direct set-mana route through the shared authoritative mana-adjustment notifier', () => {
+    const { state, s1 } = setup();
+    const s2 = state.cards.find((entry) => entry.ownerPlayerId === 'p1' && entry.definitionId === S2)!;
+    resolveExtendedEffect(state, 'p1', { type: 'set_mana', amount: 1 } as any, {
+      sourceCardId: s1,
+      abilityId: S1_REMOVE,
+    });
+    expect(state.players[0]!.mana).toBe(1);
+    expect(s2.zone).toBe('removed_from_game');
+    expect(state.abilityRuntime!.events).toEqual(expect.arrayContaining([
+      expect.objectContaining({ type: 'mana_adjusted', playerId: 'p1', delta: -3, before: 4, after: 1 }),
+      expect.objectContaining({ type: 'definition_skill_removed_on_first_mana_crossing', playerId: 'p1' }),
+    ]));
   });
 
   it('provisions the bound skill on the servant reveal route without duplicating the physical card', () => {
