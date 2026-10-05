@@ -150,6 +150,12 @@ import {
   logicalDayDefinitionPlayRequirementWaived, resolveLogicalDayCountermeasureEffect, sourceBoundDefinitionResidualGranted,
 } from './logical-day-countermeasure-capability';
 import {
+  boundOpponentDecisionLiveValid, canExecuteDefinitionResourceBindingEffect, cleanupDefinitionResourceBindingRoundState,
+  containsDefinitionResourceBindingPrivilegedNode, definitionResourceBindingRuntimeValidForRestore,
+  isAcceptedDefinitionResourceBindingAbility, isBoundOpponentRoundPowerAdjustmentValid, resolveBoundOpponentDecision, resolveDefinitionResourceBindingEffect,
+  settleBoundOpponentBattleOutcome, settleDefinitionResourceAuditEvents, settleDefinitionResourceEvent,
+} from './definition-resource-binding-capability';
+import {
   LOCATION_MARKER_FOLLOW_EFFECT, LOCATION_MARKER_COMBAT_BRANCH_EFFECT, LOCATION_MARKER_PLACE_EFFECT, LOCATION_MARKER_MIDPOINT_DEFEAT_EFFECT,
   containsLocationMarkerPrivilegedNode, isAcceptedLocationMarkerAbility, isAcceptedLocationMarkerCombatAbility,
   isAcceptedLocationMarkerFollowAbility, isAcceptedLocationMarkerMidpointDefeatAbility, isAcceptedLocationMarkerPlaceAbility,
@@ -1978,6 +1984,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAcceptedVesselCycleAbility(a) && !canExecuteVesselCycleEffect(s, context(s, sourceId, a.id, event), a.effects[0]!)) return false;
   if (containsLogicalDayCountermeasurePrivilegedNode(a) && !isAcceptedLogicalDayCountermeasureAbility(a)) return false;
   if (isAcceptedLogicalDayCountermeasureAbility(a) && !canExecuteLogicalDayCountermeasureEffect(s, context(s, sourceId, a.id, event), a)) return false;
+  if (containsDefinitionResourceBindingPrivilegedNode(a) && !isAcceptedDefinitionResourceBindingAbility(a)) return false;
+  if (isAcceptedDefinitionResourceBindingAbility(a) && !canExecuteDefinitionResourceBindingEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsBloodlustPrivilegedNode(a) && !isAcceptedBloodlustAbility(a)) return false;
   if (isAcceptedBloodlustAbility(a) && !canExecuteBloodlustEffect(s, card(s, sourceId).controllerPlayerId, a)) return false;
   if (containsLocationMarkerPrivilegedNode(a) && !isAcceptedLocationMarkerAbility(a)) return false;
@@ -2630,6 +2638,7 @@ function reveal(s: GameState, controllerId: string): void {
   if (r.revealedServants.includes(controllerId) || servantRevealForbiddenByNoCommandSeals(s, controllerId) ||
       servantRevealSuppressedByTemporaryConcealment(s, controllerId)) return;
   r.revealedServants.push(controllerId); r.events.push({ type: 'servant_package_revealed', playerId: controllerId });
+  processEvent(s, { id: nextId(s, 'servant-package-revealed'), type: 'servant_package_revealed', playerId: controllerId });
 }
 function checkFormulaTriggers(s: GameState): void {
   for (const t of collectTriggeredAbilities(s, { id: 'formula-check', type: 'when_formula_condition_met' })) {
@@ -3530,7 +3539,12 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
     case 'adjust_mana': {
       const amount = numeric(s, ctx, effect.amount);
       if (amount > 0) grantMana(s, p.id, amount, { source: 'generic' });
-      else if (amount < 0) p.mana = Math.max(0, p.mana + amount); break;
+      else if (amount < 0) {
+        const before = p.mana; p.mana = Math.max(0, p.mana + amount);
+        r.events.push({ type: 'mana_adjusted', playerId: p.id, controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+          abilityId: ctx.abilityId, resource: 'mana', requestedDelta: amount, delta: p.mana - before, before, after: p.mana });
+      }
+      break;
     }
     case 'install_rule_override': {
       if (!isExactGameStartRuleOverrideEffect(effect)) reject('resolution_failed', 'Unsupported persistent RuleOverride shape');
@@ -3585,7 +3599,13 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       }]);
       return;
     }
-    case 'adjust_victory_points': { const raw=numeric(s,ctx,effect.amount); const adjusted=bloodlustVpGainAdjustment(s,p.id,raw); p.vp=Math.max(0,p.vp+adjusted); break; }
+    case 'adjust_victory_points': {
+      const raw = numeric(s, ctx, effect.amount); const adjusted = bloodlustVpGainAdjustment(s, p.id, raw); const before = p.vp;
+      p.vp = Math.max(0, p.vp + adjusted);
+      if (p.vp !== before) r.events.push({ type: 'victory_points_adjusted', playerId: p.id, controllerId: ctx.controllerId,
+        sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, resource: 'victory_points', delta: p.vp - before, before, after: p.vp });
+      break;
+    }
     case 'move_player': {
       const to = ctx.selections[str(effect.to)]?.[0];
       if (to) moveControllerResolutionPresence(s,ctx,to);
@@ -3948,6 +3968,7 @@ export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decisi
   if (decision.interaction?.kind === 'battlefield_attack_offer_choice_v1') return isBattlefieldAttackOfferPendingDecisionLiveValid(s, decision);
   if (decision.interaction?.kind === 'one_shot_ability_reuse_choice_v1') return isOneShotAbilityReuseChoicePendingDecisionLiveValid(s, decision);
   if (decision.interaction && ['global_definition_reveal_reward_v1','discard_definition_play_all_v1'].includes(decision.interaction.kind)) return isMatchingDefinitionPendingDecisionLiveValid(s, decision);
+  if (decision.interaction?.kind === 'bound_opponent_round_rule_v1') return boundOpponentDecisionLiveValid(s, decision);
   if (decision.interaction) return true;
   try {
     if (decision.controllerId !== decision.context.controllerId) return false;
@@ -3970,6 +3991,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
     const hasPlayers = (ids: readonly string[]) => ids.every((id) => playerIds.has(id)) && new Set(ids).size === ids.length;
     if (!isVesselCycleRuntimeProvenanceValidForRestore(s)) return false;
     if (!isLogicalDayCountermeasureRuntimeProvenanceValidForRestore(s)) return false;
+    if (!definitionResourceBindingRuntimeValidForRestore(s)) return false;
     if (!isBloodlustRuntimeProvenanceValidForRestore(s, !options.deferBloodlustContributionAuthority)) return false;
     if (!isMultiPresenceRuntimeProvenanceValidForRestore(s)) return false;
     if (!isLinkedRoleCoreRuntimeProvenanceValidForRestore(s)) return false;
@@ -4028,6 +4050,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
       if (!playerIds.has(entry.playerId) || entry.round !== s.round.roundNumber || !source || !ability) return false;
       if (entry.amount === -4 && isAcceptedFortifyMovedInBattlefieldAbility(ability)) return true;
       if (entry.amount === 2 && isAcceptedBloodlustAbility(ability) && isBloodlustActionEffect(ability.effects[0]!) && source.controllerPlayerId === entry.playerId) return true;
+      if (isBoundOpponentRoundPowerAdjustmentValid(s, entry)) return true;
       if (entry.amount === 6 && isAcceptedLinkedGeneratedCardPowerAbility(ability) && source.generatedBy) {
         const generator = s.cards.find((candidate) => candidate.instanceId === source.generatedBy);
         const marker = r.cardState[source.instanceId]?.generatedCardReturnAfterBattle;
@@ -6463,6 +6486,12 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     }
     return;
   }
+  if (containsDefinitionResourceBindingPrivilegedNode(a)) {
+    if (!isAcceptedDefinitionResourceBindingAbility(a) || !resolveDefinitionResourceBindingEffect(s, ctx, a)) {
+      reject('resolution_failed', 'Definition/resource binding resolution failed');
+    }
+    return;
+  }
   if (containsBloodlustPrivilegedNode(a)) {
     if (!isAcceptedBloodlustAbility(a) || !resolveBloodlustEffect(s, ctx.controllerId, ctx.sourceCardId, a)) reject('resolution_failed', 'Unsupported bloodlust semantic');
     return;
@@ -6730,6 +6759,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   settleReactionCounterEvent(s, event);
   settleBattlefieldAttackOffers(s, event);
   settlePendingRulerSealRewards(s, event);
+  settleBoundOpponentBattleOutcome(s, event);
   if (event.type === 'round_end') {
     cleanupLinkedRoleSkillCopiesAtRoundEnd(s);
     for (const candidate of s.players) {
@@ -6844,17 +6874,22 @@ function processEvent(s: GameState, event: AbilityEvent): void {
 /** Trusted backend event hook. Events are not part of AbilityCommand. */
 export function processAbilityEvent(s: GameState, event: AbilityEvent): void {
   if (runtime(s).processedEvents.includes(event.id)) return;
+  const eventStart = runtime(s).events.length;
   const copy = structuredClone(s); copyBattlefieldAttackOfferServerAuthority(s, copy);
-  copyBloodlustContributionServerAuthority(s, copy); processEvent(copy, event); runtime(copy).revision++;
+  copyBloodlustContributionServerAuthority(s, copy); processEvent(copy, event); settleDefinitionResourceEvent(copy, event); settleDefinitionResourceAuditEvents(copy, eventStart); runtime(copy).revision++;
   Object.assign(s, copy); copyBattlefieldAttackOfferServerAuthority(copy, s);
   copyBloodlustContributionServerAuthority(copy, s);
 }
 /** Trusted backend producer helper. Allocates event identity inside the same cloned transaction. */
 export function processAbilitySystemEvent(s: GameState, label: string, event: Omit<AbilityEvent, 'id'>): void {
+  const eventStart = runtime(s).events.length;
   const copy = structuredClone(s);
   copyBattlefieldAttackOfferServerAuthority(s, copy);
   copyBloodlustContributionServerAuthority(s, copy);
-  processEvent(copy, { ...event, id: nextId(copy, label) });
+  const systemEvent = { ...event, id: nextId(copy, label) } as AbilityEvent;
+  processEvent(copy, systemEvent);
+  settleDefinitionResourceEvent(copy, systemEvent);
+  settleDefinitionResourceAuditEvents(copy, eventStart);
   runtime(copy).revision++;
   Object.assign(s, copy);
   copyBattlefieldAttackOfferServerAuthority(copy, s);
@@ -6870,6 +6905,7 @@ export function advanceAbilityPhase(
   if (r.pendingDecision || r.responseWindows.length || r.hostRequests.length || r.pendingBattleCloseDrawPlayTransaction || r.pendingBattlefieldAttackOfferTransaction) reject('pending_resolution', 'Resolve the current decision before advancing');
   if (!Number.isInteger(round) || round < s.round.roundNumber) reject('invalid_round', 'Round cannot move backwards');
   if (!Number.isInteger(previousRound) || previousRound > round) reject('invalid_round', 'Previous round cannot exceed next round');
+  const eventStart = r.events.length;
   const copy = structuredClone(s);
   copyBattleCloseDrawPlayServerAuthority(s, copy);
   copyBattlefieldAttackOfferServerAuthority(s, copy);
@@ -6890,11 +6926,12 @@ export function advanceAbilityPhase(
     runtime(copy).pendingRulerSealRewards = runtime(copy).pendingRulerSealRewards.filter((reward) => reward.round >= round);
     runtime(copy).manaGainedThisRound = { round, byPlayer: {} };
     runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
+    cleanupDefinitionResourceBindingRoundState(copy, round);
   }
   copy.round.activePhase = next; copy.round.roundNumber = round; expireTimedResourceSuppressions(copy); cleanupOngoing(copy);
   if (startsNewRound) processEvent(copy, { id: nextId(copy, 'round-start'), type: 'round_start' });
   const type = next === 'battle' ? 'controller_combat_action_window' : next === 'action' ? 'controller_action_window' : next === 'round_end' ? 'round_end' : 'phase_changed';
-  processEvent(copy, { id: nextId(copy, 'phase'), type }); runtime(copy).revision++; Object.assign(s, copy);
+  processEvent(copy, { id: nextId(copy, 'phase'), type }); settleDefinitionResourceAuditEvents(copy, eventStart); runtime(copy).revision++; Object.assign(s, copy);
   copyBattleCloseDrawPlayServerAuthority(copy, s);
   copyBattlefieldAttackOfferServerAuthority(copy, s);
   copyBloodlustContributionServerAuthority(copy, s);
@@ -7031,6 +7068,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const selected = command.selectedIds;
       if (d.interaction) {
         const meta = d.interaction;
+        if (meta.kind === 'bound_opponent_round_rule_v1') {
+          if (!Array.isArray(selected) || !resolveBoundOpponentDecision(s, d, selected)) reject('resolution_failed', 'Corrupt or stale bound-opponent interaction state');
+          break;
+        }
         if (meta.kind === 'multi_presence_location_context_v1') {
           if (!multiPresenceLocationContextDecisionLiveValid(s,d) || !Array.isArray(selected) || selected.length!==1 || !d.candidates.includes(selected[0]!)) reject('resolution_failed','Corrupt or stale multi-presence location-context interaction state');
           const resumed=structuredClone(d.context); resumed.resolutionLocationId=selected[0]!; delete r.pendingDecision; executeAbility(s,resumed); break;
@@ -7971,10 +8012,12 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
 export function playAbilityCardBatch(s: GameState, playerId: string, choices: Omit<PlayCardAction, 'type'>[]): void {
   const r = runtime(s);
   if (r.pendingDecision || r.responseWindows.length || r.hostRequests.length) reject('pending_resolution', 'Resolve current decision first');
+  const eventStart = r.events.length;
   const copy = structuredClone(s);
   copyBattlefieldAttackOfferServerAuthority(s, copy);
   copyBloodlustContributionServerAuthority(s, copy);
   playBatch(copy, playerId, choices.map(c => ({ ...c, type: 'play_card' })));
+  settleDefinitionResourceAuditEvents(copy, eventStart);
   runtime(copy).revision++; Object.assign(s, copy);
   copyBattlefieldAttackOfferServerAuthority(copy, s);
   copyBloodlustContributionServerAuthority(copy, s);
@@ -7987,7 +8030,7 @@ export function dispatchAbilityCommand(s: GameState, playerId: string, command: 
   copyBattlefieldAttackOfferServerAuthority(s, copy);
   copyBloodlustContributionServerAuthority(s, copy);
   try {
-    dispatch(copy, playerId, command); runtime(copy).revision++; Object.assign(s, copy);
+    dispatch(copy, playerId, command); settleDefinitionResourceAuditEvents(copy, before); runtime(copy).revision++; Object.assign(s, copy);
     copyOpponentCloseToOneServerAuthority(copy, s);
     copyBattleCloseDrawPlayServerAuthority(copy, s);
     copyBattlefieldAttackOfferServerAuthority(copy, s);

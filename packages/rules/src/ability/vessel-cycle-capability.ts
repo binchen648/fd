@@ -1,5 +1,6 @@
 import type { GameState } from '../schema/game';
 import { getEnabledLocations } from '../core/map-engine';
+import { notifyManaSpent } from '../core/rule-overrides';
 import type { AuthoringAbility, EffectContext, PlayerId, RuleNode } from './types';
 import { terrainAdvantageAtLocation } from './terrain-advantage-override';
 
@@ -253,7 +254,7 @@ export function resolveVesselCycleEffect(state:GameState,ctx:EffectContext,a:Aut
   }
   if(isVesselCycleDoubleActiveEffect(e)){
     if(current(state,p.id,cycle)!==e.vessel)throw new Error('VESSEL_CYCLE_WRONG_VESSEL');const cards=state.cards.filter(c=>c.controllerPlayerId===p.id&&c.definitionId===e.targetDefinitionId&&c.zone==='attack_area'&&state.abilityRuntime!.cardState[c.instanceId]?.active===true&&state.abilityRuntime!.cardState[c.instanceId]?.faceDown!==true);if(!cards.length)throw new Error('VESSEL_CYCLE_NO_ACTIVE_TARGET');
-    const cost=cards.reduce((sum,c)=>sum+Number(state.abilityRuntime!.pack.cards[c.definitionId]?.cardFace.cost??0),0);if(!Number.isSafeInteger(cost)||p.mana<cost)throw new Error('VESSEL_CYCLE_INSUFFICIENT_MANA');p.mana-=cost;for(const c of cards)setCardMarker(state,p.id,cycle,'multiplier',c.instanceId,2,ctx.sourceCardId,a.id,c.definitionId);return true;
+    const cost=cards.reduce((sum,c)=>sum+Number(state.abilityRuntime!.pack.cards[c.definitionId]?.cardFace.cost??0),0);if(!Number.isSafeInteger(cost)||p.mana<cost)throw new Error('VESSEL_CYCLE_INSUFFICIENT_MANA');p.mana-=cost;if(cost>0)notifyManaSpent(state,p.id,cost);for(const c of cards)setCardMarker(state,p.id,cycle,'multiplier',c.instanceId,2,ctx.sourceCardId,a.id,c.definitionId);return true;
   }
   if(isVesselCyclePlayedDefinitionEffect(e)){
     if(ctx.event?.sourceCardId!==ctx.sourceCardId||ctx.event.playerId!==p.id)return true;const c=state.cards.find(x=>x.instanceId===ctx.sourceCardId);if(!c||c.definitionId!==e.targetDefinitionId)return true;const low=liveCardMarker(state,p.id,cycle,'lowMana',c.instanceId); delete flags(state,p.id)[cardMarkerKey(cycle,'lowMana',c.instanceId)];

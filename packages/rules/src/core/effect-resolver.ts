@@ -3,7 +3,7 @@ import type { EffectStackItem, TimingWindow } from "../schema/effect";
 
 import type { ResolverResult } from "./resolver-contracts";
 import { applyReplacementEffect } from "./replacement-pipeline";
-import { grantMana } from "./rule-overrides";
+import { grantMana, notifyManaAdjusted } from "./rule-overrides";
 
 export function resolveEffectsForWindow(
   state: GameState,
@@ -66,6 +66,7 @@ function applyGainManaEffect(state: GameState, item: EffectStackItem): GameState
         const player = nextState.players.find((candidate) => candidate.id === item.controllerPlayerId)!;
         const before = player.mana;
         player.mana = Math.max(0, before + amount);
+        notifyManaAdjusted(nextState, item.controllerPlayerId, before, player.mana, { requestedDelta: amount });
         return { actualAmount: player.mana - before };
       })();
 

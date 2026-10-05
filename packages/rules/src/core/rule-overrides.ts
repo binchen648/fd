@@ -4,6 +4,7 @@ import { bloodlustCanContribute, bloodlustManaGainMultiplier, commitBloodlustMan
 import { commitLinkedRoleContributions, linkedRoleCanContribute, resolveLinkedRoleContributionChoices } from '../ability/linked-role-core-capability';
 import { isManaGainSuppressed } from '../ability/timed-resource-suppression';
 import { applyStorageManaOverflowReactions, collectSameLocationManaSpendRewards } from '../ability/mana-transaction-capability';
+import { settleDefinitionResourceAuditEvents } from '../ability/definition-resource-binding-capability';
 
 export type GameStartRuleOverrideName =
   | 'first_logical_day_total_power_adjustment'
@@ -214,7 +215,10 @@ export function notifyManaSpent(state: GameState, playerId: string, amount: numb
   if (amount === 0 || !state.abilityRuntime) return;
   const player = state.players.find((candidate) => candidate.id === playerId);
   if (!player) throw new Error(`Unknown mana spender: ${playerId}`);
-  state.abilityRuntime.events.push({ type: 'mana_spent', playerId, resource: 'mana', requestedDelta: -amount, delta: -amount, after: player.mana });
+  const eventStart = state.abilityRuntime.events.length;
+  const after = player.mana; const before = after + amount;
+  state.abilityRuntime.events.push({ type: 'mana_spent', playerId, resource: 'mana', requestedDelta: -amount, delta: -amount, before, after });
+  settleDefinitionResourceAuditEvents(state, eventStart);
   notifyBloodlustManaSpent(state, playerId, amount);
   const rewards = collectSameLocationManaSpendRewards(state, playerId, amount);
   for (const reward of rewards) {
@@ -223,6 +227,32 @@ export function notifyManaSpent(state: GameState, playerId: string, amount: numb
       sourceCardId: reward.sourceCardId, abilityId: reward.abilityId, resource: 'mana', requestedDelta: reward.amount,
       delta: result.actualAmount, before: result.before, after: result.after });
   }
+}
+
+/** Records an authoritative non-payment mana mutation for resource observers. */
+export function notifyManaAdjusted(
+  state: GameState,
+  playerId: string,
+  before: number,
+  after: number,
+  provenance: { controllerId?: string; sourceCardId?: string; abilityId?: string; requestedDelta?: number } = {},
+): void {
+  if (!Number.isSafeInteger(before) || before < 0 || !Number.isSafeInteger(after) || after < 0) {
+    throw new Error('Mana adjustment bounds must be nonnegative safe integers.');
+  }
+  const player = state.players.find((candidate) => candidate.id === playerId);
+  if (!player || player.mana !== after) throw new Error(`Mana adjustment state mismatch: ${playerId}`);
+  const delta = after - before;
+  if (delta === 0 || !state.abilityRuntime) return;
+  const eventStart = state.abilityRuntime.events.length;
+  state.abilityRuntime.events.push({
+    type: 'mana_adjusted', playerId, resource: 'mana',
+    requestedDelta: provenance.requestedDelta ?? delta, delta, before, after,
+    ...(provenance.controllerId ? { controllerId: provenance.controllerId } : {}),
+    ...(provenance.sourceCardId ? { sourceCardId: provenance.sourceCardId } : {}),
+    ...(provenance.abilityId ? { abilityId: provenance.abilityId } : {}),
+  });
+  settleDefinitionResourceAuditEvents(state, eventStart);
 }
 
 export interface ManaContributionClassification { bloodlust: ManaContributionChoice[]; linkedRole: ManaContributionChoice[] }

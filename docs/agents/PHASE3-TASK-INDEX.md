@@ -8352,7 +8352,7 @@ Bazett owner-complete implementation evidence:
 ## TASK P3-B-CAREN-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: parent zero-credit owner-readiness preflight for complete current `master.caren` frozen scope
 
 Frozen owner scope:
@@ -8368,3 +8368,21 @@ Accounting boundary:
 - no Caren owner-complete acceptance report/commit or preservation-only migration credit is established by current repo evidence;
 - Caren readiness and every readiness subtask are permanently zero migration credit;
 - FORMAL must mechanically rescan all five frozen identities against existing F1 source evidence, locked Reference, and currently accepted generic runtime seams, produce one complete owner-local gap set, close/accept compatible readiness, then migrate all remaining uncredited identities in one owner-complete Candidate/PR/fresh R.
+
+Implementation evidence:
+- exact Base is Bazett acceptance synchronization `19d710705ccaee472a86e07c464ed755c33d9745`; canonical Caren authoring remains `0/5`, so this readiness Candidate has zero migration credit and `data/authoring/**` delta is EMPTY;
+- authoritative Caren F1 source evidence is exact S Candidate `d74bd590ff589b3b8dcaf35192adef6429bfaa5d`, independently accepted in source-evidence review chain ending at `9b3fc778245c90d23cc9927d7674411141750699`; locked Reference remains `b2f9fa15fba07c63530bbf4612b03b8b704755f9`;
+- one complete identity-free readiness gap set covers definition-bound skill provisioning/removal, first true-name-reveal provisioning, structured opponent VP-gain correction/mana conversion, engaged-opponent round binding with 1..5 power penalty + normal-movement block + loss-triggered source removal, and ascension unlock/opponent-winner reward;
+- privileged shapes are exact whole-ability fail-closed; malformed/widened shapes, malformed resource provenance, wrong-location/non-qualifying VP sources, face-down providers, forged bound-state restore, stale round authority, and duplicate first-trigger provisioning are covered negatively;
+- bound movement/power effects remain for their stated round even after the Shroud source is removed on target loss, matching the independently frozen semantics; authority expires at next-round cleanup;
+- predecessor Candidate `0132a76e79f2bfedbd5741d3d2400adbae3ae423` received `IMPLEMENTATION_NEEDS_REVISION`; canonical Coordinator bounded same-attempt relay after Reviewer GitHub-write 403: `https://github.com/binchen648/fd/pull/524#issuecomment-5989922121`;
+- R1 P1 closure makes the first `>1 -> <=1` mana crossing cause-independent: definition-resource settlement consumes every coherent typed `resource=mana` decrease instead of two event names, direct non-payment mutations publish through one shared notifier, and the Vessel-cycle direct cost joins the existing paid-mana observer path;
+- new regressions cover a specialized typed mana-loss transaction plus legacy direct `set_mana`; existing crossing guards and one-time removal history remain fail closed;
+- Caren focused readiness regression: `12/12 PASS`;
+- affected scoped aggregate: `199/199 PASS` across 14 task-relevant files, including authoring-interpreter, executable pack, MatchSession restore, movement, resource/runtime, master-ascension, Bazett shared seams, and card-action routes;
+- R1 supplemental affected routes: `30/30 PASS` across core effect-resolver, fixed-controller set-mana, and Akasha Vessel readiness; Reviewer-parity Shuten owner regression `8/8 PASS`;
+- roster-sensitive `resource-numeric-room-boundary` fixture was stabilized by deriving a current-roster seed that places `master.gatou` at the asserted seat; gameplay assertions are unchanged;
+- typecheck PASS; content validation PASS (`13 masters / 19 servants / 20 events / 0 blocking issues`); generated determinism PASS; Phase-3 coverage/audit commands complete; production Caren identity/text routing audit CLEAN; `git diff --check` PASS;
+- broader package sweep exposes inherited fixed-seed/raw-archive fixtures before the new Caren capability executes; historical Akasha owner-complete also retains a pack-order assertion that expects Akasha last while the accepted current pack ends in Bazett. This Candidate changes neither that assertion nor the pack authoring list and changes no `data/authoring/**`; those unrelated baseline hazards remain F5 convergence work rather than widening this zero-credit task;
+- detailed report: `docs/reports/2026-10-05-p3-b-caren-owner-readiness-complete-gap-set-result.md`;
+- permanently zero migration credit; strict accounting remains `206/944`, remaining `738` pending fresh independent readiness acceptance + FORMAL A-sync/rescan.
