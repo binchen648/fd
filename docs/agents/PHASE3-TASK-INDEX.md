@@ -8663,7 +8663,7 @@ Implementation evidence:
 ## TASK P3-B-CELENIKE-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Classification: zero-credit complete-owner readiness/preflight for `master.celenike`
 
 Frozen owner scope:
@@ -8699,4 +8699,30 @@ Implementation evidence:
 - Phase-3 coverage completed with `archives=121`, `cards=248`, `abilities=442`, `compiledCards=175`, `compiledCharacters=35`, `blockingIssues=0`, `newRuntimeSemanticRouted=22`; automation audit completed with `legacyResolveEffect=158`, `legacyExecuteAbility=3`, `notClassifiable=259`, `promotionFindings=20`; verification-only artifacts were restored from Exact Base;
 - `data/authoring/**` remains unchanged and readiness is permanently zero-credit, so strict accounting stays `220/944`, remaining `724` pending a later owner-complete migration acceptance+A-sync;
 - `git diff --check` PASS; detailed result: `docs/reports/2026-10-06-p3-b-celenike-owner-readiness-complete-gap-set-result.md`;
-- fresh independent exact Base/Candidate review is required before zero-credit FORMAL readiness A-sync/rescan may release the one owner-complete Celenike migration Candidate.
+- fresh independent exact successor review returned `IMPLEMENTATION_ACCEPTED_CANDIDATE` for `f428cd81ebbbf2b27f4a2d3d75e079a55fa9b85d`; canonical Coordinator bounded same-attempt evidence is `https://github.com/binchen648/fd/pull/531#issuecomment-6001207017`;
+- lawful FORMAL zero-credit acceptance rescan reconfirms canonical Celenike authoring remains `0/3`, all three frozen identities remain uncredited, and strict accounting stays `220/944`, remaining `724`;
+- acceptance synchronization report: `docs/reports/2026-10-06-p3-a-celenike-owner-readiness-acceptance-synchronization.md`;
+- owner-complete task `P3-S-OWNER-CELENIKE-COMPLETE-MIGRATION` is released to `READY`.
+
+## TASK P3-S-OWNER-CELENIKE-COMPLETE-MIGRATION
+
+Owner: FORMAL migration
+Status: `READY`
+Classification: owner-complete migration for the complete frozen `master.celenike` scope
+
+Frozen owner scope:
+- `master.celenike.skill.ascension`
+- `master.celenike.skill.s1`
+- `master.celenike.skill.s1a`
+
+Accounting boundary:
+- strict formal accounting before this migration is `220/944`, remaining `724`;
+- canonical authoring is exactly `0/3` at the synchronized readiness boundary;
+- all three identities are currently uncredited, so the exact maximum lawful future increment is `+3`;
+- historical FB2-03 `s1a` component membership is reusable evidence only and must not be treated as prior migration credit.
+
+Formal gate:
+- use accepted readiness successor `f428cd81ebbbf2b27f4a2d3d75e079a55fa9b85d`, canonical evidence `https://github.com/binchen648/fd/pull/531#issuecomment-6001207017`, frozen F1 evidence, and locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9`;
+- materialize ascension + s1 + s1a together in one canonical `master.celenike` archive consuming only accepted identity-free battle-wither seams; no per-skill review split;
+- before Candidate freeze run focused/affected tests, typecheck, content validation, generated determinism, identity audit, authoring delta audit, and `git diff --check`;
+- require one fresh independent exact Base/Candidate review; only `MIGRATION_ACCEPTED` permits `+3` accounting.
