@@ -123,6 +123,11 @@ import {
   resolveMultiPresenceEffect,
 } from './multi-presence-player-capability';
 import {
+  canExecuteBattleWitherEffect, containsBattleWitherPrivilegedNode, isAcceptedBattleWitherAbility,
+  isBattleWitherRuntimeProvenanceValidForRestore, isWitherPainStakePendingDecisionLiveValid,
+  reconcileBattleWitherVictoryPoints, resolveBattleWitherEffect, resolveWitherPainStakeDecision,
+} from './battle-wither-capability';
+import {
   canExecuteLinkedRoleCoreEffect, containsLinkedRoleCorePrivilegedNode, isAcceptedLinkedRoleCoreAbility,
   isLinkedRoleCoreRuntimeProvenanceValidForRestore, linkedRoleEligibleScheduleTargetIds, linkedRoleMaximumContributionAmount, resolveLinkedRoleCoreEffect,
 } from './linked-role-core-capability';
@@ -2008,6 +2013,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAcceptedLinkedRoleMemberSkillCopyAbility(a) && !canExecuteLinkedRoleMemberSkillCopy(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsMultiPresencePrivilegedNode(a) && !isAcceptedMultiPresenceAbility(a)) return false;
   if (isAcceptedMultiPresenceAbility(a) && !canExecuteMultiPresenceEffect(s, context(s, sourceId, a.id, event), a)) return false;
+  if (containsBattleWitherPrivilegedNode(a) && !isAcceptedBattleWitherAbility(a)) return false;
+  if (isAcceptedBattleWitherAbility(a) && !canExecuteBattleWitherEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsVesselCyclePrivilegedNode(a) && !isAcceptedVesselCycleAbility(a)) return false;
   if (isAcceptedVesselCycleAbility(a) && !canExecuteVesselCycleEffect(s, context(s, sourceId, a.id, event), a.effects[0]!)) return false;
   if (containsLogicalDayCountermeasurePrivilegedNode(a) && !isAcceptedLogicalDayCountermeasureAbility(a)) return false;
@@ -4012,6 +4019,7 @@ export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decisi
   if (decision.interaction?.kind === 'one_shot_ability_reuse_choice_v1') return isOneShotAbilityReuseChoicePendingDecisionLiveValid(s, decision);
   if (decision.interaction && ['global_definition_reveal_reward_v1','discard_definition_play_all_v1'].includes(decision.interaction.kind)) return isMatchingDefinitionPendingDecisionLiveValid(s, decision);
   if (decision.interaction?.kind === 'bound_opponent_round_rule_v1') return boundOpponentDecisionLiveValid(s, decision);
+  if (decision.interaction?.kind === 'wither_pain_stake_v1') return isWitherPainStakePendingDecisionLiveValid(s, decision);
   if (decision.interaction) return true;
   try {
     if (decision.controllerId !== decision.context.controllerId) return false;
@@ -4039,6 +4047,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
     if (!definitionVariantBatteryRuntimeValidForRestore(s)) return false;
     if (!isBloodlustRuntimeProvenanceValidForRestore(s, !options.deferBloodlustContributionAuthority)) return false;
     if (!isMultiPresenceRuntimeProvenanceValidForRestore(s)) return false;
+    if (!isBattleWitherRuntimeProvenanceValidForRestore(s)) return false;
     if (!isLinkedRoleCoreRuntimeProvenanceValidForRestore(s)) return false;
     if (!isLinkedRoleMemberSkillCopyRuntimeProvenanceValidForRestore(s)) return false;
     if (!isMasterAscensionEventPowerRuntimeProvenanceValidForRestore(s)) return false;
@@ -6518,6 +6527,10 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     if (!resolveMultiPresenceEffect(s, ctx, a)) reject('resolution_failed', 'Multi-presence resolution failed');
     return;
   }
+  if (containsBattleWitherPrivilegedNode(a)) {
+    if (!isAcceptedBattleWitherAbility(a) || !resolveBattleWitherEffect(s, ctx, a)) reject('resolution_failed', 'Unsupported battle-wither semantic');
+    return;
+  }
   if (containsVesselCyclePrivilegedNode(a)) {
     if (!isAcceptedVesselCycleAbility(a) || !resolveVesselCycleEffect(s, ctx, a, a.effects[0]!)) reject('resolution_failed', 'Unsupported vessel-cycle semantic');
     return;
@@ -6793,7 +6806,7 @@ function settleArmedAttributeUseDefeat(s: GameState, event: AbilityEvent): void 
 
 function processEvent(s: GameState, event: AbilityEvent): void {
   const r = runtime(s);
-  reconcileVesselCycleVictoryPoints(s); reconcileBloodlustVictoryPoints(s); if (r.processedEvents.includes(event.id)) return;
+  reconcileVesselCycleVictoryPoints(s); reconcileBloodlustVictoryPoints(s); reconcileBattleWitherVictoryPoints(s); if (r.processedEvents.includes(event.id)) return;
   if (event.type === 'after_controller_enters_location' && event.playerId && event.locationId && (event.movementKind === 'normal' || event.movementKind === 'effect')) {
     r.locationEntryRoundByPlayer ??= {}; r.locationEntryRoundByPlayer[event.playerId] ??= {}; r.locationEntryRoundByPlayer[event.playerId]![event.locationId] = s.round.roundNumber;
   }
@@ -6928,6 +6941,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
     for (const id of losers) processEvent(s, { ...event, id: `${event.id}:lose:${id}`, type: 'after_controller_loses_battle', playerId: id });
   }
   reconcileBloodlustVictoryPoints(s);
+  reconcileBattleWitherVictoryPoints(s);
   checkFormulaTriggers(s);
 }
 /** Trusted backend event hook. Events are not part of AbilityCommand. */
@@ -7144,6 +7158,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
         if (meta.kind === 'multi_presence_location_context_v1') {
           if (!multiPresenceLocationContextDecisionLiveValid(s,d) || !Array.isArray(selected) || selected.length!==1 || !d.candidates.includes(selected[0]!)) reject('resolution_failed','Corrupt or stale multi-presence location-context interaction state');
           const resumed=structuredClone(d.context); resumed.resolutionLocationId=selected[0]!; delete r.pendingDecision; executeAbility(s,resumed); break;
+        }
+        if (meta.kind === 'wither_pain_stake_v1') {
+          if (!Array.isArray(selected) || !resolveWitherPainStakeDecision(s, playerId, d, selected)) reject('resolution_failed', 'Corrupt or stale wither pain-stake interaction state');
+          break;
         }
         if (meta.kind === 'battlefield_attack_offer_choice_v1') {
           const tx = r.pendingBattlefieldAttackOfferTransaction;
@@ -7940,7 +7958,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
     }
     default: reject('illegal_action', 'Unsupported client command');
   }
-  cleanupOngoing(s); checkFormulaTriggers(s); resumeBattleCloseDrawPlayAfterNestedWork(s); resumeBattlefieldAttackOfferAfterNestedWork(s);
+  reconcileBattleWitherVictoryPoints(s); cleanupOngoing(s); checkFormulaTriggers(s); resumeBattleCloseDrawPlayAfterNestedWork(s); resumeBattlefieldAttackOfferAfterNestedWork(s);
 }
 /** All eligibility/costs are checked against the pre-payment state; all cards activate before triggers. */
 function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false, allowedSourceZones: readonly string[] = ['hand', 'skill'], minimumManaCost = 0, additionalManaCost = 0): void {

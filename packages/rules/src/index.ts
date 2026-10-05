@@ -52,6 +52,7 @@ export * from './ability/event-location-equals-controller';
 
 export * from './ability/master-ascension-unlock-capability';
 export * from './ability/multi-presence-player-capability';
+export * from './ability/battle-wither-capability';
 export * from './ability/linked-role-core-capability';
 export * from './ability/definition-declaration-deck-capability';
 export * from './ability/definition-variant-battery-capability';
