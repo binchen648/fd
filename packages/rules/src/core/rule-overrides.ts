@@ -4,6 +4,7 @@ import { bloodlustCanContribute, bloodlustManaGainMultiplier, commitBloodlustMan
 import { commitLinkedRoleContributions, linkedRoleCanContribute, resolveLinkedRoleContributionChoices } from '../ability/linked-role-core-capability';
 import { isManaGainSuppressed } from '../ability/timed-resource-suppression';
 import { applyStorageManaOverflowReactions, collectSameLocationManaSpendRewards } from '../ability/mana-transaction-capability';
+import { settleDefinitionResourceAuditEvents } from '../ability/definition-resource-binding-capability';
 
 export type GameStartRuleOverrideName =
   | 'first_logical_day_total_power_adjustment'
@@ -214,7 +215,10 @@ export function notifyManaSpent(state: GameState, playerId: string, amount: numb
   if (amount === 0 || !state.abilityRuntime) return;
   const player = state.players.find((candidate) => candidate.id === playerId);
   if (!player) throw new Error(`Unknown mana spender: ${playerId}`);
-  state.abilityRuntime.events.push({ type: 'mana_spent', playerId, resource: 'mana', requestedDelta: -amount, delta: -amount, after: player.mana });
+  const eventStart = state.abilityRuntime.events.length;
+  const after = player.mana; const before = after + amount;
+  state.abilityRuntime.events.push({ type: 'mana_spent', playerId, resource: 'mana', requestedDelta: -amount, delta: -amount, before, after });
+  settleDefinitionResourceAuditEvents(state, eventStart);
   notifyBloodlustManaSpent(state, playerId, amount);
   const rewards = collectSameLocationManaSpendRewards(state, playerId, amount);
   for (const reward of rewards) {

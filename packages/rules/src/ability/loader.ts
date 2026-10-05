@@ -102,6 +102,12 @@ import {
   RESTORE_COMMAND_SEALS_RETURN_DEFINITION_EFFECT, JOIN_SOURCE_SKILL_TO_ATTACK_ZERO_COST_EFFECT,
   containsLogicalDayCountermeasurePrivilegedNode, isAcceptedLogicalDayCountermeasureAbility,
 } from './logical-day-countermeasure-capability';
+import {
+  PROVISION_DEFINITION_SKILL_EFFECT, REMOVE_DEFINITION_SKILL_ON_FIRST_MANA_CROSSING_EFFECT,
+  REACTIVE_OPPONENT_VP_MANA_CONVERSION_EFFECT, BIND_ENGAGED_OPPONENT_ROUND_RULE_EFFECT,
+  GRANT_OPPONENT_BATTLE_WINNERS_VP_EFFECT, containsDefinitionResourceBindingPrivilegedNode,
+  isAcceptedDefinitionResourceBindingAbility,
+} from './definition-resource-binding-capability';
 import { COMBAT_REWARD_DISTRIBUTION_RULE, isAcceptedFullRewardEachAbility } from './combat-reward-distribution';
 import {
   LOCATION_MARKER_FOLLOW_EFFECT, LOCATION_MARKER_COMBAT_BRANCH_EFFECT, LOCATION_MARKER_PLACE_EFFECT, LOCATION_MARKER_MIDPOINT_DEFEAT_EFFECT,
@@ -296,6 +302,9 @@ const supportedTypes = new Set([
   LOGICAL_DAY_CYCLE_RESOLVE_RESET_EFFECT, LOGICAL_DAY_CYCLE_AWAKEN_EFFECT, LOGICAL_DAY_DEFINITION_PLAY_OVERRIDE_EFFECT,
   SOURCE_BOUND_DEFINITION_PERSISTENCE_OVERRIDE_EFFECT, ARM_NEXT_OPPONENT_ATTRIBUTE_USE_DEFEAT_EFFECT,
   RESTORE_COMMAND_SEALS_RETURN_DEFINITION_EFFECT, JOIN_SOURCE_SKILL_TO_ATTACK_ZERO_COST_EFFECT,
+  PROVISION_DEFINITION_SKILL_EFFECT, REMOVE_DEFINITION_SKILL_ON_FIRST_MANA_CROSSING_EFFECT,
+  REACTIVE_OPPONENT_VP_MANA_CONVERSION_EFFECT, BIND_ENGAGED_OPPONENT_ROUND_RULE_EFFECT,
+  GRANT_OPPONENT_BATTLE_WINNERS_VP_EFFECT,
   BLOODLUST_INITIALIZE_EFFECT, BLOODLUST_CAGING_CONTRIBUTION_EFFECT, BLOODLUST_SPEND_TRACKER_EFFECT, BLOODLUST_COMBAT_DECAY_EFFECT,
   BLOODLUST_THRESHOLD_EFFECT, BLOODLUST_ACTION_EFFECT, BLOODLUST_TRANSFORM_EFFECT, BLOODLUST_ASCENSION_EFFECT,
   MASTER_ASCENSION_UNLOCK_EFFECT,
@@ -313,6 +322,7 @@ const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_actio
   'after_logical_day_cycle_awakened',
   'before_situation_or_event_resolves', 'when_movement_options_requested', 'after_card_batch_played',
   'after_master_ascension_unlocked', 'event_activated',
+  'servant_package_revealed', 'mana_adjusted', 'victory_points_adjusted',
 ]);
 const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject', 'owner', 'player', 'target', 'amount', 'count',
   'resultZone', 'visibility', 'to', 'from', 'optional', 'excluding', 'branches', 'if', 'then', 'else', 'cardId', 'zone',
@@ -364,6 +374,8 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'vpGainNumerator', 'vpGainDenominator', 'vpRounding', 'transformedCostAdd', 'transformedPowerAdd', 'contributorPowerPenalty',
   'initialDay', 'maxDay', 'stageDefinitionId', 'stageDay', 'awakenDefinitionId', 'day', 'rewardVp', 'closeDefinitionId',
   'requirementValue', 'ignorePerGamePlayLimit', 'grantResidual', 'requireSameLocation', 'commandSeals', 'expected',
+  'createIfMissing', 'firstCrossing', 'qualifyingSourceCardTypes', 'controllerManaLossPerPreventedVp', 'controllerVpPerActualManaLost',
+  'minimumPowerPenalty', 'maximumPowerPenalty', 'blockOwnTurnMovement', 'removeSourceIfTargetLosesThisRound',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -766,6 +778,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsLogicalDayCountermeasurePrivilegedNode(candidateAbility) && !isAcceptedLogicalDayCountermeasureAbility(candidateAbility)) {
         issue('logicalDayCountermeasure.gateway', 'Logical-day/countermeasure privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsDefinitionResourceBindingPrivilegedNode(candidateAbility) && !isAcceptedDefinitionResourceBindingAbility(candidateAbility)) {
+        issue('definitionResourceBinding.gateway', 'Definition/resource/bound-opponent privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       if (containsMasterAscensionUnlockPrivilegedNode(candidateAbility) && !isAcceptedMasterAscensionUnlockAbility(candidateAbility)) {
         issue('masterAscensionUnlock.gateway', 'Master-ascension unlock privileged mechanic requires an accepted exact whole-ability semantic', id);

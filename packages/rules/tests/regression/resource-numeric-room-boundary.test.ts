@@ -1,15 +1,29 @@
 import { describe, expect, it } from 'vitest';
 
+import contentLibrary from '../../../../data/generated/fd-playtest-v1.content-library.json';
 import { createMatchRoomHub } from '../../src/match-room-hub';
+import { buildSevenPlayerCharacterPairings } from '../../src/match-session';
 
 const roomId = 'resource-numeric-room-boundary';
 const hostClientId = 'host-resource-numeric';
 const commandSpellCardId = 'p5-master.gatou.command-spell';
 const gainManaAbilityId = 'command-spell.gain-mana';
 
+function seedWithGatouAtSeatFive() {
+  const characters = Object.values(contentLibrary.rules.characters);
+  const masters = characters.filter((character) => character.kind === 'master');
+  const servants = characters.filter((character) => character.kind === 'servant');
+  for (let seed = 1; seed <= 65_536; seed += 1) {
+    if (buildSevenPlayerCharacterPairings(masters, servants, seed).some((pairing) => pairing.playerId === 'p5' && pairing.master.id === 'master.gatou')) return seed;
+  }
+  throw new Error('Unable to build deterministic fixture with master.gatou at seat five');
+}
+
+const GATOU_SEAT_FIVE_SEED = seedWithGatouAtSeatFive();
+
 function setupHub() {
   const hub = createMatchRoomHub();
-  hub.createRoom({ roomId, seed: 20260905, hostClientId, hostName: 'Host' });
+  hub.createRoom({ roomId, seed: GATOU_SEAT_FIVE_SEED, hostClientId, hostName: 'Host' });
   hub.selectSeat(roomId, hostClientId, 5);
   hub.startMatch(roomId, hostClientId);
 

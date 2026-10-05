@@ -675,6 +675,16 @@ function isRestorePendingInteraction(value: unknown): boolean {
         typeof value.controllerId === 'string' && typeof value.presenceKey === 'string' && value.presenceKey.length > 0 &&
         isRestoreStringArray(value.candidateLocationIds) && value.candidateLocationIds.length > 1 && new Set(value.candidateLocationIds).size === value.candidateLocationIds.length &&
         isRestoreInteractionConstraints(value.constraints,['location']) && (value.constraints as Record<string,unknown>).min===1 && (value.constraints as Record<string,unknown>).max===1;
+    case 'bound_opponent_round_rule_v1':
+      return hasExactRestoreKeys(value, [
+        'kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'controllerId','round','opponentIds','options','constraints',
+      ]) && typeof value.controllerId === 'string' && isRestoreSafeInteger(value.round, 1) &&
+        isRestoreStringArray(value.opponentIds) && value.opponentIds.length >= 1 && new Set(value.opponentIds).size === value.opponentIds.length &&
+        isRestoreStringArray(value.options) && value.options.length === value.opponentIds.length * 5 && new Set(value.options).size === value.options.length &&
+        value.opponentIds.every((playerId) => [1,2,3,4,5].every((penalty) => (value.options as string[]).includes(`${playerId}::penalty:${penalty}`))) &&
+        isRestoreInteractionConstraints(value.constraints, ['choice']) && (value.constraints as Record<string, unknown>).min === 1 &&
+        (value.constraints as Record<string, unknown>).max === 1;
     case 'automatic_recycle_keep_v1':
       return hasExactRestoreKeys(value, [
         'kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
