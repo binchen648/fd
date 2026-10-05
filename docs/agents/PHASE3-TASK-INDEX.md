@@ -8317,7 +8317,7 @@ Implementation evidence:
 ## TASK P3-S-OWNER-BAZETT-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `ACCEPTED`
 Classification: formal owner-complete migration for current owner `master.bazett`
 
 Frozen owner scope: all ten Bazett identities listed by the accepted parent readiness task.
@@ -8328,10 +8328,43 @@ Bazett owner-complete implementation evidence:
 - exact Base `84e2fab939de6ce1b1cc307488b749b80ce8cc92`: canonical authoring `1/10`, only historical credited `s1b`; worktree `10/10`, newly materialized exactly 9, `s1bPreserved=true`;
 - original Candidate `9a457a38aa9118cecee410f6b4c133a1d10fac5c` historically received `MIGRATION_ACCEPTED` with bounded relay `https://github.com/binchen648/fd/pull/523#issuecomment-5982980953`, but before promotion FORMAL independently reproduced HELPER Epoch 47's Day-3 play-provenance contradiction; that Candidate is not re-reviewed and its premature A-sync was superseded before credit;
 - successor preserves existing/genuine `playedRound` on Day-3 restage/join and initializes absent non-play provenance as `max(0,currentRound-1)`; restage clears stale `paidManaOnPlay`; no Bazett identity branch added;
-- formal consumer regression `10/10 PASS`; accepted readiness `15/15 PASS`; accepted generic source-skill join `5/5 PASS`; Sigurd `played_this_round` consumer `7/7 PASS`; affected shared aggregate `189/189 PASS`;
+- formal consumer regression `10/10 PASS`; accepted readiness `15/15 PASS`; accepted generic source-skill join `5/5 PASS`; Sigurd `played_this_round` consumer `7/7 PASS`; Kayneth source-response `6/6 PASS`; affected shared aggregate `195/195 PASS`;
 - real Bazett authoring cross-consumer regression proves `master.bazett.skill.s5` after Day-3 stage/join is excluded from generic `played_this_round`, while a current-round control remains eligible; bug-control proves forged-current provenance would expose Day3 to the consumer;
 - content pack remains `13` masters and includes Bazett exactly once; generated content remains deterministic;
 - roster-growth-only MatchSession fixture stabilization preserves original Irisviel/Kiritsugu/one-round behavior assertions;
 - FD_TOOLCHAIN_OK; typecheck/content/generated/coverage/audit/identity/diff gates PASS; production Bazett identity routing CLEAN;
 - report: `docs/reports/2026-10-05-p3-s-owner-bazett-complete-migration-result.md`;
 - strict accounting remains `197/944`, remaining `747` until the successor receives fresh-R `MIGRATION_ACCEPTED` + lawful A-sync; then newly creditable is exactly 9 -> `206/944`, remaining `738`.
+
+### Bazett formal acceptance synchronization
+
+- Accepted exact Candidate: `e0240d85eaf07840bac7823ee1ff92c4374de3a9`.
+- Fresh independent verdict: `MIGRATION_ACCEPTED`.
+- Canonical Coordinator bounded relay: `https://github.com/binchen648/fd/pull/523#issuecomment-5988955647`.
+- Exact Base: `84e2fab939de6ce1b1cc307488b749b80ce8cc92`; Base canonical authoring contains only historical credited `master.bazett.skill.s1b` (`1/10`).
+- Accepted Candidate contains all ten frozen Bazett identities exactly once (`10/10`); exact `s1b` authoring object is preserved.
+- Newly creditable: `9`; preservation-only: `1` (`master.bazett.skill.s1b`).
+- Strict formal accounting advances `197/944 -> 206/944`; remaining `747 -> 738`.
+- The predecessor `9a457a38aa9118cecee410f6b4c133a1d10fac5c` historical acceptance and the `89e6bfd649e7c4d04990d96b31ac4c2496dd4cb1` revision verdict award no separate credit; only this exact accepted successor is synchronized.
+- Next mechanical owner is `master.caren`, frozen scope `5` identities; current canonical Caren authoring is absent and no preservation-only owner credit is established by current repo evidence.
+- Acceptance synchronization report: `docs/reports/2026-10-05-p3-a-owner-bazett-acceptance-synchronization.md`.
+
+## TASK P3-B-CAREN-OWNER-READINESS-CAPABILITY
+
+Owner: FORMAL readiness
+Status: `READY`
+Classification: parent zero-credit owner-readiness preflight for complete current `master.caren` frozen scope
+
+Frozen owner scope:
+- `master.caren.skill.ascension`
+- `master.caren.skill.s1`
+- `master.caren.skill.s1a`
+- `master.caren.skill.s2`
+- `master.caren.skill.s3`
+
+Accounting boundary:
+- strict formal accounting after accepted Bazett A-sync is `206/944`, remaining `738`;
+- current canonical `data/authoring/masters/master.caren.json` is absent;
+- no Caren owner-complete acceptance report/commit or preservation-only migration credit is established by current repo evidence;
+- Caren readiness and every readiness subtask are permanently zero migration credit;
+- FORMAL must mechanically rescan all five frozen identities against existing F1 source evidence, locked Reference, and currently accepted generic runtime seams, produce one complete owner-local gap set, close/accept compatible readiness, then migrate all remaining uncredited identities in one owner-complete Candidate/PR/fresh R.
