@@ -8486,13 +8486,13 @@ Implementation evidence:
 - HELPER Epoch 56 was read only as PRE-R guidance and was not used as credit authority.
 - Rescan mechanically confirms one additional privacy gap: `stage_attack_card` can store raw `declaredAttribute` in `modeState.stagedAttacks`, while `projectAbilityState(...)` can clone another player's staged entries verbatim once that player has a qualifying public `attack_area` card. A secret ascension declaration can therefore leak before authoritative combat reveal through `AbilityPlayerView.stagedAttacks` even though shared MatchSession telemetry is now redacted.
 - Readiness remains permanently zero-credit; strict accounting stays `211/944`, remaining `733`.
-- `P3-S-OWNER-CAULES-YGGDMILLENNIA-COMPLETE-MIGRATION` is `WAIT_READINESS_FOLLOWUP` until the staged-declaration privacy follow-up is fresh-R accepted plus another FORMAL A-sync/rescan.
+- The staged-declaration privacy follow-up is now fresh-R accepted and second A-synced; `P3-S-OWNER-CAULES-YGGDMILLENNIA-COMPLETE-MIGRATION` is released for formal owner-complete materialization.
 - Detailed A-sync report: `docs/reports/2026-10-05-p3-a-caules-yggdmillennia-owner-readiness-acceptance-synchronization.md`.
 
 ## TASK P3-S-OWNER-CAULES-YGGDMILLENNIA-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: formal owner-complete migration for the complete current `master.caules-yggdmillennia` frozen scope
 
 Frozen owner scope:
@@ -8509,8 +8509,24 @@ Accounting boundary:
 - expected maximum owner-complete increment is `+5` only if formal acceptance rescan confirms all five remain newly creditable.
 
 Formal dependency:
-- do not create the formal consumer Candidate while staged-declaration privacy readiness remains unresolved;
-- after all readiness is accepted+A-synced, materialize all five frozen identities together in one canonical owner archive, consume only accepted identity-free runtime seams, and use one formal Candidate / one PR / one fresh R / one A-sync-accounting.
+- SATISFIED: parent readiness PR #526 and staged-declaration privacy follow-up PR #527 are independently accepted and both required zero-credit A-sync/rescans are complete;
+- materialize all five frozen identities together in one canonical owner archive, consume only accepted identity-free runtime seams, and use one formal Candidate / one PR / one fresh R / one A-sync-accounting.
+
+Implementation evidence:
+- Exact Base: `c9627d0c2575b91e48472d118db36b0c7f3bfb34` (second zero-credit readiness acceptance-sync/rescan);
+- canonical authoring materializes exactly `5/5` frozen identities in `data/authoring/masters/master.caules-yggdmillennia.json` and appends that archive exactly once after Caren in the playtest master sequence;
+- static source metadata preserves initial mana `4`, Thunder cost/requirement/Power `5/5/6`, frozen names/printed text, outside-game placement for `s2`, `s3`, and ascension, and the exact 12-card ascension rebuild definition;
+- runtime behavior consumes only the independently accepted identity-free declaration/deck/projection seams; production runtime identity audit is CLEAN;
+- formal owner regression: `10/10 PASS`;
+- task-relevant affected aggregate: `204/204 PASS` across 14 files, including parent/follow-up readiness, MatchSession, Caren predecessor order, executable authoring, ascension, deployment, resource, and Suzuka shared seams;
+- canonical master-pool growth exposed four deterministic fixture assumptions (three MatchSession seeds and Caren's tail-of-list assertion); fixtures were bounded to equivalent stable scenarios/adjoining-order assertions without runtime semantic changes;
+- toolchain PASS; typecheck PASS; content validation PASS (`15 masters / 19 servants / 20 events / 0 blocking issues`); generated determinism PASS;
+- generated hashes: content library `c69f9df2ae06627e4e2daddf3b5f0078dde9e7294b88d3973c35961fbfd0e6a0`, fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`, evidence report `9bcf081cc00a45806d55a379cfc6af68618d9258e92df9f8d96351955adda50e`;
+- Phase-3 coverage PASS: `archives=121`, `cards=244`, `abilities=436`, `compiledCards=169`, `compiledCharacters=34`, `blockingIssues=0`, `newRuntimeSemanticRouted=22`;
+- automation audit completed: `legacyResolveEffect=158`, `legacyExecuteAbility=3`, `notClassifiable=253`, `promotionFindings=20`; verification-only audit/coverage artifacts restored byte-for-byte from Base and are not Candidate changes;
+- `git diff --check` PASS;
+- detailed result: `docs/reports/2026-10-06-p3-s-owner-caules-yggdmillennia-complete-migration-result.md`;
+- migration credit remains `0` at Candidate publication; strict accounting stays `211/944`, remaining `733` until exact formal `MIGRATION_ACCEPTED` plus FORMAL A-sync/accounting.
 
 ## TASK P3-B-CAULES-YGGDMILLENNIA-OWNER-READINESS-STAGED-DECLARATION-PRIVACY
 
