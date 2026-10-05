@@ -106,6 +106,22 @@ Repository gates:
 - production Bazett identity audit CLEAN;
 - `git diff --check` PASS.
 
+## Fresh Reviewer P1 revision closure
+
+Fresh review of exact Candidate `89e6bfd649e7c4d04990d96b31ac4c2496dd4cb1` returned `MIGRATION_NEEDS_REVISION`. The complete same-attempt evidence was recovered from the durable locked Reviewer mailbox snapshot and relayed without re-review at https://github.com/binchen648/fd/pull/523#issuecomment-5988815630.
+
+The sole blocking finding was an affected shared test fixture missed by the 13-master roster update: `packages/rules/tests/regression/card-action-play-source-response.test.ts` still fixed seed `20260909`, which no longer paired `master.kayneth`; Candidate therefore failed 5/6 tests there although Exact Base was 6/6 PASS.
+
+The successor revision changes only that test fixture. It now derives one deterministic current-roster seed containing `master.kayneth` with `buildSevenPlayerCharacterPairings`, then reuses that seed for all Volumen MatchSession cases. No production runtime/content behavior changed.
+
+Revision verification:
+- exact previously failing fixture: `6/6 PASS`;
+- prior affected aggregate plus the missed fixture: `195/195 PASS` across 11 files;
+- typecheck PASS;
+- content validation PASS: `13 masters / 19 servants / 20 events / 0 blocking issues`;
+- generated determinism PASS with unchanged hashes;
+- `git diff --check` PASS.
+
 ## Review gate
 
 No migration credit is awarded before fresh independent review. Candidate must remain frozen after handoff. Terminal formal verdict is expected to be `MIGRATION_ACCEPTED`, `MIGRATION_NEEDS_REVISION`, or `MIGRATION_BLOCKED` according to the current owner-complete review contract.
