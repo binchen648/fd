@@ -8616,7 +8616,7 @@ Implementation evidence:
 ## TASK P3-S-OWNER-CAULES-COMPLETE-MIGRATION
 
 Owner: FORMAL migration
-Status: `MIGRATION_COMPLETE_CANDIDATE`
+Status: `ACCEPTED`
 Classification: owner-complete migration for the complete remaining `master.caules` frozen scope
 
 Frozen owner scope:
@@ -8645,10 +8645,41 @@ Implementation evidence:
 - the archive is integrated exactly once immediately after `master.caules-yggdmillennia` in `fd-playtest-v1` and checked-in generated content/evidence artifacts are regenerated;
 - owner-complete regression `9/9 PASS`; accepted readiness regression `10/10 PASS`; FM08 preservation regression `5/5 PASS`;
 - task-relevant affected aggregate `220/220 PASS` across 16 files with `--maxWorkers=1` to avoid unrelated MatchSession timeout variance under local parallel CPU contention;
-- 16-master pool expansion shifted two generic MatchSession deterministic smoke fixtures; bounded test-only seeds converge from `3 -> 4` for the one-round smoke and `3 -> 5` for the three-round event smoke, preserving the original assertions with no production runtime change;`r`n- owner consumer regression explicitly proves Special preserves the `basic.luck` exception and Typeless preserves the `command_spell` exception through the canonical activation-lock path;
+- 16-master pool expansion shifted two generic MatchSession deterministic smoke fixtures; bounded test-only seeds converge from `3 -> 4` for the one-round smoke and `3 -> 5` for the three-round event smoke, preserving the original assertions with no production runtime change;
+- owner consumer regression explicitly proves Special preserves the `basic.luck` exception and Typeless preserves the `command_spell` exception through the canonical activation-lock path;
 - `FD_TOOLCHAIN_OK`; typecheck PASS; content validation PASS (`16 masters / 19 servants / 20 events / 0 blocking issues`);
 - generated determinism PASS with content-library hash `3a41527740651f400a18619d5b1f8993858c32a704be47fe77ae22f11f38c82f`, fixture hash `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`, evidence-report hash `7fb41d5b2e24e0482b818d2cfc52ef544e4638920d48687300a353fba5c7b0e5`;
 - Phase-3 coverage run completed with `archives=121`, `cards=248`, `abilities=442`, `compiledCards=175`, `compiledCharacters=35`, `blockingIssues=0`, `newRuntimeSemanticRouted=22`; automation audit completed with `legacyResolveEffect=158`, `legacyExecuteAbility=3`, `notClassifiable=259`, `promotionFindings=20`; verification-only coverage/audit artifacts were restored from Exact Base and are not Candidate changes;
 - production runtime delta identity/text audit for `master.caules`, owner/skill names, and legacy handler id is CLEAN; `git diff --check` PASS;
 - detailed result: `docs/reports/2026-10-06-p3-s-owner-caules-complete-migration-result.md`;
-- review publication itself grants no credit: strict accounting remains `216/944`, remaining `728` until fresh independent exact `MIGRATION_ACCEPTED` plus lawful FORMAL A-sync/accounting.
+- exact fresh independent review returned `MIGRATION_ACCEPTED` for Candidate `0d6a5e9426a2ee437b981f85fcba811bc37dd360` on PR #530;
+- canonical GitHub evidence: `https://github.com/binchen648/fd/pull/530#issuecomment-6000020804`;
+- predecessor ReviewJob for `537f628aed3c2cb2736222c088ef25751da94aec` was `MIGRATION_BLOCKED` only because PR HEAD advanced to the accepted successor; it introduced no code finding and is retained as transport/lineage evidence at `https://github.com/binchen648/fd/pull/530#issuecomment-5999987403`;
+- acceptance rescan reconfirms Base authoring exactly `1/5` (`s1a` only) and accepted Candidate authoring exactly `5/5`; parsed `s1a` is unchanged, so exactly four identities are newly creditable: ascension + s1 + s2 + s3;
+- lawful FORMAL A-sync/accounting advances strict accounting `216/944 -> 220/944`; remaining `728 -> 724`;
+- acceptance synchronization report: `docs/reports/2026-10-06-p3-a-owner-caules-acceptance-synchronization.md`;
+- next mechanical owner is `master.celenike`, frozen scope exactly `3`; canonical authoring is currently `0/3`. Historical FB2-03 membership of `master.celenike.skill.s1a` is reusable component evidence only and grants no parent-route or migration credit.
+
+## TASK P3-B-CELENIKE-OWNER-READINESS-CAPABILITY
+
+Owner: FORMAL readiness
+Status: `READY`
+Classification: zero-credit complete-owner readiness/preflight for `master.celenike`
+
+Frozen owner scope:
+- `master.celenike.skill.ascension`
+- `master.celenike.skill.s1`
+- `master.celenike.skill.s1a`
+
+Accounting boundary:
+- strict formal accounting after accepted Caules A-sync is `220/944`, remaining `724`;
+- stable first-occurrence owner order in `data/phase3/full-roster-ability-inventory.json` places `master.celenike` immediately after `master.caules`;
+- canonical `data/authoring/masters/master.celenike.json` is absent, so current canonical owner coverage is `0/3`;
+- no prior formal migration credit for these three identities is established by current task/accounting evidence;
+- `master.celenike.skill.s1a` appears in the accepted FB2-03 fixed Resource Numeric component membership, but that handoff explicitly does not authorize its parent trigger/action/condition route and must not be counted as migration credit.
+
+Formal gate:
+- inventory route is currently `SOURCE_EVIDENCE_REQUIRED / EXPLICIT_BLOCK` for all three frozen identities; use F1 frozen evidence, current repo contracts, and locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9` as inputs rather than restarting whole-roster classification;
+- scan the complete three-identity owner once and close the complete owner-local source/readiness gap set before any consumer migration Candidate;
+- preserve identity-free runtime authority; bundle compatible readiness seams instead of per-skill review splits;
+- readiness/capability work is permanently zero-credit; only a later owner-complete migration fresh R plus FORMAL A-sync/accounting may grant credit.
