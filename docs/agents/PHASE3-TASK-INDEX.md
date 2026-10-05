@@ -8707,7 +8707,7 @@ Implementation evidence:
 ## TASK P3-S-OWNER-CELENIKE-COMPLETE-MIGRATION
 
 Owner: FORMAL migration
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: owner-complete migration for the complete frozen `master.celenike` scope
 
 Frozen owner scope:
@@ -8726,3 +8726,17 @@ Formal gate:
 - materialize ascension + s1 + s1a together in one canonical `master.celenike` archive consuming only accepted identity-free battle-wither seams; no per-skill review split;
 - before Candidate freeze run focused/affected tests, typecheck, content validation, generated determinism, identity audit, authoring delta audit, and `git diff --check`;
 - require one fresh independent exact Base/Candidate review; only `MIGRATION_ACCEPTED` permits `+3` accounting.
+
+Implementation evidence:
+- Exact Base: `6e4041bc3aaade024edbc2e347127d5769d195cd` (accepted zero-credit Celenike readiness A-sync; strict accounting `220/944`, remaining `724`);
+- canonical `data/authoring/masters/master.celenike.json` expands mechanically from Base `0/3` to Candidate `3/3`, materializing exactly ascension + s1 + s1a with no preservation-only member;
+- locked Reference static metadata is preserved: initial mana `4`; s1/s1a passive cost/base Power `0`; ascension `魔术`, cost `6`, requirement `6`, base Power `9`, outside-game initial placement;
+- all three cards consume only the accepted PR #531 exact-status battle-wither readiness family: s1 applies source-scoped Wither on controller loss and steals actual up-to-2 VP from matching-status battle participants on controller win; ascension Pain Stake resolves sequential target-owned mandatory pay-2-mana/discard-all choices; s1a applies Magic-Workshop battle-end `+2 mana / -1 VP`;
+- archive is integrated exactly once immediately after `master.caules` in `fd-playtest-v1`; generated content library/evidence artifacts are rebuilt for the 17-master pack;
+- owner-complete regression `7/7 PASS`; accepted readiness regression `8/8 PASS`; task-relevant affected aggregate `193/193 PASS` across 19 files with `--maxWorkers=1`;
+- expanding the canonical master pool to 17 shifted one deterministic MatchSession Luck fixture; bounded test-only seed changes `1 -> 2` preserve the original battle assertions with no production runtime semantic change;
+- `npm run typecheck` PASS; content validation PASS (`17 masters / 19 servants / 20 events / 0 blocking issues`); generated determinism PASS with content-library hash `071a195543ddf1b5ebddfc0fe6e48e8d29e7cf41d8873ea20284ab8839c14c2b`, fixture hash `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`, evidence-report hash `607542ffb2e1b165665c7df9a5c2be2e82312854e0a91cd2260ae8c7ccd2c219`;
+- Phase-3 coverage run completed with `archives=122`, `cards=251`, `abilities=446`, `compiledCards=179`, `compiledCharacters=36`, `blockingIssues=0`, `newRuntimeSemanticRouted=22`; automation audit completed with `legacyResolveEffect=158`, `legacyExecuteAbility=3`, `notClassifiable=263`, `promotionFindings=20`; verification-only coverage/audit artifacts were restored byte-for-byte from Exact Base;
+- production runtime identity/text/legacy-handler audit for Celenike is CLEAN; authoring delta is exactly one canonical owner archive containing the three frozen identities; `git diff --check` PASS;
+- detailed result: `docs/reports/2026-10-06-p3-s-owner-celenike-complete-migration-result.md`;
+- fresh independent exact Base/Candidate migration review is required before any `+3` accounting.
