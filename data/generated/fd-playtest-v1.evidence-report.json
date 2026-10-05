@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 13,
+    "masters": 14,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -802,6 +802,83 @@
       "htmPath": "chm-extract/巴泽特·弗拉加·马克雷米兹.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/巴泽特·弗拉加·马克雷米兹.png",
       "imageIndex": 9,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caren",
+      "displayName": "卡莲·奥尔黛西亚",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卡莲·奥尔黛西亚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卡莲·奥尔黛西亚.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caren.overview",
+      "displayName": "卡莲·奥尔黛西亚",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/卡莲·奥尔黛西亚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卡莲·奥尔黛西亚.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caren.skill.ascension",
+      "displayName": "瓦伦丁的圣骸布",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卡莲·奥尔黛西亚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卡莲·奥尔黛西亚.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caren.skill.s1",
+      "displayName": "灵媒",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卡莲·奥尔黛西亚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卡莲·奥尔黛西亚.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caren.skill.s1a",
+      "displayName": "执行者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卡莲·奥尔黛西亚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卡莲·奥尔黛西亚.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caren.skill.s2",
+      "displayName": "被虐灵媒体质",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卡莲·奥尔黛西亚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卡莲·奥尔黛西亚.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.caren.skill.s3",
+      "displayName": "抹大拉的圣骸布",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卡莲·奥尔黛西亚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卡莲·奥尔黛西亚.png",
+      "imageIndex": 4,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

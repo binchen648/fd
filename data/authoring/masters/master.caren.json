@@ -1,0 +1,297 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.caren",
+  "name": "卡莲·奥尔黛西亚",
+  "class": "Master",
+  "publicInformation": {
+    "type": "master_package",
+    "initialMana": 4
+  },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "c64d3f1d389efd40a16005e9d02cd22780a5d79c",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen Caren source evidence is authoritative. Accepted PR #524 complete identity-free definition/resource/bound-opponent readiness provides runtime authority; locked Reference supplies corroboration/static metadata only."
+  },
+  "cards": [
+    {
+      "id": "master.caren.skill.s1",
+      "aliases": ["s1"],
+      "legacyId": "s1",
+      "name": "灵媒",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.caren" },
+      "printedText": "游戏开始时，你拥有【被虐灵媒体质】。当你的魔力第一次减至1或更低时，失去【被虐灵媒体质】。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "caren.s1.provision",
+          "kind": "forced_trigger",
+          "printedClause": "游戏开始时，你拥有【被虐灵媒体质】。",
+          "activation": { "trigger": "game_start" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "provision_definition_skill",
+              "definitionId": "master.caren.skill.s2",
+              "destination": "skill",
+              "createIfMissing": true
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "caren.s1.first-mana-crossing",
+          "kind": "forced_trigger",
+          "printedClause": "当你的魔力第一次减至1或更低时，失去【被虐灵媒体质】。",
+          "activation": { "trigger": "mana_adjusted" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "remove_definition_skill_on_first_mana_crossing",
+              "definitionId": "master.caren.skill.s2",
+              "threshold": 1,
+              "firstCrossing": true,
+              "destination": "removed_from_game"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.caren.skill.s1a",
+      "aliases": ["s1a"],
+      "legacyId": "s1a",
+      "name": "执行者",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.caren" },
+      "printedText": "当你第一次真名解放时，获得【抹大拉的圣骸布】。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "caren.s1a.provision-shroud",
+          "kind": "forced_trigger",
+          "printedClause": "当你第一次真名解放时，获得【抹大拉的圣骸布】。",
+          "activation": { "trigger": "servant_package_revealed" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "provision_definition_skill",
+              "definitionId": "master.caren.skill.s3",
+              "destination": "skill",
+              "createIfMissing": true
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.caren.skill.s2",
+      "aliases": ["s2"],
+      "legacyId": "s2",
+      "name": "被虐灵媒体质",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.caren" },
+      "initialPlacement": "outside_game",
+      "printedText": "当一名与你位于同一地点的对手因从者能力、令咒或升华技获得战果时，令其获得的战果减半（向下取整），然后你失去被减少的战果数的魔力。你每因此失去1点魔力，获得1点战果。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "caren.s2.vp-conversion",
+          "kind": "forced_trigger",
+          "printedClause": "当一名与你位于同一地点的对手因从者能力、令咒或升华技获得战果时，令其获得的战果减半（向下取整），然后你失去被减少的战果数的魔力。你每因此失去1点魔力，获得1点战果。",
+          "activation": { "trigger": "victory_points_adjusted" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "reactive_opponent_vp_mana_conversion",
+              "requireSameLocation": true,
+              "qualifyingSourceCardTypes": ["servant_skill", "command_spell", "master_ascension"],
+              "vpRounding": "floor_half_gain",
+              "controllerManaLossPerPreventedVp": 1,
+              "controllerVpPerActualManaLost": 1
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.caren.skill.s3",
+      "aliases": ["s3"],
+      "legacyId": "s3",
+      "name": "抹大拉的圣骸布",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.caren" },
+      "initialPlacement": "outside_game",
+      "printedText": "行动阶段：选择一名与你交战的对手，他无法于自己的回合内移动且合计威力-1至-5（由你选择）。若其本回合战败，将此牌移除游戏。",
+      "cardFace": {
+        "typeLabel": "行动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "caren.s3.bind-opponent",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：选择一名与你交战的对手，他无法于自己的回合内移动且合计威力-1至-5（由你选择）。若其本回合战败，将此牌移除游戏。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "bind_engaged_opponent_round_rule",
+              "minimumPowerPenalty": 1,
+              "maximumPowerPenalty": 5,
+              "blockOwnTurnMovement": true,
+              "removeSourceIfTargetLosesThisRound": true
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.caren.skill.ascension",
+      "aliases": ["ascension"],
+      "legacyId": "ascension",
+      "name": "瓦伦丁的圣骸布",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.caren" },
+      "initialPlacement": "outside_game",
+      "printedText": "（将此牌加入你的技能区）\n被动：当此牌加入你的技能区时，获得【抹大拉的圣骸布】。\n爱之印-当任意一名对手获得胜利时，其获得3点战果。",
+      "cardFace": {
+        "typeLabel": "迅捷/宝具",
+        "attributes": ["迅捷", "宝具"],
+        "cost": 1,
+        "basePower": 7
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [
+        { "type": "skill_zone_mana_at_least", "value": 8 }
+      ],
+      "abilities": [
+        {
+          "id": "caren.ascension.provision-shroud",
+          "kind": "forced_trigger",
+          "printedClause": "被动：当此牌加入你的技能区时，获得【抹大拉的圣骸布】。",
+          "activation": { "trigger": "after_master_ascension_unlocked" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "provision_definition_skill",
+              "definitionId": "master.caren.skill.s3",
+              "destination": "skill",
+              "createIfMissing": true
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "caren.ascension.love-mark",
+          "kind": "forced_trigger",
+          "printedClause": "爱之印-当任意一名对手获得胜利时，其获得3点战果。",
+          "activation": { "trigger": "after_battle_result_determined" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            { "type": "grant_opponent_battle_winners_vp", "amount": 3 }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    }
+  ],
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": ["../../Fate_Domination-开发版/images/masters/卡莲·奥尔黛西亚.png"]
+    }
+  ]
+}
