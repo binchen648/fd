@@ -89,6 +89,7 @@ import {
 import { MASTER_ASCENSION_UNLOCK_EFFECT, containsMasterAscensionUnlockPrivilegedNode, isAcceptedMasterAscensionUnlockAbility } from './master-ascension-unlock-capability';
 import { ASCENSION_UNLOCK_OPPONENT_SEAL_LOSS_EFFECT, NAMED_EVENT_BASIC_POWER_BONUS_EFFECT, SOURCE_DEFINITION_BASIC_POWER_BONUS_EFFECT, containsMasterAscensionEventPowerPrivilegedNode, isAcceptedMasterAscensionEventPowerAbility } from './master-ascension-event-power-capability';
 import { PERSISTENT_LOCATION_TERRAIN_REPLACE_INCREMENT_EFFECT, containsPersistentLocationTerrainPrivilegedNode, isAcceptedPersistentLocationTerrainAbility } from './persistent-location-terrain-capability';
+import { ARM_MOVEMENT_COMPETITION_SUPPRESSION_EFFECT, PLAY_ATTACHED_SUPPLY_DEFINITION_EFFECT, ROUND_LOCATION_TERRAIN_REPLACEMENTS_EFFECT, SEED_ATTACHED_SUPPLY_EFFECT, containsRoundLocationSupplyPrivilegedNode, isAcceptedRoundLocationSupplyAbility } from './round-location-supply-capability';
 import { EFFECTIVE_LOCATION_SAME_LOCATION_RESTRICTIONS_EFFECT, containsEffectiveLocationRestrictionPrivilegedNode, isAcceptedEffectiveLocationRestrictionAbility } from './effective-location-restriction-capability';
 import { RECYCLE_ACTIVE_BASIC_FOR_PRINTED_COST_MANA_EFFECT, containsOriginStillnessPrintedCostPrivilegedNode, isAcceptedOriginStillnessPrintedCostAbility } from './origin-stillness-printed-cost-capability';
 import {
@@ -275,6 +276,8 @@ const supportedTypes = new Set([
   LINKED_ROLE_COPY_REVEALED_MEMBER_SERVANT_SKILL_EFFECT,
   ASCENSION_UNLOCK_OPPONENT_SEAL_LOSS_EFFECT, NAMED_EVENT_BASIC_POWER_BONUS_EFFECT, SOURCE_DEFINITION_BASIC_POWER_BONUS_EFFECT,
   PERSISTENT_LOCATION_TERRAIN_REPLACE_INCREMENT_EFFECT,
+  ROUND_LOCATION_TERRAIN_REPLACEMENTS_EFFECT, ARM_MOVEMENT_COMPETITION_SUPPRESSION_EFFECT,
+  SEED_ATTACHED_SUPPLY_EFFECT, PLAY_ATTACHED_SUPPLY_DEFINITION_EFFECT,
   EFFECTIVE_LOCATION_SAME_LOCATION_RESTRICTIONS_EFFECT,
   RECYCLE_ACTIVE_BASIC_FOR_PRINTED_COST_MANA_EFFECT,
   ADJUST_OTHER_ACTIVE_PLAYERS_AT_SOURCE_LOCATION_MANA_EFFECT, DEFEAT_SINGLE_ACTIVE_OPPONENT_AT_CONTROLLER_BATTLEFIELD_EFFECT,
@@ -404,7 +407,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'manaCostIncrease', 'lossVp',
   'definitionId', 'linkedSkillId', 'destination', 'createIfMissing', 'active', 'allowedAttributes', 'uniquePerGame', 'requiresActiveSkillSource', 'basicOnly', 'allowRepeat',
   'where', 'roundOffset', 'benefits', 'activeOnly',
-  'minimumControllerMana', 'additionalManaCost',
+  'minimumControllerMana', 'additionalManaCost', 'triggerLocationId', 'replacements', 'opponentCount', 'suppresses', 'cards', 'drawAfterPlay', 'maxPerRound',
   'targetRoundOffset', 'definitionIds', 'workshopLocationId', 'battlefieldDefinitionId', 'manaGain', 'ignoreDefeatManaCost',
   // New mechanic keys for 5 servants
   'options', 'label', 'condition', 'targets', 'duration', 'scope', 'statusId', 'choiceId', 'value', 'floor',
@@ -878,6 +881,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsPersistentLocationTerrainPrivilegedNode(candidateAbility) && !isAcceptedPersistentLocationTerrainAbility(candidateAbility)) {
         issue('persistentLocationTerrain.gateway', 'Persistent location-terrain privileged mechanic requires an accepted exact whole-ability semantic', id);
+      }
+      if (containsRoundLocationSupplyPrivilegedNode(candidateAbility) && !isAcceptedRoundLocationSupplyAbility(candidateAbility)) {
+        issue('roundLocationSupply.gateway', 'Round-location terrain, movement-competition, and attached-supply mechanics require an accepted exact whole-ability semantic', id);
       }
       if (containsEffectiveLocationRestrictionPrivilegedNode(candidateAbility) && !isAcceptedEffectiveLocationRestrictionAbility(candidateAbility)) {
         issue('effectiveLocationRestriction.gateway', 'Effective-location restriction privileged mechanic requires an accepted exact whole-ability semantic', id);
