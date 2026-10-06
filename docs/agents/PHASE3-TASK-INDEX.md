@@ -8880,7 +8880,7 @@ Implementation evidence:
 ## TASK P3-S-OWNER-CIEL-COMPLETE-MIGRATION
 
 Owner: FORMAL migration
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Classification: formal owner-complete migration for `master.ciel`
 
 Frozen scope: exactly `6` identities — `s1`, `s1a`, `s1b`, `s2`, `s3`, ascension.
@@ -8913,4 +8913,37 @@ Implementation evidence:
 - repository-wide source-asset validation remains blocked by exactly `93` pre-existing missing `chm-extract/图包` files; emitted missing set contains no Ciel source path;
 - `git diff --check` PASS;
 - detailed result: `docs/reports/2026-10-07-p3-s-owner-ciel-complete-migration-result.md`;
-- no `+6` accounting is legal until fresh exact `MIGRATION_ACCEPTED` and FORMAL A-sync.
+- accepted Candidate `bab5010563f3045d24943d14bfc95c6b58ba408b` received `MIGRATION_ACCEPTED` on PR #537;
+- canonical GitHub evidence: `https://github.com/binchen648/fd/pull/537#issuecomment-6020685082`;
+- exact-head Phase 3 Pre-Review Gate run `37495106107` = `SUCCESS`;
+- lawful FORMAL migration acceptance synchronization credits exactly the complete frozen `6/6` Ciel owner scope: `241/944 + 6 = 247/944`, remaining `697`;
+- acceptance synchronization report: `docs/reports/2026-10-07-p3-a-owner-ciel-acceptance-synchronization.md`;
+- stable first-occurrence owner order in `data/phase3/full-roster-ability-inventory.json` places `master.dan` immediately after `master.ciel`; Dan frozen scope is exactly `3` identities and canonical `data/authoring/masters/master.dan.json` is absent (`0/3`);
+- the next legal formal transaction is zero-credit complete-owner readiness `P3-B-DAN-OWNER-READINESS-CAPABILITY`.
+
+## TASK P3-B-DAN-OWNER-READINESS-CAPABILITY
+
+Owner: FORMAL readiness
+Status: `READY`
+Classification: zero-credit complete-owner readiness/preflight for `master.dan`
+
+Frozen owner scope: exactly `3` identities — `ascension`, `s1`, `s1a`.
+
+Accounting boundary:
+- strict formal accounting after Ciel acceptance is `247/944`, remaining `697`;
+- canonical Dan authoring is exactly `0/3`;
+- readiness/capability work is permanently zero-credit;
+- Reference-specific handler evidence is discovery/provenance only and grants no parent migration credit.
+
+Mechanical owner evidence:
+- stable full-roster first-occurrence order places `master.dan` immediately after `master.ciel`;
+- locked Reference identifies 丹·布拉克莫尔 with initial mana `4`;
+- frozen identities are exactly `master.dan.skill.ascension` (五朔节骑士), `master.dan.skill.s1` (可敬的狙击手), and `master.dan.skill.s1a` (荣誉);
+- current inventory classifies the Dan routes behind Reference-specific/source-evidence-required boundaries, so complete owner-local readiness must be mechanically recovered before consumer authoring.
+
+Formal gate:
+- mechanically recover all three frozen Dan identities, locked Reference metadata/printed behavior, current generic runtime support, historical accepted components if any, and the complete owner-local readiness gap set before writing consumer authoring;
+- close the complete readiness gap set in one bounded zero-credit Candidate rather than per-skill migration fragments;
+- keep new runtime capability shapes identity-free and exact;
+- run focused readiness regressions, affected shared regressions, typecheck, content validation, generated determinism, Phase-3 coverage/audit, production identity/text audit, and `git diff --check`;
+- one fresh independent exact Base/Candidate implementation review is required before zero-credit A-sync/rescan may release Dan owner-complete migration.
