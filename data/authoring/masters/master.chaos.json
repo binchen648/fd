@@ -729,12 +729,7 @@
             }
           ],
           "targets": [],
-          "cost": [
-            {
-              "type": "pay_mana",
-              "amount": 1
-            }
-          ],
+          "cost": [],
           "ruleModifiers": [],
           "creates": [],
           "lifecycle": {},

@@ -60,6 +60,7 @@ describe('P3 Chaos owner-complete migration', () => {
     ].sort());
     expect(card(`${ROOT}.skill.s8`).abilities[0]!.effects[0]).toMatchObject({ requiredControlledDefinitionId: 'basic.preparation' });
     expect(card(`${ROOT}.skill.s9`).abilities[0]!.effects[0]).toMatchObject({ targetDefinitionId: 'basic.luck' });
+    expect(card(`${ROOT}.skill.s10`).abilities[0]!.cost).toEqual([]);
     expect(card(`${ROOT}.skill.s14`).abilities[0]!.effects[0]).toMatchObject({ attribute: '宝具' });
   });
 

@@ -14279,12 +14279,7 @@
                 "duration": "this_round"
               }
             ],
-            "cost": [
-              {
-                "type": "pay_mana",
-                "amount": 1
-              }
-            ],
+            "cost": [],
             "ruleModifiers": [],
             "creates": [],
             "lifecycle": {},
@@ -27183,11 +27178,11 @@
       "master.celenike": "master.celenike.command-spell",
       "master.chaos": "master.chaos.command-spell"
     },
-    "definitionHash": "d37b7caa507151c8a4ce7c74745ed94cf73caf81cb5c796f02b9947e54e4c852",
+    "definitionHash": "41b48c31b27000f5b8aab4d4fe7e43e9815164276ffb35c11a936c38d4a486ef",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "d37b7caa507151c8a4ce7c74745ed94cf73caf81cb5c796f02b9947e54e4c852"
+      "definitionHash": "41b48c31b27000f5b8aab4d4fe7e43e9815164276ffb35c11a936c38d4a486ef"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {

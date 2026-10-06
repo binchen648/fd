@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import * as rules from '../../src/index';
 import type { GameState } from '../../src/schema/game';
 import { playerCombatTotalPowerAdjustment } from '../../src/ability/owner-self-mechanics';
+import { terrainAdvantageAtLocation } from '../../src/ability/terrain-advantage-override';
 import { createSeededGameState } from '../../src/tools/seeded-state';
 
 const ROOT = 'fixture.definition-side-deck';
@@ -57,7 +58,7 @@ const raw = {
       ...card(B10, [], 1, 1, ['特殊']), abilities: [{
         id: 'fixture.b10', kind: 'phase_action', printedClause: 'fixture.b10', activation: { phase: 'action', opens: 'controller_action_window' },
         conditions: [{ type: 'source_owned' }], targets: [], effects: [{ type: 'double_controller_terrain_this_round', multiplier: 2, duration: 'this_round' }],
-        cost: [{ type: 'pay_mana', amount: 1 }], ruleModifiers: [], creates: [], lifecycle: {}, responseWindow, limit: {}, visibility: {}, execution,
+        cost: [], ruleModifiers: [], creates: [], lifecycle: {}, responseWindow, limit: {}, visibility: {}, execution,
       }],
     },
     card(B11, [residual('fixture.b11', { type: 'definition_side_deck_virtual_command_seal', deckKey: DECK, closeSourceAfterUse: true })], 1, 1, ['力量']),
@@ -205,7 +206,16 @@ describe('P3 Chaos complete-owner readiness identity-free definition side-deck f
   it('reuses the accepted terrain-doubling seam and converts/closes one virtual command seal', () => {
     const tenth = setup({ drawAll: true }); const b10 = playBeast(tenth.state, tenth.provider, B10);
     expect(loaded.cards[B10]!.abilities[0]!.effects[0]!.type).toBe('double_controller_terrain_this_round');
-    expect(b10).toBeTruthy();
+    tenth.state.players[0]!.locationId = 'shinto';
+    (tenth.state as any).modeState = { ...((tenth.state as any).modeState ?? {}), terrainAssignments: { shinto: ['p1'] } };
+    tenth.state.round.activePhase = 'action'; const manaAfterBeastPlay = tenth.state.players[0]!.mana;
+    expect(terrainAdvantageAtLocation(tenth.state, 'p1', 'shinto')).toBe(3);
+    const terrainActivation = rules.dispatchAbilityCommand(tenth.state, 'p1', { type: 'activate_ability', cardInstanceId: b10, abilityId: 'fixture.b10' });
+    expect(terrainActivation).toMatchObject({ ok: true });
+    expect(tenth.state.players[0]!.mana).toBe(manaAfterBeastPlay);
+    expect((tenth.state as any).modeState.terrainMultipliers).toContainEqual(expect.objectContaining({
+      playerId: 'p1', multiplier: 2, duration: 'this_round', round: 1, sourceCardId: b10, abilityId: 'fixture.b10',
+    }));
 
     const eleventh = setup({ drawAll: true }); const b11 = playBeast(eleventh.state, eleventh.provider, B11);
     expect((eleventh.state.players[0] as any).commandSpells).toBe(1); expect(sideState(eleventh.state).virtualCommandSealSourceCardId).toBe(b11);
