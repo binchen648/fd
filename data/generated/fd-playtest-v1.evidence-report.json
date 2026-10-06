@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 19,
+    "masters": 20,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -1396,6 +1396,61 @@
       "htmPath": "chm-extract/希耶尔.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/希耶尔.png",
       "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.dan",
+      "displayName": "丹·布拉克莫尔",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/丹·布拉克莫尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/丹·布拉克莫尔.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.dan.overview",
+      "displayName": "丹·布拉克莫尔",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/丹·布拉克莫尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/丹·布拉克莫尔.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.dan.skill.ascension",
+      "displayName": "五朔节骑士",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/丹·布拉克莫尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/丹·布拉克莫尔.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.dan.skill.s1",
+      "displayName": "可敬的狙击手",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/丹·布拉克莫尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/丹·布拉克莫尔.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.dan.skill.s1a",
+      "displayName": "荣誉",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/丹·布拉克莫尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/丹·布拉克莫尔.png",
+      "imageIndex": 2,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

@@ -1,0 +1,208 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.dan",
+  "name": "丹·布拉克莫尔",
+  "class": "Master",
+  "publicInformation": {
+    "type": "master_package",
+    "initialMana": 4
+  },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "348fa5b1d04b9cfba65ebd0ebee2f198cc0f471e",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Accepted Dan readiness PR #538 supplies the identity-free runtime authority for all three frozen consumer routes. Locked Reference supplies the exact owner identity, static metadata and printed behavior."
+  },
+  "cards": [
+    {
+      "id": "master.dan.skill.s1",
+      "aliases": ["s1"],
+      "legacyId": "s1",
+      "name": "可敬的狙击手",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.dan" },
+      "printedText": "当你部署于魔术工房，本回合你于深山町获得3点地利且于新都获得5点地利。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "dan.s1.workshop-round-terrain",
+          "kind": "forced_trigger",
+          "printedClause": "当你部署于魔术工房，本回合你于深山町获得3点地利且于新都获得5点地利。",
+          "activation": { "trigger": "after_player_deployed_to_location" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "round_location_terrain_replacements",
+              "triggerLocationId": "magic_workshop",
+              "replacements": [
+                { "locationId": "miyama_town", "value": 3 },
+                { "locationId": "shinto", "value": 5 }
+              ]
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.dan.skill.s1a",
+      "aliases": ["s1a"],
+      "legacyId": "s1a",
+      "name": "荣誉",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.dan" },
+      "printedText": "若你移动至一处移动时恰好有两名对手的战场并于此处获胜时，你无法获得该战场的竞争战果。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "dan.s1a.honor",
+          "kind": "forced_trigger",
+          "printedClause": "若你移动至一处移动时恰好有两名对手的战场并于此处获胜时，你无法获得该战场的竞争战果。",
+          "activation": { "trigger": "after_controller_enters_location" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "arm_movement_competition_suppression",
+              "opponentCount": 2,
+              "suppresses": "competition_vp"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.dan.skill.ascension",
+      "aliases": ["ascension"],
+      "legacyId": "ascension",
+      "name": "五朔节骑士",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.dan" },
+      "initialPlacement": "outside_game",
+      "printedText": "从游戏外将3张远隔操作和2张急行放置于此牌上。每回合你至多可将其中的一张牌追加打出（回合结束时该牌进入你的弃牌堆）。若如此，抽1张牌并将该牌移除。",
+      "cardFace": {
+        "typeLabel": "升华技",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "dan.ascension.seed-attached-supply",
+          "kind": "forced_trigger",
+          "printedClause": "从游戏外将3张远隔操作和2张急行放置于此牌上。",
+          "activation": { "trigger": "after_master_ascension_unlocked" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "seed_attached_supply",
+              "cards": [
+                { "definitionId": "basic.preparation", "count": 3 },
+                { "definitionId": "basic.surveil", "count": 2 }
+              ]
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "dan.ascension.play-preparation",
+          "kind": "phase_action",
+          "printedClause": "每回合你至多可将其中的一张远隔操作追加打出。若如此，抽1张牌。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "play_attached_supply_definition",
+              "definitionId": "basic.preparation",
+              "drawAfterPlay": 1,
+              "maxPerRound": 1
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "dan.ascension.play-suveil",
+          "kind": "phase_action",
+          "printedClause": "每回合你至多可将其中的一张急行追加打出。若如此，抽1张牌。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "play_attached_supply_definition",
+              "definitionId": "basic.surveil",
+              "drawAfterPlay": 1,
+              "maxPerRound": 1
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    }
+  ],
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": ["../../Fate_Domination-开发版/images/masters/丹·布拉克莫尔.png"]
+    }
+  ]
+}
