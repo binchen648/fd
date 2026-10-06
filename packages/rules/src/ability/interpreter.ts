@@ -2094,7 +2094,15 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
       !definitionSideDeckOwnUsage && a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber && !activeReuseGrant) return false;
   if (abilityLimitReached(s, sourceId, a) && !activeReuseGrant) return false;
   if (isAcceptedDefinitionSetRelocationAbility(a) && !definitionSetRelocationPreflight(s, sourceControllerId, a)) return false;
-  if (isAcceptedDoubleControllerTerrainAbility(a) || isAcceptedFortifyMovedInBattlefieldAbility(a)) {
+  if (isAcceptedDoubleControllerTerrainAbility(a)) {
+    const source = card(s, sourceId); const sourceState = runtime(s).cardState[sourceId]; const controller = player(s, sourceControllerId);
+    if (source.ownerPlayerId !== sourceControllerId || source.controllerPlayerId !== sourceControllerId || sourceState?.faceDown === true) return false;
+    if (a.cost.length === 0) {
+      if (!['field','attack_area'].includes(source.zone) || sourceState?.active !== true) return false;
+    } else if (source.zone !== 'skill' || sourceState?.active === true || controller.mana < 1) return false;
+    if (eligibleMultiPresenceResolutionContexts(s,sourceId,a,event).length===0) return false;
+  }
+  if (isAcceptedFortifyMovedInBattlefieldAbility(a)) {
     const source = card(s, sourceId); const sourceState = runtime(s).cardState[sourceId]; const controller = player(s, sourceControllerId);
     if (source.ownerPlayerId !== sourceControllerId || source.controllerPlayerId !== sourceControllerId || source.zone !== 'skill' ||
         sourceState?.active === true || sourceState?.faceDown === true || controller.mana < 1) return false;

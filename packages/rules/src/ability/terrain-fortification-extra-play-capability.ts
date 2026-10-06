@@ -55,7 +55,8 @@ export function isEffectPlayableFaceUpConstraint(value: RuleNode): boolean {
 
 export function isAcceptedDoubleControllerTerrainAbility(ability: AuthoringAbility): boolean {
   if (ability.kind !== 'phase_action' || ability.activation.phase !== 'action' || ability.activation.opens !== 'controller_action_window' ||
-      !exactKeys(ability.activation, ['phase', 'opens']) || !commonEmpty(ability) || !sourceOwnedOnly(ability) || !fixedManaOne(ability) ||
+      !exactKeys(ability.activation, ['phase', 'opens']) || !commonEmpty(ability) || !sourceOwnedOnly(ability) ||
+      !(ability.cost.length === 0 || fixedManaOne(ability)) ||
       ability.targets.length !== 0 || ability.effects.length !== 1) return false;
   const effect = ability.effects[0]!;
   return effect.type === DOUBLE_CONTROLLER_TERRAIN_EFFECT && effect.multiplier === 2 && effect.duration === 'this_round' &&
