@@ -8833,7 +8833,7 @@ Implementation evidence:
 ## TASK P3-B-CIEL-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Classification: zero-credit complete-owner readiness/preflight for `master.ciel`
 
 Frozen owner scope: exactly `6` identities in stable full-roster inventory order.
@@ -8870,4 +8870,31 @@ Implementation evidence:
 - repository-wide source-asset validation remains blocked by the same `93` pre-existing missing `chm-extract/图包` files; the emitted missing set contains no Ciel source path;
 - `git diff --check` PASS;
 - detailed result: `docs/reports/2026-10-06-p3-b-ciel-owner-readiness-complete-gap-set-result.md`;
-- fresh independent exact Base/Candidate implementation review remains mandatory; this Candidate grants `0` migration credit.
+- Candidate `68bf95286d53cf0d12ebe8951d40d7478870bf94` received `IMPLEMENTATION_ACCEPTED_CANDIDATE` on PR #535;
+- canonical evidence: `https://github.com/binchen648/fd/pull/535#issuecomment-6011244993`;
+- latest exact-head Phase 3 Pre-Review Gate run `37427504778` = `SUCCESS`;
+- zero-credit FORMAL acceptance synchronization/rescan keeps accounting exactly `241/944`, remaining `703`;
+- acceptance synchronization report: `docs/reports/2026-10-06-p3-a-ciel-owner-readiness-acceptance-synchronization.md`;
+- complete readiness rescan finds no remaining undiscovered owner-local runtime gap; the lawful next transaction is full six-identity owner consumer migration `P3-S-OWNER-CIEL-COMPLETE-MIGRATION`.
+
+## TASK P3-S-OWNER-CIEL-COMPLETE-MIGRATION
+
+Owner: FORMAL migration
+Status: `READY`
+Classification: formal owner-complete migration for `master.ciel`
+
+Frozen scope: exactly `6` identities — `s1`, `s1a`, `s1b`, `s2`, `s3`, ascension.
+
+Accounting boundary:
+- Exact Base after readiness A-sync remains `241/944`, remaining `703`;
+- canonical Ciel authoring is `0/6` before this migration transaction;
+- maximum lawful increment is exactly `+6`, and only after fresh exact `MIGRATION_ACCEPTED` + FORMAL A-sync/accounting;
+- historical Ciel component/recovery branches and readiness implementation remain zero-credit provenance only.
+
+Formal gate:
+- materialize all six frozen Ciel identities in one canonical `data/authoring/masters/master.ciel.json` archive;
+- preserve locked Reference names, printed text, type labels, printed costs/base Power, initial mana and owner semantics;
+- consume only accepted generic seams from synchronized readiness; do not add Ciel identity branches;
+- register the archive exactly once in the canonical playtest pack;
+- run owner-complete focused regression + readiness regressions + affected shared regressions, typecheck, content validation, generated determinism, Phase-3 coverage/audit, production identity/text audit, and `git diff --check`;
+- one fresh independent exact Base/Candidate migration review is required before any `+6` accounting.
