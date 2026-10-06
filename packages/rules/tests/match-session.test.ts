@@ -778,7 +778,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('runs eleven rounds or pauses with an explicit handled reason', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
+    const session = createMatchSession({ seed: 1, humanPlayerId: 'p1' });
     const reason = session.runFullMatch({ maxRounds: 11 });
     const projected = session.projectToClientState('p1');
 

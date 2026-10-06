@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 18,
+    "masters": 19,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -1308,6 +1308,94 @@
       "htmPath": "chm-extract/尼禄·卡欧斯.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/尼禄·卡欧斯.png",
       "imageIndex": 9,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ciel",
+      "displayName": "希耶尔",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/希耶尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/希耶尔.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ciel.overview",
+      "displayName": "希耶尔",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/希耶尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/希耶尔.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ciel.skill.ascension",
+      "displayName": "第七圣典·形态展开",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/希耶尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/希耶尔.png",
+      "imageIndex": 6,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ciel.skill.s1",
+      "displayName": "秘密的代行者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/希耶尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/希耶尔.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ciel.skill.s1a",
+      "displayName": "埋葬机关的修女",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/希耶尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/希耶尔.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ciel.skill.s1b",
+      "displayName": "外典",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/希耶尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/希耶尔.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ciel.skill.s2",
+      "displayName": "火葬式典",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/希耶尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/希耶尔.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ciel.skill.s3",
+      "displayName": "第七圣典",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/希耶尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/希耶尔.png",
+      "imageIndex": 5,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },
