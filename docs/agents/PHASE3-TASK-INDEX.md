@@ -8924,7 +8924,7 @@ Implementation evidence:
 ## TASK P3-B-DAN-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Classification: zero-credit complete-owner readiness/preflight for `master.dan`
 
 Frozen owner scope: exactly `3` identities — `ascension`, `s1`, `s1a`.
@@ -8963,3 +8963,33 @@ Implementation evidence:
 - first fresh review of Candidate `59a0d7ec512f06b7882acf47a0a20840c5988180` returned `IMPLEMENTATION_NEEDS_REVISION`; canonical relayed evidence is `https://github.com/binchen648/fd/pull/538#issuecomment-6024573458`;
 - bundled revision closes both findings at the authoritative `round_end`: stale `roundLocationTerrainReplacements` and stale armed-but-unconsumed `movementCompetitionSuppressions` are retired before the next round; regressions prove restore validity across two terrain transitions and an unconsumed Honor transition;
 - readiness remains permanently zero-credit; successor Candidate requires fresh exact implementation review before A-sync/rescan.
+- successor Candidate `348fa5b1d04b9cfba65ebd0ebee2f198cc0f471e` received fresh `IMPLEMENTATION_ACCEPTED_CANDIDATE` on blocked retry `pr538:348fa5b1d04b9cfba65ebd0ebee2f198cc0f471e:blocked-retry-1`;
+- canonical accepted evidence: `https://github.com/binchen648/fd/pull/538#issuecomment-6025287030`;
+- zero-credit readiness A-sync/rescan: `docs/reports/2026-10-07-p3-a-dan-owner-readiness-acceptance-synchronization.md`;
+- accounting remains `247/944`, remaining `697`; canonical Dan remains `0/3`;
+- complete-owner rescan found no remaining Dan-local runtime gap; release `P3-S-OWNER-DAN-COMPLETE-MIGRATION`.
+
+## TASK P3-S-OWNER-DAN-COMPLETE-MIGRATION
+
+Owner: FORMAL migration
+Status: `READY`
+Classification: owner-complete migration for `master.dan`
+
+Frozen owner scope: exactly `3` identities — `master.dan.skill.s1`, `master.dan.skill.s1a`, `master.dan.skill.ascension`.
+
+Accounting boundary:
+- exact migration Base is the Dan readiness acceptance synchronization commit produced from accepted Candidate `348fa5b1d04b9cfba65ebd0ebee2f198cc0f471e`;
+- strict accounting before this migration remains `247/944`, remaining `697`;
+- canonical Dan authoring is `0/3`;
+- maximum lawful increment is exactly `+3`, only after a fresh exact `MIGRATION_ACCEPTED` verdict and formal A-sync/accounting;
+- readiness evidence grants no migration credit and must be preserved, not recounted.
+
+Required implementation:
+- materialize one canonical `data/authoring/masters/master.dan.json` archive containing all three frozen identities and exact locked-Reference metadata/printed behavior;
+- register the archive once in the canonical playtest master sequence after Ciel according to stable owner order;
+- consumer authoring must route only through accepted identity-free readiness seams and existing generic basic-card/round lifecycle primitives;
+- preserve Dan initial mana `4`, names/text/types, ascension outside-game lifecycle, and exact `3 x basic.preparation + 2 x basic.surveil` attached-supply contract;
+- add one owner-complete regression covering exact 3/3 materialization, metadata, pack registration, gateway routing and representative runtime behavior;
+- run focused/affected tests, typecheck, content validation, generated determinism, Phase-3 coverage/audit, production identity/text audit, source-assets classification, and `git diff --check`;
+- freeze exactly one Candidate / one PR and request one fresh independent exact migration review;
+- no accounting increment before fresh `MIGRATION_ACCEPTED`.
