@@ -21,6 +21,7 @@ import { playerCombatTotalPowerAdjustment } from '../ability/owner-self-mechanic
 import { dynamicUnusedEngagedSealPowerAdjustment } from '../ability/command-seal-power-capability';
 import { shouldEachBattleWinnerReceiveFullReward } from '../ability/combat-reward-distribution';
 import { controllerHasCompetitionRewardPlunderReplacement } from '../ability/battle-plunder-replay-capability';
+import { movementCompetitionRewardSuppressed, roundLocationTerrainReplacement } from '../ability/round-location-supply-capability';
 import { logicalDayForPlayer } from './rule-overrides';
 import { situationBenefitsSuppressedForPlayer } from '../ability/next-round-situation-benefit-suppression';
 
@@ -31,6 +32,7 @@ export interface CombatParticipantInput {
   externalSkillEffects?: ExternalSkillEffect[];
   terrainSlotIndex?: number;
   terrainValueOverride?: number;
+  terrainValueOverrideSource?: 'multi_presence' | 'round_replacement';
 }
 
 export interface CombatResolutionInput {
@@ -176,10 +178,15 @@ function getTerrainBreakdowns(
     : baseValue;
   const value = typeof adjustedBase === "number" ? adjustedBase * terrainMultiplierForPlayer(state, participant.playerId) : adjustedBase;
   if (typeof value !== "number" || value === 0) return [];
-  if (participant.terrainValueOverride !== undefined && participant.terrainSlotIndex === undefined) return [{
-    source: "location", label: `${battlefieldId}.multi_presence_terrain`, value,
-    payload: { kind: "modifier", sourceType: "location", sourceId: `${battlefieldId}.multi_presence_terrain`, targetTag: "terrain" },
-  }];
+  if (participant.terrainValueOverride !== undefined && participant.terrainSlotIndex === undefined) {
+    const overrideKey = participant.terrainValueOverrideSource === 'round_replacement'
+      ? 'round_location_terrain'
+      : 'multi_presence_terrain';
+    return [{
+      source: "location", label: `${battlefieldId}.${overrideKey}`, value,
+      payload: { kind: "modifier", sourceType: "location", sourceId: `${battlefieldId}.${overrideKey}`, targetTag: "terrain" },
+    }];
+  }
   return [createTerrainBreakdown(battlefieldId, participant.terrainSlotIndex ?? 0, value)];
 }
 
@@ -409,9 +416,15 @@ export function deriveBattleParticipantsFromState(
       const authoredPower = authoredAttacks.reduce((sum, card) => sum + calculateCardPower(state, card.instanceId).value, 0);
 
       const terrainSlotIndex = assignedTerrainSlotIndex(state, battlefieldId, player.id);
+      const fixedRoundTerrainValue = roundLocationTerrainReplacement(state, player.id, battlefieldId);
       const presenceTerrainValue = multiPresenceTerrainAdvantageAtLocation(state, player.id, battlefieldId);
       const ordinaryTerrainValue = terrainSlotIndex === undefined ? 0 : Number(getLocationById(state.map, state.locationConfig, battlefieldId)?.terrainBonuses?.[terrainSlotIndex] ?? 0);
-      const terrainValueOverride = presenceTerrainValue !== ordinaryTerrainValue ? presenceTerrainValue : undefined;
+      const terrainValueOverride = fixedRoundTerrainValue !== undefined
+        ? fixedRoundTerrainValue
+        : (presenceTerrainValue !== ordinaryTerrainValue ? presenceTerrainValue : undefined);
+      const terrainValueOverrideSource = fixedRoundTerrainValue !== undefined
+        ? 'round_replacement' as const
+        : (presenceTerrainValue !== ordinaryTerrainValue ? 'multi_presence' as const : undefined);
       let persistentPowerAdjustment = 0;
       if (logicalDayForPlayer(state, player.id) === 1) {
         persistentPowerAdjustment += state.ruleOverrides?.firstLogicalDayTotalPowerAdjustmentByPlayer?.[player.id] ?? 0;
@@ -428,7 +441,14 @@ export function deriveBattleParticipantsFromState(
           getEffectiveCardAttributes(state, card.instanceId))),
         externalSkillEffects,
       };
-      return { ...participant, ...(terrainSlotIndex === undefined ? {} : { terrainSlotIndex }), ...(terrainValueOverride === undefined ? {} : { terrainValueOverride }) };
+      return {
+        ...participant,
+        ...(terrainSlotIndex === undefined ? {} : { terrainSlotIndex }),
+        ...(terrainValueOverride === undefined ? {} : {
+          terrainValueOverride,
+          ...(terrainValueOverrideSource === undefined ? {} : { terrainValueOverrideSource }),
+        }),
+      };
     });
 }
 
@@ -461,7 +481,8 @@ function buildDefaultVpAdjustments(
 
   if (competitionVpPerWinner > 0 && hooks.has("competition_rewards")) {
     for (const playerId of winnerPlayerIds) {
-      if (hasAuthoritativeLoser && controllerHasCompetitionRewardPlunderReplacement(state, playerId)) continue;
+      if ((hasAuthoritativeLoser && controllerHasCompetitionRewardPlunderReplacement(state, playerId)) ||
+          movementCompetitionRewardSuppressed(state, playerId, battlefieldId)) continue;
       adjustments.push({
         playerId,
         delta: competitionVpPerWinner,

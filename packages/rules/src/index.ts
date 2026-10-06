@@ -50,6 +50,7 @@ export * from './ability/opponent-round-vp-gain-threshold';
 export * from './ability/next-round-situation-benefit-suppression';
 export * from './ability/regular-movement-engagement-capability';
 export * from './ability/conditional-additional-play-capability';
+export * from './ability/round-location-supply-capability';
 export * from './ability/report';
 export * from './ability/resolution-dataflow';
 

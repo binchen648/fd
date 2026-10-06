@@ -538,6 +538,17 @@ export interface MasterAscensionSourceDefinitionPowerState {
 export interface PersistentLocationTerrainState {
   playerId: PlayerId; locationId: string; sourceCardId: string; abilityId: string; value: number; triggerEventIds: string[];
 }
+export interface RoundLocationTerrainReplacementState {
+  controllerId: PlayerId; sourceCardId: string; abilityId: string; round: number; triggerEventId: string;
+  replacements: Record<string, number>;
+}
+export interface MovementCompetitionSuppressionState {
+  controllerId: PlayerId; sourceCardId: string; abilityId: string; round: number; battlefieldId: string; movementEventId: string;
+}
+export interface AttachedSupplyState {
+  controllerId: PlayerId; sourceCardId: string; seedAbilityId: string;
+  definitionIds: string[]; cardInstanceIds: string[]; initializedRevision: number; lastPlayRound?: number;
+}
 export interface DefinitionSkillVariantState {
   controllerId: PlayerId; definitionId: string; variantId: string; attribute: string;
   sourceCardId: string; sourceAbilityId: string; createdRound: number;
@@ -587,6 +598,12 @@ export interface AbilityRuntime {
   masterAscensionSourceDefinitionPowerByPlayer?: Record<PlayerId, MasterAscensionSourceDefinitionPowerState>;
   /** Identity-free permanent per-location terrain replacement layers with exact source/event provenance. */
   persistentLocationTerrainByPlayer?: Record<PlayerId, Record<string, PersistentLocationTerrainState>>;
+  /** Identity-free current-round fixed terrain replacements created by an exact deployment trigger. */
+  roundLocationTerrainReplacements?: RoundLocationTerrainReplacementState[];
+  /** Identity-free current-round movement provenance that suppresses one battlefield competition reward. */
+  movementCompetitionSuppressions?: Record<PlayerId, MovementCompetitionSuppressionState>;
+  /** Identity-free physical attached-supply state bound to one owned source. */
+  attachedSupplyByPlayer?: Record<PlayerId, AttachedSupplyState>;
   /** Identity-free isolated definition side decks keyed by controller + authored deck key. */
   definitionSideDecks?: Record<string, DefinitionSideDeckState>;
   /** Round in which any ordinary Command Seal was paid or used, including card-play costs. */

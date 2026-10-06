@@ -132,6 +132,7 @@ import {
 import { canExecuteMasterAscensionUnlock, containsMasterAscensionUnlockPrivilegedNode, isAcceptedMasterAscensionUnlockAbility, resolveMasterAscensionUnlock } from './master-ascension-unlock-capability';
 import { cleanupMasterAscensionEventPowerAtRoundEnd, containsMasterAscensionEventPowerPrivilegedNode, isAcceptedMasterAscensionEventPowerAbility, isAcceptedMasterAscensionSourceDefinitionPowerAbility, isMasterAscensionEventPowerRuntimeProvenanceValidForRestore, masterAscensionNamedEventBasicPowerBonus, masterAscensionSourceDefinitionTriggerMatches, reconcileMasterAscensionEventPowerAuthority, resolveMasterAscensionEventPowerEffect, retireMasterAscensionSourceDefinitionPowerByTrigger } from './master-ascension-event-power-capability';
 import { canExecutePersistentLocationTerrainEffect, containsPersistentLocationTerrainPrivilegedNode, isAcceptedPersistentLocationTerrainAbility, isPersistentLocationTerrainRuntimeProvenanceValidForRestore, resolvePersistentLocationTerrainEffect } from './persistent-location-terrain-capability';
+import { canExecuteRoundLocationSupplyEffect, containsRoundLocationSupplyPrivilegedNode, isAcceptedRoundLocationSupplyAbility, isRoundLocationSupplyRuntimeProvenanceValidForRestore, resolveRoundLocationSupplyEffect, settleMovementCompetitionSuppression } from './round-location-supply-capability';
 import { containsEffectiveLocationRestrictionPrivilegedNode, effectiveLocationRestrictionRequiresFaceDownStandardAttack, isAcceptedEffectiveLocationRestrictionAbility, isEffectiveLocationRestrictionRuntimeProvenanceValidForRestore, isPlayerAtEffectiveLocationKind } from './effective-location-restriction-capability';
 import { containsOriginStillnessPrintedCostPrivilegedNode, isAcceptedOriginStillnessPrintedCostAbility, originStillnessEligibleActiveBasicIds, originStillnessPrintedManaGain } from './origin-stillness-printed-cost-capability';
 import {
@@ -2057,6 +2058,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsMasterAscensionUnlockPrivilegedNode(a) && !isAcceptedMasterAscensionUnlockAbility(a)) return false;
   if (isAcceptedMasterAscensionUnlockAbility(a) && !canExecuteMasterAscensionUnlock(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsPersistentLocationTerrainPrivilegedNode(a) && !isAcceptedPersistentLocationTerrainAbility(a)) return false;
+  if (containsRoundLocationSupplyPrivilegedNode(a) && !isAcceptedRoundLocationSupplyAbility(a)) return false;
+  if (isAcceptedRoundLocationSupplyAbility(a) && !canExecuteRoundLocationSupplyEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsEffectiveLocationRestrictionPrivilegedNode(a) && !isAcceptedEffectiveLocationRestrictionAbility(a)) return false;
   if (containsOriginStillnessPrintedCostPrivilegedNode(a) && !isAcceptedOriginStillnessPrintedCostAbility(a)) return false;
   if (isAcceptedOriginStillnessPrintedCostAbility(a) && originStillnessEligibleActiveBasicIds(s, context(s, sourceId, a.id, event), a).length===0) return false;
@@ -4190,6 +4193,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
     if (!isLinkedRoleMemberSkillCopyRuntimeProvenanceValidForRestore(s)) return false;
     if (!isMasterAscensionEventPowerRuntimeProvenanceValidForRestore(s)) return false;
     if (!isPersistentLocationTerrainRuntimeProvenanceValidForRestore(s)) return false;
+    if (!isRoundLocationSupplyRuntimeProvenanceValidForRestore(s)) return false;
     if (!isEffectiveLocationRestrictionRuntimeProvenanceValidForRestore(s)) return false;
     if (!(r.pendingDelayedActivations ?? []).every((entry) => {
       const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
@@ -6627,6 +6631,19 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     if (!resolvePersistentLocationTerrainEffect(s, ctx, a)) reject('resolution_failed', 'Persistent location-terrain resolution failed');
     return;
   }
+  if (containsRoundLocationSupplyPrivilegedNode(a)) {
+    if (!isAcceptedRoundLocationSupplyAbility(a)) reject('resolution_failed', 'Unsupported round-location / attached-supply semantic');
+    const resolved = resolveRoundLocationSupplyEffect(s, ctx, a);
+    if (!resolved.handled) reject('resolution_failed', 'Round-location / attached-supply resolution failed');
+    if (resolved.playedCardInstanceId) {
+      const playedId = resolved.playedCardInstanceId;
+      const playedDefinition = definition(s, playedId);
+      const playedCards = [{ instanceId: playedId, controllerId: ctx.controllerId, cardType: playedDefinition?.cardType ?? 'basic_attack', faceDown: false }];
+      processEvent(s, { id: nextId(s, 'attached-supply-declare'), type: 'on_use_declared', playerId: ctx.controllerId, sourceCardId: playedId, playedCards });
+      processEvent(s, { id: nextId(s, 'attached-supply-play'), type: 'on_card_played', playerId: ctx.controllerId, sourceCardId: playedId, playedCards });
+    }
+    return;
+  }
   if (containsOriginStillnessPrintedCostPrivilegedNode(a)) {
     if (!isAcceptedOriginStillnessPrintedCostAbility(a)) reject('resolution_failed', 'Unsupported origin-stillness printed-cost semantic');
     const pending=findPendingTarget(s,ctx,a,a.effects); if(pending){runtime(s).pendingDecision=pending; return;}
@@ -7015,6 +7032,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   settleReactionCounterEvent(s, event);
   settleBattlefieldAttackOffers(s, event);
   settlePendingRulerSealRewards(s, event);
+  settleMovementCompetitionSuppression(s, event);
   settleBoundOpponentBattleOutcome(s, event);
   if (event.type === 'round_end') {
     cleanupLinkedRoleSkillCopiesAtRoundEnd(s);

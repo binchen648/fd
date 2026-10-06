@@ -8924,7 +8924,7 @@ Implementation evidence:
 ## TASK P3-B-DAN-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: zero-credit complete-owner readiness/preflight for `master.dan`
 
 Frozen owner scope: exactly `3` identities — `ascension`, `s1`, `s1a`.
@@ -8947,3 +8947,17 @@ Formal gate:
 - keep new runtime capability shapes identity-free and exact;
 - run focused readiness regressions, affected shared regressions, typecheck, content validation, generated determinism, Phase-3 coverage/audit, production identity/text audit, and `git diff --check`;
 - one fresh independent exact Base/Candidate implementation review is required before zero-credit A-sync/rescan may release Dan owner-complete migration.
+
+Implementation evidence:
+- Exact Base: `2c3ed8ee7f7808d21e1afa062e56bdcc25393d8b`; strict accounting remains `247/944`, remaining `697`, and `data/authoring/**` delta is EMPTY;
+- complete identity-free readiness seam added for workshop deployment -> current-round fixed `miyama_town=3` / `shinto=5` terrain, preserving shared authored terrain adjustments and ordinary 远隔操作 doubling;
+- complete identity-free Honor seam added for actual movement into an actual battlefield with exactly two active opponents, suppressing only the frozen battle's `competition_vp` reward on a controller win;
+- complete identity-free ascension supply seam added: unlock seeds exactly `3 x basic.preparation` + `2 x basic.surveil`, one attached definition may be additionally played per round at printed mana cost, draw 1, without consuming ordinary attack declaration quota;
+- source/ability/event/physical-card provenance is server-owned and restore-validated; no Dan identity/name/legacy-handler branch exists in production runtime;
+- Dan readiness regression `7/7 PASS`; affected terrain/scoring + authoring interpreter + MatchSession aggregate `87/87 PASS`;
+- typecheck PASS; content validation PASS at `19 masters / 19 servants / 20 events / 0 blocking issues`; generated determinism PASS with unchanged content `90e4312ab3097f4c0e370ab4d573202c3ca3c011b9293ddc4db92b842bb87d71`, fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`, evidence `7a6eeed4246641f832d6b7cdc84649593f8c7d2f58ecf263b38b4d5c724ea745`;
+- Phase-3 coverage verification: `archives=124`, `cards=275`, `abilities=477`, `compiledCards=205`, `compiledCharacters=38`, `blockingIssues=0`, `newRuntimeSemanticRouted=22`; automation audit: `legacyResolveEffect=160`, `legacyExecuteAbility=3`, `notClassifiable=292`, `promotionFindings=20`;
+- production identity/text audit for `master.dan`, 丹·布拉克莫尔, 五朔节骑士, 可敬的狙击手, 荣誉, and `core.dan-` is CLEAN;
+- repository-wide source-assets check reproduces exactly `93` pre-existing missing `chm-extract/图包` files and no Dan path; `git diff --check` PASS;
+- detailed result: `docs/reports/2026-10-07-p3-b-dan-owner-readiness-complete-gap-set.md`;
+- readiness remains permanently zero-credit; fresh exact implementation review is still required before A-sync/rescan.

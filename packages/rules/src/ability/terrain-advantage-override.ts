@@ -2,6 +2,7 @@ import type { GameState } from '../schema/game';
 import type { LocationId } from '../schema/location';
 import { getLocationById } from '../core/map-engine';
 import { persistentLocationTerrainAdvantage } from './persistent-location-terrain-capability';
+import { roundLocationTerrainReplacement } from './round-location-supply-capability';
 
 interface TerrainOverrideEntry {
   playerId: string;
@@ -55,8 +56,9 @@ export function applyTerrainAdvantageOverride(
  * Combat-only multipliers such as active basic.preparation remain owned by the shared combat resolver.
  */
 export function terrainAdvantageAtLocation(state: GameState, playerId: string, locationId: LocationId): number {
-  const replacement = persistentLocationTerrainAdvantage(state, playerId, locationId);
-  const adjusted = applyTerrainAdvantageOverride(state, playerId, locationId, replacement ?? rawTerrain(state, playerId, locationId));
+  const roundReplacement = roundLocationTerrainReplacement(state, playerId, locationId);
+  const persistentReplacement = persistentLocationTerrainAdvantage(state, playerId, locationId);
+  const adjusted = applyTerrainAdvantageOverride(state, playerId, locationId, roundReplacement ?? persistentReplacement ?? rawTerrain(state, playerId, locationId));
   return (mode(state).terrainMultipliers ?? []).reduce((value, entry) =>
     entry.playerId === playerId && typeof entry.multiplier === 'number' &&
       (entry.duration !== 'this_round' || entry.round === state.round.roundNumber)
