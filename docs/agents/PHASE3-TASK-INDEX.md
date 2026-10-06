@@ -9014,3 +9014,45 @@ Implementation evidence:
 - lawful FORMAL accounting credits exactly the frozen Dan `3/3`: `247/944 + 3 = 250/944`, remaining `694`;
 - acceptance synchronization report: `docs/reports/2026-10-07-p3-a-owner-dan-acceptance-synchronization.md`;
 - stable first-occurrence owner order places `master.darnic` next, with exactly `3` frozen identities and no canonical `master.darnic.json`; next-owner readiness selection requires helper-report read + exact-Base rescan before any Darnic implementation.
+
+## TASK P3-B-DARNIC-OWNER-READINESS-CAPABILITY
+
+Owner: FORMAL readiness
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Classification: zero-credit complete-owner readiness/preflight for `master.darnic`
+
+Frozen owner scope: exactly `3` identities — `master.darnic.skill.ascension`, `master.darnic.skill.s1`, `master.darnic.skill.s1a`.
+
+Accounting boundary:
+- exact readiness Base is Dan owner migration acceptance-sync `765e88d8390ef6671faa4f9511b10853df8fd99e`;
+- strict accounting after Dan acceptance is `250/944`, remaining `694`;
+- canonical `data/authoring/masters/master.darnic.json` is absent (`0/3`);
+- readiness/capability is permanently zero-credit.
+
+Mechanical owner-local gap set:
+- `s1` / 领地: locked Reference `core.unoccupied-terrain-advantage` grants the controller all currently unoccupied printed terrain slots at battlefields; current production runtime has no identity-free unoccupied-terrain ownership seam;
+- ascension / 老相识 / 焦土作战: locked Reference requires an opponent sharing the controller's battlefield to pay `2 VP` at the start of that opponent's action turn to retain assigned terrain, otherwise that opponent loses the terrain assignment; current runtime has no identity-free action-turn terrain-upkeep seam;
+- ascension / 空中支援: existing accepted `double_controller_terrain_this_round` effect family is reused; readiness also closes its missing zero-cost owned-Master-skill skill-zone activation surface without adding any owner-specific route;
+- `s1a` / 噬魂者: current generic response/resource primitives appear sufficient for optional post-win `set_mana=4` and round-end mana<=2 `-2 VP`; readiness must mechanically prove the exact authoring shape, response behavior, and round-end behavior before consumer migration.
+
+Formal gate:
+- close the complete Darnic owner-local readiness gap set in one bounded zero-credit Candidate;
+- runtime additions must be identity-free, restore-safe, and preserve terrain slot authority when terrain is revoked;
+- no `data/authoring/masters/master.darnic.json` may be created in readiness;
+- run Darnic focused regressions, affected terrain/MatchSession/authoring regressions, typecheck, content validation, generated determinism, Phase-3 coverage/audit, production identity/text audit, source-assets classification, and `git diff --check`;
+- one fresh independent exact Base/Candidate implementation review is required before zero-credit A-sync/rescan may release Darnic owner-complete migration.
+
+Implementation evidence:
+- Exact Base: `765e88d8390ef6671faa4f9511b10853df8fd99e`; strict accounting remains `250/944`, remaining `694`;
+- complete identity-free readiness added for current-location unclaimed printed battlefield terrain and same-battlefield opponent action-turn terrain upkeep at exact `2 VP`;
+- terrain revocation preserves retained explicit terrain slots; settlement is player/round idempotent and the marker survives structured-clone/restore-style persistence;
+- the existing generic `double_controller_terrain_this_round` effect is reused, with zero-cost source-owned Master skill activation now accepted from the skill zone as required by 老相识 / 空中支援;
+- 噬魂者 requires no new effect family: existing optional response, `set_mana`, negated mana-threshold, and VP-adjustment primitives are mechanically proven;
+- Darnic readiness regression `8/8 PASS`; final affected run `134/134 PASS` across 9 files with explicit `--testTimeout=20000`;
+- typecheck PASS; content validation PASS at `20 masters / 19 servants / 20 events / 0 blocking issues`; generated determinism PASS with unchanged consumer hashes;
+- Phase-3 coverage remains `archives=125`, `cards=278`, `abilities=482`, `compiledCards=209`, `compiledCharacters=39`, `blockingIssues=0`, `newRuntimeSemanticRouted=22`, `dualRuntime=0`;
+- automation audit remains `legacyResolveEffect=160`, `legacyExecuteAbility=3`, `notClassifiable=297`, `promotionFindings=20`;
+- `data/authoring/**` delta EMPTY; production Darnic identity/text audit CLEAN; development Darnic image PRESENT;
+- source-assets classification reproduces exactly `93` historical missing `chm-extract/图包` assets and `darnicHits=0`; `git diff --check` PASS;
+- detailed result: `docs/reports/2026-10-07-p3-b-darnic-owner-readiness-complete-gap-set.md`;
+- readiness remains permanently zero-credit and requires one fresh exact `IMPLEMENTATION_ACCEPTED_CANDIDATE` before A-sync/rescan.

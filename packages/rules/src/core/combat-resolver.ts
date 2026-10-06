@@ -22,6 +22,7 @@ import { dynamicUnusedEngagedSealPowerAdjustment } from '../ability/command-seal
 import { shouldEachBattleWinnerReceiveFullReward } from '../ability/combat-reward-distribution';
 import { controllerHasCompetitionRewardPlunderReplacement } from '../ability/battle-plunder-replay-capability';
 import { movementCompetitionRewardSuppressed, roundLocationTerrainReplacement } from '../ability/round-location-supply-capability';
+import { unclaimedBattlefieldTerrainBonus } from '../ability/unclaimed-terrain-upkeep-capability';
 import { logicalDayForPlayer } from './rule-overrides';
 import { situationBenefitsSuppressedForPlayer } from '../ability/next-round-situation-benefit-suppression';
 
@@ -32,7 +33,7 @@ export interface CombatParticipantInput {
   externalSkillEffects?: ExternalSkillEffect[];
   terrainSlotIndex?: number;
   terrainValueOverride?: number;
-  terrainValueOverrideSource?: 'multi_presence' | 'round_replacement';
+  terrainValueOverrideSource?: 'multi_presence' | 'round_replacement' | 'unclaimed_terrain';
 }
 
 export interface CombatResolutionInput {
@@ -181,7 +182,9 @@ function getTerrainBreakdowns(
   if (participant.terrainValueOverride !== undefined && participant.terrainSlotIndex === undefined) {
     const overrideKey = participant.terrainValueOverrideSource === 'round_replacement'
       ? 'round_location_terrain'
-      : 'multi_presence_terrain';
+      : participant.terrainValueOverrideSource === 'unclaimed_terrain'
+        ? 'unclaimed_terrain'
+        : 'multi_presence_terrain';
     return [{
       source: "location", label: `${battlefieldId}.${overrideKey}`, value,
       payload: { kind: "modifier", sourceType: "location", sourceId: `${battlefieldId}.${overrideKey}`, targetTag: "terrain" },
@@ -419,12 +422,19 @@ export function deriveBattleParticipantsFromState(
       const fixedRoundTerrainValue = roundLocationTerrainReplacement(state, player.id, battlefieldId);
       const presenceTerrainValue = multiPresenceTerrainAdvantageAtLocation(state, player.id, battlefieldId);
       const ordinaryTerrainValue = terrainSlotIndex === undefined ? 0 : Number(getLocationById(state.map, state.locationConfig, battlefieldId)?.terrainBonuses?.[terrainSlotIndex] ?? 0);
-      const terrainValueOverride = fixedRoundTerrainValue !== undefined
+      const unclaimedTerrainValue = unclaimedBattlefieldTerrainBonus(state, player.id, battlefieldId);
+      const primaryTerrainValue = fixedRoundTerrainValue !== undefined
         ? fixedRoundTerrainValue
-        : (presenceTerrainValue !== ordinaryTerrainValue ? presenceTerrainValue : undefined);
+        : (presenceTerrainValue !== ordinaryTerrainValue ? presenceTerrainValue : ordinaryTerrainValue);
+      const combinedTerrainValue = primaryTerrainValue + unclaimedTerrainValue;
+      const terrainValueOverride = fixedRoundTerrainValue !== undefined || presenceTerrainValue !== ordinaryTerrainValue || unclaimedTerrainValue !== 0
+        ? combinedTerrainValue
+        : undefined;
       const terrainValueOverrideSource = fixedRoundTerrainValue !== undefined
         ? 'round_replacement' as const
-        : (presenceTerrainValue !== ordinaryTerrainValue ? 'multi_presence' as const : undefined);
+        : (presenceTerrainValue !== ordinaryTerrainValue
+          ? 'multi_presence' as const
+          : (unclaimedTerrainValue !== 0 ? 'unclaimed_terrain' as const : undefined));
       let persistentPowerAdjustment = 0;
       if (logicalDayForPlayer(state, player.id) === 1) {
         persistentPowerAdjustment += state.ruleOverrides?.firstLogicalDayTotalPowerAdjustmentByPlayer?.[player.id] ?? 0;
