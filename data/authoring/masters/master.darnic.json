@@ -1,0 +1,207 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.darnic",
+  "name": "达尼克·普雷斯通",
+  "class": "Master",
+  "publicInformation": {
+    "type": "master_package",
+    "initialMana": 4
+  },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "1b006a2ecd1142ad9503ae3546fb9d475b5e7c9e",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Accepted Darnic readiness PR #540 supplies the identity-free runtime authority for all three frozen consumer routes. Locked Reference supplies the exact owner identity, static metadata and printed behavior."
+  },
+  "cards": [
+    {
+      "id": "master.darnic.skill.s1",
+      "aliases": ["s1"],
+      "legacyId": "s1",
+      "name": "领地",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.darnic" },
+      "printedText": "你战场上未被占领的地利将属于你。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "darnic.s1.domain",
+          "kind": "passive",
+          "printedClause": "你战场上未被占领的地利将属于你。",
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "unclaimed_battlefield_terrain_bonus"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.darnic.skill.s1a",
+      "aliases": ["s1a"],
+      "legacyId": "s1a",
+      "name": "噬魂者",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.darnic" },
+      "printedText": "当你赢得一场战斗后，你可以将你的魔力设为4点。\n回合结束时，若你的魔力小于等于2，失去2点战果。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "darnic.s1a.soul-eater-win",
+          "kind": "optional_trigger",
+          "printedClause": "当你赢得一场战斗后，你可以将你的魔力设为4点。",
+          "activation": { "trigger": "after_controller_wins_battle" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "set_mana",
+              "amount": 4
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "opens": "after_controller_wins_battle", "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "darnic.s1a.soul-eater-round-end",
+          "kind": "forced_trigger",
+          "printedClause": "回合结束时，若你的魔力小于等于2，失去2点战果。",
+          "activation": { "trigger": "round_end" },
+          "conditions": [
+            {
+              "type": "controller_mana_at_least",
+              "value": 3,
+              "negated": true
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "adjust_victory_points",
+              "player": "controller",
+              "amount": -2
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.darnic.skill.ascension",
+      "aliases": ["ascension"],
+      "legacyId": "ascension",
+      "name": "老相识",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.darnic" },
+      "initialPlacement": "outside_game",
+      "printedText": "（将此牌加入你的技能区）\n焦土作战-被动：与你位于同一战场的对手的行动阶段开始时必须花费2点战果维持地利，否则其失去地利。\n空中支援-行动阶段：将你的地利翻倍。",
+      "cardFace": {
+        "typeLabel": "力量",
+        "attributes": ["力量"],
+        "cost": 8,
+        "basePower": 9
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [
+        { "type": "skill_zone_mana_at_least", "value": 8 }
+      ],
+      "abilities": [
+        {
+          "id": "darnic.ascension.scorched-earth",
+          "kind": "passive",
+          "printedClause": "焦土作战-被动：与你位于同一战场的对手的行动阶段开始时必须花费2点战果维持地利，否则其失去地利。",
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "same_battlefield_opponent_terrain_upkeep",
+              "victoryPointCost": 2
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "darnic.ascension.air-support",
+          "kind": "phase_action",
+          "printedClause": "空中支援-行动阶段：将你的地利翻倍。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "conditions": [
+            { "type": "source_owned" }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "double_controller_terrain_this_round",
+              "multiplier": 2,
+              "duration": "this_round"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    }
+  ],
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": ["../../Fate_Domination-开发版/images/masters/达尼克·普雷斯通.png"]
+    }
+  ]
+}

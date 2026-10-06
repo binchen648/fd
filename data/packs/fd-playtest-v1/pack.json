@@ -58,7 +58,8 @@
                                  "data/authoring/masters/master.celenike.json",
                                  "data/authoring/masters/master.chaos.json",
                                  "data/authoring/masters/master.ciel.json",
-                                 "data/authoring/masters/master.dan.json"
+                                 "data/authoring/masters/master.dan.json",
+                                 "data/authoring/masters/master.darnic.json"
                              ],
     "authoringMasterSupportFiles":  [
                                         "data/authoring/masters/master.shirou-emiya.json"
