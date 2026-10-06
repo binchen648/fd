@@ -1,0 +1,1329 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.chaos",
+  "name": "尼禄·卡欧斯",
+  "class": "Master",
+  "publicInformation": {
+    "type": "master_package",
+    "initialMana": 4
+  },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "41f6851ee598e38196c53d2b42660c90c12db19c",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen Chaos source evidence is authoritative. Accepted PR #533 identity-free definition-side-deck readiness provides runtime authority; locked Reference corroborates static metadata and printed behavior only."
+  },
+  "cards": [
+    {
+      "id": "master.chaos.skill.s1",
+      "aliases": [
+        "s1"
+      ],
+      "legacyId": "s1",
+      "name": "兽王之巢",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.chaos"
+      },
+      "printedText": "当你获得魔力时，抽取其数值一半数量的【兽】（向下取整）。【兽】置于独立的手牌区和弃牌堆。你拥有【争夺令咒】，【争夺令咒】不是令咒。\n前哨阶段：打出一张【兽】。【兽】的消耗以弃置相应数量的【兽】来支付，【兽】仅可以此方式被打出。",
+      "cardFace": {
+        "typeLabel": "前哨",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "chaos.s1.setup",
+          "kind": "forced_trigger",
+          "printedClause": "chaos.s1.setup",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "definition_side_deck_setup",
+              "deckKey": "master.chaos.beasts",
+              "definitionIds": [
+                "master.chaos.skill.s2",
+                "master.chaos.skill.s3",
+                "master.chaos.skill.s4",
+                "master.chaos.skill.s5",
+                "master.chaos.skill.s6",
+                "master.chaos.skill.s7",
+                "master.chaos.skill.s8",
+                "master.chaos.skill.s9",
+                "master.chaos.skill.s10",
+                "master.chaos.skill.s11",
+                "master.chaos.skill.s12",
+                "master.chaos.skill.s13",
+                "master.chaos.skill.s14",
+                "master.chaos.skill.s15",
+                "master.chaos.skill.s16"
+              ],
+              "shuffle": true,
+              "recycleDiscard": true,
+              "replaceOrdinaryCommandSealsWithVirtual": true
+            }
+          ]
+        },
+        {
+          "id": "chaos.s1.mana-draw",
+          "kind": "passive",
+          "printedClause": "chaos.s1.mana-draw",
+          "activation": {
+            "trigger": "while_active"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "definition_side_deck_mana_draw_rule",
+              "deckKey": "master.chaos.beasts",
+              "divisor": 2,
+              "rounding": "floor",
+              "excludedSourceDefinitionIds": [
+                "master.chaos.skill.s3",
+                "master.chaos.skill.s17"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "chaos.s1.play-beast",
+          "kind": "phase_action",
+          "printedClause": "chaos.s1.play-beast",
+          "activation": {
+            "phase": "advance",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "definition_side_deck_play_action",
+              "deckKey": "master.chaos.beasts",
+              "usageKey": "chaos.beast.play",
+              "maxUsesPerRound": 1,
+              "costSource": "printed_cost"
+            }
+          ]
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.chaos.skill.s2",
+      "aliases": [
+        "s2"
+      ],
+      "legacyId": "s2",
+      "name": "猎手",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.chaos"
+      },
+      "printedText": "【兽】\n追猎-战斗阶段：你战斗中每有一名对手，此牌便+1威力。",
+      "cardFace": {
+        "typeLabel": "力量",
+        "attributes": [
+          "力量"
+        ],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "chaos.s2.hunt",
+          "kind": "passive",
+          "printedClause": "chaos.s2.hunt",
+          "activation": {
+            "trigger": "while_active"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "source_opponent_count_power",
+              "amountPerOpponent": 1,
+              "requireSameBattlefield": true
+            }
+          ]
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "master.chaos.skill.s3",
+      "aliases": [
+        "s3"
+      ],
+      "legacyId": "s3",
+      "name": "吞噬",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.chaos"
+      },
+      "printedText": "【兽】\n献身-行动阶段：弃置至多3张【兽】并获得其数量两倍的魔力。你无法因此效果抽取【兽】。",
+      "cardFace": {
+        "typeLabel": "迅捷",
+        "attributes": [
+          "迅捷"
+        ],
+        "cost": 0,
+        "basePower": 2
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "chaos.s3.devour",
+          "kind": "phase_action",
+          "printedClause": "chaos.s3.devour",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "definition_side_deck_discard_for_mana",
+              "deckKey": "master.chaos.beasts",
+              "maxDiscard": 3,
+              "manaPerCard": 2,
+              "suppressManaDrawObserver": true
+            }
+          ]
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "master.chaos.skill.s4",
+      "aliases": [
+        "s4"
+      ],
+      "legacyId": "s4",
+      "name": "监视",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.chaos"
+      },
+      "printedText": "【兽】\n无惧-打出时：你于你下个回合的准备阶段抽3张【兽】，然后弃置2张【兽】。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": [
+          "魔术"
+        ],
+        "cost": 0,
+        "basePower": 1
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "chaos.s4.watch",
+          "kind": "residual",
+          "printedClause": "chaos.s4.watch",
+          "activation": {
+            "trigger": "on_card_played"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "definition_side_deck_delayed_draw_discard",
+              "deckKey": "master.chaos.beasts",
+              "delayRounds": 1,
+              "drawCount": 3,
+              "discardCount": 2
+            }
+          ]
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "master.chaos.skill.s5",
+      "aliases": [
+        "s5"
+      ],
+      "legacyId": "s5",
+      "name": "潜影",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.chaos"
+      },
+      "printedText": "【兽】\n诱捕-进入你所在地点的对手-5合计威力直至回合结束。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "chaos.s5.shadow",
+          "kind": "forced_trigger",
+          "printedClause": "chaos.s5.shadow",
+          "activation": {
+            "trigger": "after_controller_enters_location"
+          },
+          "conditions": [
+            {
+              "type": "event_player_is_opponent"
+            }
+          ],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "entering_opponent_power_penalty_round",
+              "amount": 5,
+              "duration": "this_round",
+              "requireSameLocation": true
+            }
+          ]
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "master.chaos.skill.s6",
+      "aliases": [
+        "s6"
+      ],
+      "legacyId": "s6",
+      "name": "巨物",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.chaos"
+      },
+      "printedText": "【兽】\n闭耳-战斗阶段：若你战败，抽2张【兽】。",
+      "cardFace": {
+        "typeLabel": "力量",
+        "attributes": [
+          "力量"
+        ],
+        "cost": 0,
+        "basePower": 3
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "chaos.s6.giant",
+          "kind": "forced_trigger",
+          "printedClause": "chaos.s6.giant",
+          "activation": {
+            "trigger": "after_controller_loses_battle"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "definition_side_deck_battle_loss_draw",
+              "deckKey": "master.chaos.beasts",
+              "count": 2
+            }
+          ]
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "master.chaos.skill.s7",
+      "aliases": [
+        "s7"
+      ],
+      "legacyId": "s7",
+      "name": "亵渎",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.chaos"
+      },
+      "printedText": "【兽】\n献祭-战斗阶段：若你获胜，你获得2点战果且你战斗中的败者失去2点战果。",
+      "cardFace": {
+        "typeLabel": "力量",
+        "attributes": [
+          "力量"
+        ],
+        "cost": 2,
+        "basePower": 3
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "chaos.s7.sacrifice",
+          "kind": "forced_trigger",
+          "printedClause": "chaos.s7.sacrifice",
+          "activation": {
+            "trigger": "after_controller_wins_battle"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "battle_win_vp_swing",
+              "controllerGain": 2,
+              "loserLoss": 2,
+              "scope": "battle_losers"
+            }
+          ]
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "master.chaos.skill.s8",
+      "aliases": [
+        "s8"
+      ],
+      "legacyId": "s8",
+      "name": "巨鲨",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.chaos"
+      },
+      "printedText": "【兽】\n摧坚-战斗阶段：令一名控制【远隔操作】的你的交战对手【败北】。",
+      "cardFace": {
+        "typeLabel": "迅捷",
+        "attributes": [
+          "迅捷"
+        ],
+        "cost": 1,
+        "basePower": 2
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "chaos.s8.shark",
+          "kind": "phase_action",
+          "printedClause": "chaos.s8.shark",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "defeat_engaged_definition_controller",
+              "requiredControlledDefinitionId": "basic.preparation",
+              "targetCount": 1
+            }
+          ]
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "master.chaos.skill.s9",
+      "aliases": [
+        "s9"
+      ],
+      "legacyId": "s9",
+      "name": "恐惧",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.chaos"
+      },
+      "printedText": "【兽】\n支配-战斗阶段：将与你位于同一战场的所有【幸运】的威力变为0。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": [
+          "魔术"
+        ],
+        "cost": 1,
+        "basePower": 2
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "chaos.s9.fear",
+          "kind": "passive",
+          "printedClause": "chaos.s9.fear",
+          "activation": {
+            "trigger": "while_active"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "same_battlefield_definition_power_zero",
+              "targetDefinitionId": "basic.luck",
+              "value": 0
+            }
+          ]
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "master.chaos.skill.s10",
+      "aliases": [
+        "s10"
+      ],
+      "legacyId": "s10",
+      "name": "哨兵",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.chaos"
+      },
+      "printedText": "【兽】\n守望-行动阶段：翻倍你的地利。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 1,
+        "basePower": 1
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "chaos.s10.sentry",
+          "kind": "phase_action",
+          "printedClause": "chaos.s10.sentry",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [
+            {
+              "type": "source_owned"
+            }
+          ],
+          "targets": [],
+          "cost": [
+            {
+              "type": "pay_mana",
+              "amount": 1
+            }
+          ],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "double_controller_terrain_this_round",
+              "multiplier": 2,
+              "duration": "this_round"
+            }
+          ]
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "master.chaos.skill.s11",
+      "aliases": [
+        "s11"
+      ],
+      "legacyId": "s11",
+      "name": "皇帝",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.chaos"
+      },
+      "printedText": "【兽】\n臣服-残留：【争夺令咒】更改为令咒。当你使用令咒后，关闭此牌。",
+      "cardFace": {
+        "typeLabel": "力量",
+        "attributes": [
+          "力量"
+        ],
+        "cost": 1,
+        "basePower": 1
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "chaos.s11.emperor",
+          "kind": "residual",
+          "printedClause": "chaos.s11.emperor",
+          "activation": {
+            "trigger": "on_card_played"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "definition_side_deck_virtual_command_seal",
+              "deckKey": "master.chaos.beasts",
+              "closeSourceAfterUse": true
+            }
+          ]
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "master.chaos.skill.s12",
+      "aliases": [
+        "s12"
+      ],
+      "legacyId": "s12",
+      "name": "破浪",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.chaos"
+      },
+      "printedText": "【兽】在1~8内自由选择X。\n突进-行动阶段：沿着箭头移动至多X步。此牌获得1+X威力。",
+      "cardFace": {
+        "typeLabel": "力量",
+        "attributes": [
+          "力量"
+        ],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "chaos.s12.breaker",
+          "kind": "phase_action",
+          "printedClause": "chaos.s12.breaker",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "forward_move_source_power",
+              "minX": 1,
+              "maxX": 8,
+              "powerBase": 1,
+              "powerPerX": 1,
+              "followMovementArrows": true
+            }
+          ]
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "master.chaos.skill.s13",
+      "aliases": [
+        "s13"
+      ],
+      "legacyId": "s13",
+      "name": "天灾",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.chaos"
+      },
+      "printedText": "【兽】自由选择X。\n过境-行动阶段：弃置一张你所在战场战果点数为X+2的事件牌。",
+      "cardFace": {
+        "typeLabel": "迅捷",
+        "attributes": [
+          "迅捷"
+        ],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "chaos.s13.disaster",
+          "kind": "phase_action",
+          "printedClause": "chaos.s13.disaster",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "discard_location_event_by_vp",
+              "minimumX": 0,
+              "vpOffset": 2,
+              "requireControllerLocation": true
+            }
+          ]
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "master.chaos.skill.s14",
+      "aliases": [
+        "s14"
+      ],
+      "legacyId": "s14",
+      "name": "幻影",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.chaos"
+      },
+      "printedText": "【兽】\n归尘-战斗阶段：你的宝具攻击获得+2威力。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": [
+          "魔术"
+        ],
+        "cost": 3,
+        "basePower": 3
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "chaos.s14.phantom",
+          "kind": "passive",
+          "printedClause": "chaos.s14.phantom",
+          "activation": {
+            "trigger": "while_active"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "controller_attribute_power_bonus",
+              "attribute": "宝具",
+              "amount": 2
+            }
+          ]
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "master.chaos.skill.s15",
+      "aliases": [
+        "s15"
+      ],
+      "legacyId": "s15",
+      "name": "原始",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.chaos"
+      },
+      "printedText": "【兽】\n野性-战斗阶段：与你位于同一战场且于本回合未花费或使用令咒的交战对手-3合计威力。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 3,
+        "basePower": 4
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "chaos.s15.primal",
+          "kind": "passive",
+          "printedClause": "chaos.s15.primal",
+          "activation": {
+            "trigger": "while_active"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "unsealed_engaged_opponent_power_penalty",
+              "amount": 3,
+              "requireNoCommandSealSpendOrUseThisRound": true
+            }
+          ]
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "master.chaos.skill.s16",
+      "aliases": [
+        "s16"
+      ],
+      "legacyId": "s16",
+      "name": "999之兽",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.chaos"
+      },
+      "printedText": "【兽】\n绝望-打出时：弃置你的所有【兽】手牌，X变为你以绝望弃置的牌数量的2倍（最大为10）。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "chaos.s16.beast999",
+          "kind": "residual",
+          "printedClause": "chaos.s16.beast999",
+          "activation": {
+            "trigger": "on_card_played"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "definition_side_deck_discard_all_source_power",
+              "deckKey": "master.chaos.beasts",
+              "multiplier": 2,
+              "maximum": 10
+            }
+          ]
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "initialPlacement": "outside_game"
+    },
+    {
+      "id": "master.chaos.skill.s17",
+      "aliases": [
+        "s17"
+      ],
+      "legacyId": "s17",
+      "name": "争夺令咒",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.chaos"
+      },
+      "printedText": "选择下列一项： <每局游戏限一次>\n行动阶段：再使用一次兽王之巢的前哨阶段效果。\n行动阶段：获得2点魔力（并抽一张【兽】）。\n行动阶段：若你获胜，获得2点战果。\n行动阶段：移动至一处相邻的地点。\n（注：兽没有魔力消耗，印刷的消耗为其需要弃置的兽数量。）",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "chaos.s17.scramble",
+          "kind": "phase_action",
+          "printedClause": "chaos.s17.scramble",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "definition_side_deck_one_shot_choice",
+              "deckKey": "master.chaos.beasts",
+              "oncePerGame": true,
+              "manaGain": 2,
+              "directDraw": 1,
+              "victoryPointReward": 2,
+              "allowAdjacentMove": true,
+              "allowBonusSideDeckPlay": true
+            }
+          ]
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.chaos.skill.ascension",
+      "aliases": [
+        "ascension"
+      ],
+      "legacyId": "ascension",
+      "name": "一人成军",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.chaos"
+      },
+      "printedText": "每回合你都可以于前哨阶段使用任意次兽王之巢。\n行动阶段：花费4点魔力，抽一张【兽】。",
+      "cardFace": {
+        "typeLabel": "升华技",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "chaos.ascension.unlimited",
+          "kind": "passive",
+          "printedClause": "chaos.ascension.unlimited",
+          "activation": {
+            "trigger": "while_active"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "definition_side_deck_unlimited_play",
+              "deckKey": "master.chaos.beasts",
+              "unlimited": true
+            }
+          ]
+        },
+        {
+          "id": "chaos.ascension.pay-draw",
+          "kind": "phase_action",
+          "printedClause": "chaos.ascension.pay-draw",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {
+            "order": "turn_order",
+            "passBehavior": "decline_this_window"
+          },
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "effects": [
+            {
+              "type": "definition_side_deck_pay_mana_draw",
+              "deckKey": "master.chaos.beasts",
+              "manaCost": 4,
+              "drawCount": 1,
+              "suppressManaDrawObserver": true
+            }
+          ]
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      },
+      "initialPlacement": "outside_game"
+    }
+  ],
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": [
+        "../../Fate_Domination-开发版/images/masters/尼禄·卡欧斯.png"
+      ]
+    }
+  ]
+}
