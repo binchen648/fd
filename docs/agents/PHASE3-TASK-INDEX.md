@@ -8954,10 +8954,12 @@ Implementation evidence:
 - complete identity-free Honor seam added for actual movement into an actual battlefield with exactly two active opponents, suppressing only the frozen battle's `competition_vp` reward on a controller win;
 - complete identity-free ascension supply seam added: unlock seeds exactly `3 x basic.preparation` + `2 x basic.surveil`, one attached definition may be additionally played per round at printed mana cost, draw 1, without consuming ordinary attack declaration quota;
 - source/ability/event/physical-card provenance is server-owned and restore-validated; no Dan identity/name/legacy-handler branch exists in production runtime;
-- Dan readiness regression `7/7 PASS`; affected terrain/scoring + authoring interpreter + MatchSession aggregate `87/87 PASS`;
+- Dan readiness regression `9/9 PASS`; affected terrain/scoring + authoring interpreter + MatchSession aggregate `89/89 PASS`;
 - typecheck PASS; content validation PASS at `19 masters / 19 servants / 20 events / 0 blocking issues`; generated determinism PASS with unchanged content `90e4312ab3097f4c0e370ab4d573202c3ca3c011b9293ddc4db92b842bb87d71`, fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`, evidence `7a6eeed4246641f832d6b7cdc84649593f8c7d2f58ecf263b38b4d5c724ea745`;
 - Phase-3 coverage verification: `archives=124`, `cards=275`, `abilities=477`, `compiledCards=205`, `compiledCharacters=38`, `blockingIssues=0`, `newRuntimeSemanticRouted=22`; automation audit: `legacyResolveEffect=160`, `legacyExecuteAbility=3`, `notClassifiable=292`, `promotionFindings=20`;
 - production identity/text audit for `master.dan`, 丹·布拉克莫尔, 五朔节骑士, 可敬的狙击手, 荣誉, and `core.dan-` is CLEAN;
 - repository-wide source-assets check reproduces exactly `93` pre-existing missing `chm-extract/图包` files and no Dan path; `git diff --check` PASS;
 - detailed result: `docs/reports/2026-10-07-p3-b-dan-owner-readiness-complete-gap-set.md`;
-- readiness remains permanently zero-credit; fresh exact implementation review is still required before A-sync/rescan.
+- first fresh review of Candidate `59a0d7ec512f06b7882acf47a0a20840c5988180` returned `IMPLEMENTATION_NEEDS_REVISION`; canonical relayed evidence is `https://github.com/binchen648/fd/pull/538#issuecomment-6024573458`;
+- bundled revision closes both findings at the authoritative `round_end`: stale `roundLocationTerrainReplacements` and stale armed-but-unconsumed `movementCompetitionSuppressions` are retired before the next round; regressions prove restore validity across two terrain transitions and an unconsumed Honor transition;
+- readiness remains permanently zero-credit; successor Candidate requires fresh exact implementation review before A-sync/rescan.

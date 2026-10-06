@@ -158,6 +158,29 @@ describe('P3 Dan owner readiness complete gap set', () => {
     expect(rules.currentDeploymentBonus(state, 'p1')).toBe(0);
   });
 
+  it('retires round terrain authority at authoritative round end and stays restore-valid across two transitions', () => {
+    const state = setup();
+    state.players[0]!.locationId = 'magic_workshop';
+    rules.processAbilityEvent(state, {
+      id: 'deploy-workshop-restore',
+      type: 'after_player_deployed_to_location',
+      playerId: 'p1',
+      locationId: 'magic_workshop',
+    });
+    expect(state.abilityRuntime!.roundLocationTerrainReplacements).toHaveLength(1);
+    expect(rules.isRoundLocationSupplyRuntimeProvenanceValidForRestore(state)).toBe(true);
+
+    rules.processAbilityEvent(state, { id: 'round-1-end-terrain', type: 'round_end' });
+    expect(state.abilityRuntime!.roundLocationTerrainReplacements).toEqual([]);
+    state.round.roundNumber += 1;
+    expect(rules.isRoundLocationSupplyRuntimeProvenanceValidForRestore(state)).toBe(true);
+
+    rules.processAbilityEvent(state, { id: 'round-2-end-terrain', type: 'round_end' });
+    state.round.roundNumber += 1;
+    expect(state.abilityRuntime!.roundLocationTerrainReplacements).toEqual([]);
+    expect(rules.isRoundLocationSupplyRuntimeProvenanceValidForRestore(state)).toBe(true);
+  });
+
   it('arms only an actual move into exactly two opponents and suppresses only that battle competition VP', () => {
     const state = setup();
     state.players[0]!.locationId = 'miyama_town';
@@ -220,6 +243,29 @@ describe('P3 Dan owner readiness complete gap set', () => {
       previousLocationId: 'shinto', locationId: 'miyama_town', movementKind: 'effect',
     });
     expect(one.abilityRuntime!.movementCompetitionSuppressions?.p1).toBeUndefined();
+  });
+
+  it('retires an armed but unconsumed Honor marker at authoritative round end', () => {
+    const state = setup();
+    state.players[0]!.locationId = 'miyama_town';
+    state.players[1]!.locationId = 'miyama_town';
+    state.players[2]!.locationId = 'miyama_town';
+    state.players[3]!.locationId = 'shinto';
+    rules.processAbilityEvent(state, {
+      id: 'move-two-opponents-unconsumed',
+      type: 'after_controller_enters_location',
+      playerId: 'p1',
+      previousLocationId: 'magic_workshop',
+      locationId: 'miyama_town',
+      movementKind: 'normal',
+    });
+    expect(state.abilityRuntime!.movementCompetitionSuppressions?.p1).toBeDefined();
+    expect(rules.isRoundLocationSupplyRuntimeProvenanceValidForRestore(state)).toBe(true);
+
+    rules.processAbilityEvent(state, { id: 'round-1-end-honor', type: 'round_end' });
+    expect(state.abilityRuntime!.movementCompetitionSuppressions?.p1).toBeUndefined();
+    state.round.roundNumber += 1;
+    expect(rules.isRoundLocationSupplyRuntimeProvenanceValidForRestore(state)).toBe(true);
   });
 
   it('seeds exactly 3 remote-operation plus 2 dash cards and permits only one attached supply play per round', () => {

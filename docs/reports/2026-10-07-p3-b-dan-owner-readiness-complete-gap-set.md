@@ -64,8 +64,8 @@ The two legal phase actions distinguish the two supplied basic definitions; iden
 
 ## Verification
 
-- Dan complete-owner readiness regression: `7/7 PASS`.
-- Dan + affected shared terrain/scoring + authoring interpreter + MatchSession aggregate: `87/87 PASS`.
+- Dan complete-owner readiness regression: `9/9 PASS`.
+- Dan + affected shared terrain/scoring + authoring interpreter + MatchSession aggregate: `89/89 PASS`.
 - `npm run typecheck`: PASS.
 - `npm run content:validate`: PASS — `19 masters / 19 servants / 20 events / 0 blocking issues`.
 - `npm run verify:generated-content`: PASS:
@@ -79,6 +79,21 @@ The two legal phase actions distinguish the two supplied basic definitions; iden
 - `git diff --check`: PASS.
 
 `npm run test:source-assets` still reproduces exactly `93` repository-pre-existing missing `chm-extract/图包` files. No Dan source path appears in that missing set; this historical repository-wide condition is not introduced by the readiness Candidate.
+
+## Revision closure after first fresh review
+
+Fresh independent review of exact Candidate `59a0d7ec512f06b7882acf47a0a20840c5988180` returned `IMPLEMENTATION_NEEDS_REVISION`.
+The completed review's bounded 403 relay was subsequently published by FORMAL without re-review at:
+`https://github.com/binchen648/fd/pull/538#issuecomment-6024573458`.
+
+Both blocking findings were closed together in one successor revision:
+
+- current-round terrain authority now retires at authoritative `round_end`, so inert historical `roundLocationTerrainReplacements` cannot survive into later rounds and poison restore;
+- armed-but-unconsumed Honor movement authority now retires at the same authoritative `round_end`, while same-round battle scoring and battle-result settlement behavior remain unchanged;
+- regression coverage explicitly crosses two round transitions for terrain restore validity and crosses one round boundary with an armed-but-unconsumed Honor marker;
+- revised focused/affected verification is `9/9` Dan readiness and `89/89` aggregate, with typecheck/content/determinism/coverage/audit/diff checks unchanged green.
+
+The successor Candidate still carries zero migration credit and requires a new fresh exact review before A-sync/rescan.
 
 ## Gate
 

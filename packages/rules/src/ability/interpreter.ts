@@ -132,7 +132,7 @@ import {
 import { canExecuteMasterAscensionUnlock, containsMasterAscensionUnlockPrivilegedNode, isAcceptedMasterAscensionUnlockAbility, resolveMasterAscensionUnlock } from './master-ascension-unlock-capability';
 import { cleanupMasterAscensionEventPowerAtRoundEnd, containsMasterAscensionEventPowerPrivilegedNode, isAcceptedMasterAscensionEventPowerAbility, isAcceptedMasterAscensionSourceDefinitionPowerAbility, isMasterAscensionEventPowerRuntimeProvenanceValidForRestore, masterAscensionNamedEventBasicPowerBonus, masterAscensionSourceDefinitionTriggerMatches, reconcileMasterAscensionEventPowerAuthority, resolveMasterAscensionEventPowerEffect, retireMasterAscensionSourceDefinitionPowerByTrigger } from './master-ascension-event-power-capability';
 import { canExecutePersistentLocationTerrainEffect, containsPersistentLocationTerrainPrivilegedNode, isAcceptedPersistentLocationTerrainAbility, isPersistentLocationTerrainRuntimeProvenanceValidForRestore, resolvePersistentLocationTerrainEffect } from './persistent-location-terrain-capability';
-import { canExecuteRoundLocationSupplyEffect, containsRoundLocationSupplyPrivilegedNode, isAcceptedRoundLocationSupplyAbility, isRoundLocationSupplyRuntimeProvenanceValidForRestore, resolveRoundLocationSupplyEffect, settleMovementCompetitionSuppression } from './round-location-supply-capability';
+import { canExecuteRoundLocationSupplyEffect, cleanupRoundLocationSupplyAtRoundEnd, containsRoundLocationSupplyPrivilegedNode, isAcceptedRoundLocationSupplyAbility, isRoundLocationSupplyRuntimeProvenanceValidForRestore, resolveRoundLocationSupplyEffect, settleMovementCompetitionSuppression } from './round-location-supply-capability';
 import { containsEffectiveLocationRestrictionPrivilegedNode, effectiveLocationRestrictionRequiresFaceDownStandardAttack, isAcceptedEffectiveLocationRestrictionAbility, isEffectiveLocationRestrictionRuntimeProvenanceValidForRestore, isPlayerAtEffectiveLocationKind } from './effective-location-restriction-capability';
 import { containsOriginStillnessPrintedCostPrivilegedNode, isAcceptedOriginStillnessPrintedCostAbility, originStillnessEligibleActiveBasicIds, originStillnessPrintedManaGain } from './origin-stillness-printed-cost-capability';
 import {
@@ -7035,6 +7035,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   settleMovementCompetitionSuppression(s, event);
   settleBoundOpponentBattleOutcome(s, event);
   if (event.type === 'round_end') {
+    cleanupRoundLocationSupplyAtRoundEnd(s);
     cleanupLinkedRoleSkillCopiesAtRoundEnd(s);
     for (const candidate of s.players) {
       const flags = structuredPlayerFlags(s, candidate.id);

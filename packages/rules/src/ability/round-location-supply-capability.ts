@@ -376,6 +376,17 @@ export function settleMovementCompetitionSuppression(
   }
 }
 
+export function cleanupRoundLocationSupplyAtRoundEnd(state: GameState): void {
+  const r = state.abilityRuntime;
+  if (!r) return;
+  const round = state.round.roundNumber;
+  r.roundLocationTerrainReplacements = (r.roundLocationTerrainReplacements ?? [])
+    .filter((entry) => entry.round > round);
+  for (const [controllerId, marker] of Object.entries(r.movementCompetitionSuppressions ?? {})) {
+    if (marker.round <= round) delete r.movementCompetitionSuppressions![controllerId];
+  }
+}
+
 export function attachedSupplyStateForPlayer(state: GameState, controllerId: PlayerId): AttachedSupplyState | undefined {
   const record = state.abilityRuntime?.attachedSupplyByPlayer?.[controllerId];
   return record && supplyRecordValid(state, record) ? record : undefined;
