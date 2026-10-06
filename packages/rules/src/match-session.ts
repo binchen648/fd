@@ -56,6 +56,7 @@ import {
 } from './ability/bloodlust-contribution-authority';
 import { clearTransientCardTransformState } from './ability/card-instance-state';
 import { isNormalCardDrawSuppressed } from './ability/timed-resource-suppression';
+import { settleSameBattlefieldTerrainUpkeepForPriorityPlayer } from './ability/unclaimed-terrain-upkeep-capability';
 import { isAcceptedDiscardBasicReplayCounterAbility, isAcceptedPhysicalCardReplayGrowthAbility } from './ability/deck-recycle-replay-growth-capability';
 import { isAcceptedLocationMarkerPlaceAbility, isValidLocationMarkerKey, locationMarkerKeyFromAbility } from './ability/location-marker-capability';
 import { isAcceptedAfterBattleSealAbility, isAcceptedPlaySealedAttacksAbility, isAcceptedRoundDefinitionAttributeReplacementAbility, isValidSealedCardMagicKey, sealedCardMagicKeyFromAbility } from './ability/sealed-card-magic-capability';
@@ -3899,6 +3900,9 @@ export class MatchSession {
       .sort((left, right) => left.seat - right.seat)[0];
     if (!next) return false;
     this.state.round.prioritySeat = next.seat;
+    if (this.state.round.activePhase === 'action') {
+      settleSameBattlefieldTerrainUpkeepForPriorityPlayer(this.state, next.id);
+    }
     this.record('priority_changed', `priority seat ${next.seat}`);
     return true;
   }

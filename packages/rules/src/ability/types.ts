@@ -415,6 +415,7 @@ export interface SafeEvent {
   fromState?: string;
   toState?: string;
   revision?: number;
+  roundNumber?: number;
   cardInstanceId?: string;
   fromZone?: string;
   toZone?: string;

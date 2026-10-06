@@ -133,6 +133,7 @@ import { canExecuteMasterAscensionUnlock, containsMasterAscensionUnlockPrivilege
 import { cleanupMasterAscensionEventPowerAtRoundEnd, containsMasterAscensionEventPowerPrivilegedNode, isAcceptedMasterAscensionEventPowerAbility, isAcceptedMasterAscensionSourceDefinitionPowerAbility, isMasterAscensionEventPowerRuntimeProvenanceValidForRestore, masterAscensionNamedEventBasicPowerBonus, masterAscensionSourceDefinitionTriggerMatches, reconcileMasterAscensionEventPowerAuthority, resolveMasterAscensionEventPowerEffect, retireMasterAscensionSourceDefinitionPowerByTrigger } from './master-ascension-event-power-capability';
 import { canExecutePersistentLocationTerrainEffect, containsPersistentLocationTerrainPrivilegedNode, isAcceptedPersistentLocationTerrainAbility, isPersistentLocationTerrainRuntimeProvenanceValidForRestore, resolvePersistentLocationTerrainEffect } from './persistent-location-terrain-capability';
 import { canExecuteRoundLocationSupplyEffect, cleanupRoundLocationSupplyAtRoundEnd, containsRoundLocationSupplyPrivilegedNode, isAcceptedRoundLocationSupplyAbility, isRoundLocationSupplyRuntimeProvenanceValidForRestore, resolveRoundLocationSupplyEffect, settleMovementCompetitionSuppression } from './round-location-supply-capability';
+import { settleSameBattlefieldTerrainUpkeepForPriorityPlayer } from './unclaimed-terrain-upkeep-capability';
 import { containsEffectiveLocationRestrictionPrivilegedNode, effectiveLocationRestrictionRequiresFaceDownStandardAttack, isAcceptedEffectiveLocationRestrictionAbility, isEffectiveLocationRestrictionRuntimeProvenanceValidForRestore, isPlayerAtEffectiveLocationKind } from './effective-location-restriction-capability';
 import { containsOriginStillnessPrintedCostPrivilegedNode, isAcceptedOriginStillnessPrintedCostAbility, originStillnessEligibleActiveBasicIds, originStillnessPrintedManaGain } from './origin-stillness-printed-cost-capability';
 import {
@@ -2141,7 +2142,10 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     const source = card(s, sourceId); const sourceState = runtime(s).cardState[sourceId]; const controller = player(s, sourceControllerId);
     if (source.ownerPlayerId !== sourceControllerId || source.controllerPlayerId !== sourceControllerId || sourceState?.faceDown === true) return false;
     if (a.cost.length === 0) {
-      if (!['field','attack_area'].includes(source.zone) || sourceState?.active !== true) return false;
+      const sourceDefinition = definition(s, sourceId);
+      const activeBoardSource = ['field','attack_area'].includes(source.zone) && sourceState?.active === true;
+      const ownedSkillSource = source.zone === 'skill' && sourceState?.active !== true && sourceDefinition?.cardType === 'master_skill';
+      if (!activeBoardSource && !ownedSkillSource) return false;
     } else if (source.zone !== 'skill' || sourceState?.active === true || controller.mana < 1) return false;
     if (eligibleMultiPresenceResolutionContexts(s,sourceId,a,event).length===0) return false;
   }
@@ -7278,6 +7282,10 @@ export function advanceAbilityPhase(
     cleanupDefinitionResourceBindingRoundState(copy, round);
   }
   copy.round.activePhase = next; copy.round.roundNumber = round; expireTimedResourceSuppressions(copy); cleanupOngoing(copy);
+  if (next === 'action') {
+    const priority = copy.players.find((candidate) => candidate.seat === copy.round.prioritySeat && candidate.status === 'active');
+    if (priority) settleSameBattlefieldTerrainUpkeepForPriorityPlayer(copy, priority.id);
+  }
   if (startsNewRound) applyDueExactDeckRebuilds(copy, round);
   if (startsNewRound) processEvent(copy, { id: nextId(copy, 'round-start'), type: 'round_start' });
   const type = next === 'battle' ? 'controller_combat_action_window' : next === 'action' ? 'controller_action_window' : next === 'round_end' ? 'round_end' : 'phase_changed';

@@ -2,6 +2,7 @@ import type { GameState } from '../schema/game';
 import type { LocationId } from '../schema/location';
 import { getLocationById } from './map-engine';
 import { roundLocationTerrainReplacement } from '../ability/round-location-supply-capability';
+import { unclaimedBattlefieldTerrainBonus } from '../ability/unclaimed-terrain-upkeep-capability';
 
 function modeState(state: GameState): Record<string, unknown> {
   return (state as unknown as { modeState?: Record<string, unknown> }).modeState ?? {};
@@ -65,9 +66,14 @@ export function assignedTerrainSlotIndex(state: GameState, battlefieldId: Locati
   if (!assignments || typeof assignments !== 'object') return undefined;
   const assigned = (assignments as Partial<Record<string, string[]>>)[battlefieldId];
   if (!Array.isArray(assigned)) return undefined;
+  const location = getLocationById(state.map, state.locationConfig, battlefieldId);
+  const slots = modeState(state).terrainAssignmentSlots;
+  const explicit = slots && typeof slots === 'object'
+    ? (slots as Partial<Record<string, Record<string, number>>>)[battlefieldId]?.[playerId]
+    : undefined;
+  if (Number.isSafeInteger(explicit) && Number(explicit) >= 0 && Number(explicit) < (location?.terrainBonuses?.length ?? 0)) return Number(explicit);
   const index = assigned.indexOf(playerId);
   if (index < 0) return undefined;
-  const location = getLocationById(state.map, state.locationConfig, battlefieldId);
   return index < (location?.terrainBonuses?.length ?? 0) ? index : undefined;
 }
 
@@ -75,12 +81,14 @@ export function terrainBonusAt(
   state: GameState,
   battlefieldId: LocationId,
   playerId: string,
-  terrainSlotIndex: number,
+  terrainSlotIndex?: number,
 ): number | undefined {
   const location = getLocationById(state.map, state.locationConfig, battlefieldId);
   if (!location?.terrainBonuses?.length || isTerrainSuppressedByAuthoredDuel(state, battlefieldId, playerId)) return undefined;
+  if (terrainSlotIndex !== undefined && (terrainSlotIndex < 0 || terrainSlotIndex >= location.terrainBonuses.length)) return undefined;
   const fixedRoundValue = roundLocationTerrainReplacement(state, playerId, battlefieldId);
-  const baseValue = fixedRoundValue ?? location.terrainBonuses[terrainSlotIndex];
+  const assignedValue = terrainSlotIndex === undefined ? 0 : Number(location.terrainBonuses[terrainSlotIndex] ?? 0);
+  const baseValue = (fixedRoundValue ?? assignedValue) + unclaimedBattlefieldTerrainBonus(state, playerId, battlefieldId);
   return typeof baseValue === 'number' ? baseValue * terrainMultiplierForPlayer(state, playerId) : undefined;
 }
 
@@ -91,6 +99,7 @@ export function currentDeploymentBonus(state: GameState, playerId: string): numb
   if (!location?.tags.includes('battlefield')) return 0;
   const fixedRoundValue = roundLocationTerrainReplacement(state, playerId, battlefieldId);
   const terrainSlotIndex = assignedTerrainSlotIndex(state, battlefieldId, playerId);
-  if (terrainSlotIndex === undefined && fixedRoundValue === undefined) return 0;
-  return terrainBonusAt(state, battlefieldId, playerId, terrainSlotIndex ?? 0) ?? 0;
+  const unclaimedBonus = unclaimedBattlefieldTerrainBonus(state, playerId, battlefieldId);
+  if (terrainSlotIndex === undefined && fixedRoundValue === undefined && unclaimedBonus === 0) return 0;
+  return terrainBonusAt(state, battlefieldId, playerId, terrainSlotIndex) ?? 0;
 }
