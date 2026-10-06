@@ -8788,7 +8788,7 @@ Implementation evidence:
 ## TASK P3-S-OWNER-CHAOS-COMPLETE-MIGRATION
 
 Owner: FORMAL migration
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Classification: owner-complete migration for the complete frozen `master.chaos` scope
 
 Frozen owner scope: exactly `18` identities (`ascension`, `s1`, `s2` through `s17`).
@@ -8822,4 +8822,31 @@ Implementation evidence:
 - repository-wide `test:source-assets` remains blocked by 93 pre-existing missing `chm-extract/图包` assets; the reported missing set contains no Chaos source path, and normal source-evidence/content validation for Chaos is green;
 - authoring delta is exactly one complete Chaos owner archive plus one pack registration and regenerated canonical content/evidence artifacts; `git diff --check` PASS;
 - detailed result: `docs/reports/2026-10-06-p3-s-owner-chaos-complete-migration-result.md`;
-- one fresh independent exact Base/Candidate migration review is required before any `+18` accounting.
+- successor Candidate `b1dba061da28fea587989223311a943e5d71eee6` received `MIGRATION_ACCEPTED` on PR #534;
+- canonical GitHub evidence: `https://github.com/binchen648/fd/pull/534#issuecomment-6009694427`;
+- exact-head Phase 3 Pre-Review Gate run `37416444529` = `SUCCESS`;
+- lawful FORMAL migration acceptance synchronization credits exactly the complete frozen `18/18` Chaos owner scope: `223/944 + 18 = 241/944`, remaining `703`;
+- acceptance synchronization report: `docs/reports/2026-10-06-p3-a-owner-chaos-acceptance-synchronization.md`;
+- stable first-occurrence owner order in `data/phase3/full-roster-ability-inventory.json` places `master.ciel` immediately after `master.chaos`; Ciel frozen scope is exactly `6` identities and canonical `data/authoring/masters/master.ciel.json` is absent (`0/6`);
+- historical Ciel component/recovery branches and loader-ready evidence do not grant parent migration credit; the next legal formal transaction is zero-credit complete-owner readiness `P3-B-CIEL-OWNER-READINESS-CAPABILITY`.
+
+## TASK P3-B-CIEL-OWNER-READINESS-CAPABILITY
+
+Owner: FORMAL readiness
+Status: `READY`
+Classification: zero-credit complete-owner readiness/preflight for `master.ciel`
+
+Frozen owner scope: exactly `6` identities in stable full-roster inventory order.
+
+Accounting boundary:
+- strict formal accounting after Chaos acceptance is `241/944`, remaining `703`;
+- canonical Ciel authoring is exactly `0/6`;
+- readiness/capability work is permanently zero-credit;
+- historical Ciel FB2/recovery/component evidence may be reused only as mechanically reverified component evidence and grants no parent-route migration credit.
+
+Formal gate:
+- mechanically recover all six frozen Ciel identities, locked Reference metadata/printed behavior, current runtime support, and exact readiness gaps before writing consumer authoring;
+- close the complete owner-local readiness gap set in one zero-credit Candidate, not per-skill migration fragments;
+- keep runtime capability shapes identity-free and bounded;
+- run focused readiness regressions, affected shared regressions, typecheck, content validation, generated determinism, Phase-3 coverage/audit, production identity/text audit, and `git diff --check`;
+- one fresh independent exact Base/Candidate implementation review is required before FORMAL zero-credit A-sync/rescan may release Ciel owner-complete migration.
