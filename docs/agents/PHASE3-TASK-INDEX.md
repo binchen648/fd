@@ -9018,7 +9018,7 @@ Implementation evidence:
 ## TASK P3-B-DARNIC-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Classification: zero-credit complete-owner readiness/preflight for `master.darnic`
 
 Frozen owner scope: exactly `3` identities — `master.darnic.skill.ascension`, `master.darnic.skill.s1`, `master.darnic.skill.s1a`.
@@ -9056,3 +9056,31 @@ Implementation evidence:
 - source-assets classification reproduces exactly `93` historical missing `chm-extract/图包` assets and `darnicHits=0`; `git diff --check` PASS;
 - detailed result: `docs/reports/2026-10-07-p3-b-darnic-owner-readiness-complete-gap-set.md`;
 - readiness remains permanently zero-credit and requires one fresh exact `IMPLEMENTATION_ACCEPTED_CANDIDATE` before A-sync/rescan.
+
+Acceptance synchronization:
+- exact Candidate `1b006a2ecd1142ad9503ae3546fb9d475b5e7c9e` received fresh `IMPLEMENTATION_ACCEPTED_CANDIDATE` on ReviewJobKey `pr540:1b006a2ecd1142ad9503ae3546fb9d475b5e7c9e`;
+- canonical evidence: `https://github.com/binchen648/fd/pull/540#issuecomment-6026259334`;
+- readiness remains zero-credit: accounting stays `250/944`, remaining `694`;
+- exact-Base rescan confirms no undiscovered Darnic owner-local runtime gap remains and canonical Darnic authoring is still `0/3`;
+- acceptance synchronization report: `docs/reports/2026-10-07-p3-a-darnic-owner-readiness-acceptance-synchronization.md`;
+- next legal FORMAL transaction is `P3-S-OWNER-DARNIC-COMPLETE-MIGRATION` for exactly the three frozen identities, with no credit until fresh `MIGRATION_ACCEPTED`.
+
+## TASK P3-S-OWNER-DARNIC-COMPLETE-MIGRATION
+
+Owner: FORMAL migration
+Status: `READY`
+Classification: owner-complete migration for `master.darnic`
+
+Frozen owner scope: exactly `3` identities — `master.darnic.skill.ascension`, `master.darnic.skill.s1`, `master.darnic.skill.s1a`.
+
+Release Base:
+- Darnic readiness acceptance-sync branch: `codex/a-p3-darnic-owner-readiness-acceptance-sync`;
+- readiness Candidate `1b006a2ecd1142ad9503ae3546fb9d475b5e7c9e` is accepted and zero-credit;
+- strict accounting before Darnic migration remains `250/944`, remaining `694`;
+- canonical Darnic authoring remains absent (`0/3`).
+
+Formal gate:
+- materialize all three frozen Darnic identities in one canonical `data/authoring/masters/master.darnic.json` consumer archive and register it exactly once in the active pack;
+- preserve locked Reference initial mana, names, printed text, cost/requirement/base power, initial placement, and all accepted readiness semantics without owner-specific production runtime routing;
+- run focused owner-complete behavior plus affected shared regressions, typecheck, content validation, generated determinism, Phase-3 coverage/audit, production identity/text audit, source-assets classification, and `git diff --check`;
+- one fresh independent exact Base/Candidate `MIGRATION_ACCEPTED` is required before any lawful `+3` accounting.
