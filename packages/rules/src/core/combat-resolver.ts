@@ -22,6 +22,7 @@ import { dynamicUnusedEngagedSealPowerAdjustment } from '../ability/command-seal
 import { shouldEachBattleWinnerReceiveFullReward } from '../ability/combat-reward-distribution';
 import { controllerHasCompetitionRewardPlunderReplacement } from '../ability/battle-plunder-replay-capability';
 import { logicalDayForPlayer } from './rule-overrides';
+import { situationBenefitsSuppressedForPlayer } from '../ability/next-round-situation-benefit-suppression';
 
 export interface CombatParticipantInput {
   playerId: string;
@@ -112,6 +113,7 @@ function getSituationBreakdowns(
   state: GameState,
   participant: CombatParticipantInput,
 ): BattleModifierBreakdown[] {
+  if (situationBenefitsSuppressedForPlayer(state, participant.playerId)) return [];
   return getRuleBreakdowns("situation", state.currentSituationModifiers, participant);
 }
 

@@ -73,6 +73,12 @@ export interface BattleResultData { winners: PlayerId[]; loserIds: PlayerId[] }
 export interface BattleResult extends BattleResultData { didWin(playerId: PlayerId): boolean; isSoleWinner(playerId: PlayerId): boolean }
 export interface AbilityEvent {
   id: string; type: string; playerId?: PlayerId; sourceCardId?: string; abilityId?: string; battleResult?: BattleResultData;
+  /** Trusted authoritative resource-transition facts for server-produced resource events. */
+  resource?: 'victory_points' | 'mana' | 'command_seals';
+  delta?: number;
+  before?: number;
+  after?: number;
+  roundNumber?: number;
   /** Server-owned battle identity facts for battle-derived trigger events. */
   battlePhaseResolutionId?: string;
   battleId?: string;
@@ -676,6 +682,12 @@ export interface AbilityRuntime {
   battlefieldsPassedOrStayedThisRound: Record<PlayerId, number>;
   /** Successful positive mana gained in the current authoritative round. */
   manaGainedThisRound: { round: number; byPlayer: Record<PlayerId, number> };
+  roundPositiveVictoryPointGain?: { round: number; byPlayer: Record<PlayerId, number> };
+  trustedVictoryPointChanges?: Record<string, {
+    playerId: PlayerId; resource: 'victory_points'; delta: number; before: number; after: number;
+    roundNumber: number; crossed?: boolean;
+  }>;
+  situationBenefitsSuppressedRoundByPlayer?: Record<PlayerId, number>;
   playRulesVersion: PlayRulesVersion;
   playCounters: RoundPlayCounters;
 }

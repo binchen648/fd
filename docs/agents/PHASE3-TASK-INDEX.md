@@ -8833,7 +8833,7 @@ Implementation evidence:
 ## TASK P3-B-CIEL-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: zero-credit complete-owner readiness/preflight for `master.ciel`
 
 Frozen owner scope: exactly `6` identities in stable full-roster inventory order.
@@ -8850,3 +8850,24 @@ Formal gate:
 - keep runtime capability shapes identity-free and bounded;
 - run focused readiness regressions, affected shared regressions, typecheck, content validation, generated determinism, Phase-3 coverage/audit, production identity/text audit, and `git diff --check`;
 - one fresh independent exact Base/Candidate implementation review is required before FORMAL zero-credit A-sync/rescan may release Ciel owner-complete migration.
+
+Implementation evidence:
+- Exact Base: `e1afb8772b76c4ca4e522ab9fda84824df2a6b5d`; strict accounting remains `241/944`, remaining `703`;
+- locked Reference mechanically confirms the complete six-identity owner scope: `s1`, `s1a`, `s1b`, `s2`, `s3`, ascension;
+- no `data/authoring/**` consumer delta is present in this readiness Candidate; canonical Ciel authoring remains `0/6`;
+- `s1`: adds one exact identity-free regular-movement engagement-waiver seam that ignores only the provider/controller engagement edge and preserves unrelated same-location engagers;
+- `s1a`: no new runtime is required; existing accepted game-start skill provisioning is sufficient for adding 【火葬式典】 to the skill zone;
+- `s1b`: mechanically replays the previously accepted generic definition-return + authoritative per-round opponent VP-gain threshold components, now with exact trusted VP transition provenance connected to current scoring paths;
+- `s2`: mechanically replays the accepted generic current deployment-bonus metric; existing controller-alone battlefield, VP adjustment, location-kind and mana adjustment primitives complete the printed behavior;
+- `s3`: mechanically replays the accepted exact next-round situation-benefit suppression seam for same-battlefield opponents without active 【幸运】, limited to situation mana/power bonuses;
+- ascension: adds one exact identity-free `+4` Strength-attack provider and one exact conditional additional-play provider (`>=8` current mana, named definition only, `+2` mana, one ordinary attack anchor required); the same accepted suppression seam is reusable for its inherited 【粉碎灵魂】 clause;
+- production runtime identity/text audit for `master.ciel`, 希耶尔, 第七圣典, 火葬式典 and `core.ciel-*` is CLEAN;
+- Ciel readiness focused + mechanically replayed historical generic component regressions: `38/38 PASS`;
+- MatchSession `34/34 PASS`; authoring interpreter `38/38 PASS`; `npm run typecheck` PASS;
+- content validation PASS: `18 masters / 19 servants / 20 events / 0 blocking issues`;
+- generated determinism PASS: content `2f48b6017d0df5ab1aac303a1a84067875b8cfe45cd7f971cf45e4844b56c81e`; fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`; evidence `faa416e9cd4ccc9795a660beb2c241591d601140fdc8ed6accead1b56aa6ddae`;
+- Phase-3 coverage completed with `archives=123`, `cards=269`, `abilities=467`, `compiledCards=198`, `compiledCharacters=37`, `blockingIssues=0`, `newRuntimeSemanticRouted=22`; automation audit completed with `legacyResolveEffect=158`, `legacyExecuteAbility=3`, `notClassifiable=284`, `promotionFindings=20`; verification-only artifacts were restored byte-for-byte from Exact Base;
+- repository-wide source-asset validation remains blocked by the same `93` pre-existing missing `chm-extract/图包` files; the emitted missing set contains no Ciel source path;
+- `git diff --check` PASS;
+- detailed result: `docs/reports/2026-10-06-p3-b-ciel-owner-readiness-complete-gap-set-result.md`;
+- fresh independent exact Base/Candidate implementation review remains mandatory; this Candidate grants `0` migration credit.

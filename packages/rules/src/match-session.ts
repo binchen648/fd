@@ -10,6 +10,7 @@ import {
   processAbilityEvent,
   processAbilitySystemEvent,
   projectAbilityState,
+  recordAuthoritativeVictoryPointChange,
   resolveMandatoryCombatPhaseActionsForPlayer,
 } from './ability/interpreter';
 import { sourceBoundDefinitionResidualGranted } from './ability/logical-day-countermeasure-capability';
@@ -3772,7 +3773,14 @@ export class MatchSession {
       // applyBattleScoring consumes battleResults, so doing this afterwards would lose owner-loss information.
       Object.assign(this.state, settleLinkedOwnerCardsAfterBattles(this.state, resolvedBattles));
       const scoringLogStart = this.state.log.length;
+      const vpBeforeScoring = new Map(this.state.players.map((player) => [player.id, player.vp]));
       Object.assign(this.state, applyBattleScoring(this.state).nextState);
+      for (const scoredPlayer of this.state.players) {
+        const before = vpBeforeScoring.get(scoredPlayer.id);
+        if (before !== undefined && before !== scoredPlayer.vp) {
+          recordAuthoritativeVictoryPointChange(this.state, scoredPlayer.id, before, scoredPlayer.vp, 'battle-scoring-vp');
+        }
+      }
       // Scoring may eliminate players after terrain slots were assigned during deployment.
       // Keep durable terrain authority aligned with the restore contract: only active players
       // still located at that battlefield may remain assigned, and stale slot overrides vanish.

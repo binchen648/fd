@@ -5,6 +5,7 @@ import { commitLinkedRoleContributions, linkedRoleCanContribute, resolveLinkedRo
 import { isManaGainSuppressed } from '../ability/timed-resource-suppression';
 import { applyStorageManaOverflowReactions, collectSameLocationManaSpendRewards } from '../ability/mana-transaction-capability';
 import { settleDefinitionResourceAuditEvents } from '../ability/definition-resource-binding-capability';
+import { situationBenefitsSuppressedForPlayer } from '../ability/next-round-situation-benefit-suppression';
 
 export type GameStartRuleOverrideName =
   | 'first_logical_day_total_power_adjustment'
@@ -174,6 +175,7 @@ export function grantMana(state: GameState, playerId: string, requestedAmount: n
   const effectiveRequestedAmount = requestedAmount * gainMultiplier;
   if (!Number.isSafeInteger(effectiveRequestedAmount) || effectiveRequestedAmount < 0) throw new Error('Mana grant multiplier produced an invalid amount.');
   let cappedRequestAmount = effectiveRequestedAmount;
+  if (options.source === 'situation' && situationBenefitsSuppressedForPlayer(state, playerId)) cappedRequestAmount = 0;
   const overrides = state.ruleOverrides;
   const climax = isClimaxRound(state, options.isClimaxSituation);
   if (options.source === 'situation' && !climax) {
