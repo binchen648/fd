@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 20,
+    "masters": 21,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -1450,6 +1450,61 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/丹·布拉克莫尔.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/丹·布拉克莫尔.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.darnic",
+      "displayName": "达尼克·普雷斯通",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/达尼克·普雷斯通.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/达尼克·普雷斯通.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.darnic.overview",
+      "displayName": "达尼克·普雷斯通",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/达尼克·普雷斯通.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/达尼克·普雷斯通.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.darnic.skill.ascension",
+      "displayName": "老相识",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/达尼克·普雷斯通.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/达尼克·普雷斯通.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.darnic.skill.s1",
+      "displayName": "领地",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/达尼克·普雷斯通.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/达尼克·普雷斯通.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.darnic.skill.s1a",
+      "displayName": "噬魂者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/达尼克·普雷斯通.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/达尼克·普雷斯通.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
       "issueCodes": []

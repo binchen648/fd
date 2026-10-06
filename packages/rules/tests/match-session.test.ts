@@ -361,7 +361,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('runs one semi-auto round through the same dispatch path', () => {
-    const session = createMatchSession({ seed: 4, humanPlayerId: 'p1' });
+    const session = createMatchSession({ seed: 1, humanPlayerId: 'p1' });
     const reason = session.runFullMatch({ maxRounds: 1 });
     const projected = session.projectToClientState('p1');
 

@@ -9068,7 +9068,7 @@ Acceptance synchronization:
 ## TASK P3-S-OWNER-DARNIC-COMPLETE-MIGRATION
 
 Owner: FORMAL migration
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: owner-complete migration for `master.darnic`
 
 Frozen owner scope: exactly `3` identities — `master.darnic.skill.ascension`, `master.darnic.skill.s1`, `master.darnic.skill.s1a`.
@@ -9084,3 +9084,18 @@ Formal gate:
 - preserve locked Reference initial mana, names, printed text, cost/requirement/base power, initial placement, and all accepted readiness semantics without owner-specific production runtime routing;
 - run focused owner-complete behavior plus affected shared regressions, typecheck, content validation, generated determinism, Phase-3 coverage/audit, production identity/text audit, source-assets classification, and `git diff --check`;
 - one fresh independent exact Base/Candidate `MIGRATION_ACCEPTED` is required before any lawful `+3` accounting.
+
+Implementation evidence:
+- Exact Base: `f6376feb3e3b615db4264fc51349ca0d4efc06ba`;
+- canonical `data/authoring/masters/master.darnic.json` now materializes exactly the frozen `3/3` scope with locked Reference identity, initial mana `4`, exact printed text, and exact ascension `力量 / cost 8 / requirement 8 / power 9 / outside_game` metadata;
+- consumer routes use only the accepted identity-free readiness authority from PR #540: unclaimed battlefield terrain, optional post-win `set_mana=4`, mana<=2 round-end `-2 VP`, exact `2 VP` same-battlefield terrain upkeep, and accepted current-round terrain doubling;
+- pack registration is exactly once and immediately after `master.dan`;
+- Darnic owner migration regression `6/6 PASS`; final affected suite `140/140 PASS` across 10 files with explicit `--testTimeout=20000`;
+- adding the 21st master changed the deterministic production pairing surface, so the one-round MatchSession smoke seed was mechanically recertified from `4` to `1`; seed `1` preserves the exact original smoke contract (`match_complete`, round 1, `round_end`, dispatch log and battle breakdown);
+- typecheck PASS; content validation PASS at `21 masters / 19 servants / 20 events / 0 blocking issues`;
+- generated determinism PASS: content `b2fc1c24e3c9ad9d2e05dd9dfbaadfda9c4900a0992afee02c8fd8f9f3a94756`, fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`, evidence `2c238ac983a3f9f9131acf16703a4a3d54c68af241deba93164139484f512823`;
+- Phase-3 coverage: `archives=126`, `cards=281`, `abilities=487`, `compiledCards=213`, `compiledCharacters=40`, `blockingIssues=0`, `newRuntimeSemanticRouted=22`, `legacyExecuteAbility=3`, `legacyResolveEffect=161`, `dualRuntime=0`, `notClassifiable=301`;
+- automation audit: `legacyResolveEffect=161`, `legacyExecuteAbility=3`, `notClassifiable=301`, `promotionFindings=20`;
+- production Darnic identity/text audit CLEAN; source-assets reproduces exactly `93` historical missing images with `darnicHits=0`; `git diff --check` PASS;
+- detailed result: `docs/reports/2026-10-07-p3-s-owner-darnic-complete-migration-result.md`;
+- Candidate remains uncredited until one fresh exact `MIGRATION_ACCEPTED` review and subsequent FORMAL A-sync/accounting.
