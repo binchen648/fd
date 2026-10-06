@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "fd-phase3-current-main-evidence-sync-v1",
+  "controlEpoch": "FD-P3-2026-09-23-04",
+  "taskId": "P3-A03-B11-CURRENT-MAIN-RESULT-BINDING-SYNC",
+  "owner": "Codex A",
+  "source": {
+    "currentMainSha": "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
+    "candidateSha": "13ab77128fe0d50a3db2a3ff3e66f7893354a6d0",
+    "candidateBranch": "codex/b-p3-b11-result-binding-production-bridge-current-main",
+    "reviewCommitSha": "f649ce869fd6b44780debd762e225256c4f2a40e",
+    "reviewArtifactPath": "docs/reviews/phase3/P3-B11-RESULT_BINDING_PRODUCTION_BRIDGE-review.json",
+    "reviewArtifactSha256": "D53D396755086CE8D5C762AF819F3C61BA91E73283A42F63E599FF1FC7084E49"
+  },
+  "review": {
+    "reviewer": "github:binchen648",
+    "verdict": "PASS",
+    "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+    "reviewEvidenceBinding": "EXACT_ARTIFACT_BOUND",
+    "scopeExpansion": "NOT_FOUND",
+    "legacyFallback": "CLOSED"
+  },
+  "scope": {
+    "mechanicFamily": "RESULT_BINDING_PRODUCTION_BRIDGE",
+    "authorizedAbilities": [
+      "conversion-magic.preparation",
+      "sc-kintoki-3.golden-eater"
+    ],
+    "localEligible": 2,
+    "localMigrated": 2,
+    "localSkipped": 0,
+    "gateAStatus": "SCOPED_PASS_REVIEWER_BOUND",
+    "gateBStatus": "SCOPED_PASS_REVIEWER_BOUND",
+    "gateCStatus": "SCOPED_PASS_REVIEWER_BOUND",
+    "legacyFallbackStatus": "CLOSED_EXACT_ARTIFACT_BOUND"
+  },
+  "coverage": {
+    "baseline": {
+      "commit": "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
+      "artifactPath": "artifacts/phase3-p3-b11-current-main-baseline-coverage.json",
+      "artifactSha256": "547371581D8C1EE8DB02D5727A7EE4A1574FCFEC56C460565EA2F995313B00D9",
+      "sourceFingerprint": "7239686f1a799c82029d383962a6674363eb1eb20b6ba399ed988f466e0a2fd0",
+      "counts": {
+        "newRuntimeSemanticRouted": 22,
+        "legacyResolveEffect": 144,
+        "legacyExecuteAbility": 3,
+        "dualRuntime": 0,
+        "notClassifiable": 112
+      },
+      "authorizedAbilityRoutes": {
+        "conversion-magic.preparation": "NEW_RUNTIME_SEMANTIC_ROUTED",
+        "sc-kintoki-3.golden-eater": "NOT_CLASSIFIABLE"
+      }
+    },
+    "candidate": {
+      "commit": "13ab77128fe0d50a3db2a3ff3e66f7893354a6d0",
+      "artifactPath": "artifacts/phase3-skill-coverage.json",
+      "artifactSha256": "F617B406C4E7B7B9AE8928ACB47E6B9B4067CF1034589398636063D630C7419C",
+      "sourceFingerprint": "45159c58666046414b1f0b4a66d58b97a27feb6da27e6e6333e7a6fdfbbe3d3a",
+      "counts": {
+        "newRuntimeSemanticRouted": 23,
+        "legacyResolveEffect": 144,
+        "legacyExecuteAbility": 3,
+        "dualRuntime": 0,
+        "notClassifiable": 111
+      },
+      "authorizedAbilityRoutes": {
+        "conversion-magic.preparation": "NEW_RUNTIME_SEMANTIC_ROUTED",
+        "sc-kintoki-3.golden-eater": "NEW_RUNTIME_SEMANTIC_ROUTED"
+      },
+      "compiledDefinitionsBlockingIssues": 0
+    },
+    "transition": {
+      "newRuntimeSemanticRouted": { "before": 22, "after": 23, "delta": 1 },
+      "legacyResolveEffect": { "before": 144, "after": 144, "delta": 0 },
+      "legacyExecuteAbility": { "before": 3, "after": 3, "delta": 0 },
+      "dualRuntime": { "before": 0, "after": 0, "delta": 0 },
+      "notClassifiable": { "before": 112, "after": 111, "delta": -1 }
+    }
+  },
+  "accounting": {
+    "mainCoverageCreditDelta": 0,
+    "mainDenominatorDelta": 0,
+    "migrationCreditDelta": 0,
+    "promotedOnMain": false
+  },
+  "status": "REVIEWER_ACCEPTED_CANDIDATE",
+  "governance": {
+    "promotionStatus": "NOT_AUTHORIZED",
+    "githubBoundGovernanceAttestation": "PENDING"
+  },
+  "nonClaims": [
+    "This sync does not promote Gate A, Gate B, or Gate C globally.",
+    "This sync does not grant main coverage or migration credit.",
+    "This sync does not mark the candidate PROMOTED_ON_MAIN.",
+    "This sync does not complete Phase 3, Full Roster, Release Gate, or Release Ready status."
+  ]
+}
