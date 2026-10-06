@@ -8880,7 +8880,7 @@ Implementation evidence:
 ## TASK P3-S-OWNER-CIEL-COMPLETE-MIGRATION
 
 Owner: FORMAL migration
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: formal owner-complete migration for `master.ciel`
 
 Frozen scope: exactly `6` identities — `s1`, `s1a`, `s1b`, `s2`, `s3`, ascension.
@@ -8898,3 +8898,19 @@ Formal gate:
 - register the archive exactly once in the canonical playtest pack;
 - run owner-complete focused regression + readiness regressions + affected shared regressions, typecheck, content validation, generated determinism, Phase-3 coverage/audit, production identity/text audit, and `git diff --check`;
 - one fresh independent exact Base/Candidate migration review is required before any `+6` accounting.
+
+Implementation evidence:
+- Exact Base: `1492fe5b18607db55e2a538c14202b1eeb4b0f6d`; strict accounting remains `241/944`, remaining `703`;
+- canonical `data/authoring/masters/master.ciel.json` now materializes exactly the frozen six identities once, with initial mana `4`, locked Reference names/text/static metadata, and no parent credit yet;
+- archive registration occurs exactly once immediately after `master.chaos`;
+- `s1`, `s1b`, `s3`, and ascension consume only synchronized/accepted identity-free readiness seams; `s1a` uses accepted game-start provisioning; `s2` uses accepted generic deployment-bonus/resource primitives;
+- Ciel owner-complete regression `6/6 PASS`; combined Ciel readiness + affected provisioning/deployment focused run `25/25 PASS`;
+- MatchSession `34/34 PASS`; authoring interpreter `38/38 PASS`; shared full-match smoke seed recertified from `20260904` to `1` because the former deterministic path still completed normally but exceeded its explicit 10s test budget after the production pack expanded to 19 masters;
+- `npm run typecheck` PASS; content validation/compile PASS at `19 masters / 19 servants / 20 events / 0 blocking issues`;
+- generated determinism PASS: content `90e4312ab3097f4c0e370ab4d573202c3ca3c011b9293ddc4db92b842bb87d71`, fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`, evidence `7a6eeed4246641f832d6b7cdc84649593f8c7d2f58ecf263b38b4d5c724ea745`;
+- Phase-3 coverage: `archives=124`, `cards=275`, `abilities=477`, `compiledCards=205`, `compiledCharacters=38`, `blockingIssues=0`, `newRuntimeSemanticRouted=22`; automation audit: `legacyResolveEffect=160`, `legacyExecuteAbility=3`, `notClassifiable=292`, `promotionFindings=20`; verification-only artifacts restored byte-for-byte from Exact Base;
+- production identity/text audit for `master.ciel`, 希耶尔, 第七圣典, 火葬式典, and `core.ciel-` is CLEAN;
+- repository-wide source-asset validation remains blocked by exactly `93` pre-existing missing `chm-extract/图包` files; emitted missing set contains no Ciel source path;
+- `git diff --check` PASS;
+- detailed result: `docs/reports/2026-10-07-p3-s-owner-ciel-complete-migration-result.md`;
+- no `+6` accounting is legal until fresh exact `MIGRATION_ACCEPTED` and FORMAL A-sync.
