@@ -8972,7 +8972,7 @@ Implementation evidence:
 ## TASK P3-S-OWNER-DAN-COMPLETE-MIGRATION
 
 Owner: FORMAL migration
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Classification: owner-complete migration for `master.dan`
 
 Frozen owner scope: exactly `3` identities — `master.dan.skill.s1`, `master.dan.skill.s1a`, `master.dan.skill.ascension`.
@@ -9008,3 +9008,9 @@ Implementation evidence:
 - source-assets classification reproduces exactly `93` pre-existing missing `chm-extract/图包` assets and `danHits=0`; `git diff --check` PASS;
 - detailed result: `docs/reports/2026-10-07-p3-s-owner-dan-complete-migration-result.md`;
 - Candidate remains uncredited until one fresh exact `MIGRATION_ACCEPTED` review and subsequent FORMAL A-sync/accounting.
+- exact Candidate `fab3e0b367491225492e9edae707ec50f8a35b4b` received fresh `MIGRATION_ACCEPTED` on ReviewJobKey `pr539:fab3e0b367491225492e9edae707ec50f8a35b4b`;
+- canonical accepted evidence: `https://github.com/binchen648/fd/pull/539#issuecomment-6025571234`;
+- fresh Reviewer independently reran the six-file focused/affected set at `100/100 PASS`; the Candidate's `95/95` prose count was explicitly classified as stale understatement, not a blocker;
+- lawful FORMAL accounting credits exactly the frozen Dan `3/3`: `247/944 + 3 = 250/944`, remaining `694`;
+- acceptance synchronization report: `docs/reports/2026-10-07-p3-a-owner-dan-acceptance-synchronization.md`;
+- stable first-occurrence owner order places `master.darnic` next, with exactly `3` frozen identities and no canonical `master.darnic.json`; next-owner readiness selection requires helper-report read + exact-Base rescan before any Darnic implementation.
