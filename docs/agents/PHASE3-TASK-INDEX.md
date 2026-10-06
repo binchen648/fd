@@ -8749,7 +8749,7 @@ Implementation evidence:
 ## TASK P3-B-CHAOS-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Classification: zero-credit complete-owner readiness/preflight for `master.chaos`
 
 Frozen owner scope: exactly `18` identities (`ascension`, `s1`, `s2` through `s17`).
@@ -8779,4 +8779,29 @@ Implementation evidence:
 - Phase-3 coverage completed with `archives=122`, `cards=251`, `abilities=446`, `compiledCards=179`, `compiledCharacters=36`, `blockingIssues=0`, `newRuntimeSemanticRouted=22`; automation audit completed with `legacyResolveEffect=158`, `legacyExecuteAbility=3`, `notClassifiable=263`, `promotionFindings=20`; verification-only artifacts were restored byte-for-byte from Exact Base;
 - `data/authoring/**` delta remains EMPTY, production runtime Chaos identity/text/legacy-handler audit is CLEAN, and `git diff --check` PASS; readiness remains permanently zero-credit, so accounting stays `223/944`, remaining `721`;
 - detailed result: `docs/reports/2026-10-06-p3-b-chaos-owner-readiness-complete-gap-set-result.md`;
-- one fresh independent exact Base/Candidate review is required before zero-credit FORMAL A-sync/rescan can release the Chaos owner-complete consumer migration.
+- fresh independent exact Base/Candidate review returned `IMPLEMENTATION_ACCEPTED_CANDIDATE` for Candidate `41f6851ee598e38196c53d2b42660c90c12db19c` on PR #533;
+- canonical GitHub evidence: `https://github.com/binchen648/fd/pull/533#issuecomment-6009446778`;
+- lawful FORMAL zero-credit acceptance rescan reconfirms canonical Chaos authoring remains `0/18`, all 18 frozen identities remain uncredited, and strict accounting stays `223/944`, remaining `721`;
+- acceptance synchronization report: `docs/reports/2026-10-06-p3-a-chaos-owner-readiness-acceptance-synchronization.md`;
+- owner-complete task `P3-S-OWNER-CHAOS-COMPLETE-MIGRATION` is released to `READY`.
+
+## TASK P3-S-OWNER-CHAOS-COMPLETE-MIGRATION
+
+Owner: FORMAL migration
+Status: `READY`
+Classification: owner-complete migration for the complete frozen `master.chaos` scope
+
+Frozen owner scope: exactly `18` identities (`ascension`, `s1`, `s2` through `s17`).
+
+Accounting boundary:
+- strict formal accounting before this migration is `223/944`, remaining `721`;
+- canonical authoring remains exactly `0/18` at the synchronized readiness boundary;
+- all 18 identities are currently uncredited, so the exact maximum lawful future increment is `+18`;
+- historical FB2-03 membership of `master.chaos.skill.s7` is reusable component evidence only and grants no parent-route or migration credit.
+
+Formal gate:
+- materialize the complete frozen 18-identity Chaos owner archive in one Candidate; do not split per skill;
+- consume only accepted identity-free readiness shapes from PR #533 and previously accepted reusable components;
+- preserve locked Reference metadata and behavior for every frozen identity;
+- run owner-complete focused regressions plus affected shared regressions, typecheck, content validation, generated determinism, Phase-3 coverage/audit, production identity/text audit, and `git diff --check`;
+- one fresh independent exact Base/Candidate migration review is required before any `+18` accounting.
