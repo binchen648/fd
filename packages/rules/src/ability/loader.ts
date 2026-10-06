@@ -12,7 +12,25 @@ import {
   isCombatOpponentPowerVpRewardCandidate,
 } from './combat-opponent-power-vp-reward';
 import { isAcceptedControlledCardCloseForbidModifier } from './card-close-forbid';
+import {
+  isAcceptedOpponentRoundVpGainThresholdAbility,
+  isOpponentRoundVpGainThresholdCandidate,
+  OPPONENT_ROUND_VP_GAIN_TRIGGER,
+} from './opponent-round-vp-gain-threshold';
+import {
+  NEXT_ROUND_SITUATION_BENEFIT_SUPPRESSION_EFFECT,
+  SITUATION_SUPPRESSION_LUCK_PREDICATE,
+  isAcceptedNextRoundSituationBenefitSuppressionAbility,
+  isNextRoundSituationBenefitSuppressionCandidate,
+} from './next-round-situation-benefit-suppression';
 import { isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
+import { REGULAR_MOVEMENT_IGNORE_SOURCE_ENGAGEMENT_EFFECT, containsRegularMovementEngagementPrivilegedNode, isAcceptedRegularMovementEngagementAbility } from './regular-movement-engagement-capability';
+import {
+  CONTROLLER_ATTACK_ATTRIBUTE_POWER_BONUS_EFFECT,
+  CONDITIONAL_DEFINITION_ADDITIONAL_PLAY_EFFECT,
+  containsConditionalAdditionalPlayPrivilegedNode,
+  isAcceptedConditionalAdditionalPlayAbility,
+} from './conditional-additional-play-capability';
 import { isLinkedOwnerCombatRule, isServantNoCommandSealsRule } from './linked-owner-combat';
 import { deductionRecordMechanicIsWellFormed, isDeductionRecordMarkerAbility, isEventLocationIsCondition, isSameLocationAsControllerConstraint } from './deduction-record';
 import { isActivePlayerCountMinusRoundPlayCostModifier } from './dynamic-play-cost';
@@ -273,7 +291,10 @@ const supportedTypes = new Set([
   DEFINITION_VARIANT_BATTERY_IGNORE_DEFEAT_EFFECT, DEFINITION_VARIANT_BATTERY_OVERLOAD_EFFECT,
   DEFINITION_VARIANT_ACTIVATION_LOCK_EFFECT, DEFINITION_VARIANT_ASCENSION_STOCK_EFFECT,
   'card_count_at_least',
-  'event_player_won_combat', 'event_player_lost_combat',
+  'event_player_won_combat', 'event_player_lost_combat', 'event_round_victory_points_gain_crosses',
+  NEXT_ROUND_SITUATION_BENEFIT_SUPPRESSION_EFFECT, SITUATION_SUPPRESSION_LUCK_PREDICATE,
+  REGULAR_MOVEMENT_IGNORE_SOURCE_ENGAGEMENT_EFFECT,
+  CONTROLLER_ATTACK_ATTRIBUTE_POWER_BONUS_EFFECT, CONDITIONAL_DEFINITION_ADDITIONAL_PLAY_EFFECT,
   'event_player_is_controller', 'event_player_is_opponent', 'event_location_equals_controller',
   'controller_command_seals_at_least', 'controller_command_seals_at_most',
   'player_flag_equals', 'player_flag_number_at_least', 'player_flag_number_current_round', 'player_flag_number_not_current_round',
@@ -296,7 +317,7 @@ const supportedTypes = new Set([
   'create_modifier', 'not_location_kind', 'power_bonus', 'card_not_on_board', 'not_card_id',
   // Master authoring adapters
   'record_master_directive', 'adjust_command_seals', 'set_mana', 'create_independent_deck',
-  'draw_from_independent_deck', 'activate_card_by_id', 'replace_card_in_deck',
+  'draw_from_independent_deck', 'activate_card_by_id', 'replace_card_in_deck', 'return_card_by_definition',
   'movement_rule_override', 'deployment_rule_override', 'play_source_card',
   'attach_card_to_player_attack', 'append_only_rule', 'transfer_vp_to_owner',
   'look_at_match_deck_bottoms', 'swap_revealed_with_deck_bottom',
@@ -362,7 +383,7 @@ const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_actio
   'after_logical_day_cycle_awakened',
   'before_situation_or_event_resolves', 'when_movement_options_requested', 'after_card_batch_played',
   'after_master_ascension_unlocked', 'event_activated',
-  'servant_package_revealed', 'mana_adjusted', 'victory_points_adjusted',
+  'servant_package_revealed', 'mana_adjusted', 'victory_points_adjusted', OPPONENT_ROUND_VP_GAIN_TRIGGER,
 ]);
 const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject', 'owner', 'player', 'target', 'amount', 'count',
   'resultZone', 'visibility', 'to', 'from', 'optional', 'excluding', 'branches', 'if', 'then', 'else', 'cardId', 'zone',
@@ -381,7 +402,9 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'recordKey', 'competitionReward', 'peekCount', 'vpCap', 'removedZone', 'sourceZone', 'minimumManaCost', 'removeSourceAfterBattle',
   'minimumSpent', 'rewardMana', 'powerBonus', 'closeAfterBattle', 'powerPerMana', 'mandatory', 'sameBattlefield',
   'manaCostIncrease', 'lossVp',
-  'definitionId', 'active', 'allowedAttributes', 'uniquePerGame', 'requiresActiveSkillSource', 'basicOnly', 'allowRepeat',
+  'definitionId', 'linkedSkillId', 'destination', 'createIfMissing', 'active', 'allowedAttributes', 'uniquePerGame', 'requiresActiveSkillSource', 'basicOnly', 'allowRepeat',
+  'where', 'roundOffset', 'benefits', 'activeOnly',
+  'minimumControllerMana', 'additionalManaCost',
   'targetRoundOffset', 'definitionIds', 'workshopLocationId', 'battlefieldDefinitionId', 'manaGain', 'ignoreDefeatManaCost',
   // New mechanic keys for 5 servants
   'options', 'label', 'condition', 'targets', 'duration', 'scope', 'statusId', 'choiceId', 'value', 'floor',
@@ -611,7 +634,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         }
       }
       if (n.op && !formulaOps.has(str(n.op))) issue(`${path}.op`, `Unmapped formula: ${str(n.op)}`, abilityId);
-      const serverMetric = ['controller.availableMana', 'consecutive_play_rounds', 'game.round_number',
+      const serverMetric = ['controller.availableMana', 'controller.deployment_bonus', 'consecutive_play_rounds', 'game.round_number',
         'controller.movement_distance_this_round',
         'controller.battlefields_passed_or_stayed_this_round'].includes(str(n.var ?? n.name));
       if ((n.var !== undefined || n.op === 'var') && !serverMetric &&
@@ -628,6 +651,14 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (n.resultVar && !/^[A-Za-z_][A-Za-z0-9_]*$/.test(str(n.resultVar))) issue(`${path}.resultVar`, 'Result variable must be a stable identifier', abilityId);
       if (n.type === 'move_player' && !str(n.to)) issue(`${path}.to`, 'Player movement requires a destination target reference', abilityId);
       if (n.type === 'draw_cards' && (!Number.isSafeInteger(n.count) || Number(n.count) < 0)) issue(`${path}.count`, 'Draw count must be a nonnegative integer', abilityId);
+      if (n.type === 'return_card_by_definition') {
+        const hasDefinitionId = typeof n.definitionId === 'string' && n.definitionId.length > 0;
+        const hasLinkedSkillId = typeof n.linkedSkillId === 'string' && n.linkedSkillId.length > 0;
+        if (hasDefinitionId === hasLinkedSkillId) issue(`${path}.definitionId`, 'Definition return requires exactly one definitionId or linkedSkillId', abilityId);
+        if (n.target !== 'controller' || n.destination !== 'master-skills' || n.createIfMissing !== true || n.face !== 'up' || n.active !== false) {
+          issue(path, 'Unsupported controller master-skill definition-return shape', abilityId);
+        }
+      }
       if (n.type === 'base_power_at_most' && (typeof n.value !== 'number' || !Number.isFinite(n.value))) issue(`${path}.value`, 'Base power bound must be finite', abilityId);
       if (['move_card', 'move_source_card', 'move_all_remaining', 'create_card'].includes(str(n.type)) &&
         !['hand', 'deck', 'discard', 'field', 'skill', 'attack_area', 'removed_from_game'].includes(str(node(n.to).zone))) issue(`${path}.to.zone`, 'Unsupported or missing destination zone', abilityId);
@@ -878,6 +909,20 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'authoring') &&
           !isAcceptedOpponentCloseOneNonResidualAbility(a, 'authoring')) {
         issue('opponentCloseToOne.gateway', 'Unsupported opponent close-to-one interaction semantic shape', id);
+      }
+      if (isOpponentRoundVpGainThresholdCandidate(a as unknown as AuthoringAbility) &&
+          !isAcceptedOpponentRoundVpGainThresholdAbility(a as unknown as AuthoringAbility, 'authoring')) {
+        issue('opponentRoundVpGainThreshold.gateway', 'Unsupported opponent round VP-gain threshold semantic shape', id);
+      }
+      if (isNextRoundSituationBenefitSuppressionCandidate(a as unknown as AuthoringAbility) &&
+          !isAcceptedNextRoundSituationBenefitSuppressionAbility(a as unknown as AuthoringAbility, 'authoring')) {
+        issue('nextRoundSituationBenefitSuppression.gateway', 'Unsupported next-round situation-benefit suppression semantic shape', id);
+      }
+      if (containsRegularMovementEngagementPrivilegedNode(candidateAbility) && !isAcceptedRegularMovementEngagementAbility(candidateAbility)) {
+        issue('regularMovementEngagement.gateway', 'Unsupported regular-movement engagement waiver semantic shape', id);
+      }
+      if (containsConditionalAdditionalPlayPrivilegedNode(candidateAbility) && !isAcceptedConditionalAdditionalPlayAbility(candidateAbility)) {
+        issue('conditionalAdditionalPlay.gateway', 'Unsupported conditional additional-play / attribute-power semantic shape', id);
       }
       if (candidateAbility.effects.some(isGrantBasicDoubleRemoveEffect) &&
           !isAcceptedRevealedBasicGrantMarkerAbility(candidateAbility)) {

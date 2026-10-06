@@ -7,6 +7,7 @@ import { movementLockedByPersistentRule, resolveManaContributionPaymentPlan, rul
 import { applyLinkedRoleEntrySealCost, linkedRoleEntrySealAuthority } from '../ability/linked-role-core-capability';
 import { effectiveLocationRestrictionBlocksMovement } from '../ability/effective-location-restriction-capability';
 import { boundOpponentRoundMovementLocked } from '../ability/definition-resource-binding-capability';
+import { regularMovementEngagementIgnored } from '../ability/regular-movement-engagement-capability';
 
 const STARTING_LOCATION_BY_SEAT: Record<number, LocationId> = {
   1: "miyama_town",
@@ -282,7 +283,7 @@ function failure(state: GameState, reason: MovePlayerResult["reason"]): MovePlay
 }
 
 function isPlayerEngaged(state: GameState, playerId: string): boolean {
-  if (state.ruleOverrides?.ignoreEngagementForMovementPlayerIds?.includes(playerId)) {
+  if (state.ruleOverrides?.ignoreEngagementForMovementPlayerIds?.includes(playerId) || regularMovementEngagementIgnored(state, playerId)) {
     return false;
   }
 

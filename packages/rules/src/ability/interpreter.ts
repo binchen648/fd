@@ -1,5 +1,18 @@
 import type { GameState, PhaseName } from '../schema/game';
 import { eventLocationEqualsController, isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
+import {
+  isAcceptedOpponentRoundVpGainThresholdAbility,
+  isOpponentRoundVpGainThresholdCondition,
+  OPPONENT_ROUND_VP_GAIN_THRESHOLD,
+  OPPONENT_ROUND_VP_GAIN_TRIGGER,
+} from './opponent-round-vp-gain-threshold';
+import {
+  NEXT_ROUND_SITUATION_BENEFIT_SUPPRESSION_EFFECT,
+  applyNextRoundSituationBenefitSuppression,
+  isAcceptedNextRoundSituationBenefitSuppressionAbility,
+  isNextRoundSituationBenefitSuppressionCandidate,
+  nextRoundSituationSuppressionQualifyingOpponentIds,
+} from './next-round-situation-benefit-suppression';
 import type { CardInstance } from '../schema/card';
 import type { LocationId } from '../schema/location';
 import { canOccupyLocation, getEnabledLocations } from '../core/map-engine';
@@ -15,6 +28,11 @@ import { classifyManaContributionChoices, commandSpellPhaseOverride, grantMana, 
 import { node, nodes, str } from './loader';
 import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
+import { currentDeploymentBonus } from '../core/terrain-advantage';
+import {
+  conditionalAttackAttributePowerBonus,
+  conditionalDefinitionAdditionalPlayModifier,
+} from './conditional-additional-play-capability';
 import {
   eligibleLeastBoundPlayerIds, isLeastBoundSelection, isRulerSealBindingCandidate, isRulerSealBindingSemantic,
   isRulerSealUseCandidate, isRulerSealUseSemantic, unspentRulerSealBindings,
@@ -905,6 +923,8 @@ export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPa
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
     manaGainedThisRound: { round: s.round.roundNumber, byPlayer: {} },
+    roundPositiveVictoryPointGain: { round: s.round.roundNumber, byPlayer: {} }, trustedVictoryPointChanges: {},
+    situationBenefitsSuppressedRoundByPlayer: {},
     playRulesVersion: options.playRulesVersion ?? 'explicit-v1',
     playCounters: { round: s.round.roundNumber, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} } };
 }
@@ -1014,6 +1034,7 @@ export function evaluateFormula(input: unknown, s: GameState, controllerId: stri
       const name = str(n.var ?? n.name);
       // Check standard variables first
       if (name === 'controller.availableMana') return player(s, controllerId).mana;
+      if (name === 'controller.deployment_bonus') return currentDeploymentBonus(s, controllerId);
       if (name === 'game.round_number') return s.round.roundNumber;
       if (name === 'consecutive_play_rounds') {
         const r = runtime(s);
@@ -1145,6 +1166,11 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
   if (definitionSideDeckPower.add !== 0) {
     result.value += definitionSideDeckPower.add;
     result.lines.push({ label: 'definition_side_deck_card_power', value: result.value });
+  }
+  const conditionalAttributeBonus = conditionalAttackAttributePowerBonus(s, sourceId);
+  if (conditionalAttributeBonus !== 0) {
+    result.value += conditionalAttributeBonus;
+    result.lines.push({ label: 'controller_attack_attribute_power_bonus', value: result.value });
   }
   for (const modifier of ((source as unknown as { powerModifiers?: Array<Record<string, unknown>> }).powerModifiers ?? [])) {
     if (modifier.lifecycle === 'until_leaves_active_area' && modifier.round !== s.round.roundNumber) continue;
@@ -1641,6 +1667,15 @@ function eventPlayerRelationCondition(s: GameState, ctx: EffectContext, c: RuleN
   return c.type === 'event_player_is_controller' ? eventPlayerId === ctx.controllerId : eventPlayerId !== ctx.controllerId;
 }
 
+function roundVpGainCrossingCondition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
+  if (!isOpponentRoundVpGainThresholdCondition(c)) reject('unsupported', 'Unsupported round VP-gain crossing condition shape');
+  const event = ctx.event;
+  if (!event || event.type !== OPPONENT_ROUND_VP_GAIN_TRIGGER || !event.playerId) return false;
+  const trusted = runtime(s).trustedVictoryPointChanges?.[event.id];
+  return !!trusted && trusted.playerId === event.playerId && trusted.resource === 'victory_points' &&
+    trusted.roundNumber === s.round.roundNumber && trusted.crossed === true;
+}
+
 function deductionRecordForPlayer(s: GameState, playerId: string) {
   return runtime(s).deductionRecordsByPlayer?.[playerId];
 }
@@ -1740,6 +1775,7 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'event_player_lost_combat': return eventCombatOutcomeCondition(s, ctx, c);
     case 'event_player_is_controller':
     case 'event_player_is_opponent': return eventPlayerRelationCondition(s, ctx, c);
+    case 'event_round_victory_points_gain_crosses': return roundVpGainCrossingCondition(s, ctx, c);
     case 'event_location_equals_controller': {
       if (!isAcceptedEventLocationEqualsControllerCondition(c)) reject('unsupported', 'Unsupported event-location relation condition shape');
       return eventLocationEqualsController(s, ctx.controllerId, ctx.event);
@@ -2002,6 +2038,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isRulerSealBindingCandidate(a) && !isRulerSealBindingSemantic(a)) return false;
   if (isRulerSealUseCandidate(a) && !isRulerSealUseSemantic(a)) return false;
   if (isCombatOpponentPowerVpRewardCandidate(a) && !isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled')) return false;
+  if (hasControllerMasterSkillDefinitionReturnCandidate(a) && !isAcceptedOpponentRoundVpGainThresholdAbility(a, 'compiled')) return false;
+  if (isNextRoundSituationBenefitSuppressionCandidate(a) && !isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled')) return false;
   if (isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled') &&
       !trustedCombatOpponentPowerRewardFacts(s, card(s, sourceId).controllerPlayerId, event)) return false;
   if (containsTimedGlobalResourceSuppressionNode(a.effects) && !isAcceptedTimedGlobalResourceSuppressionAbility(a)) return false;
@@ -2033,6 +2071,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAcceptedBattleWitherAbility(a) && !canExecuteBattleWitherEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsDefinitionSideDeckPrivilegedNode(a) && !isAcceptedDefinitionSideDeckAbility(a)) return false;
   if (isAcceptedDefinitionSideDeckAbility(a) && !canExecuteDefinitionSideDeckEffect(s, context(s, sourceId, a.id, event), a)) return false;
+  if (isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled') &&
+      nextRoundSituationSuppressionQualifyingOpponentIds(s, card(s, sourceId).controllerPlayerId).length === 0) return false;
   if (containsVesselCyclePrivilegedNode(a) && !isAcceptedVesselCycleAbility(a)) return false;
   if (isAcceptedVesselCycleAbility(a) && !canExecuteVesselCycleEffect(s, context(s, sourceId, a.id, event), a.effects[0]!)) return false;
   if (containsLogicalDayCountermeasurePrivilegedNode(a) && !isAcceptedLogicalDayCountermeasureAbility(a)) return false;
@@ -2342,7 +2382,10 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
       entersAttackArea(s, entry.cardInstanceId) && !isRequiredAdditionalPlayCard(s, entry.cardInstanceId));
     for (const c of s.cards.filter(c => c.controllerPlayerId === playerId && !staged.some(entry => entry.cardInstanceId === c.instanceId))) {
       const allowRequiredAdditional = hasOrdinaryStagedAttack && isRequiredAdditionalPlayCard(s, c.instanceId);
-      if (!playFailure(s, playerId, c.instanceId, false, false, false, false, allowRequiredAdditional) && entersAttackArea(s, c.instanceId)) {
+      const allowConditionalAdditional = hasOrdinaryStagedAttack &&
+        !!conditionalDefinitionAdditionalPlayModifier(s, playerId, c.instanceId);
+      if (!playFailure(s, playerId, c.instanceId, false, false, false, false, allowRequiredAdditional) &&
+          (entersAttackArea(s, c.instanceId) || allowConditionalAdditional)) {
         const declarationRule = declarationPlayRule(definition(s, c.instanceId));
         if (declarationRule) {
           for (const declaredAttribute of legalDeclaredAttributes(s, playerId, c.instanceId)) {
@@ -2350,7 +2393,8 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
           }
         } else result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId });
       }
-      if (!declarationPlayRule(definition(s, c.instanceId)) && !playFailure(s, playerId, c.instanceId, true, false, false, false, allowRequiredAdditional) && entersAttackArea(s, c.instanceId)) {
+      if (!allowConditionalAdditional && !declarationPlayRule(definition(s, c.instanceId)) &&
+          !playFailure(s, playerId, c.instanceId, true, false, false, false, allowRequiredAdditional) && entersAttackArea(s, c.instanceId)) {
         result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId, faceDown: true });
       }
     }
@@ -3010,11 +3054,76 @@ function returnLinkedGeneratedCardAfterBattle(s: GameState, ctx: EffectContext, 
     sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: physical.instanceId, toZone: 'discard' });
 }
 
+export function isControllerMasterSkillDefinitionReturnComponent(effect: AuthoringAbility['effects'][number]): boolean {
+  if (str(effect.type) !== 'return_card_by_definition') return false;
+  const definitionId = str(effect.definitionId);
+  const linkedSkillId = str(effect.linkedSkillId);
+  if (Boolean(definitionId) === Boolean(linkedSkillId)) return false;
+  if (effect.target !== 'controller' || effect.destination !== 'master-skills' || effect.createIfMissing !== true ||
+      effect.face !== 'up' || effect.active !== false) return false;
+  return Object.keys(effect).every((key) =>
+    ['type', 'target', 'definitionId', 'linkedSkillId', 'destination', 'createIfMissing', 'face', 'active'].includes(key));
+}
+
+function hasControllerMasterSkillDefinitionReturnCandidate(a: AuthoringAbility): boolean {
+  return a.effects.some((effect) => str(effect.type) === 'return_card_by_definition');
+}
+
+function resolveControllerMasterSkillDefinitionReturn(s: GameState, ctx: EffectContext, effect: RuleNode): void {
+  if (!isControllerMasterSkillDefinitionReturnComponent(effect)) {
+    reject('resolution_failed', 'Unsupported controller master-skill definition-return component shape');
+  }
+  const r = runtime(s); const controller = player(s, ctx.controllerId); const source = card(s, ctx.sourceCardId);
+  if (source.ownerPlayerId !== controller.id || source.controllerPlayerId !== controller.id) {
+    reject('invalid_source', 'Definition-return source must be owned and controlled by the controller');
+  }
+  const targetDefinitionId = str(effect.definitionId) || str(effect.linkedSkillId);
+  const targetDefinition = r.pack.cards[targetDefinitionId] as ExecutableCardDefinition | undefined;
+  if (!targetDefinition || targetDefinition.cardType !== 'master_skill' || targetDefinition.ownerId !== controller.masterCardId) {
+    reject('invalid_target', 'Definition-return target must be a controller-owned master_skill definition');
+  }
+  const physical = s.cards.filter((candidate) =>
+    candidate.definitionId === targetDefinitionId && candidate.ownerPlayerId === controller.id);
+  if (physical.length > 1) reject('invalid_target', 'Definition-return target has duplicate controller-owned physical instances');
+  if (physical.length === 1) {
+    const target = physical[0]!;
+    const fromZone = target.zone;
+    target.ownerPlayerId = controller.id;
+    target.controllerPlayerId = controller.id;
+    target.zone = 'skill';
+    target.visibility = { scope: 'owner_only', ownerPlayerId: controller.id };
+    clearTransientCardTransformState(s, target.instanceId);
+    r.cardState[target.instanceId] = {
+      ...(r.cardState[target.instanceId] ?? { active: false, faceDown: false, playedRound: s.round.roundNumber }),
+      active: false, faceDown: false,
+    };
+    r.events.push({ type: 'card_returned_by_definition', playerId: controller.id, sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId, cardInstanceId: target.instanceId, fromZone, toZone: 'skill',
+      movedCount: fromZone === 'skill' ? 0 : 1 });
+    return;
+  }
+  const instanceId = nextId(s, 'definition-return');
+  s.cards.push({
+    instanceId, definitionId: targetDefinitionId, ownerPlayerId: controller.id, controllerPlayerId: controller.id,
+    zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: controller.id }, generatedBy: ctx.sourceCardId,
+  });
+  r.cardState[instanceId] = { active: false, faceDown: false, playedRound: s.round.roundNumber };
+  r.events.push({ type: 'card_created', playerId: controller.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+    cardInstanceId: instanceId, toZone: 'skill', movedCount: 1 });
+}
+
 export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode): void {
   const p = player(s, ctx.controllerId); const r = runtime(s); const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   const unpreventable = a.ruleModifiers.some(m => m.rule === 'effect_prevention' && m.operation === 'ignore' && node(m.priority).tier === 'explicit_exception');
   if (r.preventEffects && !unpreventable) { r.events.push({ type: 'effect_prevented', playerId: p.id }); return; }
   switch (effect.type) {
+    case 'return_card_by_definition': resolveControllerMasterSkillDefinitionReturn(s, ctx, effect); break;
+    case NEXT_ROUND_SITUATION_BENEFIT_SUPPRESSION_EFFECT: {
+      if (!isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled')) reject('resolution_failed', 'Suppression effect requires the accepted exact whole-ability envelope');
+      try { applyNextRoundSituationBenefitSuppression(s, ctx.controllerId); }
+      catch (error) { reject('invalid_state', error instanceof Error ? error.message : 'Next-round situation-benefit suppression failed'); }
+      break;
+    }
     case CREATE_EVENT_PLAYER_DEFINITION_COPIES_EFFECT:
       createEventPlayerDefinitionCopies(s, ctx, effect, a); break;
     case GLOBAL_OPTIONAL_DEFINITION_REVEAL_REWARD_EFFECT:
@@ -6489,6 +6598,8 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 /** Server-only execution after discovery/trigger validation. Never accept an effect or context from the client. */
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (hasControllerMasterSkillDefinitionReturnCandidate(a) && !isAcceptedOpponentRoundVpGainThresholdAbility(a, 'compiled')) reject('resolution_failed', 'Definition-return component requires an independently accepted parent route');
+  if (isNextRoundSituationBenefitSuppressionCandidate(a) && !isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled')) reject('resolution_failed', 'Unsupported next-round situation-benefit suppression semantic shape');
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
   if (!commitLinkedRoleCopiedSkillUse(s, ctx.sourceCardId, ctx.controllerId)) reject('invalid_state', 'Copied linked-role servant skill lost source provenance');
   const useInteraction = classifyAbilityInteraction(a);
@@ -6865,6 +6976,20 @@ function settleArmedAttributeUseDefeat(s: GameState, event: AbilityEvent): void 
 function processEvent(s: GameState, event: AbilityEvent): void {
   const r = runtime(s);
   reconcileVesselCycleVictoryPoints(s); reconcileBloodlustVictoryPoints(s); reconcileBattleWitherVictoryPoints(s); if (r.processedEvents.includes(event.id)) return;
+  if (event.type === OPPONENT_ROUND_VP_GAIN_TRIGGER) {
+    const trusted = r.trustedVictoryPointChanges?.[event.id];
+    const keys = Object.keys(event).sort();
+    const expectedKeys = ['after', 'before', 'delta', 'id', 'playerId', 'resource', 'roundNumber', 'type'].sort();
+    const affected = event.playerId ? s.players.find((candidate) => candidate.id === event.playerId) : undefined;
+    if (!trusted || keys.length !== expectedKeys.length || keys.some((key, index) => key !== expectedKeys[index]) ||
+        !affected || event.resource !== 'victory_points' || event.roundNumber !== s.round.roundNumber ||
+        !Number.isSafeInteger(event.delta) || !Number.isSafeInteger(event.before) || !Number.isSafeInteger(event.after) ||
+        Number(event.before) < 0 || Number(event.after) < 0 || Number(event.before) + Number(event.delta) !== Number(event.after) ||
+        trusted.playerId !== event.playerId || trusted.resource !== event.resource || trusted.delta !== event.delta ||
+        trusted.before !== event.before || trusted.after !== event.after || trusted.roundNumber !== event.roundNumber) {
+      reject('invalid_event', 'VP-change event lacks exact current authoritative provenance');
+    }
+  }
   if (event.type === 'after_controller_enters_location' && event.playerId && event.locationId && (event.movementKind === 'normal' || event.movementKind === 'effect')) {
     r.locationEntryRoundByPlayer ??= {}; r.locationEntryRoundByPlayer[event.playerId] ??= {}; r.locationEntryRoundByPlayer[event.playerId]![event.locationId] = s.round.roundNumber;
   }
@@ -7004,12 +7129,81 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   if (event.type === 'round_start') settleDefinitionSideDeckRoundStart(s);
   checkFormulaTriggers(s);
 }
+function settleOpponentRoundVpThresholdAuditEvents(s: GameState, startIndex: number): void {
+  const r = runtime(s);
+  let index = Math.max(0, startIndex); let guard = 0;
+  while (index < r.events.length && guard++ < 512) {
+    const event = r.events[index++]!;
+    if (event.type !== 'victory_points_adjusted' || !event.playerId || !s.players.some((p) => p.id === event.playerId) ||
+        !Number.isSafeInteger(event.delta) || !Number.isSafeInteger(event.before) || !Number.isSafeInteger(event.after)) continue;
+    recordAuthoritativeVictoryPointChange(
+      s, event.playerId, Number(event.before), Number(event.after), 'round-vp-threshold-audit',
+    );
+  }
+  if (guard >= 512) reject('invalid_state', 'Round VP-gain audit exceeded bounded event budget');
+}
+
+/** Records and dispatches a VP transition that an existing trusted runtime path has already applied. */
+export function recordAuthoritativeVictoryPointChange(
+  s: GameState, playerId: string, before: number, after: number, label = 'vp-change',
+): string {
+  if (![before, after].every((value) => Number.isSafeInteger(value) && value >= 0)) {
+    reject('invalid_state', 'Authoritative VP transition must use nonnegative safe-integer balances');
+  }
+  const affected = s.players.find((candidate) => candidate.id === playerId);
+  if (!affected) reject('invalid_state', `Unknown player: ${playerId}`);
+  const delta = after - before;
+  if (!Number.isSafeInteger(delta)) reject('invalid_amount', 'VP adjustment delta must be a safe integer');
+  const r = runtime(s);
+  const ledger = r.roundPositiveVictoryPointGain ??= { round: s.round.roundNumber, byPlayer: {} };
+  if (ledger.round !== s.round.roundNumber) {
+    ledger.round = s.round.roundNumber;
+    ledger.byPlayer = {};
+  }
+  const previous = ledger.byPlayer[playerId] ?? 0;
+  const next = delta > 0 ? previous + delta : previous;
+  if (!Number.isSafeInteger(next)) reject('invalid_state', 'VP-gain ledger overflow');
+  ledger.byPlayer[playerId] = next;
+  const id = nextId(s, label);
+  const facts = {
+    playerId, resource: 'victory_points' as const, delta, before, after,
+    roundNumber: s.round.roundNumber,
+  };
+  (r.trustedVictoryPointChanges ??= {})[id] = {
+    ...facts,
+    crossed: previous < OPPONENT_ROUND_VP_GAIN_THRESHOLD && next >= OPPONENT_ROUND_VP_GAIN_THRESHOLD,
+  };
+  processEvent(s, { id, type: OPPONENT_ROUND_VP_GAIN_TRIGGER, ...facts });
+  return id;
+}
+
+/** Authoritative server VP producer. External event ingestion cannot manufacture this provenance. */
+export function adjustVictoryPointsAuthoritatively(s: GameState, playerId: string, requestedDelta: number): string {
+  if (!Number.isSafeInteger(requestedDelta)) reject('invalid_amount', 'VP adjustment must be a safe integer');
+  const copy = structuredClone(s);
+  const affected = copy.players.find((candidate) => candidate.id === playerId);
+  if (!affected) reject('invalid_state', `Unknown player: ${playerId}`);
+  if (!Number.isSafeInteger(affected.vp) || affected.vp < 0) reject('invalid_state', 'Player VP must be a nonnegative safe integer');
+  const before = affected.vp;
+  const after = Math.max(0, before + requestedDelta);
+  if (!Number.isSafeInteger(after)) reject('invalid_amount', 'VP adjustment result must be a safe integer');
+  affected.vp = after;
+  const id = recordAuthoritativeVictoryPointChange(copy, playerId, before, after);
+  runtime(copy).events.push({
+    type: 'victory_points_adjusted', playerId, resource: 'victory_points',
+    delta: after - before, before, after, triggerEventId: id,
+  });
+  runtime(copy).revision++;
+  Object.assign(s, copy);
+  return id;
+}
+
 /** Trusted backend event hook. Events are not part of AbilityCommand. */
 export function processAbilityEvent(s: GameState, event: AbilityEvent): void {
   if (runtime(s).processedEvents.includes(event.id)) return;
   const eventStart = runtime(s).events.length;
   const copy = structuredClone(s); copyBattlefieldAttackOfferServerAuthority(s, copy);
-  copyBloodlustContributionServerAuthority(s, copy); processEvent(copy, event); settleDefinitionResourceEvent(copy, event); settleDefinitionResourceAuditEvents(copy, eventStart); settleDefinitionSideDeckManaEvents(copy); runtime(copy).revision++;
+  copyBloodlustContributionServerAuthority(s, copy); processEvent(copy, event); settleDefinitionResourceEvent(copy, event); settleDefinitionResourceAuditEvents(copy, eventStart); settleOpponentRoundVpThresholdAuditEvents(copy, eventStart); settleDefinitionSideDeckManaEvents(copy); runtime(copy).revision++;
   Object.assign(s, copy); copyBattlefieldAttackOfferServerAuthority(copy, s);
   copyBloodlustContributionServerAuthority(copy, s);
 }
@@ -7023,6 +7217,7 @@ export function processAbilitySystemEvent(s: GameState, label: string, event: Om
   processEvent(copy, systemEvent);
   settleDefinitionResourceEvent(copy, systemEvent);
   settleDefinitionResourceAuditEvents(copy, eventStart);
+  settleOpponentRoundVpThresholdAuditEvents(copy, eventStart);
   settleDefinitionSideDeckManaEvents(copy);
   runtime(copy).revision++;
   Object.assign(s, copy);
@@ -7059,6 +7254,7 @@ export function advanceAbilityPhase(
     runtime(copy).pendingBattlefieldFortifications = (runtime(copy).pendingBattlefieldFortifications ?? []).filter((entry) => entry.round >= round);
     runtime(copy).pendingRulerSealRewards = runtime(copy).pendingRulerSealRewards.filter((reward) => reward.round >= round);
     runtime(copy).manaGainedThisRound = { round, byPlayer: {} };
+    runtime(copy).roundPositiveVictoryPointGain = { round, byPlayer: {} };
     runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
     cleanupDefinitionResourceBindingRoundState(copy, round);
   }
@@ -7178,9 +7374,14 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const currentStaged = stagedAttacks(s)[playerId] ?? [];
       const allowRequiredAdditional = isRequiredAdditionalPlayCard(s, command.cardInstanceId) && currentStaged.some((entry) =>
         entersAttackArea(s, entry.cardInstanceId) && !isRequiredAdditionalPlayCard(s, entry.cardInstanceId));
+      const allowConditionalAdditional = command.faceDown !== true &&
+        currentStaged.some((entry) => entersAttackArea(s, entry.cardInstanceId) &&
+          !isRequiredAdditionalPlayCard(s, entry.cardInstanceId) &&
+          !conditionalDefinitionAdditionalPlayModifier(s, playerId, entry.cardInstanceId)) &&
+        !!conditionalDefinitionAdditionalPlayModifier(s, playerId, command.cardInstanceId);
       const failure = playFailure(s, playerId, command.cardInstanceId, command.faceDown === true, false, false, false, allowRequiredAdditional);
       if (failure) reject(failure, 'Card cannot be staged in the current state');
-      if (!entersAttackArea(s, command.cardInstanceId)) reject('not_attack_card', 'Only attack cards can be staged');
+      if (!entersAttackArea(s, command.cardInstanceId) && !allowConditionalAdditional) reject('not_attack_card', 'Only attack or authorized additional-play cards can be staged');
       if (!legal.some(a => a.type === command.type && a.cardInstanceId === command.cardInstanceId && !!a.faceDown === !!command.faceDown && a.declaredAttribute === command.declaredAttribute)) reject('illegal_action', 'Card staging is not available');
       const staged = stagedAttacks(s);
       staged[playerId] = [...(staged[playerId] ?? []), { type: 'play_card', cardInstanceId: command.cardInstanceId, ...(command.faceDown ? { faceDown: true } : {}), ...(command.declaredAttribute ? { declaredAttribute: command.declaredAttribute } : {}) }];
@@ -8049,8 +8250,28 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   const requiredAdditionalIds = new Set(choices
     .filter(c => isRequiredAdditionalPlayCard(s, c.cardInstanceId))
     .map(c => c.cardInstanceId));
+  const ordinaryAnchorIds = new Set(choices
+    .filter((choice) => entersAttackArea(s, choice.cardInstanceId) &&
+      !requiredAdditionalIds.has(choice.cardInstanceId) &&
+      !conditionalDefinitionAdditionalPlayModifier(s, playerId, choice.cardInstanceId))
+    .map((choice) => choice.cardInstanceId));
+  const conditionalAdditional = new Map<string, NonNullable<ReturnType<typeof conditionalDefinitionAdditionalPlayModifier>>>();
+  if (quota === 'regular' && ordinaryAnchorIds.size > 0) {
+    for (const choice of choices) {
+      if (choice.faceDown) continue;
+      const modifier = conditionalDefinitionAdditionalPlayModifier(s, playerId, choice.cardInstanceId);
+      if (modifier && !ordinaryAnchorIds.has(choice.cardInstanceId)) conditionalAdditional.set(choice.cardInstanceId, modifier);
+    }
+  }
+  if (quota === 'regular' && choices.length > 1) {
+    for (const choice of choices) {
+      if (!entersAttackArea(s, choice.cardInstanceId) && !conditionalAdditional.has(choice.cardInstanceId)) {
+        reject('append_only', 'Non-attack batch member requires an accepted conditional additional-play provider');
+      }
+    }
+  }
   const regularAttackChoices = choices.filter(c =>
-    entersAttackArea(s, c.cardInstanceId) && !requiredAdditionalIds.has(c.cardInstanceId)).length;
+    entersAttackArea(s, c.cardInstanceId) && !requiredAdditionalIds.has(c.cardInstanceId) && !conditionalAdditional.has(c.cardInstanceId)).length;
   if (quota === 'regular' && requiredAdditionalIds.size > 0 && regularAttackChoices === 0) {
     reject('append_only', 'Required additional-play cards need a regular attack in the same batch');
   }
@@ -8092,7 +8313,9 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost, allowedSourceZones);
     if (failure) reject(failure, 'Card cannot be played in this batch');
     const cardCost = c.faceDown || waiveManaCost ? 0 : Math.max(minimumManaCost,
-      effectiveCardPlayCost(s, playerId, c.cardInstanceId) + (jointCostIncreaseByCard.get(c.cardInstanceId) ?? 0));
+      effectiveCardPlayCost(s, playerId, c.cardInstanceId) +
+      (jointCostIncreaseByCard.get(c.cardInstanceId) ?? 0) +
+      (conditionalAdditional.get(c.cardInstanceId)?.additionalManaCost ?? 0));
     paidCostByCard.set(c.cardInstanceId, cardCost);
     cost += cardCost;
     if (!c.faceDown) commandSealCost += cardPlayCommandSealCost(definition(s, c.cardInstanceId))?.amount ?? 0;
@@ -8120,7 +8343,9 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     if (before > 0 && after === 0) processEvent(s, { id: nextId(s, 'empty-seals-card-play'), type: 'after_controller_loses_all_command_seals', playerId });
   }
   for (const c of choices) {
-    moveCard(s, c.cardInstanceId, cardPlayClassification(s, c.cardInstanceId).destinationZone);
+    moveCard(s, c.cardInstanceId, conditionalAdditional.has(c.cardInstanceId)
+      ? 'attack_area'
+      : cardPlayClassification(s, c.cardInstanceId).destinationZone);
     const playedDefinition = definition(s, c.cardInstanceId)!;
     const limit = perGamePlayLimit(playedDefinition);
     if (limit && !logicalDayDefinitionPerGamePlayLimitIgnored(s, playerId, playedDefinition.id)) {
@@ -8215,7 +8440,7 @@ export function dispatchAbilityCommand(s: GameState, playerId: string, command: 
   copyBattlefieldAttackOfferServerAuthority(s, copy);
   copyBloodlustContributionServerAuthority(s, copy);
   try {
-    dispatch(copy, playerId, command); settleDefinitionResourceAuditEvents(copy, before); settleDefinitionSideDeckManaEvents(copy); runtime(copy).revision++; Object.assign(s, copy);
+    dispatch(copy, playerId, command); settleDefinitionResourceAuditEvents(copy, before); settleOpponentRoundVpThresholdAuditEvents(copy, before); settleDefinitionSideDeckManaEvents(copy); runtime(copy).revision++; Object.assign(s, copy);
     copyOpponentCloseToOneServerAuthority(copy, s);
     copyBattleCloseDrawPlayServerAuthority(copy, s);
     copyBattlefieldAttackOfferServerAuthority(copy, s);

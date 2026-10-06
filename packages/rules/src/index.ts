@@ -6,6 +6,7 @@ export * from './core/game-loop';
 export * from './core/map-engine';
 export * from './core/movement';
 export * from './core/rule-overrides';
+export * from './core/terrain-advantage';
 export * from './core/phase-machine';
 export * from './core/replacement-pipeline';
 export * from './core/scoring-resolver';
@@ -45,6 +46,10 @@ export * from './ability/bloodlust-cycle-capability';
 export * from './ability/vessel-cycle-capability';
 export * from './ability/combat-reward-distribution';
 export * from './ability/combat-opponent-power-vp-reward';
+export * from './ability/opponent-round-vp-gain-threshold';
+export * from './ability/next-round-situation-benefit-suppression';
+export * from './ability/regular-movement-engagement-capability';
+export * from './ability/conditional-additional-play-capability';
 export * from './ability/report';
 export * from './ability/resolution-dataflow';
 
