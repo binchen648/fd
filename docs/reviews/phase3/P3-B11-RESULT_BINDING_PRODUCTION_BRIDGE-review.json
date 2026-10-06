@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-B11-RESULT_BINDING_PRODUCTION_BRIDGE",
+  "reviewer": "github:binchen648",
+  "reviewRole": "Reviewer B / B-R",
+  "reviewMode": "fresh_exact_sha_independent_review",
+  "baseSha": "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
+  "candidateSha": "13ab77128fe0d50a3db2a3ff3e66f7893354a6d0",
+  "reviewedSha": "13ab77128fe0d50a3db2a3ff3e66f7893354a6d0",
+  "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "finalVerdict": "PASS",
+  "scope": {
+    "mechanicFamily": "RESULT_BINDING_PRODUCTION_BRIDGE",
+    "authorizedAbilities": [
+      "conversion-magic.preparation",
+      "sc-kintoki-3.golden-eater"
+    ],
+    "reviewedContracts": [
+      "semantic result-binding routing without card or ability identity checks",
+      "typed movedCount result consumption",
+      "Golden Eater staged server-owned interaction and optional second-stage no-op",
+      "dispatch-local first-stage and second-stage rollback",
+      "malformed graph fail-closed behavior without legacy fallback",
+      "browser and WebSocket projection, reconnect, and stale-command rejection"
+    ]
+  },
+  "checks": {
+    "semanticRoute": "PASS",
+    "identityFree": "PASS",
+    "typedResultConsumption": "PASS",
+    "stagedInteraction": "PASS",
+    "failClosed": "PASS",
+    "atomicFailure": "PASS",
+    "legacyFallback": "CLOSED",
+    "scopeExpansion": "NOT_FOUND"
+  },
+  "gateEvidence": {
+    "conversion-magic.preparation": {
+      "gateA": "SCOPED_PASS",
+      "gateB": "SCOPED_PASS",
+      "gateC": "SCOPED_PASS"
+    },
+    "sc-kintoki-3.golden-eater": {
+      "gateA": "SCOPED_PASS",
+      "gateB": "SCOPED_PASS",
+      "gateC": "SCOPED_PASS"
+    }
+  },
+  "verification": [
+    {
+      "command": "npx vitest run packages/rules/tests/regression/production-resolution-bridge.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts",
+      "result": "PASS",
+      "summary": "2 files / 29 tests"
+    },
+    {
+      "command": "npx playwright test -c playwright.config.ts e2e/fd-golden-eater-result-binding.spec.ts --project=chromium --repeat-each=5 --reporter=line",
+      "result": "PASS",
+      "summary": "Golden Eater 5/5"
+    },
+    {
+      "command": "npx playwright test -c playwright.config.ts e2e/fd-conversion-magic-core-primitive.spec.ts --project=chromium --repeat-each=5 --reporter=line",
+      "result": "PASS",
+      "summary": "Conversion Magic 5/5"
+    },
+    {
+      "command": "npm run test:ci -- --testTimeout=15000",
+      "result": "PASS",
+      "summary": "181 files / 1381 tests"
+    },
+    {
+      "command": "npm run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "npm run verify:generated-content",
+      "result": "PASS"
+    },
+    {
+      "command": "npm run content:validate",
+      "result": "PASS",
+      "summary": "7 masters / 7 servants / 20 events / 0 blocking issues"
+    }
+  ],
+  "negativeEvidence": [
+    {
+      "case": "malformed result-binding production graph",
+      "result": "resolution_failed with unchanged state, events, and revision; no legacy fallback"
+    },
+    {
+      "case": "optional second-stage empty selection",
+      "result": "typed no_op without mana payment or mana_paid event"
+    },
+    {
+      "case": "first-stage and second-stage downstream failure",
+      "result": "first-stage failure rolls back the complete dispatch; second-stage failure preserves the committed first stage and rolls back only the failing dispatch"
+    },
+    {
+      "case": "stale Golden Eater second-stage choose_target replay",
+      "result": "rejected without duplicate payment, movement, VP, events, revision, or pending interaction"
+    }
+  ],
+  "artifactBinding": {
+    "path": "docs/reviews/phase3/P3-B11-RESULT_BINDING_PRODUCTION_BRIDGE-review.json",
+    "reviewCommitSha": "reported from the immutable Git commit containing this artifact",
+    "artifactSha256": "reported from the committed artifact bytes",
+    "selfReferencePolicy": "Commit and file hashes are reported in the review handoff rather than embedded as literal self-referential values."
+  },
+  "nonClaims": [
+    "No mainline merge, mainline status, or migration credit is granted.",
+    "No Phase 3 or Full Roster completion is granted.",
+    "No Release Gate or Release Ready status is granted.",
+    "Scoped Gate A/B/C evidence does not promote any global Gate status."
+  ]
+}
