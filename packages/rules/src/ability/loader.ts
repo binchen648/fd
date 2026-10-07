@@ -91,6 +91,7 @@ import { ASCENSION_UNLOCK_OPPONENT_SEAL_LOSS_EFFECT, NAMED_EVENT_BASIC_POWER_BON
 import { PERSISTENT_LOCATION_TERRAIN_REPLACE_INCREMENT_EFFECT, containsPersistentLocationTerrainPrivilegedNode, isAcceptedPersistentLocationTerrainAbility } from './persistent-location-terrain-capability';
 import { ARM_MOVEMENT_COMPETITION_SUPPRESSION_EFFECT, PLAY_ATTACHED_SUPPLY_DEFINITION_EFFECT, ROUND_LOCATION_TERRAIN_REPLACEMENTS_EFFECT, SEED_ATTACHED_SUPPLY_EFFECT, containsRoundLocationSupplyPrivilegedNode, isAcceptedRoundLocationSupplyAbility } from './round-location-supply-capability';
 import { SAME_BATTLEFIELD_TERRAIN_UPKEEP_EFFECT, UNCLAIMED_BATTLEFIELD_TERRAIN_BONUS_EFFECT, containsUnclaimedTerrainUpkeepPrivilegedNode, isAcceptedUnclaimedTerrainUpkeepAbility } from './unclaimed-terrain-upkeep-capability';
+import { SWITCH_ROUND_SKILL_PROFILE_EFFECT, ROUND_CURRENT_LOCATION_TERRAIN_BONUS_EFFECT, ROUND_SKILL_CARD_POWER_BONUS_EFFECT, ROUND_PROFILE_DETERMINATION_REWARD_EFFECT, containsRoundSkillProfilePrivilegedNode, isAcceptedRoundSkillProfileAbility } from './round-skill-profile-capability';
 import { EFFECTIVE_LOCATION_SAME_LOCATION_RESTRICTIONS_EFFECT, containsEffectiveLocationRestrictionPrivilegedNode, isAcceptedEffectiveLocationRestrictionAbility } from './effective-location-restriction-capability';
 import { RECYCLE_ACTIVE_BASIC_FOR_PRINTED_COST_MANA_EFFECT, containsOriginStillnessPrintedCostPrivilegedNode, isAcceptedOriginStillnessPrintedCostAbility } from './origin-stillness-printed-cost-capability';
 import {
@@ -280,6 +281,7 @@ const supportedTypes = new Set([
   ROUND_LOCATION_TERRAIN_REPLACEMENTS_EFFECT, ARM_MOVEMENT_COMPETITION_SUPPRESSION_EFFECT,
   SEED_ATTACHED_SUPPLY_EFFECT, PLAY_ATTACHED_SUPPLY_DEFINITION_EFFECT,
   UNCLAIMED_BATTLEFIELD_TERRAIN_BONUS_EFFECT, SAME_BATTLEFIELD_TERRAIN_UPKEEP_EFFECT,
+  SWITCH_ROUND_SKILL_PROFILE_EFFECT, ROUND_CURRENT_LOCATION_TERRAIN_BONUS_EFFECT, ROUND_SKILL_CARD_POWER_BONUS_EFFECT, ROUND_PROFILE_DETERMINATION_REWARD_EFFECT,
   EFFECTIVE_LOCATION_SAME_LOCATION_RESTRICTIONS_EFFECT,
   RECYCLE_ACTIVE_BASIC_FOR_PRINTED_COST_MANA_EFFECT,
   ADJUST_OTHER_ACTIVE_PLAYERS_AT_SOURCE_LOCATION_MANA_EFFECT, DEFEAT_SINGLE_ACTIVE_OPPONENT_AT_CONTROLLER_BATTLEFIELD_EFFECT,
@@ -327,7 +329,7 @@ const supportedTypes = new Set([
   'attach_card_to_player_attack', 'append_only_rule', 'transfer_vp_to_owner',
   'look_at_match_deck_bottoms', 'swap_revealed_with_deck_bottom',
   'soul_drag_power_bonus', 'transform_to_return_silence_on_loss', 'return_silence_battle_start',
-  'false_attendant_book_replacement', 'existing_attack_controlled_by_target', 'not_controller', 'at_battlefield',
+  'false_attendant_book_replacement', 'existing_attack_controlled_by_target', 'not_controller', 'at_battlefield', 'victory_points_greater_than_controller',
   // Phase 3A resolution/data-flow infrastructure
   'remove_advantage_position', 'noop', 'fail_invariant', 'install_rule_override', 'provision_skill_cards',
   'adjust_selected_player_terrain', 'lend_source_card', 'engaged_opponent_attack_power_modifier',
@@ -410,6 +412,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'definitionId', 'linkedSkillId', 'destination', 'createIfMissing', 'active', 'allowedAttributes', 'uniquePerGame', 'requiresActiveSkillSource', 'basicOnly', 'allowRepeat',
   'where', 'roundOffset', 'benefits', 'activeOnly',
   'minimumControllerMana', 'additionalManaCost', 'triggerLocationId', 'replacements', 'opponentCount', 'suppresses', 'cards', 'drawAfterPlay', 'maxPerRound', 'victoryPointCost',
+  'stateKey', 'profileKey', 'enhancedDefinitionId', 'suppress', 'mode', 'requireHigherVictoryPointTarget', 'afterBattleManaLoss', 'onBattleLossVictoryPointLoss', 'requireBattlefield', 'requireNoAssignedTerrain', 'cardTypes',
   'targetRoundOffset', 'definitionIds', 'workshopLocationId', 'battlefieldDefinitionId', 'manaGain', 'ignoreDefeatManaCost',
   // New mechanic keys for 5 servants
   'options', 'label', 'condition', 'targets', 'duration', 'scope', 'statusId', 'choiceId', 'value', 'floor',
@@ -889,6 +892,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsUnclaimedTerrainUpkeepPrivilegedNode(candidateAbility) && !isAcceptedUnclaimedTerrainUpkeepAbility(candidateAbility)) {
         issue('unclaimedTerrainUpkeep.gateway', 'Unclaimed-terrain and terrain-upkeep privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsRoundSkillProfilePrivilegedNode(candidateAbility) && !isAcceptedRoundSkillProfileAbility(candidateAbility)) {
+        issue('roundSkillProfile.gateway', 'Round skill-profile privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       if (containsEffectiveLocationRestrictionPrivilegedNode(candidateAbility) && !isAcceptedEffectiveLocationRestrictionAbility(candidateAbility)) {
         issue('effectiveLocationRestriction.gateway', 'Effective-location restriction privileged mechanic requires an accepted exact whole-ability semantic', id);

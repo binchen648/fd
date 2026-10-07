@@ -6,6 +6,7 @@ import { isManaGainSuppressed } from '../ability/timed-resource-suppression';
 import { applyStorageManaOverflowReactions, collectSameLocationManaSpendRewards } from '../ability/mana-transaction-capability';
 import { settleDefinitionResourceAuditEvents } from '../ability/definition-resource-binding-capability';
 import { situationBenefitsSuppressedForPlayer } from '../ability/next-round-situation-benefit-suppression';
+import { roundSkillProfileSuppressed } from '../ability/round-skill-profile-capability';
 
 export type GameStartRuleOverrideName =
   | 'first_logical_day_total_power_adjustment'
@@ -98,7 +99,8 @@ export function logicalDayForPlayer(state: GameState, playerId: string): number 
 }
 
 export function movementLockedByPersistentRule(state: GameState, playerId: string): boolean {
-  return state.ruleOverrides?.movementLockedOwnActionCombatPlayerIds?.includes(playerId) === true &&
+  return !roundSkillProfileSuppressed(state, playerId, 'movement_lock') &&
+    state.ruleOverrides?.movementLockedOwnActionCombatPlayerIds?.includes(playerId) === true &&
     ['action', 'battle'].includes(state.round.activePhase);
 }
 
@@ -189,7 +191,7 @@ export function grantMana(state: GameState, playerId: string, requestedAmount: n
       ledger.round = state.round.roundNumber;
       ledger.byPlayer = {};
     }
-    const rule = overrides?.roundTotalManaGainCapByPlayer?.[playerId];
+    const rule = roundSkillProfileSuppressed(state, playerId, 'round_mana_cap') ? undefined : overrides?.roundTotalManaGainCapByPlayer?.[playerId];
     if (rule) {
       const limit = climax ? rule.climax : rule.regular;
       const remaining = Math.max(0, limit - (ledger.byPlayer[playerId] ?? 0));

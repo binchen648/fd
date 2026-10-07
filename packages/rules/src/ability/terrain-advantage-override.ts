@@ -4,6 +4,7 @@ import { getLocationById } from '../core/map-engine';
 import { persistentLocationTerrainAdvantage } from './persistent-location-terrain-capability';
 import { roundLocationTerrainReplacement } from './round-location-supply-capability';
 import { unclaimedBattlefieldTerrainBonus } from './unclaimed-terrain-upkeep-capability';
+import { roundCurrentLocationTerrainBonus } from './round-skill-profile-capability';
 
 interface TerrainOverrideEntry {
   playerId: string;
@@ -60,7 +61,7 @@ export function terrainAdvantageAtLocation(state: GameState, playerId: string, l
   const roundReplacement = roundLocationTerrainReplacement(state, playerId, locationId);
   const persistentReplacement = persistentLocationTerrainAdvantage(state, playerId, locationId);
   const base = (roundReplacement ?? persistentReplacement ?? rawTerrain(state, playerId, locationId)) +
-    unclaimedBattlefieldTerrainBonus(state, playerId, locationId);
+    unclaimedBattlefieldTerrainBonus(state, playerId, locationId) + roundCurrentLocationTerrainBonus(state, playerId, locationId);
   const adjusted = applyTerrainAdvantageOverride(state, playerId, locationId, base);
   return (mode(state).terrainMultipliers ?? []).reduce((value, entry) =>
     entry.playerId === playerId && typeof entry.multiplier === 'number' &&
