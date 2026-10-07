@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-E07-RP-00-RA3",
+  "reviewer": "github:binchen648",
+  "reviewThread": "https://github.com/binchen648/fd/pull/536#issuecomment-6038122625",
+  "candidateSha": "fba14be05af91733099a6c4ad67294e6c3beead6",
+  "conclusion": "REVIEW_ACCEPTED",
+  "controlEpoch": "FD-P3-2026-09-23-07",
+  "reviewScope": "RP-00 recount evidence contract fix",
+  "reviewMode": "read_only_exact_sha_evidence_contract_review",
+  "reviewedAt": "2026-10-07T12:41:29Z",
+  "githubObjectId": 6038122625,
+  "candidateParentSha": "fa76e0311c9f7bd0ca07c973866b12938c5fd79f",
+  "candidateRemoteBranch": "codex/a-p3-e07-rp00-evidence-contract-fix",
+  "candidateRemoteHeadVerified": true,
+  "observedRecountMainSha": "a7751c3fa51895fd3a401721b1e926b90e016862",
+  "currentMainAtReview": "7072da3f5ad5b6ae77c5fb4b7eb40634c29039b0",
+  "mainDrift": {
+    "classification": "CONTROL_ONLY_DRIFT",
+    "runtimeOverlap": false,
+    "authoringOverlap": false,
+    "coverageImplementationOverlap": false,
+    "promotionPreflightMustRevalidate": true
+  },
+  "reviewedChanges": [
+    "artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json",
+    "docs/reports/2026-10-07-p3-e06-a-post-merge-setup-create-to-skill-recount.md",
+    "scripts/tests/phase3-e06-post-merge-recount.test.ts"
+  ],
+  "contractChecks": {
+    "observedMainIsImmutableCommit": "PASS",
+    "runtimeCandidateIsObservedMainAncestor": "PASS",
+    "promotionHeadIsObservedMainAncestor": "PASS",
+    "movingRefEqualityRemoved": "PASS",
+    "movingRefCompatibilityDelegatedToPreflight": "PASS",
+    "scopeBoundary": "PASS",
+    "creditBoundary": "PASS",
+    "gateCBoundary": "PASS"
+  },
+  "coverage": {
+    "artifactSha256": "1631ECF10EF600A9828F2DF7AD583E9FAD857FABBC73C69C78545606C7121D18",
+    "freshRecountMatchesArtifactExceptGeneratedAt": true,
+    "newRuntimeSemanticRouted": 22,
+    "legacyResolveEffect": 144,
+    "legacyExecuteAbility": 3,
+    "dualRuntime": 0,
+    "notClassifiable": 112,
+    "setupRouteConsumerCount": 3,
+    "setupRouteConsumers": [
+      "military.has-support-shot",
+      "astronomical-science.has-chaldeas",
+      "useless-person.setup"
+    ]
+  },
+  "formalAccounting": {
+    "acceptedCurrentMainIdentities": 111,
+    "frozenDenominator": 944,
+    "remainingIdentities": 833,
+    "runtimePromotionDelta": 3,
+    "mainCoverageCreditDelta": 0,
+    "mainDenominatorDelta": 0,
+    "migrationCreditDelta": 0
+  },
+  "boundArtifacts": [
+    {
+      "path": "artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json",
+      "sha256": "138568331B2986458A753F6EC3BAA1DA7F32E21C3B11E68C27AA288077066D36"
+    },
+    {
+      "path": "artifacts/phase3-skill-coverage.json",
+      "sha256": "1631ECF10EF600A9828F2DF7AD583E9FAD857FABBC73C69C78545606C7121D18"
+    }
+  ],
+  "verification": [
+    {
+      "command": "npx vitest run scripts/tests/phase3-e06-post-merge-recount.test.ts",
+      "result": "PASS",
+      "summary": "1 file / 1 test"
+    },
+    {
+      "command": "npm run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "npm run content:validate",
+      "result": "PASS",
+      "summary": "0 blocking issues"
+    },
+    {
+      "command": "npm run verify:generated-content",
+      "result": "PASS"
+    },
+    {
+      "command": "npm run test:source-assets",
+      "result": "BLOCKED_EXPECTED",
+      "summary": "93 MISSING_IMAGE issues"
+    },
+    {
+      "command": "git diff --check fa76e0311c9f7bd0ca07c973866b12938c5fd79f..fba14be05af91733099a6c4ad67294e6c3beead6",
+      "result": "PASS"
+    }
+  ],
+  "findings": [],
+  "finalVerdict": "POST_MERGE_RECOUNT_PASS",
+  "allowedNextOwner": "Planner / Integration Owner",
+  "nonClaims": [
+    "This review does not create or authorize a merge.",
+    "This review does not grant Gate C.",
+    "This review does not grant migration, denominator, or coverage credit.",
+    "This review does not complete Phase 3 or the Release Gate.",
+    "Current-main compatibility must be revalidated by promotion preflight."
+  ]
+}
