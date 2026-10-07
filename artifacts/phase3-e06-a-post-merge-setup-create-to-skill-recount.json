@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "fd-phase3-post-merge-recount-v1",
+  "controlEpoch": "FD-P3-2026-09-23-06",
+  "taskId": "P3-E06-A-POST-MERGE-SETUP-CREATE-TO-SKILL-RECOUNT",
+  "owner": "Codex A",
+  "status": "POST_MERGE_RECOUNT_READY_FOR_REVIEW",
+  "main": {
+    "sha": "a7751c3fa51895fd3a401721b1e926b90e016862",
+    "firstParent": "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
+    "promotionPr": 536,
+    "promotionHead": "119b8f33e9d59691996a5d03a8dc7589fc816a61",
+    "mergeSha": "a7751c3fa51895fd3a401721b1e926b90e016862",
+    "mergeStatus": "MERGED"
+  },
+  "runtimePromotion": {
+    "candidateSha": "30be3b74258c817ede1cb857ace947505b62d8ed",
+    "candidateInMain": true,
+    "candidateBase": "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
+    "reviewerB": {
+      "artifactPath": "artifacts/reviewer-evidence/2026-09-29-p3-e04-s00-a2-reviewer-b.json",
+      "artifactSha256": "FD988E5544AF230D148FE9CD94E218293D54BFFB05BCFA3AE7C09B3970D66C67",
+      "reviewCommit": "73733de713e0deb833241417a04f061faf3ce8a3"
+    },
+    "reviewerA": {
+      "bindingArtifactPath": "artifacts/phase3-e04-s00-a2-reviewer-a-sync-binding.json",
+      "bindingArtifactSha256": "4E92FEF7AB33C025AB13170DB1F5A24B7AEADDBC9A6A5C1EEEB81AE3ED7A0A31",
+      "bindingCommit": "3af8509693cdae285051c75e499bbcef3e9a8a96",
+      "reviewedSyncSha": "00add371a1d32d09ed9c09ca3856490a1fa6ad6a",
+      "verdict": "PASS"
+    },
+    "governance": {
+      "attestationPath": "docs/agents/manifests/governance/P3-E06-G-OVERRIDE-ATTESTATION.json",
+      "attestationSha256": "B88CB5C0D16F4D6243BC0C484037478ECB74778001D5BE5EE50DD138775AAE31",
+      "verdict": "GOVERNANCE_INPUT_COMPLETE"
+    },
+    "authorizedAbilities": [
+      "military.has-support-shot",
+      "astronomical-science.has-chaldeas",
+      "useless-person.setup"
+    ],
+    "currentMainState": "PROMOTED_ON_MAIN_RECOUNTED",
+    "legacyFallbackStatus": "CLOSED_EXACT_ARTIFACT_BOUND",
+    "gateAStatus": "REVIEWER_ACCEPTED_CANDIDATE",
+    "gateBStatus": "REVIEWER_ACCEPTED_CANDIDATE",
+    "gateCStatus": "NOT_VERIFIED"
+  },
+  "coverage": {
+    "artifactPath": "artifacts/phase3-skill-coverage.json",
+    "artifactSha256": "1631ECF10EF600A9828F2DF7AD583E9FAD857FABBC73C69C78545606C7121D18",
+    "sourceFingerprint": "7239686f1a799c82029d383962a6674363eb1eb20b6ba399ed988f466e0a2fd0",
+    "counts": {
+      "totalArchives": 127,
+      "totalCards": 169,
+      "totalAbilities": 281,
+      "newRuntimeSemanticRouted": 22,
+      "legacyResolveEffect": 144,
+      "legacyExecuteAbility": 3,
+      "dualRuntime": 0,
+      "notClassifiable": 112,
+      "compiledBlockingIssues": 0
+    },
+    "semanticRoute": "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL=3"
+  },
+  "formalAccounting": {
+    "frozenDenominator": 944,
+    "acceptedCurrentMainIdentities": 111,
+    "remainingIdentities": 833,
+    "duplicateAcceptedIds": 0,
+    "mainCoverageCreditDelta": 0,
+    "mainDenominatorDelta": 0,
+    "migrationCreditDelta": 0,
+    "runtimePromotionDelta": 3,
+    "promotedOnMain": true,
+    "canonicalNumeratorChanged": false
+  },
+  "validation": {
+    "contentValidation": "PASS_0_BLOCKING_ISSUES",
+    "generatedContentDeterminism": "PASS",
+    "requiredSourceAssets": "BLOCKED_93_MISSING_IMAGE",
+    "gateC": "NO_CHANGE_NOT_VERIFIED",
+    "releaseGate": "BLOCKED_MISSING_IMAGE_ASSETS"
+  },
+  "nonClaims": [
+    "This recount does not add migration or main coverage credit.",
+    "This recount does not promote Gate A, Gate B, or Gate C globally.",
+    "This recount does not complete Phase 3, Full Roster, or Release Gate.",
+    "The three setup consumers are runtime-promotion status only; canonical 111/944 remains unchanged."
+  ]
+}
