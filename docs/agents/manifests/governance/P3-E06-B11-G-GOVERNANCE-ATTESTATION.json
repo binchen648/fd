@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "fd-phase3-governance-attestation-v1",
+  "controlEpoch": "FD-P3-2026-09-23-06",
+  "taskId": "P3-E06-B11-G-GOVERNANCE",
+  "acceptedRuntimeTaskId": "P3-B11-RESULT_BINDING_PRODUCTION_BRIDGE",
+  "owner": "Codex G",
+  "governanceIdentity": "github:binchen648",
+  "accountPolicy": {
+    "distinctGitHubAccountRequired": false,
+    "distinctProcessRolesRequired": true,
+    "distinctArtifactsRequired": true,
+    "source": "user-approved owner-authored review override"
+  },
+  "repository": "binchen648/fd",
+  "source": {
+    "currentMainSha": "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
+    "candidateSha": "13ab77128fe0d50a3db2a3ff3e66f7893354a6d0",
+    "candidateBranch": "codex/b-p3-b11-result-binding-production-bridge-current-main",
+    "candidateCommitUrl": "https://github.com/binchen648/fd/commit/13ab77128fe0d50a3db2a3ff3e66f7893354a6d0",
+    "reviewCommitSha": "f649ce869fd6b44780debd762e225256c4f2a40e",
+    "reviewBranch": "codex/r-p3-b11-13ab771-attestation",
+    "reviewCommitUrl": "https://github.com/binchen648/fd/commit/f649ce869fd6b44780debd762e225256c4f2a40e",
+    "synchronizationSha": "c6ecaf5f6eb1a3a441baa21768f8abd8f713321b",
+    "synchronizationBranch": "codex/a-p3-b11-current-main-evidence-sync",
+    "synchronizationCommitUrl": "https://github.com/binchen648/fd/commit/c6ecaf5f6eb1a3a441baa21768f8abd8f713321b"
+  },
+  "lineage": {
+    "currentMainIsCandidateAncestor": true,
+    "candidateIsReviewParent": true,
+    "reviewIsSynchronizationParent": true,
+    "exactSequence": [
+      "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
+      "13ab77128fe0d50a3db2a3ff3e66f7893354a6d0",
+      "f649ce869fd6b44780debd762e225256c4f2a40e",
+      "c6ecaf5f6eb1a3a441baa21768f8abd8f713321b"
+    ],
+    "postCandidateRuntimeOrAuthoringDelta": "NONE"
+  },
+  "artifacts": {
+    "review": {
+      "path": "docs/reviews/phase3/P3-B11-RESULT_BINDING_PRODUCTION_BRIDGE-review.json",
+      "sha256": "D53D396755086CE8D5C762AF819F3C61BA91E73283A42F63E599FF1FC7084E49",
+      "verdict": "PASS",
+      "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+      "legacyFallback": "CLOSED"
+    },
+    "synchronization": {
+      "path": "artifacts/phase3-p3-b11-current-main-result-binding-sync.json",
+      "sha256": "C07B9B2D1A11937A959EC44DBF0BA669ACD2F489AE864461F716371B80E49682"
+    },
+    "baselineCoverage": {
+      "path": "artifacts/phase3-p3-b11-current-main-baseline-coverage.json",
+      "sha256": "547371581D8C1EE8DB02D5727A7EE4A1574FCFEC56C460565EA2F995313B00D9"
+    },
+    "candidateCoverage": {
+      "path": "artifacts/phase3-skill-coverage.json",
+      "sha256": "F617B406C4E7B7B9AE8928ACB47E6B9B4067CF1034589398636063D630C7419C"
+    }
+  },
+  "authorizedScope": {
+    "mechanicFamily": "RESULT_BINDING_PRODUCTION_BRIDGE",
+    "abilities": [
+      "conversion-magic.preparation",
+      "sc-kintoki-3.golden-eater"
+    ],
+    "scopeExpansionFound": false,
+    "legacyFallbackStatus": "CLOSED_FOR_AUTHORIZED_SCOPE"
+  },
+  "freshVerification": {
+    "remoteRefs": "PASS",
+    "githubCommitIdentityBinding": "PASS",
+    "lineage": "PASS",
+    "artifactSha256": "PASS",
+    "focusedTests": "PASS 3 files / 30 tests",
+    "fullCi": "PASS 182 files / 1382 tests",
+    "typecheck": "PASS",
+    "contentValidation": "PASS 0 blocking issues",
+    "strictSourceAssetValidation": "EXPECTED_EXTERNAL_BLOCKER 93 MISSING_IMAGE"
+  },
+  "coverage": {
+    "newRuntimeSemanticRoutedDelta": 1,
+    "legacyResolveEffectDelta": 0,
+    "legacyExecuteAbilityDelta": 0,
+    "dualRuntimeDelta": 0,
+    "notClassifiableDelta": -1
+  },
+  "accounting": {
+    "mainCoverageCreditDelta": 0,
+    "mainDenominatorDelta": 0,
+    "migrationCreditDelta": 0,
+    "promotedOnMain": false,
+    "gateCGloballyVerified": false
+  },
+  "blockersAndNonClaims": {
+    "sourceAssetMissingImageCount": 93,
+    "sourceAssetBlockerAppliesTo": "CONTENT_AND_RELEASE_READINESS",
+    "promotionCompleted": false,
+    "mergedToMain": false,
+    "phase3Complete": false,
+    "releaseReady": false
+  },
+  "governanceResult": {
+    "verdict": "GOVERNANCE_INPUT_COMPLETE",
+    "integrationPreparationAuthorized": true,
+    "promotionMergeAuthorized": false,
+    "allowedNextOwner": "Codex I",
+    "allowedNextAction": "PROMOTION_PREPARATION_ONLY"
+  },
+  "selfReferencePolicy": "The governance commit SHA and this artifact SHA-256 are reported after commit and are not embedded self-referentially."
+}
