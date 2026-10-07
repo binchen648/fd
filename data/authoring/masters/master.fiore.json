@@ -4,12 +4,256 @@
   "id": "master.fiore",
   "name": "菲奥蕾·弗尔维吉",
   "class": "Master",
+  "publicInformation": {
+    "type": "master_package",
+    "initialMana": 4
+  },
   "sourcePolicy": {
-    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "phase3EvidenceCommit": "e4b2759776dc4e33dbcb27dbf5155b615c0ae7ee",
     "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
-    "note": "Semantics come from frozen F1 plus accepted FB2-14/R39; locked Reference is used only for owner/static metadata."
+    "note": "Frozen F1 supplies exact source text, accepted FM08 preserves s2/s3/s4, and accepted Fiore readiness PR #544 supplies the identity-free runtime authority for the remaining owner-complete consumers. Locked Reference supplies exact owner/static metadata and the confirmed Transcend/Clever Mind contract."
   },
   "cards": [
+    {
+      "id": "master.fiore.skill.s1",
+      "aliases": ["s1"],
+      "legacyId": "s1",
+      "name": "菲奥蕾·弗尔维吉",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.fiore" },
+      "printedText": "菲奥蕾拥有【瘫痪】，【温顺】与【回路不良】。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "fiore.s1.declaration",
+          "kind": "passive",
+          "printedClause": "菲奥蕾拥有【瘫痪】，【温顺】与【回路不良】。",
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "effects": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.fiore.skill.s1a",
+      "aliases": ["s1a"],
+      "legacyId": "s1a",
+      "name": "超越",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.fiore" },
+      "printedText": "前哨阶段：切换下列一项，其效果持续至回合结束。1.【瘫痪】→【神经机械学】 2.【温顺】→【决意】 3.【回路不良】→【聪慧头脑】\n行动阶段：再切换一项，战斗阶段结束后，失去4点魔力。",
+      "cardFace": {
+        "typeLabel": "前哨",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "fiore.transcend.advance.paralysis",
+          "kind": "phase_action",
+          "printedClause": "前哨阶段：将【瘫痪】替换为【神经机械学】，持续至回合结束。",
+          "activation": { "phase": "advance", "opens": "controller_action_window" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "switch_round_skill_profile",
+              "stateKey": "fiore",
+              "profileKey": "paralysis",
+              "enhancedDefinitionId": "master.fiore.skill.s5",
+              "suppress": "movement_lock",
+              "mode": "advance"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "fiore.transcend.advance.gentle",
+          "kind": "phase_action",
+          "printedClause": "前哨阶段：将【温顺】替换为【决意】，持续至回合结束。",
+          "activation": { "phase": "advance", "opens": "controller_action_window" },
+          "conditions": [],
+          "targets": [
+            {
+              "id": "higher_target",
+              "type": "player",
+              "count": { "min": 1, "max": 1 },
+              "constraints": [
+                { "type": "not_controller" },
+                { "type": "victory_points_greater_than_controller" }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "switch_round_skill_profile",
+              "stateKey": "fiore",
+              "profileKey": "gentle",
+              "enhancedDefinitionId": "master.fiore.skill.s6",
+              "suppress": "gentle_penalties",
+              "mode": "advance",
+              "target": "higher_target",
+              "requireHigherVictoryPointTarget": true
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "fiore.transcend.advance.circuit",
+          "kind": "phase_action",
+          "printedClause": "前哨阶段：将【回路不良】替换为【聪慧头脑】，持续至回合结束。",
+          "activation": { "phase": "advance", "opens": "controller_action_window" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "switch_round_skill_profile",
+              "stateKey": "fiore",
+              "profileKey": "circuit",
+              "enhancedDefinitionId": "master.fiore.skill.s7",
+              "suppress": "round_mana_cap",
+              "mode": "advance"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "fiore.transcend.action.paralysis",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：将【瘫痪】替换为【神经机械学】，战斗阶段结束后失去4点魔力。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "switch_round_skill_profile",
+              "stateKey": "fiore",
+              "profileKey": "paralysis",
+              "enhancedDefinitionId": "master.fiore.skill.s5",
+              "suppress": "movement_lock",
+              "mode": "action",
+              "afterBattleManaLoss": 4
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "fiore.transcend.action.gentle",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：将【温顺】替换为【决意】，战斗阶段结束后失去4点魔力。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "conditions": [],
+          "targets": [
+            {
+              "id": "higher_target",
+              "type": "player",
+              "count": { "min": 1, "max": 1 },
+              "constraints": [
+                { "type": "not_controller" },
+                { "type": "victory_points_greater_than_controller" }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "switch_round_skill_profile",
+              "stateKey": "fiore",
+              "profileKey": "gentle",
+              "enhancedDefinitionId": "master.fiore.skill.s6",
+              "suppress": "gentle_penalties",
+              "mode": "action",
+              "afterBattleManaLoss": 4,
+              "target": "higher_target",
+              "requireHigherVictoryPointTarget": true
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "fiore.transcend.action.circuit",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：将【回路不良】替换为【聪慧头脑】，战斗阶段结束后失去4点魔力。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "switch_round_skill_profile",
+              "stateKey": "fiore",
+              "profileKey": "circuit",
+              "enhancedDefinitionId": "master.fiore.skill.s7",
+              "suppress": "round_mana_cap",
+              "mode": "action",
+              "afterBattleManaLoss": 4
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
     {
       "id": "master.fiore.skill.s2",
       "aliases": [
@@ -295,6 +539,350 @@
           "gameStartRuleOverrides": "P3-R39/FB2-14"
         }
       }
+    },
+    {
+      "id": "master.fiore.skill.s5",
+      "aliases": ["s5"],
+      "legacyId": "s5",
+      "name": "神经机械学",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.fiore" },
+      "initialPlacement": "outside_game",
+      "printedText": "（超越后，将此牌加入你的技能区。）\n此牌需追加打出。\n行动阶段：花费1点魔力，沿箭头移动一步。\n行动阶段：若你位于你未部署的战场，获得2点地利。",
+      "cardFace": {
+        "typeLabel": "力量/特殊",
+        "attributes": ["力量", "特殊"],
+        "cost": 1,
+        "basePower": 3
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [
+        { "type": "skill_zone_mana_at_least", "value": 1 }
+      ],
+      "abilities": [
+        {
+          "id": "fiore.neuromechanics.append-only",
+          "kind": "passive",
+          "printedClause": "此牌需追加打出。",
+          "activation": { "trigger": "while_active" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            { "type": "append_only_rule" }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "fiore.neuromechanics.move",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：花费1点魔力，沿箭头移动一步。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [
+            {
+              "id": "destination",
+              "type": "location",
+              "count": { "min": 1, "max": 1 },
+              "constraints": [
+                { "type": "reachable_along_arrows", "maxSteps": 1 }
+              ]
+            }
+          ],
+          "effects": [
+            { "type": "move_player", "player": "controller", "to": "destination" }
+          ],
+          "cost": [
+            { "type": "pay_mana", "amount": 1 }
+          ],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": { "type": "per_round", "uses": 1, "scope": "this_card" },
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "fiore.neuromechanics.terrain",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：若你位于你未部署的战场，获得2点地利。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "round_current_location_terrain_bonus",
+              "stateKey": "fiore-neuro",
+              "amount": 2,
+              "requireBattlefield": true,
+              "requireNoAssignedTerrain": true
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.fiore.skill.s6",
+      "aliases": ["s6"],
+      "legacyId": "s6",
+      "name": "决意",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.fiore" },
+      "initialPlacement": "outside_game",
+      "printedText": "此牌超越时，选择一名战果高于你的对手。若你于本回合战胜了他，获得2点战果。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "fiore.determination.reward",
+          "kind": "passive",
+          "printedClause": "若你于本回合战胜超越时选择的战果高于你的对手，获得2点战果。",
+          "activation": {},
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "round_profile_determination_reward",
+              "stateKey": "fiore",
+              "profileKey": "gentle",
+              "amount": 2
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.fiore.skill.s7",
+      "aliases": ["s7"],
+      "legacyId": "s7",
+      "name": "聪慧头脑",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.fiore" },
+      "initialPlacement": "outside_game",
+      "printedText": "（超越后，将此牌加入你的技能区。）\n此牌需追加打出。\n连接强化型魔术礼装-行动阶段：花费1点魔力，你的技能牌威力+1。（包括从者技能，【聪慧头脑】与【神经机械学】）",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": ["魔术"],
+        "cost": 0,
+        "basePower": 1
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "fiore.clever-mind.append-only",
+          "kind": "passive",
+          "printedClause": "此牌需追加打出。",
+          "activation": { "trigger": "while_active" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            { "type": "append_only_rule" }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "fiore.clever-mind.reinforcement",
+          "kind": "phase_action",
+          "printedClause": "连接强化型魔术礼装-行动阶段：花费1点魔力，你的技能牌威力+1。（包括从者技能，【聪慧头脑】与【神经机械学】）",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "round_skill_card_power_bonus",
+              "stateKey": "fiore-clever",
+              "amount": 1,
+              "duration": "this_round",
+              "cardTypes": ["master_skill", "servant_skill"]
+            }
+          ],
+          "cost": [
+            { "type": "pay_mana", "amount": 1 }
+          ],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": { "type": "per_round", "uses": 1, "scope": "this_card" },
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.fiore.skill.ascension",
+      "aliases": ["ascension"],
+      "legacyId": "ascension",
+      "name": "完全恢复",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.fiore" },
+      "initialPlacement": "outside_game",
+      "printedText": "行动阶段：进行一次【超越】。如果你本回合战败，失去2点战果。",
+      "cardFace": {
+        "typeLabel": "升华技",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "fiore.full-recovery.paralysis",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：进行一次【超越】，将【瘫痪】替换为【神经机械学】。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "switch_round_skill_profile",
+              "stateKey": "fiore",
+              "profileKey": "paralysis",
+              "enhancedDefinitionId": "master.fiore.skill.s5",
+              "suppress": "movement_lock",
+              "mode": "ascension",
+              "onBattleLossVictoryPointLoss": 2
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "fiore.full-recovery.gentle",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：进行一次【超越】，将【温顺】替换为【决意】。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "conditions": [],
+          "targets": [
+            {
+              "id": "higher_target",
+              "type": "player",
+              "count": { "min": 1, "max": 1 },
+              "constraints": [
+                { "type": "not_controller" },
+                { "type": "victory_points_greater_than_controller" }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "switch_round_skill_profile",
+              "stateKey": "fiore",
+              "profileKey": "gentle",
+              "enhancedDefinitionId": "master.fiore.skill.s6",
+              "suppress": "gentle_penalties",
+              "mode": "ascension",
+              "onBattleLossVictoryPointLoss": 2,
+              "target": "higher_target",
+              "requireHigherVictoryPointTarget": true
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "fiore.full-recovery.circuit",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：进行一次【超越】，将【回路不良】替换为【聪慧头脑】。",
+          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "switch_round_skill_profile",
+              "stateKey": "fiore",
+              "profileKey": "circuit",
+              "enhancedDefinitionId": "master.fiore.skill.s7",
+              "suppress": "round_mana_cap",
+              "mode": "ascension",
+              "onBattleLossVictoryPointLoss": 2
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    }
+  ],
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": [
+        "../../Fate_Domination-开发版/images/masters/菲奥蕾·弗尔维吉.png"
+      ]
     }
   ]
 }

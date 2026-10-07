@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 21,
+    "masters": 22,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -1506,6 +1506,127 @@
       "htmPath": "chm-extract/达尼克·普雷斯通.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/达尼克·普雷斯通.png",
       "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.fiore",
+      "displayName": "菲奥蕾·弗尔维吉",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/菲奥蕾·弗尔维吉.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/菲奥蕾·弗尔维吉.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.fiore.overview",
+      "displayName": "菲奥蕾·弗尔维吉",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/菲奥蕾·弗尔维吉.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/菲奥蕾·弗尔维吉.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.fiore.skill.ascension",
+      "displayName": "完全恢复",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/菲奥蕾·弗尔维吉.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/菲奥蕾·弗尔维吉.png",
+      "imageIndex": 9,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.fiore.skill.s1",
+      "displayName": "菲奥蕾·弗尔维吉",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/菲奥蕾·弗尔维吉.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/菲奥蕾·弗尔维吉.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.fiore.skill.s1a",
+      "displayName": "超越",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/菲奥蕾·弗尔维吉.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/菲奥蕾·弗尔维吉.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.fiore.skill.s2",
+      "displayName": "瘫痪",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/菲奥蕾·弗尔维吉.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/菲奥蕾·弗尔维吉.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.fiore.skill.s3",
+      "displayName": "回路不良",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/菲奥蕾·弗尔维吉.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/菲奥蕾·弗尔维吉.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.fiore.skill.s4",
+      "displayName": "温顺",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/菲奥蕾·弗尔维吉.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/菲奥蕾·弗尔维吉.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.fiore.skill.s5",
+      "displayName": "神经机械学",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/菲奥蕾·弗尔维吉.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/菲奥蕾·弗尔维吉.png",
+      "imageIndex": 6,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.fiore.skill.s6",
+      "displayName": "决意",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/菲奥蕾·弗尔维吉.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/菲奥蕾·弗尔维吉.png",
+      "imageIndex": 7,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.fiore.skill.s7",
+      "displayName": "聪慧头脑",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/菲奥蕾·弗尔维吉.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/菲奥蕾·弗尔维吉.png",
+      "imageIndex": 8,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

@@ -9184,10 +9184,10 @@ Implementation evidence:
 ## TASK P3-S-OWNER-FIORE-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: formal owner-complete migration for current owner `master.fiore`
 
-Exact Base: Fiore readiness acceptance synchronization commit carrying this task block.
+Exact Base: `98f4bbef8ebd859df358f04b8d5d7d1841909aba` (Fiore readiness acceptance synchronization).
 
 Frozen owner scope remains exactly all nine Fiore identities. Preservation boundary:
 - preserve accepted FM08 `s2+s3+s4` byte/semantic identity and award them no duplicate credit;
@@ -9200,3 +9200,19 @@ Accounting boundary:
 - strict accounting starts `253/944`, remaining `691`;
 - no credit before fresh exact `MIGRATION_ACCEPTED` plus FORMAL A-sync/accounting;
 - if accepted, credit exactly six identities: `253/944 -> 259/944`, remaining `685`.
+
+Implementation evidence:
+- canonical `master.fiore.json` now materializes exact `9/9`; newly materialized identities are exactly `ascension+s1+s1a+s5+s6+s7`;
+- accepted FM08 `s2+s3+s4` remain preservation-only and their JSON-object SHA-256 values remain exact;
+- consumer routes use only accepted identity-free readiness authority from PR #544; no Fiore/name-specific production runtime route was introduced;
+- Fiore is registered exactly once in the canonical pack; canonical compilation is `22 masters / 19 servants / 20 events / 0 blocking issues`;
+- generated library contains `master.fiore` plus all nine frozen skill identities;
+- Fiore owner migration regression `5/5 PASS`; Fiore readiness `10/10 PASS`; final affected suite `118/118 PASS` across 8 files;
+- adding the 22nd canonical Master changed one deterministic MatchSession Luck fixture; bounded rescan recertified only that test seed from `2 -> 1`, preserving the exact original battle contract without runtime logic change;
+- typecheck/content compile/content validate/generated determinism PASS;
+- generated hashes: content `a91b4903929ac9c06febcaed8b4998217b29f7b2ad58b74a6e6f1e6e0d410fc4`, fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`, evidence `0c176fcbcdbf5f46207adda92670459939891afd530416524973f64e5e8af5a0`;
+- external-output Phase-3 coverage: `archives=126`, `cards=287`, `abilities=503`, `compiledCards=223`, `compiledCharacters=41`, `blockingIssues=0`, `newRuntimeSemanticRouted=22`, `legacyExecuteAbility=3`, `legacyResolveEffect=164`, `dualRuntime=0`, `notClassifiable=314`;
+- external-output automation audit: `legacyResolveEffect=164`, `legacyExecuteAbility=3`, `notClassifiable=314`, `promotionFindings=20`;
+- source-assets reproduces exactly `93` historical missing images with no Fiore source in the missing list; `git diff --check` PASS;
+- detailed result: `docs/reports/2026-10-07-p3-s-owner-fiore-complete-migration-result.md`;
+- Candidate remains uncredited until one fresh exact `MIGRATION_ACCEPTED` review and subsequent FORMAL A-sync/accounting.

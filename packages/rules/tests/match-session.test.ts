@@ -248,7 +248,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('lets Luck stay in the attack area for battle power and ignore defeat effects', () => {
-    const session = createMatchSession({ seed: 2, humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'] });
+    const session = createMatchSession({ seed: 1, humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'] });
     session.state.round.activePhase = 'battle';
     session.state.eventPlacements = [];
     session.state.currentSituationModifiers = [];
