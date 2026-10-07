@@ -9423,7 +9423,7 @@ Acceptance synchronization:
 ## TASK P3-S-OWNER-FUJINO-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Classification: formal owner-complete consumer migration for `master.fujino`
 
 Frozen owner scope: exactly `6` identities:
@@ -9457,7 +9457,12 @@ Implementation evidence:
 - detailed result: `docs/reports/2026-10-08-p3-s-owner-fujino-complete-migration-result.md`.
 
 Review gate:
-- freeze one formal Candidate from exact Base `0fb1d2f41fdec4d49ee1e037db2002304ba2d351`;
-- one fresh independent exact Base/Candidate review must return `MIGRATION_ACCEPTED`;
-- strict accounting remains `261/944`, remaining `683` until accepted evidence plus FORMAL A-sync/accounting;
-- only then may Fujino credit exact `+6`: `261/944 -> 267/944`, remaining `677`.
+- exact Candidate `a5bc48810d589c05285dd7341b13c9c8204bc395` received fresh exact `MIGRATION_ACCEPTED` on ReviewJobKey `pr550:a5bc48810d589c05285dd7341b13c9c8204bc395:blocked-retry-5`;
+- canonical same-attempt accepted evidence: `https://github.com/binchen648/fd/pull/550#issuecomment-6048928892`;
+- exact-head Phase 3 Pre-Review Gate run `37697099904` = `SUCCESS`;
+- FORMAL read back the published comment and mechanically reconfirmed PR #550 Base `0fb1d2f41fdec4d49ee1e037db2002304ba2d351` / Candidate `a5bc48810d589c05285dd7341b13c9c8204bc395`;
+- exact Base has no canonical `master.fujino.json`; exact Candidate contains precisely the six frozen IDs, registers `master.fujino.json` exactly once, and generated content contains all six accepted identities;
+- no preservation/recount credit applies because Base consumer materialization was exactly `0/6`;
+- lawful FORMAL accounting credits exactly six newly materialized identities: `261/944 + 6 = 267/944`, remaining `677`;
+- acceptance synchronization report: `docs/reports/2026-10-08-p3-a-owner-fujino-acceptance-synchronization.md`;
+- Fujino is formally closed; under `fd.owner-complete@1.1.0`, FORMAL now derives the next owner and its complete readiness/capability gap set mechanically from this acceptance-sync Base and the frozen roster, with no Helper dependency.
