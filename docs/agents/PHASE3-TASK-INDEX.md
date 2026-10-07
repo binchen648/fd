@@ -9349,7 +9349,7 @@ Acceptance synchronization:
 ## TASK P3-B-FUJINO-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Classification: zero-credit complete-owner readiness/capability closure for `master.fujino`
 
 Frozen owner scope: exactly `6` identities:
@@ -9410,3 +9410,36 @@ First Candidate `1beb51c5101e630c16e7bb3543930c41142829bd` received `IMPLEMENTAT
 - external successor scratch: `E:\Codex\FD\.fd-runner-review-evidence\formal-pr549-revision-from-1beb51c5101e630c16e7bb3543930c41142829bd-nonce112e95c077f815ee099968484eaeba3f`;
 - no authoring/pack/phase3 consumer delta; readiness remains zero-credit at `261/944`, remaining `683`;
 - form one bundled successor Candidate on the same PR and request one fresh exact Base/Candidate REVIEW. No readiness A-sync/accounting occurs before acceptance.
+
+Acceptance synchronization:
+- exact Candidate `7d764784b48cfb6bdfc175f5e7be529daa827a77` received fresh `IMPLEMENTATION_ACCEPTED_CANDIDATE` on ReviewJobKey `pr549:7d764784b48cfb6bdfc175f5e7be529daa827a77:blocked-retry-3`;
+- canonical same-attempt accepted evidence: `https://github.com/binchen648/fd/pull/549#issuecomment-6048017517`;
+- FORMAL acceptance rescan confirms Fujino consumer materialization remains exactly `0/6`: `master.fujino.json` absent and canonical active-pack registration count `0`;
+- readiness remains permanently zero-credit; strict accounting stays `261/944`, remaining `683`;
+- all six frozen Fujino identities remain absent and the maximum later lawful owner-migration increment is exactly `+6`;
+- acceptance synchronization report: `docs/reports/2026-10-08-p3-a-fujino-owner-readiness-acceptance-synchronization.md`;
+- no additional Fujino readiness task remains; release `P3-S-OWNER-FUJINO-COMPLETE-MIGRATION` to `READY`.
+
+## TASK P3-S-OWNER-FUJINO-COMPLETE-MIGRATION
+
+Owner: FORMAL
+Status: `READY`
+Classification: formal owner-complete consumer migration for `master.fujino`
+
+Frozen owner scope: exactly `6` identities:
+- `master.fujino.skill.ascension` — 痛觉残留
+- `master.fujino.skill.s1` — 浅神之嗣
+- `master.fujino.skill.s1a` — 无痛症
+- `master.fujino.skill.s2` — 扭曲空间
+- `master.fujino.skill.s3` — 歪曲之魔眼
+- `master.fujino.skill.s4` — 创伤
+
+Formal gate:
+- implementation Base is the exact readiness acceptance-sync HEAD, mechanically pinned before any consumer edit;
+- materialize all six frozen identities together in one canonical `master.fujino.json`;
+- register `master.fujino` exactly once in the active pack;
+- consume only accepted identity-free readiness authority plus the previously accepted generic game-start skill-provisioning authority for `s1`;
+- no `master.fujino` / 浅上藤乃 / 痛觉残留 / 浅神之嗣 / 无痛症 / 扭曲空间 / 歪曲之魔眼 / 创伤 / `core.fujino-` production runtime routing;
+- one formal Candidate, one PR, one fresh independent exact Base/Candidate migration review;
+- strict accounting starts `261/944`, remaining `683`; no credit before fresh `MIGRATION_ACCEPTED` plus FORMAL A-sync/accounting;
+- if accepted, credit exactly all six newly materialized identities: `261/944 -> 267/944`, remaining `677`.
