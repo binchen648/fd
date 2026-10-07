@@ -124,6 +124,27 @@ All three blocking findings are closed together in the successor:
 
 Successor pre-R gates remain green: typecheck, content validation, generated determinism, external-output coverage/audit, and `git diff --check`; there is still no `data/authoring/**`, pack, or generated consumer delta and readiness remains zero-credit.
 
+## Reviewer revision — PR #547 second Candidate
+
+Second Candidate `f4acbc8dc83f78d12da11b4efbbeeda9475146d0` received `IMPLEMENTATION_NEEDS_REVISION` on ReviewJobKey `pr547:f4acbc8dc83f78d12da11b4efbbeeda9475146d0`.
+
+Canonical same-attempt evidence relay: `https://github.com/binchen648/fd/pull/547#issuecomment-6044206943`.
+
+The independent review confirmed the stale-rescue closure and Phase-3 governance closure. The only remaining blocker was cold/default-timeout instability in the existing three-round MatchSession smoke: an isolated cold run reached `5321 ms` under the unchanged `5000 ms` Vitest timeout.
+
+The successor closes that remaining performance blocker without increasing or overriding the test timeout:
+
+- profiling outside all Git workspaces identified repeated replay checkpoint hashing/serialization as the dominant cold-path cost; before the closure, one three-round auto-run created `50` full replay snapshots for `215` logs and `3` battles;
+- portable SHA-256/HMAC now uses Node's native `node:crypto` synchronously when `process.getBuiltinModule` is available, while preserving the existing pure-JS portable fallback for browser/non-Node environments; `portable-sha256.test.ts` passes `7/7`, and a forced-fallback check reproduced the standard SHA-256 and HMAC-SHA-256 vectors exactly;
+- `runFullMatch` now compacts only its fully automated replay capture: normal interactive dispatch checkpoint behavior is unchanged, while auto-run retains complete `game start`, round-start/end, and `match end` snapshots and force-adds a checkpoint on any early pause/error exit. The three-round seed keeps all `215` logs and `3` battles while reducing full replay snapshots from `50` to `8`;
+- the same-session loop fingerprint no longer sorts the already-ordered physical-card array, removing an unnecessary `O(n log n)` operation without weakening loop detection;
+- after the final closure, the exact isolated smoke passed at approximately `2.769 s`; the complete `match-session.test.ts` file passed `34/34` three consecutive times with the target smoke at approximately `2.666 s`, `2.307 s`, and `2.452 s`, all under the unchanged/default `5000 ms` timeout;
+- replay/auto-run regressions remain green: `match-session-regressions.test.ts` `11/11 PASS`, the focused three-round complex-skills MatchSession regression PASS, and replay checkpoint restore PASS;
+- Reviewer-affected validation remains `121/121 PASS` across the same 7 files; the SHA implementation has an additional `7/7 PASS`;
+- typecheck, content validation, generated determinism, external-output Phase-3 coverage/audit, and `git diff --check` PASS. There is still no authoring/pack/generated consumer delta.
+
+Readiness remains zero-credit. Strict accounting remains `259/944`, remaining `685`, pending one fresh exact successor review.
+
 ## Review gate
 
 This readiness transaction is implementation-complete but permanently zero-credit.

@@ -2397,7 +2397,7 @@ function actionFingerprint(state: GameState): string {
     pendingDecision: state.abilityRuntime?.pendingDecision?.id,
     responseWindow: state.abilityRuntime?.responseWindows[0]?.id,
     hostRequests: state.abilityRuntime?.hostRequests.length ?? 0,
-    cards: state.cards.map((card) => [card.instanceId, card.zone, card.visibility.scope]).sort(),
+    cards: state.cards.map((card) => [card.instanceId, card.zone, card.visibility.scope]),
     players: state.players.map((player) => [player.id, player.mana, player.vp, player.militaryResult, player.locationId]),
     stagedAttacks: modeStateOf(state).stagedAttacks,
   });
@@ -2697,6 +2697,7 @@ export class MatchSession {
   private consumedDirectiveCount = 0;
   private seenFingerprints = new Map<string, number>();
   private replayCaptureEnabled = true;
+  private autoRunReplayCompactionDepth = 0;
 
   constructor(
     config: MatchSessionConfig = {},
@@ -3086,33 +3087,48 @@ export class MatchSession {
 
   runFullMatch(options: { maxRounds?: number } = {}): MatchPauseReason {
     const maxRounds = options.maxRounds ?? 11;
-    for (let guard = 0; guard < 2000; guard++) {
-      const reason = this.runUntilHumanInputOrRoundEnd();
-      if (reason === 'human_input') {
-        const player = this.priorityPlayer();
-        if (!player || player.id !== this.humanPlayerId) return reason;
-        const action = chooseAiAction(this.projectAbilityView(this.humanPlayerId).legalActions);
-        if (!action) {
-          this.record('human_auto_passed', `${this.humanPlayerId}:no legal action`);
-          this.advanceToNextDecision();
+    this.autoRunReplayCompactionDepth += 1;
+    try {
+      for (let guard = 0; guard < 2000; guard++) {
+        const reason = this.runUntilHumanInputOrRoundEnd();
+        if (reason === 'human_input') {
+          const player = this.priorityPlayer();
+          if (!player || player.id !== this.humanPlayerId) {
+            this.checkpoint(`auto-run pause:${reason}`, this.state, true);
+            return reason;
+          }
+          const action = chooseAiAction(this.projectAbilityView(this.humanPlayerId).legalActions);
+          if (!action) {
+            this.record('human_auto_passed', `${this.humanPlayerId}:no legal action`);
+            this.advanceToNextDecision();
+            continue;
+          }
+          const result = this.dispatchPlayerAction(this.humanPlayerId, legalActionToCommand(action));
+          if (!result.ok) {
+            const paused = this.pause('backend_rejection');
+            this.checkpoint(`auto-run pause:${paused}`, this.state, true);
+            return paused;
+          }
           continue;
         }
-        const result = this.dispatchPlayerAction(this.humanPlayerId, legalActionToCommand(action));
-        if (!result.ok) return this.pause('backend_rejection');
-        continue;
-      }
-      if (reason === 'round_end') {
-        if (this.state.round.roundNumber >= maxRounds) {
-          this.ensureFinalScoring();
-          return this.pause('match_complete');
+        if (reason === 'round_end') {
+          if (this.state.round.roundNumber >= maxRounds) {
+            this.ensureFinalScoring();
+            return this.pause('match_complete');
+          }
+          this.state.round.roundNumber += 1;
+          this.startRound(this.state.round.roundNumber);
+          continue;
         }
-        this.state.round.roundNumber += 1;
-        this.startRound(this.state.round.roundNumber);
-        continue;
+        this.checkpoint(`auto-run pause:${reason}`, this.state, true);
+        return reason;
       }
-      return reason;
+      const paused = this.pause('state_loop');
+      this.checkpoint(`auto-run pause:${paused}`, this.state, true);
+      return paused;
+    } finally {
+      this.autoRunReplayCompactionDepth -= 1;
     }
-    return this.pause('state_loop');
   }
 
   runUntilHumanInputOrStop(): MatchPauseReason {
@@ -3996,8 +4012,9 @@ export class MatchSession {
     });
   }
 
-  private checkpoint(label: string, state = this.state): void {
+  private checkpoint(label: string, state = this.state, force = false): void {
     if (!this.replayCaptureEnabled) return;
+    if (!force && this.autoRunReplayCompactionDepth > 0 && !/^round \d+ (?:start|end)$/.test(label) && label !== 'match end') return;
     const revision = state.abilityRuntime?.revision ?? 0;
     const checkpoint = {
       id: `checkpoint:${this.replay.length + 1}`,

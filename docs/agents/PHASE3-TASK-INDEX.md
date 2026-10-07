@@ -9278,3 +9278,15 @@ Reviewer revision:
 - blocker 3 metadata closure is `dependsOnPrs: [546]`, matching the actual previous-owner migration dependency;
 - successor affected validation is `121/121 PASS`; typecheck/content/generated/external coverage+audit/`git diff --check` all PASS; no authoring/pack/generated consumer delta;
 - readiness remains zero-credit; accounting remains `259/944`, remaining `685`; freeze exactly one successor Candidate then fresh R.
+
+Second Reviewer revision:
+- second Candidate `f4acbc8dc83f78d12da11b4efbbeeda9475146d0` -> `IMPLEMENTATION_NEEDS_REVISION`; ReviewJobKey `pr547:f4acbc8dc83f78d12da11b4efbbeeda9475146d0`;
+- canonical same-attempt evidence: `https://github.com/binchen648/fd/pull/547#issuecomment-6044206943`;
+- Reviewer independently confirmed stale-rescue blocker CLOSED and governance blocker CLOSED; only cold/default-timeout MatchSession instability remained, with one isolated cold smoke at `5321 ms`;
+- successor profiling found replay checkpoint hashing/serialization as the dominant path: the 3-round auto-run previously produced `50` complete snapshots for `215` logs and `3` battles;
+- Node uses native synchronous SHA-256/HMAC via guarded `process.getBuiltinModule('node:crypto')`; browser/non-Node keeps the original pure-JS fallback. SHA tests `7/7 PASS`, and forced fallback standard vectors match exactly;
+- `runFullMatch` auto-run replay capture is compacted to complete game/round boundaries plus forced early-pause checkpoints; normal interactive dispatch checkpoint behavior is unchanged. The exact 3-round seed now keeps `215` logs / `3` battles with `8` complete replay snapshots instead of `50`;
+- final exact isolated smoke is about `2.769 s`; full `match-session.test.ts` passed `34/34` three consecutive times with the target smoke about `2.666 / 2.307 / 2.452 s`, unchanged default `5000 ms` timeout;
+- `match-session-regressions.test.ts` `11/11 PASS`; focused complex-skills 3-round MatchSession regression PASS; replay restore PASS;
+- affected validation remains `121/121 PASS`; portable SHA additionally `7/7 PASS`; typecheck/content/generated/external coverage+audit/`git diff --check` PASS; no authoring/pack/generated consumer delta;
+- readiness remains zero-credit; accounting stays `259/944`, remaining `685`; freeze one successor Candidate then fresh R.

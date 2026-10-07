@@ -1,3 +1,25 @@
+type NodeHashLike = {
+  update(data: string, inputEncoding?: string): NodeHashLike;
+  digest(encoding: 'hex'): string;
+};
+type NodeCryptoLike = {
+  createHash(algorithm: 'sha256'): NodeHashLike;
+  createHmac(algorithm: 'sha256', key: string): NodeHashLike;
+};
+
+let cachedNodeCrypto: NodeCryptoLike | null | undefined;
+function nativeNodeCrypto(): NodeCryptoLike | undefined {
+  if (cachedNodeCrypto !== undefined) return cachedNodeCrypto ?? undefined;
+  const maybeProcess = (globalThis as typeof globalThis & {
+    process?: { getBuiltinModule?: (name: string) => unknown };
+  }).process;
+  const candidate = maybeProcess?.getBuiltinModule?.('node:crypto') as Partial<NodeCryptoLike> | undefined;
+  cachedNodeCrypto = candidate && typeof candidate.createHash === 'function' && typeof candidate.createHmac === 'function'
+    ? candidate as NodeCryptoLike
+    : null;
+  return cachedNodeCrypto ?? undefined;
+}
+
 const SHA256_CONSTANTS = [
   0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
   0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
@@ -89,11 +111,15 @@ function bytesToHex(bytes: Uint8Array): string {
 }
 
 export function sha256Hex(input: string): string {
+  const nodeCrypto = nativeNodeCrypto();
+  if (nodeCrypto) return nodeCrypto.createHash('sha256').update(input, 'utf8').digest('hex');
   return bytesToHex(sha256Bytes(new TextEncoder().encode(input)));
 }
 
 /** Portable RFC 2104 HMAC-SHA-256 for browser and Node rules persistence. */
 export function hmacSha256Hex(key: string, message: string): string {
+  const nodeCrypto = nativeNodeCrypto();
+  if (nodeCrypto) return nodeCrypto.createHmac('sha256', key).update(message, 'utf8').digest('hex');
   let keyBytes: Uint8Array = new TextEncoder().encode(key);
   if (keyBytes.length > 64) keyBytes = sha256Bytes(keyBytes);
   const block = new Uint8Array(64);
