@@ -9392,3 +9392,21 @@ Review gate:
 - fresh independent exact review must return `IMPLEMENTATION_ACCEPTED_CANDIDATE`;
 - only accepted evidence plus FORMAL zero-credit A-sync/full-owner rescan may release `P3-S-OWNER-FUJINO-COMPLETE-MIGRATION`;
 - no migration credit before that later owner-complete migration receives `MIGRATION_ACCEPTED` plus FORMAL A-sync/accounting.
+
+## Reviewer revision — PR #549 first Candidate
+
+First Candidate `1beb51c5101e630c16e7bb3543930c41142829bd` received `IMPLEMENTATION_NEEDS_REVISION` on ReviewJobKey `pr549:1beb51c5101e630c16e7bb3543930c41142829bd`.
+
+- canonical bounded same-attempt evidence relay, read back after the integration 403: `https://github.com/binchen648/fd/pull/549#issuecomment-6047557896`;
+- no rerun or additional finding was introduced by the relay;
+- blocker 1 closed as one generic capability correction: topology activation stays Action-only, while exact Repair accepts canonical preparation / advance / action / combat phase-window pairs, matches the live phase at execution, and is the only phase activation allowed to bypass ordinary priority and field/attack-area active-source routing; exact movementOverride/link/cardState authority remains mandatory;
+- real `getLegalActions -> dispatchAbilityCommand` regression proves Repair in all four interactive phases with another player holding priority;
+- blocker 2 closed by bounding durable post-spinal `painCount` to the exact six Injury keys; real maximum Pain `6` restores, forged Pain `999` fails closed;
+- successor focused Fujino readiness: `8/8 PASS`;
+- selected affected + Reviewer-added MatchSession regression set: `153/153 PASS` across `12` files;
+- typecheck/content/generated determinism PASS; content remains `23 masters / 19 servants / 20 events / 0 blocking issues`;
+- external coverage remains `archives=127 cards=289 abilities=505 compiledCards=226 compiledCharacters=42 blockingIssues=0 newRuntimeSemanticRouted=22 dualRuntime=0 pilotAllowlist=0 notClassifiable=316 taxonomyWarnings=328`;
+- external audit remains `legacyResolveEffect=164 legacyExecuteAbility=3 notClassifiable=316 promotionFindings=20`;
+- external successor scratch: `E:\Codex\FD\.fd-runner-review-evidence\formal-pr549-revision-from-1beb51c5101e630c16e7bb3543930c41142829bd-nonce112e95c077f815ee099968484eaeba3f`;
+- no authoring/pack/phase3 consumer delta; readiness remains zero-credit at `261/944`, remaining `683`;
+- form one bundled successor Candidate on the same PR and request one fresh exact Base/Candidate REVIEW. No readiness A-sync/accounting occurs before acceptance.

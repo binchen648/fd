@@ -12,6 +12,10 @@ const ACTION_DISCARD = ROOT + '.action-discard';
 const PAIN = ROOT + '.pain';
 const DISTORTION = ROOT + '.distortion';
 const WARP = ROOT + '.warp';
+const REPAIR_ACTION = 'fixture.injury-warp.repair.action';
+const REPAIR_PREPARATION = 'fixture.injury-warp.repair.preparation';
+const REPAIR_ADVANCE = 'fixture.injury-warp.repair.advance';
+const REPAIR_COMBAT = 'fixture.injury-warp.repair.combat';
 const ASCENSION = ROOT + '.ascension';
 const BASIC = ROOT + '.basic';
 
@@ -112,12 +116,32 @@ function archive() {
           ],
         },
       )]),
-      skill(WARP, [ability(
-        'fixture.injury-warp.repair',
-        'phase_action',
-        { phase: 'action', opens: 'controller_action_window', requiresSourceState: 'active' },
-        { type: 'repair_movement_topology_override', stateKey: STATE_KEY },
-      )], 3),
+      skill(WARP, [
+        ability(
+          REPAIR_ACTION,
+          'phase_action',
+          { phase: 'action', opens: 'controller_action_window', requiresSourceState: 'active' },
+          { type: 'repair_movement_topology_override', stateKey: STATE_KEY },
+        ),
+        ability(
+          REPAIR_PREPARATION,
+          'phase_action',
+          { phase: 'preparation', opens: 'controller_action_window', requiresSourceState: 'active' },
+          { type: 'repair_movement_topology_override', stateKey: STATE_KEY },
+        ),
+        ability(
+          REPAIR_ADVANCE,
+          'phase_action',
+          { phase: 'advance', opens: 'controller_action_window', requiresSourceState: 'active' },
+          { type: 'repair_movement_topology_override', stateKey: STATE_KEY },
+        ),
+        ability(
+          REPAIR_COMBAT,
+          'phase_action',
+          { phase: 'combat', opens: 'controller_combat_action_window', requiresSourceState: 'active' },
+          { type: 'repair_movement_topology_override', stateKey: STATE_KEY },
+        ),
+      ], 3),
       skill(ASCENSION, [ability(
         'fixture.injury-warp.ascension',
         'forced_trigger',
@@ -182,6 +206,9 @@ function ctx(sourceCardId: string, abilityId: string, event?: Record<string, unk
 function abilityOf(definitionId: string) {
   return loaded.cards[definitionId]!.abilities[0]!;
 }
+function abilityById(definitionId: string, abilityId: string) {
+  return loaded.cards[definitionId]!.abilities.find((entry) => entry.id === abilityId)!;
+}
 
 function initializeInjuryState(state: GameState) {
   const source = add(state, RULESET);
@@ -194,6 +221,10 @@ describe('P3 Fujino owner readiness complete gap set', () => {
     expect(loaded.report.filter((entry) => entry.status === 'unsupported')).toEqual([]);
     for (const id of [RULESET, DRAW, ACTION_DISCARD, PAIN, DISTORTION, WARP, ASCENSION]) {
       expect(rules.isAcceptedInjuryWarpAbility(abilityOf(id))).toBe(true);
+    }
+    for (const repair of loaded.cards[WARP]!.abilities) {
+      expect(rules.isAcceptedInjuryWarpAbility(repair)).toBe(true);
+      expect(rules.isAcceptedInjuryWarpRepairAbility(repair)).toBe(true);
     }
 
     const production = [
@@ -329,6 +360,43 @@ describe('P3 Fujino owner readiness complete gap set', () => {
     expect(state.abilityRuntime!.cardState[warp]!.active).toBe(false);
   });
 
+  it('exposes Repair in preparation, advance, action and combat even when another player has priority', () => {
+    const cases = [
+      ['preparation', REPAIR_PREPARATION],
+      ['advance', REPAIR_ADVANCE],
+      ['action', REPAIR_ACTION],
+      ['battle', REPAIR_COMBAT],
+    ] as const;
+
+    for (const [phase, repairAbilityId] of cases) {
+      const state = setup();
+      initializeInjuryState(state);
+      const distortion = add(state, DISTORTION, 'attack_area', true);
+      const warp = add(state, WARP);
+      expect(rules.resolveInjuryWarpEffect(state, ctx(distortion, abilityOf(DISTORTION).id), abilityOf(DISTORTION))).toBe(true);
+      expect(state.abilityRuntime!.cardState[warp]!.active).toBe(true);
+
+      state.round.activePhase = phase;
+      state.round.prioritySeat = state.players[1]!.seat;
+      const repair = abilityById(WARP, repairAbilityId);
+      expect(rules.isAcceptedInjuryWarpRepairAbility(repair)).toBe(true);
+      expect(rules.getLegalActions(state, 'p1')).toContainEqual({
+        type: 'activate_ability',
+        cardInstanceId: warp,
+        abilityId: repairAbilityId,
+      });
+
+      const result = rules.dispatchAbilityCommand(state, 'p1', {
+        type: 'activate_ability',
+        cardInstanceId: warp,
+        abilityId: repairAbilityId,
+      });
+      expect(result.ok).toBe(true);
+      expect(state.abilityRuntime!.cardState[warp]!.active).toBe(false);
+      expect(rules.effectiveInjuryWarpMovementLinks(state, 'miyama_town', ['shinto'] as const)).toEqual(['shinto']);
+    }
+  });
+
   it('makes stomach terrain restrictions affect MatchSession deployment legality rather than only exposing a helper', () => {
     const state = setup();
     const iw = initializeInjuryState(state);
@@ -369,6 +437,20 @@ describe('P3 Fujino owner readiness complete gap set', () => {
     const forgedPain = structuredClone(state);
     forgedPain.abilityRuntime!.injuryWarpStates!['p1:' + STATE_KEY]!.painCount = 2;
     expect(rules.isInjuryWarpRuntimeProvenanceValidForRestore(forgedPain)).toBe(false);
+
+    const spinalState = setup();
+    const spinalIw = initializeInjuryState(spinalState);
+    const spinalDraw = add(spinalState, DRAW);
+    add(spinalState, DISTORTION);
+    spinalIw.activeInjuries = ['head', 'shoulder', 'stomach', 'wrist', 'leg'];
+    spinalIw.deck = ['spinal'];
+    expect(rules.resolveInjuryWarpEffect(spinalState, ctx(spinalDraw, abilityOf(DRAW).id), abilityOf(DRAW))).toBe(true);
+    expect(spinalIw.spinalOccurred).toBe(true);
+    expect(spinalIw.painCount).toBe(INJURIES.length);
+    expect(rules.isInjuryWarpRuntimeProvenanceValidForRestore(spinalState)).toBe(true);
+    const forgedPostSpinalPain = structuredClone(spinalState);
+    forgedPostSpinalPain.abilityRuntime!.injuryWarpStates!['p1:' + STATE_KEY]!.painCount = 999;
+    expect(rules.isInjuryWarpRuntimeProvenanceValidForRestore(forgedPostSpinalPain)).toBe(false);
 
     const forgedTopology = structuredClone(state);
     forgedTopology.abilityRuntime!.injuryWarpStates!['p1:' + STATE_KEY]!.movementOverride!.replacements.miyama_town = 'magic_workshop';

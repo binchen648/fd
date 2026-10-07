@@ -152,3 +152,35 @@ This readiness transaction is implementation-complete but permanently zero-credi
 Freeze one Candidate from exact Base `ab166083772921c598fba53670b4a9ef04455ac6`, push one stacked PR against `codex/a-p3-fou-owner-migration-acceptance-sync`, and request one fresh independent exact Base/Candidate `IMPLEMENTATION_ACCEPTED_CANDIDATE` review.
 
 Only after canonical accepted readiness evidence plus FORMAL A-sync/full-owner rescan may the same owner advance to one formal `P3-S-OWNER-FUJINO-COMPLETE-MIGRATION` Candidate covering all six frozen identities together. No migration credit is legal at readiness.
+
+## Reviewer revision — PR #549 first Candidate
+
+First Candidate `1beb51c5101e630c16e7bb3543930c41142829bd` received `IMPLEMENTATION_NEEDS_REVISION` on ReviewJobKey `pr549:1beb51c5101e630c16e7bb3543930c41142829bd`.
+
+The original review attempt could not publish through the integration because GitHub returned `403 Resource not accessible by integration`. FORMAL performed only the bounded same-attempt evidence relay; the review was not rerun and no findings were added or changed. Canonical read-back URL:
+
+- `https://github.com/binchen648/fd/pull/549#issuecomment-6047557896`
+
+Both blocking findings are closed together in the successor:
+
+- Warp Space Repair is separated from the Action-only topology activation contract. The generic Repair classifier now accepts exactly the repository's canonical interactive phase/window pairs: preparation / advance / action with `controller_action_window`, and combat with `controller_combat_action_window`. Execution requires the authored repair phase to match the current live phase; topology activation remains Action-only.
+- The exact accepted Injury/Warp Repair capability is the only phase activation allowed to bypass ordinary priority ownership and ordinary field/attack-area active-source routing. It still requires the linked physical Warp skill to be the exact active runtime topology source, so the any-phase/out-of-turn exception cannot widen unrelated abilities.
+- Focused regression drives the real `getLegalActions -> dispatchAbilityCommand` path in preparation, advance, action, and battle/combat while another player owns priority. Each phase exposes only its matching Repair action, successfully repairs the topology, and deactivates the linked Warp card.
+- Post-spinal restore provenance now bounds `painCount` to the exact six-key Injury inventory. A mechanically created maximum baseline (five prior injuries plus spinal => Pain `6`) remains valid, while forged durable `painCount=999` fails restore validation.
+
+Successor verification:
+- Fujino focused readiness: `8/8 PASS`.
+- Selected affected + Reviewer-added MatchSession regression set: `153/153 PASS` across `12` files.
+- `npm run typecheck`: PASS.
+- `npm run content:validate`: PASS — `23 masters / 19 servants / 20 events / 0 blocking issues`.
+- `npm run verify:generated-content`: PASS with unchanged hashes:
+  - content `fdd2cc458e12a3dd3346c8253362a081a18b67652d19cd1f3c78a60b6aa09be6`
+  - fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`
+  - evidence `75cc147b8816004e26640cae5234b38282dd5a5eff011035cab7ff821b11cd2b`
+- external-output Phase-3 coverage: `archives=127 cards=289 abilities=505 compiledCards=226 compiledCharacters=42 blockingIssues=0 newRuntimeSemanticRouted=22 legacyExecuteAbility=3 legacyResolveEffect=164 dualRuntime=0 pilotAllowlist=0 notClassifiable=316 taxonomyWarnings=328`.
+- external-output automation audit: `legacyResolveEffect=164 legacyExecuteAbility=3 notClassifiable=316 promotionFindings=20`.
+- successor external scratch only: `E:\Codex\FD\.fd-runner-review-evidence\formal-pr549-revision-from-1beb51c5101e630c16e7bb3543930c41142829bd-nonce112e95c077f815ee099968484eaeba3f`.
+- `git diff --check`: PASS.
+- no authoring/pack/phase3 consumer delta.
+
+Readiness remains permanently zero-credit. Strict accounting remains `261/944`, remaining `683`. One bundled successor Candidate is required to receive a fresh exact Base/Candidate REVIEW before any readiness A-sync/full-owner rescan.

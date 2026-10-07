@@ -149,7 +149,7 @@ import {
 } from './elimination-rescue-link-capability';
 import {
   canExecuteInjuryWarpEffect, containsInjuryWarpPrivilegedNode, effectiveInjuryWarpMovementLinks,
-  injuryWarpCardCostAdjustment, injuryWarpCardPowerAdjustment, isAcceptedInjuryWarpAbility,
+  injuryWarpCardCostAdjustment, injuryWarpCardPowerAdjustment, isAcceptedInjuryWarpAbility, isAcceptedInjuryWarpRepairAbility,
   isInjuryWarpPendingDecisionLiveValid, isInjuryWarpRuntimeProvenanceValidForRestore,
   resolveInjuryWarpDecision, resolveInjuryWarpEffect, settleInjuryWarpMovementPenalty,
 } from './injury-warp-capability';
@@ -2167,7 +2167,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
-  if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
+  if (a.activation.requiresSourceState === 'active' && !active(s, sourceId) && !isAcceptedInjuryWarpRepairAbility(a)) return false;
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
   const activationPhase = effectiveActivationPhase(s, sourceId, a);
   if (activationPhase && activationPhase !== phase(s)) return false;
@@ -2483,7 +2483,9 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
     }
     for (const a of effectiveAbilitiesForPhysicalCard(s, c.instanceId)) {
       const interaction = classifyAbilityInteraction(a);
-      if (interaction.kind !== 'phase_activation' || effectiveActivationPhase(s, c.instanceId, a) !== phase(s) || s.round.prioritySeat !== p.seat || !canActivate(s, c.instanceId, a)) continue;
+      const outOfTurnInjuryWarpRepair = isAcceptedInjuryWarpRepairAbility(a);
+      if (interaction.kind !== 'phase_activation' || effectiveActivationPhase(s, c.instanceId, a) !== phase(s) ||
+          (!outOfTurnInjuryWarpRepair && s.round.prioritySeat !== p.seat) || !canActivate(s, c.instanceId, a)) continue;
       const costs = a.cost.filter(x => x.type === 'pay_mana' && node(x.amount).var).map(x => ({ name: str(node(x.amount).var), min: 0, max: p.mana }));
       result.push({ type: 'activate_ability', cardInstanceId: c.instanceId, abilityId: a.id, ...(costs.length ? { variableCosts: costs } : {}) });
     }

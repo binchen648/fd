@@ -108,6 +108,11 @@ function responseOk(ability: AuthoringAbility): boolean {
 function single(ability: AuthoringAbility): RuleNode | undefined {
   return ability.effects.length === 1 ? ability.effects[0] : undefined;
 }
+function repairPhaseWindow(phase: unknown): 'controller_action_window' | 'controller_combat_action_window' | undefined {
+  if (phase === 'combat') return 'controller_combat_action_window';
+  if (phase === 'preparation' || phase === 'advance' || phase === 'action') return 'controller_action_window';
+  return undefined;
+}
 
 export function isInjuryWarpRulesetEffect(value: RuleNode): value is RulesetEffect {
   const injuries = value.injuryKeys;
@@ -156,6 +161,15 @@ export function isRepairMovementTopologyOverrideEffect(value: RuleNode): value i
   return value.type === REPAIR_MOVEMENT_TOPOLOGY_OVERRIDE_EFFECT && key(value.stateKey) &&
     exact(value, ['type','stateKey']);
 }
+export function isAcceptedInjuryWarpRepairAbility(ability: AuthoringAbility): boolean {
+  if (!standard(ability) || !responseOk(ability)) return false;
+  const effect = single(ability);
+  const expectedWindow = repairPhaseWindow(ability.activation.phase);
+  return !!effect && isRepairMovementTopologyOverrideEffect(effect) &&
+    ability.kind === 'phase_action' && !!expectedWindow &&
+    ability.activation.opens === expectedWindow && ability.activation.requiresSourceState === 'active' &&
+    exact(ability.activation as unknown as Record<string, unknown>, ['phase','opens','requiresSourceState']);
+}
 export function isAscensionCopyLinkedSkillEffect(value: RuleNode): value is AscensionCopyEffect {
   return value.type === ASCENSION_COPY_LINKED_SKILL_EFFECT && key(value.stateKey) && key(value.linkedDefinitionId) &&
     value.maxCopies === 2 && value.destination === 'skill' &&
@@ -182,11 +196,12 @@ export function isAcceptedInjuryWarpAbility(ability: AuthoringAbility): boolean 
     return ability.kind === 'forced_trigger' && ability.activation.trigger === 'after_battle_ended' &&
       exact(ability.activation as unknown as Record<string, unknown>, ['trigger']);
   }
-  if (isActivateMovementTopologyOverrideEffect(effect) || isRepairMovementTopologyOverrideEffect(effect)) {
+  if (isActivateMovementTopologyOverrideEffect(effect)) {
     return ability.kind === 'phase_action' && ability.activation.phase === 'action' &&
       ability.activation.opens === 'controller_action_window' && ability.activation.requiresSourceState === 'active' &&
       exact(ability.activation as unknown as Record<string, unknown>, ['phase','opens','requiresSourceState']);
   }
+  if (isRepairMovementTopologyOverrideEffect(effect)) return isAcceptedInjuryWarpRepairAbility(ability);
   if (isAscensionCopyLinkedSkillEffect(effect)) {
     return ability.kind === 'forced_trigger' && ability.activation.trigger === 'after_master_ascension_unlocked' &&
       exact(ability.activation as unknown as Record<string, unknown>, ['trigger']);
@@ -451,7 +466,9 @@ export function canExecuteInjuryWarpEffect(state: GameState, ctx: EffectContext,
   if (isActivateMovementTopologyOverrideEffect(effect)) return state.round.activePhase === 'action' && sourceActive(state, ctx.sourceCardId);
   if (isRepairMovementTopologyOverrideEffect(effect)) {
     const iw = state.abilityRuntime?.injuryWarpStates?.[stateId(ctx.controllerId, effect.stateKey)];
-    return state.round.activePhase === 'action' && !!iw?.movementOverride &&
+    const livePhase = state.round.activePhase === 'battle' ? 'combat' : state.round.activePhase;
+    return ability.activation.phase === livePhase && repairPhaseWindow(ability.activation.phase) === ability.activation.opens &&
+      !!iw?.movementOverride &&
       iw.movementOverride.linkedCardInstanceId === ctx.sourceCardId && runtime(state).cardState[ctx.sourceCardId]?.active === true;
   }
   if (isAscensionCopyLinkedSkillEffect(effect)) return ctx.event?.type === 'after_master_ascension_unlocked' &&
@@ -593,6 +610,7 @@ export function isInjuryWarpRuntimeProvenanceValidForRestore(state: GameState): 
           iw.deck.some((item) => iw.activeInjuries.includes(item)) ||
           typeof iw.spinalOccurred !== 'boolean' || typeof iw.ascensionUnlocked !== 'boolean' || typeof iw.rewardGranted !== 'boolean') return false;
       if (iw.spinalOccurred && (iw.deck.length !== 0 || iw.activeInjuries.length !== 0)) return false;
+      if (iw.spinalOccurred && iw.painCount > rule.injuryKeys.length) return false;
       if (!iw.spinalOccurred && new Set([...iw.deck, ...iw.activeInjuries]).size !== rule.injuryKeys.length) return false;
       if (!iw.spinalOccurred && iw.painCount !== 0) return false;
       if (iw.rewardGranted && (!iw.ascensionUnlocked || !iw.spinalOccurred || iw.painCount !== 0)) return false;
