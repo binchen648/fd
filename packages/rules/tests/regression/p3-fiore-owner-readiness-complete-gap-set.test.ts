@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 
 import * as rules from '../../src/index';
@@ -376,13 +377,26 @@ function installFiorePersistentDrawbacks(state: GameState) {
 }
 
 describe('P3 Fiore owner readiness complete gap set', () => {
-  it('preserves the accepted 3/9 FM08 authoring and proves exact privileged gateways', () => {
+  it('preserves the accepted FM08 s2/s3/s4 objects after owner materialization and proves exact privileged gateways', () => {
     const current = JSON.parse(readFileSync('data/authoring/masters/master.fiore.json', 'utf8'));
     expect(current.cards.map((entry: any) => entry.id)).toEqual([
+      'master.fiore.skill.s1',
+      'master.fiore.skill.s1a',
       'master.fiore.skill.s2',
       'master.fiore.skill.s3',
       'master.fiore.skill.s4',
+      'master.fiore.skill.s5',
+      'master.fiore.skill.s6',
+      'master.fiore.skill.s7',
+      'master.fiore.skill.ascension',
     ]);
+    const preserved = new Map(current.cards.map((entry: any) => [
+      entry.id,
+      createHash('sha256').update(JSON.stringify(entry)).digest('hex'),
+    ]));
+    expect(preserved.get('master.fiore.skill.s2')).toBe('1bda7cebbae2167a86871e0ebc2e20c63ee65ec1f05228e248931e4cfc0e586c');
+    expect(preserved.get('master.fiore.skill.s3')).toBe('1e1bd3109e39f59fea5b9c6813c71bcccc456acfc2f706aa6e32274130f2baa4');
+    expect(preserved.get('master.fiore.skill.s4')).toBe('2af4dad6ba63323cf96e32a3e81350ef0d3bc5a0f387c09d65baa239fdada828');
     const pack = rules.loadAuthoringJson(archive());
     expect(pack.report.filter((entry) => entry.status === 'unsupported')).toEqual([]);
 
