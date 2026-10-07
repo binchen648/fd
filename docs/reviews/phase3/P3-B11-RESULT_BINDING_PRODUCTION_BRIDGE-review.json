@@ -2,6 +2,7 @@
   "schemaVersion": "fd-phase3-review-attestation-v1",
   "taskId": "P3-B11-RESULT_BINDING_PRODUCTION_BRIDGE",
   "reviewer": "github:binchen648",
+  "reviewThread": "https://github.com/binchen648/fd/pull/542#issuecomment-6029576390",
   "reviewRole": "Reviewer B / B-R",
   "reviewMode": "fresh_exact_sha_independent_review",
   "baseSha": "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
