@@ -46,6 +46,11 @@ describe('P3-A03 B11 current-main evidence sync', () => {
     expect(review.reviewedSha).toBe(sync.source.candidateSha);
     expect(review.finalVerdict).toBe('PASS');
     expect(review.reviewThread).toBe('https://github.com/binchen648/fd/pull/542#issuecomment-6029576390');
+    expect(sync.controlEpoch).toBe('FD-P3-2026-09-23-06');
+    expect(sync.review.attestationControlEpoch).toBe(sync.controlEpoch);
+    expect(sync.review.reviewCommentId).toBe('6029576390');
+    expect(sync.review.reviewThread).toBe(review.reviewThread);
+    expect(sync.review.reviewThread).toContain(`#issuecomment-${sync.review.reviewCommentId}`);
     expect(review.scope.authorizedAbilities).toEqual(sync.scope.authorizedAbilities);
     expect(currentMainIsAncestor).toBe('');
     expect(candidateIsReviewParent).toBe('');

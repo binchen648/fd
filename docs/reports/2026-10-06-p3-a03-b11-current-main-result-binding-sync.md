@@ -1,7 +1,7 @@
 # P3-A03 B11 Current-Main Result Binding Evidence Sync
 
 - Owner: `Codex A`
-- Control Epoch: `FD-P3-2026-09-23-04`
+- Control Epoch: `FD-P3-2026-09-23-06`
 - Task: `P3-A03-B11-CURRENT-MAIN-RESULT-BINDING-SYNC`
 - Status: `REVIEWER_ACCEPTED_CANDIDATE`
 
@@ -13,6 +13,8 @@
 - Reviewer B commit: `5235ea55eb74dabf6a7dcdcf77db8827f6cf0547`
 - Reviewer B: `github:binchen648`
 - Reviewer B thread: `https://github.com/binchen648/fd/pull/542#issuecomment-6029576390`
+- Reviewer B comment ID: `6029576390`
+- Reviewer B attestation Control Epoch: `FD-P3-2026-09-23-06`
 - Review artifact: `docs/reviews/phase3/P3-B11-RESULT_BINDING_PRODUCTION_BRIDGE-review.json`
 - Review artifact SHA-256: `069F3CFD1E41429BE0AF08D33E065802ED82609A87B812393484AF03C974403E`
 - Candidate is an ancestor of the Reviewer B commit: `YES`
