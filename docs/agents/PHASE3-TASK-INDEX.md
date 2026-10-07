@@ -9261,10 +9261,20 @@ Implementation evidence:
 - G3/G4/G5 add identity-free rounds `8/9/10` imminent-elimination rescue, exact post-scoring opponent VP swap, self-rescue no-swap behavior, persistent shared-victory links, final-ranking expansion, and fail-closed restore validation.
 - Exact completed battle results are frozen across a pending rescue decision; runtimes with no available rescue provider use a no-preview fast path.
 - Production Fou identity/text audit remains free of `master.fou`, 芙芙, 兽之印记, 苍天之力 and `core.fou-` routing.
-- Affected validation passes `120/120` across 7 files: Fou `5/5`, scoring `6/6`, fixed Command-Seal `4/4`, Ruler Seal `13/13`, Spartacus seal power `20/20`, authoring interpreter `38/38`, MatchSession `34/34`.
+- Affected validation passes `121/121` across 7 files: Fou `6/6`, scoring `6/6`, fixed Command-Seal `4/4`, Ruler Seal `13/13`, Spartacus seal power `20/20`, authoring interpreter `38/38`, MatchSession `34/34` under declared/default timeouts.
 - typecheck/content validate/generated determinism/`git diff --check` PASS; canonical content remains `22 masters / 19 servants / 20 events / 0 blocking issues`.
 - External-output Phase-3 coverage remains `archives=126 cards=287 abilities=503 compiledCards=223 compiledCharacters=41 blockingIssues=0 newRuntimeSemanticRouted=22 dualRuntime=0 notClassifiable=314`.
 - External-output automation audit remains `legacyResolveEffect=164 legacyExecuteAbility=3 notClassifiable=314 promotionFindings=20`.
 - Repository-wide source-assets command was blocked by the tool safety layer before execution; no source-assets green result is claimed, and this readiness has no authoring/generated/source-path delta.
 - Detailed result: `docs/reports/2026-10-08-p3-b-fou-owner-readiness-complete-gap-set.md`.
 - Readiness remains exactly zero-credit; strict accounting stays `259/944`, remaining `685`, pending one fresh exact `IMPLEMENTATION_ACCEPTED_CANDIDATE`.
+
+Reviewer revision:
+- first Candidate `14878d98c0e86f5c58a79b96498bfaa1488ffc15` -> `IMPLEMENTATION_NEEDS_REVISION`;
+- canonical same-attempt evidence: `https://github.com/binchen648/fd/pull/547#issuecomment-6043161307`;
+- blocker 1 closed by exact authoritative elimination-projection recomputation plus a pending-decision projection fingerprint; no-longer-threatened and changed-ledger/same-threat restore/commit attempts both fail closed;
+- blocker 2 closed without changing the existing 5000 ms test timeout: the three-round MatchSession smoke passed three consecutive isolated default-timeout runs at about `4.83-4.85 s`, then the full MatchSession file passed `34/34` with the smoke at `4.411 s`;
+- performance closure is identity-free: pack-level capability-presence caches/gates plus no-provider/no-record fast paths eliminate Fou-readiness overhead from the current production pack while preserving the fixture/provider path;
+- blocker 3 metadata closure is `dependsOnPrs: [546]`, matching the actual previous-owner migration dependency;
+- successor affected validation is `121/121 PASS`; typecheck/content/generated/external coverage+audit/`git diff --check` all PASS; no authoring/pack/generated consumer delta;
+- readiness remains zero-credit; accounting remains `259/944`, remaining `685`; freeze exactly one successor Candidate then fresh R.

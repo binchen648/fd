@@ -64,11 +64,37 @@ export function isAcceptedPermanentReturnedSkillTuningAbility(ability: Authoring
       !exactKeys(ability.limit as Record<string, unknown>, ['type', 'uses', 'scope'])) return false;
   return automaticNoOps(ability);
 }
+const packHasPermanentReturnedSkillTuning = new WeakMap<object, boolean>();
+export function runtimePackHasPermanentReturnedSkillTuning(state: GameState): boolean {
+  const pack = state.abilityRuntime?.pack;
+  if (!pack) return false;
+  const key = pack as object;
+  const cached = packHasPermanentReturnedSkillTuning.get(key);
+  if (cached !== undefined) return cached;
+  const found = Object.values(pack.cards).some((definition) => definition.abilities.some(isAcceptedPermanentReturnedSkillTuningAbility));
+  packHasPermanentReturnedSkillTuning.set(key, found);
+  return found;
+}
+function controllerHasPermanentReturnedSkillTuningProvider(state: GameState, controllerId: string): boolean {
+  const r = state.abilityRuntime;
+  if (!r || !runtimePackHasPermanentReturnedSkillTuning(state)) return false;
+  return state.cards.some((card) => card.ownerPlayerId === controllerId && card.controllerPlayerId === controllerId && card.zone === 'skill' &&
+    r.pack.cards[card.definitionId]?.abilities.some(isAcceptedPermanentReturnedSkillTuningAbility));
+}
+
+const permanentReturnedSkillTuningNodeCache = new WeakMap<object, boolean>();
 export function containsPermanentReturnedSkillTuningNode(value: unknown): boolean {
-  if (Array.isArray(value)) return value.some(containsPermanentReturnedSkillTuningNode);
-  if (!record(value)) return false;
-  if ([PERMANENT_RETURNED_SKILL_TUNING_EFFECT, COMMAND_SEAL_SPENT_THIS_ROUND_CONDITION, RETURNED_SKILL_THIS_ROUND_CONSTRAINT].includes(String(value.type) as any)) return true;
-  return Object.values(value).some(containsPermanentReturnedSkillTuningNode);
+  if (!value || typeof value !== 'object') return false;
+  const key = value as object;
+  const cached = permanentReturnedSkillTuningNodeCache.get(key);
+  if (cached !== undefined) return cached;
+  const result = Array.isArray(value)
+    ? value.some(containsPermanentReturnedSkillTuningNode)
+    : record(value) && (
+      [PERMANENT_RETURNED_SKILL_TUNING_EFFECT, COMMAND_SEAL_SPENT_THIS_ROUND_CONDITION, RETURNED_SKILL_THIS_ROUND_CONSTRAINT].includes(String(value.type) as any) ||
+      Object.values(value).some(containsPermanentReturnedSkillTuningNode));
+  permanentReturnedSkillTuningNodeCache.set(key, result);
+  return result;
 }
 
 export function markCommandSealSpent(
@@ -80,7 +106,7 @@ export function markCommandSealSpent(
 ): void {
   if (!Number.isSafeInteger(before) || !Number.isSafeInteger(after) || after < 0 || after >= before) return;
   if (!state.players.some((player) => player.id === playerId)) throw new Error('COMMAND_SEAL_SPEND_PLAYER_INVALID');
-  if (!state.abilityRuntime) return;
+  if (!state.abilityRuntime || !controllerHasPermanentReturnedSkillTuningProvider(state, playerId)) return;
   const r = runtime(state);
   (r.commandSealSpentRoundByPlayer ??= {})[playerId] = state.round.roundNumber;
   r.events.push({
@@ -100,9 +126,10 @@ export function controllerSpentCommandSealThisRound(state: GameState, playerId: 
 }
 
 export function recordSkillReturnedToSkillZone(state: GameState, cardInstanceId: string, fromZone: string): void {
-  if (fromZone === 'skill') return;
-  const r = runtime(state);
+  if (fromZone === 'skill' || !state.abilityRuntime || !runtimePackHasPermanentReturnedSkillTuning(state)) return;
   const physical = state.cards.find((card) => card.instanceId === cardInstanceId);
+  if (!physical || !controllerHasPermanentReturnedSkillTuningProvider(state, physical.controllerPlayerId)) return;
+  const r = runtime(state);
   const definition = physical && r.pack.cards[physical.definitionId];
   if (!physical || physical.zone !== 'skill' || physical.ownerPlayerId !== physical.controllerPlayerId ||
       !definition || !['master_skill', 'servant_skill'].includes(definition.cardType)) return;
@@ -166,6 +193,7 @@ export function applyPermanentReturnedSkillTuning(
 }
 
 export function applyPhysicalCardCostModifiers(state: GameState, cardInstanceId: string, resolvedBeforePhysical: number, printedReference: number): number {
+  if (!runtimePackHasPermanentReturnedSkillTuning(state)) return Math.max(0, resolvedBeforePhysical);
   const card = state.cards.find((entry) => entry.instanceId === cardInstanceId);
   const modifiers = card?.costModifiers?.filter((modifier) => modifier.duration === 'game' ||
     (modifier.duration === 'round' && state.round.roundNumber === state.abilityRuntime?.cardState[cardInstanceId]?.playedRound)) ?? [];
@@ -185,33 +213,48 @@ export function isPermanentSkillTuningRuntimeProvenanceValidForRestore(state: Ga
   try {
     const r = state.abilityRuntime;
     if (!r) return true;
+    const spentRounds = r.commandSealSpentRoundByPlayer ?? {};
+    const hasReturnedSkill = Object.values(r.cardState).some((entry) => entry.returnedToSkillZoneRound !== undefined);
+    const hasTuningModifiers = state.cards.some((card) =>
+      (card.costModifiers?.some((modifier) => modifier.provenanceKind === PERMANENT_SKILL_TUNING_PROVENANCE) ?? false) ||
+      (card.powerModifiers?.some((modifier) => modifier.provenanceKind === PERMANENT_SKILL_TUNING_PROVENANCE) ?? false));
+    if (!Object.keys(spentRounds).length && !hasReturnedSkill && !hasTuningModifiers) return true;
+
     const playerIds = new Set(state.players.map((player) => player.id));
-    for (const [playerId, round] of Object.entries(r.commandSealSpentRoundByPlayer ?? {})) {
-      if (!playerIds.has(playerId) || !Number.isSafeInteger(round) || round < 1 || round > state.round.roundNumber) return false;
-      if (!r.events.some((event) => event.type === 'command_seal_spent' && event.playerId === playerId &&
-          event.roundNumber === round && Number.isSafeInteger(event.before) && Number.isSafeInteger(event.after) &&
-          Number(event.after) < Number(event.before))) return false;
+    const spentEvents = new Set(r.events
+      .filter((event) => event.type === 'command_seal_spent' && typeof event.playerId === 'string' &&
+        Number.isSafeInteger(event.roundNumber) && Number.isSafeInteger(event.before) && Number.isSafeInteger(event.after) &&
+        Number(event.after) < Number(event.before))
+      .map((event) => `${event.playerId}:${event.roundNumber}`));
+    const returnEvents = new Set(r.events
+      .filter((event) => event.type === 'skill_card_returned_to_skill_zone' && typeof event.cardInstanceId === 'string' &&
+        Number.isSafeInteger(event.roundNumber) && event.toZone === 'skill' && event.movedCount === 1)
+      .map((event) => `${event.cardInstanceId}:${event.roundNumber}`));
+    const cardById = new Map(state.cards.map((card) => [card.instanceId, card] as const));
+    for (const [playerId, round] of Object.entries(spentRounds)) {
+      if (!playerIds.has(playerId) || !Number.isSafeInteger(round) || round < 1 || round > state.round.roundNumber ||
+          !spentEvents.has(`${playerId}:${round}`)) return false;
     }
     for (const physical of state.cards) {
       const cardState = r.cardState[physical.instanceId];
       if (cardState?.returnedToSkillZoneRound !== undefined) {
         const round = cardState.returnedToSkillZoneRound;
         if (!Number.isSafeInteger(round) || round < 1 || round > state.round.roundNumber ||
-            !r.events.some((event) => event.type === 'skill_card_returned_to_skill_zone' && event.cardInstanceId === physical.instanceId &&
-              event.roundNumber === round && event.toZone === 'skill' && event.movedCount === 1)) return false;
+            !returnEvents.has(`${physical.instanceId}:${round}`)) return false;
       }
       const allCosts = physical.costModifiers ?? [];
       if (allCosts.some((modifier) => modifier.provenanceKind !== PERMANENT_SKILL_TUNING_PROVENANCE)) return false;
       const costs = allCosts;
       const powers = physical.powerModifiers?.filter((modifier) => modifier.provenanceKind === PERMANENT_SKILL_TUNING_PROVENANCE) ?? [];
       if (costs.length !== powers.length) return false;
+      const powerById = new Map(powers.map((modifier) => [modifier.id, modifier] as const));
       for (const cost of costs) {
-        const power = powers.find((modifier) => modifier.id === cost.id);
+        const power = powerById.get(cost.id);
         if (!power || cost.kind !== 'add' || cost.value !== -1 || cost.duration !== 'game' || cost.minPrintedFraction !== 0.5 ||
             power.kind !== 'add' || power.value !== 1 || power.duration !== 'game' || power.lifecycle !== 'game' ||
             cost.sourceId !== power.sourceId || cost.sourceAbilityId !== power.sourceAbilityId || cost.controllerId !== power.controllerId || !cost.controllerId ||
             physical.ownerPlayerId !== cost.controllerId) return false;
-        const source = state.cards.find((card) => card.instanceId === cost.sourceId);
+        const source = cardById.get(cost.sourceId);
         const ability = source && cost.sourceAbilityId
           ? r.pack.cards[source.definitionId]?.abilities.find((entry) => entry.id === cost.sourceAbilityId)
           : undefined;

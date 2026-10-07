@@ -1,5 +1,6 @@
 import type { GameState } from '../schema/game';
 import type { AuthoringAbility, PendingDecision, RuleNode } from './types';
+import { projectBattleEliminationCandidatePlayerIds } from '../core/elimination-resolver';
 
 export const ELIMINATION_RESCUE_SHARED_VICTORY_EFFECT = 'once_per_game_elimination_rescue_shared_victory' as const;
 
@@ -24,6 +25,29 @@ function runtime(state: GameState) {
   if (!state.abilityRuntime) throw new Error('ELIMINATION_RESCUE_RUNTIME_MISSING');
   return state.abilityRuntime;
 }
+function stableProjectionValue(value: unknown): string {
+  if (value === null) return 'null';
+  if (value === undefined) return 'undefined';
+  if (Array.isArray(value)) return `[${value.map(stableProjectionValue).join(',')}]`;
+  if (typeof value === 'object') {
+    const object = value as Record<string, unknown>;
+    return `{${Object.keys(object).sort().map((key) => `${JSON.stringify(key)}:${stableProjectionValue(object[key])}`).join(',')}}`;
+  }
+  return JSON.stringify(value);
+}
+function eliminationRescueProjectionFingerprint(state: GameState, projectedCandidatePlayerIds: readonly string[]): string {
+  const unsettled = (state.abilityRuntime?.eliminationRescueRecords ?? [])
+    .filter((entry) => entry.round === state.round.roundNumber && !entry.scoringSettled)
+    .map((entry) => ({ controllerId: entry.controllerId, targetPlayerId: entry.targetPlayerId, sourceCardId: entry.sourceCardId, abilityId: entry.abilityId }))
+    .sort((left, right) => left.targetPlayerId.localeCompare(right.targetPlayerId) || left.sourceCardId.localeCompare(right.sourceCardId));
+  return stableProjectionValue({
+    round: state.round.roundNumber,
+    battleResults: state.battleResults,
+    players: state.players.map((player) => ({ id: player.id, seat: player.seat, status: player.status, militaryResult: player.militaryResult })),
+    unsettled,
+    projectedCandidatePlayerIds: [...projectedCandidatePlayerIds],
+  });
+}
 export function isEliminationRescueSharedVictoryEffect(value: RuleNode): boolean {
   return value.type === ELIMINATION_RESCUE_SHARED_VICTORY_EFFECT &&
     value.preventElimination === true && value.swapVictoryPointsWithOpponent === true && value.shareVictory === true &&
@@ -39,11 +63,29 @@ export function isAcceptedEliminationRescueSharedVictoryAbility(ability: Authori
       !exactKeys(ability.limit as Record<string, unknown>, ['type', 'uses', 'scope'])) return false;
   return ability.execution.mode === 'automatic' && ability.execution.allowedOperations.length === 0;
 }
+const eliminationRescueSharedVictoryNodeCache = new WeakMap<object, boolean>();
 export function containsEliminationRescueSharedVictoryNode(value: unknown): boolean {
-  if (Array.isArray(value)) return value.some(containsEliminationRescueSharedVictoryNode);
-  if (!record(value)) return false;
-  if (value.type === ELIMINATION_RESCUE_SHARED_VICTORY_EFFECT) return true;
-  return Object.values(value).some(containsEliminationRescueSharedVictoryNode);
+  if (!value || typeof value !== 'object') return false;
+  const key = value as object;
+  const cached = eliminationRescueSharedVictoryNodeCache.get(key);
+  if (cached !== undefined) return cached;
+  const result = Array.isArray(value)
+    ? value.some(containsEliminationRescueSharedVictoryNode)
+    : record(value) && (value.type === ELIMINATION_RESCUE_SHARED_VICTORY_EFFECT || Object.values(value).some(containsEliminationRescueSharedVictoryNode));
+  eliminationRescueSharedVictoryNodeCache.set(key, result);
+  return result;
+}
+
+const packHasEliminationRescueSharedVictory = new WeakMap<object, boolean>();
+export function runtimePackHasEliminationRescueSharedVictory(state: GameState): boolean {
+  const pack = state.abilityRuntime?.pack;
+  if (!pack) return false;
+  const key = pack as object;
+  const cached = packHasEliminationRescueSharedVictory.get(key);
+  if (cached !== undefined) return cached;
+  const found = Object.values(pack.cards).some((definition) => definition.abilities.some(isAcceptedEliminationRescueSharedVictoryAbility));
+  packHasEliminationRescueSharedVictory.set(key, found);
+  return found;
 }
 
 function sourceProvenanceValid(state: GameState, sourceCardId: string, controllerId: string, abilityId: string): boolean {
@@ -58,6 +100,7 @@ function sourceLive(state: GameState, sourceCardId: string, controllerId: string
   return source?.zone === 'skill' && sourceProvenanceValid(state, sourceCardId, controllerId, abilityId);
 }
 function providers(state: GameState) {
+  if (!runtimePackHasEliminationRescueSharedVictory(state)) return [];
   const r = runtime(state);
   const out: Array<{ controllerId: string; sourceCardId: string; abilityId: string }> = [];
   for (const player of state.players.slice().sort((a, b) => a.seat - b.seat)) {
@@ -96,12 +139,16 @@ function nextDecisionId(state: GameState): string {
 export function stageEliminationRescueChoice(state: GameState, projectedCandidatePlayerIds: readonly string[]): boolean {
   const r = runtime(state);
   if (r.pendingDecision || projectedCandidatePlayerIds.length === 0 || ![8, 9, 10].includes(state.round.roundNumber)) return false;
-  const candidates = [...new Set(projectedCandidatePlayerIds)]
-    .filter((id) => state.players.some((player) => player.id === id && player.status === 'active') &&
-      !(r.eliminationRescueRecords ?? []).some((entry) =>
-        entry.targetPlayerId === id && entry.round === state.round.roundNumber && !entry.scoringSettled))
-    .sort((a, b) => state.players.find((p) => p.id === a)!.seat - state.players.find((p) => p.id === b)!.seat);
-  if (!candidates.length) return false;
+  const supplied = [...new Set(projectedCandidatePlayerIds)];
+  if (supplied.length !== projectedCandidatePlayerIds.length ||
+      supplied.some((id) => !state.players.some((player) => player.id === id))) return false;
+  supplied.sort((a, b) => {
+    const left = state.players.find((player) => player.id === a)!;
+    const right = state.players.find((player) => player.id === b)!;
+    return left.seat - right.seat || left.id.localeCompare(right.id);
+  });
+  const candidates = projectBattleEliminationCandidatePlayerIds(state);
+  if (!candidates.length || JSON.stringify(supplied) !== JSON.stringify(candidates)) return false;
   const key = candidateKey(state.round.roundNumber, candidates);
   const provider = providers(state).find((entry) => !used(state, entry.sourceCardId, entry.abilityId) &&
     !r.abilityUsage[declineKey(entry.sourceCardId, entry.abilityId, key)]);
@@ -129,6 +176,7 @@ export function stageEliminationRescueChoice(state: GameState, projectedCandidat
       round: state.round.roundNumber,
       candidatePlayerIds: [...candidates],
       candidateKey: key,
+      projectionFingerprint: eliminationRescueProjectionFingerprint(state, candidates),
       constraints: { kind: 'target', targetKind: 'player', min: 0, max: 1, distinct: true },
     },
   };
@@ -139,12 +187,14 @@ export function isEliminationRescuePendingDecisionLiveValid(state: GameState, de
   try {
     const meta = decision.interaction;
     if (meta?.kind !== 'elimination_rescue_choice_v1') return false;
-    const live = meta.candidatePlayerIds.filter((id) => state.players.some((player) => player.id === id && player.status === 'active'));
+    const live = projectBattleEliminationCandidatePlayerIds(state);
     const count = record(decision.target.count) ? decision.target.count : {};
     return state.round.roundNumber === meta.round && sourceLive(state, meta.sourceCardInstanceId, meta.controllerId, meta.abilityId) &&
       !used(state, meta.sourceCardInstanceId, meta.abilityId) &&
       meta.createdRevision === runtime(state).revision && meta.continuationRef === `${decision.id}:continuation` &&
       meta.candidateKey === candidateKey(meta.round, live) &&
+      meta.projectionFingerprint === eliminationRescueProjectionFingerprint(state, live) &&
+      JSON.stringify(meta.candidatePlayerIds) === JSON.stringify(live) &&
       decision.controllerId === meta.controllerId && decision.context.controllerId === meta.controllerId &&
       decision.context.sourceCardId === meta.sourceCardInstanceId && decision.context.abilityId === meta.abilityId &&
       decision.target.id === 'elimination_rescue_target' && decision.target.type === 'player' &&
@@ -201,13 +251,18 @@ export function resolveEliminationRescueDecision(state: GameState, decision: Pen
 }
 
 export function playerEliminationPreventedByAcceptedRescue(state: GameState, playerId: string): boolean {
-  return (state.abilityRuntime?.eliminationRescueRecords ?? []).some((entry) =>
+  if (![8, 9, 10].includes(state.round.roundNumber)) return false;
+  const records = state.abilityRuntime?.eliminationRescueRecords;
+  if (!records?.length) return false;
+  return records.some((entry) =>
     entry.targetPlayerId === playerId && entry.round === state.round.roundNumber && !entry.scoringSettled);
 }
 export function settleEliminationRescueAfterScoring(state: GameState): Array<{ playerId: string; before: number; after: number }> {
   const changes: Array<{ playerId: string; before: number; after: number }> = [];
   const r = runtime(state);
-  for (const entry of r.eliminationRescueRecords ?? []) {
+  const records = r.eliminationRescueRecords;
+  if (!records?.length) return changes;
+  for (const entry of records) {
     if (entry.round !== state.round.roundNumber || entry.scoringSettled) continue;
     const target = state.players.find((player) => player.id === entry.targetPlayerId);
     const controller = state.players.find((player) => player.id === entry.controllerId);

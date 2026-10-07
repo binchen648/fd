@@ -77,7 +77,7 @@ The canonical Fou consumer remains absent at this readiness stage; this Candidat
 ## Verification
 
 Focused Fou readiness:
-- `p3-fou-owner-readiness-complete-gap-set.test.ts`: `5/5 PASS`
+- `p3-fou-owner-readiness-complete-gap-set.test.ts`: `6/6 PASS`
 
 Affected shared validation, distinct files:
 - core scoring: `6/6 PASS`
@@ -85,10 +85,10 @@ Affected shared validation, distinct files:
 - Ruler Seal subsystem: `13/13 PASS`
 - Spartacus seal-power readiness: `20/20 PASS`
 - authoring interpreter: `38/38 PASS`
-- Fou readiness: `5/5 PASS`
-- subtotal: `86/86 PASS`
-- MatchSession: `34/34 PASS`
-- total affected validation: `120/120 PASS` across 7 files.
+- Fou readiness: `6/6 PASS`
+- subtotal: `87/87 PASS`
+- MatchSession: `34/34 PASS` under its declared/default timeouts
+- total affected validation: `121/121 PASS` across 7 files.
 
 Other gates:
 - `npm run typecheck`: PASS
@@ -107,6 +107,22 @@ Other gates:
 - Fou authoring remains absent and pack registration count remains exactly zero.
 
 Repository-wide source-asset validation was attempted once at final closeout but the AgentDock tool call was blocked by the tool safety layer before execution. No result is fabricated from that blocked call. This readiness changes no authoring/generated/source-image declarations, so it introduces no new source-asset path; existing repository source-asset debt remains outside this Candidate's claimed green gates.
+
+## Reviewer revision — PR #547 first Candidate
+
+Prior Candidate `14878d98c0e86f5c58a79b96498bfaa1488ffc15` received `IMPLEMENTATION_NEEDS_REVISION` on ReviewJobKey `pr547:14878d98c0e86f5c58a79b96498bfaa1488ffc15`.
+
+Canonical same-attempt evidence relay: `https://github.com/binchen648/fd/pull/547#issuecomment-6043161307`.
+
+All three blocking findings are closed together in the successor:
+
+- stale rescue is now bound to the exact authoritative pre-scoring projection. The pending interaction stores an exact projection fingerprint covering the current battle ledger, player status/military inputs, unsettled rescue authority, and projected target set. Restore and commit recompute the projection; a target that is no longer threatened fails closed, and even a changed ledger that preserves the same target set fails the fingerprint check;
+- the focused Fou suite adds the independent stale/no-longer-threatened repro plus changed-ledger/same-threat negative coverage, bringing Fou readiness to `6/6 PASS`;
+- MatchSession performance no longer pays the new generic capability cost when the loaded pack has no such provider. Pack-level capability-presence caches, gateway gating, no-provider cost/return/seal fast paths, and no-record rescue scoring exits keep the existing three-round smoke under its original 5000 ms test timeout. The exact test passed three consecutive isolated default-timeout runs at approximately `4.83-4.85 s`, then passed inside the full MatchSession file at `4.411 s`; the full MatchSession result is `34/34 PASS` with no timeout override;
+- the full Reviewer-affected set is now `121/121 PASS` across the same 7 files: Fou `6/6`, scoring `6/6`, fixed Command-Seal `4/4`, Ruler Seal `13/13`, Spartacus seal power `20/20`, authoring interpreter `38/38`, MatchSession `34/34`;
+- PR governance metadata for the successor uses the actual dependency edge `dependsOnPrs: [546]`, because PR #547 starts from the accepted Fiore owner-migration A-sync lineage immediately after PR #546.
+
+Successor pre-R gates remain green: typecheck, content validation, generated determinism, external-output coverage/audit, and `git diff --check`; there is still no `data/authoring/**`, pack, or generated consumer delta and readiness remains zero-credit.
 
 ## Review gate
 

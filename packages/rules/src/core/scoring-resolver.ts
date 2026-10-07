@@ -1,10 +1,10 @@
 import type { GameState, PlayerScoringBreakdown } from "../schema/game";
 import type { ResolverResult } from "./resolver-contracts";
-import { resolveEliminationBatch } from "./elimination-resolver";
+import { ELIMINATION_MILITARY_THRESHOLD, resolveEliminationBatch } from "./elimination-resolver";
 import { vesselCycleReconBonus } from '../ability/vessel-cycle-capability';
 import { playerEliminationPreventedByAcceptedRescue } from '../ability/elimination-rescue-link-capability';
 
-export const ELIMINATION_MILITARY_THRESHOLD = -8;
+export { ELIMINATION_MILITARY_THRESHOLD } from "./elimination-resolver";
 
 export type ThresholdBucket = "default" | "four_or_less" | "three_or_less" | "two_or_less";
 

@@ -238,6 +238,7 @@ describe('P3 Fou owner readiness complete gap set', () => {
     const state = setup();
     const source = add(state, RESCUE);
     state.players[1]!.militaryResult = -7;
+    state.battleResults = [eliminationBattle('p2')];
 
     state.round.roundNumber = 7;
     expect(rules.stageEliminationRescueChoice(state, ['p2'])).toBe(false);
@@ -250,7 +251,6 @@ describe('P3 Fou owner readiness complete gap set', () => {
     expect(state.abilityRuntime!.eliminationRescueRecords).toHaveLength(1);
     expect(state.abilityRuntime!.sharedVictoryLinks).toHaveLength(1);
 
-    state.battleResults = [eliminationBattle('p2')];
     const scored = rules.applyBattleScoring(state).nextState;
     expect(scored.players[1]!.status).toBe('active');
 
@@ -276,18 +276,49 @@ describe('P3 Fou owner readiness complete gap set', () => {
     expect(state.cards.find((card) => card.instanceId === source)).toBeDefined();
   });
 
+  it('fails closed when the frozen elimination projection becomes stale before restore or commit', () => {
+    const state = setup();
+    add(state, RESCUE);
+    state.round.roundNumber = 8;
+    state.players[1]!.militaryResult = -7;
+    state.battleResults = [eliminationBattle('p2')];
+
+    expect(rules.projectBattleEliminationCandidatePlayerIds(state)).toEqual(['p2']);
+    expect(rules.stageEliminationRescueChoice(state, ['p2'])).toBe(true);
+    state.abilityRuntime!.eliminationRescueBattleResolutionRound = 8;
+    const decision = structuredClone(state.abilityRuntime!.pendingDecision!);
+    expect(rules.isEliminationRescuePendingDecisionLiveValid(state, decision)).toBe(true);
+    expect(rules.isEliminationRescueRuntimeProvenanceValidForRestore(state)).toBe(true);
+
+    const noLongerThreatened = structuredClone(state);
+    noLongerThreatened.battleResults[0]!.militaryAdjustments = [{ playerId: 'p2', delta: 0 }];
+    expect(rules.projectBattleEliminationCandidatePlayerIds(noLongerThreatened)).toEqual([]);
+    expect(rules.isEliminationRescuePendingDecisionLiveValid(noLongerThreatened, noLongerThreatened.abilityRuntime!.pendingDecision!)).toBe(false);
+    expect(rules.isEliminationRescueRuntimeProvenanceValidForRestore(noLongerThreatened)).toBe(false);
+    expect(rules.resolveEliminationRescueDecision(noLongerThreatened, decision, ['p2'])).toBe(false);
+    expect(noLongerThreatened.abilityRuntime!.eliminationRescueRecords ?? []).toEqual([]);
+
+    const changedLedgerSameThreat = structuredClone(state);
+    changedLedgerSameThreat.battleResults[0]!.vpReward += 1;
+    expect(rules.projectBattleEliminationCandidatePlayerIds(changedLedgerSameThreat)).toEqual(['p2']);
+    expect(rules.isEliminationRescuePendingDecisionLiveValid(changedLedgerSameThreat, changedLedgerSameThreat.abilityRuntime!.pendingDecision!)).toBe(false);
+    expect(rules.isEliminationRescueRuntimeProvenanceValidForRestore(changedLedgerSameThreat)).toBe(false);
+    expect(rules.resolveEliminationRescueDecision(changedLedgerSameThreat, decision, ['p2'])).toBe(false);
+    expect(changedLedgerSameThreat.abilityRuntime!.eliminationRescueRecords ?? []).toEqual([]);
+  });
+
   it('self-rescue creates no VP swap or shared-victory link and the physical source is once per game', () => {
     const state = setup();
     add(state, RESCUE);
     state.round.roundNumber = 9;
     state.players[0]!.militaryResult = -7;
+    state.battleResults = [eliminationBattle('p1')];
 
     expect(rules.stageEliminationRescueChoice(state, ['p1'])).toBe(true);
     const decision = structuredClone(state.abilityRuntime!.pendingDecision!);
     expect(rules.resolveEliminationRescueDecision(state, decision, ['p1'])).toBe(true);
     expect(state.abilityRuntime!.sharedVictoryLinks ?? []).toEqual([]);
 
-    state.battleResults = [eliminationBattle('p1')];
     const scored = rules.applyBattleScoring(state).nextState;
     expect(scored.players[0]!.status).toBe('active');
     expect(rules.settleEliminationRescueAfterScoring(scored)).toEqual([]);

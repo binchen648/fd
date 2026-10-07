@@ -100,6 +100,7 @@ import type { GameState, PhaseName } from './schema/game';
 import type { CompiledPlaytestContentLibrary } from '@fd/content';
 import { resolveBattlefield } from './core/combat-resolver';
 import { applyBattleScoring } from './core/scoring-resolver';
+import { projectBattleEliminationCandidatePlayerIds } from './core/elimination-resolver';
 import { canOccupyLocation, getEnabledLocations } from './core/map-engine';
 import { canViewFaceDownEvents, canViewOpponentDiscard, grantMana, rulerSealMovementLocked } from './core/rule-overrides';
 import { createSeededGameState } from './tools/seeded-state';
@@ -3829,14 +3830,10 @@ export class MatchSession {
       // applyBattleScoring consumes battleResults, so doing this afterwards would lose owner-loss information.
       if (!rescueLedgerFrozen) Object.assign(this.state, settleLinkedOwnerCardsAfterBattles(this.state, resolvedBattles));
 
-      // Elimination rescue must be decided against the exact completed battle ledger before scoring mutates status.
-      // Preview on a clone only; the real state remains untouched while a human/AI choice is pending.
+      // Elimination rescue is bound to the exact completed battle ledger before scoring mutates status.
+      // Use the shared pure military-threshold projection so restore/commit can recompute the same threat set.
       if (hasAvailableEliminationRescueProvider(this.state)) {
-        const scoringPreview = applyBattleScoring(structuredClone(this.state)).nextState;
-        const projectedEliminations = this.state.players
-          .filter((player) => player.status === 'active' &&
-            scoringPreview.players.some((candidate) => candidate.id === player.id && candidate.status === 'eliminated'))
-          .map((player) => player.id);
+        const projectedEliminations = projectBattleEliminationCandidatePlayerIds(this.state);
         if (stageEliminationRescueChoice(this.state, projectedEliminations)) {
           this.state.abilityRuntime!.eliminationRescueBattleResolutionRound = this.state.round.roundNumber;
           return;

@@ -140,12 +140,12 @@ import {
   containsPermanentReturnedSkillTuningNode, controllerSpentCommandSealThisRound,
   isAcceptedPermanentReturnedSkillTuningAbility, isControllerSpentCommandSealThisRoundCondition,
   isPermanentSkillTuningRuntimeProvenanceValidForRestore, isReturnedSkillThisRoundConstraint,
-  markCommandSealSpent, recordSkillReturnedToSkillZone,
+  markCommandSealSpent, recordSkillReturnedToSkillZone, runtimePackHasPermanentReturnedSkillTuning,
 } from './permanent-skill-tuning-capability';
 import {
   containsEliminationRescueSharedVictoryNode, isAcceptedEliminationRescueSharedVictoryAbility,
   isEliminationRescuePendingDecisionLiveValid, isEliminationRescueRuntimeProvenanceValidForRestore,
-  resolveEliminationRescueDecision,
+  resolveEliminationRescueDecision, runtimePackHasEliminationRescueSharedVictory,
 } from './elimination-rescue-link-capability';
 import { containsEffectiveLocationRestrictionPrivilegedNode, effectiveLocationRestrictionRequiresFaceDownStandardAttack, isAcceptedEffectiveLocationRestrictionAbility, isEffectiveLocationRestrictionRuntimeProvenanceValidForRestore, isPlayerAtEffectiveLocationKind } from './effective-location-restriction-capability';
 import { containsOriginStillnessPrintedCostPrivilegedNode, isAcceptedOriginStillnessPrintedCostAbility, originStillnessEligibleActiveBasicIds, originStillnessPrintedManaGain } from './origin-stillness-printed-cost-capability';
@@ -2089,8 +2089,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsRoundLocationSupplyPrivilegedNode(a) && !isAcceptedRoundLocationSupplyAbility(a)) return false;
   if (isAcceptedRoundLocationSupplyAbility(a) && !canExecuteRoundLocationSupplyEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsRoundSkillProfilePrivilegedNode(a) && !isAcceptedRoundSkillProfileAbility(a)) return false;
-  if (containsPermanentReturnedSkillTuningNode(a) && !isAcceptedPermanentReturnedSkillTuningAbility(a)) return false;
-  if (containsEliminationRescueSharedVictoryNode(a) && !isAcceptedEliminationRescueSharedVictoryAbility(a)) return false;
+  if (runtimePackHasPermanentReturnedSkillTuning(s) && containsPermanentReturnedSkillTuningNode(a) && !isAcceptedPermanentReturnedSkillTuningAbility(a)) return false;
+  if (runtimePackHasEliminationRescueSharedVictory(s) && containsEliminationRescueSharedVictoryNode(a) && !isAcceptedEliminationRescueSharedVictoryAbility(a)) return false;
   if (isAcceptedRoundSkillProfileAbility(a) && a.kind === 'phase_action' && !canExecuteRoundSkillProfileEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsEffectiveLocationRestrictionPrivilegedNode(a) && !isAcceptedEffectiveLocationRestrictionAbility(a)) return false;
   if (containsOriginStillnessPrintedCostPrivilegedNode(a) && !isAcceptedOriginStillnessPrintedCostAbility(a)) return false;
@@ -6713,14 +6713,14 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     }
     return;
   }
-  if (containsPermanentReturnedSkillTuningNode(a)) {
+  if (runtimePackHasPermanentReturnedSkillTuning(s) && containsPermanentReturnedSkillTuningNode(a)) {
     if (!isAcceptedPermanentReturnedSkillTuningAbility(a)) reject('resolution_failed', 'Unsupported permanent returned-skill tuning semantic');
     const pending = findPendingTarget(s, ctx, a, a.effects);
     if (pending) { runtime(s).pendingDecision = pending; return; }
     if (!applyPermanentReturnedSkillTuning(s, ctx, a)) reject('resolution_failed', 'Permanent returned-skill tuning resolution failed');
     return;
   }
-  if (containsEliminationRescueSharedVictoryNode(a)) {
+  if (runtimePackHasEliminationRescueSharedVictory(s) && containsEliminationRescueSharedVictoryNode(a)) {
     if (!isAcceptedEliminationRescueSharedVictoryAbility(a)) reject('resolution_failed', 'Unsupported elimination rescue / shared-victory semantic');
     return;
   }

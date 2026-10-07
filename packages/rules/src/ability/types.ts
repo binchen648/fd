@@ -349,7 +349,7 @@ export interface DefinitionSideDeckInteractionMetadata {
 export interface EliminationRescueInteractionMetadata {
   kind: 'elimination_rescue_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
   sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
-  controllerId: PlayerId; round: number; candidatePlayerIds: PlayerId[]; candidateKey: string;
+  controllerId: PlayerId; round: number; candidatePlayerIds: PlayerId[]; candidateKey: string; projectionFingerprint: string;
   constraints: { kind: 'target'; targetKind: 'player'; min: 0; max: 1; distinct: true };
 }
 export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata |
