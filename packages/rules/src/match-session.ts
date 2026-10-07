@@ -21,6 +21,7 @@ import {
   settleEliminationRescueAfterScoring,
   stageEliminationRescueChoice,
 } from './ability/elimination-rescue-link-capability';
+import { injuryWarpForbiddenDeploymentTerrainValues } from './ability/injury-warp-capability';
 import { returnDefinitionSideDeckCardToDiscard, settleDefinitionSideDeckManaEvents } from './ability/definition-side-deck-capability';
 import {
   createOpponentCloseToOnePersistenceScope,
@@ -2519,6 +2520,24 @@ function effectiveTerrainSlotIndex(state: GameState, locationId: LocationId, pla
   return index >= 0 && index < terrainSlotCount(state, locationId) ? index : undefined;
 }
 
+function availableTerrainSlotForDeployment(
+  state: GameState,
+  playerId: string,
+  locationId: LocationId,
+  maximumTerrainValue?: number,
+): number | undefined {
+  const location = getEnabledLocations(state.map, state.locationConfig).find((candidate) => candidate.id === locationId);
+  const bonuses = location?.terrainBonuses ?? [];
+  if (!bonuses.length) return undefined;
+  const current = assignedTerrainOccupants(state, locationId);
+  if (current.includes(playerId)) return effectiveTerrainSlotIndex(state, locationId, playerId);
+  const used = new Set(current.map((id) => effectiveTerrainSlotIndex(state, locationId, id)).filter((slot): slot is number => slot !== undefined));
+  const forbidden = new Set(injuryWarpForbiddenDeploymentTerrainValues(state, playerId));
+  const slot = bonuses.findIndex((value, index) =>
+    !used.has(index) && !forbidden.has(value) && (maximumTerrainValue === undefined || value <= maximumTerrainValue));
+  return slot >= 0 ? slot : undefined;
+}
+
 function activeDeploymentTerrainStatus(state: GameState, decisionPlayerId: string, locationId: LocationId): DeploymentTerrainStatus | undefined {
   const statuses = (state as unknown as { activeStatuses?: Array<Record<string, unknown>> }).activeStatuses ?? [];
   const matches = statuses.filter((status) => status.duration === 'next_round' &&
@@ -2793,6 +2812,9 @@ export class MatchSession {
           .map((candidate) => candidate.id);
         const deploymentLimit = deploymentLimitFor(this.state, location.id);
         if (deploymentLimit !== undefined && occupyingPlayerIds.length >= deploymentLimit) return false;
+        if ((location.terrainBonuses?.length ?? 0) > 0 &&
+            injuryWarpForbiddenDeploymentTerrainValues(this.state, playerId).length > 0 &&
+            availableTerrainSlotForDeployment(this.state, playerId, location.id) === undefined) return false;
         return canOccupyLocation({
           map: this.state.map,
           config: this.state.locationConfig,
@@ -2967,9 +2989,8 @@ export class MatchSession {
     const assignments = terrainAssignmentsOf(this.state);
     const current = assignedTerrainOccupants(this.state, locationId);
     if (current.includes(playerId)) return;
-    const used = new Set(current.map((id) => effectiveTerrainSlotIndex(this.state, locationId, id)).filter((slot): slot is number => slot !== undefined));
-    const slot = bonuses.findIndex((value, index) => !used.has(index) && (maximumTerrainValue === undefined || value <= maximumTerrainValue));
-    if (slot < 0) return;
+    const slot = availableTerrainSlotForDeployment(this.state, playerId, locationId, maximumTerrainValue);
+    if (slot === undefined) return;
     assignments[locationId] = [...current, playerId];
     const slotMap = terrainSlotOverridesOf(this.state);
     slotMap[locationId] ??= {};

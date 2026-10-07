@@ -100,6 +100,17 @@ import {
   ELIMINATION_RESCUE_SHARED_VICTORY_EFFECT,
   containsEliminationRescueSharedVictoryNode, isAcceptedEliminationRescueSharedVictoryAbility,
 } from './elimination-rescue-link-capability';
+import {
+  ACTIVATE_MOVEMENT_TOPOLOGY_OVERRIDE_EFFECT,
+  ASCENSION_COPY_LINKED_SKILL_EFFECT,
+  INJURY_WARP_ACTION_DISCARD_EFFECT,
+  INJURY_WARP_BATTLE_END_PAIN_EFFECT,
+  INJURY_WARP_DRAW_CHOICE_EFFECT,
+  INJURY_WARP_RULESET_EFFECT,
+  REPAIR_MOVEMENT_TOPOLOGY_OVERRIDE_EFFECT,
+  containsInjuryWarpPrivilegedNode,
+  isAcceptedInjuryWarpAbility,
+} from './injury-warp-capability';
 import { EFFECTIVE_LOCATION_SAME_LOCATION_RESTRICTIONS_EFFECT, containsEffectiveLocationRestrictionPrivilegedNode, isAcceptedEffectiveLocationRestrictionAbility } from './effective-location-restriction-capability';
 import { RECYCLE_ACTIVE_BASIC_FOR_PRINTED_COST_MANA_EFFECT, containsOriginStillnessPrintedCostPrivilegedNode, isAcceptedOriginStillnessPrintedCostAbility } from './origin-stillness-printed-cost-capability';
 import {
@@ -386,6 +397,9 @@ const supportedTypes = new Set([
   MASTER_ASCENSION_UNLOCK_EFFECT,
   PERMANENT_RETURNED_SKILL_TUNING_EFFECT, COMMAND_SEAL_SPENT_THIS_ROUND_CONDITION, RETURNED_SKILL_THIS_ROUND_CONSTRAINT,
   ELIMINATION_RESCUE_SHARED_VICTORY_EFFECT,
+  INJURY_WARP_RULESET_EFFECT, INJURY_WARP_DRAW_CHOICE_EFFECT, INJURY_WARP_ACTION_DISCARD_EFFECT,
+  INJURY_WARP_BATTLE_END_PAIN_EFFECT, ACTIVATE_MOVEMENT_TOPOLOGY_OVERRIDE_EFFECT,
+  REPAIR_MOVEMENT_TOPOLOGY_OVERRIDE_EFFECT, ASCENSION_COPY_LINKED_SKILL_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -424,6 +438,10 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'minimumControllerMana', 'additionalManaCost', 'triggerLocationId', 'replacements', 'opponentCount', 'suppresses', 'cards', 'drawAfterPlay', 'maxPerRound', 'victoryPointCost',
   'stateKey', 'profileKey', 'enhancedDefinitionId', 'suppress', 'mode', 'requireHigherVictoryPointTarget', 'afterBattleManaLoss', 'onBattleLossVictoryPointLoss', 'requireBattlefield', 'requireNoAssignedTerrain', 'cardTypes',
   'minPrintedFraction', 'preventElimination', 'swapVictoryPointsWithOpponent', 'shareVictory',
+  'injuryKeys', 'immediateRandomDiscardKey', 'recurringRandomDiscardKey', 'basicPowerPenaltyKey', 'basicPowerDelta',
+  'forbiddenTerrainKey', 'forbiddenTerrainValues', 'sealVpLossKey', 'vpLossPerSeal', 'movementManaLossKey',
+  'manaLossPerOwnTurnMove', 'conversionKey', 'linkedAttackDefinitionId', 'painSkillCostDelta', 'painDiscardPerBattleEnd',
+  'ascensionPainRewardVp', 'allowedLocationIds', 'chooseCount', 'linkedOverrideDefinitionId', 'linkedDefinitionId', 'maxCopies',
   'targetRoundOffset', 'definitionIds', 'workshopLocationId', 'battlefieldDefinitionId', 'manaGain', 'ignoreDefeatManaCost',
   // New mechanic keys for 5 servants
   'options', 'label', 'condition', 'targets', 'duration', 'scope', 'statusId', 'choiceId', 'value', 'floor',
@@ -912,6 +930,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsEliminationRescueSharedVictoryNode(candidateAbility) && !isAcceptedEliminationRescueSharedVictoryAbility(candidateAbility)) {
         issue('eliminationRescueSharedVictory.gateway', 'Elimination rescue/shared-victory privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsInjuryWarpPrivilegedNode(candidateAbility) && !isAcceptedInjuryWarpAbility(candidateAbility)) {
+        issue('injuryWarp.gateway', 'Injury/topology privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       if (containsEffectiveLocationRestrictionPrivilegedNode(candidateAbility) && !isAcceptedEffectiveLocationRestrictionAbility(candidateAbility)) {
         issue('effectiveLocationRestriction.gateway', 'Effective-location restriction privileged mechanic requires an accepted exact whole-ability semantic', id);

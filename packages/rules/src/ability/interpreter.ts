@@ -147,6 +147,12 @@ import {
   isEliminationRescuePendingDecisionLiveValid, isEliminationRescueRuntimeProvenanceValidForRestore,
   resolveEliminationRescueDecision, runtimePackHasEliminationRescueSharedVictory,
 } from './elimination-rescue-link-capability';
+import {
+  canExecuteInjuryWarpEffect, containsInjuryWarpPrivilegedNode, effectiveInjuryWarpMovementLinks,
+  injuryWarpCardCostAdjustment, injuryWarpCardPowerAdjustment, isAcceptedInjuryWarpAbility, isAcceptedInjuryWarpRepairAbility,
+  isInjuryWarpPendingDecisionLiveValid, isInjuryWarpRuntimeProvenanceValidForRestore,
+  resolveInjuryWarpDecision, resolveInjuryWarpEffect, settleInjuryWarpMovementPenalty,
+} from './injury-warp-capability';
 import { containsEffectiveLocationRestrictionPrivilegedNode, effectiveLocationRestrictionRequiresFaceDownStandardAttack, isAcceptedEffectiveLocationRestrictionAbility, isEffectiveLocationRestrictionRuntimeProvenanceValidForRestore, isPlayerAtEffectiveLocationKind } from './effective-location-restriction-capability';
 import { containsOriginStillnessPrintedCostPrivilegedNode, isAcceptedOriginStillnessPrintedCostAbility, originStillnessEligibleActiveBasicIds, originStillnessPrintedManaGain } from './origin-stillness-printed-cost-capability';
 import {
@@ -533,7 +539,10 @@ function uniqueUndirectedMiddleLocation(s: GameState, first: string | undefined,
   if (!ids.has(first as LocationId) || !ids.has(second as LocationId)) return undefined;
   const adjacent = (left: string, right: string) => {
     const a = enabled.find((entry) => entry.id === left); const b = enabled.find((entry) => entry.id === right);
-    return !!a && !!b && (a.movementLinks.includes(right as LocationId) || b.movementLinks.includes(left as LocationId));
+    return !!a && !!b && (
+      effectiveInjuryWarpMovementLinks(s, a.id, a.movementLinks).includes(right as LocationId) ||
+      effectiveInjuryWarpMovementLinks(s, b.id, b.movementLinks).includes(left as LocationId)
+    );
   };
   const middle = enabled.filter((entry) => adjacent(first, entry.id) && adjacent(entry.id, second)).map((entry) => entry.id);
   return middle.length === 1 ? middle[0] : undefined;
@@ -976,9 +985,10 @@ export function getReachableLocationsAlongArrows(s: GameState, from: string, max
   const queue = [{ id: from, distance: 0 }]; const result: LocationId[] = [];
   for (let i = 0; i < queue.length; i++) {
     const current = queue[i]!; if (current.distance >= maxSteps) continue;
-    const directLinks = locations.find(l => l.id === current.id)?.movementLinks ?? [];
+    const currentLocation = locations.find(l => l.id === current.id);
+    const directLinks = effectiveInjuryWarpMovementLinks(s, current.id, currentLocation?.movementLinks ?? []);
     const reverseLinks = hasReverseArrowMovement(s, movingPlayerId)
-      ? locations.filter(l => l.movementLinks.includes(current.id as LocationId)).map(l => l.id)
+      ? locations.filter(l => effectiveInjuryWarpMovementLinks(s, l.id, l.movementLinks).includes(current.id as LocationId)).map(l => l.id)
       : [];
     for (const link of [...directLinks, ...reverseLinks]) {
       if (visited.has(link) || !locations.some(l => l.id === link)) continue;
@@ -1193,6 +1203,11 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
   if (conditionalAttributeBonus !== 0) {
     result.value += conditionalAttributeBonus;
     result.lines.push({ label: 'controller_attack_attribute_power_bonus', value: result.value });
+  }
+  const injuryPower = injuryWarpCardPowerAdjustment(s, sourceId);
+  if (injuryPower !== 0) {
+    result.value += injuryPower;
+    result.lines.push({ label: 'injury_basic_power_adjustment', value: result.value });
   }
   for (const modifier of ((source as unknown as { powerModifiers?: Array<Record<string, unknown>> }).powerModifiers ?? [])) {
     if (modifier.lifecycle === 'until_leaves_active_area' && modifier.round !== s.round.roundNumber) continue;
@@ -2091,6 +2106,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsRoundSkillProfilePrivilegedNode(a) && !isAcceptedRoundSkillProfileAbility(a)) return false;
   if (runtimePackHasPermanentReturnedSkillTuning(s) && containsPermanentReturnedSkillTuningNode(a) && !isAcceptedPermanentReturnedSkillTuningAbility(a)) return false;
   if (runtimePackHasEliminationRescueSharedVictory(s) && containsEliminationRescueSharedVictoryNode(a) && !isAcceptedEliminationRescueSharedVictoryAbility(a)) return false;
+  if (containsInjuryWarpPrivilegedNode(a) && !isAcceptedInjuryWarpAbility(a)) return false;
+  if (isAcceptedInjuryWarpAbility(a) && !canExecuteInjuryWarpEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (isAcceptedRoundSkillProfileAbility(a) && a.kind === 'phase_action' && !canExecuteRoundSkillProfileEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsEffectiveLocationRestrictionPrivilegedNode(a) && !isAcceptedEffectiveLocationRestrictionAbility(a)) return false;
   if (containsOriginStillnessPrintedCostPrivilegedNode(a) && !isAcceptedOriginStillnessPrintedCostAbility(a)) return false;
@@ -2150,7 +2167,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
-  if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
+  if (a.activation.requiresSourceState === 'active' && !active(s, sourceId) && !isAcceptedInjuryWarpRepairAbility(a)) return false;
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
   const activationPhase = effectiveActivationPhase(s, sourceId, a);
   if (activationPhase && activationPhase !== phase(s)) return false;
@@ -2353,7 +2370,8 @@ export function effectiveCardPlayCost(s: GameState, playerId: string, sourceId: 
   if (!Number.isSafeInteger(replayIncrease) || replayIncrease < 0) reject('invalid_state', 'Physical replay-growth count is invalid');
   const vesselAura = vesselCycleSkillAura(s, playerId, d.id, d.cardType);
   const bloodlustAscension = bloodlustAscensionAdjustments(s, playerId, d.id);
-  const beforePhysical = Math.max(0, baseCost + replayIncrease + battlefieldSourceCardPlayCostIncrease(s, playerId, sourceId) + vesselAura.costDelta + (bloodlustAscension?.costAdd ?? 0));
+  const injuryCost = injuryWarpCardCostAdjustment(s, sourceId);
+  const beforePhysical = Math.max(0, baseCost + replayIncrease + battlefieldSourceCardPlayCostIncrease(s, playerId, sourceId) + vesselAura.costDelta + (bloodlustAscension?.costAdd ?? 0) + injuryCost);
   return applyPhysicalCardCostModifiers(s, sourceId, beforePhysical, dynamic.length ? baseCost : base);
 }
 
@@ -2465,7 +2483,9 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
     }
     for (const a of effectiveAbilitiesForPhysicalCard(s, c.instanceId)) {
       const interaction = classifyAbilityInteraction(a);
-      if (interaction.kind !== 'phase_activation' || effectiveActivationPhase(s, c.instanceId, a) !== phase(s) || s.round.prioritySeat !== p.seat || !canActivate(s, c.instanceId, a)) continue;
+      const outOfTurnInjuryWarpRepair = isAcceptedInjuryWarpRepairAbility(a);
+      if (interaction.kind !== 'phase_activation' || effectiveActivationPhase(s, c.instanceId, a) !== phase(s) ||
+          (!outOfTurnInjuryWarpRepair && s.round.prioritySeat !== p.seat) || !canActivate(s, c.instanceId, a)) continue;
       const costs = a.cost.filter(x => x.type === 'pay_mana' && node(x.amount).var).map(x => ({ name: str(node(x.amount).var), min: 0, max: p.mana }));
       result.push({ type: 'activate_ability', cardInstanceId: c.instanceId, abilityId: a.id, ...(costs.length ? { variableCosts: costs } : {}) });
     }
@@ -2679,7 +2699,8 @@ function shortestPath(s: GameState, from: string, to: string): string[] {
   for (let i = 0; i < queue.length; i++) {
     const path = queue[i]!;
     const current = path[path.length - 1]!;
-    for (const next of locations.find(l => l.id === current)?.movementLinks ?? []) {
+    const currentLocation = locations.find(l => l.id === current);
+    for (const next of effectiveInjuryWarpMovementLinks(s, current, currentLocation?.movementLinks ?? [])) {
       if (seen.has(next) || !locations.some(l => l.id === next)) continue;
       const candidate = [...path, next];
       if (next === to) return candidate;
@@ -2697,6 +2718,7 @@ function recordMovementForAbilityRuntime(s: GameState, playerId: string, from: s
   r.movementDistanceThisRound[playerId] = (r.movementDistanceThisRound[playerId] ?? 0) + distance;
   const battlefields = path.slice(1).filter(locationId => isBattlefield(s, locationId)).length;
   r.battlefieldsPassedOrStayedThisRound[playerId] = (r.battlefieldsPassedOrStayedThisRound[playerId] ?? 0) + battlefields;
+  settleInjuryWarpMovementPenalty(s, playerId);
   s.log.push({ type: 'movement', message: `player:${playerId}:effect_move:${from}->${to}`, payload: { playerId, from, to, movementKind: 'effect', manaSpent: 0, roundNumber: s.round.roundNumber } });
 }
 function lifecycleTransitions(s: GameState) {
@@ -4193,6 +4215,7 @@ function isMatchingDefinitionPendingDecisionLiveValid(s: GameState, decision: Pe
 }
 
 export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decision: PendingDecision): boolean {
+  if (decision.interaction?.kind === 'injury_warp_choice_v1') return isInjuryWarpPendingDecisionLiveValid(s, decision);
   if (decision.interaction?.kind === 'elimination_rescue_choice_v1') return isEliminationRescuePendingDecisionLiveValid(s, decision);
   if (decision.interaction?.kind === 'multi_presence_location_context_v1') return multiPresenceLocationContextDecisionLiveValid(s, decision);
   if (decision.interaction && ['battle_luck_discard_choice_v1','battle_opponent_close_reward_choice_v1','battle_drawn_card_optional_play_v1'].includes(decision.interaction.kind)) {
@@ -4236,6 +4259,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
     if (!definitionVariantBatteryRuntimeValidForRestore(s)) return false;
     if (!isBloodlustRuntimeProvenanceValidForRestore(s, !options.deferBloodlustContributionAuthority)) return false;
     if (!isMultiPresenceRuntimeProvenanceValidForRestore(s)) return false;
+    if (!isInjuryWarpRuntimeProvenanceValidForRestore(s)) return false;
     if (!isBattleWitherRuntimeProvenanceValidForRestore(s)) return false;
     if (!isDefinitionSideDeckRuntimeProvenanceValidForRestore(s)) return false;
     if (!isLinkedRoleCoreRuntimeProvenanceValidForRestore(s)) return false;
@@ -6724,6 +6748,11 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     if (!isAcceptedEliminationRescueSharedVictoryAbility(a)) reject('resolution_failed', 'Unsupported elimination rescue / shared-victory semantic');
     return;
   }
+  if (containsInjuryWarpPrivilegedNode(a)) {
+    if (!isAcceptedInjuryWarpAbility(a)) reject('resolution_failed', 'Unsupported injury/topology semantic');
+    if (!resolveInjuryWarpEffect(s, ctx, a)) reject('resolution_failed', 'Injury/topology resolution failed');
+    return;
+  }
   if (containsOriginStillnessPrintedCostPrivilegedNode(a)) {
     if (!isAcceptedOriginStillnessPrintedCostAbility(a)) reject('resolution_failed', 'Unsupported origin-stillness printed-cost semantic');
     const pending=findPendingTarget(s,ctx,a,a.effects); if(pending){runtime(s).pendingDecision=pending; return;}
@@ -7522,6 +7551,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const selected = command.selectedIds;
       if (d.interaction) {
         const meta = d.interaction;
+        if (meta.kind === 'injury_warp_choice_v1') {
+          if (!Array.isArray(selected) || !resolveInjuryWarpDecision(s, d, selected)) reject('resolution_failed', 'Corrupt or stale injury/topology interaction state');
+          break;
+        }
         if (meta.kind === 'elimination_rescue_choice_v1') {
           if (!Array.isArray(selected) || !resolveEliminationRescueDecision(s, d, selected)) reject('resolution_failed', 'Corrupt or stale elimination-rescue interaction state');
           break;

@@ -6,6 +6,7 @@ import type {
   EffectContext, PendingDecision, RuleNode,
 } from './types';
 import { markCommandSealSpent } from './permanent-skill-tuning-capability';
+import { effectiveInjuryWarpMovementLinks } from './injury-warp-capability';
 
 export const DEFINITION_SIDE_DECK_SETUP_EFFECT = 'definition_side_deck_setup' as const;
 export const DEFINITION_SIDE_DECK_MANA_DRAW_RULE_EFFECT = 'definition_side_deck_mana_draw_rule' as const;
@@ -328,7 +329,8 @@ function controllersOfDefinition(s: GameState, definitionId: string): string[] {
 function adjacentLocations(s: GameState, playerId: string): string[] {
   const p = s.players.find((entry) => entry.id === playerId); if (!p?.locationId) return [];
   const enabled = getEnabledLocations(s.map, s.locationConfig); const current = enabled.find((entry) => entry.id === p.locationId); if (!current) return [];
-  const ids = new Set<string>(current.movementLinks); for (const loc of enabled) if (loc.movementLinks.includes(p.locationId)) ids.add(loc.id);
+  const ids = new Set<string>(effectiveInjuryWarpMovementLinks(s, current.id, current.movementLinks));
+  for (const loc of enabled) if (effectiveInjuryWarpMovementLinks(s, loc.id, loc.movementLinks).includes(p.locationId)) ids.add(loc.id);
   return [...ids].filter((id) => canOccupyLocation({ map: s.map, config: s.locationConfig, locationId: id as LocationId, movingPlayerId: playerId,
     occupyingPlayerIds: s.players.filter((entry) => entry.status === 'active' && entry.id !== playerId && entry.locationId === id).map((entry) => entry.id), ...(s.ruleOverrides ? { ruleOverrides: s.ruleOverrides } : {}) }));
 }
@@ -336,7 +338,7 @@ function forwardReachable(s: GameState, playerId: string, maxSteps: number): Arr
   const p = s.players.find((entry) => entry.id === playerId); if (!p?.locationId) return [];
   const byId = new Map(getEnabledLocations(s.map, s.locationConfig).map((entry) => [entry.id, entry])); const out: Array<{locationId:string;steps:number}> = [];
   let frontier: LocationId[] = [p.locationId]; const seen = new Map<string, number>([[p.locationId, 0]]);
-  for (let step = 1; step <= maxSteps; step++) { const next: LocationId[] = []; for (const from of frontier) for (const to of byId.get(from)?.movementLinks ?? []) {
+  for (let step = 1; step <= maxSteps; step++) { const next: LocationId[] = []; for (const from of frontier) for (const to of effectiveInjuryWarpMovementLinks(s, from, byId.get(from)?.movementLinks ?? [])) {
     if ((seen.get(to) ?? Infinity) <= step) continue; seen.set(to, step); next.push(to); const occupiers = s.players.filter((entry) => entry.status === 'active' && entry.id !== playerId && entry.locationId === to).map((entry) => entry.id);
     if (canOccupyLocation({ map: s.map, config: s.locationConfig, locationId: to, movingPlayerId: playerId, occupyingPlayerIds: occupiers, ...(s.ruleOverrides ? { ruleOverrides: s.ruleOverrides } : {}) })) out.push({ locationId: to, steps: step });
   } frontier = next; if (!frontier.length) break; }

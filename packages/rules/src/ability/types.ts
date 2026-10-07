@@ -352,6 +352,12 @@ export interface EliminationRescueInteractionMetadata {
   controllerId: PlayerId; round: number; candidatePlayerIds: PlayerId[]; candidateKey: string; projectionFingerprint: string;
   constraints: { kind: 'target'; targetKind: 'player'; min: 0; max: 1; distinct: true };
 }
+export interface InjuryWarpChoiceInteractionMetadata {
+  kind: 'injury_warp_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; stateKey: string; candidateInjuryKeys: string[];
+  constraints: { kind: 'target'; targetKind: 'choice'; min: 1; max: 1; distinct: true };
+}
 export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata |
   OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata | DeductionRecordChoiceInteractionMetadata |
   PostDrawHandShuffleInteractionMetadata | DiscardShuffleSourceXInteractionMetadata | RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata |
@@ -363,7 +369,7 @@ export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetad
   DeploymentTerrainVpChoiceInteractionMetadata | OneShotAbilityReuseChoiceInteractionMetadata |
   GlobalDefinitionRevealRewardInteractionMetadata | DiscardDefinitionPlayAllInteractionMetadata | MultiPresenceLocationContextInteractionMetadata |
   BoundOpponentRoundRuleInteractionMetadata | WitherPainStakeInteractionMetadata | DefinitionSideDeckInteractionMetadata |
-  EliminationRescueInteractionMetadata;
+  EliminationRescueInteractionMetadata | InjuryWarpChoiceInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -612,6 +618,24 @@ export interface DefinitionSideDeckState {
   oneShotAvailable?: boolean; battleWinRewardRound?: number;
   virtualCommandSealSourceCardId?: string;
 }
+export interface InjuryWarpRuntimeState {
+  controllerId: PlayerId;
+  stateKey: string;
+  providerSourceCardId: string;
+  providerAbilityId: string;
+  deck: string[];
+  activeInjuries: string[];
+  painCount: number;
+  spinalOccurred: boolean;
+  ascensionUnlocked: boolean;
+  rewardGranted: boolean;
+  movementOverride?: {
+    sourceCardId: string;
+    abilityId: string;
+    linkedCardInstanceId: string;
+    replacements: Record<string, string>;
+  };
+}
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
@@ -653,6 +677,8 @@ export interface AbilityRuntime {
   attachedSupplyByPlayer?: Record<PlayerId, AttachedSupplyState>;
   /** Identity-free isolated definition side decks keyed by controller + authored deck key. */
   definitionSideDecks?: Record<string, DefinitionSideDeckState>;
+  /** Identity-free injury/topology package state keyed by controller + authored state key. */
+  injuryWarpStates?: Record<string, InjuryWarpRuntimeState>;
   /** Round in which any ordinary Command Seal was paid or used, including card-play costs. */
   commandSealSpentOrUsedRoundByPlayer?: Record<PlayerId, number>;
   /** Identity-free server-owned structured player flags. */

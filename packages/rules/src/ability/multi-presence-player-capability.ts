@@ -1,6 +1,7 @@
 import type { GameState } from '../schema/game';
 import { canOccupyLocation, getEnabledLocations } from '../core/map-engine';
 import type { AbilityEvent, AuthoringAbility, EffectContext, MultiPresenceState, RuleNode } from './types';
+import { effectiveInjuryWarpMovementLinks } from './injury-warp-capability';
 
 export const MULTI_PRESENCE_RECORD_LOSS_EFFECT = 'multi_presence_record_battle_loss' as const;
 export const MULTI_PRESENCE_DEPLOY_EFFECT = 'multi_presence_deploy' as const;
@@ -129,11 +130,11 @@ export function multiPresenceTerrainAdvantageAtLocation(state: GameState, player
 function presenceEngaged(state: GameState, presence: MultiPresenceState): boolean { return isBattlefield(state,presence.locationId)&&getPlayerIdsPresentAtLocation(state,presence.locationId).some((id)=>id!==presence.playerId); }
 function shortestDirected(state: GameState, from: string, to: string): string[]|undefined {
   if(from===to)return[from]; const queue:[[string,string[]]]|Array<[string,string[]]>= [[from,[from]]]; const seen=new Set([from]);
-  while(queue.length){ const [current,path]=queue.shift()!; const loc=enabledLocation(state,current); for(const next of loc?.movementLinks??[]){ if(seen.has(next))continue; const n=[...path,next]; if(next===to)return n; seen.add(next); queue.push([next,n]); } } return undefined;
+  while(queue.length){ const [current,path]=queue.shift()!; const loc=enabledLocation(state,current); for(const next of effectiveInjuryWarpMovementLinks(state,current,loc?.movementLinks??[])){ if(seen.has(next))continue; const n=[...path,next]; if(next===to)return n; seen.add(next); queue.push([next,n]); } } return undefined;
 }
 function mirroredTarget(state: GameState, current: string, from: string, to: string): string|undefined {
-  const forward=shortestDirected(state,from,to); if(forward){ let target=current; for(let i=1;i<forward.length;i+=1){ const links=enabledLocation(state,target)?.movementLinks??[]; if(links.length!==1)return undefined; target=links[0]!; } return target; }
-  const backward=shortestDirected(state,to,from); if(!backward)return undefined; let target=current; for(let i=1;i<backward.length;i+=1){ const predecessors=getEnabledLocations(state.map,state.locationConfig).filter((loc)=>loc.movementLinks.includes(target as NonNullable<GameState['players'][number]['locationId']>)); if(predecessors.length!==1)return undefined; target=predecessors[0]!.id; } return target;
+  const forward=shortestDirected(state,from,to); if(forward){ let target=current; for(let i=1;i<forward.length;i+=1){ const loc=enabledLocation(state,target); const links=effectiveInjuryWarpMovementLinks(state,target,loc?.movementLinks??[]); if(links.length!==1)return undefined; target=links[0]!; } return target; }
+  const backward=shortestDirected(state,to,from); if(!backward)return undefined; let target=current; for(let i=1;i<backward.length;i+=1){ const predecessors=getEnabledLocations(state.map,state.locationConfig).filter((loc)=>effectiveInjuryWarpMovementLinks(state,loc.id,loc.movementLinks).includes(target as NonNullable<GameState['players'][number]['locationId']>)); if(predecessors.length!==1)return undefined; target=predecessors[0]!.id; } return target;
 }
 function canPresenceOccupy(state: GameState, playerId: string, locationId: string): boolean { const occupying=getPlayerIdsPresentAtLocation(state,locationId).filter((id)=>id!==playerId); return canOccupyLocation({map:state.map,config:state.locationConfig,locationId: locationId as NonNullable<GameState['players'][number]['locationId']>,movingPlayerId:playerId,occupyingPlayerIds:occupying,...(state.ruleOverrides?{ruleOverrides:state.ruleOverrides}:{})}); }
 function primaryPresenceEngaged(state: GameState, playerId: string): boolean { const primary=state.players.find((entry)=>entry.id===playerId&&entry.status==='active'); return !!primary?.locationId&&isBattlefield(state,primary.locationId)&&getPlayerIdsPresentAtLocation(state,primary.locationId).some((id)=>id!==playerId); }

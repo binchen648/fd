@@ -9345,3 +9345,68 @@ Acceptance synchronization:
 - lawful FORMAL accounting credits exactly two newly materialized identities: `259/944 + 2 = 261/944`, remaining `683`;
 - acceptance synchronization report: `docs/reports/2026-10-08-p3-a-owner-fou-acceptance-synchronization.md`;
 - Fou is formally closed; under `fd.owner-complete@1.1.0`, FORMAL now derives the next owner and its complete readiness/capability gap set mechanically from this acceptance-sync Base and the frozen roster, with no Helper dependency.
+
+## TASK P3-B-FUJINO-OWNER-READINESS-CAPABILITY
+
+Owner: FORMAL
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Classification: zero-credit complete-owner readiness/capability closure for `master.fujino`
+
+Frozen owner scope: exactly `6` identities:
+- `master.fujino.skill.ascension` — 痛觉残留
+- `master.fujino.skill.s1` — 浅神之嗣
+- `master.fujino.skill.s1a` — 无痛症
+- `master.fujino.skill.s2` — 扭曲空间
+- `master.fujino.skill.s3` — 歪曲之魔眼
+- `master.fujino.skill.s4` — 创伤
+
+Formal boundary:
+- exact Base is Fou owner migration acceptance-sync `ab166083772921c598fba53670b4a9ef04455ac6`;
+- locked Reference is `b2f9fa15fba07c63530bbf4612b03b8b704755f9`;
+- exact Base canonical Fujino authoring is `0/6`, with no active-pack Fujino registration;
+- `s1` reuses the accepted identity-free FB2-15 game-start skill-provisioning boundary (accepted Candidate `23a666913a3050ad55d781e3f5b3a1518add4c3e`, fresh R41 accepted + A synchronization);
+- the complete remaining owner-local readiness gap is one bounded identity-free Injury/Warp subsystem covering ascension + s1a + s2 + s3 + s4 semantics;
+- no `data/authoring/**`, `data/packs/**`, or `data/phase3/**` consumer delta is allowed in readiness;
+- readiness is permanently zero-credit; strict accounting stays `261/944`, remaining `683`;
+- one Candidate, one stacked PR, one fresh independent exact Base/Candidate review are required before readiness A-sync/rescan.
+
+Implementation evidence:
+- private injury draw/choice has exact source/ability/revision/candidate provenance and fail-closed restore validation;
+- generic injury consequences cover immediate/recurring discard, Basic Attack `-1 Power`, `+2/+3` terrain deployment exclusion, `1 VP` per authoritative Command-Seal decrement, and `1 mana` own-turn movement penalty;
+- spinal conversion activates the linked distortion skill, clears injury deck/state into Pain, applies `-1` Master-skill cost per remaining Pain, and battle-terminal resolution clears exactly one Pain;
+- generic ascension-copy authority creates at most one extra linked skill copy and the post-spinal/post-ascension zero-Pain reward is exactly `+4 VP` once;
+- the warped directed topology is consumed consistently by core movement, interpreter arrow traversal, definition-side-deck adjacency/forward traversal, and multi-presence mirrored-path traversal; no split base-map route remains on those affected consumers;
+- MatchSession deployment legality and terrain-slot assignment consume the same stomach-injury terrain restriction;
+- production source contains no Fujino identity/name/printed-skill routing;
+- focused Fujino readiness `7/7 PASS`;
+- selected distinct affected runtime set `103/103 PASS`; complex-skills `38/38 PASS`; combined selected behavioral evidence `141/141 PASS`;
+- typecheck PASS; content validation PASS at `23 masters / 19 servants / 20 events / 0 blocking issues`; generated determinism PASS;
+- external coverage: `archives=127 cards=289 abilities=505 compiledCards=226 compiledCharacters=42 blockingIssues=0 newRuntimeSemanticRouted=22 dualRuntime=0 notClassifiable=316 taxonomyWarnings=328`;
+- external audit: `legacyResolveEffect=164 legacyExecuteAbility=3 notClassifiable=316 promotionFindings=20`;
+- `git diff --check` PASS;
+- supplemental historical Alice owner-complete suite is `6/7` because its unchanged pack-tail assertion expects Akiha/Alice to remain the final two Masters; exact Base already ends Fiore/Fou and this Candidate has no pack/test delta, so that pre-existing stale assertion is not counted green and is not attributed to Fujino;
+- detailed result: `docs/reports/2026-10-08-p3-b-fujino-owner-readiness-complete-gap-set.md`.
+
+Review gate:
+- freeze one Candidate from exact Base `ab166083772921c598fba53670b4a9ef04455ac6`;
+- fresh independent exact review must return `IMPLEMENTATION_ACCEPTED_CANDIDATE`;
+- only accepted evidence plus FORMAL zero-credit A-sync/full-owner rescan may release `P3-S-OWNER-FUJINO-COMPLETE-MIGRATION`;
+- no migration credit before that later owner-complete migration receives `MIGRATION_ACCEPTED` plus FORMAL A-sync/accounting.
+
+## Reviewer revision — PR #549 first Candidate
+
+First Candidate `1beb51c5101e630c16e7bb3543930c41142829bd` received `IMPLEMENTATION_NEEDS_REVISION` on ReviewJobKey `pr549:1beb51c5101e630c16e7bb3543930c41142829bd`.
+
+- canonical bounded same-attempt evidence relay, read back after the integration 403: `https://github.com/binchen648/fd/pull/549#issuecomment-6047557896`;
+- no rerun or additional finding was introduced by the relay;
+- blocker 1 closed as one generic capability correction: topology activation stays Action-only, while exact Repair accepts canonical preparation / advance / action / combat phase-window pairs, matches the live phase at execution, and is the only phase activation allowed to bypass ordinary priority and field/attack-area active-source routing; exact movementOverride/link/cardState authority remains mandatory;
+- real `getLegalActions -> dispatchAbilityCommand` regression proves Repair in all four interactive phases with another player holding priority;
+- blocker 2 closed by bounding durable post-spinal `painCount` to the exact six Injury keys; real maximum Pain `6` restores, forged Pain `999` fails closed;
+- successor focused Fujino readiness: `8/8 PASS`;
+- selected affected + Reviewer-added MatchSession regression set: `153/153 PASS` across `12` files;
+- typecheck/content/generated determinism PASS; content remains `23 masters / 19 servants / 20 events / 0 blocking issues`;
+- external coverage remains `archives=127 cards=289 abilities=505 compiledCards=226 compiledCharacters=42 blockingIssues=0 newRuntimeSemanticRouted=22 dualRuntime=0 pilotAllowlist=0 notClassifiable=316 taxonomyWarnings=328`;
+- external audit remains `legacyResolveEffect=164 legacyExecuteAbility=3 notClassifiable=316 promotionFindings=20`;
+- external successor scratch: `E:\Codex\FD\.fd-runner-review-evidence\formal-pr549-revision-from-1beb51c5101e630c16e7bb3543930c41142829bd-nonce112e95c077f815ee099968484eaeba3f`;
+- no authoring/pack/phase3 consumer delta; readiness remains zero-credit at `261/944`, remaining `683`;
+- form one bundled successor Candidate on the same PR and request one fresh exact Base/Candidate REVIEW. No readiness A-sync/accounting occurs before acceptance.
