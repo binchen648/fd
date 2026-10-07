@@ -1,7 +1,7 @@
 # FD Phase 3 Control Epoch 06
 
 - Control Epoch: `FD-P3-2026-09-23-06`
-- Status: `ACTIVE`
+- Status: `STALE_AFTER_PR_536_PROMOTION`
 - Authoritative main: `origin/main@4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27`
 - Previous epoch: `FD-P3-2026-09-23-05` (`STALE`)
 - Epoch trigger: user-approved governance-policy and authoritative-lineage change
@@ -120,3 +120,11 @@ Planner override recorded
 4. the promotion policy becomes non-successful.
 
 Final control status: `CODEX_I_PROMOTION_PR_CREATION_AUTHORIZED`
+
+## Supersession
+
+PR #536 merged as
+`a7751c3fa51895fd3a401721b1e926b90e016862` on 2026-10-07. The
+authoritative main and workstream topology therefore moved to
+`FD-P3-2026-09-23-07`. This file remains immutable historical control
+evidence and must not be used for new dispatch.
