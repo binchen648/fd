@@ -9167,3 +9167,36 @@ Implementation evidence:
 - third revision mechanically matches the locked Reference by requiring the standard `per_round / uses=1 / this_card` declarative limit, independently guarding duplicate same-round skill-power activation, rejecting multiple same-round activation records on restore, and replacing the positive second-activation regression with a negative no-second-action/no-extra-mana/no-extra-receipt/no-extra-usage regression;
 - third-revision verification: combined affected focused set `108/108 PASS`; Fiore `10/10`; terrain `7/7`; game-start `7/7`; outside-game `12/12`; authoring `38/38`; MatchSession `34/34`; typecheck/content validate/generated determinism/`git diff --check` PASS; `data/authoring/**` delta EMPTY;
 - readiness remains permanently zero-credit; strict accounting stays `253/944`, remaining `691`, and future maximum Fiore increment remains `+6` only after fresh accepted owner-complete migration plus A-sync/accounting.
+
+### Fiore readiness acceptance synchronization
+
+- Accepted exact Candidate: `e4b2759776dc4e33dbcb27dbf5155b615c0ae7ee`.
+- Fresh independent verdict: `IMPLEMENTATION_ACCEPTED_CANDIDATE`.
+- Canonical same-attempt bounded relay: `https://github.com/binchen648/fd/pull/544#issuecomment-6040241078`.
+- Reviewer exact-Candidate affected suite: required `108/108 PASS`; supplemental FM08 authoring `5/5 PASS`; combined `113/113 PASS`; typecheck/content/generated/diff and external-output Phase-3 coverage/audit PASS.
+- Canonical authoring rescan remains exactly `3/9`: preserved/previously credited `s2+s3+s4`; `ascension+s1+s1a+s5+s6+s7` remain absent and are the only newly creditable Fiore identities.
+- `master.fiore.json` remains blob `79ce0ef8c7403c849c64abe4fc41e812dc4fa6d9`; Base..accepted Candidate `data/authoring/**` delta is EMPTY.
+- No additional currently discoverable Fiore owner-local readiness gap remains.
+- Readiness acceptance is exactly `+0`; strict accounting remains `253/944`, remaining `691`.
+- `P3-S-OWNER-FIORE-COMPLETE-MIGRATION` is released to `READY`; maximum lawful later increment is `+6` only after fresh `MIGRATION_ACCEPTED` plus FORMAL A-sync/accounting.
+- Acceptance synchronization report: `docs/reports/2026-10-07-p3-a-fiore-owner-readiness-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-FIORE-COMPLETE-MIGRATION
+
+Owner: FORMAL
+Status: `READY`
+Classification: formal owner-complete migration for current owner `master.fiore`
+
+Exact Base: Fiore readiness acceptance synchronization commit carrying this task block.
+
+Frozen owner scope remains exactly all nine Fiore identities. Preservation boundary:
+- preserve accepted FM08 `s2+s3+s4` byte/semantic identity and award them no duplicate credit;
+- materialize together exactly the six missing identities `ascension+s1+s1a+s5+s6+s7`;
+- one owner / all remaining frozen identities / one formal Candidate / one PR / one fresh independent migration review.
+
+Formal implementation must consume only accepted identity-free readiness authority from PR #544 and locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9`; do not reintroduce name/ID routing, legacy handlers, duplicate persistent rules, or divergent ancestry.
+
+Accounting boundary:
+- strict accounting starts `253/944`, remaining `691`;
+- no credit before fresh exact `MIGRATION_ACCEPTED` plus FORMAL A-sync/accounting;
+- if accepted, credit exactly six identities: `253/944 -> 259/944`, remaining `685`.
