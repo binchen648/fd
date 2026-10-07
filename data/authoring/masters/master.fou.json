@@ -1,0 +1,178 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.fou",
+  "name": "芙芙",
+  "class": "Master",
+  "publicInformation": {
+    "type": "master_package",
+    "initialMana": 4
+  },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "76489aaed00dcd76d092bf18098511e3c7ff0fc1",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Accepted Fou readiness PR #547 supplies the identity-free permanent returned-skill tuning and elimination-rescue/shared-victory runtime authority. Locked Reference supplies exact owner/static metadata and printed behavior."
+  },
+  "cards": [
+    {
+      "id": "master.fou.skill.s1",
+      "aliases": [
+        "s1"
+      ],
+      "legacyId": "s1",
+      "name": "兽之印记",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.fou"
+      },
+      "printedText": "在你花费了1枚或以上的令咒的回合结束时：选择一个本回合回到你技能区的技能，其获得+1威力和-1魔力消耗直至游戏结束。降低过的消耗不能低于其印刷魔力消耗的一半。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "fou.mark-of-beast",
+          "kind": "forced_trigger",
+          "printedClause": "在你花费了1枚或以上的令咒的回合结束时：选择一个本回合回到你技能区的技能，其获得+1威力和-1魔力消耗直至游戏结束。降低过的消耗不能低于其印刷魔力消耗的一半。",
+          "activation": {
+            "trigger": "round_end"
+          },
+          "conditions": [
+            {
+              "type": "controller_spent_command_seal_this_round"
+            }
+          ],
+          "targets": [
+            {
+              "id": "returned_skill",
+              "type": "card_instance",
+              "scope": {
+                "zone": "skill",
+                "owner": "controller",
+                "controller": "self"
+              },
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "returned_to_skill_this_round"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "permanent_returned_skill_tuning",
+              "target": "returned_skill",
+              "powerDelta": 1,
+              "costDelta": -1,
+              "minPrintedFraction": 0.5
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {
+            "type": "per_round",
+            "uses": 1,
+            "scope": "this_card"
+          },
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.fou.skill.ascension",
+      "aliases": [
+        "ascension"
+      ],
+      "legacyId": "ascension",
+      "name": "苍天之力",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.fou"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "复活吧，我的爱人-每局游戏限一次，当一名玩家即将被淘汰时，防止其淘汰。本次淘汰结算后，若该玩家为你的对手，交换你们的战果。你们其中一人获得游戏胜利时，另一人也获胜（即使另一人被淘汰）。",
+      "cardFace": {
+        "typeLabel": "升华技",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "fou.force-of-providence",
+          "kind": "passive",
+          "printedClause": "复活吧，我的爱人-每局游戏限一次，当一名玩家即将被淘汰时，防止其淘汰。本次淘汰结算后，若该玩家为你的对手，交换你们的战果。你们其中一人获得游戏胜利时，另一人也获胜（即使另一人被淘汰）。",
+          "activation": {
+            "trigger": "while_active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "once_per_game_elimination_rescue_shared_victory",
+              "preventElimination": true,
+              "swapVictoryPointsWithOpponent": true,
+              "shareVictory": true
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {
+            "type": "per_game",
+            "uses": 1,
+            "scope": "this_card"
+          },
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": [
+        "../../Fate_Domination-开发版/images/masters/芙芙.png"
+      ]
+    }
+  ]
+}

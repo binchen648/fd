@@ -9303,7 +9303,7 @@ Acceptance synchronization:
 ## TASK P3-S-OWNER-FOU-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: formal owner-complete consumer migration for `master.fou`
 
 Frozen owner scope: exactly `2` identities:
@@ -9318,3 +9318,21 @@ Formal gate:
 - one formal Candidate, one PR, one fresh independent exact Base/Candidate migration review;
 - strict accounting starts `259/944`, remaining `685`; no credit before fresh `MIGRATION_ACCEPTED` plus FORMAL A-sync/accounting;
 - if accepted, credit exactly both newly materialized identities: `259/944 -> 261/944`, remaining `683`.
+
+Implementation evidence:
+- exact formal Base is `058dc4dfc436b8f222da073ff2d8bd9db91481c3` (accepted Fou readiness A-sync);
+- canonical `master.fou.json` materializes exact `2/2` and active pack registration count is exactly `1`;
+- generated content contains `master.fou`, `master.fou.skill.s1`, and `master.fou.skill.ascension`;
+- canonical content validates at `23 masters / 19 servants / 20 events / 0 blocking issues`;
+- `s1` is proven through real `round_end -> interpreter -> pending target -> choose_target -> permanent tuning` execution; consumer materialization exposed and closed the generic accepted-capability continuation gap;
+- `ascension` remains `outside_game` and consumes the generic master-ascension unlock authority; focused unlock regression `5/5 PASS`;
+- materializing the 23rd Master exposed a generic `runFullMatch` human-response auto-run gap, closed without Fou/name routing;
+- deterministic fixture recertification changes only two shared seeds after the canonical Master roster expanded: terrain/restore `20207105 -> 1`; generic Command-Spell `20260906 -> 2`; `match-session-regressions.test.ts` is `11/11 PASS`;
+- Fou owner `4/4`, Fou readiness `6/6`, shared affected + SHA plus MatchSession total `132/132 PASS`; focused complex three-round MatchSession regression PASS;
+- typecheck/content/generated determinism/`git diff --check` PASS;
+- generated hashes: content `fdd2cc458e12a3dd3346c8253362a081a18b67652d19cd1f3c78a60b6aa09be6`, fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`, evidence `75cc147b8816004e26640cae5234b38282dd5a5eff011035cab7ff821b11cd2b`;
+- external coverage: `archives=127 cards=289 abilities=505 compiledCards=226 compiledCharacters=42 blockingIssues=0 newRuntimeSemanticRouted=22 dualRuntime=0 notClassifiable=316 taxonomyWarnings=328`;
+- external audit: `legacyResolveEffect=164 legacyExecuteAbility=3 notClassifiable=316 promotionFindings=20`;
+- source-assets reproduces exactly `93` pre-existing historical missing-image blockers; no Fou source path is missing and the declared development image exists;
+- detailed result: `docs/reports/2026-10-08-p3-s-owner-fou-complete-migration-result.md`;
+- Candidate remains uncredited pending one fresh exact `MIGRATION_ACCEPTED`; accounting stays `259/944`, remaining `685`.
