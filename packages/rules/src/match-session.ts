@@ -14,6 +14,13 @@ import {
   resolveMandatoryCombatPhaseActionsForPlayer,
 } from './ability/interpreter';
 import { sourceBoundDefinitionResidualGranted } from './ability/logical-day-countermeasure-capability';
+import { recordSkillReturnedToSkillZone } from './ability/permanent-skill-tuning-capability';
+import {
+  expandSharedVictoryRanking,
+  hasAvailableEliminationRescueProvider,
+  settleEliminationRescueAfterScoring,
+  stageEliminationRescueChoice,
+} from './ability/elimination-rescue-link-capability';
 import { returnDefinitionSideDeckCardToDiscard, settleDefinitionSideDeckManaEvents } from './ability/definition-side-deck-capability';
 import {
   createOpponentCloseToOnePersistenceScope,
@@ -482,7 +489,9 @@ function isRestoreCardInstance(value: unknown): boolean {
     typeof value.definitionId === 'string' && typeof value.ownerPlayerId === 'string' &&
     typeof value.controllerPlayerId === 'string' && typeof value.zone === 'string' &&
     isRestoreVisibilityState(value.visibility) &&
-    (value.generatedBy === undefined || typeof value.generatedBy === 'string');
+    (value.generatedBy === undefined || typeof value.generatedBy === 'string') &&
+    (value.powerModifiers === undefined || (Array.isArray(value.powerModifiers) && value.powerModifiers.every(isRestoreRecord))) &&
+    (value.costModifiers === undefined || (Array.isArray(value.costModifiers) && value.costModifiers.every(isRestoreRecord)));
 }
 
 function isRestoreMapDefinition(value: unknown): boolean {
@@ -951,6 +960,7 @@ function isRestoreCardRuntimeState(value: unknown): boolean {
     (value.manaOverflowCloseAfterBattle === undefined || (isRestoreRecord(value.manaOverflowCloseAfterBattle) &&
       hasExactRestoreKeys(value.manaOverflowCloseAfterBattle, ['round','sourceAbilityId']) &&
       isRestoreSafeInteger(value.manaOverflowCloseAfterBattle.round, 1) && typeof value.manaOverflowCloseAfterBattle.sourceAbilityId === 'string')) &&
+    (value.returnedToSkillZoneRound === undefined || isRestoreSafeInteger(value.returnedToSkillZoneRound, 1)) &&
     (value.sourceBoundX === undefined || (isRestoreRecord(value.sourceBoundX) &&
       hasExactRestoreKeys(value.sourceBoundX, ['value','controllerId','sourceAbilityId']) &&
       isRestoreSafeInteger(value.sourceBoundX.value, 2) && typeof value.sourceBoundX.controllerId === 'string' &&
@@ -1506,9 +1516,12 @@ function isRestoreAbilityRuntimeReferences(
   const playerKeyedMaps = [
     'playerStatusKeysByPlayer','structuredPlayerFlagsByPlayer','structuredRoundFlagKeysByPlayer','deductionRecordsByPlayer','battleDefeatRoundByPlayer','battleLossIgnoreRoundByPlayer','combatWinRoundByPlayer','manaCaps','noblePhantasmCostsThisRound','movementDistanceThisRound',
     'battlefieldsPassedOrStayedThisRound','startingDeckSizeByPlayer','normalCardDrawBlockedThroughRoundByPlayer','manaGainBlockedThroughRoundByPlayer',
-    'normalCommandSealUseRoundByPlayer','rulerCommandSealUseRoundByPlayer',
+    'normalCommandSealUseRoundByPlayer','rulerCommandSealUseRoundByPlayer','commandSealSpentRoundByPlayer',
   ] as const;
   for (const key of playerKeyedMaps) if (value[key] !== undefined && !restoreRecordKeysBelongTo(value[key], playerIds)) return false;
+  if (value.eliminationRescueBattleResolutionRound !== undefined &&
+      (!isRestoreSafeInteger(value.eliminationRescueBattleResolutionRound, 1) ||
+       value.eliminationRescueBattleResolutionRound !== currentRound)) return false;
   for (const key of ['revealedServants','manaGainBlocked'] as const) {
     if (!(value[key] as string[]).every((id) => playerIds.has(id))) return false;
   }
@@ -3550,6 +3563,7 @@ export class MatchSession {
         remaining.push(attachment);
         continue;
       }
+      const fromZone = card.zone;
       card.zone = 'skill';
       card.controllerPlayerId = sourceOwnerId || card.ownerPlayerId;
       card.visibility = visibleScope('skill', card.ownerPlayerId);
@@ -3557,6 +3571,7 @@ export class MatchSession {
         this.state.abilityRuntime.cardState[card.instanceId]!.active = false;
       }
       clearTransientCardTransformState(this.state, card.instanceId);
+      recordSkillReturnedToSkillZone(this.state, card.instanceId, fromZone);
       this.record('attached_card_returned', `${card.instanceId}:skill`, { attachment });
     }
     modeStateOf(this.state).supportShotAttachments = remaining;
@@ -3791,25 +3806,43 @@ export class MatchSession {
     if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length ||
       this.state.abilityRuntime?.hostRequests.length || this.state.abilityRuntime?.pendingPostBattleEvents?.length) return;
 
-    const resolvedBattles: GameState['battleResults'] = [];
+    const rescueLedgerFrozen = this.state.abilityRuntime?.eliminationRescueBattleResolutionRound === this.state.round.roundNumber;
+    const resolvedBattles: GameState['battleResults'] = rescueLedgerFrozen ? structuredClone(this.state.battleResults) : [];
     const battlefields = getEnabledLocations(this.state.map, this.state.locationConfig)
       .filter((location) => !((modeStateOf(this.state).closedLocations as string[] | undefined) ?? []).includes(location.id))
       .filter((location) => location.tags.includes('battlefield') || location.rewardHooks.includes('battle_rewards'));
-    for (const battlefield of battlefields) {
-      if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length) break;
-      const before = this.state.battleResults.length;
-      Object.assign(this.state, resolveBattlefield(this.state, { battlefieldId: battlefield.id, revealHiddenEvents: true }).nextState);
-      if (this.state.battleResults.length > before) {
-        const battle = this.state.battleResults[this.state.battleResults.length - 1]!;
-        resolvedBattles.push(structuredClone(battle));
-        this.record('battle_resolved', battlefield.id, battle as unknown as Record<string, unknown>);
+    if (!rescueLedgerFrozen) {
+      for (const battlefield of battlefields) {
+        if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length) break;
+        const before = this.state.battleResults.length;
+        Object.assign(this.state, resolveBattlefield(this.state, { battlefieldId: battlefield.id, revealHiddenEvents: true }).nextState);
+        if (this.state.battleResults.length > before) {
+          const battle = this.state.battleResults[this.state.battleResults.length - 1]!;
+          resolvedBattles.push(structuredClone(battle));
+          this.record('battle_resolved', battlefield.id, battle as unknown as Record<string, unknown>);
+        }
+        this.autoResolveNonInteractiveWindows();
       }
-      this.autoResolveNonInteractiveWindows();
     }
     if (!this.state.abilityRuntime?.pendingDecision && !this.state.abilityRuntime?.responseWindows.length) {
       // Linked-owner cards must settle while the resolved battle ledger is still available.
       // applyBattleScoring consumes battleResults, so doing this afterwards would lose owner-loss information.
-      Object.assign(this.state, settleLinkedOwnerCardsAfterBattles(this.state, resolvedBattles));
+      if (!rescueLedgerFrozen) Object.assign(this.state, settleLinkedOwnerCardsAfterBattles(this.state, resolvedBattles));
+
+      // Elimination rescue must be decided against the exact completed battle ledger before scoring mutates status.
+      // Preview on a clone only; the real state remains untouched while a human/AI choice is pending.
+      if (hasAvailableEliminationRescueProvider(this.state)) {
+        const scoringPreview = applyBattleScoring(structuredClone(this.state)).nextState;
+        const projectedEliminations = this.state.players
+          .filter((player) => player.status === 'active' &&
+            scoringPreview.players.some((candidate) => candidate.id === player.id && candidate.status === 'eliminated'))
+          .map((player) => player.id);
+        if (stageEliminationRescueChoice(this.state, projectedEliminations)) {
+          this.state.abilityRuntime!.eliminationRescueBattleResolutionRound = this.state.round.roundNumber;
+          return;
+        }
+      }
+
       const scoringLogStart = this.state.log.length;
       const vpBeforeScoring = new Map(this.state.players.map((player) => [player.id, player.vp]));
       Object.assign(this.state, applyBattleScoring(this.state).nextState);
@@ -3819,6 +3852,10 @@ export class MatchSession {
           recordAuthoritativeVictoryPointChange(this.state, scoredPlayer.id, before, scoredPlayer.vp, 'battle-scoring-vp');
         }
       }
+      for (const change of settleEliminationRescueAfterScoring(this.state)) {
+        recordAuthoritativeVictoryPointChange(this.state, change.playerId, change.before, change.after, 'elimination-rescue-vp-swap');
+      }
+      if (this.state.abilityRuntime) delete this.state.abilityRuntime.eliminationRescueBattleResolutionRound;
       // Scoring may eliminate players after terrain slots were assigned during deployment.
       // Keep durable terrain authority aligned with the restore contract: only active players
       // still located at that battlefield may remain assigned, and stale slot overrides vanish.
@@ -3919,7 +3956,7 @@ export class MatchSession {
   }
 
   private finalRanking(): MatchClientState['finalRanking'] {
-    return this.state.players
+    const ranking = this.state.players
       .map((player) => ({
         playerId: player.id,
         seat: player.seat,
@@ -3928,6 +3965,7 @@ export class MatchSession {
       }))
       .sort((left, right) => right.vp - left.vp || right.militaryResult - left.militaryResult || left.seat - right.seat)
       .map((player, index) => ({ ...player, rank: index + 1 }));
+    return expandSharedVictoryRanking(this.state, ranking);
   }
 
   private advanceToNextActiveSeat(): boolean {

@@ -1,6 +1,7 @@
 import type { GameState } from '../schema/game';
 import type { AbilityEvent, AuthoringAbility, EffectContext, ManaContributionChoice, RuleNode } from './types';
 import { bloodlustVpGainAdjustment } from './bloodlust-cycle-capability';
+import { markCommandSealSpent } from './permanent-skill-tuning-capability';
 
 export const LINKED_ROLE_INITIALIZE_EFFECT = 'linked_role_initialize' as const;
 export const LINKED_ROLE_SCHEDULE_MEMBER_EFFECT = 'linked_role_schedule_member' as const;
@@ -47,7 +48,7 @@ function leaderActive(s:GameState,leaderId:string,rel:string,e:RuleNode):boolean
 function memberLeader(s:GameState,memberId:string,rel:string,e:RuleNode):string|undefined{const b=bag(s,memberId);return b[k(rel,'memberRole')]===(e.memberRoleKey as string)&&typeof b[k(rel,'memberLeader')]==='string'?String(b[k(rel,'memberLeader')]):undefined;}
 function isBattlefield(s:GameState,loc:string|undefined){if(!loc)return false;const l=s.map.locations.find(x=>x.id===loc);return !!l&&(l.tags.includes('battlefield')||l.rewardHooks.includes('battle_rewards'));}
 function seals(s:GameState,p:string){const pl=s.players.find(x=>x.id===p) as (GameState['players'][number]&{commandSpells?:number})|undefined;const n=Number(pl?.commandSpells??3);return Number.isSafeInteger(n)&&n>=0?n:0;}
-function setSeals(s:GameState,p:string,n:number,sourceCardId:string,abilityId:string){const pl=s.players.find(x=>x.id===p) as (GameState['players'][number]&{commandSpells?:number})|undefined;if(!pl)throw new Error('LINKED_ROLE_PLAYER_MISSING');const before=seals(s,p);pl.commandSpells=n;runtime(s).events.push({type:'command_seals_adjusted',playerId:p,sourceCardId,abilityId,resource:'command_seals',delta:n-before,before,after:n});}
+function setSeals(s:GameState,p:string,n:number,sourceCardId:string,abilityId:string){const pl=s.players.find(x=>x.id===p) as (GameState['players'][number]&{commandSpells?:number})|undefined;if(!pl)throw new Error('LINKED_ROLE_PLAYER_MISSING');const before=seals(s,p);pl.commandSpells=n;if(n<before)markCommandSealSpent(s,p,before,n,{sourceCardId,abilityId});runtime(s).events.push({type:'command_seals_adjusted',playerId:p,sourceCardId,abilityId,resource:'command_seals',delta:n-before,before,after:n});}
 function activeMembers(s:GameState,leaderId:string,rel:string,e:RuleNode){return s.players.filter(p=>p.status==='active'&&memberLeader(s,p.id,rel,e)===leaderId);}
 export function linkedRoleEligibleScheduleTargetIds(s:GameState,ctx:EffectContext,a:AuthoringAbility):string[]{if(!isAcceptedLinkedRoleCoreAbility(a)||a.effects[0]?.type!==LINKED_ROLE_SCHEDULE_MEMBER_EFFECT)return[];const e=a.effects[0]!,rel=relationship(e)!;if(!sourceValid(s,ctx.controllerId,ctx.sourceCardId,ctx.abilityId)||!leaderActive(s,ctx.controllerId,rel,e))return[];const leaderSeals=seals(s,ctx.controllerId);return s.players.filter(p=>p.status==='active'&&p.id!==ctx.controllerId&&bag(s,p.id)[k(rel,'ever')]!==true&&seals(s,p.id)<leaderSeals).map(p=>p.id);}
 export function linkedRoleActiveMemberIds(s:GameState,leaderId:string,relationshipKey:string):string[]{const provider=uniqueProvider(s,leaderId,relationshipKey,LINKED_ROLE_MEMBER_RULES_EFFECT);if(!provider)return[];const e=provider.ability.effects[0]!;if(!leaderActive(s,leaderId,relationshipKey,e))return[];return activeMembers(s,leaderId,relationshipKey,e).map(p=>p.id);}

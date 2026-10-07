@@ -2,6 +2,7 @@ import type { GameState, PlayerScoringBreakdown } from "../schema/game";
 import type { ResolverResult } from "./resolver-contracts";
 import { resolveEliminationBatch } from "./elimination-resolver";
 import { vesselCycleReconBonus } from '../ability/vessel-cycle-capability';
+import { playerEliminationPreventedByAcceptedRescue } from '../ability/elimination-rescue-link-capability';
 
 export const ELIMINATION_MILITARY_THRESHOLD = -8;
 
@@ -182,11 +183,13 @@ export function applyBattleScoring(state: GameState): ResolverResult {
         });
         const militaryResult = nextPlayer.militaryResult + adjustment.delta;
         const eliminated = militaryResult <= ELIMINATION_MILITARY_THRESHOLD;
-        const newlyEliminated = eliminated && nextPlayer.status !== "eliminated";
+        const prevented = eliminated && nextPlayer.status !== "eliminated" &&
+          playerEliminationPreventedByAcceptedRescue(state, nextPlayer.id);
+        const newlyEliminated = eliminated && !prevented && nextPlayer.status !== "eliminated";
         nextPlayer = {
           ...nextPlayer,
           militaryResult,
-          status: eliminated ? "eliminated" : nextPlayer.status,
+          status: eliminated && !prevented ? "eliminated" : nextPlayer.status,
         };
 
         if (newlyEliminated) {
@@ -197,7 +200,13 @@ export function applyBattleScoring(state: GameState): ResolverResult {
           });
         }
 
-        if (eliminated) {
+        if (prevented) {
+          reasons.push({
+            source: "elimination_prevented",
+            value: militaryResult,
+            label: "military_threshold",
+          });
+        } else if (eliminated) {
           reasons.push({
             source: "elimination",
             value: militaryResult,

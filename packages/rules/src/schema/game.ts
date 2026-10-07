@@ -145,7 +145,7 @@ export interface BattleResultState {
 }
 
 export interface ScoringReasonBreakdown {
-  source: VpReasonSource | "military_result" | "elimination";
+  source: VpReasonSource | "military_result" | "elimination" | "elimination_prevented";
   label: string;
   value: number;
 }

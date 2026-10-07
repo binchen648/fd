@@ -92,6 +92,14 @@ import { PERSISTENT_LOCATION_TERRAIN_REPLACE_INCREMENT_EFFECT, containsPersisten
 import { ARM_MOVEMENT_COMPETITION_SUPPRESSION_EFFECT, PLAY_ATTACHED_SUPPLY_DEFINITION_EFFECT, ROUND_LOCATION_TERRAIN_REPLACEMENTS_EFFECT, SEED_ATTACHED_SUPPLY_EFFECT, containsRoundLocationSupplyPrivilegedNode, isAcceptedRoundLocationSupplyAbility } from './round-location-supply-capability';
 import { SAME_BATTLEFIELD_TERRAIN_UPKEEP_EFFECT, UNCLAIMED_BATTLEFIELD_TERRAIN_BONUS_EFFECT, containsUnclaimedTerrainUpkeepPrivilegedNode, isAcceptedUnclaimedTerrainUpkeepAbility } from './unclaimed-terrain-upkeep-capability';
 import { SWITCH_ROUND_SKILL_PROFILE_EFFECT, ROUND_CURRENT_LOCATION_TERRAIN_BONUS_EFFECT, ROUND_SKILL_CARD_POWER_BONUS_EFFECT, ROUND_PROFILE_DETERMINATION_REWARD_EFFECT, containsRoundSkillProfilePrivilegedNode, isAcceptedRoundSkillProfileAbility } from './round-skill-profile-capability';
+import {
+  PERMANENT_RETURNED_SKILL_TUNING_EFFECT, COMMAND_SEAL_SPENT_THIS_ROUND_CONDITION, RETURNED_SKILL_THIS_ROUND_CONSTRAINT,
+  containsPermanentReturnedSkillTuningNode, isAcceptedPermanentReturnedSkillTuningAbility,
+} from './permanent-skill-tuning-capability';
+import {
+  ELIMINATION_RESCUE_SHARED_VICTORY_EFFECT,
+  containsEliminationRescueSharedVictoryNode, isAcceptedEliminationRescueSharedVictoryAbility,
+} from './elimination-rescue-link-capability';
 import { EFFECTIVE_LOCATION_SAME_LOCATION_RESTRICTIONS_EFFECT, containsEffectiveLocationRestrictionPrivilegedNode, isAcceptedEffectiveLocationRestrictionAbility } from './effective-location-restriction-capability';
 import { RECYCLE_ACTIVE_BASIC_FOR_PRINTED_COST_MANA_EFFECT, containsOriginStillnessPrintedCostPrivilegedNode, isAcceptedOriginStillnessPrintedCostAbility } from './origin-stillness-printed-cost-capability';
 import {
@@ -376,6 +384,8 @@ const supportedTypes = new Set([
   BLOODLUST_INITIALIZE_EFFECT, BLOODLUST_CAGING_CONTRIBUTION_EFFECT, BLOODLUST_SPEND_TRACKER_EFFECT, BLOODLUST_COMBAT_DECAY_EFFECT,
   BLOODLUST_THRESHOLD_EFFECT, BLOODLUST_ACTION_EFFECT, BLOODLUST_TRANSFORM_EFFECT, BLOODLUST_ASCENSION_EFFECT,
   MASTER_ASCENSION_UNLOCK_EFFECT,
+  PERMANENT_RETURNED_SKILL_TUNING_EFFECT, COMMAND_SEAL_SPENT_THIS_ROUND_CONDITION, RETURNED_SKILL_THIS_ROUND_CONSTRAINT,
+  ELIMINATION_RESCUE_SHARED_VICTORY_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -413,6 +423,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'where', 'roundOffset', 'benefits', 'activeOnly',
   'minimumControllerMana', 'additionalManaCost', 'triggerLocationId', 'replacements', 'opponentCount', 'suppresses', 'cards', 'drawAfterPlay', 'maxPerRound', 'victoryPointCost',
   'stateKey', 'profileKey', 'enhancedDefinitionId', 'suppress', 'mode', 'requireHigherVictoryPointTarget', 'afterBattleManaLoss', 'onBattleLossVictoryPointLoss', 'requireBattlefield', 'requireNoAssignedTerrain', 'cardTypes',
+  'minPrintedFraction', 'preventElimination', 'swapVictoryPointsWithOpponent', 'shareVictory',
   'targetRoundOffset', 'definitionIds', 'workshopLocationId', 'battlefieldDefinitionId', 'manaGain', 'ignoreDefeatManaCost',
   // New mechanic keys for 5 servants
   'options', 'label', 'condition', 'targets', 'duration', 'scope', 'statusId', 'choiceId', 'value', 'floor',
@@ -895,6 +906,12 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsRoundSkillProfilePrivilegedNode(candidateAbility) && !isAcceptedRoundSkillProfileAbility(candidateAbility)) {
         issue('roundSkillProfile.gateway', 'Round skill-profile privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsPermanentReturnedSkillTuningNode(candidateAbility) && !isAcceptedPermanentReturnedSkillTuningAbility(candidateAbility)) {
+        issue('permanentReturnedSkillTuning.gateway', 'Permanent returned-skill tuning privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsEliminationRescueSharedVictoryNode(candidateAbility) && !isAcceptedEliminationRescueSharedVictoryAbility(candidateAbility)) {
+        issue('eliminationRescueSharedVictory.gateway', 'Elimination rescue/shared-victory privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       if (containsEffectiveLocationRestrictionPrivilegedNode(candidateAbility) && !isAcceptedEffectiveLocationRestrictionAbility(candidateAbility)) {
         issue('effectiveLocationRestriction.gateway', 'Effective-location restriction privileged mechanic requires an accepted exact whole-ability semantic', id);

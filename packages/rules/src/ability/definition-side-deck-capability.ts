@@ -5,6 +5,7 @@ import type {
   AbilityEvent, AuthoringAbility, DefinitionSideDeckInteractionMetadata, DefinitionSideDeckState,
   EffectContext, PendingDecision, RuleNode,
 } from './types';
+import { markCommandSealSpent } from './permanent-skill-tuning-capability';
 
 export const DEFINITION_SIDE_DECK_SETUP_EFFECT = 'definition_side_deck_setup' as const;
 export const DEFINITION_SIDE_DECK_MANA_DRAW_RULE_EFFECT = 'definition_side_deck_mana_draw_rule' as const;
@@ -417,7 +418,12 @@ export function isDefinitionSideDeckPendingDecisionLiveValid(s: GameState, d: Pe
 
 function consumeOneShot(s: GameState, state: DefinitionSideDeckState): void {
   state.oneShotAvailable = false; const sourceId = state.virtualCommandSealSourceCardId; if (!sourceId) return;
-  const p = s.players.find((entry) => entry.id === state.controllerId); const carrier = p as unknown as {commandSpells?:number}; if (p && Number(carrier.commandSpells ?? 0) > 0) carrier.commandSpells = Number(carrier.commandSpells) - 1;
+  const p = s.players.find((entry) => entry.id === state.controllerId); const carrier = p as unknown as {commandSpells?:number};
+  if (p && Number(carrier.commandSpells ?? 0) > 0) {
+    const before = Number(carrier.commandSpells);
+    carrier.commandSpells = before - 1;
+    markCommandSealSpent(s, state.controllerId, before, before - 1, { sourceCardId: sourceId });
+  }
   closeVirtualSealSource(s, state);
 }
 function closeVirtualSealSource(s: GameState, state: DefinitionSideDeckState): void {

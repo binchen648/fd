@@ -14,6 +14,7 @@ import { node, str } from './loader';
 import { clearTransientCardTransformState } from './card-instance-state';
 import { playerIgnoresAbilityFromController } from './player-ability-immunity';
 import { notifyManaAdjusted } from '../core/rule-overrides';
+import { markCommandSealSpent, recordSkillReturnedToSkillZone } from './permanent-skill-tuning-capability';
 
 function modeState(state: GameState): Record<string, any> {
   (state as any).modeState = (state as any).modeState || {};
@@ -288,6 +289,10 @@ export function resolveExtendedEffect(
       const current = Number((p as any).commandSpells ?? 3);
       const amount = Number(effect.amount ?? 0);
       (p as any).commandSpells = Math.max(0, current + amount);
+      if ((p as any).commandSpells < current) markCommandSealSpent(state, controllerId, current, (p as any).commandSpells, {
+        sourceCardId: String((context as any)?.sourceCardId ?? ''),
+        abilityId: String((context as any)?.abilityId ?? ''),
+      });
       pushMasterDirective(state, controllerId, effect, { ...directiveContext(context), amount, commandSpells: (p as any).commandSpells });
       break;
     }
@@ -639,9 +644,11 @@ export function resolveExtendedEffect(
         c.ownerPlayerId === controllerId
       );
       if (targetCard) {
+        const fromZone = targetCard.zone;
         targetCard.zone = 'skill';
         targetCard.visibility = { scope: 'owner_only', ownerPlayerId: controllerId };
         clearTransientCardTransformState(state, targetCard.instanceId);
+        recordSkillReturnedToSkillZone(state, targetCard.instanceId, fromZone);
       }
       break;
     }
@@ -651,10 +658,12 @@ export function resolveExtendedEffect(
       if (sourceCardId) {
         const sourceCard = state.cards.find(c => c.instanceId === sourceCardId);
         if (sourceCard) {
+          const fromZone = sourceCard.zone;
           sourceCard.zone = 'skill';
           (sourceCard as any).active = false;
           if (state.abilityRuntime?.cardState[sourceCard.instanceId]) state.abilityRuntime.cardState[sourceCard.instanceId]!.active = false;
           clearTransientCardTransformState(state, sourceCard.instanceId);
+          recordSkillReturnedToSkillZone(state, sourceCard.instanceId, fromZone);
         }
       }
       break;

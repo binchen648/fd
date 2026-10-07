@@ -135,6 +135,18 @@ import { canExecutePersistentLocationTerrainEffect, containsPersistentLocationTe
 import { canExecuteRoundLocationSupplyEffect, cleanupRoundLocationSupplyAtRoundEnd, containsRoundLocationSupplyPrivilegedNode, isAcceptedRoundLocationSupplyAbility, isRoundLocationSupplyRuntimeProvenanceValidForRestore, resolveRoundLocationSupplyEffect, settleMovementCompetitionSuppression } from './round-location-supply-capability';
 import { settleSameBattlefieldTerrainUpkeepForPriorityPlayer } from './unclaimed-terrain-upkeep-capability';
 import { SWITCH_ROUND_SKILL_PROFILE_EFFECT, canExecuteRoundSkillProfileEffect, cleanupRoundSkillProfilesAtRoundEnd, containsRoundSkillProfilePrivilegedNode, isAcceptedRoundSkillProfileAbility, isRoundSkillProfileRuntimeProvenanceValidForRestore, resolveRoundSkillProfileEffect, roundSkillCardPowerBonus, roundSkillProfileSuppressed, settleRoundSkillProfileEvent } from './round-skill-profile-capability';
+import {
+  applyPermanentReturnedSkillTuning, applyPhysicalCardCostModifiers, cardReturnedToSkillThisRound,
+  containsPermanentReturnedSkillTuningNode, controllerSpentCommandSealThisRound,
+  isAcceptedPermanentReturnedSkillTuningAbility, isControllerSpentCommandSealThisRoundCondition,
+  isPermanentSkillTuningRuntimeProvenanceValidForRestore, isReturnedSkillThisRoundConstraint,
+  markCommandSealSpent, recordSkillReturnedToSkillZone,
+} from './permanent-skill-tuning-capability';
+import {
+  containsEliminationRescueSharedVictoryNode, isAcceptedEliminationRescueSharedVictoryAbility,
+  isEliminationRescuePendingDecisionLiveValid, isEliminationRescueRuntimeProvenanceValidForRestore,
+  resolveEliminationRescueDecision,
+} from './elimination-rescue-link-capability';
 import { containsEffectiveLocationRestrictionPrivilegedNode, effectiveLocationRestrictionRequiresFaceDownStandardAttack, isAcceptedEffectiveLocationRestrictionAbility, isEffectiveLocationRestrictionRuntimeProvenanceValidForRestore, isPlayerAtEffectiveLocationKind } from './effective-location-restriction-capability';
 import { containsOriginStillnessPrintedCostPrivilegedNode, isAcceptedOriginStillnessPrintedCostAbility, originStillnessEligibleActiveBasicIds, originStillnessPrintedManaGain } from './origin-stillness-printed-cost-capability';
 import {
@@ -978,6 +990,9 @@ export function getReachableLocationsAlongArrows(s: GameState, from: string, max
 function constraint(s: GameState, ctx: EffectContext, candidate: CardInstance, c: RuleNode): boolean {
   const d = runtime(s).pack.cards[candidate.definitionId];
   switch (c.type) {
+    case 'returned_to_skill_this_round':
+      if (!isReturnedSkillThisRoundConstraint(c)) reject('unsupported', 'Unsupported returned-skill constraint shape');
+      return cardReturnedToSkillThisRound(s, candidate.instanceId, ctx.controllerId);
     case 'base_power_at_most': return !!d && d.mode === 'automatic' && d.abilities.every(a => a.execution.mode === 'automatic') &&
       d.cardFace.basePower !== undefined && evaluateFormula(d.cardFace.basePower, s, ctx.controllerId, candidate.instanceId).value <= Number(c.value);
     case 'has_card_id': return candidate.definitionId === c.cardId;
@@ -1712,6 +1727,9 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   if (c.negated === true) return !condition(s, ctx, { ...c, negated: undefined });
   const p = player(s, ctx.controllerId); const resolutionLocation=controllerResolutionLocation(s,ctx);
   switch (c.type) {
+    case 'controller_spent_command_seal_this_round':
+      if (!isControllerSpentCommandSealThisRoundCondition(c)) reject('unsupported', 'Unsupported command-seal spend condition shape');
+      return controllerSpentCommandSealThisRound(s, ctx.controllerId);
     case 'skill_zone_mana_at_least': {
       const cardDef = definition(s, ctx.sourceCardId);
       if (cardDef && (hasPlayRuleException(cardDef, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, ctx.controllerId, cardDef.id, 'skill_zone_mana_at_least', Number(c.value)) || bloodlustPlayRequirementWaived(s, ctx.controllerId, 'skill_zone_mana_at_least', Number(c.value)) || logicalDayDefinitionPlayRequirementWaived(s, ctx.controllerId, cardDef.id, 'skill_zone_mana_at_least', Number(c.value)))) return true;
@@ -2071,6 +2089,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsRoundLocationSupplyPrivilegedNode(a) && !isAcceptedRoundLocationSupplyAbility(a)) return false;
   if (isAcceptedRoundLocationSupplyAbility(a) && !canExecuteRoundLocationSupplyEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsRoundSkillProfilePrivilegedNode(a) && !isAcceptedRoundSkillProfileAbility(a)) return false;
+  if (containsPermanentReturnedSkillTuningNode(a) && !isAcceptedPermanentReturnedSkillTuningAbility(a)) return false;
+  if (containsEliminationRescueSharedVictoryNode(a) && !isAcceptedEliminationRescueSharedVictoryAbility(a)) return false;
   if (isAcceptedRoundSkillProfileAbility(a) && a.kind === 'phase_action' && !canExecuteRoundSkillProfileEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsEffectiveLocationRestrictionPrivilegedNode(a) && !isAcceptedEffectiveLocationRestrictionAbility(a)) return false;
   if (containsOriginStillnessPrintedCostPrivilegedNode(a) && !isAcceptedOriginStillnessPrintedCostAbility(a)) return false;
@@ -2333,7 +2353,8 @@ export function effectiveCardPlayCost(s: GameState, playerId: string, sourceId: 
   if (!Number.isSafeInteger(replayIncrease) || replayIncrease < 0) reject('invalid_state', 'Physical replay-growth count is invalid');
   const vesselAura = vesselCycleSkillAura(s, playerId, d.id, d.cardType);
   const bloodlustAscension = bloodlustAscensionAdjustments(s, playerId, d.id);
-  return Math.max(0, baseCost + replayIncrease + battlefieldSourceCardPlayCostIncrease(s, playerId, sourceId) + vesselAura.costDelta + (bloodlustAscension?.costAdd ?? 0));
+  const beforePhysical = Math.max(0, baseCost + replayIncrease + battlefieldSourceCardPlayCostIncrease(s, playerId, sourceId) + vesselAura.costDelta + (bloodlustAscension?.costAdd ?? 0));
+  return applyPhysicalCardCostModifiers(s, sourceId, beforePhysical, dynamic.length ? baseCost : base);
 }
 
 function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false, ignoreManaCost = false, allowedSourceZones: readonly string[] = ['hand', 'skill']): string | undefined {
@@ -2579,8 +2600,9 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
 }
 function moveCard(s: GameState, id: string, zone: string): number {
   if (!['hand', 'deck', 'discard', 'field', 'skill', 'attack_area', 'removed_from_game', 'looked_cards', 'sealed'].includes(zone)) reject('unsupported', 'Unmapped destination zone');
-  const c = card(s, id); const moved = c.zone === zone ? 0 : 1; c.zone = zone;
+  const c = card(s, id); const fromZone = c.zone; const moved = c.zone === zone ? 0 : 1; c.zone = zone;
   c.visibility = zone === 'field' || zone === 'attack_area' || zone === 'removed_from_game' ? { scope: 'public' } : { scope: 'owner_only', ownerPlayerId: c.ownerPlayerId };
+  if (moved && zone === 'skill') recordSkillReturnedToSkillZone(s, id, fromZone);
   if (!['field', 'attack_area'].includes(zone)) {
     if (runtime(s).cardState[id]) {
       runtime(s).cardState[id]!.active = false;
@@ -2853,9 +2875,11 @@ function closeActiveAttackForDuplicatePower(s: GameState, instanceId: string, ef
   state.active = false;
   clearTransientCardTransformState(s, instanceId); retireMasterAscensionSourceDefinitionPowerByTrigger(s, instanceId);
   if (['servant_skill', 'master_skill'].includes(d.cardType)) {
+    const fromZone = target.zone;
     target.zone = 'skill'; target.controllerPlayerId = target.ownerPlayerId;
     target.visibility = { scope: 'owner_only', ownerPlayerId: target.ownerPlayerId };
     state.faceDown = false;
+    recordSkillReturnedToSkillZone(s, instanceId, fromZone);
   } else {
     state.faceDown = true;
     target.visibility = { scope: 'owner_only', ownerPlayerId: target.ownerPlayerId };
@@ -3115,6 +3139,7 @@ function resolveControllerMasterSkillDefinitionReturn(s: GameState, ctx: EffectC
       ...(r.cardState[target.instanceId] ?? { active: false, faceDown: false, playedRound: s.round.roundNumber }),
       active: false, faceDown: false,
     };
+    recordSkillReturnedToSkillZone(s, target.instanceId, fromZone);
     r.events.push({ type: 'card_returned_by_definition', playerId: controller.id, sourceCardId: ctx.sourceCardId,
       abilityId: ctx.abilityId, cardInstanceId: target.instanceId, fromZone, toZone: 'skill',
       movedCount: fromZone === 'skill' ? 0 : 1 });
@@ -3767,6 +3792,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       const amount = numeric(s, ctx, effect.amount);
       const next = Math.max(0, current + amount);
       (p as unknown as { commandSpells: number }).commandSpells = next;
+      if (next < current) markCommandSealSpent(s, p.id, current, next, { sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
       const directive = str(effect.directive) || 'adjust_command_seals';
       pushModeDirective(s, {
         controllerId: p.id,
@@ -4167,6 +4193,7 @@ function isMatchingDefinitionPendingDecisionLiveValid(s: GameState, decision: Pe
 }
 
 export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decision: PendingDecision): boolean {
+  if (decision.interaction?.kind === 'elimination_rescue_choice_v1') return isEliminationRescuePendingDecisionLiveValid(s, decision);
   if (decision.interaction?.kind === 'multi_presence_location_context_v1') return multiPresenceLocationContextDecisionLiveValid(s, decision);
   if (decision.interaction && ['battle_luck_discard_choice_v1','battle_opponent_close_reward_choice_v1','battle_drawn_card_optional_play_v1'].includes(decision.interaction.kind)) {
     return isBattleCloseDrawPlayPendingDecisionLiveValid(s, decision);
@@ -4217,6 +4244,8 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
     if (!isPersistentLocationTerrainRuntimeProvenanceValidForRestore(s)) return false;
     if (!isRoundLocationSupplyRuntimeProvenanceValidForRestore(s)) return false;
     if (!isRoundSkillProfileRuntimeProvenanceValidForRestore(s)) return false;
+    if (!isPermanentSkillTuningRuntimeProvenanceValidForRestore(s)) return false;
+    if (!isEliminationRescueRuntimeProvenanceValidForRestore(s)) return false;
     if (!isEffectiveLocationRestrictionRuntimeProvenanceValidForRestore(s)) return false;
     if (!(r.pendingDelayedActivations ?? []).every((entry) => {
       const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
@@ -4619,10 +4648,12 @@ function closeOpponentCardForCloseToOne(s: GameState, decisionPlayerId: string, 
   state.active = false;
   clearTransientCardTransformState(s, instanceId); retireMasterAscensionSourceDefinitionPowerByTrigger(s, instanceId);
   if (['servant_skill', 'master_skill'].includes(cardDefinition.cardType)) {
+    const fromZone = target.zone;
     target.zone = 'skill';
     target.controllerPlayerId = target.ownerPlayerId;
     target.visibility = { scope: 'owner_only', ownerPlayerId: target.ownerPlayerId };
     state.faceDown = false;
+    recordSkillReturnedToSkillZone(s, instanceId, fromZone);
   } else {
     state.faceDown = true;
     target.visibility = { scope: 'owner_only', ownerPlayerId: target.ownerPlayerId };
@@ -4803,7 +4834,9 @@ function closeBattleCloseDrawPlayCard(s: GameState, opponentId: PlayerId, instan
   const target = card(s, instanceId); const definition = runtime(s).pack.cards[target.definitionId]!; const state = runtime(s).cardState[instanceId]!;
   state.active = false; clearTransientCardTransformState(s, instanceId); retireMasterAscensionSourceDefinitionPowerByTrigger(s, instanceId);
   if (['servant_skill', 'master_skill'].includes(definition.cardType)) {
+    const fromZone = target.zone;
     target.zone = 'skill'; target.controllerPlayerId = target.ownerPlayerId; target.visibility = { scope: 'owner_only', ownerPlayerId: target.ownerPlayerId }; state.faceDown = false;
+    recordSkillReturnedToSkillZone(s, instanceId, fromZone);
   } else { state.faceDown = true; target.visibility = { scope: 'owner_only', ownerPlayerId: target.ownerPlayerId }; }
 }
 function battleCloseDrawPlayContext(tx: PendingBattleCloseDrawPlayTransaction): EffectContext {
@@ -6090,6 +6123,7 @@ function executeNormalSealPowerReplacement(s: GameState, ctx: EffectContext, a: 
   const current = Number((p as unknown as { commandSpells?: number }).commandSpells ?? 3);
   if (!Number.isSafeInteger(current) || current <= 0) reject('insufficient_command_seals', 'No ordinary Command Seal is available');
   (p as unknown as { commandSpells: number }).commandSpells = current - 1;
+  markCommandSealSpent(s, ctx.controllerId, current, current - 1, { sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
   markNormalCommandSealUsedThisRound(s, ctx.controllerId, {
     sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, before: current, after: current - 1,
   });
@@ -6679,6 +6713,17 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     }
     return;
   }
+  if (containsPermanentReturnedSkillTuningNode(a)) {
+    if (!isAcceptedPermanentReturnedSkillTuningAbility(a)) reject('resolution_failed', 'Unsupported permanent returned-skill tuning semantic');
+    const pending = findPendingTarget(s, ctx, a, a.effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    if (!applyPermanentReturnedSkillTuning(s, ctx, a)) reject('resolution_failed', 'Permanent returned-skill tuning resolution failed');
+    return;
+  }
+  if (containsEliminationRescueSharedVictoryNode(a)) {
+    if (!isAcceptedEliminationRescueSharedVictoryAbility(a)) reject('resolution_failed', 'Unsupported elimination rescue / shared-victory semantic');
+    return;
+  }
   if (containsOriginStillnessPrintedCostPrivilegedNode(a)) {
     if (!isAcceptedOriginStillnessPrintedCostAbility(a)) reject('resolution_failed', 'Unsupported origin-stillness printed-cost semantic');
     const pending=findPendingTarget(s,ctx,a,a.effects); if(pending){runtime(s).pendingDecision=pending; return;}
@@ -7017,11 +7062,13 @@ function settleArmedAttributeUseDefeat(s: GameState, event: AbilityEvent): void 
       sourceCardId: source.instanceId, abilityId: candidate.abilityId });
   }
   if (sourceBoundDefinitionResidualGranted(s, controller.id, source.definitionId)) {
+    const fromZone = source.zone;
     source.zone = 'skill';
     source.controllerPlayerId = source.ownerPlayerId;
     source.visibility = { scope: 'owner_only', ownerPlayerId: source.ownerPlayerId };
     sourceState.active = false; sourceState.faceDown = false; delete sourceState.paidManaOnPlay;
     clearTransientCardTransformState(s, source.instanceId);
+    recordSkillReturnedToSkillZone(s, source.instanceId, fromZone);
   }
 }
 
@@ -7159,10 +7206,12 @@ function processEvent(s: GameState, event: AbilityEvent): void {
       clearTransientCardTransformState(s, candidate.instanceId);
       retireMasterAscensionSourceDefinitionPowerByTrigger(s, candidate.instanceId);
       if (['servant_skill', 'master_skill'].includes(d.cardType)) {
+        const fromZone = candidate.zone;
         candidate.zone = 'skill';
         candidate.controllerPlayerId = candidate.ownerPlayerId;
         candidate.visibility = { scope: 'owner_only', ownerPlayerId: candidate.ownerPlayerId };
         state!.faceDown = false;
+        recordSkillReturnedToSkillZone(s, candidate.instanceId, fromZone);
       } else {
         state!.faceDown = true;
         candidate.visibility = { scope: 'owner_only', ownerPlayerId: candidate.ownerPlayerId };
@@ -7473,6 +7522,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const selected = command.selectedIds;
       if (d.interaction) {
         const meta = d.interaction;
+        if (meta.kind === 'elimination_rescue_choice_v1') {
+          if (!Array.isArray(selected) || !resolveEliminationRescueDecision(s, d, selected)) reject('resolution_failed', 'Corrupt or stale elimination-rescue interaction state');
+          break;
+        }
         if (meta.kind === 'bound_opponent_round_rule_v1') {
           if (!Array.isArray(selected) || !resolveBoundOpponentDecision(s, d, selected)) reject('resolution_failed', 'Corrupt or stale bound-opponent interaction state');
           break;
@@ -8398,6 +8451,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   if (commandSealCost > 0) {
     const before = availableSeals; const after = before - commandSealCost;
     sealCarrier.commandSpells = after;
+    markCommandSealSpent(s, playerId, before, after);
     runtime(s).events.push({ type: 'command_seals_adjusted', playerId, resource: 'command_seals', delta: -commandSealCost, before, after });
     markDefinitionSideDeckCommandSealSpentOrUsed(s, playerId);
     if (before > 0 && after === 0) processEvent(s, { id: nextId(s, 'empty-seals-card-play'), type: 'after_controller_loses_all_command_seals', playerId });

@@ -1,5 +1,6 @@
 import type { GameState } from '../schema/game';
 import type { AbilityEvent, AuthoringAbility, EffectContext, PlayerId, RuleNode } from './types';
+import { recordSkillReturnedToSkillZone } from './permanent-skill-tuning-capability';
 
 export const LOGICAL_DAY_CYCLE_INITIALIZE_EFFECT = 'logical_day_cycle_initialize' as const;
 export const LOGICAL_DAY_CYCLE_ADVANCE_EFFECT = 'logical_day_cycle_advance' as const;
@@ -202,6 +203,7 @@ function ensureDefinitionInSkill(state: GameState, controllerId: PlayerId, defin
     if (physical.controllerPlayerId !== controllerId || physical.generatedBy !== generatedBy) throw new Error('LOGICAL_DAY_STAGE_PROVENANCE_INVALID');
     if (physical.zone === 'skill') return;
     if (physical.zone !== 'discard') throw new Error('LOGICAL_DAY_STAGE_ZONE_INVALID');
+    const fromZone = physical.zone;
     physical.zone = 'skill';
     physical.visibility = { scope: 'owner_only', ownerPlayerId: controllerId };
     const cardState = r.cardState[physical.instanceId] ??= {
@@ -212,6 +214,7 @@ function ensureDefinitionInSkill(state: GameState, controllerId: PlayerId, defin
     cardState.active = false;
     cardState.faceDown = false;
     delete cardState.paidManaOnPlay;
+    recordSkillReturnedToSkillZone(state, physical.instanceId, fromZone);
     return;
   }
   const instanceId = `${controllerId}:logical-day:${definitionId}`;
@@ -233,10 +236,12 @@ function closeOwnedDefinitionToSkill(state: GameState, controllerId: PlayerId, d
   const physical = matching[0];
   if (!physical) return;
   if (physical.controllerPlayerId !== controllerId) throw new Error('LOGICAL_DAY_CLOSE_DEFINITION_CONTROL_INVALID');
+  const fromZone = physical.zone;
   physical.zone = 'skill';
   physical.visibility = { scope: 'owner_only', ownerPlayerId: controllerId };
   const cardState = r.cardState[physical.instanceId] ??= { active: false, faceDown: false, playedRound: state.round.roundNumber };
   cardState.active = false; cardState.faceDown = false; delete cardState.paidManaOnPlay;
+  recordSkillReturnedToSkillZone(state, physical.instanceId, fromZone);
 }
 
 export type LogicalDayResolution = 'handled' | 'awakened' | 'not_handled';
