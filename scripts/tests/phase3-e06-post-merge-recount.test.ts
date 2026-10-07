@@ -1,8 +1,9 @@
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { resolve } from 'node:path';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { describe, expect, it } from 'vitest';
 
@@ -36,6 +37,15 @@ function assertCommitObject(sha: string, label: string): void {
 
 function assertAncestor(ancestor: string, descendant: string, label: string): void {
   expect(() => git(['merge-base', '--is-ancestor', ancestor, descendant]), label).not.toThrow();
+}
+
+function gitAt(cwd: string, args: string[]): string {
+  return execFileSync('git', args, {
+    cwd,
+    encoding: 'utf8',
+    env: gitEnvironment,
+    stdio: ['ignore', 'pipe', 'pipe'],
+  }).trim();
 }
 
 describe('P3-E06 post-merge setup/create-to-skill recount', () => {
@@ -81,5 +91,40 @@ describe('P3-E06 post-merge setup/create-to-skill recount', () => {
     });
     expect(recount.runtimePromotion.currentMainState).toBe('PROMOTED_ON_MAIN_RECOUNTED');
     expect(recount.runtimePromotion.gateCStatus).toBe('NOT_VERIFIED');
+  });
+
+  it('requires full-history CI checkout and proves shallow recovery before ancestry checks', () => {
+    const workflow = readFileSync(resolve(root, '.github/workflows/test.yml'), 'utf8');
+    expect(workflow).toMatch(/uses: actions\/checkout@v4\s+with:\s+fetch-depth: 0/);
+
+    const source = mkdtempSync(join(tmpdir(), 'fd-phase3-lineage-source-'));
+    const shallow = mkdtempSync(join(tmpdir(), 'fd-phase3-lineage-shallow-'));
+    try {
+      gitAt(source, ['init', '--initial-branch=main']);
+      gitAt(source, ['config', 'user.email', 'phase3-test@example.invalid']);
+      gitAt(source, ['config', 'user.name', 'Phase 3 Test']);
+      writeFileSync(join(source, 'lineage.txt'), 'base\n');
+      gitAt(source, ['add', 'lineage.txt']);
+      gitAt(source, ['commit', '-m', 'base']);
+      const base = gitAt(source, ['rev-parse', 'HEAD']);
+      writeFileSync(join(source, 'lineage.txt'), 'candidate\n');
+      gitAt(source, ['commit', '-am', 'candidate']);
+      const candidate = gitAt(source, ['rev-parse', 'HEAD']);
+      writeFileSync(join(source, 'lineage.txt'), 'promotion\n');
+      gitAt(source, ['commit', '-am', 'promotion']);
+      const promotion = gitAt(source, ['rev-parse', 'HEAD']);
+
+      const sourceUrl = pathToFileURL(source).href;
+      gitAt(resolve(source, '..'), ['clone', '--depth=1', sourceUrl, shallow]);
+      expect(() => gitAt(shallow, ['rev-parse', '--verify', `${base}^{commit}`])).toThrow();
+      expect(() => gitAt(shallow, ['merge-base', '--is-ancestor', candidate, promotion])).toThrow();
+
+      gitAt(shallow, ['fetch', '--unshallow']);
+      expect(gitAt(shallow, ['rev-parse', '--verify', `${base}^{commit}`])).toBe(base);
+      expect(() => gitAt(shallow, ['merge-base', '--is-ancestor', candidate, promotion])).not.toThrow();
+    } finally {
+      rmSync(source, { recursive: true, force: true });
+      rmSync(shallow, { recursive: true, force: true });
+    }
   });
 });

@@ -70,8 +70,11 @@ candidate lineage in the machine artifact. Legacy fallback remains recorded as
 - `npm run verify:generated-content`: PASS
 - `npm run typecheck`: PASS
 - setup focused suite after `npm run content:compile`: 5 files / 184 tests PASS
+- `npx vitest run scripts/tests/phase3-e06-post-merge-recount.test.ts`: PASS, 1 file / 2 tests; includes depth-1 clone recovery regression
+- `.github/workflows/test.yml`: `actions/checkout@v4` with `fetch-depth: 0`
+- `npm run test:ci`: 183 files / 1410 passed; one existing `match-session.test.ts` 5-second timeout
+- isolated `npx vitest run packages/rules/tests/match-session.test.ts --testTimeout=15000`: 30/30 PASS
 - `npm run test:source-assets`: BLOCKED, 93 `MISSING_IMAGE` issues
-- `npx vitest run scripts/tests/phase3-e06-post-merge-recount.test.ts`: PASS, 1 file / 1 test
 - `git diff --check`: PASS
 
 This is a post-merge evidence recount, not a new runtime implementation or a
