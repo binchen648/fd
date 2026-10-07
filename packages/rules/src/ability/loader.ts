@@ -239,7 +239,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'lossAmount', 'winnerRewardAmount',
   'resultZone', 'visibility', 'to', 'from', 'optional', 'excluding', 'branches', 'if', 'then', 'else', 'cardId', 'zone',
   'var', 'op', 'args', 'left', 'right', 'formula', 'formulaRef', 'printedExpression', 'constraints', 'value', 'min', 'max',
-  'targetRef', 'resultVar', 'optionalCost', 'uses', 'conditions', 'locationKind', 'maxSteps', 'cardType', 'face', 'attribute', 'sourceCard',
+  'targetRef', 'resultVar', 'optionalCost', 'selection', 'uses', 'conditions', 'locationKind', 'maxSteps', 'cardType', 'face', 'attribute', 'sourceCard',
   'object', 'controller', 'location', 'negated', 'tier', 'specificity',
   'source', 'interpretation', 'name',
   // New mechanic keys for 5 servants

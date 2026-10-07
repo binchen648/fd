@@ -11,6 +11,8 @@ import { sha256Hex } from './portable-sha256';
 import {
   DataFlowValidationError,
   hasResolutionDataFlowSyntax,
+  isResultBindingProductionBridgeRouteCandidate,
+  isResultBindingProductionBridgeSemantic,
   validateResolutionDataFlowNodes,
 } from './resolution-dataflow';
 import type {
@@ -478,6 +480,9 @@ function validateAbilityTargetReferences(card: ExecutableCardDefinition, cards: 
 function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition, cards: Record<string, ExecutableCardDefinition>): void {
   for (const ability of card.abilities) {
     const effects = [...ability.effects, ...ability.creates];
+    if (isResultBindingProductionBridgeRouteCandidate(ability) && !isResultBindingProductionBridgeSemantic(ability)) {
+      throw new Error(`Unsupported result-binding production bridge semantic shape: ${card.id}:${ability.id}`);
+    }
     const path = `cards.${card.id}.abilities.${ability.id}.effects`;
     if (isSetupCreateToSkillCandidate(ability) && !isSetupCreateToSkillSemantic(ability)) {
       throw new Error(`Unsupported setup create-to-skill semantic shape at ${path}`);
@@ -492,7 +497,7 @@ function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition, cards
         throw new Error(`Invalid setup create-to-skill target definition '${String(targetDefinitionId)}' at ${path}`);
       }
     }
-    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isBattleLossResourceTriggerRouteCandidate(ability) && !isBattleLossServantRevealRouteCandidate(ability) && !isSharedVictoryVpTriggerRouteCandidate(ability) && !isBattleEndSourceReturnRouteCandidate(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isPlayActionRouteCandidate(ability) && !isPlaySourceCardWithCostResponseStructuralCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability) && !isSetupCreateToSkillSemantic(ability)) continue;
+    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isBattleLossResourceTriggerRouteCandidate(ability) && !isBattleLossServantRevealRouteCandidate(ability) && !isSharedVictoryVpTriggerRouteCandidate(ability) && !isBattleEndSourceReturnRouteCandidate(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isPlayActionRouteCandidate(ability) && !isPlaySourceCardWithCostResponseStructuralCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability) && !isSetupCreateToSkillSemantic(ability) && !isResultBindingProductionBridgeRouteCandidate(ability)) continue;
     try {
       validateResolutionDataFlowNodes(effects, path);
     } catch (error) {

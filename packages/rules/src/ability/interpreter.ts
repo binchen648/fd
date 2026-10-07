@@ -75,6 +75,8 @@ import {
   normalizeResolutionDataFlowNodes,
   executeResolution,
   ResolutionRuntimeError,
+  isResultBindingProductionBridgeRouteCandidate,
+  isResultBindingProductionBridgeSemantic,
   type KnownEffectResult,
 } from './resolution-dataflow';
 import type {
@@ -670,6 +672,7 @@ function eventCombatOutcomeCondition(s: GameState, ctx: EffectContext, c: RuleNo
 
 function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   if (!c || typeof c !== 'object') reject('unsupported', 'Unsupported condition');
+  if (c.expr === 'controller_at_battlefield') return isBattlefield(s, player(s, ctx.controllerId).locationId);
   if (c.negated === true) return !condition(s, ctx, { ...c, negated: undefined });
   const p = player(s, ctx.controllerId);
   switch (c.type) {
@@ -857,6 +860,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAddToAttackStructuralCandidate(a) && !isAddToAttackRouteCandidate(a)) return false;
   if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) return false;
   if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a)) return false;
+  if (isResultBindingProductionBridgeRouteCandidate(a) && !isResultBindingProductionBridgeSemantic(a)) return false;
+  if (isResultBindingProductionBridgeSemantic(a) && !hasMandatoryTargetAvailability(s, context(s, sourceId, a.id, event), a)) return false;
   if (isMagicResistancePowerModifierCandidate(a) && !isMagicResistancePowerModifierSemantic(a)) return false;
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
   if (isPreBattleDefeatCandidate(a) && !isAcceptedPreBattleDefeatAbility(a, 'compiled')) return false;
@@ -3511,12 +3516,50 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
   }
 }
 
+function executeResultBindingProductionBridge(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): void {
+  for (let index = 0; index < effects.length; index += 1) {
+    const effect = effects[index]!;
+    const targetRef = effect.type === 'pay_mana' ? str(effect.selection) : str(effect.target);
+    if (!targetRef || Object.prototype.hasOwnProperty.call(ctx.selections, targetRef)) continue;
+    const target = a.targets.find((candidate) => str(candidate.id) === targetRef);
+    if (!target) reject('resolution_failed', `Missing production bridge target '${targetRef}'.`);
+    const count = node(target.count);
+    const min = Number(count.min ?? 1);
+    const max = Number(count.max ?? 1);
+    const choices = candidates(s, ctx, target);
+    if (choices.length < min) reject('no_legal_target', 'No legal target remains');
+    if (choices.length === 0 && min === 0) {
+      ctx.selections[targetRef] = [];
+      continue;
+    }
+    runtime(s).pendingDecision = {
+      id: nextId(s, 'decision'),
+      controllerId: ctx.controllerId,
+      target,
+      candidates: choices,
+      min,
+      max,
+      context: structuredClone(ctx),
+      remainingEffects: effects,
+    };
+    return;
+  }
+  executeResolutionEffects(s, ctx, effects);
+  installOngoing(s, ctx, a);
+  cleanupOngoing(s);
+}
+
 function executeFixedControllerManaCost(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
   executeResolutionEffects(s, ctx, a.cost);
 }
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (isResultBindingProductionBridgeSemantic(a)) {
+    executeResultBindingProductionBridge(s, ctx, a, effects);
+    return;
+  }
+  if (isResultBindingProductionBridgeRouteCandidate(a)) reject('resolution_failed', 'Unsupported result-binding production bridge semantic shape.');
   if (isRulerSealBindingCandidate(a)) {
     if (!isRulerSealBindingSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal binding semantic shape');
     const pending = findPendingTarget(s, ctx, a, effects);
@@ -3816,6 +3859,9 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   if (isSetupCreateToSkillCandidate(a) && !isSetupCreateToSkillSemantic(a)) {
     reject('resolution_failed', 'Unsupported setup create-to-skill semantic shape.');
   }
+  if (isResultBindingProductionBridgeRouteCandidate(a) && !isResultBindingProductionBridgeSemantic(a)) {
+    reject('resolution_failed', 'Unsupported result-binding production bridge semantic shape.');
+  }
   if (isRulerSealBindingCandidate(a) && !isRulerSealBindingSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal binding semantic shape');
   if (isRulerSealUseCandidate(a) && !isRulerSealUseSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal use semantic shape');
   if (isOuterGodLifeAbilityCandidate(a) && !isOuterGodLifeAbilitySemantic(a)) reject('resolution_failed', 'Unsupported Outer-God-Life relational semantic shape');
@@ -3911,7 +3957,7 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
     });
     return;
   }
-  if (isCardZoneCoreDirectActionRouteCandidate(a) || isFixedControllerAdvanceDrawActionSemantic(a) || isAnyLocationExceptWorkshopMovementSemantic(a) || isPlayActionRouteCandidate(a) || isPlaySourceCardWithCostResponseStructuralCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a) || isSetupCreateToSkillSemantic(a)) {
+  if (isCardZoneCoreDirectActionRouteCandidate(a) || isFixedControllerAdvanceDrawActionSemantic(a) || isAnyLocationExceptWorkshopMovementSemantic(a) || isPlayActionRouteCandidate(a) || isPlaySourceCardWithCostResponseStructuralCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a) || isResultBindingProductionBridgeRouteCandidate(a)) {
     try {
       normalizeResolutionDataFlowNodes([...a.effects, ...a.creates], `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
     } catch (error) {
@@ -4230,6 +4276,15 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       break;
     }
     case 'activate_ability': {
+      const requestedSource = s.cards.find((candidate) =>
+        candidate.instanceId === command.cardInstanceId && candidate.controllerPlayerId === playerId);
+      const requestedAbility = requestedSource
+        ? runtime(s).pack.cards[requestedSource.definitionId]?.abilities.find((ability) => ability.id === command.abilityId)
+        : undefined;
+      if (requestedAbility && isResultBindingProductionBridgeRouteCandidate(requestedAbility) &&
+        !isResultBindingProductionBridgeSemantic(requestedAbility)) {
+        reject('resolution_failed', 'Unsupported result-binding production bridge semantic shape.');
+      }
       if (!legal.some(a => a.type === command.type && a.cardInstanceId === command.cardInstanceId && a.abilityId === command.abilityId)) reject('illegal_action', 'Ability is not available');
       const ctx = context(s, command.cardInstanceId, command.abilityId); ctx.variables = command.variables ?? {};
       executeAbility(s, ctx); break;

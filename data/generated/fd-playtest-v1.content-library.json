@@ -8801,44 +8801,94 @@
             ],
             "effects": [
               {
+                "id": "add-first-golden-impact",
                 "type": "move_card",
                 "target": "firstGoldenImpact",
+                "from": {
+                  "zone": "removed_from_game"
+                },
                 "to": {
                   "zone": "skill"
                 },
-                "resultVar": "golden_impact_cards_added_this_resolution"
+                "bind": "firstGoldenImpactAdded"
               },
               {
-                "type": "move_card",
-                "target": "secondGoldenImpact",
-                "to": {
-                  "zone": "skill"
-                },
-                "optionalCost": {
-                  "type": "pay_mana",
-                  "amount": 7
-                },
-                "resultVar": "golden_impact_cards_added_this_resolution"
-              },
-              {
+                "id": "award-first-golden-impact-vp",
                 "type": "branch",
                 "branches": [
                   {
                     "if": {
-                      "type": "controller_at_battlefield"
+                      "expr": "controller_at_battlefield"
                     },
                     "then": [
                       {
+                        "id": "award-first-golden-impact-vp-at-battlefield",
                         "type": "adjust_victory_points",
                         "player": "controller",
                         "amount": {
-                          "op": "multiply",
+                          "expr": "multiply",
                           "args": [
                             {
-                              "var": "golden_impact_cards_added_this_resolution"
+                              "expr": "binding_field",
+                              "binding": "firstGoldenImpactAdded",
+                              "field": "movedCount",
+                              "valueType": "number"
                             },
                             {
-                              "op": "const",
+                              "expr": "const",
+                              "value": 2
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "pay-for-second-golden-impact",
+                "type": "pay_mana",
+                "player": "controller",
+                "amount": 7,
+                "selection": "secondGoldenImpact",
+                "bind": "secondGoldenImpactPayment"
+              },
+              {
+                "id": "add-second-golden-impact",
+                "type": "move_card",
+                "target": "secondGoldenImpact",
+                "from": {
+                  "zone": "removed_from_game"
+                },
+                "to": {
+                  "zone": "skill"
+                },
+                "bind": "secondGoldenImpactAdded"
+              },
+              {
+                "id": "award-second-golden-impact-vp",
+                "type": "branch",
+                "branches": [
+                  {
+                    "if": {
+                      "expr": "controller_at_battlefield"
+                    },
+                    "then": [
+                      {
+                        "id": "award-second-golden-impact-vp-at-battlefield",
+                        "type": "adjust_victory_points",
+                        "player": "controller",
+                        "amount": {
+                          "expr": "multiply",
+                          "args": [
+                            {
+                              "expr": "binding_field",
+                              "binding": "secondGoldenImpactAdded",
+                              "field": "movedCount",
+                              "valueType": "number"
+                            },
+                            {
+                              "expr": "const",
                               "value": 2
                             }
                           ]
@@ -10918,11 +10968,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "7f5f8b8aa6f0abbe060b611189d4c104481486aa50435f4b73a8be7c7890bde1",
+    "definitionHash": "68c578e7575ff649b1b54a6532b105e3e93d6e5f7f9910b607958bf54a4ea7ce",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "7f5f8b8aa6f0abbe060b611189d4c104481486aa50435f4b73a8be7c7890bde1"
+      "definitionHash": "68c578e7575ff649b1b54a6532b105e3e93d6e5f7f9910b607958bf54a4ea7ce"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
