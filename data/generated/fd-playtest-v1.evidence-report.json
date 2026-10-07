@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 22,
+    "masters": 23,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -1627,6 +1627,50 @@
       "htmPath": "chm-extract/菲奥蕾·弗尔维吉.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/菲奥蕾·弗尔维吉.png",
       "imageIndex": 8,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.fou",
+      "displayName": "芙芙",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/芙芙.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/芙芙.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.fou.overview",
+      "displayName": "芙芙",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/芙芙.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/芙芙.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.fou.skill.ascension",
+      "displayName": "苍天之力",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/芙芙.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/芙芙.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.fou.skill.s1",
+      "displayName": "兽之印记",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/芙芙.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/芙芙.png",
+      "imageIndex": 1,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

@@ -8339,7 +8339,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       }
       d.context.selections[str(d.target.id)] = selected; delete r.pendingDecision;
       const resumedAbility = abilityDefinition(s, d.context.sourceCardId, d.context.abilityId);
-      if (isAcceptedLinkedRoleMemberSkillCopyAbility(resumedAbility) || isAcceptedDefinitionDeclarationDeckAbility(resumedAbility) || isAcceptedDefinitionVariantBatteryAbility(resumedAbility)) { executeAbility(s, d.context); break; }
+      if (isAcceptedLinkedRoleMemberSkillCopyAbility(resumedAbility) || isAcceptedDefinitionDeclarationDeckAbility(resumedAbility) || isAcceptedDefinitionVariantBatteryAbility(resumedAbility) || isAcceptedPermanentReturnedSkillTuningAbility(resumedAbility)) { executeAbility(s, d.context); break; }
       executeEffects(s, d.context, d.remainingEffects); break;
     }
     case 'resolve_response': {

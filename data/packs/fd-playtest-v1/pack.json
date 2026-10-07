@@ -60,7 +60,8 @@
                                  "data/authoring/masters/master.ciel.json",
                                  "data/authoring/masters/master.dan.json",
                                  "data/authoring/masters/master.darnic.json",
-                                 "data/authoring/masters/master.fiore.json"
+                                 "data/authoring/masters/master.fiore.json",
+                                 "data/authoring/masters/master.fou.json"
                              ],
     "authoringMasterSupportFiles":  [
                                         "data/authoring/masters/master.shirou-emiya.json"

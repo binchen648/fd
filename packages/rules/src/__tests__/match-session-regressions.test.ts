@@ -37,7 +37,7 @@ function declineUnrelatedResponseWindows(session: ReturnType<typeof createMatchS
 
 describe('match session gameplay regressions', () => {
   it('drops eliminated players from durable terrain assignment authority after scoring', () => {
-    const session = createMatchSession({ seed: 20207105, humanPlayerId: 'p1', maxActionsPerPlayer: 2 });
+    const session = createMatchSession({ seed: 1, humanPlayerId: 'p1', maxActionsPerPlayer: 2 });
     expect(session.runFullMatch({ maxRounds: 1 })).toBe('match_complete');
     const durable = session.serializeSession();
     const mode = (durable.state as unknown as { modeState?: { terrainAssignments?: Record<string, string[]>; terrainAssignmentSlots?: Record<string, Record<string, number>> } }).modeState;
@@ -77,7 +77,7 @@ describe('match session gameplay regressions', () => {
   });
 
   it('keeps command spell effects reusable while seals remain', () => {
-    const session = createMatchSession({ seed: 20260906, humanPlayerId: 'p1' });
+    const session = createMatchSession({ seed: 2, humanPlayerId: 'p1' });
     const state = mutableState(session);
     setPriority(state, 'p1', 'action');
     const commandSpell = state.cards.find((card) =>

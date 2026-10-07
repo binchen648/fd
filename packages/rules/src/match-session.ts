@@ -3092,24 +3092,24 @@ export class MatchSession {
       for (let guard = 0; guard < 2000; guard++) {
         const reason = this.runUntilHumanInputOrRoundEnd();
         if (reason === 'human_input') {
-          const player = this.priorityPlayer();
-          if (!player || player.id !== this.humanPlayerId) {
-            this.checkpoint(`auto-run pause:${reason}`, this.state, true);
-            return reason;
-          }
           const action = chooseAiAction(this.projectAbilityView(this.humanPlayerId).legalActions);
-          if (!action) {
+          if (action) {
+            const result = this.dispatchPlayerAction(this.humanPlayerId, legalActionToCommand(action));
+            if (!result.ok) {
+              const paused = this.pause('backend_rejection');
+              this.checkpoint(`auto-run pause:${paused}`, this.state, true);
+              return paused;
+            }
+            continue;
+          }
+          const player = this.priorityPlayer();
+          if (player?.id === this.humanPlayerId) {
             this.record('human_auto_passed', `${this.humanPlayerId}:no legal action`);
             this.advanceToNextDecision();
             continue;
           }
-          const result = this.dispatchPlayerAction(this.humanPlayerId, legalActionToCommand(action));
-          if (!result.ok) {
-            const paused = this.pause('backend_rejection');
-            this.checkpoint(`auto-run pause:${paused}`, this.state, true);
-            return paused;
-          }
-          continue;
+          this.checkpoint(`auto-run pause:${reason}`, this.state, true);
+          return reason;
         }
         if (reason === 'round_end') {
           if (this.state.round.roundNumber >= maxRounds) {
