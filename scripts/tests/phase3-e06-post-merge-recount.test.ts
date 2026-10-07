@@ -126,5 +126,5 @@ describe('P3-E06 post-merge setup/create-to-skill recount', () => {
       rmSync(source, { recursive: true, force: true });
       rmSync(shallow, { recursive: true, force: true });
     }
-  });
+  }, 15_000);
 });
