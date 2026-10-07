@@ -433,6 +433,53 @@ describe('P3 Fiore owner readiness complete gap set', () => {
     expect(rules.movementLockedByPersistentRule(state, 'p1')).toBe(true);
   });
 
+  it('rejects orphaned and forged round-skill-profile restore authority closed-world', () => {
+    const setForged = (state: GameState, fullKey: string, value: boolean | string | number) => {
+      const flags = state.abilityRuntime!.structuredPlayerFlagsByPlayer ??= {};
+      const roundKeys = state.abilityRuntime!.structuredRoundFlagKeysByPlayer ??= {};
+      (flags.p1 ??= {})[fullKey] = value;
+      (roundKeys.p1 ??= {})[fullKey] = state.round.roundNumber;
+    };
+
+    const suppression = setup([1, 2]);
+    setForged(suppression, '__fd_rsp:forged:suppress:movement_lock', true);
+    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(suppression)).toBe(false);
+    expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(suppression)).toBe(false);
+
+    const skillPower = setup([1, 2]);
+    setForged(skillPower, '__fd_rsp:forged:skillPowerBonus', 99);
+    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(skillPower)).toBe(false);
+
+    const terrain = setup([1, 2]);
+    setForged(terrain, '__fd_rsp:forged:terrainLocation', 'miyama_town');
+    setForged(terrain, '__fd_rsp:forged:terrainAmount', 2);
+    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(terrain)).toBe(false);
+
+    const unknown = setup([1, 2]);
+    setForged(unknown, '__fd_rsp:forged:futureAuthority', true);
+    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(unknown)).toBe(false);
+
+    const validProfile = setup([1, 2]);
+    const source = add(validProfile, TRANSCEND);
+    validProfile.round.activePhase = 'advance';
+    expect(rules.dispatchAbilityCommand(
+      validProfile,
+      'p1',
+      action(validProfile, source, 'fixture.transcend.advance.paralysis')!,
+    ).ok).toBe(true);
+    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(structuredClone(validProfile))).toBe(true);
+
+    const orphanedProfileFields = structuredClone(validProfile);
+    delete orphanedProfileFields.abilityRuntime!.structuredPlayerFlagsByPlayer!.p1!['__fd_rsp:fiore:profile:paralysis'];
+    delete orphanedProfileFields.abilityRuntime!.structuredRoundFlagKeysByPlayer!.p1!['__fd_rsp:fiore:profile:paralysis'];
+    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(orphanedProfileFields)).toBe(false);
+
+    const forgedRoundMarker = structuredClone(validProfile);
+    forgedRoundMarker.abilityRuntime!.structuredRoundFlagKeysByPlayer!.p1!['__fd_rsp:fiore:orphanMarker'] =
+      forgedRoundMarker.round.roundNumber;
+    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(forgedRoundMarker)).toBe(false);
+  });
+
   it('switches Circuit and removes only the current-round mana-gain cap', () => {
     const state = setup();
     installFiorePersistentDrawbacks(state);
@@ -483,6 +530,7 @@ describe('P3 Fiore owner readiness complete gap set', () => {
       battleResult: { winners: ['p1'], loserIds: ['p2'] },
     } as any);
     expect(state.players[0]!.vp).toBe(vp + 2);
+    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(structuredClone(state))).toBe(true);
     rules.processAbilityEvent(state, {
       id: 'fiore-gentle-win-replay-different-event',
       type: 'after_battle_result_determined',
@@ -530,6 +578,7 @@ describe('P3 Fiore owner readiness complete gap set', () => {
     expect(rules.dispatchAbilityCommand(state, 'p1', terrain!).ok).toBe(true);
     expect(rules.roundCurrentLocationTerrainBonus(state, 'p1', 'miyama_town')).toBe(2);
     expect(rules.currentDeploymentBonus(state, 'p1')).toBe(2);
+    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(structuredClone(state))).toBe(true);
   });
 
   it('plays generated Clever Mind and applies cumulative +1 to Master and Servant skill power for the round', () => {
@@ -557,6 +606,7 @@ describe('P3 Fiore owner readiness complete gap set', () => {
     expect(state.players[0]!.mana).toBe(mana - 1);
     expect(rules.calculateCardPower(state, clever).value).toBe(2);
     expect(rules.calculateCardPower(state, servant).value).toBe(3);
+    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(structuredClone(state))).toBe(true);
   });
 
   it('applies the action-mode -4 mana penalty after battle and ascension-mode -2 VP only on loss', () => {

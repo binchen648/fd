@@ -60,7 +60,7 @@ Production integration is identity-free:
 
 Candidate-local / affected green evidence:
 
-- Fiore complete-owner readiness regression: `9/9 PASS`.
+- Fiore complete-owner readiness regression: `10/10 PASS`, including closed-world restore-provenance tamper rejection.
 - Shared terrain deployment metric: `7/7 PASS`, including pure-read/no-mutation invariant.
 - Game-start skill provisioning: `7/7 PASS`.
 - Authoring interpreter: `38/38 PASS`.
@@ -88,6 +88,31 @@ Two selected shared tests fail identically on a plain archive of exact task-star
 2. `golden-flow-2-combat-power-winner-vp.test.ts` — restore rejects the hand-mutated fixture as `Invalid MatchSession state container`.
 
 Both failures reproduce unchanged before the Fiore readiness runtime delta. They are recorded as pre-existing shared-test debt rather than hidden or reported as Candidate green. The Fiore Candidate does not modify either test or the MatchSession restoration boundary responsible for those exact Base failures.
+
+## Fresh Reviewer revision closure
+
+Prior Candidate `d1809a4eade396242e267e74a9eff1dd1a0bb4a6` received
+`IMPLEMENTATION_NEEDS_REVISION`. The completed same-attempt evidence relay is canonical at:
+`https://github.com/binchen648/fd/pull/544#issuecomment-6032667992`.
+
+The single blocking finding was a fail-open restore boundary for privileged
+`__fd_rsp:` structured round flags. The revision closes that boundary as a
+closed-world contract:
+
+- every `__fd_rsp:` player flag must have an exact same-round marker, and every prefixed round marker must have a matching flag;
+- unknown/orphaned prefixed keys are rejected;
+- profile/mode/suppression/enhanced/provider/provider-ability/target/reward fields must belong to one validated accepted switch profile with exact physical-source and enhanced-definition provenance;
+- action and ascension penalties are accepted only when anchored to a matching validated profile mode and exact amount;
+- terrain and skill-power authority now persist exact source-card/ability provenance and must be anchored to an enhanced card belonging to a validated profile;
+- forged suppression, forged skill-power bonus, forged terrain bonus, unknown authority, orphaned profile-owned fields, and orphaned round markers are all negative-tested.
+
+Revision verification:
+
+- Fiore focused regression: `10/10 PASS`;
+- `npm run typecheck`: PASS;
+- `git diff --check`: PASS.
+
+Readiness remains permanently zero-credit; strict accounting remains `253/944`, remaining `691`.
 
 ## Gate
 
