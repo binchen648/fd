@@ -3,7 +3,7 @@
   "controlEpoch": "FD-P3-2026-09-23-06",
   "taskId": "P3-E06-A-POST-MERGE-SETUP-CREATE-TO-SKILL-RECOUNT",
   "owner": "Codex A",
-  "status": "POST_MERGE_RECOUNT_READY_FOR_REVIEW",
+  "status": "REVIEW_RECONCILIATION_REQUIRED",
   "main": {
     "observedMainSha": "a7751c3fa51895fd3a401721b1e926b90e016862",
     "firstParent": "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
@@ -83,6 +83,14 @@
   "validation": {
     "contentValidation": "PASS_0_BLOCKING_ISSUES",
     "generatedContentDeterminism": "PASS",
+    "testCi": {
+      "status": "REVIEW_RECONCILIATION_REQUIRED",
+      "command": "npm run test:ci",
+      "summary": "183 files passed / 1 failed; 1410 tests passed / 1 failed",
+      "failedTest": "packages/rules/tests/regression/complex-skills-regression.test.ts:1547",
+      "failureClass": "FULL_SUITE_TIMEOUT_AT_5000MS",
+      "isolatedEvidence": "37/37 PASS"
+    },
     "requiredSourceAssets": "BLOCKED_93_MISSING_IMAGE",
     "gateC": "NO_CHANGE_NOT_VERIFIED",
     "releaseGate": "BLOCKED_MISSING_IMAGE_ASSETS"

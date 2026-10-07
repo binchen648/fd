@@ -51,12 +51,20 @@ unchanged by this promotion.
 Machine artifact: `artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json`
 
 Machine artifact SHA-256:
-`4446D0A0E16A0A9E3402CEEBC000E2B5CAF2A98655FD3277FC6E530BA2E003FC`
+`42548822F968F29CD0A3329EB11E9BD892FE3307C27543F5BC8C59E21049D17A`
 
 Coverage artifact: `artifacts/phase3-skill-coverage.json`
 
 Coverage artifact SHA-256:
 `1631ECF10EF600A9828F2DF7AD583E9FAD857FABBC73C69C78545606C7121D18`
+
+Machine artifact status is `REVIEW_RECONCILIATION_REQUIRED`. The exact
+Candidate `2ef7e2994919ed60858c19696307d0140a3b122e` did not produce a
+reproducible default full-suite PASS in independent review: `183 files passed /
+1 failed` and `1410 tests passed / 1 failed`, due to the 5-second timeout in
+`packages/rules/tests/regression/complex-skills-regression.test.ts:1547`.
+The isolated test passes `37/37`; this recount does not alter that unrelated
+test or increase any timeout.
 
 ## Evidence Boundary
 
@@ -72,13 +80,17 @@ candidate lineage in the machine artifact. Legacy fallback remains recorded as
 - setup focused suite after `npm run content:compile`: 5 files / 184 tests PASS
 - `npx vitest run scripts/tests/phase3-e06-post-merge-recount.test.ts`: PASS, 1 file / 2 tests; includes depth-1 clone recovery regression
 - `.github/workflows/test.yml`: `actions/checkout@v4` with `fetch-depth: 0`
-- `npm run test:ci`: 184 files / 1411 tests PASS
+- `npm run test:ci`: `REVIEW_RECONCILIATION_REQUIRED`, 183 files passed / 1 failed; 1410 tests passed / 1 failed
+- failed test: `packages/rules/tests/regression/complex-skills-regression.test.ts:1547`, default 5-second timeout
+- isolated complex-skills suite: 37/37 PASS
 - `packages/rules/tests/match-session.test.ts`: gameplay-field authentication test uses a local `15_000ms` timeout; global timeout unchanged
 - isolated `npx vitest run packages/rules/tests/match-session.test.ts --testTimeout=15000`: 30/30 PASS
 - `npm run test:source-assets`: BLOCKED, 93 `MISSING_IMAGE` issues
 - `git diff --check`: PASS
 
 This is a post-merge evidence recount, not a new runtime implementation or a
-global acceptance/promotion decision. Reviewer A should independently verify
+global acceptance/promotion decision. The current evidence is not eligible for
+Planner disposition until the full-suite CI result is independently resolved.
+Reviewer A should independently verify
 the merge ancestry, evidence hashes, unchanged frozen accounting, and the
 distinction between runtime promotion and migration credit.
