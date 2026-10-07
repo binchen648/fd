@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "fd-phase3-ci-diagnosis-v1",
+  "taskId": "P3-E08-CI-01",
+  "controlEpoch": "FD-P3-2026-09-23-07",
+  "owner": "Codex A",
+  "baseSha": "b6375c4889009497e7dd9c98e83c1d2ce0da10d9",
+  "candidateSha": "0e6acd0c4017a00f689c422260808e09b13225ed",
+  "status": "READY_FOR_REVIEW",
+  "scope": "CI reproduction, timing, root-cause classification, and minimum test-only stabilization",
+  "observedFailure": {
+    "testedSha": "2ef7e2994919ed60858c19696307d0140a3b122e",
+    "command": "npm run test:ci",
+    "result": "183 files passed / 1 failed; 1410 tests passed / 1 failed",
+    "failedTest": "packages/rules/tests/regression/complex-skills-regression.test.ts:1547",
+    "failure": "default 5000ms test timeout",
+    "isolatedResult": "37/37 PASS",
+    "isolatedElapsedMs": 1960,
+    "fullSuiteObservedElapsedMs": 5463,
+    "semanticFailure": false
+  },
+  "rootCause": {
+    "classification": "TEST_TIMEOUT_UNDER_FULL_SUITE_LOAD",
+    "runtimeSemanticGap": false,
+    "assertionFailure": false,
+    "reason": "The single three-round MatchSession regression has low timeout headroom under Vitest full-suite load; isolated execution remains green."
+  },
+  "minimumFix": {
+    "path": "packages/rules/tests/regression/complex-skills-regression.test.ts",
+    "test": "keeps event and situation modifier sources in three-round MatchSession battle breakdown logs",
+    "timeoutBeforeMs": 5000,
+    "timeoutAfterMs": 15000,
+    "globalTimeoutChanged": false,
+    "assertionsChanged": false,
+    "runtimeFilesChanged": false
+  },
+  "afterVerification": {
+    "command": "npm run test:ci",
+    "result": "184 files passed / 1411 tests passed",
+    "elapsedMs": 26962,
+    "complexSkillsIsolated": "37/37 PASS",
+    "typecheck": "PASS",
+    "diffCheck": "PASS"
+  },
+  "nonClaims": [
+    "This is a test-stability fix, not a runtime semantic fix.",
+    "This does not change coverage, taxonomy, migration credit, Gate A/B/C, or Release Gate status.",
+    "This does not waive the 93 missing source-image blocker."
+  ]
+}
