@@ -18,5 +18,7 @@
   "lockReleaseAllowed": false,
   "promotionPrAllowedAfterPass": true,
   "promotionTarget": "main",
+  "plannerBranchMayBeUsedDirectlyForPr": false,
+  "requiredPrAssembly": "FRESH_MAIN_PLUS_EXACT_0CBDD33_DELTA_PLUS_G_ATTESTATION",
   "status": "READY_FOR_GOVERNANCE_REVIEW"
 }

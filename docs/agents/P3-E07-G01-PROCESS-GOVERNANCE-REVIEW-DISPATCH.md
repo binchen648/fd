@@ -56,3 +56,12 @@ PR, or close historical PRs while reviewing.
 Return exact base, exact candidate, changed paths, checks performed, findings,
 non-claims, and the next owner. A PASS authorizes a governance-only PR for this
 candidate; it does not authorize a runtime or migration promotion.
+
+## PR Assembly After PASS
+
+Do not open a PR directly from `codex/planner-p3-e07-control`, because commits
+after `0cbdd33...` contain Planner dispatch/state records outside the reviewed
+candidate. After PASS, create a fresh branch from `main@a7751c3...`, replay the
+exact governance delta from `0cbdd33...`, add only the immutable G attestation
+and required governance manifest, and target `main`. Any changed governance
+contract content requires a new exact-candidate review.
