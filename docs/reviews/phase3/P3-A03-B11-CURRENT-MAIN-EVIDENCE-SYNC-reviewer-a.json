@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "controlEpoch": "FD-P3-2026-09-23-06",
+  "taskId": "P3-A03-B11-CURRENT-MAIN-RESULT-BINDING-SYNC",
+  "reviewer": "Reviewer A",
+  "reviewerIdentity": "Codex Reviewer A",
+  "reviewMode": "read_only_exact_sha_evidence_review",
+  "reviewedAt": "2026-10-07T02:40:33.569Z",
+  "reviewedSyncSha": "1c59c46545f4bf0d8afe593940bee57faa33e580",
+  "syncArtifact": {
+    "path": "artifacts/phase3-p3-b11-current-main-result-binding-sync.json",
+    "sha256": "F22369454B070C95048CEA63CEA27AC8E960D44F48F861892C8AF5BAE33EC581"
+  },
+  "sourceEvidence": {
+    "currentMainSha": "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
+    "candidateSha": "13ab77128fe0d50a3db2a3ff3e66f7893354a6d0",
+    "reviewerBCommitSha": "5235ea55eb74dabf6a7dcdcf77db8827f6cf0547",
+    "reviewerBArtifactSha256": "069F3CFD1E41429BE0AF08D33E065802ED82609A87B812393484AF03C974403E",
+    "reviewerBCommentId": "6029576390",
+    "reviewerBThread": "https://github.com/binchen648/fd/pull/542#issuecomment-6029576390",
+    "reviewerBAttestationControlEpoch": "FD-P3-2026-09-23-06"
+  },
+  "scope": {
+    "mechanicFamily": "RESULT_BINDING_PRODUCTION_BRIDGE",
+    "authorizedAbilities": [
+      "conversion-magic.preparation",
+      "sc-kintoki-3.golden-eater"
+    ]
+  },
+  "checks": {
+    "controlEpochBinding": "PASS",
+    "reviewerBExactEvidenceBinding": "PASS",
+    "gitLineage": "PASS",
+    "remoteRefs": "PASS",
+    "baselineCoverageBinding": "PASS",
+    "candidateCoverageBinding": "PASS",
+    "identityRouteTransition": "PASS",
+    "zeroMainCredit": "PASS",
+    "scopeExpansion": "NOT_FOUND"
+  },
+  "verification": [
+    {
+      "command": "npx vitest run scripts/tests/phase3-p3-b11-current-main-evidence-sync.test.ts",
+      "result": "PASS",
+      "summary": "1 file / 1 test"
+    },
+    {
+      "command": "npm run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check 1c59c46545f4bf0d8afe593940bee57faa33e580^ 1c59c46545f4bf0d8afe593940bee57faa33e580",
+      "result": "PASS"
+    }
+  ],
+  "accounting": {
+    "mainCoverageCreditDelta": 0,
+    "mainDenominatorDelta": 0,
+    "migrationCreditDelta": 0,
+    "promotedOnMain": false
+  },
+  "finalVerdict": "PASS",
+  "governance": {
+    "status": "READY_FOR_GOVERNANCE_EVIDENCE_PREPARATION",
+    "githubBoundReviewerAAttestation": "NOT_CREATED_BY_THIS_ARTIFACT",
+    "note": "This Git artifact persists the Reviewer A verdict. Any distinct-account GitHub approval required by governance remains a separate external attestation."
+  },
+  "artifactBinding": {
+    "path": "docs/reviews/phase3/P3-A03-B11-CURRENT-MAIN-EVIDENCE-SYNC-reviewer-a.json",
+    "reviewCommitSha": "reported from the immutable Git commit containing this artifact",
+    "artifactSha256": "reported from the committed artifact bytes",
+    "selfReferencePolicy": "Commit and file hashes are reported in the review handoff rather than embedded as literal self-referential values."
+  },
+  "nonClaims": [
+    "This PASS accepts only the exact A evidence sync at 1c59c46545f4bf0d8afe593940bee57faa33e580.",
+    "This PASS does not grant global Gate A, Gate B, or Gate C promotion.",
+    "This PASS does not grant main coverage or migration credit.",
+    "This PASS does not mark the candidate PROMOTED_ON_MAIN.",
+    "This PASS does not complete Phase 3, Full Roster, Release Gate, or Release Ready status."
+  ]
+}
