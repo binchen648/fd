@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-a-sync-binding-v1",
+  "controlEpoch": "FD-P3-2026-09-23-04",
+  "taskId": "P3-E04-S00-A2",
+  "bindingRole": "Codex A",
+  "reviewerA": {
+    "identity": "Codex Reviewer A",
+    "verdict": "PASS",
+    "reviewedSyncSha": "00add371a1d32d09ed9c09ca3856490a1fa6ad6a",
+    "syncArtifactPath": "artifacts/phase3-e04-s00-a2-current-candidate-sync.json",
+    "syncArtifactSha256": "EBC56094F744CE7DE5FA1D6700DF57B92EFE66B0AF9A7A8B411FDFA11080F157",
+    "reviewCommit": null,
+    "reviewArtifactPath": null,
+    "reviewArtifactSha256": null,
+    "evidenceBinding": "REVIEWED_SYNC_SHA_AND_ARTIFACT_HASH_BOUND"
+  },
+  "candidate": {
+    "sha": "30be3b74258c817ede1cb857ace947505b62d8ed",
+    "reviewerBArtifactSha256": "FD988E5544AF230D148FE9CD94E218293D54BFFB05BCFA3AE7C09B3970D66C67",
+    "aSyncIsCandidateDescendant": true
+  },
+  "scope": {
+    "authorizedAbilities": [
+      "military.has-support-shot",
+      "astronomical-science.has-chaldeas",
+      "useless-person.setup"
+    ],
+    "gateAStatus": "REVIEWER_EVIDENCE_BOUND_CANDIDATE",
+    "gateBStatus": "REVIEWER_EVIDENCE_BOUND_CANDIDATE",
+    "gateCStatus": "NOT_VERIFIED",
+    "legacyFallbackStatus": "CLOSED_EXACT_ARTIFACT_BOUND"
+  },
+  "accounting": {
+    "mainCoverageCreditDelta": 0,
+    "mainDenominatorDelta": 0,
+    "migrationCreditDelta": 0,
+    "promotedOnMain": false
+  },
+  "governance": {
+    "githubBoundGovernanceAttestation": "PENDING",
+    "promotionStatus": "BLOCKED_PENDING_GOVERNANCE"
+  },
+  "status": "REVIEWER_ACCEPTED_CANDIDATE",
+  "nonClaims": [
+    "This binding does not promote Gate A or Gate B.",
+    "This binding does not verify Gate C.",
+    "This binding does not grant main coverage or migration credit.",
+    "This binding does not replace the GitHub-bound Governance Owner attestation."
+  ]
+}

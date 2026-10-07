@@ -1,14 +1,16 @@
 import type { GameState, PlayerState } from '../schema/game';
 import type { LocationId } from '../schema/location';
-import type { PlayerId, SafeEvent } from './types';
+import type { AbilityRuntime, ExecutableCardDefinition, PlayerId, SafeEvent } from './types';
 import { clearTransientCardTransformState } from './card-instance-state';
 import { isCardCloseForbidden } from './card-close-forbid';
 import { grantMana } from '../core/rule-overrides';
+import { isSetupCreateToSkillSemantic, isSetupCreateToSkillTargetDefinition } from './setup-create-to-skill';
 
 export type EffectExecutionStatus = 'applied' | 'no_op';
 export type BindingFieldType = 'number' | 'player_ids' | 'boolean' | 'status';
 export type EffectResultType =
   | 'remove_advantage_position'
+  | 'create_card'
   | 'move_all_remaining'
   | 'move_source_card'
   | 'move_player'
@@ -158,6 +160,14 @@ export interface CloseSourceCardResult {
   closedCount: number;
 }
 
+export interface CreateCardResult {
+  playerId: PlayerId;
+  definitionId: string;
+  destinationZone: 'skill';
+  createdInstanceIds: string[];
+  createdCount: number;
+}
+
 export interface NoopResult {
   reason: string;
 }
@@ -168,6 +178,7 @@ export interface FailInvariantResult {
 
 export type KnownEffectResult =
   | EffectResultEnvelope<'remove_advantage_position', RemoveAdvantagePositionResult>
+  | EffectResultEnvelope<'create_card', CreateCardResult>
   | EffectResultEnvelope<'move_all_remaining', MoveAllRemainingResult>
   | EffectResultEnvelope<'move_source_card', MoveSourceCardResult>
   | EffectResultEnvelope<'move_player', MovePlayerEffectResult>
@@ -192,6 +203,10 @@ export const resultSchemas: Record<EffectResultType, BindingFieldSchema> = {
   remove_advantage_position: {
     affectedPlayerIds: 'player_ids',
     removedCount: 'number',
+    status: 'status',
+  },
+  create_card: {
+    createdCount: 'number',
     status: 'status',
   },
   move_all_remaining: {
@@ -334,6 +349,7 @@ export type ConditionExpression =
 
 export type ResolutionEffectNode =
   | { id: string; type: 'remove_advantage_position'; target: TargetExpression; bind?: string }
+  | { id: string; type: 'create_card'; cardId: string; to: 'skill'; bind?: string }
   | { id: string; type: 'move_all_remaining'; owner: 'controller'; from: string; to: string; bind?: string }
   | { id: string; type: 'move_source_card'; to: 'skill' | 'removed_from_game'; bind?: string }
   | { id: string; type: 'move_player'; player: 'controller'; to: string; bind?: string }
@@ -424,6 +440,11 @@ const primitiveDefinitions: ResolutionPrimitive[] = [
     type: 'remove_advantage_position',
     resultSchema: resultSchemas.remove_advantage_position,
     execute: removeAdvantagePositionPrimitive,
+  },
+  {
+    type: 'create_card',
+    resultSchema: resultSchemas.create_card,
+    execute: createCardPrimitive,
   },
   {
     type: 'move_all_remaining',
@@ -681,6 +702,11 @@ function validateEffectReferences(
     case 'remove_advantage_position':
       validateTargetExpression(effect.target, available, unsafeBranchBindings, issues, `${path}.target`);
       break;
+    case 'create_card':
+      if (!effect.cardId || effect.to !== 'skill') {
+        issues.push({ code: 'invalid_resolution_node', path, message: 'Only create_card to controller skill is supported.' });
+      }
+      break;
     case 'draw_cards':
       validateValueExpression(effect.count, available, unsafeBranchBindings, issues, `${path}.count`);
       break;
@@ -884,6 +910,14 @@ function removeAdvantagePositionPrimitive(
   return removeAdvantagePosition(transaction, effect);
 }
 
+function createCardPrimitive(
+  transaction: AbilityResolutionTransaction,
+  effect: ResolutionPrimitiveNode,
+): KnownEffectResult {
+  if (effect.type !== 'create_card') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  return createCard(transaction, effect);
+}
+
 function moveAllRemainingPrimitive(
   transaction: AbilityResolutionTransaction,
   effect: ResolutionPrimitiveNode,
@@ -1051,6 +1085,163 @@ function removeAdvantagePosition(
     },
     emittedEventIds: affectedPlayerIds.length > 0 ? [eventId] : [],
   };
+}
+
+function createCard(
+  transaction: AbilityResolutionTransaction,
+  effect: Extract<ResolutionEffectNode, { type: 'create_card' }>,
+): KnownEffectResult {
+  const runtime = transaction.workingState.abilityRuntime;
+  if (!runtime || !runtime.pack.cards[effect.cardId]) {
+    throw new ResolutionRuntimeError('missing_created_card_definition', `Missing created card definition '${effect.cardId}'.`);
+  }
+  const source = transaction.workingState.cards.find((candidate) => candidate.instanceId === transaction.context.sourceCardId);
+  const sourceDefinition = source ? runtime?.pack.cards[source.definitionId] as ExecutableCardDefinition | undefined : undefined;
+  const sourceAbility = sourceDefinition?.abilities.find((candidate) => candidate.id === transaction.context.abilityId);
+  // Authoring-only synthetic fixtures do not carry executable ownership
+  // metadata. Production packs always carry contentIdentity/ownerId, so only
+  // those packs enter the setup authority contract.
+  const isExecutableSetupRoute = !!sourceDefinition && !!sourceAbility &&
+    isSetupCreateToSkillSemantic(sourceAbility) &&
+    (sourceDefinition.ownerId !== undefined || runtime.pack.contentIdentity !== undefined);
+  let existing: GameState['cards'][number][];
+  if (isExecutableSetupRoute) {
+    const controller = transaction.workingState.players.find((candidate) => candidate.id === transaction.context.controllerId);
+    const targetDefinition = runtime.pack.cards[effect.cardId] as ExecutableCardDefinition | undefined;
+    if (!source || !controller || !sourceDefinition ||
+      !isCanonicalSetupSourceCard(transaction, source, sourceDefinition, controller.masterCardId) ||
+      !isSetupCreateToSkillTargetDefinition(sourceDefinition, targetDefinition)) {
+      throw new ResolutionRuntimeError('invalid_setup_source', 'Setup create-to-skill source or target is not canonical.');
+    }
+    // Cardinality is global for the owner-specific definition. Do not filter
+    // by mutable provenance fields before checking whether a duplicate exists.
+    existing = transaction.workingState.cards.filter((candidate) => candidate.definitionId === effect.cardId);
+  } else {
+    existing = transaction.workingState.cards.filter((candidate) =>
+      candidate.definitionId === effect.cardId &&
+      (candidate.ownerPlayerId === transaction.context.controllerId ||
+        candidate.controllerPlayerId === transaction.context.controllerId ||
+        candidate.generatedBy === transaction.context.sourceCardId));
+  }
+  if (existing.length > 0) {
+    if (existing.length !== 1 || !isCanonicalSetupSkillCard(
+      existing[0]!,
+      runtime,
+      transaction.context.controllerId,
+      transaction.context.sourceCardId,
+      transaction.workingState.round.roundNumber,
+    )) {
+      throw new ResolutionRuntimeError('duplicate_created_card', `Card definition '${effect.cardId}' already exists without matching provenance.`);
+    }
+    return {
+      effectId: effect.id,
+      effectType: 'create_card',
+      status: 'no_op',
+      affectedEntities: [],
+      payload: {
+        playerId: transaction.context.controllerId,
+        definitionId: effect.cardId,
+        destinationZone: 'skill',
+        createdInstanceIds: [],
+        createdCount: 0,
+      },
+      emittedEventIds: [],
+    };
+  }
+
+  const instanceId = `${transaction.context.resolutionId}.${effect.id}.created`;
+  transaction.workingState.cards.push({
+    instanceId,
+    definitionId: effect.cardId,
+    ownerPlayerId: transaction.context.controllerId,
+    controllerPlayerId: transaction.context.controllerId,
+    zone: 'skill',
+    visibility: { scope: 'owner_only', ownerPlayerId: transaction.context.controllerId },
+    generatedBy: transaction.context.sourceCardId,
+  });
+  runtime.cardState[instanceId] = {
+    active: false,
+    faceDown: false,
+    playedRound: transaction.workingState.round.roundNumber,
+  };
+  const eventId = `${transaction.context.resolutionId}.${effect.id}.card_created`;
+  transaction.emittedEvents.push({
+    type: 'card_created',
+    playerId: transaction.context.controllerId,
+    sourceCardId: transaction.context.sourceCardId,
+    abilityId: transaction.context.abilityId,
+    cardInstanceId: instanceId,
+    toZone: 'skill',
+    movedCount: 1,
+    resultId: eventId,
+    revision: runtime.revision,
+  });
+  return {
+    effectId: effect.id,
+    effectType: 'create_card',
+    status: 'applied',
+    affectedEntities: [{ kind: 'player', id: transaction.context.controllerId }],
+    payload: {
+      playerId: transaction.context.controllerId,
+      definitionId: effect.cardId,
+      destinationZone: 'skill',
+      createdInstanceIds: [instanceId],
+      createdCount: 1,
+    },
+    emittedEventIds: [eventId],
+  };
+}
+
+function isCanonicalSetupSkillCard(
+  card: GameState['cards'][number],
+  runtime: AbilityRuntime,
+  controllerId: PlayerId,
+  sourceCardId: string,
+  currentRound: number,
+): boolean {
+  if (card.ownerPlayerId !== controllerId ||
+    card.controllerPlayerId !== controllerId ||
+    card.zone !== 'skill' ||
+    card.generatedBy !== sourceCardId ||
+    Object.keys(card.visibility).length !== 2 ||
+    card.visibility.scope !== 'owner_only' ||
+    card.visibility.ownerPlayerId !== controllerId) return false;
+
+  return isCanonicalSetupCardState(runtime, card.instanceId, currentRound);
+}
+
+function isCanonicalSetupCardState(runtime: AbilityRuntime, cardInstanceId: string, currentRound: number): boolean {
+  const cardState = runtime.cardState[cardInstanceId];
+  return !!cardState &&
+    typeof cardState.active === 'boolean' && cardState.active === false &&
+    typeof cardState.faceDown === 'boolean' && cardState.faceDown === false &&
+    Number.isInteger(cardState.playedRound) && cardState.playedRound >= 0 &&
+    cardState.playedRound <= currentRound &&
+    Object.keys(cardState).every((key) => ['active', 'faceDown', 'playedRound'].includes(key));
+}
+
+function isCanonicalSetupSourceCard(
+  transaction: AbilityResolutionTransaction,
+  source: GameState['cards'][number],
+  sourceDefinition: ExecutableCardDefinition,
+  controllerMasterId: string,
+): boolean {
+  const controllerId = transaction.context.controllerId;
+  return source.ownerPlayerId === controllerId &&
+    source.controllerPlayerId === controllerId &&
+    source.zone === 'skill' &&
+    source.generatedBy === undefined &&
+    Object.keys(source.visibility).length === 2 &&
+    source.visibility.scope === 'owner_only' &&
+    source.visibility.ownerPlayerId === controllerId &&
+    sourceDefinition.cardType === 'master_skill' &&
+    sourceDefinition.mode === 'automatic' &&
+    sourceDefinition.ownerId === controllerMasterId &&
+    isCanonicalSetupCardState(
+      transaction.workingState.abilityRuntime!,
+      source.instanceId,
+      transaction.workingState.round.roundNumber,
+    );
 }
 
 function moveAllRemaining(
@@ -1676,6 +1867,7 @@ function evaluateValue(transaction: AbilityResolutionTransaction, expression: Va
   const result = transaction.context.bindings.get(expression.binding);
   if (!result) throw new ResolutionRuntimeError('missing_binding', `Missing binding '${expression.binding}'`);
   if (result.effectType === 'remove_advantage_position' && expression.field === 'removedCount') return result.payload.removedCount;
+  if (result.effectType === 'create_card' && expression.field === 'createdCount') return result.payload.createdCount;
   if (result.effectType === 'move_all_remaining' && expression.field === 'movedCount') return result.payload.movedCount;
   if (result.effectType === 'move_source_card' && expression.field === 'movedCount') return result.payload.movedCount;
   if (result.effectType === 'move_player' && expression.field === 'movedCount') return result.payload.movedCount;
@@ -1826,6 +2018,19 @@ function coerceResolutionEffectNode(value: unknown, path: string, issues: DataFl
         target: coerceTargetExpression(current.target, `${path}.target`, issues),
         ...coerceBind(current.bind),
       };
+    case 'create_card': {
+      const destination = objectExpression(current.to, `${path}.to`, issues);
+      if (current.owner !== undefined || destination?.owner !== undefined || current.then !== undefined) {
+        invalidNode(path, 'Setup create_card does not support owner override or nested then effects.', issues);
+      }
+      return {
+        id,
+        type,
+        cardId: stringField(current, 'cardId', `${path}.cardId`, issues),
+        to: zoneField(current.to, `${path}.to`, issues) === 'skill' ? 'skill' : reportSetupSkillDestination(path, issues),
+        ...coerceBind(current.bind),
+      };
+    }
     case 'move_card':
       if (current.target !== 'this_card') {
         invalidNode(`${path}.target`, 'Typed source-card movement requires target=this_card.', issues);
@@ -2122,6 +2327,11 @@ function sourceCardDestination(value: unknown, path: string, issues: DataFlowIss
 
 function reportSourceSkillDestination(path: string, issues: DataFlowIssue[]): 'skill' {
   invalidNode(`${path}.to`, 'Only source-card return to controller skill is supported.', issues);
+  return 'skill';
+}
+
+function reportSetupSkillDestination(path: string, issues: DataFlowIssue[]): 'skill' {
+  invalidNode(`${path}.to`, 'Only setup create_card to controller skill is supported.', issues);
   return 'skill';
 }
 

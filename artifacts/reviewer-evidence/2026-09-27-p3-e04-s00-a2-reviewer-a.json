@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-a-evidence-v1",
+  "controlEpoch": "FD-P3-2026-09-23-04",
+  "taskId": "P3-E04-S00-A2",
+  "reviewer": "Reviewer A",
+  "reviewedSha": "6671415fde3b0a7e188e680a695129b502a77ff7",
+  "verdict": "PASS",
+  "sourceOverlay": {
+    "path": "artifacts/phase3-ledger-92-semantic-route-review-overlay-v2.json",
+    "sourceCommit": "9a982060c59484a1ebe40799eebd01b996b5f02e",
+    "sha256": "7a8e96497648d1a6eebcf1974dc4f2a33b90bd7aab9aeb5b8f0aab9e741f34dd",
+    "presentInReviewedSha": true
+  },
+  "reviewerBArtifact": {
+    "path": "artifacts/reviewer-evidence/2026-09-27-setup-create-to-skill-current-main-review.json",
+    "sha256": "9b272aa8fc59a642145b261225fa78231760e28cc487917c582b4c52b0124952"
+  },
+  "acceptedCandidateSha": "34a43694f59d08a392e18e7eaa49acefd012dc61",
+  "acceptedCandidateIsAncestor": true,
+  "authorizedConsumerCount": 3,
+  "consumerCounts": {
+    "before": {
+      "newRuntime": 12,
+      "legacyResolveEffect": 49,
+      "legacyExecuteAbility": 3,
+      "notClassifiable": 28,
+      "totalAbilities": 92
+    },
+    "after": {
+      "newRuntime": 12,
+      "legacyResolveEffect": 49,
+      "legacyExecuteAbility": 3,
+      "notClassifiable": 28,
+      "totalAbilities": 92
+    }
+  },
+  "zeroCredit": true,
+  "runtimeDelta": "NONE",
+  "candidateInMain": false,
+  "gateC": "NOT_VERIFIED",
+  "promotionAuthorized": "PREPARATION_ONLY",
+  "nonClaims": [
+    "This review does not assert that the candidate is merged into main.",
+    "This review does not grant main coverage credit.",
+    "This review does not verify Gate C or the post-merge recount."
+  ]
+}

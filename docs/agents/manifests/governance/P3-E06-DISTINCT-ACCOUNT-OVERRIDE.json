@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "fd-phase3-governance-override-v1",
+  "controlEpoch": "FD-P3-2026-09-23-06",
+  "decisionDate": "2026-10-03",
+  "decisionTimezone": "Asia/Shanghai",
+  "decisionAuthority": "USER_CONFIRMED_PLANNER_RECORDED",
+  "override": {
+    "independentGithubAccountRequired": false,
+    "independentRoleArtifactsRequired": true,
+    "exactShaBindingRequired": true,
+    "immutableStageOrderingRequired": true,
+    "promotionPolicyMustPass": true,
+    "humanApprovalRequired": true
+  },
+  "acceptedRisk": {
+    "sameGithubLoginMayRepresentMultipleRoles": true,
+    "humanApprover": "github:binchen648",
+    "accountIdentityIsNotIndependenceProof": true
+  },
+  "authoritativeLineage": {
+    "mainSha": "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
+    "runtimeCandidateSha": "30be3b74258c817ede1cb857ace947505b62d8ed",
+    "governanceCarrierSha": "054726e90ce7e65a181f07ce151f614f677ce970",
+    "carrierPullRequest": 491,
+    "aSyncHeadSha": "3af8509693cdae285051c75e499bbcef3e9a8a96",
+    "candidateIsCarrierAncestor": true,
+    "candidateToCarrierRuntimeDelta": "NONE"
+  },
+  "supersededLineage": {
+    "candidateSha": "abbf1ae6419719462ff34fb3ce46f4c97f7407a4",
+    "status": "SUPERSEDED_BY_USER_APPROVED_LINEAGE_OVERRIDE"
+  },
+  "policyEvidence": {
+    "workflowRunId": 37088881513,
+    "result": "SUCCESS",
+    "output": "PHASE_3_GOVERNANCE_PASSED"
+  },
+  "currentGovernanceStatus": "WAIT_CODEX_G_OVERRIDE_ATTESTATION",
+  "targetGovernanceStatus": "GOVERNANCE_INPUT_COMPLETE",
+  "codexIAuthorized": false,
+  "mainCreditDelta": 0
+}

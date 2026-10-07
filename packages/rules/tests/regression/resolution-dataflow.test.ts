@@ -122,6 +122,8 @@ function producerFor(effectType: keyof typeof resultSchemas, binding: string): R
   switch (effectType) {
     case 'remove_advantage_position':
       return { id: `produce-${binding}`, type: 'remove_advantage_position', target: { expr: 'same_battlefield_opponents' }, bind: binding };
+    case 'create_card':
+      return { id: `produce-${binding}`, type: 'create_card', cardId: 'fixture.created.skill', to: 'skill', bind: binding };
     case 'move_all_remaining':
       return { id: `produce-${binding}`, type: 'move_all_remaining', owner: 'controller', from: 'hand', to: 'discard', bind: binding };
     case 'move_source_card':
@@ -376,9 +378,9 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
           source.zone = effectType === 'move_source_card' ? 'attack_area' : 'field';
           source.visibility = { scope: 'public' };
         }
-        if (effectType === 'move_source_card' || effectType === 'reveal_servant_package') {
+        if (effectType === 'create_card' || effectType === 'move_source_card' || effectType === 'reveal_servant_package') {
           state.abilityRuntime = {
-            pack: { cards: {} }, revision: 0, sequence: 0, randomState: 20260909,
+            pack: { cards: effectType === 'create_card' ? { 'fixture.created.skill': {} as never } : {} }, revision: 0, sequence: 0, randomState: 20260909,
             cardState: { 'synthetic-source': { active: true, faceDown: false, playedRound: 1 } },
             ongoingEffects: [], responseWindows: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
             events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [],

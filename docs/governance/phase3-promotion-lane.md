@@ -1,6 +1,6 @@
 # Phase 3 Promotion Lane Governance
 
-Phase 3 candidate work may be promoted to `main` only through a Promotion PR that carries structured evidence, repeatable CI, and independent review. This lane is governance infrastructure only; it does not change game rules, runtime behavior, card data, migration counts, or existing acceptance conclusions.
+Phase 3 candidate work may be promoted to `main` only through a Promotion PR that carries structured evidence, repeatable CI, and substantive review. This lane is governance infrastructure only; it does not change game rules, runtime behavior, card data, migration counts, or existing acceptance conclusions.
 
 ## GitHub Checks
 
@@ -16,7 +16,9 @@ Phase 3 PRs must include a fenced `json phase3-task-manifest` block in the PR bo
 
 Roles are `A`, `B`, `R`, `S`, `I`, and `G`. Promotion PRs targeting `main` must use role `I`; governance-only PRs use role `G`; stacked Phase 3 implementation/review/migration PRs use role `A`, `B`, `R`, or `S` with `prType: "stacked"`. A Promotion review conclusion must be an explicit accepted Phase 3 conclusion. The R review SHA must resolve to a fetched commit and be distinct from the base, candidate, synchronization, and integration commits. The reviewed candidate must precede A synchronization, and A synchronization must precede the Promotion head.
 
-Promotion review evidence is a machine-readable JSON attestation stored below `docs/reviews/phase3/` in the tree identified by `review.sha`. The manifest binds that file by SHA-256 and repeats its `taskId`, `reviewer` (`github:<login>`), GitHub review-thread URL, candidate SHA, and conclusion. The gate reads the file from the review commit and requires every field to match. This makes evidence tampering or accidental reuse detectable; GitHub's independent-approval rule remains the authority that proves the reviewer account differs from the PR author.
+Promotion review evidence is a machine-readable JSON attestation stored below `docs/reviews/phase3/` in the tree identified by `review.sha`. The manifest binds that file by SHA-256 and repeats its `taskId`, `reviewer` (`github:<login>`), GitHub review-thread URL, candidate SHA, and conclusion. The gate reads the file from the review commit and requires every field to match. This makes evidence tampering or accidental reuse detectable.
+
+Review independence is enforced through separate review work, exact-HEAD or exact-candidate binding, immutable evidence, and a recorded verdict. It does not require a distinct GitHub account. For a pull request authored by `github:binchen648`, a completed substantive review with a PASS attestation may satisfy the human-approval stage without an additional GitHub `APPROVED` review. The attestation must identify the reviewed SHA, verification performed, unresolved blockers, and non-claims. A failed, blocked, stale, or unbound review never grants merge authority.
 
 The attestation shape is:
 
@@ -34,3 +36,5 @@ The attestation shape is:
 ## External Repository Settings
 
 Branch protection and rulesets are repository settings, not source files. Required checks should be configured only after the checks have run on `main` and GitHub has produced stable status contexts. Required status checks must use strict mode (`Require branches to be up to date before merging`) so a changed upstream HEAD forces a new merge-base validation.
+
+The repository does not require a distinct-account approving review for PRs authored by `github:binchen648`. Branch protection therefore keeps the PR workflow and required status checks while setting the required approving-review count to zero. This exception does not waive review: the applicable review artifact or GitHub attestation comment must be complete before merge, and all required checks must pass on the final HEAD.

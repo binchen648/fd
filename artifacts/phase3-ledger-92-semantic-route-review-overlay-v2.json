@@ -1,0 +1,197 @@
+{
+  "schemaVersion": "fd-phase3-ledger-92-review-overlay-v2",
+  "task": "P3-A-LEDGER-92-R-VERDICT-SYNC",
+  "controlEpoch": "FD-P3-2026-09-23-03",
+  "baseCommit": "4b52b3166ed2ba0efaa4569ee95c6513fd26ab2f",
+  "dependencyCommit": "d93a3b1ecd8d316015c4872b3a0ac5ae8d457a44",
+  "currentMainCommit": "0e943a94e8bdab6335e34818278ecc90760015f0",
+  "currentMainAlignment": "WAITING_CURRENT_MAIN_ALIGNMENT",
+  "sourceOverlay": "artifacts/phase3-ledger-92-semantic-route-review-overlay.json",
+  "sourceOverlaySha256": "6b527918be2a50245fa8529917bbaca7b18284bf39d00a83b65c8ef550ab11fa",
+  "candidateCommit": "6976617004b99c31ab3dd1c362aa0fd1cbd26745",
+  "reviewer": {
+    "verdict": "PASS",
+    "artifact": "artifacts/reviewer-evidence/2026-09-25-p3-reviewer-b-create-to-skill-pass-attestation.md",
+    "artifactSha256": "f54e3fd5d43c0e1f7f549df0222a51adadfeef7c785a8ef29b0b8b5cf34c8654"
+  },
+  "changedAbilityKeys": [
+    "master.maiya/master.maiya.skill.military/military.has-support-shot",
+    "master.olga-marie/master.olga-marie.skill.astronomical-science/astronomical-science.has-chaldeas",
+    "master.shinji/master.shinji.skill.useless-person/useless-person.setup"
+  ],
+  "effectiveCountsBefore": {
+    "NEW_RUNTIME_SEMANTIC_ROUTED": 9,
+    "LEGACY_RESOLVE_EFFECT": 52,
+    "LEGACY_EXECUTE_ABILITY": 3,
+    "NOT_CLASSIFIABLE": 28,
+    "totalAbilities": 92
+  },
+  "effectiveCountsAfter": {
+    "NEW_RUNTIME_SEMANTIC_ROUTED": 12,
+    "LEGACY_RESOLVE_EFFECT": 49,
+    "LEGACY_EXECUTE_ABILITY": 3,
+    "NOT_CLASSIFIABLE": 28,
+    "totalAbilities": 92
+  },
+  "formalMainCoverage": {
+    "denominatorBefore": 92,
+    "denominatorAfter": 92,
+    "denominatorDelta": 0,
+    "promotedOnMain": false,
+    "mainCommit": "0e943a94e8bdab6335e34818278ecc90760015f0",
+    "candidateInCurrentMain": false,
+    "alignmentStatus": "WAITING_CURRENT_MAIN_ALIGNMENT",
+    "coverageDelta": 0
+  },
+  "abilities": [
+    {
+      "abilityKey": "master.gatou/master.gatou.command-spell/command-spell.gain-mana",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "PASS",
+      "rVerdict": "ACCEPTED",
+      "nextOwner": "NONE"
+    },
+    {
+      "abilityKey": "master.irisviel/master.irisviel.skill.conversion-magic/conversion-magic.preparation",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "PASS",
+      "rVerdict": "ACCEPTED",
+      "nextOwner": "NONE"
+    },
+    {
+      "abilityKey": "master.kayneth/master.kayneth.deck.volumen-hydrargyrum/volumen.extra-play",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "PASS",
+      "rVerdict": "ACCEPTED",
+      "nextOwner": "NONE"
+    },
+    {
+      "abilityKey": "master.kiritsugu/master.kiritsugu.skill.time-alter/time-alter.action",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "PASS",
+      "rVerdict": "ACCEPTED",
+      "nextOwner": "NONE"
+    },
+    {
+      "abilityKey": "master.maiya/master.maiya.skill.military/military.attach-support-shot",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "REPAIR",
+      "rVerdict": "EVIDENCE_REPAIR_REQUIRED",
+      "nextOwner": "EVIDENCE_REPAIR"
+    },
+    {
+      "abilityKey": "master.maiya/master.maiya.skill.military/military.has-support-shot",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "NOT_VERIFIED",
+      "rVerdict": "REVIEWER_ACCEPTED_CANDIDATE",
+      "nextOwner": "R",
+      "abilityState": "REVIEWER_ACCEPTED_CANDIDATE",
+      "mainStatus": "WAITING_CURRENT_MAIN_ALIGNMENT",
+      "legacyFallback": "CLOSED",
+      "formalMainCredit": "NOT_COUNTED_ON_MAIN",
+      "exactImplementationLineage": {
+        "candidateCommit": "6976617004b99c31ab3dd1c362aa0fd1cbd26745",
+        "candidateParent": "d93a3b1ecd8d316015c4872b3a0ac5ae8d457a44",
+        "reviewerArtifact": "artifacts/reviewer-evidence/2026-09-25-p3-reviewer-b-create-to-skill-pass-attestation.md",
+        "reviewerArtifactSha256": "f54e3fd5d43c0e1f7f549df0222a51adadfeef7c785a8ef29b0b8b5cf34c8654",
+        "semanticContract": "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL_CURRENT_LINEAGE_REPAIR"
+      }
+    },
+    {
+      "abilityKey": "master.olga-marie/master.olga-marie.command-spell/command-spell.gain-mana",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "NOT_VERIFIED",
+      "rVerdict": "AB_ACCEPTED",
+      "nextOwner": "GATE_C_EVIDENCE"
+    },
+    {
+      "abilityKey": "master.olga-marie/master.olga-marie.skill.astronomical-science/astronomical-science.first-loss",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "PASS",
+      "rVerdict": "ACCEPTED",
+      "nextOwner": "NONE"
+    },
+    {
+      "abilityKey": "master.olga-marie/master.olga-marie.skill.astronomical-science/astronomical-science.has-chaldeas",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "NOT_VERIFIED",
+      "rVerdict": "REVIEWER_ACCEPTED_CANDIDATE",
+      "nextOwner": "R",
+      "abilityState": "REVIEWER_ACCEPTED_CANDIDATE",
+      "mainStatus": "WAITING_CURRENT_MAIN_ALIGNMENT",
+      "legacyFallback": "CLOSED",
+      "formalMainCredit": "NOT_COUNTED_ON_MAIN",
+      "exactImplementationLineage": {
+        "candidateCommit": "6976617004b99c31ab3dd1c362aa0fd1cbd26745",
+        "candidateParent": "d93a3b1ecd8d316015c4872b3a0ac5ae8d457a44",
+        "reviewerArtifact": "artifacts/reviewer-evidence/2026-09-25-p3-reviewer-b-create-to-skill-pass-attestation.md",
+        "reviewerArtifactSha256": "f54e3fd5d43c0e1f7f549df0222a51adadfeef7c785a8ef29b0b8b5cf34c8654",
+        "semanticContract": "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL_CURRENT_LINEAGE_REPAIR"
+      }
+    },
+    {
+      "abilityKey": "master.shinji/master.shinji.skill.useless-person/useless-person.setup",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "NOT_VERIFIED",
+      "rVerdict": "REVIEWER_ACCEPTED_CANDIDATE",
+      "nextOwner": "R",
+      "abilityState": "REVIEWER_ACCEPTED_CANDIDATE",
+      "mainStatus": "WAITING_CURRENT_MAIN_ALIGNMENT",
+      "legacyFallback": "CLOSED",
+      "formalMainCredit": "NOT_COUNTED_ON_MAIN",
+      "exactImplementationLineage": {
+        "candidateCommit": "6976617004b99c31ab3dd1c362aa0fd1cbd26745",
+        "candidateParent": "d93a3b1ecd8d316015c4872b3a0ac5ae8d457a44",
+        "reviewerArtifact": "artifacts/reviewer-evidence/2026-09-25-p3-reviewer-b-create-to-skill-pass-attestation.md",
+        "reviewerArtifactSha256": "f54e3fd5d43c0e1f7f549df0222a51adadfeef7c785a8ef29b0b8b5cf34c8654",
+        "semanticContract": "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL_CURRENT_LINEAGE_REPAIR"
+      }
+    },
+    {
+      "abilityKey": "servant.artoria-alt/servant.artoria-alt.skill.sc-artoria-alt-2/sc-artoria-alt-2.angra-mainyu-embrace",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "PASS",
+      "rVerdict": "ACCEPTED",
+      "nextOwner": "NONE"
+    },
+    {
+      "abilityKey": "servant.tomoe/servant.tomoe.skill.sc-tomoe-1/sc-tomoe-1.independent-action",
+      "effectiveRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "gateA": "PASS",
+      "gateB": "PASS",
+      "gateC": "NOT_VERIFIED",
+      "rVerdict": "AB_ACCEPTED",
+      "nextOwner": "GATE_C_EVIDENCE"
+    }
+  ],
+  "unchangedAbilityCount": 9,
+  "legacyFallbackClosedForChangedRows": true,
+  "nonClaims": [
+    "This overlay does not rewrite the accepted 92-ability source ledger.",
+    "Reviewer-accepted candidate is not in current main and remains WAITING_CURRENT_MAIN_ALIGNMENT.",
+    "Gate C remains NOT_VERIFIED for the three setup rows because the PASS attestation has no browser evidence.",
+    "No unrelated ability receives state, route, or coverage credit from this synchronization."
+  ]
+}

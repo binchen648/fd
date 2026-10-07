@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "controlEpoch": "FD-P3-2026-09-23-04",
+  "taskId": "P3-E04-S00-A2",
+  "contractTaskId": "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL_CURRENT_LINEAGE_REPAIR",
+  "reviewer": "Reviewer B",
+  "reviewerIdentity": "Codex Reviewer B",
+  "reviewMode": "read_only_independent_review",
+  "sourceMainSha": "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
+  "candidateParentSha": "5edd7b6e781e2fc81ca18112e900528d8109ea54",
+  "candidateSha": "30be3b74258c817ede1cb857ace947505b62d8ed",
+  "candidateInCurrentMain": false,
+  "reviewScope": {
+    "mechanicFamily": "SETUP_CARD_CREATION_MINIMAL",
+    "contract": "CREATE_TO_SKILL_CURRENT_LINEAGE_REPAIR",
+    "authorizedAbilities": [
+      "military.has-support-shot",
+      "astronomical-science.has-chaldeas",
+      "useless-person.setup"
+    ],
+    "outOfScope": [
+      "Gate A/B/C promotion",
+      "Phase 3 completion",
+      "Full Roster completion",
+      "Release Gate completion",
+      "main promotion",
+      "GitHub-bound Governance Owner attestation",
+      "Artoria Caster post-battle create_card(to=deck)",
+      "additional setup create consumers beyond the three authorized abilities"
+    ]
+  },
+  "reviewChecks": {
+    "genericRoute": "PASS",
+    "identityFree": "PASS",
+    "typedCreateCardToSkill": "PASS",
+    "sourceAuthority": "PASS",
+    "targetDefinitionAuthority": "PASS",
+    "globalCardinality": "PASS",
+    "failClosed": "PASS",
+    "atomicFailure": "PASS",
+    "idempotency": "PASS",
+    "legacyFallback": "CLOSED",
+    "scopeExpansion": "NOT_FOUND"
+  },
+  "independentNegativeEvidence": [
+    {
+      "case": "coordinated existing-card owner/controller/provenance corruption",
+      "result": "duplicate_created_card; exactly one target remains; full state unchanged"
+    },
+    {
+      "case": "non-master-skill target definition",
+      "result": "invalid_setup_source; no skill-zone card created; full state unchanged"
+    },
+    {
+      "case": "setup source moved from skill to hand",
+      "result": "invalid_setup_source; target not created; full state unchanged"
+    }
+  ],
+  "automatedNegativeEvidence": [
+    "duplicate target definition instances",
+    "wrong or coordinated target ownership",
+    "public, active, face-down, future-round, or missing target card state",
+    "wrong source owner/controller/zone/definition owner or missing source card state",
+    "invalid target card type, owner, mode, and initial zone",
+    "unknown target definition",
+    "create_card in creates or nested branch",
+    "corrupted routed graph without legacy fallback"
+  ],
+  "verification": [
+    {
+      "command": "npx vitest run packages/rules/tests/regression/setup-create-to-skill-current-lineage.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/complex-skills-regression.test.ts packages/rules/tests/regression/fb2-game-start-skill-provisioning.test.ts",
+      "result": "PASS",
+      "summary": "5 files / 184 tests"
+    },
+    {
+      "command": "npm run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "npm run build --workspace @fd/client",
+      "result": "PASS"
+    },
+    {
+      "command": "npm run test:ci -- --testTimeout=15000",
+      "result": "PASS",
+      "summary": "181 files / 1405 tests"
+    },
+    {
+      "command": "git diff --check 4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27..30be3b74258c817ede1cb857ace947505b62d8ed",
+      "result": "PASS"
+    }
+  ],
+  "consumerEnumeration": {
+    "result": "PASS",
+    "count": 3,
+    "consumers": [
+      "master.maiya.skill.military::military.has-support-shot",
+      "master.olga-marie.skill.astronomical-science::astronomical-science.has-chaldeas",
+      "master.shinji.skill.useless-person::useless-person.setup"
+    ]
+  },
+  "knownExternalBlockers": [
+    "GitHub-bound Governance Owner attestation is not supplied by this artifact",
+    "Codex A must rebind evidence to this exact candidate and review artifact before promotion"
+  ],
+  "explicitNonClaims": [
+    "This PASS does not grant Gate A/B/C promotion.",
+    "This PASS does not mean Phase 3 is complete.",
+    "This PASS does not mean Full Roster is complete.",
+    "This PASS does not mean Release Gate is complete.",
+    "This PASS does not mean the candidate has entered main."
+  ],
+  "finalVerdict": "PASS"
+}

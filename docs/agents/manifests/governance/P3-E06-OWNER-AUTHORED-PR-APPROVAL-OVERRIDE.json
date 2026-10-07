@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "fd-owner-authored-pr-approval-override-v1",
+  "controlEpoch": "FD-P3-2026-09-23-06",
+  "taskId": "P3-E06-I-RP00-PROMOTION",
+  "effectiveDate": "2026-10-06",
+  "repository": "binchen648/fd",
+  "approvedBy": "github:binchen648",
+  "scope": {
+    "pullRequestAuthor": "github:binchen648",
+    "appliesToAllPullRequestsByAuthor": true,
+    "distinctGitHubApproverRequired": false,
+    "additionalGitHubAccountReviewRequired": false
+  },
+  "reviewControls": {
+    "substantiveReviewRequired": true,
+    "recordedVerdictRequired": true,
+    "exactShaBindingRequired": true,
+    "immutableEvidenceRequiredForGovernedPromotion": true,
+    "requiredChecksMustPassOnFinalHead": true,
+    "failedBlockedOrStaleReviewGrantsApproval": false
+  },
+  "githubProtectionIntent": {
+    "pullRequestWorkflowRetained": true,
+    "strictRequiredStatusChecksRetained": true,
+    "requiredApprovingReviewCount": 0,
+    "requireLastPushApproval": false,
+    "requiredChecks": [
+      "build",
+      "test",
+      "Phase 3 Promotion Lane / policy"
+    ]
+  },
+  "currentPromotion": {
+    "pullRequest": 536,
+    "reviewedPromotionHead": "ca8a0624cad8e89ca26360a6e1b69f8435554c78",
+    "reviewResult": "PASS_WITH_RECORDED_EXTERNAL_BLOCKER",
+    "sourceAssetBlockingIssueCount": 93,
+    "sourceAssetBlockingIssueCode": "MISSING_IMAGE",
+    "gateCVerified": false,
+    "promotedOnMain": false,
+    "mainCoverageCreditDelta": 0,
+    "mainDenominatorDelta": 0,
+    "migrationCreditDelta": 0
+  },
+  "supersedes": [
+    "distinct-account approval requirement for github:binchen648-authored PRs",
+    "required approving-review count of 1 for the main branch"
+  ],
+  "doesNotSupersede": [
+    "substantive review",
+    "exact-SHA evidence binding",
+    "required status checks",
+    "runtime and authoring scope controls",
+    "post-merge evidence synchronization",
+    "Gate C and release-readiness requirements"
+  ],
+  "status": "USER_APPROVED_OWNER_AUTHORED_PR_REVIEW_OVERRIDE"
+}
