@@ -1,0 +1,153 @@
+# P3-B Fou Owner Readiness Complete Gap Set
+
+Date: 2026-10-08
+Task: `P3-B-FOU-OWNER-READINESS-CAPABILITY`
+Branch: `codex/b-p3-fou-owner-readiness-complete-gap-set`
+Exact Base: `17eebe767897e73c17eb3749c8986797d06b2097`
+Locked Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
+Helper evidence: Epoch 6 / `helper-112e95c077f815ee099968484eaeba3f-6`
+Classification: zero-credit complete-owner readiness for `master.fou`
+
+## Frozen owner scope
+
+Exactly two identities:
+
+- `master.fou.skill.s1` — 兽之印记
+- `master.fou.skill.ascension` — 苍天之力
+
+This readiness Candidate intentionally creates no Fou consumer authoring and no pack registration:
+- `data/authoring/masters/master.fou.json`: ABSENT
+- canonical pack registration count: `0`
+- migration credit: `+0`
+- strict accounting remains `259/944`, remaining `685`.
+
+## Complete readiness closure
+
+### G1 — authoritative Command-Seal spend + returned physical skill provenance
+
+A shared identity-free ledger now records a real Command-Seal decrease in the authoritative runtime, including existing typed resolution paths, direct card-play seal payment, linked-role seal payment, definition-side-deck one-shot seal payment, and compatible extended-effect paths.
+
+Physical skill cards returning to the controller skill zone now record the exact current round and a source event. Existing canonical return/close paths call the same generic recorder rather than introducing owner-specific routing.
+
+The compatibility boundary remains non-invasive: low-level rule/data-flow fixtures without an initialized ability runtime still execute their original resource adjustment; provenance recording is simply unavailable in such non-runtime fixtures.
+
+### G2 — permanent physical returned-skill tuning
+
+New identity-free capability `permanent_returned_skill_tuning` accepts one exact whole-ability shape:
+- forced round-end trigger;
+- requires a real same-round Command-Seal spend;
+- requires one physical controller-owned skill that returned to the skill zone this round;
+- applies game-duration `+1 Power`;
+- applies game-duration `-1 effective play cost`;
+- effective cost cannot fall below `ceil(printed cost * 0.5)`;
+- marks stack lawfully on later qualifying rounds;
+- paired Power/cost provenance is restore-validated and forged/widened pairs fail closed.
+
+### G3/G4/G5 — imminent-elimination rescue, VP exchange, shared victory
+
+New identity-free capability `once_per_game_elimination_rescue_shared_victory` provides:
+- eligibility only in locked Reference rounds `8/9/10`;
+- exact pre-scoring elimination projection from the completed battle ledger;
+- optional owner-only target choice among exact imminent eliminations;
+- one accepted rescue record per physical source/ability per game;
+- exact selected player remains active through threshold scoring;
+- self rescue creates neither VP exchange nor shared-victory link;
+- opponent rescue swaps controller/target VP exactly once after scoring settles;
+- opponent rescue creates a persistent bidirectional shared-victory link;
+- final ranking expands rank-1 through valid persistent links;
+- stale, duplicate, forged, widened or corrupt rescue/link state fails restore validation.
+
+The exact completed battle ledger is frozen while an interactive rescue decision is pending, preventing battle re-resolution when MatchSession resumes.
+
+A fast path skips all rescue scoring-preview work when the current runtime has no available accepted rescue provider. This preserves the existing production MatchSession cost before Fou consumer migration.
+
+## Identity-free / consumer boundary
+
+Production authority is mechanically covered by regression against:
+- `master.fou`
+- 芙芙
+- 兽之印记
+- 苍天之力
+- `core.fou-`
+
+No such owner/name branch is permitted in the accepted runtime path.
+
+The canonical Fou consumer remains absent at this readiness stage; this Candidate is capability-only and zero-credit.
+
+## Verification
+
+Focused Fou readiness:
+- `p3-fou-owner-readiness-complete-gap-set.test.ts`: `6/6 PASS`
+
+Affected shared validation, distinct files:
+- core scoring: `6/6 PASS`
+- fixed controller Command-Seal component: `4/4 PASS`
+- Ruler Seal subsystem: `13/13 PASS`
+- Spartacus seal-power readiness: `20/20 PASS`
+- authoring interpreter: `38/38 PASS`
+- Fou readiness: `6/6 PASS`
+- subtotal: `87/87 PASS`
+- MatchSession: `34/34 PASS` under its declared/default timeouts
+- total affected validation: `121/121 PASS` across 7 files.
+
+Other gates:
+- `npm run typecheck`: PASS
+- `npm run content:validate`: PASS — `22 masters / 19 servants / 20 events / 0 blocking issues`
+- `npm run verify:generated-content`: PASS
+  - content `a91b4903929ac9c06febcaed8b4998217b29f7b2ad58b74a6e6f1e6e0d410fc4`
+  - fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`
+  - evidence `0c176fcbcdbf5f46207adda92670459939891afd530416524973f64e5e8af5a0`
+- external-output Phase-3 coverage:
+  - `archives=126`, `cards=287`, `abilities=503`
+  - `compiledCards=223`, `compiledCharacters=41`, `blockingIssues=0`
+  - `newRuntimeSemanticRouted=22`, `legacyExecuteAbility=3`, `legacyResolveEffect=164`, `dualRuntime=0`, `pilotAllowlist=0`, `notClassifiable=314`, `taxonomyWarnings=326`
+- external-output automation audit:
+  - `legacyResolveEffect=164`, `legacyExecuteAbility=3`, `notClassifiable=314`, `promotionFindings=20`
+- `git diff --check`: PASS
+- Fou authoring remains absent and pack registration count remains exactly zero.
+
+Repository-wide source-asset validation was attempted once at final closeout but the AgentDock tool call was blocked by the tool safety layer before execution. No result is fabricated from that blocked call. This readiness changes no authoring/generated/source-image declarations, so it introduces no new source-asset path; existing repository source-asset debt remains outside this Candidate's claimed green gates.
+
+## Reviewer revision — PR #547 first Candidate
+
+Prior Candidate `14878d98c0e86f5c58a79b96498bfaa1488ffc15` received `IMPLEMENTATION_NEEDS_REVISION` on ReviewJobKey `pr547:14878d98c0e86f5c58a79b96498bfaa1488ffc15`.
+
+Canonical same-attempt evidence relay: `https://github.com/binchen648/fd/pull/547#issuecomment-6043161307`.
+
+All three blocking findings are closed together in the successor:
+
+- stale rescue is now bound to the exact authoritative pre-scoring projection. The pending interaction stores an exact projection fingerprint covering the current battle ledger, player status/military inputs, unsettled rescue authority, and projected target set. Restore and commit recompute the projection; a target that is no longer threatened fails closed, and even a changed ledger that preserves the same target set fails the fingerprint check;
+- the focused Fou suite adds the independent stale/no-longer-threatened repro plus changed-ledger/same-threat negative coverage, bringing Fou readiness to `6/6 PASS`;
+- MatchSession performance no longer pays the new generic capability cost when the loaded pack has no such provider. Pack-level capability-presence caches, gateway gating, no-provider cost/return/seal fast paths, and no-record rescue scoring exits keep the existing three-round smoke under its original 5000 ms test timeout. The exact test passed three consecutive isolated default-timeout runs at approximately `4.83-4.85 s`, then passed inside the full MatchSession file at `4.411 s`; the full MatchSession result is `34/34 PASS` with no timeout override;
+- the full Reviewer-affected set is now `121/121 PASS` across the same 7 files: Fou `6/6`, scoring `6/6`, fixed Command-Seal `4/4`, Ruler Seal `13/13`, Spartacus seal power `20/20`, authoring interpreter `38/38`, MatchSession `34/34`;
+- PR governance metadata for the successor uses the actual dependency edge `dependsOnPrs: [546]`, because PR #547 starts from the accepted Fiore owner-migration A-sync lineage immediately after PR #546.
+
+Successor pre-R gates remain green: typecheck, content validation, generated determinism, external-output coverage/audit, and `git diff --check`; there is still no `data/authoring/**`, pack, or generated consumer delta and readiness remains zero-credit.
+
+## Reviewer revision — PR #547 second Candidate
+
+Second Candidate `f4acbc8dc83f78d12da11b4efbbeeda9475146d0` received `IMPLEMENTATION_NEEDS_REVISION` on ReviewJobKey `pr547:f4acbc8dc83f78d12da11b4efbbeeda9475146d0`.
+
+Canonical same-attempt evidence relay: `https://github.com/binchen648/fd/pull/547#issuecomment-6044206943`.
+
+The independent review confirmed the stale-rescue closure and Phase-3 governance closure. The only remaining blocker was cold/default-timeout instability in the existing three-round MatchSession smoke: an isolated cold run reached `5321 ms` under the unchanged `5000 ms` Vitest timeout.
+
+The successor closes that remaining performance blocker without increasing or overriding the test timeout:
+
+- profiling outside all Git workspaces identified repeated replay checkpoint hashing/serialization as the dominant cold-path cost; before the closure, one three-round auto-run created `50` full replay snapshots for `215` logs and `3` battles;
+- portable SHA-256/HMAC now uses Node's native `node:crypto` synchronously when `process.getBuiltinModule` is available, while preserving the existing pure-JS portable fallback for browser/non-Node environments; `portable-sha256.test.ts` passes `7/7`, and a forced-fallback check reproduced the standard SHA-256 and HMAC-SHA-256 vectors exactly;
+- `runFullMatch` now compacts only its fully automated replay capture: normal interactive dispatch checkpoint behavior is unchanged, while auto-run retains complete `game start`, round-start/end, and `match end` snapshots and force-adds a checkpoint on any early pause/error exit. The three-round seed keeps all `215` logs and `3` battles while reducing full replay snapshots from `50` to `8`;
+- the same-session loop fingerprint no longer sorts the already-ordered physical-card array, removing an unnecessary `O(n log n)` operation without weakening loop detection;
+- after the final closure, the exact isolated smoke passed at approximately `2.769 s`; the complete `match-session.test.ts` file passed `34/34` three consecutive times with the target smoke at approximately `2.666 s`, `2.307 s`, and `2.452 s`, all under the unchanged/default `5000 ms` timeout;
+- replay/auto-run regressions remain green: `match-session-regressions.test.ts` `11/11 PASS`, the focused three-round complex-skills MatchSession regression PASS, and replay checkpoint restore PASS;
+- Reviewer-affected validation remains `121/121 PASS` across the same 7 files; the SHA implementation has an additional `7/7 PASS`;
+- typecheck, content validation, generated determinism, external-output Phase-3 coverage/audit, and `git diff --check` PASS. There is still no authoring/pack/generated consumer delta.
+
+Readiness remains zero-credit. Strict accounting remains `259/944`, remaining `685`, pending one fresh exact successor review.
+
+## Review gate
+
+This readiness transaction is implementation-complete but permanently zero-credit.
+Freeze one Candidate from exact Base `17eebe767897e73c17eb3749c8986797d06b2097`, push one PR, and request one fresh independent exact Base/Candidate `IMPLEMENTATION_ACCEPTED_CANDIDATE` review.
+
+Only after accepted readiness evidence plus FORMAL A-sync/rescan may the same owner advance to `P3-S-OWNER-FOU-COMPLETE-MIGRATION` for the exact two frozen consumer identities.

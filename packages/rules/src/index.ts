@@ -53,6 +53,8 @@ export * from './ability/conditional-additional-play-capability';
 export * from './ability/round-location-supply-capability';
 export * from './ability/unclaimed-terrain-upkeep-capability';
 export * from './ability/round-skill-profile-capability';
+export * from './ability/permanent-skill-tuning-capability';
+export * from './ability/elimination-rescue-link-capability';
 export * from './ability/report';
 export * from './ability/resolution-dataflow';
 

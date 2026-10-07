@@ -1,5 +1,6 @@
 import type { GameState } from '../schema/game';
 import type { AuthoringAbility, EffectContext, PendingDecision, PlayerId, RuleNode, SafeEvent } from './types';
+import { recordSkillReturnedToSkillZone } from './permanent-skill-tuning-capability';
 
 export const PROVISION_DEFINITION_SKILL_EFFECT = 'provision_definition_skill';
 export const REMOVE_DEFINITION_SKILL_ON_FIRST_MANA_CROSSING_EFFECT = 'remove_definition_skill_on_first_mana_crossing';
@@ -118,7 +119,12 @@ function moveOwnedDefinitionToSkill(state: GameState, controllerId: PlayerId, so
       visibility: { scope: 'owner_only', ownerPlayerId: controllerId }, generatedBy: sourceCardId };
     state.cards.push(physical);
   } else {
+    const fromZone = physical.zone;
     physical.controllerPlayerId = controllerId; physical.zone = 'skill'; physical.visibility = { scope: 'owner_only', ownerPlayerId: controllerId };
+    const prior = runtime(state).cardState[physical.instanceId];
+    runtime(state).cardState[physical.instanceId] = prior ? { ...prior, active: false, faceDown: false } : { active: false, faceDown: false, playedRound: 0 };
+    recordSkillReturnedToSkillZone(state, physical.instanceId, fromZone);
+    return true;
   }
   const prior = runtime(state).cardState[physical.instanceId];
   runtime(state).cardState[physical.instanceId] = prior ? { ...prior, active: false, faceDown: false } : { active: false, faceDown: false, playedRound: 0 };

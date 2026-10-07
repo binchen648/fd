@@ -35,6 +35,31 @@ export interface CardInstance {
   zone: string;
   visibility: VisibilityState;
   generatedBy?: string;
+  /** Source-provenanced physical-card Power modifiers. Game-duration entries survive round cleanup. */
+  powerModifiers?: Array<{
+    id: string;
+    sourceId: string;
+    sourceAbilityId?: string;
+    controllerId?: string;
+    kind: 'add' | 'set' | 'reverse_situation_event';
+    value?: number;
+    duration?: 'round' | 'game' | 'while_active';
+    lifecycle?: 'until_leaves_active_area' | 'game';
+    round?: number;
+    provenanceKind?: string;
+  }>;
+  /** Source-provenanced physical-card play-cost modifiers. */
+  costModifiers?: Array<{
+    id: string;
+    sourceId: string;
+    sourceAbilityId?: string;
+    controllerId?: string;
+    kind: 'add';
+    value: number;
+    duration: 'round' | 'game';
+    minPrintedFraction?: number;
+    provenanceKind?: string;
+  }>;
   /** Identity-free membership in one server-owned isolated definition side deck. */
   definitionSideDeckKey?: string;
 }

@@ -346,6 +346,12 @@ export interface DefinitionSideDeckInteractionMetadata {
   selectedCardInstanceId?: string; paymentCount?: number; candidateIds: string[];
   constraints: { kind: 'target'; targetKind: 'card' | 'choice'; min: number; max: number; distinct: true };
 }
+export interface EliminationRescueInteractionMetadata {
+  kind: 'elimination_rescue_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; round: number; candidatePlayerIds: PlayerId[]; candidateKey: string; projectionFingerprint: string;
+  constraints: { kind: 'target'; targetKind: 'player'; min: 0; max: 1; distinct: true };
+}
 export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata |
   OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata | DeductionRecordChoiceInteractionMetadata |
   PostDrawHandShuffleInteractionMetadata | DiscardShuffleSourceXInteractionMetadata | RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata |
@@ -356,7 +362,8 @@ export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetad
   BattleDrawnCardOptionalPlayInteractionMetadata | BattlefieldAttackOfferChoiceInteractionMetadata |
   DeploymentTerrainVpChoiceInteractionMetadata | OneShotAbilityReuseChoiceInteractionMetadata |
   GlobalDefinitionRevealRewardInteractionMetadata | DiscardDefinitionPlayAllInteractionMetadata | MultiPresenceLocationContextInteractionMetadata |
-  BoundOpponentRoundRuleInteractionMetadata | WitherPainStakeInteractionMetadata | DefinitionSideDeckInteractionMetadata;
+  BoundOpponentRoundRuleInteractionMetadata | WitherPainStakeInteractionMetadata | DefinitionSideDeckInteractionMetadata |
+  EliminationRescueInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -451,6 +458,8 @@ export interface CardRuntimeState {
   roundPowerBonus?: { round: number; amount: number; sourceAbilityId: string };
   /** Source-owned mana-overflow close request for the canonical battle terminal. */
   manaOverflowCloseAfterBattle?: { round: number; sourceAbilityId: string };
+  /** Latest authoritative round in which this existing physical skill returned to its owner's skill zone. */
+  returnedToSkillZoneRound?: number;
   /** Physical-source binding created from an authenticated discard->deck selection. */
   sourceBoundX?: { value: number; controllerId: PlayerId; sourceAbilityId: string };
   /** Round whose battle participation upkeep for sourceBoundX has already settled. */
@@ -724,6 +733,19 @@ export interface AbilityRuntime {
   normalCommandSealUseHistory?: NormalCommandSealUseRecord[];
   /** Authoritative round of the most recent Ruler Seal ability/replacement use by issuer. Paying a seal as a cost does not write this fact. */
   rulerCommandSealUseRoundByPlayer?: Record<PlayerId, number>;
+  /** Authoritative round of the most recent actual Command Seal spend by player, including costs and replacement payments. */
+  commandSealSpentRoundByPlayer?: Record<PlayerId, number>;
+  /** Per-game accepted elimination rescues. One record means the source's once-per-game rescue was consumed. */
+  eliminationRescueRecords?: Array<{
+    controllerId: PlayerId; targetPlayerId: PlayerId; sourceCardId: string; abilityId: string; round: number;
+    opponentTarget: boolean; scoringSettled: boolean; vpSwapped: boolean;
+  }>;
+  /** Persistent bidirectional victory-sharing links created by accepted rescue effects. */
+  sharedVictoryLinks?: Array<{
+    leftPlayerId: PlayerId; rightPlayerId: PlayerId; sourceCardId: string; abilityId: string; createdRound: number;
+  }>;
+  /** Current battle round whose resolved battle ledger is frozen while elimination rescue is decided. */
+  eliminationRescueBattleResolutionRound?: number;
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];
   events: SafeEvent[]; calculations: { controllerId: PlayerId; lines: CalculationLine[] }[];
   preventEffects: boolean; manaCaps: Record<PlayerId, number>; manaGainBlocked: PlayerId[];

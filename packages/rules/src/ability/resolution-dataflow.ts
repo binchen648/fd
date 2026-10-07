@@ -7,6 +7,7 @@ import { grantMana, spendMana } from '../core/rule-overrides';
 import { servantRevealSuppressedByTemporaryConcealment } from './owner-self-mechanics';
 import { isNormalCardDrawSuppressed } from './timed-resource-suppression';
 import { bloodlustVpGainAdjustment } from './bloodlust-cycle-capability';
+import { markCommandSealSpent, recordSkillReturnedToSkillZone } from './permanent-skill-tuning-capability';
 
 export type EffectExecutionStatus = 'applied' | 'no_op';
 export type BindingFieldType = 'number' | 'player_ids' | 'boolean' | 'status';
@@ -1503,6 +1504,7 @@ function closeSourceCard(
   const fromZone = source.zone;
   source.zone = 'skill';
   source.visibility = { scope: 'owner_only', ownerPlayerId: source.ownerPlayerId };
+  recordSkillReturnedToSkillZone(transaction.workingState, source.instanceId, fromZone);
   const eventId = `${transaction.context.resolutionId}.${effect.id}.source_card_closed`;
   transaction.emittedEvents.push({
     type: 'source_card_closed',
@@ -1642,6 +1644,10 @@ function adjustCommandSeals(
     throw new ResolutionRuntimeError('insufficient_command_seals', 'Command seal adjustment would go below zero.');
   }
   player.commandSpells = after;
+  if (after < before) markCommandSealSpent(transaction.workingState, player.id, before, after, {
+    sourceCardId: transaction.context.sourceCardId,
+    abilityId: transaction.context.abilityId,
+  });
   const eventId = `${transaction.context.resolutionId}.${effect.id}.command_seals_adjusted`;
   transaction.emittedEvents.push(resourceEvent(transaction, eventId, 'command_seals_adjusted', player.id, 'command_seals', amount, before, after));
   return {

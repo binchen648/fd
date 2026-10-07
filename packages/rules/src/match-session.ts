@@ -14,6 +14,13 @@ import {
   resolveMandatoryCombatPhaseActionsForPlayer,
 } from './ability/interpreter';
 import { sourceBoundDefinitionResidualGranted } from './ability/logical-day-countermeasure-capability';
+import { recordSkillReturnedToSkillZone } from './ability/permanent-skill-tuning-capability';
+import {
+  expandSharedVictoryRanking,
+  hasAvailableEliminationRescueProvider,
+  settleEliminationRescueAfterScoring,
+  stageEliminationRescueChoice,
+} from './ability/elimination-rescue-link-capability';
 import { returnDefinitionSideDeckCardToDiscard, settleDefinitionSideDeckManaEvents } from './ability/definition-side-deck-capability';
 import {
   createOpponentCloseToOnePersistenceScope,
@@ -93,6 +100,7 @@ import type { GameState, PhaseName } from './schema/game';
 import type { CompiledPlaytestContentLibrary } from '@fd/content';
 import { resolveBattlefield } from './core/combat-resolver';
 import { applyBattleScoring } from './core/scoring-resolver';
+import { projectBattleEliminationCandidatePlayerIds } from './core/elimination-resolver';
 import { canOccupyLocation, getEnabledLocations } from './core/map-engine';
 import { canViewFaceDownEvents, canViewOpponentDiscard, grantMana, rulerSealMovementLocked } from './core/rule-overrides';
 import { createSeededGameState } from './tools/seeded-state';
@@ -482,7 +490,9 @@ function isRestoreCardInstance(value: unknown): boolean {
     typeof value.definitionId === 'string' && typeof value.ownerPlayerId === 'string' &&
     typeof value.controllerPlayerId === 'string' && typeof value.zone === 'string' &&
     isRestoreVisibilityState(value.visibility) &&
-    (value.generatedBy === undefined || typeof value.generatedBy === 'string');
+    (value.generatedBy === undefined || typeof value.generatedBy === 'string') &&
+    (value.powerModifiers === undefined || (Array.isArray(value.powerModifiers) && value.powerModifiers.every(isRestoreRecord))) &&
+    (value.costModifiers === undefined || (Array.isArray(value.costModifiers) && value.costModifiers.every(isRestoreRecord)));
 }
 
 function isRestoreMapDefinition(value: unknown): boolean {
@@ -951,6 +961,7 @@ function isRestoreCardRuntimeState(value: unknown): boolean {
     (value.manaOverflowCloseAfterBattle === undefined || (isRestoreRecord(value.manaOverflowCloseAfterBattle) &&
       hasExactRestoreKeys(value.manaOverflowCloseAfterBattle, ['round','sourceAbilityId']) &&
       isRestoreSafeInteger(value.manaOverflowCloseAfterBattle.round, 1) && typeof value.manaOverflowCloseAfterBattle.sourceAbilityId === 'string')) &&
+    (value.returnedToSkillZoneRound === undefined || isRestoreSafeInteger(value.returnedToSkillZoneRound, 1)) &&
     (value.sourceBoundX === undefined || (isRestoreRecord(value.sourceBoundX) &&
       hasExactRestoreKeys(value.sourceBoundX, ['value','controllerId','sourceAbilityId']) &&
       isRestoreSafeInteger(value.sourceBoundX.value, 2) && typeof value.sourceBoundX.controllerId === 'string' &&
@@ -1506,9 +1517,12 @@ function isRestoreAbilityRuntimeReferences(
   const playerKeyedMaps = [
     'playerStatusKeysByPlayer','structuredPlayerFlagsByPlayer','structuredRoundFlagKeysByPlayer','deductionRecordsByPlayer','battleDefeatRoundByPlayer','battleLossIgnoreRoundByPlayer','combatWinRoundByPlayer','manaCaps','noblePhantasmCostsThisRound','movementDistanceThisRound',
     'battlefieldsPassedOrStayedThisRound','startingDeckSizeByPlayer','normalCardDrawBlockedThroughRoundByPlayer','manaGainBlockedThroughRoundByPlayer',
-    'normalCommandSealUseRoundByPlayer','rulerCommandSealUseRoundByPlayer',
+    'normalCommandSealUseRoundByPlayer','rulerCommandSealUseRoundByPlayer','commandSealSpentRoundByPlayer',
   ] as const;
   for (const key of playerKeyedMaps) if (value[key] !== undefined && !restoreRecordKeysBelongTo(value[key], playerIds)) return false;
+  if (value.eliminationRescueBattleResolutionRound !== undefined &&
+      (!isRestoreSafeInteger(value.eliminationRescueBattleResolutionRound, 1) ||
+       value.eliminationRescueBattleResolutionRound !== currentRound)) return false;
   for (const key of ['revealedServants','manaGainBlocked'] as const) {
     if (!(value[key] as string[]).every((id) => playerIds.has(id))) return false;
   }
@@ -2383,7 +2397,7 @@ function actionFingerprint(state: GameState): string {
     pendingDecision: state.abilityRuntime?.pendingDecision?.id,
     responseWindow: state.abilityRuntime?.responseWindows[0]?.id,
     hostRequests: state.abilityRuntime?.hostRequests.length ?? 0,
-    cards: state.cards.map((card) => [card.instanceId, card.zone, card.visibility.scope]).sort(),
+    cards: state.cards.map((card) => [card.instanceId, card.zone, card.visibility.scope]),
     players: state.players.map((player) => [player.id, player.mana, player.vp, player.militaryResult, player.locationId]),
     stagedAttacks: modeStateOf(state).stagedAttacks,
   });
@@ -2683,6 +2697,7 @@ export class MatchSession {
   private consumedDirectiveCount = 0;
   private seenFingerprints = new Map<string, number>();
   private replayCaptureEnabled = true;
+  private autoRunReplayCompactionDepth = 0;
 
   constructor(
     config: MatchSessionConfig = {},
@@ -3072,33 +3087,48 @@ export class MatchSession {
 
   runFullMatch(options: { maxRounds?: number } = {}): MatchPauseReason {
     const maxRounds = options.maxRounds ?? 11;
-    for (let guard = 0; guard < 2000; guard++) {
-      const reason = this.runUntilHumanInputOrRoundEnd();
-      if (reason === 'human_input') {
-        const player = this.priorityPlayer();
-        if (!player || player.id !== this.humanPlayerId) return reason;
-        const action = chooseAiAction(this.projectAbilityView(this.humanPlayerId).legalActions);
-        if (!action) {
-          this.record('human_auto_passed', `${this.humanPlayerId}:no legal action`);
-          this.advanceToNextDecision();
+    this.autoRunReplayCompactionDepth += 1;
+    try {
+      for (let guard = 0; guard < 2000; guard++) {
+        const reason = this.runUntilHumanInputOrRoundEnd();
+        if (reason === 'human_input') {
+          const player = this.priorityPlayer();
+          if (!player || player.id !== this.humanPlayerId) {
+            this.checkpoint(`auto-run pause:${reason}`, this.state, true);
+            return reason;
+          }
+          const action = chooseAiAction(this.projectAbilityView(this.humanPlayerId).legalActions);
+          if (!action) {
+            this.record('human_auto_passed', `${this.humanPlayerId}:no legal action`);
+            this.advanceToNextDecision();
+            continue;
+          }
+          const result = this.dispatchPlayerAction(this.humanPlayerId, legalActionToCommand(action));
+          if (!result.ok) {
+            const paused = this.pause('backend_rejection');
+            this.checkpoint(`auto-run pause:${paused}`, this.state, true);
+            return paused;
+          }
           continue;
         }
-        const result = this.dispatchPlayerAction(this.humanPlayerId, legalActionToCommand(action));
-        if (!result.ok) return this.pause('backend_rejection');
-        continue;
-      }
-      if (reason === 'round_end') {
-        if (this.state.round.roundNumber >= maxRounds) {
-          this.ensureFinalScoring();
-          return this.pause('match_complete');
+        if (reason === 'round_end') {
+          if (this.state.round.roundNumber >= maxRounds) {
+            this.ensureFinalScoring();
+            return this.pause('match_complete');
+          }
+          this.state.round.roundNumber += 1;
+          this.startRound(this.state.round.roundNumber);
+          continue;
         }
-        this.state.round.roundNumber += 1;
-        this.startRound(this.state.round.roundNumber);
-        continue;
+        this.checkpoint(`auto-run pause:${reason}`, this.state, true);
+        return reason;
       }
-      return reason;
+      const paused = this.pause('state_loop');
+      this.checkpoint(`auto-run pause:${paused}`, this.state, true);
+      return paused;
+    } finally {
+      this.autoRunReplayCompactionDepth -= 1;
     }
-    return this.pause('state_loop');
   }
 
   runUntilHumanInputOrStop(): MatchPauseReason {
@@ -3550,6 +3580,7 @@ export class MatchSession {
         remaining.push(attachment);
         continue;
       }
+      const fromZone = card.zone;
       card.zone = 'skill';
       card.controllerPlayerId = sourceOwnerId || card.ownerPlayerId;
       card.visibility = visibleScope('skill', card.ownerPlayerId);
@@ -3557,6 +3588,7 @@ export class MatchSession {
         this.state.abilityRuntime.cardState[card.instanceId]!.active = false;
       }
       clearTransientCardTransformState(this.state, card.instanceId);
+      recordSkillReturnedToSkillZone(this.state, card.instanceId, fromZone);
       this.record('attached_card_returned', `${card.instanceId}:skill`, { attachment });
     }
     modeStateOf(this.state).supportShotAttachments = remaining;
@@ -3791,25 +3823,39 @@ export class MatchSession {
     if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length ||
       this.state.abilityRuntime?.hostRequests.length || this.state.abilityRuntime?.pendingPostBattleEvents?.length) return;
 
-    const resolvedBattles: GameState['battleResults'] = [];
+    const rescueLedgerFrozen = this.state.abilityRuntime?.eliminationRescueBattleResolutionRound === this.state.round.roundNumber;
+    const resolvedBattles: GameState['battleResults'] = rescueLedgerFrozen ? structuredClone(this.state.battleResults) : [];
     const battlefields = getEnabledLocations(this.state.map, this.state.locationConfig)
       .filter((location) => !((modeStateOf(this.state).closedLocations as string[] | undefined) ?? []).includes(location.id))
       .filter((location) => location.tags.includes('battlefield') || location.rewardHooks.includes('battle_rewards'));
-    for (const battlefield of battlefields) {
-      if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length) break;
-      const before = this.state.battleResults.length;
-      Object.assign(this.state, resolveBattlefield(this.state, { battlefieldId: battlefield.id, revealHiddenEvents: true }).nextState);
-      if (this.state.battleResults.length > before) {
-        const battle = this.state.battleResults[this.state.battleResults.length - 1]!;
-        resolvedBattles.push(structuredClone(battle));
-        this.record('battle_resolved', battlefield.id, battle as unknown as Record<string, unknown>);
+    if (!rescueLedgerFrozen) {
+      for (const battlefield of battlefields) {
+        if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length) break;
+        const before = this.state.battleResults.length;
+        Object.assign(this.state, resolveBattlefield(this.state, { battlefieldId: battlefield.id, revealHiddenEvents: true }).nextState);
+        if (this.state.battleResults.length > before) {
+          const battle = this.state.battleResults[this.state.battleResults.length - 1]!;
+          resolvedBattles.push(structuredClone(battle));
+          this.record('battle_resolved', battlefield.id, battle as unknown as Record<string, unknown>);
+        }
+        this.autoResolveNonInteractiveWindows();
       }
-      this.autoResolveNonInteractiveWindows();
     }
     if (!this.state.abilityRuntime?.pendingDecision && !this.state.abilityRuntime?.responseWindows.length) {
       // Linked-owner cards must settle while the resolved battle ledger is still available.
       // applyBattleScoring consumes battleResults, so doing this afterwards would lose owner-loss information.
-      Object.assign(this.state, settleLinkedOwnerCardsAfterBattles(this.state, resolvedBattles));
+      if (!rescueLedgerFrozen) Object.assign(this.state, settleLinkedOwnerCardsAfterBattles(this.state, resolvedBattles));
+
+      // Elimination rescue is bound to the exact completed battle ledger before scoring mutates status.
+      // Use the shared pure military-threshold projection so restore/commit can recompute the same threat set.
+      if (hasAvailableEliminationRescueProvider(this.state)) {
+        const projectedEliminations = projectBattleEliminationCandidatePlayerIds(this.state);
+        if (stageEliminationRescueChoice(this.state, projectedEliminations)) {
+          this.state.abilityRuntime!.eliminationRescueBattleResolutionRound = this.state.round.roundNumber;
+          return;
+        }
+      }
+
       const scoringLogStart = this.state.log.length;
       const vpBeforeScoring = new Map(this.state.players.map((player) => [player.id, player.vp]));
       Object.assign(this.state, applyBattleScoring(this.state).nextState);
@@ -3819,6 +3865,10 @@ export class MatchSession {
           recordAuthoritativeVictoryPointChange(this.state, scoredPlayer.id, before, scoredPlayer.vp, 'battle-scoring-vp');
         }
       }
+      for (const change of settleEliminationRescueAfterScoring(this.state)) {
+        recordAuthoritativeVictoryPointChange(this.state, change.playerId, change.before, change.after, 'elimination-rescue-vp-swap');
+      }
+      if (this.state.abilityRuntime) delete this.state.abilityRuntime.eliminationRescueBattleResolutionRound;
       // Scoring may eliminate players after terrain slots were assigned during deployment.
       // Keep durable terrain authority aligned with the restore contract: only active players
       // still located at that battlefield may remain assigned, and stale slot overrides vanish.
@@ -3919,7 +3969,7 @@ export class MatchSession {
   }
 
   private finalRanking(): MatchClientState['finalRanking'] {
-    return this.state.players
+    const ranking = this.state.players
       .map((player) => ({
         playerId: player.id,
         seat: player.seat,
@@ -3928,6 +3978,7 @@ export class MatchSession {
       }))
       .sort((left, right) => right.vp - left.vp || right.militaryResult - left.militaryResult || left.seat - right.seat)
       .map((player, index) => ({ ...player, rank: index + 1 }));
+    return expandSharedVictoryRanking(this.state, ranking);
   }
 
   private advanceToNextActiveSeat(): boolean {
@@ -3961,8 +4012,9 @@ export class MatchSession {
     });
   }
 
-  private checkpoint(label: string, state = this.state): void {
+  private checkpoint(label: string, state = this.state, force = false): void {
     if (!this.replayCaptureEnabled) return;
+    if (!force && this.autoRunReplayCompactionDepth > 0 && !/^round \d+ (?:start|end)$/.test(label) && label !== 'match end') return;
     const revision = state.abilityRuntime?.revision ?? 0;
     const checkpoint = {
       id: `checkpoint:${this.replay.length + 1}`,
