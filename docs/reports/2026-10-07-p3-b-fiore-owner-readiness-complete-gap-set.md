@@ -146,6 +146,45 @@ Revision verification:
 
 Accounting remains unchanged at `253/944`, remaining `691`; readiness is still zero-credit.
 
+### Third Reviewer locked-Reference once-per-round revision
+
+Candidate `b9cd0eeffb26f7f0993e4d1ff933552a1177bbed` received
+`IMPLEMENTATION_NEEDS_REVISION`. Canonical evidence:
+`https://github.com/binchen648/fd/pull/544#issuecomment-6038848506`.
+
+The restore-value predecessor finding is accepted as materially closed. The
+remaining blocker was a locked-Reference contract mismatch for
+`master.fiore.skill.s7 / clever-mind-reinforcement`: the Reference requires
+`abilityCost: 1` and `limit: once-per-round`, while the prior readiness
+fixture/capability permitted and positively tested a second same-round paid
+activation.
+
+The revision closes that exact contract:
+
+- the accepted skill-power authoring shape now requires the repository's standard declarative `{ type: 'per_round', uses: 1, scope: 'this_card' }` limit;
+- the capability also independently rejects a second same-round skill-power activation using its identity-free round activation authority;
+- restore validation rejects more than one same-round skill-power activation for the same accepted activation group, even if forged receipts/usage counters were made internally consistent;
+- the Fiore regression now requires the second same-round action to be absent and verifies mana, gameplay bonus, activation records, receipts, and round usage do not increase.
+
+Post-revision verification:
+
+- locked Reference source mechanically confirmed `clever-mind-reinforcement` has `abilityCost: 1` and `limit: "once-per-round"`;
+- combined affected focused set: `108/108 PASS`;
+- Fiore readiness: `10/10 PASS`;
+- shared terrain metric: `7/7 PASS`;
+- game-start provisioning: `7/7 PASS`;
+- explicit outside-game/game-start: `12/12 PASS`;
+- authoring interpreter: `38/38 PASS`;
+- MatchSession: `34/34 PASS`;
+- `npm run typecheck`: PASS;
+- `npm run content:validate`: PASS (`21 masters / 19 servants / 20 events / 0 blocking issues`);
+- `npm run verify:generated-content`: PASS with unchanged generated hashes;
+- `data/authoring/**` delta from prior Candidate is EMPTY;
+- `git diff --check`: PASS.
+
+Readiness remains permanently zero-credit; strict accounting remains
+`253/944`, remaining `691`.
+
 ## Gate
 
 This readiness Candidate remains permanently zero-credit. No missing Fiore consumer identity is materialized here.

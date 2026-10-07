@@ -299,7 +299,7 @@ function archive() {
           creates: [],
           lifecycle: {},
           responseWindow: { order: 'turn_order', passBehavior: 'decline_this_window' },
-          limit: {},
+          limit: { type: 'per_round', uses: 1, scope: 'this_card' },
           visibility: {},
           execution: { mode: 'automatic', allowedOperations: [] },
         },
@@ -665,7 +665,7 @@ describe('P3 Fiore owner readiness complete gap set', () => {
     expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(structuredClone(state))).toBe(true);
   });
 
-  it('plays generated Clever Mind and applies cumulative +1 per paid activation to Master and Servant skill power', () => {
+  it('plays generated Clever Mind once per round and applies +1 to Master and Servant skill power', () => {
     const state = setup([1, 2]);
     const source = add(state, TRANSCEND);
     const basic = add(state, BASIC, 'hand');
@@ -690,13 +690,20 @@ describe('P3 Fiore owner readiness complete gap set', () => {
     expect(state.players[0]!.mana).toBe(mana - 1);
     expect(rules.calculateCardPower(state, clever).value).toBe(2);
     expect(rules.calculateCardPower(state, servant).value).toBe(3);
-    const secondLink = action(state, clever, 'fixture.clever.link');
-    expect(secondLink).toBeDefined();
-    expect(rules.dispatchAbilityCommand(state, 'p1', secondLink!).ok).toBe(true);
-    expect(state.players[0]!.mana).toBe(mana - 2);
-    expect(rules.roundSkillCardPowerBonus(state, 'p1')).toBe(2);
-    expect(rules.calculateCardPower(state, clever).value).toBe(3);
-    expect(rules.calculateCardPower(state, servant).value).toBe(4);
+
+    const activationsBefore = state.abilityRuntime!.roundSkillProfileSkillPowerActivations!.length;
+    const receiptsBefore = state.abilityRuntime!.events.filter((entry) => entry.type === 'round_skill_card_power_activated').length;
+    const usageKey = `round-skill-profile:skillPower:${clever}:fixture.clever.link:round:${state.round.roundNumber}`;
+    const usageBefore = state.abilityRuntime!.abilityUsage[usageKey];
+
+    expect(action(state, clever, 'fixture.clever.link')).toBeUndefined();
+    expect(state.players[0]!.mana).toBe(mana - 1);
+    expect(rules.roundSkillCardPowerBonus(state, 'p1')).toBe(1);
+    expect(rules.calculateCardPower(state, clever).value).toBe(2);
+    expect(rules.calculateCardPower(state, servant).value).toBe(3);
+    expect(state.abilityRuntime!.roundSkillProfileSkillPowerActivations).toHaveLength(activationsBefore);
+    expect(state.abilityRuntime!.events.filter((entry) => entry.type === 'round_skill_card_power_activated')).toHaveLength(receiptsBefore);
+    expect(state.abilityRuntime!.abilityUsage[usageKey]).toBe(usageBefore);
     expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(structuredClone(state))).toBe(true);
   });
 

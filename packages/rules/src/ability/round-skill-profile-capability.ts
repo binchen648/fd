@@ -46,12 +46,18 @@ function standardExecution(ability: AuthoringAbility): boolean {
     Array.isArray(ability.execution.allowedOperations) &&
     ability.execution.allowedOperations.length === 0;
 }
-function standardPhaseAction(ability: AuthoringAbility): boolean {
+function oncePerRoundThisCard(ability: AuthoringAbility): boolean {
+  return exact(ability.limit, ['type', 'uses', 'scope']) &&
+    ability.limit.type === 'per_round' &&
+    ability.limit.uses === 1 &&
+    ability.limit.scope === 'this_card';
+}
+function standardPhaseAction(ability: AuthoringAbility, requireOncePerRound = false): boolean {
   return ability.kind === 'phase_action' &&
     ability.ruleModifiers.length === 0 &&
     ability.creates.length === 0 &&
     empty(ability.lifecycle) &&
-    empty(ability.limit) &&
+    (requireOncePerRound ? oncePerRoundThisCard(ability) : empty(ability.limit)) &&
     empty(ability.visibility) &&
     standardResponse(ability) &&
     standardExecution(ability);
@@ -129,7 +135,7 @@ export function isAcceptedRoundSkillProfileAbility(ability: AuthoringAbility): b
       ability.activation.requiresSourceState === 'active';
   }
   if (skillPowerEffect(effect)) {
-    return standardPhaseAction(ability) && ability.conditions.length === 0 && ability.targets.length === 0 &&
+    return standardPhaseAction(ability, true) && ability.conditions.length === 0 && ability.targets.length === 0 &&
       ability.cost.length === 1 && rec(ability.cost[0]) && ability.cost[0]!.type === 'pay_mana' &&
       ability.cost[0]!.amount === 1 && exact(ability.cost[0], ['type', 'amount']) &&
       exact(ability.activation, ['phase', 'opens', 'requiresSourceState']) &&
@@ -293,7 +299,8 @@ export function canExecuteRoundSkillProfileEffect(
   }
   if (skillPowerEffect(effect)) {
     const controller = state.players.find((entry) => entry.id === ctx.controllerId && entry.status === 'active');
-    return sourceActive(state, ctx.controllerId, ctx.sourceCardId) && !!controller && controller.mana >= 1;
+    const alreadyUsed = acceptedActivationCount(state, 'skillPower', ctx.sourceCardId, ctx.abilityId) >= 1;
+    return !alreadyUsed && sourceActive(state, ctx.controllerId, ctx.sourceCardId) && !!controller && controller.mana >= 1;
   }
   if (determinationEffect(effect)) return true;
   return false;
@@ -775,7 +782,7 @@ export function isRoundSkillProfileRuntimeProvenanceValidForRestore(state: GameS
     }
     for (const group of skillPowerGroups.values()) {
       const ordered = [...group].sort((a, b) => a.ordinal - b.ordinal);
-      if (ordered.some((entry, index) => entry.ordinal !== index + 1)) return false;
+      if (ordered.length !== 1 || ordered.some((entry, index) => entry.ordinal !== index + 1)) return false;
       const first = ordered[0]!;
       if (ordered.length !== acceptedActivationCount(
         state, 'skillPower', first.sourceCardId, first.abilityId)) return false;
