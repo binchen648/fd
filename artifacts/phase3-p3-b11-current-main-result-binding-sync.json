@@ -7,9 +7,9 @@
     "currentMainSha": "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
     "candidateSha": "13ab77128fe0d50a3db2a3ff3e66f7893354a6d0",
     "candidateBranch": "codex/b-p3-b11-result-binding-production-bridge-current-main",
-    "reviewCommitSha": "f649ce869fd6b44780debd762e225256c4f2a40e",
+    "reviewCommitSha": "5235ea55eb74dabf6a7dcdcf77db8827f6cf0547",
     "reviewArtifactPath": "docs/reviews/phase3/P3-B11-RESULT_BINDING_PRODUCTION_BRIDGE-review.json",
-    "reviewArtifactSha256": "D53D396755086CE8D5C762AF819F3C61BA91E73283A42F63E599FF1FC7084E49"
+    "reviewArtifactSha256": "069F3CFD1E41429BE0AF08D33E065802ED82609A87B812393484AF03C974403E"
   },
   "review": {
     "reviewer": "github:binchen648",

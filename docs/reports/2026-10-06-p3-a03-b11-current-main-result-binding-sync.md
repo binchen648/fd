@@ -10,11 +10,14 @@
 - Current main: `4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27`
 - Candidate: `13ab77128fe0d50a3db2a3ff3e66f7893354a6d0`
 - Candidate branch: `codex/b-p3-b11-result-binding-production-bridge-current-main`
-- Reviewer B commit: `f649ce869fd6b44780debd762e225256c4f2a40e`
+- Reviewer B commit: `5235ea55eb74dabf6a7dcdcf77db8827f6cf0547`
 - Reviewer B: `github:binchen648`
+- Reviewer B thread: `https://github.com/binchen648/fd/pull/542#issuecomment-6029576390`
 - Review artifact: `docs/reviews/phase3/P3-B11-RESULT_BINDING_PRODUCTION_BRIDGE-review.json`
-- Review artifact SHA-256: `D53D396755086CE8D5C762AF819F3C61BA91E73283A42F63E599FF1FC7084E49`
-- Review commit directly inherits Candidate: `YES`
+- Review artifact SHA-256: `069F3CFD1E41429BE0AF08D33E065802ED82609A87B812393484AF03C974403E`
+- Candidate is an ancestor of the Reviewer B commit: `YES`
+- Reviewer B commit direct parent: `f649ce869fd6b44780debd762e225256c4f2a40e` (the prior exact-candidate review attestation)
+- Reviewer B commit directly inherits Candidate: `NO`
 - Candidate descends from current main: `YES`
 
 ## Authorized scope

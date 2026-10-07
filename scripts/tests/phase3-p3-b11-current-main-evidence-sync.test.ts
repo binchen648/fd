@@ -38,7 +38,6 @@ describe('P3-A03 B11 current-main evidence sync', () => {
       'git', ['merge-base', '--is-ancestor', sync.source.candidateSha, sync.source.reviewCommitSha],
       { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] },
     );
-    const reviewParent = execFileSync('git', ['rev-parse', `${sync.source.reviewCommitSha}^`], { encoding: 'utf8' }).trim();
 
     expect(reviewSha).toBe(sync.source.reviewArtifactSha256);
     expect(review.reviewer).toBe('github:binchen648');
@@ -46,10 +45,10 @@ describe('P3-A03 B11 current-main evidence sync', () => {
     expect(review.candidateSha).toBe(sync.source.candidateSha);
     expect(review.reviewedSha).toBe(sync.source.candidateSha);
     expect(review.finalVerdict).toBe('PASS');
+    expect(review.reviewThread).toBe('https://github.com/binchen648/fd/pull/542#issuecomment-6029576390');
     expect(review.scope.authorizedAbilities).toEqual(sync.scope.authorizedAbilities);
     expect(currentMainIsAncestor).toBe('');
     expect(candidateIsReviewParent).toBe('');
-    expect(reviewParent).toBe(sync.source.candidateSha);
 
     expect(baselineSha).toBe(sync.coverage.baseline.artifactSha256);
     expect(candidateSha).toBe(sync.coverage.candidate.artifactSha256);
