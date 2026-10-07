@@ -21,9 +21,10 @@
     "reviewerTaskId": "P3-E07-RP-00-RA3",
     "candidateSha": "fa76e0311c9f7bd0ca07c973866b12938c5fd79f",
     "sourceBranch": "codex/a-p3-e06-post-merge-recount",
-    "state": "CANDIDATE_EXISTS_READY_FOR_RA3",
+    "reviewVerdict": "POST_MERGE_RECOUNT_PASS",
+    "state": "PROMOTED_ON_MAIN_RECOUNTED",
     "runtimeEditsAllowed": false,
-    "lockReleaseAllowed": false
+    "lockReleaseAllowed": true
   },
   "pullRequestTopology": {
     "noNewStackedRolePr": true,
@@ -36,12 +37,20 @@
   "runtimeReservation": {
     "domain": "ability-runtime/setup-create-to-skill",
     "owner": "RP-00",
-    "state": "HELD_PENDING_RA3_PASS"
+    "state": "RELEASED_AFTER_RA3_PASS"
   },
   "credit": {
     "gateC": "NOT_GRANTED",
     "releaseReady": false,
     "migrationDeltaFromControlTransition": 0
   },
-  "status": "RP00_RECOUNT_ACTIVE_NO_NEW_STACKED_ROLE_PR"
+  "governanceReview": {
+    "taskId": "P3-E07-G01",
+    "reviewedCandidate": "0cbdd33cd5e70978322777326849b99cb40c6e9e",
+    "verdict": "GOVERNANCE_CONTRACT_PASS",
+    "pullRequest": 543,
+    "pullRequestHead": "fadf4810fc25762d1e6cf34e1dffb2350e9f2fce",
+    "state": "WAIT_HUMAN_MERGE"
+  },
+  "status": "RP00_RECOUNTED_LOCK_RELEASED_GOVERNANCE_PR_WAIT_HUMAN"
 }

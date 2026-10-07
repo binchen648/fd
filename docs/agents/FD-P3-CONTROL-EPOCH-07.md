@@ -22,8 +22,8 @@
 
 | Task | Owner | Exact base | State |
 |---|---|---|---|
-| `P3-E07-RP-00-A3` | Codex A | `a7751c3...` | `CANDIDATE_EXISTS: fa76e03...` |
-| `P3-E07-RP-00-RA3` | Reviewer A | `fa76e03...` | `READY_FOR_REVIEW` |
+| `P3-E07-RP-00-A3` | Codex A | `a7751c3...` | `PROMOTED_ON_MAIN_RECOUNTED` |
+| `P3-E07-RP-00-RA3` | Reviewer A | `fa76e03...` | `POST_MERGE_RECOUNT_PASS` |
 
 Codex A owns coverage, ledger, and evidence recount only. It must not edit
 runtime or authoring semantics. RP-00 reaches
@@ -32,10 +32,11 @@ candidate.
 
 ## Runtime Reservation
 
-The `ability-runtime/setup-create-to-skill` reservation remains held by RP-00
-while recount is pending. No additional runtime mutation is authorized by this
-document. The Planner releases the reservation only after `P3-E07-RP-00-RA3`
-PASS.
+The `ability-runtime/setup-create-to-skill` reservation was released after
+Reviewer A returned `POST_MERGE_RECOUNT_PASS` for exact candidate
+`fa76e0311c9f7bd0ca07c973866b12938c5fd79f`. This release applies only to the
+RP-00 reservation. It does not authorize another runtime IMPLEMENT task without
+a selected Slice, accepted dependencies, and a new resource-domain lease.
 
 Read-only PREPARE work may proceed without the lock. It may extract semantic
 deltas, dependencies, consumer sets, test vectors, and file overlap, but may
@@ -117,26 +118,25 @@ decisions and may not be self-declared by an implementer:
 
 Permitted now:
 
-1. A completes RP-00 post-merge recount from exact main.
-2. Reviewer A waits for and reviews the exact A candidate.
-3. Planner/Governance prepares the Epoch 07 process contract.
+1. Human reviews and merges governance-only PR #543.
+2. A prepares the next one-Slice selection and Control CLI inputs without
+   opening role-stage PRs.
+3. Future runtime Slices may perform PREPARE-only reconnaissance.
 4. A may design, but not yet claim acceptance for, Control CLI and drift
    classifier tasks.
-5. Future runtime Slices may perform PREPARE-only reconnaissance.
 
 Forbidden now:
 
-- releasing the RP-00 runtime reservation before RA3 PASS;
 - dispatching a new overlapping runtime IMPLEMENT task;
 - creating new role-stage stacked PRs;
 - treating any historical PR count or candidate status as main credit.
 
 ## Next Sync Triggers
 
-1. Reviewer A returns the RA3 verdict for `fa76e03...`;
-2. RP-00 recount PASS or findings change the reservation state;
-3. the no-stacked-role-PR governance contract is accepted or rejected;
+1. PR #543 merges or its exact HEAD/check state changes;
+2. the no-stacked-role-PR governance contract is accepted or rejected;
+3. the next minimum Slice receives a Planner selection;
 4. authoritative main changes;
 5. a new role-stage stacked PR is opened after this directive.
 
-Final control status: `RP00_RECOUNT_ACTIVE_NO_NEW_STACKED_ROLE_PR`
+Final control status: `RP00_RECOUNTED_LOCK_RELEASED_GOVERNANCE_PR_WAIT_HUMAN`
