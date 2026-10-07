@@ -9068,7 +9068,7 @@ Acceptance synchronization:
 ## TASK P3-S-OWNER-DARNIC-COMPLETE-MIGRATION
 
 Owner: FORMAL migration
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Classification: owner-complete migration for `master.darnic`
 
 Frozen owner scope: exactly `3` identities — `master.darnic.skill.ascension`, `master.darnic.skill.s1`, `master.darnic.skill.s1a`.
@@ -9099,3 +9099,11 @@ Implementation evidence:
 - production Darnic identity/text audit CLEAN; source-assets reproduces exactly `93` historical missing images with `darnicHits=0`; `git diff --check` PASS;
 - detailed result: `docs/reports/2026-10-07-p3-s-owner-darnic-complete-migration-result.md`;
 - Candidate remains uncredited until one fresh exact `MIGRATION_ACCEPTED` review and subsequent FORMAL A-sync/accounting.
+
+Acceptance synchronization:
+- exact Candidate `d40eb77b1480fa334688f0a5c1377ca0531c7704` received fresh `MIGRATION_ACCEPTED` on blocked retry `pr541:d40eb77b1480fa334688f0a5c1377ca0531c7704:blocked-retry-1`;
+- canonical accepted evidence: `https://github.com/binchen648/fd/pull/541#issuecomment-6031672772`;
+- blocked predecessor attempt was environment-only; external-output coverage/audit on the same exact Candidate closed `REVIEWER_WORKSPACE_DIRTY_AFTER_OFFICIAL_AUDIT_GENERATION` without Candidate mutation;
+- lawful FORMAL accounting credits exactly the frozen Darnic `3/3`: `250/944 + 3 = 253/944`, remaining `691`;
+- acceptance synchronization report: `docs/reports/2026-10-07-p3-a-owner-darnic-acceptance-synchronization.md`;
+- no readiness credit is recounted; owner change requires fixed HELPER report read plus exact acceptance-sync Base rescan before selecting the next owner.
