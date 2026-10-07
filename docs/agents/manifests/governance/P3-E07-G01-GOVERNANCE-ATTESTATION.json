@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "fd-phase3-process-governance-attestation-v1",
+  "controlEpoch": "FD-P3-2026-09-23-07",
+  "taskId": "P3-E07-G01",
+  "repository": "https://github.com/binchen648/fd",
+  "reviewMode": "READ_ONLY",
+  "scope": "PROCESS_GOVERNANCE_ONLY",
+  "governanceOwner": {
+    "role": "Codex G / Promotion Governance Owner",
+    "identity": "github:binchen648",
+    "githubAccountId": 201342173,
+    "profileUrl": "https://github.com/binchen648",
+    "distinctAccountRequired": false,
+    "roleSeparationRequired": true
+  },
+  "reviewTarget": {
+    "baseSha": "a7751c3fa51895fd3a401721b1e926b90e016862",
+    "candidateSha": "0cbdd33cd5e70978322777326849b99cb40c6e9e",
+    "candidateParentSha": "a7751c3fa51895fd3a401721b1e926b90e016862",
+    "directParentVerified": true,
+    "replayCommitSha": "e48285b7bb9a2e16bfa46271c65cfeb733fe4938",
+    "replayParentSha": "a7751c3fa51895fd3a401721b1e926b90e016862",
+    "exactDeltaReplayed": true
+  },
+  "changedPaths": [
+    "docs/agents/FD-P3-CONTROL-EPOCH-06.md",
+    "docs/agents/FD-P3-CONTROL-EPOCH-07.md",
+    "docs/agents/P3-E07-C01-A-CONTROL-AUTOMATION-DISPATCH.md",
+    "docs/agents/P3-E07-NO-STACKED-ROLE-PR-DIRECTIVE.md",
+    "docs/agents/PHASE3-AGENT-CONTRACT.md",
+    "docs/agents/PHASE3-FULL-ROSTER-COLLABORATION-CONTRACT.md",
+    "docs/agents/PHASE3-TASK-INDEX.md",
+    "docs/agents/manifests/governance/P3-E07-CONTROL-TRANSITION.json",
+    "docs/governance/phase3-promotion-lane.md",
+    "docs/governance/phase3-slice-task-promotion-contract.md",
+    "docs/reports/2026-10-07-p3-e07-control-transition.md"
+  ],
+  "verification": {
+    "governanceOnlyPathSet": true,
+    "runtimeChanges": false,
+    "authoringChanges": false,
+    "generatedContentChanges": false,
+    "testChanges": false,
+    "applicationChanges": false,
+    "gitDiffCheck": "PASS",
+    "focusedGovernanceTests": "PASS 1 file / 22 tests",
+    "controlTransitionJson": "VALID",
+    "pullRequest536": {
+      "state": "MERGED",
+      "headSha": "119b8f33e9d59691996a5d03a8dc7589fc816a61",
+      "mergeSha": "a7751c3fa51895fd3a401721b1e926b90e016862",
+      "mergedBy": "github:binchen648"
+    },
+    "mainChecks": {
+      "build": {
+        "conclusion": "PASS",
+        "checkRunId": 112602249438
+      },
+      "test": {
+        "conclusion": "PASS",
+        "checkRunId": 112602249360
+      },
+      "deploy": {
+        "conclusion": "PASS",
+        "checkRunId": 112602249416
+      },
+      "phase3Policy": {
+        "conclusion": "PASS",
+        "checkRunId": 112602267225
+      }
+    },
+    "rp00State": "MERGED_RECOUNT_PENDING",
+    "candidateStateLabel": "ACTIVE_RECOUNT_PREPARATION",
+    "stateLabelsSemanticallyEquivalent": true,
+    "runtimeReservation": "HELD_PENDING_RA3_PASS",
+    "runtimeLockReleased": false,
+    "c01AState": "WAIT_RP00_RECOUNT",
+    "singlePromotionPrPerSlice": true,
+    "promotionPrOwner": "I",
+    "mergeOwner": "HUMAN",
+    "existingStackedPrAutomaticCredit": false,
+    "driftClassificationIsManualEvidenceState": true,
+    "implementerSelfClassificationAllowed": false
+  },
+  "findings": [],
+  "nonClaims": [
+    "RUNTIME_SLICE_ACCEPTED",
+    "RUNTIME_LOCK_RELEASED",
+    "MIGRATION_CREDIT_GRANTED",
+    "GATE_C_PASS",
+    "PHASE3_COMPLETE",
+    "RELEASE_READY",
+    "RUNTIME_PROMOTION_AUTHORIZED"
+  ],
+  "governanceResult": {
+    "verdict": "GOVERNANCE_CONTRACT_PASS",
+    "governanceOnlyPrAuthorized": true,
+    "runtimePromotionAuthorized": false,
+    "nextOwner": "Human Approver"
+  }
+}
