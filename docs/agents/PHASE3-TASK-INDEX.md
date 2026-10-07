@@ -9303,7 +9303,7 @@ Acceptance synchronization:
 ## TASK P3-S-OWNER-FOU-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Classification: formal owner-complete consumer migration for `master.fou`
 
 Frozen owner scope: exactly `2` identities:
@@ -9335,4 +9335,13 @@ Implementation evidence:
 - external audit: `legacyResolveEffect=164 legacyExecuteAbility=3 notClassifiable=316 promotionFindings=20`;
 - source-assets reproduces exactly `93` pre-existing historical missing-image blockers; no Fou source path is missing and the declared development image exists;
 - detailed result: `docs/reports/2026-10-08-p3-s-owner-fou-complete-migration-result.md`;
-- Candidate remains uncredited pending one fresh exact `MIGRATION_ACCEPTED`; accounting stays `259/944`, remaining `685`.
+- Candidate `10a646189047466f794b74d75234f7621bbaa7f0` received fresh exact `MIGRATION_ACCEPTED` on ReviewJobKey `pr548:10a646189047466f794b74d75234f7621bbaa7f0`.
+
+Acceptance synchronization:
+- canonical same-attempt accepted evidence: `https://github.com/binchen648/fd/pull/548#issuecomment-6046496976`;
+- FORMAL read back the published comment and mechanically reconfirmed PR #548 Base `058dc4dfc436b8f222da073ff2d8bd9db91481c3` / Candidate `10a646189047466f794b74d75234f7621bbaa7f0`;
+- exact Base has no canonical `master.fou.json` consumer materialization; exact Candidate contains precisely `master.fou.skill.s1` + `master.fou.skill.ascension`, registers `master.fou.json` exactly once, and generated content contains both accepted identities;
+- no preservation/recount credit applies for Fou because Base consumer materialization was exactly `0/2`;
+- lawful FORMAL accounting credits exactly two newly materialized identities: `259/944 + 2 = 261/944`, remaining `683`;
+- acceptance synchronization report: `docs/reports/2026-10-08-p3-a-owner-fou-acceptance-synchronization.md`;
+- Fou is formally closed; under `fd.owner-complete@1.1.0`, FORMAL now derives the next owner and its complete readiness/capability gap set mechanically from this acceptance-sync Base and the frozen roster, with no Helper dependency.
