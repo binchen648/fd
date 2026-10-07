@@ -3,6 +3,7 @@ import type { LocationId } from '../schema/location';
 import { getLocationById } from './map-engine';
 import { roundLocationTerrainReplacement } from '../ability/round-location-supply-capability';
 import { unclaimedBattlefieldTerrainBonus } from '../ability/unclaimed-terrain-upkeep-capability';
+import { roundCurrentLocationTerrainBonus } from '../ability/round-skill-profile-capability';
 
 function modeState(state: GameState): Record<string, unknown> {
   return (state as unknown as { modeState?: Record<string, unknown> }).modeState ?? {};
@@ -88,7 +89,8 @@ export function terrainBonusAt(
   if (terrainSlotIndex !== undefined && (terrainSlotIndex < 0 || terrainSlotIndex >= location.terrainBonuses.length)) return undefined;
   const fixedRoundValue = roundLocationTerrainReplacement(state, playerId, battlefieldId);
   const assignedValue = terrainSlotIndex === undefined ? 0 : Number(location.terrainBonuses[terrainSlotIndex] ?? 0);
-  const baseValue = (fixedRoundValue ?? assignedValue) + unclaimedBattlefieldTerrainBonus(state, playerId, battlefieldId);
+  const baseValue = (fixedRoundValue ?? assignedValue) + unclaimedBattlefieldTerrainBonus(state, playerId, battlefieldId) +
+    roundCurrentLocationTerrainBonus(state, playerId, battlefieldId);
   return typeof baseValue === 'number' ? baseValue * terrainMultiplierForPlayer(state, playerId) : undefined;
 }
 
@@ -100,6 +102,7 @@ export function currentDeploymentBonus(state: GameState, playerId: string): numb
   const fixedRoundValue = roundLocationTerrainReplacement(state, playerId, battlefieldId);
   const terrainSlotIndex = assignedTerrainSlotIndex(state, battlefieldId, playerId);
   const unclaimedBonus = unclaimedBattlefieldTerrainBonus(state, playerId, battlefieldId);
-  if (terrainSlotIndex === undefined && fixedRoundValue === undefined && unclaimedBonus === 0) return 0;
+  const roundBonus = roundCurrentLocationTerrainBonus(state, playerId, battlefieldId);
+  if (terrainSlotIndex === undefined && fixedRoundValue === undefined && unclaimedBonus === 0 && roundBonus === 0) return 0;
   return terrainBonusAt(state, battlefieldId, playerId, terrainSlotIndex) ?? 0;
 }

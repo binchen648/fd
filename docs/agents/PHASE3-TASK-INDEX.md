@@ -9107,3 +9107,63 @@ Acceptance synchronization:
 - lawful FORMAL accounting credits exactly the frozen Darnic `3/3`: `250/944 + 3 = 253/944`, remaining `691`;
 - acceptance synchronization report: `docs/reports/2026-10-07-p3-a-owner-darnic-acceptance-synchronization.md`;
 - no readiness credit is recounted; owner change requires fixed HELPER report read plus exact acceptance-sync Base rescan before selecting the next owner.
+
+## TASK P3-B-FIORE-OWNER-READINESS-CAPABILITY
+
+Owner: FORMAL readiness
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Classification: zero-credit complete-owner readiness/preflight for `master.fiore`
+
+Exact readiness Base: `b7bb64a0b3079927177c7ad131f9a482d29540d8` (accepted Darnic migration A-sync/accounting).
+
+Frozen owner scope: exactly `9` identities:
+- `master.fiore.skill.ascension`
+- `master.fiore.skill.s1`
+- `master.fiore.skill.s1a`
+- `master.fiore.skill.s2`
+- `master.fiore.skill.s3`
+- `master.fiore.skill.s4`
+- `master.fiore.skill.s5`
+- `master.fiore.skill.s6`
+- `master.fiore.skill.s7`
+
+Current canonical material / preservation boundary:
+- current `data/authoring/masters/master.fiore.json` contains exactly `3/9`: `s2 + s3 + s4`;
+- those three identities were already migrated and credited by accepted FM08 recovery (`P3-FM08`, Candidate `81ccb7e7e5d0f2cf5ad7da1eda3279c20a604c1a`, R40 accepted) and are preservation-only for this owner-complete replay;
+- exactly six frozen identities remain uncredited: `ascension + s1 + s1a + s5 + s6 + s7`;
+- the preserved `s2/s3/s4` objects must not receive duplicate credit or semantic drift.
+
+Accounting boundary:
+- strict accounting after Darnic acceptance is `253/944`, remaining `691`;
+- readiness/capability is permanently zero-credit;
+- maximum later lawful Fiore migration increment is exactly `+6`, only after one owner-complete Candidate preserves the accepted `3/9`, materializes all six remaining identities, receives fresh `MIGRATION_ACCEPTED`, and FORMAL A-sync/accounting completes.
+
+Formal readiness gate:
+- scan the complete nine-identity owner contract in one pass; do not stop after the first runtime gap;
+- mechanically preserve accepted FM08 `s2/s3/s4` semantics and authoring while deriving all generic readiness seams required by the six remaining identities from frozen inventory + locked Reference;
+- any new runtime primitive must be identity-free, data-driven, restore-safe, fail closed, and covered by focused negative paths;
+- readiness must not materialize the six missing Fiore consumers or award migration credit;
+- run focused/affected tests, typecheck, content validation, generated determinism, Phase-3 coverage/audit using external `--out` paths where supported, production identity/text audit, source-assets classification, and `git diff --check`;
+- freeze exactly one readiness Candidate / one PR and require one fresh independent exact `IMPLEMENTATION_ACCEPTED_CANDIDATE` before zero-credit A-sync/rescan may release Fiore owner-complete migration.
+
+Implementation evidence:
+- implementation start commit after exact accepted Darnic A-sync: `e46a6e05c42e1b13ebf4381ab710c5ad1522ae13`;
+- existing accepted FM08 `master.fiore.json` is byte-preserved at blob `79ce0ef8c7403c849c64abe4fc41e812dc4fa6d9`; `data/authoring/**` delta is EMPTY;
+- complete identity-free round-profile readiness covers all six uncredited Fiore identities while preserving accepted `s2/s3/s4`: Transcend pair switching/suppression, action `-4 mana`, Neuromechanics move/+2 terrain, Determination higher-VP target/+2 VP, Clever Mind cumulative skill +1, and Full Recovery loss-only `-2 VP`;
+- Full Recovery loss authority survives a prior win/non-loss, remains restore-valid, charges exactly once on later loss, and does not double-charge on replay;
+- Fiore readiness regression `10/10 PASS`, including closed-world `__fd_rsp:` restore tamper rejection; shared terrain metric `7/7 PASS`; game-start provisioning `7/7 PASS`; authoring interpreter `38/38 PASS`; MatchSession `34/34 PASS`;
+- selected affected batch is `105/107`; both remaining failures reproduce identically on a plain archive of exact task-start commit `e46a6e05c42e1b13ebf4381ab710c5ad1522ae13` and are recorded as pre-existing shared-test debt, not Candidate green;
+- typecheck PASS; content validation PASS at `21 masters / 19 servants / 20 events / 0 blocking issues`; generated determinism PASS with unchanged consumer hashes;
+- Phase-3 coverage/audit were written outside all Git workspaces using explicit `--out`: coverage `archives=126 cards=281 abilities=487 compiledCards=213 compiledCharacters=40 blockingIssues=0 newRuntimeSemanticRouted=22 dualRuntime=0`; audit `legacyResolveEffect=161 legacyExecuteAbility=3 notClassifiable=301 promotionFindings=20`;
+- production Fiore identity/text audit CLEAN; development Fiore image PRESENT; source-assets reproduces exactly `93` historical missing images with `fioreHits=0`; `git diff --check` PASS;
+- detailed result: `docs/reports/2026-10-07-p3-b-fiore-owner-readiness-complete-gap-set.md`;
+- prior Candidate `d1809a4eade396242e267e74a9eff1dd1a0bb4a6` received `IMPLEMENTATION_NEEDS_REVISION`; canonical same-attempt relay: `https://github.com/binchen648/fd/pull/544#issuecomment-6032667992`;
+- the sole blocking finding is closed by a fail-closed/closed-world `__fd_rsp:` restore contract: every prefixed flag/round marker is paired and current-round, profile-owned fields are anchored to exact accepted switch/provider/enhanced-definition provenance, terrain/skill-power authority records and validates exact source-card/ability provenance, and unknown/orphaned authority is rejected;
+- revision verification: Fiore focused regression `10/10 PASS`, typecheck PASS, `git diff --check` PASS;
+- successor Candidate `c56c25f2d607397ddf1cfbce7ac193752f4e3737` then received `IMPLEMENTATION_NEEDS_REVISION` for value tampering inside an otherwise valid provenance envelope; canonical same-attempt relay: `https://github.com/binchen648/fd/pull/544#issuecomment-6032994485`;
+- second revision removes live `__fd_rsp:` gameplay authority and replaces it with dedicated restore-validated profile / paid skill-power activation / terrain activation records plus exact event receipts and round-scoped usage-count cross-checks; forged target, target snapshot, skill-power ordinal/count, terrain location, legacy prefixed flags, and unmatched receipts fail closed;
+- second-revision verification: Fiore `10/10 PASS`; MatchSession `34/34 PASS`; terrain metric `7/7 PASS`; outside-game/game-start `12/12 PASS`; authoring interpreter `38/38 PASS`; typecheck/content validate/generated determinism/`git diff --check` PASS;
+- Candidate `b9cd0eeffb26f7f0993e4d1ff933552a1177bbed` received `IMPLEMENTATION_NEEDS_REVISION` for widening Clever Mind beyond the locked Reference's once-per-round contract; canonical evidence: `https://github.com/binchen648/fd/pull/544#issuecomment-6038848506`;
+- third revision mechanically matches the locked Reference by requiring the standard `per_round / uses=1 / this_card` declarative limit, independently guarding duplicate same-round skill-power activation, rejecting multiple same-round activation records on restore, and replacing the positive second-activation regression with a negative no-second-action/no-extra-mana/no-extra-receipt/no-extra-usage regression;
+- third-revision verification: combined affected focused set `108/108 PASS`; Fiore `10/10`; terrain `7/7`; game-start `7/7`; outside-game `12/12`; authoring `38/38`; MatchSession `34/34`; typecheck/content validate/generated determinism/`git diff --check` PASS; `data/authoring/**` delta EMPTY;
+- readiness remains permanently zero-credit; strict accounting stays `253/944`, remaining `691`, and future maximum Fiore increment remains `+6` only after fresh accepted owner-complete migration plus A-sync/accounting.

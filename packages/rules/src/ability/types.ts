@@ -557,6 +557,43 @@ export interface DefinitionSkillVariantState {
 export interface RoundCardAttributePowerBonusState {
   controllerId: PlayerId; attribute: string; amount: number; round: number; sourceCardId: string; abilityId: string;
 }
+export interface RoundSkillProfileRuntimeState {
+  controllerId: PlayerId;
+  stateKey: string;
+  profileKey: string;
+  mode: 'advance' | 'action' | 'ascension';
+  suppression: 'movement_lock' | 'gentle_penalties' | 'round_mana_cap';
+  enhancedCardInstanceId: string;
+  providerSourceCardId: string;
+  providerAbilityId: string;
+  round: number;
+  createdRevision: number;
+  targetPlayerId?: PlayerId;
+  controllerVpAtSelection?: number;
+  targetVpAtSelection?: number;
+  actionPenaltyPending?: boolean;
+  ascensionLossPending?: boolean;
+  determinationRewarded?: boolean;
+}
+export interface RoundSkillProfileSkillPowerActivationState {
+  controllerId: PlayerId;
+  stateKey: string;
+  sourceCardId: string;
+  abilityId: string;
+  round: number;
+  createdRevision: number;
+  ordinal: number;
+}
+export interface RoundSkillProfileTerrainActivationState {
+  controllerId: PlayerId;
+  stateKey: string;
+  sourceCardId: string;
+  abilityId: string;
+  round: number;
+  createdRevision: number;
+  ordinal: number;
+  locationId: string;
+}
 export interface DefinitionSideDeckState {
   deckKey: string; controllerId: PlayerId; providerSourceCardId: string; providerAbilityId: string;
   definitionIds: string[]; drawPile: string[]; hand: string[]; discardPile: string[]; recycleDiscard: boolean;
@@ -623,6 +660,12 @@ export interface AbilityRuntime {
   definitionSkillVariants?: Record<string, DefinitionSkillVariantState>;
   /** Identity-free current-round attack-card Power bonuses scoped by effective card attribute. */
   roundCardAttributePowerBonuses?: RoundCardAttributePowerBonusState[];
+  /** Restore-authenticated current-round profile switches; replaces generic __fd_rsp flag authority. */
+  roundSkillProfiles?: RoundSkillProfileRuntimeState[];
+  /** Exact accepted paid skill-Power activations; each record contributes +1 for its current round. */
+  roundSkillProfileSkillPowerActivations?: RoundSkillProfileSkillPowerActivationState[];
+  /** Exact accepted current-location terrain activations; each record contributes +2 at its bound battlefield. */
+  roundSkillProfileTerrainActivations?: RoundSkillProfileTerrainActivationState[];
   /** Game-long, per-definition declaration history for accepted declaration-play rules. */
   declaredAttributesByPlayerDefinition?: Record<PlayerId, Record<string, string[]>>;
   /** Exact next-round deck rebuilds scheduled by accepted definition-driven ascension rules. */

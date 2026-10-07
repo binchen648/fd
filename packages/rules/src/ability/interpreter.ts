@@ -134,6 +134,7 @@ import { cleanupMasterAscensionEventPowerAtRoundEnd, containsMasterAscensionEven
 import { canExecutePersistentLocationTerrainEffect, containsPersistentLocationTerrainPrivilegedNode, isAcceptedPersistentLocationTerrainAbility, isPersistentLocationTerrainRuntimeProvenanceValidForRestore, resolvePersistentLocationTerrainEffect } from './persistent-location-terrain-capability';
 import { canExecuteRoundLocationSupplyEffect, cleanupRoundLocationSupplyAtRoundEnd, containsRoundLocationSupplyPrivilegedNode, isAcceptedRoundLocationSupplyAbility, isRoundLocationSupplyRuntimeProvenanceValidForRestore, resolveRoundLocationSupplyEffect, settleMovementCompetitionSuppression } from './round-location-supply-capability';
 import { settleSameBattlefieldTerrainUpkeepForPriorityPlayer } from './unclaimed-terrain-upkeep-capability';
+import { SWITCH_ROUND_SKILL_PROFILE_EFFECT, canExecuteRoundSkillProfileEffect, cleanupRoundSkillProfilesAtRoundEnd, containsRoundSkillProfilePrivilegedNode, isAcceptedRoundSkillProfileAbility, isRoundSkillProfileRuntimeProvenanceValidForRestore, resolveRoundSkillProfileEffect, roundSkillCardPowerBonus, roundSkillProfileSuppressed, settleRoundSkillProfileEvent } from './round-skill-profile-capability';
 import { containsEffectiveLocationRestrictionPrivilegedNode, effectiveLocationRestrictionRequiresFaceDownStandardAttack, isAcceptedEffectiveLocationRestrictionAbility, isEffectiveLocationRestrictionRuntimeProvenanceValidForRestore, isPlayerAtEffectiveLocationKind } from './effective-location-restriction-capability';
 import { containsOriginStillnessPrintedCostPrivilegedNode, isAcceptedOriginStillnessPrintedCostAbility, originStillnessEligibleActiveBasicIds, originStillnessPrintedManaGain } from './origin-stillness-printed-cost-capability';
 import {
@@ -1108,11 +1109,15 @@ function modifierControllerApplies(s: GameState, modifierControllerId: string, s
 export function calculateCardPower(s: GameState, sourceId: string): { value: number; lines: CalculationLine[] } {
   if (runtime(s).cardState[sourceId]?.faceDown) return { value: 0, lines: [{ label: '暗置攻击无伤害结算', value: 0 }] };
   const source = card(s, sourceId); const d = definition(s, sourceId);
-  const persistentLock = s.ruleOverrides?.masterSkillPowerLockIfSituationForbidsByPlayer?.[source.controllerPlayerId];
+  const persistentLock = roundSkillProfileSuppressed(s, source.controllerPlayerId, 'gentle_penalties')
+    ? undefined
+    : s.ruleOverrides?.masterSkillPowerLockIfSituationForbidsByPlayer?.[source.controllerPlayerId];
   if (d?.cardType === 'master_skill' && persistentLock && situationForbidsAttribute(s, persistentLock.attribute)) {
     return { value: persistentLock.value, lines: [{ label: 'persistent_situation_attribute_power_lock', value: persistentLock.value }] };
   }
   const result = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
+  const profileSkillBonus = ['master_skill','servant_skill'].includes(d?.cardType ?? '') ? roundSkillCardPowerBonus(s, source.controllerPlayerId) : 0;
+  if (profileSkillBonus !== 0) { result.value += profileSkillBonus; result.lines.push({ label: 'round_skill_profile_power_bonus', value: result.value }); }
   const bloodlustSkillBonus = runtime(s).cardState[sourceId]?.active === true && ['master_skill','servant_skill'].includes(d?.cardType ?? '') ? bloodlustSkillPowerBonus(s, source.controllerPlayerId) : 0;
   if (bloodlustSkillBonus !== 0) { result.value += bloodlustSkillBonus; result.lines.push({ label: 'bloodlust_skill_power_bonus', value: result.value }); }
   const bloodlustAscension = bloodlustAscensionAdjustments(s, source.controllerPlayerId, d?.id ?? source.definitionId);
@@ -1287,6 +1292,10 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
       !playerIgnoresAbilityFromController(s, candidate.id, ctx.controllerId) &&
       nodes(target.constraints).every(c => {
         if (c.type === 'not_controller') return candidate.id !== ctx.controllerId;
+        if (c.type === 'victory_points_greater_than_controller') {
+          const controller = s.players.find((entry) => entry.id === ctx.controllerId);
+          return !!controller && candidate.id !== controller.id && candidate.vp > controller.vp;
+        }
         if (c.type === 'least_ruler_binding_count') return eligibleLeastBoundPlayerIds(s, ctx.controllerId, 2, rulerEligibleOpponents).includes(candidate.id);
         if (c.type === 'bound_by_controller_ruler_seal') return unspentRulerSealBindings(s, ctx.controllerId, candidate.id).length > 0;
         if (c.type === 'same_location_as_controller') {
@@ -2061,6 +2070,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsPersistentLocationTerrainPrivilegedNode(a) && !isAcceptedPersistentLocationTerrainAbility(a)) return false;
   if (containsRoundLocationSupplyPrivilegedNode(a) && !isAcceptedRoundLocationSupplyAbility(a)) return false;
   if (isAcceptedRoundLocationSupplyAbility(a) && !canExecuteRoundLocationSupplyEffect(s, context(s, sourceId, a.id, event), a)) return false;
+  if (containsRoundSkillProfilePrivilegedNode(a) && !isAcceptedRoundSkillProfileAbility(a)) return false;
+  if (isAcceptedRoundSkillProfileAbility(a) && a.kind === 'phase_action' && !canExecuteRoundSkillProfileEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsEffectiveLocationRestrictionPrivilegedNode(a) && !isAcceptedEffectiveLocationRestrictionAbility(a)) return false;
   if (containsOriginStillnessPrintedCostPrivilegedNode(a) && !isAcceptedOriginStillnessPrintedCostAbility(a)) return false;
   if (isAcceptedOriginStillnessPrintedCostAbility(a) && originStillnessEligibleActiveBasicIds(s, context(s, sourceId, a.id, event), a).length===0) return false;
@@ -3125,6 +3136,13 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
   if (r.preventEffects && !unpreventable) { r.events.push({ type: 'effect_prevented', playerId: p.id }); return; }
   switch (effect.type) {
     case 'return_card_by_definition': resolveControllerMasterSkillDefinitionReturn(s, ctx, effect); break;
+    case SWITCH_ROUND_SKILL_PROFILE_EFFECT: {
+      if (!isAcceptedRoundSkillProfileAbility(a) || a.effects.length !== 1 || a.effects[0]?.type !== SWITCH_ROUND_SKILL_PROFILE_EFFECT) {
+        reject('resolution_failed', 'Round skill-profile switch requires the accepted exact whole-ability envelope');
+      }
+      if (!resolveRoundSkillProfileEffect(s, ctx, a)) reject('resolution_failed', 'Round skill-profile switch resolution failed');
+      break;
+    }
     case NEXT_ROUND_SITUATION_BENEFIT_SUPPRESSION_EFFECT: {
       if (!isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled')) reject('resolution_failed', 'Suppression effect requires the accepted exact whole-ability envelope');
       try { applyNextRoundSituationBenefitSuppression(s, ctx.controllerId); }
@@ -4198,6 +4216,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
     if (!isMasterAscensionEventPowerRuntimeProvenanceValidForRestore(s)) return false;
     if (!isPersistentLocationTerrainRuntimeProvenanceValidForRestore(s)) return false;
     if (!isRoundLocationSupplyRuntimeProvenanceValidForRestore(s)) return false;
+    if (!isRoundSkillProfileRuntimeProvenanceValidForRestore(s)) return false;
     if (!isEffectiveLocationRestrictionRuntimeProvenanceValidForRestore(s)) return false;
     if (!(r.pendingDelayedActivations ?? []).every((entry) => {
       const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
@@ -6648,6 +6667,18 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     }
     return;
   }
+  if (containsRoundSkillProfilePrivilegedNode(a)) {
+    if (!isAcceptedRoundSkillProfileAbility(a)) reject('resolution_failed', 'Unsupported round skill-profile semantic');
+    if (a.kind !== 'passive') {
+      const pending = findPendingTarget(s, ctx, a, a.effects);
+      if (pending) { runtime(s).pendingDecision = pending; return; }
+      if (a.effects[0]?.type === 'round_skill_card_power_bonus') {
+        spendMana(s, ctx.controllerId, 1, ctx.manaContributions);
+      }
+      if (!resolveRoundSkillProfileEffect(s, ctx, a)) reject('resolution_failed', 'Round skill-profile resolution failed');
+    }
+    return;
+  }
   if (containsOriginStillnessPrintedCostPrivilegedNode(a)) {
     if (!isAcceptedOriginStillnessPrintedCostAbility(a)) reject('resolution_failed', 'Unsupported origin-stillness printed-cost semantic');
     const pending=findPendingTarget(s,ctx,a,a.effects); if(pending){runtime(s).pendingDecision=pending; return;}
@@ -7038,9 +7069,11 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   settlePendingRulerSealRewards(s, event);
   settleMovementCompetitionSuppression(s, event);
   settleBoundOpponentBattleOutcome(s, event);
+  settleRoundSkillProfileEvent(s, event);
   if (event.type === 'round_end') {
     cleanupRoundLocationSupplyAtRoundEnd(s);
     cleanupLinkedRoleSkillCopiesAtRoundEnd(s);
+    cleanupRoundSkillProfilesAtRoundEnd(s);
     for (const candidate of s.players) {
       const flags = structuredPlayerFlags(s, candidate.id);
       if (flags.__fd_temporary_servant_concealment_active !== true) continue;
