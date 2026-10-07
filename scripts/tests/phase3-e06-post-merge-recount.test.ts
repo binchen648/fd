@@ -15,7 +15,7 @@ describe('P3-E06 post-merge setup/create-to-skill recount', () => {
     const coverage = JSON.parse(readFileSync(coveragePath, 'utf8')) as any;
     const coverageSha = createHash('sha256').update(readFileSync(coveragePath)).digest('hex').toUpperCase();
 
-    expect(execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim()).toBe(recount.main.sha);
+    expect(execFileSync('git', ['rev-parse', 'origin/main'], { encoding: 'utf8' }).trim()).toBe(recount.main.sha);
     expect(execFileSync('git', ['merge-base', '--is-ancestor', recount.runtimePromotion.candidateSha, recount.main.sha], { encoding: 'utf8' })).toBe('');
     expect(execFileSync('git', ['merge-base', '--is-ancestor', recount.main.promotionHead, recount.main.sha], { encoding: 'utf8' })).toBe('');
     expect(coverageSha).toBe(recount.coverage.artifactSha256);
