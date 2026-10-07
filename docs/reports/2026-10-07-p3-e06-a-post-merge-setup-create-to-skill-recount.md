@@ -73,6 +73,7 @@ candidate lineage in the machine artifact. Legacy fallback remains recorded as
 - `npx vitest run scripts/tests/phase3-e06-post-merge-recount.test.ts`: PASS, 1 file / 2 tests; includes depth-1 clone recovery regression
 - `.github/workflows/test.yml`: `actions/checkout@v4` with `fetch-depth: 0`
 - `npm run test:ci`: 184 files / 1411 tests PASS
+- `packages/rules/tests/match-session.test.ts`: gameplay-field authentication test uses a local `15_000ms` timeout; global timeout unchanged
 - isolated `npx vitest run packages/rules/tests/match-session.test.ts --testTimeout=15000`: 30/30 PASS
 - `npm run test:source-assets`: BLOCKED, 93 `MISSING_IMAGE` issues
 - `git diff --check`: PASS

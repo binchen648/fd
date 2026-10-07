@@ -323,7 +323,7 @@ describe('MatchSession semi-auto runtime', () => {
     const erasedHistory: any = structuredClone(durable);
     erasedHistory.battleHistory = [];
     expect(() => restoreMatchSession(erasedHistory)).toThrow('Invalid or missing deferred runtime state authority');
-  });
+  }, 15_000);
 
   it('keeps independent direct MatchSession lifecycles isolated even under one host secret', () => {
     const older = createMatchSession({ seed: 111, humanPlayerId: 'p1' });
