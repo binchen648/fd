@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "fd-phase3-control-transition-v1",
+  "controlEpoch": "FD-P3-2026-09-23-07",
+  "effectiveDate": "2026-10-07",
+  "authoritativeMain": "a7751c3fa51895fd3a401721b1e926b90e016862",
+  "trigger": {
+    "pullRequest": 536,
+    "state": "MERGED",
+    "mergeCommit": "a7751c3fa51895fd3a401721b1e926b90e016862",
+    "previousEpoch": "FD-P3-2026-09-23-06"
+  },
+  "mainChecks": {
+    "build": "PASS",
+    "test": "PASS",
+    "deploy": "PASS",
+    "phase3Policy": "PASS"
+  },
+  "postMergeRecount": {
+    "taskId": "P3-E07-RP-00-A3",
+    "owner": "A",
+    "reviewerTaskId": "P3-E07-RP-00-RA3",
+    "state": "ACTIVE_RECOUNT_PREPARATION",
+    "runtimeEditsAllowed": false,
+    "lockReleaseAllowed": false
+  },
+  "pullRequestTopology": {
+    "noNewStackedRolePr": true,
+    "singlePromotionPrPerSlice": true,
+    "promotionPrOwner": "I",
+    "promotionTarget": "main",
+    "existingStackedPrDisposition": "PROVENANCE_PENDING_CLASSIFICATION",
+    "ciEnforcement": "PENDING_A_AND_G"
+  },
+  "runtimeReservation": {
+    "domain": "ability-runtime/setup-create-to-skill",
+    "owner": "RP-00",
+    "state": "HELD_PENDING_RA3_PASS"
+  },
+  "credit": {
+    "gateC": "NOT_GRANTED",
+    "releaseReady": false,
+    "migrationDeltaFromControlTransition": 0
+  },
+  "status": "RP00_RECOUNT_ACTIVE_NO_NEW_STACKED_ROLE_PR"
+}

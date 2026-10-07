@@ -1,21 +1,42 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.39
+- Version: P3-TI-1.40
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
+- Current control epoch: `FD-P3-2026-09-23-07`
+- Authoritative main: `a7751c3fa51895fd3a401721b1e926b90e016862`
 
 This file is the task lookup entry point for Phase 3 agents. Do not read the full `docs/plans/fd-phase-3-parallel-work-queue.md` by default. Read only the assigned task block below, then follow its explicit `Read` list.
 
 ## Flow Summary
 
 1. Codex A owns measurement, automation, evidence packets, and taxonomy drift protection.
-2. Codex B owns scoped runtime implementation, one hot-file lane at a time.
+2. Codex B owns scoped runtime implementation, with one writer per declared
+   resource domain.
 3. Codex R owns independent acceptance review and must stay read-only.
 4. B runtime work may run in parallel with A documentation/tooling work only when B has exclusive ownership of its declared hot files.
 5. B may not start the next runtime task until its previous implementation report exists and either R has reviewed it or the coordinator explicitly accepts the risk.
 6. Full-roster S work may run in parallel as a read-only intake lane under `PHASE3-FULL-ROSTER-COLLABORATION-CONTRACT.md`; it does not change current runtime task status.
 7. B2 runtime work starts only from an explicit `READY` block after the active hot-file lane and all listed gates are closed.
+8. No newly dispatched role task opens a stacked PR. A, B, B2, R, and S hand
+   off exact-SHA commits and artifacts; Codex I creates the Slice's single
+   Promotion PR targeting `main`.
+9. Existing task entries that mention stacked PRs are historical provenance.
+   They do not override the Epoch 07 no-stacked-role-PR directive.
+
+## Current Control Tasks
+
+| Task | Owner | State | Boundary |
+|---|---|---|---|
+| `P3-E07-RP-00-A3` | A | `ACTIVE_RECOUNT_PREPARATION` | post-merge recount only; no runtime edits |
+| `P3-E07-RP-00-RA3` | Reviewer A | `WAIT_A3` | exact-SHA recount review |
+| `P3-E07-G01` | G | `READY_AFTER_PLANNER_COMMIT` | review Slice/Task/PR governance only |
+| `P3-E07-C01-A` | A | `WAIT_RP00_RECOUNT` | Control CLI and drift-classifier design/implementation |
+| `P3-E07-C01-RA` | Reviewer A | `WAIT_C01_A` | automation and classification review |
+
+Read `docs/agents/FD-P3-CONTROL-EPOCH-07.md` and the exact assigned dispatch
+card before acting on these tasks.
 
 ## Full-Roster Flow
 
