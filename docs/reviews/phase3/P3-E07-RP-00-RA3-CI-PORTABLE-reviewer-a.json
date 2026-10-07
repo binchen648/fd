@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-E07-RP-00-RA3",
+  "reviewer": "github:binchen648",
+  "reviewThread": "https://github.com/binchen648/fd/pull/536#issuecomment-6039348450",
+  "candidateSha": "3292ff005e0d76d0584700fa45a1c3e2d7fcbb98",
+  "conclusion": "REVIEW_ACCEPTED",
+  "controlEpoch": "FD-P3-2026-09-23-07",
+  "reviewScope": "RP-00 CI-portable evidence contract",
+  "reviewMode": "read_only_exact_sha_ci_portability_review",
+  "reviewedAt": "2026-10-07T13:48:20Z",
+  "githubObjectId": 6039348450,
+  "candidateParentSha": "3429df904bc7337c523cffad900ccd938c6f288e",
+  "candidateRemoteBranch": "codex/a-p3-e07-rp00-evidence-contract-ci-portable",
+  "candidateRemoteHeadVerified": true,
+  "observedRecountMainSha": "a7751c3fa51895fd3a401721b1e926b90e016862",
+  "currentMainAtReview": "7072da3f5ad5b6ae77c5fb4b7eb40634c29039b0",
+  "sliceClassification": "EVIDENCE_ONLY",
+  "mainDrift": {
+    "classification": "CONTROL_ONLY_DRIFT",
+    "runtimeOverlap": false,
+    "authoringOverlap": false,
+    "coverageImplementationOverlap": false,
+    "promotionPreflightMustRevalidate": true
+  },
+  "reviewedChanges": [
+    ".github/workflows/test.yml",
+    "artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json",
+    "docs/reports/2026-10-07-p3-e06-a-post-merge-setup-create-to-skill-recount.md",
+    "scripts/tests/phase3-e06-post-merge-recount.test.ts"
+  ],
+  "contractChecks": {
+    "standardTestWorkflowFetchesFullHistory": "PASS",
+    "depthOneCloneOmitsBoundAncestors": "PASS",
+    "unshallowRestoresCommitObjects": "PASS",
+    "unshallowRestoresAncestryChecks": "PASS",
+    "commitObjectAssertionsRetained": "PASS",
+    "ancestryAssertionsRetained": "PASS",
+    "timeoutIsTestLocal": "PASS",
+    "globalTimeoutUnchanged": "PASS",
+    "creditBoundary": "PASS",
+    "gateCBoundary": "PASS"
+  },
+  "coverage": {
+    "artifactSha256": "1631ECF10EF600A9828F2DF7AD583E9FAD857FABBC73C69C78545606C7121D18",
+    "newRuntimeSemanticRouted": 22,
+    "legacyResolveEffect": 144,
+    "legacyExecuteAbility": 3,
+    "dualRuntime": 0,
+    "notClassifiable": 112,
+    "setupRouteConsumerCount": 3
+  },
+  "formalAccounting": {
+    "acceptedCurrentMainIdentities": 111,
+    "frozenDenominator": 944,
+    "remainingIdentities": 833,
+    "mainCoverageCreditDelta": 0,
+    "mainDenominatorDelta": 0,
+    "migrationCreditDelta": 0
+  },
+  "boundArtifacts": [
+    {
+      "path": "artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json",
+      "sha256": "4446D0A0E16A0A9E3402CEEBC000E2B5CAF2A98655FD3277FC6E530BA2E003FC"
+    },
+    {
+      "path": "artifacts/phase3-skill-coverage.json",
+      "sha256": "1631ECF10EF600A9828F2DF7AD583E9FAD857FABBC73C69C78545606C7121D18"
+    }
+  ],
+  "verification": [
+    {
+      "command": "npx vitest run scripts/tests/phase3-e06-post-merge-recount.test.ts",
+      "result": "PASS",
+      "summary": "1 file / 2 tests"
+    },
+    {
+      "command": "npm run test:ci",
+      "result": "IMPLEMENTER_PASS_REVIEWER_EXTERNAL_FLAKE",
+      "summary": "Implementer: 184 files / 1411 tests PASS. Reviewer: two runs reached 183 files / 1410 tests with only the unchanged match-session 5-second timeout; the changed lineage regression passed under full-suite load in both runs."
+    },
+    {
+      "command": "npx vitest run packages/rules/tests/match-session.test.ts --testTimeout=15000",
+      "result": "PASS",
+      "summary": "1 file / 30 tests"
+    },
+    {
+      "command": "npm run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "npm run content:validate",
+      "result": "PASS",
+      "summary": "0 blocking issues"
+    },
+    {
+      "command": "npm run verify:generated-content",
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check fba14be05af91733099a6c4ad67294e6c3beead6..3292ff005e0d76d0584700fa45a1c3e2d7fcbb98",
+      "result": "PASS"
+    }
+  ],
+  "findings": [],
+  "externalBlockers": [
+    "Final-head required CI checks must pass before merge; Reviewer reproduced the pre-existing match-session 5-second timeout in two default full-suite runs.",
+    "The 93 MISSING_IMAGE source assets remain a Release Gate blocker."
+  ],
+  "finalVerdict": "POST_MERGE_RECOUNT_PASS",
+  "allowedNextOwner": "Planner",
+  "allowedNextAction": "RECORD_EVIDENCE_ONLY_CONTROL_ONLY_DRIFT_DISPOSITION",
+  "nonClaims": [
+    "This review does not create or authorize a merge.",
+    "This review does not waive final-head required checks.",
+    "This review does not grant Gate C.",
+    "This review does not grant migration, denominator, or coverage credit.",
+    "This review does not complete Phase 3 or the Release Gate."
+  ]
+}
