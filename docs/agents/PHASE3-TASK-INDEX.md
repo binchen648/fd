@@ -9107,3 +9107,41 @@ Acceptance synchronization:
 - lawful FORMAL accounting credits exactly the frozen Darnic `3/3`: `250/944 + 3 = 253/944`, remaining `691`;
 - acceptance synchronization report: `docs/reports/2026-10-07-p3-a-owner-darnic-acceptance-synchronization.md`;
 - no readiness credit is recounted; owner change requires fixed HELPER report read plus exact acceptance-sync Base rescan before selecting the next owner.
+
+## TASK P3-B-FIORE-OWNER-READINESS-CAPABILITY
+
+Owner: FORMAL readiness
+Status: `READY`
+Classification: zero-credit complete-owner readiness/preflight for `master.fiore`
+
+Exact readiness Base: `b7bb64a0b3079927177c7ad131f9a482d29540d8` (accepted Darnic migration A-sync/accounting).
+
+Frozen owner scope: exactly `9` identities:
+- `master.fiore.skill.ascension`
+- `master.fiore.skill.s1`
+- `master.fiore.skill.s1a`
+- `master.fiore.skill.s2`
+- `master.fiore.skill.s3`
+- `master.fiore.skill.s4`
+- `master.fiore.skill.s5`
+- `master.fiore.skill.s6`
+- `master.fiore.skill.s7`
+
+Current canonical material / preservation boundary:
+- current `data/authoring/masters/master.fiore.json` contains exactly `3/9`: `s2 + s3 + s4`;
+- those three identities were already migrated and credited by accepted FM08 recovery (`P3-FM08`, Candidate `81ccb7e7e5d0f2cf5ad7da1eda3279c20a604c1a`, R40 accepted) and are preservation-only for this owner-complete replay;
+- exactly six frozen identities remain uncredited: `ascension + s1 + s1a + s5 + s6 + s7`;
+- the preserved `s2/s3/s4` objects must not receive duplicate credit or semantic drift.
+
+Accounting boundary:
+- strict accounting after Darnic acceptance is `253/944`, remaining `691`;
+- readiness/capability is permanently zero-credit;
+- maximum later lawful Fiore migration increment is exactly `+6`, only after one owner-complete Candidate preserves the accepted `3/9`, materializes all six remaining identities, receives fresh `MIGRATION_ACCEPTED`, and FORMAL A-sync/accounting completes.
+
+Formal readiness gate:
+- scan the complete nine-identity owner contract in one pass; do not stop after the first runtime gap;
+- mechanically preserve accepted FM08 `s2/s3/s4` semantics and authoring while deriving all generic readiness seams required by the six remaining identities from frozen inventory + locked Reference;
+- any new runtime primitive must be identity-free, data-driven, restore-safe, fail closed, and covered by focused negative paths;
+- readiness must not materialize the six missing Fiore consumers or award migration credit;
+- run focused/affected tests, typecheck, content validation, generated determinism, Phase-3 coverage/audit using external `--out` paths where supported, production identity/text audit, source-assets classification, and `git diff --check`;
+- freeze exactly one readiness Candidate / one PR and require one fresh independent exact `IMPLEMENTATION_ACCEPTED_CANDIDATE` before zero-credit A-sync/rescan may release Fiore owner-complete migration.
