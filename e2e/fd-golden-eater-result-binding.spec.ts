@@ -124,8 +124,8 @@ test('routes Golden Eater through browser, staged pending reconnect, projection,
   await firstTargetWindow.getByRole('button', { name: 'choose_target' }).click();
 
   await expect.poll(() => latestPendingDecision(projections)?.candidates).toEqual([goldenEaterSecondTargetInstanceId]);
-  await expect.poll(() => projectedCardZone(projections.at(-1), goldenEaterFirstTargetInstanceId)).toBe('removed_from_game');
-  await expect.poll(() => latestSelfPlayer(projections)?.vp).toBe(0);
+  await expect.poll(() => projectedCardZone(projections.at(-1), goldenEaterFirstTargetInstanceId)).toBe('skill');
+  await expect.poll(() => latestSelfPlayer(projections)?.vp).toBe(2);
   expect(latestSelfPlayer(projections)?.mana).toBe(12);
 
   const secondPendingRevision = projections.at(-1)?.match?.view.revision;

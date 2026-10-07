@@ -3517,12 +3517,14 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
 }
 
 function executeResultBindingProductionBridge(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): void {
+  let executionStartIndex = 0;
   for (let index = 0; index < effects.length; index += 1) {
     const effect = effects[index]!;
     const targetRef = effect.type === 'pay_mana' ? str(effect.selection) : str(effect.target);
     if (!targetRef || Object.prototype.hasOwnProperty.call(ctx.selections, targetRef)) continue;
     const target = a.targets.find((candidate) => str(candidate.id) === targetRef);
     if (!target) reject('resolution_failed', `Missing production bridge target '${targetRef}'.`);
+    if (index > executionStartIndex) executeResolutionEffects(s, ctx, effects.slice(executionStartIndex, index));
     const count = node(target.count);
     const min = Number(count.min ?? 1);
     const max = Number(count.max ?? 1);
@@ -3530,6 +3532,7 @@ function executeResultBindingProductionBridge(s: GameState, ctx: EffectContext, 
     if (choices.length < min) reject('no_legal_target', 'No legal target remains');
     if (choices.length === 0 && min === 0) {
       ctx.selections[targetRef] = [];
+      executionStartIndex = index + 1;
       continue;
     }
     runtime(s).pendingDecision = {
@@ -3540,11 +3543,11 @@ function executeResultBindingProductionBridge(s: GameState, ctx: EffectContext, 
       min,
       max,
       context: structuredClone(ctx),
-      remainingEffects: effects,
+      remainingEffects: effects.slice(index),
     };
     return;
   }
-  executeResolutionEffects(s, ctx, effects);
+  executeResolutionEffects(s, ctx, effects.slice(executionStartIndex));
   installOngoing(s, ctx, a);
   cleanupOngoing(s);
 }

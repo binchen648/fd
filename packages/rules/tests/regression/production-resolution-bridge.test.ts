@@ -83,8 +83,8 @@ describe('P3-B11 result binding production bridge', () => {
       type: 'choose_target', decisionId: firstDecisionId, selectedIds: [firstTargetInstanceId],
     });
     expect(firstStage.ok).toBe(true);
-    expect(session.state.cards.find((card) => card.instanceId === firstTargetInstanceId)?.zone).toBe('removed_from_game');
-    expect(session.state.players.find((player) => player.id === 'p1')?.vp).toBe(0);
+    expect(session.state.cards.find((card) => card.instanceId === firstTargetInstanceId)?.zone).toBe('skill');
+    expect(session.state.players.find((player) => player.id === 'p1')?.vp).toBe(2);
     expect(session.getPlayerView('p1').pendingDecision?.candidates).toEqual([secondTargetInstanceId]);
 
     const afterFirstStage = structuredClone(session.state);
