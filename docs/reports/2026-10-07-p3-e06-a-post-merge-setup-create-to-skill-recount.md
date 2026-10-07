@@ -9,7 +9,8 @@ Observed main SHA (immutable recount anchor):
 
 Moving-ref compatibility is `CONTROL_ONLY_DRIFT` and belongs to the
 `PROMOTION_PREFLIGHT_POLICY`; this recount does not require `origin/main` to
-remain equal to the observed SHA.
+remain equal to the observed SHA. CI verification uses only the bound commit
+objects and ancestry in the checkout; it does not require a remote ref.
 
 Promotion: PR #536, merge `a7751c3fa51895fd3a401721b1e926b90e016862`, promotion
 head `119b8f33e9d59691996a5d03a8dc7589fc816a61`.
@@ -49,6 +50,9 @@ unchanged by this promotion.
 
 Machine artifact: `artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json`
 
+Machine artifact SHA-256:
+`4446D0A0E16A0A9E3402CEEBC000E2B5CAF2A98655FD3277FC6E530BA2E003FC`
+
 Coverage artifact: `artifacts/phase3-skill-coverage.json`
 
 Coverage artifact SHA-256:
@@ -67,6 +71,7 @@ candidate lineage in the machine artifact. Legacy fallback remains recorded as
 - `npm run typecheck`: PASS
 - setup focused suite after `npm run content:compile`: 5 files / 184 tests PASS
 - `npm run test:source-assets`: BLOCKED, 93 `MISSING_IMAGE` issues
+- `npx vitest run scripts/tests/phase3-e06-post-merge-recount.test.ts`: PASS, 1 file / 1 test
 - `git diff --check`: PASS
 
 This is a post-merge evidence recount, not a new runtime implementation or a

@@ -1,13 +1,42 @@
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-const root = process.cwd();
+const root = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 const recountPath = resolve(root, 'artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json');
 const coveragePath = resolve(root, 'artifacts/phase3-skill-coverage.json');
+const gitEnvironment = {
+  ...process.env,
+  GIT_CONFIG_NOSYSTEM: '1',
+  GIT_OPTIONAL_LOCKS: '0',
+};
+
+function git(args: string[]): string {
+  try {
+    return execFileSync('git', args, {
+      cwd: root,
+      encoding: 'utf8',
+      env: gitEnvironment,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    }).trim();
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Git evidence verification failed for ${args.join(' ')}: ${message}`);
+  }
+}
+
+function assertCommitObject(sha: string, label: string): void {
+  expect(sha, `${label} must be a full commit SHA`).toMatch(/^[0-9a-f]{40}$/);
+  expect(git(['rev-parse', '--verify', `${sha}^{commit}`]), `${label} must be a valid local commit object`).toBe(sha);
+}
+
+function assertAncestor(ancestor: string, descendant: string, label: string): void {
+  expect(() => git(['merge-base', '--is-ancestor', ancestor, descendant]), label).not.toThrow();
+}
 
 describe('P3-E06 post-merge setup/create-to-skill recount', () => {
   it('binds the immutable observed main, runtime lineage, unchanged accounting, and fresh coverage', () => {
@@ -16,14 +45,17 @@ describe('P3-E06 post-merge setup/create-to-skill recount', () => {
     const coverageSha = createHash('sha256').update(readFileSync(coveragePath)).digest('hex').toUpperCase();
 
     const observedMainSha = recount.main.observedMainSha;
-    expect(execFileSync('git', ['rev-parse', '--verify', `${observedMainSha}^{commit}`], { encoding: 'utf8' }).trim()).toBe(observedMainSha);
-    expect(execFileSync('git', ['merge-base', '--is-ancestor', recount.runtimePromotion.candidateSha, observedMainSha], { encoding: 'utf8' })).toBe('');
-    expect(execFileSync('git', ['merge-base', '--is-ancestor', recount.main.promotionHead, observedMainSha], { encoding: 'utf8' })).toBe('');
+    assertCommitObject(observedMainSha, 'observedMainSha');
+    assertCommitObject(recount.runtimePromotion.candidateSha, 'runtime candidate');
+    assertCommitObject(recount.main.promotionHead, 'promotion head');
+    assertAncestor(recount.runtimePromotion.candidateSha, observedMainSha, 'runtime candidate must precede observedMainSha');
+    assertAncestor(recount.main.promotionHead, observedMainSha, 'promotion head must precede observedMainSha');
     expect(recount.promotionCompatibility).toEqual({
       status: 'CONTROL_ONLY_DRIFT',
       authority: 'PROMOTION_PREFLIGHT_POLICY',
       movingRef: 'origin/main',
       recountRule: 'OBSERVED_MAIN_SHA_ONLY; DO_NOT_REQUIRE_MOVING_REF_EQUALITY',
+      ciRule: 'BOUND_COMMIT_OBJECTS_ONLY; NO_REMOTE_REF_REQUIRED',
     });
     expect(coverageSha).toBe(recount.coverage.artifactSha256);
     expect(coverage.counts.totalArchives).toBe(127);

@@ -16,7 +16,8 @@
     "status": "CONTROL_ONLY_DRIFT",
     "authority": "PROMOTION_PREFLIGHT_POLICY",
     "movingRef": "origin/main",
-    "recountRule": "OBSERVED_MAIN_SHA_ONLY; DO_NOT_REQUIRE_MOVING_REF_EQUALITY"
+    "recountRule": "OBSERVED_MAIN_SHA_ONLY; DO_NOT_REQUIRE_MOVING_REF_EQUALITY",
+    "ciRule": "BOUND_COMMIT_OBJECTS_ONLY; NO_REMOTE_REF_REQUIRED"
   },
   "runtimePromotion": {
     "candidateSha": "30be3b74258c817ede1cb857ace947505b62d8ed",
