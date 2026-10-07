@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "controlEpoch": "FD-P3-2026-09-23-07",
+  "taskId": "P3-E07-RP-00-RA3",
+  "reviewer": "Reviewer A",
+  "reviewerIdentity": "Codex Reviewer A",
+  "reviewMode": "read_only_exact_sha_post_merge_recount_review",
+  "reviewedAt": "2026-10-07T04:35:53.105Z",
+  "authoritativeMainAtCandidate": "a7751c3fa51895fd3a401721b1e926b90e016862",
+  "currentMainAtReview": "7072da3f5ad5b6ae77c5fb4b7eb40634c29039b0",
+  "reviewedCandidateSha": "fa76e0311c9f7bd0ca07c973866b12938c5fd79f",
+  "candidateBranch": "codex/a-p3-e06-post-merge-recount",
+  "candidateRemoteHeadVerified": true,
+  "candidateDescendsFromAuthoritativeMain": true,
+  "epochTransition": {
+    "sourceEpoch": "FD-P3-2026-09-23-06",
+    "reviewEpoch": "FD-P3-2026-09-23-07",
+    "disposition": "EXPLICIT_BINDING_ACCEPTED",
+    "regenerationRequired": false
+  },
+  "mainDrift": {
+    "from": "a7751c3fa51895fd3a401721b1e926b90e016862",
+    "to": "7072da3f5ad5b6ae77c5fb4b7eb40634c29039b0",
+    "classification": "CONTROL_ONLY_DRIFT",
+    "runtimeOverlap": false,
+    "authoringOverlap": false,
+    "coverageImplementationOverlap": false
+  },
+  "changedPaths": [
+    "artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json",
+    "artifacts/phase3-skill-coverage.json",
+    "docs/reports/2026-10-07-p3-e06-a-post-merge-setup-create-to-skill-recount.md",
+    "scripts/tests/phase3-e06-post-merge-recount.test.ts"
+  ],
+  "runtimePromotion": {
+    "candidateSha": "30be3b74258c817ede1cb857ace947505b62d8ed",
+    "candidateInMain": true,
+    "authorizedAbilities": [
+      "military.has-support-shot",
+      "astronomical-science.has-chaldeas",
+      "useless-person.setup"
+    ],
+    "semanticRoute": "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL",
+    "semanticRouteConsumerCount": 3,
+    "gateC": "NOT_VERIFIED",
+    "legacyFallback": "CLOSED_EXACT_ARTIFACT_BOUND"
+  },
+  "coverage": {
+    "totalArchives": 127,
+    "totalCards": 169,
+    "totalAbilities": 281,
+    "newRuntimeSemanticRouted": 22,
+    "legacyResolveEffect": 144,
+    "legacyExecuteAbility": 3,
+    "dualRuntime": 0,
+    "notClassifiable": 112,
+    "compiledBlockingIssues": 0,
+    "freshRecountMatchesArtifactExceptGeneratedAt": true
+  },
+  "formalAccounting": {
+    "acceptedCurrentMainIdentities": 111,
+    "frozenDenominator": 944,
+    "remainingIdentities": 833,
+    "duplicateAcceptedIds": 0,
+    "runtimePromotionDelta": 3,
+    "mainCoverageCreditDelta": 0,
+    "mainDenominatorDelta": 0,
+    "migrationCreditDelta": 0
+  },
+  "boundArtifacts": [
+    {
+      "path": "artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json",
+      "sha256": "06B1746E64518D7B5A4DE18FFDF6145297BACDAE83539A038834D09EA7543198"
+    },
+    {
+      "path": "artifacts/phase3-skill-coverage.json",
+      "sha256": "1631ECF10EF600A9828F2DF7AD583E9FAD857FABBC73C69C78545606C7121D18"
+    },
+    {
+      "path": "artifacts/reviewer-evidence/2026-09-29-p3-e04-s00-a2-reviewer-b.json",
+      "sha256": "FD988E5544AF230D148FE9CD94E218293D54BFFB05BCFA3AE7C09B3970D66C67"
+    },
+    {
+      "path": "artifacts/phase3-e04-s00-a2-reviewer-a-sync-binding.json",
+      "sha256": "4E92FEF7AB33C025AB13170DB1F5A24B7AEADDBC9A6A5C1EEEB81AE3ED7A0A31"
+    },
+    {
+      "path": "docs/agents/manifests/governance/P3-E06-G-OVERRIDE-ATTESTATION.json",
+      "sha256": "B88CB5C0D16F4D6243BC0C484037478ECB74778001D5BE5EE50DD138775AAE31"
+    }
+  ],
+  "verification": [
+    {
+      "command": "npx vitest run scripts/tests/phase3-e06-post-merge-recount.test.ts",
+      "result": "PASS",
+      "summary": "1 file / 1 test"
+    },
+    {
+      "command": "npx vitest run packages/rules/tests/regression/setup-create-to-skill-current-lineage.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/complex-skills-regression.test.ts packages/rules/tests/regression/fb2-game-start-skill-provisioning.test.ts",
+      "result": "PASS",
+      "summary": "5 files / 184 tests"
+    },
+    {
+      "command": "npm run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "npm run content:validate",
+      "result": "PASS",
+      "summary": "0 blocking issues"
+    },
+    {
+      "command": "npm run verify:generated-content",
+      "result": "PASS"
+    },
+    {
+      "command": "npm run test:source-assets",
+      "result": "BLOCKED_EXPECTED",
+      "summary": "93 MISSING_IMAGE issues"
+    },
+    {
+      "command": "git diff --check a7751c3fa51895fd3a401721b1e926b90e016862..fa76e0311c9f7bd0ca07c973866b12938c5fd79f",
+      "result": "PASS"
+    }
+  ],
+  "findings": [],
+  "finalVerdict": "POST_MERGE_RECOUNT_PASS",
+  "allowedNextOwner": "Codex I",
+  "allowedNextAction": "CREATE_EVIDENCE_ONLY_PROMOTION_PR_FROM_CURRENT_MAIN",
+  "nonClaims": [
+    "This verdict does not grant Gate C.",
+    "This verdict does not grant migration or denominator credit.",
+    "This verdict does not complete Phase 3 or the Release Gate.",
+    "This verdict does not itself create or authorize a merge.",
+    "The 93 missing source assets remain a release blocker."
+  ]
+}
