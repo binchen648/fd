@@ -1,16 +1,22 @@
 {
-  "schemaVersion": "fd-phase3-post-merge-recount-v1",
+  "schemaVersion": "fd-phase3-post-merge-recount-v2",
   "controlEpoch": "FD-P3-2026-09-23-06",
   "taskId": "P3-E06-A-POST-MERGE-SETUP-CREATE-TO-SKILL-RECOUNT",
   "owner": "Codex A",
   "status": "POST_MERGE_RECOUNT_READY_FOR_REVIEW",
   "main": {
-    "sha": "a7751c3fa51895fd3a401721b1e926b90e016862",
+    "observedMainSha": "a7751c3fa51895fd3a401721b1e926b90e016862",
     "firstParent": "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
     "promotionPr": 536,
     "promotionHead": "119b8f33e9d59691996a5d03a8dc7589fc816a61",
     "mergeSha": "a7751c3fa51895fd3a401721b1e926b90e016862",
     "mergeStatus": "MERGED"
+  },
+  "promotionCompatibility": {
+    "status": "CONTROL_ONLY_DRIFT",
+    "authority": "PROMOTION_PREFLIGHT_POLICY",
+    "movingRef": "origin/main",
+    "recountRule": "OBSERVED_MAIN_SHA_ONLY; DO_NOT_REQUIRE_MOVING_REF_EQUALITY"
   },
   "runtimePromotion": {
     "candidateSha": "30be3b74258c817ede1cb857ace947505b62d8ed",

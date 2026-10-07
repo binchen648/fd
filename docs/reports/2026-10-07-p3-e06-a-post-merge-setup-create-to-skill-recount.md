@@ -4,7 +4,12 @@ Control Epoch: `FD-P3-2026-09-23-06`
 
 Task: `P3-E06-A-POST-MERGE-SETUP-CREATE-TO-SKILL-RECOUNT`
 
-Authoritative main: `origin/main@a7751c3fa51895fd3a401721b1e926b90e016862`
+Observed main SHA (immutable recount anchor):
+`a7751c3fa51895fd3a401721b1e926b90e016862`
+
+Moving-ref compatibility is `CONTROL_ONLY_DRIFT` and belongs to the
+`PROMOTION_PREFLIGHT_POLICY`; this recount does not require `origin/main` to
+remain equal to the observed SHA.
 
 Promotion: PR #536, merge `a7751c3fa51895fd3a401721b1e926b90e016862`, promotion
 head `119b8f33e9d59691996a5d03a8dc7589fc816a61`.

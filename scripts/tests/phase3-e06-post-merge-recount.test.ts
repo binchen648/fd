@@ -10,14 +10,21 @@ const recountPath = resolve(root, 'artifacts/phase3-e06-a-post-merge-setup-creat
 const coveragePath = resolve(root, 'artifacts/phase3-skill-coverage.json');
 
 describe('P3-E06 post-merge setup/create-to-skill recount', () => {
-  it('binds current main, exact runtime lineage, unchanged formal accounting, and fresh coverage', () => {
+  it('binds the immutable observed main, runtime lineage, unchanged accounting, and fresh coverage', () => {
     const recount = JSON.parse(readFileSync(recountPath, 'utf8')) as any;
     const coverage = JSON.parse(readFileSync(coveragePath, 'utf8')) as any;
     const coverageSha = createHash('sha256').update(readFileSync(coveragePath)).digest('hex').toUpperCase();
 
-    expect(execFileSync('git', ['rev-parse', 'origin/main'], { encoding: 'utf8' }).trim()).toBe(recount.main.sha);
-    expect(execFileSync('git', ['merge-base', '--is-ancestor', recount.runtimePromotion.candidateSha, recount.main.sha], { encoding: 'utf8' })).toBe('');
-    expect(execFileSync('git', ['merge-base', '--is-ancestor', recount.main.promotionHead, recount.main.sha], { encoding: 'utf8' })).toBe('');
+    const observedMainSha = recount.main.observedMainSha;
+    expect(execFileSync('git', ['rev-parse', '--verify', `${observedMainSha}^{commit}`], { encoding: 'utf8' }).trim()).toBe(observedMainSha);
+    expect(execFileSync('git', ['merge-base', '--is-ancestor', recount.runtimePromotion.candidateSha, observedMainSha], { encoding: 'utf8' })).toBe('');
+    expect(execFileSync('git', ['merge-base', '--is-ancestor', recount.main.promotionHead, observedMainSha], { encoding: 'utf8' })).toBe('');
+    expect(recount.promotionCompatibility).toEqual({
+      status: 'CONTROL_ONLY_DRIFT',
+      authority: 'PROMOTION_PREFLIGHT_POLICY',
+      movingRef: 'origin/main',
+      recountRule: 'OBSERVED_MAIN_SHA_ONLY; DO_NOT_REQUIRE_MOVING_REF_EQUALITY',
+    });
     expect(coverageSha).toBe(recount.coverage.artifactSha256);
     expect(coverage.counts.totalArchives).toBe(127);
     expect(coverage.counts.totalCards).toBe(169);
