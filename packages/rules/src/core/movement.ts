@@ -8,6 +8,7 @@ import { applyLinkedRoleEntrySealCost, linkedRoleEntrySealAuthority } from '../a
 import { effectiveLocationRestrictionBlocksMovement } from '../ability/effective-location-restriction-capability';
 import { boundOpponentRoundMovementLocked } from '../ability/definition-resource-binding-capability';
 import { regularMovementEngagementIgnored } from '../ability/regular-movement-engagement-capability';
+import { effectiveInjuryWarpMovementLinks, settleInjuryWarpMovementPenalty } from '../ability/injury-warp-capability';
 
 const STARTING_LOCATION_BY_SEAT: Record<number, LocationId> = {
   1: "miyama_town",
@@ -112,7 +113,7 @@ export function movePlayer(state: GameState, input: MovePlayerInput): MovePlayer
     return failure(state, "engaged");
   }
 
-  const path = findMovementPath(state.map, state.locationConfig, player.locationId, input.to);
+  const path = findMovementPath(state, player.locationId, input.to);
   if (!path) {
     return failure(state, "invalid_path");
   }
@@ -189,6 +190,10 @@ export function movePlayer(state: GameState, input: MovePlayerInput): MovePlayer
     if (manaSpent > 0) spendMana(nextState, input.playerId, manaSpent, input.manaContributions);
     if (destination) movedPlayer.locationId = destination;
   }
+  if (nextState.abilityRuntime === state.abilityRuntime && nextState.abilityRuntime) {
+    nextState = { ...nextState, abilityRuntime: structuredClone(nextState.abilityRuntime) };
+  }
+  settleInjuryWarpMovementPenalty(nextState, input.playerId);
 
   return {
     nextState,
@@ -310,8 +315,7 @@ function isPlayerEngaged(state: GameState, playerId: string): boolean {
 }
 
 function findMovementPath(
-  map: MapDefinition,
-  config: MatchLocationConfig,
+  state: GameState,
   from: LocationId,
   to: LocationId,
 ): LocationId[] | null {
@@ -333,12 +337,12 @@ function findMovementPath(
       continue;
     }
 
-    const location = getLocationById(map, config, current);
+    const location = getLocationById(state.map, state.locationConfig, current);
     if (!location) {
       continue;
     }
 
-    for (const next of location.movementLinks) {
+    for (const next of effectiveInjuryWarpMovementLinks(state, current, location.movementLinks)) {
       if (visited.has(next)) {
         continue;
       }

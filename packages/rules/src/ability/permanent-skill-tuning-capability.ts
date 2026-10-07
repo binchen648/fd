@@ -1,5 +1,6 @@
 import type { GameState } from '../schema/game';
 import type { AuthoringAbility, EffectContext, RuleNode } from './types';
+import { settleInjuryWarpCommandSealSpend } from './injury-warp-capability';
 
 export const PERMANENT_RETURNED_SKILL_TUNING_EFFECT = 'permanent_returned_skill_tuning' as const;
 export const COMMAND_SEAL_SPENT_THIS_ROUND_CONDITION = 'controller_spent_command_seal_this_round' as const;
@@ -106,6 +107,7 @@ export function markCommandSealSpent(
 ): void {
   if (!Number.isSafeInteger(before) || !Number.isSafeInteger(after) || after < 0 || after >= before) return;
   if (!state.players.some((player) => player.id === playerId)) throw new Error('COMMAND_SEAL_SPEND_PLAYER_INVALID');
+  settleInjuryWarpCommandSealSpend(state, playerId, before, after);
   if (!state.abilityRuntime || !controllerHasPermanentReturnedSkillTuningProvider(state, playerId)) return;
   const r = runtime(state);
   (r.commandSealSpentRoundByPlayer ??= {})[playerId] = state.round.roundNumber;
