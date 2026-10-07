@@ -9423,7 +9423,7 @@ Acceptance synchronization:
 ## TASK P3-S-OWNER-FUJINO-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: formal owner-complete consumer migration for `master.fujino`
 
 Frozen owner scope: exactly `6` identities:
@@ -9443,3 +9443,21 @@ Formal gate:
 - one formal Candidate, one PR, one fresh independent exact Base/Candidate migration review;
 - strict accounting starts `261/944`, remaining `683`; no credit before fresh `MIGRATION_ACCEPTED` plus FORMAL A-sync/accounting;
 - if accepted, credit exactly all six newly materialized identities: `261/944 -> 267/944`, remaining `677`.
+
+Implementation evidence:
+- exact implementation Base: `0fb1d2f41fdec4d49ee1e037db2002304ba2d351`;
+- canonical `data/authoring/masters/master.fujino.json` materializes all six frozen identities together and the active pack registers `master.fujino` exactly once;
+- no production runtime source is changed; consumer definitions use only accepted identity-free Injury/Warp, FB2-15 provisioning, append-only, outside-game, and ascension authority;
+- owner-complete regression `4/4 PASS`; selected affected validation `127/127 PASS` across nine files;
+- typecheck PASS; content validation PASS at `24 masters / 19 servants / 20 events / 0 blocking issues`;
+- generated determinism PASS: content `a2fae3521b495f0e577a0cef558ef3f4c6c134156c13013e627db76f518f07e9`, fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`, evidence `a6f47f6b2ed85aa82a7322dcecefcb890db86a2b265854aff5ae379cf03cda88`;
+- external coverage: `archives=128 cards=295 abilities=517 compiledCards=233 compiledCharacters=43 blockingIssues=0 newRuntimeSemanticRouted=22 legacyExecuteAbility=3 legacyResolveEffect=165 dualRuntime=0 pilotAllowlist=0 notClassifiable=327 taxonomyWarnings=338`;
+- external audit: `legacyResolveEffect=165 legacyExecuteAbility=3 notClassifiable=327 promotionFindings=20`;
+- declared Fujino development image exists; repository-wide source-assets still has exactly `93` historical `chm-extract/图包` missing-image blockers and is not claimed green;
+- detailed result: `docs/reports/2026-10-08-p3-s-owner-fujino-complete-migration-result.md`.
+
+Review gate:
+- freeze one formal Candidate from exact Base `0fb1d2f41fdec4d49ee1e037db2002304ba2d351`;
+- one fresh independent exact Base/Candidate review must return `MIGRATION_ACCEPTED`;
+- strict accounting remains `261/944`, remaining `683` until accepted evidence plus FORMAL A-sync/accounting;
+- only then may Fujino credit exact `+6`: `261/944 -> 267/944`, remaining `677`.

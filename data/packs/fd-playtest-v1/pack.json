@@ -61,7 +61,8 @@
                                  "data/authoring/masters/master.dan.json",
                                  "data/authoring/masters/master.darnic.json",
                                  "data/authoring/masters/master.fiore.json",
-                                 "data/authoring/masters/master.fou.json"
+                                 "data/authoring/masters/master.fou.json",
+                                 "data/authoring/masters/master.fujino.json"
                              ],
     "authoringMasterSupportFiles":  [
                                         "data/authoring/masters/master.shirou-emiya.json"

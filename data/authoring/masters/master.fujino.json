@@ -1,0 +1,409 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.fujino",
+  "name": "浅上藤乃",
+  "class": "Master",
+  "publicInformation": {
+    "type": "master_package",
+    "initialMana": 4
+  },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "7d764784b48cfb6bdfc175f5e7be529daa827a77",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Accepted Fujino readiness PR #549 supplies the identity-free Injury/Warp runtime authority; accepted FB2-15 supplies game-start skill provisioning. Locked Reference supplies exact owner/static metadata and printed behavior."
+  },
+  "cards": [
+    {
+      "id": "master.fujino.skill.s1",
+      "aliases": ["s1"],
+      "legacyId": "s1",
+      "name": "浅神之嗣",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.fujino" },
+      "printedText": "将一张【歪曲之魔眼】加入你的技能区。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "fujino.s1.provision-distortion",
+          "kind": "forced_trigger",
+          "printedClause": "将一张【歪曲之魔眼】加入你的技能区。",
+          "activation": { "trigger": "game_start" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "provision_skill_cards",
+              "player": "controller",
+              "targetDefinitionIds": ["master.fujino.skill.s3"]
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.fujino.skill.s1a",
+      "aliases": ["s1a"],
+      "legacyId": "s1a",
+      "name": "无痛症",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.fujino" },
+      "printedText": "战斗阶段，若你位于战场，随机抽取2张【创伤】，获得其中一张并将另一张洗回【创伤】牌堆。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "fujino.s1a.injury-choice",
+          "kind": "forced_trigger",
+          "printedClause": "战斗阶段，若你位于战场，随机抽取2张【创伤】，获得其中一张并将另一张洗回【创伤】牌堆。",
+          "activation": { "trigger": "controller_combat_action_window" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "injury_warp_draw_choice",
+              "stateKey": "fujino.injury-warp",
+              "allowedLocationIds": ["miyama_town", "shinto"],
+              "drawCount": 2,
+              "chooseCount": 1
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.fujino.skill.s2",
+      "aliases": ["s2"],
+      "legacyId": "s2",
+      "name": "扭曲空间",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.fujino" },
+      "printedText": "从魔术工房指向深山町的移动箭头改为指向新都，从新都的改为指向深山町，从深山町的改为指向侦查。（同时更改相邻地点关系）\n修复-任何阶段：关闭【扭曲空间】。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "fujino.s2.repair.preparation",
+          "kind": "phase_action",
+          "printedClause": "修复-任何阶段：关闭【扭曲空间】。",
+          "activation": { "phase": "preparation", "opens": "controller_action_window", "requiresSourceState": "active" },
+          "conditions": [],
+          "targets": [],
+          "effects": [{ "type": "repair_movement_topology_override", "stateKey": "fujino.injury-warp" }],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "fujino.s2.repair.advance",
+          "kind": "phase_action",
+          "printedClause": "修复-任何阶段：关闭【扭曲空间】。",
+          "activation": { "phase": "advance", "opens": "controller_action_window", "requiresSourceState": "active" },
+          "conditions": [],
+          "targets": [],
+          "effects": [{ "type": "repair_movement_topology_override", "stateKey": "fujino.injury-warp" }],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "fujino.s2.repair.action",
+          "kind": "phase_action",
+          "printedClause": "修复-任何阶段：关闭【扭曲空间】。",
+          "activation": { "phase": "action", "opens": "controller_action_window", "requiresSourceState": "active" },
+          "conditions": [],
+          "targets": [],
+          "effects": [{ "type": "repair_movement_topology_override", "stateKey": "fujino.injury-warp" }],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "fujino.s2.repair.combat",
+          "kind": "phase_action",
+          "printedClause": "修复-任何阶段：关闭【扭曲空间】。",
+          "activation": { "phase": "combat", "opens": "controller_combat_action_window", "requiresSourceState": "active" },
+          "conditions": [],
+          "targets": [],
+          "effects": [{ "type": "repair_movement_topology_override", "stateKey": "fujino.injury-warp" }],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.fujino.skill.s3",
+      "aliases": ["s3"],
+      "legacyId": "s3",
+      "name": "歪曲之魔眼",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.fujino" },
+      "initialPlacement": "outside_game",
+      "printedText": "此牌需追加打出。\n歪曲吧！-行动阶段：激活【扭曲空间】。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": ["魔术"],
+        "cost": 3,
+        "basePower": 4
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [
+        { "type": "skill_zone_mana_at_least", "value": 3 }
+      ],
+      "abilities": [
+        {
+          "id": "fujino.s3.append-only",
+          "kind": "passive",
+          "printedClause": "此牌需追加打出。",
+          "activation": { "trigger": "while_active" },
+          "conditions": [],
+          "targets": [],
+          "effects": [{ "type": "append_only_rule" }],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "fujino.s3.bend-space",
+          "kind": "phase_action",
+          "printedClause": "歪曲吧！-行动阶段：激活【扭曲空间】。",
+          "activation": { "phase": "action", "opens": "controller_action_window", "requiresSourceState": "active" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "activate_movement_topology_override",
+              "stateKey": "fujino.injury-warp",
+              "linkedOverrideDefinitionId": "master.fujino.skill.s2",
+              "replacements": [
+                { "from": "magic_workshop", "to": "shinto" },
+                { "from": "shinto", "to": "miyama_town" },
+                { "from": "miyama_town", "to": "recon" }
+              ]
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.fujino.skill.s4",
+      "aliases": ["s4"],
+      "legacyId": "s4",
+      "name": "创伤",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.fujino" },
+      "printedText": "【创伤【头部】】获得此牌时，立即随机弃置一张手牌。行动阶段开始时，随机弃置一张手牌。\n【创伤【肩部】】你的基础攻击威力-1。\n【创伤【胃部】】+2的魔术工房与+3的地利位置对你视为已被占领，无法部署。\n【创伤【腕部】】当你使用令咒时，失去1点战果。\n【创伤【腿部】】当你于你的回合移动后，失去1点魔力。\n【创伤【脊椎】】将【歪曲之魔眼】加入你的攻击，然后将牌堆中剩余的【创伤】移除游戏并将所有已有的【创伤】切换为【痛觉】。\n【痛觉】唯一：战斗结束后，弃置一张【痛觉】。失控-你的技能魔力消耗-1。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "fujino.s4.ruleset",
+          "kind": "passive",
+          "printedClause": "【创伤】与【痛觉】按本牌定义的六项创伤规则持续结算。",
+          "activation": { "trigger": "while_active" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "injury_warp_ruleset",
+              "stateKey": "fujino.injury-warp",
+              "injuryKeys": ["head", "shoulder", "stomach", "wrist", "leg", "spinal"],
+              "immediateRandomDiscardKey": "head",
+              "recurringRandomDiscardKey": "head",
+              "basicPowerPenaltyKey": "shoulder",
+              "basicPowerDelta": -1,
+              "forbiddenTerrainKey": "stomach",
+              "forbiddenTerrainValues": [2, 3],
+              "sealVpLossKey": "wrist",
+              "vpLossPerSeal": 1,
+              "movementManaLossKey": "leg",
+              "manaLossPerOwnTurnMove": 1,
+              "conversionKey": "spinal",
+              "linkedAttackDefinitionId": "master.fujino.skill.s3",
+              "painSkillCostDelta": -1,
+              "painDiscardPerBattleEnd": 1,
+              "ascensionPainRewardVp": 4
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "fujino.s4.head-action-discard",
+          "kind": "forced_trigger",
+          "printedClause": "行动阶段开始时，若已有【创伤【头部】】，随机弃置一张手牌。",
+          "activation": { "trigger": "controller_action_window" },
+          "conditions": [],
+          "targets": [],
+          "effects": [{ "type": "injury_warp_action_discard", "stateKey": "fujino.injury-warp" }],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "fujino.s4.pain-battle-end",
+          "kind": "forced_trigger",
+          "printedClause": "【痛觉】唯一：战斗结束后，弃置一张【痛觉】。",
+          "activation": { "trigger": "after_battle_ended" },
+          "conditions": [],
+          "targets": [],
+          "effects": [{ "type": "injury_warp_battle_end_pain", "stateKey": "fujino.injury-warp" }],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.fujino.skill.ascension",
+      "aliases": ["ascension"],
+      "legacyId": "ascension",
+      "name": "痛觉残留",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.fujino" },
+      "initialPlacement": "outside_game",
+      "printedText": "解锁此技能时，将一张【歪曲之魔眼】的复制加入你的技能区。\n当你因获得【创伤【脊椎】】切换【痛觉】且所有【痛觉】被弃置之后，获得4点战果。",
+      "cardFace": {
+        "typeLabel": "升华技",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "fujino.ascension.copy-distortion",
+          "kind": "forced_trigger",
+          "printedClause": "解锁此技能时，将一张【歪曲之魔眼】的复制加入你的技能区。",
+          "activation": { "trigger": "after_master_ascension_unlocked" },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "ascension_copy_linked_skill",
+              "stateKey": "fujino.injury-warp",
+              "linkedDefinitionId": "master.fujino.skill.s3",
+              "maxCopies": 2,
+              "destination": "skill"
+            }
+          ],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    }
+  ],
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": [
+        "../../Fate_Domination-开发版/images/masters/浅上藤乃.png"
+      ]
+    }
+  ]
+}
