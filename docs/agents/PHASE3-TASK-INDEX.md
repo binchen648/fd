@@ -9184,7 +9184,7 @@ Implementation evidence:
 ## TASK P3-S-OWNER-FIORE-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Classification: formal owner-complete migration for current owner `master.fiore`
 
 Exact Base: `98f4bbef8ebd859df358f04b8d5d7d1841909aba` (Fiore readiness acceptance synchronization).
@@ -9216,3 +9216,12 @@ Implementation evidence:
 - source-assets reproduces exactly `93` historical missing images with no Fiore source in the missing list; `git diff --check` PASS;
 - detailed result: `docs/reports/2026-10-07-p3-s-owner-fiore-complete-migration-result.md`;
 - Candidate remains uncredited until one fresh exact `MIGRATION_ACCEPTED` review and subsequent FORMAL A-sync/accounting.
+
+Acceptance synchronization:
+- exact Candidate `d49cd45d377319976f525823f6df330bd69f6ac4` received fresh `MIGRATION_ACCEPTED` on ReviewJobKey `pr546:d49cd45d377319976f525823f6df330bd69f6ac4`;
+- canonical same-attempt accepted evidence: `https://github.com/binchen648/fd/pull/546#issuecomment-6041250189`;
+- FORMAL exact-Candidate rescan confirms canonical Fiore authoring is exactly `9/9`, pack registration is exactly once, and the only newly materialized identities are `ascension+s1+s1a+s5+s6+s7`;
+- preserved FM08 `s2+s3+s4` objects remain exact and receive no duplicate credit;
+- lawful FORMAL accounting credits exactly six newly materialized identities: `253/944 + 6 = 259/944`, remaining `685`;
+- acceptance synchronization report: `docs/reports/2026-10-07-p3-a-owner-fiore-acceptance-synchronization.md`;
+- owner change requires fixed HELPER report read plus exact acceptance-sync Base rescan before selecting the next owner.
