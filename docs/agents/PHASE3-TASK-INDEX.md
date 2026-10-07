@@ -9229,7 +9229,7 @@ Acceptance synchronization:
 ## TASK P3-B-FOU-OWNER-READINESS-CAPABILITY
 
 Owner: FORMAL readiness
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Classification: zero-credit complete-owner readiness/preflight for `master.fou`
 
 Exact readiness Base: `17eebe767897e73c17eb3749c8986797d06b2097` (accepted Fiore owner-migration A-sync/accounting).
@@ -9290,3 +9290,31 @@ Second Reviewer revision:
 - `match-session-regressions.test.ts` `11/11 PASS`; focused complex-skills 3-round MatchSession regression PASS; replay restore PASS;
 - affected validation remains `121/121 PASS`; portable SHA additionally `7/7 PASS`; typecheck/content/generated/external coverage+audit/`git diff --check` PASS; no authoring/pack/generated consumer delta;
 - readiness remains zero-credit; accounting stays `259/944`, remaining `685`; freeze one successor Candidate then fresh R.
+
+Acceptance synchronization:
+- exact Candidate `76489aaed00dcd76d092bf18098511e3c7ff0fc1` received fresh `IMPLEMENTATION_ACCEPTED_CANDIDATE` on ReviewJobKey `pr547:76489aaed00dcd76d092bf18098511e3c7ff0fc1`;
+- canonical same-attempt accepted evidence: `https://github.com/binchen648/fd/pull/547#issuecomment-6044972979`;
+- FORMAL acceptance rescan confirms Fou consumer materialization remains exactly `0/2`: `master.fou.json` absent and canonical pack registration count `0`;
+- readiness remains permanently zero-credit; strict accounting stays `259/944`, remaining `685`;
+- all two frozen Fou identities remain absent and the maximum later lawful owner-migration increment is exactly `+2`;
+- acceptance synchronization report: `docs/reports/2026-10-08-p3-a-fou-owner-readiness-acceptance-synchronization.md`;
+- no additional Fou readiness task remains; release `P3-S-OWNER-FOU-COMPLETE-MIGRATION` to `READY`.
+
+## TASK P3-S-OWNER-FOU-COMPLETE-MIGRATION
+
+Owner: FORMAL
+Status: `READY`
+Classification: formal owner-complete consumer migration for `master.fou`
+
+Frozen owner scope: exactly `2` identities:
+- `master.fou.skill.s1` — 兽之印记
+- `master.fou.skill.ascension` — 苍天之力
+
+Formal gate:
+- implementation Base is the exact readiness acceptance-sync HEAD, mechanically pinned before any consumer edit;
+- materialize both frozen identities together in one canonical `master.fou.json`;
+- register `master.fou` exactly once in the active pack;
+- consume only accepted identity-free readiness authority; no `master.fou` / 芙芙 / 兽之印记 / 苍天之力 / `core.fou-` production runtime routing;
+- one formal Candidate, one PR, one fresh independent exact Base/Candidate migration review;
+- strict accounting starts `259/944`, remaining `685`; no credit before fresh `MIGRATION_ACCEPTED` plus FORMAL A-sync/accounting;
+- if accepted, credit exactly both newly materialized identities: `259/944 -> 261/944`, remaining `683`.
