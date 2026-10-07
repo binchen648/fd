@@ -469,15 +469,98 @@ describe('P3 Fiore owner readiness complete gap set', () => {
     ).ok).toBe(true);
     expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(structuredClone(validProfile))).toBe(true);
 
-    const orphanedProfileFields = structuredClone(validProfile);
-    delete orphanedProfileFields.abilityRuntime!.structuredPlayerFlagsByPlayer!.p1!['__fd_rsp:fiore:profile:paralysis'];
-    delete orphanedProfileFields.abilityRuntime!.structuredRoundFlagKeysByPlayer!.p1!['__fd_rsp:fiore:profile:paralysis'];
-    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(orphanedProfileFields)).toBe(false);
+    const missingProfile = structuredClone(validProfile);
+    missingProfile.abilityRuntime!.roundSkillProfiles = [];
+    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(missingProfile)).toBe(false);
 
     const forgedRoundMarker = structuredClone(validProfile);
-    forgedRoundMarker.abilityRuntime!.structuredRoundFlagKeysByPlayer!.p1!['__fd_rsp:fiore:orphanMarker'] =
-      forgedRoundMarker.round.roundNumber;
+    const forgedRoundKeys = forgedRoundMarker.abilityRuntime!.structuredRoundFlagKeysByPlayer ??= {};
+    (forgedRoundKeys.p1 ??= {})['__fd_rsp:fiore:orphanMarker'] = forgedRoundMarker.round.roundNumber;
     expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(forgedRoundMarker)).toBe(false);
+
+    const gentleState = setup([1, 2, 3]);
+    const gentleSource = add(gentleState, TRANSCEND);
+    gentleState.round.activePhase = 'advance';
+    expect(rules.dispatchAbilityCommand(
+      gentleState,
+      'p1',
+      action(gentleState, gentleSource, 'fixture.transcend.advance.gentle')!,
+    ).ok).toBe(true);
+    expect(choose(gentleState, ['p2']).ok).toBe(true);
+    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(structuredClone(gentleState))).toBe(true);
+
+    const forgedTarget = structuredClone(gentleState);
+    forgedTarget.abilityRuntime!.roundSkillProfiles![0]!.targetPlayerId = 'p3';
+    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(forgedTarget)).toBe(false);
+    expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(forgedTarget)).toBe(false);
+
+    const forgedTargetSnapshot = structuredClone(gentleState);
+    forgedTargetSnapshot.abilityRuntime!.roundSkillProfiles![0]!.targetVpAtSelection = 1;
+    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(forgedTargetSnapshot)).toBe(false);
+
+    const cleverState = setup([1, 2]);
+    const cleverSource = add(cleverState, TRANSCEND);
+    const cleverBasic = add(cleverState, BASIC, 'hand');
+    cleverState.round.activePhase = 'advance';
+    expect(rules.dispatchAbilityCommand(
+      cleverState,
+      'p1',
+      action(cleverState, cleverSource, 'fixture.transcend.advance.circuit')!,
+    ).ok).toBe(true);
+    const clever = generated(cleverState, CLEVER);
+    cleverState.round.activePhase = 'action';
+    expect(() => rules.playAbilityCardBatch(cleverState, 'p1', [
+      { cardInstanceId: cleverBasic },
+      { cardInstanceId: clever },
+    ])).not.toThrow();
+    expect(rules.dispatchAbilityCommand(
+      cleverState,
+      'p1',
+      action(cleverState, clever, 'fixture.clever.link')!,
+    ).ok).toBe(true);
+    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(structuredClone(cleverState))).toBe(true);
+    expect(rules.roundSkillCardPowerBonus(cleverState, 'p1')).toBe(1);
+
+    const forgedPowerOrdinal = structuredClone(cleverState);
+    forgedPowerOrdinal.abilityRuntime!.roundSkillProfileSkillPowerActivations![0]!.ordinal = 99;
+    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(forgedPowerOrdinal)).toBe(false);
+
+    const forgedPowerCount = structuredClone(cleverState);
+    forgedPowerCount.abilityRuntime!.roundSkillProfileSkillPowerActivations!.push({
+      ...structuredClone(forgedPowerCount.abilityRuntime!.roundSkillProfileSkillPowerActivations![0]!),
+      ordinal: 2,
+    });
+    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(forgedPowerCount)).toBe(false);
+    expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(forgedPowerCount)).toBe(false);
+
+    const terrainState = setup([1, 2]);
+    const terrainSource = add(terrainState, TRANSCEND);
+    const terrainBasic = add(terrainState, BASIC, 'hand');
+    terrainState.round.activePhase = 'advance';
+    expect(rules.dispatchAbilityCommand(
+      terrainState,
+      'p1',
+      action(terrainState, terrainSource, 'fixture.transcend.advance.paralysis')!,
+    ).ok).toBe(true);
+    const neuro = generated(terrainState, NEURO);
+    terrainState.round.activePhase = 'action';
+    expect(() => rules.playAbilityCardBatch(terrainState, 'p1', [
+      { cardInstanceId: terrainBasic },
+      { cardInstanceId: neuro },
+    ])).not.toThrow();
+    terrainState.players[0]!.locationId = 'miyama_town';
+    (terrainState as any).modeState = {};
+    expect(rules.dispatchAbilityCommand(
+      terrainState,
+      'p1',
+      action(terrainState, neuro, 'fixture.neuro.terrain')!,
+    ).ok).toBe(true);
+    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(structuredClone(terrainState))).toBe(true);
+
+    const forgedTerrainLocation = structuredClone(terrainState);
+    forgedTerrainLocation.abilityRuntime!.roundSkillProfileTerrainActivations![0]!.locationId = 'shinto';
+    expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(forgedTerrainLocation)).toBe(false);
+    expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(forgedTerrainLocation)).toBe(false);
   });
 
   it('switches Circuit and removes only the current-round mana-gain cap', () => {
@@ -578,10 +661,11 @@ describe('P3 Fiore owner readiness complete gap set', () => {
     expect(rules.dispatchAbilityCommand(state, 'p1', terrain!).ok).toBe(true);
     expect(rules.roundCurrentLocationTerrainBonus(state, 'p1', 'miyama_town')).toBe(2);
     expect(rules.currentDeploymentBonus(state, 'p1')).toBe(2);
+    expect(action(state, neuro, 'fixture.neuro.terrain')).toBeUndefined();
     expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(structuredClone(state))).toBe(true);
   });
 
-  it('plays generated Clever Mind and applies cumulative +1 to Master and Servant skill power for the round', () => {
+  it('plays generated Clever Mind and applies cumulative +1 per paid activation to Master and Servant skill power', () => {
     const state = setup([1, 2]);
     const source = add(state, TRANSCEND);
     const basic = add(state, BASIC, 'hand');
@@ -606,6 +690,13 @@ describe('P3 Fiore owner readiness complete gap set', () => {
     expect(state.players[0]!.mana).toBe(mana - 1);
     expect(rules.calculateCardPower(state, clever).value).toBe(2);
     expect(rules.calculateCardPower(state, servant).value).toBe(3);
+    const secondLink = action(state, clever, 'fixture.clever.link');
+    expect(secondLink).toBeDefined();
+    expect(rules.dispatchAbilityCommand(state, 'p1', secondLink!).ok).toBe(true);
+    expect(state.players[0]!.mana).toBe(mana - 2);
+    expect(rules.roundSkillCardPowerBonus(state, 'p1')).toBe(2);
+    expect(rules.calculateCardPower(state, clever).value).toBe(3);
+    expect(rules.calculateCardPower(state, servant).value).toBe(4);
     expect(rules.isRoundSkillProfileRuntimeProvenanceValidForRestore(structuredClone(state))).toBe(true);
   });
 

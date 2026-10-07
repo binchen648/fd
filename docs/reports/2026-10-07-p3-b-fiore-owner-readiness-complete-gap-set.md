@@ -114,6 +114,38 @@ Revision verification:
 
 Readiness remains permanently zero-credit; strict accounting remains `253/944`, remaining `691`.
 
+### Second Reviewer value-authentication revision
+
+Successor Candidate `c56c25f2d607397ddf1cfbce7ac193752f4e3737` received
+`IMPLEMENTATION_NEEDS_REVISION`. The same-attempt evidence is canonical at:
+`https://github.com/binchen648/fd/pull/544#issuecomment-6032994485`.
+
+The remaining root finding was value tampering inside an otherwise valid
+round-skill-profile provenance envelope. The successor revision removes live
+`__fd_rsp:` gameplay authority entirely and replaces it with dedicated,
+restore-validated runtime records:
+
+- round profile switches are bound to exact provider/source/ability/enhanced-card identity, mode, suppression, round, revision, and one exact switch receipt;
+- higher-VP Determination selection records the exact target plus controller/target VP selection snapshots and requires an exact matching switch receipt; forged target or selection snapshot fails restore;
+- Clever Mind power is reconstructed only from exact paid activation records with contiguous ordinals, matching activation receipts, and matching round-scoped usage counts; direct bonus mutation is no longer an authority path;
+- terrain bonus is reconstructed only from exact activation records bound to the source ability, battlefield, revision, receipt, and usage count; forged terrain location fails restore;
+- any legacy `__fd_rsp:` prefixed structured flag/round marker is rejected on restore, preventing mixed old/new authority;
+- action/ascension pending/consumed state is tied to exact settlement receipts.
+
+Revision verification:
+
+- Fiore readiness focused regression: `10/10 PASS`;
+- MatchSession: `34/34 PASS`;
+- shared terrain deployment metric: `7/7 PASS`;
+- explicit outside-game/game-start regression: `12/12 PASS`;
+- authoring interpreter: `38/38 PASS`;
+- `npm run typecheck`: PASS;
+- `npm run content:validate`: PASS;
+- `npm run verify:generated-content`: PASS;
+- `git diff --check`: PASS.
+
+Accounting remains unchanged at `253/944`, remaining `691`; readiness is still zero-credit.
+
 ## Gate
 
 This readiness Candidate remains permanently zero-credit. No missing Fiore consumer identity is materialized here.

@@ -1,5 +1,14 @@
 import type { GameState } from '../schema/game';
-import type { AuthoringAbility, EffectContext, PlayerId, RuleNode } from './types';
+import type {
+  AuthoringAbility,
+  EffectContext,
+  PlayerId,
+  RoundSkillProfileRuntimeState,
+  RoundSkillProfileSkillPowerActivationState,
+  RoundSkillProfileTerrainActivationState,
+  RuleNode,
+  SafeEvent,
+} from './types';
 
 export const SWITCH_ROUND_SKILL_PROFILE_EFFECT = 'switch_round_skill_profile' as const;
 export const ROUND_CURRENT_LOCATION_TERRAIN_BONUS_EFFECT = 'round_current_location_terrain_bonus' as const;
@@ -148,36 +157,39 @@ function runtime(state: GameState) {
   if (!state.abilityRuntime) throw new Error('ROUND_SKILL_PROFILE_RUNTIME_REQUIRED');
   return state.abilityRuntime;
 }
-function flags(state: GameState, playerId: PlayerId): Record<string, boolean | string | number> {
-  const all = runtime(state).structuredPlayerFlagsByPlayer ??= {};
-  return all[playerId] ??= {};
+function profileStates(state: GameState): RoundSkillProfileRuntimeState[] {
+  return runtime(state).roundSkillProfiles ??= [];
 }
-function roundKeys(state: GameState, playerId: PlayerId): Record<string, number> {
-  const all = runtime(state).structuredRoundFlagKeysByPlayer ??= {};
-  return all[playerId] ??= {};
+function skillPowerStates(state: GameState): RoundSkillProfileSkillPowerActivationState[] {
+  return runtime(state).roundSkillProfileSkillPowerActivations ??= [];
 }
-function readFlags(state: GameState, playerId: PlayerId): Readonly<Record<string, boolean | string | number>> {
-  return state.abilityRuntime?.structuredPlayerFlagsByPlayer?.[playerId] ?? {};
+function terrainStates(state: GameState): RoundSkillProfileTerrainActivationState[] {
+  return runtime(state).roundSkillProfileTerrainActivations ??= [];
 }
-function readRoundKeys(state: GameState, playerId: PlayerId): Readonly<Record<string, number>> {
-  return state.abilityRuntime?.structuredRoundFlagKeysByPlayer?.[playerId] ?? {};
+function currentProfiles(state: GameState, playerId: PlayerId): RoundSkillProfileRuntimeState[] {
+  return (state.abilityRuntime?.roundSkillProfiles ?? []).filter((entry) =>
+    entry.controllerId === playerId && entry.round === state.round.roundNumber);
 }
-function key(stateKey: string, suffix: string): string { return `${PREFIX}${stateKey}:${suffix}`; }
-function setRoundFlag(state: GameState, playerId: PlayerId, stateKey: string, suffix: string, value: boolean | string | number): void {
-  const k = key(stateKey, suffix);
-  flags(state, playerId)[k] = value;
-  roundKeys(state, playerId)[k] = state.round.roundNumber;
+function activationUsageKey(
+  state: GameState,
+  kind: 'skillPower' | 'terrain',
+  sourceCardId: string,
+  abilityId: string,
+): string {
+  return `round-skill-profile:${kind}:${sourceCardId}:${abilityId}:round:${state.round.roundNumber}`;
 }
-function clearFlag(state: GameState, playerId: PlayerId, stateKey: string, suffix: string): void {
-  const k = key(stateKey, suffix);
-  delete flags(state, playerId)[k];
-  delete roundKeys(state, playerId)[k];
+function acceptedActivationCount(
+  state: GameState,
+  kind: 'skillPower' | 'terrain',
+  sourceCardId: string,
+  abilityId: string,
+): number {
+  const r = runtime(state);
+  return r.abilityUsage[activationUsageKey(state, kind, sourceCardId, abilityId)] ?? 0;
 }
-function getRoundFlag(state: GameState, playerId: PlayerId, stateKey: string, suffix: string): boolean | string | number | undefined {
-  const k = key(stateKey, suffix);
-  return readRoundKeys(state, playerId)[k] === state.round.roundNumber ? readFlags(state, playerId)[k] : undefined;
+function exactEvent(event: SafeEvent, keys: readonly string[]): boolean {
+  return exact(event, keys);
 }
-function profilePrefix(stateKey: string): string { return `${PREFIX}${stateKey}:`; }
 function sourceAbility(state: GameState, sourceCardId: string, abilityId: string): AuthoringAbility | undefined {
   const source = state.cards.find((entry) => entry.instanceId === sourceCardId);
   return source ? runtime(state).pack.cards[source.definitionId]?.abilities.find((entry) => entry.id === abilityId) : undefined;
@@ -262,8 +274,9 @@ export function canExecuteRoundSkillProfileEffect(
   const effect = ability.effects[0]!;
   if (switchEffect(effect)) {
     const stateKey = String(effect.stateKey), profileKey = String(effect.profileKey), mode = String(effect.mode);
-    if (getRoundFlag(state, ctx.controllerId, stateKey, `profile:${profileKey}`) === true) return false;
-    if (getRoundFlag(state, ctx.controllerId, stateKey, `mode:${mode}`) === true) return false;
+    const liveProfiles = currentProfiles(state, ctx.controllerId).filter((entry) => entry.stateKey === stateKey);
+    if (liveProfiles.some((entry) => entry.profileKey === profileKey)) return false;
+    if (liveProfiles.some((entry) => entry.mode === mode)) return false;
     if (effect.requireHigherVictoryPointTarget === true &&
         !higherVpSelectedTarget(state, ctx, String(effect.target)) &&
         !hasHigherVpTarget(state, ctx.controllerId)) return false;
@@ -272,7 +285,10 @@ export function canExecuteRoundSkillProfileEffect(
     return !!definition && !!controller && definition.cardType === 'master_skill' && (definition as { ownerId?: string }).ownerId === controller.masterCardId;
   }
   if (terrainEffect(effect)) {
-    return sourceActive(state, ctx.controllerId, ctx.sourceCardId) &&
+    const alreadyUsed = (state.abilityRuntime?.roundSkillProfileTerrainActivations ?? []).some((entry) =>
+      entry.controllerId === ctx.controllerId && entry.sourceCardId === ctx.sourceCardId &&
+      entry.abilityId === ctx.abilityId && entry.round === state.round.roundNumber);
+    return !alreadyUsed && sourceActive(state, ctx.controllerId, ctx.sourceCardId) &&
       !!currentBattlefield(state, ctx.controllerId) && !assignedTerrainAtCurrentLocation(state, ctx.controllerId);
   }
   if (skillPowerEffect(effect)) {
@@ -292,56 +308,116 @@ export function resolveRoundSkillProfileEffect(
   const effect = ability.effects[0]!;
   if (switchEffect(effect)) {
     const stateKey = String(effect.stateKey), profileKey = String(effect.profileKey), mode = String(effect.mode);
+    const controller = state.players.find((entry) => entry.id === ctx.controllerId && entry.status === 'active');
+    if (!controller) return false;
+    const targetId = effect.requireHigherVictoryPointTarget === true
+      ? higherVpSelectedTarget(state, ctx, String(effect.target))
+      : undefined;
+    if (effect.requireHigherVictoryPointTarget === true && !targetId) return false;
+    const target = targetId ? state.players.find((entry) => entry.id === targetId && entry.status === 'active') : undefined;
     const enhancedId = findOrCreateEnhancedCard(state, ctx, effect);
-    setRoundFlag(state, ctx.controllerId, stateKey, `mode:${mode}`, true);
-    setRoundFlag(state, ctx.controllerId, stateKey, `profile:${profileKey}`, true);
-    setRoundFlag(state, ctx.controllerId, stateKey, `suppress:${String(effect.suppress)}`, true);
-    setRoundFlag(state, ctx.controllerId, stateKey, `enhanced:${profileKey}`, enhancedId);
-    setRoundFlag(state, ctx.controllerId, stateKey, `provider:${profileKey}`, ctx.sourceCardId);
-    setRoundFlag(state, ctx.controllerId, stateKey, `providerAbility:${profileKey}`, ctx.abilityId);
-    if (effect.requireHigherVictoryPointTarget === true) {
-      const targetId = higherVpSelectedTarget(state, ctx, String(effect.target));
-      if (!targetId) return false;
-      setRoundFlag(state, ctx.controllerId, stateKey, `target:${profileKey}`, targetId);
+    const record: RoundSkillProfileRuntimeState = {
+      controllerId: ctx.controllerId,
+      stateKey,
+      profileKey,
+      mode: mode as RoundSkillProfileRuntimeState['mode'],
+      suppression: String(effect.suppress) as RoundSkillProfileSuppression,
+      enhancedCardInstanceId: enhancedId,
+      providerSourceCardId: ctx.sourceCardId,
+      providerAbilityId: ctx.abilityId,
+      round: state.round.roundNumber,
+      createdRevision: runtime(state).revision,
+    };
+    if (targetId && target) {
+      record.targetPlayerId = targetId;
+      record.controllerVpAtSelection = controller.vp;
+      record.targetVpAtSelection = target.vp;
+      record.determinationRewarded = false;
     }
-    if (effect.mode === 'action') setRoundFlag(state, ctx.controllerId, stateKey, 'actionPenaltyMana', 4);
-    if (effect.mode === 'ascension') setRoundFlag(state, ctx.controllerId, stateKey, 'ascensionLossVp', 2);
-    runtime(state).events.push({
+    if (mode === 'action') record.actionPenaltyPending = true;
+    if (mode === 'ascension') record.ascensionLossPending = true;
+    profileStates(state).push(record);
+    const receipt: SafeEvent = {
       type: 'round_skill_profile_switched',
       playerId: ctx.controllerId,
       sourceCardId: ctx.sourceCardId,
       abilityId: ctx.abilityId,
       cardInstanceId: enhancedId,
       roundNumber: state.round.roundNumber,
-    });
+      revision: runtime(state).revision,
+    };
+    if (targetId && target) {
+      receipt.qualifyingPlayerIds = [ctx.controllerId, targetId];
+      receipt.before = controller.vp;
+      receipt.after = target.vp;
+    }
+    runtime(state).events.push(receipt);
     return true;
   }
   if (terrainEffect(effect)) {
     const stateKey = String(effect.stateKey);
     const locationId = currentBattlefield(state, ctx.controllerId);
     if (!locationId || assignedTerrainAtCurrentLocation(state, ctx.controllerId)) return false;
-    setRoundFlag(state, ctx.controllerId, stateKey, 'terrainLocation', locationId);
-    setRoundFlag(state, ctx.controllerId, stateKey, 'terrainAmount', 2);
-    setRoundFlag(state, ctx.controllerId, stateKey, 'terrainProvider', ctx.sourceCardId);
-    setRoundFlag(state, ctx.controllerId, stateKey, 'terrainProviderAbility', ctx.abilityId);
+    const prior = terrainStates(state).filter((entry) =>
+      entry.controllerId === ctx.controllerId && entry.sourceCardId === ctx.sourceCardId &&
+      entry.abilityId === ctx.abilityId && entry.round === state.round.roundNumber).length;
+    const ordinal = prior + 1;
+    runtime(state).abilityUsage[activationUsageKey(state, 'terrain', ctx.sourceCardId, ctx.abilityId)] = ordinal;
+    terrainStates(state).push({
+      controllerId: ctx.controllerId,
+      stateKey,
+      sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId,
+      round: state.round.roundNumber,
+      createdRevision: runtime(state).revision,
+      ordinal,
+      locationId,
+    });
+    runtime(state).events.push({
+      type: 'round_current_location_terrain_activated',
+      playerId: ctx.controllerId,
+      sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId,
+      battlefieldId: locationId,
+      delta: 2,
+      roundNumber: state.round.roundNumber,
+      revision: runtime(state).revision,
+    });
     return true;
   }
   if (skillPowerEffect(effect)) {
     const stateKey = String(effect.stateKey);
-    const prior = getRoundFlag(state, ctx.controllerId, stateKey, 'skillPowerBonus');
-    const value = prior === undefined ? 0 : Number(prior);
-    if (!Number.isSafeInteger(value) || value < 0) throw new Error('ROUND_SKILL_PROFILE_POWER_STATE_INVALID');
-    setRoundFlag(state, ctx.controllerId, stateKey, 'skillPowerBonus', value + 1);
-    setRoundFlag(state, ctx.controllerId, stateKey, 'skillPowerProvider', ctx.sourceCardId);
-    setRoundFlag(state, ctx.controllerId, stateKey, 'skillPowerProviderAbility', ctx.abilityId);
+    const prior = skillPowerStates(state).filter((entry) =>
+      entry.controllerId === ctx.controllerId && entry.sourceCardId === ctx.sourceCardId &&
+      entry.abilityId === ctx.abilityId && entry.round === state.round.roundNumber).length;
+    const ordinal = prior + 1;
+    runtime(state).abilityUsage[activationUsageKey(state, 'skillPower', ctx.sourceCardId, ctx.abilityId)] = ordinal;
+    skillPowerStates(state).push({
+      controllerId: ctx.controllerId,
+      stateKey,
+      sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId,
+      round: state.round.roundNumber,
+      createdRevision: runtime(state).revision,
+      ordinal,
+    });
+    runtime(state).events.push({
+      type: 'round_skill_card_power_activated',
+      playerId: ctx.controllerId,
+      sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId,
+      resource: 'mana',
+      requestedDelta: -1,
+      delta: 1,
+      before: ordinal - 1,
+      after: ordinal,
+      roundNumber: state.round.roundNumber,
+      revision: runtime(state).revision,
+    });
     return true;
   }
   if (determinationEffect(effect)) return true;
   return false;
-}
-
-function currentFlag(state: GameState, playerId: string, fullKey: string): boolean | string | number | undefined {
-  return readRoundKeys(state, playerId)[fullKey] === state.round.roundNumber ? readFlags(state, playerId)[fullKey] : undefined;
 }
 
 export function roundSkillProfileSuppressed(
@@ -349,33 +425,17 @@ export function roundSkillProfileSuppressed(
   playerId: string,
   suppression: RoundSkillProfileSuppression,
 ): boolean {
-  const suffix = `:suppress:${suppression}`;
-  return Object.keys(readFlags(state, playerId)).some((fullKey) =>
-    fullKey.startsWith(PREFIX) && fullKey.endsWith(suffix) && currentFlag(state, playerId, fullKey) === true);
+  return currentProfiles(state, playerId).some((entry) => entry.suppression === suppression);
 }
 
 export function roundSkillCardPowerBonus(state: GameState, playerId: string): number {
-  let total = 0;
-  for (const [fullKey, value] of Object.entries(readFlags(state, playerId))) {
-    if (!fullKey.startsWith(PREFIX) || !fullKey.endsWith(':skillPowerBonus') || currentFlag(state, playerId, fullKey) === undefined) continue;
-    if (!Number.isSafeInteger(value) || Number(value) < 0) throw new Error('ROUND_SKILL_PROFILE_POWER_STATE_INVALID');
-    total += Number(value);
-  }
-  return total;
+  return (state.abilityRuntime?.roundSkillProfileSkillPowerActivations ?? []).filter((entry) =>
+    entry.controllerId === playerId && entry.round === state.round.roundNumber).length;
 }
 
 export function roundCurrentLocationTerrainBonus(state: GameState, playerId: string, locationId: string): number {
-  let total = 0;
-  const playerFlags = readFlags(state, playerId);
-  for (const fullKey of Object.keys(playerFlags)) {
-    if (!fullKey.startsWith(PREFIX) || !fullKey.endsWith(':terrainLocation')) continue;
-    if (currentFlag(state, playerId, fullKey) !== locationId) continue;
-    const stateKey = fullKey.slice(PREFIX.length, -':terrainLocation'.length);
-    const amount = getRoundFlag(state, playerId, stateKey, 'terrainAmount');
-    if (!Number.isSafeInteger(amount) || Number(amount) < 0) throw new Error('ROUND_SKILL_PROFILE_TERRAIN_STATE_INVALID');
-    total += Number(amount);
-  }
-  return total;
+  return (state.abilityRuntime?.roundSkillProfileTerrainActivations ?? []).filter((entry) =>
+    entry.controllerId === playerId && entry.round === state.round.roundNumber && entry.locationId === locationId).length * 2;
 }
 
 function matchingDeterminationProvider(
@@ -403,80 +463,74 @@ export function settleRoundSkillProfileEvent(state: GameState, event: {
 }): void {
   if (!state.abilityRuntime) return;
   for (const controller of state.players.filter((entry) => entry.status === 'active')) {
-    const playerFlags = readFlags(state, controller.id);
-    const currentKeys = Object.keys(playerFlags).filter((fullKey) =>
-      fullKey.startsWith(PREFIX) && readRoundKeys(state, controller.id)[fullKey] === state.round.roundNumber);
+    const profiles = currentProfiles(state, controller.id);
 
     if (event.type === 'after_battle_result_determined' && event.battleResult && Array.isArray(event.battleParticipantIds)) {
       const participants = new Set(event.battleParticipantIds);
       const winners = new Set(event.battleResult.winners);
       const losers = new Set(event.battleResult.loserIds);
 
-      for (const fullKey of currentKeys.filter((entry) => entry.includes(':target:'))) {
-        const marker = fullKey.slice(PREFIX.length);
-        const split = marker.indexOf(':target:');
-        if (split < 1) continue;
-        const stateKey = marker.slice(0, split);
-        const profileKey = marker.slice(split + ':target:'.length);
-        if (getRoundFlag(state, controller.id, stateKey, `rewarded:${profileKey}`) === true) continue;
-        const targetId = String(currentFlag(state, controller.id, fullKey) ?? '');
-        const enhancedId = getRoundFlag(state, controller.id, stateKey, `enhanced:${profileKey}`);
-        if (!targetId || typeof enhancedId !== 'string') continue;
-        const provider = matchingDeterminationProvider(state, controller.id, stateKey, profileKey, enhancedId);
+      for (const profile of profiles.filter((entry) => entry.targetPlayerId && entry.determinationRewarded !== true)) {
+        const targetId = profile.targetPlayerId!;
+        const provider = matchingDeterminationProvider(
+          state, controller.id, profile.stateKey, profile.profileKey, profile.enhancedCardInstanceId);
         if (!provider) continue;
         if (participants.has(controller.id) && participants.has(targetId) && winners.has(controller.id) && losers.has(targetId)) {
           const before = controller.vp;
           controller.vp += 2;
-          setRoundFlag(state, controller.id, stateKey, `rewarded:${profileKey}`, true);
+          profile.determinationRewarded = true;
           runtime(state).events.push({
             type: 'round_profile_determination_rewarded',
             playerId: controller.id,
             sourceCardId: provider.sourceCardId,
             abilityId: provider.abilityId,
+            qualifyingPlayerIds: [controller.id, targetId],
             resource: 'victory_points',
             delta: 2,
             before,
             after: controller.vp,
             roundNumber: state.round.roundNumber,
+            revision: runtime(state).revision,
           });
         }
       }
 
-      for (const fullKey of currentKeys.filter((entry) => entry.endsWith(':ascensionLossVp'))) {
-        const stateKey = fullKey.slice(PREFIX.length, -':ascensionLossVp'.length);
-        const amount = Number(currentFlag(state, controller.id, fullKey));
-        if (amount !== 2 || !participants.has(controller.id) || !losers.has(controller.id)) continue;
+      for (const profile of profiles.filter((entry) => entry.ascensionLossPending === true)) {
+        if (!participants.has(controller.id) || !losers.has(controller.id)) continue;
         const before = controller.vp;
-        controller.vp = Math.max(0, controller.vp - amount);
-        clearFlag(state, controller.id, stateKey, 'ascensionLossVp');
+        controller.vp = Math.max(0, controller.vp - 2);
+        profile.ascensionLossPending = false;
         runtime(state).events.push({
           type: 'round_profile_ascension_loss_penalty',
           playerId: controller.id,
+          sourceCardId: profile.providerSourceCardId,
+          abilityId: profile.providerAbilityId,
           resource: 'victory_points',
           delta: controller.vp - before,
           before,
           after: controller.vp,
           roundNumber: state.round.roundNumber,
+          revision: runtime(state).revision,
         });
       }
     }
 
     if (event.type === 'after_battle_ended') {
-      for (const fullKey of currentKeys.filter((entry) => entry.endsWith(':actionPenaltyMana'))) {
-        const stateKey = fullKey.slice(PREFIX.length, -':actionPenaltyMana'.length);
-        const amount = Number(currentFlag(state, controller.id, fullKey));
-        if (amount !== 4) continue;
+      for (const profile of profiles.filter((entry) => entry.actionPenaltyPending === true)) {
         const before = controller.mana;
-        controller.mana = Math.max(0, controller.mana - amount);
-        clearFlag(state, controller.id, stateKey, 'actionPenaltyMana');
+        controller.mana = Math.max(0, controller.mana - 4);
+        profile.actionPenaltyPending = false;
         runtime(state).events.push({
           type: 'round_profile_action_mana_penalty',
           playerId: controller.id,
+          sourceCardId: profile.providerSourceCardId,
+          abilityId: profile.providerAbilityId,
           resource: 'mana',
           delta: controller.mana - before,
           before,
           after: controller.mana,
           roundNumber: state.round.roundNumber,
+          revision: runtime(state).revision,
         });
       }
     }
@@ -485,183 +539,323 @@ export function settleRoundSkillProfileEvent(state: GameState, event: {
 
 export function cleanupRoundSkillProfilesAtRoundEnd(state: GameState): void {
   if (!state.abilityRuntime) return;
-  for (const controller of state.players) {
-    const playerFlags = state.abilityRuntime.structuredPlayerFlagsByPlayer?.[controller.id];
-    const playerRoundKeys = state.abilityRuntime.structuredRoundFlagKeysByPlayer?.[controller.id];
-    if (!playerFlags || !playerRoundKeys) continue;
-    const enhancedIds = Object.entries(playerFlags)
-      .filter(([fullKey]) => fullKey.startsWith(PREFIX) && fullKey.includes(':enhanced:') && playerRoundKeys[fullKey] === state.round.roundNumber)
-      .map(([, value]) => typeof value === 'string' ? value : '')
-      .filter(Boolean);
-    for (const instanceId of enhancedIds) {
-      const physical = state.cards.find((entry) => entry.instanceId === instanceId);
-      if (physical && physical.ownerPlayerId === controller.id && physical.controllerPlayerId === controller.id) {
-        state.cards.splice(state.cards.indexOf(physical), 1);
-        delete runtime(state).cardState[instanceId];
-      }
-    }
-    for (const fullKey of Object.keys(playerFlags)) {
-      if (fullKey.startsWith(PREFIX) && playerRoundKeys[fullKey] === state.round.roundNumber) {
-        delete playerFlags[fullKey];
-        delete playerRoundKeys[fullKey];
-      }
+  const r = runtime(state);
+  const round = state.round.roundNumber;
+  const enhancedIds = (r.roundSkillProfiles ?? [])
+    .filter((entry) => entry.round === round)
+    .map((entry) => entry.enhancedCardInstanceId);
+  for (const instanceId of new Set(enhancedIds)) {
+    const physical = state.cards.find((entry) => entry.instanceId === instanceId);
+    if (physical) {
+      state.cards.splice(state.cards.indexOf(physical), 1);
+      delete r.cardState[instanceId];
     }
   }
+  r.roundSkillProfiles = (r.roundSkillProfiles ?? []).filter((entry) => entry.round > round);
+  r.roundSkillProfileSkillPowerActivations = (r.roundSkillProfileSkillPowerActivations ?? []).filter((entry) => entry.round > round);
+  r.roundSkillProfileTerrainActivations = (r.roundSkillProfileTerrainActivations ?? []).filter((entry) => entry.round > round);
 }
 
 export function isRoundSkillProfileRuntimeProvenanceValidForRestore(state: GameState): boolean {
   try {
     if (!state.abilityRuntime) return true;
+    const r = runtime(state);
     const playerIds = new Set(state.players.map((entry) => entry.id));
-    const allPlayerFlags = state.abilityRuntime.structuredPlayerFlagsByPlayer ?? {};
-    const allPlayerRoundKeys = state.abilityRuntime.structuredRoundFlagKeysByPlayer ?? {};
-    const runtimePlayerIds = new Set([...Object.keys(allPlayerFlags), ...Object.keys(allPlayerRoundKeys)]);
+    const locationIds = new Set<string>(state.map.locations.map((entry) => entry.id));
 
-    for (const playerId of runtimePlayerIds) {
+    for (const [playerId, playerFlags] of Object.entries(r.structuredPlayerFlagsByPlayer ?? {})) {
       if (!playerIds.has(playerId)) return false;
-      const playerFlags = allPlayerFlags[playerId] ?? {};
-      const playerRoundKeys = allPlayerRoundKeys[playerId] ?? {};
-      const flagKeys = Object.keys(playerFlags).filter((fullKey) => fullKey.startsWith(PREFIX));
-      const roundMarkerKeys = Object.keys(playerRoundKeys).filter((fullKey) => fullKey.startsWith(PREFIX));
-      if (flagKeys.length !== roundMarkerKeys.length) return false;
-      if (flagKeys.some((fullKey) => !(fullKey in playerRoundKeys)) ||
-          roundMarkerKeys.some((fullKey) => !(fullKey in playerFlags))) return false;
-      if (roundMarkerKeys.some((fullKey) => playerRoundKeys[fullKey] !== state.round.roundNumber)) return false;
+      if (Object.keys(playerFlags).some((fullKey) => fullKey.startsWith(PREFIX))) return false;
+    }
+    for (const [playerId, playerRoundKeys] of Object.entries(r.structuredRoundFlagKeysByPlayer ?? {})) {
+      if (!playerIds.has(playerId)) return false;
+      if (Object.keys(playerRoundKeys).some((fullKey) => fullKey.startsWith(PREFIX))) return false;
+    }
 
-      const groups = new Map<string, Map<string, boolean | string | number>>();
-      for (const fullKey of flagKeys) {
-        const marker = fullKey.slice(PREFIX.length);
-        const split = marker.indexOf(':');
-        if (split < 1) return false;
-        const stateKey = marker.slice(0, split);
-        const suffix = marker.slice(split + 1);
-        if (!token(stateKey) || !suffix) return false;
-        const entries = groups.get(stateKey) ?? new Map<string, boolean | string | number>();
-        if (entries.has(suffix)) return false;
-        entries.set(suffix, playerFlags[fullKey]!);
-        groups.set(stateKey, entries);
+    const profiles = r.roundSkillProfiles ?? [];
+    const skillPowerActivations = r.roundSkillProfileSkillPowerActivations ?? [];
+    const terrainActivations = r.roundSkillProfileTerrainActivations ?? [];
+    const profileIds = new Set<string>();
+    const modeIds = new Set<string>();
+    const enhancedIds = new Set<string>();
+
+    const switchReceipts = r.events.filter((event) =>
+      event.type === 'round_skill_profile_switched' && event.roundNumber === state.round.roundNumber);
+    if (switchReceipts.length !== profiles.length) return false;
+
+    for (const profile of profiles) {
+      if (!playerIds.has(profile.controllerId) || !token(profile.stateKey) || !token(profile.profileKey) ||
+          !MODES.includes(profile.mode) || !SUPPRESSIONS.includes(profile.suppression) ||
+          profile.round !== state.round.roundNumber || !Number.isSafeInteger(profile.createdRevision) ||
+          profile.createdRevision < 0 || profile.createdRevision > r.revision) return false;
+
+      const profileId = `${profile.controllerId}\u0000${profile.stateKey}\u0000${profile.profileKey}`;
+      const modeId = `${profile.controllerId}\u0000${profile.stateKey}\u0000${profile.mode}`;
+      if (profileIds.has(profileId) || modeIds.has(modeId) || enhancedIds.has(profile.enhancedCardInstanceId)) return false;
+      profileIds.add(profileId);
+      modeIds.add(modeId);
+      enhancedIds.add(profile.enhancedCardInstanceId);
+
+      const provider = state.cards.find((entry) => entry.instanceId === profile.providerSourceCardId);
+      const providerAbility = provider
+        ? sourceAbility(state, profile.providerSourceCardId, profile.providerAbilityId)
+        : undefined;
+      const effect = providerAbility?.effects[0];
+      const enhanced = state.cards.find((entry) => entry.instanceId === profile.enhancedCardInstanceId);
+      if (!provider || !sourceOwned(state, profile.controllerId, profile.providerSourceCardId) ||
+          !providerAbility || !isAcceptedRoundSkillProfileAbility(providerAbility) ||
+          !switchEffect(effect) || effect!.stateKey !== profile.stateKey ||
+          effect!.profileKey !== profile.profileKey || effect!.mode !== profile.mode ||
+          effect!.suppress !== profile.suppression ||
+          !enhanced || enhanced.ownerPlayerId !== profile.controllerId ||
+          enhanced.controllerPlayerId !== profile.controllerId ||
+          enhanced.generatedBy !== profile.providerSourceCardId ||
+          enhanced.definitionId !== effect!.enhancedDefinitionId ||
+          !r.cardState[profile.enhancedCardInstanceId] ||
+          r.cardState[profile.enhancedCardInstanceId]!.playedRound !== profile.round) return false;
+
+      const targetRequired = effect!.requireHigherVictoryPointTarget === true;
+      const determinationProvider = targetRequired
+        ? matchingDeterminationProvider(
+            state, profile.controllerId, profile.stateKey, profile.profileKey, profile.enhancedCardInstanceId)
+        : undefined;
+      if (targetRequired) {
+        if (typeof profile.targetPlayerId !== 'string' || profile.targetPlayerId === profile.controllerId ||
+            !playerIds.has(profile.targetPlayerId) ||
+            !Number.isSafeInteger(profile.controllerVpAtSelection) || Number(profile.controllerVpAtSelection) < 0 ||
+            !Number.isSafeInteger(profile.targetVpAtSelection) || Number(profile.targetVpAtSelection) < 0 ||
+            Number(profile.targetVpAtSelection) <= Number(profile.controllerVpAtSelection) ||
+            typeof profile.determinationRewarded !== 'boolean' ||
+            !determinationProvider) return false;
+      } else if (profile.targetPlayerId !== undefined || profile.controllerVpAtSelection !== undefined ||
+                 profile.targetVpAtSelection !== undefined || profile.determinationRewarded !== undefined) {
+        return false;
       }
 
-      const validatedProfiles = new Map<string, { effect: RuleNode; enhancedId: string }>();
-      const enhancedIds = new Set<string>();
-
-      for (const [stateKey, entries] of groups) {
-        for (const [suffix, value] of entries) {
-          if (!suffix.startsWith('profile:')) continue;
-          const profileKey = suffix.slice('profile:'.length);
-          if (!token(profileKey) || value !== true) return false;
-          const enhancedId = entries.get(`enhanced:${profileKey}`);
-          const providerId = entries.get(`provider:${profileKey}`);
-          const providerAbilityId = entries.get(`providerAbility:${profileKey}`);
-          if (typeof enhancedId !== 'string' || typeof providerId !== 'string' || typeof providerAbilityId !== 'string') return false;
-          const enhanced = state.cards.find((entry) => entry.instanceId === enhancedId);
-          const provider = state.cards.find((entry) => entry.instanceId === providerId);
-          const providerAbility = provider ? sourceAbility(state, providerId, providerAbilityId) : undefined;
-          if (!enhanced || enhanced.ownerPlayerId !== playerId || enhanced.controllerPlayerId !== playerId ||
-              enhanced.generatedBy !== providerId ||
-              !provider || !sourceOwned(state, playerId, providerId) ||
-              !providerAbility || !isAcceptedRoundSkillProfileAbility(providerAbility) ||
-              !switchEffect(providerAbility.effects[0]) ||
-              providerAbility.effects[0]!.stateKey !== stateKey ||
-              providerAbility.effects[0]!.profileKey !== profileKey ||
-              enhanced.definitionId !== providerAbility.effects[0]!.enhancedDefinitionId) return false;
-          const effect = providerAbility.effects[0]!;
-          if (entries.get(`mode:${String(effect.mode)}`) !== true ||
-              entries.get(`suppress:${String(effect.suppress)}`) !== true) return false;
-          const target = entries.get(`target:${profileKey}`);
-          if (effect.requireHigherVictoryPointTarget === true) {
-            if (typeof target !== 'string' || target === playerId || !playerIds.has(target)) return false;
-          } else if (target !== undefined) {
-            return false;
-          }
-          validatedProfiles.set(`${stateKey}\u0000${profileKey}`, { effect, enhancedId });
-          enhancedIds.add(enhancedId);
-        }
+      if (profile.mode === 'action') {
+        if (typeof profile.actionPenaltyPending !== 'boolean' || profile.ascensionLossPending !== undefined) return false;
+      } else if (profile.actionPenaltyPending !== undefined) {
+        return false;
+      }
+      if (profile.mode === 'ascension') {
+        if (typeof profile.ascensionLossPending !== 'boolean') return false;
+      } else if (profile.ascensionLossPending !== undefined) {
+        return false;
       }
 
-      for (const [stateKey, entries] of groups) {
-        const profilesForState = [...validatedProfiles.entries()]
-          .filter(([profileId]) => profileId.startsWith(`${stateKey}\u0000`))
-          .map(([, profile]) => profile);
-
-        for (const [suffix, value] of entries) {
-          if (suffix.startsWith('profile:') || suffix.startsWith('enhanced:') ||
-              suffix.startsWith('provider:') || suffix.startsWith('providerAbility:') ||
-              suffix.startsWith('target:') || suffix.startsWith('rewarded:')) {
-            const split = suffix.indexOf(':');
-            const kind = suffix.slice(0, split);
-            const profileKey = suffix.slice(split + 1);
-            if (!token(profileKey)) return false;
-            const profile = validatedProfiles.get(`${stateKey}\u0000${profileKey}`);
-            if (!profile) return false;
-            if (kind === 'rewarded') {
-              if (value !== true || entries.get(`target:${profileKey}`) === undefined ||
-                  !matchingDeterminationProvider(state, playerId, stateKey, profileKey, profile.enhancedId)) return false;
-            }
-            continue;
-          }
-          if (suffix.startsWith('mode:')) {
-            const mode = suffix.slice('mode:'.length);
-            if (!MODES.includes(mode as typeof MODES[number]) || value !== true ||
-                !profilesForState.some((profile) => profile.effect.mode === mode)) return false;
-            continue;
-          }
-          if (suffix.startsWith('suppress:')) {
-            const suppression = suffix.slice('suppress:'.length);
-            if (!SUPPRESSIONS.includes(suppression as RoundSkillProfileSuppression) || value !== true ||
-                !profilesForState.some((profile) => profile.effect.suppress === suppression)) return false;
-            continue;
-          }
-          if (suffix === 'actionPenaltyMana') {
-            if (value !== 4 || !profilesForState.some((profile) => profile.effect.mode === 'action')) return false;
-            continue;
-          }
-          if (suffix === 'ascensionLossVp') {
-            if (value !== 2 || !profilesForState.some((profile) => profile.effect.mode === 'ascension')) return false;
-            continue;
-          }
-          if (['terrainLocation', 'terrainAmount', 'terrainProvider', 'terrainProviderAbility',
-               'skillPowerBonus', 'skillPowerProvider', 'skillPowerProviderAbility'].includes(suffix)) continue;
-          return false;
+      const matchingSwitchReceipts = switchReceipts.filter((event) => {
+        if (event.playerId !== profile.controllerId ||
+            event.sourceCardId !== profile.providerSourceCardId ||
+            event.abilityId !== profile.providerAbilityId ||
+            event.cardInstanceId !== profile.enhancedCardInstanceId ||
+            event.roundNumber !== profile.round ||
+            event.revision !== profile.createdRevision) return false;
+        if (targetRequired) {
+          return exactEvent(event, [
+            'type','playerId','sourceCardId','abilityId','cardInstanceId','roundNumber','revision',
+            'qualifyingPlayerIds','before','after',
+          ]) &&
+            Array.isArray(event.qualifyingPlayerIds) &&
+            event.qualifyingPlayerIds.length === 2 &&
+            event.qualifyingPlayerIds[0] === profile.controllerId &&
+            event.qualifyingPlayerIds[1] === profile.targetPlayerId &&
+            event.before === profile.controllerVpAtSelection &&
+            event.after === profile.targetVpAtSelection;
         }
+        return exactEvent(event, [
+          'type','playerId','sourceCardId','abilityId','cardInstanceId','roundNumber','revision',
+        ]);
+      });
+      if (matchingSwitchReceipts.length !== 1) return false;
 
-        const terrainSuffixes = ['terrainLocation', 'terrainAmount', 'terrainProvider', 'terrainProviderAbility'];
-        if (terrainSuffixes.some((suffix) => entries.has(suffix))) {
-          if (!terrainSuffixes.every((suffix) => entries.has(suffix))) return false;
-          const locationId = entries.get('terrainLocation');
-          const amount = entries.get('terrainAmount');
-          const providerId = entries.get('terrainProvider');
-          const providerAbilityId = entries.get('terrainProviderAbility');
-          const location = typeof locationId === 'string'
-            ? state.map.locations.find((entry) => entry.id === locationId)
-            : undefined;
-          const providerAbility = typeof providerId === 'string' && typeof providerAbilityId === 'string'
-            ? sourceAbility(state, providerId, providerAbilityId)
-            : undefined;
-          if (!location?.tags.includes('battlefield') || amount !== 2 ||
-              typeof providerId !== 'string' || !enhancedIds.has(providerId) ||
-              !providerAbility || !isAcceptedRoundSkillProfileAbility(providerAbility) ||
-              !terrainEffect(providerAbility.effects[0]) ||
-              providerAbility.effects[0]!.stateKey !== stateKey) return false;
-        }
+      const determinationReceipts = r.events.filter((event) =>
+        exactEvent(event, [
+          'type','playerId','sourceCardId','abilityId','qualifyingPlayerIds','resource','delta',
+          'before','after','roundNumber','revision',
+        ]) &&
+        event.type === 'round_profile_determination_rewarded' &&
+        event.roundNumber === profile.round &&
+        event.playerId === profile.controllerId &&
+        event.sourceCardId === determinationProvider?.sourceCardId &&
+        event.abilityId === determinationProvider?.abilityId &&
+        Array.isArray(event.qualifyingPlayerIds) &&
+        event.qualifyingPlayerIds.length === 2 &&
+        event.qualifyingPlayerIds[0] === profile.controllerId &&
+        event.qualifyingPlayerIds[1] === profile.targetPlayerId &&
+        event.resource === 'victory_points' &&
+        event.delta === 2 &&
+        Number.isSafeInteger(event.revision) && Number(event.revision) <= r.revision &&
+        Number.isSafeInteger(event.before) && Number.isSafeInteger(event.after) &&
+        Number(event.after) === Number(event.before) + 2);
+      if (targetRequired && profile.determinationRewarded === true) {
+        if (determinationReceipts.length !== 1) return false;
+      } else if (determinationReceipts.length !== 0) {
+        return false;
+      }
 
-        const skillPowerSuffixes = ['skillPowerBonus', 'skillPowerProvider', 'skillPowerProviderAbility'];
-        if (skillPowerSuffixes.some((suffix) => entries.has(suffix))) {
-          if (!skillPowerSuffixes.every((suffix) => entries.has(suffix))) return false;
-          const bonus = entries.get('skillPowerBonus');
-          const providerId = entries.get('skillPowerProvider');
-          const providerAbilityId = entries.get('skillPowerProviderAbility');
-          const providerAbility = typeof providerId === 'string' && typeof providerAbilityId === 'string'
-            ? sourceAbility(state, providerId, providerAbilityId)
-            : undefined;
-          if (!Number.isSafeInteger(bonus) || Number(bonus) < 1 ||
-              typeof providerId !== 'string' || !enhancedIds.has(providerId) ||
-              !providerAbility || !isAcceptedRoundSkillProfileAbility(providerAbility) ||
-              !skillPowerEffect(providerAbility.effects[0]) ||
-              providerAbility.effects[0]!.stateKey !== stateKey) return false;
-        }
+      const actionPenaltyReceipts = r.events.filter((event) =>
+        exactEvent(event, [
+          'type','playerId','sourceCardId','abilityId','resource','delta','before','after','roundNumber','revision',
+        ]) &&
+        event.type === 'round_profile_action_mana_penalty' &&
+        event.roundNumber === profile.round &&
+        event.playerId === profile.controllerId &&
+        event.sourceCardId === profile.providerSourceCardId &&
+        event.abilityId === profile.providerAbilityId &&
+        event.resource === 'mana' &&
+        Number.isSafeInteger(event.revision) && Number(event.revision) <= r.revision &&
+        Number.isSafeInteger(event.before) && Number.isSafeInteger(event.after) &&
+        Number(event.after) === Math.max(0, Number(event.before) - 4) &&
+        event.delta === Number(event.after) - Number(event.before));
+      if (profile.mode === 'action' && profile.actionPenaltyPending === false) {
+        if (actionPenaltyReceipts.length !== 1) return false;
+      } else if (actionPenaltyReceipts.length !== 0) {
+        return false;
+      }
+
+      const ascensionLossReceipts = r.events.filter((event) =>
+        exactEvent(event, [
+          'type','playerId','sourceCardId','abilityId','resource','delta','before','after','roundNumber','revision',
+        ]) &&
+        event.type === 'round_profile_ascension_loss_penalty' &&
+        event.roundNumber === profile.round &&
+        event.playerId === profile.controllerId &&
+        event.sourceCardId === profile.providerSourceCardId &&
+        event.abilityId === profile.providerAbilityId &&
+        event.resource === 'victory_points' &&
+        Number.isSafeInteger(event.revision) && Number(event.revision) <= r.revision &&
+        Number.isSafeInteger(event.before) && Number.isSafeInteger(event.after) &&
+        Number(event.after) === Math.max(0, Number(event.before) - 2) &&
+        event.delta === Number(event.after) - Number(event.before));
+      if (profile.mode === 'ascension' && profile.ascensionLossPending === false) {
+        if (ascensionLossReceipts.length !== 1) return false;
+      } else if (ascensionLossReceipts.length !== 0) {
+        return false;
       }
     }
+
+    const generatedProfileCards = state.cards
+      .filter((entry) => entry.instanceId.startsWith('round-profile:') && r.cardState[entry.instanceId]?.playedRound === state.round.roundNumber)
+      .map((entry) => entry.instanceId);
+    if (generatedProfileCards.length !== enhancedIds.size ||
+        generatedProfileCards.some((instanceId) => !enhancedIds.has(instanceId))) return false;
+
+    const skillPowerReceipts = r.events.filter((event) =>
+      event.type === 'round_skill_card_power_activated' && event.roundNumber === state.round.roundNumber);
+    if (skillPowerReceipts.length !== skillPowerActivations.length) return false;
+    const skillPowerGroups = new Map<string, RoundSkillProfileSkillPowerActivationState[]>();
+    for (const activation of skillPowerActivations) {
+      if (!playerIds.has(activation.controllerId) || !token(activation.stateKey) ||
+          activation.round !== state.round.roundNumber || !Number.isSafeInteger(activation.createdRevision) ||
+          activation.createdRevision < 0 || activation.createdRevision > r.revision ||
+          !Number.isSafeInteger(activation.ordinal) || activation.ordinal < 1 ||
+          !enhancedIds.has(activation.sourceCardId)) return false;
+      const source = state.cards.find((entry) => entry.instanceId === activation.sourceCardId);
+      const ability = source ? sourceAbility(state, activation.sourceCardId, activation.abilityId) : undefined;
+      if (!source || source.ownerPlayerId !== activation.controllerId || source.controllerPlayerId !== activation.controllerId ||
+          !ability || !isAcceptedRoundSkillProfileAbility(ability) || !skillPowerEffect(ability.effects[0]) ||
+          ability.effects[0]!.stateKey !== activation.stateKey) return false;
+      const groupKey = `${activation.controllerId}\u0000${activation.sourceCardId}\u0000${activation.abilityId}`;
+      const group = skillPowerGroups.get(groupKey) ?? [];
+      group.push(activation);
+      skillPowerGroups.set(groupKey, group);
+      const receipts = skillPowerReceipts.filter((event) =>
+        exactEvent(event, ['type','playerId','sourceCardId','abilityId','resource','requestedDelta','delta','before','after','roundNumber','revision']) &&
+        event.playerId === activation.controllerId &&
+        event.sourceCardId === activation.sourceCardId &&
+        event.abilityId === activation.abilityId &&
+        event.resource === 'mana' &&
+        event.requestedDelta === -1 &&
+        event.delta === 1 &&
+        event.before === activation.ordinal - 1 &&
+        event.after === activation.ordinal &&
+        event.roundNumber === activation.round &&
+        event.revision === activation.createdRevision);
+      if (receipts.length !== 1) return false;
+    }
+    for (const group of skillPowerGroups.values()) {
+      const ordered = [...group].sort((a, b) => a.ordinal - b.ordinal);
+      if (ordered.some((entry, index) => entry.ordinal !== index + 1)) return false;
+      const first = ordered[0]!;
+      if (ordered.length !== acceptedActivationCount(
+        state, 'skillPower', first.sourceCardId, first.abilityId)) return false;
+    }
+
+    const terrainReceipts = r.events.filter((event) =>
+      event.type === 'round_current_location_terrain_activated' && event.roundNumber === state.round.roundNumber);
+    if (terrainReceipts.length !== terrainActivations.length) return false;
+    const terrainGroups = new Map<string, RoundSkillProfileTerrainActivationState[]>();
+    for (const activation of terrainActivations) {
+      if (!playerIds.has(activation.controllerId) || !token(activation.stateKey) ||
+          activation.round !== state.round.roundNumber || !Number.isSafeInteger(activation.createdRevision) ||
+          activation.createdRevision < 0 || activation.createdRevision > r.revision ||
+          !Number.isSafeInteger(activation.ordinal) || activation.ordinal < 1 ||
+          !enhancedIds.has(activation.sourceCardId) || !locationIds.has(activation.locationId) ||
+          !state.map.locations.find((entry) => entry.id === activation.locationId)?.tags.includes('battlefield')) return false;
+      const source = state.cards.find((entry) => entry.instanceId === activation.sourceCardId);
+      const ability = source ? sourceAbility(state, activation.sourceCardId, activation.abilityId) : undefined;
+      if (!source || source.ownerPlayerId !== activation.controllerId || source.controllerPlayerId !== activation.controllerId ||
+          !ability || !isAcceptedRoundSkillProfileAbility(ability) || !terrainEffect(ability.effects[0]) ||
+          ability.effects[0]!.stateKey !== activation.stateKey) return false;
+      const groupKey = `${activation.controllerId}\u0000${activation.sourceCardId}\u0000${activation.abilityId}`;
+      const group = terrainGroups.get(groupKey) ?? [];
+      group.push(activation);
+      terrainGroups.set(groupKey, group);
+      const receipts = terrainReceipts.filter((event) =>
+        exactEvent(event, ['type','playerId','sourceCardId','abilityId','battlefieldId','delta','roundNumber','revision']) &&
+        event.playerId === activation.controllerId &&
+        event.sourceCardId === activation.sourceCardId &&
+        event.abilityId === activation.abilityId &&
+        event.battlefieldId === activation.locationId &&
+        event.delta === 2 &&
+        event.roundNumber === activation.round &&
+        event.revision === activation.createdRevision);
+      if (receipts.length !== 1) return false;
+    }
+    for (const group of terrainGroups.values()) {
+      const ordered = [...group].sort((a, b) => a.ordinal - b.ordinal);
+      if (ordered.some((entry, index) => entry.ordinal !== index + 1)) return false;
+      const first = ordered[0]!;
+      if (ordered.length !== acceptedActivationCount(
+        state, 'terrain', first.sourceCardId, first.abilityId)) return false;
+    }
+
+    for (const enhancedId of enhancedIds) {
+      const definition = state.cards.find((entry) => entry.instanceId === enhancedId);
+      const abilities = definition ? runtime(state).pack.cards[definition.definitionId]?.abilities ?? [] : [];
+      for (const ability of abilities.filter(isAcceptedRoundSkillProfileAbility)) {
+        const effect = ability.effects[0];
+        if (!effect || (!skillPowerEffect(effect) && !terrainEffect(effect))) continue;
+        const expected = acceptedActivationCount(
+          state, skillPowerEffect(effect) ? 'skillPower' : 'terrain', enhancedId, ability.id);
+        const actual = skillPowerEffect(effect)
+          ? skillPowerActivations.filter((entry) =>
+              entry.controllerId === definition!.controllerPlayerId && entry.sourceCardId === enhancedId &&
+              entry.abilityId === ability.id && entry.round === state.round.roundNumber).length
+          : terrainActivations.filter((entry) =>
+              entry.controllerId === definition!.controllerPlayerId && entry.sourceCardId === enhancedId &&
+              entry.abilityId === ability.id && entry.round === state.round.roundNumber).length;
+        if (actual !== expected) return false;
+      }
+    }
+
+    const expectedUsage = new Map<string, number>();
+    for (const activation of skillPowerActivations) {
+      const usageKey = activationUsageKey(state, 'skillPower', activation.sourceCardId, activation.abilityId);
+      expectedUsage.set(usageKey, (expectedUsage.get(usageKey) ?? 0) + 1);
+    }
+    for (const activation of terrainActivations) {
+      const usageKey = activationUsageKey(state, 'terrain', activation.sourceCardId, activation.abilityId);
+      expectedUsage.set(usageKey, (expectedUsage.get(usageKey) ?? 0) + 1);
+    }
+    const currentUsageEntries = Object.entries(r.abilityUsage).filter(([usageKey]) =>
+      usageKey.startsWith('round-skill-profile:') &&
+      usageKey.endsWith(`:round:${state.round.roundNumber}`));
+    if (currentUsageEntries.length !== expectedUsage.size) return false;
+    for (const [usageKey, count] of currentUsageEntries) {
+      if (expectedUsage.get(usageKey) !== count) return false;
+    }
+
     return true;
   } catch {
     return false;

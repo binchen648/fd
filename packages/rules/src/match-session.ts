@@ -602,7 +602,7 @@ function isRestoreSafeEvent(value: unknown): boolean {
   if (value.resource !== undefined && !['mana','command_seals','victory_points'].includes(String(value.resource))) return false;
   if (value.rewardBranch !== undefined && value.rewardBranch !== 'mana' && value.rewardBranch !== 'victory_points') return false;
   for (const key of ['delta','before','after','requestedDelta'] as const) if (value[key] !== undefined && !isRestoreFiniteNumber(value[key])) return false;
-  for (const key of ['revision','movedCount'] as const) if (value[key] !== undefined && !isRestoreSafeInteger(value[key])) return false;
+  for (const key of ['revision','roundNumber','movedCount'] as const) if (value[key] !== undefined && !isRestoreSafeInteger(value[key])) return false;
   if (value.qualifyingPlayerIds !== undefined && !isRestoreStringArray(value.qualifyingPlayerIds)) return false;
   if (value.revealedCardDefinitionIds !== undefined && !isRestoreStringArray(value.revealedCardDefinitionIds)) return false;
   if (value.revealedCardInstanceIds !== undefined && !isRestoreStringArray(value.revealedCardInstanceIds)) return false;
@@ -1118,6 +1118,37 @@ function isRestoreOneShotAbilityReuseGrant(value: unknown): boolean {
     typeof value.controllerId === 'string' && typeof value.providerSourceCardId === 'string' && typeof value.providerSourceAbilityId === 'string' &&
     typeof value.targetCardId === 'string' && typeof value.targetAbilityId === 'string' && isRestoreSafeInteger(value.round, 1) && typeof value.consumed === 'boolean';
 }
+function isRestoreRoundSkillProfileRuntimeState(value: unknown): boolean {
+  if (!isRestoreRecord(value)) return false;
+  const required = ['controllerId','stateKey','profileKey','mode','suppression','enhancedCardInstanceId','providerSourceCardId','providerAbilityId','round','createdRevision'];
+  const optional = ['targetPlayerId','controllerVpAtSelection','targetVpAtSelection','actionPenaltyPending','ascensionLossPending','determinationRewarded'];
+  const keys = Object.keys(value);
+  if (required.some((key) => !keys.includes(key)) || keys.some((key) => !required.includes(key) && !optional.includes(key))) return false;
+  if (typeof value.controllerId !== 'string' || typeof value.stateKey !== 'string' || typeof value.profileKey !== 'string' ||
+      !['advance','action','ascension'].includes(String(value.mode)) ||
+      !['movement_lock','gentle_penalties','round_mana_cap'].includes(String(value.suppression)) ||
+      typeof value.enhancedCardInstanceId !== 'string' || typeof value.providerSourceCardId !== 'string' ||
+      typeof value.providerAbilityId !== 'string' || !isRestoreSafeInteger(value.round, 1) || !isRestoreSafeInteger(value.createdRevision)) return false;
+  const targetFields = [value.targetPlayerId, value.controllerVpAtSelection, value.targetVpAtSelection];
+  if (targetFields.some((entry) => entry !== undefined) &&
+      (typeof value.targetPlayerId !== 'string' || !isRestoreSafeInteger(value.controllerVpAtSelection, 0) || !isRestoreSafeInteger(value.targetVpAtSelection, 0))) return false;
+  for (const key of ['actionPenaltyPending','ascensionLossPending','determinationRewarded'] as const) {
+    if (value[key] !== undefined && typeof value[key] !== 'boolean') return false;
+  }
+  return true;
+}
+function isRestoreRoundSkillProfileSkillPowerActivationState(value: unknown): boolean {
+  return hasExactRestoreKeys(value, ['controllerId','stateKey','sourceCardId','abilityId','round','createdRevision','ordinal']) &&
+    typeof value.controllerId === 'string' && typeof value.stateKey === 'string' && typeof value.sourceCardId === 'string' &&
+    typeof value.abilityId === 'string' && isRestoreSafeInteger(value.round, 1) && isRestoreSafeInteger(value.createdRevision) &&
+    isRestoreSafeInteger(value.ordinal, 1);
+}
+function isRestoreRoundSkillProfileTerrainActivationState(value: unknown): boolean {
+  return hasExactRestoreKeys(value, ['controllerId','stateKey','sourceCardId','abilityId','round','createdRevision','ordinal','locationId']) &&
+    typeof value.controllerId === 'string' && typeof value.stateKey === 'string' && typeof value.sourceCardId === 'string' &&
+    typeof value.abilityId === 'string' && isRestoreSafeInteger(value.round, 1) && isRestoreSafeInteger(value.createdRevision) &&
+    isRestoreSafeInteger(value.ordinal, 1) && typeof value.locationId === 'string';
+}
 function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionRestorePackKind): boolean {
   if (value === undefined) return true;
   if (!isRestoreRecord(value) || !isRestoreAbilityPack(value.pack, packKind) || !isRestoreRecord(value.cardState) ||
@@ -1163,6 +1194,12 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
   if (value.crossPhaseActionProviders !== undefined && (!Array.isArray(value.crossPhaseActionProviders) || value.crossPhaseActionProviders.length !== 0)) return false;
   if (value.oneShotAbilityReuseGrants !== undefined && (!Array.isArray(value.oneShotAbilityReuseGrants) ||
       !value.oneShotAbilityReuseGrants.every(isRestoreOneShotAbilityReuseGrant))) return false;
+  if (value.roundSkillProfiles !== undefined && (!Array.isArray(value.roundSkillProfiles) ||
+      !value.roundSkillProfiles.every(isRestoreRoundSkillProfileRuntimeState))) return false;
+  if (value.roundSkillProfileSkillPowerActivations !== undefined && (!Array.isArray(value.roundSkillProfileSkillPowerActivations) ||
+      !value.roundSkillProfileSkillPowerActivations.every(isRestoreRoundSkillProfileSkillPowerActivationState))) return false;
+  if (value.roundSkillProfileTerrainActivations !== undefined && (!Array.isArray(value.roundSkillProfileTerrainActivations) ||
+      !value.roundSkillProfileTerrainActivations.every(isRestoreRoundSkillProfileTerrainActivationState))) return false;
   if (value.playerStatusKeysByPlayer !== undefined && !isRestoreStringArrayMap(value.playerStatusKeysByPlayer)) return false;
   if (value.persistentLocationTerrainByPlayer !== undefined && (!isRestoreRecord(value.persistentLocationTerrainByPlayer) ||
       !Object.values(value.persistentLocationTerrainByPlayer).every((locationMap) => isRestoreRecord(locationMap) && Object.values(locationMap).every((entry) =>
