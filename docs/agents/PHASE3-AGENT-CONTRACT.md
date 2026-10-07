@@ -1,6 +1,6 @@
 # Phase 3 Agent Contract
 
-- Version: P3-AC-1.0
+- Version: P3-AC-1.1
 - Status: ACTIVE
 - Scope: Phase 3 agent role ownership, task routing, and startup read rules
 - Authority: subordinate to `docs/FD-DOCUMENT-ROADMAP.md`, `docs/rules/FD-Game-Rules-Final.md`, and `docs/plans/fd-rules-conformance-and-acceptance.md`
@@ -77,6 +77,22 @@ Must not:
 - promote a slice using implementer-only evidence
 
 Codex R may return `PLAN_NEEDS_REVISION`, `IMPLEMENTATION_NEEDS_REVISION`, or candidate acceptance, but review and implementation roles must stay separate.
+
+## Slice And Pull Request Boundary
+
+A Slice is the smallest independently promotable semantic unit. It is not a
+chat, branch, commit, task, or role. One Slice may contain multiple role-owned
+tasks and conversations, but it has only one final Promotion PR targeting
+`main`.
+
+Roles A, B, B2, R, and S may create isolated worktrees, branches, commits, and
+immutable artifacts. They must not create a new role-stage PR whose base is
+another unmerged role branch. Role separation is proved by exact-SHA-bound,
+ordered artifacts and read-only review, not by a chain of pull requests.
+
+Codex I alone assembles the accepted lineage into the final Promotion PR.
+Existing stacked PRs remain read-only provenance until Planner classifies them
+as promoted, replay-required, superseded, or archive-ready.
 
 ## Task Routing Rule
 

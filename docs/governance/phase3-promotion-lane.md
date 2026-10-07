@@ -8,13 +8,50 @@ Phase 3 candidate work may be promoted to `main` only through a Promotion PR tha
 - `Test / test`: existing typecheck plus `npm run test:ci`.
 - `Phase 3 Promotion Lane / policy`: structured Phase 3 manifest policy and focused governance tests.
 
-The Phase 3 gate runs on all pull requests so stacked Phase 3 PRs get a stable policy check even when their base is another `codex/...` branch. Phase 3 naming and changes under rules, content, Phase 3 data, scripts, plans, reports, audits, repository package manifests, or `.github` governance paths activate manifest policy. Ordinary PRs outside those signals are skipped. A push to `main` runs the focused tests under the same check name, establishing its status context before it is made required. The gate uses `pull_request`, not `pull_request_target`, has `contents: read`, uses no secrets, does not persist checkout credentials, and cancels stale runs for the same PR.
+The Phase 3 gate runs on Promotion and governance pull requests. Historical
+stacked Phase 3 PRs may continue to receive checks, but Epoch 07 forbids new
+role-stage PRs based on another unmerged role branch. Phase 3 naming and
+changes under rules, content, Phase 3 data, scripts, plans, reports, audits,
+repository package manifests, or `.github` governance paths activate manifest
+policy. Ordinary PRs outside those signals are skipped. A push to `main` runs
+the focused tests under the same check name, establishing its status context
+before it is made required. The gate uses `pull_request`, not
+`pull_request_target`, has `contents: read`, uses no secrets, does not persist
+checkout credentials, and cancels stale runs for the same PR.
 
 ## Manifest Policy
 
 Phase 3 PRs must include a fenced `json phase3-task-manifest` block in the PR body. The manifest records role, task ID, base/head refs and SHAs, dependency PRs, affected ability IDs, runtime behavior flag, rules source, Reference commit, R review evidence, A synchronization evidence, migration counts, tests, uncovered scenarios, blockers, zero-migration credit, and upstream revalidation acknowledgement.
 
-Roles are `A`, `B`, `R`, `S`, `I`, and `G`. Promotion PRs targeting `main` must use role `I`; governance-only PRs use role `G`; stacked Phase 3 implementation/review/migration PRs use role `A`, `B`, `R`, or `S` with `prType: "stacked"`. A Promotion review conclusion must be an explicit accepted Phase 3 conclusion. The R review SHA must resolve to a fetched commit and be distinct from the base, candidate, synchronization, and integration commits. The reviewed candidate must precede A synchronization, and A synchronization must precede the Promotion head.
+Roles are `A`, `B`, `R`, `S`, `I`, and `G`. Promotion PRs targeting `main`
+must use role `I`; governance-only PRs use role `G`. Roles A, B, B2, R, and S
+produce branch commits and immutable handoff artifacts, not role-stage PRs.
+`prType: "stacked"` is historical input only and is invalid for a newly
+dispatched Epoch 07 Slice. A Promotion review conclusion must be an explicit
+accepted Phase 3 conclusion. The R review SHA must resolve to a fetched commit
+and be distinct from the base, candidate, synchronization, and integration
+commits. The reviewed candidate must precede A synchronization, and A
+synchronization must precede the Promotion head.
+
+## One-Slice Promotion Topology
+
+One Slice may use several worktrees and conversations, but it has exactly one
+final Promotion PR. The required topology is:
+
+```text
+Planner task card
+  -> role-owned commits and immutable artifacts
+  -> independent exact-SHA reviews
+  -> Codex I assembly
+  -> one Promotion PR targeting main
+  -> human merge decision
+  -> post-merge recount
+```
+
+Intermediate GitHub discussion uses a Slice tracking issue or exact-SHA-bound
+attestation comment. It must not require an A-to-B-to-S chain of PR bases.
+Existing stacked PRs receive no main credit and are not merged merely because
+their historical checks pass.
 
 Promotion review evidence is a machine-readable JSON attestation stored below `docs/reviews/phase3/` in the tree identified by `review.sha`. The manifest binds that file by SHA-256 and repeats its `taskId`, `reviewer` (`github:<login>`), GitHub review-thread URL, candidate SHA, and conclusion. The gate reads the file from the review commit and requires every field to match. This makes evidence tampering or accidental reuse detectable.
 

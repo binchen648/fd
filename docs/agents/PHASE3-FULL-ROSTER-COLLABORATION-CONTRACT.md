@@ -25,7 +25,10 @@ S must not modify runtime semantics, define primitives, infer rules from Referen
 
 The collaborator may act as B2 only for one task marked `READY` after its capability request, canonical semantics, baseline, file lease, and dependencies are accepted. B2 follows all Codex B restrictions.
 
-One PR has one role. An S PR cannot contain B2 runtime changes; a B2 PR cannot contain unrelated bulk authoring or metric changes.
+One task artifact and one implementation commit have one role. An S task cannot
+contain B2 runtime changes; a B2 task cannot contain unrelated bulk authoring
+or metric changes. Multiple role tasks for one Slice remain in one ordered
+lineage and culminate in one Codex I Promotion PR.
 
 Codex A, Codex B, and Codex R retain the ownership defined in `PHASE3-AGENT-CONTRACT.md`.
 
@@ -83,9 +86,9 @@ S owns only declared authoring, intake, inventory, source, and migration-fixture
 - Reference behavior conflicts with canonical rules: `REFERENCE_RUNTIME_CONFLICT`.
 - Highly specific clear behavior: `SPECIAL_HANDLER_CANDIDATE` for B/R review.
 
-## Pull Requests
+## Promotion Handoff
 
-Every PR states:
+Each role handoff records:
 
 ```yaml
 Role: S | A | B | B2 | R
@@ -104,6 +107,11 @@ GateClaim: NONE | CANDIDATE
 ```
 
 Do not combine roles, unrelated mechanic families, Reference runtime import, metric redefinition, and production runtime changes. Implementers cannot claim acceptance.
+
+A, B, B2, R, and S do not open role-stage PRs based on another unmerged role
+branch. They publish exact-SHA-bound commits and artifacts on the assigned Slice
+lineage. After all required reviews pass, Codex I creates the Slice's only
+Promotion PR targeting `main`.
 
 ## Checkpoints
 
