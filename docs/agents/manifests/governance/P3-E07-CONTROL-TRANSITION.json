@@ -19,7 +19,9 @@
     "taskId": "P3-E07-RP-00-A3",
     "owner": "A",
     "reviewerTaskId": "P3-E07-RP-00-RA3",
-    "state": "ACTIVE_RECOUNT_PREPARATION",
+    "candidateSha": "fa76e0311c9f7bd0ca07c973866b12938c5fd79f",
+    "sourceBranch": "codex/a-p3-e06-post-merge-recount",
+    "state": "CANDIDATE_EXISTS_READY_FOR_RA3",
     "runtimeEditsAllowed": false,
     "lockReleaseAllowed": false
   },

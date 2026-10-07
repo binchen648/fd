@@ -22,8 +22,8 @@
 
 | Task | Owner | Exact base | State |
 |---|---|---|---|
-| `P3-E07-RP-00-A3` | Codex A | `a7751c3...` | `ACTIVE_RECOUNT_PREPARATION` |
-| `P3-E07-RP-00-RA3` | Reviewer A | A3 exact candidate | `WAIT_A3` |
+| `P3-E07-RP-00-A3` | Codex A | `a7751c3...` | `CANDIDATE_EXISTS: fa76e03...` |
+| `P3-E07-RP-00-RA3` | Reviewer A | `fa76e03...` | `READY_FOR_REVIEW` |
 
 Codex A owns coverage, ledger, and evidence recount only. It must not edit
 runtime or authoring semantics. RP-00 reaches
@@ -133,8 +133,8 @@ Forbidden now:
 
 ## Next Sync Triggers
 
-1. `P3-E07-RP-00-A3` produces an exact candidate;
-2. Reviewer A returns the RA3 verdict;
+1. Reviewer A returns the RA3 verdict for `fa76e03...`;
+2. RP-00 recount PASS or findings change the reservation state;
 3. the no-stacked-role-PR governance contract is accepted or rejected;
 4. authoritative main changes;
 5. a new role-stage stacked PR is opened after this directive.

@@ -29,8 +29,8 @@ This file is the task lookup entry point for Phase 3 agents. Do not read the ful
 
 | Task | Owner | State | Boundary |
 |---|---|---|---|
-| `P3-E07-RP-00-A3` | A | `ACTIVE_RECOUNT_PREPARATION` | post-merge recount only; no runtime edits |
-| `P3-E07-RP-00-RA3` | Reviewer A | `WAIT_A3` | exact-SHA recount review |
+| `P3-E07-RP-00-A3` | A | `CANDIDATE_EXISTS: fa76e03...` | post-merge recount only; no runtime edits |
+| `P3-E07-RP-00-RA3` | Reviewer A | `READY_FOR_REVIEW` | exact-SHA recount review |
 | `P3-E07-G01` | G | `READY_AFTER_PLANNER_COMMIT` | review Slice/Task/PR governance only |
 | `P3-E07-C01-A` | A | `WAIT_RP00_RECOUNT` | Control CLI and drift-classifier design/implementation |
 | `P3-E07-C01-RA` | Reviewer A | `WAIT_C01_A` | automation and classification review |
