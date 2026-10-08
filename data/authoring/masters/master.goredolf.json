@@ -1,0 +1,520 @@
+{
+    "schemaVersion":  "fd-card-authoring-v1",
+    "archiveType":  "master_skill_card_archive",
+    "id":  "master.goredolf",
+    "name":  "戈尔德鲁夫·穆吉克",
+    "class":  "Master",
+    "publicInformation":  {
+                              "type":  "master_package",
+                              "initialMana":  4
+                          },
+    "sourcePolicy":  {
+                         "phase3EvidenceCommit":  "0c63e26e7e511b5a1660e65080eafdd8c01906c3",
+                         "referenceMetadataCommit":  "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+                         "note":  "Accepted Goredolf readiness Candidate provides identity-free round-commitment authority. Locked Reference legacy-content.json supplies the exact three skill texts and physical Gof Fist card text. Development master image locator is recorded in locked Reference; standalone Gof Fist image path is not independently verified. Migration needs fresh independent review."
+                     },
+    "cards":  [
+                  {
+                      "id":  "master.goredolf.skill.s1",
+                      "aliases":  [
+                                      "s1"
+                                  ],
+                      "legacyId":  "s1",
+                      "name":  "铁腕绅士",
+                      "cardType":  "master_skill",
+                      "owner":  {
+                                    "type":  "master",
+                                    "id":  "master.goredolf"
+                                },
+                      "printedText":  "游戏开始时，将你牌库中威力最高的2张基础攻击替换为【戈夫铁拳】。",
+                      "cardFace":  {
+                                       "typeLabel":  "被动",
+                                       "attributes":  [
+
+                                                      ],
+                                       "cost":  0,
+                                       "basePower":  0
+                                   },
+                      "playTiming":  {
+                                         "phase":  "action",
+                                         "window":  "controller_play_card_window"
+                                     },
+                      "playRequirements":  [
+
+                                           ],
+                      "abilities":  [
+                                        {
+                                            "id":  "goredolf.iron.replace",
+                                            "kind":  "forced_trigger",
+                                            "printedClause":  "游戏开始时，将你牌库中威力最高的2张基础攻击替换为【戈夫铁拳】。",
+                                            "activation":  {
+                                                               "trigger":  "game_start"
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+
+                                                        ],
+                                            "effects":  [
+                                                            {
+                                                                "type":  "replace_highest_basic_attacks_with_definition",
+                                                                "definitionId":  "card.card-gof-fist",
+                                                                "count":  2,
+                                                                "ranking":  "printed_base_power_desc_deck_order"
+                                                            }
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "creates":  [
+
+                                                        ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "execution":  {
+                                                              "mode":  "automatic",
+                                                              "allowedOperations":  [
+
+                                                                                    ]
+                                                          }
+                                        }
+                                    ],
+                      "verification":  {
+                                           "implementationStatus":  "complete"
+                                       }
+                  },
+                  {
+                      "id":  "master.goredolf.skill.s1a",
+                      "aliases":  [
+                                      "s1a"
+                                  ],
+                      "legacyId":  "s1a",
+                      "name":  "愚者的决意",
+                      "cardType":  "master_skill",
+                      "owner":  {
+                                    "type":  "master",
+                                    "id":  "master.goredolf"
+                                },
+                      "printedText":  "前哨阶段：+2合计威力。你本回合必须部署于一处战场且你不能于你的回合移动，若你本回合战败，失去2点战果。\n【戈夫铁拳】为牌库替换牌，抽到手牌后于战斗时打出。",
+                      "cardFace":  {
+                                       "typeLabel":  "前哨",
+                                       "attributes":  [
+
+                                                      ],
+                                       "cost":  0,
+                                       "basePower":  0
+                                   },
+                      "playTiming":  {
+                                         "phase":  "action",
+                                         "window":  "controller_play_card_window"
+                                     },
+                      "playRequirements":  [
+
+                                           ],
+                      "abilities":  [
+                                        {
+                                            "id":  "goredolf.resolve.activate",
+                                            "kind":  "phase_action",
+                                            "printedClause":  "前哨阶段：+2合计威力，必须部署于战场且本回合不能移动。",
+                                            "activation":  {
+                                                               "phase":  "advance",
+                                                               "opens":  "controller_action_window"
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+
+                                                        ],
+                                            "effects":  [
+                                                            {
+                                                                "type":  "activate_round_commitment",
+                                                                "stateKey":  "goredolf.foolish-resolve",
+                                                                "powerBonus":  2,
+                                                                "mustDeployToBattlefield":  true,
+                                                                "lockMovement":  true
+                                                            }
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "creates":  [
+
+                                                        ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+                                                                   "order":  "turn_order",
+                                                                   "passBehavior":  "decline_this_window"
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "execution":  {
+                                                              "mode":  "automatic",
+                                                              "allowedOperations":  [
+
+                                                                                    ]
+                                                          }
+                                        },
+                                        {
+                                            "id":  "goredolf.resolve.loss",
+                                            "kind":  "forced_trigger",
+                                            "printedClause":  "若你本回合战败，失去2点战果。",
+                                            "activation":  {
+                                                               "trigger":  "after_controller_loses_battle"
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+
+                                                        ],
+                                            "effects":  [
+                                                            {
+                                                                "type":  "round_commitment_loss_vp_penalty",
+                                                                "stateKey":  "goredolf.foolish-resolve",
+                                                                "amount":  2
+                                                            }
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "creates":  [
+
+                                                        ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "execution":  {
+                                                              "mode":  "automatic",
+                                                              "allowedOperations":  [
+
+                                                                                    ]
+                                                          }
+                                        }
+                                    ],
+                      "verification":  {
+                                           "implementationStatus":  "complete"
+                                       }
+                  },
+                  {
+                      "id":  "master.goredolf.skill.ascension",
+                      "aliases":  [
+                                      "ascension"
+                                  ],
+                      "legacyId":  "ascension",
+                      "name":  "别掉队了！",
+                      "cardType":  "master_skill",
+                      "owner":  {
+                                    "type":  "master",
+                                    "id":  "master.goredolf"
+                                },
+                      "printedText":  "【戈夫铁拳】获得+6威力。\n当你使用了愚者的决意并赢得了战斗，此战斗的所有败者失去2点战果。",
+                      "cardFace":  {
+                                       "typeLabel":  "升华技",
+                                       "attributes":  [
+
+                                                      ],
+                                       "cost":  0,
+                                       "basePower":  0
+                                   },
+                      "playTiming":  {
+                                         "phase":  "action",
+                                         "window":  "controller_play_card_window"
+                                     },
+                      "playRequirements":  [
+
+                                           ],
+                      "abilities":  [
+                                        {
+                                            "id":  "goredolf.ascension.fist-power",
+                                            "kind":  "passive",
+                                            "printedClause":  "【戈夫铁拳】获得+6威力。",
+                                            "activation":  {
+                                                               "trigger":  "while_active"
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+
+                                                        ],
+                                            "effects":  [
+                                                            {
+                                                                "type":  "round_commitment_definition_power_bonus",
+                                                                "definitionId":  "card.card-gof-fist",
+                                                                "amount":  6
+                                                            }
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "creates":  [
+
+                                                        ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "execution":  {
+                                                              "mode":  "automatic",
+                                                              "allowedOperations":  [
+
+                                                                                    ]
+                                                          }
+                                        },
+                                        {
+                                            "id":  "goredolf.ascension.win-losers",
+                                            "kind":  "forced_trigger",
+                                            "printedClause":  "使用愚者的决意并赢得战斗时，此战斗所有败者失去2点战果。",
+                                            "activation":  {
+                                                               "trigger":  "after_controller_wins_battle"
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+
+                                                        ],
+                                            "effects":  [
+                                                            {
+                                                                "type":  "round_commitment_win_losers_vp_penalty",
+                                                                "stateKey":  "goredolf.foolish-resolve",
+                                                                "amount":  2
+                                                            }
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "creates":  [
+
+                                                        ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "execution":  {
+                                                              "mode":  "automatic",
+                                                              "allowedOperations":  [
+
+                                                                                    ]
+                                                          }
+                                        }
+                                    ],
+                      "verification":  {
+                                           "implementationStatus":  "complete"
+                                       }
+                  },
+                  {
+                      "id":  "card.card-gof-fist",
+                      "aliases":  [
+                                      "Card_Gof_Fist"
+                                  ],
+                      "legacyId":  "Card_Gof_Fist",
+                      "name":  "戈夫铁拳",
+                      "cardType":  "basic_attack",
+                      "owner":  {
+                                    "type":  "master",
+                                    "id":  "master.goredolf"
+                                },
+                      "printedText":  "裸拳警告！-唯一/战斗阶段：若你赢得战斗，获得4点战果。\n双拳出击！-战斗阶段：弃置一张【戈夫铁拳】，此牌威力翻倍。",
+                      "cardFace":  {
+                                       "typeLabel":  "力量",
+                                       "attributes":  [
+
+                                                      ],
+                                       "cost":  0,
+                                       "basePower":  2
+                                   },
+                      "playTiming":  {
+                                         "phase":  "action",
+                                         "window":  "controller_play_card_window"
+                                     },
+                      "playRequirements":  [
+
+                                           ],
+                      "abilities":  [
+                                        {
+                                            "id":  "goredolf.fist.win-vp",
+                                            "kind":  "forced_trigger",
+                                            "printedClause":  "若你赢得战斗，获得4点战果。",
+                                            "activation":  {
+                                                               "trigger":  "after_controller_wins_battle"
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+
+                                                        ],
+                                            "effects":  [
+                                                            {
+                                                                "type":  "round_commitment_fist_win_vp",
+                                                                "amount":  4
+                                                            }
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "creates":  [
+
+                                                        ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "execution":  {
+                                                              "allowedOperations":  [
+
+                                                                                    ],
+                                                              "mode":  "automatic"
+                                                          }
+                                        },
+                                        {
+                                            "id":  "goredolf.fist.double",
+                                            "kind":  "phase_action",
+                                            "printedClause":  "战斗阶段：弃置另一张【戈夫铁拳】，此牌威力翻倍。",
+                                            "activation":  {
+                                                               "opens":  "controller_combat_action_window",
+                                                               "phase":  "combat"
+                                                           },
+                                            "conditions":  [
+
+                                                           ],
+                                            "targets":  [
+                                                            {
+                                                                "scope":  {
+                                                                              "zone":  "hand",
+                                                                              "owner":  "controller",
+                                                                              "controller":  "self"
+                                                                          },
+                                                                "count":  {
+                                                                              "min":  1,
+                                                                              "max":  1
+                                                                          },
+                                                                "constraints":  [
+
+                                                                                ],
+                                                                "id":  "other_fist",
+                                                                "type":  "card_instance"
+                                                            }
+                                                        ],
+                                            "effects":  [
+                                                            {
+                                                                "multiplier":  2,
+                                                                "target":  "other_fist",
+                                                                "type":  "round_commitment_fist_discard_other_double_power"
+                                                            }
+                                                        ],
+                                            "cost":  [
+
+                                                     ],
+                                            "ruleModifiers":  [
+
+                                                              ],
+                                            "creates":  [
+
+                                                        ],
+                                            "lifecycle":  {
+
+                                                          },
+                                            "responseWindow":  {
+                                                                   "order":  "turn_order",
+                                                                   "passBehavior":  "decline_this_window"
+                                                               },
+                                            "limit":  {
+
+                                                      },
+                                            "visibility":  {
+
+                                                           },
+                                            "execution":  {
+                                                              "allowedOperations":  [
+
+                                                                                    ],
+                                                              "mode":  "automatic"
+                                                          }
+                                        }
+                                    ],
+                      "verification":  {
+                                           "implementationStatus":  "complete"
+                                       }
+                  }
+              ],
+    "sources":  [
+                    {
+                        "imageOrder":  [
+                                           "../../Fate_Domination-开发版/images/masters/戈尔德鲁夫·穆吉克.png"
+                                       ],
+                        "id":  "development_card_images",
+                        "type":  "development_image_set"
+                    }
+                ]
+}

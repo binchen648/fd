@@ -9663,3 +9663,36 @@ Acceptance synchronization (2026-10-09):
 - Readiness A-sync contributes `+0`; accounting remains `270/944`, remaining `674`.
 - Formal acceptance-sync report: `docs/reports/2026-10-09-p3-a-goredolf-owner-readiness-acceptance-synchronization.md`.
 - Release `P3-S-OWNER-GOREDOLF-COMPLETE-MIGRATION` to `READY`, for all three frozen identities in one owner-complete Candidate from the new acceptance-sync HEAD.
+
+## TASK P3-S-OWNER-GOREDOLF-COMPLETE-MIGRATION
+
+Owner: FORMAL
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Classification: owner-complete migration, frozen exactly 3 skills for `master.goredolf`
+
+Exact Base:
+- `45945303b1535e7e661af6014ca1132ca3e40459` — published Goredolf readiness acceptance synchronization.
+- Accepted readiness evidence: PR #555 `IMPLEMENTATION_ACCEPTED_CANDIDATE`, https://github.com/binchen648/fd/pull/555#issuecomment-6064675657.
+
+Frozen identities in this one consumer archive:
+- `master.goredolf.skill.ascension` — 别掉队了！
+- `master.goredolf.skill.s1` — 铁腕绅士
+- `master.goredolf.skill.s1a` — 愚者的决意
+
+Canonical materialization:
+- `data/authoring/masters/master.goredolf.json`: one complete owner consumer containing all three frozen skills;
+- `card.card-gof-fist`: one physical Gof Fist definition with authenticated +4 win VP and player-selected discard-other-fist to double Power;
+- `data/packs/fd-playtest-v1/pack.json`: exactly one Goredolf authoring master registration;
+- `data/generated`: regenerated content library and evidence report; deterministic reproduction PASS.
+
+FORMAL-only verification (NOT independent acceptance):
+- Goredolf owner `9/9`, Goredolf readiness `5/5`, movement `3/3`, complex skills `38/38`, MatchSession `34/34`: `89/89 PASS` across five files;
+- typecheck PASS, content validate PASS (`26 masters / 19 servants / 20 events / 0 blocking`), generated determinism PASS;
+- external phase3 coverage PASS (`archives=130 cards=309 abilities=543 compiledCards=249 compiledCharacters=45 blockingIssues=0`);
+- external automation audit PASS (`promotionFindings=20` preserved);
+- detailed implementation report: `docs/reports/2026-10-09-p3-s-owner-goredolf-complete-migration.md`.
+
+Formal review gate:
+- Freeze one Candidate, publish exactly one owner PR and request one fresh independent review against pinned Base, Candidate, branch and task.
+- All broader `test:ci` limitations from PR #555 remain separately disclosed; no full-suite green claimed.
+- Formal accounting remains `270/944`, remaining `674` until exact `MIGRATION_ACCEPTED` and subsequent A-sync; maximum increment `+3`.

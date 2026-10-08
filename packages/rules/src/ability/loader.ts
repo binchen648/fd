@@ -122,6 +122,8 @@ import {
   ROUND_COMMITMENT_DEFINITION_POWER_EFFECT,
   ROUND_COMMITMENT_LOSS_VP_EFFECT,
   ROUND_COMMITMENT_WIN_LOSERS_VP_EFFECT,
+  ROUND_COMMITMENT_FIST_WIN_VP_EFFECT,
+  ROUND_COMMITMENT_FIST_DOUBLE_EFFECT,
   containsRoundCommitmentPrivilegedNode,
   isAcceptedRoundCommitmentAbility,
 } from './round-commitment-capability';
@@ -417,7 +419,7 @@ const supportedTypes = new Set([
   LINKED_AUXILIARY_SUITE_EFFECT,
   REPLACE_HIGHEST_BASIC_ATTACKS_EFFECT, ACTIVATE_ROUND_COMMITMENT_EFFECT,
   ROUND_COMMITMENT_LOSS_VP_EFFECT, ROUND_COMMITMENT_DEFINITION_POWER_EFFECT,
-  ROUND_COMMITMENT_WIN_LOSERS_VP_EFFECT,
+  ROUND_COMMITMENT_WIN_LOSERS_VP_EFFECT, ROUND_COMMITMENT_FIST_WIN_VP_EFFECT, ROUND_COMMITMENT_FIST_DOUBLE_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
