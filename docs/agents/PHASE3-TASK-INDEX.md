@@ -9541,7 +9541,7 @@ Readiness acceptance closure:
 ## TASK P3-S-OWNER-GOETIA-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Classification: formal owner-complete migration for `master.goetia`
 
 Exact Base:
@@ -9593,11 +9593,20 @@ Fresh Reviewer revision closure:
 - full regression investigation also stabilized other pool-sensitive fixtures and historical pack-end assumptions, corrected Golden Flow so a Master provider cannot be repurposed as a synthetic attack, and closed the eliminated-controller historical provision restore defect without relaxing live provider authority;
 - serial broad rerun: `272 files / 1043 tests PASS`; `7 files / 16 tests` remain as Base-existing convergence debt with no Exact-Base-to-current test or related-runtime delta;
 - candidate-induced broad-regression failures after the revision: `0`;
-- strict accounting remains `267/944`, remaining `677` until a fresh successor Candidate receives `MIGRATION_ACCEPTED`.
+- before final successor acceptance, strict accounting remained `267/944`, remaining `677`.
 
-Review/accounting gate:
-- freeze one owner Candidate from exact Base `8b3576f4b9e9f73dcc20969e5979494e097083a8`;
-- one PR and one fresh independent exact Base/Candidate REVIEW;
-- strict accounting remains `267/944`, remaining `677` before acceptance;
-- no credit for the seven helper definitions or the shared restore repair;
-- only fresh `MIGRATION_ACCEPTED` plus FORMAL A-sync may credit exact `+3`: `267/944 -> 270/944`, remaining `674`.
+Review/accounting closure:
+- exact accepted Candidate: `1a944ab7ce6cf926982d5b5d0b3dc29020cfffaf` from exact Base `8b3576f4b9e9f73dcc20969e5979494e097083a8`;
+- fresh independent exact Base/Candidate REVIEW returned `MIGRATION_ACCEPTED`;
+- seven helper definitions and the shared restore repair remain zero-credit;
+- FORMAL acceptance synchronization lawfully credits exact `+3`: `267/944 -> 270/944`, remaining `674`.
+
+Acceptance synchronization:
+- exact successor Candidate `1a944ab7ce6cf926982d5b5d0b3dc29020cfffaf` received fresh exact `MIGRATION_ACCEPTED` on ReviewJobKey `pr552:1a944ab7ce6cf926982d5b5d0b3dc29020cfffaf:blocked-retry-1`;
+- canonical same-attempt accepted evidence: `https://github.com/binchen648/fd/pull/552#issuecomment-6056490781`;
+- FORMAL mechanical acceptance rescan confirms exact Base consumer materialization `0/3`, accepted Candidate materialization `3/3`, active-pack registration exactly `1`, seven Demon God helper definitions exactly `7` and permanently zero-credit, with no Base-to-Candidate deletion/rename;
+- independent Reviewer closed predecessor R1/R2 with `4/4 + 5/5 PASS`, reproduced Goetia owner `5/5 PASS`, Caren restore `13/13 PASS`, typecheck/content/generated PASS, external coverage `blockingIssues=0`, external audit with `promotionFindings=20` preserved, final clean exact HEAD and `git diff --check` PASS;
+- independent serial broad regression recorded `1043/1059 PASS`; the remaining `7 files / 16 tests` are disclosed historical convergence debt unchanged between exact Base and accepted Candidate, and candidate-induced broad-regression failures are `0`;
+- strict accounting advances lawfully `267/944 + 3 = 270/944`, remaining `674`; preservation/recount/helper/shared-repair credit is exactly `+0`;
+- acceptance synchronization report: `docs/reports/2026-10-08-p3-a-owner-goetia-acceptance-synchronization.md`;
+- Goetia owner is fully closed. FORMAL must derive the next owner mechanically from the frozen roster and this acceptance-sync HEAD under `fd.owner-complete@1.1.0`, with no HELPER lane.
