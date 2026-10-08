@@ -56,6 +56,7 @@ export * from './ability/round-skill-profile-capability';
 export * from './ability/permanent-skill-tuning-capability';
 export * from './ability/elimination-rescue-link-capability';
 export * from './ability/injury-warp-capability';
+export * from './ability/linked-auxiliary-suite-capability';
 export * from './ability/report';
 export * from './ability/resolution-dataflow';
 

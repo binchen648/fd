@@ -111,6 +111,11 @@ import {
   containsInjuryWarpPrivilegedNode,
   isAcceptedInjuryWarpAbility,
 } from './injury-warp-capability';
+import {
+  LINKED_AUXILIARY_SUITE_EFFECT,
+  containsLinkedAuxiliarySuitePrivilegedNode,
+  isAcceptedLinkedAuxiliarySuiteAbility,
+} from './linked-auxiliary-suite-capability';
 import { EFFECTIVE_LOCATION_SAME_LOCATION_RESTRICTIONS_EFFECT, containsEffectiveLocationRestrictionPrivilegedNode, isAcceptedEffectiveLocationRestrictionAbility } from './effective-location-restriction-capability';
 import { RECYCLE_ACTIVE_BASIC_FOR_PRINTED_COST_MANA_EFFECT, containsOriginStillnessPrintedCostPrivilegedNode, isAcceptedOriginStillnessPrintedCostAbility } from './origin-stillness-printed-cost-capability';
 import {
@@ -400,6 +405,7 @@ const supportedTypes = new Set([
   INJURY_WARP_RULESET_EFFECT, INJURY_WARP_DRAW_CHOICE_EFFECT, INJURY_WARP_ACTION_DISCARD_EFFECT,
   INJURY_WARP_BATTLE_END_PAIN_EFFECT, ACTIVATE_MOVEMENT_TOPOLOGY_OVERRIDE_EFFECT,
   REPAIR_MOVEMENT_TOPOLOGY_OVERRIDE_EFFECT, ASCENSION_COPY_LINKED_SKILL_EFFECT,
+  LINKED_AUXILIARY_SUITE_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -443,6 +449,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'manaLossPerOwnTurnMove', 'conversionKey', 'linkedAttackDefinitionId', 'painSkillCostDelta', 'painDiscardPerBattleEnd',
   'ascensionPainRewardVp', 'allowedLocationIds', 'chooseCount', 'linkedOverrideDefinitionId', 'linkedDefinitionId', 'maxCopies',
   'targetRoundOffset', 'definitionIds', 'workshopLocationId', 'battlefieldDefinitionId', 'manaGain', 'ignoreDefeatManaCost',
+  'zeroCommandSeals', 'requiredLocationId', 'manaPerSeal', 'waiveRequirementType', 'ignoreNoblePhantasmSituationForbid',
   // New mechanic keys for 5 servants
   'options', 'label', 'condition', 'targets', 'duration', 'scope', 'statusId', 'choiceId', 'value', 'floor',
   'effectiveLocationKind', 'persistentTerrainMinimum', 'persistentTerrainProviderDefinitionId', 'persistentTerrainProviderAbilityId', 'blockOpponentExit', 'requireFaceDownStandardAttack',
@@ -670,7 +677,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
           issue(path, 'Per-target victory-point gain requires controller, same_battlefield_opponents, and a nonnegative safe-integer amountPerTarget', abilityId);
         }
       }
-      if (n.op && !formulaOps.has(str(n.op))) issue(`${path}.op`, `Unmapped formula: ${str(n.op)}`, abilityId);
+      if (n.op && n.type !== LINKED_AUXILIARY_SUITE_EFFECT && !formulaOps.has(str(n.op))) issue(`${path}.op`, `Unmapped formula: ${str(n.op)}`, abilityId);
       const serverMetric = ['controller.availableMana', 'controller.deployment_bonus', 'consecutive_play_rounds', 'game.round_number',
         'controller.movement_distance_this_round',
         'controller.battlefields_passed_or_stayed_this_round'].includes(str(n.var ?? n.name));
@@ -933,6 +940,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsInjuryWarpPrivilegedNode(candidateAbility) && !isAcceptedInjuryWarpAbility(candidateAbility)) {
         issue('injuryWarp.gateway', 'Injury/topology privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsLinkedAuxiliarySuitePrivilegedNode(candidateAbility) && !isAcceptedLinkedAuxiliarySuiteAbility(candidateAbility)) {
+        issue('linkedAuxiliarySuite.gateway', 'Linked-auxiliary privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       if (containsEffectiveLocationRestrictionPrivilegedNode(candidateAbility) && !isAcceptedEffectiveLocationRestrictionAbility(candidateAbility)) {
         issue('effectiveLocationRestriction.gateway', 'Effective-location restriction privileged mechanic requires an accepted exact whole-ability semantic', id);

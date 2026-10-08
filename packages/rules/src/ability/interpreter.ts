@@ -153,6 +153,24 @@ import {
   isInjuryWarpPendingDecisionLiveValid, isInjuryWarpRuntimeProvenanceValidForRestore,
   resolveInjuryWarpDecision, resolveInjuryWarpEffect, settleInjuryWarpMovementPenalty,
 } from './injury-warp-capability';
+import {
+  canExecuteLinkedAuxiliarySuiteEffect,
+  containsLinkedAuxiliarySuitePrivilegedNode,
+  isAcceptedLinkedAuxiliarySuiteAbility,
+  isLinkedAuxiliarySuitePendingDecisionLiveValid,
+  isLinkedAuxiliarySuiteRuntimeProvenanceValidForRestore,
+  linkedAuxiliaryCombatActionGrantRestoreValid,
+  linkedAuxiliaryOnPlayPowerBonus,
+  linkedAuxiliaryPowerImmutable,
+  linkedAuxiliaryRequiresAdditionalPlay,
+  linkedAuxiliaryRoundPlayExceptionsActive,
+  linkedAuxiliaryRoundPowerAdjustmentRestoreValid,
+  linkedAuxiliarySameBatchReductionEligible,
+  linkedAuxiliarySealManaSubstitution,
+  resolveLinkedAuxiliarySuiteDecision,
+  resolveLinkedAuxiliarySuiteEffect,
+  type LinkedAuxiliarySuiteOps,
+} from './linked-auxiliary-suite-capability';
 import { containsEffectiveLocationRestrictionPrivilegedNode, effectiveLocationRestrictionRequiresFaceDownStandardAttack, isAcceptedEffectiveLocationRestrictionAbility, isEffectiveLocationRestrictionRuntimeProvenanceValidForRestore, isPlayerAtEffectiveLocationKind } from './effective-location-restriction-capability';
 import { containsOriginStillnessPrintedCostPrivilegedNode, isAcceptedOriginStillnessPrintedCostAbility, originStillnessEligibleActiveBasicIds, originStillnessPrintedManaGain } from './origin-stillness-printed-cost-capability';
 import {
@@ -429,7 +447,7 @@ function isCommandSpellCard(s: GameState, sourceId: string): boolean {
   return definition(s, sourceId)?.cardType === 'command_spell';
 }
 function isRequiredAdditionalPlayCard(s: GameState, sourceId: string): boolean {
-  return hasRequiredAdditionalPlayMarker(definition(s, sourceId));
+  return hasRequiredAdditionalPlayMarker(definition(s, sourceId)) || linkedAuxiliaryRequiresAdditionalPlay(s, sourceId);
 }
 function legacyAttackAreaCardsPlayedThisRound(s: GameState, playerId: string): number {
   return s.cards.filter(c =>
@@ -1134,6 +1152,10 @@ function modifierControllerApplies(s: GameState, modifierControllerId: string, s
 export function calculateCardPower(s: GameState, sourceId: string): { value: number; lines: CalculationLine[] } {
   if (runtime(s).cardState[sourceId]?.faceDown) return { value: 0, lines: [{ label: '暗置攻击无伤害结算', value: 0 }] };
   const source = card(s, sourceId); const d = definition(s, sourceId);
+  if (linkedAuxiliaryPowerImmutable(s, sourceId)) {
+    const printed = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
+    return { value: printed.value, lines: [...printed.lines, { label: 'linked_auxiliary_printed_power_immutable', value: printed.value }] };
+  }
   const persistentLock = roundSkillProfileSuppressed(s, source.controllerPlayerId, 'gentle_penalties')
     ? undefined
     : s.ruleOverrides?.masterSkillPowerLockIfSituationForbidsByPlayer?.[source.controllerPlayerId];
@@ -1141,6 +1163,11 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     return { value: persistentLock.value, lines: [{ label: 'persistent_situation_attribute_power_lock', value: persistentLock.value }] };
   }
   const result = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
+  const linkedAuxiliaryBonus = linkedAuxiliaryOnPlayPowerBonus(s, sourceId);
+  if (linkedAuxiliaryBonus !== 0) {
+    result.value += linkedAuxiliaryBonus;
+    result.lines.push({ label: 'linked_auxiliary_active_ascension_power', value: result.value });
+  }
   const profileSkillBonus = ['master_skill','servant_skill'].includes(d?.cardType ?? '') ? roundSkillCardPowerBonus(s, source.controllerPlayerId) : 0;
   if (profileSkillBonus !== 0) { result.value += profileSkillBonus; result.lines.push({ label: 'round_skill_profile_power_bonus', value: result.value }); }
   const bloodlustSkillBonus = runtime(s).cardState[sourceId]?.active === true && ['master_skill','servant_skill'].includes(d?.cardType ?? '') ? bloodlustSkillPowerBonus(s, source.controllerPlayerId) : 0;
@@ -2108,6 +2135,9 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (runtimePackHasEliminationRescueSharedVictory(s) && containsEliminationRescueSharedVictoryNode(a) && !isAcceptedEliminationRescueSharedVictoryAbility(a)) return false;
   if (containsInjuryWarpPrivilegedNode(a) && !isAcceptedInjuryWarpAbility(a)) return false;
   if (isAcceptedInjuryWarpAbility(a) && !canExecuteInjuryWarpEffect(s, context(s, sourceId, a.id, event), a)) return false;
+  if (containsLinkedAuxiliarySuitePrivilegedNode(a) && !isAcceptedLinkedAuxiliarySuiteAbility(a)) return false;
+  if (isAcceptedLinkedAuxiliarySuiteAbility(a) &&
+      !canExecuteLinkedAuxiliarySuiteEffect(s, context(s, sourceId, a.id, event), a, linkedAuxiliaryOps(s))) return false;
   if (isAcceptedRoundSkillProfileAbility(a) && a.kind === 'phase_action' && !canExecuteRoundSkillProfileEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsEffectiveLocationRestrictionPrivilegedNode(a) && !isAcceptedEffectiveLocationRestrictionAbility(a)) return false;
   if (containsOriginStillnessPrintedCostPrivilegedNode(a) && !isAcceptedOriginStillnessPrintedCostAbility(a)) return false;
@@ -2383,12 +2413,17 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   if (c.zone === 'skill' && (isActivationOnlyDefinition(s, c.definitionId) || d.abilities.some((ability) =>
     ability.effects.some((effect) => isPlaceSourceAtBattlefieldEffect(effect) || isSourceSkillAttackJoinEffect(effect) || isJoinSourceSkillToAttackZeroCostEffect(effect))))) return 'activation_only';
   const hasLegacyAppendOnlyMarker = d.abilities.some(a => a.effects.some(effect => effect.type === 'append_only_rule' && effect.rule !== 'ignore_battle_loss_effects'));
-  const requiredAdditionalPlay = hasRequiredAdditionalPlayMarker(d);
-  if (hasLegacyAppendOnlyMarker && (!allowRequiredAdditionalPlay || !requiredAdditionalPlay)) return 'append_only';
+  const requiredAdditionalPlay = isRequiredAdditionalPlayCard(s, sourceId);
+  if ((hasLegacyAppendOnlyMarker || linkedAuxiliaryRequiresAdditionalPlay(s, sourceId)) && (!allowRequiredAdditionalPlay || !requiredAdditionalPlay)) return 'append_only';
   if (!ignoreTiming && (phase(s) !== d.playTiming.phase || s.round.prioritySeat !== player(s, p).seat)) return 'illegal_timing';
   if (faceDown && (!isAttack(d) || d.cardType === 'servant_skill')) return 'illegal_face_down';
   const forbidRules = ongoingCardPlayForbidRules(s, p, sourceId);
-  if (forbidRules.some(rule => !hasPlayRuleException(d, rule))) return 'play_forbidden';
+  const linkedRoundException = linkedAuxiliaryRoundPlayExceptionsActive(s, p);
+  const noblePhantasm = getEffectiveCardAttributes(s, sourceId).includes('宝具');
+  if (forbidRules.some(rule => {
+    if (linkedRoundException && noblePhantasm && ['situation_restrictions','situation_play_forbid'].includes(rule)) return false;
+    return !hasPlayRuleException(d, rule);
+  })) return 'play_forbidden';
   const limit = perGamePlayLimit(d);
   if (limit && !logicalDayDefinitionPerGamePlayLimitIgnored(s, p, d.id) &&
       (runtime(s).abilityUsage[`play:${sourceId}:${limit.key}`] ?? 0) >= limit.uses) return 'card_limit_reached';
@@ -2399,12 +2434,16 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   }
   if (!ignoreAttackLimit && attackPlayLimitReached(s, p, sourceId, ignoreStagedAttackLimit)) return 'attack_play_limit_reached';
   const requirements = d.playRequirements.concat(nodes(d.cardFace.requirements)).filter(r =>
-    str(r.type) && !(str(r.type) === 'skill_zone_mana_at_least' && (hasPlayRuleException(d, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)) || bloodlustPlayRequirementWaived(s, p, 'skill_zone_mana_at_least', Number(r.value)) || logicalDayDefinitionPlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)))));
+    str(r.type) && !(str(r.type) === 'skill_zone_mana_at_least' && (linkedRoundException || hasPlayRuleException(d, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)) || bloodlustPlayRequirementWaived(s, p, 'skill_zone_mana_at_least', Number(r.value)) || logicalDayDefinitionPlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)))));
   if (!requirements.every(r => condition(s, context(s, sourceId, ''), r))) return 'play_requirement';
 
-  if (!faceDown && !ignoreManaCost && player(s, p).mana + bloodlustMaximumContributionAmount(s, p) + linkedRoleMaximumContributionAmount(s, p) < effectiveCardPlayCost(s, p, sourceId)) return 'insufficient_mana';
   const sealCost = !faceDown ? cardPlayCommandSealCost(d) : undefined;
-  if (sealCost && Number((player(s, p) as unknown as { commandSpells?: number }).commandSpells ?? 3) < sealCost.amount) return 'insufficient_command_seals';
+  const sealManaRate = linkedAuxiliarySealManaSubstitution(s, p);
+  const sealManaCost = sealCost && sealManaRate !== undefined ? sealCost.amount * sealManaRate : 0;
+  if (!faceDown && !ignoreManaCost &&
+      player(s, p).mana + bloodlustMaximumContributionAmount(s, p) + linkedRoleMaximumContributionAmount(s, p) <
+        effectiveCardPlayCost(s, p, sourceId) + sealManaCost) return 'insufficient_mana';
+  if (sealCost && sealManaRate === undefined && Number((player(s, p) as unknown as { commandSpells?: number }).commandSpells ?? 3) < sealCost.amount) return 'insufficient_command_seals';
   const unconfirmed = d.abilities.find(a => ['unsupported', 'text_unconfirmed'].includes(a.execution.mode));
   if (unconfirmed) return unconfirmed.execution.mode;
   if (!faceDown) {
@@ -2690,6 +2729,71 @@ function payEffectCost(s: GameState, ctx: EffectContext, cost: RuleNode, selecte
 }
 function shuffle(s: GameState, ownerId: string): void {
   shuffleOwnedDeckDeterministically(s, ownerId);
+}
+function linkedAuxiliaryOps(s: GameState): LinkedAuxiliarySuiteOps {
+  return {
+    moveCard: (cardInstanceId, zone) => { moveCard(s, cardInstanceId, zone); },
+    shuffleDeck: (playerId) => { shuffle(s, playerId); },
+    grantMana: (playerId, amount) => {
+      grantMana(s, playerId, amount, { source: 'generic' });
+    },
+    spendMana: (playerId, amount) => {
+      try { spendMana(s, playerId, amount); return true; } catch { return false; }
+    },
+    closableControlledCardIds: (playerId, effectControllerId) => s.cards.filter((physical) => {
+      if (physical.controllerPlayerId !== playerId || !['field','attack_area'].includes(physical.zone)) return false;
+      const definition = runtime(s).pack.cards[physical.definitionId];
+      const state = runtime(s).cardState[physical.instanceId];
+      if (!definition || !state?.active || state.faceDown || isCardCloseForbidden(s, physical.instanceId, effectControllerId)) return false;
+      return physical.zone !== 'attack_area' || !isResidualAttackCard(s, physical.instanceId, definition);
+    }).map((physical) => physical.instanceId),
+    closeControlledActiveCard: (playerId, cardInstanceId, effectControllerId) => {
+      const physical = s.cards.find((entry) => entry.instanceId === cardInstanceId);
+      const definition = physical ? runtime(s).pack.cards[physical.definitionId] : undefined;
+      const state = physical ? runtime(s).cardState[physical.instanceId] : undefined;
+      if (!physical || physical.controllerPlayerId !== playerId || !['field','attack_area'].includes(physical.zone) ||
+          !definition || !state?.active || state.faceDown || isCardCloseForbidden(s, physical.instanceId, effectControllerId) ||
+          (physical.zone === 'attack_area' && isResidualAttackCard(s, physical.instanceId, definition))) return false;
+      state.active = false;
+      clearTransientCardTransformState(s, physical.instanceId);
+      retireMasterAscensionSourceDefinitionPowerByTrigger(s, physical.instanceId);
+      if (['servant_skill','master_skill'].includes(definition.cardType)) {
+        const fromZone = physical.zone;
+        physical.zone = 'skill'; physical.controllerPlayerId = physical.ownerPlayerId;
+        physical.visibility = { scope: 'owner_only', ownerPlayerId: physical.ownerPlayerId };
+        state.faceDown = false; recordSkillReturnedToSkillZone(s, physical.instanceId, fromZone);
+      } else {
+        state.faceDown = true; physical.visibility = { scope: 'owner_only', ownerPlayerId: physical.ownerPlayerId };
+      }
+      return true;
+    },
+    playableHandCardIds: (playerId) => s.cards.filter((physical) =>
+      physical.ownerPlayerId === playerId && physical.controllerPlayerId === playerId && physical.zone === 'hand')
+      .filter((physical) => {
+        try {
+          const draft = structuredClone(s);
+          playBatch(draft, playerId, [{ type: 'play_card', cardInstanceId: physical.instanceId }], 'effect', false, ['hand']);
+          return true;
+        } catch { return false; }
+      }).map((physical) => physical.instanceId),
+    playHandCardDuringCombat: (playerId, cardInstanceId) => {
+      try {
+        playBatch(s, playerId, [{ type: 'play_card', cardInstanceId }], 'effect', false, ['hand']);
+        return true;
+      } catch { return false; }
+    },
+    movePlayer: (playerId, toLocationId, sourceCardId, abilityId) => {
+      const moving = s.players.find((entry) => entry.id === playerId && entry.status === 'active');
+      const target = getEnabledLocations(s.map, s.locationConfig).find((entry) => entry.id === toLocationId);
+      if (!moving?.locationId || !target || moving.locationId === target.id) return false;
+      const from = moving.locationId; moving.locationId = target.id;
+      recordMovementForAbilityRuntime(s, playerId, from, target.id);
+      processEvent(s, { id: nextId(s, 'linked-auxiliary-move'), type: 'after_controller_enters_location', playerId,
+        previousLocationId: from, locationId: target.id, movementKind: 'effect', sourceCardId, abilityId });
+      return true;
+    },
+    drawCards: (playerId, count, ctx) => playerId === ctx.controllerId && drawCardsWithAutomaticRecycle(s, ctx, count, []),
+  };
 }
 function shortestPath(s: GameState, from: string, to: string): string[] {
   if (from === to) return [from];
@@ -3812,6 +3916,18 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
     case 'adjust_command_seals': {
       const current = Number((p as unknown as { commandSpells?: number }).commandSpells ?? 3);
       const amount = numeric(s, ctx, effect.amount);
+      const substitutionRate = linkedAuxiliarySealManaSubstitution(s, p.id);
+      if (substitutionRate !== undefined) {
+        const manaDelta = amount * substitutionRate;
+        if (!Number.isSafeInteger(manaDelta)) reject('invalid_state', 'Command-Seal mana substitution exceeds safe integer range');
+        const beforeMana = p.mana;
+        if (manaDelta > 0) grantMana(s, p.id, manaDelta, { source: 'generic' });
+        else if (manaDelta < 0) spendMana(s, p.id, -manaDelta);
+        runtime(s).events.push({ type: 'command_seal_adjustment_substituted_with_mana', playerId: p.id,
+          controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+          resource: 'mana', requestedDelta: manaDelta, delta: p.mana - beforeMana, before: beforeMana, after: p.mana });
+        break;
+      }
       const next = Math.max(0, current + amount);
       (p as unknown as { commandSpells: number }).commandSpells = next;
       if (next < current) markCommandSealSpent(s, p.id, current, next, { sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
@@ -4216,6 +4332,7 @@ function isMatchingDefinitionPendingDecisionLiveValid(s: GameState, decision: Pe
 
 export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decision: PendingDecision): boolean {
   if (decision.interaction?.kind === 'injury_warp_choice_v1') return isInjuryWarpPendingDecisionLiveValid(s, decision);
+  if (decision.interaction?.kind === 'linked_auxiliary_suite_choice_v1') return isLinkedAuxiliarySuitePendingDecisionLiveValid(s, decision, linkedAuxiliaryOps(s));
   if (decision.interaction?.kind === 'elimination_rescue_choice_v1') return isEliminationRescuePendingDecisionLiveValid(s, decision);
   if (decision.interaction?.kind === 'multi_presence_location_context_v1') return multiPresenceLocationContextDecisionLiveValid(s, decision);
   if (decision.interaction && ['battle_luck_discard_choice_v1','battle_opponent_close_reward_choice_v1','battle_drawn_card_optional_play_v1'].includes(decision.interaction.kind)) {
@@ -4260,6 +4377,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
     if (!isBloodlustRuntimeProvenanceValidForRestore(s, !options.deferBloodlustContributionAuthority)) return false;
     if (!isMultiPresenceRuntimeProvenanceValidForRestore(s)) return false;
     if (!isInjuryWarpRuntimeProvenanceValidForRestore(s)) return false;
+    if (!isLinkedAuxiliarySuiteRuntimeProvenanceValidForRestore(s)) return false;
     if (!isBattleWitherRuntimeProvenanceValidForRestore(s)) return false;
     if (!isDefinitionSideDeckRuntimeProvenanceValidForRestore(s)) return false;
     if (!isLinkedRoleCoreRuntimeProvenanceValidForRestore(s)) return false;
@@ -4323,6 +4441,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
       if (entry.amount === -4 && isAcceptedFortifyMovedInBattlefieldAbility(ability)) return true;
       if (entry.amount === 2 && isAcceptedBloodlustAbility(ability) && isBloodlustActionEffect(ability.effects[0]!) && source.controllerPlayerId === entry.playerId) return true;
       if (isBoundOpponentRoundPowerAdjustmentValid(s, entry)) return true;
+      if (linkedAuxiliaryRoundPowerAdjustmentRestoreValid(s, entry)) return true;
       if (entry.amount === 6 && isAcceptedLinkedGeneratedCardPowerAbility(ability) && source.generatedBy) {
         const generator = s.cards.find((candidate) => candidate.instanceId === source.generatedBy);
         const marker = r.cardState[source.instanceId]?.generatedCardReturnAfterBattle;
@@ -5016,7 +5135,7 @@ function battleCloseDrawImmediatePlayHistoryValidForRestore(s: GameState): boole
     const cardEntry = s.cards.find((candidate) => candidate.instanceId === cardInstanceId);
     if (!cardEntry) return false;
     const matches = history.filter((entry) => entry.cardInstanceId === cardInstanceId && entry.round === state.actionAbilityAllowedInCombatRound && entry.playerId === cardEntry.ownerPlayerId);
-    if (matches.length !== 1) return false;
+    if (matches.length !== 1 && !linkedAuxiliaryCombatActionGrantRestoreValid(s, cardInstanceId, state.actionAbilityAllowedInCombatRound)) return false;
   }
   return true;
 }
@@ -6753,6 +6872,11 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     if (!resolveInjuryWarpEffect(s, ctx, a)) reject('resolution_failed', 'Injury/topology resolution failed');
     return;
   }
+  if (containsLinkedAuxiliarySuitePrivilegedNode(a)) {
+    if (!isAcceptedLinkedAuxiliarySuiteAbility(a)) reject('resolution_failed', 'Unsupported linked-auxiliary suite semantic');
+    if (!resolveLinkedAuxiliarySuiteEffect(s, ctx, a, linkedAuxiliaryOps(s))) reject('resolution_failed', 'Linked-auxiliary suite resolution failed');
+    return;
+  }
   if (containsOriginStillnessPrintedCostPrivilegedNode(a)) {
     if (!isAcceptedOriginStillnessPrintedCostAbility(a)) reject('resolution_failed', 'Unsupported origin-stillness printed-cost semantic');
     const pending=findPendingTarget(s,ctx,a,a.effects); if(pending){runtime(s).pendingDecision=pending; return;}
@@ -7384,6 +7508,13 @@ export function advanceAbilityPhase(
     runtime(copy).movementDistanceThisRound = {};
     runtime(copy).battlefieldsPassedOrStayedThisRound = {};
     runtime(copy).roundPlayerPowerAdjustments = (runtime(copy).roundPlayerPowerAdjustments ?? []).filter((entry) => entry.round >= round);
+    for (const suite of Object.values(runtime(copy).linkedAuxiliarySuites ?? {})) {
+      if (suite.wonRound !== undefined && suite.wonRound < round) delete suite.wonRound;
+      if (suite.skipUpkeepRound !== undefined && suite.skipUpkeepRound < round) delete suite.skipUpkeepRound;
+      if (suite.roundExceptionRound !== undefined && suite.roundExceptionRound < round) delete suite.roundExceptionRound;
+      if (suite.roundPowerBonus?.round !== undefined && suite.roundPowerBonus.round < round) delete suite.roundPowerBonus;
+      if (suite.combatActionGrant?.round !== undefined && suite.combatActionGrant.round < round) delete suite.combatActionGrant;
+    }
     for (const state of Object.values(runtime(copy).cardState)) { const linked = state.generatedCardReturnAfterBattle; if (linked && linked.round < round) delete state.generatedCardReturnAfterBattle; }
     runtime(copy).pendingBattlefieldFortifications = (runtime(copy).pendingBattlefieldFortifications ?? []).filter((entry) => entry.round >= round);
     runtime(copy).pendingRulerSealRewards = runtime(copy).pendingRulerSealRewards.filter((reward) => reward.round >= round);
@@ -7553,6 +7684,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
         const meta = d.interaction;
         if (meta.kind === 'injury_warp_choice_v1') {
           if (!Array.isArray(selected) || !resolveInjuryWarpDecision(s, d, selected)) reject('resolution_failed', 'Corrupt or stale injury/topology interaction state');
+          break;
+        }
+        if (meta.kind === 'linked_auxiliary_suite_choice_v1') {
+          if (!Array.isArray(selected) || !resolveLinkedAuxiliarySuiteDecision(s, playerId, d, selected, linkedAuxiliaryOps(s))) reject('resolution_failed', 'Corrupt or stale linked-auxiliary interaction state');
           break;
         }
         if (meta.kind === 'elimination_rescue_choice_v1') {
@@ -8451,6 +8586,12 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
       .reduce((sum, source) => sum + source.manaCostIncrease, 0);
     if (increase > 0) jointCostIncreaseByCard.set(choice.cardInstanceId, increase);
   }
+  const linkedAuxiliaryOtherAttackCost = choices
+    .filter((choice) => !choice.faceDown && entersAttackArea(s, choice.cardInstanceId) &&
+      !linkedAuxiliarySameBatchReductionEligible(s, choice.cardInstanceId))
+    .reduce((sum, choice) => sum + effectiveCardPlayCost(s, playerId, choice.cardInstanceId) +
+      (jointCostIncreaseByCard.get(choice.cardInstanceId) ?? 0) +
+      (conditionalAdditional.get(choice.cardInstanceId)?.additionalManaCost ?? 0), 0);
   let cost = 0;
   let commandSealCost = 0;
   const paidCostByCard = new Map<string, number>();
@@ -8458,15 +8599,19 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     const allowRequiredAdditional = quota === 'regular' && requiredAdditionalIds.has(c.cardInstanceId) && regularAttackChoices > 0;
     const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost, allowedSourceZones);
     if (failure) reject(failure, 'Card cannot be played in this batch');
+    const linkedReduction = linkedAuxiliarySameBatchReductionEligible(s, c.cardInstanceId) ? linkedAuxiliaryOtherAttackCost : 0;
     const cardCost = c.faceDown || waiveManaCost ? 0 : Math.max(minimumManaCost,
       effectiveCardPlayCost(s, playerId, c.cardInstanceId) +
       (jointCostIncreaseByCard.get(c.cardInstanceId) ?? 0) +
-      (conditionalAdditional.get(c.cardInstanceId)?.additionalManaCost ?? 0));
+      (conditionalAdditional.get(c.cardInstanceId)?.additionalManaCost ?? 0) -
+      linkedReduction);
     paidCostByCard.set(c.cardInstanceId, cardCost);
     cost += cardCost;
     if (!c.faceDown) commandSealCost += cardPlayCommandSealCost(definition(s, c.cardInstanceId))?.amount ?? 0;
   }
-  cost += additionalManaCost;
+  const sealManaRate = linkedAuxiliarySealManaSubstitution(s, playerId);
+  const substitutedSealManaCost = commandSealCost > 0 && sealManaRate !== undefined ? commandSealCost * sealManaRate : 0;
+  cost += additionalManaCost + substitutedSealManaCost;
   const explicitContributions = choices.flatMap((choice) => choice.manaContributions ?? []);
   const contributionClassificationByCard = new Map<string, ReturnType<typeof classifyManaContributionChoices>>();
   try { for (const choice of choices) if (choice.manaContributions?.length) contributionClassificationByCard.set(choice.cardInstanceId, classifyManaContributionChoices(s, playerId, choice.manaContributions)); }
@@ -8475,13 +8620,16 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   if (paymentPlan!.payerAmount > player(s, playerId).mana) reject('insufficient_mana', 'Cannot pay aggregate batch cost');
   const sealCarrier = player(s, playerId) as unknown as { commandSpells?: number };
   const availableSeals = Number(sealCarrier.commandSpells ?? 3);
-  if (!Number.isSafeInteger(availableSeals) || availableSeals < commandSealCost) reject('insufficient_command_seals', 'Cannot pay aggregate Command Seal card-play cost');
+  if (!Number.isSafeInteger(availableSeals) || (sealManaRate === undefined && availableSeals < commandSealCost)) reject('insufficient_command_seals', 'Cannot pay aggregate Command Seal card-play cost');
   for (const choice of choices) if (!commitLinkedRoleCopiedSkillUse(s, choice.cardInstanceId, playerId)) reject('invalid_state', 'Copied linked-role servant skill lost source provenance');
   const playedCards = choices.map(c => ({ instanceId: c.cardInstanceId, controllerId: playerId,
     cardType: definition(s, c.cardInstanceId)!.cardType, faceDown: !!c.faceDown }));
   const prePaymentMana = player(s, playerId).mana;
   if (cost > 0) spendMana(s, playerId, cost, explicitContributions);
-  if (commandSealCost > 0) {
+  if (commandSealCost > 0 && sealManaRate !== undefined) {
+    runtime(s).events.push({ type: 'command_seal_cost_substituted_with_mana', playerId, resource: 'mana',
+      requestedDelta: -substitutedSealManaCost, delta: -substitutedSealManaCost });
+  } else if (commandSealCost > 0) {
     const before = availableSeals; const after = before - commandSealCost;
     sealCarrier.commandSpells = after;
     markCommandSealSpent(s, playerId, before, after);
