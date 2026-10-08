@@ -1,11 +1,11 @@
 # Phase 3 Task Index
 
-- Version: P3-TI-1.40
+- Version: P3-TI-1.41
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
-- Current control epoch: `FD-P3-2026-09-23-07`
-- Authoritative main: `a7751c3fa51895fd3a401721b1e926b90e016862`
+- Current control epoch: `FD-P3-2026-09-23-08`
+- Authoritative main: `7072da3f5ad5b6ae77c5fb4b7eb40634c29039b0`
 
 This file is the task lookup entry point for Phase 3 agents. Do not read the full `docs/plans/fd-phase-3-parallel-work-queue.md` by default. Read only the assigned task block below, then follow its explicit `Read` list.
 
@@ -23,9 +23,12 @@ This file is the task lookup entry point for Phase 3 agents. Do not read the ful
    off exact-SHA commits and artifacts; Codex I creates the Slice's single
    Promotion PR targeting `main`.
 9. Existing task entries that mention stacked PRs are historical provenance.
-   They do not override the Epoch 07 no-stacked-role-PR directive.
+   They do not override the active no-stacked-role-PR directive.
 
-## Current Control Tasks
+## Epoch 07 Control Tasks (Historical Snapshot)
+
+These statuses were recorded under Epoch 07 and are not reissued by the Epoch
+08 transition.
 
 | Task | Owner | State | Boundary |
 |---|---|---|---|
@@ -35,8 +38,14 @@ This file is the task lookup entry point for Phase 3 agents. Do not read the ful
 | `P3-E07-C01-A` | A | `WAIT_RP00_RECOUNT` | Control CLI and drift-classifier design/implementation |
 | `P3-E07-C01-RA` | Reviewer A | `WAIT_C01_A` | automation and classification review |
 
-Read `docs/agents/FD-P3-CONTROL-EPOCH-07.md` and the exact assigned dispatch
-card before acting on these tasks.
+## Current Control Tasks
+
+| Task | Owner | State | Boundary |
+|---|---|---|---|
+| `P3-E08-CI-01` | A | `READY_AFTER_FORMAL_PUBLICATION` | CI stability evidence/report only, within the three paths in its task assignment; no runtime or authoring edits |
+
+Read `docs/agents/FD-P3-CONTROL-EPOCH-08.md` and the exact assigned task
+authorization before acting.
 
 ## Full-Roster Flow
 
