@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-E08-CI-01",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "reviewer": "github:binchen648",
+  "reviewerRole": "Reviewer A",
+  "reviewThread": null,
+  "githubAttestationStatus": "NOT_PROVIDED",
+  "independentGithubAccountVerified": false,
+  "reviewedSha": "ff7abf7df6922247d2684d61eb7b0400373cacd4",
+  "candidateSha": "ff7abf7df6922247d2684d61eb7b0400373cacd4",
+  "implementationSha": "b5a76f8d2c8a742c2b4d8910c6c77ed00d7461e6",
+  "baseSha": "7072da3f5ad5b6ae77c5fb4b7eb40634c29039b0",
+  "reviewDate": "2026-10-08",
+  "timezone": "Asia/Shanghai",
+  "verdict": "PASS",
+  "conclusion": "REVIEW_ACCEPTED",
+  "scope": "Exact carrier lineage, single-test timeout, evidence binding and independent test verification",
+  "lineage": {
+    "implementationDirectParentIsBase": true,
+    "carrierDirectParentIsImplementation": true,
+    "carrierRemoteRefVerified": "refs/heads/codex/a-p3-e08-ci-01-current-main-replay"
+  },
+  "boundArtifact": {
+    "path": "artifacts/phase3-e08-ci-01.json",
+    "sha256": "D533972A2BA41BBA637231F5B738BCBD764026D2274A4C85EE60D9F555086398",
+    "reportPath": "docs/reports/2026-10-08-p3-e08-ci-01-current-main-ci-stability.md",
+    "reportDigestBindingVerified": true,
+    "historicalAndCurrentEvidenceSeparated": true
+  },
+  "implementationChecks": {
+    "changedTest": "packages/rules/tests/regression/complex-skills-regression.test.ts",
+    "testName": "keeps event and situation modifier sources in three-round MatchSession battle breakdown logs",
+    "timeoutBeforeMs": 5000,
+    "timeoutAfterMs": 15000,
+    "assertionsChanged": false,
+    "globalTimeoutChanged": false,
+    "runtimeChanged": false,
+    "authoringChanged": false,
+    "coverageOrTaxonomyChanged": false
+  },
+  "independentVerification": [
+    {
+      "testedSha": "ff7abf7df6922247d2684d61eb7b0400373cacd4",
+      "command": "npm run test:ci",
+      "exitCode": 0,
+      "filesPassed": 183,
+      "testsPassed": 1409,
+      "durationMs": 23440,
+      "targetTestElapsedMs": 4172
+    },
+    {
+      "testedSha": "ff7abf7df6922247d2684d61eb7b0400373cacd4",
+      "command": "npx vitest run packages/rules/tests/regression/complex-skills-regression.test.ts",
+      "exitCode": 0,
+      "filesPassed": 1,
+      "testsPassed": 37,
+      "targetTestElapsedMs": 1419
+    },
+    {
+      "testedSha": "ff7abf7df6922247d2684d61eb7b0400373cacd4",
+      "command": "npm run typecheck",
+      "exitCode": 0
+    },
+    {
+      "command": "git diff --check 7072da3f5ad5b6ae77c5fb4b7eb40634c29039b0..ff7abf7df6922247d2684d61eb7b0400373cacd4",
+      "exitCode": 0
+    }
+  ],
+  "mainAtSubmission": {
+    "sha": "0a8853d4f7b671e955d9694f138daa6cc92b6e52",
+    "driftFromBase": "CONTROL_ONLY_DRIFT",
+    "changedPaths": [
+      "docs/agents/FD-P3-CONTROL-EPOCH-07.md",
+      "docs/agents/FD-P3-CONTROL-EPOCH-08.md",
+      "docs/agents/PHASE3-TASK-INDEX.md",
+      "docs/agents/manifests/governance/P3-E08-CONTROL-TRANSITION.json",
+      "docs/agents/manifests/governance/P3-E08-G-CONTROL-PUBLICATION-ATTESTATION.json",
+      "docs/reports/2026-10-08-p3-e08-ci-01-epoch-transition.md"
+    ],
+    "integrationMustRevalidateMainAndPromotionHead": true
+  },
+  "accounting": {
+    "mainCoverageCreditDelta": 0,
+    "mainDenominatorDelta": 0,
+    "migrationCreditDelta": 0
+  },
+  "findings": [],
+  "allowedNextOwner": "Codex I",
+  "allowedNextAction": "PREPARE_SINGLE_CI_STABILITY_PROMOTION_PR_SUBJECT_TO_GOVERNANCE_PREFLIGHT",
+  "boundaries": {
+    "githubRequiredChecks": "NOT_VERIFIED",
+    "promotion": "NOT_VERIFIED",
+    "gateC": "NOT_VERIFIED",
+    "longTermCIStability": "NOT_VERIFIED",
+    "releaseSourceAssets": "HISTORICAL_93_MISSING_IMAGE_BLOCKER_NOT_REAUDITED"
+  },
+  "nonClaims": [
+    "This records an independent Reviewer A role verdict; the GitHub account matches the implementation author and is not independently attested.",
+    "No GitHub review/comment URL is fabricated; governance must validate the applicable identity policy before promotion.",
+    "This review does not authorize merge or waive required checks on the promotion head.",
+    "This review does not grant Gate, Phase 3, Release or migration acceptance."
+  ]
+}
