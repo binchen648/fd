@@ -9696,3 +9696,11 @@ Formal review gate:
 - Freeze one Candidate, publish exactly one owner PR and request one fresh independent review against pinned Base, Candidate, branch and task.
 - All broader `test:ci` limitations from PR #555 remain separately disclosed; no full-suite green claimed.
 - Formal accounting remains `270/944`, remaining `674` until exact `MIGRATION_ACCEPTED` and subsequent A-sync; maximum increment `+3`.
+
+Acceptance synchronization (2026-10-09):
+- PR #556 exact owner Candidate `90f6664285a0eb0788c15ed443047eadc7861270` from Base `45945303b1535e7e661af6014ca1132ca3e40459` received fresh `MIGRATION_ACCEPTED` on ReviewJobKey `pr556:90f6664285a0eb0788c15ed443047eadc7861270:blocked-retry-1`.
+- Independent accepted same-attempt evidence: https://github.com/binchen648/fd/pull/556#issuecomment-6065739856
+- FORMAL rescan confirms exactly three Goredolf frozen skills materialized, all marked complete; auxiliary `card.card-gof-fist` earns no independent credit; active pack references the owner archive once.
+- Exact new credit `+3`: accounting `270/944 -> 273/944`, remaining `674 -> 671`, no duplicate readiness credit.
+- Independent scoped checks were accepted, but full `test:ci` was not rerun; historical wider-suite issues are not declared closed.
+- Formal A-sync report: `docs/reports/2026-10-09-p3-a-goredolf-owner-migration-acceptance-synchronization.md`.
