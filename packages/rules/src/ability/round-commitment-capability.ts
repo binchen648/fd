@@ -6,6 +6,8 @@ export const ACTIVATE_ROUND_COMMITMENT_EFFECT = 'activate_round_commitment' as c
 export const ROUND_COMMITMENT_LOSS_VP_EFFECT = 'round_commitment_loss_vp_penalty' as const;
 export const ROUND_COMMITMENT_DEFINITION_POWER_EFFECT = 'round_commitment_definition_power_bonus' as const;
 export const ROUND_COMMITMENT_WIN_LOSERS_VP_EFFECT = 'round_commitment_win_losers_vp_penalty' as const;
+export const ROUND_COMMITMENT_FIST_WIN_VP_EFFECT = 'round_commitment_fist_win_vp' as const;
+export const ROUND_COMMITMENT_FIST_DOUBLE_EFFECT = 'round_commitment_fist_discard_other_double_power' as const;
 
 type CommitmentEffect = RuleNode;
 
@@ -23,7 +25,9 @@ function key(value: unknown): value is string {
   return typeof value === 'string' && value.length > 0 && value.length <= 256 && !/\s/.test(value);
 }
 function common(ability: AuthoringAbility): boolean {
-  return ability.conditions.length === 0 && ability.targets.length === 0 && ability.cost.length === 0 &&
+  const double = ability.effects.length === 1 && fistDoubleEffect(ability.effects[0]!);
+  const validTarget = double && ability.targets.length === 1 && (() => { const t = ability.targets[0]!; const scope = t.scope as Record<string, unknown>; const count = t.count as Record<string, unknown>; return t.id === 'other_fist' && t.type === 'card_instance' && exact(t, ['id','type','scope','count','constraints']) && exact(scope,['zone','owner','controller']) && scope.zone === 'hand' && scope.owner === 'controller' && scope.controller === 'self' && exact(count,['min','max']) && count.min===1 && count.max===1 && Array.isArray(t.constraints) && t.constraints.length===0; })();
+  return ability.conditions.length === 0 && (ability.targets.length === 0 || validTarget === true) && ability.cost.length === 0 &&
     ability.ruleModifiers.length === 0 && ability.creates.length === 0 &&
     empty(ability.lifecycle) && empty(ability.limit) && empty(ability.visibility) &&
     ability.execution.mode === 'automatic' && ability.execution.allowedOperations.length === 0;
@@ -57,12 +61,33 @@ function winnerLosersEffect(effect: RuleNode): boolean {
   return effect.type === ROUND_COMMITMENT_WIN_LOSERS_VP_EFFECT && key(effect.stateKey) && effect.amount === 2 &&
     exact(effect, ['type','stateKey','amount']);
 }
+function fistWinEffect(effect: RuleNode): boolean {
+  return effect.type === ROUND_COMMITMENT_FIST_WIN_VP_EFFECT && effect.amount === 4 &&
+    exact(effect, ['type','amount']);
+}
+function fistDoubleEffect(effect: RuleNode): boolean {
+  return effect.type === ROUND_COMMITMENT_FIST_DOUBLE_EFFECT && effect.target === 'other_fist' && effect.multiplier === 2 &&
+    exact(effect, ['type','target','multiplier']);
+}
 function acceptedEffect(effect: RuleNode): boolean {
   return replacementEffect(effect) || activationEffect(effect) || lossEffect(effect) ||
-    definitionPowerEffect(effect) || winnerLosersEffect(effect);
+    definitionPowerEffect(effect) || winnerLosersEffect(effect) || fistWinEffect(effect) || fistDoubleEffect(effect);
 }
 function effectOf(ability: AuthoringAbility): CommitmentEffect | undefined {
   return ability.effects.length === 1 && acceptedEffect(ability.effects[0]!) ? ability.effects[0]! : undefined;
+}
+
+export function roundCommitmentFistDoubleCandidateIds(state: GameState, controllerId: string, sourceCardId: string): string[] {
+  const source = state.cards.find((entry) => entry.instanceId === sourceCardId);
+  if (!source || source.ownerPlayerId !== controllerId || source.controllerPlayerId !== controllerId) return [];
+  return state.cards.filter((entry) => entry.instanceId !== sourceCardId &&
+    entry.ownerPlayerId === controllerId && entry.controllerPlayerId === controllerId &&
+    entry.definitionId === source.definitionId && entry.zone === 'hand').map((entry) => entry.instanceId);
+}
+
+export function isRoundCommitmentFistDoubleAbility(ability: AuthoringAbility): boolean {
+  return ability.effects.length === 1 && fistDoubleEffect(ability.effects[0]!) &&
+    isAcceptedRoundCommitmentAbility(ability);
 }
 
 export function containsRoundCommitmentPrivilegedNode(ability: AuthoringAbility): boolean {
@@ -72,6 +97,8 @@ export function containsRoundCommitmentPrivilegedNode(ability: AuthoringAbility)
     ROUND_COMMITMENT_LOSS_VP_EFFECT,
     ROUND_COMMITMENT_DEFINITION_POWER_EFFECT,
     ROUND_COMMITMENT_WIN_LOSERS_VP_EFFECT,
+    ROUND_COMMITMENT_FIST_WIN_VP_EFFECT,
+    ROUND_COMMITMENT_FIST_DOUBLE_EFFECT,
   ].includes(String(effect.type) as never));
 }
 
@@ -91,6 +118,10 @@ export function isAcceptedRoundCommitmentAbility(ability: AuthoringAbility): boo
   }
   if (definitionPowerEffect(effect)) {
     return ability.kind === 'passive' && (empty(activation) || (exact(activation, ['trigger']) && activation.trigger === 'while_active'));
+  }
+  if (fistDoubleEffect(effect)) return ability.kind === 'phase_action' && exact(activation,['phase','opens']) && activation.phase === 'combat' && activation.opens === 'controller_combat_action_window';
+  if (fistWinEffect(effect)) {
+    return ability.kind === 'forced_trigger' && exact(activation, ['trigger']) && activation.trigger === 'after_controller_wins_battle';
   }
   if (winnerLosersEffect(effect)) {
     return ability.kind === 'forced_trigger' && exact(activation, ['trigger']) && activation.trigger === 'after_controller_wins_battle';
@@ -206,6 +237,32 @@ export function canExecuteRoundCommitmentEffect(state: GameState, ctx: EffectCon
   if (lossEffect(effect)) return !!commitmentAdjustment(state, ctx.controllerId, String(effect.stateKey)) &&
     !!trustedBattleFacts(state, ctx.event, ctx.controllerId, 'after_controller_loses_battle');
   if (definitionPowerEffect(effect)) return liveMasterSkillSource(state, ctx.controllerId, ctx.sourceCardId);
+  if (fistDoubleEffect(effect)) {
+    const source = state.cards.find((entry) => entry.instanceId === ctx.sourceCardId);
+    const cardState = source && runtime(state).cardState[source.instanceId];
+    if (!source || source.ownerPlayerId !== ctx.controllerId || source.controllerPlayerId !== ctx.controllerId ||
+        source.zone !== 'attack_area' || !cardState?.active || cardState.faceDown === true ||
+        cardState.basePowerMultiplier !== undefined && cardState.basePowerMultiplier !== 1 ||
+        state.round.activePhase !== 'battle') return false;
+    return state.cards.some((candidate) => candidate.instanceId !== source.instanceId &&
+      candidate.definitionId === source.definitionId && candidate.ownerPlayerId === ctx.controllerId &&
+      candidate.controllerPlayerId === ctx.controllerId && candidate.zone === 'hand');
+  }
+  if (fistWinEffect(effect)) {
+    const source = state.cards.find((entry) => entry.instanceId === ctx.sourceCardId);
+    const def = source ? runtime(state).pack.cards[source.definitionId] : undefined;
+    const cardState = source ? runtime(state).cardState[source.instanceId] : undefined;
+    return !!source && !!def && def.cardType === 'basic_attack' &&
+      source.ownerPlayerId === ctx.controllerId && source.controllerPlayerId === ctx.controllerId &&
+      source.zone === 'attack_area' && cardState?.active === true && cardState.faceDown !== true &&
+      !state.cards.some((other) => other.instanceId !== source.instanceId &&
+        other.definitionId === source.definitionId && other.controllerPlayerId === ctx.controllerId &&
+        other.ownerPlayerId === ctx.controllerId && other.zone === 'attack_area' &&
+        runtime(state).cardState[other.instanceId]?.active === true &&
+        runtime(state).cardState[other.instanceId]?.faceDown !== true &&
+        state.cards.indexOf(other) < state.cards.indexOf(source)) &&
+      !!trustedBattleFacts(state, ctx.event, ctx.controllerId, 'after_controller_wins_battle');
+  }
   if (winnerLosersEffect(effect)) return liveMasterSkillSource(state, ctx.controllerId, ctx.sourceCardId) &&
     !!commitmentAdjustment(state, ctx.controllerId, String(effect.stateKey)) &&
     !!trustedBattleFacts(state, ctx.event, ctx.controllerId, 'after_controller_wins_battle');
@@ -239,6 +296,33 @@ export function resolveRoundCommitmentEffect(state: GameState, ctx: EffectContex
     return true;
   }
   if (definitionPowerEffect(effect)) return true;
+  if (fistDoubleEffect(effect)) {
+    const source = state.cards.find((entry) => entry.instanceId === ctx.sourceCardId);
+    const selected = ctx.selections.other_fist;
+    if (!source || !selected || selected.length !== 1) return false;
+    const other = state.cards.find((entry) => entry.instanceId === selected[0]);
+    if (!other || other.instanceId === source.instanceId || other.definitionId !== source.definitionId ||
+        other.ownerPlayerId !== ctx.controllerId || other.controllerPlayerId !== ctx.controllerId || other.zone !== 'hand') return false;
+    other.zone = 'discard';
+    other.visibility = { scope: 'owner_only', ownerPlayerId: other.ownerPlayerId };
+    const otherState = runtime(state).cardState[other.instanceId];
+    if (otherState) { otherState.active = false; otherState.faceDown = false; delete otherState.basePowerMultiplier; }
+    const stateOfSource = runtime(state).cardState[source.instanceId];
+    if (!stateOfSource) return false;
+    stateOfSource.basePowerMultiplier = 2;
+    runtime(state).events.push({ type: 'round_commitment_fist_doubled', playerId: ctx.controllerId,
+      sourceCardId: source.instanceId, abilityId: ctx.abilityId });
+    return true;
+  }
+  if (fistWinEffect(effect)) {
+    const p = state.players.find((entry) => entry.id === ctx.controllerId);
+    if (!p || !Number.isSafeInteger(p.vp) || !Number.isSafeInteger(p.vp + 4)) return false;
+    const before = p.vp; p.vp += 4;
+    runtime(state).events.push({ type: 'victory_points_adjusted', playerId: p.id, controllerId: ctx.controllerId,
+      sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, resource: 'victory_points',
+      delta: 4, before, after: p.vp });
+    return true;
+  }
   if (winnerLosersEffect(effect)) {
     const facts = trustedBattleFacts(state, ctx.event, ctx.controllerId, 'after_controller_wins_battle'); if (!facts) return false;
     for (const loserId of facts.loserIds.filter((id) => !facts.winners.includes(id))) applyVpLoss(state, loserId, Number(effect.amount), ctx);

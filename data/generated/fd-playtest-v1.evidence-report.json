@@ -2,12 +2,23 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 25,
+    "masters": 26,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
   },
   "entities": [
+    {
+      "entityId": "card.card-gof-fist",
+      "displayName": "戈夫铁拳",
+      "entityKind": "named_attack",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/戈尔德鲁夫·穆吉克.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/戈尔德鲁夫·穆吉克.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
     {
       "entityId": "card.goetia.demon-god.baal",
       "displayName": "Demon God Baal",
@@ -1942,6 +1953,61 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/盖提亚.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.goredolf",
+      "displayName": "戈尔德鲁夫·穆吉克",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/戈尔德鲁夫·穆吉克.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/戈尔德鲁夫·穆吉克.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.goredolf.overview",
+      "displayName": "戈尔德鲁夫·穆吉克",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/戈尔德鲁夫·穆吉克.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/戈尔德鲁夫·穆吉克.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.goredolf.skill.ascension",
+      "displayName": "别掉队了！",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/戈尔德鲁夫·穆吉克.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/戈尔德鲁夫·穆吉克.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.goredolf.skill.s1",
+      "displayName": "铁腕绅士",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/戈尔德鲁夫·穆吉克.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/戈尔德鲁夫·穆吉克.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.goredolf.skill.s1a",
+      "displayName": "愚者的决意",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/戈尔德鲁夫·穆吉克.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/戈尔德鲁夫·穆吉克.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
       "issueCodes": []

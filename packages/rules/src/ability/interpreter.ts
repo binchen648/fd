@@ -174,6 +174,8 @@ import {
 import {
   canExecuteRoundCommitmentEffect,
   containsRoundCommitmentPrivilegedNode,
+  isRoundCommitmentFistDoubleAbility,
+  roundCommitmentFistDoubleCandidateIds,
   isAcceptedRoundCommitmentAbility,
   isRoundCommitmentPowerAdjustmentValidForRestore,
   resolveRoundCommitmentEffect,
@@ -1344,6 +1346,9 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
   }
   if (target.type === 'card_instance') {
     const sourceAbility = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+    if (target.id === 'other_fist' && isRoundCommitmentFistDoubleAbility(sourceAbility)) {
+      return roundCommitmentFistDoubleCandidateIds(s, ctx.controllerId, ctx.sourceCardId);
+    }
     if (isAcceptedLinkedRoleMemberSkillCopyAbility(sourceAbility) && sourceAbility.effects[0]?.target === target.id) {
       return linkedRoleEligibleRevealedMemberServantSkillIds(s, ctx, sourceAbility);
     }
@@ -6896,6 +6901,10 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (containsRoundCommitmentPrivilegedNode(a)) {
     if (!isAcceptedRoundCommitmentAbility(a)) reject('resolution_failed', 'Unsupported round-commitment semantic');
+    if (isRoundCommitmentFistDoubleAbility(a)) {
+      const pending = findPendingTarget(s, ctx, a, a.effects);
+      if (pending) { runtime(s).pendingDecision = pending; return; }
+    }
     if (!canExecuteRoundCommitmentEffect(s, ctx, a) || !resolveRoundCommitmentEffect(s, ctx, a)) {
       reject('resolution_failed', 'Round-commitment resolution failed');
     }
@@ -8531,6 +8540,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       }
       d.context.selections[str(d.target.id)] = selected; delete r.pendingDecision;
       const resumedAbility = abilityDefinition(s, d.context.sourceCardId, d.context.abilityId);
+      if (isRoundCommitmentFistDoubleAbility(resumedAbility)) {
+        if (!canExecuteRoundCommitmentEffect(s, d.context, resumedAbility) || !resolveRoundCommitmentEffect(s, d.context, resumedAbility)) reject('resolution_failed', 'Fist selection no longer matches exact round-commitment authority');
+        break;
+      }
       if (isAcceptedLinkedRoleMemberSkillCopyAbility(resumedAbility) || isAcceptedDefinitionDeclarationDeckAbility(resumedAbility) || isAcceptedDefinitionVariantBatteryAbility(resumedAbility) || isAcceptedPermanentReturnedSkillTuningAbility(resumedAbility)) { executeAbility(s, d.context); break; }
       executeEffects(s, d.context, d.remainingEffects); break;
     }
