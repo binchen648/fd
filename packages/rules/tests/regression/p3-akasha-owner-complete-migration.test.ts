@@ -76,7 +76,7 @@ describe('P3 Akasha owner-complete migration', () => {
   it('integrates Akasha exactly once in the canonical playtest master sequence', () => {
     const pack = JSON.parse(readFileSync('data/packs/fd-playtest-v1/pack.json', 'utf8'));
     expect(pack.authoringMasterFiles.filter((entry: string) => entry === path)).toHaveLength(1);
-    expect(pack.authoringMasterFiles.at(-1)).toBe(path);
+    const index = pack.authoringMasterFiles.indexOf(path); expect(index).toBeGreaterThanOrEqual(0); expect(pack.authoringMasterFiles[index + 1]).toBe('data/authoring/masters/master.akiha.json');
   });
 
   it('does not add Akasha identity routing to production runtime source', () => {

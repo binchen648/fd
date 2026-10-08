@@ -3,6 +3,9 @@ import { describe, expect, it } from 'vitest';
 import { createMatchSession } from '../../src/match-session';
 import { isAddToAttackDirectAction } from '../../src/ability/interpreter';
 import type { AuthoringAbility } from '../../src/ability/types';
+import { SEVEN_HUMAN_PLAYER_IDS, seedIncludingMaster } from './deterministic-character-fixture';
+
+const MAIYA_FIXTURE_SEED = seedIncludingMaster('master.maiya');
 
 function prepareMaiyaAdvance(session: ReturnType<typeof createMatchSession>): { playerId: string; military: string; supportShot: string } {
   const pairing = session.pairings.find((candidate) => candidate.master.id === 'master.maiya')!;
@@ -23,7 +26,7 @@ function prepareMaiyaAdvance(session: ReturnType<typeof createMatchSession>): { 
 
 describe('CARD_ACTION_SEMANTICS_MINIMAL_ADD_TO_ATTACK', () => {
   it('routes Maiya Support Shot by executable semantic form through data-flow', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createMatchSession({ seed: MAIYA_FIXTURE_SEED, humanPlayerIds: SEVEN_HUMAN_PLAYER_IDS });
     const { playerId, military, supportShot } = prepareMaiyaAdvance(session);
 
     const activation = session.dispatchPlayerAction(playerId, {
@@ -78,7 +81,7 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_ADD_TO_ATTACK', () => {
   });
 
   it('fails closed without legacy fallback when a migrated Support Shot graph is corrupted', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createMatchSession({ seed: MAIYA_FIXTURE_SEED, humanPlayerIds: SEVEN_HUMAN_PLAYER_IDS });
     const { playerId, military, supportShot } = prepareMaiyaAdvance(session);
     const ability = session.state.abilityRuntime!.pack.cards['master.maiya.skill.military']!.abilities
       .find((candidate) => candidate.id === 'military.attach-support-shot')!;
@@ -103,7 +106,7 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_ADD_TO_ATTACK', () => {
   });
 
   it('does not expose or execute add-to-attack when the canonical battlefield condition is missing', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createMatchSession({ seed: MAIYA_FIXTURE_SEED, humanPlayerIds: SEVEN_HUMAN_PLAYER_IDS });
     const { playerId, military, supportShot } = prepareMaiyaAdvance(session);
     session.state.players.find((candidate) => candidate.id === playerId)!.locationId = 'miyama_town';
     const ability = session.state.abilityRuntime!.pack.cards['master.maiya.skill.military']!.abilities
@@ -136,7 +139,7 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_ADD_TO_ATTACK', () => {
   });
 
   it.each(['hand', 'deck', 'discard', 'field'] as const)('fails closed before spending mana when Support Shot is in %s', (zone) => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createMatchSession({ seed: MAIYA_FIXTURE_SEED, humanPlayerIds: SEVEN_HUMAN_PLAYER_IDS });
     const { playerId, military, supportShot } = prepareMaiyaAdvance(session);
     const support = session.state.cards.find((card) => card.instanceId === supportShot)!;
     support.zone = zone;
@@ -164,7 +167,7 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_ADD_TO_ATTACK', () => {
   });
 
   it('does not offer add-to-attack when no legal non-controller player target remains', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createMatchSession({ seed: MAIYA_FIXTURE_SEED, humanPlayerIds: SEVEN_HUMAN_PLAYER_IDS });
     const { playerId, military, supportShot } = prepareMaiyaAdvance(session);
     for (const candidate of session.state.players) {
       if (candidate.id !== playerId) candidate.status = 'eliminated';
@@ -194,7 +197,7 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_ADD_TO_ATTACK', () => {
   });
 
   it('rejects a target that becomes inactive after activation without rolling back the committed activation cost', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createMatchSession({ seed: MAIYA_FIXTURE_SEED, humanPlayerIds: SEVEN_HUMAN_PLAYER_IDS });
     const { playerId, military, supportShot } = prepareMaiyaAdvance(session);
 
     const activation = session.dispatchPlayerAction(playerId, {
@@ -231,7 +234,7 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_ADD_TO_ATTACK', () => {
   });
 
   it('attaches beside an existing target attack without consuming normal play counters or printed card cost', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createMatchSession({ seed: MAIYA_FIXTURE_SEED, humanPlayerIds: SEVEN_HUMAN_PLAYER_IDS });
     const { playerId, military, supportShot } = prepareMaiyaAdvance(session);
     const existingAttack = session.state.cards.find((card) =>
       card.controllerPlayerId === 'p2' &&

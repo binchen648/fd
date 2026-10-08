@@ -47,9 +47,11 @@ function buildGoldenFlow2Room(roomId = 'golden-flow-2-regression') {
   }
 
   const p1Attack = state.cards.find((card) =>
-    card.ownerPlayerId === 'p1' && ['hand', 'deck', 'skill'].includes(card.zone));
+    card.ownerPlayerId === 'p1' && ['hand', 'deck'].includes(card.zone) &&
+    state.abilityRuntime?.pack.cards[card.definitionId]?.cardType === 'basic_attack');
   const p2Attack = state.cards.find((card) =>
-    card.ownerPlayerId === 'p2' && ['hand', 'deck', 'skill'].includes(card.zone));
+    card.ownerPlayerId === 'p2' && ['hand', 'deck'].includes(card.zone) &&
+    state.abilityRuntime?.pack.cards[card.definitionId]?.cardType === 'basic_attack');
   if (!p1Attack || !p2Attack) throw new Error('Golden Flow 2 fixture requires one mutable card for p1 and p2');
 
   const activateAttack = (card: typeof p1Attack, definitionId: string, controllerPlayerId: string) => {

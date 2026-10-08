@@ -85,6 +85,16 @@ function sourceProvider(state: GameState, sourceCardId: string, abilityId: strin
   const ability = def.abilities.find((entry) => entry.id === abilityId); if (!ability || !isAcceptedDefinitionResourceBindingAbility(ability)) return undefined;
   return { source, ability, controllerId: controller.id };
 }
+function persistedProvisionProvider(state: GameState, sourceCardId: string, abilityId: string): { source: GameState['cards'][number]; ability: AuthoringAbility; controllerId: PlayerId } | undefined {
+  const source = state.cards.find((entry) => entry.instanceId === sourceCardId); if (!source) return undefined;
+  const def = runtime(state).pack.cards[source.definitionId]; if (!def || def.cardType !== 'master_skill') return undefined;
+  const controller = state.players.find((entry) => entry.id === source.controllerPlayerId);
+  if (!controller || source.ownerPlayerId !== controller.id || !source.definitionId.startsWith(`${controller.masterCardId}.skill.`) ||
+      !['skill', 'field'].includes(source.zone)) return undefined;
+  const stateEntry = runtime(state).cardState[source.instanceId]; if (stateEntry?.faceDown === true) return undefined;
+  const ability = def.abilities.find((entry) => entry.id === abilityId); if (!ability || !provisionAbility(ability)) return undefined;
+  return { source, ability, controllerId: controller.id };
+}
 function persistedBoundProvider(state: GameState, sourceCardId: string, abilityId: string): { source: GameState['cards'][number]; ability: AuthoringAbility; controllerId: PlayerId } | undefined {
   const source = state.cards.find((entry) => entry.instanceId === sourceCardId); if (!source) return undefined;
   const def = runtime(state).pack.cards[source.definitionId]; if (!def || def.cardType !== 'master_skill') return undefined;
@@ -351,8 +361,8 @@ export function definitionResourceBindingRuntimeValidForRestore(state: GameState
       }
       if (key.startsWith(FLAG_PREFIX + 'provisioned:')) {
         if (value !== true) return false; const suffix = key.slice((FLAG_PREFIX + 'provisioned:').length); const split = suffix.lastIndexOf(':');
-        if (split <= 0) return false; const provider = sourceProvider(state, suffix.slice(0, split), suffix.slice(split + 1));
-        if (!provider || !provisionAbility(provider.ability) || provider.controllerId !== targetId) return false;
+        if (split <= 0) return false; const provider = persistedProvisionProvider(state, suffix.slice(0, split), suffix.slice(split + 1));
+        if (!provider || provider.controllerId !== targetId) return false;
       }
       if (key.startsWith(FLAG_PREFIX + 'bound:')) {
         const parsed = parseBinding(value); if (!parsed || parsed.round !== state.round.roundNumber || !state.players.some((entry) => entry.id === targetId) || !state.players.some((entry) => entry.id === parsed.controllerId)) return false;

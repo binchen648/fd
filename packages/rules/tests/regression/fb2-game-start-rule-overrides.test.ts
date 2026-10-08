@@ -7,6 +7,7 @@ import type { GameState } from '../../src/schema/game';
 import { createSeededGameState } from '../../src/tools/seeded-state';
 import { createMatchSession, restoreMatchSession } from '../../src/match-session';
 import { restoreTrustedAuthoringFixtureSession } from '../trusted-authoring-fixture';
+import { seedIncludingMasterAndSituation } from './deterministic-character-fixture';
 
 const SETUP_DEF = 'fixture.game-start-rules';
 const SETUP_ID = 'fixture-game-start-rules';
@@ -18,6 +19,7 @@ const MASTER_POWER_DEF = 'fixture.master-power';
 const MASTER_POWER_ID = 'fixture-master-power';
 const NP_DEF = 'fixture.np';
 const NP_ID = 'fixture-np';
+const KAYNETH_TURNING_POINT_SEED = seedIncludingMasterAndSituation('master.kayneth', 'situation.turning_point');
 
 const exactEffects: RuleNode[] = [
   { type: 'install_rule_override', player: 'controller', rule: 'first_logical_day_total_power_adjustment', value: -2 },
@@ -226,7 +228,7 @@ describe('P3-FB2-14 identity-free game-start RuleOverride runtime', () => {
 
     let session: ReturnType<typeof createMatchSession>;
     try {
-      session = createMatchSession({ seed: 1, humanPlayerId: 'p1' });
+      session = createMatchSession({ seed: KAYNETH_TURNING_POINT_SEED, humanPlayerId: 'p1' });
     } finally {
       setupCard.abilities = originalAbilities;
     }

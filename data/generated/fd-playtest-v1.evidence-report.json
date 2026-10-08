@@ -2,12 +2,89 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 24,
+    "masters": 25,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
   },
   "entities": [
+    {
+      "entityId": "card.goetia.demon-god.baal",
+      "displayName": "Demon God Baal",
+      "entityKind": "named_attack",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/盖提亚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "card.goetia.demon-god.barbatos",
+      "displayName": "Demon God Barbatos",
+      "entityKind": "named_attack",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/盖提亚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+      "imageIndex": 9,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "card.goetia.demon-god.flauros",
+      "displayName": "Demon God Flauros",
+      "entityKind": "named_attack",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/盖提亚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+      "imageIndex": 6,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "card.goetia.demon-god.forneus",
+      "displayName": "Demon God Forneus",
+      "entityKind": "named_attack",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/盖提亚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "card.goetia.demon-god.phenex",
+      "displayName": "Demon God Phenex",
+      "entityKind": "named_attack",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/盖提亚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "card.goetia.demon-god.raum",
+      "displayName": "Demon God Raum",
+      "entityKind": "named_attack",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/盖提亚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+      "imageIndex": 8,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "card.goetia.demon-god.zepar",
+      "displayName": "Demon God Zepar",
+      "entityKind": "named_attack",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/盖提亚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+      "imageIndex": 7,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
     {
       "entityId": "card.x-commanderhildr",
       "displayName": "???????",
@@ -1813,6 +1890,61 @@
       "issueCodes": [
         "SOURCE_ASSET_UNVERIFIED"
       ]
+    },
+    {
+      "entityId": "master.goetia",
+      "displayName": "盖提亚",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/盖提亚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.goetia.overview",
+      "displayName": "盖提亚",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/盖提亚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.goetia.skill.ascension",
+      "displayName": "冠位时间神殿",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/盖提亚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+      "imageIndex": 10,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.goetia.skill.s1",
+      "displayName": "集体意识",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/盖提亚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.goetia.skill.s2",
+      "displayName": "魔神柱",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/盖提亚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
     },
     {
       "entityId": "master.irisviel",

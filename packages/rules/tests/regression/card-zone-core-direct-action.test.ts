@@ -3,6 +3,13 @@ import { describe, expect, it } from 'vitest';
 import { createMatchSession } from '../../src/match-session';
 import { isCardZoneCoreDirectActionSemantic } from '../../src/ability/interpreter';
 import type { AuthoringAbility } from '../../src/ability/types';
+import { SEVEN_HUMAN_PLAYER_IDS, seedIncludingMaster } from './deterministic-character-fixture';
+
+const IRISVIEL_FIXTURE_SEED = seedIncludingMaster('master.irisviel');
+
+function createIrisvielSession() {
+  return createMatchSession({ seed: IRISVIEL_FIXTURE_SEED, humanPlayerIds: SEVEN_HUMAN_PLAYER_IDS });
+}
 
 function preparePlayerForAdvance(session: ReturnType<typeof createMatchSession>, playerId: string): void {
   const player = session.state.players.find((candidate) => candidate.id === playerId)!;
@@ -34,7 +41,7 @@ function putTwoControllerCardsInHand(session: ReturnType<typeof createMatchSessi
 
 describe('CARD_ZONE_CORE_DIRECT_ACTION', () => {
   it('routes Conversion Magic by executable semantic form and binds actual moved count', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createIrisvielSession();
     const pairing = session.pairings.find((candidate) => candidate.master.id === 'master.irisviel')!;
     preparePlayerForAdvance(session, pairing.playerId);
     const source = sourceCard(session, pairing.playerId, 'master.irisviel.skill.conversion-magic');
@@ -66,7 +73,7 @@ describe('CARD_ZONE_CORE_DIRECT_ACTION', () => {
   });
 
   it('fails closed without legacy fallback when a migrated Conversion Magic graph is corrupted', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createIrisvielSession();
     const pairing = session.pairings.find((candidate) => candidate.master.id === 'master.irisviel')!;
     preparePlayerForAdvance(session, pairing.playerId);
     const source = sourceCard(session, pairing.playerId, 'master.irisviel.skill.conversion-magic');
@@ -91,7 +98,7 @@ describe('CARD_ZONE_CORE_DIRECT_ACTION', () => {
   });
 
   it('fails closed when corrupted Conversion Magic no longer matches the Card/Zone semantic classifier', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createIrisvielSession();
     const pairing = session.pairings.find((candidate) => candidate.master.id === 'master.irisviel')!;
     preparePlayerForAdvance(session, pairing.playerId);
     const source = sourceCard(session, pairing.playerId, 'master.irisviel.skill.conversion-magic');

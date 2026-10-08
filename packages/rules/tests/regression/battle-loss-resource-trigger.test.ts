@@ -2,11 +2,14 @@
 
 import type { AuthoringAbility } from '../../src/ability/types';
 import { createMatchSession } from '../../src/match-session';
+import { seedIncludingMaster } from './deterministic-character-fixture';
 import {
   isBattleLossResourceTriggerSemantic,
   processAbilityEvent,
   resolveBattlefield,
 } from '../../src/index';
+
+const SHINJI_FIXTURE_SEED = seedIncludingMaster('master.shinji', 'p1');
 
 function commandSpells(session: ReturnType<typeof createMatchSession>, playerId = 'p1'): number {
   return Number((session.state.players.find((player) => player.id === playerId) as unknown as { commandSpells?: number }).commandSpells ?? 3);
@@ -31,7 +34,7 @@ function activateAttack(session: ReturnType<typeof createMatchSession>, ownerPla
 }
 
 function twoBattlefieldSession(): ReturnType<typeof createMatchSession> {
-  const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1', humanPlayerIds: ['p1'] });
+  const session = createMatchSession({ seed: SHINJI_FIXTURE_SEED, humanPlayerId: 'p1', humanPlayerIds: ['p1'] });
   expect(session.pairings.find((pairing) => pairing.playerId === 'p1')?.master.id).toBe('master.shinji');
   session.state.round.activePhase = 'battle';
   session.state.eventPlacements = [];

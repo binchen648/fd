@@ -105,7 +105,7 @@ describe('P3 Fujino owner-complete migration', () => {
 
     const pack = JSON.parse(readFileSync('data/packs/fd-playtest-v1/pack.json', 'utf8'));
     expect(pack.authoringMasterFiles.filter((entry: string) => entry.endsWith('/master.fujino.json'))).toHaveLength(1);
-    expect(pack.authoringMasterFiles.at(-1)).toBe(PATH);
+    const index = pack.authoringMasterFiles.indexOf(PATH); expect(index).toBeGreaterThan(0); expect(pack.authoringMasterFiles[index - 1]).toBe('data/authoring/masters/master.fou.json');
   });
 
   it('provisions Distortion at game start, activates warped topology, and repairs it out of turn in preparation', () => {

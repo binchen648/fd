@@ -536,6 +536,31 @@
       }
     },
     {
+      "id": "master.goetia",
+      "name": "盖提亚",
+      "overviewCardId": "master.goetia.overview",
+      "initialMana": 4,
+      "commandSpellCardIds": [],
+      "skillCardIds": [
+        "master.goetia.skill.s1",
+        "master.goetia.skill.s2",
+        "master.goetia.skill.ascension"
+      ],
+      "linkedCards": {
+        "generated": []
+      },
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Authoring master converted for seven-player product playtest."
+      },
+      "source": {
+        "htmPath": "chm-extract/盖提亚.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+        "imageIndex": 0,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
       "id": "master.irisviel",
       "name": "爱丽丝菲尔·冯·爱因兹贝伦",
       "overviewCardId": "master.irisviel.overview",
@@ -2393,6 +2418,165 @@
     }
   ],
   "cards": [
+    {
+      "id": "card.goetia.demon-god.baal",
+      "name": "Demon God Baal",
+      "cardType": "named_attack",
+      "printedValue": 1,
+      "printedCost": 13,
+      "printedText": "Demon God Baal",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/盖提亚.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+        "imageIndex": 3,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "card.goetia.demon-god.barbatos",
+      "name": "Demon God Barbatos",
+      "cardType": "named_attack",
+      "printedValue": 0,
+      "printedCost": 3,
+      "printedText": "Demon God Barbatos",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/盖提亚.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+        "imageIndex": 9,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "card.goetia.demon-god.flauros",
+      "name": "Demon God Flauros",
+      "cardType": "named_attack",
+      "printedValue": 0,
+      "printedCost": 4,
+      "printedText": "Demon God Flauros",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/盖提亚.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+        "imageIndex": 6,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "card.goetia.demon-god.forneus",
+      "name": "Demon God Forneus",
+      "cardType": "named_attack",
+      "attribute": "strength",
+      "attributes": [
+        "strength"
+      ],
+      "printedValue": 0,
+      "printedCost": 5,
+      "printedText": "Demon God Forneus",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/盖提亚.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+        "imageIndex": 5,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "card.goetia.demon-god.phenex",
+      "name": "Demon God Phenex",
+      "cardType": "named_attack",
+      "printedValue": 1,
+      "printedCost": 13,
+      "printedText": "Demon God Phenex",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/盖提亚.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+        "imageIndex": 4,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "card.goetia.demon-god.raum",
+      "name": "Demon God Raum",
+      "cardType": "named_attack",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 0,
+      "printedCost": 2,
+      "printedText": "Demon God Raum",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/盖提亚.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+        "imageIndex": 8,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "card.goetia.demon-god.zepar",
+      "name": "Demon God Zepar",
+      "cardType": "named_attack",
+      "attribute": "magecraft",
+      "attributes": [
+        "magecraft"
+      ],
+      "printedValue": 0,
+      "printedCost": 6,
+      "printedText": "Demon God Zepar",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/盖提亚.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+        "imageIndex": 7,
+        "reviewedAgainstImage": true
+      }
+    },
     {
       "id": "card.x-commanderhildr",
       "name": "???????",
@@ -5869,6 +6053,88 @@
         "htmPath": "chm-extract/卧藤门司.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_222924_628.png",
         "imageIndex": 1,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.goetia.overview",
+      "name": "盖提亚",
+      "cardType": "master_overview",
+      "printedText": "集体意识: 你没有令咒。将7张【魔神柱】加入攻击。回合结束时若你该回合未获得胜利，将一张你控制的【魔神柱】移除游戏，若无法达成，你被淘汰。\n魔神柱: 【魔神柱巴力】13耗13需1威：残留：此卡的威力不可改变。魔神柱只能追加打出并且它们的费用减少X（X=打出的非魔神柱攻击的费用）。\n【魔神柱菲尼克斯】13耗13需1威：残留：此牌的威力不可变动。行动阶段：移除一张菲尼克斯以外的激活的魔神柱，获得6点魔力。\n【魔神柱佛钮司】力量5耗5需0威：残留。战斗阶段：将佛钮司洗入你的牌库并关闭你控制的一张牌。打出一张牌，支付其费用且使用该牌行动阶段能力。\n【魔神柱佛劳洛斯】迅捷4耗4需0威：残留。前哨阶段：将佛劳洛斯洗入你的牌库，直到回合结束合计威力+5。\n【魔神柱桀派】魔术6耗6需0威：残留：当你输掉战斗时，你可将桀派洗入你的牌库并获得2点战果，如此便可无需于回合结束时将魔神柱移除游戏。\n【魔神柱劳姆】特殊2耗2需0威：残留：战斗阶段结束后若你位于侦察，你可将劳姆加入手牌，如此便可无需于回合结束时将魔神柱移除游戏。被动/行动阶段：从手牌或场上弃置劳姆，移动至任意地点。\n【魔神柱巴巴妥司】3耗3需0威：残留：当你将要获得、失去或支付一枚令咒时，改为获得、失去、支付4点魔力。行动阶段：将巴巴妥司洗入你的牌库，直到回合结束之前，你拥有的魔力少于8点也可打出技能、你的宝具不会被局势牌禁止使用。\nDemon God Baal: Demon God Baal\nDemon God Phenex: Demon God Phenex\nDemon God Forneus: Demon God Forneus\nDemon God Flauros: Demon God Flauros\nDemon God Zepar: Demon God Zepar\nDemon God Raum: Demon God Raum\nDemon God Barbatos: Demon God Barbatos\n冠位时间神殿: 此牌激活时，立即将此牌加入你的攻击。\n残留：此牌永不关闭。【魔神柱】获得\"打出时：此牌+4威力。\"\n前哨阶段：花费1点魔力，若你的手牌中没有【魔神柱】，弃置你的所有手牌并抽三张牌。",
+      "capability": {
+        "status": "FULL"
+      },
+      "source": {
+        "htmPath": "chm-extract/盖提亚.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+        "imageIndex": 0,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.goetia.skill.ascension",
+      "name": "冠位时间神殿",
+      "cardType": "master_skill",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 0,
+      "printedCost": 13,
+      "printedText": "此牌激活时，立即将此牌加入你的攻击。\n残留：此牌永不关闭。【魔神柱】获得\"打出时：此牌+4威力。\"\n前哨阶段：花费1点魔力，若你的手牌中没有【魔神柱】，弃置你的所有手牌并抽三张牌。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/盖提亚.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+        "imageIndex": 10,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.goetia.skill.s1",
+      "name": "集体意识",
+      "cardType": "master_skill",
+      "printedValue": 0,
+      "printedCost": 0,
+      "printedText": "你没有令咒。将7张【魔神柱】加入攻击。回合结束时若你该回合未获得胜利，将一张你控制的【魔神柱】移除游戏，若无法达成，你被淘汰。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/盖提亚.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+        "imageIndex": 1,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.goetia.skill.s2",
+      "name": "魔神柱",
+      "cardType": "master_skill",
+      "printedValue": 0,
+      "printedCost": 0,
+      "printedText": "【魔神柱巴力】13耗13需1威：残留：此卡的威力不可改变。魔神柱只能追加打出并且它们的费用减少X（X=打出的非魔神柱攻击的费用）。\n【魔神柱菲尼克斯】13耗13需1威：残留：此牌的威力不可变动。行动阶段：移除一张菲尼克斯以外的激活的魔神柱，获得6点魔力。\n【魔神柱佛钮司】力量5耗5需0威：残留。战斗阶段：将佛钮司洗入你的牌库并关闭你控制的一张牌。打出一张牌，支付其费用且使用该牌行动阶段能力。\n【魔神柱佛劳洛斯】迅捷4耗4需0威：残留。前哨阶段：将佛劳洛斯洗入你的牌库，直到回合结束合计威力+5。\n【魔神柱桀派】魔术6耗6需0威：残留：当你输掉战斗时，你可将桀派洗入你的牌库并获得2点战果，如此便可无需于回合结束时将魔神柱移除游戏。\n【魔神柱劳姆】特殊2耗2需0威：残留：战斗阶段结束后若你位于侦察，你可将劳姆加入手牌，如此便可无需于回合结束时将魔神柱移除游戏。被动/行动阶段：从手牌或场上弃置劳姆，移动至任意地点。\n【魔神柱巴巴妥司】3耗3需0威：残留：当你将要获得、失去或支付一枚令咒时，改为获得、失去、支付4点魔力。行动阶段：将巴巴妥司洗入你的牌库，直到回合结束之前，你拥有的魔力少于8点也可打出技能、你的宝具不会被局势牌禁止使用。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/盖提亚.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/盖提亚.png",
+        "imageIndex": 2,
         "reviewedAgainstImage": true
       }
     },
@@ -18384,6 +18650,860 @@
         "playKind": "support",
         "destinationZone": "field"
       },
+      "master.goetia.skill.s1": {
+        "id": "master.goetia.skill.s1",
+        "name": "集体意识",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "被动",
+          "attributes": [],
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "goetia.s1.setup",
+            "kind": "forced_trigger",
+            "printedClause": "你没有令咒。将7张【魔神柱】加入攻击。回合结束时若你该回合未获得胜利，将一张你控制的【魔神柱】移除游戏，若无法达成，你被淘汰。",
+            "activation": {
+              "trigger": "game_start"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "linked_auxiliary_suite",
+                "op": "setup",
+                "stateKey": "goetia.linked-suite",
+                "definitionIds": [
+                  "card.goetia.demon-god.baal",
+                  "card.goetia.demon-god.phenex",
+                  "card.goetia.demon-god.forneus",
+                  "card.goetia.demon-god.flauros",
+                  "card.goetia.demon-god.zepar",
+                  "card.goetia.demon-god.raum",
+                  "card.goetia.demon-god.barbatos"
+                ],
+                "destination": "attack_area",
+                "zeroCommandSeals": true
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "goetia.s1.mark-win",
+            "kind": "forced_trigger",
+            "printedClause": "本回合获得战斗胜利时，记录回合末无需移除【魔神柱】。",
+            "activation": {
+              "trigger": "after_controller_wins_battle"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "linked_auxiliary_suite",
+                "op": "mark_win",
+                "stateKey": "goetia.linked-suite"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "goetia.s1.round-end-upkeep",
+            "kind": "forced_trigger",
+            "printedClause": "回合结束时若本回合未获得胜利，将一张你控制的【魔神柱】移除游戏；若无法达成，你被淘汰。",
+            "activation": {
+              "trigger": "round_end"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "linked_auxiliary_suite",
+                "op": "round_end_upkeep",
+                "stateKey": "goetia.linked-suite"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "master.goetia",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
+      },
+      "master.goetia.skill.s2": {
+        "id": "master.goetia.skill.s2",
+        "name": "魔神柱",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "被动",
+          "attributes": [],
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "goetia.s2.physical-suite-catalogue",
+            "kind": "passive",
+            "printedClause": "【魔神柱】的七张实体攻击牌及其可执行子条款由本 frozen identity 关联的物理定义承载。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "noop",
+                "reason": "physical Demon God semantics are authored on the seven card.goetia.demon-god.* definitions"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "master.goetia",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
+      },
+      "card.goetia.demon-god.baal": {
+        "id": "card.goetia.demon-god.baal",
+        "name": "Demon God Baal",
+        "cardType": "basic_attack",
+        "cardFace": {
+          "typeLabel": "",
+          "attributes": [],
+          "cost": 13,
+          "basePower": 1
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "goetia.baal.append",
+            "kind": "passive",
+            "printedClause": "魔神柱只能追加打出并且它们的费用减少X（X=打出的非魔神柱攻击的费用）。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "linked_auxiliary_suite",
+                "op": "append_cost_rule",
+                "stateKey": "goetia.linked-suite"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "goetia.baal.power-immutable",
+            "kind": "passive",
+            "printedClause": "残留：此卡的威力不可改变。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "linked_auxiliary_suite",
+                "op": "power_immutable",
+                "stateKey": "goetia.linked-suite"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "master.goetia",
+        "playKind": "attack",
+        "destinationZone": "attack_area"
+      },
+      "card.goetia.demon-god.phenex": {
+        "id": "card.goetia.demon-god.phenex",
+        "name": "Demon God Phenex",
+        "cardType": "basic_attack",
+        "cardFace": {
+          "typeLabel": "",
+          "attributes": [],
+          "cost": 13,
+          "basePower": 1
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "goetia.phenex.power-immutable",
+            "kind": "passive",
+            "printedClause": "残留：此牌的威力不可变动。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "linked_auxiliary_suite",
+                "op": "power_immutable",
+                "stateKey": "goetia.linked-suite"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "goetia.phenex.remove-for-mana",
+            "kind": "phase_action",
+            "printedClause": "行动阶段：移除一张菲尼克斯以外的激活的魔神柱，获得6点魔力。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "linked_auxiliary_suite",
+                "op": "remove_other_for_mana",
+                "stateKey": "goetia.linked-suite",
+                "manaGain": 6
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "master.goetia",
+        "playKind": "attack",
+        "destinationZone": "attack_area"
+      },
+      "card.goetia.demon-god.forneus": {
+        "id": "card.goetia.demon-god.forneus",
+        "name": "Demon God Forneus",
+        "cardType": "basic_attack",
+        "cardFace": {
+          "typeLabel": "力量",
+          "attributes": [
+            "力量"
+          ],
+          "cost": 5,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "goetia.forneus.close-play",
+            "kind": "phase_action",
+            "printedClause": "战斗阶段：将佛钮司洗入你的牌库并关闭你控制的一张牌。打出一张牌，支付其费用且使用该牌行动阶段能力。",
+            "activation": {
+              "phase": "combat",
+              "opens": "controller_combat_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "linked_auxiliary_suite",
+                "op": "shuffle_close_play",
+                "stateKey": "goetia.linked-suite"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "master.goetia",
+        "playKind": "attack",
+        "destinationZone": "attack_area"
+      },
+      "card.goetia.demon-god.flauros": {
+        "id": "card.goetia.demon-god.flauros",
+        "name": "Demon God Flauros",
+        "cardType": "basic_attack",
+        "cardFace": {
+          "typeLabel": "迅捷",
+          "attributes": [
+            "迅捷"
+          ],
+          "cost": 4,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "goetia.flauros.round-power",
+            "kind": "phase_action",
+            "printedClause": "前哨阶段：将佛劳洛斯洗入你的牌库，直到回合结束合计威力+5。",
+            "activation": {
+              "phase": "preparation",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "linked_auxiliary_suite",
+                "op": "shuffle_round_power",
+                "stateKey": "goetia.linked-suite",
+                "amount": 5
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "master.goetia",
+        "playKind": "attack",
+        "destinationZone": "attack_area"
+      },
+      "card.goetia.demon-god.zepar": {
+        "id": "card.goetia.demon-god.zepar",
+        "name": "Demon God Zepar",
+        "cardType": "basic_attack",
+        "cardFace": {
+          "typeLabel": "魔术",
+          "attributes": [
+            "魔术"
+          ],
+          "cost": 6,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "goetia.zepar.loss-reward",
+            "kind": "response",
+            "printedClause": "当你输掉战斗时，你可将桀派洗入你的牌库并获得2点战果，如此便可无需于回合结束时将魔神柱移除游戏。",
+            "activation": {
+              "trigger": "after_controller_loses_battle"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "linked_auxiliary_suite",
+                "op": "loss_reward",
+                "stateKey": "goetia.linked-suite",
+                "vpGain": 2
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "opens": "after_controller_loses_battle",
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "master.goetia",
+        "playKind": "attack",
+        "destinationZone": "attack_area"
+      },
+      "card.goetia.demon-god.raum": {
+        "id": "card.goetia.demon-god.raum",
+        "name": "Demon God Raum",
+        "cardType": "basic_attack",
+        "cardFace": {
+          "typeLabel": "特殊",
+          "attributes": [
+            "特殊"
+          ],
+          "cost": 2,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "goetia.raum.battle-end-return",
+            "kind": "response",
+            "printedClause": "战斗阶段结束后若你位于侦察，你可将劳姆加入手牌，如此便可无需于回合结束时将魔神柱移除游戏。",
+            "activation": {
+              "trigger": "after_battle_ended"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "linked_auxiliary_suite",
+                "op": "battle_end_return",
+                "stateKey": "goetia.linked-suite",
+                "requiredLocationId": "recon"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "opens": "after_battle_ended",
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "goetia.raum.discard-move",
+            "kind": "phase_action",
+            "printedClause": "行动阶段：从手牌或场上弃置劳姆，移动至任意地点。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "linked_auxiliary_suite",
+                "op": "discard_move",
+                "stateKey": "goetia.linked-suite"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "master.goetia",
+        "playKind": "attack",
+        "destinationZone": "attack_area"
+      },
+      "card.goetia.demon-god.barbatos": {
+        "id": "card.goetia.demon-god.barbatos",
+        "name": "Demon God Barbatos",
+        "cardType": "basic_attack",
+        "cardFace": {
+          "typeLabel": "",
+          "attributes": [],
+          "cost": 3,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "goetia.barbatos.seal-mana",
+            "kind": "passive",
+            "printedClause": "当你将要获得、失去或支付一枚令咒时，改为获得、失去、支付4点魔力。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "linked_auxiliary_suite",
+                "op": "seal_mana_substitution",
+                "stateKey": "goetia.linked-suite",
+                "manaPerSeal": 4
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "goetia.barbatos.round-exceptions",
+            "kind": "phase_action",
+            "printedClause": "行动阶段：将巴巴妥司洗入你的牌库，直到回合结束之前，你拥有的魔力少于8点也可打出技能、你的宝具不会被局势牌禁止使用。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "linked_auxiliary_suite",
+                "op": "round_play_exceptions",
+                "stateKey": "goetia.linked-suite",
+                "waiveRequirementType": "skill_zone_mana_at_least",
+                "ignoreNoblePhantasmSituationForbid": true
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "master.goetia",
+        "playKind": "attack",
+        "destinationZone": "attack_area"
+      },
+      "master.goetia.skill.ascension": {
+        "id": "master.goetia.skill.ascension",
+        "name": "冠位时间神殿",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "特殊",
+          "attributes": [
+            "特殊"
+          ],
+          "cost": 13,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 13
+          }
+        ],
+        "abilities": [
+          {
+            "id": "goetia.ascension.activate",
+            "kind": "forced_trigger",
+            "printedClause": "此牌激活时，立即将此牌加入你的攻击。",
+            "activation": {
+              "trigger": "after_master_ascension_unlocked"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "linked_auxiliary_suite",
+                "op": "ascension_activate",
+                "stateKey": "goetia.linked-suite"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "goetia.ascension.residual",
+            "kind": "residual",
+            "printedClause": "残留：此牌永不关闭。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "noop",
+                "reason": "residual marker keeps the activated temple out of ordinary close candidates"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "goetia.ascension.member-play-power",
+            "kind": "passive",
+            "printedClause": "【魔神柱】获得“打出时：此牌+4威力。”",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "linked_auxiliary_suite",
+                "op": "ascension_play_power",
+                "stateKey": "goetia.linked-suite",
+                "amount": 4
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "goetia.ascension.redraw",
+            "kind": "phase_action",
+            "printedClause": "前哨阶段：花费1点魔力，若你的手牌中没有【魔神柱】，弃置你的所有手牌并抽三张牌。",
+            "activation": {
+              "phase": "preparation",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "linked_auxiliary_suite",
+                "op": "ascension_redraw",
+                "stateKey": "goetia.linked-suite",
+                "manaCost": 1,
+                "drawCount": 3
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.goetia",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
       "servant.artoriac.skill.sc-artoriac-1": {
         "id": "servant.artoriac.skill.sc-artoriac-1",
         "name": "选王剑",
@@ -30611,6 +31731,136 @@
         "playKind": "support",
         "destinationZone": "field",
         "initialZone": "skill"
+      },
+      "master.goetia.command-spell": {
+        "id": "master.goetia.command-spell",
+        "name": "令咒",
+        "cardType": "command_spell",
+        "cardFace": {
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "mode": "automatic",
+        "abilities": [
+          {
+            "id": "command-spell.gain-mana",
+            "kind": "phase_action",
+            "printedClause": "行动阶段：获得4点魔力。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "adjust_mana",
+                "amount": 4
+              },
+              {
+                "type": "adjust_command_seals",
+                "amount": -1,
+                "directive": "spend_command_spell"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {},
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "command-spell.power-victory",
+            "kind": "phase_action",
+            "printedClause": "行动阶段：总威力+2，如果你本回合赢得战斗，获得2点战果。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "record_master_directive",
+                "directive": "gain_2_vp_if_win_this_round"
+              },
+              {
+                "type": "adjust_command_seals",
+                "amount": -1,
+                "directive": "spend_command_spell"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [
+              {
+                "type": "create_modifier",
+                "modifier": {
+                  "type": "power_bonus",
+                  "target": "controller",
+                  "amount": 2,
+                  "duration": "this_round"
+                }
+              }
+            ],
+            "lifecycle": {},
+            "responseWindow": {},
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "command-spell.free-move",
+            "kind": "phase_action",
+            "printedClause": "行动阶段：无视交战状态，从深山町或新都移动至任意地点。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "record_master_directive",
+                "directive": "move_from_shinto_or_miyama_to_any_location_ignore_engagement"
+              },
+              {
+                "type": "adjust_command_seals",
+                "amount": -1,
+                "directive": "spend_command_spell"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {},
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "ownerId": "master.goetia",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
       }
     },
     "characters": {
@@ -31066,6 +32316,28 @@
           "master.fujino.skill.s3",
           "master.fujino.skill.s4",
           "master.fujino.skill.ascension"
+        ],
+        "publicInformation": {
+          "type": "master_package",
+          "initialMana": 4
+        }
+      },
+      "master.goetia": {
+        "id": "master.goetia",
+        "name": "盖提亚",
+        "class": "Master",
+        "kind": "master",
+        "cardIds": [
+          "master.goetia.skill.s1",
+          "master.goetia.skill.s2",
+          "card.goetia.demon-god.baal",
+          "card.goetia.demon-god.phenex",
+          "card.goetia.demon-god.forneus",
+          "card.goetia.demon-god.flauros",
+          "card.goetia.demon-god.zepar",
+          "card.goetia.demon-god.raum",
+          "card.goetia.demon-god.barbatos",
+          "master.goetia.skill.ascension"
         ],
         "publicInformation": {
           "type": "master_package",
@@ -31655,13 +32927,14 @@
       "master.darnic": "master.darnic.command-spell",
       "master.fiore": "master.fiore.command-spell",
       "master.fou": "master.fou.command-spell",
-      "master.fujino": "master.fujino.command-spell"
+      "master.fujino": "master.fujino.command-spell",
+      "master.goetia": "master.goetia.command-spell"
     },
-    "definitionHash": "346fc2fa87a41301db7ffb1f2f53de82ec47e470578baf3b0d7e9f00467a61ea",
+    "definitionHash": "c06645c9ce551563966cfbdd09ca6ba4db45ea33d06b9844b8497d325c38fe5e",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "346fc2fa87a41301db7ffb1f2f53de82ec47e470578baf3b0d7e9f00467a61ea"
+      "definitionHash": "c06645c9ce551563966cfbdd09ca6ba4db45ea33d06b9844b8497d325c38fe5e"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
@@ -33748,1432 +35021,1625 @@
         "abilityIndex": 0,
         "path": "archives[23].cards[5].abilities[0]"
       },
-      "servant.artoriac.skill.sc-artoriac-1": {
-        "archiveId": "servant.artoriac",
+      "master.goetia.skill.s1": {
+        "archiveId": "master.goetia",
         "archiveIndex": 24,
         "cardIndex": 0,
         "path": "archives[24].cards[0]"
       },
-      "servant.artoriac.skill.sc-artoriac-1#sc-artoriac-1.true-name-release": {
-        "archiveId": "servant.artoriac",
+      "master.goetia.skill.s1#goetia.s1.setup": {
+        "archiveId": "master.goetia",
         "archiveIndex": 24,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[24].cards[0].abilities[0]"
       },
-      "servant.artoriac.skill.sc-artoriac-1#sc-artoriac-1.residual-special-power-bonus": {
-        "archiveId": "servant.artoriac",
+      "master.goetia.skill.s1#goetia.s1.mark-win": {
+        "archiveId": "master.goetia",
         "archiveIndex": 24,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[24].cards[0].abilities[1]"
       },
-      "servant.artoriac.skill.sc-artoriac-1#sc-artoriac-1.return-current-round-attack": {
-        "archiveId": "servant.artoriac",
+      "master.goetia.skill.s1#goetia.s1.round-end-upkeep": {
+        "archiveId": "master.goetia",
         "archiveIndex": 24,
         "cardIndex": 0,
         "abilityIndex": 2,
         "path": "archives[24].cards[0].abilities[2]"
       },
-      "servant.artoriac.skill.sc-artoriac-2": {
-        "archiveId": "servant.artoriac",
+      "master.goetia.skill.s2": {
+        "archiveId": "master.goetia",
         "archiveIndex": 24,
         "cardIndex": 1,
         "path": "archives[24].cards[1]"
       },
-      "servant.artoriac.skill.sc-artoriac-2#sc-artoriac-2.pay-x-look-x-plus-two": {
-        "archiveId": "servant.artoriac",
+      "master.goetia.skill.s2#goetia.s2.physical-suite-catalogue": {
+        "archiveId": "master.goetia",
         "archiveIndex": 24,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[24].cards[1].abilities[0]"
       },
-      "servant.artoriac.skill.sc-artoriac-3": {
-        "archiveId": "servant.artoriac",
+      "card.goetia.demon-god.baal": {
+        "archiveId": "master.goetia",
         "archiveIndex": 24,
         "cardIndex": 2,
         "path": "archives[24].cards[2]"
       },
-      "servant.artoriac.skill.sc-artoriac-3#sc-artoriac-3.discard-public-and-power-formula": {
-        "archiveId": "servant.artoriac",
+      "card.goetia.demon-god.baal#goetia.baal.append": {
+        "archiveId": "master.goetia",
         "archiveIndex": 24,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[24].cards[2].abilities[0]"
       },
-      "servant.artoriac.skill.sc-artoriac-3#sc-artoriac-3.conditional-true-name-release": {
-        "archiveId": "servant.artoriac",
+      "card.goetia.demon-god.baal#goetia.baal.power-immutable": {
+        "archiveId": "master.goetia",
         "archiveIndex": 24,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[24].cards[2].abilities[1]"
       },
-      "servant.artoriac.skill.sc-artoriac-3#sc-artoriac-3.shuffle-discard-on-victory": {
-        "archiveId": "servant.artoriac",
-        "archiveIndex": 24,
-        "cardIndex": 2,
-        "abilityIndex": 2,
-        "path": "archives[24].cards[2].abilities[2]"
-      },
-      "servant.artoriac.skill.sc-artoriac-4": {
-        "archiveId": "servant.artoriac",
+      "card.goetia.demon-god.phenex": {
+        "archiveId": "master.goetia",
         "archiveIndex": 24,
         "cardIndex": 3,
         "path": "archives[24].cards[3]"
       },
-      "servant.artoriac.skill.sc-artoriac-4#sc-artoriac-4.unique-passive-luck-on-win": {
-        "archiveId": "servant.artoriac",
+      "card.goetia.demon-god.phenex#goetia.phenex.power-immutable": {
+        "archiveId": "master.goetia",
         "archiveIndex": 24,
         "cardIndex": 3,
         "abilityIndex": 0,
         "path": "archives[24].cards[3].abilities[0]"
       },
-      "servant.artoriac.skill.sc-artoriac-4#sc-artoriac-4.recon-gain-vp-and-move": {
-        "archiveId": "servant.artoriac",
+      "card.goetia.demon-god.phenex#goetia.phenex.remove-for-mana": {
+        "archiveId": "master.goetia",
         "archiveIndex": 24,
         "cardIndex": 3,
         "abilityIndex": 1,
         "path": "archives[24].cards[3].abilities[1]"
       },
-      "servant.artoriac.skill.sc-artoriac-5": {
-        "archiveId": "servant.artoriac",
+      "card.goetia.demon-god.forneus": {
+        "archiveId": "master.goetia",
         "archiveIndex": 24,
         "cardIndex": 4,
         "path": "archives[24].cards[4]"
       },
-      "servant.artoriac.skill.sc-artoriac-5#sc-artoriac-5.unique-passive-luck-on-win": {
-        "archiveId": "servant.artoriac",
+      "card.goetia.demon-god.forneus#goetia.forneus.close-play": {
+        "archiveId": "master.goetia",
         "archiveIndex": 24,
         "cardIndex": 4,
         "abilityIndex": 0,
         "path": "archives[24].cards[4].abilities[0]"
       },
-      "servant.artoriac.skill.sc-artoriac-5#sc-artoriac-5.gain-mana-or-vp": {
-        "archiveId": "servant.artoriac",
-        "archiveIndex": 24,
-        "cardIndex": 4,
-        "abilityIndex": 1,
-        "path": "archives[24].cards[4].abilities[1]"
-      },
-      "servant.artoriac.skill.sc-artoriac-6": {
-        "archiveId": "servant.artoriac",
+      "card.goetia.demon-god.flauros": {
+        "archiveId": "master.goetia",
         "archiveIndex": 24,
         "cardIndex": 5,
         "path": "archives[24].cards[5]"
       },
-      "servant.artoriac.skill.sc-artoriac-6#sc-artoriac-6.unique-passive-luck-on-win": {
-        "archiveId": "servant.artoriac",
+      "card.goetia.demon-god.flauros#goetia.flauros.round-power": {
+        "archiveId": "master.goetia",
         "archiveIndex": 24,
         "cardIndex": 5,
         "abilityIndex": 0,
         "path": "archives[24].cards[5].abilities[0]"
       },
-      "servant.artoriac.skill.sc-artoriac-6#sc-artoriac-6.gain-vp-if-not-sole-winner": {
-        "archiveId": "servant.artoriac",
+      "card.goetia.demon-god.zepar": {
+        "archiveId": "master.goetia",
         "archiveIndex": 24,
-        "cardIndex": 5,
-        "abilityIndex": 1,
-        "path": "archives[24].cards[5].abilities[1]"
+        "cardIndex": 6,
+        "path": "archives[24].cards[6]"
       },
-      "servant.drake.skill.sc-drake-1": {
-        "archiveId": "servant.drake",
+      "card.goetia.demon-god.zepar#goetia.zepar.loss-reward": {
+        "archiveId": "master.goetia",
+        "archiveIndex": 24,
+        "cardIndex": 6,
+        "abilityIndex": 0,
+        "path": "archives[24].cards[6].abilities[0]"
+      },
+      "card.goetia.demon-god.raum": {
+        "archiveId": "master.goetia",
+        "archiveIndex": 24,
+        "cardIndex": 7,
+        "path": "archives[24].cards[7]"
+      },
+      "card.goetia.demon-god.raum#goetia.raum.battle-end-return": {
+        "archiveId": "master.goetia",
+        "archiveIndex": 24,
+        "cardIndex": 7,
+        "abilityIndex": 0,
+        "path": "archives[24].cards[7].abilities[0]"
+      },
+      "card.goetia.demon-god.raum#goetia.raum.discard-move": {
+        "archiveId": "master.goetia",
+        "archiveIndex": 24,
+        "cardIndex": 7,
+        "abilityIndex": 1,
+        "path": "archives[24].cards[7].abilities[1]"
+      },
+      "card.goetia.demon-god.barbatos": {
+        "archiveId": "master.goetia",
+        "archiveIndex": 24,
+        "cardIndex": 8,
+        "path": "archives[24].cards[8]"
+      },
+      "card.goetia.demon-god.barbatos#goetia.barbatos.seal-mana": {
+        "archiveId": "master.goetia",
+        "archiveIndex": 24,
+        "cardIndex": 8,
+        "abilityIndex": 0,
+        "path": "archives[24].cards[8].abilities[0]"
+      },
+      "card.goetia.demon-god.barbatos#goetia.barbatos.round-exceptions": {
+        "archiveId": "master.goetia",
+        "archiveIndex": 24,
+        "cardIndex": 8,
+        "abilityIndex": 1,
+        "path": "archives[24].cards[8].abilities[1]"
+      },
+      "master.goetia.skill.ascension": {
+        "archiveId": "master.goetia",
+        "archiveIndex": 24,
+        "cardIndex": 9,
+        "path": "archives[24].cards[9]"
+      },
+      "master.goetia.skill.ascension#goetia.ascension.activate": {
+        "archiveId": "master.goetia",
+        "archiveIndex": 24,
+        "cardIndex": 9,
+        "abilityIndex": 0,
+        "path": "archives[24].cards[9].abilities[0]"
+      },
+      "master.goetia.skill.ascension#goetia.ascension.residual": {
+        "archiveId": "master.goetia",
+        "archiveIndex": 24,
+        "cardIndex": 9,
+        "abilityIndex": 1,
+        "path": "archives[24].cards[9].abilities[1]"
+      },
+      "master.goetia.skill.ascension#goetia.ascension.member-play-power": {
+        "archiveId": "master.goetia",
+        "archiveIndex": 24,
+        "cardIndex": 9,
+        "abilityIndex": 2,
+        "path": "archives[24].cards[9].abilities[2]"
+      },
+      "master.goetia.skill.ascension#goetia.ascension.redraw": {
+        "archiveId": "master.goetia",
+        "archiveIndex": 24,
+        "cardIndex": 9,
+        "abilityIndex": 3,
+        "path": "archives[24].cards[9].abilities[3]"
+      },
+      "servant.artoriac.skill.sc-artoriac-1": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 25,
         "cardIndex": 0,
         "path": "archives[25].cards[0]"
       },
-      "servant.drake.skill.sc-drake-1#sc-drake-1.draw": {
-        "archiveId": "servant.drake",
+      "servant.artoriac.skill.sc-artoriac-1#sc-artoriac-1.true-name-release": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 25,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[25].cards[0].abilities[0]"
       },
-      "servant.drake.skill.sc-drake-1#sc-drake-1.mount-summon": {
-        "archiveId": "servant.drake",
+      "servant.artoriac.skill.sc-artoriac-1#sc-artoriac-1.residual-special-power-bonus": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 25,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[25].cards[0].abilities[1]"
       },
-      "servant.drake.skill.sc-drake-2": {
-        "archiveId": "servant.drake",
+      "servant.artoriac.skill.sc-artoriac-1#sc-artoriac-1.return-current-round-attack": {
+        "archiveId": "servant.artoriac",
+        "archiveIndex": 25,
+        "cardIndex": 0,
+        "abilityIndex": 2,
+        "path": "archives[25].cards[0].abilities[2]"
+      },
+      "servant.artoriac.skill.sc-artoriac-2": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 25,
         "cardIndex": 1,
         "path": "archives[25].cards[1]"
       },
-      "servant.drake.skill.sc-drake-2#sc-drake-2.reveal": {
-        "archiveId": "servant.drake",
+      "servant.artoriac.skill.sc-artoriac-2#sc-artoriac-2.pay-x-look-x-plus-two": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 25,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[25].cards[1].abilities[0]"
       },
-      "servant.drake.skill.sc-drake-2#sc-drake-2.reward-and-move": {
-        "archiveId": "servant.drake",
-        "archiveIndex": 25,
-        "cardIndex": 1,
-        "abilityIndex": 1,
-        "path": "archives[25].cards[1].abilities[1]"
-      },
-      "servant.drake.skill.sc-drake-3": {
-        "archiveId": "servant.drake",
+      "servant.artoriac.skill.sc-artoriac-3": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 25,
         "cardIndex": 2,
         "path": "archives[25].cards[2]"
       },
-      "servant.drake.skill.sc-drake-3#sc-drake-3.reveal": {
-        "archiveId": "servant.drake",
+      "servant.artoriac.skill.sc-artoriac-3#sc-artoriac-3.discard-public-and-power-formula": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 25,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[25].cards[2].abilities[0]"
       },
-      "servant.drake.skill.sc-drake-3#sc-drake-3.movement-power": {
-        "archiveId": "servant.drake",
+      "servant.artoriac.skill.sc-artoriac-3#sc-artoriac-3.conditional-true-name-release": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 25,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[25].cards[2].abilities[1]"
       },
-      "servant.drake.skill.sc-drake-3#sc-drake-3.reverse-dash": {
-        "archiveId": "servant.drake",
+      "servant.artoriac.skill.sc-artoriac-3#sc-artoriac-3.shuffle-discard-on-victory": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 25,
         "cardIndex": 2,
         "abilityIndex": 2,
         "path": "archives[25].cards[2].abilities[2]"
       },
-      "servant.drake.skill.sc-drake-3#sc-drake-3.plunder": {
-        "archiveId": "servant.drake",
+      "servant.artoriac.skill.sc-artoriac-4": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 25,
-        "cardIndex": 2,
-        "abilityIndex": 3,
-        "path": "archives[25].cards[2].abilities[3]"
+        "cardIndex": 3,
+        "path": "archives[25].cards[3]"
       },
-      "servant.achilles.skill.sc-achilles-1": {
-        "archiveId": "servant.achilles",
+      "servant.artoriac.skill.sc-artoriac-4#sc-artoriac-4.unique-passive-luck-on-win": {
+        "archiveId": "servant.artoriac",
+        "archiveIndex": 25,
+        "cardIndex": 3,
+        "abilityIndex": 0,
+        "path": "archives[25].cards[3].abilities[0]"
+      },
+      "servant.artoriac.skill.sc-artoriac-4#sc-artoriac-4.recon-gain-vp-and-move": {
+        "archiveId": "servant.artoriac",
+        "archiveIndex": 25,
+        "cardIndex": 3,
+        "abilityIndex": 1,
+        "path": "archives[25].cards[3].abilities[1]"
+      },
+      "servant.artoriac.skill.sc-artoriac-5": {
+        "archiveId": "servant.artoriac",
+        "archiveIndex": 25,
+        "cardIndex": 4,
+        "path": "archives[25].cards[4]"
+      },
+      "servant.artoriac.skill.sc-artoriac-5#sc-artoriac-5.unique-passive-luck-on-win": {
+        "archiveId": "servant.artoriac",
+        "archiveIndex": 25,
+        "cardIndex": 4,
+        "abilityIndex": 0,
+        "path": "archives[25].cards[4].abilities[0]"
+      },
+      "servant.artoriac.skill.sc-artoriac-5#sc-artoriac-5.gain-mana-or-vp": {
+        "archiveId": "servant.artoriac",
+        "archiveIndex": 25,
+        "cardIndex": 4,
+        "abilityIndex": 1,
+        "path": "archives[25].cards[4].abilities[1]"
+      },
+      "servant.artoriac.skill.sc-artoriac-6": {
+        "archiveId": "servant.artoriac",
+        "archiveIndex": 25,
+        "cardIndex": 5,
+        "path": "archives[25].cards[5]"
+      },
+      "servant.artoriac.skill.sc-artoriac-6#sc-artoriac-6.unique-passive-luck-on-win": {
+        "archiveId": "servant.artoriac",
+        "archiveIndex": 25,
+        "cardIndex": 5,
+        "abilityIndex": 0,
+        "path": "archives[25].cards[5].abilities[0]"
+      },
+      "servant.artoriac.skill.sc-artoriac-6#sc-artoriac-6.gain-vp-if-not-sole-winner": {
+        "archiveId": "servant.artoriac",
+        "archiveIndex": 25,
+        "cardIndex": 5,
+        "abilityIndex": 1,
+        "path": "archives[25].cards[5].abilities[1]"
+      },
+      "servant.drake.skill.sc-drake-1": {
+        "archiveId": "servant.drake",
         "archiveIndex": 26,
         "cardIndex": 0,
         "path": "archives[26].cards[0]"
       },
-      "servant.achilles.skill.sc-achilles-1#sc-achilles-1.achilles-heel": {
-        "archiveId": "servant.achilles",
+      "servant.drake.skill.sc-drake-1#sc-drake-1.draw": {
+        "archiveId": "servant.drake",
         "archiveIndex": 26,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[26].cards[0].abilities[0]"
       },
-      "servant.achilles.skill.sc-achilles-1#sc-achilles-1.gale-advance": {
-        "archiveId": "servant.achilles",
+      "servant.drake.skill.sc-drake-1#sc-drake-1.mount-summon": {
+        "archiveId": "servant.drake",
         "archiveIndex": 26,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[26].cards[0].abilities[1]"
       },
-      "servant.achilles.skill.sc-achilles-2": {
-        "archiveId": "servant.achilles",
+      "servant.drake.skill.sc-drake-2": {
+        "archiveId": "servant.drake",
         "archiveIndex": 26,
         "cardIndex": 1,
         "path": "archives[26].cards[1]"
       },
-      "servant.achilles.skill.sc-achilles-2#sc-achilles-2.blue-sky": {
-        "archiveId": "servant.achilles",
+      "servant.drake.skill.sc-drake-2#sc-drake-2.reveal": {
+        "archiveId": "servant.drake",
         "archiveIndex": 26,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[26].cards[1].abilities[0]"
       },
-      "servant.achilles.skill.sc-achilles-3": {
-        "archiveId": "servant.achilles",
+      "servant.drake.skill.sc-drake-2#sc-drake-2.reward-and-move": {
+        "archiveId": "servant.drake",
+        "archiveIndex": 26,
+        "cardIndex": 1,
+        "abilityIndex": 1,
+        "path": "archives[26].cards[1].abilities[1]"
+      },
+      "servant.drake.skill.sc-drake-3": {
+        "archiveId": "servant.drake",
         "archiveIndex": 26,
         "cardIndex": 2,
         "path": "archives[26].cards[2]"
       },
-      "servant.achilles.skill.sc-achilles-3#sc-achilles-3.hero-duel": {
-        "archiveId": "servant.achilles",
+      "servant.drake.skill.sc-drake-3#sc-drake-3.reveal": {
+        "archiveId": "servant.drake",
         "archiveIndex": 26,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[26].cards[2].abilities[0]"
       },
-      "servant.artoria-alt.skill.sc-artoria-alt-1": {
-        "archiveId": "servant.artoria-alt",
+      "servant.drake.skill.sc-drake-3#sc-drake-3.movement-power": {
+        "archiveId": "servant.drake",
+        "archiveIndex": 26,
+        "cardIndex": 2,
+        "abilityIndex": 1,
+        "path": "archives[26].cards[2].abilities[1]"
+      },
+      "servant.drake.skill.sc-drake-3#sc-drake-3.reverse-dash": {
+        "archiveId": "servant.drake",
+        "archiveIndex": 26,
+        "cardIndex": 2,
+        "abilityIndex": 2,
+        "path": "archives[26].cards[2].abilities[2]"
+      },
+      "servant.drake.skill.sc-drake-3#sc-drake-3.plunder": {
+        "archiveId": "servant.drake",
+        "archiveIndex": 26,
+        "cardIndex": 2,
+        "abilityIndex": 3,
+        "path": "archives[26].cards[2].abilities[3]"
+      },
+      "servant.achilles.skill.sc-achilles-1": {
+        "archiveId": "servant.achilles",
         "archiveIndex": 27,
         "cardIndex": 0,
         "path": "archives[27].cards[0]"
       },
-      "servant.artoria-alt.skill.sc-artoria-alt-1#sc-artoria-alt-1.true-name-release": {
-        "archiveId": "servant.artoria-alt",
+      "servant.achilles.skill.sc-achilles-1#sc-achilles-1.achilles-heel": {
+        "archiveId": "servant.achilles",
         "archiveIndex": 27,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[27].cards[0].abilities[0]"
       },
-      "servant.artoria-alt.skill.sc-artoria-alt-1#sc-artoria-alt-1.ignore-situation-restrictions": {
-        "archiveId": "servant.artoria-alt",
+      "servant.achilles.skill.sc-achilles-1#sc-achilles-1.gale-advance": {
+        "archiveId": "servant.achilles",
         "archiveIndex": 27,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[27].cards[0].abilities[1]"
       },
-      "servant.artoria-alt.skill.sc-artoria-alt-1#sc-artoria-alt-1.chain-of-wind-king": {
-        "archiveId": "servant.artoria-alt",
-        "archiveIndex": 27,
-        "cardIndex": 0,
-        "abilityIndex": 2,
-        "path": "archives[27].cards[0].abilities[2]"
-      },
-      "servant.artoria-alt.skill.sc-artoria-alt-2": {
-        "archiveId": "servant.artoria-alt",
+      "servant.achilles.skill.sc-achilles-2": {
+        "archiveId": "servant.achilles",
         "archiveIndex": 27,
         "cardIndex": 1,
         "path": "archives[27].cards[1]"
       },
-      "servant.artoria-alt.skill.sc-artoria-alt-2#sc-artoria-alt-2.low-mana-play-override": {
-        "archiveId": "servant.artoria-alt",
+      "servant.achilles.skill.sc-achilles-2#sc-achilles-2.blue-sky": {
+        "archiveId": "servant.achilles",
         "archiveIndex": 27,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[27].cards[1].abilities[0]"
       },
-      "servant.artoria-alt.skill.sc-artoria-alt-2#sc-artoria-alt-2.angra-mainyu-embrace": {
-        "archiveId": "servant.artoria-alt",
-        "archiveIndex": 27,
-        "cardIndex": 1,
-        "abilityIndex": 1,
-        "path": "archives[27].cards[1].abilities[1]"
-      },
-      "servant.artoria-alt.skill.sc-artoria-alt-2#sc-artoria-alt-2.forbid-noble-phantasm-when-low-mana": {
-        "archiveId": "servant.artoria-alt",
-        "archiveIndex": 27,
-        "cardIndex": 1,
-        "abilityIndex": 2,
-        "path": "archives[27].cards[1].abilities[2]"
-      },
-      "servant.artoria-alt.skill.sc-artoria-alt-3": {
-        "archiveId": "servant.artoria-alt",
+      "servant.achilles.skill.sc-achilles-3": {
+        "archiveId": "servant.achilles",
         "archiveIndex": 27,
         "cardIndex": 2,
         "path": "archives[27].cards[2]"
       },
-      "servant.artoria-alt.skill.sc-artoria-alt-3#sc-artoria-alt-3.noble-bloom": {
-        "archiveId": "servant.artoria-alt",
+      "servant.achilles.skill.sc-achilles-3#sc-achilles-3.hero-duel": {
+        "archiveId": "servant.achilles",
         "archiveIndex": 27,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[27].cards[2].abilities[0]"
       },
-      "servant.artoria-alt.skill.sc-artoria-alt-3#sc-artoria-alt-3.noble-bloom-extra-vp": {
+      "servant.artoria-alt.skill.sc-artoria-alt-1": {
         "archiveId": "servant.artoria-alt",
-        "archiveIndex": 27,
-        "cardIndex": 2,
-        "abilityIndex": 1,
-        "path": "archives[27].cards[2].abilities[1]"
-      },
-      "servant.artoria-alt.skill.sc-artoria-alt-3#sc-artoria-alt-3.magic-resistance": {
-        "archiveId": "servant.artoria-alt",
-        "archiveIndex": 27,
-        "cardIndex": 2,
-        "abilityIndex": 2,
-        "path": "archives[27].cards[2].abilities[2]"
-      },
-      "servant.ereshkigal.skill.sc-ereshkigal-1": {
-        "archiveId": "servant.ereshkigal",
         "archiveIndex": 28,
         "cardIndex": 0,
         "path": "archives[28].cards[0]"
       },
-      "servant.ereshkigal.skill.sc-ereshkigal-1#sc-ereshkigal-1.battle-continuation": {
-        "archiveId": "servant.ereshkigal",
+      "servant.artoria-alt.skill.sc-artoria-alt-1#sc-artoria-alt-1.true-name-release": {
+        "archiveId": "servant.artoria-alt",
         "archiveIndex": 28,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[28].cards[0].abilities[0]"
       },
-      "servant.ereshkigal.skill.sc-ereshkigal-2": {
-        "archiveId": "servant.ereshkigal",
+      "servant.artoria-alt.skill.sc-artoria-alt-1#sc-artoria-alt-1.ignore-situation-restrictions": {
+        "archiveId": "servant.artoria-alt",
+        "archiveIndex": 28,
+        "cardIndex": 0,
+        "abilityIndex": 1,
+        "path": "archives[28].cards[0].abilities[1]"
+      },
+      "servant.artoria-alt.skill.sc-artoria-alt-1#sc-artoria-alt-1.chain-of-wind-king": {
+        "archiveId": "servant.artoria-alt",
+        "archiveIndex": 28,
+        "cardIndex": 0,
+        "abilityIndex": 2,
+        "path": "archives[28].cards[0].abilities[2]"
+      },
+      "servant.artoria-alt.skill.sc-artoria-alt-2": {
+        "archiveId": "servant.artoria-alt",
         "archiveIndex": 28,
         "cardIndex": 1,
         "path": "archives[28].cards[1]"
       },
-      "servant.ereshkigal.skill.sc-ereshkigal-2#sc-ereshkigal-2.netherworld-protection": {
-        "archiveId": "servant.ereshkigal",
+      "servant.artoria-alt.skill.sc-artoria-alt-2#sc-artoria-alt-2.low-mana-play-override": {
+        "archiveId": "servant.artoria-alt",
         "archiveIndex": 28,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[28].cards[1].abilities[0]"
       },
-      "servant.ereshkigal.skill.sc-ereshkigal-2#sc-ereshkigal-2.gain-mana-on-deploy": {
-        "archiveId": "servant.ereshkigal",
+      "servant.artoria-alt.skill.sc-artoria-alt-2#sc-artoria-alt-2.angra-mainyu-embrace": {
+        "archiveId": "servant.artoria-alt",
         "archiveIndex": 28,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[28].cards[1].abilities[1]"
       },
-      "servant.ereshkigal.skill.sc-ereshkigal-2#sc-ereshkigal-2.self-exempt": {
-        "archiveId": "servant.ereshkigal",
+      "servant.artoria-alt.skill.sc-artoria-alt-2#sc-artoria-alt-2.forbid-noble-phantasm-when-low-mana": {
+        "archiveId": "servant.artoria-alt",
         "archiveIndex": 28,
         "cardIndex": 1,
         "abilityIndex": 2,
         "path": "archives[28].cards[1].abilities[2]"
       },
-      "servant.ereshkigal.skill.sc-ereshkigal-2#sc-ereshkigal-2.return-to-skill-zone": {
-        "archiveId": "servant.ereshkigal",
-        "archiveIndex": 28,
-        "cardIndex": 1,
-        "abilityIndex": 3,
-        "path": "archives[28].cards[1].abilities[3]"
-      },
-      "servant.ereshkigal.skill.sc-ereshkigal-3": {
-        "archiveId": "servant.ereshkigal",
+      "servant.artoria-alt.skill.sc-artoria-alt-3": {
+        "archiveId": "servant.artoria-alt",
         "archiveIndex": 28,
         "cardIndex": 2,
         "path": "archives[28].cards[2]"
       },
-      "servant.ereshkigal.skill.sc-ereshkigal-3#sc-ereshkigal-3.true-name-release": {
-        "archiveId": "servant.ereshkigal",
+      "servant.artoria-alt.skill.sc-artoria-alt-3#sc-artoria-alt-3.noble-bloom": {
+        "archiveId": "servant.artoria-alt",
         "archiveIndex": 28,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[28].cards[2].abilities[0]"
       },
-      "servant.ereshkigal.skill.sc-ereshkigal-3#sc-ereshkigal-3.blooming-netherworld": {
-        "archiveId": "servant.ereshkigal",
+      "servant.artoria-alt.skill.sc-artoria-alt-3#sc-artoria-alt-3.noble-bloom-extra-vp": {
+        "archiveId": "servant.artoria-alt",
         "archiveIndex": 28,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[28].cards[2].abilities[1]"
       },
-      "servant.tomoe.skill.sc-tomoe-1": {
-        "archiveId": "servant.tomoe",
+      "servant.artoria-alt.skill.sc-artoria-alt-3#sc-artoria-alt-3.magic-resistance": {
+        "archiveId": "servant.artoria-alt",
+        "archiveIndex": 28,
+        "cardIndex": 2,
+        "abilityIndex": 2,
+        "path": "archives[28].cards[2].abilities[2]"
+      },
+      "servant.ereshkigal.skill.sc-ereshkigal-1": {
+        "archiveId": "servant.ereshkigal",
         "archiveIndex": 29,
         "cardIndex": 0,
         "path": "archives[29].cards[0]"
       },
-      "servant.tomoe.skill.sc-tomoe-1#sc-tomoe-1.independent-action": {
-        "archiveId": "servant.tomoe",
+      "servant.ereshkigal.skill.sc-ereshkigal-1#sc-ereshkigal-1.battle-continuation": {
+        "archiveId": "servant.ereshkigal",
         "archiveIndex": 29,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[29].cards[0].abilities[0]"
       },
-      "servant.tomoe.skill.sc-tomoe-1#sc-tomoe-1.penalty-on-defeat": {
-        "archiveId": "servant.tomoe",
-        "archiveIndex": 29,
-        "cardIndex": 0,
-        "abilityIndex": 1,
-        "path": "archives[29].cards[0].abilities[1]"
-      },
-      "servant.tomoe.skill.sc-tomoe-2": {
-        "archiveId": "servant.tomoe",
+      "servant.ereshkigal.skill.sc-ereshkigal-2": {
+        "archiveId": "servant.ereshkigal",
         "archiveIndex": 29,
         "cardIndex": 1,
         "path": "archives[29].cards[1]"
       },
-      "servant.tomoe.skill.sc-tomoe-2#sc-tomoe-2.inferno-fire": {
-        "archiveId": "servant.tomoe",
+      "servant.ereshkigal.skill.sc-ereshkigal-2#sc-ereshkigal-2.netherworld-protection": {
+        "archiveId": "servant.ereshkigal",
         "archiveIndex": 29,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[29].cards[1].abilities[0]"
       },
-      "servant.tomoe.skill.sc-tomoe-2#sc-tomoe-2.double-terrain": {
-        "archiveId": "servant.tomoe",
+      "servant.ereshkigal.skill.sc-ereshkigal-2#sc-ereshkigal-2.gain-mana-on-deploy": {
+        "archiveId": "servant.ereshkigal",
         "archiveIndex": 29,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[29].cards[1].abilities[1]"
       },
-      "servant.tomoe.skill.sc-tomoe-3": {
-        "archiveId": "servant.tomoe",
+      "servant.ereshkigal.skill.sc-ereshkigal-2#sc-ereshkigal-2.self-exempt": {
+        "archiveId": "servant.ereshkigal",
+        "archiveIndex": 29,
+        "cardIndex": 1,
+        "abilityIndex": 2,
+        "path": "archives[29].cards[1].abilities[2]"
+      },
+      "servant.ereshkigal.skill.sc-ereshkigal-2#sc-ereshkigal-2.return-to-skill-zone": {
+        "archiveId": "servant.ereshkigal",
+        "archiveIndex": 29,
+        "cardIndex": 1,
+        "abilityIndex": 3,
+        "path": "archives[29].cards[1].abilities[3]"
+      },
+      "servant.ereshkigal.skill.sc-ereshkigal-3": {
+        "archiveId": "servant.ereshkigal",
         "archiveIndex": 29,
         "cardIndex": 2,
         "path": "archives[29].cards[2]"
       },
-      "servant.tomoe.skill.sc-tomoe-3#sc-tomoe-3.true-name-release": {
-        "archiveId": "servant.tomoe",
+      "servant.ereshkigal.skill.sc-ereshkigal-3#sc-ereshkigal-3.true-name-release": {
+        "archiveId": "servant.ereshkigal",
         "archiveIndex": 29,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[29].cards[2].abilities[0]"
       },
-      "servant.tomoe.skill.sc-tomoe-3#sc-tomoe-3.rain-of-fire": {
-        "archiveId": "servant.tomoe",
+      "servant.ereshkigal.skill.sc-ereshkigal-3#sc-ereshkigal-3.blooming-netherworld": {
+        "archiveId": "servant.ereshkigal",
         "archiveIndex": 29,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[29].cards[2].abilities[1]"
       },
-      "servant.tristan.skill.sc-tristan-1": {
-        "archiveId": "servant.tristan",
+      "servant.tomoe.skill.sc-tomoe-1": {
+        "archiveId": "servant.tomoe",
         "archiveIndex": 30,
         "cardIndex": 0,
         "path": "archives[30].cards[0]"
       },
-      "servant.tristan.skill.sc-tristan-1#sc-tristan-1.true-name-release": {
-        "archiveId": "servant.tristan",
+      "servant.tomoe.skill.sc-tomoe-1#sc-tomoe-1.independent-action": {
+        "archiveId": "servant.tomoe",
         "archiveIndex": 30,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[30].cards[0].abilities[0]"
       },
-      "servant.tristan.skill.sc-tristan-1#sc-tristan-1.lament-resonance": {
-        "archiveId": "servant.tristan",
+      "servant.tomoe.skill.sc-tomoe-1#sc-tomoe-1.penalty-on-defeat": {
+        "archiveId": "servant.tomoe",
         "archiveIndex": 30,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[30].cards[0].abilities[1]"
       },
-      "servant.tristan.skill.sc-tristan-2": {
-        "archiveId": "servant.tristan",
+      "servant.tomoe.skill.sc-tomoe-2": {
+        "archiveId": "servant.tomoe",
         "archiveIndex": 30,
         "cardIndex": 1,
         "path": "archives[30].cards[1]"
       },
-      "servant.tristan.skill.sc-tristan-2#sc-tristan-2.memory-fades": {
-        "archiveId": "servant.tristan",
+      "servant.tomoe.skill.sc-tomoe-2#sc-tomoe-2.inferno-fire": {
+        "archiveId": "servant.tomoe",
         "archiveIndex": 30,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[30].cards[1].abilities[0]"
       },
-      "servant.tristan.skill.sc-tristan-3": {
-        "archiveId": "servant.tristan",
+      "servant.tomoe.skill.sc-tomoe-2#sc-tomoe-2.double-terrain": {
+        "archiveId": "servant.tomoe",
+        "archiveIndex": 30,
+        "cardIndex": 1,
+        "abilityIndex": 1,
+        "path": "archives[30].cards[1].abilities[1]"
+      },
+      "servant.tomoe.skill.sc-tomoe-3": {
+        "archiveId": "servant.tomoe",
         "archiveIndex": 30,
         "cardIndex": 2,
         "path": "archives[30].cards[2]"
       },
-      "servant.tristan.skill.sc-tristan-3#sc-tristan-3.independent-action": {
-        "archiveId": "servant.tristan",
+      "servant.tomoe.skill.sc-tomoe-3#sc-tomoe-3.true-name-release": {
+        "archiveId": "servant.tomoe",
         "archiveIndex": 30,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[30].cards[2].abilities[0]"
       },
-      "servant.tristan.skill.sc-tristan-3#sc-tristan-3.penalty-on-defeat": {
-        "archiveId": "servant.tristan",
+      "servant.tomoe.skill.sc-tomoe-3#sc-tomoe-3.rain-of-fire": {
+        "archiveId": "servant.tomoe",
         "archiveIndex": 30,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[30].cards[2].abilities[1]"
       },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-1": {
-        "archiveId": "servant.ushiwakamaru",
+      "servant.tristan.skill.sc-tristan-1": {
+        "archiveId": "servant.tristan",
         "archiveIndex": 31,
         "cardIndex": 0,
         "path": "archives[31].cards[0]"
       },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-1#sc-ushiwakamaru-1.true-name-release": {
-        "archiveId": "servant.ushiwakamaru",
+      "servant.tristan.skill.sc-tristan-1#sc-tristan-1.true-name-release": {
+        "archiveId": "servant.tristan",
         "archiveIndex": 31,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[31].cards[0].abilities[0]"
       },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-1#sc-ushiwakamaru-1.cross-phase-action": {
-        "archiveId": "servant.ushiwakamaru",
+      "servant.tristan.skill.sc-tristan-1#sc-tristan-1.lament-resonance": {
+        "archiveId": "servant.tristan",
         "archiveIndex": 31,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[31].cards[0].abilities[1]"
       },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-1#sc-ushiwakamaru-1.whirling-slashes": {
-        "archiveId": "servant.ushiwakamaru",
-        "archiveIndex": 31,
-        "cardIndex": 0,
-        "abilityIndex": 2,
-        "path": "archives[31].cards[0].abilities[2]"
-      },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-2": {
-        "archiveId": "servant.ushiwakamaru",
+      "servant.tristan.skill.sc-tristan-2": {
+        "archiveId": "servant.tristan",
         "archiveIndex": 31,
         "cardIndex": 1,
         "path": "archives[31].cards[1]"
       },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-2#sc-ushiwakamaru-2.true-name-release": {
-        "archiveId": "servant.ushiwakamaru",
+      "servant.tristan.skill.sc-tristan-2#sc-tristan-2.memory-fades": {
+        "archiveId": "servant.tristan",
         "archiveIndex": 31,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[31].cards[1].abilities[0]"
       },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-2#sc-ushiwakamaru-2.eight-boat-leap": {
-        "archiveId": "servant.ushiwakamaru",
-        "archiveIndex": 31,
-        "cardIndex": 1,
-        "abilityIndex": 1,
-        "path": "archives[31].cards[1].abilities[1]"
-      },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-3": {
-        "archiveId": "servant.ushiwakamaru",
+      "servant.tristan.skill.sc-tristan-3": {
+        "archiveId": "servant.tristan",
         "archiveIndex": 31,
         "cardIndex": 2,
         "path": "archives[31].cards[2]"
       },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-3#sc-ushiwakamaru-3.draw": {
-        "archiveId": "servant.ushiwakamaru",
+      "servant.tristan.skill.sc-tristan-3#sc-tristan-3.independent-action": {
+        "archiveId": "servant.tristan",
         "archiveIndex": 31,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[31].cards[2].abilities[0]"
       },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-3#sc-ushiwakamaru-3.mount-summon": {
-        "archiveId": "servant.ushiwakamaru",
+      "servant.tristan.skill.sc-tristan-3#sc-tristan-3.penalty-on-defeat": {
+        "archiveId": "servant.tristan",
         "archiveIndex": 31,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[31].cards[2].abilities[1]"
       },
-      "servant.valkyrie.skill.sc-valkyrie-1": {
-        "archiveId": "servant.valkyrie",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-1": {
+        "archiveId": "servant.ushiwakamaru",
         "archiveIndex": 32,
         "cardIndex": 0,
         "path": "archives[32].cards[0]"
       },
-      "servant.valkyrie.skill.sc-valkyrie-1#sc-valkyrie-1.maiden-descent": {
-        "archiveId": "servant.valkyrie",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-1#sc-ushiwakamaru-1.true-name-release": {
+        "archiveId": "servant.ushiwakamaru",
         "archiveIndex": 32,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[32].cards[0].abilities[0]"
       },
-      "servant.valkyrie.skill.sc-valkyrie-2": {
-        "archiveId": "servant.valkyrie",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-1#sc-ushiwakamaru-1.cross-phase-action": {
+        "archiveId": "servant.ushiwakamaru",
+        "archiveIndex": 32,
+        "cardIndex": 0,
+        "abilityIndex": 1,
+        "path": "archives[32].cards[0].abilities[1]"
+      },
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-1#sc-ushiwakamaru-1.whirling-slashes": {
+        "archiveId": "servant.ushiwakamaru",
+        "archiveIndex": 32,
+        "cardIndex": 0,
+        "abilityIndex": 2,
+        "path": "archives[32].cards[0].abilities[2]"
+      },
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-2": {
+        "archiveId": "servant.ushiwakamaru",
         "archiveIndex": 32,
         "cardIndex": 1,
         "path": "archives[32].cards[1]"
       },
-      "servant.valkyrie.skill.sc-valkyrie-2#sc-valkyrie-2.forward-action": {
-        "archiveId": "servant.valkyrie",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-2#sc-ushiwakamaru-2.true-name-release": {
+        "archiveId": "servant.ushiwakamaru",
         "archiveIndex": 32,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[32].cards[1].abilities[0]"
       },
-      "servant.valkyrie.skill.sc-valkyrie-2#sc-valkyrie-2.forward-combat": {
-        "archiveId": "servant.valkyrie",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-2#sc-ushiwakamaru-2.eight-boat-leap": {
+        "archiveId": "servant.ushiwakamaru",
         "archiveIndex": 32,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[32].cards[1].abilities[1]"
       },
-      "servant.valkyrie.skill.sc-valkyrie-2#sc-valkyrie-2.steel-shield": {
-        "archiveId": "servant.valkyrie",
-        "archiveIndex": 32,
-        "cardIndex": 1,
-        "abilityIndex": 2,
-        "path": "archives[32].cards[1].abilities[2]"
-      },
-      "servant.valkyrie.skill.sc-valkyrie-3": {
-        "archiveId": "servant.valkyrie",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-3": {
+        "archiveId": "servant.ushiwakamaru",
         "archiveIndex": 32,
         "cardIndex": 2,
         "path": "archives[32].cards[2]"
       },
-      "servant.valkyrie.skill.sc-valkyrie-3#false-gungnir-retrigger-commanders": {
-        "archiveId": "servant.valkyrie",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-3#sc-ushiwakamaru-3.draw": {
+        "archiveId": "servant.ushiwakamaru",
         "archiveIndex": 32,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[32].cards[2].abilities[0]"
       },
-      "card.x-commanderortlinde": {
-        "archiveId": "servant.valkyrie",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-3#sc-ushiwakamaru-3.mount-summon": {
+        "archiveId": "servant.ushiwakamaru",
         "archiveIndex": 32,
-        "cardIndex": 3,
-        "path": "archives[32].cards[3]"
+        "cardIndex": 2,
+        "abilityIndex": 1,
+        "path": "archives[32].cards[2].abilities[1]"
       },
-      "card.x-commanderortlinde#card.x-commanderortlinde.on-play-power": {
+      "servant.valkyrie.skill.sc-valkyrie-1": {
         "archiveId": "servant.valkyrie",
-        "archiveIndex": 32,
-        "cardIndex": 3,
-        "abilityIndex": 0,
-        "path": "archives[32].cards[3].abilities[0]"
-      },
-      "card.x-commanderhildr": {
-        "archiveId": "servant.valkyrie",
-        "archiveIndex": 32,
-        "cardIndex": 4,
-        "path": "archives[32].cards[4]"
-      },
-      "card.x-commanderhildr#card.x-commanderhildr.on-play-power": {
-        "archiveId": "servant.valkyrie",
-        "archiveIndex": 32,
-        "cardIndex": 4,
-        "abilityIndex": 0,
-        "path": "archives[32].cards[4].abilities[0]"
-      },
-      "card.x-commanderthrud": {
-        "archiveId": "servant.valkyrie",
-        "archiveIndex": 32,
-        "cardIndex": 5,
-        "path": "archives[32].cards[5]"
-      },
-      "card.x-commanderthrud#card.x-commanderthrud.on-play-power": {
-        "archiveId": "servant.valkyrie",
-        "archiveIndex": 32,
-        "cardIndex": 5,
-        "abilityIndex": 0,
-        "path": "archives[32].cards[5].abilities[0]"
-      },
-      "servant.vlad.skill.sc-vlad-1": {
-        "archiveId": "servant.vlad",
         "archiveIndex": 33,
         "cardIndex": 0,
         "path": "archives[33].cards[0]"
       },
-      "servant.vlad.skill.sc-vlad-1#sc-vlad-1.terrain-doubling": {
-        "archiveId": "servant.vlad",
+      "servant.valkyrie.skill.sc-valkyrie-1#sc-valkyrie-1.maiden-descent": {
+        "archiveId": "servant.valkyrie",
         "archiveIndex": 33,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[33].cards[0].abilities[0]"
       },
-      "servant.vlad.skill.sc-vlad-1#sc-vlad-1.fortification": {
-        "archiveId": "servant.vlad",
-        "archiveIndex": 33,
-        "cardIndex": 0,
-        "abilityIndex": 1,
-        "path": "archives[33].cards[0].abilities[1]"
-      },
-      "servant.vlad.skill.sc-vlad-2": {
-        "archiveId": "servant.vlad",
+      "servant.valkyrie.skill.sc-valkyrie-2": {
+        "archiveId": "servant.valkyrie",
         "archiveIndex": 33,
         "cardIndex": 1,
         "path": "archives[33].cards[1]"
       },
-      "servant.vlad.skill.sc-vlad-2#sc-vlad-2.kazikli-bey": {
-        "archiveId": "servant.vlad",
+      "servant.valkyrie.skill.sc-valkyrie-2#sc-valkyrie-2.forward-action": {
+        "archiveId": "servant.valkyrie",
         "archiveIndex": 33,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[33].cards[1].abilities[0]"
       },
-      "servant.vlad.skill.sc-vlad-3": {
-        "archiveId": "servant.vlad",
+      "servant.valkyrie.skill.sc-valkyrie-2#sc-valkyrie-2.forward-combat": {
+        "archiveId": "servant.valkyrie",
+        "archiveIndex": 33,
+        "cardIndex": 1,
+        "abilityIndex": 1,
+        "path": "archives[33].cards[1].abilities[1]"
+      },
+      "servant.valkyrie.skill.sc-valkyrie-2#sc-valkyrie-2.steel-shield": {
+        "archiveId": "servant.valkyrie",
+        "archiveIndex": 33,
+        "cardIndex": 1,
+        "abilityIndex": 2,
+        "path": "archives[33].cards[1].abilities[2]"
+      },
+      "servant.valkyrie.skill.sc-valkyrie-3": {
+        "archiveId": "servant.valkyrie",
         "archiveIndex": 33,
         "cardIndex": 2,
         "path": "archives[33].cards[2]"
       },
-      "servant.vlad.skill.sc-vlad-3#sc-vlad-3.move": {
-        "archiveId": "servant.vlad",
+      "servant.valkyrie.skill.sc-valkyrie-3#false-gungnir-retrigger-commanders": {
+        "archiveId": "servant.valkyrie",
         "archiveIndex": 33,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[33].cards[2].abilities[0]"
       },
-      "servant.voyager.skill.sc-voyager-1": {
-        "archiveId": "servant.voyager",
+      "card.x-commanderortlinde": {
+        "archiveId": "servant.valkyrie",
+        "archiveIndex": 33,
+        "cardIndex": 3,
+        "path": "archives[33].cards[3]"
+      },
+      "card.x-commanderortlinde#card.x-commanderortlinde.on-play-power": {
+        "archiveId": "servant.valkyrie",
+        "archiveIndex": 33,
+        "cardIndex": 3,
+        "abilityIndex": 0,
+        "path": "archives[33].cards[3].abilities[0]"
+      },
+      "card.x-commanderhildr": {
+        "archiveId": "servant.valkyrie",
+        "archiveIndex": 33,
+        "cardIndex": 4,
+        "path": "archives[33].cards[4]"
+      },
+      "card.x-commanderhildr#card.x-commanderhildr.on-play-power": {
+        "archiveId": "servant.valkyrie",
+        "archiveIndex": 33,
+        "cardIndex": 4,
+        "abilityIndex": 0,
+        "path": "archives[33].cards[4].abilities[0]"
+      },
+      "card.x-commanderthrud": {
+        "archiveId": "servant.valkyrie",
+        "archiveIndex": 33,
+        "cardIndex": 5,
+        "path": "archives[33].cards[5]"
+      },
+      "card.x-commanderthrud#card.x-commanderthrud.on-play-power": {
+        "archiveId": "servant.valkyrie",
+        "archiveIndex": 33,
+        "cardIndex": 5,
+        "abilityIndex": 0,
+        "path": "archives[33].cards[5].abilities[0]"
+      },
+      "servant.vlad.skill.sc-vlad-1": {
+        "archiveId": "servant.vlad",
         "archiveIndex": 34,
         "cardIndex": 0,
         "path": "archives[34].cards[0]"
       },
-      "servant.voyager.skill.sc-voyager-1#sc-voyager-1.voices-of-stars": {
-        "archiveId": "servant.voyager",
+      "servant.vlad.skill.sc-vlad-1#sc-vlad-1.terrain-doubling": {
+        "archiveId": "servant.vlad",
         "archiveIndex": 34,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[34].cards[0].abilities[0]"
       },
-      "servant.voyager.skill.sc-voyager-1#sc-voyager-1.hope-reveal": {
-        "archiveId": "servant.voyager",
+      "servant.vlad.skill.sc-vlad-1#sc-vlad-1.fortification": {
+        "archiveId": "servant.vlad",
         "archiveIndex": 34,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[34].cards[0].abilities[1]"
       },
-      "servant.voyager.skill.sc-voyager-2": {
-        "archiveId": "servant.voyager",
+      "servant.vlad.skill.sc-vlad-2": {
+        "archiveId": "servant.vlad",
         "archiveIndex": 34,
         "cardIndex": 1,
         "path": "archives[34].cards[1]"
       },
-      "servant.voyager.skill.sc-voyager-2#sc-voyager-2.peace-action": {
-        "archiveId": "servant.voyager",
+      "servant.vlad.skill.sc-vlad-2#sc-vlad-2.kazikli-bey": {
+        "archiveId": "servant.vlad",
         "archiveIndex": 34,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[34].cards[1].abilities[0]"
       },
-      "servant.voyager.skill.sc-voyager-2#sc-voyager-2.peace-combat": {
-        "archiveId": "servant.voyager",
-        "archiveIndex": 34,
-        "cardIndex": 1,
-        "abilityIndex": 1,
-        "path": "archives[34].cards[1].abilities[1]"
-      },
-      "servant.voyager.skill.sc-voyager-3": {
-        "archiveId": "servant.voyager",
+      "servant.vlad.skill.sc-vlad-3": {
+        "archiveId": "servant.vlad",
         "archiveIndex": 34,
         "cardIndex": 2,
         "path": "archives[34].cards[2]"
       },
-      "servant.voyager.skill.sc-voyager-3#sc-voyager-3.pale-blue-dot": {
-        "archiveId": "servant.voyager",
+      "servant.vlad.skill.sc-vlad-3#sc-vlad-3.move": {
+        "archiveId": "servant.vlad",
         "archiveIndex": 34,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[34].cards[2].abilities[0]"
       },
-      "servant.voyager.skill.sc-voyager-4": {
+      "servant.voyager.skill.sc-voyager-1": {
         "archiveId": "servant.voyager",
-        "archiveIndex": 34,
-        "cardIndex": 3,
-        "path": "archives[34].cards[3]"
-      },
-      "servant.voyager.skill.sc-voyager-4#sc-voyager-4.outer-god-life-power": {
-        "archiveId": "servant.voyager",
-        "archiveIndex": 34,
-        "cardIndex": 3,
-        "abilityIndex": 0,
-        "path": "archives[34].cards[3].abilities[0]"
-      },
-      "servant.voyager.skill.sc-voyager-4#sc-voyager-4.outer-god-life-return": {
-        "archiveId": "servant.voyager",
-        "archiveIndex": 34,
-        "cardIndex": 3,
-        "abilityIndex": 1,
-        "path": "archives[34].cards[3].abilities[1]"
-      },
-      "servant.xiangyu.skill.sc-xiangyu-1": {
-        "archiveId": "servant.xiangyu",
         "archiveIndex": 35,
         "cardIndex": 0,
         "path": "archives[35].cards[0]"
       },
-      "servant.xiangyu.skill.sc-xiangyu-1#sc-xiangyu-1.arm-matrix": {
-        "archiveId": "servant.xiangyu",
+      "servant.voyager.skill.sc-voyager-1#sc-voyager-1.voices-of-stars": {
+        "archiveId": "servant.voyager",
         "archiveIndex": 35,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[35].cards[0].abilities[0]"
       },
-      "servant.xiangyu.skill.sc-xiangyu-1#sc-xiangyu-1.battle-end-decay": {
-        "archiveId": "servant.xiangyu",
+      "servant.voyager.skill.sc-voyager-1#sc-voyager-1.hope-reveal": {
+        "archiveId": "servant.voyager",
         "archiveIndex": 35,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[35].cards[0].abilities[1]"
       },
-      "servant.xiangyu.skill.sc-xiangyu-2": {
-        "archiveId": "servant.xiangyu",
+      "servant.voyager.skill.sc-voyager-2": {
+        "archiveId": "servant.voyager",
         "archiveIndex": 35,
         "cardIndex": 1,
         "path": "archives[35].cards[1]"
       },
-      "servant.xiangyu.skill.sc-xiangyu-2#sc-xiangyu-2.backward-one": {
-        "archiveId": "servant.xiangyu",
+      "servant.voyager.skill.sc-voyager-2#sc-voyager-2.peace-action": {
+        "archiveId": "servant.voyager",
         "archiveIndex": 35,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[35].cards[1].abilities[0]"
       },
-      "servant.xiangyu.skill.sc-xiangyu-2#sc-xiangyu-2.forward-one": {
-        "archiveId": "servant.xiangyu",
+      "servant.voyager.skill.sc-voyager-2#sc-voyager-2.peace-combat": {
+        "archiveId": "servant.voyager",
         "archiveIndex": 35,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[35].cards[1].abilities[1]"
       },
-      "servant.xiangyu.skill.sc-xiangyu-2#sc-xiangyu-2.play-top": {
-        "archiveId": "servant.xiangyu",
-        "archiveIndex": 35,
-        "cardIndex": 1,
-        "abilityIndex": 2,
-        "path": "archives[35].cards[1].abilities[2]"
-      },
-      "servant.xiangyu.skill.sc-xiangyu-2#sc-xiangyu-2.play-hand-free": {
-        "archiveId": "servant.xiangyu",
-        "archiveIndex": 35,
-        "cardIndex": 1,
-        "abilityIndex": 3,
-        "path": "archives[35].cards[1].abilities[3]"
-      },
-      "servant.xiangyu.skill.sc-xiangyu-3": {
-        "archiveId": "servant.xiangyu",
+      "servant.voyager.skill.sc-voyager-3": {
+        "archiveId": "servant.voyager",
         "archiveIndex": 35,
         "cardIndex": 2,
         "path": "archives[35].cards[2]"
       },
-      "servant.xiangyu.skill.sc-xiangyu-3#sc-xiangyu-3.gain-reaction": {
-        "archiveId": "servant.xiangyu",
+      "servant.voyager.skill.sc-voyager-3#sc-voyager-3.pale-blue-dot": {
+        "archiveId": "servant.voyager",
         "archiveIndex": 35,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[35].cards[2].abilities[0]"
       },
-      "servant.xiangyu.skill.sc-xiangyu-3#sc-xiangyu-3.unstoppable-force": {
-        "archiveId": "servant.xiangyu",
+      "servant.voyager.skill.sc-voyager-4": {
+        "archiveId": "servant.voyager",
         "archiveIndex": 35,
-        "cardIndex": 2,
-        "abilityIndex": 1,
-        "path": "archives[35].cards[2].abilities[1]"
+        "cardIndex": 3,
+        "path": "archives[35].cards[3]"
       },
-      "servant.kintoki.skill.sc-kintoki-1": {
-        "archiveId": "servant.kintoki",
+      "servant.voyager.skill.sc-voyager-4#sc-voyager-4.outer-god-life-power": {
+        "archiveId": "servant.voyager",
+        "archiveIndex": 35,
+        "cardIndex": 3,
+        "abilityIndex": 0,
+        "path": "archives[35].cards[3].abilities[0]"
+      },
+      "servant.voyager.skill.sc-voyager-4#sc-voyager-4.outer-god-life-return": {
+        "archiveId": "servant.voyager",
+        "archiveIndex": 35,
+        "cardIndex": 3,
+        "abilityIndex": 1,
+        "path": "archives[35].cards[3].abilities[1]"
+      },
+      "servant.xiangyu.skill.sc-xiangyu-1": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 36,
         "cardIndex": 0,
         "path": "archives[36].cards[0]"
       },
-      "servant.kintoki.skill.sc-kintoki-1#sc-kintoki-1.true-name-release": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-1#sc-xiangyu-1.arm-matrix": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 36,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[36].cards[0].abilities[0]"
       },
-      "servant.kintoki.skill.sc-kintoki-1#sc-kintoki-1.ignore-skill-zone-mana-requirement": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-1#sc-xiangyu-1.battle-end-decay": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 36,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[36].cards[0].abilities[1]"
       },
-      "servant.kintoki.skill.sc-kintoki-1#sc-kintoki-1.ignore-situation-play-forbid": {
-        "archiveId": "servant.kintoki",
-        "archiveIndex": 36,
-        "cardIndex": 0,
-        "abilityIndex": 2,
-        "path": "archives[36].cards[0].abilities[2]"
-      },
-      "servant.kintoki.skill.sc-kintoki-1#sc-kintoki-1.once-per-game": {
-        "archiveId": "servant.kintoki",
-        "archiveIndex": 36,
-        "cardIndex": 0,
-        "abilityIndex": 3,
-        "path": "archives[36].cards[0].abilities[3]"
-      },
-      "servant.kintoki.skill.sc-kintoki-2": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-2": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 36,
         "cardIndex": 1,
         "path": "archives[36].cards[1]"
       },
-      "servant.kintoki.skill.sc-kintoki-2#sc-kintoki-2.true-name-release": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-2#sc-xiangyu-2.backward-one": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 36,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[36].cards[1].abilities[0]"
       },
-      "servant.kintoki.skill.sc-kintoki-2#sc-kintoki-2.ignore-skill-zone-mana-requirement": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-2#sc-xiangyu-2.forward-one": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 36,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[36].cards[1].abilities[1]"
       },
-      "servant.kintoki.skill.sc-kintoki-2#sc-kintoki-2.ignore-situation-play-forbid": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-2#sc-xiangyu-2.play-top": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 36,
         "cardIndex": 1,
         "abilityIndex": 2,
         "path": "archives[36].cards[1].abilities[2]"
       },
-      "servant.kintoki.skill.sc-kintoki-2#sc-kintoki-2.once-per-game": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-2#sc-xiangyu-2.play-hand-free": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 36,
         "cardIndex": 1,
         "abilityIndex": 3,
         "path": "archives[36].cards[1].abilities[3]"
       },
-      "servant.kintoki.skill.sc-kintoki-3": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-3": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 36,
         "cardIndex": 2,
         "path": "archives[36].cards[2]"
       },
-      "servant.kintoki.skill.sc-kintoki-3#sc-kintoki-3.true-name-release": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-3#sc-xiangyu-3.gain-reaction": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 36,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[36].cards[2].abilities[0]"
       },
-      "servant.kintoki.skill.sc-kintoki-3#sc-kintoki-3.golden-eater": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-3#sc-xiangyu-3.unstoppable-force": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 36,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[36].cards[2].abilities[1]"
       },
-      "servant.mash.skill.sc-mash-1": {
-        "archiveId": "servant.mash",
+      "servant.kintoki.skill.sc-kintoki-1": {
+        "archiveId": "servant.kintoki",
         "archiveIndex": 37,
         "cardIndex": 0,
         "path": "archives[37].cards[0]"
       },
-      "servant.mash.skill.sc-mash-1#distant-utopia-terrain": {
-        "archiveId": "servant.mash",
+      "servant.kintoki.skill.sc-kintoki-1#sc-kintoki-1.true-name-release": {
+        "archiveId": "servant.kintoki",
         "archiveIndex": 37,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[37].cards[0].abilities[0]"
       },
-      "servant.mash.skill.sc-mash-2": {
-        "archiveId": "servant.mash",
+      "servant.kintoki.skill.sc-kintoki-1#sc-kintoki-1.ignore-skill-zone-mana-requirement": {
+        "archiveId": "servant.kintoki",
+        "archiveIndex": 37,
+        "cardIndex": 0,
+        "abilityIndex": 1,
+        "path": "archives[37].cards[0].abilities[1]"
+      },
+      "servant.kintoki.skill.sc-kintoki-1#sc-kintoki-1.ignore-situation-play-forbid": {
+        "archiveId": "servant.kintoki",
+        "archiveIndex": 37,
+        "cardIndex": 0,
+        "abilityIndex": 2,
+        "path": "archives[37].cards[0].abilities[2]"
+      },
+      "servant.kintoki.skill.sc-kintoki-1#sc-kintoki-1.once-per-game": {
+        "archiveId": "servant.kintoki",
+        "archiveIndex": 37,
+        "cardIndex": 0,
+        "abilityIndex": 3,
+        "path": "archives[37].cards[0].abilities[3]"
+      },
+      "servant.kintoki.skill.sc-kintoki-2": {
+        "archiveId": "servant.kintoki",
         "archiveIndex": 37,
         "cardIndex": 1,
         "path": "archives[37].cards[1]"
       },
-      "servant.mash.skill.sc-mash-2#snowflake-wall-attack-reduction": {
-        "archiveId": "servant.mash",
+      "servant.kintoki.skill.sc-kintoki-2#sc-kintoki-2.true-name-release": {
+        "archiveId": "servant.kintoki",
         "archiveIndex": 37,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[37].cards[1].abilities[0]"
       },
-      "servant.mash.skill.sc-mash-3": {
-        "archiveId": "servant.mash",
+      "servant.kintoki.skill.sc-kintoki-2#sc-kintoki-2.ignore-skill-zone-mana-requirement": {
+        "archiveId": "servant.kintoki",
+        "archiveIndex": 37,
+        "cardIndex": 1,
+        "abilityIndex": 1,
+        "path": "archives[37].cards[1].abilities[1]"
+      },
+      "servant.kintoki.skill.sc-kintoki-2#sc-kintoki-2.ignore-situation-play-forbid": {
+        "archiveId": "servant.kintoki",
+        "archiveIndex": 37,
+        "cardIndex": 1,
+        "abilityIndex": 2,
+        "path": "archives[37].cards[1].abilities[2]"
+      },
+      "servant.kintoki.skill.sc-kintoki-2#sc-kintoki-2.once-per-game": {
+        "archiveId": "servant.kintoki",
+        "archiveIndex": 37,
+        "cardIndex": 1,
+        "abilityIndex": 3,
+        "path": "archives[37].cards[1].abilities[3]"
+      },
+      "servant.kintoki.skill.sc-kintoki-3": {
+        "archiveId": "servant.kintoki",
         "archiveIndex": 37,
         "cardIndex": 2,
         "path": "archives[37].cards[2]"
       },
-      "servant.mash.skill.sc-mash-3#ortenaus-continuous-rule": {
-        "archiveId": "servant.mash",
+      "servant.kintoki.skill.sc-kintoki-3#sc-kintoki-3.true-name-release": {
+        "archiveId": "servant.kintoki",
         "archiveIndex": 37,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[37].cards[2].abilities[0]"
       },
-      "servant.mash.skill.sc-mash-3#ortenaus-game-start-hide": {
-        "archiveId": "servant.mash",
+      "servant.kintoki.skill.sc-kintoki-3#sc-kintoki-3.golden-eater": {
+        "archiveId": "servant.kintoki",
         "archiveIndex": 37,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[37].cards[2].abilities[1]"
       },
-      "servant.mash.skill.sc-mash-3#ortenaus-empty-seals-hide": {
+      "servant.mash.skill.sc-mash-1": {
         "archiveId": "servant.mash",
-        "archiveIndex": 37,
-        "cardIndex": 2,
-        "abilityIndex": 2,
-        "path": "archives[37].cards[2].abilities[2]"
-      },
-      "servant.mash.skill.sc-mash-4": {
-        "archiveId": "servant.mash",
-        "archiveIndex": 37,
-        "cardIndex": 3,
-        "path": "archives[37].cards[3]"
-      },
-      "servant.mash.skill.sc-mash-4#guard-catalogue-marker": {
-        "archiveId": "servant.mash",
-        "archiveIndex": 37,
-        "cardIndex": 3,
-        "abilityIndex": 0,
-        "path": "archives[37].cards[3].abilities[0]"
-      },
-      "card.x-guard": {
-        "archiveId": "servant.mash",
-        "archiveIndex": 37,
-        "cardIndex": 4,
-        "path": "archives[37].cards[4]"
-      },
-      "card.x-guard#lend-linked-owner-card": {
-        "archiveId": "servant.mash",
-        "archiveIndex": 37,
-        "cardIndex": 4,
-        "abilityIndex": 0,
-        "path": "archives[37].cards[4].abilities[0]"
-      },
-      "card.x-guard#linked-owner-combat-rule": {
-        "archiveId": "servant.mash",
-        "archiveIndex": 37,
-        "cardIndex": 4,
-        "abilityIndex": 1,
-        "path": "archives[37].cards[4].abilities[1]"
-      },
-      "servant.sherlock.skill.sc-sherlock-1": {
-        "archiveId": "servant.sherlock",
         "archiveIndex": 38,
         "cardIndex": 0,
         "path": "archives[38].cards[0]"
       },
-      "servant.sherlock.skill.sc-sherlock-1#sc-sherlock-1.elementary": {
-        "archiveId": "servant.sherlock",
+      "servant.mash.skill.sc-mash-1#distant-utopia-terrain": {
+        "archiveId": "servant.mash",
         "archiveIndex": 38,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[38].cards[0].abilities[0]"
       },
-      "servant.sherlock.skill.sc-sherlock-2": {
-        "archiveId": "servant.sherlock",
+      "servant.mash.skill.sc-mash-2": {
+        "archiveId": "servant.mash",
         "archiveIndex": 38,
         "cardIndex": 1,
         "path": "archives[38].cards[1]"
       },
-      "servant.sherlock.skill.sc-sherlock-2#sc-sherlock-2.dynamic-cost": {
-        "archiveId": "servant.sherlock",
+      "servant.mash.skill.sc-mash-2#snowflake-wall-attack-reduction": {
+        "archiveId": "servant.mash",
         "archiveIndex": 38,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[38].cards[1].abilities[0]"
       },
-      "servant.sherlock.skill.sc-sherlock-2#sc-sherlock-2.workshop-residual": {
-        "archiveId": "servant.sherlock",
-        "archiveIndex": 38,
-        "cardIndex": 1,
-        "abilityIndex": 1,
-        "path": "archives[38].cards[1].abilities[1]"
-      },
-      "servant.sherlock.skill.sc-sherlock-2#sc-sherlock-2.memory-palace": {
-        "archiveId": "servant.sherlock",
-        "archiveIndex": 38,
-        "cardIndex": 1,
-        "abilityIndex": 2,
-        "path": "archives[38].cards[1].abilities[2]"
-      },
-      "servant.sherlock.skill.sc-sherlock-3": {
-        "archiveId": "servant.sherlock",
+      "servant.mash.skill.sc-mash-3": {
+        "archiveId": "servant.mash",
         "archiveIndex": 38,
         "cardIndex": 2,
         "path": "archives[38].cards[2]"
       },
-      "servant.sherlock.skill.sc-sherlock-3#sc-sherlock-3.trigger": {
-        "archiveId": "servant.sherlock",
+      "servant.mash.skill.sc-mash-3#ortenaus-continuous-rule": {
+        "archiveId": "servant.mash",
         "archiveIndex": 38,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[38].cards[2].abilities[0]"
       },
-      "servant.sherlock.skill.sc-sherlock-3#sc-sherlock-3.expire": {
-        "archiveId": "servant.sherlock",
+      "servant.mash.skill.sc-mash-3#ortenaus-game-start-hide": {
+        "archiveId": "servant.mash",
         "archiveIndex": 38,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[38].cards[2].abilities[1]"
       },
-      "servant.sherlock.skill.sc-sherlock-4": {
-        "archiveId": "servant.sherlock",
+      "servant.mash.skill.sc-mash-3#ortenaus-empty-seals-hide": {
+        "archiveId": "servant.mash",
+        "archiveIndex": 38,
+        "cardIndex": 2,
+        "abilityIndex": 2,
+        "path": "archives[38].cards[2].abilities[2]"
+      },
+      "servant.mash.skill.sc-mash-4": {
+        "archiveId": "servant.mash",
         "archiveIndex": 38,
         "cardIndex": 3,
         "path": "archives[38].cards[3]"
       },
-      "servant.sherlock.skill.sc-sherlock-4#sc-sherlock-4.deduction-record": {
-        "archiveId": "servant.sherlock",
+      "servant.mash.skill.sc-mash-4#guard-catalogue-marker": {
+        "archiveId": "servant.mash",
         "archiveIndex": 38,
         "cardIndex": 3,
         "abilityIndex": 0,
         "path": "archives[38].cards[3].abilities[0]"
       },
-      "servant.sherlock.skill.sc-sherlock-5": {
-        "archiveId": "servant.sherlock",
+      "card.x-guard": {
+        "archiveId": "servant.mash",
         "archiveIndex": 38,
         "cardIndex": 4,
         "path": "archives[38].cards[4]"
       },
-      "servant.sherlock.skill.sc-sherlock-5#sc-sherlock-5.deduction-record": {
-        "archiveId": "servant.sherlock",
+      "card.x-guard#lend-linked-owner-card": {
+        "archiveId": "servant.mash",
         "archiveIndex": 38,
         "cardIndex": 4,
         "abilityIndex": 0,
         "path": "archives[38].cards[4].abilities[0]"
       },
-      "servant.sherlock.skill.sc-sherlock-6": {
-        "archiveId": "servant.sherlock",
+      "card.x-guard#linked-owner-combat-rule": {
+        "archiveId": "servant.mash",
         "archiveIndex": 38,
-        "cardIndex": 5,
-        "path": "archives[38].cards[5]"
+        "cardIndex": 4,
+        "abilityIndex": 1,
+        "path": "archives[38].cards[4].abilities[1]"
       },
-      "servant.sherlock.skill.sc-sherlock-6#sc-sherlock-6.deduction-record": {
+      "servant.sherlock.skill.sc-sherlock-1": {
         "archiveId": "servant.sherlock",
-        "archiveIndex": 38,
-        "cardIndex": 5,
-        "abilityIndex": 0,
-        "path": "archives[38].cards[5].abilities[0]"
-      },
-      "servant.sherlock.skill.sc-sherlock-7": {
-        "archiveId": "servant.sherlock",
-        "archiveIndex": 38,
-        "cardIndex": 6,
-        "path": "archives[38].cards[6]"
-      },
-      "servant.sherlock.skill.sc-sherlock-7#sc-sherlock-7.deduction-record": {
-        "archiveId": "servant.sherlock",
-        "archiveIndex": 38,
-        "cardIndex": 6,
-        "abilityIndex": 0,
-        "path": "archives[38].cards[6].abilities[0]"
-      },
-      "servant.shuten.skill.sc-shuten-1": {
-        "archiveId": "servant.shuten",
         "archiveIndex": 39,
         "cardIndex": 0,
         "path": "archives[39].cards[0]"
       },
-      "servant.shuten.skill.sc-shuten-1#sc-shuten-1.place-banquet": {
-        "archiveId": "servant.shuten",
+      "servant.sherlock.skill.sc-sherlock-1#sc-sherlock-1.elementary": {
+        "archiveId": "servant.sherlock",
         "archiveIndex": 39,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[39].cards[0].abilities[0]"
       },
-      "servant.shuten.skill.sc-shuten-1#sc-shuten-1.cost-aura": {
-        "archiveId": "servant.shuten",
-        "archiveIndex": 39,
-        "cardIndex": 0,
-        "abilityIndex": 1,
-        "path": "archives[39].cards[0].abilities[1]"
-      },
-      "servant.shuten.skill.sc-shuten-1#sc-shuten-1.battle-end-vp": {
-        "archiveId": "servant.shuten",
-        "archiveIndex": 39,
-        "cardIndex": 0,
-        "abilityIndex": 2,
-        "path": "archives[39].cards[0].abilities[2]"
-      },
-      "servant.shuten.skill.sc-shuten-1#sc-shuten-1.round-cleanup": {
-        "archiveId": "servant.shuten",
-        "archiveIndex": 39,
-        "cardIndex": 0,
-        "abilityIndex": 3,
-        "path": "archives[39].cards[0].abilities[3]"
-      },
-      "servant.shuten.skill.sc-shuten-2": {
-        "archiveId": "servant.shuten",
+      "servant.sherlock.skill.sc-sherlock-2": {
+        "archiveId": "servant.sherlock",
         "archiveIndex": 39,
         "cardIndex": 1,
         "path": "archives[39].cards[1]"
       },
-      "servant.shuten.skill.sc-shuten-2#sc-shuten-2.required-additional-play": {
-        "archiveId": "servant.shuten",
+      "servant.sherlock.skill.sc-sherlock-2#sc-sherlock-2.dynamic-cost": {
+        "archiveId": "servant.sherlock",
         "archiveIndex": 39,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[39].cards[1].abilities[0]"
       },
-      "servant.shuten.skill.sc-shuten-2#sc-shuten-2.ignore-eight-mana": {
-        "archiveId": "servant.shuten",
+      "servant.sherlock.skill.sc-sherlock-2#sc-sherlock-2.workshop-residual": {
+        "archiveId": "servant.sherlock",
         "archiveIndex": 39,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[39].cards[1].abilities[1]"
       },
-      "servant.shuten.skill.sc-shuten-2#sc-shuten-2.delirium": {
-        "archiveId": "servant.shuten",
+      "servant.sherlock.skill.sc-sherlock-2#sc-sherlock-2.memory-palace": {
+        "archiveId": "servant.sherlock",
         "archiveIndex": 39,
         "cardIndex": 1,
         "abilityIndex": 2,
         "path": "archives[39].cards[1].abilities[2]"
       },
-      "servant.shuten.skill.sc-shuten-3": {
-        "archiveId": "servant.shuten",
+      "servant.sherlock.skill.sc-sherlock-3": {
+        "archiveId": "servant.sherlock",
         "archiveIndex": 39,
         "cardIndex": 2,
         "path": "archives[39].cards[2]"
       },
-      "servant.shuten.skill.sc-shuten-3#sc-shuten-3.true-name-release": {
-        "archiveId": "servant.shuten",
+      "servant.sherlock.skill.sc-sherlock-3#sc-sherlock-3.trigger": {
+        "archiveId": "servant.sherlock",
         "archiveIndex": 39,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[39].cards[2].abilities[0]"
       },
-      "servant.shuten.skill.sc-shuten-3#sc-shuten-3.bone-collector": {
-        "archiveId": "servant.shuten",
+      "servant.sherlock.skill.sc-sherlock-3#sc-sherlock-3.expire": {
+        "archiveId": "servant.sherlock",
         "archiveIndex": 39,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[39].cards[2].abilities[1]"
       },
-      "servant.siegfried.skill.sc-siegfried-1": {
-        "archiveId": "servant.siegfried",
+      "servant.sherlock.skill.sc-sherlock-4": {
+        "archiveId": "servant.sherlock",
+        "archiveIndex": 39,
+        "cardIndex": 3,
+        "path": "archives[39].cards[3]"
+      },
+      "servant.sherlock.skill.sc-sherlock-4#sc-sherlock-4.deduction-record": {
+        "archiveId": "servant.sherlock",
+        "archiveIndex": 39,
+        "cardIndex": 3,
+        "abilityIndex": 0,
+        "path": "archives[39].cards[3].abilities[0]"
+      },
+      "servant.sherlock.skill.sc-sherlock-5": {
+        "archiveId": "servant.sherlock",
+        "archiveIndex": 39,
+        "cardIndex": 4,
+        "path": "archives[39].cards[4]"
+      },
+      "servant.sherlock.skill.sc-sherlock-5#sc-sherlock-5.deduction-record": {
+        "archiveId": "servant.sherlock",
+        "archiveIndex": 39,
+        "cardIndex": 4,
+        "abilityIndex": 0,
+        "path": "archives[39].cards[4].abilities[0]"
+      },
+      "servant.sherlock.skill.sc-sherlock-6": {
+        "archiveId": "servant.sherlock",
+        "archiveIndex": 39,
+        "cardIndex": 5,
+        "path": "archives[39].cards[5]"
+      },
+      "servant.sherlock.skill.sc-sherlock-6#sc-sherlock-6.deduction-record": {
+        "archiveId": "servant.sherlock",
+        "archiveIndex": 39,
+        "cardIndex": 5,
+        "abilityIndex": 0,
+        "path": "archives[39].cards[5].abilities[0]"
+      },
+      "servant.sherlock.skill.sc-sherlock-7": {
+        "archiveId": "servant.sherlock",
+        "archiveIndex": 39,
+        "cardIndex": 6,
+        "path": "archives[39].cards[6]"
+      },
+      "servant.sherlock.skill.sc-sherlock-7#sc-sherlock-7.deduction-record": {
+        "archiveId": "servant.sherlock",
+        "archiveIndex": 39,
+        "cardIndex": 6,
+        "abilityIndex": 0,
+        "path": "archives[39].cards[6].abilities[0]"
+      },
+      "servant.shuten.skill.sc-shuten-1": {
+        "archiveId": "servant.shuten",
         "archiveIndex": 40,
         "cardIndex": 0,
         "path": "archives[40].cards[0]"
       },
-      "servant.siegfried.skill.sc-siegfried-1#sc-siegfried-1.play-vp-loss": {
-        "archiveId": "servant.siegfried",
+      "servant.shuten.skill.sc-shuten-1#sc-shuten-1.place-banquet": {
+        "archiveId": "servant.shuten",
         "archiveIndex": 40,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[40].cards[0].abilities[0]"
       },
-      "servant.siegfried.skill.sc-siegfried-1#sc-siegfried-1.invisibility-cloak": {
-        "archiveId": "servant.siegfried",
+      "servant.shuten.skill.sc-shuten-1#sc-shuten-1.cost-aura": {
+        "archiveId": "servant.shuten",
         "archiveIndex": 40,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[40].cards[0].abilities[1]"
       },
-      "servant.siegfried.skill.sc-siegfried-2": {
-        "archiveId": "servant.siegfried",
+      "servant.shuten.skill.sc-shuten-1#sc-shuten-1.battle-end-vp": {
+        "archiveId": "servant.shuten",
+        "archiveIndex": 40,
+        "cardIndex": 0,
+        "abilityIndex": 2,
+        "path": "archives[40].cards[0].abilities[2]"
+      },
+      "servant.shuten.skill.sc-shuten-1#sc-shuten-1.round-cleanup": {
+        "archiveId": "servant.shuten",
+        "archiveIndex": 40,
+        "cardIndex": 0,
+        "abilityIndex": 3,
+        "path": "archives[40].cards[0].abilities[3]"
+      },
+      "servant.shuten.skill.sc-shuten-2": {
+        "archiveId": "servant.shuten",
         "archiveIndex": 40,
         "cardIndex": 1,
         "path": "archives[40].cards[1]"
       },
-      "servant.siegfried.skill.sc-siegfried-2#sc-siegfried-2.true-name-release": {
-        "archiveId": "servant.siegfried",
+      "servant.shuten.skill.sc-shuten-2#sc-shuten-2.required-additional-play": {
+        "archiveId": "servant.shuten",
         "archiveIndex": 40,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[40].cards[1].abilities[0]"
       },
-      "servant.siegfried.skill.sc-siegfried-2#sc-siegfried-2.armor-of-fafnir": {
-        "archiveId": "servant.siegfried",
+      "servant.shuten.skill.sc-shuten-2#sc-shuten-2.ignore-eight-mana": {
+        "archiveId": "servant.shuten",
         "archiveIndex": 40,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[40].cards[1].abilities[1]"
       },
-      "servant.siegfried.skill.sc-siegfried-3": {
-        "archiveId": "servant.siegfried",
+      "servant.shuten.skill.sc-shuten-2#sc-shuten-2.delirium": {
+        "archiveId": "servant.shuten",
+        "archiveIndex": 40,
+        "cardIndex": 1,
+        "abilityIndex": 2,
+        "path": "archives[40].cards[1].abilities[2]"
+      },
+      "servant.shuten.skill.sc-shuten-3": {
+        "archiveId": "servant.shuten",
         "archiveIndex": 40,
         "cardIndex": 2,
         "path": "archives[40].cards[2]"
       },
-      "servant.siegfried.skill.sc-siegfried-3#sc-siegfried-3.true-name-release": {
-        "archiveId": "servant.siegfried",
+      "servant.shuten.skill.sc-shuten-3#sc-shuten-3.true-name-release": {
+        "archiveId": "servant.shuten",
         "archiveIndex": 40,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[40].cards[2].abilities[0]"
       },
-      "servant.siegfried.skill.sc-siegfried-3#sc-siegfried-3.reveal-hand-power": {
-        "archiveId": "servant.siegfried",
+      "servant.shuten.skill.sc-shuten-3#sc-shuten-3.bone-collector": {
+        "archiveId": "servant.shuten",
         "archiveIndex": 40,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[40].cards[2].abilities[1]"
       },
-      "servant.sigurd.skill.sc-sigurd-1": {
-        "archiveId": "servant.sigurd",
+      "servant.siegfried.skill.sc-siegfried-1": {
+        "archiveId": "servant.siegfried",
         "archiveIndex": 41,
         "cardIndex": 0,
         "path": "archives[41].cards[0]"
       },
-      "servant.sigurd.skill.sc-sigurd-1#sc-sigurd-1.true-name-release": {
-        "archiveId": "servant.sigurd",
+      "servant.siegfried.skill.sc-siegfried-1#sc-siegfried-1.play-vp-loss": {
+        "archiveId": "servant.siegfried",
         "archiveIndex": 41,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[41].cards[0].abilities[0]"
       },
-      "servant.sigurd.skill.sc-sigurd-1#sc-sigurd-1.curse": {
-        "archiveId": "servant.sigurd",
+      "servant.siegfried.skill.sc-siegfried-1#sc-siegfried-1.invisibility-cloak": {
+        "archiveId": "servant.siegfried",
         "archiveIndex": 41,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[41].cards[0].abilities[1]"
       },
-      "servant.sigurd.skill.sc-sigurd-1#sc-sigurd-1.after-battle-refund": {
-        "archiveId": "servant.sigurd",
-        "archiveIndex": 41,
-        "cardIndex": 0,
-        "abilityIndex": 2,
-        "path": "archives[41].cards[0].abilities[2]"
-      },
-      "servant.sigurd.skill.sc-sigurd-2": {
-        "archiveId": "servant.sigurd",
+      "servant.siegfried.skill.sc-siegfried-2": {
+        "archiveId": "servant.siegfried",
         "archiveIndex": 41,
         "cardIndex": 1,
         "path": "archives[41].cards[1]"
       },
-      "servant.sigurd.skill.sc-sigurd-2#sc-sigurd-2.curse": {
-        "archiveId": "servant.sigurd",
+      "servant.siegfried.skill.sc-siegfried-2#sc-siegfried-2.true-name-release": {
+        "archiveId": "servant.siegfried",
         "archiveIndex": 41,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[41].cards[1].abilities[0]"
       },
-      "servant.sigurd.skill.sc-sigurd-2#sc-sigurd-2.blade-storm": {
-        "archiveId": "servant.sigurd",
+      "servant.siegfried.skill.sc-siegfried-2#sc-siegfried-2.armor-of-fafnir": {
+        "archiveId": "servant.siegfried",
         "archiveIndex": 41,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[41].cards[1].abilities[1]"
       },
-      "servant.sigurd.skill.sc-sigurd-3": {
-        "archiveId": "servant.sigurd",
+      "servant.siegfried.skill.sc-siegfried-3": {
+        "archiveId": "servant.siegfried",
         "archiveIndex": 41,
         "cardIndex": 2,
         "path": "archives[41].cards[2]"
       },
-      "servant.sigurd.skill.sc-sigurd-3#sc-sigurd-3.required-additional-play": {
-        "archiveId": "servant.sigurd",
+      "servant.siegfried.skill.sc-siegfried-3#sc-siegfried-3.true-name-release": {
+        "archiveId": "servant.siegfried",
         "archiveIndex": 41,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[41].cards[2].abilities[0]"
       },
-      "servant.sigurd.skill.sc-sigurd-3#sc-sigurd-3.revealed-attributes": {
-        "archiveId": "servant.sigurd",
+      "servant.siegfried.skill.sc-siegfried-3#sc-siegfried-3.reveal-hand-power": {
+        "archiveId": "servant.siegfried",
         "archiveIndex": 41,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[41].cards[2].abilities[1]"
       },
-      "servant.tezcat.skill.sc-tezcat-1": {
-        "archiveId": "servant.tezcat",
+      "servant.sigurd.skill.sc-sigurd-1": {
+        "archiveId": "servant.sigurd",
         "archiveIndex": 42,
         "cardIndex": 0,
         "path": "archives[42].cards[0]"
       },
-      "servant.tezcat.skill.sc-tezcat-1#sc-tezcat-1.required-additional": {
-        "archiveId": "servant.tezcat",
+      "servant.sigurd.skill.sc-sigurd-1#sc-sigurd-1.true-name-release": {
+        "archiveId": "servant.sigurd",
         "archiveIndex": 42,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[42].cards[0].abilities[0]"
       },
-      "servant.tezcat.skill.sc-tezcat-1#sc-tezcat-1.joint-other-modifier": {
-        "archiveId": "servant.tezcat",
+      "servant.sigurd.skill.sc-sigurd-1#sc-sigurd-1.curse": {
+        "archiveId": "servant.sigurd",
         "archiveIndex": 42,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[42].cards[0].abilities[1]"
       },
-      "servant.tezcat.skill.sc-tezcat-2": {
-        "archiveId": "servant.tezcat",
+      "servant.sigurd.skill.sc-sigurd-1#sc-sigurd-1.after-battle-refund": {
+        "archiveId": "servant.sigurd",
+        "archiveIndex": 42,
+        "cardIndex": 0,
+        "abilityIndex": 2,
+        "path": "archives[42].cards[0].abilities[2]"
+      },
+      "servant.sigurd.skill.sc-sigurd-2": {
+        "archiveId": "servant.sigurd",
         "archiveIndex": 42,
         "cardIndex": 1,
         "path": "archives[42].cards[1]"
       },
-      "servant.tezcat.skill.sc-tezcat-2#sc-tezcat-2.battlefield-offer": {
-        "archiveId": "servant.tezcat",
+      "servant.sigurd.skill.sc-sigurd-2#sc-sigurd-2.curse": {
+        "archiveId": "servant.sigurd",
         "archiveIndex": 42,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[42].cards[1].abilities[0]"
       },
-      "servant.tezcat.skill.sc-tezcat-3": {
-        "archiveId": "servant.tezcat",
+      "servant.sigurd.skill.sc-sigurd-2#sc-sigurd-2.blade-storm": {
+        "archiveId": "servant.sigurd",
+        "archiveIndex": 42,
+        "cardIndex": 1,
+        "abilityIndex": 1,
+        "path": "archives[42].cards[1].abilities[1]"
+      },
+      "servant.sigurd.skill.sc-sigurd-3": {
+        "archiveId": "servant.sigurd",
         "archiveIndex": 42,
         "cardIndex": 2,
         "path": "archives[42].cards[2]"
       },
-      "servant.tezcat.skill.sc-tezcat-3#sc-tezcat-3.true-name-release": {
-        "archiveId": "servant.tezcat",
+      "servant.sigurd.skill.sc-sigurd-3#sc-sigurd-3.required-additional-play": {
+        "archiveId": "servant.sigurd",
         "archiveIndex": 42,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[42].cards[2].abilities[0]"
       },
-      "servant.tezcat.skill.sc-tezcat-3#sc-tezcat-3.seal-play-cost": {
-        "archiveId": "servant.tezcat",
+      "servant.sigurd.skill.sc-sigurd-3#sc-sigurd-3.revealed-attributes": {
+        "archiveId": "servant.sigurd",
         "archiveIndex": 42,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[42].cards[2].abilities[1]"
       },
-      "servant.tezcat.skill.sc-tezcat-3#sc-tezcat-3.defeat-engaged": {
+      "servant.tezcat.skill.sc-tezcat-1": {
         "archiveId": "servant.tezcat",
-        "archiveIndex": 42,
-        "cardIndex": 2,
-        "abilityIndex": 2,
-        "path": "archives[42].cards[2].abilities[2]"
-      },
-      "card.derived.master.shirou-emiya.ganjiang-moye": {
-        "archiveId": "master.shirou-emiya",
         "archiveIndex": 43,
         "cardIndex": 0,
         "path": "archives[43].cards[0]"
       },
-      "card.derived.master.shirou-emiya.ganjiang-moye#ganjiang-moye.append-only": {
-        "archiveId": "master.shirou-emiya",
+      "servant.tezcat.skill.sc-tezcat-1#sc-tezcat-1.required-additional": {
+        "archiveId": "servant.tezcat",
         "archiveIndex": 43,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[43].cards[0].abilities[0]"
+      },
+      "servant.tezcat.skill.sc-tezcat-1#sc-tezcat-1.joint-other-modifier": {
+        "archiveId": "servant.tezcat",
+        "archiveIndex": 43,
+        "cardIndex": 0,
+        "abilityIndex": 1,
+        "path": "archives[43].cards[0].abilities[1]"
+      },
+      "servant.tezcat.skill.sc-tezcat-2": {
+        "archiveId": "servant.tezcat",
+        "archiveIndex": 43,
+        "cardIndex": 1,
+        "path": "archives[43].cards[1]"
+      },
+      "servant.tezcat.skill.sc-tezcat-2#sc-tezcat-2.battlefield-offer": {
+        "archiveId": "servant.tezcat",
+        "archiveIndex": 43,
+        "cardIndex": 1,
+        "abilityIndex": 0,
+        "path": "archives[43].cards[1].abilities[0]"
+      },
+      "servant.tezcat.skill.sc-tezcat-3": {
+        "archiveId": "servant.tezcat",
+        "archiveIndex": 43,
+        "cardIndex": 2,
+        "path": "archives[43].cards[2]"
+      },
+      "servant.tezcat.skill.sc-tezcat-3#sc-tezcat-3.true-name-release": {
+        "archiveId": "servant.tezcat",
+        "archiveIndex": 43,
+        "cardIndex": 2,
+        "abilityIndex": 0,
+        "path": "archives[43].cards[2].abilities[0]"
+      },
+      "servant.tezcat.skill.sc-tezcat-3#sc-tezcat-3.seal-play-cost": {
+        "archiveId": "servant.tezcat",
+        "archiveIndex": 43,
+        "cardIndex": 2,
+        "abilityIndex": 1,
+        "path": "archives[43].cards[2].abilities[1]"
+      },
+      "servant.tezcat.skill.sc-tezcat-3#sc-tezcat-3.defeat-engaged": {
+        "archiveId": "servant.tezcat",
+        "archiveIndex": 43,
+        "cardIndex": 2,
+        "abilityIndex": 2,
+        "path": "archives[43].cards[2].abilities[2]"
+      },
+      "card.derived.master.shirou-emiya.ganjiang-moye": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 44,
+        "cardIndex": 0,
+        "path": "archives[44].cards[0]"
+      },
+      "card.derived.master.shirou-emiya.ganjiang-moye#ganjiang-moye.append-only": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 44,
+        "cardIndex": 0,
+        "abilityIndex": 0,
+        "path": "archives[44].cards[0].abilities[0]"
       }
     }
   }
