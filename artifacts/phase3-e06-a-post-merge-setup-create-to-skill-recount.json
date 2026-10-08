@@ -3,7 +3,7 @@
   "controlEpoch": "FD-P3-2026-09-23-08",
   "taskId": "P3-E08-RP-00-A3-RECONCILIATION",
   "owner": "Codex A",
-  "status": "VALIDATION_PENDING",
+  "status": "READY_FOR_REVIEW",
   "main": {
     "observedMainSha": "a7751c3fa51895fd3a401721b1e926b90e016862",
     "firstParent": "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
@@ -81,18 +81,104 @@
     "canonicalNumeratorChanged": false
   },
   "validation": {
-    "status": "PENDING",
-    "commands": [],
+    "status": "PASS_SCOPED_LOCAL_VERIFICATION",
+    "commands": [
+      {
+        "command": "npm ci",
+        "exitCode": 0,
+        "testedSha": "fefcf4f7f5bd66ed7693889fb99391e6e7321016",
+        "result": "239 packages added; audit reports 12 vulnerabilities (1 low, 4 moderate, 5 high, 2 critical); no automatic dependency changes"
+      },
+      {
+        "command": "npm run phase3:coverage",
+        "exitCode": 0,
+        "testedSha": "fefcf4f7f5bd66ed7693889fb99391e6e7321016",
+        "result": "127 archives / 169 cards / 281 abilities; 22/144/3/0/112; compiled 76 cards / 14 characters / 0 blocking issues",
+        "artifactSha256": "8683CF3C41E62703593CA5508A04544A02BBF7E3EB972371073FDCAE1A16C045"
+      },
+      {
+        "command": "npx vitest run scripts/tests/phase3-e06-post-merge-recount.test.ts",
+        "exitCode": 0,
+        "testedSha": "43916d3f7b6e7384d7c1e98875881c99992ab467",
+        "result": "1 file / 3 tests PASS; immutable commits, independent classifier/compiler/hash verification, shallow failure/unshallow recovery"
+      },
+      {
+        "command": "npm run typecheck",
+        "exitCode": 0,
+        "testedSha": "43916d3f7b6e7384d7c1e98875881c99992ab467",
+        "result": "PASS"
+      },
+      {
+        "command": "npm run content:validate",
+        "exitCode": 0,
+        "testedSha": "43916d3f7b6e7384d7c1e98875881c99992ab467",
+        "result": "7 masters / 7 servants / 20 events / 0 blocking issues; does not include required source-assets mode"
+      },
+      {
+        "command": "npm run verify:generated-content",
+        "exitCode": 0,
+        "testedSha": "43916d3f7b6e7384d7c1e98875881c99992ab467",
+        "result": "PASS",
+        "hashes": {
+          "contentLibrary": "866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736",
+          "fixture": "fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057",
+          "evidenceReport": "b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3"
+        }
+      },
+      {
+        "command": "npm run test:ci",
+        "exitCode": 0,
+        "testedSha": "43916d3f7b6e7384d7c1e98875881c99992ab467",
+        "result": "184 files / 1412 tests PASS; default command, no global timeout override",
+        "durationSeconds": 23.72
+      },
+      {
+        "command": "git diff --check",
+        "exitCode": 0,
+        "testedSha": "43916d3f7b6e7384d7c1e98875881c99992ab467",
+        "result": "PASS; final carrier checked separately before and after commit"
+      }
+    ],
     "requiredSourceAssets": "BLOCKED_93_MISSING_IMAGE",
     "missingImageCountSource": "RETAINED_HISTORICAL_NOT_REAUDITED",
     "gateC": "NOT_VERIFIED",
-    "releaseGate": "BLOCKED_MISSING_IMAGE_ASSETS"
+    "releaseGate": "BLOCKED_MISSING_IMAGE_ASSETS",
+    "testedImplementationSha": "43916d3f7b6e7384d7c1e98875881c99992ab467",
+    "finalCarrierBindingPolicy": "CARRIER_SHA_RETURNED_EXTERNALLY; EVIDENCE_ONLY_DESCENDANT_OF_TESTED_IMPLEMENTATION",
+    "developmentDiagnostics": [
+      {
+        "stage": "PRE_AUTHORIZATION_HISTORICAL_RESTORE",
+        "command": "npx vitest run scripts/tests/phase3-e06-post-merge-recount.test.ts",
+        "exitCode": 1,
+        "result": "0/2 PASS: historical coverage hash mismatch; Test checkout missing fetch-depth:0",
+        "disposition": "Historical hash retained separately, fresh hash rebound; workflow authorization granted by Planner b6d7856"
+      },
+      {
+        "stage": "INITIAL_FRESH_COMPARISON",
+        "command": "npx vitest run scripts/tests/phase3-e06-post-merge-recount.test.ts",
+        "exitCode": 1,
+        "result": "2/3 PASS: buildCoverageFromArchives does not include CLI compiledDefinitions",
+        "disposition": "Added independent executable-pack compilation and full-object comparison; no assertion removed"
+      },
+      {
+        "stage": "PRE_COMMIT_FOCUSED",
+        "command": "npx vitest run scripts/tests/phase3-e06-post-merge-recount.test.ts",
+        "exitCode": 0,
+        "result": "3/3 PASS",
+        "testedSha": "UNCOMMITTED_CANDIDATE_INPUTS; superseded by exact implementation verification"
+      }
+    ],
+    "runtimeSemanticDelta": "NONE",
+    "ancestryVerification": "LOCAL_BOUND_COMMIT_OBJECTS_AND_ANCESTRY_PASS",
+    "longTermCIStability": "NOT_VERIFIED"
   },
   "nonClaims": [
     "This recount does not add migration or main coverage credit.",
     "This recount does not promote Gate A, Gate B, or Gate C globally.",
     "This recount does not complete Phase 3, Full Roster, or Release Gate.",
-    "The three setup consumers are runtime-promotion status only; canonical 111/944 remains unchanged."
+    "The three setup consumers are runtime-promotion status only; canonical 111/944 remains unchanged.",
+    "READY_FOR_REVIEW is a fresh evidence candidate, not independent Reviewer acceptance or promotion.",
+    "Historical runtimePromotionDelta=3 is not this reconciliation's delta; all reconciliation deltas are zero."
   ],
   "historicalEvidence": {
     "sourceCommit": "b6375c4889009497e7dd9c98e83c1d2ce0da10d9",
