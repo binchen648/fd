@@ -9541,20 +9541,54 @@ Readiness acceptance closure:
 ## TASK P3-S-OWNER-GOETIA-COMPLETE-MIGRATION
 
 Owner: FORMAL
-Status: `READY`
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 Classification: formal owner-complete migration for `master.goetia`
+
+Exact Base:
+- `8b3576f4b9e9f73dcc20969e5979494e097083a8` — accepted Goetia readiness synchronization.
 
 Frozen owner scope: exactly `3` identities:
 - `master.goetia.skill.ascension` — 冠位时间神殿
 - `master.goetia.skill.s1` — 集体意识
 - `master.goetia.skill.s2` — 魔神柱
 
-Formal implementation rules:
-- exact Base is the HEAD of the Goetia readiness acceptance-sync transaction;
-- materialize all three frozen identities together in one canonical Goetia authoring consumer;
-- register Goetia exactly once in the canonical active pack;
-- consume only the accepted identity-free readiness authority from PR #551 and existing accepted shared runtime;
-- no Goetia/name-specific production routing outside canonical authoring consumer data;
-- one owner Candidate, one PR, one fresh exact Base/Candidate REVIEW;
-- no migration credit before fresh `MIGRATION_ACCEPTED` evidence plus FORMAL A-sync/accounting;
-- maximum lawful increment is exactly `+3`: `267/944 -> 270/944`, remaining `674`.
+Formal implementation closure:
+- exact Base canonical Goetia coverage is `0/3`; working formal coverage is exactly `3/3`;
+- one canonical `data/authoring/masters/master.goetia.json` materializes all three frozen identities together;
+- seven locked-Reference physical Demon God helper attacks are authored as non-credit owner support definitions;
+- Goetia is registered exactly once in the canonical active pack;
+- owner consumer uses the accepted identity-free `linked_auxiliary_suite` authority from PR #551;
+- production Goetia/card-name/printed-text routing audit is CLEAN.
+
+Affected shared-regression closure:
+- adding the 25th playable Master exposed a pre-existing Caren durable-restore defect in the existing seed-1 MatchSession regression;
+- the failing state contained no Goetia player and no linked-auxiliary suite state;
+- exact culprit was the historical Caren `definition_resource_binding:provisioned` marker whose legitimate source had been played from `skill` to `field`;
+- execution-time provider rules remain unchanged;
+- one identity-free restore-only `persistedProvisionProvider` now accepts exact historical provision sources in `skill` or legally played `field`, while forged `hand` remains rejected;
+- shared repair contributes exactly `+0` migration credit and is explicitly included for fresh REVIEW.
+
+Verification:
+- Goetia owner-complete: `5/5 PASS`;
+- accepted Goetia readiness: `4/4 PASS`;
+- Caren readiness including new restore regression: `13/13 PASS`;
+- selected affected aggregate: `131/131 PASS` across nine files;
+- typecheck PASS;
+- content validate PASS: `25 masters / 19 servants / 20 events / 0 blocking issues`;
+- generated determinism PASS:
+  - content `f7f0a1b44e3e9d22425ed646adbc53aa8a925f2f0bcfc462d5c237325ce7264a`
+  - fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`
+  - evidence `600fe09a921a9ace395dbfb00eec850e04b5e65a6a4f22ef3460ffdc15f693e0`
+- external coverage: `archives=129 cards=305 abilities=536 compiledCards=244 compiledCharacters=44 blockingIssues=0 newRuntimeSemanticRouted=22 legacyExecuteAbility=3 legacyResolveEffect=165 dualRuntime=0 pilotAllowlist=0 notClassifiable=346 taxonomyWarnings=357`;
+- external audit: `legacyResolveEffect=165 legacyExecuteAbility=3 notClassifiable=346 promotionFindings=20`;
+- `git diff --check` PASS;
+- Goetia development image exists;
+- repository-wide source-assets still reproduces exactly `93` historical missing-image blockers with no Goetia hit and is not represented as PASS;
+- detailed report: `docs/reports/2026-10-08-p3-s-owner-goetia-complete-migration-result.md`.
+
+Review/accounting gate:
+- freeze one owner Candidate from exact Base `8b3576f4b9e9f73dcc20969e5979494e097083a8`;
+- one PR and one fresh independent exact Base/Candidate REVIEW;
+- strict accounting remains `267/944`, remaining `677` before acceptance;
+- no credit for the seven helper definitions or the shared restore repair;
+- only fresh `MIGRATION_ACCEPTED` plus FORMAL A-sync may credit exact `+3`: `267/944 -> 270/944`, remaining `674`.

@@ -135,6 +135,24 @@ describe('P3 Caren owner-readiness complete identity-free gap set', () => {
     expect(first[0]!.zone).toBe('skill');
   });
 
+  it('restores provision history after its exact source is legally played to field but rejects a forged hand-zone provider', () => {
+    const { state, s1 } = setup();
+    const source = state.cards.find((entry) => entry.instanceId === s1)!;
+    source.zone = 'field';
+    source.visibility = { scope: 'public' };
+    state.abilityRuntime!.cardState[s1] = {
+      ...(state.abilityRuntime!.cardState[s1] ?? { playedRound: state.round.roundNumber }),
+      active: true,
+      faceDown: false,
+      playedRound: state.round.roundNumber,
+    };
+    expect(isDeferredAbilityRuntimeProvenanceValidForRestore(state)).toBe(true);
+
+    source.zone = 'hand';
+    source.visibility = { scope: 'owner_only', ownerPlayerId: 'p1' };
+    expect(isDeferredAbilityRuntimeProvenanceValidForRestore(state)).toBe(false);
+  });
+
   it('observes an authoritative specialized mana-loss transaction instead of requiring a particular event name', () => {
     const { state } = setup();
     const s2 = state.cards.find((entry) => entry.ownerPlayerId === 'p1' && entry.definitionId === S2)!;
