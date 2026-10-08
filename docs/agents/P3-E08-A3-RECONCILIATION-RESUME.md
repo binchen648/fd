@@ -35,10 +35,27 @@ historical inputs. Do not merge their whole branches or inherit an old review
 as acceptance of a fresh candidate.
 
 Authorized scope is the A3 recount artifact, coverage artifact, recount test,
-and a new 2026-10-08 reconciliation report. Preserve the old A3 report as
-historical evidence. Do not import workflow changes or unrelated test timeout
-changes from the old A3 lineage. If an additional prerequisite is actually
-missing, report the exact failed command and smallest additional path needed.
+a new 2026-10-08 reconciliation report, and `.github/workflows/test.yml`.
+Preserve the old A3 report as historical evidence. Do not import unrelated
+test timeout changes from the old A3 lineage. If another prerequisite is
+actually missing, report the exact failed command and smallest path needed.
+
+### User-Authorized Workflow Amendment (2026-10-08)
+
+Codex A is authorized to add `with: fetch-depth: 0` to the existing
+`actions/checkout@v4` step in the Test workflow. This supplies complete Git
+history for the recount's historical commit and ancestry checks. Limit the
+workflow change to this checkout input. Keep existing triggers, permissions,
+test commands and required checks intact. This amendment grants the task the
+scoped Test-workflow writer reservation; it does not reserve other workflows.
+
+Complete coverage re-binding against the fresh candidate inputs, fresh A3
+evidence and all required validation below. Preserve historical evidence and
+ancestry assertions; do not skip them or replace them with unconditional PASS.
+Runtime implementation is outside this task's authorization. Reviewer A must
+include checkout history availability and the workflow scope in fresh review.
+The final Promotion HEAD must pass GitHub Test and policy checks with this
+workflow change. Epoch 08 remains active; no new governance contract is added.
 
 Preserve A3's immutable observed-main anchor a7751c3... . Bind a separate
 reconciliation record to current main fefcf4f... and CI-01 PR #554. Do not change
