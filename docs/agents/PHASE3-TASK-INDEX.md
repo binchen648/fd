@@ -9529,3 +9529,32 @@ Review gate:
 - no A-sync/accounting credit before accepted readiness evidence;
 - accepted readiness remains `267/944`, remaining `677`, then releases `P3-S-OWNER-GOETIA-COMPLETE-MIGRATION`;
 - only later fresh `MIGRATION_ACCEPTED` plus FORMAL A-sync may credit exact `+3`: `267/944 -> 270/944`, remaining `674`.
+
+Readiness acceptance closure:
+- exact Candidate `babefa422e023d8fb70a79ed8d0cf5811e140011` received fresh exact `IMPLEMENTATION_ACCEPTED_CANDIDATE` on ReviewJobKey `pr551:babefa422e023d8fb70a79ed8d0cf5811e140011:blocked-retry-2`;
+- canonical same-attempt accepted evidence: `https://github.com/binchen648/fd/pull/551#issuecomment-6049735142`;
+- Reviewer independently reproduced focused Goetia `4/4 PASS`, selected affected `102/102 PASS` across six files, typecheck/content/generated/coverage/audit PASS, and final exact clean HEAD;
+- FORMAL mechanical rescan at accepted Candidate confirms `data/authoring/masters/master.goetia.json` absent, active-pack registration count `0`, generated occurrences for all three frozen IDs `0`, and canonical materialization exactly `0/3`;
+- readiness acceptance grants exactly `+0`; strict accounting remains `267/944`, remaining `677`;
+- acceptance synchronization report: `docs/reports/2026-10-08-p3-a-goetia-owner-readiness-acceptance-synchronization.md`.
+
+## TASK P3-S-OWNER-GOETIA-COMPLETE-MIGRATION
+
+Owner: FORMAL
+Status: `READY`
+Classification: formal owner-complete migration for `master.goetia`
+
+Frozen owner scope: exactly `3` identities:
+- `master.goetia.skill.ascension` — 冠位时间神殿
+- `master.goetia.skill.s1` — 集体意识
+- `master.goetia.skill.s2` — 魔神柱
+
+Formal implementation rules:
+- exact Base is the HEAD of the Goetia readiness acceptance-sync transaction;
+- materialize all three frozen identities together in one canonical Goetia authoring consumer;
+- register Goetia exactly once in the canonical active pack;
+- consume only the accepted identity-free readiness authority from PR #551 and existing accepted shared runtime;
+- no Goetia/name-specific production routing outside canonical authoring consumer data;
+- one owner Candidate, one PR, one fresh exact Base/Candidate REVIEW;
+- no migration credit before fresh `MIGRATION_ACCEPTED` evidence plus FORMAL A-sync/accounting;
+- maximum lawful increment is exactly `+3`: `267/944 -> 270/944`, remaining `674`.
