@@ -116,6 +116,15 @@ import {
   containsLinkedAuxiliarySuitePrivilegedNode,
   isAcceptedLinkedAuxiliarySuiteAbility,
 } from './linked-auxiliary-suite-capability';
+import {
+  ACTIVATE_ROUND_COMMITMENT_EFFECT,
+  REPLACE_HIGHEST_BASIC_ATTACKS_EFFECT,
+  ROUND_COMMITMENT_DEFINITION_POWER_EFFECT,
+  ROUND_COMMITMENT_LOSS_VP_EFFECT,
+  ROUND_COMMITMENT_WIN_LOSERS_VP_EFFECT,
+  containsRoundCommitmentPrivilegedNode,
+  isAcceptedRoundCommitmentAbility,
+} from './round-commitment-capability';
 import { EFFECTIVE_LOCATION_SAME_LOCATION_RESTRICTIONS_EFFECT, containsEffectiveLocationRestrictionPrivilegedNode, isAcceptedEffectiveLocationRestrictionAbility } from './effective-location-restriction-capability';
 import { RECYCLE_ACTIVE_BASIC_FOR_PRINTED_COST_MANA_EFFECT, containsOriginStillnessPrintedCostPrivilegedNode, isAcceptedOriginStillnessPrintedCostAbility } from './origin-stillness-printed-cost-capability';
 import {
@@ -406,6 +415,9 @@ const supportedTypes = new Set([
   INJURY_WARP_BATTLE_END_PAIN_EFFECT, ACTIVATE_MOVEMENT_TOPOLOGY_OVERRIDE_EFFECT,
   REPAIR_MOVEMENT_TOPOLOGY_OVERRIDE_EFFECT, ASCENSION_COPY_LINKED_SKILL_EFFECT,
   LINKED_AUXILIARY_SUITE_EFFECT,
+  REPLACE_HIGHEST_BASIC_ATTACKS_EFFECT, ACTIVATE_ROUND_COMMITMENT_EFFECT,
+  ROUND_COMMITMENT_LOSS_VP_EFFECT, ROUND_COMMITMENT_DEFINITION_POWER_EFFECT,
+  ROUND_COMMITMENT_WIN_LOSERS_VP_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -450,6 +462,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'ascensionPainRewardVp', 'allowedLocationIds', 'chooseCount', 'linkedOverrideDefinitionId', 'linkedDefinitionId', 'maxCopies',
   'targetRoundOffset', 'definitionIds', 'workshopLocationId', 'battlefieldDefinitionId', 'manaGain', 'ignoreDefeatManaCost',
   'zeroCommandSeals', 'requiredLocationId', 'manaPerSeal', 'waiveRequirementType', 'ignoreNoblePhantasmSituationForbid',
+  'ranking', 'mustDeployToBattlefield', 'lockMovement',
   // New mechanic keys for 5 servants
   'options', 'label', 'condition', 'targets', 'duration', 'scope', 'statusId', 'choiceId', 'value', 'floor',
   'effectiveLocationKind', 'persistentTerrainMinimum', 'persistentTerrainProviderDefinitionId', 'persistentTerrainProviderAbilityId', 'blockOpponentExit', 'requireFaceDownStandardAttack',
@@ -943,6 +956,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsLinkedAuxiliarySuitePrivilegedNode(candidateAbility) && !isAcceptedLinkedAuxiliarySuiteAbility(candidateAbility)) {
         issue('linkedAuxiliarySuite.gateway', 'Linked-auxiliary privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsRoundCommitmentPrivilegedNode(candidateAbility) && !isAcceptedRoundCommitmentAbility(candidateAbility)) {
+        issue('roundCommitment.gateway', 'Round-commitment privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       if (containsEffectiveLocationRestrictionPrivilegedNode(candidateAbility) && !isAcceptedEffectiveLocationRestrictionAbility(candidateAbility)) {
         issue('effectiveLocationRestriction.gateway', 'Effective-location restriction privileged mechanic requires an accepted exact whole-ability semantic', id);

@@ -9610,3 +9610,47 @@ Acceptance synchronization:
 - strict accounting advances lawfully `267/944 + 3 = 270/944`, remaining `674`; preservation/recount/helper/shared-repair credit is exactly `+0`;
 - acceptance synchronization report: `docs/reports/2026-10-08-p3-a-owner-goetia-acceptance-synchronization.md`;
 - Goetia owner is fully closed. FORMAL must derive the next owner mechanically from the frozen roster and this acceptance-sync HEAD under `fd.owner-complete@1.1.0`, with no HELPER lane.
+
+## TASK P3-B-GOREDOLF-OWNER-READINESS-CAPABILITY
+
+Owner: FORMAL
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Classification: zero-credit owner-local readiness / capability closure for `master.goredolf`
+
+Exact Base:
+- `1b233c4d380b06549940889c9bd2b20f557c58e3` — accepted Goetia owner-migration synchronization.
+
+Frozen owner scope: exactly `3` identities:
+- `master.goredolf.skill.ascension` — 别掉队了！
+- `master.goredolf.skill.s1` — 铁腕绅士
+- `master.goredolf.skill.s1a` — 愚者的决意
+
+Mechanical Base state:
+- canonical Goredolf consumer materialization remains exactly `0/3`;
+- no Goredolf active-pack registration;
+- strict accounting remains `270/944`, remaining `674`;
+- readiness grants exactly `+0` migration credit.
+
+Complete readiness closure:
+- new identity-free `round-commitment-capability.ts` covers exact game-start top-two basic replacement, current-round +2 commitment, battlefield-only deployment, round movement lock, trusted loss `-2 VP`, exact-definition `+6 Power`, and trusted committed-win loser `-2 VP`;
+- no owner-specific runtime state; commitment provenance reuses current-round `roundPlayerPowerAdjustments`;
+- loader whole-ability gate, interpreter legality/resolution/Power/restore, core movement, MatchSession deployment, and public exports are wired fail-closed;
+- no `data/authoring/**`, pack, or generated-content delta and production identity-routing audit is CLEAN.
+
+Verification:
+- focused Goredolf readiness: `5/5 PASS`;
+- affected validation: `154/154 PASS` across `15` files;
+- typecheck PASS;
+- content validation PASS: `25 masters / 19 servants / 20 events / 0 blocking issues`;
+- generated determinism PASS with unchanged hashes;
+- external coverage: `archives=129 cards=305 abilities=536 compiledCards=244 compiledCharacters=44 blockingIssues=0 newRuntimeSemanticRouted=22 legacyExecuteAbility=3 legacyResolveEffect=165 dualRuntime=0 pilotAllowlist=0 notClassifiable=346 taxonomyWarnings=357`;
+- external audit: `legacyResolveEffect=165 legacyExecuteAbility=3 notClassifiable=346 promotionFindings=20`;
+- one separately observed historical FM02 raw-authoring suite has `3` stale assertions; neither it nor the referenced archives differ from this readiness Base and it is not represented as green or candidate-induced;
+- detailed report: `docs/reports/2026-10-08-p3-b-goredolf-owner-readiness-complete-gap-set.md`.
+
+Formal gate:
+- freeze one zero-credit readiness Candidate from exact Base `1b233c4d380b06549940889c9bd2b20f557c58e3`;
+- one PR and one fresh exact Base/Candidate independent readiness REVIEW;
+- readiness acceptance keeps accounting at `270/944`, remaining `674`;
+- only after zero-credit A-sync may FORMAL build one owner-complete Goredolf consumer containing all three frozen identities together;
+- maximum later lawful owner increment is exactly `+3`: `270/944 -> 273/944`, remaining `671`.

@@ -7,6 +7,7 @@ import { applyStorageManaOverflowReactions, collectSameLocationManaSpendRewards 
 import { settleDefinitionResourceAuditEvents } from '../ability/definition-resource-binding-capability';
 import { situationBenefitsSuppressedForPlayer } from '../ability/next-round-situation-benefit-suppression';
 import { roundSkillProfileSuppressed } from '../ability/round-skill-profile-capability';
+import { roundCommitmentMovementLocked } from '../ability/round-commitment-capability';
 
 export type GameStartRuleOverrideName =
   | 'first_logical_day_total_power_adjustment'
@@ -99,9 +100,10 @@ export function logicalDayForPlayer(state: GameState, playerId: string): number 
 }
 
 export function movementLockedByPersistentRule(state: GameState, playerId: string): boolean {
-  return !roundSkillProfileSuppressed(state, playerId, 'movement_lock') &&
-    state.ruleOverrides?.movementLockedOwnActionCombatPlayerIds?.includes(playerId) === true &&
-    ['action', 'battle'].includes(state.round.activePhase);
+  if (roundSkillProfileSuppressed(state, playerId, 'movement_lock')) return false;
+  return roundCommitmentMovementLocked(state, playerId) ||
+    (state.ruleOverrides?.movementLockedOwnActionCombatPlayerIds?.includes(playerId) === true &&
+      ['action', 'battle'].includes(state.round.activePhase));
 }
 
 export function rulerSealMovementLocked(state: GameState, playerId: string): boolean {
