@@ -171,6 +171,14 @@ import {
   resolveLinkedAuxiliarySuiteEffect,
   type LinkedAuxiliarySuiteOps,
 } from './linked-auxiliary-suite-capability';
+import {
+  canExecuteRoundCommitmentEffect,
+  containsRoundCommitmentPrivilegedNode,
+  isAcceptedRoundCommitmentAbility,
+  isRoundCommitmentPowerAdjustmentValidForRestore,
+  resolveRoundCommitmentEffect,
+  roundCommitmentDefinitionPowerBonus,
+} from './round-commitment-capability';
 import { containsEffectiveLocationRestrictionPrivilegedNode, effectiveLocationRestrictionRequiresFaceDownStandardAttack, isAcceptedEffectiveLocationRestrictionAbility, isEffectiveLocationRestrictionRuntimeProvenanceValidForRestore, isPlayerAtEffectiveLocationKind } from './effective-location-restriction-capability';
 import { containsOriginStillnessPrintedCostPrivilegedNode, isAcceptedOriginStillnessPrintedCostAbility, originStillnessEligibleActiveBasicIds, originStillnessPrintedManaGain } from './origin-stillness-printed-cost-capability';
 import {
@@ -1168,6 +1176,11 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     result.value += linkedAuxiliaryBonus;
     result.lines.push({ label: 'linked_auxiliary_active_ascension_power', value: result.value });
   }
+  const roundCommitmentDefinitionBonus = roundCommitmentDefinitionPowerBonus(s, sourceId);
+  if (roundCommitmentDefinitionBonus !== 0) {
+    result.value += roundCommitmentDefinitionBonus;
+    result.lines.push({ label: 'round_commitment_definition_power_bonus', value: result.value });
+  }
   const profileSkillBonus = ['master_skill','servant_skill'].includes(d?.cardType ?? '') ? roundSkillCardPowerBonus(s, source.controllerPlayerId) : 0;
   if (profileSkillBonus !== 0) { result.value += profileSkillBonus; result.lines.push({ label: 'round_skill_profile_power_bonus', value: result.value }); }
   const bloodlustSkillBonus = runtime(s).cardState[sourceId]?.active === true && ['master_skill','servant_skill'].includes(d?.cardType ?? '') ? bloodlustSkillPowerBonus(s, source.controllerPlayerId) : 0;
@@ -2138,6 +2151,9 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsLinkedAuxiliarySuitePrivilegedNode(a) && !isAcceptedLinkedAuxiliarySuiteAbility(a)) return false;
   if (isAcceptedLinkedAuxiliarySuiteAbility(a) &&
       !canExecuteLinkedAuxiliarySuiteEffect(s, context(s, sourceId, a.id, event), a, linkedAuxiliaryOps(s))) return false;
+  if (containsRoundCommitmentPrivilegedNode(a) && !isAcceptedRoundCommitmentAbility(a)) return false;
+  if (isAcceptedRoundCommitmentAbility(a) &&
+      !canExecuteRoundCommitmentEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (isAcceptedRoundSkillProfileAbility(a) && a.kind === 'phase_action' && !canExecuteRoundSkillProfileEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (containsEffectiveLocationRestrictionPrivilegedNode(a) && !isAcceptedEffectiveLocationRestrictionAbility(a)) return false;
   if (containsOriginStillnessPrintedCostPrivilegedNode(a) && !isAcceptedOriginStillnessPrintedCostAbility(a)) return false;
@@ -4442,6 +4458,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
       if (entry.amount === 2 && isAcceptedBloodlustAbility(ability) && isBloodlustActionEffect(ability.effects[0]!) && source.controllerPlayerId === entry.playerId) return true;
       if (isBoundOpponentRoundPowerAdjustmentValid(s, entry)) return true;
       if (linkedAuxiliaryRoundPowerAdjustmentRestoreValid(s, entry)) return true;
+      if (isRoundCommitmentPowerAdjustmentValidForRestore(s, entry)) return true;
       if (entry.amount === 6 && isAcceptedLinkedGeneratedCardPowerAbility(ability) && source.generatedBy) {
         const generator = s.cards.find((candidate) => candidate.instanceId === source.generatedBy);
         const marker = r.cardState[source.instanceId]?.generatedCardReturnAfterBattle;
@@ -6875,6 +6892,13 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (containsLinkedAuxiliarySuitePrivilegedNode(a)) {
     if (!isAcceptedLinkedAuxiliarySuiteAbility(a)) reject('resolution_failed', 'Unsupported linked-auxiliary suite semantic');
     if (!resolveLinkedAuxiliarySuiteEffect(s, ctx, a, linkedAuxiliaryOps(s))) reject('resolution_failed', 'Linked-auxiliary suite resolution failed');
+    return;
+  }
+  if (containsRoundCommitmentPrivilegedNode(a)) {
+    if (!isAcceptedRoundCommitmentAbility(a)) reject('resolution_failed', 'Unsupported round-commitment semantic');
+    if (!canExecuteRoundCommitmentEffect(s, ctx, a) || !resolveRoundCommitmentEffect(s, ctx, a)) {
+      reject('resolution_failed', 'Round-commitment resolution failed');
+    }
     return;
   }
   if (containsOriginStillnessPrintedCostPrivilegedNode(a)) {

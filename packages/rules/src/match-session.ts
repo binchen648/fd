@@ -22,6 +22,7 @@ import {
   stageEliminationRescueChoice,
 } from './ability/elimination-rescue-link-capability';
 import { injuryWarpForbiddenDeploymentTerrainValues } from './ability/injury-warp-capability';
+import { roundCommitmentMustDeployToBattlefield } from './ability/round-commitment-capability';
 import { returnDefinitionSideDeckCardToDiscard, settleDefinitionSideDeckManaEvents } from './ability/definition-side-deck-capability';
 import {
   createOpponentCloseToOnePersistenceScope,
@@ -2825,7 +2826,8 @@ export class MatchSession {
         });
       });
     const prideLocations = this.kaynethPrideDeploymentLocations(playerId, legalLocations.map((location) => location.id));
-    const mustBattlefield = this.state.ruleOverrides?.mustDeployToBattlefieldPlayerIds?.includes(playerId);
+    const mustBattlefield = this.state.ruleOverrides?.mustDeployToBattlefieldPlayerIds?.includes(playerId) ||
+      roundCommitmentMustDeployToBattlefield(this.state, playerId);
     const forcedLocation = forcedDeploymentLocationForPlayer(this.state, playerId);
     let filteredLocations = mustBattlefield ? legalLocations.filter((location) => location.tags.includes('battlefield')) : legalLocations;
     if (forcedLocation) filteredLocations = filteredLocations.filter((location) => location.id === forcedLocation);
