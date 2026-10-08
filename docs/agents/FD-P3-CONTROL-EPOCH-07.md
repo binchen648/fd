@@ -1,7 +1,7 @@
 # FD Phase 3 Control Epoch 07
 
 - Control Epoch: `FD-P3-2026-09-23-07`
-- Status: `ACTIVE`
+- Status: `STALE_AFTER_PR_543_MERGE`
 - Authoritative main: `origin/main@a7751c3fa51895fd3a401721b1e926b90e016862`
 - Previous epoch: `FD-P3-2026-09-23-06` (`STALE_AFTER_PR_536_PROMOTION`)
 - Epoch trigger: PR #536 merged, authoritative main changed, and the accepted
@@ -140,3 +140,11 @@ Forbidden now:
 5. a new role-stage stacked PR is opened after this directive.
 
 Final control status: `RP00_RECOUNT_ACTIVE_NO_NEW_STACKED_ROLE_PR`
+
+## Supersession
+
+PR #543 merged as `7072da3f5ad5b6ae77c5fb4b7eb40634c29039b0` on
+2026-10-07, changing authoritative main from
+`a7751c3fa51895fd3a401721b1e926b90e016862`. Epoch 07 is stale after this
+main change. Its task-state snapshot remains historical and is not reissued by
+this note.
