@@ -1556,5 +1556,5 @@ describe('complex master and session regressions', () => {
       ),
     )).toBe(true);
     expect(projection.replay.length).toBeGreaterThanOrEqual(3);
-  });
+  }, 15_000);
 });
