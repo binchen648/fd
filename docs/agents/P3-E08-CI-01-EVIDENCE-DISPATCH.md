@@ -7,6 +7,10 @@
 - Worktree: `C:/Users/chenshang/.config/superpowers/worktrees/fd/a-p3-e08-ci-01-current-main-replay`
 - State: `AUTHORIZED_TO_GENERATE_EVIDENCE`
 
+This Planner authorization supports evidence preparation. Reviewer A may
+examine the exact carrier independently. Mainline Promotion remains gated on
+the Epoch 08 governance transition reaching main.
+
 Continue in the existing clean worktree. Verify the implementation is its HEAD
 and its direct parent is the exact main base. Confirm current origin/main before
 proceeding; report any new drift instead of silently changing the base.

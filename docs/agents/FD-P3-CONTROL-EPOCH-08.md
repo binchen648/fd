@@ -1,11 +1,15 @@
 # FD Phase 3 Control Epoch 08
 
 - Control Epoch: `FD-P3-2026-09-23-08`
-- Status: `PLANNER_PUBLISHED`
+- Status: `PLANNER_CANDIDATE_WAIT_MAIN_GOVERNANCE_PR`
 - Effective date: `2026-10-08`
 - Authoritative main: `7072da3f5ad5b6ae77c5fb4b7eb40634c29039b0`
 - Previous control: Epoch 07; superseded prospectively, historical evidence preserved.
 - Trigger: PR #543 governance contract entered main; ownership and dependency ordering are updated to separate CI reconciliation from runtime implementation.
+
+This Planner commit is an authorization candidate on a side branch. Epoch 08
+becomes authoritative for mainline promotion only after the control transition
+and the task-index pointer are merged into main through a governance PR.
 
 ## Authority And Accounting
 
