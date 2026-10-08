@@ -9565,14 +9565,14 @@ Affected shared-regression closure:
 - the failing state contained no Goetia player and no linked-auxiliary suite state;
 - exact culprit was the historical Caren `definition_resource_binding:provisioned` marker whose legitimate source had been played from `skill` to `field`;
 - execution-time provider rules remain unchanged;
-- one identity-free restore-only `persistedProvisionProvider` now accepts exact historical provision sources in `skill` or legally played `field`, while forged `hand` remains rejected;
+- one identity-free restore-only `persistedProvisionProvider` now accepts exact historical provision sources in `skill` or legally played `field`, including after the exact controller is eliminated, while live execution remains active-controller-only and forged `hand` remains rejected;
 - shared repair contributes exactly `+0` migration credit and is explicitly included for fresh REVIEW.
 
 Verification:
 - Goetia owner-complete: `5/5 PASS`;
 - accepted Goetia readiness: `4/4 PASS`;
 - Caren readiness including new restore regression: `13/13 PASS`;
-- selected affected aggregate: `131/131 PASS` across nine files;
+- successor affected aggregate: `223/223 PASS` across 24 files with file parallelism disabled;
 - typecheck PASS;
 - content validate PASS: `25 masters / 19 servants / 20 events / 0 blocking issues`;
 - generated determinism PASS:
@@ -9585,6 +9585,15 @@ Verification:
 - Goetia development image exists;
 - repository-wide source-assets still reproduces exactly `93` historical missing-image blockers with no Goetia hit and is not represented as PASS;
 - detailed report: `docs/reports/2026-10-08-p3-s-owner-goetia-complete-migration-result.md`.
+
+Fresh Reviewer revision closure:
+- ReviewJobKey `pr552:bc7283687cd0f7cbda2946bdbb82f8180e7ca6fd:blocked-retry-5` returned `MIGRATION_NEEDS_REVISION`;
+- canonical same-attempt evidence relay: `https://github.com/binchen648/fd/pull/552#issuecomment-6055566625`;
+- R1/R2 were stale fixed-seed fixture assumptions in Irisviel and Maiya/Kayneth regressions; both now use a shared deterministic character fixture against the current canonical pool and pass `4/4 + 5/5`;
+- full regression investigation also stabilized other pool-sensitive fixtures and historical pack-end assumptions, corrected Golden Flow so a Master provider cannot be repurposed as a synthetic attack, and closed the eliminated-controller historical provision restore defect without relaxing live provider authority;
+- serial broad rerun: `272 files / 1043 tests PASS`; `7 files / 16 tests` remain as Base-existing convergence debt with no Exact-Base-to-current test or related-runtime delta;
+- candidate-induced broad-regression failures after the revision: `0`;
+- strict accounting remains `267/944`, remaining `677` until a fresh successor Candidate receives `MIGRATION_ACCEPTED`.
 
 Review/accounting gate:
 - freeze one owner Candidate from exact Base `8b3576f4b9e9f73dcc20969e5979494e097083a8`;

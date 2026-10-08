@@ -148,6 +148,9 @@ describe('P3 Caren owner-readiness complete identity-free gap set', () => {
     };
     expect(isDeferredAbilityRuntimeProvenanceValidForRestore(state)).toBe(true);
 
+    state.players[0]!.status = 'eliminated';
+    expect(isDeferredAbilityRuntimeProvenanceValidForRestore(state)).toBe(true);
+
     source.zone = 'hand';
     source.visibility = { scope: 'owner_only', ownerPlayerId: 'p1' };
     expect(isDeferredAbilityRuntimeProvenanceValidForRestore(state)).toBe(false);

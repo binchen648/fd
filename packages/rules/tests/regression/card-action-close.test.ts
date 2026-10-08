@@ -3,9 +3,12 @@ import { describe, expect, it } from 'vitest';
 import { createMatchSession } from '../../src/match-session';
 import { isCloseSourceCardOnPlayedTrigger, processAbilityEvent } from '../../src/ability/interpreter';
 import type { AuthoringAbility } from '../../src/ability/types';
+import { SEVEN_HUMAN_PLAYER_IDS, seedIncludingServant } from './deterministic-character-fixture';
+
+const ARTORIA_ALT_FIXTURE_SEED = seedIncludingServant('servant.artoria-alt');
 
 function prepareCurse() {
-  const session = createMatchSession({ seed: 20260907, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+  const session = createMatchSession({ seed: ARTORIA_ALT_FIXTURE_SEED, humanPlayerIds: SEVEN_HUMAN_PLAYER_IDS });
   const curse = session.state.cards.find((candidate) => candidate.definitionId === 'servant.artoria-alt.skill.sc-artoria-alt-2')!;
   expect(curse).toBeTruthy();
   const player = session.state.players.find((candidate) => candidate.id === curse.controllerPlayerId)!;

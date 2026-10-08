@@ -55,7 +55,7 @@ describe('P3 Akiha owner-complete migration',()=>{
     expect(card('master.akiha.skill.s2').abilities[0]!.effects[0]).toMatchObject({threshold:15,lockValue:15,removeAllCommandSeals:true,manaGainMultiplier:2,vpGainNumerator:1,vpGainDenominator:2,vpRounding:'floor'});
   });
   it('integrates Akiha exactly once immediately after Akasha',()=>{
-    const pack=JSON.parse(readFileSync('data/packs/fd-playtest-v1/pack.json','utf8')); expect(pack.authoringMasterFiles.filter((x:string)=>x===path)).toHaveLength(1); expect(pack.authoringMasterFiles.slice(-2)).toEqual(['data/authoring/masters/master.akasha.json',path]);
+    const pack=JSON.parse(readFileSync('data/packs/fd-playtest-v1/pack.json','utf8')); expect(pack.authoringMasterFiles.filter((x:string)=>x===path)).toHaveLength(1); const index=pack.authoringMasterFiles.indexOf(path); expect(index).toBeGreaterThan(0); expect(pack.authoringMasterFiles[index-1]).toBe('data/authoring/masters/master.akasha.json');
   });
   it('drives the accepted Bloodlust runtime through canonical Akiha definitions',()=>{
     const {state,ids}=runtimeSetup(); expect(bloodlustValue(state,'p1',RESOURCE)).toBe(0);

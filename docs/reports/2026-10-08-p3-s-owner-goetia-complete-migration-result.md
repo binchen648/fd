@@ -66,16 +66,48 @@ Reproduction:
 The Candidate therefore includes one identity-free, restore-only repair in
 `packages/rules/src/ability/definition-resource-binding-capability.ts`:
 - execution-time `sourceProvider` is unchanged;
-- new `persistedProvisionProvider` accepts only exact owned active-controller Master-skill provision sources in `skill` or legally played `field`;
+- new `persistedProvisionProvider` accepts only exact owned-controller Master-skill provision sources in `skill` or legally played `field`; historical provenance remains valid after the controller is eliminated, while execution-time providers still require an active controller;
 - exact accepted provision ability and non-face-down source remain mandatory;
 - `hand`, deck, discard, attack-area and unrelated sources remain rejected;
 - no Caren or Goetia identity/name/text routing is added.
 
 Focused regression added to the existing Caren readiness suite proves:
 - exact game-start provision history remains restore-valid after its exact source is legally played to `field`;
+- the same exact historical provision remains restore-valid after the controller is eliminated;
 - changing that source to forged `hand` state remains restore-invalid.
 
 This is the same governance pattern already used by prior owner transactions whose affected regressions exposed identity-free shared restore defects (for example Amakusa and Araya): the shared repair is disclosed, independently reviewable, and adds **zero** migration credit.
+
+## Fresh Reviewer revision closure
+
+Fresh ReviewJobKey `pr552:bc7283687cd0f7cbda2946bdbb82f8180e7ca6fd:blocked-retry-5` returned
+`MIGRATION_NEEDS_REVISION`. The completed attempt's 403 evidence was relayed without re-review and is canonically anchored at:
+`https://github.com/binchen648/fd/pull/552#issuecomment-6055566625`.
+
+The Reviewer independently reproduced two blocking groups:
+
+- R1: `card-zone-core-direct-action.test.ts` had 3 failures because hard-coded seed `20260909` no longer selected Irisviel after the canonical Master pool grew to 25.
+- R2: `fb2-fixed-controller-mana-cost.test.ts` had 4 failures because hard-coded seed `20260916` no longer selected Maiya/Kayneth.
+
+FORMAL then ran the entire regression directory rather than stopping at R1/R2. Candidate-induced failures were closed in one revision:
+
+- added shared test-only `deterministic-character-fixture.ts`, which searches the current canonical pool for a deterministic seed satisfying explicit Master/Servant/player/situation requirements;
+- migrated the affected Irisviel, Maiya, Kayneth, Shinji, Achilles, Artoria Alter and golden-card fixtures away from stale fixed-seed character assumptions;
+- stabilized historical owner pack tests so they verify unique registration plus intended local predecessor/successor ordering instead of assuming an old owner remains the permanent end of the pack;
+- fixed Golden Flow 2 so its synthetic mutable attack must be a real `basic_attack` from hand/deck and can no longer overwrite a Master skill/provider such as Goetia s1;
+- diagnosed the Olga/B17 restore failure to Caules-Yggdmillennia's exact historical `definition_resource_binding:provisioned` markers after their controller was legitimately eliminated;
+- refined only `persistedProvisionProvider` restore validation to retain exact provision history for eliminated controllers. The live execution `sourceProvider` remains active-only; owner/controller/master/zone/exact provision ability/non-face-down checks remain intact.
+
+Direct Reviewer findings now pass: R1 `4/4`, R2 `5/5`.
+
+Serial repository regression rerun after the revision:
+- `272` files / `1043` tests PASS;
+- `7` files / `16` tests remain FAIL as Base-existing convergence debt;
+- the remaining files are `fb2-saber-magic-resistance.test.ts`, `p3-akiha-owner-readiness-capability.test.ts`, two Tamamo readiness/owner tests, `replay.test.ts`, `seeded-scenario.test.ts`, and `shinto-hidden-event-scenario.test.ts`;
+- none of those seven test files changed from Exact Base; their related Bloodlust/Tamamo/Magic-Resistance/replay/simulate/seeded/combat runtime sources also have zero Base-to-current delta;
+- the synthetic Akiha/Saber/Tamamo suites do not depend on the new Goetia canonical pool, while the replay/seeded family is the already-recorded no-AbilityRuntime fixture debt. The earlier Caules-Y readiness report explicitly records `Ability runtime is not initialized` as unrelated convergence debt.
+
+Candidate-induced broad-regression failures after revision: **0**.
 
 ## Verification
 
@@ -96,17 +128,9 @@ Caren shared restore regression:
 - full Caren readiness suite now `13/13 PASS`;
 - the new field-provider restore case is included.
 
-Selected affected aggregate:
-- **`131/131 PASS` across 9 files**:
-  - Goetia owner: 5;
-  - Goetia readiness: 4;
-  - Caren readiness: 13;
-  - required additional play: 8;
-  - Ruler / Command-Seal subsystem: 13;
-  - master ascension unlock: 5;
-  - complex skills: 38;
-  - MatchSession gameplay regressions: 11;
-  - MatchSession: 34.
+Successor affected aggregate:
+- **`223/223 PASS` across 24 files** with file parallelism disabled;
+- includes Goetia owner/readiness, Caren restore, Reviewer R1/R2, all deterministic character-fixture migrations, battle-loss resource/reveal, card add/close, game-start rules, golden-card/Golden Flow 2, Olga B17 restore, the five stabilized historical owner pack-order suites, required additional play, Ruler/Command-Seal, master ascension unlock, complex skills, MatchSession gameplay regressions, and MatchSession.
 
 Static/content gates:
 - `npm run typecheck`: PASS;
@@ -130,6 +154,8 @@ External automation audit:
 
 Scratch evidence:
 - `E:\Codex\FD\.fd-runner-review-evidence\formal-goetia-owner-8b3576f4-nonce112e95c077f815ee099968484eaeba3f`.
+- successor verification: `E:\Codex\FD\.fd-runner-review-evidence\formal-pr552-successor-preflight`;
+- serial broad regression JSON: `E:\Codex\FD\.fd-runner-review-evidence\formal-pr552-revision-broad\regression-results-serial.json`.
 
 ## Accounting / review gate
 

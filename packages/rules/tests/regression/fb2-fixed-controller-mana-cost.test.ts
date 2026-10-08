@@ -7,6 +7,10 @@ import {
 } from '../../src/ability/interpreter';
 import { createMatchSession } from '../../src/match-session';
 import type { AuthoringAbility, EffectContext } from '../../src/ability/types';
+import { SEVEN_HUMAN_PLAYER_IDS, seedIncludingMaster } from './deterministic-character-fixture';
+
+const MAIYA_FIXTURE_SEED = seedIncludingMaster('master.maiya');
+const KAYNETH_FIXTURE_SEED = seedIncludingMaster('master.kayneth');
 
 function fixedCostAbility(): AuthoringAbility {
   return {
@@ -29,7 +33,7 @@ function fixedCostAbility(): AuthoringAbility {
 }
 
 function prepareMaiya() {
-  const session = createMatchSession({ seed: 20260916, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+  const session = createMatchSession({ seed: MAIYA_FIXTURE_SEED, humanPlayerIds: SEVEN_HUMAN_PLAYER_IDS });
   const pairing = session.pairings.find((candidate) => candidate.master.id === 'master.maiya')!;
   const player = session.state.players.find((candidate) => candidate.id === pairing.playerId)!;
   player.locationId = 'recon';
@@ -45,7 +49,7 @@ function prepareMaiya() {
 }
 
 function prepareVolumen(mana = 5) {
-  const session = createMatchSession({ seed: 20260916, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+  const session = createMatchSession({ seed: KAYNETH_FIXTURE_SEED, humanPlayerIds: SEVEN_HUMAN_PLAYER_IDS });
   const pairing = session.pairings.find((candidate) => candidate.master.id === 'master.kayneth')!;
   const player = session.state.players.find((candidate) => candidate.id === pairing.playerId)!;
   player.mana = mana;

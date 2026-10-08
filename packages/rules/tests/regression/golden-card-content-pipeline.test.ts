@@ -6,6 +6,7 @@ import { compileLoadedPlaytestPack, loadPlaytestContentPack } from '@fd/content'
 import contentLibrary from '../../../../data/generated/fd-playtest-v1.content-library.json';
 import { compileExecutableCardPack } from '../../src/ability/executable-card-pack';
 import { createMatchSession } from '../../src/match-session';
+import { SEVEN_HUMAN_PLAYER_IDS, seedIncludingPairings } from './deterministic-character-fixture';
 
 const goldenCardIds = [
   'servant.artoriac.skill.sc-artoriac-1',
@@ -15,8 +16,14 @@ const goldenCardIds = [
 
 type GoldenCardId = typeof goldenCardIds[number];
 
+const GOLDEN_FIXTURE_SEED = seedIncludingPairings([
+  { servantId: 'servant.artoriac' },
+  { servantId: 'servant.ereshkigal' },
+  { servantId: 'servant.artoria-alt' },
+]);
+
 function prepareGoldenCard(cardId: GoldenCardId, mana: number) {
-  const session = createMatchSession({ seed: 20260907, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+  const session = createMatchSession({ seed: GOLDEN_FIXTURE_SEED, humanPlayerIds: SEVEN_HUMAN_PLAYER_IDS });
   const card = session.state.cards.find((candidate) => candidate.definitionId === cardId)!;
   const player = session.state.players.find((candidate) => candidate.id === card.controllerPlayerId)!;
   const runtime = session.state.abilityRuntime!;

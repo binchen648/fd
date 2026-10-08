@@ -4,11 +4,13 @@ import { describe, expect, it } from 'vitest';
 import type { AuthoringAbility } from '../../src/ability/types';
 import * as rules from '../../src/index';
 import { createSeededGameState } from '../../src/tools/seeded-state';
+import { seedIncludingServant } from './deterministic-character-fixture';
 
 const raw = JSON.parse(readFileSync('data/authoring/servants/servant.achilles.json', 'utf8'));
 const CARD_ID = 'servant.achilles.skill.sc-achilles-1';
 const ABILITY_ID = 'sc-achilles-1.achilles-heel';
 const SOURCE_ID = 'b16-achilles-skill';
+const ACHILLES_FIXTURE_SEED = seedIncludingServant('servant.achilles');
 
 function synthetic(): AuthoringAbility {
   return {
@@ -64,7 +66,7 @@ function activateAttack(session: ReturnType<typeof rules.createMatchSession>, ow
 }
 
 function productionSession() {
-  const session = rules.createMatchSession({ seed: 20260904, humanPlayerId: 'p3', humanPlayerIds: ['p3'] });
+  const session = rules.createMatchSession({ seed: ACHILLES_FIXTURE_SEED, humanPlayerId: 'p3', humanPlayerIds: ['p3'] });
   const achillesId = session.pairings.find((pairing) => pairing.servant.id === 'servant.achilles')?.playerId;
   if (!achillesId) throw new Error('Production fixture must contain servant.achilles');
   const opponentId = session.state.players.find((player) => player.id !== achillesId)?.id;

@@ -88,7 +88,7 @@ function sourceProvider(state: GameState, sourceCardId: string, abilityId: strin
 function persistedProvisionProvider(state: GameState, sourceCardId: string, abilityId: string): { source: GameState['cards'][number]; ability: AuthoringAbility; controllerId: PlayerId } | undefined {
   const source = state.cards.find((entry) => entry.instanceId === sourceCardId); if (!source) return undefined;
   const def = runtime(state).pack.cards[source.definitionId]; if (!def || def.cardType !== 'master_skill') return undefined;
-  const controller = state.players.find((entry) => entry.id === source.controllerPlayerId && entry.status === 'active');
+  const controller = state.players.find((entry) => entry.id === source.controllerPlayerId);
   if (!controller || source.ownerPlayerId !== controller.id || !source.definitionId.startsWith(`${controller.masterCardId}.skill.`) ||
       !['skill', 'field'].includes(source.zone)) return undefined;
   const stateEntry = runtime(state).cardState[source.instanceId]; if (stateEntry?.faceDown === true) return undefined;
