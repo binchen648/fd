@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "fd-phase3-process-governance-attestation-v1",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "taskId": "P3-E08-G-CONTROL-PUBLICATION",
+  "reviewerRole": "Codex G / Promotion Governance Owner",
+  "identity": "github:binchen648",
+  "baseSha": "7072da3f5ad5b6ae77c5fb4b7eb40634c29039b0",
+  "reviewedCandidateSha": "6af1ba28bab02227aba4300dd0a797bb9d473d8a",
+  "reviewMode": "READ_ONLY_SOURCE_CANDIDATE",
+  "changedPaths": [
+    "docs/agents/FD-P3-CONTROL-EPOCH-07.md",
+    "docs/agents/FD-P3-CONTROL-EPOCH-08.md",
+    "docs/agents/PHASE3-TASK-INDEX.md",
+    "docs/agents/manifests/governance/P3-E08-CONTROL-TRANSITION.json",
+    "docs/reports/2026-10-08-p3-e08-ci-01-epoch-transition.md"
+  ],
+  "verification": {
+    "directParentMatches": true,
+    "exactSourceDeltaPreserved": true,
+    "pr543MergeMatches": true,
+    "baseChecks": "build/test/deploy/policy SUCCESS",
+    "transitionJson": "VALID",
+    "diffCheck": "PASS",
+    "taskIndexEpoch": "FD-P3-2026-09-23-08",
+    "humanMergeAuthorization": "User explicitly authorized creation and merge after successful review in this chat",
+    "publicationPendingFields": "Historical pre-publication snapshot; GitHub final-head checks and merge object establish completion",
+    "authoritativeMainMeaning": "Pinned pre-publication baseline"
+  },
+  "findings": [],
+  "verdict": "GOVERNANCE_CONTRACT_PASS",
+  "runtimeChanged": false,
+  "authoringChanged": false,
+  "creditDelta": 0,
+  "gateC": "NOT_VERIFIED",
+  "releaseReady": false
+}
