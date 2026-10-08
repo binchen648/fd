@@ -9466,3 +9466,66 @@ Review gate:
 - lawful FORMAL accounting credits exactly six newly materialized identities: `261/944 + 6 = 267/944`, remaining `677`;
 - acceptance synchronization report: `docs/reports/2026-10-08-p3-a-owner-fujino-acceptance-synchronization.md`;
 - Fujino is formally closed; under `fd.owner-complete@1.1.0`, FORMAL now derives the next owner and its complete readiness/capability gap set mechanically from this acceptance-sync Base and the frozen roster, with no Helper dependency.
+
+## TASK P3-B-GOETIA-OWNER-READINESS-CAPABILITY
+
+Owner: FORMAL
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Classification: zero-credit owner-local readiness / capability closure for `master.goetia`
+
+Exact Base:
+- `d93845a5b4bb8be08a540d96759bdb754756765b` — accepted Fujino owner-migration synchronization.
+
+Frozen owner scope: exactly `3` identities:
+- `master.goetia.skill.ascension` — 冠位时间神殿
+- `master.goetia.skill.s1` — 集体意识
+- `master.goetia.skill.s2` — 魔神柱
+
+Mechanical Base state:
+- no canonical Goetia authoring consumer materialization;
+- no Goetia active-pack registration;
+- current canonical consumer materialization remains exactly `0/3`;
+- strict formal accounting starts and remains `267/944`, remaining `677`;
+- readiness grants exactly `+0` migration credit.
+
+Complete owner-local readiness gap set closed in one bounded transaction:
+- exact identity-free linked physical auxiliary-suite setup and authenticated state;
+- seven physical linked members, zero ordinary Command Seals, round-end upkeep/removal/elimination;
+- append-only/same-batch cost authority and immutable printed Power;
+- Phenex remove-other-for-6-mana;
+- Forneus combat close/shuffle/play/action-grant flow;
+- Flauros preparation/outpost round Power;
+- Zepar battle-loss reward/upkeep skip;
+- Raum battle-end recon return and Action discard/move;
+- Barbatos 4-mana Command-Seal substitution plus **Action-phase** round play exceptions;
+- ascension activation, member +4 play Power, and preparation/outpost 1-mana redraw;
+- fail-closed pending-decision, round-Power, combat-action-grant, and ascension restore provenance;
+- loader/interpreter/runtime integration remains owner-name/Goetia-name independent.
+
+Implementation findings closed before Candidate freeze:
+- fixed `round_play_exceptions` from incorrect preparation binding to exact Action-phase binding while preserving Flauros/ascension preparation windows;
+- fixed response-window gateway so exact `opens` is allowed for Zepar/Raum responses without broadening their exact trigger/open pairs;
+- fixed loader scanner so accepted `linked_auxiliary_suite` internal `op` values are not misclassified as generic formula operators, while whole-ability gateway validation remains mandatory;
+- added only the explicitly required linked-suite mechanic fields to the generic scanner allowlist.
+
+Verification:
+- Goetia readiness focused regression: `4/4 PASS`;
+- selected affected regressions: `113/113 PASS` across seven files;
+- typecheck PASS;
+- content validation PASS: `24 masters / 19 servants / 20 events / 0 blocking issues`;
+- generated determinism PASS:
+  - content `a2fae3521b495f0e577a0cef558ef3f4c6c134156c13013e627db76f518f07e9`
+  - fixture `87542f5da07effcf6bba03efd963ae964dde99af4f6c3c63352225e870c96e6c`
+  - evidence `a6f47f6b2ed85aa82a7322dcecefcb890db86a2b265854aff5ae379cf03cda88`
+- `git diff --check` PASS;
+- external coverage: `archives=128 cards=295 abilities=517 compiledCards=233 compiledCharacters=43 blockingIssues=0 newRuntimeSemanticRouted=22 legacyExecuteAbility=3 legacyResolveEffect=165 dualRuntime=0 pilotAllowlist=0 notClassifiable=327 taxonomyWarnings=338`;
+- external audit: `legacyResolveEffect=165 legacyExecuteAbility=3 notClassifiable=327 promotionFindings=20`;
+- no `data/authoring/**`, `data/packs/**`, or `data/phase3/**` delta;
+- detailed report: `docs/reports/2026-10-08-p3-b-goetia-owner-readiness-complete-gap-set.md`.
+
+Review gate:
+- freeze one zero-credit Candidate from exact Base `d93845a5b4bb8be08a540d96759bdb754756765b`;
+- one PR and one fresh independent exact Base/Candidate readiness review;
+- no A-sync/accounting credit before accepted readiness evidence;
+- accepted readiness remains `267/944`, remaining `677`, then releases `P3-S-OWNER-GOETIA-COMPLETE-MIGRATION`;
+- only later fresh `MIGRATION_ACCEPTED` plus FORMAL A-sync may credit exact `+3`: `267/944 -> 270/944`, remaining `674`.
