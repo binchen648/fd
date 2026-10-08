@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "fd-phase3-control-transition-v1",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "previousEpoch": "FD-P3-2026-09-23-07",
+  "effectiveDate": "2026-10-08",
+  "authoritativeMain": "7072da3f5ad5b6ae77c5fb4b7eb40634c29039b0",
+  "status": "PLANNER_PUBLISHED",
+  "trigger": "PR_543_MERGED_AND_WORKSTREAM_DEPENDENCIES_UPDATED",
+  "governanceSourcePr": 543,
+  "activeTask": {
+    "taskId": "P3-E08-CI-01",
+    "owner": "A",
+    "implementationSha": "b5a76f8d2c8a742c2b4d8910c6c77ed00d7461e6",
+    "evidenceCarrierSha": null,
+    "state": "AUTHORIZED_TO_GENERATE_EVIDENCE",
+    "reviewerVerdict": "NOT_STARTED",
+    "runtimeBlocking": false,
+    "promotionEligible": false
+  },
+  "rp00Reconciliation": {
+    "state": "REVIEW_RECONCILIATION_REQUIRED",
+    "runtimeBlocking": false,
+    "promotionEligible": false
+  },
+  "runtimeReservation": {
+    "rp00": "RELEASED",
+    "b11": "PREPARE_ONLY_PENDING_EXACT_DISPATCH"
+  },
+  "credit": {
+    "frozenAccounting": "111/944",
+    "transitionDelta": 0,
+    "gateC": "NOT_VERIFIED",
+    "releaseReady": false
+  }
+}
