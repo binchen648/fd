@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "fd-phase3-ci-diagnosis-v2",
+  "taskId": "P3-E08-CI-01",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "owner": "Codex A",
+  "status": "READY_FOR_REVIEW",
+  "baseSha": "7072da3f5ad5b6ae77c5fb4b7eb40634c29039b0",
+  "implementationSha": "b5a76f8d2c8a742c2b4d8910c6c77ed00d7461e6",
+  "evidenceCarrierBinding": {
+    "kind": "CONTAINING_GIT_COMMIT",
+    "shaLocation": "POST_COMMIT_EXACT_SHA_HANDOFF",
+    "expectedDirectParentSha": "b5a76f8d2c8a742c2b4d8910c6c77ed00d7461e6"
+  },
+  "plannerAuthorization": {
+    "publicationCommit": "e34642c51422d4580a5937225627edf30341b0cf",
+    "publicationRef": "origin/codex/planner-p3-e07-control",
+    "dispatchPath": "docs/agents/P3-E08-CI-01-EVIDENCE-DISPATCH.md"
+  },
+  "historicalSource": {
+    "implementationSha": "0e6acd0c4017a00f689c422260808e09b13225ed",
+    "evidenceSha": "13b8096b66a430c8327d4e36ac07e735a21a10b2",
+    "artifactPath": "artifacts/phase3-e08-ci-01.json",
+    "historicalFullSuite": { "filesPassed": 184, "testsPassed": 1411, "elapsedMs": 26962 },
+    "reportedTimeout": {
+      "testedSha": "2ef7e2994919ed60858c19696307d0140a3b122e",
+      "source": "REVIEWER_REPORTED_FAILURE_RECORDED_IN_SOURCE_EVIDENCE",
+      "command": "npm run test:ci",
+      "testPath": "packages/rules/tests/regression/complex-skills-regression.test.ts:1547",
+      "elapsedMs": 5463,
+      "timeoutMs": 5000
+    },
+    "currentMainAcceptanceInherited": false
+  },
+  "diagnosis": {
+    "classification": "TEST_TIMEOUT_UNDER_FULL_SUITE_LOAD",
+    "confidence": "SUPPORTED_DIAGNOSIS",
+    "currentMainTimeoutReproduced": false,
+    "runtimePerformanceAudited": false,
+    "reason": "The historical reported run exceeded the default timeout; current-main isolated and full-suite runs pass, with full-suite load increasing the target duration from 1452ms to 3883ms. This supports load-sensitive timeout headroom as the diagnosis without establishing a runtime performance audit."
+  },
+  "minimumFix": {
+    "path": "packages/rules/tests/regression/complex-skills-regression.test.ts",
+    "testName": "keeps event and situation modifier sources in three-round MatchSession battle breakdown logs",
+    "timeoutBeforeMs": 5000,
+    "timeoutAfterMs": 15000,
+    "changedLines": "single test closing invocation",
+    "assertionsChanged": false,
+    "globalTimeoutChanged": false,
+    "runtimeChanged": false
+  },
+  "verification": {
+    "date": "2026-10-08",
+    "timezone": "Asia/Shanghai",
+    "commands": [
+      { "command": "npm ci", "testedSha": "7072da3f5ad5b6ae77c5fb4b7eb40634c29039b0", "exitCode": 0, "result": "PASS; 239 packages added; npm audit reported 12 advisories" },
+      { "command": "npx vitest run packages/rules/tests/regression/complex-skills-regression.test.ts", "testedSha": "7072da3f5ad5b6ae77c5fb4b7eb40634c29039b0", "exitCode": 1, "result": "NO_TESTS_COLLECTED", "failureReason": "Clean worktree lacked @fd/content dist exports before TypeScript build", "resolvedBy": "npm run typecheck, matching the Test workflow setup order" },
+      { "command": "npm run typecheck", "testedSha": "7072da3f5ad5b6ae77c5fb4b7eb40634c29039b0", "exitCode": 0, "result": "PASS" },
+      { "command": "npx vitest run packages/rules/tests/regression/complex-skills-regression.test.ts", "testedSha": "7072da3f5ad5b6ae77c5fb4b7eb40634c29039b0", "exitCode": 0, "filesPassed": 1, "testsPassed": 37, "targetTestElapsedMs": 1452, "suiteTestElapsedMs": 1653, "wallElapsedMs": 5397 },
+      { "command": "npm run test:ci", "testedSha": "7072da3f5ad5b6ae77c5fb4b7eb40634c29039b0", "exitCode": 0, "filesPassed": 183, "testsPassed": 1409, "targetTestElapsedMs": 3883, "wallElapsedMs": 26404 },
+      { "command": "npx vitest run packages/rules/tests/regression/complex-skills-regression.test.ts", "testedSha": "b5a76f8d2c8a742c2b4d8910c6c77ed00d7461e6", "executionPoint": "identical test change immediately before implementation commit", "exitCode": 0, "filesPassed": 1, "testsPassed": 37, "targetTestElapsedMs": 1406, "suiteTestElapsedMs": 1594 },
+      { "command": "npm run typecheck", "testedSha": "b5a76f8d2c8a742c2b4d8910c6c77ed00d7461e6", "exitCode": 0, "result": "PASS" },
+      { "command": "npm run test:ci", "testedSha": "b5a76f8d2c8a742c2b4d8910c6c77ed00d7461e6", "exitCode": 0, "filesPassed": 183, "testsPassed": 1409, "targetTestElapsedMs": 3882, "wallElapsedMs": 24336 },
+      { "command": "git diff --check 7072da3f5ad5b6ae77c5fb4b7eb40634c29039b0..HEAD", "testedSha": "b5a76f8d2c8a742c2b4d8910c6c77ed00d7461e6", "exitCode": 0, "result": "PASS" }
+    ]
+  },
+  "accounting": { "mainCoverageCreditDelta": 0, "mainDenominatorDelta": 0, "migrationCreditDelta": 0 },
+  "gates": { "gateC": "NOT_VERIFIED", "githubRequiredChecks": "NOT_VERIFIED", "promotion": "NOT_VERIFIED", "longTermCIStability": "NOT_VERIFIED" },
+  "reviewerVerdict": "NOT_STARTED",
+  "knownLimitations": [
+    "Current-main timeout did not recur in the measured baseline run.",
+    "Local PASS results do not establish GitHub required-check or long-term stability acceptance.",
+    "The previously recorded 93 MISSING_IMAGE Release blocker and existing Gate C restrictions are retained; source assets were not re-audited by this task."
+  ]
+}
