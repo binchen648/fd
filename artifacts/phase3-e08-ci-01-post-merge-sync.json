@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "fd-phase3-post-merge-synchronization-v1",
+  "taskId": "P3-E08-CI-01-POST-MERGE-SYNC",
+  "sourceTaskId": "P3-E08-CI-01",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "owner": "Codex A",
+  "status": "READY_FOR_REVIEW",
+  "main": {
+    "observedMainSha": "fefcf4f7f5bd66ed7693889fb99391e6e7321016",
+    "bindingPolicy": "IMMUTABLE_HISTORICAL_COMMIT_NOT_MOVING_ORIGIN_MAIN",
+    "previousMainSha": "0a8853d4f7b671e955d9694f138daa6cc92b6e52"
+  },
+  "promotion": {
+    "pullRequest": 554,
+    "url": "https://github.com/binchen648/fd/pull/554",
+    "state": "MERGED",
+    "mergedAt": "2026-10-08T06:33:28Z",
+    "mergeCommit": "fefcf4f7f5bd66ed7693889fb99391e6e7321016",
+    "promotionHeadSha": "3b934ad90860fb122936be46b2ca1920ae5c388c",
+    "implementationSha": "b5a76f8d2c8a742c2b4d8910c6c77ed00d7461e6",
+    "reviewedEvidenceCarrierSha": "ff7abf7df6922247d2684d61eb7b0400373cacd4",
+    "scope": "SINGLE_TEST_LOCAL_TIMEOUT_CI_STABILITY_ONLY",
+    "sliceStatus": "PROMOTED_ON_MAIN",
+    "abilityPromotionGranted": false,
+    "checksEvidenceSource": "gh pr view 554 --json mergeCommit,headRefOid,baseRefOid,state,mergedAt,statusCheckRollup",
+    "checksScope": "PROMOTION_HEAD_PR_CHECK_ROLLUP",
+    "checks": [
+      { "name": "build", "conclusion": "SUCCESS", "url": "https://github.com/binchen648/fd/actions/runs/37725684071/job/113143185839" },
+      { "name": "test", "conclusion": "SUCCESS", "url": "https://github.com/binchen648/fd/actions/runs/37725684061/job/113143185872" },
+      { "name": "Phase 3 Promotion Lane / policy", "conclusion": "SUCCESS", "url": "https://github.com/binchen648/fd/actions/runs/37725684067/job/113143186110" }
+    ]
+  },
+  "reviewBindings": {
+    "reviewCommit": "d927b7a7fd2f191823eaa99e7d82586bcdeb89da",
+    "githubBindingCommit": "c3098230cdcc7e90ee0fdbe15659b0c8c6512104",
+    "reviewer": "github:binchen648",
+    "reviewedSha": "ff7abf7df6922247d2684d61eb7b0400373cacd4",
+    "verdict": "PASS",
+    "reviewThread": "https://github.com/binchen648/fd/pull/553#issuecomment-6051895413",
+    "artifacts": [
+      { "path": "artifacts/phase3-e08-ci-01.json", "sha256": "d533972a2ba41bba637231f5b738bcbd764026d2274a4c85ee60d9f555086398" },
+      { "path": "docs/reviews/phase3/P3-E08-CI-01-reviewer-a.json", "sha256": "a2d1bd72548804d577600926dda713793972bedb34b0638d536030a8667b072e" },
+      { "path": "docs/reviews/phase3/P3-E08-CI-01-reviewer-a-pr-binding.json", "sha256": "bdb145eca28b35644df819b1a7a2ae5f3f006efb99a4abc9258dc2a88cacd6a2" }
+    ]
+  },
+  "coverageRecount": {
+    "method": "buildCoverageFromArchives on each commit's Git authoring blobs; classifier and runtime input objects independently proven identical",
+    "classifierPath": "scripts/phase3-coverage.ts",
+    "countsAreRawClassificationNotMigrationAcceptance": true,
+    "sourceFingerprintBefore": "7239686f1a799c82029d383962a6674363eb1eb20b6ba399ed988f466e0a2fd0",
+    "sourceFingerprintAfter": "7239686f1a799c82029d383962a6674363eb1eb20b6ba399ed988f466e0a2fd0",
+    "archives": 127,
+    "cards": 169,
+    "abilities": 281,
+    "before": { "new": 22, "legacyResolve": 144, "legacyExecute": 3, "dual": 0, "notClassifiable": 112, "pilotAllowlist": 0 },
+    "after": { "new": 22, "legacyResolve": 144, "legacyExecute": 3, "dual": 0, "notClassifiable": 112, "pilotAllowlist": 0 },
+    "delta": { "new": 0, "legacyResolve": 0, "legacyExecute": 0, "dual": 0, "notClassifiable": 0, "pilotAllowlist": 0 },
+    "unchangedGitObjects": [
+      { "path": "data/authoring", "objectSha": "66a7746dea669e5d06261323fc489aeb798da16e" },
+      { "path": "data/packs", "objectSha": "8500f5ce85fef874f0e8325e5c5d2b4b91c9a9a8" },
+      { "path": "packages/content/src", "objectSha": "578877014dfa30200bb7fe44e9126a5e114fd646" },
+      { "path": "packages/rules/src", "objectSha": "b36d236faa7d51e85a6ecf069762a7394b0900c0" },
+      { "path": "scripts/phase3-coverage.ts", "objectSha": "ce6f84862de382703d6bfbf2940e535f1b238be3" },
+      { "path": "artifacts/phase3-skill-coverage.json", "objectSha": "fe46272be8ea328ba9ba88ad8f86186a3e94bf1d" }
+    ]
+  },
+  "accounting": { "coverageCreditDelta": 0, "migrationCreditDelta": 0, "denominatorDelta": 0, "acceptedIdentityListChanged": false },
+  "postMergeValidation": {
+    "mergeParentsAndAncestors": "PASS",
+    "reviewFieldsAndArtifactHashes": "PASS",
+    "independentBeforeAfterClassifierRecount": "PASS",
+    "runtimeAndAuthoringGitObjectsUnchanged": "PASS",
+    "runtimeTestsOnMergeCommit": "NOT_RERUN",
+    "reviewerIndependentTestsScope": "ff7abf7df6922247d2684d61eb7b0400373cacd4: focused 37/37; default CI 183 files / 1409 tests; typecheck PASS",
+    "supplementalCheckRunsApi": "TLS_HANDSHAKE_TIMEOUT_TWO_ATTEMPTS; PR head check rollup was retrieved successfully"
+  },
+  "retainedGates": {
+    "gateC": "NOT_VERIFIED",
+    "missingImageBlockers": 93,
+    "missingImageCountSource": "RETAINED_EXISTING_BLOCKER_NOT_REAUDITED",
+    "releaseGate": "BLOCKED",
+    "longTermCIStability": "NOT_VERIFIED"
+  },
+  "syncReviewerVerdict": "NOT_STARTED",
+  "nextStep": "Reviewer A exact-SHA review of this synchronization, then Planner disposition for A3 reconciliation"
+}
