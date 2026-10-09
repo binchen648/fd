@@ -3,13 +3,13 @@
   "source": "data/authoring/masters/master.irisviel.json",
   "cardId": "master.irisviel.skill.conversion-magic",
   "abilityId": "conversion-magic.preparation",
-  "claim": "Existing API behavior characterization; independent semantic expectation review pending",
+  "claim": "Binding ownership repaired after c0db16ae; malformed binding stays owned, exact validation rejects. Independent review pending",
   "vectors": [
     { "id": "canonical", "mutation": "none", "routeCandidate": true, "exactEligible": true },
     { "id": "renamed-identity", "mutation": "rename", "routeCandidate": true, "exactEligible": true },
     { "id": "owned-wrong-destination", "mutation": "deck", "routeCandidate": true, "exactEligible": false },
     { "id": "owned-wrong-source", "mutation": "discard", "routeCandidate": true, "exactEligible": false },
-    { "id": "unknown-binding", "mutation": "unknown-binding", "routeCandidate": false, "exactEligible": false },
+    { "id": "unknown-binding", "mutation": "unknown-binding", "routeCandidate": true, "exactEligible": false },
     { "id": "outside-window", "mutation": "action", "routeCandidate": false, "exactEligible": false },
     { "id": "extra-node", "mutation": "extra-node", "routeCandidate": false, "exactEligible": false }
   ]

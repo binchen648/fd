@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "fd-b11-binding-ownership-vectors-v1",
+  "taskId": "B11_CONVERSION_BINDING_OWNERSHIP_REPAIR",
+  "source": "data/authoring/masters/master.irisviel.json",
+  "sourceAbility": "conversion-magic.preparation",
+  "expectationReview": "PENDING",
+  "invariants": ["GameState", "cards", "mana", "events", "pending", "revision"],
+  "vectors": [
+    { "id": "unknown legacy binding", "routeCandidate": true, "exactEligible": false, "compileOutcome": "REJECT", "rejectionCode": "resolution_failed" },
+    { "id": "unknown typed binding", "routeCandidate": true, "exactEligible": false, "compileOutcome": "REJECT", "rejectionCode": "resolution_failed" },
+    { "id": "missing binding declaration", "routeCandidate": true, "exactEligible": false, "compileOutcome": "REJECT", "rejectionCode": "resolution_failed" },
+    { "id": "wrong result field", "routeCandidate": true, "exactEligible": false, "compileOutcome": "REJECT", "rejectionCode": "resolution_failed" },
+    { "id": "wrong result type", "routeCandidate": true, "exactEligible": false, "compileOutcome": "REJECT", "rejectionCode": "resolution_failed" },
+    { "id": "scalar instead of result binding", "routeCandidate": true, "exactEligible": false, "compileOutcome": "REJECT", "rejectionCode": "resolution_failed" },
+    { "id": "missing binding use", "routeCandidate": true, "exactEligible": false, "compileOutcome": "REJECT", "rejectionCode": "resolution_failed" }
+  ]
+}
