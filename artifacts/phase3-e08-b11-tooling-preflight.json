@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "fd-p3-preflight-result-v1",
+  "taskId": "P3-E08-B11-COMBINATION-READINESS",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "status": "FAIL",
+  "inputs": {
+    "testedCandidateSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+    "testedBaseSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+    "inputSha256": "499D8AED4DCED6D08914387D7CD00FED235EA08EBB4336EEF9235C92B791D9FE",
+    "contract": {
+      "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+      "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+      "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+      "section": "## phase3:preflight"
+    }
+  },
+  "executionMethod": "EXACT_COMMIT_GIT_BLOBS_AND_FULL_NAME_STATUS_DIFF",
+  "segments": [
+    {
+      "adapter": "b11-v1",
+      "role": "B",
+      "taskId": "P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY",
+      "testedBaseSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+      "testedCandidateSha": "7868b82949e3e17e64218755e0efe3ed478ff778",
+      "changedPaths": [
+        "data/authoring/servants/servant.kintoki.json",
+        "data/generated/fd-playtest-v1.content-library.json",
+        "docs/agents/manifests/tasks/P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY.json",
+        "e2e/fd-conversion-magic-core-primitive.spec.ts",
+        "e2e/fd-golden-eater-result-binding.spec.ts",
+        "e2e/support/prepare-conversion-magic-room.ts",
+        "e2e/support/prepare-golden-eater-room.ts",
+        "e2e/support/start-conversion-magic-fixture-server.ts",
+        "e2e/support/start-golden-eater-fixture-server.ts",
+        "packages/rules/src/ability/executable-card-pack.ts",
+        "packages/rules/src/ability/interpreter.ts",
+        "packages/rules/src/ability/loader.ts",
+        "packages/rules/src/ability/resolution-dataflow.ts",
+        "packages/rules/tests/regression/production-resolution-bridge.test.ts",
+        "packages/rules/tests/regression/resolution-dataflow.test.ts"
+      ]
+    },
+    {
+      "adapter": "shared-socket-v1",
+      "role": "B",
+      "taskId": "P3-E08-SHARED-SOCKET-LIFECYCLE-FIX",
+      "testedBaseSha": "7868b82949e3e17e64218755e0efe3ed478ff778",
+      "testedCandidateSha": "d13ab485dc54398581568a5a66bd696d4459862d",
+      "changedPaths": [
+        "apps/server/src/match-server.test.ts",
+        "apps/server/src/match-server.ts",
+        "docs/agents/manifests/tasks/P3-E08-SHARED-SOCKET-LIFECYCLE-FIX.json"
+      ]
+    },
+    {
+      "adapter": "a-coverage-v1",
+      "role": "A",
+      "taskId": "P3-E08-B11-COVERAGE-EVIDENCE-SYNC",
+      "testedBaseSha": "d13ab485dc54398581568a5a66bd696d4459862d",
+      "testedCandidateSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "changedPaths": [
+        "artifacts/phase3-e08-b11-coverage-sync.json",
+        "artifacts/phase3-skill-coverage.json",
+        "docs/reports/2026-10-09-p3-e08-b11-coverage-sync.md",
+        "scripts/phase3-e08-b11-coverage-sync.ts",
+        "scripts/tests/phase3-e06-post-merge-recount.test.ts",
+        "scripts/tests/phase3-e08-b11-coverage-sync.test.ts"
+      ]
+    }
+  ],
+  "changedPaths": [
+    "apps/server/src/match-server.test.ts",
+    "apps/server/src/match-server.ts",
+    "artifacts/phase3-e08-b11-coverage-sync.json",
+    "artifacts/phase3-skill-coverage.json",
+    "data/authoring/servants/servant.kintoki.json",
+    "data/generated/fd-playtest-v1.content-library.json",
+    "docs/agents/manifests/tasks/P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY.json",
+    "docs/agents/manifests/tasks/P3-E08-SHARED-SOCKET-LIFECYCLE-FIX.json",
+    "docs/reports/2026-10-09-p3-e08-b11-coverage-sync.md",
+    "e2e/fd-conversion-magic-core-primitive.spec.ts",
+    "e2e/fd-golden-eater-result-binding.spec.ts",
+    "e2e/support/prepare-conversion-magic-room.ts",
+    "e2e/support/prepare-golden-eater-room.ts",
+    "e2e/support/start-conversion-magic-fixture-server.ts",
+    "e2e/support/start-golden-eater-fixture-server.ts",
+    "packages/rules/src/ability/executable-card-pack.ts",
+    "packages/rules/src/ability/interpreter.ts",
+    "packages/rules/src/ability/loader.ts",
+    "packages/rules/src/ability/resolution-dataflow.ts",
+    "packages/rules/tests/regression/production-resolution-bridge.test.ts",
+    "packages/rules/tests/regression/resolution-dataflow.test.ts",
+    "scripts/phase3-e08-b11-coverage-sync.ts",
+    "scripts/tests/phase3-e06-post-merge-recount.test.ts",
+    "scripts/tests/phase3-e08-b11-coverage-sync.test.ts"
+  ],
+  "worktree": {
+    "dirty": false,
+    "statusEntries": [],
+    "inspectedWorkingTree": false,
+    "claim": "COMMIT_BASED_ONLY"
+  },
+  "issues": [
+    {
+      "code": "DEPENDENCY_PENDING",
+      "path": "7868b82949e3e17e64218755e0efe3ed478ff778",
+      "message": "P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY"
+    },
+    {
+      "code": "DEPENDENCY_PENDING",
+      "path": "d13ab485dc54398581568a5a66bd696d4459862d",
+      "message": "P3-E08-SHARED-SOCKET-LIFECYCLE-FIX"
+    },
+    {
+      "code": "DEPENDENCY_PENDING",
+      "path": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "message": "P3-E08-B11-COVERAGE-EVIDENCE-SYNC"
+    },
+    {
+      "code": "CHECK_PENDING",
+      "path": "b11-component-scenario",
+      "message": "npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/production-resolution-bridge.test.ts"
+    },
+    {
+      "code": "CHECK_PENDING",
+      "path": "socket-boundary",
+      "message": "npm run test --workspace @fd/server -- src/match-server.test.ts"
+    },
+    {
+      "code": "CHECK_PENDING",
+      "path": "browser",
+      "message": "npx playwright test e2e/fd-golden-eater-result-binding.spec.ts e2e/fd-conversion-magic-core-primitive.spec.ts --repeat-each=5"
+    }
+  ],
+  "acceptanceGranted": false,
+  "reviewReadyChanged": false,
+  "promotionPolicyChanged": false
+}

@@ -1,0 +1,807 @@
+{
+  "schemaVersion": "fd-p3-contract-parity-result-v1",
+  "taskId": "P3-E08-B11-CONTRACT-PARITY",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "status": "FAIL",
+  "testedCandidateSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+  "inputSha256": "BF19E09006E5E16E90CEB2DD67E8BF212BE9D6FF0F90207446257272933D8B36",
+  "premiseSha256": "EA1E993D9575D191582BE4D6D8DD90A8AE03903918C392C78EFE620E457AA1D4",
+  "fixtureBinding": {
+    "commit": "9a7122176dcc82827c27d2cf593c59633737eafe",
+    "path": "scripts/fixtures/phase3-b11-parity-fixtures.json",
+    "sha256": "E5EDA4F27959A447CD392B302351199F23868488A7B0821DF7814BD477835981"
+  },
+  "sourceObjects": {
+    "packages": "8346a5d5054c186e081afdfb478cf80159821efb",
+    "scripts/phase3-coverage.ts": "ce6f84862de382703d6bfbf2940e535f1b238be3"
+  },
+  "executionPerformed": true,
+  "executionMethod": "ISOLATED_SHARED_GIT_CLONE_REAL_API_SUBPROCESS",
+  "dependencyProvider": "LOCAL_NODE_MODULES; ALL_PACKAGE_SOURCE_AND_COVERAGE_GIT_OBJECTS_MATCH_CANDIDATE",
+  "results": [
+    {
+      "fixtureId": "golden-positive",
+      "family": "golden-eater",
+      "category": "positive",
+      "executedInputSha256": "00CFF4B1BBC1C6D2C80D6002C591AD114C3EAB0C8335944240A86F58522681CD",
+      "fixtureSha256": "F37ADCF1D7A24BB4E7F52920FB450E993D5851464DEFA50A329FD0E8774F8090",
+      "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+      "actualAbilityId": "sc-kintoki-3.golden-eater",
+      "normalizationReport": [],
+      "observations": {
+        "runtime": {
+          "evaluationStatus": "EVALUATED",
+          "routeCandidate": true,
+          "exactEligible": true
+        },
+        "compiler": {
+          "evaluationStatus": "EVALUATED_COMPILE_ONLY",
+          "compileOutcome": "ACCEPT",
+          "definitionHash": "68c578e7575ff649b1b54a6532b105e3e93d6e5f7f9910b607958bf54a4ea7ce",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Executable compiler exports compilation, not standalone route classification",
+            "exactEligible": "Compilation acceptance is not family eligibility"
+          }
+        },
+        "coverage": {
+          "evaluationStatus": "NOT_EVALUATED_EXACT_ELIGIBILITY_RAW_CLASSIFICATION_RETAINED",
+          "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+          "semanticRoutes": [],
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Coverage route taxonomy is broader than B11 structural ownership",
+            "exactEligible": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+          }
+        },
+        "inventory": {
+          "evaluationStatus": "NOT_EVALUATED",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "No B11 inventory classification API; Card Zone CLI belongs to a different family",
+            "exactEligible": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+          }
+        }
+      },
+      "apiCalls": {
+        "runtime": [
+          "isResultBindingProductionBridgeRouteCandidate",
+          "isResultBindingProductionBridgeSemantic"
+        ],
+        "compiler": [
+          "compileExecutableCardPack"
+        ],
+        "coverage": [
+          "classifyAbilityForCoverage"
+        ]
+      }
+    },
+    {
+      "fixtureId": "golden-renamed-identities",
+      "family": "golden-eater",
+      "category": "identity-variation",
+      "executedInputSha256": "187023B42705FEE558DFE25537141776FE85CD19BEEFC04EEA7450734B3AEF8C",
+      "fixtureSha256": "91EEC73F41A09ADA4A4ACF926A854BE894213891765EF7786DD0527E76E3FE59",
+      "actualCardId": "diagnostic.golden.source",
+      "actualAbilityId": "diagnostic.golden.binding",
+      "normalizationReport": [],
+      "observations": {
+        "runtime": {
+          "evaluationStatus": "EVALUATED",
+          "routeCandidate": true,
+          "exactEligible": true
+        },
+        "compiler": {
+          "evaluationStatus": "EVALUATED_COMPILE_ONLY",
+          "compileOutcome": "ACCEPT",
+          "definitionHash": "dd3085315d7ff94a2df75aeb85bb978d3bfedcf95fe18448f46f05e3ce9c7ff0",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Executable compiler exports compilation, not standalone route classification",
+            "exactEligible": "Compilation acceptance is not family eligibility"
+          }
+        },
+        "coverage": {
+          "evaluationStatus": "NOT_EVALUATED_EXACT_ELIGIBILITY_RAW_CLASSIFICATION_RETAINED",
+          "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+          "semanticRoutes": [],
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Coverage route taxonomy is broader than B11 structural ownership",
+            "exactEligible": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+          }
+        },
+        "inventory": {
+          "evaluationStatus": "NOT_EVALUATED",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "No B11 inventory classification API; Card Zone CLI belongs to a different family",
+            "exactEligible": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+          }
+        }
+      },
+      "apiCalls": {
+        "runtime": [
+          "isResultBindingProductionBridgeRouteCandidate",
+          "isResultBindingProductionBridgeSemantic"
+        ],
+        "compiler": [
+          "compileExecutableCardPack"
+        ],
+        "coverage": [
+          "classifyAbilityForCoverage"
+        ]
+      }
+    },
+    {
+      "fixtureId": "golden-invalid-result-field",
+      "family": "golden-eater",
+      "category": "owned-malformed",
+      "executedInputSha256": "3F97DC98F08B9C8F11F0008E860E6E8517F0E4B44FEC08B7CDEC709245F709F6",
+      "fixtureSha256": "3A4910CADA058DBDD3CCA727C870B6172F7B37DD2FB972794AA0484FBFE6A12E",
+      "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+      "actualAbilityId": "sc-kintoki-3.golden-eater",
+      "normalizationReport": [],
+      "observations": {
+        "runtime": {
+          "evaluationStatus": "EVALUATED",
+          "routeCandidate": true,
+          "exactEligible": false
+        },
+        "compiler": {
+          "evaluationStatus": "EVALUATED_COMPILE_ONLY",
+          "compileOutcome": "REJECT",
+          "error": "Error: Unsupported result-binding production bridge semantic shape: servant.kintoki.skill.sc-kintoki-3:sc-kintoki-3.golden-eater",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Executable compiler exports compilation, not standalone route classification",
+            "exactEligible": "Compilation rejection is not structural ownership"
+          }
+        },
+        "coverage": {
+          "evaluationStatus": "NOT_EVALUATED_EXACT_ELIGIBILITY_RAW_CLASSIFICATION_RETAINED",
+          "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+          "semanticRoutes": [],
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Coverage route taxonomy is broader than B11 structural ownership",
+            "exactEligible": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+          }
+        },
+        "inventory": {
+          "evaluationStatus": "NOT_EVALUATED",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "No B11 inventory classification API; Card Zone CLI belongs to a different family",
+            "exactEligible": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+          }
+        }
+      },
+      "apiCalls": {
+        "runtime": [
+          "isResultBindingProductionBridgeRouteCandidate",
+          "isResultBindingProductionBridgeSemantic"
+        ],
+        "compiler": [
+          "compileExecutableCardPack"
+        ],
+        "coverage": [
+          "classifyAbilityForCoverage"
+        ]
+      }
+    },
+    {
+      "fixtureId": "golden-missing-target-reference",
+      "family": "golden-eater",
+      "category": "owned-malformed",
+      "executedInputSha256": "069F52A99A7A465A66ED253CA2B0754981099860C0B953380F51073D5192390E",
+      "fixtureSha256": "8DFB9A350AA11E004B52DCF2020F7962517B2963D152781B8D9E5097372041C4",
+      "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+      "actualAbilityId": "sc-kintoki-3.golden-eater",
+      "normalizationReport": [],
+      "observations": {
+        "runtime": {
+          "evaluationStatus": "EVALUATED",
+          "routeCandidate": true,
+          "exactEligible": false
+        },
+        "compiler": {
+          "evaluationStatus": "EVALUATED_COMPILE_ONLY",
+          "compileOutcome": "REJECT",
+          "error": "Error: cards.servant.kintoki.skill.sc-kintoki-3.abilities.sc-kintoki-3.golden-eater[0].target references missing target missingTarget",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Executable compiler exports compilation, not standalone route classification",
+            "exactEligible": "Compilation rejection is not structural ownership"
+          }
+        },
+        "coverage": {
+          "evaluationStatus": "NOT_EVALUATED_EXACT_ELIGIBILITY_RAW_CLASSIFICATION_RETAINED",
+          "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+          "semanticRoutes": [],
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Coverage route taxonomy is broader than B11 structural ownership",
+            "exactEligible": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+          }
+        },
+        "inventory": {
+          "evaluationStatus": "NOT_EVALUATED",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "No B11 inventory classification API; Card Zone CLI belongs to a different family",
+            "exactEligible": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+          }
+        }
+      },
+      "apiCalls": {
+        "runtime": [
+          "isResultBindingProductionBridgeRouteCandidate",
+          "isResultBindingProductionBridgeSemantic"
+        ],
+        "compiler": [
+          "compileExecutableCardPack"
+        ],
+        "coverage": [
+          "classifyAbilityForCoverage"
+        ]
+      }
+    },
+    {
+      "fixtureId": "golden-wrong-payment",
+      "family": "golden-eater",
+      "category": "owned-malformed",
+      "executedInputSha256": "10F20904435EF48FB4A16B9FE4156B67A10BAF10F82F4B896B772934F8060219",
+      "fixtureSha256": "834DAE1A1024AAE35014849B7D0C9439C21681143870B729691C5F529E574A34",
+      "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+      "actualAbilityId": "sc-kintoki-3.golden-eater",
+      "normalizationReport": [],
+      "observations": {
+        "runtime": {
+          "evaluationStatus": "EVALUATED",
+          "routeCandidate": true,
+          "exactEligible": false
+        },
+        "compiler": {
+          "evaluationStatus": "EVALUATED_COMPILE_ONLY",
+          "compileOutcome": "REJECT",
+          "error": "Error: Unsupported result-binding production bridge semantic shape: servant.kintoki.skill.sc-kintoki-3:sc-kintoki-3.golden-eater",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Executable compiler exports compilation, not standalone route classification",
+            "exactEligible": "Compilation rejection is not structural ownership"
+          }
+        },
+        "coverage": {
+          "evaluationStatus": "NOT_EVALUATED_EXACT_ELIGIBILITY_RAW_CLASSIFICATION_RETAINED",
+          "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+          "semanticRoutes": [],
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Coverage route taxonomy is broader than B11 structural ownership",
+            "exactEligible": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+          }
+        },
+        "inventory": {
+          "evaluationStatus": "NOT_EVALUATED",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "No B11 inventory classification API; Card Zone CLI belongs to a different family",
+            "exactEligible": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+          }
+        }
+      },
+      "apiCalls": {
+        "runtime": [
+          "isResultBindingProductionBridgeRouteCandidate",
+          "isResultBindingProductionBridgeSemantic"
+        ],
+        "compiler": [
+          "compileExecutableCardPack"
+        ],
+        "coverage": [
+          "classifyAbilityForCoverage"
+        ]
+      }
+    },
+    {
+      "fixtureId": "golden-outside-combat",
+      "family": "golden-eater",
+      "category": "outside-scope",
+      "executedInputSha256": "C645B46ED4C55409145BF96C77CA18361F3DE686D4D291ABA0C85DBECDE7FC4A",
+      "fixtureSha256": "3414D442C0DDE20F48E3568A393ED2493E00FFB43B6719D213784A23B1DECE5B",
+      "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+      "actualAbilityId": "sc-kintoki-3.golden-eater",
+      "normalizationReport": [],
+      "observations": {
+        "runtime": {
+          "evaluationStatus": "EVALUATED",
+          "routeCandidate": false,
+          "exactEligible": false
+        },
+        "compiler": {
+          "evaluationStatus": "EVALUATED_COMPILE_ONLY",
+          "compileOutcome": "ACCEPT",
+          "definitionHash": "e6480d39cf61762cb56a19ed8f4b6a2e139102555561df9e1480ef33ff573a9d",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Executable compiler exports compilation, not standalone route classification",
+            "exactEligible": "Compilation acceptance is not family eligibility"
+          }
+        },
+        "coverage": {
+          "evaluationStatus": "NOT_EVALUATED_EXACT_ELIGIBILITY_RAW_CLASSIFICATION_RETAINED",
+          "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+          "semanticRoutes": [],
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Coverage route taxonomy is broader than B11 structural ownership",
+            "exactEligible": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+          }
+        },
+        "inventory": {
+          "evaluationStatus": "NOT_EVALUATED",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "No B11 inventory classification API; Card Zone CLI belongs to a different family",
+            "exactEligible": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+          }
+        }
+      },
+      "apiCalls": {
+        "runtime": [
+          "isResultBindingProductionBridgeRouteCandidate",
+          "isResultBindingProductionBridgeSemantic"
+        ],
+        "compiler": [
+          "compileExecutableCardPack"
+        ],
+        "coverage": [
+          "classifyAbilityForCoverage"
+        ]
+      }
+    },
+    {
+      "fixtureId": "conversion-positive",
+      "family": "conversion-magic",
+      "category": "positive",
+      "executedInputSha256": "D738802372E7C5EC44F95A20D94E62F553F79A73812CCE067E674FE9A92E6F89",
+      "fixtureSha256": "78767FCE3567090D1F75A1AA0702D9F6CE99B2A241E108B956F16A643778B9DA",
+      "actualCardId": "master.irisviel.skill.conversion-magic",
+      "actualAbilityId": "conversion-magic.preparation",
+      "normalizationReport": [],
+      "observations": {
+        "runtime": {
+          "evaluationStatus": "PARTIALLY_EVALUATED",
+          "routeCandidate": null,
+          "exactEligible": true,
+          "unavailable": {
+            "routeCandidate": "No exported structural routeCandidate API for Conversion Magic; private helper not copied"
+          }
+        },
+        "compiler": {
+          "evaluationStatus": "EVALUATED_COMPILE_ONLY",
+          "compileOutcome": "ACCEPT",
+          "definitionHash": "68c578e7575ff649b1b54a6532b105e3e93d6e5f7f9910b607958bf54a4ea7ce",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Executable compiler exports compilation, not standalone route classification",
+            "exactEligible": "Compilation acceptance is not family eligibility"
+          }
+        },
+        "coverage": {
+          "evaluationStatus": "NOT_EVALUATED_EXACT_ELIGIBILITY_RAW_CLASSIFICATION_RETAINED",
+          "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+          "semanticRoutes": [
+            "CARD_ZONE_CORE_DIRECT_ACTION:MOVE_ALL_REMAINING_PLUS_ADJUST_MANA"
+          ],
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Coverage route taxonomy is broader than B11 structural ownership",
+            "exactEligible": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+          }
+        },
+        "inventory": {
+          "evaluationStatus": "NOT_EVALUATED",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "No B11 inventory classification API; Card Zone CLI belongs to a different family",
+            "exactEligible": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+          }
+        }
+      },
+      "apiCalls": {
+        "runtime": [
+          "isCardZoneCoreDirectActionSemantic"
+        ],
+        "compiler": [
+          "compileExecutableCardPack"
+        ],
+        "coverage": [
+          "classifyAbilityForCoverage"
+        ]
+      }
+    },
+    {
+      "fixtureId": "conversion-renamed-identities",
+      "family": "conversion-magic",
+      "category": "identity-variation",
+      "executedInputSha256": "6604DCBB4502967C38E08CA29D49FD4CF3DE5B2ED2EBB5DC296AEEF86C38C630",
+      "fixtureSha256": "A117E613100356B0A92A3963998021B2A8C5593942F808C2FA099200ACB21B76",
+      "actualCardId": "diagnostic.conversion.source",
+      "actualAbilityId": "diagnostic.conversion.binding",
+      "normalizationReport": [],
+      "observations": {
+        "runtime": {
+          "evaluationStatus": "PARTIALLY_EVALUATED",
+          "routeCandidate": null,
+          "exactEligible": true,
+          "unavailable": {
+            "routeCandidate": "No exported structural routeCandidate API for Conversion Magic; private helper not copied"
+          }
+        },
+        "compiler": {
+          "evaluationStatus": "EVALUATED_COMPILE_ONLY",
+          "compileOutcome": "ACCEPT",
+          "definitionHash": "dbcf0948a9961cdbaf9f93cf4dbe03725acaffd954b52f60a18d5c320a47b292",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Executable compiler exports compilation, not standalone route classification",
+            "exactEligible": "Compilation acceptance is not family eligibility"
+          }
+        },
+        "coverage": {
+          "evaluationStatus": "NOT_EVALUATED_EXACT_ELIGIBILITY_RAW_CLASSIFICATION_RETAINED",
+          "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+          "semanticRoutes": [
+            "CARD_ZONE_CORE_DIRECT_ACTION:MOVE_ALL_REMAINING_PLUS_ADJUST_MANA"
+          ],
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Coverage route taxonomy is broader than B11 structural ownership",
+            "exactEligible": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+          }
+        },
+        "inventory": {
+          "evaluationStatus": "NOT_EVALUATED",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "No B11 inventory classification API; Card Zone CLI belongs to a different family",
+            "exactEligible": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+          }
+        }
+      },
+      "apiCalls": {
+        "runtime": [
+          "isCardZoneCoreDirectActionSemantic"
+        ],
+        "compiler": [
+          "compileExecutableCardPack"
+        ],
+        "coverage": [
+          "classifyAbilityForCoverage"
+        ]
+      }
+    },
+    {
+      "fixtureId": "conversion-unknown-binding",
+      "family": "conversion-magic",
+      "category": "owned-malformed",
+      "executedInputSha256": "512EFC758D535B6760A2FBF273F747246F0E60A7045CCD1130113E187B7BD3B8",
+      "fixtureSha256": "9ABB741DAA7952EE2E77E13B007D7270FEED25A3AE9D3C6A3582F0EEA225FC7F",
+      "actualCardId": "master.irisviel.skill.conversion-magic",
+      "actualAbilityId": "conversion-magic.preparation",
+      "normalizationReport": [
+        {
+          "cardId": "master.irisviel.skill.conversion-magic",
+          "abilityId": "conversion-magic.preparation",
+          "path": "effects[1].amount.var",
+          "status": "unsupported",
+          "reason": "Unbound server metric or variable: missingBinding",
+          "suggestedImplementation": "Add a validated handler and behavioral tests for this field before enabling automation."
+        }
+      ],
+      "observations": {
+        "runtime": {
+          "evaluationStatus": "PARTIALLY_EVALUATED",
+          "routeCandidate": null,
+          "exactEligible": false,
+          "unavailable": {
+            "routeCandidate": "No exported structural routeCandidate API for Conversion Magic; private helper not copied"
+          }
+        },
+        "compiler": {
+          "evaluationStatus": "EVALUATED_COMPILE_ONLY",
+          "compileOutcome": "REJECT",
+          "error": "Error: Executable compilation rejected unsupported semantics:\nmaster.irisviel.skill.conversion-magic:conversion-magic.preparation:effects[1].amount.var: Unbound server metric or variable: missingBinding",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Executable compiler exports compilation, not standalone route classification",
+            "exactEligible": "Compilation rejection is not structural ownership"
+          }
+        },
+        "coverage": {
+          "evaluationStatus": "NOT_EVALUATED_EXACT_ELIGIBILITY_RAW_CLASSIFICATION_RETAINED",
+          "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+          "semanticRoutes": [
+            "CARD_ZONE_CORE_DIRECT_ACTION:MOVE_ALL_REMAINING_PLUS_ADJUST_MANA"
+          ],
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Coverage route taxonomy is broader than B11 structural ownership",
+            "exactEligible": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+          }
+        },
+        "inventory": {
+          "evaluationStatus": "NOT_EVALUATED",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "No B11 inventory classification API; Card Zone CLI belongs to a different family",
+            "exactEligible": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+          }
+        }
+      },
+      "apiCalls": {
+        "runtime": [
+          "isCardZoneCoreDirectActionSemantic"
+        ],
+        "compiler": [
+          "compileExecutableCardPack"
+        ],
+        "coverage": [
+          "classifyAbilityForCoverage"
+        ]
+      }
+    },
+    {
+      "fixtureId": "conversion-outside-advance",
+      "family": "conversion-magic",
+      "category": "outside-scope",
+      "executedInputSha256": "F7E7468205829D21218E5623157ECFFC7261B252DB77377C3BB442F6A9E265B3",
+      "fixtureSha256": "E3A976859AEC6DF5FA96D48E2E39BB07F61A28C39A7F589AFA9DACA9B52CA0B3",
+      "actualCardId": "master.irisviel.skill.conversion-magic",
+      "actualAbilityId": "conversion-magic.preparation",
+      "normalizationReport": [],
+      "observations": {
+        "runtime": {
+          "evaluationStatus": "PARTIALLY_EVALUATED",
+          "routeCandidate": null,
+          "exactEligible": false,
+          "unavailable": {
+            "routeCandidate": "No exported structural routeCandidate API for Conversion Magic; private helper not copied"
+          }
+        },
+        "compiler": {
+          "evaluationStatus": "EVALUATED_COMPILE_ONLY",
+          "compileOutcome": "ACCEPT",
+          "definitionHash": "639e2f642c54be82fd9c7ed0d7568724ed3d3744a8270ffe356e53c40f46b3c7",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Executable compiler exports compilation, not standalone route classification",
+            "exactEligible": "Compilation acceptance is not family eligibility"
+          }
+        },
+        "coverage": {
+          "evaluationStatus": "NOT_EVALUATED_EXACT_ELIGIBILITY_RAW_CLASSIFICATION_RETAINED",
+          "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+          "semanticRoutes": [],
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "Coverage route taxonomy is broader than B11 structural ownership",
+            "exactEligible": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+          }
+        },
+        "inventory": {
+          "evaluationStatus": "NOT_EVALUATED",
+          "routeCandidate": null,
+          "exactEligible": null,
+          "unavailable": {
+            "routeCandidate": "No B11 inventory classification API; Card Zone CLI belongs to a different family",
+            "exactEligible": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+          }
+        }
+      },
+      "apiCalls": {
+        "runtime": [
+          "isCardZoneCoreDirectActionSemantic"
+        ],
+        "compiler": [
+          "compileExecutableCardPack"
+        ],
+        "coverage": [
+          "classifyAbilityForCoverage"
+        ]
+      }
+    }
+  ],
+  "issues": [
+    {
+      "code": "EXPECTATIONS_NOT_INDEPENDENTLY_REVIEWED",
+      "path": "expectationReview",
+      "message": "Agreement is not an acceptance premise"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "golden-positive:inventory.routeCandidate",
+      "message": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "golden-positive:inventory.exactEligible",
+      "message": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "golden-positive:coverage.exactEligible",
+      "message": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "golden-renamed-identities:inventory.routeCandidate",
+      "message": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "golden-renamed-identities:inventory.exactEligible",
+      "message": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "golden-renamed-identities:coverage.exactEligible",
+      "message": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "golden-invalid-result-field:inventory.routeCandidate",
+      "message": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "golden-invalid-result-field:inventory.exactEligible",
+      "message": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "golden-invalid-result-field:coverage.exactEligible",
+      "message": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "golden-missing-target-reference:inventory.routeCandidate",
+      "message": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "golden-missing-target-reference:inventory.exactEligible",
+      "message": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "golden-missing-target-reference:coverage.exactEligible",
+      "message": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "golden-wrong-payment:inventory.routeCandidate",
+      "message": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "golden-wrong-payment:inventory.exactEligible",
+      "message": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "golden-wrong-payment:coverage.exactEligible",
+      "message": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "golden-outside-combat:inventory.routeCandidate",
+      "message": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "golden-outside-combat:inventory.exactEligible",
+      "message": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "golden-outside-combat:coverage.exactEligible",
+      "message": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "conversion-positive:inventory.routeCandidate",
+      "message": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "conversion-positive:inventory.exactEligible",
+      "message": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "conversion-positive:coverage.exactEligible",
+      "message": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "conversion-renamed-identities:inventory.routeCandidate",
+      "message": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "conversion-renamed-identities:inventory.exactEligible",
+      "message": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "conversion-renamed-identities:coverage.exactEligible",
+      "message": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "conversion-unknown-binding:inventory.routeCandidate",
+      "message": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "conversion-unknown-binding:inventory.exactEligible",
+      "message": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "conversion-unknown-binding:coverage.exactEligible",
+      "message": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "conversion-outside-advance:inventory.routeCandidate",
+      "message": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "conversion-outside-advance:inventory.exactEligible",
+      "message": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+    },
+    {
+      "code": "REQUIRED_OBSERVATION_NOT_EVALUATED",
+      "path": "conversion-outside-advance:coverage.exactEligible",
+      "message": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+    }
+  ],
+  "acceptanceGranted": false,
+  "effectCorrectnessVerified": false,
+  "fallbackClosureVerified": false,
+  "browserAcceptanceVerified": false
+}
