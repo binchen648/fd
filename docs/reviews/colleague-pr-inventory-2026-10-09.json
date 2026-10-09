@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 16,
-    "pending": 518,
+    "reviewed": 17,
+    "pending": 517,
     "blocked": 0,
     "notVerified": 0
   },
@@ -20947,11 +20947,30 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "FB2_50_SELECTED_PLAYED_ATTACK_TEMPORARY_COPY_BLOCKING_GATES",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-09-colleague-review-batch-06.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/fb2-50-selected-played-attack-copy.test.ts packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts packages/rules/tests/core/card-source-state.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/lifecycle-source-active-runtime.test.ts packages/rules/tests/regression/interaction-private-optional-runtime.test.ts --maxWorkers=1",
+            "targetSha": "532fc01f924555d97c4929db6774528648daf520",
+            "result": "6 files / 84 tests PASS; do not cover reproduced blockers",
+            "artifactIdentity": "2026-10-09-pr-425-focused-chain"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-425-independent.mjs",
+            "targetSha": "532fc01f924555d97c4929db6774528648daf520",
+            "result": "Exit1: two positive controls PASS; five negative gates FAIL, four malformed visibility values plus expiry into game-out",
+            "artifactIdentity": "docs/reviews/probes/review-425-independent.mjs"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0

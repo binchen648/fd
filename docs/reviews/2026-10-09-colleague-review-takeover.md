@@ -100,6 +100,12 @@ passed 6/6, including stale SHA, missing producer, duplicate/unknown PR and cred
 
 ## Next Work
 
+Batch06 adds PR425 FAILED: malformed visibility admission and a reproduced
+temporary-copy lifecycle conflict with Final rules 11.5. Focused 84/84 PASS does
+not cover these blockers. Final rules candidate/current-main blobs are identical.
+Cumulative disposition: 17/534, 9 PASS, 8 FAILED, 517 pending. See
+2026-10-09-pr-425-review.md and review-425-independent.mjs for exact evidence.
+
 Batch05 adds PR447/448 authorized-delta PASS with independent focused runs of
 91 and 100 tests plus 22/46 probe controls. Cumulative disposition is now
 16/534: 9 PASS, 7 FAILED, 518 pending. Full details and preparation/assertion
