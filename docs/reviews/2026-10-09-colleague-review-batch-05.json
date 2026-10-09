@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-09",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [
+    {
+      "pr": 447,
+      "headSha": "ac9ed4ac5b696402e9621992a9a4a9bfaba5ed04",
+      "baseSha": "63666879bc004c724d7ceef0b43d8a9bbd910fdf",
+      "producer": "Codex Automation Review Owner",
+      "verdict": "PASS",
+      "scope": "AUTHORIZED_FB2_32_SOURCE_STATE_DELTA_ONLY",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/fb2-32-source-state-conditions.test.ts packages/rules/tests/fb2-42-controlled-card-close-forbid.test.ts packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts packages/rules/tests/core/card-source-state.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts --maxWorkers=1",
+          "targetSha": "ac9ed4ac5b696402e9621992a9a4a9bfaba5ed04",
+          "result": "5 files / 91 tests PASS after workspace build preparation",
+          "artifactIdentity": "2026-10-09-pr-447-focused-chain"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-447-448-independent.mjs",
+          "targetSha": "ac9ed4ac5b696402e9621992a9a4a9bfaba5ed04",
+          "result": "Exit0: 22 independent controls PASS",
+          "artifactIdentity": "docs/reviews/probes/review-447-448-independent.mjs"
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Codex Automation Review Owner",
+          "command": "gh pr view 447 --repo binchen648/fd --json headRefOid,baseRefOid,state; git diff 63666879bc004c724d7ceef0b43d8a9bbd910fdf ac9ed4ac5b696402e9621992a9a4a9bfaba5ed04; npm run typecheck; npm run content:validate; git diff --check 63666879bc004c724d7ceef0b43d8a9bbd910fdf ac9ed4ac5b696402e9621992a9a4a9bfaba5ed04",
+          "targetSha": "ac9ed4ac5b696402e9621992a9a4a9bfaba5ed04",
+          "result": "Exact live bindings and complete four-path authorized delta checked; typecheck/content/diff PASS; detached worktree clean",
+          "artifactIdentity": "docs/reviews/2026-10-09-fb2-32-33-review.md"
+        }
+      ],
+      "limitations": [
+        "PASS is only the named authorized delta, not inherited runtime clearance or formal acceptance.",
+        "Inherited FB2-49 malformed-visibility defect remains unresolved.",
+        "No full CI, Gate C, current-main runtime execution or material recount.",
+        "Historical acceptance inputs were not independently reissued."
+      ]
+    },
+    {
+      "pr": 448,
+      "headSha": "f0d753f49f0b7541d14ca9a5446644cbdc751199",
+      "baseSha": "471392953e58ab60726cf3a6746481a04ce072ad",
+      "producer": "Codex Automation Review Owner",
+      "verdict": "PASS",
+      "scope": "AUTHORIZED_FB2_33_COMBAT_OUTCOME_DELTA_ONLY",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/fb2-33-event-combat-outcome.test.ts packages/rules/tests/fb2-32-source-state-conditions.test.ts packages/rules/tests/fb2-42-controlled-card-close-forbid.test.ts packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts packages/rules/tests/core/card-source-state.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts --maxWorkers=1",
+          "targetSha": "f0d753f49f0b7541d14ca9a5446644cbdc751199",
+          "result": "6 files / 100 tests PASS after workspace build preparation",
+          "artifactIdentity": "2026-10-09-pr-448-focused-chain"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-447-448-independent.mjs",
+          "targetSha": "f0d753f49f0b7541d14ca9a5446644cbdc751199",
+          "result": "Exit0: 46 independent controls PASS",
+          "artifactIdentity": "docs/reviews/probes/review-447-448-independent.mjs"
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Codex Automation Review Owner",
+          "command": "gh pr view 448 --repo binchen648/fd --json headRefOid,baseRefOid,state; git diff 471392953e58ab60726cf3a6746481a04ce072ad f0d753f49f0b7541d14ca9a5446644cbdc751199; npm run typecheck; npm run content:validate; git diff --check 471392953e58ab60726cf3a6746481a04ce072ad f0d753f49f0b7541d14ca9a5446644cbdc751199",
+          "targetSha": "f0d753f49f0b7541d14ca9a5446644cbdc751199",
+          "result": "Exact live bindings and complete four-path authorized delta checked; typecheck/content/diff PASS; detached worktree clean",
+          "artifactIdentity": "docs/reviews/2026-10-09-fb2-32-33-review.md"
+        }
+      ],
+      "limitations": [
+        "PASS is only the named authorized delta, not inherited runtime clearance or formal acceptance.",
+        "Inherited FB2-49 malformed-visibility defect remains unresolved.",
+        "No full CI, Gate C, current-main runtime execution or material recount.",
+        "Trusted API fixtures do not establish external client injection resistance."
+      ]
+    }
+  ]
+}

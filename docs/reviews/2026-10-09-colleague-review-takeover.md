@@ -100,6 +100,12 @@ passed 6/6, including stale SHA, missing producer, duplicate/unknown PR and cred
 
 ## Next Work
 
+Batch05 adds PR447/448 authorized-delta PASS with independent focused runs of
+91 and 100 tests plus 22/46 probe controls. Cumulative disposition is now
+16/534: 9 PASS, 7 FAILED, 518 pending. Full details and preparation/assertion
+corrections are in 2026-10-09-fb2-32-33-review.md. Inherited FB2-49 defects and
+all promotion/credit boundaries remain unchanged.
+
 The first checkpoint read PR445 exact head 658849d1602bd4b705a924f6aa649e973d9d65ca and base
 5c8e21c853ac95a1b0ee42e28108ae40692491cf have been read. Runtime review and
 comparison with PR424 accepted authority remain PENDING; old CONTRACT_CONFLICT
