@@ -1,7 +1,7 @@
 {
   "schemaVersion": "fd-phase3-skill-coverage-v1",
-  "generatedAt": "2026-10-08T08:22:09.673Z",
-  "sourceFingerprint": "7239686f1a799c82029d383962a6674363eb1eb20b6ba399ed988f466e0a2fd0",
+  "generatedAt": "2026-10-09T12:19:26+08:00",
+  "sourceFingerprint": "45159c58666046414b1f0b4a66d58b97a27feb6da27e6e6333e7a6fdfbbe3d3a",
   "counts": {
     "totalArchives": 127,
     "totalCards": 169,
@@ -81,7 +81,7 @@
       "CARD_ACTION_SEMANTICS": 35,
       "CARD_ZONE": 29,
       "MOVEMENT": 16,
-      "RESOURCE_NUMERIC": 77,
+      "RESOURCE_NUMERIC": 78,
       "VISIBILITY": 15
     },
     "modifierCounts": {
@@ -119,7 +119,9 @@
       "ZONE_VISIBILITY": 1
     },
     "resultBindingCounts": {
-      "RESULT_VAR": 2
+      "BIND": 1,
+      "BINDING_FIELD": 1,
+      "RESULT_VAR": 1
     },
     "battleIntegrationCounts": {
       "BATTLE_INTEGRATION": 130
@@ -7869,12 +7871,12 @@
         "CHOOSE_N_CARDS"
       ],
       "effectPrimitiveFamilies": [
-        "CARD_ZONE"
+        "CARD_ZONE",
+        "RESOURCE_NUMERIC"
       ],
       "exactEffectPrimitives": [
         "adjust_victory_points",
         "branch",
-        "controller_at_battlefield",
         "move_card",
         "pay_mana"
       ],
@@ -7884,20 +7886,19 @@
         "HIDDEN_OR_PRIVATE"
       ],
       "resultBinding": [
-        "RESULT_VAR"
+        "BIND",
+        "BINDING_FIELD"
       ],
       "battleIntegration": [
         "BATTLE_INTEGRATION"
       ],
       "specialSubsystems": [],
-      "runtimeRoute": "NOT_CLASSIFIABLE",
+      "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
       "semanticRoutes": [],
       "taxonomyWarnings": [
         "TAXONOMY_DRIFT_WARNING:phase_action_is_not_domain_trigger"
       ],
-      "unclassifiedReasons": [
-        "NOT_CLASSIFIABLE:unknown_effect_primitive:controller_at_battlefield"
-      ]
+      "unclassifiedReasons": []
     },
     {
       "archiveId": "servant.kiritsugu",
@@ -11821,8 +11822,8 @@
     },
     "newRuntimeConsumers": {
       "before": 0,
-      "after": 22,
-      "delta": 22
+      "after": 23,
+      "delta": 23
     },
     "legacyExecuteAbilityConsumers": {
       "before": 3,
@@ -11840,8 +11841,8 @@
       "delta": 0
     },
     "notClassifiable": {
-      "before": 128,
-      "after": 112,
+      "before": 127,
+      "after": 111,
       "delta": -16
     },
     "pilotAllowlistEntries": {
@@ -11852,152 +11853,146 @@
     "cardSpecificRuntimeHandlers": [
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 134,
+        "line": 136,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 134,
+        "line": 136,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 134,
+        "line": 136,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 141,
+        "line": 143,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 141,
+        "line": 143,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 141,
+        "line": 143,
         "id": "master_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 156,
+        "line": 158,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 156,
+        "line": 158,
         "id": "servant_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 156,
+        "line": 158,
         "id": "servant_attack",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 156,
+        "line": 158,
         "id": "master_deck_card",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 456,
+        "line": 458,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 779,
+        "line": 782,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 779,
+        "line": 782,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 814,
+        "line": 817,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 942,
+        "line": 947,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 949,
+        "line": 954,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 992,
+        "line": 997,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1345,
+        "line": 1350,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1352,
+        "line": 1357,
         "id": "servant_package_revealed",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1574,
+        "line": 1579,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 1810,
+        "line": 1815,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 2366,
+        "line": 2371,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 2366,
+        "line": 2371,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 2442,
+        "line": 2447,
         "id": "master-skills",
-        "confidence": "STATIC_LITERAL"
-      },
-      {
-        "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 2468,
-        "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
@@ -12008,31 +12003,37 @@
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 2655,
+        "line": 2478,
+        "id": "master_skill",
+        "confidence": "STATIC_LITERAL"
+      },
+      {
+        "file": "packages/rules/src/ability/interpreter.ts",
+        "line": 2660,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/interpreter.ts",
-        "line": 4125,
+        "line": 4174,
         "id": "servant_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/resolution-dataflow.ts",
-        "line": 1237,
+        "line": 1438,
         "id": "master_skill",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/resolution-dataflow.ts",
-        "line": 1396,
+        "line": 1597,
         "id": "servant_package_revealed",
         "confidence": "STATIC_LITERAL"
       },
       {
         "file": "packages/rules/src/ability/resolution-dataflow.ts",
-        "line": 2061,
+        "line": 2288,
         "id": "servant_package",
         "confidence": "STATIC_LITERAL"
       },
@@ -12186,8 +12187,8 @@
       "delta": 0
     },
     "unsupportedNodes": {
-      "before": 128,
-      "after": 128,
+      "before": 127,
+      "after": 127,
       "delta": 0
     },
     "kpiNote": "KPI tracks routing/legacy consumers and unsupported nodes, not raw ability count."
@@ -12211,7 +12212,6 @@
       "close_source_card": 14,
       "combat_opponent_power_vp_reward": 1,
       "controller_alone_at_battlefield": 1,
-      "controller_at_battlefield": 1,
       "controller_at_location_kind": 1,
       "create_card": 3,
       "create_independent_deck": 1,
@@ -12264,7 +12264,7 @@
       "CARD_ACTION_SEMANTICS": 35,
       "CARD_ZONE": 29,
       "MOVEMENT": 16,
-      "RESOURCE_NUMERIC": 77,
+      "RESOURCE_NUMERIC": 78,
       "VISIBILITY": 15
     },
     "unknownPrimitiveCounts": {
@@ -12277,7 +12277,6 @@
       "claim_and_discard_location_events": 1,
       "combat_opponent_power_vp_reward": 1,
       "controller_alone_at_battlefield": 1,
-      "controller_at_battlefield": 1,
       "controller_at_location_kind": 1,
       "defeat_highest_power_opponents": 12,
       "defeat_player": 1,
@@ -13733,12 +13732,6 @@
       "reason": "NOT_CLASSIFIABLE:runtime_route_unknown"
     },
     {
-      "archiveId": "servant.kintoki",
-      "cardId": "servant.kintoki.skill.sc-kintoki-3",
-      "abilityId": "sc-kintoki-3.golden-eater",
-      "reason": "NOT_CLASSIFIABLE:unknown_effect_primitive:controller_at_battlefield"
-    },
-    {
       "archiveId": "servant.kiritsugu",
       "cardId": "servant.kiritsugu.skill.sc-kiritsugu-1",
       "abilityId": "sc-kiritsugu-1.presence-concealment",
@@ -13994,7 +13987,7 @@
   "compiledDefinitions": {
     "packId": "fd-playtest-v1",
     "version": 1,
-    "definitionHash": "7f5f8b8aa6f0abbe060b611189d4c104481486aa50435f4b73a8be7c7890bde1",
+    "definitionHash": "68c578e7575ff649b1b54a6532b105e3e93d6e5f7f9910b607958bf54a4ea7ce",
     "compiledCards": 76,
     "compiledCharacters": 14,
     "blockingIssues": 0
