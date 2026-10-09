@@ -1,0 +1,289 @@
+{
+  "taskId": "P3-E08-B11-COVERAGE-EVIDENCE-SYNC",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "generatedAt": "2026-10-09T12:19:26+08:00",
+  "status": "AUTOMATION_BASELINE_CANDIDATE",
+  "lineage": {
+    "observedMainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+    "candidateSha": "7868b82949e3e17e64218755e0efe3ed478ff778",
+    "candidateParent": "7c8a3d7125e6e60dfe301e166f289c280fd5eb41",
+    "candidateInObservedMain": false,
+    "candidateBranch": "codex/p3-e08-b11-current-main-replay-20261009",
+    "candidateTree": "a5ad519f6e7580f6b198487f2a277ce30a0093bb",
+    "sourceObjects": {
+      "data/authoring": "b2e3896827cf9041e675b6f69c380b2668ff3413",
+      "data/packs": "8500f5ce85fef874f0e8325e5c5d2b4b91c9a9a8",
+      "data/generated": "40cebcd7f65316869f938b864ea6e133b1a98f66",
+      "packages/content/src": "578877014dfa30200bb7fe44e9126a5e114fd646",
+      "packages/rules/src": "bc535f7aead45cf6ef4d93246603da5cfd3c02da",
+      "scripts/phase3-coverage.ts": "ce6f84862de382703d6bfbf2940e535f1b238be3"
+    }
+  },
+  "baseline": {
+    "artifactPath": "artifacts/phase3-skill-coverage.json",
+    "artifactCommit": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+    "artifactSha256": "8683CF3C41E62703593CA5508A04544A02BBF7E3EB972371073FDCAE1A16C045",
+    "sourceFingerprint": "7239686f1a799c82029d383962a6674363eb1eb20b6ba399ed988f466e0a2fd0"
+  },
+  "candidateCoverage": {
+    "artifactPath": "artifacts/phase3-skill-coverage.json",
+    "artifactSha256": "52FA3FBAC9DC609DCC51E4AE3629F64801699CE55DA6A8C2A7C3DB0D1BBE5558",
+    "sourceFingerprint": "45159c58666046414b1f0b4a66d58b97a27feb6da27e6e6333e7a6fdfbbe3d3a",
+    "definitionHash": "68c578e7575ff649b1b54a6532b105e3e93d6e5f7f9910b607958bf54a4ea7ce",
+    "counts": {
+      "totalArchives": 127,
+      "totalCards": 169,
+      "totalAbilities": 281,
+      "abilityKindCounts": {
+        "CONDITIONAL_REVEAL": 1,
+        "CONTINUOUS_FORMULA": 13,
+        "DECLARATION_REVEAL": 10,
+        "FORCED_TRIGGER": 74,
+        "OPTIONAL_TRIGGER": 51,
+        "PASSIVE": 24,
+        "PHASE_ACTION": 96,
+        "RESIDUAL": 11,
+        "RESPONSE": 1
+      },
+      "timingCounts": {
+        "ACTION": 76,
+        "ADVANCE": 2,
+        "COMBAT": 66,
+        "CONTROLLER_ACTION_WINDOW": 69,
+        "CONTROLLER_COMBAT_ACTION_WINDOW": 28,
+        "IMMEDIATE": 7,
+        "POST_BATTLE_OPTIONAL_TRIGGER_WINDOW": 3,
+        "PREPARATION": 1,
+        "WHEN_FORMULA_CONDITION_MET": 1,
+        "WHEN_PLAY_REQUIREMENTS_CHECKED": 8,
+        "WHEN_POWER_CALCULATION_APPLIED": 1,
+        "WHILE_ACTIVE": 12
+      },
+      "domainEventTriggerCounts": {
+        "after_battle_ended": 3,
+        "after_battle_result_determined": 26,
+        "after_controller_enters_location": 3,
+        "after_controller_first_loses_battle": 1,
+        "after_controller_gains_victory": 1,
+        "after_controller_loses_all_command_seals": 1,
+        "after_controller_loses_battle": 15,
+        "after_controller_wins_battle": 7,
+        "after_player_deployed_to_battlefield": 13,
+        "before_situation_or_event_resolves": 1,
+        "game_start": 20,
+        "on_card_played": 41,
+        "on_use_declared": 10
+      },
+      "requirementCounts": {
+        "BATTLE_STATE": 130,
+        "LOCATION": 51,
+        "MANA": 2,
+        "SOURCE_ACTIVE": 139
+      },
+      "targetCounts": {
+        "BRANCH_CHOICE": 2,
+        "CHOOSE_LOCATION": 15,
+        "CHOOSE_N_CARDS": 19,
+        "CHOOSE_ONE_PLAYER": 8
+      },
+      "costCounts": {
+        "COMMAND_SEAL_OR_RESOURCE": 1,
+        "DISCARD_OR_CLOSE": 29,
+        "MANA": 7
+      },
+      "interactionCounts": {
+        "BRANCH_CHOICE": 2,
+        "CHOOSE_LOCATION": 15,
+        "CHOOSE_N_CARDS": 19,
+        "CHOOSE_ONE_PLAYER": 8,
+        "RESPONSE": 1,
+        "YES_NO": 51
+      },
+      "strictPendingInteractionCounts": {
+        "BRANCH_CHOICE": 2,
+        "CHOOSE_LOCATION": 15,
+        "CHOOSE_N_CARDS": 19,
+        "CHOOSE_ONE_PLAYER": 8
+      },
+      "effectPrimitiveFamilyCounts": {
+        "CARD_ACTION_SEMANTICS": 35,
+        "CARD_ZONE": 29,
+        "MOVEMENT": 16,
+        "RESOURCE_NUMERIC": 78,
+        "VISIBILITY": 15
+      },
+      "modifierCounts": {
+        "EFFECT_MODIFIER": 9,
+        "RULE_MODIFIER": 43
+      },
+      "lifecyclePolicyCounts": {
+        "lifecycle:cleanup:expire_after_duration": 1,
+        "lifecycle:cleanup:remain_active": 4,
+        "lifecycle:cleanup:when_card_leaves_active_area": 2,
+        "lifecycle:duration:round_count": 1,
+        "lifecycle:duration:this_round": 2,
+        "lifecycle:duration:while_active": 7,
+        "lifecycle:duration:while_card_active": 3,
+        "lifecycle:rounds:2": 1,
+        "lifecycle:sourceValidity:kind:accepted_source_state_policy": 1,
+        "lifecycle:sourceValidity:owner:card_zone_source_state": 1,
+        "lifecycle:sourceValidity:policyId:fd.card-zone.active-card-source.v1": 1,
+        "lifecycle:starts:immediate": 6,
+        "limit:conflictPolicy:only_one_effect_may_activate_per_window": 3,
+        "limit:groupId:artoriac-pilgrim-unique-on-win": 3,
+        "limit:scope:this_card": 22,
+        "limit:scope:unique_keyword_group": 3,
+        "limit:type:per_game": 8,
+        "limit:type:per_round": 14,
+        "limit:type:unique": 3,
+        "limit:uses:1": 17,
+        "limit:uses:3": 5,
+        "limit:window:trigger_window": 3
+      },
+      "hiddenInformationCounts": {
+        "HIDDEN_OR_PRIVATE": 49,
+        "PRIVATE_LOOK": 2,
+        "REVEAL": 12,
+        "ZONE_VISIBILITY": 1
+      },
+      "resultBindingCounts": {
+        "BIND": 1,
+        "BINDING_FIELD": 1,
+        "RESULT_VAR": 1
+      },
+      "battleIntegrationCounts": {
+        "BATTLE_INTEGRATION": 130
+      },
+      "specialSubsystemCounts": {
+        "SPECIAL_SUBSYSTEM": 17
+      }
+    }
+  },
+  "candidateLocalRouting": {
+    "before": {
+      "new": 22,
+      "legacyResolve": 144,
+      "legacyExecute": 3,
+      "dual": 0,
+      "notClassifiable": 112
+    },
+    "after": {
+      "new": 23,
+      "legacyResolve": 144,
+      "legacyExecute": 3,
+      "dual": 0,
+      "notClassifiable": 111
+    },
+    "delta": {
+      "new": 1,
+      "legacyResolve": 0,
+      "legacyExecute": 0,
+      "dual": 0,
+      "notClassifiable": -1
+    },
+    "changedRoutes": [
+      {
+        "cardId": "servant.kintoki.skill.sc-kintoki-3",
+        "abilityId": "sc-kintoki-3.golden-eater",
+        "abilityKey": "servant.kintoki.skill.sc-kintoki-3::sc-kintoki-3.golden-eater",
+        "before": "NOT_CLASSIFIABLE",
+        "after": "NEW_RUNTIME_SEMANTIC_ROUTED",
+        "semanticRoutes": []
+      }
+    ]
+  },
+  "formalCredit": {
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0,
+    "promotedOnMain": false
+  },
+  "review": {
+    "verdict": "NOT_VERIFIED",
+    "evidenceBinding": "REVIEW_ARTIFACT_NOT_SUPPLIED",
+    "gateA": "NOT_VERIFIED",
+    "gateB": "NOT_VERIFIED",
+    "gateC": "NOT_VERIFIED"
+  },
+  "candidateDispatch": {
+    "path": "docs/agents/manifests/tasks/P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY.json",
+    "commit": "7868b82949e3e17e64218755e0efe3ed478ff778",
+    "sha256": "BA0200E136EB894B6426BCF8FA682311341703C93C1853356BB401F05E96B6B2",
+    "reportedVerification": {
+      "focused": "29/29 PASS",
+      "typecheck": "PASS",
+      "clientBuild": "PASS",
+      "contentValidation": "PASS: 0 blocking",
+      "generatedDeterminism": "PASS",
+      "testCi": "1425 passed, 1 failed: phase3-e06-post-merge-recount coverage snapshot requires A sync",
+      "playwrightRepeat5": "Two runs: each 9/10; Golden Eater 5/5, Conversion Magic 4/5",
+      "runtimeSourceParity": "No diff against accepted f7704da for replayed runtime, authoring and browser evidence"
+    },
+    "blockers": [
+      {
+        "owner": "Codex A",
+        "code": "AUTOMATION_EVIDENCE_SYNC_REQUIRED",
+        "evidence": "scripts/tests/phase3-e06-post-merge-recount.test.ts:115 compares current coverage with pre-B11 snapshot"
+      },
+      {
+        "owner": "Server runtime owner",
+        "code": "RUNTIME_CAPABILITY_HANDOFF",
+        "evidence": "Conversion Magic mana stays 4 in repeated browser tests; apps/server/src/match-server.ts close handler unconditionally disconnects the client",
+        "boundary": "Shared socket lifecycle requires a separately scoped repair; B11 Gate C is not stable"
+      }
+    ]
+  },
+  "automationVerification": {
+    "scope": "A automation working tree on exact candidate; carrier identity supplied in handoff; no Reviewer acceptance",
+    "commands": [
+      {
+        "command": "npm ci",
+        "exitCode": 0,
+        "result": "239 packages added; audit reports 12 vulnerabilities"
+      },
+      {
+        "command": "npx tsx scripts/phase3-e08-b11-coverage-sync.ts --validate",
+        "exitCode": 0,
+        "result": "Full Git/coverage/compiler/artifact/report validation"
+      },
+      {
+        "command": "npx vitest run scripts/tests/phase3-e08-b11-coverage-sync.test.ts scripts/tests/phase3-e06-post-merge-recount.test.ts scripts/tests/phase3-coverage.test.ts",
+        "exitCode": 0,
+        "result": "3 files / 28 tests"
+      },
+      {
+        "command": "npm run test:ci",
+        "exitCode": 0,
+        "result": "186 files / 1429 tests"
+      },
+      {
+        "command": "npm run typecheck",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "command": "npm run content:validate",
+        "exitCode": 0,
+        "result": "7 masters / 7 servants / 20 events; 0 blocking"
+      },
+      {
+        "command": "git diff --check",
+        "exitCode": 0,
+        "result": "PASS"
+      }
+    ],
+    "initialFailure": "First focused run: 5/6 passed; historical hash used pre-A3 coverage. Fixed by binding raw merged A3 Git blob; historical recount artifact unchanged.",
+    "notRun": [
+      "Browser E2E by A",
+      "source-assets required validation",
+      "Global Gate C",
+      "GitHub required checks"
+    ]
+  },
+  "retainedLimitations": [
+    "93 MISSING_IMAGE historical Release blockers; not re-audited",
+    "Global Gate C NOT_VERIFIED",
+    "B11 repeated browser socket lifecycle failure retained; no runtime repair by A",
+    "Unrelated legacy consumers retained"
+  ]
+}
