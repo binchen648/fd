@@ -1,0 +1,181 @@
+{
+  "schemaVersion": "fd-phase3-a3-post-merge-synchronization-v1",
+  "taskId": "P3-E08-RP-00-A3-POST-MERGE-SYNCHRONIZATION",
+  "sourceTaskId": "P3-E08-RP-00-A3-RECONCILIATION",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "owner": "Codex A",
+  "status": "READY_FOR_REVIEW",
+  "observationDate": "2026-10-09",
+  "main": {
+    "observedMainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+    "bindingPolicy": "IMMUTABLE_HISTORICAL_COMMIT_NOT_MOVING_ORIGIN_MAIN",
+    "previousMainSha": "fefcf4f7f5bd66ed7693889fb99391e6e7321016"
+  },
+  "promotion": {
+    "pullRequest": 545,
+    "url": "https://github.com/binchen648/fd/pull/545",
+    "state": "MERGED",
+    "mergeCommit": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+    "mergedAt": "2026-10-09T01:14:16Z",
+    "promotionHeadSha": "e89b5bf8050c49ac46107932add61fbae785b286",
+    "reviewedEvidenceCarrierSha": "1423b92f95e85eabfbe762583fd331e20226f180",
+    "implementationSha": "513c390b8f2061a9638052bf9fa0264b457baf4f",
+    "synchronizationSha": "47d1cac90af079cd21838a9d8379bc266e8f546a",
+    "sliceStatus": "PROMOTED_ON_MAIN",
+    "scope": "A3_EVIDENCE_CONTRACT_AND_AUTHORIZED_LOCAL_TEST_BUDGETS_ONLY",
+    "abilityPromotionGranted": false
+  },
+  "review": {
+    "commit": "f186e2e9063b5a5d950d7fd5bcdca17f77957690",
+    "reviewer": "github:binchen648",
+    "reviewedSha": "1423b92f95e85eabfbe762583fd331e20226f180",
+    "verdict": "PASS",
+    "reviewThread": "https://github.com/binchen648/fd/pull/545#issuecomment-6072127687",
+    "artifactPath": "docs/reviews/phase3/P3-E08-RP-00-A3-overall-reviewer-a.json",
+    "artifactSha256": "5BED0941BAC37F7AAFD67DED13C60322733D5A0040BD5203BBDF2C69FB3B87D5"
+  },
+  "boundArtifacts": [
+    {
+      "path": "artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json",
+      "sha256": "AF590F7F633562A19DAE2EE6AA255029D53E8B98979979F3C3539B6435EB94D5"
+    },
+    {
+      "path": "artifacts/phase3-skill-coverage.json",
+      "sha256": "8683CF3C41E62703593CA5508A04544A02BBF7E3EB972371073FDCAE1A16C045"
+    },
+    {
+      "path": "docs/reports/2026-10-08-p3-e08-a3-reconciliation.md",
+      "sha256": "F0FD6DC76E748240120FFA642AFA738478605A8C029DBD4F85A970021C557145"
+    }
+  ],
+  "gitHubChecks": {
+    "source": "GitHub commit check-runs API on exact promotion head; PR metadata confirms merge",
+    "headSha": "e89b5bf8050c49ac46107932add61fbae785b286",
+    "selectionPolicy": "LATEST_COMPLETED_CHECK_PER_NAME; RETAIN_ALL_ATTEMPTS",
+    "attempts": [
+      {
+        "completed_at": "2026-10-09T01:10:39Z",
+        "conclusion": "success",
+        "head_sha": "e89b5bf8050c49ac46107932add61fbae785b286",
+        "html_url": "https://github.com/binchen648/fd/actions/runs/37868454255/job/113620695621",
+        "id": 113620695621,
+        "name": "Phase 3 Promotion Lane / policy"
+      },
+      {
+        "completed_at": "2026-10-09T01:09:50Z",
+        "conclusion": "failure",
+        "head_sha": "e89b5bf8050c49ac46107932add61fbae785b286",
+        "html_url": "https://github.com/binchen648/fd/actions/runs/37868388164/job/113620491219",
+        "id": 113620491219,
+        "name": "Phase 3 Promotion Lane / policy"
+      },
+      {
+        "completed_at": "2026-10-09T01:10:07Z",
+        "conclusion": "success",
+        "head_sha": "e89b5bf8050c49ac46107932add61fbae785b286",
+        "html_url": "https://github.com/binchen648/fd/actions/runs/37868386777/job/113620483527",
+        "id": 113620483527,
+        "name": "build"
+      },
+      {
+        "completed_at": "2026-10-09T01:09:29Z",
+        "conclusion": "cancelled",
+        "head_sha": "e89b5bf8050c49ac46107932add61fbae785b286",
+        "html_url": "https://github.com/binchen648/fd/actions/runs/37868386742/job/113620483347",
+        "id": 113620483347,
+        "name": "Phase 3 Promotion Lane / policy"
+      },
+      {
+        "completed_at": "2026-10-09T01:10:47Z",
+        "conclusion": "success",
+        "head_sha": "e89b5bf8050c49ac46107932add61fbae785b286",
+        "html_url": "https://github.com/binchen648/fd/actions/runs/37868386746/job/113620482944",
+        "id": 113620482944,
+        "name": "test"
+      }
+    ],
+    "requiredNames": [
+      "build",
+      "test",
+      "Phase 3 Promotion Lane / policy"
+    ]
+  },
+  "coverageRecount": {
+    "method": "Independent classifier on merge checkout; prove authoring/pack/content/runtime/classifier input Git objects unchanged from previous main",
+    "archives": 127,
+    "cards": 169,
+    "abilities": 281,
+    "sourceFingerprint": "7239686f1a799c82029d383962a6674363eb1eb20b6ba399ed988f466e0a2fd0",
+    "before": {
+      "new": 22,
+      "legacyResolve": 144,
+      "legacyExecute": 3,
+      "dual": 0,
+      "notClassifiable": 112
+    },
+    "after": {
+      "new": 22,
+      "legacyResolve": 144,
+      "legacyExecute": 3,
+      "dual": 0,
+      "notClassifiable": 112
+    },
+    "delta": {
+      "new": 0,
+      "legacyResolve": 0,
+      "legacyExecute": 0,
+      "dual": 0,
+      "notClassifiable": 0
+    },
+    "notMigrationAcceptance": true,
+    "semanticRoute": "SETUP_CARD_CREATION_MINIMAL:CREATE_TO_SKILL",
+    "consumerKeys": [
+      "master.maiya.skill.military::military.has-support-shot",
+      "master.olga-marie.skill.astronomical-science::astronomical-science.has-chaldeas",
+      "master.shinji.skill.useless-person::useless-person.setup"
+    ],
+    "unchangedSourcePaths": [
+      "data/authoring",
+      "data/packs",
+      "packages/content/src",
+      "packages/rules/src",
+      "scripts/phase3-coverage.ts"
+    ]
+  },
+  "accounting": {
+    "coverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0,
+    "runtimePromotionDelta": 0,
+    "retainedAcceptedIdentities": 111,
+    "retainedDenominator": 944,
+    "retainedRemaining": 833,
+    "identityListReenumerated": false,
+    "identityAcceptanceReawarded": false
+  },
+  "historicalEvidencePolicy": "Original A3 recount/report, all prior failures and reviewer artifacts remain unchanged; this record adds post-merge facts only.",
+  "postMergeValidation": {
+    "mergeParentsAndAncestry": "PENDING_TEST",
+    "reviewFieldsAndArtifactHashes": "PENDING_TEST",
+    "independentRecountAndUnchangedSourceObjects": "PENDING_TEST",
+    "focused": "NOT_RUN",
+    "typecheck": "NOT_RUN",
+    "fullRuntimeSuiteOnMerge": "NOT_RERUN",
+    "priorIndependentRuntimeTests": {
+      "testedSha": "1423b92f95e85eabfbe762583fd331e20226f180",
+      "fullSuite": "184 files / 1412 tests PASS",
+      "focused": "41/41 PASS",
+      "source": "Bound overall Reviewer A artifact"
+    },
+    "freshGitHubMergeCommitChecks": "NOT_CLAIMED; checks above bind promotion head only"
+  },
+  "retainedGates": {
+    "gateC": "NOT_VERIFIED",
+    "missingImageBlockers": 93,
+    "missingImageCountSource": "HISTORICAL_RETAINED_NOT_REAUDITED",
+    "releaseGate": "BLOCKED",
+    "longTermCIStability": "NOT_VERIFIED"
+  },
+  "syncReviewerVerdict": "NOT_STARTED",
+  "nextStep": "Reviewer A exact-SHA review of this synchronization, then Planner resumes Phase 3 main work"
+}
