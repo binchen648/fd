@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-progress-v1",
+  "pr": 445,
+  "state": "IN_PROGRESS",
+  "verdict": null,
+  "producer": "Codex Automation Review Owner",
+  "headSha": "658849d1602bd4b705a924f6aa649e973d9d65ca",
+  "baseSha": "5c8e21c853ac95a1b0ee42e28108ae40692491cf",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "sourceAcceptedCandidate": "aa04a12e1647560374e09f7e2b6e62a5dccd0954",
+  "pr424HeadObserved": "26b252b196e57eb6fa500330a59470583cdbc8bb",
+  "evidence": [
+    {
+      "producer": "Codex Automation Review Owner",
+      "command": "npm run typecheck",
+      "targetSha": "658849d1602bd4b705a924f6aa649e973d9d65ca",
+      "result": "PASS",
+      "artifactIdentity": "2026-10-09-pr-445-typecheck"
+    },
+    {
+      "producer": "Codex Automation Review Owner",
+      "command": "npx vitest run packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/match-room-hub.test.ts packages/rules/tests/portable-sha256.test.ts --maxWorkers=1",
+      "targetSha": "658849d1602bd4b705a924f6aa649e973d9d65ca",
+      "result": "PASS 4 files / 89 tests",
+      "artifactIdentity": "2026-10-09-pr-445-focused"
+    }
+  ],
+  "remaining": [
+    "Review all 22 candidate diff paths and independent adversarial cases.",
+    "Assess optional participantPlayerIds/battleParticipantPowers reconstruction against accepted source and current-main authority; unchanged focused tests are insufficient.",
+    "Review prerequisite provenance and PR424 accepted contract disposition without inferring authorization from old labels."
+  ],
+  "runtimeAcceptanceGranted": false,
+  "promotionAuthorized": false,
+  "creditDelta": 0
+}

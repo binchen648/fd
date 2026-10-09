@@ -1,0 +1,440 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-09",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review intake; does not impersonate historic Reviewer A-R/B-R artifacts",
+  "reviews": [
+    {
+      "pr": 356,
+      "headSha": "35a2a59fd4bf77bdbbfac37031556617af94c47f",
+      "baseSha": "52ea97e9371f5a2353b58ad948b232434c68abd8",
+      "producer": "Russell",
+      "verdict": "PASS",
+      "scope": "HISTORICAL_EXACT_CANDIDATE_TECHNICAL_REVIEW_NOT_FORMAL_RUNTIME_ACCEPTANCE",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Russell",
+          "command": "npx vitest run (Ciel, combat resolver, executable compiler, pack loader, terrain metric, outside-game placement; golden combat flow and MatchSession)",
+          "targetSha": "35a2a59fd4bf77bdbbfac37031556617af94c47f",
+          "result": "PASS: 130 committed tests; independent negative probes are separate and may fail",
+          "artifactIdentity": "2026-10-09-pr-356-committed-focused-tests",
+          "commandIsVerbatim": false
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Russell",
+          "command": "gh pr view; git diff; immutable F1/Reference object inspection; npm run typecheck; npm run content:validate; git diff --check",
+          "targetSha": "35a2a59fd4bf77bdbbfac37031556617af94c47f",
+          "result": "Exact binding/scope and frozen source checked; typecheck/content/diff-check PASS",
+          "artifactIdentity": "2026-10-09-pr-356-source-and-build",
+          "commandIsVerbatim": false
+        }
+      ],
+      "limitations": [
+        "No current-main runtime verdict or migration credit granted.",
+        "Full CI not independently rerun in this batch.",
+        "Failure of an inherited dependency can block a valid consumer without attributing its introduction to this candidate."
+      ]
+    },
+    {
+      "pr": 359,
+      "headSha": "8ff45c944ba810edfbfa93d17462d4c3cb6a4e16",
+      "baseSha": "7e2925ed37f89b60dac2c2b13c68081af6e33fbe",
+      "producer": "Laplace",
+      "verdict": "PASS",
+      "scope": "HISTORICAL_EXACT_CANDIDATE_TECHNICAL_REVIEW_NOT_FORMAL_RUNTIME_ACCEPTANCE",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [
+        {
+          "severity": "P3",
+          "introducedByCandidate": false,
+          "path": "packages/rules/src/ability/interpreter.ts",
+          "line": 43,
+          "description": "Projection lazily initializes stagedAttacks on a rejected command against an uninitialized state. Same code exists at base/main; initialized-state rejection remained mutation-free."
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Laplace",
+          "command": "npx vitest run packages/rules/tests/regression/fb2-ryougi-s3-support-definition.test.ts packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts packages/rules/tests/regression/fb2-required-additional-play.test.ts packages/rules/tests/executable-card-pack.test.ts packages/content/src/__tests__/playtest-pack-loader.test.ts",
+          "targetSha": "8ff45c944ba810edfbfa93d17462d4c3cb6a4e16",
+          "result": "PASS: 95 committed tests; independent negative probes are separate and may fail",
+          "artifactIdentity": "2026-10-09-pr-359-committed-focused-tests",
+          "commandIsVerbatim": true
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Laplace",
+          "command": "gh pr view; git diff; immutable F1/Reference object inspection; npm run typecheck; npm run content:validate; git diff --check",
+          "targetSha": "8ff45c944ba810edfbfa93d17462d4c3cb6a4e16",
+          "result": "Exact binding/scope and frozen source checked; typecheck/content/diff-check PASS",
+          "artifactIdentity": "2026-10-09-pr-359-source-and-build",
+          "commandIsVerbatim": false
+        }
+      ],
+      "limitations": [
+        "No current-main runtime verdict or migration credit granted.",
+        "Full CI not independently rerun in this batch.",
+        "Failure of an inherited dependency can block a valid consumer without attributing its introduction to this candidate."
+      ]
+    },
+    {
+      "pr": 361,
+      "headSha": "7f83a0cfba2cd7f781ab0c0491c9ed2607db02d6",
+      "baseSha": "40eaf45a64ecca0ddb6efe62a8bed35652420707",
+      "producer": "Helmholtz",
+      "verdict": "FAILED",
+      "scope": "HISTORICAL_EXACT_CANDIDATE_TECHNICAL_REVIEW_NOT_FORMAL_RUNTIME_ACCEPTANCE",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [
+        {
+          "severity": "P1",
+          "introducedByCandidate": false,
+          "path": "packages/rules/src/match-session.ts",
+          "line": 613,
+          "description": "Production deployment emits the consumer trigger only for battlefield-tagged locations, not support-location Magic Workshop. Both consumers produced mana 6 / VP 1 instead of 7 / 3."
+        },
+        {
+          "severity": "P1",
+          "introducedByCandidate": false,
+          "path": "packages/rules/src/match-session.ts",
+          "line": 1155,
+          "description": "Round cleanup discards both active consumer cards because their continuous_formula/forced_trigger definitions have no residual marker, contradicting Final Rules 11.3/11.5."
+        },
+        {
+          "severity": "P2",
+          "introducedByCandidate": false,
+          "path": "packages/rules/src/ability/interpreter.ts",
+          "line": 627,
+          "description": "Trusted reward hook grants +1 mana/+2 VP for unplayed, closed or removed source. No external-client injection demonstrated."
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Helmholtz",
+          "command": "npx vitest run (scoped consumer/family/runtime 4 files; resource/interaction room-boundary 2 files; single worker)",
+          "targetSha": "7f83a0cfba2cd7f781ab0c0491c9ed2607db02d6",
+          "result": "PASS: 25 committed tests; independent negative probes are separate and may fail",
+          "artifactIdentity": "2026-10-09-pr-361-committed-focused-tests",
+          "commandIsVerbatim": false
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Helmholtz",
+          "command": "gh pr view; git diff; immutable F1/Reference object inspection; npm run typecheck; npm run content:validate; git diff --check",
+          "targetSha": "7f83a0cfba2cd7f781ab0c0491c9ed2607db02d6",
+          "result": "Exact binding/scope and frozen source checked; typecheck/content/diff-check PASS",
+          "artifactIdentity": "2026-10-09-pr-361-source-and-build",
+          "commandIsVerbatim": false
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner (parent rerun)",
+          "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-361-independent.mjs",
+          "targetSha": "7f83a0cfba2cd7f781ab0c0491c9ed2607db02d6",
+          "result": "Exit1: six failed consumer gates; positive controls PASS",
+          "artifactIdentity": "docs/reviews/probes/review-361-independent.mjs"
+        }
+      ],
+      "limitations": [
+        "No current-main runtime verdict or migration credit granted.",
+        "Full CI not independently rerun in this batch.",
+        "Failure of an inherited dependency can block a valid consumer without attributing its introduction to this candidate."
+      ]
+    },
+    {
+      "pr": 363,
+      "headSha": "0de67e5b5c4f403f04fa54868c6db09b980c90f8",
+      "baseSha": "bfa9087ab77223e40525fe36214509b1f2cdf9ff",
+      "producer": "Helmholtz",
+      "verdict": "FAILED",
+      "scope": "HISTORICAL_EXACT_CANDIDATE_TECHNICAL_REVIEW_NOT_FORMAL_RUNTIME_ACCEPTANCE",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [
+        {
+          "severity": "P2",
+          "introducedByCandidate": false,
+          "path": "packages/rules/src/ability/loader.ts",
+          "line": 267,
+          "description": "Inherited raw-source authority boundary fails closed requirement: unknown authority client and conflicting hostOps/allowedOperations normalize into accepted automatic initial-mana route for both consumers. Valid consumer definitions pass; failure is the dependency negative gate."
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Helmholtz",
+          "command": "npx vitest run (scoped consumer/family/runtime 4 files; resource/interaction room-boundary 2 files; single worker)",
+          "targetSha": "0de67e5b5c4f403f04fa54868c6db09b980c90f8",
+          "result": "PASS: 25 committed tests; independent negative probes are separate and may fail",
+          "artifactIdentity": "2026-10-09-pr-363-committed-focused-tests",
+          "commandIsVerbatim": false
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Helmholtz",
+          "command": "gh pr view; git diff; immutable F1/Reference object inspection; npm run typecheck; npm run content:validate; git diff --check",
+          "targetSha": "0de67e5b5c4f403f04fa54868c6db09b980c90f8",
+          "result": "Exact binding/scope and frozen source checked; typecheck/content/diff-check PASS",
+          "artifactIdentity": "2026-10-09-pr-363-source-and-build",
+          "commandIsVerbatim": false
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner (parent rerun)",
+          "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-363-authority.mjs",
+          "targetSha": "0de67e5b5c4f403f04fa54868c6db09b980c90f8",
+          "result": "Exit1: valid controls PASS; four authority negatives failed",
+          "artifactIdentity": "docs/reviews/probes/review-363-authority.mjs"
+        }
+      ],
+      "limitations": [
+        "No current-main runtime verdict or migration credit granted.",
+        "Full CI not independently rerun in this batch.",
+        "Failure of an inherited dependency can block a valid consumer without attributing its introduction to this candidate."
+      ]
+    },
+    {
+      "pr": 364,
+      "headSha": "edfe2ee2e21b484d2b01824f6117d364d1af835b",
+      "baseSha": "362c799c9c3b92a1e2af3f1e4597d5cfcba532ac",
+      "producer": "Nash",
+      "verdict": "FAILED",
+      "scope": "HISTORICAL_EXACT_CANDIDATE_TECHNICAL_REVIEW_NOT_FORMAL_RUNTIME_ACCEPTANCE",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [
+        {
+          "severity": "P1",
+          "introducedByCandidate": false,
+          "path": "packages/rules/src/ability/interpreter.ts",
+          "line": 554,
+          "description": "Highest NP cost predicate checks controller own ledger, not opponent in same battlefield: controller cost4 versus opponent cost6 incorrectly awards +2 VP."
+        },
+        {
+          "severity": "P2",
+          "introducedByCandidate": false,
+          "path": "packages/rules/src/ability/interpreter.ts",
+          "line": 855,
+          "description": "Internal battle-result event with missing battle/result/participant provenance opens two reward windows. External-client injection not demonstrated."
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Nash",
+          "command": "npx vitest run (MHX/FM03, Magic Resistance, B18/B19; 5 files)",
+          "targetSha": "edfe2ee2e21b484d2b01824f6117d364d1af835b",
+          "result": "PASS: 26 committed tests; independent negative probes are separate and may fail",
+          "artifactIdentity": "2026-10-09-pr-364-committed-focused-tests",
+          "commandIsVerbatim": false
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Nash",
+          "command": "gh pr view; git diff; immutable F1/Reference object inspection; npm run typecheck; npm run content:validate; git diff --check",
+          "targetSha": "edfe2ee2e21b484d2b01824f6117d364d1af835b",
+          "result": "Exact binding/scope and frozen source checked; typecheck/content/diff-check PASS",
+          "artifactIdentity": "2026-10-09-pr-364-source-and-build",
+          "commandIsVerbatim": false
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner (parent rerun)",
+          "command": "npx tsx <absolute-review-root>/docs/reviews/probes/review-364-366-independent.ts",
+          "targetSha": "edfe2ee2e21b484d2b01824f6117d364d1af835b",
+          "result": "Exit1: five controls PASS; two negatives failed",
+          "artifactIdentity": "docs/reviews/probes/review-364-366-independent.ts"
+        }
+      ],
+      "limitations": [
+        "No current-main runtime verdict or migration credit granted.",
+        "Full CI not independently rerun in this batch.",
+        "Failure of an inherited dependency can block a valid consumer without attributing its introduction to this candidate."
+      ]
+    },
+    {
+      "pr": 366,
+      "headSha": "beb472cd2c8e02d8d06bca5a6159865d16391aa5",
+      "baseSha": "ddbbf36726d44eedcc808f5f6b4ab7d5e48d8e6e",
+      "producer": "Nash",
+      "verdict": "PASS",
+      "scope": "HISTORICAL_EXACT_CANDIDATE_TECHNICAL_REVIEW_NOT_FORMAL_RUNTIME_ACCEPTANCE",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Nash",
+          "command": "npx vitest run (migration, provisioning, mixed archive, Ciel/Ryougi targets, compiler, additional-play; 7 files)",
+          "targetSha": "beb472cd2c8e02d8d06bca5a6159865d16391aa5",
+          "result": "PASS: 103 committed tests; independent negative probes are separate and may fail",
+          "artifactIdentity": "2026-10-09-pr-366-committed-focused-tests",
+          "commandIsVerbatim": false
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Nash",
+          "command": "gh pr view; git diff; immutable F1/Reference object inspection; npm run typecheck; npm run content:validate; git diff --check",
+          "targetSha": "beb472cd2c8e02d8d06bca5a6159865d16391aa5",
+          "result": "Exact binding/scope and frozen source checked; typecheck/content/diff-check PASS",
+          "artifactIdentity": "2026-10-09-pr-366-source-and-build",
+          "commandIsVerbatim": false
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner (parent rerun)",
+          "command": "npx tsx <absolute-review-root>/docs/reviews/probes/review-364-366-independent.ts",
+          "targetSha": "beb472cd2c8e02d8d06bca5a6159865d16391aa5",
+          "result": "Exit0: 13 probes PASS",
+          "artifactIdentity": "docs/reviews/probes/review-364-366-independent.ts"
+        }
+      ],
+      "limitations": [
+        "No current-main runtime verdict or migration credit granted.",
+        "Full CI not independently rerun in this batch.",
+        "Failure of an inherited dependency can block a valid consumer without attributing its introduction to this candidate."
+      ]
+    },
+    {
+      "pr": 368,
+      "headSha": "d4c0fce05255b1bf1956f1fd8079763bad05d602",
+      "baseSha": "18c39c838fe84e26b4739a75efcd3f3efb8bb499",
+      "producer": "Codex Automation Review Owner",
+      "verdict": "PASS",
+      "scope": "HISTORICAL_EXACT_CANDIDATE_TECHNICAL_REVIEW_NOT_FORMAL_RUNTIME_ACCEPTANCE",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts packages/rules/tests/ruler-consumer-migration.test.ts",
+          "targetSha": "d4c0fce05255b1bf1956f1fd8079763bad05d602",
+          "result": "PASS: 17 committed tests; independent negative probes are separate and may fail",
+          "artifactIdentity": "2026-10-09-pr-368-committed-focused-tests",
+          "commandIsVerbatim": true
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Codex Automation Review Owner",
+          "command": "gh pr view; git diff; immutable F1/Reference object inspection; npm run typecheck; npm run content:validate; git diff --check",
+          "targetSha": "d4c0fce05255b1bf1956f1fd8079763bad05d602",
+          "result": "Exact binding/scope and frozen source checked; typecheck/content/diff-check PASS",
+          "artifactIdentity": "2026-10-09-pr-368-source-and-build",
+          "commandIsVerbatim": false
+        }
+      ],
+      "limitations": [
+        "No current-main runtime verdict or migration credit granted.",
+        "Full CI not independently rerun in this batch.",
+        "Failure of an inherited dependency can block a valid consumer without attributing its introduction to this candidate."
+      ]
+    },
+    {
+      "pr": 372,
+      "headSha": "5a0a67332b02d2b8d67bcf78660fcfa764ad9996",
+      "baseSha": "64457098542e0b3c3701c2dacce08826c70bf1c0",
+      "producer": "Codex Automation Review Owner",
+      "verdict": "PASS",
+      "scope": "HISTORICAL_EXACT_CANDIDATE_TECHNICAL_REVIEW_NOT_FORMAL_RUNTIME_ACCEPTANCE",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/regression/fb2-event-static-battle-metadata.test.ts packages/rules/tests/regression/fb2-event-rule-executable-bridge.test.ts packages/rules/tests/lostbelt-objective-event-migration.test.ts",
+          "targetSha": "5a0a67332b02d2b8d67bcf78660fcfa764ad9996",
+          "result": "PASS: 10 committed tests; independent negative probes are separate and may fail",
+          "artifactIdentity": "2026-10-09-pr-372-committed-focused-tests",
+          "commandIsVerbatim": true
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Codex Automation Review Owner",
+          "command": "gh pr view; git diff; immutable F1/Reference object inspection; npm run typecheck; npm run content:validate; git diff --check",
+          "targetSha": "5a0a67332b02d2b8d67bcf78660fcfa764ad9996",
+          "result": "Exact binding/scope and frozen source checked; typecheck/content/diff-check PASS",
+          "artifactIdentity": "2026-10-09-pr-372-source-and-build",
+          "commandIsVerbatim": false
+        }
+      ],
+      "limitations": [
+        "No current-main runtime verdict or migration credit granted.",
+        "Full CI not independently rerun in this batch.",
+        "Failure of an inherited dependency can block a valid consumer without attributing its introduction to this candidate."
+      ]
+    },
+    {
+      "pr": 451,
+      "headSha": "bdfa753c46d5e0a1edf6ed428c7b793acc87f5f1",
+      "baseSha": "2f104335e3e943db1f2fe550596e93de3cfe35e6",
+      "producer": "Codex Automation Review Owner",
+      "verdict": "FAILED",
+      "scope": "HISTORICAL_EXACT_CANDIDATE_TECHNICAL_REVIEW_NOT_FORMAL_RUNTIME_ACCEPTANCE",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [
+        {
+          "severity": "P2",
+          "introducedByCandidate": true,
+          "path": "packages/rules/src/ability/interpreter.ts",
+          "line": 590,
+          "description": "Loader accepts nonempty __proto__ flag key, but primitive true assignment to ordinary object silently fails to create own flag. Operation returns without saving state. Safely support all admitted keys or reject reserved keys before mutation; no external-client exploit claimed."
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/m50-player-flag-state-core.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+          "targetSha": "bdfa753c46d5e0a1edf6ed428c7b793acc87f5f1",
+          "result": "PASS 2 files / 36 tests",
+          "artifactIdentity": "2026-10-09-pr-451-focused"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx tsx <absolute-review-root>/docs/reviews/probes/review-451-flag-keys.ts",
+          "targetSha": "bdfa753c46d5e0a1edf6ed428c7b793acc87f5f1",
+          "result": "Exit1: three controls PASS; __proto__ flag write failed",
+          "artifactIdentity": "docs/reviews/probes/review-451-flag-keys.ts"
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Codex Automation Review Owner",
+          "command": "git diff exact-base exact-head; npm run typecheck; npm run content:validate; git diff --check exact-base exact-head",
+          "targetSha": "bdfa753c46d5e0a1edf6ed428c7b793acc87f5f1",
+          "result": "Six-file scope inspected; typecheck/content/diff PASS; no authoring delta",
+          "artifactIdentity": "2026-10-09-pr-451-source-and-build"
+        }
+      ],
+      "limitations": [
+        "No full CI/current-main runtime rerun.",
+        "Old NOT_VERIFIED meant missing independent evidence, not absent implementation."
+      ]
+    }
+  ]
+}
