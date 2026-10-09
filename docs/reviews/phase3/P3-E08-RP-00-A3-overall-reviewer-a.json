@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-E08-RP-00-A3-RECONCILIATION",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "reviewer": "github:binchen648",
+  "reviewerRole": "Reviewer A",
+  "reviewThread": "https://github.com/binchen648/fd/pull/545#issuecomment-6072127687",
+  "githubObjectId": 6072127687,
+  "githubObjectType": "PR_ISSUE_COMMENT",
+  "reviewDate": "2026-10-09",
+  "timezone": "Asia/Shanghai",
+  "candidateSha": "1423b92f95e85eabfbe762583fd331e20226f180",
+  "reviewedSha": "1423b92f95e85eabfbe762583fd331e20226f180",
+  "implementationSha": "513c390b8f2061a9638052bf9fa0264b457baf4f",
+  "baseSha": "fefcf4f7f5bd66ed7693889fb99391e6e7321016",
+  "verdict": "PASS",
+  "conclusion": "REVIEW_ACCEPTED",
+  "reviewScope": "Complete A3 evidence reconciliation; overall exact-SHA review, not an intermediate scoped review",
+  "authorizationCommits": [
+    "b6d785669f7a6853cbb365ba1421a77936fc8ffd",
+    "ca6d57b0c44c944e2e3d99d3bf74fed297c0d1a7",
+    "6fefcb4d9df104765f66f57a85305d3de3a4f5b8"
+  ],
+  "reviewedChanges": [
+    ".github/workflows/test.yml",
+    "artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json",
+    "artifacts/phase3-skill-coverage.json",
+    "docs/reports/2026-10-08-p3-e08-a3-reconciliation.md",
+    "packages/rules/tests/match-session.test.ts",
+    "scripts/tests/phase3-e06-post-merge-recount.test.ts",
+    "scripts/tests/phase3-reference-lock.test.ts"
+  ],
+  "boundArtifacts": [
+    { "path": "artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json", "sha256": "AF590F7F633562A19DAE2EE6AA255029D53E8B98979979F3C3539B6435EB94D5" },
+    { "path": "artifacts/phase3-skill-coverage.json", "sha256": "8683CF3C41E62703593CA5508A04544A02BBF7E3EB972371073FDCAE1A16C045" },
+    { "path": "docs/reports/2026-10-08-p3-e08-a3-reconciliation.md", "sha256": "F0FD6DC76E748240120FFA642AFA738478605A8C029DBD4F85A970021C557145" }
+  ],
+  "independentVerification": {
+    "testedSha": "1423b92f95e85eabfbe762583fd331e20226f180",
+    "defaultFullCi": {
+      "command": "npm run test:ci",
+      "exitCode": 0,
+      "filesPassed": 184,
+      "testsPassed": 1412,
+      "durationSeconds": 32.67,
+      "attemptCount": 1,
+      "schedulingOrTimeoutCliOverrides": false,
+      "referenceVerificationElapsedMs": 4071,
+      "authenticationElapsedMs": 7448
+    },
+    "focused": {
+      "command": "npx vitest run scripts/tests/phase3-reference-lock.test.ts packages/rules/tests/match-session.test.ts scripts/tests/phase3-e06-post-merge-recount.test.ts",
+      "exitCode": 0,
+      "filesPassed": 3,
+      "testsPassed": 41,
+      "durationSeconds": 16.66,
+      "referenceVerificationElapsedMs": 1247,
+      "authenticationElapsedMs": 3228,
+      "recountRecalculationElapsedMs": 2751,
+      "shallowRecoveryElapsedMs": 3033
+    },
+    "typecheck": "PASS",
+    "contentValidation": "PASS_7_MASTERS_7_SERVANTS_20_EVENTS_0_BLOCKING_ISSUES",
+    "generatedContentDeterminism": "PASS",
+    "completeBaseToCarrierDiffCheck": "PASS",
+    "exactParentsAndHashes": "PASS",
+    "priorReviewJsonAndHashes": "PASS",
+    "historicalFailedValidationRecordsPreserved": "PASS",
+    "historicalMainAnchorPreserved": "a7751c3fa51895fd3a401721b1e926b90e016862",
+    "reusedContentEvidenceSourceObjectsMatch": "PASS",
+    "fullObjectClassifierCompilerRecalculation": "PASS",
+    "threeExactSetupConsumers": "PASS",
+    "workflowChangeOnlyFetchDepthZero": true,
+    "namedTimeoutAmendmentsOnly": true,
+    "realGitFixtureAndAllAssertionsPreserved": true,
+    "globalTimeoutOrWorkersChanged": false,
+    "runtimeAuthoringOrClassifierChanged": false
+  },
+  "coverage": {
+    "new": 22,
+    "legacyResolve": 144,
+    "legacyExecute": 3,
+    "dual": 0,
+    "notClassifiable": 112,
+    "sourceFingerprint": "7239686f1a799c82029d383962a6674363eb1eb20b6ba399ed988f466e0a2fd0"
+  },
+  "accounting": {
+    "retainedAcceptedIdentities": 111,
+    "retainedDenominator": 944,
+    "retainedRemaining": 833,
+    "identityEnumerationReaccepted": false,
+    "coverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0,
+    "reconciliationRuntimePromotionDelta": 0
+  },
+  "findings": [],
+  "historicalFindings": "Previous FAIL and scoped PASS verdicts remain valid for their exact reviewed SHAs; the completed carrier passes independently without rewriting those records.",
+  "allowedNextOwner": "Codex I",
+  "allowedNextAction": "ASSEMBLE_OR_UPDATE_EXISTING_SOLE_A3_PROMOTION_PR_545_SUBJECT_TO_PREFLIGHT_AND_FINAL_HEAD_CHECKS",
+  "integration": {
+    "promotionPr": 545,
+    "observedPrHeadBeforeAssembly": "d3d15d0e8632ae27bb842b6547bed0d94f620ab3",
+    "observedPrHeadAcceptedByThisReview": false,
+    "mainAtReview": "fefcf4f7f5bd66ed7693889fb99391e6e7321016",
+    "mustRevalidateCurrentMainTopologyAndHashes": true,
+    "mustRunPromotionPreflight": true,
+    "mustPassBuildTestPolicyOnFinalPromotionHead": true,
+    "mergeAuthorizedByThisReview": false
+  },
+  "retainedGates": {
+    "gateC": "NOT_VERIFIED",
+    "finalPromotionHeadChecks": "NOT_VERIFIED",
+    "longTermCIStability": "NOT_VERIFIED",
+    "sourceAssets": "HISTORICAL_93_MISSING_IMAGE_NOT_REAUDITED",
+    "releaseGate": "BLOCKED"
+  },
+  "nonClaims": [
+    "Acceptance is limited to this complete A3 evidence reconciliation carrier.",
+    "No runtime semantic acceptance, new credit, merge, Phase 3 completion or Release readiness is granted.",
+    "No independent GitHub account requirement is inferred; the authenticated reviewer identity is recorded as used.",
+    "Local passing tests do not substitute for required GitHub checks on the eventual promotion head."
+  ]
+}
