@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-a-automation-review-v1",
+  "taskId": "P3-E08-B11-COVERAGE-EVIDENCE-SYNC",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "reviewDate": "2026-10-09",
+  "reviewer": "Reviewer A",
+  "candidateSha": "4b7f40ae6039b6e212f8240c460c9e468e8019f1",
+  "reviewedSha": "4b7f40ae6039b6e212f8240c460c9e468e8019f1",
+  "runtimeCandidateSha": "7868b82949e3e17e64218755e0efe3ed478ff778",
+  "conclusion": "REVIEW_ACCEPTED",
+  "finalVerdict": "PASS",
+  "acceptedScope": "AUTOMATION_BASELINE_ONLY_NOT_RUNTIME_OR_PROMOTION",
+  "findings": [],
+  "boundArtifacts": [
+    {
+      "path": "artifacts/phase3-e08-b11-coverage-sync.json",
+      "sha256": "E62626E2EC7C0088E879416E6C6C929FDF9647109BCEA2EFF6B22DB23A572B3D"
+    },
+    {
+      "path": "artifacts/phase3-skill-coverage.json",
+      "sha256": "52FA3FBAC9DC609DCC51E4AE3629F64801699CE55DA6A8C2A7C3DB0D1BBE5558"
+    }
+  ],
+  "checks": {
+    "evidenceCarrierDirectParentIsRuntimeCandidate": "PASS",
+    "candidateParent": "7c8a3d7125e6e60dfe301e166f289c280fd5eb41",
+    "observedMainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+    "observedMainAncestorOfCandidate": "PASS",
+    "candidateInObservedMain": false,
+    "candidateSourceObjectsEqualCarrierAndCleanCheckout": "PASS",
+    "classifierUnchangedFromObservedMain": "PASS",
+    "fullBaselineAndCandidateRecomputation": "PASS",
+    "compiledPackAndCoverageHashBinding": "PASS",
+    "historicalRecountBoundToImmutableMainGitBlobs": "PASS",
+    "currentCheckoutCoverageIndependentlyCompiled": "PASS",
+    "deterministicRegeneration": "PASS",
+    "tamperedEvidenceRejected": "PASS",
+    "reportBinding": "PASS",
+    "exactSixPathEvidenceOnlyDiff": "PASS",
+    "aEvidenceRemoteRefExact": "PASS"
+  },
+  "candidateLocalRouting": {
+    "before": { "new": 22, "legacyResolve": 144, "legacyExecute": 3, "dual": 0, "notClassifiable": 112 },
+    "after": { "new": 23, "legacyResolve": 144, "legacyExecute": 3, "dual": 0, "notClassifiable": 111 },
+    "changedAbilityKey": "servant.kintoki.skill.sc-kintoki-3::sc-kintoki-3.golden-eater",
+    "changedAbilityCount": 1,
+    "previousRoute": "NOT_CLASSIFIABLE",
+    "currentRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
+    "interpretation": "STATIC_CLASSIFIER_ROUTING_SIGNAL_NOT_RUNTIME_SEMANTIC_ACCEPTANCE"
+  },
+  "independentTests": {
+    "testedSha": "4b7f40ae6039b6e212f8240c460c9e468e8019f1",
+    "focused": { "files": 3, "tests": 28, "result": "PASS" },
+    "defaultTestCi": { "files": 186, "tests": 1429, "durationSeconds": 31.36, "result": "PASS" },
+    "typecheck": "PASS",
+    "readOnlySyncValidator": "PASS",
+    "completeScopedDiffCheck": "PASS",
+    "browserE2E": "NOT_RUN",
+    "contentValidation": "PRODUCER_REPORTED_NOT_INDEPENDENTLY_RERUN",
+    "githubRequiredChecks": "NOT_VERIFIED"
+  },
+  "formalCredit": {
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0,
+    "promotedOnMain": false
+  },
+  "aOwnedDelta": {
+    "runtime": "NONE",
+    "authoring": "NONE",
+    "taxonomy": "NONE",
+    "classifier": "NONE"
+  },
+  "retainedLimitations": {
+    "reviewerBRuntimeArtifact": "NOT_SUPPLIED",
+    "gateA": "NOT_VERIFIED",
+    "gateB": "NOT_VERIFIED",
+    "gateC": "NOT_VERIFIED",
+    "socketBrowserBlocker": "B_REPORTED_RETAINED_NOT_INDEPENDENTLY_DIAGNOSED_BY_A",
+    "legacyFallbackClosure": "NOT_INDEPENDENTLY_VERIFIED",
+    "unrelatedLegacyConsumers": "UNCHANGED",
+    "missingImageBlockers": "HISTORICAL_93_RETAINED_NOT_REAUDITED",
+    "npmAudit": "PRODUCER_REPORTED_12_VULNERABILITIES_NOT_REAUDITED",
+    "runtimeCandidateRemoteRef": "NOT_CONFIRMED",
+    "githubReviewerAttestation": "NOT_PROVIDED_NOT_PROMOTION_POLICY_EVIDENCE"
+  },
+  "allowedNextStep": "RECORD_AUTOMATION_REVIEW_PASS; RUNTIME_OWNER_HANDLES_SOCKET_SLICE_SEPARATELY; REVIEWER_B_REVIEWS_EXACT_RUNTIME_CANDIDATE",
+  "promotionPreparationAllowed": false,
+  "runtimeAcceptanceGranted": false,
+  "gatePromotionGranted": false,
+  "phase3CompletionGranted": false,
+  "releaseAcceptanceGranted": false
+}
