@@ -5,14 +5,14 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { ancestor, array, cliError, commitExists, fields, gitText, hash, InputError, inputFile, json, object, output, parseArgs, parseReference, readReference, sha, string, type Issue, type Obj } from './phase3-tooling-common';
 
-export const adapterClosurePaths = ['scripts/phase3-contract-parity-worker.ts', 'scripts/phase3-tooling-common.ts'];
+export const adapterClosurePaths = ['scripts/phase3-contract-parity.ts', 'scripts/phase3-contract-parity-worker.ts', 'scripts/phase3-tooling-common.ts'];
 
 export function verifyAdapterClosure(root: string, raw: unknown, issues: Issue[]) {
   const refs = array(raw, 'executionAdapter');
   const parsed = refs.map((ref, index) => parseReference(ref, `executionAdapter[${index}]`));
   if (parsed.length !== adapterClosurePaths.length || new Set(parsed.map(ref => ref.path)).size !== parsed.length ||
       adapterClosurePaths.some(path => !parsed.some(ref => ref.path === path)) || new Set(parsed.map(ref => ref.commit)).size !== 1) {
-    throw new InputError('Execution adapter must bind the complete worker/common closure at one exact commit');
+    throw new InputError('Execution adapter must bind the complete controller/worker/common closure at one exact commit');
   }
   const files = parsed.map(ref => {
     const bytes = readReference(root, ref, issues);
