@@ -3,41 +3,41 @@
   "taskId": "P3-E08-B11-CONTRACT-PARITY",
   "controlEpoch": "FD-P3-2026-09-23-08",
   "status": "FAIL",
-  "testedCandidateSha": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
-  "inputSha256": "6C3EDC8C31E6273B1254581DB8596E6481A83B5B40B535A9DA1D7C2E1ECD45FD",
-  "premiseSha256": "2540B370B8A55EEEC68810CF9B1A98826CE35290F00A6D4F17B1261E3B768A61",
+  "testedCandidateSha": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
+  "inputSha256": "CF307202E26222774344F4CA75B7208FFE16020C0097390E30A2D84A346D1AB8",
+  "premiseSha256": "CF2A50939F709D71ECFC29D29AFB626F1BFCFDED787DD49A027E160787C2DB81",
   "fixtureBinding": {
-    "commit": "ac4d401a9905384d35f0aee7f2474e3072ed75c6",
+    "commit": "7a9699efcca8e16467cd973a7c7dd522e5a230a9",
     "path": "scripts/fixtures/phase3-b11-parity-fixtures.json",
-    "sha256": "B7DE0808C98DE132E15078E698EC9A5CE1515521A01B93521D283A30311B161B"
+    "sha256": "CA345E013C74B233ABE5A496760C04E0C50E5A4241030608B68843D6163AEAE4"
   },
   "executionAdapter": {
-    "commit": "dbc1b75aaf40253982fc4e458b80dce4043b9224",
+    "commit": "7a9699efcca8e16467cd973a7c7dd522e5a230a9",
     "files": [
       {
-        "commit": "dbc1b75aaf40253982fc4e458b80dce4043b9224",
+        "commit": "7a9699efcca8e16467cd973a7c7dd522e5a230a9",
         "path": "scripts/phase3-contract-parity.ts",
         "sha256": "A46EB418461F20DC3E0E89AA07540B01B7B22B3D529875984AD8E33EA56E9BFC"
       },
       {
-        "commit": "dbc1b75aaf40253982fc4e458b80dce4043b9224",
+        "commit": "7a9699efcca8e16467cd973a7c7dd522e5a230a9",
         "path": "scripts/phase3-contract-parity-worker.ts",
         "sha256": "F3AF363EBD62EB56772128F7FF619E14C38AB0E9C34B683E16E145AF2817FEC4"
       },
       {
-        "commit": "dbc1b75aaf40253982fc4e458b80dce4043b9224",
+        "commit": "7a9699efcca8e16467cd973a7c7dd522e5a230a9",
         "path": "scripts/phase3-tooling-common.ts",
         "sha256": "C11A3B6F573DEB012E936724CDAA274F940B6DD5EBE00078175F668E485E9555"
       },
       {
-        "commit": "dbc1b75aaf40253982fc4e458b80dce4043b9224",
+        "commit": "7a9699efcca8e16467cd973a7c7dd522e5a230a9",
         "path": "scripts/phase3-b11-diagnostic-api.ts",
-        "sha256": "D881C8FDD6A4CB071A3D5A3F099B6AD357F57CCCA8E36F6760A968581F05B33A"
+        "sha256": "3D761C0CE3CD59844F9680C5D4AAC0AE4D8B008034736DFA11C05EB68AAABF1B"
       }
     ]
   },
   "sourceObjects": {
-    "packages": "e6b0467c0191384e6df4db9fe55e90295089a6b8",
+    "packages": "eadedc7dcd436def339cccef8d8a3169c7f43d1f",
     "apps": "b7ee91d572c870972cdb37de7b38920a0c16f6b6",
     "scripts/phase3-coverage.ts": "ce6f84862de382703d6bfbf2940e535f1b238be3",
     "package.json": "4feec879e2ae5ef0547634e5a62b89b8d1794d88",
@@ -571,7 +571,7 @@
       "observations": {
         "runtime": {
           "evaluationStatus": "EVALUATED",
-          "routeCandidate": false,
+          "routeCandidate": true,
           "exactEligible": false
         },
         "compiler": {
@@ -588,7 +588,7 @@
         "coverage": {
           "evaluationStatus": "EVALUATED_EXACT_ELIGIBILITY_RAW_CLASSIFICATION_RETAINED",
           "exactEligible": false,
-          "shape": "OUTSIDE_DIAGNOSTIC_CONTRACT",
+          "shape": "MOVE_REMAINING_COUNT_TO_MANA",
           "inputSha256": "25477EEE14D99E882D5CC27AF867E63520E3E97D8879FE5468CED0E0009B1EEC",
           "contract": "B11_AUTHORING_DIAGNOSTIC_V1",
           "runtimeRoute": "NEW_RUNTIME_SEMANTIC_ROUTED",
@@ -598,9 +598,9 @@
         },
         "inventory": {
           "evaluationStatus": "EVALUATED",
-          "routeCandidate": false,
+          "routeCandidate": true,
           "exactEligible": false,
-          "shape": "OUTSIDE_DIAGNOSTIC_CONTRACT",
+          "shape": "MOVE_REMAINING_COUNT_TO_MANA",
           "inputSha256": "25477EEE14D99E882D5CC27AF867E63520E3E97D8879FE5468CED0E0009B1EEC",
           "contract": "B11_AUTHORING_DIAGNOSTIC_V1"
         }
@@ -689,16 +689,6 @@
       "code": "EXPECTATIONS_NOT_INDEPENDENTLY_REVIEWED",
       "path": "expectationReview",
       "message": "Agreement is not an acceptance premise"
-    },
-    {
-      "code": "API_EXPECTATION_DISAGREEMENT",
-      "path": "conversion-unknown-binding:runtime.routeCandidate",
-      "message": "actual=false declared=true"
-    },
-    {
-      "code": "API_EXPECTATION_DISAGREEMENT",
-      "path": "conversion-unknown-binding:inventory.routeCandidate",
-      "message": "actual=false declared=true"
     }
   ],
   "acceptanceGranted": false,

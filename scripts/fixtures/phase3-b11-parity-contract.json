@@ -5,27 +5,27 @@
   "contractId": "B11_RESULT_BINDING_DIAGNOSTIC_V1",
   "contractVersion": 1,
   "adapterVersion": "b11-api-observations-v1",
-  "candidateSha": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+  "candidateSha": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
   "executionAdapter": [
     {
-      "commit": "dbc1b75aaf40253982fc4e458b80dce4043b9224",
+      "commit": "7a9699efcca8e16467cd973a7c7dd522e5a230a9",
       "path": "scripts/phase3-contract-parity.ts",
       "sha256": "A46EB418461F20DC3E0E89AA07540B01B7B22B3D529875984AD8E33EA56E9BFC"
     },
     {
-      "commit": "dbc1b75aaf40253982fc4e458b80dce4043b9224",
+      "commit": "7a9699efcca8e16467cd973a7c7dd522e5a230a9",
       "path": "scripts/phase3-contract-parity-worker.ts",
       "sha256": "F3AF363EBD62EB56772128F7FF619E14C38AB0E9C34B683E16E145AF2817FEC4"
     },
     {
-      "commit": "dbc1b75aaf40253982fc4e458b80dce4043b9224",
+      "commit": "7a9699efcca8e16467cd973a7c7dd522e5a230a9",
       "path": "scripts/phase3-tooling-common.ts",
       "sha256": "C11A3B6F573DEB012E936724CDAA274F940B6DD5EBE00078175F668E485E9555"
     },
     {
-      "commit": "dbc1b75aaf40253982fc4e458b80dce4043b9224",
+      "commit": "7a9699efcca8e16467cd973a7c7dd522e5a230a9",
       "path": "scripts/phase3-b11-diagnostic-api.ts",
-      "sha256": "D881C8FDD6A4CB071A3D5A3F099B6AD357F57CCCA8E36F6760A968581F05B33A"
+      "sha256": "3D761C0CE3CD59844F9680C5D4AAC0AE4D8B008034736DFA11C05EB68AAABF1B"
     }
   ],
   "contract": {
@@ -35,14 +35,14 @@
     "section": "## phase3:contract-parity"
   },
   "fixtures": {
-    "commit": "ac4d401a9905384d35f0aee7f2474e3072ed75c6",
+    "commit": "7a9699efcca8e16467cd973a7c7dd522e5a230a9",
     "path": "scripts/fixtures/phase3-b11-parity-fixtures.json",
-    "sha256": "B7DE0808C98DE132E15078E698EC9A5CE1515521A01B93521D283A30311B161B"
+    "sha256": "CA345E013C74B233ABE5A496760C04E0C50E5A4241030608B68843D6163AEAE4"
   },
   "owners": {
     "runtime": {
       "required": true,
-      "meaning": "Candidate exported structural ownership and exact semantic eligibility for both shapes; missing binding reference is outside Conversion structural ownership"
+      "meaning": "Candidate exported structural ownership and exact semantic eligibility for both shapes; Conversion ownership checks phase/window/envelope and ordered effect types, never binding validity; malformed bindings are owned and exact-ineligible"
     },
     "compiler": {
       "required": true,
@@ -50,7 +50,7 @@
     },
     "inventory": {
       "required": true,
-      "meaning": "classifyB11InventoryAbility evaluates raw authoring structural envelope and exact target/effect/binding shape; does not consume runtime/compiler/fixture verdicts"
+      "meaning": "classifyB11InventoryAbility evaluates raw authoring structural envelope and exact target/effect/binding shape; Conversion binding declarations and references are validated only in exactEligible, not ownership; does not consume runtime/compiler/fixture verdicts"
     },
     "coverage": {
       "required": true,

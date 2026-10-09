@@ -1,5 +1,7 @@
 # B11 Inventory / Coverage Observation Completion
 
+Historical snapshot: `de28753ee243cd82e5a7730a3b0cf07ad031c928`. Read the original receipt from that commit when verifying the hashes below. Current review-fix bindings are in `2026-10-09-p3-e08-b11-observation-review-fix.md`; this historical report does not describe the moving receipt at HEAD.
+
 Control Epoch: `FD-P3-2026-09-23-08`
 Scope: user-authorized read-only completion of 30 inventory/coverage observations and integration of the B-owned exported API. Claimed status: `AUTOMATION_BASELINE_CANDIDATE`; readiness: `FAIL`. No Review, Gate, migration or promotion acceptance is granted.
 
