@@ -9,7 +9,7 @@ Scope: user-authorized read-only completion of 30 inventory/coverage observation
 - Candidate parent / previous combination: `9eaa0e0c417486adf7b0449e3d32fb90b7d362f9`.
 - B dependency integration merge: `92f8604` (B-owned exported predicate and its tests/manifests; not an A-authored runtime change).
 - Fixture producer: `ac4d401a9905384d35f0aee7f2474e3072ed75c6`.
-- Adapter producer: `dbc1b75` (resolve the full SHA from the bound contract/receipt, not the moving branch HEAD).
+- Adapter producer: `dbc1b75aaf40253982fc4e458b80dce4043b9224`.
 - Contract publication: `e65503e601d7a3a4d1265d87a09484cb8295f2c2`.
 - Contract input: `scripts/fixtures/phase3-b11-parity-contract.json`, SHA-256 `6C3EDC8C31E6273B1254581DB8596E6481A83B5B40B535A9DA1D7C2E1ECD45FD`.
 - Fixture: `scripts/fixtures/phase3-b11-parity-fixtures.json`, SHA-256 `B7DE0808C98DE132E15078E698EC9A5CE1515521A01B93521D283A30311B161B`.
@@ -49,8 +49,9 @@ The compiler rejects this unknown-binding graph, and exact eligibility is false.
 - Input generation with short `ac4d401`: exit 1, correctly rejected non-exact SHA; regenerated with full SHA, exit 0.
 - `npx tsx scripts/phase3-contract-parity.ts --contract scripts/fixtures/phase3-b11-parity-contract.json --candidate c0db16ae65699b2e2789c7776c0aa4271b11e496 --out artifacts/phase3-e08-b11-inventory-coverage-parity.json`: exit 1, execution performed; 60/60 observations, three fail-visible issues above. Exit 1 is a blocked readiness verdict, not missing execution.
 - Earlier `ac4d401` receipt regenerated twice with identical full SHA-256 `A511EDD48A8DE64313D2FAD43E92E66FE24076D42A8D76FB9523CE3DCF710712`. This is historical reproducibility evidence, not the final adapter receipt hash.
+- Final `dbc1b75aaf40253982fc4e458b80dce4043b9224` adapter receipt regenerated twice byte-identically: SHA-256 `D5E6B0C2F739F3D060555E0223D8738AE1470DF78E399F6E5E78BD732C0E2691`. Read-only receipt check independently counted all 30 A observations as booleans. Both executions retain readiness exit 1; no output fields were normalized to hide differences.
 - Initial default `npm run test:ci`: exit 1, 185/191 files, 1436 passed / 5 failed / 25 skipped, one unhandled RPC timeout. Historical coverage-sync rejects `packages/rules/src` drift because it binds the pre-export candidate. Other failures were timeout in preflight setup, observation-gap negative, full-roster, two Reference cases and MatchSession three-round smoke. This run was not a final frozen-carrier acceptance run; all failures remain recorded.
-- Frozen evidence-carrier full CI: pending at this report checkpoint; no PASS claim.
+- Frozen carrier `00fa5b4a703b5c262e8e252c78443c382e87abd3`, clean worktree, default `npm run test:ci`: exit 1, 187/191 files passed; 1440 passed / 2 failed / 25 skipped (1467 total), one unhandled RPC timeout. Four failing files: historical coverage-sync (`Candidate source drift: packages/rules/src`), preflight setup (10-second hook timeout), observation-gap reviewer-negative (5-second timeout), full-roster executable intake (5-second timeout). New parity 8/8 and diagnostic API 13/13 passed in this full run; MatchSession 30/30 passed. No global or unrelated local timeout was increased. Full CI and combination readiness are NOT PASS.
 
 ## Handoff
 
