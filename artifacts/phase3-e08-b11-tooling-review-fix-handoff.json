@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "fd-p3-b11-tooling-review-fix-v1",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "taskId": "P3-E08-B11-TOOLING-MINIMUM-CONTRACT",
+  "supersededToolingCarrier": "961ac01aa1cb22dfa30212332bd4af4d5a80c035",
+  "implementationAndTestSha": "050839956f3795cde76b48eddaebe6708e470ab4",
+  "executionAdapterSha": "9695d7107645f9972ebef7ab6c78a4ef14b015da",
+  "fixtureProducerSha": "b5ef0626c5f373658c7b0ef0208f5cfda91f1a6e",
+  "testedCombinationSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+  "parityInput": { "path": "scripts/fixtures/phase3-b11-parity-contract.json", "sha256": "170BA66A80A37EB47F5EEE868281D468F2770625C8581375D66FE235B6AEB673" },
+  "parityArtifact": { "path": "artifacts/phase3-e08-b11-tooling-parity-review-fix.json", "sha256": "3882243E538B542D62772A932130EC8231186DE619A9E460B6447B211AF694EA" },
+  "replication": "Two independent executions produced identical full artifact SHA-256",
+  "fixes": [
+    "runtime.routeCandidate is required for every family; no family-specific skip or implicit applicability exemption",
+    "Input binds controller, worker and common dependency to one Git commit and individual SHA-256 digests",
+    "Local normalized Git content drift blocks execution; worker/helper run from verified Git bytes",
+    "Worker receipt hashes its executed closure and controller verifies exact commit/hash binding",
+    "Candidate package-lock/tsconfig/source objects and actual loader hash are recorded; loader hash checked before and after execution"
+  ],
+  "commands": [
+    { "command": "npx vitest run scripts/tests/phase3-contract-parity.test.ts scripts/tests/phase3-readiness-preflight.test.ts", "exitCode": 0, "counts": "12/12", "source": "9695d71 with final drift regression under development" },
+    { "command": "npm run test:ci", "exitCode": 0, "counts": "188 files / 1441 tests", "testedSha": "050839956f3795cde76b48eddaebe6708e470ab4", "durationSeconds": 54.94 },
+    { "command": "npm run typecheck", "exitCode": 0, "testedSha": "050839956f3795cde76b48eddaebe6708e470ab4" },
+    { "command": "git diff --check 961ac01aa1cb22dfa30212332bd4af4d5a80c035 HEAD", "exitCode": 0 },
+    { "command": "npm run phase3:contract-parity -- --contract scripts/fixtures/phase3-b11-parity-contract.json --candidate 9eaa0e0c417486adf7b0449e3d32fb90b7d362f9 --out artifacts/phase3-e08-b11-tooling-parity-review-fix.json", "exitCode": 1, "counts": "10 executed fixtures / 34 required missing observations / 1 pending fixture review", "executionAdapterSha": "9695d7107645f9972ebef7ab6c78a4ef14b015da" },
+    { "command": "same parity command with --out artifacts/phase3-e08-b11-tooling-parity-review-fix-repeat.json", "exitCode": 1, "counts": "identical artifact bytes" }
+  ],
+  "negativeRegressionEvidence": [
+    "Four Conversion runtime.routeCandidate observations null while every other comparison agrees: exactly four required-observation issues",
+    "Missing Conversion routeCandidate expectation: malformed input rejected",
+    "Controller, worker and common dependency local content drift: rejected",
+    "Worker drift through complete runParity path: no candidate execution, empty results",
+    "Incomplete execution closure: malformed input rejected",
+    "Receipt digests independently checked against Git blobs"
+  ],
+  "remainingReadiness": "FAIL_NO_WAIVER",
+  "fixtureExpectationReviewOwner": "Reviewer B",
+  "toolingReviewOwner": "Reviewer A",
+  "knownLegacyPathsIntentionallyRetained": "All existing runtime/fallback owners unchanged",
+  "areasNotVerified": ["Independent fixture expectation review", "Missing comparable runtime/inventory/coverage APIs", "GitHub required checks", "Promotion", "Global Gate C", "Historical 93 missing-image Release blockers"],
+  "runtimeDelta": "NONE",
+  "authoringDelta": "NONE",
+  "taxonomyDelta": "NONE",
+  "mainCoverageCreditDelta": 0,
+  "migrationCreditDelta": 0,
+  "denominatorDelta": 0,
+  "reviewReadyChanged": false,
+  "promotedOnMain": false,
+  "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE"
+}
