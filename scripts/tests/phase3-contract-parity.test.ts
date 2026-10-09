@@ -83,7 +83,7 @@ describe('B11 real API contract parity diagnostics', () => {
       await expect(verifyDependencyClosure(temporary, binding)).rejects.toThrow('Execution dependency closure drift');
     } finally { rmSync(temporary, { recursive: true, force: true }); }
   });
-  it('fails readiness when expectations lack independent review or required API observations are unavailable', () => {
+  it('fails readiness for pending review and real disagreement despite complete API observations', () => {
     expect(result.status).toBe('FAIL');
     expect(result.issues.map(issue => issue.code)).toContain('EXPECTATIONS_NOT_INDEPENDENTLY_REVIEWED');
     expect(result.issues.some(issue => issue.code === 'REQUIRED_OBSERVATION_NOT_EVALUATED')).toBe(false);

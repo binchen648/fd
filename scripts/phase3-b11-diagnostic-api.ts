@@ -1,6 +1,6 @@
 import { hash, type Obj } from './phase3-tooling-common';
 
-const list = (value: unknown): Obj[] => Array.isArray(value) ? value : [];
+const list = (value: unknown): Obj[] => Array.isArray(value) ? value.map(item => item ?? {}) : [];
 const empty = (value: unknown): boolean => value === undefined || (Array.isArray(value) && value.length === 0);
 const name = (value: unknown): value is string => typeof value === 'string' && value.length > 0;
 

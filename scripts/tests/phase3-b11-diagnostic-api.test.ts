@@ -48,4 +48,10 @@ describe('B11 read-only inventory and coverage exact diagnostics', () => {
     expect(classifyB11InventoryAbility({})).toMatchObject({ routeCandidate: false, exactEligible: false });
     expect(classifyB11CoverageEligibility({ effects: [{ type: 'unknown' }] }).exactEligible).toBe(false);
   });
+  it('rejects malformed nested values without throwing or accepting a filtered graph', () => {
+    const input = structuredClone(golden);
+    input.effects[1].branches[0].then[0].amount.args[1] = null;
+    expect(classifyB11InventoryAbility(input).exactEligible).toBe(false);
+    expect(classifyB11CoverageEligibility({ ...conversion, effects: [null, null] }).exactEligible).toBe(false);
+  });
 });
