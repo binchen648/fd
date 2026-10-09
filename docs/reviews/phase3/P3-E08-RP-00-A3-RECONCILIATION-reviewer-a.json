@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-E08-RP-00-A3-RECONCILIATION",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "reviewer": "github:binchen648",
+  "reviewerRole": "Reviewer A",
+  "reviewThread": "https://github.com/binchen648/fd/pull/545#issuecomment-6071641331",
+  "githubObjectId": 6071641331,
+  "githubObjectType": "PR_ISSUE_COMMENT",
+  "reviewDate": "2026-10-09",
+  "timezone": "Asia/Shanghai",
+  "candidateSha": "caeebdd52f8d420b179e464bdd07e4d50f378a4b",
+  "reviewedSha": "caeebdd52f8d420b179e464bdd07e4d50f378a4b",
+  "implementationSha": "43916d3f7b6e7384d7c1e98875881c99992ab467",
+  "baseSha": "fefcf4f7f5bd66ed7693889fb99391e6e7321016",
+  "verdict": "FAIL",
+  "conclusion": "IMPLEMENTATION_NEEDS_REVISION",
+  "reviewScope": "Five authorized A3 reconciliation paths, exact lineage, fresh evidence and CI portability",
+  "boundArtifacts": [
+    {
+      "path": "artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json",
+      "sha256": "FDFD723B55783AC4287888DC16545F57E89D873ADFB5909CDDAC5A581832A80A"
+    },
+    {
+      "path": "artifacts/phase3-skill-coverage.json",
+      "sha256": "8683CF3C41E62703593CA5508A04544A02BBF7E3EB972371073FDCAE1A16C045"
+    },
+    {
+      "path": "docs/reports/2026-10-08-p3-e08-a3-reconciliation.md",
+      "sha256": "613F3E357C97CD6F51DD0A71970AC324D6D4B3A34C8E6F66DD1ED71A29196AD0"
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P1",
+      "id": "NEW_RECOUNT_TEST_FULL_SUITE_TIMEOUT",
+      "path": "scripts/tests/phase3-e06-post-merge-recount.test.ts",
+      "line": 97,
+      "evidence": "New asynchronous independent classifier/compiler verification exceeds the default 5000ms budget in reviewer default full-suite execution; isolated execution passes in 2480ms.",
+      "minimumRepair": "Stabilize the authorized recount test while preserving compiler/full-object/hash/ancestry assertions. Preserve the fresh failed run separately from implementer PASS, and verify the new exact candidate with default test:ci."
+    }
+  ],
+  "independentVerification": {
+    "testedSha": "caeebdd52f8d420b179e464bdd07e4d50f378a4b",
+    "defaultTestCi": {
+      "command": "npm run test:ci",
+      "exitCode": 1,
+      "filesPassed": 182,
+      "filesFailed": 2,
+      "testsPassed": 1410,
+      "testsFailed": 2,
+      "durationSeconds": 30.71,
+      "failures": [
+        { "path": "scripts/tests/phase3-e06-post-merge-recount.test.ts", "line": 97, "reason": "Test timed out in 5000ms", "origin": "NEW_TEST" },
+        { "path": "packages/rules/tests/match-session.test.ts", "line": 313, "reason": "Test timed out in 5000ms", "elapsedMs": 6873, "origin": "UNCHANGED_INHERITED_TEST" }
+      ]
+    },
+    "focusedRecount": { "exitCode": 0, "filesPassed": 1, "testsPassed": 3 },
+    "typecheck": "PASS",
+    "contentValidation": "PASS_0_BLOCKING_ISSUES",
+    "generatedContentDeterminism": "PASS",
+    "scopedDiffCheck": "PASS",
+    "exactParentsAndArtifactHashes": "PASS",
+    "workflowChangeFetchDepthOnly": "PASS",
+    "coverageRecalculationAndThreeConsumers": "PASS_IN_FOCUSED_RECOUNT",
+    "historicalEvidenceAndZeroCreditBoundaries": "PASS"
+  },
+  "accounting": { "coverageCreditDelta": 0, "migrationCreditDelta": 0, "denominatorDelta": 0 },
+  "retainedGates": { "gateC": "NOT_VERIFIED", "sourceAssets": "HISTORICAL_93_MISSING_IMAGE_NOT_REAUDITED", "finalPromotionHeadChecks": "NOT_VERIFIED" },
+  "nextOwner": "Codex A / Planner",
+  "nextAction": "Repair the new recount-test stability within authorized scope; Planner separately disposes inherited MatchSession CI timeout. No A3 assembly from this failed carrier.",
+  "nonClaims": [
+    "The inherited MatchSession failure is not attributed to a new runtime semantic defect.",
+    "No unrelated timeout import, runtime repair or merge is authorized by this review.",
+    "This review targets the explicit carrier, not the stale PR 545 head.",
+    "Only Reviewer A evidence is written; candidate files are unchanged."
+  ]
+}
