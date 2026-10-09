@@ -136,3 +136,59 @@ rerun here. No live GitHub PR status, required checks, human approval, runtime
 or browser test result was freshly verified. The historical recovery backlog
 has not been audited consumer by consumer. No colleague submission received a
 new technical PASS from this intake.
+
+## User-Supplied Historical Handoffs Reconciliation
+
+The user supplied the historical A-R promotion/recount gap, A113 Future
+PREPARE recommendation and B-R RP-00 handoff. These are context inputs, not a
+fresh implementation authorization. Original display timestamps were not
+used to infer a new current task.
+
+- The historical absence of an a7751c3-bound recount is no longer the complete
+  state. Current main contains
+  `artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json`, now
+  carrying the Epoch 08 reconciliation contract and immutable observed main
+  `a7751c3fa51895fd3a401721b1e926b90e016862`. Its historical READY_FOR_REVIEW
+  field must be read with the subsequent exact review, not treated alone as
+  today's pending state.
+- Later A3 post-merge synchronization carrier
+  `c7ad77574b6d99abcb2852488b23d2bc8da7bc80` and Reviewer A commit
+  `4ab905be91c0e03a488d162ae5a0174fa95f3b78` bind current observed main
+  `9a1689d2ec5b56b67d1483d2593b4ab809d6c15c`. This follow-up independently
+  recomputed the sync artifact digest from the carrier and matched
+  `23e52c4b1167b108aade6872f722f07b34ff346a01b61657dd112b4819a7dd78`.
+  The recorded scope is A3_POST_MERGE_EVIDENCE_SYNCHRONIZATION_ONLY, and
+  identityListReenumerated is false. It cannot substitute for a new complete
+  A111/A112 identity reconstruction or silently finish every A-R task.
+- The proposed A113 identity is
+  `servant.ereshkigal.skill.sc-ereshkigal-1`, ability
+  `sc-ereshkigal-1.battle-continuation`. Current main still resolves
+  `data/authoring/servants/servant.ereshkigal.json` to supplied blob
+  `a8bcf07070d606555e2b095a69d1ea131b102519`. Its action-phase clause and
+  authored effect select an enabled non-workshop destination and move the
+  controller. The misleading battle-related identifier is not proof of
+  Battle semantics. This source check is not fresh whole-card runtime review.
+- Structured reading of the current main's historical A112 row found registry
+  presence true and four gaps: RUNTIME_CONTRACT_UNBOUND,
+  TEST_EVIDENCE_UNBOUND, GATE_C_PENDING and LEGACY_ONLY. The user handoff listed
+  only the first three. The row's runtimeContractBinding is
+  FAMILY_REPRESENTATIVE_ONLY, and its sharedRuntimeContract is
+  CURRENT_MAIN_PLAYTEST_BASELINE with no accepted family bound by A111.
+  P3-FB2-09/R27 is therefore a proposed matching contract requiring fresh
+  identity-specific binding, not an already proven complete-card dependency.
+  The gap artifact remains anchored to historical main 0e943a94, so it is a
+  selection input rather than fresh current-main execution proof.
+- B-R's supplied abbf1ae handoff matches the historical dispatch and reviewed
+  candidate. It does not override the subsequent lineage supersession or
+  become a fresh Epoch 08 runtime candidate. Its old held reservation cannot
+  establish present ownership after later closure/release records.
+
+Remaining inputs are narrower: supply the A113 exact packet/dispatch if one
+was created after Future PREPARE, or confirm that this is still A-R's latest
+assignment. If B-R has no newer assignment, retain it as historical/frozen
+context without inventing a new task. The supplied text does not provide the
+separate B11 user dispatch referenced by the newer Codex B manifest.
+
+No stale recount was rerun and no fresh runtime work was started by this
+reconciliation. Gate C and the historically retained 93 image blockers remain
+non-claims; the asset inventory was not freshly audited.
