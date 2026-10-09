@@ -74,6 +74,61 @@ function setup(originalPrintedCost=0, withBattleLossPenalty=false) {
   return state;
 }
 describe('CCC source-bound private paid copy',()=>{
+  it('rejects forged CCC source shape at every pending choice stage',()=>{
+    const state=setup(2);
+    expect(rules.dispatchAbilityCommand(state,'p1',{
+      type:'activate_ability',cardInstanceId:'code',abilityId:'cc-hack',
+    })).toMatchObject({ok:true});
+    const mutations:[string,(a:any)=>void][]=[
+      ['trigger ability',a=>{a.kind='forced_trigger';a.activation={trigger:'after_controller_wins_battle'};}],
+      ['wrong phase',a=>{a.activation.phase='preparation';}],
+      ['wrong window',a=>{a.activation.opens='controller_combat_action_window';}],
+      ['manual execution',a=>{a.execution.mode='manual';}],
+      ['unexpected target',a=>{a.targets=[{type:'player'}];}],
+      ['unexpected source cost',a=>{a.cost=[{type:'adjust_mana',amount:-1}];}],
+    ];
+    const check=(stage:string)=>{
+      const pending=state.abilityRuntime!.pendingDecision!;
+      expect(pending.interaction?.stage).toBe(stage);
+      expect(rules.isCanonicalGenericPendingDecisionForRestore(state,pending)).toBe(true);
+      for(const [label,mutate] of mutations){
+        const forged=structuredClone(state);
+        const source=forged.abilityRuntime!.pack.cards[names.ccc]!.abilities
+          .find(a=>a.id==='cc-hack')!;
+        mutate(source);
+        expect(rules.isCanonicalGenericPendingDecisionForRestore(
+          forged,forged.abilityRuntime!.pendingDecision!),stage+' / '+label).toBe(false);
+      }
+    };
+    check('player');
+    const cleanSession=rules.createMatchSession({
+      humanPlayerId:'p1',humanPlayerIds:['p1','p2'],
+      restorePackKind:'trusted_authoring_fixture',
+    });
+    cleanSession.state=state;
+    cleanSession.logs=[];cleanSession.replay=[];cleanSession.replaySnapshots=[];cleanSession.battleHistory=[];
+    const saved=JSON.parse(JSON.stringify(cleanSession.serializeSession()));
+    expect(rules.restoreMatchSession(saved,{restorePackKind:'trusted_authoring_fixture'})
+      .state.abilityRuntime?.pendingDecision?.interaction?.stage).toBe('player');
+    const forgedSnapshot=structuredClone(saved);
+    const forged=forgedSnapshot.state.abilityRuntime.pack.cards[names.ccc].abilities
+      .find((a:any)=>a.id==='cc-hack');
+    forged.kind='forced_trigger';
+    forged.activation={trigger:'after_controller_wins_battle'};
+    expect(()=>rules.restoreMatchSession(forgedSnapshot,{
+      restorePackKind:'trusted_authoring_fixture',
+    })).toThrow(/Invalid (MatchSession state container|or missing deferred runtime state authority)/);
+    for(const [stage,selectedIds] of [
+      ['discard',['p2']],['reorder',['a']],['copy',['c','b']],
+    ] as const){
+      const pending=state.abilityRuntime!.pendingDecision!;
+      expect(rules.dispatchAbilityCommand(state,'p1',{
+        type:'choose_target',decisionId:pending.id,selectedIds:[...selectedIds],
+      })).toMatchObject({ok:true});
+      check(stage);
+    }
+  });
+
   it('charges one VP only for a trusted battle loss, never a forged loss or actual victory',()=>{
     const lost=setup(0,true);
     lost.players[0]!.vp=3;

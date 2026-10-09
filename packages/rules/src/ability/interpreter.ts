@@ -4859,6 +4859,10 @@ function isMysticCodeSwitchPendingDecisionLiveValid(s: GameState,d: PendingDecis
     const source=card(s,m.sourceCardInstanceId);
     const ability=restoredAbility(s,m.sourceCardInstanceId,m.abilityId);
     if (!ability || ability.effects.length!==1 || ability.effects[0]?.type!=='mystic_code_switch' ||
+        ability.kind!=='phase_action' || ability.activation.phase!=='preparation' ||
+        ability.activation.opens!=='controller_action_window' ||
+        ability.execution.mode!=='automatic' || ability.targets.length!==0 ||
+        ability.cost.length!==0 ||
         source.ownerPlayerId!==m.controllerId ||
         source.controllerPlayerId!==m.controllerId || source.zone!=='skill' ||
         s.round.activePhase!=='preparation' || d.controllerId!==m.controllerId ||
@@ -4889,6 +4893,10 @@ function isPrivateDeckTopPendingDecisionLiveValid(s: GameState, d: PendingDecisi
     const source=card(s,m.sourceCardInstanceId);
     const a=restoredAbility(s,m.sourceCardInstanceId,m.abilityId);
     if (!a || a.effects.length!==1 || a.effects[0]?.type!=='private_deck_top_choice' ||
+        a.kind!=='phase_action' || a.activation.phase!=='action' ||
+        a.activation.opens!=='controller_action_window' ||
+        a.execution.mode!=='automatic' || a.targets.length!==0 ||
+        a.cost.length!==0 ||
         a.effects[0]?.count!==3 || !ownedMysticCodeSource(s,source.instanceId,m.controllerId,true) ||
         s.round.activePhase!=='action' || player(s,m.controllerId).locationId!==m.battlefieldId ||
         !isBattlefield(s,m.battlefieldId) ||

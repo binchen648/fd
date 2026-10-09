@@ -72,6 +72,31 @@ function setup(additionalModes=false) {
   return state;
 }
 describe('real preparation-phase Mystic Code switch and restore',()=>{
+  it('rejects source shape forgery in a live Dress Change pending choice',()=>{
+    const state=setup();
+    expect(rules.dispatchAbilityCommand(state,'p1',{
+      type:'activate_ability',cardInstanceId:'source',abilityId:'switch',
+    })).toMatchObject({ok:true});
+    const pending=state.abilityRuntime!.pendingDecision!;
+    expect(rules.isCanonicalGenericPendingDecisionForRestore(state,pending)).toBe(true);
+    const mutations:[string,(a:any)=>void][]=[
+      ['trigger ability',a=>{a.kind='forced_trigger';a.activation={trigger:'after_controller_loses_battle'};}],
+      ['wrong phase',a=>{a.activation.phase='action';}],
+      ['wrong window',a=>{a.activation.opens='controller_combat_action_window';}],
+      ['manual execution',a=>{a.execution.mode='manual';}],
+      ['unexpected target',a=>{a.targets=[{type:'player'}];}],
+      ['unexpected source cost',a=>{a.cost=[{type:'adjust_mana',amount:-1}];}],
+    ];
+    for(const [label,mutate] of mutations){
+      const forged=structuredClone(state);
+      const source=forged.abilityRuntime!.pack.cards[sourceId]!.abilities
+        .find(a=>a.id==='switch')!;
+      mutate(source);
+      expect(rules.isCanonicalGenericPendingDecisionForRestore(
+        forged,forged.abilityRuntime!.pendingDecision!),label).toBe(false);
+    }
+  });
+
   it('requires each of four Mystic Codes to accompany, not replace, a paid ordinary attack',()=>{
     for(let index=0;index<definitions.length;index++){
       const state=setup(true);
