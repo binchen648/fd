@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-a-post-merge-review-v1",
+  "taskId": "P3-E08-RP-00-A3-POST-MERGE-SYNCHRONIZATION",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "reviewDate": "2026-10-09",
+  "reviewer": "github:binchen648",
+  "role": "Reviewer A",
+  "reviewThread": "https://github.com/binchen648/fd/pull/545#issuecomment-6074064975",
+  "attestationCommentId": 6074064975,
+  "candidateSha": "c7ad77574b6d99abcb2852488b23d2bc8da7bc80",
+  "reviewedSha": "c7ad77574b6d99abcb2852488b23d2bc8da7bc80",
+  "conclusion": "REVIEW_ACCEPTED",
+  "finalVerdict": "PASS",
+  "scope": "A3_POST_MERGE_EVIDENCE_SYNCHRONIZATION_ONLY",
+  "findings": [],
+  "syncArtifact": {
+    "path": "artifacts/phase3-e08-a3-post-merge-sync.json",
+    "sha256": "23E52C4B1167B108AADE6872F722F07B34FF346A01B61657DD112B4819A7DD78"
+  },
+  "lineage": {
+    "previousMainSha": "fefcf4f7f5bd66ed7693889fb99391e6e7321016",
+    "observedMainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+    "promotionHeadSha": "e89b5bf8050c49ac46107932add61fbae785b286",
+    "syncImplementationSha": "38d4cea770ff447700ffbfffc5f62acc98c4475e",
+    "syncCarrierSha": "c7ad77574b6d99abcb2852488b23d2bc8da7bc80",
+    "mergeParentsExact": "PASS",
+    "syncDirectParentChain": "PASS",
+    "remoteCarrierRefExact": "PASS",
+    "bindingPolicy": "IMMUTABLE_OBSERVED_MAIN_NOT_MOVING_ORIGIN_MAIN"
+  },
+  "priorAcceptedReview": {
+    "commit": "f186e2e9063b5a5d950d7fd5bcdca17f77957690",
+    "reviewedSha": "1423b92f95e85eabfbe762583fd331e20226f180",
+    "path": "docs/reviews/phase3/P3-E08-RP-00-A3-overall-reviewer-a.json",
+    "sha256": "5BED0941BAC37F7AAFD67DED13C60322733D5A0040BD5203BBDF2C69FB3B87D5",
+    "reviewThread": "https://github.com/binchen648/fd/pull/545#issuecomment-6072127687",
+    "identityHashFieldsAndAncestry": "PASS",
+    "boundRecountCoverageAndReportHashes": "PASS"
+  },
+  "gitHubVerification": {
+    "pullRequest": 545,
+    "state": "MERGED",
+    "mergeCommit": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+    "mergedAt": "2026-10-09T01:14:16Z",
+    "checkRunsHeadSha": "e89b5bf8050c49ac46107932add61fbae785b286",
+    "liveApiCompared": true,
+    "recordedAttemptsMatched": 5,
+    "historicalFailedAndCancelledPolicyAttemptsRetained": true,
+    "latestCompletedByName": {
+      "build": { "id": 113620483527, "conclusion": "success" },
+      "test": { "id": 113620482944, "conclusion": "success" },
+      "Phase 3 Promotion Lane / policy": { "id": 113620695621, "conclusion": "success" }
+    },
+    "freshMergeCommitRuntimeChecksClaimed": false
+  },
+  "independentValidation": {
+    "testedSha": "c7ad77574b6d99abcb2852488b23d2bc8da7bc80",
+    "focused": {
+      "command": "npx vitest run scripts/tests/phase3-e08-a3-post-merge-sync.test.ts scripts/tests/phase3-e06-post-merge-recount.test.ts",
+      "files": 2,
+      "tests": 6,
+      "result": "PASS"
+    },
+    "typecheck": "PASS",
+    "completeScopedDiffCheck": "PASS",
+    "freshCoverageRecomputation": "PASS",
+    "unchangedSourceGitObjects": "PASS",
+    "exactThreeSetupConsumerRoutes": "PASS",
+    "tamperedBindingsNonzeroCreditAndLaterFailedCheckRejected": "PASS",
+    "candidateDiff": "THREE_NEW_EVIDENCE_TEST_REPORT_PATHS_ONLY",
+    "fullRuntimeSuites": "NOT_RERUN"
+  },
+  "accounting": {
+    "before": { "new": 22, "legacyResolve": 144, "legacyExecute": 3, "dual": 0, "notClassifiable": 112 },
+    "after": { "new": 22, "legacyResolve": 144, "legacyExecute": 3, "dual": 0, "notClassifiable": 112 },
+    "coverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0,
+    "runtimePromotionDelta": 0,
+    "retainedAcceptedIdentities": 111,
+    "retainedDenominator": 944,
+    "retainedRemaining": 833,
+    "identityListReenumerated": false,
+    "identityAcceptanceReawarded": false
+  },
+  "runtimeDelta": "NONE",
+  "authoringDelta": "NONE",
+  "taxonomyDelta": "NONE",
+  "retainedLimitations": {
+    "gateC": "NOT_VERIFIED",
+    "releaseGate": "BLOCKED",
+    "missingImageBlockers": 93,
+    "missingImageCountSource": "HISTORICAL_RETAINED_NOT_REAUDITED",
+    "longTermCIStability": "NOT_VERIFIED",
+    "npmAudit": "PRODUCER_REPORTED_12_VULNERABILITIES_NOT_REAUDITED",
+    "priorFailuresAndFindings": "PRESERVED_NOT_REWRITTEN"
+  },
+  "allowedNextStep": "PLANNER_RECORD_A3_POST_MERGE_SYNC_CLOSURE_AND_RESUME_PHASE3_PLANNING",
+  "abilityPromotionGranted": false,
+  "gatePromotionGranted": false,
+  "phase3CompletionGranted": false,
+  "releaseAcceptanceGranted": false
+}
