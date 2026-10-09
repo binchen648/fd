@@ -24,6 +24,7 @@ describe('B11 real API contract parity diagnostics', () => {
     expect(result.executionPerformed).toBe(true);
     expect(result.executionAdapter.commit).toBe(input.executionAdapter[0].commit);
     expect(result.executionAdapter.files.map(file => file.path)).toEqual(adapterClosurePaths);
+    for (const ref of result.executionAdapter.files) expect(hash(git(root, ['show', `${ref.commit}:${ref.path}`]))).toBe(ref.sha256);
     expect(result.results).toHaveLength(10);
     for (const row of result.results) {
       expect(row.executedInputSha256).toMatch(/^[0-9A-F]{64}$/);
@@ -63,7 +64,7 @@ describe('B11 real API contract parity diagnostics', () => {
     const missing = structuredClone(fixtures); delete missing.fixtures.find((fixture: any) => fixture.family === 'conversion-magic').expected.runtime.routeCandidate;
     expect(() => parseFixtures(missing)).toThrow(InputError);
   });
-  it('rejects local drift in both worker and its tooling dependency even with unchanged candidate APIs', () => {
+  it('rejects local drift in controller, worker and its dependency before executing candidate APIs', async () => {
     const temporary = mkdtempSync(resolve(tmpdir(), 'fd-parity-binding-test-'));
     try {
       git(root, ['clone', '--shared', '--no-checkout', '--', root, temporary]);
@@ -74,6 +75,12 @@ describe('B11 real API contract parity diagnostics', () => {
         writeFileSync(resolve(temporary, path), Buffer.concat([original, Buffer.from('\n// unbound local change\n')]));
         const issues: Issue[] = []; verifyAdapterClosure(temporary, input.executionAdapter, issues);
         expect(issues.some(issue => issue.code === 'EXECUTION_ADAPTER_DRIFT' && issue.path === path)).toBe(true);
+        if (path.endsWith('phase3-contract-parity-worker.ts')) {
+          const rejected = await runParity(temporary, input, combinationSha, 'drift-probe');
+          expect(rejected.executionPerformed).toBe(false);
+          expect(rejected.results).toEqual([]);
+          expect(rejected.issues.some(issue => issue.code === 'EXECUTION_ADAPTER_DRIFT' && issue.path === path)).toBe(true);
+        }
         writeFileSync(resolve(temporary, path), original);
       }
       expect(() => verifyAdapterClosure(temporary, input.executionAdapter.slice(0, 1), [])).toThrow(InputError);

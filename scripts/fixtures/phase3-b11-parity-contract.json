@@ -6,6 +6,23 @@
   "contractVersion": 1,
   "adapterVersion": "b11-api-observations-v1",
   "candidateSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+  "executionAdapter": [
+    {
+      "commit": "9695d7107645f9972ebef7ab6c78a4ef14b015da",
+      "path": "scripts/phase3-contract-parity.ts",
+      "sha256": "13C39334FAB7BB67527F4976AAD4A573CF2EE33B36DF85526E87601AA58CAA3B"
+    },
+    {
+      "commit": "9695d7107645f9972ebef7ab6c78a4ef14b015da",
+      "path": "scripts/phase3-contract-parity-worker.ts",
+      "sha256": "1B0A8174ADA38189BF37CCEE607B90C6811C21F1B75F9C43DA8DEBD0D28E27D9"
+    },
+    {
+      "commit": "9695d7107645f9972ebef7ab6c78a4ef14b015da",
+      "path": "scripts/phase3-tooling-common.ts",
+      "sha256": "C11A3B6F573DEB012E936724CDAA274F940B6DD5EBE00078175F668E485E9555"
+    }
+  ],
   "contract": {
     "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
     "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
@@ -13,9 +30,9 @@
     "section": "## phase3:contract-parity"
   },
   "fixtures": {
-    "commit": "9a7122176dcc82827c27d2cf593c59633737eafe",
+    "commit": "b5ef0626c5f373658c7b0ef0208f5cfda91f1a6e",
     "path": "scripts/fixtures/phase3-b11-parity-fixtures.json",
-    "sha256": "E5EDA4F27959A447CD392B302351199F23868488A7B0821DF7814BD477835981"
+    "sha256": "0757970801F81178069CA7DF4423985180130C220D486871FFAFE137C0929A46"
   },
   "owners": {
     "runtime": {

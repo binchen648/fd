@@ -71,8 +71,8 @@ Real API mappings in b11-api-observations-v1:
   is a different contract, not an interchangeable inventory owner observation.
   Both required fields remain NOT_EVALUATED.
 
-Required comparable fields in this version are runtime (both Golden fields,
-Conversion exactEligible), compiler compileOutcome, inventory both fields,
+Required comparable fields in this version are runtime (routeCandidate and
+exactEligible for every family), compiler compileOutcome, inventory both fields,
 coverage exactEligible. No CLI waiver switch disables an owner.
 Unavailable required fields fail readiness. These missing capabilities are
 tooling/API boundaries, not a claim that effects themselves are broken.
@@ -84,10 +84,21 @@ coverage Git objects are verified equal to the candidate. Observations record
 fixture/input digests, actual identities, normalization reports and API calls.
 Declared expectations are never used as observation values.
 
+executionAdapter is mandatory and binds controller, worker and common helper
+Git references at one exact commit, including each SHA-256. Local normalized
+Git blob identity must match each reference; drift blocks execution. The worker
+and helper execute from verified Git bytes in the isolated snapshot, not from
+the local working copy. The worker hashes the closure and returns its binding;
+the controller verifies that receipt. Package-lock and tsconfig objects must
+also match the candidate; the actual tsx loader digest is recorded and checked
+before and after execution. Installed dependency binaries remain a disclosed
+local provider, not an independently attested package installation.
+There is no family-based exemption or implicit applicability waiver.
+
 Fixture expectations start PENDING. ACCEPTED requires a bound independent
 fd-p3-parity-expectation-review-v1 artifact with verdict=PASS, reviewer,
 candidateSha, reviewedFixtureCommit and premiseSha256. The premise hashes
-candidate, contract, fixture reference and owner mappings, excluding the review
+candidate, contract, fixture reference, executionAdapter and owner mappings, excluding the review
 itself. Review must descend from the exact fixture producer. Agreement with
 unreviewed expectations never passes readiness.
 
