@@ -119,3 +119,38 @@ npm run phase3:thread-dispatch -- protocol-probe --cwd <FD_CHECKOUT> --limit 3
 ## Next Minimal Step
 
 Find a supported connection to the live desktop host that exposes the designated target's execution state and direct-input capability. Keep dispatch disabled while state remains unknown. If no such connection is available, separately authorize a dedicated CLI worker experiment.
+
+## Desktop Connection Investigation
+
+Read-only follow-up on 2026-10-09:
+
+- Installed Windows package version: `OpenAI.Codex 26.1002.7124.0`.
+- Desktop-bundled executable reports `codex-cli 0.162.0-alpha.2`; the first PATH command is the npm wrapper reporting `0.147.0`. These versions must not be treated as interchangeable.
+- Process parent metadata identifies the desktop host as `ChatGPT.exe` with Codex children. Process command lines were not read.
+- `Get-NetTCPConnection -State Listen` found no listeners owned by the observed Codex processes or their desktop parent. This is a point-in-time TCP observation; it does not exclude Unix sockets, named pipes, other processes, or outbound relay connections.
+- Bundled `app-server proxy --help` documents a Unix-domain control socket and `--sock` override.
+- Bundled `app-server daemon version` attempted the default control socket and failed with Windows socket error `10050`. The socket's machine path is redacted. This differs from the older PATH executable's Windows lifecycle rejection.
+- A bounded five-second client attempt using the bundled executable with `app-server proxy` failed before `initialize` succeeded. No thread method or turn-start request was sent through that proxy, and the client closed afterward.
+
+Sanitized proxy evidence:
+
+```json
+{"mode":"desktop-bundled-default-proxy","initialized":false,"result":"CONNECTION_FAILED"}
+```
+
+Reproduction uses the installed executable path locally, without committing it:
+
+```text
+<DESKTOP_CODEX_EXE> --version
+<DESKTOP_CODEX_EXE> app-server proxy --help
+<DESKTOP_CODEX_EXE> app-server daemon version
+```
+
+The bounded client used `AppServerJsonRpcTransport(<DESKTOP_CODEX_EXE>, ['app-server', 'proxy'])`, attempted `initialize`, and closed after failure or a five-second deadline. It did not start a separate execution of the target session.
+
+Official documentation checked:
+
+- [App Server](https://learn.chatgpt.com/docs/app-server): documents stdio, experimental WebSocket, Unix socket, and disabled transports. It states that `thread/read` does not load a thread into memory. These protocol capabilities do not establish an external endpoint for this running desktop installation.
+- [Settings](https://learn.chatgpt.com/docs/reference/settings) and [Remote connections](https://learn.chatgpt.com/docs/remote-connections): the reviewed pages did not establish an external scripting API for existing Windows desktop chats. Remote connections describe account/device pairing and a relay; that product workflow is not proof of an app-server endpoint available to this client.
+
+Verdict remains `BLOCKED`, rather than a claim of universal desktop incompatibility. Named-pipe connectivity and alternative configured endpoints remain unknown; no private storage, process handles, IPC payloads, or UI automation were inspected. No probe was sent and no CLI worker was started.
