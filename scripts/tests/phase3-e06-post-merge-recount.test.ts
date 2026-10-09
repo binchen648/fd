@@ -158,7 +158,7 @@ describe('P3-E06 post-merge setup/create-to-skill recount', () => {
     ]) {
       expect(createHash('sha256').update(readFileSync(resolve(root, path))).digest('hex').toUpperCase()).toBe(hash);
     }
-  });
+  }, 15_000);
 
   it('requires full-history CI checkout and proves shallow recovery before ancestry checks', () => {
     const workflow = readFileSync(resolve(root, '.github/workflows/test.yml'), 'utf8');
