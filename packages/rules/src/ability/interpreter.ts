@@ -3234,7 +3234,7 @@ function isPlaySourceCardWithCostResponseStructuralCandidate(a: AuthoringAbility
   return hasFixedManaCost(a.cost, 2) && str(a.effects[0]?.type) === 'play_source_card';
 }
 
-function isCardZoneCoreDirectActionRouteCandidate(a: AuthoringAbility): boolean {
+export function isCardZoneCoreDirectActionRouteCandidate(a: AuthoringAbility): boolean {
   if (a.kind !== 'phase_action' || str(a.activation.phase) !== 'advance' || str(a.activation.opens) !== 'controller_action_window') return false;
   if (a.targets.length || a.cost.length || a.creates.length || a.effects.length !== 2) return false;
   const [move, mana] = a.effects;
