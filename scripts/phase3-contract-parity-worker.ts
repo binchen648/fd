@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { hash, InputError, type Obj } from './phase3-tooling-common';
+import { verifyDependencyClosure } from './phase3-contract-parity';
 
 function setValue(value: Obj, path: string, replacement: unknown): void {
   const parts = path.split('.');
@@ -101,7 +102,10 @@ if (process.argv[2] === '--snapshot') {
       if (hash(readFileSync(resolve(adapterRoot, file.path))) !== file.sha256) throw new InputError(`Execution adapter digest mismatch: ${file.path}`);
     }
     process.chdir(snapshot);
+    verifyDependencyClosure(snapshot, executionAdapter.dependencyBinding.closure);
     const results = await collectCandidateObservations(snapshot, fixtures);
-    process.stdout.write(`${JSON.stringify({ schemaVersion: 'fd-p3-parity-execution-v1', executionAdapter, results })}\n`);
+    verifyDependencyClosure(snapshot, executionAdapter.dependencyBinding.closure);
+    process.stdout.write(`${JSON.stringify({ schemaVersion: 'fd-p3-parity-execution-v1', executionAdapter,
+      nodeVersion: process.version, nodeSha256: hash(readFileSync(process.execPath)), results })}\n`);
   } catch (error) { process.stderr.write(`${String(error)}\n`); process.exitCode = 1; }
 }

@@ -79,8 +79,9 @@ tooling/API boundaries, not a claim that effects themselves are broken.
 
 Execution uses an isolated shared Git clone, detached at the exact candidate,
 and a real API subprocess. Git checkout preserves Unicode paths on Windows. Installed
-dependencies come from the tooling checkout only after all package source and
-coverage Git objects are verified equal to the candidate. Observations record
+dependencies are freshly installed with npm ci in that checkout from the bound
+candidate lockfile, with an isolated npm cache and lifecycle scripts disabled.
+No local node_modules provider is shared. Observations record
 fixture/input digests, actual identities, normalization reports and API calls.
 Declared expectations are never used as observation values.
 
@@ -90,9 +91,12 @@ Git blob identity must match each reference; drift blocks execution. The worker
 and helper execute from verified Git bytes in the isolated snapshot, not from
 the local working copy. The worker hashes the closure and returns its binding;
 the controller verifies that receipt. Package-lock and tsconfig objects must
-also match the candidate; the actual tsx loader digest is recorded and checked
-before and after execution. Installed dependency binaries remain a disclosed
-local provider, not an independently attested package installation.
+also match the candidate. The receipt binds the lockfile digest, complete installed
+dependency tree digest (including transitive imports and native binaries), file
+count, Node version/executable digest and npm CLI digest. The full installed tree
+is a superset of the dependencies loaded by the worker; it is checked before and
+after execution. Dependency links outside the isolated checkout are rejected.
+NODE_OPTIONS/NODE_PATH are cleared and the tsx transform cache is disabled.
 There is no family-based exemption or implicit applicability waiver.
 
 Fixture expectations start PENDING. ACCEPTED requires a bound independent

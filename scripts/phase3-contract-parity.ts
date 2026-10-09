@@ -1,11 +1,38 @@
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { lstatSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { dirname, join, resolve } from 'node:path';
+import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { ancestor, array, cliError, commitExists, fields, gitText, hash, InputError, inputFile, json, object, output, parseArgs, parseReference, readReference, sha, string, type Issue, type Obj } from './phase3-tooling-common';
+import { ancestor, array, cliError, commitExists, fields, git, gitText, hash, InputError, inputFile, json, object, output, parseArgs, parseReference, readReference, sha, string, type Issue, type Obj } from './phase3-tooling-common';
 
 export const adapterClosurePaths = ['scripts/phase3-contract-parity.ts', 'scripts/phase3-contract-parity-worker.ts', 'scripts/phase3-tooling-common.ts'];
+
+// Bind the entire installed tree, a superset of the loader's transitive imports
+// and native binaries. Directory links may only point into this isolated checkout.
+export function dependencyClosure(root: string) {
+  const entries: { path: string; sha256?: string; target?: string }[] = [];
+  const walk = (path: string) => {
+    const name = relative(root, path).replaceAll('\\', '/');
+    const stat = lstatSync(path);
+    if (stat.isSymbolicLink()) {
+      const target = relative(root, realpathSync(path));
+      if (isAbsolute(target) || target === '..' || target.startsWith(`..${process.platform === 'win32' ? '\\' : '/'}`)) {
+        throw new InputError(`Dependency link escapes isolated checkout: ${name}`);
+      }
+      entries.push({ path: name, target: target.replaceAll('\\', '/') });
+      if (lstatSync(realpathSync(path)).isFile()) entries.push({ path: `${name}:content`, sha256: hash(readFileSync(path)) });
+    } else if (stat.isDirectory()) {
+      for (const child of readdirSync(path).sort()) walk(join(path, child));
+    } else if (stat.isFile()) entries.push({ path: name, sha256: hash(readFileSync(path)) });
+    else throw new InputError(`Unsupported dependency entry: ${name}`);
+  };
+  walk(join(root, 'node_modules'));
+  return { sha256: hash(JSON.stringify(entries)), fileCount: entries.length };
+}
+
+export function verifyDependencyClosure(root: string, expected: ReturnType<typeof dependencyClosure>) {
+  if (JSON.stringify(dependencyClosure(root)) !== JSON.stringify(expected)) throw new InputError('Execution dependency closure drift');
+}
 
 export function verifyAdapterClosure(root: string, raw: unknown, issues: Issue[]) {
   const refs = array(raw, 'executionAdapter');
@@ -167,10 +194,11 @@ export async function runParity(root: string, raw: unknown, candidate: string, i
     }
   }
   let results: Obj[] = [];
+  let executionDependencies: Obj | undefined;
   const sourceObjects: Record<string, string> = {};
   const blockingInput = issues.some(issue => !['EXPECTATIONS_NOT_INDEPENDENTLY_REVIEWED', 'EXPECTATION_REVIEW_BINDING_FAILED'].includes(issue.code)) || !fixtures || !fixtureBytes;
   if (!blockingInput && fixtures && fixtureBytes) {
-    for (const path of ['packages', 'scripts/phase3-coverage.ts', 'package-lock.json', 'tsconfig.json']) {
+    for (const path of ['packages', 'apps', 'scripts/phase3-coverage.ts', 'package.json', 'package-lock.json', 'tsconfig.json']) {
       const bound = gitText(root, ['rev-parse', `${candidate}:${path}`]);
       sourceObjects[path] = bound;
       if (gitText(root, ['rev-parse', `HEAD:${path}`]) !== bound || gitText(root, ['diff', 'HEAD', '--', path]) || gitText(root, ['ls-files', '--others', '--exclude-standard', '--', path])) {
@@ -182,24 +210,39 @@ export async function runParity(root: string, raw: unknown, candidate: string, i
       // Git checkout preserves repository Unicode paths on Windows, unlike system tar.
       execFileSync('git', ['clone', '--shared', '--no-checkout', '--', root, temporary], { stdio: ['ignore', 'pipe', 'pipe'] });
       execFileSync('git', ['checkout', '--detach', candidate], { cwd: temporary, stdio: ['ignore', 'pipe', 'pipe'] });
-      symlinkSync(resolve(root, 'node_modules'), join(temporary, 'node_modules'), 'junction');
+      const environment = { ...process.env, NODE_OPTIONS: '', NODE_PATH: '', TSX_DISABLE_CACHE: '1' };
+      const npmCli = process.env.npm_execpath && process.env.npm_execpath.endsWith('npm-cli.js')
+        ? process.env.npm_execpath : join(dirname(process.execPath), 'node_modules/npm/bin/npm-cli.js');
+      execFileSync(process.execPath, [npmCli, 'ci', '--ignore-scripts', '--include=dev', '--include=optional',
+        '--no-audit', '--no-fund', '--cache', join(temporary, 'npm-cache')], {
+        cwd: temporary, env: environment, timeout: 120_000, maxBuffer: 32 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'],
+      });
+      const dependencyBinding = {
+        lockfileSha256: hash(readFileSync(join(temporary, 'package-lock.json'))),
+        closure: dependencyClosure(temporary), nodeVersion: process.version,
+        nodeSha256: hash(readFileSync(process.execPath)), npmCliSha256: hash(readFileSync(npmCli)),
+      };
+      if (dependencyBinding.lockfileSha256 !== hash(git(root, ['show', `${candidate}:package-lock.json`]))) {
+        throw new InputError('Isolated installation changed bound lockfile');
+      }
       const adapterBinding = { commit: adapter.commit, files: adapter.files.map(({ ref }) => ({ path: ref.path, sha256: ref.sha256 })) };
       const adapterRoot = join(temporary, 'execution-adapter');
       for (const { ref, bytes } of adapter.files) {
         const path = join(adapterRoot, ref.path); mkdirSync(dirname(path), { recursive: true }); writeFileSync(path, bytes!);
       }
-      const bindingPath = join(adapterRoot, 'binding.json'); writeFileSync(bindingPath, JSON.stringify(adapterBinding));
-      const loaderPath = resolve(root, 'node_modules/tsx/dist/loader.mjs');
-      const loaderSha256 = hash(readFileSync(loaderPath));
+      const bindingPath = join(adapterRoot, 'binding.json'); writeFileSync(bindingPath, JSON.stringify({ ...adapterBinding, dependencyBinding }));
+      const loaderPath = join(temporary, 'node_modules/tsx/dist/loader.mjs');
       const fixtureFile = join(temporary, 'executed-fixtures.json'); writeFileSync(fixtureFile, fixtureBytes);
       const execution = execFileSync(process.execPath, ['--import', pathToFileURL(loaderPath).href,
         join(adapterRoot, 'scripts/phase3-contract-parity-worker.ts'), '--snapshot', temporary, fixtureFile, bindingPath], {
-        cwd: root, timeout: 120_000, maxBuffer: 32 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'],
+        cwd: temporary, env: environment, timeout: 120_000, maxBuffer: 32 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'],
       });
       const receipt = json(execution, 'execution receipt');
       if (receipt.schemaVersion !== 'fd-p3-parity-execution-v1') throw new Error('Unexpected execution receipt');
-      if (JSON.stringify(receipt.executionAdapter) !== JSON.stringify(adapterBinding) || hash(readFileSync(loaderPath)) !== loaderSha256) throw new Error('Execution adapter/loader receipt binding mismatch');
-      sourceObjects.executionLoaderSha256 = loaderSha256;
+      if (JSON.stringify(receipt.executionAdapter) !== JSON.stringify({ ...adapterBinding, dependencyBinding }) ||
+          receipt.nodeVersion !== dependencyBinding.nodeVersion || receipt.nodeSha256 !== dependencyBinding.nodeSha256) throw new Error('Execution adapter/dependency receipt binding mismatch');
+      verifyDependencyClosure(temporary, dependencyBinding.closure);
+      executionDependencies = dependencyBinding;
       results = array(receipt.results, 'execution results');
       compareObservations(fixtures, results, issues);
     } finally {
@@ -209,9 +252,9 @@ export async function runParity(root: string, raw: unknown, candidate: string, i
   }
   return { schemaVersion: 'fd-p3-contract-parity-result-v1', taskId: input.taskId, controlEpoch: input.controlEpoch,
     status: issues.length ? 'FAIL' : 'PASS', testedCandidateSha: candidate, inputSha256, premiseSha256,
-    fixtureBinding: fixtureRef, executionAdapter: { commit: adapter.commit, files: adapter.files.map(({ ref }) => ref) }, sourceObjects, executionPerformed: results.length > 0,
+    fixtureBinding: fixtureRef, executionAdapter: { commit: adapter.commit, files: adapter.files.map(({ ref }) => ref) }, sourceObjects, executionDependencies, executionPerformed: results.length > 0,
     executionMethod: results.length ? 'ISOLATED_SHARED_GIT_CLONE_REAL_API_SUBPROCESS' : 'NOT_EXECUTED_INPUT_REJECTED',
-    dependencyProvider: 'LOCAL_NODE_MODULES; ALL_PACKAGE_SOURCE_AND_COVERAGE_GIT_OBJECTS_MATCH_CANDIDATE',
+    dependencyProvider: 'ISOLATED_NPM_CI_BOUND_LOCKFILE; COMPLETE_INSTALLED_TREE_AND_NODE_IDENTITY_BOUND',
     results, issues, acceptanceGranted: false, effectCorrectnessVerified: false, fallbackClosureVerified: false, browserAcceptanceVerified: false };
 }
 

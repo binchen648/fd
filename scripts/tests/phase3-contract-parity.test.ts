@@ -1,10 +1,10 @@
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { buildParityInput, combinationSha, fixturePath } from '../phase3-b11-tooling-inputs';
-import { adapterClosurePaths, compareObservations, parseFixtures, parseParityInput, runParity, verifyAdapterClosure } from '../phase3-contract-parity';
+import { adapterClosurePaths, compareObservations, dependencyClosure, parseFixtures, parseParityInput, runParity, verifyAdapterClosure, verifyDependencyClosure } from '../phase3-contract-parity';
 import { collectCandidateObservations } from '../phase3-contract-parity-worker';
 import { git, gitText, hash, InputError, type Issue } from '../phase3-tooling-common';
 
@@ -22,6 +22,12 @@ describe('B11 real API contract parity diagnostics', () => {
   it('executes candidate APIs in an isolated snapshot with canonical input and fixture hashes', () => {
     expect(result.executionMethod).toBe('ISOLATED_SHARED_GIT_CLONE_REAL_API_SUBPROCESS');
     expect(result.executionPerformed).toBe(true);
+    expect(result.dependencyProvider).toContain('ISOLATED_NPM_CI_BOUND_LOCKFILE');
+    expect(result.executionDependencies?.lockfileSha256).toBe(hash(git(root, ['show', `${combinationSha}:package-lock.json`])));
+    expect(result.executionDependencies?.closure.fileCount).toBeGreaterThan(100);
+    expect(result.executionDependencies?.closure.sha256).toMatch(/^[0-9A-F]{64}$/);
+    expect(result.executionDependencies?.nodeVersion).toBe(process.version);
+    expect(result.executionDependencies?.nodeSha256).toBe(hash(readFileSync(process.execPath)));
     expect(result.executionAdapter.commit).toBe(input.executionAdapter[0].commit);
     expect(result.executionAdapter.files.map(file => file.path)).toEqual(adapterClosurePaths);
     for (const ref of result.executionAdapter.files) expect(hash(git(root, ['show', `${ref.commit}:${ref.path}`]))).toBe(ref.sha256);
@@ -45,6 +51,23 @@ describe('B11 real API contract parity diagnostics', () => {
       expect(row.observations.compiler.compileOutcome).toBe('REJECT');
     }
     for (const row of result.results.filter(row => row.category === 'outside-scope')) expect(row.observations.runtime.exactEligible).toBe(false);
+  });
+  it('rejects a changed transitive dependency even when the loader stays unchanged', () => {
+    const temporary = mkdtempSync(resolve(tmpdir(), 'fd-parity-dependency-test-'));
+    try {
+      const modules = resolve(temporary, 'node_modules');
+      mkdirSync(resolve(modules, 'tsx/dist'), { recursive: true });
+      mkdirSync(resolve(modules, 'esbuild/lib'), { recursive: true });
+      const loader = resolve(modules, 'tsx/dist/loader.mjs');
+      const dependency = resolve(modules, 'esbuild/lib/main.js');
+      writeFileSync(loader, 'import "esbuild";'); writeFileSync(dependency, 'export const trusted = true;');
+      const binding = dependencyClosure(temporary);
+      const loaderDigest = hash(readFileSync(loader));
+      expect(() => verifyDependencyClosure(temporary, binding)).not.toThrow();
+      writeFileSync(dependency, 'export const trusted = false;');
+      expect(hash(readFileSync(loader))).toBe(loaderDigest);
+      expect(() => verifyDependencyClosure(temporary, binding)).toThrow('Execution dependency closure drift');
+    } finally { rmSync(temporary, { recursive: true, force: true }); }
   });
   it('fails readiness when expectations lack independent review or required API observations are unavailable', () => {
     expect(result.status).toBe('FAIL');
