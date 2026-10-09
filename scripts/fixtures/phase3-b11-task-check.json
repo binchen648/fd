@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "fd-p3-task-check-v1",
+  "taskId": "P3-E08-B11-COMBINATION-READINESS",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "baseSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "candidateSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+  "contract": {
+    "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+    "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+    "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+    "section": "## phase3:preflight"
+  },
+  "segments": [
+    {
+      "adapter": "b11-v1",
+      "role": "B",
+      "taskId": "P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY",
+      "scope": "RESULT_BINDING_B11",
+      "baseSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+      "candidateSha": "7868b82949e3e17e64218755e0efe3ed478ff778",
+      "authorizedPaths": [
+        "data/authoring/servants/servant.kintoki.json",
+        "data/generated/fd-playtest-v1.content-library.json",
+        "docs/agents/manifests/tasks/P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY.json",
+        "e2e/fd-conversion-magic-core-primitive.spec.ts",
+        "e2e/fd-golden-eater-result-binding.spec.ts",
+        "e2e/support/prepare-conversion-magic-room.ts",
+        "e2e/support/prepare-golden-eater-room.ts",
+        "e2e/support/start-conversion-magic-fixture-server.ts",
+        "e2e/support/start-golden-eater-fixture-server.ts",
+        "packages/rules/src/ability/executable-card-pack.ts",
+        "packages/rules/src/ability/interpreter.ts",
+        "packages/rules/src/ability/loader.ts",
+        "packages/rules/src/ability/resolution-dataflow.ts",
+        "packages/rules/tests/regression/production-resolution-bridge.test.ts",
+        "packages/rules/tests/regression/resolution-dataflow.test.ts"
+      ],
+      "record": {
+        "commit": "7868b82949e3e17e64218755e0efe3ed478ff778",
+        "path": "docs/agents/manifests/tasks/P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY.json",
+        "sha256": "BA0200E136EB894B6426BCF8FA682311341703C93C1853356BB401F05E96B6B2"
+      },
+      "references": [
+        {
+          "commit": "7868b82949e3e17e64218755e0efe3ed478ff778",
+          "path": "docs/rules/FD-Game-Rules-Final.md",
+          "sha256": "4CBF96C27235670F89AAAB8F4C8C1416F9F64180DA864E521F5EF6E75CCEB227",
+          "section": "### 1.2"
+        }
+      ],
+      "dependencies": [
+        {
+          "taskId": "P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY",
+          "candidateSha": "7868b82949e3e17e64218755e0efe3ed478ff778",
+          "state": "PENDING"
+        }
+      ]
+    },
+    {
+      "adapter": "shared-socket-v1",
+      "role": "B",
+      "taskId": "P3-E08-SHARED-SOCKET-LIFECYCLE-FIX",
+      "scope": "SHARED_SOCKET_LIFECYCLE",
+      "baseSha": "7868b82949e3e17e64218755e0efe3ed478ff778",
+      "candidateSha": "d13ab485dc54398581568a5a66bd696d4459862d",
+      "authorizedPaths": [
+        "apps/server/src/match-server.test.ts",
+        "apps/server/src/match-server.ts",
+        "docs/agents/manifests/tasks/P3-E08-SHARED-SOCKET-LIFECYCLE-FIX.json"
+      ],
+      "record": {
+        "commit": "d13ab485dc54398581568a5a66bd696d4459862d",
+        "path": "docs/agents/manifests/tasks/P3-E08-SHARED-SOCKET-LIFECYCLE-FIX.json",
+        "sha256": "16448C7D7DB80CA50149D80C76F00F024FC9A7DA872CFC75AFDB5941B676883A"
+      },
+      "references": [
+        {
+          "commit": "d13ab485dc54398581568a5a66bd696d4459862d",
+          "path": "docs/rules/FD-Game-Rules-Final.md",
+          "sha256": "4CBF96C27235670F89AAAB8F4C8C1416F9F64180DA864E521F5EF6E75CCEB227",
+          "section": "### 1.2"
+        }
+      ],
+      "dependencies": [
+        {
+          "taskId": "P3-E08-SHARED-SOCKET-LIFECYCLE-FIX",
+          "candidateSha": "d13ab485dc54398581568a5a66bd696d4459862d",
+          "state": "PENDING"
+        }
+      ]
+    },
+    {
+      "adapter": "a-coverage-v1",
+      "role": "A",
+      "taskId": "P3-E08-B11-COVERAGE-EVIDENCE-SYNC",
+      "scope": "COVERAGE_EVIDENCE",
+      "baseSha": "d13ab485dc54398581568a5a66bd696d4459862d",
+      "candidateSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "authorizedPaths": [
+        "artifacts/phase3-e08-b11-coverage-sync.json",
+        "artifacts/phase3-skill-coverage.json",
+        "docs/reports/2026-10-09-p3-e08-b11-coverage-sync.md",
+        "scripts/phase3-e08-b11-coverage-sync.ts",
+        "scripts/tests/phase3-e06-post-merge-recount.test.ts",
+        "scripts/tests/phase3-e08-b11-coverage-sync.test.ts"
+      ],
+      "record": {
+        "commit": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+        "path": "artifacts/phase3-e08-b11-coverage-sync.json",
+        "sha256": "E62626E2EC7C0088E879416E6C6C929FDF9647109BCEA2EFF6B22DB23A572B3D"
+      },
+      "references": [
+        {
+          "commit": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+          "path": "docs/rules/FD-Game-Rules-Final.md",
+          "sha256": "4CBF96C27235670F89AAAB8F4C8C1416F9F64180DA864E521F5EF6E75CCEB227",
+          "section": "### 1.2"
+        }
+      ],
+      "dependencies": [
+        {
+          "taskId": "P3-E08-B11-COVERAGE-EVIDENCE-SYNC",
+          "candidateSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+          "state": "PENDING"
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "b11-component-scenario",
+      "command": "npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/production-resolution-bridge.test.ts",
+      "state": "PENDING",
+      "testedSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9"
+    },
+    {
+      "id": "socket-boundary",
+      "command": "npx vitest run apps/server/src/match-server.test.ts",
+      "state": "PENDING",
+      "testedSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9"
+    },
+    {
+      "id": "browser",
+      "command": "npx playwright test e2e/fd-golden-eater-result-binding.spec.ts e2e/fd-conversion-magic-core-primitive.spec.ts --repeat-each=5",
+      "state": "PENDING",
+      "testedSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9"
+    }
+  ]
+}

@@ -2,7 +2,7 @@ import { execFileSync } from 'node:child_process';
 import { mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { ancestor, array, cliError, commitExists, fields, gitText, hash, InputError, inputFile, json, object, output, parseArgs, parseReference, readReference, sha, string, type Issue, type Obj } from './phase3-tooling-common';
 
 const ownerNames = ['runtime', 'compiler', 'inventory', 'coverage'];
@@ -156,12 +156,12 @@ export async function runParity(root: string, raw: unknown, candidate: string, i
     }
     const temporary = mkdtempSync(join(tmpdir(), 'fd-b11-parity-'));
     try {
-      const archivePath = join(temporary, 'candidate.tar');
-      execFileSync('git', ['archive', '--format=tar', `--output=${archivePath}`, candidate], { cwd: root, stdio: ['ignore', 'pipe', 'pipe'] });
-      execFileSync('tar', ['-xf', archivePath, '-C', temporary], { stdio: ['ignore', 'pipe', 'pipe'] });
+      // Git checkout preserves repository Unicode paths on Windows, unlike system tar.
+      execFileSync('git', ['clone', '--shared', '--no-checkout', '--', root, temporary], { stdio: ['ignore', 'pipe', 'pipe'] });
+      execFileSync('git', ['checkout', '--detach', candidate], { cwd: temporary, stdio: ['ignore', 'pipe', 'pipe'] });
       symlinkSync(resolve(root, 'node_modules'), join(temporary, 'node_modules'), 'junction');
       const fixtureFile = join(temporary, 'executed-fixtures.json'); writeFileSync(fixtureFile, fixtureBytes);
-      const execution = execFileSync(process.execPath, ['--import', resolve(root, 'node_modules/tsx/dist/loader.mjs'),
+      const execution = execFileSync(process.execPath, ['--import', pathToFileURL(resolve(root, 'node_modules/tsx/dist/loader.mjs')).href,
         resolve(root, 'scripts/phase3-contract-parity-worker.ts'), '--snapshot', temporary, fixtureFile], {
         cwd: root, timeout: 120_000, maxBuffer: 32 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'],
       });
@@ -176,7 +176,7 @@ export async function runParity(root: string, raw: unknown, candidate: string, i
   }
   return { schemaVersion: 'fd-p3-contract-parity-result-v1', taskId: input.taskId, controlEpoch: input.controlEpoch,
     status: issues.length ? 'FAIL' : 'PASS', testedCandidateSha: candidate, inputSha256, premiseSha256,
-    fixtureBinding: fixtureRef, sourceObjects, executionMethod: 'ISOLATED_GIT_ARCHIVE_REAL_API_SUBPROCESS',
+    fixtureBinding: fixtureRef, sourceObjects, executionMethod: 'ISOLATED_SHARED_GIT_CLONE_REAL_API_SUBPROCESS',
     dependencyProvider: 'LOCAL_NODE_MODULES; ALL_PACKAGE_SOURCE_AND_COVERAGE_GIT_OBJECTS_MATCH_CANDIDATE',
     results, issues, acceptanceGranted: false, effectCorrectnessVerified: false, fallbackClosureVerified: false, browserAcceptanceVerified: false };
 }

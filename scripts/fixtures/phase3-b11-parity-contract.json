@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "fd-p3-contract-parity-v1",
+  "taskId": "P3-E08-B11-CONTRACT-PARITY",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "contractId": "B11_RESULT_BINDING_DIAGNOSTIC_V1",
+  "contractVersion": 1,
+  "adapterVersion": "b11-api-observations-v1",
+  "candidateSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+  "contract": {
+    "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+    "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+    "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+    "section": "## phase3:contract-parity"
+  },
+  "fixtures": {
+    "commit": "9a7122176dcc82827c27d2cf593c59633737eafe",
+    "path": "scripts/fixtures/phase3-b11-parity-fixtures.json",
+    "sha256": "E5EDA4F27959A447CD392B302351199F23868488A7B0821DF7814BD477835981"
+  },
+  "owners": {
+    "runtime": {
+      "required": true,
+      "meaning": "Golden: exported structural routeCandidate + exact semantic eligibility. Conversion: exported exact semantic eligibility; no structural API available"
+    },
+    "compiler": {
+      "required": true,
+      "meaning": "compileExecutableCardPack ACCEPT/REJECT only; neither ownership nor exact family eligibility inferred"
+    },
+    "inventory": {
+      "required": true,
+      "meaning": "Require an independently callable B11 inventory routeCandidate/exactEligible classification; no current API"
+    },
+    "coverage": {
+      "required": true,
+      "meaning": "Retain raw classifyAbilityForCoverage runtimeRoute/semanticRoutes; required exact B11 eligibility currently not exposed"
+    }
+  },
+  "expectationReview": {
+    "state": "PENDING"
+  }
+}

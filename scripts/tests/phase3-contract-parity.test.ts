@@ -19,7 +19,7 @@ describe('B11 real API contract parity diagnostics', () => {
     result = await runParity(root, input, combinationSha, hash(JSON.stringify(input)));
   }, 120_000);
   it('executes candidate APIs in an isolated snapshot with canonical input and fixture hashes', () => {
-    expect(result.executionMethod).toBe('ISOLATED_GIT_ARCHIVE_REAL_API_SUBPROCESS');
+    expect(result.executionMethod).toBe('ISOLATED_SHARED_GIT_CLONE_REAL_API_SUBPROCESS');
     expect(result.results).toHaveLength(10);
     for (const row of result.results) {
       expect(row.executedInputSha256).toMatch(/^[0-9A-F]{64}$/);

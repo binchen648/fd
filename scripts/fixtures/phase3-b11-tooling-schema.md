@@ -77,7 +77,8 @@ coverage exactEligible. No CLI waiver switch disables an owner.
 Unavailable required fields fail readiness. These missing capabilities are
 tooling/API boundaries, not a claim that effects themselves are broken.
 
-Execution uses an isolated git archive and a real API subprocess. Installed
+Execution uses an isolated shared Git clone, detached at the exact candidate,
+and a real API subprocess. Git checkout preserves Unicode paths on Windows. Installed
 dependencies come from the tooling checkout only after all package source and
 coverage Git objects are verified equal to the candidate. Observations record
 fixture/input digests, actual identities, normalization reports and API calls.
