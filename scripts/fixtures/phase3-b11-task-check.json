@@ -135,7 +135,7 @@
     },
     {
       "id": "socket-boundary",
-      "command": "npx vitest run apps/server/src/match-server.test.ts",
+      "command": "npm run test --workspace @fd/server -- src/match-server.test.ts",
       "state": "PENDING",
       "testedSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9"
     },

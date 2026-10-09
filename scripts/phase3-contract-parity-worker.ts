@@ -53,33 +53,34 @@ export async function collectCandidateObservations(snapshot: string, fixtures: O
     const rawCalls: Obj = {};
     if (normalized && fixture.family === 'golden-eater') {
       observations.runtime = {
+        evaluationStatus: 'EVALUATED',
         routeCandidate: runtime.isResultBindingProductionBridgeRouteCandidate(normalized),
         exactEligible: runtime.isResultBindingProductionBridgeSemantic(normalized),
       };
       rawCalls.runtime = ['isResultBindingProductionBridgeRouteCandidate', 'isResultBindingProductionBridgeSemantic'];
     } else if (normalized && fixture.family === 'conversion-magic') {
-      observations.runtime = { routeCandidate: null, exactEligible: interpreter.isCardZoneCoreDirectActionSemantic(normalized),
+      observations.runtime = { evaluationStatus: 'PARTIALLY_EVALUATED', routeCandidate: null, exactEligible: interpreter.isCardZoneCoreDirectActionSemantic(normalized),
         unavailable: { routeCandidate: 'No exported structural routeCandidate API for Conversion Magic; private helper not copied' } };
       rawCalls.runtime = ['isCardZoneCoreDirectActionSemantic'];
     } else {
-      observations.runtime = { routeCandidate: null, exactEligible: null, unavailable: {
+      observations.runtime = { evaluationStatus: 'NOT_EVALUATED', routeCandidate: null, exactEligible: null, unavailable: {
         routeCandidate: 'Authoring normalization produced no comparable ability', exactEligible: 'Authoring normalization produced no comparable ability',
       } };
     }
     try {
       const compiled = compiler.compileExecutableCardPack(library);
-      observations.compiler = { compileOutcome: 'ACCEPT', definitionHash: compiled.definitionHash, routeCandidate: null, exactEligible: null,
+      observations.compiler = { evaluationStatus: 'EVALUATED_COMPILE_ONLY', compileOutcome: 'ACCEPT', definitionHash: compiled.definitionHash, routeCandidate: null, exactEligible: null,
         unavailable: { routeCandidate: 'Executable compiler exports compilation, not standalone route classification', exactEligible: 'Compilation acceptance is not family eligibility' } };
     } catch (error) {
-      observations.compiler = { compileOutcome: 'REJECT', error: String(error), routeCandidate: null, exactEligible: null,
+      observations.compiler = { evaluationStatus: 'EVALUATED_COMPILE_ONLY', compileOutcome: 'REJECT', error: String(error), routeCandidate: null, exactEligible: null,
         unavailable: { routeCandidate: 'Executable compiler exports compilation, not standalone route classification', exactEligible: 'Compilation rejection is not structural ownership' } };
     }
     rawCalls.compiler = ['compileExecutableCardPack'];
     const row = coverage.classifyAbilityForCoverage(archive.id, card.id, ability);
-    observations.coverage = { runtimeRoute: row.runtimeRoute, semanticRoutes: row.semanticRoutes, routeCandidate: null, exactEligible: null,
+    observations.coverage = { evaluationStatus: 'NOT_EVALUATED_EXACT_ELIGIBILITY_RAW_CLASSIFICATION_RETAINED', runtimeRoute: row.runtimeRoute, semanticRoutes: row.semanticRoutes, routeCandidate: null, exactEligible: null,
       unavailable: { routeCandidate: 'Coverage route taxonomy is broader than B11 structural ownership', exactEligible: 'Coverage API does not expose exact B11 eligibility; raw classifications retained' } };
     rawCalls.coverage = ['classifyAbilityForCoverage'];
-    observations.inventory = { routeCandidate: null, exactEligible: null,
+    observations.inventory = { evaluationStatus: 'NOT_EVALUATED', routeCandidate: null, exactEligible: null,
       unavailable: { routeCandidate: 'No B11 inventory classification API; Card Zone CLI belongs to a different family', exactEligible: 'No B11 inventory classification API; do not reuse runtime or coverage observations' } };
     results.push({ fixtureId: fixture.id, family: fixture.family, category: fixture.category,
       executedInputSha256: hash(`${JSON.stringify({ archiveId: archive.id, cardId: card.id, ability })}\n`),

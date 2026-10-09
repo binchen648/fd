@@ -20,11 +20,14 @@ describe('B11 real API contract parity diagnostics', () => {
   }, 120_000);
   it('executes candidate APIs in an isolated snapshot with canonical input and fixture hashes', () => {
     expect(result.executionMethod).toBe('ISOLATED_SHARED_GIT_CLONE_REAL_API_SUBPROCESS');
+    expect(result.executionPerformed).toBe(true);
     expect(result.results).toHaveLength(10);
     for (const row of result.results) {
       expect(row.executedInputSha256).toMatch(/^[0-9A-F]{64}$/);
       expect(row.apiCalls.compiler).toEqual(['compileExecutableCardPack']);
       expect(row.apiCalls.coverage).toEqual(['classifyAbilityForCoverage']);
+      expect(row.observations.inventory.evaluationStatus).toBe('NOT_EVALUATED');
+      expect(row.observations.coverage.evaluationStatus).toBe('NOT_EVALUATED_EXACT_ELIGIBILITY_RAW_CLASSIFICATION_RETAINED');
     }
     for (const id of ['golden-positive', 'golden-renamed-identities', 'conversion-positive', 'conversion-renamed-identities']) {
       const row = result.results.find(row => row.fixtureId === id)!;
@@ -62,5 +65,6 @@ describe('B11 real API contract parity diagnostics', () => {
     expect(() => parseFixtures({ ...fixtures, fixtures: fixtures.fixtures.filter((fixture: any) => fixture.category !== 'owned-malformed') })).toThrow(InputError);
     const stale = await runParity(root, { ...input, candidateSha: '0'.repeat(40) }, combinationSha, 'test');
     expect(stale.issues.map(issue => issue.code)).toContain('EXACT_SHA_MISMATCH'); expect(stale.results).toEqual([]);
+    expect(stale.executionPerformed).toBe(false); expect(stale.executionMethod).toBe('NOT_EXECUTED_INPUT_REJECTED');
   }, 15_000);
 });

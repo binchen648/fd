@@ -176,7 +176,8 @@ export async function runParity(root: string, raw: unknown, candidate: string, i
   }
   return { schemaVersion: 'fd-p3-contract-parity-result-v1', taskId: input.taskId, controlEpoch: input.controlEpoch,
     status: issues.length ? 'FAIL' : 'PASS', testedCandidateSha: candidate, inputSha256, premiseSha256,
-    fixtureBinding: fixtureRef, sourceObjects, executionMethod: 'ISOLATED_SHARED_GIT_CLONE_REAL_API_SUBPROCESS',
+    fixtureBinding: fixtureRef, sourceObjects, executionPerformed: results.length > 0,
+    executionMethod: results.length ? 'ISOLATED_SHARED_GIT_CLONE_REAL_API_SUBPROCESS' : 'NOT_EXECUTED_INPUT_REJECTED',
     dependencyProvider: 'LOCAL_NODE_MODULES; ALL_PACKAGE_SOURCE_AND_COVERAGE_GIT_OBJECTS_MATCH_CANDIDATE',
     results, issues, acceptanceGranted: false, effectCorrectnessVerified: false, fallbackClosureVerified: false, browserAcceptanceVerified: false };
 }

@@ -70,7 +70,7 @@ export function buildTaskInput(root: string) {
     })),
     checks: [
       { id: 'b11-component-scenario', command: 'npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/production-resolution-bridge.test.ts', state: 'PENDING', testedSha: combinationSha },
-      { id: 'socket-boundary', command: 'npx vitest run apps/server/src/match-server.test.ts', state: 'PENDING', testedSha: combinationSha },
+      { id: 'socket-boundary', command: 'npm run test --workspace @fd/server -- src/match-server.test.ts', state: 'PENDING', testedSha: combinationSha },
       { id: 'browser', command: 'npx playwright test e2e/fd-golden-eater-result-binding.spec.ts e2e/fd-conversion-magic-core-primitive.spec.ts --repeat-each=5', state: 'PENDING', testedSha: combinationSha },
     ],
   };
