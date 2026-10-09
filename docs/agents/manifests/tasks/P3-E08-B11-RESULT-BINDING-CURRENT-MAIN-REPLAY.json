@@ -1,0 +1,73 @@
+{
+  "taskId": "P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY",
+  "owner": "Codex B",
+  "status": "IMPLEMENTATION_COMPLETE_CANDIDATE",
+  "reviewReady": false,
+  "baseCommit": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "semanticSource": "f7704da0158d68543c76a8a0ed1af37ae6987165",
+  "authorization": "User dispatch on 2026-10-09; B11 ability-runtime reservation continued",
+  "runtimeHotFiles": [
+    "packages/rules/src/ability/interpreter.ts",
+    "packages/rules/src/ability/executable-card-pack.ts",
+    "packages/rules/src/ability/resolution-dataflow.ts"
+  ],
+  "consumers": ["Golden Eater", "Conversion Magic"],
+  "denominators": { "canonicalConsumers": 2, "mappedConsumers": 2 },
+  "semanticContract": {
+    "design": "docs/plans/2026-09-12-p3-b11-result-binding-production-bridge-design.md",
+    "route": "Shared candidate ownership and exact result-binding graph validation; malformed owned graph rejects resolution_failed",
+    "identityFree": true
+  },
+  "transactions": [
+    "Activation creates server-owned first pending; malformed definition mutates nothing",
+    "First target dispatch commits move_card and bound VP before second pending",
+    "Second target dispatch commits optional payment, movement and VP atomically; failure preserves first-stage commit",
+    "Conversion Magic binds actual movedCount to mana within one dispatch"
+  ],
+  "identities": {
+    "authority": "Server-derived pending candidates and typed result values",
+    "freshness": "Existing authoritative match instance, restore epoch and revision checks",
+    "replay": "Replay second choose_target frame must reject without mutation"
+  },
+  "evidence": {
+    "gateA": ["packages/rules/tests/regression/resolution-dataflow.test.ts"],
+    "gateB": ["packages/rules/tests/regression/production-resolution-bridge.test.ts"],
+    "gateC": ["e2e/fd-golden-eater-result-binding.spec.ts", "e2e/fd-conversion-magic-core-primitive.spec.ts"],
+    "scope": "Trusted fixture setup followed by browser/WS dispatch, projection, reconnect and stale replay; no natural room setup claim"
+  },
+  "legacy": {
+    "ownedRouteFallback": "FORBIDDEN",
+    "unrelatedAbilities": "Retained on existing routes",
+    "globalKpiSyncOwner": "Codex A"
+  },
+  "gateAvailability": {
+    "phase3:preflight": "NOT_AVAILABLE_ON_BASE",
+    "phase3:contract-parity": "NOT_AVAILABLE_ON_BASE",
+    "note": "No waiver approved; unavailable gates must remain explicit in handoff"
+  },
+  "freshVerification": {
+    "focused": "29/29 PASS",
+    "typecheck": "PASS",
+    "clientBuild": "PASS",
+    "contentValidation": "PASS: 0 blocking",
+    "generatedDeterminism": "PASS",
+    "testCi": "1425 passed, 1 failed: phase3-e06-post-merge-recount coverage snapshot requires A sync",
+    "playwrightRepeat5": "Two runs: each 9/10; Golden Eater 5/5, Conversion Magic 4/5",
+    "runtimeSourceParity": "No diff against accepted f7704da for replayed runtime, authoring and browser evidence"
+  },
+  "blockers": [
+    {
+      "owner": "Codex A",
+      "code": "AUTOMATION_EVIDENCE_SYNC_REQUIRED",
+      "evidence": "scripts/tests/phase3-e06-post-merge-recount.test.ts:115 compares current coverage with pre-B11 snapshot"
+    },
+    {
+      "owner": "Server runtime owner",
+      "code": "RUNTIME_CAPABILITY_HANDOFF",
+      "evidence": "Conversion Magic mana stays 4 in repeated browser tests; apps/server/src/match-server.ts close handler unconditionally disconnects the client",
+      "boundary": "Shared socket lifecycle requires a separately scoped repair; B11 Gate C is not stable"
+    }
+  ],
+  "waivers": [],
+  "nonClaims": ["Gate promotion", "main migration credit", "Release Gate", "taxonomy changes"]
+}
