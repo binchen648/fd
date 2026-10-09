@@ -5,22 +5,27 @@
   "contractId": "B11_RESULT_BINDING_DIAGNOSTIC_V1",
   "contractVersion": 1,
   "adapterVersion": "b11-api-observations-v1",
-  "candidateSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+  "candidateSha": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
   "executionAdapter": [
     {
-      "commit": "9695d7107645f9972ebef7ab6c78a4ef14b015da",
+      "commit": "dbc1b75aaf40253982fc4e458b80dce4043b9224",
       "path": "scripts/phase3-contract-parity.ts",
-      "sha256": "13C39334FAB7BB67527F4976AAD4A573CF2EE33B36DF85526E87601AA58CAA3B"
+      "sha256": "A46EB418461F20DC3E0E89AA07540B01B7B22B3D529875984AD8E33EA56E9BFC"
     },
     {
-      "commit": "9695d7107645f9972ebef7ab6c78a4ef14b015da",
+      "commit": "dbc1b75aaf40253982fc4e458b80dce4043b9224",
       "path": "scripts/phase3-contract-parity-worker.ts",
-      "sha256": "1B0A8174ADA38189BF37CCEE607B90C6811C21F1B75F9C43DA8DEBD0D28E27D9"
+      "sha256": "F3AF363EBD62EB56772128F7FF619E14C38AB0E9C34B683E16E145AF2817FEC4"
     },
     {
-      "commit": "9695d7107645f9972ebef7ab6c78a4ef14b015da",
+      "commit": "dbc1b75aaf40253982fc4e458b80dce4043b9224",
       "path": "scripts/phase3-tooling-common.ts",
       "sha256": "C11A3B6F573DEB012E936724CDAA274F940B6DD5EBE00078175F668E485E9555"
+    },
+    {
+      "commit": "dbc1b75aaf40253982fc4e458b80dce4043b9224",
+      "path": "scripts/phase3-b11-diagnostic-api.ts",
+      "sha256": "D881C8FDD6A4CB071A3D5A3F099B6AD357F57CCCA8E36F6760A968581F05B33A"
     }
   ],
   "contract": {
@@ -30,14 +35,14 @@
     "section": "## phase3:contract-parity"
   },
   "fixtures": {
-    "commit": "b5ef0626c5f373658c7b0ef0208f5cfda91f1a6e",
+    "commit": "ac4d401a9905384d35f0aee7f2474e3072ed75c6",
     "path": "scripts/fixtures/phase3-b11-parity-fixtures.json",
-    "sha256": "0757970801F81178069CA7DF4423985180130C220D486871FFAFE137C0929A46"
+    "sha256": "B7DE0808C98DE132E15078E698EC9A5CE1515521A01B93521D283A30311B161B"
   },
   "owners": {
     "runtime": {
       "required": true,
-      "meaning": "Golden: exported structural routeCandidate + exact semantic eligibility. Conversion: exported exact semantic eligibility; no structural API available"
+      "meaning": "Candidate exported structural ownership and exact semantic eligibility for both shapes; missing binding reference is outside Conversion structural ownership"
     },
     "compiler": {
       "required": true,
@@ -45,11 +50,11 @@
     },
     "inventory": {
       "required": true,
-      "meaning": "Require an independently callable B11 inventory routeCandidate/exactEligible classification; no current API"
+      "meaning": "classifyB11InventoryAbility evaluates raw authoring structural envelope and exact target/effect/binding shape; does not consume runtime/compiler/fixture verdicts"
     },
     "coverage": {
       "required": true,
-      "meaning": "Retain raw classifyAbilityForCoverage runtimeRoute/semanticRoutes; required exact B11 eligibility currently not exposed"
+      "meaning": "classifyB11CoverageEligibility evaluates raw authoring exact shape using the shared read-only diagnostic contract; retain separate actual classifyAbilityForCoverage taxonomy without changing KPI"
     }
   },
   "expectationReview": {
