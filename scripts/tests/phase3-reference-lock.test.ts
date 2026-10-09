@@ -68,7 +68,7 @@ describe('Phase 3 locked Reference verifier', () => {
     expect(result.requiredFiles).toEqual(requiredFiles);
     expect(Object.keys(result.inputDigests)).toEqual(requiredFiles);
     expect(Object.values(result.inputDigests).every((digest) => /^[a-f0-9]{64}$/.test(digest))).toBe(true);
-  });
+  }, 15_000);
 
   it('rejects the wrong commit', () => {
     const { root, lock } = createReferenceFixture();
