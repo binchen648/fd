@@ -1,0 +1,194 @@
+{
+  "schemaVersion": "fd-c01-review-handoff-v1",
+  "taskId": "P3-C01-THREAD-DISPATCH-FEASIBILITY",
+  "date": "2026-10-09",
+  "timezone": "Asia/Shanghai",
+  "artifactType": "IMPLEMENTER_REVIEW_INPUT",
+  "riskTier": "EVIDENCE_ONLY",
+  "reviewerRole": "Reviewer A",
+  "candidateSha": "07115074f2f6bdb80d2c15c52d5e03f57a339d6e",
+  "implementationEvidenceSha": "15d8db2ee261e694fdbb0ae37573162d84bfe802",
+  "baseSha": "fefcf4f7f5bd66ed7693889fb99391e6e7321016",
+  "observedMainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "readiness": {
+    "packet": "PREPARED_FOR_MANUAL_REVIEW",
+    "automatedDispatch": "BLOCKED_NO_REGISTERED_REVIEWER",
+    "independentReview": "NOT_PERFORMED",
+    "promotion": "NOT_AUTHORIZED"
+  },
+  "pipeline": [
+    "A",
+    "RA",
+    "I",
+    "Human"
+  ],
+  "scope": "Independent read-only review of the C01 feasibility implementation, protocol limits and sanitized evidence. No engineering task or desktop dispatch.",
+  "authorizationProvenance": [
+    {
+      "kind": "user-instruction",
+      "description": "C01 feasibility investigation, isolated adapter/tests/report; single probe to a designated idle experiment thread."
+    },
+    {
+      "kind": "user-follow-up",
+      "description": "User authorized the proposed dedicated CLI worker probe. This does not grant standing worker registration or formal task dispatch."
+    },
+    {
+      "kind": "user-follow-up",
+      "description": "User requested rule audit and preparation of the next source-pinned handoff."
+    }
+  ],
+  "sources": [
+    {
+      "commitSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+      "path": "docs/agents/PHASE3-AGENT-CONTRACT.md",
+      "gitBlobSha": "becefd2a99558a1bb01921a40c474f78198ea23c",
+      "kind": "published-main"
+    },
+    {
+      "commitSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+      "path": "docs/governance/phase3-slice-task-promotion-contract.md",
+      "gitBlobSha": "f1eabcd1ecd6413326df3bbd43fc5835b8abaa29",
+      "kind": "published-main"
+    },
+    {
+      "commitSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+      "path": "docs/governance/phase3-promotion-lane.md",
+      "gitBlobSha": "88f3c329a59f6cbcf917f21d23561497ce899326",
+      "kind": "published-main"
+    },
+    {
+      "commitSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+      "path": "docs/agents/FD-P3-CONTROL-EPOCH-08.md",
+      "gitBlobSha": "576cfd6519df771fb02b9cc94ac69bad6ff66788",
+      "kind": "published-main"
+    },
+    {
+      "commitSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+      "path": "docs/plans/fd-rules-conformance-and-acceptance.md",
+      "gitBlobSha": "81066b8877e2e6cc4aedbd495e06395d353546e6",
+      "kind": "published-main"
+    },
+    {
+      "commitSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+      "path": "scripts/phase3-governance.ts",
+      "gitBlobSha": "d2e900c2e6dc97aa9a0e65b319d8dcb57fa3ae0e",
+      "kind": "published-main"
+    },
+    {
+      "commitSha": "45eb5b3f038f227d69a8f15e7a3c7842f1a718d3",
+      "path": "docs/agents/P3-E08-C01-THREAD-DISPATCH-PROTOTYPE.md",
+      "gitBlobSha": "24110389071af24be0add5ff03113087ad7baf10",
+      "kind": "planner-task-input"
+    }
+  ],
+  "predecessors": [
+    {
+      "role": "A",
+      "artifactSha": "15d8db2ee261e694fdbb0ae37573162d84bfe802",
+      "state": "IMPLEMENTER_EVIDENCE_SUBMITTED",
+      "independentlyAccepted": false
+    }
+  ],
+  "changedPaths": [
+    ".gitignore",
+    "config/phase3-thread-registry.example.json",
+    "docs/reports/2026-10-09-p3-c01-review-rules-audit.md",
+    "docs/reports/2026-10-09-p3-c01-thread-dispatch-feasibility.md",
+    "package.json",
+    "scripts/phase3-cli-worker-probe.ts",
+    "scripts/phase3-thread-dispatch.ts",
+    "scripts/tests/phase3-cli-worker-probe.test.ts",
+    "scripts/tests/phase3-thread-dispatch.test.ts"
+  ],
+  "reviewerAllowedWrites": [],
+  "evidence": {
+    "reportedVerdict": "CLI_WORKER_ONLY_VERIFIED",
+    "desktopDispatch": "BLOCKED",
+    "actualProbeSendCount": 1,
+    "exactWorkerAck": true,
+    "completedTurn": true,
+    "toolItemsObserved": 0,
+    "reportedTests": 11,
+    "liveIncrementalProgress": "NOT_VERIFIED"
+  },
+  "commands": [
+    "npx vitest run scripts/tests/phase3-thread-dispatch.test.ts scripts/tests/phase3-cli-worker-probe.test.ts",
+    "npx tsc --noEmit --target ES2022 --module ESNext --moduleResolution Bundler --skipLibCheck --types node scripts/phase3-thread-dispatch.ts scripts/phase3-cli-worker-probe.ts scripts/tests/phase3-thread-dispatch.test.ts scripts/tests/phase3-cli-worker-probe.test.ts",
+    "git diff --check fefcf4f7f5bd66ed7693889fb99391e6e7321016 07115074f2f6bdb80d2c15c52d5e03f57a339d6e"
+  ],
+  "liveReproduction": {
+    "default": "DO_NOT_RUN",
+    "reason": "The worker probe creates a new ephemeral execution thread and sends a real turn. The existing desktop target must not be resumed. Any new live probe needs an explicit local target/lifecycle designation."
+  },
+  "requiredReviewChecks": [
+    "Resolve the full candidate/base and inspect their exact diff; do not review the mutable branch head.",
+    "Verify the listed source blobs from their pinned commits; read the role contract first.",
+    "Review generic adapter ACK matching separately from the worker exact thread/turn/status/text checker.",
+    "Check pre-send reservation, persistence callback, duplicate refusal and uncertain-delivery reconciliation; distinguish process-local and durable guarantees.",
+    "Check request deadlines, initialization notification, notification buffering and shutdown/error behavior.",
+    "Confirm unregistered, busy and unknown targets refuse dispatch; verify no production runtime paths changed.",
+    "Run focused tests and typecheck independently; report executed versus merely inspected checks.",
+    "Do not infer complete role/base/lock scheduling checks from the feasibility tests.",
+    "Separate accepted transport response, completed turn and exact ACK; preserve desktop BLOCKED.",
+    "State drift/compatibility limits against observed main without inventing current-main acceptance."
+  ],
+  "unresolved": [
+    {
+      "code": "EPOCH_STATUS_CONFLICT",
+      "impact": "Planner/G must reconcile active versus pending labels; do not derive dispatch authorization from a label."
+    },
+    {
+      "code": "PROMOTION_CONTRACT_HISTORICAL_HEADER",
+      "impact": "Use pinned body plus current task authorization; header alone does not establish applicability."
+    },
+    {
+      "code": "UNPUBLISHED_LOCAL_STANDARD",
+      "impact": "Uncommitted local additions are excluded as mandatory worker inputs pending publication or explicit authorization."
+    },
+    {
+      "code": "GENERIC_ACK_SUBSTRING_MATCH",
+      "impact": "Generic waitForAck is not proof of exact ACK or turn correlation and must be reviewed as a limitation."
+    },
+    {
+      "code": "SCHEDULER_GATES_NOT_IMPLEMENTED",
+      "impact": "Role mismatch, stale base, locks and WAIT/FAIL scheduling tests remain broader prototype gaps."
+    },
+    {
+      "code": "REGISTRY_SINGLE_CONTROLLER",
+      "impact": "No transactional multi-controller reservation or standalone CLI durable retry guarantee."
+    },
+    {
+      "code": "REVIEWER_NOT_REGISTERED",
+      "impact": "No existing Reviewer A thread ID or authorized persistent CLI reviewer is registered."
+    }
+  ],
+  "expectedOutput": {
+    "verdict": [
+      "PASS",
+      "FAIL",
+      "REVIEW_BLOCKED"
+    ],
+    "fields": [
+      "taskId",
+      "reviewerRole",
+      "candidateSha",
+      "baseSha",
+      "ruleSources",
+      "checksExecuted",
+      "findings",
+      "nonClaims"
+    ],
+    "note": "Separate immutable reviewer artifact; implementer must not create a verdict on behalf of Reviewer A."
+  },
+  "nonClaims": [
+    "DESKTOP_THREAD_DISPATCH_VERIFIED",
+    "PRODUCTION_READY_SCHEDULER",
+    "RUNTIME_ACCEPTANCE",
+    "MIGRATION_CREDIT",
+    "GATE_PROMOTION",
+    "HUMAN_APPROVAL",
+    "MERGE_AUTHORITY"
+  ],
+  "creditDelta": 0
+}
