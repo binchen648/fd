@@ -12,9 +12,11 @@ const execute = promisify(execFile);
 
 // Bind the entire installed tree, a superset of the loader's transitive imports
 // and native binaries. Directory links may only point into this isolated checkout.
-export function dependencyClosure(root: string) {
+export async function dependencyClosure(root: string) {
   const entries: { path: string; sha256?: string; target?: string }[] = [];
-  const walk = (path: string) => {
+  let visited = 0;
+  const walk = async (path: string) => {
+    if (++visited % 64 === 0) await new Promise<void>(resume => setImmediate(resume));
     const name = relative(root, path).replaceAll('\\', '/');
     const stat = lstatSync(path);
     if (stat.isSymbolicLink()) {
@@ -25,16 +27,16 @@ export function dependencyClosure(root: string) {
       entries.push({ path: name, target: target.replaceAll('\\', '/') });
       if (lstatSync(realpathSync(path)).isFile()) entries.push({ path: `${name}:content`, sha256: hash(readFileSync(path)) });
     } else if (stat.isDirectory()) {
-      for (const child of readdirSync(path).sort()) walk(join(path, child));
+      for (const child of readdirSync(path).sort()) await walk(join(path, child));
     } else if (stat.isFile()) entries.push({ path: name, sha256: hash(readFileSync(path)) });
     else throw new InputError(`Unsupported dependency entry: ${name}`);
   };
-  walk(join(root, 'node_modules'));
+  await walk(join(root, 'node_modules'));
   return { sha256: hash(JSON.stringify(entries)), fileCount: entries.length };
 }
 
-export function verifyDependencyClosure(root: string, expected: ReturnType<typeof dependencyClosure>) {
-  if (JSON.stringify(dependencyClosure(root)) !== JSON.stringify(expected)) throw new InputError('Execution dependency closure drift');
+export async function verifyDependencyClosure(root: string, expected: Awaited<ReturnType<typeof dependencyClosure>>) {
+  if (JSON.stringify(await dependencyClosure(root)) !== JSON.stringify(expected)) throw new InputError('Execution dependency closure drift');
 }
 
 export function verifyAdapterClosure(root: string, raw: unknown, issues: Issue[]) {
@@ -226,7 +228,7 @@ export async function runParity(root: string, raw: unknown, candidate: string, i
       });
       const dependencyBinding = {
         lockfileSha256: hash(readFileSync(join(temporary, 'package-lock.json'))),
-        closure: dependencyClosure(temporary), nodeVersion: process.version,
+        closure: await dependencyClosure(temporary), nodeVersion: process.version,
         nodeSha256: hash(readFileSync(process.execPath)), npmCliSha256: hash(readFileSync(npmCli)),
       };
       if (dependencyBinding.lockfileSha256 !== hash(git(root, ['show', `${candidate}:package-lock.json`]))) {
@@ -248,7 +250,7 @@ export async function runParity(root: string, raw: unknown, candidate: string, i
       if (receipt.schemaVersion !== 'fd-p3-parity-execution-v1') throw new Error('Unexpected execution receipt');
       if (JSON.stringify(receipt.executionAdapter) !== JSON.stringify({ ...adapterBinding, dependencyBinding }) ||
           receipt.nodeVersion !== dependencyBinding.nodeVersion || receipt.nodeSha256 !== dependencyBinding.nodeSha256) throw new Error('Execution adapter/dependency receipt binding mismatch');
-      verifyDependencyClosure(temporary, dependencyBinding.closure);
+      await verifyDependencyClosure(temporary, dependencyBinding.closure);
       executionDependencies = dependencyBinding;
       results = array(receipt.results, 'execution results');
       compareObservations(fixtures, results, issues);

@@ -62,7 +62,7 @@ describe('B11 real API contract parity diagnostics', () => {
     }
     for (const row of result.results.filter(row => row.category === 'outside-scope')) expect(row.observations.runtime.exactEligible).toBe(false);
   });
-  it('rejects a changed transitive dependency even when the loader stays unchanged', () => {
+  it('rejects a changed transitive dependency even when the loader stays unchanged', async () => {
     const temporary = mkdtempSync(resolve(tmpdir(), 'fd-parity-dependency-test-'));
     try {
       const modules = resolve(temporary, 'node_modules');
@@ -71,12 +71,12 @@ describe('B11 real API contract parity diagnostics', () => {
       const loader = resolve(modules, 'tsx/dist/loader.mjs');
       const dependency = resolve(modules, 'esbuild/lib/main.js');
       writeFileSync(loader, 'import "esbuild";'); writeFileSync(dependency, 'export const trusted = true;');
-      const binding = dependencyClosure(temporary);
+      const binding = await dependencyClosure(temporary);
       const loaderDigest = hash(readFileSync(loader));
-      expect(() => verifyDependencyClosure(temporary, binding)).not.toThrow();
+      await expect(verifyDependencyClosure(temporary, binding)).resolves.toBeUndefined();
       writeFileSync(dependency, 'export const trusted = false;');
       expect(hash(readFileSync(loader))).toBe(loaderDigest);
-      expect(() => verifyDependencyClosure(temporary, binding)).toThrow('Execution dependency closure drift');
+      await expect(verifyDependencyClosure(temporary, binding)).rejects.toThrow('Execution dependency closure drift');
     } finally { rmSync(temporary, { recursive: true, force: true }); }
   });
   it('fails readiness when expectations lack independent review or required API observations are unavailable', () => {

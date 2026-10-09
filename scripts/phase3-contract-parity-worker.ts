@@ -102,9 +102,9 @@ if (process.argv[2] === '--snapshot') {
       if (hash(readFileSync(resolve(adapterRoot, file.path))) !== file.sha256) throw new InputError(`Execution adapter digest mismatch: ${file.path}`);
     }
     process.chdir(snapshot);
-    verifyDependencyClosure(snapshot, executionAdapter.dependencyBinding.closure);
+    await verifyDependencyClosure(snapshot, executionAdapter.dependencyBinding.closure);
     const results = await collectCandidateObservations(snapshot, fixtures);
-    verifyDependencyClosure(snapshot, executionAdapter.dependencyBinding.closure);
+    await verifyDependencyClosure(snapshot, executionAdapter.dependencyBinding.closure);
     process.stdout.write(`${JSON.stringify({ schemaVersion: 'fd-p3-parity-execution-v1', executionAdapter,
       nodeVersion: process.version, nodeSha256: hash(readFileSync(process.execPath)), results })}\n`);
   } catch (error) { process.stderr.write(`${String(error)}\n`); process.exitCode = 1; }
