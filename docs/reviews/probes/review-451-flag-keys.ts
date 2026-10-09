@@ -4,7 +4,9 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const head = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
-assert.equal(head, 'bdfa753c46d5e0a1edf6ed428c7b793acc87f5f1');
+assert.ok(['bdfa753c46d5e0a1edf6ed428c7b793acc87f5f1',
+  'a0f58e40bb82dd33740e9aec395e884cc40b2ab2', '31bf148c173d04fd0332ad3d8e0442fbcb85984a'].includes(head),
+  'Wrong exact candidate checkout');
 const rules = await import(pathToFileURL(resolve('packages/rules/src/index.ts')).href);
 const { createSeededGameState } = await import(pathToFileURL(resolve('packages/rules/src/tools/seeded-state.ts')).href);
 const results = [];

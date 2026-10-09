@@ -26,7 +26,7 @@ Ancestry, GitHub state, historical labels and material counts grant no acceptanc
 Refresh live SHA bindings before any downstream use. New PRs after this snapshot
 are not silently included in the count.
 
-## Completed Technical Reviews
+## First Checkpoint Reviews
 
 | PR | Verdict | Independent Producer | Committed Focused Tests |
 | --- | --- | --- | --- |
@@ -40,7 +40,15 @@ are not silently included in the count.
 | 372 | PASS | Review owner | 10 PASS |
 | 451 | FAILED | Review owner | 36 PASS; admitted flag-key negative FAIL |
 
-Nine reviews are disposed: five PASS, four FAILED. 525 remain PENDING.
+At the first checkpoint nine reviews were disposed: five PASS, four FAILED.
+After batch02, PR445 has an early blocking FAILED negative-gate disposition:
+ten technical dispositions, five PASS, five FAILED, 524 PENDING. This does not
+claim exhaustive clearance of PR445's remaining contract/scope questions.
+Batch03 adds independently reproduced PR452/453 flag-key failures: twelve
+technical dispositions, five PASS, seven FAILED, 522 PENDING. These are early
+blocking negative-gate dispositions, not exhaustive acceptance of other semantics.
+PR452 focused rerun 36/36 PASS after an initial 5-second timeout; PR453 43/43 PASS.
+Each exact candidate independently fails the __proto__ own-flag storage probe.
 The batch JSON binds every verdict and finding to exact head/base. FAILED means
 technical gate failed, not necessarily that the PR introduced the dependency bug.
 No historic Reviewer A-R/B-R identity or formal artifact is impersonated.
@@ -88,14 +96,17 @@ passed 6/6, including stale SHA, missing producer, duplicate/unknown PR and cred
 
 ## Next Work
 
-PR445 exact head 658849d1602bd4b705a924f6aa649e973d9d65ca and base
+The first checkpoint read PR445 exact head 658849d1602bd4b705a924f6aa649e973d9d65ca and base
 5c8e21c853ac95a1b0ee42e28108ae40692491cf have been read. Runtime review and
 comparison with PR424 accepted authority remain PENDING; old CONTRACT_CONFLICT
-is not independently reconfirmed. Fresh typecheck and four focused suites passed
+is not independently reconfirmed. Batch02 supersedes the pending technical
+disposition with a reproduced malformed-visibility gate failure. Typecheck and four focused suites passed
 89/89 on exact PR445 head. Source #422 and PR445 share byte-identical authority,
 classifier, dedicated interaction tests and server tests; restore reconstruction
 differs by conditional optional participant/power fields. Passing unchanged tests
-does not settle that semantic difference. Then continue remaining inventory by scoped batches.
+does not settle that semantic difference. Full CI 132/924 and server5 also passed,
+but do not cover the new failure. Continue remaining inventory by scoped batches;
+any repair must come from the authorized owner and receive fresh exact-SHA review.
 Parallel reviewers hit a usage limit after the first batch; this is not a PR defect.
 
 No runtime repair, GitHub comment/review submission, PR creation/merge, epoch/queue

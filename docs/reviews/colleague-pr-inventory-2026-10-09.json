@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 9,
-    "pending": 525,
+    "reviewed": 12,
+    "pending": 522,
     "blocked": 0,
     "notVerified": 0
   },
@@ -22032,11 +22032,70 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "HISTORICAL_EXACT_CANDIDATE_NEGATIVE_GATE_REVIEW_EARLY_BLOCKING_DISPOSITION",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-09-colleague-review-batch-02.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run typecheck",
+            "targetSha": "658849d1602bd4b705a924f6aa649e973d9d65ca",
+            "result": "PASS",
+            "artifactIdentity": "2026-10-09-pr-445-check-1"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/match-room-hub.test.ts packages/rules/tests/portable-sha256.test.ts --maxWorkers=1",
+            "targetSha": "658849d1602bd4b705a924f6aa649e973d9d65ca",
+            "result": "PASS 4 files / 89 tests",
+            "artifactIdentity": "2026-10-09-pr-445-check-2"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=2",
+            "targetSha": "658849d1602bd4b705a924f6aa649e973d9d65ca",
+            "result": "PASS 132 files / 924 tests",
+            "artifactIdentity": "2026-10-09-pr-445-check-3"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm test --workspace @fd/server -- --run",
+            "targetSha": "658849d1602bd4b705a924f6aa649e973d9d65ca",
+            "result": "PASS 1 file / 5 tests",
+            "artifactIdentity": "2026-10-09-pr-445-check-4"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run content:validate",
+            "targetSha": "658849d1602bd4b705a924f6aa649e973d9d65ca",
+            "result": "PASS 7 masters / 7 servants / 20 events / 0 blockers",
+            "artifactIdentity": "2026-10-09-pr-445-check-5"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run verify:generated-content",
+            "targetSha": "658849d1602bd4b705a924f6aa649e973d9d65ca",
+            "result": "PASS three checked-in hashes reproduced",
+            "artifactIdentity": "2026-10-09-pr-445-check-6"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-445-visibility.mjs",
+            "targetSha": "658849d1602bd4b705a924f6aa649e973d9d65ca",
+            "result": "Exit1: valid control PASS; four malformed visibility shapes admitted and activated",
+            "artifactIdentity": "docs/reviews/probes/review-445-visibility.mjs"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0
@@ -22337,11 +22396,30 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "HISTORICAL_EXACT_CANDIDATE_NEGATIVE_GATE_REVIEW_EARLY_BLOCKING_DISPOSITION",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-09-colleague-review-batch-03.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/set-player-flag-scalar-controller.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+            "targetSha": "a0f58e40bb82dd33740e9aec395e884cc40b2ab2",
+            "result": "Initial run 35 PASS / 1 existing 5-second timeout; ordered rerun 36/36 PASS",
+            "artifactIdentity": "2026-10-09-pr-452-focused"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx tsx <absolute-review-root>/docs/reviews/probes/review-451-flag-keys.ts",
+            "targetSha": "a0f58e40bb82dd33740e9aec395e884cc40b2ab2",
+            "result": "Expected exit1: three controls PASS, __proto__ write failure",
+            "artifactIdentity": "docs/reviews/probes/review-451-flag-keys.ts"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0
@@ -22380,11 +22458,30 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "HISTORICAL_EXACT_CANDIDATE_NEGATIVE_GATE_REVIEW_EARLY_BLOCKING_DISPOSITION",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-09-colleague-review-batch-03.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/set-player-flag-scalar-controller.test.ts packages/rules/tests/m50-player-flag-round-state-core-r2.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+            "targetSha": "31bf148c173d04fd0332ad3d8e0442fbcb85984a",
+            "result": "3 files / 43 tests PASS",
+            "artifactIdentity": "2026-10-09-pr-453-focused"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx tsx <absolute-review-root>/docs/reviews/probes/review-451-flag-keys.ts",
+            "targetSha": "31bf148c173d04fd0332ad3d8e0442fbcb85984a",
+            "result": "Expected exit1: three controls PASS, __proto__ write failure",
+            "artifactIdentity": "docs/reviews/probes/review-451-flag-keys.ts"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0

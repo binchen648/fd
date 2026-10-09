@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-09",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, no formal recovery role impersonation",
+  "reviews": [
+    {
+      "pr": 445,
+      "headSha": "658849d1602bd4b705a924f6aa649e973d9d65ca",
+      "baseSha": "5c8e21c853ac95a1b0ee42e28108ae40692491cf",
+      "producer": "Codex Automation Review Owner",
+      "verdict": "FAILED",
+      "scope": "HISTORICAL_EXACT_CANDIDATE_NEGATIVE_GATE_REVIEW_EARLY_BLOCKING_DISPOSITION",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [
+        {
+          "severity": "P2",
+          "introducedByCandidate": true,
+          "inheritedFromSemanticSource": true,
+          "path": "packages/rules/src/ability/opponent-close-to-one.ts",
+          "line": 23,
+          "description": "exactTrueNameVisibility normalizes non-object input to empty object before checking it. String/array/boolean/number visibility fields are admitted by raw gateway, load with zero issues, classify compiled and activate. Exact structured envelope must reject malformed fields before normalization.",
+          "sourceAndCandidateBlob": "5cee2ff7c9fbb898d386489c8eb5903c76e161a1"
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npm run typecheck",
+          "targetSha": "658849d1602bd4b705a924f6aa649e973d9d65ca",
+          "result": "PASS",
+          "artifactIdentity": "2026-10-09-pr-445-check-1"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/match-room-hub.test.ts packages/rules/tests/portable-sha256.test.ts --maxWorkers=1",
+          "targetSha": "658849d1602bd4b705a924f6aa649e973d9d65ca",
+          "result": "PASS 4 files / 89 tests",
+          "artifactIdentity": "2026-10-09-pr-445-check-2"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npm run test:ci -- --maxWorkers=2",
+          "targetSha": "658849d1602bd4b705a924f6aa649e973d9d65ca",
+          "result": "PASS 132 files / 924 tests",
+          "artifactIdentity": "2026-10-09-pr-445-check-3"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npm test --workspace @fd/server -- --run",
+          "targetSha": "658849d1602bd4b705a924f6aa649e973d9d65ca",
+          "result": "PASS 1 file / 5 tests",
+          "artifactIdentity": "2026-10-09-pr-445-check-4"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npm run content:validate",
+          "targetSha": "658849d1602bd4b705a924f6aa649e973d9d65ca",
+          "result": "PASS 7 masters / 7 servants / 20 events / 0 blockers",
+          "artifactIdentity": "2026-10-09-pr-445-check-5"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npm run verify:generated-content",
+          "targetSha": "658849d1602bd4b705a924f6aa649e973d9d65ca",
+          "result": "PASS three checked-in hashes reproduced",
+          "artifactIdentity": "2026-10-09-pr-445-check-6"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-445-visibility.mjs",
+          "targetSha": "658849d1602bd4b705a924f6aa649e973d9d65ca",
+          "result": "Exit1: valid control PASS; four malformed visibility shapes admitted and activated",
+          "artifactIdentity": "docs/reviews/probes/review-445-visibility.mjs"
+        }
+      ],
+      "limitations": [
+        "FAILED is an early blocking technical disposition, not exhaustive clearance of all 22 diff paths.",
+        "Old CONTRACT_CONFLICT was not reconfirmed as a formal Planner disposition. Optional restore provenance adaptation remains unresolved.",
+        "No current-main runtime execution, promotion or migration credit.",
+        "Source #422 and this candidate share the identical classifier blob; replay introduces it relative to candidate base, not originally authored here.",
+        "The synthetic probe shows malformed trusted authoring admission, not unauthorized external-client event injection."
+      ]
+    }
+  ]
+}
