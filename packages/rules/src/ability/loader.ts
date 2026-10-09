@@ -290,7 +290,7 @@ function isAcceptedMagicResistanceIndependentModifierLifecycle(rawAbility: RuleN
 const supportedTypes = new Set([
   'controller_alone_at_battlefield', 'claim_and_discard_location_events', 'any_enabled_location',
   'skill_zone_mana_at_least', 'played_with_basic_attack', 'draw_cards', 'play_selected_cards', 'base_power_at_most',
-  'reveal_information', 'set_zone_visibility', 'look_at_deck_top', 'move_card', 'move_all_remaining',
+  'reveal_information', 'set_zone_visibility', 'look_at_deck_top', 'move_card', 'move_all_remaining', 'discard_random_owned_hand', 'grant_played_attacks_printed_mana_power', 'private_deck_top_choice', 'mystic_code_switch', 'mystic_code_expire_on_event', 'mystic_code_command_seal_limit', 'mystic_code_battle_recovery', 'mystic_code_recon_escape', 'mystic_code_regalia', 'mystic_code_battle_loss_vp',
   'shuffle_zone_into_deck', 'shuffle_deck', 'adjust_mana', 'adjust_victory_points', 'move_player', 'branch',
   'create_card', 'pay_mana', 'move_source_card', 'integer', 'lte', 'gt', 'exists_target', 'played_this_round',
   'or', 'and', 'not', 'not_card_type', 'is_attack', 'has_attribute', 'not_source_card', 'has_card_id',
@@ -487,7 +487,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'manaCost', 'basePowerMultiplier', 'removeAfter',
   'firstAttribute', 'secondAttribute', 'distinctCards', 'resource', 'roundsAfterCurrent',
   'zones', 'numerator', 'denominator', 'rounding', 'destination', 'defeatIfEmpty', 'minBasePower', 'perCard', 'sourcePlayers',
-  'printedCostMultiplier',
+  'printedCostMultiplier', 'maximumBonus', 'when',
   'toZone', 'provenance', 'revealMax', 'power', 'transferVp', 'playCost', 'mode', 'generator', 'dedupeSamePlayer',
   'cycleKey', 'initialVessel', 'middleVessel', 'finalVessel', 'firstMaxVp', 'middleMaxVp', 'firstVpMultiplier', 'middleVpDivisor',
   'middleVpRounding', 'repeatPenaltyVp', 'lossMargin', 'temporaryDefinitionId', 'ascensionDefinitionId', 'temporaryKeep', 'vessel', 'requiredDefinitionId', 'targetDefinitionId',
@@ -543,6 +543,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (!value || typeof value !== 'object') return;
       const n = node(value);
       for (const key of Object.keys(n)) {
+        // This is a validated four-key, string-only leaf of Regalia, not an
+        // arbitrary nested mechanic AST. Do not globally allow its keys.
+        if (n.type === 'mystic_code_regalia' && key === 'codeDefinitionIds') continue;
         const playerFlagLocalField =
           (['player_flag_equals', 'player_flag_number_at_least', 'player_flag_number_current_round', 'player_flag_number_not_current_round',
             'set_player_flag', 'clear_player_flag', 'add_player_flag_number'].includes(str(n.type)) && key === 'key') ||
@@ -722,10 +725,30 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (['move_card', 'move_source_card', 'move_all_remaining', 'create_card'].includes(str(n.type)) &&
         !['hand', 'deck', 'discard', 'field', 'skill', 'attack_area', 'removed_from_game'].includes(str(node(n.to).zone))) issue(`${path}.to.zone`, 'Unsupported or missing destination zone', abilityId);
       if (n.optionalCost && str(node(n.optionalCost).type) !== 'pay_mana') issue(`${path}.optionalCost`, 'Only optional mana payment is supported', abilityId);
+      if (n.type === 'mystic_code_recon_escape' && (path !== 'effects[0]' || Object.keys(n).length !== 1)) issue(path,'Mystic Code Recon escape must be a direct zero-argument effect',abilityId);
+      if (n.type === 'mystic_code_battle_recovery' && (path !== 'effects[0]' || Object.keys(n).length !== 1)) issue(path,'Mystic Code battle recovery must have exact zero-argument effect',abilityId);
+      if (n.type === 'mystic_code_battle_loss_vp' && (path !== 'effects[0]' || Object.keys(n).length !== 2 || n.amount !== -1)) issue(path,'Mystic Code battle loss must be exact minus one VP',abilityId);
+      if (n.type === 'mystic_code_regalia') {
+        const modes=node(n.codeDefinitionIds);
+        if(path!=='effects[0]' || Object.keys(n).length!==2 ||
+           Object.keys(modes).length!==4 ||
+           !['extra','ccc','extella','link'].every(key=>typeof modes[key]==='string' && str(modes[key]).length>0) ||
+           new Set(Object.values(modes)).size!==4)
+          issue(path,'Mystic Code ascension requires exact four owned mode definitions',abilityId);
+      }
+      if (n.type === 'mystic_code_command_seal_limit' && (path !== 'effects[0]' || Object.keys(n).length !== 1)) issue(path,'Mystic Code seal restriction requires exact passive marker',abilityId);
+      if (n.type === 'mystic_code_expire_on_event' && (path !== 'effects[0]' || Object.keys(n).length !== 2 || !['after_controller_wins_battle','after_controller_enters_location'].includes(str(n.when)))) issue(path,'Mystic Code expiry requires exact event',abilityId);
+      if (n.type === 'mystic_code_switch' && (path !== 'effects[0]' || Object.keys(n).length !== 2 || !Array.isArray(n.definitionIds) || n.definitionIds.length !== 4 || new Set(n.definitionIds).size !== 4)) issue(path, 'Mystic Code switch requires exact four outside-game skill definitions',abilityId);
+      if (n.type === 'private_deck_top_choice' && (path !== 'effects[0]' || Object.keys(n).length !== 2 || n.count !== 3)) issue(path,'Private deck top effect requires exact direct count three',abilityId);
+      if (n.type === 'grant_played_attacks_printed_mana_power' && (path !== 'effects[0]' || Object.keys(n).length !== 2 || n.maximumBonus !== 3)) issue(path, 'Printed mana Power requires direct exact +3 cap', abilityId);
+      if (n.type === 'discard_random_owned_hand' && (path !== 'effects[0]' || Object.keys(n).length !== 1)) issue(path, 'Random discard requires a single effect node with no client-controlled target', abilityId);
       if (n.type === 'look_at_deck_top' && (n.resultZone !== 'looked_cards' || n.count === undefined)) issue(`${path}.resultZone`, 'Deck look requires a count and looked_cards temporary zone', abilityId);
       if (n.type === 'set_zone_visibility' && (n.visibility !== 'public' || n.zone !== 'discard')) issue(`${path}.visibility`, 'Only continuous public discard visibility is supported', abilityId);
       if (n.type === 'shuffle_zone_into_deck' && (node(n.from).zone !== 'discard' || node(n.to).zone !== 'deck')) issue(`${path}.from`, 'Only discard-to-deck shuffle is supported', abilityId);
-      for (const [key, child] of Object.entries(n)) scan(child, `${path}.${key}`, abilityId);
+      for (const [key, child] of Object.entries(n)) {
+        if (n.type === 'mystic_code_regalia' && key === 'codeDefinitionIds') continue;
+        scan(child, `${path}.${key}`, abilityId);
+      }
     };
     const face = node(raw.cardFace);
     scan(face.cost, 'cardFace.cost'); scan(face.basePower, 'cardFace.basePower'); scan(face.requirements, 'cardFace.requirements');
@@ -784,6 +807,56 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (lifecycle.duration !== 'while_card_active' || !['when_card_leaves_active_area', 'remain_active'].includes(str(lifecycle.cleanup))) {
           issue('lifecycle.sourceValidity', 'Source-validity policy requires while_card_active with a supported source cleanup policy', id);
         }
+      }
+      if (Array.isArray(a.effects) && a.effects.some((effect: RuleNode) => effect.type === 'mystic_code_recon_escape') &&
+          (a.effects.length!==1 || str(a.kind)!=='forced_trigger' ||
+           node(a.activation).trigger!=='after_controller_enters_location' ||
+           node(a.execution).mode!=='automatic' || nodes(a.targets).length!==0 ||
+           (nodes(a.conditions).length!==1 || nodes(a.conditions)[0]?.type!=='event_player_is_opponent' || Object.keys(nodes(a.conditions)[0]!).length!==1) ||
+           nodes(a.cost).length!==0))
+        issue('effects','Mystic Code Recon must use one automatic opponent-entry trigger',id);
+      if (Array.isArray(a.effects) && a.effects.some((effect: RuleNode) => effect.type === 'mystic_code_battle_recovery') &&
+          (a.effects.length!==1 ||
+           !((str(a.kind)==='forced_trigger' && node(a.activation).trigger==='after_controller_loses_battle') ||
+             (str(a.kind)==='phase_action' && node(a.activation).phase==='combat' &&
+              node(a.activation).opens==='controller_combat_action_window' &&
+              node(a.activation).requiresSourceState==='active')) ||
+           node(a.execution).mode!=='automatic' ||
+           nodes(a.targets).length!==0 || nodes(a.cost).length!==0 || nodes(a.conditions).length!==0))
+        issue('effects','Mystic Code recovery requires a combat arm action or trusted battle-loss trigger',id);
+      if (Array.isArray(a.effects) && a.effects.some((effect: RuleNode) => effect.type === 'mystic_code_battle_loss_vp') &&
+          (a.effects.length!==1 || str(a.kind)!=='forced_trigger' ||
+           node(a.activation).trigger!=='after_controller_loses_battle' || node(a.execution).mode!=='automatic' ||
+           nodes(a.targets).length!==0 || nodes(a.cost).length!==0 || nodes(a.conditions).length!==0))
+        issue('effects','Mystic Code Data Leak must be a single trusted battle-loss trigger',id);
+      if (Array.isArray(a.effects) && a.effects.some((effect: RuleNode) => effect.type === 'mystic_code_regalia') &&
+          (a.effects.length!==1 || str(a.kind)!=='passive' || node(a.activation).trigger!=='while_active' ||
+           node(a.execution).mode!=='automatic' || nodes(a.targets).length!==0 ||
+           nodes(a.cost).length!==0 || nodes(a.conditions).length!==0))
+        issue('effects','Mystic Code Regalia must be a source-owned passive mode authority',id);
+      if (Array.isArray(a.effects) && a.effects.some((effect: RuleNode) => effect.type === 'mystic_code_command_seal_limit') &&
+          (a.effects.length!==1 || str(a.kind)!=='passive' || node(a.activation).trigger!=='while_active' ||
+          node(a.execution).mode!=='automatic' || nodes(a.targets).length!==0 || nodes(a.cost).length!==0))
+        issue('effects','Mystic Code seal restriction requires one exact passive effect',id);
+      if (Array.isArray(a.effects) && a.effects.some((effect: RuleNode) => effect.type === 'mystic_code_expire_on_event') && (a.effects.length !== 1 || str(a.kind)!=='forced_trigger' || node(a.activation).trigger!==node(a.effects[0]).when || node(a.execution).mode!=='automatic')) issue('effects','Mystic Code expiration requires exactly matched forced trigger',id);
+      if (Array.isArray(a.effects) && a.effects.some((effect: RuleNode) => effect.type === 'mystic_code_switch') &&
+          (a.effects.length !== 1 || node(a.execution).mode !== 'automatic' || str(a.kind) !== 'phase_action' ||
+           node(a.activation).phase !== 'preparation' || nodes(a.targets).length !== 0 ||
+           nodes(a.cost).length !== 0)) issue('effects','Mystic Code switching must be one automatic preparation action with no targets/cost',id);
+      if (Array.isArray(a.effects) && a.effects.some((effect: RuleNode) => effect.type === 'private_deck_top_choice') &&
+          (a.effects.length !== 1 || node(a.execution).mode !== 'automatic' || str(a.kind) !== 'phase_action' ||
+           node(a.activation).phase !== 'action' || nodes(a.targets).length !== 0 ||
+           nodes(a.cost).length !== 0)) issue('effects','Private opponent deck top must be one automatic action-stage effect',id);
+      if (Array.isArray(a.effects) && a.effects.some((effect: RuleNode) => effect.type === 'grant_played_attacks_printed_mana_power') &&
+          (a.effects.length !== 1 || node(a.execution).mode !== 'automatic' || str(a.kind) !== 'phase_action' ||
+           node(a.activation).phase !== 'action' || nodes(a.targets).length !== 0 || nodes(a.cost).length !== 0)) {
+        issue('effects', 'Printed mana Power requires one exact automatic action-stage effect without target or cost', id);
+      }
+      if (Array.isArray(a.effects) && a.effects.some((effect: RuleNode) => effect.type === 'discard_random_owned_hand') &&
+          (a.effects.length !== 1 || node(a.execution).mode !== 'automatic' ||
+           !['phase_action', 'forced_trigger'].includes(str(a.kind)) ||
+           nodes(a.targets).length !== 0 || nodes(a.cost).length !== 0)) {
+        issue('effects', 'Random owned-hand discard requires a solitary automatic phase/trigger operation without target or cost', id);
       }
       const response = node(a.responseWindow);
       if (['optional_trigger', 'response'].includes(str(a.kind)) && !str(response.opens)) issue('responseWindow.opens', 'Explicit response window is required', id);

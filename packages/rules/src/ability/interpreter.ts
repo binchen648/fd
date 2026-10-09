@@ -1,4 +1,7 @@
 import type { GameState, PhaseName } from '../schema/game';
+import { trustedPrintedAttackManaPowerBonus } from './printed-attack-mana-power-bonus';
+import { planPrivateDeckTopDiscard, planPrivateDeckTopReorder } from './private-deck-top-selection';
+import { applyExclusiveOutsideSkillSwitch, halfUpPrintedAttackRecovery } from './mystic-code-switch-capability';
 import { eventLocationEqualsController, isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
 import {
   isAcceptedOpponentRoundVpGainThresholdAbility,
@@ -453,6 +456,91 @@ function cardPlayClassification(s: GameState, sourceId: string): CardPlayClassif
 function entersAttackArea(s: GameState, sourceId: string): boolean {
   return cardPlayClassification(s, sourceId).playKind === 'attack';
 }
+function masterCodeSealRestrictionActive(s: GameState,controllerId: string): boolean {
+  return s.cards.some(c=>c.ownerPlayerId===controllerId && c.controllerPlayerId===controllerId &&
+    (c.zone==='skill' || (c.zone==='attack_area' && runtime(s).cardState[c.instanceId]?.active===true &&
+      runtime(s).cardState[c.instanceId]?.faceDown!==true)) &&
+    definition(s,c.instanceId)?.abilities.some(a=>
+      a.kind==='passive' && a.activation.trigger==='while_active' &&
+      a.execution.mode==='automatic' && a.effects.length===1 &&
+      exactRuleNodeKeys(a.effects[0]!,['type']) &&
+      a.effects[0]!.type==='mystic_code_command_seal_limit'));
+}
+function isForbiddenCodeSealUse(s: GameState,sourceId: string,ability: AuthoringAbility): boolean {
+  if (!isCommandSpellCard(s,sourceId) ||
+      !masterCodeSealRestrictionActive(s,card(s,sourceId).controllerPlayerId)) return false;
+  // Normal seals are allowed for movement or payment only. Fail closed for
+  // newly authored seal abilities as well as the known victory directive.
+  const body=ability.effects.filter(effect=>effect.type!=='adjust_command_seals');
+  const spent=ability.effects.some(effect=>effect.type==='adjust_command_seals' &&
+    effect.amount===-1 && effect.directive==='spend_command_spell');
+  // One normal Seal pays for exactly one permitted operation. Do not accept
+  // composite mana grants, extra spends, or a mixed move+mana transaction.
+  if(!spent || ability.effects.length!==2 || body.length!==1)return true;
+  return body.some(effect=>!((effect.type==='record_master_directive' &&
+    effect.directive==='move_from_shinto_or_miyama_to_any_location_ignore_engagement') ||
+    (effect.type==='adjust_mana' && effect.amount===4)));
+}
+/** An installed, acquired ascension card grants exactly one owner-local
+ * four-mode contract. Only this authenticated passive marker authorizes buffs.
+ */
+function mysticCodeRegaliaAuthority(s:GameState,controllerId:string) {
+  // Combat projection also supports games without an authored ability runtime.
+  if(!s.abilityRuntime)return undefined;
+  const masterId=s.players.find(p=>p.id===controllerId)?.masterCardId;
+  if(typeof masterId!=='string' || !masterId)return undefined;
+  const found=s.cards.filter(c=>c.ownerPlayerId===controllerId &&
+    c.controllerPlayerId===controllerId && c.zone==='skill' &&
+    definition(s,c.instanceId)?.cardType==='master_skill' &&
+    c.definitionId===masterId+'.skill.ascension').flatMap(c=>
+    (definition(s,c.instanceId)?.abilities ?? []).filter(a=>
+      a.kind==='passive' && a.activation.trigger==='while_active' &&
+      a.execution.mode==='automatic' && a.effects.length===1 &&
+      a.effects[0]?.type==='mystic_code_regalia' &&
+      exactRuleNodeKeys(a.effects[0]!,['type','codeDefinitionIds']) &&
+      !a.conditions.length && !a.targets.length && !a.cost.length
+    ).map(a=>a.effects[0]!.codeDefinitionIds));
+  if(found.length!==1)return undefined;
+  const defs=found[0];
+  if(!defs || typeof defs!=='object' || Array.isArray(defs))return undefined;
+  const record=defs as Record<string,unknown>;
+  if(!exactRuleNodeKeys(record,['extra','ccc','extella','link']) ||
+    Object.values(record).some(id=>typeof id!=='string'||!id ||
+      !id.startsWith(masterId+'.skill.') || runtime(s).pack.cards[id]?.cardType!=='master_skill') ||
+    new Set(Object.values(record)).size!==4)return undefined;
+  return record as Record<'extra'|'ccc'|'extella'|'link',string>;
+}
+function liveMysticCodeMode(s:GameState,controllerId:string,mode:'extra'|'ccc'|'extella'|'link') {
+  const defs=mysticCodeRegaliaAuthority(s,controllerId);
+  if(!defs)return undefined;
+  const physical=s.cards.filter(c=>c.definitionId===defs[mode] &&
+    c.ownerPlayerId===controllerId && c.controllerPlayerId===controllerId &&
+    (c.zone==='skill' || (c.zone==='attack_area' &&
+      runtime(s).cardState[c.instanceId]?.active===true &&
+      runtime(s).cardState[c.instanceId]?.faceDown!==true)));
+  return physical.length===1?physical[0]:undefined;
+}
+function ownedMysticCodeSource(s:GameState,sourceId:string,controllerId:string,requireActive=false):boolean {
+  const source=s.cards.find(c=>c.instanceId===sourceId);
+  if(!source || source.ownerPlayerId!==controllerId || source.controllerPlayerId!==controllerId)return false;
+  const state=runtime(s).cardState[sourceId];
+  const combatActive=source.zone==='attack_area' && state?.active===true && state.faceDown!==true;
+  return requireActive?combatActive:source.zone==='skill' || combatActive;
+}
+export function mysticCodeTerrainZero(s:GameState,controllerId:string):boolean {
+  return liveMysticCodeMode(s,controllerId,'extella')?.zone==='attack_area';
+}
+function mysticCodeRegaliaPowerBonus(s:GameState,sourceId:string):number {
+  const physical=card(s,sourceId);
+  if(physical.zone!=='attack_area' || runtime(s).cardState[sourceId]?.active!==true ||
+    runtime(s).cardState[sourceId]?.faceDown===true)return 0;
+  const defs=mysticCodeRegaliaAuthority(s,physical.controllerPlayerId);
+  if(!defs)return 0;
+  if(physical.definitionId===defs.extella &&
+    liveMysticCodeMode(s,physical.controllerPlayerId,'extella')?.instanceId===sourceId)return 5;
+  return definition(s,sourceId)?.cardType==='basic_attack' &&
+    !!liveMysticCodeMode(s,physical.controllerPlayerId,'link') ? 1 : 0;
+}
 function isCommandSpellCard(s: GameState, sourceId: string): boolean {
   return definition(s, sourceId)?.cardType === 'command_spell';
 }
@@ -825,6 +913,33 @@ function settleSealedCardBattleEnd(s: GameState, event: AbilityEvent): void {
   stageNextSealedCardBattleDecision(s);
 }
 
+function eligibleMysticCodeRecoveryAttackIds(s: GameState,controllerId: string): string[] {
+  return s.cards.filter(c=>c.ownerPlayerId===controllerId && c.controllerPlayerId===controllerId &&
+    c.zone==='attack_area' && runtime(s).cardState[c.instanceId]?.active===true &&
+    runtime(s).cardState[c.instanceId]?.playedRound===s.round.roundNumber &&
+    classifyCardPlay(definition(s,c.instanceId)).playKind==='attack' &&
+    !isResidualAttackCard(s,c.instanceId,definition(s,c.instanceId)) &&
+    halfUpPrintedAttackRecovery(definition(s,c.instanceId)?.cardFace.cost,true,true)!==undefined)
+    .map(c=>c.instanceId);
+}
+function trustedMysticCodeLossEvent(s: GameState,controllerId: string,event: AbilityEvent | undefined): boolean {
+  if (!event || event.type!=='after_controller_loses_battle' || event.playerId!==controllerId ||
+      !event.resultId || !event.battleId || !event.battlePhaseResolutionId || !event.battlefieldId) return false;
+  const root=runtime(s).trustedBattleResultSnapshots?.[event.resultId];
+  return !!root && root.resultId===event.resultId && root.battleId===event.battleId &&
+    root.battlePhaseResolutionId===event.battlePhaseResolutionId &&
+    root.battlefieldId===event.battlefieldId &&
+    root.loserIds.includes(controllerId) && !root.winners.includes(controllerId) &&
+    root.battleParticipantIds.includes(controllerId);
+}
+function trustedMysticCodeWinEvent(s:GameState,controllerId:string,event:AbilityEvent | undefined):boolean {
+  if(!event || event.type!=='after_controller_wins_battle' || event.playerId!==controllerId ||
+    !event.resultId || !event.battleId || !event.battlePhaseResolutionId || !event.battlefieldId)return false;
+  const root=runtime(s).trustedBattleResultSnapshots?.[event.resultId];
+  return !!root && root.resultId===event.resultId && root.battleId===event.battleId &&
+    root.battlePhaseResolutionId===event.battlePhaseResolutionId && root.battlefieldId===event.battlefieldId &&
+    root.winners.includes(controllerId) && root.battleParticipantIds.includes(controllerId);
+}
 function trustedBattlePlunderFacts(s: GameState, controllerId: string, event: AbilityEvent | undefined) {
   if (!event || event.type !== 'after_controller_wins_battle' || event.playerId !== controllerId ||
       typeof event.resultId !== 'string' || typeof event.battlePhaseResolutionId !== 'string' ||
@@ -856,6 +971,17 @@ function deterministicShuffleIds(s: GameState, ids: readonly string[]): string[]
     const j = Math.floor((r.randomState / 0x100000000) * (i + 1)); [values[i], values[j]] = [values[j]!, values[i]!];
   }
   return values;
+}
+/** Server-only transaction primitive for randomly discarding a controller-owned hand card.
+ * Uses the same persisted deterministic RNG state as the game deck shuffle.
+ * No action/ability authorizes this primitive by itself.
+ */
+function discardRandomOwnedHandCard(s: GameState, controllerId: string): string | undefined {
+  const hand = s.cards.filter(c => c.ownerPlayerId === controllerId && c.controllerPlayerId === controllerId && c.zone === 'hand');
+  if (!hand.length) return undefined;
+  const chosen = deterministicShuffleIds(s, hand.map(c => c.instanceId))[0]!;
+  moveCard(s, chosen, 'discard');
+  return chosen;
 }
 function setOwnerDeckOrder(s: GameState, ownerId: string, orderedIds: readonly string[]): void {
   const positions = s.cards.map((physical, index) => physical.ownerPlayerId === ownerId && physical.zone === 'deck' ? index : -1).filter((index) => index >= 0);
@@ -1173,6 +1299,8 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     return { value: persistentLock.value, lines: [{ label: 'persistent_situation_attribute_power_lock', value: persistentLock.value }] };
   }
   const result = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
+  const regaliaBonus=mysticCodeRegaliaPowerBonus(s,sourceId);
+  if(regaliaBonus){result.value+=regaliaBonus;result.lines.push({label:'mystic_code_regalia_power',value:result.value});}
   const linkedAuxiliaryBonus = linkedAuxiliaryOnPlayPowerBonus(s, sourceId);
   if (linkedAuxiliaryBonus !== 0) {
     result.value += linkedAuxiliaryBonus;
@@ -1230,6 +1358,17 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     if (!Number.isSafeInteger(roundPowerBonus.amount) || roundPowerBonus.amount < 0) reject('invalid_state', 'Round card-Power bonus is invalid');
     result.value += roundPowerBonus.amount;
     result.lines.push({ label: roundPowerBonus.sourceAbilityId || 'round_card_power_bonus', value: result.value });
+  }
+  const printedManaBonus = runtime(s).cardState[sourceId]?.printedManaPowerBonus;
+  if (printedManaBonus?.round === s.round.roundNumber) {
+    if (!Number.isSafeInteger(printedManaBonus.amount) || printedManaBonus.amount < 0 || printedManaBonus.amount > 3)
+      reject('invalid_state', 'Printed-mana card Power bonus is invalid');
+    const provider=s.cards.find(c=>c.instanceId===printedManaBonus.sourceCardId);
+    if (!provider || provider.controllerPlayerId!==source.controllerPlayerId ||
+      !ownedMysticCodeSource(s,provider.instanceId,source.controllerPlayerId,true))
+      reject('invalid_state','Printed-mana Power source is no longer active');
+    result.value += printedManaBonus.amount;
+    result.lines.push({label:'printed_mana_round_power_bonus',value:result.value});
   }
   const variantBatteryPowerBonus = definitionVariantRoundCardPowerBonus(s, sourceId);
   if (variantBatteryPowerBonus !== 0) {
@@ -2218,6 +2357,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
+  if (isForbiddenCodeSealUse(s,sourceId,a)) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId) && !isAcceptedInjuryWarpRepairAbility(a)) return false;
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
   const activationPhase = effectiveActivationPhase(s, sourceId, a);
@@ -2454,8 +2594,10 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
     if ((runtime(s).cardPlayCountByInstance?.[sourceId] ?? 0) - Number(baseline) >= 1) return 'card_limit_reached';
   }
   if (!ignoreAttackLimit && attackPlayLimitReached(s, p, sourceId, ignoreStagedAttackLimit)) return 'attack_play_limit_reached';
+  const regaliaExtra=liveMysticCodeMode(s,p,'extra');
   const requirements = d.playRequirements.concat(nodes(d.cardFace.requirements)).filter(r =>
-    str(r.type) && !(str(r.type) === 'skill_zone_mana_at_least' && (linkedRoundException || hasPlayRuleException(d, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)) || bloodlustPlayRequirementWaived(s, p, 'skill_zone_mana_at_least', Number(r.value)) || logicalDayDefinitionPlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)))));
+    str(r.type) && !(str(r.type) === 'skill_zone_mana_at_least' && (linkedRoundException || hasPlayRuleException(d, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)) || bloodlustPlayRequirementWaived(s, p, 'skill_zone_mana_at_least', Number(r.value)) || logicalDayDefinitionPlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)) ||
+      (Number(r.value)===8 && regaliaExtra?.instanceId===sourceId))));
   if (!requirements.every(r => condition(s, context(s, sourceId, ''), r))) return 'play_requirement';
 
   const sealCost = !faceDown ? cardPlayCommandSealCost(d) : undefined;
@@ -2636,6 +2778,11 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
     for (const a of definition(s, c.instanceId)?.abilities ?? []) {
       const eliminatedRoundCleanup = event.type === 'round_end' && isBattlefieldSourceRoundCleanupAbility(a);
       if (!controllerEligible && !eliminatedRoundCleanup) continue;
+      if (a.effects.some(effect=>effect.type==='mystic_code_recon_escape') &&
+          (event.type!=='after_controller_enters_location' || !event.playerId ||
+           event.playerId===c.controllerPlayerId ||
+           event.locationId!==player(s,c.controllerPlayerId).locationId ||
+           !event.locationId || !isBattlefield(s,event.locationId))) continue;
       const matches = a.activation.trigger === event.type || (!a.activation.trigger && a.kind === 'phase_action' && a.activation.opens === event.type);
       if (event.type === 'while_active') {
         const transformed = runtime(s).transformedReturnSilenceSourceCardIds?.includes(c.instanceId) === true;
@@ -2681,6 +2828,27 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
 function moveCard(s: GameState, id: string, zone: string): number {
   if (!['hand', 'deck', 'discard', 'field', 'skill', 'attack_area', 'removed_from_game', 'looked_cards', 'sealed'].includes(zone)) reject('unsupported', 'Unmapped destination zone');
   const c = card(s, id); const fromZone = c.zone; const moved = c.zone === zone ? 0 : 1; c.zone = zone;
+  // An Extella arm can only be settled while the same physical Code remains
+  // face-up and active in attack. Retire its lease as soon as it leaves attack;
+  // otherwise a normal move/close would leave unrestorable orphan authority.
+  if (moved && fromZone==='attack_area' && zone!=='attack_area') {
+    const armed=runtime(s).mysticCodeRecoveryArms?.[c.controllerPlayerId];
+    if(armed?.sourceCardId===id)delete runtime(s).mysticCodeRecoveryArms![c.controllerPlayerId];
+  }
+  const reconCode=definition(s,id)?.abilities.some(a=>a.effects.some(e=>e.type==='mystic_code_recon_escape'));
+  const wasReconSource=fromZone==='skill' || fromZone==='attack_area';
+  const becomesReconSource=zone==='skill' || zone==='attack_area';
+  if (reconCode && becomesReconSource && !wasReconSource) {
+    s.ruleOverrides ??= {};
+    s.ruleOverrides.reconCapacityExemptPlayerIds ??= [];
+    if (!s.ruleOverrides.reconCapacityExemptPlayerIds.includes(c.controllerPlayerId))
+      s.ruleOverrides.reconCapacityExemptPlayerIds.push(c.controllerPlayerId);
+  }
+  if (reconCode && wasReconSource && !becomesReconSource &&
+      s.ruleOverrides?.reconCapacityExemptPlayerIds) {
+    s.ruleOverrides.reconCapacityExemptPlayerIds =
+      s.ruleOverrides.reconCapacityExemptPlayerIds.filter(pid=>pid!==c.controllerPlayerId);
+  }
   c.visibility = zone === 'field' || zone === 'attack_area' || zone === 'removed_from_game' ? { scope: 'public' } : { scope: 'owner_only', ownerPlayerId: c.ownerPlayerId };
   if (moved && zone === 'skill') recordSkillReturnedToSkillZone(s, id, fromZone);
   if (!['field', 'attack_area'].includes(zone)) {
@@ -3759,6 +3927,202 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       if (!ongoing || effect.visibility !== 'public') reject('unsupported', 'Visibility requires an ongoing public effect');
       ongoing.publicZones.push(str(effect.zone)); break;
     }
+    case 'mystic_code_recon_escape': {
+      const event=ctx.event;
+      const controller=player(s,ctx.controllerId);
+      const source=card(s,ctx.sourceCardId);
+      if (!exactRuleNodeKeys(effect,['type']) ||
+          !event || event.type!=='after_controller_enters_location' ||
+          !event.playerId || event.playerId===ctx.controllerId ||
+          event.locationId!==controller.locationId || !controller.locationId ||
+          !isBattlefield(s,controller.locationId) ||
+          !s.players.some(p=>p.id===event.playerId && p.status==='active' &&
+            p.locationId===controller.locationId) ||
+          !ownedMysticCodeSource(s,source.instanceId,ctx.controllerId) || r.pendingDecision)
+        reject('invalid_event','Recon escape requires a live opponent entrance to your battlefield');
+      if (!getEnabledLocations(s.map,s.locationConfig).some(location=>location.id==='recon')) break;
+      const id=nextId(s,'mystic-code-recon');
+      r.pendingDecision={
+        id,controllerId:ctx.controllerId,
+        target:{id:'mystic-code-recon',type:'choice',count:{min:1,max:1},
+          options:[{id:'stay',label:'Stay'},{id:'recon',label:'Move to Recon'}]},
+        candidates:['stay','recon'],min:1,max:1,context:structuredClone(ctx),remainingEffects:[],
+        interaction:{kind:'mystic_code_recon_escape_v1',template:'target',visibility:'owner_only',cancelPolicy:'forbidden',
+          sourceCardInstanceId:ctx.sourceCardId,abilityId:ctx.abilityId,
+          createdRevision:r.revision+1,continuationRef:`${id}:continuation`,
+          controllerId:ctx.controllerId,triggerEventId:event.id,
+          triggeringOpponentId:event.playerId,battlefieldId:controller.locationId,
+          round:s.round.roundNumber,options:['stay','recon'],
+          constraints:{kind:'target',targetKind:'choice',min:1,max:1,distinct:true}},
+      };
+      break;
+    }
+    case 'mystic_code_battle_recovery': {
+      const recoveryAbility=abilityDefinition(s,ctx.sourceCardId,ctx.abilityId);
+      if(recoveryAbility.kind==='phase_action') {
+        const armedLocation=player(s,ctx.controllerId).locationId;
+        if(!exactRuleNodeKeys(effect,['type']) || phase(s)!=='combat' ||
+          !armedLocation || !isBattlefield(s,armedLocation) ||
+          !ownedMysticCodeSource(s,ctx.sourceCardId,ctx.controllerId,true) || r.pendingDecision ||
+          r.mysticCodeRecoveryArms?.[ctx.controllerId]?.round===s.round.roundNumber)
+          reject('illegal_action','Extella recovery requires an active combat Code with no prior arm');
+        const choices=eligibleMysticCodeRecoveryAttackIds(s,ctx.controllerId);
+        if(!choices.length)reject('invalid_target','No active non-permanent attack for Extella recovery');
+        const id=nextId(s,'mystic-code-recovery-arm');
+        r.pendingDecision={id,controllerId:ctx.controllerId,
+          target:{id:'mystic-code-recovery-attack',type:'card_instance',count:{min:1,max:1}},
+          candidates:choices,min:1,max:1,context:structuredClone(ctx),remainingEffects:[],
+          interaction:{kind:'mystic_code_recovery_arm_v1',template:'target',
+            visibility:'owner_only',cancelPolicy:'forbidden',
+            sourceCardInstanceId:ctx.sourceCardId,abilityId:ctx.abilityId,
+            createdRevision:r.revision+1,continuationRef:`${id}:continuation`,
+            controllerId:ctx.controllerId,round:s.round.roundNumber,candidateIds:choices,
+            constraints:{kind:'target',targetKind:'card',min:1,max:1,distinct:true}}};
+        break;
+      }
+      if (!exactRuleNodeKeys(effect,['type']) || !trustedMysticCodeLossEvent(s,ctx.controllerId,ctx.event) ||
+          !ownedMysticCodeSource(s,ctx.sourceCardId,ctx.controllerId) || r.pendingDecision)
+        reject('invalid_event','Recovery requires exact current trusted battle loss and active Mystic Code');
+      const choices=eligibleMysticCodeRecoveryAttackIds(s,ctx.controllerId);
+      if (!choices.length) break;
+      const id=nextId(s,'mystic-code-battle-recovery');
+      r.pendingDecision={
+        id,controllerId:ctx.controllerId,
+        target:{id:'mystic-code-recovery-attack',type:'card_instance',count:{min:1,max:1}},
+        candidates:choices,min:1,max:1,context:structuredClone(ctx),remainingEffects:[],
+        interaction:{kind:'mystic_code_battle_recovery_v1',template:'target',visibility:'owner_only',cancelPolicy:'forbidden',
+          sourceCardInstanceId:ctx.sourceCardId,abilityId:ctx.abilityId,
+          createdRevision:r.revision+1,continuationRef:`${id}:continuation`,
+          controllerId:ctx.controllerId,triggerEventId:ctx.event!.id,resultId:ctx.event!.resultId!,
+          round:s.round.roundNumber,candidateIds:choices,
+          constraints:{kind:'target',targetKind:'card',min:1,max:1,distinct:true}},
+      };
+      break;
+    }
+    case 'mystic_code_battle_loss_vp': {
+      const source=card(s,ctx.sourceCardId);
+      if(!exactRuleNodeKeys(effect,['type','amount']) || effect.amount!==-1 ||
+        !trustedMysticCodeLossEvent(s,ctx.controllerId,ctx.event) ||
+        !ownedMysticCodeSource(s,source.instanceId,ctx.controllerId))
+        reject('invalid_event','Mystic Code loss penalty needs a trusted loss and owned live source');
+      const before=p.vp; p.vp=Math.max(0,p.vp-1);
+      if(p.vp!==before)r.events.push({type:'victory_points_adjusted',playerId:p.id,
+        sourceCardId:source.instanceId,abilityId:ctx.abilityId,resource:'victory_points',
+        delta:p.vp-before,before,after:p.vp});
+      break;
+    }
+    case 'mystic_code_regalia': {
+      const source=card(s,ctx.sourceCardId);
+      if(!exactRuleNodeKeys(effect,['type','codeDefinitionIds']) ||
+        source.ownerPlayerId!==ctx.controllerId || source.controllerPlayerId!==ctx.controllerId ||
+        source.zone!=='skill' || !mysticCodeRegaliaAuthority(s,ctx.controllerId))
+        reject('invalid_state','Mystic Code Regalia requires acquired ascension authority');
+      // Regalia buffs read current physical source state, not stale modifiers.
+      break;
+    }
+    case 'mystic_code_expire_on_event': {
+      if (!exactRuleNodeKeys(effect,['type','when']) ||
+          !['after_controller_wins_battle','after_controller_enters_location'].includes(str(effect.when)) ||
+          ctx.event?.type!==effect.when || ctx.event?.playerId!==ctx.controllerId ||
+          (effect.when==='after_controller_wins_battle' && !trustedMysticCodeWinEvent(s,ctx.controllerId,ctx.event)) ||
+          (effect.when==='after_controller_enters_location' &&
+            (!ctx.event.previousLocationId || !ctx.event.locationId ||
+              ctx.event.previousLocationId===ctx.event.locationId ||
+              !['normal','effect'].includes(String(ctx.event.movementKind)) ||
+              player(s,ctx.controllerId).locationId!==ctx.event.locationId)) ||
+          !ownedMysticCodeSource(s,ctx.sourceCardId,ctx.controllerId))
+        reject('invalid_event','Mystic Code expiration requires matched trusted owner event');
+      moveCard(s,ctx.sourceCardId,'removed_from_game');
+      break;
+    }
+    case 'mystic_code_switch': {
+      const options=effect.definitionIds;
+      if (!exactRuleNodeKeys(effect,['type','definitionIds']) || !Array.isArray(options) ||
+          options.length!==4 || new Set(options).size!==4 ||
+          options.some(x=>typeof x!=='string'||!x) ||
+          s.round.activePhase!=='preparation' || r.pendingDecision ||
+          card(s,ctx.sourceCardId).ownerPlayerId!==ctx.controllerId ||
+          card(s,ctx.sourceCardId).controllerPlayerId!==ctx.controllerId ||
+          card(s,ctx.sourceCardId).zone!=='skill')
+        reject('illegal_action','Mystic Code switch requires a valid preparation Skill');
+      // A pending four-Code lease must not be born from a physical state that
+      // its own restore/choose guards would reject. Validate all instance IDs
+      // before advancing the server RNG or discarding even one hand card.
+      if (new Set(s.cards.map(c=>c.instanceId)).size!==s.cards.length)
+        reject('invalid_state','Mystic Code switch needs globally unique physical card IDs');
+      const master=player(s,ctx.controllerId).masterCardId;
+      for(const id of options) {
+        const d=r.pack.cards[id];
+        if (!d || d.cardType!=='master_skill' || !((d as typeof d & {ownerId?:string}).ownerId===master ||
+              (!(d as typeof d & {ownerId?:string}).ownerId && id.startsWith(master+'.skill.'))) || d.initialPlacement!=='outside_game')
+          reject('resolution_failed','Mystic Code pool is not fully owned outside-game skill definitions');
+        const existing=s.cards.filter(c=>c.ownerPlayerId===ctx.controllerId && c.definitionId===id);
+        if (existing.length>1 || existing.some(c=>c.controllerPlayerId!==ctx.controllerId ||
+            !['skill','removed_from_game'].includes(c.zone))) reject('invalid_state','Mystic Code physical ownership is malformed');
+      }
+      if (!s.cards.some(c=>c.controllerPlayerId===ctx.controllerId&&c.ownerPlayerId===ctx.controllerId&&c.zone==='hand'))
+        reject('invalid_target','Mystic Code requires one discardable hand card');
+      discardRandomOwnedHandCard(s,ctx.controllerId);
+      for(const id of options) {
+        if (s.cards.some(c=>c.ownerPlayerId===ctx.controllerId&&c.definitionId===id)) continue;
+        const instanceId=nextId(s,'mystic-code');
+        s.cards.push({instanceId,definitionId:id,ownerPlayerId:ctx.controllerId,controllerPlayerId:ctx.controllerId,
+          zone:'removed_from_game',visibility:{scope:'public'},generatedBy:ctx.sourceCardId});
+        r.cardState[instanceId]={active:false,faceDown:false,playedRound:s.round.roundNumber};
+      }
+      const physicalIds=options.map(id=>s.cards.find(c=>c.ownerPlayerId===ctx.controllerId && c.definitionId===id)!.instanceId);
+      const id=nextId(s,'mystic-code-choice');
+      r.pendingDecision={id,controllerId:ctx.controllerId,target:{id:'mystic-code-choice',type:'card_instance',count:{min:1,max:1}},
+        candidates:physicalIds,min:1,max:1,context:structuredClone(ctx),remainingEffects:[],
+        interaction:{kind:'mystic_code_switch_v1',template:'target',visibility:'owner_only',cancelPolicy:'forbidden',
+          sourceCardInstanceId:ctx.sourceCardId,abilityId:ctx.abilityId,createdRevision:r.revision+1,
+          continuationRef:`${id}:continuation`,controllerId:ctx.controllerId,
+          codeDefinitionIds:[...options],codePhysicalIds:physicalIds,
+          constraints:{kind:'target',targetKind:'card',min:1,max:1,distinct:true}}};
+      break;
+    }
+    case 'private_deck_top_choice': {
+      if (!exactRuleNodeKeys(effect, ['type','count']) || effect.count !== 3 ||
+          s.round.activePhase !== 'action' || r.pendingDecision ||
+          !ownedMysticCodeSource(s,ctx.sourceCardId,ctx.controllerId,true))
+        reject('illegal_action','Private deck top requires an active Mystic Code attack');
+      const controller = player(s, ctx.controllerId);
+      if (!controller.locationId || !isBattlefield(s, controller.locationId)) reject('illegal_action', 'A battlefield is required');
+      const choices = s.players.filter(candidate => candidate.status === 'active' &&
+        candidate.locationId && sameBattlefield(s, candidate.locationId, controller.locationId)).map(candidate=>candidate.id);
+      if (!choices.length) reject('invalid_target','No players at this battlefield');
+      const id = nextId(s,'private-deck-player');
+      r.pendingDecision = {
+        id, controllerId: ctx.controllerId,
+        target: {id:'private-deck-player',type:'player',count:{min:1,max:1}},
+        candidates: choices, min:1,max:1,context:structuredClone(ctx),remainingEffects:[],
+        interaction: {kind:'private_deck_top_choice_v1',template:'target',visibility:'owner_only',cancelPolicy:'forbidden',
+          sourceCardInstanceId:ctx.sourceCardId,abilityId:ctx.abilityId,createdRevision:r.revision+1,
+          continuationRef:`${id}:continuation`,controllerId:ctx.controllerId,stage:'player',
+          battlefieldId:controller.locationId,
+          constraints:{kind:'target',targetKind:'player',min:1,max:1,distinct:true}},
+      };
+      break;
+    }
+    case 'grant_played_attacks_printed_mana_power': {
+      if (!exactRuleNodeKeys(effect, ['type', 'maximumBonus']) || effect.maximumBonus !== 3 ||
+          s.round.activePhase !== 'action' || !ownedMysticCodeSource(s,ctx.sourceCardId,ctx.controllerId,true))
+        reject('illegal_action', 'Printed-mana attack bonus requires an active Mystic Code attack');
+      for (const attack of s.cards.filter(c => c.controllerPlayerId === ctx.controllerId && c.zone === 'attack_area' &&
+        r.cardState[c.instanceId]?.active === true && r.cardState[c.instanceId]?.playedRound === s.round.roundNumber)) {
+        const amount = trustedPrintedAttackManaPowerBonus(attack.instanceId, ctx.controllerId, s.cards, r.pack.cards as never);
+        if (amount === undefined) continue;
+        const state = r.cardState[attack.instanceId]!;
+        if (state.printedManaPowerBonus?.round === s.round.roundNumber) reject('invalid_state', 'Attack already has a printed-mana Power bonus');
+        state.printedManaPowerBonus = { round: s.round.roundNumber, amount, sourceCardId:ctx.sourceCardId,sourceAbilityId:ctx.abilityId };
+      }
+      break;
+    }
+    case 'discard_random_owned_hand': {
+      if (!exactRuleNodeKeys(effect, ['type'])) reject('unsupported', 'Random hand discard requires exact canonical effect');
+      discardRandomOwnedHandCard(s, ctx.controllerId);
+      break;
+    }
     case 'look_at_deck_top': {
       const calculated = evaluateFormula(effect.count, s, p.id, ctx.sourceCardId, ctx.variables);
       r.calculations.push({ controllerId: p.id, lines: calculated.lines });
@@ -4351,7 +4715,321 @@ function isMatchingDefinitionPendingDecisionLiveValid(s: GameState, decision: Pe
   } catch { return false; }
 }
 
+/** Exact persisted capability binding for passive Recon occupancy exemption. */
+function isCanonicalMysticCodeReconAbility(a: AuthoringAbility): boolean {
+  return a.kind==='forced_trigger' &&
+    a.activation.trigger==='after_controller_enters_location' &&
+    a.execution.mode==='automatic' &&
+    a.effects.length===1 && a.effects[0]?.type==='mystic_code_recon_escape' &&
+    exactRuleNodeKeys(a.effects[0]!,['type']) &&
+    a.conditions.length===1 && a.conditions[0]?.type==='event_player_is_opponent' &&
+    exactRuleNodeKeys(a.conditions[0]!,['type']) &&
+    a.targets.length===0 && a.cost.length===0;
+}
+export function isMysticCodeReconCapacityStateValidForRestore(s: GameState): boolean {
+  const ids=s.ruleOverrides?.reconCapacityExemptPlayerIds ?? [];
+  if (!Array.isArray(ids) || new Set(ids).size!==ids.length) return false;
+  return ids.every(id=>s.players.some(p=>p.id===id) &&
+    s.cards.some(c=>c.ownerPlayerId===id && c.controllerPlayerId===id &&
+      ownedMysticCodeSource(s,c.instanceId,id) && definition(s,c.instanceId)?.abilities.some(a=>
+        isCanonicalMysticCodeReconAbility(a))));
+}
+function isMysticCodeReconEscapePendingDecisionLiveValid(s: GameState,d: PendingDecision): boolean {
+  try {
+    const m=d.interaction;
+    if (!m || m.kind!=='mystic_code_recon_escape_v1') return false;
+    const r=runtime(s);
+    const source=card(s,m.sourceCardInstanceId);
+    const a=restoredAbility(s,m.sourceCardInstanceId,m.abilityId);
+    const controller=player(s,m.controllerId);
+    const opponent=player(s,m.triggeringOpponentId);
+    return !!a && isCanonicalMysticCodeReconAbility(a) &&
+      ownedMysticCodeSource(s,source.instanceId,m.controllerId) &&
+      m.controllerId!==m.triggeringOpponentId && controller.locationId===m.battlefieldId &&
+      opponent.locationId===m.battlefieldId && opponent.status==='active' &&
+      isBattlefield(s,m.battlefieldId) && r.processedEvents.includes(m.triggerEventId) &&
+      m.round===s.round.roundNumber && m.createdRevision===r.revision &&
+      m.continuationRef===`${d.id}:continuation` &&
+      m.visibility==='owner_only' && m.cancelPolicy==='forbidden' &&
+      d.controllerId===m.controllerId && d.context.controllerId===m.controllerId &&
+      d.context.sourceCardId===m.sourceCardInstanceId && d.context.abilityId===m.abilityId &&
+      d.min===1 && d.max===1 &&
+      exactStringArray(d.candidates,['stay','recon']) &&
+      exactStringArray(m.options,['stay','recon']);
+  } catch{return false;}
+}
+function isMysticCodeRecoveryArmPendingDecisionLiveValid(s:GameState,d:PendingDecision):boolean {
+  try {
+    const m=d.interaction;
+    if(!m || m.kind!=='mystic_code_recovery_arm_v1')return false;
+    const a=restoredAbility(s,m.sourceCardInstanceId,m.abilityId);
+    const choices=eligibleMysticCodeRecoveryAttackIds(s,m.controllerId);
+    return !!a && a.kind==='phase_action' && a.activation.phase==='combat' &&
+      a.effects.length===1 && a.effects[0]?.type==='mystic_code_battle_recovery' &&
+      !!player(s,m.controllerId).locationId && isBattlefield(s,player(s,m.controllerId).locationId) &&
+      phase(s)==='combat' && ownedMysticCodeSource(s,m.sourceCardInstanceId,m.controllerId,true) &&
+      !runtime(s).mysticCodeRecoveryArms?.[m.controllerId] &&
+      m.round===s.round.roundNumber && m.createdRevision===runtime(s).revision &&
+      m.continuationRef===`${d.id}:continuation` &&
+      m.visibility==='owner_only' && m.cancelPolicy==='forbidden' &&
+      d.controllerId===m.controllerId && d.context.controllerId===m.controllerId &&
+      d.context.sourceCardId===m.sourceCardInstanceId && d.context.abilityId===m.abilityId &&
+      d.min===1 && d.max===1 && exactStringArray(d.candidates,choices) &&
+      exactStringArray(m.candidateIds,choices);
+  }catch{return false;}
+}
+export function isMysticCodeRecoveryArmsValidForRestore(s:GameState):boolean {
+  try {
+    const r=runtime(s);
+    if(r.mysticCodeRecoveryArms!==undefined &&
+       (!r.mysticCodeRecoveryArms || typeof r.mysticCodeRecoveryArms!=='object' ||
+        Array.isArray(r.mysticCodeRecoveryArms)))return false;
+    return Object.entries(r.mysticCodeRecoveryArms??{}).every(([key,arm])=>{
+      // Require the whole trusted combat snapshot, not merely a few fields
+      // that happen to satisfy the source comparison. No injected extras.
+      if(!arm || typeof arm!=='object' || Array.isArray(arm) ||
+        !exactRuleNodeKeys(arm,['round','controllerId','sourceCardId','abilityId',
+          'attackInstanceId','printedCost','battlefieldId']) ||
+        !Number.isSafeInteger(arm.round) || arm.round<1 ||
+        typeof arm.controllerId!=='string' || !arm.controllerId ||
+        typeof arm.sourceCardId!=='string' || !arm.sourceCardId ||
+        typeof arm.abilityId!=='string' || !arm.abilityId ||
+        typeof arm.attackInstanceId!=='string' || !arm.attackInstanceId ||
+        !Number.isSafeInteger(arm.printedCost) || arm.printedCost<0 ||
+        typeof arm.battlefieldId!=='string' || !arm.battlefieldId)return false;
+      const a=restoredAbility(s,arm.sourceCardId,arm.abilityId);
+      return key===arm.controllerId && arm.round===s.round.roundNumber &&
+        typeof arm.battlefieldId==='string' && isBattlefield(s,arm.battlefieldId) &&
+        player(s,arm.controllerId).locationId===arm.battlefieldId &&
+        !!a && a.kind==='phase_action' && a.activation.phase==='combat' &&
+        a.effects.length===1 && a.effects[0]?.type==='mystic_code_battle_recovery' &&
+        ownedMysticCodeSource(s,arm.sourceCardId,arm.controllerId,true) &&
+        eligibleMysticCodeRecoveryAttackIds(s,arm.controllerId).includes(arm.attackInstanceId) &&
+        definition(s,arm.attackInstanceId)?.cardFace.cost===arm.printedCost;
+    });
+  }catch{return false;}
+}
+function settleMysticCodeRecoveryArm(s:GameState,event:AbilityEvent):void {
+  if(event.type==='round_end'){delete runtime(s).mysticCodeRecoveryArms;return;}
+  if(!['after_controller_loses_battle','after_controller_wins_battle'].includes(event.type) ||
+    !event.playerId)return;
+  const r=runtime(s);const arm=r.mysticCodeRecoveryArms?.[event.playerId];
+  if(!arm || arm.round!==s.round.roundNumber)return;
+  const trusted=event.type==='after_controller_loses_battle'
+    ? trustedMysticCodeLossEvent(s,event.playerId,event)
+    : trustedMysticCodeWinEvent(s,event.playerId,event);
+  if(!trusted)return;
+  delete r.mysticCodeRecoveryArms![event.playerId];
+  if(event.type!=='after_controller_loses_battle' || event.battlefieldId!==arm.battlefieldId)return;
+  if(!ownedMysticCodeSource(s,arm.sourceCardId,arm.controllerId,true) ||
+    !eligibleMysticCodeRecoveryAttackIds(s,arm.controllerId).includes(arm.attackInstanceId) ||
+    definition(s,arm.attackInstanceId)?.cardFace.cost!==arm.printedCost)
+    reject('invalid_state','Extella armed attack/source lost trusted combat authority');
+  const amount=halfUpPrintedAttackRecovery(arm.printedCost,true,true);
+  if(amount===undefined)reject('invalid_state','Extella armed printed-cost recovery malformed');
+  if(amount>0)grantMana(s,arm.controllerId,amount,{source:'generic'});
+}
+function isMysticCodeBattleRecoveryPendingDecisionLiveValid(s: GameState,d: PendingDecision): boolean {
+  try {
+    const m=d.interaction;
+    if (!m || m.kind!=='mystic_code_battle_recovery_v1') return false;
+    const r=runtime(s);
+    const source=card(s,m.sourceCardInstanceId);
+    const a=restoredAbility(s,m.sourceCardInstanceId,m.abilityId);
+    const root=r.trustedBattleResultSnapshots?.[m.resultId];
+    const eligible=eligibleMysticCodeRecoveryAttackIds(s,m.controllerId);
+    return !!a && a.kind==='forced_trigger' && a.activation.trigger==='after_controller_loses_battle' &&
+      a.effects.length===1 && a.effects[0]?.type==='mystic_code_battle_recovery' &&
+      ownedMysticCodeSource(s,source.instanceId,m.controllerId) && !!root &&
+      root.loserIds.includes(m.controllerId) && !root.winners.includes(m.controllerId) &&
+      r.processedEvents.includes(m.triggerEventId) && m.round===s.round.roundNumber &&
+      m.createdRevision===r.revision && m.continuationRef===`${d.id}:continuation` &&
+      m.visibility==='owner_only' && m.cancelPolicy==='forbidden' &&
+      d.controllerId===m.controllerId && d.context.controllerId===m.controllerId &&
+      d.context.sourceCardId===m.sourceCardInstanceId && d.context.abilityId===m.abilityId &&
+      d.min===1 && d.max===1 && exactStringArray(m.candidateIds,eligible) &&
+      exactStringArray(d.candidates,eligible);
+  } catch{return false;}
+}
+function isMysticCodeSwitchPendingDecisionLiveValid(s: GameState,d: PendingDecision): boolean {
+  try {
+    const m=d.interaction;
+    if (!m || m.kind!=='mystic_code_switch_v1') return false;
+    const r=runtime(s);
+    const source=card(s,m.sourceCardInstanceId);
+    const ability=restoredAbility(s,m.sourceCardInstanceId,m.abilityId);
+    if (!ability || ability.effects.length!==1 || ability.effects[0]?.type!=='mystic_code_switch' ||
+        ability.kind!=='phase_action' || ability.activation.phase!=='preparation' ||
+        ability.activation.opens!=='controller_action_window' ||
+        ability.execution.mode!=='automatic' || ability.targets.length!==0 ||
+        ability.cost.length!==0 ||
+        source.ownerPlayerId!==m.controllerId ||
+        source.controllerPlayerId!==m.controllerId || source.zone!=='skill' ||
+        s.round.activePhase!=='preparation' || d.controllerId!==m.controllerId ||
+        d.context.sourceCardId!==m.sourceCardInstanceId || d.context.controllerId!==m.controllerId ||
+        d.context.abilityId!==m.abilityId || m.createdRevision!==r.revision ||
+        m.continuationRef!==`${d.id}:continuation` || m.visibility!=='owner_only' ||
+        m.cancelPolicy!=='forbidden' || !Array.isArray(m.codeDefinitionIds) ||
+        m.codeDefinitionIds.length!==4 || new Set(m.codeDefinitionIds).size!==4 ||
+        !Array.isArray(m.codePhysicalIds) || m.codePhysicalIds.length!==4 ||
+        !exactStringArray(m.codeDefinitionIds,ability.effects[0].definitionIds as string[]) ||
+        d.min!==1 || d.max!==1 || !exactStringArray(d.candidates,m.codePhysicalIds))return false;
+    // The execution-time switch planner forbids duplicate physical identities
+    // globally. Do not admit a snapshot that could never complete its lease.
+    if(new Set(s.cards.map(c=>c.instanceId)).size!==s.cards.length)return false;
+    const planned=m.codeDefinitionIds.map(id=>s.cards.filter(c=>c.definitionId===id && c.ownerPlayerId===m.controllerId));
+    return planned.every((matches,index)=>matches.length===1 &&
+      matches[0]!.instanceId===m.codePhysicalIds[index] &&
+      matches[0]!.controllerPlayerId===m.controllerId &&
+      ['removed_from_game','skill'].includes(matches[0]!.zone)) &&
+      planned.flat().filter(c=>c.zone==='skill').length<=1;
+  } catch{return false;}
+}
+function isPrivateDeckTopPendingDecisionLiveValid(s: GameState, d: PendingDecision): boolean {
+  try {
+    const m=d.interaction;
+    if (!m || m.kind!=='private_deck_top_choice_v1') return false;
+    const r=runtime(s);
+    const source=card(s,m.sourceCardInstanceId);
+    const a=restoredAbility(s,m.sourceCardInstanceId,m.abilityId);
+    if (!a || a.effects.length!==1 || a.effects[0]?.type!=='private_deck_top_choice' ||
+        a.kind!=='phase_action' || a.activation.phase!=='action' ||
+        a.activation.opens!=='controller_action_window' ||
+        a.execution.mode!=='automatic' || a.targets.length!==0 ||
+        a.cost.length!==0 ||
+        a.effects[0]?.count!==3 || !ownedMysticCodeSource(s,source.instanceId,m.controllerId,true) ||
+        s.round.activePhase!=='action' || player(s,m.controllerId).locationId!==m.battlefieldId ||
+        !isBattlefield(s,m.battlefieldId) ||
+        m.createdRevision!==r.revision || m.continuationRef!==`${d.id}:continuation` ||
+        m.visibility!=='owner_only' || m.cancelPolicy!=='forbidden' ||
+        d.controllerId!==m.controllerId || d.context.controllerId!==m.controllerId ||
+        d.context.sourceCardId!==m.sourceCardInstanceId || d.context.abilityId!==m.abilityId ||
+        !Array.isArray(d.candidates) || new Set(d.candidates).size!==d.candidates.length) return false;
+    if (m.stage==='player') {
+      const choices=s.players.filter(p=>p.status==='active' && p.locationId===m.battlefieldId).map(p=>p.id);
+      return d.min===1 && d.max===1 && exactStringArray(d.candidates,choices);
+    }
+    if (!m.targetPlayerId || player(s,m.targetPlayerId).locationId!==m.battlefieldId ||
+        !Array.isArray(m.topCardIds)) return false;
+    const deck=ownerDeckIds(s,m.targetPlayerId);
+    if (m.stage==='discard') {
+      return exactStringArray(d.candidates,m.topCardIds) && d.min===0 &&
+        d.max===m.topCardIds.length && exactStringArray(deck.slice(0,m.topCardIds.length),m.topCardIds);
+    }
+    if (m.stage==='reorder' && Array.isArray(m.keptCardIds)) {
+      return d.min===m.keptCardIds.length && d.max===m.keptCardIds.length &&
+        exactStringArray(d.candidates,m.keptCardIds) &&
+        exactStringArray(deck.slice(0,m.keptCardIds.length),m.keptCardIds);
+    }
+    if (m.stage==='copy' && Array.isArray(m.discardedIds)) {
+      return !!liveMysticCodeMode(s,m.controllerId,'ccc') &&
+        liveMysticCodeMode(s,m.controllerId,'ccc')?.instanceId===m.sourceCardInstanceId &&
+        m.discardedIds.length>0 && new Set(m.discardedIds).size===m.discardedIds.length &&
+        m.discardedIds.every(id=>m.topCardIds!.includes(id) &&
+          s.cards.some(c=>c.instanceId===id && c.ownerPlayerId===m.targetPlayerId &&
+            c.zone==='discard')) && d.min===1 && d.max===1 &&
+        exactStringArray(d.candidates,['__fd_decline_ccc_copy__',...m.discardedIds]);
+    }
+    return false;
+  } catch {return false;}
+}
+/** The optional, paid CCC copy is offered only for cards this same trusted
+ * interaction moved to the opponent's discard. Source and lease are rechecked
+ * on both dispatch and persistent-session restore.
+ */
+function stageMysticCodeCccCopy(s:GameState,d:PendingDecision,discardedIds:readonly string[]):void {
+  const m=d.interaction;
+  if(!m || m.kind!=='private_deck_top_choice_v1' || !discardedIds.length ||
+    !m.targetPlayerId || !m.topCardIds ||
+    liveMysticCodeMode(s,m.controllerId,'ccc')?.instanceId!==m.sourceCardInstanceId)return;
+  if(new Set(discardedIds).size!==discardedIds.length ||
+    !discardedIds.every(id=>m.topCardIds!.includes(id) &&
+      s.cards.some(c=>c.instanceId===id && c.ownerPlayerId===m.targetPlayerId && c.zone==='discard')))
+    reject('invalid_state','Mystic Code CCC copy source is no longer this interaction discard');
+  const r=runtime(s);
+  const id=nextId(s,'mystic-code-ccc-copy');
+  // Reorder and copy have different exact serialization schemas. The
+  // preceding reorder lease contains keptCardIds, which must NOT leak into
+  // the new copy lease or MatchSession will reject a legitimate save.
+  const copyInteraction={...m,stage:'copy' as const,discardedIds:[...discardedIds],
+    createdRevision:r.revision+1,continuationRef:`${id}:continuation`,
+    constraints:{kind:'target' as const,targetKind:'card' as const,
+      min:1 as const,max:1 as const,distinct:true as const}};
+  delete copyInteraction.keptCardIds;
+  r.pendingDecision={id,controllerId:m.controllerId,
+    target:{id:'mystic-code-ccc-paid-copy',type:'card_instance',count:{min:1,max:1}},
+    candidates:['__fd_decline_ccc_copy__',...discardedIds],min:1,max:1,
+    context:structuredClone(d.context),remainingEffects:[],
+    interaction:copyInteraction};
+}
+export function isMysticCodePaidCopyStateValidForRestore(s:GameState):boolean {
+  try {
+    const r=runtime(s);
+    return Object.entries(r.cardState).every(([id,state])=>{
+      const mark=state?.mysticCodePaidCopy;
+      if(!mark)return true;
+      const physical=s.cards.find(c=>c.instanceId===id);
+      const original=s.cards.find(c=>c.instanceId===mark.originalInstanceId);
+      const source=s.cards.find(c=>c.instanceId===mark.sourceCardId);
+      // A generated paid attack must be traced to a real CCC top-deck action,
+      // not just an arbitrary owner-held card with a matching generatedBy.
+      // Source need not still be active: legitimate copies outlive a Code
+      // leaving the battlefield until their scheduled round-end cleanup.
+      const sourceDef=source ? definition(s,source.instanceId) : undefined;
+      const cccSource=sourceDef?.cardType==='master_skill' &&
+        sourceDef.abilities.some(a=>a.kind==='phase_action' &&
+          a.activation.phase==='action' && a.execution.mode==='automatic' &&
+          a.effects.length===1 && a.effects[0]?.type==='private_deck_top_choice' &&
+          a.effects[0].count===3);
+      return !!physical && !!original && !!source &&
+        !!cccSource &&
+        mark.round>=1 && mark.round<=s.round.roundNumber &&
+        physical.ownerPlayerId===mark.controllerId &&
+        physical.controllerPlayerId===mark.controllerId &&
+        physical.generatedBy===mark.sourceCardId &&
+        physical.definitionId===mark.originalDefinitionId &&
+        original.definitionId===mark.originalDefinitionId &&
+        source.ownerPlayerId===mark.controllerId &&
+        (mark.round===s.round.roundNumber || physical.zone==='removed_from_game');
+    });
+  } catch {return false;}
+}
+/** Validate source provenance of the current-round printed-cost Power modifier
+ * before a persisted session can be reactivated. Historical inert markers are
+ * harmless after a round boundary, but future-round markers are not.
+ */
+export function isPrintedManaPowerBonusStateValidForRestore(s: GameState): boolean {
+  try {
+    const r=runtime(s);
+    for(const [instanceId,state] of Object.entries(r.cardState)) {
+      const marker=state?.printedManaPowerBonus;
+      if (!marker) continue;
+      if (marker.round>s.round.roundNumber || marker.round<1 ||
+          !Number.isSafeInteger(marker.amount) || marker.amount<0 || marker.amount>3) return false;
+      if (marker.round<s.round.roundNumber) continue;
+      const physical=s.cards.find(c=>c.instanceId===instanceId);
+      const provider=s.cards.find(c=>c.instanceId===marker.sourceCardId);
+      if (!physical || !provider || physical.zone!=='attack_area' ||
+          physical.controllerPlayerId!==provider.controllerPlayerId ||
+          !ownedMysticCodeSource(s,provider.instanceId,provider.controllerPlayerId,true) || state.active!==true ||
+          state.playedRound!==s.round.roundNumber) return false;
+      const ability=restoredAbility(s,provider.instanceId,marker.sourceAbilityId);
+      if (!ability || ability.kind!=='phase_action' ||
+          ability.activation.phase!=='action' || ability.effects.length!==1 ||
+          ability.effects[0]?.type!=='grant_played_attacks_printed_mana_power' ||
+          ability.effects[0]?.maximumBonus!==3) return false;
+      const expected=trustedPrintedAttackManaPowerBonus(instanceId,physical.controllerPlayerId,s.cards,r.pack.cards as never);
+      if (marker.amount!==expected) return false;
+    }
+    return true;
+  } catch{return false;}
+}
 export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decision: PendingDecision): boolean {
+  if (decision.interaction?.kind === 'mystic_code_recon_escape_v1') return isMysticCodeReconEscapePendingDecisionLiveValid(s,decision);
+  if (decision.interaction?.kind === 'mystic_code_recovery_arm_v1') return isMysticCodeRecoveryArmPendingDecisionLiveValid(s,decision);
+  if (decision.interaction?.kind === 'mystic_code_battle_recovery_v1') return isMysticCodeBattleRecoveryPendingDecisionLiveValid(s,decision);
+  if (decision.interaction?.kind === 'mystic_code_switch_v1') return isMysticCodeSwitchPendingDecisionLiveValid(s,decision);
+  if (decision.interaction?.kind === 'private_deck_top_choice_v1') return isPrivateDeckTopPendingDecisionLiveValid(s, decision);
   if (decision.interaction?.kind === 'injury_warp_choice_v1') return isInjuryWarpPendingDecisionLiveValid(s, decision);
   if (decision.interaction?.kind === 'linked_auxiliary_suite_choice_v1') return isLinkedAuxiliarySuitePendingDecisionLiveValid(s, decision, linkedAuxiliaryOps(s));
   if (decision.interaction?.kind === 'elimination_rescue_choice_v1') return isEliminationRescuePendingDecisionLiveValid(s, decision);
@@ -5320,6 +5998,23 @@ export function isBattleLossResourceTriggerSemantic(a: AuthoringAbility): boolea
   return isFixedControllerCommandSealAdjustmentComponent(effect);
 }
 
+/** Accepted ordinary (preventable) one-VP loss, distinct from the existing
+ * unpreventable five-VP privileged effect. Exact structural authoring only.
+ */
+function isExactOrdinaryBattleLossOneVpAbility(a: AuthoringAbility): boolean {
+  const effect=a.effects[0];
+  return a.kind==='forced_trigger' &&
+    exactRuleNodeKeys(a.activation,['trigger']) &&
+    a.activation.trigger==='after_controller_loses_battle' &&
+    a.execution.mode==='automatic' && a.execution.allowedOperations.length===0 &&
+    a.effects.length===1 && !!effect &&
+    exactRuleNodeKeys(effect,['type','player','amount']) &&
+    effect.type==='adjust_victory_points' && effect.player==='controller' && effect.amount===-1 &&
+    a.conditions.length===0 && a.targets.length===0 && a.cost.length===0 &&
+    a.creates.length===0 && a.ruleModifiers.length===0 &&
+    Object.keys(a.lifecycle).length===0 && Object.keys(a.limit).length===0 &&
+    !str(a.responseWindow.opens);
+}
 function isBattleLossUnpreventableVpTriggerCandidate(a: AuthoringAbility): boolean {
   return a.kind === 'forced_trigger' &&
     str(a.activation.trigger) === 'after_controller_loses_battle' &&
@@ -6731,6 +7426,15 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (isSourcePlayBasicAttackDrawTriggerCandidate(a)) reject('resolution_failed', 'Unsupported source-play basic-attack draw trigger semantic shape');
   if (isDeploymentResourceRewardCandidate(a)) reject('resolution_failed', 'Unsupported deployment resource reward semantic shape');
   if (isBattleLossResourceTriggerCandidate(a)) reject('resolution_failed', 'Unsupported battle-loss resource semantic shape');
+  if (isExactOrdinaryBattleLossOneVpAbility(a)) {
+    if (!ctx.event || ctx.event.type!=='after_controller_loses_battle' ||
+        ctx.event.playerId!==ctx.controllerId ||
+        card(s,ctx.sourceCardId).zone!=='skill' ||
+        card(s,ctx.sourceCardId).controllerPlayerId!==ctx.controllerId)
+      reject('invalid_event','Ordinary battle-loss VP requires exact owned skill and event');
+    resolveEffect(s,ctx,a.effects[0]!);
+    return;
+  }
   if (isBattleLossUnpreventableVpTriggerCandidate(a)) reject('resolution_failed', 'Unsupported unpreventable battle-loss VP semantic shape');
   if (isBattleLossServantRevealCandidate(a)) reject('resolution_failed', 'Unsupported battle-loss servant reveal semantic shape');
   if (isSharedVictoryVpTriggerCandidate(a)) reject('resolution_failed', 'Unsupported shared-victory VP semantic shape');
@@ -6824,6 +7528,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 /** Server-only execution after discovery/trigger validation. Never accept an effect or context from the client. */
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (isForbiddenCodeSealUse(s,ctx.sourceCardId,a)) reject('illegal_action','Active Mystic Code forbids Command Seal Power/Victory use');
   if (hasControllerMasterSkillDefinitionReturnCandidate(a) && !isAcceptedOpponentRoundVpGainThresholdAbility(a, 'compiled')) reject('resolution_failed', 'Definition-return component requires an independently accepted parent route');
   if (isNextRoundSituationBenefitSuppressionCandidate(a) && !isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled')) reject('resolution_failed', 'Unsupported next-round situation-benefit suppression semantic shape');
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
@@ -7295,6 +8000,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   if (!event.id) reject('invalid_event', 'Events require stable ids');
   r.processedEvents.push(event.id);
   rememberTrustedBattleResultSnapshot(r, event);
+  settleMysticCodeRecoveryArm(s,event);
   settleDefinitionSideDeckBattleEvent(s, event);
   settleArmedAttributeUseDefeat(s, event);
   settleReactionCounterEvent(s, event);
@@ -7304,6 +8010,14 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   settleBoundOpponentBattleOutcome(s, event);
   settleRoundSkillProfileEvent(s, event);
   if (event.type === 'round_end') {
+    for(const physical of s.cards) {
+      const marker=r.cardState[physical.instanceId]?.mysticCodePaidCopy;
+      if(!marker || marker.round>s.round.roundNumber)continue;
+      if(physical.ownerPlayerId!==marker.controllerId ||
+        physical.generatedBy!==marker.sourceCardId)
+        reject('invalid_state','CCC temporary card lost generated-source authority');
+      if(physical.zone!=='removed_from_game')moveCard(s,physical.instanceId,'removed_from_game');
+    }
     cleanupRoundLocationSupplyAtRoundEnd(s);
     cleanupLinkedRoleSkillCopiesAtRoundEnd(s);
     cleanupRoundSkillProfilesAtRoundEnd(s);
@@ -8018,6 +8732,154 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           stageNextSealedCardBattleDecision(s);
           break;
         }
+        if (meta.kind === 'mystic_code_recon_escape_v1') {
+          if (!isMysticCodeReconEscapePendingDecisionLiveValid(s,d) ||
+              !Array.isArray(selected) || selected.length!==1 ||
+              !['stay','recon'].includes(selected[0]!))
+            reject('resolution_failed','Mystic Code Recon option lost source/event provenance');
+          delete r.pendingDecision;
+          if (selected[0]==='recon') {
+            s.ruleOverrides ??= {};
+            s.ruleOverrides.reconCapacityExemptPlayerIds ??= [];
+            if (!s.ruleOverrides.reconCapacityExemptPlayerIds.includes(playerId))
+              s.ruleOverrides.reconCapacityExemptPlayerIds.push(playerId);
+            moveControllerResolutionPresence(s,d.context,'recon');
+          }
+          break;
+        }
+        if (meta.kind === 'mystic_code_recovery_arm_v1') {
+          if(!isMysticCodeRecoveryArmPendingDecisionLiveValid(s,d) ||
+            !Array.isArray(selected) || selected.length!==1 ||
+            !meta.candidateIds.includes(selected[0]!))
+            reject('resolution_failed','Extella combat arm lost source or attack snapshot authority');
+          const cost=definition(s,selected[0]!)?.cardFace.cost;
+          if(typeof cost!=='number' || !Number.isSafeInteger(cost) || cost<0)
+            reject('resolution_failed','Extella printed attack cost is invalid');
+          const battlefieldId=player(s,playerId).locationId;
+          if(!battlefieldId || !isBattlefield(s,battlefieldId))
+            reject('resolution_failed','Extella recovery must be armed at a battlefield');
+          r.mysticCodeRecoveryArms ??= {};
+          if(r.mysticCodeRecoveryArms[playerId]?.round===s.round.roundNumber)
+            reject('invalid_state','Extella recovery already armed this round');
+          r.mysticCodeRecoveryArms[playerId]={
+            round:s.round.roundNumber,controllerId:playerId,
+            sourceCardId:meta.sourceCardInstanceId,abilityId:meta.abilityId,
+            attackInstanceId:selected[0]!,printedCost:cost,battlefieldId};
+          delete r.pendingDecision;
+          break;
+        }
+        if (meta.kind === 'mystic_code_battle_recovery_v1') {
+          if (!isMysticCodeBattleRecoveryPendingDecisionLiveValid(s,d)) reject('resolution_failed','Mystic Code battle recovery lost trusted provenance');
+          const source=card(s,meta.sourceCardInstanceId);
+          const live=eligibleMysticCodeRecoveryAttackIds(s,playerId);
+          const root=r.trustedBattleResultSnapshots?.[meta.resultId];
+          if (!root || !root.loserIds.includes(playerId) || root.winners.includes(playerId) ||
+              !r.processedEvents.includes(meta.triggerEventId) ||
+              !ownedMysticCodeSource(s,source.instanceId,playerId) || meta.controllerId!==playerId ||
+              meta.round!==s.round.roundNumber ||
+              meta.createdRevision!==r.revision || meta.continuationRef!==`${d.id}:continuation` ||
+              !exactStringArray(live,meta.candidateIds) || !exactStringArray(d.candidates,live) ||
+              !Array.isArray(selected) || selected.length!==1 || !live.includes(selected[0]!))
+            reject('resolution_failed','Mystic Code recovery choice is stale or unauthorized');
+          const amount=halfUpPrintedAttackRecovery(definition(s,selected[0]!)?.cardFace.cost,true,true);
+          if (amount===undefined) reject('resolution_failed','Chosen attack printed cost is invalid');
+          delete r.pendingDecision;
+          if (amount>0) grantMana(s,playerId,amount,{source:'generic'});
+          break;
+        }
+        if (meta.kind === 'mystic_code_switch_v1') {
+          if (!isMysticCodeSwitchPendingDecisionLiveValid(s,d)) reject('resolution_failed','Mystic Code selection lost its source or physical-card authority');
+          const source=card(s,meta.sourceCardInstanceId);
+          if (s.round.activePhase!=='preparation' || source.ownerPlayerId!==playerId ||
+              source.controllerPlayerId!==playerId || source.zone!=='skill' ||
+              !Array.isArray(selected) || selected.length!==1 || !meta.codePhysicalIds.includes(selected[0]!) ||
+              !exactStringArray(d.candidates,meta.codePhysicalIds) ||
+              meta.createdRevision!==r.revision || meta.continuationRef!==`${d.id}:continuation` ||
+              meta.controllerId!==playerId || meta.visibility!=='owner_only' ||
+              !Array.isArray(meta.codeDefinitionIds) || meta.codeDefinitionIds.length!==4)
+            reject('resolution_failed','Stale or forged Mystic Code choice');
+          const chosen=card(s,selected[0]!);
+          if (!applyExclusiveOutsideSkillSwitch(s,playerId,meta.codeDefinitionIds,chosen.definitionId,
+                (id,zone)=>moveCard(s,id,zone))) reject('resolution_failed','Mystic Code physical set changed');
+          delete r.pendingDecision;
+          break;
+        }
+        if (meta.kind === 'private_deck_top_choice_v1') {
+          if (!isPrivateDeckTopPendingDecisionLiveValid(s,d)) reject('resolution_failed','Private-deck pending choice lost its source or deck authority');
+          const src = card(s,meta.sourceCardInstanceId);
+          if (src.controllerPlayerId !== playerId || !ownedMysticCodeSource(s,src.instanceId,playerId,true) ||
+              s.round.activePhase !== 'action' || player(s,playerId).locationId !== meta.battlefieldId ||
+              !Array.isArray(selected) || new Set(selected).size !== selected.length ||
+              selected.length < d.min || selected.length > d.max ||
+              selected.some(id=>!d.candidates.includes(id))) reject('resolution_failed','Stale private-deck interaction');
+          if (meta.stage === 'player') {
+            const targetId = selected[0]!;
+            if (!meta.battlefieldId || player(s,targetId).locationId !== meta.battlefieldId ||
+                player(s,targetId).status !== 'active') reject('invalid_target','Player left the battlefield');
+            const top = ensureBattlePlunderTopCards(s,targetId,3);
+            delete r.pendingDecision;
+            if (!top.length) break;
+            const id=nextId(s,'private-deck-discard');
+            r.pendingDecision={id,controllerId:playerId,target:{id:'private-deck-discard',type:'card_instance',count:{min:0,max:top.length}},
+              candidates:[...top],min:0,max:top.length,context:structuredClone(d.context),remainingEffects:[],
+              interaction:{...meta,stage:'discard',targetPlayerId:targetId,topCardIds:top,
+                createdRevision:r.revision+1,continuationRef:`${id}:continuation`,
+                constraints:{kind:'target',targetKind:'card',min:0,max:top.length,distinct:true}}};
+            break;
+          }
+          if (meta.stage==='copy') {
+            const originalId=selected[0]!;
+            delete r.pendingDecision;
+            if(originalId==='__fd_decline_ccc_copy__')break;
+            if(!meta.discardedIds?.includes(originalId) ||
+              liveMysticCodeMode(s,playerId,'ccc')?.instanceId!==meta.sourceCardInstanceId)
+              reject('resolution_failed','CCC paid copy lost ascension or exact discarded-card authority');
+            const original=card(s,originalId);
+            if(original.ownerPlayerId!==meta.targetPlayerId || original.zone!=='discard' ||
+              !definition(s,originalId))reject('resolution_failed','CCC original card left the discard');
+            const instanceId=nextId(s,'mystic-code-paid-copy');
+            s.cards.push({instanceId,definitionId:original.definitionId,
+              ownerPlayerId:playerId,controllerPlayerId:playerId,zone:'hand',
+              visibility:{scope:'owner_only',ownerPlayerId:playerId},
+              generatedBy:meta.sourceCardInstanceId});
+            // The effect-play route charges normal mana but ignores ordinary
+            // timing/attack quota, as required by a temporary paid copy.
+            playBatch(s,playerId,[{type:'play_card',cardInstanceId:instanceId}], 'effect',false,['hand'],0,0,true);
+            r.cardState[instanceId]!.mysticCodePaidCopy={
+              round:s.round.roundNumber,controllerId:playerId,
+              sourceCardId:meta.sourceCardInstanceId,
+              originalInstanceId:originalId,originalDefinitionId:original.definitionId};
+            break;
+          }
+          const targetId=meta.targetPlayerId!;
+          if (meta.stage === 'discard') {
+            const current=ownerDeckIds(s,targetId);
+            const discardPlan=planPrivateDeckTopDiscard(meta.topCardIds!,current,selected);
+            const survivors=discardPlan?.reorderCandidates;
+            if (!survivors) reject('resolution_failed','Private top cards changed before discard');
+            for(const id of selected) moveCard(s,id,'discard');
+            delete r.pendingDecision;
+            if (survivors.length<=1) {
+              stageMysticCodeCccCopy(s,d,selected);
+              break;
+            }
+            const id=nextId(s,'private-deck-reorder');
+            r.pendingDecision={id,controllerId:playerId,target:{id:'private-deck-reorder',type:'card_instance',count:{min:survivors.length,max:survivors.length}},
+              candidates:[...survivors],min:survivors.length,max:survivors.length,
+              context:structuredClone(d.context),remainingEffects:[],
+              interaction:{...meta,stage:'reorder',keptCardIds:survivors,discardedIds:[...selected],
+                createdRevision:r.revision+1,continuationRef:`${id}:continuation`,
+                constraints:{kind:'target',targetKind:'card',min:survivors.length,max:survivors.length,distinct:true}}};
+            break;
+          }
+          const kept=meta.keptCardIds!;
+          const plan=planPrivateDeckTopReorder(kept,ownerDeckIds(s,targetId),selected);
+          if (!plan) reject('resolution_failed','Private deck reorder became stale');
+          setOwnerDeckOrder(s,targetId,plan);
+          delete r.pendingDecision;
+          stageMysticCodeCccCopy(s,d,meta.discardedIds ?? []);
+          break;
+        }
         if (meta.kind === 'battle_plunder_choice_v1') {
           if (!isBattlePlunderReplayPendingDecisionLiveValid(s, d) || !Array.isArray(selected) || selected.length < d.min ||
               selected.length > d.max || new Set(selected).size !== selected.length || selected.some((id) => !d.candidates.includes(id))) {
@@ -8561,7 +9423,16 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
   reconcileBattleWitherVictoryPoints(s); cleanupOngoing(s); checkFormulaTriggers(s); resumeBattleCloseDrawPlayAfterNestedWork(s); resumeBattlefieldAttackOfferAfterNestedWork(s);
 }
 /** All eligibility/costs are checked against the pre-payment state; all cards activate before triggers. */
-function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false, allowedSourceZones: readonly string[] = ['hand', 'skill'], minimumManaCost = 0, additionalManaCost = 0): void {
+function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false, allowedSourceZones: readonly string[] = ['hand', 'skill'], minimumManaCost = 0, additionalManaCost = 0, forceCccCopyIntoAttack = false): void {
+  if (forceCccCopyIntoAttack) {
+    const copied=choices.length===1 ? s.cards.find(c=>c.instanceId===choices[0]?.cardInstanceId) : undefined;
+    if (quota!=='effect' || waiveManaCost || choices.length!==1 || choices[0]?.faceDown ||
+        !copied || copied.zone!=='hand' || copied.ownerPlayerId!==playerId ||
+        copied.controllerPlayerId!==playerId ||
+        !copied.generatedBy ||
+        liveMysticCodeMode(s,playerId,'ccc')?.instanceId!==copied.generatedBy)
+      reject('illegal_action','CCC paid copy requires one authenticated temporary attack with ordinary payment');
+  }
   if (!Number.isSafeInteger(minimumManaCost) || minimumManaCost < 0) reject('unsupported', 'Minimum play cost must be a nonnegative safe integer');
   if (!Number.isSafeInteger(additionalManaCost) || additionalManaCost < 0) reject('unsupported', 'Additional play cost must be a nonnegative safe integer');
   if (new Set(choices.map(c => c.cardInstanceId)).size !== choices.length) reject('illegal_action', 'Duplicate card in play batch');
@@ -8675,7 +9546,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     if (before > 0 && after === 0) processEvent(s, { id: nextId(s, 'empty-seals-card-play'), type: 'after_controller_loses_all_command_seals', playerId });
   }
   for (const c of choices) {
-    moveCard(s, c.cardInstanceId, conditionalAdditional.has(c.cardInstanceId)
+    moveCard(s, c.cardInstanceId, forceCccCopyIntoAttack || conditionalAdditional.has(c.cardInstanceId)
       ? 'attack_area'
       : cardPlayClassification(s, c.cardInstanceId).destinationZone);
     const playedDefinition = definition(s, c.cardInstanceId)!;
