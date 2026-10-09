@@ -25,6 +25,8 @@ data/logs/
 deliverables/
 data/staged/**/*.png
 *.log
+local-thread-registry*.json
+.fd-thread-registry*.json
 
 # Local/editor/agent state
 .DS_Store

@@ -1,0 +1,10 @@
+{
+  "threads": [
+    {
+      "threadId": "REDACTED-THREAD-ID",
+      "role": "experiment",
+      "allowed": true
+    }
+  ],
+  "sentDispatchIds": []
+}
