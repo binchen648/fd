@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-09",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [
+    {
+      "pr": 427,
+      "headSha": "d3ed651db4ba6ca26f9a715a87840065f3db6fd7",
+      "baseSha": "415482ca2ebbff34098c93617b4b352d5ed50b55",
+      "producer": "Codex Automation Review Owner",
+      "verdict": "FAILED",
+      "scope": "FB2_51_OPPONENT_ROUND_VP_GAIN_MALFORMED_ENVELOPE_GATE",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [
+        {
+          "priority": "P2",
+          "path": "packages/rules/src/ability/opponent-round-vp-gain-threshold.ts",
+          "line": 44,
+          "summary": "Null/missing second condition or null first effect raises native TypeError in both raw classifier and loader rather than returning false/unsupported. Also see effect dereference at line53.",
+          "introducedRelativeToBase": true
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/fb2-51-opponent-round-vp-gain-threshold.test.ts packages/rules/tests/fb2-30-master-skill-definition-return.test.ts packages/rules/tests/fb2-31-event-player-relation.test.ts packages/rules/tests/core/game-loop-round-start.test.ts packages/rules/tests/core/game-loop-battle-cleanup.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+          "targetSha": "d3ed651db4ba6ca26f9a715a87840065f3db6fd7",
+          "result": "6 files / 68 tests PASS",
+          "artifactIdentity": "2026-10-09-pr-427-focused-integration"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npm run test:ci -- --maxWorkers=1",
+          "targetSha": "d3ed651db4ba6ca26f9a715a87840065f3db6fd7",
+          "result": "Exit0: 181 files / 1353 tests PASS; candidate script exclusions unchanged",
+          "artifactIdentity": "2026-10-09-pr-427-full-ci"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-427-independent.mjs",
+          "targetSha": "d3ed651db4ba6ca26f9a715a87840065f3db6fd7",
+          "result": "Exit1: six positive controls PASS, six malformed-envelope gates FAIL, covering null second condition/null first effect/sparse second condition in classifier and loader",
+          "artifactIdentity": "docs/reviews/probes/review-427-independent.mjs"
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Codex Automation Review Owner",
+          "command": "gh pr view 427 --repo binchen648/fd --json headRefOid,baseRefOid,state; git diff 415482ca2ebbff34098c93617b4b352d5ed50b55 d3ed651db4ba6ca26f9a715a87840065f3db6fd7; npm run typecheck; npm run content:validate; npm run verify:generated-content; npm run build --workspace @fd/client; git diff --check 415482ca2ebbff34098c93617b4b352d5ed50b55 d3ed651db4ba6ca26f9a715a87840065f3db6fd7",
+          "targetSha": "d3ed651db4ba6ca26f9a715a87840065f3db6fd7",
+          "result": "Exact live bindings and complete nine-path diff/base dispatch checked; typecheck/content/determinism/client build/diff PASS; build emitted externalization/chunk-size warnings",
+          "artifactIdentity": "docs/reviews/2026-10-09-pr-427-review.md"
+        }
+      ],
+      "limitations": [
+        "Malformed admission throws; no fail-open runtime execution or external-client exploit is established.",
+        "Early blocking gate, not exhaustive clearance of every VP mutation/authority/persistence path.",
+        "No actual locked external Reference verification, coverage/audit regeneration, Gate C or current-main runtime execution.",
+        "Client build is not browser runtime validation. Excluded CI suites were not run.",
+        "Inherited PR425 defects and historical acceptance claims are not cleared or reissued.",
+        "No runtime acceptance, promotion or credit granted."
+      ]
+    }
+  ]
+}

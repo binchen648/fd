@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 17,
-    "pending": 517,
+    "reviewed": 18,
+    "pending": 516,
     "blocked": 0,
     "notVerified": 0
   },
@@ -21051,11 +21051,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "FB2_51_OPPONENT_ROUND_VP_GAIN_MALFORMED_ENVELOPE_GATE",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-09-colleague-review-batch-07.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/fb2-51-opponent-round-vp-gain-threshold.test.ts packages/rules/tests/fb2-30-master-skill-definition-return.test.ts packages/rules/tests/fb2-31-event-player-relation.test.ts packages/rules/tests/core/game-loop-round-start.test.ts packages/rules/tests/core/game-loop-battle-cleanup.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+            "targetSha": "d3ed651db4ba6ca26f9a715a87840065f3db6fd7",
+            "result": "6 files / 68 tests PASS",
+            "artifactIdentity": "2026-10-09-pr-427-focused-integration"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=1",
+            "targetSha": "d3ed651db4ba6ca26f9a715a87840065f3db6fd7",
+            "result": "Exit0: 181 files / 1353 tests PASS; candidate script exclusions unchanged",
+            "artifactIdentity": "2026-10-09-pr-427-full-ci"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-427-independent.mjs",
+            "targetSha": "d3ed651db4ba6ca26f9a715a87840065f3db6fd7",
+            "result": "Exit1: six positive controls PASS, six malformed-envelope gates FAIL, covering null second condition/null first effect/sparse second condition in classifier and loader",
+            "artifactIdentity": "docs/reviews/probes/review-427-independent.mjs"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0

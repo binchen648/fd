@@ -100,6 +100,12 @@ passed 6/6, including stale SHA, missing producer, duplicate/unknown PR and cred
 
 ## Next Work
 
+Batch07 adds PR427 FAILED: nested malformed array entries throw native TypeError
+at the new raw classifier/loader boundary. Independent six positive controls
+PASS and six malformed checks FAIL. Focused 68/68 and full CI 181/1353 PASS;
+those tests do not cover the new nested cases. Cumulative: 18/534, 9 PASS,
+9 FAILED, 516 pending. Exact evidence is in 2026-10-09-pr-427-review.md.
+
 Batch06 adds PR425 FAILED: malformed visibility admission and a reproduced
 temporary-copy lifecycle conflict with Final rules 11.5. Focused 84/84 PASS does
 not cover these blockers. Final rules candidate/current-main blobs are identical.
