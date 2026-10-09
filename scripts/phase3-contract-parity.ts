@@ -1,11 +1,14 @@
-import { execFileSync } from 'node:child_process';
-import { lstatSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
+import { execFile } from 'node:child_process';
+import { lstatSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, realpathSync, writeFileSync } from 'node:fs';
+import { rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { promisify } from 'node:util';
 import { ancestor, array, cliError, commitExists, fields, git, gitText, hash, InputError, inputFile, json, object, output, parseArgs, parseReference, readReference, sha, string, type Issue, type Obj } from './phase3-tooling-common';
 
 export const adapterClosurePaths = ['scripts/phase3-contract-parity.ts', 'scripts/phase3-contract-parity-worker.ts', 'scripts/phase3-tooling-common.ts'];
+const execute = promisify(execFile);
 
 // Bind the entire installed tree, a superset of the loader's transitive imports
 // and native binaries. Directory links may only point into this isolated checkout.
@@ -211,14 +214,14 @@ export async function runParity(root: string, raw: unknown, candidate: string, i
     const temporary = mkdtempSync(join(tmpdir(), 'fd-b11-parity-'));
     try {
       // Git checkout preserves repository Unicode paths on Windows, unlike system tar.
-      execFileSync('git', ['clone', '--shared', '--no-checkout', '--', root, temporary], { stdio: ['ignore', 'pipe', 'pipe'] });
-      execFileSync('git', ['checkout', '--detach', candidate], { cwd: temporary, stdio: ['ignore', 'pipe', 'pipe'] });
+      await execute('git', ['clone', '--shared', '--no-checkout', '--', root, temporary]);
+      await execute('git', ['checkout', '--detach', candidate], { cwd: temporary });
       const environment = { ...process.env, NODE_OPTIONS: '', NODE_PATH: '', TSX_DISABLE_CACHE: '1' };
       const npmCli = process.env.npm_execpath && process.env.npm_execpath.endsWith('npm-cli.js')
         ? process.env.npm_execpath : join(dirname(process.execPath), 'node_modules/npm/bin/npm-cli.js');
-      execFileSync(process.execPath, [npmCli, 'ci', '--ignore-scripts', '--include=dev', '--include=optional',
+      await execute(process.execPath, [npmCli, 'ci', '--ignore-scripts', '--include=dev', '--include=optional',
         '--no-audit', '--no-fund', '--cache', join(temporary, 'npm-cache')], {
-        cwd: temporary, env: environment, timeout: 120_000, maxBuffer: 32 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'],
+        cwd: temporary, env: environment, timeout: 120_000, maxBuffer: 32 * 1024 * 1024,
       });
       const dependencyBinding = {
         lockfileSha256: hash(readFileSync(join(temporary, 'package-lock.json'))),
@@ -236,11 +239,11 @@ export async function runParity(root: string, raw: unknown, candidate: string, i
       const bindingPath = join(adapterRoot, 'binding.json'); writeFileSync(bindingPath, JSON.stringify({ ...adapterBinding, dependencyBinding }));
       const loaderPath = join(temporary, 'node_modules/tsx/dist/loader.mjs');
       const fixtureFile = join(temporary, 'executed-fixtures.json'); writeFileSync(fixtureFile, fixtureBytes);
-      const execution = execFileSync(process.execPath, ['--import', pathToFileURL(loaderPath).href,
+      const execution = await execute(process.execPath, ['--import', pathToFileURL(loaderPath).href,
         join(adapterRoot, 'scripts/phase3-contract-parity-worker.ts'), '--snapshot', temporary, fixtureFile, bindingPath], {
-        cwd: temporary, env: environment, timeout: 120_000, maxBuffer: 32 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'],
+        cwd: temporary, env: environment, timeout: 120_000, maxBuffer: 32 * 1024 * 1024,
       });
-      const receipt = json(execution, 'execution receipt');
+      const receipt = json(execution.stdout, 'execution receipt');
       if (receipt.schemaVersion !== 'fd-p3-parity-execution-v1') throw new Error('Unexpected execution receipt');
       if (JSON.stringify(receipt.executionAdapter) !== JSON.stringify({ ...adapterBinding, dependencyBinding }) ||
           receipt.nodeVersion !== dependencyBinding.nodeVersion || receipt.nodeSha256 !== dependencyBinding.nodeSha256) throw new Error('Execution adapter/dependency receipt binding mismatch');
@@ -250,7 +253,7 @@ export async function runParity(root: string, raw: unknown, candidate: string, i
       compareObservations(fixtures, results, issues);
     } finally {
       if (!resolve(temporary).startsWith(`${resolve(tmpdir())}\\`) && !resolve(temporary).startsWith(`${resolve(tmpdir())}/`)) throw new Error('Unsafe temporary cleanup path');
-      rmSync(temporary, { recursive: true, force: true });
+      await rm(temporary, { recursive: true, force: true });
     }
   }
   return { schemaVersion: 'fd-p3-contract-parity-result-v1', taskId: input.taskId, controlEpoch: input.controlEpoch,
