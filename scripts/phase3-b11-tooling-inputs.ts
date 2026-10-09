@@ -6,6 +6,7 @@ import { adapterClosurePaths } from './phase3-contract-parity';
 import { git, hash, parseArgs, sha } from './phase3-tooling-common';
 
 export const combinationSha = '9eaa0e0c417486adf7b0449e3d32fb90b7d362f9';
+export const diagnosticCandidateSha = 'c0db16ae65699b2e2789c7776c0aa4271b11e496';
 export const sourceMainSha = '9a1689d2ec5b56b67d1483d2593b4ab809d6c15c';
 export const publicationSha = 'e65503e601d7a3a4d1265d87a09484cb8295f2c2';
 export const fixturePath = 'scripts/fixtures/phase3-b11-parity-fixtures.json';
@@ -20,7 +21,7 @@ export function buildFixtures(root: string) {
     { family: 'conversion-magic', path: 'data/authoring/masters/master.irisviel.json', archiveId: 'master.irisviel', cardId: 'master.irisviel.skill.conversion-magic', abilityId: 'conversion-magic.preparation' },
   ];
   const seeds = definitions.map(source => {
-    const archive = JSON.parse(git(root, ['show', `${combinationSha}:${source.path}`]).toString('utf8'));
+    const archive = JSON.parse(git(root, ['show', `${diagnosticCandidateSha}:${source.path}`]).toString('utf8'));
     const ability = archive.cards.find((card: any) => card.id === source.cardId).abilities.find((item: any) => item.id === source.abilityId);
     return { source: { archiveId: source.archiveId, cardId: source.cardId, abilityId: source.abilityId, abilitySha256: hash(`${JSON.stringify(ability)}\n`) }, family: source.family };
   });
@@ -35,8 +36,8 @@ export function buildFixtures(root: string) {
   return {
     schemaVersion: 'fd-p3-b11-parity-fixtures-v1',
     references: [
-      ...definitions.map(source => reference(root, combinationSha, source.path, source.abilityId)),
-      reference(root, combinationSha, 'docs/plans/2026-09-12-p3-b11-result-binding-production-bridge-design.md', '## Fail-Closed And Legacy Boundary'),
+      ...definitions.map(source => reference(root, diagnosticCandidateSha, source.path, source.abilityId)),
+      reference(root, diagnosticCandidateSha, 'docs/plans/2026-09-12-p3-b11-result-binding-production-bridge-design.md', '## Fail-Closed And Legacy Boundary'),
     ],
     fixtures: [
       fixture(0, 'golden-positive', 'positive', true, true, 'ACCEPT'),
@@ -81,15 +82,15 @@ export function buildParityInput(root: string, fixtureCommit: string, adapterCom
   sha(fixtureCommit, '--fixture-commit');
   return {
     schemaVersion: 'fd-p3-contract-parity-v1', taskId: 'P3-E08-B11-CONTRACT-PARITY', controlEpoch: 'FD-P3-2026-09-23-08',
-    contractId: 'B11_RESULT_BINDING_DIAGNOSTIC_V1', contractVersion: 1, adapterVersion: 'b11-api-observations-v1', candidateSha: combinationSha,
+    contractId: 'B11_RESULT_BINDING_DIAGNOSTIC_V1', contractVersion: 1, adapterVersion: 'b11-api-observations-v1', candidateSha: diagnosticCandidateSha,
     executionAdapter: adapterClosurePaths.map(path => reference(root, adapterCommit, path)),
     contract: reference(root, publicationSha, 'docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md', '## phase3:contract-parity'),
     fixtures: reference(root, fixtureCommit, fixturePath),
     owners: {
-      runtime: { required: true, meaning: 'Golden: exported structural routeCandidate + exact semantic eligibility. Conversion: exported exact semantic eligibility; no structural API available' },
+      runtime: { required: true, meaning: 'Candidate exported structural ownership and exact semantic eligibility for both shapes; missing binding reference is outside Conversion structural ownership' },
       compiler: { required: true, meaning: 'compileExecutableCardPack ACCEPT/REJECT only; neither ownership nor exact family eligibility inferred' },
-      inventory: { required: true, meaning: 'Require an independently callable B11 inventory routeCandidate/exactEligible classification; no current API' },
-      coverage: { required: true, meaning: 'Retain raw classifyAbilityForCoverage runtimeRoute/semanticRoutes; required exact B11 eligibility currently not exposed' },
+      inventory: { required: true, meaning: 'classifyB11InventoryAbility evaluates raw authoring structural envelope and exact target/effect/binding shape; does not consume runtime/compiler/fixture verdicts' },
+      coverage: { required: true, meaning: 'classifyB11CoverageEligibility evaluates raw authoring exact shape using the shared read-only diagnostic contract; retain separate actual classifyAbilityForCoverage taxonomy without changing KPI' },
     },
     expectationReview: { state: 'PENDING' },
   };

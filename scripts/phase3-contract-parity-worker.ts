@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { hash, InputError, type Obj } from './phase3-tooling-common';
 import { verifyDependencyClosure } from './phase3-contract-parity';
+import { classifyB11InventoryAbility, classifyB11CoverageEligibility } from './phase3-b11-diagnostic-api';
 
 function setValue(value: Obj, path: string, replacement: unknown): void {
   const parts = path.split('.');
@@ -60,9 +61,8 @@ export async function collectCandidateObservations(snapshot: string, fixtures: O
       };
       rawCalls.runtime = ['isResultBindingProductionBridgeRouteCandidate', 'isResultBindingProductionBridgeSemantic'];
     } else if (normalized && fixture.family === 'conversion-magic') {
-      observations.runtime = { evaluationStatus: 'PARTIALLY_EVALUATED', routeCandidate: null, exactEligible: interpreter.isCardZoneCoreDirectActionSemantic(normalized),
-        unavailable: { routeCandidate: 'No exported structural routeCandidate API for Conversion Magic; private helper not copied' } };
-      rawCalls.runtime = ['isCardZoneCoreDirectActionSemantic'];
+      observations.runtime = { evaluationStatus: 'EVALUATED', routeCandidate: interpreter.isCardZoneCoreDirectActionRouteCandidate(normalized), exactEligible: interpreter.isCardZoneCoreDirectActionSemantic(normalized) };
+      rawCalls.runtime = ['isCardZoneCoreDirectActionRouteCandidate', 'isCardZoneCoreDirectActionSemantic'];
     } else {
       observations.runtime = { evaluationStatus: 'NOT_EVALUATED', routeCandidate: null, exactEligible: null, unavailable: {
         routeCandidate: 'Authoring normalization produced no comparable ability', exactEligible: 'Authoring normalization produced no comparable ability',
@@ -77,12 +77,11 @@ export async function collectCandidateObservations(snapshot: string, fixtures: O
         unavailable: { routeCandidate: 'Executable compiler exports compilation, not standalone route classification', exactEligible: 'Compilation rejection is not structural ownership' } };
     }
     rawCalls.compiler = ['compileExecutableCardPack'];
-    const row = coverage.classifyAbilityForCoverage(archive.id, card.id, ability);
-    observations.coverage = { evaluationStatus: 'NOT_EVALUATED_EXACT_ELIGIBILITY_RAW_CLASSIFICATION_RETAINED', runtimeRoute: row.runtimeRoute, semanticRoutes: row.semanticRoutes, routeCandidate: null, exactEligible: null,
-      unavailable: { routeCandidate: 'Coverage route taxonomy is broader than B11 structural ownership', exactEligible: 'Coverage API does not expose exact B11 eligibility; raw classifications retained' } };
-    rawCalls.coverage = ['classifyAbilityForCoverage'];
-    observations.inventory = { evaluationStatus: 'NOT_EVALUATED', routeCandidate: null, exactEligible: null,
-      unavailable: { routeCandidate: 'No B11 inventory classification API; Card Zone CLI belongs to a different family', exactEligible: 'No B11 inventory classification API; do not reuse runtime or coverage observations' } };
+    const row = coverage.classifyAbilityForCoverage(archive, card, ability);
+    observations.coverage = { ...classifyB11CoverageEligibility(ability), runtimeRoute: row.runtimeRoute, semanticRoutes: row.semanticRoutes };
+    rawCalls.coverage = ['classifyAbilityForCoverage', 'classifyB11CoverageEligibility'];
+    observations.inventory = classifyB11InventoryAbility(ability);
+    rawCalls.inventory = ['classifyB11InventoryAbility'];
     results.push({ fixtureId: fixture.id, family: fixture.family, category: fixture.category,
       executedInputSha256: hash(`${JSON.stringify({ archiveId: archive.id, cardId: card.id, ability })}\n`),
       fixtureSha256: hash(`${JSON.stringify(fixture)}\n`), actualCardId: card.id, actualAbilityId: ability.id,

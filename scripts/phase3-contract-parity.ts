@@ -7,7 +7,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
 import { ancestor, array, cliError, commitExists, fields, git, gitText, hash, InputError, inputFile, json, object, output, parseArgs, parseReference, readReference, sha, string, type Issue, type Obj } from './phase3-tooling-common';
 
-export const adapterClosurePaths = ['scripts/phase3-contract-parity.ts', 'scripts/phase3-contract-parity-worker.ts', 'scripts/phase3-tooling-common.ts'];
+export const adapterClosurePaths = ['scripts/phase3-contract-parity.ts', 'scripts/phase3-contract-parity-worker.ts', 'scripts/phase3-tooling-common.ts', 'scripts/phase3-b11-diagnostic-api.ts'];
 const execute = promisify(execFile);
 
 // Bind the entire installed tree, a superset of the loader's transitive imports

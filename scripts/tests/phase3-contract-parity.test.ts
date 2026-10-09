@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { beforeAll, describe, expect, it } from 'vitest';
-import { buildParityInput, combinationSha, fixturePath } from '../phase3-b11-tooling-inputs';
+import { buildParityInput, diagnosticCandidateSha as combinationSha, fixturePath } from '../phase3-b11-tooling-inputs';
 import { adapterClosurePaths, compareObservations, dependencyClosure, parseFixtures, parseParityInput, runParity, verifyAdapterClosure, verifyDependencyClosure } from '../phase3-contract-parity';
 import { collectCandidateObservations } from '../phase3-contract-parity-worker';
 import { git, gitText, hash, InputError, type Issue } from '../phase3-tooling-common';
@@ -45,9 +45,13 @@ describe('B11 real API contract parity diagnostics', () => {
     for (const row of result.results) {
       expect(row.executedInputSha256).toMatch(/^[0-9A-F]{64}$/);
       expect(row.apiCalls.compiler).toEqual(['compileExecutableCardPack']);
-      expect(row.apiCalls.coverage).toEqual(['classifyAbilityForCoverage']);
-      expect(row.observations.inventory.evaluationStatus).toBe('NOT_EVALUATED');
-      expect(row.observations.coverage.evaluationStatus).toBe('NOT_EVALUATED_EXACT_ELIGIBILITY_RAW_CLASSIFICATION_RETAINED');
+      expect(row.apiCalls.coverage).toEqual(['classifyAbilityForCoverage', 'classifyB11CoverageEligibility']);
+      expect(row.apiCalls.inventory).toEqual(['classifyB11InventoryAbility']);
+      expect(row.observations.inventory.evaluationStatus).toBe('EVALUATED');
+      expect(row.observations.coverage.evaluationStatus).toBe('EVALUATED_EXACT_ELIGIBILITY_RAW_CLASSIFICATION_RETAINED');
+      expect(typeof row.observations.inventory.routeCandidate).toBe('boolean');
+      expect(typeof row.observations.inventory.exactEligible).toBe('boolean');
+      expect(typeof row.observations.coverage.exactEligible).toBe('boolean');
     }
     for (const id of ['golden-positive', 'golden-renamed-identities', 'conversion-positive', 'conversion-renamed-identities']) {
       const row = result.results.find(row => row.fixtureId === id)!;
@@ -82,8 +86,9 @@ describe('B11 real API contract parity diagnostics', () => {
   it('fails readiness when expectations lack independent review or required API observations are unavailable', () => {
     expect(result.status).toBe('FAIL');
     expect(result.issues.map(issue => issue.code)).toContain('EXPECTATIONS_NOT_INDEPENDENTLY_REVIEWED');
-    expect(result.issues.some(issue => issue.code === 'REQUIRED_OBSERVATION_NOT_EVALUATED' && issue.path.includes(':inventory.'))).toBe(true);
-    expect(result.issues.some(issue => issue.code === 'REQUIRED_OBSERVATION_NOT_EVALUATED' && issue.path.includes(':coverage.'))).toBe(true);
+    expect(result.issues.some(issue => issue.code === 'REQUIRED_OBSERVATION_NOT_EVALUATED')).toBe(false);
+    expect(result.issues.some(issue => issue.code === 'API_EXPECTATION_DISAGREEMENT' && issue.path === 'conversion-unknown-binding:runtime.routeCandidate')).toBe(true);
+    expect(result.issues.some(issue => issue.code === 'API_EXPECTATION_DISAGREEMENT' && issue.path === 'conversion-unknown-binding:inventory.routeCandidate')).toBe(true);
     expect(result.acceptanceGranted).toBe(false);
   });
   it('never exempts missing Conversion runtime ownership when all other observations agree', () => {
