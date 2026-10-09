@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-a-gap-plan-review-v1",
+  "taskId": "P3-E08-B11-OBSERVATION-GAP-DECOMPOSITION",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "reviewDate": "2026-10-09",
+  "reviewer": "Reviewer A",
+  "reviewedSha": "abdd8e4eb735240d72a416ede743e84c58ebcd40",
+  "candidateSha": "abdd8e4eb735240d72a416ede743e84c58ebcd40",
+  "diffBaseSha": "c4a4b136719bf4ca165d81f1c01e254a8e7aefc3",
+  "conclusion": "REVIEW_ACCEPTED",
+  "finalVerdict": "PASS",
+  "acceptedScope": "FOUR_FILE_GAP_DECOMPOSITION_PLAN_DELTA_ONLY",
+  "findings": [],
+  "planArtifact": {
+    "path": "artifacts/phase3-e08-b11-observation-gap-plan.json",
+    "sha256": "71389413FC176132A8649F0637897F4E72A3FFBA8FEA1E7B2B20960C8EDB4693"
+  },
+  "sourceEvidence": {
+    "reviewedCarrier": "32eb054f49e2413d2f9891d6edbd665d7eb3c154",
+    "priorReviewCommit": "75ce895c91f8af2ddd25b3c4fbb546bf107d3007",
+    "exactReviewParityFixtureHashesAndReviewParent": "PASS",
+    "priorReviewAcceptedScope": "TWO_PRIOR_TOOLING_BLOCKER_REPAIRS_ONLY",
+    "historicalVersusCurrentEvidence": "DISTINCT_NO_NEW_PARITY_ACCEPTANCE"
+  },
+  "independentChecks": {
+    "focused": { "files": 1, "tests": 5, "result": "PASS" },
+    "typecheck": "PASS",
+    "diffCheck": "PASS",
+    "artifactAndReportExactByteRecomputation": "PASS",
+    "duplicateUnknownMissingAndUnboundGapRejection": "PASS",
+    "fullCi": "NOT_RERUN"
+  },
+  "recomputedSummary": {
+    "missingObservations": 34,
+    "fixtureCases": 10,
+    "canonicalConsumers": 2,
+    "ownerCounts": { "B": 4, "A": 30 },
+    "distinctApiTasks": 3,
+    "pendingFixtureReview": 1
+  },
+  "ownerBoundaries": {
+    "runtimeStructuralApi": "CODEx_B_PROPOSED_ONLY_REQUIRES_EXPLICIT_AUTHORIZATION_BEFORE_IMPLEMENTATION",
+    "inventoryApi": "CODEX_A_DIAGNOSTIC_ONLY_REVIEWER_B_SEMANTIC_EXPECTATIONS_REQUIRED",
+    "coverageEligibilityApi": "CODEX_A_DIAGNOSTIC_ONLY_NO_TAXONOMY_OR_KPI_CHANGE",
+    "compilerRepair": "NOT_PROPOSED",
+    "fixtureExpectations": "REVIEWER_B_PENDING_NOT_ACCEPTED_BY_REVIEWER_A"
+  },
+  "readiness": "FAIL_NO_WAIVER",
+  "formalCredit": { "mainCoverageCreditDelta": 0, "migrationCreditDelta": 0, "denominatorDelta": 0 },
+  "runtimeDefectEstablished": false,
+  "writerAuthorizationGranted": false,
+  "fixtureAcceptanceGranted": false,
+  "promotionAllowed": false,
+  "githubAttestationProvided": false,
+  "limitations": [
+    "Intervening parity implementation changes before diffBaseSha are outside this review and not accepted by inheritance",
+    "API implementations and actual observation availability remain unverified",
+    "Plan does not dispatch tasks or acquire writer locks",
+    "Global Gate C, GitHub required checks and promotion not verified",
+    "Historical 93 missing-image Release blockers retained"
+  ],
+  "nextStep": "PLANNER_MAY_PREPARE_THREE_NARROW_TASKS; REVIEWER_B_REVIEWS_EXACT_FIXTURE_PREMISE; EXPLICIT_B_API_AUTHORIZATION_REQUIRED; FREEZE_AND_FRESHLY_REVIEW_NEW_IMPLEMENTATIONS_AND_RERUN_READINESS"
+}
