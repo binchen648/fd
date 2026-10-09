@@ -50,3 +50,14 @@ re-awarding identities. Raw classification remains 22/144/3/0/112. Gate C,
 long-term CI stability and Release readiness are not granted; historical
 93 MISSING_IMAGE remains recorded. Next sync: B11 scope/reservation handoff
 or C01 feasibility result, whichever arrives first.
+
+## B11 Queue Update: 2026-10-09
+
+The B11 observation gap plan at abdd8e4 was accepted for decomposition only
+by Reviewer A commit 58551e0 (local evidence; remote publication pending).
+Use [B11 Observation API Dispatch](P3-E08-B11-OBSERVATION-API-DISPATCH.md)
+for the three narrowly scoped API tasks and the read-only RB fixture review.
+B may expose the existing structural classifier without semantic changes,
+subject to the existing writer reservation. A prepares now and implements
+inventory/coverage diagnostics after RB fixture premise PASS. Readiness is
+FAIL_NO_WAIVER; I remains waiting. No runtime or migration acceptance is added.
