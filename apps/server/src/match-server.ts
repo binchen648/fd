@@ -152,10 +152,11 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
       const clientId = requestUrl.searchParams.get('clientId');
       const reconnectToken = requestUrl.searchParams.get('reconnectToken');
       if (!clientId) throw new Error('clientId is required');
-      if (reconnectToken) hub.reconnect(roomId, reconnectToken);
-      hub.project(roomId, clientId);
+      if (!reconnectToken) throw new Error('reconnectToken is required');
+      const client = hub.project(roomId, clientId).clients.find((candidate) => candidate.id === clientId);
+      if (!client || client.reconnectToken !== reconnectToken) throw new Error('Invalid reconnect token for client');
       wss.handleUpgrade(request, socket, head, (websocket) => {
-        wss.emit('connection', websocket, request, roomId, clientId);
+        wss.emit('connection', websocket, request, roomId, clientId, reconnectToken);
       });
     } catch (error) {
       socket.write(`HTTP/1.1 401 Unauthorized\r\n\r\n${error instanceof Error ? error.message : 'Unauthorized'}`);
@@ -163,15 +164,11 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
     }
   });
 
-  wss.on('connection', (socket: WebSocket, request: IncomingMessage, roomId: string, clientId: string) => {
+  wss.on('connection', (socket: WebSocket, _request: IncomingMessage, roomId: string, clientId: string, reconnectToken: string) => {
+    // Reconnect and registration share one synchronous boundary after authentication.
+    hub.reconnect(roomId, reconnectToken);
     const clientSocket = { roomId, clientId, socket };
     sockets.add(clientSocket);
-    // An old socket can close after upgrade authentication but before registration.
-    const projection = hub.project(roomId, clientId);
-    if (projection.clients.find((client) => client.id === clientId)?.connected === false) {
-      const reconnectToken = new URL(request.url ?? '/', 'http://127.0.0.1').searchParams.get('reconnectToken');
-      if (reconnectToken) hub.reconnect(roomId, reconnectToken);
-    }
     sendSocket(socket, {
       type: 'server:projection',
       roomId,
@@ -201,7 +198,7 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
 
     socket.on('close', () => {
       sockets.delete(clientSocket);
-      if ([...sockets].some((candidate) => candidate.roomId === roomId && candidate.clientId === clientId && candidate.socket.readyState === WebSocket.OPEN)) return;
+      if ([...sockets].some((candidate) => candidate.roomId === roomId && candidate.clientId === clientId)) return;
       try {
         hub.disconnect(roomId, clientId);
         broadcastRoom(roomId, 'client_disconnected');

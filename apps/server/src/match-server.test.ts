@@ -158,22 +158,62 @@ describe('match websocket server', () => {
     expect(serverHandle.hub.project('socket-race', 'host').clients.find((client) => client.id === 'host')?.connected).toBe(false);
   });
 
-  it('restores connection state if the old close occurs after upgrade reconnect', async () => {
+  it('restores connection state if the old close occurs after upgrade validation', async () => {
     serverHandle = createMatchServer();
     const port = await serverHandle.listen();
     const host = serverHandle.hub.createRoom({ roomId: 'upgrade-race', hostClientId: 'host' });
     const token = host.clients.find((client) => client.id === 'host')!.reconnectToken;
-    const reconnect = serverHandle.hub.reconnect.bind(serverHandle.hub);
-    vi.spyOn(serverHandle.hub, 'reconnect').mockImplementationOnce((roomId, reconnectToken) => {
-      const projection = reconnect(roomId, reconnectToken);
-      serverHandle!.hub.disconnect(roomId, 'host');
-      return projection;
+    const handleUpgrade = serverHandle.wss.handleUpgrade.bind(serverHandle.wss);
+    vi.spyOn(serverHandle.wss, 'handleUpgrade').mockImplementationOnce((request, socket, head, callback) => {
+      serverHandle!.hub.disconnect('upgrade-race', 'host');
+      handleUpgrade(request, socket, head, callback);
     });
     const socket = await connectSocket(`ws://127.0.0.1:${port}/rooms/upgrade-race?clientId=host&reconnectToken=${token}`);
     const projection = await socket.next((message) => message.type === 'server:projection');
     if (projection.type !== 'server:projection') throw new Error('Expected projection');
     expect(projection.projection.clients.find((client) => client.id === 'host')?.connected).toBe(true);
     socket.socket.close();
+  });
+
+  it.each(['missing', 'wrong-client'] as const)('rejects %s reconnect credentials before registration without mutation', async (variant) => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    serverHandle.hub.createRoom({ roomId: 'credential-race', hostClientId: 'host' });
+    const guest = serverHandle.hub.joinRoom('credential-race', { clientId: 'guest', displayName: 'Guest' });
+    const before = structuredClone(serverHandle.hub.project('credential-race', 'host'));
+    const version = serverHandle.hub.version('credential-race');
+    const upgrade = vi.spyOn(serverHandle.wss, 'handleUpgrade');
+    const tokenQuery = variant === 'missing' ? '' : `&reconnectToken=${guest.clients.find((client) => client.id === 'guest')!.reconnectToken}`;
+    await expect(connectSocket(`ws://127.0.0.1:${port}/rooms/credential-race?clientId=host${tokenQuery}`)).rejects.toThrow('401');
+    expect(upgrade).not.toHaveBeenCalled();
+    expect(serverHandle.hub.project('credential-race', 'host')).toEqual(before);
+    expect(serverHandle.hub.version('credential-race')).toBe(version);
+  });
+
+  it('disconnects once when all same-client sockets close simultaneously', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    const room = serverHandle.hub.createRoom({ roomId: 'closing-race', hostClientId: 'host' });
+    const token = room.clients.find((client) => client.id === 'host')!.reconnectToken;
+    const url = `ws://127.0.0.1:${port}/rooms/closing-race?clientId=host&reconnectToken=${token}`;
+    const first = await connectSocket(url);
+    await first.next((message) => message.type === 'server:projection');
+    const second = await connectSocket(url);
+    await second.next((message) => message.type === 'server:projection');
+    const disconnect = vi.spyOn(serverHandle.hub, 'disconnect');
+    const version = serverHandle.hub.version('closing-race');
+    const closed = [first, second].map((inbox) => new Promise<void>((resolve) => inbox.socket.once('close', () => resolve())));
+    for (const socket of serverHandle.wss.clients) socket.close();
+    await Promise.all(closed);
+    await vi.waitFor(() => expect(serverHandle!.wss.clients.size).toBe(0));
+    expect(disconnect).toHaveBeenCalledTimes(1);
+    expect(serverHandle.hub.version('closing-race')).toBe(version + 1);
+    expect(serverHandle.hub.project('closing-race', 'host').clients.find((client) => client.id === 'host')?.connected).toBe(false);
+    const reconnected = await connectSocket(url);
+    await reconnected.next((message) => message.type === 'server:projection');
+    expect(serverHandle.hub.project('closing-race', 'host').clients.find((client) => client.id === 'host')?.connected).toBe(true);
+    reconnected.socket.close();
+    await vi.waitFor(() => expect(disconnect).toHaveBeenCalledTimes(2));
   });
 
   it('does not count another room or client as a surviving connection', async () => {
