@@ -1,0 +1,343 @@
+{
+  "schemaVersion": "fd-p3-b11-parity-fixtures-v1",
+  "references": [
+    {
+      "commit": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "path": "data/authoring/servants/servant.kintoki.json",
+      "sha256": "2E5CBAA6965924E306D1E61764CC75A52F278039D5871B39C51DE431CF268B35",
+      "section": "sc-kintoki-3.golden-eater"
+    },
+    {
+      "commit": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "path": "data/authoring/masters/master.irisviel.json",
+      "sha256": "F81D3E1E03276C9E2404E09712B139B00EAFE1F8A5F141CEDA867FBC901D61C8",
+      "section": "conversion-magic.preparation"
+    },
+    {
+      "commit": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "path": "docs/plans/2026-09-12-p3-b11-result-binding-production-bridge-design.md",
+      "sha256": "BC534430CBBCA00116CDFB2173FF38FFD2B6A581D39464CE46DF760E4AFEF18B",
+      "section": "## Fail-Closed And Legacy Boundary"
+    }
+  ],
+  "fixtures": [
+    {
+      "id": "golden-positive",
+      "source": {
+        "archiveId": "servant.kintoki",
+        "cardId": "servant.kintoki.skill.sc-kintoki-3",
+        "abilityId": "sc-kintoki-3.golden-eater",
+        "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+      },
+      "family": "golden-eater",
+      "category": "positive",
+      "mutations": [],
+      "expected": {
+        "runtime": {
+          "routeCandidate": true,
+          "exactEligible": true
+        },
+        "compiler": {
+          "compileOutcome": "ACCEPT"
+        },
+        "inventory": {
+          "routeCandidate": true,
+          "exactEligible": true
+        },
+        "coverage": {
+          "exactEligible": true
+        }
+      }
+    },
+    {
+      "id": "golden-renamed-identities",
+      "source": {
+        "archiveId": "servant.kintoki",
+        "cardId": "servant.kintoki.skill.sc-kintoki-3",
+        "abilityId": "sc-kintoki-3.golden-eater",
+        "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+      },
+      "family": "golden-eater",
+      "category": "identity-variation",
+      "mutations": [],
+      "renameIdentity": {
+        "cardId": "diagnostic.golden.source",
+        "abilityId": "diagnostic.golden.binding"
+      },
+      "expected": {
+        "runtime": {
+          "routeCandidate": true,
+          "exactEligible": true
+        },
+        "compiler": {
+          "compileOutcome": "ACCEPT"
+        },
+        "inventory": {
+          "routeCandidate": true,
+          "exactEligible": true
+        },
+        "coverage": {
+          "exactEligible": true
+        }
+      }
+    },
+    {
+      "id": "golden-invalid-result-field",
+      "source": {
+        "archiveId": "servant.kintoki",
+        "cardId": "servant.kintoki.skill.sc-kintoki-3",
+        "abilityId": "sc-kintoki-3.golden-eater",
+        "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+      },
+      "family": "golden-eater",
+      "category": "owned-malformed",
+      "mutations": [
+        {
+          "path": "effects.1.branches.0.then.0.amount.args.0.field",
+          "value": "unavailableCount"
+        }
+      ],
+      "expected": {
+        "runtime": {
+          "routeCandidate": true,
+          "exactEligible": false
+        },
+        "compiler": {
+          "compileOutcome": "REJECT"
+        },
+        "inventory": {
+          "routeCandidate": true,
+          "exactEligible": false
+        },
+        "coverage": {
+          "exactEligible": false
+        }
+      }
+    },
+    {
+      "id": "golden-missing-target-reference",
+      "source": {
+        "archiveId": "servant.kintoki",
+        "cardId": "servant.kintoki.skill.sc-kintoki-3",
+        "abilityId": "sc-kintoki-3.golden-eater",
+        "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+      },
+      "family": "golden-eater",
+      "category": "owned-malformed",
+      "mutations": [
+        {
+          "path": "effects.0.target",
+          "value": "missingTarget"
+        }
+      ],
+      "expected": {
+        "runtime": {
+          "routeCandidate": true,
+          "exactEligible": false
+        },
+        "compiler": {
+          "compileOutcome": "REJECT"
+        },
+        "inventory": {
+          "routeCandidate": true,
+          "exactEligible": false
+        },
+        "coverage": {
+          "exactEligible": false
+        }
+      }
+    },
+    {
+      "id": "golden-wrong-payment",
+      "source": {
+        "archiveId": "servant.kintoki",
+        "cardId": "servant.kintoki.skill.sc-kintoki-3",
+        "abilityId": "sc-kintoki-3.golden-eater",
+        "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+      },
+      "family": "golden-eater",
+      "category": "owned-malformed",
+      "mutations": [
+        {
+          "path": "effects.2.amount",
+          "value": 8
+        }
+      ],
+      "expected": {
+        "runtime": {
+          "routeCandidate": true,
+          "exactEligible": false
+        },
+        "compiler": {
+          "compileOutcome": "REJECT"
+        },
+        "inventory": {
+          "routeCandidate": true,
+          "exactEligible": false
+        },
+        "coverage": {
+          "exactEligible": false
+        }
+      }
+    },
+    {
+      "id": "golden-outside-combat",
+      "source": {
+        "archiveId": "servant.kintoki",
+        "cardId": "servant.kintoki.skill.sc-kintoki-3",
+        "abilityId": "sc-kintoki-3.golden-eater",
+        "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+      },
+      "family": "golden-eater",
+      "category": "outside-scope",
+      "mutations": [
+        {
+          "path": "activation.phase",
+          "value": "action"
+        },
+        {
+          "path": "activation.opens",
+          "value": "controller_action_window"
+        }
+      ],
+      "expected": {
+        "runtime": {
+          "routeCandidate": false,
+          "exactEligible": false
+        },
+        "compiler": {
+          "compileOutcome": "ACCEPT"
+        },
+        "inventory": {
+          "routeCandidate": false,
+          "exactEligible": false
+        },
+        "coverage": {
+          "exactEligible": false
+        }
+      }
+    },
+    {
+      "id": "conversion-positive",
+      "source": {
+        "archiveId": "master.irisviel",
+        "cardId": "master.irisviel.skill.conversion-magic",
+        "abilityId": "conversion-magic.preparation",
+        "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+      },
+      "family": "conversion-magic",
+      "category": "positive",
+      "mutations": [],
+      "expected": {
+        "runtime": {
+          "exactEligible": true
+        },
+        "compiler": {
+          "compileOutcome": "ACCEPT"
+        },
+        "inventory": {
+          "routeCandidate": true,
+          "exactEligible": true
+        },
+        "coverage": {
+          "exactEligible": true
+        }
+      }
+    },
+    {
+      "id": "conversion-renamed-identities",
+      "source": {
+        "archiveId": "master.irisviel",
+        "cardId": "master.irisviel.skill.conversion-magic",
+        "abilityId": "conversion-magic.preparation",
+        "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+      },
+      "family": "conversion-magic",
+      "category": "identity-variation",
+      "mutations": [],
+      "renameIdentity": {
+        "cardId": "diagnostic.conversion.source",
+        "abilityId": "diagnostic.conversion.binding"
+      },
+      "expected": {
+        "runtime": {
+          "exactEligible": true
+        },
+        "compiler": {
+          "compileOutcome": "ACCEPT"
+        },
+        "inventory": {
+          "routeCandidate": true,
+          "exactEligible": true
+        },
+        "coverage": {
+          "exactEligible": true
+        }
+      }
+    },
+    {
+      "id": "conversion-unknown-binding",
+      "source": {
+        "archiveId": "master.irisviel",
+        "cardId": "master.irisviel.skill.conversion-magic",
+        "abilityId": "conversion-magic.preparation",
+        "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+      },
+      "family": "conversion-magic",
+      "category": "owned-malformed",
+      "mutations": [
+        {
+          "path": "effects.1.amount.var",
+          "value": "missingBinding"
+        }
+      ],
+      "expected": {
+        "runtime": {
+          "exactEligible": false
+        },
+        "compiler": {
+          "compileOutcome": "REJECT"
+        },
+        "inventory": {
+          "routeCandidate": true,
+          "exactEligible": false
+        },
+        "coverage": {
+          "exactEligible": false
+        }
+      }
+    },
+    {
+      "id": "conversion-outside-advance",
+      "source": {
+        "archiveId": "master.irisviel",
+        "cardId": "master.irisviel.skill.conversion-magic",
+        "abilityId": "conversion-magic.preparation",
+        "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+      },
+      "family": "conversion-magic",
+      "category": "outside-scope",
+      "mutations": [
+        {
+          "path": "activation.phase",
+          "value": "action"
+        }
+      ],
+      "expected": {
+        "runtime": {
+          "exactEligible": false
+        },
+        "compiler": {
+          "compileOutcome": "ACCEPT"
+        },
+        "inventory": {
+          "routeCandidate": false,
+          "exactEligible": false
+        },
+        "coverage": {
+          "exactEligible": false
+        }
+      }
+    }
+  ]
+}
