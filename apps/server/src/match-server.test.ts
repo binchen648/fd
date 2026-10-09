@@ -133,6 +133,72 @@ function nextMessage(socket: WebSocket, messages: ServerRoomMessage[], predicate
 }
 
 describe('match websocket server', () => {
+  it('keeps the replacement socket connected until the final same-client socket closes', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    const host = serverHandle.hub.createRoom({ roomId: 'socket-race', hostClientId: 'host' });
+    const token = host.clients.find((client) => client.id === 'host')!.reconnectToken;
+    const url = `ws://127.0.0.1:${port}/rooms/socket-race?clientId=host&reconnectToken=${token}`;
+    const first = await connectSocket(url);
+    await first.next((message) => message.type === 'server:projection');
+    const second = await connectSocket(url);
+    await second.next((message) => message.type === 'server:projection');
+    const disconnect = vi.spyOn(serverHandle.hub, 'disconnect');
+    const version = serverHandle.hub.version('socket-race');
+    first.socket.close();
+    await new Promise((resolve) => first.socket.once('close', resolve));
+    second.socket.send(JSON.stringify({ type: 'client:request_projection' }));
+    const projection = await second.next((message) => message.type === 'server:projection');
+    expect(projection.type).toBe('server:projection');
+    expect(disconnect).not.toHaveBeenCalled();
+    expect(serverHandle.hub.version('socket-race')).toBe(version);
+    expect(serverHandle.hub.project('socket-race', 'host').clients.find((client) => client.id === 'host')?.connected).toBe(true);
+    second.socket.close();
+    await vi.waitFor(() => expect(disconnect).toHaveBeenCalledTimes(1));
+    expect(serverHandle.hub.project('socket-race', 'host').clients.find((client) => client.id === 'host')?.connected).toBe(false);
+  });
+
+  it('restores connection state if the old close occurs after upgrade reconnect', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    const host = serverHandle.hub.createRoom({ roomId: 'upgrade-race', hostClientId: 'host' });
+    const token = host.clients.find((client) => client.id === 'host')!.reconnectToken;
+    const reconnect = serverHandle.hub.reconnect.bind(serverHandle.hub);
+    vi.spyOn(serverHandle.hub, 'reconnect').mockImplementationOnce((roomId, reconnectToken) => {
+      const projection = reconnect(roomId, reconnectToken);
+      serverHandle!.hub.disconnect(roomId, 'host');
+      return projection;
+    });
+    const socket = await connectSocket(`ws://127.0.0.1:${port}/rooms/upgrade-race?clientId=host&reconnectToken=${token}`);
+    const projection = await socket.next((message) => message.type === 'server:projection');
+    if (projection.type !== 'server:projection') throw new Error('Expected projection');
+    expect(projection.projection.clients.find((client) => client.id === 'host')?.connected).toBe(true);
+    socket.socket.close();
+  });
+
+  it('does not count another room or client as a surviving connection', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    const firstRoom = serverHandle.hub.createRoom({ roomId: 'socket-scope-a', hostClientId: 'host' });
+    const secondRoom = serverHandle.hub.createRoom({ roomId: 'socket-scope-b', hostClientId: 'host' });
+    const guest = serverHandle.hub.joinRoom('socket-scope-a', { clientId: 'guest', displayName: 'Guest' });
+    const connect = async (roomId: string, clientId: string, projection: typeof firstRoom) => {
+      const token = projection.clients.find((client) => client.id === clientId)!.reconnectToken;
+      const inbox = await connectSocket(`ws://127.0.0.1:${port}/rooms/${roomId}?clientId=${clientId}&reconnectToken=${token}`);
+      await inbox.next((message) => message.type === 'server:projection');
+      return inbox;
+    };
+    const first = await connect('socket-scope-a', 'host', firstRoom);
+    const second = await connect('socket-scope-b', 'host', secondRoom);
+    const otherClient = await connect('socket-scope-a', 'guest', guest);
+    first.socket.close();
+    await vi.waitFor(() => expect(serverHandle!.hub.project('socket-scope-a', 'host').clients.find((client) => client.id === 'host')?.connected).toBe(false));
+    expect(serverHandle.hub.project('socket-scope-b', 'host').clients.find((client) => client.id === 'host')?.connected).toBe(true);
+    expect(serverHandle.hub.project('socket-scope-a', 'guest').clients.find((client) => client.id === 'guest')?.connected).toBe(true);
+    second.socket.close();
+    otherClient.socket.close();
+  });
+
   it('rejects stale expectedRevision commands before mutating a room', async () => {
     serverHandle = createMatchServer();
     const port = await serverHandle.listen();

@@ -1,0 +1,24 @@
+{
+  "taskId": "P3-E08-SHARED-SOCKET-LIFECYCLE-FIX",
+  "owner": "Codex B / Communication Runtime Owner",
+  "baseCommit": "7868b82949e3e17e64218755e0efe3ed478ff778",
+  "authorization": "User dispatch 2026-10-09",
+  "exclusiveFiles": ["apps/server/src/match-server.ts", "apps/server/src/match-server.test.ts"],
+  "contract": "Client remains connected while an OPEN socket exists for the same room/client; final close disconnects; connection registration repairs upgrade/close interleaving",
+  "transactions": "Socket registration and final-close decision are synchronous; no rule state mutation",
+  "identity": "roomId + clientId scoped socket membership; existing reconnect token validation retained",
+  "negativeVectors": ["old socket close with newer socket alive", "final socket close", "different client remains isolated", "close between upgrade reconnect and connection registration"],
+  "evidence": ["apps/server/src/match-server.test.ts", "e2e/fd-conversion-magic-core-primitive.spec.ts"],
+  "gateAvailability": "Base has no manifest preflight/contract-parity commands; no waiver claimed",
+  "verification": {
+    "redBeforeFix": "Both socket race regressions failed before implementation",
+    "server": "8/8 PASS",
+    "typecheck": "PASS",
+    "playwrightRepeat5": "10/10 PASS: Conversion Magic 5/5 and Golden Eater 5/5",
+    "testCi": "1424/1426; existing A coverage snapshot mismatch plus roster intake failure under full load",
+    "rosterIntakeFocusedRerun": "12/12 PASS",
+    "fullCiPassed": false
+  },
+  "status": "IMPLEMENTATION_COMPLETE_CANDIDATE",
+  "nonClaims": ["B11 acceptance", "coverage sync", "Gate promotion"]
+}

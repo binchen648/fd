@@ -163,9 +163,15 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
     }
   });
 
-  wss.on('connection', (socket: WebSocket, _request: IncomingMessage, roomId: string, clientId: string) => {
+  wss.on('connection', (socket: WebSocket, request: IncomingMessage, roomId: string, clientId: string) => {
     const clientSocket = { roomId, clientId, socket };
     sockets.add(clientSocket);
+    // An old socket can close after upgrade authentication but before registration.
+    const projection = hub.project(roomId, clientId);
+    if (projection.clients.find((client) => client.id === clientId)?.connected === false) {
+      const reconnectToken = new URL(request.url ?? '/', 'http://127.0.0.1').searchParams.get('reconnectToken');
+      if (reconnectToken) hub.reconnect(roomId, reconnectToken);
+    }
     sendSocket(socket, {
       type: 'server:projection',
       roomId,
@@ -195,6 +201,7 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
 
     socket.on('close', () => {
       sockets.delete(clientSocket);
+      if ([...sockets].some((candidate) => candidate.roomId === roomId && candidate.clientId === clientId && candidate.socket.readyState === WebSocket.OPEN)) return;
       try {
         hub.disconnect(roomId, clientId);
         broadcastRoom(roomId, 'client_disconnected');
