@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-09",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [
+    {
+      "pr": 449,
+      "headSha": "9a2a273d67b59872f4589d2ec10cbf32b2e1cef5",
+      "baseSha": "ba958e78fcd6ce7a4276889aaac75d689a767409",
+      "producer": "Codex Automation Review Owner",
+      "verdict": "PASS",
+      "scope": "AUTHORIZED_M50_01_PRIMITIVE_DELTA_ONLY",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/m50-01-target-count-vp-per-target.test.ts packages/rules/tests/fb2-33-event-combat-outcome.test.ts packages/rules/tests/fb2-32-source-state-conditions.test.ts packages/rules/tests/fb2-42-controlled-card-close-forbid.test.ts packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts packages/rules/tests/core/card-source-state.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts --maxWorkers=1",
+          "targetSha": "9a2a273d67b59872f4589d2ec10cbf32b2e1cef5",
+          "result": "7 files / 107 tests PASS",
+          "artifactIdentity": "2026-10-09-pr-449-focused-chain"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-449-independent.mjs",
+          "targetSha": "9a2a273d67b59872f4589d2ec10cbf32b2e1cef5",
+          "result": "Exit0: 5 independent positive/negative controls PASS",
+          "artifactIdentity": "docs/reviews/probes/review-449-independent.mjs"
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Codex Automation Review Owner",
+          "command": "gh pr view 449 --repo binchen648/fd --json headRefOid,baseRefOid,state; git diff ba958e78fcd6ce7a4276889aaac75d689a767409 9a2a273d67b59872f4589d2ec10cbf32b2e1cef5; npm run typecheck; npm run content:validate; git diff --check ba958e78fcd6ce7a4276889aaac75d689a767409 9a2a273d67b59872f4589d2ec10cbf32b2e1cef5",
+          "targetSha": "9a2a273d67b59872f4589d2ec10cbf32b2e1cef5",
+          "result": "Exact live HEAD/base confirmed; full authorized diff read; typecheck/content/diff PASS; detached candidate worktree clean",
+          "artifactIdentity": "2026-10-09-pr-449-scope"
+        }
+      ],
+      "limitations": [
+        "PASS applies only to the named authorized delta, not every inherited runtime path or formal recovery acceptance.",
+        "The inherited FB2-49 malformed-visibility defect discovered for PR445 is not fixed or cleared by this review.",
+        "No full official CI or current-main runtime execution was performed for these two candidates.",
+        "Implementer material/accounting numbers were not freshly recounted; this review grants zero credit.",
+        "PR450 persistence coverage uses trusted_authoring_fixture. It does not establish playable Scathach production integration.",
+        "Current origin/main was freshly fetched and remains the pinned SHA."
+      ]
+    },
+    {
+      "pr": 450,
+      "headSha": "8e3570d753a42683d3d69751a51900f5daeaefee",
+      "baseSha": "67a8d150efd20d7b84c08fab59d9b403a9543087",
+      "producer": "Codex Automation Review Owner",
+      "verdict": "PASS",
+      "scope": "AUTHORIZED_M50_02_SELECTED_ONE_INTERACTION_DELTA_ONLY",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/m50-02-opponent-close-one-non-residual.test.ts packages/rules/tests/m50-01-target-count-vp-per-target.test.ts packages/rules/tests/fb2-33-event-combat-outcome.test.ts packages/rules/tests/fb2-32-source-state-conditions.test.ts packages/rules/tests/fb2-42-controlled-card-close-forbid.test.ts packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts packages/rules/tests/core/card-source-state.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+          "targetSha": "8e3570d753a42683d3d69751a51900f5daeaefee",
+          "result": "9 files / 144 tests PASS",
+          "artifactIdentity": "2026-10-09-pr-450-focused-chain"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-450-independent.mjs",
+          "targetSha": "8e3570d753a42683d3d69751a51900f5daeaefee",
+          "result": "Exit0: 9 independent positive/negative controls PASS",
+          "artifactIdentity": "docs/reviews/probes/review-450-independent.mjs"
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Codex Automation Review Owner",
+          "command": "gh pr view 450 --repo binchen648/fd --json headRefOid,baseRefOid,state; git diff 67a8d150efd20d7b84c08fab59d9b403a9543087 8e3570d753a42683d3d69751a51900f5daeaefee; npm run typecheck; npm run content:validate; git diff --check 67a8d150efd20d7b84c08fab59d9b403a9543087 8e3570d753a42683d3d69751a51900f5daeaefee",
+          "targetSha": "8e3570d753a42683d3d69751a51900f5daeaefee",
+          "result": "Exact live HEAD/base confirmed; full authorized diff read; typecheck/content/diff PASS; detached candidate worktree clean",
+          "artifactIdentity": "2026-10-09-pr-450-scope"
+        }
+      ],
+      "limitations": [
+        "PASS applies only to the named authorized delta, not every inherited runtime path or formal recovery acceptance.",
+        "The inherited FB2-49 malformed-visibility defect discovered for PR445 is not fixed or cleared by this review.",
+        "No full official CI or current-main runtime execution was performed for these two candidates.",
+        "Implementer material/accounting numbers were not freshly recounted; this review grants zero credit.",
+        "PR450 persistence coverage uses trusted_authoring_fixture. It does not establish playable Scathach production integration.",
+        "Current origin/main was freshly fetched and remains the pinned SHA."
+      ]
+    }
+  ]
+}

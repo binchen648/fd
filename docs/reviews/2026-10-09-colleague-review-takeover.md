@@ -49,6 +49,10 @@ technical dispositions, five PASS, seven FAILED, 522 PENDING. These are early
 blocking negative-gate dispositions, not exhaustive acceptance of other semantics.
 PR452 focused rerun 36/36 PASS after an initial 5-second timeout; PR453 43/43 PASS.
 Each exact candidate independently fails the __proto__ own-flag storage probe.
+Batch04 adds delta-scoped PASS for PR449/450: fourteen technical dispositions,
+seven PASS, seven FAILED, 520 PENDING. Independent chains passed 107/144 tests;
+additional probes passed 5/9 controls. These PASS results do not clear inherited
+FB2-49 defects or grant whole-runtime/current-main acceptance.
 The batch JSON binds every verdict and finding to exact head/base. FAILED means
 technical gate failed, not necessarily that the PR introduced the dependency bug.
 No historic Reviewer A-R/B-R identity or formal artifact is impersonated.

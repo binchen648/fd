@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 12,
-    "pending": 522,
+    "reviewed": 14,
+    "pending": 520,
     "blocked": 0,
     "notVerified": 0
   },
@@ -22250,11 +22250,30 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "PASS",
+        "scope": "AUTHORIZED_M50_01_PRIMITIVE_DELTA_ONLY",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-09-colleague-review-batch-04.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/m50-01-target-count-vp-per-target.test.ts packages/rules/tests/fb2-33-event-combat-outcome.test.ts packages/rules/tests/fb2-32-source-state-conditions.test.ts packages/rules/tests/fb2-42-controlled-card-close-forbid.test.ts packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts packages/rules/tests/core/card-source-state.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts --maxWorkers=1",
+            "targetSha": "9a2a273d67b59872f4589d2ec10cbf32b2e1cef5",
+            "result": "7 files / 107 tests PASS",
+            "artifactIdentity": "2026-10-09-pr-449-focused-chain"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-449-independent.mjs",
+            "targetSha": "9a2a273d67b59872f4589d2ec10cbf32b2e1cef5",
+            "result": "Exit0: 5 independent positive/negative controls PASS",
+            "artifactIdentity": "docs/reviews/probes/review-449-independent.mjs"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0
@@ -22293,11 +22312,30 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "PASS",
+        "scope": "AUTHORIZED_M50_02_SELECTED_ONE_INTERACTION_DELTA_ONLY",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-09-colleague-review-batch-04.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/m50-02-opponent-close-one-non-residual.test.ts packages/rules/tests/m50-01-target-count-vp-per-target.test.ts packages/rules/tests/fb2-33-event-combat-outcome.test.ts packages/rules/tests/fb2-32-source-state-conditions.test.ts packages/rules/tests/fb2-42-controlled-card-close-forbid.test.ts packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts packages/rules/tests/core/card-source-state.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+            "targetSha": "8e3570d753a42683d3d69751a51900f5daeaefee",
+            "result": "9 files / 144 tests PASS",
+            "artifactIdentity": "2026-10-09-pr-450-focused-chain"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-450-independent.mjs",
+            "targetSha": "8e3570d753a42683d3d69751a51900f5daeaefee",
+            "result": "Exit0: 9 independent positive/negative controls PASS",
+            "artifactIdentity": "docs/reviews/probes/review-450-independent.mjs"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0
