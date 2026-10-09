@@ -216,7 +216,8 @@ export async function runParity(root: string, raw: unknown, candidate: string, i
       // Git checkout preserves repository Unicode paths on Windows, unlike system tar.
       await execute('git', ['clone', '--shared', '--no-checkout', '--', root, temporary]);
       await execute('git', ['checkout', '--detach', candidate], { cwd: temporary });
-      const environment = { ...process.env, NODE_OPTIONS: '', NODE_PATH: '', TSX_DISABLE_CACHE: '1' };
+      const environment = { ...process.env, NODE_OPTIONS: '', NODE_PATH: '', TSX_DISABLE_CACHE: '1',
+        ESBUILD_BINARY_PATH: '', TSX_TSCONFIG_PATH: join(temporary, 'tsconfig.json') };
       const npmCli = process.env.npm_execpath && process.env.npm_execpath.endsWith('npm-cli.js')
         ? process.env.npm_execpath : join(dirname(process.execPath), 'node_modules/npm/bin/npm-cli.js');
       await execute(process.execPath, [npmCli, 'ci', '--ignore-scripts', '--include=dev', '--include=optional',

@@ -17,7 +17,17 @@ describe('B11 real API contract parity diagnostics', () => {
   beforeAll(async () => {
     input = buildParityInput(root, gitText(root, ['rev-parse', 'HEAD']));
     fixtures = parseFixtures(JSON.parse(readFileSync(resolve(root, fixturePath), 'utf8')));
-    result = await runParity(root, input, combinationSha, hash(JSON.stringify(input)));
+    const inheritedBinary = process.env.ESBUILD_BINARY_PATH;
+    const inheritedConfig = process.env.TSX_TSCONFIG_PATH;
+    process.env.ESBUILD_BINARY_PATH = resolve(root, 'untrusted-esbuild.exe');
+    process.env.TSX_TSCONFIG_PATH = resolve(root, 'untrusted-tsconfig.json');
+    try { result = await runParity(root, input, combinationSha, hash(JSON.stringify(input))); }
+    finally {
+      if (inheritedBinary === undefined) delete process.env.ESBUILD_BINARY_PATH;
+      else process.env.ESBUILD_BINARY_PATH = inheritedBinary;
+      if (inheritedConfig === undefined) delete process.env.TSX_TSCONFIG_PATH;
+      else process.env.TSX_TSCONFIG_PATH = inheritedConfig;
+    }
   }, 120_000);
   it('executes candidate APIs in an isolated snapshot with canonical input and fixture hashes', () => {
     expect(result.executionMethod).toBe('ISOLATED_SHARED_GIT_CLONE_REAL_API_SUBPROCESS');

@@ -96,7 +96,8 @@ dependency tree digest (including transitive imports and native binaries), file
 count, Node version/executable digest and npm CLI digest. The full installed tree
 is a superset of the dependencies loaded by the worker; it is checked before and
 after execution. Dependency links outside the isolated checkout are rejected.
-NODE_OPTIONS/NODE_PATH are cleared and the tsx transform cache is disabled.
+NODE_OPTIONS/NODE_PATH/ESBUILD_BINARY_PATH are cleared, TSX_TSCONFIG_PATH is
+bound to the candidate config, and the tsx transform cache is disabled.
 There is no family-based exemption or implicit applicability waiver.
 
 Fixture expectations start PENDING. ACCEPTED requires a bound independent
