@@ -37,9 +37,11 @@ export interface ProtocolTransport {
 type PendingRequest = {
   resolve: (value: unknown) => void;
   reject: (reason: Error) => void;
+  timer: NodeJS.Timeout;
 };
 
 export class AppServerJsonRpcTransport implements ProtocolTransport {
+  readonly notifications: Array<{ method: string; params: unknown }> = [];
   private child: ChildProcessWithoutNullStreams;
   private lines: Interface;
   private nextId = 1;
@@ -60,16 +62,19 @@ export class AppServerJsonRpcTransport implements ProtocolTransport {
         // Keep stderr available through rejected requests; do not print secrets or full logs.
       }
     });
-    this.child.on('exit', () => {
+    const failPending = () => {
       for (const request of Array.from(this.pending.values())) {
+        clearTimeout(request.timer);
         request.reject(new Error('app-server transport exited'));
       }
       this.pending.clear();
-    });
+    };
+    this.child.on('exit', failPending);
+    this.child.on('error', failPending);
   }
 
   async initialize(): Promise<unknown> {
-    return this.request('initialize', {
+    const result = await this.request('initialize', {
       clientInfo: { name: 'fd-c01-thread-dispatch', title: 'FD C01 Thread Dispatch Probe', version: '0.1.0' },
       capabilities: {
         experimentalApi: true,
@@ -77,15 +82,22 @@ export class AppServerJsonRpcTransport implements ProtocolTransport {
         optOutNotificationMethods: [],
       },
     });
+    this.child.stdin.write(`${JSON.stringify({ method: 'initialized', params: {} })}\n`);
+    return result;
   }
 
   request(method: string, params?: unknown): Promise<unknown> {
     const id = this.nextId++;
     const message = { jsonrpc: '2.0', id, method, params };
     return new Promise((resolve, reject) => {
-      this.pending.set(id, { resolve, reject });
+      const timer = setTimeout(() => {
+        this.pending.delete(id);
+        reject(new Error('app-server request timed out; reconcile before retry'));
+      }, 30_000);
+      this.pending.set(id, { resolve, reject, timer });
       this.child.stdin.write(`${JSON.stringify(message)}\n`, (error) => {
         if (error) {
+          clearTimeout(timer);
           this.pending.delete(id);
           reject(error);
         }
@@ -94,6 +106,8 @@ export class AppServerJsonRpcTransport implements ProtocolTransport {
   }
 
   waitForNotification(predicate: (method: string, params: unknown) => boolean, timeoutMs: number): Promise<unknown | null> {
+    const buffered = this.notifications.find((entry) => predicate(entry.method, entry.params));
+    if (buffered) return Promise.resolve(buffered.params);
     return new Promise((resolve) => {
       const waiter = {
         predicate,
@@ -124,6 +138,7 @@ export class AppServerJsonRpcTransport implements ProtocolTransport {
 
     if (typeof message.id === 'number' && this.pending.has(message.id)) {
       const request = this.pending.get(message.id)!;
+      clearTimeout(request.timer);
       this.pending.delete(message.id);
       if (message.error) {
         request.reject(new Error(JSON.stringify(message.error)));
@@ -134,6 +149,8 @@ export class AppServerJsonRpcTransport implements ProtocolTransport {
     }
 
     if (typeof message.method === 'string') {
+      this.notifications.push({ method: message.method, params: message.params });
+      if (this.notifications.length > 2048) this.notifications.shift();
       for (const waiter of [...this.notificationWaiters]) {
         if (waiter.predicate(message.method, message.params)) {
           clearTimeout(waiter.timer);
@@ -172,7 +189,8 @@ export function normalizeThreadStatus(thread: JsonObject | null | undefined): Di
 }
 
 export class ThreadDispatchAdapter {
-  constructor(private transport: ProtocolTransport, private registry: DispatchRegistry) {}
+  constructor(private transport: ProtocolTransport, private registry: DispatchRegistry,
+    private persistRegistry?: (registry: DispatchRegistry) => void) {}
 
   async readStatus(threadId: string): Promise<DispatchResult<DispatchStatus>> {
     if (!this.isRegistered(threadId)) {
@@ -214,7 +232,7 @@ export class ThreadDispatchAdapter {
       return { ok: false, code: 'UNREGISTERED_THREAD', message: 'thread is not explicitly registered for C01 dispatch' };
     }
     if ((this.registry.sentDispatchIds ?? []).includes(dispatchId)) {
-      return { ok: false, code: 'DUPLICATE_DISPATCH', message: 'dispatchId has already been recorded as sent' };
+      return { ok: false, code: 'DUPLICATE_DISPATCH', message: 'dispatchId has already been reserved; reconcile before any further action' };
     }
     if (status.kind !== 'idle' || status.canAcceptDirectInput !== true) {
       return { ok: false, code: 'NOT_IDLE', message: `thread status is ${status.kind}; refusing to send` };
@@ -228,12 +246,14 @@ export class ThreadDispatchAdapter {
     const preview = this.previewDispatch(threadId, status.value, dispatchId);
     if (preview.ok === false) return { ok: false, code: preview.code, message: preview.message };
     try {
+      // Reserve before the write: a lost response must never allow a duplicate send.
+      this.registry.sentDispatchIds = [...(this.registry.sentDispatchIds ?? []), dispatchId];
+      this.persistRegistry?.(this.registry);
       const turnResponse = await this.transport.request('turn/start', {
         threadId,
         input: [{ type: 'text', text: preview.value.message, text_elements: [] }],
         responsesapiClientMetadata: { fdDispatchId: dispatchId, fdTask: 'P3-C01-THREAD-DISPATCH-FEASIBILITY' },
       });
-      this.registry.sentDispatchIds = [...(this.registry.sentDispatchIds ?? []), dispatchId];
       return { ok: true, value: { accepted: true, turnResponse } };
     } catch (error) {
       return { ok: false, code: 'TRANSPORT_ERROR', message: error instanceof Error ? error.message : String(error) };

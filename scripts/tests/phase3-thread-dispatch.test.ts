@@ -112,4 +112,24 @@ describe('phase3 thread dispatch adapter', () => {
       params: { threadId: 'thread-1', cursor: 'cursor-1' },
     });
   });
+
+  it('persists reservation before send and refuses retry after uncertain delivery', async () => {
+    const transport = new MockTransport({ status: { type: 'idle' }, canAcceptDirectInput: true });
+    const original = transport.request.bind(transport);
+    let reserved: DispatchRegistry | undefined;
+    transport.request = async (method, params) => {
+      if (method === 'turn/start') {
+        expect(reserved?.sentDispatchIds).toContain('uncertain');
+        transport.requests.push({ method, params });
+        throw new Error('connection lost after write');
+      }
+      return original(method, params);
+    };
+    const adapter = new ThreadDispatchAdapter(transport, registry(), (value) => { reserved = structuredClone(value); });
+    expect(await adapter.sendProbe('thread-1', 'uncertain')).toMatchObject({ ok: false, code: 'TRANSPORT_ERROR' });
+    const restarted = new ThreadDispatchAdapter(transport, reserved!);
+    expect(await restarted.sendProbe('thread-1', 'uncertain')).toMatchObject({ ok: false, code: 'DUPLICATE_DISPATCH' });
+    expect(transport.requests.filter((request) => request.method === 'turn/start')).toHaveLength(1);
+    expect(transport.requests.at(-1)?.method).toBe('thread/read');
+  });
 });

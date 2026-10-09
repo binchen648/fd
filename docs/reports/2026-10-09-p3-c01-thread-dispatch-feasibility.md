@@ -6,9 +6,9 @@ Task: P3-C01-THREAD-DISPATCH-FEASIBILITY
 
 ## Verdict
 
-BLOCKED for full desktop-thread dispatch verification.
+CLI_WORKER_ONLY_VERIFIED after the user-authorized dedicated CLI worker follow-up. Existing desktop-thread dispatch remains BLOCKED.
 
-The installed app-server protocol supports thread listing, thread reading, incremental item listing, turn start, and turn completion notifications. Metadata listing and metadata reading of the user-designated experiment thread succeeded through `codex app-server --stdio`. The designated thread returned `notLoaded` with `canAcceptDirectInput:null`; idle state could not be confirmed, so no probe was sent.
+The installed app-server protocol supports thread listing, thread reading, incremental item listing, turn start, and turn completion notifications. Metadata listing and metadata reading of the user-designated desktop experiment thread succeeded through `codex app-server --stdio`. That thread returned `notLoaded` with `canAcceptDirectInput:null`, so no desktop probe was sent. A subsequent dedicated ephemeral CLI worker completed one ACK-only probe through its owning app-server connection.
 
 ## Environment
 
@@ -154,3 +154,65 @@ Official documentation checked:
 - [Settings](https://learn.chatgpt.com/docs/reference/settings) and [Remote connections](https://learn.chatgpt.com/docs/remote-connections): the reviewed pages did not establish an external scripting API for existing Windows desktop chats. Remote connections describe account/device pairing and a relay; that product workflow is not proof of an app-server endpoint available to this client.
 
 Verdict remains `BLOCKED`, rather than a claim of universal desktop incompatibility. Named-pipe connectivity and alternative configured endpoints remain unknown; no private storage, process handles, IPC payloads, or UI automation were inspected. No probe was sent and no CLI worker was started.
+
+## Authorized CLI Worker Follow-Up
+
+The user subsequently asked to try the proposed dedicated CLI worker experiment. This follow-up created one ephemeral CLI thread through a separately owned stdio app-server using the desktop-bundled `codex-cli 0.162.0-alpha.2`. It did not resume or send input to the designated desktop thread.
+
+Implementation: `scripts/phase3-cli-worker-probe.ts`.
+
+- An empty temporary directory served as the worker cwd. `thread/start` requested `ephemeral:true`, `sandbox:read-only`, `approvalPolicy:never`, and no environments, with ACK-only base/developer instructions.
+- The explicit local registry was saved in the temporary directory. Registry and evidence paths and the real worker thread ID are not committed.
+- `thread/read(includeTurns:false)` returned `idle` and `canAcceptDirectInput:true` before dispatch.
+- One unique dispatchId was reserved in the local registry before `turn/start`. This prevents automatic replay after a lost response or process restart with that registry.
+- Exactly one `turn/start` request was issued. Its returned turn ID was correlated with `item/completed` and `turn/completed` notifications.
+- Exactly one assistant message had text equal to `ACK:<dispatchId>`; the correlated turn status was `completed`. No tool items were observed.
+- A final metadata read returned `idle` with direct input enabled. Repeating the adapter call with the same dispatchId returned `DUPLICATE_DISPATCH` without another `turn/start`.
+- The transport was closed after this bounded experiment. No background worker remains running.
+
+Sanitized real-run evidence (dispatchId redacted consistently):
+
+```json
+{
+  "mode": "dedicated-cli-worker",
+  "dispatchId": "<DISPATCH_ID>",
+  "sendAttempts": 1,
+  "transportAccepted": true,
+  "completed": true,
+  "ackMatched": true,
+  "ephemeral": true,
+  "sandbox": "read-only",
+  "initialStatus": {"ok":true,"value":{"kind":"idle","canAcceptDirectInput":true}},
+  "toolItemTypes": [],
+  "result": "CLI_WORKER_ONLY_VERIFIED",
+  "finalStatus": {"ok":true,"value":{"kind":"idle","canAcceptDirectInput":true}},
+  "duplicateRefused": true
+}
+```
+
+Reproduce only when explicitly authorizing a new dedicated CLI worker probe, with `FD_C01_CODEX_EXE` set locally to the selected executable:
+
+```text
+npx tsx scripts/phase3-cli-worker-probe.ts
+```
+
+This command creates a new ephemeral CLI thread and sends one probe; it is not a desktop connection check. It does not accept an existing desktop thread ID. If acceptance is uncertain or completion times out, it queries state before further action, never resends, and attempts interruption of a known incomplete turn before closing.
+
+Verification:
+
+```text
+npx vitest run scripts/tests/phase3-thread-dispatch.test.ts scripts/tests/phase3-cli-worker-probe.test.ts
+11 tests passed across 2 files
+npx tsc --noEmit --target ES2022 --module ESNext --moduleResolution Bundler --skipLibCheck --types node scripts/phase3-thread-dispatch.ts scripts/phase3-cli-worker-probe.ts scripts/tests/phase3-thread-dispatch.test.ts scripts/tests/phase3-cli-worker-probe.test.ts
+Passed
+```
+
+The adapter now reserves dispatch IDs before transport writes, with an optional persistence callback; the worker supplies disk persistence. Transport initialization sends `initialized`, requests have deadlines, and notifications are buffered to avoid losing a completion that arrives before a waiter attaches. Worker-specific ACK checks reject user echoes, prefixes, extra assistant messages, failed turns, and other thread/turn IDs.
+
+Scope and remaining limits:
+
+- This verifies ACK-only dedicated CLI execution, not desktop reuse, engineering-task execution, runtime acceptance, migration credit, Gate, or promotion.
+- Local reservation assumes one controller; it is not a transactional multi-controller registry. Transport uncertainty still requires reconciliation, not resend.
+- Generic adapter `waitForAck` remains a prototype and is not used as proof: this experiment uses the worker's exact assistant-text and thread/turn/status validation instead.
+- Incremental progress pagination remains protocol-supported and mock-tested, not live-verified in this worker experiment.
+- Next minimal implementation is to keep dedicated worker ownership explicit, use durable local reservations, and retain the bounded one-turn lifecycle. Desktop dispatch must remain disabled until a supported live desktop connection is verified.
