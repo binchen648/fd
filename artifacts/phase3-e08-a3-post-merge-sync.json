@@ -155,11 +155,34 @@
   },
   "historicalEvidencePolicy": "Original A3 recount/report, all prior failures and reviewer artifacts remain unchanged; this record adds post-merge facts only.",
   "postMergeValidation": {
-    "mergeParentsAndAncestry": "PENDING_TEST",
-    "reviewFieldsAndArtifactHashes": "PENDING_TEST",
-    "independentRecountAndUnchangedSourceObjects": "PENDING_TEST",
-    "focused": "NOT_RUN",
-    "typecheck": "NOT_RUN",
+    "mergeParentsAndAncestry": "PASS",
+    "reviewFieldsAndArtifactHashes": "PASS",
+    "independentRecountAndUnchangedSourceObjects": "PASS",
+    "verificationImplementationSha": "38d4cea770ff447700ffbfffc5f62acc98c4475e",
+    "focused": {
+      "command": "npx vitest run scripts/tests/phase3-e08-a3-post-merge-sync.test.ts scripts/tests/phase3-e06-post-merge-recount.test.ts",
+      "exitCode": 0,
+      "files": 2,
+      "tests": 6,
+      "durationSeconds": 7.68
+    },
+    "typecheck": {
+      "command": "npm run typecheck",
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    "readOnlyClassifierAudit": {
+      "command": "npx tsx -e (buildCoverageFromArchives(loadAuthoringArchives(process.cwd()), { workspaceRoot: process.cwd() }))",
+      "exitCode": 0,
+      "sourceMainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+      "result": "127 archives / 169 cards / 281 abilities; 22/144/3/0/112; exact setup consumers=3",
+      "writesCoverageArtifact": false
+    },
+    "diffCheck": {
+      "command": "git diff --check 9a1689d2ec5b56b67d1483d2593b4ab809d6c15c..HEAD",
+      "exitCode": 0,
+      "status": "PASS"
+    },
     "fullRuntimeSuiteOnMerge": "NOT_RERUN",
     "priorIndependentRuntimeTests": {
       "testedSha": "1423b92f95e85eabfbe762583fd331e20226f180",
@@ -167,7 +190,13 @@
       "focused": "41/41 PASS",
       "source": "Bound overall Reviewer A artifact"
     },
-    "freshGitHubMergeCommitChecks": "NOT_CLAIMED; checks above bind promotion head only"
+    "freshGitHubMergeCommitChecks": "NOT_CLAIMED; checks above bind promotion head only",
+    "install": {
+      "command": "npm ci",
+      "exitCode": 0,
+      "audit": "12 vulnerabilities (1 low / 4 moderate / 5 high / 2 critical); no automatic dependency update"
+    },
+    "carrierBindingPolicy": "FINAL_CARRIER_SHA_RETURNED_EXTERNALLY; EVIDENCE_ONLY_DESCENDANT_OF_VERIFICATION_IMPLEMENTATION"
   },
   "retainedGates": {
     "gateC": "NOT_VERIFIED",
