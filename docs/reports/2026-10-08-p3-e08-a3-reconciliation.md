@@ -1,4 +1,84 @@
-# Epoch 08 A3 Reconciliation
+# A3 Reconciliation Revision - 2026-10-09
+
+- Task: `P3-E08-RP-00-A3-RECONCILIATION`
+- Control Epoch: `FD-P3-2026-09-23-08`
+- Timezone: Asia/Shanghai
+- Overall status: `REVIEW_RECONCILIATION_REQUIRED`
+- Scoped repair: `RECOUNT_TEST_PASS_FULL_CI_BLOCKED`
+- Pinned base remains `fefcf4f7f5bd66ed7693889fb99391e6e7321016`.
+- Tested repair implementation: `98b58ec22ad8140d940c65170f9e0d3e9a8f3919`.
+- Evidence carrier is returned externally after commit, with no self-reference.
+
+## Reviewer FAIL preserved and bound
+
+Reviewer A reviewed carrier `caeebdd52f8d420b179e464bdd07e4d50f378a4b`.
+Review commit: `d5436b77b269db2119f702a54ba7fa61ef4ad1fb`, whose direct
+parent is that reviewed carrier. Artifact at that commit:
+`docs/reviews/phase3/P3-E08-RP-00-A3-RECONCILIATION-reviewer-a.json`.
+SHA-256: `61197DB8CF817ADEE43959DE566F6937B0F3CEE16B5A2E13AEA19077C2753D74`.
+Reviewer: github:binchen648. Verdict: FAIL.
+Thread: https://github.com/binchen648/fd/pull/545#issuecomment-6071641331
+
+The immutable review JSON was read and its hash and direct parent verified.
+Its evidence is retained in the recount's reviewerHistory. The Oct 8 local PASS
+remains in validationHistory; it is not rewritten to imply independent acceptance.
+Reviewer full CI was 182/184 files and 1410/1412 tests, with two 5000ms timeouts:
+new recount recalculation and inherited MatchSession:313.
+
+## Minimal repair and measured result
+
+Only the new async recount recalculation test's local timeout changed from the
+default 5000ms to 15000ms. Compiler, full-object, SHA-256, identity and ancestry
+assertions are byte-for-byte unchanged. No global timeout or other test changed.
+The earlier shallow recovery test retains its existing 15000ms budget.
+
+On fresh default full CI, the recount recalculation took 7700ms and passed;
+shallow recovery took 5553ms and passed. This demonstrates the previous 5000ms
+budget was insufficient under full-suite contention; it does not prove
+long-term stability or guarantee GitHub required checks.
+
+| Fresh command at tested repair implementation | Exit | Result |
+| --- | ---: | --- |
+| npx vitest run scripts/tests/phase3-e06-post-merge-recount.test.ts | 0 | 1 file / 3 tests PASS |
+| npm run typecheck | 0 | PASS |
+| npm run content:validate | 0 | 7 masters / 7 servants / 20 events; blocking=0 |
+| npm run verify:generated-content | 0 | PASS; same three generated hashes |
+| npm run test:ci | 1 | 183/184 files, 1411/1412 tests; 31.49s |
+| git diff --check caeebdd52f8d420b179e464bdd07e4d50f378a4b..HEAD | 0 | PASS |
+
+The only fresh full-CI failure is unchanged
+`packages/rules/tests/match-session.test.ts:313`:
+`authenticates gameplay-affecting MatchSession fields outside GameState`,
+6669ms elapsed against the default 5000ms timeout. This path was not edited.
+Planner must separately dispose this inherited failure; no unrelated timeout,
+global configuration, retries to select a PASS, or runtime repair was imported.
+
+## Current evidence binding and boundaries
+
+- Recount: `artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json`
+- Current SHA-256: `8C5C020E6EB46E3E1B801959E5DD926D18ED412065F7DDE427F2CD203A748D44`
+- Coverage: `artifacts/phase3-skill-coverage.json` (unchanged)
+- Coverage SHA-256: `8683CF3C41E62703593CA5508A04544A02BBF7E3EB972371073FDCAE1A16C045`
+
+Independent classifier/compiler full-object recomputation passed in both focused
+and default full CI. Coverage remains 22/144/3/0/112, with exactly three setup
+consumers. All coverage/migration/denominator deltas are zero. Runtime, authoring,
+taxonomy, workflow and coverage artifact are unchanged by this review repair.
+
+93 historical missing-image blockers remain recorded, not freshly reaudited.
+Gate C and final Promotion HEAD GitHub required checks remain NOT_VERIFIED.
+No new acceptance, promotion, PR, merge or credit is granted.
+Reviewer A may review the scoped repair's exact carrier; overall A3 assembly
+remains blocked pending Planner disposition and successful reconciliation.
+
+## Historical Oct 8 record (not current readiness)
+
+Everything below is the original local verification record from the rejected
+carrier. Its READY_FOR_REVIEW and PASS statements are historical only, superseded
+by the Reviewer FAIL and current full-CI failure above. In particular, the old
+artifact hash below is not the current artifact binding.
+
+### Original Epoch 08 A3 Reconciliation
 
 - Task: `P3-E08-RP-00-A3-RECONCILIATION`
 - Control Epoch: `FD-P3-2026-09-23-08`
