@@ -12,7 +12,7 @@ import type { LocationDefinition } from "../schema/location";
 import type { VisibilityState } from "../schema/visibility";
 import type { ResolverResult } from "./resolver-contracts";
 import { getLocationById } from "./map-engine";
-import { calculateCardPower, processAbilityEvent, processAbilitySystemEvent } from '../ability/interpreter';
+import { calculateCardPower, mysticCodeTerrainZero, processAbilityEvent, processAbilitySystemEvent } from '../ability/interpreter';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
 import { isPlayerPresentAtLocation, multiPresenceTerrainAdvantageAtLocation } from '../ability/multi-presence-player-capability';
 import { applyLinkedOwnerCombatPowerSharing, playerHasLinkedOwnerLossImmunity, prepareLinkedOwnerCardsForBattle } from '../ability/linked-owner-combat';
@@ -34,7 +34,7 @@ export interface CombatParticipantInput {
   externalSkillEffects?: ExternalSkillEffect[];
   terrainSlotIndex?: number;
   terrainValueOverride?: number;
-  terrainValueOverrideSource?: 'multi_presence' | 'round_replacement' | 'unclaimed_terrain' | 'round_profile_bonus';
+  terrainValueOverrideSource?: 'multi_presence' | 'round_replacement' | 'unclaimed_terrain' | 'round_profile_bonus' | 'mystic_code_regalia';
 }
 
 export interface CombatResolutionInput {
@@ -171,6 +171,9 @@ function getTerrainBreakdowns(
 ): BattleModifierBreakdown[] {
   const location = getLocationById(state.map, state.locationConfig, battlefieldId);
   if (isTerrainSuppressedByAuthoredDuel(state, battlefieldId, participant.playerId)) return [];
+  // Regalia sets effective terrain advantage to zero, not merely its printed
+  // slot bonus: independent terrain multipliers/overrides must not revive it.
+  if (participant.terrainValueOverrideSource === 'mystic_code_regalia') return [];
   if (!location?.terrainBonuses?.length) return [];
   const baseValue = participant.terrainValueOverride !== undefined
     ? participant.terrainValueOverride
@@ -431,10 +434,13 @@ export function deriveBattleParticipantsFromState(
         ? fixedRoundTerrainValue
         : (presenceTerrainValue !== ordinaryTerrainValue ? presenceTerrainValue : ordinaryTerrainValue);
       const combinedTerrainValue = primaryTerrainValue + unclaimedTerrainValue + roundProfileTerrainValue;
-      const terrainValueOverride = fixedRoundTerrainValue !== undefined || presenceTerrainValue !== ordinaryTerrainValue || unclaimedTerrainValue !== 0 || roundProfileTerrainValue !== 0
-        ? combinedTerrainValue
+      const regaliaTerrainZero=mysticCodeTerrainZero(state,player.id);
+      const terrainValueOverride = regaliaTerrainZero || fixedRoundTerrainValue !== undefined || presenceTerrainValue !== ordinaryTerrainValue || unclaimedTerrainValue !== 0 || roundProfileTerrainValue !== 0
+        ? regaliaTerrainZero ? 0 : combinedTerrainValue
         : undefined;
-      const terrainValueOverrideSource = fixedRoundTerrainValue !== undefined
+      const terrainValueOverrideSource = regaliaTerrainZero
+        ? 'mystic_code_regalia' as const
+        : fixedRoundTerrainValue !== undefined
         ? 'round_replacement' as const
         : (presenceTerrainValue !== ordinaryTerrainValue
           ? 'multi_presence' as const

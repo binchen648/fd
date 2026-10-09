@@ -164,6 +164,8 @@ export interface RuleOverrideState {
   ignoreMovementLinkPlayerIds?: string[];
   reverseArrowMovementPlayerIds?: string[];
   ignoreOccupancyLimitPlayerIds?: string[];
+  /** Source-validated Recon-only capacity exemptions; do not count these players toward Recon occupancy. */
+  reconCapacityExemptPlayerIds?: string[];
   engagedPlayerIds?: string[];
   ignoreEngagementForMovementPlayerIds?: string[];
   mustDeployToBattlefieldPlayerIds?: string[];
