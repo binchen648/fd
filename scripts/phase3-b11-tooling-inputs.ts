@@ -6,7 +6,7 @@ import { adapterClosurePaths } from './phase3-contract-parity';
 import { git, hash, parseArgs, sha } from './phase3-tooling-common';
 
 export const combinationSha = '9eaa0e0c417486adf7b0449e3d32fb90b7d362f9';
-export const diagnosticCandidateSha = 'c0db16ae65699b2e2789c7776c0aa4271b11e496';
+export const diagnosticCandidateSha = '7ec91bbc26be0f63332d5cc8421b2c7c014906c5';
 export const sourceMainSha = '9a1689d2ec5b56b67d1483d2593b4ab809d6c15c';
 export const publicationSha = 'e65503e601d7a3a4d1265d87a09484cb8295f2c2';
 export const fixturePath = 'scripts/fixtures/phase3-b11-parity-fixtures.json';
@@ -87,9 +87,9 @@ export function buildParityInput(root: string, fixtureCommit: string, adapterCom
     contract: reference(root, publicationSha, 'docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md', '## phase3:contract-parity'),
     fixtures: reference(root, fixtureCommit, fixturePath),
     owners: {
-      runtime: { required: true, meaning: 'Candidate exported structural ownership and exact semantic eligibility for both shapes; missing binding reference is outside Conversion structural ownership' },
+      runtime: { required: true, meaning: 'Candidate exported structural ownership and exact semantic eligibility for both shapes; Conversion ownership checks phase/window/envelope and ordered effect types, never binding validity; malformed bindings are owned and exact-ineligible' },
       compiler: { required: true, meaning: 'compileExecutableCardPack ACCEPT/REJECT only; neither ownership nor exact family eligibility inferred' },
-      inventory: { required: true, meaning: 'classifyB11InventoryAbility evaluates raw authoring structural envelope and exact target/effect/binding shape; does not consume runtime/compiler/fixture verdicts' },
+      inventory: { required: true, meaning: 'classifyB11InventoryAbility evaluates raw authoring structural envelope and exact target/effect/binding shape; Conversion binding declarations and references are validated only in exactEligible, not ownership; does not consume runtime/compiler/fixture verdicts' },
       coverage: { required: true, meaning: 'classifyB11CoverageEligibility evaluates raw authoring exact shape using the shared read-only diagnostic contract; retain separate actual classifyAbilityForCoverage taxonomy without changing KPI' },
     },
     expectationReview: { state: 'PENDING' },

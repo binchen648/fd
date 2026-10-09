@@ -2,19 +2,19 @@
   "schemaVersion": "fd-p3-b11-parity-fixtures-v1",
   "references": [
     {
-      "commit": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+      "commit": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
       "path": "data/authoring/servants/servant.kintoki.json",
       "sha256": "2E5CBAA6965924E306D1E61764CC75A52F278039D5871B39C51DE431CF268B35",
       "section": "sc-kintoki-3.golden-eater"
     },
     {
-      "commit": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+      "commit": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
       "path": "data/authoring/masters/master.irisviel.json",
       "sha256": "F81D3E1E03276C9E2404E09712B139B00EAFE1F8A5F141CEDA867FBC901D61C8",
       "section": "conversion-magic.preparation"
     },
     {
-      "commit": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+      "commit": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
       "path": "docs/plans/2026-09-12-p3-b11-result-binding-production-bridge-design.md",
       "sha256": "BC534430CBBCA00116CDFB2173FF38FFD2B6A581D39464CE46DF760E4AFEF18B",
       "section": "## Fail-Closed And Legacy Boundary"

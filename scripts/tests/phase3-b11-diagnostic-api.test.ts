@@ -20,10 +20,22 @@ describe('B11 read-only inventory and coverage exact diagnostics', () => {
     expect(classifyB11CoverageEligibility(input).exactEligible).toBe(true);
     expect(input).toEqual({ ...source, id: 'diagnostic.unrelated.identity' });
   });
-  it('keeps malformed binding ownership disagreement visible rather than copying expected values', () => {
+  it('owns malformed binding while rejecting exact eligibility', () => {
     const input = structuredClone(conversion);
     input.effects[1].amount.var = 'unknown';
-    expect(classifyB11InventoryAbility(input)).toMatchObject({ routeCandidate: false, exactEligible: false });
+    expect(classifyB11InventoryAbility(input)).toMatchObject({ routeCandidate: true, exactEligible: false });
+    expect(classifyB11CoverageEligibility(input).exactEligible).toBe(false);
+  });
+  it.each(['missing-declaration', 'missing-use', 'wrong-field', 'wrong-value-type', 'scalar'])('owns malformed Conversion %s without accepting its binding', defect => {
+    const input = structuredClone(conversion);
+    if (defect === 'missing-declaration') delete input.effects[0].resultVar;
+    if (defect === 'missing-use') delete input.effects[1].amount;
+    if (defect === 'wrong-field' || defect === 'wrong-value-type') input.effects[1].amount = {
+      expr: 'binding_field', binding: input.effects[0].resultVar,
+      field: defect === 'wrong-field' ? 'unknown' : 'movedCount', valueType: defect === 'wrong-value-type' ? 'string' : 'number',
+    };
+    if (defect === 'scalar') input.effects[1].amount = 3;
+    expect(classifyB11InventoryAbility(input)).toMatchObject({ routeCandidate: true, exactEligible: false });
     expect(classifyB11CoverageEligibility(input).exactEligible).toBe(false);
   });
   it.each(['field', 'target', 'payment'])('rejects invalid Golden %s while preserving structural ownership', defect => {
@@ -53,5 +65,11 @@ describe('B11 read-only inventory and coverage exact diagnostics', () => {
     input.effects[1].branches[0].then[0].amount.args[1] = null;
     expect(classifyB11InventoryAbility(input).exactEligible).toBe(false);
     expect(classifyB11CoverageEligibility({ ...conversion, effects: [null, null] }).exactEligible).toBe(false);
+  });
+  it.each([classifyB11InventoryAbility, classifyB11CoverageEligibility])('rejects optional target conditions [null] without interrupting diagnostics', classify => {
+    const input = structuredClone(golden);
+    input.targets[1].conditions = [null];
+    expect(classify(input).exactEligible).toBe(false);
+    expect(input.targets[1].conditions).toEqual([null]);
   });
 });

@@ -23,9 +23,10 @@ function impactIds(target: Obj): string[] {
 }
 
 function impactTarget(target: Obj, optional: boolean): boolean {
+  const conditions = list(target.conditions);
   return name(target.id) && target.type === 'card_instance' && target.scope?.zone === 'removed_from_game' && target.scope?.owner === 'controller'
     && target.count?.min === (optional ? 0 : 1) && target.count?.max === 1 && target.visibility === 'private_to_controller' && impactIds(target).length === 2
-    && (optional ? list(target.conditions).length === 1 && target.conditions[0].type === 'controller_mana_at_least' && target.conditions[0].value === 7 : empty(target.conditions));
+    && (optional ? conditions.length === 1 && conditions[0].type === 'controller_mana_at_least' && conditions[0].value === 7 : empty(target.conditions));
 }
 
 function movement(effect: Obj, target: Obj): boolean {
@@ -49,8 +50,7 @@ export function inspectB11AuthoringShape(ability: Obj) {
   const activation = ability.activation ?? {};
   const common = ability.kind === 'phase_action' && empty(ability.cost) && empty(ability.creates);
   const conversionCandidate = common && activation.phase === 'advance' && activation.opens === 'controller_action_window' && empty(ability.targets)
-    && effects.length === 2 && effects[0].type === 'move_all_remaining' && effects[1].type === 'adjust_mana'
-    && name(effects[0].resultVar ?? effects[0].bind) && bindingAmount(effects[1].amount, effects[0].resultVar ?? effects[0].bind);
+    && effects.length === 2 && effects[0].type === 'move_all_remaining' && effects[1].type === 'adjust_mana';
   const goldenCandidate = ability.kind === 'phase_action' && activation.phase === 'combat' && activation.opens === 'controller_combat_action_window'
     && effects.some(effect => effect.type === 'move_card') && (hasBinding(effects) || list(ability.targets).some(target => target.type === 'card_instance' && target.scope?.zone === 'removed_from_game' && target.scope?.owner === 'controller'));
   const targets = list(ability.targets);
@@ -61,7 +61,8 @@ export function inspectB11AuthoringShape(ability: Obj) {
     && effects[2].type === 'pay_mana' && effects[2].player === 'controller' && effects[2].amount === 7 && effects[2].selection === targets[1].id && name(effects[2].bind)
     && movement(effects[3], targets[1]) && effects[3].bind !== effects[0].bind && effects[2].bind !== effects[0].bind && effects[2].bind !== effects[3].bind
     && award(effects[4], effects[3].bind);
-  const conversionExact = conversionCandidate && effects[0].from === 'hand' && effects[0].to?.zone === 'discard';
+  const conversionExact = conversionCandidate && effects[0].from === 'hand' && effects[0].to?.zone === 'discard'
+    && name(effects[0].resultVar ?? effects[0].bind) && bindingAmount(effects[1].amount, effects[0].resultVar ?? effects[0].bind);
   return { routeCandidate: !!(goldenCandidate || conversionCandidate), exactEligible: !!(goldenExact || conversionExact),
     shape: goldenCandidate ? 'RESULT_BINDING_PRIVATE_SELECTION' : conversionCandidate ? 'MOVE_REMAINING_COUNT_TO_MANA' : 'OUTSIDE_DIAGNOSTIC_CONTRACT',
     inputSha256: hash(`${JSON.stringify(ability)}\n`) };

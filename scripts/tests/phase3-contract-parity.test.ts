@@ -83,12 +83,15 @@ describe('B11 real API contract parity diagnostics', () => {
       await expect(verifyDependencyClosure(temporary, binding)).rejects.toThrow('Execution dependency closure drift');
     } finally { rmSync(temporary, { recursive: true, force: true }); }
   });
-  it('fails readiness for pending review and real disagreement despite complete API observations', () => {
+  it('fails readiness only for pending independent review after complete matching API observations', () => {
     expect(result.status).toBe('FAIL');
     expect(result.issues.map(issue => issue.code)).toContain('EXPECTATIONS_NOT_INDEPENDENTLY_REVIEWED');
     expect(result.issues.some(issue => issue.code === 'REQUIRED_OBSERVATION_NOT_EVALUATED')).toBe(false);
-    expect(result.issues.some(issue => issue.code === 'API_EXPECTATION_DISAGREEMENT' && issue.path === 'conversion-unknown-binding:runtime.routeCandidate')).toBe(true);
-    expect(result.issues.some(issue => issue.code === 'API_EXPECTATION_DISAGREEMENT' && issue.path === 'conversion-unknown-binding:inventory.routeCandidate')).toBe(true);
+    expect(result.issues.some(issue => issue.code === 'API_EXPECTATION_DISAGREEMENT')).toBe(false);
+    const malformed = result.results.find(row => row.fixtureId === 'conversion-unknown-binding')!;
+    expect(malformed.observations.runtime).toMatchObject({ routeCandidate: true, exactEligible: false });
+    expect(malformed.observations.inventory).toMatchObject({ routeCandidate: true, exactEligible: false });
+    expect(malformed.observations.compiler.compileOutcome).toBe('REJECT');
     expect(result.acceptanceGranted).toBe(false);
   });
   it('never exempts missing Conversion runtime ownership when all other observations agree', () => {
