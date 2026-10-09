@@ -67,6 +67,15 @@ describe('phase3 thread dispatch adapter', () => {
     expect(transport.requests.map((request) => request.method)).not.toContain('turn/start');
   });
 
+  it('refuses idle threads whose direct-input capability is unknown or disabled', async () => {
+    for (const canAcceptDirectInput of [null, false]) {
+      const transport = new MockTransport({ status: { type: 'idle' }, canAcceptDirectInput });
+      const adapter = new ThreadDispatchAdapter(transport, registry());
+      expect(await adapter.sendProbe('thread-1', 'fd-c01-capability')).toMatchObject({ ok: false, code: 'NOT_IDLE' });
+      expect(transport.requests.map((request) => request.method)).not.toContain('turn/start');
+    }
+  });
+
   it('sends the bounded probe once when a registered thread is idle', async () => {
     const transport = new MockTransport({ id: 'thread-1', status: { type: 'idle' }, canAcceptDirectInput: true });
     const adapter = new ThreadDispatchAdapter(transport, registry());

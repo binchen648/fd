@@ -8,13 +8,13 @@ Task: P3-C01-THREAD-DISPATCH-FEASIBILITY
 
 BLOCKED for full desktop-thread dispatch verification.
 
-The installed app-server protocol supports thread listing, thread reading, incremental item listing, turn start, and turn completion notifications. This run verified metadata listing for FD cwd through `codex app-server --stdio`, but no user-designated experiment thread ID was provided, so no thread body was read and no probe was sent.
+The installed app-server protocol supports thread listing, thread reading, incremental item listing, turn start, and turn completion notifications. Metadata listing and metadata reading of the user-designated experiment thread succeeded through `codex app-server --stdio`. The designated thread returned `notLoaded` with `canAcceptDirectInput:null`; idle state could not be confirmed, so no probe was sent.
 
 ## Environment
 
-- Original workspace: `D:\fd`
+- Original workspace: redacted FD checkout.
 - Original workspace status before work: dirty, with pre-existing tracked and untracked changes.
-- Worktree: `C:\Users\chenshang\.config\superpowers\worktrees\fd\c01-thread-dispatch-feasibility`
+- Worktree: isolated checkout; machine path redacted.
 - Branch: `codex/c01-thread-dispatch-feasibility`
 - Base: exact `origin/main` at `fefcf4f7f5bd66ed7693889fb99391e6e7321016`
 - CLI version observed by `codex --version`: `codex-cli 0.147.0`
@@ -28,11 +28,11 @@ Actually verified:
 - `codex app-server generate-ts --experimental` generated protocol bindings.
 - `codex app-server generate-json-schema --experimental` generated protocol schemas.
 - `thread/list` over `codex app-server --stdio` initialized successfully and returned FD cwd thread metadata.
+- `thread/read` with `includeTurns:false` succeeded for the user-designated experiment thread; no conversation body was requested.
 - Adapter tests verify refusal for unregistered threads, running/unknown status, duplicate dispatch IDs, ACK mismatch, and cursor-based progress reads.
 
 Protocol shows support, not end-to-end verified:
 
-- `thread/read` exists and returns a `Thread`.
 - `thread/items/list` exists and supports cursors.
 - `thread/resume` exists and can rejoin a running thread by `threadId`, but this is a concurrency risk if used incorrectly.
 - `turn/start` exists and is the likely send primitive for a loaded/direct-input-capable thread.
@@ -40,14 +40,17 @@ Protocol shows support, not end-to-end verified:
 
 Not verified in this run:
 
-- Reading a user-designated experiment thread.
 - Confirming an existing desktop thread is `idle` with `canAcceptDirectInput=true`.
 - Sending the C01 probe to a desktop thread.
 - Receiving a matching `ACK:<dispatchId>`.
 
 ## Probe Evidence
 
-No probe was sent. The run stopped before dispatch because no experiment thread ID was provided.
+After the user supplied an experiment link, exactly one metadata-only `thread/read` was performed against that designated target. The result below prevented dispatch. No `turn/start` was called, no dispatchId was sent, and no ACK was obtained.
+
+```json
+{"initialized":true,"status":{"ok":true,"value":{"kind":"unknown","reason":"status is notLoaded","canAcceptDirectInput":null}}}
+```
 
 Sanitized protocol-list evidence:
 
@@ -55,7 +58,7 @@ Sanitized protocol-list evidence:
 {
   "initialized": true,
   "listedThreads": 3,
-  "cwd": "D:\\fd",
+  "cwd": "<FD_CHECKOUT>",
   "observedStatuses": ["notLoaded"],
   "canAcceptDirectInput": [null],
   "sources": ["vscode"]
@@ -92,7 +95,7 @@ Passed:
 
 ```text
 npx vitest run scripts/tests/phase3-thread-dispatch.test.ts
-7 tests passed
+8 tests passed
 ```
 
 Passed:
@@ -104,15 +107,15 @@ npx tsc --noEmit --target ES2022 --module ESNext --moduleResolution Bundler --sk
 Passed with metadata-only output:
 
 ```text
-npm run phase3:thread-dispatch -- protocol-probe --cwd D:\fd --limit 3
+npm run phase3:thread-dispatch -- protocol-probe --cwd <FD_CHECKOUT> --limit 3
 ```
 
 ## Remaining Limitations
 
 - No runtime acceptance, migration credit, gate, or promotion authority is granted or implied.
-- Full verdict cannot advance to `DESKTOP_THREAD_DISPATCH_VERIFIED` until the user supplies one explicit idle experiment thread ID and the adapter observes `idle` plus direct-input capability before one send.
-- If direct desktop-thread input remains unavailable after explicit thread registration, the fallback is `CLI_WORKER_ONLY_VERIFIED`: create dedicated CLI workers and dispatch only to those newly registered worker sessions. The cost is losing direct reuse of existing desktop chats and requiring worker lifecycle management outside the desktop session.
+- Full verdict cannot advance to `DESKTOP_THREAD_DISPATCH_VERIFIED` until a live desktop connection exposes authoritative `idle` status and `canAcceptDirectInput:true` for the designated target. A standalone server's local state does not establish that the desktop is idle.
+- A dedicated CLI worker is an alternative to investigate, not a verified verdict in this run. It requires separate worker lifecycle management and does not reuse existing desktop execution. No worker was started.
 
 ## Next Minimal Step
 
-Register one disposable experiment thread ID in a local ignored registry file, run `probe` once, and record sanitized `turn/start` acceptance separately from matching `turn/completed` ACK.
+Find a supported connection to the live desktop host that exposes the designated target's execution state and direct-input capability. Keep dispatch disabled while state remains unknown. If no such connection is available, separately authorize a dedicated CLI worker experiment.

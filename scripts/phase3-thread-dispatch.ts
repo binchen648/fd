@@ -216,7 +216,7 @@ export class ThreadDispatchAdapter {
     if ((this.registry.sentDispatchIds ?? []).includes(dispatchId)) {
       return { ok: false, code: 'DUPLICATE_DISPATCH', message: 'dispatchId has already been recorded as sent' };
     }
-    if (status.kind !== 'idle' || status.canAcceptDirectInput === false) {
+    if (status.kind !== 'idle' || status.canAcceptDirectInput !== true) {
       return { ok: false, code: 'NOT_IDLE', message: `thread status is ${status.kind}; refusing to send` };
     }
     return { ok: true, value: { threadId, dispatchId, message: probeMessage(dispatchId) } };
