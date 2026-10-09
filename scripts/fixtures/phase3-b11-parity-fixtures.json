@@ -230,6 +230,7 @@
       "mutations": [],
       "expected": {
         "runtime": {
+          "routeCandidate": true,
           "exactEligible": true
         },
         "compiler": {
@@ -261,6 +262,7 @@
       },
       "expected": {
         "runtime": {
+          "routeCandidate": true,
           "exactEligible": true
         },
         "compiler": {
@@ -293,6 +295,7 @@
       ],
       "expected": {
         "runtime": {
+          "routeCandidate": true,
           "exactEligible": false
         },
         "compiler": {
@@ -325,6 +328,7 @@
       ],
       "expected": {
         "runtime": {
+          "routeCandidate": false,
           "exactEligible": false
         },
         "compiler": {

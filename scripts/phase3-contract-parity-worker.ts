@@ -94,8 +94,14 @@ if (process.argv[2] === '--snapshot') {
   try {
     const snapshot = resolve(process.argv[3]);
     const fixtures = JSON.parse(readFileSync(resolve(process.argv[4]), 'utf8'));
+    const bindingPath = resolve(process.argv[5]);
+    const executionAdapter = JSON.parse(readFileSync(bindingPath, 'utf8'));
+    const adapterRoot = resolve(bindingPath, '..');
+    for (const file of executionAdapter.files) {
+      if (hash(readFileSync(resolve(adapterRoot, file.path))) !== file.sha256) throw new InputError(`Execution adapter digest mismatch: ${file.path}`);
+    }
     process.chdir(snapshot);
     const results = await collectCandidateObservations(snapshot, fixtures);
-    process.stdout.write(`${JSON.stringify({ schemaVersion: 'fd-p3-parity-execution-v1', results })}\n`);
+    process.stdout.write(`${JSON.stringify({ schemaVersion: 'fd-p3-parity-execution-v1', executionAdapter, results })}\n`);
   } catch (error) { process.stderr.write(`${String(error)}\n`); process.exitCode = 1; }
 }

@@ -1,9 +1,31 @@
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { ancestor, array, cliError, commitExists, fields, gitText, hash, InputError, inputFile, json, object, output, parseArgs, parseReference, readReference, sha, string, type Issue, type Obj } from './phase3-tooling-common';
+
+export const adapterClosurePaths = ['scripts/phase3-contract-parity-worker.ts', 'scripts/phase3-tooling-common.ts'];
+
+export function verifyAdapterClosure(root: string, raw: unknown, issues: Issue[]) {
+  const refs = array(raw, 'executionAdapter');
+  const parsed = refs.map((ref, index) => parseReference(ref, `executionAdapter[${index}]`));
+  if (parsed.length !== adapterClosurePaths.length || new Set(parsed.map(ref => ref.path)).size !== parsed.length ||
+      adapterClosurePaths.some(path => !parsed.some(ref => ref.path === path)) || new Set(parsed.map(ref => ref.commit)).size !== 1) {
+    throw new InputError('Execution adapter must bind the complete worker/common closure at one exact commit');
+  }
+  const files = parsed.map(ref => {
+    const bytes = readReference(root, ref, issues);
+    if (bytes) {
+      try {
+        const localObject = gitText(root, ['hash-object', `--path=${ref.path}`, ref.path]);
+        if (localObject !== gitText(root, ['rev-parse', `${ref.commit}:${ref.path}`])) throw new Error('Local adapter content differs from bound Git blob');
+      } catch (error) { issues.push({ code: 'EXECUTION_ADAPTER_DRIFT', path: ref.path, message: String(error) }); }
+    }
+    return { ref, bytes };
+  });
+  return { commit: parsed[0].commit, files };
+}
 
 const ownerNames = ['runtime', 'compiler', 'inventory', 'coverage'];
 const requiredFields: Record<string, string[]> = {
@@ -13,12 +35,13 @@ const requiredFields: Record<string, string[]> = {
 
 export function parseParityInput(raw: unknown): Obj {
   const input = object(raw, 'contract');
-  fields(input, ['schemaVersion', 'taskId', 'controlEpoch', 'contractId', 'contractVersion', 'adapterVersion', 'candidateSha', 'contract', 'fixtures', 'owners', 'expectationReview'], 'contract');
+  fields(input, ['schemaVersion', 'taskId', 'controlEpoch', 'contractId', 'contractVersion', 'adapterVersion', 'executionAdapter', 'candidateSha', 'contract', 'fixtures', 'owners', 'expectationReview'], 'contract');
   if (input.schemaVersion !== 'fd-p3-contract-parity-v1' || input.contractVersion !== 1 || input.adapterVersion !== 'b11-api-observations-v1' ||
       input.contractId !== 'B11_RESULT_BINDING_DIAGNOSTIC_V1' || input.taskId !== 'P3-E08-B11-CONTRACT-PARITY' || input.controlEpoch !== 'FD-P3-2026-09-23-08') {
     throw new InputError('Unsupported parity contract/task/epoch/adapter');
   }
   sha(input.candidateSha, 'candidateSha');
+  for (const ref of array(input.executionAdapter, 'executionAdapter')) parseReference(ref, 'executionAdapter');
   parseReference(input.contract, 'contract', true); parseReference(input.fixtures, 'fixtures');
   const owners = object(input.owners, 'owners');
   fields(owners, ownerNames, 'owners');
@@ -73,7 +96,6 @@ export function parseFixtures(raw: unknown): Obj {
       const values = object(expected[owner], `expected.${owner}`);
       fields(values, requiredFields[owner], `expected.${owner}`);
       for (const field of requiredFields[owner]) {
-        if (fixture.family === 'conversion-magic' && owner === 'runtime' && field === 'routeCandidate') continue;
         if (field === 'compileOutcome' ? !['ACCEPT', 'REJECT'].includes(values[field]) : typeof values[field] !== 'boolean') throw new InputError(`Missing/invalid expectation ${owner}.${field}`);
       }
     }
@@ -97,7 +119,6 @@ export function compareObservations(fixtures: Obj, results: Obj[], issues: Issue
       issues.push({ code: 'EXECUTION_FIXTURE_DIGEST_MISMATCH', path: fixture.id, message: 'Receipt does not match executed fixture' }); continue;
     }
     for (const owner of ownerNames) for (const field of requiredFields[owner]) {
-      if (owner === 'runtime' && fixture.family === 'conversion-magic' && field === 'routeCandidate') continue;
       const actual = result.observations[owner]?.[field];
       if (actual === null || actual === undefined) {
         issues.push({ code: 'REQUIRED_OBSERVATION_NOT_EVALUATED', path: `${fixture.id}:${owner}.${field}`, message: result.observations[owner]?.unavailable?.[field] ?? 'Comparable API unavailable' });
@@ -111,6 +132,8 @@ export function compareObservations(fixtures: Obj, results: Obj[], issues: Issue
 export async function runParity(root: string, raw: unknown, candidate: string, inputSha256: string) {
   const input = parseParityInput(raw); sha(candidate, '--candidate');
   const issues: Issue[] = [];
+  const adapter = verifyAdapterClosure(root, input.executionAdapter, issues);
+  if (!ancestor(root, candidate, adapter.commit)) issues.push({ code: 'EXECUTION_ADAPTER_LINEAGE_FAILED', path: adapter.commit, message: 'Adapter must descend from tested candidate' });
   const contract = parseReference(input.contract, 'contract', true);
   readReference(root, contract, issues);
   if (contract.commit !== 'e65503e601d7a3a4d1265d87a09484cb8295f2c2' || contract.path !== 'docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md' || contract.section !== '## phase3:contract-parity') {
@@ -128,7 +151,7 @@ export async function runParity(root: string, raw: unknown, candidate: string, i
     if (ref.commit !== candidate) issues.push({ code: 'FIXTURE_SOURCE_STALE', path: ref.path, message: 'Canonical references must use tested candidate' });
   }
   const premiseSha256 = hash(`${JSON.stringify({ contractId: input.contractId, contractVersion: input.contractVersion,
-    adapterVersion: input.adapterVersion, candidateSha: candidate, contract, fixtures: fixtureRef, owners: input.owners })}\n`);
+    adapterVersion: input.adapterVersion, executionAdapter: input.executionAdapter, candidateSha: candidate, contract, fixtures: fixtureRef, owners: input.owners })}\n`);
   if (input.expectationReview.state === 'PENDING') issues.push({ code: 'EXPECTATIONS_NOT_INDEPENDENTLY_REVIEWED', path: 'expectationReview', message: 'Agreement is not an acceptance premise' });
   else {
     const ref = parseReference(input.expectationReview.artifact, 'expectation artifact');
@@ -145,9 +168,9 @@ export async function runParity(root: string, raw: unknown, candidate: string, i
   }
   let results: Obj[] = [];
   const sourceObjects: Record<string, string> = {};
-  const blockingInput = issues.some(issue => !['EXPECTATIONS_NOT_INDEPENDENTLY_REVIEWED', 'EXPECTATION_REVIEW_BINDING_FAILED', 'REFERENCE_BINDING_FAILED'].includes(issue.code)) || !fixtures || !fixtureBytes;
+  const blockingInput = issues.some(issue => !['EXPECTATIONS_NOT_INDEPENDENTLY_REVIEWED', 'EXPECTATION_REVIEW_BINDING_FAILED'].includes(issue.code)) || !fixtures || !fixtureBytes;
   if (!blockingInput && fixtures && fixtureBytes) {
-    for (const path of ['packages', 'scripts/phase3-coverage.ts']) {
+    for (const path of ['packages', 'scripts/phase3-coverage.ts', 'package-lock.json', 'tsconfig.json']) {
       const bound = gitText(root, ['rev-parse', `${candidate}:${path}`]);
       sourceObjects[path] = bound;
       if (gitText(root, ['rev-parse', `HEAD:${path}`]) !== bound || gitText(root, ['diff', 'HEAD', '--', path]) || gitText(root, ['ls-files', '--others', '--exclude-standard', '--', path])) {
@@ -160,13 +183,23 @@ export async function runParity(root: string, raw: unknown, candidate: string, i
       execFileSync('git', ['clone', '--shared', '--no-checkout', '--', root, temporary], { stdio: ['ignore', 'pipe', 'pipe'] });
       execFileSync('git', ['checkout', '--detach', candidate], { cwd: temporary, stdio: ['ignore', 'pipe', 'pipe'] });
       symlinkSync(resolve(root, 'node_modules'), join(temporary, 'node_modules'), 'junction');
+      const adapterBinding = { commit: adapter.commit, files: adapter.files.map(({ ref }) => ({ path: ref.path, sha256: ref.sha256 })) };
+      const adapterRoot = join(temporary, 'execution-adapter');
+      for (const { ref, bytes } of adapter.files) {
+        const path = join(adapterRoot, ref.path); mkdirSync(dirname(path), { recursive: true }); writeFileSync(path, bytes!);
+      }
+      const bindingPath = join(adapterRoot, 'binding.json'); writeFileSync(bindingPath, JSON.stringify(adapterBinding));
+      const loaderPath = resolve(root, 'node_modules/tsx/dist/loader.mjs');
+      const loaderSha256 = hash(readFileSync(loaderPath));
       const fixtureFile = join(temporary, 'executed-fixtures.json'); writeFileSync(fixtureFile, fixtureBytes);
-      const execution = execFileSync(process.execPath, ['--import', pathToFileURL(resolve(root, 'node_modules/tsx/dist/loader.mjs')).href,
-        resolve(root, 'scripts/phase3-contract-parity-worker.ts'), '--snapshot', temporary, fixtureFile], {
+      const execution = execFileSync(process.execPath, ['--import', pathToFileURL(loaderPath).href,
+        join(adapterRoot, 'scripts/phase3-contract-parity-worker.ts'), '--snapshot', temporary, fixtureFile, bindingPath], {
         cwd: root, timeout: 120_000, maxBuffer: 32 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'],
       });
       const receipt = json(execution, 'execution receipt');
       if (receipt.schemaVersion !== 'fd-p3-parity-execution-v1') throw new Error('Unexpected execution receipt');
+      if (JSON.stringify(receipt.executionAdapter) !== JSON.stringify(adapterBinding) || hash(readFileSync(loaderPath)) !== loaderSha256) throw new Error('Execution adapter/loader receipt binding mismatch');
+      sourceObjects.executionLoaderSha256 = loaderSha256;
       results = array(receipt.results, 'execution results');
       compareObservations(fixtures, results, issues);
     } finally {
@@ -176,7 +209,7 @@ export async function runParity(root: string, raw: unknown, candidate: string, i
   }
   return { schemaVersion: 'fd-p3-contract-parity-result-v1', taskId: input.taskId, controlEpoch: input.controlEpoch,
     status: issues.length ? 'FAIL' : 'PASS', testedCandidateSha: candidate, inputSha256, premiseSha256,
-    fixtureBinding: fixtureRef, sourceObjects, executionPerformed: results.length > 0,
+    fixtureBinding: fixtureRef, executionAdapter: { commit: adapter.commit, files: adapter.files.map(({ ref }) => ref) }, sourceObjects, executionPerformed: results.length > 0,
     executionMethod: results.length ? 'ISOLATED_SHARED_GIT_CLONE_REAL_API_SUBPROCESS' : 'NOT_EXECUTED_INPUT_REJECTED',
     dependencyProvider: 'LOCAL_NODE_MODULES; ALL_PACKAGE_SOURCE_AND_COVERAGE_GIT_OBJECTS_MATCH_CANDIDATE',
     results, issues, acceptanceGranted: false, effectCorrectnessVerified: false, fallbackClosureVerified: false, browserAcceptanceVerified: false };

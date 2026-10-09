@@ -2,6 +2,7 @@ import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { changedPaths } from './phase3-preflight';
+import { adapterClosurePaths } from './phase3-contract-parity';
 import { git, hash, parseArgs, sha } from './phase3-tooling-common';
 
 export const combinationSha = '9eaa0e0c417486adf7b0449e3d32fb90b7d362f9';
@@ -26,7 +27,7 @@ export function buildFixtures(root: string) {
   const fixture = (seed: number, id: string, category: string, routeCandidate: boolean, eligible: boolean, compilation: string, mutations: any[] = [], renameIdentity?: any) => ({
     id, ...seeds[seed], category, mutations, ...(renameIdentity ? { renameIdentity } : {}),
     expected: {
-      runtime: seed === 0 ? { routeCandidate, exactEligible: eligible } : { exactEligible: eligible },
+      runtime: { routeCandidate, exactEligible: eligible },
       compiler: { compileOutcome: compilation },
       inventory: { routeCandidate, exactEligible: eligible }, coverage: { exactEligible: eligible },
     },
@@ -76,11 +77,12 @@ export function buildTaskInput(root: string) {
   };
 }
 
-export function buildParityInput(root: string, fixtureCommit: string) {
+export function buildParityInput(root: string, fixtureCommit: string, adapterCommit = fixtureCommit) {
   sha(fixtureCommit, '--fixture-commit');
   return {
     schemaVersion: 'fd-p3-contract-parity-v1', taskId: 'P3-E08-B11-CONTRACT-PARITY', controlEpoch: 'FD-P3-2026-09-23-08',
     contractId: 'B11_RESULT_BINDING_DIAGNOSTIC_V1', contractVersion: 1, adapterVersion: 'b11-api-observations-v1', candidateSha: combinationSha,
+    executionAdapter: adapterClosurePaths.map(path => reference(root, adapterCommit, path)),
     contract: reference(root, publicationSha, 'docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md', '## phase3:contract-parity'),
     fixtures: reference(root, fixtureCommit, fixturePath),
     owners: {
@@ -98,8 +100,8 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   if (process.argv.includes('--fixtures-only')) {
     writeFileSync(resolve(root, fixturePath), `${JSON.stringify(buildFixtures(root), null, 2)}\n`);
   } else {
-    const args = parseArgs(process.argv.slice(2), ['--fixture-commit'], ['--fixture-commit']);
+    const args = parseArgs(process.argv.slice(2), ['--fixture-commit', '--adapter-commit'], ['--fixture-commit', '--adapter-commit']);
     writeFileSync(resolve(root, 'scripts/fixtures/phase3-b11-task-check.json'), `${JSON.stringify(buildTaskInput(root), null, 2)}\n`);
-    writeFileSync(resolve(root, 'scripts/fixtures/phase3-b11-parity-contract.json'), `${JSON.stringify(buildParityInput(root, args['--fixture-commit']), null, 2)}\n`);
+    writeFileSync(resolve(root, 'scripts/fixtures/phase3-b11-parity-contract.json'), `${JSON.stringify(buildParityInput(root, args['--fixture-commit'], args['--adapter-commit']), null, 2)}\n`);
   }
 }
