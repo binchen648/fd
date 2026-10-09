@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-E08-RP-00-A3-RECONCILIATION",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "reviewer": "github:binchen648",
+  "reviewerRole": "Reviewer A",
+  "reviewThread": "https://github.com/binchen648/fd/pull/545#issuecomment-6071767065",
+  "githubObjectId": 6071767065,
+  "candidateSha": "31e69e6251a443cd33cde29f3e2f48a82039dc55",
+  "reviewedSha": "31e69e6251a443cd33cde29f3e2f48a82039dc55",
+  "implementationSha": "98b58ec22ad8140d940c65170f9e0d3e9a8f3919",
+  "reviewDate": "2026-10-09",
+  "timezone": "Asia/Shanghai",
+  "reviewScope": "Local recount timeout repair and fail-closed evidence reconciliation only",
+  "scopedVerdict": "PASS",
+  "overallStatus": "REVIEW_RECONCILIATION_REQUIRED",
+  "conclusion": "IMPLEMENTATION_NEEDS_REVISION",
+  "promotionAcceptanceGranted": false,
+  "closedFindings": ["NEW_RECOUNT_TEST_FULL_SUITE_TIMEOUT"],
+  "priorReview": {
+    "commitSha": "d5436b77b269db2119f702a54ba7fa61ef4ad1fb",
+    "artifactPath": "docs/reviews/phase3/P3-E08-RP-00-A3-RECONCILIATION-reviewer-a.json",
+    "artifactSha256": "61197DB8CF817ADEE43959DE566F6937B0F3CEE16B5A2E13AEA19077C2753D74",
+    "historicalFailPreserved": true
+  },
+  "boundArtifacts": [
+    { "path": "artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json", "sha256": "8C5C020E6EB46E3E1B801959E5DD926D18ED412065F7DDE427F2CD203A748D44" },
+    { "path": "docs/reports/2026-10-08-p3-e08-a3-reconciliation.md", "sha256": "ABEDAB7D5BB4CCD015A51DAA6868A0CC564888D29FF9888391FA759A179B9F07" },
+    { "path": "artifacts/phase3-skill-coverage.json", "sha256": "8683CF3C41E62703593CA5508A04544A02BBF7E3EB972371073FDCAE1A16C045" }
+  ],
+  "independentVerification": {
+    "testedSha": "31e69e6251a443cd33cde29f3e2f48a82039dc55",
+    "focusedRecount": "3/3 PASS",
+    "recalculationElapsedMs": 2142,
+    "typecheck": "PASS",
+    "scopedDiffCheck": "PASS",
+    "exactParentsAndHashes": "PASS",
+    "priorValidationPreservedExactly": "PASS",
+    "priorReviewJsonPreservedExactly": "PASS",
+    "assertionsUnchanged": true,
+    "onlyTestInvocationTimeoutChanged": "5000_TO_15000_MS",
+    "fullCiRerunByReviewer": false
+  },
+  "implementerFullCiEvidence": {
+    "testedSha": "98b58ec22ad8140d940c65170f9e0d3e9a8f3919",
+    "exitCode": 1,
+    "filesPassed": 183,
+    "filesFailed": 1,
+    "testsPassed": 1411,
+    "testsFailed": 1,
+    "scopedRecountPassed": true,
+    "recalculationElapsedMs": 7700,
+    "remainingFailure": "packages/rules/tests/match-session.test.ts:313; 6669ms against 5000ms; unchanged inherited test"
+  },
+  "accounting": { "coverageCreditDelta": 0, "migrationCreditDelta": 0, "denominatorDelta": 0 },
+  "nextOwner": "Planner",
+  "nextAction": "Dispose inherited MatchSession CI timeout before overall reconciliation acceptance; no A3 assembly or merge granted.",
+  "retainedGates": { "gateC": "NOT_VERIFIED", "finalPromotionHeadChecks": "NOT_VERIFIED", "longTermCIStability": "NOT_VERIFIED", "sourceAssets": "HISTORICAL_93_MISSING_IMAGE_NOT_REAUDITED" }
+}
