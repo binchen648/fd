@@ -3,7 +3,7 @@
   "controlEpoch": "FD-P3-2026-09-23-08",
   "taskId": "P3-E08-RP-00-A3-RECONCILIATION",
   "owner": "Codex A",
-  "status": "REVIEW_RECONCILIATION_REQUIRED",
+  "status": "READY_FOR_REVIEW",
   "main": {
     "observedMainSha": "a7751c3fa51895fd3a401721b1e926b90e016862",
     "firstParent": "4b8eeeeb4edea07e2f5b6ad608534d78b5d61a27",
@@ -81,88 +81,307 @@
     "canonicalNumeratorChanged": false
   },
   "validation": {
-    "status": "AUTHORIZED_MATCHSESSION_AND_RECOUNT_PASS_FULL_CI_BLOCKED",
-    "testedImplementationSha": "482d54bde108ffd54015a025044f58eccd8d722f",
+    "status": "PASS_SCOPED_LOCAL_VERIFICATION_PENDING_OVERALL_REVIEW",
+    "testedImplementationSha": "513c390b8f2061a9638052bf9fa0264b457baf4f",
     "finalCarrierBindingPolicy": "CARRIER_SHA_RETURNED_EXTERNALLY; EVIDENCE_ONLY_DESCENDANT_OF_TESTED_IMPLEMENTATION",
     "repairDate": "2026-10-09",
     "timezone": "Asia/Shanghai",
     "plannerAuthorization": {
-      "commit": "ca6d57b0c44c944e2e3d99d3bf74fed297c0d1a7",
-      "path": "docs/agents/P3-E08-A3-MATCHSESSION-TIMEOUT-DISPOSITION.md",
-      "additionalAllowedPath": "packages/rules/tests/match-session.test.ts",
-      "change": "NAMED_AUTHENTICATION_TEST_LOCAL_TIMEOUT_5000_TO_15000_MS_ONLY"
+      "commit": "6fefcb4d9df104765f66f57a85305d3de3a4f5b8",
+      "path": "docs/agents/P3-E08-A3-REFERENCE-TIMEOUT-DISPOSITION.md",
+      "additionalAllowedPath": "scripts/tests/phase3-reference-lock.test.ts",
+      "change": "NAMED_REFERENCE_VERIFICATION_TEST_LOCAL_TIMEOUT_5000_TO_15000_MS_ONLY",
+      "noMoreAutomaticTimeoutAmendments": true
     },
     "writerVerification": {
-      "method": "Planner Epoch 08 reservation search plus git status --porcelain for the exact path across accessible registered worktrees",
-      "accessibleWorktreesChecked": 111,
+      "method": "Epoch 08 reservation search plus exact-path git status across accessible registered worktrees",
+      "accessibleWorktreesChecked": 112,
       "competingDirtyFiles": 0,
       "competingEpoch08ReservationsFound": 0,
       "scope": "LOCAL_VISIBLE_CHECK_AT_START_NOT_GLOBAL_AGENT_LIVENESS_PROOF"
     },
     "repairScope": {
-      "path": "packages/rules/tests/match-session.test.ts",
-      "testName": "authenticates gameplay-affecting MatchSession fields outside GameState",
+      "path": "scripts/tests/phase3-reference-lock.test.ts",
+      "testName": "verifies repository, exact commit, clean checkout, required files, and SHA-256 digests",
       "change": "TEST_LEVEL_TIMEOUT_5000_TO_15000_MS",
-      "seed": "UNCHANGED",
-      "oneRoundSimulation": "UNCHANGED",
-      "snapshotTampering": "UNCHANGED",
-      "restorationErrors": "UNCHANGED",
-      "assertions": "UNCHANGED",
+      "fixtureGitCommands": "UNCHANGED",
+      "fixtureCommit": "UNCHANGED",
+      "cleanCheckoutVerification": "UNCHANGED",
+      "digestAndIdentityAssertions": "UNCHANGED",
       "globalTimeoutChanged": false,
       "workerSettingsChanged": false,
+      "referenceVerifierImplementationChanged": false,
       "runtimeChanged": false
     },
     "commands": [
       {
-        "command": "npx vitest run packages/rules/tests/match-session.test.ts scripts/tests/phase3-e06-post-merge-recount.test.ts",
+        "command": "npx vitest run scripts/tests/phase3-reference-lock.test.ts packages/rules/tests/match-session.test.ts scripts/tests/phase3-e06-post-merge-recount.test.ts --reporter=default --reporter=json --outputFile=C:/Users/chenshang/AppData/Local/Temp/fd-a3-reference-focused-513c390.json",
         "exitCode": 0,
-        "testedSha": "482d54bde108ffd54015a025044f58eccd8d722f",
-        "result": "2 files / 33 tests PASS",
-        "durationSeconds": 14.54,
-        "authenticationMs": 2381,
-        "recountRecalculationMs": 2160
+        "testedSha": "513c390b8f2061a9638052bf9fa0264b457baf4f",
+        "result": "3 files / 41 tests PASS",
+        "durationSeconds": 15.82,
+        "reporterEvidence": {
+          "rawDiagnosticSha256": "6048A61E97595342A3FE3DA2B8E383BCF2EBF79B6B2CD336301C0AFAE75F170D",
+          "rawDiagnosticLocation": "LOCAL_TEMP_NOT_REQUIRED_FOR_REPRODUCTION",
+          "success": true,
+          "files": 3,
+          "passedFiles": 3,
+          "tests": 41,
+          "passed": 41,
+          "failed": 0,
+          "scopedTimings": [
+            {
+              "file": "scripts/tests/phase3-e06-post-merge-recount.test.ts",
+              "name": "P3-E06 post-merge setup/create-to-skill recount recalculates coverage and binds current main without rewriting historical failures or credit",
+              "status": "passed",
+              "durationMs": 2308.9593999999997
+            },
+            {
+              "file": "scripts/tests/phase3-e06-post-merge-recount.test.ts",
+              "name": "P3-E06 post-merge setup/create-to-skill recount requires full-history CI checkout and proves shallow recovery before ancestry checks",
+              "status": "passed",
+              "durationMs": 2509.2486
+            },
+            {
+              "file": "scripts/tests/phase3-reference-lock.test.ts",
+              "name": "Phase 3 locked Reference verifier verifies repository, exact commit, clean checkout, required files, and SHA-256 digests",
+              "status": "passed",
+              "durationMs": 1134.7907999999998
+            },
+            {
+              "file": "packages/rules/tests/match-session.test.ts",
+              "name": "MatchSession semi-auto runtime authenticates gameplay-affecting MatchSession fields outside GameState",
+              "status": "passed",
+              "durationMs": 2629.6558000000005
+            }
+          ],
+          "slowestTests": [
+            {
+              "file": "packages/rules/tests/match-session.test.ts",
+              "name": "MatchSession semi-auto runtime runs eleven rounds or pauses with an explicit handled reason",
+              "status": "passed",
+              "durationMs": 4327.1908
+            },
+            {
+              "file": "packages/rules/tests/match-session.test.ts",
+              "name": "MatchSession semi-auto runtime authenticates gameplay-affecting MatchSession fields outside GameState",
+              "status": "passed",
+              "durationMs": 2629.6558000000005
+            },
+            {
+              "file": "scripts/tests/phase3-e06-post-merge-recount.test.ts",
+              "name": "P3-E06 post-merge setup/create-to-skill recount requires full-history CI checkout and proves shallow recovery before ancestry checks",
+              "status": "passed",
+              "durationMs": 2509.2486
+            },
+            {
+              "file": "scripts/tests/phase3-e06-post-merge-recount.test.ts",
+              "name": "P3-E06 post-merge setup/create-to-skill recount recalculates coverage and binds current main without rewriting historical failures or credit",
+              "status": "passed",
+              "durationMs": 2308.9593999999997
+            },
+            {
+              "file": "scripts/tests/phase3-reference-lock.test.ts",
+              "name": "Phase 3 locked Reference verifier locks the transitive local TypeScript input closure used by confirmed overrides",
+              "status": "passed",
+              "durationMs": 1487.0530999999992
+            },
+            {
+              "file": "packages/rules/tests/match-session.test.ts",
+              "name": "MatchSession semi-auto runtime runs a three-round event smoke with revealable battle breakdowns",
+              "status": "passed",
+              "durationMs": 1433.8343999999997
+            },
+            {
+              "file": "scripts/tests/phase3-reference-lock.test.ts",
+              "name": "Phase 3 locked Reference verifier fails closed before intake when a local confirmed-override dependency is missing",
+              "status": "passed",
+              "durationMs": 1329.6195000000007
+            },
+            {
+              "file": "scripts/tests/phase3-reference-lock.test.ts",
+              "name": "Phase 3 locked Reference verifier verifies repository, exact commit, clean checkout, required files, and SHA-256 digests",
+              "status": "passed",
+              "durationMs": 1134.7907999999998
+            },
+            {
+              "file": "scripts/tests/phase3-reference-lock.test.ts",
+              "name": "Phase 3 locked Reference verifier rejects a dirty checkout",
+              "status": "passed",
+              "durationMs": 1043.1732999999995
+            },
+            {
+              "file": "packages/rules/tests/match-session.test.ts",
+              "name": "MatchSession semi-auto runtime runs one semi-auto round through the same dispatch path",
+              "status": "passed",
+              "durationMs": 1009.5971000000004
+            },
+            {
+              "file": "scripts/tests/phase3-reference-lock.test.ts",
+              "name": "Phase 3 locked Reference verifier rejects missing required Reference inputs",
+              "status": "passed",
+              "durationMs": 936.4894999999997
+            },
+            {
+              "file": "scripts/tests/phase3-reference-lock.test.ts",
+              "name": "Phase 3 locked Reference verifier returns portable metadata without leaking the local absolute Reference path",
+              "status": "passed",
+              "durationMs": 927.8955999999998
+            }
+          ]
+        }
       },
       {
         "command": "npm run typecheck",
         "exitCode": 0,
-        "testedSha": "482d54bde108ffd54015a025044f58eccd8d722f",
+        "testedSha": "513c390b8f2061a9638052bf9fa0264b457baf4f",
         "result": "PASS"
       },
       {
-        "command": "npm run test:ci",
-        "exitCode": 1,
-        "testedSha": "482d54bde108ffd54015a025044f58eccd8d722f",
-        "result": "183 files passed / 1 failed; 1411 tests passed / 1 failed",
-        "durationSeconds": 30.93,
-        "matchSession": {
-          "testsPassed": 30,
-          "authenticationMs": 6799
-        },
-        "recount": {
-          "testsPassed": 3,
-          "recalculationMs": 8336,
-          "shallowRecoveryMs": 6279
-        },
-        "failures": [
-          {
-            "path": "scripts/tests/phase3-reference-lock.test.ts",
-            "line": 61,
-            "testName": "verifies repository, exact commit, clean checkout, required files, and SHA-256 digests",
-            "reason": "Test timed out in 5000ms",
-            "elapsedMs": 5179,
-            "origin": "UNCHANGED_TEST_NEWLY_OBSERVED_TIMEOUT",
-            "nextOwner": "Planner",
-            "repairAuthorized": false
-          }
-        ]
+        "command": "npm run test:ci -- --reporter=default --reporter=json --outputFile=C:/Users/chenshang/AppData/Local/Temp/fd-a3-reference-full-ci-513c390.json",
+        "exitCode": 0,
+        "testedSha": "513c390b8f2061a9638052bf9fa0264b457baf4f",
+        "result": "184 files / 1412 tests PASS",
+        "durationSeconds": 30.42,
+        "fullSuiteAttemptCountThisDisposition": 1,
+        "scheduling": "DEFAULT_UNCHANGED; REPORTER_FLAGS_ONLY",
+        "reporterEvidence": {
+          "rawDiagnosticSha256": "6E5E8E5AFA1949F4A4D457FE091397E795DBDFAA845C02831BEFD5D7B8920007",
+          "rawDiagnosticLocation": "LOCAL_TEMP_NOT_REQUIRED_FOR_REPRODUCTION",
+          "success": true,
+          "files": 184,
+          "passedFiles": 184,
+          "tests": 1412,
+          "passed": 1412,
+          "failed": 0,
+          "scopedTimings": [
+            {
+              "file": "scripts/tests/phase3-e06-post-merge-recount.test.ts",
+              "name": "P3-E06 post-merge setup/create-to-skill recount recalculates coverage and binds current main without rewriting historical failures or credit",
+              "status": "passed",
+              "durationMs": 7541.108700000001
+            },
+            {
+              "file": "scripts/tests/phase3-e06-post-merge-recount.test.ts",
+              "name": "P3-E06 post-merge setup/create-to-skill recount requires full-history CI checkout and proves shallow recovery before ancestry checks",
+              "status": "passed",
+              "durationMs": 6085.3253
+            },
+            {
+              "file": "scripts/tests/phase3-reference-lock.test.ts",
+              "name": "Phase 3 locked Reference verifier verifies repository, exact commit, clean checkout, required files, and SHA-256 digests",
+              "status": "passed",
+              "durationMs": 3819.0049999999997
+            },
+            {
+              "file": "packages/rules/tests/match-session.test.ts",
+              "name": "MatchSession semi-auto runtime authenticates gameplay-affecting MatchSession fields outside GameState",
+              "status": "passed",
+              "durationMs": 6895.416800000001
+            }
+          ],
+          "slowestTests": [
+            {
+              "file": "scripts/tests/phase3-e06-post-merge-recount.test.ts",
+              "name": "P3-E06 post-merge setup/create-to-skill recount recalculates coverage and binds current main without rewriting historical failures or credit",
+              "status": "passed",
+              "durationMs": 7541.108700000001
+            },
+            {
+              "file": "packages/rules/tests/match-session.test.ts",
+              "name": "MatchSession semi-auto runtime authenticates gameplay-affecting MatchSession fields outside GameState",
+              "status": "passed",
+              "durationMs": 6895.416800000001
+            },
+            {
+              "file": "scripts/tests/phase3-e06-post-merge-recount.test.ts",
+              "name": "P3-E06 post-merge setup/create-to-skill recount requires full-history CI checkout and proves shallow recovery before ancestry checks",
+              "status": "passed",
+              "durationMs": 6085.3253
+            },
+            {
+              "file": "packages/rules/tests/regression/complex-skills-regression.test.ts",
+              "name": "complex master and session regressions keeps event and situation modifier sources in three-round MatchSession battle breakdown logs",
+              "status": "passed",
+              "durationMs": 6061.738199999999
+            },
+            {
+              "file": "packages/rules/tests/match-session.test.ts",
+              "name": "MatchSession semi-auto runtime runs eleven rounds or pauses with an explicit handled reason",
+              "status": "passed",
+              "durationMs": 4310.829699999998
+            },
+            {
+              "file": "scripts/tests/phase3-full-roster-inventory.test.ts",
+              "name": "Phase 3 full-roster identity inventory a checkout that passes FS00 verification is directly consumable by FS01 intake",
+              "status": "passed",
+              "durationMs": 4219.5363
+            },
+            {
+              "file": "scripts/tests/phase3-reference-lock.test.ts",
+              "name": "Phase 3 locked Reference verifier locks the transitive local TypeScript input closure used by confirmed overrides",
+              "status": "passed",
+              "durationMs": 3822.304899999999
+            },
+            {
+              "file": "scripts/tests/phase3-reference-lock.test.ts",
+              "name": "Phase 3 locked Reference verifier verifies repository, exact commit, clean checkout, required files, and SHA-256 digests",
+              "status": "passed",
+              "durationMs": 3819.0049999999997
+            },
+            {
+              "file": "packages/rules/tests/match-session.test.ts",
+              "name": "MatchSession semi-auto runtime runs a three-round event smoke with revealable battle breakdowns",
+              "status": "passed",
+              "durationMs": 3778.8017999999975
+            },
+            {
+              "file": "scripts/tests/phase3-reference-lock.test.ts",
+              "name": "Phase 3 locked Reference verifier rejects the wrong commit",
+              "status": "passed",
+              "durationMs": 3280.1293000000005
+            },
+            {
+              "file": "scripts/tests/phase3-reference-lock.test.ts",
+              "name": "Phase 3 locked Reference verifier rejects a dirty checkout",
+              "status": "passed",
+              "durationMs": 2981.543100000001
+            },
+            {
+              "file": "packages/rules/tests/match-session.test.ts",
+              "name": "MatchSession semi-auto runtime runs one semi-auto round through the same dispatch path",
+              "status": "passed",
+              "durationMs": 2942.1838
+            }
+          ]
+        }
       },
       {
-        "command": "git diff --check 31e69e6251a443cd33cde29f3e2f48a82039dc55..HEAD",
+        "command": "git diff --check 18846c4744226dfe1ebe88b28bd64768afab67f9..HEAD",
         "exitCode": 0,
-        "testedSha": "482d54bde108ffd54015a025044f58eccd8d722f",
-        "result": "PASS; final carrier scope checked separately"
+        "testedSha": "513c390b8f2061a9638052bf9fa0264b457baf4f",
+        "result": "PASS; final carrier checked separately"
       }
     ],
+    "environment": {
+      "node": "v24.13.1",
+      "npm": "11.8.0",
+      "git": "2.49.0.windows.1",
+      "vitest": "3.2.7",
+      "platform": "win32",
+      "arch": "x64",
+      "cpuModel": "AMD Ryzen 9 7845HX with Radeon Graphics",
+      "logicalCpuCount": 24,
+      "availableParallelism": 24,
+      "totalMemoryBytes": 16294907904,
+      "freeMemoryBytesBeforeRun": 3449143296,
+      "memoryScope": "SINGLE_PRE_RUN_SNAPSHOT_NOT_PEAK_MEASUREMENT",
+      "workerEnvironmentOverrides": {},
+      "workerConfigOverrides": "NONE; vitest.config.ts sets include/environment/globals only",
+      "effectiveWorkerProcessCount": "NOT_MEASURED",
+      "poolConfiguration": "VITEST_DEFAULT_NOT_OVERRIDDEN"
+    },
+    "timingInterpretation": "Full-suite scoped tests slower than focused; contention plausible, not confirmed general root cause. Local timeout changes do not prove absence of performance regressions or long-term stability.",
     "reusedExactInputEvidence": {
       "mode": "REFERENCE_PRIOR_RUN_NOT_FRESH_RUN",
       "testedSha": "98b58ec22ad8140d940c65170f9e0d3e9a8f3919",
@@ -182,13 +401,14 @@
       "coverage": "UNCHANGED_HASH; INDEPENDENT_FULL_OBJECT_CLASSIFIER_AND_COMPILER_VERIFICATION_PASSED_IN_FOCUSED_AND_FULL_CI"
     },
     "coverageArtifactUnchanged": true,
+    "coverageVerification": "INDEPENDENT_CLASSIFIER_COMPILER_FULL_OBJECT_HASH_AND_ANCESTRY_ASSERTIONS_PASS_IN_FRESH_FOCUSED_AND_FULL_SUITE",
     "requiredSourceAssets": "BLOCKED_93_MISSING_IMAGE",
     "missingImageCountSource": "RETAINED_HISTORICAL_NOT_REAUDITED",
     "gateC": "NOT_VERIFIED",
     "releaseGate": "BLOCKED_MISSING_IMAGE_ASSETS",
     "longTermCIStability": "NOT_VERIFIED",
     "runtimeSemanticDelta": "NONE",
-    "nextAction": "Reviewer A may review the exact authorized MatchSession/recount evidence; Planner must separately dispose the new unchanged reference-lock timeout. No READY_FOR_REVIEW, assembly or promotion claim."
+    "nextAction": "Reviewer A overall exact-SHA review with independent full CI; no intermediate scoped review. Codex I waits for overall acceptance before sole PR #545 assembly."
   },
   "nonClaims": [
     "This recount does not add migration or main coverage credit.",
@@ -197,8 +417,7 @@
     "The three setup consumers are runtime-promotion status only; canonical 111/944 remains unchanged.",
     "READY_FOR_REVIEW is a fresh evidence candidate, not independent Reviewer acceptance or promotion.",
     "Historical runtimePromotionDelta=3 is not this reconciliation's delta; all reconciliation deltas are zero.",
-    "The fresh default full CI run failed at unchanged MatchSession test:313; no full CI PASS or promotion readiness is claimed.",
-    "The authorized MatchSession authentication test now passes; default full CI still fails at unchanged phase3-reference-lock.test.ts:61. No overall reconciliation acceptance is claimed."
+    "Fresh producer full CI passes, but no independent overall Reviewer acceptance, GitHub required-check PASS, assembly authorization or promotion is granted by this task."
   ],
   "historicalEvidence": {
     "sourceCommit": "b6375c4889009497e7dd9c98e83c1d2ce0da10d9",
@@ -294,11 +513,12 @@
     ],
     "workflowAmendment": "TEST_CHECKOUT_FETCH_DEPTH_0_ONLY",
     "compatibilityAuthority": "PROMOTION_PREFLIGHT_POLICY",
-    "freshReviewerVerdict": "NOT_STARTED_FOR_MATCHSESSION_DISPOSITION",
+    "freshReviewerVerdict": "NOT_STARTED_FOR_COMPLETE_CARRIER",
     "gitHubRequiredChecks": "NOT_RUN_ON_FRESH_PROMOTION_HEAD",
     "priorCarrierReviewerVerdict": "SCOPED_PASS_OVERALL_RECONCILIATION_REQUIRED",
-    "plannerDispositionRequired": "UNCHANGED_REFERENCE_LOCK_DEFAULT_CI_TIMEOUT",
-    "matchSessionDispositionCommit": "ca6d57b0c44c944e2e3d99d3bf74fed297c0d1a7"
+    "plannerDispositionRequired": "NONE_FROM_FRESH_RUN; OVERALL_REVIEW_PENDING",
+    "matchSessionDispositionCommit": "ca6d57b0c44c944e2e3d99d3bf74fed297c0d1a7",
+    "referenceDispositionCommit": "6fefcb4d9df104765f66f57a85305d3de3a4f5b8"
   },
   "validationHistory": [
     {
@@ -484,6 +704,130 @@
         "nextAction": "Reviewer A exact-SHA review of scoped recount repair; Planner separately disposes inherited MatchSession timeout. No assembly or promotion until reconciliation accepted."
       },
       "subsequentIndependentReviewVerdict": "SCOPED_PASS_OVERALL_RECONCILIATION_REQUIRED"
+    },
+    {
+      "carrierSha": "18846c4744226dfe1ebe88b28bd64768afab67f9",
+      "validation": {
+        "status": "AUTHORIZED_MATCHSESSION_AND_RECOUNT_PASS_FULL_CI_BLOCKED",
+        "testedImplementationSha": "482d54bde108ffd54015a025044f58eccd8d722f",
+        "finalCarrierBindingPolicy": "CARRIER_SHA_RETURNED_EXTERNALLY; EVIDENCE_ONLY_DESCENDANT_OF_TESTED_IMPLEMENTATION",
+        "repairDate": "2026-10-09",
+        "timezone": "Asia/Shanghai",
+        "plannerAuthorization": {
+          "commit": "ca6d57b0c44c944e2e3d99d3bf74fed297c0d1a7",
+          "path": "docs/agents/P3-E08-A3-MATCHSESSION-TIMEOUT-DISPOSITION.md",
+          "additionalAllowedPath": "packages/rules/tests/match-session.test.ts",
+          "change": "NAMED_AUTHENTICATION_TEST_LOCAL_TIMEOUT_5000_TO_15000_MS_ONLY"
+        },
+        "writerVerification": {
+          "method": "Planner Epoch 08 reservation search plus git status --porcelain for the exact path across accessible registered worktrees",
+          "accessibleWorktreesChecked": 111,
+          "competingDirtyFiles": 0,
+          "competingEpoch08ReservationsFound": 0,
+          "scope": "LOCAL_VISIBLE_CHECK_AT_START_NOT_GLOBAL_AGENT_LIVENESS_PROOF"
+        },
+        "repairScope": {
+          "path": "packages/rules/tests/match-session.test.ts",
+          "testName": "authenticates gameplay-affecting MatchSession fields outside GameState",
+          "change": "TEST_LEVEL_TIMEOUT_5000_TO_15000_MS",
+          "seed": "UNCHANGED",
+          "oneRoundSimulation": "UNCHANGED",
+          "snapshotTampering": "UNCHANGED",
+          "restorationErrors": "UNCHANGED",
+          "assertions": "UNCHANGED",
+          "globalTimeoutChanged": false,
+          "workerSettingsChanged": false,
+          "runtimeChanged": false
+        },
+        "commands": [
+          {
+            "command": "npx vitest run packages/rules/tests/match-session.test.ts scripts/tests/phase3-e06-post-merge-recount.test.ts",
+            "exitCode": 0,
+            "testedSha": "482d54bde108ffd54015a025044f58eccd8d722f",
+            "result": "2 files / 33 tests PASS",
+            "durationSeconds": 14.54,
+            "authenticationMs": 2381,
+            "recountRecalculationMs": 2160
+          },
+          {
+            "command": "npm run typecheck",
+            "exitCode": 0,
+            "testedSha": "482d54bde108ffd54015a025044f58eccd8d722f",
+            "result": "PASS"
+          },
+          {
+            "command": "npm run test:ci",
+            "exitCode": 1,
+            "testedSha": "482d54bde108ffd54015a025044f58eccd8d722f",
+            "result": "183 files passed / 1 failed; 1411 tests passed / 1 failed",
+            "durationSeconds": 30.93,
+            "matchSession": {
+              "testsPassed": 30,
+              "authenticationMs": 6799
+            },
+            "recount": {
+              "testsPassed": 3,
+              "recalculationMs": 8336,
+              "shallowRecoveryMs": 6279
+            },
+            "failures": [
+              {
+                "path": "scripts/tests/phase3-reference-lock.test.ts",
+                "line": 61,
+                "testName": "verifies repository, exact commit, clean checkout, required files, and SHA-256 digests",
+                "reason": "Test timed out in 5000ms",
+                "elapsedMs": 5179,
+                "origin": "UNCHANGED_TEST_NEWLY_OBSERVED_TIMEOUT",
+                "nextOwner": "Planner",
+                "repairAuthorized": false
+              }
+            ]
+          },
+          {
+            "command": "git diff --check 31e69e6251a443cd33cde29f3e2f48a82039dc55..HEAD",
+            "exitCode": 0,
+            "testedSha": "482d54bde108ffd54015a025044f58eccd8d722f",
+            "result": "PASS; final carrier scope checked separately"
+          }
+        ],
+        "reusedExactInputEvidence": {
+          "mode": "REFERENCE_PRIOR_RUN_NOT_FRESH_RUN",
+          "testedSha": "98b58ec22ad8140d940c65170f9e0d3e9a8f3919",
+          "carrierSha": "31e69e6251a443cd33cde29f3e2f48a82039dc55",
+          "commands": [
+            "npm run content:validate",
+            "npm run verify:generated-content"
+          ],
+          "result": "PASS; retained prior exact tested SHA; source Git objects compared to current implementation",
+          "unchangedPaths": [
+            "data/authoring",
+            "data/packs",
+            "packages/content/src",
+            "packages/rules/src",
+            "scripts/phase3-coverage.ts"
+          ],
+          "coverage": "UNCHANGED_HASH; INDEPENDENT_FULL_OBJECT_CLASSIFIER_AND_COMPILER_VERIFICATION_PASSED_IN_FOCUSED_AND_FULL_CI"
+        },
+        "coverageArtifactUnchanged": true,
+        "requiredSourceAssets": "BLOCKED_93_MISSING_IMAGE",
+        "missingImageCountSource": "RETAINED_HISTORICAL_NOT_REAUDITED",
+        "gateC": "NOT_VERIFIED",
+        "releaseGate": "BLOCKED_MISSING_IMAGE_ASSETS",
+        "longTermCIStability": "NOT_VERIFIED",
+        "runtimeSemanticDelta": "NONE",
+        "nextAction": "Reviewer A may review the exact authorized MatchSession/recount evidence; Planner must separately dispose the new unchanged reference-lock timeout. No READY_FOR_REVIEW, assembly or promotion claim."
+      },
+      "nonClaims": [
+        "This recount does not add migration or main coverage credit.",
+        "This recount does not promote Gate A, Gate B, or Gate C globally.",
+        "This recount does not complete Phase 3, Full Roster, or Release Gate.",
+        "The three setup consumers are runtime-promotion status only; canonical 111/944 remains unchanged.",
+        "READY_FOR_REVIEW is a fresh evidence candidate, not independent Reviewer acceptance or promotion.",
+        "Historical runtimePromotionDelta=3 is not this reconciliation's delta; all reconciliation deltas are zero.",
+        "The fresh default full CI run failed at unchanged MatchSession test:313; no full CI PASS or promotion readiness is claimed.",
+        "The authorized MatchSession authentication test now passes; default full CI still fails at unchanged phase3-reference-lock.test.ts:61. No overall reconciliation acceptance is claimed."
+      ],
+      "plannerDisposition": "Reference timeout local amendment authorized; no independent acceptance inferred"
     }
   ],
   "reviewerHistory": [

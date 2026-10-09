@@ -1,4 +1,110 @@
-# A3 MatchSession Disposition - Latest Verification 2026-10-09
+# A3 Complete Reconciliation Carrier - 2026-10-09
+
+- Task: `P3-E08-RP-00-A3-RECONCILIATION`
+- Control Epoch: `FD-P3-2026-09-23-08`
+- Producer status: `READY_FOR_REVIEW`, not overall Reviewer PASS.
+- Tested implementation: `513c390b8f2061a9638052bf9fa0264b457baf4f`.
+- Immutable source main remains `fefcf4f7f5bd66ed7693889fb99391e6e7321016`.
+- Historical observed-main anchor remains `a7751c3fa51895fd3a401721b1e926b90e016862`.
+- Final evidence carrier SHA is supplied externally after commit.
+
+## Final scoped authorization
+
+Planner publication:
+`6fefcb4d9df104765f66f57a85305d3de3a4f5b8:docs/agents/P3-E08-A3-REFERENCE-TIMEOUT-DISPOSITION.md`.
+The only new test edit since `18846c4744226dfe1ebe88b28bd64768afab67f9`
+changes the named Reference verifier test's local timeout to 15000ms.
+112 accessible worktrees were checked for uncommitted changes to that path;
+none were found. The Epoch 08 reservation search found no competing reservation.
+This is a local visible check, not global agent-liveness verification.
+
+The real Git fixture operations, fixture commit, clean-checkout checks, SHA-256
+and identity assertions are unchanged. No Reference verifier implementation,
+global timeout, suite timeout, worker configuration or fixture semantics changed.
+The earlier authorized MatchSession and recount local fixes remain in lineage.
+
+## Fresh complete verification
+
+Exactly one fresh full-suite run was performed for this disposition. Reporter
+flags collect machine timings only and do not change selection, scheduling,
+worker count or timeout. Exact full command:
+`npm run test:ci -- --reporter=default --reporter=json --outputFile=C:/Users/chenshang/AppData/Local/Temp/fd-a3-reference-full-ci-513c390.json`
+
+| Command | Exit | Actual result |
+| --- | ---: | --- |
+| Reference + MatchSession + recount focused suites, default and JSON reporters | 0 | 3 files / 41 tests PASS; 15.82s |
+| npm run typecheck | 0 | PASS |
+| npm run test:ci with default and JSON reporters only | 0 | 184 files / 1412 tests PASS; 30.42s |
+| git diff --check 18846c4744226dfe1ebe88b28bd64768afab67f9..HEAD | 0 | PASS; repeated for final carrier |
+
+The exact focused command is preserved in the machine artifact. Temporary
+reporter output paths describe the actual local commands; replay may choose
+another temporary output path without changing scheduling. Raw reporter hashes,
+parsed counts, scoped durations and the slowest 12 tests are embedded in the
+recount; no test requires these local temporary files.
+
+| Scoped test | Focused ms (rounded) | Full CI ms (rounded) |
+| --- | ---: | ---: |
+| Reference Git/digest verification | 1135 | 3819 |
+| MatchSession authentication | 2630 | 6895 |
+| recount classifier/compiler verification | 2309 | 7541 |
+| recount shallow failure/recovery | 2509 | 6085 |
+
+No new timeout or assertion failure appeared. This is a successful producer
+run, not independent acceptance or a guarantee of long-term stability.
+
+## Environment and interpretation
+
+Node v24.13.1; npm 11.8.0; Git 2.49.0.windows.1; Vitest 3.2.7;
+Windows x64; AMD Ryzen 9 7845HX; 24 logical CPUs / availableParallelism=24.
+Before verification the host reported 16,294,907,904 bytes total memory and
+3,449,143,296 bytes free. This is a single snapshot, not a peak measurement.
+
+Vitest config specifies include/environment/globals only. No CI/VITEST/NODE_OPTIONS
+environment override was present; worker/pool settings stayed at defaults.
+Actual concurrent worker-process count was not instrumented.
+Focused/full timing differences are compatible with contention, but no general
+causal or runtime-performance conclusion is claimed. The policy remains:
+if another timeout appears, stop automatic amendments and diagnose resources.
+
+## Current evidence and historical retention
+
+- Recount: `artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json`
+- Current SHA-256: `AF590F7F633562A19DAE2EE6AA255029D53E8B98979979F3C3539B6435EB94D5`
+- Coverage SHA-256, unchanged:
+  `8683CF3C41E62703593CA5508A04544A02BBF7E3EB972371073FDCAE1A16C045`
+
+All prior failures remain in validationHistory/historicalEvidence, including
+the original Reviewer FAIL, the 6669ms MatchSession timeout and the 5179ms
+Reference timeout. Both immutable Reviewer artifacts remain bound under
+reviewerHistory: `d5436b77...` and `3e8af685...`. Scoped PASS on the latter
+is not interpreted as overall acceptance of this fresh carrier.
+
+Content validation and generated determinism still reference the matching-input
+PASS runs at `98b58ec22ad8140d940c65170f9e0d3e9a8f3919`; they were not rerun.
+Authoring, packs, content source, runtime source and classifier Git objects were
+compared again to this tested implementation and are unchanged. Independent
+classifier/compiler full-object, coverage hash, three consumer identities and
+historical ancestry assertions passed in this fresh focused/full run.
+
+Raw coverage stays 22/144/3/0/112; exactly three setup consumers stay on their
+accepted shared route. Canonical 111/944 and remaining 833 are retained, not
+newly credited. Coverage/migration/denominator deltas are all zero.
+Historical 93 MISSING_IMAGE blockers, Gate C NOT_VERIFIED, final-head GitHub
+checks NOT_VERIFIED and long-term stability NOT_VERIFIED remain.
+
+## Overall review handoff
+
+Fresh overall Reviewer verdict is NOT_STARTED. Deliver this single complete
+carrier directly to Reviewer A for exact-SHA overall review and independent
+full CI. No further intermediate scoped review is required. Codex I waits for
+that overall acceptance before assembling the existing final PR #545.
+No new PR, merge, migration credit, full-roster/Phase 3/Release completion is
+claimed. The historical status text below is not current readiness.
+
+## Historical disposition records (superseded by latest producer evidence)
+
+## A3 MatchSession Disposition - Historical Verification 2026-10-09
 
 - Task: `P3-E08-RP-00-A3-RECONCILIATION`
 - Control Epoch: `FD-P3-2026-09-23-08`
