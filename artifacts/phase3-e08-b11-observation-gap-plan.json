@@ -1,0 +1,657 @@
+{
+  "schemaVersion": "fd-p3-b11-observation-gap-plan-v1",
+  "taskId": "P3-E08-B11-OBSERVATION-GAP-DECOMPOSITION",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "reviewedCarrier": "32eb054f49e2413d2f9891d6edbd665d7eb3c154",
+  "testedCombinationSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+  "sources": {
+    "reviewer": {
+      "commit": "75ce895c91f8af2ddd25b3c4fbb546bf107d3007",
+      "path": "docs/reviews/phase3/P3-E08-B11-tooling-repair-reviewer-a.json",
+      "sha256": "C409D84F52720146E42F4DFB919DB30417FB1B8A96EAE7543863F97A472B1FE4",
+      "acceptedScope": "TWO_PRIOR_TOOLING_BLOCKER_REPAIRS_ONLY"
+    },
+    "parity": {
+      "commit": "32eb054f49e2413d2f9891d6edbd665d7eb3c154",
+      "path": "artifacts/phase3-e08-b11-tooling-parity-review-fix.json",
+      "sha256": "3882243E538B542D62772A932130EC8231186DE619A9E460B6447B211AF694EA"
+    },
+    "fixtures": {
+      "commit": "b5ef0626c5f373658c7b0ef0208f5cfda91f1a6e",
+      "path": "scripts/fixtures/phase3-b11-parity-fixtures.json",
+      "sha256": "0757970801F81178069CA7DF4423985180130C220D486871FFAFE137C0929A46"
+    }
+  },
+  "summary": {
+    "missingObservations": 34,
+    "fixtureCases": 10,
+    "canonicalConsumers": 2,
+    "ownerCounts": {
+      "B": 4,
+      "A": 30
+    },
+    "distinctApiTasks": 3,
+    "pendingFixtureReview": 1
+  },
+  "groups": [
+    {
+      "field": "runtime.routeCandidate",
+      "owner": "Codex B",
+      "count": 4,
+      "task": "B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API",
+      "smallestRepair": "Expose the existing shared structural ownership classifier as a read-only API; preserve routing/primitive behavior. If ownership semantics must change, stop and request a separately scoped runtime contract.",
+      "reviewer": "Reviewer B",
+      "dependencies": [],
+      "meaning": "Structural ownership is distinct from exact eligibility. Owned malformed input must not masquerade as outside-scope.",
+      "state": "PROPOSED_OWNER_HANDOFF_NOT_DISPATCHED",
+      "observations": [
+        {
+          "fixtureId": "conversion-outside-advance",
+          "family": "conversion-magic",
+          "category": "outside-scope",
+          "canonicalSource": {
+            "archiveId": "master.irisviel",
+            "cardId": "master.irisviel.skill.conversion-magic",
+            "abilityId": "conversion-magic.preparation",
+            "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+          },
+          "actualCardId": "master.irisviel.skill.conversion-magic",
+          "actualAbilityId": "conversion-magic.preparation",
+          "issuePath": "conversion-outside-advance:runtime.routeCandidate",
+          "reason": "No exported structural routeCandidate API for Conversion Magic; private helper not copied"
+        },
+        {
+          "fixtureId": "conversion-positive",
+          "family": "conversion-magic",
+          "category": "positive",
+          "canonicalSource": {
+            "archiveId": "master.irisviel",
+            "cardId": "master.irisviel.skill.conversion-magic",
+            "abilityId": "conversion-magic.preparation",
+            "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+          },
+          "actualCardId": "master.irisviel.skill.conversion-magic",
+          "actualAbilityId": "conversion-magic.preparation",
+          "issuePath": "conversion-positive:runtime.routeCandidate",
+          "reason": "No exported structural routeCandidate API for Conversion Magic; private helper not copied"
+        },
+        {
+          "fixtureId": "conversion-renamed-identities",
+          "family": "conversion-magic",
+          "category": "identity-variation",
+          "canonicalSource": {
+            "archiveId": "master.irisviel",
+            "cardId": "master.irisviel.skill.conversion-magic",
+            "abilityId": "conversion-magic.preparation",
+            "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+          },
+          "actualCardId": "diagnostic.conversion.source",
+          "actualAbilityId": "diagnostic.conversion.binding",
+          "issuePath": "conversion-renamed-identities:runtime.routeCandidate",
+          "reason": "No exported structural routeCandidate API for Conversion Magic; private helper not copied"
+        },
+        {
+          "fixtureId": "conversion-unknown-binding",
+          "family": "conversion-magic",
+          "category": "owned-malformed",
+          "canonicalSource": {
+            "archiveId": "master.irisviel",
+            "cardId": "master.irisviel.skill.conversion-magic",
+            "abilityId": "conversion-magic.preparation",
+            "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+          },
+          "actualCardId": "master.irisviel.skill.conversion-magic",
+          "actualAbilityId": "conversion-magic.preparation",
+          "issuePath": "conversion-unknown-binding:runtime.routeCandidate",
+          "reason": "No exported structural routeCandidate API for Conversion Magic; private helper not copied"
+        }
+      ]
+    },
+    {
+      "field": "inventory.routeCandidate",
+      "owner": "Codex A",
+      "count": 10,
+      "task": "B11_INVENTORY_OBSERVATION_API",
+      "smallestRepair": "Provide independently executable authoring inventory observations for B11; explicitly separate structural ownership and exact graph eligibility. Do not alias runtime/coverage values or copy an unrelated Card Zone CLI.",
+      "reviewer": "Reviewer A tooling; Reviewer B semantic expectations",
+      "dependencies": [
+        "FIXTURE_EXPECTATION_REVIEW"
+      ],
+      "meaning": "Inventory ownership on canonical authoring input and owned malformed graph variants, not ability ID membership.",
+      "state": "PROPOSED_OWNER_HANDOFF_NOT_DISPATCHED",
+      "observations": [
+        {
+          "fixtureId": "conversion-outside-advance",
+          "family": "conversion-magic",
+          "category": "outside-scope",
+          "canonicalSource": {
+            "archiveId": "master.irisviel",
+            "cardId": "master.irisviel.skill.conversion-magic",
+            "abilityId": "conversion-magic.preparation",
+            "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+          },
+          "actualCardId": "master.irisviel.skill.conversion-magic",
+          "actualAbilityId": "conversion-magic.preparation",
+          "issuePath": "conversion-outside-advance:inventory.routeCandidate",
+          "reason": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+        },
+        {
+          "fixtureId": "conversion-positive",
+          "family": "conversion-magic",
+          "category": "positive",
+          "canonicalSource": {
+            "archiveId": "master.irisviel",
+            "cardId": "master.irisviel.skill.conversion-magic",
+            "abilityId": "conversion-magic.preparation",
+            "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+          },
+          "actualCardId": "master.irisviel.skill.conversion-magic",
+          "actualAbilityId": "conversion-magic.preparation",
+          "issuePath": "conversion-positive:inventory.routeCandidate",
+          "reason": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+        },
+        {
+          "fixtureId": "conversion-renamed-identities",
+          "family": "conversion-magic",
+          "category": "identity-variation",
+          "canonicalSource": {
+            "archiveId": "master.irisviel",
+            "cardId": "master.irisviel.skill.conversion-magic",
+            "abilityId": "conversion-magic.preparation",
+            "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+          },
+          "actualCardId": "diagnostic.conversion.source",
+          "actualAbilityId": "diagnostic.conversion.binding",
+          "issuePath": "conversion-renamed-identities:inventory.routeCandidate",
+          "reason": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+        },
+        {
+          "fixtureId": "conversion-unknown-binding",
+          "family": "conversion-magic",
+          "category": "owned-malformed",
+          "canonicalSource": {
+            "archiveId": "master.irisviel",
+            "cardId": "master.irisviel.skill.conversion-magic",
+            "abilityId": "conversion-magic.preparation",
+            "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+          },
+          "actualCardId": "master.irisviel.skill.conversion-magic",
+          "actualAbilityId": "conversion-magic.preparation",
+          "issuePath": "conversion-unknown-binding:inventory.routeCandidate",
+          "reason": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+        },
+        {
+          "fixtureId": "golden-invalid-result-field",
+          "family": "golden-eater",
+          "category": "owned-malformed",
+          "canonicalSource": {
+            "archiveId": "servant.kintoki",
+            "cardId": "servant.kintoki.skill.sc-kintoki-3",
+            "abilityId": "sc-kintoki-3.golden-eater",
+            "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+          },
+          "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+          "actualAbilityId": "sc-kintoki-3.golden-eater",
+          "issuePath": "golden-invalid-result-field:inventory.routeCandidate",
+          "reason": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+        },
+        {
+          "fixtureId": "golden-missing-target-reference",
+          "family": "golden-eater",
+          "category": "owned-malformed",
+          "canonicalSource": {
+            "archiveId": "servant.kintoki",
+            "cardId": "servant.kintoki.skill.sc-kintoki-3",
+            "abilityId": "sc-kintoki-3.golden-eater",
+            "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+          },
+          "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+          "actualAbilityId": "sc-kintoki-3.golden-eater",
+          "issuePath": "golden-missing-target-reference:inventory.routeCandidate",
+          "reason": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+        },
+        {
+          "fixtureId": "golden-outside-combat",
+          "family": "golden-eater",
+          "category": "outside-scope",
+          "canonicalSource": {
+            "archiveId": "servant.kintoki",
+            "cardId": "servant.kintoki.skill.sc-kintoki-3",
+            "abilityId": "sc-kintoki-3.golden-eater",
+            "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+          },
+          "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+          "actualAbilityId": "sc-kintoki-3.golden-eater",
+          "issuePath": "golden-outside-combat:inventory.routeCandidate",
+          "reason": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+        },
+        {
+          "fixtureId": "golden-positive",
+          "family": "golden-eater",
+          "category": "positive",
+          "canonicalSource": {
+            "archiveId": "servant.kintoki",
+            "cardId": "servant.kintoki.skill.sc-kintoki-3",
+            "abilityId": "sc-kintoki-3.golden-eater",
+            "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+          },
+          "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+          "actualAbilityId": "sc-kintoki-3.golden-eater",
+          "issuePath": "golden-positive:inventory.routeCandidate",
+          "reason": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+        },
+        {
+          "fixtureId": "golden-renamed-identities",
+          "family": "golden-eater",
+          "category": "identity-variation",
+          "canonicalSource": {
+            "archiveId": "servant.kintoki",
+            "cardId": "servant.kintoki.skill.sc-kintoki-3",
+            "abilityId": "sc-kintoki-3.golden-eater",
+            "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+          },
+          "actualCardId": "diagnostic.golden.source",
+          "actualAbilityId": "diagnostic.golden.binding",
+          "issuePath": "golden-renamed-identities:inventory.routeCandidate",
+          "reason": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+        },
+        {
+          "fixtureId": "golden-wrong-payment",
+          "family": "golden-eater",
+          "category": "owned-malformed",
+          "canonicalSource": {
+            "archiveId": "servant.kintoki",
+            "cardId": "servant.kintoki.skill.sc-kintoki-3",
+            "abilityId": "sc-kintoki-3.golden-eater",
+            "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+          },
+          "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+          "actualAbilityId": "sc-kintoki-3.golden-eater",
+          "issuePath": "golden-wrong-payment:inventory.routeCandidate",
+          "reason": "No B11 inventory classification API; Card Zone CLI belongs to a different family"
+        }
+      ]
+    },
+    {
+      "field": "inventory.exactEligible",
+      "owner": "Codex A",
+      "count": 10,
+      "task": "B11_INVENTORY_OBSERVATION_API",
+      "smallestRepair": "Use the same narrow inventory task with a separate exactEligible result; report skipped shape/reason and raw normalized inputs. No KPI/taxonomy changes.",
+      "reviewer": "Reviewer A tooling; Reviewer B semantic expectations",
+      "dependencies": [
+        "FIXTURE_EXPECTATION_REVIEW"
+      ],
+      "meaning": "Inventory exact eligibility is a semantic graph classification, not mere presence of binding syntax.",
+      "state": "PROPOSED_OWNER_HANDOFF_NOT_DISPATCHED",
+      "observations": [
+        {
+          "fixtureId": "conversion-outside-advance",
+          "family": "conversion-magic",
+          "category": "outside-scope",
+          "canonicalSource": {
+            "archiveId": "master.irisviel",
+            "cardId": "master.irisviel.skill.conversion-magic",
+            "abilityId": "conversion-magic.preparation",
+            "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+          },
+          "actualCardId": "master.irisviel.skill.conversion-magic",
+          "actualAbilityId": "conversion-magic.preparation",
+          "issuePath": "conversion-outside-advance:inventory.exactEligible",
+          "reason": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+        },
+        {
+          "fixtureId": "conversion-positive",
+          "family": "conversion-magic",
+          "category": "positive",
+          "canonicalSource": {
+            "archiveId": "master.irisviel",
+            "cardId": "master.irisviel.skill.conversion-magic",
+            "abilityId": "conversion-magic.preparation",
+            "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+          },
+          "actualCardId": "master.irisviel.skill.conversion-magic",
+          "actualAbilityId": "conversion-magic.preparation",
+          "issuePath": "conversion-positive:inventory.exactEligible",
+          "reason": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+        },
+        {
+          "fixtureId": "conversion-renamed-identities",
+          "family": "conversion-magic",
+          "category": "identity-variation",
+          "canonicalSource": {
+            "archiveId": "master.irisviel",
+            "cardId": "master.irisviel.skill.conversion-magic",
+            "abilityId": "conversion-magic.preparation",
+            "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+          },
+          "actualCardId": "diagnostic.conversion.source",
+          "actualAbilityId": "diagnostic.conversion.binding",
+          "issuePath": "conversion-renamed-identities:inventory.exactEligible",
+          "reason": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+        },
+        {
+          "fixtureId": "conversion-unknown-binding",
+          "family": "conversion-magic",
+          "category": "owned-malformed",
+          "canonicalSource": {
+            "archiveId": "master.irisviel",
+            "cardId": "master.irisviel.skill.conversion-magic",
+            "abilityId": "conversion-magic.preparation",
+            "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+          },
+          "actualCardId": "master.irisviel.skill.conversion-magic",
+          "actualAbilityId": "conversion-magic.preparation",
+          "issuePath": "conversion-unknown-binding:inventory.exactEligible",
+          "reason": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+        },
+        {
+          "fixtureId": "golden-invalid-result-field",
+          "family": "golden-eater",
+          "category": "owned-malformed",
+          "canonicalSource": {
+            "archiveId": "servant.kintoki",
+            "cardId": "servant.kintoki.skill.sc-kintoki-3",
+            "abilityId": "sc-kintoki-3.golden-eater",
+            "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+          },
+          "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+          "actualAbilityId": "sc-kintoki-3.golden-eater",
+          "issuePath": "golden-invalid-result-field:inventory.exactEligible",
+          "reason": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+        },
+        {
+          "fixtureId": "golden-missing-target-reference",
+          "family": "golden-eater",
+          "category": "owned-malformed",
+          "canonicalSource": {
+            "archiveId": "servant.kintoki",
+            "cardId": "servant.kintoki.skill.sc-kintoki-3",
+            "abilityId": "sc-kintoki-3.golden-eater",
+            "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+          },
+          "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+          "actualAbilityId": "sc-kintoki-3.golden-eater",
+          "issuePath": "golden-missing-target-reference:inventory.exactEligible",
+          "reason": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+        },
+        {
+          "fixtureId": "golden-outside-combat",
+          "family": "golden-eater",
+          "category": "outside-scope",
+          "canonicalSource": {
+            "archiveId": "servant.kintoki",
+            "cardId": "servant.kintoki.skill.sc-kintoki-3",
+            "abilityId": "sc-kintoki-3.golden-eater",
+            "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+          },
+          "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+          "actualAbilityId": "sc-kintoki-3.golden-eater",
+          "issuePath": "golden-outside-combat:inventory.exactEligible",
+          "reason": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+        },
+        {
+          "fixtureId": "golden-positive",
+          "family": "golden-eater",
+          "category": "positive",
+          "canonicalSource": {
+            "archiveId": "servant.kintoki",
+            "cardId": "servant.kintoki.skill.sc-kintoki-3",
+            "abilityId": "sc-kintoki-3.golden-eater",
+            "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+          },
+          "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+          "actualAbilityId": "sc-kintoki-3.golden-eater",
+          "issuePath": "golden-positive:inventory.exactEligible",
+          "reason": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+        },
+        {
+          "fixtureId": "golden-renamed-identities",
+          "family": "golden-eater",
+          "category": "identity-variation",
+          "canonicalSource": {
+            "archiveId": "servant.kintoki",
+            "cardId": "servant.kintoki.skill.sc-kintoki-3",
+            "abilityId": "sc-kintoki-3.golden-eater",
+            "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+          },
+          "actualCardId": "diagnostic.golden.source",
+          "actualAbilityId": "diagnostic.golden.binding",
+          "issuePath": "golden-renamed-identities:inventory.exactEligible",
+          "reason": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+        },
+        {
+          "fixtureId": "golden-wrong-payment",
+          "family": "golden-eater",
+          "category": "owned-malformed",
+          "canonicalSource": {
+            "archiveId": "servant.kintoki",
+            "cardId": "servant.kintoki.skill.sc-kintoki-3",
+            "abilityId": "sc-kintoki-3.golden-eater",
+            "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+          },
+          "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+          "actualAbilityId": "sc-kintoki-3.golden-eater",
+          "issuePath": "golden-wrong-payment:inventory.exactEligible",
+          "reason": "No B11 inventory classification API; do not reuse runtime or coverage observations"
+        }
+      ]
+    },
+    {
+      "field": "coverage.exactEligible",
+      "owner": "Codex A",
+      "count": 10,
+      "task": "B11_COVERAGE_DIAGNOSTIC_EXACT_ELIGIBILITY",
+      "smallestRepair": "Add an independently reviewable diagnostic-only eligibility observation alongside the unchanged coverage taxonomy. Preserve raw runtimeRoute and counters; do not reinterpret NEW_RUNTIME as eligibility or substitute another owner observation.",
+      "reviewer": "Reviewer A tooling; Reviewer B semantic expectations",
+      "dependencies": [
+        "FIXTURE_EXPECTATION_REVIEW"
+      ],
+      "meaning": "Raw coverage taxonomy and exact graph eligibility answer different questions and must remain separate.",
+      "state": "PROPOSED_OWNER_HANDOFF_NOT_DISPATCHED",
+      "observations": [
+        {
+          "fixtureId": "conversion-outside-advance",
+          "family": "conversion-magic",
+          "category": "outside-scope",
+          "canonicalSource": {
+            "archiveId": "master.irisviel",
+            "cardId": "master.irisviel.skill.conversion-magic",
+            "abilityId": "conversion-magic.preparation",
+            "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+          },
+          "actualCardId": "master.irisviel.skill.conversion-magic",
+          "actualAbilityId": "conversion-magic.preparation",
+          "issuePath": "conversion-outside-advance:coverage.exactEligible",
+          "reason": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+        },
+        {
+          "fixtureId": "conversion-positive",
+          "family": "conversion-magic",
+          "category": "positive",
+          "canonicalSource": {
+            "archiveId": "master.irisviel",
+            "cardId": "master.irisviel.skill.conversion-magic",
+            "abilityId": "conversion-magic.preparation",
+            "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+          },
+          "actualCardId": "master.irisviel.skill.conversion-magic",
+          "actualAbilityId": "conversion-magic.preparation",
+          "issuePath": "conversion-positive:coverage.exactEligible",
+          "reason": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+        },
+        {
+          "fixtureId": "conversion-renamed-identities",
+          "family": "conversion-magic",
+          "category": "identity-variation",
+          "canonicalSource": {
+            "archiveId": "master.irisviel",
+            "cardId": "master.irisviel.skill.conversion-magic",
+            "abilityId": "conversion-magic.preparation",
+            "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+          },
+          "actualCardId": "diagnostic.conversion.source",
+          "actualAbilityId": "diagnostic.conversion.binding",
+          "issuePath": "conversion-renamed-identities:coverage.exactEligible",
+          "reason": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+        },
+        {
+          "fixtureId": "conversion-unknown-binding",
+          "family": "conversion-magic",
+          "category": "owned-malformed",
+          "canonicalSource": {
+            "archiveId": "master.irisviel",
+            "cardId": "master.irisviel.skill.conversion-magic",
+            "abilityId": "conversion-magic.preparation",
+            "abilitySha256": "6B8C5744C7D7A0DD7848C088C6CF4BBB7DAA656E4ECF4E1FB4924096D2D5F709"
+          },
+          "actualCardId": "master.irisviel.skill.conversion-magic",
+          "actualAbilityId": "conversion-magic.preparation",
+          "issuePath": "conversion-unknown-binding:coverage.exactEligible",
+          "reason": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+        },
+        {
+          "fixtureId": "golden-invalid-result-field",
+          "family": "golden-eater",
+          "category": "owned-malformed",
+          "canonicalSource": {
+            "archiveId": "servant.kintoki",
+            "cardId": "servant.kintoki.skill.sc-kintoki-3",
+            "abilityId": "sc-kintoki-3.golden-eater",
+            "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+          },
+          "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+          "actualAbilityId": "sc-kintoki-3.golden-eater",
+          "issuePath": "golden-invalid-result-field:coverage.exactEligible",
+          "reason": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+        },
+        {
+          "fixtureId": "golden-missing-target-reference",
+          "family": "golden-eater",
+          "category": "owned-malformed",
+          "canonicalSource": {
+            "archiveId": "servant.kintoki",
+            "cardId": "servant.kintoki.skill.sc-kintoki-3",
+            "abilityId": "sc-kintoki-3.golden-eater",
+            "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+          },
+          "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+          "actualAbilityId": "sc-kintoki-3.golden-eater",
+          "issuePath": "golden-missing-target-reference:coverage.exactEligible",
+          "reason": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+        },
+        {
+          "fixtureId": "golden-outside-combat",
+          "family": "golden-eater",
+          "category": "outside-scope",
+          "canonicalSource": {
+            "archiveId": "servant.kintoki",
+            "cardId": "servant.kintoki.skill.sc-kintoki-3",
+            "abilityId": "sc-kintoki-3.golden-eater",
+            "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+          },
+          "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+          "actualAbilityId": "sc-kintoki-3.golden-eater",
+          "issuePath": "golden-outside-combat:coverage.exactEligible",
+          "reason": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+        },
+        {
+          "fixtureId": "golden-positive",
+          "family": "golden-eater",
+          "category": "positive",
+          "canonicalSource": {
+            "archiveId": "servant.kintoki",
+            "cardId": "servant.kintoki.skill.sc-kintoki-3",
+            "abilityId": "sc-kintoki-3.golden-eater",
+            "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+          },
+          "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+          "actualAbilityId": "sc-kintoki-3.golden-eater",
+          "issuePath": "golden-positive:coverage.exactEligible",
+          "reason": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+        },
+        {
+          "fixtureId": "golden-renamed-identities",
+          "family": "golden-eater",
+          "category": "identity-variation",
+          "canonicalSource": {
+            "archiveId": "servant.kintoki",
+            "cardId": "servant.kintoki.skill.sc-kintoki-3",
+            "abilityId": "sc-kintoki-3.golden-eater",
+            "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+          },
+          "actualCardId": "diagnostic.golden.source",
+          "actualAbilityId": "diagnostic.golden.binding",
+          "issuePath": "golden-renamed-identities:coverage.exactEligible",
+          "reason": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+        },
+        {
+          "fixtureId": "golden-wrong-payment",
+          "family": "golden-eater",
+          "category": "owned-malformed",
+          "canonicalSource": {
+            "archiveId": "servant.kintoki",
+            "cardId": "servant.kintoki.skill.sc-kintoki-3",
+            "abilityId": "sc-kintoki-3.golden-eater",
+            "abilitySha256": "5400E995C6DE1719DA05CCFA92CB6D85391C1A57AD5029B432FCC0712C5E1997"
+          },
+          "actualCardId": "servant.kintoki.skill.sc-kintoki-3",
+          "actualAbilityId": "sc-kintoki-3.golden-eater",
+          "issuePath": "golden-wrong-payment:coverage.exactEligible",
+          "reason": "Coverage API does not expose exact B11 eligibility; raw classifications retained"
+        }
+      ]
+    }
+  ],
+  "fixtureReviewHandoff": {
+    "owner": "Reviewer B",
+    "state": "PENDING",
+    "contractId": "B11_RESULT_BINDING_DIAGNOSTIC_V1",
+    "testedCandidateSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+    "reviewedFixtureCommit": "b5ef0626c5f373658c7b0ef0208f5cfda91f1a6e",
+    "fixtureArtifact": {
+      "commit": "b5ef0626c5f373658c7b0ef0208f5cfda91f1a6e",
+      "path": "scripts/fixtures/phase3-b11-parity-fixtures.json",
+      "sha256": "0757970801F81178069CA7DF4423985180130C220D486871FFAFE137C0929A46"
+    },
+    "executionAdapter": {
+      "commit": "9695d7107645f9972ebef7ab6c78a4ef14b015da",
+      "files": [
+        {
+          "commit": "9695d7107645f9972ebef7ab6c78a4ef14b015da",
+          "path": "scripts/phase3-contract-parity.ts",
+          "sha256": "13C39334FAB7BB67527F4976AAD4A573CF2EE33B36DF85526E87601AA58CAA3B"
+        },
+        {
+          "commit": "9695d7107645f9972ebef7ab6c78a4ef14b015da",
+          "path": "scripts/phase3-contract-parity-worker.ts",
+          "sha256": "1B0A8174ADA38189BF37CCEE607B90C6811C21F1B75F9C43DA8DEBD0D28E27D9"
+        },
+        {
+          "commit": "9695d7107645f9972ebef7ab6c78a4ef14b015da",
+          "path": "scripts/phase3-tooling-common.ts",
+          "sha256": "C11A3B6F573DEB012E936724CDAA274F940B6DD5EBE00078175F668E485E9555"
+        }
+      ]
+    },
+    "premiseSha256": "FA537BA6646A9FBE14DE7511BC51423F1F910281A41BB5EDBA0CBECAEB446530",
+    "inputContract": "scripts/fixtures/phase3-b11-parity-contract.json",
+    "requiredArtifactSchema": "fd-p3-parity-expectation-review-v1",
+    "requirements": "Read canonical rules and consumer authoring. Independently decide positive, malformed, outside-scope, identity and binding expectations. Bind candidateSha, reviewedFixtureCommit, premiseSha256, reviewer and verdict; do not grant readiness from tool agreement. If expectations change, regenerate premise and review the new exact fixture identity."
+  },
+  "dependencyOrder": [
+    "Reviewer B fixture expectation review and B read-only structural API task may proceed in parallel",
+    "A inventory and coverage diagnostic tasks consume independently reviewed meanings, without changing taxonomy",
+    "Freeze owner implementations and bind the new execution closure and fixture premise",
+    "Reviewer A reviews tool changes; bind exact execution receipts and fresh owner reviews",
+    "A reruns preflight/parity; readiness remains FAIL until all required observations and dependencies are satisfied"
+  ],
+  "runtimeDefectEstablished": false,
+  "readiness": "FAIL_NO_WAIVER",
+  "mainCoverageCreditDelta": 0,
+  "migrationCreditDelta": 0,
+  "denominatorDelta": 0,
+  "promotedOnMain": false,
+  "reviewReadyChanged": false,
+  "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE"
+}
