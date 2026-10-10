@@ -6,6 +6,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { assertFinalTaskCheck, buildFinalTaskCheck, buildContinuationTaskCheck, runPreflight } from '../phase3-preflight';
 import { git, gitText, hash, InputError } from '../phase3-tooling-common';
 import { publicationSha, reference } from '../phase3-b11-tooling-inputs';
+import { buildContinuationBinding, validateContinuationBinding } from '../phase3-e08-b11-coverage-sync';
 
 const root = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 const taskId = 'P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY';
@@ -49,6 +50,9 @@ let normal: ReturnType<typeof fixture>;
 let deleted: ReturnType<typeof fixture>;
 let renamed: ReturnType<typeof fixture>;
 let finalTask: ReturnType<typeof buildFinalTaskCheck>;
+let currentResult: ReturnType<typeof runPreflight>;
+let unauthorized: string;
+let invalidCommand: string;
 const evaluate = (context: ReturnType<typeof fixture>, input: unknown = context.input, candidate = context.candidate) => runPreflight(context.cwd, input, candidate, context.base, hash(JSON.stringify(input)));
 
 describe('readiness preflight, independent from promotion policy', () => {
@@ -56,6 +60,20 @@ describe('readiness preflight, independent from promotion policy', () => {
     normal = fixture('normal'); deleted = fixture('delete'); renamed = fixture('rename');
     const input = JSON.parse(readFileSync(join(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
     finalTask = buildFinalTaskCheck(root, input.finalBinding.sourceSha);
+    currentResult = runPreflight(root, input, input.candidateSha, input.baseSha, hash(JSON.stringify(input)));
+    for (const mode of ['unauthorized', 'invalidCommand']) {
+      const cwd = mkdtempSync(join(tmpdir(), 'fd-continuation-delta-')); directories.push(cwd);
+      git(cwd, ['init']); git(cwd, ['config', 'user.name', 'Automation Fixture']); git(cwd, ['config', 'user.email', 'fixture@example.invalid']);
+      const common = resolve(root, gitText(root, ['rev-parse', '--git-common-dir']));
+      writeFileSync(join(cwd, '.git/objects/info/alternates'), `${join(common, 'objects').replaceAll('\\', '/')}\n`);
+      git(cwd, ['checkout', '--detach', input.finalBinding.sourceSha]);
+      if (mode === 'unauthorized') { writeFileSync(join(cwd, 'unauthorized.txt'), 'not authorized\n'); unauthorized = cwd; }
+      else {
+        const pkg = JSON.parse(readFileSync(join(cwd, 'package.json'), 'utf8'));
+        pkg.scripts['test:ci'] += ' --testTimeout=15000'; writeFileSync(join(cwd, 'package.json'), JSON.stringify(pkg)); invalidCommand = cwd;
+      }
+      git(cwd, ['add', '.']); git(cwd, ['commit', '-m', `adversarial ${mode}`]);
+    }
   }, 60_000);
   afterAll(() => { for (const path of directories) rmSync(path, { recursive: true, force: true }); });
   it('binds every original uncovered path without converting registration into acceptance', () => {
@@ -72,13 +90,18 @@ describe('readiness preflight, independent from promotion policy', () => {
     assertFinalTaskCheck(finalTask, structuredClone(finalTask));
   });
   it('keeps exact current continuation observations separate from missing original authority and final review', () => {
-    const task = JSON.parse(readFileSync(join(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
-    const result = runPreflight(root, task, task.candidateSha, task.baseSha, hash(JSON.stringify(task)));
+    const result = currentResult;
     expect(result.status).toBe('FAIL');
     expect(result.issues.filter(issue => issue.code === 'ORIGINAL_AUTHORIZATION_UNPROVEN')).toHaveLength(7);
     expect(result.issues.some(issue => issue.code === 'FINAL_RA_RB_REVIEW_PENDING')).toBe(true);
     expect(result.issues.some(issue => issue.code === 'UNCOVERED_CHANGED_PATH')).toBe(false);
     expect(result.acceptanceGranted).toBe(false);
+  });
+  it.each(['unauthorized', 'invalidCommand'])('rejects actual committed %s deltas, not only caller claims', mode => {
+    const cwd = mode === 'unauthorized' ? unauthorized : invalidCommand;
+    const task = JSON.parse(readFileSync(join(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
+    const binding = buildContinuationBinding(cwd, task.finalBinding.sourceSha);
+    expect(() => validateContinuationBinding(cwd, binding)).toThrow();
   });
   it.each(['schema', 'receipt', 'history', 'scope', 'pending'])('fails closed for invalid current %s inputs', mode => {
     const task = JSON.parse(readFileSync(join(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));

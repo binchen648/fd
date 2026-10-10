@@ -9,12 +9,14 @@ import { assertSameEvidence, buildSync, buildFinalSync, historicalCarrierSha, va
 
 const root = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 let expected: Awaited<ReturnType<typeof buildSync>>;
+let finalSnapshot: Awaited<ReturnType<typeof buildFinalSync>>;
 
 beforeAll(async () => {
   expected = await buildSync(root);
   const task = JSON.parse(readFileSync(resolve(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
   buildContinuationBinding(root, task.finalBinding.sourceSha);
   buildContinuationReviews(root);
+  finalSnapshot = await buildFinalSync(root);
 }, 30_000);
 const historicalBytes = (path: string) => execFileSync('git', ['show', `${historicalCarrierSha}:${path}`], { cwd: root, maxBuffer: 32 * 1024 * 1024 });
 
@@ -118,7 +120,8 @@ describe('final source coverage is separate from immutable history', () => {
     expect(() => assertSameEvidence(bad, expected.sync)).toThrow();
   });
   it('binds the full final source, compiler, unchanged counts and exact scan locations', async () => {
-    const result = await buildFinalSync(root);
+    const result = finalSnapshot;
+    validateContinuationBinding(root, result.binding as ReturnType<typeof buildContinuationBinding>);
     const current = JSON.parse(readFileSync(resolve(root, coveragePath), 'utf8'));
     assertSameEvidence(current, result.coverage);
     expect(result.sync.candidateLocalRouting.after).toEqual({ new: 23, legacyResolve: 144, legacyExecute: 3, dual: 0, notClassifiable: 111 });
