@@ -2,6 +2,16 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch35 records PR466 technical FAILED on2026-10-10:empty-hand shuffle and
+sole immune-opponent defeat advertised as legal but deterministic dispatch
+rejects atomically. Independent9/9 expected checks PASS,including R1/R2 closure,
+private continuation,aura actual cloak compliance,power/restore controls.
+Focused182/182 PASS;full1073 PASS/10 FAIL,all10 reproduced at exact base
+(14 PASS/10 FAIL). Strict evidence FAIL only31 absent external images.
+Material134/944 unchanged,zero-credit prerequisite. Cumulative46/534,
+14 PASS,32 FAILED,488 pending. See batch35 and2026-10-10-pr-466-review.md.
+All-PR goal remains active,incomplete.
+
 Batch34 records PR465 technical FAILED on2026-10-10:unclosed additive printed
 reversal versus exclusive draw/mana encoding;actual sc2 inherits same-location
 cloak immunity bypass fromPR463. Independent final7/7 expected checks PASS;

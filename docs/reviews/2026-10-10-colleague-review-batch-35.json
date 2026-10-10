@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [
+    {
+      "pr": 466,
+      "headSha": "f807936f26d3e61dc2454a59f918de073fcfeb4f",
+      "baseSha": "44bf45f39c6adc2b419527f96d4257aea4080bb8",
+      "producer": "Codex Automation Review Owner",
+      "verdict": "FAILED",
+      "scope": "SKADI_RUNE_CASTLE_READINESS_REVISION_TECHNICAL_REVIEW",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [
+        {
+          "priority": "P2",
+          "path": "packages/rules/src/ability/interpreter.ts",
+          "line": 975,
+          "summary": "Empty-hand/nonempty-deck exact-two shuffle advertised but dispatch deterministically rejects after draw;missing hand-capacity preflight.",
+          "introducedRelativeToBase": true
+        },
+        {
+          "priority": "P2",
+          "path": "packages/rules/src/ability/interpreter.ts",
+          "line": 1521,
+          "summary": "Armed defeat advertised against actual sole cloak-immune battlefield opponent,then fails invalid_target;discovery/execution eligibility mismatch.",
+          "introducedRelativeToBase": true
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-466-independent.mjs",
+          "targetSha": "f807936f26d3e61dc2454a59f918de073fcfeb4f",
+          "result": "9/9 expected checks PASS incl both defects;R1/R2 closure;privacy/exact cost/actual cloak aura/dynamic power/restore/gateway controls",
+          "artifactIdentity": "docs/reviews/probes/review-466-independent.mjs"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npm run test:ci -- --maxWorkers=2",
+          "targetSha": "f807936f26d3e61dc2454a59f918de073fcfeb4f",
+          "result": "151 files/1083 tests:1073 PASS/10 inherited FAIL,no timeouts;not green CI",
+          "artifactIdentity": "pr466-independent-full-ci"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/fm07-alter-ego-transform-authoring.test.ts packages/rules/tests/regression/battle-loss-state-transform.test.ts packages/rules/tests/regression/fb2-alter-ego-transform.test.ts packages/rules/tests/regression/p3-sitonai-readiness-capability.test.ts packages/rules/tests/regression/p3-source-skill-attack-join-capability.test.ts packages/rules/tests/regression/p3-skadi-rune-castle-readiness-capability.test.ts --maxWorkers=1",
+          "targetSha": "f807936f26d3e61dc2454a59f918de073fcfeb4f",
+          "result": "10 files/182 tests PASS;capability12/12;misses both new boundaries",
+          "artifactIdentity": "pr466-independent-focused"
+        },
+        {
+          "kind": "BASELINE_TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/astolfo-s1-consumer-migration.test.ts packages/rules/tests/m50-02-opponent-close-one-non-residual.test.ts packages/rules/tests/seven-servant-decks.test.ts packages/rules/tests/regression/golden-card-content-pipeline.test.ts packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts --maxWorkers=2",
+          "targetSha": "44bf45f39c6adc2b419527f96d4257aea4080bb8",
+          "result": "5 files/24 tests:14 PASS/10 inherited FAIL;not full baseline CI",
+          "artifactIdentity": "pr466-exact-base-comparison"
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Codex Automation Review Owner",
+          "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 466 --repo binchen648/fd --json headRefOid,baseRefOid,state,comments; git fetch origin main",
+          "targetSha": "f807936f26d3e61dc2454a59f918de073fcfeb4f",
+          "result": "Typecheck/content/diff PASS;strict evidence FAIL inherited31 missing-image diagnostics isolated;live bindings unchanged;historical relays separately attributed",
+          "artifactIdentity": "docs/reviews/2026-10-10-pr-466-review.md"
+        }
+      ],
+      "limitations": [
+        "Technical FAILED only;new capability fixture plus actual cloak,not formal Skadi consumer migration;zero material delta/credit.",
+        "External Reference/CHM/assets,full baseline CI,UI/network,all combinations and exhaustive signed restore unverified.",
+        "Historical acceptance not transferred;PR461-465 findings remain open;strict generated verifier FAIL on inherited external assets.",
+        "No repair,formal acceptance,Planner mutation,GitHub verdict,Gate,promotion or merge."
+      ]
+    }
+  ]
+}

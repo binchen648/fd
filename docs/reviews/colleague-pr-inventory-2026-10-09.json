@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 45,
-    "pending": 489,
+    "reviewed": 46,
+    "pending": 488,
     "blocked": 0,
     "notVerified": 0
   },
@@ -23918,11 +23918,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "SKADI_RUNE_CASTLE_READINESS_REVISION_TECHNICAL_REVIEW",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-35.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-466-independent.mjs",
+            "targetSha": "f807936f26d3e61dc2454a59f918de073fcfeb4f",
+            "result": "9/9 expected checks PASS incl both defects;R1/R2 closure;privacy/exact cost/actual cloak aura/dynamic power/restore/gateway controls",
+            "artifactIdentity": "docs/reviews/probes/review-466-independent.mjs"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=2",
+            "targetSha": "f807936f26d3e61dc2454a59f918de073fcfeb4f",
+            "result": "151 files/1083 tests:1073 PASS/10 inherited FAIL,no timeouts;not green CI",
+            "artifactIdentity": "pr466-independent-full-ci"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/fm07-alter-ego-transform-authoring.test.ts packages/rules/tests/regression/battle-loss-state-transform.test.ts packages/rules/tests/regression/fb2-alter-ego-transform.test.ts packages/rules/tests/regression/p3-sitonai-readiness-capability.test.ts packages/rules/tests/regression/p3-source-skill-attack-join-capability.test.ts packages/rules/tests/regression/p3-skadi-rune-castle-readiness-capability.test.ts --maxWorkers=1",
+            "targetSha": "f807936f26d3e61dc2454a59f918de073fcfeb4f",
+            "result": "10 files/182 tests PASS;capability12/12;misses both new boundaries",
+            "artifactIdentity": "pr466-independent-focused"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0
