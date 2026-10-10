@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 431,
+    "headSha": "c8fadf19c304a698e7f4c847e376a5ba6609c60e",
+    "baseSha": "fce4e3df812a1c4ba3c7f5ca9ff2d73c69b42d0a",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "FAILED",
+    "scope": "FB2_53_PERSISTED_TWO_STAGE_DECISION_SHAPE_GATES",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [{
+      "priority": "P2",
+      "path": "packages/rules/src/ability/interpreter.ts",
+      "line": 4363,
+      "summary": "Both new interaction stages use context and remainingEffects before nested validation; null/missing fields escape as native TypeError instead of controlled rejection. State remains unchanged; no external exploit established.",
+      "introducedRelativeToBase": true
+    }],
+    "evidence": [
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/fb2-53-basic-strength-opponent-skill-face-down.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/regression/card-action-play.test.ts packages/rules/tests/ability-interaction-projection.test.ts packages/rules/tests/regression/interaction-room-boundary.test.ts packages/rules/tests/fb2-44-face-up-cards-per-round.test.ts --maxWorkers=1",
+        "targetSha": "c8fadf19c304a698e7f4c847e376a5ba6609c60e",
+        "result": "6 files / 75 tests PASS",
+        "artifactIdentity": "2026-10-10-pr-431-focused"
+      },
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci -- --maxWorkers=1",
+        "targetSha": "c8fadf19c304a698e7f4c847e376a5ba6609c60e",
+        "result": "Exit0: 185 files / 1386 tests PASS, script exclusions preserved",
+        "artifactIdentity": "2026-10-10-pr-431-full-ci"
+      },
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-431-independent.mjs",
+        "targetSha": "c8fadf19c304a698e7f4c847e376a5ba6609c60e",
+        "result": "Exit1 reproduced twice: two positive controls PASS; eight malformed-state controlled-rejection checks FAIL, native exceptions escape with unchanged state",
+        "artifactIdentity": "docs/reviews/probes/review-431-independent.mjs"
+      },
+      {
+        "kind": "STATIC_AND_BUILD",
+        "producer": "Codex Automation Review Owner",
+        "command": "gh pr view 431 --repo binchen648/fd --json headRefOid,baseRefOid,state; git diff fce4e3df812a1c4ba3c7f5ca9ff2d73c69b42d0a c8fadf19c304a698e7f4c847e376a5ba6609c60e; npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check fce4e3df812a1c4ba3c7f5ca9ff2d73c69b42d0a c8fadf19c304a698e7f4c847e376a5ba6609c60e",
+        "targetSha": "c8fadf19c304a698e7f4c847e376a5ba6609c60e",
+        "result": "Live exact bindings and fetched main unchanged; seven changed paths and base dispatch read; typecheck/content/determinism/diff PASS",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-431-review.md"
+      }
+    ],
+    "limitations": [
+      "Trusted persisted-state robustness finding, not established client snapshot-forgery exploit or partial-mutation proof.",
+      "First-stage normal play remains committed on second-stage failure; no cross-command rollback requirement inferred.",
+      "No external Reference verification, coverage/audit regeneration, client build/browser, source-asset/Gate C, current-main runtime or post-merge recount.",
+      "Blocking gate review does not exhaustively clear remaining semantic paths or inherited findings.",
+      "No runtime acceptance, promotion, credit or GitHub publication."
+    ]
+  }]
+}

@@ -100,6 +100,14 @@ passed 6/6, including stale SHA, missing producer, duplicate/unknown PR and cred
 
 ## Next Work
 
+Batch09 records PR431 FAILED on 2026-10-10: both new two-stage interactions
+dereference context/remainingEffects before shape validation. Eight malformed
+cases throw native TypeError; two positive controls PASS, state remains unchanged.
+Focused 75/75 and full CI 185 files / 1386 tests PASS do not cover these failures.
+Live exact head/base and freshly fetched main remain bound to the inventory.
+Cumulative: 20/534, 9 PASS, 11 FAILED, 514 pending. See batch09 and
+2026-10-10-pr-431-review.md. Full all-PR goal remains active and incomplete.
+
 Batch08 finalizes PR428 FAILED on 2026-10-10: malformed marker containers
 are accepted, and a consecutive accepted generic activation overwrites an
 already-current suppression. The latter is not proof of formal once-per-game
