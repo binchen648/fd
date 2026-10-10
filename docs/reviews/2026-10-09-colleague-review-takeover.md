@@ -100,6 +100,15 @@ passed 6/6, including stale SHA, missing producer, duplicate/unknown PR and cred
 
 ## Next Work
 
+Batch12 records whole PR435/B02 FAILED on 2026-10-10: seven malformed containers
+gain actual basic +2 power/+1 cost. Four provenance/recount/normal/rollback controls
+PASS; focused65/65 PASS; full CI1432 PASS /1 FAIL (inherited Helena157 vs151).
+Material155->157/two additions/no frozen removals or duplicates independently bound.
+Twice replacement tested only for military scoring, not Final rules14.2 cutline.
+Exact OPEN bindings and main unchanged; prior defects not cleared.
+Cumulative: 23/534, 9 PASS, 14 FAILED, 511 pending. See batch12 and
+2026-10-10-pr-435-review.md. Full all-PR goal remains active and incomplete.
+
 Batch11 records whole PR434/B01 FAILED on 2026-10-10: six malformed envelopes
 gain actual defeat immunity, and four material additions break Helena's historical
 global count assertion. Four provenance/recount/normal controls PASS; focused68/68

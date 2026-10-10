@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 22,
-    "pending": 512,
+    "reviewed": 23,
+    "pending": 511,
     "blocked": 0,
     "notVerified": 0
   },
@@ -21546,11 +21546,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "WHOLE_F4_B02_MALFORMED_OWNED_PASSIVE_ADMISSION_GATE",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-12.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/f4-b02-owned-passive-modifier-migrations.test.ts packages/rules/tests/f4-b01-passive-modifier-migrations.test.ts packages/rules/tests/p3-f4-b01-passive-modifier-migrations.test.ts packages/rules/tests/core/combat-resolver.test.ts packages/rules/tests/core/scoring-resolver.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+            "targetSha": "156c66ce5f87038b139b2a0ad5916b4a4078f17a",
+            "result": "6 files /65 tests PASS",
+            "artifactIdentity": "2026-10-10-pr-435-focused"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=1",
+            "targetSha": "156c66ce5f87038b139b2a0ad5916b4a4078f17a",
+            "result": "Exit1:189 files PASS /1 FAIL,1432 tests PASS /1 FAIL; inherited Helena global count157 vs151 remains unresolved",
+            "artifactIdentity": "2026-10-10-pr-435-full-ci"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-435-independent.mjs",
+            "targetSha": "156c66ce5f87038b139b2a0ad5916b4a4078f17a",
+            "result": "Exit1:four controls PASS,seven malformed gates FAIL; raw/compiled=true,issues=0,power5,surcharge1. Material155->157,exact two additions,no frozen removals/duplicates. Military-only replacement and conflict rollback control passes",
+            "artifactIdentity": "docs/reviews/probes/review-435-independent.mjs"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0
