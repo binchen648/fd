@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-b-final-packet-review-v1",
+  "taskId": "P3-E08-B11-FINAL-EVIDENCE-RECONCILIATION",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "reviewDate": "2026-10-10",
+  "reviewer": "Codex Reviewer B",
+  "verdict": "BLOCKED",
+  "reviewedCarrierSha": "11c1985dc4c72151bbf16298292bf4b7fa29fcab",
+  "frozenCombinationSha": "4ed28937a5a747e8ea2b5cd189255ca8dddee838",
+  "finalSourceSha": "db7c5625bedf634e0f9a065d9ee6cf1a12800507",
+  "packetPath": "artifacts/phase3-e08-b11-final-combination-evidence.json",
+  "packetSha256": "0A0CBDE50BDED8BA13EF06F0166DEA7D1AED65AE316FC3CA4ACFA974DA9AB5A6",
+  "scope": "B11 scoped consumer semantics, preserved Reviewer B evidence, compiler/interpreter overlap identity, and fail-visible final acceptance boundaries. Tooling/governance acceptance remains Reviewer A/Planner owned.",
+  "authorizedAbilities": ["sc-kintoki-3.golden-eater", "conversion-magic.preparation"],
+  "narrowChecks": {
+    "priorReviewerBBytesAndConclusion": "PASS: original f2da26c artifact hash matches and embedded JSON equals exact Git artifact; acceptance scope is not expanded.",
+    "allEmbeddedScopedReviewBytes": "PASS: all three listed review hashes and exactOriginalArtifact objects verified against Git.",
+    "packetHash": "PASS",
+    "declaredSourceObjects": "PASS: every sourceObjects Git object matches both frozen combination and reviewed carrier.",
+    "compilerInterpreterOverlap": "PASS: no source diff between accepted 7ec91bbc and finalSourceSha in these two files. This establishes implementation identity, not original write authorization.",
+    "carrierDeltaFromFrozenCombination": "Only consolidated packet and report differ; no runtime, server, authoring or browser test delta.",
+    "browserEvidenceBoundary": "Submitted suites use trusted fixture servers and real browser/WS commands from scoped windows. They do not establish natural create/select/start progression or Global Gate C.",
+    "blockedDisposition": "Accurate: CI process exit 1 retained despite passing assertions; original authorization and fresh check-reference gaps remain explicit."
+  },
+  "independentVerification": {
+    "testedSha": "11c1985dc4c72151bbf16298292bf4b7fa29fcab",
+    "componentCommand": "npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/production-resolution-bridge.test.ts packages/rules/tests/regression/b11-conversion-classification-api.test.ts packages/rules/tests/regression/b11-conversion-binding-ownership.test.ts --maxWorkers=2",
+    "componentFiles": 4,
+    "componentTestsPassed": 51,
+    "serverCommand": "npm run test --workspace @fd/server -- src/match-server.test.ts",
+    "serverTestsPassed": 11,
+    "fullCiRerun": false,
+    "browserRerun": false,
+    "note": "Fresh local executions use carrier HEAD. Frozen-combination executions are producer evidence and are not relabeled as independent Reviewer B browser/CI runs."
+  },
+  "remainingBlockers": [
+    {"code": "CURRENT_DEFAULT_CI_UNHANDLED_RPC_TIMEOUT", "disposition": "Keep FAIL until CI owner provides reproducible disposition and required fresh passing execution; assertion counts do not override exit 1."},
+    {"code": "ORIGINAL_AUTHORIZATION_UNPROVEN", "disposition": "Planner must establish original authorization for seven B paths. Reviewer B source identity and narrow correctness review cannot manufacture that authority."},
+    {"code": "PATH_SCOPE_REVIEW_AND_EXECUTION_BINDING_PENDING", "disposition": "Keep unresolved role/path review and three check references pending until their exact evidence is bound by authorized owners."},
+    {"code": "SOURCE_ASSETS_MISSING", "disposition": "Submitted source-assets result remains FAIL with 93 missing images; no Release waiver is granted."},
+    {"code": "FINAL_REVIEWER_A_PENDING", "disposition": "This artifact cannot supply Reviewer A tooling/evidence acceptance."}
+  ],
+  "newRuntimeDefectsFound": [],
+  "nonClaims": ["Final readiness PASS", "Global Gate C", "Main promotion", "Phase 3 complete", "Release ready", "GitHub required checks", "Original authorization approval"],
+  "formalCredit": {"coverageDelta": 0, "migrationDelta": 0, "denominatorDelta": 0, "promotedOnMain": false},
+  "githubIdentity": null,
+  "githubReviewThread": null,
+  "reviewCommitBinding": "Artifact-only containing commit; SHA and artifact digest reported externally."
+}
