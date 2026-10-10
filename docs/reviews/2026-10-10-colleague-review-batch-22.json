@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 446,
+    "headSha": "509a027a3b5487259b2c3f6d3c7722710031c046",
+    "baseSha": "7c2ee773a8ca36fde7cc2812c86e9cb20cdb83e2",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "FAILED",
+    "scope": "ASTOLFO_S1_COMPLETE_CARD_CURRENT_MAIN_REPLAY_REVIEW",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [{
+      "priority": "P2", "path": "packages/rules/src/ability/interpreter.ts", "line": 1658,
+      "summary": "Actual Astolfo settlement returns a closed skill face-up but owner_only;skill-zone projection hides it from every non-owner,contrary to Final Rules11.4. Inherited identical runtime,not S-introduced regression;whole-card test checks zone only.",
+      "introducedRelativeToBase": false
+    }],
+    "evidence": [
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-446-independent.mjs",
+        "targetSha": "509a027a3b5487259b2c3f6d3c7722710031c046", "result": "6 expected assertions PASS:exact F1/source-card/hash bindings,scope,play/timing,private atomic decisions,real closed-skill visibility reproduction,111->112/944 recount",
+        "artifactIdentity": "docs/reviews/probes/review-446-independent.mjs" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/astolfo-s1-consumer-migration.test.ts packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts packages/rules/tests/fb2-42-controlled-card-close-forbid.test.ts packages/rules/tests/match-room.test.ts packages/rules/tests/match-room-hub.test.ts --maxWorkers=2",
+        "targetSha": "509a027a3b5487259b2c3f6d3c7722710031c046", "result": "5 files/75 tests PASS",
+        "artifactIdentity": "pr446-independent-focused" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci -- --maxWorkers=2",
+        "targetSha": "509a027a3b5487259b2c3f6d3c7722710031c046", "result": "133 files/933 tests PASS,original timeout/exclusions,no failure reruns",
+        "artifactIdentity": "pr446-independent-full-ci" },
+      { "kind": "STATIC_AND_BUILD", "producer": "Codex Automation Review Owner",
+        "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 446 --repo binchen648/fd --json headRefOid,baseRefOid,state; git fetch origin main; gh api repos/binchen648/fd/issues/comments/5775187822; gh api repos/binchen648/fd/issues/comments/5832739229",
+        "targetSha": "509a027a3b5487259b2c3f6d3c7722710031c046", "result": "Build/content/determinism/diff PASS;live bindings/main unchanged;source/reviewer relay correctly attributed;runtime blob equality proves inherited visibility issue",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-446-review.md" }
+    ],
+    "limitations": [
+      "Authoring replay/provenance/scope correct;whole-card runtime conformance fails on inherited dependency,not new production regression.",
+      "F1 committed inventory verified,not external CHM/images/Reference originals;historical reviewer tests not ours.",
+      "No independent baseline scenario execution or client screenshot;inheritance proven by immutable production equality.",
+      "No migration/runtime acceptance,Planner authorization,GitHub publication,Gate C,promotion,merge or credit."
+    ]
+  }]
+}

@@ -2,6 +2,14 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch22 records PR446 FAILED on2026-10-10:actual Astolfo closes a skill
+face-up but hides it from non-owners,contrary to Final Rules11.4. Inherited
+identical runtime,not S-introduced regression. Complete authoring/F1 provenance
+and111->112/944 scope verified. Focused75/75,full CI133 files/933 tests,
+typecheck/content/determinism PASS. Final6 expected assertions PASS,including
+visibility reproduction. Cumulative:33/534,10 PASS,23 FAILED,501 pending.
+See batch22 and2026-10-10-pr-446-review.md. All-PR goal active,incomplete.
+
 Batch21 records PR444 FAILED on2026-10-10:generic protection rejects own
 required close despite Final Rules11.4;mechanical source/dispatch replay is
 accurate,but that historical contract needs conformance resolution. Focused
