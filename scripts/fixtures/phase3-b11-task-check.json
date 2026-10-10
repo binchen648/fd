@@ -3,7 +3,7 @@
   "taskId": "P3-E08-B11-COMBINATION-READINESS",
   "controlEpoch": "FD-P3-2026-09-23-08",
   "baseSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
-  "candidateSha": "46dbd031b06192e7e81479706678937064cdc1a3",
+  "candidateSha": "ae95d19fd3c13bfe5962373c51560a76c90bae04",
   "authorization": {
     "commit": "8eb752c181ea025ac54c53f425a89aa64238f575",
     "path": "docs/agents/P3-E08-B11-FINAL-EVIDENCE-REPAIR-AUTHORIZATION.md",
@@ -1220,7 +1220,7 @@
     "runtimeServerReservation": "RETAINED_BY_B"
   },
   "finalBinding": {
-    "sourceSha": "46dbd031b06192e7e81479706678937064cdc1a3",
+    "sourceSha": "ae95d19fd3c13bfe5962373c51560a76c90bae04",
     "sourceObjects": {
       "data/authoring": "b2e3896827cf9041e675b6f69c380b2668ff3413",
       "data/packs": "8500f5ce85fef874f0e8325e5c5d2b4b91c9a9a8",
@@ -1228,11 +1228,11 @@
       "packages/content/src": "578877014dfa30200bb7fe44e9126a5e114fd646",
       "packages/rules/src": "91c4f8128ed7a51e7e59854a27f7e4f8fdda299f",
       "scripts/phase3-coverage.ts": "ce6f84862de382703d6bfbf2940e535f1b238be3",
-      "scripts/phase3-e08-b11-coverage-sync.ts": "33afce921925970fe7d133472e46d48a34b23c73",
-      "scripts/tests/phase3-e08-b11-coverage-sync.test.ts": "9fb27fbec6315223b8b154f0697e86214b3fdc6c",
-      "scripts/tests/phase3-e06-post-merge-recount.test.ts": "3e7972499a751d8b3be2370098b46a797efcf974",
-      "scripts/phase3-preflight.ts": "416e95c8365ef7cabb95c51f43624aeffb2bb266",
-      "scripts/tests/phase3-readiness-preflight.test.ts": "4a750671472aa01bd24bb54c0343efe1ff163dc0"
+      "scripts/phase3-e08-b11-coverage-sync.ts": "5cfbd15d19eaa7375093664d1f529ab7cf3ce3d7",
+      "scripts/tests/phase3-e08-b11-coverage-sync.test.ts": "ae7555a694b2b00d27f0bd8112232e3d0b557d78",
+      "scripts/tests/phase3-e06-post-merge-recount.test.ts": "4b022578290922e6c94c7cf81030dcc85e7d0c8d",
+      "scripts/phase3-preflight.ts": "3c0ec10ba72b4c6d91de3b080c5815788f71d783",
+      "scripts/tests/phase3-readiness-preflight.test.ts": "57b964df60d73167a7f3b0b76597d4856c72d86c"
     }
   },
   "checks": [
@@ -1240,19 +1240,19 @@
       "id": "b11-component-scenario",
       "command": "npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/production-resolution-bridge.test.ts",
       "state": "PENDING_FRESH_EXECUTION_PACKET_BINDING",
-      "testedSha": "46dbd031b06192e7e81479706678937064cdc1a3"
+      "testedSha": "ae95d19fd3c13bfe5962373c51560a76c90bae04"
     },
     {
       "id": "socket-boundary",
       "command": "npm run test --workspace @fd/server -- src/match-server.test.ts",
       "state": "PENDING_FRESH_EXECUTION_PACKET_BINDING",
-      "testedSha": "46dbd031b06192e7e81479706678937064cdc1a3"
+      "testedSha": "ae95d19fd3c13bfe5962373c51560a76c90bae04"
     },
     {
       "id": "browser",
       "command": "npx playwright test e2e/fd-golden-eater-result-binding.spec.ts e2e/fd-conversion-magic-core-primitive.spec.ts --repeat-each=5",
       "state": "PENDING_FRESH_EXECUTION_PACKET_BINDING",
-      "testedSha": "46dbd031b06192e7e81479706678937064cdc1a3"
+      "testedSha": "ae95d19fd3c13bfe5962373c51560a76c90bae04"
     }
   ],
   "formalCredit": {
