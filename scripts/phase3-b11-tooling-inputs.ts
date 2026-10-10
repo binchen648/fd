@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { changedPaths } from './phase3-preflight';
 import { adapterClosurePaths } from './phase3-contract-parity';
-import { git, hash, parseArgs, sha } from './phase3-tooling-common';
+import { git, hash, InputError, parseArgs, sha, type Obj } from './phase3-tooling-common';
 
 export const combinationSha = '9eaa0e0c417486adf7b0449e3d32fb90b7d362f9';
 export const diagnosticCandidateSha = '7ec91bbc26be0f63332d5cc8421b2c7c014906c5';
@@ -96,9 +96,59 @@ export function buildParityInput(root: string, fixtureCommit: string, adapterCom
   };
 }
 
+export const reviewedToolingCarrier = 'be7dd6b4da6b377daf019b6170efc112c2d7a45e';
+export const premiseReviewBindings = {
+  a: { commit: '31bad4ac87e728e5c80b9a9448f63c84f57a1d46', path: 'docs/reviews/phase3/P3-E08-B11-observation-repair-reviewer-a.json', sha256: 'D17FC230259C55E285436A89E45F7C286B5B39708F1F7182C307740B65016900' },
+  b: { commit: 'f2da26c56cc8c5e2b8ffe35d9802051a2e3d7540', path: 'docs/reviews/phase3/P3-E08-B11-fixture-premise-be7dd6b-review.json', sha256: '745AFE7E74EE7C970341FAE29F79678E33273A696FE04B81C263978892AD804B' },
+};
+
+export function validatePremiseReviewBodies(root: string, input: Obj, a: Obj, b: Obj): void {
+  const require = (condition: boolean, field: string) => { if (!condition) throw new InputError(`Exact premise review mismatch: ${field}`); };
+  const same = (left: unknown, right: unknown) => JSON.stringify(left) === JSON.stringify(right);
+  const contract = reference(root, reviewedToolingCarrier, 'scripts/fixtures/phase3-b11-parity-contract.json');
+  const premise = hash(`${JSON.stringify({ contractId: input.contractId, contractVersion: input.contractVersion,
+    adapterVersion: input.adapterVersion, executionAdapter: input.executionAdapter, candidateSha: input.candidateSha,
+    contract: input.contract, fixtures: input.fixtures, owners: input.owners })}\n`);
+  for (const [owner, review] of Object.entries({ a, b })) {
+    require(review.taskId === input.taskId && review.controlEpoch === input.controlEpoch, `${owner}.task/epoch`);
+    require((owner === 'a' ? review.fixturePremiseSha256 : review.premiseSha256) === premise, `${owner}.premise`);
+  }
+  require(a.finalVerdict === 'PASS' && a.reviewer === 'Reviewer A' && a.reviewedSha === reviewedToolingCarrier && a.candidateSha === reviewedToolingCarrier, 'a.identity/verdict/carrier');
+  require(a.acceptedScope === 'A_OWNED_READ_ONLY_DIAGNOSTIC_REPAIR_AND_EVIDENCE_BINDING_NOT_FIXTURE_SEMANTICS_OR_RUNTIME', 'a.scope');
+  require(a.runtimeDependencySha === input.candidateSha && a.adapterAndFixtureSha === input.fixtures.commit, 'a.dependencies');
+  const expectedBindings = ['scripts/fixtures/phase3-b11-parity-contract.json', fixturePath, 'artifacts/phase3-e08-b11-inventory-coverage-parity.json']
+    .map(path => ({ path, sha256: reference(root, reviewedToolingCarrier, path).sha256 }));
+  require(same(a.boundArtifacts, expectedBindings), 'a.artifact hashes');
+  require(a.promotionAllowed === false && a.runtimeAcceptanceGranted === false && same(a.formalCredit, { mainCoverageCreditDelta: 0, migrationCreditDelta: 0, denominatorDelta: 0 }), 'a.acceptance boundary');
+  require(b.schemaVersion === 'fd-p3-parity-expectation-review-v1' && b.verdict === 'PASS' && b.reviewer === 'Codex Reviewer B', 'b.identity/verdict/schema');
+  require(b.candidateSha === input.candidateSha && b.inspectedCarrierSha === reviewedToolingCarrier, 'b.candidate/carrier');
+  require(b.reviewedFixtureCommit === input.fixtures.commit && b.fixturePath === input.fixtures.path && b.fixtureSha256 === input.fixtures.sha256, 'b.fixture');
+  require(b.executionAdapterCommit === input.executionAdapter[0].commit && b.contractInputSha256 === contract.sha256, 'b.adapter/input');
+  require(same(b.scope?.authorizedAbilities, ['sc-kintoki-3.golden-eater', 'conversion-magic.preparation']) && b.scope?.fixtureCount === 10, 'b.scope');
+  const fixtures = JSON.parse(git(root, ['show', `${input.fixtures.commit}:${input.fixtures.path}`]).toString('utf8'));
+  require(same(b.fixtureAssessments?.map((row: Obj) => row.id).sort(), fixtures.fixtures.map((row: Obj) => row.id).sort()) && b.fixtureAssessments.every((row: Obj) => row.verdict === 'PASS'), 'b.fixture verdicts');
+  require(b.boundaries?.fixturePremiseAccepted === true && b.boundaries.fullCombinationReadinessGranted === false && b.boundaries.gatePromotionGranted === false && b.boundaries.mainPromotionGranted === false && b.boundaries.migrationCredit === 0, 'b.acceptance boundary');
+}
+
+export function bindReviewedParityInput(root: string) {
+  const input = JSON.parse(git(root, ['show', `${reviewedToolingCarrier}:scripts/fixtures/phase3-b11-parity-contract.json`]).toString('utf8'));
+  const reviews: Record<string, Obj> = {};
+  for (const [owner, ref] of Object.entries(premiseReviewBindings)) {
+    const bytes = git(root, ['show', `${ref.commit}:${ref.path}`]);
+    if (hash(bytes) !== ref.sha256) throw new InputError(`Reviewer ${owner} artifact hash mismatch`);
+    if (git(root, ['rev-parse', `${ref.commit}^`]).toString().trim() !== reviewedToolingCarrier ||
+        git(root, ['diff', '--name-only', `${ref.commit}^`, ref.commit]).toString().trim() !== ref.path) throw new InputError(`Reviewer ${owner} exact parent/artifact-only lineage mismatch`);
+    reviews[owner] = JSON.parse(bytes.toString('utf8'));
+  }
+  validatePremiseReviewBodies(root, input, reviews.a, reviews.b);
+  return { ...input, expectationReview: { state: 'ACCEPTED', artifact: premiseReviewBindings.b } };
+}
+
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const root = resolve('.');
-  if (process.argv.includes('--fixtures-only')) {
+  if (process.argv.includes('--bind-reviewed')) {
+    writeFileSync(resolve(root, 'scripts/fixtures/phase3-b11-parity-contract.json'), `${JSON.stringify(bindReviewedParityInput(root), null, 2)}\n`);
+  } else if (process.argv.includes('--fixtures-only')) {
     writeFileSync(resolve(root, fixturePath), `${JSON.stringify(buildFixtures(root), null, 2)}\n`);
   } else {
     const args = parseArgs(process.argv.slice(2), ['--fixture-commit', '--adapter-commit'], ['--fixture-commit', '--adapter-commit']);
