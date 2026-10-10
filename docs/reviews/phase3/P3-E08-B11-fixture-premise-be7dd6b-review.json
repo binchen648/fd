@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "fd-p3-parity-expectation-review-v1",
+  "taskId": "P3-E08-B11-CONTRACT-PARITY",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "reviewer": "Codex Reviewer B",
+  "reviewDate": "2026-10-10",
+  "verdict": "PASS",
+  "candidateSha": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
+  "inspectedCarrierSha": "be7dd6b4da6b377daf019b6170efc112c2d7a45e",
+  "reviewedFixtureCommit": "7a9699efcca8e16467cd973a7c7dd522e5a230a9",
+  "fixturePath": "scripts/fixtures/phase3-b11-parity-fixtures.json",
+  "fixtureSha256": "CA345E013C74B233ABE5A496760C04E0C50E5A4241030608B68843D6163AEAE4",
+  "contractInputPath": "scripts/fixtures/phase3-b11-parity-contract.json",
+  "contractInputSha256": "CF307202E26222774344F4CA75B7208FFE16020C0097390E30A2D84A346D1AB8",
+  "premiseSha256": "CF2A50939F709D71ECFC29D29AFB626F1BFCFDED787DD49A027E160787C2DB81",
+  "executionAdapterCommit": "7a9699efcca8e16467cd973a7c7dd522e5a230a9",
+  "scope": {
+    "authorizedAbilities": ["sc-kintoki-3.golden-eater", "conversion-magic.preparation"],
+    "fixtureCount": 10,
+    "acceptance": "Declared expectations and owner-output meanings for these exact fixtures and this exact premise only. Not general correctness of the diagnostic API or runtime."
+  },
+  "ruleSources": [
+    {"commit": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5", "path": "docs/rules/FD-Game-Rules-Final.md", "sections": ["1.2", "8.3", "12.1"]},
+    {"commit": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5", "path": "data/authoring/servants/servant.kintoki.json", "section": "sc-kintoki-3.golden-eater", "sha256": "2E5CBAA6965924E306D1E61764CC75A52F278039D5871B39C51DE431CF268B35"},
+    {"commit": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5", "path": "data/authoring/masters/master.irisviel.json", "section": "conversion-magic.preparation", "sha256": "F81D3E1E03276C9E2404E09712B139B00EAFE1F8A5F141CEDA867FBC901D61C8"},
+    {"commit": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5", "path": "docs/plans/2026-09-12-p3-b11-result-binding-production-bridge-design.md", "sha256": "BC534430CBBCA00116CDFB2173FF38FFD2B6A581D39464CE46DF760E4AFEF18B"},
+    {"commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2", "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md", "section": "phase3:contract-parity"}
+  ],
+  "ownerMeanings": {
+    "runtime": "Exported predicates applied to normalized candidate abilities. Structural ownership precedes exact binding validity; a malformed owned graph remains owned.",
+    "compiler": "Production compileExecutableCardPack ACCEPT or REJECT. ACCEPT outside this scoped timing contract means structurally compilable, not canonical permission to use a mutated printed card.",
+    "inventory": "Raw-authoring structural ownership and exact shape from classifyB11InventoryAbility. Conversion candidate uses timing/envelope/ordered effect types, with binding validation confined to exactEligible.",
+    "coverage": "Exact raw-authoring diagnostic eligibility from classifyB11CoverageEligibility. Production coverage taxonomy is separately retained; this is not a KPI or migration-credit observation.",
+    "correlation": "Inventory and coverage explicitly share inspectB11AuthoringShape. They are correlated diagnostic surfaces, not two independent proofs of rules, settlement, fallback closure or browser behavior."
+  },
+  "fixtureAssessments": [
+    {"id": "golden-positive", "verdict": "PASS", "reason": "Combat printed clause permits first removed-card move, optional second move for 7 mana, and 2 VP per actual move at a battlefield."},
+    {"id": "golden-renamed-identities", "verdict": "PASS", "reason": "Consistent source/ability identity substitution preserves the graph; eligibility must not rely on the original source identity."},
+    {"id": "golden-invalid-result-field", "verdict": "PASS", "reason": "Unknown result field stays owned, becomes exact-ineligible, and requires compiler rejection."},
+    {"id": "golden-missing-target-reference", "verdict": "PASS", "reason": "Unbound target reference stays owned, becomes exact-ineligible, and requires rejection."},
+    {"id": "golden-wrong-payment", "verdict": "PASS", "reason": "8 mana contradicts the exact printed 7-mana optional payment; owned but ineligible and rejected."},
+    {"id": "golden-outside-combat", "verdict": "PASS", "reason": "Action timing is outside this combat bridge; compile ACCEPT is only the declared structural diagnostic meaning."},
+    {"id": "conversion-positive", "verdict": "PASS", "reason": "Advance printed clause discards all hand cards and awards one mana per actual discard; bound movedCount realizes that requirement."},
+    {"id": "conversion-renamed-identities", "verdict": "PASS", "reason": "Consistent source/ability identity substitution preserves the move/count/mana contract."},
+    {"id": "conversion-unknown-binding", "verdict": "PASS", "reason": "The same structural ability is still owned despite its unknown reference; exact eligibility is false and compiler rejects. Runtime and inventory now use the accepted ownership meaning."},
+    {"id": "conversion-outside-advance", "verdict": "PASS", "reason": "Action timing is outside the advance bridge. Compiler ACCEPT does not authorize the modified card under canonical text."}
+  ],
+  "closedFindings": ["FIXTURE_OWNERSHIP_MEANING_GAP", "OWNER_EXPECTATION_MAPPING_UNDEFINED", "CONVERSION_OWNERSHIP_PREMISE_NOT_REPAIRED"],
+  "blockingFindings": [],
+  "verification": {
+    "independentCommand": "npx vitest run scripts/tests/phase3-contract-parity.test.ts scripts/tests/phase3-b11-diagnostic-api.test.ts --maxWorkers=2",
+    "testedCarrierSha": "be7dd6b4da6b377daf019b6170efc112c2d7a45e",
+    "testFiles": 2,
+    "passedTests": 28,
+    "execution": "Fresh isolated candidate API execution: ten fixtures, all required observations evaluated, no expectation disagreement. The pre-attestation result remains FAIL solely for pending independent review. Bound adapter bytes match the inspected carrier implementation.",
+    "referenceHashes": "All bound adapter, fixture and publication references independently verified against exact Git bytes.",
+    "premiseHash": "Independently recomputed from candidate, contract, fixture reference, adapter and owner meanings; matches premiseSha256.",
+    "expectationPreservation": "Compared fixture Git objects against de28753: all ten expected maps unchanged; canonical source commits updated to 7ec91bbc.",
+    "typecheck": "PASS",
+    "diffCheck": "PASS",
+    "fullCiRerun": false,
+    "browserRerun": false
+  },
+  "boundaries": {
+    "fixturePremiseAccepted": true,
+    "toolingAcceptanceGranted": false,
+    "fullCombinationReadinessGranted": false,
+    "gatePromotionGranted": false,
+    "mainPromotionGranted": false,
+    "phase3Complete": false,
+    "releaseReady": false,
+    "migrationCredit": 0,
+    "githubIdentity": null,
+    "githubReviewThread": null
+  },
+  "reviewCommitBinding": "Artifact-only containing Git commit; commit SHA and raw artifact SHA-256 are reported externally to avoid self-referential hashes."
+}
