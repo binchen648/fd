@@ -2194,5 +2194,27 @@
     },
     "creditChange": "NONE",
     "runtimeRepairByA": "NONE"
+  },
+  "onePassContinuation": {
+    "taskId": "P3-E08-B11-CI-AND-BINDING-FINALIZATION",
+    "controlEpoch": "FD-P3-2026-09-23-08",
+    "authorization": {
+      "commit": "08e2f8cbf99b69ff1220b9dc1e933ec08fe57158",
+      "path": "docs/agents/P3-E08-B11-ONE-PASS-A-REPAIR.md",
+      "gitObject": "41dca8d12bf258b92299660d3e135fe9456719a6",
+      "sha256": "461476638B42AA31448DADD2026D8B0F9F317FFC6E4BDE474AD3F84FB30F9F00"
+    },
+    "implementationSha": "f4cdad92f129d26a75aac207ecedc991d40a653c",
+    "historicalPacketCommit": "11c1985dc4c72151bbf16298292bf4b7fa29fcab",
+    "historicalPacketSha256": "0A0CBDE50BDED8BA13EF06F0166DEA7D1AED65AE316FC3CA4ACFA974DA9AB5A6",
+    "historicalFieldsScope": "Historical frozen packet, not current candidate execution",
+    "currentPacket": {
+      "path": "artifacts/phase3-e08-b11-ci-and-binding-finalization.json",
+      "sha256": "752C8024687E55CD2EBCC2E460B9C67289FCBE920D15A37A6D9481E9F7A75B26"
+    },
+    "currentStatus": "BLOCKED_CURRENT_EVIDENCE_CONTRACT_AND_FAILED_CI_PAIR",
+    "oldFailuresRetained": true,
+    "creditDelta": 0,
+    "currentReviewPending": true
   }
 }
