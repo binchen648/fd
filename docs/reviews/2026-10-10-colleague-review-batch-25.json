@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 456,
+    "headSha": "83cac6ef2a1334b823e37c873d0a1a2c8e819cb9",
+    "baseSha": "3b2d78ae931a0ded23f98ec1e513768dea9c78de",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "PASS",
+    "scope": "OUTSIDE_GAME_OWNED_SERVANT_SKILL_REVISION_TECHNICAL_REVIEW",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [],
+    "evidence": [
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-456-independent.mjs",
+        "targetSha": "83cac6ef2a1334b823e37c873d0a1a2c8e819cb9", "result": "8/8 PASS:deferred definition retained/no initialZone,other-card/input equality,ordinary/master controls,11 malformed owners,R1 extra-key rejection,14 invalid placements,3 type/namespace mismatches,two-commit ancestry/task/scope,112/944 recount",
+        "artifactIdentity": "docs/reviews/probes/review-456-independent.mjs" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/regression/fb2-explicit-outside-game-initial-placement.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/authoring-interpreter.test.ts --maxWorkers=2",
+        "targetSha": "83cac6ef2a1334b823e37c873d0a1a2c8e819cb9", "result": "3 files/99 tests PASS,revised focused12/12",
+        "artifactIdentity": "pr456-independent-focused" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci -- --maxWorkers=2",
+        "targetSha": "83cac6ef2a1334b823e37c873d0a1a2c8e819cb9", "result": "141 files/1001 tests PASS,original timeout/exclusions,no failure reruns",
+        "artifactIdentity": "pr456-independent-full-ci" },
+      { "kind": "STATIC_AND_BUILD", "producer": "Codex Automation Review Owner",
+        "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 456 --repo binchen648/fd --json headRefOid,baseRefOid,state; git fetch origin main; gh api repos/binchen648/fd/issues/comments/5844121623; gh api repos/binchen648/fd/issues/comments/5825842148",
+        "targetSha": "83cac6ef2a1334b823e37c873d0a1a2c8e819cb9", "result": "Build/content/determinism/diff PASS,live bindings unchanged;task present;static initialZone consumer verified. Historical relay attributed;current is Base->R1->revision,not direct child",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-456-review.md" }
+    ],
+    "limitations": [
+      "Technical PASS only. Report direct-parent freeze instruction needs corrected provenance for two-commit revision lineage.",
+      "No custom modified production MatchSession instantiated;compiler no-initialZone and unchanged initialization loop verified.",
+      "Historical153-row readiness/three consumers,original Reference/assets and historical Work preservation not reverified.",
+      "Inherited/source findings remain uncleared;no runtime acceptance,Planner changes,GitHub publication,Gate,promotion,merge or credit."
+    ]
+  }]
+}

@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 35,
-    "pending": 499,
+    "reviewed": 36,
+    "pending": 498,
     "blocked": 0,
     "notVerified": 0
   },
@@ -23156,11 +23156,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "PASS",
+        "scope": "OUTSIDE_GAME_OWNED_SERVANT_SKILL_REVISION_TECHNICAL_REVIEW",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-25.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-456-independent.mjs",
+            "targetSha": "83cac6ef2a1334b823e37c873d0a1a2c8e819cb9",
+            "result": "8/8 PASS:deferred definition retained/no initialZone,other-card/input equality,ordinary/master controls,11 malformed owners,R1 extra-key rejection,14 invalid placements,3 type/namespace mismatches,two-commit ancestry/task/scope,112/944 recount",
+            "artifactIdentity": "docs/reviews/probes/review-456-independent.mjs"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/regression/fb2-explicit-outside-game-initial-placement.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/authoring-interpreter.test.ts --maxWorkers=2",
+            "targetSha": "83cac6ef2a1334b823e37c873d0a1a2c8e819cb9",
+            "result": "3 files/99 tests PASS,revised focused12/12",
+            "artifactIdentity": "pr456-independent-focused"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=2",
+            "targetSha": "83cac6ef2a1334b823e37c873d0a1a2c8e819cb9",
+            "result": "141 files/1001 tests PASS,original timeout/exclusions,no failure reruns",
+            "artifactIdentity": "pr456-independent-full-ci"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0

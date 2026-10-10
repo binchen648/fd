@@ -2,6 +2,15 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch25 records PR456 technical PASS on2026-10-10:exact servant owner gate
+rejects R1 extra-key case and malformed variants;deferred definition retained
+without initialZone,ordinary/master controls and other-card equality verified.
+Independent8/8,focused99/99,full CI141 files/1001 tests,typecheck/content/
+determinism PASS. Base->R1->revision has two commits;report direct-parent freeze
+instruction needs provenance follow-up. Material112/944 unchanged,no credit.
+Cumulative:36/534,13 PASS,23 FAILED,498 pending. See batch25 and
+2026-10-10-pr-456-review.md. All-PR goal remains active,incomplete.
+
 Batch24 records PR455 technical PASS on2026-10-10:exact current A dispatch
 and historical helper verified;real seven-seat movement/effect and bounded
 opponent admission pass. Independent9/9 probe,focused30/30,full CI141 files/
