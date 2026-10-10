@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 23,
-    "pending": 511,
+    "reviewed": 24,
+    "pending": 510,
     "blocked": 0,
     "notVerified": 0
   },
@@ -21625,11 +21625,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "WHOLE_F4_B03_MALFORMED_MODIFIER_LIFECYCLE_ADMISSION_GATE",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-13.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/f4-b03-modifier-lifecycle-migrations.test.ts packages/rules/tests/f4-b02-owned-passive-modifier-migrations.test.ts packages/rules/tests/f4-b01-passive-modifier-migrations.test.ts packages/rules/tests/p3-f4-b01-passive-modifier-migrations.test.ts packages/rules/tests/core/movement.test.ts packages/rules/tests/core/combat-resolver.test.ts packages/rules/tests/core/game-loop-round-start.test.ts packages/rules/tests/core/game-loop-battle-cleanup.test.ts packages/rules/tests/regression/fb2-terrain-deployment-bonus-metric.test.ts packages/rules/tests/fb2-47-controller-defeated-vp-reward.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+            "targetSha": "4589924f0cae86dc58bd75a4794e2b2caef0f3ec",
+            "result": "11 files /106 tests PASS, including B03 R1 production regressions",
+            "artifactIdentity": "2026-10-10-pr-436-focused"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=1",
+            "targetSha": "4589924f0cae86dc58bd75a4794e2b2caef0f3ec",
+            "result": "Exit1:190 files PASS /1 FAIL,1443 tests PASS /1 FAIL; inherited Helena count159 vs151",
+            "artifactIdentity": "2026-10-10-pr-436-full-ci"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-436-independent.mjs",
+            "targetSha": "4589924f0cae86dc58bd75a4794e2b2caef0f3ec",
+            "result": "Exit1:four controls PASS,six malformed gates FAIL; raw/compiled=true,issues=0,lock=true or power7. Exact157->159,no removals/duplicates; local text/hash binding; lifecycle and rollback controls PASS",
+            "artifactIdentity": "docs/reviews/probes/review-436-independent.mjs"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0

@@ -2,6 +2,15 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch13 records PR436 FAILED on 2026-10-10: the new B03 empty predicates
+admit malformed limit/responseWindow/lifecycle containers. Six cases load with
+zero issues and install movement locks or next-round +3; four independent controls
+PASS. Focused106/106 PASS; full CI190 files PASS/1 FAIL,1443 tests PASS/1 FAIL,
+with inherited Helena159 vs151 failure. Live bindings/fetched main unchanged;
+search534/incomplete=false does not prove all remaining heads unchanged.
+Cumulative:24/534,9 PASS,15 FAILED,510 pending. See batch13 and
+2026-10-10-pr-436-review.md. All-PR goal remains active and incomplete.
+
 Repository: binchen648/fd. Contributor: fengling20011118-dotcom.
 Pinned main: `9a1689d2ec5b56b67d1483d2593b4ab809d6c15c`.
 Review branch: `codex/colleague-pr-review`.
