@@ -2,6 +2,15 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch33 records PR464 bounded technical PASS on2026-10-10:no new exact-scope
+join-capability blocker found;prior play-provenance finding closed. Independent
+final6/6 PASS;focused155/155 PASS. Initialfull1053 PASS/12 FAIL(2 timeouts),
+bounded rerun1055 PASS/10 FAIL;all10 deterministic failures reproduce at exact
+base(14 PASS/10 FAIL). Strict evidence FAIL on31 absent external images.
+PR461-463 dependency findings remain open;no whole-chain acceptance or credit.
+Cumulative44/534,14 PASS,30 FAILED,490 pending. See batch33 and
+2026-10-10-pr-464-review.md. All-PR goal remains active,incomplete.
+
 Batch32 records PR463 FAILED on2026-10-10:new global mana/draw suppression
 ignores same-location actual cloak immunity. Independent6/6 expected checks
 PASS,including two-resource defect and away/expiry/R1 closure/pair controls.

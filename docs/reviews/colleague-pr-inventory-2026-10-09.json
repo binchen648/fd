@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 43,
-    "pending": 491,
+    "reviewed": 44,
+    "pending": 490,
     "blocked": 0,
     "notVerified": 0
   },
@@ -23777,11 +23777,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "PASS",
+        "scope": "SOURCE_SKILL_ATTACK_JOIN_REVISION_BOUNDED_TECHNICAL_REVIEW",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-33.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-464-independent.mjs",
+            "targetSha": "c68bfe1246c06a2a0f67728d5539a3710a355933",
+            "result": "Final6/6 PASS;join/non-play/repeat/provenance;8 authority and8 loader/compiled rejection variants;initial4/6 fixture lazy-mode initialization disclosed",
+            "artifactIdentity": "docs/reviews/probes/review-464-independent.mjs"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci; npm run test:ci -- --maxWorkers=2",
+            "targetSha": "c68bfe1246c06a2a0f67728d5539a3710a355933",
+            "result": "149 files/1065 tests:initial1053 PASS/12 FAIL(10 deterministic+2 timeouts);bounded rerun1055 PASS/10 FAIL;not green CI",
+            "artifactIdentity": "pr464-independent-full-ci-both-runs"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/regression/p3-source-skill-attack-join-capability.test.ts packages/rules/tests/regression/p3-sitonai-readiness-capability.test.ts packages/rules/tests/regression/p3-sigurd-revealed-source-capability.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts --maxWorkers=1",
+            "targetSha": "c68bfe1246c06a2a0f67728d5539a3710a355933",
+            "result": "7 files/155 tests PASS;capability5/5;R1 closure set19/19",
+            "artifactIdentity": "pr464-independent-focused"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0

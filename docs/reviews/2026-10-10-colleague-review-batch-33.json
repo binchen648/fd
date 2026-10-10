@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 464,
+    "headSha": "c68bfe1246c06a2a0f67728d5539a3710a355933",
+    "baseSha": "e92cb3a08392619b0e8f47504f8e1c751b7b504d",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "PASS",
+    "scope": "SOURCE_SKILL_ATTACK_JOIN_REVISION_BOUNDED_TECHNICAL_REVIEW",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [],
+    "evidence": [
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-464-independent.mjs",
+        "targetSha": "c68bfe1246c06a2a0f67728d5539a3710a355933", "result": "Final6/6 PASS;join/non-play/repeat/provenance;8 authority and8 loader/compiled rejection variants;initial4/6 fixture lazy-mode initialization disclosed",
+        "artifactIdentity": "docs/reviews/probes/review-464-independent.mjs" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci; npm run test:ci -- --maxWorkers=2",
+        "targetSha": "c68bfe1246c06a2a0f67728d5539a3710a355933", "result": "149 files/1065 tests:initial1053 PASS/12 FAIL(10 deterministic+2 timeouts);bounded rerun1055 PASS/10 FAIL;not green CI",
+        "artifactIdentity": "pr464-independent-full-ci-both-runs" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/regression/p3-source-skill-attack-join-capability.test.ts packages/rules/tests/regression/p3-sitonai-readiness-capability.test.ts packages/rules/tests/regression/p3-sigurd-revealed-source-capability.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts --maxWorkers=1",
+        "targetSha": "c68bfe1246c06a2a0f67728d5539a3710a355933", "result": "7 files/155 tests PASS;capability5/5;R1 closure set19/19",
+        "artifactIdentity": "pr464-independent-focused" },
+      { "kind": "BASELINE_TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/astolfo-s1-consumer-migration.test.ts packages/rules/tests/m50-02-opponent-close-one-non-residual.test.ts packages/rules/tests/seven-servant-decks.test.ts packages/rules/tests/regression/golden-card-content-pipeline.test.ts packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts --maxWorkers=2",
+        "targetSha": "e92cb3a08392619b0e8f47504f8e1c751b7b504d", "result": "5 files/24 tests:14 PASS/10 inherited FAIL;not full baseline CI",
+        "artifactIdentity": "pr464-exact-base-comparison" },
+      { "kind": "STATIC_AND_BUILD", "producer": "Codex Automation Review Owner",
+        "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 464 --repo binchen648/fd --json headRefOid,baseRefOid,state,comments; git fetch origin main",
+        "targetSha": "c68bfe1246c06a2a0f67728d5539a3710a355933", "result": "Typecheck/content/diff PASS;strict evidence FAIL inherited31 missing-image diagnostics isolated;live bindings unchanged;historical Reference and relays separately attributed",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-464-review.md" }
+    ],
+    "limitations": [
+      "Narrow delta PASS only;PR461-463 dependency findings remain open;no whole-chain readiness or formal acceptance.",
+      "No actual Sitonai consumer migration,external Reference equivalence,full baseline CI,UI/network or exhaustive restore verification.",
+      "Both full CI runs fail;initial2 timeouts not conclusively attributed;strict generated verifier FAIL on inherited external images.",
+      "Zero credit;no repair,Planner mutation,GitHub verdict,Gate,promotion or merge."
+    ]
+  }]
+}
