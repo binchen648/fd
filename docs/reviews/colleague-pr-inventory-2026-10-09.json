@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 40,
-    "pending": 494,
+    "reviewed": 41,
+    "pending": 493,
     "blocked": 0,
     "notVerified": 0
   },
@@ -23559,11 +23559,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "SIGURD_REVEALED_SOURCE_CAPABILITY_SUCCESSOR_TECHNICAL_REVIEW",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-30.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-461-independent.mjs",
+            "targetSha": "20f7c6d3262b00ca072554fc07be5fc2ba89e7ab",
+            "result": "Final7/7 expected assertions PASS including2 defects;closed-source fixture explicitly seeded after real play;production starter invoked directly;R1/R2 controls and lineage/no material delta",
+            "artifactIdentity": "docs/reviews/probes/review-461-independent.mjs"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=2",
+            "targetSha": "20f7c6d3262b00ca072554fc07be5fc2ba89e7ab",
+            "result": "146 files/1047 tests:1036 PASS,11 FAIL;10 inherited and1 ten-second timeout with unknown baseline causation;contention disclosed",
+            "artifactIdentity": "pr461-independent-full-ci"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/regression/p3-sigurd-revealed-source-capability.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/battle-loss-servant-reveal.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/core/combat-resolver.test.ts --maxWorkers=1",
+            "targetSha": "20f7c6d3262b00ca072554fc07be5fc2ba89e7ab",
+            "result": "7 files/161 tests:160 PASS,1 original ten-second eleven-round timeout;capability7/7 PASS;no green substitution",
+            "artifactIdentity": "pr461-independent-focused"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0

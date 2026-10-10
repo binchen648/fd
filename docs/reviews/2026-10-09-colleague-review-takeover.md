@@ -2,6 +2,16 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch30 records PR461 FAILED on2026-10-10:canonical terminal removes sole
+refund target before mandatory continuation;real session starter skips newly
+added round_start trigger. Final7/7 expected probe assertions PASS,including
+defects;affected160 PASS/1 timeout;full CI1036 PASS/11 FAIL. Exact-base comparison
+14 PASS/10 FAIL confirms inherited failures;timeout causation unknown and
+contention disclosed. Strict evidence FAIL only on26 absent external images.
+Material129/944 unchanged,zero-credit capability. Cumulative41/534,13 PASS,
+28 FAILED,493 pending. See batch30 and2026-10-10-pr-461-review.md.
+All-PR goal remains active,incomplete.
+
 Batch29 records PR460 FAILED on2026-10-10:cloak immunity misses actual Banquet
 cost aura and loader-admitted hostile card-target/move path;new11-servant roster
 breaks fixed-seed Tomoe fixture. Independent7/7 expected assertions PASS,including

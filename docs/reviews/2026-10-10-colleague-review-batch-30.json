@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 461,
+    "headSha": "20f7c6d3262b00ca072554fc07be5fc2ba89e7ab",
+    "baseSha": "fe37f27e17007af77573ab99e02b40870d62d532",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "FAILED",
+    "scope": "SIGURD_REVEALED_SOURCE_CAPABILITY_SUCCESSOR_TECHNICAL_REVIEW",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [
+      { "priority": "P1", "path": "packages/rules/src/ability/interpreter.ts", "line": 3768,
+        "summary": "Canonical terminal removes sole refund candidate before mandatory target continuation;choice rejects without mutation and pending decision blocks cleanup.", "introducedRelativeToBase": true },
+      { "priority": "P2", "path": "packages/rules/src/ability/interpreter.ts", "line": 3812,
+        "summary": "Round-start event guarded by increasing round is skipped by real MatchSession starter,which already replaces round;actual method VP10 versus direct API control9.", "introducedRelativeToBase": true }
+    ],
+    "evidence": [
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-461-independent.mjs",
+        "targetSha": "20f7c6d3262b00ca072554fc07be5fc2ba89e7ab", "result": "Final7/7 expected assertions PASS including2 defects;closed-source fixture explicitly seeded after real play;production starter invoked directly;R1/R2 controls and lineage/no material delta",
+        "artifactIdentity": "docs/reviews/probes/review-461-independent.mjs" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci -- --maxWorkers=2",
+        "targetSha": "20f7c6d3262b00ca072554fc07be5fc2ba89e7ab", "result": "146 files/1047 tests:1036 PASS,11 FAIL;10 inherited and1 ten-second timeout with unknown baseline causation;contention disclosed",
+        "artifactIdentity": "pr461-independent-full-ci" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/regression/p3-sigurd-revealed-source-capability.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/battle-loss-servant-reveal.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/core/combat-resolver.test.ts --maxWorkers=1",
+        "targetSha": "20f7c6d3262b00ca072554fc07be5fc2ba89e7ab", "result": "7 files/161 tests:160 PASS,1 original ten-second eleven-round timeout;capability7/7 PASS;no green substitution",
+        "artifactIdentity": "pr461-independent-focused" },
+      { "kind": "BASELINE_TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/astolfo-s1-consumer-migration.test.ts packages/rules/tests/m50-02-opponent-close-one-non-residual.test.ts packages/rules/tests/seven-servant-decks.test.ts packages/rules/tests/regression/golden-card-content-pipeline.test.ts packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts --maxWorkers=2",
+        "targetSha": "fe37f27e17007af77573ab99e02b40870d62d532", "result": "5 files/24 tests:14 PASS,10 inherited FAIL;not full baseline CI",
+        "artifactIdentity": "pr461-exact-base-comparison" },
+      { "kind": "STATIC_AND_BUILD", "producer": "Codex Automation Review Owner",
+        "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 461 --repo binchen648/fd --json headRefOid,baseRefOid,state; git fetch origin main; gh api repos/binchen648/fd/issues/comments/5848501887",
+        "targetSha": "20f7c6d3262b00ca072554fc07be5fc2ba89e7ab", "result": "Typecheck/content/diff PASS;strict evidence FAIL inherited26 missing-image diagnostics isolated;live bindings unchanged;historical relay separately attributed",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-461-review.md" }
+    ],
+    "limitations": [
+      "Technical FAILED only;zero-credit capability,no Sigurd consumers or formal rescan/readiness acceptance;dependency findings remain.",
+      "Production round starter directly inspected through in-memory generic fixture,not end-to-end UI flow;closed-source fixture seeded after real plays.",
+      "Timeout baseline causation unknown and contention disclosed;full baseline CI not run.",
+      "Strict evidence remains FAIL;external assets/locked Reference and exhaustive restore/immunity coverage unverified.",
+      "No runtime repair,Planner mutation,GitHub verdict,Gate,promotion,merge,runtime acceptance or credit."
+    ]
+  }]
+}
