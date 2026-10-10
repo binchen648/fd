@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "fd-c01-scheduler-gate-evidence-v1",
+  "taskId": "P3-C01-THREAD-DISPATCH-FEASIBILITY",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "date": "2026-10-10",
+  "status": "AUTOMATION_BASELINE_CANDIDATE",
+  "implementationSha": "13f8b5c6f9493daa8bb84f4415e8930a78bdd5ea",
+  "baseSha": "bbbeabbd92e6db49fe04a457db9a2c3f0c80a1c9",
+  "authorization": {
+    "plannerContractCommit": "5d0779435494e5a4e2ea59c6e37d825eac27ebc5",
+    "path": "docs/agents/P3-E08-C01-THREAD-DISPATCH-PROTOTYPE.md",
+    "userDisposition": "Scheduler gate tests permitted; real engineering-task automatic dispatch not authorized"
+  },
+  "sourceBlobs": {
+    "scripts/phase3-scheduler-gates.ts": "f39164e376a43f3f1e3c7c9512655f7ac4696d35",
+    "scripts/tests/phase3-scheduler-gates.test.ts": "3de3d9122fd5e8a5307a31aed83fa35e24f8ac02"
+  },
+  "verification": [
+    {
+      "command": "npx --no-install vitest run scripts/tests/phase3-scheduler-gates.test.ts",
+      "stage": "RED_BEFORE_IMPLEMENTATION",
+      "exitCode": 1,
+      "reason": "Scheduler gate module did not exist; no tests collected"
+    },
+    {
+      "command": "npx --no-install vitest run scripts/tests/phase3-scheduler-gates.test.ts scripts/tests/phase3-thread-dispatch.test.ts scripts/tests/phase3-cli-worker-probe.test.ts",
+      "stage": "FINAL_IMPLEMENTATION",
+      "exitCode": 0,
+      "files": 3,
+      "tests": 47,
+      "schedulerTests": 36,
+      "existingSafetyTests": 11
+    },
+    {
+      "command": "npx --no-install tsc --noEmit --target ES2022 --module ESNext --moduleResolution Bundler --skipLibCheck --types node scripts/phase3-thread-dispatch.ts scripts/phase3-cli-worker-probe.ts scripts/phase3-scheduler-gates.ts scripts/tests/phase3-thread-dispatch.test.ts scripts/tests/phase3-cli-worker-probe.test.ts scripts/tests/phase3-scheduler-gates.test.ts",
+      "exitCode": 0,
+      "scope": "Targeted automation source and tests only"
+    },
+    { "command": "git diff --check", "exitCode": 0 }
+  ],
+  "negativeCoverage": [
+    "stale base", "stale or dirty worktree", "unavailable commit observation",
+    "role mismatch", "unregistered worker", "domain not allowed", "busy/waiting/unknown worker",
+    "unknown or conflicting lock snapshot", "pending/failed/waiting/missing dependency",
+    "review identity mismatch or absent artifact hash", "duplicate dependency rows",
+    "unbound chat PASS", "Planner task/epoch/role/dependency mismatch",
+    "duplicate reserved or acknowledged delivery", "uncertain delivery remains reserved", "unknown delivery snapshot",
+    "malformed snapshot", "positive matching preview remains non-authorizing"
+  ],
+  "mode": "READ_ONLY_SUPPLIED_SNAPSHOT",
+  "dispatchAuthorized": false,
+  "liveFactsVerified": false,
+  "realWorkerStartsThisTask": 0,
+  "realEngineeringDispatchesThisTask": 0,
+  "acceptanceGranted": false,
+  "mainCoverageCreditDelta": 0,
+  "migrationCreditDelta": 0,
+  "denominatorDelta": 0,
+  "notVerified": [
+    "Authoritative queue/Git/review/lock live collection and artifact authentication",
+    "Snapshot freshness and TOCTOU prevention",
+    "Atomic multi-controller reservations and process-restart durable recovery",
+    "Desktop chat interoperability and real engineering task routing",
+    "Scheduler preview integration with send transport",
+    "Full CI, full platform readiness, Gate and promotion"
+  ]
+}
