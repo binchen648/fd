@@ -2,7 +2,8 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'nod
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { setImmediate as yieldToEventLoop } from 'node:timers/promises';
 import { assertFinalTaskCheck, buildFinalTaskCheck, buildContinuationTaskCheck, runPreflight } from '../phase3-preflight';
 import { git, gitText, hash, InputError } from '../phase3-tooling-common';
 import { publicationSha, reference } from '../phase3-b11-tooling-inputs';
@@ -56,6 +57,8 @@ let invalidCommand: string;
 const evaluate = (context: ReturnType<typeof fixture>, input: unknown = context.input, candidate = context.candidate) => runPreflight(context.cwd, input, candidate, context.base, hash(JSON.stringify(input)));
 
 describe('readiness preflight, independent from promotion policy', () => {
+  // Synchronous Git diagnostics must let Vitest deliver queued RPC updates between cases.
+  afterEach(async () => { await yieldToEventLoop(); });
   beforeAll(() => {
     normal = fixture('normal'); deleted = fixture('delete'); renamed = fixture('rename');
     const input = JSON.parse(readFileSync(join(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
