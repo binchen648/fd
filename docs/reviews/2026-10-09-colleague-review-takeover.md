@@ -2,6 +2,15 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch40 records PR471 technical FAILED on2026-10-10:actual sc3 newly exposes
+inherited PR470 named-ability restore gaps in owned-seal choice/dynamic aura.
+Independent7/7 expected checks PASS,sc2 exact historical object preserved,
+actual sc1/sc2/sc3 positive paths verified. Focused201/201 PASS;full1141
+PASS/10 FAIL,exact-base14 PASS/10 FAIL reproduces same failure classes.
+Strict evidence FAIL only31 absent external images;historical ignored debug
+file absent. Cumulative51/534,15 PASS,36 FAILED,483 pending. See batch40 and
+2026-10-10-pr-471-review.md. No credit or authority;goal active,incomplete.
+
 Batch39 records PR470 technical FAILED on2026-10-10:host-signed restore
 accepts wrong named sibling ability for owned-Ruler pending choice and dynamic
 unused-seal aura;first cannot settle,second remains gameplay-active.

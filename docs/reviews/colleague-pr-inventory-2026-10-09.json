@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 50,
-    "pending": 484,
+    "reviewed": 51,
+    "pending": 483,
     "blocked": 0,
     "notVerified": 0
   },
@@ -24289,11 +24289,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "SPARTACUS_OWNER_COMPLETE_MIGRATION_TECHNICAL_REVIEW",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-40.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-471-independent.mjs",
+            "targetSha": "ab009a6074f2c71b7eaf1204880d71fffd670bea",
+            "result": "7/7 expected checks PASS incl both actual sc3 defects,actual sc1 cost/reveal/real seal-user formula,3-to-zero physical replacement/restore,sc2 historical object/hash and real-loop power19/private/replay controls",
+            "artifactIdentity": "docs/reviews/probes/review-471-independent.mjs"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/regression/p3-owner-spartacus-complete-migration.test.ts packages/rules/tests/regression/p3-spartacus-seal-power-readiness-capability.test.ts packages/rules/tests/fb2-48-combat-opponent-power-vp-reward.test.ts packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/core/combat-resolver.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/fb2-fixed-controller-command-seal-component.test.ts --maxWorkers=1",
+            "targetSha": "ab009a6074f2c71b7eaf1204880d71fffd670bea",
+            "result": "10 files/201 tests PASS;owner8/8;not historical245",
+            "artifactIdentity": "pr471-independent-focused"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=2",
+            "targetSha": "ab009a6074f2c71b7eaf1204880d71fffd670bea",
+            "result": "157 files/1151 tests:1141 PASS/10 inherited FAIL,no timeouts;not green CI;historical ignored debug file absent",
+            "artifactIdentity": "pr471-independent-full-ci"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0
