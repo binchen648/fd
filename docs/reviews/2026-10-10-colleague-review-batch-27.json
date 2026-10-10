@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 458,
+    "headSha": "cf8b8cc019c014cf0c1e187b6cbd2212c6e3a030",
+    "baseSha": "83d3f6dcc9476390aa8bc11d1dc5b5e15f077a63",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "FAILED",
+    "scope": "SHERLOCK_OWNER_COMPLETE_MIGRATION_SUCCESSOR_TECHNICAL_REVIEW",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [
+      { "priority": "P1", "path": "packages/rules/src/ability/interpreter.ts", "line": 1409,
+        "summary": "New owner-only revealed-card payload leaks through unchanged MatchSession shared logging/client projection and rejected pass response;real production session reproduction.", "introducedRelativeToBase": true },
+      { "priority": "P2", "path": "packages/rules/src/ability/loader.ts", "line": 435,
+        "summary": "Retaining all markers breaks unchanged compiled M50-02 empty-marker contract;no-loader-issue authoring loses valid close action. Six new CI failures;baseline M50-02 7/7 PASS.", "introducedRelativeToBase": true },
+      { "priority": "P2", "path": "data/authoring/servants/servant.sherlock.json", "line": 109,
+        "summary": "Deduction-record presence incorrectly gates unconditional Elementary card reveal;without record legal action absent and dispatch rejected despite valid source/phase/opponent.", "introducedRelativeToBase": true },
+      { "priority": "P2", "path": "packages/rules/src/ability/interpreter.ts", "line": 3585,
+        "summary": "Different secret record attributes yield identical owner DTOs;record state and private set event omit owner-recoverable current attribute/definition.", "introducedRelativeToBase": true }
+    ],
+    "evidence": [
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-458-independent.mjs",
+        "targetSha": "cf8b8cc019c014cf0c1e187b6cbd2212c6e3a030", "result": "Final10/10 expected assertions PASS,including4 defect reproductions;actual MatchSession private leak,compiled marker regression,no-record rejection,owner DTO equality;source/task/material116->123 and normal controls",
+        "artifactIdentity": "docs/reviews/probes/review-458-independent.mjs" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci -- --maxWorkers=2",
+        "targetSha": "cf8b8cc019c014cf0c1e187b6cbd2212c6e3a030", "result": "Captured143 files/1022 tests:9 FAIL,1013 PASS;6 new M50-02 failures,3 inherited failures;original timeout/exclusions",
+        "artifactIdentity": "pr458-independent-full-ci" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/regression/p3-owner-sherlock-complete-migration.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/core/combat-resolver.test.ts packages/rules/tests/regression/battle-loss-servant-reveal.test.ts scripts/tests/compile-playtest-content-pack.test.ts --maxWorkers=2",
+        "targetSha": "cf8b8cc019c014cf0c1e187b6cbd2212c6e3a030", "result": "Captured6 files/114 tests:113 PASS,1 original5s timeout;Sherlock9/9 and workshop interaction PASS;not green-substituted",
+        "artifactIdentity": "pr458-independent-focused" },
+      { "kind": "BASELINE_TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/astolfo-s1-consumer-migration.test.ts packages/rules/tests/m50-02-opponent-close-one-non-residual.test.ts packages/rules/tests/seven-servant-decks.test.ts packages/rules/tests/regression/golden-card-content-pipeline.test.ts --maxWorkers=2",
+        "targetSha": "83d3f6dcc9476390aa8bc11d1dc5b5e15f077a63", "result": "4 files/20 tests:17 PASS,3 inherited FAIL;M50-02 7/7 PASS;not full baseline CI",
+        "artifactIdentity": "pr458-exact-base-comparison" },
+      { "kind": "STATIC_AND_BUILD", "producer": "Codex Automation Review Owner",
+        "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 458 --repo binchen648/fd --json headRefOid,baseRefOid,state; git fetch origin main; gh api repos/binchen648/fd/issues/comments/5846079823",
+        "targetSha": "cf8b8cc019c014cf0c1e187b6cbd2212c6e3a030", "result": "Typecheck/content/diff PASS;strict generated evidence FAIL on candidate/base,16 absent external images isolated;live SHA/main unchanged;relay currently lacks detailed verdict evidence",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-458-review.md" }
+    ],
+    "limitations": [
+      "Technical FAILED only;material seven additions are not awarded credit or runtime acceptance;PR457 dependency findings remain unresolved.",
+      "Owner-private producer/log transport mismatch verified;original source public-versus-private show semantics need separate authority clarification.",
+      "Strict generated evidence mismatch is asset-dependent;external Reference/images and original Work preservation unverified.",
+      "Initial process handles disappeared across interruption,outputs uncredited;fresh captured runs retain all failures,including focused timeout with unknown baseline causation.",
+      "No network/UI/full baseline CI/exhaustive restore acceptance;no Planner change,GitHub publication,Gate,promotion,merge or credit."
+    ]
+  }]
+}

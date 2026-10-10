@@ -2,6 +2,16 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch27 records PR458 FAILED on2026-10-10:owner-private card payload leaks
+through real MatchSession shared logs;marker preservation breaks compiled
+M50-02;Elementary wrongly requires an existing record;owner DTO cannot recover
+record attribute. Final10/10 expected probe assertions PASS,including defects.
+Full CI1013 PASS/9 FAIL(6 new M50-02,3 inherited);baseline17 PASS/3 FAIL,
+M50-02 7/7 PASS. Focused113 PASS/1 timeout. Strict generated evidence remains
+asset-dependent FAIL. Material116->123/944 is not credit. Cumulative38/534,
+13 PASS,25 FAILED,496 pending. See batch27 and2026-10-10-pr-458-review.md.
+All-PR goal remains active,incomplete.
+
 Batch26 records PR457 FAILED on2026-10-10:real dispatch/combat loses granted
 terrain for a no-slot recipient;two simultaneously lent Guards yield different
 winners when physical-card array order changes. Original full CI1005 PASS/

@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 37,
-    "pending": 497,
+    "reviewed": 38,
+    "pending": 496,
     "blocked": 0,
     "notVerified": 0
   },
@@ -23324,11 +23324,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "SHERLOCK_OWNER_COMPLETE_MIGRATION_SUCCESSOR_TECHNICAL_REVIEW",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-27.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-458-independent.mjs",
+            "targetSha": "cf8b8cc019c014cf0c1e187b6cbd2212c6e3a030",
+            "result": "Final10/10 expected assertions PASS,including4 defect reproductions;actual MatchSession private leak,compiled marker regression,no-record rejection,owner DTO equality;source/task/material116->123 and normal controls",
+            "artifactIdentity": "docs/reviews/probes/review-458-independent.mjs"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=2",
+            "targetSha": "cf8b8cc019c014cf0c1e187b6cbd2212c6e3a030",
+            "result": "Captured143 files/1022 tests:9 FAIL,1013 PASS;6 new M50-02 failures,3 inherited failures;original timeout/exclusions",
+            "artifactIdentity": "pr458-independent-full-ci"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/regression/p3-owner-sherlock-complete-migration.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/core/combat-resolver.test.ts packages/rules/tests/regression/battle-loss-servant-reveal.test.ts scripts/tests/compile-playtest-content-pack.test.ts --maxWorkers=2",
+            "targetSha": "cf8b8cc019c014cf0c1e187b6cbd2212c6e3a030",
+            "result": "Captured6 files/114 tests:113 PASS,1 original5s timeout;Sherlock9/9 and workshop interaction PASS;not green-substituted",
+            "artifactIdentity": "pr458-independent-focused"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0
