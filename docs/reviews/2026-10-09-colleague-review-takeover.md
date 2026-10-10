@@ -100,6 +100,15 @@ passed 6/6, including stale SHA, missing producer, duplicate/unknown PR and cred
 
 ## Next Work
 
+Batch10 records PR433 FAILED on 2026-10-10: installed receipts are not removed
+with invalidated modifiers. Legal close rolls back; phase cleanup commits orphan
+receipts and subsequent projection fails. Independent three controls PASS and
+four lifecycle checks FAIL. Focused 95/95 and full CI187 files / 1410 tests PASS
+do not cover the blocker. Exact OPEN bindings and main unchanged; contributor
+search534/incomplete=false does not prove unchanged heads for all remaining PRs.
+Cumulative: 21/534, 9 PASS, 12 FAILED, 513 pending. See batch10 and
+2026-10-10-pr-433-review.md. Full all-PR goal remains active and incomplete.
+
 Batch09 records PR431 FAILED on 2026-10-10: both new two-stage interactions
 dereference context/remainingEffects before shape validation. Eight malformed
 cases throw native TypeError; two positive controls PASS, state remains unchanged.

@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 20,
-    "pending": 514,
+    "reviewed": 21,
+    "pending": 513,
     "blocked": 0,
     "notVerified": 0
   },
@@ -21392,11 +21392,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "FB2_54_RECEIPT_LIFECYCLE_CLEANUP_CONSISTENCY_GATE",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-10.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/fb2-54-event-power-uncontested-win-reward.test.ts packages/rules/tests/fb2-31-event-player-relation.test.ts packages/rules/tests/fb2-33-event-combat-outcome.test.ts packages/rules/tests/fb2-43-event-location-equals-controller.test.ts packages/rules/tests/fb2-51-opponent-round-vp-gain-threshold.test.ts packages/rules/tests/regression/lifecycle-source-active-runtime.test.ts packages/rules/tests/regression/fb2-any-location-except-workshop-movement.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+            "targetSha": "420f54df880bbad4816166c9cc94f2922248308b",
+            "result": "8 files / 95 tests PASS, includes real deployment and ordinary movement; initial missing FB2-33 path corrected before final bundle",
+            "artifactIdentity": "2026-10-10-pr-433-focused"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=1",
+            "targetSha": "420f54df880bbad4816166c9cc94f2922248308b",
+            "result": "Exit0: 187 files / 1410 tests PASS; candidate script exclusions preserved",
+            "artifactIdentity": "2026-10-10-pr-433-full-ci"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-433-independent.mjs",
+            "targetSha": "420f54df880bbad4816166c9cc94f2922248308b",
+            "result": "Exit1: three controls PASS, four lifecycle checks FAIL. Legal synthetic close returns invalid_state with complete rollback; three source-invalidations leave committed orphan receipts and throw on projection. Initial face-down expectation corrected to zero power.",
+            "artifactIdentity": "docs/reviews/probes/review-433-independent.mjs"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0

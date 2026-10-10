@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 433,
+    "headSha": "420f54df880bbad4816166c9cc94f2922248308b",
+    "baseSha": "febbdfcfcfea295d4e6bb005369b03e9d80307a6",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "FAILED",
+    "scope": "FB2_54_RECEIPT_LIFECYCLE_CLEANUP_CONSISTENCY_GATE",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [{
+      "priority": "P2",
+      "path": "packages/rules/src/ability/interpreter.ts",
+      "line": 545,
+      "summary": "New receipt validator rejects legitimate lifecycle cleanup because removed FB2-54 modifiers retain their install receipts. Legal close rolls back; inactive/face-down/invalid-zone phase cleanup commits orphan receipts then public projection fails.",
+      "introducedRelativeToBase": true
+    }],
+    "evidence": [
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/fb2-54-event-power-uncontested-win-reward.test.ts packages/rules/tests/fb2-31-event-player-relation.test.ts packages/rules/tests/fb2-33-event-combat-outcome.test.ts packages/rules/tests/fb2-43-event-location-equals-controller.test.ts packages/rules/tests/fb2-51-opponent-round-vp-gain-threshold.test.ts packages/rules/tests/regression/lifecycle-source-active-runtime.test.ts packages/rules/tests/regression/fb2-any-location-except-workshop-movement.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+        "targetSha": "420f54df880bbad4816166c9cc94f2922248308b",
+        "result": "8 files / 95 tests PASS, includes real deployment and ordinary movement; initial missing FB2-33 path corrected before final bundle",
+        "artifactIdentity": "2026-10-10-pr-433-focused"
+      },
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci -- --maxWorkers=1",
+        "targetSha": "420f54df880bbad4816166c9cc94f2922248308b",
+        "result": "Exit0: 187 files / 1410 tests PASS; candidate script exclusions preserved",
+        "artifactIdentity": "2026-10-10-pr-433-full-ci"
+      },
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-433-independent.mjs",
+        "targetSha": "420f54df880bbad4816166c9cc94f2922248308b",
+        "result": "Exit1: three controls PASS, four lifecycle checks FAIL. Legal synthetic close returns invalid_state with complete rollback; three source-invalidations leave committed orphan receipts and throw on projection. Initial face-down expectation corrected to zero power.",
+        "artifactIdentity": "docs/reviews/probes/review-433-independent.mjs"
+      },
+      {
+        "kind": "STATIC_AND_BUILD",
+        "producer": "Codex Automation Review Owner",
+        "command": "gh pr view 433 --repo binchen648/fd --json headRefOid,baseRefOid,state; git diff febbdfcfcfea295d4e6bb005369b03e9d80307a6 420f54df880bbad4816166c9cc94f2922248308b; npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check febbdfcfcfea295d4e6bb005369b03e9d80307a6 420f54df880bbad4816166c9cc94f2922248308b",
+        "targetSha": "420f54df880bbad4816166c9cc94f2922248308b",
+        "result": "Exact OPEN head/base and fetched main unchanged; eight-path diff and base dispatch clarification read; typecheck/content/determinism/diff PASS",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-433-review.md"
+      }
+    ],
+    "limitations": [
+      "Trusted synthetic close and isolated source-state lifecycle tests; not actual formal Mechaeli migration or external client forgery proof.",
+      "Immediate invalidation and face-down zero-power behavior remain correct before cleanup.",
+      "Historical R1/R2 and implementer tests remain attributed inputs, not reused as independent evidence.",
+      "No external Reference verification, client/browser, coverage/audit regeneration, source-asset/Gate C, current-main runtime or recount.",
+      "Blocking gate does not exhaustively clear all event/battle semantics or inherited defects.",
+      "No runtime acceptance, promotion, credit or GitHub publication."
+    ]
+  }]
+}
