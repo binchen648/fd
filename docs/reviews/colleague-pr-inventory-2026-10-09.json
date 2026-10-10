@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 42,
-    "pending": 492,
+    "reviewed": 43,
+    "pending": 491,
     "blocked": 0,
     "notVerified": 0
   },
@@ -23707,11 +23707,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "SITONAI_COMBINATION_FIMBUL_CAPABILITY_SUCCESSOR_TECHNICAL_REVIEW",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-32.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-463-independent.mjs",
+            "targetSha": "8789fcad58867b999a9d713b83342f602fa3f775",
+            "result": "6/6 expected checks PASS including two-resource immunity defect;away/no-cloak/expiry/pair/R1 gateway and count controls;no data delta",
+            "artifactIdentity": "docs/reviews/probes/review-463-independent.mjs"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=2",
+            "targetSha": "8789fcad58867b999a9d713b83342f602fa3f775",
+            "result": "148 files/1060 tests:1050 PASS,10 inherited FAIL;no timeout failures",
+            "artifactIdentity": "pr463-independent-full-ci"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/regression/p3-sitonai-readiness-capability.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/src/__tests__/match-session-regressions.test.ts packages/rules/src/__tests__/all-card-types.test.ts packages/rules/tests/regression/card-action-add-to-attack.test.ts --maxWorkers=1",
+            "targetSha": "8789fcad58867b999a9d713b83342f602fa3f775",
+            "result": "8 files/162 tests PASS;capability7/7;misses immunity combination",
+            "artifactIdentity": "pr463-independent-focused"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0

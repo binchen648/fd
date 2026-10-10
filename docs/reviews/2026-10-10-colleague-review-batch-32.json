@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 463,
+    "headSha": "8789fcad58867b999a9d713b83342f602fa3f775",
+    "baseSha": "508050bb701d2dd2fe425dc323eca2a970ec95c1",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "FAILED",
+    "scope": "SITONAI_COMBINATION_FIMBUL_CAPABILITY_SUCCESSOR_TECHNICAL_REVIEW",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [{ "priority": "P2", "path": "packages/rules/src/ability/timed-resource-suppression.ts", "line": 92,
+      "summary": "New global mana/draw block applies to same-location actual cloak-protected controller despite true existing immunity predicate;no source-aware exclusion.", "introducedRelativeToBase": true }],
+    "evidence": [
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-463-independent.mjs",
+        "targetSha": "8789fcad58867b999a9d713b83342f602fa3f775", "result": "6/6 expected checks PASS including two-resource immunity defect;away/no-cloak/expiry/pair/R1 gateway and count controls;no data delta",
+        "artifactIdentity": "docs/reviews/probes/review-463-independent.mjs" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci -- --maxWorkers=2",
+        "targetSha": "8789fcad58867b999a9d713b83342f602fa3f775", "result": "148 files/1060 tests:1050 PASS,10 inherited FAIL;no timeout failures",
+        "artifactIdentity": "pr463-independent-full-ci" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/regression/p3-sitonai-readiness-capability.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/src/__tests__/match-session-regressions.test.ts packages/rules/src/__tests__/all-card-types.test.ts packages/rules/tests/regression/card-action-add-to-attack.test.ts --maxWorkers=1",
+        "targetSha": "8789fcad58867b999a9d713b83342f602fa3f775", "result": "8 files/162 tests PASS;capability7/7;misses immunity combination",
+        "artifactIdentity": "pr463-independent-focused" },
+      { "kind": "BASELINE_TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/astolfo-s1-consumer-migration.test.ts packages/rules/tests/m50-02-opponent-close-one-non-residual.test.ts packages/rules/tests/seven-servant-decks.test.ts packages/rules/tests/regression/golden-card-content-pipeline.test.ts packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts --maxWorkers=2",
+        "targetSha": "508050bb701d2dd2fe425dc323eca2a970ec95c1", "result": "5 files/24 tests:14 PASS,10 inherited FAIL;not full baseline CI",
+        "artifactIdentity": "pr463-exact-base-comparison" },
+      { "kind": "STATIC_AND_BUILD", "producer": "Codex Automation Review Owner",
+        "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 463 --repo binchen648/fd --json headRefOid,baseRefOid,state,comments; git fetch origin main",
+        "targetSha": "8789fcad58867b999a9d713b83342f602fa3f775", "result": "Typecheck/content/diff PASS;strict evidence FAIL inherited31 missing-image diagnostics isolated;live bindings unchanged;historical predecessor/successor relays separately attributed",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-463-review.md" }
+    ],
+    "limitations": [
+      "Technical FAILED only;generic capability fixture plus actual cloak,not formal Sitonai consumer migration;zero material delta and credit.",
+      "All dynamic immunity timing/exhaustive restore/full baseline CI/UI/network unverified;dependency findings remain.",
+      "Strict verifier remains FAIL on external assets;historical acceptance not transferred to own verdict.",
+      "No runtime repair,formal acceptance,Planner mutation,GitHub verdict,Gate,promotion,merge or credit."
+    ]
+  }]
+}

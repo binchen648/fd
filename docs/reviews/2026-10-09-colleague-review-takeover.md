@@ -2,6 +2,15 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch32 records PR463 FAILED on2026-10-10:new global mana/draw suppression
+ignores same-location actual cloak immunity. Independent6/6 expected checks
+PASS,including two-resource defect and away/expiry/R1 closure/pair controls.
+Focused162/162 PASS;full CI1050 PASS/10 FAIL,all10 reproduced at exact base
+(14 PASS/10 FAIL). Strict evidence FAIL only on31 absent external images.
+Material132/944 unchanged,zero-credit capability. Cumulative43/534,13 PASS,
+30 FAILED,491 pending. See batch32 and2026-10-10-pr-463-review.md.
+All-PR goal remains active,incomplete.
+
 Batch31 records PR462 FAILED on2026-10-10:actual product Sigurd curses miss
 real session round start,an inherited PR461 integration defect. Final6/6 expected
 probe checks PASS,including actual7-unique-servant VP10 versus direct API8;
