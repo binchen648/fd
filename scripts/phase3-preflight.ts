@@ -1,5 +1,7 @@
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isDeepStrictEqual } from 'node:util';
+import { authorizationSha, finalSourcePaths, implementationBaseSha, mainSha, repairPaths, sha256, validateFinalBinding } from './phase3-e08-b11-coverage-sync';
 import { ancestor, array, cliError, commitExists, fields, git, InputError, inputFile, json, object, output, parseArgs, parseReference, readReference, safePath, sha, string, type Issue } from './phase3-tooling-common';
 
 const b11Task = 'P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY';
@@ -60,8 +62,12 @@ function reviewDependency(root: string, raw: unknown, epoch: string, issues: Iss
   if (!ancestor(root, candidate, ref.commit)) issues.push({ code: 'DEPENDENCY_REVIEW_LINEAGE_FAILED', path: ref.commit, message: taskId });
 }
 
-export function runPreflight(root: string, raw: unknown, candidate: string, base: string, inputSha256: string) {
+export function runPreflight(root: string, raw: unknown, candidate: string, base: string, inputSha256: string): {
+  status: string; issues: Issue[]; changedPaths: string[]; acceptanceGranted: boolean;
+  reviewReadyChanged: boolean; promotionPolicyChanged: boolean; [key: string]: any;
+} {
   const input = object(raw, 'task check');
+  if (input.schemaVersion === 'fd-p3-task-check-v2') return runFinalPreflight(root, input, candidate, base, inputSha256);
   fields(input, ['schemaVersion', 'taskId', 'controlEpoch', 'baseSha', 'candidateSha', 'contract', 'segments', 'checks'], 'task check');
   if (input.schemaVersion !== 'fd-p3-task-check-v1') throw new InputError('Unsupported task-check schema');
   const taskId = string(input.taskId, 'taskId');
@@ -157,6 +163,100 @@ export function runPreflight(root: string, raw: unknown, candidate: string, base
     executionMethod: 'EXACT_COMMIT_GIT_BLOBS_AND_FULL_NAME_STATUS_DIFF', segments: inspectedSegments, changedPaths: allChanges,
     worktree: { dirty: dirty.length > 0, statusEntries: dirty, inspectedWorkingTree: false, claim: 'COMMIT_BASED_ONLY' },
     issues, acceptanceGranted: false, reviewReadyChanged: false, promotionPolicyChanged: false };
+}
+
+const originalContract = 'e65503e601d7a3a4d1265d87a09484cb8295f2c2';
+const originalContractPath = 'docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md';
+const historicalTaskPath = 'scripts/fixtures/phase3-b11-task-check.json';
+const firstCoverageSha = '9eaa0e0c417486adf7b0449e3d32fb90b7d362f9';
+const scopedReviewSha = 'b81acf2b4749a09b1dfc0a6f292dda442b7fdbd5';
+
+function exactReference(root: string, commit: string, path: string, section?: string) {
+  const bytes = git(root, ['show', `${commit}:${path}`]);
+  if (section && !bytes.toString('utf8').includes(section)) throw new InputError('Authorization section missing');
+  return { commit, path, sha256: sha256(bytes), ...(section ? { section } : {}) };
+}
+
+export function buildFinalTaskCheck(root: string, sourceSha: string) {
+  sha(sourceSha, 'final source SHA');
+  const historicalBytes = git(root, ['show', `${implementationBaseSha}:${historicalTaskPath}`]);
+  const historicalInput = json(historicalBytes, 'historical task');
+  const historical = runPreflight(root, historicalInput, implementationBaseSha, mainSha, sha256(historicalBytes));
+  const unregistered = historical.issues.filter(issue => issue.code === 'UNCOVERED_CHANGED_PATH').map(issue => issue.path).sort();
+  if (unregistered.length !== 40 || new Set(unregistered).size !== 40) throw new InputError('Original forty-path baseline drift');
+  const authorization = exactReference(root, authorizationSha, 'docs/agents/P3-E08-B11-FINAL-EVIDENCE-REPAIR-AUTHORIZATION.md', '## Authorized Write Paths');
+  const toolingAuthorization = exactReference(root, originalContract, originalContractPath, '## Implementation And Handoff');
+  const roleAuthorization = exactReference(root, mainSha, 'docs/agents/PHASE3-AGENT-CONTRACT.md', '## Slice And Pull Request Boundary');
+  const provenance = unregistered.map(path => {
+    const introducingSha = git(root, ['log', '--reverse', '--format=%H', `${mainSha}..${implementationBaseSha}`, '--', path]).toString('utf8').trim().split('\n')[0];
+    if (!/^[0-9a-f]{40}$/.test(introducingSha)) throw new InputError(`Missing introducing delta: ${path}`);
+    const introducingBase = git(root, ['rev-parse', `${introducingSha}^`]).toString('utf8').trim();
+    if (!changedPaths(root, introducingBase, introducingSha).includes(path)) throw new InputError(`Introducing delta mismatch: ${path}`);
+    const role = path.startsWith('packages/rules/') || path.startsWith('docs/agents/manifests/') ? 'B' :
+      path.startsWith('docs/reviews/') ? 'R' : 'A';
+    // Original scope reference is not retroactive acceptance or proof of a user-only B dispatch.
+    const originalAuthorization = role === 'A' ? toolingAuthorization : role === 'R' ? roleAuthorization : null;
+    const authorizationState = role === 'B' ? 'UNPROVEN_USER_DISPATCH_NOT_GIT_BOUND' : 'ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW';
+    return { path, introducingSha, introducingBase, introducingDelta: exactReference(root, introducingSha, path),
+      finalContent: exactReference(root, implementationBaseSha, path), role, originalAuthorization, authorizationState,
+      originalScope: role === 'A' ? 'Tooling files, package script entries, documented task-check fixtures, automation tests and evidence' :
+        role === 'R' ? 'Immutable read-only role review artifact' : 'User dispatch claimed by B task record; independent original authorization required',
+      acceptedScope: 'NOT_ACCEPTED_WHOLESALE', finalReviewState: 'PENDING_RA_RB_FINAL_COMBINATION' };
+  });
+  const sourceObjects = Object.fromEntries(finalSourcePaths.map(path => [path, git(root, ['rev-parse', `${sourceSha}:${path}`]).toString('utf8').trim()]));
+  const overlap = changedPaths(root, firstCoverageSha, implementationBaseSha).filter(path => !unregistered.includes(path));
+  return {
+    schemaVersion: 'fd-p3-task-check-v2', taskId: 'P3-E08-B11-COMBINATION-READINESS', controlEpoch: 'FD-P3-2026-09-23-08',
+    baseSha: mainSha, candidateSha: sourceSha, authorization,
+    scopedReview: exactReference(root, scopedReviewSha, 'docs/reviews/phase3/P3-E08-B11-premise-sync-reviewer-a.json'),
+    historicalInput, historicalInputSha256: sha256(historicalBytes), provenance, overlappingSourceChanges: overlap.map(path => ({
+      path, originalSource: exactReference(root, firstCoverageSha, path), finalSource: exactReference(root, implementationBaseSha, path),
+      authorizationState: 'PENDING_EXACT_DELTA_AUTHORIZATION_AND_REVIEW',
+    })),
+    repairReservation: { owner: 'Codex A', branch: 'codex/a-p3-e08-b11-final-evidence', paths: repairPaths,
+      priorAWorktrees: 'CLEAN_AT_RESERVATION; NO_OTHER_OVERLAPPING_WRITER_OBSERVED', runtimeServerReservation: 'RETAINED_BY_B' },
+    finalBinding: { sourceSha, sourceObjects },
+    checks: (historicalInput.checks as Array<Record<string, unknown>>).map(check => ({ id: check.id, command: check.command,
+      state: 'PENDING_FRESH_EXECUTION_PACKET_BINDING', testedSha: sourceSha })),
+    formalCredit: { mainCoverageCreditDelta: 0, migrationCreditDelta: 0, denominatorDelta: 0, promotedOnMain: false },
+  };
+}
+
+export function assertFinalTaskCheck(actual: unknown, expected: ReturnType<typeof buildFinalTaskCheck>) {
+  if (!isDeepStrictEqual(actual, expected)) throw new InputError('Final provenance evidence mismatch');
+}
+
+function runFinalPreflight(root: string, input: Record<string, any>, candidate: string, base: string, inputSha256: string) {
+  fields(input, ['schemaVersion', 'taskId', 'controlEpoch', 'baseSha', 'candidateSha', 'authorization', 'scopedReview',
+    'historicalInput', 'historicalInputSha256', 'provenance', 'overlappingSourceChanges', 'repairReservation', 'finalBinding', 'checks', 'formalCredit'], 'final task check');
+  sha(candidate, '--candidate'); sha(base, '--base');
+  const issues: Issue[] = [];
+  if (candidate !== input.candidateSha || base !== mainSha || input.baseSha !== mainSha) issues.push({ code: 'EXACT_SHA_MISMATCH', path: 'input', message: 'Final CLI/source/main mismatch' });
+  const expected = buildFinalTaskCheck(root, input.finalBinding?.sourceSha);
+  try { assertFinalTaskCheck(input, expected); }
+  catch { issues.push({ code: 'FINAL_PROVENANCE_BINDING_MISMATCH', path: 'input', message: 'Exact source, forty per-path authorizations, scopes, hashes or pending states were changed' }); }
+  validateFinalBinding(root, input.finalBinding);
+  const reviewRef = parseReference(input.scopedReview, 'scopedReview');
+  const reviewBytes = readReference(root, reviewRef, issues);
+  if (reviewBytes) {
+    const review = json(reviewBytes, 'scoped review');
+    if (review.reviewedSha !== implementationBaseSha || review.controlEpoch !== input.controlEpoch || review.finalVerdict !== 'PASS' ||
+      review.acceptedScope !== 'EXACT_PREMISE_REVIEW_BINDING_AND_LOCAL_PARITY_EVIDENCE_SYNC_ONLY' ||
+      git(root, ['rev-parse', `${reviewRef.commit}^`]).toString('utf8').trim() !== implementationBaseSha) {
+      issues.push({ code: 'SCOPED_REVIEW_MISMATCH', path: reviewRef.path, message: 'No final readiness can be inherited' });
+    }
+  }
+  for (const row of expected.provenance) issues.push({ code: row.role === 'B' ? 'ORIGINAL_AUTHORIZATION_UNPROVEN' : 'PATH_SCOPE_REVIEW_PENDING', path: row.path, message: row.authorizationState });
+  for (const row of expected.overlappingSourceChanges) issues.push({ code: 'OVERLAPPING_SOURCE_REVIEW_PENDING', path: row.path, message: row.authorizationState });
+  for (const check of expected.checks) issues.push({ code: 'FRESH_EXECUTION_BINDING_PENDING', path: String(check.id), message: String(check.command) });
+  issues.push({ code: 'FINAL_RA_RB_REVIEW_PENDING', path: candidate, message: 'Registration and passing diagnostics do not grant acceptance' });
+  const changed = changedPaths(root, mainSha, candidate);
+  const registered = new Set([...changedPaths(root, mainSha, firstCoverageSha), ...expected.provenance.map(row => row.path), ...expected.overlappingSourceChanges.map(row => row.path), ...repairPaths]);
+  for (const path of changed) if (!registered.has(path)) issues.push({ code: 'UNCOVERED_CHANGED_PATH', path, message: 'Not in exact provenance or Planner repair authorization' });
+  return { schemaVersion: 'fd-p3-preflight-result-v2', taskId: input.taskId, controlEpoch: input.controlEpoch, status: 'FAIL',
+    inputs: { testedCandidateSha: candidate, testedBaseSha: base, inputSha256 }, changedPaths: changed,
+    provenance: expected.provenance, overlappingSourceChanges: expected.overlappingSourceChanges, issues,
+    acceptanceGranted: false, reviewReadyChanged: false, promotionPolicyChanged: false };
 }
 
 export function runPreflightCli(argv: string[], root = resolve('.')): void {

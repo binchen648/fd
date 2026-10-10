@@ -1,149 +1,1264 @@
 {
-  "schemaVersion": "fd-p3-task-check-v1",
+  "schemaVersion": "fd-p3-task-check-v2",
   "taskId": "P3-E08-B11-COMBINATION-READINESS",
   "controlEpoch": "FD-P3-2026-09-23-08",
   "baseSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
-  "candidateSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
-  "contract": {
-    "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
-    "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
-    "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
-    "section": "## phase3:preflight"
+  "candidateSha": "46dbd031b06192e7e81479706678937064cdc1a3",
+  "authorization": {
+    "commit": "8eb752c181ea025ac54c53f425a89aa64238f575",
+    "path": "docs/agents/P3-E08-B11-FINAL-EVIDENCE-REPAIR-AUTHORIZATION.md",
+    "sha256": "BFE275A2526D760709D5CBD4E91336E405518B6763050434D6031A6E36932204",
+    "section": "## Authorized Write Paths"
   },
-  "segments": [
-    {
-      "adapter": "b11-v1",
-      "role": "B",
-      "taskId": "P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY",
-      "scope": "RESULT_BINDING_B11",
-      "baseSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
-      "candidateSha": "7868b82949e3e17e64218755e0efe3ed478ff778",
-      "authorizedPaths": [
-        "data/authoring/servants/servant.kintoki.json",
-        "data/generated/fd-playtest-v1.content-library.json",
-        "docs/agents/manifests/tasks/P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY.json",
-        "e2e/fd-conversion-magic-core-primitive.spec.ts",
-        "e2e/fd-golden-eater-result-binding.spec.ts",
-        "e2e/support/prepare-conversion-magic-room.ts",
-        "e2e/support/prepare-golden-eater-room.ts",
-        "e2e/support/start-conversion-magic-fixture-server.ts",
-        "e2e/support/start-golden-eater-fixture-server.ts",
-        "packages/rules/src/ability/executable-card-pack.ts",
-        "packages/rules/src/ability/interpreter.ts",
-        "packages/rules/src/ability/loader.ts",
-        "packages/rules/src/ability/resolution-dataflow.ts",
-        "packages/rules/tests/regression/production-resolution-bridge.test.ts",
-        "packages/rules/tests/regression/resolution-dataflow.test.ts"
-      ],
-      "record": {
-        "commit": "7868b82949e3e17e64218755e0efe3ed478ff778",
-        "path": "docs/agents/manifests/tasks/P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY.json",
-        "sha256": "BA0200E136EB894B6426BCF8FA682311341703C93C1853356BB401F05E96B6B2"
-      },
-      "references": [
-        {
+  "scopedReview": {
+    "commit": "b81acf2b4749a09b1dfc0a6f292dda442b7fdbd5",
+    "path": "docs/reviews/phase3/P3-E08-B11-premise-sync-reviewer-a.json",
+    "sha256": "0C6D1224B80A1BA4EC6D5B617BC70C882B174C82452A7F22AF1614D4A526C9E0"
+  },
+  "historicalInput": {
+    "schemaVersion": "fd-p3-task-check-v1",
+    "taskId": "P3-E08-B11-COMBINATION-READINESS",
+    "controlEpoch": "FD-P3-2026-09-23-08",
+    "baseSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+    "candidateSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+    "contract": {
+      "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+      "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+      "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+      "section": "## phase3:preflight"
+    },
+    "segments": [
+      {
+        "adapter": "b11-v1",
+        "role": "B",
+        "taskId": "P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY",
+        "scope": "RESULT_BINDING_B11",
+        "baseSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+        "candidateSha": "7868b82949e3e17e64218755e0efe3ed478ff778",
+        "authorizedPaths": [
+          "data/authoring/servants/servant.kintoki.json",
+          "data/generated/fd-playtest-v1.content-library.json",
+          "docs/agents/manifests/tasks/P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY.json",
+          "e2e/fd-conversion-magic-core-primitive.spec.ts",
+          "e2e/fd-golden-eater-result-binding.spec.ts",
+          "e2e/support/prepare-conversion-magic-room.ts",
+          "e2e/support/prepare-golden-eater-room.ts",
+          "e2e/support/start-conversion-magic-fixture-server.ts",
+          "e2e/support/start-golden-eater-fixture-server.ts",
+          "packages/rules/src/ability/executable-card-pack.ts",
+          "packages/rules/src/ability/interpreter.ts",
+          "packages/rules/src/ability/loader.ts",
+          "packages/rules/src/ability/resolution-dataflow.ts",
+          "packages/rules/tests/regression/production-resolution-bridge.test.ts",
+          "packages/rules/tests/regression/resolution-dataflow.test.ts"
+        ],
+        "record": {
           "commit": "7868b82949e3e17e64218755e0efe3ed478ff778",
-          "path": "docs/rules/FD-Game-Rules-Final.md",
-          "sha256": "4CBF96C27235670F89AAAB8F4C8C1416F9F64180DA864E521F5EF6E75CCEB227",
-          "section": "### 1.2"
-        }
-      ],
-      "dependencies": [
-        {
-          "taskId": "P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY",
-          "candidateSha": "7868b82949e3e17e64218755e0efe3ed478ff778",
-          "state": "PENDING"
-        }
-      ]
-    },
-    {
-      "adapter": "shared-socket-v1",
-      "role": "B",
-      "taskId": "P3-E08-SHARED-SOCKET-LIFECYCLE-FIX",
-      "scope": "SHARED_SOCKET_LIFECYCLE",
-      "baseSha": "7868b82949e3e17e64218755e0efe3ed478ff778",
-      "candidateSha": "d13ab485dc54398581568a5a66bd696d4459862d",
-      "authorizedPaths": [
-        "apps/server/src/match-server.test.ts",
-        "apps/server/src/match-server.ts",
-        "docs/agents/manifests/tasks/P3-E08-SHARED-SOCKET-LIFECYCLE-FIX.json"
-      ],
-      "record": {
-        "commit": "d13ab485dc54398581568a5a66bd696d4459862d",
-        "path": "docs/agents/manifests/tasks/P3-E08-SHARED-SOCKET-LIFECYCLE-FIX.json",
-        "sha256": "16448C7D7DB80CA50149D80C76F00F024FC9A7DA872CFC75AFDB5941B676883A"
+          "path": "docs/agents/manifests/tasks/P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY.json",
+          "sha256": "BA0200E136EB894B6426BCF8FA682311341703C93C1853356BB401F05E96B6B2"
+        },
+        "references": [
+          {
+            "commit": "7868b82949e3e17e64218755e0efe3ed478ff778",
+            "path": "docs/rules/FD-Game-Rules-Final.md",
+            "sha256": "4CBF96C27235670F89AAAB8F4C8C1416F9F64180DA864E521F5EF6E75CCEB227",
+            "section": "### 1.2"
+          }
+        ],
+        "dependencies": [
+          {
+            "taskId": "P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY",
+            "candidateSha": "7868b82949e3e17e64218755e0efe3ed478ff778",
+            "state": "PENDING"
+          }
+        ]
       },
-      "references": [
-        {
+      {
+        "adapter": "shared-socket-v1",
+        "role": "B",
+        "taskId": "P3-E08-SHARED-SOCKET-LIFECYCLE-FIX",
+        "scope": "SHARED_SOCKET_LIFECYCLE",
+        "baseSha": "7868b82949e3e17e64218755e0efe3ed478ff778",
+        "candidateSha": "d13ab485dc54398581568a5a66bd696d4459862d",
+        "authorizedPaths": [
+          "apps/server/src/match-server.test.ts",
+          "apps/server/src/match-server.ts",
+          "docs/agents/manifests/tasks/P3-E08-SHARED-SOCKET-LIFECYCLE-FIX.json"
+        ],
+        "record": {
           "commit": "d13ab485dc54398581568a5a66bd696d4459862d",
-          "path": "docs/rules/FD-Game-Rules-Final.md",
-          "sha256": "4CBF96C27235670F89AAAB8F4C8C1416F9F64180DA864E521F5EF6E75CCEB227",
-          "section": "### 1.2"
-        }
-      ],
-      "dependencies": [
-        {
-          "taskId": "P3-E08-SHARED-SOCKET-LIFECYCLE-FIX",
-          "candidateSha": "d13ab485dc54398581568a5a66bd696d4459862d",
-          "state": "PENDING"
-        }
-      ]
+          "path": "docs/agents/manifests/tasks/P3-E08-SHARED-SOCKET-LIFECYCLE-FIX.json",
+          "sha256": "16448C7D7DB80CA50149D80C76F00F024FC9A7DA872CFC75AFDB5941B676883A"
+        },
+        "references": [
+          {
+            "commit": "d13ab485dc54398581568a5a66bd696d4459862d",
+            "path": "docs/rules/FD-Game-Rules-Final.md",
+            "sha256": "4CBF96C27235670F89AAAB8F4C8C1416F9F64180DA864E521F5EF6E75CCEB227",
+            "section": "### 1.2"
+          }
+        ],
+        "dependencies": [
+          {
+            "taskId": "P3-E08-SHARED-SOCKET-LIFECYCLE-FIX",
+            "candidateSha": "d13ab485dc54398581568a5a66bd696d4459862d",
+            "state": "PENDING"
+          }
+        ]
+      },
+      {
+        "adapter": "a-coverage-v1",
+        "role": "A",
+        "taskId": "P3-E08-B11-COVERAGE-EVIDENCE-SYNC",
+        "scope": "COVERAGE_EVIDENCE",
+        "baseSha": "d13ab485dc54398581568a5a66bd696d4459862d",
+        "candidateSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+        "authorizedPaths": [
+          "artifacts/phase3-e08-b11-coverage-sync.json",
+          "artifacts/phase3-skill-coverage.json",
+          "docs/reports/2026-10-09-p3-e08-b11-coverage-sync.md",
+          "scripts/phase3-e08-b11-coverage-sync.ts",
+          "scripts/tests/phase3-e06-post-merge-recount.test.ts",
+          "scripts/tests/phase3-e08-b11-coverage-sync.test.ts"
+        ],
+        "record": {
+          "commit": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+          "path": "artifacts/phase3-e08-b11-coverage-sync.json",
+          "sha256": "E62626E2EC7C0088E879416E6C6C929FDF9647109BCEA2EFF6B22DB23A572B3D"
+        },
+        "references": [
+          {
+            "commit": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+            "path": "docs/rules/FD-Game-Rules-Final.md",
+            "sha256": "4CBF96C27235670F89AAAB8F4C8C1416F9F64180DA864E521F5EF6E75CCEB227",
+            "section": "### 1.2"
+          }
+        ],
+        "dependencies": [
+          {
+            "taskId": "P3-E08-B11-COVERAGE-EVIDENCE-SYNC",
+            "candidateSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+            "state": "PENDING"
+          }
+        ]
+      }
+    ],
+    "checks": [
+      {
+        "id": "b11-component-scenario",
+        "command": "npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/production-resolution-bridge.test.ts",
+        "state": "PENDING",
+        "testedSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9"
+      },
+      {
+        "id": "socket-boundary",
+        "command": "npm run test --workspace @fd/server -- src/match-server.test.ts",
+        "state": "PENDING",
+        "testedSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9"
+      },
+      {
+        "id": "browser",
+        "command": "npx playwright test e2e/fd-golden-eater-result-binding.spec.ts e2e/fd-conversion-magic-core-primitive.spec.ts --repeat-each=5",
+        "state": "PENDING",
+        "testedSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9"
+      }
+    ]
+  },
+  "historicalInputSha256": "499D8AED4DCED6D08914387D7CD00FED235EA08EBB4336EEF9235C92B791D9FE",
+  "provenance": [
+    {
+      "path": "artifacts/phase3-e08-b11-inventory-coverage-parity.json",
+      "introducingSha": "00fa5b4a703b5c262e8e252c78443c382e87abd3",
+      "introducingBase": "dbc1b75aaf40253982fc4e458b80dce4043b9224",
+      "introducingDelta": {
+        "commit": "00fa5b4a703b5c262e8e252c78443c382e87abd3",
+        "path": "artifacts/phase3-e08-b11-inventory-coverage-parity.json",
+        "sha256": "D5E6B0C2F739F3D060555E0223D8738AE1470DF78E399F6E5E78BD732C0E2691"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "artifacts/phase3-e08-b11-inventory-coverage-parity.json",
+        "sha256": "47E94CD3E9FAA90C44D68F1FB94A481077B60F50762A3C548CFF639DE7B1E0C8"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
     },
     {
-      "adapter": "a-coverage-v1",
-      "role": "A",
-      "taskId": "P3-E08-B11-COVERAGE-EVIDENCE-SYNC",
-      "scope": "COVERAGE_EVIDENCE",
-      "baseSha": "d13ab485dc54398581568a5a66bd696d4459862d",
-      "candidateSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
-      "authorizedPaths": [
-        "artifacts/phase3-e08-b11-coverage-sync.json",
-        "artifacts/phase3-skill-coverage.json",
-        "docs/reports/2026-10-09-p3-e08-b11-coverage-sync.md",
-        "scripts/phase3-e08-b11-coverage-sync.ts",
-        "scripts/tests/phase3-e06-post-merge-recount.test.ts",
-        "scripts/tests/phase3-e08-b11-coverage-sync.test.ts"
-      ],
-      "record": {
-        "commit": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
-        "path": "artifacts/phase3-e08-b11-coverage-sync.json",
-        "sha256": "E62626E2EC7C0088E879416E6C6C929FDF9647109BCEA2EFF6B22DB23A572B3D"
+      "path": "artifacts/phase3-e08-b11-observation-gap-plan.json",
+      "introducingSha": "abdd8e4eb735240d72a416ede743e84c58ebcd40",
+      "introducingBase": "c4a4b136719bf4ca165d81f1c01e254a8e7aefc3",
+      "introducingDelta": {
+        "commit": "abdd8e4eb735240d72a416ede743e84c58ebcd40",
+        "path": "artifacts/phase3-e08-b11-observation-gap-plan.json",
+        "sha256": "71389413FC176132A8649F0637897F4E72A3FFBA8FEA1E7B2B20960C8EDB4693"
       },
-      "references": [
-        {
-          "commit": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
-          "path": "docs/rules/FD-Game-Rules-Final.md",
-          "sha256": "4CBF96C27235670F89AAAB8F4C8C1416F9F64180DA864E521F5EF6E75CCEB227",
-          "section": "### 1.2"
-        }
-      ],
-      "dependencies": [
-        {
-          "taskId": "P3-E08-B11-COVERAGE-EVIDENCE-SYNC",
-          "candidateSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
-          "state": "PENDING"
-        }
-      ]
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "artifacts/phase3-e08-b11-observation-gap-plan.json",
+        "sha256": "71389413FC176132A8649F0637897F4E72A3FFBA8FEA1E7B2B20960C8EDB4693"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "artifacts/phase3-e08-b11-tooling-coverage.json",
+      "introducingSha": "961ac01aa1cb22dfa30212332bd4af4d5a80c035",
+      "introducingBase": "d7805bda96d0322fd461bd7bf50755e272dbbca1",
+      "introducingDelta": {
+        "commit": "961ac01aa1cb22dfa30212332bd4af4d5a80c035",
+        "path": "artifacts/phase3-e08-b11-tooling-coverage.json",
+        "sha256": "876A7E0D20FDF92D9ECCF9E3EEB50347AC748032F78E7F8B026B0D99FDD505DC"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "artifacts/phase3-e08-b11-tooling-coverage.json",
+        "sha256": "876A7E0D20FDF92D9ECCF9E3EEB50347AC748032F78E7F8B026B0D99FDD505DC"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "artifacts/phase3-e08-b11-tooling-handoff.json",
+      "introducingSha": "961ac01aa1cb22dfa30212332bd4af4d5a80c035",
+      "introducingBase": "d7805bda96d0322fd461bd7bf50755e272dbbca1",
+      "introducingDelta": {
+        "commit": "961ac01aa1cb22dfa30212332bd4af4d5a80c035",
+        "path": "artifacts/phase3-e08-b11-tooling-handoff.json",
+        "sha256": "C53E70D169211299BBEF432EE2D049C55748B69989B038BC06FD5057BFE1E9D4"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "artifacts/phase3-e08-b11-tooling-handoff.json",
+        "sha256": "C53E70D169211299BBEF432EE2D049C55748B69989B038BC06FD5057BFE1E9D4"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "artifacts/phase3-e08-b11-tooling-parity-review-fix.json",
+      "introducingSha": "32eb054f49e2413d2f9891d6edbd665d7eb3c154",
+      "introducingBase": "050839956f3795cde76b48eddaebe6708e470ab4",
+      "introducingDelta": {
+        "commit": "32eb054f49e2413d2f9891d6edbd665d7eb3c154",
+        "path": "artifacts/phase3-e08-b11-tooling-parity-review-fix.json",
+        "sha256": "3882243E538B542D62772A932130EC8231186DE619A9E460B6447B211AF694EA"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "artifacts/phase3-e08-b11-tooling-parity-review-fix.json",
+        "sha256": "3882243E538B542D62772A932130EC8231186DE619A9E460B6447B211AF694EA"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "artifacts/phase3-e08-b11-tooling-parity.json",
+      "introducingSha": "961ac01aa1cb22dfa30212332bd4af4d5a80c035",
+      "introducingBase": "d7805bda96d0322fd461bd7bf50755e272dbbca1",
+      "introducingDelta": {
+        "commit": "961ac01aa1cb22dfa30212332bd4af4d5a80c035",
+        "path": "artifacts/phase3-e08-b11-tooling-parity.json",
+        "sha256": "10B4EB681ACBAA131C80ECA6E4DEE491EC523BB06875361CD2BF4FA42B75EFBB"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "artifacts/phase3-e08-b11-tooling-parity.json",
+        "sha256": "10B4EB681ACBAA131C80ECA6E4DEE491EC523BB06875361CD2BF4FA42B75EFBB"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "artifacts/phase3-e08-b11-tooling-preflight.json",
+      "introducingSha": "961ac01aa1cb22dfa30212332bd4af4d5a80c035",
+      "introducingBase": "d7805bda96d0322fd461bd7bf50755e272dbbca1",
+      "introducingDelta": {
+        "commit": "961ac01aa1cb22dfa30212332bd4af4d5a80c035",
+        "path": "artifacts/phase3-e08-b11-tooling-preflight.json",
+        "sha256": "5490742375C8D98488C5E6B2CDF1C762A3918DF3D129A62F9C798D1745893A06"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "artifacts/phase3-e08-b11-tooling-preflight.json",
+        "sha256": "5490742375C8D98488C5E6B2CDF1C762A3918DF3D129A62F9C798D1745893A06"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "artifacts/phase3-e08-b11-tooling-review-fix-handoff.json",
+      "introducingSha": "32eb054f49e2413d2f9891d6edbd665d7eb3c154",
+      "introducingBase": "050839956f3795cde76b48eddaebe6708e470ab4",
+      "introducingDelta": {
+        "commit": "32eb054f49e2413d2f9891d6edbd665d7eb3c154",
+        "path": "artifacts/phase3-e08-b11-tooling-review-fix-handoff.json",
+        "sha256": "73842C2A70FFCBB1FE81F8E92F028522EDA29F438BE245CE2166C085A7E4543E"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "artifacts/phase3-e08-b11-tooling-review-fix-handoff.json",
+        "sha256": "73842C2A70FFCBB1FE81F8E92F028522EDA29F438BE245CE2166C085A7E4543E"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "docs/agents/manifests/tasks/B11_CONVERSION_BINDING_OWNERSHIP_REPAIR.json",
+      "introducingSha": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
+      "introducingBase": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+      "introducingDelta": {
+        "commit": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
+        "path": "docs/agents/manifests/tasks/B11_CONVERSION_BINDING_OWNERSHIP_REPAIR.json",
+        "sha256": "2C282F13214E45773D619A64553235FDD965B93642FD7A75EC870B79B0D7CA9C"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/agents/manifests/tasks/B11_CONVERSION_BINDING_OWNERSHIP_REPAIR.json",
+        "sha256": "2C282F13214E45773D619A64553235FDD965B93642FD7A75EC870B79B0D7CA9C"
+      },
+      "role": "B",
+      "originalAuthorization": null,
+      "authorizationState": "UNPROVEN_USER_DISPATCH_NOT_GIT_BOUND",
+      "originalScope": "User dispatch claimed by B task record; independent original authorization required",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "docs/agents/manifests/tasks/B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API.json",
+      "introducingSha": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "introducingDelta": {
+        "commit": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+        "path": "docs/agents/manifests/tasks/B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API.json",
+        "sha256": "798F978CE0FC49BDA8F3B819F7A33A9D17E544C9B591708E045F0B2D7B7662F8"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/agents/manifests/tasks/B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API.json",
+        "sha256": "798F978CE0FC49BDA8F3B819F7A33A9D17E544C9B591708E045F0B2D7B7662F8"
+      },
+      "role": "B",
+      "originalAuthorization": null,
+      "authorizationState": "UNPROVEN_USER_DISPATCH_NOT_GIT_BOUND",
+      "originalScope": "User dispatch claimed by B task record; independent original authorization required",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "docs/agents/manifests/vectors/B11_CONVERSION_BINDING_OWNERSHIP_REPAIR.json",
+      "introducingSha": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
+      "introducingBase": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+      "introducingDelta": {
+        "commit": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
+        "path": "docs/agents/manifests/vectors/B11_CONVERSION_BINDING_OWNERSHIP_REPAIR.json",
+        "sha256": "6FFED2F17076390D2F634FBEC71E307B0BE03E895A890E55738E9BA6A4856A52"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/agents/manifests/vectors/B11_CONVERSION_BINDING_OWNERSHIP_REPAIR.json",
+        "sha256": "6FFED2F17076390D2F634FBEC71E307B0BE03E895A890E55738E9BA6A4856A52"
+      },
+      "role": "B",
+      "originalAuthorization": null,
+      "authorizationState": "UNPROVEN_USER_DISPATCH_NOT_GIT_BOUND",
+      "originalScope": "User dispatch claimed by B task record; independent original authorization required",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "docs/agents/manifests/vectors/B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API.json",
+      "introducingSha": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "introducingDelta": {
+        "commit": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+        "path": "docs/agents/manifests/vectors/B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API.json",
+        "sha256": "C70057BEF2E86942B38E03654E5A9ED7C75DAFCA1411BFDFF2E3BE9176DB8F33"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/agents/manifests/vectors/B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API.json",
+        "sha256": "B5B903F82385A444809DD91B554CED881199B0E273259B70C65084148C5D366C"
+      },
+      "role": "B",
+      "originalAuthorization": null,
+      "authorizationState": "UNPROVEN_USER_DISPATCH_NOT_GIT_BOUND",
+      "originalScope": "User dispatch claimed by B task record; independent original authorization required",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "docs/reports/2026-10-09-p3-e08-b11-inventory-coverage-observations.md",
+      "introducingSha": "00fa5b4a703b5c262e8e252c78443c382e87abd3",
+      "introducingBase": "dbc1b75aaf40253982fc4e458b80dce4043b9224",
+      "introducingDelta": {
+        "commit": "00fa5b4a703b5c262e8e252c78443c382e87abd3",
+        "path": "docs/reports/2026-10-09-p3-e08-b11-inventory-coverage-observations.md",
+        "sha256": "E1550410E49AC6E40CF083EE2006F083B97EAE79B0D78FCD958056A39F4CC80D"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/reports/2026-10-09-p3-e08-b11-inventory-coverage-observations.md",
+        "sha256": "914B134634677B35F591A1DFD7DE5B9416AF007BE87E0D44DBA6D1A5C9293C80"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "docs/reports/2026-10-09-p3-e08-b11-observation-gap-plan.md",
+      "introducingSha": "abdd8e4eb735240d72a416ede743e84c58ebcd40",
+      "introducingBase": "c4a4b136719bf4ca165d81f1c01e254a8e7aefc3",
+      "introducingDelta": {
+        "commit": "abdd8e4eb735240d72a416ede743e84c58ebcd40",
+        "path": "docs/reports/2026-10-09-p3-e08-b11-observation-gap-plan.md",
+        "sha256": "754109B7C0DF009284700E5EB74933A5C15C6858DAC5EB43A4FCE6C14CC799B4"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/reports/2026-10-09-p3-e08-b11-observation-gap-plan.md",
+        "sha256": "754109B7C0DF009284700E5EB74933A5C15C6858DAC5EB43A4FCE6C14CC799B4"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "docs/reports/2026-10-09-p3-e08-b11-observation-review-fix.md",
+      "introducingSha": "be7dd6b4da6b377daf019b6170efc112c2d7a45e",
+      "introducingBase": "7a9699efcca8e16467cd973a7c7dd522e5a230a9",
+      "introducingDelta": {
+        "commit": "be7dd6b4da6b377daf019b6170efc112c2d7a45e",
+        "path": "docs/reports/2026-10-09-p3-e08-b11-observation-review-fix.md",
+        "sha256": "62578FF781D9D07A6E71F5F72C6A96F1B3FD40DB4BD56126CDA5051CD82B1F3E"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/reports/2026-10-09-p3-e08-b11-observation-review-fix.md",
+        "sha256": "D52A84EA9672F0C303972A418AD9B5B44CC15434CA167FDE9A83C76839701783"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "docs/reports/2026-10-09-p3-e08-b11-tooling-diagnostics.md",
+      "introducingSha": "961ac01aa1cb22dfa30212332bd4af4d5a80c035",
+      "introducingBase": "d7805bda96d0322fd461bd7bf50755e272dbbca1",
+      "introducingDelta": {
+        "commit": "961ac01aa1cb22dfa30212332bd4af4d5a80c035",
+        "path": "docs/reports/2026-10-09-p3-e08-b11-tooling-diagnostics.md",
+        "sha256": "F4E4FEF45FE764F9169C3F6A2E34C258580729456F9A45601B0097529BDB3C21"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/reports/2026-10-09-p3-e08-b11-tooling-diagnostics.md",
+        "sha256": "F4E4FEF45FE764F9169C3F6A2E34C258580729456F9A45601B0097529BDB3C21"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "docs/reports/2026-10-09-p3-e08-b11-tooling-review-fix.md",
+      "introducingSha": "32eb054f49e2413d2f9891d6edbd665d7eb3c154",
+      "introducingBase": "050839956f3795cde76b48eddaebe6708e470ab4",
+      "introducingDelta": {
+        "commit": "32eb054f49e2413d2f9891d6edbd665d7eb3c154",
+        "path": "docs/reports/2026-10-09-p3-e08-b11-tooling-review-fix.md",
+        "sha256": "49354500018C134108626DF054AF0A6D78CD05814C6DC2E3840BEE9A88B5A9EF"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/reports/2026-10-09-p3-e08-b11-tooling-review-fix.md",
+        "sha256": "49354500018C134108626DF054AF0A6D78CD05814C6DC2E3840BEE9A88B5A9EF"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "docs/reports/2026-10-10-p3-e08-b11-premise-review-sync.md",
+      "introducingSha": "46dbd031b06192e7e81479706678937064cdc1a3",
+      "introducingBase": "85d1631c4c89bfc38e13f29e37bfe6a8b4ccaf5b",
+      "introducingDelta": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/reports/2026-10-10-p3-e08-b11-premise-review-sync.md",
+        "sha256": "44C8FCCCF00C1AD5267E7D0FBFA6F407F1E8339ADD736BAF630534A4E1F834C4"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/reports/2026-10-10-p3-e08-b11-premise-review-sync.md",
+        "sha256": "44C8FCCCF00C1AD5267E7D0FBFA6F407F1E8339ADD736BAF630534A4E1F834C4"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "docs/reviews/phase3/P3-E08-B11-fixture-premise-be7dd6b-review.json",
+      "introducingSha": "f2da26c56cc8c5e2b8ffe35d9802051a2e3d7540",
+      "introducingBase": "be7dd6b4da6b377daf019b6170efc112c2d7a45e",
+      "introducingDelta": {
+        "commit": "f2da26c56cc8c5e2b8ffe35d9802051a2e3d7540",
+        "path": "docs/reviews/phase3/P3-E08-B11-fixture-premise-be7dd6b-review.json",
+        "sha256": "745AFE7E74EE7C970341FAE29F79678E33273A696FE04B81C263978892AD804B"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/reviews/phase3/P3-E08-B11-fixture-premise-be7dd6b-review.json",
+        "sha256": "745AFE7E74EE7C970341FAE29F79678E33273A696FE04B81C263978892AD804B"
+      },
+      "role": "R",
+      "originalAuthorization": {
+        "commit": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+        "path": "docs/agents/PHASE3-AGENT-CONTRACT.md",
+        "sha256": "4D32A0E0F7B385C7011407FFB499534520E1FFD6B7BF31B1D8DBB9CABCEC0E5E",
+        "section": "## Slice And Pull Request Boundary"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Immutable read-only role review artifact",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "docs/reviews/phase3/P3-E08-B11-observation-repair-reviewer-a.json",
+      "introducingSha": "31bad4ac87e728e5c80b9a9448f63c84f57a1d46",
+      "introducingBase": "be7dd6b4da6b377daf019b6170efc112c2d7a45e",
+      "introducingDelta": {
+        "commit": "31bad4ac87e728e5c80b9a9448f63c84f57a1d46",
+        "path": "docs/reviews/phase3/P3-E08-B11-observation-repair-reviewer-a.json",
+        "sha256": "D17FC230259C55E285436A89E45F7C286B5B39708F1F7182C307740B65016900"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/reviews/phase3/P3-E08-B11-observation-repair-reviewer-a.json",
+        "sha256": "D17FC230259C55E285436A89E45F7C286B5B39708F1F7182C307740B65016900"
+      },
+      "role": "R",
+      "originalAuthorization": {
+        "commit": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+        "path": "docs/agents/PHASE3-AGENT-CONTRACT.md",
+        "sha256": "4D32A0E0F7B385C7011407FFB499534520E1FFD6B7BF31B1D8DBB9CABCEC0E5E",
+        "section": "## Slice And Pull Request Boundary"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Immutable read-only role review artifact",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "package.json",
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "introducingDelta": {
+        "commit": "9a7122176dcc82827c27d2cf593c59633737eafe",
+        "path": "package.json",
+        "sha256": "7BC2EDC15A74AF833F4A5EFE50509F8AA03C07990AB7B19AADCCC9AEF6127593"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "package.json",
+        "sha256": "7BC2EDC15A74AF833F4A5EFE50509F8AA03C07990AB7B19AADCCC9AEF6127593"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "packages/rules/src/ability/card-zone-result-binding.ts",
+      "introducingSha": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
+      "introducingBase": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+      "introducingDelta": {
+        "commit": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
+        "path": "packages/rules/src/ability/card-zone-result-binding.ts",
+        "sha256": "3042C4143CE4982DD5750F301C36786E4908A4A0D8DC3AD7543445D21884F90D"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "packages/rules/src/ability/card-zone-result-binding.ts",
+        "sha256": "3042C4143CE4982DD5750F301C36786E4908A4A0D8DC3AD7543445D21884F90D"
+      },
+      "role": "B",
+      "originalAuthorization": null,
+      "authorizationState": "UNPROVEN_USER_DISPATCH_NOT_GIT_BOUND",
+      "originalScope": "User dispatch claimed by B task record; independent original authorization required",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "packages/rules/tests/regression/b11-conversion-binding-ownership.test.ts",
+      "introducingSha": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
+      "introducingBase": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+      "introducingDelta": {
+        "commit": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
+        "path": "packages/rules/tests/regression/b11-conversion-binding-ownership.test.ts",
+        "sha256": "C2FE4CFB03363A72A6072A46A5BE254F61DC092D921DAD29DBF4BA54F07E2572"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "packages/rules/tests/regression/b11-conversion-binding-ownership.test.ts",
+        "sha256": "C2FE4CFB03363A72A6072A46A5BE254F61DC092D921DAD29DBF4BA54F07E2572"
+      },
+      "role": "B",
+      "originalAuthorization": null,
+      "authorizationState": "UNPROVEN_USER_DISPATCH_NOT_GIT_BOUND",
+      "originalScope": "User dispatch claimed by B task record; independent original authorization required",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "packages/rules/tests/regression/b11-conversion-classification-api.test.ts",
+      "introducingSha": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "introducingDelta": {
+        "commit": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+        "path": "packages/rules/tests/regression/b11-conversion-classification-api.test.ts",
+        "sha256": "0660B437F85F6A029BFA7F9125C68E7EB99B846BB8C4307314089E8259D7A4F9"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "packages/rules/tests/regression/b11-conversion-classification-api.test.ts",
+        "sha256": "0660B437F85F6A029BFA7F9125C68E7EB99B846BB8C4307314089E8259D7A4F9"
+      },
+      "role": "B",
+      "originalAuthorization": null,
+      "authorizationState": "UNPROVEN_USER_DISPATCH_NOT_GIT_BOUND",
+      "originalScope": "User dispatch claimed by B task record; independent original authorization required",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "scripts/fixtures/phase3-b11-parity-contract.json",
+      "introducingSha": "e62e8b1d7068122a47b231c5b741789424990401",
+      "introducingBase": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingDelta": {
+        "commit": "e62e8b1d7068122a47b231c5b741789424990401",
+        "path": "scripts/fixtures/phase3-b11-parity-contract.json",
+        "sha256": "BF19E09006E5E16E90CEB2DD67E8BF212BE9D6FF0F90207446257272933D8B36"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/fixtures/phase3-b11-parity-contract.json",
+        "sha256": "1F97E1B7BC4FFAC180016C2B2361F8406A7550FB0A276BABCE9CF7F311127643"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "scripts/fixtures/phase3-b11-parity-fixtures.json",
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "introducingDelta": {
+        "commit": "9a7122176dcc82827c27d2cf593c59633737eafe",
+        "path": "scripts/fixtures/phase3-b11-parity-fixtures.json",
+        "sha256": "E5EDA4F27959A447CD392B302351199F23868488A7B0821DF7814BD477835981"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/fixtures/phase3-b11-parity-fixtures.json",
+        "sha256": "CA345E013C74B233ABE5A496760C04E0C50E5A4241030608B68843D6163AEAE4"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "scripts/fixtures/phase3-b11-task-check.json",
+      "introducingSha": "e62e8b1d7068122a47b231c5b741789424990401",
+      "introducingBase": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingDelta": {
+        "commit": "e62e8b1d7068122a47b231c5b741789424990401",
+        "path": "scripts/fixtures/phase3-b11-task-check.json",
+        "sha256": "BE274E5EB3D6011ADB3F06ECFD6B97A31F408BC64E93BD66E389A74F5477784B"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/fixtures/phase3-b11-task-check.json",
+        "sha256": "499D8AED4DCED6D08914387D7CD00FED235EA08EBB4336EEF9235C92B791D9FE"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "scripts/fixtures/phase3-b11-tooling-schema.md",
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "introducingDelta": {
+        "commit": "9a7122176dcc82827c27d2cf593c59633737eafe",
+        "path": "scripts/fixtures/phase3-b11-tooling-schema.md",
+        "sha256": "AFBFDF575E78F044BF012EA9A3A9C7D25C3F2D88D580007810905AF788E14F8E"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/fixtures/phase3-b11-tooling-schema.md",
+        "sha256": "32202FFBD9F3F4D889EA64B4AD3D1C68B943136D055B2772F2E09554B6FA469D"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "scripts/phase3-b11-diagnostic-api.ts",
+      "introducingSha": "ac4d401a9905384d35f0aee7f2474e3072ed75c6",
+      "introducingBase": "92f8604e485d94bae069e36e15d783b19ef36c23",
+      "introducingDelta": {
+        "commit": "ac4d401a9905384d35f0aee7f2474e3072ed75c6",
+        "path": "scripts/phase3-b11-diagnostic-api.ts",
+        "sha256": "D8B7987DAEBB8AD217E241D430ABC02A52B6EC86101DDA225C86CD86AEFA67C9"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/phase3-b11-diagnostic-api.ts",
+        "sha256": "3D761C0CE3CD59844F9680C5D4AAC0AE4D8B008034736DFA11C05EB68AAABF1B"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "scripts/phase3-b11-observation-gaps.ts",
+      "introducingSha": "abdd8e4eb735240d72a416ede743e84c58ebcd40",
+      "introducingBase": "c4a4b136719bf4ca165d81f1c01e254a8e7aefc3",
+      "introducingDelta": {
+        "commit": "abdd8e4eb735240d72a416ede743e84c58ebcd40",
+        "path": "scripts/phase3-b11-observation-gaps.ts",
+        "sha256": "6AE6E0FD296E78F099F37F705ECB115E9AC33DB66E532279DB231108F867074B"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/phase3-b11-observation-gaps.ts",
+        "sha256": "6AE6E0FD296E78F099F37F705ECB115E9AC33DB66E532279DB231108F867074B"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "scripts/phase3-b11-tooling-inputs.ts",
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "introducingDelta": {
+        "commit": "9a7122176dcc82827c27d2cf593c59633737eafe",
+        "path": "scripts/phase3-b11-tooling-inputs.ts",
+        "sha256": "600C5F1DD0C93FDDBC43BEE9A026A1F47AB84886590346048F608B3FF0736C9B"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/phase3-b11-tooling-inputs.ts",
+        "sha256": "D8C457E2568B96F7E2F5B07900A451E270DFBB8982824718260FA74DCA118EF0"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "scripts/phase3-contract-parity-worker.ts",
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "introducingDelta": {
+        "commit": "9a7122176dcc82827c27d2cf593c59633737eafe",
+        "path": "scripts/phase3-contract-parity-worker.ts",
+        "sha256": "B87263F29D100C9F657B5FB1EBB88DFF34F9170F0D4FF463F5241D32763573EE"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/phase3-contract-parity-worker.ts",
+        "sha256": "F3AF363EBD62EB56772128F7FF619E14C38AB0E9C34B683E16E145AF2817FEC4"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "scripts/phase3-contract-parity.ts",
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "introducingDelta": {
+        "commit": "9a7122176dcc82827c27d2cf593c59633737eafe",
+        "path": "scripts/phase3-contract-parity.ts",
+        "sha256": "ADA2E4A09064AE082FA6EA3F9F36A8FBCAF46CB66663229B82A3D3F9AA743435"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/phase3-contract-parity.ts",
+        "sha256": "A46EB418461F20DC3E0E89AA07540B01B7B22B3D529875984AD8E33EA56E9BFC"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "scripts/phase3-preflight.ts",
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "introducingDelta": {
+        "commit": "9a7122176dcc82827c27d2cf593c59633737eafe",
+        "path": "scripts/phase3-preflight.ts",
+        "sha256": "60EED991C5825FE004166414B23B9DB13C3FBBBDC78BE0CB0D798F1D13D38F5A"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/phase3-preflight.ts",
+        "sha256": "60EED991C5825FE004166414B23B9DB13C3FBBBDC78BE0CB0D798F1D13D38F5A"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "scripts/phase3-tooling-common.ts",
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "introducingDelta": {
+        "commit": "9a7122176dcc82827c27d2cf593c59633737eafe",
+        "path": "scripts/phase3-tooling-common.ts",
+        "sha256": "C11A3B6F573DEB012E936724CDAA274F940B6DD5EBE00078175F668E485E9555"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/phase3-tooling-common.ts",
+        "sha256": "C11A3B6F573DEB012E936724CDAA274F940B6DD5EBE00078175F668E485E9555"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "scripts/tests/phase3-b11-diagnostic-api.test.ts",
+      "introducingSha": "ac4d401a9905384d35f0aee7f2474e3072ed75c6",
+      "introducingBase": "92f8604e485d94bae069e36e15d783b19ef36c23",
+      "introducingDelta": {
+        "commit": "ac4d401a9905384d35f0aee7f2474e3072ed75c6",
+        "path": "scripts/tests/phase3-b11-diagnostic-api.test.ts",
+        "sha256": "34A5A70321CCE97D52D03EEE484636DC3D98F37A4687B9C7B7346C9FC0F66DE8"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/tests/phase3-b11-diagnostic-api.test.ts",
+        "sha256": "C719649B18436C27A4835CCBA087D6A3F471434D3159091FDDE640096EAD9025"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "scripts/tests/phase3-b11-observation-gaps.test.ts",
+      "introducingSha": "abdd8e4eb735240d72a416ede743e84c58ebcd40",
+      "introducingBase": "c4a4b136719bf4ca165d81f1c01e254a8e7aefc3",
+      "introducingDelta": {
+        "commit": "abdd8e4eb735240d72a416ede743e84c58ebcd40",
+        "path": "scripts/tests/phase3-b11-observation-gaps.test.ts",
+        "sha256": "1DD7A2347F7C85DE4F603C4CCA723E5EC6AADE0A7B13DF2F120EE685C0DD35AB"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/tests/phase3-b11-observation-gaps.test.ts",
+        "sha256": "1DD7A2347F7C85DE4F603C4CCA723E5EC6AADE0A7B13DF2F120EE685C0DD35AB"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "scripts/tests/phase3-b11-premise-review-sync.test.ts",
+      "introducingSha": "85d1631c4c89bfc38e13f29e37bfe6a8b4ccaf5b",
+      "introducingBase": "5484434ceb4bb435833e4eaa63039943dda9a00b",
+      "introducingDelta": {
+        "commit": "85d1631c4c89bfc38e13f29e37bfe6a8b4ccaf5b",
+        "path": "scripts/tests/phase3-b11-premise-review-sync.test.ts",
+        "sha256": "B58F3948294A07B2183D682D764405BB6F3F390C395CB94E6F359F19092452B5"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/tests/phase3-b11-premise-review-sync.test.ts",
+        "sha256": "B58F3948294A07B2183D682D764405BB6F3F390C395CB94E6F359F19092452B5"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "scripts/tests/phase3-contract-parity.test.ts",
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "introducingDelta": {
+        "commit": "9a7122176dcc82827c27d2cf593c59633737eafe",
+        "path": "scripts/tests/phase3-contract-parity.test.ts",
+        "sha256": "F293E134B295044737E6C8595A83618EECC02A90947D9162634B7F75515A9522"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/tests/phase3-contract-parity.test.ts",
+        "sha256": "0BE398EDE905EE351770A92288FB91C07A9A8AA5BD075E32B2D50AEEE1EB5F51"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
+    },
+    {
+      "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "introducingDelta": {
+        "commit": "9a7122176dcc82827c27d2cf593c59633737eafe",
+        "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+        "sha256": "A2A8475FDD4F9BF5DD7CDA3B62DEADBD05E2A9A4AC550D3BAA6D1504F047DFEE"
+      },
+      "finalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+        "sha256": "A2A8475FDD4F9BF5DD7CDA3B62DEADBD05E2A9A4AC550D3BAA6D1504F047DFEE"
+      },
+      "role": "A",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "authorizationState": "ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW",
+      "originalScope": "Tooling files, package script entries, documented task-check fixtures, automation tests and evidence",
+      "acceptedScope": "NOT_ACCEPTED_WHOLESALE",
+      "finalReviewState": "PENDING_RA_RB_FINAL_COMBINATION"
     }
   ],
+  "overlappingSourceChanges": [
+    {
+      "path": "packages/rules/src/ability/executable-card-pack.ts",
+      "originalSource": {
+        "commit": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+        "path": "packages/rules/src/ability/executable-card-pack.ts",
+        "sha256": "FD30EE7E82C576B165410BCBDCB5CE317C70632C06A7BA07BABDB4C3F986DFB5"
+      },
+      "finalSource": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "packages/rules/src/ability/executable-card-pack.ts",
+        "sha256": "7F00857BBB67FE47FB1E61200AAC84A8E174378ED1C8BDDCF74A9190DB2A0BC0"
+      },
+      "authorizationState": "PENDING_EXACT_DELTA_AUTHORIZATION_AND_REVIEW"
+    },
+    {
+      "path": "packages/rules/src/ability/interpreter.ts",
+      "originalSource": {
+        "commit": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+        "path": "packages/rules/src/ability/interpreter.ts",
+        "sha256": "4F3D43B80E10300ACEBD880FFB29D2719D7D02F6D8BCC94210F5B527856018B0"
+      },
+      "finalSource": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "packages/rules/src/ability/interpreter.ts",
+        "sha256": "A5F74D0CDCB71C169640DC6D0C0B7936EB2CB26B4AC8A1421E2DD50783554C43"
+      },
+      "authorizationState": "PENDING_EXACT_DELTA_AUTHORIZATION_AND_REVIEW"
+    }
+  ],
+  "repairReservation": {
+    "owner": "Codex A",
+    "branch": "codex/a-p3-e08-b11-final-evidence",
+    "paths": [
+      "scripts/phase3-e08-b11-coverage-sync.ts",
+      "scripts/tests/phase3-e08-b11-coverage-sync.test.ts",
+      "scripts/tests/phase3-e06-post-merge-recount.test.ts",
+      "artifacts/phase3-skill-coverage.json",
+      "scripts/fixtures/phase3-b11-task-check.json",
+      "scripts/phase3-preflight.ts",
+      "scripts/tests/phase3-readiness-preflight.test.ts",
+      "artifacts/phase3-e08-b11-final-combination-evidence.json",
+      "docs/reports/2026-10-10-p3-e08-b11-final-combination-evidence.md"
+    ],
+    "priorAWorktrees": "CLEAN_AT_RESERVATION; NO_OTHER_OVERLAPPING_WRITER_OBSERVED",
+    "runtimeServerReservation": "RETAINED_BY_B"
+  },
+  "finalBinding": {
+    "sourceSha": "46dbd031b06192e7e81479706678937064cdc1a3",
+    "sourceObjects": {
+      "data/authoring": "b2e3896827cf9041e675b6f69c380b2668ff3413",
+      "data/packs": "8500f5ce85fef874f0e8325e5c5d2b4b91c9a9a8",
+      "data/generated": "40cebcd7f65316869f938b864ea6e133b1a98f66",
+      "packages/content/src": "578877014dfa30200bb7fe44e9126a5e114fd646",
+      "packages/rules/src": "91c4f8128ed7a51e7e59854a27f7e4f8fdda299f",
+      "scripts/phase3-coverage.ts": "ce6f84862de382703d6bfbf2940e535f1b238be3",
+      "scripts/phase3-e08-b11-coverage-sync.ts": "33afce921925970fe7d133472e46d48a34b23c73",
+      "scripts/tests/phase3-e08-b11-coverage-sync.test.ts": "9fb27fbec6315223b8b154f0697e86214b3fdc6c",
+      "scripts/tests/phase3-e06-post-merge-recount.test.ts": "3e7972499a751d8b3be2370098b46a797efcf974",
+      "scripts/phase3-preflight.ts": "416e95c8365ef7cabb95c51f43624aeffb2bb266",
+      "scripts/tests/phase3-readiness-preflight.test.ts": "4a750671472aa01bd24bb54c0343efe1ff163dc0"
+    }
+  },
   "checks": [
     {
       "id": "b11-component-scenario",
       "command": "npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/production-resolution-bridge.test.ts",
-      "state": "PENDING",
-      "testedSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9"
+      "state": "PENDING_FRESH_EXECUTION_PACKET_BINDING",
+      "testedSha": "46dbd031b06192e7e81479706678937064cdc1a3"
     },
     {
       "id": "socket-boundary",
       "command": "npm run test --workspace @fd/server -- src/match-server.test.ts",
-      "state": "PENDING",
-      "testedSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9"
+      "state": "PENDING_FRESH_EXECUTION_PACKET_BINDING",
+      "testedSha": "46dbd031b06192e7e81479706678937064cdc1a3"
     },
     {
       "id": "browser",
       "command": "npx playwright test e2e/fd-golden-eater-result-binding.spec.ts e2e/fd-conversion-magic-core-primitive.spec.ts --repeat-each=5",
-      "state": "PENDING",
-      "testedSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9"
+      "state": "PENDING_FRESH_EXECUTION_PACKET_BINDING",
+      "testedSha": "46dbd031b06192e7e81479706678937064cdc1a3"
     }
-  ]
+  ],
+  "formalCredit": {
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0,
+    "promotedOnMain": false
+  }
 }

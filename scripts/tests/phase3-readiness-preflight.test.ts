@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { runPreflight } from '../phase3-preflight';
+import { assertFinalTaskCheck, buildFinalTaskCheck, runPreflight } from '../phase3-preflight';
 import { git, gitText, hash, InputError } from '../phase3-tooling-common';
 import { publicationSha, reference } from '../phase3-b11-tooling-inputs';
 
@@ -48,11 +48,44 @@ function fixture(mode: 'normal' | 'delete' | 'rename') {
 let normal: ReturnType<typeof fixture>;
 let deleted: ReturnType<typeof fixture>;
 let renamed: ReturnType<typeof fixture>;
+let finalTask: ReturnType<typeof buildFinalTaskCheck>;
 const evaluate = (context: ReturnType<typeof fixture>, input: unknown = context.input, candidate = context.candidate) => runPreflight(context.cwd, input, candidate, context.base, hash(JSON.stringify(input)));
 
 describe('readiness preflight, independent from promotion policy', () => {
-  beforeAll(() => { normal = fixture('normal'); deleted = fixture('delete'); renamed = fixture('rename'); }, 60_000);
+  beforeAll(() => {
+    normal = fixture('normal'); deleted = fixture('delete'); renamed = fixture('rename');
+    const input = JSON.parse(readFileSync(join(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
+    finalTask = buildFinalTaskCheck(root, input.finalBinding.sourceSha);
+  }, 60_000);
   afterAll(() => { for (const path of directories) rmSync(path, { recursive: true, force: true }); });
+  it('binds every original uncovered path without converting registration into acceptance', () => {
+    expect(finalTask.provenance).toHaveLength(40);
+    expect(new Set(finalTask.provenance.map(row => row.path)).size).toBe(40);
+    for (const row of finalTask.provenance) {
+      expect(row.introducingSha).toMatch(/^[0-9a-f]{40}$/);
+      expect(row.introducingDelta.sha256).toMatch(/^[0-9A-F]{64}$/);
+      expect(row.finalContent.sha256).toMatch(/^[0-9A-F]{64}$/);
+      expect(row.acceptedScope).toBe('NOT_ACCEPTED_WHOLESALE');
+      expect(row.finalReviewState).toBe('PENDING_RA_RB_FINAL_COMBINATION');
+      if (row.role === 'B') expect(row.originalAuthorization).toBeNull();
+    }
+    assertFinalTaskCheck(finalTask, structuredClone(finalTask));
+  });
+  it('rejects altered introducing SHA, hashes, original authority, scope, checks and credit', () => {
+    for (const mutate of [
+      (v: any) => { v.provenance[0].introducingSha = '0'.repeat(40); },
+      (v: any) => { v.provenance[0].finalContent.sha256 = '0'.repeat(64); },
+      (v: any) => { v.provenance[0].originalAuthorization = v.authorization; },
+      (v: any) => { v.provenance[0].acceptedScope = 'ACCEPTED'; },
+      (v: any) => { v.provenance.pop(); },
+      (v: any) => { v.provenance[0].path = 'packages/rules/src/**'; },
+      (v: any) => { v.checks[0].state = 'PASS'; },
+      (v: any) => { v.formalCredit.mainCoverageCreditDelta = 1; },
+    ]) {
+      const actual = structuredClone(finalTask); mutate(actual);
+      expect(() => assertFinalTaskCheck(actual, finalTask)).toThrow('Final provenance evidence mismatch');
+    }
+  });
   it('verifies exact committed input, role-scoped paths, review and execution binding', () => {
     const result = evaluate(normal);
     expect(result.status).toBe('PASS'); expect(result.issues).toEqual([]);

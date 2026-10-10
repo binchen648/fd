@@ -1,18 +1,20 @@
 import { readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { beforeAll, describe, expect, it } from 'vitest';
-import { assertSameEvidence, buildSync, coveragePath, renderReport, reportPath, sha256, syncPath } from '../phase3-e08-b11-coverage-sync';
+import { assertSameEvidence, buildSync, buildFinalSync, historicalCarrierSha, validateFinalBinding, coveragePath, renderReport, reportPath, sha256, syncPath } from '../phase3-e08-b11-coverage-sync';
 
 const root = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 let expected: Awaited<ReturnType<typeof buildSync>>;
 
 beforeAll(async () => { expected = await buildSync(root); }, 30_000);
+const historicalBytes = (path: string) => execFileSync('git', ['show', `${historicalCarrierSha}:${path}`], { cwd: root, maxBuffer: 32 * 1024 * 1024 });
 
 describe('B11 exact candidate coverage synchronization', () => {
   it('recomputes full baseline/candidate routing, compiler output, Git lineage and hashes', () => {
-    const coverageBytes = readFileSync(resolve(root, coveragePath));
-    const syncBytes = readFileSync(resolve(root, syncPath));
+    const coverageBytes = historicalBytes(coveragePath);
+    const syncBytes = historicalBytes(syncPath);
     assertSameEvidence(JSON.parse(coverageBytes.toString('utf8')), expected.coverage);
     assertSameEvidence(JSON.parse(syncBytes.toString('utf8')), expected.sync);
     expect(sha256(coverageBytes)).toBe(expected.sync.candidateCoverage.artifactSha256);
@@ -52,9 +54,35 @@ describe('B11 exact candidate coverage synchronization', () => {
   });
 
   it('binds the report to exact artifact bytes and regenerates deterministically', async () => {
-    expect(readFileSync(resolve(root, reportPath), 'utf8')).toBe(renderReport(expected.sync));
+    expect(historicalBytes(reportPath).toString('utf8')).toBe(renderReport(expected.sync));
     const second = await buildSync(root);
     expect(JSON.stringify(second)).toBe(JSON.stringify(expected));
     expect(renderReport(second.sync)).toBe(renderReport(expected.sync));
   }, 30_000);
+});
+
+describe('final source coverage is separate from immutable history', () => {
+  it('binds the full final source, compiler, unchanged counts and exact scan locations', async () => {
+    const result = await buildFinalSync(root);
+    const current = JSON.parse(readFileSync(resolve(root, coveragePath), 'utf8'));
+    assertSameEvidence(current, result.coverage);
+    expect(result.sync.candidateLocalRouting.after).toEqual({ new: 23, legacyResolve: 144, legacyExecute: 3, dual: 0, notClassifiable: 111 });
+    expect(result.sync.formalCredit).toEqual({ mainCoverageCreditDelta: 0, migrationCreditDelta: 0, denominatorDelta: 0, promotedOnMain: false });
+    expect(() => assertSameEvidence(current, JSON.parse(historicalBytes(coveragePath).toString('utf8')))).toThrow();
+    expect(result.coverage.runtimeRouting.cardSpecificRuntimeHandlers).not.toEqual(expected.coverage.runtimeRouting.cardSpecificRuntimeHandlers);
+  });
+  it('rejects stale, mixed, tampered bindings and unavailable historical commit objects', () => {
+    const input = JSON.parse(readFileSync(resolve(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
+    for (const mutate of [
+      (b: any) => { b.sourceSha = historicalCarrierSha; },
+      (b: any) => { b.sourceObjects['packages/rules/src'] = '0'.repeat(40); },
+      (b: any) => { delete b.sourceObjects['data/authoring']; },
+      (b: any) => { b.sourceSha = '0'.repeat(40); },
+    ]) {
+      const binding = structuredClone(input.finalBinding); mutate(binding);
+      expect(() => validateFinalBinding(root, binding)).toThrow();
+    }
+    const missing = '0'.repeat(40);
+    expect(() => execFileSync('git', ['show', `${missing}:${coveragePath}`], { cwd: root, stdio: 'pipe' })).toThrow();
+  });
 });

@@ -1,0 +1,24 @@
+{
+  "taskId": "P3-E08-B11-FINAL-EVIDENCE-RECONCILIATION",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "status": "IMPLEMENTATION_IN_PROGRESS_NOT_ACCEPTED",
+  "reservation": {
+    "owner": "Codex A",
+    "authorizationCommit": "8eb752c181ea025ac54c53f425a89aa64238f575",
+    "branch": "codex/a-p3-e08-b11-final-evidence",
+    "baseSha": "46dbd031b06192e7e81479706678937064cdc1a3",
+    "checkedPriorWorktrees": "A tooling and coverage worktrees clean; no overlapping writer change observed",
+    "runtimeServerReservation": "RETAINED_BY_B_NOT_RELEASED",
+    "paths": [
+      "scripts/phase3-e08-b11-coverage-sync.ts",
+      "scripts/tests/phase3-e08-b11-coverage-sync.test.ts",
+      "scripts/tests/phase3-e06-post-merge-recount.test.ts",
+      "artifacts/phase3-skill-coverage.json",
+      "scripts/fixtures/phase3-b11-task-check.json",
+      "scripts/phase3-preflight.ts",
+      "scripts/tests/phase3-readiness-preflight.test.ts",
+      "artifacts/phase3-e08-b11-final-combination-evidence.json",
+      "docs/reports/2026-10-10-p3-e08-b11-final-combination-evidence.md"
+    ]
+  }
+}
