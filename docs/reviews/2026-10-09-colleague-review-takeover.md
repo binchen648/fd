@@ -2,6 +2,15 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch41 records PR472 technical FAILED on2026-10-10:legal immediate-play
+nested response and generic-choice pauses cannot restore;completed continuation
+restores. Independent7/7 expected checks PASS;prior transaction/orphan/root/
+round-retirement closures positive. Focused105/105 PASS;full1156 PASS/10 FAIL,
+exact-base14 PASS/10 FAIL reproduces all10. Strict generated evidence FAIL
+only31 absent external images. Historical acceptance separately attributed.
+Cumulative52/534,15 PASS,37 FAILED,482 pending. See batch41 and
+2026-10-10-pr-472-review.md. Zero credit or authority;goal active,incomplete.
+
 Batch40 records PR471 technical FAILED on2026-10-10:actual sc3 newly exposes
 inherited PR470 named-ability restore gaps in owned-seal choice/dynamic aura.
 Independent7/7 expected checks PASS,sc2 exact historical object preserved,

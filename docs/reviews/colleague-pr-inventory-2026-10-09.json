@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 51,
-    "pending": 483,
+    "reviewed": 52,
+    "pending": 482,
     "blocked": 0,
     "notVerified": 0
   },
@@ -24363,11 +24363,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "STHENO_DIVINE_CORE_READINESS_CAPABILITY_TECHNICAL_REVIEW",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-41.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-472-independent.mjs",
+            "targetSha": "5d7ec79524b577dcd729ae7bc93d905343bd3e1f",
+            "result": "7/7 expected checks PASS incl real nested response/choice restore failures,normal stages/settlement controls,real-loop retirement,second activation,authenticated orphan/substitution rejection,compiled fail-closed,generated diagnostic isolation",
+            "artifactIdentity": "docs/reviews/probes/review-472-independent.mjs"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/regression/p3-stheno-divine-core-readiness-capability.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/core/game-loop-battle-cleanup.test.ts packages/rules/tests/core/game-loop-round-start.test.ts packages/rules/tests/core/phase-machine.test.ts packages/rules/tests/core/game-loop-action.test.ts --maxWorkers=1",
+            "targetSha": "5d7ec79524b577dcd729ae7bc93d905343bd3e1f",
+            "result": "7 files/105 tests PASS;Divine Core15/15;independent rerun not historical evidence",
+            "artifactIdentity": "pr472-independent-focused"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=2",
+            "targetSha": "5d7ec79524b577dcd729ae7bc93d905343bd3e1f",
+            "result": "158 files/1166 tests:1156 PASS/10 FAIL,no timeouts;all failure classes reproduced at exact base;not green CI",
+            "artifactIdentity": "pr472-independent-full-ci"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0
