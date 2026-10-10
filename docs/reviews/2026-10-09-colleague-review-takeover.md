@@ -2,6 +2,15 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch31 records PR462 FAILED on2026-10-10:actual product Sigurd curses miss
+real session round start,an inherited PR461 integration defect. Final6/6 expected
+probe checks PASS,including actual7-unique-servant VP10 versus direct API8;
+quote-only source difference disclosed. Focused163/163 PASS;full CI1043 PASS/
+10 FAIL,all10 reproduced at exact base(14 PASS/10 FAIL). Strict evidence FAIL
+only on31 absent external-image diagnostics. Material129->132/944 is not credit.
+Cumulative42/534,13 PASS,29 FAILED,492 pending. See batch31 and
+2026-10-10-pr-462-review.md. All-PR goal remains active,incomplete.
+
 Batch30 records PR461 FAILED on2026-10-10:canonical terminal removes sole
 refund target before mandatory continuation;real session starter skips newly
 added round_start trigger. Final7/7 expected probe assertions PASS,including

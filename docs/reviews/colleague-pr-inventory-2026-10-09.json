@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 41,
-    "pending": 493,
+    "reviewed": 42,
+    "pending": 492,
     "blocked": 0,
     "notVerified": 0
   },
@@ -23632,11 +23632,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "SIGURD_OWNER_COMPLETE_MIGRATION_TECHNICAL_REVIEW",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-31.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-462-independent.mjs",
+            "targetSha": "0af5064fc9894e3db3896a631db8c9beb8fb1485",
+            "result": "Final6/6 expected checks PASS including actual-product curse defect;one quote-glyph-only source difference disclosed;mana/refund/attributes/additional/doubling/removal controls;129->132 material not credit",
+            "artifactIdentity": "docs/reviews/probes/review-462-independent.mjs"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=2",
+            "targetSha": "0af5064fc9894e3db3896a631db8c9beb8fb1485",
+            "result": "147 files/1053 tests:1043 PASS,10 inherited FAIL;no timeout failure",
+            "artifactIdentity": "pr462-independent-full-ci"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/regression/p3-owner-sigurd-complete-migration.test.ts packages/rules/tests/regression/p3-sigurd-revealed-source-capability.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/core/combat-resolver.test.ts scripts/tests/compile-playtest-content-pack.test.ts --maxWorkers=1",
+            "targetSha": "0af5064fc9894e3db3896a631db8c9beb8fb1485",
+            "result": "8 files/163 tests PASS;Sigurd6/6,capability7/7;misses real round-start integration defect",
+            "artifactIdentity": "pr462-independent-focused"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0

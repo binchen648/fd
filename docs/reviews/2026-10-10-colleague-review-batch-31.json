@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 462,
+    "headSha": "0af5064fc9894e3db3896a631db8c9beb8fb1485",
+    "baseSha": "8f2c8141c33da0ac30a3468a068c9ab1715e15ce",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "FAILED",
+    "scope": "SIGURD_OWNER_COMPLETE_MIGRATION_TECHNICAL_REVIEW",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [{ "priority": "P2", "path": "packages/rules/src/ability/interpreter.ts", "line": 3812,
+      "summary": "Inherited round-start integration defect prevents both new Sigurd curses in real product session;actual7-unique-servant starter VP10 versus direct API control8.", "introducedRelativeToBase": false }],
+    "evidence": [
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-462-independent.mjs",
+        "targetSha": "0af5064fc9894e3db3896a631db8c9beb8fb1485", "result": "Final6/6 expected checks PASS including actual-product curse defect;one quote-glyph-only source difference disclosed;mana/refund/attributes/additional/doubling/removal controls;129->132 material not credit",
+        "artifactIdentity": "docs/reviews/probes/review-462-independent.mjs" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci -- --maxWorkers=2",
+        "targetSha": "0af5064fc9894e3db3896a631db8c9beb8fb1485", "result": "147 files/1053 tests:1043 PASS,10 inherited FAIL;no timeout failure",
+        "artifactIdentity": "pr462-independent-full-ci" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/regression/p3-owner-sigurd-complete-migration.test.ts packages/rules/tests/regression/p3-sigurd-revealed-source-capability.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/core/combat-resolver.test.ts scripts/tests/compile-playtest-content-pack.test.ts --maxWorkers=1",
+        "targetSha": "0af5064fc9894e3db3896a631db8c9beb8fb1485", "result": "8 files/163 tests PASS;Sigurd6/6,capability7/7;misses real round-start integration defect",
+        "artifactIdentity": "pr462-independent-focused" },
+      { "kind": "BASELINE_TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/astolfo-s1-consumer-migration.test.ts packages/rules/tests/m50-02-opponent-close-one-non-residual.test.ts packages/rules/tests/seven-servant-decks.test.ts packages/rules/tests/regression/golden-card-content-pipeline.test.ts packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts --maxWorkers=2",
+        "targetSha": "8f2c8141c33da0ac30a3468a068c9ab1715e15ce", "result": "5 files/24 tests:14 PASS,10 inherited FAIL;not full baseline CI",
+        "artifactIdentity": "pr462-exact-base-comparison" },
+      { "kind": "STATIC_AND_BUILD", "producer": "Codex Automation Review Owner",
+        "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 462 --repo binchen648/fd --json headRefOid,baseRefOid,state; git fetch origin main; gh api repos/binchen648/fd/issues/comments/5851169420",
+        "targetSha": "0af5064fc9894e3db3896a631db8c9beb8fb1485", "result": "Typecheck/content/diff PASS;strict evidence FAIL,31 absent-image diagnostics isolated;live bindings unchanged;historical acceptance separately attributed",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-462-review.md" }
+    ],
+    "limitations": [
+      "Technical FAILED only;runtime unchanged from base but new consumers do not satisfy real-session curses;material132/944 is not credit.",
+      "Actual starter called directly in lawful product session;not full UI flow or full baseline CI.",
+      "One source quote-only difference and initial situation-forbid harness rejection disclosed;no situation rule bypass.",
+      "Generic PR461 refund/removal defect not cleared or claimed as normal unique-roster Sigurd reproduction.",
+      "Strict evidence FAIL,external Reference/images/product-display suite/exhaustive restore unverified;no formal acceptance,Planner mutation,GitHub verdict,Gate,promotion,merge or credit."
+    ]
+  }]
+}
