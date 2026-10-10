@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent evidence review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 442,
+    "headSha": "a1b8f274c8f3fb0859540de9dc08ca3a97a5f8cc",
+    "baseSha": "4b52b3166ed2ba0efaa4569ee95c6513fd26ab2f",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "FAILED",
+    "scope": "WHOLE_158_ROW_RECONCILIATION_PROVENANCE_GATE",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [{
+      "priority": "P2", "path": "artifacts/phase3-frontier-reconciliation.json", "line": 17616,
+      "summary": "Mozart S2 falsely binds source/review/candidate/runtime ranges to PR436 B03;that candidate contains only Mozart S3/S1. S2 is materialized at PR439 B06. Misbinds replay contract and test provenance.",
+      "introducedRelativeToBase": true
+    }],
+    "evidence": [
+      { "kind": "TEST", "producer": "Codex Automation Review Owner", "command": "node docs/reviews/probes/review-442-independent.mjs --github",
+        "targetSha": "a1b8f274c8f3fb0859540de9dc08ca3a97a5f8cc", "result": "Initial probe exit1:lineage/material and32-range paths PASS,158-row source FAIL Mozart;29 comments fetched,28 candidate mentions/1 Ibaraki historical inheritance mismatch", "artifactIdentity": "pr442-git-github-provenance" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner", "command": "node docs/reviews/probes/review-442-independent.mjs",
+        "targetSha": "a1b8f274c8f3fb0859540de9dc08ca3a97a5f8cc", "result": "Final probe exit1:4 checks PASS/1 FAIL Mozart source binding;complete158-row scan,111->265/154+4 union,32 changed ranges;explicit Mozart reproduction and identical-Ibaraki control PASS", "artifactIdentity": "docs/reviews/probes/review-442-independent.mjs" },
+      { "kind": "STATIC_AND_BUILD", "producer": "Codex Automation Review Owner", "command": "git diff --check <base> <candidate>; git merge-base <historical-main> <frontier>; gh pr view 442 --repo binchen648/fd --json headRefOid,baseRefOid,state; git fetch origin main; gh api repos/binchen648/fd/issues/372/comments; gh api repos/binchen648/fd/pulls/372/reviews",
+        "targetSha": "a1b8f274c8f3fb0859540de9dc08ca3a97a5f8cc", "result": "Diff PASS;merge-base exact;head/base/main unchanged;PR372 later handoff request is not acceptance. Historical ledger/relay sources distinguished from reviewer reruns", "artifactIdentity": "docs/reviews/2026-10-10-pr-442-review.md" }
+    ],
+    "limitations": [
+      "Evidence-only complete-row mechanical provenance check,not158 runtime contract reviews.",
+      "29 reviewer links fetched;exact-SHA mentions alone do not authenticate scope or provenance correctness.",
+      "Ibaraki card equality follow-up,not runtime regression;historical reviewed SHA distinct from inherited frontier node.",
+      "Formal269 is historical ledger claim,not fresh current-main credit;R66 re-attestation request not acceptance.",
+      "No original image/CHM/Reference verification,replay,recount,GitHub publication,Planner changes,Gate C,promotion or credit."
+    ]
+  }]
+}

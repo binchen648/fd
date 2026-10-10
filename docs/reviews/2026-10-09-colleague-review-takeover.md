@@ -2,6 +2,14 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch19 records PR442 FAILED on2026-10-10:Mozart S2 binds the wrong PR436
+candidate/reviewer/B03 runtime range instead of PR439/B06. Full158-row material/
+classification union and32-range path checks executed;111->265/154+4 verified.
+29 reviewer links retrieved,including Ibaraki historical/inherited-SHA follow-up
+with equal card object,not a runtime finding. Live bindings/main unchanged.
+Cumulative:30/534,9 PASS,21 FAILED,504 pending. See batch19 and
+2026-10-10-pr-442-review.md. All-PR goal active,incomplete.
+
 Batch18 records PR441 FAILED on 2026-10-10:new Sherlock CI depends on fixed
 external Reference path;new granted-ability gates accept six malformed envelopes
 and actually execute suppression. Independent8 expected assertions PASS,

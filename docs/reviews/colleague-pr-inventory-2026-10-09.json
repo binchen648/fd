@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 29,
-    "pending": 505,
+    "reviewed": 30,
+    "pending": 504,
     "blocked": 0,
     "notVerified": 0
   },
@@ -22237,11 +22237,30 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "WHOLE_158_ROW_RECONCILIATION_PROVENANCE_GATE",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-19.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node docs/reviews/probes/review-442-independent.mjs --github",
+            "targetSha": "a1b8f274c8f3fb0859540de9dc08ca3a97a5f8cc",
+            "result": "Initial probe exit1:lineage/material and32-range paths PASS,158-row source FAIL Mozart;29 comments fetched,28 candidate mentions/1 Ibaraki historical inheritance mismatch",
+            "artifactIdentity": "pr442-git-github-provenance"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node docs/reviews/probes/review-442-independent.mjs",
+            "targetSha": "a1b8f274c8f3fb0859540de9dc08ca3a97a5f8cc",
+            "result": "Final probe exit1:4 checks PASS/1 FAIL Mozart source binding;complete158-row scan,111->265/154+4 union,32 changed ranges;explicit Mozart reproduction and identical-Ibaraki control PASS",
+            "artifactIdentity": "docs/reviews/probes/review-442-independent.mjs"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0
