@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 28,
-    "pending": 506,
+    "reviewed": 29,
+    "pending": 505,
     "blocked": 0,
     "notVerified": 0
   },
@@ -22182,11 +22182,30 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "WHOLE_M50_02_BLOCKING_PORTABILITY_AND_GRANTED_ABILITY_ADMISSION_GATE",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-18.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=1",
+            "targetSha": "fc6d2f52f2d2cebbedc60e9e5d106744b347c8ff",
+            "result": "Exit1:240 files PASS/1 failed suite;1686 tests PASS;Sherlock suite ENOENT at materializer import,no tests collected",
+            "artifactIdentity": "pr441-full-ci"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-441-independent.mjs",
+            "targetSha": "fc6d2f52f2d2cebbedc60e9e5d106744b347c8ff",
+            "result": "Exit0:8 expected assertions PASS,2 controls plus6 malformed reproductions;42 archives/50 additions/215->265/no duplicate;raw/compiledAccepted,zero issues,actual suppression",
+            "artifactIdentity": "docs/reviews/probes/review-441-independent.mjs"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0

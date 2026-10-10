@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 441,
+    "headSha": "fc6d2f52f2d2cebbedc60e9e5d106744b347c8ff",
+    "baseSha": "f688876fa11b86130e2b8999eaffb23cab79798a",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "FAILED",
+    "scope": "WHOLE_M50_02_BLOCKING_PORTABILITY_AND_GRANTED_ABILITY_ADMISSION_GATE",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [
+      { "priority": "P2", "path": "packages/rules/tests/p3-f4-m50-02-sherlock-deduction-record.test.ts", "line": 6,
+        "summary": "New CI test imports materializer with eager fixed external Reference file reads;clean exact candidate suite collection fails ENOENT. 240 files pass,one suite fails.", "introducedRelativeToBase": true },
+      { "priority": "P2", "path": "packages/rules/src/ability/m50-granted-card-abilities.ts", "line": 18,
+        "summary": "New grant empty-record coercion accepts limit/lifecycle/responseWindow true or arrays;six raw/compiled admission cases have zero loader issues and actually grant power/execute suppression.", "introducedRelativeToBase": true }
+    ],
+    "evidence": [
+      { "kind": "TEST", "producer": "Codex Automation Review Owner", "command": "npm run test:ci -- --maxWorkers=1",
+        "targetSha": "fc6d2f52f2d2cebbedc60e9e5d106744b347c8ff", "result": "Exit1:240 files PASS/1 failed suite;1686 tests PASS;Sherlock suite ENOENT at materializer import,no tests collected", "artifactIdentity": "pr441-full-ci" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner", "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-441-independent.mjs",
+        "targetSha": "fc6d2f52f2d2cebbedc60e9e5d106744b347c8ff", "result": "Exit0:8 expected assertions PASS,2 controls plus6 malformed reproductions;42 archives/50 additions/215->265/no duplicate;raw/compiledAccepted,zero issues,actual suppression", "artifactIdentity": "docs/reviews/probes/review-441-independent.mjs" },
+      { "kind": "STATIC_AND_BUILD", "producer": "Codex Automation Review Owner", "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 441 --repo binchen648/fd --json headRefOid,baseRefOid,state; git fetch origin main",
+        "targetSha": "fc6d2f52f2d2cebbedc60e9e5d106744b347c8ff", "result": "Build/content/determinism/diff PASS;head/base/main unchanged;129-path scope with blocking review recorded,not exhaustive50-contract clearance", "artifactIdentity": "docs/reviews/2026-10-10-pr-441-review.md" }
+    ],
+    "limitations": [
+      "Whole batch blocking disposition,not exhaustive50-contract/runtime acceptance.",
+      "Material/recount/load facts are not migration credit or authenticated source semantics.",
+      "External Reference/CHM/images/materializer not independently authenticated or reconstructed.",
+      "Synthetic malformed admission cases,not established external client exploit.",
+      "Inherited440 payload/admission issues not cleared;CI failed suite not excluded or fabricated.",
+      "No GitHub publication,Planner changes,current-main recount,Gate C,promotion or credit."
+    ]
+  }]
+}

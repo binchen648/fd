@@ -2,6 +2,14 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch18 records PR441 FAILED on 2026-10-10:new Sherlock CI depends on fixed
+external Reference path;new granted-ability gates accept six malformed envelopes
+and actually execute suppression. Independent8 expected assertions PASS,
+whole42-archive/50-ID215->265 recount verified. Full CI240 files PASS/1 failed
+suite,1686 tests PASS;build/content/determinism PASS. Live bindings/main unchanged.
+Cumulative:29/534,9 PASS,20 FAILED,505 pending. See batch18 and
+2026-10-10-pr-441-review.md. Goal remains active,incomplete.
+
 Batch17 records PR440 FAILED on 2026-10-10: legal Chaos rush cannot receive
 required X through dispatch; new structured flags silently lose __proto__.
 Three independent expected assertions PASS,including whole50/41-archive
