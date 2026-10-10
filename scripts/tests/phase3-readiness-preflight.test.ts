@@ -86,7 +86,7 @@ describe('readiness preflight, independent from promotion policy', () => {
     const bytes = JSON.stringify({ schemaVersion: 'fd-p3-final-combination-evidence-v2', taskId: binding.taskId,
       controlEpoch: binding.controlEpoch, sourceSha: binding.sourceSha, implementationSha: binding.sourceSha,
       commands: [receipt], sourceObjects: binding.sourceObjects, authorizationContinuation: binding });
-    writeFileSync(join(unauthorized, packetPath), bytes); git(unauthorized, ['add', packetPath]); git(unauthorized, ['commit', '-m', 'synthetic receipt integrity fixture']);
+    writeFileSync(join(unauthorized, packetPath), bytes); git(unauthorized, ['add', '-f', packetPath]); git(unauthorized, ['commit', '-m', 'synthetic receipt integrity fixture']);
     const commit = gitText(unauthorized, ['rev-parse', 'HEAD']);
     receiptFixture = { binding, receipts: [receipt], reference: { commit, path: packetPath,
       blob: gitText(unauthorized, ['rev-parse', `${commit}:${packetPath}`]), sha256: hash(bytes) } };
