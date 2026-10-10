@@ -276,7 +276,13 @@ export function buildContinuationBinding(root: string, sourceSha: string) {
 function deriveContinuationBinding(root: string, sourceSha: string) {
   if (!/^[0-9a-f]{40}$/.test(sourceSha)) throw new Error('Invalid continuation source SHA');
   git(root, ['rev-parse', '--verify', `${sourceSha}^{commit}`]);
-  const authorizations = pinnedAuthorizations.map(([commit, path]) => referenceAt(root, commit, path));
+  const authorizations = pinnedAuthorizations.map(([commit, path]) => {
+    const bytes = git(root, ['show', `${commit}:${path}`]).toString('utf8');
+    const taskId = /^Task: ([A-Z0-9-]+)\./m.exec(bytes)?.[1];
+    const controlEpoch = /Epoch: (FD-P3-[0-9-]+)\./.exec(bytes)?.[1];
+    if (!taskId || controlEpoch !== 'FD-P3-2026-09-23-08') throw new Error('Pinned authorization task/epoch missing');
+    return { ...referenceAt(root, commit, path), taskId, controlEpoch };
+  });
   const last = git(root, ['show', `${continuationSha}:${pinnedAuthorizations[2][1]}`]).toString('utf8');
   const declared = [...last.matchAll(/^- ([^\r\n]+)$/gm)].map(match => match[1]);
   assertSameEvidence(declared, continuationPaths);
@@ -370,9 +376,16 @@ const historicalReviewSpecs = [
   ['5a361fffaf9c151ffbc27c995ea773380692e120', 'docs/reviews/phase3/P3-E08-B11-final-packet-11c1985-reviewer-b.json', '11c1985dc4c72151bbf16298292bf4b7fa29fcab', 'NARROW_RUNTIME_SOURCE_AND_COMPONENT_SERVER_ONLY; BLOCKED_NOT_FINAL_ACCEPTANCE'],
 ] as const;
 
+const historicalReviewsCache = new Map<string, ReturnType<typeof deriveContinuationReviews>>();
 export function buildContinuationReviews(root: string) {
+  const key = resolve(root);
+  if (!historicalReviewsCache.has(key)) historicalReviewsCache.set(key, deriveContinuationReviews(root));
+  return structuredClone(historicalReviewsCache.get(key)!);
+}
+function deriveContinuationReviews(root: string) {
   return historicalReviewSpecs.map(([commit, path, reviewedSha, scope]) => ({
     ...referenceAt(root, commit, path), reviewedSha, scope, inheritedFinalAcceptance: false,
+    parent: text(root, ['rev-parse', `${commit}^`]),
     artifact: JSON.parse(git(root, ['show', `${commit}:${path}`]).toString('utf8')),
   }));
 }
@@ -380,7 +393,7 @@ export function buildContinuationReviews(root: string) {
 export function validateContinuationReviews(root: string, reviews: ReturnType<typeof buildContinuationReviews>) {
   assertSameEvidence(reviews, buildContinuationReviews(root));
   for (const review of reviews) {
-    if (text(root, ['rev-parse', `${review.commit}^`]) !== review.reviewedSha ||
+    if (review.parent !== review.reviewedSha ||
         (review.artifact.reviewedSha ?? review.artifact.reviewedCarrierSha) !== review.reviewedSha) throw new Error('Review exact lineage mismatch');
   }
 }
@@ -421,6 +434,7 @@ export async function collectContinuationPacket(root: string) {
     }
     const receipt = { command, testedSha, sourceSha: binding.sourceSha, startedAt, durationMs: Date.now() - start,
       exitCode, stdout, stderr, outputSha256: sha256(`${stdout}\n${stderr}`) };
+    if (text(root, ['rev-parse', 'HEAD']) !== testedSha) throw new Error('Frozen implementation HEAD changed');
     validateContinuationBinding(root, binding); validateContinuationReceipt(root, receipt, binding); receipts.push(receipt);
     process.stdout.write(`END exit=${exitCode} duration=${receipt.durationMs} ${command}\n`);
     if (exitCode !== 0 && !command.includes('phase3:preflight') && command !== 'npm run test:source-assets') { stoppedAt = command; break; }

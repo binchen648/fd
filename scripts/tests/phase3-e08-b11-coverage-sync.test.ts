@@ -10,7 +10,12 @@ import { assertSameEvidence, buildSync, buildFinalSync, historicalCarrierSha, va
 const root = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 let expected: Awaited<ReturnType<typeof buildSync>>;
 
-beforeAll(async () => { expected = await buildSync(root); }, 30_000);
+beforeAll(async () => {
+  expected = await buildSync(root);
+  const task = JSON.parse(readFileSync(resolve(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
+  buildContinuationBinding(root, task.finalBinding.sourceSha);
+  buildContinuationReviews(root);
+}, 30_000);
 const historicalBytes = (path: string) => execFileSync('git', ['show', `${historicalCarrierSha}:${path}`], { cwd: root, maxBuffer: 32 * 1024 * 1024 });
 
 describe('B11 exact candidate coverage synchronization', () => {
