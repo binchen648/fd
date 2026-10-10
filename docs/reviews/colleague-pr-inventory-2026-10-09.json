@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 21,
-    "pending": 513,
+    "reviewed": 22,
+    "pending": 512,
     "blocked": 0,
     "notVerified": 0
   },
@@ -21471,11 +21471,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "WHOLE_F4_B01_BATCH_MALFORMED_ADMISSION_AND_MATERIAL_COUNT_COMPATIBILITY_GATES",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-11.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/p3-f4-b01-passive-modifier-migrations.test.ts packages/rules/tests/f4-b01-passive-modifier-migrations.test.ts packages/rules/tests/atalanta-s2-consumer-migration.test.ts packages/rules/tests/fm04-independent-action-authoring.test.ts packages/rules/tests/fm07-alter-ego-transform-authoring.test.ts packages/rules/tests/fb2-54-event-power-uncontested-win-reward.test.ts packages/rules/tests/fb2-35-round-active-attack-paid-cost-combat-power.test.ts packages/rules/tests/core/combat-resolver.test.ts --maxWorkers=1",
+            "targetSha": "2128ae7fc51cdaf0d9ae1a3cc37c46fe699b83b4",
+            "result": "8 files / 68 tests PASS",
+            "artifactIdentity": "2026-10-10-pr-434-focused"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=1; npx vitest run packages/rules/tests/helena-s1-consumer-migration.test.ts --maxWorkers=1",
+            "targetSha": "2128ae7fc51cdaf0d9ae1a3cc37c46fe699b83b4",
+            "result": "Separate executions: full CI exit1, 188 files PASS /1 FAIL, 1423 tests PASS /1 FAIL; isolated Helena6 PASS /1 FAIL, actual155 vs expected151",
+            "artifactIdentity": "2026-10-10-pr-434-ci-and-isolated-regression"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-434-independent.mjs",
+            "targetSha": "2128ae7fc51cdaf0d9ae1a3cc37c46fe699b83b4",
+            "result": "Exit1: four provenance/material/normal controls PASS; six malformed admission gates FAIL with raw=true, compiled=true, issues=0, lossDelta=0. Material151->155, exact four additions, no frozen duplicates/removals; Ibaraki historical blob identical",
+            "artifactIdentity": "docs/reviews/probes/review-434-independent.mjs"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0

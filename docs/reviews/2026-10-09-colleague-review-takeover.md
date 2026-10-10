@@ -100,6 +100,15 @@ passed 6/6, including stale SHA, missing producer, duplicate/unknown PR and cred
 
 ## Next Work
 
+Batch11 records whole PR434/B01 FAILED on 2026-10-10: six malformed envelopes
+gain actual defeat immunity, and four material additions break Helena's historical
+global count assertion. Four provenance/recount/normal controls PASS; focused68/68
+PASS; full CI1423 PASS /1 FAIL, isolated candidate Helena6/7 versus exact base7/7.
+Material151->155/four additions/no removals or duplicates verified; Ibaraki exact
+historical blob reconciled without credit. Exact OPEN bindings and main unchanged.
+Cumulative: 22/534, 9 PASS, 13 FAILED, 512 pending. See batch11 and
+2026-10-10-pr-434-review.md. Full all-PR goal remains active and incomplete.
+
 Batch10 records PR433 FAILED on 2026-10-10: installed receipts are not removed
 with invalidated modifiers. Legal close rolls back; phase cleanup commits orphan
 receipts and subsequent projection fails. Independent three controls PASS and

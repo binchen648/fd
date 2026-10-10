@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 434,
+    "headSha": "2128ae7fc51cdaf0d9ae1a3cc37c46fe699b83b4",
+    "baseSha": "27cc057893738e0c64a1db0148b9132c9b4429e2",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "FAILED",
+    "scope": "WHOLE_F4_B01_BATCH_MALFORMED_ADMISSION_AND_MATERIAL_COUNT_COMPATIBILITY_GATES",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [
+      {
+        "priority": "P2",
+        "path": "packages/rules/src/ability/batch-passive-card-rules.ts",
+        "line": 19,
+        "summary": "Malformed visibility/limit/activation/responseWindow containers normalize into empty records; six raw/compiled envelopes load without issues and actually grant defeat immunity.",
+        "introducedRelativeToBase": true
+      },
+      {
+        "priority": "P2",
+        "path": "packages/rules/tests/helena-s1-consumer-migration.test.ts",
+        "line": 213,
+        "summary": "Four authoring additions trigger unchanged historical material-count assertion 151 vs actual155; exact base7/7 PASS, candidate6/7 and full CI fail. This is batch integration compatibility, not an imposed per-batch full-CI mandate.",
+        "introducedRelativeToBase": true
+      }
+    ],
+    "evidence": [
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/p3-f4-b01-passive-modifier-migrations.test.ts packages/rules/tests/f4-b01-passive-modifier-migrations.test.ts packages/rules/tests/atalanta-s2-consumer-migration.test.ts packages/rules/tests/fm04-independent-action-authoring.test.ts packages/rules/tests/fm07-alter-ego-transform-authoring.test.ts packages/rules/tests/fb2-54-event-power-uncontested-win-reward.test.ts packages/rules/tests/fb2-35-round-active-attack-paid-cost-combat-power.test.ts packages/rules/tests/core/combat-resolver.test.ts --maxWorkers=1",
+        "targetSha": "2128ae7fc51cdaf0d9ae1a3cc37c46fe699b83b4",
+        "result": "8 files / 68 tests PASS",
+        "artifactIdentity": "2026-10-10-pr-434-focused"
+      },
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci -- --maxWorkers=1; npx vitest run packages/rules/tests/helena-s1-consumer-migration.test.ts --maxWorkers=1",
+        "targetSha": "2128ae7fc51cdaf0d9ae1a3cc37c46fe699b83b4",
+        "result": "Separate executions: full CI exit1, 188 files PASS /1 FAIL, 1423 tests PASS /1 FAIL; isolated Helena6 PASS /1 FAIL, actual155 vs expected151",
+        "artifactIdentity": "2026-10-10-pr-434-ci-and-isolated-regression"
+      },
+      {
+        "kind": "BASELINE_TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npm ci --offline --ignore-scripts --no-audit --no-fund; npm run typecheck; npx vitest run packages/rules/tests/helena-s1-consumer-migration.test.ts --maxWorkers=1",
+        "targetSha": "27cc057893738e0c64a1db0148b9132c9b4429e2",
+        "result": "Separate exact-base executions: dependency/build PASS, Helena7/7 PASS; explicitly baseline evidence, not candidate TEST credit",
+        "artifactIdentity": "2026-10-10-pr-434-exact-base-control"
+      },
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-434-independent.mjs",
+        "targetSha": "2128ae7fc51cdaf0d9ae1a3cc37c46fe699b83b4",
+        "result": "Exit1: four provenance/material/normal controls PASS; six malformed admission gates FAIL with raw=true, compiled=true, issues=0, lossDelta=0. Material151->155, exact four additions, no frozen duplicates/removals; Ibaraki historical blob identical",
+        "artifactIdentity": "docs/reviews/probes/review-434-independent.mjs"
+      },
+      {
+        "kind": "STATIC_AND_BUILD",
+        "producer": "Codex Automation Review Owner",
+        "command": "gh pr view 434 --repo binchen648/fd --json headRefOid,baseRefOid,state; git diff 27cc057893738e0c64a1db0148b9132c9b4429e2 2128ae7fc51cdaf0d9ae1a3cc37c46fe699b83b4; npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check 27cc057893738e0c64a1db0148b9132c9b4429e2 2128ae7fc51cdaf0d9ae1a3cc37c46fe699b83b4",
+        "targetSha": "2128ae7fc51cdaf0d9ae1a3cc37c46fe699b83b4",
+        "result": "Live OPEN head/base and fetched main unchanged; all15 changed paths and base batch-first handoff read; typecheck/content/determinism/diff PASS",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-434-review.md"
+      }
+    ],
+    "limitations": [
+      "Local frozen-text/hash binding and exact material recount, not external original source-image/CHM or Locked Reference verification.",
+      "Malformed authoring admission demonstrated; external client pack-forgery exploit not established.",
+      "Whole batch fails, not four independent acceptance grants; no new or historical formal credit reassigned.",
+      "Inherited PR433 receipt/lifecycle defect is not repaired or cleared.",
+      "No client/browser, coverage/audit regeneration, source-asset/Gate C, current-main runtime or post-merge recount; CI exclusions preserved.",
+      "Blocking gates do not exhaustively clear all enclosing play quota/phase/persistence workflows.",
+      "No runtime acceptance, promotion, credit, GitHub publication or Planner control edits."
+    ]
+  }]
+}
