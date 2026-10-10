@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 459,
+    "headSha": "da831ab2dd399de974c881bc9ea6aa4336d5b093",
+    "baseSha": "0ea4c4d97225cab3931cdf13d8453b21116d760e",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "FAILED",
+    "scope": "SHUTEN_OWNER_COMPLETE_MIGRATION_SUCCESSOR_TECHNICAL_REVIEW",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [{
+      "priority": "P1", "path": "packages/rules/src/ability/interpreter.ts", "line": 1455,
+      "summary": "Legal additional Sake play at Recon makes forced combat-window effect reject invalid_state and roll back whole battle-phase advance;real backend batch/phase reproduction.",
+      "introducedRelativeToBase": true
+    }],
+    "evidence": [
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-459-independent.mjs",
+        "targetSha": "da831ab2dd399de974c881bc9ea6aa4336d5b093", "result": "7/7 expected assertions PASS including phase-blocker reproduction;normal grant,cleanup,deck/defeat,7 malformed primitives,source/task/lineage/material controls",
+        "artifactIdentity": "docs/reviews/probes/review-459-independent.mjs" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci -- --maxWorkers=2",
+        "targetSha": "da831ab2dd399de974c881bc9ea6aa4336d5b093", "result": "144 files/1030 tests:1020 PASS,10 FAIL;9 exact-base failures plus1 timeout of unknown baseline causation",
+        "artifactIdentity": "pr459-independent-full-ci" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/regression/p3-owner-shuten-complete-migration.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/regression/p3-owner-sherlock-complete-migration.test.ts scripts/tests/compile-playtest-content-pack.test.ts --maxWorkers=2",
+        "targetSha": "da831ab2dd399de974c881bc9ea6aa4336d5b093", "result": "5 files/104 tests PASS;Shuten8/8;does not cover phase blocker",
+        "artifactIdentity": "pr459-independent-focused" },
+      { "kind": "BASELINE_TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/astolfo-s1-consumer-migration.test.ts packages/rules/tests/m50-02-opponent-close-one-non-residual.test.ts packages/rules/tests/seven-servant-decks.test.ts packages/rules/tests/regression/golden-card-content-pipeline.test.ts --maxWorkers=2",
+        "targetSha": "0ea4c4d97225cab3931cdf13d8453b21116d760e", "result": "4 files/20 tests:11 PASS,9 inherited FAIL;not full baseline CI",
+        "artifactIdentity": "pr459-exact-base-comparison" },
+      { "kind": "STATIC_AND_BUILD", "producer": "Codex Automation Review Owner",
+        "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 459 --repo binchen648/fd --json headRefOid,baseRefOid,state; git fetch origin main; gh api repos/binchen648/fd/issues/comments/5846980781",
+        "targetSha": "da831ab2dd399de974c881bc9ea6aa4336d5b093", "result": "Typecheck/content/diff PASS;strict generated evidence FAIL,21 absent external image diagnostics isolated;live bindings unchanged;historical relay lacks detailed evidence",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-459-review.md" }
+    ],
+    "limitations": [
+      "Technical FAILED only;material123->126/944 not credit;dependency findings remain unresolved.",
+      "Full CI timeout causation unknown;no green substitution or unsupported regression attribution.",
+      "Strict verifier remains FAIL;external Reference images/original asset preservation unverified.",
+      "No full baseline CI,network/UI/exhaustive restore acceptance,Planner mutation,GitHub verdict,Gate,promotion,merge or credit."
+    ]
+  }]
+}

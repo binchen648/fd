@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 38,
-    "pending": 496,
+    "reviewed": 39,
+    "pending": 495,
     "blocked": 0,
     "notVerified": 0
   },
@@ -23404,11 +23404,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "SHUTEN_OWNER_COMPLETE_MIGRATION_SUCCESSOR_TECHNICAL_REVIEW",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-28.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-459-independent.mjs",
+            "targetSha": "da831ab2dd399de974c881bc9ea6aa4336d5b093",
+            "result": "7/7 expected assertions PASS including phase-blocker reproduction;normal grant,cleanup,deck/defeat,7 malformed primitives,source/task/lineage/material controls",
+            "artifactIdentity": "docs/reviews/probes/review-459-independent.mjs"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=2",
+            "targetSha": "da831ab2dd399de974c881bc9ea6aa4336d5b093",
+            "result": "144 files/1030 tests:1020 PASS,10 FAIL;9 exact-base failures plus1 timeout of unknown baseline causation",
+            "artifactIdentity": "pr459-independent-full-ci"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/regression/p3-owner-shuten-complete-migration.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/regression/p3-owner-sherlock-complete-migration.test.ts scripts/tests/compile-playtest-content-pack.test.ts --maxWorkers=2",
+            "targetSha": "da831ab2dd399de974c881bc9ea6aa4336d5b093",
+            "result": "5 files/104 tests PASS;Shuten8/8;does not cover phase blocker",
+            "artifactIdentity": "pr459-independent-focused"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0

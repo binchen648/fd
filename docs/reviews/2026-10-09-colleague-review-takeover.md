@@ -2,6 +2,15 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch28 records PR459 FAILED on2026-10-10:legal additional Sake play at Recon
+blocks transactional battle-phase advance. Independent7/7 expected assertions
+PASS,including defect;focused104/104 PASS. Full CI1020 PASS/10 FAIL;exact-base
+comparison11 PASS/9 FAIL confirms9 inherited failures;remaining timeout has
+unknown baseline causation. Strict generated evidence remains asset-dependent
+FAIL(21 missing external images). Material123->126/944 is not credit.
+Cumulative39/534,13 PASS,26 FAILED,495 pending. See batch28 and
+2026-10-10-pr-459-review.md. All-PR goal remains active,incomplete.
+
 Batch27 records PR458 FAILED on2026-10-10:owner-private card payload leaks
 through real MatchSession shared logs;marker preservation breaks compiled
 M50-02;Elementary wrongly requires an existing record;owner DTO cannot recover
