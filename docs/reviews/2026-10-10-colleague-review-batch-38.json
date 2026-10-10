@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [
+    {
+      "pr": 469,
+      "headSha": "d12596998bc4d3a45494e84b107e2577d8e445c4",
+      "baseSha": "128089a18341b41b663244f6b8b23088d237f6d8",
+      "producer": "Codex Automation Review Owner",
+      "verdict": "FAILED",
+      "scope": "SPARTACUS_ACCEPTED_CAPABILITY_RECOVERY_TECHNICAL_REVIEW",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [
+        {
+          "priority": "P1",
+          "path": "packages/rules/src/ability/interpreter.ts",
+          "line": 3654,
+          "summary": "Preexisting persistent movement lock not checked before spending seal and staging forbidden-cancel destination choice;all destinations then reject,blocking continuation.",
+          "introducedRelativeToBase": true
+        },
+        {
+          "priority": "P2",
+          "path": "packages/rules/src/ability/interpreter.ts",
+          "line": 4390,
+          "summary": "Ruler move metadata not bound to authored destination pair or pending candidates;rewritten metadata alone permits an undeclared enabled Workshop destination.",
+          "introducedRelativeToBase": true
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-469-independent.mjs",
+          "targetSha": "d12596998bc4d3a45494e84b107e2577d8e445c4",
+          "result": "Final7/7 expected checks PASS incl two defects,R1 actual cloak,docs-only R2,historical reward module normalization,valid restore/free play,real-loop frozen power15 and serialized two sources;initial6/6 before reward extension",
+          "artifactIdentity": "docs/reviews/probes/review-469-independent.mjs"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/fb2-48-combat-opponent-power-vp-reward.test.ts packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/fb2-any-location-except-workshop-movement.test.ts packages/rules/tests/core/combat-resolver.test.ts --maxWorkers=1",
+          "targetSha": "d12596998bc4d3a45494e84b107e2577d8e445c4",
+          "result": "8 files/176 tests PASS;Ruler13/13,reward10/10",
+          "artifactIdentity": "pr469-independent-focused"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npm run test:ci -- --maxWorkers=2",
+          "targetSha": "d12596998bc4d3a45494e84b107e2577d8e445c4",
+          "result": "155 files/1123 tests:1113 PASS/10 inherited FAIL,no timeouts;not green CI",
+          "artifactIdentity": "pr469-independent-full-ci"
+        },
+        {
+          "kind": "BASELINE_TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/astolfo-s1-consumer-migration.test.ts packages/rules/tests/m50-02-opponent-close-one-non-residual.test.ts packages/rules/tests/seven-servant-decks.test.ts packages/rules/tests/regression/golden-card-content-pipeline.test.ts packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts --maxWorkers=2",
+          "targetSha": "128089a18341b41b663244f6b8b23088d237f6d8",
+          "result": "5 files/24 tests:14 PASS/10 FAIL matching all10;not full baseline CI",
+          "artifactIdentity": "pr469-exact-base-comparison"
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Codex Automation Review Owner",
+          "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 469 --repo binchen648/fd --json headRefOid,baseRefOid,state; gh api repos/binchen648/fd/issues/469/comments --paginate; git fetch origin main",
+          "targetSha": "d12596998bc4d3a45494e84b107e2577d8e445c4",
+          "result": "Typecheck/content/diff PASS;strict evidence FAIL only31 inherited absent images isolated;live exact bindings unchanged;historical relays separately attributed",
+          "artifactIdentity": "docs/reviews/2026-10-10-pr-469-review.md"
+        }
+      ],
+      "limitations": [
+        "Current-base restored capability defects;no claim these first originated in this recovery rather than historical accepted implementations.",
+        "Metadata corruption probe is an internal fail-closed regression,not an established external exploit or unsigned restore bypass.",
+        "No actual Spartacus authoring migration;controlled seven-player fixtures;full baseline CI/external locked rules/reference/UI/network/exhaustive restore unverified.",
+        "Historical acceptance not transferred;prior dependencies remain;zero credit,repair,formal acceptance,GitHub verdict,Planner mutation,Gate,promotion or merge."
+      ]
+    }
+  ]
+}

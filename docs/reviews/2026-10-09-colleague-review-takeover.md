@@ -2,6 +2,15 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch38 records PR469 technical FAILED on2026-10-10:preexisting persistent
+movement lock strands a spent noncancellable Ruler move;metadata-only destination
+rewrite bypasses authored pair/snapshot. Independent final7/7 expected checks
+PASS;R1/R2 closure and real-loop frozen reward verified. Focused176/176 PASS;
+full1113 PASS/10 FAIL,exact-base14 PASS/10 FAIL matches all10.
+Strict evidence FAIL only31 absent external images. Zero authoring delta/credit.
+Cumulative49/534,15 PASS,34 FAILED,485 pending. See batch38 and
+2026-10-10-pr-469-review.md. All-PR goal remains active,incomplete.
+
 Batch37 records PR468 technical FAILED on2026-10-10:actual Skadi consumers
 expose inherited zero-hand shuffle and immune sole-opponent defeat discovery
 mismatches. Independent6/6 expected checks PASS;focused175/175 PASS.
