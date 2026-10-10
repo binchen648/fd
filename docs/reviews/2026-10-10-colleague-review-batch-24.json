@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 455,
+    "headSha": "6c18b429172ac671f918e4ae2c9291f347d3ee6b",
+    "baseSha": "830934876e0805b4bf21c45dd73e7ac57e2be065",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "PASS",
+    "scope": "FB2_43_EVENT_LOCATION_RELATION_TECHNICAL_DELTA_REVIEW",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [],
+    "evidence": [
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-455-independent.mjs",
+        "targetSha": "6c18b429172ac671f918e4ae2c9291f347d3ee6b", "result": "9/9 PASS:read-only helper/actor separation,real seven-seat movement/effect,negative compositions,bounded opponent opt-in,malformed rollback,carrier/trigger bounds,historical helper/current dispatch/scope,112/944 recount",
+        "artifactIdentity": "docs/reviews/probes/review-455-independent.mjs" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/fb2-43-event-location-equals-controller-current-main.test.ts packages/rules/tests/fb2-31-event-player-relation-current-main.test.ts packages/rules/tests/core/game-loop-action.test.ts packages/rules/tests/core/movement.test.ts packages/rules/tests/regression/fb2-any-location-except-workshop-movement.test.ts --maxWorkers=2",
+        "targetSha": "6c18b429172ac671f918e4ae2c9291f347d3ee6b", "result": "5 files/30 tests PASS",
+        "artifactIdentity": "pr455-independent-focused" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci -- --maxWorkers=2",
+        "targetSha": "6c18b429172ac671f918e4ae2c9291f347d3ee6b", "result": "141 files/998 tests PASS,original timeout/exclusions,no failure reruns",
+        "artifactIdentity": "pr455-independent-full-ci" },
+      { "kind": "STATIC_AND_BUILD", "producer": "Codex Automation Review Owner",
+        "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 455 --repo binchen648/fd --json headRefOid,baseRefOid,state; git fetch origin main; gh api repos/binchen648/fd/issues/comments/5748914327; gh api -X GET search/issues -f \"q=repo:binchen648/fd type:pr author:fengling20011118-dotcom\" -f per_page=1",
+        "targetSha": "6c18b429172ac671f918e4ae2c9291f347d3ee6b", "result": "Build/content/determinism/diff PASS;live bindings/main unchanged;exact-base A dispatch present;historical reviewer results attributed. Contributor search534/incompletefalse,count-only recheck",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-455-review.md" }
+    ],
+    "limitations": [
+      "Technical PASS only,not whole-card/current-main acceptance or clearance of inherited defects.",
+      "Current base dispatch and source helper verified;original external Reference,readiness17->18/Siegfried S2 claims not rerun.",
+      "Fresh534 search total does not revalidate all other candidate HEADs/states or prove all-PR completion.",
+      "No runtime acceptance,Planner authorization changes,GitHub publication,Gate C,promotion,merge or credit."
+    ]
+  }]
+}

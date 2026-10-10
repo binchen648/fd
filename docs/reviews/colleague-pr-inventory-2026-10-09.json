@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 34,
-    "pending": 500,
+    "reviewed": 35,
+    "pending": 499,
     "blocked": 0,
     "notVerified": 0
   },
@@ -23089,11 +23089,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "PASS",
+        "scope": "FB2_43_EVENT_LOCATION_RELATION_TECHNICAL_DELTA_REVIEW",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-24.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-455-independent.mjs",
+            "targetSha": "6c18b429172ac671f918e4ae2c9291f347d3ee6b",
+            "result": "9/9 PASS:read-only helper/actor separation,real seven-seat movement/effect,negative compositions,bounded opponent opt-in,malformed rollback,carrier/trigger bounds,historical helper/current dispatch/scope,112/944 recount",
+            "artifactIdentity": "docs/reviews/probes/review-455-independent.mjs"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/fb2-43-event-location-equals-controller-current-main.test.ts packages/rules/tests/fb2-31-event-player-relation-current-main.test.ts packages/rules/tests/core/game-loop-action.test.ts packages/rules/tests/core/movement.test.ts packages/rules/tests/regression/fb2-any-location-except-workshop-movement.test.ts --maxWorkers=2",
+            "targetSha": "6c18b429172ac671f918e4ae2c9291f347d3ee6b",
+            "result": "5 files/30 tests PASS",
+            "artifactIdentity": "pr455-independent-focused"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=2",
+            "targetSha": "6c18b429172ac671f918e4ae2c9291f347d3ee6b",
+            "result": "141 files/998 tests PASS,original timeout/exclusions,no failure reruns",
+            "artifactIdentity": "pr455-independent-full-ci"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0
