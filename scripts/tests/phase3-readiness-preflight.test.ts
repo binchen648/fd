@@ -7,7 +7,7 @@ import { setImmediate as yieldToEventLoop } from 'node:timers/promises';
 import { assertFinalTaskCheck, buildFinalTaskCheck, buildContinuationTaskCheck, runPreflight } from '../phase3-preflight';
 import { git, gitText, hash, InputError } from '../phase3-tooling-common';
 import { publicationSha, reference } from '../phase3-b11-tooling-inputs';
-import { buildContinuationBinding, validateContinuationBinding } from '../phase3-e08-b11-coverage-sync';
+import { buildContinuationBinding, validateContinuationBinding, validateContinuationReceiptReference, type ContinuationReceipt, type ReceiptReference } from '../phase3-e08-b11-coverage-sync';
 
 const root = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 const taskId = 'P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY';
@@ -54,6 +54,7 @@ let finalTask: ReturnType<typeof buildFinalTaskCheck>;
 let currentResult: ReturnType<typeof runPreflight>;
 let unauthorized: string;
 let invalidCommand: string;
+let receiptFixture: { binding: ReturnType<typeof buildContinuationBinding>; receipts: ContinuationReceipt[]; reference: ReceiptReference };
 const evaluate = (context: ReturnType<typeof fixture>, input: unknown = context.input, candidate = context.candidate) => runPreflight(context.cwd, input, candidate, context.base, hash(JSON.stringify(input)));
 
 describe('readiness preflight, independent from promotion policy', () => {
@@ -77,6 +78,18 @@ describe('readiness preflight, independent from promotion policy', () => {
       }
       git(cwd, ['add', '.']); git(cwd, ['commit', '-m', `adversarial ${mode}`]);
     }
+    const binding = buildContinuationBinding(unauthorized, input.finalBinding.sourceSha);
+    const receipt: ContinuationReceipt = { command: 'npm run test:ci', sourceSha: binding.sourceSha, testedSha: binding.sourceSha,
+      startedAt: '2026-10-10T00:00:00.000Z', durationMs: 0, exitCode: 1, stdout: 'SYNTHETIC_UNIT_FIXTURE_NOT_EXECUTION_EVIDENCE', stderr: '',
+      outputSha256: hash('SYNTHETIC_UNIT_FIXTURE_NOT_EXECUTION_EVIDENCE\n') };
+    const packetPath = 'artifacts/phase3-e08-b11-final-combination-evidence.json';
+    const bytes = JSON.stringify({ schemaVersion: 'fd-p3-final-combination-evidence-v2', taskId: binding.taskId,
+      controlEpoch: binding.controlEpoch, sourceSha: binding.sourceSha, implementationSha: binding.sourceSha,
+      commands: [receipt], sourceObjects: binding.sourceObjects, authorizationContinuation: binding });
+    writeFileSync(join(unauthorized, packetPath), bytes); git(unauthorized, ['add', packetPath]); git(unauthorized, ['commit', '-m', 'synthetic receipt integrity fixture']);
+    const commit = gitText(unauthorized, ['rev-parse', 'HEAD']);
+    receiptFixture = { binding, receipts: [receipt], reference: { commit, path: packetPath,
+      blob: gitText(unauthorized, ['rev-parse', `${commit}:${packetPath}`]), sha256: hash(bytes) } };
   }, 60_000);
   afterAll(() => { for (const path of directories) rmSync(path, { recursive: true, force: true }); });
   it('binds every original uncovered path without converting registration into acceptance', () => {
@@ -105,6 +118,12 @@ describe('readiness preflight, independent from promotion policy', () => {
     const task = JSON.parse(readFileSync(join(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
     const binding = buildContinuationBinding(cwd, task.finalBinding.sourceSha);
     expect(() => validateContinuationBinding(cwd, binding)).toThrow();
+  });
+  it('rejects output tampering even after a caller recomputes the receipt hash', () => {
+    const { binding, receipts, reference: ref } = receiptFixture;
+    validateContinuationReceiptReference(unauthorized, ref, receipts, binding);
+    const bad = structuredClone(receipts); bad[0].stdout = 'forged'; bad[0].outputSha256 = hash(`${bad[0].stdout}\n${bad[0].stderr}`);
+    expect(() => validateContinuationReceiptReference(unauthorized, ref, bad, binding)).toThrow();
   });
   it.each(['schema', 'receipt', 'history', 'scope', 'pending'])('fails closed for invalid current %s inputs', mode => {
     const task = JSON.parse(readFileSync(join(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
