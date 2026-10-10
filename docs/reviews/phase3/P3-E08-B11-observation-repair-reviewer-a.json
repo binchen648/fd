@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-a-observation-repair-review-v1",
+  "taskId": "P3-E08-B11-CONTRACT-PARITY",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "reviewDate": "2026-10-10",
+  "reviewer": "Reviewer A",
+  "candidateSha": "be7dd6b4da6b377daf019b6170efc112c2d7a45e",
+  "reviewedSha": "be7dd6b4da6b377daf019b6170efc112c2d7a45e",
+  "priorFailedCarrierSha": "de28753ee243cd82e5a7730a3b0cf07ad031c928",
+  "runtimeDependencySha": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
+  "adapterAndFixtureSha": "7a9699efcca8e16467cd973a7c7dd522e5a230a9",
+  "conclusion": "REVIEW_ACCEPTED",
+  "finalVerdict": "PASS",
+  "acceptedScope": "A_OWNED_READ_ONLY_DIAGNOSTIC_REPAIR_AND_EVIDENCE_BINDING_NOT_FIXTURE_SEMANTICS_OR_RUNTIME",
+  "findings": [],
+  "closedFindings": [
+    {
+      "id": "MALFORMED_OPTIONAL_TARGET_NULL_CONDITION_CRASH",
+      "priority": "P2",
+      "status": "CLOSED",
+      "evidence": "Both diagnostic APIs return exactEligible=false for Golden targets[1].conditions=[null], without throwing or mutating input."
+    }
+  ],
+  "boundArtifacts": [
+    {
+      "path": "scripts/fixtures/phase3-b11-parity-contract.json",
+      "sha256": "CF307202E26222774344F4CA75B7208FFE16020C0097390E30A2D84A346D1AB8"
+    },
+    {
+      "path": "scripts/fixtures/phase3-b11-parity-fixtures.json",
+      "sha256": "CA345E013C74B233ABE5A496760C04E0C50E5A4241030608B68843D6163AEAE4"
+    },
+    {
+      "path": "artifacts/phase3-e08-b11-inventory-coverage-parity.json",
+      "sha256": "5206C6104277A0344306AE6AE1664EA502CC329DBC4BAADF75BAA44B7DC5E7EB"
+    }
+  ],
+  "fixturePremiseSha256": "CF2A50939F709D71ECFC29D29AFB626F1BFCFDED787DD49A027E160787C2DB81",
+  "independentChecks": {
+    "testedSha": "be7dd6b4da6b377daf019b6170efc112c2d7a45e",
+    "focused": { "files": 4, "tests": 55, "durationSeconds": 76.19, "result": "PASS" },
+    "diagnosticApiSubset": { "tests": 20, "result": "PASS" },
+    "typecheck": "PASS",
+    "completeScopedDiffCheck": "PASS",
+    "remoteCarrierRefExact": "PASS",
+    "exactInputFixtureReceiptHashes": "PASS",
+    "tenFixtureExpectedMapsUnchangedFromPriorCarrier": "PASS",
+    "packagesAppsDataAndClassifierEqualRuntimeDependency": "PASS",
+    "isolatedCandidateRealApiExecution": "PASS",
+    "adapterAndInstalledDependencyDriftNegatives": "PASS",
+    "missingObservationAndDisagreementRemainFailClosed": "PASS",
+    "fullCurrentCi": "NOT_RERUN",
+    "submittedReceiptByteRepeatability": "PRODUCER_REPORTED_NOT_INDEPENDENTLY_REGENERATED_WITH_IDENTICAL_SUBMITTED_INPUT"
+  },
+  "observationBoundary": {
+    "fixtureCases": 10,
+    "requiredFieldsEvaluated": 60,
+    "missingObservations": 0,
+    "apiExpectationDisagreements": 0,
+    "remainingIssue": "EXPECTATIONS_NOT_INDEPENDENTLY_REVIEWED",
+    "readiness": "FAIL",
+    "inventoryAndCoverageShareDiagnosticHelper": true,
+    "independentRuntimeImplementationsClaimed": false,
+    "fixtureSemanticAcceptanceOwner": "Reviewer B",
+    "fixtureSemanticAcceptanceGranted": false
+  },
+  "formalCredit": { "mainCoverageCreditDelta": 0, "migrationCreditDelta": 0, "denominatorDelta": 0 },
+  "retainedLimitations": [
+    "Historical coverage-sync source binding conflict still open",
+    "Prior frozen full CI failure, skipped tests and RPC timeout retained; no fresh full CI acceptance",
+    "New fixture and owner semantic premise awaits Reviewer B",
+    "Runtime dependency not independently reviewed by Reviewer A",
+    "Fallback closure not certified",
+    "GitHub required checks, Global Gate C and promotion not verified",
+    "Historical 93 missing-image Release blockers retained, not reaudited"
+  ],
+  "runtimeAcceptanceGranted": false,
+  "promotionAllowed": false,
+  "githubAttestationProvided": false,
+  "nextStep": "REVIEWER_B_REVIEW_NEW_EXACT_FIXTURE_OWNER_PREMISE; PLANNER_HANDLE_CI_COMPATIBILITY_SEPARATELY; FREEZE_AND_BIND_FRESH_EXECUTION_AND_REVIEWS_BEFORE_READINESS"
+}
