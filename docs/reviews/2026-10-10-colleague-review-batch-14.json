@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 437,
+    "headSha": "aebb2581b7172ca213371580e30c0c7e958606f8",
+    "baseSha": "c75ff0a7e8f514c529c08a7c214b4cd989ea0b00",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "FAILED",
+    "scope": "WHOLE_F4_B04_MALFORMED_EVENT_SOURCE_POWER_ADMISSION_GATE",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [{
+      "priority": "P2",
+      "path": "packages/rules/src/ability/batch-event-source-power-rules.ts",
+      "line": 16,
+      "summary": "New exactKeys/empty normalizes malformed visibility/lifecycle/limit/responseWindow to empty records; six cases load with zero issues and actual play grants power8.",
+      "introducedRelativeToBase": true
+    }],
+    "evidence": [
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/f4-b04-event-source-power-resource-migrations.test.ts packages/rules/tests/f4-b03-modifier-lifecycle-migrations.test.ts packages/rules/tests/fb2-54-event-power-uncontested-win-reward.test.ts packages/rules/tests/fb2-47-controller-defeated-vp-reward.test.ts packages/rules/tests/core/movement.test.ts packages/rules/tests/core/game-loop-action.test.ts packages/rules/tests/regression/replay.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+        "targetSha": "aebb2581b7172ca213371580e30c0c7e958606f8",
+        "result": "8 files /102 tests PASS, B04 itself17/17",
+        "artifactIdentity": "2026-10-10-pr-437-focused"
+      },
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci -- --maxWorkers=1",
+        "targetSha": "aebb2581b7172ca213371580e30c0c7e958606f8",
+        "result": "Exit1:191 files PASS/1 FAIL,1460 tests PASS/1 FAIL; inherited Helena161 vs151 only",
+        "artifactIdentity": "2026-10-10-pr-437-full-ci"
+      },
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-437-independent.mjs",
+        "targetSha": "aebb2581b7172ca213371580e30c0c7e958606f8",
+        "result": "Exit1:four controls PASS,six malformed gates FAIL; raw/compiled=true,issues0,power8. Exact159->161,no removals/duplicates; local text/hash; source-play expiration/retiming and real movement/inflation controls PASS",
+        "artifactIdentity": "docs/reviews/probes/review-437-independent.mjs"
+      },
+      {
+        "kind": "STATIC_AND_BUILD",
+        "producer": "Codex Automation Review Owner",
+        "command": "gh pr view 437 --repo binchen648/fd --json headRefOid,baseRefOid,state; git diff c75ff0a7e8f514c529c08a7c214b4cd989ea0b00 aebb2581b7172ca213371580e30c0c7e958606f8; npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check c75ff0a7e8f514c529c08a7c214b4cd989ea0b00 aebb2581b7172ca213371580e30c0c7e958606f8",
+        "targetSha": "aebb2581b7172ca213371580e30c0c7e958606f8",
+        "result": "Live OPEN bindings/fetched main unchanged; complete12-path delta read; typecheck/content/determinism/diff PASS; base differs from reviewed436 only in governance docs; Helena blob unchanged",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-437-review.md"
+      }
+    ],
+    "limitations": [
+      "Whole-batch blocking review is not exhaustive runtime or current-main acceptance.",
+      "Local frozen source/hash/material binding only, not original-source/Reference authentication or formal credit.",
+      "Actual malformed authoring admission, not established remote pack-forgery exploit.",
+      "Inherited Helena CI/admission/receipt defects remain unresolved, not newly attributed here.",
+      "No client/browser,source-assets,Gate C,current-main recount,coverage/audit regeneration; official CI exclusions retained.",
+      "No GitHub publication,Planner edits,reservation,runtime acceptance,promotion or credit."
+    ]
+  }]
+}

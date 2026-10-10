@@ -2,6 +2,13 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch14 records PR437 FAILED on 2026-10-10: new B04 empty-envelope predicates
+admit six malformed containers with raw/compiled=true,issues0,actual power8.
+Four independent controls PASS; focused102/102 PASS; full CI191 files PASS/1 FAIL,
+1460 tests PASS/1 FAIL,only inherited Helena161 vs151. Live bindings/fetched main
+unchanged. Cumulative:25/534,9 PASS,16 FAILED,509 pending. See batch14 and
+2026-10-10-pr-437-review.md. All-PR goal remains active and incomplete.
+
 Batch13 records PR436 FAILED on 2026-10-10: the new B03 empty predicates
 admit malformed limit/responseWindow/lifecycle containers. Six cases load with
 zero issues and install movement locks or next-round +3; four independent controls

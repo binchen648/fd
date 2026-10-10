@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 24,
-    "pending": 510,
+    "reviewed": 25,
+    "pending": 509,
     "blocked": 0,
     "notVerified": 0
   },
@@ -21701,11 +21701,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "WHOLE_F4_B04_MALFORMED_EVENT_SOURCE_POWER_ADMISSION_GATE",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-14.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/f4-b04-event-source-power-resource-migrations.test.ts packages/rules/tests/f4-b03-modifier-lifecycle-migrations.test.ts packages/rules/tests/fb2-54-event-power-uncontested-win-reward.test.ts packages/rules/tests/fb2-47-controller-defeated-vp-reward.test.ts packages/rules/tests/core/movement.test.ts packages/rules/tests/core/game-loop-action.test.ts packages/rules/tests/regression/replay.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+            "targetSha": "aebb2581b7172ca213371580e30c0c7e958606f8",
+            "result": "8 files /102 tests PASS, B04 itself17/17",
+            "artifactIdentity": "2026-10-10-pr-437-focused"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=1",
+            "targetSha": "aebb2581b7172ca213371580e30c0c7e958606f8",
+            "result": "Exit1:191 files PASS/1 FAIL,1460 tests PASS/1 FAIL; inherited Helena161 vs151 only",
+            "artifactIdentity": "2026-10-10-pr-437-full-ci"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-437-independent.mjs",
+            "targetSha": "aebb2581b7172ca213371580e30c0c7e958606f8",
+            "result": "Exit1:four controls PASS,six malformed gates FAIL; raw/compiled=true,issues0,power8. Exact159->161,no removals/duplicates; local text/hash; source-play expiration/retiming and real movement/inflation controls PASS",
+            "artifactIdentity": "docs/reviews/probes/review-437-independent.mjs"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0
