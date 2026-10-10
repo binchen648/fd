@@ -356,6 +356,7 @@ export const continuationCommands = [
 
 export type ContinuationReceipt = { command: string; testedSha: string; sourceSha: string; startedAt: string;
   durationMs: number; exitCode: number; stdout: string; stderr: string; outputSha256: string };
+const testedObjectsCache = new Set<string>();
 
 export function validateContinuationReceipt(root: string, receipt: ContinuationReceipt, binding: ReturnType<typeof buildContinuationBinding>) {
   if (!isDeepStrictEqual(Object.keys(receipt).sort(), ['command', 'testedSha', 'sourceSha', 'startedAt', 'durationMs', 'exitCode', 'stdout', 'stderr', 'outputSha256'].sort())) throw new Error('Unknown receipt fields');
@@ -364,11 +365,34 @@ export function validateContinuationReceipt(root: string, receipt: ContinuationR
       !Number.isFinite(receipt.durationMs) || receipt.durationMs < 0 || !Number.isFinite(Date.parse(receipt.startedAt)) ||
       typeof receipt.stdout !== 'string' || typeof receipt.stderr !== 'string') throw new Error('Invalid command receipt');
   if (!/^[0-9a-f]{40}$/.test(receipt.testedSha)) throw new Error('Invalid tested SHA');
-  git(root, ['merge-base', '--is-ancestor', binding.sourceSha, receipt.testedSha]);
-  git(root, ['merge-base', '--is-ancestor', receipt.testedSha, 'HEAD']);
-  const objects = sourceObjectsAt(root, receipt.testedSha);
-  for (const path of finalSourcePaths) if (objects[path] !== binding.sourceObjects[path]) throw new Error(`Stale tested source: ${path}`);
+  const key = `${resolve(root)}:${binding.sourceSha}:${receipt.testedSha}:${text(root, ['rev-parse', 'HEAD'])}:${sha256(JSON.stringify(binding.sourceObjects))}`;
+  if (!testedObjectsCache.has(key)) {
+    git(root, ['merge-base', '--is-ancestor', binding.sourceSha, receipt.testedSha]);
+    git(root, ['merge-base', '--is-ancestor', receipt.testedSha, 'HEAD']);
+    const objects = sourceObjectsAt(root, receipt.testedSha);
+    for (const path of finalSourcePaths) if (objects[path] !== binding.sourceObjects[path]) throw new Error(`Stale tested source: ${path}`);
+    testedObjectsCache.add(key);
+  }
   if (sha256(`${receipt.stdout}\n${receipt.stderr}`) !== receipt.outputSha256) throw new Error('Receipt output hash mismatch');
+}
+
+export type ReceiptReference = { commit: string; path: string; blob: string; sha256: string };
+export function validateContinuationReceiptReference(root: string, ref: ReceiptReference | null, receipts: ContinuationReceipt[], binding: ReturnType<typeof buildContinuationBinding>) {
+  if (ref === null) return; // Unsealed executions remain a preflight blocker; never acceptance.
+  if (!isDeepStrictEqual(Object.keys(ref).sort(), ['commit', 'path', 'blob', 'sha256'].sort()) ||
+      ref.path !== repairPaths[7] || !/^[0-9a-f]{40}$/.test(ref.commit)) throw new Error('Invalid receipt reference');
+  assertSameEvidence(ref, referenceAt(root, ref.commit, ref.path));
+  git(root, ['merge-base', '--is-ancestor', binding.sourceSha, ref.commit]);
+  git(root, ['merge-base', '--is-ancestor', ref.commit, 'HEAD']);
+  const packet = JSON.parse(git(root, ['show', `${ref.commit}:${ref.path}`]).toString('utf8'));
+  if (packet.schemaVersion !== 'fd-p3-final-combination-evidence-v2' || packet.taskId !== continuationTaskId ||
+      packet.controlEpoch !== binding.controlEpoch || packet.sourceSha !== binding.sourceSha) throw new Error('Receipt bundle context mismatch');
+  assertSameEvidence(packet.commands, receipts); assertSameEvidence(packet.sourceObjects, binding.sourceObjects);
+  assertSameEvidence(packet.authorizationContinuation, binding);
+  for (const receipt of receipts) {
+    if (receipt.testedSha !== packet.implementationSha) throw new Error('Receipt tested implementation mismatch');
+    validateContinuationReceipt(root, receipt, binding);
+  }
 }
 
 const historicalReviewSpecs = [
@@ -460,6 +484,14 @@ export async function collectContinuationPacket(root: string) {
     carrierRule: 'Carrier must descend from implementationSha; all finalSourcePaths Git objects must match sourceObjects. No full-CI claim on untested carrier.',
     sourceObjects: binding.sourceObjects, authorizationContinuation: binding, publication,
     historicalEvidence: history, historicalReviews: task.execution.reviews,
+    preparationFailures: [
+      { sourceSha: '55d25db22c37d95ca6bd8cde8ee55d91394d379d', command: continuationCommands[2], exitCode: 1,
+        summary: '3 files: 2 failed / 1 passed; 36 tests: 8 failed / 28 passed; 2 onTaskUpdate RPC errors. Repeated immutable Git reconstruction exceeded test limits.',
+        evidenceBoundary: 'Tool-observed preparation run; not frozen CI and not an immutable raw-output receipt' },
+      { sourceSha: '9d5fc9f6d3ca124ce8737dd7d630b51a8a2411db', command: continuationCommands[2], exitCode: 1,
+        summary: '3 files: 2 failed / 1 passed; 36 tests: 2 failed / 34 passed. Two remaining 5000ms preparation timeouts; no timeout increased.',
+        evidenceBoundary: 'Tool-observed preparation run; not frozen CI and not an immutable raw-output receipt' },
+    ],
     scopedReviews: history[0].exactArtifact.scopedReviews,
     provenance: task.provenance, overlappingSourceChanges: task.overlappingSourceChanges,
     commands: receipts, stoppedAt,

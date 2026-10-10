@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { assertSameEvidence, buildSync, buildFinalSync, historicalCarrierSha, validateFinalBinding, coveragePath, renderReport, reportPath, sha256, syncPath,
   buildContinuationBinding, validateContinuationBinding, buildContinuationReviews, validateContinuationReviews,
-  validateContinuationReceipt, type ContinuationReceipt } from '../phase3-e08-b11-coverage-sync';
+  validateContinuationReceipt, validateContinuationReceiptReference, type ContinuationReceipt } from '../phase3-e08-b11-coverage-sync';
 
 const root = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 let expected: Awaited<ReturnType<typeof buildSync>>;
@@ -118,6 +118,14 @@ describe('final source coverage is separate from immutable history', () => {
     const bad = JSON.parse(original.toString('utf8'));
     bad.candidateLocalRouting.after.new++;
     expect(() => assertSameEvidence(bad, expected.sync)).toThrow();
+  });
+  it('rejects replaying a historical packet as a current receipt reference even with its correct hash', () => {
+    const task = JSON.parse(readFileSync(resolve(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
+    const commit = '11c1985dc4c72151bbf16298292bf4b7fa29fcab';
+    const path = 'artifacts/phase3-e08-b11-final-combination-evidence.json';
+    const bytes = execFileSync('git', ['show', `${commit}:${path}`], { cwd: root });
+    const blob = execFileSync('git', ['rev-parse', `${commit}:${path}`], { cwd: root, encoding: 'utf8' }).trim();
+    expect(() => validateContinuationReceiptReference(root, { commit, path, blob, sha256: sha256(bytes) }, [], task.finalBinding)).toThrow();
   });
   it('binds the full final source, compiler, unchanged counts and exact scan locations', async () => {
     const result = finalSnapshot;

@@ -5,6 +5,7 @@ import { isDeepStrictEqual } from 'node:util';
 import { authorizationSha, finalSourcePaths, implementationBaseSha, mainSha, repairPaths, sha256, validateFinalBinding,
   buildContinuationBinding, validateContinuationBinding, continuationPaths, continuationTaskId,
   buildContinuationReviews, validateContinuationReviews, validateContinuationReceipt, type ContinuationReceipt } from './phase3-e08-b11-coverage-sync';
+import { validateContinuationReceiptReference, type ReceiptReference } from './phase3-e08-b11-coverage-sync';
 import { ancestor, array, cliError, commitExists, fields, git, InputError, inputFile, json, object, output, parseArgs, parseReference, readReference, safePath, sha, string, type Issue } from './phase3-tooling-common';
 
 const b11Task = 'P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY';
@@ -273,11 +274,12 @@ export function buildContinuationTaskCheck(root: string, sourceSha: string) {
   // The exact blocked v2 carrier pins all forty original provenance rows. Do not re-authorize them.
   const historical = JSON.parse(git(root, ['show', '11c1985dc4c72151bbf16298292bf4b7fa29fcab:scripts/fixtures/phase3-b11-task-check.json']).toString('utf8')) as ReturnType<typeof buildFinalTaskCheck>;
   return { ...historical, schemaVersion: 'fd-p3-task-check-v3', taskId: continuationTaskId,
-    candidateSha: sourceSha, checks: historical.checks.map(check => ({ ...check, testedSha: sourceSha })),
+    candidateSha: sourceSha, checks: historical.checks.map(check => ({ id: check.id, command: check.command, sourceSha, state: 'PENDING_FINAL_RA_RB' })),
     finalBinding: buildContinuationBinding(root, sourceSha),
     repairReservation: { ...historical.repairReservation, branch: 'codex/a-p3-e08-b11-evidence-contract-continuation', paths: continuationPaths },
     execution: { schemaVersion: 'fd-p3-continuation-execution-v1', carryingSha: 'RESOLVE_FROM_GIT_HANDOFF_NOT_SELF_REFERENTIAL',
-      receipts: [] as ContinuationReceipt[], reviews: buildContinuationReviews(root), finalReviewState: 'PENDING_FINAL_RA_RB' },
+      receipts: [] as ContinuationReceipt[], receiptReference: null as ReceiptReference | null,
+      reviews: buildContinuationReviews(root), finalReviewState: 'PENDING_FINAL_RA_RB' },
   };
 }
 
@@ -287,9 +289,10 @@ export function validateContinuationTaskCheck(root: string, input: Record<string
   fields(object(input.execution, 'execution'), Object.keys(expected.execution), 'continuation execution');
   const receipts = array(input.execution.receipts, 'execution.receipts') as ContinuationReceipt[];
   // Only executed receipts vary. Authorizations, history, scopes and pending acceptance are reconstructed from Git.
-  assertFinalTaskCheck({ ...input, execution: { ...input.execution, receipts: [] } }, expected);
+  assertFinalTaskCheck({ ...input, execution: { ...input.execution, receipts: [], receiptReference: null } }, expected);
   validateContinuationReviews(root, input.execution.reviews);
   for (const receipt of receipts) validateContinuationReceipt(root, receipt, input.finalBinding);
+  validateContinuationReceiptReference(root, input.execution.receiptReference, receipts, input.finalBinding);
   return expected;
 }
 
@@ -299,6 +302,7 @@ function runContinuationPreflight(root: string, input: Record<string, any>, cand
   if (candidate !== input.candidateSha || base !== mainSha) throw new InputError('Continuation CLI SHA mismatch');
   validateContinuationBinding(root, input.finalBinding);
   const issues: Issue[] = [];
+  if (receipts.length && input.execution.receiptReference === null) issues.push({ code: 'UNSEALED_EXECUTION_RECEIPTS', path: 'execution.receiptReference', message: 'Bind the recorded packet commit/path/blob/hash before carrier handoff; no acceptance inferred' });
   for (const row of expected.provenance) issues.push({ code: row.role === 'B' ? 'ORIGINAL_AUTHORIZATION_UNPROVEN' : 'PATH_SCOPE_REVIEW_PENDING', path: row.path, message: row.authorizationState });
   for (const row of expected.overlappingSourceChanges) issues.push({ code: 'OVERLAPPING_SOURCE_REVIEW_PENDING', path: row.path, message: row.authorizationState });
   for (const check of expected.checks) {
