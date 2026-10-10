@@ -2,6 +2,16 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch42 records PR474 technical FAILED on2026-10-10:four malformed compiled
+nonempty envelope arrays are normalized to empty and enable full rewards.
+Own4/4 expected checks PASS;reused PR472 probe7/7 confirms inherited defect.
+Focused138/138 PASS;full1163 PASS/10 FAIL;exact-base14 PASS/10 FAIL matches10.
+Strict evidence FAIL only31 absent images. Disk-full install recovered in new
+isolated worktrees;no deletion. Evidence branch continues from3310fe2c.
+PR473 is not in colleague inventory;limited9/9 check is not counted.
+Cumulative53/534,15 PASS,38 FAILED,481 pending. See batch42 and
+2026-10-10-pr-474-review.md. Zero credit/authority;goal active,incomplete.
+
 Batch41 records PR472 technical FAILED on2026-10-10:legal immediate-play
 nested response and generic-choice pauses cannot restore;completed continuation
 restores. Independent7/7 expected checks PASS;prior transaction/orphan/root/

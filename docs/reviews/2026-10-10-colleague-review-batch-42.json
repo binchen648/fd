@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 474,
+    "headSha": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+    "baseSha": "f2029ede09c7dbe61119836c4c349fce3753d8fb",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "FAILED",
+    "scope": "STHENO_FULL_REWARD_EACH_READINESS_CAPABILITY_TECHNICAL_REVIEW",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [{
+      "priority": "P2",
+      "path": "packages/rules/src/ability/combat-reward-distribution.ts",
+      "line": 15,
+      "summary": "Malformed nonempty compiled activation/lifecycle/limit/visibility arrays masquerade as empty records and enable full reward distribution.",
+      "introducedRelativeToBase": true
+    }],
+    "evidence": [
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-474-independent.mjs",
+        "targetSha": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+        "result": "4/4 expected checks PASS:full component/scoring controls,negative provider controls,raw scope/host-op rejection,four malformed compiled envelope cases accepted",
+        "artifactIdentity": "docs/reviews/probes/review-474-independent.mjs"
+      },
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-472-independent.mjs",
+        "targetSha": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+        "result": "7/7 expected checks PASS on this target;inherited nested legal pause restore defect persists;strict generated discrepancy isolated31 images",
+        "artifactIdentity": "docs/reviews/probes/review-472-independent.mjs"
+      },
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts packages/rules/tests/core/combat-resolver.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+        "targetSha": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+        "result": "5 files/138 tests PASS;full-reward7/7;independently rerun exact final SHA",
+        "artifactIdentity": "pr474-independent-focused"
+      },
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci -- --maxWorkers=2",
+        "targetSha": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+        "result": "159 files/1173 tests:1163 PASS/10 FAIL,no timeouts;all10 classes reproduced at exact base;not green CI",
+        "artifactIdentity": "pr474-independent-full-ci"
+      },
+      {
+        "kind": "BASELINE_TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/astolfo-s1-consumer-migration.test.ts packages/rules/tests/m50-02-opponent-close-one-non-residual.test.ts packages/rules/tests/seven-servant-decks.test.ts packages/rules/tests/regression/golden-card-content-pipeline.test.ts packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts --maxWorkers=2",
+        "targetSha": "f2029ede09c7dbe61119836c4c349fce3753d8fb",
+        "result": "5 files/24 tests:14 PASS/10 FAIL;matches current full failure classes;not full base CI",
+        "artifactIdentity": "pr474-exact-base-comparison"
+      },
+      {
+        "kind": "STATIC_AND_BUILD",
+        "producer": "Codex Automation Review Owner",
+        "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; git diff --exit-code 64409069f0ee62db21443f61faaf62df136c8cb8 <candidate>; gh pr view 474 --repo binchen648/fd --json headRefOid,baseRefOid,state; gh api repos/binchen648/fd/issues/474/comments --paginate; git fetch origin main",
+        "targetSha": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+        "result": "Typecheck/content/diff/tree equivalence PASS;authoring empty;strict evidence FAIL isolated31 images;live bindings unchanged;historical acceptance separate producer",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-474-review.md"
+      }
+    ],
+    "limitations": [
+      "Compiled trusted-fixture mutation admission defect,not established raw-loader or external client exploit;valid reward formula passes.",
+      "PR473 outside colleague inventory,limited check not counted;initial disk-full install recovered on another volume without deletion.",
+      "External locked Reference/CHM/full base CI unverified;no formal acceptance,credit,repair,GitHub verdict,Planner mutation,Gate,promotion or merge."
+    ]
+  }]
+}
