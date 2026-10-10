@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent evidence review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 443,
+    "headSha": "855ae96f509f9a9dccb243b3d276f4ccf1d67288",
+    "baseSha": "8842186ca3653775d35dd07eff1965606532da66",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "PASS",
+    "scope": "HISTORICAL_FB2_49_BLOCKER_REPORT_AND_TASK_STATUS",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [],
+    "evidence": [
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "node docs/reviews/probes/review-443-independent.mjs --github",
+        "targetSha": "855ae96f509f9a9dccb243b3d276f4ccf1d67288",
+        "result": "5/5 PASS exit0:exact lineage/docs-only scope,missing source prerequisite/pre-mutation guard,dispatch stop/status boundaries,111/944 material recount,exact historical reviewer attribution",
+        "artifactIdentity": "docs/reviews/probes/review-443-independent.mjs" },
+      { "kind": "STATIC_AND_BUILD", "producer": "Codex Automation Review Owner",
+        "command": "gh pr view 443 --repo binchen648/fd --json headRefOid,baseRefOid,state; git fetch origin main; git rev-parse origin/main; git show <base>:docs/agents/PHASE3-AGENT-CONTRACT.md",
+        "targetSha": "855ae96f509f9a9dccb243b3d276f4ccf1d67288",
+        "result": "Live OPEN/exact head/base and current main unchanged;role boundaries reviewed. No runtime CI required for two-document blocker-only change",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-443-review.md" }
+    ],
+    "limitations": [
+      "PASS is historical blocker-report disposition only,not FB2-49 runtime acceptance or present-main blocker diagnosis.",
+      "Source guard statically checked;source runtime tests not rerun. Historical reviewer evidence remains attributed.",
+      "Formal111 accounting and historical local preservation/restoration are not independently re-established.",
+      "No external Reference/source image verification,Planner authorization,GitHub publication,Gate C,promotion,merge or credit."
+    ]
+  }]
+}
