@@ -58,6 +58,11 @@
     }
   },
   "expectationReview": {
-    "state": "PENDING"
+    "state": "ACCEPTED",
+    "artifact": {
+      "commit": "f2da26c56cc8c5e2b8ffe35d9802051a2e3d7540",
+      "path": "docs/reviews/phase3/P3-E08-B11-fixture-premise-be7dd6b-review.json",
+      "sha256": "745AFE7E74EE7C970341FAE29F79678E33273A696FE04B81C263978892AD804B"
+    }
   }
 }

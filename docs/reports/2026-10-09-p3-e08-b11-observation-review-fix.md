@@ -1,5 +1,7 @@
 # B11 Observation Review Fix
 
+Historical reviewed snapshot: `be7dd6b4da6b377daf019b6170efc112c2d7a45e`. Verify the original input/receipt hashes below from that commit, not the moving HEAD paths. Subsequent exact review binding and execution are recorded in `2026-10-10-p3-e08-b11-premise-review-sync.md`.
+
 Control Epoch: `FD-P3-2026-09-23-08`
 Task: `P3-E08-B11-CONTRACT-PARITY`, scoped A tooling / owner-mapping repair.
 Claimed status: `AUTOMATION_BASELINE_CANDIDATE`. Readiness remains FAIL; the new premise requires independent review.

@@ -2,9 +2,9 @@
   "schemaVersion": "fd-p3-contract-parity-result-v1",
   "taskId": "P3-E08-B11-CONTRACT-PARITY",
   "controlEpoch": "FD-P3-2026-09-23-08",
-  "status": "FAIL",
+  "status": "PASS",
   "testedCandidateSha": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
-  "inputSha256": "CF307202E26222774344F4CA75B7208FFE16020C0097390E30A2D84A346D1AB8",
+  "inputSha256": "1F97E1B7BC4FFAC180016C2B2361F8406A7550FB0A276BABCE9CF7F311127643",
   "premiseSha256": "CF2A50939F709D71ECFC29D29AFB626F1BFCFDED787DD49A027E160787C2DB81",
   "fixtureBinding": {
     "commit": "7a9699efcca8e16467cd973a7c7dd522e5a230a9",
@@ -684,13 +684,7 @@
       }
     }
   ],
-  "issues": [
-    {
-      "code": "EXPECTATIONS_NOT_INDEPENDENTLY_REVIEWED",
-      "path": "expectationReview",
-      "message": "Agreement is not an acceptance premise"
-    }
-  ],
+  "issues": [],
   "acceptanceGranted": false,
   "effectCorrectnessVerified": false,
   "fallbackClosureVerified": false,
