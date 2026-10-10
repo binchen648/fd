@@ -1,4 +1,5 @@
 import { resolve } from 'node:path';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { isDeepStrictEqual } from 'node:util';
 import { authorizationSha, finalSourcePaths, implementationBaseSha, mainSha, repairPaths, sha256, validateFinalBinding } from './phase3-e08-b11-coverage-sync';
@@ -177,6 +178,28 @@ function exactReference(root: string, commit: string, path: string, section?: st
   return { commit, path, sha256: sha256(bytes), ...(section ? { section } : {}) };
 }
 
+function batchReferences(root: string, refs: Array<{ commit: string; path: string }>) {
+  const output = requireGitBatch(root, refs.map(ref => `${ref.commit}:${ref.path}`));
+  let offset = 0;
+  const result = refs.map(ref => {
+    const newline = output.indexOf(10, offset);
+    const header = output.subarray(offset, newline).toString('utf8');
+    const match = /^[0-9a-f]{40} blob (\d+)$/.exec(header);
+    if (newline < 0 || !match) throw new InputError(`Missing provenance Git blob: ${ref.commit}:${ref.path}`);
+    const end = newline + 1 + Number(match[1]);
+    if (output[end] !== 10) throw new InputError('Truncated provenance Git blob');
+    const bytes = output.subarray(newline + 1, end); offset = end + 1;
+    return { ...ref, sha256: sha256(bytes) };
+  });
+  if (offset !== output.length) throw new InputError('Unexpected extra provenance Git bytes');
+  return result;
+}
+
+function requireGitBatch(root: string, refs: string[]) {
+  return execFileSync('git', ['cat-file', '--batch'], { cwd: root, input: `${refs.join('\n')}\n`,
+    maxBuffer: 32 * 1024 * 1024, stdio: ['pipe', 'pipe', 'pipe'] });
+}
+
 export function buildFinalTaskCheck(root: string, sourceSha: string) {
   sha(sourceSha, 'final source SHA');
   const historicalBytes = git(root, ['show', `${implementationBaseSha}:${historicalTaskPath}`]);
@@ -187,18 +210,35 @@ export function buildFinalTaskCheck(root: string, sourceSha: string) {
   const authorization = exactReference(root, authorizationSha, 'docs/agents/P3-E08-B11-FINAL-EVIDENCE-REPAIR-AUTHORIZATION.md', '## Authorized Write Paths');
   const toolingAuthorization = exactReference(root, originalContract, originalContractPath, '## Implementation And Handoff');
   const roleAuthorization = exactReference(root, mainSha, 'docs/agents/PHASE3-AGENT-CONTRACT.md', '## Slice And Pull Request Boundary');
-  const provenance = unregistered.map(path => {
-    const introducingSha = git(root, ['log', '--reverse', '--format=%H', `${mainSha}..${implementationBaseSha}`, '--', path]).toString('utf8').trim().split('\n')[0];
-    if (!/^[0-9a-f]{40}$/.test(introducingSha)) throw new InputError(`Missing introducing delta: ${path}`);
-    const introducingBase = git(root, ['rev-parse', `${introducingSha}^`]).toString('utf8').trim();
-    if (!changedPaths(root, introducingBase, introducingSha).includes(path)) throw new InputError(`Introducing delta mismatch: ${path}`);
+  const introductions = new Map<string, { introducingSha: string; introducingBase: string }>();
+  const history = git(root, ['log', '--reverse', '--full-history', '--no-merges', '--format=__P3_COMMIT__ %H %P', '--name-only',
+    `${mainSha}..${implementationBaseSha}`, '--', ...unregistered]).toString('utf8').split('\n');
+  let current: { introducingSha: string; introducingBase: string } | undefined;
+  for (const line of history) {
+    const match = /^__P3_COMMIT__ ([0-9a-f]{40}) ([0-9a-f]{40})$/.exec(line);
+    if (line.startsWith('__P3_COMMIT__')) {
+      if (!match) throw new InputError('Invalid introducing commit/parent record');
+      current = { introducingSha: match[1], introducingBase: match[2] };
+    } else if (unregistered.includes(line) && !introductions.has(line)) {
+      if (!current) throw new InputError('Unbound introducing path');
+      introductions.set(line, current);
+    }
+  }
+  const introducingReferences = batchReferences(root, unregistered.map(path => {
+    const record = introductions.get(path);
+    if (!record) throw new InputError(`Missing introducing delta: ${path}`);
+    return { commit: record.introducingSha, path };
+  }));
+  const finalReferences = batchReferences(root, unregistered.map(path => ({ commit: implementationBaseSha, path })));
+  const provenance = unregistered.map((path, index) => {
+    const { introducingSha, introducingBase } = introductions.get(path)!;
     const role = path.startsWith('packages/rules/') || path.startsWith('docs/agents/manifests/') ? 'B' :
       path.startsWith('docs/reviews/') ? 'R' : 'A';
     // Original scope reference is not retroactive acceptance or proof of a user-only B dispatch.
     const originalAuthorization = role === 'A' ? toolingAuthorization : role === 'R' ? roleAuthorization : null;
     const authorizationState = role === 'B' ? 'UNPROVEN_USER_DISPATCH_NOT_GIT_BOUND' : 'ORIGINAL_ROLE_SCOPE_BOUND_PENDING_PATH_REVIEW';
-    return { path, introducingSha, introducingBase, introducingDelta: exactReference(root, introducingSha, path),
-      finalContent: exactReference(root, implementationBaseSha, path), role, originalAuthorization, authorizationState,
+    return { path, introducingSha, introducingBase, introducingDelta: introducingReferences[index],
+      finalContent: finalReferences[index], role, originalAuthorization, authorizationState,
       originalScope: role === 'A' ? 'Tooling files, package script entries, documented task-check fixtures, automation tests and evidence' :
         role === 'R' ? 'Immutable read-only role review artifact' : 'User dispatch claimed by B task record; independent original authorization required',
       acceptedScope: 'NOT_ACCEPTED_WHOLESALE', finalReviewState: 'PENDING_RA_RB_FINAL_COMBINATION' };

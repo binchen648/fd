@@ -25,7 +25,11 @@ export const repairPaths = [
   'artifacts/phase3-e08-b11-final-combination-evidence.json',
   'docs/reports/2026-10-10-p3-e08-b11-final-combination-evidence.md',
 ];
-export const finalSourcePaths = [...sourcePaths, ...repairPaths.filter(path => path.endsWith('.ts'))];
+export const finalSourcePaths = [...sourcePaths, ...repairPaths.filter(path => path.endsWith('.ts')),
+  'apps/server/src', 'apps/client/src', 'packages/rules/tests', 'e2e',
+  'scripts/phase3-tooling-common.ts', 'scripts/phase3-b11-diagnostic-api.ts',
+  'scripts/phase3-contract-parity.ts', 'scripts/phase3-contract-parity-worker.ts',
+  'package.json', 'package-lock.json', 'playwright.config.ts', '.github/workflows/test.yml'];
 
 export function sha256(value: string | Buffer): string {
   return createHash('sha256').update(value).digest('hex').toUpperCase();
@@ -227,8 +231,10 @@ export function validateFinalBinding(root: string, binding: { sourceSha: string;
   for (const [index, path] of sourcePaths.entries()) {
     if (objects[index + finalSourcePaths.length * 2] !== binding.sourceObjects[path]) throw new Error(`Unreviewed runtime/classifier source: ${path}`);
   }
-  if (text(root, ['diff', 'HEAD', '--', ...finalSourcePaths])) throw new Error('Dirty final inputs');
-  if (text(root, ['ls-files', '--others', '--exclude-standard', '--', ...finalSourcePaths])) throw new Error('Untracked final inputs');
+  const evidenceOnly = [coveragePath, 'scripts/fixtures/phase3-b11-task-check.json', repairPaths[7], repairPaths[8]];
+  const checkedPaths = ['.', ...evidenceOnly.map(path => `:(exclude)${path}`)];
+  if (text(root, ['diff', 'HEAD', '--', ...checkedPaths])) throw new Error('Dirty final inputs');
+  if (text(root, ['ls-files', '--others', '--exclude-standard', '--', ...checkedPaths])) throw new Error('Untracked final inputs');
   return binding;
 }
 
@@ -244,6 +250,7 @@ export async function collectFinalPacket(root: string) {
   const testedSha = text(root, ['rev-parse', 'HEAD']);
   if (text(root, ['status', '--porcelain=v1', '--untracked-files=all'])) throw new Error('Freeze a clean combination before collecting evidence');
   const task = JSON.parse(readFileSync(resolve(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
+  const previous = JSON.parse(readFileSync(resolve(root, repairPaths[7]), 'utf8'));
   const { coverage, binding } = await buildFinalSync(root);
   assertSameEvidence(JSON.parse(readFileSync(resolve(root, coveragePath), 'utf8')), coverage);
   const commands = [
@@ -315,6 +322,10 @@ export async function collectFinalPacket(root: string) {
       priorTimeoutRpcFailures: 'RETAINED_HISTORICAL_NOT_REPRODUCED_ON_46dbd031',
       repairRedRun: 'Uncommitted authorized source edits rejected Dirty final inputs; 13 passed / 2 failed. No dirty bypass added.',
     },
+    previousAttempts: previous.schemaVersion === 'fd-p3-final-combination-evidence-v1' ?
+      [...(previous.previousAttempts ?? []), { testedSha: previous.frozenCombinationSha, sourceSha: previous.finalSourceSha,
+        artifactSha256: sha256(readFileSync(resolve(root, repairPaths[7]))), commands: previous.commands,
+        disposition: 'All assertions passed; unhandled onTaskUpdate RPC timeout made focused and CI exit 1. Original outputs retained; no timeout/waiver change.' }] : [],
     commands: results, remainingBlockers: currentIssues,
     releaseBlocker: 'SOURCE_ASSETS_REQUIRED_RESULT_RECORDED_SEPARATELY; NO_POLICY_REDEFINITION',
     review: { reviewerA: 'PENDING_FINAL_EXACT_SHA', reviewerB: 'PENDING_FINAL_EXACT_SHA', readiness: 'NOT_GRANTED',
