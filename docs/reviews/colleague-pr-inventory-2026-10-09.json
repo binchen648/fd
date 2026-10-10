@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 18,
-    "pending": 516,
+    "reviewed": 19,
+    "pending": 515,
     "blocked": 0,
     "notVerified": 0
   },
@@ -21123,11 +21123,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "FB2_52_MALFORMED_MARKER_CONTAINER_AND_TEMPORAL_COMPOSITION_GATES",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-08.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=1",
+            "targetSha": "59d930f9e5a0202e0d1b3d9358e0d35ca3a0d029",
+            "result": "2026-10-10 rerun exit0: 182 files / 1361 tests PASS. Original handle lost; no live candidate process was found before rerun. Partial original output not counted as PASS.",
+            "artifactIdentity": "2026-10-10-pr-428-full-ci"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/fb2-52-next-round-situation-benefit-suppression.test.ts packages/rules/tests/core/combat-resolver.test.ts packages/rules/tests/regression/fb2-game-start-rule-overrides.test.ts packages/rules/tests/fb2-51-opponent-round-vp-gain-threshold.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+            "targetSha": "59d930f9e5a0202e0d1b3d9358e0d35ca3a0d029",
+            "result": "5 files / 69 tests PASS",
+            "artifactIdentity": "2026-10-09-pr-428-focused-integration"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-428-independent.mjs",
+            "targetSha": "59d930f9e5a0202e0d1b3d9358e0d35ca3a0d029",
+            "result": "Exit1 on initial and 2026-10-10 rerun: two positive controls PASS; six checks FAIL, five invalid container cases and one consecutive-round overwrite",
+            "artifactIdentity": "docs/reviews/probes/review-428-independent.mjs"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0

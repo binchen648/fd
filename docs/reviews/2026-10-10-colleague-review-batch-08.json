@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [
+    {
+      "pr": 428,
+      "headSha": "59d930f9e5a0202e0d1b3d9358e0d35ca3a0d029",
+      "baseSha": "94f788bccaeb519334cb8ecfd6ed5023660d0997",
+      "producer": "Codex Automation Review Owner",
+      "verdict": "FAILED",
+      "scope": "FB2_52_MALFORMED_MARKER_CONTAINER_AND_TEMPORAL_COMPOSITION_GATES",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [
+        {
+          "priority": "P2",
+          "path": "packages/rules/src/ability/next-round-situation-benefit-suppression.ts",
+          "line": 157,
+          "summary": "Invalid marker-map containers are silently normalized into valid state and activation commits instead of transactional rejection.",
+          "introducedRelativeToBase": true
+        },
+        {
+          "priority": "P2",
+          "path": "packages/rules/src/ability/next-round-situation-benefit-suppression.ts",
+          "line": 164,
+          "summary": "A consecutive accepted generic activation replaces round2's current suppression with round3 and immediately restores situation mana in round2; formal once-per-game Ciel replay is not established.",
+          "introducedRelativeToBase": true
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npm run test:ci -- --maxWorkers=1",
+          "targetSha": "59d930f9e5a0202e0d1b3d9358e0d35ca3a0d029",
+          "result": "2026-10-10 rerun exit0: 182 files / 1361 tests PASS. Original handle lost; no live candidate process was found before rerun. Partial original output not counted as PASS.",
+          "artifactIdentity": "2026-10-10-pr-428-full-ci"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/fb2-52-next-round-situation-benefit-suppression.test.ts packages/rules/tests/core/combat-resolver.test.ts packages/rules/tests/regression/fb2-game-start-rule-overrides.test.ts packages/rules/tests/fb2-51-opponent-round-vp-gain-threshold.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+          "targetSha": "59d930f9e5a0202e0d1b3d9358e0d35ca3a0d029",
+          "result": "5 files / 69 tests PASS",
+          "artifactIdentity": "2026-10-09-pr-428-focused-integration"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-428-independent.mjs",
+          "targetSha": "59d930f9e5a0202e0d1b3d9358e0d35ca3a0d029",
+          "result": "Exit1 on initial and 2026-10-10 rerun: two positive controls PASS; six checks FAIL, five invalid container cases and one consecutive-round overwrite",
+          "artifactIdentity": "docs/reviews/probes/review-428-independent.mjs"
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Codex Automation Review Owner",
+          "command": "gh pr view 428 --repo binchen648/fd --json headRefOid,baseRefOid,state; git diff 94f788bccaeb519334cb8ecfd6ed5023660d0997 59d930f9e5a0202e0d1b3d9358e0d35ca3a0d029; npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check 94f788bccaeb519334cb8ecfd6ed5023660d0997 59d930f9e5a0202e0d1b3d9358e0d35ca3a0d029",
+          "targetSha": "59d930f9e5a0202e0d1b3d9358e0d35ca3a0d029",
+          "result": "Exact live bindings rechecked 2026-10-10; complete nine-path diff and base dispatch read; typecheck/content/determinism/diff PASS",
+          "artifactIdentity": "docs/reviews/2026-10-09-pr-428-review.md"
+        }
+      ],
+      "limitations": [
+        "Temporal finding is accepted generic envelope/API composition, not proof that formal once-per-game Ciel may repeat in gameplay.",
+        "Marker robustness tests use trusted in-memory state; no client or snapshot-forgery exploit is established.",
+        "No actual external Reference verification, coverage/audit regeneration, client/browser verification, Gate C, current-main runtime execution or recount.",
+        "Historical acceptance and inherited findings are not administratively revoked or cleared.",
+        "No runtime acceptance, promotion or credit granted."
+      ]
+    }
+  ]
+}

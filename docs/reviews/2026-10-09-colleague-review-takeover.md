@@ -100,6 +100,16 @@ passed 6/6, including stale SHA, missing producer, duplicate/unknown PR and cred
 
 ## Next Work
 
+Batch08 finalizes PR428 FAILED on 2026-10-10: malformed marker containers
+are accepted, and a consecutive accepted generic activation overwrites an
+already-current suppression. The latter is not proof of formal once-per-game
+Ciel replay. Focused 69/69 and full CI 182/1361 PASS; independent probe has
+two controls PASS and six checks FAIL. Original CI handle was lost; no live
+candidate process existed before the successful rerun. Live exact bindings and
+main remain unchanged, contributor search total remains534/incomplete=false.
+Cumulative: 19/534, 9 PASS, 10 FAILED, 515 pending. See batch08 and
+2026-10-09-pr-428-review.md. All-PR completion remains unproven.
+
 Batch07 adds PR427 FAILED: nested malformed array entries throw native TypeError
 at the new raw classifier/loader boundary. Independent six positive controls
 PASS and six malformed checks FAIL. Focused 68/68 and full CI 181/1353 PASS;
