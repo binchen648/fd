@@ -2,6 +2,15 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch37 records PR468 technical FAILED on2026-10-10:actual Skadi consumers
+expose inherited zero-hand shuffle and immune sole-opponent defeat discovery
+mismatches. Independent6/6 expected checks PASS;focused175/175 PASS.
+Full1090 PASS/10 FAIL;exact-base14 PASS/10 FAIL matches all10.
+Strict evidence FAIL only31 absent external images. Historical acceptance
+retained as separate producer;no credit or formal authority transferred.
+Cumulative48/534,15 PASS,33 FAILED,486 pending. See batch37 and
+2026-10-10-pr-468-review.md. All-PR goal remains active,incomplete.
+
 Batch36 records PR467 bounded technical PASS on2026-10-10:Raido selector
 revision closure and typed movement independently verified;no new scope blocker.
 Final6/6 probe checks PASS;initial shared-map fixture pollution disclosed.

@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [
+    {
+      "pr": 468,
+      "headSha": "7a0e4c4087a01f1c37f4676dc1e62e69d8423e15",
+      "baseSha": "bc4304ebbde331af6e2d00c4d33a1fedde6fbf79",
+      "producer": "Codex Automation Review Owner",
+      "verdict": "FAILED",
+      "scope": "SKADI_OWNER_COMPLETE_MIGRATION_TECHNICAL_REVIEW",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [
+        {
+          "priority": "P2",
+          "path": "data/authoring/servants/servant.skadi.json",
+          "line": 41,
+          "summary": "Actual wisdom-outpost newly consumes inherited shuffle discovery defect: zero-hand/nonempty-deck is advertised but exact-two execution rejects atomically.",
+          "introducedRelativeToBase": true
+        },
+        {
+          "priority": "P2",
+          "path": "data/authoring/servants/servant.skadi.json",
+          "line": 192,
+          "summary": "Actual cross-card Teiwaz newly consumes inherited defeat discovery defect: sole cloak-immune opponent advertised but execution rejects; paid arm and shared round use remain committed.",
+          "introducedRelativeToBase": true
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-468-independent.mjs",
+          "targetSha": "7a0e4c4087a01f1c37f4676dc1e62e69d8423e15",
+          "result": "6/6 expected checks PASS including two actual-consumer defects, private shuffle control, actual cloak, shared guard and terrain expiry",
+          "artifactIdentity": "docs/reviews/probes/review-468-independent.mjs"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/regression/p3-owner-skadi-complete-migration.test.ts packages/rules/tests/regression/p3-raido-movement-readiness-capability.test.ts packages/rules/tests/regression/p3-skadi-rune-castle-readiness-capability.test.ts packages/rules/tests/core/combat-resolver.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts --maxWorkers=1",
+          "targetSha": "7a0e4c4087a01f1c37f4676dc1e62e69d8423e15",
+          "result": "8 files/175 tests PASS;owner11/11 and guarded/legacy Raido6/6",
+          "artifactIdentity": "pr468-independent-focused"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npm run test:ci -- --maxWorkers=2",
+          "targetSha": "7a0e4c4087a01f1c37f4676dc1e62e69d8423e15",
+          "result": "153 files/1100 tests:1090 PASS/10 inherited FAIL,no timeouts;not green CI",
+          "artifactIdentity": "pr468-independent-full-ci"
+        },
+        {
+          "kind": "BASELINE_TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/astolfo-s1-consumer-migration.test.ts packages/rules/tests/m50-02-opponent-close-one-non-residual.test.ts packages/rules/tests/seven-servant-decks.test.ts packages/rules/tests/regression/golden-card-content-pipeline.test.ts packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts --maxWorkers=2",
+          "targetSha": "bc4304ebbde331af6e2d00c4d33a1fedde6fbf79",
+          "result": "5 files/24 tests:14 PASS/10 FAIL,same failures;not full baseline CI",
+          "artifactIdentity": "pr468-exact-base-comparison"
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Codex Automation Review Owner",
+          "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 468 --repo binchen648/fd --json headRefOid,baseRefOid,state; gh api repos/binchen648/fd/issues/468/comments --paginate; git fetch origin main",
+          "targetSha": "7a0e4c4087a01f1c37f4676dc1e62e69d8423e15",
+          "result": "Typecheck/content/diff PASS;strict evidence FAIL only31 inherited absent images isolated;live exact bindings unchanged;historical relays separately attributed",
+          "artifactIdentity": "docs/reviews/2026-10-10-pr-468-review.md"
+        }
+      ],
+      "limitations": [
+        "Runtime defects already present at base;new actual consumer exposure is the scope finding,not a newly introduced generic primitive regression.",
+        "Actual archives in controlled seven-player fixture,not production Skadi MatchSession gameplay;external locked Reference/CHM/images and full baseline CI unverified.",
+        "Historical acceptance not transferred;prior dependency findings remain;134->137 material eligibility is not credit.",
+        "No repair,formal runtime acceptance,GitHub verdict,Planner mutation,Gate,promotion or merge."
+      ]
+    }
+  ]
+}

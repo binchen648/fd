@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 47,
-    "pending": 487,
+    "reviewed": 48,
+    "pending": 486,
     "blocked": 0,
     "notVerified": 0
   },
@@ -24063,11 +24063,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "SKADI_OWNER_COMPLETE_MIGRATION_TECHNICAL_REVIEW",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-37.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-468-independent.mjs",
+            "targetSha": "7a0e4c4087a01f1c37f4676dc1e62e69d8423e15",
+            "result": "6/6 expected checks PASS including two actual-consumer defects, private shuffle control, actual cloak, shared guard and terrain expiry",
+            "artifactIdentity": "docs/reviews/probes/review-468-independent.mjs"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/regression/p3-owner-skadi-complete-migration.test.ts packages/rules/tests/regression/p3-raido-movement-readiness-capability.test.ts packages/rules/tests/regression/p3-skadi-rune-castle-readiness-capability.test.ts packages/rules/tests/core/combat-resolver.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts --maxWorkers=1",
+            "targetSha": "7a0e4c4087a01f1c37f4676dc1e62e69d8423e15",
+            "result": "8 files/175 tests PASS;owner11/11 and guarded/legacy Raido6/6",
+            "artifactIdentity": "pr468-independent-focused"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=2",
+            "targetSha": "7a0e4c4087a01f1c37f4676dc1e62e69d8423e15",
+            "result": "153 files/1100 tests:1090 PASS/10 inherited FAIL,no timeouts;not green CI",
+            "artifactIdentity": "pr468-independent-full-ci"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0
