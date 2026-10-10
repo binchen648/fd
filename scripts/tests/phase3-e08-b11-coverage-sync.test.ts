@@ -3,7 +3,9 @@ import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { beforeAll, describe, expect, it } from 'vitest';
-import { assertSameEvidence, buildSync, buildFinalSync, historicalCarrierSha, validateFinalBinding, coveragePath, renderReport, reportPath, sha256, syncPath } from '../phase3-e08-b11-coverage-sync';
+import { assertSameEvidence, buildSync, buildFinalSync, historicalCarrierSha, validateFinalBinding, coveragePath, renderReport, reportPath, sha256, syncPath,
+  buildContinuationBinding, validateContinuationBinding, buildContinuationReviews, validateContinuationReviews,
+  validateContinuationReceipt, type ContinuationReceipt } from '../phase3-e08-b11-coverage-sync';
 
 const root = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 let expected: Awaited<ReturnType<typeof buildSync>>;
@@ -62,6 +64,54 @@ describe('B11 exact candidate coverage synchronization', () => {
 });
 
 describe('final source coverage is separate from immutable history', () => {
+  it('admits only the pinned authorization continuation and exact concurrency delta', () => {
+    const task = JSON.parse(readFileSync(resolve(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
+    const binding = buildContinuationBinding(root, task.finalBinding.sourceSha);
+    expect(binding.authorizations).toHaveLength(3);
+    expect(binding.changedPaths.find(row => row.path === 'package.json')?.authorization.commit).toBe('08e2f8cbf99b69ff1220b9dc1e933ec08fe57158');
+    validateContinuationBinding(root, binding);
+    expect(() => validateFinalBinding(root, task.finalBinding)).toThrow();
+  });
+  it.each(['missing', 'forged', 'unknown-key', 'unauthorized-path', 'wrong-epoch'])('rejects %s continuation evidence', mode => {
+    const task = JSON.parse(readFileSync(resolve(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
+    const binding: any = structuredClone(task.finalBinding);
+    if (mode === 'missing') binding.authorizations.pop();
+    if (mode === 'forged') binding.authorizations[2].sha256 = '0'.repeat(64);
+    if (mode === 'unknown-key') binding.allowlist = ['**'];
+    if (mode === 'unauthorized-path') binding.changedPaths.push({ path: 'packages/rules/src/ability/interpreter.ts', authorization: binding.authorizations[2] });
+    if (mode === 'wrong-epoch') binding.controlEpoch = 'FD-P3-2026-09-23-04';
+    expect(() => validateContinuationBinding(root, binding)).toThrow();
+  });
+  it.each(['command', 'stdout', 'testedSha', 'unknown-key'])('rejects tampered %s receipt', mode => {
+    const task = JSON.parse(readFileSync(resolve(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
+    const binding = task.finalBinding;
+    const receipt: ContinuationReceipt = { command: 'npm run test:ci', testedSha: binding.sourceSha, sourceSha: binding.sourceSha,
+      startedAt: '2026-10-10T00:00:00.000Z', durationMs: 0, exitCode: 1, stdout: 'UNIT_TEST_RECEIPT_NOT_REAL_EXECUTION', stderr: '',
+      outputSha256: sha256('UNIT_TEST_RECEIPT_NOT_REAL_EXECUTION\n') };
+    validateContinuationReceipt(root, receipt, binding);
+    const bad: any = structuredClone(receipt);
+    if (mode === 'command') bad.command += ' --testTimeout=15000';
+    if (mode === 'stdout') bad.stdout = 'changed';
+    if (mode === 'testedSha') bad.testedSha = historicalCarrierSha;
+    if (mode === 'unknown-key') bad.accepted = true;
+    expect(() => validateContinuationReceipt(root, bad, binding)).toThrow();
+  });
+  it.each(['scope', 'hash', 'reviewedSha', 'acceptance'])('rejects mismatched historical review %s without inheriting acceptance', mode => {
+    const reviews = buildContinuationReviews(root);
+    validateContinuationReviews(root, reviews);
+    const bad: any = structuredClone(reviews);
+    if (mode === 'scope') bad[0].scope = 'FULL_RUNTIME_ACCEPTANCE';
+    if (mode === 'hash') bad[0].sha256 = '0'.repeat(64);
+    if (mode === 'reviewedSha') bad[0].reviewedSha = historicalCarrierSha;
+    if (mode === 'acceptance') bad[0].inheritedFinalAcceptance = true;
+    expect(() => validateContinuationReviews(root, bad)).toThrow();
+  });
+  it('rejects historical snapshot drift independently of current continuation', () => {
+    const original = historicalBytes(syncPath);
+    const bad = JSON.parse(original.toString('utf8'));
+    bad.candidateLocalRouting.after.new++;
+    expect(() => assertSameEvidence(bad, expected.sync)).toThrow();
+  });
   it('binds the full final source, compiler, unchanged counts and exact scan locations', async () => {
     const result = await buildFinalSync(root);
     const current = JSON.parse(readFileSync(resolve(root, coveragePath), 'utf8'));

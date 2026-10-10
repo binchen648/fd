@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { assertFinalTaskCheck, buildFinalTaskCheck, runPreflight } from '../phase3-preflight';
+import { assertFinalTaskCheck, buildFinalTaskCheck, buildContinuationTaskCheck, runPreflight } from '../phase3-preflight';
 import { git, gitText, hash, InputError } from '../phase3-tooling-common';
 import { publicationSha, reference } from '../phase3-b11-tooling-inputs';
 
@@ -70,6 +70,25 @@ describe('readiness preflight, independent from promotion policy', () => {
       if (row.role === 'B') expect(row.originalAuthorization).toBeNull();
     }
     assertFinalTaskCheck(finalTask, structuredClone(finalTask));
+  });
+  it('keeps exact current continuation observations separate from missing original authority and final review', () => {
+    const task = JSON.parse(readFileSync(join(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
+    const result = runPreflight(root, task, task.candidateSha, task.baseSha, hash(JSON.stringify(task)));
+    expect(result.status).toBe('FAIL');
+    expect(result.issues.filter(issue => issue.code === 'ORIGINAL_AUTHORIZATION_UNPROVEN')).toHaveLength(7);
+    expect(result.issues.some(issue => issue.code === 'FINAL_RA_RB_REVIEW_PENDING')).toBe(true);
+    expect(result.issues.some(issue => issue.code === 'UNCOVERED_CHANGED_PATH')).toBe(false);
+    expect(result.acceptanceGranted).toBe(false);
+  });
+  it.each(['schema', 'receipt', 'history', 'scope', 'pending'])('fails closed for invalid current %s inputs', mode => {
+    const task = JSON.parse(readFileSync(join(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
+    const bad: any = buildContinuationTaskCheck(root, task.finalBinding.sourceSha);
+    if (mode === 'schema') bad.schemaVersion = 'fd-p3-task-check-v999';
+    if (mode === 'receipt') bad.execution.receipts = [{ command: 'npm run test:ci', exitCode: 0, trusted: true }];
+    if (mode === 'history') bad.historicalInputSha256 = '0'.repeat(64);
+    if (mode === 'scope') bad.execution.reviews[0].scope = 'FINAL_ACCEPTANCE';
+    if (mode === 'pending') bad.execution.finalReviewState = 'PASS';
+    expect(() => runPreflight(root, bad, bad.candidateSha, bad.baseSha, hash(JSON.stringify(bad)))).toThrow();
   });
   it('rejects altered introducing SHA, hashes, original authority, scope, checks and credit', () => {
     for (const mutate of [

@@ -7,7 +7,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { describe, expect, it } from 'vitest';
 import { buildCoverageFromArchives, loadAuthoringArchives } from '../phase3-coverage';
-import { validateFinalBinding } from '../phase3-e08-b11-coverage-sync';
+import { validateFinalBinding, validateContinuationBinding } from '../phase3-e08-b11-coverage-sync';
 
 const root = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 const recountPath = resolve(root, 'artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json');
@@ -104,7 +104,8 @@ describe('P3-E06 post-merge setup/create-to-skill recount', () => {
 
   it('recalculates coverage and binds current main without rewriting historical failures or credit', async () => {
     const task = JSON.parse(readFileSync(resolve(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
-    validateFinalBinding(root, task.finalBinding);
+    if (task.schemaVersion === 'fd-p3-task-check-v3') validateContinuationBinding(root, task.finalBinding);
+    else validateFinalBinding(root, task.finalBinding);
     const recount = JSON.parse(readFileSync(recountPath, 'utf8')) as any;
     const coverage = JSON.parse(readFileSync(coveragePath, 'utf8')) as any;
     const fresh = buildCoverageFromArchives(loadAuthoringArchives(root), {

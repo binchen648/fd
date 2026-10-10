@@ -2,7 +2,9 @@ import { resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { isDeepStrictEqual } from 'node:util';
-import { authorizationSha, finalSourcePaths, implementationBaseSha, mainSha, repairPaths, sha256, validateFinalBinding } from './phase3-e08-b11-coverage-sync';
+import { authorizationSha, finalSourcePaths, implementationBaseSha, mainSha, repairPaths, sha256, validateFinalBinding,
+  buildContinuationBinding, validateContinuationBinding, continuationPaths, continuationTaskId,
+  buildContinuationReviews, validateContinuationReviews, validateContinuationReceipt, type ContinuationReceipt } from './phase3-e08-b11-coverage-sync';
 import { ancestor, array, cliError, commitExists, fields, git, InputError, inputFile, json, object, output, parseArgs, parseReference, readReference, safePath, sha, string, type Issue } from './phase3-tooling-common';
 
 const b11Task = 'P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY';
@@ -68,6 +70,7 @@ export function runPreflight(root: string, raw: unknown, candidate: string, base
   reviewReadyChanged: boolean; promotionPolicyChanged: boolean; [key: string]: any;
 } {
   const input = object(raw, 'task check');
+  if (input.schemaVersion === 'fd-p3-task-check-v3') return runContinuationPreflight(root, input, candidate, base, inputSha256);
   if (input.schemaVersion === 'fd-p3-task-check-v2') return runFinalPreflight(root, input, candidate, base, inputSha256);
   fields(input, ['schemaVersion', 'taskId', 'controlEpoch', 'baseSha', 'candidateSha', 'contract', 'segments', 'checks'], 'task check');
   if (input.schemaVersion !== 'fd-p3-task-check-v1') throw new InputError('Unsupported task-check schema');
@@ -264,6 +267,47 @@ export function buildFinalTaskCheck(root: string, sourceSha: string) {
 
 export function assertFinalTaskCheck(actual: unknown, expected: ReturnType<typeof buildFinalTaskCheck>) {
   if (!isDeepStrictEqual(actual, expected)) throw new InputError('Final provenance evidence mismatch');
+}
+
+export function buildContinuationTaskCheck(root: string, sourceSha: string) {
+  const historical = buildFinalTaskCheck(root, sourceSha);
+  return { ...historical, schemaVersion: 'fd-p3-task-check-v3', taskId: continuationTaskId,
+    finalBinding: buildContinuationBinding(root, sourceSha),
+    repairReservation: { ...historical.repairReservation, branch: 'codex/a-p3-e08-b11-evidence-contract-continuation', paths: continuationPaths },
+    execution: { schemaVersion: 'fd-p3-continuation-execution-v1', carryingSha: 'RESOLVE_FROM_GIT_HANDOFF_NOT_SELF_REFERENTIAL',
+      receipts: [] as ContinuationReceipt[], reviews: buildContinuationReviews(root), finalReviewState: 'PENDING_FINAL_RA_RB' },
+  };
+}
+
+function runContinuationPreflight(root: string, input: Record<string, any>, candidate: string, base: string, inputSha256: string) {
+  const expected = buildContinuationTaskCheck(root, input.finalBinding?.sourceSha);
+  fields(input, Object.keys(expected), 'continuation task check');
+  fields(object(input.execution, 'execution'), Object.keys(expected.execution), 'continuation execution');
+  const receipts = array(input.execution.receipts, 'execution.receipts') as ContinuationReceipt[];
+  // Only executed receipts vary. Authorizations, history, scopes and pending acceptance are reconstructed from Git.
+  assertFinalTaskCheck({ ...input, execution: { ...input.execution, receipts: [] } }, expected);
+  if (candidate !== input.candidateSha || base !== mainSha) throw new InputError('Continuation CLI SHA mismatch');
+  validateContinuationBinding(root, input.finalBinding);
+  validateContinuationReviews(root, input.execution.reviews);
+  for (const receipt of receipts) validateContinuationReceipt(root, receipt, input.finalBinding);
+  const issues: Issue[] = [];
+  for (const row of expected.provenance) issues.push({ code: row.role === 'B' ? 'ORIGINAL_AUTHORIZATION_UNPROVEN' : 'PATH_SCOPE_REVIEW_PENDING', path: row.path, message: row.authorizationState });
+  for (const row of expected.overlappingSourceChanges) issues.push({ code: 'OVERLAPPING_SOURCE_REVIEW_PENDING', path: row.path, message: row.authorizationState });
+  for (const check of expected.checks) {
+    const observations = receipts.filter(row => row.command === check.command);
+    if (!observations.length) issues.push({ code: 'FRESH_EXECUTION_BINDING_PENDING', path: String(check.id), message: String(check.command) });
+    else if (observations.some(row => row.exitCode !== 0)) issues.push({ code: 'EXECUTION_FAILED', path: String(check.id), message: String(check.command) });
+  }
+  issues.push({ code: 'FINAL_RA_RB_REVIEW_PENDING', path: candidate, message: 'Historical scoped reviews are not final combination acceptance' });
+  const changed = changedPaths(root, mainSha, candidate);
+  const registered = new Set([...changedPaths(root, mainSha, firstCoverageSha), ...expected.provenance.map(row => row.path),
+    ...expected.overlappingSourceChanges.map(row => row.path), ...continuationPaths, 'package.json']);
+  for (const path of changed) if (!registered.has(path)) issues.push({ code: 'UNCOVERED_CHANGED_PATH', path, message: 'No pinned authorization or provenance' });
+  return { schemaVersion: 'fd-p3-preflight-result-v3', taskId: input.taskId, controlEpoch: input.controlEpoch, status: 'FAIL',
+    inputs: { testedCandidateSha: candidate, testedBaseSha: base, inputSha256 }, changedPaths: changed,
+    provenance: expected.provenance, overlappingSourceChanges: expected.overlappingSourceChanges,
+    authorizations: input.finalBinding.authorizations, execution: input.execution, issues,
+    acceptanceGranted: false, reviewReadyChanged: false, promotionPolicyChanged: false };
 }
 
 function runFinalPreflight(root: string, input: Record<string, any>, candidate: string, base: string, inputSha256: string) {

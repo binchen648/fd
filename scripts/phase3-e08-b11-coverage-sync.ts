@@ -17,6 +17,18 @@ const sourcePaths = ['data/authoring', 'data/packs', 'data/generated', 'packages
 export const historicalCarrierSha = '9eaa0e0c417486adf7b0449e3d32fb90b7d362f9';
 export const implementationBaseSha = '46dbd031b06192e7e81479706678937064cdc1a3';
 export const authorizationSha = '8eb752c181ea025ac54c53f425a89aa64238f575';
+export const blockedCarrierSha = '4d911906c00b0d0309f82adefb96cd8680baa6da';
+export const continuationSha = '8d8098c9068ad702d65695367d30c5f5c2d85f6d';
+export const continuationTaskId = 'P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION';
+export const continuationPaths = [
+  'scripts/phase3-e08-b11-coverage-sync.ts', 'scripts/tests/phase3-e08-b11-coverage-sync.test.ts',
+  'scripts/tests/phase3-e06-post-merge-recount.test.ts', 'scripts/phase3-preflight.ts',
+  'scripts/tests/phase3-readiness-preflight.test.ts', 'scripts/fixtures/phase3-b11-task-check.json',
+  coveragePath, 'artifacts/phase3-e08-b11-final-combination-evidence.json',
+  'docs/reports/2026-10-10-p3-e08-b11-final-combination-evidence.md',
+  'artifacts/phase3-e08-b11-ci-and-binding-finalization.json',
+  'docs/reports/2026-10-10-p3-e08-b11-ci-and-binding-finalization.md',
+];
 export const repairPaths = [
   'scripts/phase3-e08-b11-coverage-sync.ts', 'scripts/tests/phase3-e08-b11-coverage-sync.test.ts',
   'scripts/tests/phase3-e06-post-merge-recount.test.ts', coveragePath,
@@ -219,6 +231,11 @@ export function validateFinalBinding(root: string, binding: { sourceSha: string;
   for (const path of text(root, ['diff', '--name-only', implementationBaseSha, 'HEAD']).split('\n').filter(Boolean)) {
     if (!repairPaths.includes(path)) throw new Error(`Unauthorized repair delta: ${path}`);
   }
+  validateSourceObjects(root, binding, [coveragePath, 'scripts/fixtures/phase3-b11-task-check.json', repairPaths[7], repairPaths[8]]);
+  return binding;
+}
+
+function validateSourceObjects(root: string, binding: { sourceSha: string; sourceObjects: Record<string, string> }, evidenceOnly: string[]) {
   if (!isDeepStrictEqual(Object.keys(binding.sourceObjects).sort(), [...finalSourcePaths].sort())) throw new Error('Incomplete final source objects');
   const refs = [...finalSourcePaths.map(path => `${binding.sourceSha}:${path}`), ...finalSourcePaths.map(path => `HEAD:${path}`),
     ...sourcePaths.map(path => `7ec91bbc26be0f63332d5cc8421b2c7c014906c5:${path}`)];
@@ -231,19 +248,232 @@ export function validateFinalBinding(root: string, binding: { sourceSha: string;
   for (const [index, path] of sourcePaths.entries()) {
     if (objects[index + finalSourcePaths.length * 2] !== binding.sourceObjects[path]) throw new Error(`Unreviewed runtime/classifier source: ${path}`);
   }
-  const evidenceOnly = [coveragePath, 'scripts/fixtures/phase3-b11-task-check.json', repairPaths[7], repairPaths[8]];
   const checkedPaths = ['.', ...evidenceOnly.map(path => `:(exclude)${path}`)];
   if (text(root, ['diff', 'HEAD', '--', ...checkedPaths])) throw new Error('Dirty final inputs');
   if (text(root, ['ls-files', '--others', '--exclude-standard', '--', ...checkedPaths])) throw new Error('Untracked final inputs');
+}
+
+const pinnedAuthorizations = [
+  [authorizationSha, 'docs/agents/P3-E08-B11-FINAL-EVIDENCE-REPAIR-AUTHORIZATION.md'],
+  ['08e2f8cbf99b69ff1220b9dc1e933ec08fe57158', 'docs/agents/P3-E08-B11-ONE-PASS-A-REPAIR.md'],
+  [continuationSha, 'docs/agents/P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION.md'],
+] as const;
+
+function referenceAt(root: string, commit: string, path: string) {
+  const bytes = git(root, ['show', `${commit}:${path}`]);
+  return { commit, path, blob: text(root, ['rev-parse', `${commit}:${path}`]), sha256: sha256(bytes) };
+}
+
+export function buildContinuationBinding(root: string, sourceSha: string) {
+  if (!/^[0-9a-f]{40}$/.test(sourceSha)) throw new Error('Invalid continuation source SHA');
+  git(root, ['rev-parse', '--verify', `${sourceSha}^{commit}`]);
+  const authorizations = pinnedAuthorizations.map(([commit, path]) => referenceAt(root, commit, path));
+  const last = git(root, ['show', `${continuationSha}:${pinnedAuthorizations[2][1]}`]).toString('utf8');
+  const declared = [...last.matchAll(/^- ([^\r\n]+)$/gm)].map(match => match[1]);
+  assertSameEvidence(declared, continuationPaths);
+  const concurrency = git(root, ['show', `${pinnedAuthorizations[1][0]}:${pinnedAuthorizations[1][1]}`]).toString('utf8');
+  if (!concurrency.includes('- package.json: append --maxWorkers=2 to test:ci')) throw new Error('Concurrency authorization missing');
+  const original = git(root, ['show', `${authorizationSha}:${pinnedAuthorizations[0][1]}`]).toString('utf8');
+  for (const path of repairPaths) {
+    if (!original.includes(`- ${path}`)) throw new Error(`Original authorization missing: ${path}`);
+  }
+  const changed = text(root, ['diff', '--name-only', implementationBaseSha, sourceSha]).split('\n').filter(Boolean);
+  return {
+    schemaVersion: 'fd-p3-authorization-continuation-v1', taskId: continuationTaskId, controlEpoch: 'FD-P3-2026-09-23-08',
+    baseSha: blockedCarrierSha, sourceSha, carryingSha: 'RESOLVE_FROM_GIT_HANDOFF_NOT_SELF_REFERENTIAL',
+    authorizations, sourceObjects: sourceObjectsAt(root, sourceSha),
+    changedPaths: changed.map(path => ({ path, authorization: path === 'package.json' ? authorizations[1] : authorizations[2] })),
+    publication: { mode: 'PINNED_GIT_OBJECTS; REMOTE_PUBLICATION_RECORDED_IN_PACKET', mainMembership: authorizations.map(ref => ({
+      commit: ref.commit, onObservedMain: isAncestor(root, ref.commit, mainSha),
+    })) },
+  };
+}
+
+function sourceObjectsAt(root: string, commit: string): Record<string, string> {
+  const objects = execFileSync('git', ['cat-file', '--batch-check=%(objectname)'], { cwd: root,
+    input: `${finalSourcePaths.map(path => `${commit}:${path}`).join('\n')}\n`, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'],
+  }).trim().split('\n');
+  if (objects.length !== finalSourcePaths.length || objects.some(value => !/^[0-9a-f]{40}$/.test(value))) throw new Error('Missing source object');
+  return Object.fromEntries(finalSourcePaths.map((path, index) => [path, objects[index]]));
+}
+
+function isAncestor(root: string, ancestor: string, descendant: string): boolean {
+  git(root, ['rev-parse', '--verify', `${ancestor}^{commit}`]); git(root, ['rev-parse', '--verify', `${descendant}^{commit}`]);
+  try { git(root, ['merge-base', '--is-ancestor', ancestor, descendant]); return true; }
+  catch (error) { if ((error as { status?: number }).status === 1) return false; throw error; }
+}
+
+export function validateContinuationBinding(root: string, binding: ReturnType<typeof buildContinuationBinding>) {
+  const expected = buildContinuationBinding(root, binding?.sourceSha);
+  assertSameEvidence(binding, expected);
+  git(root, ['merge-base', '--is-ancestor', blockedCarrierSha, binding.sourceSha]);
+  git(root, ['merge-base', '--is-ancestor', binding.sourceSha, 'HEAD']);
+  const changed = text(root, ['diff', '--name-only', implementationBaseSha, 'HEAD']).split('\n').filter(Boolean);
+  for (const path of changed) if (!continuationPaths.includes(path) && path !== 'package.json') throw new Error(`Unauthorized continuation delta: ${path}`);
+  for (const path of text(root, ['diff', '--name-only', blockedCarrierSha, 'HEAD']).split('\n').filter(Boolean)) {
+    if (!continuationPaths.includes(path)) throw new Error(`Unauthorized new delta: ${path}`);
+  }
+  const before = JSON.parse(git(root, ['show', `11c1985dc4c72151bbf16298292bf4b7fa29fcab:package.json`]).toString('utf8'));
+  const after = JSON.parse(git(root, ['show', 'HEAD:package.json']).toString('utf8'));
+  before.scripts['test:ci'] += ' --maxWorkers=2'; assertSameEvidence(after, before);
+  // Byte equality also protects whitespace and all unrelated package fields.
+  assertSameEvidence(git(root, ['show', 'HEAD:package.json']), git(root, ['show', `${blockedCarrierSha}:package.json`]));
+  for (const path of [syncPath, reportPath, 'artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json']) {
+    assertSameEvidence(readFileSync(resolve(root, path)), git(root, ['show', `${blockedCarrierSha}:${path}`]));
+  }
+  validateSourceObjects(root, binding, continuationPaths.filter(path => !path.endsWith('.ts')));
   return binding;
+}
+
+export const continuationCommands = [
+  'npm ci', 'npm run typecheck',
+  'npx vitest run scripts/tests/phase3-e08-b11-coverage-sync.test.ts scripts/tests/phase3-e06-post-merge-recount.test.ts scripts/tests/phase3-readiness-preflight.test.ts',
+  'npx tsx scripts/phase3-e08-b11-coverage-sync.ts --validate',
+  'npx tsx scripts/phase3-e08-b11-coverage-sync.ts --final --validate',
+  `npm run phase3:preflight -- --manifest scripts/fixtures/phase3-b11-task-check.json --candidate SOURCE_SHA --base ${mainSha}`,
+  'npm run test:ci', 'npm run content:validate', 'npm run verify:generated-content',
+  'npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/production-resolution-bridge.test.ts',
+  'npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/production-resolution-bridge.test.ts packages/rules/tests/regression/b11-conversion-classification-api.test.ts packages/rules/tests/regression/b11-conversion-binding-ownership.test.ts',
+  'npm run test --workspace @fd/server -- src/match-server.test.ts',
+  'npx playwright test e2e/fd-golden-eater-result-binding.spec.ts e2e/fd-conversion-magic-core-primitive.spec.ts --repeat-each=5',
+  'npm run test:source-assets', `git diff --check ${mainSha}...HEAD`,
+] as const;
+
+export type ContinuationReceipt = { command: string; testedSha: string; sourceSha: string; startedAt: string;
+  durationMs: number; exitCode: number; stdout: string; stderr: string; outputSha256: string };
+
+export function validateContinuationReceipt(root: string, receipt: ContinuationReceipt, binding: ReturnType<typeof buildContinuationBinding>) {
+  if (!isDeepStrictEqual(Object.keys(receipt).sort(), ['command', 'testedSha', 'sourceSha', 'startedAt', 'durationMs', 'exitCode', 'stdout', 'stderr', 'outputSha256'].sort())) throw new Error('Unknown receipt fields');
+  const allowed = continuationCommands.map(command => command.replace('SOURCE_SHA', binding.sourceSha));
+  if (!allowed.includes(receipt.command) || receipt.sourceSha !== binding.sourceSha || !Number.isInteger(receipt.exitCode) ||
+      !Number.isFinite(receipt.durationMs) || receipt.durationMs < 0 || !Number.isFinite(Date.parse(receipt.startedAt)) ||
+      typeof receipt.stdout !== 'string' || typeof receipt.stderr !== 'string') throw new Error('Invalid command receipt');
+  if (!/^[0-9a-f]{40}$/.test(receipt.testedSha)) throw new Error('Invalid tested SHA');
+  git(root, ['merge-base', '--is-ancestor', binding.sourceSha, receipt.testedSha]);
+  git(root, ['merge-base', '--is-ancestor', receipt.testedSha, 'HEAD']);
+  const objects = sourceObjectsAt(root, receipt.testedSha);
+  for (const path of finalSourcePaths) if (objects[path] !== binding.sourceObjects[path]) throw new Error(`Stale tested source: ${path}`);
+  if (sha256(`${receipt.stdout}\n${receipt.stderr}`) !== receipt.outputSha256) throw new Error('Receipt output hash mismatch');
+}
+
+const historicalReviewSpecs = [
+  ['fec28af32f3a14cfc174cfedcfb5ecbefd8344fd', 'docs/reviews/phase3/P3-E08-B11-final-blocked-packet-reviewer-a.json', '11c1985dc4c72151bbf16298292bf4b7fa29fcab', 'A_OWNED_BLOCKED_PACKET_EVIDENCE_CONSISTENCY_AND_HISTORICAL_FINAL_BINDING_ONLY'],
+  ['5a361fffaf9c151ffbc27c995ea773380692e120', 'docs/reviews/phase3/P3-E08-B11-final-packet-11c1985-reviewer-b.json', '11c1985dc4c72151bbf16298292bf4b7fa29fcab', 'NARROW_RUNTIME_SOURCE_AND_COMPONENT_SERVER_ONLY; BLOCKED_NOT_FINAL_ACCEPTANCE'],
+] as const;
+
+export function buildContinuationReviews(root: string) {
+  return historicalReviewSpecs.map(([commit, path, reviewedSha, scope]) => ({
+    ...referenceAt(root, commit, path), reviewedSha, scope, inheritedFinalAcceptance: false,
+    artifact: JSON.parse(git(root, ['show', `${commit}:${path}`]).toString('utf8')),
+  }));
+}
+
+export function validateContinuationReviews(root: string, reviews: ReturnType<typeof buildContinuationReviews>) {
+  assertSameEvidence(reviews, buildContinuationReviews(root));
+  for (const review of reviews) {
+    if (text(root, ['rev-parse', `${review.commit}^`]) !== review.reviewedSha ||
+        (review.artifact.reviewedSha ?? review.artifact.reviewedCarrierSha) !== review.reviewedSha) throw new Error('Review exact lineage mismatch');
+  }
 }
 
 export async function buildFinalSync(root: string) {
   const input = JSON.parse(readFileSync(resolve(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
-  if (input.schemaVersion !== 'fd-p3-task-check-v2' || input.controlEpoch !== 'FD-P3-2026-09-23-08' || input.candidateSha !== input.finalBinding?.sourceSha) throw new Error('Final task/source binding mismatch');
-  const binding = validateFinalBinding(root, input.finalBinding);
+  if (!['fd-p3-task-check-v2', 'fd-p3-task-check-v3'].includes(input.schemaVersion) || input.controlEpoch !== 'FD-P3-2026-09-23-08' || input.candidateSha !== input.finalBinding?.sourceSha) throw new Error('Final task/source binding mismatch');
+  const binding = input.schemaVersion === 'fd-p3-task-check-v3' ? validateContinuationBinding(root, input.finalBinding) : validateFinalBinding(root, input.finalBinding);
+  if (input.schemaVersion === 'fd-p3-task-check-v3') {
+    const { runPreflight } = await import('./phase3-preflight');
+    runPreflight(root, input, input.candidateSha, input.baseSha, sha256(readFileSync(resolve(root, 'scripts/fixtures/phase3-b11-task-check.json'))));
+  }
   const result = await buildSnapshotAtCheckout(root, binding.sourceSha);
   return { ...result, binding };
+}
+
+export async function collectContinuationPacket(root: string) {
+  const testedSha = text(root, ['rev-parse', 'HEAD']);
+  if (text(root, ['status', '--porcelain=v1', '--untracked-files=all'])) throw new Error('Freeze clean implementation before collection');
+  const taskPath = 'scripts/fixtures/phase3-b11-task-check.json';
+  const task = JSON.parse(readFileSync(resolve(root, taskPath), 'utf8'));
+  if (task.schemaVersion !== 'fd-p3-task-check-v3') throw new Error('Continuation requires v3 input');
+  const binding = validateContinuationBinding(root, task.finalBinding);
+  const history = ['artifacts/phase3-e08-b11-final-combination-evidence.json', 'artifacts/phase3-e08-b11-ci-and-binding-finalization.json']
+    .map(path => ({ ...referenceAt(root, blockedCarrierSha, path), exactArtifact: JSON.parse(git(root, ['show', `${blockedCarrierSha}:${path}`]).toString('utf8')) }));
+  const receipts: ContinuationReceipt[] = [];
+  const commands = [...continuationCommands.slice(0, 6).map(command => command.replace('SOURCE_SHA', binding.sourceSha)),
+    'npm run test:ci', 'npm run test:ci', ...continuationCommands.slice(7)];
+  let stoppedAt: string | null = null;
+  for (const command of commands) {
+    process.stdout.write(`START ${command}\n`);
+    const startedAt = new Date().toISOString(); const start = Date.now();
+    let stdout = ''; let stderr = ''; let exitCode = 0;
+    try { stdout = execSync(command, { cwd: root, encoding: 'utf8', timeout: 600_000, maxBuffer: 32 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] }); }
+    catch (error) {
+      const failure = error as { status?: number; stdout?: Buffer | string; stderr?: Buffer | string; message?: string };
+      exitCode = failure.status ?? -1; stdout = String(failure.stdout ?? ''); stderr = String(failure.stderr ?? failure.message ?? '');
+    }
+    const receipt = { command, testedSha, sourceSha: binding.sourceSha, startedAt, durationMs: Date.now() - start,
+      exitCode, stdout, stderr, outputSha256: sha256(`${stdout}\n${stderr}`) };
+    validateContinuationBinding(root, binding); validateContinuationReceipt(root, receipt, binding); receipts.push(receipt);
+    process.stdout.write(`END exit=${exitCode} duration=${receipt.durationMs} ${command}\n`);
+    if (exitCode !== 0 && !command.includes('phase3:preflight') && command !== 'npm run test:source-assets') { stoppedAt = command; break; }
+  }
+  const { coverage } = await buildFinalSync(root);
+  assertSameEvidence(JSON.parse(readFileSync(resolve(root, coveragePath), 'utf8')), coverage);
+  const { runPreflight } = await import('./phase3-preflight');
+  task.execution.receipts = receipts;
+  const preflight = runPreflight(root, task, task.candidateSha, task.baseSha, sha256(`${JSON.stringify(task, null, 2)}\n`));
+  validateContinuationReviews(root, task.execution.reviews);
+  let publication: Record<string, unknown>;
+  try {
+    const remote = text(root, ['ls-remote', 'origin', 'refs/heads/main', 'refs/heads/codex/planner-p3-e07-control']);
+    publication = { observedAt: new Date().toISOString(), remoteOutput: remote,
+      continuationExactRemoteHead: remote.includes(`${continuationSha}\trefs/heads/codex/planner-p3-e07-control`), status: 'OBSERVED_REMOTE_REFS_ONLY; NOT_ACCEPTANCE' };
+  } catch (error) { publication = { status: 'PUBLICATION_CHECK_FAILED', error: String(error) }; }
+  const packet = {
+    schemaVersion: 'fd-p3-final-combination-evidence-v2', taskId: continuationTaskId, controlEpoch: task.controlEpoch,
+    generatedAt: text(root, ['show', '-s', '--format=%cI', testedSha]), observedMainSha: mainSha,
+    status: stoppedAt ? 'BLOCKED_FRESH_EXECUTION_FAILURE' : 'IMPLEMENTATION_COMPLETE_REVIEW_PENDING_WITH_ORIGINAL_AUTHORIZATION_GAPS',
+    sourceSha: binding.sourceSha, implementationSha: testedSha, testedSha,
+    evidenceCarrierSha: 'RESOLVE_FROM_GIT_HANDOFF_NOT_SELF_REFERENTIAL',
+    carrierRule: 'Carrier must descend from implementationSha; all finalSourcePaths Git objects must match sourceObjects. No full-CI claim on untested carrier.',
+    sourceObjects: binding.sourceObjects, authorizationContinuation: binding, publication,
+    historicalEvidence: history, historicalReviews: task.execution.reviews,
+    scopedReviews: history[0].exactArtifact.scopedReviews,
+    provenance: task.provenance, overlappingSourceChanges: task.overlappingSourceChanges,
+    commands: receipts, stoppedAt,
+    checks: task.checks.map((check: { id: string; command: string }) => ({ id: check.id, command: check.command,
+      receipts: receipts.filter(row => row.command === check.command).map(row => ({ testedSha: row.testedSha, outputSha256: row.outputSha256, exitCode: row.exitCode })),
+      reviewAcceptance: 'PENDING_FINAL_RA_RB; SUCCESS_IS_NOT_ACCEPTANCE' })),
+    ciRuns: receipts.filter(row => row.command === 'npm run test:ci'),
+    environment: { node: process.version, npm: execSync('npm --version', { cwd: root, encoding: 'utf8' }).trim(), platform: process.platform, logicalCpus: (await import('node:os')).cpus().length,
+      concurrencyCommand: JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8')).scripts['test:ci'],
+      preparation: 'NPM_CI_THEN_TYPECHECK_BEFORE_FOCUSED_AND_CI; ACTUAL_RECEIPTS_ATTACHED' },
+    coverage: { path: coveragePath, sha256: sha256(readFileSync(resolve(root, coveragePath))), counts: counts(coverage), definitionHash: coverage.compiledDefinitions.definitionHash },
+    preflight, remainingBlockers: preflight.issues,
+    review: { reviewerA: 'PENDING_FINAL_EXACT_SHA', reviewerB: 'PENDING_FINAL_EXACT_SHA', readiness: 'NOT_GRANTED', globalGateC: 'NOT_VERIFIED', promotion: 'NOT_GRANTED' },
+    formalAccounting: { accepted: 111, denominator: 944, remaining: 833, coverageCreditDelta: 0, migrationCreditDelta: 0, denominatorDelta: 0, promotedOnMain: false },
+    releaseBlockers: ['93 MISSING_IMAGE retained; source-assets receipt separately recorded', 'Global Gate C NOT_VERIFIED'],
+    runtimeWorkflowTimeoutDelta: 'NONE', c01Dispatch: 'NONE', promotionPr: 'NONE',
+  };
+  const artifactPath = repairPaths[7]; const bytes = `${JSON.stringify(packet, null, 2)}\n`;
+  writeFileSync(resolve(root, artifactPath), bytes);
+  writeFileSync(resolve(root, taskPath), `${JSON.stringify(task, null, 2)}\n`);
+  const report = `# B11 Evidence Contract Continuation\n\nTask: ${continuationTaskId}\nEpoch: ${task.controlEpoch}\nObserved main: ${mainSha}\n` +
+    `Source: ${binding.sourceSha}\nFrozen implementation/tested SHA: ${testedSha}\nArtifact: ${artifactPath}\nSHA-256: ${sha256(bytes)}\nStatus: ${packet.status}\n\n` +
+    `All prior failures are preserved by exact Git commit/path/blob/SHA-256 and embedded original artifacts. No historical PASS is broadened.\n` +
+    `Current v3 inputs reconstruct authorization from pinned Git objects, verify full path coverage, source objects, compiler, receipts and exact historical reviews. Historical v1/v2 validation is retained.\n\n` +
+    `## Actual executions\n${receipts.map(row => `- ${row.command}: exit ${row.exitCode}; ${row.durationMs} ms; tested ${row.testedSha}; output SHA-256 ${row.outputSha256}`).join('\n')}\n\n` +
+    `## Remaining blockers\n${preflight.issues.map(issue => `- ${issue.code}: ${issue.path}`).join('\n')}\n\n` +
+    `Seven original B authorizations remain UNPROVEN; 33 A/R path reviews, two overlapping source reviews and final RA/RB verdicts remain pending. Fresh execution receipts are not acceptance.\n` +
+    `Formal ledger 111/944, remaining 833; coverage/migration/denominator credit 0/0/0. Raw routes ${Object.values(counts(coverage)).join('/')}.\n` +
+    `93 missing images and Global Gate C NOT_VERIFIED remain. No runtime/socket/workflow/timeout/authoring/classifier changes. No PR or C01 dispatch.\n` +
+    `Next: parallel RA/RB exact-carrier review; Planner/G disposes genuine authority gaps; Integration waits.\n`;
+  writeFileSync(resolve(root, repairPaths[8]), report);
+  const pointer = { schemaVersion: 'fd-p3-ci-binding-finalization-v2', taskId: continuationTaskId, controlEpoch: task.controlEpoch,
+    implementationSha: testedSha, sourceSha: binding.sourceSha, packet: { path: artifactPath, sha256: sha256(bytes) },
+    historical: history[1], status: packet.status, formalCredit: task.formalCredit, acceptanceGranted: false };
+  writeFileSync(resolve(root, continuationPaths[9]), `${JSON.stringify(pointer, null, 2)}\n`);
+  writeFileSync(resolve(root, continuationPaths[10]), `# B11 CI And Binding Finalization Continuation\n\n${report}`);
+  process.stdout.write(`PACKET ${artifactPath} SHA256=${sha256(bytes)} testedSha=${testedSha}\n`);
 }
 
 export async function collectFinalPacket(root: string) {
@@ -378,7 +608,9 @@ export function renderReport(sync: Awaited<ReturnType<typeof buildSync>>['sync']
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   void (async () => {
   const root = resolve('.');
-  if (process.argv.includes('--collect')) {
+  if (process.argv.includes('--collect-continuation')) {
+    await collectContinuationPacket(root);
+  } else if (process.argv.includes('--collect')) {
     await collectFinalPacket(root);
   } else if (process.argv.includes('--final')) {
     const { coverage, binding } = await buildFinalSync(root);
