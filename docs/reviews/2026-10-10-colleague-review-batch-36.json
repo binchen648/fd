@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [
+    {
+      "pr": 467,
+      "headSha": "b94a44ee9bf32f3fbd542df47d3a6b42d0e04876",
+      "baseSha": "abda8c845133bd12bce47f624808a3ead9d95510",
+      "producer": "Codex Automation Review Owner",
+      "verdict": "PASS",
+      "scope": "RAIDO_MOVEMENT_READINESS_REVISION_BOUNDED_TECHNICAL_REVIEW",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-467-independent.mjs",
+          "targetSha": "b94a44ee9bf32f3fbd542df47d3a6b42d0e04876",
+          "result": "Final6/6 PASS;typed exact-cost movement and receipt;4 preflight negatives;late occupancy;7 loader/compiled mutations;initial shared-map fixture pollution disclosed",
+          "artifactIdentity": "docs/reviews/probes/review-467-independent.mjs"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/regression/p3-raido-movement-readiness-capability.test.ts packages/rules/tests/regression/fb2-any-location-except-workshop-movement.test.ts packages/rules/tests/regression/fb2-game-start-rule-overrides.test.ts packages/rules/tests/regression/p3-skadi-rune-castle-readiness-capability.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts --maxWorkers=1",
+          "targetSha": "b94a44ee9bf32f3fbd542df47d3a6b42d0e04876",
+          "result": "8 files/170 tests PASS;new4/4 and legacy7/7",
+          "artifactIdentity": "pr467-independent-focused"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npm run test:ci -- --maxWorkers=2",
+          "targetSha": "b94a44ee9bf32f3fbd542df47d3a6b42d0e04876",
+          "result": "152 files/1087 tests:1077 PASS/10 inherited FAIL,no timeouts;not green CI",
+          "artifactIdentity": "pr467-independent-full-ci"
+        },
+        {
+          "kind": "BASELINE_TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/astolfo-s1-consumer-migration.test.ts packages/rules/tests/m50-02-opponent-close-one-non-residual.test.ts packages/rules/tests/seven-servant-decks.test.ts packages/rules/tests/regression/golden-card-content-pipeline.test.ts packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts --maxWorkers=2",
+          "targetSha": "abda8c845133bd12bce47f624808a3ead9d95510",
+          "result": "5 files/24 tests:14 PASS/10 inherited FAIL;not full baseline CI",
+          "artifactIdentity": "pr467-exact-base-comparison"
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Codex Automation Review Owner",
+          "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 467 --repo binchen648/fd --json headRefOid,baseRefOid,state,comments; git fetch origin main",
+          "targetSha": "b94a44ee9bf32f3fbd542df47d3a6b42d0e04876",
+          "result": "Typecheck/content/diff PASS;strict evidence FAIL inherited31 missing-image diagnostics isolated;live bindings unchanged;historical relays separately attributed",
+          "artifactIdentity": "docs/reviews/2026-10-10-pr-467-review.md"
+        }
+      ],
+      "limitations": [
+        "Narrow technical delta PASS only;PR466 and earlier dependency findings remain;no whole-chain readiness or credit.",
+        "Generic fixture,not actual Skadi consumer migration;external Reference/CHM/assets,full baseline CI,UI/network and exhaustive restore unverified.",
+        "Strict verifier FAIL on inherited images;historical acceptance not transferred;initial harness map isolation error retained.",
+        "No repair,formal acceptance,Planner mutation,GitHub verdict,Gate,promotion or merge."
+      ]
+    }
+  ]
+}

@@ -2,6 +2,15 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch36 records PR467 bounded technical PASS on2026-10-10:Raido selector
+revision closure and typed movement independently verified;no new scope blocker.
+Final6/6 probe checks PASS;initial shared-map fixture pollution disclosed.
+Focused170/170 PASS;full1077 PASS/10 FAIL,all10 reproduced at exact base
+(14 PASS/10 FAIL). Strict evidence FAIL only31 absent external images.
+PR466 and earlier dependency findings remain open;zero material delta/credit.
+Cumulative47/534,15 PASS,32 FAILED,487 pending. See batch36 and
+2026-10-10-pr-467-review.md. All-PR goal remains active,incomplete.
+
 Batch35 records PR466 technical FAILED on2026-10-10:empty-hand shuffle and
 sole immune-opponent defeat advertised as legal but deterministic dispatch
 rejects atomically. Independent9/9 expected checks PASS,including R1/R2 closure,
