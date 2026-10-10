@@ -2,6 +2,16 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch29 records PR460 FAILED on2026-10-10:cloak immunity misses actual Banquet
+cost aura and loader-admitted hostile card-target/move path;new11-servant roster
+breaks fixed-seed Tomoe fixture. Independent7/7 expected assertions PASS,including
+defects and R1/R2 closure;focused189/189 PASS. Prepared full CI1030 PASS/10 FAIL;
+exact-base inherited comparison11 PASS/9 FAIL,Tomoe4/4 PASS. Initial package
+output load failure disclosed,not runtime-attributed. Strict evidence FAIL only
+on26 absent external-image diagnostics. Material126->129/944 is not credit.
+Cumulative40/534,13 PASS,27 FAILED,494 pending. See batch29 and
+2026-10-10-pr-460-review.md. All-PR goal remains active,incomplete.
+
 Batch28 records PR459 FAILED on2026-10-10:legal additional Sake play at Recon
 blocks transactional battle-phase advance. Independent7/7 expected assertions
 PASS,including defect;focused104/104 PASS. Full CI1020 PASS/10 FAIL;exact-base

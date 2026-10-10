@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 460,
+    "headSha": "e912ad973314cb032adb0e4eb1e0b9141cc322d9",
+    "baseSha": "3412aac11f14d9e8012e4aa8c4761fccbf58e581",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "FAILED",
+    "scope": "SIEGFRIED_OWNER_COMPLETE_MIGRATION_SUCCESSOR_TECHNICAL_REVIEW",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [
+      { "priority": "P2", "path": "packages/rules/src/ability/interpreter.ts", "line": 990,
+        "summary": "New cloak same-location immunity does not exclude actual Banquet cost aura;real dispatch pays3 for printed-cost1 after cloak.", "introducedRelativeToBase": true },
+      { "priority": "P2", "path": "packages/rules/src/ability/interpreter.ts", "line": 513,
+        "summary": "Loader-admitted hostile card-target/move fixture selects and discards cloaked controller card;player-only filter leaves supported card-effect immunity incomplete.", "introducedRelativeToBase": true },
+      { "priority": "P2", "path": "packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts", "line": 95,
+        "summary": "Eleven-servant roster breaks fixed-seed Tomoe pairing fixture;candidate undefined playerId failure versus exact-base4/4 PASS. Test regression,not Tomoe semantics.", "introducedRelativeToBase": true }
+    ],
+    "evidence": [
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-460-independent.mjs",
+        "targetSha": "e912ad973314cb032adb0e4eb1e0b9141cc322d9", "result": "7/7 expected assertions PASS including2 immunity defects;R1/R2 closure,total-power/expiry,malformed/source/lineage/material controls",
+        "artifactIdentity": "docs/reviews/probes/review-460-independent.mjs" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci -- --maxWorkers=2",
+        "targetSha": "e912ad973314cb032adb0e4eb1e0b9141cc322d9", "result": "Prepared run145 files/1040 tests:1030 PASS,10 FAIL;9 inherited and1 introduced Tomoe fixture;initial81 suite package-output load failures separately disclosed",
+        "artifactIdentity": "pr460-independent-full-ci" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/regression/p3-owner-siegfried-complete-migration.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/core/combat-resolver.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/battle-loss-servant-reveal.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/content/src/__tests__/playtest-pack-loader.test.ts scripts/tests/compile-playtest-content-pack.test.ts --maxWorkers=1",
+        "targetSha": "e912ad973314cb032adb0e4eb1e0b9141cc322d9", "result": "9 files/189 tests PASS includingSiegfried10/10;does not cover immunity gaps",
+        "artifactIdentity": "pr460-independent-focused" },
+      { "kind": "BASELINE_TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/astolfo-s1-consumer-migration.test.ts packages/rules/tests/m50-02-opponent-close-one-non-residual.test.ts packages/rules/tests/seven-servant-decks.test.ts packages/rules/tests/regression/golden-card-content-pipeline.test.ts --maxWorkers=2",
+        "targetSha": "3412aac11f14d9e8012e4aa8c4761fccbf58e581", "result": "4 files/20 tests:11 PASS,9 inherited FAIL;not full baseline CI",
+        "artifactIdentity": "pr460-exact-base-inherited-comparison" },
+      { "kind": "BASELINE_TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts --maxWorkers=1",
+        "targetSha": "3412aac11f14d9e8012e4aa8c4761fccbf58e581", "result": "4/4 PASS including fixed-seed Tomoe fixture",
+        "artifactIdentity": "pr460-exact-base-Tomoe-comparison" },
+      { "kind": "STATIC_AND_BUILD", "producer": "Codex Automation Review Owner",
+        "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 460 --repo binchen648/fd --json headRefOid,baseRefOid,state; git fetch origin main; gh api repos/binchen648/fd/issues/comments/5847738666",
+        "targetSha": "e912ad973314cb032adb0e4eb1e0b9141cc322d9", "result": "Typecheck/content/diff PASS;strict evidence FAIL,26 external missing-image diagnostics isolated;live SHA/main unchanged;historical predecessor relay read and separately attributed",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-460-review.md" }
+    ],
+    "limitations": [
+      "Technical FAILED only;129/944 material is not credit;dependency findings remain.",
+      "F2 is a loader-admitted generic fixture,not formal consumer acceptance;no exhaustive typed immunity claim.",
+      "Strict verifier remains FAIL on unavailable external assets;initial package-output preparation failure disclosed.",
+      "No full baseline CI,network/UI/exhaustive restore acceptance,Planner mutation,GitHub verdict,Gate,promotion,merge or credit."
+    ]
+  }]
+}
