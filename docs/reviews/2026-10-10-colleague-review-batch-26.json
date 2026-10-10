@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 457,
+    "headSha": "f52f458a192f363ffa0e6430e6639abc657e91e8",
+    "baseSha": "24ce42298ca41b142356424c0ed60ed5b9ca9bc7",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "FAILED",
+    "scope": "MASH_OWNER_COMPLETE_MIGRATION_SUCCESSOR_TECHNICAL_REVIEW",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [
+      { "priority": "P2", "path": "packages/rules/src/core/combat-resolver.ts", "line": 162,
+        "summary": "Valid no-slot selected player receives stored terrain4 but actual combat applies0;new terrain capability bypassed by inherited no-slot early return.", "introducedRelativeToBase": true },
+      { "priority": "P2", "path": "packages/rules/src/ability/linked-owner-combat.ts", "line": 117,
+        "summary": "Two product Guard copies legally loaned to different opponents yield different powers/winners when card array order reverses;pairwise single-pass sharing is not consistent.", "introducedRelativeToBase": true },
+      { "priority": "P2", "path": "data/packs/fd-playtest-v1/pack.json", "line": 20,
+        "summary": "Roster/material expansion breaks7 CI assertions in4 unchanged test files;exact base18/18 PASS. Named fixtures/deck expectations and current material count need scoped repairs.", "introducedRelativeToBase": true }
+    ],
+    "evidence": [
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-457-independent.mjs",
+        "targetSha": "f52f458a192f363ffa0e6430e6639abc657e91e8", "result": "Final10/10 expected assertions PASS,including two real-dispatch/combat defect reproductions;source/task/material112->116/944,product/compiler,normal controls,asset-only evidence difference",
+        "artifactIdentity": "docs/reviews/probes/review-457-independent.mjs" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/regression/p3-owner-mash-complete-migration.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/core/combat-resolver.test.ts scripts/tests/compile-playtest-content-pack.test.ts --maxWorkers=2",
+        "targetSha": "f52f458a192f363ffa0e6430e6639abc657e91e8", "result": "5 files/104 tests PASS,Mash8/8,MatchSession32/32",
+        "artifactIdentity": "pr457-independent-focused" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci -- --maxWorkers=2",
+        "targetSha": "f52f458a192f363ffa0e6430e6639abc657e91e8", "result": "142 files/1012 tests:4 failed files,7 failed tests,1005 passed;original exclusions/timeouts,no failure reruns",
+        "artifactIdentity": "pr457-independent-full-ci" },
+      { "kind": "BASELINE_TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/astolfo-s1-consumer-migration.test.ts packages/rules/tests/seven-servant-decks.test.ts packages/rules/tests/regression/card-action-close.test.ts packages/rules/tests/regression/golden-card-content-pipeline.test.ts --maxWorkers=2",
+        "targetSha": "24ce42298ca41b142356424c0ed60ed5b9ca9bc7", "result": "4 files/18 tests PASS;all candidate CI failures concern these newly stale fixtures",
+        "artifactIdentity": "pr457-exact-base-affected-ci" },
+      { "kind": "STATIC_AND_BUILD", "producer": "Codex Automation Review Owner",
+        "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 457 --repo binchen648/fd --json headRefOid,baseRefOid,state; git fetch origin main; gh api repos/binchen648/fd/issues/comments/5845430482",
+        "targetSha": "f52f458a192f363ffa0e6430e6639abc657e91e8", "result": "Typecheck/content/diff PASS;strict generated verifier FAIL,evidence difference isolated to7 absent new images,not runtime finding;BASE verifier PASS;live SHA/main unchanged,checkouts clean",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-457-review.md" }
+    ],
+    "limitations": [
+      "Technical FAILED,not formal runtime verdict;material four additions are not awarded migration credit.",
+      "Strict candidate generated verification fails on asset-dependent evidence,not all outputs green;external assets/Reference remain unverified.",
+      "Independent synthetic seven-seat actual backend dispatch/combat,not live room/client UI;full baseline CI not run.",
+      "Historical reviewer evidence attributed separately;no Planner changes,GitHub publication,acceptance,Gate,promotion,merge or credit."
+    ]
+  }]
+}

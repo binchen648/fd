@@ -2,6 +2,15 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch26 records PR457 FAILED on2026-10-10:real dispatch/combat loses granted
+terrain for a no-slot recipient;two simultaneously lent Guards yield different
+winners when physical-card array order changes. Original full CI1005 PASS/
+7 FAIL in4 files;exact-base affected18/18 PASS. Focused104/104 and final10/10
+expected probe assertions PASS,including defect reproductions. Strict generated
+verifier fails only on7 absent newly registered source images;not runtime bug.
+Material112->116/944 is not formal credit. Cumulative37/534,13 PASS,24 FAILED,
+497 pending. See batch26 and2026-10-10-pr-457-review.md. Goal remains active.
+
 Batch25 records PR456 technical PASS on2026-10-10:exact servant owner gate
 rejects R1 extra-key case and malformed variants;deferred definition retained
 without initialZone,ordinary/master controls and other-card equality verified.
