@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-a-premise-sync-review-v1",
+  "taskId": "P3-E08-B11-CONTRACT-PARITY",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "reviewDate": "2026-10-10",
+  "reviewer": "Reviewer A",
+  "candidateSha": "46dbd031b06192e7e81479706678937064cdc1a3",
+  "reviewedSha": "46dbd031b06192e7e81479706678937064cdc1a3",
+  "bindingImplementationSha": "85d1631c4c89bfc38e13f29e37bfe6a8b4ccaf5b",
+  "runtimeCandidateSha": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
+  "priorReviewedCarrierSha": "be7dd6b4da6b377daf019b6170efc112c2d7a45e",
+  "conclusion": "REVIEW_ACCEPTED",
+  "finalVerdict": "PASS",
+  "acceptedScope": "EXACT_PREMISE_REVIEW_BINDING_AND_LOCAL_PARITY_EVIDENCE_SYNC_ONLY",
+  "findings": [],
+  "reviewBindings": {
+    "a": {
+      "commit": "31bad4ac87e728e5c80b9a9448f63c84f57a1d46",
+      "path": "docs/reviews/phase3/P3-E08-B11-observation-repair-reviewer-a.json",
+      "sha256": "D17FC230259C55E285436A89E45F7C286B5B39708F1F7182C307740B65016900"
+    },
+    "b": {
+      "commit": "f2da26c56cc8c5e2b8ffe35d9802051a2e3d7540",
+      "path": "docs/reviews/phase3/P3-E08-B11-fixture-premise-be7dd6b-review.json",
+      "sha256": "745AFE7E74EE7C970341FAE29F79678E33273A696FE04B81C263978892AD804B"
+    },
+    "actualDirectParentsAndArtifactOnlyDiffs": "PASS",
+    "integratedRawArtifactBytesUnchanged": "PASS",
+    "identityTaskEpochScopePremiseAndNonPromotionBoundaries": "PASS",
+    "tenPerFixtureVerdicts": "PASS"
+  },
+  "boundArtifacts": [
+    { "path": "scripts/fixtures/phase3-b11-parity-contract.json", "sha256": "1F97E1B7BC4FFAC180016C2B2361F8406A7550FB0A276BABCE9CF7F311127643" },
+    { "path": "scripts/fixtures/phase3-b11-parity-fixtures.json", "sha256": "CA345E013C74B233ABE5A496760C04E0C50E5A4241030608B68843D6163AEAE4" },
+    { "path": "artifacts/phase3-e08-b11-inventory-coverage-parity.json", "sha256": "47E94CD3E9FAA90C44D68F1FB94A481077B60F50762A3C548CFF639DE7B1E0C8" }
+  ],
+  "premiseSha256": "CF2A50939F709D71ECFC29D29AFB626F1BFCFDED787DD49A027E160787C2DB81",
+  "independentValidation": {
+    "testedSha": "46dbd031b06192e7e81479706678937064cdc1a3",
+    "focused": { "files": 5, "tests": 69, "durationSeconds": 74.76, "result": "PASS" },
+    "newBindingRegressionSubset": { "tests": 14, "result": "PASS" },
+    "typecheck": "PASS",
+    "completeScopedDiffCheck": "PASS",
+    "exactRemoteCarrier": "PASS",
+    "onlyExpectationReviewChangedInContractInput": "PASS",
+    "fixturesAndExecutedAdapterClosureUnchanged": "PASS",
+    "readOnlyAcceptedInputRegeneration": "PASS",
+    "freshIsolatedAcceptedInputParity": {
+      "status": "PASS",
+      "issues": [],
+      "executedFixtures": 10,
+      "requiredObservations": 60,
+      "exactRecordedReceiptBytes": true,
+      "acceptanceGranted": false
+    },
+    "fullCurrentCi": "NOT_RERUN",
+    "browserSuites": "NOT_RERUN"
+  },
+  "formalCredit": { "mainCoverageCreditDelta": 0, "migrationCreditDelta": 0, "denominatorDelta": 0 },
+  "overallCombinationReadiness": "NOT_GRANTED_HISTORICAL_CI_AND_SOURCE_BINDING_BLOCKERS_REMAIN",
+  "runtimeAcceptanceGranted": false,
+  "effectCorrectnessVerified": false,
+  "fallbackClosureVerified": false,
+  "browserAcceptanceVerified": false,
+  "gatePromotionGranted": false,
+  "promotionAllowed": false,
+  "githubAttestationProvided": false,
+  "retainedLimitations": [
+    "Historical CI/source-binding compatibility conflict remains open",
+    "Prior concurrency and RPC timeouts retained",
+    "Full current combination CI, Global Gate C and promotion unverified",
+    "Historical 93 missing-image Release blockers retained, not freshly audited",
+    "Reviewer B semantics not re-reviewed by Reviewer A; only immutable exact verdict binding inspected",
+    "Inventory/coverage remain correlated diagnostic surfaces, not independent runtime proofs"
+  ],
+  "nextStep": "PLANNER_RECORD_SCOPED_SYNC_ACCEPTANCE_AND_SEPARATELY_DISPOSE_CI_SOURCE_BINDING_GAPS; NO_PROMOTION_FROM_LOCAL_PARITY_PASS"
+}
