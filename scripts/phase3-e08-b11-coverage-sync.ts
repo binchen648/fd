@@ -264,7 +264,16 @@ function referenceAt(root: string, commit: string, path: string) {
   return { commit, path, blob: text(root, ['rev-parse', `${commit}:${path}`]), sha256: sha256(bytes) };
 }
 
+const continuationBindingCache = new Map<string, ReturnType<typeof deriveContinuationBinding>>();
+
 export function buildContinuationBinding(root: string, sourceSha: string) {
+  const key = `${resolve(root)}:${sourceSha}`;
+  if (!continuationBindingCache.has(key)) continuationBindingCache.set(key, deriveContinuationBinding(root, sourceSha));
+  // Cache only immutable Git-derived metadata, never working-tree/delta validation or caller claims.
+  return structuredClone(continuationBindingCache.get(key)!);
+}
+
+function deriveContinuationBinding(root: string, sourceSha: string) {
   if (!/^[0-9a-f]{40}$/.test(sourceSha)) throw new Error('Invalid continuation source SHA');
   git(root, ['rev-parse', '--verify', `${sourceSha}^{commit}`]);
   const authorizations = pinnedAuthorizations.map(([commit, path]) => referenceAt(root, commit, path));
@@ -381,8 +390,8 @@ export async function buildFinalSync(root: string) {
   if (!['fd-p3-task-check-v2', 'fd-p3-task-check-v3'].includes(input.schemaVersion) || input.controlEpoch !== 'FD-P3-2026-09-23-08' || input.candidateSha !== input.finalBinding?.sourceSha) throw new Error('Final task/source binding mismatch');
   const binding = input.schemaVersion === 'fd-p3-task-check-v3' ? validateContinuationBinding(root, input.finalBinding) : validateFinalBinding(root, input.finalBinding);
   if (input.schemaVersion === 'fd-p3-task-check-v3') {
-    const { runPreflight } = await import('./phase3-preflight');
-    runPreflight(root, input, input.candidateSha, input.baseSha, sha256(readFileSync(resolve(root, 'scripts/fixtures/phase3-b11-task-check.json'))));
+    const { validateContinuationTaskCheck } = await import('./phase3-preflight');
+    validateContinuationTaskCheck(root, input);
   }
   const result = await buildSnapshotAtCheckout(root, binding.sourceSha);
   return { ...result, binding };

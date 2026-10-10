@@ -270,8 +270,10 @@ export function assertFinalTaskCheck(actual: unknown, expected: ReturnType<typeo
 }
 
 export function buildContinuationTaskCheck(root: string, sourceSha: string) {
-  const historical = buildFinalTaskCheck(root, sourceSha);
+  // The exact blocked v2 carrier pins all forty original provenance rows. Do not re-authorize them.
+  const historical = JSON.parse(git(root, ['show', '11c1985dc4c72151bbf16298292bf4b7fa29fcab:scripts/fixtures/phase3-b11-task-check.json']).toString('utf8')) as ReturnType<typeof buildFinalTaskCheck>;
   return { ...historical, schemaVersion: 'fd-p3-task-check-v3', taskId: continuationTaskId,
+    candidateSha: sourceSha, checks: historical.checks.map(check => ({ ...check, testedSha: sourceSha })),
     finalBinding: buildContinuationBinding(root, sourceSha),
     repairReservation: { ...historical.repairReservation, branch: 'codex/a-p3-e08-b11-evidence-contract-continuation', paths: continuationPaths },
     execution: { schemaVersion: 'fd-p3-continuation-execution-v1', carryingSha: 'RESOLVE_FROM_GIT_HANDOFF_NOT_SELF_REFERENTIAL',
@@ -279,17 +281,23 @@ export function buildContinuationTaskCheck(root: string, sourceSha: string) {
   };
 }
 
-function runContinuationPreflight(root: string, input: Record<string, any>, candidate: string, base: string, inputSha256: string) {
+export function validateContinuationTaskCheck(root: string, input: Record<string, any>) {
   const expected = buildContinuationTaskCheck(root, input.finalBinding?.sourceSha);
   fields(input, Object.keys(expected), 'continuation task check');
   fields(object(input.execution, 'execution'), Object.keys(expected.execution), 'continuation execution');
   const receipts = array(input.execution.receipts, 'execution.receipts') as ContinuationReceipt[];
   // Only executed receipts vary. Authorizations, history, scopes and pending acceptance are reconstructed from Git.
   assertFinalTaskCheck({ ...input, execution: { ...input.execution, receipts: [] } }, expected);
-  if (candidate !== input.candidateSha || base !== mainSha) throw new InputError('Continuation CLI SHA mismatch');
-  validateContinuationBinding(root, input.finalBinding);
   validateContinuationReviews(root, input.execution.reviews);
   for (const receipt of receipts) validateContinuationReceipt(root, receipt, input.finalBinding);
+  return expected;
+}
+
+function runContinuationPreflight(root: string, input: Record<string, any>, candidate: string, base: string, inputSha256: string) {
+  const expected = validateContinuationTaskCheck(root, input);
+  const receipts = input.execution.receipts as ContinuationReceipt[];
+  if (candidate !== input.candidateSha || base !== mainSha) throw new InputError('Continuation CLI SHA mismatch');
+  validateContinuationBinding(root, input.finalBinding);
   const issues: Issue[] = [];
   for (const row of expected.provenance) issues.push({ code: row.role === 'B' ? 'ORIGINAL_AUTHORIZATION_UNPROVEN' : 'PATH_SCOPE_REVIEW_PENDING', path: row.path, message: row.authorizationState });
   for (const row of expected.overlappingSourceChanges) issues.push({ code: 'OVERLAPPING_SOURCE_REVIEW_PENDING', path: row.path, message: row.authorizationState });
