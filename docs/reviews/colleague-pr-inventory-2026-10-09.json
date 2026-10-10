@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 44,
-    "pending": 490,
+    "reviewed": 45,
+    "pending": 489,
     "blocked": 0,
     "notVerified": 0
   },
@@ -23845,11 +23845,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "SITONAI_OWNER_COMPLETE_CONSUMER_TECHNICAL_REVIEW",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-34.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-465-independent.mjs",
+            "targetSha": "0e39b88803fd6091f85d13cfe9c959683ce2fe92",
+            "result": "Final7/7 expected checks PASS incl source-conflict and actual cloak combination;132->134 material,sc3 preserved;initial6/7 pure-draw-result harness error disclosed",
+            "artifactIdentity": "docs/reviews/probes/review-465-independent.mjs"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=2",
+            "targetSha": "0e39b88803fd6091f85d13cfe9c959683ce2fe92",
+            "result": "150 files/1071 tests:1061 PASS/10 inherited FAIL,no timeouts;not green CI",
+            "artifactIdentity": "pr465-independent-full-ci"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/regression/p3-owner-sitonai-complete-migration.test.ts packages/rules/tests/regression/p3-source-skill-attack-join-capability.test.ts packages/rules/tests/regression/p3-sitonai-readiness-capability.test.ts packages/rules/tests/fm07-alter-ego-transform-authoring.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts --maxWorkers=1",
+            "targetSha": "0e39b88803fd6091f85d13cfe9c959683ce2fe92",
+            "result": "8 files/160 tests PASS;owner6/6;neither resolves F1 nor covers F2 combination",
+            "artifactIdentity": "pr465-independent-focused"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0

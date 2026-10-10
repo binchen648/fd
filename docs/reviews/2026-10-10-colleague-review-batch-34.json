@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 465,
+    "headSha": "0e39b88803fd6091f85d13cfe9c959683ce2fe92",
+    "baseSha": "3748e7341ecdfd26ccd56bbde75fbd6502e1f233",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "FAILED",
+    "scope": "SITONAI_OWNER_COMPLETE_CONSUMER_TECHNICAL_REVIEW",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [
+      { "priority": "P2", "path": "data/authoring/servants/servant.sitonai.json", "line": 106,
+        "summary": "Unclosed frozen additive reversal versus exclusive Reference-behavior source conflict:actual reversed sc2 blocks mana but permits draw;no authoritative adjudication binding supplied.", "introducedRelativeToBase": true },
+      { "priority": "P2", "path": "data/authoring/servants/servant.sitonai.json", "line": 118,
+        "summary": "Actual sc2 draw/mana consumers inherit PR463 immunity defect:same-location actual cloak predicate true yet both resources blocked;new consumer exposure,no runtime delta.", "introducedRelativeToBase": false }
+    ],
+    "evidence": [
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-465-independent.mjs",
+        "targetSha": "0e39b88803fd6091f85d13cfe9c959683ce2fe92", "result": "Final7/7 expected checks PASS incl source-conflict and actual cloak combination;132->134 material,sc3 preserved;initial6/7 pure-draw-result harness error disclosed",
+        "artifactIdentity": "docs/reviews/probes/review-465-independent.mjs" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci -- --maxWorkers=2",
+        "targetSha": "0e39b88803fd6091f85d13cfe9c959683ce2fe92", "result": "150 files/1071 tests:1061 PASS/10 inherited FAIL,no timeouts;not green CI",
+        "artifactIdentity": "pr465-independent-full-ci" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/regression/p3-owner-sitonai-complete-migration.test.ts packages/rules/tests/regression/p3-source-skill-attack-join-capability.test.ts packages/rules/tests/regression/p3-sitonai-readiness-capability.test.ts packages/rules/tests/fm07-alter-ego-transform-authoring.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts --maxWorkers=1",
+        "targetSha": "0e39b88803fd6091f85d13cfe9c959683ce2fe92", "result": "8 files/160 tests PASS;owner6/6;neither resolves F1 nor covers F2 combination",
+        "artifactIdentity": "pr465-independent-focused" },
+      { "kind": "BASELINE_TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/astolfo-s1-consumer-migration.test.ts packages/rules/tests/m50-02-opponent-close-one-non-residual.test.ts packages/rules/tests/seven-servant-decks.test.ts packages/rules/tests/regression/golden-card-content-pipeline.test.ts packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts --maxWorkers=2",
+        "targetSha": "3748e7341ecdfd26ccd56bbde75fbd6502e1f233", "result": "5 files/24 tests:14 PASS/10 inherited FAIL;not full baseline CI",
+        "artifactIdentity": "pr465-exact-base-comparison" },
+      { "kind": "STATIC_AND_BUILD", "producer": "Codex Automation Review Owner",
+        "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 465 --repo binchen648/fd --json headRefOid,baseRefOid,state,comments; git fetch origin main",
+        "targetSha": "0e39b88803fd6091f85d13cfe9c959683ce2fe92", "result": "Typecheck/content/diff PASS;strict evidence FAIL inherited31 missing-image diagnostics isolated;live bindings unchanged;actual product excludes Sitonai;historical source/review separately attributed",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-465-review.md" }
+    ],
+    "limitations": [
+      "Technical FAILED only;F1 requires authoritative rule reconciliation,not unilateral reviewer rule adjudication;F2 runtime cause inheritedPR463.",
+      "Actual-authoring7-player fixtures,not product MatchSession/UI;synthetic win events;external Reference/CHM/assets/full baseline CI/exhaustive restore unverified.",
+      "Strict generated verifier FAIL on inherited external images;historical acceptance not transferred;material134/944 not credit.",
+      "No repair,formal acceptance,Planner mutation,GitHub verdict,Gate,promotion or merge."
+    ]
+  }]
+}

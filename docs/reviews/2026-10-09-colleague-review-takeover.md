@@ -2,6 +2,16 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch34 records PR465 technical FAILED on2026-10-10:unclosed additive printed
+reversal versus exclusive draw/mana encoding;actual sc2 inherits same-location
+cloak immunity bypass fromPR463. Independent final7/7 expected checks PASS;
+focused160/160 PASS;full1061 PASS/10 FAIL,all10 reproduced at exact base
+(14 PASS/10 FAIL). Strict evidence FAIL only31 absent external images.
+Material132->134/944,sc3 preserved,not credit. Actual archives executed in
+7-player fixture;Sitonai absent from active product pack. Cumulative45/534,
+14 PASS,31 FAILED,489 pending. See batch34 and2026-10-10-pr-465-review.md.
+All-PR goal remains active,incomplete.
+
 Batch33 records PR464 bounded technical PASS on2026-10-10:no new exact-scope
 join-capability blocker found;prior play-provenance finding closed. Independent
 final6/6 PASS;focused155/155 PASS. Initialfull1053 PASS/12 FAIL(2 timeouts),
