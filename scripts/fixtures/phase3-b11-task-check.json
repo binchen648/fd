@@ -1,9 +1,9 @@
 {
-  "schemaVersion": "fd-p3-task-check-v2",
-  "taskId": "P3-E08-B11-COMBINATION-READINESS",
+  "schemaVersion": "fd-p3-task-check-v3",
+  "taskId": "P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION",
   "controlEpoch": "FD-P3-2026-09-23-08",
   "baseSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
-  "candidateSha": "db7c5625bedf634e0f9a065d9ee6cf1a12800507",
+  "candidateSha": "c13add9ad5daee46c2f16bafa175abfb78beb020",
   "authorization": {
     "commit": "8eb752c181ea025ac54c53f425a89aa64238f575",
     "path": "docs/agents/P3-E08-B11-FINAL-EVIDENCE-REPAIR-AUTHORIZATION.md",
@@ -1204,23 +1204,56 @@
   ],
   "repairReservation": {
     "owner": "Codex A",
-    "branch": "codex/a-p3-e08-b11-final-evidence",
+    "branch": "codex/a-p3-e08-b11-evidence-contract-continuation",
     "paths": [
       "scripts/phase3-e08-b11-coverage-sync.ts",
       "scripts/tests/phase3-e08-b11-coverage-sync.test.ts",
       "scripts/tests/phase3-e06-post-merge-recount.test.ts",
-      "artifacts/phase3-skill-coverage.json",
-      "scripts/fixtures/phase3-b11-task-check.json",
       "scripts/phase3-preflight.ts",
       "scripts/tests/phase3-readiness-preflight.test.ts",
+      "scripts/fixtures/phase3-b11-task-check.json",
+      "artifacts/phase3-skill-coverage.json",
       "artifacts/phase3-e08-b11-final-combination-evidence.json",
-      "docs/reports/2026-10-10-p3-e08-b11-final-combination-evidence.md"
+      "docs/reports/2026-10-10-p3-e08-b11-final-combination-evidence.md",
+      "artifacts/phase3-e08-b11-ci-and-binding-finalization.json",
+      "docs/reports/2026-10-10-p3-e08-b11-ci-and-binding-finalization.md"
     ],
     "priorAWorktrees": "CLEAN_AT_RESERVATION; NO_OTHER_OVERLAPPING_WRITER_OBSERVED",
     "runtimeServerReservation": "RETAINED_BY_B"
   },
   "finalBinding": {
-    "sourceSha": "db7c5625bedf634e0f9a065d9ee6cf1a12800507",
+    "schemaVersion": "fd-p3-authorization-continuation-v1",
+    "taskId": "P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION",
+    "controlEpoch": "FD-P3-2026-09-23-08",
+    "baseSha": "4d911906c00b0d0309f82adefb96cd8680baa6da",
+    "sourceSha": "c13add9ad5daee46c2f16bafa175abfb78beb020",
+    "carryingSha": "RESOLVE_FROM_GIT_HANDOFF_NOT_SELF_REFERENTIAL",
+    "authorizations": [
+      {
+        "commit": "8eb752c181ea025ac54c53f425a89aa64238f575",
+        "path": "docs/agents/P3-E08-B11-FINAL-EVIDENCE-REPAIR-AUTHORIZATION.md",
+        "blob": "360dd5a4164ac04fe17e241c38b9ffe10eb59f0c",
+        "sha256": "BFE275A2526D760709D5CBD4E91336E405518B6763050434D6031A6E36932204",
+        "taskId": "P3-E08-B11-FINAL-EVIDENCE-RECONCILIATION",
+        "controlEpoch": "FD-P3-2026-09-23-08"
+      },
+      {
+        "commit": "08e2f8cbf99b69ff1220b9dc1e933ec08fe57158",
+        "path": "docs/agents/P3-E08-B11-ONE-PASS-A-REPAIR.md",
+        "blob": "41dca8d12bf258b92299660d3e135fe9456719a6",
+        "sha256": "461476638B42AA31448DADD2026D8B0F9F317FFC6E4BDE474AD3F84FB30F9F00",
+        "taskId": "P3-E08-B11-CI-AND-BINDING-FINALIZATION",
+        "controlEpoch": "FD-P3-2026-09-23-08"
+      },
+      {
+        "commit": "8d8098c9068ad702d65695367d30c5f5c2d85f6d",
+        "path": "docs/agents/P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION.md",
+        "blob": "75ae90a419c47f069858d7a04aceecbd6f3b1edc",
+        "sha256": "46219FFB6D07A5BE54D356CEF4D080ECE0C53D90B063FD1924796904A12670FE",
+        "taskId": "P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION",
+        "controlEpoch": "FD-P3-2026-09-23-08"
+      }
+    ],
     "sourceObjects": {
       "data/authoring": "b2e3896827cf9041e675b6f69c380b2668ff3413",
       "data/packs": "8500f5ce85fef874f0e8325e5c5d2b4b91c9a9a8",
@@ -1228,11 +1261,11 @@
       "packages/content/src": "578877014dfa30200bb7fe44e9126a5e114fd646",
       "packages/rules/src": "91c4f8128ed7a51e7e59854a27f7e4f8fdda299f",
       "scripts/phase3-coverage.ts": "ce6f84862de382703d6bfbf2940e535f1b238be3",
-      "scripts/phase3-e08-b11-coverage-sync.ts": "4274efefc6e15a5cb3dce544242e620f1293cc05",
-      "scripts/tests/phase3-e08-b11-coverage-sync.test.ts": "ae7555a694b2b00d27f0bd8112232e3d0b557d78",
-      "scripts/tests/phase3-e06-post-merge-recount.test.ts": "4b022578290922e6c94c7cf81030dcc85e7d0c8d",
-      "scripts/phase3-preflight.ts": "20eece4c3a43b5af304282bcc404443499eef662",
-      "scripts/tests/phase3-readiness-preflight.test.ts": "57b964df60d73167a7f3b0b76597d4856c72d86c",
+      "scripts/phase3-e08-b11-coverage-sync.ts": "084a218398f460bc74a29e66d778ba52e69353d6",
+      "scripts/tests/phase3-e08-b11-coverage-sync.test.ts": "aa0651daad3e6698300373198e1d90882f742fff",
+      "scripts/tests/phase3-e06-post-merge-recount.test.ts": "9e6c91bf2789de1878b690aff03ec064894bc7f5",
+      "scripts/phase3-preflight.ts": "12a347ee40fa7277eea7f81512209be2f2891b18",
+      "scripts/tests/phase3-readiness-preflight.test.ts": "bbb2a1735aa86801552421cfb8fc9bc8b1ada3b9",
       "apps/server/src": "6f8d10eb9f7bc8ea4008b8e10e531e57574fd552",
       "apps/client/src": "b717b97710a5afa6bb3e362ed6c230e2cde02778",
       "packages/rules/tests": "b171665edc5f149bbdda05886c87eb4020a17158",
@@ -1241,30 +1274,181 @@
       "scripts/phase3-b11-diagnostic-api.ts": "5820ba706be5a5124f3adbec62fd0bcd9cdd7763",
       "scripts/phase3-contract-parity.ts": "a436a858dbc6c21fed48d58ff05538afd088a6e1",
       "scripts/phase3-contract-parity-worker.ts": "dd386ae0e932e055674d53f08d93761edc7b32a1",
-      "package.json": "ba841428f741d8b5cbfc82817dc62e11718bcae1",
+      "package.json": "0f311821628a0a60cb37d752a259e6d688f7a6e9",
       "package-lock.json": "d7844d900ba14635d4b8d2c50ac4954cbc9c0a93",
       "playwright.config.ts": "c41069bee0070a5dd6b5d6653eca1f91d418b133",
       ".github/workflows/test.yml": "fdacabf4b02417252369ca12368e3a0a53942da0"
+    },
+    "changedPaths": [
+      {
+        "path": "artifacts/phase3-e08-b11-ci-and-binding-finalization.json",
+        "authorization": {
+          "commit": "8d8098c9068ad702d65695367d30c5f5c2d85f6d",
+          "path": "docs/agents/P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION.md",
+          "blob": "75ae90a419c47f069858d7a04aceecbd6f3b1edc",
+          "sha256": "46219FFB6D07A5BE54D356CEF4D080ECE0C53D90B063FD1924796904A12670FE",
+          "taskId": "P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION",
+          "controlEpoch": "FD-P3-2026-09-23-08"
+        }
+      },
+      {
+        "path": "artifacts/phase3-e08-b11-final-combination-evidence.json",
+        "authorization": {
+          "commit": "8d8098c9068ad702d65695367d30c5f5c2d85f6d",
+          "path": "docs/agents/P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION.md",
+          "blob": "75ae90a419c47f069858d7a04aceecbd6f3b1edc",
+          "sha256": "46219FFB6D07A5BE54D356CEF4D080ECE0C53D90B063FD1924796904A12670FE",
+          "taskId": "P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION",
+          "controlEpoch": "FD-P3-2026-09-23-08"
+        }
+      },
+      {
+        "path": "artifacts/phase3-skill-coverage.json",
+        "authorization": {
+          "commit": "8d8098c9068ad702d65695367d30c5f5c2d85f6d",
+          "path": "docs/agents/P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION.md",
+          "blob": "75ae90a419c47f069858d7a04aceecbd6f3b1edc",
+          "sha256": "46219FFB6D07A5BE54D356CEF4D080ECE0C53D90B063FD1924796904A12670FE",
+          "taskId": "P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION",
+          "controlEpoch": "FD-P3-2026-09-23-08"
+        }
+      },
+      {
+        "path": "docs/reports/2026-10-10-p3-e08-b11-ci-and-binding-finalization.md",
+        "authorization": {
+          "commit": "8d8098c9068ad702d65695367d30c5f5c2d85f6d",
+          "path": "docs/agents/P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION.md",
+          "blob": "75ae90a419c47f069858d7a04aceecbd6f3b1edc",
+          "sha256": "46219FFB6D07A5BE54D356CEF4D080ECE0C53D90B063FD1924796904A12670FE",
+          "taskId": "P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION",
+          "controlEpoch": "FD-P3-2026-09-23-08"
+        }
+      },
+      {
+        "path": "docs/reports/2026-10-10-p3-e08-b11-final-combination-evidence.md",
+        "authorization": {
+          "commit": "8d8098c9068ad702d65695367d30c5f5c2d85f6d",
+          "path": "docs/agents/P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION.md",
+          "blob": "75ae90a419c47f069858d7a04aceecbd6f3b1edc",
+          "sha256": "46219FFB6D07A5BE54D356CEF4D080ECE0C53D90B063FD1924796904A12670FE",
+          "taskId": "P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION",
+          "controlEpoch": "FD-P3-2026-09-23-08"
+        }
+      },
+      {
+        "path": "package.json",
+        "authorization": {
+          "commit": "08e2f8cbf99b69ff1220b9dc1e933ec08fe57158",
+          "path": "docs/agents/P3-E08-B11-ONE-PASS-A-REPAIR.md",
+          "blob": "41dca8d12bf258b92299660d3e135fe9456719a6",
+          "sha256": "461476638B42AA31448DADD2026D8B0F9F317FFC6E4BDE474AD3F84FB30F9F00",
+          "taskId": "P3-E08-B11-CI-AND-BINDING-FINALIZATION",
+          "controlEpoch": "FD-P3-2026-09-23-08"
+        }
+      },
+      {
+        "path": "scripts/fixtures/phase3-b11-task-check.json",
+        "authorization": {
+          "commit": "8d8098c9068ad702d65695367d30c5f5c2d85f6d",
+          "path": "docs/agents/P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION.md",
+          "blob": "75ae90a419c47f069858d7a04aceecbd6f3b1edc",
+          "sha256": "46219FFB6D07A5BE54D356CEF4D080ECE0C53D90B063FD1924796904A12670FE",
+          "taskId": "P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION",
+          "controlEpoch": "FD-P3-2026-09-23-08"
+        }
+      },
+      {
+        "path": "scripts/phase3-e08-b11-coverage-sync.ts",
+        "authorization": {
+          "commit": "8d8098c9068ad702d65695367d30c5f5c2d85f6d",
+          "path": "docs/agents/P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION.md",
+          "blob": "75ae90a419c47f069858d7a04aceecbd6f3b1edc",
+          "sha256": "46219FFB6D07A5BE54D356CEF4D080ECE0C53D90B063FD1924796904A12670FE",
+          "taskId": "P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION",
+          "controlEpoch": "FD-P3-2026-09-23-08"
+        }
+      },
+      {
+        "path": "scripts/phase3-preflight.ts",
+        "authorization": {
+          "commit": "8d8098c9068ad702d65695367d30c5f5c2d85f6d",
+          "path": "docs/agents/P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION.md",
+          "blob": "75ae90a419c47f069858d7a04aceecbd6f3b1edc",
+          "sha256": "46219FFB6D07A5BE54D356CEF4D080ECE0C53D90B063FD1924796904A12670FE",
+          "taskId": "P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION",
+          "controlEpoch": "FD-P3-2026-09-23-08"
+        }
+      },
+      {
+        "path": "scripts/tests/phase3-e06-post-merge-recount.test.ts",
+        "authorization": {
+          "commit": "8d8098c9068ad702d65695367d30c5f5c2d85f6d",
+          "path": "docs/agents/P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION.md",
+          "blob": "75ae90a419c47f069858d7a04aceecbd6f3b1edc",
+          "sha256": "46219FFB6D07A5BE54D356CEF4D080ECE0C53D90B063FD1924796904A12670FE",
+          "taskId": "P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION",
+          "controlEpoch": "FD-P3-2026-09-23-08"
+        }
+      },
+      {
+        "path": "scripts/tests/phase3-e08-b11-coverage-sync.test.ts",
+        "authorization": {
+          "commit": "8d8098c9068ad702d65695367d30c5f5c2d85f6d",
+          "path": "docs/agents/P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION.md",
+          "blob": "75ae90a419c47f069858d7a04aceecbd6f3b1edc",
+          "sha256": "46219FFB6D07A5BE54D356CEF4D080ECE0C53D90B063FD1924796904A12670FE",
+          "taskId": "P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION",
+          "controlEpoch": "FD-P3-2026-09-23-08"
+        }
+      },
+      {
+        "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+        "authorization": {
+          "commit": "8d8098c9068ad702d65695367d30c5f5c2d85f6d",
+          "path": "docs/agents/P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION.md",
+          "blob": "75ae90a419c47f069858d7a04aceecbd6f3b1edc",
+          "sha256": "46219FFB6D07A5BE54D356CEF4D080ECE0C53D90B063FD1924796904A12670FE",
+          "taskId": "P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION",
+          "controlEpoch": "FD-P3-2026-09-23-08"
+        }
+      }
+    ],
+    "publication": {
+      "mode": "PINNED_GIT_OBJECTS; REMOTE_PUBLICATION_RECORDED_IN_PACKET",
+      "mainMembership": [
+        {
+          "commit": "8eb752c181ea025ac54c53f425a89aa64238f575",
+          "onObservedMain": false
+        },
+        {
+          "commit": "08e2f8cbf99b69ff1220b9dc1e933ec08fe57158",
+          "onObservedMain": false
+        },
+        {
+          "commit": "8d8098c9068ad702d65695367d30c5f5c2d85f6d",
+          "onObservedMain": false
+        }
+      ]
     }
   },
   "checks": [
     {
       "id": "b11-component-scenario",
       "command": "npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/production-resolution-bridge.test.ts",
-      "state": "PENDING_FRESH_EXECUTION_PACKET_BINDING",
-      "testedSha": "db7c5625bedf634e0f9a065d9ee6cf1a12800507"
+      "sourceSha": "c13add9ad5daee46c2f16bafa175abfb78beb020",
+      "state": "PENDING_FINAL_RA_RB"
     },
     {
       "id": "socket-boundary",
       "command": "npm run test --workspace @fd/server -- src/match-server.test.ts",
-      "state": "PENDING_FRESH_EXECUTION_PACKET_BINDING",
-      "testedSha": "db7c5625bedf634e0f9a065d9ee6cf1a12800507"
+      "sourceSha": "c13add9ad5daee46c2f16bafa175abfb78beb020",
+      "state": "PENDING_FINAL_RA_RB"
     },
     {
       "id": "browser",
       "command": "npx playwright test e2e/fd-golden-eater-result-binding.spec.ts e2e/fd-conversion-magic-core-primitive.spec.ts --repeat-each=5",
-      "state": "PENDING_FRESH_EXECUTION_PACKET_BINDING",
-      "testedSha": "db7c5625bedf634e0f9a065d9ee6cf1a12800507"
+      "sourceSha": "c13add9ad5daee46c2f16bafa175abfb78beb020",
+      "state": "PENDING_FINAL_RA_RB"
     }
   ],
   "formalCredit": {
@@ -1272,5 +1456,242 @@
     "migrationCreditDelta": 0,
     "denominatorDelta": 0,
     "promotedOnMain": false
+  },
+  "execution": {
+    "schemaVersion": "fd-p3-continuation-execution-v1",
+    "carryingSha": "RESOLVE_FROM_GIT_HANDOFF_NOT_SELF_REFERENTIAL",
+    "receipts": [],
+    "receiptReference": null,
+    "reviews": [
+      {
+        "commit": "fec28af32f3a14cfc174cfedcfb5ecbefd8344fd",
+        "path": "docs/reviews/phase3/P3-E08-B11-final-blocked-packet-reviewer-a.json",
+        "blob": "98b95e3102468969580ca2b7a55a719b82979196",
+        "sha256": "77F973E2CF83321DF810CF4C55DCCA2FCE9A90FE27097826F2BA236B4DFB20D7",
+        "reviewedSha": "11c1985dc4c72151bbf16298292bf4b7fa29fcab",
+        "scope": "A_OWNED_BLOCKED_PACKET_EVIDENCE_CONSISTENCY_AND_HISTORICAL_FINAL_BINDING_ONLY",
+        "inheritedFinalAcceptance": false,
+        "parent": "11c1985dc4c72151bbf16298292bf4b7fa29fcab",
+        "artifact": {
+          "schemaVersion": "fd-phase3-reviewer-a-final-blocked-packet-review-v1",
+          "taskId": "P3-E08-B11-FINAL-EVIDENCE-RECONCILIATION",
+          "controlEpoch": "FD-P3-2026-09-23-08",
+          "reviewDate": "2026-10-10",
+          "reviewer": "Reviewer A",
+          "candidateSha": "11c1985dc4c72151bbf16298292bf4b7fa29fcab",
+          "reviewedSha": "11c1985dc4c72151bbf16298292bf4b7fa29fcab",
+          "frozenCombinationSha": "4ed28937a5a747e8ea2b5cd189255ca8dddee838",
+          "finalSourceSha": "db7c5625bedf634e0f9a065d9ee6cf1a12800507",
+          "observedMainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+          "conclusion": "REVIEW_ACCEPTED",
+          "finalVerdict": "PASS",
+          "acceptedScope": "A_OWNED_BLOCKED_PACKET_EVIDENCE_CONSISTENCY_AND_HISTORICAL_FINAL_BINDING_ONLY",
+          "findings": [],
+          "boundArtifact": {
+            "path": "artifacts/phase3-e08-b11-final-combination-evidence.json",
+            "sha256": "0A0CBDE50BDED8BA13EF06F0166DEA7D1AED65AE316FC3CA4ACFA974DA9AB5A6"
+          },
+          "independentValidation": {
+            "testedSha": "11c1985dc4c72151bbf16298292bf4b7fa29fcab",
+            "focused": {
+              "command": "npx --no-install vitest run scripts/tests/phase3-e08-b11-coverage-sync.test.ts scripts/tests/phase3-e06-post-merge-recount.test.ts scripts/tests/phase3-readiness-preflight.test.ts",
+              "files": 3,
+              "tests": 15,
+              "durationSeconds": 43.88,
+              "exitCode": 0,
+              "result": "PASS"
+            },
+            "completeScopedDiffCheck": "PASS",
+            "nineAuthorizedPathsRelativeTo46dbd031": "PASS",
+            "carrierDirectParentEqualsFrozenCombination": "PASS",
+            "carrierOnlyChangesPacketAndReport": "PASS",
+            "sourceObjectBindings": {
+              "count": 23,
+              "result": "PASS",
+              "scope": "FINAL_SOURCE_FROZEN_COMBINATION_AND_CARRIER_EQUALITY"
+            },
+            "sourceMembershipParentsTreesAndAncestry": {
+              "count": 6,
+              "result": "PASS",
+              "acceptanceInherited": false
+            },
+            "originalReviewHashesParentsAndEmbeddedArtifacts": {
+              "count": 3,
+              "result": "PASS",
+              "acceptedScopesExpanded": false
+            },
+            "provenanceReferencesAndIntroducingParents": {
+              "count": 40,
+              "result": "PASS",
+              "originalAuthorityGranted": false
+            },
+            "overlappingSourceReferences": {
+              "count": 2,
+              "result": "PASS",
+              "runtimeDeltaAccepted": false
+            },
+            "historicalArtifactBytesPreserved": "PASS",
+            "currentCoverageArtifactHash": "PASS",
+            "recordedCommandOutputHashesAndTestedSha": {
+              "count": 14,
+              "result": "PASS"
+            },
+            "previousAttemptCommandOutputHashes": "PASS",
+            "preflightIssuesPreservedWithExplicitCurrentCiBlocker": "PASS",
+            "formalAccountingAndZeroCredit": "PASS",
+            "fullCi": "RECORDED_OUTPUT_INSPECTED_NOT_RERUN",
+            "runtimeServerAndBrowserSuites": "RECORDED_OUTPUT_INSPECTED_NOT_RERUN",
+            "typecheckContentAndGeneratedDeterminism": "RECORDED_OUTPUT_INSPECTED_NOT_RERUN"
+          },
+          "producerExecutionBoundary": {
+            "testedSha": "4ed28937a5a747e8ea2b5cd189255ca8dddee838",
+            "carrierFullCiClaimed": false,
+            "defaultCi": {
+              "files": 193,
+              "tests": 1507,
+              "assertionsPassed": true,
+              "exitCode": 1,
+              "status": "FAIL",
+              "error": "[vitest-worker]: Timeout calling onTaskUpdate",
+              "rootCause": "UNCONFIRMED"
+            },
+            "sourceAssets": {
+              "missingImages": 93,
+              "exitCode": 1,
+              "status": "FAIL"
+            },
+            "preflight": {
+              "status": "FAIL",
+              "unprovenOriginalAuthorizations": 7,
+              "pathScopeReviewsPending": 33,
+              "overlappingSourceChangesPending": 2,
+              "executionReferencesPending": 3,
+              "finalReviewPendingAtPacketCreation": true
+            }
+          },
+          "formalAccounting": {
+            "accepted": 111,
+            "denominator": 944,
+            "remaining": 833,
+            "mainCoverageCreditDelta": 0,
+            "migrationCreditDelta": 0,
+            "denominatorDelta": 0,
+            "promotedOnMain": false
+          },
+          "overallCombinationReadiness": "BLOCKED_CURRENT_CI_RPC_AND_ORIGINAL_AUTHORIZATION_GAPS",
+          "runtimeAcceptanceGranted": false,
+          "fixtureSemanticAcceptanceGranted": false,
+          "fallbackClosureVerified": false,
+          "browserAcceptanceGranted": false,
+          "globalGateC": "NOT_VERIFIED",
+          "gatePromotionGranted": false,
+          "promotionAllowed": false,
+          "githubRequiredChecksVerified": false,
+          "githubAttestationProvided": false,
+          "c01DispatchAuthorized": false,
+          "retainedLimitations": [
+            "Default full CI exits 1 despite passing assertions; RPC failure requires separate Planner disposition",
+            "Original authorization, path-level review, overlapping runtime delta and check-reference gaps remain unresolved",
+            "Prior scoped reviews are not final combination acceptance",
+            "Reviewer B owns runtime, socket, fixture semantics and combined behavior acceptance",
+            "93 missing-image source-assets Release blockers remain; no policy waiver granted",
+            "Full current CI and runtime/browser suites were not independently rerun by Reviewer A",
+            "This local review artifact is not a GitHub promotion attestation or required-check acceptance"
+          ],
+          "nextStep": "PLANNER_DISPOSE_CI_RPC_AND_ORIGINAL_AUTHORITY_GAPS; REVIEWER_B_REVIEW_OWN_SCOPE; INTEGRATION_AND_C01_DISPATCH_REMAIN_BLOCKED"
+        }
+      },
+      {
+        "commit": "5a361fffaf9c151ffbc27c995ea773380692e120",
+        "path": "docs/reviews/phase3/P3-E08-B11-final-packet-11c1985-reviewer-b.json",
+        "blob": "513c0aaa882c6e17cc1d129da0b8d2a72c9eaa67",
+        "sha256": "6A6B732622E7275FA2D387AAD06C6B93C6C54FCDB83B1CDF61B2F7C0523D5CF8",
+        "reviewedSha": "11c1985dc4c72151bbf16298292bf4b7fa29fcab",
+        "scope": "NARROW_RUNTIME_SOURCE_AND_COMPONENT_SERVER_ONLY; BLOCKED_NOT_FINAL_ACCEPTANCE",
+        "inheritedFinalAcceptance": false,
+        "parent": "11c1985dc4c72151bbf16298292bf4b7fa29fcab",
+        "artifact": {
+          "schemaVersion": "fd-phase3-reviewer-b-final-packet-review-v1",
+          "taskId": "P3-E08-B11-FINAL-EVIDENCE-RECONCILIATION",
+          "controlEpoch": "FD-P3-2026-09-23-08",
+          "reviewDate": "2026-10-10",
+          "reviewer": "Codex Reviewer B",
+          "verdict": "BLOCKED",
+          "reviewedCarrierSha": "11c1985dc4c72151bbf16298292bf4b7fa29fcab",
+          "frozenCombinationSha": "4ed28937a5a747e8ea2b5cd189255ca8dddee838",
+          "finalSourceSha": "db7c5625bedf634e0f9a065d9ee6cf1a12800507",
+          "packetPath": "artifacts/phase3-e08-b11-final-combination-evidence.json",
+          "packetSha256": "0A0CBDE50BDED8BA13EF06F0166DEA7D1AED65AE316FC3CA4ACFA974DA9AB5A6",
+          "scope": "B11 scoped consumer semantics, preserved Reviewer B evidence, compiler/interpreter overlap identity, and fail-visible final acceptance boundaries. Tooling/governance acceptance remains Reviewer A/Planner owned.",
+          "authorizedAbilities": [
+            "sc-kintoki-3.golden-eater",
+            "conversion-magic.preparation"
+          ],
+          "narrowChecks": {
+            "priorReviewerBBytesAndConclusion": "PASS: original f2da26c artifact hash matches and embedded JSON equals exact Git artifact; acceptance scope is not expanded.",
+            "allEmbeddedScopedReviewBytes": "PASS: all three listed review hashes and exactOriginalArtifact objects verified against Git.",
+            "packetHash": "PASS",
+            "declaredSourceObjects": "PASS: every sourceObjects Git object matches both frozen combination and reviewed carrier.",
+            "compilerInterpreterOverlap": "PASS: no source diff between accepted 7ec91bbc and finalSourceSha in these two files. This establishes implementation identity, not original write authorization.",
+            "carrierDeltaFromFrozenCombination": "Only consolidated packet and report differ; no runtime, server, authoring or browser test delta.",
+            "browserEvidenceBoundary": "Submitted suites use trusted fixture servers and real browser/WS commands from scoped windows. They do not establish natural create/select/start progression or Global Gate C.",
+            "blockedDisposition": "Accurate: CI process exit 1 retained despite passing assertions; original authorization and fresh check-reference gaps remain explicit."
+          },
+          "independentVerification": {
+            "testedSha": "11c1985dc4c72151bbf16298292bf4b7fa29fcab",
+            "componentCommand": "npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/production-resolution-bridge.test.ts packages/rules/tests/regression/b11-conversion-classification-api.test.ts packages/rules/tests/regression/b11-conversion-binding-ownership.test.ts --maxWorkers=2",
+            "componentFiles": 4,
+            "componentTestsPassed": 51,
+            "serverCommand": "npm run test --workspace @fd/server -- src/match-server.test.ts",
+            "serverTestsPassed": 11,
+            "fullCiRerun": false,
+            "browserRerun": false,
+            "note": "Fresh local executions use carrier HEAD. Frozen-combination executions are producer evidence and are not relabeled as independent Reviewer B browser/CI runs."
+          },
+          "remainingBlockers": [
+            {
+              "code": "CURRENT_DEFAULT_CI_UNHANDLED_RPC_TIMEOUT",
+              "disposition": "Keep FAIL until CI owner provides reproducible disposition and required fresh passing execution; assertion counts do not override exit 1."
+            },
+            {
+              "code": "ORIGINAL_AUTHORIZATION_UNPROVEN",
+              "disposition": "Planner must establish original authorization for seven B paths. Reviewer B source identity and narrow correctness review cannot manufacture that authority."
+            },
+            {
+              "code": "PATH_SCOPE_REVIEW_AND_EXECUTION_BINDING_PENDING",
+              "disposition": "Keep unresolved role/path review and three check references pending until their exact evidence is bound by authorized owners."
+            },
+            {
+              "code": "SOURCE_ASSETS_MISSING",
+              "disposition": "Submitted source-assets result remains FAIL with 93 missing images; no Release waiver is granted."
+            },
+            {
+              "code": "FINAL_REVIEWER_A_PENDING",
+              "disposition": "This artifact cannot supply Reviewer A tooling/evidence acceptance."
+            }
+          ],
+          "newRuntimeDefectsFound": [],
+          "nonClaims": [
+            "Final readiness PASS",
+            "Global Gate C",
+            "Main promotion",
+            "Phase 3 complete",
+            "Release ready",
+            "GitHub required checks",
+            "Original authorization approval"
+          ],
+          "formalCredit": {
+            "coverageDelta": 0,
+            "migrationDelta": 0,
+            "denominatorDelta": 0,
+            "promotedOnMain": false
+          },
+          "githubIdentity": null,
+          "githubReviewThread": null,
+          "reviewCommitBinding": "Artifact-only containing commit; SHA and artifact digest reported externally."
+        }
+      }
+    ],
+    "finalReviewState": "PENDING_FINAL_RA_RB"
   }
 }
