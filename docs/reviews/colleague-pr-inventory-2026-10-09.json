@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 25,
-    "pending": 509,
+    "reviewed": 26,
+    "pending": 508,
     "blocked": 0,
     "notVerified": 0
   },
@@ -21777,11 +21777,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "WHOLE_F4_B05_MALFORMED_EVENT_RESOURCE_LIFECYCLE_ADMISSION_GATE",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-15.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/f4-b05-event-resource-lifecycle-migrations.test.ts packages/rules/tests/f4-b04-event-source-power-resource-migrations.test.ts packages/rules/tests/f4-b03-modifier-lifecycle-migrations.test.ts packages/rules/tests/regression/fb2-deployment-resource-reward.test.ts packages/rules/tests/fb2-54-event-power-uncontested-win-reward.test.ts packages/rules/tests/core/movement.test.ts packages/rules/tests/regression/replay.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+            "targetSha": "14aee956ac561c4460dd7923d6155b26b7ee822c",
+            "result": "8 files /106 tests PASS,B05 itself11/11",
+            "artifactIdentity": "2026-10-10-pr-438-focused"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=1",
+            "targetSha": "14aee956ac561c4460dd7923d6155b26b7ee822c",
+            "result": "Exit1:192 files PASS/1 FAIL,1471 tests PASS/1 FAIL; inherited Helena163 vs151 only",
+            "artifactIdentity": "2026-10-10-pr-438-full-ci"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-438-independent.mjs",
+            "targetSha": "14aee956ac561c4460dd7923d6155b26b7ee822c",
+            "result": "Exit1:five controls PASS,six malformed gates FAIL;raw/compiled=true,issues0,closed=true. Text/hash and161->163 verified; five locator differences reported,authority NOT_VERIFIED. Actual support isolation and backend-arm duplicate rollback PASS",
+            "artifactIdentity": "docs/reviews/probes/review-438-independent.mjs"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0

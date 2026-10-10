@@ -2,6 +2,14 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch15 records PR438 FAILED on 2026-10-10: six malformed B05 fields are
+accepted and actually close the source. Five independent controls PASS,including
+real support-deployment isolation and backend-arm rollback. Text/hash match but
+five locator differences remain unverified. Focused106/106 PASS;full CI192 files
+PASS/1 FAIL,1471 tests PASS/1 FAIL,inherited Helena163 vs151 only. Live bindings/main
+unchanged. Cumulative:26/534,9 PASS,17 FAILED,508 pending. See batch15 and
+2026-10-10-pr-438-review.md. All-PR goal remains active and incomplete.
+
 Batch14 records PR437 FAILED on 2026-10-10: new B04 empty-envelope predicates
 admit six malformed containers with raw/compiled=true,issues0,actual power8.
 Four independent controls PASS; focused102/102 PASS; full CI191 files PASS/1 FAIL,
