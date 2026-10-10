@@ -3,7 +3,7 @@
   "taskId": "P3-E08-B11-COMBINATION-READINESS",
   "controlEpoch": "FD-P3-2026-09-23-08",
   "baseSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
-  "candidateSha": "ae95d19fd3c13bfe5962373c51560a76c90bae04",
+  "candidateSha": "db7c5625bedf634e0f9a065d9ee6cf1a12800507",
   "authorization": {
     "commit": "8eb752c181ea025ac54c53f425a89aa64238f575",
     "path": "docs/agents/P3-E08-B11-FINAL-EVIDENCE-REPAIR-AUTHORIZATION.md",
@@ -1220,7 +1220,7 @@
     "runtimeServerReservation": "RETAINED_BY_B"
   },
   "finalBinding": {
-    "sourceSha": "ae95d19fd3c13bfe5962373c51560a76c90bae04",
+    "sourceSha": "db7c5625bedf634e0f9a065d9ee6cf1a12800507",
     "sourceObjects": {
       "data/authoring": "b2e3896827cf9041e675b6f69c380b2668ff3413",
       "data/packs": "8500f5ce85fef874f0e8325e5c5d2b4b91c9a9a8",
@@ -1228,11 +1228,23 @@
       "packages/content/src": "578877014dfa30200bb7fe44e9126a5e114fd646",
       "packages/rules/src": "91c4f8128ed7a51e7e59854a27f7e4f8fdda299f",
       "scripts/phase3-coverage.ts": "ce6f84862de382703d6bfbf2940e535f1b238be3",
-      "scripts/phase3-e08-b11-coverage-sync.ts": "5cfbd15d19eaa7375093664d1f529ab7cf3ce3d7",
+      "scripts/phase3-e08-b11-coverage-sync.ts": "4274efefc6e15a5cb3dce544242e620f1293cc05",
       "scripts/tests/phase3-e08-b11-coverage-sync.test.ts": "ae7555a694b2b00d27f0bd8112232e3d0b557d78",
       "scripts/tests/phase3-e06-post-merge-recount.test.ts": "4b022578290922e6c94c7cf81030dcc85e7d0c8d",
-      "scripts/phase3-preflight.ts": "3c0ec10ba72b4c6d91de3b080c5815788f71d783",
-      "scripts/tests/phase3-readiness-preflight.test.ts": "57b964df60d73167a7f3b0b76597d4856c72d86c"
+      "scripts/phase3-preflight.ts": "20eece4c3a43b5af304282bcc404443499eef662",
+      "scripts/tests/phase3-readiness-preflight.test.ts": "57b964df60d73167a7f3b0b76597d4856c72d86c",
+      "apps/server/src": "6f8d10eb9f7bc8ea4008b8e10e531e57574fd552",
+      "apps/client/src": "b717b97710a5afa6bb3e362ed6c230e2cde02778",
+      "packages/rules/tests": "b171665edc5f149bbdda05886c87eb4020a17158",
+      "e2e": "c35df85c558bbc6147be19dd12f967188b43951b",
+      "scripts/phase3-tooling-common.ts": "5392c14e86f52978c88b795524fef1efcb86fd80",
+      "scripts/phase3-b11-diagnostic-api.ts": "5820ba706be5a5124f3adbec62fd0bcd9cdd7763",
+      "scripts/phase3-contract-parity.ts": "a436a858dbc6c21fed48d58ff05538afd088a6e1",
+      "scripts/phase3-contract-parity-worker.ts": "dd386ae0e932e055674d53f08d93761edc7b32a1",
+      "package.json": "ba841428f741d8b5cbfc82817dc62e11718bcae1",
+      "package-lock.json": "d7844d900ba14635d4b8d2c50ac4954cbc9c0a93",
+      "playwright.config.ts": "c41069bee0070a5dd6b5d6653eca1f91d418b133",
+      ".github/workflows/test.yml": "fdacabf4b02417252369ca12368e3a0a53942da0"
     }
   },
   "checks": [
@@ -1240,19 +1252,19 @@
       "id": "b11-component-scenario",
       "command": "npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/production-resolution-bridge.test.ts",
       "state": "PENDING_FRESH_EXECUTION_PACKET_BINDING",
-      "testedSha": "ae95d19fd3c13bfe5962373c51560a76c90bae04"
+      "testedSha": "db7c5625bedf634e0f9a065d9ee6cf1a12800507"
     },
     {
       "id": "socket-boundary",
       "command": "npm run test --workspace @fd/server -- src/match-server.test.ts",
       "state": "PENDING_FRESH_EXECUTION_PACKET_BINDING",
-      "testedSha": "ae95d19fd3c13bfe5962373c51560a76c90bae04"
+      "testedSha": "db7c5625bedf634e0f9a065d9ee6cf1a12800507"
     },
     {
       "id": "browser",
       "command": "npx playwright test e2e/fd-golden-eater-result-binding.spec.ts e2e/fd-conversion-magic-core-primitive.spec.ts --repeat-each=5",
       "state": "PENDING_FRESH_EXECUTION_PACKET_BINDING",
-      "testedSha": "ae95d19fd3c13bfe5962373c51560a76c90bae04"
+      "testedSha": "db7c5625bedf634e0f9a065d9ee6cf1a12800507"
     }
   ],
   "formalCredit": {
