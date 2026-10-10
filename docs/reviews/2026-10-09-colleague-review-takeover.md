@@ -2,6 +2,14 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch17 records PR440 FAILED on 2026-10-10: legal Chaos rush cannot receive
+required X through dispatch; new structured flags silently lose __proto__.
+Three independent expected assertions PASS,including whole50/41-archive
+165->215 recount. Full CI195 files/1496 tests PASS;build/content/determinism
+PASS. This is a whole-batch blocking disposition,not exhaustive50-contract
+clearance. Live bindings/main unchanged. Cumulative:28/534,9 PASS,19 FAILED,
+506 pending. See batch17 and2026-10-10-pr-440-review.md. Goal remains active.
+
 Batch16 records PR439 FAILED on 2026-10-10: six malformed B06 fields actually
 install event bursts or punishment arms,and new Amakusa S1 breaks the historical
 Ruler scope test(exact base5/5 PASS,candidate4 PASS/1 FAIL). Four independent

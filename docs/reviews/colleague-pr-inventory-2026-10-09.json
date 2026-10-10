@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 27,
-    "pending": 507,
+    "reviewed": 28,
+    "pending": 506,
     "blocked": 0,
     "notVerified": 0
   },
@@ -21997,11 +21997,30 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "WHOLE_M50_MACRO_BATCH_BLOCKING_PAYLOAD_INGRESS_AND_FLAG_STORAGE_GATE",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-17.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=1",
+            "targetSha": "f0e5554e3210e721ae98faa29fc5241b410c5b72",
+            "result": "195 files/1496 tests PASS; default timeout; M50 suite8/8 included",
+            "artifactIdentity": "pr440-full-ci"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-440-independent.mjs",
+            "targetSha": "f0e5554e3210e721ae98faa29fc5241b410c5b72",
+            "result": "Exit0:3 expected assertions PASS;50 new IDs/41 archives/165->215/944/no duplicate verified;Chaos missing or supplied X always rejected;synthetic reserved flag silently lost",
+            "artifactIdentity": "docs/reviews/probes/review-440-independent.mjs"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0
