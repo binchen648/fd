@@ -8399,6 +8399,11 @@
       "freeBytes": 511303680,
       "driveDfreeBytes": 55686569984,
       "source": "Get-PSDrive read-only observation after test cleanup"
+    },
+    "packagingDiagnostic": {
+      "command": "read-only git show receipt packet",
+      "failure": "ENOBUFS: administrative wrapper default 1 MiB output buffer",
+      "disposition": "Wrapper used existing tooling-equivalent 64 MiB buffer; no source change, CI retry, RPC timeout change or suppression"
     }
   },
   "coverage": {
@@ -8421,7 +8426,7 @@
     "inputs": {
       "testedCandidateSha": "c13add9ad5daee46c2f16bafa175abfb78beb020",
       "testedBaseSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
-      "inputSha256": "2B01CF13E81061B9629F26541169CD56D92271B54DA6AC0F3D7275F2C73C2210"
+      "inputSha256": "3C6C98AE11033E5E5BEDE6EE40A2D510B1616CE06D52B119329CF01E04B1FB7B"
     },
     "changedPaths": [
       "apps/server/src/match-server.test.ts",
@@ -9649,7 +9654,12 @@
           "outputSha256": "74B292FA6C6991D35A56D0FBE23641C3DA3D5A0A42A7AC7CCB612569786766E7"
         }
       ],
-      "receiptReference": null,
+      "receiptReference": {
+        "commit": "81344883ed92406af79b47d4a5aab75c31369b71",
+        "path": "artifacts/phase3-e08-b11-final-combination-evidence.json",
+        "blob": "c969aefebee3a45e6dd60fd3ba817bd82819a129",
+        "sha256": "3DFF60D5BD9DDE9F884430EF42158A35EC57BF5E70B36CE919818855A04C92B0"
+      },
       "reviews": [
         {
           "commit": "fec28af32f3a14cfc174cfedcfb5ecbefd8344fd",
@@ -9883,11 +9893,6 @@
       "finalReviewState": "PENDING_FINAL_RA_RB"
     },
     "issues": [
-      {
-        "code": "UNSEALED_EXECUTION_RECEIPTS",
-        "path": "execution.receiptReference",
-        "message": "Bind the recorded packet commit/path/blob/hash before carrier handoff; no acceptance inferred"
-      },
       {
         "code": "PATH_SCOPE_REVIEW_PENDING",
         "path": "artifacts/phase3-e08-b11-inventory-coverage-parity.json",
@@ -10124,11 +10129,6 @@
     "promotionPolicyChanged": false
   },
   "remainingBlockers": [
-    {
-      "code": "UNSEALED_EXECUTION_RECEIPTS",
-      "path": "execution.receiptReference",
-      "message": "Bind the recorded packet commit/path/blob/hash before carrier handoff; no acceptance inferred"
-    },
     {
       "code": "PATH_SCOPE_REVIEW_PENDING",
       "path": "artifacts/phase3-e08-b11-inventory-coverage-parity.json",
@@ -10419,5 +10419,11 @@
     ],
     "priorAWorktrees": "CLEAN_AT_RESERVATION; NO_OTHER_OVERLAPPING_WRITER_OBSERVED",
     "runtimeServerReservation": "RETAINED_BY_B"
+  },
+  "executionReceiptReference": {
+    "commit": "81344883ed92406af79b47d4a5aab75c31369b71",
+    "path": "artifacts/phase3-e08-b11-final-combination-evidence.json",
+    "blob": "c969aefebee3a45e6dd60fd3ba817bd82819a129",
+    "sha256": "3DFF60D5BD9DDE9F884430EF42158A35EC57BF5E70B36CE919818855A04C92B0"
   }
 }

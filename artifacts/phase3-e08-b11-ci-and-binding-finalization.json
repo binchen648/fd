@@ -6,7 +6,7 @@
   "sourceSha": "c13add9ad5daee46c2f16bafa175abfb78beb020",
   "packet": {
     "path": "artifacts/phase3-e08-b11-final-combination-evidence.json",
-    "sha256": "3DFF60D5BD9DDE9F884430EF42158A35EC57BF5E70B36CE919818855A04C92B0"
+    "sha256": "E9F9CEAE529013BC74A1E73EDC0D55F995A1827FAFA8FF6E10D3486331CAC3DB"
   },
   "historical": {
     "commit": "4d911906c00b0d0309f82adefb96cd8680baa6da",
@@ -4004,5 +4004,11 @@
     "denominatorDelta": 0,
     "promotedOnMain": false
   },
-  "acceptanceGranted": false
+  "acceptanceGranted": false,
+  "executionReceiptReference": {
+    "commit": "81344883ed92406af79b47d4a5aab75c31369b71",
+    "path": "artifacts/phase3-e08-b11-final-combination-evidence.json",
+    "blob": "c969aefebee3a45e6dd60fd3ba817bd82819a129",
+    "sha256": "3DFF60D5BD9DDE9F884430EF42158A35EC57BF5E70B36CE919818855A04C92B0"
+  }
 }

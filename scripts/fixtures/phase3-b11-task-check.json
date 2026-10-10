@@ -1550,7 +1550,12 @@
         "outputSha256": "74B292FA6C6991D35A56D0FBE23641C3DA3D5A0A42A7AC7CCB612569786766E7"
       }
     ],
-    "receiptReference": null,
+    "receiptReference": {
+      "commit": "81344883ed92406af79b47d4a5aab75c31369b71",
+      "path": "artifacts/phase3-e08-b11-final-combination-evidence.json",
+      "blob": "c969aefebee3a45e6dd60fd3ba817bd82819a129",
+      "sha256": "3DFF60D5BD9DDE9F884430EF42158A35EC57BF5E70B36CE919818855A04C92B0"
+    },
     "reviews": [
       {
         "commit": "fec28af32f3a14cfc174cfedcfb5ecbefd8344fd",

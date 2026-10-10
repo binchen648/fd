@@ -6,7 +6,7 @@ Observed main: 9a1689d2ec5b56b67d1483d2593b4ab809d6c15c
 Source: c13add9ad5daee46c2f16bafa175abfb78beb020
 Frozen implementation/tested SHA: 9a4f4c6ee2723eb7f546341f3c18a1f0a29c3bc1
 Artifact: artifacts/phase3-e08-b11-final-combination-evidence.json
-SHA-256: 3DFF60D5BD9DDE9F884430EF42158A35EC57BF5E70B36CE919818855A04C92B0
+SHA-256: E9F9CEAE529013BC74A1E73EDC0D55F995A1827FAFA8FF6E10D3486331CAC3DB
 Status: BLOCKED_SECOND_CI_NO_SPACE_AND_ORIGINAL_AUTHORIZATION_GAPS
 
 All prior failures are preserved by exact Git commit/path/blob/SHA-256 and embedded original artifacts. No historical PASS is broadened.
@@ -23,7 +23,6 @@ Current v3 inputs reconstruct authorization from pinned Git objects, verify full
 - npm run test:ci: exit 1; 167040 ms; tested 9a4f4c6ee2723eb7f546341f3c18a1f0a29c3bc1; output SHA-256 74B292FA6C6991D35A56D0FBE23641C3DA3D5A0A42A7AC7CCB612569786766E7
 
 ## Remaining blockers
-- UNSEALED_EXECUTION_RECEIPTS: execution.receiptReference
 - PATH_SCOPE_REVIEW_PENDING: artifacts/phase3-e08-b11-inventory-coverage-parity.json
 - PATH_SCOPE_REVIEW_PENDING: artifacts/phase3-e08-b11-observation-gap-plan.json
 - PATH_SCOPE_REVIEW_PENDING: artifacts/phase3-e08-b11-tooling-coverage.json
@@ -83,3 +82,12 @@ Second failure is Git checkout ENOSPC on C, not a rule assertion or timeout. No 
 Other-worktree CI/test contention was observed during the pair; quiet-execution condition is NOT_MET. No unconditional stability claim.
 C free space after cleanup: 511303680 bytes; D: 55686569984 bytes. No unrelated files deleted.
 Pre-freeze successful preparation and the ignored-artifact staging failure include full raw records/hashes in packet. Earlier tool-observed preparation failures remain explicitly labeled, not fabricated immutable receipts.
+
+## Immutable execution binding
+Receipt packet commit: 81344883ed92406af79b47d4a5aab75c31369b71
+Path: artifacts/phase3-e08-b11-final-combination-evidence.json
+Blob: c969aefebee3a45e6dd60fd3ba817bd82819a129
+SHA-256: 3DFF60D5BD9DDE9F884430EF42158A35EC57BF5E70B36CE919818855A04C92B0
+Actual receipts are bound to this immutable packet; no execution-to-acceptance conversion. Post-stop component/server/browser checks remain pending.
+
+Read-only packet sealing initially exceeded an administrative 1 MiB git-show buffer (ENOBUFS). Only the wrapper buffer was corrected; implementation and CI runs were not changed or repeated.
