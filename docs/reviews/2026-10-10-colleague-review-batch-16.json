@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 439,
+    "headSha": "3fefa0cdb02cf9ff81cec64732cb67e5d6513549",
+    "baseSha": "819f88e84148513d87766cf39db7ae8d1c0c995f",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "FAILED",
+    "scope": "WHOLE_F4_B06_MALFORMED_ADMISSION_AND_RULER_INTEGRATION_GATE",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [
+      {
+        "priority": "P2",
+        "path": "packages/rules/src/ability/batch-card-play-combat-event-burst-rules.ts",
+        "line": 14,
+        "summary": "New exactKeys/empty coerces malformed lifecycle/responseWindow/limit; six cases load issue-free and actually remove events/grant power or install punishment arm.",
+        "introducedRelativeToBase": true
+      },
+      {
+        "priority": "P2",
+        "path": "data/authoring/servants/servant.amakusa.json",
+        "line": 119,
+        "summary": "Amakusa S1 addition triggers unchanged historical Ruler six-ID regression; exact base5/5 PASS,candidate4 PASS/1 FAIL,also full CI failure.",
+        "introducedRelativeToBase": true
+      }
+    ],
+    "evidence": [
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/f4-b06-card-play-combat-event-burst-migrations.test.ts packages/rules/tests/f4-b05-event-resource-lifecycle-migrations.test.ts packages/rules/tests/event-rule.test.ts packages/rules/tests/core/combat-resolver.test.ts packages/rules/tests/core/scoring-resolver.test.ts packages/rules/tests/core/game-loop-battle-cleanup.test.ts packages/rules/tests/regression/replay.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+        "targetSha": "3fefa0cdb02cf9ff81cec64732cb67e5d6513549",
+        "result": "7 actual files/93 tests PASS; nonexistent event-rule path not selected; B06 itself16/16",
+        "artifactIdentity": "2026-10-10-pr-439-focused"
+      },
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/regression/fb2-event-rule-executable-bridge.test.ts --maxWorkers=1",
+        "targetSha": "3fefa0cdb02cf9ff81cec64732cb67e5d6513549",
+        "result": "1 file/6 tests PASS",
+        "artifactIdentity": "2026-10-10-pr-439-event-bridge"
+      },
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci -- --maxWorkers=1",
+        "targetSha": "3fefa0cdb02cf9ff81cec64732cb67e5d6513549",
+        "result": "Exit1:192 files PASS/2 FAIL,1486 tests PASS/2 FAIL; inherited Helena165 vs151 and new Ruler7 vs6",
+        "artifactIdentity": "2026-10-10-pr-439-full-ci"
+      },
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/ruler-consumer-migration.test.ts --maxWorkers=1",
+        "targetSha": "3fefa0cdb02cf9ff81cec64732cb67e5d6513549",
+        "result": "1 file:4 tests PASS/1 FAIL,Ruler identity list7 vs6",
+        "artifactIdentity": "2026-10-10-pr-439-ruler-candidate"
+      },
+      {
+        "kind": "BASELINE_TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npm run typecheck; npx vitest run packages/rules/tests/ruler-consumer-migration.test.ts --maxWorkers=1",
+        "targetSha": "819f88e84148513d87766cf39db7ae8d1c0c995f",
+        "result": "Typecheck PASS;1 file/5 tests PASS after build. Initial unbuilt attempt collection failed,no tests; not credited",
+        "artifactIdentity": "2026-10-10-pr-439-ruler-exact-base"
+      },
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-439-independent.mjs",
+        "targetSha": "3fefa0cdb02cf9ff81cec64732cb67e5d6513549",
+        "result": "Exit1:four controls PASS,six malformed gates FAIL;raw/compiled=true,issues0,applied=true. Text/hash/local locators and163->165 verified; hidden retention,fixed X,expiry,standard remote loser/tamper controls PASS",
+        "artifactIdentity": "docs/reviews/probes/review-439-independent.mjs"
+      },
+      {
+        "kind": "STATIC_AND_BUILD",
+        "producer": "Codex Automation Review Owner",
+        "command": "gh pr view 439 --repo binchen648/fd --json headRefOid,baseRefOid,state; git diff 819f88e84148513d87766cf39db7ae8d1c0c995f 3fefa0cdb02cf9ff81cec64732cb67e5d6513549; npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check 819f88e84148513d87766cf39db7ae8d1c0c995f 3fefa0cdb02cf9ff81cec64732cb67e5d6513549",
+        "targetSha": "3fefa0cdb02cf9ff81cec64732cb67e5d6513549",
+        "result": "Live OPEN bindings/main unchanged;14-path diff read;build/content/determinism/diff PASS;base governance-only delta from reviewed438;Ruler and Helena test blobs unchanged",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-439-review.md"
+      }
+    ],
+    "limitations": [
+      "Whole-batch blocking disposition,not exhaustive runtime/current-main acceptance.",
+      "Local source/hash/locator matching,not original CHM/image/Reference authentication or credit.",
+      "Authoring admission reproduced,not established external-client exploit.",
+      "Inherited Helena/admission/receipt findings not cleared;new Ruler integration failure separately base-tested.",
+      "No current-main recount,browser/client,source-assets,Gate C,coverage/audit regeneration;official CI exclusions retained.",
+      "No GitHub publication,Planner edits,reservation,runtime acceptance,promotion or credit."
+    ]
+  }]
+}

@@ -2,6 +2,14 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch16 records PR439 FAILED on 2026-10-10: six malformed B06 fields actually
+install event bursts or punishment arms,and new Amakusa S1 breaks the historical
+Ruler scope test(exact base5/5 PASS,candidate4 PASS/1 FAIL). Four independent
+controls PASS,focused93+6 PASS;full CI192 files PASS/2 FAIL,1486 tests PASS/2 FAIL.
+Helena165 vs151 remains inherited. Live bindings/main unchanged. Cumulative:
+27/534,9 PASS,18 FAILED,507 pending. See batch16 and2026-10-10-pr-439-review.md.
+All-PR goal remains active and incomplete.
+
 Batch15 records PR438 FAILED on 2026-10-10: six malformed B05 fields are
 accepted and actually close the source. Five independent controls PASS,including
 real support-deployment isolation and backend-arm rollback. Text/hash match but
