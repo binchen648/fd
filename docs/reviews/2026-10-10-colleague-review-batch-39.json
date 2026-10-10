@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [
+    {
+      "pr": 470,
+      "headSha": "c5c418a0c1227924abdac5de6707ebeacbe074a0",
+      "baseSha": "7f0dc16fec89bcbbd78681e7cfc3036616a5c68b",
+      "producer": "Codex Automation Review Owner",
+      "verdict": "FAILED",
+      "scope": "SPARTACUS_SEAL_POWER_READINESS_TECHNICAL_REVIEW",
+      "runtimeAcceptanceGranted": false,
+      "promotionAuthorized": false,
+      "creditDelta": 0,
+      "findings": [
+        {
+          "priority": "P2",
+          "path": "packages/rules/src/match-session.ts",
+          "line": 1293,
+          "summary": "Owned-Ruler pending restore checks any accepted replacement on source,not named abilityId;normal sibling ID/context restores but execution rejects and leaves noncancellable decision.",
+          "introducedRelativeToBase": true
+        },
+        {
+          "priority": "P2",
+          "path": "packages/rules/src/match-session.ts",
+          "line": 1104,
+          "summary": "Dynamic unused-seal modifier restore checks any accepted aura on source,not ongoing abilityId;wrong normal sibling identity restores and authoritative combat still includes +6.",
+          "introducedRelativeToBase": true
+        }
+      ],
+      "evidence": [
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-470-independent.mjs",
+          "targetSha": "c5c418a0c1227924abdac5de6707ebeacbe074a0",
+          "result": "7/7 expected checks PASS incl both signed named-ability corruption defects,repeatable3-to-zero normal use/12 power/expiry,physical/marker/counter rejection,real engaged user/live aura",
+          "artifactIdentity": "docs/reviews/probes/review-470-independent.mjs"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/regression/p3-spartacus-seal-power-readiness-capability.test.ts packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts packages/rules/tests/match-session.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/core/combat-resolver.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/fixed-controller-command-seal-component.test.ts --maxWorkers=1",
+          "targetSha": "c5c418a0c1227924abdac5de6707ebeacbe074a0",
+          "result": "Actual7 files/179 tests PASS;last supplied path nonexistent and not executed,disclosed and corrected separately",
+          "artifactIdentity": "pr470-independent-focused"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/regression/fb2-fixed-controller-command-seal-component.test.ts --maxWorkers=1",
+          "targetSha": "c5c418a0c1227924abdac5de6707ebeacbe074a0",
+          "result": "Corrected component1 file/4 tests PASS;aggregate183 across two runs,not historical227",
+          "artifactIdentity": "pr470-independent-component"
+        },
+        {
+          "kind": "TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npm run test:ci -- --maxWorkers=2",
+          "targetSha": "c5c418a0c1227924abdac5de6707ebeacbe074a0",
+          "result": "156 files/1143 tests:1133 PASS/10 inherited FAIL,no timeouts;not green CI",
+          "artifactIdentity": "pr470-independent-full-ci"
+        },
+        {
+          "kind": "BASELINE_TEST",
+          "producer": "Codex Automation Review Owner",
+          "command": "npx vitest run packages/rules/tests/astolfo-s1-consumer-migration.test.ts packages/rules/tests/m50-02-opponent-close-one-non-residual.test.ts packages/rules/tests/seven-servant-decks.test.ts packages/rules/tests/regression/golden-card-content-pipeline.test.ts packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts --maxWorkers=2",
+          "targetSha": "7f0dc16fec89bcbbd78681e7cfc3036616a5c68b",
+          "result": "5 files/24 tests:14 PASS/10 FAIL matching all10;not full baseline CI",
+          "artifactIdentity": "pr470-exact-base-comparison"
+        },
+        {
+          "kind": "STATIC_AND_BUILD",
+          "producer": "Codex Automation Review Owner",
+          "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 470 --repo binchen648/fd --json headRefOid,baseRefOid,state; gh api repos/binchen648/fd/issues/470/comments --paginate; git fetch origin main",
+          "targetSha": "c5c418a0c1227924abdac5de6707ebeacbe074a0",
+          "result": "Typecheck/content/diff PASS;strict evidence FAIL only31 inherited absent images isolated;live exact bindings unchanged;historical relays separately attributed",
+          "artifactIdentity": "docs/reviews/2026-10-10-pr-470-review.md"
+        }
+      ],
+      "limitations": [
+        "Host-signed structural/semantic restore regression,not unsigned MAC bypass or established external exploit;wrong sibling aura remains same6 not increased reward.",
+        "No actual Spartacus consumer migration;controlled seven-player fixture;full baseline CI/external locked Reference/CHM/UI/network/exhaustive restore unverified.",
+        "First focused command contained unmatched file filter;actual179 then corrected4 recorded separately.",
+        "Historical acceptance not transferred;dependency findings remain;no credit,repair,formal acceptance,GitHub verdict,Planner mutation,Gate,promotion or merge."
+      ]
+    }
+  ]
+}

@@ -2,6 +2,15 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch39 records PR470 technical FAILED on2026-10-10:host-signed restore
+accepts wrong named sibling ability for owned-Ruler pending choice and dynamic
+unused-seal aura;first cannot settle,second remains gameplay-active.
+Independent7/7 expected checks PASS;focused179 then corrected component4 PASS
+(nonexistent initial filter disclosed). Full1133 PASS/10 FAIL,exact-base14
+PASS/10 FAIL matches all10. Strict evidence FAIL only31 absent external images.
+Zero authoring delta/credit. Cumulative50/534,15 PASS,35 FAILED,484 pending.
+See batch39 and2026-10-10-pr-470-review.md. Goal remains active,incomplete.
+
 Batch38 records PR469 technical FAILED on2026-10-10:preexisting persistent
 movement lock strands a spent noncancellable Ruler move;metadata-only destination
 rewrite bypasses authored pair/snapshot. Independent final7/7 expected checks
