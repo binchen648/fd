@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 444,
+    "headSha": "c820161a427de6b0e55c209b7e14e3f6fba36033",
+    "baseSha": "c6c5786cb48f6abc563aa8359e335fbd26c14c4f",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "FAILED",
+    "scope": "FB2_42_CURRENT_MAIN_REPLAY_RULE_BOUNDARY_REVIEW",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [{
+      "priority": "P2", "path": "packages/rules/src/ability/interpreter.ts", "line": 1218,
+      "summary": "New generic close-forbid rejects the source card's own required close through authenticated dispatch and typed resolution,without an explicit exception to Final Rules11.4. Faithfully replayed historical dispatch/source contract itself needs conformance resolution.",
+      "introducedRelativeToBase": true
+    }],
+    "evidence": [
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-444-independent.mjs",
+        "targetSha": "c820161a427de6b0e55c209b7e14e3f6fba36033", "result": "Final12 expected assertions PASS:authenticated self-close rejection reproduction,dispatch/typed rollback,direct-execution usage residual,selector/liveness/bounds controls,111/944 full material recount. Initial atomicity assertion failed as documented",
+        "artifactIdentity": "docs/reviews/probes/review-444-independent.mjs" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/fb2-42-controlled-card-close-forbid.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/lifecycle-source-active-runtime.test.ts packages/rules/tests/regression/card-zone-core-direct-action.test.ts packages/rules/tests/regression/card-action-close.test.ts packages/rules/tests/core/card-source-state.test.ts --maxWorkers=2",
+        "targetSha": "c820161a427de6b0e55c209b7e14e3f6fba36033", "result": "6 files/46 tests PASS",
+        "artifactIdentity": "pr444-independent-focused" },
+      { "kind": "TEST", "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci -- --maxWorkers=2",
+        "targetSha": "c820161a427de6b0e55c209b7e14e3f6fba36033", "result": "131 files/866 tests PASS,original timeout/no added exclusions",
+        "artifactIdentity": "pr444-independent-full-ci" },
+      { "kind": "STATIC_AND_BUILD", "producer": "Codex Automation Review Owner",
+        "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 444 --repo binchen648/fd --json headRefOid,baseRefOid,state; git fetch origin main; gh api repos/binchen648/fd/issues/comments/5748132070",
+        "targetSha": "c820161a427de6b0e55c209b7e14e3f6fba36033", "result": "PASS build/content/determinism/diff;live exact bindings unchanged. Source review attributed;Final Rules11.4/dispatch conflict independently checked",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-444-review.md" }
+    ],
+    "limitations": [
+      "Historical source/helper replay is accurate;blocking issue is controlling-rule conformance,not unexplained divergence from A dispatch.",
+      "Direct executeAbility usage mutation separately observed;authenticated dispatch and typed rollback pass,no client-visible corruption claimed.",
+      "Original Reference/text/images and formal acceptance not revalidated;no product consumer migration present.",
+      "No runtime acceptance,Planner authorization,GitHub publication,Gate C,promotion,merge or credit."
+    ]
+  }]
+}

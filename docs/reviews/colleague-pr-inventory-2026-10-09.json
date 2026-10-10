@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 31,
-    "pending": 503,
+    "reviewed": 32,
+    "pending": 502,
     "blocked": 0,
     "notVerified": 0
   },
@@ -22347,11 +22347,38 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "FB2_42_CURRENT_MAIN_REPLAY_RULE_BOUNDARY_REVIEW",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-21.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-444-independent.mjs",
+            "targetSha": "c820161a427de6b0e55c209b7e14e3f6fba36033",
+            "result": "Final12 expected assertions PASS:authenticated self-close rejection reproduction,dispatch/typed rollback,direct-execution usage residual,selector/liveness/bounds controls,111/944 full material recount. Initial atomicity assertion failed as documented",
+            "artifactIdentity": "docs/reviews/probes/review-444-independent.mjs"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/fb2-42-controlled-card-close-forbid.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/lifecycle-source-active-runtime.test.ts packages/rules/tests/regression/card-zone-core-direct-action.test.ts packages/rules/tests/regression/card-action-close.test.ts packages/rules/tests/core/card-source-state.test.ts --maxWorkers=2",
+            "targetSha": "c820161a427de6b0e55c209b7e14e3f6fba36033",
+            "result": "6 files/46 tests PASS",
+            "artifactIdentity": "pr444-independent-focused"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=2",
+            "targetSha": "c820161a427de6b0e55c209b7e14e3f6fba36033",
+            "result": "131 files/866 tests PASS,original timeout/no added exclusions",
+            "artifactIdentity": "pr444-independent-full-ci"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0

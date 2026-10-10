@@ -2,6 +2,15 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch21 records PR444 FAILED on2026-10-10:generic protection rejects own
+required close despite Final Rules11.4;mechanical source/dispatch replay is
+accurate,but that historical contract needs conformance resolution. Focused
+6 files/46 tests and full CI131 files/866 tests PASS;typecheck/content/
+determinism PASS. Final12 expected independent assertions PASS,including
+reproduction;direct usage residual is separately limited,dispatch rollback PASS.
+Cumulative:32/534,10 PASS,22 FAILED,502 pending. See batch21 and
+2026-10-10-pr-444-review.md. All-PR goal active,incomplete.
+
 Batch20 records PR443 PASS on2026-10-10,limited to the historical FB2-49
 blocker report/task status. Independent5/5 read-only checks PASS:source
 prerequisite missing on exact replay base,pre-mutation guard/source binding,
