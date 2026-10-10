@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "fd-colleague-pr-review-batch-v1",
+  "date": "2026-10-10",
+  "mainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "repository": "binchen648/fd",
+  "role": "Independent technical review, not formal runtime acceptance",
+  "reviews": [{
+    "pr": 475,
+    "headSha": "fe4653d1013110555881585db3a447880dd463d3",
+    "baseSha": "9fd9036c6d74427f88b3b268f9ef2916cf3f3beb",
+    "producer": "Codex Automation Review Owner",
+    "verdict": "FAILED",
+    "scope": "STHENO_OWNER_COMPLETE_MIGRATION_TECHNICAL_REVIEW",
+    "runtimeAcceptanceGranted": false,
+    "promotionAuthorized": false,
+    "creditDelta": 0,
+    "findings": [{
+      "priority": "P1",
+      "path": "data/authoring/servants/servant.stheno.json",
+      "line": 327,
+      "summary": "Actual sc3 exposes inherited PR472 legal nested-response/choice pause restore rejection;normal completion restores.",
+      "introducedRelativeToBase": true
+    }],
+    "evidence": [
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-475-independent.mjs",
+        "targetSha": "fe4653d1013110555881585db3a447880dd463d3",
+        "result": "6/6 expected checks PASS;sc1 exact object/all text hashes,material140->142/no duplicates,cost gates,sc2 real-loop10/9,sc3 ordinary root/round restore,actual nested pause defects",
+        "artifactIdentity": "docs/reviews/probes/review-475-independent.mjs"
+      },
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-472-independent.mjs",
+        "targetSha": "fe4653d1013110555881585db3a447880dd463d3",
+        "result": "7/7 expected checks PASS on this exact target;inherited legal pause defect and authority/round controls;generated31-image diagnostic isolation",
+        "artifactIdentity": "docs/reviews/probes/review-472-independent.mjs"
+      },
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts packages/rules/tests/regression/p3-stheno-divine-core-readiness-capability.test.ts packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/core/combat-resolver.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+        "targetSha": "fe4653d1013110555881585db3a447880dd463d3",
+        "result": "8 files/173 tests PASS;owner5/5;full MatchSession33,not implementer147 subset",
+        "artifactIdentity": "pr475-independent-focused"
+      },
+      {
+        "kind": "TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npm run test:ci -- --maxWorkers=2",
+        "targetSha": "fe4653d1013110555881585db3a447880dd463d3",
+        "result": "160 files/1178 tests:1168 PASS/10 FAIL,no timeouts;all10 classes reproduced at exact base;not green CI/no complementary exclusions",
+        "artifactIdentity": "pr475-independent-full-ci"
+      },
+      {
+        "kind": "BASELINE_TEST",
+        "producer": "Codex Automation Review Owner",
+        "command": "npx vitest run packages/rules/tests/astolfo-s1-consumer-migration.test.ts packages/rules/tests/m50-02-opponent-close-one-non-residual.test.ts packages/rules/tests/seven-servant-decks.test.ts packages/rules/tests/regression/golden-card-content-pipeline.test.ts packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts --maxWorkers=2",
+        "targetSha": "9fd9036c6d74427f88b3b268f9ef2916cf3f3beb",
+        "result": "5 files/24 tests:14 PASS/10 FAIL;Astolfo actual140 base/142 candidate;not full base CI or historical timeout reproduction",
+        "artifactIdentity": "pr475-exact-base-comparison"
+      },
+      {
+        "kind": "STATIC_AND_BUILD",
+        "producer": "Codex Automation Review Owner",
+        "command": "npm run typecheck; npm run content:validate; npm run verify:generated-content; git diff --check <base> <candidate>; gh pr view 475 --repo binchen648/fd --json headRefOid,baseRefOid,state; gh api repos/binchen648/fd/issues/475/comments --paginate; git fetch origin main",
+        "targetSha": "fe4653d1013110555881585db3a447880dd463d3",
+        "result": "Typecheck/content/diff PASS;runtime empty;strict evidence FAIL isolated31 absent images;live bindings unchanged;historical MIGRATION_ACCEPTED separately attributed",
+        "artifactIdentity": "docs/reviews/2026-10-10-pr-475-review.md"
+      }
+    ],
+    "limitations": [
+      "Inherited generic defect/new actual sc3 exposure,no runtime delta;real commands not forged snapshot/decision.",
+      "Probe preparation corrections disclosed;sc2 synthetic-event post-loop restore not claimed;external Reference/product integration/full base CI unverified.",
+      "No formal acceptance,credit,repair,GitHub verdict,Planner mutation,Gate,promotion or merge."
+    ]
+  }]
+}

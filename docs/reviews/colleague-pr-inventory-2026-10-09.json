@@ -18,8 +18,8 @@
     "merged": 20,
     "closed": 5,
     "missingGitObjects": 0,
-    "reviewed": 53,
-    "pending": 481,
+    "reviewed": 54,
+    "pending": 480,
     "blocked": 0,
     "notVerified": 0
   },
@@ -24508,11 +24508,46 @@
         ]
       },
       "technicalReview": {
-        "state": "PENDING",
-        "verdict": null,
-        "reviewerArtifact": null,
-        "testsExecuted": [],
-        "note": "Git ancestry, GitHub state and historical review labels do not grant technical acceptance."
+        "state": "REVIEWED",
+        "verdict": "FAILED",
+        "scope": "STHENO_OWNER_COMPLETE_MIGRATION_TECHNICAL_REVIEW",
+        "producer": "Codex Automation Review Owner",
+        "reviewerArtifact": "docs/reviews/2026-10-10-colleague-review-batch-43.json",
+        "testsExecuted": [
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-475-independent.mjs",
+            "targetSha": "fe4653d1013110555881585db3a447880dd463d3",
+            "result": "6/6 expected checks PASS;sc1 exact object/all text hashes,material140->142/no duplicates,cost gates,sc2 real-loop10/9,sc3 ordinary root/round restore,actual nested pause defects",
+            "artifactIdentity": "docs/reviews/probes/review-475-independent.mjs"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "node --import tsx <absolute-review-root>/docs/reviews/probes/review-472-independent.mjs",
+            "targetSha": "fe4653d1013110555881585db3a447880dd463d3",
+            "result": "7/7 expected checks PASS on this exact target;inherited legal pause defect and authority/round controls;generated31-image diagnostic isolation",
+            "artifactIdentity": "docs/reviews/probes/review-472-independent.mjs"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npx vitest run packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts packages/rules/tests/regression/p3-stheno-divine-core-readiness-capability.test.ts packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts packages/rules/tests/authoring-interpreter.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/core/combat-resolver.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=1",
+            "targetSha": "fe4653d1013110555881585db3a447880dd463d3",
+            "result": "8 files/173 tests PASS;owner5/5;full MatchSession33,not implementer147 subset",
+            "artifactIdentity": "pr475-independent-focused"
+          },
+          {
+            "kind": "TEST",
+            "producer": "Codex Automation Review Owner",
+            "command": "npm run test:ci -- --maxWorkers=2",
+            "targetSha": "fe4653d1013110555881585db3a447880dd463d3",
+            "result": "160 files/1178 tests:1168 PASS/10 FAIL,no timeouts;all10 classes reproduced at exact base;not green CI/no complementary exclusions",
+            "artifactIdentity": "pr475-independent-full-ci"
+          }
+        ],
+        "note": "Historical candidate technical disposition only; independent current-main gates remain separate."
       },
       "promotionAuthorized": false,
       "creditDelta": 0

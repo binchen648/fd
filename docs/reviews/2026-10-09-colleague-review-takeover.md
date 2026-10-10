@@ -2,6 +2,15 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch43 records PR475 technical FAILED on2026-10-10:actual sc3 exposes
+inherited legal nested-response/choice pause restore defect. Independent6/6
+expected checks PASS;sc1 object preserved,material140->142/no duplicates,
+sc2 real-loop VP10/9. Focused173/173 PASS;full1168 PASS/10 FAIL;exact-base
+14 PASS/10 FAIL matches classes. Strict evidence FAIL only31 absent images.
+Probe fixture corrections disclosed;historical acceptance remains separate.
+Cumulative54/534,15 PASS,39 FAILED,480 pending. See batch43 and
+2026-10-10-pr-475-review.md. Zero credit/authority;goal active,incomplete.
+
 Batch42 records PR474 technical FAILED on2026-10-10:four malformed compiled
 nonempty envelope arrays are normalized to empty and enable full rewards.
 Own4/4 expected checks PASS;reused PR472 probe7/7 confirms inherited defect.
