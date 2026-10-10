@@ -2,6 +2,15 @@
 
 Status: ACTIVE / PARTIAL, not ALL_PRS_REVIEWED.
 
+Batch23 records PR454 technical PASS on2026-10-10:event-player relation
+scope/known actor/fail-closed/carrier/trigger bounds independently verified.
+Focused97/97,full CI140 files/987 tests,typecheck/content/determinism PASS.
+Final8/8 probe PASS;27 placement count binds R123 material,not capability-only
+PR375. Current specific replay authorization and readiness17 remain unverified;
+no runtime acceptance or predecessor clearance. Cumulative:34/534,11 PASS,
+23 FAILED,500 pending. See batch23 and2026-10-10-pr-454-review.md.
+All-PR goal remains active,incomplete.
+
 Batch22 records PR446 FAILED on2026-10-10:actual Astolfo closes a skill
 face-up but hides it from non-owners,contrary to Final Rules11.4. Inherited
 identical runtime,not S-introduced regression. Complete authoring/F1 provenance
