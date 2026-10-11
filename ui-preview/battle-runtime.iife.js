@@ -180191,7 +180191,7 @@
       this.#aiTimer = void 0;
       this.#listeners.clear();
     }
-    dispatch(actionId, selections) {
+    dispatch(actionId, selections, payloadOverride) {
       if (this.#disposed) throw new Error("MATCH_CLOSED");
       let action = this.#localAvailableActions().find((candidate) => candidate.id === actionId);
       if (!action) {
@@ -180203,7 +180203,7 @@
         }
       }
       if (!action) throw new Error("ACTION_NOT_AVAILABLE");
-      let payload = action.payload ?? {};
+      let payload = payloadOverride === void 0 ? action.payload ?? {} : structuredClone(payloadOverride);
       if (action.commandType === CommandType.ResolveDecision) payload = {
         ...payload && typeof payload === "object" ? payload : {},
         selections: selections ?? []
@@ -180379,6 +180379,7 @@
             CommandType.DeployPlayer,
             CommandType.MovePlayer,
             CommandType.CommitAttack,
+            CommandType.UseSkill,
             CommandType.UseCommandSeal,
             CommandType.CompletePlayerWindow,
             CommandType.CompleteCombatResponse

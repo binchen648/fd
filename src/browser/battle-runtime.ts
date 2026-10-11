@@ -266,7 +266,7 @@ export class BrowserBattleRuntime {
     this.#listeners.clear();
   }
 
-  dispatch(actionId: string, selections?: string[]): ReturnType<BrowserBattleRuntime["snapshot"]> {
+  dispatch(actionId: string, selections?: string[], payloadOverride?: unknown): ReturnType<BrowserBattleRuntime["snapshot"]> {
     if (this.#disposed) throw new Error("MATCH_CLOSED");
     let action = this.#localAvailableActions().find((candidate) => candidate.id === actionId);
     if (!action) {
@@ -280,7 +280,11 @@ export class BrowserBattleRuntime {
       }
     }
     if (!action) throw new Error("ACTION_NOT_AVAILABLE");
-    let payload: unknown = action.payload ?? {};
+    // Structured skill choices (for example Rin's 宝石) are selected in the
+    // battle UI after the legal action is exposed.  Keep the action id as the
+    // authority check, while allowing the UI to provide the validated choice
+    // payload for that same legal action.
+    let payload: unknown = payloadOverride === undefined ? action.payload ?? {} : structuredClone(payloadOverride);
     if (action.commandType === CommandType.ResolveDecision) payload = {
       ...(payload && typeof payload === "object" ? payload : {}),
       selections: selections ?? [],
@@ -455,7 +459,8 @@ export class BrowserBattleRuntime {
         if (action) candidates.push({ type: action.commandType, payload: decisionPayload(action) });
       } else {
         const supported = new Set<string>([CommandType.DeployPlayer, CommandType.MovePlayer,
-          CommandType.CommitAttack, CommandType.UseCommandSeal, CommandType.CompletePlayerWindow, CommandType.CompleteCombatResponse]);
+          CommandType.CommitAttack, CommandType.UseSkill, CommandType.UseCommandSeal,
+          CommandType.CompletePlayerWindow, CommandType.CompleteCombatResponse]);
         const legal = this.app.availableActionsFor(actorId).filter(action => supported.has(action.commandType));
         const ranked = rankTacticalActions(state, actorId, legal, this.definitions, this.#content.events ?? []);
         for (const action of ranked) candidates.push({ type: action.commandType, payload: action.payload ?? {} });
