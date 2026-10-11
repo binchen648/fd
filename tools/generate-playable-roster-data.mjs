@@ -3,41 +3,51 @@ import path from "node:path";
 
 const projectRoot = path.resolve(import.meta.dirname, "..");
 const legacy = JSON.parse(fs.readFileSync(path.join(projectRoot, "src/content/generated/legacy-content.json"), "utf8"));
+const migrationBatches = JSON.parse(fs.readFileSync(path.join(projectRoot, "docs/skill-migration-batches.json"), "utf8"));
 const entities = new Map([...legacy.masters, ...legacy.servants].map((entity) => [entity.id, entity]));
 const cards = new Map(legacy.cards.map((card) => [card.id, card]));
 
-// The browser runtime seats seven players.  Keep one extra option in each
-// picker so the human can choose first while the remaining six seats are
-// filled from the same executable pools.
-export const PLAYABLE_MASTERS = [
-  "master.kayneth",
-  "master.shinji",
-  "master.kiritsugu",
-  "master.maiya",
-  "master.dan",
-  "master.rin",
-  "master.irisviel",
-  "master.julius",
-];
-export const PLAYABLE_SERVANTS = [
-  "servant.artoriac",
-  "servant.drake",
-  "servant.achilles",
-  "servant.artoria-alt",
-  "servant.ereshkigal",
-  "servant.tomoe",
-  "servant.kintoki",
-  "servant.emiya",
-];
-
-function hasAsset(relativePath) {
-  return fs.existsSync(path.join(projectRoot, "ui-preview", relativePath));
-}
+const completedSkillStatus = new Map(
+  migrationBatches.batches.flatMap((batch) => (batch.skills ?? []).map((skill) => [skill.id, skill.executionStatus])),
+);
 
 function portraitPath(entity) {
   const folder = entity.id.startsWith("master.") ? "masters" : "servants";
   const relative = `../assets/cards/${folder}/${entity.name}.png`;
   return hasAsset(relative) ? relative : "";
+}
+
+// A role is playable only when every one of its authored skills is marked
+// FULL in the frozen F1–F5 migration record and its local portrait exists.
+// This intentionally excludes preview-only IDs and roles that still contain a
+// PARTIAL skill, even if the generic runtime can display their text.
+function completedWithPortrait(entity) {
+  const skills = entity.skills ?? [];
+  return skills.length > 0
+    && skills.every((skill) => completedSkillStatus.get(skill.id) === "FULL")
+    && Boolean(portraitPath(entity));
+}
+
+export const PLAYABLE_MASTERS = legacy.masters.filter(completedWithPortrait).map((entity) => entity.id);
+export const PLAYABLE_SERVANTS = legacy.servants.filter(completedWithPortrait).map((entity) => entity.id);
+
+function roleAudit(entitiesForType) {
+  return entitiesForType.map((entity) => {
+    const skills = entity.skills ?? [];
+    const partialSkillIds = skills.filter((skill) => completedSkillStatus.get(skill.id) !== "FULL").map((skill) => skill.id);
+    return {
+      id: entity.id,
+      skillCount: skills.length,
+      completedSkillCount: skills.length - partialSkillIds.length,
+      partialSkillIds,
+      hasPortrait: Boolean(portraitPath(entity)),
+      playable: completedWithPortrait(entity),
+    };
+  });
+}
+
+function hasAsset(relativePath) {
+  return fs.existsSync(path.join(projectRoot, "ui-preview", relativePath));
 }
 
 function cardImage(card) {
@@ -132,8 +142,25 @@ const preview = {
   }])),
 };
 
+const skillCount = [...Object.values(detail.masters), ...Object.values(detail.servants)].reduce((sum, item) => sum + item.skills.length, 0);
+const rosterManifest = {
+  schemaVersion: 1,
+  source: "docs/skill-migration-batches.json",
+  selection: "Every authored skill is FULL in the frozen F1-F5 migration record and the role has a local portrait.",
+  masterIds: PLAYABLE_MASTERS,
+  servantIds: PLAYABLE_SERVANTS,
+  skillCount: skillCount,
+  audit: {
+    masters: roleAudit(legacy.masters),
+    servants: roleAudit(legacy.servants),
+  },
+};
+
+fs.writeFileSync(
+  path.join(projectRoot, "src/content/generated/playable-roster.json"),
+  `${JSON.stringify(rosterManifest, null, 2)}\n`,
+);
 fs.writeFileSync(path.join(projectRoot, "ui-preview/codex-detail-data.js"), `window.FDCodexDetailData=${JSON.stringify(detail, null, 2)};\n`);
 fs.writeFileSync(path.join(projectRoot, "ui-preview/character-preview-data.js"), `window.FDCharacterPreviewData=${JSON.stringify(preview, null, 2)};\n`);
 
-const skillCount = [...Object.values(detail.masters), ...Object.values(detail.servants)].reduce((sum, item) => sum + item.skills.length, 0);
 console.log(`Generated ${PLAYABLE_MASTERS.length} masters, ${PLAYABLE_SERVANTS.length} servants, ${skillCount} skills.`);

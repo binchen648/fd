@@ -13,31 +13,13 @@ import { rankTacticalActions } from "../ai/tactical-actions.ts";
 import { calculateCombatPower } from "../rules-core/combat-power.ts";
 import { getMoonCellState } from "../rules-core/moon-cell.ts";
 import { THREE_X_MASTER_RATINGS } from "../content/three-x-ratings.ts";
+import playableRoster from "../content/generated/playable-roster.json" with { type: "json" };
 
-// Eight fully executable choices feed seven seats in a local match.  The
-// previous list contained two preview-only IDs (gatou/olga-marie), so those
-// cards could be selected but could never be assigned by the rules engine.
-const MASTER_IDS = [
-  "master.kayneth",
-  "master.shinji",
-  "master.kiritsugu",
-  "master.maiya",
-  "master.dan",
-  "master.rin",
-  "master.irisviel",
-  "master.julius",
-] as const;
-
-const SERVANT_IDS = [
-  "servant.artoriac",
-  "servant.drake",
-  "servant.achilles",
-  "servant.artoria-alt",
-  "servant.ereshkigal",
-  "servant.tomoe",
-  "servant.kintoki",
-  "servant.emiya",
-] as const;
+// The picker is generated from the frozen F1–F5 migration record.  Keeping
+// the manifest as the single source prevents a preview-only role from being
+// selectable before its complete skill package is actually playable.
+const MASTER_IDS = playableRoster.masterIds;
+const SERVANT_IDS = playableRoster.servantIds;
 
 type CharacterPreview = { sourceId?: string; name?: string; fullName?: string; class?: string; image?: string };
 type DetailCatalog = { masters?: Record<string, CharacterPreview>; servants?: Record<string, CharacterPreview> };

@@ -3,16 +3,11 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import vm from "node:vm";
 import content from "../src/content/generated/legacy-content.json" with { type: "json" };
+import roster from "../src/content/generated/playable-roster.json" with { type: "json" };
 import { buildStandardContent } from "../src/content/content-package.ts";
 
-const masters = [
-  "master.kayneth", "master.shinji", "master.kiritsugu", "master.maiya",
-  "master.dan", "master.rin", "master.irisviel", "master.julius",
-];
-const servants = [
-  "servant.artoriac", "servant.drake", "servant.achilles", "servant.artoria-alt",
-  "servant.ereshkigal", "servant.tomoe", "servant.kintoki", "servant.emiya",
-];
+const masters = roster.masterIds;
+const servants = roster.servantIds;
 
 function readCatalog(file, key) {
   const context = { window: {} };
@@ -20,12 +15,19 @@ function readCatalog(file, key) {
   return context.window[key];
 }
 
-test("playable roster contains eight valid choices for seven in-game seats", () => {
+test("playable roster contains only completed roles with local portraits", () => {
   const contentIds = new Set([...(content.masters ?? []), ...(content.servants ?? [])].map((entity) => entity.id));
   for (const id of [...masters, ...servants]) assert.ok(contentIds.has(id), `missing content: ${id}`);
-  assert.equal(masters.length, 8);
-  assert.equal(servants.length, 8);
-  assert.equal(7, Math.min(masters.length, servants.length) - 1);
+  assert.equal(masters.length, 11);
+  assert.equal(servants.length, 15);
+  assert.equal(roster.selection, "Every authored skill is FULL in the frozen F1-F5 migration record and the role has a local portrait.");
+  const audits = new Map([...roster.audit.masters, ...roster.audit.servants].map((entry) => [entry.id, entry]));
+  for (const id of [...masters, ...servants]) {
+    const entry = audits.get(id);
+    assert.ok(entry?.playable, `roster audit rejected: ${id}`);
+    assert.equal(entry.partialSkillIds.length, 0, `partial skills remain: ${id}`);
+    assert.equal(entry.hasPortrait, true, `portrait missing: ${id}`);
+  }
 });
 
 test("every selected master and servant skill is executable and represented by the UI catalog", () => {

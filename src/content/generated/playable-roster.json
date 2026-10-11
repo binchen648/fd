@@ -1,0 +1,2315 @@
+{
+  "schemaVersion": 1,
+  "source": "docs/skill-migration-batches.json",
+  "selection": "Every authored skill is FULL in the frozen F1-F5 migration record and the role has a local portrait.",
+  "masterIds": [
+    "master.kiritsugu",
+    "master.rin",
+    "master.sakura",
+    "master.kirei",
+    "master.iliya",
+    "master.waver",
+    "master.kayneth",
+    "master.irisviel",
+    "master.bazett",
+    "master.dan",
+    "master.julius"
+  ],
+  "servantIds": [
+    "servant.saber",
+    "servant.emiya",
+    "servant.iskandar",
+    "servant.medusa",
+    "servant.cu",
+    "servant.gilles",
+    "servant.herc",
+    "servant.musashi",
+    "servant.artoria-alt",
+    "servant.tomoe",
+    "servant.ereshkigal",
+    "servant.melusine",
+    "servant.drake",
+    "servant.kintoki",
+    "servant.jeanne"
+  ],
+  "skillCount": 96,
+  "audit": {
+    "masters": [
+      {
+        "id": "master.kiritsugu",
+        "skillCount": 5,
+        "completedSkillCount": 5,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "master.ryuunosuke",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.shirou-emiya",
+        "skillCount": 4,
+        "completedSkillCount": 4,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.rin",
+        "skillCount": 5,
+        "completedSkillCount": 5,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "master.sakura",
+        "skillCount": 5,
+        "completedSkillCount": 5,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "master.kirei",
+        "skillCount": 4,
+        "completedSkillCount": 4,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "master.kuzuki",
+        "skillCount": 4,
+        "completedSkillCount": 4,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.iliya",
+        "skillCount": 5,
+        "completedSkillCount": 5,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "master.shinji",
+        "skillCount": 5,
+        "completedSkillCount": 3,
+        "partialSkillIds": [
+          "master.shinji.skill.s4",
+          "master.shinji.skill.ascension"
+        ],
+        "hasPortrait": true,
+        "playable": false
+      },
+      {
+        "id": "master.waver",
+        "skillCount": 4,
+        "completedSkillCount": 4,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "master.kayneth",
+        "skillCount": 4,
+        "completedSkillCount": 4,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "master.maiya",
+        "skillCount": 3,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "master.maiya.skill.s1",
+          "master.maiya.skill.s2",
+          "master.maiya.skill.ascension"
+        ],
+        "hasPortrait": true,
+        "playable": false
+      },
+      {
+        "id": "master.tokiomi",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.kariya",
+        "skillCount": 5,
+        "completedSkillCount": 5,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.zouken",
+        "skillCount": 6,
+        "completedSkillCount": 6,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.irisviel",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "master.bazett",
+        "skillCount": 10,
+        "completedSkillCount": 10,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "master.artoira",
+        "skillCount": 2,
+        "completedSkillCount": 2,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.shirou-meal",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.kohaku",
+        "skillCount": 4,
+        "completedSkillCount": 4,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.hisui-detective",
+        "skillCount": 5,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "master.hisui-detective.skill.s1",
+          "master.hisui-detective.skill.s1a",
+          "master.hisui-detective.skill.s2",
+          "master.hisui-detective.skill.s3",
+          "master.hisui-detective.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.shiki-nanaya",
+        "skillCount": 5,
+        "completedSkillCount": 2,
+        "partialSkillIds": [
+          "master.shiki-nanaya.skill.s1b",
+          "master.shiki-nanaya.skill.s2",
+          "master.shiki-nanaya.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.akiha",
+        "skillCount": 5,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "master.akiha.skill.s1",
+          "master.akiha.skill.s1a",
+          "master.akiha.skill.s2",
+          "master.akiha.skill.s3",
+          "master.akiha.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.arcueid",
+        "skillCount": 5,
+        "completedSkillCount": 5,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.ciel",
+        "skillCount": 6,
+        "completedSkillCount": 6,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.chaos",
+        "skillCount": 18,
+        "completedSkillCount": 10,
+        "partialSkillIds": [
+          "master.chaos.skill.s1",
+          "master.chaos.skill.s3",
+          "master.chaos.skill.s4",
+          "master.chaos.skill.s6",
+          "master.chaos.skill.s11",
+          "master.chaos.skill.s16",
+          "master.chaos.skill.s17",
+          "master.chaos.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.akasha",
+        "skillCount": 8,
+        "completedSkillCount": 1,
+        "partialSkillIds": [
+          "master.akasha.skill.s1a",
+          "master.akasha.skill.s2",
+          "master.akasha.skill.s3",
+          "master.akasha.skill.s4",
+          "master.akasha.skill.s5",
+          "master.akasha.skill.s6",
+          "master.akasha.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.shiki-tohno",
+        "skillCount": 6,
+        "completedSkillCount": 1,
+        "partialSkillIds": [
+          "master.shiki-tohno.skill.s1a",
+          "master.shiki-tohno.skill.s2",
+          "master.shiki-tohno.skill.s3",
+          "master.shiki-tohno.skill.s4",
+          "master.shiki-tohno.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.wallachia",
+        "skillCount": 9,
+        "completedSkillCount": 1,
+        "partialSkillIds": [
+          "master.wallachia.skill.s1",
+          "master.wallachia.skill.s3",
+          "master.wallachia.skill.s4",
+          "master.wallachia.skill.s5",
+          "master.wallachia.skill.s6",
+          "master.wallachia.skill.s7",
+          "master.wallachia.skill.s8",
+          "master.wallachia.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.caren",
+        "skillCount": 5,
+        "completedSkillCount": 1,
+        "partialSkillIds": [
+          "master.caren.skill.s1",
+          "master.caren.skill.s2",
+          "master.caren.skill.s3",
+          "master.caren.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.taiga",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.hakuno-m",
+        "skillCount": 4,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "master.hakuno-m.skill.s1",
+          "master.hakuno-m.skill.s2",
+          "master.hakuno-m.skill.s3",
+          "master.hakuno-m.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.hakuno-f",
+        "skillCount": 6,
+        "completedSkillCount": 1,
+        "partialSkillIds": [
+          "master.hakuno-f.skill.s1",
+          "master.hakuno-f.skill.s2",
+          "master.hakuno-f.skill.s4",
+          "master.hakuno-f.skill.s5",
+          "master.hakuno-f.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.rani",
+        "skillCount": 4,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "master.rani.skill.s1",
+          "master.rani.skill.s2",
+          "master.rani.skill.s3",
+          "master.rani.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.jinako",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.dan",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "master.alice",
+        "skillCount": 3,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "master.alice.skill.s1",
+          "master.alice.skill.s2",
+          "master.alice.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.julius",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "master.leonardo",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.twice",
+        "skillCount": 2,
+        "completedSkillCount": 2,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.darnic",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.kiara",
+        "skillCount": 8,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "master.kiara.skill.s1",
+          "master.kiara.skill.s1a",
+          "master.kiara.skill.s2",
+          "master.kiara.skill.s3",
+          "master.kiara.skill.s4",
+          "master.kiara.skill.s5",
+          "master.kiara.skill.s6",
+          "master.kiara.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.fiore",
+        "skillCount": 9,
+        "completedSkillCount": 4,
+        "partialSkillIds": [
+          "master.fiore.skill.s1a",
+          "master.fiore.skill.s5",
+          "master.fiore.skill.s6",
+          "master.fiore.skill.s7",
+          "master.fiore.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.caules-yggdmillennia",
+        "skillCount": 5,
+        "completedSkillCount": 5,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.roche",
+        "skillCount": 4,
+        "completedSkillCount": 4,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.celenike",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.sieg",
+        "skillCount": 4,
+        "completedSkillCount": 4,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.amakusa",
+        "skillCount": 5,
+        "completedSkillCount": 5,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.shishigou",
+        "skillCount": 4,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "master.shishigou.skill.s1",
+          "master.shishigou.skill.s2",
+          "master.shishigou.skill.s3",
+          "master.shishigou.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.ritsuka-f",
+        "skillCount": 3,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "master.ritsuka-f.skill.s1",
+          "master.ritsuka-f.skill.s1a",
+          "master.ritsuka-f.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.ritsuka-m",
+        "skillCount": 3,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "master.ritsuka-m.skill.s1",
+          "master.ritsuka-m.skill.s2",
+          "master.ritsuka-m.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.goredolf",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.sion",
+        "skillCount": 18,
+        "completedSkillCount": 11,
+        "partialSkillIds": [
+          "master.sion.skill.s1",
+          "master.sion.skill.s2",
+          "master.sion.skill.s3",
+          "master.sion.skill.s4",
+          "master.sion.skill.s14",
+          "master.sion.skill.s15",
+          "master.sion.skill.s17"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.fou",
+        "skillCount": 2,
+        "completedSkillCount": 2,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.kadoc",
+        "skillCount": 7,
+        "completedSkillCount": 1,
+        "partialSkillIds": [
+          "master.kadoc.skill.s1",
+          "master.kadoc.skill.s2",
+          "master.kadoc.skill.s3",
+          "master.kadoc.skill.s4",
+          "master.kadoc.skill.s5",
+          "master.kadoc.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.ophelia",
+        "skillCount": 10,
+        "completedSkillCount": 2,
+        "partialSkillIds": [
+          "master.ophelia.skill.s1",
+          "master.ophelia.skill.s2",
+          "master.ophelia.skill.s3",
+          "master.ophelia.skill.s4",
+          "master.ophelia.skill.s5",
+          "master.ophelia.skill.s6",
+          "master.ophelia.skill.s7",
+          "master.ophelia.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.hinako",
+        "skillCount": 6,
+        "completedSkillCount": 2,
+        "partialSkillIds": [
+          "master.hinako.skill.s1",
+          "master.hinako.skill.s3",
+          "master.hinako.skill.s4",
+          "master.hinako.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.peperoncino",
+        "skillCount": 7,
+        "completedSkillCount": 3,
+        "partialSkillIds": [
+          "master.peperoncino.skill.s2",
+          "master.peperoncino.skill.s3",
+          "master.peperoncino.skill.s4",
+          "master.peperoncino.skill.ascension"
+        ],
+        "hasPortrait": true,
+        "playable": false
+      },
+      {
+        "id": "master.wodime",
+        "skillCount": 11,
+        "completedSkillCount": 11,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.goetia",
+        "skillCount": 3,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "master.goetia.skill.s1",
+          "master.goetia.skill.s2",
+          "master.goetia.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.tiamat",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.reines",
+        "skillCount": 6,
+        "completedSkillCount": 1,
+        "partialSkillIds": [
+          "master.reines.skill.s1a",
+          "master.reines.skill.s2",
+          "master.reines.skill.s3",
+          "master.reines.skill.s4",
+          "master.reines.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.illya-mahou",
+        "skillCount": 3,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "master.illya-mahou.skill.s1",
+          "master.illya-mahou.skill.s1a",
+          "master.illya-mahou.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.miyu",
+        "skillCount": 4,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "master.miyu.skill.s1",
+          "master.miyu.skill.s2",
+          "master.miyu.skill.s3",
+          "master.miyu.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.shiki-ryougi",
+        "skillCount": 6,
+        "completedSkillCount": 6,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.fujino",
+        "skillCount": 6,
+        "completedSkillCount": 2,
+        "partialSkillIds": [
+          "master.fujino.skill.s1a",
+          "master.fujino.skill.s2",
+          "master.fujino.skill.s4",
+          "master.fujino.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.araya",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "master.caules",
+        "skillCount": 5,
+        "completedSkillCount": 1,
+        "partialSkillIds": [
+          "master.caules.skill.s1",
+          "master.caules.skill.s2",
+          "master.caules.skill.s3",
+          "master.caules.skill.ascension"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      }
+    ],
+    "servants": [
+      {
+        "id": "servant.angra",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.saber",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "servant.emiya",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "servant.gil",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.iskandar",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "servant.medusa",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "servant.diarmuid",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.cu",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "servant.medea",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.gilles",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "servant.sasaki",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.hassan",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.herc",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "servant.lance",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.nero",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.mordred",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.altera",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.gawain",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.bedivere",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.okita",
+        "skillCount": 4,
+        "completedSkillCount": 4,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.sigurd",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.siegfried",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.deon",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.muramasa",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.musashi",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "servant.artoria-alt",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "servant.charlemagne",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.molay",
+        "skillCount": 4,
+        "completedSkillCount": 4,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.arthur",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.jason",
+        "skillCount": 3,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "servant.jason.skill.sc-jason-1",
+          "servant.jason.skill.sc-jason-2",
+          "servant.jason.skill.sc-jason-3"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.barghest",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.saitou",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.dioscuri",
+        "skillCount": 3,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "servant.dioscuri.skill.sc-dioscuri-1",
+          "servant.dioscuri.skill.sc-dioscuri-2",
+          "servant.dioscuri.skill.sc-dioscuri-3"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.lakshmibai",
+        "skillCount": 4,
+        "completedSkillCount": 1,
+        "partialSkillIds": [
+          "servant.lakshmibai.skill.sc-lakshmibai-1",
+          "servant.lakshmibai.skill.sc-lakshmibai-2",
+          "servant.lakshmibai.skill.sc-lakshmibai-4"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.okita-alt",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.suzuka",
+        "skillCount": 3,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "servant.suzuka.skill.sc-suzuka-1",
+          "servant.suzuka.skill.sc-suzuka-2",
+          "servant.suzuka.skill.sc-suzuka-3"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.nobunaga",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.atalanta",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.chiron",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.robin",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.arjuna-archer",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.ishtar",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.mechaeli",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.arash",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.tesla",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.billy",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.napoleon",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.chloe",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.tristan",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.ashva",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.emiya-alt",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.baobhan",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.tomoe",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "servant.orion",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.moriarty",
+        "skillCount": 3,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "servant.moriarty.skill.sc-moriarty-1",
+          "servant.moriarty.skill.sc-moriarty-2",
+          "servant.moriarty.skill.sc-moriarty-3"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.sei",
+        "skillCount": 3,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "servant.sei.skill.sc-sei-1",
+          "servant.sei.skill.sc-sei-2",
+          "servant.sei.skill.sc-sei-3"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.euryale",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.karna",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.vlad",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.elizabeth",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.scathach",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.valkyrie",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.ereshkigal",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "servant.enkidu",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.meltryllis",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.brynhildr",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.caenis",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.leonidas",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.romulus",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.jaguarman",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.benkei",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.donquixote",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.lionking",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.bradamante",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.gareth",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.kagetora",
+        "skillCount": 4,
+        "completedSkillCount": 1,
+        "partialSkillIds": [
+          "servant.kagetora.skill.sc-kagetora-1",
+          "servant.kagetora.skill.sc-kagetora-2",
+          "servant.kagetora.skill.sc-kagetora-4"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.melusine",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "servant.albion",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.parvati",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.astolfo",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.achilles",
+        "skillCount": 3,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "servant.achilles.skill.sc-achilles-1",
+          "servant.achilles.skill.sc-achilles-2",
+          "servant.achilles.skill.sc-achilles-3"
+        ],
+        "hasPortrait": true,
+        "playable": false
+      },
+      {
+        "id": "servant.ivan",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.drake",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "servant.ushiwakamaru",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.ozymandias",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.sitonai",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.odysseus",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.medb",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.roberts",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.boudica",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.quetzalcoatl",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.hephaistion",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.ryouma",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.teach",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.mandricardo",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.martha",
+        "skillCount": 4,
+        "completedSkillCount": 4,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.georgios",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.nemo",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.taisui",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.constantine",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.tamamo",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.andersen",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.avicebron",
+        "skillCount": 5,
+        "completedSkillCount": 1,
+        "partialSkillIds": [
+          "servant.avicebron.skill.sc-avicebron-1",
+          "servant.avicebron.skill.sc-avicebron-2",
+          "servant.avicebron.skill.sc-avicebron-4",
+          "servant.avicebron.skill.sc-avicebron-5"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.shakespeare",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.davinci",
+        "skillCount": 17,
+        "completedSkillCount": 13,
+        "partialSkillIds": [
+          "servant.davinci.skill.sc-davinci-1",
+          "servant.davinci.skill.sc-davinci-2",
+          "servant.davinci.skill.sc-davinci-3",
+          "servant.davinci.skill.sc-davinci-9"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.mozart",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.illya",
+        "skillCount": 10,
+        "completedSkillCount": 10,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.douman",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.merlin",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.edison",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.anastasia",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.maxwell",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.kinggil",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.artoriac",
+        "skillCount": 6,
+        "completedSkillCount": 1,
+        "partialSkillIds": [
+          "servant.artoriac.skill.sc-artoriac-1",
+          "servant.artoriac.skill.sc-artoriac-3",
+          "servant.artoriac.skill.sc-artoriac-4",
+          "servant.artoriac.skill.sc-artoriac-5",
+          "servant.artoriac.skill.sc-artoriac-6"
+        ],
+        "hasPortrait": true,
+        "playable": false
+      },
+      {
+        "id": "servant.mephisto",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.skadi",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.sanzang",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.nitocris",
+        "skillCount": 3,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "servant.nitocris.skill.sc-nitocris-1",
+          "servant.nitocris.skill.sc-nitocris-2",
+          "servant.nitocris.skill.sc-nitocris-3"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.ladyavalon",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.nursery",
+        "skillCount": 3,
+        "completedSkillCount": 1,
+        "partialSkillIds": [
+          "servant.nursery.skill.sc-nursery-1",
+          "servant.nursery.skill.sc-nursery-3"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.helena",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.hassanhf",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.hassanser",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.kinghassan",
+        "skillCount": 3,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "servant.kinghassan.skill.sc-kinghassan-1",
+          "servant.kinghassan.skill.sc-kinghassan-2",
+          "servant.kinghassan.skill.sc-kinghassan-3"
+        ],
+        "hasPortrait": true,
+        "playable": false
+      },
+      {
+        "id": "servant.semiramis",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.kiritsugu",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.jack",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.lishuwen",
+        "skillCount": 3,
+        "completedSkillCount": 1,
+        "partialSkillIds": [
+          "servant.lishuwen.skill.sc-lishuwen-1",
+          "servant.lishuwen.skill.sc-lishuwen-2"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.shuten",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.jekyll",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.corday",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.sanson",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.koyanskaya",
+        "skillCount": 6,
+        "completedSkillCount": 1,
+        "partialSkillIds": [
+          "servant.koyanskaya.skill.sc-koyanskaya-2",
+          "servant.koyanskaya.skill.sc-koyanskaya-3",
+          "servant.koyanskaya.skill.sc-koyanskaya-4",
+          "servant.koyanskaya.skill.sc-koyanskaya-5",
+          "servant.koyanskaya.skill.sc-koyanskaya-6"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.kama",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.stheno",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.kotarou",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.danzou",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.izou",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.mhx",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.osakabe",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.carmilla",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.tezcat",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.arcueid",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.frank",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.spartacus",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.kiyohime",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.penthesilea",
+        "skillCount": 3,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "servant.penthesilea.skill.sc-penthesilea-1",
+          "servant.penthesilea.skill.sc-penthesilea-2",
+          "servant.penthesilea.skill.sc-penthesilea-3"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.kintoki",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "servant.passionlip",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.raikou",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.darius",
+        "skillCount": 4,
+        "completedSkillCount": 4,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.lubu",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.xiangyu",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.arjuna",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.nightingale",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.cu-alter",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.kingprotea",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.koyo",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.kriemhild",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.hijikata",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.ibaraki",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.caligula",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.dantes",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.salieri",
+        "skillCount": 3,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "servant.salieri.skill.sc-salieri-1",
+          "servant.salieri.skill.sc-salieri-2",
+          "servant.salieri.skill.sc-salieri-3"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.jeanne-alter",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.lobo",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.kagekiyo",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.gorgon",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.jeanne",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": true,
+        "playable": true
+      },
+      {
+        "id": "servant.amakusa",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.sherlock",
+        "skillCount": 7,
+        "completedSkillCount": 4,
+        "partialSkillIds": [
+          "servant.sherlock.skill.sc-sherlock-1",
+          "servant.sherlock.skill.sc-sherlock-2",
+          "servant.sherlock.skill.sc-sherlock-3"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.astraea",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.oberon",
+        "skillCount": 4,
+        "completedSkillCount": 4,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.morgan",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.amor",
+        "skillCount": 3,
+        "completedSkillCount": 3,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.himiko",
+        "skillCount": 3,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "servant.himiko.skill.sc-himiko-1",
+          "servant.himiko.skill.sc-himiko-2",
+          "servant.himiko.skill.sc-himiko-3"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.bb",
+        "skillCount": 4,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "servant.bb.skill.sc-bb-1",
+          "servant.bb.skill.sc-bb-2",
+          "servant.bb.skill.sc-bb-3",
+          "servant.bb.skill.sc-bb-4"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.bikuni",
+        "skillCount": 4,
+        "completedSkillCount": 0,
+        "partialSkillIds": [
+          "servant.bikuni.skill.sc-bikuni-1",
+          "servant.bikuni.skill.sc-bikuni-2",
+          "servant.bikuni.skill.sc-bikuni-3",
+          "servant.bikuni.skill.sc-bikuni-4"
+        ],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.abigail",
+        "skillCount": 4,
+        "completedSkillCount": 4,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.hokusai",
+        "skillCount": 4,
+        "completedSkillCount": 4,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.voyager",
+        "skillCount": 4,
+        "completedSkillCount": 4,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.clytie",
+        "skillCount": 4,
+        "completedSkillCount": 4,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      },
+      {
+        "id": "servant.mash",
+        "skillCount": 4,
+        "completedSkillCount": 4,
+        "partialSkillIds": [],
+        "hasPortrait": false,
+        "playable": false
+      }
+    ]
+  }
+}
