@@ -3,27 +3,27 @@ window.FDCharacterPreviewData={
     "肯尼斯": {
       "sourceId": "master.kayneth",
       "name": "肯尼斯",
-      "fullName": "肯尼斯·阿其波卢德",
+      "fullName": "肯尼斯",
       "class": "Master",
       "image": "../assets/cards/masters/肯尼斯.png",
       "skills": [
         {
-          "id": "master.kayneth.skill.double-master",
+          "id": "master.kayneth.skill.s1",
           "name": "双重御主",
-          "type": "御主技能",
-          "text": "双重御主-你拥有的魔力少于8点也可以使用技能牌。"
+          "type": "被动",
+          "text": "你拥有的魔力少于8点也可以使用技能牌。"
         },
         {
-          "id": "master.kayneth.skill.alchemist",
+          "id": "master.kayneth.skill.s2",
           "name": "炼金术师",
-          "type": "御主技能",
-          "text": "炼金术师-游戏开始时，将6张【月灵髓液】洗成一副独立的牌库。行动阶段：从独立牌库抽一张【月灵髓液】。"
+          "type": "行动阶段",
+          "text": "游戏开始时，将6张【月灵髓液】洗成一副独立的牌库。行动阶段：从独立牌库抽一张【月灵髓液】。"
         },
         {
-          "id": "master.kayneth.skill.pride",
+          "id": "master.kayneth.skill.s3",
           "name": "倨傲",
-          "type": "御主技能",
-          "text": "倨傲-若你可以部署于一名战果低于你且独自位于战场的其他玩家所在的战场，则你必须部署。"
+          "type": "被动",
+          "text": "若你可以部署于一名战果低于你且独自位于战场的其他玩家所在的战场，则你必须部署。"
         },
         {
           "id": "master.kayneth.skill.ascension",
@@ -42,28 +42,28 @@ window.FDCharacterPreviewData={
       "image": "../assets/cards/masters/间桐慎二.png",
       "skills": [
         {
-          "id": "master.shinji.skill.drain-command",
+          "id": "master.shinji.skill.s1",
           "name": "吸魔命令",
-          "type": "御主技能",
+          "type": "被动",
           "text": "进入深山町时，获得1点魔力。"
         },
         {
-          "id": "master.shinji.skill.useless-person",
+          "id": "master.shinji.skill.s2",
           "name": "无用之人",
-          "type": "御主技能",
+          "type": "被动",
           "text": "开局获得【伪臣之书】。"
         },
         {
-          "id": "master.shinji.skill.clown",
+          "id": "master.shinji.skill.s3",
           "name": "小丑",
-          "type": "御主技能",
+          "type": "被动",
           "text": "当你战败时，失去一枚令咒。"
         },
         {
-          "id": "master.shinji.skill.false-attendant-book",
+          "id": "master.shinji.skill.s4",
           "name": "伪臣之书",
-          "type": "御主技能",
-          "text": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。 当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。"
+          "type": "被动",
+          "text": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。\n当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。"
         },
         {
           "id": "master.shinji.skill.ascension",
@@ -82,22 +82,28 @@ window.FDCharacterPreviewData={
       "image": "../assets/cards/masters/卫宫切嗣.png",
       "skills": [
         {
-          "id": "master.kiritsugu.skill.magus-killer",
+          "id": "master.kiritsugu.skill.s1",
           "name": "魔术师杀手",
-          "type": "御主技能",
+          "type": "被动",
           "text": "游戏开始时，将你牌库的一张牌替换为【起源弹】。"
         },
         {
-          "id": "master.kiritsugu.skill.time-alter",
+          "id": "master.kiritsugu.skill.s2",
           "name": "固有时制御",
-          "type": "御主技能",
-          "text": "行动阶段：暗置打出一张牌，然后抽一张牌。"
+          "type": "行动阶段",
+          "text": "暗置打出一张牌，然后抽一张牌。"
         },
         {
-          "id": "master.kiritsugu.skill.square-accel",
+          "id": "master.kiritsugu.skill.s3",
           "name": "四倍速",
-          "type": "御主技能",
-          "text": "战斗阶段：关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。"
+          "type": "战斗阶段",
+          "text": "关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。"
+        },
+        {
+          "id": "master.kiritsugu.skill.s4",
+          "name": "起源弹",
+          "type": "牌库牌",
+          "text": "迅捷0耗2威。[切断与结合]-战斗阶段：令一名你的交战对手失去三分之一的魔力（向上取整），然后此牌获得等同于其失去魔力值二倍的威力。"
         },
         {
           "id": "master.kiritsugu.skill.ascension",
@@ -116,15 +122,15 @@ window.FDCharacterPreviewData={
       "image": "../assets/cards/masters/久宇舞弥.png",
       "skills": [
         {
-          "id": "master.maiya.skill.military",
+          "id": "master.maiya.skill.s1",
           "name": "军旅",
-          "type": "御主技能",
+          "type": "前哨阶段",
           "text": "你拥有【援护射击】。前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。"
         },
         {
-          "id": "master.maiya.deck.support-shot",
+          "id": "master.maiya.skill.s2",
           "name": "援护射击",
-          "type": "御主技能",
+          "type": "牌库牌",
           "text": "迅捷属性，2魔耗2需0威力。此牌需追加打出。压制-行动阶段：若你不是久宇舞弥，你需向其支付2点战果使用此效果。获得+1基础地利后，翻倍你的地利。"
         },
         {
@@ -136,73 +142,31 @@ window.FDCharacterPreviewData={
         }
       ]
     },
-    "卧藤门司": {
-      "sourceId": "master.gatou",
-      "name": "卧藤门司",
-      "fullName": "卧藤门司",
+    "丹·布拉克莫尔": {
+      "sourceId": "master.dan",
+      "name": "丹·布拉克莫尔",
+      "fullName": "丹·布拉克莫尔",
       "class": "Master",
-      "image": "../assets/cards/masters/卧藤门司.png",
+      "image": "../assets/cards/masters/丹·布拉克莫尔.png",
       "skills": [
         {
-          "id": "master.gatou.skill.seeker",
-          "name": "求道者",
-          "type": "御主技能",
-          "text": "求道者-战斗阶段结束时，每有一名位于你所在地地点且以移动进入该地点的其他玩家，你获得1点魔力。若你获胜，改为获得1点战果。冥想-你使用过令咒的回合不受其他玩家的能力影响。"
-        }
-      ]
-    },
-    "爱丽丝菲尔": {
-      "sourceId": "master.irisviel",
-      "name": "爱丽丝菲尔",
-      "fullName": "爱丽丝菲尔·冯·爱因兹贝伦",
-      "class": "Master",
-      "image": "../assets/cards/masters/爱丽丝菲尔.png",
-      "skills": [
-        {
-          "id": "master.irisviel.skill.proxy-master",
-          "name": "代理御主",
-          "type": "御主技能",
-          "text": "令咒改为在前哨阶段使用。"
+          "id": "master.dan.skill.s1",
+          "name": "可敬的狙击手",
+          "type": "被动",
+          "text": "当你部署于魔术工房，本回合你于深山町获得3点地利且于新都获得5点地利。"
         },
         {
-          "id": "master.irisviel.skill.conversion-magic",
-          "name": "转换魔术",
-          "type": "御主技能",
-          "text": "前哨阶段：弃置所有手牌，每1张获得1点魔力。"
+          "id": "master.dan.skill.s1a",
+          "name": "荣誉",
+          "type": "被动",
+          "text": "若你移动至一处移动时恰好有两名对手的战场并于此处获胜时，你无法获得该战场的竞争战果。"
         },
         {
-          "id": "master.irisviel.skill.ascension",
-          "name": "生命赋予",
+          "id": "master.dan.skill.ascension",
+          "name": "五朔节骑士",
           "type": "升华技",
-          "text": "（升华技，将此牌加入你的技能区）\n你每回合只能使用此攻击的其中一项能力。\n行动阶段：本回合的一张基础攻击可以保持激活至下回合结束。\n战斗阶段：你的攻击获得魔术属性并且威力+1。",
+          "text": "从游戏外将3张远隔操作和2张急行放置于此牌上。每回合你至多可将其中的一张牌追加打出（回合结束时该牌进入你的弃牌堆）。若如此，抽1张牌并将该牌移除。",
           "isAscension": true
-        }
-      ]
-    },
-    "奥尔加玛丽·阿尼姆斯菲亚": {
-      "sourceId": "master.olga-marie",
-      "name": "奥尔加玛丽·阿尼姆斯菲亚",
-      "fullName": "奥尔加玛丽·阿尼姆斯菲亚",
-      "class": "Master",
-      "image": "../assets/cards/masters/奥尔加玛丽·阿尼姆斯菲亚.png",
-      "skills": [
-        {
-          "id": "master.olga-marie.skill.astronomical-science",
-          "name": "天体科学",
-          "type": "御主技能",
-          "text": "天体科学-你拥有【迦勒底亚斯】。无论抵达-当你首次战败后的回合结束时，激活【特里斯墨吉斯忒斯之殇】。"
-        },
-        {
-          "id": "master.olga-marie.skill.chaldeas",
-          "name": "迦勒底亚斯",
-          "type": "御主技能",
-          "text": "事务剪定-你可以查看局势牌堆底和事件牌堆底。每回合限一次，当一张属于原局势或事件牌堆的非高潮局势或事件牌被展示后将要生效前，你可以将其与相应牌堆底的牌调换。"
-        },
-        {
-          "id": "master.olga-marie.skill.trismegistus-grief",
-          "name": "特里斯墨吉斯忒斯之殇",
-          "type": "御主技能",
-          "text": "魂离神引-你的合计威力+X，X为此牌被激活时的回合数的一半（向上取整）。当你战败后，你失去魂离神引并获得归寂。归寂-你必须部署于战场，你的战斗阶段开始时，令所有与你位于同一战场的玩家【败北】，然后移除此牌。"
         }
       ]
     },
@@ -245,6 +209,62 @@ window.FDCharacterPreviewData={
           "isAscension": true
         }
       ]
+    },
+    "爱丽丝菲尔": {
+      "sourceId": "master.irisviel",
+      "name": "爱丽丝菲尔",
+      "fullName": "爱丽丝菲尔",
+      "class": "Master",
+      "image": "../assets/cards/masters/爱丽丝菲尔.png",
+      "skills": [
+        {
+          "id": "master.irisviel.skill.s1",
+          "name": "代理御主",
+          "type": "被动",
+          "text": "令咒改为在前哨阶段使用。"
+        },
+        {
+          "id": "master.irisviel.skill.s2",
+          "name": "转换魔术",
+          "type": "前哨阶段",
+          "text": "弃置所有手牌，每1张获得1点魔力。"
+        },
+        {
+          "id": "master.irisviel.skill.ascension",
+          "name": "生命赋予",
+          "type": "升华技",
+          "text": "（升华技，将此牌加入你的技能区）\n你每回合只能使用此攻击的其中一项能力。\n行动阶段：本回合的一张基础攻击可以保持激活至下回合结束。\n战斗阶段：你的攻击获得魔术属性并且威力+1。",
+          "isAscension": true
+        }
+      ]
+    },
+    "尤里鸟斯·贝尔奇斯科·哈维": {
+      "sourceId": "master.julius",
+      "name": "尤里鸟斯·贝尔奇斯科·哈维",
+      "fullName": "尤里鸟斯·贝尔奇斯科·哈维",
+      "class": "Master",
+      "image": "../assets/cards/masters/尤里鸟斯·贝尔奇斯科·哈维.png",
+      "skills": [
+        {
+          "id": "master.julius.skill.s1",
+          "name": "代码_潜行",
+          "type": "前哨",
+          "text": "前哨阶段：本阶段不进行部署，于你的行动阶段开始时部署于一处战场。"
+        },
+        {
+          "id": "master.julius.skill.s1a",
+          "name": "快速老化",
+          "type": "被动",
+          "text": "每回合结束时移除你弃牌堆中两张牌或随机弃置一张牌。若无法执行，需要先抽一张牌。"
+        },
+        {
+          "id": "master.julius.skill.ascension",
+          "name": "黑蝎",
+          "type": "升华技",
+          "text": "安全增强方案-当你使用【潜行】时，可以部署于魔术工房。\n隐身增强方案-当你使用【潜行】时，可以花费2点魔力，改为于自己的战斗阶段中进行部署。",
+          "isAscension": true
+        }
+      ]
     }
   },
   "servants": {
@@ -258,20 +278,38 @@ window.FDCharacterPreviewData={
         {
           "id": "servant.artoriac.skill.sc-artoriac-1",
           "name": "选王剑",
-          "type": "从者技能",
+          "type": "特殊/宝具",
           "text": "【真名解放】\n残留：此卡持续激活两回合。你的其他特殊属性攻击威力+2。\n战斗阶段：将一张你本回合打出的非技能卡或背面向上的攻击返回你的手牌。"
         },
         {
           "id": "servant.artoriac.skill.sc-artoriac-2",
           "name": "选定之杖",
-          "type": "从者技能",
+          "type": "魔术",
           "text": "行动阶段：花费X点魔力，然后查看你牌库顶的X+2张牌，你可以将其中一张加入手牌，然后弃置其余被查看的牌。"
         },
         {
           "id": "servant.artoriac.skill.sc-artoriac-3",
           "name": "真圆集结誓约之星",
-          "type": "从者技能",
+          "type": "魔术/宝具",
           "text": "残留：你的弃牌堆持续公开，X为你弃牌堆中幸运牌的数量×5（至多为15）。当X大于0时，【真名解放】。当你获得一场胜利时，将你的弃牌堆洗回牌库，此效果无法被阻止。"
+        },
+        {
+          "id": "servant.artoriac.skill.sc-artoriac-4",
+          "name": "朝圣者的召唤",
+          "type": "特殊",
+          "text": "唯一/被动：如果你赢得战斗，你可以从手牌中将此卡移出游戏并将一张[幸运]洗入你的牌库。\n行动阶段：如果你位于侦察，获得2点战果。沿着箭头移动至多两个地点。"
+        },
+        {
+          "id": "servant.artoriac.skill.sc-artoriac-5",
+          "name": "朝圣者的休憩",
+          "type": "特殊",
+          "text": "唯一/被动：如果你赢得战斗，你可以从手牌中将此卡移出游戏并将一张[幸运]洗入你的牌库。\n行动阶段：获得2点魔力，如果你无法增加魔力则获得2点战果。"
+        },
+        {
+          "id": "servant.artoriac.skill.sc-artoriac-6",
+          "name": "朝圣者的命运",
+          "type": "特殊",
+          "text": "唯一/被动：如果你赢得战斗，你可以从手牌中将此卡移出游戏并将一张[幸运]洗入你的牌库。\n战斗阶段：如果你赢得战斗且不是单独获胜，获得2点战果。"
         }
       ]
     },
@@ -284,20 +322,20 @@ window.FDCharacterPreviewData={
       "skills": [
         {
           "id": "servant.drake.skill.sc-drake-1",
-          "name": "骑乘",
-          "type": "从者技能",
+          "name": "骑乘（Rider Class）",
+          "type": "特殊",
           "text": "打出时：若此牌与一张基础攻击一同打出，抽一张牌。\n坐骑召唤-行动阶段：打出至多3张基本威力为3或更低的手牌。"
         },
         {
           "id": "servant.drake.skill.sc-drake-2",
           "name": "黄金鹿与暴风夜",
-          "type": "从者技能",
-          "text": "【真名解放】\n战斗阶段：如果无人与你对战，获得你所处战场上的所有事件牌的战果并弃置它们。如果你在侦察，立刻获得2点战果。\n无视花费移动至任一地点。"
+          "type": "宝具",
+          "text": "【真名解放】\n战斗阶段：如果无人与你对战，获得你所处战场上的所有事件牌的战果并弃置它们。如果你在侦察，立刻获得2点战果。无视花费移动至任一地点。"
         },
         {
           "id": "servant.drake.skill.sc-drake-3",
           "name": "暴风雨的航海家",
-          "type": "从者技能",
+          "type": "特殊",
           "text": "【真名解放】\nX为你本回合移动距离的4倍。\n被动：你的【急行】可以反向移动。\n劫掠-战斗阶段：本回合每经过或停留一个战场获得1战果。"
         }
       ]
@@ -312,19 +350,19 @@ window.FDCharacterPreviewData={
         {
           "id": "servant.achilles.skill.sc-achilles-1",
           "name": "勇者的不凋花",
-          "type": "从者技能",
+          "type": "被动",
           "text": "阿喀琉斯之踵-被动：当你战败后，你【真名解放】。\n疾风驰骋-被动/战斗阶段：若你真名隐藏，令你的所有交战对手随机弃置一张手牌，然后将未弃置牌或弃置的牌不是【幸运】或敏捷牌的对手的合计威力设为0。"
         },
         {
           "id": "servant.achilles.skill.sc-achilles-2",
           "name": "包围苍天的小世界",
-          "type": "从者技能",
-          "text": "湛蓝天空-行动阶段：选择下列一项：\n1. 与你位于同一战场的对手立即随机弃置一张手牌。\n2. 与你位于同一战场的对手无法使用技能牌。\n3. 花费3点魔力，隐藏你的从者真名直至回合结束。"
+          "type": "特殊/宝具",
+          "text": "湛蓝天空-行动阶段：选择下列一项：\n1.与你位于同一战场的对手立即随机弃置一张手牌。\n2.与你位于同一战场的对手无法使用技能牌。\n3.花费3点魔力，隐藏你的从者真名直至回合结束。"
         },
         {
           "id": "servant.achilles.skill.sc-achilles-3",
           "name": "驰骋天际星之枪尖",
-          "type": "从者技能",
+          "type": "特殊/宝具",
           "text": "英雄对决-行动阶段：当你所在的战场只有1名对手时，所有人无法进入或离开此战场，同时，你与此对手无法被地利和所有不属于你们的从者或NPC的牌或效果影响。"
         }
       ]
@@ -339,19 +377,19 @@ window.FDCharacterPreviewData={
         {
           "id": "servant.artoria-alt.skill.sc-artoria-alt-1",
           "name": "誓约胜利之剑",
-          "type": "从者技能",
+          "type": "力量/宝具",
           "text": "【真名解放】\n局势牌无法阻止你打出此牌。\n风王铁锤-行动阶段：花费4点魔力，此牌每被连续打出一回合，便获得+3威力。"
         },
         {
           "id": "servant.artoria-alt.skill.sc-artoria-alt-2",
           "name": "黑化诅咒",
-          "type": "从者技能",
+          "type": "特殊",
           "text": "你拥有的魔力少于8点也可以打出此牌。\n安哥拉曼纽的拥抱-残留：当你使用宝具时，关闭此牌。\n若你的魔力少于8点，与你位于同一战场的对手无法使用宝具。"
         },
         {
           "id": "servant.artoria-alt.skill.sc-artoria-alt-3",
           "name": "对魔力（saber class）",
-          "type": "从者技能",
+          "type": "特殊",
           "text": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。"
         }
       ]
@@ -366,20 +404,20 @@ window.FDCharacterPreviewData={
         {
           "id": "servant.ereshkigal.skill.sc-ereshkigal-1",
           "name": "战斗续行（Lancer Class）",
-          "type": "从者技能",
+          "type": "特殊/迅捷",
           "text": "行动阶段：移动至除魔术工房外的任意地点。"
         },
         {
           "id": "servant.ereshkigal.skill.sc-ereshkigal-2",
           "name": "冥界佑护",
-          "type": "从者技能",
-          "text": "位于此战场的玩家计算威力时，来自局势牌和事件牌的所有力量修正值乘以-1。每当有玩家部署于此战场时，埃列什基伽勒获得1点魔力。\n被动/行动阶段：埃列什基伽勒不受【冥界佑护】的影响。\n战斗阶段结束后将此牌放还于技能区。"
+          "type": "被动",
+          "text": "位于此战场的玩家计算威力时，来自局势牌和事件牌的所有力量修正值乘以-1。\n每当有玩家部署于此战场时，埃列什基伽勒获得1点魔力。\n被动/行动阶段：埃列什基伽勒不受【冥界佑护】的影响。战斗阶段结束后将此牌放还于技能区。"
         },
         {
           "id": "servant.ereshkigal.skill.sc-ereshkigal-3",
           "name": "灵峰踏抱冥府之鞴",
-          "type": "从者技能",
-          "text": "【真名解放】花开冥界-行动阶段：若【冥界佑护】未位于版图内，将其放置于你所在的战场。若其已位于你所在的战场，你+6合计威力。"
+          "type": "特殊/宝具",
+          "text": "【真名解放】\n花开冥界-行动阶段：若【冥界佑护】未位于版图内，将其放置于你所在的战场。若其已位于你所在的战场，你+6合计威力。"
         }
       ]
     },
@@ -393,19 +431,19 @@ window.FDCharacterPreviewData={
         {
           "id": "servant.tomoe.skill.sc-tomoe-1",
           "name": "单独行动（Archer Class）",
-          "type": "从者技能",
+          "type": "特殊",
           "text": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。"
         },
         {
           "id": "servant.tomoe.skill.sc-tomoe-2",
           "name": "鬼种之魔",
-          "type": "从者技能",
+          "type": "力量",
           "text": "无间业火-行动阶段：下个回合，所有对手部署于此战场前可以花费至多5点战果，所有基础地利数高于其支付战果数的地利位置视为已被占据，无法部署。\n战斗阶段：将你的地利翻倍。"
         },
         {
           "id": "servant.tomoe.skill.sc-tomoe-3",
           "name": "真言·圣观世音菩萨",
-          "type": "从者技能",
+          "type": "迅捷/宝具",
           "text": "【真名解放】\n炽焰之雨-战斗阶段：令同一战场所有未拥有地利的对手-5合计威力。"
         }
       ]
@@ -420,20 +458,20 @@ window.FDCharacterPreviewData={
         {
           "id": "servant.kintoki.skill.sc-kintoki-1",
           "name": "黄金冲击",
-          "type": "从者技能",
-          "text": "【真名解放】\n你拥有的魔力少于8点也可打出此牌。\n局势牌无法禁止你打出此牌。\n每局游戏限一次"
+          "type": "宝具/力量",
+          "text": "【真名解放】<每局游戏限一次>你拥有的魔力少于8点也可打出此牌。局势牌无法禁止你打出此牌。"
         },
         {
           "id": "servant.kintoki.skill.sc-kintoki-2",
           "name": "黄金冲击",
-          "type": "从者技能",
-          "text": "【真名解放】\n你拥有的魔力少于8点也可打出此牌。\n局势牌无法禁止你打出此牌。\n每局游戏限一次"
+          "type": "宝具/力量",
+          "text": "【真名解放】<每局游戏限一次>你拥有的魔力少于8点也可打出此牌。局势牌无法禁止你打出此牌。"
         },
         {
           "id": "servant.kintoki.skill.sc-kintoki-3",
           "name": "黄金噬者",
-          "type": "从者技能",
-          "text": "【真名解放】\n战斗阶段：将一张被移除游戏的【黄金冲击】加入你的技能区，你可以花费7点魔力将另一张黄金冲击也加入你的技能区。若你位于一处战场，每加入一张【黄金冲击】便获得2点战果。"
+          "type": "宝具",
+          "text": "【真名解放】战斗阶段：将一张被移除游戏的【黄金冲击】加入你的技能区，你可以花费7点魔力将另一张黄金冲击也加入你的技能区。若你位于一处战场，每加入一张【黄金冲击】便获得2点战果。"
         }
       ]
     },
