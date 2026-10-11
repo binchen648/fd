@@ -154,7 +154,15 @@ export function buildSkillDefinitions(raw: { masters?: RawOwner[]; servants?: Ra
             ?? (skill.legacyId ? [{ kind: "legacy", document: "legacy-content.json", locator: `${ownerType}/${owner.id}/${skill.legacyId}` }] : undefined),
           supportLevel: confirmed?.supportLevel ?? parsedSupport ?? toSupportLevel(skill.implementation),
           handlerId: confirmed?.handlerId ?? skill.handlerId ?? parsedHandler,
-          tags: confirmed?.tags ?? skill.tags,
+          tags: (() => {
+            const tags = confirmed?.tags ?? skill.tags;
+            // Every master ascension definition is an ascension skill even
+            // when an older authored record omitted the display tag.
+            if (ownerType === "master" && (skill.legacyId === "ascension" || skill.id.endsWith(".skill.ascension"))) {
+              return [...new Set([...(tags ?? []), "ascension"])] as string[];
+            }
+            return tags;
+          })(),
           limit: confirmed?.limit ?? (confirmed?.suppressInferredLimit || skill.suppressInferredLimit ? undefined : skill.limit ?? inferUsageLimit(skill.text ?? "")),
           requiresTrueName: confirmed?.requiresTrueName ?? skill.requiresTrueName,
           revealsTrueNameOnPlay: confirmed?.revealsTrueNameOnPlay === false

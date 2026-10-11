@@ -5,7 +5,7 @@ const {chromium}=require('../../binchen648_fd/work/node_modules/playwright');
  await page.addInitScript(()=>localStorage.setItem('fd-home-notices',JSON.stringify([{title:'保留公告文字',image:'../assets/map/locations/workshop.png'},{title:'自定义图片',image:'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'},{title:'旧网络公告',image:'https://anime.fate-go.jp/ep6-movie/wandering/assets/img/special/digicon/pc_03.jpg'}])));
  await page.route(/^https?:\/\//,route=>route.abort());
  const click=async s=>{await page.locator(s).click();await page.waitForTimeout(850)};
- await page.goto(pathToFileURL(path.resolve('ui-preview/本地UI预览.html')).href);await page.locator('.legal-screen.is-ready').waitFor({timeout:120000});await click('[data-legal-continue]');await page.waitForTimeout(1200);await click('.press-any');
+ await page.goto(pathToFileURL(path.resolve('index.html')).href);await page.locator('.legal-screen.is-ready').waitFor({timeout:120000});await click('[data-legal-continue]');await page.waitForTimeout(1200);await click('.press-any');
  const old=page.locator('[data-notice-slide="0"]');assert.equal(await old.locator('h2').innerText(),'保留公告文字');assert.match(await old.locator('img').getAttribute('src'),/^\.\.\/assets\/ui\/display-art\//);
  assert.match(await page.locator('[data-notice-slide="2"] img').getAttribute('src'),/^\.\.\/assets\/ui\/display-art\//);
  assert.match(await page.locator('[data-notice-slide="1"] img').getAttribute('src'),/^data:image\/gif/);

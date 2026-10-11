@@ -5,7 +5,7 @@ const {chromium}=require('../../binchen648_fd/work/node_modules/playwright');
  const click=async s=>{await page.locator(s).click();await page.waitForTimeout(950)};
  const shot=async(n,w)=>page.screenshot({path:path.resolve('ui-preview/design-review/'+n+'-wide-'+w+'.png')});
  for(const width of [1280,1920]){
-  await page.setViewportSize({width,height:width===1280?720:1080});await page.goto(pathToFileURL(path.resolve('ui-preview/本地UI预览.html')).href);await page.locator('.legal-screen.is-ready').waitFor({timeout:60000});await click('[data-legal-continue]');await page.waitForTimeout(1200);
+  await page.setViewportSize({width,height:width===1280?720:1080});await page.goto(pathToFileURL(path.resolve('index.html')).href);await page.locator('.legal-screen.is-ready').waitFor({timeout:60000});await click('[data-legal-continue]');await page.waitForTimeout(1200);
   assert.ok((await page.locator('.splash>.bg').evaluate(e=>getComputedStyle(e).filter)).includes('brightness(1)'));await shot('splash-bright',width);await click('.press-any');
   assert.ok((await page.locator('.home-screen>.bg').evaluate(e=>getComputedStyle(e).filter)).includes('brightness(1)'));await shot('home-bright',width);
   await click('[data-nav="single"]');await click('[data-mode="free"]');assert.equal(await page.locator('.ow-roster').evaluate(e=>getComputedStyle(e).scrollbarWidth),'thin');

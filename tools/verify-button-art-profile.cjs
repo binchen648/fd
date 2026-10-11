@@ -8,7 +8,7 @@ const {chromium}=require('../../binchen648_fd/work/node_modules/playwright');
  const page=await browser.newPage({viewport:{width:1280,height:720}}),errors=[];
  page.on('pageerror',e=>errors.push(e.message));
  await page.addInitScript(()=>{if(!localStorage.getItem('fd-player-profile'))localStorage.setItem('fd-player-profile',JSON.stringify({name:'御主',totalGames:3,topFour:2,wins:1,progression:{xp:150,earnedByMode:{standard:150}},modes:{standard:{games:3,topFour:2,wins:1}}}))});
- const entry=pathToFileURL(path.resolve(__dirname,'../ui-preview/本地UI预览.html')).href;
+ const entry=pathToFileURL(path.resolve(__dirname,'../index.html')).href;
  await page.goto(entry);await page.locator('.legal-screen.is-ready').waitFor({timeout:60000});
  const click=async selector=>{await page.locator(selector).click();await page.waitForTimeout(850)};
  await click('[data-legal-continue]');await page.waitForTimeout(650);await click('.press-any');

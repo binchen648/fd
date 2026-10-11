@@ -5,7 +5,7 @@ const {chromium}=require('../../binchen648_fd/work/node_modules/playwright');
  const click=async selector=>{await page.locator(selector).click();await page.waitForTimeout(850)};
  const fit=async selector=>{const rect=await page.locator(selector).evaluate(node=>{const r=node.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:innerWidth,height:innerHeight}});assert.ok(rect.left>=-1&&rect.right<=rect.width+1&&rect.top>=-1&&rect.bottom<=rect.height+1,selector+' fits viewport '+JSON.stringify(rect))};
  const shots=path.resolve('ui-preview/design-review/tutorial');fs.mkdirSync(shots,{recursive:true});
- await page.goto(pathToFileURL(path.resolve('ui-preview/本地UI预览.html')).href);await page.locator('.legal-screen.is-ready').waitFor({timeout:120000});await click('[data-legal-continue]');await page.waitForTimeout(1200);await click('.press-any');await click('[data-nav="tutorial"]');
+ await page.goto(pathToFileURL(path.resolve('index.html')).href);await page.locator('.legal-screen.is-ready').waitFor({timeout:120000});await click('[data-legal-continue]');await page.waitForTimeout(1200);await click('.press-any');await click('[data-nav="tutorial"]');
  for(const size of [{width:1280,height:720},{width:1920,height:1080},{width:844,height:390},{width:740,height:360}]){
   await page.setViewportSize(size);await page.mouse.move(0,0);await page.waitForTimeout(250);await fit('.tutorial-grid');await page.screenshot({path:path.join(shots,'directory-'+size.width+'.png')});
   await click('[data-tutorial="新手教程"]');await fit('.tutorial-page');await fit('.tutorial-step-actions');

@@ -21,6 +21,11 @@ import { isAbilityActivationBlocked, isCardSourceAbilityActivationBlocked } from
 import { hasRulerSealWinRewardFromSource, listRulerSealsControlledBy } from "./ruler-seals.ts";
 import { isCardTextSuppressed } from "./card-text.ts";
 
+function isAscensionSkill(skill: Pick<SkillDefinition, "id" | "ownerType" | "tags">): boolean {
+  return skill.ownerType === "master"
+    && (skill.tags?.includes("ascension") === true || skill.id.endsWith(".skill.ascension"));
+}
+
 export class SkillRegistry {
   readonly #definitions = new Map<string, SkillDefinition>();
   readonly #handlers = new Map<string, SkillHandler>();
@@ -109,7 +114,10 @@ export class SkillRegistry {
       playRequiresPlayerFlag: skill.playRequiresPlayerFlag ? { ...skill.playRequiresPlayerFlag } : undefined,
       basePower: skill.basePower ?? 0,
       basePowerFormula: skill.basePowerFormula ? structuredClone(skill.basePowerFormula) : undefined,
-      typeLabel: skill.typeLabel ?? "特殊",
+      // Keep the physical card's display category aligned with the authored
+      // catalogue. Ascension skills are still locked until unlocked, but they
+      // must be visibly identified as "升华技" in runtime card definitions.
+      typeLabel: isAscensionSkill(skill) ? "升华技" : skill.typeLabel ?? "特殊",
       attributes: skill.attributes !== undefined
         ? getCardAttributes({ attributes: skill.attributes, typeLabel: "" })
         : getCardAttributes({ typeLabel: skill.typeLabel ?? (skill.tags ?? []).join("/") }),
@@ -393,7 +401,12 @@ export class SkillRegistry {
     const outOfTurnPhaseAllowed = skill.tags?.includes("any-phase-out-of-turn") === true && windows.includes(state.phase as PhaseId);
     if ((!outOfTurnPhaseAllowed && state.activePlayerId !== playerId) || (!windows.includes(state.phase as PhaseId) && !actionAbilityCombatOverride)) return false;
     if (state.step === "post-power-response" && !steps?.includes("post-power-response")) return false;
-    if (steps?.length && !steps.includes(state.step)) return false;
+    // Action phase uses dedicated movement/play steps instead of the generic
+    // `player-window` label used by the authored skill catalogue. Treat those
+    // steps as the same player-controlled action window for skill legality;
+    // the command still remains gated by phase, active player and each
+    // handler's own resource/target checks.
+    if (steps?.length && !isSkillStepAllowed(state, steps)) return false;
     const forbiddenAttributes = (state.modeState.situationRestrictions as { forbiddenAttributes?: string[] } | undefined)?.forbiddenAttributes ?? [];
     const skillAttributes = skill.attributes !== undefined
       ? getCardAttributes({ attributes: skill.attributes, typeLabel: skill.typeLabel ?? "" })
@@ -432,6 +445,13 @@ export class SkillRegistry {
     if (uniqueGroup && !isUsageAvailable(state.players[playerId].usage[`__unique:${uniqueGroup}`], "once-per-round", state.round, state.phase)) return false;
     return true;
   }
+}
+
+function isSkillStepAllowed(state: GameState, steps: PhaseStepId[]): boolean {
+  if (steps.includes(state.step)) return true;
+  return state.phase === "action"
+    && steps.includes("player-window")
+    && ["move-decision", "play-batch-draft", "play-batch-commit"].includes(state.step);
 }
 
 /** Rules default every phase/optional-trigger ability to once per round unless a card explicitly says otherwise. */

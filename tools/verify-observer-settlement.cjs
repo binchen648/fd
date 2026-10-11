@@ -4,7 +4,7 @@ const path=require('path');
  const browser=await chromium.launch({executablePath:'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',headless:true,args:['--allow-file-access-from-files']});
  try{
   const page=await browser.newPage();
-  await page.goto('file:///'+path.resolve(__dirname,'../ui-preview/本地UI预览.html').replaceAll('\\','/'));
+  await page.goto('file:///'+path.resolve(__dirname,'../index.html').replaceAll('\\','/'));
   await page.waitForFunction(()=>Boolean(window.FDBattleRuntime));
   const result=await page.evaluate(()=>{
    const runtime=window.FDBattleRuntime.create({seed:1});

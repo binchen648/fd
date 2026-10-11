@@ -20,7 +20,7 @@ check(documents.find(doc=>doc.id==='common').text.includes('合计威力较低�
   const page=await browser.newPage({viewport:{width:1280,height:720}}),errors=[];
   page.on('pageerror',error=>errors.push(error.message));
   const click=async selector=>{await page.locator(selector).click();await page.waitForTimeout(850)};
-  await page.goto(pathToFileURL(path.join(root,'ui-preview/本地UI预览.html')).href);
+  await page.goto(pathToFileURL(path.join(root,'index.html')).href);
   await page.locator('.legal-screen.is-ready').waitFor({timeout:60000});await click('[data-legal-continue]');await page.waitForTimeout(500);await click('.press-any');await page.waitForTimeout(400);await click('[data-nav="tutorial"]');await click('[data-tutorial="新手教程"]');
   await page.locator('.tutorial-chapters').evaluate(e=>e.dataset.retained='yes');
   for(const viewport of [{width:1280,height:720},{width:1920,height:1080}]){

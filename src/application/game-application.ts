@@ -56,6 +56,7 @@ export class GameApplication {
   cardDefinitions(): Record<string, CardDefinition> {
     const definitions = structuredClone({
       ...this.#content.cards,
+      ...(this.#content.skills?.asCardDefinitions() ?? {}),
       ...Object.fromEntries(this.#content.events.map((definition) => [definition.id, definition as CardDefinition])),
       ...Object.fromEntries(this.#content.situations.map((definition) => [definition.id, definition as CardDefinition])),
     });

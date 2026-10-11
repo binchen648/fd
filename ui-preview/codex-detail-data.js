@@ -36,6 +36,17 @@ window.FDCodexDetailData={
           "requirement": null,
           "basePower": 0,
           "image": ""
+        },
+        {
+          "id": "master.kayneth.skill.ascension",
+          "name": "流体力学",
+          "type": "升华技",
+          "text": "你的所有攻击牌可以残留至下回合结束。当你从从者牌库中抽到【月灵髓液】时，你可以将其展示并再抽一张牌。",
+          "cost": null,
+          "requirement": null,
+          "basePower": null,
+          "image": "",
+          "isAscension": true
         }
       ]
     },
@@ -85,6 +96,17 @@ window.FDCodexDetailData={
           "requirement": null,
           "basePower": 0,
           "image": "../assets/rules-content/chm-used/masters/master-shinji/01.png"
+        },
+        {
+          "id": "master.shinji.skill.ascension",
+          "name": "圣杯核心",
+          "type": "升华技",
+          "text": "此牌在第八回合结束后，并且莎士比亚是你的从者时生效。你失去【伪臣之书】。若莎士比亚是你的第一名从者，你位于深山町时合计威力+12，当你获得X点战果时，所有位于深山町的对手失去X点战果；若莎士比亚并非你的第一名从者，你获得8点战果。",
+          "cost": null,
+          "requirement": null,
+          "basePower": null,
+          "image": "",
+          "isAscension": true
         }
       ]
     },
@@ -124,6 +146,17 @@ window.FDCodexDetailData={
           "requirement": null,
           "basePower": 0,
           "image": ""
+        },
+        {
+          "id": "master.kiritsugu.skill.ascension",
+          "name": "冷血杀手",
+          "type": "升华技",
+          "text": "解锁此技能后立刻移除你弃牌堆中的2张牌并将2张游戏外的起源弹加入手牌。",
+          "cost": null,
+          "requirement": null,
+          "basePower": null,
+          "image": "../assets/cards/skills/master-卫宫切嗣-ascension.png",
+          "isAscension": true
         }
       ]
     },
@@ -153,6 +186,17 @@ window.FDCodexDetailData={
           "requirement": null,
           "basePower": 0,
           "image": "../assets/rules-content/chm-used/masters/master-maiya/01.png"
+        },
+        {
+          "id": "master.maiya.skill.ascension",
+          "name": "甜品狂热者",
+          "type": "升华技",
+          "text": "解锁此技能后，立即从手牌、牌库和弃牌堆移除所有魔术牌，每以此法移除一张魔术牌，你获得2点魔力。然后将游戏外的一张【射击】加入你的技能区。",
+          "cost": null,
+          "requirement": null,
+          "basePower": null,
+          "image": "",
+          "isAscension": true
         }
       ]
     },
@@ -201,6 +245,17 @@ window.FDCodexDetailData={
           "requirement": null,
           "basePower": 0,
           "image": ""
+        },
+        {
+          "id": "master.irisviel.skill.ascension",
+          "name": "生命赋予",
+          "type": "升华技",
+          "text": "（升华技，将此牌加入你的技能区）\n你每回合只能使用此攻击的其中一项能力。\n行动阶段：本回合的一张基础攻击可以保持激活至下回合结束。\n战斗阶段：你的攻击获得魔术属性并且威力+1。",
+          "cost": 2,
+          "requirement": 2,
+          "basePower": 4,
+          "image": "",
+          "isAscension": true
         }
       ]
     },
@@ -289,6 +344,17 @@ window.FDCodexDetailData={
           "basePower": null,
           "requirement": null,
           "image": "../assets/cards/skills/master-远坂凛-s4.png"
+        },
+        {
+          "id": "master.rin.skill.ascension",
+          "name": "宝石剑泽尔里奇",
+          "type": "升华技",
+          "text": "（升华技，将此牌加入你的技能区）\n被动：你的魔术基础牌和【阴炁弹】的威力+2。\n行动阶段：获得本回合所有玩家花费的魔力。战斗结束后，将此牌移除游戏。",
+          "cost": 0,
+          "basePower": 6,
+          "requirement": 0,
+          "image": "",
+          "isAscension": true
         }
       ]
     }

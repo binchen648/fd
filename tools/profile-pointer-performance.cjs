@@ -6,7 +6,7 @@ const {chromium} = require('../../binchen648_fd/work/node_modules/playwright');
   try {
     const page = await browser.newPage({viewport:{width:1600,height:900}});
     const errors=[];page.on('pageerror',error=>errors.push(error.message));
-    await page.goto(pathToFileURL(path.resolve(__dirname,'../ui-preview/本地UI预览.html')).href);
+    await page.goto(pathToFileURL(path.resolve(__dirname,'../index.html')).href);
     await page.locator('.legal-screen.is-ready').waitFor({timeout:120000});
     await page.locator('[data-legal-continue]').click();await page.waitForTimeout(1800);
     await page.locator('.press-any').click();await page.waitForTimeout(1300);

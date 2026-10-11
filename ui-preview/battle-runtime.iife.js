@@ -59872,6 +59872,9 @@
   }
 
   // src/rules-core/skill-registry.ts
+  function isAscensionSkill(skill) {
+    return skill.ownerType === "master" && (skill.tags?.includes("ascension") === true || skill.id.endsWith(".skill.ascension"));
+  }
   var SkillRegistry = class {
     #definitions = /* @__PURE__ */ new Map();
     #handlers = /* @__PURE__ */ new Map();
@@ -59957,7 +59960,10 @@
         playRequiresPlayerFlag: skill.playRequiresPlayerFlag ? { ...skill.playRequiresPlayerFlag } : void 0,
         basePower: skill.basePower ?? 0,
         basePowerFormula: skill.basePowerFormula ? structuredClone(skill.basePowerFormula) : void 0,
-        typeLabel: skill.typeLabel ?? "\u7279\u6B8A",
+        // Keep the physical card's display category aligned with the authored
+        // catalogue. Ascension skills are still locked until unlocked, but they
+        // must be visibly identified as "升华技" in runtime card definitions.
+        typeLabel: isAscensionSkill(skill) ? "\u5347\u534E\u6280" : skill.typeLabel ?? "\u7279\u6B8A",
         attributes: skill.attributes !== void 0 ? getCardAttributes({ attributes: skill.attributes, typeLabel: "" }) : getCardAttributes({ typeLabel: skill.typeLabel ?? (skill.tags ?? []).join("/") }),
         basicCardPowerBonus: skill.basicCardPowerBonus,
         basicCardPowerBonusAttributes: skill.basicCardPowerBonusAttributes ? [...skill.basicCardPowerBonusAttributes] : void 0,
@@ -60192,7 +60198,7 @@
       const outOfTurnPhaseAllowed = skill.tags?.includes("any-phase-out-of-turn") === true && windows.includes(state.phase);
       if (!outOfTurnPhaseAllowed && state.activePlayerId !== playerId || !windows.includes(state.phase) && !actionAbilityCombatOverride) return false;
       if (state.step === "post-power-response" && !steps?.includes("post-power-response")) return false;
-      if (steps?.length && !steps.includes(state.step)) return false;
+      if (steps?.length && !isSkillStepAllowed(state, steps)) return false;
       const forbiddenAttributes = state.modeState.situationRestrictions?.forbiddenAttributes ?? [];
       const skillAttributes = skill.attributes !== void 0 ? getCardAttributes({ attributes: skill.attributes, typeLabel: skill.typeLabel ?? "" }) : getCardAttributes({ typeLabel: skill.typeLabel ?? "" });
       if (isCardSourceAbilityActivationBlocked(state, playerId, {
@@ -60224,6 +60230,10 @@
       return true;
     }
   };
+  function isSkillStepAllowed(state, steps) {
+    if (steps.includes(state.step)) return true;
+    return state.phase === "action" && steps.includes("player-window") && ["move-decision", "play-batch-draft", "play-batch-commit"].includes(state.step);
+  }
   function resolveSkillUsageLimit(limit, activation) {
     if (limit) return limit;
     return activation === "phase" || activation === "optional-trigger" ? "once-per-round" : void 0;
@@ -92475,7 +92485,7 @@
         handler: useSerenityDance
       });
     }
-    const kaynethAlchemistSkills = definitions.filter((skill) => skill.id === KAYNETH_ALCHEMIST_ID && skill.handlerId === KAYNETH_ALCHEMIST_HANDLER && skill.supportLevel === "FULL" && skill.passiveEventTypes?.includes("game.started"));
+    const kaynethAlchemistSkills = definitions.filter((skill) => skill.id === KAYNETH_ALCHEMIST_ID && skill.handlerId === KAYNETH_ALCHEMIST_HANDLER && skill.supportLevel === "FULL");
     if (kaynethAlchemistSkills.length && !effects.has(KAYNETH_ALCHEMIST_HANDLER)) effects.register(KAYNETH_ALCHEMIST_HANDLER, useKaynethAlchemist);
     for (const skill of kaynethAlchemistSkills) {
       passives.register({
@@ -98676,7 +98686,7 @@
       return;
     }
     if (abilityId === "wisdom-move-anywhere") {
-      if (mode !== "move-anywhere" || state.phase !== "action" || state.step !== "player-window" || state.activePlayerId !== player.id) {
+      if (mode !== "move-anywhere" || !isActionSkillWindow(state) || state.activePlayerId !== player.id) {
         throw new Error("SCATHACH_WISDOM_MOVE_FORBIDDEN");
       }
       const candidates = scathachWisdomMoveCandidates(state, player.id, definitions);
@@ -98753,7 +98763,7 @@
       return mode === "zero-magic" && state.phase === "combat" && state.step === "player-window" && state.activePlayerId === playerId && (player.locationId === "mountain" || player.locationId === "city");
     }
     if (ability.id === "wisdom-move-anywhere") {
-      return mode === "move-anywhere" && state.phase === "action" && state.step === "player-window" && state.activePlayerId === playerId && scathachWisdomMoveCandidates(state, playerId, definitions).length > 0;
+      return mode === "move-anywhere" && isActionSkillWindow(state) && state.activePlayerId === playerId && scathachWisdomMoveCandidates(state, playerId, definitions).length > 0;
     }
     if (ability.id === "wisdom-strict-second") {
       const pending2 = pendingCombat(state);
@@ -98781,7 +98791,7 @@
     }
     const abilityId = isRecord143(payload) && typeof payload.abilityId === "string" ? payload.abilityId : void 0;
     if (abilityId === "serenity-dance-move") {
-      if (!definitions || state.phase !== "action" || state.step !== "player-window" || state.activePlayerId !== player.id) throw new Error("SERENITY_DANCE_MOVE_WINDOW_INVALID");
+      if (!definitions || !isActionSkillWindow(state) || state.activePlayerId !== player.id) throw new Error("SERENITY_DANCE_MOVE_WINDOW_INVALID");
       if (player.locationId !== "mountain" && player.locationId !== "city") throw new Error("SERENITY_DANCE_MOVE_SOURCE_INVALID");
       const destination = player.locationId === "mountain" ? "city" : "mountain";
       const movement = movePlayerByEffect(state, player.id, destination, definitions);
@@ -98809,7 +98819,7 @@
     const player = state.players[playerId];
     if (!player || !ability) return false;
     if (ability.id === "serenity-dance-move") {
-      return state.phase === "action" && state.step === "player-window" && state.activePlayerId === playerId && (player.locationId === "mountain" || player.locationId === "city");
+      return isActionSkillWindow(state) && state.activePlayerId === playerId && (player.locationId === "mountain" || player.locationId === "city");
     }
     if (ability.id === "serenity-dance-workshop-block") {
       return state.phase === "combat" && state.step === "player-window" && state.activePlayerId === playerId;
@@ -103902,7 +103912,7 @@
   };
   var isRulerClassLegal = (state, playerId, skill, ability) => {
     const player = state.players[playerId];
-    if (!player || !ability || state.phase !== "action" || state.step !== "player-window" || state.activePlayerId !== playerId) return false;
+    if (!player || !ability || !isActionSkillWindow(state) || state.activePlayerId !== playerId) return false;
     if (ability.id === "divine-judgment") {
       const uses = Number(player.flags[rulerJudgmentUsesKey(skill.id)] ?? 0);
       return Number.isInteger(uses) && uses < 3 && rulerFirstJudgmentTargets(state, playerId).length > 0;
@@ -104074,7 +104084,7 @@
   var isSpartacusFreeSpiritLegal = (state, playerId, skill, ability) => {
     if (skill.id !== SPARTACUS_FREE_SPIRIT_ID || !ability) return false;
     const player = state.players[playerId];
-    if (!player || state.phase !== "action" || state.step !== "player-window" || state.activePlayerId !== playerId) return false;
+    if (!player || !isActionSkillWindow(state) || state.activePlayerId !== playerId) return false;
     if (ability.id === "free-spirit-unused-seal-aura") return player.flags.engagedOpponentUnusedSealPowerRound !== state.round;
     if (ability.id === "free-spirit-use-command-seal") return player.commandSeals > 0;
     if (ability.id === "free-spirit-use-ruler-seal") return listRulerSealsControlledBy(state, playerId).length > 0;
@@ -105036,7 +105046,7 @@
     }
     const abilityId = readSkillAbilityId(payload);
     if (skill.id === MANDRICARDO_OATH_ID && abilityId === "oath-instant-strike") {
-      if (state.phase !== "action" || state.step !== "player-window" || state.activePlayerId !== player.id) throw new Error("MANDRICARDO_OATH_WINDOW_INVALID");
+      if (!isActionSkillWindow(state) || state.activePlayerId !== player.id) throw new Error("MANDRICARDO_OATH_WINDOW_INVALID");
       const sourceInstanceId = findActiveOwnedSkillAttack(state, player.id, MANDRICARDO_OATH_ID);
       if (!sourceInstanceId) throw new Error("MANDRICARDO_OATH_SOURCE_NOT_ACTIVE");
       armMandricardoInstantStrike(state, player, sourceInstanceId);
@@ -105056,7 +105066,7 @@
     const player = state.players[playerId];
     if (!player || !ability || Number(player.flags.mandricardoInstantStrikeRound ?? -1) === state.round) return false;
     if (skill.id === MANDRICARDO_OATH_ID && ability.id === "oath-instant-strike") {
-      return state.phase === "action" && state.step === "player-window" && state.activePlayerId === playerId && Boolean(findActiveOwnedSkillAttack(state, playerId, MANDRICARDO_OATH_ID));
+      return isActionSkillWindow(state) && state.activePlayerId === playerId && Boolean(findActiveOwnedSkillAttack(state, playerId, MANDRICARDO_OATH_ID));
     }
     if (skill.id === MANDRICARDO_WOODEN_SWORD_ID && ability.id === "wooden-sword-instant-strike") {
       return player.flags.mandricardoWoodenSwordInstantStrikeGranted === true && state.phase === "combat" && state.step === "player-window" && state.activePlayerId === playerId && Boolean(findActiveOwnedSkillAttack(state, playerId, MANDRICARDO_WOODEN_SWORD_ID));
@@ -105072,6 +105082,9 @@
   var KAYNETH_VOLUMEN_IRE = "card.card-volumen-track";
   var KAYNETH_VOLUMEN_FERVOR = "card.card-volumen-boil";
   var KAYNETH_VOLUMEN_IDS = /* @__PURE__ */ new Set([KAYNETH_VOLUMEN_SCALP, KAYNETH_VOLUMEN_IRE, KAYNETH_VOLUMEN_FERVOR]);
+  function isActionSkillWindow(state) {
+    return state.phase === "action" && ["player-window", "move-decision", "play-batch-draft", "play-batch-commit"].includes(state.step);
+  }
   function kaynethVolumenDeckKey(playerId) {
     return `kaynethVolumenDeck:${playerId}`;
   }
@@ -105103,7 +105116,7 @@
     }
     const abilityId = readSkillAbilityId(payload);
     if (skill.id !== KAYNETH_ALCHEMIST_ID || abilityId !== "alchemist-draw") throw new Error("KAYNETH_ALCHEMIST_ABILITY_INVALID");
-    if (state.phase !== "action" || state.step !== "player-window" || state.activePlayerId !== player.id || !definitions) {
+    if (!isActionSkillWindow(state) || state.activePlayerId !== player.id || !definitions) {
       throw new Error("KAYNETH_ALCHEMIST_WINDOW_INVALID");
     }
     const key = kaynethVolumenDeckKey(player.id);
@@ -105127,7 +105140,7 @@
   var isKaynethAlchemistLegal = (state, playerId, skill, ability) => {
     if (skill.id !== KAYNETH_ALCHEMIST_ID || ability?.id !== "alchemist-draw") return false;
     const deck = state.modeState[kaynethVolumenDeckKey(playerId)];
-    return state.phase === "action" && state.step === "player-window" && state.activePlayerId === playerId && Array.isArray(deck) && deck.length > 0;
+    return isActionSkillWindow(state) && state.activePlayerId === playerId && Array.isArray(deck) && deck.length > 0;
   };
   function installKaynethFluidDynamics(state, player, definitions) {
     const modifierId = `${KAYNETH_FLUID_DYNAMICS_ID}:two-round-residual`;
@@ -111985,6 +111998,7 @@
     cardDefinitions() {
       const definitions = structuredClone({
         ...this.#content.cards,
+        ...this.#content.skills?.asCardDefinitions() ?? {},
         ...Object.fromEntries(this.#content.events.map((definition) => [definition.id, definition])),
         ...Object.fromEntries(this.#content.situations.map((definition) => [definition.id, definition]))
       });
@@ -178917,7 +178931,13 @@
             sourceRefs: skill.sourceRefs ?? (ownerType === "servant" ? toSkillSources(getEnglishServantSource(owner.id)) : void 0) ?? (skill.legacyId ? [{ kind: "legacy", document: "legacy-content.json", locator: `${ownerType}/${owner.id}/${skill.legacyId}` }] : void 0),
             supportLevel: confirmed?.supportLevel ?? parsedSupport ?? toSupportLevel(skill.implementation),
             handlerId: confirmed?.handlerId ?? skill.handlerId ?? parsedHandler,
-            tags: confirmed?.tags ?? skill.tags,
+            tags: (() => {
+              const tags4 = confirmed?.tags ?? skill.tags;
+              if (ownerType === "master" && (skill.legacyId === "ascension" || skill.id.endsWith(".skill.ascension"))) {
+                return [.../* @__PURE__ */ new Set([...tags4 ?? [], "ascension"])];
+              }
+              return tags4;
+            })(),
             limit: confirmed?.limit ?? (confirmed?.suppressInferredLimit || skill.suppressInferredLimit ? void 0 : skill.limit ?? inferUsageLimit(skill.text ?? "")),
             requiresTrueName: confirmed?.requiresTrueName ?? skill.requiresTrueName,
             revealsTrueNameOnPlay: confirmed?.revealsTrueNameOnPlay === false ? false : confirmedRevealsTrueNameOnPlay ? true : confirmedRuntime?.revealsTrueNameOnPlay ?? (skill.revealsTrueNameOnPlay === false ? false : void 0) ?? /^\s*【真名解放】/.test(text),
@@ -179996,8 +180016,8 @@
     const masterIds = new Set(MASTER_IDS);
     const servantIds = new Set(SERVANT_IDS);
     return {
-      masters: (legacy_content_default.masters ?? []).filter((master) => masterIds.has(master.id)).map(({ skills: _skills, ...master }) => ({ ...master, skills: [] })),
-      servants: (legacy_content_default.servants ?? []).filter((servant) => servantIds.has(servant.id)).map(({ skills: _skills, ...servant }) => ({ ...servant, skills: [] })),
+      masters: (legacy_content_default.masters ?? []).filter((master) => masterIds.has(master.id)).map((master) => ({ ...master, skills: master.skills ?? [] })),
+      servants: (legacy_content_default.servants ?? []).filter((servant) => servantIds.has(servant.id)).map((servant) => ({ ...servant, skills: servant.skills ?? [] })),
       cards: (legacy_content_default.cards ?? []).filter((card) => card.cardType !== "skill" && card.isSkill !== true),
       situations: legacy_content_default.situations ?? [],
       eventGroups: (legacy_content_default.eventGroups ?? []).filter((group) => group.id === "event-group.fuyuki" || group.name.includes("\u51AC\u6728")),
@@ -180006,11 +180026,7 @@
   }
   function standardContent() {
     if (!preparedContent) {
-      const built = buildStandardContent(playableContentSource());
-      preparedContent = Object.freeze({
-        ...built,
-        cards: Object.fromEntries(Object.entries(built.cards).filter(([, card]) => card.cardType !== "skill" && card.isSkill !== true))
-      });
+      preparedContent = Object.freeze(buildStandardContent(playableContentSource()));
     }
     return preparedContent;
   }

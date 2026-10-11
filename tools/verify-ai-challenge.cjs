@@ -11,7 +11,7 @@ async function play(browser, seed, policy) {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
-  await page.goto(pathToFileURL(path.resolve(__dirname, '../ui-preview/本地UI预览.html')).href);
+  await page.goto(pathToFileURL(path.resolve(__dirname, '../index.html')).href);
   await page.locator('.legal-screen.is-ready').waitFor({ timeout: 120000 });
   await page.evaluate(seed => {
     const create = window.FDBattleRuntime.create;

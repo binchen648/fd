@@ -22,7 +22,7 @@ const MIME = {
 
 function resolveRequestPath(urlPath) {
   const pathname = decodeURIComponent((urlPath ?? "/").split("?", 1)[0]);
-  const requested = pathname === "/" ? "/ui-preview/本地UI预览.html" : pathname;
+  const requested = pathname === "/" ? "/index.html" : pathname;
   const relative = normalize(requested).replace(/^([/\\])+/, "");
   const absolute = resolve(projectRoot, relative);
   if (absolute !== projectRoot && !absolute.startsWith(`${projectRoot}${sep}`)) return null;

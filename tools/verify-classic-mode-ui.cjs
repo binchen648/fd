@@ -9,7 +9,7 @@ const {chromium} = require('../../binchen648_fd/work/node_modules/playwright');
     const page = await browser.newPage({viewport:{width:1280,height:720}});
     const errors=[]; page.on('pageerror',error=>errors.push(error.message));
     const click=async selector=>{await page.locator(selector).click();await page.waitForTimeout(800)};
-    await page.goto(pathToFileURL(path.resolve(__dirname,'../ui-preview/本地UI预览.html')).href);
+    await page.goto(pathToFileURL(path.resolve(__dirname,'../index.html')).href);
     await page.locator('.legal-screen.is-ready').waitFor({timeout:60000});
     await click('[data-legal-continue]');await page.waitForTimeout(700);await click('.press-any');await click('[data-nav="single"]');
     for(const viewport of [{width:1280,height:720},{width:1920,height:1080}]) {

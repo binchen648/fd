@@ -53,6 +53,9 @@ function cardTitle(definitions, instance) {
 
 function cardAttributes(definition) {
   if (!definition) return "";
+  // Ascension cards have ordinary card attributes for rule calculations, but
+  // their authored category must remain visible on the physical card face.
+  if (definition.typeLabel === "升华技" || definition.tags?.includes("ascension")) return "升华技";
   if (Array.isArray(definition.attributes) && definition.attributes.length) return definition.attributes.join(" / ");
   return definition.typeLabel ?? "";
 }

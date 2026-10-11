@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 import assert from 'node:assert/strict';
-const html=readFileSync('ui-preview/本地UI预览.html','utf8');
+const html=readFileSync('index.html','utf8');
 for(const match of html.matchAll(/<script(?![^>]*\bsrc\s*=)[^>]*>([\s\S]*?)<\/script>/gi))new vm.Script(match[1]);
 const names=['battleBgmZone','bgmZoneForScreen','bgmTrackPool','pickBgm','stopBgmPlayback','switchBgm','syncBgmForScreen'];
 const source=names.map(name=>{const start=html.search(new RegExp('(?:async )?function '+name+'\\('));const end=html.indexOf('\nfunction ',start+1);return html.slice(start,end)}).join('\n');

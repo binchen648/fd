@@ -5,7 +5,7 @@ const path=require('path');
  const page=await browser.newPage({viewport:{width:1600,height:900}}),errors=[],rounds=new Set(),steps=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
  const click=async s=>{await page.locator(s).click();await page.waitForTimeout(1000)};
- await page.goto('file:///'+path.resolve(__dirname,'../ui-preview/本地UI预览.html').replaceAll('\\','/'));await page.locator('.legal-screen.is-ready').waitFor({timeout:60000});await click('[data-legal-continue]');await page.waitForTimeout(1200);await click('.press-any');await click('[data-nav="single"]');await click('[data-mode="free"]');await click('[data-pick-master="肯尼斯"]');await click('[data-standard-next]');await click('[data-pick-servant="巴御前"]');await click('[data-standard-next]');await click('[data-enter-battle-preview]');await page.locator('.battle-host').waitFor();
+ await page.goto('file:///'+path.resolve(__dirname,'../index.html').replaceAll('\\','/'));await page.locator('.legal-screen.is-ready').waitFor({timeout:60000});await click('[data-legal-continue]');await page.waitForTimeout(1200);await click('.press-any');await click('[data-nav="single"]');await click('[data-mode="free"]');await click('[data-pick-master="肯尼斯"]');await click('[data-standard-next]');await click('[data-pick-servant="巴御前"]');await click('[data-standard-next]');await click('[data-enter-battle-preview]');await page.locator('.battle-host').waitFor();
  const start=Date.now();let lastRevision=-1,lastChanged=Date.now(),finished=false;
  while(Date.now()-start<360000){
   const result=await page.evaluate(()=>{

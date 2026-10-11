@@ -5,7 +5,7 @@ const {chromium}=require('../../binchen648_fd/work/node_modules/playwright');
  const click=async selector=>{await page.locator(selector).click();await page.waitForTimeout(850)};
  const fit=async selector=>assert.ok(await page.locator(selector).evaluate(node=>{const r=node.getBoundingClientRect();return r.left>=-1&&r.right<=innerWidth+1&&r.top>=-1&&r.bottom<=innerHeight+1}),selector+' fits viewport');
  const screenshots=path.resolve('ui-preview/design-review/archive');fs.mkdirSync(screenshots,{recursive:true});
- await page.goto(pathToFileURL(path.resolve('ui-preview/本地UI预览.html')).href);await page.locator('.legal-screen.is-ready').waitFor({timeout:120000});await click('[data-legal-continue]');await page.waitForTimeout(1200);await click('.press-any');await click('[data-nav="codex"]');
+ await page.goto(pathToFileURL(path.resolve('index.html')).href);await page.locator('.legal-screen.is-ready').waitFor({timeout:120000});await click('[data-legal-continue]');await page.waitForTimeout(1200);await click('.press-any');await click('[data-nav="codex"]');
  for(const size of [{width:1280,height:720},{width:1920,height:1080},{width:844,height:390},{width:740,height:360}]){
   await page.setViewportSize(size);await click('[data-codex-section="masters"]');
   await fit('.codex-toolbar');await fit('.codex-grid');await fit('[data-codex-search]');

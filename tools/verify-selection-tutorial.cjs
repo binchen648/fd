@@ -6,7 +6,7 @@ const path=require('path');
  page.on('pageerror',e=>errors.push(e.message));const check=(ok,name)=>{if(!ok)throw Error(name);checks.push(name)};
  const click=async selector=>{await page.locator(selector).click();await page.waitForTimeout(900)};
  const loaded=async selector=>{await page.locator(selector).evaluateAll(async imgs=>Promise.all(imgs.map(i=>i.decode().catch(()=>{}))));return page.locator(selector).evaluateAll(imgs=>imgs.length>0&&imgs.every(i=>i.naturalWidth>0))};
- await page.goto('file:///'+path.resolve(__dirname,'../ui-preview/本地UI预览.html').replaceAll('\\','/'));await page.locator('.legal-screen.is-ready').waitFor({timeout:60000});await click('[data-legal-continue]');await page.waitForTimeout(1200);await click('.press-any');
+ await page.goto('file:///'+path.resolve(__dirname,'../index.html').replaceAll('\\','/'));await page.locator('.legal-screen.is-ready').waitFor({timeout:60000});await click('[data-legal-continue]');await page.waitForTimeout(1200);await click('.press-any');
  await click('[data-nav="single"]');await click('[data-mode="free"]');check(await page.locator('[data-standard-next]').isDisabled(),'未选御主禁止确认');check(await page.locator('[data-standard-stage="servant"]').isDisabled(),'未选御主禁止进入从者');check(await page.locator('[data-pick-master]').count()===8,'八名御主');check(await loaded('.pick-card-avatar img'),'御主图片加载');
  const masters=await page.locator('[data-pick-master]').evaluateAll(nodes=>nodes.map(n=>n.dataset.pickMaster));
  await page.locator('.pick-grid').evaluate(e=>e.dataset.retained='yes');

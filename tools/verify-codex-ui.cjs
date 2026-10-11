@@ -22,7 +22,7 @@ const browser=await chromium.launch({executablePath:'C:/Program Files (x86)/Micr
 const page=await browser.newPage({viewport:{width:1280,height:720}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
 const click=async s=>{await page.locator(s).click();await page.waitForTimeout(850)};
 const images=async selector=>{await page.locator(selector).evaluateAll(async items=>{await Promise.all(items.map(i=>i.decode().catch(()=>{})))});return page.locator(selector).evaluateAll(items=>items.length>0&&items.every(i=>i.naturalWidth>0))};
-await page.goto('file:///'+path.join(root,'ui-preview/本地UI预览.html').replaceAll('\\','/'));await page.locator('.legal-screen.is-ready').waitFor({timeout:60000});await click('[data-legal-continue]');await page.waitForTimeout(1200);await click('.press-any');await page.locator('[data-nav="codex"]').waitFor();await click('[data-nav="codex"]');
+await page.goto('file:///'+path.join(root,'index.html').replaceAll('\\','/'));await page.locator('.legal-screen.is-ready').waitFor({timeout:60000});await click('[data-legal-continue]');await page.waitForTimeout(1200);await click('.press-any');await page.locator('[data-nav="codex"]').waitFor();await click('[data-nav="codex"]');
 check(await page.locator('.codex-card').count()===8,'八名御主');check(await images('.codex-card img'),'角色列表卡图加载');
 await page.mouse.move(0,0);await page.waitForTimeout(300);
 check(await page.locator('.codex-portrait img').evaluateAll(items=>items.every(i=>{const p=i.parentElement.getBoundingClientRect(),r=i.getBoundingClientRect();return r.width<=p.width+1&&r.height<=p.height+1&&getComputedStyle(i).objectFit==='cover'})),'角色列表使用头像裁切且不超出卡片');
@@ -31,6 +31,10 @@ for(const [kind,bucket] of [['master',roles.masters],['servant',roles.servants]]
  check(await images('.codex-detail-art img'),`详情图片 ${card.name}`);
  check(await page.locator('.codex-skill-item').count()===card.skills.length,`技能数量 ${card.name}`);
  const text=await page.locator('.codex-detail-content').innerText();check(card.skills.every(s=>text.includes(s.name)&&text.includes(s.text)),`技能文案 ${card.name}`);
+ if(kind==='master'){
+  const ascensions=card.skills.filter(s=>s.isAscension===true);
+  check(ascensions.every(s=>s.type==='升华技'&&text.includes('升华技')),`御主升华技标记 ${card.name}`);
+ }
  if(kind==='servant'){
   await page.locator('.codex-detail-identity').evaluate(e=>e.dataset.auditRetained='yes');
   await click('[data-codex-detail-tab="deck"]');check(await page.locator('.codex-deck-card').count()===card.deck.length,`卡组种类 ${card.name}`);

@@ -24,6 +24,13 @@ window.FDCharacterPreviewData={
           "name": "倨傲",
           "type": "御主技能",
           "text": "倨傲-若你可以部署于一名战果低于你且独自位于战场的其他玩家所在的战场，则你必须部署。"
+        },
+        {
+          "id": "master.kayneth.skill.ascension",
+          "name": "流体力学",
+          "type": "升华技",
+          "text": "你的所有攻击牌可以残留至下回合结束。当你从从者牌库中抽到【月灵髓液】时，你可以将其展示并再抽一张牌。",
+          "isAscension": true
         }
       ]
     },
@@ -57,6 +64,13 @@ window.FDCharacterPreviewData={
           "name": "伪臣之书",
           "type": "御主技能",
           "text": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。 当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。"
+        },
+        {
+          "id": "master.shinji.skill.ascension",
+          "name": "圣杯核心",
+          "type": "升华技",
+          "text": "此牌在第八回合结束后，并且莎士比亚是你的从者时生效。你失去【伪臣之书】。若莎士比亚是你的第一名从者，你位于深山町时合计威力+12，当你获得X点战果时，所有位于深山町的对手失去X点战果；若莎士比亚并非你的第一名从者，你获得8点战果。",
+          "isAscension": true
         }
       ]
     },
@@ -84,6 +98,13 @@ window.FDCharacterPreviewData={
           "name": "四倍速",
           "type": "御主技能",
           "text": "战斗阶段：关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。"
+        },
+        {
+          "id": "master.kiritsugu.skill.ascension",
+          "name": "冷血杀手",
+          "type": "升华技",
+          "text": "解锁此技能后立刻移除你弃牌堆中的2张牌并将2张游戏外的起源弹加入手牌。",
+          "isAscension": true
         }
       ]
     },
@@ -105,6 +126,13 @@ window.FDCharacterPreviewData={
           "name": "援护射击",
           "type": "御主技能",
           "text": "迅捷属性，2魔耗2需0威力。此牌需追加打出。压制-行动阶段：若你不是久宇舞弥，你需向其支付2点战果使用此效果。获得+1基础地利后，翻倍你的地利。"
+        },
+        {
+          "id": "master.maiya.skill.ascension",
+          "name": "甜品狂热者",
+          "type": "升华技",
+          "text": "解锁此技能后，立即从手牌、牌库和弃牌堆移除所有魔术牌，每以此法移除一张魔术牌，你获得2点魔力。然后将游戏外的一张【射击】加入你的技能区。",
+          "isAscension": true
         }
       ]
     },
@@ -141,6 +169,13 @@ window.FDCharacterPreviewData={
           "name": "转换魔术",
           "type": "御主技能",
           "text": "前哨阶段：弃置所有手牌，每1张获得1点魔力。"
+        },
+        {
+          "id": "master.irisviel.skill.ascension",
+          "name": "生命赋予",
+          "type": "升华技",
+          "text": "（升华技，将此牌加入你的技能区）\n你每回合只能使用此攻击的其中一项能力。\n行动阶段：本回合的一张基础攻击可以保持激活至下回合结束。\n战斗阶段：你的攻击获得魔术属性并且威力+1。",
+          "isAscension": true
         }
       ]
     },
@@ -201,6 +236,13 @@ window.FDCharacterPreviewData={
           "name": "阴炁弹",
           "type": "牌库牌",
           "text": "魔术属性，0耗1威。<每局游戏限一次>\n(<每局游戏限一次>的卡牌，关闭后将被移除游戏。对于其他卡牌的效果而言，它们便是游戏外的。)"
+        },
+        {
+          "id": "master.rin.skill.ascension",
+          "name": "宝石剑泽尔里奇",
+          "type": "升华技",
+          "text": "（升华技，将此牌加入你的技能区）\n被动：你的魔术基础牌和【阴炁弹】的威力+2。\n行动阶段：获得本回合所有玩家花费的魔力。战斗结束后，将此牌移除游戏。",
+          "isAscension": true
         }
       ]
     }

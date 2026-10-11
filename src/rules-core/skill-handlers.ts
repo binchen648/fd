@@ -3494,16 +3494,19 @@ export function registerCorePassiveHandlers(registry: SkillRegistry, passives: P
 
   const kaynethAlchemistSkills = definitions.filter((skill) => skill.id === KAYNETH_ALCHEMIST_ID
     && skill.handlerId === KAYNETH_ALCHEMIST_HANDLER
-    && skill.supportLevel === "FULL"
-    && skill.passiveEventTypes?.includes("game.started"));
+    && skill.supportLevel === "FULL");
   if (kaynethAlchemistSkills.length && !effects.has(KAYNETH_ALCHEMIST_HANDLER)) effects.register(KAYNETH_ALCHEMIST_HANDLER, useKaynethAlchemist);
   for (const skill of kaynethAlchemistSkills) {
+    // The authored card has a game-start setup side effect even though the
+    // legacy migration did not carry a `passiveEventTypes` field for it.
+    // Register that trigger explicitly so the independent Volumen deck is
+    // prepared before the first action window and the skill can be used.
     passives.register({
-      skill,
-      eventType: "game.started",
-      mandatory: true,
-      condition: (state, _event, playerId) => state.players[playerId]?.masterId === skill.ownerId,
-      handler: useKaynethAlchemist,
+        skill,
+        eventType: "game.started",
+        mandatory: true,
+        condition: (state, _event, playerId) => state.players[playerId]?.masterId === skill.ownerId,
+        handler: useKaynethAlchemist,
     });
   }
 
@@ -10408,7 +10411,7 @@ export const useScathachWisdom: SkillHandler = ({ state, player, skill, payload,
     return;
   }
   if (abilityId === "wisdom-move-anywhere") {
-    if (mode !== "move-anywhere" || state.phase !== "action" || state.step !== "player-window" || state.activePlayerId !== player.id) {
+    if (mode !== "move-anywhere" || !isActionSkillWindow(state) || state.activePlayerId !== player.id) {
       throw new Error("SCATHACH_WISDOM_MOVE_FORBIDDEN");
     }
     const candidates = scathachWisdomMoveCandidates(state, player.id, definitions);
@@ -10489,7 +10492,7 @@ export const isScathachWisdomLegal: SkillLegalityPredicate = (state, playerId, _
       && (player.locationId === "mountain" || player.locationId === "city");
   }
   if (ability.id === "wisdom-move-anywhere") {
-    return mode === "move-anywhere" && state.phase === "action" && state.step === "player-window" && state.activePlayerId === playerId
+    return mode === "move-anywhere" && isActionSkillWindow(state) && state.activePlayerId === playerId
       && scathachWisdomMoveCandidates(state, playerId, definitions).length > 0;
   }
   if (ability.id === "wisdom-strict-second") {
@@ -10525,7 +10528,7 @@ export const useSerenityDance: SkillHandler = ({ state, player, skill, payload, 
 
   const abilityId = isRecord(payload) && typeof payload.abilityId === "string" ? payload.abilityId : undefined;
   if (abilityId === "serenity-dance-move") {
-    if (!definitions || state.phase !== "action" || state.step !== "player-window" || state.activePlayerId !== player.id) throw new Error("SERENITY_DANCE_MOVE_WINDOW_INVALID");
+    if (!definitions || !isActionSkillWindow(state) || state.activePlayerId !== player.id) throw new Error("SERENITY_DANCE_MOVE_WINDOW_INVALID");
     if (player.locationId !== "mountain" && player.locationId !== "city") throw new Error("SERENITY_DANCE_MOVE_SOURCE_INVALID");
     const destination = player.locationId === "mountain" ? "city" : "mountain";
     const movement = movePlayerByEffect(state, player.id, destination, definitions);
@@ -10554,7 +10557,7 @@ export const isSerenityDanceLegal: SkillLegalityPredicate = (state, playerId, _s
   const player = state.players[playerId];
   if (!player || !ability) return false;
   if (ability.id === "serenity-dance-move") {
-    return state.phase === "action" && state.step === "player-window" && state.activePlayerId === playerId
+    return isActionSkillWindow(state) && state.activePlayerId === playerId
       && (player.locationId === "mountain" || player.locationId === "city");
   }
   if (ability.id === "serenity-dance-workshop-block") {
@@ -16296,7 +16299,7 @@ export const useRulerClass: SkillHandler = ({ state, player, skill, payload, def
 
 export const isRulerClassLegal: SkillLegalityPredicate = (state, playerId, skill, ability) => {
   const player = state.players[playerId];
-  if (!player || !ability || state.phase !== "action" || state.step !== "player-window" || state.activePlayerId !== playerId) return false;
+  if (!player || !ability || !isActionSkillWindow(state) || state.activePlayerId !== playerId) return false;
   if (ability.id === "divine-judgment") {
     const uses = Number(player.flags[rulerJudgmentUsesKey(skill.id)] ?? 0);
     return Number.isInteger(uses) && uses < 3 && rulerFirstJudgmentTargets(state, playerId).length > 0;
@@ -16497,7 +16500,7 @@ const resolveSpartacusFreeSpiritRulerSeal: SkillHandler = ({ state, player, payl
 export const isSpartacusFreeSpiritLegal: SkillLegalityPredicate = (state, playerId, skill, ability) => {
   if (skill.id !== SPARTACUS_FREE_SPIRIT_ID || !ability) return false;
   const player = state.players[playerId];
-  if (!player || state.phase !== "action" || state.step !== "player-window" || state.activePlayerId !== playerId) return false;
+  if (!player || !isActionSkillWindow(state) || state.activePlayerId !== playerId) return false;
   if (ability.id === "free-spirit-unused-seal-aura") return player.flags.engagedOpponentUnusedSealPowerRound !== state.round;
   if (ability.id === "free-spirit-use-command-seal") return player.commandSeals > 0;
   if (ability.id === "free-spirit-use-ruler-seal") return listRulerSealsControlledBy(state, playerId).length > 0;
@@ -17605,7 +17608,7 @@ export const useMandricardoInstantStrike: SkillHandler = ({ state, player, skill
 
   const abilityId = readSkillAbilityId(payload);
   if (skill.id === MANDRICARDO_OATH_ID && abilityId === "oath-instant-strike") {
-    if (state.phase !== "action" || state.step !== "player-window" || state.activePlayerId !== player.id) throw new Error("MANDRICARDO_OATH_WINDOW_INVALID");
+    if (!isActionSkillWindow(state) || state.activePlayerId !== player.id) throw new Error("MANDRICARDO_OATH_WINDOW_INVALID");
     const sourceInstanceId = findActiveOwnedSkillAttack(state, player.id, MANDRICARDO_OATH_ID);
     if (!sourceInstanceId) throw new Error("MANDRICARDO_OATH_SOURCE_NOT_ACTIVE");
     armMandricardoInstantStrike(state, player, sourceInstanceId);
@@ -17626,7 +17629,7 @@ export const isMandricardoInstantStrikeLegal: SkillLegalityPredicate = (state, p
   const player = state.players[playerId];
   if (!player || !ability || Number(player.flags.mandricardoInstantStrikeRound ?? -1) === state.round) return false;
   if (skill.id === MANDRICARDO_OATH_ID && ability.id === "oath-instant-strike") {
-    return state.phase === "action" && state.step === "player-window" && state.activePlayerId === playerId
+    return isActionSkillWindow(state) && state.activePlayerId === playerId
       && Boolean(findActiveOwnedSkillAttack(state, playerId, MANDRICARDO_OATH_ID));
   }
   if (skill.id === MANDRICARDO_WOODEN_SWORD_ID && ability.id === "wooden-sword-instant-strike") {
@@ -17646,6 +17649,11 @@ const KAYNETH_VOLUMEN_SCALP = "card.card-volumen-slash";
 const KAYNETH_VOLUMEN_IRE = "card.card-volumen-track";
 const KAYNETH_VOLUMEN_FERVOR = "card.card-volumen-boil";
 const KAYNETH_VOLUMEN_IDS = new Set([KAYNETH_VOLUMEN_SCALP, KAYNETH_VOLUMEN_IRE, KAYNETH_VOLUMEN_FERVOR]);
+
+function isActionSkillWindow(state: GameState): boolean {
+  return state.phase === "action"
+    && ["player-window", "move-decision", "play-batch-draft", "play-batch-commit"].includes(state.step);
+}
 
 function kaynethVolumenDeckKey(playerId: string): string {
   return `kaynethVolumenDeck:${playerId}`;
@@ -17679,7 +17687,7 @@ export const useKaynethAlchemist: SkillHandler = ({ state, player, skill, payloa
   }
   const abilityId = readSkillAbilityId(payload);
   if (skill.id !== KAYNETH_ALCHEMIST_ID || abilityId !== "alchemist-draw") throw new Error("KAYNETH_ALCHEMIST_ABILITY_INVALID");
-  if (state.phase !== "action" || state.step !== "player-window" || state.activePlayerId !== player.id || !definitions) {
+  if (!isActionSkillWindow(state) || state.activePlayerId !== player.id || !definitions) {
     throw new Error("KAYNETH_ALCHEMIST_WINDOW_INVALID");
   }
   const key = kaynethVolumenDeckKey(player.id);
@@ -17704,7 +17712,7 @@ export const useKaynethAlchemist: SkillHandler = ({ state, player, skill, payloa
 export const isKaynethAlchemistLegal: SkillLegalityPredicate = (state, playerId, skill, ability) => {
   if (skill.id !== KAYNETH_ALCHEMIST_ID || ability?.id !== "alchemist-draw") return false;
   const deck = state.modeState[kaynethVolumenDeckKey(playerId)];
-  return state.phase === "action" && state.step === "player-window" && state.activePlayerId === playerId
+  return isActionSkillWindow(state) && state.activePlayerId === playerId
     && Array.isArray(deck) && deck.length > 0;
 };
 

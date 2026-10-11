@@ -53,10 +53,14 @@ function playableContentSource(): LegacyContentPackage {
   return {
     masters: (rawContent.masters ?? [])
       .filter((master) => masterIds.has(master.id))
-      .map(({ skills: _skills, ...master }) => ({ ...master, skills: [] })),
+      // Keep the authored skill definitions in the playable package.  The
+      // previous preview-only shell removed every skill here, which meant
+      // the engine could never seed a player's skill zone or expose a
+      // `skill.use` action during an actual match.
+      .map((master) => ({ ...master, skills: master.skills ?? [] })),
     servants: (rawContent.servants ?? [])
       .filter((servant) => servantIds.has(servant.id))
-      .map(({ skills: _skills, ...servant }) => ({ ...servant, skills: [] })),
+      .map((servant) => ({ ...servant, skills: servant.skills ?? [] })),
     cards: (rawContent.cards ?? []).filter((card) => card.cardType !== "skill" && card.isSkill !== true),
     situations: rawContent.situations ?? [],
     eventGroups: (rawContent.eventGroups ?? []).filter((group) => group.id === "event-group.fuyuki" || group.name.includes("冬木")),
@@ -66,11 +70,11 @@ function playableContentSource(): LegacyContentPackage {
 
 function standardContent(): StandardContent {
   if (!preparedContent) {
-    const built = buildStandardContent(playableContentSource());
-    preparedContent = Object.freeze({
-      ...built,
-      cards: Object.fromEntries(Object.entries(built.cards).filter(([, card]) => card.cardType !== "skill" && card.isSkill !== true)),
-    });
+    // `buildStandardContent` materializes authored skills as executable card
+    // definitions.  Do not strip those definitions after building them: the
+    // browser UI and the match engine both use the same registry to determine
+    // which skill actions are legal.
+    preparedContent = Object.freeze(buildStandardContent(playableContentSource()));
   }
   return preparedContent;
 }

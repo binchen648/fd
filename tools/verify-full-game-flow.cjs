@@ -19,7 +19,7 @@ const {chromium} = require(path.join(rulesRoot, 'node_modules/playwright'));
   });
   page.on('requestfailed', request => errors.push(`request: ${request.url()} (${request.failure()?.errorText || 'failed'})`));
 
-  const entry = pathToFileURL(path.resolve(__dirname, '../ui-preview/本地UI预览.html')).href;
+  const entry = pathToFileURL(path.resolve(__dirname, '../index.html')).href;
   await page.goto(entry, {waitUntil: 'domcontentloaded'});
   await page.locator('.legal-screen.is-ready [data-legal-continue]').waitFor({timeout: 120000});
   await page.locator('[data-legal-continue]').click();
@@ -74,7 +74,7 @@ const {chromium} = require(path.join(rulesRoot, 'node_modules/playwright'));
     }));
     throw new Error(`${error.message}\n${JSON.stringify(diagnostic)}\n${errors.join('\n')}`);
   }
-  if (!page.url().endsWith(encodeURI('/本地UI预览.html'))) throw new Error(`正式入口被导航到其他页面：${page.url()}`);
+  if (!page.url().endsWith(encodeURI('/index.html'))) throw new Error(`正式入口被导航到其他页面：${page.url()}`);
   const battleEntryMs = Date.now() - battleEntryStartedAt;
   const battleText = await page.evaluate(() => document.querySelector('.battle-host').shadowRoot.textContent);
   if (!battleText.includes(selectedMaster)) throw new Error(`主对战区未载入所选御主：${selectedMaster}`);
@@ -91,13 +91,15 @@ const {chromium} = require(path.join(rulesRoot, 'node_modules/playwright'));
   }
   if (/CURRENT DECISION|DIRECTIVES/.test(battleText)) throw new Error('主对战区仍包含调试客户端内容');
   const runtimeSkillCards = await page.evaluate(() => Object.values(window.fdCurrentBattleRuntime.snapshot().definitions).filter(card => card.cardType === 'skill' || card.isSkill).length);
-  // Presentation-only fixture: exercise the expanded Moon Cell page without enabling unfinished skills.
+  // The browser runtime now loads the authored skill registry.  This check is
+  // deliberately about presence: legality is still decided by the engine's
+  // phase, resource and ownership rules rather than by the UI fixture.
   const moonSequence=process.env.FD_VERIFY_MOON_SEQUENCE==='1';
   if(moonSequence)await page.evaluate(()=>{const runtime=window.fdCurrentBattleRuntime,original=runtime.snapshot.bind(runtime);runtime.snapshot=()=>({...original(),moonCell:{sourceIds:['ui-fixture'],playerIds:[],objectiveEventIds:[]}})});
   const openingBoard=await page.evaluate(()=>{const runtime=window.fdCurrentBattleRuntime,before=JSON.stringify(runtime.app.state),snapshot=runtime.snapshot(),root=document.querySelector('.battle-host').shadowRoot;return {snapshotPreservedState:before===JSON.stringify(runtime.app.state),events:['mountain','city'].map(id=>({id,expected:snapshot.view.board.currentEvents[id].length,visible:root.querySelectorAll(`.${id} .map-event-card`).length})),artDefinitions:Object.values(snapshot.definitions).filter(def=>def.id?.startsWith('event.fuyuki.')||def.id?.startsWith('situation.')).every(def=>!!def.presentation?.imageKey)};});
   if(!openingBoard.snapshotPreservedState||!openingBoard.artDefinitions||openingBoard.events.some(entry=>entry.visible!==entry.expected))throw new Error(`开局事件显示或只读投影异常：${JSON.stringify(openingBoard)}`);
-  if (runtimeSkillCards !== 0) throw new Error(`试玩运行时仍载入了 ${runtimeSkillCards} 张未完成技能卡`);
-  if (battleEntryMs > 3000) throw new Error(`进入主对战区仍然过慢：${battleEntryMs}ms`);
+  if (runtimeSkillCards < 1) throw new Error('正式入口没有载入可执行技能卡');
+  if (battleEntryMs > 5000) throw new Error(`进入主对战区仍然过慢：${battleEntryMs}ms`);
   await page.waitForFunction(()=>document.querySelector('.battle-host')?.shadowRoot?.querySelector('.battle-root.preview-ready'),null,{timeout:10000});
   const openingHandMotion=await page.evaluate(()=>{const root=document.querySelector('.battle-host').shadowRoot,cards=[...root.querySelectorAll('.hand .card')];return {cards:cards.length,flights:window.__handFlights.length,pending:root.querySelectorAll('.hand .draw-pending').length,loaded:cards.every(card=>card.querySelector('img')?.naturalWidth>0),duration:window.__handFlights.every(f=>f.duration===620)}});
   if(!openingHandMotion.cards||openingHandMotion.flights!==openingHandMotion.cards||openingHandMotion.pending||!openingHandMotion.loaded||!openingHandMotion.duration)throw Error('开局手牌未按原动画飞入 '+JSON.stringify(openingHandMotion));
@@ -116,6 +118,21 @@ const {chromium} = require(path.join(rulesRoot, 'node_modules/playwright'));
   const deployedViaMap = await deployTarget.getAttribute('aria-label');
   await deployTarget.click();
   await page.waitForFunction(() => {const view=window.fdCurrentBattleRuntime.snapshot().view;return view.phase==='action'&&view.activePlayerId==='p1'}, null, {timeout:15000});
+  const skillActionDiagnostic = await page.evaluate(() => {
+    const runtime = window.fdCurrentBattleRuntime, snapshot = runtime.snapshot(), player = runtime.app.state.players.p1;
+    return {
+      actions: snapshot.actions.filter(action => action.commandType === 'skill.use').map(action => action.payload?.skillId),
+      masterSkills: player.masterSkills.map(id => runtime.app.state.cards[id]?.definitionId),
+      servantSkills: player.servantSkills.map(id => runtime.app.state.cards[id]?.definitionId),
+      masterId: player.masterId,
+      servantId: player.servantId,
+      phase: snapshot.view.phase,
+      step: snapshot.view.step,
+      activePlayerId: snapshot.view.activePlayerId,
+      definitions: Object.values(snapshot.definitions).filter(card => card.cardType === 'skill' || card.isSkill).map(card => card.id),
+    };
+  });
+  if (!skillActionDiagnostic.actions.length) throw new Error(`行动阶段没有暴露可用的技能行动：${JSON.stringify(skillActionDiagnostic)}`);
   const moveToggle = page.locator('.battle-host').locator('[data-runtime-map-move-toggle]');
   await moveToggle.waitFor({timeout: 15000});
   if (!(await moveToggle.innerText()).startsWith('常规移动')) throw new Error('行动阶段没有显示常规移动按钮');

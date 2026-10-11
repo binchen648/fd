@@ -9,7 +9,7 @@ const {chromium} = require('../../binchen648_fd/work/node_modules/playwright');
     const page = await browser.newPage();
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
-    await page.goto(pathToFileURL(path.resolve(__dirname, '../ui-preview/本地UI预览.html')).href);
+    await page.goto(pathToFileURL(path.resolve(__dirname, '../index.html')).href);
     await page.waitForFunction(() => window.FDBattleRuntime?.isPrepared());
     const result = await page.evaluate(async () => {
       // Advance the real preparation window so computers have work queued.

@@ -12,6 +12,7 @@ const manifestMatch = manifestSource.match(/=\s*({[\s\S]*})\s*as const;/);
 if (!manifestMatch) throw new Error(`无法解析资源清单：${manifestPath}`);
 const manifest = JSON.parse(manifestMatch[1]);
 const printedBasics = JSON.parse(fs.readFileSync(path.join(projectRoot, 'src/content/generated/legacy-content.json'), 'utf8')).cards.filter(card => /^card\.card[abq]\d+$/.test(card.id));
+const legacyContent = JSON.parse(fs.readFileSync(path.join(projectRoot, 'src/content/generated/legacy-content.json'), 'utf8'));
 
 const masterIds = [
   'master.kayneth',
@@ -50,6 +51,7 @@ const basicImages = {
 const authoredCards = new Map(library.cards.map(card => [card.id, card]));
 const runtimeCards = library.rules.cards || {};
 const entityById = new Map([...library.masters, ...library.servants].map(entity => [entity.id, entity]));
+const legacyEntityById = new Map([...legacyContent.masters, ...legacyContent.servants].map(entity => [entity.id, entity]));
 
 function localAsset(assetPath = '') {
   const prefix = '/assets/fd/real/';
@@ -110,18 +112,44 @@ function deckFor(entity) {
   return groups;
 }
 
+function authoredMasterAscensionView(id) {
+  const entity = legacyEntityById.get(id);
+  const skill = entity?.skills?.find(item => item.tags?.includes('ascension') || item.legacyId === 'ascension');
+  if (!skill) return null;
+  const name = displayNames[id] || entity.name;
+  const imagePath = `../assets/cards/skills/master-${name}-${skill.legacyId || 'ascension'}.png`;
+  return {
+    id: skill.id,
+    name: skill.name,
+    // Keep the authored phase/category in the rules package, while making
+    // the unlock state explicit in both the codex and the in-match skill panel.
+    type: '升华技',
+    text: skill.text || '',
+    cost: skill.cost ?? null,
+    requirement: skill.requirement ?? null,
+    basePower: skill.basePower ?? null,
+    image: fs.existsSync(path.resolve(projectRoot, 'ui-preview', imagePath)) ? imagePath : '',
+    isAscension: true,
+  };
+}
+
 function characterView(id) {
   const entity = entityById.get(id);
   if (!entity) throw new Error(`内容库缺少角色：${id}`);
   const name = displayNames[id] || entity.name;
   const skillIds = [...(entity.skillCardIds || [])];
+  const skills = skillIds.map(cardView);
+  if (id.startsWith('master.')) {
+    const ascension = authoredMasterAscensionView(id);
+    if (ascension && !skills.some(skill => skill.id === ascension.id)) skills.push(ascension);
+  }
   return {
     sourceId: id,
     name,
     fullName: entity.name,
     class: className(entity),
     image: portraitPath(entity, name),
-    skills: skillIds.map(cardView),
+    skills,
     ...(id.startsWith('servant.') ? {deck: deckFor(entity)} : {}),
   };
 }
@@ -141,7 +169,7 @@ const preview = {
     fullName: item.fullName,
     class: item.class,
     image: item.image,
-    skills: item.skills.map(({id, name: skillName, type, text}) => ({id, name: skillName, type, text})),
+    skills: item.skills.map(({id, name: skillName, type, text, isAscension}) => ({id, name: skillName, type, text, ...(isAscension ? {isAscension: true} : {})})),
   }])),
   servants: Object.fromEntries(Object.entries(detail.servants).map(([name, item]) => [name, {
     sourceId: item.sourceId,
@@ -149,7 +177,7 @@ const preview = {
     fullName: item.fullName,
     class: item.class,
     image: item.image,
-    skills: item.skills.map(({id, name: skillName, type, text}) => ({id, name: skillName, type, text})),
+    skills: item.skills.map(({id, name: skillName, type, text, isAscension}) => ({id, name: skillName, type, text, ...(isAscension ? {isAscension: true} : {})})),
   }])),
 };
 
