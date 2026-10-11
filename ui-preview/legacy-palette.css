@@ -356,3 +356,121 @@
   color: #f3f1e8 !important;
   text-shadow: 0 2px 9px rgba(0,0,0,.62) !important;
 }
+
+/* Final theme tokens shared by every action surface. */
+:root,
+#app,
+:host,
+.battle-root.battle-root {
+  --ui-confirm: #ff9d16;
+  --ui-confirm-hover: #ffb33d;
+  --ui-danger: #c83d3d;
+  --ui-danger-hover: #df5050;
+}
+
+/* Loading and legal screens use white information text.  Gold is reserved
+   for the progress fill and small section accents. */
+#app .legal-loader-percent,
+#app .legal-loader-copy strong,
+#app .legal-continue {
+  color: #fff !important;
+}
+#app .legal-loader-percent { text-shadow: 0 2px 8px rgba(0,0,0,.6); }
+#app .legal-continue {
+  opacity: 1 !important;
+  font-size: clamp(20px, 1.65vw, 28px) !important;
+  text-shadow: 0 2px 9px rgba(0,0,0,.62);
+}
+#app .legal-continue::after { background: linear-gradient(90deg, rgba(255,255,255,.86), transparent) !important; }
+
+/* The home hover plate is the restrained translucent ivory banner from the
+   earlier build, with black type for contrast. */
+#app .home-screen .home-menu .nav::before {
+  background: rgba(243,241,232,.84) !important;
+  box-shadow: 0 5px 18px rgba(0,0,0,.16);
+}
+#app .home-screen .home-menu .nav:hover,
+#app .home-screen .home-menu .nav:focus-visible,
+#app .home-screen .home-menu .nav:hover strong,
+#app .home-screen .home-menu .nav:focus-visible strong,
+#app .home-screen .home-menu .nav:hover small,
+#app .home-screen .home-menu .nav:focus-visible small { color: #15171b !important; }
+
+/* Increase reading sizes without changing the established layout. */
+#app .screen:not(.legal-screen) { font-size: 14px; }
+#app button,
+#app input,
+#app select,
+#app textarea { font-size: 13px; }
+#app .sub-title span,
+#app .toolbar,
+#app .tabs button,
+#app .filters button,
+#app .ow-stage-tabs button,
+#app .ow-class-filter button,
+#app .codex-category-tabs button,
+#app .codex-class-filters button { font-size: 13px !important; }
+#app .mode-body small,
+#app .mode-body p,
+#app .tutorial-card p,
+#app .codex-meta,
+#app .profile-identity p,
+#app .usage-empty { font-size: 13px !important; }
+#app .pick-card-info strong,
+#app .codex-card :is(strong,h3,b),
+#app .tutorial-chapters button,
+#app .tutorial-article,
+#app .tutorial-takeaway { font-size: 14px !important; }
+#app .legal-loader-copy strong { font-size: 14px !important; }
+#app .press-any { font-size: clamp(17px, 1.15vw, 21px) !important; }
+
+/* Confirm actions use the old orange treatment; destructive/end actions use
+   the separate red state shown in the battle reference. */
+#app .screen :is(.ow-primary,.room-primary,.profile-name-edit button,
+  .settings-confirm,.tutorial-step-actions button:last-child,
+  .purchase-finish,.ready-enter-preview,.threex-primary,
+  [data-standard-next],[data-confirm-choice]):not(:disabled) {
+  background: var(--ui-confirm) !important;
+  border-color: var(--ui-confirm) !important;
+  color: #20160a !important;
+  box-shadow: 0 3px 0 rgba(110,62,0,.42) !important;
+}
+#app .screen :is(.ow-primary,.room-primary,.profile-name-edit button,
+  .settings-confirm,.tutorial-step-actions button:last-child,
+  .purchase-finish,.ready-enter-preview,.threex-primary,
+  [data-standard-next],[data-confirm-choice]):not(:disabled):hover {
+  background: var(--ui-confirm-hover) !important;
+}
+#app .screen :is(.ow-primary--danger,.danger,.end-action,[data-action="end"],
+  [data-action="stop"]):not(:disabled) {
+  background: var(--ui-danger) !important;
+  border-color: var(--ui-danger) !important;
+  color: #fff !important;
+}
+#app .screen :is(.ow-primary--danger,.danger,.end-action,[data-action="end"],
+  [data-action="stop"]):not(:disabled):hover {
+  background: var(--ui-danger-hover) !important;
+}
+
+/* Shadow-DOM battle controls use the same semantic colors and readable type. */
+.battle-root.battle-root { font-size: 13px !important; }
+.battle-root.battle-root :is(.opp-info,.player-info,.place-title,
+  .public-label,.actions button,.turn-clock,.phase span,.topbar,
+  .ability-text,.choice-option,.log-item) { font-size: 13px !important; }
+.battle-root.battle-root :is(.actions button.primary,.actions #confirm-play,
+  .choice-actions button.primary,.settlement-actions .settlement-next,
+  .command-seal-option>button):not(:disabled) {
+  background: var(--ui-confirm) !important;
+  border-color: var(--ui-confirm) !important;
+  color: #20160a !important;
+}
+.battle-root.battle-root .actions button.end-action:not(:disabled),
+.battle-root.battle-root .actions .end-action:not(:disabled) {
+  background: var(--ui-danger) !important;
+  border-color: var(--ui-danger) !important;
+  color: #fff !important;
+}
+.battle-root.battle-root .actions button.end-action:not(:disabled):hover,
+.battle-root.battle-root .actions .end-action:not(:disabled):hover {
+  background: var(--ui-danger-hover) !important;
+}
