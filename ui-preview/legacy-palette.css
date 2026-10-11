@@ -2,21 +2,21 @@
  * Legacy Fate palette
  *
  * The current component geometry and interaction model stay intact.  This
- * layer only restores the palette used by the original build: deep navy
- * surfaces, warm ivory type and restrained grail gold accents.
+ * layer only restores the palette used by the original build: neutral
+ * charcoal surfaces, warm ivory type and restrained grail gold accents.
  */
 :root,
 :host,
 #app {
-  --ui-ink: #06111f;
-  --ui-panel: #0b1d2e;
-  --ui-panel-raised: #142b43;
-  --ui-line: #3b5570;
+  --ui-ink: #111315;
+  --ui-panel: #1b1e21;
+  --ui-panel-raised: #272a2d;
+  --ui-line: #555350;
   --ui-paper: #f3f2ed;
-  --ui-muted: #aeb9c5;
+  --ui-muted: #b7bab9;
   --ui-accent: #d6ae52;
   --ui-action: #d6ae52;
-  --ui-ornament: #8fa8c1;
+  --ui-ornament: #b7bab9;
   --ui-danger: #a36f75;
   --gold: var(--ui-accent);
   --gold2: var(--ui-paper);
@@ -31,11 +31,11 @@
   --gold: #d6ae52 !important;
   --gold2: #f3f2ed !important;
   --ui-paper: #f3f2ed !important;
-  --ui-ink: #06111f !important;
-  --ui-muted: #aeb9c5 !important;
-  --ui-line: #3b5570 !important;
-  --ui-panel: #0b1d2e !important;
-  background: #06111f !important;
+  --ui-ink: #111315 !important;
+  --ui-muted: #b7bab9 !important;
+  --ui-line: #555350 !important;
+  --ui-panel: #1b1e21 !important;
+  background: #111315 !important;
   color: #f3f2ed !important;
 }
 
@@ -46,30 +46,30 @@
   .profile-transfer-panel,.usage-panel,.avatar-picker-panel,
   .character-skill-preview,.profile-overview,.profile-rank-panel,
   .profile-stat-card,.profile-history-panel,.profile-transfer-panel) {
-  background: rgba(11, 29, 46, .95) !important;
-  border-color: #3b5570 !important;
+  background: rgba(27, 30, 33, .95) !important;
+  border-color: #555350 !important;
 }
 #app :is(.settings-hub-head,.settings-dialog-head,.avatar-picker-head,
   .home-notice-editor-head,.character-skill-preview-head,
   .tutorial-reader-head,.draft-focus-heading) {
-  background: #06111f !important;
-  border-color: #3b5570 !important;
+  background: #111315 !important;
+  border-color: #555350 !important;
 }
 #app :is(.settings-row,.bgm-scene-row,.bgm-master-row,.sfx-volume-actions,
   .profile-stat-card,.profile-rank-panel,.profile-name-edit input) {
-  background: #0b1d2e !important;
-  border-color: #3b5570 !important;
+  background: #1b1e21 !important;
+  border-color: #555350 !important;
   color: #f3f2ed !important;
 }
 #app :is(.profile-hero,.profile-stats) {
-  background: rgba(11, 29, 46, .91) !important;
-  border-color: #3b5570 !important;
+  background: rgba(27, 30, 33, .91) !important;
+  border-color: #555350 !important;
 }
 #app :is(.profile-transfer-panel textarea,.home-notice-editor-panel input,
   .home-notice-editor-panel textarea) {
-  background: #06111f !important;
+  background: #111315 !important;
   color: #f3f2ed !important;
-  border-color: #3b5570 !important;
+  border-color: #555350 !important;
 }
 
 /* Homepage retains its white hover banner and black hover type. */
@@ -80,26 +80,26 @@
 #app .home-menu .nav:hover small,
 #app .home-menu .nav:hover .num,
 #app .home-menu .nav:focus-visible,
-#app .home-menu .nav:focus-visible small { color: #071321 !important; }
+#app .home-menu .nav:focus-visible small { color: #111315 !important; }
 #app .home-menu .nav:hover::before,
 #app .home-menu .nav:focus-visible::before { background: #f3f2ed !important; }
-#app .home-notice-copy { background: rgba(6, 17, 31, .92) !important; }
+#app .home-notice-copy { background: rgba(17, 19, 21, .92) !important; }
 
-/* Mode cards: the image and layout are unchanged; only the old navy/gold
+/* Mode cards: the image and layout are unchanged; only the old charcoal/gold
    relationship is restored. */
 #app .mode-selection-screen .mode-card,
 #app .multiplayer-lobby-screen .multi-lobby-slot,
 #app .multiplayer-lobby-screen .multi-lobby-head {
-  background: #0b1d2e !important;
-  border-color: #3b5570 !important;
+  background: #1b1e21 !important;
+  border-color: #555350 !important;
 }
 #app .mode-selection-screen .mode-card .mode-body {
-  background: linear-gradient(145deg, #142b43, #0b1d2e) !important;
+  background: linear-gradient(145deg, #272a2d, #1b1e21) !important;
   color: #f3f2ed !important;
   border-top-color: #d6ae52 !important;
 }
 #app .mode-selection-screen .mode-body :is(strong,.mode-cta) { color: #f3f2ed !important; }
-#app .mode-selection-screen .mode-body :is(small,p) { color: #aeb9c5 !important; }
+#app .mode-selection-screen .mode-body :is(small,p) { color: #b7bab9 !important; }
 #app .mode-selection-screen .mode-body::after,
 #app .mode-selection-screen .mode-body:after { color: #d6ae52 !important; }
 #app .mode-selection-screen .mode-card:hover { border-color: #d6ae52 !important; }
@@ -118,13 +118,13 @@
 #app .draft-screen .purchase-candidate,
 #app .draft-screen .purchase-candidate-avatar,
 #app .draft-screen .purchase-option {
-  background: #142b43 !important;
-  border-color: #3b5570 !important;
+  background: #272a2d !important;
+  border-color: #555350 !important;
   color: #f3f2ed !important;
 }
 #app .draft-screen .ow-stage-tabs button,
 #app .draft-screen .ow-class-filter button,
-#app .draft-screen .threex-stepper button { color: #aeb9c5 !important; }
+#app .draft-screen .threex-stepper button { color: #b7bab9 !important; }
 #app .draft-screen .ow-stage-tabs button.active,
 #app .draft-screen .ow-class-filter button.active,
 #app .draft-screen .threex-stepper button.active {
@@ -133,42 +133,42 @@
   border-color: #d6ae52 !important;
 }
 #app .draft-screen .roster-search {
-  background: #0b1d2e !important;
-  border-color: #3b5570 !important;
+  background: #1b1e21 !important;
+  border-color: #555350 !important;
   color: #f3f2ed !important;
 }
 #app .draft-screen .contract-workspace .ow-roster-grid .pick-card.active {
-  background: #142b43 !important;
+  background: #272a2d !important;
   border-color: #d6ae52 !important;
   outline-color: #d6ae52 !important;
 }
 #app .draft-screen .contract-workspace .ow-roster-grid .pick-card.active .pick-card-info,
 #app .draft-screen .contract-workspace .ow-roster-grid .pick-card.active .pick-card-info strong {
-  background: #183653 !important;
+  background: #30343a !important;
   color: #f3f2ed !important;
 }
 #app .draft-screen .contract-workspace .pick-card.active:after,
 #app .draft-screen .ban-target-state {
   background: #d6ae52 !important;
-  color: #06111f !important;
+  color: #111315 !important;
 }
 #app .draft-screen .contract-workspace .ow-draft-footer,
 #app .draft-screen .purchase-footer,
 #app .draft-screen .ready-footer {
-  background: #06111f !important;
-  border-color: #3b5570 !important;
+  background: #111315 !important;
+  border-color: #555350 !important;
 }
 #app .draft-screen .purchase-head {
-  background: linear-gradient(145deg, #142b43, #0b1d2e) !important;
-  border-color: #3b5570 !important;
+  background: linear-gradient(145deg, #272a2d, #1b1e21) !important;
+  border-color: #555350 !important;
   color: #f3f2ed !important;
 }
 #app .draft-screen .purchase-head :is(h2,small,.crystal-count b) { color: #f3f2ed !important; }
-#app .draft-screen .purchase-head :is(p,.crystal-count span) { color: #aeb9c5 !important; }
+#app .draft-screen .purchase-head :is(p,.crystal-count span) { color: #b7bab9 !important; }
 #app .draft-screen .purchase-option-foot button,
 #app .draft-screen :is(.ow-primary,.purchase-finish,.ready-enter-preview,.threex-primary) {
   background: #d6ae52 !important;
-  color: #06111f !important;
+  color: #111315 !important;
   border-color: #d6ae52 !important;
 }
 
@@ -179,8 +179,8 @@
 #app .archive-list-screen .codex-card,
 #app .archive-detail-screen .codex-deck-card,
 #app .archive-detail-screen .codex-detail-content {
-  background: #0b1d2e !important;
-  border-color: #3b5570 !important;
+  background: #1b1e21 !important;
+  border-color: #555350 !important;
   color: #f3f2ed !important;
 }
 #app .archive-list-screen .codex-category-tabs button.active,
@@ -191,9 +191,9 @@
   border-color: #d6ae52 !important;
 }
 #app .archive-list-screen .codex-class-filters button,
-#app .archive-list-screen .codex-search { color: #aeb9c5 !important; }
+#app .archive-list-screen .codex-search { color: #b7bab9 !important; }
 #app .archive-list-screen .codex-card :is(strong,h3,b) { color: #f3f2ed !important; }
-#app .archive-list-screen .codex-card :is(small,p) { color: #aeb9c5 !important; }
+#app .archive-list-screen .codex-card :is(small,p) { color: #b7bab9 !important; }
 
 /* Tutorial and settings keep the existing composition but use the old dark
    blue paper and gold active state. */
@@ -202,11 +202,11 @@
   .tutorial-article,.tutorial-takeaway,.tutorial-lesson-head,
   .tutorial-step-actions,.tutorial-topics,.tutorial-chapters),
 #app .tutorial-screen .tutorial-chapters button {
-  background: #0b1d2e !important;
-  border-color: #3b5570 !important;
+  background: #1b1e21 !important;
+  border-color: #555350 !important;
   color: #f3f2ed !important;
 }
-#app .tutorial-screen .tutorial-chapters button:hover { background: #142b43 !important; }
+#app .tutorial-screen .tutorial-chapters button:hover { background: #272a2d !important; }
 #app .tutorial-screen .tutorial-chapters button.active {
   background: rgba(214, 174, 82, .17) !important;
   border-color: #d6ae52 !important;
@@ -214,9 +214,9 @@
   color: #f3f2ed !important;
 }
 #app .tutorial-screen :is(.tutorial-mode-label,.tutorial-diagram,.tutorial-rule-table th) {
-  background: #142b43 !important;
+  background: #272a2d !important;
   color: #f3f2ed !important;
-  border-color: #3b5570 !important;
+  border-color: #555350 !important;
 }
 #app .tutorial-hub-copy :is(strong,p,small),
 #app .tutorial-screen :is(.tutorial-lesson-head small,.tutorial-takeaway:before,
@@ -226,41 +226,41 @@
 .battle-root.battle-root {
   --gold: #d6ae52 !important;
   --gold2: #f3f2ed !important;
-  --blue: #8fa8c1 !important;
-  --line: #3b5570 !important;
-  --panel: #0b1d2e !important;
+  --blue: #b7bab9 !important;
+  --line: #555350 !important;
+  --panel: #1b1e21 !important;
 }
 .battle-root.battle-root :is(.topbar,.ability-head,.choice-head,.discard-head,
   .settlement-head,.drawer-head) {
-  background: rgba(6, 17, 31, .96) !important;
-  border-color: #3b5570 !important;
+  background: rgba(17, 19, 21, .96) !important;
+  border-color: #555350 !important;
 }
 .battle-root.battle-root :is(.player,.opp-panel-face,.opponent,.actions,
   .ability-panel,.choice-panel,.save-box,.discard-panel,.settlement-shell,
   .log-drawer,.command-seal-section,.command-seal-option) {
-  background: rgba(11, 29, 46, .95) !important;
-  border-color: #3b5570 !important;
+  background: rgba(27, 30, 33, .95) !important;
+  border-color: #555350 !important;
 }
 .battle-root.battle-root .actions {
-  background: rgba(11, 29, 46, .95) !important;
+  background: rgba(27, 30, 33, .95) !important;
 }
 .battle-root.battle-root :is(.ability-card,.choice-option,.settlement-battle,
   .settlement-ranking,.log-item,.command-seal-head) {
-  background: #142b43 !important;
-  border-color: #3b5570 !important;
+  background: #272a2d !important;
+  border-color: #555350 !important;
 }
 .battle-root.battle-root :is(.actions button,.ability-tabs button,
   .ability-text button,.choice-actions button,.discard-head button,
   .settlement-actions button) {
-  background: #0b1d2e !important;
+  background: #1b1e21 !important;
   color: #f3f2ed !important;
-  border-color: #3b5570 !important;
+  border-color: #555350 !important;
 }
 .battle-root.battle-root :is(.actions button.primary,.actions #confirm-play,
   .choice-actions button.primary,.settlement-actions .settlement-next,
   .command-seal-option>button) {
   background: #d6ae52 !important;
-  color: #06111f !important;
+  color: #111315 !important;
   border-color: #d6ae52 !important;
 }
 .battle-root.battle-root :is(.ability-tabs button.active,.choice-option.selected,
@@ -285,15 +285,15 @@
 .battle-root.battle-root :is(.land-slot .slot-face,.workshop-slots .slot-face,
   .hand .card,.victory-card) { border-color: rgba(214, 174, 82, .55) !important; }
 .battle-root.battle-root :is(.draw-card-flight,.map-card-flight,.runtime-card-flight) {
-  background: #0b1d2e !important;
+  background: #1b1e21 !important;
   border-color: #d6ae52 !important;
 }
 .battle-root.battle-root .victory-scene {
-  background: linear-gradient(130deg, #142b43, #06111f 75%) !important;
+  background: linear-gradient(130deg, #272a2d, #111315 75%) !important;
 }
 .battle-root.battle-root .victory-any-key {
   background: #d6ae52 !important;
-  color: #06111f !important;
+  color: #111315 !important;
 }
 
 /* Remove the remaining red/gray state treatment without changing its meaning. */
@@ -303,26 +303,56 @@
 #app .draft-screen .ow-ban-draft .ow-roster-grid .pick-card.active:after,
 #app .draft-screen .ow-ban-draft .ow-roster-grid .pick-card.banned:after {
   background: #d6ae52 !important;
-  color: #06111f !important;
+  color: #111315 !important;
 }
 #app .draft-screen .ow-ban-draft .ow-roster-grid .pick-card.banned .pick-card-info {
-  background: #142b43 !important;
+  background: #272a2d !important;
 }
 #app .draft-screen .ow-ban-draft .draft-focus {
-  background: #0b1d2e !important;
+  background: #1b1e21 !important;
   border-left-color: #d6ae52 !important;
 }
 #app .threex-ban-slot.locked,
 #app .contract-workspace .threex-ban-summary article {
-  background: #142b43 !important;
+  background: #272a2d !important;
   border-left-color: #d6ae52 !important;
 }
 
 /* Scrollbars belong to the palette too. */
-#app *, .battle-root * { scrollbar-color: #5d7892 #0b1d2e !important; }
+#app *, .battle-root * { scrollbar-color: #777571 #1b1e21 !important; }
 #app *::-webkit-scrollbar,
-#app *::-webkit-scrollbar-track { background: #0b1d2e !important; }
+#app *::-webkit-scrollbar-track { background: #1b1e21 !important; }
 #app *::-webkit-scrollbar-thumb {
-  background: #5d7892 !important;
-  border-color: #0b1d2e !important;
+  background: #777571 !important;
+  border-color: #1b1e21 !important;
+}
+
+
+/* Restore the original neutral presentation: the art carries the colour,
+   while the chrome stays charcoal and the gold accent remains restrained. */
+#app .home-screen > .bg,
+#app .splash > .bg {
+  filter: saturate(.72) contrast(1.03) brightness(.72) !important;
+}
+#app .home-screen > .veil,
+#app .splash > .veil {
+  background:
+    radial-gradient(ellipse at 62% 38%, transparent 24%, rgba(0,0,0,.18) 66%, rgba(0,0,0,.54) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.22), transparent 30%, transparent 72%, rgba(0,0,0,.48)) !important;
+}
+#app .home-screen .ambient-light,
+#app .splash .ambient-light { opacity: .44 !important; }
+#app .home-screen .ambient-mist,
+#app .splash .ambient-mist { opacity: .09 !important; }
+#app .home-screen .home-menu .nav:hover::before,
+#app .home-screen .home-menu .nav:focus-visible::before {
+  background: #f3f1e8 !important;
+}
+#app .home-screen .home-menu .nav:hover,
+#app .home-screen .home-menu .nav:focus-visible {
+  color: #17191c !important;
+}
+#app .splash .press-any {
+  color: #f3f1e8 !important;
+  text-shadow: 0 2px 9px rgba(0,0,0,.62) !important;
 }
