@@ -1,5 +1,29 @@
 # B11 Evidence Contract Continuation
 
+## Environment observation continuation: 2026-10-11
+
+Current continuation status: BLOCKED_AUTHORIZATION_REVIEW_AND_EXECUTION_EVIDENCE_GAPS.
+Authorization: 415d1fefc1f343045f93d73d74c599e4df96eec6, docs/agents/P3-E08-B11-ENVIRONMENT-RECOVERY-AND-REVERIFY.md.
+Base carrier: 525451986f372a2e8e24afbc675fb6f40526f416.
+The original report below is preserved as historical evidence. Its ENOSPC and NOT_MET statements describe the original pair.
+
+New command observations bind exact tested SHA 9a4f4c6ee2723eb7f546341f3c18a1f0a29c3bc1 in clean D:/fd-validation/b11-9a4f4c6/checkout.
+TEMP/TMP, npm cache and Playwright cache were on D. Node v24.13.1 / npm 11.8.0; GitHub Node 20 equivalence remains unverified.
+Two sequential default CI runs each exited 0: 193 files / 1532 tests, approximately 135s and 159s.
+Preparation/typecheck passed; focused evidence 40/40, component 51/51, server 11/11 and browser repeat 10/10 passed.
+Content validation and generated verification passed. Source-assets exited 1 with 93 MISSING_IMAGE blockers.
+All 23 recorded source/config Git objects match the implementation and base carrier.
+
+Evidence limitation: these are persisted summaries of prior-turn tool observations. Complete original stdout logs were not saved; no log hash or immutable receipt is claimed.
+Quiet-window limitation: an empty process observation at 2026-10-11T10:00:40+08:00 was recorded, but all-worker acknowledgements were not obtained. I previously overstated quiet-window compliance; the authorized condition remains NOT_PROVEN.
+These limitations prevent upgrading readiness from the two local PASS observations.
+
+Outstanding owners: A/Planner for complete execution receipts and acknowledged window; Planner/G for seven original authorization gaps and two overlapping runtime deltas; RA/RB for 33 path-scope reviews and final carrier review; assets owner for 93 missing images; G/I for governance and required checks.
+Coverage/migration/denominator delta remain 0/0/0; ledger remains 111/944. No acceptance, promotion, runtime change or C01 dispatch.
+The machine-readable continuation is environmentRevalidationContinuation in the artifact named below.
+Current artifact SHA-256: 4338FAD122BED5B3733712641C5B29BDE82A961E60A8CBD9C02446633363934B.
+The SHA-256 in the original report below binds only the original 5254519 packet.
+
 Task: P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION
 Epoch: FD-P3-2026-09-23-08
 Observed main: 9a1689d2ec5b56b67d1483d2593b4ab809d6c15c
