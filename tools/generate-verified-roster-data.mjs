@@ -19,9 +19,8 @@ const masterIds = [
   'master.shinji',
   'master.kiritsugu',
   'master.maiya',
-  'master.gatou',
-  'master.irisviel',
-  'master.olga-marie',
+  'master.dan',
+  'master.julius',
 ];
 const servantIds = [
   'servant.artoriac',

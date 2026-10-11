@@ -14,15 +14,18 @@ import { calculateCombatPower } from "../rules-core/combat-power.ts";
 import { getMoonCellState } from "../rules-core/moon-cell.ts";
 import { THREE_X_MASTER_RATINGS } from "../content/three-x-ratings.ts";
 
+// Eight fully executable choices feed seven seats in a local match.  The
+// previous list contained two preview-only IDs (gatou/olga-marie), so those
+// cards could be selected but could never be assigned by the rules engine.
 const MASTER_IDS = [
   "master.kayneth",
   "master.shinji",
   "master.kiritsugu",
   "master.maiya",
-  "master.gatou",
-  "master.irisviel",
-  "master.olga-marie",
+  "master.dan",
   "master.rin",
+  "master.irisviel",
+  "master.julius",
 ] as const;
 
 const SERVANT_IDS = [

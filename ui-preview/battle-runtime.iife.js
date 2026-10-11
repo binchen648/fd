@@ -179995,10 +179995,10 @@
     "master.shinji",
     "master.kiritsugu",
     "master.maiya",
-    "master.gatou",
+    "master.dan",
+    "master.rin",
     "master.irisviel",
-    "master.olga-marie",
-    "master.rin"
+    "master.julius"
   ];
   var SERVANT_IDS = [
     "servant.artoriac",
