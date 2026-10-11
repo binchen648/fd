@@ -1,0 +1,158 @@
+[
+  {
+    "seed": 20261006,
+    "policy": "fixed",
+    "elapsedMs": 189494,
+    "rounds": 11,
+    "decisions": 98,
+    "scores": [
+      {
+        "id": "p1",
+        "points": 6,
+        "eliminated": true
+      },
+      {
+        "id": "p2",
+        "points": 25,
+        "eliminated": false
+      },
+      {
+        "id": "p3",
+        "points": 13,
+        "eliminated": true
+      },
+      {
+        "id": "p4",
+        "points": 12,
+        "eliminated": true
+      },
+      {
+        "id": "p5",
+        "points": 37,
+        "eliminated": false
+      },
+      {
+        "id": "p6",
+        "points": 23,
+        "eliminated": true
+      },
+      {
+        "id": "p7",
+        "points": 36,
+        "eliminated": false
+      }
+    ],
+    "victory": {
+      "finished": true,
+      "winnerIds": [
+        "p5"
+      ],
+      "reason": "final-score"
+    },
+    "errors": []
+  },
+  {
+    "seed": 20261006,
+    "policy": "public-strategy",
+    "elapsedMs": 197491,
+    "rounds": 11,
+    "decisions": 109,
+    "scores": [
+      {
+        "id": "p1",
+        "points": 12,
+        "eliminated": true
+      },
+      {
+        "id": "p2",
+        "points": 43,
+        "eliminated": false
+      },
+      {
+        "id": "p3",
+        "points": 10,
+        "eliminated": true
+      },
+      {
+        "id": "p4",
+        "points": 10,
+        "eliminated": true
+      },
+      {
+        "id": "p5",
+        "points": 28,
+        "eliminated": true
+      },
+      {
+        "id": "p6",
+        "points": 35,
+        "eliminated": false
+      },
+      {
+        "id": "p7",
+        "points": 11,
+        "eliminated": true
+      }
+    ],
+    "victory": {
+      "finished": true,
+      "winnerIds": [
+        "p2"
+      ],
+      "reason": "final-score"
+    },
+    "errors": []
+  },
+  {
+    "seed": 20261007,
+    "policy": "public-strategy",
+    "elapsedMs": 191364,
+    "rounds": 11,
+    "decisions": 104,
+    "scores": [
+      {
+        "id": "p1",
+        "points": 0,
+        "eliminated": true
+      },
+      {
+        "id": "p2",
+        "points": 25,
+        "eliminated": true
+      },
+      {
+        "id": "p3",
+        "points": 13,
+        "eliminated": true
+      },
+      {
+        "id": "p4",
+        "points": 15,
+        "eliminated": true
+      },
+      {
+        "id": "p5",
+        "points": 47,
+        "eliminated": false
+      },
+      {
+        "id": "p6",
+        "points": 21,
+        "eliminated": true
+      },
+      {
+        "id": "p7",
+        "points": 39,
+        "eliminated": false
+      }
+    ],
+    "victory": {
+      "finished": true,
+      "winnerIds": [
+        "p5"
+      ],
+      "reason": "final-score"
+    },
+    "errors": []
+  }
+]

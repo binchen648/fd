@@ -1,6 +1,7 @@
 import type { EventGroupDefinition, EventDefinition, CardDefinition, SituationDefinition } from "../rules-core/content-types.ts";
 import type { StandardContent } from "../match-engine/standard-match-engine.ts";
 import { normalizeCardAttributes } from "../rules-core/content-types.ts";
+import { FUYUKI_EFFECT_TAGS, FUYUKI_TEXT_OVERRIDES } from "../rules-core/fuyuki-objectives.ts";
 import { buildSkillDefinitions } from "./skill-package.ts";
 import { SkillRegistry } from "../rules-core/skill-registry.ts";
 import { THREE_X_MASTER_RATINGS } from "./three-x-ratings.ts";
@@ -187,13 +188,14 @@ export function buildStandardContent(raw: LegacyContentPackage): StandardContent
         name: typeof item.name === "string" ? item.name : id,
         locationId: item.locationId === "mountain" || item.locationId === "city" ? item.locationId : undefined,
         victoryPoints: Number(item.victoryPoints ?? 0),
+        tags: FUYUKI_EFFECT_TAGS[id] ? [...FUYUKI_EFFECT_TAGS[id]] : undefined,
         mentionedAttributes: CONFIRMED_EVENT_MENTIONED_ATTRIBUTES[id]
           ? [...CONFIRMED_EVENT_MENTIONED_ATTRIBUTES[id]]
           : undefined,
         combatPower: CONFIRMED_EVENT_COMBAT_POWER[id]
           ? structuredClone(CONFIRMED_EVENT_COMBAT_POWER[id])
           : undefined,
-        text: typeof item.text === "string" ? item.text : undefined,
+        text: FUYUKI_TEXT_OVERRIDES[id] ?? (typeof item.text === "string" ? item.text : undefined),
         presentation: { imageKey: typeof item.image === "string" ? item.image : undefined },
       });
     }

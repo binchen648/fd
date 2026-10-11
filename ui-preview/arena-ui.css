@@ -1,0 +1,336 @@
+/* Arena system: slate layers and orange selection feedback. */
+#app :is(.draft-screen,.mode-selection-screen,.classic-setup-screen,.archive-list-screen,.archive-detail-screen,.multiplayer-lobby-screen){--ui-accent:#fff;--gold:#fff;--gold2:#fff;--ui-paper:#fff;--ui-ink:#171717;--ui-muted:#bbb9b5;--ui-line:#ffffff24;--ui-panel:#252525;min-width:0!important;min-height:0!important;background:#171717!important;color:#fff}
+#app :is(.draft-screen,.mode-selection-screen,.classic-setup-screen,.archive-list-screen,.archive-detail-screen,.multiplayer-lobby-screen) .bg{filter:grayscale(1) brightness(.6)!important;opacity:.45!important}
+#app :is(.draft-screen,.mode-selection-screen,.classic-setup-screen,.archive-list-screen,.archive-detail-screen,.multiplayer-lobby-screen) .veil{background:linear-gradient(110deg,#171717dd,#17171766 60%,#171717bb)!important}
+#app :is(.draft-screen,.mode-selection-screen,.classic-setup-screen,.archive-list-screen,.archive-detail-screen,.multiplayer-lobby-screen) :is(.grain,.ambient-light,.ambient-mist){display:none!important}
+#app :is(.mode-selection-screen,.classic-setup-screen,.archive-list-screen,.archive-detail-screen,.multiplayer-lobby-screen) .sub-header{top:24px!important;left:32px!important;right:32px!important;height:84px!important;gap:26px!important;border-bottom:1px solid #ffffff24;padding-bottom:16px}
+#app :is(.mode-selection-screen,.classic-setup-screen,.archive-list-screen,.archive-detail-screen,.multiplayer-lobby-screen) .sub-title h1{font:900 clamp(30px,3.4vw,56px)/1.05 var(--ui-font)!important;letter-spacing:-.05em!important;transform:none!important;margin:7px 0 0!important}
+#app :is(.mode-selection-screen,.classic-setup-screen,.archive-list-screen,.archive-detail-screen,.multiplayer-lobby-screen) .sub-title>span{color:#bbb9b5!important;font:700 10px var(--ui-font)!important;letter-spacing:.22em!important}
+#app :is(.draft-screen,.mode-selection-screen,.classic-setup-screen,.archive-list-screen,.archive-detail-screen,.multiplayer-lobby-screen) button:focus-visible{outline:2px solid #fff!important;outline-offset:4px!important}
+#app :is(.draft-screen,.mode-selection-screen,.classic-setup-screen,.archive-list-screen,.archive-detail-screen,.multiplayer-lobby-screen) .back{background:#ffffff0c!important;color:#fff!important;border-radius:0!important;min-height:44px!important;box-shadow:none!important}
+/* Mode portal: large artwork across the full available width. */
+#app .mode-selection-screen .mode-grid{position:absolute!important;inset:148px 48px 48px!important;width:auto!important;max-width:1400px!important;height:auto!important;margin:0 auto!important;transform:none!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;align-items:stretch!important;gap:24px!important}
+#app .mode-selection-screen .mode-grid--multi{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+#app .mode-selection-screen .mode-card{display:grid!important;grid-template-rows:minmax(0,1fr) 190px!important;width:100%!important;max-width:none!important;height:100%!important;min-height:0!important;border:1px solid #ffffff30!important;border-radius:0!important;background:#252525!important;box-shadow:none!important;overflow:hidden!important}
+#app .mode-selection-screen .mode-media{background:#111c30!important}
+#app .mode-selection-screen .mode-card-image{width:100%!important;height:100%!important;object-fit:cover!important;object-position:50% 15%!important;filter:saturate(.85)}
+#app .mode-selection-screen .mode-card .mode-body{align-items:start!important;text-align:left!important;background:#fff!important;color:#171717!important;padding:24px!important;border:0!important;position:relative}
+#app .mode-selection-screen .mode-body small{font:700 10px var(--ui-font)!important;color:#666!important;letter-spacing:.1em}
+#app .mode-selection-screen .mode-body strong{font:900 30px/1.15 var(--ui-font)!important;color:#171717!important;transform:none!important;margin:10px 0!important}
+#app .mode-selection-screen .mode-body p{font-size:13px!important;line-height:1.7!important;max-width:none!important;color:#64758c!important;margin:0!important}
+#app .mode-selection-screen .mode-body:after{content:'↗';position:absolute;right:20px;top:20px;font-size:24px;color:#171717}
+/* Selection: a wide portrait roster paired with a single persistent character view. */
+#app .draft-screen .draft-back{top:16px!important;left:32px!important}
+#app .draft-screen .player-identity-plate{top:12px!important;right:32px!important;background:#252525!important;border:1px solid #ffffff25!important;border-radius:0!important}
+#app .draft-screen .rank-inline{color:#fff!important;border-color:#666!important}
+#app .draft-screen .lol-draft.ow-draft.contract-workspace{inset:88px 32px 20px!important;display:grid!important;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)!important;grid-template-rows:94px 60px minmax(0,1fr) 70px!important;gap:0 28px!important}
+#app .draft-screen .contract-workspace .ow-phase-head{padding:0 0 14px!important;align-items:start!important;border:0!important}
+#app .draft-screen .contract-workspace .ow-phase-copy :is(h1,h2){font:900 clamp(28px,3vw,46px)/1.1 var(--ui-font)!important;margin:6px 0!important;letter-spacing:-.05em!important}
+#app .draft-screen .ow-phase-copy small{color:#bbb9b5!important;font-size:10px!important;letter-spacing:.2em!important}
+#app .draft-screen .ow-phase-copy p{color:#bbb9b5!important;font-size:12px!important}
+#app .draft-screen .contract-workspace .ow-draft-toolbar{grid-column:1!important;gap:12px!important;padding:0 0 12px!important;border-bottom:1px solid #ffffff25!important;overflow:auto!important}
+#app .draft-screen .ow-stage-tabs{border:0!important;border-radius:0!important;padding:0!important;gap:4px;background:transparent!important;flex-shrink:0}
+#app .draft-screen .ow-stage-tabs button{border:0!important;border-radius:0!important;min-height:44px!important;background:#303030!important;color:#bbb9b5!important;padding:10px 18px!important;font-weight:800!important}
+#app .draft-screen .ow-stage-tabs button.active{background:#fff!important;color:#171717!important;box-shadow:none!important}
+#app .draft-screen .roster-search{flex:1!important;max-width:none!important;min-width:165px!important;background:#303030!important;border:1px solid #64758c!important;border-radius:0!important;padding:8px 10px!important;color:#fff}
+#app .draft-screen .roster-search input{color:#fff!important;font-size:14px!important}
+#app .draft-screen .roster-search small{color:#bbb9b5!important}
+#app .draft-screen .ow-class-filter{flex-shrink:0!important;max-width:48%;overflow:auto!important;flex-wrap:nowrap!important;gap:4px!important}
+#app .draft-screen .ow-class-filter button{background:#303030!important;color:#bbb9b5!important;border:0!important;border-radius:0!important;min-height:44px!important;flex-shrink:0!important}
+#app .draft-screen .ow-class-filter button.active{background:#fff!important;color:#171717!important}
+#app .draft-screen .contract-workspace .ow-roster{grid-column:1!important;grid-row:3!important;padding:18px 8px 18px 0!important;scrollbar-width:thin;scrollbar-color:#8192aa #171717;scrollbar-gutter:stable}
+#app .draft-screen .contract-workspace .ow-roster-grid{width:100%!important;max-width:none!important;margin:0!important;grid-template-columns:repeat(auto-fill,minmax(110px,1fr))!important;gap:14px!important;align-content:start!important}
+#app .draft-screen .contract-workspace .ow-roster-grid .pick-card{position:relative;border:1px solid #ffffff35!important;background:#303030!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important}
+#app .draft-screen .contract-workspace .ow-roster-grid .pick-card-avatar{height:116px!important;background:#303030!important;overflow:hidden!important}
+#app .draft-screen .contract-workspace .ow-roster-grid .pick-card-avatar img{object-fit:cover!important;object-position:50% 12%!important;filter:none!important}
+#app .draft-screen .contract-workspace .ow-roster-grid .pick-card-info{padding:9px 8px!important;min-height:58px!important;background:#303030!important;color:#fff!important;text-align:left!important}
+#app .draft-screen .contract-workspace .ow-roster-grid .pick-card-info strong{font:800 12px/1.4 var(--ui-font)!important;color:#fff!important;white-space:normal!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#app .draft-screen .contract-workspace .ow-roster-grid .pick-card-info small{color:#bbb9b5!important;font-size:10px!important}
+#app .draft-screen .contract-workspace .pick-card.active{border-color:#fff!important;outline:2px solid #fff!important;outline-offset:2px!important}
+#app .draft-screen .contract-workspace .pick-card.active .pick-card-info{background:#fff!important;color:#171717!important}
+#app .draft-screen .contract-workspace .pick-card.active .pick-card-info strong{color:#171717!important}
+#app .draft-screen .contract-workspace .pick-card.active .pick-card-info small{color:#64758c!important}
+#app .draft-screen .contract-workspace .pick-card.active:after{content:'✓';position:absolute;right:6px;top:6px;width:22px;height:22px;display:grid;place-items:center;background:#fff;color:#171717;font-weight:900;pointer-events:none}
+#app .draft-screen .contract-workspace .pick-card.banned{opacity:.65!important;filter:grayscale(1)!important;outline:none!important}
+#app .draft-screen .contract-workspace .pick-card.banned:after{content:'╳';position:absolute;inset:0 0 58px;display:grid;place-items:center;font-size:50px;color:#fff;text-shadow:0 2px 5px #000;background:#0005;pointer-events:none}
+#app .draft-screen .lol-draft.ow-draft.contract-workspace .draft-focus,#app .draft-screen .threex-content>.contract-workspace .draft-focus{grid-column:2!important;grid-row:2/4!important;display:grid!important;grid-template-columns:minmax(100px,.85fr) minmax(0,1fr)!important;grid-template-rows:auto minmax(0,1fr)!important;gap:20px!important;padding:24px!important;min-height:0!important;background:#ffffff08!important;border:1px solid #ffffff20!important;border-radius:0!important;overflow:hidden!important;position:relative}
+#app .draft-focus-heading{grid-column:1/-1;min-width:0;padding-bottom:16px;border-bottom:1px solid #ffffff25}
+#app .draft-focus-heading>small{font:800 10px var(--ui-font);color:#bbb9b5;letter-spacing:.2em}
+#app .draft-focus-heading h2{font:900 clamp(24px,2.5vw,38px)/1.2 var(--ui-font);margin:8px 0;letter-spacing:-.04em;overflow-wrap:anywhere}
+#app .draft-focus-heading .draft-focus-class{display:inline-block;background:#fff;color:#171717!important;padding:4px 10px!important;border:0!important;font-size:11px}
+#app .draft-screen .contract-workspace .draft-focus-art{grid-column:1!important;grid-row:2!important;min-height:0!important;align-self:stretch!important;background:transparent!important;overflow:hidden!important}
+#app .draft-screen .draft-focus-art img{filter:none!important;width:100%!important;height:100%!important;object-fit:contain!important}
+#app .draft-screen .draft-focus-empty{color:#64758c!important;font-size:70px!important}
+#app .draft-screen .contract-workspace .draft-focus-skills{grid-column:2!important;grid-row:2!important;min-height:0!important;max-height:none!important;margin:0!important;padding-right:6px!important;overflow:auto!important;border:0!important;scrollbar-width:thin;scrollbar-color:#8192aa transparent}
+#app .draft-screen .draft-focus-skills article{display:block!important;padding:0 0 18px!important;margin:0 0 18px!important;border-bottom:1px solid #ffffff25!important}
+#app .draft-screen .draft-focus-skills article>span{display:inline-block;font:800 10px var(--ui-font);color:#8192aa;margin-bottom:6px}
+#app .draft-screen .draft-focus-skills strong{font-size:15px!important;color:#fff!important;line-height:1.5}
+#app .draft-screen .draft-focus-skills p{font-size:13px!important;line-height:1.85!important;color:#bcc9da!important;margin:8px 0 0!important}
+#app .draft-screen .contract-workspace .ow-draft-footer{grid-row:4!important;grid-column:1/-1!important;display:flex!important;align-items:center!important;justify-content:center!important;position:relative!important;background:#171717!important;border-top:1px solid #ffffff30!important;padding:10px 20px!important}
+#app .draft-screen .ow-selection-summary{position:absolute;left:0;max-width:35%;color:#91a1b8!important;font-size:11px!important}
+#app .draft-screen :is(.ow-primary,.purchase-finish,.ready-enter-preview,.threex-primary){background:#fff!important;color:#171717!important;border:0!important;border-radius:0!important;box-shadow:none!important;min-height:46px!important;min-width:190px!important;padding:12px 28px!important;font:900 15px var(--ui-font)!important;clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)}
+#app .draft-screen :is(.ow-primary,.purchase-finish,.ready-enter-preview,.threex-primary):disabled{background:#33405a!important;color:#8192aa!important;opacity:1!important}
+/* Draft phases: participant strip, permanent ban mark and a shared character stage. */
+#app .draft-screen .threex-page{inset:78px 32px 20px!important;grid-template-rows:46px minmax(0,1fr)!important;gap:16px!important}
+#app .draft-screen .threex-stepper{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;border:1px solid #ffffff25!important;background:#252525!important}
+#app .draft-screen .threex-stepper button{width:100%!important;height:46px!important;min-width:0!important;padding:10px 16px!important;flex:auto!important;background:#252525!important;color:#8192aa!important;border:0!important;border-right:1px solid #ffffff20!important;border-radius:0!important;justify-content:center!important;box-shadow:none!important}
+#app .draft-screen .threex-stepper button.active{background:#fff!important;color:#171717!important}
+#app .draft-screen .threex-stepper button.active span{color:#64758c!important}
+#app .draft-screen .threex-stepper button.done{color:#fff!important}
+#app .draft-screen .threex-content>.contract-workspace{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)!important;grid-template-rows:78px 82px minmax(0,1fr) 70px!important;gap:0 28px!important}
+#app .draft-screen .threex-content>.contract-workspace .draft-focus{grid-row:3!important;padding:18px!important;gap:12px!important}
+#app .draft-screen .threex-ban-board{grid-row:2!important;padding:0 0 12px!important}
+#app .draft-screen .threex-ban-slots{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;gap:6px!important}
+#app .draft-screen .threex-ban-slot{height:66px!important;background:#303030!important;border:1px solid #ffffff20!important;padding:8px!important;gap:8px!important}
+#app .draft-screen .threex-ban-slot.pending{background:#33405a!important;border-color:#fff!important}
+#app .draft-screen .threex-ban-slot.locked{background:#181818!important;border-color:#666!important}
+#app .draft-screen .threex-ban-slot.locked:after{content:'×';position:absolute;right:3px;top:0;color:#fff;font-size:20px}
+#app .draft-screen .threex-ban-slot strong{color:#ced9e8!important;line-height:1.4}
+#app .draft-screen .threex-ban-slot.pending strong:after{color:#fff!important}
+#app .draft-screen .threex-ban-player-name span{color:#bbb9b5!important}
+#app .draft-screen .threex-ban-master-art{height:46px!important;width:32px!important;filter:grayscale(1)}
+#app .draft-screen .threex-ban-summary{grid-column:1!important;grid-row:2!important;overflow:auto!important;border-bottom:1px solid #ffffff25!important}
+#app .draft-screen .threex-ban-summary article{background:#303030!important;border:1px solid #444!important;color:#bcc9da!important}
+#app .draft-screen .contract-workspace .ow-current-choice{grid-column:2!important;grid-row:2!important;position:static!important;justify-content:end!important;padding:10px 0!important;background:transparent!important}
+#app .draft-screen .ow-current-choice strong{color:#fff!important}
+#app .draft-screen .ow-current-choice span{color:#91a1b8!important}
+#app .draft-screen .ban-target-state{position:static!important;grid-column:1/-1!important;grid-row:1!important;background:#fff!important;color:#171717!important;justify-self:start;align-self:start;font:800 11px var(--ui-font);padding:5px 10px!important}
+#app .draft-screen .threex-content>.ow-ban-draft.contract-workspace .draft-focus{grid-template-rows:28px auto minmax(0,1fr)!important}
+#app .draft-screen .ow-ban-draft .draft-focus-heading{grid-row:2!important;padding-bottom:8px}
+#app .draft-screen .ow-ban-draft .draft-focus-art,#app .draft-screen .ow-ban-draft .draft-focus-skills{grid-row:3!important}
+#app .draft-screen .ban-target-note{display:none!important}
+/* Requisition: wallet and collection stay visible beside four upgrade cards. */
+#app .draft-screen .purchase-screen{grid-template-columns:240px minmax(0,1fr)!important;grid-template-rows:150px minmax(0,1fr) 70px!important;gap:20px!important;overflow:hidden!important}
+#app .draft-screen .purchase-head{background:#fff!important;color:#171717!important;border:0!important;padding:24px!important;gap:16px!important}
+#app .draft-screen .purchase-head :is(h2,small){color:#171717!important}
+#app .draft-screen .purchase-head p{color:#64758c!important}
+#app .draft-screen .crystal-count{border-color:#17171733!important;padding:20px 0!important}
+#app .draft-screen .crystal-count span{color:#64758c!important}
+#app .draft-screen .crystal-count b{color:#171717!important;font-size:76px!important}
+#app .draft-screen .crystal-count b:after{color:#171717!important}
+#app .draft-screen .purchase-candidates{overflow:auto!important}
+#app .draft-screen .purchase-candidate{width:135px!important;flex-basis:135px!important;border:1px solid #64758c!important;border-radius:0!important;background:#303030!important}
+#app .draft-screen .purchase-candidate :is(strong,small){color:#fff!important}
+#app .draft-screen .purchase-candidate-avatar{height:70px!important;background:#303030!important}
+#app .draft-screen .purchase-section-title :is(h3,small){color:#fff!important}
+#app .draft-screen .purchase-options{overflow:auto!important}
+#app .draft-screen .purchase-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;height:calc(100% - 60px)!important;gap:12px!important}
+#app .draft-screen .purchase-option{min-height:250px!important;background:#303030!important;border:1px solid #64758c!important;border-radius:0!important}
+#app .draft-screen .purchase-product-mark{height:84px!important;display:flex!important;flex-direction:column!important;align-items:start!important;background:#ffffff08!important;padding:16px!important;border-bottom:1px solid #ffffff20!important;gap:8px!important}
+#app .draft-screen .purchase-icon{color:#fff!important;width:36px!important;height:36px!important}
+#app .draft-screen .purchase-product-mark small{color:#bbb9b5!important;margin:0!important}
+#app .draft-screen .purchase-option-main{padding:16px!important}
+#app .draft-screen .purchase-option-top{display:block!important}
+#app .draft-screen .purchase-option-top h3{font-size:17px!important;color:#fff!important;margin-bottom:12px!important}
+#app .draft-screen .purchase-option-top>span{font-size:11px!important;color:#bbb9b5!important}
+#app .draft-screen .purchase-price b{color:#fff!important;font-size:28px!important}
+#app .draft-screen .purchase-option p{color:#bbb9b5!important;font-size:12px!important}
+#app .draft-screen .purchase-option-foot button{min-height:44px!important;background:#fff!important;color:#171717!important;border:0!important;border-radius:0!important}
+#app .draft-screen .purchase-option-foot button:disabled{background:#33405a!important;color:#91a1b8!important;border:1px solid #64758c!important}
+#app .draft-screen .purchase-option-foot small{color:#bbb9b5!important}
+#app .draft-screen .purchase-footer{justify-content:center!important;position:relative!important;background:#171717!important;border-top:1px solid #ffffff30!important}
+#app .draft-screen .purchase-master{position:absolute;left:0;max-width:30%}
+/* Locked pair: two large portraits with independently readable abilities. */
+#app .draft-screen .ready-screen{grid-template-rows:76px minmax(0,1fr) 70px!important;gap:18px!important}
+#app .draft-screen .ready-character{grid-template-columns:38% minmax(0,1fr)!important;gap:20px!important;background:#ffffff08!important;border:1px solid #ffffff25!important;border-top:0!important;padding:24px!important}
+#app .draft-screen .ready-card-col>span{color:#bbb9b5!important;letter-spacing:.2em;font-size:10px}
+#app .draft-screen .ready-skill-list{scrollbar-width:thin;scrollbar-color:#8192aa transparent}
+#app .draft-screen .ready-skill-head>span{color:#8192aa!important}
+#app .draft-screen .ready-skill p{color:#bcc9da!important;font-size:13px!important}
+#app .draft-screen .ready-footer{justify-content:center!important;position:relative!important;background:#171717!important;gap:20px!important}
+#app .draft-screen .ready-footer>strong{position:absolute;left:0;color:#fff!important}
+#app .draft-screen .ready-footer>span{display:none!important}
+/* Archive: a dedicated navigation rail, then the collection and dossier. */
+#app .archive-navigation{position:absolute;top:144px;left:32px;bottom:24px;width:190px;padding:16px 0;border-right:1px solid #ffffff25;z-index:3}
+#app .archive-navigation>small{font:800 10px var(--ui-font);color:#8192aa;letter-spacing:.18em}
+#app .archive-navigation>p{font-size:11px;color:#8192aa;line-height:1.8;position:absolute;bottom:8px;left:0}
+#app .archive-list-screen .codex-category-tabs{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:6px!important;margin:24px 20px 0 0!important;counter-reset:category}
+#app .archive-list-screen .codex-category-tabs button{counter-increment:category;display:flex;align-items:center;gap:14px;min-height:60px!important;padding:14px!important;background:transparent!important;border:0!important;color:#bbb9b5!important;text-align:left;white-space:normal!important;font-size:14px!important}
+#app .archive-list-screen .codex-category-tabs button:before{content:counter(category,decimal-leading-zero);font-size:10px;color:#777}
+#app .archive-list-screen .codex-category-tabs button.active{background:#fff!important;color:#171717!important}
+#app .archive-list-screen .codex-category-tabs button.active:before{color:#64758c}
+#app .archive-list-screen .codex-toolbar{inset:144px 32px auto 250px!important;height:56px!important;gap:18px!important;border-bottom:1px solid #ffffff25!important}
+#app .archive-list-screen .codex-class-filters button{background:#303030!important;color:#bbb9b5!important;border:0!important;border-radius:0!important;min-height:44px!important;font-size:12px!important}
+#app .archive-list-screen .codex-class-filters button.active{background:#fff!important;color:#171717!important}
+#app .archive-list-screen .codex-search{background:#303030!important;border:1px solid #64758c!important;border-radius:0!important;flex-basis:230px!important;min-height:44px!important}
+#app .archive-list-screen .codex-search input{color:#fff!important}
+#app .archive-list-screen .codex-search small{color:#bbb9b5!important}
+#app .archive-list-screen:has(.codex-toolbar) .codex-grid{inset:216px 32px 24px 250px!important;grid-template-columns:repeat(auto-fill,minmax(160px,1fr))!important;gap:24px!important;padding:12px 8px 12px 0!important;scrollbar-color:#8192aa #171717!important}
+#app .archive-list-screen .codex-card{border:1px solid #ffffff30!important;background:#2b374b!important;box-shadow:none!important;border-radius:0!important;overflow:hidden!important}
+#app .archive-list-screen .codex-portrait{height:240px!important;padding:10px!important;background:#ffffff08!important}
+#app .archive-list-screen .codex-portrait img{width:100%!important;height:100%!important;min-height:0!important;max-height:100%!important;aspect-ratio:auto!important;object-fit:contain!important;transform:none}
+#app .archive-list-screen .codex-card[data-entry-kind="master"] .codex-portrait,#app .archive-list-screen .codex-card[data-entry-kind="servant"] .codex-portrait{height:180px!important;padding:0!important}
+#app .archive-list-screen .codex-card[data-entry-kind="master"] .codex-portrait img,#app .archive-list-screen .codex-card[data-entry-kind="servant"] .codex-portrait img{object-fit:cover!important;object-position:50% 12%!important}
+#app .archive-list-screen .codex-name{color:#fff!important;min-height:50px!important;padding:14px 14px 4px!important;font-size:14px!important}
+#app .archive-list-screen .codex-meta{color:#bbb9b5!important;padding:0 14px 16px!important;min-height:32px!important;font-size:11px!important}
+#app .archive-list-screen .codex-card:hover{border-color:#fff!important}
+#app .archive-detail-screen .codex-detail-page{inset:144px 32px 24px!important;grid-template-columns:minmax(200px,30%) minmax(0,1fr)!important;gap:32px!important}
+#app .archive-detail-screen .codex-detail-art{background:#ffffff08!important;padding:24px!important}
+#app .archive-detail-screen .codex-detail-art img{filter:none!important}
+#app .archive-detail-screen .codex-detail-id{border:0!important;padding:16px 0!important}
+#app .archive-detail-screen .codex-detail-id strong{font-size:30px!important;color:#fff!important}
+#app .archive-detail-screen .codex-detail-id small{color:#bbb9b5!important}
+#app .archive-detail-screen .codex-detail-content{background:#ffffff08!important;border:1px solid #ffffff25!important;border-radius:0!important}
+#app .archive-detail-screen .codex-detail-tabs{background:#181818!important;padding:8px 20px!important;gap:8px!important}
+#app .archive-detail-screen .codex-detail-tabs button{background:transparent!important;color:#bbb9b5!important;border:0!important;border-radius:0!important;min-height:44px!important;padding:10px 24px!important}
+#app .archive-detail-screen .codex-detail-tabs button.active{background:#fff!important;color:#171717!important}
+#app .archive-detail-screen .codex-skill-list{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:16px!important;padding-top:20px!important}
+#app .archive-detail-screen .codex-skill-item{background:#ffffff05!important;border:1px solid #ffffff25!important;padding:24px!important;display:block!important;position:relative!important}
+#app .archive-detail-screen .codex-skill-item:before{position:static!important;display:block;font-size:11px!important;margin-bottom:12px!important;color:#8192aa!important}
+#app .archive-detail-screen .codex-skill-art{float:right!important;width:80px!important;height:120px!important;margin:0 0 10px 16px!important}
+#app .archive-detail-screen .codex-skill-copy header{display:block!important}
+#app .archive-detail-screen .codex-skill-copy h3{font-size:19px!important}
+#app .archive-detail-screen .codex-skill-copy header>span{color:#91a1b8!important;display:block;margin-top:8px}
+#app .archive-detail-screen .codex-skill-copy p{font-size:14px!important;color:#bcc9da!important;line-height:1.9!important}
+#app .archive-detail-screen .codex-skill-stats span{border-color:#777!important;color:#ced9e8!important;background:#33405a!important}
+#app .archive-detail-screen .codex-deck-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))!important;gap:20px!important}
+#app .archive-detail-screen .codex-deck-card{background:#303030!important;border:1px solid #64758c!important;border-radius:0!important;padding:14px!important}
+#app .archive-detail-screen .codex-deck-art{height:260px!important;background:#181818!important}
+#app .archive-detail-screen.board-dossier .codex-skill-list{grid-template-columns:1fr!important}
+/* Rules / lobby share the monochrome portal. */
+#app .classic-setup-screen .classic-rules-panel{inset:144px 32px 24px!important;width:auto!important;height:auto!important;transform:none!important;max-width:1100px!important;margin:0 auto!important;background:#1c1c1c!important;border:1px solid #64758c!important;border-radius:0!important;padding:28px!important;overflow:auto!important}
+#app .classic-rules-panel ol{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;counter-reset:rule}
+#app .classic-rules-panel li{padding:24px!important;background:#ffffff07!important;border:1px solid #ffffff20!important;display:block!important;counter-increment:rule}
+#app .classic-rules-panel li:before{content:counter(rule,decimal-leading-zero)!important;position:static!important;display:block!important;background:#fff!important;color:#171717!important;border-radius:0!important;margin-bottom:18px!important}
+#app .classic-rules-panel li strong{color:#fff!important;font-size:18px!important}
+#app .classic-rules-panel li p{color:#bbb9b5!important}
+#app .classic-rules-footer{border-color:#64758c!important}
+#app .classic-rules-footer button{background:#33405a!important;color:#bbb9b5!important;border:1px solid #64758c!important;border-radius:0!important}
+#app .multiplayer-lobby-screen .multi-lobby-panel{inset:144px 32px 24px!important;width:auto!important;height:auto!important;transform:none!important;background:#1c1c1c!important;border:1px solid #64758c!important;border-radius:0!important;overflow:auto!important}
+#app .multiplayer-lobby-screen .multi-lobby-head{background:#303030!important}
+#app .multiplayer-lobby-screen .multi-lobby-slot{background:#303030!important;border:1px solid #64758c!important;border-radius:0!important}
+#app .multiplayer-lobby-screen .multi-lobby-state{color:#ced9e8!important}
+#app .multiplayer-lobby-screen .multi-lobby-ready-note>span{background:#fff!important;box-shadow:none!important}
+#app .multiplayer-lobby-screen .multi-lobby-start{background:#fff!important;color:#171717!important;border:0!important;border-radius:0!important}
+@media(min-width:1600px){#app .draft-screen .contract-workspace .ow-roster-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))!important}#app .draft-screen .contract-workspace .ow-roster-grid .pick-card-avatar{height:150px!important}}
+@media(min-width:1101px) and (max-width:1599px){#app .draft-screen .ow-ban-draft .ow-roster-grid .pick-card-avatar{height:78px!important}}
+/* Shared blue slate accents are reserved for selection and actions. */
+#app :is(.draft-screen,.mode-selection-screen,.classic-setup-screen,.archive-list-screen,.archive-detail-screen,.multiplayer-lobby-screen){--ui-accent:#d6ae52;--gold:#d6ae52;--gold2:#bbc4d4;--ui-paper:#f3f2ef}
+#app .draft-screen .contract-workspace .pick-card.active{border-color:#dedbd5!important;outline-color:#d6ae52!important}
+#app .draft-screen .contract-workspace .pick-card.active .pick-card-info{background:#3c3c3c!important;color:#fff!important}
+#app .draft-screen .contract-workspace .pick-card.active:after{background:#dedbd5!important;color:#182432!important}
+#app .draft-screen .contract-workspace .ow-roster-grid .pick-card.active .pick-card-info{background:#3c3c3c!important}
+#app .draft-screen .contract-workspace .pick-card.active .pick-card-info :is(strong,small){color:#fff!important}
+#app .draft-screen :is(.ow-primary,.purchase-finish,.ready-enter-preview,.threex-primary),#app .draft-screen .purchase-option-foot button:not(:disabled),#app .multiplayer-lobby-screen .multi-lobby-start{background:#d6ae52!important;color:#fff!important}
+#app .draft-screen .ow-primary.ow-primary--ban:not(:disabled){background:#d6ae52!important;color:#fff!important}
+#app .screen.draft-screen .purchase-screen .purchase-footer>.purchase-finish,#app .screen.draft-screen .ready-screen .ready-footer>.ready-enter-preview{background:#d6ae52!important;color:#fff!important}
+#app .draft-screen .threex-stepper button.active{background:#3c3c3c!important;color:#fff!important;box-shadow:inset 0 -2px #dedbd5!important}
+#app .draft-screen .threex-ban-slot.pending{background:#3c3c3c!important;border-color:#d6ae52!important}
+#app .draft-screen .contract-workspace .pick-card.banned:after{color:#c9d4e2!important;background:#10172280!important}
+#app .archive-list-screen .codex-category-tabs button.active{background:#3c3c3c!important;color:#fff!important;box-shadow:inset 3px 0 #dedbd5!important}
+#app .archive-list-screen .codex-category-tabs button.active:before{color:#c9d4e2}
+#app .archive-list-screen .codex-class-filters button.active{background:#f3f2ef!important;color:#252525!important}
+#app .draft-screen .lol-draft.ow-draft.contract-workspace .draft-focus-heading .draft-focus-class,#app .draft-screen .threex-content>.contract-workspace .draft-focus-heading .draft-focus-class{background:#2a3a55!important;color:#ced9e8!important;border:1px solid #555350!important;padding:4px 10px!important}
+#app .draft-screen .player-identity-plate :is(small,.rank-inline){color:#bcc9da!important;text-shadow:none!important}
+#app .draft-screen .contract-workspace .ow-phase-head{padding-bottom:4px!important}
+#app .draft-screen .threex-content>.contract-workspace .ow-phase-head{overflow:visible!important}
+#app .draft-screen .threex-content>.contract-workspace .ow-phase-copy h2{font-size:30px!important;margin:4px 0!important}
+#app .archive-navigation{overflow:auto;scrollbar-width:thin;scrollbar-color:#64758c transparent}
+/* Landscape touch layout keeps confirmation central and reading areas scrollable. */
+@media(max-width:1100px) and (orientation:landscape){
+ #app :is(.mode-selection-screen,.classic-setup-screen,.archive-list-screen,.archive-detail-screen,.multiplayer-lobby-screen) .sub-header{inset:10px 16px auto!important;height:56px!important;padding-bottom:6px;gap:16px!important}
+ #app :is(.mode-selection-screen,.classic-setup-screen,.archive-list-screen,.archive-detail-screen,.multiplayer-lobby-screen) .sub-title h1{font-size:26px!important}
+ #app .mode-selection-screen .mode-grid{inset:82px 16px 12px!important;gap:12px!important}
+ #app .mode-selection-screen .mode-card{height:100%!important;grid-template-rows:minmax(70px,1fr) 130px!important}
+ #app .mode-selection-screen .mode-body{padding:14px!important}
+ #app .mode-selection-screen .mode-body strong{font-size:20px!important;margin:8px 0!important}
+ #app .mode-selection-screen .mode-body p{font-size:10px!important;line-height:1.6!important}
+ #app .mode-selection-screen .mode-body:after{right:10px;top:10px;font-size:16px}
+ #app .draft-screen .draft-back{top:8px!important;left:16px!important}
+ #app .draft-screen .player-identity-plate{top:8px!important;right:16px!important}
+ #app .draft-screen .lol-draft.ow-draft.contract-workspace{inset:64px 16px 8px!important;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)!important;grid-template-rows:58px 48px minmax(0,1fr) 56px!important;gap:0 16px!important}
+ #app .draft-screen .contract-workspace .ow-phase-copy :is(h1,h2){font-size:24px!important;margin:3px 0!important}
+ #app .draft-screen .ow-phase-copy p{font-size:10px!important}
+ #app .draft-screen .ow-phase-copy small{font-size:9px!important}
+ #app .draft-screen .contract-workspace .ow-draft-toolbar{gap:6px!important;padding-bottom:4px!important}
+ #app .draft-screen .roster-search{min-width:130px!important;padding:6px!important}
+ #app .draft-screen .roster-search input{font-size:16px!important}
+ #app .draft-screen .roster-search small{display:none}
+ #app .draft-screen .ow-stage-tabs button{padding:8px 10px!important}
+ #app .draft-screen .ow-class-filter{max-width:35%}
+ #app .draft-screen .contract-workspace .ow-roster{padding:10px 5px 10px 0!important}
+ #app .draft-screen .contract-workspace .ow-roster-grid{grid-template-columns:repeat(auto-fill,minmax(76px,1fr))!important;gap:9px!important}
+ #app .draft-screen .contract-workspace .ow-roster-grid .pick-card-avatar{height:68px!important}
+ #app .draft-screen .contract-workspace .ow-roster-grid .pick-card-info{padding:5px!important;min-height:40px!important}
+ #app .draft-screen .contract-workspace .ow-roster-grid .pick-card-info strong{font-size:10px!important}
+ #app .draft-screen .contract-workspace .ow-roster-grid .pick-card-info small{font-size:9px!important}
+ #app .draft-screen .lol-draft.ow-draft.contract-workspace .draft-focus,#app .draft-screen .threex-content>.contract-workspace .draft-focus{grid-template-columns:75px minmax(0,1fr)!important;grid-template-rows:auto minmax(0,1fr)!important;padding:12px!important;gap:10px!important}
+ #app .draft-focus-heading{padding-bottom:8px}
+ #app .draft-focus-heading h2{font-size:20px!important;margin:4px 0!important}
+ #app .draft-focus-heading small{font-size:8px}
+ #app .draft-screen .draft-focus-skills strong{font-size:12px!important}
+ #app .draft-screen .draft-focus-skills p{font-size:11px!important;line-height:1.7!important}
+ #app .draft-screen .draft-focus-skills article{margin-bottom:12px!important;padding-bottom:12px!important}
+ #app .draft-screen .contract-workspace .ow-draft-footer{padding:6px!important}
+ #app .draft-screen .ow-selection-summary{font-size:9px!important;max-width:28%}
+ #app .draft-screen :is(.ow-primary,.purchase-finish,.ready-enter-preview,.threex-primary){min-width:150px!important;min-height:44px!important;font-size:13px!important;padding:10px 18px!important}
+ #app .draft-screen .threex-page{inset:64px 16px 8px!important;grid-template-rows:36px minmax(0,1fr)!important;gap:6px!important}
+ #app .draft-screen .threex-stepper button{height:36px!important;padding:6px!important;font-size:11px!important}
+ #app .draft-screen .threex-content>.contract-workspace{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)!important;grid-template-rows:52px 46px minmax(0,1fr) 56px!important;gap:0 16px!important}
+ #app .draft-screen .threex-ban-slots{grid-template-columns:repeat(7,120px)!important;overflow:auto!important}
+ #app .draft-screen .threex-ban-slot{height:40px!important;padding:4px!important}
+ #app .draft-screen .threex-ban-master-art{width:24px!important;height:30px!important}
+ #app .draft-screen .threex-ban-board{padding-bottom:6px!important}
+ #app .draft-screen .threex-content>.ow-ban-draft.contract-workspace .draft-focus{grid-template-rows:22px auto minmax(0,1fr)!important;gap:6px!important;padding:8px!important}
+ #app .draft-screen .threex-content>.contract-workspace .ow-phase-copy h2{font-size:22px!important;margin:1px 0!important}
+ #app .draft-screen .threex-ban-summary{padding:4px 0!important}
+ #app .draft-screen .ow-current-choice{font-size:10px!important;gap:8px!important}
+ #app .draft-screen .purchase-screen{grid-template-columns:155px minmax(0,1fr)!important;grid-template-rows:64px minmax(0,1fr) 56px!important;gap:12px!important;overflow:hidden!important;scroll-padding-bottom:70px}
+ #app .draft-screen .purchase-head{overflow:auto!important}
+ #app .draft-screen .purchase-candidates .purchase-section-title{display:none!important}
+ #app .draft-screen .purchase-options{overflow:auto!important;scrollbar-width:thin;scrollbar-color:#8192aa transparent}
+ #app .draft-screen .purchase-options>.purchase-section-title{display:none!important}
+ #app .draft-screen .purchase-head{padding:16px!important;gap:12px!important}
+ #app .draft-screen .purchase-head h2{font-size:23px!important}
+ #app .draft-screen .crystal-count{padding:12px 0!important}
+ #app .draft-screen .crystal-count b{font-size:48px!important}
+ #app .draft-screen .purchase-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;height:auto!important;gap:8px!important}
+ #app .draft-screen .purchase-option{min-height:190px!important}
+ #app .draft-screen .purchase-product-mark{height:36px!important;padding:6px!important;flex-direction:row!important;align-items:center!important}
+ #app .draft-screen .purchase-product-mark small{display:none!important}
+ #app .draft-screen .purchase-option-top h3{font-size:13px!important}
+ #app .draft-screen .purchase-price b{font-size:20px!important}
+ #app .draft-screen .purchase-option-main{padding:8px!important}
+ #app .draft-screen .purchase-option p{font-size:11px!important;min-height:34px!important}
+ #app .draft-screen .purchase-option-foot button{width:100%!important;padding:6px 2px!important;font-size:11px!important}
+ #app .draft-screen .purchase-option-main{padding:12px!important}
+ #app .draft-screen .purchase-section-title h3{font-size:16px!important}
+ #app .draft-screen .purchase-candidate{flex-basis:112px!important}
+ #app .draft-screen .purchase-candidate-avatar{height:48px!important}
+ #app .draft-screen .purchase-footer{position:sticky!important;bottom:0!important;z-index:6!important;min-height:56px!important}
+ #app .draft-screen .ready-screen{grid-template-rows:62px minmax(260px,1fr) 56px!important;overflow:auto!important;gap:10px!important}
+ #app .draft-screen .ready-character{padding:12px!important;gap:12px!important}
+ #app .draft-screen .ready-head h2{font-size:24px!important}
+ #app .draft-screen .ready-card-name strong{font-size:17px!important}
+ #app .draft-screen .ready-skill p{font-size:11px!important}
+ #app .draft-screen .ready-footer{position:sticky!important;bottom:0!important;min-height:56px!important;z-index:5!important}
+ #app .draft-screen .ready-footer>strong{font-size:10px!important;max-width:25%}
+ #app .archive-navigation{top:78px;bottom:12px;left:16px;width:120px;padding:8px 0}
+ #app .archive-navigation>small{font-size:8px}
+ #app .archive-navigation>p{display:none}
+ #app .archive-list-screen .codex-category-tabs{margin:12px 12px 0 0!important;gap:4px!important}
+ #app .archive-list-screen .codex-category-tabs button{min-height:48px!important;padding:8px!important;font-size:11px!important;gap:6px}
+ #app .archive-list-screen .codex-toolbar{inset:78px 16px auto 152px!important;height:48px!important;gap:10px!important}
+ #app .archive-list-screen .codex-search{flex-basis:160px!important}
+ #app .archive-list-screen .codex-search input{font-size:16px!important}
+ #app .archive-list-screen:has(.codex-toolbar) .codex-grid{inset:138px 16px 12px 152px!important;grid-template-columns:repeat(auto-fill,minmax(96px,1fr))!important;gap:12px!important;padding:6px 5px 6px 0!important}
+ #app .archive-list-screen .codex-portrait{height:150px!important;padding:6px!important}
+ #app .archive-list-screen .codex-card[data-entry-kind="master"] .codex-portrait,#app .archive-list-screen .codex-card[data-entry-kind="servant"] .codex-portrait{height:100px!important}
+ #app .archive-list-screen .codex-name{min-height:40px!important;padding:8px 8px 2px!important;font-size:11px!important}
+ #app .archive-list-screen .codex-meta{font-size:9px!important;padding:0 8px 8px!important;min-height:24px!important}
+ #app .archive-detail-screen .codex-detail-page{inset:78px 16px 12px!important;grid-template-columns:160px minmax(0,1fr)!important;gap:16px!important}
+ #app .archive-detail-screen .codex-detail-art{padding:10px!important}
+ #app .archive-detail-screen .codex-detail-id strong{font-size:19px!important}
+ #app .archive-detail-screen .codex-detail-tabs{padding:4px 12px!important}
+ #app .archive-detail-screen .codex-detail-scroll{padding:16px!important}
+ #app .archive-detail-screen .codex-skill-list{grid-template-columns:1fr!important;padding-top:12px!important}
+ #app .archive-detail-screen .codex-skill-item{padding:16px!important}
+ #app .archive-detail-screen .codex-deck-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))!important;gap:12px!important}
+ #app .archive-detail-screen .codex-deck-art{height:180px!important}
+ #app .classic-setup-screen .classic-rules-panel{inset:82px 16px 12px!important;padding:18px!important}
+ #app .classic-rules-panel ol{grid-template-columns:1fr!important;gap:12px}
+ #app .classic-rules-panel li{padding:16px!important}
+ #app .multiplayer-lobby-screen .multi-lobby-panel{inset:82px 16px 12px!important}
+ #app .multiplayer-lobby-screen .multi-lobby-slots{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+

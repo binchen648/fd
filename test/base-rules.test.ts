@@ -168,7 +168,7 @@ test("部署、单向移动和常规两张攻击在规则模块中原子完成",
   state.step = "move-decision";
   movePlayer(state, "p1", "city");
   assert.equal(state.players.p1.locationId, "city");
-  assert.equal(state.players.p1.mana, 4);
+  assert.equal(state.players.p1.mana, 5);
 
   const definitions = {
     "card.low-1": { id: "card.low-1", name: "低位一", cost: 1, basePower: 2, typeLabel: "魔术" },
@@ -181,7 +181,7 @@ test("部署、单向移动和常规两张攻击在规则模块中原子完成",
   const result = commitStandardAttack(state, "p1", selected, [], definitions);
   assert.equal(result.paidMana, 2);
   assert.equal(state.players.p1.attack.length, 2);
-  assert.equal(state.players.p1.mana, 2);
+  assert.equal(state.players.p1.mana, 3);
 });
 
 test("战场战果与侦察2战果在同一回合只结算一次", () => {

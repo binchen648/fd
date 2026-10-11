@@ -28,13 +28,17 @@ test("标准引擎可连续推进准备、前哨、行动并进入战斗", () =>
   for (const phase of ["preparation", "outpost", "action"] as const) {
     for (const actor of ["p1", "p2"]) {
       assert.equal(state.phase, phase);
+      if (phase === "outpost") {
+        state = engine.execute(state, command(state, `deploy-${actor}`, CommandType.DeployPlayer, actor, { locationId: "mountain" })).state;
+      }
       result = engine.execute(state, command(state, `${phase}-${actor}`, CommandType.CompletePlayerWindow, actor));
       state = result.state;
       if (phase === "action") {
         assert.equal(state.activePlayerId, actor);
         assert.equal(state.step, "play-batch-draft");
-        result = engine.execute(state, command(state, `${phase}-${actor}-play`, CommandType.CompletePlayerWindow, actor));
+        result = engine.execute(state, command(state, `${phase}-${actor}-play`, CommandType.CommitAttack, actor, { faceUpInstanceIds: [...state.players[actor].hand], faceDownInstanceIds: [] }));
         state = result.state;
+        state = engine.execute(state, command(state, `${phase}-${actor}-done`, CommandType.CompletePlayerWindow, actor)).state;
       }
     }
   }

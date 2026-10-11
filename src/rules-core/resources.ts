@@ -54,7 +54,7 @@ export function gainMana(player: PlayerState, amount: number): number {
     ? Math.max(0, roundCap - (Number.isInteger(alreadyGained) && alreadyGained >= 0 ? alreadyGained : 0))
     : scaledAmount;
   const requested = Math.min(scaledAmount, allowed);
-  const cap = Number(player.flags.manaCap);
+  const cap = Number(player.flags.manaCap ?? 12);
   const before = player.mana;
   player.mana = Number.isInteger(cap) && cap >= 0
     ? Math.min(cap, before + requested)
@@ -97,7 +97,7 @@ export function loseMana(player: PlayerState, amount: number): number {
 export function setMana(player: PlayerState, amount: number): void {
   if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_MANA_INVALID");
   if (player.flags.infiniteMana === true) return;
-  const cap = Number(player.flags.manaCap);
+  const cap = Number(player.flags.manaCap ?? 12);
   player.mana = Number.isInteger(cap) && cap >= 0 ? Math.min(cap, amount) : amount;
 }
 
@@ -109,7 +109,7 @@ export function restoreManaUnpreventable(player: PlayerState, amount: number): n
   if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_MANA_INVALID");
   if (player.flags.infiniteMana === true || amount === 0) return 0;
   const before = player.mana;
-  const cap = Number(player.flags.manaCap);
+  const cap = Number(player.flags.manaCap ?? 12);
   player.mana = Number.isInteger(cap) && cap >= 0 ? Math.min(cap, before + amount) : before + amount;
   return player.mana - before;
 }
@@ -134,8 +134,9 @@ export function gainVictoryPoints(player: PlayerState, amount: number): number {
 export function adjustVictoryPoints(player: PlayerState, delta: number): number {
   if (!Number.isInteger(delta)) throw new Error("RESOURCE_VICTORY_POINTS_INVALID");
   if (delta >= 0) return gainVictoryPoints(player, delta);
-  player.victoryPoints += delta;
-  return delta;
+  const before = player.victoryPoints;
+  player.victoryPoints = Math.max(0, before + delta);
+  return player.victoryPoints - before;
 }
 
 /** Transfer existing victory points without treating the received amount as a new gain. */

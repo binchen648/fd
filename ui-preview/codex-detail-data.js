@@ -242,6 +242,55 @@ window.FDCodexDetailData={
           "image": "../assets/rules-content/chm-used/masters/master-olga-marie/02.png"
         }
       ]
+    },
+    "远坂凛": {
+      "sourceId": "master.rin",
+      "name": "远坂凛",
+      "fullName": "远坂凛",
+      "class": "Master",
+      "image": "../assets/cards/masters/远坂凛.png",
+      "skills": [
+        {
+          "id": "master.rin.skill.s1",
+          "name": "宝石魔术",
+          "type": "被动",
+          "text": "游戏开始时，你获得10枚【宝石】。高潮阶段时你可以在【宝石】上选择相同的选项，每个选项至多3次(共计9次)。",
+          "cost": null,
+          "basePower": null,
+          "requirement": null,
+          "image": ""
+        },
+        {
+          "id": "master.rin.skill.s2",
+          "name": "绝对服从的命令",
+          "type": "被动",
+          "text": "你必须于第一回合使用一枚令咒。否则于该回合结束失去一枚令咒。若你以该令咒获得了魔力，战斗阶段结束后，你失去4点魔力。",
+          "cost": null,
+          "basePower": null,
+          "requirement": null,
+          "image": ""
+        },
+        {
+          "id": "master.rin.skill.s3",
+          "name": "宝石",
+          "type": "行动阶段",
+          "text": "<每局游戏限一次>\n行动阶段：选择一项本回合没有选择过的选项：\n-获得1点魔力。\n-打出一张游戏外的【阴炁弹】。\n-弃置1-3张牌，然后抽取相同数量的牌。",
+          "cost": 0,
+          "basePower": null,
+          "requirement": null,
+          "image": "../assets/cards/skills/master-远坂凛-s3.png"
+        },
+        {
+          "id": "master.rin.skill.s4",
+          "name": "阴炁弹",
+          "type": "牌库牌",
+          "text": "魔术属性，0耗1威。<每局游戏限一次>\n(<每局游戏限一次>的卡牌，关闭后将被移除游戏。对于其他卡牌的效果而言，它们便是游戏外的。)",
+          "cost": null,
+          "basePower": null,
+          "requirement": null,
+          "image": "../assets/cards/skills/master-远坂凛-s4.png"
+        }
+      ]
     }
   },
   "servants": {
@@ -1210,6 +1259,147 @@ window.FDCodexDetailData={
           "requirement": null,
           "basePower": 4,
           "image": "../assets/rules-content/basic-attacks/basic-luck.png",
+          "count": 2
+        }
+      ]
+    },
+    "卫宫": {
+      "sourceId": "servant.emiya",
+      "name": "卫宫",
+      "fullName": "卫宫",
+      "class": "Archer",
+      "image": "../assets/cards/servants/卫宫.png",
+      "skills": [
+        {
+          "id": "servant.emiya.skill.sc-emiya-1",
+          "name": "炽天覆七重圆环",
+          "type": "特殊",
+          "text": "战斗阶段：将同一战场所有对手的迅捷属性威力变为0。",
+          "cost": 2,
+          "basePower": 4,
+          "requirement": 2,
+          "image": "../assets/cards/skills/servant-卫宫-sc_emiya_1.png"
+        },
+        {
+          "id": "servant.emiya.skill.sc-emiya-2",
+          "name": "伪·螺旋剑",
+          "type": "迅捷/宝具",
+          "text": "【真名解放】<每局游戏限一次>\n行动阶段：将你的地利变为3倍。\n战斗阶段：若赢得本场战斗，获得4战果。",
+          "cost": 2,
+          "basePower": 4,
+          "requirement": 2,
+          "image": "../assets/cards/skills/servant-卫宫-sc_emiya_2.png"
+        },
+        {
+          "id": "servant.emiya.skill.sc-emiya-np",
+          "name": "无限剑制",
+          "type": "特殊",
+          "text": "【真名解放】\n打出时：以你打出的牌、手牌、牌库和弃牌堆任意组建一组至多12张牌的手牌。\n残留：你的常规出牌改为打出0~4张牌，你不能抽牌，当你的手牌数为0时，关闭此牌。",
+          "cost": 8,
+          "basePower": 0,
+          "requirement": 8,
+          "image": "../assets/cards/skills/servant-卫宫-sc_emiya_np.png"
+        }
+      ],
+      "deck": [
+        {
+          "id": "card.cardb1",
+          "name": "迫击",
+          "type": "力量",
+          "text": "基础攻击卡牌",
+          "cost": 0,
+          "basePower": 2,
+          "image": "../assets/cards/deck/cardB1.png",
+          "count": 1
+        },
+        {
+          "id": "card.cardb2",
+          "name": "强打",
+          "type": "力量",
+          "text": "基础攻击卡牌",
+          "cost": 0,
+          "basePower": 3,
+          "image": "../assets/cards/deck/cardB2.png",
+          "count": 1
+        },
+        {
+          "id": "card.cardq1",
+          "name": "翻弄",
+          "type": "迅捷",
+          "text": "基础攻击卡牌",
+          "cost": 0,
+          "basePower": 2,
+          "image": "../assets/cards/deck/cardQ1.png",
+          "count": 2
+        },
+        {
+          "id": "card.cardq2",
+          "name": "瞬间移动",
+          "type": "迅捷",
+          "text": "基础攻击卡牌",
+          "cost": 0,
+          "basePower": 3,
+          "image": "../assets/cards/deck/cardQ2.png",
+          "count": 1
+        },
+        {
+          "id": "card.cardq3",
+          "name": "瞬间的一击",
+          "type": "迅捷",
+          "text": "基础攻击卡牌",
+          "cost": 0,
+          "basePower": 4,
+          "image": "../assets/cards/deck/cardQ3.png",
+          "count": 1
+        },
+        {
+          "id": "card.carda1",
+          "name": "低位魔法",
+          "type": "魔法",
+          "text": "基础攻击卡牌",
+          "cost": 0,
+          "basePower": 2,
+          "image": "../assets/cards/deck/cardA1.png",
+          "count": 1
+        },
+        {
+          "id": "card.carda2",
+          "name": "中位魔法",
+          "type": "魔法",
+          "text": "基础攻击卡牌",
+          "cost": 0,
+          "basePower": 3,
+          "image": "../assets/cards/deck/cardA2.png",
+          "count": 1
+        },
+        {
+          "id": "card.carda3",
+          "name": "高位魔法",
+          "type": "魔法",
+          "text": "基础攻击卡牌",
+          "cost": 0,
+          "basePower": 4,
+          "image": "../assets/cards/deck/cardA3.png",
+          "count": 1
+        },
+        {
+          "id": "card.cardsurveil",
+          "name": "急行",
+          "type": "特殊",
+          "text": "行动：无视交战沿箭头移动。",
+          "cost": 1,
+          "basePower": 3,
+          "image": "../assets/cards/deck/cardSurveil.png",
+          "count": 1
+        },
+        {
+          "id": "card.cardpreparation",
+          "name": "远隔操作",
+          "type": "特殊",
+          "text": "行动：地利翻倍。战斗：若赢，获2战果。",
+          "cost": 1,
+          "basePower": 2,
+          "image": "../assets/cards/deck/cardPreparation.png",
           "count": 2
         }
       ]

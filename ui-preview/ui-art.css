@@ -1,0 +1,99 @@
+/* Shared visual system. Do not put motion or gameplay geometry in this file. */
+:root,:host{
+ --ui-ink:#171717;--ui-panel:#252525;--ui-panel-raised:#303030;--ui-line:#555350;
+ --ui-paper:#f3f2ef;--ui-muted:#bbb9b5;--ui-accent:#d6ae52;--ui-action:#d6ae52;--ui-danger:#be8890;
+ --ui-radius:6px;--ui-font:'Segoe UI','Microsoft YaHei',sans-serif;
+ --gold:var(--ui-accent);--gold2:var(--ui-paper);
+}
+.screen,:host{font-family:var(--ui-font);color:var(--ui-paper)}
+/* Type: a single utility voice, retaining the existing oversized italic titles. */
+:is(.sub-title,.ready-head,.room-panel__kicker,.profile-identity,.settings-hub-head,.settings-dialog-head,.avatar-picker-head,.home-notice-label,.home-notice-detail-label,.codex-detail-id,.pick-section-title,.purchase-head,.multi-lobby-head,.character-skill-preview-head) small,
+.room-panel__kicker,.legal-copy>small{font-family:var(--ui-font)!important;font-weight:800!important;color:var(--ui-accent)!important}
+:is(.sub-title h1,.ready-head h2,.room-panel h2,.settings-dialog-head h2,.multi-lobby-head h2,.codex-detail-id strong,.profile-history-panel h2,.profile-transfer-panel h2){color:var(--ui-paper);font-weight:900}
+:is(.settings-row-copy small,.settings-dialog-head p,.profile-identity p,.usage-empty,.profile-history-empty,.room-panel p,.setup-note,.multi-lobby-player small,.home-notice-meta,.home-notice-detail-meta){color:var(--ui-muted)!important}
+/* Home and entry: keep the composition and all reveal effects. */
+.legal-copy h1{font-family:var(--ui-font);font-weight:900}.legal-credit{border-color:var(--ui-line)}
+.legal-continue{color:var(--ui-accent)}.legal-continue::after{background:var(--ui-accent)}
+.legal-loader-percent{color:var(--ui-accent)}.legal-progress{border-color:var(--ui-line);box-shadow:none}
+.legal-progress-fallback::after{background:var(--ui-accent)}
+.home-menu .nav{color:var(--ui-paper);text-shadow:0 2px 5px #0008}
+.home-menu .nav .num{color:var(--ui-muted)}.home-menu .nav:hover{color:var(--ui-accent)}
+.home-menu .nav:hover .num{color:var(--ui-accent)}
+.home-menu .nav small{font-family:var(--ui-font);color:var(--ui-accent);font-weight:800}
+.home-notice{border:2px solid var(--ui-line);border-radius:var(--ui-radius);background:var(--ui-ink);box-shadow:0 5px 0 #0008}
+.home-notice-copy{background:var(--ui-ink)}.home-notice-copy h2{color:var(--ui-paper)}.home-notice-copy p{color:var(--ui-muted)}
+.home-notice-label{background:var(--ui-accent)!important;color:var(--ui-ink)!important;font-weight:900}
+.home-notice-dot{background:#62625a}.home-notice-dot.is-active{background:var(--ui-accent)}.home-notice-progress{background:var(--ui-accent)}
+.back{color:var(--ui-paper)!important;font-weight:800}.back:hover{color:var(--ui-accent)!important}
+/* Shared panel edges and neutral surfaces, including all settings dialogs. */
+:is(.settings.settings-hub,.settings-bg-dialog,.settings-bgm-dialog,.settings-sfx-dialog,.avatar-picker-dialog,.room-panel,.multi-lobby-panel,.home-notice-editor-panel,.home-notice-detail-panel,.profile-history-panel,.profile-transfer-panel,.usage-panel,.avatar-picker-panel,.character-skill-preview,.pick-side,.lol-side,.purchase-option,.purchase-candidate,.codex-detail-content,.codex-detail-identity){
+ background:var(--ui-panel)!important;border-color:var(--ui-line)!important;border-radius:var(--ui-radius)!important;box-shadow:0 6px 0 #0005!important;
+}
+:is(.settings-hub-head,.settings-dialog-head,.avatar-picker-head,.multi-lobby-head,.home-notice-editor-head,.character-skill-preview-head){background:var(--ui-ink);border-color:var(--ui-line)!important}
+.settings-row{background:var(--ui-panel);border-color:var(--ui-line)}.settings-row:hover{background:var(--ui-panel-raised)}
+.settings-row-icon{color:var(--ui-paper)!important;border-color:var(--ui-line)!important;background:var(--ui-ink)!important;border-radius:6px}
+.settings-row-arrow{color:var(--ui-accent)}.settings-row-current{color:var(--ui-muted)}
+.settings-row-copy strong{font-size:16px}.settings-row-copy small{font-size:12px}.settings-row-current{font-size:12px}
+.bgm-scene-row,.bgm-master-row,.sfx-volume-actions{background:var(--ui-panel);border-color:var(--ui-line)}
+.bgm-scene-copy strong{color:var(--ui-paper)}.bgm-scene-copy small{color:var(--ui-muted)}
+.bgm-toggle.on{background:var(--ui-accent)!important;color:var(--ui-ink)!important;border-color:var(--ui-accent)!important}
+input[type=range]{accent-color:var(--ui-accent)}
+.bgm-volume-control input{background:linear-gradient(90deg,var(--ui-accent) 0 var(--bgm-volume),var(--ui-line) var(--bgm-volume) 100%)}
+.bgm-volume-control input::-webkit-slider-thumb{background:var(--ui-accent);border-color:var(--ui-paper);box-shadow:none}
+.bgm-custom-status{color:var(--ui-muted)}
+.settings-bgm-dialog::-webkit-scrollbar-track{background:var(--ui-ink);border-color:var(--ui-line)}
+.settings-bgm-dialog::-webkit-scrollbar-thumb{background:var(--ui-line);border-color:var(--ui-ink);box-shadow:none}
+.settings-bgm-dialog::-webkit-scrollbar-thumb:hover{background:var(--ui-muted)}
+:is(.battle-bg-choice,.avatar-choice){border-color:var(--ui-line)!important;border-radius:6px!important;box-shadow:none!important}
+:is(.battle-bg-choice,.avatar-choice).active{border-color:var(--ui-accent)!important;box-shadow:0 0 0 2px var(--ui-accent)!important}
+/* Secondary buttons: same casing across settings, dialogs, drafting and profiles. */
+:is(.settings-dialog-head>button,.avatar-picker-head>button,.bgm-toggle,.bgm-custom-button,.bgm-custom-clear,.sfx-preview-button,.battle-bg-upload-button,.battle-bg-use-custom,.threex-secondary,.purchase-option-foot button,.home-notice-editor-head button,.home-notice-editor-actions button,.home-notice-add,.home-notice-upload,.home-notice-detail-close,.multi-lobby-start,.pick-confirm,.pick-lock){
+ border:2px solid var(--ui-line)!important;border-radius:3px!important;background:var(--ui-ink)!important;color:var(--ui-paper)!important;box-shadow:none!important;clip-path:none!important;font-family:var(--ui-font);font-weight:800;
+}
+:is(.battle-bg-use-custom,.multi-lobby-start,.pick-confirm,.pick-lock,.purchase-option-foot button,.home-notice-editor-actions button.primary){background:var(--ui-accent)!important;color:var(--ui-ink)!important;border-color:var(--ui-accent)!important}
+:is(.home-notice-editor-actions button.danger){color:var(--ui-danger)!important;border-color:var(--ui-danger)!important;background:var(--ui-ink)!important}
+:is(.battle-bg-use-custom,.multi-lobby-start,.pick-confirm,.pick-lock,.purchase-option-foot button,.bgm-custom-clear):disabled{background:var(--ui-panel-raised)!important;color:var(--ui-muted)!important;border-color:var(--ui-line)!important;box-shadow:none!important}
+:is(.room-field input,.room-field select,.home-notice-field input,.home-notice-field textarea,.home-notice-field select){background:var(--ui-ink)!important;color:var(--ui-paper)!important;border:2px solid var(--ui-line)!important;border-radius:6px!important}
+:is(.room-field input,.room-field select,.home-notice-field input,.home-notice-field textarea,.home-notice-field select):focus{border-color:var(--ui-accent)!important;box-shadow:none!important}
+/* Mode cards retain their full artwork; paper nameplates echo the hero gallery. */
+.mode-card{border-radius:6px;overflow:hidden;background:var(--ui-paper);box-shadow:0 6px 0 #0008}
+.mode-body{background:var(--ui-paper);border-color:var(--ui-paper);color:var(--ui-ink)}.mode-body strong{color:var(--ui-ink);font-weight:900}.mode-body small,.mode-body p{color:var(--ui-muted)}
+.tutorial-card{background:var(--ui-panel)!important;border:2px solid var(--ui-line)!important;border-radius:6px!important;box-shadow:0 5px 0 #0008!important;color:var(--ui-paper)!important}
+.tutorial-card:hover{border-color:var(--ui-accent)!important}.tutorial-icon{color:var(--ui-accent)!important}.tutorial-card p{color:var(--ui-muted)!important}
+/* Codex: neutral chrome, unchanged card art and skill attribute colors. */
+.codex-grid{grid-auto-rows:max-content}
+.codex-card{background:var(--ui-panel)!important;border:2px solid var(--ui-line)!important;border-radius:6px!important;overflow:hidden;box-shadow:none!important}
+.codex-card:hover{border-color:var(--ui-accent)!important}.codex-name{color:var(--ui-paper)}.codex-meta{color:var(--ui-muted)}
+.codex-detail-id em,.ready-card-name em{color:var(--ui-paper);border-color:var(--ui-line);border-radius:4px}
+.codex-detail-id small,.codex-detail-section-head h3{color:var(--ui-accent)!important}
+.codex-skill-item{background:transparent!important;border:0!important;border-bottom:1px solid var(--ui-line)!important;border-radius:0!important;box-shadow:none!important}
+.codex-skill-copy h3{color:var(--ui-paper)}.codex-skill-copy p{color:var(--ui-muted)}
+.codex-deck-card{border-color:var(--ui-line);background:var(--ui-panel);border-radius:6px}.codex-deck-count{background:var(--ui-accent);color:var(--ui-ink);font-weight:900}
+.codex-board-count,.codex-empty-state,.codex-empty-detail{color:var(--ui-muted)}
+/* Profile uses the same neutral panels; rank emblems keep their identity colors. */
+.profile-stats>div{background:var(--ui-panel);border-left-color:var(--ui-accent);border-radius:6px}.profile-stats small{color:var(--ui-muted)}.profile-stats strong{color:var(--ui-paper)}
+.profile-rank-panel{background:var(--ui-panel);border-color:var(--ui-line);border-left-color:var(--ui-accent);box-shadow:none}.profile-rank-panel:before{display:none}
+.profile-rank-track{background:var(--ui-ink);border-color:var(--ui-line)}.profile-rank-track>i{background:var(--ui-accent)}
+.profile-match-row,.usage-row{border-color:var(--ui-line);background:transparent}.profile-mode-bar{background:transparent;border-color:var(--ui-line)}
+.player-identity-plate{background:var(--ui-ink);border-color:var(--ui-line);border-radius:6px}.player-identity-avatar{border-color:var(--ui-line)}
+/* Drafting extras: apply chrome without altering grid sizes or action sequencing. */
+.ow-draft-toolbar,.ow-roster,.ow-draft-footer{background:var(--ui-ink)!important;border-color:var(--ui-line)!important}
+.ow-phase-copy small{font-family:var(--ui-font);color:var(--ui-accent)}.ow-phase-copy h1,.ow-phase-copy h2{font-weight:900;text-shadow:none}
+.purchase-candidate.active,.purchase-option:hover:not(.is-disabled){border-color:var(--ui-accent)!important}.purchase-option-top span,.purchase-option-foot small,.crystal-count{color:var(--ui-accent)}
+.character-skill-preview-item{background:transparent;border-color:var(--ui-line);border-radius:0}.character-skill-preview-index{color:var(--ui-accent)}.character-skill-preview-copy p{color:var(--ui-muted)}
+.multi-lobby-footer,.multi-lobby-slot,.threex-ban-slot{background:var(--ui-panel);border-color:var(--ui-line)}.multi-lobby-slot.is-empty{background:var(--ui-ink)}
+.tutorial-screen .codex-detail-content{border-radius:6px!important}
+/* Battle chrome only. Locations, counters, card categories and status colors are untouched. */
+.battle-root{--gold:var(--ui-accent);--gold2:var(--ui-paper);font-family:var(--ui-font)}
+.battle-root .topbar{background:rgba(16,16,16,.97);border-color:var(--ui-line)}
+:is(.battle-root .actions,.battle-root .player,.battle-root .opponent,.ability-panel,.choice-panel,.save-box,.discard-panel,.settlement-shell,.log-drawer){background:var(--ui-panel)!important;border-color:var(--ui-line)!important;border-radius:6px!important;box-shadow:none!important}
+:is(.ability-head,.choice-head,.discard-head,.settlement-head,.drawer-head){background:var(--ui-ink);border-color:var(--ui-line)}
+:is(.battle-root .actions button,.ability-tabs button,.ability-text button,.choice-actions button,.choice-option,.close,.discard-head button,.settlement-actions button){border:2px solid var(--ui-line)!important;border-radius:3px!important;background:var(--ui-ink)!important;color:var(--ui-paper)!important;box-shadow:none!important;font-weight:800}
+:is(.battle-root .actions button.primary,.battle-root .actions #confirm-play,.choice-actions button.primary,.ability-tabs button.active,.choice-option.selected,.settlement-actions .settlement-next){background:var(--ui-accent)!important;color:var(--ui-ink)!important;border-color:var(--ui-accent)!important}
+:is(.battle-root .actions button,.choice-actions button,.ability-text button):disabled{background:var(--ui-panel-raised)!important;color:var(--ui-muted)!important;border-color:var(--ui-line)!important;box-shadow:none!important;opacity:1!important}
+.battle-root .phase.active{color:var(--ui-accent);border-color:var(--ui-accent)}.battle-root .turn-clock{background:var(--ui-ink);border-color:var(--ui-line)}
+.battle-root .phase span.active{color:var(--ui-paper);border-color:var(--ui-accent);text-shadow:none}
+.battle-root .opponent{grid-template-columns:25% 25% minmax(0,1fr)!important}
+.battle-root .opp-info{padding:6px!important;line-height:1.35}
+.ability-card,.settlement-ranking,.settlement-battle,.log-item,.choice-option{background:var(--ui-panel)!important;border-color:var(--ui-line)!important}
+:is(.settings,.room-panel,.multi-lobby-panel,.home-notice-editor-panel,.avatar-picker-dialog,.settings-bg-dialog,.settings-bgm-dialog,.settings-sfx-dialog,.battle-root) button:focus-visible{outline:2px solid var(--ui-accent)!important;outline-offset:3px}

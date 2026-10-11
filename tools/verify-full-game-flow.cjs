@@ -12,6 +12,7 @@ const {chromium} = require(path.join(rulesRoot, 'node_modules/playwright'));
     args: ['--allow-file-access-from-files'],
   });
   const page = await browser.newPage({viewport: {width: 1600, height: 900}});
+  await page.addInitScript(()=>{window.__handFlights=[];const animate=Element.prototype.animate;Element.prototype.animate=function(frames,options){if(this.classList.contains('draw-card-flight'))window.__handFlights.push({image:this.querySelector('img')?.getAttribute('src'),duration:options?.duration});return animate.call(this,frames,options)}});
   page.on('pageerror', error => errors.push(`pageerror: ${error.message}`));
   page.on('console', message => {
     if (message.type() === 'error') errors.push(`console: ${message.text()}`);
@@ -97,6 +98,9 @@ const {chromium} = require(path.join(rulesRoot, 'node_modules/playwright'));
   if(!openingBoard.snapshotPreservedState||!openingBoard.artDefinitions||openingBoard.events.some(entry=>entry.visible!==entry.expected))throw new Error(`开局事件显示或只读投影异常：${JSON.stringify(openingBoard)}`);
   if (runtimeSkillCards !== 0) throw new Error(`试玩运行时仍载入了 ${runtimeSkillCards} 张未完成技能卡`);
   if (battleEntryMs > 3000) throw new Error(`进入主对战区仍然过慢：${battleEntryMs}ms`);
+  await page.waitForFunction(()=>document.querySelector('.battle-host')?.shadowRoot?.querySelector('.battle-root.preview-ready'),null,{timeout:10000});
+  const openingHandMotion=await page.evaluate(()=>{const root=document.querySelector('.battle-host').shadowRoot,cards=[...root.querySelectorAll('.hand .card')];return {cards:cards.length,flights:window.__handFlights.length,pending:root.querySelectorAll('.hand .draw-pending').length,loaded:cards.every(card=>card.querySelector('img')?.naturalWidth>0),duration:window.__handFlights.every(f=>f.duration===620)}});
+  if(!openingHandMotion.cards||openingHandMotion.flights!==openingHandMotion.cards||openingHandMotion.pending||!openingHandMotion.loaded||!openingHandMotion.duration)throw Error('开局手牌未按原动画飞入 '+JSON.stringify(openingHandMotion));
 
   await page.waitForFunction(() => window.fdCurrentBattleRuntime.snapshot().view.activePlayerId === 'p1', null, {timeout: 15000});
   const endAction = page.locator('.battle-host').locator('.end-action');
@@ -111,6 +115,7 @@ const {chromium} = require(path.join(rulesRoot, 'node_modules/playwright'));
   if (locationButtons.some(text => /部署|移动/.test(text))) throw new Error(`部署或移动仍显示为右侧按钮：${locationButtons.join('、')}`);
   const deployedViaMap = await deployTarget.getAttribute('aria-label');
   await deployTarget.click();
+  await page.waitForFunction(() => {const view=window.fdCurrentBattleRuntime.snapshot().view;return view.phase==='action'&&view.activePlayerId==='p1'}, null, {timeout:15000});
   const moveToggle = page.locator('.battle-host').locator('[data-runtime-map-move-toggle]');
   await moveToggle.waitFor({timeout: 15000});
   if (!(await moveToggle.innerText()).startsWith('常规移动')) throw new Error('行动阶段没有显示常规移动按钮');
@@ -277,9 +282,15 @@ const {chromium} = require(path.join(rulesRoot, 'node_modules/playwright'));
   const scoutingReward=await page.evaluate(()=>{const snapshot=window.fdCurrentBattleRuntime.snapshot(),root=document.querySelector('.battle-host').shadowRoot;return [...root.querySelectorAll('[data-settlement-info-player]')].map(node=>{const id=node.dataset.settlementInfoPlayer,awarded=snapshot.eventLog.filter(event=>event.type==='combat.resolved'&&event.payload?.round===snapshot.view.round).reduce((total,event)=>total+Number(event.payload?.victoryPoints?.[id]??0),0);return {id,awarded,text:node.textContent}})});
   if(scoutingReward.some(row=>row.awarded>0&&!row.text.includes('+'+row.awarded+' 战果')))throw Error('侦察页未显示真实战果 '+JSON.stringify(scoutingReward));
   let moonStep=null;if(moonSequence){await page.locator('.battle-host').locator('[data-settlement-next]').click();moonStep=await currentRegion();if(moonStep.id!=='moon-cell'||moonStep.button!=='进入下一回合'||!moonStep.progress.includes('5 / 5'))throw Error('展开的月之圣杯未置于最后 '+JSON.stringify(moonStep))}
+  await page.evaluate(()=>{const root=document.querySelector('.battle-host').shadowRoot;window.__retainedHand=new Map([...root.querySelectorAll('.hand .card')].map(card=>[card.dataset.instanceId,card]));window.__flightsBeforeRefill=window.__handFlights.length});
+  await page.locator('.battle-host').locator('.settlement-actions [data-runtime-action]').click();
+  await page.waitForFunction(()=>window.fdCurrentBattleRuntime.snapshot().view.round===2);
+  await page.waitForFunction(()=>{const root=document.querySelector('.battle-host').shadowRoot;return !root.querySelector('.hand .draw-pending,.draw-card-flight')},null,{timeout:10000});
+  const refillHandMotion=await page.evaluate(()=>{const runtime=window.fdCurrentBattleRuntime,root=document.querySelector('.battle-host').shadowRoot,cards=[...root.querySelectorAll('.hand .card')],ids=cards.map(c=>c.dataset.instanceId),expected=Object.values(runtime.snapshot().view.cards).filter(c=>c.ownerPlayerId===runtime.playerId&&c.zone==='hand'&&c.definitionId).map(c=>c.instanceId),added=cards.filter(c=>!window.__retainedHand.has(c.dataset.instanceId));return {added:added.length,flights:window.__handFlights.length-window.__flightsBeforeRefill,retained:cards.every(c=>!window.__retainedHand.has(c.dataset.instanceId)||window.__retainedHand.get(c.dataset.instanceId)===c),matches:ids.length===expected.length&&ids.every(id=>expected.includes(id))}});
+  if(!refillHandMotion.added||refillHandMotion.flights!==refillHandMotion.added||!refillHandMotion.retained||!refillHandMotion.matches)throw Error('新回合抽牌动画或手牌同步错误 '+JSON.stringify(refillHandMotion));
   const relevantErrors = errors.filter(message => !message.includes('favicon') && !message.includes('net::ERR_ABORTED'));
   if (relevantErrors.length) throw new Error(relevantErrors.join('\n'));
-  console.log(JSON.stringify({ok: true, mode: requestedMode, url: page.url(), selected: [selectedMaster, selectedServant], eventGroup: '冬木', eventCards: 20, runtimeSkillCards, battleEntryMs, mapInteractions, occupantDiagnostic, visualMotion, seededFirstPlayers, automaticProgress, openingBoard, numberAnimation, panelPowerAfter, workshopStep, workshopInfo, settlementBefore, settlementAfter, scoutingStep, scoutingInfo, scoutingReward, moonStep}, null, 2));
+  console.log(JSON.stringify({ok: true, mode: requestedMode, url: page.url(), selected: [selectedMaster, selectedServant], eventGroup: '冬木', eventCards: 20, runtimeSkillCards, battleEntryMs, openingHandMotion, refillHandMotion, mapInteractions, occupantDiagnostic, visualMotion, seededFirstPlayers, automaticProgress, openingBoard, numberAnimation, panelPowerAfter, workshopStep, workshopInfo, settlementBefore, settlementAfter, scoutingStep, scoutingInfo, scoutingReward, moonStep}, null, 2));
   await browser.close();
 })().catch(async error => {
   console.error(error.stack || error);

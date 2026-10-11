@@ -1,4 +1,5 @@
 import type { GameState, PlayerState } from "../domain/state/types.ts";
+import { countFuyukiEffect, fuyukiBasePower, fuyukiTerrain, fuyukiTotalBonus } from "./fuyuki-objectives.ts";
 import { getCardAttributes } from "./content-types.ts";
 import type { CardDefinition } from "./content-types.ts";
 import { getAttachedCards } from "./card-attachments.ts";
@@ -101,7 +102,8 @@ export function calculateCombatCardBasePower(
   const magicReductionProtected = attributes.includes("魔术")
     && (Number(player.flags.magicPowerReductionProtectedRound ?? -1) === state.round
       || Number(player.flags.opponentAbilityMagicPowerReductionProtectedRound ?? -1) === state.round);
-  return getStructuredCardBasePower(state, player.id, instance, definition, cards, masteryAdjusted, false, magicReductionProtected, powerAlterationApplications);
+  return getStructuredCardBasePower(state, player.id, instance, definition, cards,
+    ignoresNeutralBoardCombatEffects(state, player.id) ? masteryAdjusted : fuyukiBasePower(state, player, cards, masteryAdjusted), false, magicReductionProtected, powerAlterationApplications);
 }
 
 function getMusashiNitenTotalPowerBonus(state: GameState, player: PlayerState, cards: Record<string, CardDefinition>): number {
@@ -154,7 +156,9 @@ export function calculateTerrainAdvantage(
     : 0;
   if (!Number.isFinite(roundLocationBonus)) throw new Error("ROUND_TERRAIN_ADVANTAGE_BONUS_INVALID");
   const indiaTerrainBonus = getIndiaFadingTownTerrainBonus(state, player, locationId, cards);
-  const calculated = getStructuredDeploymentAdvantage(state, player.id, cards, deploymentBonusBase + unoccupiedTerrainBonus + roundLocationBonus + indiaTerrainBonus, locationId);
+  const eventDeploymentBonus = !ignoresNeutralBoardCombatEffects(state, player.id)
+    && countFuyukiEffect(state, locationId, cards, "zero-terrain") ? 0 : deploymentBonusBase;
+  const calculated = getStructuredDeploymentAdvantage(state, player.id, cards, eventDeploymentBonus + unoccupiedTerrainBonus + roundLocationBonus + indiaTerrainBonus, locationId);
   const zeroSourceInstanceId = typeof player.flags.terrainAdvantageZeroSourceInstanceId === "string"
     ? player.flags.terrainAdvantageZeroSourceInstanceId
     : undefined;
@@ -169,7 +173,7 @@ export function calculateTerrainAdvantage(
     if (!Number.isFinite(override)) throw new Error("TERRAIN_ADVANTAGE_OVERRIDE_INVALID");
     return override;
   }
-  return calculated;
+  return ignoresNeutralBoardCombatEffects(state, player.id) ? calculated : fuyukiTerrain(state, locationId, cards, calculated);
 }
 
 function calculateCombatPowerRaw(state: GameState, player: PlayerState, cards: Record<string, CardDefinition>, locationId?: string): number {
@@ -243,7 +247,10 @@ function calculateCombatPowerRaw(state: GameState, player: PlayerState, cards: R
   const lostbeltPresenceBonus = getLostbeltPresencePowerBonus(state, player, locationId ?? player.locationId, cards);
   const indiaJudgementBonus = getIndiaJudgementPowerBonus(state, player);
   const chinaObjectiveBonus = getChineseObjectiveTotalPowerBonus(state, player, locationId ?? player.locationId, cards);
-  const aggregate = base + roundBonus + commandSealBonus + leonardoBonus + nanayaPenalty + firstDayPenalty + hunterBonus + terrainContribution + danSniperBonus + aggregateSituationAdd + fiorePenalty + climaxNoblePhantasmBonus + kariyaNemesisPenalty + unusedSealAuraBonus + musashiNitenBonus + lostbeltPresenceBonus + indiaJudgementBonus + chinaObjectiveBonus + stackedStatusPower;
+  const fuyukiBonus = ignoresNeutralBoardCombatEffects(state, player.id) ? 0
+    : applyEventObjectiveNumericEffectMultiplier(state, player.id, cards, "power",
+      fuyukiTotalBonus(state, player, cards, terrainLocationId, hasSharedActiveAttribute(state, player, cards)));
+  const aggregate = base + roundBonus + commandSealBonus + leonardoBonus + nanayaPenalty + firstDayPenalty + hunterBonus + terrainContribution + danSniperBonus + aggregateSituationAdd + fiorePenalty + climaxNoblePhantasmBonus + kariyaNemesisPenalty + unusedSealAuraBonus + musashiNitenBonus + lostbeltPresenceBonus + indiaJudgementBonus + chinaObjectiveBonus + stackedStatusPower + fuyukiBonus;
   const structured = getStructuredCombatPower(
     state,
     player.id,
@@ -383,7 +390,7 @@ export function calculateCombatCardPower(
     instance,
     definition,
     cards,
-    masteryAdjustedBasePower,
+    ignoresNeutralBoardCombatEffects(state, player.id) ? masteryAdjustedBasePower : fuyukiBasePower(state, player, cards, masteryAdjustedBasePower),
     reductionProtected,
     opponentReductionProtected,
     powerAlterationApplications,
@@ -586,6 +593,7 @@ function getCurrentEventCardPowerAdd(
       const gatedMap = replaceAttributeMapForColor(state, eventId, gated.addByAttribute);
       if (printedBasePower >= gated.min) value += attributes.reduce((sum, attribute) => sum + Number(gatedMap?.[attribute] ?? 0), 0);
     }
+    if (event?.tags?.includes("fuyuki:high-card-plus-one") && printedBasePower >= 4) value += 1;
     value += getIndiaObjectiveCardPowerAdd(state, player, instanceId, eventId, attributes, cards);
     const chinaMultiplier = getChinesePositiveBoardPowerMultiplier(state, locationId, cards);
     return total + (value > 0 ? value * chinaMultiplier : value);

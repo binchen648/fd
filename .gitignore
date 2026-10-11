@@ -8,3 +8,8 @@ coverage/
 *.bak
 .DS_Store
 Thumbs.db
+.tmp-*
+audit-now.txt
+tools/__pycache__/
+ui-preview/design-review/
+docs/ai-sparring-*.png

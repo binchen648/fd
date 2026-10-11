@@ -48963,7 +48963,7 @@
           "legacyId": "fuyuki_E0",
           "name": "夺回伊莉雅",
           "victoryPoints": 5,
-          "text": "赢区域者得3魔",
+          "text": "无额外效果。",
           "implementation": "pending"
         },
         {
@@ -49059,7 +49059,7 @@
           "legacyId": "fuyuki_E12",
           "name": "遏制威胁",
           "victoryPoints": 2,
-          "text": "威≥4得+1威,胜者回1令咒/4魔",
+          "text": "基本威力4及以上的攻击于此战场获得+1威力。此战场的胜者可以恢复1枚令咒。",
           "implementation": "pending"
         },
         {

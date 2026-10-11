@@ -1,0 +1,254 @@
+[
+  {
+    "seed": 20261006,
+    "policy": "fixed",
+    "elapsedMs": 165129,
+    "rounds": 11,
+    "decisions": 98,
+    "scores": [
+      {
+        "id": "p1",
+        "points": 0,
+        "eliminated": true
+      },
+      {
+        "id": "p2",
+        "points": 40,
+        "eliminated": false
+      },
+      {
+        "id": "p3",
+        "points": 20,
+        "eliminated": true
+      },
+      {
+        "id": "p4",
+        "points": 10,
+        "eliminated": true
+      },
+      {
+        "id": "p5",
+        "points": 24,
+        "eliminated": true
+      },
+      {
+        "id": "p6",
+        "points": 16,
+        "eliminated": true
+      },
+      {
+        "id": "p7",
+        "points": 55,
+        "eliminated": false
+      }
+    ],
+    "victory": {
+      "finished": true,
+      "winnerIds": [
+        "p7"
+      ],
+      "reason": "final-score"
+    },
+    "errors": [],
+    "firstRoundBots": [
+      {
+        "id": "p2",
+        "seals": 3,
+        "points": 9
+      },
+      {
+        "id": "p3",
+        "seals": 3,
+        "points": 0
+      },
+      {
+        "id": "p4",
+        "seals": 3,
+        "points": 0
+      },
+      {
+        "id": "p5",
+        "seals": 2,
+        "points": 6
+      },
+      {
+        "id": "p6",
+        "seals": 3,
+        "points": 0
+      },
+      {
+        "id": "p7",
+        "seals": 3,
+        "points": 4
+      }
+    ]
+  },
+  {
+    "seed": 20261006,
+    "policy": "public-strategy",
+    "elapsedMs": 166759,
+    "rounds": 11,
+    "decisions": 104,
+    "scores": [
+      {
+        "id": "p1",
+        "points": 12,
+        "eliminated": true
+      },
+      {
+        "id": "p2",
+        "points": 29,
+        "eliminated": true
+      },
+      {
+        "id": "p3",
+        "points": 35,
+        "eliminated": false
+      },
+      {
+        "id": "p4",
+        "points": 10,
+        "eliminated": true
+      },
+      {
+        "id": "p5",
+        "points": 43,
+        "eliminated": false
+      },
+      {
+        "id": "p6",
+        "points": 16,
+        "eliminated": true
+      },
+      {
+        "id": "p7",
+        "points": 22,
+        "eliminated": true
+      }
+    ],
+    "victory": {
+      "finished": true,
+      "winnerIds": [
+        "p5"
+      ],
+      "reason": "final-score"
+    },
+    "errors": [],
+    "firstRoundBots": [
+      {
+        "id": "p2",
+        "seals": 2,
+        "points": 9
+      },
+      {
+        "id": "p3",
+        "seals": 3,
+        "points": 0
+      },
+      {
+        "id": "p4",
+        "seals": 3,
+        "points": 0
+      },
+      {
+        "id": "p5",
+        "seals": 3,
+        "points": 0
+      },
+      {
+        "id": "p6",
+        "seals": 3,
+        "points": 0
+      },
+      {
+        "id": "p7",
+        "seals": 3,
+        "points": 0
+      }
+    ]
+  },
+  {
+    "seed": 20261007,
+    "policy": "public-strategy",
+    "elapsedMs": 167784,
+    "rounds": 11,
+    "decisions": 104,
+    "scores": [
+      {
+        "id": "p1",
+        "points": 0,
+        "eliminated": true
+      },
+      {
+        "id": "p2",
+        "points": 13,
+        "eliminated": true
+      },
+      {
+        "id": "p3",
+        "points": 33,
+        "eliminated": false
+      },
+      {
+        "id": "p4",
+        "points": 15,
+        "eliminated": true
+      },
+      {
+        "id": "p5",
+        "points": 31,
+        "eliminated": true
+      },
+      {
+        "id": "p6",
+        "points": 20,
+        "eliminated": true
+      },
+      {
+        "id": "p7",
+        "points": 49,
+        "eliminated": false
+      }
+    ],
+    "victory": {
+      "finished": true,
+      "winnerIds": [
+        "p7"
+      ],
+      "reason": "final-score"
+    },
+    "errors": [],
+    "firstRoundBots": [
+      {
+        "id": "p2",
+        "seals": 3,
+        "points": 0
+      },
+      {
+        "id": "p3",
+        "seals": 3,
+        "points": 0
+      },
+      {
+        "id": "p4",
+        "seals": 3,
+        "points": 0
+      },
+      {
+        "id": "p5",
+        "seals": 2,
+        "points": 7
+      },
+      {
+        "id": "p6",
+        "seals": 3,
+        "points": 2
+      },
+      {
+        "id": "p7",
+        "seals": 3,
+        "points": 5
+      }
+    ]
+  }
+]

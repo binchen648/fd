@@ -7,14 +7,14 @@ export const MAP_LOCATIONS = Object.freeze({
     name: "魔术工房",
     capacity: 4,
     next: "mountain",
-    moveCost: 2,
+    moveCost: 1,
   },
   mountain: {
     id: "mountain",
     name: "深山町",
     capacity: null,
     next: "city",
-    moveCost: 1,
+    moveCost: 2,
   },
   city: {
     id: "city",

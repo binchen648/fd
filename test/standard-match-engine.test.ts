@@ -631,7 +631,7 @@ test("提亚马特人类恶在战斗结算后令战胜她的每名玩家额外�
   const result = engine.execute(state, makeCommand(state, "human-evil-combat", CommandType.ResolveCombat, "p1", { locationId: "mountain" }));
   assert.deepEqual(result.events.find((event) => event.type === "combat.resolved")?.payload && (result.events.find((event) => event.type === "combat.resolved")!.payload as { winnerIds: string[] }).winnerIds, ["p2"]);
   assert.equal(result.state.players.p2.victoryPoints, 4);
-  assert.equal(result.state.players.p1.defeated, true);
+  assert.equal(result.state.players.p1.defeated, false);
 });
 
 test("龙之心在战斗奖励结算后仅因对手同属性更高单张攻击失去3点战果", () => {
@@ -727,7 +727,7 @@ test("十二试炼在战败结算后获得战果、削减胜者并强化其余�
   state.players.p1.attack = ["labors"]; state.players.p1.servantSkills = ["otherLabors"]; state.players.p2.attack = ["winner"];
 
   const result = engine.execute(state, makeCommand(state, "resolve-labors", CommandType.ResolveCombat, "p1", { locationId: "mountain" }));
-  assert.equal(result.state.players.p1.defeated, true);
+  assert.equal(result.state.players.p1.defeated, false);
   assert.equal(result.state.players.p1.victoryPoints, 3);
   assert.equal(result.state.players.p2.victoryPoints, 0);
   assert.equal(result.state.cards.labors.zone, "removed");
@@ -982,7 +982,7 @@ test("慎二进入深山町时无论部署还是普通移动都会获得1点魔�
   result = engine.execute(move, makeCommand(move, "shinji-deploy-workshop", CommandType.DeployPlayer, "p1", { locationId: "workshop" }));
   result.state.phase = "action"; result.state.step = "move-decision"; result.state.activePlayerId = "p1"; result.state.players.p1.mana = 3;
   result = engine.execute(result.state, makeCommand(result.state, "shinji-move", CommandType.MovePlayer, "p1", { locationId: "mountain" }));
-  assert.equal(result.state.players.p1.mana, 2);
+  assert.equal(result.state.players.p1.mana, 3);
 
   const other = createGameState({ gameInstanceId: "other-deploy-mountain", players: [{ id: "p1", name: "一" }], seed: 131 });
   other.status = "playing"; other.phase = "outpost"; other.step = "player-window"; other.activePlayerId = "p1"; other.players.p1.masterId = "master.other"; other.players.p1.mana = 0;
@@ -1273,7 +1273,7 @@ test("厄运打出时抽一张牌，败北后洗回牌库", () => {
   state.cards[opponentId] = { instanceId: opponentId, definitionId: "card.lifecycle-high", ownerPlayerId: "p2", controllerPlayerId: "p2", zone: "attack", face: "up", active: true, residual: false, temporary: false, modifiers: [] };
   state.players.p2.attack = [opponentId];
   resolveCombat(state, "mountain", definitions, Object.fromEntries(events.map((event) => [event.id, event])));
-  assert.equal(state.players.p1.defeated, true);
+  assert.equal(state.players.p1.defeated, false);
   assert.equal(state.cards[cardId].zone, "deck");
   assert.equal(state.players.p1.deck.includes(cardId), true);
   assert.equal(state.players.p1.discard.includes(cardId), false);
@@ -1312,7 +1312,7 @@ test("魔性之猪胜利后让战败者失去1点战果", () => {
   };
   const result = resolveCombat(state, "mountain", definitions, {});
   assert.deepEqual(result.winnerIds, ["p1"]);
-  assert.equal(state.players.p2.defeated, true);
+  assert.equal(state.players.p2.defeated, false);
   assert.equal(state.players.p2.victoryPoints, 2);
 });
 
@@ -1527,7 +1527,7 @@ test("口袋达·芬奇仅在部署于魔术工房时获得1点魔力", () => {
   const result = engine.execute(state, makeCommand(state, "davinci-deploy", CommandType.DeployPlayer, "p1", { locationId: "workshop" }));
   // The first workshop deployment grants the normal +2 deployment bonus; the
   // skill contributes exactly one additional mana from the deployed event.
-  assert.equal(result.state.players.p1.mana, 13);
+  assert.equal(result.state.players.p1.mana, 12);
   assert.equal(result.events.some((event) => event.type === "player.deployed"), true);
 });
 

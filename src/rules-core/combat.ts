@@ -1,4 +1,5 @@
 import type { GameState } from "../domain/state/types.ts";
+import { rewardFuyukiWinner } from "./fuyuki-objectives.ts";
 import type { CardDefinition, EventDefinition } from "./content-types.ts";
 import { closePlayerCard, movePlayerCard, returnCardsToDeckOnDefeat } from "./decks.ts";
 import { StateRandom } from "../match-engine/random.ts";
@@ -124,6 +125,8 @@ export function calculateCombatSnapshot(
     .map((playerId) => state.players[playerId])
     .filter((player) => player && !player.eliminated);
   const npcParticipants = getNpcCombatantsAtLocation(state, locationId, cards);
+  // Freeze scores before the first battlefield awards any points.
+  state.modeState.fuyukiSettlementScores ??= Object.fromEntries(Object.values(state.players).map((player) => [player.id, player.victoryPoints]));
   const powers: Record<string, number> = {};
   const npcPowers: Record<string, number> = {};
   const attributes: Record<string, string[]> = {};
@@ -285,7 +288,12 @@ export function finalizeCombatFromSnapshot(
       for (const card of Object.values(state.cards)) {
         if (card.ownerPlayerId === player.id && card.playBlockedUntilOwnerCombatWin) delete card.playBlockedUntilOwnerCombatWin;
       }
-    } else player.flags.combatLossRound = state.round;
+    } else {
+      player.flags.combatLossRound = state.round;
+      // Card recycling on a loss does not impose the separate defeat status.
+      const random = new StateRandom();
+      returnCardsToDeckOnDefeat(state, player.id, cards, (maxExclusive) => random.integer(state, maxExclusive));
+    }
     const eventRewardBlocked = state.modeState.currentSituationClimax === true
       && player.flags.climaxEventVictoryPointGainBlocked === true;
     const competitionRewardBlocked = player.flags.competitionVictoryPointGainBlocked === true;
@@ -318,14 +326,8 @@ export function finalizeCombatFromSnapshot(
       victoryPoints[player.id] += appliedDelta;
       if (appliedDelta > 0) abilityVictoryPoints[player.id] = (abilityVictoryPoints[player.id] ?? 0) + appliedDelta;
     }
-    if (!winnerIds.includes(player.id)) {
-      if (!chineseDefeatIgnored) {
-        if (defeatPlayer(state, player.id)) defeatedPlayerIds.push(player.id);
-        const random = new StateRandom();
-        returnCardsToDeckOnDefeat(state, player.id, cards, (maxExclusive) => random.integer(state, maxExclusive));
-      }
-    }
     if (winnerIds.includes(player.id)) {
+      rewardFuyukiWinner(state, player.id, locationId, cards);
       const cardWinBonus = player.attack.reduce((sum, instanceId) => {
         const instance = state.cards[instanceId];
         const definition = instance ? cards[instance.definitionId] : undefined;
@@ -355,11 +357,8 @@ export function finalizeCombatFromSnapshot(
       }
     }
     if (!winnerIds.includes(player.id) && player.flags.independentActionPenaltyRound === state.round) {
-      state.players[player.id].victoryPoints -= 5;
-      victoryPoints[player.id] = (victoryPoints[player.id] ?? 0) - 5;
+      victoryPoints[player.id] = (victoryPoints[player.id] ?? 0) + adjustVictoryPoints(state.players[player.id], -5);
     }
-    delete state.players[player.id].flags.roundPowerBonus;
-    delete state.players[player.id].flags.commandSealRoundPowerBonus;
     delete state.players[player.id].flags.commandSealVictoryPointBonusRound;
     delete state.players[player.id].flags.commandSealVictoryPointBonus;
     delete state.players[player.id].flags.chaosHunterRound;
@@ -428,12 +427,9 @@ export function finalizeCombatFromSnapshot(
       }
     } else {
       player.flags.combatLossRound = state.round;
-      if (defeatPlayer(state, player.id)) defeatedPlayerIds.push(player.id);
       const random = new StateRandom();
       returnCardsToDeckOnDefeat(state, player.id, cards, (maxExclusive) => random.integer(state, maxExclusive));
     }
-    delete player.flags.roundPowerBonus;
-    delete player.flags.commandSealRoundPowerBonus;
     delete player.flags.commandSealVictoryPointBonusRound;
     delete player.flags.commandSealVictoryPointBonus;
     delete player.flags.chaosHunterRound;

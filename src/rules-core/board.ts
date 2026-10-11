@@ -1,4 +1,5 @@
 import type { GameState } from "../domain/state/types.ts";
+import { fuyukiMovementBlocked } from "./fuyuki-objectives.ts";
 import type { CardDefinition } from "./content-types.ts";
 import { playerIgnoresDefeat } from "./defeat.ts";
 import { gainMana } from "./resources.ts";
@@ -14,7 +15,7 @@ import { isIndiaFadingTownExitBlocked } from "./india-lostbelt.ts";
 import { applyLocationEntryDiscards, getLocationRouteLeaveManaCost, resolveLocationEntryPayments, type LocationAccessPayment } from "./location-access-rules.ts";
 
 const locationOrder = ["workshop", "mountain", "city", "scouting"] as const;
-const moveCosts: Record<string, number> = { workshop: 2, mountain: 2, city: 1 };
+const moveCosts: Record<string, number> = { workshop: 1, mountain: 2, city: 2 };
 const capacities: Record<string, number | null> = { workshop: 4, mountain: null, city: null, scouting: 1 };
 
 export interface MovementResult {
@@ -664,6 +665,7 @@ export function movePlayer(
   if (!ignoresCardMovementRestrictions
     && (player.flags.movementBlockedPermanent === true || player.flags.movementBlockedRound === state.round || player.flags.regularMovementBlockedRound === state.round
       || ownActionCombatMovementLocked || ownTurnMovementLocked || isSourceBoundMovementBlocked(state, playerId))) throw new Error("PLAYER_MOVEMENT_BLOCKED");
+  if (!ignoresCardMovementRestrictions && definitions && fuyukiMovementBlocked(state, player.locationId, targetLocationId, definitions)) throw new Error("MOVEMENT_BLOCKED_BY_EVENT");
   if (!ignoresCardMovementRestrictions && isBoardCardMovementLocked(state, playerId, player.locationId, targetLocationId)) throw new Error("MOVEMENT_BLOCKED_BY_BOARD_CARD");
   if (!ignoresCardMovementRestrictions && isPlayerExitBlockedBySameLocationRule(state, playerId, targetLocationId)) throw new Error("MOVEMENT_BLOCKED_BY_LOCATION_RULE");
   if (!ignoresCardMovementRestrictions && definitions && isPlayerExitBlockedByLostbeltObjective(state, playerId, targetLocationId, definitions)) throw new Error("MOVEMENT_BLOCKED_BY_EVENT");
@@ -756,6 +758,7 @@ export function movePlayerByEffect(state: GameState, playerId: string, targetLoc
   const ownTurnMovementLocked = player.flags.movementBlockedOwnTurnRound === state.round && state.activePlayerId === playerId;
   if (!ignoresCardMovementRestrictions && (player.flags.movementBlockedPermanent === true || player.flags.movementBlockedRound === state.round
     || ownActionCombatMovementLocked || ownTurnMovementLocked || isSourceBoundMovementBlocked(state, playerId))) throw new Error("PLAYER_MOVEMENT_BLOCKED");
+  if (!ignoresCardMovementRestrictions && definitions && fuyukiMovementBlocked(state, player.locationId, targetLocationId, definitions)) throw new Error("MOVEMENT_BLOCKED_BY_EVENT");
   if (!ignoresCardMovementRestrictions && isBoardCardMovementLocked(state, playerId, player.locationId, targetLocationId)) throw new Error("MOVEMENT_BLOCKED_BY_BOARD_CARD");
   if (!ignoresCardMovementRestrictions && isPlayerExitBlockedBySameLocationRule(state, playerId, targetLocationId)) throw new Error("MOVEMENT_BLOCKED_BY_LOCATION_RULE");
   if (!ignoresCardMovementRestrictions && definitions && isPlayerExitBlockedByLostbeltObjective(state, playerId, targetLocationId, definitions)) throw new Error("MOVEMENT_BLOCKED_BY_EVENT");

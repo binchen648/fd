@@ -510,6 +510,7 @@ export interface BoardState {
   locations: Record<string, string[]>;
   situationDeck: string[];
   situationDiscard: string[];
+  burnedSituationIds?: string[];
   activeSituations: string[];
   eventDeck: string[];
   eventDiscard: string[];

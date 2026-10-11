@@ -9,8 +9,10 @@ import { applyThreeXPurchase, createThreeXBudgetForMaster, finalizeThreeXPurchas
 import type { ThreeXModeState } from "../rules-core/three-x-state.ts";
 import type { GameEvent } from "../domain/state/types.ts";
 import { StateRandom } from "../match-engine/random.ts";
+import { rankTacticalActions } from "../ai/tactical-actions.ts";
 import { calculateCombatPower } from "../rules-core/combat-power.ts";
 import { getMoonCellState } from "../rules-core/moon-cell.ts";
+import { THREE_X_MASTER_RATINGS } from "../content/three-x-ratings.ts";
 
 const MASTER_IDS = [
   "master.kayneth",
@@ -20,6 +22,7 @@ const MASTER_IDS = [
   "master.gatou",
   "master.irisviel",
   "master.olga-marie",
+  "master.rin",
 ] as const;
 
 const SERVANT_IDS = [
@@ -30,6 +33,7 @@ const SERVANT_IDS = [
   "servant.ereshkigal",
   "servant.tomoe",
   "servant.kintoki",
+  "servant.emiya",
 ] as const;
 
 type CharacterPreview = { sourceId?: string; name?: string; fullName?: string; class?: string; image?: string };
@@ -95,6 +99,7 @@ declare global {
       create(options?: RuntimeOptions): BrowserBattleRuntime;
       prepare(): Promise<void>;
       isPrepared(): boolean;
+      masterCrystalRating(name: string): number;
     };
   }
 }
@@ -149,6 +154,8 @@ export class BrowserBattleRuntime {
   #lastEvents: unknown[] = [];
   #eventLog: GameEvent[] = [];
   #aiPumping = false;
+  #disposed = false;
+  #aiTimer: number | undefined;
 
   constructor(options: RuntimeOptions = {}) {
     const mode: RuntimeMode = options.mode === "3x" || options.mode === "three-x" || options.mode === "threeX" ? "three-x" : "standard";
@@ -220,7 +227,7 @@ export class BrowserBattleRuntime {
       const servant = previewBySourceId("servants", assignment.servantId) ?? { sourceId: assignment.servantId, name: assignment.servantId };
       return { ...assignment, player, master, servant };
     });
-    const availableActions = this.app.availableActionsFor(this.playerId);
+    const availableActions = this.#localAvailableActions();
     const deploymentRequired = view.phase === "outpost" && availableActions.some((action) => action.commandType === CommandType.DeployPlayer);
     const actions = deploymentRequired
       ? availableActions.filter((action) => action.commandType !== CommandType.CompletePlayerWindow)
@@ -242,13 +249,22 @@ export class BrowserBattleRuntime {
   }
 
   subscribe(listener: Listener): () => void {
+    if (this.#disposed) return () => {};
     this.#listeners.add(listener);
     listener(this.snapshot());
     return () => this.#listeners.delete(listener);
   }
 
+  dispose(): void {
+    this.#disposed = true;
+    if (this.#aiTimer !== undefined) window.clearTimeout(this.#aiTimer);
+    this.#aiTimer = undefined;
+    this.#listeners.clear();
+  }
+
   dispatch(actionId: string, selections?: string[]): ReturnType<BrowserBattleRuntime["snapshot"]> {
-    let action = this.app.availableActionsFor(this.playerId).find((candidate) => candidate.id === actionId);
+    if (this.#disposed) throw new Error("MATCH_CLOSED");
+    let action = this.#localAvailableActions().find((candidate) => candidate.id === actionId);
     if (!action) {
       const draft = this.#draftAttackActions().find((candidate) => candidate.id === actionId);
       if (draft) {
@@ -265,7 +281,9 @@ export class BrowserBattleRuntime {
       ...(payload && typeof payload === "object" ? payload : {}),
       selections: selections ?? [],
     };
-    const result = this.#send(this.playerId, action.commandType, payload);
+    const observingSettlement = this.app.state.players[this.playerId]?.eliminated === true
+      && [CommandType.ResolveCombat, CommandType.EndRound].includes(action.commandType as typeof CommandType.ResolveCombat | typeof CommandType.EndRound);
+    const result = this.#send(observingSettlement ? "host" : this.playerId, action.commandType, payload);
     if (!result.ok) throw new Error(result.rejection.code);
     if (action.commandType === CommandType.DeployPlayer || action.commandType === CommandType.CommitAttack) {
       const complete = this.app.availableActionsFor(this.playerId).find((candidate) => candidate.commandType === CommandType.CompletePlayerWindow);
@@ -392,10 +410,23 @@ export class BrowserBattleRuntime {
     }
   }
 
+  #localAvailableActions(): AvailableAction[] {
+    const state = this.app.state;
+    if (!state.players[this.playerId]?.eliminated) return this.app.availableActionsFor(this.playerId);
+    // Eliminated local players keep the region-by-region viewing controls.
+    // Only public settlement commands are forwarded by the local match host;
+    // no living player's moves, cards, skills or private choices are exposed.
+    if (state.phase !== "combat" || state.step !== "settlement" || state.pendingDecision) return [];
+    const observerSource = state.turnOrder.find(id => !state.players[id]?.eliminated);
+    return observerSource ? this.app.availableActionsFor(observerSource).filter(action =>
+      action.commandType === CommandType.ResolveCombat || action.commandType === CommandType.EndRound) : [];
+  }
+
   #scheduleComputerPlayers(): void {
-    if (this.#aiPumping) return;
+    if (this.#disposed || this.#aiPumping) return;
     this.#aiPumping = true;
-    window.setTimeout(async () => {
+    this.#aiTimer = window.setTimeout(async () => {
+      this.#aiTimer = undefined;
       try {
         await this.#pumpComputerPlayers();
       } catch (error) {
@@ -409,26 +440,21 @@ export class BrowserBattleRuntime {
 
   async #pumpComputerPlayers(): Promise<void> {
     for (let guard = 0; guard < 300; guard += 1) {
+      if (this.#disposed) return;
       const state = this.app.state;
       const pendingActor = state.pendingDecision?.chooserPlayerIds.find((id) => state.pendingDecision?.submissions[id] === undefined);
       const actorId = pendingActor ?? state.activePlayerId;
       if (!actorId || actorId === this.playerId || state.status === "finished") return;
-      const player = state.players[actorId];
       const candidates: Array<{ type: string; payload: unknown }> = [];
       if (pendingActor) {
         const action = this.app.availableActionsFor(actorId).find((candidate) => candidate.commandType === CommandType.ResolveDecision);
         if (action) candidates.push({ type: action.commandType, payload: decisionPayload(action) });
-      } else if (state.phase === "outpost" && player?.flags.deploymentBonusActive !== true) {
-        for (const locationId of ["workshop", "mountain", "city"]) candidates.push({ type: CommandType.DeployPlayer, payload: { locationId } });
-      } else if (state.phase === "action" && state.step === "move-decision") {
-        for (const locationId of ["mountain", "city", "scouting", "workshop"]) {
-          if (locationId !== player?.locationId) candidates.push({ type: CommandType.MovePlayer, payload: { locationId } });
-        }
-      } else if (state.phase === "action" && state.step === "play-batch-draft") {
-        const faceUpInstanceIds = player?.hand.slice(0, Math.min(2, player.hand.length)) ?? [];
-        if (faceUpInstanceIds.length) candidates.push({ type: CommandType.CommitAttack, payload: { faceUpInstanceIds, faceDownInstanceIds: [] } });
-      } else if (state.phase === "combat" && state.step === "post-power-response") {
-        candidates.push({ type: CommandType.CompleteCombatResponse, payload: {} });
+      } else {
+        const supported = new Set<string>([CommandType.DeployPlayer, CommandType.MovePlayer,
+          CommandType.CommitAttack, CommandType.UseCommandSeal, CommandType.CompletePlayerWindow, CommandType.CompleteCombatResponse]);
+        const legal = this.app.availableActionsFor(actorId).filter(action => supported.has(action.commandType));
+        const ranked = rankTacticalActions(state, actorId, legal, this.definitions, this.#content.events ?? []);
+        for (const action of ranked) candidates.push({ type: action.commandType, payload: action.payload ?? {} });
       }
       candidates.push({ type: CommandType.CompletePlayerWindow, payload: {} });
       let acceptedEvents: unknown[] | undefined;
@@ -445,6 +471,7 @@ export class BrowserBattleRuntime {
   }
 
   #emit(): void {
+    if (this.#disposed) return;
     const snapshot = this.snapshot();
     for (const listener of this.#listeners) listener(snapshot);
   }
@@ -454,5 +481,9 @@ window.FDBattleRuntime = {
   create: (options) => new BrowserBattleRuntime(options),
   prepare: prepareStandardContent,
   isPrepared: () => preparedContent !== undefined,
+  masterCrystalRating: (name: string) => {
+    const id = selectedSourceId("masters", name, MASTER_IDS);
+    return THREE_X_MASTER_RATINGS[id] ?? 4;
+  },
 };
 

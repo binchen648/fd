@@ -1,0 +1,70 @@
+/* The archive shares the preparation screens' paper, ink and warm accent. */
+#app .archive-list-screen .codex-category-tabs{border:0!important;border-radius:0!important;background:transparent!important;padding:0!important;gap:4px!important;align-self:center;margin-bottom:0}
+#app .archive-list-screen .codex-category-tabs button{min-height:44px;border:0!important;border-bottom:3px solid transparent!important;border-radius:0!important;background:transparent!important;color:var(--ui-muted)!important;padding:10px 18px!important;font:800 13px var(--ui-font);box-shadow:none!important}
+#app .archive-list-screen .codex-category-tabs button.active{background:transparent!important;border-bottom-color:var(--ui-accent)!important;color:var(--ui-paper)!important}
+#app .archive-list-screen .codex-toolbar{display:flex;align-items:center;gap:16px;height:56px!important;padding:0!important;border-bottom:1px solid var(--ui-line)}
+#app .archive-list-screen .codex-class-filters{display:flex;flex:1;min-width:0;gap:6px;align-items:center;overflow:auto;flex-wrap:nowrap;scrollbar-width:thin}
+#app .archive-list-screen .codex-class-filters button{flex-shrink:0;min-height:36px;clip-path:none!important;border-radius:2px!important;border:1px solid #505457!important;box-shadow:none!important;background:#202429!important;color:var(--ui-paper)!important;padding:8px 12px!important;font:700 12px var(--ui-font)}
+#app .archive-list-screen .codex-class-filters button.active{background:var(--ui-paper)!important;border-color:var(--ui-paper)!important;color:var(--ui-ink)!important}
+#app .codex-search{display:flex;align-items:center;gap:8px;flex:0 0 218px;min-width:0;min-height:44px;padding:8px 10px;border:1px solid #555a5e;border-radius:3px;background:#1b1e21}
+#app .codex-search>span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+#app .codex-search input{min-width:0;width:100%;border:0;outline:0;background:transparent;color:var(--ui-paper);font:13px var(--ui-font)}
+#app .codex-search input::-webkit-search-cancel-button{display:none}
+#app .codex-search:focus-within{border-color:var(--ui-accent)}
+#app .codex-search button{border:0;background:transparent;color:var(--ui-paper);font-size:22px;padding:0;min-width:24px;line-height:26px}
+#app .codex-search small{flex-shrink:0;font-size:10px;color:var(--ui-muted);white-space:nowrap}
+#app .archive-list-screen .codex-grid{grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:18px;padding:12px 8px 16px 0;scrollbar-width:thin;scrollbar-color:#6b6455 #191d20;scrollbar-gutter:stable}
+#app .archive-list-screen .codex-card{border:1px solid #555a5e!important;border-radius:2px!important;background:#e8e7df!important;text-align:left}
+#app .archive-list-screen .codex-name{padding:10px 10px 4px;color:#16191c;font:800 13px/1.4 var(--ui-font);min-height:46px;overflow-wrap:anywhere}
+#app .archive-list-screen .codex-meta{padding:0 10px 12px;color:#53565a;font:11px/1.5 var(--ui-font);min-height:30px}
+#app .archive-list-screen .codex-card:hover{border-color:var(--ui-accent)!important}
+#app .archive-list-screen [hidden]{display:none!important}
+#app .archive-list-screen .codex-empty-state{grid-column:1/-1;min-height:160px;padding:28px;border-left:2px solid var(--ui-accent);background:#1b1e21;color:var(--ui-muted);line-height:1.8}
+#app [data-codex-reset]{min-height:44px;padding:10px 14px;border:1px solid #65696b;background:transparent;color:var(--ui-paper);font:700 12px var(--ui-font)}
+#app .archive-detail-screen .codex-detail-tabs button:only-child{pointer-events:none;cursor:default}
+#app .archive-detail-screen .codex-detail-id strong{line-height:1.35!important;overflow-wrap:anywhere}
+#app .archive-detail-screen .codex-detail-scroll{scrollbar-gutter:stable}
+#app .archive-detail-screen .codex-deck-grid{grid-template-columns:repeat(auto-fill,minmax(172px,1fr));gap:16px!important;padding-top:18px}
+#app .archive-detail-screen .codex-deck-card{position:relative;border:1px solid #484b4c;border-radius:2px;background:#22262a;padding:10px}
+#app .archive-detail-screen .codex-deck-art{height:240px;background:#111315}
+#app .archive-detail-screen .codex-deck-card h3{font-size:14px;line-height:1.5;margin:12px 0 6px}
+#app .archive-detail-screen .codex-deck-meta{display:flex;flex-wrap:wrap;gap:4px 8px;font-size:11px;color:var(--ui-accent)}
+#app .archive-detail-screen .codex-deck-card p{font-size:12px;line-height:1.8;color:var(--ui-muted)}
+#app .board-dossier .codex-skill-item{padding:24px 0!important}
+#app .board-dossier .codex-skill-item:before{display:none}
+#app .board-dossier .codex-skill-stats{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0!important}
+#app .board-dossier .codex-skill-stats span{border:0;border-left:2px solid var(--ui-accent);background:#272b2f;padding:12px 16px!important;font-size:14px!important;color:var(--ui-paper)}
+#app .board-dossier .codex-skill-copy p{font-size:16px!important;line-height:2!important;white-space:pre-wrap}
+#app .archive-list-screen button:focus-visible,#app .archive-detail-screen [data-codex-detail-tab]:focus-visible{outline:2px solid var(--ui-accent)!important;outline-offset:3px}
+@media(max-width:1100px) and (orientation:landscape){
+ #app :is(.archive-list-screen,.archive-detail-screen){min-width:0!important;min-height:0!important;height:100dvh!important}
+ #app :is(.archive-list-screen,.archive-detail-screen) .sub-header{left:16px!important;right:16px!important;top:10px!important;height:52px!important;gap:16px!important}
+ #app :is(.archive-list-screen,.archive-detail-screen) .sub-title h1{font-size:26px!important;margin:3px 0 0!important}
+ #app :is(.archive-list-screen,.archive-detail-screen) .sub-title>span{font-size:8px!important}
+ #app .archive-list-screen .codex-category-tabs{margin-left:auto;overflow:auto;min-width:0}
+ #app .archive-list-screen .codex-category-tabs button{font-size:11px!important;padding:10px!important;flex-shrink:0}
+ #app .archive-list-screen .codex-toolbar{left:16px!important;right:16px!important;top:74px!important;height:52px!important;gap:10px}
+ #app .archive-list-screen .codex-search{flex-basis:180px}
+ #app .archive-list-screen .codex-search input{font-size:16px}
+ #app .archive-list-screen:has(.codex-toolbar) .codex-grid{top:138px!important;left:16px!important;right:16px!important;bottom:12px!important;grid-template-columns:repeat(auto-fill,104px);gap:12px;padding-top:0}
+ #app .archive-list-screen .codex-name{font-size:11px;min-height:34px;padding:6px 7px 2px}
+ #app .archive-list-screen .codex-meta{font-size:9px;min-height:24px;padding:0 7px 6px}
+ #app .archive-detail-screen .codex-detail-page{top:78px!important;left:16px!important;right:16px!important;bottom:12px!important;grid-template-columns:minmax(150px,27%) minmax(0,1fr)!important;gap:16px!important}
+ #app .archive-detail-screen .codex-detail-art{padding:0!important}
+ #app .archive-detail-screen .codex-detail-identity{gap:8px!important}
+ #app .archive-detail-screen .codex-detail-id{padding:8px 0!important}
+ #app .archive-detail-screen .codex-detail-id strong{font-size:18px!important}
+ #app .archive-detail-screen .codex-detail-tabs{padding:0 12px!important}
+ #app .archive-detail-screen .codex-detail-scroll{padding:14px!important}
+ #app .archive-detail-screen .codex-detail-section-head{padding-bottom:12px!important}
+ #app .archive-detail-screen .codex-detail-section-head h2{font-size:20px!important}
+ #app .archive-detail-screen .codex-skill-item{padding:16px 0 16px 28px!important;grid-template-columns:64px minmax(0,1fr)!important;gap:12px!important}
+ #app .archive-detail-screen .codex-skill-item:before{top:20px}
+ #app .archive-detail-screen .codex-skill-art{width:64px!important;height:96px!important}
+ #app .archive-detail-screen .codex-skill-copy h3{font-size:16px!important}
+ #app .archive-detail-screen .codex-skill-copy p{font-size:13px!important}
+ #app .archive-detail-screen .codex-deck-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px!important;padding-top:12px}
+ #app .archive-detail-screen .codex-deck-art{height:174px}
+ #app .board-dossier .codex-skill-item{padding:16px 0!important}
+ #app .board-dossier .codex-skill-stats span{font-size:12px!important;padding:8px 10px!important}
+}

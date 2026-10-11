@@ -1,5 +1,6 @@
 import type { GameState, PlayerState, CardInstance, CardZone } from "../domain/state/types.ts";
 import type { CardDefinition } from "./content-types.ts";
+import { countFuyukiEffect } from "./fuyuki-objectives.ts";
 import { getEffectiveCardUsageLimit, isCardUsageAvailable } from "./usage-limits.ts";
 import { playerIgnoresDefeat } from "./defeat.ts";
 import { cardAllowsFaceDownPlay, cardHasEightManaWaiver, cardIgnoresSituationRestrictions, cardIgnoresUsageLimit, cardPlayForbiddenByModifier, getCardRuleUsageLimitOverride, getEffectiveCardCost } from "./card-rule-modifiers.ts";
@@ -140,6 +141,10 @@ export function assertCardCanEnterAttack(context: AttackCardValidationContext): 
   if (cardPlayForbiddenByModifier(state, player, instance)) throw new Error("CARD_PLAY_FORBIDDEN_BY_MODIFIER");
   const forbiddenAttributes = (state.modeState.situationRestrictions as { forbiddenAttributes?: string[] } | undefined)?.forbiddenAttributes ?? [];
   const instanceAttributes = getCardInstanceAttributes(instance, definition, state, definitions);
+  if (!context.faceDown && !ignoresCardEffectPlayRestrictions(state, playerId, definitions)
+    && instanceAttributes.includes("特殊") && countFuyukiEffect(state, player.locationId, definitions, "bounded-field")) {
+    throw new Error("EVENT_FORBIDS_SPECIAL_ATTACK");
+  }
   if (!isPlayerUnaffectedBySituation(state, playerId, definitions)
     && !definition.ignoresSituationRestrictions
     && !cardIgnoresSituationRestrictions(state, player, instance)

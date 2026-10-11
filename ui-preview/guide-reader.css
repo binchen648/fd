@@ -1,0 +1,88 @@
+/* Shared field manual: clear navigation, illustrated rules and a stable footer. */
+#app :is(.tutorial-screen,.tutorial-hub-screen){min-width:0!important;min-height:0!important}
+#app .tutorial-hub-screen .tutorial-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;max-width:1120px;margin:0 auto;top:160px;bottom:48px;left:48px;right:48px;width:auto;transform:none}
+#app .tutorial-hub-screen .tutorial-card{display:flex;flex-direction:column;text-align:left;padding:0!important;border:1px solid #ffffff25!important;border-radius:2px!important;background:#eae8df!important;overflow:hidden;box-shadow:none!important;color:#202428!important;min-height:0;align-items:stretch;justify-content:start}
+.tutorial-hub-art{width:100%;height:clamp(140px,30vh,300px);object-fit:cover;flex:1;min-height:0}
+.tutorial-hub-copy{padding:24px 28px;width:100%;box-sizing:border-box}
+#app .tutorial-hub-copy small{color:#6b6250;font-size:12px;letter-spacing:.08em}
+#app .tutorial-hub-copy strong{display:block;font-size:32px;margin:8px 0!important;color:#202428!important}
+#app .tutorial-hub-copy p{font-size:15px;line-height:1.7;color:#53585c!important;margin:0 0 20px}
+.tutorial-hub-copy>span{display:block;border-top:1px solid #20242825;padding-top:16px;font-weight:700;font-size:14px}
+#app .tutorial-screen--beginner .codex-detail-content{grid-template-rows:auto minmax(0,1fr) auto!important}
+#app .tutorial-screen--beginner .tutorial-lesson-copy{display:block!important}
+#app .tutorial-beginner-body{grid-template-columns:minmax(180px,.8fr) minmax(0,1.2fr)!important;gap:24px!important;align-items:start}
+#app .tutorial-visual{height:220px!important}
+#app .tutorial-visual::after{display:none}
+#app .tutorial-takeaways{grid-column:1/-1;gap:28px!important}
+#app .tutorial-takeaway:before{position:static!important;font-size:14px!important;margin:0 0 10px!important}
+#app .tutorial-takeaway>small{font-size:16px}
+#app .tutorial-takeaway p{font-size:15px!important;line-height:1.85!important}
+.guide-diagram{min-width:0;padding:0}
+.guide-diagram>small{display:block;color:var(--ui-accent);font-weight:700;font-size:12px;letter-spacing:.08em;margin-bottom:14px}
+.guide-diagram-tile{min-width:0;padding:16px 12px;background:#ffffff06;border-top:2px solid #edc46c7a}
+.guide-diagram-tile strong{display:block;color:var(--ui-paper);font-size:16px;line-height:1.5}
+.guide-diagram-tile span{display:block;color:#b5bec4;font-size:13px;line-height:1.7;margin-top:8px}
+.guide-resource-row,.guide-event-row,.guide-deploy-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.guide-resolution-row,.guide-milestone-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.guide-route{display:flex;align-items:stretch;gap:5px}
+.guide-route .guide-diagram-tile{flex:1;padding:12px 7px;text-align:center}
+.guide-route .guide-diagram-tile strong{font-size:14px}
+.guide-route-arrow{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ui-accent);font-size:20px;flex-shrink:0}
+.guide-route-arrow small{font-size:11px;white-space:nowrap;margin-top:6px}
+#app .guide-diagram-note{font-size:12px!important;line-height:1.7!important;color:#aeb7be!important;margin:12px 0 0!important}
+#app .tutorial-screen .tutorial-step-actions{box-sizing:border-box;max-width:none!important;margin:0!important;padding:12px 32px!important;border-top:1px solid #ffffff20!important;background:#171b1e;gap:16px;min-height:68px}
+#app .tutorial-screen .tutorial-step-actions button{min-height:44px!important;min-width:112px;padding:8px 22px!important;border-radius:2px!important;border-width:1px!important}
+#app .tutorial-screen--rules .tutorial-lesson-copy{scroll-padding-top:20px;overflow-x:hidden!important}
+#app .tutorial-screen--rules .tutorial-lesson-copy>:is(p,h3,ol,nav,div,details){width:100%;max-width:940px!important;margin-left:auto!important;margin-right:auto!important}
+#app .tutorial-screen--rules .tutorial-reader-head{display:block!important;position:relative}
+#app .tutorial-screen--rules .tutorial-reader-head>div{max-width:940px;margin:0 auto}
+#app .tutorial-screen--rules .tutorial-mode-label{position:absolute;right:20px;top:26px}
+#app .tutorial-screen .tutorial-lesson-copy h3{border-left:0!important;padding:0!important;margin-top:32px!important;margin-bottom:12px!important;font-size:21px!important;color:var(--ui-paper)!important;scroll-margin-top:20px}
+#app .tutorial-screen .tutorial-lead-heading{color:var(--ui-accent)!important;font-size:24px!important;margin-top:24px!important}
+#app .tutorial-screen--rules .tutorial-lesson-copy p,#app .tutorial-screen--rules .tutorial-lesson-copy li{font-size:15px!important;line-height:1.95!important;color:#c9cfd2!important}
+.tutorial-outline{border-bottom:1px solid #ffffff20;padding-bottom:16px;min-width:0}
+.tutorial-outline>span{display:block;font-size:11px;color:#aeb7be;margin-bottom:8px;letter-spacing:.08em}
+.tutorial-outline>div{display:flex;gap:8px;overflow-x:auto;scrollbar-width:thin;padding-bottom:6px}
+#app .tutorial-outline button{flex-shrink:0;min-height:44px;padding:8px 14px;border:1px solid #ffffff25;border-radius:2px;background:#ffffff06;color:#eae8df;font-size:13px;white-space:nowrap}
+#app .tutorial-outline button:hover,#app .tutorial-outline button:focus-visible{border-color:var(--ui-accent);color:var(--ui-accent)}
+#app .tutorial-screen .tutorial-rule-table{background:transparent!important;overflow-x:auto;border:1px solid #ffffff20!important}
+#app .tutorial-screen .tutorial-rule-table table{width:100%;font-size:14px!important}
+#app .tutorial-screen .tutorial-rule-table th{padding:12px 16px;text-align:left;font-weight:700;background:#30363b;color:var(--ui-accent);border-bottom:1px solid #ffffff25;line-height:1.7}
+#app .tutorial-screen .tutorial-rule-table tr:first-child{background:transparent!important}
+#app .tutorial-screen .tutorial-rule-table td{padding:12px 16px!important;color:#c9cfd2!important;border-bottom:1px solid #ffffff15!important;font-size:14px!important;vertical-align:top}
+#app .tutorial-screen .tutorial-rule-table tr:nth-child(odd):not(:first-child){background:#ffffff04!important}
+#app .tutorial-screen .tutorial-reference{border-top:1px solid #ffffff25!important}
+#app .tutorial-screen .tutorial-reference summary{min-height:44px;display:list-item;cursor:pointer;padding:10px 0;box-sizing:border-box;font-size:14px}
+@media(max-width:1100px){
+ #app :is(.tutorial-screen,.tutorial-hub-screen) .sub-header{top:14px!important;left:16px!important;right:16px!important}
+ #app :is(.tutorial-screen,.tutorial-hub-screen) .sub-title h1{font-size:30px!important}
+ #app .tutorial-screen .tutorial-page{top:86px!important;left:16px!important;right:16px!important;bottom:12px!important;grid-template-columns:160px minmax(0,1fr)!important;gap:16px!important}
+ #app .tutorial-screen .tutorial-chapters{padding-right:12px!important}
+ #app .tutorial-chapters-head{padding:8px 0!important;font-size:11px}
+ #app .tutorial-screen .tutorial-chapters button{min-height:48px!important;padding:10px 6px!important;gap:8px!important}
+ #app .tutorial-chapter-label{font-size:11px!important;line-height:1.6}
+ #app .tutorial-reader-head{padding:12px 16px!important;gap:8px!important}
+ #app .tutorial-reader-head h2{font-size:21px!important}
+ #app .tutorial-mode-label{display:none!important}
+ #app .tutorial-screen .tutorial-lesson-copy{padding:16px!important}
+ #app .tutorial-beginner-body{grid-template-columns:minmax(100px,.65fr) minmax(0,1.35fr)!important;gap:16px!important}
+ #app .tutorial-visual{height:140px!important}
+ #app .tutorial-takeaways{grid-template-columns:1fr!important;gap:20px!important}
+ #app .tutorial-takeaway:before{float:left;margin:3px 10px 0 0!important}
+ #app .tutorial-screen .tutorial-step-actions{padding:8px 16px!important;min-height:60px}
+ #app .tutorial-screen .tutorial-step-actions button{min-width:88px;padding:8px 12px!important}
+ .guide-diagram-tile{padding:10px 8px}.guide-diagram-tile strong{font-size:13px}.guide-diagram-tile span{font-size:12px;margin-top:4px}
+ .guide-route{gap:3px}.guide-route .guide-diagram-tile{padding:8px 3px}.guide-route .guide-diagram-tile strong{font-size:12px}.guide-route-arrow small{font-size:10px}
+ #app .tutorial-hub-screen .tutorial-grid{top:94px!important;bottom:16px!important;left:24px!important;right:24px!important;gap:16px}
+ .tutorial-hub-copy{padding:14px 18px}.tutorial-hub-art{height:100px}
+ #app .tutorial-hub-copy strong{font-size:24px}.tutorial-hub-copy>span{padding-top:10px}
+ #app .tutorial-hub-copy p{font-size:13px;margin-bottom:12px}
+}
+@media(max-width:1100px) and (max-height:500px) and (orientation:landscape){
+ #app .tutorial-hub-screen .tutorial-card{display:grid;grid-template-columns:36% minmax(0,1fr)}
+ .tutorial-hub-art{height:100%;width:100%;min-height:0;object-fit:cover}
+ .tutorial-hub-copy{align-self:center;padding:16px}
+ #app .tutorial-hub-copy strong{font-size:22px}
+ #app .tutorial-hub-copy small{font-size:11px}
+ #app .tutorial-hub-copy p{font-size:12px;line-height:1.7}
+}

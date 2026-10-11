@@ -48966,7 +48966,7 @@
             legacyId: "fuyuki_E0",
             name: "\u593A\u56DE\u4F0A\u8389\u96C5",
             victoryPoints: 5,
-            text: "\u8D62\u533A\u57DF\u8005\u5F973\u9B54",
+            text: "\u65E0\u989D\u5916\u6548\u679C\u3002",
             implementation: "pending"
           },
           {
@@ -49062,7 +49062,7 @@
             legacyId: "fuyuki_E12",
             name: "\u904F\u5236\u5A01\u80C1",
             victoryPoints: 2,
-            text: "\u5A01\u22654\u5F97+1\u5A01,\u80DC\u8005\u56DE1\u4EE4\u5492/4\u9B54",
+            text: "\u57FA\u672C\u5A01\u529B4\u53CA\u4EE5\u4E0A\u7684\u653B\u51FB\u4E8E\u6B64\u6218\u573A\u83B7\u5F97+1\u5A01\u529B\u3002\u6B64\u6218\u573A\u7684\u80DC\u8005\u53EF\u4EE5\u6062\u590D1\u679A\u4EE4\u5492\u3002",
             implementation: "pending"
           },
           {
@@ -50965,10 +50965,10 @@
           if (source.modifier.operation !== "set") throw new Error("POST_POWER_DEFEAT_OPERATION_INVALID");
           const triggerPower = Number(source.modifier.value);
           if (!Number.isInteger(triggerPower)) throw new Error("POST_POWER_DEFEAT_POWER_INVALID");
-          const matched = Object.entries(measured).some(([instanceId, power]) => {
+          const matched = Object.entries(measured).some(([instanceId, power2]) => {
             const instance = state.cards[instanceId];
             const definition = instance ? definitions[instance.definitionId] : void 0;
-            return Boolean(instance && definition && power === triggerPower && structuredModifierMatchesCard(state, definitions, source, instance, definition));
+            return Boolean(instance && definition && power2 === triggerPower && structuredModifierMatchesCard(state, definitions, source, instance, definition));
           });
           if (matched) defeated.add(targetPlayerId);
         }
@@ -52513,397 +52513,163 @@
     });
   }
 
-  // src/rules-core/battlefield-rules.ts
-  function isRecord3(value) {
-    return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+  // src/rules-core/resources.ts
+  function isWorkshopResourceGainBlocked(player) {
+    return player.flags.workshopResourceGainBlocked === true && player.locationId === "workshop";
   }
-  function sourceStillOwned(state, rule) {
-    const controller = state.players[rule.controllerPlayerId];
-    if (!controller || controller.eliminated) return false;
-    return Object.values(state.cards).some((card) => card.ownerPlayerId === controller.id && card.zone !== "removed" && card.zone !== "discard" && (card.definitionId === rule.sourceId || card.definitionId === `card.skill.${rule.sourceId}`));
+  function blockManaGainThroughRound(player, throughRound) {
+    if (!Number.isInteger(throughRound) || throughRound < 0) throw new Error("MANA_GAIN_BLOCK_ROUND_INVALID");
+    const current = Number(player.flags.manaGainBlockedThroughRound ?? Number.NEGATIVE_INFINITY);
+    player.flags.manaGainBlockedThroughRound = Math.max(current, throughRound);
+    player.flags.manaGainBlocked = true;
   }
-  function getDynamicBattlefieldRules(state) {
-    const raw = state.modeState.dynamicBattlefieldRules;
-    if (!Array.isArray(raw)) return [];
-    return raw.filter((item) => {
-      if (!isRecord3(item)) return false;
-      return typeof item.sourceId === "string" && typeof item.controllerPlayerId === "string" && (item.locationId === "workshop" || item.locationId === "mountain" || item.locationId === "city") && item.objectives === "none" && item.competitionReward === "current-situation-mana";
-    }).filter((rule) => sourceStillOwned(state, rule));
+  function expireTimedManaGainBlock(player, currentRound) {
+    if (!Number.isInteger(currentRound) || currentRound < 0) throw new Error("RESOURCE_ROUND_INVALID");
+    const throughRound = Number(player.flags.manaGainBlockedThroughRound ?? Number.NEGATIVE_INFINITY);
+    if (throughRound >= currentRound) return;
+    delete player.flags.manaGainBlockedThroughRound;
+    delete player.flags.manaGainBlocked;
   }
-  function installDynamicBattlefieldRule(state, rule) {
-    if (!state.players[rule.controllerPlayerId] || !rule.sourceId) throw new Error("DYNAMIC_BATTLEFIELD_RULE_INVALID");
-    const existing = Array.isArray(state.modeState.dynamicBattlefieldRules) ? state.modeState.dynamicBattlefieldRules.filter((item) => !(isRecord3(item) && item.sourceId === rule.sourceId && item.controllerPlayerId === rule.controllerPlayerId && item.locationId === rule.locationId)) : [];
-    state.modeState = { ...state.modeState, dynamicBattlefieldRules: [...existing, structuredClone(rule)] };
+  function setManaGainBlockSource(player, sourceId, blocked) {
+    if (typeof sourceId !== "string" || !sourceId) throw new Error("MANA_GAIN_BLOCK_SOURCE_INVALID");
+    const current = Array.isArray(player.flags.manaGainBlockSourceIds) ? player.flags.manaGainBlockSourceIds.filter((id) => typeof id === "string" && id.length > 0) : [];
+    const next = blocked ? [.../* @__PURE__ */ new Set([...current, sourceId])] : current.filter((id) => id !== sourceId);
+    if (next.length > 0) player.flags.manaGainBlockSourceIds = next;
+    else delete player.flags.manaGainBlockSourceIds;
   }
-  function isBattlefieldLocation(state, locationId) {
-    if (locationId === "mountain" || locationId === "city") return true;
-    return getDynamicBattlefieldRules(state).some((rule) => rule.locationId === locationId);
-  }
-  function getBattlefieldLocationIds(state) {
-    const result = ["mountain", "city"];
-    for (const rule of getDynamicBattlefieldRules(state)) if (!result.includes(rule.locationId)) result.push(rule.locationId);
-    return result;
-  }
-  function getDynamicBattlefieldCompetitionReward(state, locationId) {
-    const rules2 = getDynamicBattlefieldRules(state).filter((rule) => rule.locationId === locationId);
-    if (rules2.length === 0) return void 0;
-    if (rules2.some((rule) => rule.competitionReward !== rules2[0].competitionReward)) throw new Error("DYNAMIC_BATTLEFIELD_REWARD_CONFLICT");
-    if (rules2[0].competitionReward === "current-situation-mana") {
-      const mana = Number(state.modeState.currentSituationMana ?? 0);
-      if (!Number.isInteger(mana) || mana < 0) throw new Error("CURRENT_SITUATION_MANA_INVALID");
-      return mana;
+  function gainMana(player, amount) {
+    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_MANA_INVALID");
+    const sourceBlocked = Array.isArray(player.flags.manaGainBlockSourceIds) && player.flags.manaGainBlockSourceIds.length > 0;
+    if (player.flags.manaGainBlocked === true || sourceBlocked || isWorkshopResourceGainBlocked(player)) return 0;
+    if (player.flags.infiniteMana === true) return 0;
+    const gainMultiplier = Number(player.flags.manaGainMultiplier ?? 1);
+    if (!Number.isInteger(gainMultiplier) || gainMultiplier < 1) throw new Error("RESOURCE_MANA_MULTIPLIER_INVALID");
+    const scaledAmount = amount * gainMultiplier;
+    const replacementSourceInstanceId = player.flags.manaGainReplacementSourceInstanceId;
+    if (typeof replacementSourceInstanceId === "string" && replacementSourceInstanceId.length > 0) {
+      const accumulated = Number(player.flags.manaGainReplacementPower ?? 0);
+      if (!Number.isInteger(accumulated) || accumulated < 0) throw new Error("RESOURCE_MANA_REPLACEMENT_STATE_INVALID");
+      player.flags.manaGainReplacementPower = accumulated + scaledAmount;
+      return 0;
     }
-    return void 0;
-  }
-
-  // src/rules-core/linked-player-rules.ts
-  var MANA_RULES_KEY = "linkedManaContributionRules";
-  var ENTRY_RULES_KEY = "linkedEntrySealRules";
-  var COMMAND_CONTEXT_KEY = "commandManaContributionContext";
-  var MANA_USAGE_KEY = "linkedManaContributionUsage";
-  function isRecord4(value) {
-    return Boolean(value) && typeof value === "object" && !Array.isArray(value);
-  }
-  function battlefield(state, locationId) {
-    return typeof locationId === "string" && isBattlefieldLocation(state, locationId);
-  }
-  function manaRules(state) {
-    const raw = state.modeState[MANA_RULES_KEY];
-    if (!Array.isArray(raw)) return [];
-    return raw.filter((value) => isRecord4(value) && typeof value.id === "string" && typeof value.sourceId === "string" && typeof value.beneficiaryPlayerId === "string" && typeof value.contributorPlayerId === "string" && Number.isInteger(value.maxPerRound));
-  }
-  function entryRules(state) {
-    const raw = state.modeState[ENTRY_RULES_KEY];
-    if (!Array.isArray(raw)) return [];
-    return raw.filter((value) => isRecord4(value) && typeof value.id === "string" && typeof value.sourceId === "string" && typeof value.entrantPlayerId === "string" && typeof value.anchorPlayerId === "string" && Number.isInteger(value.commandSealCost));
-  }
-  function installLinkedManaContributionRule(state, rule) {
-    if (!rule.id || !rule.sourceId || !state.players[rule.beneficiaryPlayerId] || !state.players[rule.contributorPlayerId] || rule.beneficiaryPlayerId === rule.contributorPlayerId || !Number.isInteger(rule.maxPerRound) || rule.maxPerRound <= 0) {
-      throw new Error("LINKED_MANA_RULE_INVALID");
+    const roundCap = Number(player.flags.roundManaGainCap);
+    const alreadyGained = Number(player.flags.roundManaGained ?? 0);
+    const allowed = Number.isInteger(roundCap) && roundCap >= 0 ? Math.max(0, roundCap - (Number.isInteger(alreadyGained) && alreadyGained >= 0 ? alreadyGained : 0)) : scaledAmount;
+    const requested = Math.min(scaledAmount, allowed);
+    const cap = Number(player.flags.manaCap ?? 12);
+    const before = player.mana;
+    player.mana = Number.isInteger(cap) && cap >= 0 ? Math.min(cap, before + requested) : before + requested;
+    const applied = player.mana - before;
+    const overflow = Number.isInteger(cap) && cap >= 0 ? Math.max(0, before + requested - cap) : 0;
+    if (overflow > 0) {
+      const sequence = Number(player.flags.manaGainOverflowSequence ?? 0) + 1;
+      if (!Number.isSafeInteger(sequence) || sequence <= 0) throw new Error("RESOURCE_MANA_OVERFLOW_SEQUENCE_INVALID");
+      const ledger = Array.isArray(player.flags.manaGainOverflowLedger) ? player.flags.manaGainOverflowLedger : [];
+      player.flags.manaGainOverflowSequence = sequence;
+      player.flags.manaGainOverflowLedger = [...ledger, { sequence, requested, applied, overflow, cap, before }];
     }
-    state.modeState[MANA_RULES_KEY] = [...manaRules(state).filter((existing) => existing.id !== rule.id), structuredClone(rule)];
-  }
-  function installLinkedEntrySealRule(state, rule) {
-    if (!rule.id || !rule.sourceId || !state.players[rule.entrantPlayerId] || !state.players[rule.anchorPlayerId] || rule.entrantPlayerId === rule.anchorPlayerId || !Number.isInteger(rule.commandSealCost) || rule.commandSealCost <= 0) {
-      throw new Error("LINKED_ENTRY_RULE_INVALID");
+    if (Number.isInteger(roundCap) && roundCap >= 0) {
+      player.flags.roundManaGained = (Number.isInteger(alreadyGained) && alreadyGained >= 0 ? alreadyGained : 0) + applied;
     }
-    state.modeState[ENTRY_RULES_KEY] = [...entryRules(state).filter((existing) => existing.id !== rule.id), structuredClone(rule)];
+    return applied;
   }
-  function removeLinkedPlayerRulesBySource(state, sourceId) {
-    state.modeState[MANA_RULES_KEY] = manaRules(state).filter((rule) => rule.sourceId !== sourceId);
-    state.modeState[ENTRY_RULES_KEY] = entryRules(state).filter((rule) => rule.sourceId !== sourceId);
+  function transferMana(source, target, amount) {
+    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_MANA_INVALID");
+    if (amount === 0) return 0;
+    const available = source.flags.infiniteMana === true ? amount : Math.min(amount, Math.max(0, source.mana));
+    if (available <= 0) return 0;
+    const applied = gainMana(target, available);
+    if (source.flags.infiniteMana !== true) source.mana -= applied;
+    return applied;
   }
-  function playerHasRequiredStatus(player, status) {
-    return Boolean(player && (!status || player.statuses.includes(status)));
+  function loseMana(player, amount) {
+    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_MANA_INVALID");
+    if (player.flags.infiniteMana === true) return 0;
+    const before = player.mana;
+    player.mana = Math.max(0, before - amount);
+    return before - player.mana;
   }
-  function manaRuleLive(state, rule) {
-    const beneficiary = state.players[rule.beneficiaryPlayerId];
-    const contributor = state.players[rule.contributorPlayerId];
-    if (!beneficiary || !contributor || beneficiary.eliminated || contributor.eliminated || !playerHasRequiredStatus(beneficiary, rule.beneficiaryRequiredStatus) || !playerHasRequiredStatus(contributor, rule.contributorRequiredStatus)) return false;
-    if (rule.requireDifferentBattlefields === true) {
-      if (!battlefield(state, beneficiary.locationId) || !battlefield(state, contributor.locationId) || beneficiary.locationId === contributor.locationId) return false;
+  function setMana(player, amount) {
+    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_MANA_INVALID");
+    if (player.flags.infiniteMana === true) return;
+    const cap = Number(player.flags.manaCap ?? 12);
+    player.mana = Number.isInteger(cap) && cap >= 0 ? Math.min(cap, amount) : amount;
+  }
+  function restoreManaUnpreventable(player, amount) {
+    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_MANA_INVALID");
+    if (player.flags.infiniteMana === true || amount === 0) return 0;
+    const before = player.mana;
+    const cap = Number(player.flags.manaCap ?? 12);
+    player.mana = Number.isInteger(cap) && cap >= 0 ? Math.min(cap, before + amount) : before + amount;
+    return player.mana - before;
+  }
+  function gainVictoryPoints(player, amount) {
+    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_VICTORY_POINTS_INVALID");
+    if (player.flags.victoryPointGainBlocked === true || isWorkshopResourceGainBlocked(player)) return 0;
+    const multiplier = Number(player.flags.victoryPointGainMultiplier ?? 1);
+    if (!Number.isInteger(multiplier) || multiplier < 1) throw new Error("RESOURCE_VICTORY_POINTS_MULTIPLIER_INVALID");
+    const numerator = Number(player.flags.victoryPointGainFractionNumerator ?? 1);
+    const denominator = Number(player.flags.victoryPointGainFractionDenominator ?? 1);
+    if (!Number.isInteger(numerator) || numerator < 0 || !Number.isInteger(denominator) || denominator <= 0) {
+      throw new Error("RESOURCE_VICTORY_POINTS_FRACTION_INVALID");
     }
-    if (rule.requireSameBattlefield === true) {
-      if (!battlefield(state, beneficiary.locationId) || beneficiary.locationId !== contributor.locationId) return false;
-    }
-    if (rule.minimumContributorMana !== void 0) {
-      if (!Number.isInteger(rule.minimumContributorMana) || rule.minimumContributorMana < 0) throw new Error("LINKED_MANA_RULE_INVALID");
-      if (contributor.flags.infiniteMana !== true && contributor.mana < rule.minimumContributorMana) return false;
-    }
-    return true;
+    const applied = Math.floor(amount * numerator / denominator) * multiplier;
+    player.victoryPoints += applied;
+    return applied;
   }
-  function manaUsage(state) {
-    const raw = state.modeState[MANA_USAGE_KEY];
-    if (!isRecord4(raw)) return {};
-    const result = {};
-    for (const [key, value] of Object.entries(raw)) {
-      if (!isRecord4(value) || !Number.isInteger(value.round) || !Number.isInteger(value.amount)) continue;
-      result[key] = { round: Number(value.round), amount: Number(value.amount) };
-    }
-    return result;
+  function adjustVictoryPoints(player, delta) {
+    if (!Number.isInteger(delta)) throw new Error("RESOURCE_VICTORY_POINTS_INVALID");
+    if (delta >= 0) return gainVictoryPoints(player, delta);
+    const before = player.victoryPoints;
+    player.victoryPoints = Math.max(0, before + delta);
+    return player.victoryPoints - before;
   }
-  function prepareCommandManaContribution(state, actorPlayerId, payload) {
-    delete state.modeState[COMMAND_CONTEXT_KEY];
-    if (!isRecord4(payload)) return;
-    const rawChoices = Array.isArray(payload.manaContributions) ? payload.manaContributions : isRecord4(payload.manaContribution) ? [payload.manaContribution] : [];
-    if (rawChoices.length === 0) return;
-    if (!state.players[actorPlayerId]) throw new Error("COMMAND_MANA_CONTRIBUTION_INVALID");
-    const choices = rawChoices.map((raw) => {
-      if (!isRecord4(raw)) throw new Error("COMMAND_MANA_CONTRIBUTION_INVALID");
-      const contributorPlayerId = typeof raw.contributorPlayerId === "string" ? raw.contributorPlayerId : "";
-      const amount = Number(raw.amount);
-      const paymentOrdinal = raw.paymentOrdinal === void 0 ? 0 : Number(raw.paymentOrdinal);
-      const sourceInstanceId = typeof raw.sourceInstanceId === "string" ? raw.sourceInstanceId : void 0;
-      if (!state.players[contributorPlayerId] || actorPlayerId === contributorPlayerId || !Number.isInteger(amount) || amount <= 0 || !Number.isInteger(paymentOrdinal) || paymentOrdinal < 0) {
-        throw new Error("COMMAND_MANA_CONTRIBUTION_INVALID");
-      }
-      return { contributorPlayerId, amount, paymentOrdinal, ...sourceInstanceId ? { sourceInstanceId } : {}, consumed: false };
-    });
-    const keys = choices.map((choice) => `${choice.paymentOrdinal}:${choice.contributorPlayerId}`);
-    if (new Set(keys).size !== keys.length) throw new Error("COMMAND_MANA_CONTRIBUTION_DUPLICATE");
-    state.modeState[COMMAND_CONTEXT_KEY] = {
-      beneficiaryPlayerId: actorPlayerId,
-      choices,
-      nextPaymentOrdinal: 0
-    };
+  function transferVictoryPoints(source, target, amount) {
+    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_VICTORY_POINTS_INVALID");
+    if (amount === 0) return 0;
+    const transferred = Math.min(amount, Math.max(0, source.victoryPoints));
+    source.victoryPoints -= transferred;
+    target.victoryPoints += transferred;
+    return transferred;
   }
-  function commandContext(state) {
-    const raw = state.modeState[COMMAND_CONTEXT_KEY];
-    if (!isRecord4(raw)) return void 0;
-    const choices = Array.isArray(raw.choices) ? raw.choices.filter((choice) => isRecord4(choice) && typeof choice.contributorPlayerId === "string" && Number.isInteger(choice.amount) && Number.isInteger(choice.paymentOrdinal) && typeof choice.consumed === "boolean") : [];
-    return typeof raw.beneficiaryPlayerId === "string" && Number.isInteger(raw.nextPaymentOrdinal) ? { beneficiaryPlayerId: raw.beneficiaryPlayerId, choices, nextPaymentOrdinal: Number(raw.nextPaymentOrdinal) } : void 0;
+  function getCustomResource(player, resourceId) {
+    if (!resourceId || resourceId.trim().length === 0) throw new Error("RESOURCE_ID_INVALID");
+    const value = Number(player.customResources?.[resourceId] ?? 0);
+    return Number.isInteger(value) && value >= 0 ? value : 0;
   }
-  function resolveCommandManaContribution(state, payerPlayerId, totalAmount) {
-    if (!Number.isInteger(totalAmount) || totalAmount < 0) throw new Error("MANA_COST_INVALID");
-    const context = commandContext(state);
-    if (!context || context.beneficiaryPlayerId !== payerPlayerId || totalAmount === 0) {
-      return { payerAmount: totalAmount, contributions: [], contributorAmount: 0 };
-    }
-    const ordinal = context.nextPaymentOrdinal;
-    const selected = context.choices.map((choice, index) => ({ choice, index })).filter(({ choice }) => !choice.consumed && choice.paymentOrdinal === ordinal);
-    if (selected.length === 0) {
-      return { payerAmount: totalAmount, contributions: [], contributorAmount: 0, commit: { nextPaymentOrdinal: ordinal + 1, consumedChoiceIndexes: [], usages: [] } };
-    }
-    const requestedTotal = selected.reduce((sum, entry) => sum + entry.choice.amount, 0);
-    if (requestedTotal > totalAmount) throw new Error("COMMAND_MANA_CONTRIBUTION_INVALID");
-    const usage = manaUsage(state);
-    const nextUsage = /* @__PURE__ */ new Map();
-    const contributions = [];
-    for (const { choice, index } of selected) {
-      const candidates = manaRules(state).filter((rule2) => rule2.beneficiaryPlayerId === payerPlayerId && rule2.contributorPlayerId === choice.contributorPlayerId && manaRuleLive(state, rule2));
-      if (candidates.length !== 1) throw new Error(candidates.length === 0 ? "MANA_CONTRIBUTION_NOT_ALLOWED" : "MANA_CONTRIBUTION_CONFLICT");
-      const rule = candidates[0];
-      const prior = nextUsage.has(rule.id) ? Number(nextUsage.get(rule.id)) : usage[rule.id]?.round === state.round ? usage[rule.id].amount : 0;
-      const appliedUsage = prior + choice.amount;
-      if (appliedUsage > rule.maxPerRound) throw new Error("MANA_CONTRIBUTION_ROUND_LIMIT_REACHED");
-      const contributor = state.players[choice.contributorPlayerId];
-      if (!contributor || contributor.flags.infiniteMana !== true && contributor.mana < choice.amount) throw new Error("MANA_CONTRIBUTOR_INSUFFICIENT_MANA");
-      nextUsage.set(rule.id, appliedUsage);
-      contributions.push({ contributorPlayerId: choice.contributorPlayerId, amount: choice.amount, ruleId: rule.id, usageAmount: appliedUsage, ...choice.sourceInstanceId ? { sourceInstanceId: choice.sourceInstanceId } : {}, choiceIndex: index });
-    }
-    return {
-      payerAmount: totalAmount - requestedTotal,
-      contributions,
-      ...contributions.length === 1 ? { contributorPlayerId: contributions[0].contributorPlayerId } : {},
-      contributorAmount: requestedTotal,
-      commit: {
-        nextPaymentOrdinal: ordinal + 1,
-        consumedChoiceIndexes: contributions.map((entry) => entry.choiceIndex),
-        usages: [...nextUsage].map(([ruleId, amount]) => ({ ruleId, amount }))
-      }
-    };
+  function setCustomResource(player, resourceId, amount) {
+    if (!resourceId || resourceId.trim().length === 0) throw new Error("RESOURCE_ID_INVALID");
+    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_AMOUNT_INVALID");
+    player.customResources = { ...player.customResources ?? {}, [resourceId]: amount };
   }
-  function commitCommandManaContribution(state, resolved2) {
-    const commit = resolved2.commit;
-    if (!commit) return;
-    const context = commandContext(state);
-    if (!context || context.nextPaymentOrdinal + 1 !== commit.nextPaymentOrdinal) throw new Error("COMMAND_MANA_CONTRIBUTION_STATE_MISMATCH");
-    context.nextPaymentOrdinal = commit.nextPaymentOrdinal;
-    for (const index of commit.consumedChoiceIndexes) {
-      if (!context.choices[index] || context.choices[index].consumed) throw new Error("COMMAND_MANA_CONTRIBUTION_STATE_MISMATCH");
-      context.choices[index].consumed = true;
-    }
-    const usage = manaUsage(state);
-    for (const entry of commit.usages) usage[entry.ruleId] = { round: state.round, amount: entry.amount };
-    state.modeState[MANA_USAGE_KEY] = usage;
-    state.modeState[COMMAND_CONTEXT_KEY] = context;
+  function gainCustomResource(player, resourceId, amount, limit) {
+    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_AMOUNT_INVALID");
+    const current = getCustomResource(player, resourceId);
+    const cap = Number.isInteger(limit) && limit >= 0 ? limit : Number.MAX_SAFE_INTEGER;
+    const gained = Math.min(cap, current + amount) - current;
+    setCustomResource(player, resourceId, current + gained);
+    return gained;
   }
-  function finishCommandManaContribution(state) {
-    const context = commandContext(state);
-    delete state.modeState[COMMAND_CONTEXT_KEY];
-    if (context && context.choices.some((choice) => !choice.consumed)) throw new Error("COMMAND_MANA_CONTRIBUTION_UNUSED");
-  }
-  function getLinkedEntryCommandSealCost(state, entrantPlayerId, targetLocationId) {
-    const applicable = entryRules(state).filter((rule) => {
-      if (rule.entrantPlayerId !== entrantPlayerId) return false;
-      const entrant = state.players[rule.entrantPlayerId];
-      const anchor = state.players[rule.anchorPlayerId];
-      if (!entrant || !anchor || entrant.eliminated || anchor.eliminated || !playerHasRequiredStatus(entrant, rule.entrantRequiredStatus) || !playerHasRequiredStatus(anchor, rule.anchorRequiredStatus)) return false;
-      if (rule.onlyBeforeClimax === true && state.modeState.currentSituationClimax === true) return false;
-      return battlefield(state, targetLocationId) && anchor.locationId === targetLocationId && entrant.locationId !== targetLocationId;
-    });
-    if (applicable.length === 0) return 0;
-    if (applicable.length > 1) throw new Error("LINKED_ENTRY_RULE_CONFLICT");
-    return applicable[0].commandSealCost;
-  }
-
-  // src/rules-core/location-rules.ts
-  function isRecord5(value) {
-    return Boolean(value) && typeof value === "object" && !Array.isArray(value);
-  }
-  function sourceStillOwned2(state, playerId, sourceId) {
-    const player = state.players[playerId];
-    if (!player || player.eliminated) return false;
-    return [...player.masterSkills, ...player.servantSkills, ...player.hand, ...player.attack].some((instanceId) => {
-      const card = state.cards[instanceId];
-      return Boolean(card && card.ownerPlayerId === playerId && card.zone !== "removed" && (card.definitionId === sourceId || card.definitionId === `card.skill.${sourceId}`));
-    });
-  }
-  function persistentRules(state) {
-    const raw = state.modeState.persistentLocationAdvantages;
-    if (!Array.isArray(raw)) return [];
-    return raw.filter((item) => {
-      if (!isRecord5(item)) return false;
-      return typeof item.sourceId === "string" && typeof item.playerId === "string" && (item.locationId === "mountain" || item.locationId === "city") && Number.isInteger(item.value) && Number(item.value) >= 0 && (item.mode === "replace" || item.mode === "add");
-    }).map((item) => ({ ...item }));
-  }
-  function unoccupiedRules(state) {
-    const raw = state.modeState.unoccupiedLocationAdvantages;
-    if (!Array.isArray(raw)) return [];
-    return raw.filter((item) => {
-      if (!isRecord5(item) || typeof item.sourceId !== "string" || typeof item.playerId !== "string") return false;
-      return Array.isArray(item.locationIds) && item.locationIds.length > 0 && item.locationIds.every((id) => id === "mountain" || id === "city");
-    }).map((item) => ({ ...item, locationIds: [...item.locationIds] }));
-  }
-  function addUnoccupiedLocationAdvantageRule(state, rule) {
-    if (!state.players[rule.playerId] || !rule.sourceId || rule.locationIds.length === 0) throw new Error("UNOCCUPIED_LOCATION_ADVANTAGE_INVALID");
-    const rules2 = unoccupiedRules(state).filter((item) => !(item.sourceId === rule.sourceId && item.playerId === rule.playerId));
-    state.modeState = {
-      ...state.modeState,
-      unoccupiedLocationAdvantages: [...rules2, { ...rule, locationIds: [...new Set(rule.locationIds)] }]
-    };
-  }
-  function getUnoccupiedLocationAdvantageBonus(state, playerId, locationId) {
-    if (locationId !== "mountain" && locationId !== "city") return 0;
-    const applies = unoccupiedRules(state).some((rule) => rule.playerId === playerId && rule.locationIds.includes(locationId) && sourceStillOwned2(state, playerId, rule.sourceId));
-    if (!applies) return 0;
-    const records2 = state.board.outpostRecords[locationId] ?? [];
-    return (records2[0] == null ? 3 : 0) + (records2[1] == null ? 1 : 0);
-  }
-  function effectiveLocationRules(state) {
-    const raw = state.modeState.effectiveLocationRules;
-    if (!Array.isArray(raw)) return [];
-    return raw.filter((item) => {
-      if (!isRecord5(item)) return false;
-      if (typeof item.sourceId !== "string" || typeof item.playerId !== "string") return false;
-      if (!["workshop", "mountain", "city", "scouting"].includes(String(item.treatedAs))) return false;
-      if (item.actualLocationIds !== void 0 && (!Array.isArray(item.actualLocationIds) || item.actualLocationIds.some((id) => !["workshop", "mountain", "city", "scouting"].includes(String(id))))) return false;
-      if (item.persistentAdvantageAtLeast !== void 0 && (!Number.isInteger(item.persistentAdvantageAtLeast) || Number(item.persistentAdvantageAtLeast) < 0)) return false;
-      return item.persistentAdvantageSourceId === void 0 || typeof item.persistentAdvantageSourceId === "string";
-    }).map((item) => ({ ...item, ...item.actualLocationIds ? { actualLocationIds: [...item.actualLocationIds] } : {} }));
-  }
-  function sameLocationRestrictions(state) {
-    const raw = state.modeState.sameLocationRestrictions;
-    if (!Array.isArray(raw)) return [];
-    return raw.filter((item) => {
-      if (!isRecord5(item)) return false;
-      if (typeof item.sourceId !== "string" || typeof item.controllerPlayerId !== "string") return false;
-      if (item.activeWhenControllerAtEffectiveLocation !== void 0 && !["workshop", "mountain", "city", "scouting"].includes(String(item.activeWhenControllerAtEffectiveLocation))) return false;
-      return true;
-    }).map((item) => ({ ...item }));
-  }
-  function getPersistentLocationAdvantage(state, playerId, locationId, sourceId) {
-    if (locationId !== "mountain" && locationId !== "city") return 0;
-    const rules2 = persistentRules(state).filter((rule) => rule.playerId === playerId && rule.locationId === locationId && (sourceId === void 0 || rule.sourceId === sourceId));
-    if (rules2.length === 0) return 0;
-    const replacements = rules2.filter((rule) => rule.mode === "replace").map((rule) => rule.value);
-    const replacement = replacements.length > 0 ? Math.max(...replacements) : 0;
-    return replacement + rules2.filter((rule) => rule.mode === "add").reduce((sum, rule) => sum + rule.value, 0);
-  }
-  function resolveLocationAdvantage(state, playerId, locationId, base) {
-    if (!Number.isFinite(base)) throw new Error("LOCATION_ADVANTAGE_BASE_INVALID");
-    if (locationId !== "mountain" && locationId !== "city") return base;
-    const rules2 = persistentRules(state).filter((rule) => rule.playerId === playerId && rule.locationId === locationId);
-    if (rules2.length === 0) return base;
-    const replacements = rules2.filter((rule) => rule.mode === "replace").map((rule) => rule.value);
-    let value = replacements.length > 0 ? Math.max(...replacements) : base;
-    value += rules2.filter((rule) => rule.mode === "add").reduce((sum, rule) => sum + rule.value, 0);
-    return value;
-  }
-  function setPersistentLocationAdvantage(state, rule) {
-    if (!state.players[rule.playerId] || !Number.isInteger(rule.value) || rule.value < 0) throw new Error("PERSISTENT_LOCATION_ADVANTAGE_INVALID");
-    const existing = persistentRules(state).filter((item) => !(item.sourceId === rule.sourceId && item.playerId === rule.playerId && item.locationId === rule.locationId));
-    state.modeState = { ...state.modeState, persistentLocationAdvantages: [...existing, { ...rule }] };
-    syncPersistentLocationAdvantage(state, rule.playerId);
-    return rule.value;
-  }
-  function incrementPersistentLocationAdvantage(state, options) {
-    const amount = options.amount ?? 1;
-    const max = options.max ?? Number.MAX_SAFE_INTEGER;
-    if (!Number.isInteger(amount) || amount < 0 || !Number.isInteger(max) || max < 0) throw new Error("PERSISTENT_LOCATION_ADVANTAGE_INCREMENT_INVALID");
-    const existing = persistentRules(state).find((rule) => rule.sourceId === options.sourceId && rule.playerId === options.playerId && rule.locationId === options.locationId);
-    const next = Math.min(max, Number(existing?.value ?? 0) + amount);
-    setPersistentLocationAdvantage(state, {
-      sourceId: options.sourceId,
-      playerId: options.playerId,
-      locationId: options.locationId,
-      value: next,
-      mode: options.mode ?? existing?.mode ?? "replace"
-    });
-    return next;
-  }
-  function syncPersistentLocationAdvantage(state, playerId) {
-    const player = state.players[playerId];
-    if (!player) return 0;
-    const locationId = player.locationId;
-    if (locationId !== "mountain" && locationId !== "city") return 0;
-    const base = player.flags.deploymentBonusActive === true && player.flags.deploymentLocationId === locationId ? Number(player.flags.deploymentBonus ?? 0) : 0;
-    const resolved2 = resolveLocationAdvantage(state, playerId, locationId, base);
-    if (resolved2 > 0) {
-      player.flags.deploymentLocationId = locationId;
-      player.flags.deploymentBonus = resolved2;
-      player.flags.deploymentBonusActive = true;
-    }
-    return resolved2;
-  }
-  function addEffectiveLocationRule(state, rule) {
-    if (!state.players[rule.playerId] || !rule.sourceId) throw new Error("EFFECTIVE_LOCATION_RULE_INVALID");
-    const rules2 = effectiveLocationRules(state).filter((item) => !(item.sourceId === rule.sourceId && item.playerId === rule.playerId && item.treatedAs === rule.treatedAs));
-    state.modeState = {
-      ...state.modeState,
-      effectiveLocationRules: [...rules2, { ...rule, ...rule.actualLocationIds ? { actualLocationIds: [...rule.actualLocationIds] } : {} }]
-    };
-  }
-  function isPlayerAtEffectiveLocation(state, playerId, locationId) {
-    const player = state.players[playerId];
-    if (!player || player.eliminated || !player.locationId) return false;
-    if (player.locationId === locationId) return true;
-    return effectiveLocationRules(state).some((rule) => {
-      if (rule.playerId !== playerId || rule.treatedAs !== locationId || !sourceStillOwned2(state, playerId, rule.sourceId)) return false;
-      if (rule.actualLocationIds?.length && !rule.actualLocationIds.includes(player.locationId)) return false;
-      if (rule.persistentAdvantageAtLeast !== void 0) {
-        const advantage = getPersistentLocationAdvantage(state, playerId, player.locationId, rule.persistentAdvantageSourceId);
-        if (advantage < rule.persistentAdvantageAtLeast) return false;
-      }
-      return true;
-    });
-  }
-  function addSameLocationRestrictionRule(state, rule) {
-    if (!state.players[rule.controllerPlayerId] || !rule.sourceId) throw new Error("SAME_LOCATION_RESTRICTION_INVALID");
-    const rules2 = sameLocationRestrictions(state).filter((item) => !(item.sourceId === rule.sourceId && item.controllerPlayerId === rule.controllerPlayerId));
-    state.modeState = { ...state.modeState, sameLocationRestrictions: [...rules2, { ...rule }] };
-  }
-  function restrictionAppliesToTarget(state, rule, targetPlayerId) {
-    const controller = state.players[rule.controllerPlayerId];
-    const target = state.players[targetPlayerId];
-    if (!controller || !target || controller.eliminated || target.eliminated || controller.id === target.id) return false;
-    if (!controller.locationId || controller.locationId !== target.locationId) return false;
-    if (!sourceStillOwned2(state, controller.id, rule.sourceId)) return false;
-    if (isOtherPlayerAbilityEffectIgnored(state, controller.id, target.id)) return false;
-    if (rule.activeWhenControllerAtEffectiveLocation && !isPlayerAtEffectiveLocation(state, controller.id, rule.activeWhenControllerAtEffectiveLocation)) return false;
-    return true;
-  }
-  function isPlayerExitBlockedBySameLocationRule(state, playerId, targetLocationId) {
-    const player = state.players[playerId];
-    if (!player?.locationId || player.locationId === targetLocationId) return false;
-    return sameLocationRestrictions(state).some((rule) => rule.blockOpponentExit === true && restrictionAppliesToTarget(state, rule, playerId));
-  }
-  function isFaceDownStandardAttackRequiredBySameLocationRule(state, playerId) {
-    return sameLocationRestrictions(state).some((rule) => rule.requireOpponentFaceDownStandardAttack === true && restrictionAppliesToTarget(state, rule, playerId));
+  function spendCustomResource(player, resourceId, amount) {
+    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_AMOUNT_INVALID");
+    const current = getCustomResource(player, resourceId);
+    const spent = Math.min(current, amount);
+    setCustomResource(player, resourceId, current - spent);
+    return spent;
   }
 
   // src/rules-core/ruler-seals.ts
-  function isRecord6(value) {
+  function isRecord3(value) {
     return Boolean(value) && typeof value === "object" && !Array.isArray(value);
   }
   function readState(state) {
     const raw = state.modeState.rulerSeals;
-    if (!isRecord6(raw)) return { seals: [], bindCounts: {}, winRewards: [], uses: [], sequence: 0 };
+    if (!isRecord3(raw)) return { seals: [], bindCounts: {}, winRewards: [], uses: [], sequence: 0 };
     const seals = Array.isArray(raw.seals) ? raw.seals.filter((item) => Boolean(item) && typeof item === "object" && typeof item.sealId === "string" && typeof item.controllerPlayerId === "string" && typeof item.boundPlayerId === "string" && typeof item.sourceId === "string" && Number.isInteger(item.createdRound)).map((item) => ({ ...item })) : [];
     const bindCounts = {};
-    if (isRecord6(raw.bindCounts)) {
+    if (isRecord3(raw.bindCounts)) {
       for (const [controllerPlayerId, value] of Object.entries(raw.bindCounts)) {
-        if (!isRecord6(value)) continue;
+        if (!isRecord3(value)) continue;
         bindCounts[controllerPlayerId] = Object.fromEntries(Object.entries(value).filter(([, count]) => Number.isInteger(count) && Number(count) >= 0).map(([playerId, count]) => [playerId, Number(count)]));
       }
     }
@@ -53053,370 +52819,383 @@
     writeState(state, store);
   }
 
-  // src/rules-core/resources.ts
-  function isWorkshopResourceGainBlocked(player) {
-    return player.flags.workshopResourceGainBlocked === true && player.locationId === "workshop";
+  // src/rules-core/battlefield-rules.ts
+  function isRecord4(value) {
+    return Boolean(value) && typeof value === "object" && !Array.isArray(value);
   }
-  function blockManaGainThroughRound(player, throughRound) {
-    if (!Number.isInteger(throughRound) || throughRound < 0) throw new Error("MANA_GAIN_BLOCK_ROUND_INVALID");
-    const current = Number(player.flags.manaGainBlockedThroughRound ?? Number.NEGATIVE_INFINITY);
-    player.flags.manaGainBlockedThroughRound = Math.max(current, throughRound);
-    player.flags.manaGainBlocked = true;
+  function sourceStillOwned(state, rule) {
+    const controller = state.players[rule.controllerPlayerId];
+    if (!controller || controller.eliminated) return false;
+    return Object.values(state.cards).some((card) => card.ownerPlayerId === controller.id && card.zone !== "removed" && card.zone !== "discard" && (card.definitionId === rule.sourceId || card.definitionId === `card.skill.${rule.sourceId}`));
   }
-  function expireTimedManaGainBlock(player, currentRound) {
-    if (!Number.isInteger(currentRound) || currentRound < 0) throw new Error("RESOURCE_ROUND_INVALID");
-    const throughRound = Number(player.flags.manaGainBlockedThroughRound ?? Number.NEGATIVE_INFINITY);
-    if (throughRound >= currentRound) return;
-    delete player.flags.manaGainBlockedThroughRound;
-    delete player.flags.manaGainBlocked;
+  function getDynamicBattlefieldRules(state) {
+    const raw = state.modeState.dynamicBattlefieldRules;
+    if (!Array.isArray(raw)) return [];
+    return raw.filter((item) => {
+      if (!isRecord4(item)) return false;
+      return typeof item.sourceId === "string" && typeof item.controllerPlayerId === "string" && (item.locationId === "workshop" || item.locationId === "mountain" || item.locationId === "city") && item.objectives === "none" && item.competitionReward === "current-situation-mana";
+    }).filter((rule) => sourceStillOwned(state, rule));
   }
-  function setManaGainBlockSource(player, sourceId, blocked) {
-    if (typeof sourceId !== "string" || !sourceId) throw new Error("MANA_GAIN_BLOCK_SOURCE_INVALID");
-    const current = Array.isArray(player.flags.manaGainBlockSourceIds) ? player.flags.manaGainBlockSourceIds.filter((id) => typeof id === "string" && id.length > 0) : [];
-    const next = blocked ? [.../* @__PURE__ */ new Set([...current, sourceId])] : current.filter((id) => id !== sourceId);
-    if (next.length > 0) player.flags.manaGainBlockSourceIds = next;
-    else delete player.flags.manaGainBlockSourceIds;
+  function installDynamicBattlefieldRule(state, rule) {
+    if (!state.players[rule.controllerPlayerId] || !rule.sourceId) throw new Error("DYNAMIC_BATTLEFIELD_RULE_INVALID");
+    const existing = Array.isArray(state.modeState.dynamicBattlefieldRules) ? state.modeState.dynamicBattlefieldRules.filter((item) => !(isRecord4(item) && item.sourceId === rule.sourceId && item.controllerPlayerId === rule.controllerPlayerId && item.locationId === rule.locationId)) : [];
+    state.modeState = { ...state.modeState, dynamicBattlefieldRules: [...existing, structuredClone(rule)] };
   }
-  function gainMana(player, amount) {
-    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_MANA_INVALID");
-    const sourceBlocked = Array.isArray(player.flags.manaGainBlockSourceIds) && player.flags.manaGainBlockSourceIds.length > 0;
-    if (player.flags.manaGainBlocked === true || sourceBlocked || isWorkshopResourceGainBlocked(player)) return 0;
-    if (player.flags.infiniteMana === true) return 0;
-    const gainMultiplier = Number(player.flags.manaGainMultiplier ?? 1);
-    if (!Number.isInteger(gainMultiplier) || gainMultiplier < 1) throw new Error("RESOURCE_MANA_MULTIPLIER_INVALID");
-    const scaledAmount = amount * gainMultiplier;
-    const replacementSourceInstanceId = player.flags.manaGainReplacementSourceInstanceId;
-    if (typeof replacementSourceInstanceId === "string" && replacementSourceInstanceId.length > 0) {
-      const accumulated = Number(player.flags.manaGainReplacementPower ?? 0);
-      if (!Number.isInteger(accumulated) || accumulated < 0) throw new Error("RESOURCE_MANA_REPLACEMENT_STATE_INVALID");
-      player.flags.manaGainReplacementPower = accumulated + scaledAmount;
-      return 0;
+  function isBattlefieldLocation(state, locationId) {
+    if (locationId === "mountain" || locationId === "city") return true;
+    return getDynamicBattlefieldRules(state).some((rule) => rule.locationId === locationId);
+  }
+  function getBattlefieldLocationIds(state) {
+    const result = ["mountain", "city"];
+    for (const rule of getDynamicBattlefieldRules(state)) if (!result.includes(rule.locationId)) result.push(rule.locationId);
+    return result;
+  }
+  function getDynamicBattlefieldCompetitionReward(state, locationId) {
+    const rules2 = getDynamicBattlefieldRules(state).filter((rule) => rule.locationId === locationId);
+    if (rules2.length === 0) return void 0;
+    if (rules2.some((rule) => rule.competitionReward !== rules2[0].competitionReward)) throw new Error("DYNAMIC_BATTLEFIELD_REWARD_CONFLICT");
+    if (rules2[0].competitionReward === "current-situation-mana") {
+      const mana = Number(state.modeState.currentSituationMana ?? 0);
+      if (!Number.isInteger(mana) || mana < 0) throw new Error("CURRENT_SITUATION_MANA_INVALID");
+      return mana;
     }
-    const roundCap = Number(player.flags.roundManaGainCap);
-    const alreadyGained = Number(player.flags.roundManaGained ?? 0);
-    const allowed = Number.isInteger(roundCap) && roundCap >= 0 ? Math.max(0, roundCap - (Number.isInteger(alreadyGained) && alreadyGained >= 0 ? alreadyGained : 0)) : scaledAmount;
-    const requested = Math.min(scaledAmount, allowed);
-    const cap = Number(player.flags.manaCap);
-    const before = player.mana;
-    player.mana = Number.isInteger(cap) && cap >= 0 ? Math.min(cap, before + requested) : before + requested;
-    const applied = player.mana - before;
-    const overflow = Number.isInteger(cap) && cap >= 0 ? Math.max(0, before + requested - cap) : 0;
-    if (overflow > 0) {
-      const sequence = Number(player.flags.manaGainOverflowSequence ?? 0) + 1;
-      if (!Number.isSafeInteger(sequence) || sequence <= 0) throw new Error("RESOURCE_MANA_OVERFLOW_SEQUENCE_INVALID");
-      const ledger = Array.isArray(player.flags.manaGainOverflowLedger) ? player.flags.manaGainOverflowLedger : [];
-      player.flags.manaGainOverflowSequence = sequence;
-      player.flags.manaGainOverflowLedger = [...ledger, { sequence, requested, applied, overflow, cap, before }];
-    }
-    if (Number.isInteger(roundCap) && roundCap >= 0) {
-      player.flags.roundManaGained = (Number.isInteger(alreadyGained) && alreadyGained >= 0 ? alreadyGained : 0) + applied;
-    }
-    return applied;
-  }
-  function transferMana(source, target, amount) {
-    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_MANA_INVALID");
-    if (amount === 0) return 0;
-    const available = source.flags.infiniteMana === true ? amount : Math.min(amount, Math.max(0, source.mana));
-    if (available <= 0) return 0;
-    const applied = gainMana(target, available);
-    if (source.flags.infiniteMana !== true) source.mana -= applied;
-    return applied;
-  }
-  function loseMana(player, amount) {
-    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_MANA_INVALID");
-    if (player.flags.infiniteMana === true) return 0;
-    const before = player.mana;
-    player.mana = Math.max(0, before - amount);
-    return before - player.mana;
-  }
-  function setMana(player, amount) {
-    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_MANA_INVALID");
-    if (player.flags.infiniteMana === true) return;
-    const cap = Number(player.flags.manaCap);
-    player.mana = Number.isInteger(cap) && cap >= 0 ? Math.min(cap, amount) : amount;
-  }
-  function restoreManaUnpreventable(player, amount) {
-    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_MANA_INVALID");
-    if (player.flags.infiniteMana === true || amount === 0) return 0;
-    const before = player.mana;
-    const cap = Number(player.flags.manaCap);
-    player.mana = Number.isInteger(cap) && cap >= 0 ? Math.min(cap, before + amount) : before + amount;
-    return player.mana - before;
-  }
-  function gainVictoryPoints(player, amount) {
-    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_VICTORY_POINTS_INVALID");
-    if (player.flags.victoryPointGainBlocked === true || isWorkshopResourceGainBlocked(player)) return 0;
-    const multiplier = Number(player.flags.victoryPointGainMultiplier ?? 1);
-    if (!Number.isInteger(multiplier) || multiplier < 1) throw new Error("RESOURCE_VICTORY_POINTS_MULTIPLIER_INVALID");
-    const numerator = Number(player.flags.victoryPointGainFractionNumerator ?? 1);
-    const denominator = Number(player.flags.victoryPointGainFractionDenominator ?? 1);
-    if (!Number.isInteger(numerator) || numerator < 0 || !Number.isInteger(denominator) || denominator <= 0) {
-      throw new Error("RESOURCE_VICTORY_POINTS_FRACTION_INVALID");
-    }
-    const applied = Math.floor(amount * numerator / denominator) * multiplier;
-    player.victoryPoints += applied;
-    return applied;
-  }
-  function adjustVictoryPoints(player, delta) {
-    if (!Number.isInteger(delta)) throw new Error("RESOURCE_VICTORY_POINTS_INVALID");
-    if (delta >= 0) return gainVictoryPoints(player, delta);
-    player.victoryPoints += delta;
-    return delta;
-  }
-  function transferVictoryPoints(source, target, amount) {
-    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_VICTORY_POINTS_INVALID");
-    if (amount === 0) return 0;
-    const transferred = Math.min(amount, Math.max(0, source.victoryPoints));
-    source.victoryPoints -= transferred;
-    target.victoryPoints += transferred;
-    return transferred;
-  }
-  function getCustomResource(player, resourceId) {
-    if (!resourceId || resourceId.trim().length === 0) throw new Error("RESOURCE_ID_INVALID");
-    const value = Number(player.customResources?.[resourceId] ?? 0);
-    return Number.isInteger(value) && value >= 0 ? value : 0;
-  }
-  function setCustomResource(player, resourceId, amount) {
-    if (!resourceId || resourceId.trim().length === 0) throw new Error("RESOURCE_ID_INVALID");
-    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_AMOUNT_INVALID");
-    player.customResources = { ...player.customResources ?? {}, [resourceId]: amount };
-  }
-  function gainCustomResource(player, resourceId, amount, limit) {
-    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_AMOUNT_INVALID");
-    const current = getCustomResource(player, resourceId);
-    const cap = Number.isInteger(limit) && limit >= 0 ? limit : Number.MAX_SAFE_INTEGER;
-    const gained = Math.min(cap, current + amount) - current;
-    setCustomResource(player, resourceId, current + gained);
-    return gained;
-  }
-  function spendCustomResource(player, resourceId, amount) {
-    if (!Number.isInteger(amount) || amount < 0) throw new Error("RESOURCE_AMOUNT_INVALID");
-    const current = getCustomResource(player, resourceId);
-    const spent = Math.min(current, amount);
-    setCustomResource(player, resourceId, current - spent);
-    return spent;
+    return void 0;
   }
 
-  // src/rules-core/ability-activation-restrictions.ts
-  function liveRoundModifier(state, modifier) {
-    if (modifier.duration === "game") return true;
-    if (modifier.duration === "round") return modifier.createdRound === state.round;
-    if (modifier.duration !== "while-source-active" || !modifier.sourceInstanceId) return false;
-    const source = state.cards[modifier.sourceInstanceId];
-    return Boolean(source && source.zone === "attack" && source.active && source.face === "up");
+  // src/rules-core/linked-player-rules.ts
+  var MANA_RULES_KEY = "linkedManaContributionRules";
+  var ENTRY_RULES_KEY = "linkedEntrySealRules";
+  var COMMAND_CONTEXT_KEY = "commandManaContributionContext";
+  var MANA_USAGE_KEY = "linkedManaContributionUsage";
+  function isRecord5(value) {
+    return Boolean(value) && typeof value === "object" && !Array.isArray(value);
   }
-  function isAbilityActivationBlocked(state, playerId, kind) {
-    const target = state.players[playerId];
-    if (!target || target.eliminated) return false;
-    return state.activeRuleModifiers.some((modifier) => {
-      if (modifier.rule !== "ability_activation" || modifier.operation !== "forbid" || !liveRoundModifier(state, modifier)) return false;
-      const scope = modifier.scope ?? {};
-      const kinds = Array.isArray(scope.kinds) ? scope.kinds.filter((value) => typeof value === "string") : [];
-      if (kinds.length > 0 && !kinds.includes(kind)) return false;
-      const subject = typeof scope.subject === "string" ? scope.subject : void 0;
-      if (subject === "controller") return modifier.controllerPlayerId === playerId;
-      if (subject === "all_opponents") return modifier.controllerPlayerId !== playerId;
-      if (subject === "same_battlefield_opponents") {
-        if (modifier.controllerPlayerId === playerId) return false;
-        const sourcePlayer = state.players[modifier.controllerPlayerId];
-        const locationId = sourcePlayer?.locationId;
-        return Boolean((locationId === "mountain" || locationId === "city") && target.locationId === locationId);
+  function battlefield(state, locationId) {
+    return typeof locationId === "string" && isBattlefieldLocation(state, locationId);
+  }
+  function manaRules(state) {
+    const raw = state.modeState[MANA_RULES_KEY];
+    if (!Array.isArray(raw)) return [];
+    return raw.filter((value) => isRecord5(value) && typeof value.id === "string" && typeof value.sourceId === "string" && typeof value.beneficiaryPlayerId === "string" && typeof value.contributorPlayerId === "string" && Number.isInteger(value.maxPerRound));
+  }
+  function entryRules(state) {
+    const raw = state.modeState[ENTRY_RULES_KEY];
+    if (!Array.isArray(raw)) return [];
+    return raw.filter((value) => isRecord5(value) && typeof value.id === "string" && typeof value.sourceId === "string" && typeof value.entrantPlayerId === "string" && typeof value.anchorPlayerId === "string" && Number.isInteger(value.commandSealCost));
+  }
+  function installLinkedManaContributionRule(state, rule) {
+    if (!rule.id || !rule.sourceId || !state.players[rule.beneficiaryPlayerId] || !state.players[rule.contributorPlayerId] || rule.beneficiaryPlayerId === rule.contributorPlayerId || !Number.isInteger(rule.maxPerRound) || rule.maxPerRound <= 0) {
+      throw new Error("LINKED_MANA_RULE_INVALID");
+    }
+    state.modeState[MANA_RULES_KEY] = [...manaRules(state).filter((existing) => existing.id !== rule.id), structuredClone(rule)];
+  }
+  function installLinkedEntrySealRule(state, rule) {
+    if (!rule.id || !rule.sourceId || !state.players[rule.entrantPlayerId] || !state.players[rule.anchorPlayerId] || rule.entrantPlayerId === rule.anchorPlayerId || !Number.isInteger(rule.commandSealCost) || rule.commandSealCost <= 0) {
+      throw new Error("LINKED_ENTRY_RULE_INVALID");
+    }
+    state.modeState[ENTRY_RULES_KEY] = [...entryRules(state).filter((existing) => existing.id !== rule.id), structuredClone(rule)];
+  }
+  function removeLinkedPlayerRulesBySource(state, sourceId) {
+    state.modeState[MANA_RULES_KEY] = manaRules(state).filter((rule) => rule.sourceId !== sourceId);
+    state.modeState[ENTRY_RULES_KEY] = entryRules(state).filter((rule) => rule.sourceId !== sourceId);
+  }
+  function playerHasRequiredStatus(player, status) {
+    return Boolean(player && (!status || player.statuses.includes(status)));
+  }
+  function manaRuleLive(state, rule) {
+    const beneficiary = state.players[rule.beneficiaryPlayerId];
+    const contributor = state.players[rule.contributorPlayerId];
+    if (!beneficiary || !contributor || beneficiary.eliminated || contributor.eliminated || !playerHasRequiredStatus(beneficiary, rule.beneficiaryRequiredStatus) || !playerHasRequiredStatus(contributor, rule.contributorRequiredStatus)) return false;
+    if (rule.requireDifferentBattlefields === true) {
+      if (!battlefield(state, beneficiary.locationId) || !battlefield(state, contributor.locationId) || beneficiary.locationId === contributor.locationId) return false;
+    }
+    if (rule.requireSameBattlefield === true) {
+      if (!battlefield(state, beneficiary.locationId) || beneficiary.locationId !== contributor.locationId) return false;
+    }
+    if (rule.minimumContributorMana !== void 0) {
+      if (!Number.isInteger(rule.minimumContributorMana) || rule.minimumContributorMana < 0) throw new Error("LINKED_MANA_RULE_INVALID");
+      if (contributor.flags.infiniteMana !== true && contributor.mana < rule.minimumContributorMana) return false;
+    }
+    return true;
+  }
+  function manaUsage(state) {
+    const raw = state.modeState[MANA_USAGE_KEY];
+    if (!isRecord5(raw)) return {};
+    const result = {};
+    for (const [key, value] of Object.entries(raw)) {
+      if (!isRecord5(value) || !Number.isInteger(value.round) || !Number.isInteger(value.amount)) continue;
+      result[key] = { round: Number(value.round), amount: Number(value.amount) };
+    }
+    return result;
+  }
+  function prepareCommandManaContribution(state, actorPlayerId, payload) {
+    delete state.modeState[COMMAND_CONTEXT_KEY];
+    if (!isRecord5(payload)) return;
+    const rawChoices = Array.isArray(payload.manaContributions) ? payload.manaContributions : isRecord5(payload.manaContribution) ? [payload.manaContribution] : [];
+    if (rawChoices.length === 0) return;
+    if (!state.players[actorPlayerId]) throw new Error("COMMAND_MANA_CONTRIBUTION_INVALID");
+    const choices = rawChoices.map((raw) => {
+      if (!isRecord5(raw)) throw new Error("COMMAND_MANA_CONTRIBUTION_INVALID");
+      const contributorPlayerId = typeof raw.contributorPlayerId === "string" ? raw.contributorPlayerId : "";
+      const amount = Number(raw.amount);
+      const paymentOrdinal = raw.paymentOrdinal === void 0 ? 0 : Number(raw.paymentOrdinal);
+      const sourceInstanceId = typeof raw.sourceInstanceId === "string" ? raw.sourceInstanceId : void 0;
+      if (!state.players[contributorPlayerId] || actorPlayerId === contributorPlayerId || !Number.isInteger(amount) || amount <= 0 || !Number.isInteger(paymentOrdinal) || paymentOrdinal < 0) {
+        throw new Error("COMMAND_MANA_CONTRIBUTION_INVALID");
       }
-      return false;
+      return { contributorPlayerId, amount, paymentOrdinal, ...sourceInstanceId ? { sourceInstanceId } : {}, consumed: false };
     });
+    const keys = choices.map((choice) => `${choice.paymentOrdinal}:${choice.contributorPlayerId}`);
+    if (new Set(keys).size !== keys.length) throw new Error("COMMAND_MANA_CONTRIBUTION_DUPLICATE");
+    state.modeState[COMMAND_CONTEXT_KEY] = {
+      beneficiaryPlayerId: actorPlayerId,
+      choices,
+      nextPaymentOrdinal: 0
+    };
   }
-  function forbidOpponentAbilityActivationOnBattlefield(state, controllerPlayerId, sourceId, sourceInstanceId, kinds = ["action", "combat"]) {
-    const id = `${sourceId}:ability-activation:${controllerPlayerId}:${state.round}`;
-    state.activeRuleModifiers = state.activeRuleModifiers.filter((modifier) => modifier.id !== id);
-    state.activeRuleModifiers.push({
-      id,
-      sourceId,
-      controllerPlayerId,
-      ...sourceInstanceId ? { sourceInstanceId } : {},
-      operation: "forbid",
-      rule: "ability_activation",
-      scope: { subject: "same_battlefield_opponents", kinds: [...new Set(kinds)] },
-      duration: "round",
-      createdRound: state.round
-    });
-    return id;
+  function commandContext(state) {
+    const raw = state.modeState[COMMAND_CONTEXT_KEY];
+    if (!isRecord5(raw)) return void 0;
+    const choices = Array.isArray(raw.choices) ? raw.choices.filter((choice) => isRecord5(choice) && typeof choice.contributorPlayerId === "string" && Number.isInteger(choice.amount) && Number.isInteger(choice.paymentOrdinal) && typeof choice.consumed === "boolean") : [];
+    return typeof raw.beneficiaryPlayerId === "string" && Number.isInteger(raw.nextPaymentOrdinal) ? { beneficiaryPlayerId: raw.beneficiaryPlayerId, choices, nextPaymentOrdinal: Number(raw.nextPaymentOrdinal) } : void 0;
   }
-  function isCardSourceAbilityActivationBlocked(state, playerId, source) {
-    const target = state.players[playerId];
-    if (!target || target.eliminated || !target.locationId) return false;
-    return state.activeRuleModifiers.some((modifier) => {
-      if (modifier.rule !== "card_attribute_ability_activation" || modifier.operation !== "forbid" || !liveRoundModifier(state, modifier)) return false;
-      const controller = state.players[modifier.controllerPlayerId];
-      if (!controller || controller.eliminated || !controller.locationId || controller.locationId !== target.locationId) return false;
-      const scope = modifier.scope ?? {};
-      if (scope.basic === true && source.basic !== true) return false;
-      if (scope.basic === false && source.basic === true) return false;
-      const excludedDefinitionIds = Array.isArray(scope.excludeDefinitionIds) ? scope.excludeDefinitionIds.filter((value) => typeof value === "string") : [];
-      if (excludedDefinitionIds.includes(source.definitionId)) return false;
-      const excludedTags = Array.isArray(scope.excludeTags) ? scope.excludeTags.filter((value) => typeof value === "string") : [];
-      if (excludedTags.some((tag) => source.tags?.includes(tag))) return false;
-      const attribute = typeof scope.attribute === "string" ? scope.attribute : void 0;
-      if (!attribute) return false;
-      return attribute === "\u65E0\u5C5E\u6027" ? source.attributes.length === 0 : source.attributes.includes(attribute);
-    });
+  function resolveCommandManaContribution(state, payerPlayerId, totalAmount) {
+    if (!Number.isInteger(totalAmount) || totalAmount < 0) throw new Error("MANA_COST_INVALID");
+    const context = commandContext(state);
+    if (!context || context.beneficiaryPlayerId !== payerPlayerId || totalAmount === 0) {
+      return { payerAmount: totalAmount, contributions: [], contributorAmount: 0 };
+    }
+    const ordinal = context.nextPaymentOrdinal;
+    const selected = context.choices.map((choice, index) => ({ choice, index })).filter(({ choice }) => !choice.consumed && choice.paymentOrdinal === ordinal);
+    if (selected.length === 0) {
+      return { payerAmount: totalAmount, contributions: [], contributorAmount: 0, commit: { nextPaymentOrdinal: ordinal + 1, consumedChoiceIndexes: [], usages: [] } };
+    }
+    const requestedTotal = selected.reduce((sum, entry) => sum + entry.choice.amount, 0);
+    if (requestedTotal > totalAmount) throw new Error("COMMAND_MANA_CONTRIBUTION_INVALID");
+    const usage = manaUsage(state);
+    const nextUsage = /* @__PURE__ */ new Map();
+    const contributions = [];
+    for (const { choice, index } of selected) {
+      const candidates = manaRules(state).filter((rule2) => rule2.beneficiaryPlayerId === payerPlayerId && rule2.contributorPlayerId === choice.contributorPlayerId && manaRuleLive(state, rule2));
+      if (candidates.length !== 1) throw new Error(candidates.length === 0 ? "MANA_CONTRIBUTION_NOT_ALLOWED" : "MANA_CONTRIBUTION_CONFLICT");
+      const rule = candidates[0];
+      const prior = nextUsage.has(rule.id) ? Number(nextUsage.get(rule.id)) : usage[rule.id]?.round === state.round ? usage[rule.id].amount : 0;
+      const appliedUsage = prior + choice.amount;
+      if (appliedUsage > rule.maxPerRound) throw new Error("MANA_CONTRIBUTION_ROUND_LIMIT_REACHED");
+      const contributor = state.players[choice.contributorPlayerId];
+      if (!contributor || contributor.flags.infiniteMana !== true && contributor.mana < choice.amount) throw new Error("MANA_CONTRIBUTOR_INSUFFICIENT_MANA");
+      nextUsage.set(rule.id, appliedUsage);
+      contributions.push({ contributorPlayerId: choice.contributorPlayerId, amount: choice.amount, ruleId: rule.id, usageAmount: appliedUsage, ...choice.sourceInstanceId ? { sourceInstanceId: choice.sourceInstanceId } : {}, choiceIndex: index });
+    }
+    return {
+      payerAmount: totalAmount - requestedTotal,
+      contributions,
+      ...contributions.length === 1 ? { contributorPlayerId: contributions[0].contributorPlayerId } : {},
+      contributorAmount: requestedTotal,
+      commit: {
+        nextPaymentOrdinal: ordinal + 1,
+        consumedChoiceIndexes: contributions.map((entry) => entry.choiceIndex),
+        usages: [...nextUsage].map(([ruleId, amount]) => ({ ruleId, amount }))
+      }
+    };
   }
-  function forbidCardAttributeAbilityActivationAtLocation(state, controllerPlayerId, sourceId, sourceInstanceId, attribute, options = {}) {
-    if (!state.players[controllerPlayerId] || !state.cards[sourceInstanceId] || !attribute) throw new Error("CARD_ATTRIBUTE_ABILITY_BLOCK_INVALID");
-    const id = `${sourceId}:card-attribute-ability:${sourceInstanceId}`;
-    state.activeRuleModifiers = state.activeRuleModifiers.filter((modifier) => modifier.id !== id);
-    state.activeRuleModifiers.push({
-      id,
-      sourceId,
-      controllerPlayerId,
-      sourceInstanceId,
-      operation: "forbid",
-      rule: "card_attribute_ability_activation",
-      scope: {
-        attribute,
-        excludeDefinitionIds: [...new Set(options.excludeDefinitionIds ?? [])],
-        excludeTags: [...new Set(options.excludeTags ?? [])]
-      },
-      duration: "while-source-active",
-      createdRound: state.round
+  function commitCommandManaContribution(state, resolved2) {
+    const commit = resolved2.commit;
+    if (!commit) return;
+    const context = commandContext(state);
+    if (!context || context.nextPaymentOrdinal + 1 !== commit.nextPaymentOrdinal) throw new Error("COMMAND_MANA_CONTRIBUTION_STATE_MISMATCH");
+    context.nextPaymentOrdinal = commit.nextPaymentOrdinal;
+    for (const index of commit.consumedChoiceIndexes) {
+      if (!context.choices[index] || context.choices[index].consumed) throw new Error("COMMAND_MANA_CONTRIBUTION_STATE_MISMATCH");
+      context.choices[index].consumed = true;
+    }
+    const usage = manaUsage(state);
+    for (const entry of commit.usages) usage[entry.ruleId] = { round: state.round, amount: entry.amount };
+    state.modeState[MANA_USAGE_KEY] = usage;
+    state.modeState[COMMAND_CONTEXT_KEY] = context;
+  }
+  function finishCommandManaContribution(state) {
+    const context = commandContext(state);
+    delete state.modeState[COMMAND_CONTEXT_KEY];
+    if (context && context.choices.some((choice) => !choice.consumed)) throw new Error("COMMAND_MANA_CONTRIBUTION_UNUSED");
+  }
+  function getLinkedEntryCommandSealCost(state, entrantPlayerId, targetLocationId) {
+    const applicable = entryRules(state).filter((rule) => {
+      if (rule.entrantPlayerId !== entrantPlayerId) return false;
+      const entrant = state.players[rule.entrantPlayerId];
+      const anchor = state.players[rule.anchorPlayerId];
+      if (!entrant || !anchor || entrant.eliminated || anchor.eliminated || !playerHasRequiredStatus(entrant, rule.entrantRequiredStatus) || !playerHasRequiredStatus(anchor, rule.anchorRequiredStatus)) return false;
+      if (rule.onlyBeforeClimax === true && state.modeState.currentSituationClimax === true) return false;
+      return battlefield(state, targetLocationId) && anchor.locationId === targetLocationId && entrant.locationId !== targetLocationId;
     });
-    return id;
+    if (applicable.length === 0) return 0;
+    if (applicable.length > 1) throw new Error("LINKED_ENTRY_RULE_CONFLICT");
+    return applicable[0].commandSealCost;
   }
 
-  // src/rules-core/command-seals.ts
-  function sourcedManaSubstitutionRate(state, playerId, rateFlag, sourceFlag) {
+  // src/rules-core/location-rules.ts
+  function isRecord6(value) {
+    return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+  }
+  function sourceStillOwned2(state, playerId, sourceId) {
     const player = state.players[playerId];
-    if (!player) throw new Error("COMMAND_SEAL_PLAYER_INVALID");
-    const rate = Number(player.flags[rateFlag] ?? 0);
-    if (!Number.isInteger(rate) || rate < 0) throw new Error("COMMAND_SEAL_MANA_SUBSTITUTION_INVALID");
-    const sourceInstanceId = player.flags[sourceFlag];
-    if (sourceInstanceId === void 0) return rate;
-    if (typeof sourceInstanceId !== "string") throw new Error("COMMAND_SEAL_MANA_SUBSTITUTION_SOURCE_INVALID");
-    const source = state.cards[sourceInstanceId];
-    return source?.controllerPlayerId === playerId && source.zone === "attack" && source.active && source.face === "up" ? rate : 0;
+    if (!player || player.eliminated) return false;
+    return [...player.masterSkills, ...player.servantSkills, ...player.hand, ...player.attack].some((instanceId) => {
+      const card = state.cards[instanceId];
+      return Boolean(card && card.ownerPlayerId === playerId && card.zone !== "removed" && (card.definitionId === sourceId || card.definitionId === `card.skill.${sourceId}`));
+    });
   }
-  function incrementRoundUsageFlag(state, playerId, kind) {
-    const player = state.players[playerId];
-    if (!player) throw new Error("COMMAND_SEAL_PLAYER_INVALID");
-    if (kind === "normal") {
-      player.flags.commandSealUsedRound = state.round;
-      player.flags.commandSealUsesThisRound = Number(player.flags.commandSealUsesRound === state.round ? player.flags.commandSealUsesThisRound ?? 0 : 0) + 1;
-      player.flags.commandSealUsesRound = state.round;
-      return;
-    }
-    player.flags.rulerCommandSealUsedRound = state.round;
-    player.flags.rulerCommandSealUsesThisRound = Number(player.flags.rulerCommandSealUsesRound === state.round ? player.flags.rulerCommandSealUsesThisRound ?? 0 : 0) + 1;
-    player.flags.rulerCommandSealUsesRound = state.round;
+  function persistentRules(state) {
+    const raw = state.modeState.persistentLocationAdvantages;
+    if (!Array.isArray(raw)) return [];
+    return raw.filter((item) => {
+      if (!isRecord6(item)) return false;
+      return typeof item.sourceId === "string" && typeof item.playerId === "string" && (item.locationId === "mountain" || item.locationId === "city") && Number.isInteger(item.value) && Number(item.value) >= 0 && (item.mode === "replace" || item.mode === "add");
+    }).map((item) => ({ ...item }));
   }
-  function assertCommandSealUseAllowed(state, playerId, purpose = "ability") {
-    const player = state.players[playerId];
-    if (!player || player.eliminated) throw new Error("COMMAND_SEAL_PLAYER_INVALID");
-    const movementOnlySourceInstanceId = typeof player.flags.commandSealUseMovementOnlySourceInstanceId === "string" ? player.flags.commandSealUseMovementOnlySourceInstanceId : void 0;
-    const movementOnlySource = movementOnlySourceInstanceId ? state.cards[movementOnlySourceInstanceId] : void 0;
-    if (purpose !== "movement" && movementOnlySource && movementOnlySource.zone !== "removed") {
-      throw new Error("COMMAND_SEAL_USE_PURPOSE_FORBIDDEN");
-    }
-    if (Number(player.flags.commandSealUseBlockedThroughRound ?? Number.NEGATIVE_INFINITY) >= state.round) {
-      throw new Error("COMMAND_SEAL_USE_BLOCKED");
-    }
-    if (isAbilityActivationBlocked(state, playerId, "action")) throw new Error("COMMAND_SEAL_USE_BLOCKED");
+  function unoccupiedRules(state) {
+    const raw = state.modeState.unoccupiedLocationAdvantages;
+    if (!Array.isArray(raw)) return [];
+    return raw.filter((item) => {
+      if (!isRecord6(item) || typeof item.sourceId !== "string" || typeof item.playerId !== "string") return false;
+      return Array.isArray(item.locationIds) && item.locationIds.length > 0 && item.locationIds.every((id) => id === "mountain" || id === "city");
+    }).map((item) => ({ ...item, locationIds: [...item.locationIds] }));
   }
-  function spendNormalCommandSeal(state, playerId, purpose = "ability") {
-    const player = state.players[playerId];
-    if (!player || player.eliminated) throw new Error("COMMAND_SEAL_PLAYER_INVALID");
-    assertCommandSealUseAllowed(state, playerId, purpose);
-    if (!Number.isInteger(player.commandSeals) || player.commandSeals <= 0) throw new Error("COMMAND_SEAL_NOT_AVAILABLE");
-    player.commandSeals -= 1;
-    player.flags.commandSealSpentRound = state.round;
-    incrementRoundUsageFlag(state, playerId, "normal");
+  function addUnoccupiedLocationAdvantageRule(state, rule) {
+    if (!state.players[rule.playerId] || !rule.sourceId || rule.locationIds.length === 0) throw new Error("UNOCCUPIED_LOCATION_ADVANTAGE_INVALID");
+    const rules2 = unoccupiedRules(state).filter((item) => !(item.sourceId === rule.sourceId && item.playerId === rule.playerId));
+    state.modeState = {
+      ...state.modeState,
+      unoccupiedLocationAdvantages: [...rules2, { ...rule, locationIds: [...new Set(rule.locationIds)] }]
+    };
   }
-  function assertCommandSealCostPayable(state, playerId, amount = 1) {
-    const player = state.players[playerId];
-    if (!player || player.eliminated) throw new Error("COMMAND_SEAL_PLAYER_INVALID");
-    if (!Number.isInteger(amount) || amount < 0) throw new Error("COMMAND_SEAL_COST_INVALID");
-    const creditRound = Number(player.flags.commandSealPaymentCreditRound ?? Number.NEGATIVE_INFINITY);
-    const availableCredits = creditRound === state.round ? Math.max(0, Number(player.flags.commandSealPaymentCredits ?? 0)) : 0;
-    if (!Number.isInteger(availableCredits)) throw new Error("COMMAND_SEAL_PAYMENT_CREDIT_INVALID");
-    const substitutionCredits = Math.min(amount, availableCredits);
-    const remaining = amount - substitutionCredits;
-    const manaRate = sourcedManaSubstitutionRate(state, playerId, "commandSealCostManaSubstitution", "commandSealCostManaSubstitutionSourceInstanceId");
-    const manaSubstitutionCost = manaRate > 0 ? remaining * manaRate : 0;
-    const paidSeals = manaRate > 0 ? 0 : remaining;
-    if (!Number.isInteger(player.commandSeals) || player.commandSeals < paidSeals) throw new Error("COMMAND_SEAL_NOT_AVAILABLE");
-    if (manaSubstitutionCost > 0 && player.flags.infiniteMana !== true && player.mana < manaSubstitutionCost) throw new Error("COMMAND_SEAL_NOT_AVAILABLE");
-    return { paidSeals, substitutionCredits, availableCredits, manaSubstitutionCost };
-  }
-  function payCommandSealCost(state, playerId, amount = 1) {
-    const player = state.players[playerId];
-    const plan = assertCommandSealCostPayable(state, playerId, amount);
-    if (!player) throw new Error("COMMAND_SEAL_PLAYER_INVALID");
-    if (plan.manaSubstitutionCost > 0) payMana(player, plan.manaSubstitutionCost, "COMMAND_SEAL_NOT_AVAILABLE");
-    player.commandSeals -= plan.paidSeals;
-    if (plan.paidSeals > 0) player.flags.commandSealSpentRound = state.round;
-    if (plan.substitutionCredits > 0) {
-      const remaining = plan.availableCredits - plan.substitutionCredits;
-      if (remaining > 0) player.flags.commandSealPaymentCredits = remaining;
-      else {
-        delete player.flags.commandSealPaymentCredits;
-        delete player.flags.commandSealPaymentCreditRound;
-      }
-    }
-    return { paidSeals: plan.paidSeals, substitutionCredits: plan.substitutionCredits };
-  }
-  function loseCommandSeals(state, playerId, amount = 1) {
-    const player = state.players[playerId];
-    if (!player || player.eliminated) throw new Error("COMMAND_SEAL_PLAYER_INVALID");
-    if (!Number.isInteger(amount) || amount < 0) throw new Error("COMMAND_SEAL_AMOUNT_INVALID");
-    const manaRate = sourcedManaSubstitutionRate(state, playerId, "commandSealLossManaSubstitution", "commandSealLossManaSubstitutionSourceInstanceId");
-    if (manaRate > 0) {
-      loseMana(player, amount * manaRate);
-      return 0;
-    }
-    const lost = Math.min(amount, Math.max(0, player.commandSeals));
-    player.commandSeals -= lost;
-    return lost;
-  }
-  function gainCommandSeals(state, playerId, amount = 1) {
-    const player = state.players[playerId];
-    if (!player || player.eliminated) throw new Error("COMMAND_SEAL_PLAYER_INVALID");
-    if (!Number.isInteger(amount) || amount < 0) throw new Error("COMMAND_SEAL_AMOUNT_INVALID");
-    const manaRate = sourcedManaSubstitutionRate(state, playerId, "commandSealGainManaSubstitution", "commandSealGainManaSubstitutionSourceInstanceId");
-    if (manaRate > 0) {
-      const gainedMana = gainMana(player, amount * manaRate);
-      return { gainedSeals: 0, gainedMana };
-    }
-    const maximum = player.flags.commandSealMaximum === void 0 ? void 0 : Number(player.flags.commandSealMaximum);
-    if (maximum !== void 0 && (!Number.isInteger(maximum) || maximum < 0)) throw new Error("COMMAND_SEAL_MAXIMUM_INVALID");
-    const gainedSeals = maximum === void 0 ? amount : Math.max(0, Math.min(amount, maximum - player.commandSeals));
-    player.commandSeals += gainedSeals;
-    return { gainedSeals, gainedMana: 0 };
-  }
-  function spendRulerCommandSeal(state, controllerPlayerId, sealId) {
-    const player = state.players[controllerPlayerId];
-    if (!player || player.eliminated) throw new Error("RULER_SEAL_CONTROLLER_INVALID");
-    assertCommandSealUseAllowed(state, controllerPlayerId);
-    const seal = consumeRulerSeal(state, sealId, controllerPlayerId);
-    recordRulerSealUse(state, seal);
-    incrementRoundUsageFlag(state, controllerPlayerId, "ruler");
-    return seal;
-  }
-  function payRulerSealCost(state, controllerPlayerId, sealId) {
-    const player = state.players[controllerPlayerId];
-    if (!player || player.eliminated) throw new Error("RULER_SEAL_CONTROLLER_INVALID");
-    return consumeRulerSeal(state, sealId, controllerPlayerId);
-  }
-  function countUnusedOwnedCommandSeals(state, playerId) {
-    const player = state.players[playerId];
-    if (!player || player.eliminated) return 0;
-    return Math.max(0, Number(player.commandSeals ?? 0)) + listRulerSealsControlledBy(state, playerId).length;
-  }
-  function countEngagedOpponentUnusedCommandSeals(state, playerId, locationId = state.players[playerId]?.locationId) {
+  function getUnoccupiedLocationAdvantageBonus(state, playerId, locationId) {
     if (locationId !== "mountain" && locationId !== "city") return 0;
-    return (state.board.locations[locationId] ?? []).reduce((sum, candidateId) => {
-      if (candidateId === playerId) return sum;
-      const candidate = state.players[candidateId];
-      if (!candidate || candidate.eliminated) return sum;
-      return sum + countUnusedOwnedCommandSeals(state, candidateId);
-    }, 0);
+    const applies = unoccupiedRules(state).some((rule) => rule.playerId === playerId && rule.locationIds.includes(locationId) && sourceStillOwned2(state, playerId, rule.sourceId));
+    if (!applies) return 0;
+    const records2 = state.board.outpostRecords[locationId] ?? [];
+    return (records2[0] == null ? 3 : 0) + (records2[1] == null ? 1 : 0);
+  }
+  function effectiveLocationRules(state) {
+    const raw = state.modeState.effectiveLocationRules;
+    if (!Array.isArray(raw)) return [];
+    return raw.filter((item) => {
+      if (!isRecord6(item)) return false;
+      if (typeof item.sourceId !== "string" || typeof item.playerId !== "string") return false;
+      if (!["workshop", "mountain", "city", "scouting"].includes(String(item.treatedAs))) return false;
+      if (item.actualLocationIds !== void 0 && (!Array.isArray(item.actualLocationIds) || item.actualLocationIds.some((id) => !["workshop", "mountain", "city", "scouting"].includes(String(id))))) return false;
+      if (item.persistentAdvantageAtLeast !== void 0 && (!Number.isInteger(item.persistentAdvantageAtLeast) || Number(item.persistentAdvantageAtLeast) < 0)) return false;
+      return item.persistentAdvantageSourceId === void 0 || typeof item.persistentAdvantageSourceId === "string";
+    }).map((item) => ({ ...item, ...item.actualLocationIds ? { actualLocationIds: [...item.actualLocationIds] } : {} }));
+  }
+  function sameLocationRestrictions(state) {
+    const raw = state.modeState.sameLocationRestrictions;
+    if (!Array.isArray(raw)) return [];
+    return raw.filter((item) => {
+      if (!isRecord6(item)) return false;
+      if (typeof item.sourceId !== "string" || typeof item.controllerPlayerId !== "string") return false;
+      if (item.activeWhenControllerAtEffectiveLocation !== void 0 && !["workshop", "mountain", "city", "scouting"].includes(String(item.activeWhenControllerAtEffectiveLocation))) return false;
+      return true;
+    }).map((item) => ({ ...item }));
+  }
+  function getPersistentLocationAdvantage(state, playerId, locationId, sourceId) {
+    if (locationId !== "mountain" && locationId !== "city") return 0;
+    const rules2 = persistentRules(state).filter((rule) => rule.playerId === playerId && rule.locationId === locationId && (sourceId === void 0 || rule.sourceId === sourceId));
+    if (rules2.length === 0) return 0;
+    const replacements = rules2.filter((rule) => rule.mode === "replace").map((rule) => rule.value);
+    const replacement = replacements.length > 0 ? Math.max(...replacements) : 0;
+    return replacement + rules2.filter((rule) => rule.mode === "add").reduce((sum, rule) => sum + rule.value, 0);
+  }
+  function resolveLocationAdvantage(state, playerId, locationId, base) {
+    if (!Number.isFinite(base)) throw new Error("LOCATION_ADVANTAGE_BASE_INVALID");
+    if (locationId !== "mountain" && locationId !== "city") return base;
+    const rules2 = persistentRules(state).filter((rule) => rule.playerId === playerId && rule.locationId === locationId);
+    if (rules2.length === 0) return base;
+    const replacements = rules2.filter((rule) => rule.mode === "replace").map((rule) => rule.value);
+    let value = replacements.length > 0 ? Math.max(...replacements) : base;
+    value += rules2.filter((rule) => rule.mode === "add").reduce((sum, rule) => sum + rule.value, 0);
+    return value;
+  }
+  function setPersistentLocationAdvantage(state, rule) {
+    if (!state.players[rule.playerId] || !Number.isInteger(rule.value) || rule.value < 0) throw new Error("PERSISTENT_LOCATION_ADVANTAGE_INVALID");
+    const existing = persistentRules(state).filter((item) => !(item.sourceId === rule.sourceId && item.playerId === rule.playerId && item.locationId === rule.locationId));
+    state.modeState = { ...state.modeState, persistentLocationAdvantages: [...existing, { ...rule }] };
+    syncPersistentLocationAdvantage(state, rule.playerId);
+    return rule.value;
+  }
+  function incrementPersistentLocationAdvantage(state, options) {
+    const amount = options.amount ?? 1;
+    const max = options.max ?? Number.MAX_SAFE_INTEGER;
+    if (!Number.isInteger(amount) || amount < 0 || !Number.isInteger(max) || max < 0) throw new Error("PERSISTENT_LOCATION_ADVANTAGE_INCREMENT_INVALID");
+    const existing = persistentRules(state).find((rule) => rule.sourceId === options.sourceId && rule.playerId === options.playerId && rule.locationId === options.locationId);
+    const next = Math.min(max, Number(existing?.value ?? 0) + amount);
+    setPersistentLocationAdvantage(state, {
+      sourceId: options.sourceId,
+      playerId: options.playerId,
+      locationId: options.locationId,
+      value: next,
+      mode: options.mode ?? existing?.mode ?? "replace"
+    });
+    return next;
+  }
+  function syncPersistentLocationAdvantage(state, playerId) {
+    const player = state.players[playerId];
+    if (!player) return 0;
+    const locationId = player.locationId;
+    if (locationId !== "mountain" && locationId !== "city") return 0;
+    const base = player.flags.deploymentBonusActive === true && player.flags.deploymentLocationId === locationId ? Number(player.flags.deploymentBonus ?? 0) : 0;
+    const resolved2 = resolveLocationAdvantage(state, playerId, locationId, base);
+    if (resolved2 > 0) {
+      player.flags.deploymentLocationId = locationId;
+      player.flags.deploymentBonus = resolved2;
+      player.flags.deploymentBonusActive = true;
+    }
+    return resolved2;
+  }
+  function addEffectiveLocationRule(state, rule) {
+    if (!state.players[rule.playerId] || !rule.sourceId) throw new Error("EFFECTIVE_LOCATION_RULE_INVALID");
+    const rules2 = effectiveLocationRules(state).filter((item) => !(item.sourceId === rule.sourceId && item.playerId === rule.playerId && item.treatedAs === rule.treatedAs));
+    state.modeState = {
+      ...state.modeState,
+      effectiveLocationRules: [...rules2, { ...rule, ...rule.actualLocationIds ? { actualLocationIds: [...rule.actualLocationIds] } : {} }]
+    };
+  }
+  function isPlayerAtEffectiveLocation(state, playerId, locationId) {
+    const player = state.players[playerId];
+    if (!player || player.eliminated || !player.locationId) return false;
+    if (player.locationId === locationId) return true;
+    return effectiveLocationRules(state).some((rule) => {
+      if (rule.playerId !== playerId || rule.treatedAs !== locationId || !sourceStillOwned2(state, playerId, rule.sourceId)) return false;
+      if (rule.actualLocationIds?.length && !rule.actualLocationIds.includes(player.locationId)) return false;
+      if (rule.persistentAdvantageAtLeast !== void 0) {
+        const advantage = getPersistentLocationAdvantage(state, playerId, player.locationId, rule.persistentAdvantageSourceId);
+        if (advantage < rule.persistentAdvantageAtLeast) return false;
+      }
+      return true;
+    });
+  }
+  function addSameLocationRestrictionRule(state, rule) {
+    if (!state.players[rule.controllerPlayerId] || !rule.sourceId) throw new Error("SAME_LOCATION_RESTRICTION_INVALID");
+    const rules2 = sameLocationRestrictions(state).filter((item) => !(item.sourceId === rule.sourceId && item.controllerPlayerId === rule.controllerPlayerId));
+    state.modeState = { ...state.modeState, sameLocationRestrictions: [...rules2, { ...rule }] };
+  }
+  function restrictionAppliesToTarget(state, rule, targetPlayerId) {
+    const controller = state.players[rule.controllerPlayerId];
+    const target = state.players[targetPlayerId];
+    if (!controller || !target || controller.eliminated || target.eliminated || controller.id === target.id) return false;
+    if (!controller.locationId || controller.locationId !== target.locationId) return false;
+    if (!sourceStillOwned2(state, controller.id, rule.sourceId)) return false;
+    if (isOtherPlayerAbilityEffectIgnored(state, controller.id, target.id)) return false;
+    if (rule.activeWhenControllerAtEffectiveLocation && !isPlayerAtEffectiveLocation(state, controller.id, rule.activeWhenControllerAtEffectiveLocation)) return false;
+    return true;
+  }
+  function isPlayerExitBlockedBySameLocationRule(state, playerId, targetLocationId) {
+    const player = state.players[playerId];
+    if (!player?.locationId || player.locationId === targetLocationId) return false;
+    return sameLocationRestrictions(state).some((rule) => rule.blockOpponentExit === true && restrictionAppliesToTarget(state, rule, playerId));
+  }
+  function isFaceDownStandardAttackRequiredBySameLocationRule(state, playerId) {
+    return sameLocationRestrictions(state).some((rule) => rule.requireOpponentFaceDownStandardAttack === true && restrictionAppliesToTarget(state, rule, playerId));
   }
 
   // src/rules-core/situation-immunity.ts
@@ -54579,6 +54358,82 @@
     )));
   }
 
+  // src/rules-core/defeat.ts
+  function playerIgnoresDefeat(state, player, definitions) {
+    if (player.flags.ignoreDefeat === true || player.flags.ignoreDefeatRound === state.round) return true;
+    if (!definitions) return false;
+    if (isStructuredDefeatIgnored(state, player.id, definitions)) return true;
+    const linkedOwnerDefeatIgnore = Object.values(state.cards).some((instance) => {
+      if (!instance.active || instance.face !== "up" || instance.zone !== "attack" || !instance.ownerPlayerId || !instance.controllerPlayerId) return false;
+      const definition = definitions[instance.definitionId];
+      if (definition?.linkedOwnerDefeatIgnore !== true || player.id !== instance.ownerPlayerId && player.id !== instance.controllerPlayerId) return false;
+      if (instance.ownerPlayerId === instance.controllerPlayerId) return player.id === instance.ownerPlayerId;
+      const owner = state.players[instance.ownerPlayerId];
+      const controller = state.players[instance.controllerPlayerId];
+      return Boolean(owner && controller && owner.locationId && owner.locationId === controller.locationId);
+    });
+    if (linkedOwnerDefeatIgnore) return true;
+    return player.attack.some((instanceId) => {
+      const instance = state.cards[instanceId];
+      const definition = instance ? definitions[instance.definitionId] : void 0;
+      if (!instance?.active || instance.face !== "up" || !definition?.playerDefeatIgnoreCondition) return false;
+      const condition = definition.playerDefeatIgnoreCondition.playerFlagEquals;
+      return Boolean(condition && player.flags[condition.key] === condition.value);
+    });
+  }
+  function defeatPlayer(state, playerId, emitEvent, details = {}) {
+    const player = state.players[playerId];
+    if (!player || player.eliminated) return false;
+    if (player.defeated) return false;
+    player.defeated = true;
+    emitEvent?.("player.defeated", { playerId, ...details });
+    return true;
+  }
+  function payDefeatEffectCost(state, targetPlayerId, controllerPlayerId, definitions) {
+    const controller = state.players[controllerPlayerId];
+    if (!controller || controller.eliminated) return false;
+    if (controllerPlayerId === targetPlayerId) return true;
+    const extraMana = getStructuredOpponentDefeatManaCost(state, targetPlayerId, definitions);
+    if (extraMana <= 0) return true;
+    if (controller.flags.infiniteMana !== true && controller.mana < extraMana) return false;
+    try {
+      payManaCost(state, controller, extraMana, definitions, "DEFEAT_EFFECT_MANA_COST_UNAFFORDABLE");
+    } catch (error) {
+      if (error instanceof Error && ["DEFEAT_EFFECT_MANA_COST_UNAFFORDABLE", "MANA_SPENDING_FORBIDDEN_BY_RULE"].includes(error.message)) return false;
+      throw error;
+    }
+    controller.flags.roundManaSpent = Number(controller.flags.roundManaSpent ?? 0) + extraMana;
+    return true;
+  }
+  function defeatPlayerByEffect(state, targetPlayerId, controllerPlayerId, definitions, emitEvent, details = {}) {
+    const target = state.players[targetPlayerId];
+    const controller = state.players[controllerPlayerId];
+    if (!target || target.eliminated || target.defeated || !controller || controller.eliminated) return false;
+    if (!payDefeatEffectCost(state, targetPlayerId, controllerPlayerId, definitions)) return false;
+    return defeatPlayer(state, targetPlayerId, emitEvent, { ...details, controllerPlayerId });
+  }
+  function applyDefeatEffect(state, targetPlayerId, controllerPlayerId, definitions, emitEvent, details = {}) {
+    const target = state.players[targetPlayerId];
+    const controller = state.players[controllerPlayerId];
+    if (!target || target.eliminated || !controller || controller.eliminated) {
+      return { applied: false, defeated: false, ignored: false, alreadyDefeated: false };
+    }
+    if (controllerPlayerId !== targetPlayerId && isOtherPlayerAbilityEffectIgnored(state, controllerPlayerId, targetPlayerId)) {
+      return { applied: false, defeated: false, ignored: true, alreadyDefeated: target.defeated };
+    }
+    if (!payDefeatEffectCost(state, targetPlayerId, controllerPlayerId, definitions)) {
+      return { applied: false, defeated: false, ignored: false, alreadyDefeated: target.defeated };
+    }
+    const alreadyDefeated = target.defeated;
+    emitEvent?.("player.defeat-applied", { playerId: targetPlayerId, controllerPlayerId, ...details });
+    if (playerIgnoresDefeat(state, target, definitions)) {
+      return { applied: true, defeated: false, ignored: true, alreadyDefeated };
+    }
+    if (alreadyDefeated) return { applied: true, defeated: false, ignored: false, alreadyDefeated: true };
+    const defeated = defeatPlayer(state, targetPlayerId, emitEvent, { ...details, controllerPlayerId });
+    return { applied: true, defeated, ignored: false, alreadyDefeated: false };
+  }
+
   // src/rules-core/india-lostbelt.ts
   var INDIA_POOL_ID = "lostbelt:india";
   var INDIA_EXPANSION_HANDLER = "core.india-expansion";
@@ -55395,7 +55250,17 @@
     const masteryAdjusted = hasMusashiNitenIchiryu(state, player) ? applyMusashiBasePowerRule(player, definition, printed, mastery) : printed;
     const attributes = getCombatCardAttributes(state, player, instanceId, cards);
     const magicReductionProtected = attributes.includes("\u9B54\u672F") && (Number(player.flags.magicPowerReductionProtectedRound ?? -1) === state.round || Number(player.flags.opponentAbilityMagicPowerReductionProtectedRound ?? -1) === state.round);
-    return getStructuredCardBasePower(state, player.id, instance, definition, cards, masteryAdjusted, false, magicReductionProtected, powerAlterationApplications);
+    return getStructuredCardBasePower(
+      state,
+      player.id,
+      instance,
+      definition,
+      cards,
+      ignoresNeutralBoardCombatEffects(state, player.id) ? masteryAdjusted : fuyukiBasePower(state, player, cards, masteryAdjusted),
+      false,
+      magicReductionProtected,
+      powerAlterationApplications
+    );
   }
   function getMusashiNitenTotalPowerBonus(state, player, cards) {
     const mastery = getMusashiMastery(player);
@@ -55424,7 +55289,8 @@
     const roundLocationBonus = player.flags.roundTerrainAdvantageBonusRound === state.round && player.flags.roundTerrainAdvantageBonusLocationId === locationId ? Number(player.flags.roundTerrainAdvantageBonus ?? 0) : 0;
     if (!Number.isFinite(roundLocationBonus)) throw new Error("ROUND_TERRAIN_ADVANTAGE_BONUS_INVALID");
     const indiaTerrainBonus = getIndiaFadingTownTerrainBonus(state, player, locationId, cards);
-    const calculated = getStructuredDeploymentAdvantage(state, player.id, cards, deploymentBonusBase + unoccupiedTerrainBonus + roundLocationBonus + indiaTerrainBonus, locationId);
+    const eventDeploymentBonus = !ignoresNeutralBoardCombatEffects(state, player.id) && countFuyukiEffect(state, locationId, cards, "zero-terrain") ? 0 : deploymentBonusBase;
+    const calculated = getStructuredDeploymentAdvantage(state, player.id, cards, eventDeploymentBonus + unoccupiedTerrainBonus + roundLocationBonus + indiaTerrainBonus, locationId);
     const zeroSourceInstanceId = typeof player.flags.terrainAdvantageZeroSourceInstanceId === "string" ? player.flags.terrainAdvantageZeroSourceInstanceId : void 0;
     const zeroSource = zeroSourceInstanceId ? state.cards[zeroSourceInstanceId] : void 0;
     if (zeroSource?.zone === "attack" && zeroSource.active === true && zeroSource.face === "up") return 0;
@@ -55434,7 +55300,7 @@
       if (!Number.isFinite(override)) throw new Error("TERRAIN_ADVANTAGE_OVERRIDE_INVALID");
       return override;
     }
-    return calculated;
+    return ignoresNeutralBoardCombatEffects(state, player.id) ? calculated : fuyukiTerrain(state, locationId, cards, calculated);
   }
   function calculateCombatPowerRaw(state, player, cards, locationId) {
     const permanentFixed = player.flags.combatPowerFixedPermanent;
@@ -55478,7 +55344,14 @@
     const lostbeltPresenceBonus = getLostbeltPresencePowerBonus(state, player, locationId ?? player.locationId, cards);
     const indiaJudgementBonus = getIndiaJudgementPowerBonus(state, player);
     const chinaObjectiveBonus = getChineseObjectiveTotalPowerBonus(state, player, locationId ?? player.locationId, cards);
-    const aggregate = base + roundBonus + commandSealBonus + leonardoBonus + nanayaPenalty + firstDayPenalty + hunterBonus + terrainContribution + danSniperBonus + aggregateSituationAdd + fiorePenalty + climaxNoblePhantasmBonus + kariyaNemesisPenalty + unusedSealAuraBonus + musashiNitenBonus + lostbeltPresenceBonus + indiaJudgementBonus + chinaObjectiveBonus + stackedStatusPower;
+    const fuyukiBonus = ignoresNeutralBoardCombatEffects(state, player.id) ? 0 : applyEventObjectiveNumericEffectMultiplier(
+      state,
+      player.id,
+      cards,
+      "power",
+      fuyukiTotalBonus(state, player, cards, terrainLocationId, hasSharedActiveAttribute(state, player, cards))
+    );
+    const aggregate = base + roundBonus + commandSealBonus + leonardoBonus + nanayaPenalty + firstDayPenalty + hunterBonus + terrainContribution + danSniperBonus + aggregateSituationAdd + fiorePenalty + climaxNoblePhantasmBonus + kariyaNemesisPenalty + unusedSealAuraBonus + musashiNitenBonus + lostbeltPresenceBonus + indiaJudgementBonus + chinaObjectiveBonus + stackedStatusPower + fuyukiBonus;
     const structured = getStructuredCombatPower(
       state,
       player.id,
@@ -55573,7 +55446,7 @@
       instance,
       definition,
       cards,
-      masteryAdjustedBasePower,
+      ignoresNeutralBoardCombatEffects(state, player.id) ? masteryAdjustedBasePower : fuyukiBasePower(state, player, cards, masteryAdjustedBasePower),
       reductionProtected,
       opponentReductionProtected,
       powerAlterationApplications
@@ -55710,6 +55583,7 @@
         const gatedMap = replaceAttributeMapForColor(state, eventId, gated.addByAttribute);
         if (printedBasePower >= gated.min) value += attributes.reduce((sum, attribute) => sum + Number(gatedMap?.[attribute] ?? 0), 0);
       }
+      if (event?.tags?.includes("fuyuki:high-card-plus-one") && printedBasePower >= 4) value += 1;
       value += getIndiaObjectiveCardPowerAdd(state, player, instanceId, eventId, attributes, cards);
       const chinaMultiplier = getChinesePositiveBoardPowerMultiplier(state, locationId, cards);
       return total + (value > 0 ? value * chinaMultiplier : value);
@@ -55925,80 +55799,282 @@
     return split;
   }
 
-  // src/rules-core/defeat.ts
-  function playerIgnoresDefeat(state, player, definitions) {
-    if (player.flags.ignoreDefeat === true || player.flags.ignoreDefeatRound === state.round) return true;
-    if (!definitions) return false;
-    if (isStructuredDefeatIgnored(state, player.id, definitions)) return true;
-    const linkedOwnerDefeatIgnore = Object.values(state.cards).some((instance) => {
-      if (!instance.active || instance.face !== "up" || instance.zone !== "attack" || !instance.ownerPlayerId || !instance.controllerPlayerId) return false;
-      const definition = definitions[instance.definitionId];
-      if (definition?.linkedOwnerDefeatIgnore !== true || player.id !== instance.ownerPlayerId && player.id !== instance.controllerPlayerId) return false;
-      if (instance.ownerPlayerId === instance.controllerPlayerId) return player.id === instance.ownerPlayerId;
-      const owner = state.players[instance.ownerPlayerId];
-      const controller = state.players[instance.controllerPlayerId];
-      return Boolean(owner && controller && owner.locationId && owner.locationId === controller.locationId);
-    });
-    if (linkedOwnerDefeatIgnore) return true;
-    return player.attack.some((instanceId) => {
-      const instance = state.cards[instanceId];
-      const definition = instance ? definitions[instance.definitionId] : void 0;
-      if (!instance?.active || instance.face !== "up" || !definition?.playerDefeatIgnoreCondition) return false;
-      const condition = definition.playerDefeatIgnoreCondition.playerFlagEquals;
-      return Boolean(condition && player.flags[condition.key] === condition.value);
+  // src/rules-core/ability-activation-restrictions.ts
+  function liveRoundModifier(state, modifier) {
+    if (modifier.duration === "game") return true;
+    if (modifier.duration === "round") return modifier.createdRound === state.round;
+    if (modifier.duration !== "while-source-active" || !modifier.sourceInstanceId) return false;
+    const source = state.cards[modifier.sourceInstanceId];
+    return Boolean(source && source.zone === "attack" && source.active && source.face === "up");
+  }
+  function isAbilityActivationBlocked(state, playerId, kind) {
+    const target = state.players[playerId];
+    if (!target || target.eliminated) return false;
+    return state.activeRuleModifiers.some((modifier) => {
+      if (modifier.rule !== "ability_activation" || modifier.operation !== "forbid" || !liveRoundModifier(state, modifier)) return false;
+      const scope = modifier.scope ?? {};
+      const kinds = Array.isArray(scope.kinds) ? scope.kinds.filter((value) => typeof value === "string") : [];
+      if (kinds.length > 0 && !kinds.includes(kind)) return false;
+      const subject = typeof scope.subject === "string" ? scope.subject : void 0;
+      if (subject === "controller") return modifier.controllerPlayerId === playerId;
+      if (subject === "all_opponents") return modifier.controllerPlayerId !== playerId;
+      if (subject === "same_battlefield_opponents") {
+        if (modifier.controllerPlayerId === playerId) return false;
+        const sourcePlayer = state.players[modifier.controllerPlayerId];
+        const locationId = sourcePlayer?.locationId;
+        return Boolean((locationId === "mountain" || locationId === "city") && target.locationId === locationId);
+      }
+      return false;
     });
   }
-  function defeatPlayer(state, playerId, emitEvent, details = {}) {
+  function forbidOpponentAbilityActivationOnBattlefield(state, controllerPlayerId, sourceId, sourceInstanceId, kinds = ["action", "combat"]) {
+    const id = `${sourceId}:ability-activation:${controllerPlayerId}:${state.round}`;
+    state.activeRuleModifiers = state.activeRuleModifiers.filter((modifier) => modifier.id !== id);
+    state.activeRuleModifiers.push({
+      id,
+      sourceId,
+      controllerPlayerId,
+      ...sourceInstanceId ? { sourceInstanceId } : {},
+      operation: "forbid",
+      rule: "ability_activation",
+      scope: { subject: "same_battlefield_opponents", kinds: [...new Set(kinds)] },
+      duration: "round",
+      createdRound: state.round
+    });
+    return id;
+  }
+  function isCardSourceAbilityActivationBlocked(state, playerId, source) {
+    const target = state.players[playerId];
+    if (!target || target.eliminated || !target.locationId) return false;
+    return state.activeRuleModifiers.some((modifier) => {
+      if (modifier.rule !== "card_attribute_ability_activation" || modifier.operation !== "forbid" || !liveRoundModifier(state, modifier)) return false;
+      const controller = state.players[modifier.controllerPlayerId];
+      if (!controller || controller.eliminated || !controller.locationId || controller.locationId !== target.locationId) return false;
+      const scope = modifier.scope ?? {};
+      if (scope.basic === true && source.basic !== true) return false;
+      if (scope.basic === false && source.basic === true) return false;
+      const excludedDefinitionIds = Array.isArray(scope.excludeDefinitionIds) ? scope.excludeDefinitionIds.filter((value) => typeof value === "string") : [];
+      if (excludedDefinitionIds.includes(source.definitionId)) return false;
+      const excludedTags = Array.isArray(scope.excludeTags) ? scope.excludeTags.filter((value) => typeof value === "string") : [];
+      if (excludedTags.some((tag) => source.tags?.includes(tag))) return false;
+      const attribute = typeof scope.attribute === "string" ? scope.attribute : void 0;
+      if (!attribute) return false;
+      return attribute === "\u65E0\u5C5E\u6027" ? source.attributes.length === 0 : source.attributes.includes(attribute);
+    });
+  }
+  function forbidCardAttributeAbilityActivationAtLocation(state, controllerPlayerId, sourceId, sourceInstanceId, attribute, options = {}) {
+    if (!state.players[controllerPlayerId] || !state.cards[sourceInstanceId] || !attribute) throw new Error("CARD_ATTRIBUTE_ABILITY_BLOCK_INVALID");
+    const id = `${sourceId}:card-attribute-ability:${sourceInstanceId}`;
+    state.activeRuleModifiers = state.activeRuleModifiers.filter((modifier) => modifier.id !== id);
+    state.activeRuleModifiers.push({
+      id,
+      sourceId,
+      controllerPlayerId,
+      sourceInstanceId,
+      operation: "forbid",
+      rule: "card_attribute_ability_activation",
+      scope: {
+        attribute,
+        excludeDefinitionIds: [...new Set(options.excludeDefinitionIds ?? [])],
+        excludeTags: [...new Set(options.excludeTags ?? [])]
+      },
+      duration: "while-source-active",
+      createdRound: state.round
+    });
+    return id;
+  }
+
+  // src/rules-core/command-seals.ts
+  function sourcedManaSubstitutionRate(state, playerId, rateFlag, sourceFlag) {
     const player = state.players[playerId];
-    if (!player || player.eliminated) return false;
-    if (player.defeated) return false;
-    player.defeated = true;
-    emitEvent?.("player.defeated", { playerId, ...details });
-    return true;
+    if (!player) throw new Error("COMMAND_SEAL_PLAYER_INVALID");
+    const rate = Number(player.flags[rateFlag] ?? 0);
+    if (!Number.isInteger(rate) || rate < 0) throw new Error("COMMAND_SEAL_MANA_SUBSTITUTION_INVALID");
+    const sourceInstanceId = player.flags[sourceFlag];
+    if (sourceInstanceId === void 0) return rate;
+    if (typeof sourceInstanceId !== "string") throw new Error("COMMAND_SEAL_MANA_SUBSTITUTION_SOURCE_INVALID");
+    const source = state.cards[sourceInstanceId];
+    return source?.controllerPlayerId === playerId && source.zone === "attack" && source.active && source.face === "up" ? rate : 0;
   }
-  function payDefeatEffectCost(state, targetPlayerId, controllerPlayerId, definitions) {
-    const controller = state.players[controllerPlayerId];
-    if (!controller || controller.eliminated) return false;
-    if (controllerPlayerId === targetPlayerId) return true;
-    const extraMana = getStructuredOpponentDefeatManaCost(state, targetPlayerId, definitions);
-    if (extraMana <= 0) return true;
-    if (controller.flags.infiniteMana !== true && controller.mana < extraMana) return false;
-    try {
-      payManaCost(state, controller, extraMana, definitions, "DEFEAT_EFFECT_MANA_COST_UNAFFORDABLE");
-    } catch (error) {
-      if (error instanceof Error && ["DEFEAT_EFFECT_MANA_COST_UNAFFORDABLE", "MANA_SPENDING_FORBIDDEN_BY_RULE"].includes(error.message)) return false;
-      throw error;
+  function incrementRoundUsageFlag(state, playerId, kind) {
+    const player = state.players[playerId];
+    if (!player) throw new Error("COMMAND_SEAL_PLAYER_INVALID");
+    if (kind === "normal") {
+      player.flags.commandSealUsedRound = state.round;
+      player.flags.commandSealUsesThisRound = Number(player.flags.commandSealUsesRound === state.round ? player.flags.commandSealUsesThisRound ?? 0 : 0) + 1;
+      player.flags.commandSealUsesRound = state.round;
+      return;
     }
-    controller.flags.roundManaSpent = Number(controller.flags.roundManaSpent ?? 0) + extraMana;
-    return true;
+    player.flags.rulerCommandSealUsedRound = state.round;
+    player.flags.rulerCommandSealUsesThisRound = Number(player.flags.rulerCommandSealUsesRound === state.round ? player.flags.rulerCommandSealUsesThisRound ?? 0 : 0) + 1;
+    player.flags.rulerCommandSealUsesRound = state.round;
   }
-  function defeatPlayerByEffect(state, targetPlayerId, controllerPlayerId, definitions, emitEvent, details = {}) {
-    const target = state.players[targetPlayerId];
-    const controller = state.players[controllerPlayerId];
-    if (!target || target.eliminated || target.defeated || !controller || controller.eliminated) return false;
-    if (!payDefeatEffectCost(state, targetPlayerId, controllerPlayerId, definitions)) return false;
-    return defeatPlayer(state, targetPlayerId, emitEvent, { ...details, controllerPlayerId });
+  function assertCommandSealUseAllowed(state, playerId, purpose = "ability") {
+    const player = state.players[playerId];
+    if (!player || player.eliminated) throw new Error("COMMAND_SEAL_PLAYER_INVALID");
+    const movementOnlySourceInstanceId = typeof player.flags.commandSealUseMovementOnlySourceInstanceId === "string" ? player.flags.commandSealUseMovementOnlySourceInstanceId : void 0;
+    const movementOnlySource = movementOnlySourceInstanceId ? state.cards[movementOnlySourceInstanceId] : void 0;
+    if (purpose !== "movement" && movementOnlySource && movementOnlySource.zone !== "removed") {
+      throw new Error("COMMAND_SEAL_USE_PURPOSE_FORBIDDEN");
+    }
+    if (Number(player.flags.commandSealUseBlockedThroughRound ?? Number.NEGATIVE_INFINITY) >= state.round) {
+      throw new Error("COMMAND_SEAL_USE_BLOCKED");
+    }
+    if (isAbilityActivationBlocked(state, playerId, "action")) throw new Error("COMMAND_SEAL_USE_BLOCKED");
   }
-  function applyDefeatEffect(state, targetPlayerId, controllerPlayerId, definitions, emitEvent, details = {}) {
-    const target = state.players[targetPlayerId];
-    const controller = state.players[controllerPlayerId];
-    if (!target || target.eliminated || !controller || controller.eliminated) {
-      return { applied: false, defeated: false, ignored: false, alreadyDefeated: false };
+  function spendNormalCommandSeal(state, playerId, purpose = "ability") {
+    const player = state.players[playerId];
+    if (!player || player.eliminated) throw new Error("COMMAND_SEAL_PLAYER_INVALID");
+    assertCommandSealUseAllowed(state, playerId, purpose);
+    if (!Number.isInteger(player.commandSeals) || player.commandSeals <= 0) throw new Error("COMMAND_SEAL_NOT_AVAILABLE");
+    player.commandSeals -= 1;
+    player.flags.commandSealSpentRound = state.round;
+    incrementRoundUsageFlag(state, playerId, "normal");
+  }
+  function assertCommandSealCostPayable(state, playerId, amount = 1) {
+    const player = state.players[playerId];
+    if (!player || player.eliminated) throw new Error("COMMAND_SEAL_PLAYER_INVALID");
+    if (!Number.isInteger(amount) || amount < 0) throw new Error("COMMAND_SEAL_COST_INVALID");
+    const creditRound = Number(player.flags.commandSealPaymentCreditRound ?? Number.NEGATIVE_INFINITY);
+    const availableCredits = creditRound === state.round ? Math.max(0, Number(player.flags.commandSealPaymentCredits ?? 0)) : 0;
+    if (!Number.isInteger(availableCredits)) throw new Error("COMMAND_SEAL_PAYMENT_CREDIT_INVALID");
+    const substitutionCredits = Math.min(amount, availableCredits);
+    const remaining = amount - substitutionCredits;
+    const manaRate = sourcedManaSubstitutionRate(state, playerId, "commandSealCostManaSubstitution", "commandSealCostManaSubstitutionSourceInstanceId");
+    const manaSubstitutionCost = manaRate > 0 ? remaining * manaRate : 0;
+    const paidSeals = manaRate > 0 ? 0 : remaining;
+    if (!Number.isInteger(player.commandSeals) || player.commandSeals < paidSeals) throw new Error("COMMAND_SEAL_NOT_AVAILABLE");
+    if (manaSubstitutionCost > 0 && player.flags.infiniteMana !== true && player.mana < manaSubstitutionCost) throw new Error("COMMAND_SEAL_NOT_AVAILABLE");
+    return { paidSeals, substitutionCredits, availableCredits, manaSubstitutionCost };
+  }
+  function payCommandSealCost(state, playerId, amount = 1) {
+    const player = state.players[playerId];
+    const plan = assertCommandSealCostPayable(state, playerId, amount);
+    if (!player) throw new Error("COMMAND_SEAL_PLAYER_INVALID");
+    if (plan.manaSubstitutionCost > 0) payMana(player, plan.manaSubstitutionCost, "COMMAND_SEAL_NOT_AVAILABLE");
+    player.commandSeals -= plan.paidSeals;
+    if (plan.paidSeals > 0) player.flags.commandSealSpentRound = state.round;
+    if (plan.substitutionCredits > 0) {
+      const remaining = plan.availableCredits - plan.substitutionCredits;
+      if (remaining > 0) player.flags.commandSealPaymentCredits = remaining;
+      else {
+        delete player.flags.commandSealPaymentCredits;
+        delete player.flags.commandSealPaymentCreditRound;
+      }
     }
-    if (controllerPlayerId !== targetPlayerId && isOtherPlayerAbilityEffectIgnored(state, controllerPlayerId, targetPlayerId)) {
-      return { applied: false, defeated: false, ignored: true, alreadyDefeated: target.defeated };
+    return { paidSeals: plan.paidSeals, substitutionCredits: plan.substitutionCredits };
+  }
+  function loseCommandSeals(state, playerId, amount = 1) {
+    const player = state.players[playerId];
+    if (!player || player.eliminated) throw new Error("COMMAND_SEAL_PLAYER_INVALID");
+    if (!Number.isInteger(amount) || amount < 0) throw new Error("COMMAND_SEAL_AMOUNT_INVALID");
+    const manaRate = sourcedManaSubstitutionRate(state, playerId, "commandSealLossManaSubstitution", "commandSealLossManaSubstitutionSourceInstanceId");
+    if (manaRate > 0) {
+      loseMana(player, amount * manaRate);
+      return 0;
     }
-    if (!payDefeatEffectCost(state, targetPlayerId, controllerPlayerId, definitions)) {
-      return { applied: false, defeated: false, ignored: false, alreadyDefeated: target.defeated };
+    const lost = Math.min(amount, Math.max(0, player.commandSeals));
+    player.commandSeals -= lost;
+    return lost;
+  }
+  function gainCommandSeals(state, playerId, amount = 1) {
+    const player = state.players[playerId];
+    if (!player || player.eliminated) throw new Error("COMMAND_SEAL_PLAYER_INVALID");
+    if (!Number.isInteger(amount) || amount < 0) throw new Error("COMMAND_SEAL_AMOUNT_INVALID");
+    const manaRate = sourcedManaSubstitutionRate(state, playerId, "commandSealGainManaSubstitution", "commandSealGainManaSubstitutionSourceInstanceId");
+    if (manaRate > 0) {
+      const gainedMana = gainMana(player, amount * manaRate);
+      return { gainedSeals: 0, gainedMana };
     }
-    const alreadyDefeated = target.defeated;
-    emitEvent?.("player.defeat-applied", { playerId: targetPlayerId, controllerPlayerId, ...details });
-    if (playerIgnoresDefeat(state, target, definitions)) {
-      return { applied: true, defeated: false, ignored: true, alreadyDefeated };
+    const maximum = player.flags.commandSealMaximum === void 0 ? void 0 : Number(player.flags.commandSealMaximum);
+    if (maximum !== void 0 && (!Number.isInteger(maximum) || maximum < 0)) throw new Error("COMMAND_SEAL_MAXIMUM_INVALID");
+    const gainedSeals = maximum === void 0 ? amount : Math.max(0, Math.min(amount, maximum - player.commandSeals));
+    player.commandSeals += gainedSeals;
+    return { gainedSeals, gainedMana: 0 };
+  }
+  function spendRulerCommandSeal(state, controllerPlayerId, sealId) {
+    const player = state.players[controllerPlayerId];
+    if (!player || player.eliminated) throw new Error("RULER_SEAL_CONTROLLER_INVALID");
+    assertCommandSealUseAllowed(state, controllerPlayerId);
+    const seal = consumeRulerSeal(state, sealId, controllerPlayerId);
+    recordRulerSealUse(state, seal);
+    incrementRoundUsageFlag(state, controllerPlayerId, "ruler");
+    return seal;
+  }
+  function payRulerSealCost(state, controllerPlayerId, sealId) {
+    const player = state.players[controllerPlayerId];
+    if (!player || player.eliminated) throw new Error("RULER_SEAL_CONTROLLER_INVALID");
+    return consumeRulerSeal(state, sealId, controllerPlayerId);
+  }
+  function countUnusedOwnedCommandSeals(state, playerId) {
+    const player = state.players[playerId];
+    if (!player || player.eliminated) return 0;
+    return Math.max(0, Number(player.commandSeals ?? 0)) + listRulerSealsControlledBy(state, playerId).length;
+  }
+  function countEngagedOpponentUnusedCommandSeals(state, playerId, locationId = state.players[playerId]?.locationId) {
+    if (locationId !== "mountain" && locationId !== "city") return 0;
+    return (state.board.locations[locationId] ?? []).reduce((sum, candidateId) => {
+      if (candidateId === playerId) return sum;
+      const candidate = state.players[candidateId];
+      if (!candidate || candidate.eliminated) return sum;
+      return sum + countUnusedOwnedCommandSeals(state, candidateId);
+    }, 0);
+  }
+
+  // src/rules-core/fuyuki-objectives.ts
+  var FUYUKI_EFFECT_TAGS = Object.fromEntries(
+    Object.entries({
+      1: "no-extra-effect",
+      2: "trailing-power",
+      3: "trailing-power",
+      7: "low-base-five",
+      8: "double-terrain",
+      9: "zero-terrain",
+      13: "high-card-plus-one",
+      14: "hidden-name-five",
+      15: "hidden-name-five",
+      16: "shared-attribute-four",
+      17: "bounded-field",
+      18: "bounded-field",
+      19: "after-combat-mana-two",
+      20: "after-combat-mana-two"
+    }).map(([number, effect]) => [`event.fuyuki.${number}`, [`fuyuki:${effect}`]])
+  );
+  var FUYUKI_TEXT_OVERRIDES = {
+    "event.fuyuki.1": "\u65E0\u989D\u5916\u6548\u679C\u3002",
+    "event.fuyuki.13": "\u57FA\u672C\u5A01\u529B4\u53CA\u4EE5\u4E0A\u7684\u653B\u51FB\u4E8E\u6B64\u6218\u573A\u83B7\u5F97+1\u5A01\u529B\u3002\u6B64\u6218\u573A\u7684\u80DC\u8005\u53EF\u4EE5\u6062\u590D1\u679A\u4EE4\u5492\u3002"
+  };
+  function countFuyukiEffect(state, locationId, cards, effect) {
+    if (!locationId) return 0;
+    return (state.board.currentEvents[locationId] ?? []).filter((id) => state.board.eventVisibility[id] !== "down" && cards[id]?.tags?.includes(`fuyuki:${effect}`)).length;
+  }
+  function fuyukiBasePower(state, player, cards, value) {
+    return (value === 1 || value === 2) && countFuyukiEffect(state, player.locationId, cards, "low-base-five") ? 5 : value;
+  }
+  function fuyukiTerrain(state, locationId, cards, value) {
+    return value * 2 ** countFuyukiEffect(state, locationId, cards, "double-terrain");
+  }
+  function fuyukiTotalBonus(state, player, cards, locationId, sharedAttribute) {
+    const count = (effect) => countFuyukiEffect(state, locationId, cards, effect);
+    const scores = state.modeState.fuyukiSettlementScores;
+    const ownScore = scores?.[player.id] ?? player.victoryPoints;
+    const lowerCount = Object.values(state.players).filter((other) => !other.eliminated && (scores?.[other.id] ?? other.victoryPoints) < ownScore).length;
+    return count("trailing-power") * Math.max(0, 12 - lowerCount * 4) + (player.trueNameRevealed ? 0 : count("hidden-name-five") * 5) + (sharedAttribute ? count("shared-attribute-four") * 4 : 0);
+  }
+  function fuyukiMovementBlocked(state, from, to, cards) {
+    return from !== to && (countFuyukiEffect(state, from, cards, "bounded-field") > 0 || countFuyukiEffect(state, to, cards, "bounded-field") > 0);
+  }
+  function rewardFuyukiWinner(state, playerId, locationId, cards) {
+    const player = state.players[playerId];
+    for (let i = 0; i < countFuyukiEffect(state, locationId, cards, "high-card-plus-one"); i += 1) {
+      if (player.commandSeals < Number(player.flags.commandSealMaximum ?? 3)) gainCommandSeals(state, playerId, 1);
     }
-    if (alreadyDefeated) return { applied: true, defeated: false, ignored: false, alreadyDefeated: true };
-    const defeated = defeatPlayer(state, targetPlayerId, emitEvent, { ...details, controllerPlayerId });
-    return { applied: true, defeated, ignored: false, alreadyDefeated: false };
+  }
+  function rewardFuyukiAfterCombat(state, cards) {
+    for (const player of Object.values(state.players)) {
+      if (player.eliminated || !player.locationId) continue;
+      gainMana(player, countFuyukiEffect(state, player.locationId, cards, "after-combat-mana-two") * 2);
+    }
   }
 
   // src/rules-core/location-access-rules.ts
@@ -56085,7 +56161,7 @@
 
   // src/rules-core/board.ts
   var locationOrder = ["workshop", "mountain", "city", "scouting"];
-  var moveCosts = { workshop: 2, mountain: 2, city: 1 };
+  var moveCosts = { workshop: 1, mountain: 2, city: 2 };
   var capacities = { workshop: 4, mountain: null, city: null, scouting: 1 };
   function liveMovementArrowOverrides(state) {
     const raw = state.modeState.movementArrowOverrides;
@@ -56539,6 +56615,7 @@
     const ownActionCombatMovementLocked = player.flags.movementLockedOwnActionCombat === true && state.activePlayerId === playerId && (state.phase === "action" || state.phase === "combat");
     const ownTurnMovementLocked = player.flags.movementBlockedOwnTurnRound === state.round && state.activePlayerId === playerId;
     if (!ignoresCardMovementRestrictions && (player.flags.movementBlockedPermanent === true || player.flags.movementBlockedRound === state.round || player.flags.regularMovementBlockedRound === state.round || ownActionCombatMovementLocked || ownTurnMovementLocked || isSourceBoundMovementBlocked(state, playerId))) throw new Error("PLAYER_MOVEMENT_BLOCKED");
+    if (!ignoresCardMovementRestrictions && definitions && fuyukiMovementBlocked(state, player.locationId, targetLocationId, definitions)) throw new Error("MOVEMENT_BLOCKED_BY_EVENT");
     if (!ignoresCardMovementRestrictions && isBoardCardMovementLocked(state, playerId, player.locationId, targetLocationId)) throw new Error("MOVEMENT_BLOCKED_BY_BOARD_CARD");
     if (!ignoresCardMovementRestrictions && isPlayerExitBlockedBySameLocationRule(state, playerId, targetLocationId)) throw new Error("MOVEMENT_BLOCKED_BY_LOCATION_RULE");
     if (!ignoresCardMovementRestrictions && definitions && isPlayerExitBlockedByLostbeltObjective(state, playerId, targetLocationId, definitions)) throw new Error("MOVEMENT_BLOCKED_BY_EVENT");
@@ -56615,6 +56692,7 @@
     const ownActionCombatMovementLocked = player.flags.movementLockedOwnActionCombat === true && state.activePlayerId === playerId && (state.phase === "action" || state.phase === "combat");
     const ownTurnMovementLocked = player.flags.movementBlockedOwnTurnRound === state.round && state.activePlayerId === playerId;
     if (!ignoresCardMovementRestrictions && (player.flags.movementBlockedPermanent === true || player.flags.movementBlockedRound === state.round || ownActionCombatMovementLocked || ownTurnMovementLocked || isSourceBoundMovementBlocked(state, playerId))) throw new Error("PLAYER_MOVEMENT_BLOCKED");
+    if (!ignoresCardMovementRestrictions && definitions && fuyukiMovementBlocked(state, player.locationId, targetLocationId, definitions)) throw new Error("MOVEMENT_BLOCKED_BY_EVENT");
     if (!ignoresCardMovementRestrictions && isBoardCardMovementLocked(state, playerId, player.locationId, targetLocationId)) throw new Error("MOVEMENT_BLOCKED_BY_BOARD_CARD");
     if (!ignoresCardMovementRestrictions && isPlayerExitBlockedBySameLocationRule(state, playerId, targetLocationId)) throw new Error("MOVEMENT_BLOCKED_BY_LOCATION_RULE");
     if (!ignoresCardMovementRestrictions && definitions && isPlayerExitBlockedByLostbeltObjective(state, playerId, targetLocationId, definitions)) throw new Error("MOVEMENT_BLOCKED_BY_EVENT");
@@ -56834,6 +56912,9 @@
     if (cardPlayForbiddenByModifier(state, player, instance)) throw new Error("CARD_PLAY_FORBIDDEN_BY_MODIFIER");
     const forbiddenAttributes = state.modeState.situationRestrictions?.forbiddenAttributes ?? [];
     const instanceAttributes = getCardInstanceAttributes(instance, definition, state, definitions);
+    if (!context.faceDown && !ignoresCardEffectPlayRestrictions(state, playerId, definitions) && instanceAttributes.includes("\u7279\u6B8A") && countFuyukiEffect(state, player.locationId, definitions, "bounded-field")) {
+      throw new Error("EVENT_FORBIDS_SPECIAL_ATTACK");
+    }
     if (!isPlayerUnaffectedBySituation(state, playerId, definitions) && !definition.ignoresSituationRestrictions && !cardIgnoresSituationRestrictions(state, player, instance) && !structuredCardIgnoresSituationRestrictions(state, playerId, instance, definition, definitions) && forbiddenAttributes.some((attribute) => instanceAttributes.includes(attribute) && !situationForbiddenAttributeReplacedForCard(state, player, instance, definition, definitions, attribute))) {
       throw new Error("CARD_ATTRIBUTE_FORBIDDEN_BY_SITUATION");
     }
@@ -58254,10 +58335,10 @@
       if (scope.locationId !== locationId) return [];
       const player = state.players[modifier.controllerPlayerId];
       const powerMode = scope.powerMode === "controller-current-combat-power" ? "controller-current-combat-power" : void 0;
-      const power = modifier.value === void 0 ? void 0 : Number(modifier.value);
+      const power2 = modifier.value === void 0 ? void 0 : Number(modifier.value);
       if (!player || player.eliminated) return [];
-      if (!powerMode && (power === void 0 || !Number.isInteger(power) || power < 0)) return [];
-      if (powerMode && power !== void 0) throw new Error("COMBAT_WINNER_CHALLENGE_POWER_SOURCE_CONFLICT");
+      if (!powerMode && (power2 === void 0 || !Number.isInteger(power2) || power2 < 0)) return [];
+      if (powerMode && power2 !== void 0) throw new Error("COMBAT_WINNER_CHALLENGE_POWER_SOURCE_CONFLICT");
       const strictHigher = scope.strictHigher !== false;
       const rewardMode = scope.rewardMode === "competition-only" ? "competition-only" : void 0;
       if (!rewardMode) throw new Error("COMBAT_WINNER_CHALLENGE_REWARD_MODE_INVALID");
@@ -58267,7 +58348,7 @@
         sourceInstanceId: modifier.sourceInstanceId,
         playerId: modifier.controllerPlayerId,
         locationId,
-        ...power !== void 0 ? { power } : {},
+        ...power2 !== void 0 ? { power: power2 } : {},
         ...powerMode ? { powerMode } : {},
         strictHigher,
         rewardMode
@@ -58407,6 +58488,7 @@
     }
     const participants = getPlayerIdsPresentAtLocation(state, locationId).map((playerId) => state.players[playerId]).filter((player) => player && !player.eliminated);
     const npcParticipants = getNpcCombatantsAtLocation(state, locationId, cards);
+    state.modeState.fuyukiSettlementScores ??= Object.fromEntries(Object.values(state.players).map((player) => [player.id, player.victoryPoints]));
     const powers = {};
     const npcPowers = {};
     const attributes = {};
@@ -58431,9 +58513,9 @@
       }
     }
     for (const npc of npcParticipants) {
-      const power = calculateNpcCombatPower(state, npc, locationId, cards);
-      npcPowers[npc.id] = power;
-      powers[npc.id] = power;
+      const power2 = calculateNpcCombatPower(state, npc, locationId, cards);
+      npcPowers[npc.id] = power2;
+      powers[npc.id] = power2;
     }
     const participantVictoryPointsBeforeCombat = Object.fromEntries(participants.map((player) => [player.id, player.victoryPoints]));
     return {
@@ -58485,9 +58567,9 @@
     const challenges = getCombatWinnerChallenges(state, locationId);
     const resolvedChallenges = challenges.map((challenge) => {
       const challenger = state.players[challenge.playerId];
-      const power = challenge.powerMode === "controller-current-combat-power" ? calculateCombatPower(state, challenger, cards, challenger.locationId && isBattlefieldLocation(state, challenger.locationId) ? challenger.locationId : void 0) : challenge.power;
-      if (!Number.isInteger(power) || Number(power) < 0) throw new Error("COMBAT_WINNER_CHALLENGE_POWER_INVALID");
-      return { ...challenge, power: Number(power) };
+      const power2 = challenge.powerMode === "controller-current-combat-power" ? calculateCombatPower(state, challenger, cards, challenger.locationId && isBattlefieldLocation(state, challenger.locationId) ? challenger.locationId : void 0) : challenge.power;
+      if (!Number.isInteger(power2) || Number(power2) < 0) throw new Error("COMBAT_WINNER_CHALLENGE_POWER_INVALID");
+      return { ...challenge, power: Number(power2) };
     });
     const eligibleChallenges = resolvedChallenges.filter((challenge) => {
       const challenger = state.players[challenge.playerId];
@@ -58532,7 +58614,11 @@
         for (const card of Object.values(state.cards)) {
           if (card.ownerPlayerId === player.id && card.playBlockedUntilOwnerCombatWin) delete card.playBlockedUntilOwnerCombatWin;
         }
-      } else player.flags.combatLossRound = state.round;
+      } else {
+        player.flags.combatLossRound = state.round;
+        const random = new StateRandom();
+        returnCardsToDeckOnDefeat(state, player.id, cards, (maxExclusive) => random.integer(state, maxExclusive));
+      }
       const eventRewardBlocked = state.modeState.currentSituationClimax === true && player.flags.climaxEventVictoryPointGainBlocked === true;
       const competitionRewardBlocked = player.flags.competitionVictoryPointGainBlocked === true;
       const replacedEventPoints = replacementEventPoints.get(player.id);
@@ -58556,14 +58642,8 @@
         victoryPoints[player.id] += appliedDelta;
         if (appliedDelta > 0) abilityVictoryPoints[player.id] = (abilityVictoryPoints[player.id] ?? 0) + appliedDelta;
       }
-      if (!winnerIds.includes(player.id)) {
-        if (!chineseDefeatIgnored) {
-          if (defeatPlayer(state, player.id)) defeatedPlayerIds.push(player.id);
-          const random = new StateRandom();
-          returnCardsToDeckOnDefeat(state, player.id, cards, (maxExclusive) => random.integer(state, maxExclusive));
-        }
-      }
       if (winnerIds.includes(player.id)) {
+        rewardFuyukiWinner(state, player.id, locationId, cards);
         const cardWinBonus = player.attack.reduce((sum, instanceId) => {
           const instance = state.cards[instanceId];
           const definition = instance ? cards[instance.definitionId] : void 0;
@@ -58593,11 +58673,8 @@
         }
       }
       if (!winnerIds.includes(player.id) && player.flags.independentActionPenaltyRound === state.round) {
-        state.players[player.id].victoryPoints -= 5;
-        victoryPoints[player.id] = (victoryPoints[player.id] ?? 0) - 5;
+        victoryPoints[player.id] = (victoryPoints[player.id] ?? 0) + adjustVictoryPoints(state.players[player.id], -5);
       }
-      delete state.players[player.id].flags.roundPowerBonus;
-      delete state.players[player.id].flags.commandSealRoundPowerBonus;
       delete state.players[player.id].flags.commandSealVictoryPointBonusRound;
       delete state.players[player.id].flags.commandSealVictoryPointBonus;
       delete state.players[player.id].flags.chaosHunterRound;
@@ -58655,12 +58732,9 @@
         }
       } else {
         player.flags.combatLossRound = state.round;
-        if (defeatPlayer(state, player.id)) defeatedPlayerIds.push(player.id);
         const random = new StateRandom();
         returnCardsToDeckOnDefeat(state, player.id, cards, (maxExclusive) => random.integer(state, maxExclusive));
       }
-      delete player.flags.roundPowerBonus;
-      delete player.flags.commandSealRoundPowerBonus;
       delete player.flags.commandSealVictoryPointBonusRound;
       delete player.flags.commandSealVictoryPointBonus;
       delete player.flags.chaosHunterRound;
@@ -58758,6 +58832,7 @@
     }
     const removed = shuffled2.splice(0, 2);
     state.board.situationDiscard = removed.map((definition) => definition.id);
+    state.board.burnedSituationIds = [...state.board.situationDiscard];
     state.board.situationDeck = [
       ...shuffled2.map((definition) => definition.id),
       ...climax.map((definition) => definition.id)
@@ -67037,10 +67112,10 @@
     const card = state.cards[choices[0]];
     const definition = definitions[card.definitionId];
     if (!definition) throw new Error("DEON_SELF_SUGGESTION_DEFINITION_MISSING");
-    const power = getPrintedCardBasePower(state, target, definition);
+    const power2 = getPrintedCardBasePower(state, target, definition);
     movePlayerCard(state, target.id, card.instanceId, "discard");
-    player.flags.roundPowerBonus = Number(player.flags.roundPowerBonus ?? 0) + power;
-    return { targetPlayerId: target.id, discardedInstanceId: card.instanceId, powerBonus: power };
+    player.flags.roundPowerBonus = Number(player.flags.roundPowerBonus ?? 0) + power2;
+    return { targetPlayerId: target.id, discardedInstanceId: card.instanceId, powerBonus: power2 };
   };
   var isDeonSwordDanceLegal = (state, playerId, skill, _ability, definitions) => {
     const player = state.players[playerId];
@@ -69646,7 +69721,7 @@
     const ownPower = Number(powers[player.id]);
     if (!Number.isFinite(ownPower)) return [];
     const winners = new Set(Array.isArray(event.winnerIds) ? event.winnerIds.filter((id) => typeof id === "string") : []);
-    return Object.entries(powers).filter(([targetPlayerId, power]) => targetPlayerId !== player.id && Boolean(state.players[targetPlayerId]) && !state.players[targetPlayerId].eliminated && !winners.has(targetPlayerId) && Number.isFinite(Number(power)) && Number(power) < ownPower && Number(player.flags[`${IMMORAL_COMBAT_PREFIX}${targetPlayerId}`] ?? -1) !== state.round).map(([targetPlayerId]) => targetPlayerId);
+    return Object.entries(powers).filter(([targetPlayerId, power2]) => targetPlayerId !== player.id && Boolean(state.players[targetPlayerId]) && !state.players[targetPlayerId].eliminated && !winners.has(targetPlayerId) && Number.isFinite(Number(power2)) && Number(power2) < ownPower && Number(player.flags[`${IMMORAL_COMBAT_PREFIX}${targetPlayerId}`] ?? -1) !== state.round).map(([targetPlayerId]) => targetPlayerId);
   }
   function stealPhantomVictoryPoints(state, player, targetPlayerId) {
     const target = state.players[targetPlayerId];
@@ -70679,12 +70754,12 @@
     const locationId = player.locationId;
     if (locationId !== "mountain" && locationId !== "city") throw new Error("NEMO_NAUTILUS_BATTLEFIELD_REQUIRED");
     revealPlayerTrueName(state, player.id);
-    const power = calculateCombatCardPower(state, player, source.instanceId, definitions, locationId);
+    const power2 = calculateCombatCardPower(state, player, source.instanceId, definitions, locationId);
     player.flags.roundTerrainAdvantageBonusRound = state.round;
     player.flags.roundTerrainAdvantageBonusLocationId = locationId;
-    player.flags.roundTerrainAdvantageBonus = Number(player.flags.roundTerrainAdvantageBonus ?? 0) + power;
+    player.flags.roundTerrainAdvantageBonus = Number(player.flags.roundTerrainAdvantageBonus ?? 0) + power2;
     player.flags.nemoNautilusCloseAfterCombatInstanceId = source.instanceId;
-    return { sourceInstanceId: source.instanceId, terrainGain: power, locationId };
+    return { sourceInstanceId: source.instanceId, terrainGain: power2, locationId };
   };
   var isNemoNautilusLegal = (state, playerId, _skill, ability, definitions) => {
     const player = state.players[playerId];
@@ -72780,7 +72855,7 @@
     if (!Number.isFinite(ownPower)) return;
     const winnerIds = Array.isArray(event.winnerIds) ? event.winnerIds.filter((id) => typeof id === "string") : [];
     if (winnerIds.includes(player.id)) return;
-    const hasLower = Object.entries(powers).some(([id, power]) => id !== player.id && Number.isFinite(Number(power)) && Number(power) < ownPower);
+    const hasLower = Object.entries(powers).some(([id, power2]) => id !== player.id && Number.isFinite(Number(power2)) && Number(power2) < ownPower);
     if (!hasLower) return;
     gainVictoryPoints(player, 3);
     return { gainedVictoryPoints: 3 };
@@ -75770,7 +75845,7 @@
       emitEvent?.("card.revealed", { playerId: player.id, instanceId, definitionId: definition.id, sourceSkillId: skillId2, method: "black-dog-galatine" });
       return getPrintedCardBasePower(state, player, definition);
     });
-    const powerBonus = selectedInstanceIds.length === 3 && printedPowers.every((power) => power === 3) ? 15 : printedPowers.reduce((sum, power) => sum + power, 0);
+    const powerBonus = selectedInstanceIds.length === 3 && printedPowers.every((power2) => power2 === 3) ? 15 : printedPowers.reduce((sum, power2) => sum + power2, 0);
     const source = activeOwnedSkill36(state, player, skillId2, definitions);
     if (!source) throw new Error("BARGHEST_GALATINE_SOURCE_INACTIVE");
     const modifierId = `${skillId2}:black-dog-galatine:${state.round}`;
@@ -77458,14 +77533,14 @@
   function hasFetchOf(state, controllerPlayerId, targetPlayerId) {
     return readFetches(state).some((fetch) => fetch.controllerPlayerId === controllerPlayerId && fetch.targetPlayerId === targetPlayerId);
   }
-  function createFetch(state, controllerPlayerId, targetPlayerId, power, locationId) {
+  function createFetch(state, controllerPlayerId, targetPlayerId, power2, locationId) {
     if (hasFetchOf(state, controllerPlayerId, targetPlayerId)) return void 0;
-    if (!Number.isFinite(power)) throw new Error("BAOBHAN_FETCH_POWER_INVALID");
+    if (!Number.isFinite(power2)) throw new Error("BAOBHAN_FETCH_POWER_INVALID");
     const created = {
       id: fetchId(controllerPlayerId, targetPlayerId),
       controllerPlayerId,
       targetPlayerId,
-      power,
+      power: power2,
       createdRound: state.round,
       createdLocationId: locationId
     };
@@ -77557,8 +77632,8 @@
       if (player.defeated || BATTLEFIELDS.has(armed.locationId)) continue;
       const target = state.players[armed.targetPlayerId];
       if (!target || target.eliminated || target.locationId !== armed.locationId) continue;
-      const power = calculateCombatPower(state, target, definitions, armed.locationId);
-      const fetch = createFetch(state, player.id, target.id, power, armed.locationId);
+      const power2 = calculateCombatPower(state, target, definitions, armed.locationId);
+      const fetch = createFetch(state, player.id, target.id, power2, armed.locationId);
       if (fetch) created.push(fetch);
     }
     writePartTargets(state, kept);
@@ -80370,10 +80445,10 @@
       const card = state.cards[instanceId];
       const definition = card ? definitions[card.definitionId] : void 0;
       if (!card || !definition || !card.active || card.face !== "up" || card.playedRound !== state.round || definition.cardType !== "attack") continue;
-      const power = Math.min(3, getCardPlayCost(state, definition, player, card, definitions));
+      const power2 = Math.min(3, getCardPlayCost(state, definition, player, card, definitions));
       const id = `${HAKUNO_F_LINK_ID}:moon-drive:${state.round}:${instanceId}`;
-      card.powerModifiers = [...(card.powerModifiers ?? []).filter((modifier) => modifier.id !== id), { id, sourceId: HAKUNO_F_LINK_ID, kind: "add", value: power, duration: "round" }];
-      modified.push({ instanceId, power });
+      card.powerModifiers = [...(card.powerModifiers ?? []).filter((modifier) => modifier.id !== id), { id, sourceId: HAKUNO_F_LINK_ID, kind: "add", value: power2, duration: "round" }];
+      modified.push({ instanceId, power: power2 });
     }
     return { modified };
   }
@@ -82337,16 +82412,16 @@
     if (!card || card.definitionId !== CHAOS_999_ID || card.zone !== "attack" || !card.active) return;
     const hand = namedSideDeckHand(state, player.id, CHAOS_BEAST_DECK_ID);
     const discarded = discardNamedSideDeckHandCards(state, player.id, CHAOS_BEAST_DECK_ID, hand);
-    const power = Math.min(10, discarded.length * 2);
+    const power2 = Math.min(10, discarded.length * 2);
     const id = `${CHAOS_999_ID}:despair`;
     card.powerModifiers = [...(card.powerModifiers ?? []).filter((modifier) => modifier.id !== id), {
       id,
       sourceId: CHAOS_999_ID,
       kind: "set",
-      value: power,
+      value: power2,
       duration: "game"
     }];
-    return { discardedInstanceIds: discarded, power };
+    return { discardedInstanceIds: discarded, power: power2 };
   }
   function handleManaGain(state, player, event, randomInt) {
     if (event.playerId !== player.id || event.sourceId === CHAOS_DEVOURER_ID || event.sourceId === CHAOS_SCRAMBLED_SEAL_ID) return;
@@ -83492,14 +83567,14 @@
   function fearForDeck(deck, definitions) {
     const scores = FEAR_ATTRIBUTES.map((attribute) => {
       let count = 0;
-      let power = 0;
+      let power2 = 0;
       for (const definitionId of deck) {
         const definition = definitions[definitionId];
         if (!definition || !getCardAttributes(definition).includes(attribute)) continue;
         count += 1;
-        power += Number(definition.basePower ?? 0);
+        power2 += Number(definition.basePower ?? 0);
       }
-      return { attribute, count, power };
+      return { attribute, count, power: power2 };
     });
     scores.sort((left, right) => left.count - right.count || left.power - right.power || FEAR_ATTRIBUTES.indexOf(left.attribute) - FEAR_ATTRIBUTES.indexOf(right.attribute));
     return scores[0].attribute;
@@ -97557,7 +97632,7 @@
       const definition = state.cards[id] && definitions ? definitions[state.cards[id].definitionId] : void 0;
       return definition ? getCardAttributes(definition) : [];
     }) : [];
-    const referenceBasePowers = sameBasePowerAsPayloadKey ? resolveStructuredCardSelection(payload, { payloadKey: sameBasePowerAsPayloadKey }, "selectedInstanceId").map((id) => state.cards[id] && definitions ? definitions[state.cards[id].definitionId]?.basePower : void 0).filter((power) => Number.isInteger(power)) : [];
+    const referenceBasePowers = sameBasePowerAsPayloadKey ? resolveStructuredCardSelection(payload, { payloadKey: sameBasePowerAsPayloadKey }, "selectedInstanceId").map((id) => state.cards[id] && definitions ? definitions[state.cards[id].definitionId]?.basePower : void 0).filter((power2) => Number.isInteger(power2)) : [];
     return [...new Set(cards)].filter((id) => {
       const card = state.cards[id];
       if (!card || !card.ownerPlayerId || !targetIds.has(card.ownerPlayerId) || !allowedZones.has(card.zone)) return false;
@@ -97972,7 +98047,7 @@
     if (choice.distinctBasePower === true) {
       if (!definitions) throw new Error("STRUCTURED_SKILL_CARD_DEFINITIONS_REQUIRED");
       const powers = selected.map((id) => definitions[state.cards[id]?.definitionId ?? ""]?.basePower);
-      if (powers.some((power) => !Number.isInteger(power)) || new Set(powers).size !== powers.length) throw new Error("STRUCTURED_SKILL_CARD_SELECTION_DISTINCT_POWER_REQUIRED");
+      if (powers.some((power2) => !Number.isInteger(power2)) || new Set(powers).size !== powers.length) throw new Error("STRUCTURED_SKILL_CARD_SELECTION_DISTINCT_POWER_REQUIRED");
     }
     if (choice.totalPlayCostAtMostMana === true) {
       if (!definitions) throw new Error("STRUCTURED_SKILL_CARD_DEFINITIONS_REQUIRED");
@@ -100173,7 +100248,7 @@
     const event = isRecord143(payload) && isRecord143(payload.event) ? payload.event : void 0;
     if (eventType === "combat.resolved") {
       if (!event || event.locationId !== player.locationId || !isRecord143(event.powers) || !Object.prototype.hasOwnProperty.call(event.powers, player.id)) return;
-      const lowPowerIds = Object.entries(event.powers).filter(([id, power]) => id !== player.id && Boolean(state.players[id]) && Number.isFinite(Number(power)) && Number(power) < 12).map(([id]) => id);
+      const lowPowerIds = Object.entries(event.powers).filter(([id, power2]) => id !== player.id && Boolean(state.players[id]) && Number.isFinite(Number(power2)) && Number(power2) < 12).map(([id]) => id);
       if (lowPowerIds.length > 0) writeJaguarmanDeathClawPending(state, player.id, lowPowerIds);
       return;
     }
@@ -108554,9 +108629,9 @@
           const event = isRecord143(options.payload) && isRecord143(options.payload.event) ? options.payload.event : void 0;
           const powers = isRecord143(event?.powers) ? event.powers : void 0;
           const targetPlayerId = isRecord143(options.payload) && typeof options.payload.targetPlayerId === "string" ? options.payload.targetPlayerId : void 0;
-          const power = targetPlayerId && powers ? powers[targetPlayerId] : void 0;
-          if (!Number.isInteger(power)) throw new Error("STRUCTURED_SKILL_AMOUNT_INVALID");
-          resolved2 = Number(power);
+          const power2 = targetPlayerId && powers ? powers[targetPlayerId] : void 0;
+          if (!Number.isInteger(power2)) throw new Error("STRUCTURED_SKILL_AMOUNT_INVALID");
+          resolved2 = Number(power2);
           break;
         }
         case "selected_card_count": {
@@ -109979,7 +110054,7 @@
       const definitions = this.cardDefinitions();
       if (this.content.skills) actions.push(...this.content.skills.getLegalActions(state, playerId, definitions));
       actions.push(...getNormalCommandSealLegalActions(state, playerId, definitions));
-      if (state.activePlayerId === playerId && state.status === "playing") {
+      if (state.activePlayerId === playerId && state.status === "playing" && this.canCompleteWindow(state, playerId)) {
         actions.push({ type: CommandType.CompletePlayerWindow, label: "\u5B8C\u6210\u5F53\u524D\u9636\u6BB5", payload: {} });
       }
       return structuredClone(actions);
@@ -109991,6 +110066,13 @@
      * the browser from inventing permissions and gives every front end the same
      * deploy, move, attack and settlement entry points.
      */
+    canCompleteWindow(state, playerId) {
+      const player = state.players[playerId];
+      if (!player) return false;
+      if (state.phase === "outpost" && !player.locationId && !playerSkipsOutpostDeployment(state, playerId)) return false;
+      if (state.phase === "action" && state.step === "play-batch-draft" && this.getStandardCoreLegalActions(state, playerId).some((action) => action.type === CommandType.CommitAttack)) return false;
+      return true;
+    }
     getStandardCoreLegalActions(state, playerId) {
       if (state.status !== "playing") return [];
       const player = state.players[playerId];
@@ -110437,6 +110519,7 @@
           break;
         case CommandType.CompletePlayerWindow:
           {
+            if (!this.canCompleteWindow(state, command.actorId)) throw new Error("MANDATORY_PHASE_ACTION_REQUIRED");
             if (state.phase === "combat" && state.step === "player-window" && state.activePlayerId === command.actorId && hasPendingMandatoryActionAbilityInCombat(state, state.players[command.actorId], this.cardDefinitions())) {
               throw new Error("MANDATORY_CARD_ABILITY_PENDING");
             }
@@ -110788,6 +110871,9 @@
           }
           if (checkpoint.stage === "after-combat-ending") {
             removeCardsScheduledAfterCombat(state);
+            rewardFuyukiAfterCombat(state, this.cardDefinitions());
+            endStandardRound(state, this.cardDefinitions());
+            delete state.modeState.fuyukiSettlementScores;
             checkpoint = { ...checkpoint, stage: "after-round-ending" };
             state.modeState.endRoundCheckpoint = structuredClone(checkpoint);
             emit("round.ending", { round: endedRound, previousLocations: structuredClone(checkpoint.previousLocations) });
@@ -110805,7 +110891,6 @@
           const finalStatus = shouldFinish ? instantVictoryIds.length > 0 ? { finished: true, winnerIds: instantVictoryIds, reason: "round-eleven-noble-phantasm" } : this.getModeDefinition(state.mode).getFinalWinnerStatus?.(state) ?? { finished: true, winnerIds: determineFinalWinnerIds(state), reason: "final-score" } : null;
           const finalWinnerIds = expandSharedVictoryWinnerIds(state, finalStatus?.winnerIds ?? []);
           delete state.modeState.endRoundCheckpoint;
-          endStandardRound(state, this.cardDefinitions());
           if (shouldFinish) {
             state.status = "finished";
             state.phase = "combat";
@@ -110951,14 +111036,14 @@
       const index = (fromIndex + offset) % state.turnOrder.length;
       const id = state.turnOrder[index];
       const player = state.players[id];
-      if (player && !player.eliminated && !player.defeated && !(state.phase === "outpost" && (playerSkipsOutpostDeployment(state, id) || Number(player.flags.outpostTakenEarlyRound ?? -1) === state.round)) && !(state.phase === "action" && Number(player.flags.actionTakenEarlyRound ?? -1) === state.round)) return { index, id };
+      if (player && !player.eliminated && !(state.phase === "outpost" && (playerSkipsOutpostDeployment(state, id) || Number(player.flags.outpostTakenEarlyRound ?? -1) === state.round)) && !(state.phase === "action" && Number(player.flags.actionTakenEarlyRound ?? -1) === state.round)) return { index, id };
     }
     return null;
   }
   function firstEligible(state) {
     return state.turnOrder.find((id) => {
       const player = state.players[id];
-      return player && !player.eliminated && !player.defeated && !(state.phase === "outpost" && (playerSkipsOutpostDeployment(state, id) || Number(player.flags.outpostTakenEarlyRound ?? -1) === state.round)) && !(state.phase === "action" && Number(player.flags.actionTakenEarlyRound ?? -1) === state.round);
+      return player && !player.eliminated && !(state.phase === "outpost" && (playerSkipsOutpostDeployment(state, id) || Number(player.flags.outpostTakenEarlyRound ?? -1) === state.round)) && !(state.phase === "action" && Number(player.flags.actionTakenEarlyRound ?? -1) === state.round);
     }) ?? null;
   }
   function setPhaseStart(state, playerId) {
@@ -111506,7 +111591,11 @@
       }]));
     }
     board.situationDeck = maskDeckIds(board.situationDeck, "situation:hidden");
-    if (!mayViewBurnedSituations) board.situationDiscard = maskDeckIds(board.situationDiscard, "situation:hidden");
+    if (!mayViewBurnedSituations) {
+      const burned = new Set(board.burnedSituationIds ?? []);
+      board.situationDiscard = board.situationDiscard.map((id, index) => burned.has(id) ? `situation:hidden:${index}` : id);
+      board.burnedSituationIds = maskDeckIds(board.burnedSituationIds ?? [], "situation:hidden");
+    }
     board.currentEvents = Object.fromEntries(Object.entries(board.currentEvents).map(([locationId, eventIds]) => [
       locationId,
       eventIds.map((eventId) => maskEventId(board, eventId))
@@ -179345,9 +179434,10 @@
           name: typeof item.name === "string" ? item.name : id,
           locationId: item.locationId === "mountain" || item.locationId === "city" ? item.locationId : void 0,
           victoryPoints: Number(item.victoryPoints ?? 0),
+          tags: FUYUKI_EFFECT_TAGS[id] ? [...FUYUKI_EFFECT_TAGS[id]] : void 0,
           mentionedAttributes: CONFIRMED_EVENT_MENTIONED_ATTRIBUTES[id] ? [...CONFIRMED_EVENT_MENTIONED_ATTRIBUTES[id]] : void 0,
           combatPower: CONFIRMED_EVENT_COMBAT_POWER[id] ? structuredClone(CONFIRMED_EVENT_COMBAT_POWER[id]) : void 0,
-          text: typeof item.text === "string" ? item.text : void 0,
+          text: FUYUKI_TEXT_OVERRIDES[id] ?? (typeof item.text === "string" ? item.text : void 0),
           presentation: { imageKey: typeof item.image === "string" ? item.image : void 0 }
         });
       }
@@ -179692,6 +179782,193 @@
     return { mountain: 1, city: 1 };
   }
 
+  // src/ai/tactical-actions.ts
+  function tacticalKnowledge(state, actorId) {
+    const view = projectPublicState(state, actorId);
+    const empty = createGameState({ gameInstanceId: state.gameInstanceId, players: Object.values(view.players), seed: 1 });
+    const players = Object.fromEntries(Object.values(view.players).map((player) => {
+      const own = player.id === actorId;
+      const attacks = Object.values(view.cards).filter((card) => card.controllerPlayerId === player.id && card.zone === "attack").map((card) => card.instanceId);
+      const terrainSlot = player.locationId ? view.board.outpostRecords[player.locationId]?.indexOf(player.id) ?? -1 : -1;
+      return [player.id, own ? {
+        ...structuredClone(state.players[player.id]),
+        // Even the bot must not plan around the order of its next draws.
+        deck: Array.from({ length: player.deckCount }, (_, i) => `unknown-deck:${player.id}:${i}`)
+      } : {
+        ...empty.players[player.id],
+        ...player,
+        attack: attacks,
+        // Counts are public; placeholders never disclose a hand or deck definition/order.
+        hand: Array.from({ length: player.handCount }, (_, i) => `unknown-hand:${player.id}:${i}`),
+        deck: Array.from({ length: player.deckCount }, (_, i) => `unknown-deck:${player.id}:${i}`),
+        flags: {
+          ...player.publicFlags,
+          deploymentBonusActive: terrainSlot >= 0,
+          deploymentLocationId: player.locationId ?? "",
+          deploymentBonus: terrainSlot === 0 ? 3 : terrainSlot === 1 ? 1 : 0
+        }
+      }];
+    }));
+    const cards = Object.fromEntries(Object.values(view.cards).map((card) => [card.instanceId, {
+      ...card.ownerPlayerId === actorId && card.definitionId != null ? structuredClone(state.cards[card.instanceId]) : {},
+      ...card,
+      definitionId: card.definitionId ?? "ai:hidden",
+      modifiers: [],
+      residual: false,
+      temporary: false,
+      active: card.definitionId !== null && card.active
+    }]));
+    return {
+      ...empty,
+      status: view.status,
+      mode: view.mode,
+      modeState: view.modeState,
+      round: view.round,
+      phase: view.phase,
+      step: view.step,
+      activePlayerId: view.activePlayerId,
+      turnOrder: [...view.turnOrder],
+      board: structuredClone(view.board),
+      players,
+      cards,
+      activeRuleModifiers: view.activeRuleModifiers.filter((modifier) => modifier.controllerPlayerId === actorId || modifier.sourceInstanceId && view.cards[modifier.sourceInstanceId]?.definitionId != null && view.cards[modifier.sourceInstanceId]?.face === "up")
+    };
+  }
+  function power(state, id, context) {
+    return calculateCombatPower(state, state.players[id], context.definitions, state.players[id].locationId ?? void 0);
+  }
+  function attackCopy(state, payload, context) {
+    const next = structuredClone(state), player = next.players[context.actorId];
+    for (const [face, ids] of [["up", payload.faceUpInstanceIds ?? []], ["down", payload.faceDownInstanceIds ?? []]]) {
+      for (const id of ids) {
+        const card = next.cards[id], definition = context.definitions[card?.definitionId];
+        if (!card || !definition) continue;
+        player.mana -= getCardPlayCost(state, definition, state.players[context.actorId], state.cards[id], context.definitions);
+        player.hand = player.hand.filter((candidate) => candidate !== id);
+        if (!player.attack.includes(id)) player.attack.push(id);
+        card.zone = "attack";
+        card.face = face;
+        card.active = face === "up";
+      }
+    }
+    return next;
+  }
+  function handPotential(state, id, context) {
+    const definition = context.definitions[state.cards[id]?.definitionId];
+    if (!definition) return 0;
+    const player = state.players[context.actorId];
+    const cost = Math.max(0, getCardPlayCost(state, definition, player, state.cards[id], context.definitions));
+    return Math.max(0, getPrintedCardBasePower(state, player, definition)) / (cost + 1);
+  }
+  function locationValue(state, context) {
+    const player = state.players[context.actorId], location = player.locationId;
+    const late = state.round >= 10;
+    const reserve = Math.min(8, player.mana) * (late ? 0.08 : 0.3) + player.hand.length * (late ? 0.12 : 0.65) + player.hand.reduce((sum, id) => sum + handPotential(state, id, context), 0) * (late ? 0.01 : 0.7);
+    if (location === "scouting") return 8 + reserve;
+    if (location === "workshop") return reserve + (player.mana < 5 ? 2 : 0.5);
+    if (!location) return reserve;
+    const opponents = (state.board.locations[location] ?? []).filter((id) => id !== player.id && !state.players[id]?.eliminated);
+    let probability = 1;
+    const ownPower = power(state, player.id, context);
+    for (const id of opponents) {
+      const opponent = state.players[id], publicCards = Object.values(state.cards).filter((card) => card.controllerPlayerId === id && card.zone === "attack");
+      const hiddenCount = publicCards.filter((card) => card.definitionId === "ai:hidden").length;
+      const actorIndex = state.turnOrder.indexOf(player.id), opponentIndex = state.turnOrder.indexOf(id);
+      const stillToPlay = state.phase === "outpost" || state.phase === "action" && opponentIndex > actorIndex;
+      const uncertainty = hiddenCount * 2 + (stillToPlay && opponent.hand.length ? Math.min(6, opponent.mana + 2) : 0);
+      const threat = power(state, id, context) + uncertainty;
+      const margin = ownPower - threat;
+      probability *= uncertainty ? Math.max(0.05, Math.min(0.95, 0.5 + margin / 12)) : margin > 0 ? 1 : margin === 0 ? 0.5 : 0;
+    }
+    if (state.phase === "action") {
+      const route = ["workshop", "mountain", "city", "scouting"];
+      const targetIndex = route.indexOf(location), actorIndex = state.turnOrder.indexOf(player.id);
+      for (const id of state.turnOrder.slice(actorIndex + 1)) {
+        const opponent = state.players[id];
+        if (!opponent || opponent.eliminated || opponents.includes(id) || !opponent.hand.length) continue;
+        const from = route.indexOf(opponent.locationId ?? "");
+        if (from < 0 || from >= targetIndex) continue;
+        if (from > 0 && (state.board.locations[opponent.locationId] ?? []).length > 1) continue;
+        const travelCost = route.slice(from + 1, targetIndex + 1).reduce((sum, destination) => sum + (destination === "mountain" ? 1 : 2), 0);
+        if (opponent.mana < travelCost) continue;
+        const potentialPower = Math.min(6, opponent.mana - travelCost + 2);
+        const invasionRisk = Math.max(0, Math.min(1, (potentialPower - ownPower + 2) / 6));
+        probability *= 1 - 0.35 * invasionRisk;
+      }
+    }
+    const sealReward = player.flags.commandSealVictoryPointBonusRound === state.round ? Number(player.flags.commandSealVictoryPointBonus ?? 0) : 0;
+    const reward = sealReward + (location === "city" ? 3 : 2) + (state.board.currentEvents[location] ?? []).reduce((sum, id) => sum + (context.events.find((event) => event.id === id)?.victoryPoints ?? (id === "event:hidden" ? 2 : 0)), 0);
+    const leader = Math.max(...Object.values(state.players).filter((p) => !p.eliminated).map((p) => p.victoryPoints));
+    const urgency = state.round >= 10 || player.victoryPoints < leader - 5 ? 1.25 : 1;
+    return reserve + reward * 4 * probability * urgency - (1 - probability) * 2 - opponents.length * 0.12;
+  }
+  function bestHandValue(state, context) {
+    const player = state.players[context.actorId];
+    let best = locationValue(state, context);
+    const hand = player.hand.filter((id) => context.definitions[state.cards[id]?.definitionId]).sort((a, b) => handPotential(state, b, context) - handPotential(state, a, context)).slice(0, 16);
+    const requirements = getStandardAttackRequirements(player, state, context.definitions);
+    const countRule = getStructuredStandardAttackCardCountRule(state, player.id, context.definitions);
+    for (let i = 0; i < hand.length; i++) for (let j = i; j < hand.length; j++) {
+      const ids = i === j ? [hand[i]] : [hand[i], hand[j]];
+      const selected = ids.map((id) => context.definitions[state.cards[id].definitionId]);
+      const single = selected.some((definition) => definition.singleCardPlay === true);
+      const alreadyReduced = player.attack.some((id) => context.definitions[state.cards[id]?.definitionId]?.tags?.includes("reduces-standard-attack-by-one"));
+      const reduction = !alreadyReduced && selected.some((definition) => definition.tags?.includes("reduces-standard-attack-by-one")) ? 1 : 0;
+      const required = Math.max(1, requirements.requiredCards - reduction);
+      if (single ? ids.length !== 1 : countRule ? ids.length < countRule.minCount || ids.length > countRule.maxCount : ids.length !== required) continue;
+      try {
+        assertStructuredCardBatchAllowed(state, player.id, ids, context.definitions);
+        for (const instanceId of ids) assertCardCanEnterAttack({
+          state,
+          playerId: context.actorId,
+          instanceId,
+          definitions: context.definitions,
+          faceDown: false,
+          primitiveDragonActive: requirements.primitiveDragonActive
+        });
+      } catch {
+        continue;
+      }
+      const next = attackCopy(state, { faceUpInstanceIds: ids }, context);
+      if (next.players[context.actorId].mana < 0) continue;
+      best = Math.max(best, locationValue(next, context));
+    }
+    return best;
+  }
+  function sealOpportunityCost(state, actorId) {
+    const remaining = state.players[actorId].commandSeals;
+    return state.round >= 10 ? 2 + Math.max(0, 3 - remaining) * 0.5 : 6 + Math.max(0, 11 - state.round) * 0.45 + Math.max(0, 3 - remaining) * 2;
+  }
+  function rankTacticalActions(state, actorId, actions, definitions, events) {
+    const knowledge = tacticalKnowledge(state, actorId), context = { actorId, definitions, events };
+    const baseline = state.step === "move-decision" ? bestHandValue(knowledge, context) : locationValue(knowledge, context);
+    const ranked = actions.map((action, index) => {
+      let score = baseline;
+      const payload = action.payload ?? {};
+      try {
+        if (action.commandType === CommandType.CommitAttack) score = locationValue(attackCopy(knowledge, payload, context), context);
+        else if (action.commandType === CommandType.DeployPlayer || action.commandType === CommandType.MovePlayer) {
+          const next = structuredClone(knowledge);
+          if (action.commandType === CommandType.DeployPlayer) deployPlayer(next, actorId, payload.locationId, definitions);
+          else movePlayer(next, actorId, payload.locationId, false, definitions);
+          score = bestHandValue(next, context) - (action.commandType === CommandType.MovePlayer ? 0.2 : 0);
+        } else if (action.commandType === CommandType.UseCommandSeal) {
+          const next = structuredClone(knowledge);
+          useNormalCommandSeal(next, actorId, action.payload, definitions);
+          score = bestHandValue(next, context) - sealOpportunityCost(knowledge, actorId);
+        } else if (action.commandType !== CommandType.CompletePlayerWindow && action.commandType !== CommandType.CompleteCombatResponse) score = Number.NEGATIVE_INFINITY;
+      } catch {
+        score = Number.NEGATIVE_INFINITY;
+      }
+      return { action, score, index };
+    });
+    const ordinaryBest = Math.max(baseline, ...ranked.filter((item) => item.action.commandType !== CommandType.UseCommandSeal).map((item) => item.score));
+    for (const item of ranked) if (item.action.commandType === CommandType.UseCommandSeal && item.score <= ordinaryBest + 1e-3) {
+      item.score = Number.NEGATIVE_INFINITY;
+    }
+    return ranked.sort((a, b) => b.score - a.score || a.index - b.index).map((item) => item.action);
+  }
+
   // src/browser/battle-runtime.ts
   var MASTER_IDS = [
     "master.kayneth",
@@ -179700,7 +179977,8 @@
     "master.maiya",
     "master.gatou",
     "master.irisviel",
-    "master.olga-marie"
+    "master.olga-marie",
+    "master.rin"
   ];
   var SERVANT_IDS = [
     "servant.artoriac",
@@ -179709,7 +179987,8 @@
     "servant.artoria-alt",
     "servant.ereshkigal",
     "servant.tomoe",
-    "servant.kintoki"
+    "servant.kintoki",
+    "servant.emiya"
   ];
   var preparedContent;
   var preparationPromise;
@@ -179795,6 +180074,8 @@
     #lastEvents = [];
     #eventLog = [];
     #aiPumping = false;
+    #disposed = false;
+    #aiTimer;
     constructor(options = {}) {
       const mode = options.mode === "3x" || options.mode === "three-x" || options.mode === "threeX" ? "three-x" : "standard";
       const allContent = standardContent();
@@ -179863,7 +180144,7 @@
         const servant = previewBySourceId("servants", assignment.servantId) ?? { sourceId: assignment.servantId, name: assignment.servantId };
         return { ...assignment, player, master, servant };
       });
-      const availableActions = this.app.availableActionsFor(this.playerId);
+      const availableActions = this.#localAvailableActions();
       const deploymentRequired = view.phase === "outpost" && availableActions.some((action) => action.commandType === CommandType.DeployPlayer);
       const actions = deploymentRequired ? availableActions.filter((action) => action.commandType !== CommandType.CompletePlayerWindow) : availableActions;
       return {
@@ -179882,12 +180163,21 @@
       };
     }
     subscribe(listener) {
+      if (this.#disposed) return () => {
+      };
       this.#listeners.add(listener);
       listener(this.snapshot());
       return () => this.#listeners.delete(listener);
     }
+    dispose() {
+      this.#disposed = true;
+      if (this.#aiTimer !== void 0) window.clearTimeout(this.#aiTimer);
+      this.#aiTimer = void 0;
+      this.#listeners.clear();
+    }
     dispatch(actionId, selections) {
-      let action = this.app.availableActionsFor(this.playerId).find((candidate) => candidate.id === actionId);
+      if (this.#disposed) throw new Error("MATCH_CLOSED");
+      let action = this.#localAvailableActions().find((candidate) => candidate.id === actionId);
       if (!action) {
         const draft = this.#draftAttackActions().find((candidate) => candidate.id === actionId);
         if (draft) {
@@ -179902,7 +180192,8 @@
         ...payload && typeof payload === "object" ? payload : {},
         selections: selections ?? []
       };
-      const result = this.#send(this.playerId, action.commandType, payload);
+      const observingSettlement = this.app.state.players[this.playerId]?.eliminated === true && [CommandType.ResolveCombat, CommandType.EndRound].includes(action.commandType);
+      const result = this.#send(observingSettlement ? "host" : this.playerId, action.commandType, payload);
       if (!result.ok) throw new Error(result.rejection.code);
       if (action.commandType === CommandType.DeployPlayer || action.commandType === CommandType.CommitAttack) {
         const complete = this.app.availableActionsFor(this.playerId).find((candidate) => candidate.commandType === CommandType.CompletePlayerWindow);
@@ -180034,10 +180325,18 @@
         return { ok: false, events: [], rejection: { code } };
       }
     }
+    #localAvailableActions() {
+      const state = this.app.state;
+      if (!state.players[this.playerId]?.eliminated) return this.app.availableActionsFor(this.playerId);
+      if (state.phase !== "combat" || state.step !== "settlement" || state.pendingDecision) return [];
+      const observerSource = state.turnOrder.find((id) => !state.players[id]?.eliminated);
+      return observerSource ? this.app.availableActionsFor(observerSource).filter((action) => action.commandType === CommandType.ResolveCombat || action.commandType === CommandType.EndRound) : [];
+    }
     #scheduleComputerPlayers() {
-      if (this.#aiPumping) return;
+      if (this.#disposed || this.#aiPumping) return;
       this.#aiPumping = true;
-      window.setTimeout(async () => {
+      this.#aiTimer = window.setTimeout(async () => {
+        this.#aiTimer = void 0;
         try {
           await this.#pumpComputerPlayers();
         } catch (error) {
@@ -180050,26 +180349,27 @@
     }
     async #pumpComputerPlayers() {
       for (let guard = 0; guard < 300; guard += 1) {
+        if (this.#disposed) return;
         const state = this.app.state;
         const pendingActor = state.pendingDecision?.chooserPlayerIds.find((id) => state.pendingDecision?.submissions[id] === void 0);
         const actorId = pendingActor ?? state.activePlayerId;
         if (!actorId || actorId === this.playerId || state.status === "finished") return;
-        const player = state.players[actorId];
         const candidates = [];
         if (pendingActor) {
           const action = this.app.availableActionsFor(actorId).find((candidate) => candidate.commandType === CommandType.ResolveDecision);
           if (action) candidates.push({ type: action.commandType, payload: decisionPayload(action) });
-        } else if (state.phase === "outpost" && player?.flags.deploymentBonusActive !== true) {
-          for (const locationId of ["workshop", "mountain", "city"]) candidates.push({ type: CommandType.DeployPlayer, payload: { locationId } });
-        } else if (state.phase === "action" && state.step === "move-decision") {
-          for (const locationId of ["mountain", "city", "scouting", "workshop"]) {
-            if (locationId !== player?.locationId) candidates.push({ type: CommandType.MovePlayer, payload: { locationId } });
-          }
-        } else if (state.phase === "action" && state.step === "play-batch-draft") {
-          const faceUpInstanceIds = player?.hand.slice(0, Math.min(2, player.hand.length)) ?? [];
-          if (faceUpInstanceIds.length) candidates.push({ type: CommandType.CommitAttack, payload: { faceUpInstanceIds, faceDownInstanceIds: [] } });
-        } else if (state.phase === "combat" && state.step === "post-power-response") {
-          candidates.push({ type: CommandType.CompleteCombatResponse, payload: {} });
+        } else {
+          const supported = /* @__PURE__ */ new Set([
+            CommandType.DeployPlayer,
+            CommandType.MovePlayer,
+            CommandType.CommitAttack,
+            CommandType.UseCommandSeal,
+            CommandType.CompletePlayerWindow,
+            CommandType.CompleteCombatResponse
+          ]);
+          const legal = this.app.availableActionsFor(actorId).filter((action) => supported.has(action.commandType));
+          const ranked = rankTacticalActions(state, actorId, legal, this.definitions, this.#content.events ?? []);
+          for (const action of ranked) candidates.push({ type: action.commandType, payload: action.payload ?? {} });
         }
         candidates.push({ type: CommandType.CompletePlayerWindow, payload: {} });
         let acceptedEvents;
@@ -180088,6 +180388,7 @@
       throw new Error("AI_ACTION_GUARD_EXCEEDED");
     }
     #emit() {
+      if (this.#disposed) return;
       const snapshot = this.snapshot();
       for (const listener of this.#listeners) listener(snapshot);
     }
@@ -180095,6 +180396,10 @@
   window.FDBattleRuntime = {
     create: (options) => new BrowserBattleRuntime(options),
     prepare: prepareStandardContent,
-    isPrepared: () => preparedContent !== void 0
+    isPrepared: () => preparedContent !== void 0,
+    masterCrystalRating: (name) => {
+      const id = selectedSourceId("masters", name, MASTER_IDS);
+      return THREE_X_MASTER_RATINGS[id] ?? 4;
+    }
   };
 })();

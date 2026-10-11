@@ -2,6 +2,7 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import vm from "node:vm";
 import { fileURLToPath } from "node:url";
+import { FUYUKI_TEXT_OVERRIDES } from "../src/rules-core/fuyuki-objectives.ts";
 
 const toolDir = path.dirname(fileURLToPath(import.meta.url));
 const projectDir = path.resolve(toolDir, "..");
@@ -278,7 +279,7 @@ const eventGroups = legacy.eventGroups.map((group) => ({
     legacyId: card.id,
     name: card.name,
     victoryPoints: card.vp,
-    text: card.desc,
+    text: FUYUKI_TEXT_OVERRIDES[`event.${String(group.id).toLowerCase()}.${index + 1}`] ?? card.desc,
     implementation: "pending",
   })),
 }));

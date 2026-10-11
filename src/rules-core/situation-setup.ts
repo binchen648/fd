@@ -13,6 +13,7 @@ export function initializeSituationDeck(state: GameState, definitions: Situation
   }
   const removed = shuffled.splice(0, 2);
   state.board.situationDiscard = removed.map((definition) => definition.id);
+  state.board.burnedSituationIds = [...state.board.situationDiscard];
   state.board.situationDeck = [
     ...shuffled.map((definition) => definition.id),
     ...climax.map((definition) => definition.id),

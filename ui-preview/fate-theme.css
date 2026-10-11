@@ -1,0 +1,106 @@
+/* Project palette; imagery and resource colors are deliberately independent. */
+:root,:host,#app{color-scheme:dark;--ui-ink:#171717;--ui-panel:#252525;--ui-panel-raised:#303030;--ui-line:#555350;--ui-paper:#f3f2ef;--ui-muted:#bbb9b5;--ui-accent:#d6ae52;--ui-action:#d6ae52;--ui-ornament:#bbc4d4;--ui-danger:#be8890;--gold:var(--ui-ornament);--gold2:var(--ui-paper);--control-surface:var(--ui-panel);--control-line:var(--ui-line)}
+#app .screen{color:var(--ui-paper)}
+#app :is(.settings.settings-hub,.settings-bg-dialog,.settings-bgm-dialog,.settings-sfx-dialog,.avatar-picker-dialog,.room-panel,.home-notice-editor-panel,.home-notice-detail-panel,.profile-history-panel,.profile-transfer-panel,.usage-panel,.avatar-picker-panel,.character-skill-preview){background:#252525f5!important;border-color:#555350!important;box-shadow:none!important}
+#app :is(.settings-hub-head,.settings-dialog-head,.avatar-picker-head,.home-notice-editor-head,.character-skill-preview-head){background:#171717!important}
+#app :is(.settings-row,.bgm-scene-row,.bgm-master-row,.sfx-volume-actions,.profile-stat-card,.profile-rank-panel,.profile-name-edit input){background:#252525!important;border-color:#555350!important;color:#f3f2ef!important}
+#app .screen :is(.tutorial-step-actions button:last-child,.profile-name-edit button,.room-primary,.profile-transfer-actions button,.settings-confirm){background:#d6ae52!important;color:#fff!important;border-color:#d6ae52!important}
+#app :is(.tutorial-screen,.tutorial-hub-screen){--ui-accent:#d6ae52;--ui-paper:#f3f2ef;--ui-ink:#171717;--ui-muted:#bbb9b5}
+#app .tutorial-hub-screen .tutorial-card{background:#f3f2ef!important;color:#252525!important}
+#app .tutorial-hub-copy :is(strong,p,small){color:#252525!important}
+#app .tutorial-screen :is(.codex-detail-content,.tutorial-chapter-nav,.tutorial-article,.tutorial-takeaway,.tutorial-lesson-head,.tutorial-step-actions,.tutorial-topics){background:#252525!important;border-color:#555350!important}
+#app .tutorial-screen .tutorial-chapters{background:#252525!important;border-color:#555350!important}
+#app .tutorial-screen .tutorial-chapters button{background:#303030!important;color:#bbb9b5!important;border-color:#555350!important}
+#app .tutorial-screen .tutorial-chapters button.active{background:#3c3c3c!important;color:#fff!important;border-color:#dedbd5!important}
+#app .tutorial-screen .tutorial-reader-head{background:#171717!important}
+#app .tutorial-screen :is(.tutorial-mode-label,.tutorial-diagram,.tutorial-rule-table th){background:#303030!important;color:#f3f2ef!important;border-color:#555350!important}
+#app .tutorial-screen .guide-diagram-tile{border-top-color:#d6ae52!important}
+#app .tutorial-screen :is(.guide-route-arrow,.guide-diagram>small,.tutorial-rule-table tr:first-child){color:#f3f2ef!important}
+#app .tutorial-screen :is(.tutorial-lesson-head small,.tutorial-takeaway:before,.tutorial-article h2,.tutorial-article h3){color:#f3f2ef!important}
+#app .home-menu .nav,#app .home-menu .nav small,#app .home-menu .nav .num{color:#fff!important}
+#app .home-menu .nav:hover,#app .home-menu .nav:hover small,#app .home-menu .nav:hover .num,#app .home-menu .nav:focus-visible,#app .home-menu .nav:focus-visible small{color:#171717!important;text-shadow:none!important}
+#app .home-menu .nav:hover::before,#app .home-menu .nav:focus-visible::before{background:#f3f2ef!important}
+#app .home-menu .nav:hover strong,#app .home-menu .nav:focus-visible strong{text-shadow:none!important}
+#app .home-menu::before{background:linear-gradient(180deg,transparent,#f3f2ef80,transparent)!important}
+#app .home-notice-copy{background:#171717!important}
+#app .press-any{color:#fff!important}
+#app .profile-mode-bar nav button.active{color:#f3f2ef!important;border-bottom-color:#d6ae52!important}
+#app .top-tools button{background:#252525!important;color:#f3f2ef!important;border-color:#555350!important}
+
+/* Shared chrome extends through the board, dialogs and results. */
+.battle-root.battle-root{--gold:var(--ui-ornament);--gold2:var(--ui-paper)}
+.battle-root.battle-root .topbar{background:#171717eb!important;border-color:#555350!important}
+:is(.battle-root.battle-root .actions,.battle-root.battle-root .player,.battle-root.battle-root .opponent,.ability-panel,.choice-panel,.save-box,.discard-panel,.settlement-shell,.log-drawer){background:#252525f5!important;border-color:#555350!important;box-shadow:none!important}
+:is(.ability-head,.choice-head,.discard-head,.settlement-head,.drawer-head){background:#171717!important;border-color:#555350!important}
+:is(.ability-card,.settlement-ranking,.settlement-battle,.log-item,.choice-option){background:#303030!important;border-color:#555350!important}
+:is(.battle-root.battle-root .actions button,.ability-tabs button,.ability-text button,.choice-actions button,.choice-option,.discard-head button,.settlement-actions button){background:#252525!important;color:#f3f2ef!important;border-color:#555350!important}
+:is(.battle-root.battle-root .actions button.primary,.battle-root.battle-root .actions #confirm-play,.choice-actions button.primary,.settlement-actions .settlement-next){background:#d6ae52!important;color:#fff!important;border-color:#d6ae52!important}
+:is(.ability-tabs button.active,.choice-option.selected){background:#3c3c3c!important;color:#f3f2ef!important;border-color:#dedbd5!important}
+.battle-root.battle-root :is(.command-seal-head,.command-seal-option){background:#252525!important;border-color:#555350!important}
+.battle-root.battle-root :is(.command-seal-glyph,.command-seal-head>strong b){background:#3c3c3c!important;color:#dedbd5!important;border-color:#d6ae52!important;box-shadow:none!important}
+.battle-root.battle-root :is(.command-seal-option>button,.command-seal-destinations button.selected){background:#d6ae52!important;color:#fff!important;border-color:#d6ae52!important;box-shadow:none!important}
+.battle-root *{scrollbar-color:#777571 #252525;scrollbar-width:thin}
+#app :is(.profile-rank-track,.profile-rank-track i){background:#3c3c3c!important}
+#app .profile-rank-track i{background:#d6ae52!important}
+#app :is(.profile-hero,.profile-stats){background:#252525!important;border-color:#555350!important}
+#app .profile-rank-panel :is(small,strong,b){color:#bbc4d4!important}
+#app .profile-hero .profile-rank-panel{background:transparent!important}
+#app :is(.ready-card-name .class-tag,.rank-inline,.profile-rank-name,.settings-hub-head small){color:#bbc4d4!important;border-color:#756b54!important}
+#app :is(.profile-transfer-panel textarea,.home-notice-editor-panel input,.home-notice-editor-panel textarea){background:#171717!important;color:#f3f2ef!important;border-color:#555350!important}
+
+/* Browser scrollbars are part of the same chrome; filters scroll horizontally only. */
+#app *{scrollbar-color:#777571 #252525;scrollbar-width:thin}
+#app *::-webkit-scrollbar{width:6px;height:6px;background:#252525}
+#app *::-webkit-scrollbar-track{background:#252525}
+#app *::-webkit-scrollbar-thumb{background:#777571;border-radius:8px;border:1px solid #252525}
+#app *::-webkit-scrollbar-button{display:none;width:0;height:0}
+#app .draft-screen .contract-workspace .ow-draft-toolbar{overflow:hidden!important}
+#app .draft-screen :is(.ow-stage-tabs,.ow-class-filter){overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important;min-height:44px!important}
+#app .draft-screen :is(.ow-stage-tabs,.ow-class-filter)::-webkit-scrollbar{display:none}
+#app .draft-screen .roster-search{overflow:hidden!important;min-width:120px!important}
+#app .draft-screen .roster-search input{min-width:0!important;width:100%!important}
+#app .screen.draft-screen .contract-workspace .ow-draft-footer>.ow-primary:not(:disabled){background:var(--ui-action)!important;color:#fff!important;border-color:#d6ae52!important}
+#app .screen.draft-screen .contract-workspace .ow-roster-grid .pick-card.active{border-color:#dedbd5!important;outline-color:#dedbd5!important;box-shadow:none!important}
+#app .draft-screen .threex-ban-summary{background:#252525!important;border-color:#555350!important}
+#app .draft-screen .threex-ban-summary :is(span,small,strong){color:#bbb9b5!important}
+#app .draft-screen .contract-workspace .ow-phase-copy h1{font-size:clamp(28px,2.6vw,40px)!important;line-height:1.15!important;margin:4px 0!important}
+@media(max-width:1100px) and (orientation:landscape){#app .draft-screen .contract-workspace .ow-phase-copy h1{font-size:24px!important;line-height:1.1!important;margin:1px 0!important}}
+
+/* Overwatch 2 inspired slate surfaces and orange confirmation controls. */
+#app .mode-selection-screen .mode-card .mode-body{background:linear-gradient(135deg,#303030,#252525)!important;color:#fff!important;border-top:2px solid #d6ae52!important}
+#app .mode-selection-screen .mode-body strong{color:#fff!important}
+#app .mode-selection-screen .mode-body :is(small,p){color:#bbb9b5!important}
+#app .mode-selection-screen .mode-body:after{color:#d6ae52!important}
+#app .tutorial-hub-screen .tutorial-card{background:#252525!important;color:#fff!important;border-color:#555350!important}
+#app .tutorial-hub-copy :is(strong,p,small){color:#fff!important}
+#app .tutorial-hub-copy p{color:#bbb9b5!important}
+#app .tutorial-hub-copy>span{color:#dedbd5!important;border-color:#555350!important}
+#app .draft-screen .purchase-head{background:linear-gradient(155deg,#303030,#252525)!important;color:#fff!important;border:1px solid #555350!important}
+#app .draft-screen .purchase-head :is(h2,small,.crystal-count b){color:#fff!important}
+#app .draft-screen .purchase-head :is(p,.crystal-count span){color:#bbb9b5!important}
+#app .draft-screen .crystal-count{border-color:#555350!important}
+#app .draft-screen .ban-target-state{background:#3c3c3c!important;color:#dedbd5!important;border:1px solid #555350!important}
+#app .archive-list-screen .codex-class-filters button.active,#app .draft-screen .ow-class-filter button.active{background:#3c3c3c!important;color:#fff!important;box-shadow:inset 0 -2px #d6ae52!important}
+#app .draft-screen .ow-stage-tabs button.active,#app .archive-detail-screen .codex-detail-tabs button.active{background:#3c3c3c!important;color:#fff!important}
+#app .screen.draft-screen .contract-workspace .ow-draft-footer>.ow-primary:not(:disabled),#app .screen.draft-screen .purchase-screen .purchase-footer>.purchase-finish,#app .screen.draft-screen .ready-screen .ready-footer>.ready-enter-preview{background:#d6ae52!important;color:#192334!important;border-color:#d6ae52!important}
+#app .screen :is(.tutorial-step-actions button:last-child,.profile-name-edit button,.room-primary,.profile-transfer-actions button,.settings-confirm),#app .draft-screen .purchase-option-foot button:not(:disabled),#app .multiplayer-lobby-screen .multi-lobby-start{background:#d6ae52!important;color:#192334!important;border-color:#d6ae52!important}
+:is(.battle-root.battle-root .actions button.primary,.battle-root.battle-root .actions #confirm-play,.choice-actions button.primary,.settlement-actions .settlement-next,.battle-root.battle-root .command-seal-option>button){background:#d6ae52!important;color:#192334!important;border-color:#d6ae52!important}
+#app .home-menu .nav:hover::before,#app .home-menu .nav:focus-visible::before{background:#fff!important}
+#app .draft-screen .contract-workspace .ow-phase-copy>small::before{display:none}
+#app .draft-screen .draft-focus-heading{border-bottom-color:#555350!important;background:transparent}
+#app :is(.settings-hub-head,.settings-dialog-head,.tutorial-reader-head){border-bottom-color:#555350!important;background:#252525!important}
+#app .screen.draft-screen .contract-workspace .ow-draft-footer>.ow-primary:not(:disabled),#app .screen.draft-screen .purchase-screen .purchase-footer>.purchase-finish,#app .screen.draft-screen .ready-screen .ready-footer>.ready-enter-preview{clip-path:none!important;border-radius:3px!important;box-shadow:none!important}
+#app .screen.draft-screen .contract-workspace .ow-draft-footer>.ow-primary:not(:disabled):hover,#app .screen.draft-screen .purchase-screen .purchase-footer>.purchase-finish:hover,#app .screen.draft-screen .ready-screen .ready-footer>.ready-enter-preview:hover{background:#dedbd5!important}
+
+/* One visual language: flat slate panels, clean tabs and an orange state marker. */
+#app .mode-selection-screen .mode-card .mode-body,#app .draft-screen .purchase-head{background:#252525!important;border-color:#555350!important}
+#app .mode-selection-screen .mode-card .mode-body{border-top:0!important}
+#app :is(.mode-card,.tutorial-card,.codex-card,.draft-focus,.ready-character,.purchase-option){border-radius:3px!important}
+#app :is(.draft-screen,.archive-list-screen,.archive-detail-screen) :is(.draft-focus-class,.rank-inline){background:#303030!important;color:#dedbd5!important;border-color:#555350!important}
+#app .draft-screen .contract-workspace .pick-card.active:after{background:#d6ae52!important;color:#192334!important}
+#app .archive-list-screen .codex-category-tabs button.active,#app .draft-screen .threex-stepper button.active{background:#3c3c3c!important}
+#app .tutorial-screen .tutorial-mode-label{background:#303030!important;color:#dedbd5!important;border:0!important;border-radius:3px!important}
+#app .screen :is(.room-primary,.profile-name-edit button,.tutorial-step-actions button,.profile-transfer-actions button,.multi-lobby-start){border-radius:3px!important;clip-path:none!important;box-shadow:none!important}
+.rank-promotion-overlay{background:radial-gradient(circle at 50% 48%,#30303099,transparent 45%),#171717!important;color:#fff!important}
+.rank-promotion-stage h2,.rank-promotion-name strong{color:#fff!important;text-shadow:0 4px 20px #0008!important}
+.rank-promotion-kicker,.rank-promotion-name span,.rank-promotion-stage p i{color:#d6ae52!important}

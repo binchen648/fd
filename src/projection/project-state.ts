@@ -117,7 +117,11 @@ export function projectPublicState(state: GameState, viewerId: string): PublicGa
     }]));
   }
   board.situationDeck = maskDeckIds(board.situationDeck, "situation:hidden");
-  if (!mayViewBurnedSituations) board.situationDiscard = maskDeckIds(board.situationDiscard, "situation:hidden");
+  if (!mayViewBurnedSituations) {
+    const burned = new Set(board.burnedSituationIds ?? []);
+    board.situationDiscard = board.situationDiscard.map((id, index) => burned.has(id) ? `situation:hidden:${index}` : id);
+    board.burnedSituationIds = maskDeckIds(board.burnedSituationIds ?? [], "situation:hidden");
+  }
   board.currentEvents = Object.fromEntries(Object.entries(board.currentEvents).map(([locationId, eventIds]) => [
     locationId,
     eventIds.map((eventId) => maskEventId(board, eventId)),

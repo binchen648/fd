@@ -160,3 +160,6 @@ const skillCount = [...Object.values(detail.masters), ...Object.values(detail.se
   .reduce((total, entity) => total + entity.skills.length, 0);
 const deckTypeCount = Object.values(detail.servants).reduce((total, entity) => total + entity.deck.length, 0);
 console.log(`已生成 ${masterIds.length} 名御主、${servantIds.length} 名从者、${skillCount} 个技能、${deckTypeCount} 种卡组条目。`);
+// The two supplemental UI characters use the project's printed legacy source.
+// Their gameplay skills remain disabled by playableContentSource().
+await import('./add-ui-roster-pair.cjs');

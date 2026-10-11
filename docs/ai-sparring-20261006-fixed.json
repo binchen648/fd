@@ -1,0 +1,6657 @@
+{
+  "seed": 20261006,
+  "policy": "fixed",
+  "elapsedMs": 189494,
+  "rounds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "final": {
+    "round": 11,
+    "revision": 522,
+    "finished": true,
+    "victory": {
+      "finished": true,
+      "winnerIds": [
+        "p5"
+      ],
+      "reason": "final-score"
+    },
+    "scores": [
+      {
+        "id": "p1",
+        "points": 6,
+        "eliminated": true
+      },
+      {
+        "id": "p2",
+        "points": 25,
+        "eliminated": false
+      },
+      {
+        "id": "p3",
+        "points": 13,
+        "eliminated": true
+      },
+      {
+        "id": "p4",
+        "points": 12,
+        "eliminated": true
+      },
+      {
+        "id": "p5",
+        "points": 37,
+        "eliminated": false
+      },
+      {
+        "id": "p6",
+        "points": 23,
+        "eliminated": true
+      },
+      {
+        "id": "p7",
+        "points": 36,
+        "eliminated": false
+      }
+    ]
+  },
+  "errors": [],
+  "decisions": [
+    {
+      "round": 1,
+      "revision": 8,
+      "operation": "phase.player.complete",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": null,
+        "mana": 6,
+        "power": 0,
+        "points": 0
+      }
+    },
+    {
+      "round": 1,
+      "revision": 15,
+      "operation": "player.deploy",
+      "payload": {
+        "locationId": "workshop"
+      },
+      "reason": "固定奇偶回合部署",
+      "before": {
+        "location": null,
+        "mana": 6,
+        "power": 0,
+        "points": 0
+      }
+    },
+    {
+      "round": 1,
+      "revision": 29,
+      "operation": "player.attack.commit",
+      "payload": {
+        "faceUpInstanceIds": [
+          "p1:card:3",
+          "p1:card:1"
+        ],
+        "faceDownInstanceIds": []
+      },
+      "reason": "固定优先明置最多张",
+      "before": {
+        "location": "workshop",
+        "mana": 8,
+        "power": 0,
+        "points": 0
+      }
+    },
+    {
+      "round": 1,
+      "revision": 65,
+      "operation": "phase.player.complete",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "workshop",
+        "mana": 7,
+        "power": 10,
+        "points": 0
+      }
+    },
+    {
+      "round": 1,
+      "revision": 72,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 1,
+      "revision": 72,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "mountain"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "workshop",
+        "mana": 7,
+        "power": 10,
+        "points": 0
+      }
+    },
+    {
+      "round": 1,
+      "revision": 73,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 1,
+      "revision": 73,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "city"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "workshop",
+        "mana": 7,
+        "power": 10,
+        "points": 0
+      }
+    },
+    {
+      "round": 1,
+      "revision": 74,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 1,
+      "revision": 74,
+      "operation": "round.end",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "workshop",
+        "mana": 7,
+        "power": 10,
+        "points": 0
+      }
+    },
+    {
+      "round": 2,
+      "revision": 81,
+      "operation": "phase.player.complete",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": null,
+        "mana": 9,
+        "power": 0,
+        "points": 0
+      }
+    },
+    {
+      "round": 2,
+      "revision": 94,
+      "operation": "player.deploy",
+      "payload": {
+        "locationId": "city"
+      },
+      "reason": "固定奇偶回合部署",
+      "before": {
+        "location": null,
+        "mana": 9,
+        "power": 0,
+        "points": 0
+      }
+    },
+    {
+      "round": 2,
+      "revision": 115,
+      "operation": "player.attack.commit",
+      "payload": {
+        "faceUpInstanceIds": [
+          "p1:card:2",
+          "p1:card:8"
+        ],
+        "faceDownInstanceIds": []
+      },
+      "reason": "固定优先明置最多张",
+      "before": {
+        "location": "city",
+        "mana": 9,
+        "power": 0,
+        "points": 0
+      }
+    },
+    {
+      "round": 2,
+      "revision": 124,
+      "operation": "phase.player.complete",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "city",
+        "mana": 9,
+        "power": 12,
+        "points": 0
+      }
+    },
+    {
+      "round": 2,
+      "revision": 125,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 2,
+      "revision": 125,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "mountain"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "city",
+        "mana": 9,
+        "power": 12,
+        "points": 0
+      }
+    },
+    {
+      "round": 2,
+      "revision": 126,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 2,
+      "revision": 126,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "city"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "city",
+        "mana": 9,
+        "power": 12,
+        "points": 0
+      }
+    },
+    {
+      "round": 2,
+      "revision": 127,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 2,
+      "revision": 127,
+      "operation": "round.end",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "city",
+        "mana": 9,
+        "power": 12,
+        "points": 0
+      }
+    },
+    {
+      "round": 3,
+      "revision": 133,
+      "operation": "phase.player.complete",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": null,
+        "mana": 9,
+        "power": 0,
+        "points": 0
+      }
+    },
+    {
+      "round": 3,
+      "revision": 145,
+      "operation": "player.deploy",
+      "payload": {
+        "locationId": "workshop"
+      },
+      "reason": "固定奇偶回合部署",
+      "before": {
+        "location": null,
+        "mana": 9,
+        "power": 0,
+        "points": 0
+      }
+    },
+    {
+      "round": 3,
+      "revision": 165,
+      "operation": "player.attack.commit",
+      "payload": {
+        "faceUpInstanceIds": [
+          "p1:card:10",
+          "p1:card:5"
+        ],
+        "faceDownInstanceIds": []
+      },
+      "reason": "固定优先明置最多张",
+      "before": {
+        "location": "workshop",
+        "mana": 11,
+        "power": 0,
+        "points": 0
+      }
+    },
+    {
+      "round": 3,
+      "revision": 176,
+      "operation": "phase.player.complete",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "workshop",
+        "mana": 11,
+        "power": 8,
+        "points": 0
+      }
+    },
+    {
+      "round": 3,
+      "revision": 178,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 3,
+      "revision": 178,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "mountain"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "workshop",
+        "mana": 11,
+        "power": 8,
+        "points": 0
+      }
+    },
+    {
+      "round": 3,
+      "revision": 179,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 3,
+      "revision": 179,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "city"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "workshop",
+        "mana": 11,
+        "power": 8,
+        "points": 0
+      }
+    },
+    {
+      "round": 3,
+      "revision": 180,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 3,
+      "revision": 180,
+      "operation": "round.end",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "workshop",
+        "mana": 11,
+        "power": 8,
+        "points": 0
+      }
+    },
+    {
+      "round": 4,
+      "revision": 185,
+      "operation": "phase.player.complete",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": null,
+        "mana": 12,
+        "power": 0,
+        "points": 0
+      }
+    },
+    {
+      "round": 4,
+      "revision": 196,
+      "operation": "player.deploy",
+      "payload": {
+        "locationId": "city"
+      },
+      "reason": "固定奇偶回合部署",
+      "before": {
+        "location": null,
+        "mana": 12,
+        "power": 0,
+        "points": 0
+      }
+    },
+    {
+      "round": 4,
+      "revision": 215,
+      "operation": "player.attack.commit",
+      "payload": {
+        "faceUpInstanceIds": [
+          "p1:card:6",
+          "p1:card:7"
+        ],
+        "faceDownInstanceIds": []
+      },
+      "reason": "固定优先明置最多张",
+      "before": {
+        "location": "city",
+        "mana": 12,
+        "power": 0,
+        "points": 0
+      }
+    },
+    {
+      "round": 4,
+      "revision": 228,
+      "operation": "phase.player.complete",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "city",
+        "mana": 12,
+        "power": 12,
+        "points": 0
+      }
+    },
+    {
+      "round": 4,
+      "revision": 231,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 4,
+      "revision": 231,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "mountain"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "city",
+        "mana": 12,
+        "power": 12,
+        "points": 0
+      }
+    },
+    {
+      "round": 4,
+      "revision": 232,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 4,
+      "revision": 232,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "city"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "city",
+        "mana": 12,
+        "power": 12,
+        "points": 0
+      }
+    },
+    {
+      "round": 4,
+      "revision": 233,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 4,
+      "revision": 233,
+      "operation": "round.end",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "city",
+        "mana": 12,
+        "power": 12,
+        "points": 6
+      }
+    },
+    {
+      "round": 5,
+      "revision": 237,
+      "operation": "phase.player.complete",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": null,
+        "mana": 12,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 5,
+      "revision": 247,
+      "operation": "player.deploy",
+      "payload": {
+        "locationId": "workshop"
+      },
+      "reason": "固定奇偶回合部署",
+      "before": {
+        "location": null,
+        "mana": 12,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 5,
+      "revision": 264,
+      "operation": "player.attack.commit",
+      "payload": {
+        "faceUpInstanceIds": [
+          "p1:card:4",
+          "p1:card:9"
+        ],
+        "faceDownInstanceIds": []
+      },
+      "reason": "固定优先明置最多张",
+      "before": {
+        "location": "workshop",
+        "mana": 12,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 5,
+      "revision": 279,
+      "operation": "phase.player.complete",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "workshop",
+        "mana": 11,
+        "power": 11,
+        "points": 6
+      }
+    },
+    {
+      "round": 5,
+      "revision": 283,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 5,
+      "revision": 283,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "mountain"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "workshop",
+        "mana": 11,
+        "power": 11,
+        "points": 6
+      }
+    },
+    {
+      "round": 5,
+      "revision": 284,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 5,
+      "revision": 284,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "city"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "workshop",
+        "mana": 11,
+        "power": 11,
+        "points": 6
+      }
+    },
+    {
+      "round": 5,
+      "revision": 285,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 5,
+      "revision": 285,
+      "operation": "round.end",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "workshop",
+        "mana": 11,
+        "power": 11,
+        "points": 6
+      }
+    },
+    {
+      "round": 6,
+      "revision": 288,
+      "operation": "phase.player.complete",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": null,
+        "mana": 11,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 6,
+      "revision": 297,
+      "operation": "player.deploy",
+      "payload": {
+        "locationId": "city"
+      },
+      "reason": "固定奇偶回合部署",
+      "before": {
+        "location": null,
+        "mana": 11,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 6,
+      "revision": 313,
+      "operation": "player.attack.commit",
+      "payload": {
+        "faceUpInstanceIds": [
+          "p1:card:11",
+          "p1:card:12"
+        ],
+        "faceDownInstanceIds": []
+      },
+      "reason": "固定优先明置最多张",
+      "before": {
+        "location": "city",
+        "mana": 11,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 6,
+      "revision": 330,
+      "operation": "phase.player.complete",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "city",
+        "mana": 9,
+        "power": 6,
+        "points": 6
+      }
+    },
+    {
+      "round": 6,
+      "revision": 335,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 6,
+      "revision": 335,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "mountain"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "city",
+        "mana": 9,
+        "power": 6,
+        "points": 6
+      }
+    },
+    {
+      "round": 6,
+      "revision": 336,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 6,
+      "revision": 336,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "city"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "city",
+        "mana": 9,
+        "power": 6,
+        "points": 6
+      }
+    },
+    {
+      "round": 6,
+      "revision": 337,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 6,
+      "revision": 337,
+      "operation": "round.end",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "city",
+        "mana": 9,
+        "power": 6,
+        "points": 6
+      }
+    },
+    {
+      "round": 7,
+      "revision": 339,
+      "operation": "phase.player.complete",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": null,
+        "mana": 12,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 7,
+      "revision": 347,
+      "operation": "player.deploy",
+      "payload": {
+        "locationId": "workshop"
+      },
+      "reason": "固定奇偶回合部署",
+      "before": {
+        "location": null,
+        "mana": 12,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 7,
+      "revision": 362,
+      "operation": "player.attack.commit",
+      "payload": {
+        "faceUpInstanceIds": [
+          "p1:card:1",
+          "p1:card:4"
+        ],
+        "faceDownInstanceIds": []
+      },
+      "reason": "固定优先明置最多张",
+      "before": {
+        "location": "workshop",
+        "mana": 12,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 7,
+      "revision": 381,
+      "operation": "phase.player.complete",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "workshop",
+        "mana": 11,
+        "power": 10,
+        "points": 6
+      }
+    },
+    {
+      "round": 7,
+      "revision": 387,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 7,
+      "revision": 387,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "mountain"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "workshop",
+        "mana": 11,
+        "power": 10,
+        "points": 6
+      }
+    },
+    {
+      "round": 7,
+      "revision": 388,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 7,
+      "revision": 388,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "city"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "workshop",
+        "mana": 11,
+        "power": 10,
+        "points": 6
+      }
+    },
+    {
+      "round": 7,
+      "revision": 389,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 7,
+      "revision": 389,
+      "operation": "round.end",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "workshop",
+        "mana": 11,
+        "power": 10,
+        "points": 6
+      }
+    },
+    {
+      "round": 8,
+      "revision": 390,
+      "operation": "phase.player.complete",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": null,
+        "mana": 11,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 8,
+      "revision": 397,
+      "operation": "player.deploy",
+      "payload": {
+        "locationId": "city"
+      },
+      "reason": "固定奇偶回合部署",
+      "before": {
+        "location": null,
+        "mana": 11,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 8,
+      "revision": 411,
+      "operation": "player.attack.commit",
+      "payload": {
+        "faceUpInstanceIds": [
+          "p1:card:6",
+          "p1:card:5"
+        ],
+        "faceDownInstanceIds": []
+      },
+      "reason": "固定优先明置最多张",
+      "before": {
+        "location": "city",
+        "mana": 11,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 8,
+      "revision": 432,
+      "operation": "phase.player.complete",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "city",
+        "mana": 11,
+        "power": 7,
+        "points": 6
+      }
+    },
+    {
+      "round": 8,
+      "revision": 439,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 8,
+      "revision": 439,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "mountain"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "city",
+        "mana": 11,
+        "power": 7,
+        "points": 6
+      }
+    },
+    {
+      "round": 8,
+      "revision": 440,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 8,
+      "revision": 440,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "city"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "city",
+        "mana": 11,
+        "power": 7,
+        "points": 6
+      }
+    },
+    {
+      "round": 8,
+      "revision": 441,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 8,
+      "revision": 441,
+      "operation": "round.end",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": "city",
+        "mana": 11,
+        "power": 7,
+        "points": 6
+      }
+    },
+    {
+      "round": 9,
+      "revision": 471,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 9,
+      "revision": 471,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "mountain"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": null,
+        "mana": 11,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 9,
+      "revision": 472,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 9,
+      "revision": 472,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "city"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": null,
+        "mana": 11,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 9,
+      "revision": 473,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 9,
+      "revision": 473,
+      "operation": "round.end",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": null,
+        "mana": 11,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 10,
+      "revision": 495,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 10,
+      "revision": 495,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "mountain"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": null,
+        "mana": 11,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 10,
+      "revision": 496,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 10,
+      "revision": 496,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "city"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": null,
+        "mana": 11,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 10,
+      "revision": 497,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 10,
+      "revision": 497,
+      "operation": "round.end",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": null,
+        "mana": 11,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 11,
+      "revision": 519,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 11,
+      "revision": 519,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "mountain"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": null,
+        "mana": 11,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 11,
+      "revision": 520,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 11,
+      "revision": 520,
+      "operation": "combat.resolve",
+      "payload": {
+        "locationId": "city"
+      },
+      "reason": "完成当前阶段",
+      "before": {
+        "location": null,
+        "mana": 11,
+        "power": 0,
+        "points": 6
+      }
+    },
+    {
+      "round": 11,
+      "revision": 521,
+      "operation": "settlement.next"
+    },
+    {
+      "round": 11,
+      "revision": 521,
+      "operation": "round.end",
+      "payload": {},
+      "reason": "完成当前阶段",
+      "before": {
+        "location": null,
+        "mana": 11,
+        "power": 0,
+        "points": 6
+      }
+    }
+  ],
+  "publicTrace": [
+    {
+      "round": 1,
+      "phase": "preparation",
+      "playerId": "p1",
+      "location": null,
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "preparation",
+      "playerId": "p2",
+      "location": null,
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "preparation",
+      "playerId": "p3",
+      "location": null,
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "preparation",
+      "playerId": "p4",
+      "location": null,
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "preparation",
+      "playerId": "p5",
+      "location": null,
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "preparation",
+      "playerId": "p6",
+      "location": null,
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "preparation",
+      "playerId": "p7",
+      "location": null,
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "outpost",
+      "playerId": "p1",
+      "location": null,
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": null,
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "outpost",
+      "playerId": "p3",
+      "location": null,
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "outpost",
+      "playerId": "p4",
+      "location": null,
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": null,
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": null,
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": null,
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "outpost",
+      "playerId": "p1",
+      "location": "workshop",
+      "mana": 8,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": "city",
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "outpost",
+      "playerId": "p3",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "outpost",
+      "playerId": "p4",
+      "location": "city",
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": "city",
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p1",
+      "location": "workshop",
+      "mana": 8,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "city",
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "city",
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "city",
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p1",
+      "location": "workshop",
+      "mana": 7,
+      "seals": 3,
+      "points": 0,
+      "handCount": 1,
+      "power": 10
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "city",
+      "mana": 6,
+      "seals": 2,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "city",
+      "mana": 6,
+      "seals": 1,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "city",
+      "mana": 6,
+      "seals": 0,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 0,
+      "handCount": 1,
+      "power": 20
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 2,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 1,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 0,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 0,
+      "points": 0,
+      "handCount": 1,
+      "power": 17
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 6,
+      "seals": 2,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 10,
+      "seals": 1,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 10,
+      "seals": 1,
+      "points": 0,
+      "handCount": 1,
+      "power": 6
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 2,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 1,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 0,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 4,
+      "seals": 0,
+      "points": 0,
+      "handCount": 1,
+      "power": 19
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "workshop",
+      "mana": 6,
+      "seals": 2,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "workshop",
+      "mana": 6,
+      "seals": 2,
+      "points": 0,
+      "handCount": 1,
+      "power": 5
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 2,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 1,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 0,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 1,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 5,
+      "seals": 0,
+      "points": 0,
+      "handCount": 1,
+      "power": 18
+    },
+    {
+      "round": 1,
+      "phase": "combat",
+      "playerId": "p1",
+      "location": "workshop",
+      "mana": 7,
+      "seals": 3,
+      "points": 0,
+      "handCount": 1,
+      "power": 10
+    },
+    {
+      "round": 1,
+      "phase": "combat",
+      "playerId": "p2",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 0,
+      "handCount": 1,
+      "power": 20
+    },
+    {
+      "round": 1,
+      "phase": "combat",
+      "playerId": "p3",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 0,
+      "points": 0,
+      "handCount": 1,
+      "power": 17
+    },
+    {
+      "round": 1,
+      "phase": "combat",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 10,
+      "seals": 1,
+      "points": 0,
+      "handCount": 1,
+      "power": 6
+    },
+    {
+      "round": 1,
+      "phase": "combat",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 4,
+      "seals": 0,
+      "points": 0,
+      "handCount": 1,
+      "power": 19
+    },
+    {
+      "round": 1,
+      "phase": "combat",
+      "playerId": "p6",
+      "location": "workshop",
+      "mana": 6,
+      "seals": 2,
+      "points": 0,
+      "handCount": 1,
+      "power": 5
+    },
+    {
+      "round": 1,
+      "phase": "combat",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 5,
+      "seals": 0,
+      "points": 0,
+      "handCount": 1,
+      "power": 18
+    },
+    {
+      "round": 1,
+      "phase": "combat",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 10,
+      "seals": 1,
+      "points": 2,
+      "handCount": 1,
+      "power": 6
+    },
+    {
+      "round": 1,
+      "phase": "combat",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 4,
+      "seals": 0,
+      "points": 13,
+      "handCount": 1,
+      "power": 19
+    },
+    {
+      "round": 1,
+      "phase": "combat",
+      "playerId": "p2",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 12,
+      "handCount": 1,
+      "power": 20
+    },
+    {
+      "round": 2,
+      "phase": "preparation",
+      "playerId": "p1",
+      "location": null,
+      "mana": 9,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "preparation",
+      "playerId": "p2",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 12,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "preparation",
+      "playerId": "p3",
+      "location": null,
+      "mana": 8,
+      "seals": 0,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "preparation",
+      "playerId": "p4",
+      "location": null,
+      "mana": 12,
+      "seals": 1,
+      "points": 2,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "preparation",
+      "playerId": "p5",
+      "location": null,
+      "mana": 6,
+      "seals": 0,
+      "points": 13,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "preparation",
+      "playerId": "p6",
+      "location": null,
+      "mana": 8,
+      "seals": 2,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "preparation",
+      "playerId": "p7",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "outpost",
+      "playerId": "p1",
+      "location": null,
+      "mana": 9,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 12,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "outpost",
+      "playerId": "p3",
+      "location": null,
+      "mana": 8,
+      "seals": 0,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "outpost",
+      "playerId": "p4",
+      "location": null,
+      "mana": 12,
+      "seals": 1,
+      "points": 2,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": null,
+      "mana": 6,
+      "seals": 0,
+      "points": 13,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": null,
+      "mana": 8,
+      "seals": 2,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 7,
+      "seals": 0,
+      "points": 12,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "outpost",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 8,
+      "seals": 0,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "outpost",
+      "playerId": "p4",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 1,
+      "points": 2,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 6,
+      "seals": 0,
+      "points": 13,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": "workshop",
+      "mana": 10,
+      "seals": 2,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 7,
+      "seals": 0,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "action",
+      "playerId": "p1",
+      "location": "city",
+      "mana": 9,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 7,
+      "seals": 0,
+      "points": 12,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 8,
+      "seals": 0,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 1,
+      "points": 2,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 6,
+      "seals": 0,
+      "points": 13,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "workshop",
+      "mana": 10,
+      "seals": 2,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 7,
+      "seals": 0,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 7,
+      "seals": 0,
+      "points": 12,
+      "handCount": 1,
+      "power": 15
+    },
+    {
+      "round": 2,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 0,
+      "handCount": 1,
+      "power": 17
+    },
+    {
+      "round": 2,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 12,
+      "seals": 0,
+      "points": 2,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 2,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 11,
+      "seals": 0,
+      "points": 2,
+      "handCount": 1,
+      "power": 8
+    },
+    {
+      "round": 2,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 13,
+      "handCount": 1,
+      "power": 15
+    },
+    {
+      "round": 2,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "workshop",
+      "mana": 9,
+      "seals": 2,
+      "points": 0,
+      "handCount": 1,
+      "power": 8
+    },
+    {
+      "round": 2,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 0,
+      "points": 0,
+      "handCount": 1,
+      "power": 7
+    },
+    {
+      "round": 2,
+      "phase": "combat",
+      "playerId": "p1",
+      "location": "city",
+      "mana": 9,
+      "seals": 3,
+      "points": 0,
+      "handCount": 1,
+      "power": 12
+    },
+    {
+      "round": 2,
+      "phase": "combat",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 7,
+      "seals": 0,
+      "points": 12,
+      "handCount": 1,
+      "power": 15
+    },
+    {
+      "round": 2,
+      "phase": "combat",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 0,
+      "handCount": 1,
+      "power": 17
+    },
+    {
+      "round": 2,
+      "phase": "combat",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 11,
+      "seals": 0,
+      "points": 2,
+      "handCount": 1,
+      "power": 8
+    },
+    {
+      "round": 2,
+      "phase": "combat",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 13,
+      "handCount": 1,
+      "power": 15
+    },
+    {
+      "round": 2,
+      "phase": "combat",
+      "playerId": "p6",
+      "location": "workshop",
+      "mana": 9,
+      "seals": 2,
+      "points": 0,
+      "handCount": 1,
+      "power": 8
+    },
+    {
+      "round": 2,
+      "phase": "combat",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 0,
+      "points": 0,
+      "handCount": 1,
+      "power": 7
+    },
+    {
+      "round": 2,
+      "phase": "combat",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 7,
+      "seals": 0,
+      "points": 19,
+      "handCount": 1,
+      "power": 15
+    },
+    {
+      "round": 2,
+      "phase": "combat",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 11,
+      "seals": 0,
+      "points": 4,
+      "handCount": 1,
+      "power": 8
+    },
+    {
+      "round": 2,
+      "phase": "combat",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 5,
+      "handCount": 1,
+      "power": 17
+    },
+    {
+      "round": 3,
+      "phase": "preparation",
+      "playerId": "p1",
+      "location": null,
+      "mana": 9,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "preparation",
+      "playerId": "p2",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 19,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "preparation",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 5,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "preparation",
+      "playerId": "p4",
+      "location": null,
+      "mana": 11,
+      "seals": 0,
+      "points": 4,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "preparation",
+      "playerId": "p5",
+      "location": null,
+      "mana": 5,
+      "seals": 0,
+      "points": 13,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "preparation",
+      "playerId": "p6",
+      "location": null,
+      "mana": 9,
+      "seals": 2,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "preparation",
+      "playerId": "p7",
+      "location": null,
+      "mana": 6,
+      "seals": 0,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "outpost",
+      "playerId": "p1",
+      "location": null,
+      "mana": 9,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 19,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "outpost",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 5,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "outpost",
+      "playerId": "p4",
+      "location": null,
+      "mana": 11,
+      "seals": 0,
+      "points": 4,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": null,
+      "mana": 5,
+      "seals": 0,
+      "points": 13,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": null,
+      "mana": 9,
+      "seals": 2,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": null,
+      "mana": 6,
+      "seals": 0,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "outpost",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 5,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "outpost",
+      "playerId": "p4",
+      "location": "mountain",
+      "mana": 11,
+      "seals": 0,
+      "points": 4,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 13,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 9,
+      "seals": 2,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 0,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "outpost",
+      "playerId": "p1",
+      "location": "workshop",
+      "mana": 11,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": "workshop",
+      "mana": 8,
+      "seals": 0,
+      "points": 19,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "action",
+      "playerId": "p1",
+      "location": "workshop",
+      "mana": 11,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "workshop",
+      "mana": 8,
+      "seals": 0,
+      "points": 19,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 5,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "mountain",
+      "mana": 11,
+      "seals": 0,
+      "points": 4,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 13,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 9,
+      "seals": 2,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 6,
+      "seals": 0,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 6,
+      "seals": 0,
+      "points": 5,
+      "handCount": 1,
+      "power": 9
+    },
+    {
+      "round": 3,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 4,
+      "handCount": 1,
+      "power": 15
+    },
+    {
+      "round": 3,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 13,
+      "handCount": 1,
+      "power": 15
+    },
+    {
+      "round": 3,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "scouting",
+      "mana": 9,
+      "seals": 1,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 3,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "scouting",
+      "mana": 8,
+      "seals": 1,
+      "points": 0,
+      "handCount": 1,
+      "power": 4
+    },
+    {
+      "round": 3,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 5,
+      "seals": 0,
+      "points": 0,
+      "handCount": 1,
+      "power": 15
+    },
+    {
+      "round": 3,
+      "phase": "action",
+      "playerId": "p1",
+      "location": "workshop",
+      "mana": 11,
+      "seals": 3,
+      "points": 0,
+      "handCount": 1,
+      "power": 8
+    },
+    {
+      "round": 3,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "workshop",
+      "mana": 8,
+      "seals": 0,
+      "points": 19,
+      "handCount": 1,
+      "power": 6
+    },
+    {
+      "round": 3,
+      "phase": "combat",
+      "playerId": "p1",
+      "location": "workshop",
+      "mana": 11,
+      "seals": 3,
+      "points": 0,
+      "handCount": 1,
+      "power": 8
+    },
+    {
+      "round": 3,
+      "phase": "combat",
+      "playerId": "p2",
+      "location": "workshop",
+      "mana": 8,
+      "seals": 0,
+      "points": 19,
+      "handCount": 1,
+      "power": 6
+    },
+    {
+      "round": 3,
+      "phase": "combat",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 6,
+      "seals": 0,
+      "points": 5,
+      "handCount": 1,
+      "power": 9
+    },
+    {
+      "round": 3,
+      "phase": "combat",
+      "playerId": "p4",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 4,
+      "handCount": 1,
+      "power": 15
+    },
+    {
+      "round": 3,
+      "phase": "combat",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 13,
+      "handCount": 1,
+      "power": 15
+    },
+    {
+      "round": 3,
+      "phase": "combat",
+      "playerId": "p6",
+      "location": "scouting",
+      "mana": 8,
+      "seals": 1,
+      "points": 0,
+      "handCount": 1,
+      "power": 4
+    },
+    {
+      "round": 3,
+      "phase": "combat",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 5,
+      "seals": 0,
+      "points": 0,
+      "handCount": 1,
+      "power": 15
+    },
+    {
+      "round": 3,
+      "phase": "combat",
+      "playerId": "p4",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 6,
+      "handCount": 1,
+      "power": 15
+    },
+    {
+      "round": 3,
+      "phase": "combat",
+      "playerId": "p6",
+      "location": "scouting",
+      "mana": 8,
+      "seals": 1,
+      "points": 2,
+      "handCount": 1,
+      "power": 4
+    },
+    {
+      "round": 3,
+      "phase": "combat",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 5,
+      "seals": 0,
+      "points": 2,
+      "handCount": 1,
+      "power": 15
+    },
+    {
+      "round": 3,
+      "phase": "combat",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 19,
+      "handCount": 1,
+      "power": 15
+    },
+    {
+      "round": 4,
+      "phase": "preparation",
+      "playerId": "p1",
+      "location": null,
+      "mana": 12,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "preparation",
+      "playerId": "p2",
+      "location": null,
+      "mana": 10,
+      "seals": 0,
+      "points": 19,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "preparation",
+      "playerId": "p3",
+      "location": null,
+      "mana": 8,
+      "seals": 0,
+      "points": 5,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "preparation",
+      "playerId": "p4",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "preparation",
+      "playerId": "p5",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 19,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "preparation",
+      "playerId": "p6",
+      "location": null,
+      "mana": 10,
+      "seals": 1,
+      "points": 2,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "preparation",
+      "playerId": "p7",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 2,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "outpost",
+      "playerId": "p1",
+      "location": null,
+      "mana": 12,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": null,
+      "mana": 10,
+      "seals": 0,
+      "points": 19,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "outpost",
+      "playerId": "p3",
+      "location": null,
+      "mana": 8,
+      "seals": 0,
+      "points": 5,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "outpost",
+      "playerId": "p4",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 19,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": null,
+      "mana": 10,
+      "seals": 1,
+      "points": 2,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 2,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "outpost",
+      "playerId": "p4",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 19,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 1,
+      "points": 2,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 7,
+      "seals": 0,
+      "points": 2,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "outpost",
+      "playerId": "p1",
+      "location": "city",
+      "mana": 12,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": "workshop",
+      "mana": 12,
+      "seals": 0,
+      "points": 19,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "outpost",
+      "playerId": "p3",
+      "location": "workshop",
+      "mana": 9,
+      "seals": 0,
+      "points": 5,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "action",
+      "playerId": "p1",
+      "location": "city",
+      "mana": 12,
+      "seals": 3,
+      "points": 0,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "workshop",
+      "mana": 12,
+      "seals": 0,
+      "points": 19,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "workshop",
+      "mana": 9,
+      "seals": 0,
+      "points": 5,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 19,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 1,
+      "points": 2,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 7,
+      "seals": 0,
+      "points": 2,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 6,
+      "handCount": 1,
+      "power": 13
+    },
+    {
+      "round": 4,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 19,
+      "handCount": 1,
+      "power": 10
+    },
+    {
+      "round": 4,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 2,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 2,
+      "handCount": 1,
+      "power": 20
+    },
+    {
+      "round": 4,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 5,
+      "seals": 0,
+      "points": 2,
+      "handCount": 1,
+      "power": 20
+    },
+    {
+      "round": 4,
+      "phase": "action",
+      "playerId": "p1",
+      "location": "city",
+      "mana": 12,
+      "seals": 3,
+      "points": 0,
+      "handCount": 1,
+      "power": 12
+    },
+    {
+      "round": 4,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "scouting",
+      "mana": 7,
+      "seals": 0,
+      "points": 19,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 4,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "scouting",
+      "mana": 7,
+      "seals": 0,
+      "points": 19,
+      "handCount": 1,
+      "power": 2
+    },
+    {
+      "round": 4,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "workshop",
+      "mana": 7,
+      "seals": 0,
+      "points": 5,
+      "handCount": 1,
+      "power": 7
+    },
+    {
+      "round": 4,
+      "phase": "combat",
+      "playerId": "p1",
+      "location": "city",
+      "mana": 12,
+      "seals": 3,
+      "points": 0,
+      "handCount": 1,
+      "power": 12
+    },
+    {
+      "round": 4,
+      "phase": "combat",
+      "playerId": "p2",
+      "location": "scouting",
+      "mana": 7,
+      "seals": 0,
+      "points": 19,
+      "handCount": 1,
+      "power": 2
+    },
+    {
+      "round": 4,
+      "phase": "combat",
+      "playerId": "p3",
+      "location": "workshop",
+      "mana": 7,
+      "seals": 0,
+      "points": 5,
+      "handCount": 1,
+      "power": 7
+    },
+    {
+      "round": 4,
+      "phase": "combat",
+      "playerId": "p4",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 6,
+      "handCount": 1,
+      "power": 13
+    },
+    {
+      "round": 4,
+      "phase": "combat",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 19,
+      "handCount": 1,
+      "power": 10
+    },
+    {
+      "round": 4,
+      "phase": "combat",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 2,
+      "handCount": 1,
+      "power": 20
+    },
+    {
+      "round": 4,
+      "phase": "combat",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 5,
+      "seals": 0,
+      "points": 2,
+      "handCount": 1,
+      "power": 20
+    },
+    {
+      "round": 4,
+      "phase": "combat",
+      "playerId": "p2",
+      "location": "scouting",
+      "mana": 7,
+      "seals": 0,
+      "points": 21,
+      "handCount": 1,
+      "power": 2
+    },
+    {
+      "round": 4,
+      "phase": "combat",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 8,
+      "handCount": 1,
+      "power": 20
+    },
+    {
+      "round": 4,
+      "phase": "combat",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 5,
+      "seals": 0,
+      "points": 6,
+      "handCount": 1,
+      "power": 20
+    },
+    {
+      "round": 4,
+      "phase": "combat",
+      "playerId": "p1",
+      "location": "city",
+      "mana": 12,
+      "seals": 3,
+      "points": 6,
+      "handCount": 1,
+      "power": 12
+    },
+    {
+      "round": 5,
+      "phase": "preparation",
+      "playerId": "p1",
+      "location": null,
+      "mana": 12,
+      "seals": 3,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "preparation",
+      "playerId": "p2",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "preparation",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 5,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "preparation",
+      "playerId": "p4",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "preparation",
+      "playerId": "p5",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 19,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "preparation",
+      "playerId": "p6",
+      "location": null,
+      "mana": 10,
+      "seals": 0,
+      "points": 8,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "preparation",
+      "playerId": "p7",
+      "location": null,
+      "mana": 5,
+      "seals": 0,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "outpost",
+      "playerId": "p1",
+      "location": null,
+      "mana": 12,
+      "seals": 3,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "outpost",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 5,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "outpost",
+      "playerId": "p4",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 19,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": null,
+      "mana": 10,
+      "seals": 0,
+      "points": 8,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": null,
+      "mana": 5,
+      "seals": 0,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 19,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 8,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "outpost",
+      "playerId": "p1",
+      "location": "workshop",
+      "mana": 12,
+      "seals": 3,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 7,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "outpost",
+      "playerId": "p3",
+      "location": "workshop",
+      "mana": 8,
+      "seals": 0,
+      "points": 5,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "outpost",
+      "playerId": "p4",
+      "location": "workshop",
+      "mana": 12,
+      "seals": 0,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "action",
+      "playerId": "p1",
+      "location": "workshop",
+      "mana": 12,
+      "seals": 3,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 7,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "workshop",
+      "mana": 8,
+      "seals": 0,
+      "points": 5,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "workshop",
+      "mana": 12,
+      "seals": 0,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 19,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 8,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 19,
+      "handCount": 1,
+      "power": 13
+    },
+    {
+      "round": 5,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 9,
+      "seals": 0,
+      "points": 8,
+      "handCount": 1,
+      "power": 13
+    },
+    {
+      "round": 5,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 6,
+      "handCount": 1,
+      "power": 7
+    },
+    {
+      "round": 5,
+      "phase": "action",
+      "playerId": "p1",
+      "location": "workshop",
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 1,
+      "power": 11
+    },
+    {
+      "round": 5,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 7,
+      "seals": 0,
+      "points": 21,
+      "handCount": 1,
+      "power": 10
+    },
+    {
+      "round": 5,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 5,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 5,
+      "handCount": 1,
+      "power": 13
+    },
+    {
+      "round": 5,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 7,
+      "seals": 0,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 5,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 5,
+      "seals": 0,
+      "points": 6,
+      "handCount": 1,
+      "power": 6
+    },
+    {
+      "round": 5,
+      "phase": "combat",
+      "playerId": "p1",
+      "location": "workshop",
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 1,
+      "power": 11
+    },
+    {
+      "round": 5,
+      "phase": "combat",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 7,
+      "seals": 0,
+      "points": 21,
+      "handCount": 1,
+      "power": 10
+    },
+    {
+      "round": 5,
+      "phase": "combat",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 5,
+      "handCount": 1,
+      "power": 13
+    },
+    {
+      "round": 5,
+      "phase": "combat",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 5,
+      "seals": 0,
+      "points": 6,
+      "handCount": 1,
+      "power": 6
+    },
+    {
+      "round": 5,
+      "phase": "combat",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 19,
+      "handCount": 1,
+      "power": 13
+    },
+    {
+      "round": 5,
+      "phase": "combat",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 9,
+      "seals": 0,
+      "points": 8,
+      "handCount": 1,
+      "power": 13
+    },
+    {
+      "round": 5,
+      "phase": "combat",
+      "playerId": "p7",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 6,
+      "handCount": 1,
+      "power": 7
+    },
+    {
+      "round": 5,
+      "phase": "combat",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 5,
+      "seals": 0,
+      "points": 8,
+      "handCount": 1,
+      "power": 6
+    },
+    {
+      "round": 5,
+      "phase": "combat",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 9,
+      "seals": 0,
+      "points": 12,
+      "handCount": 1,
+      "power": 13
+    },
+    {
+      "round": 5,
+      "phase": "combat",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 8,
+      "handCount": 1,
+      "power": 13
+    },
+    {
+      "round": 5,
+      "phase": "combat",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 22,
+      "handCount": 1,
+      "power": 13
+    },
+    {
+      "round": 6,
+      "phase": "preparation",
+      "playerId": "p1",
+      "location": null,
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "preparation",
+      "playerId": "p2",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "preparation",
+      "playerId": "p3",
+      "location": null,
+      "mana": 5,
+      "seals": 0,
+      "points": 8,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "preparation",
+      "playerId": "p4",
+      "location": null,
+      "mana": 5,
+      "seals": 0,
+      "points": 8,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "preparation",
+      "playerId": "p5",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 22,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "preparation",
+      "playerId": "p6",
+      "location": null,
+      "mana": 9,
+      "seals": 0,
+      "points": 12,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "preparation",
+      "playerId": "p7",
+      "location": null,
+      "mana": 5,
+      "seals": 0,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "outpost",
+      "playerId": "p1",
+      "location": null,
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "outpost",
+      "playerId": "p3",
+      "location": null,
+      "mana": 5,
+      "seals": 0,
+      "points": 8,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "outpost",
+      "playerId": "p4",
+      "location": null,
+      "mana": 5,
+      "seals": 0,
+      "points": 8,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 22,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": null,
+      "mana": 9,
+      "seals": 0,
+      "points": 12,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": null,
+      "mana": 5,
+      "seals": 0,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": "city",
+      "mana": 9,
+      "seals": 0,
+      "points": 12,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 5,
+      "seals": 0,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "outpost",
+      "playerId": "p1",
+      "location": "city",
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "outpost",
+      "playerId": "p3",
+      "location": "mountain",
+      "mana": 5,
+      "seals": 0,
+      "points": 8,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "outpost",
+      "playerId": "p4",
+      "location": "workshop",
+      "mana": 7,
+      "seals": 0,
+      "points": 8,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": "workshop",
+      "mana": 8,
+      "seals": 0,
+      "points": 22,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "action",
+      "playerId": "p1",
+      "location": "city",
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "mountain",
+      "mana": 5,
+      "seals": 0,
+      "points": 8,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "workshop",
+      "mana": 7,
+      "seals": 0,
+      "points": 8,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "workshop",
+      "mana": 8,
+      "seals": 0,
+      "points": 22,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "city",
+      "mana": 9,
+      "seals": 0,
+      "points": 12,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 5,
+      "seals": 0,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "city",
+      "mana": 9,
+      "seals": 0,
+      "points": 12,
+      "handCount": 1,
+      "power": 11
+    },
+    {
+      "round": 6,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 5,
+      "seals": 0,
+      "points": 6,
+      "handCount": 1,
+      "power": 11
+    },
+    {
+      "round": 6,
+      "phase": "action",
+      "playerId": "p1",
+      "location": "city",
+      "mana": 9,
+      "seals": 3,
+      "points": 6,
+      "handCount": 1,
+      "power": 6
+    },
+    {
+      "round": 6,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "city",
+      "mana": 6,
+      "seals": 0,
+      "points": 21,
+      "handCount": 1,
+      "power": 6
+    },
+    {
+      "round": 6,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "mountain",
+      "mana": 5,
+      "seals": 0,
+      "points": 8,
+      "handCount": 1,
+      "power": 4
+    },
+    {
+      "round": 6,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 2,
+      "seals": 0,
+      "points": 8,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 6,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 2,
+      "seals": 0,
+      "points": 8,
+      "handCount": 1,
+      "power": 5
+    },
+    {
+      "round": 6,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "workshop",
+      "mana": 7,
+      "seals": 0,
+      "points": 22,
+      "handCount": 1,
+      "power": 8
+    },
+    {
+      "round": 6,
+      "phase": "combat",
+      "playerId": "p1",
+      "location": "city",
+      "mana": 9,
+      "seals": 3,
+      "points": 6,
+      "handCount": 1,
+      "power": 6
+    },
+    {
+      "round": 6,
+      "phase": "combat",
+      "playerId": "p2",
+      "location": "city",
+      "mana": 6,
+      "seals": 0,
+      "points": 21,
+      "handCount": 1,
+      "power": 6
+    },
+    {
+      "round": 6,
+      "phase": "combat",
+      "playerId": "p3",
+      "location": "mountain",
+      "mana": 5,
+      "seals": 0,
+      "points": 8,
+      "handCount": 1,
+      "power": 4
+    },
+    {
+      "round": 6,
+      "phase": "combat",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 2,
+      "seals": 0,
+      "points": 8,
+      "handCount": 1,
+      "power": 5
+    },
+    {
+      "round": 6,
+      "phase": "combat",
+      "playerId": "p5",
+      "location": "workshop",
+      "mana": 7,
+      "seals": 0,
+      "points": 22,
+      "handCount": 1,
+      "power": 8
+    },
+    {
+      "round": 6,
+      "phase": "combat",
+      "playerId": "p6",
+      "location": "city",
+      "mana": 9,
+      "seals": 0,
+      "points": 12,
+      "handCount": 1,
+      "power": 11
+    },
+    {
+      "round": 6,
+      "phase": "combat",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 5,
+      "seals": 0,
+      "points": 6,
+      "handCount": 1,
+      "power": 11
+    },
+    {
+      "round": 6,
+      "phase": "combat",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 2,
+      "seals": 0,
+      "points": 10,
+      "handCount": 1,
+      "power": 5
+    },
+    {
+      "round": 6,
+      "phase": "combat",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 5,
+      "seals": 0,
+      "points": 10,
+      "handCount": 1,
+      "power": 11
+    },
+    {
+      "round": 6,
+      "phase": "combat",
+      "playerId": "p6",
+      "location": "city",
+      "mana": 9,
+      "seals": 0,
+      "points": 17,
+      "handCount": 1,
+      "power": 11
+    },
+    {
+      "round": 7,
+      "phase": "preparation",
+      "playerId": "p1",
+      "location": null,
+      "mana": 12,
+      "seals": 3,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "preparation",
+      "playerId": "p2",
+      "location": null,
+      "mana": 10,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "preparation",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 8,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "preparation",
+      "playerId": "p4",
+      "location": null,
+      "mana": 4,
+      "seals": 0,
+      "points": 10,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "preparation",
+      "playerId": "p5",
+      "location": null,
+      "mana": 9,
+      "seals": 0,
+      "points": 22,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "preparation",
+      "playerId": "p6",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 17,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "preparation",
+      "playerId": "p7",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 10,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "outpost",
+      "playerId": "p1",
+      "location": null,
+      "mana": 12,
+      "seals": 3,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": null,
+      "mana": 10,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "outpost",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 8,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "outpost",
+      "playerId": "p4",
+      "location": null,
+      "mana": 4,
+      "seals": 0,
+      "points": 10,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": null,
+      "mana": 9,
+      "seals": 0,
+      "points": 22,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 17,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 10,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 10,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "outpost",
+      "playerId": "p1",
+      "location": "workshop",
+      "mana": 12,
+      "seals": 3,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "outpost",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 8,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "outpost",
+      "playerId": "p4",
+      "location": "workshop",
+      "mana": 5,
+      "seals": 0,
+      "points": 10,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": "workshop",
+      "mana": 10,
+      "seals": 0,
+      "points": 22,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 17,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "action",
+      "playerId": "p1",
+      "location": "workshop",
+      "mana": 12,
+      "seals": 3,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 8,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "workshop",
+      "mana": 5,
+      "seals": 0,
+      "points": 10,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "workshop",
+      "mana": 10,
+      "seals": 0,
+      "points": 22,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 17,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 10,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 10,
+      "handCount": 1,
+      "power": 15
+    },
+    {
+      "round": 7,
+      "phase": "action",
+      "playerId": "p1",
+      "location": "workshop",
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 1,
+      "power": 10
+    },
+    {
+      "round": 7,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 21,
+      "handCount": 1,
+      "power": 10
+    },
+    {
+      "round": 7,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 8,
+      "handCount": 1,
+      "power": 16
+    },
+    {
+      "round": 7,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 0,
+      "seals": 0,
+      "points": 10,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 7,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 0,
+      "seals": 0,
+      "points": 10,
+      "handCount": 1,
+      "power": 2
+    },
+    {
+      "round": 7,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "workshop",
+      "mana": 10,
+      "seals": 0,
+      "points": 22,
+      "handCount": 1,
+      "power": 8
+    },
+    {
+      "round": 7,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 17,
+      "handCount": 1,
+      "power": 11
+    },
+    {
+      "round": 7,
+      "phase": "combat",
+      "playerId": "p1",
+      "location": "workshop",
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 1,
+      "power": 10
+    },
+    {
+      "round": 7,
+      "phase": "combat",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 21,
+      "handCount": 1,
+      "power": 10
+    },
+    {
+      "round": 7,
+      "phase": "combat",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 8,
+      "handCount": 1,
+      "power": 16
+    },
+    {
+      "round": 7,
+      "phase": "combat",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 0,
+      "seals": 0,
+      "points": 10,
+      "handCount": 1,
+      "power": 2
+    },
+    {
+      "round": 7,
+      "phase": "combat",
+      "playerId": "p5",
+      "location": "workshop",
+      "mana": 10,
+      "seals": 0,
+      "points": 22,
+      "handCount": 1,
+      "power": 8
+    },
+    {
+      "round": 7,
+      "phase": "combat",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 17,
+      "handCount": 1,
+      "power": 11
+    },
+    {
+      "round": 7,
+      "phase": "combat",
+      "playerId": "p7",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 10,
+      "handCount": 1,
+      "power": 15
+    },
+    {
+      "round": 7,
+      "phase": "combat",
+      "playerId": "p4",
+      "location": "scouting",
+      "mana": 0,
+      "seals": 0,
+      "points": 12,
+      "handCount": 1,
+      "power": 2
+    },
+    {
+      "round": 7,
+      "phase": "combat",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 21,
+      "handCount": 1,
+      "power": 11
+    },
+    {
+      "round": 7,
+      "phase": "combat",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 13,
+      "handCount": 1,
+      "power": 16
+    },
+    {
+      "round": 8,
+      "phase": "preparation",
+      "playerId": "p1",
+      "location": null,
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "preparation",
+      "playerId": "p2",
+      "location": null,
+      "mana": 10,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "preparation",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 13,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "preparation",
+      "playerId": "p4",
+      "location": null,
+      "mana": 0,
+      "seals": 0,
+      "points": 12,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "preparation",
+      "playerId": "p5",
+      "location": null,
+      "mana": 10,
+      "seals": 0,
+      "points": 22,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "preparation",
+      "playerId": "p6",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "preparation",
+      "playerId": "p7",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 10,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "outpost",
+      "playerId": "p1",
+      "location": null,
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": null,
+      "mana": 10,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "outpost",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 13,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "outpost",
+      "playerId": "p4",
+      "location": null,
+      "mana": 0,
+      "seals": 0,
+      "points": 12,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": null,
+      "mana": 10,
+      "seals": 0,
+      "points": 22,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 10,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "outpost",
+      "playerId": "p1",
+      "location": "city",
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "outpost",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 13,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "outpost",
+      "playerId": "p4",
+      "location": "workshop",
+      "mana": 2,
+      "seals": 0,
+      "points": 12,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 22,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": "workshop",
+      "mana": 12,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 10,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "action",
+      "playerId": "p1",
+      "location": "city",
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 13,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "workshop",
+      "mana": 2,
+      "seals": 0,
+      "points": 12,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 22,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "workshop",
+      "mana": 12,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 10,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "action",
+      "playerId": "p1",
+      "location": "city",
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 1,
+      "power": 7
+    },
+    {
+      "round": 8,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 9,
+      "seals": 0,
+      "points": 21,
+      "handCount": 1,
+      "power": 12
+    },
+    {
+      "round": 8,
+      "phase": "action",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 13,
+      "handCount": 1,
+      "power": 9
+    },
+    {
+      "round": 8,
+      "phase": "action",
+      "playerId": "p4",
+      "location": "workshop",
+      "mana": 1,
+      "seals": 0,
+      "points": 12,
+      "handCount": 1,
+      "power": 11
+    },
+    {
+      "round": 8,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 22,
+      "handCount": 1,
+      "power": 8
+    },
+    {
+      "round": 8,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "scouting",
+      "mana": 7,
+      "seals": 0,
+      "points": 21,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 8,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "scouting",
+      "mana": 6,
+      "seals": 0,
+      "points": 21,
+      "handCount": 1,
+      "power": 4
+    },
+    {
+      "round": 8,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 10,
+      "handCount": 1,
+      "power": 12
+    },
+    {
+      "round": 8,
+      "phase": "combat",
+      "playerId": "p1",
+      "location": "city",
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 1,
+      "power": 7
+    },
+    {
+      "round": 8,
+      "phase": "combat",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 9,
+      "seals": 0,
+      "points": 21,
+      "handCount": 1,
+      "power": 12
+    },
+    {
+      "round": 8,
+      "phase": "combat",
+      "playerId": "p3",
+      "location": "city",
+      "mana": 7,
+      "seals": 0,
+      "points": 13,
+      "handCount": 1,
+      "power": 9
+    },
+    {
+      "round": 8,
+      "phase": "combat",
+      "playerId": "p4",
+      "location": "workshop",
+      "mana": 1,
+      "seals": 0,
+      "points": 12,
+      "handCount": 1,
+      "power": 11
+    },
+    {
+      "round": 8,
+      "phase": "combat",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 22,
+      "handCount": 1,
+      "power": 8
+    },
+    {
+      "round": 8,
+      "phase": "combat",
+      "playerId": "p6",
+      "location": "scouting",
+      "mana": 6,
+      "seals": 0,
+      "points": 21,
+      "handCount": 1,
+      "power": 4
+    },
+    {
+      "round": 8,
+      "phase": "combat",
+      "playerId": "p7",
+      "location": "city",
+      "mana": 5,
+      "seals": 0,
+      "points": 10,
+      "handCount": 1,
+      "power": 12
+    },
+    {
+      "round": 8,
+      "phase": "combat",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 9,
+      "seals": 0,
+      "points": 25,
+      "handCount": 1,
+      "power": 12
+    },
+    {
+      "round": 8,
+      "phase": "combat",
+      "playerId": "p6",
+      "location": "scouting",
+      "mana": 6,
+      "seals": 0,
+      "points": 23,
+      "handCount": 1,
+      "power": 4
+    },
+    {
+      "round": 8,
+      "phase": "combat",
+      "playerId": "p7",
+      "location": "city",
+      "mana": 5,
+      "seals": 1,
+      "points": 15,
+      "handCount": 1,
+      "power": 12
+    },
+    {
+      "round": 9,
+      "phase": "preparation",
+      "playerId": "p1",
+      "location": null,
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "preparation",
+      "playerId": "p2",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "preparation",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 13,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "preparation",
+      "playerId": "p4",
+      "location": null,
+      "mana": 1,
+      "seals": 0,
+      "points": 12,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "preparation",
+      "playerId": "p5",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 22,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "preparation",
+      "playerId": "p6",
+      "location": null,
+      "mana": 10,
+      "seals": 0,
+      "points": 23,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "preparation",
+      "playerId": "p7",
+      "location": null,
+      "mana": 9,
+      "seals": 1,
+      "points": 15,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "outpost",
+      "playerId": "p1",
+      "location": null,
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "outpost",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 13,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "outpost",
+      "playerId": "p4",
+      "location": null,
+      "mana": 1,
+      "seals": 0,
+      "points": 12,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 22,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": null,
+      "mana": 10,
+      "seals": 0,
+      "points": 23,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": null,
+      "mana": 9,
+      "seals": 1,
+      "points": 15,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 12,
+      "seals": 0,
+      "points": 22,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 23,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 9,
+      "seals": 1,
+      "points": 15,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "action",
+      "playerId": "p1",
+      "location": null,
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "action",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 13,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "action",
+      "playerId": "p4",
+      "location": null,
+      "mana": 1,
+      "seals": 0,
+      "points": 12,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 12,
+      "seals": 0,
+      "points": 22,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 23,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 9,
+      "seals": 1,
+      "points": 15,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 11,
+      "seals": 0,
+      "points": 25,
+      "handCount": 1,
+      "power": 15
+    },
+    {
+      "round": 9,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 11,
+      "seals": 0,
+      "points": 22,
+      "handCount": 1,
+      "power": 13
+    },
+    {
+      "round": 9,
+      "phase": "action",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 9,
+      "seals": 0,
+      "points": 23,
+      "handCount": 1,
+      "power": 9
+    },
+    {
+      "round": 9,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 9,
+      "seals": 0,
+      "points": 15,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 7,
+      "seals": 0,
+      "points": 15,
+      "handCount": 1,
+      "power": 24
+    },
+    {
+      "round": 9,
+      "phase": "combat",
+      "playerId": "p1",
+      "location": null,
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "combat",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 11,
+      "seals": 0,
+      "points": 25,
+      "handCount": 1,
+      "power": 15
+    },
+    {
+      "round": 9,
+      "phase": "combat",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 13,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "combat",
+      "playerId": "p4",
+      "location": null,
+      "mana": 1,
+      "seals": 0,
+      "points": 12,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 9,
+      "phase": "combat",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 11,
+      "seals": 0,
+      "points": 22,
+      "handCount": 1,
+      "power": 13
+    },
+    {
+      "round": 9,
+      "phase": "combat",
+      "playerId": "p6",
+      "location": "mountain",
+      "mana": 9,
+      "seals": 0,
+      "points": 23,
+      "handCount": 1,
+      "power": 9
+    },
+    {
+      "round": 9,
+      "phase": "combat",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 7,
+      "seals": 0,
+      "points": 15,
+      "handCount": 1,
+      "power": 24
+    },
+    {
+      "round": 9,
+      "phase": "combat",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 7,
+      "seals": 0,
+      "points": 25,
+      "handCount": 1,
+      "power": 24
+    },
+    {
+      "round": 9,
+      "phase": "combat",
+      "playerId": "p5",
+      "location": "city",
+      "mana": 11,
+      "seals": 0,
+      "points": 27,
+      "handCount": 1,
+      "power": 13
+    },
+    {
+      "round": 10,
+      "phase": "preparation",
+      "playerId": "p1",
+      "location": null,
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "preparation",
+      "playerId": "p2",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "preparation",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 13,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "preparation",
+      "playerId": "p4",
+      "location": null,
+      "mana": 1,
+      "seals": 0,
+      "points": 12,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "preparation",
+      "playerId": "p5",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 27,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "preparation",
+      "playerId": "p6",
+      "location": null,
+      "mana": 9,
+      "seals": 0,
+      "points": 23,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "preparation",
+      "playerId": "p7",
+      "location": null,
+      "mana": 11,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "outpost",
+      "playerId": "p1",
+      "location": null,
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "outpost",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 13,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "outpost",
+      "playerId": "p4",
+      "location": null,
+      "mana": 1,
+      "seals": 0,
+      "points": 12,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 27,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": null,
+      "mana": 9,
+      "seals": 0,
+      "points": 23,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": null,
+      "mana": 11,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 27,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 11,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "action",
+      "playerId": "p1",
+      "location": null,
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "action",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 13,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "action",
+      "playerId": "p4",
+      "location": null,
+      "mana": 1,
+      "seals": 0,
+      "points": 12,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 27,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "action",
+      "playerId": "p6",
+      "location": null,
+      "mana": 9,
+      "seals": 0,
+      "points": 23,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 11,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 11,
+      "seals": 0,
+      "points": 27,
+      "handCount": 1,
+      "power": 10
+    },
+    {
+      "round": 10,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 25,
+      "handCount": 1,
+      "power": 8
+    },
+    {
+      "round": 10,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 1,
+      "power": 5
+    },
+    {
+      "round": 10,
+      "phase": "combat",
+      "playerId": "p1",
+      "location": null,
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "combat",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 1,
+      "power": 5
+    },
+    {
+      "round": 10,
+      "phase": "combat",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 13,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "combat",
+      "playerId": "p4",
+      "location": null,
+      "mana": 1,
+      "seals": 0,
+      "points": 12,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "combat",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 11,
+      "seals": 0,
+      "points": 27,
+      "handCount": 1,
+      "power": 10
+    },
+    {
+      "round": 10,
+      "phase": "combat",
+      "playerId": "p6",
+      "location": null,
+      "mana": 9,
+      "seals": 0,
+      "points": 23,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 10,
+      "phase": "combat",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 10,
+      "seals": 0,
+      "points": 25,
+      "handCount": 1,
+      "power": 8
+    },
+    {
+      "round": 10,
+      "phase": "combat",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 11,
+      "seals": 0,
+      "points": 37,
+      "handCount": 1,
+      "power": 10
+    },
+    {
+      "round": 11,
+      "phase": "preparation",
+      "playerId": "p1",
+      "location": null,
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "preparation",
+      "playerId": "p2",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "preparation",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 13,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "preparation",
+      "playerId": "p4",
+      "location": null,
+      "mana": 1,
+      "seals": 0,
+      "points": 12,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "preparation",
+      "playerId": "p5",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 37,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "preparation",
+      "playerId": "p6",
+      "location": null,
+      "mana": 9,
+      "seals": 0,
+      "points": 23,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "preparation",
+      "playerId": "p7",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "outpost",
+      "playerId": "p1",
+      "location": null,
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "outpost",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 13,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "outpost",
+      "playerId": "p4",
+      "location": null,
+      "mana": 1,
+      "seals": 0,
+      "points": 12,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 37,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "outpost",
+      "playerId": "p6",
+      "location": null,
+      "mana": 9,
+      "seals": 0,
+      "points": 23,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "outpost",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 37,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "outpost",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "outpost",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "action",
+      "playerId": "p1",
+      "location": null,
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "action",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 13,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "action",
+      "playerId": "p4",
+      "location": null,
+      "mana": 1,
+      "seals": 0,
+      "points": 12,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 37,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "action",
+      "playerId": "p6",
+      "location": null,
+      "mana": 9,
+      "seals": 0,
+      "points": 23,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 3,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "action",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 11,
+      "seals": 0,
+      "points": 37,
+      "handCount": 1,
+      "power": 13
+    },
+    {
+      "round": 11,
+      "phase": "action",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 11,
+      "seals": 0,
+      "points": 25,
+      "handCount": 1,
+      "power": 14
+    },
+    {
+      "round": 11,
+      "phase": "action",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 1,
+      "power": 10
+    },
+    {
+      "round": 11,
+      "phase": "combat",
+      "playerId": "p1",
+      "location": null,
+      "mana": 11,
+      "seals": 3,
+      "points": 6,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "combat",
+      "playerId": "p2",
+      "location": "mountain",
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 1,
+      "power": 10
+    },
+    {
+      "round": 11,
+      "phase": "combat",
+      "playerId": "p3",
+      "location": null,
+      "mana": 7,
+      "seals": 0,
+      "points": 13,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "combat",
+      "playerId": "p4",
+      "location": null,
+      "mana": 1,
+      "seals": 0,
+      "points": 12,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "combat",
+      "playerId": "p5",
+      "location": "mountain",
+      "mana": 11,
+      "seals": 0,
+      "points": 37,
+      "handCount": 1,
+      "power": 13
+    },
+    {
+      "round": 11,
+      "phase": "combat",
+      "playerId": "p6",
+      "location": null,
+      "mana": 9,
+      "seals": 0,
+      "points": 23,
+      "handCount": 0,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "combat",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 11,
+      "seals": 0,
+      "points": 25,
+      "handCount": 1,
+      "power": 14
+    },
+    {
+      "round": 11,
+      "phase": "combat",
+      "playerId": "p7",
+      "location": "mountain",
+      "mana": 11,
+      "seals": 0,
+      "points": 36,
+      "handCount": 1,
+      "power": 14
+    },
+    {
+      "round": 11,
+      "phase": "combat",
+      "playerId": "p2",
+      "location": null,
+      "mana": 12,
+      "seals": 0,
+      "points": 25,
+      "handCount": 1,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "combat",
+      "playerId": "p5",
+      "location": null,
+      "mana": 11,
+      "seals": 0,
+      "points": 37,
+      "handCount": 1,
+      "power": 0
+    },
+    {
+      "round": 11,
+      "phase": "combat",
+      "playerId": "p7",
+      "location": null,
+      "mana": 11,
+      "seals": 0,
+      "points": 36,
+      "handCount": 1,
+      "power": 0
+    }
+  ]
+}

@@ -10,6 +10,7 @@ import { commitStandardAttack } from "../rules-core/card-play.ts";
 import { calculateCombatSnapshot, finalizeCombatFromSnapshot, type CombatPowerSnapshot } from "../rules-core/combat.ts";
 import { getBattlefieldLocationIds, isBattlefieldLocation, type BattlefieldLocationId } from "../rules-core/battlefield-rules.ts";
 import { applyClimaxElimination, chooseEventGroup, endStandardRound, initializeEventDeck, resolveDeferredActionStartDraws, startStandardRound } from "../rules-core/rounds.ts";
+import { rewardFuyukiAfterCombat } from "../rules-core/fuyuki-objectives.ts";
 import { initializeSituationDeck } from "../rules-core/situation-setup.ts";
 import { StateRandom } from "./random.ts";
 import { SkillRegistry } from "../rules-core/skill-registry.ts";
@@ -145,7 +146,7 @@ export class StandardMatchEngine {
     const definitions = this.cardDefinitions();
     if (this.content.skills) actions.push(...this.content.skills.getLegalActions(state, playerId, definitions));
     actions.push(...getNormalCommandSealLegalActions(state, playerId, definitions));
-    if (state.activePlayerId === playerId && state.status === "playing") {
+    if (state.activePlayerId === playerId && state.status === "playing" && this.canCompleteWindow(state, playerId)) {
       actions.push({ type: CommandType.CompletePlayerWindow, label: "完成当前阶段", payload: {} });
     }
     return structuredClone(actions);
@@ -158,6 +159,15 @@ export class StandardMatchEngine {
    * the browser from inventing permissions and gives every front end the same
    * deploy, move, attack and settlement entry points.
    */
+  private canCompleteWindow(state: GameState, playerId: string): boolean {
+    const player = state.players[playerId];
+    if (!player) return false;
+    if (state.phase === "outpost" && !player.locationId && !playerSkipsOutpostDeployment(state, playerId)) return false;
+    if (state.phase === "action" && state.step === "play-batch-draft"
+      && this.getStandardCoreLegalActions(state, playerId).some((action) => action.type === CommandType.CommitAttack)) return false;
+    return true;
+  }
+
   private getStandardCoreLegalActions(state: GameState, playerId: string): GameAction[] {
     if (state.status !== "playing") return [];
     const player = state.players[playerId];
@@ -655,6 +665,7 @@ export class StandardMatchEngine {
         break;
       case CommandType.CompletePlayerWindow:
         {
+          if (!this.canCompleteWindow(state, command.actorId)) throw new Error("MANDATORY_PHASE_ACTION_REQUIRED");
           if (state.phase === "combat" && state.step === "player-window" && state.activePlayerId === command.actorId
             && hasPendingMandatoryActionAbilityInCombat(state, state.players[command.actorId], this.cardDefinitions())) {
             throw new Error("MANDATORY_CARD_ABILITY_PENDING");
@@ -1047,6 +1058,9 @@ export class StandardMatchEngine {
         }
         if (checkpoint.stage === "after-combat-ending") {
           removeCardsScheduledAfterCombat(state);
+          rewardFuyukiAfterCombat(state, this.cardDefinitions());
+          endStandardRound(state, this.cardDefinitions());
+          delete state.modeState.fuyukiSettlementScores;
           checkpoint = { ...checkpoint, stage: "after-round-ending" };
           state.modeState.endRoundCheckpoint = structuredClone(checkpoint);
           emit("round.ending", { round: endedRound, previousLocations: structuredClone(checkpoint.previousLocations) });
@@ -1072,7 +1086,6 @@ export class StandardMatchEngine {
           : null;
         const finalWinnerIds = expandSharedVictoryWinnerIds(state, finalStatus?.winnerIds ?? []);
         delete state.modeState.endRoundCheckpoint;
-        endStandardRound(state, this.cardDefinitions());
         if (shouldFinish) {
           state.status = "finished";
           state.phase = "combat";
@@ -1249,7 +1262,7 @@ function nextEligible(state: GameState, fromIndex: number): { index: number; id:
     const index = (fromIndex + offset) % state.turnOrder.length;
     const id = state.turnOrder[index];
     const player = state.players[id];
-    if (player && !player.eliminated && !player.defeated
+    if (player && !player.eliminated
       && !(state.phase === "outpost" && (playerSkipsOutpostDeployment(state, id) || Number(player.flags.outpostTakenEarlyRound ?? -1) === state.round))
       && !(state.phase === "action" && Number(player.flags.actionTakenEarlyRound ?? -1) === state.round)) return { index, id };
   }
@@ -1259,7 +1272,7 @@ function nextEligible(state: GameState, fromIndex: number): { index: number; id:
 function firstEligible(state: GameState): string | null {
   return state.turnOrder.find((id) => {
     const player = state.players[id];
-    return player && !player.eliminated && !player.defeated
+    return player && !player.eliminated
       && !(state.phase === "outpost" && (playerSkipsOutpostDeployment(state, id) || Number(player.flags.outpostTakenEarlyRound ?? -1) === state.round))
       && !(state.phase === "action" && Number(player.flags.actionTakenEarlyRound ?? -1) === state.round);
   }) ?? null;

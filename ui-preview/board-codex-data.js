@@ -122,7 +122,7 @@ window.FDBoardCodexData={
     {
       "id": "event.fuyuki.1",
       "name": "夺回伊莉雅",
-      "text": "赢区域者得3魔",
+      "text": "无额外效果。",
       "image": "../assets/map/events/夺回伊莉雅.png",
       "victoryPoints": 5,
       "group": "冬木",
@@ -221,7 +221,7 @@ window.FDBoardCodexData={
     {
       "id": "event.fuyuki.13",
       "name": "遏制威胁",
-      "text": "威≥4得+1威,胜者回1令咒/4魔",
+      "text": "基本威力4及以上的攻击于此战场获得+1威力。此战场的胜者可以恢复1枚令咒。",
       "image": "../assets/map/events/遏制威胁.png",
       "victoryPoints": 2,
       "group": "冬木",

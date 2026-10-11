@@ -1,0 +1,104 @@
+[
+  {
+    "source": "https://api.atlasacademy.io/nice/JP/war/100",
+    "imageUrl": "https://static.atlasacademy.io/JP/Terminal/MapImgs/img_questmap_000100/img_questmap_000100.png",
+    "width": 1920,
+    "label": "冬木",
+    "height": 1240,
+    "file": "maps/fgo-fuyuki.png",
+    "category": "地图"
+  },
+  {
+    "source": "https://api.atlasacademy.io/nice/JP/war/101",
+    "imageUrl": "https://static.atlasacademy.io/JP/Terminal/MapImgs/img_questmap_000101/img_questmap_000101.png",
+    "width": 1920,
+    "label": "奥尔良",
+    "height": 1240,
+    "file": "maps/fgo-orleans.png",
+    "category": "地图"
+  },
+  {
+    "source": "https://api.atlasacademy.io/nice/JP/war/102",
+    "imageUrl": "https://static.atlasacademy.io/JP/Terminal/MapImgs/img_questmap_000102/img_questmap_000102.png",
+    "width": 1920,
+    "label": "罗马",
+    "height": 1240,
+    "file": "maps/fgo-septem.png",
+    "category": "地图"
+  },
+  {
+    "source": "https://api.atlasacademy.io/nice/JP/war/103",
+    "imageUrl": "https://static.atlasacademy.io/JP/Terminal/MapImgs/img_questmap_000103/img_questmap_000103.png",
+    "width": 1920,
+    "label": "俄刻阿诺斯",
+    "height": 1240,
+    "file": "maps/fgo-okeanos.png",
+    "category": "地图"
+  },
+  {
+    "source": "https://api.atlasacademy.io/nice/JP/war/104",
+    "imageUrl": "https://static.atlasacademy.io/JP/Terminal/MapImgs/img_questmap_000104/img_questmap_000104.png",
+    "width": 1920,
+    "label": "伦敦",
+    "height": 1240,
+    "file": "maps/fgo-london.png",
+    "category": "地图"
+  },
+  {
+    "source": "https://api.atlasacademy.io/nice/JP/war/105",
+    "imageUrl": "https://static.atlasacademy.io/JP/Terminal/MapImgs/img_questmap_000105/img_questmap_000105.png",
+    "width": 1920,
+    "label": "北美",
+    "height": 1240,
+    "file": "maps/fgo-america.png",
+    "category": "地图"
+  },
+  {
+    "source": "https://api.atlasacademy.io/nice/JP/war/106",
+    "imageUrl": "https://static.atlasacademy.io/JP/Terminal/MapImgs/img_questmap_000106/img_questmap_000106.png",
+    "width": 1920,
+    "label": "卡美洛",
+    "height": 1240,
+    "file": "maps/fgo-camelot.png",
+    "category": "地图"
+  },
+  {
+    "source": "https://api.atlasacademy.io/nice/JP/war/107",
+    "imageUrl": "https://static.atlasacademy.io/JP/Terminal/MapImgs/img_questmap_000107/img_questmap_000107.png",
+    "width": 2048,
+    "label": "巴比伦尼亚",
+    "height": 1432,
+    "file": "maps/fgo-babylonia.png",
+    "category": "地图"
+  },
+  {
+    "source": "https://api.atlasacademy.io/nice/JP/war/201",
+    "imageUrl": "https://static.atlasacademy.io/JP/Terminal/MapImgs/img_questmap_000201/img_questmap_000201.png",
+    "width": 2048,
+    "label": "新宿",
+    "height": 1434,
+    "file": "maps/fgo-shinjuku.png",
+    "category": "地图"
+  },
+  {
+    "source": "https://www.fate-sn.com/",
+    "category": "宣传图",
+    "file": "visuals/fate-hf-keyvisual-01.jpg",
+    "imageUrl": "https://www.fate-sn.com/assets_hf3/img/top/main_pc.jpg",
+    "label": "HF 官网桌面主视觉"
+  },
+  {
+    "source": "https://www.fate-sn.com/",
+    "category": "宣传图",
+    "file": "visuals/fate-hf-keyvisual-02.jpg",
+    "imageUrl": "https://www.fate-sn.com/assets_hf3/img/top/main_sp.jpg",
+    "label": "HF 官网移动版主视觉"
+  },
+  {
+    "source": "https://anime.fate-go.jp/ep6-movie/paladin/",
+    "category": "宣传图",
+    "file": "visuals/fgo-camelot-paladin.jpg",
+    "imageUrl": "https://anime.fate-go.jp/ep6-movie/paladin/assets/img/top/img_main.jpg",
+    "label": "卡美洛 后篇"
+  }
+]

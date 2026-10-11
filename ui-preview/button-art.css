@@ -1,0 +1,37 @@
+/* ZZZ-inspired graphic controls: ink, paper and signal yellow. Existing motion is unchanged. */
+:root,:host{--control-surface:var(--ui-panel);--control-line:#555;--control-text:var(--ui-paper);--control-muted:#aaa;--control-accent:var(--ui-accent)}
+.mode-grid--multi{width:min(1100px,calc(100vw - 120px));grid-template-columns:repeat(4,minmax(0,228px))}
+.codex-category-tabs,.profile-mode-bar nav,.ow-stage-tabs,.codex-detail-tabs{padding:4px!important;gap:4px!important;border:2px solid var(--ui-line)!important;border-radius:3px!important;background:var(--ui-ink)!important;box-shadow:none!important;backdrop-filter:none}
+.codex-category-tabs button,.profile-mode-bar nav button,.ow-stage-tabs button,.codex-detail-tabs button{clip-path:none!important;border:0!important;border-radius:3px!important;background:transparent!important;color:var(--ui-muted)!important;box-shadow:none!important;font-weight:900;letter-spacing:.02em}
+.codex-category-tabs button.active,.profile-mode-bar nav button.active,.ow-stage-tabs button.active,.codex-detail-tabs button.active{background:var(--ui-accent)!important;color:var(--ui-ink)!important;box-shadow:none!important}
+.codex-category-tabs button::after,.codex-detail-tabs button::after,.ow-stage-tabs button::after{display:none!important}
+.profile-mode-bar nav button small{color:var(--ui-muted)!important}.profile-mode-bar nav button.active small{color:var(--ui-muted)!important}.profile-mode-bar nav{flex-wrap:wrap}
+.codex-class-filters button,.ow-class-filter button,.pick-filter button,.lol-class-filter button{clip-path:none!important;border-radius:4px!important;border:1px solid #555!important;background:var(--ui-panel)!important;color:var(--ui-paper)!important;box-shadow:0 3px 0 #080808!important;font-weight:800}
+.codex-class-filters button.active,.ow-class-filter button.active,.pick-filter button.active,.lol-class-filter button.active{background:var(--ui-paper)!important;color:#161616!important;border-color:var(--ui-paper)!important;box-shadow:0 3px 0 var(--ui-accent)!important}
+.codex-class-filters button::before,.codex-class-filters button::after{display:none!important}
+.profile-name-edit button,.ready-enter-preview,.ow-primary,.room-primary,.threex-primary,.profile-transfer-actions [data-profile-import],.save-actions button.primary,.settlement-demo button.primary{clip-path:none!important;border-radius:3px!important;border:2px solid #111!important;background:var(--ui-accent)!important;color:var(--ui-ink)!important;box-shadow:0 0 0 1px var(--ui-accent),0 4px 0 #111!important;font-weight:900;letter-spacing:.04em}
+.profile-transfer-actions [data-profile-export]{clip-path:none!important;border-radius:3px!important;border:2px solid #111!important;background:var(--ui-paper)!important;color:var(--ui-ink)!important;box-shadow:0 0 0 1px #777,0 4px 0 #111!important;font-weight:900}
+.profile-name-edit input{border-radius:6px!important;border:2px solid #555!important;background:var(--ui-ink)!important;box-shadow:none}
+.profile-name-edit input:focus{border-color:var(--ui-accent)!important;outline:none}.profile-transfer-panel textarea{border-radius:6px!important}
+.top-tools button,.log-drawer button,.save-actions button,.settlement-demo button:not(.primary){border-radius:3px!important;border:2px solid #555!important;background:var(--ui-ink)!important;color:var(--ui-paper)!important;box-shadow:none!important;font-weight:800;clip-path:none!important}
+:is(.codex-category-tabs,.codex-class-filters,.profile-mode-bar nav,.ow-stage-tabs,.ow-class-filter,.codex-detail-tabs,.top-tools) button:focus-visible,.profile-name-edit button:focus-visible,.profile-transfer-actions button:focus-visible,.ready-enter-preview:focus-visible,.room-primary:focus-visible,.ow-primary:focus-visible{outline:2px solid var(--ui-accent)!important;outline-offset:4px}
+:is(.ready-enter-preview,.ow-primary,.room-primary,.threex-primary):disabled{background:#333!important;border-color:#222!important;color:var(--ui-muted)!important;box-shadow:none!important;opacity:1!important}
+/* The original portrait framing and selection motion remain intact. */
+.ow-draft-toolbar{background:rgba(20,20,20,.95);border-color:var(--ui-line)}
+.ow-roster{background:rgba(20,20,20,.9);border-color:var(--ui-line)}
+.ow-roster-grid .pick-card{border:2px solid #555!important;border-radius:6px!important;background:var(--ui-panel-raised)!important;box-shadow:0 4px 0 #0a0a0a!important}
+.ow-roster-grid .pick-card-info{background:var(--ui-panel-raised)!important}.ow-roster-grid .pick-card-info strong{color:var(--ui-paper)!important}.ow-roster-grid .pick-card-info small{color:var(--ui-muted)!important}
+.ow-roster-grid .pick-card.active{border-color:var(--ui-accent)!important;box-shadow:0 0 0 2px var(--ui-accent)!important}.ow-roster-grid .pick-card.active .pick-card-info{background:var(--ui-accent)!important}.ow-roster-grid .pick-card.active .pick-card-info strong,.ow-roster-grid .pick-card.active .pick-card-info small{color:var(--ui-ink)!important}
+.ow-draft-footer{background:rgba(16,16,16,.95);border-color:#555}.ow-phase-line{background:var(--ui-accent);box-shadow:none}.ow-phase-line:after{display:none}
+/* OW2's contrasting portrait nameplates, with ZZZ's selected accent. */
+.ow-roster-grid .pick-card-info{background:var(--ui-panel-raised)!important}
+.ow-roster-grid .pick-card-info strong{color:var(--ui-ink)!important}
+.ow-roster-grid .pick-card-info small{color:var(--ui-muted)!important}
+.ready-character{border-radius:6px;background:rgba(27,27,27,.96);border-color:var(--ui-line);box-shadow:none}
+.ready-character:before{background:var(--ui-accent);height:3px}
+.ready-skill-title{border-color:var(--ui-line)}
+.ready-skill{border:0;border-bottom:1px solid var(--ui-line);border-radius:0;background:transparent;box-shadow:none}
+.ready-skill:hover{background:var(--ui-panel-raised);border-color:#707068}
+.ready-skill-head>span{color:var(--ui-accent);font-family:'Segoe UI',sans-serif;font-weight:900}
+.ready-skill-head small{color:var(--ui-muted)}
+.ready-skill p{color:var(--ui-muted)}
