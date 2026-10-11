@@ -362,10 +362,10 @@
 #app,
 :host,
 .battle-root.battle-root {
-  --ui-confirm: #ff9d16;
-  --ui-confirm-hover: #ffb33d;
-  --ui-danger: #c83d3d;
-  --ui-danger-hover: #df5050;
+  --ui-confirm: #ff9f1a;
+  --ui-confirm-hover: #ffbd4d;
+  --ui-danger: #d44747;
+  --ui-danger-hover: #eb6262;
 }
 
 /* Loading and legal screens use white information text.  Gold is reserved
@@ -386,8 +386,19 @@
 /* The home hover plate is the restrained translucent ivory banner from the
    earlier build, with black type for contrast. */
 #app .home-screen .home-menu .nav::before {
-  background: rgba(243,241,232,.84) !important;
-  box-shadow: 0 5px 18px rgba(0,0,0,.16);
+  inset: 0 -2px 0 -2px !important;
+  clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%) !important;
+  background: rgba(243,241,232,.92) !important;
+  box-shadow: 0 5px 18px rgba(0,0,0,.18) !important;
+  transition: opacity .18s ease, transform .18s ease !important;
+}
+#app .home-screen .home-menu .nav:not(:hover):not(:focus-visible)::before {
+  opacity: 0 !important;
+}
+#app .home-screen .home-menu .nav:hover::before,
+#app .home-screen .home-menu .nav:focus-visible::before {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
 }
 #app .home-screen .home-menu .nav:hover,
 #app .home-screen .home-menu .nav:focus-visible,
@@ -429,27 +440,88 @@
 #app .screen :is(.ow-primary,.room-primary,.profile-name-edit button,
   .settings-confirm,.tutorial-step-actions button:last-child,
   .purchase-finish,.ready-enter-preview,.threex-primary,
-  [data-standard-next],[data-confirm-choice]):not(:disabled) {
+  .pick-confirm,.multi-lobby-start,
+  .home-notice-editor-actions button.primary,.home-notice-add,
+  .battle-bg-use-custom,.profile-transfer-actions button,
+  [data-standard-next],[data-confirm-choice],[data-enter-battle-preview],
+  [data-room-start],[data-threex-finish-purchase],[data-threex-finish-ban],
+  [data-threex-confirm-ban],[data-threex-confirm-master],
+  [data-threex-confirm-servant]):not(:disabled),
+#app .screen button.primary:not(:disabled) {
   background: var(--ui-confirm) !important;
   border-color: var(--ui-confirm) !important;
   color: #20160a !important;
-  box-shadow: 0 3px 0 rgba(110,62,0,.42) !important;
+  box-shadow: 0 3px 0 rgba(110,62,0,.34) !important;
+  font-weight: 800 !important;
 }
 #app .screen :is(.ow-primary,.room-primary,.profile-name-edit button,
   .settings-confirm,.tutorial-step-actions button:last-child,
   .purchase-finish,.ready-enter-preview,.threex-primary,
-  [data-standard-next],[data-confirm-choice]):not(:disabled):hover {
+  .pick-confirm,.multi-lobby-start,
+  .home-notice-editor-actions button.primary,.home-notice-add,
+  .battle-bg-use-custom,.profile-transfer-actions button,
+  [data-standard-next],[data-confirm-choice],[data-enter-battle-preview],
+  [data-room-start],[data-threex-finish-purchase],[data-threex-finish-ban],
+  [data-threex-confirm-ban],[data-threex-confirm-master],
+  [data-threex-confirm-servant]):not(:disabled):hover,
+#app .screen button.primary:not(:disabled):hover {
   background: var(--ui-confirm-hover) !important;
+  border-color: var(--ui-confirm-hover) !important;
 }
 #app .screen :is(.ow-primary--danger,.danger,.end-action,[data-action="end"],
-  [data-action="stop"]):not(:disabled) {
+  [data-action="stop"],.home-notice-editor-actions button.danger):not(:disabled) {
   background: var(--ui-danger) !important;
   border-color: var(--ui-danger) !important;
   color: #fff !important;
 }
 #app .screen :is(.ow-primary--danger,.danger,.end-action,[data-action="end"],
-  [data-action="stop"]):not(:disabled):hover {
+  [data-action="stop"],.home-notice-editor-actions button.danger):not(:disabled):hover {
   background: var(--ui-danger-hover) !important;
+  border-color: var(--ui-danger-hover) !important;
+}
+
+/* Secondary entry points that use their own component selectors still follow
+   the same bright action color, so there is no dark-gold outlier. */
+#app .screen :is(.purchase-option-foot button:not(:disabled),
+  .classic-rules-footer .room-primary:not(:disabled),
+  .home-notice-editor-actions .primary:not(:disabled),
+  .home-notice-add:not(:disabled),.settings-confirm:not(:disabled),
+  .tutorial-step-actions button:last-child:not(:disabled),
+  .profile-transfer-actions button:not(:disabled)) {
+  background: var(--ui-confirm) !important;
+  border-color: var(--ui-confirm) !important;
+  color: #20160a !important;
+}
+#app .screen :is(.purchase-option-foot button:not(:disabled),
+  .classic-rules-footer .room-primary:not(:disabled),
+  .home-notice-editor-actions .primary:not(:disabled),
+  .home-notice-add:not(:disabled),.settings-confirm:not(:disabled),
+  .tutorial-step-actions button:last-child:not(:disabled),
+  .profile-transfer-actions button:not(:disabled)):hover {
+  background: var(--ui-confirm-hover) !important;
+  border-color: var(--ui-confirm-hover) !important;
+}
+
+/* The draft footer has a deliberately very specific component rule in the
+   setup stylesheet.  Match that specificity here so its old muted gold
+   gradient cannot override the bright action token. */
+#app .screen.draft-screen .contract-workspace .ow-draft-footer > .ow-primary:not(:disabled),
+#app .screen.draft-screen .purchase-screen .purchase-footer > .purchase-finish:not(:disabled),
+#app .screen.draft-screen .ready-screen .ready-footer > .ready-enter-preview:not(:disabled),
+#app .screen.draft-screen .purchase-option-foot button:not(:disabled),
+#app .screen.multiplayer-lobby-screen .multi-lobby-start:not(:disabled) {
+  background: var(--ui-confirm) !important;
+  border-color: var(--ui-confirm) !important;
+  color: #20160a !important;
+  box-shadow: 0 3px 0 rgba(110,62,0,.34) !important;
+}
+#app .screen.draft-screen .contract-workspace .ow-draft-footer > .ow-primary:not(:disabled):hover,
+#app .screen.draft-screen .purchase-screen .purchase-footer > .purchase-finish:not(:disabled):hover,
+#app .screen.draft-screen .ready-screen .ready-footer > .ready-enter-preview:not(:disabled):hover,
+#app .screen.draft-screen .purchase-option-foot button:not(:disabled):hover,
+#app .screen.multiplayer-lobby-screen .multi-lobby-start:not(:disabled):hover {
+  background: var(--ui-confirm-hover) !important;
+  border-color: var(--ui-confirm-hover) !important;
 }
 
 /* Shadow-DOM battle controls use the same semantic colors and readable type. */
@@ -459,10 +531,19 @@
   .ability-text,.choice-option,.log-item) { font-size: 13px !important; }
 .battle-root.battle-root :is(.actions button.primary,.actions #confirm-play,
   .choice-actions button.primary,.settlement-actions .settlement-next,
+  .save-actions button.primary,.victory-any-key,
   .command-seal-option>button):not(:disabled) {
   background: var(--ui-confirm) !important;
   border-color: var(--ui-confirm) !important;
   color: #20160a !important;
+  font-weight: 800 !important;
+}
+.battle-root.battle-root :is(.actions button.primary,.actions #confirm-play,
+  .choice-actions button.primary,.settlement-actions .settlement-next,
+  .save-actions button.primary,.victory-any-key,
+  .command-seal-option>button):not(:disabled):hover {
+  background: var(--ui-confirm-hover) !important;
+  border-color: var(--ui-confirm-hover) !important;
 }
 .battle-root.battle-root .actions button.end-action:not(:disabled),
 .battle-root.battle-root .actions .end-action:not(:disabled) {
