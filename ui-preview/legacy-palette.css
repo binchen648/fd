@@ -386,9 +386,11 @@
 /* The home hover plate is the restrained translucent ivory banner from the
    earlier build, with black type for contrast. */
 #app .home-screen .home-menu .nav::before {
-  inset: 9px -8px 9px -4px !important;
-  clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%) !important;
-  background: rgba(220,219,214,.64) !important;
+  inset: 9px auto 9px -4px !important;
+  width: 360px !important;
+  max-width: calc(100vw - 64px) !important;
+  clip-path: none !important;
+  background: rgba(239,238,233,.76) !important;
   box-shadow: 0 4px 14px rgba(0,0,0,.20) !important;
   backdrop-filter: blur(1px) !important;
   transition: opacity .18s ease, transform .18s ease !important;
@@ -400,14 +402,17 @@
 #app .home-screen .home-menu .nav:focus-visible::before {
   opacity: 1 !important;
   transform: translateX(0) !important;
-  background: rgba(220,219,214,.64) !important;
+  background: rgba(239,238,233,.76) !important;
 }
 #app .home-screen .home-menu .nav:hover,
 #app .home-screen .home-menu .nav:focus-visible,
 #app .home-screen .home-menu .nav:hover strong,
-#app .home-screen .home-menu .nav:focus-visible strong,
+#app .home-screen .home-menu .nav:focus-visible strong {
+  color: #15171b !important;
+  text-shadow: none !important;
+}
 #app .home-screen .home-menu .nav:hover small,
-#app .home-screen .home-menu .nav:focus-visible small { color: #15171b !important; }
+#app .home-screen .home-menu .nav:focus-visible small { color: #806f46 !important; }
 
 /* Increase reading sizes without changing the established layout. */
 #app .screen:not(.legal-screen) { font-size: 14px; }

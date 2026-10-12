@@ -5,7 +5,7 @@ const markup="<div class=\"battle-root\"><header class=\"topbar\">\n    <div cla
 function render(host,options={}){
  if(!host) throw new Error('FDBattleUI host missing');
  const root=host.shadowRoot||host.attachShadow({mode:'open'});
- root.innerHTML='<style>'+css+'</style><link rel="stylesheet" href="./button-art.css?v=20261006-experience-audit"><link rel="stylesheet" href="./ui-art.css?v=20261006-experience-audit"><link rel="stylesheet" href="./fate-theme.css?v=20261006-experience-audit"><link rel="stylesheet" href="./ow2-polish.css?v=20261006-experience-audit"><link rel="stylesheet" href="./legacy-palette.css?v=20261012-legacy-neutral-v11">'+markup;
+ root.innerHTML='<style>'+css+'</style><link rel="stylesheet" href="./button-art.css?v=20261006-experience-audit"><link rel="stylesheet" href="./ui-art.css?v=20261006-experience-audit"><link rel="stylesheet" href="./fate-theme.css?v=20261006-experience-audit"><link rel="stylesheet" href="./ow2-polish.css?v=20261006-experience-audit"><link rel="stylesheet" href="./legacy-palette.css?v=20261012-legacy-neutral-v12">'+markup;
  const playSfx=(name,settings={})=>{const player=typeof options.playSfx==='function'?options.playSfx:window.fdPlaySfx;return typeof player==='function'?player(name,settings):false};
  let sfxHoverTarget=null;
  root.addEventListener('pointerover',event=>{
