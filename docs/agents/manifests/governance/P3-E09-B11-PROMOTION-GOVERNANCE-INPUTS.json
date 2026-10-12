@@ -1,0 +1,183 @@
+{
+  "schemaVersion": "fd-p3-promotion-governance-input-preparation-v1",
+  "taskId": "P3-E09-B11-PROMOTION-ATTESTATION-BRIDGE",
+  "promotionManifestTaskId": "P3-E09-I-B11-FINAL-PROMOTION",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "date": "2026-10-12",
+  "status": "PREPARED_WAIT_EXACT_INTEGRATION_RA",
+  "role": "Codex G / actual governance attestor",
+  "githubIdentity": {
+    "authenticatedLogin": "binchen648",
+    "policyReviewer": "github:binchen648",
+    "verifiedBy": "gh api user",
+    "independentGithubAccountRequired": false,
+    "distinctRoleAndArtifactRequired": true,
+    "oldTechnicalReviewerIdentityRewritten": false
+  },
+  "publicationRef": "refs/heads/codex/g-p3-e09-b11-attestation-preparation",
+  "effectiveMain": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+  "observedFrozenIAssembly": "da57179a3d7c8a9f407a4ea986ab834cdd0acf25",
+  "assemblyNotAcceptedIntegrationCandidate": true,
+  "sourceInputs": [
+    {
+      "type": "dispatch",
+      "commit": "ab3540aa07c9a02f7879d96e042b8e2a0a41e728",
+      "path": "docs/agents/P3-E09-B11-INTEGRATION-CONTRACT-AND-ATTESTATION.md",
+      "sha256": "3ED51E6564CE52C143F50A9AF15D9B41F8C5CF94737E35CE8ED338B2BDDCCA94"
+    },
+    {
+      "type": "effectivePackageAuthority",
+      "commit": "76133b6dbfc09318143df37b24b0e2e4a2de3a17",
+      "path": "docs/agents/P3-E09-I-B11-PROMOTION-AUTHORIZATION.md",
+      "sha256": "7F4AF9FCEF80C69FEA9EC9216453315378D7E248C40B5EDFA69F5B7BF5CE1D3E"
+    },
+    {
+      "type": "effectiveRoomAuthority",
+      "commit": "19c3c365443fbbfb3008aaf66d3f72b5d4079c23",
+      "path": "docs/agents/P3-E09-B11-FINAL-RA-AND-G-DISPATCH.md",
+      "sha256": "D0FEBBE8B6D66FD350108C8AD1B1AE262CB53B57CA7825A7C162AE666DBDEA72"
+    },
+    {
+      "type": "oldFinalRa",
+      "commit": "28875202695d43e580ddd637f1721e3a1dddbc8a",
+      "path": "docs/reviews/phase3/P3-E09-B11-086a86a-final-contract-reviewer-a.json",
+      "sha256": "C4A19526A09845214F1C4D2B3B25CC933E75532B8CD7DD8B30C719AB241E7FFE"
+    },
+    {
+      "type": "runtimeRb",
+      "commit": "4d5b76be9d5459cc0c40e50fae8513bc59cd5d21",
+      "path": "docs/reviews/phase3/P3-E09-B11-TRANSPORT-SECURITY-REPAIR-0f62210-reviewer-b.json",
+      "sha256": "6FE0EAD378E31149B3271E137FDB99ACAC161F2894E3FAD21FC0A14986E96DB4"
+    },
+    {
+      "type": "historicalPackageProposal",
+      "commit": "be34ec166dcb5ac40c659645a85a3182f7135a92",
+      "path": "docs/agents/manifests/governance/P3-E09-B11-PACKAGE-RESERVATION-DISPOSITION.json",
+      "sha256": "9AB42BEEFF34B710F2EB45251EFE45F246DBCA73DD00F1632376BBDA4686C355"
+    }
+  ],
+  "policySource": {
+    "path": "scripts/phase3-governance.ts",
+    "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+    "sha256": "F4BA772527FB7F1E1739C038D28DC1A80221383F89641D6CE03DCB40B01A634B"
+  },
+  "observedSourceEquivalence": [
+    {
+      "path": "packages/rules/src",
+      "runtimeBlob": "52e4920a73720851cde4c71216a5aec6fb43f094",
+      "assemblyBlob": "52e4920a73720851cde4c71216a5aec6fb43f094"
+    },
+    {
+      "path": "apps/client/src",
+      "runtimeBlob": "076979d5bcb728e72ae468f6420244cc16cf9393",
+      "assemblyBlob": "076979d5bcb728e72ae468f6420244cc16cf9393"
+    },
+    {
+      "path": "apps/server/src",
+      "runtimeBlob": "cc3d9e35d3b2d85c1be6387909d0a4e80e44513d",
+      "assemblyBlob": "cc3d9e35d3b2d85c1be6387909d0a4e80e44513d"
+    },
+    {
+      "path": "e2e",
+      "runtimeBlob": "13b6198a127710b63fead7589d24cd26f59ae6e0",
+      "assemblyBlob": "13b6198a127710b63fead7589d24cd26f59ae6e0"
+    },
+    {
+      "path": "data/authoring",
+      "runtimeBlob": "b2e3896827cf9041e675b6f69c380b2668ff3413",
+      "assemblyBlob": "b2e3896827cf9041e675b6f69c380b2668ff3413"
+    },
+    {
+      "path": "data/generated",
+      "runtimeBlob": "40cebcd7f65316869f938b864ea6e133b1a98f66",
+      "assemblyBlob": "40cebcd7f65316869f938b864ea6e133b1a98f66"
+    },
+    {
+      "path": "package.json",
+      "runtimeBlob": "0f311821628a0a60cb37d752a259e6d688f7a6e9",
+      "assemblyBlob": "0f311821628a0a60cb37d752a259e6d688f7a6e9"
+    },
+    {
+      "path": "package-lock.json",
+      "runtimeBlob": "d7844d900ba14635d4b8d2c50ac4954cbc9c0a93",
+      "assemblyBlob": "d7844d900ba14635d4b8d2c50ac4954cbc9c0a93"
+    },
+    {
+      "path": "playwright.config.ts",
+      "runtimeBlob": "c41069bee0070a5dd6b5d6653eca1f91d418b133",
+      "assemblyBlob": "c41069bee0070a5dd6b5d6653eca1f91d418b133"
+    }
+  ],
+  "pendingInputs": {
+    "newIntegrationImplementation": null,
+    "newIntegrationCarrier": null,
+    "newIntegrationRaCommit": null,
+    "newIntegrationRaArtifactPath": null,
+    "newIntegrationRaArtifactSha256": null,
+    "newIntegrationRaExactReviewedCandidateSha": null,
+    "newIntegrationRaVerdict": null
+  },
+  "policyFormat": {
+    "schemaVersion": "fd-phase3-review-attestation-v1",
+    "requiredExactFields": [
+      "taskId",
+      "reviewer",
+      "reviewThread",
+      "candidateSha",
+      "conclusion"
+    ],
+    "requiredEvidencePath": "docs/reviews/phase3/P3-E09-B11-promotion-attestation.json",
+    "reviewThreadSource": "Actual returned URL of a newly created attestation comment on repo PR 558 after exact integration RA acceptance, not a guessed comment URL.",
+    "taskIdBinding": "Use promotionManifestTaskId, not G preparation task ID.",
+    "reviewerBinding": "Actual GitHub comment author equals authenticated policyReviewer; G is attestor, not impersonation of old RA.",
+    "candidateBinding": "Only newIntegrationRaExactReviewedCandidateSha after verified new integration RA verdict.",
+    "conclusionBinding": "REVIEW_ACCEPTED only if actual new integration RA accepts that exact candidate; preserve narrower runtime/evidence scopes in provenance.",
+    "artifactHashBinding": "Immutable bridge artifact at manifest review.sha must have exact lowercase SHA-256 in manifest; report own commit/hash externally, not self-reference."
+  },
+  "publicationTarget": {
+    "repo": "binchen648/fd",
+    "existingPr": 558,
+    "reviewThread": null,
+    "githubObjectId": null,
+    "actualAuthor": null,
+    "rawGithubResponseRecorded": false,
+    "published": false,
+    "reason": "No new integration RA verdict available in fetched refs at preparation; do not publish candidate acceptance prematurely."
+  },
+  "finalizationRequirements": [
+    "Fetch fresh source refs; verify exact new integration RA artifact schema, PASS/accepted verdict, scope, hash, candidate binding and publication ref; old RA PASS is not this gate.",
+    "Reverify main and final assembly, old RB/RA, effective package and room-ID sources/hashes, accepted source/config equivalence and explicit allowed tooling deltas.",
+    "Verify unchanged old RA/RB artifact bytes and retain their original schema/null identity fields; create separate bridge artifact only.",
+    "Publish real GitHub comment on PR 558 binding exact accepted candidate plus old/new review refs/hashes and zero-credit/retained-limit scope.",
+    "Read back returned GitHub comment id/url/body/author; authenticated author must equal reviewer; store actual response/provenance in governance inputs.",
+    "Create immutable fd-phase3-review-attestation-v1 bridge JSON only after real thread exists; use actual policy-compatible fields and bind separate technical artifacts in governance inputs.",
+    "Coordinate I composition: review.sha distinct from base/head/candidate/synchronization; candidate ancestor of synchronization, synchronization ancestor of head; candidate and synchronization each precede head.",
+    "I applies manifest with exact bridge commit/path/hash and actual thread; run current policy with --verify-git-ancestry on actual assembly before promotion; never inherit PR 558 checks as runtime promotion checks."
+  ],
+  "retainedFacts": {
+    "oldFinalRaSchema": "fd-phase3-reviewer-a-final-contract-review-v1; retained without edits",
+    "oldRaActualConclusion": "REVIEW_ACCEPTED on 086a86a; not review of future integration candidate",
+    "effectivePackageAdoption": "Planner 76133b6d prospective decision; historical G proposal remains PROPOSED_NOT_EFFECTIVE in its source",
+    "historicalPackageReservationMissing": true,
+    "oldWindowConditionUnmet": true
+  },
+  "boundaries": {
+    "runtimeChanged": false,
+    "policyImplementationChanged": false,
+    "oldRaArtifactModified": false,
+    "newTechnicalVerdictIssuedByG": false,
+    "newGithubAttestationPublished": false,
+    "bridgePolicyArtifactCreated": false,
+    "overallAcceptance": false,
+    "promotionMerged": false,
+    "creditDelta": 0,
+    "migrationDelta": 0,
+    "denominatorDelta": 0,
+    "ledger": "111/944",
+    "gateC": "NOT_VERIFIED",
+    "missingImageReleaseBlockers": 93,
+    "releaseReady": false,
+    "newEpochActivated": false,
+    "aRepeatSyncAssigned": false
+  }
+}
