@@ -968,3 +968,111 @@
   border-bottom: 1px solid #555350 !important;
   box-shadow: none !important;
 }
+
+/* Keep the servant draw in the same full-width rhythm as the master draw. */
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) {
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: auto auto minmax(154px, auto) minmax(260px, 1fr) auto !important;
+  gap: 0 !important;
+}
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) > .ow-phase-head,
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) > .ow-current-choice,
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) > .ow-roster,
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) > .draft-focus,
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) > .ow-draft-footer {
+  grid-column: 1 !important;
+}
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) > .ow-phase-head { grid-row: 1 !important; }
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) > .ow-current-choice {
+  grid-row: 2 !important;
+  position: static !important;
+  justify-self: end !important;
+  align-self: center !important;
+  margin: 0 !important;
+  padding: 8px 0 !important;
+  background: transparent !important;
+}
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) > .ow-roster {
+  grid-row: 3 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding: 10px 0 16px !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) > .draft-focus {
+  grid-row: 4 !important;
+}
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) > .ow-draft-footer {
+  grid-row: 5 !important;
+}
+
+/* Gold is reserved for actionable confirmation buttons.  Red marks a ban or
+   other destructive action, while disabled and secondary controls keep their
+   neutral surfaces. */
+:root,
+#app,
+:host,
+.battle-root.battle-root {
+  --ui-confirm: #d6ae52 !important;
+  --ui-confirm-hover: #e4bf6b !important;
+  --ui-confirm-active: #b78d3d !important;
+}
+#app .screen :is(.ow-primary--ban,[data-threex-confirm-ban]):not(:disabled) {
+  background: var(--ui-danger) !important;
+  border-color: var(--ui-danger) !important;
+  color: #fff !important;
+  box-shadow: 0 3px 0 rgba(92, 24, 24, .34) !important;
+}
+#app .screen :is(.ow-primary--ban,[data-threex-confirm-ban]):not(:disabled):hover {
+  background: var(--ui-danger-hover) !important;
+  border-color: var(--ui-danger-hover) !important;
+}
+#app .screen.draft-screen .contract-workspace .ow-draft-footer
+  > .ow-primary.ow-primary--ban:not(:disabled),
+#app .screen.draft-screen .contract-workspace .ow-draft-footer
+  > [data-threex-confirm-ban]:not(:disabled) {
+  background: var(--ui-danger) !important;
+  border-color: var(--ui-danger) !important;
+  color: #fff !important;
+}
+#app .screen.draft-screen .contract-workspace .ow-draft-footer
+  > .ow-primary.ow-primary--ban:not(:disabled):hover,
+#app .screen.draft-screen .contract-workspace .ow-draft-footer
+  > [data-threex-confirm-ban]:not(:disabled):hover {
+  background: var(--ui-danger-hover) !important;
+  border-color: var(--ui-danger-hover) !important;
+}
+
+/* Keep the established portrait card proportions while centering the full
+   candidate rail.  This avoids both the old squeezed left column and the
+   oversized horizontal cards. */
+#app .draft-screen .threex-content > .ow-master-draft .ow-3x-grid--small,
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) .ow-3x-grid {
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: center !important;
+  gap: 16px !important;
+  width: max-content !important;
+  min-width: 100% !important;
+  max-width: none !important;
+}
+#app .draft-screen .threex-content > .ow-master-draft .ow-3x-grid--small .pick-card,
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) .ow-3x-grid .pick-card {
+  display: block !important;
+  flex: 0 0 clamp(190px, 16vw, 270px) !important;
+  width: clamp(190px, 16vw, 270px) !important;
+  height: 276px !important;
+  grid-template-columns: none !important;
+}
+#app .draft-screen .threex-content > .ow-master-draft .ow-3x-grid--small .pick-card-avatar,
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) .ow-3x-grid .pick-card-avatar {
+  height: 224px !important;
+}
+#app .draft-screen .threex-content > .ow-master-draft .ow-3x-grid--small .pick-card-info,
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) .ow-3x-grid .pick-card-info {
+  display: block !important;
+  padding: 8px 9px !important;
+}
