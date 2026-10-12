@@ -3,6 +3,31 @@ import { describe, expect, it } from 'vitest';
 import { createMatchRoom, restoreMatchRoom } from '../src/match-room';
 
 describe('MatchRoom product session layer', () => {
+  it('keeps random credentials out of every public projection and rejects duplicate identities', () => {
+    const room = createMatchRoom({ roomId: 'auth-room', hostClientId: 'host' });
+    const hostToken = room.getIssuedCredential('host');
+    const guest = room.joinRoom({ clientId: 'guest', displayName: 'Guest', role: 'spectator' });
+    expect(hostToken).toMatch(/^reconnect-v2-[0-9a-f]{64}$/);
+    expect(createMatchRoom({ roomId: 'auth-room', hostClientId: 'host' }).getIssuedCredential('host')).not.toBe(hostToken);
+    for (const id of ['host', 'guest']) {
+      const projection = JSON.stringify(room.getProjection(id));
+      expect(projection).not.toContain('reconnectToken');
+      expect(projection).not.toContain(hostToken);
+      expect(projection).not.toContain(guest.reconnectToken);
+    }
+    const before = room.serializeRoom();
+    expect(() => room.joinRoom({ clientId: 'host', displayName: 'Impersonated', role: 'host' })).toThrow('authenticated reconnect required');
+    expect(() => room.joinRoom({ clientId: 'other', displayName: 'Other host', role: 'host' })).toThrow('Invalid new client');
+    expect(room.serializeRoom()).toEqual(before);
+    expect(() => room.authenticateClient('host', guest.reconnectToken)).toThrow('Invalid reconnect');
+  });
+
+  it('rejects legacy predictable persisted credentials without insecure adoption', () => {
+    const room = createMatchRoom({ roomId: 'legacy-auth', hostClientId: 'host' });
+    const snapshot = room.serializeRoom();
+    snapshot.clients[0]!.reconnectToken = 'reconnect-predictable';
+    expect(() => restoreMatchRoom(snapshot)).toThrow('Unsafe or invalid persisted client credentials');
+  });
   it('creates a room, joins clients, selects seats, and starts a 7-seat match as host', () => {
     const room = createMatchRoom({ seed: 20260905, hostClientId: 'host-a' });
     room.joinRoom({ clientId: 'alice', displayName: 'Alice' });

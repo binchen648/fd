@@ -22,6 +22,9 @@ export interface RoomClient {
   displayName: string;
   role: RoomClientRole;
   connected: boolean;
+}
+
+export interface PersistedRoomClient extends RoomClient {
   reconnectToken: string;
 }
 
@@ -37,6 +40,12 @@ export interface MatchRoomConfig extends MatchSessionConfig {
   roomId?: string;
   hostClientId?: string;
   hostName?: string;
+}
+
+export function resolveMatchRoomId(config: Pick<MatchRoomConfig, 'roomId' | 'seed'>): string {
+  if (config.roomId === undefined) return `fd-room-${config.seed ?? 20260904}`;
+  if (typeof config.roomId !== 'string' || config.roomId.trim().length === 0) throw new Error('Invalid room id');
+  return config.roomId;
 }
 
 export interface MatchRoomProjection {
@@ -55,18 +64,14 @@ export interface MatchRoomSnapshot {
   hostClientId: string;
   seed: number;
   status: RoomStatus;
-  clients: RoomClient[];
+  clients: PersistedRoomClient[];
   seats: RoomSeat[];
   session?: MatchSessionSnapshot;
 }
 
-function stableToken(input: string): string {
-  let hash = 2166136261;
-  for (const char of input) {
-    hash ^= char.charCodeAt(0);
-    hash = Math.imul(hash, 16777619);
-  }
-  return `reconnect-${(hash >>> 0).toString(36)}`;
+function randomCredential(): string {
+  const bytes = globalThis.crypto.getRandomValues(new Uint8Array(32));
+  return `reconnect-v2-${Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('')}`;
 }
 
 function defaultSeats(): RoomSeat[] {
@@ -92,9 +97,10 @@ export class MatchRoom {
   private readonly persistenceSecret: string;
   private readonly persistenceScope: string;
   private readonly restorePackKind: NonNullable<MatchSessionConfig['restorePackKind']>;
+  private readonly credentials = new Map<string, string>();
 
   constructor(config: MatchRoomConfig = {}) {
-    this.roomId = config.roomId ?? `fd-room-${config.seed ?? 20260904}`;
+    this.roomId = resolveMatchRoomId(config);
     this.seed = config.seed ?? 20260904;
     this.hostClientId = config.hostClientId ?? 'host';
     this.persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
@@ -105,28 +111,61 @@ export class MatchRoom {
       displayName: config.hostName ?? '房主',
       role: 'host',
       connected: true,
-      reconnectToken: stableToken(`${this.roomId}:${this.hostClientId}`),
     }];
+    this.credentials.set(this.hostClientId, randomCredential());
     this.seats = defaultSeats();
   }
 
-  joinRoom(input: { clientId: string; displayName: string; role?: RoomClientRole }): RoomClient {
+  joinRoom(input: { clientId: string; displayName: string; role?: RoomClientRole }): PersistedRoomClient {
     const existing = this.clients.find((client) => client.id === input.clientId);
-    if (existing) {
-      existing.connected = true;
-      existing.displayName = input.displayName;
-      existing.role = input.role ?? existing.role;
-      return existing;
+    if (existing) throw new Error('Identity already exists; authenticated reconnect required');
+    if (typeof input.clientId !== 'string' || !input.clientId || typeof input.displayName !== 'string' || !input.displayName
+      || !['player', 'spectator'].includes(input.role ?? 'player')) {
+      throw new Error('Invalid new client identity or role');
     }
     const client: RoomClient = {
       id: input.clientId,
       displayName: input.displayName,
       role: input.role ?? 'player',
       connected: true,
-      reconnectToken: stableToken(`${this.roomId}:${input.clientId}`),
     };
+    this.credentials.set(client.id, randomCredential());
     this.clients.push(client);
-    return client;
+    return { ...client, reconnectToken: this.getIssuedCredential(client.id) };
+  }
+
+  // Trusted in-process issuance only; transport must never expose this via projection.
+  getIssuedCredential(clientId: string): string {
+    this.requireClient(clientId);
+    const token = this.credentials.get(clientId);
+    if (!token) throw new Error('Missing private client credential');
+    return token;
+  }
+
+  authenticateClient(clientId: string, token: string): void {
+    if (typeof token !== 'string' || !/^reconnect-v2-[0-9a-f]{64}$/.test(token)
+      || this.credentials.get(clientId) !== token) throw new Error('Invalid reconnect token for client');
+    this.requireClient(clientId);
+  }
+
+  restoreClients(clients: PersistedRoomClient[]): void {
+    if (!Array.isArray(clients) || !clients.some(client => client?.id === this.hostClientId)) throw new Error('Unknown client: missing host');
+    const credentials = new Map<string, string>();
+    const publicClients: RoomClient[] = [];
+    for (const client of clients) {
+      if (!client || typeof client.id !== 'string' || !client.id || typeof client.displayName !== 'string'
+        || typeof client.connected !== 'boolean' || !['host', 'player', 'spectator'].includes(client.role)
+        || (client.role === 'host') !== (client.id === this.hostClientId) || credentials.has(client.id)
+        || typeof client.reconnectToken !== 'string' || !/^reconnect-v2-[0-9a-f]{64}$/.test(client.reconnectToken)
+        || [...credentials.values()].includes(client.reconnectToken)) {
+        throw new Error('Unsafe or invalid persisted client credentials; legacy reconnect sessions must be recreated');
+      }
+      credentials.set(client.id, client.reconnectToken);
+      publicClients.push({ id: client.id, displayName: client.displayName, role: client.role, connected: client.connected });
+    }
+    this.credentials.clear();
+    for (const [id, token] of credentials) this.credentials.set(id, token);
+    this.clients = publicClients;
   }
 
   selectSeat(clientId: string, seatNumber: number): RoomSeat {
@@ -179,8 +218,9 @@ export class MatchRoom {
   }
 
   reconnect(reconnectToken: string): RoomClient {
-    const client = this.clients.find((candidate) => candidate.reconnectToken === reconnectToken);
+    const client = this.clients.find((candidate) => this.credentials.get(candidate.id) === reconnectToken);
     if (!client) throw new Error('Invalid reconnect token');
+    this.authenticateClient(client.id, reconnectToken);
     client.connected = true;
     return client;
   }
@@ -250,7 +290,7 @@ export class MatchRoom {
         isHost: clientId === this.hostClientId,
       },
       hostClientId: this.hostClientId,
-      clients: structuredClone(this.clients),
+      clients: this.clients.map(({ id, displayName, role, connected }) => ({ id, displayName, role, connected })),
       seats: structuredClone(this.seats),
       match: this.session ? this.session.projectToClientState(viewerId) : null,
     };
@@ -271,7 +311,7 @@ export class MatchRoom {
       hostClientId: this.hostClientId,
       seed: this.seed,
       status: this.status,
-      clients: structuredClone(this.clients),
+      clients: this.clients.map(client => ({ ...client, reconnectToken: this.getIssuedCredential(client.id) })),
       seats: structuredClone(this.seats),
       ...(this.session ? { session: this.session.serializeSession() } : {}),
     };
@@ -307,11 +347,11 @@ export function restoreMatchRoom(
     persistenceScope,
   });
   const persistenceContext = room.getPersistenceContext();
+  room.restoreClients(snapshot.clients);
   const restoredSession = snapshot.session
     ? restoreMatchSession(snapshot.session, persistenceContext, reconcileReplayTrust)
     : undefined;
   room.status = snapshot.status;
-  room.clients = structuredClone(snapshot.clients);
   room.seats = structuredClone(snapshot.seats);
   room.session = restoredSession;
   return room;
