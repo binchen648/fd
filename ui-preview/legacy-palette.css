@@ -1315,3 +1315,181 @@
     grid-template-rows: 220px minmax(260px, auto) 64px !important;
   }
 }
+
+/* Three-X ban phase has a different information shape from character draw.
+   Keep the player rail and candidate pool on the left, while the ban target
+   panel owns the full right column.  This late rule intentionally overrides
+   the shared draw focus grid so the target label can never sit on top of the
+   heading. */
+#app .draft-screen .threex-content > .ow-ban-draft.contract-workspace {
+  grid-template-columns: minmax(0, 1.25fr) minmax(360px, .9fr) !important;
+  grid-template-rows: auto auto minmax(300px, 1fr) 64px !important;
+  gap: 0 24px !important;
+  align-content: stretch !important;
+}
+#app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .ow-phase-head {
+  grid-column: 1 / -1 !important;
+  grid-row: 1 !important;
+}
+#app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .threex-ban-board {
+  grid-column: 1 / -1 !important;
+  grid-row: 2 !important;
+  min-width: 0 !important;
+}
+#app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .ow-roster {
+  grid-column: 1 !important;
+  grid-row: 3 !important;
+  min-width: 0 !important;
+  min-height: 300px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding: 10px 0 18px !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+#app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .ow-roster .ow-3x-grid {
+  display: grid !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important;
+  grid-auto-rows: max-content !important;
+  gap: 12px !important;
+  align-content: start !important;
+  justify-content: stretch !important;
+}
+#app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .ow-roster .ow-3x-grid .pick-card {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  display: block !important;
+}
+#app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .ow-roster .pick-card-avatar {
+  height: clamp(112px, 16vh, 220px) !important;
+}
+#app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .draft-focus {
+  grid-column: 2 !important;
+  grid-row: 3 !important;
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: minmax(140px, 36%) minmax(0, 1fr) !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+  gap: 16px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  padding: 76px 0 44px 24px !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+#app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .draft-focus > .ban-target-state {
+  position: absolute !important;
+  /* Absolutely positioned children use the focus content box as their
+     containing block, which already starts after the 76px top padding. */
+  top: -60px !important;
+  left: 24px !important;
+  right: 0 !important;
+  z-index: 4 !important;
+  display: block !important;
+  min-height: 18px !important;
+  line-height: 1.35 !important;
+  white-space: nowrap !important;
+}
+#app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .draft-focus > .draft-focus-heading {
+  grid-column: 1 / -1 !important;
+  grid-row: 1 !important;
+  min-width: 0 !important;
+  align-self: start !important;
+  margin: 0 !important;
+}
+#app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .draft-focus > .draft-focus-art {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+}
+#app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .draft-focus > .draft-focus-skills {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin-top: 0 !important;
+  overflow: auto !important;
+}
+#app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .draft-focus > .ban-target-note {
+  position: absolute !important;
+  left: 24px !important;
+  right: 0 !important;
+  bottom: 12px !important;
+  z-index: 3 !important;
+  margin: 0 !important;
+  line-height: 1.5 !important;
+}
+#app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .ow-draft-footer {
+  grid-column: 1 / -1 !important;
+  grid-row: 4 !important;
+}
+
+/* The splash and home art should read as artwork, not as a near-black card.
+   The common project veil remains restrained on these two entry screens. */
+#app > .screen.splash > .bg {
+  filter: saturate(.88) sepia(.02) contrast(1.01) brightness(1.12) !important;
+}
+#app > .screen.splash > .veil {
+  background:
+    radial-gradient(ellipse at 62% 36%, transparent 18%, rgba(0,0,0,.05) 58%, rgba(0,0,0,.16) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.05), transparent 28%, transparent 72%, rgba(0,0,0,.16)) !important;
+}
+#app > .screen.home-screen > .bg {
+  filter: saturate(.88) contrast(1.01) brightness(1.08) !important;
+}
+#app > .screen.home-screen > .veil {
+  background:
+    radial-gradient(ellipse at 62% 36%, transparent 18%, rgba(0,0,0,.04) 58%, rgba(0,0,0,.14) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.04), transparent 28%, transparent 72%, rgba(0,0,0,.14)) !important;
+}
+
+@media (max-width: 1350px) {
+  #app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .ow-roster .ow-3x-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)) !important;
+    gap: 10px !important;
+  }
+  #app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .ow-roster .pick-card-avatar {
+    height: 90px !important;
+  }
+}
+
+@media (max-width: 900px) {
+  #app .draft-screen .threex-content > .ow-ban-draft.contract-workspace {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto auto minmax(300px, auto) minmax(260px, auto) 64px !important;
+    gap: 0 !important;
+    overflow: auto !important;
+  }
+  #app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .ow-phase-head,
+  #app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .threex-ban-board,
+  #app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .ow-roster,
+  #app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .draft-focus,
+  #app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .ow-draft-footer {
+    grid-column: 1 !important;
+  }
+  #app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .ow-phase-head { grid-row: 1 !important; }
+  #app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .threex-ban-board { grid-row: 2 !important; }
+  #app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .ow-roster {
+    grid-row: 3 !important;
+    min-height: 300px !important;
+  }
+  #app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .draft-focus {
+    grid-row: 4 !important;
+    grid-template-columns: minmax(110px, 34%) minmax(0, 1fr) !important;
+    padding: 60px 0 36px 16px !important;
+  }
+  #app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .draft-focus > .ban-target-state {
+    left: 16px !important;
+    top: -44px !important;
+  }
+  #app .draft-screen .threex-content > .ow-ban-draft.contract-workspace > .ow-draft-footer { grid-row: 5 !important; }
+}
