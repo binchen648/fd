@@ -34,30 +34,111 @@
       "note": "Waited for observed competing CI to finish; a point-in-time process observation does not satisfy the authorization acknowledgement requirement."
     },
     "commands": [
-      { "command": "npm ci", "exitCode": 0, "result": "239 packages added; 248 audited; 12 dependency vulnerabilities reported" },
-      { "command": "npm run typecheck", "exitCode": 0 },
-      { "command": "npx vitest run scripts/tests/phase3-e08-b11-coverage-sync.test.ts scripts/tests/phase3-e06-post-merge-recount.test.ts scripts/tests/phase3-readiness-preflight.test.ts", "exitCode": 0, "files": 3, "tests": 40 },
-      { "command": "npx tsx scripts/phase3-e08-b11-coverage-sync.ts --validate", "exitCode": 0 },
-      { "command": "npx tsx scripts/phase3-e08-b11-coverage-sync.ts --final --validate", "exitCode": 0, "result": "23/144/3/0/111; DIAGNOSTIC_ONLY_NOT_ACCEPTANCE" },
-      { "command": "npm run test:ci", "sequence": 1, "exitCode": 0, "files": 193, "tests": 1532, "reportedDurationSeconds": 135 },
-      { "command": "npm run test:ci", "sequence": 2, "exitCode": 0, "files": 193, "tests": 1532, "reportedDurationSeconds": 159 },
-      { "command": "npm run content:validate", "exitCode": 0, "result": "7 masters / 7 servants / 20 events / 0 blocking issues" },
-      { "command": "npm run verify:generated-content", "exitCode": 0 },
-      { "command": "npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/production-resolution-bridge.test.ts packages/rules/tests/regression/b11-conversion-classification-api.test.ts packages/rules/tests/regression/b11-conversion-binding-ownership.test.ts", "exitCode": 0, "files": 4, "tests": 51 },
-      { "command": "npm run test --workspace @fd/server -- src/match-server.test.ts", "exitCode": 0, "files": 1, "tests": 11 },
-      { "command": "npx playwright install chromium", "exitCode": 0, "result": "Browser installed in D cache" },
-      { "command": "npx playwright test e2e/fd-golden-eater-result-binding.spec.ts e2e/fd-conversion-magic-core-primitive.spec.ts --repeat-each=5", "exitCode": 0, "tests": 10 },
-      { "command": "npm run test:source-assets", "exitCode": 1, "blockingIssues": 93, "failureReason": "MISSING_IMAGE" },
-      { "command": "git diff --check 9a1689d2ec5b56b67d1483d2593b4ab809d6c15c...HEAD", "exitCode": 0 }
+      {
+        "command": "npm ci",
+        "exitCode": 0,
+        "result": "239 packages added; 248 audited; 12 dependency vulnerabilities reported"
+      },
+      {
+        "command": "npm run typecheck",
+        "exitCode": 0
+      },
+      {
+        "command": "npx vitest run scripts/tests/phase3-e08-b11-coverage-sync.test.ts scripts/tests/phase3-e06-post-merge-recount.test.ts scripts/tests/phase3-readiness-preflight.test.ts",
+        "exitCode": 0,
+        "files": 3,
+        "tests": 40
+      },
+      {
+        "command": "npx tsx scripts/phase3-e08-b11-coverage-sync.ts --validate",
+        "exitCode": 0
+      },
+      {
+        "command": "npx tsx scripts/phase3-e08-b11-coverage-sync.ts --final --validate",
+        "exitCode": 0,
+        "result": "23/144/3/0/111; DIAGNOSTIC_ONLY_NOT_ACCEPTANCE"
+      },
+      {
+        "command": "npm run test:ci",
+        "sequence": 1,
+        "exitCode": 0,
+        "files": 193,
+        "tests": 1532,
+        "reportedDurationSeconds": 135
+      },
+      {
+        "command": "npm run test:ci",
+        "sequence": 2,
+        "exitCode": 0,
+        "files": 193,
+        "tests": 1532,
+        "reportedDurationSeconds": 159
+      },
+      {
+        "command": "npm run content:validate",
+        "exitCode": 0,
+        "result": "7 masters / 7 servants / 20 events / 0 blocking issues"
+      },
+      {
+        "command": "npm run verify:generated-content",
+        "exitCode": 0
+      },
+      {
+        "command": "npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/production-resolution-bridge.test.ts packages/rules/tests/regression/b11-conversion-classification-api.test.ts packages/rules/tests/regression/b11-conversion-binding-ownership.test.ts",
+        "exitCode": 0,
+        "files": 4,
+        "tests": 51
+      },
+      {
+        "command": "npm run test --workspace @fd/server -- src/match-server.test.ts",
+        "exitCode": 0,
+        "files": 1,
+        "tests": 11
+      },
+      {
+        "command": "npx playwright install chromium",
+        "exitCode": 0,
+        "result": "Browser installed in D cache"
+      },
+      {
+        "command": "npx playwright test e2e/fd-golden-eater-result-binding.spec.ts e2e/fd-conversion-magic-core-primitive.spec.ts --repeat-each=5",
+        "exitCode": 0,
+        "tests": 10
+      },
+      {
+        "command": "npm run test:source-assets",
+        "exitCode": 1,
+        "blockingIssues": 93,
+        "failureReason": "MISSING_IMAGE"
+      },
+      {
+        "command": "git diff --check 9a1689d2ec5b56b67d1483d2593b4ab809d6c15c...HEAD",
+        "exitCode": 0
+      }
     ],
     "environmentDisposition": "ENOSPC_NOT_REPRODUCED_IN_LOCAL_D_CHECKOUT",
     "overallStatus": "BLOCKED_AUTHORIZATION_REVIEW_AND_EXECUTION_EVIDENCE_GAPS",
     "remainingRequirements": [
-      { "owner": "A / Planner", "requirement": "Persist complete execution logs and obtain acknowledged quiet window before claiming fully compliant immutable execution receipts" },
-      { "owner": "Planner / G", "requirement": "Resolve seven ORIGINAL_AUTHORIZATION_UNPROVEN paths and two overlapping runtime deltas without retrospective invented authorization" },
-      { "owner": "RA / RB", "requirement": "Review 33 pending path scopes and final exact continuation carrier; prior reviews cannot be expanded" },
-      { "owner": "Assets owner / Planner", "requirement": "93 MISSING_IMAGE remain Release blockers" },
-      { "owner": "G / I", "requirement": "Current governance, remote required checks and promotion remain pending" }
+      {
+        "owner": "A / Planner",
+        "requirement": "Persist complete execution logs and obtain acknowledged quiet window before claiming fully compliant immutable execution receipts"
+      },
+      {
+        "owner": "Planner / G",
+        "requirement": "Resolve seven ORIGINAL_AUTHORIZATION_UNPROVEN paths and two overlapping runtime deltas without retrospective invented authorization"
+      },
+      {
+        "owner": "RA / RB",
+        "requirement": "Review 33 pending path scopes and final exact continuation carrier; prior reviews cannot be expanded"
+      },
+      {
+        "owner": "Assets owner / Planner",
+        "requirement": "93 MISSING_IMAGE remain Release blockers"
+      },
+      {
+        "owner": "G / I",
+        "requirement": "Current governance, remote required checks and promotion remain pending"
+      }
     ],
     "historicalFieldsRule": "Existing status, remainingBlockers, executions and notExecutedAfterStop describe the preserved prior carrier, not the new observation pair. No historical record is superseded or deleted.",
     "creditDelta": 0,
@@ -10490,5 +10571,188 @@
     "path": "artifacts/phase3-e08-b11-final-combination-evidence.json",
     "blob": "c969aefebee3a45e6dd60fd3ba817bd82819a129",
     "sha256": "3DFF60D5BD9DDE9F884430EF42158A35EC57BF5E70B36CE919818855A04C92B0"
+  },
+  "recordedValidationContinuation": {
+    "taskId": "P3-E08-B11-RECORDED-VALIDATION",
+    "controlEpoch": "FD-P3-2026-09-23-08",
+    "authorizationCommit": "bb41b2cb71edc52d755c14f276ca85d98fecfd84",
+    "authorizationPath": "docs/agents/P3-E08-B11-RECORDED-VALIDATION-DISPATCH.md",
+    "testedSha": "9a4f4c6ee2723eb7f546341f3c18a1f0a29c3bc1",
+    "priorCarrierSha": "c8b9786ca4d7cde7240783147c735367d59d2425",
+    "priorPacketSha256": "4338fad122bed5b3733712641c5b29bde82a961e60a8cbd9c02446633363934b",
+    "evidenceCarrierSha": "RESOLVE_FROM_GIT_HANDOFF_NOT_SELF_REFERENTIAL",
+    "status": "A_EXECUTION_EVIDENCE_COMPLETE",
+    "requiredRawReceipts": "COMPLETE",
+    "receiptPacketPath": "artifacts/phase3-e08-b11-environment-reverification-receipts.json",
+    "receiptPacketSha256": "dcc796d63eba088260440dfaf4b4c53b9e3af8a3032055336530dd8fcf47f08a",
+    "commandSummaries": [
+      {
+        "index": 1,
+        "command": "npm ci",
+        "exitCode": 0,
+        "durationMs": 10017,
+        "stdoutSha256": "6bfba6fa7eb769bac084eb4d43f69d4a5f6e60f16284fad1be3b99bd60cfc307",
+        "stderrSha256": "67389c0b6efbe86c5fc51293d278be25159d27ace6d73ae2da626b49a0143470"
+      },
+      {
+        "index": 2,
+        "command": "node -e \"console.log(require('os').tmpdir())\"",
+        "exitCode": 0,
+        "durationMs": 96,
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "index": 3,
+        "command": "npm --version",
+        "exitCode": 0,
+        "durationMs": 349,
+        "stdoutSha256": "b396e3e19de55c61b6773383a0a92ee45dd6cddcbec8a09d731a6f2caefa2c5b",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "index": 4,
+        "command": "npm run typecheck",
+        "exitCode": 0,
+        "durationMs": 611,
+        "stdoutSha256": "fe697f3caea6aa3017ce001f09cac853c9f311a09a2c043dc56f82c15f02d1d4",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "index": 5,
+        "command": "npx vitest run scripts/tests/phase3-e08-b11-coverage-sync.test.ts scripts/tests/phase3-e06-post-merge-recount.test.ts scripts/tests/phase3-readiness-preflight.test.ts",
+        "exitCode": 0,
+        "durationMs": 54790,
+        "files": 3,
+        "tests": 40,
+        "stdoutSha256": "c7f55cd0f7143c869d2e310340b273cbfe2212cde4d85ee4da85285fb4d9ba2d",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "index": 6,
+        "command": "npx tsx scripts/phase3-e08-b11-coverage-sync.ts --validate",
+        "exitCode": 0,
+        "durationMs": 8738,
+        "stdoutSha256": "4af48fe84bcc2c9adeb42c00f18017103284f61ffd9dc9c00ae934a1ffc9a470",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "index": 7,
+        "command": "npx tsx scripts/phase3-e08-b11-coverage-sync.ts --final --validate",
+        "exitCode": 0,
+        "durationMs": 6686,
+        "stdoutSha256": "b918a05ca3347ed526b0287cfb7c105298eaf48316b33fad03ec04517ad2feb6",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "index": 8,
+        "command": "npm run phase3:preflight -- --manifest scripts/fixtures/phase3-b11-task-check.json --candidate c13add9ad5daee46c2f16bafa175abfb78beb020 --base 9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+        "exitCode": 1,
+        "durationMs": 4330,
+        "stdoutSha256": "5cdb164e813a15dc38cd6998c1a6d353bc0ce7b4646c4a9f03be2bf55b36e383",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "index": 9,
+        "command": "npm run test:ci",
+        "exitCode": 0,
+        "durationMs": 141846,
+        "files": 193,
+        "tests": 1532,
+        "stdoutSha256": "3ef354189542b0fab02ed61ad90f28afa238befaecdde2895dd7fef654936459",
+        "stderrSha256": "3d417beed61322a6d99ac401fc555e427db0bf72546806ae66f7505b45fb1d09"
+      },
+      {
+        "index": 10,
+        "command": "npm run test:ci",
+        "exitCode": 0,
+        "durationMs": 143886,
+        "files": 193,
+        "tests": 1532,
+        "stdoutSha256": "34e2327ceaa40491af1a4bebac977a53e55d376630da26631511d94389cce73b",
+        "stderrSha256": "e9a888e1de6a1b59923f0dd0b84169291372e08979b4a375b60ea446e4d6f0df"
+      },
+      {
+        "index": 11,
+        "command": "npm run content:validate",
+        "exitCode": 0,
+        "durationMs": 1018,
+        "stdoutSha256": "1e9efe9020c2dcf014d3285336f42e6e85d0f66639e126ddca0ac84254910906",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "index": 12,
+        "command": "npm run verify:generated-content",
+        "exitCode": 0,
+        "durationMs": 1076,
+        "stdoutSha256": "7b7c76808cebdd0b6eda5c2a4bd8ecad7321fdcb67297d5ef799c1014b8f26e0",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "index": 13,
+        "command": "npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/production-resolution-bridge.test.ts packages/rules/tests/regression/b11-conversion-classification-api.test.ts packages/rules/tests/regression/b11-conversion-binding-ownership.test.ts",
+        "exitCode": 0,
+        "durationMs": 5152,
+        "files": 4,
+        "tests": 51,
+        "stdoutSha256": "aa76cebb7420474551c5022145c34222249cdc833cd873b982e551091cda852c",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "index": 14,
+        "command": "npm run test --workspace @fd/server -- src/match-server.test.ts",
+        "exitCode": 0,
+        "durationMs": 4349,
+        "files": 1,
+        "tests": 11,
+        "stdoutSha256": "71dfe0aa7b680b5d5c6fe96dfe75f59752d33d0466ba4b69616d8d814aa25d9b",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "index": 15,
+        "command": "npx playwright test e2e/fd-golden-eater-result-binding.spec.ts e2e/fd-conversion-magic-core-primitive.spec.ts --repeat-each=5",
+        "exitCode": 0,
+        "durationMs": 33648,
+        "stdoutSha256": "dae91668152d65cbf72e2aef453346aba04e8469a6313b2e9b61517458876f4e",
+        "stderrSha256": "c7ab015e8fb79886429e08dc877120807915888302394e7340061005bc81bad3"
+      },
+      {
+        "index": 16,
+        "command": "npm run test:source-assets",
+        "exitCode": 1,
+        "durationMs": 1079,
+        "stdoutSha256": "90e4acbbb0cc3c83053c6cfda5d8b584053e7c56f41b997957c4a0e5ff632bd0",
+        "stderrSha256": "e9ca5059f29f431a7fda6bfaf96e4871b13c8f3b3a524b2d45949a9c61dfd4a4"
+      },
+      {
+        "index": 17,
+        "command": "git diff --check 9a1689d2ec5b56b67d1483d2593b4ab809d6c15c...HEAD",
+        "exitCode": 0,
+        "durationMs": 143,
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "sourceObjectCount": 23,
+    "sourceEquivalence": "VERIFIED",
+    "historicalMissingEvidence": {
+      "oldCompleteLogs": "MISSING",
+      "oldQuietAcknowledgements": "MISSING"
+    },
+    "externalDependencies": {
+      "originalAuthorityPathsUnproven": 7,
+      "pathScopesAwaitingReview": 33,
+      "runtimeOverlapsAwaitingDisposition": 2,
+      "finalReviewerA": "PENDING",
+      "finalReviewerB": "PENDING",
+      "governance": "PENDING",
+      "missingImages": 93,
+      "globalGateC": "NOT_VERIFIED"
+    },
+    "aScopeComplete": "YES_EXECUTION_AND_BINDING_ONLY",
+    "overallReadiness": "BLOCKED",
+    "creditDelta": 0,
+    "readinessGranted": false,
+    "promotionGranted": false
   }
 }

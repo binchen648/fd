@@ -1,3 +1,14 @@
+# Recorded validation continuation: 2026-10-12
+
+Current execution status: A_EXECUTION_EVIDENCE_COMPLETE. A execution/binding scope complete: YES.
+Overall readiness: BLOCKED external authorization/review/Release dependencies.
+Receipt artifact: artifacts/phase3-e08-b11-environment-reverification-receipts.json
+SHA-256: dcc796d63eba088260440dfaf4b4c53b9e3af8a3032055336530dd8fcf47f08a
+Current combination artifact SHA-256: 94889745f47b1865c62ec8d6c1633d960c02828344b3db28b0f16c7dad010854
+Both fresh default CI executions: 193 files / 1532 tests, exit 0. All required command bytes are preserved in the receipt artifact. Source-assets retains exit 1 / 93 MISSING_IMAGE; historical missing records remain MISSING.
+See docs/reports/2026-10-11-p3-e08-b11-environment-reverification-receipts.md for all commands, exact hashes, wrapper stop/continuation and window declaration limits.
+Existing report sections below remain historical; their earlier statuses and hashes are not current execution conclusions.
+
 # B11 Evidence Contract Continuation
 
 ## Environment observation continuation: 2026-10-11
