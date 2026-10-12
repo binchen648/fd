@@ -4,8 +4,8 @@
 - Status: ACTIVE
 - Scope: task-level startup index for Phase 3 agents
 - Authority: subordinate to `docs/agents/PHASE3-AGENT-CONTRACT.md`
-- Current control epoch: `FD-P3-2026-09-23-08`
-- Authoritative main: `7072da3f5ad5b6ae77c5fb4b7eb40634c29039b0`
+- Current control epoch: `FD-P3-2026-09-23-09` (effective on main after reviewed governance merge)
+- Authoritative main: `9a1689d2ec5b56b67d1483d2593b4ab809d6c15c` (pre-publication baseline)
 
 This file is the task lookup entry point for Phase 3 agents. Do not read the full `docs/plans/fd-phase-3-parallel-work-queue.md` by default. Read only the assigned task block below, then follow its explicit `Read` list.
 
@@ -42,10 +42,19 @@ These statuses were recorded under Epoch 07 and are not reissued by the Epoch
 
 | Task | Owner | State | Boundary |
 |---|---|---|---|
-| `P3-E08-CI-01` | A | `READY_AFTER_FORMAL_PUBLICATION` | CI stability evidence/report only, within the three paths in its task assignment; no runtime or authoring edits |
+| `P3-E09-G-B11-LIMITED-PUBLICATION` | G | `GOVERNANCE_PUBLICATION_PENDING_REVIEW_AND_MERGE` | exact receipt risk and conditional nine-blob disposition only; no runtime acceptance |
+| `P3-E09-B11-RA-CLOSURE` | Reviewer A | `FINAL_EXACT_EVIDENCE_REVIEW_ACCEPTED_28875202` | exact 086a86a final evidence/tooling only; no inherited acceptance of unrelated historical rows or runtime |
+| `P3-E09-B11-RB-COMBINATION` | Reviewer B | `SCOPED_TRANSPORT_COMBINATION_PASS_4D5B76BE` | exact 0f62210 repair and existing B11/Golden Eater/socket composition only; no overall acceptance |
+| `P3-E09-B11-A` | A | `A_SCOPE_COMPLETE` | no new tests, fixes or per-review sync assigned |
+| `P3-E09-B11-B` | B | `READ_ONLY_PREPARATION_ONLY` | no new runtime repair or writer lock |
+| `P3-E09-B11-I` | I | `WAITING` | no promotion authorization |
 
-Read `docs/agents/FD-P3-CONTROL-EPOCH-08.md` and the exact assigned task
+Read `docs/agents/FD-P3-CONTROL-EPOCH-09.md` and the exact assigned task
 authorization before acting.
+
+Later room-ID authority and actual final reviews are bound in
+`docs/agents/manifests/governance/P3-E09-B11-ROOM-ID-ADOPTION.json`.
+The package writer-reservation gap remains outside the adopted scopes.
 
 ## Full-Roster Flow
 
