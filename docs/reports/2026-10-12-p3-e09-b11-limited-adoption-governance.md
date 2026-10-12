@@ -23,6 +23,12 @@ packet is reviewed and merged with the current task-index pointer updated.
 Publication pending fields are pre-merge snapshots; the exact PR/merge objects
 establish completion. No premature mainline transition is claimed.
 
+Later immutable supplement: `P3-E09-B11-ROOM-ID-ADOPTION.json` and
+`2026-10-12-p3-e09-b11-room-id-adoption.md` bind Planner 19c3c365,
+actual final RA 28875202 and scoped RB 4d5b76be. The initial pending review
+descriptions below remain preparation snapshots, not current final verdicts.
+The supplement does not close unrelated historical package reservation gaps.
+
 ## Exact Effective Scope
 
 Carrier: 463facb109cc4d19c4fda7af936fb4546fb86091.

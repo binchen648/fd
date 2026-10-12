@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "fd-p3-exact-delta-prospective-adoption-v1",
+  "taskId": "P3-E09-G-B11-ROOM-ID-ADOPTION",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "date": "2026-10-12",
+  "governanceRole": "Codex G / Promotion Governance Owner",
+  "githubIdentity": "github:binchen648",
+  "repository": "https://github.com/binchen648/fd",
+  "authority": {
+    "commit": "19c3c365443fbbfb3008aaf66d3f72b5d4079c23",
+    "ref": "refs/heads/codex/planner-p3-e08-environment-recovery",
+    "path": "docs/agents/P3-E09-B11-FINAL-RA-AND-G-DISPATCH.md",
+    "sha256": "D0FEBBE8B6D66FD350108C8AD1B1AE262CB53B57CA7825A7C162AE666DBDEA72",
+    "section": "Room-ID Delta: Planner Prospective Disposition",
+    "type": "NEW_EFFECTIVE_PLANNER_PROSPECTIVE_AUTHORITY",
+    "notHistoricalInstructionRecovery": true
+  },
+  "delta": {
+    "baseSha": "865c27b9446e591c5e9be9956d50ca5375f825de",
+    "implementationSha": "d9d8a6a480710afba20ee7371ecdedb09de77de1",
+    "finalRuntimeCarrierSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+    "testedImplementationSha": "485b216cd4c440d3ff253248c46b62e226ee223e",
+    "finalEvidenceCarrierSha": "086a86a24f5cf0991b3743ceb28b34a767252070",
+    "pathTable": [
+      {
+        "path": "apps/server/src/match-server.test.ts",
+        "implementationBlob": "10248b72cc9a032bfefc7280d6fc44c529b5d56e"
+      },
+      {
+        "path": "apps/server/src/match-server.ts",
+        "implementationBlob": "47c82a648c43a5bd7debbbada2ba5f6d73db44e4"
+      },
+      {
+        "path": "packages/rules/src/match-room-hub.ts",
+        "implementationBlob": "f35f25eb62bca10b38e4058db79fc25a55064086"
+      },
+      {
+        "path": "packages/rules/src/match-room.ts",
+        "implementationBlob": "0c4bc3fd8482e2117931d2eed621fee798720fb5"
+      },
+      {
+        "path": "packages/rules/tests/match-room-hub.test.ts",
+        "implementationBlob": "d2c95bf2c918aa929b817bd472fa03d6b5c9f4cf"
+      }
+    ]
+  },
+  "verification": {
+    "changedPathsExactlyFive": true,
+    "allBlobsMatchImplementationRuntimeTestedAndEvidenceCarriers": true,
+    "deltaAncestry": true,
+    "priorTaskPathMembership": true,
+    "sourceTask": {
+      "commit": "e247a9a2c07c83652234c42e95f1d74548f1a6a3",
+      "path": "docs/agents/P3-E09-B11-TRANSPORT-SECURITY-REPAIR.md"
+    },
+    "reservation": {
+      "commit": "53eda909e3d5551b51bc892551b560779131fea3",
+      "path": "docs/agents/manifests/reservations/P3-E09-B11-TRANSPORT-SECURITY-REPAIR.json",
+      "limitation": "Prospective reservation names prior task paths, not proof of original room-ID instruction; no historical writer record reconstructed."
+    }
+  },
+  "reviewerB": {
+    "commit": "4d5b76be9d5459cc0c40e50fae8513bc59cd5d21",
+    "path": "docs/reviews/phase3/P3-E09-B11-TRANSPORT-SECURITY-REPAIR-0f62210-reviewer-b.json",
+    "sha256": "6FE0EAD378E31149B3271E137FDB99ACAC161F2894E3FAD21FC0A14986E96DB4",
+    "remoteRef": "refs/heads/codex/rb-p3-e09-transport-0f62210",
+    "githubCommitUrl": "https://github.com/binchen648/fd/commit/4d5b76be9d5459cc0c40e50fae8513bc59cd5d21",
+    "githubCommitAuthor": "github:binchen648",
+    "artifactReviewer": "Codex Reviewer B",
+    "verdict": "PASS",
+    "scope": "Scoped transport security repair and existing B11/Golden Eater/socket composition only",
+    "reviewedSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+    "closedFindings": [
+      "PUBLIC_RECONNECT_CREDENTIAL_AND_REJOIN_IDENTITY_BYPASS",
+      "END_TURN_MISSING_REVISION_MUTATION_BYPASS",
+      "EMPTY_ROOM_ID_UNAUTHENTICATED_ROOM_REPLACEMENT"
+    ],
+    "notApprovedGithubReview": true,
+    "artifactGithubIdentityAndThread": "NULL_RETAINED; commit author mapping is not proof of an independent review thread."
+  },
+  "reviewerA": {
+    "commit": "28875202695d43e580ddd637f1721e3a1dddbc8a",
+    "path": "docs/reviews/phase3/P3-E09-B11-086a86a-final-contract-reviewer-a.json",
+    "sha256": "C4A19526A09845214F1C4D2B3B25CC933E75532B8CD7DD8B30C719AB241E7FFE",
+    "remoteRef": "refs/heads/codex/ra-p3-e09-b11-final-contract-review",
+    "githubCommitUrl": "https://github.com/binchen648/fd/commit/28875202695d43e580ddd637f1721e3a1dddbc8a",
+    "githubCommitAuthor": "github:binchen648",
+    "artifactReviewer": "Reviewer A",
+    "reviewedSha": "086a86a24f5cf0991b3743ceb28b34a767252070",
+    "conclusion": "REVIEW_ACCEPTED",
+    "verdict": "PASS",
+    "acceptedScope": "EXACT_FOUR_HISTORICAL_TEST_CONTRACT_REPAIRS_CURRENT_BINDING_VALIDATOR_COVERAGE_AND_AUTHENTIC_EXECUTION_EVIDENCE_ONLY",
+    "technicalBlockingFindings": [],
+    "packet": {
+      "path": "artifacts/phase3-e09-b11-final-evidence-binding.json",
+      "sha256": "6E1CB9EEBBB9F8A71C0CB65C562F15E29D003EE1A56D309580D7F74560E12E36"
+    },
+    "notNewRuntimeVerdict": true,
+    "notApprovedGithubReview": true,
+    "timingLimitation": "Raw evidence accepted as actual recorded execution; no continuous quiet-window or fully serial batch certification granted"
+  },
+  "decision": {
+    "status": "EXACT_ROOM_ID_PROSPECTIVE_AUTHORITY_BOUND",
+    "roomIdAuthorityBinding": "COMPLETE_FOR_EXACT_FIVE_PATH_DELTA_ONLY",
+    "finalRaBinding": "ACTUAL_REVIEW_ACCEPTED_BOUND; evidence/tooling scope only",
+    "historicalOriginalProofMissing": "RETAINED",
+    "laterDeltaInheritance": false,
+    "originalNineBlobAdoptionExpanded": false,
+    "newSourceWritesAuthorized": false,
+    "wholeBranchAdopted": false,
+    "semanticVerdictIssuedByG": false,
+    "effectivePlannerAuthorityAtSource": true,
+    "epochMainPublication": "PENDING_GOVERNANCE_PR_558_REVIEW_CHECKS_AND_HUMAN_MERGE",
+    "integrationAuthorized": false
+  },
+  "remainingGovernance": [
+    "Original Epoch 09 package.json historical writer-reservation gap remains outside room-ID and nine-blob scope; no new proof or separate disposition supplied here.",
+    "GitHub commit/ref provenance verified for RA/RB; neither reviewer artifact supplies an APPROVED Review or authenticated review-thread identity; no such identity fabricated.",
+    "Governance publication review/checks/human merge still required; updated exact HEAD checks cannot be inherited from old PR HEAD.",
+    "Planner alone considers separate I dispatch after consolidated remaining prerequisites; this attestation does not authorize runtime merge."
+  ],
+  "boundaries": {
+    "aPacketRewritten": false,
+    "newAExecutionOrSyncAssigned": false,
+    "runtimeChanged": false,
+    "authoringChanged": false,
+    "policyChanged": false,
+    "overallAcceptance": false,
+    "runtimePromotion": false,
+    "gateC": "NOT_VERIFIED",
+    "creditDelta": 0,
+    "migrationDelta": 0,
+    "denominatorDelta": 0,
+    "ledger": "111/944",
+    "missingImageReleaseBlockers": 93,
+    "releaseReady": false,
+    "epoch10Activated": false
+  }
+}

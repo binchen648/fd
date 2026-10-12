@@ -43,14 +43,18 @@ These statuses were recorded under Epoch 07 and are not reissued by the Epoch
 | Task | Owner | State | Boundary |
 |---|---|---|---|
 | `P3-E09-G-B11-LIMITED-PUBLICATION` | G | `GOVERNANCE_PUBLICATION_PENDING_REVIEW_AND_MERGE` | exact receipt risk and conditional nine-blob disposition only; no runtime acceptance |
-| `P3-E09-B11-RA-CLOSURE` | Reviewer A | `PENDING_IMMUTABLE_FINAL_SCOPE_AND_EVIDENCE_VERDICT` | close rows 3/4/8/17/20/27/33; no runtime acceptance |
-| `P3-E09-B11-RB-COMBINATION` | Reviewer B | `PENDING_IMMUTABLE_FINAL_COMBINATION_VERDICT` | Conversion-only PASS does not accept Golden Eater/socket composition |
+| `P3-E09-B11-RA-CLOSURE` | Reviewer A | `FINAL_EXACT_EVIDENCE_REVIEW_ACCEPTED_28875202` | exact 086a86a final evidence/tooling only; no inherited acceptance of unrelated historical rows or runtime |
+| `P3-E09-B11-RB-COMBINATION` | Reviewer B | `SCOPED_TRANSPORT_COMBINATION_PASS_4D5B76BE` | exact 0f62210 repair and existing B11/Golden Eater/socket composition only; no overall acceptance |
 | `P3-E09-B11-A` | A | `A_SCOPE_COMPLETE` | no new tests, fixes or per-review sync assigned |
 | `P3-E09-B11-B` | B | `READ_ONLY_PREPARATION_ONLY` | no new runtime repair or writer lock |
 | `P3-E09-B11-I` | I | `WAITING` | no promotion authorization |
 
 Read `docs/agents/FD-P3-CONTROL-EPOCH-09.md` and the exact assigned task
 authorization before acting.
+
+Later room-ID authority and actual final reviews are bound in
+`docs/agents/manifests/governance/P3-E09-B11-ROOM-ID-ADOPTION.json`.
+The package writer-reservation gap remains outside the adopted scopes.
 
 ## Full-Roster Flow
 
