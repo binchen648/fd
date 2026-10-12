@@ -424,6 +424,79 @@
 #app .home-screen .home-menu .nav:hover small,
 #app .home-screen .home-menu .nav:focus-visible small { color: #806f46 !important; }
 
+/* Keep the splash fallback independent from the rotating home backgrounds. */
+#app .splash > .bg {
+  background-image:
+    radial-gradient(circle at 28% 48%, rgba(230,194,116,.18), transparent 25%),
+    linear-gradient(90deg, rgba(0,0,0,.08), rgba(0,0,0,.35) 48%, rgba(0,0,0,.93) 79%),
+    var(--splash-background, url('../assets/ui/splash-backgrounds/splash-01.png')) !important;
+  background-position: center !important;
+  background-size: cover !important;
+}
+
+/* Mode cards use the full text column instead of leaving the copy centered in
+   a narrow block. Add a little tracking so 模式 remains readable at a glance. */
+#app .mode-selection-screen .mode-body {
+  align-items: stretch !important;
+  text-align: left !important;
+}
+#app .mode-selection-screen .mode-body strong,
+#app .mode-selection-screen .mode-body p,
+#app .mode-selection-screen .mode-body .mode-cta {
+  width: 100% !important;
+}
+#app .mode-selection-screen .mode-body p {
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+#app .mode-selection-screen .mode-body strong {
+  letter-spacing: .06em !important;
+}
+#app .mode-selection-screen .sub-title h1 {
+  letter-spacing: .08em !important;
+}
+
+/* The ban summary is a neutral status strip, not a red warning panel. */
+#app .draft-screen .threex-ban-summary {
+  border-color: #555350 !important;
+  background: #1b1e21 !important;
+}
+#app .draft-screen .threex-ban-summary > span {
+  display: flex !important;
+  flex: 0 0 96px !important;
+  flex-direction: column !important;
+  gap: 3px !important;
+}
+#app .draft-screen .threex-ban-summary > span small {
+  color: #c8a65d !important;
+  font: 700 9px Georgia, serif !important;
+  letter-spacing: .14em !important;
+}
+#app .draft-screen .threex-ban-summary > span strong {
+  color: #f3f2ed !important;
+  font-size: 13px !important;
+}
+#app .draft-screen .threex-ban-summary article {
+  border-color: #555350 !important;
+  background: #272a2d !important;
+}
+#app .draft-screen .threex-ban-summary article small { color: #b7bab9 !important; }
+#app .draft-screen .threex-ban-summary article strong { color: #f3f2ed !important; }
+
+/* Give the crystal shop header a stable title / balance / feedback grid. */
+#app .draft-screen .purchase-head {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  grid-template-rows: auto auto !important;
+  align-items: end !important;
+}
+#app .draft-screen .purchase-head > .purchase-feedback {
+  grid-column: 1 / -1 !important;
+  justify-self: end !important;
+  margin: 6px 0 0 !important;
+}
+
 /* Increase reading sizes without changing the established layout. */
 #app .screen:not(.legal-screen) { font-size: 14px; }
 #app button,
@@ -607,6 +680,10 @@
   filter: saturate(.66) contrast(1.03) brightness(.70) !important;
 }
 #app > .screen.splash > .bg {
+  background:
+    linear-gradient(90deg, rgba(3,5,9,.76), rgba(3,5,9,.46) 34%, rgba(3,5,9,.18) 62%, rgba(3,5,9,.58)),
+    var(--splash-background, url('../assets/ui/splash-backgrounds/splash-01.png')) center/cover no-repeat,
+    url('../assets/ui/splash-backgrounds/splash-01.png') center/cover no-repeat !important;
   filter: saturate(.68) contrast(1.03) brightness(.72) !important;
 }
 #app > .screen > .veil {
