@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-a-recorded-validation-review-v1",
+  "taskId": "P3-E08-B11-RECORDED-VALIDATION",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "reviewDate": "2026-10-12",
+  "reviewer": "Reviewer A",
+  "candidateSha": "463facb109cc4d19c4fda7af936fb4546fb86091",
+  "reviewedSha": "463facb109cc4d19c4fda7af936fb4546fb86091",
+  "testedImplementationSha": "9a4f4c6ee2723eb7f546341f3c18a1f0a29c3bc1",
+  "conclusion": "REVIEW_ACCEPTED",
+  "finalVerdict": "PASS",
+  "acceptedScope": "A_EXECUTION_RECORD_CAPTURE_SOURCE_BINDING_AND_EXPLICIT_33_PATH_SCOPES_ONLY",
+  "findings": [],
+  "boundArtifacts": [
+    {
+      "path": "artifacts/phase3-e08-b11-environment-reverification-receipts.json",
+      "sha256": "DCC796D63EBA088260440DFAF4B4C53B9E3AF8A3032055336530DD8FCF47F08A"
+    },
+    {
+      "path": "artifacts/phase3-e08-b11-final-combination-evidence.json",
+      "sha256": "94889745F47B1865C62EC8D6C1633D960C02828344B3DB28B0F16C7DAD010854"
+    }
+  ],
+  "pathScopeTable": {
+    "path": "docs/reviews/phase3/P3-E08-B11-recorded-validation-ra-path-scopes.json",
+    "sha256": "BC3A0B38DB32D16D9FD5991BA86969C9EC52777FACA0F7027F05A9793048C523",
+    "paths": 33,
+    "acceptedScoped": 33,
+    "blanketFileBehaviorAcceptanceGranted": false,
+    "automaticPendingToPassAllowed": false
+  },
+  "independentValidation": {
+    "mode": "READ_ONLY_RAW_EVIDENCE_AND_GIT_REVIEW_NO_HEAVY_EXECUTION",
+    "rawCommandReceipts": 18,
+    "rawStdoutStderrStreams": 36,
+    "decodedByteLengthsAndSha256": "PASS",
+    "embeddedBytesEqualLocalUnmodifiedFiles": "PASS",
+    "healthAndWrapperFileHashes": "PASS",
+    "sourceObjects": { "count": 23, "testedSourceAndCarrierEquality": "PASS" },
+    "sourceAndPriorCarrierAncestry": "PASS",
+    "fourAuthorizedEvidenceReportPaths": "PASS",
+    "priorPacketFieldsPreserved": "PASS",
+    "originalFiveCommandsPreservedAndOnlyRemainingStepsResumed": "PASS",
+    "sequentialDefaultCiCountsExitsAndNoSignals": "PASS",
+    "directArgvEnvironmentConfirmation": "PASS",
+    "actualPreflightAndSourceAssetFailuresRetained": "PASS",
+    "remoteExactCarrierRef": "PASS",
+    "diffCheck": "PASS",
+    "fullCiFocusedRuntimeAndBrowserRerunByReviewerA": false
+  },
+  "producerExecutionResultsInspected": {
+    "testedSha": "9a4f4c6ee2723eb7f546341f3c18a1f0a29c3bc1",
+    "defaultCi": { "runs": 2, "eachFiles": 193, "eachTests": 1532, "eachExitCode": 0 },
+    "focused": { "files": 3, "tests": 40, "exitCode": 0 },
+    "component": { "files": 4, "tests": 51, "exitCode": 0 },
+    "server": { "files": 1, "tests": 11, "exitCode": 0 },
+    "browser": { "tests": 10, "exitCode": 0 },
+    "preflight": { "exitCode": 1, "acceptanceGranted": false },
+    "sourceAssets": { "exitCode": 1, "missingImages": 93 },
+    "carrierFullCiExecutionClaimed": false,
+    "originalWrapperStop": "RETAINED_OWNED_NPX_PARENT_MISCLASSIFICATION",
+    "historicalCompleteLogs": "MISSING",
+    "historicalQuietAcknowledgements": "MISSING"
+  },
+  "aExecutionAndBindingScopeComplete": true,
+  "overallReadiness": "BLOCKED_EXTERNAL_AUTHORITY_REVIEW_AND_RELEASE_DEPENDENCIES",
+  "runtimeOwnershipDeltaAcceptance": "PENDING_REVIEWER_B_EXACT_DELTA_MALFORMED_INPUT_ATOMICITY_AND_FALLBACK",
+  "runtimeAcceptanceGranted": false,
+  "fixtureSemanticAcceptanceGranted": false,
+  "fallbackClosureVerified": false,
+  "globalGateC": "NOT_VERIFIED",
+  "promotionAllowed": false,
+  "githubAttestationProvided": false,
+  "githubNode20Equivalence": "NOT_VERIFIED",
+  "individualOtherOwnerWindowAcknowledgements": "NOT_SUPPLIED_NOT_INFERRED_FROM_PROCESS_SAMPLES",
+  "formalAccounting": {
+    "accepted": 111,
+    "denominator": 944,
+    "remaining": 833,
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0,
+    "promotedOnMain": false
+  },
+  "retainedLimitations": [
+    "33 path decisions accept only their explicit tooling/evidence scopes, not all file behavior or a whole branch",
+    "Historical schema/API availability documentation is not current v3 truth",
+    "Seven original B authorization gaps and two runtime overlaps remain Planner/G and Reviewer B owned",
+    "Fresh complete receipts do not reconstruct missing historical evidence",
+    "Process snapshots do not supply absent individual owner acknowledgements or prove an uninterrupted quiet host",
+    "Reviewer B final ownership, malformed input, atomicity and fallback verdict is not issued by Reviewer A",
+    "GitHub required checks, Node 20 equivalence, Global Gate C and Release readiness are not granted"
+  ],
+  "nextStep": "COLLECT_REVIEWER_B_EXACT_SEMANTIC_VERDICT_AND_PLANNER_G_AUTHORITY_DISPOSITION; NO_AUTOMATIC_PREFLIGHT_PASS_OR_PROMOTION"
+}

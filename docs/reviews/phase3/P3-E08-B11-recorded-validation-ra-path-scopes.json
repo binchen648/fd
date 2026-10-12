@@ -1,0 +1,861 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-a-path-scope-table-v1",
+  "taskId": "P3-E08-B11-RECORDED-VALIDATION",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "reviewDate": "2026-10-12",
+  "reviewer": "Reviewer A",
+  "candidateSha": "463facb109cc4d19c4fda7af936fb4546fb86091",
+  "reviewedSha": "463facb109cc4d19c4fda7af936fb4546fb86091",
+  "basis": "Exactly the 33 non-B provenance paths in the bound combination packet; current bytes, not only historical finalContent.",
+  "decisionMeaning": "ACCEPTED_SCOPED approves only the stated A/R path role and evidence/tooling surface. It does not accept a whole branch, runtime behavior, current fixture semantics or all functionality in that file.",
+  "summary": {
+    "paths": 33,
+    "acceptedScoped": 33,
+    "rejected": 0,
+    "currentEqualsHistorical": 29,
+    "changedSinceHistorical": 4
+  },
+  "historicalAcceptanceExpanded": false,
+  "automaticPreflightPendingConversionAllowed": false,
+  "fullPathBehaviorAcceptanceGranted": false,
+  "originalBAuthorityGranted": false,
+  "entries": [
+    {
+      "path": "artifacts/phase3-e08-b11-inventory-coverage-parity.json",
+      "role": "A",
+      "currentBlob": "b8d5cd20da8d1aab8c424c0b6488f5cfeb12668f",
+      "currentSha256": "47E94CD3E9FAA90C44D68F1FB94A481077B60F50762A3C548CFF639DE7B1E0C8",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "artifacts/phase3-e08-b11-inventory-coverage-parity.json",
+        "sha256": "47E94CD3E9FAA90C44D68F1FB94A481077B60F50762A3C548CFF639DE7B1E0C8"
+      },
+      "introducingSha": "00fa5b4a703b5c262e8e252c78443c382e87abd3",
+      "introducingBase": "dbc1b75aaf40253982fc4e458b80dce4043b9224",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "IMMUTABLE_HISTORICAL_DIAGNOSTIC_RECORD_IDENTITY_AND_PROVENANCE_ONLY",
+      "excludedOrNotVerified": "Not current execution, independent regeneration, final semantic acceptance or main credit.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "artifacts/phase3-e08-b11-observation-gap-plan.json",
+      "role": "A",
+      "currentBlob": "31481eea2308d19c3b4296fc3486905b529ac4c1",
+      "currentSha256": "71389413FC176132A8649F0637897F4E72A3FFBA8FEA1E7B2B20960C8EDB4693",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "artifacts/phase3-e08-b11-observation-gap-plan.json",
+        "sha256": "71389413FC176132A8649F0637897F4E72A3FFBA8FEA1E7B2B20960C8EDB4693"
+      },
+      "introducingSha": "abdd8e4eb735240d72a416ede743e84c58ebcd40",
+      "introducingBase": "c4a4b136719bf4ca165d81f1c01e254a8e7aefc3",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "IMMUTABLE_HISTORICAL_DIAGNOSTIC_RECORD_IDENTITY_AND_PROVENANCE_ONLY",
+      "excludedOrNotVerified": "Not current execution, independent regeneration, final semantic acceptance or main credit.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "artifacts/phase3-e08-b11-tooling-coverage.json",
+      "role": "A",
+      "currentBlob": "32042afce793d54082f31dd3403d617c5ad219e6",
+      "currentSha256": "876A7E0D20FDF92D9ECCF9E3EEB50347AC748032F78E7F8B026B0D99FDD505DC",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "artifacts/phase3-e08-b11-tooling-coverage.json",
+        "sha256": "876A7E0D20FDF92D9ECCF9E3EEB50347AC748032F78E7F8B026B0D99FDD505DC"
+      },
+      "introducingSha": "961ac01aa1cb22dfa30212332bd4af4d5a80c035",
+      "introducingBase": "d7805bda96d0322fd461bd7bf50755e272dbbca1",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "IMMUTABLE_HISTORICAL_DIAGNOSTIC_RECORD_IDENTITY_AND_PROVENANCE_ONLY",
+      "excludedOrNotVerified": "Not current execution, independent regeneration, final semantic acceptance or main credit.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "artifacts/phase3-e08-b11-tooling-handoff.json",
+      "role": "A",
+      "currentBlob": "65844184da7e7cd2abc41de8c09d09e54bceacfd",
+      "currentSha256": "C53E70D169211299BBEF432EE2D049C55748B69989B038BC06FD5057BFE1E9D4",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "artifacts/phase3-e08-b11-tooling-handoff.json",
+        "sha256": "C53E70D169211299BBEF432EE2D049C55748B69989B038BC06FD5057BFE1E9D4"
+      },
+      "introducingSha": "961ac01aa1cb22dfa30212332bd4af4d5a80c035",
+      "introducingBase": "d7805bda96d0322fd461bd7bf50755e272dbbca1",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "IMMUTABLE_HISTORICAL_DIAGNOSTIC_RECORD_IDENTITY_AND_PROVENANCE_ONLY",
+      "excludedOrNotVerified": "Not current execution, independent regeneration, final semantic acceptance or main credit.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "artifacts/phase3-e08-b11-tooling-parity-review-fix.json",
+      "role": "A",
+      "currentBlob": "470ee91aae6dd75e09553b324cc3521d77154c1e",
+      "currentSha256": "3882243E538B542D62772A932130EC8231186DE619A9E460B6447B211AF694EA",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "artifacts/phase3-e08-b11-tooling-parity-review-fix.json",
+        "sha256": "3882243E538B542D62772A932130EC8231186DE619A9E460B6447B211AF694EA"
+      },
+      "introducingSha": "32eb054f49e2413d2f9891d6edbd665d7eb3c154",
+      "introducingBase": "050839956f3795cde76b48eddaebe6708e470ab4",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "IMMUTABLE_HISTORICAL_DIAGNOSTIC_RECORD_IDENTITY_AND_PROVENANCE_ONLY",
+      "excludedOrNotVerified": "Not current execution, independent regeneration, final semantic acceptance or main credit.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "artifacts/phase3-e08-b11-tooling-parity.json",
+      "role": "A",
+      "currentBlob": "47d7111dcdcd4b0c06218df21bb7bb55b8085872",
+      "currentSha256": "10B4EB681ACBAA131C80ECA6E4DEE491EC523BB06875361CD2BF4FA42B75EFBB",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "artifacts/phase3-e08-b11-tooling-parity.json",
+        "sha256": "10B4EB681ACBAA131C80ECA6E4DEE491EC523BB06875361CD2BF4FA42B75EFBB"
+      },
+      "introducingSha": "961ac01aa1cb22dfa30212332bd4af4d5a80c035",
+      "introducingBase": "d7805bda96d0322fd461bd7bf50755e272dbbca1",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "IMMUTABLE_HISTORICAL_DIAGNOSTIC_RECORD_IDENTITY_AND_PROVENANCE_ONLY",
+      "excludedOrNotVerified": "Not current execution, independent regeneration, final semantic acceptance or main credit.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "artifacts/phase3-e08-b11-tooling-preflight.json",
+      "role": "A",
+      "currentBlob": "f4e9517b4017d315c7b9fab8ce3c8ee8300a5d8d",
+      "currentSha256": "5490742375C8D98488C5E6B2CDF1C762A3918DF3D129A62F9C798D1745893A06",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "artifacts/phase3-e08-b11-tooling-preflight.json",
+        "sha256": "5490742375C8D98488C5E6B2CDF1C762A3918DF3D129A62F9C798D1745893A06"
+      },
+      "introducingSha": "961ac01aa1cb22dfa30212332bd4af4d5a80c035",
+      "introducingBase": "d7805bda96d0322fd461bd7bf50755e272dbbca1",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "IMMUTABLE_HISTORICAL_DIAGNOSTIC_RECORD_IDENTITY_AND_PROVENANCE_ONLY",
+      "excludedOrNotVerified": "Not current execution, independent regeneration, final semantic acceptance or main credit.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "artifacts/phase3-e08-b11-tooling-review-fix-handoff.json",
+      "role": "A",
+      "currentBlob": "4c70eb57ddfb1996220a1329e73e22f3252c1b51",
+      "currentSha256": "73842C2A70FFCBB1FE81F8E92F028522EDA29F438BE245CE2166C085A7E4543E",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "artifacts/phase3-e08-b11-tooling-review-fix-handoff.json",
+        "sha256": "73842C2A70FFCBB1FE81F8E92F028522EDA29F438BE245CE2166C085A7E4543E"
+      },
+      "introducingSha": "32eb054f49e2413d2f9891d6edbd665d7eb3c154",
+      "introducingBase": "050839956f3795cde76b48eddaebe6708e470ab4",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "IMMUTABLE_HISTORICAL_DIAGNOSTIC_RECORD_IDENTITY_AND_PROVENANCE_ONLY",
+      "excludedOrNotVerified": "Not current execution, independent regeneration, final semantic acceptance or main credit.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "docs/reports/2026-10-09-p3-e08-b11-inventory-coverage-observations.md",
+      "role": "A",
+      "currentBlob": "33296c23ce649804dbf1f3390be184899a22feb7",
+      "currentSha256": "914B134634677B35F591A1DFD7DE5B9416AF007BE87E0D44DBA6D1A5C9293C80",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/reports/2026-10-09-p3-e08-b11-inventory-coverage-observations.md",
+        "sha256": "914B134634677B35F591A1DFD7DE5B9416AF007BE87E0D44DBA6D1A5C9293C80"
+      },
+      "introducingSha": "00fa5b4a703b5c262e8e252c78443c382e87abd3",
+      "introducingBase": "dbc1b75aaf40253982fc4e458b80dce4043b9224",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "HISTORICAL_REPORT_PROVENANCE_AND_DECLARED_BOUNDARIES_ONLY",
+      "excludedOrNotVerified": "Producer statements retain their historical status; no new execution or acceptance inferred.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "docs/reports/2026-10-09-p3-e08-b11-observation-gap-plan.md",
+      "role": "A",
+      "currentBlob": "491ee5227a20689be4e1b8da2ce517b448c7163c",
+      "currentSha256": "754109B7C0DF009284700E5EB74933A5C15C6858DAC5EB43A4FCE6C14CC799B4",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/reports/2026-10-09-p3-e08-b11-observation-gap-plan.md",
+        "sha256": "754109B7C0DF009284700E5EB74933A5C15C6858DAC5EB43A4FCE6C14CC799B4"
+      },
+      "introducingSha": "abdd8e4eb735240d72a416ede743e84c58ebcd40",
+      "introducingBase": "c4a4b136719bf4ca165d81f1c01e254a8e7aefc3",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "HISTORICAL_REPORT_PROVENANCE_AND_DECLARED_BOUNDARIES_ONLY",
+      "excludedOrNotVerified": "Producer statements retain their historical status; no new execution or acceptance inferred.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "docs/reports/2026-10-09-p3-e08-b11-observation-review-fix.md",
+      "role": "A",
+      "currentBlob": "5284af1e73de9a7d3f34a5241b470a933761ffb9",
+      "currentSha256": "D52A84EA9672F0C303972A418AD9B5B44CC15434CA167FDE9A83C76839701783",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/reports/2026-10-09-p3-e08-b11-observation-review-fix.md",
+        "sha256": "D52A84EA9672F0C303972A418AD9B5B44CC15434CA167FDE9A83C76839701783"
+      },
+      "introducingSha": "be7dd6b4da6b377daf019b6170efc112c2d7a45e",
+      "introducingBase": "7a9699efcca8e16467cd973a7c7dd522e5a230a9",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "HISTORICAL_REPORT_PROVENANCE_AND_DECLARED_BOUNDARIES_ONLY",
+      "excludedOrNotVerified": "Producer statements retain their historical status; no new execution or acceptance inferred.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "docs/reports/2026-10-09-p3-e08-b11-tooling-diagnostics.md",
+      "role": "A",
+      "currentBlob": "47fa6b03d0c340be719b91ea44d4c92fb9381104",
+      "currentSha256": "F4E4FEF45FE764F9169C3F6A2E34C258580729456F9A45601B0097529BDB3C21",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/reports/2026-10-09-p3-e08-b11-tooling-diagnostics.md",
+        "sha256": "F4E4FEF45FE764F9169C3F6A2E34C258580729456F9A45601B0097529BDB3C21"
+      },
+      "introducingSha": "961ac01aa1cb22dfa30212332bd4af4d5a80c035",
+      "introducingBase": "d7805bda96d0322fd461bd7bf50755e272dbbca1",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "HISTORICAL_REPORT_PROVENANCE_AND_DECLARED_BOUNDARIES_ONLY",
+      "excludedOrNotVerified": "Producer statements retain their historical status; no new execution or acceptance inferred.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "docs/reports/2026-10-09-p3-e08-b11-tooling-review-fix.md",
+      "role": "A",
+      "currentBlob": "76a18441cb19322ed495f9f43bba7829a1334e78",
+      "currentSha256": "49354500018C134108626DF054AF0A6D78CD05814C6DC2E3840BEE9A88B5A9EF",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/reports/2026-10-09-p3-e08-b11-tooling-review-fix.md",
+        "sha256": "49354500018C134108626DF054AF0A6D78CD05814C6DC2E3840BEE9A88B5A9EF"
+      },
+      "introducingSha": "32eb054f49e2413d2f9891d6edbd665d7eb3c154",
+      "introducingBase": "050839956f3795cde76b48eddaebe6708e470ab4",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "HISTORICAL_REPORT_PROVENANCE_AND_DECLARED_BOUNDARIES_ONLY",
+      "excludedOrNotVerified": "Producer statements retain their historical status; no new execution or acceptance inferred.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "docs/reports/2026-10-10-p3-e08-b11-premise-review-sync.md",
+      "role": "A",
+      "currentBlob": "745fb555e0ed7a1c8f21e2448e445c5e6792ac35",
+      "currentSha256": "44C8FCCCF00C1AD5267E7D0FBFA6F407F1E8339ADD736BAF630534A4E1F834C4",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/reports/2026-10-10-p3-e08-b11-premise-review-sync.md",
+        "sha256": "44C8FCCCF00C1AD5267E7D0FBFA6F407F1E8339ADD736BAF630534A4E1F834C4"
+      },
+      "introducingSha": "46dbd031b06192e7e81479706678937064cdc1a3",
+      "introducingBase": "85d1631c4c89bfc38e13f29e37bfe6a8b4ccaf5b",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "HISTORICAL_REPORT_PROVENANCE_AND_DECLARED_BOUNDARIES_ONLY",
+      "excludedOrNotVerified": "Producer statements retain their historical status; no new execution or acceptance inferred.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "docs/reviews/phase3/P3-E08-B11-fixture-premise-be7dd6b-review.json",
+      "role": "R",
+      "currentBlob": "78c77b0886a6336976eafbc36bebbf58933d722a",
+      "currentSha256": "745AFE7E74EE7C970341FAE29F79678E33273A696FE04B81C263978892AD804B",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/reviews/phase3/P3-E08-B11-fixture-premise-be7dd6b-review.json",
+        "sha256": "745AFE7E74EE7C970341FAE29F79678E33273A696FE04B81C263978892AD804B"
+      },
+      "introducingSha": "f2da26c56cc8c5e2b8ffe35d9802051a2e3d7540",
+      "introducingBase": "be7dd6b4da6b377daf019b6170efc112c2d7a45e",
+      "originalAuthorization": {
+        "commit": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+        "path": "docs/agents/PHASE3-AGENT-CONTRACT.md",
+        "sha256": "4D32A0E0F7B385C7011407FFB499534520E1FFD6B7BF31B1D8DBB9CABCEC0E5E",
+        "section": "## Slice And Pull Request Boundary"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "IMMUTABLE_PRIOR_REVIEW_BYTES_IDENTITY_AND_ORIGINAL_SCOPE_ONLY",
+      "excludedOrNotVerified": "RA verifies binding, not Reviewer B semantics; no acceptance inherited by current candidate.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "docs/reviews/phase3/P3-E08-B11-observation-repair-reviewer-a.json",
+      "role": "R",
+      "currentBlob": "6bc4155dd6878c1e5139b9acc83808190f982188",
+      "currentSha256": "D17FC230259C55E285436A89E45F7C286B5B39708F1F7182C307740B65016900",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "docs/reviews/phase3/P3-E08-B11-observation-repair-reviewer-a.json",
+        "sha256": "D17FC230259C55E285436A89E45F7C286B5B39708F1F7182C307740B65016900"
+      },
+      "introducingSha": "31bad4ac87e728e5c80b9a9448f63c84f57a1d46",
+      "introducingBase": "be7dd6b4da6b377daf019b6170efc112c2d7a45e",
+      "originalAuthorization": {
+        "commit": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+        "path": "docs/agents/PHASE3-AGENT-CONTRACT.md",
+        "sha256": "4D32A0E0F7B385C7011407FFB499534520E1FFD6B7BF31B1D8DBB9CABCEC0E5E",
+        "section": "## Slice And Pull Request Boundary"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "IMMUTABLE_PRIOR_REVIEW_BYTES_IDENTITY_AND_ORIGINAL_SCOPE_ONLY",
+      "excludedOrNotVerified": "RA verifies binding, not Reviewer B semantics; no acceptance inherited by current candidate.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "package.json",
+      "role": "A",
+      "currentBlob": "0f311821628a0a60cb37d752a259e6d688f7a6e9",
+      "currentSha256": "6FFED5CF04F2F5FD13538E7EF86E5C59D2F50B5DB2401C9424264E50204A1658",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "package.json",
+        "sha256": "7BC2EDC15A74AF833F4A5EFE50509F8AA03C07990AB7B19AADCCC9AEF6127593"
+      },
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": false,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "EXACT_TOOLING_COMMAND_ENTRIES_AND_PREVIOUSLY_AUTHORIZED_TEST_CI_MAXWORKERS_2_ONLY",
+      "excludedOrNotVerified": "Dependencies, unrelated package behavior and GitHub Node 20 equivalence not accepted.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "scripts/fixtures/phase3-b11-parity-contract.json",
+      "role": "A",
+      "currentBlob": "6c179b71544d1aa4b00192585f82ec9ecf34e88a",
+      "currentSha256": "1F97E1B7BC4FFAC180016C2B2361F8406A7550FB0A276BABCE9CF7F311127643",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/fixtures/phase3-b11-parity-contract.json",
+        "sha256": "1F97E1B7BC4FFAC180016C2B2361F8406A7550FB0A276BABCE9CF7F311127643"
+      },
+      "introducingSha": "e62e8b1d7068122a47b231c5b741789424990401",
+      "introducingBase": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "EXACT_CANDIDATE_ADAPTER_FIXTURE_AND_HISTORICAL_REVIEW_BINDINGS_ONLY",
+      "excludedOrNotVerified": "No new premise or runtime semantics acceptance; Reviewer B owns expectation meanings.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "scripts/fixtures/phase3-b11-parity-fixtures.json",
+      "role": "A",
+      "currentBlob": "404887ba97350edef5e1cba49c916a33765cc0eb",
+      "currentSha256": "CA345E013C74B233ABE5A496760C04E0C50E5A4241030608B68843D6163AEAE4",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/fixtures/phase3-b11-parity-fixtures.json",
+        "sha256": "CA345E013C74B233ABE5A496760C04E0C50E5A4241030608B68843D6163AEAE4"
+      },
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "EXACT_FIXTURE_BYTES_AND_PRIOR_REVIEW_IDENTITY_ONLY",
+      "excludedOrNotVerified": "Current malformed-input, atomicity and fallback semantic acceptance remains Reviewer B owned.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "scripts/fixtures/phase3-b11-task-check.json",
+      "role": "A",
+      "currentBlob": "591d486c9b96638f15d897247fc968f56e7b05f9",
+      "currentSha256": "3C6C98AE11033E5E5BEDE6EE40A2D510B1616CE06D52B119329CF01E04B1FB7B",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/fixtures/phase3-b11-task-check.json",
+        "sha256": "499D8AED4DCED6D08914387D7CD00FED235EA08EBB4336EEF9235C92B791D9FE"
+      },
+      "introducingSha": "e62e8b1d7068122a47b231c5b741789424990401",
+      "introducingBase": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": false,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "V3_PINNED_AUTHORIZATION_RECEIPT_AND_HISTORICAL_SCOPE_BINDINGS_FAIL_CLOSED_ONLY",
+      "excludedOrNotVerified": "Recorded-validation continuation is not automatically consumed by this input; pending dependencies remain pending.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "scripts/fixtures/phase3-b11-tooling-schema.md",
+      "role": "A",
+      "currentBlob": "17ea2ae729f6735375e7c4c0139d9a549be3ca7d",
+      "currentSha256": "32202FFBD9F3F4D889EA64B4AD3D1C68B943136D055B2772F2E09554B6FA469D",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/fixtures/phase3-b11-tooling-schema.md",
+        "sha256": "32202FFBD9F3F4D889EA64B4AD3D1C68B943136D055B2772F2E09554B6FA469D"
+      },
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "HISTORICAL_V1_SCHEMA_DOCUMENTATION_ONLY",
+      "excludedOrNotVerified": "Some API availability descriptions precede later observations; not accepted as current v3 specification.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "scripts/phase3-b11-diagnostic-api.ts",
+      "role": "A",
+      "currentBlob": "5820ba706be5a5124f3adbec62fd0bcd9cdd7763",
+      "currentSha256": "3D761C0CE3CD59844F9680C5D4AAC0AE4D8B008034736DFA11C05EB68AAABF1B",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/phase3-b11-diagnostic-api.ts",
+        "sha256": "3D761C0CE3CD59844F9680C5D4AAC0AE4D8B008034736DFA11C05EB68AAABF1B"
+      },
+      "introducingSha": "ac4d401a9905384d35f0aee7f2474e3072ed75c6",
+      "introducingBase": "92f8604e485d94bae069e36e15d783b19ef36c23",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "READ_ONLY_DIAGNOSTIC_OBSERVATION_AND_MALFORMED_NULL_SAFETY_ONLY",
+      "excludedOrNotVerified": "Correlated inventory/coverage diagnostics do not prove runtime ownership, effect correctness or fallback closure.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "scripts/phase3-b11-observation-gaps.ts",
+      "role": "A",
+      "currentBlob": "06842de76b564d70c6da84d8fa17498f6f01c342",
+      "currentSha256": "6AE6E0FD296E78F099F37F705ECB115E9AC33DB66E532279DB231108F867074B",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/phase3-b11-observation-gaps.ts",
+        "sha256": "6AE6E0FD296E78F099F37F705ECB115E9AC33DB66E532279DB231108F867074B"
+      },
+      "introducingSha": "abdd8e4eb735240d72a416ede743e84c58ebcd40",
+      "introducingBase": "c4a4b136719bf4ca165d81f1c01e254a8e7aefc3",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "READ_ONLY_GAP_DECOMPOSITION_AND_OWNER_ROUTING_ONLY",
+      "excludedOrNotVerified": "Missing observations are tooling gaps, not independently established runtime defects.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "scripts/phase3-b11-tooling-inputs.ts",
+      "role": "A",
+      "currentBlob": "94797ff6569b49dd51e33e0749137e932264e422",
+      "currentSha256": "D8C457E2568B96F7E2F5B07900A451E270DFBB8982824718260FA74DCA118EF0",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/phase3-b11-tooling-inputs.ts",
+        "sha256": "D8C457E2568B96F7E2F5B07900A451E270DFBB8982824718260FA74DCA118EF0"
+      },
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "PINNED_INPUT_GENERATION_AND_EXACT_PRIOR_REVIEW_BINDING_ONLY",
+      "excludedOrNotVerified": "Generating fixtures does not accept their semantics; historical builders are not current readiness.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "scripts/phase3-contract-parity-worker.ts",
+      "role": "A",
+      "currentBlob": "dd386ae0e932e055674d53f08d93761edc7b32a1",
+      "currentSha256": "F3AF363EBD62EB56772128F7FF619E14C38AB0E9C34B683E16E145AF2817FEC4",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/phase3-contract-parity-worker.ts",
+        "sha256": "F3AF363EBD62EB56772128F7FF619E14C38AB0E9C34B683E16E145AF2817FEC4"
+      },
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "EXACT_ADAPTER_CLOSURE_REAL_API_OBSERVATION_AND_RECEIPT_BINDING_ONLY",
+      "excludedOrNotVerified": "API agreement is not independent runtime correctness or browser acceptance.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "scripts/phase3-contract-parity.ts",
+      "role": "A",
+      "currentBlob": "a436a858dbc6c21fed48d58ff05538afd088a6e1",
+      "currentSha256": "A46EB418461F20DC3E0E89AA07540B01B7B22B3D529875984AD8E33EA56E9BFC",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/phase3-contract-parity.ts",
+        "sha256": "A46EB418461F20DC3E0E89AA07540B01B7B22B3D529875984AD8E33EA56E9BFC"
+      },
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "FAIL_CLOSED_DIAGNOSTIC_PARITY_AND_BOUND_EXECUTION_CLOSURE_ONLY",
+      "excludedOrNotVerified": "Diagnostic PASS does not grant combination readiness, runtime, Gate or promotion.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "scripts/phase3-preflight.ts",
+      "role": "A",
+      "currentBlob": "12a347ee40fa7277eea7f81512209be2f2891b18",
+      "currentSha256": "036E026A238EA1ABB25710F15D820F53F456916B0B4373BA3FFB93BC9BD16343",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/phase3-preflight.ts",
+        "sha256": "60EED991C5825FE004166414B23B9DB13C3FBBBDC78BE0CB0D798F1D13D38F5A"
+      },
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": false,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "V1_V2_HISTORY_AND_V3_EXACT_PATH_AUTHORIZATION_RECEIPT_REVIEW_VALIDATION_ONLY",
+      "excludedOrNotVerified": "Current result remains FAIL; seven original authorities and runtime overlaps are not adopted.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "scripts/phase3-tooling-common.ts",
+      "role": "A",
+      "currentBlob": "5392c14e86f52978c88b795524fef1efcb86fd80",
+      "currentSha256": "C11A3B6F573DEB012E936724CDAA274F940B6DD5EBE00078175F668E485E9555",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/phase3-tooling-common.ts",
+        "sha256": "C11A3B6F573DEB012E936724CDAA274F940B6DD5EBE00078175F668E485E9555"
+      },
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "STRUCTURED_REFERENCE_PATH_DIGEST_GIT_AND_CLI_VALIDATION_HELPERS_ONLY",
+      "excludedOrNotVerified": "No independent GitHub attestation, rule semantics or general security certification.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "scripts/tests/phase3-b11-diagnostic-api.test.ts",
+      "role": "A",
+      "currentBlob": "d4623dd9e930f2cb563dbb8469fa80ff86fe36b3",
+      "currentSha256": "C719649B18436C27A4835CCBA087D6A3F471434D3159091FDDE640096EAD9025",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/tests/phase3-b11-diagnostic-api.test.ts",
+        "sha256": "C719649B18436C27A4835CCBA087D6A3F471434D3159091FDDE640096EAD9025"
+      },
+      "introducingSha": "ac4d401a9905384d35f0aee7f2474e3072ed75c6",
+      "introducingBase": "92f8604e485d94bae069e36e15d783b19ef36c23",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "READ_ONLY_API_REGRESSION_AND_INPUT_NONMUTATION_ASSERTIONS_ONLY",
+      "excludedOrNotVerified": "Unit diagnostics do not establish all malformed runtime cases or atomic settlement.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "scripts/tests/phase3-b11-observation-gaps.test.ts",
+      "role": "A",
+      "currentBlob": "b1b5e702229bd0ebb01a1097305050a6054dfa78",
+      "currentSha256": "1DD7A2347F7C85DE4F603C4CCA723E5EC6AADE0A7B13DF2F120EE685C0DD35AB",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/tests/phase3-b11-observation-gaps.test.ts",
+        "sha256": "1DD7A2347F7C85DE4F603C4CCA723E5EC6AADE0A7B13DF2F120EE685C0DD35AB"
+      },
+      "introducingSha": "abdd8e4eb735240d72a416ede743e84c58ebcd40",
+      "introducingBase": "c4a4b136719bf4ca165d81f1c01e254a8e7aefc3",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "GAP_PLAN_HASH_OWNERSHIP_AND_FAIL_CLOSED_AUTOMATION_ASSERTIONS_ONLY",
+      "excludedOrNotVerified": "No runtime semantic acceptance from gap-plan tests.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "scripts/tests/phase3-b11-premise-review-sync.test.ts",
+      "role": "A",
+      "currentBlob": "73786d860cdd528b45a1546c1184268c9cec96ba",
+      "currentSha256": "B58F3948294A07B2183D682D764405BB6F3F390C395CB94E6F359F19092452B5",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/tests/phase3-b11-premise-review-sync.test.ts",
+        "sha256": "B58F3948294A07B2183D682D764405BB6F3F390C395CB94E6F359F19092452B5"
+      },
+      "introducingSha": "85d1631c4c89bfc38e13f29e37bfe6a8b4ccaf5b",
+      "introducingBase": "5484434ceb4bb435833e4eaa63039943dda9a00b",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "EXACT_REVIEW_BODY_IDENTITY_HASH_SCOPE_AND_NONPROMOTION_ASSERTIONS_ONLY",
+      "excludedOrNotVerified": "Prior exact premise verdict cannot be broadened to the current combined runtime.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "scripts/tests/phase3-contract-parity.test.ts",
+      "role": "A",
+      "currentBlob": "ce1567144677e25a108e57251c9838e02973e67b",
+      "currentSha256": "0BE398EDE905EE351770A92288FB91C07A9A8AA5BD075E32B2D50AEEE1EB5F51",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/tests/phase3-contract-parity.test.ts",
+        "sha256": "0BE398EDE905EE351770A92288FB91C07A9A8AA5BD075E32B2D50AEEE1EB5F51"
+      },
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": true,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "API_OBSERVATION_ADAPTER_DEPENDENCY_DRIFT_AND_UNAVAILABLE_FIELD_NEGATIVES_ONLY",
+      "excludedOrNotVerified": "Correlated diagnostic success is not runtime/Gate acceptance.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    },
+    {
+      "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+      "role": "A",
+      "currentBlob": "bbb2a1735aa86801552421cfb8fc9bc8b1ada3b9",
+      "currentSha256": "6D74A343F1379D841F8836BD1784CE4E5702B77C84A25B61C1298032543F5B09",
+      "historicalFinal": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+        "sha256": "A2A8475FDD4F9BF5DD7CDA3B62DEADBD05E2A9A4AC550D3BAA6D1504F047DFEE"
+      },
+      "introducingSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+      "introducingBase": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "currentEqualsHistorical": false,
+      "decision": "ACCEPTED_SCOPED",
+      "acceptedScope": "EXACT_CHANGED_PATH_SCHEMA_AUTHORIZATION_AND_SEALED_RECEIPT_TAMPER_NEGATIVES_ONLY",
+      "excludedOrNotVerified": "Synthetic fixture receipts are not actual execution; current real preflight remains blocked.",
+      "pathRole": "A_TOOLING_OR_R_EVIDENCE_NOT_B_RUNTIME",
+      "closesOverallReadiness": false
+    }
+  ],
+  "remainingExternalDependencies": [
+    "Seven original B authority paths remain UNPROVEN",
+    "Two runtime overlaps remain Planner/RB owned",
+    "Exact ownership delta malformed-input, atomicity and fallback semantics remain Reviewer B owned",
+    "Node 20 GitHub equivalence and required checks remain NOT_VERIFIED",
+    "93 missing-image Release blockers retained"
+  ],
+  "mainCoverageCreditDelta": 0,
+  "migrationCreditDelta": 0,
+  "denominatorDelta": 0,
+  "promotionAllowed": false,
+  "overallReadiness": "BLOCKED"
+}
