@@ -41,6 +41,10 @@ export class MatchRoomHub {
     return room;
   }
 
+  hasRoom(roomId: string): boolean {
+    return this.rooms.has(roomId);
+  }
+
   joinRoom(roomId: string, input: Parameters<MatchRoom['joinRoom']>[0]): MatchRoomProjection {
     const room = this.getRoom(roomId);
     room.joinRoom(input);
@@ -62,19 +66,19 @@ export class MatchRoomHub {
     return room.getProjection(clientId);
   }
 
-  dispatchCommand(roomId: string, clientId: string, command: AbilityCommand, expectedRevision?: number): { result: DispatchResult; projection: MatchRoomProjection } {
+  dispatchCommand(roomId: string, clientId: string, command: AbilityCommand, expectedRevision: number): { result: DispatchResult; projection: MatchRoomProjection } {
     const room = this.getRoom(roomId);
-    this.assertExpectedRevision(room, clientId, expectedRevision, true);
+    this.assertExpectedRevision(room, clientId, expectedRevision);
     const result = room.dispatchClientCommand(clientId, command);
     if (result.ok) this.bump(roomId, 'command_dispatched');
     return { result, projection: room.getProjection(clientId) };
   }
 
-  endTurn(roomId: string, clientId: string, expectedRevision?: number): { result: DispatchResult; projection: MatchRoomProjection } {
+  endTurn(roomId: string, clientId: string, expectedRevision: number): { result: DispatchResult; projection: MatchRoomProjection } {
     const room = this.getRoom(roomId);
     this.assertExpectedRevision(room, clientId, expectedRevision);
     const result = room.endClientTurn(clientId);
-    this.bump(roomId, 'command_dispatched');
+    if (result.ok) this.bump(roomId, 'command_dispatched');
     return { result, projection: room.getProjection(clientId) };
   }
 
@@ -178,11 +182,11 @@ export class MatchRoomHub {
     return { roomId, version, type };
   }
 
-  private assertExpectedRevision(room: MatchRoom, clientId: string, expectedRevision?: number, required = false): void {
+  private assertExpectedRevision(room: MatchRoom, clientId: string, expectedRevision: number): void {
     if (expectedRevision === undefined) {
-      if (required) throw new Error('missing_expected_revision: interaction command requires expectedRevision');
-      return;
+      throw new Error('missing_expected_revision: mutation requires expectedRevision');
     }
+    if (!Number.isSafeInteger(expectedRevision) || expectedRevision < 0) throw new Error('invalid_expected_revision: nonnegative safe integer required');
     const actualRevision = room.getProjection(clientId).match?.view.revision;
     if (actualRevision !== expectedRevision) {
       throw new Error(`Stale command revision: expected ${expectedRevision}, current ${actualRevision ?? 'unavailable'}`);

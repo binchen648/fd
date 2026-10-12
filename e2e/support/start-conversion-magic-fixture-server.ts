@@ -20,7 +20,7 @@ process.stdout.write(`${JSON.stringify({
   wsBase: `ws://127.0.0.1:${port}`,
   roomId,
   clientId: conversionMagicHostClientId,
-  reconnectToken: client.reconnectToken,
+  reconnectToken: room.getIssuedCredential(client.id),
 })}\n`);
 
 const shutdown = async () => {

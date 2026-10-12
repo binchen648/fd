@@ -19,11 +19,36 @@ function realUnrelatedAbility(snapshot: any) {
 }
 
 describe('MatchRoomHub local multiplayer transport layer', () => {
+  it('rejects missing, invalid and stale revisions for both mutation commands without any side effects', () => {
+    const hub = createMatchRoomHub();
+    const roomId = hub.createRoom({ roomId: 'required-revision', hostClientId: 'host' }).roomId;
+    hub.selectSeat(roomId, 'host', 1);
+    hub.startMatch(roomId, 'host');
+    const room = hub.getRoom(roomId);
+    const revision = room.session!.state.abilityRuntime!.revision;
+    const before = structuredClone(room.serializeRoom());
+    const projection = structuredClone(hub.project(roomId, 'host'));
+    const version = hub.version(roomId);
+    for (const value of [undefined, null, '2', NaN, Infinity, -1, 0.5, Number.MAX_SAFE_INTEGER + 1, revision - 1]) {
+      for (const mutation of [
+        () => hub.endTurn(roomId, 'host', value as number),
+        () => hub.dispatchCommand(roomId, 'host', { type: 'activate_ability', cardInstanceId: 'forged', abilityId: 'forged' }, value as number),
+      ]) {
+        expect(mutation).toThrow(/expected_revision|Stale command revision/);
+        expect(room.serializeRoom()).toEqual(before);
+        expect(hub.project(roomId, 'host')).toEqual(projection);
+        expect(hub.version(roomId)).toBe(version);
+      }
+    }
+    expect(hub.endTurn(roomId, 'host', revision).result.ok).toBe(true);
+    expect(hub.version(roomId)).toBe(version + 1);
+  });
   it('manages a room through create, join, seat, start, project, disconnect, reconnect, and restore', () => {
     const hub = createMatchRoomHub();
     const hostProjection = hub.createRoom({ seed: 20260905, hostClientId: 'host-a' });
     const roomId = hostProjection.roomId;
-    const alice = hub.joinRoom(roomId, { clientId: 'alice', displayName: 'Alice' });
+    hub.joinRoom(roomId, { clientId: 'alice', displayName: 'Alice' });
+    const aliceToken = hub.getRoom(roomId).getIssuedCredential('alice');
     hub.joinRoom(roomId, { clientId: 'bob', displayName: 'Bob' });
     hub.selectSeat(roomId, 'alice', 1);
     hub.selectSeat(roomId, 'bob', 2);
@@ -35,7 +60,7 @@ describe('MatchRoomHub local multiplayer transport layer', () => {
 
     hub.disconnect(roomId, 'alice');
     expect(hub.project(roomId, 'alice').clients.find((client) => client.id === 'alice')?.connected).toBe(false);
-    hub.reconnect(roomId, alice.clients.find((client) => client.id === 'alice')!.reconnectToken);
+    hub.reconnect(roomId, aliceToken);
     expect(hub.project(roomId, 'alice').clients.find((client) => client.id === 'alice')?.connected).toBe(true);
 
     const snapshot = hub.serialize();

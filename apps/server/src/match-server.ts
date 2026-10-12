@@ -7,6 +7,7 @@ import {
   type CreateRoomHttpRequest,
   type JoinRoomHttpRequest,
   type MatchRoomHub,
+  type MatchRoom,
   type MatchRoomProjection,
   type PersistedRoomHttpRequest,
   type RoomHttpResponse,
@@ -17,6 +18,7 @@ interface ClientSocket {
   roomId: string;
   clientId: string;
   socket: WebSocket;
+  room: MatchRoom;
 }
 
 export interface MatchServerHandle {
@@ -56,13 +58,13 @@ function sendJson(response: ServerResponse, status: number, payload: unknown): v
   response.end(JSON.stringify(payload));
 }
 
-function roomResponse(projection: MatchRoomProjection): RoomHttpResponse {
+function roomResponse(hub: MatchRoomHub, projection: MatchRoomProjection): RoomHttpResponse {
   const client = projection.clients.find((candidate) => candidate.id === projection.viewer.clientId);
   if (!client) throw new Error(`Projection is missing viewer client ${projection.viewer.clientId}`);
   return {
     roomId: projection.roomId,
     clientId: client.id,
-    reconnectToken: client.reconnectToken,
+    reconnectToken: hub.getRoom(projection.roomId).getIssuedCredential(client.id),
     projection,
   };
 }
@@ -80,6 +82,10 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
   const broadcastRoom = (roomId: string, event: string) => {
     for (const clientSocket of sockets) {
       if (clientSocket.roomId !== roomId || clientSocket.socket.readyState !== WebSocket.OPEN) continue;
+      if (hub.getRoom(roomId) !== clientSocket.room) {
+        clientSocket.socket.close(1008, 'Room replaced; reconnect required');
+        continue;
+      }
       const projection = hub.project(roomId, clientSocket.clientId);
       sendSocket(clientSocket.socket, {
         type: 'server:projection',
@@ -109,27 +115,35 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
       }
       if (request.method === 'POST' && requestUrl.pathname === '/rooms') {
         const body = await readBody(request) as CreateRoomHttpRequest;
+        const requestedRoomId = body.roomId ?? `fd-room-${body.seed ?? 20260904}`;
+        if (hub.hasRoom(requestedRoomId)) throw new Error('Room already exists');
         const projection = hub.createRoom({
           ...(body.roomId ? { roomId: body.roomId } : {}),
           ...(body.seed !== undefined ? { seed: body.seed } : {}),
           ...(body.hostClientId ? { hostClientId: body.hostClientId } : {}),
           ...(body.hostName ? { hostName: body.hostName } : {}),
         });
-        sendJson(response, 201, roomResponse(projection));
+        sendJson(response, 201, roomResponse(hub, projection));
         return;
       }
       const roomPath = parseRoomPath(requestUrl.pathname);
       if (request.method === 'POST' && roomPath?.action === 'join') {
         const body = await readBody(request) as JoinRoomHttpRequest;
         const projection = hub.joinRoom(roomPath.roomId, body);
-        sendJson(response, 200, roomResponse(projection));
+        sendJson(response, 200, roomResponse(hub, projection));
         broadcastRoom(roomPath.roomId, 'client_joined');
         return;
       }
       if (request.method === 'POST' && roomPath?.action === 'restore') {
         const body = await readBody(request) as PersistedRoomHttpRequest;
+        const room = hub.getRoom(roomPath.roomId);
+        room.authenticateClient(body.clientId, body.reconnectToken);
+        if (body.clientId !== room.hostClientId || body.snapshot?.hostClientId !== body.clientId
+          || body.snapshot.clients.find(client => client.id === body.clientId)?.reconnectToken !== body.reconnectToken) {
+          throw new Error('Authenticated host and matching snapshot credentials required');
+        }
         const projection = hub.restoreRoom(roomPath.roomId, body.snapshot);
-        sendJson(response, 200, roomResponse(projection));
+        sendJson(response, 200, roomResponse(hub, projection));
         broadcastRoom(roomPath.roomId, 'room_restored');
         return;
       }
@@ -153,8 +167,7 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
       const reconnectToken = requestUrl.searchParams.get('reconnectToken');
       if (!clientId) throw new Error('clientId is required');
       if (!reconnectToken) throw new Error('reconnectToken is required');
-      const client = hub.project(roomId, clientId).clients.find((candidate) => candidate.id === clientId);
-      if (!client || client.reconnectToken !== reconnectToken) throw new Error('Invalid reconnect token for client');
+      hub.getRoom(roomId).authenticateClient(clientId, reconnectToken);
       wss.handleUpgrade(request, socket, head, (websocket) => {
         wss.emit('connection', websocket, request, roomId, clientId, reconnectToken);
       });
@@ -166,8 +179,15 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
 
   wss.on('connection', (socket: WebSocket, _request: IncomingMessage, roomId: string, clientId: string, reconnectToken: string) => {
     // Reconnect and registration share one synchronous boundary after authentication.
-    hub.reconnect(roomId, reconnectToken);
-    const clientSocket = { roomId, clientId, socket };
+    const room = hub.getRoom(roomId);
+    try {
+      room.authenticateClient(clientId, reconnectToken);
+      hub.reconnect(roomId, reconnectToken);
+    } catch {
+      socket.close(1008, 'Authentication failed');
+      return;
+    }
+    const clientSocket = { roomId, clientId, socket, room };
     sockets.add(clientSocket);
     sendSocket(socket, {
       type: 'server:projection',
@@ -183,6 +203,8 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
         return;
       }
       try {
+        if (hub.getRoom(roomId) !== room) throw new Error('Room replaced; authenticated reconnect required');
+        room.authenticateClient(clientId, reconnectToken);
         handleClientMessage(hub, roomId, clientId, message);
         broadcastRoom(roomId, message.type);
       } catch (error) {
@@ -200,6 +222,7 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
       sockets.delete(clientSocket);
       if ([...sockets].some((candidate) => candidate.roomId === roomId && candidate.clientId === clientId)) return;
       try {
+        if (hub.getRoom(roomId) !== room) return;
         hub.disconnect(roomId, clientId);
         broadcastRoom(roomId, 'client_disconnected');
       } catch {
@@ -248,11 +271,13 @@ function handleClientMessage(hub: MatchRoomHub, roomId: string, clientId: string
     return;
   }
   if (message.type === 'client:end_turn') {
-    hub.endTurn(roomId, clientId, message.expectedRevision);
+    const { result } = hub.endTurn(roomId, clientId, message.expectedRevision);
+    if (!result.ok) throw new Error(result.rejection?.message ?? 'End turn rejected');
     return;
   }
   if (message.type === 'client:dispatch_command') {
-    hub.dispatchCommand(roomId, clientId, message.command, message.expectedRevision);
+    const { result } = hub.dispatchCommand(roomId, clientId, message.command, message.expectedRevision);
+    if (!result.ok) throw new Error(result.rejection?.message ?? 'Command rejected');
     return;
   }
   if (message.type === 'client:consume_directive') {

@@ -3,14 +3,45 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import App from './App';
+import { createMatchRoom } from '@fd/rules/match-room';
+import { RemoteMatchRoomClient } from './state/match-room-client';
+import type { ClientRoomMessage } from '@fd/rules/match-room-protocol';
 
 afterEach(() => {
   vi.restoreAllMocks();
+  vi.unstubAllGlobals();
   window.localStorage.clear();
   window.history.replaceState({}, '', '/');
 });
 
 describe('App room product shell', () => {
+  it('reconnects locally using private credentials absent from the public room DTO', () => {
+    const room = createMatchRoom({ roomId: 'local-private-reconnect', hostClientId: 'host' });
+    room.disconnect('host');
+    expect(JSON.stringify(room.getProjection('host'))).not.toContain('reconnectToken');
+    room.reconnect(room.getIssuedCredential('host'));
+    expect(room.getProjection('host').clients[0]?.connected).toBe(true);
+  });
+
+  it('does not send either mutation when its revision is missing or invalid', () => {
+    const send = vi.fn();
+    vi.stubGlobal('WebSocket', class {
+      send = send;
+      addEventListener() {}
+      close() {}
+    });
+    const client = new RemoteMatchRoomClient({ httpBaseUrl: 'http://localhost', wsBaseUrl: 'ws://localhost', roomId: 'room', clientId: 'host', reconnectToken: 'private-test-token' });
+    client.connect();
+    for (const expectedRevision of [undefined, null, '2', NaN, Infinity, -1, 0.5]) {
+      for (const type of ['client:end_turn', 'client:dispatch_command']) {
+        client.send({ type, expectedRevision, command: { type: 'pass_priority' } } as unknown as ClientRoomMessage);
+      }
+    }
+    expect(send).not.toHaveBeenCalled();
+    client.send({ type: 'client:end_turn', expectedRevision: 2 });
+    expect(send).toHaveBeenCalledWith(JSON.stringify({ type: 'client:end_turn', expectedRevision: 2 }));
+    client.close();
+  });
   it('renders the local room, seven seats, and connection controls', async () => {
     const user = userEvent.setup();
     render(<App />);
