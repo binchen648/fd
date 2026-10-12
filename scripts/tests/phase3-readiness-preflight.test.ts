@@ -4,13 +4,14 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { setImmediate as yieldToEventLoop } from 'node:timers/promises';
-import { assertFinalTaskCheck, buildFinalTaskCheck, buildContinuationTaskCheck, runPreflight } from '../phase3-preflight';
+import { assertFinalTaskCheck, buildFinalTaskCheck, buildContinuationTaskCheck, runPreflight, buildE09IntegrationBinding } from '../phase3-preflight';
 import { git, gitText, hash, InputError } from '../phase3-tooling-common';
 import { publicationSha, reference } from '../phase3-b11-tooling-inputs';
 import { buildContinuationBinding, validateContinuationBinding, validateContinuationReceiptReference, createHistoricalEvidenceSnapshot, type ContinuationReceipt, type ReceiptReference } from '../phase3-e08-b11-coverage-sync';
 
 const snapshot = createHistoricalEvidenceSnapshot(resolve(fileURLToPath(new URL('../..', import.meta.url))));
 const root = snapshot.root;
+const currentRoot = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 afterAll(snapshot.cleanup);
 const taskId = 'P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY';
 const manifestPath = `docs/agents/manifests/tasks/${taskId}.json`;
@@ -58,6 +59,14 @@ let unauthorized: string;
 let invalidCommand: string;
 let receiptFixture: { binding: ReturnType<typeof buildContinuationBinding>; receipts: ContinuationReceipt[]; reference: ReceiptReference };
 const evaluate = (context: ReturnType<typeof fixture>, input: unknown = context.input, candidate = context.candidate) => runPreflight(context.cwd, input, candidate, context.base, hash(JSON.stringify(input)));
+
+describe('integration preflight does not inherit historical readiness', () => {
+  it('rejects stale CLI identity before evaluation and requires the integration schema', () => {
+    const input = buildE09IntegrationBinding(currentRoot);
+    expect(() => runPreflight(currentRoot, input, input.technicalCarrierSha, input.observedMainSha, hash(JSON.stringify(input)))).toThrow('Integration CLI SHA mismatch');
+    expect(() => runPreflight(currentRoot, { ...input, schemaVersion: 'fd-p3-e09-unrecognized' }, input.assemblySha, input.observedMainSha, '0'.repeat(64))).toThrow();
+  });
+});
 
 describe('readiness preflight, independent from promotion policy', () => {
   // Synchronous Git diagnostics must let Vitest deliver queued RPC updates between cases.

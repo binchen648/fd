@@ -50,6 +50,10 @@ export function validateE09RawStreams(value: unknown): number {
 }
 
 export function validateE09FinalBinding(root: string, input: ReturnType<typeof buildE09FinalBinding>) {
+  return validateE09TechnicalBinding(root, input);
+}
+
+function validateE09TechnicalBinding(root: string, input: ReturnType<typeof buildE09FinalBinding>, preservedPaths: ReadonlySet<string> = new Set()) {
   const expected = buildE09FinalBinding(root);
   assertFinalTaskCheck(input, expected);
   git(root, ['merge-base', '--is-ancestor', e09CandidateSha, 'HEAD']);
@@ -73,12 +77,12 @@ export function validateE09FinalBinding(root: string, input: ReturnType<typeof b
   for (const path of changedPaths(root, e09BaseSha, e09CandidateSha)) if (!transportPaths.has(path)) throw new InputError(`Unauthorized transport delta: ${path}`);
   const repairPaths = new Set(declaredPaths(read(3)));
   for (const path of changedPaths(root, e09ReviewSha, 'HEAD')) {
-    if (!repairPaths.has(path) && path !== 'artifacts/phase3-e09-b11-final-binding-diagnostic.json' && path !== 'docs/reports/2026-10-12-p3-e09-b11-final-binding-diagnostic.md') throw new InputError(`Unexpected evidence delta: ${path}`);
+    if (!repairPaths.has(path) && !preservedPaths.has(path) && path !== 'artifacts/phase3-e09-b11-final-binding-diagnostic.json' && path !== 'docs/reports/2026-10-12-p3-e09-b11-final-binding-diagnostic.md') throw new InputError(`Unexpected evidence delta: ${path}`);
   }
   const sourceBlobs = git(root, ['rev-parse', ...packet.sourceBinding.files.map((row: any) => `${e09CandidateSha}:${row.path}`)]).toString().trim().split('\n');
+  const sourceHashes = batchReferences(root, packet.sourceBinding.files.map((row: any) => ({ commit: e09CandidateSha, path: row.path })));
   for (const [index, row] of packet.sourceBinding.files.entries()) {
-    const bytes = git(root, ['show', `${e09CandidateSha}:${row.path}`]);
-    if (hash(bytes).toLowerCase() !== row.sha256 || sourceBlobs[index] !== row.gitBlob) throw new InputError('Transport source hash mismatch');
+    if (sourceHashes[index].sha256.toLowerCase() !== row.sha256 || sourceBlobs[index] !== row.gitBlob) throw new InputError('Transport source hash mismatch');
   }
   const issues: Issue[] = [{ code: 'FINAL_REVIEWER_A_PENDING', path: 'current carrier', message: 'Scoped RB review is not final evidence acceptance' },
     { code: 'ROOM_ID_REPAIR_AUTHORITY_UNBOUND', path: 'd9d8a6a480710afba20ee7371ecdedb09de77de1', message: 'Read dispatch authorizes paths but does not explicitly bind the subsequent room-ID semantic repair; Planner must provide exact authority disposition' },
@@ -87,6 +91,144 @@ export function validateE09FinalBinding(root: string, input: ReturnType<typeof b
   return { status: 'BLOCKED', rawStreams, review, packet, issues, sourceObjects: input.sourceObjects,
     authenticHistoricalCi: packet.receipts.find((row: any) => row.id === '13-current-combination-default-ci'),
     acceptanceGranted: false, creditDelta: 0 };
+}
+
+export const e09AssemblySha = 'da57179a3d7c8a9f407a4ea986ab834cdd0acf25';
+export const e09IntegrationMainSha = '1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce';
+const e09PreviousMainSha = '9a1689d2ec5b56b67d1483d2593b4ab809d6c15c';
+const e09TechnicalCarrierSha = '086a86a24f5cf0991b3743ceb28b34a767252070';
+const e09FinalRaSha = '28875202695d43e580ddd637f1721e3a1dddbc8a';
+const e09IntegrationAuthoritySha = 'ab3540aa07c9a02f7879d96e042b8e2a0a41e728';
+const e09ControlPaths = [
+  'docs/agents/FD-P3-CONTROL-EPOCH-09.md', 'docs/agents/PHASE3-TASK-INDEX.md',
+  'docs/agents/manifests/governance/P3-E09-B11-LIMITED-ADOPTION-ATTESTATION.json',
+  'docs/agents/manifests/governance/P3-E09-B11-ROOM-ID-ADOPTION.json',
+  'docs/reports/2026-10-12-p3-e09-b11-limited-adoption-governance.md',
+  'docs/reports/2026-10-12-p3-e09-b11-room-id-adoption.md',
+] as const;
+const e09IntegrationPaths = [
+  'scripts/phase3-preflight.ts', 'scripts/tests/phase3-e09-b11-final-binding.test.ts',
+  'scripts/tests/phase3-readiness-preflight.test.ts', 'scripts/fixtures/phase3-e09-b11-integration-binding.json',
+  'artifacts/phase3-e09-b11-integration-evidence-binding.json',
+  'docs/reports/2026-10-12-p3-e09-b11-integration-evidence-binding.md',
+] as const;
+const e09PromotionPaths = [
+  'docs/reviews/phase3/P3-E09-B11-promotion-attestation.json',
+  'docs/agents/manifests/governance/P3-E09-B11-PROMOTION-GOVERNANCE-INPUTS.json',
+  'docs/reports/2026-10-12-p3-e09-b11-promotion-attestation.md',
+] as const;
+
+export function buildE09IntegrationBinding(root: string) {
+  const refs = batchReferences(root, [
+    { commit: e09IntegrationAuthoritySha, path: 'docs/agents/P3-E09-B11-INTEGRATION-CONTRACT-AND-ATTESTATION.md' },
+    { commit: '76133b6dbfc09318143df37b24b0e2e4a2de3a17', path: 'docs/agents/P3-E09-I-B11-PROMOTION-AUTHORIZATION.md' },
+    { commit: e09FinalRaSha, path: 'docs/reviews/phase3/P3-E09-B11-086a86a-final-contract-reviewer-a.json' },
+    { commit: e09TechnicalCarrierSha, path: 'artifacts/phase3-e09-b11-final-evidence-binding.json' },
+    { commit: e09TechnicalCarrierSha, path: 'artifacts/phase3-e09-b11-final-coverage.json' },
+    ...e09ControlPaths.map(path => ({ commit: e09IntegrationMainSha, path })),
+  ]);
+  const blobs = git(root, ['rev-parse', ...e09ControlPaths.map(path => `${e09IntegrationMainSha}:${path}`)]).toString().trim().split('\n');
+  return { schemaVersion: 'fd-p3-e09-integration-binding-v1', taskId: 'P3-E09-B11-INTEGRATION-EVIDENCE-CONTRACT',
+    controlEpoch: 'FD-P3-2026-09-23-09', assemblySha: e09AssemblySha, observedMainSha: e09IntegrationMainSha,
+    previousMainSha: e09PreviousMainSha, technicalCarrierSha: e09TechnicalCarrierSha,
+    technical: buildE09FinalBinding(root), authorization: refs[0], promotionAuthority: refs[1], finalReviewerA: refs[2],
+    acceptedPacket: refs[3], acceptedCoverage: refs[4],
+    preservedControlFiles: refs.slice(5).map((ref, index) => ({ ...ref, gitBlob: blobs[index] })),
+    promotionEvidence: [] as Array<{ commit: string; path: string; sha256: string }>,
+    formalCredit: { mainCoverageCreditDelta: 0, migrationCreditDelta: 0, denominatorDelta: 0, promotedOnMain: false },
+    acceptanceGranted: false };
+}
+
+export function validateE09IntegrationBinding(root: string, input: ReturnType<typeof buildE09IntegrationBinding>) {
+  const expected = buildE09IntegrationBinding(root);
+  assertFinalTaskCheck({ ...input, promotionEvidence: [] }, expected);
+  if (!Array.isArray(input.promotionEvidence)) throw new InputError('Explicit promotion evidence references required');
+  for (const [base, tip] of [[e09PreviousMainSha, e09IntegrationMainSha], [e09IntegrationMainSha, e09AssemblySha],
+    [e09CandidateSha, e09TechnicalCarrierSha], [e09TechnicalCarrierSha, e09FinalRaSha], [e09FinalRaSha, e09AssemblySha], [e09AssemblySha, 'HEAD']]) {
+    git(root, ['merge-base', '--is-ancestor', base, tip]);
+  }
+  if (git(root, ['rev-parse', `${e09FinalRaSha}^`]).toString().trim() !== e09TechnicalCarrierSha) throw new InputError('Final RA parent mismatch');
+  assertFinalTaskCheck(changedPaths(root, e09PreviousMainSha, e09IntegrationMainSha), [...e09ControlPaths].sort());
+  assertFinalTaskCheck(changedPaths(root, e09FinalRaSha, e09AssemblySha), [...e09ControlPaths].sort());
+  const read = (ref: { commit: string; path: string; sha256: string }) => {
+    const bytes = git(root, ['show', `${ref.commit}:${ref.path}`]);
+    if (hash(bytes) !== ref.sha256) throw new InputError('Integration reference hash mismatch');
+    return bytes;
+  };
+  const authorityText = read(input.authorization).toString();
+  for (const path of [...e09IntegrationPaths, ...e09PromotionPaths]) {
+    if (!authorityText.includes(`- ${path}\n`)) throw new InputError('Integration path authority missing');
+  }
+  const controlFiles = input.preservedControlFiles;
+  const actualBlobs = git(root, ['rev-parse', ...controlFiles.map(ref => `HEAD:${ref.path}`)]).toString().trim().split('\n');
+  controlFiles.forEach((ref, index) => { if (actualBlobs[index] !== ref.gitBlob) throw new InputError(`Preserved main blob drift: ${ref.path}`); });
+  if (git(root, ['diff', 'HEAD', '--', ...e09ControlPaths]).length) throw new InputError('Dirty preserved main control');
+  const ra = JSON.parse(read(input.finalReviewerA).toString());
+  const technicalRefs = [input.finalReviewerA, input.acceptedPacket, input.acceptedCoverage];
+  const technicalBlobs = git(root, ['rev-parse', ...technicalRefs.flatMap(ref => [`${ref.commit}:${ref.path}`, `HEAD:${ref.path}`])]).toString().trim().split('\n');
+  technicalRefs.forEach((ref, index) => {
+    if (technicalBlobs[index * 2] !== technicalBlobs[index * 2 + 1]) throw new InputError(`Accepted technical artifact drift: ${ref.path}`);
+  });
+  if (git(root, ['diff', 'HEAD', '--', ...technicalRefs.map(ref => ref.path)]).length) throw new InputError('Dirty accepted technical artifact');
+  if (ra.reviewedSha !== e09TechnicalCarrierSha || ra.runtimeCandidateSha !== e09CandidateSha || ra.finalVerdict !== 'PASS' ||
+    ra.reviewer !== 'Reviewer A' || ra.controlEpoch !== input.controlEpoch ||
+    ra.acceptedScope !== 'EXACT_FOUR_HISTORICAL_TEST_CONTRACT_REPAIRS_CURRENT_BINDING_VALIDATOR_COVERAGE_AND_AUTHENTIC_EXECUTION_EVIDENCE_ONLY' ||
+    ra.boundPacket.sha256 !== input.acceptedPacket.sha256 || ra.boundCoverage.sha256 !== input.acceptedCoverage.sha256) throw new InputError('Final RA scope binding mismatch');
+  const acceptedPacket = JSON.parse(read(input.acceptedPacket).toString());
+  read(input.acceptedCoverage);
+  if (acceptedPacket.implementationSha !== ra.implementationSha || acceptedPacket.binding.candidateSha !== e09CandidateSha ||
+    acceptedPacket.formalCredit.promotedOnMain !== false || acceptedPacket.acceptanceGranted !== false) throw new InputError('Accepted technical packet mismatch');
+  const rawStreams = validateE09RawStreams(acceptedPacket);
+  if (rawStreams !== 24 || validateE09RawStreams(acceptedPacket.validationReceipts) !== 20 ||
+    acceptedPacket.validationReceipts.length !== ra.independentEvidenceVerification.newValidationRecords) throw new InputError('Missing accepted historical/current receipts');
+  const limited = JSON.parse(read(controlFiles[2]).toString());
+  const room = JSON.parse(read(controlFiles[3]).toString());
+  for (const ref of [limited.authority, room.authority]) read(ref);
+  if (limited.controlEpoch !== input.controlEpoch || room.controlEpoch !== input.controlEpoch ||
+    limited.boundaries.creditDelta !== undefined && limited.boundaries.creditDelta !== 0 ||
+    limited.boundaries.coverageCreditDelta !== 0 || room.boundaries.creditDelta !== 0 ||
+    room.delta.finalRuntimeCarrierSha !== e09CandidateSha || room.delta.finalEvidenceCarrierSha !== e09TechnicalCarrierSha ||
+    room.decision.status !== 'EXACT_ROOM_ID_PROSPECTIVE_AUTHORITY_BOUND') throw new InputError('Prospective adoption scope mismatch');
+  assertFinalTaskCheck(room.reviewerA.commit, e09FinalRaSha);
+  assertFinalTaskCheck(room.reviewerB.commit, e09ReviewSha);
+  read(room.reviewerA); read(room.reviewerB);
+  const roomPaths = room.delta.pathTable.map((row: any) => row.path).sort();
+  assertFinalTaskCheck(changedPaths(root, room.delta.baseSha, room.delta.implementationSha), roomPaths);
+  const adopted = [...room.delta.pathTable.flatMap((row: any) => [
+    { source: `${room.delta.implementationSha}:${row.path}`, blob: row.implementationBlob },
+    { source: `${e09CandidateSha}:${row.path}`, blob: row.implementationBlob },
+  ]), ...limited.prospectiveAdoption.authorityDecision.pathTable.map((row: any) => ({ source: `${e09CandidateSha}:${row.path}`, blob: row.finalBlob }))];
+  const adoptionBlobs = git(root, ['rev-parse', ...adopted.map(row => row.source)]).toString().trim().split('\n');
+  adopted.forEach((row, index) => { if (adoptionBlobs[index] !== row.blob) throw new InputError('Adopted blob mismatch'); });
+  const promotionAuthority = read(input.promotionAuthority).toString();
+  const packageBlob = input.technical.sourceObjects['package.json'];
+  const packageHash = hash(git(root, ['show', `${e09CandidateSha}:package.json`]));
+  if (!promotionAuthority.includes(`Final package.json blob: ${packageBlob}.`) || !promotionAuthority.includes(`Final SHA-256: ${packageHash}.`)) throw new InputError('Package prospective authority mismatch');
+  const preservedPaths = new Set<string>([...e09ControlPaths, ...e09IntegrationPaths, input.finalReviewerA.path]);
+  const newEvidence = new Set<string>();
+  for (const raw of input.promotionEvidence) {
+    const ref = parseReference(raw, 'promotion evidence');
+    if (!(e09PromotionPaths as readonly string[]).includes(ref.path) || newEvidence.has(ref.path)) throw new InputError('Unknown or duplicate promotion evidence path');
+    git(root, ['merge-base', '--is-ancestor', e09AssemblySha, ref.commit]);
+    git(root, ['merge-base', '--is-ancestor', ref.commit, 'HEAD']);
+    read(ref);
+    if (git(root, ['rev-parse', `${ref.commit}:${ref.path}`]).toString().trim() !== git(root, ['rev-parse', `HEAD:${ref.path}`]).toString().trim() ||
+      git(root, ['diff', 'HEAD', '--', ref.path]).length) throw new InputError('Promotion evidence source drift');
+    newEvidence.add(ref.path); preservedPaths.add(ref.path);
+  }
+  for (const path of changedPaths(root, e09AssemblySha, 'HEAD')) if (!preservedPaths.has(path) || (e09ControlPaths as readonly string[]).includes(path)) throw new InputError(`Unknown integration delta: ${path}`);
+  const technical = validateE09TechnicalBinding(root, input.technical, preservedPaths);
+  assertFinalTaskCheck(acceptedPacket.preservedHistoricalTransportReceipts.receipts, technical.packet.receipts);
+  return { schemaVersion: 'fd-p3-e09-integration-result-v1', status: 'BLOCKED', taskId: input.taskId,
+    controlEpoch: input.controlEpoch, assemblySha: input.assemblySha, observedMainSha: input.observedMainSha,
+    preservedControlFiles: controlFiles, technical, acceptedRawStreams: rawStreams,
+    effectiveRoomIdAdoption: 'EXACT_PROSPECTIVE_AUTHORITY_BOUND_NOT_HISTORICAL_PROOF',
+    effectivePackageAdoption: 'EXACT_PROSPECTIVE_PLANNER_AUTHORITY_BOUND_NOT_HISTORICAL_RESERVATION',
+    issues: [{ code: 'INTEGRATION_REVIEWER_A_PENDING', path: 'new exact carrier', message: 'Existing RA applies only to its accepted technical source' },
+      { code: 'PROMOTION_GOVERNANCE_PENDING', path: 'real GitHub attestation and actual-head required checks', message: 'Preserved main control does not satisfy new promotion policy evidence' },
+      { code: 'SOURCE_ASSETS_MISSING', path: 'source-assets', message: '93 MISSING_IMAGE retained' }],
+    historicalIssuesRewritten: false, acceptanceGranted: false, promotionAllowed: false, creditDelta: 0,
+    reviewReadyChanged: false, promotionPolicyChanged: false };
 }
 const socketTask = 'P3-E08-SHARED-SOCKET-LIFECYCLE-FIX';
 const b11Paths = [
@@ -150,6 +292,11 @@ export function runPreflight(root: string, raw: unknown, candidate: string, base
   reviewReadyChanged: boolean; promotionPolicyChanged: boolean; [key: string]: any;
 } {
   const input = object(raw, 'task check');
+  if (input.schemaVersion === 'fd-p3-e09-integration-binding-v1') {
+    if (candidate !== git(root, ['rev-parse', 'HEAD']).toString().trim() || base !== input.observedMainSha) throw new InputError('Integration CLI SHA mismatch');
+    return { ...validateE09IntegrationBinding(root, input as ReturnType<typeof buildE09IntegrationBinding>),
+      inputs: { testedCandidateSha: candidate, testedBaseSha: base, inputSha256 }, changedPaths: changedPaths(root, base, candidate) };
+  }
   if (input.schemaVersion === 'fd-p3-task-check-v3') return runContinuationPreflight(root, input, candidate, base, inputSha256);
   if (input.schemaVersion === 'fd-p3-task-check-v2') return runFinalPreflight(root, input, candidate, base, inputSha256);
   fields(input, ['schemaVersion', 'taskId', 'controlEpoch', 'baseSha', 'candidateSha', 'contract', 'segments', 'checks'], 'task check');
