@@ -1,67 +1,58 @@
-# B11 Integration Evidence Contract
+# B11 Integration Closure Repair
 
-Task: P3-E09-B11-INTEGRATION-EVIDENCE-CONTRACT
-Epoch: FD-P3-2026-09-23-09
-Assembly: da57179a3d7c8a9f407a4ea986ab834cdd0acf25
-Observed main: 1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce
-Implementation: c8ffed759c5e821b5684b0019d4e95f5eefab44c
-Carrier: exact Git commit containing this report and artifact; no self-referential commit claim.
+Task: P3-E09-B11-INTEGRATION-CLOSURE-REPAIR. Epoch: FD-P3-2026-09-23-09.
 
-## Packet
+Observed immutable main: `1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce`. Frozen I: `9dbeef07d6bf8a9b956d2291e768b5369f09803b`. Implementation: `2a1a2eeae5bd880914f27f36cc31f7b9ad3753ca`. Evidence carrier is the external containing Git commit, not a guessed/self-referential SHA.
 
-Path: artifacts/phase3-e09-b11-integration-evidence-binding.json
-SHA-256: ACFE35DF7E6BCDF71B0C48DDD54C4CFD322B8FF124E65F4F6AE76946ACB9CADF
-Branch: codex/a-p3-e09-b11-integration-evidence-contract
-Authorization: ab3540aa07c9a02f7879d96e042b8e2a0a41e728:docs/agents/P3-E09-B11-INTEGRATION-CONTRACT-AND-ATTESTATION.md
-Authorization SHA-256: 3ED51E6564CE52C143F50A9AF15D9B41F8C5CF94737E35CE8ED338B2BDDCCA94
+Artifact: `artifacts/phase3-e09-b11-integration-evidence-binding.json`. SHA-256: `FAED5431BAF496CCC9C8819828B16570129581D73D984E69BB5BCA0929A3CAB4`.
+Status: `BLOCKED_CURRENT_EXECUTION_FAILURE_REVIEW_REQUIRED`. No Review/Gate/promotion acceptance granted.
 
-## Contract Repair
+## Scoped Changes
 
-The frozen assembly previously failed on the first unbound Epoch 09 main control file (baseline receipt: 11/12 PASS, exit 1). A distinct integration schema now binds all six preserved control files to exact effective main SHA/blob/hash, verifies main and candidate ancestry and full runtime/client/server/e2e/content object equivalence, and rejects dirty providers. Historical mode stays pinned to accepted carrier 086a86a24f5cf0991b3743ceb28b34a767252070; old packets and issues are not rewritten. No prefix waiver, taxonomy change or promotion-policy edit is introduced.
+Only the six Planner-authorized integration paths changed. Typed exact review references replace filename exceptions. Source commit/path/hash, schema/task/Epoch/candidate/scope/verdict/packet, artifact-only direct parent, ancestry and source/final blob equality are all required. Unknown paths, duplicate references, forged PASS and stale proof fail closed.
 
-Exact RA 28875202695d43e580ddd637f1721e3a1dddbc8a and RB 4d5b76be9d5459cc0c40e50fae8513bc59cd5d21 retain only their original accepted scopes. Their copied artifacts, hashes and parent/source bindings are verified. The room-ID and package dispositions are verified as exact prospective authority, not recovery of missing historical instructions/reservations. New G promotion evidence needs its own immutable source references and literal authorized path; it does not grant policy acceptance.
+Immutable Git reads are shared only within one validation call and batch Git object/G reference operations avoid repeated Windows process starts. HEAD, dirty/untracked state and later calls are never cached. Early unauthorized-delta rejection retains all later exact source/ancestry/hash checks; no timeout/concurrency/workflow changes.
 
-## Preserved Epoch 09 Files
+## Full Composition
 
-| Path | Main commit | Blob | SHA-256 |
-| --- | --- | --- | --- |
-| docs/agents/FD-P3-CONTROL-EPOCH-09.md | 1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce | f066b3936d3e4006efb7c985ad617b0a28e4ee8d | F49FD1F9883E8638CD54F1ED76F7EFD57CFDB8B7C69E67F149D62E8493EE2B96 |
-| docs/agents/PHASE3-TASK-INDEX.md | 1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce | 56d685226151f02da1774acbecc6066c825ee3a5 | D40BFB9B20DD6B4EE04C21446AA5803898D5071B4D922D27D261273861ABAFC8 |
-| docs/agents/manifests/governance/P3-E09-B11-LIMITED-ADOPTION-ATTESTATION.json | 1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce | 77b52bf577b5f0e122bc6dc01c5e26ec04af1053 | C33D6C9266BB4733ED99D3816B0E6FE3A780CEC0B454058D76B5106DA2CF9DF1 |
-| docs/agents/manifests/governance/P3-E09-B11-ROOM-ID-ADOPTION.json | 1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce | 0d9c810850689b86f73f3de229c8f804c4ebbea9 | 94A7BBC2B85CA027735A38887EC471B8D3167D4E4D0319BF18321EA1E2C53C18 |
-| docs/reports/2026-10-12-p3-e09-b11-limited-adoption-governance.md | 1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce | 6b6dfc82bea7a1dc26062c5f420993879dd8dda0 | 13A6898C035BC4E4F6B57AEB01813D460AF86BDE267EF1FCE406361C74EE5AB1 |
-| docs/reports/2026-10-12-p3-e09-b11-room-id-adoption.md | 1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce | a86f1bbbe10bd4b16d0008061ec883958ba3128b | 43D58E0661DD0B0E397DE31065C67535CC252E2065274565B4DDEB0DC71D6ED7 |
+The real historical d122717 RA, eaa7435 G, 275eea synchronization and 9dbeef07 final HEAD remain provenance only. The new full differently named RA/G/sync/final composition is a test-only synthetic Git proof, not a published attestation or actual independent acceptance. New RA must bind this frozen carrier and its packet hash; then G must bind that new exact RA. Future proofs remain external and pending.
 
-## Validation
+Reviewer contract: `fd-phase3-reviewer-a-integration-closure-review-v1`, exact task/Epoch above; accepted scope `EXACT_INTEGRATION_CLOSURE_REFERENCE_CONTRACT_AND_FINAL_ASSEMBLY_EVIDENCE_ONLY`. RA adds exactly one immutable JSON artifact as direct child of the reviewed carrier and returns actual commit/path/hash. A does not create it. `buildE09IntegrationReviewReference` reconstructs the reference from bytes. I supplies `fd-p3-e09-integration-closure-check-v1` with frozen `producerBinding` and `temporal` containing ASSEMBLED, producerCandidateSha, reviewReferences, governanceReferences, synchronizationSha and actual finalHeadSha. Unknown fields are rejected.
 
-All final validation records bind clean implementation c8ffed759c5e821b5684b0019d4e95f5eefab44c. Ordered npm ci -> typecheck -> focused -> content -> generated -> diff -> one default full CI. Full raw stdout/stderr, byte lengths, hashes, exits and timestamps are embedded.
+I must run both evidence preflight and separate ancestry/policy preflight on the real final post-RA/post-G HEAD before creating the single promotion PR. Old G is rejected for the changed candidate; this packet does not grant policy, GitHub required-check or merge acceptance.
 
-| Receipt | Tested SHA | Exit | Scope |
-| --- | --- | --- | --- |
-| integration-baseline | da57179a3d7c8a9f407a4ea986ab834cdd0acf25 | 1 | PREPARATION_HISTORY_NOT_FINAL_ACCEPTANCE |
-| integration-final-ci | c8ffed759c5e821b5684b0019d4e95f5eefab44c | 0 | FROZEN_IMPLEMENTATION_VALIDATION |
-| integration-final-content | c8ffed759c5e821b5684b0019d4e95f5eefab44c | 0 | FROZEN_IMPLEMENTATION_VALIDATION |
-| integration-final-diff | c8ffed759c5e821b5684b0019d4e95f5eefab44c | 0 | FROZEN_IMPLEMENTATION_VALIDATION |
-| integration-final-focused | c8ffed759c5e821b5684b0019d4e95f5eefab44c | 0 | FROZEN_IMPLEMENTATION_VALIDATION |
-| integration-final-generated | c8ffed759c5e821b5684b0019d4e95f5eefab44c | 0 | FROZEN_IMPLEMENTATION_VALIDATION |
-| integration-final-npm-ci | c8ffed759c5e821b5684b0019d4e95f5eefab44c | 0 | FROZEN_IMPLEMENTATION_VALIDATION |
-| integration-final-typecheck | c8ffed759c5e821b5684b0019d4e95f5eefab44c | 0 | FROZEN_IMPLEMENTATION_VALIDATION |
-| integration-focused-prep | da57179a3d7c8a9f407a4ea986ab834cdd0acf25 | 0 | PREPARATION_HISTORY_NOT_FINAL_ACCEPTANCE |
-| integration-npm-ci | da57179a3d7c8a9f407a4ea986ab834cdd0acf25 | 0 | PREPARATION_HISTORY_NOT_FINAL_ACCEPTANCE |
-| integration-typecheck-prep-v2 | da57179a3d7c8a9f407a4ea986ab834cdd0acf25 | 0 | PREPARATION_HISTORY_NOT_FINAL_ACCEPTANCE |
-| integration-typecheck-prep | da57179a3d7c8a9f407a4ea986ab834cdd0acf25 | 0 | PREPARATION_HISTORY_NOT_FINAL_ACCEPTANCE |
+## Commands And Raw Receipts
 
-Focused: 2 files / 45 tests PASS. Default CI: exit 0; Test Files  194 passed (194); Tests  1565 passed (1565). No timeout/concurrency/workflow edits, no retries of default CI. npm ci reports 12 dependency audit findings; no package changes authorized or made.
+All command outputs, exits, times, source SHA, clean/dirty status and stdout/stderr hashes/base64 are sealed in the artifact. Preparation failures are retained, not silently replaced by a selected success. Frozen results belong to implementation `2a1a2eeae5bd880914f27f36cc31f7b9ad3753ca`; the later carrier changes only artifact/report. No claim that full CI was rerun on the later carrier. Node: v24.13.1; remote required-check environment remains unverified.
 
-Negatives preserve unknown input/path rejection and add stale main/candidate, forged review/adoption, modified accepted main blob/hash, committed unknown governance files, committed/dirty runtime drift, rewritten accepted RA artifact, and unbound promotion-source rejection. Two producer preparation probes have no captured raw receipt; their failures are disclosed in packet preparationProbeLimitations and never counted as final evidence.
+| Receipt | Command | Exit | Binding | Relevant result |
+| --- | --- | --- | --- | --- |
+| closure-focused-prep-v2 | `npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts --maxWorkers=2` | 1 | UNFROZEN_PREPARATION_NOT_FINAL_EXECUTION | Test Files  1 failed / 1 passed (2); Tests  46 passed / 17 skipped (63) |
+| closure-focused-prep-v3 | `npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts --maxWorkers=2` | 1 | UNFROZEN_PREPARATION_NOT_FINAL_EXECUTION | Test Files  1 failed / 1 passed (2); Tests  1 failed / 62 passed (63); Tests 1 ⎯⎯⎯⎯⎯⎯⎯ |
+| closure-focused-prep-v4 | `npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts --maxWorkers=2` | 1 | UNFROZEN_PREPARATION_NOT_FINAL_EXECUTION | Test Files  1 failed / 1 passed (2); Tests  2 failed / 44 passed / 20 skipped (66); Tests 2 ⎯⎯⎯⎯⎯⎯⎯ |
+| closure-focused-prep-v5 | `npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts --maxWorkers=2` | 1 | UNFROZEN_PREPARATION_NOT_FINAL_EXECUTION | Test Files  1 failed / 1 passed (2); Tests  1 failed / 65 passed (66); Tests 1 ⎯⎯⎯⎯⎯⎯⎯ |
+| closure-focused-prep | `npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts --maxWorkers=2` | 1 | UNFROZEN_PREPARATION_NOT_FINAL_EXECUTION | Test Files  2 failed (2); Tests  3 failed / 43 passed / 17 skipped (63); Tests 3 ⎯⎯⎯⎯⎯⎯⎯ |
+| closure-frozen-focused | `npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts --maxWorkers=2` | 1 | HISTORICAL_SUPERSEDED_IMPLEMENTATION_EXECUTION | Test Files  1 failed / 1 passed (2); Tests  2 failed / 64 passed (66); Tests 2 ⎯⎯⎯⎯⎯⎯⎯ |
+| closure-frozen-npm-ci | `npm ci` | 0 | HISTORICAL_SUPERSEDED_IMPLEMENTATION_EXECUTION | 12 vulnerabilities (1 low, 4 moderate, 5 high, 2 critical) |
+| closure-frozen-typecheck | `npm run typecheck` | 0 | HISTORICAL_SUPERSEDED_IMPLEMENTATION_EXECUTION | See bound raw receipt |
+| closure-frozen-v2-default-ci | `npm run test:ci` | 1 | FROZEN_IMPLEMENTATION_EXECUTION | Test Files  1 failed / 193 passed (194); Tests  1 failed / 1585 passed (1586); Tests 1 ⎯⎯⎯⎯⎯⎯⎯ |
+| closure-frozen-v2-diff-check | `git diff --check 9dbeef07d6bf8a9b956d2291e768b5369f09803b..HEAD` | 0 | FROZEN_IMPLEMENTATION_EXECUTION | See bound raw receipt |
+| closure-frozen-v2-focused | `npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts --maxWorkers=2` | 0 | FROZEN_IMPLEMENTATION_EXECUTION | Test Files  2 passed (2); Tests  66 passed (66) |
+| closure-frozen-v2-npm-ci | `npm ci` | 0 | FROZEN_IMPLEMENTATION_EXECUTION | 12 vulnerabilities (1 low, 4 moderate, 5 high, 2 critical) |
+| closure-frozen-v2-parity-isolation-run | `npx vitest run scripts/tests/phase3-contract-parity.test.ts -t rejects.local.drift --maxWorkers=2` | 1 | FROZEN_IMPLEMENTATION_EXECUTION | Test Files  1 failed (1); Tests  1 failed / 7 skipped (8); Tests 1 ⎯⎯⎯⎯⎯⎯⎯ |
+| closure-frozen-v2-typecheck | `npm run typecheck` | 0 | FROZEN_IMPLEMENTATION_EXECUTION | See bound raw receipt |
+| closure-npm-ci-prep | `npm ci` | 0 | HISTORICAL_SUPERSEDED_IMPLEMENTATION_EXECUTION | 12 vulnerabilities (1 low, 4 moderate, 5 high, 2 critical) |
+| closure-remote-main | `git ls-remote origin refs/heads/main` | 0 | FROZEN_IMPLEMENTATION_EXECUTION | See bound raw receipt |
+| closure-typecheck-prep | `npm run typecheck` | 0 | UNFROZEN_PREPARATION_NOT_FINAL_EXECUTION | See bound raw receipt |
 
-## Boundaries
+## Current CI Blocker
 
-Current scoped implementation: IMPLEMENTATION_COMPLETE_CANDIDATE. Overall readiness: BLOCKED.
-- INTEGRATION_REVIEWER_A_PENDING: Existing RA applies only to its accepted technical source
-- PROMOTION_GOVERNANCE_PENDING: Preserved main control does not satisfy new promotion policy evidence
-- SOURCE_ASSETS_MISSING: 93 MISSING_IMAGE retained
+Default CI: 193/194 files, 1585/1586 tests, exit 1. The unchanged historical parity test at scripts/tests/phase3-contract-parity.test.ts:111 exceeded its existing 15000ms timeout. Isolated replay also failed: 1 failed, 7 skipped, 15063ms. This is NOT proven to be concurrency-only and is NOT a new runtime semantic defect finding. Its frozen-I and implementation blobs match; this path is outside the six authorized edits. The failed isolation capture invocation is recorded separately as missing test evidence; its corrected run is bound without hiding the first attempt. No retry of default CI to select a green run. Planner must disposition a scoped performance investigation; A did not change this timeout or file.
 
-Existing classification stays 23/144/3/0/111; credit/migration/denominator deltas all 0; ledger 111/944. PROMOTED_ON_MAIN=false. Global Gate C NOT_VERIFIED; 93 MISSING_IMAGE retained. No new PR, runtime/authoring changes, policy waiver, C01 dispatch, or promotion PASS.
+## Remaining Boundaries
 
-Next: Reviewer A reviews the exact pushed integration-contract carrier. After that verdict, G supplies the policy-compatible bridge attestation; I resumes only under Planner authority with actual-head required checks. Old RA/RB do not accept this new tooling source or the future promotion head.
+New independent RA: pending. Fresh G/actual GitHub attestation: pending. Actual final assembly evidence plus policy preflight: pending. Remote required checks and human approval: pending. 93 MISSING_IMAGE, Global Gate C and long-term stability remain blocked/unverified. npm ci retains its audit advisories; no dependency fixes were authorized. No new runtime/browser result or readiness claimed. Historical runtime/source equivalence remains checked against original source objects, not by broad family inheritance.
+
+All main/migration/denominator deltas are 0; promotedOnMain=false; accounting remains 111/944 and routing remains 23/144/3/0/111. No runtime, authoring, workflow, policy, historical review or coverage taxonomy edit. No role-level PR or C01 dispatch.
+
+Next: Reviewer A can review this complete BLOCKED carrier for evidence/contract consistency. Planner must first disposition the reproduced out-of-scope parity timeout. Only after fresh overall acceptance may G create a new binding and I validate the real complete assembled HEAD; no Integration advancement is authorized by this packet.
