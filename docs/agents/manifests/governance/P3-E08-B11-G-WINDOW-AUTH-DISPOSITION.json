@@ -1,0 +1,371 @@
+{
+  "schemaVersion": "fd-p3-governance-window-authority-disposition-v1",
+  "taskId": "P3-E08-B11-G-WINDOW-AUTH",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "publishedDate": "2026-10-12",
+  "role": "Codex G / Promotion Governance Owner",
+  "githubIdentity": "github:binchen648",
+  "identityVerification": "gh api user returned binchen648; shared account, separate G role/artifact; not a GitHub APPROVED review",
+  "repository": "https://github.com/binchen648/fd",
+  "publicationRef": "refs/heads/codex/g-p3-e08-b11-window-authority-disposition",
+  "plannerCommit": "246110d4c900f03646448709e908aa611f973678",
+  "plannerPath": "docs/agents/P3-E08-B11-PLANNER-GOVERNANCE-DISPOSITION.md",
+  "reviewedCarrierSha": "463facb109cc4d19c4fda7af936fb4546fb86091",
+  "testedSha": "9a4f4c6ee2723eb7f546341f3c18a1f0a29c3bc1",
+  "currentMainObserved": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "aScopeStatus": "A_SCOPE_COMPLETE",
+  "overallStatus": "OVERALL_BLOCKED_EXTERNAL_ACCEPTANCE",
+  "decisionStatus": "G_DECISION_PUBLISHED_PENDING_PLANNER_USER_DISPOSITION",
+  "inputs": {
+    "receipt": {
+      "path": "artifacts/phase3-e08-b11-environment-reverification-receipts.json",
+      "sha256": "DCC796D63EBA088260440DFAF4B4C53B9E3AF8A3032055336530DD8FCF47F08A"
+    },
+    "combination": {
+      "path": "artifacts/phase3-e08-b11-final-combination-evidence.json",
+      "sha256": "94889745F47B1865C62EC8D6C1633D960C02828344B3DB28B0F16C7DAD010854"
+    }
+  },
+  "windowDecision": {
+    "verdict": "CONDITION_UNMET",
+    "conditionStatus": "QUIET_WINDOW_CONDITION_NOT_PROVEN",
+    "authoritySources": [
+      {
+        "commit": "415d1fefc1f343045f93d73d74c599e4df96eec6",
+        "path": "docs/agents/P3-E08-B11-ENVIRONMENT-RECOVERY-AND-REVERIFY.md",
+        "section": "Owners And Parallelism"
+      },
+      {
+        "commit": "bb41b2cb71edc52d755c14f276ca85d98fecfd84",
+        "path": "docs/agents/P3-E08-B11-RECORDED-VALIDATION-DISPATCH.md",
+        "section": "Owners And Start Condition"
+      }
+    ],
+    "observedWindow": {
+      "start": "2026-10-12T08:11:38+08:00",
+      "end": "2026-10-12T09:11:38+08:00",
+      "announcer": "Planner/user in current chat",
+      "declaration": "开始",
+      "aAcknowledgement": "YES; A runs only authorized B11 batch",
+      "otherOwnerIndividualAcknowledgements": "NOT_SUPPLIED_TO_A; window formally announced by Planner/user; individual consent not fabricated"
+    },
+    "announcementEvidenceStatus": "RECORDED_IN_A_RECEIPT; original chat not independently authenticated by G",
+    "reason": "Both authorities explicitly require other active heavy-test owner acknowledgements. Recorded start announcement and A acknowledgement do not satisfy that condition; sampled processes cannot prove whole-window exclusivity.",
+    "wrapperStopStatus": "ORIGINAL_EXECUTION_STOPPED_RETAINED",
+    "wrapperCorrection": "Recorded own-npx descendant misclassification; continuation includes intermediate cmd parents and only commands 6-17. Not treated as independent proof that no other workers ran.",
+    "contentionUncertainty": "RETAINED",
+    "longTermStability": "NOT_VERIFIED",
+    "historicalAcknowledgements": "MISSING_NOT_RECONSTRUCTED",
+    "prospectiveRiskProposal": {
+      "status": "PROPOSED_NOT_EFFECTIVE",
+      "scope": "Only this exact receipt/carrier pair may be considered in independent candidate review and later promotion preparation; never stability acceptance.",
+      "conditions": [
+        "Planner/user explicitly accepts missing-acknowledgement contention risk and publishes effective authority plus required Control Epoch transition before promotion authorization.",
+        "Retain both same-source successful CI receipts and all original stops, missing acknowledgements, wrapper changes, preflight/source-assets failures and local Node 24 observation.",
+        "RA publishes immutable exact evidence acceptance and 33-path accepted-scope table; RB independently reviews exact final runtime/ownership/validation semantics.",
+        "Required GitHub Node 20 build/test/policy checks must succeed on actual eventual promotion HEAD; no local-CI equivalence or inherited SUCCESS."
+      ],
+      "changesPolicy": true,
+      "effectiveAuthority": null
+    }
+  },
+  "authorityDecision": {
+    "verdict": "ORIGINAL_PROOF_MISSING",
+    "scope": "Exact complete historical seven-path authorization and two runtime overlaps are not established by inspected sources.",
+    "inspectedSources": [
+      {
+        "commit": "2c151a83f799b6d3cbd234fdf8a2c65fd3b3cd58",
+        "path": "docs/agents/P3-E08-B11-OBSERVATION-API-DISPATCH.md",
+        "support": "OBS-01-B supports unchanged helper export and focused API tests subject to writer check, not malformed ownership repair or compiler/runtime rejection."
+      },
+      {
+        "commit": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+        "path": "docs/agents/manifests/tasks/B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API.json",
+        "support": "Implementer reports user instruction; not the independently bound original user instruction or exact path reservation."
+      },
+      {
+        "commit": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
+        "path": "docs/agents/manifests/tasks/B11_CONVERSION_BINDING_OWNERSHIP_REPAIR.json",
+        "support": "Implementer reports user-directed P1 repair; original instruction/path reservation not supplied."
+      },
+      {
+        "commit": "246110d4c900f03646448709e908aa611f973678",
+        "path": "docs/agents/P3-E08-B11-PLANNER-GOVERNANCE-DISPOSITION.md",
+        "support": "Authorizes prospective adoption REVIEW only, explicitly no retrospective authorization or semantic acceptance."
+      }
+    ],
+    "pinnedDeltas": [
+      {
+        "base": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+        "candidate": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+        "paths": [
+          "docs/agents/manifests/tasks/B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API.json",
+          "docs/agents/manifests/vectors/B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API.json",
+          "packages/rules/src/ability/interpreter.ts",
+          "packages/rules/tests/regression/b11-conversion-classification-api.test.ts"
+        ]
+      },
+      {
+        "base": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+        "candidate": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
+        "paths": [
+          "docs/agents/manifests/tasks/B11_CONVERSION_BINDING_OWNERSHIP_REPAIR.json",
+          "docs/agents/manifests/vectors/B11_CONVERSION_BINDING_OWNERSHIP_REPAIR.json",
+          "docs/agents/manifests/vectors/B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API.json",
+          "packages/rules/src/ability/card-zone-result-binding.ts",
+          "packages/rules/src/ability/executable-card-pack.ts",
+          "packages/rules/src/ability/interpreter.ts",
+          "packages/rules/tests/regression/b11-conversion-binding-ownership.test.ts"
+        ]
+      }
+    ],
+    "pathTable": [
+      {
+        "path": "docs/agents/manifests/tasks/B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API.json",
+        "finalBlob": "bdc054f75301a6132436748adba1f7932d53935b",
+        "classification": "ORIGINAL_AUTHORITY_GAP",
+        "historicalAuthority": "ORIGINAL_PROOF_MISSING_FOR_EXACT_FINAL_DELTA",
+        "priorScopedSupport": "OBS-01_B_READ_ONLY_EXPORT_SCOPE_ONLY; ownership modifications not included",
+        "prospectiveAdoption": "PROPOSED_EXACT_BLOB_ONLY_NOT_EFFECTIVE"
+      },
+      {
+        "path": "docs/agents/manifests/vectors/B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API.json",
+        "finalBlob": "8ec207e4626c70d9f8bdf3e65577c9641da86413",
+        "classification": "ORIGINAL_AUTHORITY_GAP",
+        "historicalAuthority": "ORIGINAL_PROOF_MISSING_FOR_EXACT_FINAL_DELTA",
+        "priorScopedSupport": "OBS-01_B_READ_ONLY_EXPORT_SCOPE_ONLY; ownership modifications not included",
+        "prospectiveAdoption": "PROPOSED_EXACT_BLOB_ONLY_NOT_EFFECTIVE"
+      },
+      {
+        "path": "packages/rules/src/ability/interpreter.ts",
+        "finalBlob": "25f17fe843a9a05650722e996f0ce97109cfadbe",
+        "classification": "RUNTIME_OVERLAP",
+        "historicalAuthority": "ORIGINAL_PROOF_MISSING_FOR_EXACT_FINAL_DELTA",
+        "priorScopedSupport": "OBS-01_B_READ_ONLY_EXPORT_SCOPE_ONLY; ownership modifications not included",
+        "prospectiveAdoption": "PROPOSED_EXACT_BLOB_ONLY_NOT_EFFECTIVE"
+      },
+      {
+        "path": "packages/rules/tests/regression/b11-conversion-classification-api.test.ts",
+        "finalBlob": "889dc27042bced6b8f7fc89526b4cb458647b4bf",
+        "classification": "ORIGINAL_AUTHORITY_GAP",
+        "historicalAuthority": "ORIGINAL_PROOF_MISSING_FOR_EXACT_FINAL_DELTA",
+        "priorScopedSupport": "OBS-01_B_READ_ONLY_EXPORT_SCOPE_ONLY; ownership modifications not included",
+        "prospectiveAdoption": "PROPOSED_EXACT_BLOB_ONLY_NOT_EFFECTIVE"
+      },
+      {
+        "path": "docs/agents/manifests/tasks/B11_CONVERSION_BINDING_OWNERSHIP_REPAIR.json",
+        "finalBlob": "64c9e2fd97c61aba9ad6056c4c45968302e75aab",
+        "classification": "ORIGINAL_AUTHORITY_GAP",
+        "historicalAuthority": "ORIGINAL_PROOF_MISSING_FOR_EXACT_FINAL_DELTA",
+        "priorScopedSupport": "NONE_IN_INSPECTED_DISPATCH",
+        "prospectiveAdoption": "PROPOSED_EXACT_BLOB_ONLY_NOT_EFFECTIVE"
+      },
+      {
+        "path": "docs/agents/manifests/vectors/B11_CONVERSION_BINDING_OWNERSHIP_REPAIR.json",
+        "finalBlob": "4b8b6073387f45b0fc7eb0324753b8213528d799",
+        "classification": "ORIGINAL_AUTHORITY_GAP",
+        "historicalAuthority": "ORIGINAL_PROOF_MISSING_FOR_EXACT_FINAL_DELTA",
+        "priorScopedSupport": "NONE_IN_INSPECTED_DISPATCH",
+        "prospectiveAdoption": "PROPOSED_EXACT_BLOB_ONLY_NOT_EFFECTIVE"
+      },
+      {
+        "path": "packages/rules/src/ability/card-zone-result-binding.ts",
+        "finalBlob": "958013fcf75ccd9b8a08ecb2f0dcd2fd30a55fab",
+        "classification": "ORIGINAL_AUTHORITY_GAP",
+        "historicalAuthority": "ORIGINAL_PROOF_MISSING_FOR_EXACT_FINAL_DELTA",
+        "priorScopedSupport": "NONE_IN_INSPECTED_DISPATCH",
+        "prospectiveAdoption": "PROPOSED_EXACT_BLOB_ONLY_NOT_EFFECTIVE"
+      },
+      {
+        "path": "packages/rules/src/ability/executable-card-pack.ts",
+        "finalBlob": "1e6eef44d3cd177616575a9e9050e9a996c9ec51",
+        "classification": "RUNTIME_OVERLAP",
+        "historicalAuthority": "ORIGINAL_PROOF_MISSING_FOR_EXACT_FINAL_DELTA",
+        "priorScopedSupport": "NONE_IN_INSPECTED_DISPATCH",
+        "prospectiveAdoption": "PROPOSED_EXACT_BLOB_ONLY_NOT_EFFECTIVE"
+      },
+      {
+        "path": "packages/rules/tests/regression/b11-conversion-binding-ownership.test.ts",
+        "finalBlob": "338e5bdba84995984622ad2313c1a59b0fec5fe1",
+        "classification": "ORIGINAL_AUTHORITY_GAP",
+        "historicalAuthority": "ORIGINAL_PROOF_MISSING_FOR_EXACT_FINAL_DELTA",
+        "priorScopedSupport": "NONE_IN_INSPECTED_DISPATCH",
+        "prospectiveAdoption": "PROPOSED_EXACT_BLOB_ONLY_NOT_EFFECTIVE"
+      }
+    ],
+    "deltaEquivalence": "All nine final path blobs at 7ec91bbc match tested source and reviewed carrier; adjacent delta ancestry verified. No later modification adopted by inheritance.",
+    "scopeDistinction": "Export adds public existing classifier without logic/call-site change. Ownership broadens malformed-input routing, extracts shared semantics and adds compiler/runtime rejection; not covered by read-only export dispatch.",
+    "prospectiveAdoption": {
+      "status": "PROPOSED_NOT_EFFECTIVE",
+      "scope": "Only the two pinned deltas and nine verified final blobs, not the entire branch or any later modifications.",
+      "preconditions": [
+        "RB publishes separate immutable review binding exact carrier/test source and pinned deltas; assesses canonical rules, accepted contracts, atomicity, identity-free routing, fallback closure and unrelated shapes claimed by generic ownership.",
+        "RA publishes exact scope bindings for remaining A/R paths and immutable final evidence verdict.",
+        "Planner/user explicitly approves exact prospective adoption and publishes required Epoch transition for accepted contract/ownership changes before I authorization."
+      ],
+      "retrospectiveAuthorization": false,
+      "newRuntimeWritesAuthorized": false,
+      "effectiveAuthority": null,
+      "rejectionRoute": "If RB finds a semantic defect, Planner assigns one minimal B repair with explicit path/writer lock; no A runtime repair."
+    }
+  },
+  "mechanicalVerification": {
+    "embeddedByteRecordsVerified": 42,
+    "commandReceiptCount": 18,
+    "commandStreamCount": 36,
+    "healthRecords": [
+      {
+        "path": "D:\\fd-validation\\b11-recorded-validation\\receipts\\20261012T081138\\health.jsonl",
+        "byteLength": 21602,
+        "sha256": "D5D6D54566E01CAAC84A4FBECD9159FDC2E934F2751ABEAE91663148B5977EF0",
+        "records": 12
+      },
+      {
+        "path": "D:\\fd-validation\\b11-recorded-validation\\receipts\\20261012T081138-continuation\\health.jsonl",
+        "byteLength": 73736,
+        "sha256": "2D1711FD255A3103AA793B96AE71341AB0759F710BAFBCB3EDE1A2EC98081245",
+        "records": 44
+      }
+    ],
+    "sourceConfigObjects": [
+      {
+        "path": "data/authoring",
+        "oid": "b2e3896827cf9041e675b6f69c380b2668ff3413"
+      },
+      {
+        "path": "data/packs",
+        "oid": "8500f5ce85fef874f0e8325e5c5d2b4b91c9a9a8"
+      },
+      {
+        "path": "data/generated",
+        "oid": "40cebcd7f65316869f938b864ea6e133b1a98f66"
+      },
+      {
+        "path": "packages/content/src",
+        "oid": "578877014dfa30200bb7fe44e9126a5e114fd646"
+      },
+      {
+        "path": "packages/rules/src",
+        "oid": "91c4f8128ed7a51e7e59854a27f7e4f8fdda299f"
+      },
+      {
+        "path": "scripts/phase3-coverage.ts",
+        "oid": "ce6f84862de382703d6bfbf2940e535f1b238be3"
+      },
+      {
+        "path": "scripts/phase3-e08-b11-coverage-sync.ts",
+        "oid": "084a218398f460bc74a29e66d778ba52e69353d6"
+      },
+      {
+        "path": "scripts/tests/phase3-e08-b11-coverage-sync.test.ts",
+        "oid": "aa0651daad3e6698300373198e1d90882f742fff"
+      },
+      {
+        "path": "scripts/tests/phase3-e06-post-merge-recount.test.ts",
+        "oid": "9e6c91bf2789de1878b690aff03ec064894bc7f5"
+      },
+      {
+        "path": "scripts/phase3-preflight.ts",
+        "oid": "12a347ee40fa7277eea7f81512209be2f2891b18"
+      },
+      {
+        "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+        "oid": "bbb2a1735aa86801552421cfb8fc9bc8b1ada3b9"
+      },
+      {
+        "path": "apps/server/src",
+        "oid": "6f8d10eb9f7bc8ea4008b8e10e531e57574fd552"
+      },
+      {
+        "path": "apps/client/src",
+        "oid": "b717b97710a5afa6bb3e362ed6c230e2cde02778"
+      },
+      {
+        "path": "packages/rules/tests",
+        "oid": "b171665edc5f149bbdda05886c87eb4020a17158"
+      },
+      {
+        "path": "e2e",
+        "oid": "c35df85c558bbc6147be19dd12f967188b43951b"
+      },
+      {
+        "path": "scripts/phase3-tooling-common.ts",
+        "oid": "5392c14e86f52978c88b795524fef1efcb86fd80"
+      },
+      {
+        "path": "scripts/phase3-b11-diagnostic-api.ts",
+        "oid": "5820ba706be5a5124f3adbec62fd0bcd9cdd7763"
+      },
+      {
+        "path": "scripts/phase3-contract-parity.ts",
+        "oid": "a436a858dbc6c21fed48d58ff05538afd088a6e1"
+      },
+      {
+        "path": "scripts/phase3-contract-parity-worker.ts",
+        "oid": "dd386ae0e932e055674d53f08d93761edc7b32a1"
+      },
+      {
+        "path": "package.json",
+        "oid": "0f311821628a0a60cb37d752a259e6d688f7a6e9"
+      },
+      {
+        "path": "package-lock.json",
+        "oid": "d7844d900ba14635d4b8d2c50ac4954cbc9c0a93"
+      },
+      {
+        "path": "playwright.config.ts",
+        "oid": "c41069bee0070a5dd6b5d6653eca1f91d418b133"
+      },
+      {
+        "path": ".github/workflows/test.yml",
+        "oid": "fdacabf4b02417252369ca12368e3a0a53942da0"
+      }
+    ],
+    "sameSourceSequentialCi": [
+      {
+        "command": "npm run test:ci",
+        "exitCode": 0,
+        "testedSha": "9a4f4c6ee2723eb7f546341f3c18a1f0a29c3bc1",
+        "startedAt": "2026-10-12T00:15:06.029Z",
+        "endedAt": "2026-10-12T00:17:27.875Z",
+        "stdoutSha256": "3EF354189542B0FAB02ED61AD90F28AFA238BEFAECDDE2895DD7FEF654936459",
+        "stderrSha256": "3D417BEED61322A6D99AC401FC555E427DB0BF72546806AE66F7505B45FB1D09"
+      },
+      {
+        "command": "npm run test:ci",
+        "exitCode": 0,
+        "testedSha": "9a4f4c6ee2723eb7f546341f3c18a1f0a29c3bc1",
+        "startedAt": "2026-10-12T00:17:29.468Z",
+        "endedAt": "2026-10-12T00:19:53.354Z",
+        "stdoutSha256": "34E2327CEAA40491AF1A4BEBAC977A53E55D376630DA26631511D94389CCE73B",
+        "stderrSha256": "E9A888E1DE6A1B59923F0DD0B84169291372E08979B4A375B60EA446E4D6F0DF"
+      }
+    ],
+    "fullCiRerunByG": false,
+    "note": "Byte/hash/ancestry/source binding audit only. Existing receipt exits verified; G did not rerun tests or grant semantic acceptance."
+  },
+  "retainedBlockers": [
+    "RA/RB received verdicts not yet immutable machine attestations; RA 33-path scope review pending.",
+    "Preflight receipt exit 1 retained; no authorization or pending-to-PASS conversion.",
+    "Local Node 24 is not proof of GitHub Node 20 required checks.",
+    "93 MISSING_IMAGE remains independent Release blocker."
+  ],
+  "boundaries": {
+    "newEpochActivated": false,
+    "waiverEffective": false,
+    "governanceInputComplete": false,
+    "integrationAuthorized": false,
+    "newPrCreated": false,
+    "merged": false,
+    "promotedOnMain": false,
+    "coverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "mainDenominatorDelta": 0,
+    "ledger": "111/944",
+    "gateC": "NOT_VERIFIED",
+    "phase3Complete": false,
+    "releaseComplete": false,
+    "aNewWorkRequired": false
+  },
+  "nextOwner": "Planner/user: one explicit window-risk and exact prospective-adoption disposition after immutable RA/RB evidence. Publish required Epoch transition if approved; only then consider I authorization."
+}
