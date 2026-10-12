@@ -747,30 +747,8 @@
   font-family: var(--fd-display-font) !important;
 }
 
-/* Every utility/action button uses the same orange language as the reference
-   button. Large artwork cards and transparent navigation remain compositions,
-   so their image and hover treatments are not flattened into controls. */
-#app .screen button:not(.nav):not(.press-any):not(.legal-continue):not(.mode-card):not(.tutorial-card):not(.codex-card):not(.pick-card):not(.battle-bg-choice):not(.avatar-choice):not(.profile-avatar-button):not(.home-notice-edge):not(.home-notice-dot):not(.settings-row):not(.profile),
-.battle-root.battle-root button {
-  background: var(--ui-confirm) !important;
-  border-color: var(--ui-confirm) !important;
-  color: var(--ui-button-text) !important;
-  border-radius: 4px !important;
-  box-shadow: 0 3px 0 rgba(151, 69, 0, .34), 0 6px 16px rgba(0,0,0,.16) !important;
-}
-#app .screen button:not(:disabled):not(.nav):not(.press-any):not(.legal-continue):not(.mode-card):not(.tutorial-card):not(.codex-card):not(.pick-card):not(.battle-bg-choice):not(.avatar-choice):not(.profile-avatar-button):not(.home-notice-edge):not(.home-notice-dot):not(.settings-row):not(.profile):hover,
-.battle-root.battle-root button:not(:disabled):hover {
-  background: var(--ui-confirm-hover) !important;
-  border-color: var(--ui-confirm-hover) !important;
-  color: #fffdf8 !important;
-  box-shadow: 0 3px 0 rgba(151, 69, 0, .28), 0 8px 20px rgba(0,0,0,.22) !important;
-}
-#app .screen button:not(:disabled):not(.nav):not(.press-any):not(.legal-continue):not(.mode-card):not(.tutorial-card):not(.codex-card):not(.pick-card):not(.battle-bg-choice):not(.avatar-choice):not(.profile-avatar-button):not(.home-notice-edge):not(.home-notice-dot):not(.settings-row):not(.profile):active,
-.battle-root.battle-root button:not(:disabled):active {
-  background: var(--ui-confirm-active) !important;
-  border-color: var(--ui-confirm-active) !important;
-  box-shadow: 0 1px 0 rgba(151, 69, 0, .38) inset !important;
-}
+/* Only primary actions use the reference orange.  Tabs, filters, navigation,
+   close controls and selection cards keep their component-specific surfaces. */
 #app .screen button:disabled,
 .battle-root.battle-root button:disabled {
   background: #343638 !important;
