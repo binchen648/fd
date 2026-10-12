@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-a-integration-contract-review-v1",
+  "taskId": "P3-E09-B11-INTEGRATION-EVIDENCE-CONTRACT",
+  "reviewDate": "2026-10-12",
+  "reviewer": "Reviewer A",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "candidateSha": "a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da",
+  "reviewedSha": "a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da",
+  "implementationSha": "c8ffed759c5e821b5684b0019d4e95f5eefab44c",
+  "assemblySha": "da57179a3d7c8a9f407a4ea986ab834cdd0acf25",
+  "boundMainSha": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+  "runtimeCandidateSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+  "conclusion": "REVIEW_ACCEPTED",
+  "finalVerdict": "PASS",
+  "acceptedScope": "EXACT_INTEGRATION_BINDING_TOOLING_TEST_CONTRACT_AND_AUTHENTIC_EXECUTION_EVIDENCE_ONLY",
+  "technicalBlockingFindingsWithinAcceptedScope": [],
+  "boundPacket": {
+    "path": "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+    "sha256": "ACFE35DF7E6BCDF71B0C48DDD54C4CFD322B8FF124E65F4F6AE76946ACB9CADF"
+  },
+  "boundReport": {
+    "path": "docs/reports/2026-10-12-p3-e09-b11-integration-evidence-binding.md",
+    "sha256": "871F4A36F7DAAB2B1C67673A9A00F6A3C409DFA4199E3E3439B28AE63DA47092"
+  },
+  "authorization": {
+    "commit": "ab3540aa07c9a02f7879d96e042b8e2a0a41e728",
+    "path": "docs/agents/P3-E09-B11-INTEGRATION-CONTRACT-AND-ATTESTATION.md",
+    "sha256": "3ED51E6564CE52C143F50A9AF15D9B41F8C5CF94737E35CE8ED338B2BDDCCA94",
+    "sixChangedPathsWithinLiteralScope": true
+  },
+  "preservedTechnicalReview": {
+    "commit": "28875202695d43e580ddd637f1721e3a1dddbc8a",
+    "reviewedSha": "086a86a24f5cf0991b3743ceb28b34a767252070",
+    "path": "docs/reviews/phase3/P3-E09-B11-086a86a-final-contract-reviewer-a.json",
+    "sha256": "C4A19526A09845214F1C4D2B3B25CC933E75532B8CD7DD8B30C719AB241E7FFE",
+    "unchanged": true,
+    "historicalFindingsAndFailedReceiptsRetained": true
+  },
+  "preservedControlPaths": [
+    "docs/agents/FD-P3-CONTROL-EPOCH-09.md",
+    "docs/agents/PHASE3-TASK-INDEX.md",
+    "docs/agents/manifests/governance/P3-E09-B11-LIMITED-ADOPTION-ATTESTATION.json",
+    "docs/agents/manifests/governance/P3-E09-B11-ROOM-ID-ADOPTION.json",
+    "docs/reports/2026-10-12-p3-e09-b11-limited-adoption-governance.md",
+    "docs/reports/2026-10-12-p3-e09-b11-room-id-adoption.md"
+  ],
+  "contractReview": {
+    "separateMode": "PASS: historical final binding remains strict; integration preservation is limited to exact pinned paths, not a directory whitelist",
+    "mainControlProvenance": "PASS: six main paths, Git blobs and SHA-256 match the bound main and current carrier; modifications are rejected",
+    "lineage": "PASS: direct assembly -> implementation -> carrier parent chain; main, technical candidate and reviewer ancestry checked",
+    "historicalEvidence": "PASS: original reviewer, accepted packet, coverage and historical raw records remain byte-bound and separate from current execution",
+    "prospectiveAuthority": "PASS: exact room-ID/package adoption references checked as prospective authority only; missing historical authorization is not reconstructed",
+    "promotionEvidence": "PASS: only the three authorized G outputs may be explicitly bound; unknown paths, malformed references and input acceptance grants are rejected",
+    "failClosed": "PASS: current validator returns BLOCKED with RA pending, governance pending and source-assets missing; no readiness override",
+    "negativeVerification": "PASS: eight independent in-memory main/candidate/blob/hash/reviewer/unknown-key/acceptance/promotion-path mutations rejected; committed and dirty source/control negatives inspected in focused test source"
+  },
+  "independentEvidenceVerification": {
+    "method": "READ_ONLY_SOURCE_REVIEW_GIT_OBJECTS_RAW_BYTE_HASH_CHECKS_AND_CURRENT_VALIDATOR_NEGATIVES; NO_SUITE_RERUN",
+    "pinnedReferencesVerified": 32,
+    "newValidationRecords": 12,
+    "newRawStreams": 24,
+    "rawLengthsHashesAndLocalOriginalEquality": "PASS",
+    "finalImplementationRecords": 7,
+    "preparationHistoryRecords": 5,
+    "finalRecordsSourceIdentity": "ALL_SEVEN_PIN_IMPLEMENTATION_AND_HAVE_EMPTY_BEFORE_AFTER_STATUS_AND_NO_SIGNAL",
+    "finalRecordedBatchSequential": true,
+    "quietWindowOrLongTermStabilityCertified": false,
+    "nineRuntimeConfigObjectsAcrossRuntimeCandidateCombinationAssemblyImplementationCarrier": "PASS",
+    "carrierOnlyChanges": "PACKET_AND_REPORT; NO_SOURCE_OR_TEST_DELTA_FROM_TESTED_IMPLEMENTATION",
+    "historicalTransportRawStreams": 26,
+    "acceptedTechnicalPacketRawStreams": 24,
+    "copiedBrowserAndHistoricalFailedCIRecords": "EXACTLY_EQUAL_PINNED_ACCEPTED_TECHNICAL_PACKET; NOT_FRESH_EXECUTION",
+    "missingPreparationProbeEvidence": "REMAINS_MISSING_NOT_RECONSTRUCTED",
+    "remoteExactCarrierRef": "PASS",
+    "producerWorktreeClean": true,
+    "diffCheck": "PASS",
+    "runtimeWorkflowTimeoutKpiChanged": false
+  },
+  "executionResultsInspectedNotRerun": {
+    "focused": { "tests": 45, "exitCode": 0 },
+    "defaultCI": { "files": 194, "tests": 1565, "exitCode": 0 },
+    "npmCiTypecheckContentGeneratedDiff": "EXIT_0",
+    "browser": "NO_NEW_BROWSER_EXECUTION; SCOPED_HISTORICAL_EVIDENCE_REUSED_BY_SOURCE_EQUIVALENCE_ONLY"
+  },
+  "boundaries": {
+    "overallReadiness": "BLOCKED_GOVERNANCE_REQUIRED_CHECKS_AND_RELEASE_PREREQUISITES",
+    "githubAttestationProvided": false,
+    "reviewThread": null,
+    "promotionPolicyAttestation": false,
+    "runtimeSemanticAcceptanceGrantedByReviewerA": false,
+    "promotionAllowed": false,
+    "promotedOnMain": false,
+    "gateC": "NOT_VERIFIED",
+    "sourceAssetsMissing": 93,
+    "candidateLocalCounts": { "new": 23, "legacyResolve": 144, "legacyExecute": 3, "dual": 0, "notClassifiable": 111 },
+    "acceptedIdentities": 111,
+    "denominator": 944,
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0
+  },
+  "nextOwner": "G_FOR_REAL_GITHUB_BRIDGE_ATTESTATION_THEN_I_FOR_AUTHORIZED_ASSEMBLY_AND_ACTUAL_PROMOTION_HEAD_CHECKS; NO_AUTOMATIC_PROMOTION",
+  "commitBinding": "Immutable review commit and artifact SHA-256 returned externally; no self-reference or invented GitHub identity or URL"
+}
