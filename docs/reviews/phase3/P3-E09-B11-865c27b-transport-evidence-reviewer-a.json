@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-a-transport-evidence-review-v1",
+  "taskId": "P3-E09-B11-TRANSPORT-SECURITY-REPAIR",
+  "reviewDate": "2026-10-12",
+  "reviewer": "Reviewer A",
+  "controlContext": "EPOCH_09_SCOPED_DISPATCH; MAIN_PUBLICATION_NOT_ASSERTED",
+  "candidateSha": "865c27b9446e591c5e9be9956d50ca5375f825de",
+  "reviewedSha": "865c27b9446e591c5e9be9956d50ca5375f825de",
+  "baseSha": "463facb109cc4d19c4fda7af936fb4546fb86091",
+  "testedImplementationSha": "ea5e630bbabfcbd91cd2bce6b7eb17d24829d60b",
+  "conclusion": "REVIEW_ACCEPTED",
+  "finalVerdict": "PASS",
+  "acceptedScope": "EXACT_CANDIDATE_EVIDENCE_BINDING_RAW_RECEIPT_INTEGRITY_AUTHORIZED_PATHS_AND_FAILURE_DISCLOSURE_ONLY",
+  "technicalBlockingFindingsWithinAcceptedScope": [],
+  "boundPacket": {
+    "path": "artifacts/phase3-e09-b11-transport-security-repair.json",
+    "sha256": "d4d367c7174c9c697476ba6ee7a73ed30d6660f2546810e7c907c406202a8f21"
+  },
+  "boundReport": {
+    "path": "docs/reports/2026-10-12-p3-e09-b11-transport-security-repair.md",
+    "sha256": "91459279f49181e8b948196acd7624f3f6cc246544aa203663533f2d2c4d5c38"
+  },
+  "authorityReferencesInspected": {
+    "dispatchCommit": "e247a9a2c07c83652234c42e95f1d74548f1a6a3",
+    "dispatchPath": "docs/agents/P3-E09-B11-TRANSPORT-SECURITY-REPAIR.md",
+    "reservationCommit": "53eda909e3d5551b51bc892551b560779131fea3",
+    "reservationPath": "docs/agents/manifests/reservations/P3-E09-B11-TRANSPORT-SECURITY-REPAIR.json",
+    "compatibilityCommit": "2806e25c74337ff9cc5fb088cee4dd7b8674440f",
+    "compatibilityPath": "docs/agents/P3-E09-B11-COMPATIBILITY-AND-VALIDATION.md",
+    "prospectivePathScope": "PASS; 13 SOURCE_TEST_AND_2_EVIDENCE_PATHS",
+    "reservationAcknowledgement": "PRODUCER_HANDOFF_ASSERTION; NOT_AN_ENFORCED_MUTEX_OR_ALL_WORKER_ACK"
+  },
+  "independentVerification": {
+    "method": "READ_ONLY_GIT_OBJECTS_RAW_RECEIPTS_AND_COLLECTOR_INSPECTION; NO_HEAVY_TEST_RERUN",
+    "baseToTestedToCandidateAncestry": "PASS",
+    "thirteenSourceBlobIdsAndSha256": "PASS_ON_TESTED_AND_CANDIDATE",
+    "candidateVersusTestedDiff": "ONLY_PACKET_AND_REPORT; ALL_SOURCE_TEST_BYTES_UNCHANGED",
+    "unifiedSourceDiff": "PASS_EXACT_GIT_DIFF_BYTES_LENGTH_AND_SHA256",
+    "unifiedSourceDiffSha256": "d7399117c9e2ea18b649047da16a1c9c15aab0f5f9ac698bc587346e901b47d2",
+    "commandReceipts": 8,
+    "rawStreams": 16,
+    "rawStreamVerification": "PASS_BASE64_DECODED_LENGTH_HASH_AND_EQUALITY_TO_LOCAL_ORIGINALS",
+    "localReceiptMetadata": "PASS_8_ORIGINAL_FILE_HASHES_AND_COMMAND_CWD_SOURCE_TIME_EXIT_SIGNAL_FIELDS",
+    "preliminaryCombinedOutputs": "PASS_6_HASHES; PRELIMINARY_NOT_FINAL_SPLIT_STREAM_EVIDENCE",
+    "collectorHash": "PASS",
+    "collectorInspection": "Sequential child process capture; original streams drained before hashing; startup process sample is not a continuous exclusivity proof",
+    "sequentialTimesAndSignals": "PASS; ALL_FINAL_COMMANDS_WITHIN_RECORDED_WINDOW; NO_SIGNALS",
+    "unchangedPaths": "PACKAGE_WORKFLOW_AND_FIVE_FAILED_TEST_SOURCES_IDENTICAL_TO_BASE",
+    "remoteCandidateRef": "PASS_EXACT_SHA",
+    "producerWorktreeClean": true,
+    "diffCheck": "PASS"
+  },
+  "executionResultsInspectedNotRerun": {
+    "npmCiExit": 0,
+    "rootAndClientTypecheckExit": [0, 0],
+    "ruleRegressions": { "files": 8, "passed": 71, "exitCode": 0 },
+    "server": { "passed": 15, "exitCode": 0 },
+    "client": { "passed": 49, "failed": 1, "exitCode": 1 },
+    "browser": { "passed": 15, "repeatEach": 5, "exitCode": 0 },
+    "defaultCI": { "filesPassed": 189, "filesFailed": 4, "testsPassed": 1489, "testsFailed": 1, "testsSkipped": 45, "exitCode": 1 },
+    "countsAndFailureDescriptionsMatchRawOutput": true,
+    "browserScope": "TRUSTED_FIXTURE_START_FOR_CONVERSION_AND_GOLDEN; NOT_NATURAL_ROOM_PROGRESSION_OR_GLOBAL_GATE_C"
+  },
+  "retainedPrerequisites": [
+    "Client asset inventory assertion fails; unchanged test source does not waive failure or prove all inputs unchanged",
+    "Four default CI files fail historical source/continuation binding; no historical rewrite or check bypass is accepted",
+    "Fresh Reviewer B authentication, malformed input, mutation atomicity, fallback and final skill/socket composition verdict remains required",
+    "Recorded user coordination statement and process samples are not authenticated chat exports, all-worker ACKs or a global mutex",
+    "Preliminary focused results are historical producer observations, not independently witnessed final candidate execution",
+    "Local Node 24 is not GitHub Node 20 equivalence; promotion-head required checks remain unverified",
+    "Twelve dependency audit vulnerabilities disclosed; dependency updates outside scope",
+    "93 MISSING_IMAGE, historical governance gaps, Global Gate C and Release blockers remain"
+  ],
+  "boundaries": {
+    "overallReadiness": "FAIL_GLOBAL_VALIDATION_AND_INDEPENDENT_REVIEWS_PENDING",
+    "runtimeSecurityAcceptanceGranted": false,
+    "reviewerBVerdictIssuedByReviewerA": false,
+    "historicalSecurityFindingsClosedByReviewerA": false,
+    "githubAttestationProvided": false,
+    "gateC": "NOT_VERIFIED",
+    "promotionAllowed": false,
+    "mainLedger": "111/944",
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0
+  },
+  "nextOwner": "REVIEWER_B_FOR_EXACT_SECURITY_COMPOSITION; PLANNER_FOR_RETAINED_CI_ASSET_AND_GOVERNANCE_PREREQUISITES; NO_PROMOTION_AUTHORIZATION",
+  "commitBinding": "Immutable review commit and artifact SHA256 returned externally; no self-reference or invented GitHub review URL"
+}
