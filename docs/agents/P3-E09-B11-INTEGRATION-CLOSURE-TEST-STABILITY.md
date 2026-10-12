@@ -42,6 +42,7 @@ Authorized write paths are limited to:
 - `scripts/tests/phase3-e09-b11-final-binding.test.ts`
 - `scripts/tests/phase3-readiness-preflight.test.ts`
 - `scripts/tests/phase3-contract-parity.test.ts`
+- `scripts/phase3-preflight.ts` (only the exact authorization consumption below)
 - `scripts/fixtures/phase3-e09-b11-integration-binding.json`
 - `artifacts/phase3-e09-b11-integration-evidence-binding.json`
 - `docs/reports/2026-10-12-p3-e09-b11-integration-evidence-binding.md`
@@ -56,6 +57,36 @@ Allowed changes:
 - reduce redundant repeated Git graph walks when the checked object set is
   byte-identical and the artifact records the source hashes;
 - improve raw receipt recording for the focused command and default CI.
+
+### Exact Preflight Authorization Continuation
+
+Planner supplements authorization commit
+`bd0dabe80c40cdc3bae024303b68851d11f980b2` to close the mismatch between its
+authorized test changes and the integration preflight contract.
+
+Codex A may modify `scripts/phase3-preflight.ts` solely to consume the exact
+test-path authorization in that commit for this B11 integration-closure task.
+The newly admitted test delta is limited to:
+
+- `scripts/tests/phase3-e09-b11-final-binding.test.ts`
+- `scripts/tests/phase3-readiness-preflight.test.ts`
+- `scripts/tests/phase3-contract-parity.test.ts`
+
+Bind the authorization to its full commit SHA, task, candidate lineage and
+actual path set using the existing contract representation. Preserve existing
+hash, ancestry, review-reference and historical/current snapshot checks.
+This is authorization consumption, not acceptance of arbitrary content in
+these files; Reviewer A must review the actual changes.
+
+Do not admit a directory, glob, all tests, or arbitrary Planner commits.
+Unknown paths and absent, forged or mismatched authorization must still fail
+closed. Add positive and negative regression cases in the already authorized
+`scripts/tests/phase3-readiness-preflight.test.ts`: the exact authorized parity
+test delta is accepted, while an extra path or invalid authorization is rejected.
+
+Include this supplemental Planner commit in the final packet. Re-run the
+integration evidence preflight on the completed carrier in addition to the
+verification below. A preflight PASS does not grant promotion acceptance.
 
 Not allowed:
 
