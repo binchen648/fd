@@ -6,7 +6,30 @@ import { authorizationSha, finalSourcePaths, implementationBaseSha, mainSha, rep
   buildContinuationBinding, validateContinuationBinding, continuationPaths, continuationTaskId,
   buildContinuationReviews, validateContinuationReviews, validateContinuationReceipt, type ContinuationReceipt } from './phase3-e08-b11-coverage-sync';
 import { validateContinuationReceiptReference, type ReceiptReference } from './phase3-e08-b11-coverage-sync';
-import { ancestor, array, cliError, commitExists, fields, git, hash, InputError, inputFile, json, object, output, parseArgs, parseReference, readReference, safePath, sha, string, type Issue } from './phase3-tooling-common';
+import { ancestor, array, cliError, commitExists, fields, git as uncachedGit, hash, InputError, inputFile, json, object, output, parseArgs, parseReference, readReference, safePath, sha, string, type Issue } from './phase3-tooling-common';
+
+// A validation call can reuse immutable object reads, never HEAD/worktree state or a later call's evidence.
+let evidenceReads: { root: string; values: Map<string, Buffer> } | undefined;
+function withEvidenceReads<T>(root: string, evaluate: () => T, refs: string[] = []): T {
+  const previous = evidenceReads;
+  evidenceReads = { root, values: new Map() };
+  try {
+    if (refs.length) batchReferences(root, [...new Set(refs)].map(ref => {
+      const colon = ref.indexOf(':'); return { commit: ref.slice(0, colon), path: ref.slice(colon + 1) };
+    }));
+    return evaluate();
+  } finally { evidenceReads = previous; }
+}
+function git(root: string, args: string[]): Buffer {
+  const immutable = args[0] === 'show' && /^[0-9a-f]{40}:/.test(args[1]) ||
+    args[0] === 'rev-parse' && args.slice(1).every(arg => /^[0-9a-f]{40}(?:[:^].*)?$/.test(arg)) ||
+    args[0] === 'merge-base' && args[1] === '--is-ancestor' && args.slice(2).every(arg => /^[0-9a-f]{40}$/.test(arg));
+  const key = JSON.stringify(args);
+  if (immutable && evidenceReads?.root === root && evidenceReads.values.has(key)) return evidenceReads.values.get(key)!;
+  const bytes = uncachedGit(root, args);
+  if (immutable && evidenceReads?.root === root) evidenceReads.values.set(key, bytes);
+  return bytes;
+}
 
 const b11Task = 'P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY';
 
@@ -140,6 +163,24 @@ export function buildE09IntegrationBinding(root: string) {
 }
 
 export function validateE09IntegrationBinding(root: string, input: ReturnType<typeof buildE09IntegrationBinding>) {
+  return withEvidenceReads(root, () => evaluateE09IntegrationBinding(root, input));
+}
+
+function evaluateE09IntegrationBinding(root: string, input: ReturnType<typeof buildE09IntegrationBinding>, reviewPaths: ReadonlySet<string> = new Set()) {
+  if (git(root, ['diff', 'HEAD', '--', ...e09RuntimePaths]).length || git(root, ['ls-files', '--others', '--exclude-standard', '--', ...e09RuntimePaths]).length) throw new InputError('Dirty current provider');
+  if (!Array.isArray(input.promotionEvidence)) throw new InputError('Explicit promotion evidence references required');
+  const permitted = new Set<string>([...e09ControlPaths, ...e09IntegrationPaths,
+    'docs/reviews/phase3/P3-E09-B11-086a86a-final-contract-reviewer-a.json', ...reviewPaths]);
+  for (const raw of input.promotionEvidence) {
+    const ref = parseReference(raw, 'promotion evidence');
+    if (!(e09PromotionPaths as readonly string[]).includes(ref.path)) throw new InputError('Unknown or duplicate promotion evidence path');
+    if (hash(git(root, ['show', `${ref.commit}:${ref.path}`])) !== ref.sha256) throw new InputError('Integration reference hash mismatch');
+    permitted.add(ref.path);
+  }
+  for (const path of changedPaths(root, e09AssemblySha, 'HEAD')) {
+    if ((e09ControlPaths as readonly string[]).includes(path)) throw new InputError(`Preserved main blob drift: ${path}`);
+    if (!permitted.has(path)) throw new InputError(`Unknown integration delta: ${path}`);
+  }
   const expected = buildE09IntegrationBinding(root);
   assertFinalTaskCheck({ ...input, promotionEvidence: [] }, expected);
   if (!Array.isArray(input.promotionEvidence)) throw new InputError('Explicit promotion evidence references required');
@@ -204,16 +245,22 @@ export function validateE09IntegrationBinding(root: string, input: ReturnType<ty
   const packageBlob = input.technical.sourceObjects['package.json'];
   const packageHash = hash(git(root, ['show', `${e09CandidateSha}:package.json`]));
   if (!promotionAuthority.includes(`Final package.json blob: ${packageBlob}.`) || !promotionAuthority.includes(`Final SHA-256: ${packageHash}.`)) throw new InputError('Package prospective authority mismatch');
-  const preservedPaths = new Set<string>([...e09ControlPaths, ...e09IntegrationPaths, input.finalReviewerA.path]);
+  const preservedPaths = new Set<string>([...e09ControlPaths, ...e09IntegrationPaths, input.finalReviewerA.path, ...reviewPaths]);
   const newEvidence = new Set<string>();
+  const promotionRefs = input.promotionEvidence.map(raw => parseReference(raw, 'promotion evidence'));
+  if (promotionRefs.length) {
+    const blobs = git(root, ['rev-parse', ...promotionRefs.flatMap(ref => [`${ref.commit}:${ref.path}`, `HEAD:${ref.path}`])]).toString().trim().split('\n');
+    if (promotionRefs.some((ref, index) => blobs[index * 2] !== blobs[index * 2 + 1]) ||
+      git(root, ['diff', 'HEAD', '--', ...promotionRefs.map(ref => ref.path)]).length) throw new InputError('Promotion evidence source drift');
+    for (const commit of new Set(promotionRefs.map(ref => ref.commit))) {
+      git(root, ['merge-base', '--is-ancestor', e09AssemblySha, commit]);
+      git(root, ['merge-base', '--is-ancestor', commit, 'HEAD']);
+    }
+  }
   for (const raw of input.promotionEvidence) {
     const ref = parseReference(raw, 'promotion evidence');
     if (!(e09PromotionPaths as readonly string[]).includes(ref.path) || newEvidence.has(ref.path)) throw new InputError('Unknown or duplicate promotion evidence path');
-    git(root, ['merge-base', '--is-ancestor', e09AssemblySha, ref.commit]);
-    git(root, ['merge-base', '--is-ancestor', ref.commit, 'HEAD']);
     read(ref);
-    if (git(root, ['rev-parse', `${ref.commit}:${ref.path}`]).toString().trim() !== git(root, ['rev-parse', `HEAD:${ref.path}`]).toString().trim() ||
-      git(root, ['diff', 'HEAD', '--', ref.path]).length) throw new InputError('Promotion evidence source drift');
     newEvidence.add(ref.path); preservedPaths.add(ref.path);
   }
   for (const path of changedPaths(root, e09AssemblySha, 'HEAD')) if (!preservedPaths.has(path) || (e09ControlPaths as readonly string[]).includes(path)) throw new InputError(`Unknown integration delta: ${path}`);
@@ -229,6 +276,163 @@ export function validateE09IntegrationBinding(root: string, input: ReturnType<ty
       { code: 'SOURCE_ASSETS_MISSING', path: 'source-assets', message: '93 MISSING_IMAGE retained' }],
     historicalIssuesRewritten: false, acceptanceGranted: false, promotionAllowed: false, creditDelta: 0,
     reviewReadyChanged: false, promotionPolicyChanged: false };
+}
+
+export interface E09IntegrationReviewReference {
+  commit: string; path: string; sha256: string; schemaVersion: string; taskId: string;
+  controlEpoch: string; reviewer: string; reviewedCandidateSha: string; acceptedScope: string; verdict: string;
+  boundPacket: { commit: string; path: string; sha256: string };
+}
+const e09ClosureTask = 'P3-E09-B11-INTEGRATION-CLOSURE-REPAIR';
+const e09ClosureAuthority = '27dab1ad5b64127dffd7c4108aa9c1c6d4b076dc';
+const e09ClosureStart = '9dbeef07d6bf8a9b956d2291e768b5369f09803b';
+const e09HistoricalReview = 'd12271770d84b615109377ad970b915df246cf19';
+const e09HistoricalG = 'eaa7435b1b60f89c3df870116007bb7bc0a197c0';
+const e09ReviewContracts = {
+  'fd-phase3-reviewer-a-integration-contract-review-v1': { taskId: 'P3-E09-B11-INTEGRATION-EVIDENCE-CONTRACT',
+    scope: 'EXACT_INTEGRATION_BINDING_TOOLING_TEST_CONTRACT_AND_AUTHENTIC_EXECUTION_EVIDENCE_ONLY' },
+  'fd-phase3-reviewer-a-integration-closure-review-v1': { taskId: e09ClosureTask,
+    scope: 'EXACT_INTEGRATION_CLOSURE_REFERENCE_CONTRACT_AND_FINAL_ASSEMBLY_EVIDENCE_ONLY' },
+} as const;
+
+export function buildE09IntegrationReviewReference(root: string, commit: string, path: string): E09IntegrationReviewReference {
+  const ref = exactReference(root, sha(commit, 'review commit'), safePath(path, 'review path'));
+  const review = json(git(root, ['show', `${commit}:${path}`]), 'integration review');
+  const contract = e09ReviewContracts[review.schemaVersion as keyof typeof e09ReviewContracts];
+  if (!contract || review.taskId !== contract.taskId || review.acceptedScope !== contract.scope ||
+    review.controlEpoch !== 'FD-P3-2026-09-23-09' || review.finalVerdict !== 'PASS' || review.conclusion !== 'REVIEW_ACCEPTED' ||
+    !['Reviewer A', 'Codex Reviewer A'].includes(review.reviewer) || review.candidateSha !== review.reviewedSha ||
+    review.boundMainSha !== e09IntegrationMainSha || review.runtimeCandidateSha !== e09CandidateSha) throw new InputError('Unsupported or non-PASS integration review scope');
+  if (!path.startsWith('docs/reviews/phase3/') || !path.endsWith('.json')) throw new InputError('Technical review path required');
+  const reviewed = sha(review.reviewedSha, 'reviewed candidate');
+  const packet = parseReference({ commit: reviewed, ...object(review.boundPacket, 'bound packet') }, 'bound packet');
+  if (packet.commit !== reviewed) throw new InputError('Reviewed packet must come from the exact reviewed candidate');
+  if (packet.path !== 'artifacts/phase3-e09-b11-integration-evidence-binding.json') throw new InputError('Unexpected reviewed packet path');
+  return { ...ref, schemaVersion: review.schemaVersion, taskId: review.taskId, controlEpoch: review.controlEpoch,
+    reviewer: review.reviewer, reviewedCandidateSha: reviewed, acceptedScope: review.acceptedScope, verdict: review.finalVerdict, boundPacket: packet };
+}
+
+export function buildE09ClosureProducerBinding(root: string) {
+  const reviewPaths = changedPaths(root, 'a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da', e09HistoricalReview);
+  if (reviewPaths.length !== 1) throw new InputError('Historical review must introduce exactly one immutable artifact');
+  return { schemaVersion: 'fd-p3-e09-integration-producer-v1', taskId: e09ClosureTask,
+    controlEpoch: 'FD-P3-2026-09-23-09', frozenAssemblySha: e09ClosureStart,
+    authority: exactReference(root, e09ClosureAuthority, 'docs/agents/P3-E09-B11-INTEGRATION-CLOSURE-REPAIR.md'),
+    technicalBinding: buildE09IntegrationBinding(root),
+    historicalReviews: [buildE09IntegrationReviewReference(root, e09HistoricalReview, reviewPaths[0])],
+    historicalGovernance: batchReferences(root, e09PromotionPaths.map(path => ({ commit: e09HistoricalG, path }))),
+    historicalSynchronizationSha: '275eea1bfc8dde2b4c06df933403039c9eabb967',
+    temporalPolicy: { producerFrozenBeforeReview: true, futureReview: 'PENDING_EXTERNAL_REFERENCE', futureGovernance: 'PENDING_AFTER_NEW_REVIEW', futureSelfHash: 'NOT_EMBEDDED' },
+    formalCredit: { mainCoverageCreditDelta: 0, migrationCreditDelta: 0, denominatorDelta: 0, promotedOnMain: false } };
+}
+
+export interface E09ClosureInputs {
+  stage: 'PRODUCER' | 'ASSEMBLED'; producerCandidateSha: string | null;
+  reviewReferences: E09IntegrationReviewReference[];
+  governanceReferences: Array<{ commit: string; path: string; sha256: string }>;
+  synchronizationSha: string | null; finalHeadSha: string;
+}
+
+function validateE09ReviewReference(root: string, ref: E09IntegrationReviewReference, assembledSha: string) {
+  assertFinalTaskCheck(ref, buildE09IntegrationReviewReference(root, ref.commit, ref.path));
+  if (git(root, ['rev-parse', `${ref.commit}^`]).toString().trim() !== ref.reviewedCandidateSha ||
+    !isDeepStrictEqual(changedPaths(root, ref.reviewedCandidateSha, ref.commit), [ref.path])) throw new InputError('Review must be independent artifact-only direct descendant');
+  git(root, ['merge-base', '--is-ancestor', e09IntegrationMainSha, ref.reviewedCandidateSha]);
+  git(root, ['merge-base', '--is-ancestor', ref.commit, assembledSha]);
+  const packetBytes = git(root, ['show', `${ref.boundPacket.commit}:${ref.boundPacket.path}`]);
+  if (hash(packetBytes) !== ref.boundPacket.sha256) throw new InputError('Reviewed packet hash mismatch');
+  const blobs = git(root, ['rev-parse', `${ref.commit}:${ref.path}`, `${assembledSha}:${ref.path}`]).toString().trim().split('\n');
+  if (blobs[0] !== blobs[1]) throw new InputError('Assembled review blob mismatch');
+  if (git(root, ['diff', 'HEAD', '--', ref.path]).length) throw new InputError('Dirty review artifact');
+  return json(packetBytes, 'reviewed packet');
+}
+
+function validateE09GovernanceClosure(root: string, refs: E09ClosureInputs['governanceReferences'], review: E09IntegrationReviewReference, synchronization: string, head: string) {
+  if (refs.length !== 3 || !isDeepStrictEqual(refs.map(ref => ref.path).sort(), [...e09PromotionPaths].sort()) || new Set(refs.map(ref => ref.commit)).size !== 1) throw new InputError('Exactly three immutable G references required');
+  const checkedRefs = refs.map(ref => parseReference(ref, 'G reference'));
+  const assembledBlobs = git(root, ['rev-parse', ...checkedRefs.flatMap(ref => [`${ref.commit}:${ref.path}`, `${head}:${ref.path}`])]).toString().trim().split('\n');
+  checkedRefs.forEach((ref, index) => {
+    if (assembledBlobs[index * 2] !== assembledBlobs[index * 2 + 1]) throw new InputError(`Final G source drift: ${ref.path}`);
+  });
+  const read = (raw: E09ClosureInputs['governanceReferences'][number]) => {
+    const ref = parseReference(raw, 'G reference');
+    const bytes = git(root, ['show', `${ref.commit}:${ref.path}`]);
+    if (hash(bytes) !== ref.sha256) throw new InputError('G reference hash mismatch');
+    return bytes;
+  };
+  const bytes = new Map(refs.map(ref => [ref.path, read(ref)]));
+  const attestation = json(bytes.get(e09PromotionPaths[0])!, 'G attestation');
+  const inputs = json(bytes.get(e09PromotionPaths[1])!, 'G inputs');
+  if (attestation.schemaVersion !== 'fd-phase3-review-attestation-v1' || attestation.taskId !== 'P3-E09-I-B11-FINAL-PROMOTION' ||
+    attestation.candidateSha !== review.reviewedCandidateSha || attestation.conclusion !== 'REVIEW_ACCEPTED' ||
+    !/^github:[A-Za-z0-9-]+$/.test(attestation.reviewer) || !/^https:\/\/github\.com\/binchen648\/fd\/pull\/\d+#issuecomment-\d+$/.test(attestation.reviewThread) ||
+    inputs.schemaVersion !== 'fd-p3-promotion-governance-inputs-v1' || inputs.taskId !== 'P3-E09-B11-PROMOTION-ATTESTATION-BRIDGE' || inputs.controlEpoch !== review.controlEpoch || inputs.effectiveMain !== e09IntegrationMainSha ||
+    inputs.newIntegrationRa.commit !== review.commit || inputs.newIntegrationRa.path !== review.path || inputs.newIntegrationRa.sha256 !== review.sha256 ||
+    inputs.newIntegrationRa.candidateSha !== review.reviewedCandidateSha || inputs.newIntegrationRa.verdict !== 'PASS' ||
+    inputs.newIntegrationRa.acceptedScope !== review.acceptedScope || inputs.integrationPacket.sha256 !== review.boundPacket.sha256) throw new InputError('G must bind this exact new RA and candidate');
+  const g = refs[0].commit;
+  for (const [base, tip] of [[review.commit, g], [g, synchronization], [synchronization, head]]) git(root, ['merge-base', '--is-ancestor', base, tip]);
+  if (new Set([review.reviewedCandidateSha, review.commit, g, synchronization, head]).size !== 5) throw new InputError('Distinct candidate/RA/G/synchronization/final identities required');
+  return { synchronizationSha: synchronization, finalHeadSha: head, governanceCommit: g,
+    externalGithubStatement: 'IMMUTABLE_RECORDED_REFERENCE_ONLY_NOT_FRESH_NETWORK_OR_REQUIRED_CHECK_VERIFICATION', policyAcceptanceGranted: false };
+}
+
+export function validateE09IntegrationClosure(root: string, producer: ReturnType<typeof buildE09ClosureProducerBinding>, temporal: E09ClosureInputs) {
+  fields(object(temporal, 'temporal inputs'), ['stage', 'producerCandidateSha', 'reviewReferences', 'governanceReferences', 'synchronizationSha', 'finalHeadSha'], 'temporal inputs');
+  const head = git(root, ['rev-parse', 'HEAD']).toString().trim();
+  if (temporal.finalHeadSha !== head || !['PRODUCER', 'ASSEMBLED'].includes(temporal.stage)) throw new InputError('Actual final HEAD and supported temporal stage required');
+  if (temporal.stage === 'ASSEMBLED') {
+    const candidate = sha(temporal.producerCandidateSha, 'producer candidate');
+    const allowed = new Set([...array(temporal.reviewReferences, 'review references').map(ref => safePath(ref.path, 'review path')), ...e09PromotionPaths]);
+    for (const path of changedPaths(root, candidate, head)) if (!allowed.has(path)) throw new InputError(`Unauthorized post-candidate delta: ${path}`);
+  }
+  const binding = producer.technicalBinding;
+  const refs = [producer.authority, binding.authorization, binding.promotionAuthority, binding.finalReviewerA,
+    binding.acceptedPacket, binding.acceptedCoverage, ...binding.preservedControlFiles,
+    ...producer.historicalGovernance, ...producer.historicalReviews, ...temporal.reviewReferences,
+    ...temporal.governanceReferences, ...producer.historicalReviews.map(ref => ref.boundPacket),
+    ...temporal.reviewReferences.map(ref => ref.boundPacket)];
+  return withEvidenceReads(root, () => evaluateE09IntegrationClosure(root, producer, temporal),
+    [...refs.map(ref => `${sha(ref.commit, 'evidence commit')}:${safePath(ref.path, 'evidence path')}`),
+      ...e09References.map(([commit, path]) => `${commit}:${path}`)]);
+}
+
+function evaluateE09IntegrationClosure(root: string, producer: ReturnType<typeof buildE09ClosureProducerBinding>, temporal: E09ClosureInputs) {
+  assertFinalTaskCheck(producer, buildE09ClosureProducerBinding(root));
+  fields(object(temporal, 'temporal inputs'), ['stage', 'producerCandidateSha', 'reviewReferences', 'governanceReferences', 'synchronizationSha', 'finalHeadSha'], 'temporal inputs');
+  const head = git(root, ['rev-parse', 'HEAD']).toString().trim();
+  if (temporal.finalHeadSha !== head || !['PRODUCER', 'ASSEMBLED'].includes(temporal.stage)) throw new InputError('Actual final HEAD and supported temporal stage required');
+  git(root, ['merge-base', '--is-ancestor', producer.frozenAssemblySha, head]);
+  const reviews = [...producer.historicalReviews, ...array(temporal.reviewReferences, 'review references')];
+  if (new Set(reviews.map(ref => `${ref.commit}:${ref.path}`)).size !== reviews.length || new Set(reviews.map(ref => ref.path)).size !== reviews.length) throw new InputError('Duplicate review references');
+  const packets = new Map(reviews.map(ref => [ref.commit, validateE09ReviewReference(root, ref, head)]));
+  const historicalReview = producer.historicalReviews[0];
+  validateE09GovernanceClosure(root, producer.historicalGovernance, historicalReview, producer.historicalSynchronizationSha, producer.frozenAssemblySha);
+  let assembly: ReturnType<typeof validateE09GovernanceClosure> | null = null;
+  let governance = producer.historicalGovernance;
+  if (temporal.stage === 'PRODUCER') {
+    if (temporal.producerCandidateSha !== null || temporal.synchronizationSha !== null || temporal.reviewReferences.length || temporal.governanceReferences.length) throw new InputError('Producer cannot embed future acceptance proofs');
+  } else {
+    const candidate = sha(temporal.producerCandidateSha, 'producer candidate');
+    const current = temporal.reviewReferences.find(ref => ref.reviewedCandidateSha === candidate && ref.taskId === e09ClosureTask);
+    if (!current || temporal.reviewReferences.length !== 1) throw new InputError('One new exact closure review required; historical PASS cannot be inherited');
+    const packet = packets.get(current.commit)!;
+    if (packet.taskId !== e09ClosureTask) throw new InputError('Current producer packet task mismatch');
+    assertFinalTaskCheck(packet.producerBinding, producer);
+    const packetBlobs = git(root, ['rev-parse', `${candidate}:${current.boundPacket.path}`, `HEAD:${current.boundPacket.path}`]).toString().trim().split('\n');
+    if (packetBlobs[0] !== packetBlobs[1]) throw new InputError('Frozen producer packet rewritten after review');
+    const allowed = new Set([...temporal.reviewReferences.map(ref => ref.path), ...e09PromotionPaths]);
+    for (const path of changedPaths(root, candidate, head)) if (!allowed.has(path)) throw new InputError(`Unauthorized post-candidate delta: ${path}`);
+    governance = array(temporal.governanceReferences, 'current G references');
+    assembly = validateE09GovernanceClosure(root, governance, current, sha(temporal.synchronizationSha, 'synchronization'), head);
+  }
+  const technicalBinding = { ...producer.technicalBinding, promotionEvidence: governance };
+  const result = evaluateE09IntegrationBinding(root, technicalBinding, new Set(reviews.map(ref => ref.path)));
+  return { ...result, schemaVersion: 'fd-p3-e09-integration-closure-result-v1', taskId: e09ClosureTask,
+    issues: assembly ? result.issues.filter(issue => issue.code !== 'INTEGRATION_REVIEWER_A_PENDING') : result.issues,
+    historicalAssembly: { finalHeadSha: producer.frozenAssemblySha, verifiedAsHistoricalOnly: true },
+    currentAssembly: assembly, currentReviewStatus: assembly ? 'EXACT_CURRENT_REFERENCE_BOUND_NOT_PROMOTION' : 'PENDING_NEW_INDEPENDENT_REVIEW',
+    producerFutureProofEmbedded: false, acceptanceGranted: false, promotionAllowed: false };
 }
 const socketTask = 'P3-E08-SHARED-SOCKET-LIFECYCLE-FIX';
 const b11Paths = [
@@ -292,6 +496,17 @@ export function runPreflight(root: string, raw: unknown, candidate: string, base
   reviewReadyChanged: boolean; promotionPolicyChanged: boolean; [key: string]: any;
 } {
   const input = object(raw, 'task check');
+  if (input.schemaVersion === 'fd-p3-e09-integration-producer-v1' || input.schemaVersion === 'fd-p3-e09-integration-closure-check-v1') {
+    const head = git(root, ['rev-parse', 'HEAD']).toString().trim();
+    if (candidate !== head || base !== e09IntegrationMainSha) throw new InputError('Closure CLI SHA mismatch');
+    if (input.schemaVersion === 'fd-p3-e09-integration-closure-check-v1') fields(input, ['schemaVersion', 'producerBinding', 'temporal'], 'closure check');
+    const producer = input.schemaVersion === 'fd-p3-e09-integration-producer-v1' ? input : input.producerBinding;
+    const temporal = input.schemaVersion === 'fd-p3-e09-integration-producer-v1' ? {
+      stage: 'PRODUCER' as const, producerCandidateSha: null, reviewReferences: [], governanceReferences: [], synchronizationSha: null, finalHeadSha: head,
+    } : input.temporal;
+    return { ...validateE09IntegrationClosure(root, producer as ReturnType<typeof buildE09ClosureProducerBinding>, temporal),
+      inputs: { testedCandidateSha: candidate, testedBaseSha: base, inputSha256 }, changedPaths: changedPaths(root, base, candidate) };
+  }
   if (input.schemaVersion === 'fd-p3-e09-integration-binding-v1') {
     if (candidate !== git(root, ['rev-parse', 'HEAD']).toString().trim() || base !== input.observedMainSha) throw new InputError('Integration CLI SHA mismatch');
     return { ...validateE09IntegrationBinding(root, input as ReturnType<typeof buildE09IntegrationBinding>),
@@ -419,6 +634,9 @@ function batchReferences(root: string, refs: Array<{ commit: string; path: strin
     const end = newline + 1 + Number(match[1]);
     if (output[end] !== 10) throw new InputError('Truncated provenance Git blob');
     const bytes = output.subarray(newline + 1, end); offset = end + 1;
+    if (evidenceReads?.root === root && /^[0-9a-f]{40}$/.test(ref.commit)) {
+      evidenceReads.values.set(JSON.stringify(['show', `${ref.commit}:${ref.path}`]), bytes);
+    }
     return { ...ref, sha256: sha256(bytes) };
   });
   if (offset !== output.length) throw new InputError('Unexpected extra provenance Git bytes');
@@ -426,8 +644,13 @@ function batchReferences(root: string, refs: Array<{ commit: string; path: strin
 }
 
 function requireGitBatch(root: string, refs: string[]) {
-  return execFileSync('git', ['cat-file', '--batch'], { cwd: root, input: `${refs.join('\n')}\n`,
+  const key = `immutable-batch:${JSON.stringify(refs)}`;
+  const immutable = refs.every(ref => /^[0-9a-f]{40}:/.test(ref));
+  if (immutable && evidenceReads?.root === root && evidenceReads.values.has(key)) return evidenceReads.values.get(key)!;
+  const bytes = execFileSync('git', ['cat-file', '--batch'], { cwd: root, input: `${refs.join('\n')}\n`,
     maxBuffer: 32 * 1024 * 1024, stdio: ['pipe', 'pipe', 'pipe'] });
+  if (immutable && evidenceReads?.root === root) evidenceReads.values.set(key, bytes);
+  return bytes;
 }
 
 export function buildFinalTaskCheck(root: string, sourceSha: string) {

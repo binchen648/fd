@@ -4,7 +4,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { setImmediate as yieldToEventLoop } from 'node:timers/promises';
-import { assertFinalTaskCheck, buildFinalTaskCheck, buildContinuationTaskCheck, runPreflight, buildE09IntegrationBinding } from '../phase3-preflight';
+import { assertFinalTaskCheck, buildFinalTaskCheck, buildContinuationTaskCheck, runPreflight, buildE09IntegrationBinding, buildE09ClosureProducerBinding } from '../phase3-preflight';
 import { git, gitText, hash, InputError } from '../phase3-tooling-common';
 import { publicationSha, reference } from '../phase3-b11-tooling-inputs';
 import { buildContinuationBinding, validateContinuationBinding, validateContinuationReceiptReference, createHistoricalEvidenceSnapshot, type ContinuationReceipt, type ReceiptReference } from '../phase3-e08-b11-coverage-sync';
@@ -61,6 +61,12 @@ let receiptFixture: { binding: ReturnType<typeof buildContinuationBinding>; rece
 const evaluate = (context: ReturnType<typeof fixture>, input: unknown = context.input, candidate = context.candidate) => runPreflight(context.cwd, input, candidate, context.base, hash(JSON.stringify(input)));
 
 describe('integration preflight does not inherit historical readiness', () => {
+  it('requires the actual final SHA and rejects unsupported external closure fields', () => {
+    const producer = buildE09ClosureProducerBinding(currentRoot);
+    expect(() => runPreflight(currentRoot, producer, producer.technicalBinding.technicalCarrierSha, producer.technicalBinding.observedMainSha, hash(JSON.stringify(producer)))).toThrow('Closure CLI SHA mismatch');
+    const head = gitText(currentRoot, ['rev-parse', 'HEAD']);
+    expect(() => runPreflight(currentRoot, { schemaVersion: 'fd-p3-e09-integration-closure-check-v1', producerBinding: producer, temporal: {}, waiveMissingReview: true }, head, producer.technicalBinding.observedMainSha, '0'.repeat(64))).toThrow('unknown field');
+  });
   it('rejects stale CLI identity before evaluation and requires the integration schema', () => {
     const input = buildE09IntegrationBinding(currentRoot);
     expect(() => runPreflight(currentRoot, input, input.technicalCarrierSha, input.observedMainSha, hash(JSON.stringify(input)))).toThrow('Integration CLI SHA mismatch');

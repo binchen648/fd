@@ -1,127 +1,187 @@
 {
-  "schemaVersion": "fd-p3-e09-integration-binding-v1",
-  "taskId": "P3-E09-B11-INTEGRATION-EVIDENCE-CONTRACT",
+  "schemaVersion": "fd-p3-e09-integration-producer-v1",
+  "taskId": "P3-E09-B11-INTEGRATION-CLOSURE-REPAIR",
   "controlEpoch": "FD-P3-2026-09-23-09",
-  "assemblySha": "da57179a3d7c8a9f407a4ea986ab834cdd0acf25",
-  "observedMainSha": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
-  "previousMainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
-  "technicalCarrierSha": "086a86a24f5cf0991b3743ceb28b34a767252070",
-  "technical": {
-    "schemaVersion": "fd-p3-e09-final-binding-v1",
-    "taskId": "P3-E09-B11-FINAL-EVIDENCE-CONTRACT-REPAIR",
-    "candidateSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
-    "runtimeBaseSha": "463facb109cc4d19c4fda7af936fb4546fb86091",
-    "combinationTestedSha": "88dcd441a17584b4a2a6d1ba78e588ac6a818ed1",
-    "references": [
+  "frozenAssemblySha": "9dbeef07d6bf8a9b956d2291e768b5369f09803b",
+  "authority": {
+    "commit": "27dab1ad5b64127dffd7c4108aa9c1c6d4b076dc",
+    "path": "docs/agents/P3-E09-B11-INTEGRATION-CLOSURE-REPAIR.md",
+    "sha256": "17AE3BA6CC383EB3BF267FE6F21D0E7FC591EB9110A97E110A94527B26DE7DC2"
+  },
+  "technicalBinding": {
+    "schemaVersion": "fd-p3-e09-integration-binding-v1",
+    "taskId": "P3-E09-B11-INTEGRATION-EVIDENCE-CONTRACT",
+    "controlEpoch": "FD-P3-2026-09-23-09",
+    "assemblySha": "da57179a3d7c8a9f407a4ea986ab834cdd0acf25",
+    "observedMainSha": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+    "previousMainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+    "technicalCarrierSha": "086a86a24f5cf0991b3743ceb28b34a767252070",
+    "technical": {
+      "schemaVersion": "fd-p3-e09-final-binding-v1",
+      "taskId": "P3-E09-B11-FINAL-EVIDENCE-CONTRACT-REPAIR",
+      "candidateSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+      "runtimeBaseSha": "463facb109cc4d19c4fda7af936fb4546fb86091",
+      "combinationTestedSha": "88dcd441a17584b4a2a6d1ba78e588ac6a818ed1",
+      "references": [
+        {
+          "commit": "4d5b76be9d5459cc0c40e50fae8513bc59cd5d21",
+          "path": "docs/reviews/phase3/P3-E09-B11-TRANSPORT-SECURITY-REPAIR-0f62210-reviewer-b.json",
+          "sha256": "6FE0EAD378E31149B3271E137FDB99ACAC161F2894E3FAD21FC0A14986E96DB4"
+        },
+        {
+          "commit": "e247a9a2c07c83652234c42e95f1d74548f1a6a3",
+          "path": "docs/agents/P3-E09-B11-TRANSPORT-SECURITY-REPAIR.md",
+          "sha256": "68FA8B97CF7BFB7954EBB886EDB90B1C1204CFF1D3A672B1079CFCAC7ADDB90C"
+        },
+        {
+          "commit": "2806e25c74337ff9cc5fb088cee4dd7b8674440f",
+          "path": "docs/agents/P3-E09-B11-COMPATIBILITY-AND-VALIDATION.md",
+          "sha256": "6357254B6935930554B6AC4CFF8FBD5D7A8CFFD65E65B5CE87F4EB82C498AEA9"
+        },
+        {
+          "commit": "69002b6a13f733cfdae586aeb4e19408e1ee592b",
+          "path": "docs/agents/P3-E09-B11-FINAL-EVIDENCE-CONTRACT-REPAIR.md",
+          "sha256": "BF027CFC8DCE0C3A31B0FB4062FE402470895816F832656836B8AE4344FFEE3A"
+        },
+        {
+          "commit": "0f62210a2e007a15e28f945c546ccd00c345942a",
+          "path": "artifacts/phase3-e09-b11-transport-security-repair.json",
+          "sha256": "9B1EB7E165F578722579BC2A44AD79D9CA78D8DDBB72747D83C07678EBAB6CF0"
+        }
+      ],
+      "sourceObjects": {
+        "packages": "c904b430fa508f32633c94ba0f4a529608906b59",
+        "apps": "c34eef2d6a3827ca60659a0410e4cc2e5c373a12",
+        "e2e": "13b6198a127710b63fead7589d24cd26f59ae6e0",
+        "data": "9afd59edf63bf38293e02950a7c3abd31bbc1938",
+        "package.json": "0f311821628a0a60cb37d752a259e6d688f7a6e9",
+        "package-lock.json": "d7844d900ba14635d4b8d2c50ac4954cbc9c0a93",
+        "playwright.config.ts": "c41069bee0070a5dd6b5d6653eca1f91d418b133",
+        "tsconfig.json": "249eda05330a5d5380bba2a0981594ae6f1fabf0",
+        "scripts/phase3-coverage.ts": "ce6f84862de382703d6bfbf2940e535f1b238be3"
+      },
+      "historicalAcceptanceInherited": false,
+      "mainCreditDelta": 0
+    },
+    "authorization": {
+      "commit": "ab3540aa07c9a02f7879d96e042b8e2a0a41e728",
+      "path": "docs/agents/P3-E09-B11-INTEGRATION-CONTRACT-AND-ATTESTATION.md",
+      "sha256": "3ED51E6564CE52C143F50A9AF15D9B41F8C5CF94737E35CE8ED338B2BDDCCA94"
+    },
+    "promotionAuthority": {
+      "commit": "76133b6dbfc09318143df37b24b0e2e4a2de3a17",
+      "path": "docs/agents/P3-E09-I-B11-PROMOTION-AUTHORIZATION.md",
+      "sha256": "7F4AF9FCEF80C69FEA9EC9216453315378D7E248C40B5EDFA69F5B7BF5CE1D3E"
+    },
+    "finalReviewerA": {
+      "commit": "28875202695d43e580ddd637f1721e3a1dddbc8a",
+      "path": "docs/reviews/phase3/P3-E09-B11-086a86a-final-contract-reviewer-a.json",
+      "sha256": "C4A19526A09845214F1C4D2B3B25CC933E75532B8CD7DD8B30C719AB241E7FFE"
+    },
+    "acceptedPacket": {
+      "commit": "086a86a24f5cf0991b3743ceb28b34a767252070",
+      "path": "artifacts/phase3-e09-b11-final-evidence-binding.json",
+      "sha256": "6E1CB9EEBBB9F8A71C0CB65C562F15E29D003EE1A56D309580D7F74560E12E36"
+    },
+    "acceptedCoverage": {
+      "commit": "086a86a24f5cf0991b3743ceb28b34a767252070",
+      "path": "artifacts/phase3-e09-b11-final-coverage.json",
+      "sha256": "FC256A3C1851CFAC43DA133EBC9D76D69BBC6CF2C4AD3495F08533BE0F61ACCA"
+    },
+    "preservedControlFiles": [
       {
-        "commit": "4d5b76be9d5459cc0c40e50fae8513bc59cd5d21",
-        "path": "docs/reviews/phase3/P3-E09-B11-TRANSPORT-SECURITY-REPAIR-0f62210-reviewer-b.json",
-        "sha256": "6FE0EAD378E31149B3271E137FDB99ACAC161F2894E3FAD21FC0A14986E96DB4"
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "docs/agents/FD-P3-CONTROL-EPOCH-09.md",
+        "sha256": "F49FD1F9883E8638CD54F1ED76F7EFD57CFDB8B7C69E67F149D62E8493EE2B96",
+        "gitBlob": "f066b3936d3e4006efb7c985ad617b0a28e4ee8d"
       },
       {
-        "commit": "e247a9a2c07c83652234c42e95f1d74548f1a6a3",
-        "path": "docs/agents/P3-E09-B11-TRANSPORT-SECURITY-REPAIR.md",
-        "sha256": "68FA8B97CF7BFB7954EBB886EDB90B1C1204CFF1D3A672B1079CFCAC7ADDB90C"
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "docs/agents/PHASE3-TASK-INDEX.md",
+        "sha256": "D40BFB9B20DD6B4EE04C21446AA5803898D5071B4D922D27D261273861ABAFC8",
+        "gitBlob": "56d685226151f02da1774acbecc6066c825ee3a5"
       },
       {
-        "commit": "2806e25c74337ff9cc5fb088cee4dd7b8674440f",
-        "path": "docs/agents/P3-E09-B11-COMPATIBILITY-AND-VALIDATION.md",
-        "sha256": "6357254B6935930554B6AC4CFF8FBD5D7A8CFFD65E65B5CE87F4EB82C498AEA9"
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "docs/agents/manifests/governance/P3-E09-B11-LIMITED-ADOPTION-ATTESTATION.json",
+        "sha256": "C33D6C9266BB4733ED99D3816B0E6FE3A780CEC0B454058D76B5106DA2CF9DF1",
+        "gitBlob": "77b52bf577b5f0e122bc6dc01c5e26ec04af1053"
       },
       {
-        "commit": "69002b6a13f733cfdae586aeb4e19408e1ee592b",
-        "path": "docs/agents/P3-E09-B11-FINAL-EVIDENCE-CONTRACT-REPAIR.md",
-        "sha256": "BF027CFC8DCE0C3A31B0FB4062FE402470895816F832656836B8AE4344FFEE3A"
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "docs/agents/manifests/governance/P3-E09-B11-ROOM-ID-ADOPTION.json",
+        "sha256": "94A7BBC2B85CA027735A38887EC471B8D3167D4E4D0319BF18321EA1E2C53C18",
+        "gitBlob": "0d9c810850689b86f73f3de229c8f804c4ebbea9"
       },
       {
-        "commit": "0f62210a2e007a15e28f945c546ccd00c345942a",
-        "path": "artifacts/phase3-e09-b11-transport-security-repair.json",
-        "sha256": "9B1EB7E165F578722579BC2A44AD79D9CA78D8DDBB72747D83C07678EBAB6CF0"
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "docs/reports/2026-10-12-p3-e09-b11-limited-adoption-governance.md",
+        "sha256": "13A6898C035BC4E4F6B57AEB01813D460AF86BDE267EF1FCE406361C74EE5AB1",
+        "gitBlob": "6b6dfc82bea7a1dc26062c5f420993879dd8dda0"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "docs/reports/2026-10-12-p3-e09-b11-room-id-adoption.md",
+        "sha256": "43D58E0661DD0B0E397DE31065C67535CC252E2065274565B4DDEB0DC71D6ED7",
+        "gitBlob": "a86f1bbbe10bd4b16d0008061ec883958ba3128b"
       }
     ],
-    "sourceObjects": {
-      "packages": "c904b430fa508f32633c94ba0f4a529608906b59",
-      "apps": "c34eef2d6a3827ca60659a0410e4cc2e5c373a12",
-      "e2e": "13b6198a127710b63fead7589d24cd26f59ae6e0",
-      "data": "9afd59edf63bf38293e02950a7c3abd31bbc1938",
-      "package.json": "0f311821628a0a60cb37d752a259e6d688f7a6e9",
-      "package-lock.json": "d7844d900ba14635d4b8d2c50ac4954cbc9c0a93",
-      "playwright.config.ts": "c41069bee0070a5dd6b5d6653eca1f91d418b133",
-      "tsconfig.json": "249eda05330a5d5380bba2a0981594ae6f1fabf0",
-      "scripts/phase3-coverage.ts": "ce6f84862de382703d6bfbf2940e535f1b238be3"
+    "promotionEvidence": [],
+    "formalCredit": {
+      "mainCoverageCreditDelta": 0,
+      "migrationCreditDelta": 0,
+      "denominatorDelta": 0,
+      "promotedOnMain": false
     },
-    "historicalAcceptanceInherited": false,
-    "mainCreditDelta": 0
+    "acceptanceGranted": false
   },
-  "authorization": {
-    "commit": "ab3540aa07c9a02f7879d96e042b8e2a0a41e728",
-    "path": "docs/agents/P3-E09-B11-INTEGRATION-CONTRACT-AND-ATTESTATION.md",
-    "sha256": "3ED51E6564CE52C143F50A9AF15D9B41F8C5CF94737E35CE8ED338B2BDDCCA94"
-  },
-  "promotionAuthority": {
-    "commit": "76133b6dbfc09318143df37b24b0e2e4a2de3a17",
-    "path": "docs/agents/P3-E09-I-B11-PROMOTION-AUTHORIZATION.md",
-    "sha256": "7F4AF9FCEF80C69FEA9EC9216453315378D7E248C40B5EDFA69F5B7BF5CE1D3E"
-  },
-  "finalReviewerA": {
-    "commit": "28875202695d43e580ddd637f1721e3a1dddbc8a",
-    "path": "docs/reviews/phase3/P3-E09-B11-086a86a-final-contract-reviewer-a.json",
-    "sha256": "C4A19526A09845214F1C4D2B3B25CC933E75532B8CD7DD8B30C719AB241E7FFE"
-  },
-  "acceptedPacket": {
-    "commit": "086a86a24f5cf0991b3743ceb28b34a767252070",
-    "path": "artifacts/phase3-e09-b11-final-evidence-binding.json",
-    "sha256": "6E1CB9EEBBB9F8A71C0CB65C562F15E29D003EE1A56D309580D7F74560E12E36"
-  },
-  "acceptedCoverage": {
-    "commit": "086a86a24f5cf0991b3743ceb28b34a767252070",
-    "path": "artifacts/phase3-e09-b11-final-coverage.json",
-    "sha256": "FC256A3C1851CFAC43DA133EBC9D76D69BBC6CF2C4AD3495F08533BE0F61ACCA"
-  },
-  "preservedControlFiles": [
+  "historicalReviews": [
     {
-      "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
-      "path": "docs/agents/FD-P3-CONTROL-EPOCH-09.md",
-      "sha256": "F49FD1F9883E8638CD54F1ED76F7EFD57CFDB8B7C69E67F149D62E8493EE2B96",
-      "gitBlob": "f066b3936d3e4006efb7c985ad617b0a28e4ee8d"
-    },
-    {
-      "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
-      "path": "docs/agents/PHASE3-TASK-INDEX.md",
-      "sha256": "D40BFB9B20DD6B4EE04C21446AA5803898D5071B4D922D27D261273861ABAFC8",
-      "gitBlob": "56d685226151f02da1774acbecc6066c825ee3a5"
-    },
-    {
-      "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
-      "path": "docs/agents/manifests/governance/P3-E09-B11-LIMITED-ADOPTION-ATTESTATION.json",
-      "sha256": "C33D6C9266BB4733ED99D3816B0E6FE3A780CEC0B454058D76B5106DA2CF9DF1",
-      "gitBlob": "77b52bf577b5f0e122bc6dc01c5e26ec04af1053"
-    },
-    {
-      "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
-      "path": "docs/agents/manifests/governance/P3-E09-B11-ROOM-ID-ADOPTION.json",
-      "sha256": "94A7BBC2B85CA027735A38887EC471B8D3167D4E4D0319BF18321EA1E2C53C18",
-      "gitBlob": "0d9c810850689b86f73f3de229c8f804c4ebbea9"
-    },
-    {
-      "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
-      "path": "docs/reports/2026-10-12-p3-e09-b11-limited-adoption-governance.md",
-      "sha256": "13A6898C035BC4E4F6B57AEB01813D460AF86BDE267EF1FCE406361C74EE5AB1",
-      "gitBlob": "6b6dfc82bea7a1dc26062c5f420993879dd8dda0"
-    },
-    {
-      "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
-      "path": "docs/reports/2026-10-12-p3-e09-b11-room-id-adoption.md",
-      "sha256": "43D58E0661DD0B0E397DE31065C67535CC252E2065274565B4DDEB0DC71D6ED7",
-      "gitBlob": "a86f1bbbe10bd4b16d0008061ec883958ba3128b"
+      "commit": "d12271770d84b615109377ad970b915df246cf19",
+      "path": "docs/reviews/phase3/P3-E09-B11-a09fe2d-integration-contract-reviewer-a.json",
+      "sha256": "3EC5C7FB57E8A32AD9747EB7F94CC1E5C47C0CCFE2B59DE5578F3864ED3BF230",
+      "schemaVersion": "fd-phase3-reviewer-a-integration-contract-review-v1",
+      "taskId": "P3-E09-B11-INTEGRATION-EVIDENCE-CONTRACT",
+      "controlEpoch": "FD-P3-2026-09-23-09",
+      "reviewer": "Reviewer A",
+      "reviewedCandidateSha": "a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da",
+      "acceptedScope": "EXACT_INTEGRATION_BINDING_TOOLING_TEST_CONTRACT_AND_AUTHENTIC_EXECUTION_EVIDENCE_ONLY",
+      "verdict": "PASS",
+      "boundPacket": {
+        "commit": "a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da",
+        "path": "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+        "sha256": "ACFE35DF7E6BCDF71B0C48DDD54C4CFD322B8FF124E65F4F6AE76946ACB9CADF"
+      }
     }
   ],
-  "promotionEvidence": [],
+  "historicalGovernance": [
+    {
+      "commit": "eaa7435b1b60f89c3df870116007bb7bc0a197c0",
+      "path": "docs/reviews/phase3/P3-E09-B11-promotion-attestation.json",
+      "sha256": "C37074DBE5AA830CFD866A5C4B0695E2850C648DA790C36344015CB18D30EF91"
+    },
+    {
+      "commit": "eaa7435b1b60f89c3df870116007bb7bc0a197c0",
+      "path": "docs/agents/manifests/governance/P3-E09-B11-PROMOTION-GOVERNANCE-INPUTS.json",
+      "sha256": "A998942C1D996675592EB9DA37C98908C1FD84657EA78D8481519D0EF48E10B6"
+    },
+    {
+      "commit": "eaa7435b1b60f89c3df870116007bb7bc0a197c0",
+      "path": "docs/reports/2026-10-12-p3-e09-b11-promotion-attestation.md",
+      "sha256": "F61B8682C749320C50774AC839EF3AD003C01D791681E2D40D47FC159F95065C"
+    }
+  ],
+  "historicalSynchronizationSha": "275eea1bfc8dde2b4c06df933403039c9eabb967",
+  "temporalPolicy": {
+    "producerFrozenBeforeReview": true,
+    "futureReview": "PENDING_EXTERNAL_REFERENCE",
+    "futureGovernance": "PENDING_AFTER_NEW_REVIEW",
+    "futureSelfHash": "NOT_EMBEDDED"
+  },
   "formalCredit": {
     "mainCoverageCreditDelta": 0,
     "migrationCreditDelta": 0,
     "denominatorDelta": 0,
     "promotedOnMain": false
-  },
-  "acceptanceGranted": false
+  }
 }
