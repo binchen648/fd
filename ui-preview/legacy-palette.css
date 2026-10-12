@@ -390,7 +390,12 @@
   width: 360px !important;
   max-width: calc(100vw - 64px) !important;
   clip-path: none !important;
-  background: rgba(239,238,233,.76) !important;
+  background: linear-gradient(90deg,
+    rgba(239,238,233,.78) 0%,
+    rgba(239,238,233,.78) 58%,
+    rgba(239,238,233,.62) 78%,
+    rgba(239,238,233,.26) 93%,
+    rgba(239,238,233,0) 100%) !important;
   box-shadow: 0 4px 14px rgba(0,0,0,.20) !important;
   backdrop-filter: blur(1px) !important;
   transition: opacity .18s ease, transform .18s ease !important;
@@ -402,7 +407,12 @@
 #app .home-screen .home-menu .nav:focus-visible::before {
   opacity: 1 !important;
   transform: translateX(0) !important;
-  background: rgba(239,238,233,.76) !important;
+  background: linear-gradient(90deg,
+    rgba(239,238,233,.78) 0%,
+    rgba(239,238,233,.78) 58%,
+    rgba(239,238,233,.62) 78%,
+    rgba(239,238,233,.26) 93%,
+    rgba(239,238,233,0) 100%) !important;
 }
 #app .home-screen .home-menu .nav:hover,
 #app .home-screen .home-menu .nav:focus-visible,
