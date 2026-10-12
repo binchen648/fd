@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "fd-p3-package-reservation-disposition-v1",
+  "taskId": "P3-E09-G-PACKAGE-RESERVATION",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "date": "2026-10-12",
+  "role": "Codex G / Promotion Governance Owner",
+  "githubIdentity": "github:binchen648",
+  "publicationRef": "refs/heads/codex/g-p3-e09-package-reservation-proposal",
+  "governancePublication": {
+    "pr": 558,
+    "headSha": "ac2663c526535923f510358f12b2926db16dddf6",
+    "mergeSha": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+    "mainShaObserved": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+    "publishedEpoch": "FD-P3-2026-09-23-09",
+    "classification": "CONTROL_ONLY_DRIFT",
+    "scope": "Six governance/control files only; package/runtime/config unchanged by merge; not B11 runtime promotion.",
+    "userMergeAuthority": "Explicit user instruction in this conversation to review and merge PR #558; recorded in GitHub comment 6121282458",
+    "auditUrl": "https://github.com/binchen648/fd/pull/558#issuecomment-6121282458"
+  },
+  "historicalReservation": {
+    "verdict": "ORIGINAL_WRITER_RESERVATION_PROOF_NOT_ESTABLISHED",
+    "exactMissingEvidence": "Contemporaneous acknowledgement/assignment of exclusive package.json writer ownership for the two introducing edits, tied to owner, worktree/ref, path and execution interval. Implementation task ownership, author login and subsequent clean worktree observations are not that proof.",
+    "investigationScope": "Inspected immutable task authorities, introducing package Git deltas, RA row-17 review and Planner checkpoint. No original reservation record supplied by these sources; not a claim of exhaustive cross-chat search.",
+    "reviewReference": {
+      "commit": "94e5588955fa96f1c160aebcb55f895346036fd3",
+      "path": "docs/reviews/phase3/P3-E08-B11-463facb-path-scope-review.json",
+      "row": 17,
+      "verdict": "NOT_VERIFIED_FOR_HISTORICAL_RESERVATION"
+    },
+    "priorAuthorities": [
+      {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886"
+      },
+      {
+        "commit": "08e2f8cbf99b69ff1220b9dc1e933ec08fe57158",
+        "path": "docs/agents/P3-E08-B11-ONE-PASS-A-REPAIR.md",
+        "sha256": "461476638B42AA31448DADD2026D8B0F9F317FFC6E4BDE474AD3F84FB30F9F00"
+      }
+    ],
+    "priorAuthorityMeaning": [
+      "A owns scoped tooling/package script entries but must coordinate writer locks.",
+      "Cap authorization permits only appending --maxWorkers=2 and explicitly forbids inheriting earlier package deltas."
+    ]
+  },
+  "exactPath": "package.json",
+  "transitions": [
+    {
+      "before": {
+        "commit": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+        "blob": "4feec879e2ae5ef0547634e5a62b89b8d1794d88",
+        "sha256": "67743B8F98E98A2DDFE50E7E1030F663CE6B5958145EB7477ACBFB4488269128"
+      },
+      "after": {
+        "commit": "9a7122176dcc82827c27d2cf593c59633737eafe",
+        "blob": "ba841428f741d8b5cbfc82817dc62e11718bcae1",
+        "sha256": "7BC2EDC15A74AF833F4A5EFE50509F8AA03C07990AB7B19AADCCC9AEF6127593"
+      },
+      "scriptDeltas": [
+        {
+          "key": "phase3:preflight",
+          "before": null,
+          "after": "tsx scripts/phase3-preflight.ts"
+        },
+        {
+          "key": "phase3:contract-parity",
+          "before": null,
+          "after": "tsx scripts/phase3-contract-parity.ts"
+        }
+      ]
+    },
+    {
+      "before": {
+        "commit": "11c1985dc4c72151bbf16298292bf4b7fa29fcab",
+        "blob": "ba841428f741d8b5cbfc82817dc62e11718bcae1",
+        "sha256": "7BC2EDC15A74AF833F4A5EFE50509F8AA03C07990AB7B19AADCCC9AEF6127593"
+      },
+      "after": {
+        "commit": "f4cdad92f129d26a75aac207ecedc991d40a653c",
+        "blob": "0f311821628a0a60cb37d752a259e6d688f7a6e9",
+        "sha256": "6FFED5CF04F2F5FD13538E7EF86E5C59D2F50B5DB2401C9424264E50204A1658"
+      },
+      "scriptDeltas": [
+        {
+          "key": "test:ci",
+          "before": "vitest run --exclude \"packages/rules/tests/*-authoring.test.ts\" --exclude \"packages/rules/tests/five-servants-authoring.test.ts\" --exclude \"packages/content/src/__tests__/fd-playtest-masters.test.ts\" --exclude \"packages/content/src/__tests__/fd-playtest-servants.test.ts\" --exclude \"scripts/tests/compile-playtest-content-pack.test.ts\" --exclude \"scripts/tests/verify-fd-playtest-v1.test.ts\"",
+          "after": "vitest run --exclude \"packages/rules/tests/*-authoring.test.ts\" --exclude \"packages/rules/tests/five-servants-authoring.test.ts\" --exclude \"packages/content/src/__tests__/fd-playtest-masters.test.ts\" --exclude \"packages/content/src/__tests__/fd-playtest-servants.test.ts\" --exclude \"scripts/tests/compile-playtest-content-pack.test.ts\" --exclude \"scripts/tests/verify-fd-playtest-v1.test.ts\" --maxWorkers=2"
+        }
+      ]
+    }
+  ],
+  "finalCarrierPackage": {
+    "commit": "086a86a24f5cf0991b3743ceb28b34a767252070",
+    "blob": "0f311821628a0a60cb37d752a259e6d688f7a6e9",
+    "sha256": "6FFED5CF04F2F5FD13538E7EF86E5C59D2F50B5DB2401C9424264E50204A1658"
+  },
+  "mainPackage": {
+    "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+    "blob": "4feec879e2ae5ef0547634e5a62b89b8d1794d88",
+    "sha256": "67743B8F98E98A2DDFE50E7E1030F663CE6B5958145EB7477ACBFB4488269128"
+  },
+  "verification": {
+    "jsonDeltaOnlyDeclaredThreeScriptKeys": true,
+    "dependenciesDevDependenciesWorkspacesUnchanged": true,
+    "testExclusionsUnchanged": true,
+    "timeoutRetryWorkflowLockfileChanges": false,
+    "packageBlobMatchesFrozenSources": [
+      "f4cdad92f129d26a75aac207ecedc991d40a653c",
+      "9a4f4c6ee2723eb7f546341f3c18a1f0a29c3bc1",
+      "0f62210a2e007a15e28f945c546ccd00c345942a",
+      "485b216cd4c440d3ff253248c46b62e226ee223e",
+      "086a86a24f5cf0991b3743ceb28b34a767252070"
+    ],
+    "finalRa": {
+      "commit": "28875202695d43e580ddd637f1721e3a1dddbc8a",
+      "conclusion": "REVIEW_ACCEPTED",
+      "scope": "Final evidence/tooling technical acceptance only; no historical ownership proof reconstructed."
+    }
+  },
+  "prospectiveProposal": {
+    "status": "PROPOSED_NOT_EFFECTIVE",
+    "adoptionType": "Exact existing package script delta and disclosed historical ownership-risk disposition, prospective only.",
+    "scope": "Only the two pinned package.json transitions, three script-key changes and final blob 0f311821628a0a60cb37d752a259e6d688f7a6e9/SHA-256 6FFED5CF04F2F5FD13538E7EF86E5C59D2F50B5DB2401C9424264E50204A1658.",
+    "excluded": [
+      "Other paths in introducing commits or whole branches.",
+      "Underlying preflight/parity implementations, runtime, authoring, policy exemptions or additional package changes.",
+      "Later package delta inheritance or changes to existing excludes, dependencies, lockfile, timeout or retry settings.",
+      "Historical acknowledgement reconstruction, future writer reservation, local Node 24 equivalence or overall acceptance."
+    ],
+    "activationRequirements": [
+      "Planner/user explicitly accepts this exact two-delta/final-blob prospective disposition and missing historical ownership risk in immutable authority.",
+      "Planner records effective scope and any required control/ownership transition; no Epoch 10 activation inferred by G.",
+      "I authorization remains a separate Planner decision after all other applicable prerequisites; eventual exact promotion HEAD requires Node 20 build/test/policy checks."
+    ],
+    "effectiveAuthority": null,
+    "historicalMissingProofRetained": true,
+    "newAImplementationOrRerunRequired": false,
+    "policyImplementationChangeAuthorized": false
+  },
+  "boundaries": {
+    "packageJsonEdited": false,
+    "runtimeEdited": false,
+    "producerPacketRewritten": false,
+    "governanceInputComplete": false,
+    "integrationAuthorized": false,
+    "overallAcceptance": false,
+    "coverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0,
+    "ledger": "111/944",
+    "gateC": "NOT_VERIFIED",
+    "missingImageReleaseBlockers": 93,
+    "releaseReady": false,
+    "newEpochActivated": false
+  },
+  "nextOwner": "Planner/user: approve or reject exact proposal, or supply actual historical reservation proof. No A sync/retest solely for this governance decision."
+}
