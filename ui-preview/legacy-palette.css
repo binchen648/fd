@@ -388,7 +388,7 @@
 #app .home-screen .home-menu .nav::before {
   inset: 9px -8px 9px -4px !important;
   clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%) !important;
-  background: rgba(227,226,221,.80) !important;
+  background: rgba(220,219,214,.64) !important;
   box-shadow: 0 4px 14px rgba(0,0,0,.20) !important;
   backdrop-filter: blur(1px) !important;
   transition: opacity .18s ease, transform .18s ease !important;
@@ -501,6 +501,24 @@
   .profile-transfer-actions button:not(:disabled)):hover {
   background: var(--ui-confirm-hover) !important;
   border-color: var(--ui-confirm-hover) !important;
+}
+
+/* Disabled action buttons must not retain the old gold fill. */
+#app .screen :is(.ow-primary,.room-primary,.profile-name-edit button,
+  .settings-confirm,.tutorial-step-actions button:last-child,
+  .purchase-finish,.ready-enter-preview,.threex-primary,.pick-confirm,
+  .multi-lobby-start,.purchase-option-foot button,
+  [data-standard-next],[data-confirm-choice],[data-enter-battle-preview],
+  [data-room-start],[data-threex-finish-purchase],[data-threex-finish-ban],
+  [data-threex-confirm-ban],[data-threex-confirm-master],
+  [data-threex-confirm-servant]):disabled,
+#app .screen.draft-screen .contract-workspace .ow-draft-footer > .ow-primary:disabled,
+#app .screen.draft-screen .purchase-option-foot button:disabled {
+  background: #343638 !important;
+  border-color: #55585a !important;
+  color: #9b9e9e !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
 }
 
 /* The draft footer has a deliberately very specific component rule in the
