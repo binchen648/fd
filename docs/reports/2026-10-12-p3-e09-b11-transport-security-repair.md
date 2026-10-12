@@ -5,6 +5,8 @@ State: `IMPLEMENTATION_COMPLETE_CANDIDATE`.
 Readiness: `FAIL_GLOBAL_VALIDATION_AND_INDEPENDENT_REVIEWS_PENDING`.
 Current tested implementation: `d9d8a6a480710afba20ee7371ecdedb09de77de1`. The final candidate is the exact commit containing this packet, reported externally in the final handoff to avoid inventing a self-referential SHA. The final evidence commit changes no source/test blobs. The previous candidate `865c27b9446e591c5e9be9956d50ca5375f825de` was FAILED for unauthenticated room replacement; its tests do not grant current acceptance.
 
+Fresh browser/default-CI combination tested carrier: `88dcd441a17584b4a2a6d1ba78e588ac6a818ed1`, independently checked to have the same source/config Git objects as the focused implementation. Fresh final RB composition and RA evidence review are pending. The user-reported RB room-ID PASS is narrow; RA PASS bound to `865c27b9` is historical only.
+
 ## Authority And Source
 
 - Base: `463facb109cc4d19c4fda7af936fb4546fb86091`.
@@ -74,6 +76,19 @@ The shared `resolveMatchRoomId` resolves defaults only for an omitted ID, reject
 
 Fresh focused verification against `d9d8a6a...`: typecheck exit 0; 9 rule files / 123 tests exit 0 (including FB2-49 persistence/trust); server 16/16 exit 0; diff-check exit 0. Direct Hub and real HTTP cases cover omitted/default duplicate, empty, whitespace-only, null, number, object and array IDs. They assert original room/session identity, full snapshot and credentials, persistence scope, version and projection unchanged. Hub also checks the global scope binding and that trust revocation is never called. The older fresh-lifecycle scope test now uses a separate new Hub, retaining its provenance rejection while respecting the prohibition on overwriting a live room.
 
-Three fresh command receipts/six raw streams bind the new source. The eight old receipts/sixteen streams remain immutable inside the historical batch. The previous heavy window remains RELEASED; no new browser/full-CI batch or heavy exclusivity is claimed. Current browser/full CI have not been rerun; no old acceptance is inherited. Reviewer must fresh-review the new exact candidate.
+Three focused command receipts/six raw streams bind `d9d8a6a` under `roomIdFocusedReceipts`. The eight old receipts/sixteen streams remain immutable inside the historical batch. At the room-ID checkpoint, no new browser/full-CI run had been performed. The follow-up combination executions below are now bound to `88dcd441`; no old acceptance is inherited. Reviewer must fresh-review the final exact candidate.
+
+### Fresh Current-Source Combination Batch
+
+The user explicitly assigned browser combination and default full CI on the new source. Actual bounded window on host `cyb`: 2026-10-12 16:09:48.3547284 through 16:17:36.9740612 Asia/Shanghai, now RELEASED. Initial free bytes: C=168105304064, D=53355061248. No competing heavy process was found; only the existing non-FD Vite service on 5173 remained. Ports 3000/8787 were free before and after the run. This records the new execution instruction and process observations without fabricating fresh cross-chat acknowledgements.
+
+Sequential executions against exact `88dcd441`:
+
+- Chromium Conversion Magic, Golden Eater and remote-sync with repeat-each=5: exit 0, 15/15. Each scenario passed 5/5. Conversion and Golden retain trusted server-process fixture starting boundaries; remote-sync performs real HTTP create/join/select/start.
+- Original `npm run test:ci`: exit 1; 189/193 files passed, 4 failed; 1490 tests passed, 1 failed, 45 skipped of 1536. No timeout/concurrency settings were changed or new flags supplied.
+
+The four fresh failing files are `phase3-contract-parity.test.ts` (historical packages source mismatch), `phase3-e08-b11-coverage-sync.test.ts`, `phase3-readiness-preflight.test.ts` and `phase3-e06-post-merge-recount.test.ts` (historical continuation table rejects App.test.tsx). Complete stdout/stderr bytes, SHA-256, commands, times and exits are embedded in the packet's current two receipts/four streams; source/config equivalence is explicitly pinned. Raw files are `12-current-combination-browser.*` and `13-current-combination-default-ci.*` in the local receipt directory. Failures were not weakened, waived or repaired in A-owned code.
+
+Only packet/report change after this batch. Runtime/source/test/configuration objects remain identical to the tested carrier. The final frozen SHA is reported externally. Browser success and local room-ID review do not grant final security/composition acceptance. Readiness remains FAIL pending the retained validation blockers and fresh exact-candidate RB/RA reviews; no main/Phase/Gate/credit/promotion is granted.
 
 Global client/full CI are not green. Fresh RB security/composition review and RA evidence review are pending; no prior narrow PASS is inherited. Local Node v24.13.1 does not establish GitHub Node20 equivalence. Deployment/TLS and snapshot-at-rest protection are not verified. Unrelated offline/legacy snapshot E2Es are not migrated and cannot bypass current HTTP host proof. Historical evidence, governance/authority gaps and Release blockers remain unchanged. No role-level PR, self-PASS, credit or Gate is granted; `111/944` and `93 MISSING_IMAGE` remain unchanged.
