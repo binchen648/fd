@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "fd-planner-writer-reservation-v1",
+  "reservationId": "P3-E09-B11-TRANSPORT-SECURITY-REPAIR",
+  "issuedDate": "2026-10-12",
+  "issuerRole": "Planner / Process Controller",
+  "ownerRole": "Codex B / communication runtime owner",
+  "ownerTask": "P3-E09-B11-TRANSPORT-SECURITY-REPAIR",
+  "status": "GRANTED_PENDING_OWNER_BINDING",
+  "authorityType": "PLANNER_EXCLUSIVE_PROSPECTIVE_RESERVATION",
+  "controlTransition": "FD-P3-2026-09-23-09_PENDING_PUBLICATION_ON_MAIN",
+  "mainPublishedEpoch": "FD-P3-2026-09-23-08",
+  "mainObserved": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "requiredBase": "463facb109cc4d19c4fda7af936fb4546fb86091",
+  "resourceDomains": ["session-authority", "server-transport"],
+  "sourceAndTestPaths": [
+    "packages/rules/src/match-room.ts",
+    "packages/rules/src/match-room-hub.ts",
+    "packages/rules/src/match-room-protocol.ts",
+    "packages/rules/tests/match-room.test.ts",
+    "packages/rules/tests/match-room-hub.test.ts",
+    "apps/server/src/match-server.ts",
+    "apps/server/src/match-server.test.ts",
+    "apps/client/src/state/match-room-client.ts",
+    "apps/client/src/state/remote-room-fixture.ts",
+    "e2e/support/prepare-conversion-magic-room.ts",
+    "e2e/support/prepare-golden-eater-room.ts",
+    "e2e/fd-conversion-magic-core-primitive.spec.ts",
+    "e2e/fd-golden-eater-result-binding.spec.ts",
+    "e2e/fd-remote-sync.spec.ts"
+  ],
+  "evidencePaths": [
+    "artifacts/phase3-e09-b11-transport-security-repair.json",
+    "docs/reports/2026-10-12-p3-e09-b11-transport-security-repair.md"
+  ],
+  "otherPlannerTasks": "NO_NEW_OVERLAPPING_WRITES; existing or unknown conflicting work must be preserved and reported, not reset or silently superseded",
+  "preGrantObservation": {
+    "observedAt": "2026-10-12T09:46:43.1146880+08:00",
+    "accessibleRegisteredWorktreesChecked": 210,
+    "inaccessibleRegisteredWorktrees": 6,
+    "dirtyAuthorizedSourceAndTestPathsFound": 0,
+    "method": "git worktree list --porcelain; git -C each-accessible-worktree status --porcelain -- exact-14-paths",
+    "limitations": "Snapshot only; not cross-chat acknowledgement, remote-fork audit, process lock or proof that no future writer can act"
+  },
+  "ownerBinding": {
+    "branch": null,
+    "absoluteWorktree": null,
+    "acknowledgement": "PENDING_OWNER_HANDOFF",
+    "activation": "Only the designated B task may bind this grant; return branch/worktree/exact base and reservation acceptance before source edits. Existing conflict requires Planner disposition, not waiting for an unspecified registry."
+  },
+  "release": "Planner explicitly releases or transfers after frozen candidate handoff; no implicit timeout or automatic transfer to another B",
+  "testWindow": "NOT_GRANTED; source reservation is not permission for uncoordinated simultaneous heavy tests",
+  "runtimeAcceptance": false,
+  "integrationAuthorized": false,
+  "creditDelta": 0
+}
