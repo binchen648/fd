@@ -1,0 +1,278 @@
+{
+  "schemaVersion": "fd-p3-final-runtime-combination-review-v1",
+  "taskId": "P3-E08-B11-FINAL-B11-SOCKET-GOLDEN-EATER-REVIEW",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "reviewDate": "2026-10-12",
+  "reviewer": {
+    "role": "Reviewer B",
+    "identity": "Codex Reviewer B",
+    "githubIdentity": null,
+    "githubReviewThread": null
+  },
+  "reviewedCarrierSha": "463facb109cc4d19c4fda7af936fb4546fb86091",
+  "testedImplementationSha": "9a4f4c6ee2723eb7f546341f3c18a1f0a29c3bc1",
+  "sourceEquivalence": "Independently verified 23 source/config Git object identities between receipt, implementation and reviewed carrier.",
+  "verdict": "FAILED",
+  "scope": {
+    "consumers": [
+      "conversion-magic.preparation",
+      "sc-kintoki-3.golden-eater"
+    ],
+    "components": [
+      "shared binding ownership/compiler",
+      "typed resolution and staged pending",
+      "MatchSession dispatch and rollback",
+      "MatchRoomHub mutation gate",
+      "server socket registration/authentication/disconnection",
+      "browser projection/reconnect/stale evidence"
+    ],
+    "browserStartingState": "Trusted server process fixture; no natural room progression acceptance."
+  },
+  "inspectedRuntimeChains": [
+    "Client WS -> token authentication -> synchronous reconnect/register -> handleClientMessage -> Hub revision check -> MatchRoom controlled-seat dispatch -> MatchSession -> dispatchAbilityCommand clone -> executeAbility -> typed staged executeEffects -> projection/broadcast",
+    "Golden Eater first choose_target -> first move and movedCount-bound VP -> second pending commit; second choose_target -> optional pay_mana(7), move, VP in independent dispatch clone",
+    "Conversion candidate -> shared exact/typed validation -> move_all_remaining actual movedCount -> adjust_mana -> commit only after complete dispatch",
+    "socket close -> remove registration -> same room/client survivor check -> final disconnect once"
+  ],
+  "scopedPositiveEvidence": {
+    "sharedOwnershipAndTypedResolution": "PASS within exact migrated envelopes",
+    "goldenFirstAndSecondDispatchRollback": "PASS for focused staged tests",
+    "declineAndInsufficientPayment": "PASS for focused tests",
+    "mandatoryTargetOfferAndMalformedGraphFallback": "PASS for focused tests",
+    "replacementSocketCloseAndUpgradeRegistrationRace": "PASS for existing server race tests",
+    "finalAuthenticatedRevisionBoundCombination": "FAILED"
+  },
+  "independentTests": [
+    {
+      "command": "node node_modules/vitest/vitest.mjs run packages/rules/tests/regression/production-resolution-bridge.test.ts packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/b11-conversion-binding-ownership.test.ts packages/rules/tests/regression/b11-conversion-classification-api.test.ts --maxWorkers=1",
+      "cwd": "D:/fd-validation/b11-9a4f4c6/checkout",
+      "exitCode": 0,
+      "files": 4,
+      "tests": 51
+    },
+    {
+      "command": "npm run test --workspace @fd/server -- src/match-server.test.ts",
+      "cwd": "D:/fd-validation/b11-9a4f4c6/checkout",
+      "exitCode": 0,
+      "files": 1,
+      "tests": 11
+    }
+  ],
+  "recordedEvidence": {
+    "receiptPath": "artifacts/phase3-e08-b11-environment-reverification-receipts.json",
+    "receiptSha256": "DCC796D63EBA088260440DFAF4B4C53B9E3AF8A3032055336530DD8FCF47F08A",
+    "rawStreamsVerified": 36,
+    "commandReceiptsVerified": 18,
+    "reportedBrowserRepeats": 10,
+    "independentBrowserRerun": false,
+    "independentFullCiRerun": false,
+    "assessment": "Positive browser paths use trusted process fixtures and supplied valid tokens/revisions. They do not test another viewer stealing credentials or end_turn without a revision; passing counts do not close these counterexamples."
+  },
+  "blockingFindings": [
+    {
+      "code": "PUBLIC_RECONNECT_CREDENTIAL_AND_REJOIN_IDENTITY_BYPASS",
+      "priority": "P0",
+      "evidence": [
+        {
+          "path": "packages/rules/src/match-room.ts",
+          "line": 253,
+          "symbol": "MatchRoom.getProjection",
+          "fact": "All viewers receive complete clients[] with reconnectToken."
+        },
+        {
+          "path": "packages/rules/src/match-room.ts",
+          "line": 63,
+          "symbol": "stableToken",
+          "fact": "Credential is deterministic FNV-style hash of public roomId:clientId."
+        },
+        {
+          "path": "packages/rules/src/match-room.ts",
+          "line": 113,
+          "symbol": "MatchRoom.joinRoom",
+          "fact": "Existing client identity is reclaimed and mutated without existing credential."
+        },
+        {
+          "path": "apps/server/src/match-server.ts",
+          "line": 121,
+          "symbol": "HTTP join handler / roomResponse",
+          "fact": "Unauthenticated duplicate join returns the existing client's credential and host projection."
+        },
+        {
+          "path": "apps/server/src/match-server.ts",
+          "line": 157,
+          "symbol": "upgrade token comparison",
+          "fact": "Comparison accepts credentials obtainable through public projection, deterministic calculation or duplicate join."
+        }
+      ],
+      "negativeObservations": [
+        {
+          "case": "guest_projection_host_impersonation",
+          "guestIsHost": false,
+          "hostTokenExposed": true,
+          "acceptedSocket": true,
+          "revisionBefore": 2,
+          "revisionAfter": 3,
+          "pendingController": "p1",
+          "errors": []
+        },
+        {
+          "case": "credential_generation_and_duplicate_join",
+          "tokenGuessMatches": true,
+          "httpStatus": 200,
+          "returnedHostCredential": true,
+          "returnedViewerIsHost": true,
+          "versionBefore": 1,
+          "versionAfter": 2,
+          "hostNameChanged": true
+        }
+      ],
+      "rootCause": "The socket treats a reconnect token as identity authority while generation, issuance and projection make that token available without proving identity.",
+      "impact": "Spectator can become the seated host/controller, expose that controller's private projection and issue real B11/Golden Eater mutations. Fixed socket lifecycle races do not repair authentication.",
+      "minimalRepair": [
+        "Split public RoomClient DTO from server-private reconnect credentials; exclude all credentials from other-viewer HTTP/WS projections and broadcast.",
+        "Generate unpredictable server-owned credentials using cryptographic randomness; handle legacy persisted credentials explicitly rather than silently retaining predictable tokens.",
+        "Reject duplicate clientId joins unless an authenticated reconnect flow proves existing credentials; do not grant existing host identity by clientId alone.",
+        "Read private credential state for socket authentication; do not depend on a public projection containing secrets.",
+        "Regression: spectator projection, duplicate host join, deterministic old-token guess and raw WS host impersonation must reject without changing state/revision/logs/version; genuine reconnect must remain functional."
+      ]
+    },
+    {
+      "code": "END_TURN_MISSING_REVISION_MUTATION_BYPASS",
+      "priority": "P1",
+      "evidence": [
+        {
+          "path": "packages/rules/src/match-room-protocol.ts",
+          "line": 7,
+          "symbol": "ClientRoomMessage",
+          "fact": "client:end_turn expectedRevision remains optional."
+        },
+        {
+          "path": "packages/rules/src/match-room-hub.ts",
+          "line": 73,
+          "symbol": "MatchRoomHub.endTurn",
+          "fact": "Uses assertExpectedRevision without required=true."
+        },
+        {
+          "path": "packages/rules/src/match-room-hub.ts",
+          "line": 181,
+          "symbol": "assertExpectedRevision",
+          "fact": "Missing revision returns successfully when required=false."
+        },
+        {
+          "path": "apps/server/src/match-server.ts",
+          "line": 250,
+          "symbol": "handleClientMessage",
+          "fact": "Raw client:end_turn reaches optional Hub gate."
+        }
+      ],
+      "negativeObservation": {
+        "case": "raw_ws_end_turn_missing_revision",
+        "before": {
+          "revision": 2,
+          "phase": "battle",
+          "priority": 1,
+          "logs": 19,
+          "version": 2
+        },
+        "after": {
+          "revision": 8,
+          "phase": "round_end",
+          "priority": 7,
+          "logs": 39,
+          "version": 3
+        },
+        "errors": []
+      },
+      "rootCause": "Mutation commands have inconsistent authoritative freshness requirements; a raw WS caller can bypass the revision check used by ordinary dispatch.",
+      "impact": "Omitting revision advances the battle phase and runs server settlement. The reproduced command changed revision 2->8, phase battle->round_end, logs 19->39, room version 2->3 with no error.",
+      "minimalRepair": [
+        "Require numeric expectedRevision for end_turn in protocol and Hub, and reject missing/invalid/mismatched revision before any mutation.",
+        "Use one required mutation gate for dispatch/end-turn; bump room version/broadcast accepted mutation only after successful result.",
+        "Add raw WS and direct Hub missing/stale revision negatives for both commands; assert GameState, pending, resource values, events, logs, revision, room version and projection unchanged after rejection."
+      ]
+    }
+  ],
+  "adversarialReproduction": {
+    "executionMethod": "Direct node.exe node_modules/tsx/dist/cli.mjs --eval of the recorded TypeScript below, against exact tested implementation; only ephemeral local server and in-memory trusted fixtures. No production/test/source file edited.",
+    "firstUnusableAttempt": "An npm wrapper eval returned exit 0 with empty stdout. It is not used as verification. Direct Node argv invocation produced the observations recorded here.",
+    "scripts": [
+      {
+        "name": "public_projection_impersonation_and_missing_revision",
+        "source": "import { createMatchServer } from './apps/server/src/match-server';\nimport { prepareGoldenEaterRoom, goldenEaterHostClientId, goldenEaterSourceInstanceId } from './e2e/support/prepare-golden-eater-room';\nimport { WebSocket } from 'ws';\nasync function connect(port:number,id:string,token:string){const ws=new WebSocket('ws://127.0.0.1:'+port+'/rooms/'+id+'?clientId='+goldenEaterHostClientId+'&reconnectToken='+encodeURIComponent(token));const frames:any[]=[];ws.on('message',b=>frames.push(JSON.parse(b.toString())));await new Promise<void>((r,j)=>{ws.once('open',()=>r());ws.once('error',j)});return {ws,frames}}\nasync function close(ws:WebSocket){const p=new Promise(r=>ws.once('close',r));ws.close();await p}\n(async()=>{\n const server=createMatchServer();const port=await server.listen(0);const id='rb-auth';server.hub.createRoom({roomId:id,hostClientId:goldenEaterHostClientId});const room=server.hub.getRoom(id);prepareGoldenEaterRoom(room);\n server.hub.joinRoom(id,{clientId:'guest',displayName:'Guest',role:'spectator'});const guest=server.hub.project(id,'guest');const leaked=guest.clients.find(c=>c.id===goldenEaterHostClientId)?.reconnectToken;\n const before=room.session!.state.abilityRuntime!.revision;const {ws,frames}=await connect(port,id,leaked??'');\n ws.send(JSON.stringify({type:'client:dispatch_command',expectedRevision:before,command:{type:'activate_ability',cardInstanceId:goldenEaterSourceInstanceId,abilityId:'sc-kintoki-3.golden-eater'}}));\n await new Promise(r=>setTimeout(r,200));\n console.log(JSON.stringify({case:'guest_projection_host_impersonation',guestIsHost:guest.viewer.isHost,hostTokenExposed:typeof leaked==='string',acceptedSocket:ws.readyState===WebSocket.OPEN,revisionBefore:before,revisionAfter:room.session!.state.abilityRuntime!.revision,pendingController:room.session!.state.abilityRuntime!.pendingDecision?.controllerId,errors:frames.filter(x=>x.type==='server:error')}));\n await close(ws);await server.close();\n const s=createMatchServer();const p=await s.listen(0);const id2='rb-revision';const proj=s.hub.createRoom({roomId:id2,hostClientId:goldenEaterHostClientId});const r=s.hub.getRoom(id2);prepareGoldenEaterRoom(r);const token=proj.clients.find(c=>c.id===goldenEaterHostClientId)!.reconnectToken;const c=await connect(p,id2,token);\n const snapshot=()=>({revision:r.session!.state.abilityRuntime!.revision,phase:r.session!.state.round.activePhase,priority:r.session!.state.round.prioritySeat,logs:r.session!.logs.length,version:s.hub.version(id2)});\n const b=snapshot();c.ws.send(JSON.stringify({type:'client:end_turn'}));await new Promise(r=>setTimeout(r,200));\n console.log(JSON.stringify({case:'raw_ws_end_turn_missing_revision',before:b,after:snapshot(),errors:c.frames.filter(x=>x.type==='server:error')}));\n await close(c.ws);await s.close();\n})().catch(e=>{console.error(e);process.exitCode=1});",
+        "exitCode": 0,
+        "observations": [
+          {
+            "case": "guest_projection_host_impersonation",
+            "guestIsHost": false,
+            "hostTokenExposed": true,
+            "acceptedSocket": true,
+            "revisionBefore": 2,
+            "revisionAfter": 3,
+            "pendingController": "p1",
+            "errors": []
+          },
+          {
+            "case": "raw_ws_end_turn_missing_revision",
+            "before": {
+              "revision": 2,
+              "phase": "battle",
+              "priority": 1,
+              "logs": 19,
+              "version": 2
+            },
+            "after": {
+              "revision": 8,
+              "phase": "round_end",
+              "priority": 7,
+              "logs": 39,
+              "version": 3
+            },
+            "errors": []
+          }
+        ]
+      },
+      {
+        "name": "predictable_token_and_duplicate_http_join",
+        "source": "import { createMatchServer } from './apps/server/src/match-server';\nimport { goldenEaterHostClientId,prepareGoldenEaterRoom } from './e2e/support/prepare-golden-eater-room';\n(async()=>{const s=createMatchServer();const port=await s.listen(0);const id='rb-token-boundary';s.hub.createRoom({roomId:id,hostClientId:goldenEaterHostClientId});const room=s.hub.getRoom(id);prepareGoldenEaterRoom(room);\nconst input=id+':'+goldenEaterHostClientId;let hash=2166136261;for(const ch of input){hash^=ch.charCodeAt(0);hash=Math.imul(hash,16777619)}const guessed='reconnect-'+(hash>>>0).toString(36);\nconst expected=room.clients.find(c=>c.id===goldenEaterHostClientId)!.reconnectToken;\nconst version=s.hub.version(id);const response=await fetch('http://127.0.0.1:'+port+'/rooms/'+id+'/join',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({clientId:goldenEaterHostClientId,displayName:'Impersonated host'})});const body:any=await response.json();\nconsole.log(JSON.stringify({case:'credential_generation_and_duplicate_join',tokenGuessMatches:guessed===expected,httpStatus:response.status,returnedHostCredential:body.reconnectToken===expected,returnedViewerIsHost:body.projection?.viewer?.isHost,versionBefore:version,versionAfter:s.hub.version(id),hostNameChanged:room.clients.find(c=>c.id===goldenEaterHostClientId)?.displayName==='Impersonated host'}));await s.close()})().catch(e=>{console.error(e);process.exitCode=1});",
+        "exitCode": 0,
+        "observations": [
+          {
+            "case": "credential_generation_and_duplicate_join",
+            "tokenGuessMatches": true,
+            "httpStatus": 200,
+            "returnedHostCredential": true,
+            "returnedViewerIsHost": true,
+            "versionBefore": 1,
+            "versionAfter": 2,
+            "hostNameChanged": true
+          }
+        ]
+      }
+    ],
+    "credentialPublication": "Reproduction does not persist actual token values.",
+    "serverShutdown": "All ephemeral servers/sockets closed after each reproduction."
+  },
+  "priorReviews": {
+    "reviewerBCommit": "8d352763fd32f94fef5a60492ed9d9be960f5f1a",
+    "pathScopeCommit": "94e5588955fa96f1c160aebcb55f895346036fd3",
+    "publicationBranch": "codex/rb-p3-e08-b11-463facb-review",
+    "previousNarrowConclusion": "Conversion binding ownership PASS remains narrow; this final transport/runtime composition review exposes separate blocking failures."
+  },
+  "retainedExternalBlockers": [
+    "7 original authority gaps",
+    "7 NOT_VERIFIED rows in 33-path scope table",
+    "quiet-window acknowledgement authority",
+    "93 MISSING_IMAGE",
+    "governance/GitHub required checks/Node20 equivalence"
+  ],
+  "boundaries": {
+    "productionCodeModified": false,
+    "testsModified": false,
+    "gatePromotion": false,
+    "mainPromotion": false,
+    "phase3Complete": false,
+    "releaseReady": false,
+    "creditDelta": 0
+  },
+  "commitBinding": "Exact containing review commit and artifact SHA-256 provided externally; no invented GitHub reviewer identity/thread or self-referential hash."
+}
