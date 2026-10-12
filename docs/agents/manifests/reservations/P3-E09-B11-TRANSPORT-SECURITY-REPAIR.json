@@ -22,6 +22,11 @@
     "apps/server/src/match-server.test.ts",
     "apps/client/src/state/match-room-client.ts",
     "apps/client/src/state/remote-room-fixture.ts",
+    "apps/client/src/App.tsx",
+    "apps/client/src/App.test.tsx",
+    "e2e/support/start-conversion-magic-fixture-server.ts",
+    "e2e/support/start-golden-eater-fixture-server.ts",
+    "e2e/support/gate-c-room-harness.ts",
     "e2e/support/prepare-conversion-magic-room.ts",
     "e2e/support/prepare-golden-eater-room.ts",
     "e2e/fd-conversion-magic-core-primitive.spec.ts",
@@ -48,7 +53,7 @@
     "activation": "Only the designated B task may bind this grant; return branch/worktree/exact base and reservation acceptance before source edits. Existing conflict requires Planner disposition, not waiting for an unspecified registry."
   },
   "release": "Planner explicitly releases or transfers after frozen candidate handoff; no implicit timeout or automatic transfer to another B",
-  "testWindow": "NOT_GRANTED; source reservation is not permission for uncoordinated simultaneous heavy tests",
+  "testWindow": "CONDITIONAL_BATCH_AUTHORIZATION; actual window pending coordination/start confirmation under P3-E09-B11-COMPATIBILITY-AND-VALIDATION.md",
   "runtimeAcceptance": false,
   "integrationAuthorized": false,
   "creditDelta": 0
