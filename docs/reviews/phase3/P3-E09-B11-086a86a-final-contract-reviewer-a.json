@@ -1,0 +1,118 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-a-final-contract-review-v1",
+  "taskId": "P3-E09-B11-FINAL-EVIDENCE-CONTRACT-REPAIR",
+  "reviewDate": "2026-10-12",
+  "reviewer": "Reviewer A",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "epochMainPublicationVerified": false,
+  "candidateSha": "086a86a24f5cf0991b3743ceb28b34a767252070",
+  "reviewedSha": "086a86a24f5cf0991b3743ceb28b34a767252070",
+  "implementationSha": "485b216cd4c440d3ff253248c46b62e226ee223e",
+  "implementationBaseSha": "8f24b2d037743c08023431388ae115c8c68792e3",
+  "runtimeCandidateSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+  "runtimeCombinationTestedSha": "88dcd441a17584b4a2a6d1ba78e588ac6a818ed1",
+  "historicalExecutionSha": "9a4f4c6ee2723eb7f546341f3c18a1f0a29c3bc1",
+  "conclusion": "REVIEW_ACCEPTED",
+  "finalVerdict": "PASS",
+  "acceptedScope": "EXACT_FOUR_HISTORICAL_TEST_CONTRACT_REPAIRS_CURRENT_BINDING_VALIDATOR_COVERAGE_AND_AUTHENTIC_EXECUTION_EVIDENCE_ONLY",
+  "technicalBlockingFindingsWithinAcceptedScope": [],
+  "boundPacket": {
+    "path": "artifacts/phase3-e09-b11-final-evidence-binding.json",
+    "sha256": "6E1CB9EEBBB9F8A71C0CB65C562F15E29D003EE1A56D309580D7F74560E12E36"
+  },
+  "boundReport": {
+    "path": "docs/reports/2026-10-12-p3-e09-b11-final-evidence-binding.md",
+    "sha256": "BDDC9AFEAD2D855821BEE0DB09AC9340C33583A69F6AE7DC3BDF5991A85B9929"
+  },
+  "boundCoverage": {
+    "path": "artifacts/phase3-e09-b11-final-coverage.json",
+    "sha256": "FC256A3C1851CFAC43DA133EBC9D76D69BBC6CF2C4AD3495F08533BE0F61ACCA",
+    "independentFullPayloadReproduction": "PASS",
+    "measurementScope": "CANDIDATE_LOCAL_ONLY",
+    "after": { "new": 23, "legacyResolve": 144, "legacyExecute": 3, "dual": 0, "notClassifiable": 111 }
+  },
+  "authorization": {
+    "commit": "69002b6a13f733cfdae586aeb4e19408e1ee592b",
+    "path": "docs/agents/P3-E09-B11-FINAL-EVIDENCE-CONTRACT-REPAIR.md",
+    "sha256": "BF027CFC8DCE0C3A31B0FB4062FE402470895816F832656836B8AE4344FFEE3A",
+    "elevenImplementationCarrierChangedPathsWithinLiteralScope": true,
+    "roomIdSemanticRepairAuthorityGrantedByReviewerA": false
+  },
+  "contractReview": {
+    "historicalSnapshot": "PASS: exact detached historical Git SHA, clean checkout assertion, dependency-lock equality, task-owned cleanup and workspace package links redirected into historical checkout",
+    "historicalParity": "PASS: original provider/adapter/schema validation and adversarial assertions retained; historical root no longer follows current runtime",
+    "historicalCoverageSync": "PASS: source/receipt/ancestry/allowlist assertions retained on historical root",
+    "historicalReadiness": "PASS: original fail-closed pending/authorization checks and committed tamper fixtures retained",
+    "historicalRecount": "PASS: historical artifact remains immutable; historical compiler/loader are imported from actual historical root",
+    "currentBinding": "PASS: exact current input reconstructed, full runtime/config object equality, pinned authorizations and scoped Reviewer B artifact checked independently",
+    "currentNegatives": "PASS: six independently executed in-memory schema/authority/candidate/scope/source/inheritance mutations rejected; committed-drift, dirty-provider and raw-receipt negatives inspected in focused test source",
+    "readiness": "BLOCKED: validator retains external authority, governance, source-assets and pending final RA state; no input can silently override pending acceptance",
+    "browserReuse": "PASS_SCOPED_SOURCE_EQUIVALENCE_ONLY; NOT_NEW_BROWSER_EXECUTION_OR_GLOBAL_GATE_C"
+  },
+  "reviewerBReference": {
+    "commit": "4d5b76be9d5459cc0c40e50fae8513bc59cd5d21",
+    "path": "docs/reviews/phase3/P3-E09-B11-TRANSPORT-SECURITY-REPAIR-0f62210-reviewer-b.json",
+    "sha256": "6FE0EAD378E31149B3271E137FDB99ACAC161F2894E3FAD21FC0A14986E96DB4",
+    "scope": "Scoped transport security repair and existing B11/Golden Eater/socket composition only",
+    "directParentAndExactVerdictScopeVerified": true,
+    "newRuntimeVerdictIssuedByReviewerA": false,
+    "githubAttestationVerified": false
+  },
+  "independentEvidenceVerification": {
+    "method": "READ_ONLY_GIT_OBJECTS_RAW_BYTE_HASH_CHECKS_CURRENT_VALIDATOR_NEGATIVES_AND_COVERAGE_RECOMPUTATION; NO_SUITE_RERUN",
+    "directBaseImplementationCarrierParentChain": "PASS",
+    "nineRuntimeConfigObjectsAcrossRuntimeCandidateCombinationImplementationCarrier": "PASS",
+    "fivePinnedReferenceHashes": "PASS",
+    "carrierOnlyChanges": "PACKET_AND_REPORT; NO_TEST_OR_SOURCE_DELTA_FROM_TESTED_IMPLEMENTATION",
+    "newValidationRecords": 10,
+    "newRawStreams": 20,
+    "newRawBytesLengthsHashesAndLocalOriginalEquality": "PASS",
+    "finalImplementationRecords": 7,
+    "preparationHistoryRecords": 3,
+    "preparationFailuresRetained": 2,
+    "historicalTransportRawStreams": 26,
+    "historicalRawLengthsAndHashes": "PASS",
+    "copiedBrowserAndFailedCIRecordsEqualPinnedHistoricalPacket": "PASS",
+    "freshWorkingTreeSourceIdentity": "ALL_SEVEN_FINAL_RECORDS_PIN_IMPLEMENTATION_AND_HAVE_EMPTY_BEFORE_AFTER_STATUS",
+    "runtimeWorkflowTimeoutConcurrencyKpiChanged": false,
+    "remoteExactCarrierRef": "PASS",
+    "producerWorktreeClean": true,
+    "diffCheck": "PASS"
+  },
+  "executionResultsInspectedNotRerun": {
+    "focused": { "files": 5, "tests": 60, "exitCode": 0 },
+    "defaultCI": { "files": 194, "tests": 1548, "exitCode": 0 },
+    "npmCiTypecheckContentGeneratedDiff": "EXIT_0",
+    "historicalCurrentCombinationCI": "EXIT_1_RETAINED; NOT_CONVERTED_TO_SUCCESS",
+    "browser": "15_PASS_REUSED_ONLY_THROUGH_CURRENT_RUNTIME_OBJECT_EQUIVALENCE"
+  },
+  "executionTimingObservation": {
+    "npmCiBeforeTypecheckBeforeFocusedAndCI": true,
+    "allCommandsSequential": false,
+    "overlap": "final-focused 08:52:33.267Z-08:53:49.875Z overlaps final-content 08:53:03.919Z-08:53:05.046Z and final-generated 08:53:10.637Z-08:53:11.803Z",
+    "defaultCiStartedAfterOtherFinalChecks": true,
+    "disposition": "Raw evidence accepted as actual recorded execution; no continuous quiet-window or fully serial batch certification granted"
+  },
+  "externalPrerequisites": [
+    "ROOM_ID_REPAIR_AUTHORITY_UNBOUND: Planner/G exact authority disposition still required; path registration is not semantic authorization",
+    "GOVERNANCE_PENDING: effective Epoch/main publication and eventual promotion authorization remain separate",
+    "GitHub Node 20 promotion-head build/test/policy checks and real review attestation are not supplied by this local review",
+    "93 MISSING_IMAGE and Global Gate C/Release limitations remain unchanged",
+    "Scoped browser fixtures do not prove natural full-game progression or complete roster acceptance"
+  ],
+  "boundaries": {
+    "overallReadiness": "BLOCKED_EXTERNAL_AUTHORITY_GOVERNANCE_AND_RELEASE_PREREQUISITES",
+    "historicalAcceptanceInherited": false,
+    "runtimeSemanticAcceptanceGrantedByReviewerA": false,
+    "githubAttestationProvided": false,
+    "promotionAllowed": false,
+    "gateC": "NOT_VERIFIED",
+    "acceptedIdentities": 111,
+    "denominator": 944,
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0
+  },
+  "nextOwner": "PLANNER_G_FOR_AUTHORITY_AND_GOVERNANCE_DISPOSITION; NO_AUTOMATIC_INTEGRATION_OR_PROMOTION",
+  "commitBinding": "Immutable review commit and artifact hash returned externally; no self-reference or invented GitHub review URL"
+}

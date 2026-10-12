@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "fd-p3-b11-tooling-handoff-v1",
+  "taskId": "P3-E08-B11-TOOLING-MINIMUM-CONTRACT",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "implementationSha": "d7805bda96d0322fd461bd7bf50755e272dbbca1",
+  "testedCombinationSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+  "observedMainSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "fixtureProducerSha": "9a7122176dcc82827c27d2cf593c59633737eafe",
+  "plannerContractCommit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+  "plannerRemoteObservation": {
+    "branch": "origin/codex/planner-p3-e07-control",
+    "sha": "45eb5b3f038f227d69a8f15e7a3c7842f1a718d3",
+    "contractIsAncestorOfRemoteHead": false,
+    "limitation": "Contract supplied by user is locally bound; its remote publication is not confirmed. Publish it before remote review."
+  },
+  "artifacts": [
+    { "path": "artifacts/phase3-e08-b11-tooling-preflight.json", "sha256": "5490742375C8D98488C5E6B2CDF1C762A3918DF3D129A62F9C798D1745893A06", "status": "FAIL", "exitCode": 1 },
+    { "path": "artifacts/phase3-e08-b11-tooling-parity.json", "sha256": "10B4EB681ACBAA131C80ECA6E4DEE491EC523BB06875361CD2BF4FA42B75EFBB", "status": "FAIL", "exitCode": 1 },
+    { "path": "artifacts/phase3-e08-b11-tooling-coverage.json", "sha256": "876A7E0D20FDF92D9ECCF9E3EEB50347AC748032F78E7F8B026B0D99FDD505DC", "status": "GENERATED", "exitCode": 0 }
+  ],
+  "coverage": { "archives": 127, "cards": 169, "abilities": 281, "new": 23, "legacyResolve": 144, "legacyExecute": 3, "dual": 0, "notClassifiable": 111 },
+  "diagnostics": {
+    "preflight": { "pendingReviewDependencies": 3, "pendingExecutionEvidenceBindings": 3, "unauthorizedPaths": 0 },
+    "parity": { "executedFixtures": 10, "expectationsPendingReview": 1, "requiredUnavailableObservations": 30, "observedExpectationDisagreements": 0 },
+    "executionEvidenceNote": "Fresh component/server/browser tests passed on an equivalent source checkout, but task-check receipts remain PENDING; they are not exact combination execution attestations."
+  },
+  "commands": [
+    { "command": "npx vitest run scripts/tests/phase3-readiness-preflight.test.ts scripts/tests/phase3-contract-parity.test.ts", "exitCode": 0, "counts": "2 files / 10 tests", "checkout": "e62e8b1 parent working tree before final explicit-status changes" },
+    { "command": "npx vitest run scripts/tests/phase3-contract-parity.test.ts", "exitCode": 0, "counts": "5/5", "checkout": "d7805bd implementation working tree" },
+    { "command": "npx vitest run packages/rules/tests/regression/resolution-dataflow.test.ts packages/rules/tests/regression/production-resolution-bridge.test.ts apps/server/src/match-server.test.ts", "exitCode": 0, "counts": "29/29 rules tests; root config excluded server tests", "checkout": "e62e8b1 plus tooling-only changes" },
+    { "command": "npm run test --workspace @fd/server -- src/match-server.test.ts", "exitCode": 0, "counts": "11/11", "checkout": "e62e8b1 plus tooling-only changes" },
+    { "command": "npx playwright test e2e/fd-golden-eater-result-binding.spec.ts e2e/fd-conversion-magic-core-primitive.spec.ts --project=chromium --repeat-each=5", "exitCode": 0, "counts": "10/10", "checkout": "e62e8b1 plus tooling-only changes" },
+    { "command": "npm run test:ci", "exitCode": 0, "counts": "188 files / 1439 tests", "checkout": "d7805bda96d0322fd461bd7bf50755e272dbbca1", "durationSeconds": 54.24 },
+    { "command": "npm run typecheck", "exitCode": 0 },
+    { "command": "npm run content:validate", "exitCode": 0, "counts": "7 masters / 7 servants / 20 events / 0 blocking" },
+    { "command": "npm run verify:generated-content", "exitCode": 0 },
+    { "command": "npm run phase3:coverage -- --out artifacts/phase3-e08-b11-tooling-coverage.json", "exitCode": 0 },
+    { "command": "git diff --check", "exitCode": 0 },
+    { "command": "direct Node spawn: each CLI with missing manifest/contract", "exitCode": 2, "counts": "both rejected MALFORMED_INPUT; PowerShell wrapper reported 1" }
+  ],
+  "historicalFailures": [
+    "First parity run: Windows tar failed on Unicode repository paths; 5 tests skipped after setup failure. Replaced archive extraction with isolated shared Git clone.",
+    "Second parity run: Windows ESM --import absolute path rejected; 5 tests skipped after setup failure. Fixed loader using file URL."
+  ],
+  "runtimeSourceDeltaFromCombination": "NONE",
+  "authoringDeltaFromCombination": "NONE",
+  "coverageTaxonomyDelta": "NONE",
+  "legacyPathsIntentionallyRetained": "All unrelated runtime paths; no fallback owner changed",
+  "areasNotVerified": ["Independent fixture expectation review", "B11 inventory comparable classification API", "Coverage exact eligibility comparable API", "Exact combination execution receipts", "GitHub required checks", "Promotion", "Global Gate C", "93 historical missing-image Release blockers"],
+  "mainCoverageCreditDelta": 0,
+  "migrationCreditDelta": 0,
+  "denominatorDelta": 0,
+  "reviewReadyChanged": false,
+  "promotedOnMain": false,
+  "claimedAcceptance": "AUTOMATION_BASELINE_CANDIDATE",
+  "readiness": "BLOCKED_NO_WAIVER",
+  "nextOwner": "Reviewer A: review tooling and fixture expectations; classification API gaps remain with respective owners"
+}
