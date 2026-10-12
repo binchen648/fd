@@ -400,6 +400,7 @@
 #app .home-screen .home-menu .nav:focus-visible::before {
   opacity: 1 !important;
   transform: translateX(0) !important;
+  background: rgba(220,219,214,.64) !important;
 }
 #app .home-screen .home-menu .nav:hover,
 #app .home-screen .home-menu .nav:focus-visible,
