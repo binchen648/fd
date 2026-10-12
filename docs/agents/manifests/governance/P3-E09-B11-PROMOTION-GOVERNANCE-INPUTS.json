@@ -1,0 +1,208 @@
+{
+  "schemaVersion": "fd-p3-promotion-governance-inputs-v1",
+  "taskId": "P3-E09-B11-PROMOTION-ATTESTATION-BRIDGE",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "status": "REAL_GITHUB_BRIDGE_PUBLISHED_EXACT_INTEGRATION_RA_BOUND",
+  "governanceAttestor": "github:binchen648",
+  "governanceRole": "Codex G",
+  "independentRoleAndArtifact": true,
+  "independentGithubAccountRequired": false,
+  "effectiveMain": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+  "sourceInputs": [
+    {
+      "type": "dispatch",
+      "commit": "ab3540aa07c9a02f7879d96e042b8e2a0a41e728",
+      "path": "docs/agents/P3-E09-B11-INTEGRATION-CONTRACT-AND-ATTESTATION.md",
+      "sha256": "3ED51E6564CE52C143F50A9AF15D9B41F8C5CF94737E35CE8ED338B2BDDCCA94"
+    },
+    {
+      "type": "effectivePackageAuthority",
+      "commit": "76133b6dbfc09318143df37b24b0e2e4a2de3a17",
+      "path": "docs/agents/P3-E09-I-B11-PROMOTION-AUTHORIZATION.md",
+      "sha256": "7F4AF9FCEF80C69FEA9EC9216453315378D7E248C40B5EDFA69F5B7BF5CE1D3E"
+    },
+    {
+      "type": "effectiveRoomAuthority",
+      "commit": "19c3c365443fbbfb3008aaf66d3f72b5d4079c23",
+      "path": "docs/agents/P3-E09-B11-FINAL-RA-AND-G-DISPATCH.md",
+      "sha256": "D0FEBBE8B6D66FD350108C8AD1B1AE262CB53B57CA7825A7C162AE666DBDEA72"
+    },
+    {
+      "type": "oldFinalRa",
+      "commit": "28875202695d43e580ddd637f1721e3a1dddbc8a",
+      "path": "docs/reviews/phase3/P3-E09-B11-086a86a-final-contract-reviewer-a.json",
+      "sha256": "C4A19526A09845214F1C4D2B3B25CC933E75532B8CD7DD8B30C719AB241E7FFE"
+    },
+    {
+      "type": "runtimeRb",
+      "commit": "4d5b76be9d5459cc0c40e50fae8513bc59cd5d21",
+      "path": "docs/reviews/phase3/P3-E09-B11-TRANSPORT-SECURITY-REPAIR-0f62210-reviewer-b.json",
+      "sha256": "6FE0EAD378E31149B3271E137FDB99ACAC161F2894E3FAD21FC0A14986E96DB4"
+    },
+    {
+      "type": "historicalPackageProposal",
+      "commit": "be34ec166dcb5ac40c659645a85a3182f7135a92",
+      "path": "docs/agents/manifests/governance/P3-E09-B11-PACKAGE-RESERVATION-DISPOSITION.json",
+      "sha256": "9AB42BEEFF34B710F2EB45251EFE45F246DBCA73DD00F1632376BBDA4686C355"
+    }
+  ],
+  "newIntegrationRa": {
+    "commit": "d12271770d84b615109377ad970b915df246cf19",
+    "path": "docs/reviews/phase3/P3-E09-B11-a09fe2d-integration-contract-reviewer-a.json",
+    "sha256": "3EC5C7FB57E8A32AD9747EB7F94CC1E5C47C0CCFE2B59DE5578F3864ED3BF230",
+    "remoteRef": "refs/heads/codex/ra-p3-e09-b11-integration-contract-review",
+    "candidateSha": "a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da",
+    "conclusion": "REVIEW_ACCEPTED",
+    "verdict": "PASS",
+    "acceptedScope": "EXACT_INTEGRATION_BINDING_TOOLING_TEST_CONTRACT_AND_AUTHENTIC_EXECUTION_EVIDENCE_ONLY",
+    "technicalBlockingFindings": []
+  },
+  "integrationPacket": {
+    "path": "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+    "sha256": "ACFE35DF7E6BCDF71B0C48DDD54C4CFD322B8FF124E65F4F6AE76946ACB9CADF"
+  },
+  "integrationReport": {
+    "path": "docs/reports/2026-10-12-p3-e09-b11-integration-evidence-binding.md",
+    "sha256": "871F4A36F7DAAB2B1C67673A9A00F6A3C409DFA4199E3E3439B28AE63DA47092"
+  },
+  "preservedMainControlObjects": [
+    {
+      "path": "docs/agents/FD-P3-CONTROL-EPOCH-09.md",
+      "blob": "f066b3936d3e4006efb7c985ad617b0a28e4ee8d",
+      "sha256": "F49FD1F9883E8638CD54F1ED76F7EFD57CFDB8B7C69E67F149D62E8493EE2B96"
+    },
+    {
+      "path": "docs/agents/PHASE3-TASK-INDEX.md",
+      "blob": "56d685226151f02da1774acbecc6066c825ee3a5",
+      "sha256": "D40BFB9B20DD6B4EE04C21446AA5803898D5071B4D922D27D261273861ABAFC8"
+    },
+    {
+      "path": "docs/agents/manifests/governance/P3-E09-B11-LIMITED-ADOPTION-ATTESTATION.json",
+      "blob": "77b52bf577b5f0e122bc6dc01c5e26ec04af1053",
+      "sha256": "C33D6C9266BB4733ED99D3816B0E6FE3A780CEC0B454058D76B5106DA2CF9DF1"
+    },
+    {
+      "path": "docs/agents/manifests/governance/P3-E09-B11-ROOM-ID-ADOPTION.json",
+      "blob": "0d9c810850689b86f73f3de229c8f804c4ebbea9",
+      "sha256": "94A7BBC2B85CA027735A38887EC471B8D3167D4E4D0319BF18321EA1E2C53C18"
+    },
+    {
+      "path": "docs/reports/2026-10-12-p3-e09-b11-limited-adoption-governance.md",
+      "blob": "6b6dfc82bea7a1dc26062c5f420993879dd8dda0",
+      "sha256": "13A6898C035BC4E4F6B57AEB01813D460AF86BDE267EF1FCE406361C74EE5AB1"
+    },
+    {
+      "path": "docs/reports/2026-10-12-p3-e09-b11-room-id-adoption.md",
+      "blob": "a86f1bbbe10bd4b16d0008061ec883958ba3128b",
+      "sha256": "43D58E0661DD0B0E397DE31065C67535CC252E2065274565B4DDEB0DC71D6ED7"
+    }
+  ],
+  "runtimeSourceEquivalence": [
+    {
+      "path": "packages/rules/src",
+      "blob": "52e4920a73720851cde4c71216a5aec6fb43f094"
+    },
+    {
+      "path": "apps/client/src",
+      "blob": "076979d5bcb728e72ae468f6420244cc16cf9393"
+    },
+    {
+      "path": "apps/server/src",
+      "blob": "cc3d9e35d3b2d85c1be6387909d0a4e80e44513d"
+    },
+    {
+      "path": "e2e",
+      "blob": "13b6198a127710b63fead7589d24cd26f59ae6e0"
+    },
+    {
+      "path": "data/authoring",
+      "blob": "b2e3896827cf9041e675b6f69c380b2668ff3413"
+    },
+    {
+      "path": "data/generated",
+      "blob": "40cebcd7f65316869f938b864ea6e133b1a98f66"
+    },
+    {
+      "path": "package.json",
+      "blob": "0f311821628a0a60cb37d752a259e6d688f7a6e9"
+    },
+    {
+      "path": "package-lock.json",
+      "blob": "d7844d900ba14635d4b8d2c50ac4954cbc9c0a93"
+    },
+    {
+      "path": "playwright.config.ts",
+      "blob": "c41069bee0070a5dd6b5d6653eca1f91d418b133"
+    }
+  ],
+  "oldRaArtifactUnchanged": true,
+  "originalReviewArtifactsRewritten": false,
+  "sourceReviewDirectParent": "d1227177 parent equals exact candidate a09fe2d; independent G bridge descends from d1227177",
+  "githubAttestation": {
+    "responseProjection": {
+      "author": "binchen648",
+      "body": "Codex G / actual Promotion Governance Attestor\nTask ID: P3-E09-I-B11-FINAL-PROMOTION\nControl Epoch: FD-P3-2026-09-23-09\nReviewer/attestor identity: github:binchen648\nExact accepted integration candidate SHA: a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da\nConclusion: REVIEW_ACCEPTED\nScope: policy-compatible governance bridge for exact integration tooling/evidence acceptance; not a new runtime technical verdict, GitHub APPROVED Review, main promotion or overall acceptance.\n\nNew integration Reviewer A: d12271770d84b615109377ad970b915df246cf19\nArtifact: docs/reviews/phase3/P3-E09-B11-a09fe2d-integration-contract-reviewer-a.json\nSHA-256: 3EC5C7FB57E8A32AD9747EB7F94CC1E5C47C0CCFE2B59DE5578F3864ED3BF230\nActual RA verdict: REVIEW_ACCEPTED / PASS, EXACT_INTEGRATION_BINDING_TOOLING_TEST_CONTRACT_AND_AUTHENTIC_EXECUTION_EVIDENCE_ONLY.\nOld final RA: 28875202695d43e580ddd637f1721e3a1dddbc8a; artifact SHA-256 C4A19526A09845214F1C4D2B3B25CC933E75532B8CD7DD8B30C719AB241E7FFE; original JSON unchanged.\nRuntime RB: 4d5b76be9d5459cc0c40e50fae8513bc59cd5d21; artifact SHA-256 6FE0EAD378E31149B3271E137FDB99ACAC161F2894E3FAD21FC0A14986E96DB4; scoped transport security repair and existing B11/Golden Eater/socket composition only.\nEffective package authority: 76133b6dbfc09318143df37b24b0e2e4a2de3a17\nEffective room-ID authority: 19c3c365443fbbfb3008aaf66d3f72b5d4079c23.\nEffective main: 1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce.\nSix main control files and nine runtime/config objects verified against exact accepted sources. Preserved historical missing proof, failed receipts, no serial/quiet-window/stability certification, scoped browser evidence reuse only.\nG is the actual attestor, not an invented identity for old RA. Distinct reviewer roles and immutable source artifacts retained.\nCredit/migration/denominator delta 0; ledger 111/944; Gate C NOT_VERIFIED; 93 missing images remain Release blocking.\nI may consume this bridge under existing Planner assembly authority; eventual exact promotion HEAD still requires current Node 20 build/test/policy and human approval. No merge or Release granted by this comment.",
+      "createdAt": "2026-10-12T10:21:50Z",
+      "id": 6122320706,
+      "updatedAt": "2026-10-12T10:21:50Z",
+      "url": "https://github.com/binchen648/fd/pull/558#issuecomment-6122320706"
+    },
+    "actualAuthorVerifiedByReadBack": true,
+    "exactBodyAndCandidateVerified": true,
+    "targetPr": 558,
+    "approvedGithubReview": false,
+    "oldRaIdentityInvented": false,
+    "commentMutability": "GitHub comment is an actual external statement; immutable Git bridge/provenance bytes bind the observed URL/id/body at read-back. No claim comment can never be edited."
+  },
+  "policyArtifact": {
+    "path": "docs/reviews/phase3/P3-E09-B11-promotion-attestation.json",
+    "schemaVersion": "fd-phase3-review-attestation-v1",
+    "exactManifestFields": {
+      "schemaVersion": "fd-phase3-review-attestation-v1",
+      "taskId": "P3-E09-I-B11-FINAL-PROMOTION",
+      "reviewer": "github:binchen648",
+      "reviewThread": "https://github.com/binchen648/fd/pull/558#issuecomment-6122320706",
+      "candidateSha": "a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da",
+      "conclusion": "REVIEW_ACCEPTED"
+    },
+    "ownCommitAndHashReportedExternally": true,
+    "reviewShaMeaning": "Containing immutable G bridge commit, not old/new technical RA commit."
+  },
+  "policySource": {
+    "path": "scripts/phase3-governance.ts",
+    "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+    "sha256": "F4BA772527FB7F1E1739C038D28DC1A80221383F89641D6CE03DCB40B01A634B"
+  },
+  "finalTopologyRequirements": {
+    "reviewedCandidateSha": "a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da",
+    "reviewSha": "Use containing G bridge commit reported externally; distinct from base, candidate, synchronization and final head.",
+    "synchronizationSha": "I must create actual descendant synchronization commit after consuming immutable bridge; no SHA guessed here.",
+    "promotionHead": "Actual later integration HEAD, distinct from synchronization and reviewed candidate.",
+    "ancestry": "candidate -> synchronization -> promotion head; preserve bridge and source-review commits; final assembled tree must retain bridge evidence exactly.",
+    "validation": "I runs existing phase3:ci-gate --verify-git-ancestry against actual promotion manifest and checks exact artifact bytes/hash; no actual final I topology has yet been supplied."
+  },
+  "remoteVerification": {
+    "method": "GitHub REST git/ref endpoints after Git transport connection reset/timeout",
+    "main": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+    "review": "d12271770d84b615109377ad970b915df246cf19",
+    "candidate": "a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da"
+  },
+  "boundaries": {
+    "runtimeChanged": false,
+    "policyChanged": false,
+    "technicalAcceptanceBroadened": false,
+    "bridgeSuppliesNewRuntimeVerdict": false,
+    "overallReadiness": "BLOCKED_REQUIRED_ACTUAL_PROMOTION_CHECKS_HUMAN_APPROVAL_AND_RELEASE_PREREQUISITES",
+    "promotionMergeAuthorized": false,
+    "promotedOnMain": false,
+    "creditDelta": 0,
+    "migrationDelta": 0,
+    "denominatorDelta": 0,
+    "ledger": "111/944",
+    "gateC": "NOT_VERIFIED",
+    "missingImageReleaseBlockers": 93,
+    "releaseReady": false,
+    "newEpochActivated": false,
+    "aNewSyncOrRerunAssigned": false
+  }
+}
