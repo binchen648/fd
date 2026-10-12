@@ -1,0 +1,185 @@
+{
+  "schemaVersion": "fd-p3-scoped-governance-effective-attestation-v1",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "previousEpoch": "FD-P3-2026-09-23-08",
+  "taskId": "P3-E09-G-B11-LIMITED-PUBLICATION",
+  "publishedDate": "2026-10-12",
+  "governanceRole": "Codex G / Promotion Governance Owner",
+  "identity": "github:binchen648",
+  "identityVerification": "gh api user; shared account, separate role/artifact; not an APPROVED GitHub Review",
+  "repository": "https://github.com/binchen648/fd",
+  "publicationRef": "refs/heads/codex/g-p3-e09-b11-limited-publication",
+  "baseSha": "9a1689d2ec5b56b67d1483d2593b4ab809d6c15c",
+  "mainDrift": "NONE_AT_PREPARATION",
+  "publicationStatus": "GOVERNANCE_PR_REVIEW_CHECKS_AND_HUMAN_MERGE_PENDING",
+  "mainlineControlBeforeMerge": "FD-P3-2026-09-23-08",
+  "mainlineEffectCondition": "Reviewed governance packet merged on main with updated current task-index pointer; PR/merge object establish effective publication. No mainline authority claimed before merge.",
+  "authority": {
+    "commit": "e36c3e73133ca9478cdef3b0993d0b20c6ea1dc7",
+    "ref": "refs/heads/codex/planner-p3-e08-environment-recovery",
+    "path": "docs/agents/FD-P3-CONTROL-EPOCH-09.md",
+    "sha256": "F49FD1F9883E8638CD54F1ED76F7EFD57CFDB8B7C69E67F149D62E8493EE2B96",
+    "sourceType": "Planner immutable record of explicit 2026-10-12 user approval; not an authenticated chat export",
+    "instruction": "Publish limited window-risk disposition and conditional two-delta/nine-blob prospective adoption; withhold immediate promotion and overall acceptance."
+  },
+  "proposal": {
+    "commit": "5b61a3e6149efaa79f3dbf101ebef0edc5399466",
+    "path": "docs/agents/manifests/governance/P3-E08-B11-G-WINDOW-AUTH-DISPOSITION.json",
+    "sha256": "501E75DBE227D240AC7797D5E04FCD8B5C7D6215F2E17D6B651023D8446739F8",
+    "githubRecord": "https://github.com/binchen648/fd/commit/5b61a3e6149efaa79f3dbf101ebef0edc5399466#commitcomment-204499629"
+  },
+  "checkpoint": {
+    "commit": "6d8179901dd19db026e0e90833e0932a274be4dd",
+    "path": "docs/agents/P3-E08-B11-PLANNER-GOVERNANCE-DISPOSITION.md",
+    "sha256": "BEED5D72EFDE6C64D232FB8FC4E2A061579BBE89B1647B939CA50388470618FD"
+  },
+  "reviewedCarrierSha": "463facb109cc4d19c4fda7af936fb4546fb86091",
+  "testedSha": "9a4f4c6ee2723eb7f546341f3c18a1f0a29c3bc1",
+  "receipt": {
+    "path": "artifacts/phase3-e08-b11-environment-reverification-receipts.json",
+    "sha256": "DCC796D63EBA088260440DFAF4B4C53B9E3AF8A3032055336530DD8FCF47F08A"
+  },
+  "windowDisposition": {
+    "authorization": "USER_APPROVED_EXACT_PAIR_RISK_DISPOSITION",
+    "scope": "Only the exact reviewed carrier and receipt SHA-256 above; missing-other-worker-acknowledgement risk accepted for candidate review consideration.",
+    "historicalVerdict": "CONDITION_UNMET",
+    "historicalCondition": "QUIET_WINDOW_CONDITION_NOT_PROVEN",
+    "otherOwnerAcknowledgements": "MISSING_NOT_RECONSTRUCTED",
+    "exclusivityProven": false,
+    "longTermStability": "NOT_VERIFIED",
+    "node24EquivalentToGithubNode20": "NOT_VERIFIED"
+  },
+  "prospectiveAdoption": {
+    "authorization": "USER_APPROVED_CONDITIONAL_PROSPECTIVE_ADOPTION",
+    "pinnedDeltas": [
+      {
+        "base": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+        "candidate": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+        "paths": [
+          "docs/agents/manifests/tasks/B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API.json",
+          "docs/agents/manifests/vectors/B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API.json",
+          "packages/rules/src/ability/interpreter.ts",
+          "packages/rules/tests/regression/b11-conversion-classification-api.test.ts"
+        ]
+      },
+      {
+        "base": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+        "candidate": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
+        "paths": [
+          "docs/agents/manifests/tasks/B11_CONVERSION_BINDING_OWNERSHIP_REPAIR.json",
+          "docs/agents/manifests/vectors/B11_CONVERSION_BINDING_OWNERSHIP_REPAIR.json",
+          "docs/agents/manifests/vectors/B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API.json",
+          "packages/rules/src/ability/card-zone-result-binding.ts",
+          "packages/rules/src/ability/executable-card-pack.ts",
+          "packages/rules/src/ability/interpreter.ts",
+          "packages/rules/tests/regression/b11-conversion-binding-ownership.test.ts"
+        ]
+      }
+    ],
+    "authorityDecision": {
+      "pathTable": [
+        {
+          "path": "docs/agents/manifests/tasks/B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API.json",
+          "finalBlob": "bdc054f75301a6132436748adba1f7932d53935b"
+        },
+        {
+          "path": "docs/agents/manifests/vectors/B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API.json",
+          "finalBlob": "8ec207e4626c70d9f8bdf3e65577c9641da86413"
+        },
+        {
+          "path": "packages/rules/src/ability/interpreter.ts",
+          "finalBlob": "25f17fe843a9a05650722e996f0ce97109cfadbe"
+        },
+        {
+          "path": "packages/rules/tests/regression/b11-conversion-classification-api.test.ts",
+          "finalBlob": "889dc27042bced6b8f7fc89526b4cb458647b4bf"
+        },
+        {
+          "path": "docs/agents/manifests/tasks/B11_CONVERSION_BINDING_OWNERSHIP_REPAIR.json",
+          "finalBlob": "64c9e2fd97c61aba9ad6056c4c45968302e75aab"
+        },
+        {
+          "path": "docs/agents/manifests/vectors/B11_CONVERSION_BINDING_OWNERSHIP_REPAIR.json",
+          "finalBlob": "4b8b6073387f45b0fc7eb0324753b8213528d799"
+        },
+        {
+          "path": "packages/rules/src/ability/card-zone-result-binding.ts",
+          "finalBlob": "958013fcf75ccd9b8a08ecb2f0dcd2fd30a55fab"
+        },
+        {
+          "path": "packages/rules/src/ability/executable-card-pack.ts",
+          "finalBlob": "1e6eef44d3cd177616575a9e9050e9a996c9ec51"
+        },
+        {
+          "path": "packages/rules/tests/regression/b11-conversion-binding-ownership.test.ts",
+          "finalBlob": "338e5bdba84995984622ad2313c1a59b0fec5fe1"
+        }
+      ]
+    },
+    "verification": "All nine final blobs match both carrier and tested source. Exact two-delta ancestry verified. No B11 source is imported in this publication.",
+    "historicalVerdict": "ORIGINAL_PROOF_MISSING",
+    "historicalAuthorizationReconstructed": false,
+    "semanticPass": false,
+    "wholeBranchAdopted": false,
+    "laterDeltaInheritance": false,
+    "newRuntimeWritesAuthorized": false,
+    "conditions": [
+      "Separate final Reviewer A scope/evidence acceptance, including remaining seven rows.",
+      "Separate final Reviewer B combination acceptance; Conversion-only PASS does not accept Golden Eater/socket composition.",
+      "Governance review, required checks and human merge of this limited publication.",
+      "Separate resolution of remaining authority issues before I dispatch; eventual exact runtime promotion HEAD must pass GitHub Node 20 build/test/policy."
+    ]
+  },
+  "packageWriterReservation": {
+    "path": "package.json",
+    "insideApprovedNineBlobScope": false,
+    "status": "ORIGINAL_WRITER_RESERVATION_PROOF_NOT_ESTABLISHED",
+    "reviewSource": {
+      "commit": "94e5588955fa96f1c160aebcb55f895346036fd3",
+      "path": "docs/reviews/phase3/P3-E08-B11-463facb-path-scope-review.json",
+      "row": 17
+    },
+    "testedBlob": "0f311821628a0a60cb37d752a259e6d688f7a6e9",
+    "currentSha256": "6FFED5CF04F2F5FD13538E7EF86E5C59D2F50B5DB2401C9424264E50204A1658",
+    "sourcesInspected": [
+      "e65503e601d7a3a4d1265d87a09484cb8295f2c2:docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md assigns scripts to A but requires coordinated package/tooling writer locks.",
+      "08e2f8cbf99b69ff1220b9dc1e933ec08fe57158:docs/agents/P3-E08-B11-ONE-PASS-A-REPAIR.md; f4cdad92f129d26a75aac207ecedc991d40a653c package delta adds maxWorkers=2."
+    ],
+    "disposition": "EXCLUDED_AND_UNRESOLVED; no retrospective writer-lock proof or prospective adoption granted here.",
+    "boundedNextStep": "RA finishes exact row-17 technical scope judgment; Planner/user separately disposes exact package script deltas if original writer-reservation proof is unavailable. No A rerun or new source edit."
+  },
+  "pendingReviews": {
+    "reviewerA": "Remaining rows 3/4/8/17/20/27/33 plus separate final exact evidence verdict; existing table is a scope subreview, not substitute final RA verdict.",
+    "reviewerB": "Immutable record publication and final exact B11/Golden Eater/socket combination acceptance; Conversion-only scope retained.",
+    "receiptReuse": "Verified same-source receipts may support scoped review; no full CI rerun merely for reviewer/Epoch label."
+  },
+  "authorizedChangedPaths": [
+    "docs/agents/FD-P3-CONTROL-EPOCH-09.md",
+    "docs/agents/PHASE3-TASK-INDEX.md",
+    "docs/agents/manifests/governance/P3-E09-B11-LIMITED-ADOPTION-ATTESTATION.json",
+    "docs/reports/2026-10-12-p3-e09-b11-limited-adoption-governance.md"
+  ],
+  "boundaries": {
+    "runtimeChanged": false,
+    "authoringChanged": false,
+    "producerEvidenceChanged": false,
+    "policyImplementationChanged": false,
+    "manifestExemptionsChanged": false,
+    "proposalOrEpoch08HistoryChanged": false,
+    "aScopeStatus": "A_SCOPE_COMPLETE",
+    "aNewTestsOrSyncAssigned": false,
+    "integrationAuthorized": false,
+    "overallAcceptance": false,
+    "promotedOnMain": false,
+    "coverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "mainDenominatorDelta": 0,
+    "ledger": "111/944",
+    "gateC": "NOT_VERIFIED",
+    "missingImageReleaseBlockers": 93,
+    "sourceAssetsWaiver": false,
+    "phase3Complete": false,
+    "releaseReady": false
+  },
+  "verdict": "SCOPED_GOVERNANCE_PUBLICATION_ONLY; TECHNICAL_ACCEPTANCE_AND_INTEGRATION_NOT_GRANTED"
+}
