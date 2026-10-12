@@ -20,6 +20,37 @@ export const authorizationSha = '8eb752c181ea025ac54c53f425a89aa64238f575';
 export const blockedCarrierSha = '4d911906c00b0d0309f82adefb96cd8680baa6da';
 export const continuationSha = '8d8098c9068ad702d65695367d30c5f5c2d85f6d';
 export const continuationTaskId = 'P3-E08-B11-EVIDENCE-CONTRACT-CONTINUATION';
+
+export const historicalExecutionSha = '9a4f4c6ee2723eb7f546341f3c18a1f0a29c3bc1';
+
+// Historical contracts execute against their original provider, not later transport changes.
+export function createHistoricalEvidenceSnapshot(workspace: string) {
+  git(workspace, ['merge-base', '--is-ancestor', historicalExecutionSha, 'HEAD']);
+  const directory = mkdtempSync(join(tmpdir(), 'fd-b11-historical-contract-'));
+  const cleanup = () => {
+    if (!relative(tmpdir(), directory).startsWith('fd-b11-historical-contract-')) throw new Error('Invalid snapshot cleanup scope');
+    rmSync(directory, { recursive: true, force: true });
+  };
+  try {
+    git(workspace, ['clone', '--shared', '--no-checkout', '--', workspace, directory]);
+    git(directory, ['checkout', '--detach', historicalExecutionSha]);
+    if (text(directory, ['rev-parse', 'HEAD']) !== historicalExecutionSha || text(directory, ['status', '--porcelain'])) throw new Error('Historical snapshot drift');
+    if (sha256(readFileSync(join(workspace, 'package-lock.json'))) !== sha256(readFileSync(join(directory, 'package-lock.json')))) throw new Error('Historical dependency lock drift');
+    const modules = join(directory, 'node_modules'); mkdirSync(modules);
+    const linkType = process.platform === 'win32' ? 'junction' : 'dir';
+    for (const entry of readdirSync(join(workspace, 'node_modules'), { withFileTypes: true })) {
+      if (entry.name === '@fd') {
+        const scope = join(modules, '@fd'); mkdirSync(scope);
+        for (const name of readdirSync(join(workspace, 'node_modules/@fd'))) {
+          const target = relative(workspace, realpathSync(join(workspace, 'node_modules/@fd', name)));
+          if (target.startsWith('..') || !target.startsWith('packages') && !target.startsWith('apps')) throw new Error('Invalid historical workspace dependency');
+          symlinkSync(join(directory, target), join(scope, name), linkType);
+        }
+      } else if (entry.isDirectory() || entry.isSymbolicLink()) symlinkSync(join(workspace, 'node_modules', entry.name), join(modules, entry.name), linkType);
+    }
+    return { root: directory, sha: historicalExecutionSha, cleanup };
+  } catch (error) { cleanup(); throw error; }
+}
 export const continuationPaths = [
   'scripts/phase3-e08-b11-coverage-sync.ts', 'scripts/tests/phase3-e08-b11-coverage-sync.test.ts',
   'scripts/tests/phase3-e06-post-merge-recount.test.ts', 'scripts/phase3-preflight.ts',
@@ -124,8 +155,8 @@ export async function buildSnapshotAtCheckout(root: string, candidateSha: string
     throw new Error('Observed main coverage baseline drift');
   }
   const fresh = buildCoverageFromArchives(loadAuthoringArchives(root), { workspaceRoot: root, generatedAt });
-  const { loadPlaytestContentPack, validateLoadedPlaytestPack, compileLoadedPlaytestPack } = await import('../packages/content/src/playtest-pack-loader');
-  const { compileExecutableCardPack } = await import('../packages/rules/src/ability/executable-card-pack');
+  const { loadPlaytestContentPack, validateLoadedPlaytestPack, compileLoadedPlaytestPack } = await import(pathToFileURL(resolve(root, 'packages/content/src/playtest-pack-loader.ts')).href);
+  const { compileExecutableCardPack } = await import(pathToFileURL(resolve(root, 'packages/rules/src/ability/executable-card-pack.ts')).href);
   const pack = loadPlaytestContentPack(resolve(root, 'data/packs/fd-playtest-v1/pack.json'), { workspaceRoot: root });
   const issues = validateLoadedPlaytestPack(pack, { workspaceRoot: root });
   const library = compileLoadedPlaytestPack(pack, issues).library;

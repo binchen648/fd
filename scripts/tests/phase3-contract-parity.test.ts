@@ -2,13 +2,16 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'nod
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { createHistoricalEvidenceSnapshot } from '../phase3-e08-b11-coverage-sync';
 import { buildParityInput, diagnosticCandidateSha as combinationSha, fixturePath } from '../phase3-b11-tooling-inputs';
 import { adapterClosurePaths, compareObservations, dependencyClosure, parseFixtures, parseParityInput, runParity, verifyAdapterClosure, verifyDependencyClosure } from '../phase3-contract-parity';
 import { collectCandidateObservations } from '../phase3-contract-parity-worker';
 import { git, gitText, hash, InputError, type Issue } from '../phase3-tooling-common';
 
-const root = resolve(fileURLToPath(new URL('../..', import.meta.url)));
+const snapshot = createHistoricalEvidenceSnapshot(resolve(fileURLToPath(new URL('../..', import.meta.url))));
+const root = snapshot.root;
+afterAll(snapshot.cleanup);
 let input: ReturnType<typeof buildParityInput>;
 let fixtures: ReturnType<typeof parseFixtures>;
 let result: Awaited<ReturnType<typeof runParity>>;

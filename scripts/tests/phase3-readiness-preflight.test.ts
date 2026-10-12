@@ -7,9 +7,11 @@ import { setImmediate as yieldToEventLoop } from 'node:timers/promises';
 import { assertFinalTaskCheck, buildFinalTaskCheck, buildContinuationTaskCheck, runPreflight } from '../phase3-preflight';
 import { git, gitText, hash, InputError } from '../phase3-tooling-common';
 import { publicationSha, reference } from '../phase3-b11-tooling-inputs';
-import { buildContinuationBinding, validateContinuationBinding, validateContinuationReceiptReference, type ContinuationReceipt, type ReceiptReference } from '../phase3-e08-b11-coverage-sync';
+import { buildContinuationBinding, validateContinuationBinding, validateContinuationReceiptReference, createHistoricalEvidenceSnapshot, type ContinuationReceipt, type ReceiptReference } from '../phase3-e08-b11-coverage-sync';
 
-const root = resolve(fileURLToPath(new URL('../..', import.meta.url)));
+const snapshot = createHistoricalEvidenceSnapshot(resolve(fileURLToPath(new URL('../..', import.meta.url))));
+const root = snapshot.root;
+afterAll(snapshot.cleanup);
 const taskId = 'P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY';
 const manifestPath = `docs/agents/manifests/tasks/${taskId}.json`;
 const sourcePath = 'packages/rules/src/ability/resolution-dataflow.ts';

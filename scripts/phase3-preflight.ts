@@ -6,9 +6,88 @@ import { authorizationSha, finalSourcePaths, implementationBaseSha, mainSha, rep
   buildContinuationBinding, validateContinuationBinding, continuationPaths, continuationTaskId,
   buildContinuationReviews, validateContinuationReviews, validateContinuationReceipt, type ContinuationReceipt } from './phase3-e08-b11-coverage-sync';
 import { validateContinuationReceiptReference, type ReceiptReference } from './phase3-e08-b11-coverage-sync';
-import { ancestor, array, cliError, commitExists, fields, git, InputError, inputFile, json, object, output, parseArgs, parseReference, readReference, safePath, sha, string, type Issue } from './phase3-tooling-common';
+import { ancestor, array, cliError, commitExists, fields, git, hash, InputError, inputFile, json, object, output, parseArgs, parseReference, readReference, safePath, sha, string, type Issue } from './phase3-tooling-common';
 
 const b11Task = 'P3-E08-B11-RESULT-BINDING-CURRENT-MAIN-REPLAY';
+
+export const e09CandidateSha = '0f62210a2e007a15e28f945c546ccd00c345942a';
+export const e09ReviewSha = '4d5b76be9d5459cc0c40e50fae8513bc59cd5d21';
+export const e09RepairAuthorizationSha = '69002b6a13f733cfdae586aeb4e19408e1ee592b';
+const e09BaseSha = '463facb109cc4d19c4fda7af936fb4546fb86091';
+const e09TestedSha = '88dcd441a17584b4a2a6d1ba78e588ac6a818ed1';
+const e09RuntimePaths = ['packages', 'apps', 'e2e', 'data', 'package.json', 'package-lock.json', 'playwright.config.ts', 'tsconfig.json', 'scripts/phase3-coverage.ts'];
+const e09References = [
+  [e09ReviewSha, 'docs/reviews/phase3/P3-E09-B11-TRANSPORT-SECURITY-REPAIR-0f62210-reviewer-b.json'],
+  ['e247a9a2c07c83652234c42e95f1d74548f1a6a3', 'docs/agents/P3-E09-B11-TRANSPORT-SECURITY-REPAIR.md'],
+  ['2806e25c74337ff9cc5fb088cee4dd7b8674440f', 'docs/agents/P3-E09-B11-COMPATIBILITY-AND-VALIDATION.md'],
+  [e09RepairAuthorizationSha, 'docs/agents/P3-E09-B11-FINAL-EVIDENCE-CONTRACT-REPAIR.md'],
+  [e09CandidateSha, 'artifacts/phase3-e09-b11-transport-security-repair.json'],
+] as const;
+
+export function buildE09FinalBinding(root: string) {
+  const references = e09References.map(([commit, path]) => ({ commit, path,
+    sha256: hash(git(root, ['show', `${commit}:${path}`])) }));
+  const objects = git(root, ['rev-parse', ...e09RuntimePaths.map(path => `${e09CandidateSha}:${path}`)]).toString().trim().split('\n');
+  return { schemaVersion: 'fd-p3-e09-final-binding-v1', taskId: 'P3-E09-B11-FINAL-EVIDENCE-CONTRACT-REPAIR',
+    candidateSha: e09CandidateSha, runtimeBaseSha: e09BaseSha, combinationTestedSha: e09TestedSha,
+    references, sourceObjects: Object.fromEntries(e09RuntimePaths.map((path, index) => [path, objects[index]])),
+    historicalAcceptanceInherited: false, mainCreditDelta: 0 };
+}
+
+export function validateE09RawStreams(value: unknown): number {
+  let count = 0;
+  const visit = (value: unknown) => {
+    if (!value || typeof value !== 'object') return;
+    const row = value as Record<string, unknown>;
+    if (row.encoding === 'base64' && typeof row.raw === 'string' && typeof row.sha256 === 'string') {
+      const bytes = Buffer.from(row.raw, 'base64');
+      if (bytes.toString('base64') !== row.raw || bytes.length !== row.bytes || hash(bytes).toLowerCase() !== row.sha256) throw new InputError('Tampered raw receipt');
+      count++;
+    }
+    for (const item of Object.values(row)) visit(item);
+  };
+  visit(value); return count;
+}
+
+export function validateE09FinalBinding(root: string, input: ReturnType<typeof buildE09FinalBinding>) {
+  const expected = buildE09FinalBinding(root);
+  assertFinalTaskCheck(input, expected);
+  git(root, ['merge-base', '--is-ancestor', e09CandidateSha, 'HEAD']);
+  if (git(root, ['rev-parse', `${e09ReviewSha}^`]).toString().trim() !== e09CandidateSha) throw new InputError('Reviewer parent mismatch');
+  const review = JSON.parse(git(root, ['show', `${e09ReviewSha}:${e09References[0][1]}`]).toString());
+  if (review.reviewedSha !== e09CandidateSha || review.verdict !== 'PASS' || review.overallReadiness !== 'BLOCKED' ||
+      review.reviewerIdentity !== 'Codex Reviewer B' || review.combinationTestedSha !== e09TestedSha ||
+      review.verdictScope !== 'Scoped transport security repair and existing B11/Golden Eater/socket composition only') throw new InputError('Scoped reviewer binding mismatch');
+  const sourceBytes = git(root, ['show', `${e09CandidateSha}:${e09References[4][1]}`]);
+  if (hash(sourceBytes).toLowerCase() !== review.packet.sha256) throw new InputError('Reviewer packet hash mismatch');
+  const packet = JSON.parse(sourceBytes.toString());
+  const rawStreams = validateE09RawStreams(packet);
+  if (rawStreams !== 26) throw new InputError('Missing raw receipts');
+  const entries = Object.entries(input.sourceObjects);
+  const boundObjects = git(root, ['rev-parse', ...['HEAD', e09TestedSha].flatMap(commit => entries.map(([path]) => `${commit}:${path}`))]).toString().trim().split('\n');
+  entries.forEach(([path, object], index) => { if (boundObjects[index] !== object || boundObjects[index + entries.length] !== object) throw new InputError(`Current source drift: ${path}`); });
+  if (git(root, ['diff', 'HEAD', '--', ...e09RuntimePaths]).length || git(root, ['ls-files', '--others', '--exclude-standard', '--', ...e09RuntimePaths]).length) throw new InputError('Dirty current provider');
+  const read = (index: number) => git(root, ['show', `${e09References[index][0]}:${e09References[index][1]}`]).toString();
+  const declaredPaths = (text: string) => [...text.matchAll(/^- ([\w./-]+)(?: \([^\r\n]*\))?(?:\r?\n|$)/gm)].map(match => match[1]);
+  const transportPaths = new Set([...declaredPaths(read(1)), ...declaredPaths(read(2))]);
+  for (const path of changedPaths(root, e09BaseSha, e09CandidateSha)) if (!transportPaths.has(path)) throw new InputError(`Unauthorized transport delta: ${path}`);
+  const repairPaths = new Set(declaredPaths(read(3)));
+  for (const path of changedPaths(root, e09ReviewSha, 'HEAD')) {
+    if (!repairPaths.has(path) && path !== 'artifacts/phase3-e09-b11-final-binding-diagnostic.json' && path !== 'docs/reports/2026-10-12-p3-e09-b11-final-binding-diagnostic.md') throw new InputError(`Unexpected evidence delta: ${path}`);
+  }
+  const sourceBlobs = git(root, ['rev-parse', ...packet.sourceBinding.files.map((row: any) => `${e09CandidateSha}:${row.path}`)]).toString().trim().split('\n');
+  for (const [index, row] of packet.sourceBinding.files.entries()) {
+    const bytes = git(root, ['show', `${e09CandidateSha}:${row.path}`]);
+    if (hash(bytes).toLowerCase() !== row.sha256 || sourceBlobs[index] !== row.gitBlob) throw new InputError('Transport source hash mismatch');
+  }
+  const issues: Issue[] = [{ code: 'FINAL_REVIEWER_A_PENDING', path: 'current carrier', message: 'Scoped RB review is not final evidence acceptance' },
+    { code: 'ROOM_ID_REPAIR_AUTHORITY_UNBOUND', path: 'd9d8a6a480710afba20ee7371ecdedb09de77de1', message: 'Read dispatch authorizes paths but does not explicitly bind the subsequent room-ID semantic repair; Planner must provide exact authority disposition' },
+    { code: 'SOURCE_ASSETS_MISSING', path: 'source-assets', message: '93 MISSING_IMAGE retained' },
+    { code: 'GOVERNANCE_PENDING', path: 'Epoch 09/main publication and promotion', message: 'Not granted by evidence contract' }];
+  return { status: 'BLOCKED', rawStreams, review, packet, issues, sourceObjects: input.sourceObjects,
+    authenticHistoricalCi: packet.receipts.find((row: any) => row.id === '13-current-combination-default-ci'),
+    acceptanceGranted: false, creditDelta: 0 };
+}
 const socketTask = 'P3-E08-SHARED-SOCKET-LIFECYCLE-FIX';
 const b11Paths = [
   'data/authoring/servants/servant.kintoki.json', 'data/generated/fd-playtest-v1.content-library.json',

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "fd-p3-e09-final-binding-v1",
+  "taskId": "P3-E09-B11-FINAL-EVIDENCE-CONTRACT-REPAIR",
+  "candidateSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+  "runtimeBaseSha": "463facb109cc4d19c4fda7af936fb4546fb86091",
+  "combinationTestedSha": "88dcd441a17584b4a2a6d1ba78e588ac6a818ed1",
+  "references": [
+    {
+      "commit": "4d5b76be9d5459cc0c40e50fae8513bc59cd5d21",
+      "path": "docs/reviews/phase3/P3-E09-B11-TRANSPORT-SECURITY-REPAIR-0f62210-reviewer-b.json",
+      "sha256": "6FE0EAD378E31149B3271E137FDB99ACAC161F2894E3FAD21FC0A14986E96DB4"
+    },
+    {
+      "commit": "e247a9a2c07c83652234c42e95f1d74548f1a6a3",
+      "path": "docs/agents/P3-E09-B11-TRANSPORT-SECURITY-REPAIR.md",
+      "sha256": "68FA8B97CF7BFB7954EBB886EDB90B1C1204CFF1D3A672B1079CFCAC7ADDB90C"
+    },
+    {
+      "commit": "2806e25c74337ff9cc5fb088cee4dd7b8674440f",
+      "path": "docs/agents/P3-E09-B11-COMPATIBILITY-AND-VALIDATION.md",
+      "sha256": "6357254B6935930554B6AC4CFF8FBD5D7A8CFFD65E65B5CE87F4EB82C498AEA9"
+    },
+    {
+      "commit": "69002b6a13f733cfdae586aeb4e19408e1ee592b",
+      "path": "docs/agents/P3-E09-B11-FINAL-EVIDENCE-CONTRACT-REPAIR.md",
+      "sha256": "BF027CFC8DCE0C3A31B0FB4062FE402470895816F832656836B8AE4344FFEE3A"
+    },
+    {
+      "commit": "0f62210a2e007a15e28f945c546ccd00c345942a",
+      "path": "artifacts/phase3-e09-b11-transport-security-repair.json",
+      "sha256": "9B1EB7E165F578722579BC2A44AD79D9CA78D8DDBB72747D83C07678EBAB6CF0"
+    }
+  ],
+  "sourceObjects": {
+    "packages": "c904b430fa508f32633c94ba0f4a529608906b59",
+    "apps": "c34eef2d6a3827ca60659a0410e4cc2e5c373a12",
+    "e2e": "13b6198a127710b63fead7589d24cd26f59ae6e0",
+    "data": "9afd59edf63bf38293e02950a7c3abd31bbc1938",
+    "package.json": "0f311821628a0a60cb37d752a259e6d688f7a6e9",
+    "package-lock.json": "d7844d900ba14635d4b8d2c50ac4954cbc9c0a93",
+    "playwright.config.ts": "c41069bee0070a5dd6b5d6653eca1f91d418b133",
+    "tsconfig.json": "249eda05330a5d5380bba2a0981594ae6f1fabf0",
+    "scripts/phase3-coverage.ts": "ce6f84862de382703d6bfbf2940e535f1b238be3"
+  },
+  "historicalAcceptanceInherited": false,
+  "mainCreditDelta": 0
+}

@@ -5,11 +5,13 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
-import { describe, expect, it } from 'vitest';
+import { afterAll, describe, expect, it } from 'vitest';
 import { buildCoverageFromArchives, loadAuthoringArchives } from '../phase3-coverage';
-import { validateFinalBinding, validateContinuationBinding } from '../phase3-e08-b11-coverage-sync';
+import { validateFinalBinding, validateContinuationBinding, createHistoricalEvidenceSnapshot } from '../phase3-e08-b11-coverage-sync';
 
-const root = resolve(fileURLToPath(new URL('../..', import.meta.url)));
+const snapshot = createHistoricalEvidenceSnapshot(resolve(fileURLToPath(new URL('../..', import.meta.url))));
+const root = snapshot.root;
+afterAll(snapshot.cleanup);
 const recountPath = resolve(root, 'artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json');
 const coveragePath = resolve(root, 'artifacts/phase3-skill-coverage.json');
 const historicalCoverageCommit = '9a1689d2ec5b56b67d1483d2593b4ab809d6c15c';
@@ -112,8 +114,8 @@ describe('P3-E06 post-merge setup/create-to-skill recount', () => {
       workspaceRoot: root, generatedAt: coverage.generatedAt,
     });
     const { loadPlaytestContentPack, validateLoadedPlaytestPack, compileLoadedPlaytestPack } =
-      await import('../../packages/content/src/playtest-pack-loader');
-    const { compileExecutableCardPack } = await import('../../packages/rules/src/ability/executable-card-pack');
+      await import(pathToFileURL(resolve(root, 'packages/content/src/playtest-pack-loader.ts')).href);
+    const { compileExecutableCardPack } = await import(pathToFileURL(resolve(root, 'packages/rules/src/ability/executable-card-pack.ts')).href);
     const pack = loadPlaytestContentPack(resolve(root, 'data/packs/fd-playtest-v1/pack.json'), { workspaceRoot: root });
     const issues = validateLoadedPlaytestPack(pack, { workspaceRoot: root });
     const library = compileLoadedPlaytestPack(pack, issues).library;

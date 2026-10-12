@@ -2,12 +2,14 @@ import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { assertSameEvidence, buildSync, buildFinalSync, historicalCarrierSha, validateFinalBinding, coveragePath, renderReport, reportPath, sha256, syncPath,
   buildContinuationBinding, validateContinuationBinding, buildContinuationReviews, validateContinuationReviews,
-  validateContinuationReceipt, validateContinuationReceiptReference, type ContinuationReceipt } from '../phase3-e08-b11-coverage-sync';
+  validateContinuationReceipt, validateContinuationReceiptReference, createHistoricalEvidenceSnapshot, type ContinuationReceipt } from '../phase3-e08-b11-coverage-sync';
 
-const root = resolve(fileURLToPath(new URL('../..', import.meta.url)));
+const snapshot = createHistoricalEvidenceSnapshot(resolve(fileURLToPath(new URL('../..', import.meta.url))));
+const root = snapshot.root;
+afterAll(snapshot.cleanup);
 let expected: Awaited<ReturnType<typeof buildSync>>;
 let finalSnapshot: Awaited<ReturnType<typeof buildFinalSync>>;
 
