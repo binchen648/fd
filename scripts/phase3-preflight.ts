@@ -385,6 +385,11 @@ export function validateE09IntegrationClosure(root: string, producer: ReturnType
     const candidate = sha(temporal.producerCandidateSha, 'producer candidate');
     const allowed = new Set([...array(temporal.reviewReferences, 'review references').map(ref => safePath(ref.path, 'review path')), ...e09PromotionPaths]);
     for (const path of changedPaths(root, candidate, head)) if (!allowed.has(path)) throw new InputError(`Unauthorized post-candidate delta: ${path}`);
+    const governance = array(temporal.governanceReferences, 'current G references').map(ref => parseReference(ref, 'G reference'));
+    if (governance.length !== 3 || !isDeepStrictEqual(governance.map(ref => ref.path).sort(), [...e09PromotionPaths].sort()) || new Set(governance.map(ref => ref.commit)).size !== 1) throw new InputError('Exactly three immutable G references required');
+    const attestationRef = governance.find(ref => ref.path === e09PromotionPaths[0])!;
+    const attestationBytes = git(root, ['show', `${attestationRef.commit}:${attestationRef.path}`]);
+    if (hash(attestationBytes) !== attestationRef.sha256 || json(attestationBytes, 'G attestation').candidateSha !== candidate) throw new InputError('G must bind the exact current candidate and hash');
   }
   const binding = producer.technicalBinding;
   const refs = [producer.authority, binding.authorization, binding.promotionAuthority, binding.finalReviewerA,
