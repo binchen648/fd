@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+import * as persistenceAuthority from '../src/ability/opponent-close-to-one-authority';
 
 import { createMatchRoomHub } from '../src/match-room-hub';
 import { advanceAbilityPhase, isPresenceConcealmentAssassinationSemantic } from '../src/ability/interpreter';
@@ -19,6 +20,35 @@ function realUnrelatedAbility(snapshot: any) {
 }
 
 describe('MatchRoomHub local multiplayer transport layer', () => {
+  it('rejects invalid or duplicate room creation before revoking trust or changing the running room', () => {
+    const hub = createMatchRoomHub();
+    const roomId = hub.createRoom({ hostClientId: 'host' }).roomId;
+    hub.selectSeat(roomId, 'host', 1);
+    hub.startMatch(roomId, 'host');
+    const room = hub.getRoom(roomId);
+    const session = room.session;
+    const before = structuredClone(room.serializeRoom());
+    const version = hub.version(roomId);
+    const projection = structuredClone(hub.project(roomId, 'host'));
+    const scope = room.getPersistenceContext().persistenceScope;
+    const token = room.getIssuedCredential('host');
+    const revoke = vi.spyOn(persistenceAuthority, 'revokeOpponentCloseToOnePersistenceTrust');
+    try {
+      for (const roomId of [undefined, 'fd-room-20260904', '', '   ', null, 42, {}, []]) {
+        expect(() => hub.createRoom({ roomId, hostClientId: 'replacement-host' } as any)).toThrow(/Room already exists|Invalid room id/);
+        expect(hub.getRoom(before.roomId)).toBe(room);
+        expect(room.session).toBe(session);
+        expect(room.serializeRoom()).toEqual(before);
+        expect(hub.version(before.roomId)).toBe(version);
+        expect(hub.project(before.roomId, 'host')).toEqual(projection);
+        expect(room.getIssuedCredential('host')).toBe(token);
+        expect(persistenceAuthority.resolveOpponentCloseToOnePersistenceScope(before.roomId)).toBe(scope);
+        expect(revoke).not.toHaveBeenCalled();
+      }
+    } finally {
+      revoke.mockRestore();
+    }
+  });
   it('rejects missing, invalid and stale revisions for both mutation commands without any side effects', () => {
     const hub = createMatchRoomHub();
     const roomId = hub.createRoom({ roomId: 'required-revision', hostClientId: 'host' }).roomId;
@@ -145,19 +175,21 @@ describe('MatchRoomHub local multiplayer transport layer', () => {
     hub.startMatch(roomId, 'host-old');
     const oldSnapshot = structuredClone(hub.getRoom(roomId).serializeRoom());
 
-    hub.createRoom({ roomId, seed: 222, hostClientId: 'host-fresh' });
-    hub.startMatch(roomId, 'host-fresh');
-    const beforeRoom = hub.getRoom(roomId);
+    // A fresh Hub may reuse the public ID; create never replaces a live room in one Hub.
+    const freshHub = createMatchRoomHub();
+    freshHub.createRoom({ roomId, seed: 222, hostClientId: 'host-fresh' });
+    freshHub.startMatch(roomId, 'host-fresh');
+    const beforeRoom = freshHub.getRoom(roomId);
     const beforeSnapshot = structuredClone(beforeRoom.serializeRoom());
-    const beforeVersion = hub.version(roomId);
+    const beforeVersion = freshHub.version(roomId);
     const mixed: any = structuredClone(beforeSnapshot);
     mixed.session.state = structuredClone(oldSnapshot.session!.state);
     mixed.session.deferredRuntimeStateSeal = structuredClone(oldSnapshot.session!.deferredRuntimeStateSeal);
 
-    expect(() => hub.restoreRoom(roomId, mixed)).toThrow('Invalid or missing deferred runtime state authority');
-    expect(hub.getRoom(roomId)).toBe(beforeRoom);
-    expect(hub.getRoom(roomId).serializeRoom()).toEqual(beforeSnapshot);
-    expect(hub.version(roomId)).toBe(beforeVersion);
+    expect(() => freshHub.restoreRoom(roomId, mixed)).toThrow('Invalid or missing deferred runtime state authority');
+    expect(freshHub.getRoom(roomId)).toBe(beforeRoom);
+    expect(freshHub.getRoom(roomId).serializeRoom()).toEqual(beforeSnapshot);
+    expect(freshHub.version(roomId)).toBe(beforeVersion);
   });
 
   it('rejects referentially invalid restored board state without replacing the room', () => {

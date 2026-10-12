@@ -168,6 +168,35 @@ function nextMessage(socket: WebSocket, messages: ServerRoomMessage[], predicate
 }
 
 describe('match websocket server', () => {
+  it('rejects empty/default/invalid HTTP room IDs without replacing the running default room', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    const hub = serverHandle.hub;
+    const roomId = hub.createRoom({ hostClientId: 'host' }).roomId;
+    hub.selectSeat(roomId, 'host', 1);
+    hub.startMatch(roomId, 'host');
+    const room = hub.getRoom(roomId);
+    const session = room.session;
+    const snapshot = structuredClone(room.serializeRoom());
+    const scope = room.getPersistenceContext().persistenceScope;
+    const version = hub.version(roomId);
+    const projection = structuredClone(hub.project(roomId, 'host'));
+    for (const roomId of ['', undefined, 'fd-room-20260904', '   ', null, 42, {}, []]) {
+      const response = await fetch(`http://127.0.0.1:${port}/rooms`, {
+        method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ roomId, hostClientId: 'replacement-host' }),
+      });
+      expect(response.status).toBe(400);
+      const body = await response.text();
+      expect(body).not.toContain('reconnectToken');
+      expect(body).not.toContain(room.getIssuedCredential('host'));
+      expect(hub.getRoom(snapshot.roomId)).toBe(room);
+      expect(room.session).toBe(session);
+      expect(room.serializeRoom()).toEqual(snapshot);
+      expect(room.getPersistenceContext().persistenceScope).toBe(scope);
+      expect(hub.version(snapshot.roomId)).toBe(version);
+      expect(hub.project(snapshot.roomId, 'host')).toEqual(projection);
+    }
+  });
   it('blocks RB public-credential and duplicate HTTP identity impersonation without Golden Eater mutation', async () => {
     serverHandle = createMatchServer();
     const port = await serverHandle.listen();

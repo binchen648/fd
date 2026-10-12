@@ -115,10 +115,8 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
       }
       if (request.method === 'POST' && requestUrl.pathname === '/rooms') {
         const body = await readBody(request) as CreateRoomHttpRequest;
-        const requestedRoomId = body.roomId ?? `fd-room-${body.seed ?? 20260904}`;
-        if (hub.hasRoom(requestedRoomId)) throw new Error('Room already exists');
         const projection = hub.createRoom({
-          ...(body.roomId ? { roomId: body.roomId } : {}),
+          ...(body.roomId !== undefined ? { roomId: body.roomId } : {}),
           ...(body.seed !== undefined ? { seed: body.seed } : {}),
           ...(body.hostClientId ? { hostClientId: body.hostClientId } : {}),
           ...(body.hostName ? { hostName: body.hostName } : {}),

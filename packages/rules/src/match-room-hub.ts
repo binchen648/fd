@@ -1,6 +1,7 @@
 import {
   createMatchRoom,
   restoreMatchRoom,
+  resolveMatchRoomId,
   type MatchRoom,
   type MatchRoomConfig,
   type MatchRoomProjection,
@@ -25,11 +26,9 @@ export class MatchRoomHub {
   private roomVersions = new Map<string, number>();
 
   createRoom(config: MatchRoomConfig = {}): MatchRoomProjection {
-    const requestedRoomId = config.roomId ?? `fd-room-${config.seed ?? 20260904}`;
-    const replaced = this.rooms.get(requestedRoomId);
-    const replacedScope = replaced?.getPersistenceContext().persistenceScope;
-    if (replacedScope) revokeOpponentCloseToOnePersistenceTrust(replacedScope);
-    const room = createMatchRoom(config);
+    const requestedRoomId = resolveMatchRoomId(config);
+    if (this.rooms.has(requestedRoomId)) throw new Error('Room already exists');
+    const room = createMatchRoom({ ...config, roomId: requestedRoomId });
     this.rooms.set(room.roomId, room);
     this.bump(room.roomId, 'room_created');
     return room.getProjection(room.hostClientId);

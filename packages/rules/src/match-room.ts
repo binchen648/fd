@@ -42,6 +42,12 @@ export interface MatchRoomConfig extends MatchSessionConfig {
   hostName?: string;
 }
 
+export function resolveMatchRoomId(config: Pick<MatchRoomConfig, 'roomId' | 'seed'>): string {
+  if (config.roomId === undefined) return `fd-room-${config.seed ?? 20260904}`;
+  if (typeof config.roomId !== 'string' || config.roomId.trim().length === 0) throw new Error('Invalid room id');
+  return config.roomId;
+}
+
 export interface MatchRoomProjection {
   roomId: string;
   status: RoomStatus;
@@ -94,7 +100,7 @@ export class MatchRoom {
   private readonly credentials = new Map<string, string>();
 
   constructor(config: MatchRoomConfig = {}) {
-    this.roomId = config.roomId ?? `fd-room-${config.seed ?? 20260904}`;
+    this.roomId = resolveMatchRoomId(config);
     this.seed = config.seed ?? 20260904;
     this.hostClientId = config.hostClientId ?? 'host';
     this.persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
