@@ -713,3 +713,180 @@
 .battle-root.battle-root::before {
   background: rgba(0,0,0,.36) !important;
 }
+
+/* Unified typography and controls.  Source Han Serif is requested for body
+   copy (Noto Serif SC is the installed equivalent); Bahnschrift with Noto Sans
+   SC gives headings a geometric sans shape while keeping Chinese glyphs clear. */
+:root,
+:host,
+#app,
+.battle-root.battle-root {
+  --fd-display-font: "Bahnschrift", "Noto Sans SC", "Noto Sans", "Segoe UI", sans-serif;
+  --fd-body-font: "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
+  --ui-font: var(--fd-body-font) !important;
+  --ui-confirm: #fe8d00 !important;
+  --ui-confirm-hover: #ff9f1c !important;
+  --ui-confirm-active: #e67800 !important;
+  --ui-button-text: #fff8ee !important;
+}
+#app .screen,
+.battle-root.battle-root {
+  font-family: var(--fd-body-font) !important;
+}
+#app :is(h1,h2,h3,h4),
+.battle-root.battle-root :is(h1,h2,h3,h4),
+#app :is(.codex-name,.ready-card-name,.skill-title,.skill-row b,
+  .skill-name-face,.ability-text h3,.codex-skill-name,
+  .codex-skill-copy h3,.draft-focus-skills strong,.ready-skill-head strong,
+  .ready-skill-title strong,.character-skill-preview-head strong,
+  .character-skill-preview-copy strong) {
+  font-family: var(--fd-display-font) !important;
+}
+#app button,
+.battle-root.battle-root button {
+  font-family: var(--fd-display-font) !important;
+}
+
+/* Every utility/action button uses the same orange language as the reference
+   button. Large artwork cards and transparent navigation remain compositions,
+   so their image and hover treatments are not flattened into controls. */
+#app .screen button:not(.nav):not(.press-any):not(.legal-continue):not(.mode-card):not(.tutorial-card):not(.codex-card):not(.pick-card):not(.battle-bg-choice):not(.avatar-choice):not(.profile-avatar-button):not(.home-notice-edge):not(.home-notice-dot):not(.settings-row):not(.profile),
+.battle-root.battle-root button {
+  background: var(--ui-confirm) !important;
+  border-color: var(--ui-confirm) !important;
+  color: var(--ui-button-text) !important;
+  border-radius: 4px !important;
+  box-shadow: 0 3px 0 rgba(151, 69, 0, .34), 0 6px 16px rgba(0,0,0,.16) !important;
+}
+#app .screen button:not(:disabled):not(.nav):not(.press-any):not(.legal-continue):not(.mode-card):not(.tutorial-card):not(.codex-card):not(.pick-card):not(.battle-bg-choice):not(.avatar-choice):not(.profile-avatar-button):not(.home-notice-edge):not(.home-notice-dot):not(.settings-row):not(.profile):hover,
+.battle-root.battle-root button:not(:disabled):hover {
+  background: var(--ui-confirm-hover) !important;
+  border-color: var(--ui-confirm-hover) !important;
+  color: #fffdf8 !important;
+  box-shadow: 0 3px 0 rgba(151, 69, 0, .28), 0 8px 20px rgba(0,0,0,.22) !important;
+}
+#app .screen button:not(:disabled):not(.nav):not(.press-any):not(.legal-continue):not(.mode-card):not(.tutorial-card):not(.codex-card):not(.pick-card):not(.battle-bg-choice):not(.avatar-choice):not(.profile-avatar-button):not(.home-notice-edge):not(.home-notice-dot):not(.settings-row):not(.profile):active,
+.battle-root.battle-root button:not(:disabled):active {
+  background: var(--ui-confirm-active) !important;
+  border-color: var(--ui-confirm-active) !important;
+  box-shadow: 0 1px 0 rgba(151, 69, 0, .38) inset !important;
+}
+#app .screen button:disabled,
+.battle-root.battle-root button:disabled {
+  background: #343638 !important;
+  border-color: #55585a !important;
+  color: #9b9e9e !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+}
+
+/* Battle skill names and ability controls follow the same display/body split. */
+.battle-root.battle-root :is(.skill-title,.skill-row b,.skill-name-face,
+  .ability-text h3,.ability-head h2,.choice-head h2,.settlement-head h2,
+  .save-box h2,.drawer-head h2,.discard-head h2) {
+  font-family: var(--fd-display-font) !important;
+}
+.battle-root.battle-root :is(.ranking,.servant-name,.meters,.resources,
+  .skill-row small,.hint,.opp-info,.public-label,.place small,.log-item,
+  .save-box p,.preview p) {
+  font-family: var(--fd-body-font) !important;
+}
+
+/* Typography pass: the component sheets use !important font shorthands.  These
+   selectors intentionally mirror those component scopes so the project-wide
+   type split remains stable on every screen and at every responsive breakpoint. */
+#app .screen .sub-title h1,
+#app :is(.mode-selection-screen,.classic-setup-screen,.archive-list-screen,
+  .archive-detail-screen,.multiplayer-lobby-screen) .sub-title h1,
+#app .screen .sub-title > span,
+#app .mode-selection-screen .mode-body strong,
+#app .screen .draft-screen .contract-workspace .ow-phase-copy :is(h1,h2),
+#app .draft-screen .contract-workspace .ow-roster-grid .pick-card-info strong,
+#app .draft-focus-heading h2,
+#app .purchase-head h2,
+#app .purchase-section-title h3,
+#app .archive-detail-screen .codex-detail-section-head h2,
+#app .tutorial-reader-head h2,
+#app .tutorial-screen--rules .tutorial-lesson-copy > h3,
+#app .profile-stats strong,
+#app .ready-head h2,
+#app .ready-card-name strong,
+#app .ready-skill-title strong,
+#app .ready-skill-head strong,
+#app .ow-roster-grid .pick-card-info strong,
+#app .codex-card :is(strong,h3,b),
+#app .archive-list-screen .codex-name,
+#app .codex-detail-section-head h3,
+#app .codex-skill-copy h3,
+#app .codex-skill-name,
+#app .codex-detail-id strong,
+#app .profile-rank-copy strong,
+#app .profile-rank-name,
+#app .profile-stat-card strong,
+#app .draft-focus-skills strong,
+#app .tutorial-takeaway small,
+#app .tutorial-chapters button,
+#app .purchase-product-mark > span,
+#app .crystal-count b,
+#app .logo :is(.fate,.slash,.dom),
+#app .splash-title :is(.fate,.dom),
+#app .legal-copy h1,
+#app .rank-promotion-stage h2,
+#app .rank-promotion-name strong,
+#app .battle-entry-copy :is(h1,h2,strong),
+.battle-root.battle-root .brand,
+.battle-root.battle-root :is(.opp-name,.player-name,.place-title,
+  .settlement-combatant strong,.settlement-place strong,.round strong,
+  .hand-power strong,.opp-power-badge strong,.opp-detail-power strong) {
+  font-family: var(--fd-display-font) !important;
+}
+
+/* Body copy stays in the serif family, including the mode cards and the
+   explanatory text that previously inherited a heading shorthand. */
+#app .mode-selection-screen .mode-body p,
+#app .mode-selection-screen .mode-body small,
+#app .screen .mode-body p,
+#app .screen .mode-body small,
+#app .screen .ow-phase-copy p,
+#app .screen .ow-phase-copy small,
+#app .screen .purchase-head p,
+#app .screen .purchase-head small,
+#app .screen .purchase-section-title small,
+#app .screen .ready-head p,
+#app .screen .ready-skill p,
+#app .screen .tutorial-reader-head small,
+#app .screen .tutorial-lesson-copy > p,
+#app .screen .tutorial-lesson-copy > small,
+#app .screen .tutorial-takeaway p,
+#app .screen .codex-meta,
+#app .screen .codex-skill-copy p,
+#app .screen .profile-identity p,
+#app .screen .usage-empty,
+#app .screen .legal-copy,
+#app .screen .legal-copy p,
+#app .screen .legal-copy small,
+#app .screen .legal-loader-percent {
+  font-family: var(--fd-body-font) !important;
+}
+
+/* Keep labels on controls geometric even when a component defines its own
+   font shorthand. */
+#app .screen :is(button,input,select,textarea),
+.battle-root.battle-root :is(button,input,select,textarea) {
+  font-family: var(--fd-display-font) !important;
+}
+
+/* Controls are interface copy rather than headings, so keep their labels in
+   the serif body face while the title and skill selectors above stay geometric. */
+#app .screen button:is(.ow-primary,.ready-enter-preview,.purchase-finish,
+  .profile-name-edit button,.tutorial-step-actions button,
+  .profile-transfer-actions button,.settings-confirm,.room-primary,
+  .threex-primary,.pick-confirm,.multi-lobby-start,
+  .purchase-option-foot button,[data-standard-next],[data-confirm-choice],
+  [data-enter-battle-preview],[data-room-start],[data-threex-finish-purchase],
+  [data-threex-finish-ban],[data-threex-confirm-ban],
+  [data-threex-confirm-master],[data-threex-confirm-servant]),
+#app .screen button,
+.battle-root.battle-root button {
+  font-family: var(--fd-body-font) !important;
+}
