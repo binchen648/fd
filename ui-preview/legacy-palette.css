@@ -1076,3 +1076,242 @@
   display: block !important;
   padding: 8px 9px !important;
 }
+
+/* 3X selection workspace: use both sides of the stage.  The candidate pool
+   stays on the left while the selected character and skill ledger occupy the
+   right, so names remain inside a visible card instead of being clipped by a
+   full-width stacked rail. */
+#app .draft-screen .threex-content > .ow-master-draft.contract-workspace,
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) {
+  grid-template-columns: minmax(0, 1.45fr) minmax(360px, .9fr) !important;
+  grid-template-rows: auto auto minmax(310px, 1fr) 64px !important;
+  gap: 0 24px !important;
+  align-content: stretch !important;
+}
+#app .draft-screen .threex-content > .ow-master-draft.contract-workspace > .ow-phase-head,
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) > .ow-phase-head {
+  grid-column: 1 / -1 !important;
+  grid-row: 1 !important;
+}
+#app .draft-screen .threex-content > .ow-master-draft.contract-workspace > .threex-ban-summary {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  padding-right: 0 !important;
+  min-width: 0 !important;
+}
+#app .draft-screen .threex-content > .ow-master-draft.contract-workspace > .ow-current-choice,
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) > .ow-current-choice {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+  justify-self: stretch !important;
+  align-self: stretch !important;
+  position: static !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 8px 16px !important;
+  background: transparent !important;
+}
+#app .draft-screen .threex-content > .ow-master-draft.contract-workspace > .ow-roster,
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) > .ow-roster {
+  grid-column: 1 !important;
+  grid-row: 3 !important;
+  min-width: 0 !important;
+  min-height: 310px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  align-items: start !important;
+  justify-items: stretch !important;
+  padding: 10px 14px 18px 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+#app .draft-screen .threex-content > .ow-master-draft.contract-workspace .ow-3x-grid--small,
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) .ow-3x-grid {
+  display: grid !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  grid-auto-rows: 276px !important;
+  align-content: start !important;
+  justify-content: stretch !important;
+  gap: 14px !important;
+}
+#app .draft-screen .threex-content > .ow-master-draft.contract-workspace .ow-3x-grid--small .pick-card,
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) .ow-3x-grid .pick-card {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 276px !important;
+  flex: none !important;
+}
+#app .draft-screen .threex-content > .ow-master-draft.contract-workspace > .draft-focus,
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) > .draft-focus {
+  grid-column: 2 !important;
+  grid-row: 2 / 4 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  display: grid !important;
+  grid-template-columns: minmax(150px, 38%) minmax(0, 1fr) !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+  gap: 16px !important;
+  padding: 60px 0 16px 24px !important;
+}
+#app .draft-screen .threex-content > .contract-workspace > .draft-focus > .draft-focus-heading {
+  grid-column: 1 / -1 !important;
+  grid-row: 1 !important;
+  min-width: 0 !important;
+}
+#app .draft-screen .threex-content > .contract-workspace > .draft-focus > .draft-focus-art {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+}
+#app .draft-screen .threex-content > .contract-workspace > .draft-focus > .draft-focus-skills {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin-top: 0 !important;
+  overflow: auto !important;
+}
+#app .draft-screen .threex-content > .ow-master-draft.contract-workspace > .ow-draft-footer,
+#app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) > .ow-draft-footer {
+  grid-column: 1 / -1 !important;
+  grid-row: 4 !important;
+}
+
+/* Crystal shop: reserve the upper row for a readable servant pool and keep
+   the upgrade cards compact enough that the candidate is never pushed away. */
+#app .draft-screen .threex-content > .purchase-screen {
+  grid-template-rows: minmax(300px, 1fr) minmax(230px, .75fr) 64px !important;
+  gap: 18px !important;
+  overflow: hidden !important;
+}
+#app .draft-screen .threex-content > .purchase-screen > .purchase-candidates {
+  min-height: 300px !important;
+  overflow: hidden !important;
+}
+#app .draft-screen .threex-content > .purchase-screen > .purchase-options {
+  min-height: 230px !important;
+  overflow: hidden !important;
+}
+#app .draft-screen .threex-content > .purchase-screen .purchase-candidate-list {
+  min-height: 0 !important;
+  height: calc(100% - 54px) !important;
+  align-content: center !important;
+  align-items: center !important;
+  overflow: auto !important;
+}
+#app .draft-screen .threex-content > .purchase-screen .purchase-candidate {
+  display: grid !important;
+  flex-direction: initial !important;
+  grid-template-columns: 106px minmax(0, 1fr) !important;
+  grid-template-rows: 1fr !important;
+  align-items: center !important;
+  width: 260px !important;
+  height: 150px !important;
+  min-height: 150px !important;
+  flex: 0 0 260px !important;
+}
+#app .draft-screen .threex-content > .purchase-screen .purchase-candidate-avatar {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+#app .draft-screen .threex-content > .purchase-screen .purchase-candidate > div:last-child {
+  min-width: 0 !important;
+  padding: 0 14px !important;
+}
+#app .draft-screen .threex-content > .purchase-screen .purchase-grid {
+  height: calc(100% - 54px) !important;
+  grid-auto-rows: minmax(150px, 1fr) !important;
+  gap: 12px !important;
+}
+#app .draft-screen .threex-content > .purchase-screen .purchase-option {
+  min-height: 210px !important;
+  height: 100% !important;
+  padding: 10px 12px 8px !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+#app .draft-screen .threex-content > .purchase-screen .purchase-product-mark {
+  height: 30px !important;
+  min-height: 30px !important;
+  padding: 3px 8px !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+#app .draft-screen .threex-content > .purchase-screen .purchase-product-mark > span {
+  font-size: 21px !important;
+}
+#app .draft-screen .threex-content > .purchase-screen .purchase-product-mark small {
+  margin: 0 !important;
+}
+#app .draft-screen .threex-content > .purchase-screen .purchase-option-main {
+  height: auto !important;
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  padding: 6px 0 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+#app .draft-screen .threex-content > .purchase-screen .purchase-option-main p {
+  margin: 4px 0 !important;
+  font-size: 10px !important;
+  line-height: 1.3 !important;
+  min-height: 0 !important;
+}
+#app .draft-screen .threex-content > .purchase-screen .purchase-option-top h3 {
+  font-size: 17px !important;
+}
+#app .draft-screen .threex-content > .purchase-screen .purchase-option-top span {
+  font-size: 11px !important;
+}
+#app .draft-screen .threex-content > .purchase-screen .purchase-option-foot small {
+  font-size: 10px !important;
+}
+#app .draft-screen .threex-content > .purchase-screen .purchase-option-foot {
+  flex-shrink: 0 !important;
+  margin-top: auto !important;
+  gap: 8px !important;
+}
+#app .draft-screen .threex-content > .purchase-screen .purchase-option-foot button {
+  height: 30px !important;
+  min-height: 30px !important;
+  padding: 0 9px !important;
+  font-size: 10px !important;
+}
+
+@media (max-width: 900px) {
+  #app .draft-screen .threex-content > .ow-master-draft.contract-workspace,
+  #app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto auto minmax(300px, 1fr) auto !important;
+    gap: 0 !important;
+  }
+  #app .draft-screen .threex-content > .ow-master-draft.contract-workspace > .ow-current-choice,
+  #app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) > .ow-current-choice,
+  #app .draft-screen .threex-content > .ow-master-draft.contract-workspace > .draft-focus,
+  #app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) > .draft-focus {
+    grid-column: 1 !important;
+  }
+  #app .draft-screen .threex-content > .ow-master-draft.contract-workspace > .draft-focus,
+  #app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) > .draft-focus {
+    grid-row: 4 !important;
+  }
+  #app .draft-screen .threex-content > .ow-master-draft.contract-workspace > .ow-draft-footer,
+  #app .draft-screen .threex-content > .ow-3x-draft:not(.ow-ban-draft) > .ow-draft-footer {
+    grid-row: 5 !important;
+  }
+  #app .draft-screen .threex-content > .purchase-screen {
+    overflow: auto !important;
+    grid-template-rows: 220px minmax(260px, auto) 64px !important;
+  }
+}
