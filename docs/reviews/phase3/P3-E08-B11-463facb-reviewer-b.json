@@ -1,0 +1,183 @@
+{
+  "schemaVersion": "fd-p3-exact-carrier-review-v1",
+  "taskId": "P3-E08-B11-RECORDED-VALIDATION",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "reviewDate": "2026-10-12",
+  "reviewer": {
+    "role": "Reviewer B",
+    "identity": "Codex Reviewer B",
+    "githubIdentity": null,
+    "githubReviewThread": null
+  },
+  "reviewedCarrierSha": "463facb109cc4d19c4fda7af936fb4546fb86091",
+  "priorCarrierSha": "c8b9786ca4d7cde7240783147c735367d59d2425",
+  "testedSha": "9a4f4c6ee2723eb7f546341f3c18a1f0a29c3bc1",
+  "ownershipRepairSha": "7ec91bbc26be0f63332d5cc8421b2c7c014906c5",
+  "exactOverlap": {
+    "baseSha": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+    "finalSourceSha": "46dbd031b06192e7e81479706678937064cdc1a3",
+    "paths": [
+      "packages/rules/src/ability/executable-card-pack.ts",
+      "packages/rules/src/ability/interpreter.ts"
+    ],
+    "inspection": "Independently read exact Git delta. Changes replace duplicated Conversion predicates with shared candidate/exact predicates, add compiler exact rejection and runtime pre-legality rejection. No unrelated semantic change found in these two deltas."
+  },
+  "scope": {
+    "authorizedAbilities": [
+      "conversion-magic.preparation",
+      "sc-kintoki-3.golden-eater"
+    ],
+    "semanticReview": "Conversion binding-ownership delta only; Golden Eater has receipt-binding review in this delivery, not renewed complete semantic acceptance.",
+    "ownedEnvelope": "phase_action + advance + controller_action_window + no targets/cost/creates + exactly ordered move_all_remaining then adjust_mana",
+    "malformedCoverage": "Seven binding corruptions inside this envelope. Mutated envelope/timing/effect types and arbitrary malformed JavaScript objects are not granted fallback-closure acceptance."
+  },
+  "verdict": "BLOCKED",
+  "scopedConclusions": {
+    "rawReceiptIntegrity": "PASS",
+    "sourceEquivalence": "PASS",
+    "conversionOwnershipDelta": "PASS",
+    "malformedBindingFailClosed": "PASS",
+    "atomicGameStateFailure": "PASS",
+    "ownedBindingLegacyFallback": "CLOSED",
+    "fullB11FinalCombination": "BLOCKED"
+  },
+  "evidence": [
+    {
+      "path": "artifacts/phase3-e08-b11-environment-reverification-receipts.json",
+      "sha256": "DCC796D63EBA088260440DFAF4B4C53B9E3AF8A3032055336530DD8FCF47F08A",
+      "commands": 18,
+      "streams": 36,
+      "verification": "Base64 bytes, lengths and SHA-256 independently recomputed; no mismatch. Both CI logs contain 193 files / 1532 tests passed; historical missing receipts remain missing."
+    },
+    {
+      "path": "packages/rules/src/ability/card-zone-result-binding.ts",
+      "symbols": [
+        "isCardZoneCoreDirectActionRouteCandidate",
+        "isCardZoneCoreDirectActionSemantic"
+      ],
+      "verification": "Ownership checks timing/envelope/ordered types, not binding validity or source/ability identity. Exact checks hand->discard and movedCount reference."
+    },
+    {
+      "path": "packages/rules/src/ability/executable-card-pack.ts",
+      "symbols": [
+        "validateAbilityResolutionDataFlow"
+      ],
+      "verification": "Shared owned graph is validated then exact-ineligible graph rejects. Compiler input immutability independently exercised."
+    },
+    {
+      "path": "packages/rules/src/ability/interpreter.ts",
+      "symbols": [
+        "dispatch",
+        "executeAbility",
+        "executeEffects",
+        "executeResolutionEffects",
+        "dispatchAbilityCommand"
+      ],
+      "verification": "Dispatch rejects owned inexact graph before legality/activation; normalized binding failures become resolution_failed; executeEffects has return on owned route; cloned dispatch state commits only on success."
+    },
+    {
+      "path": "packages/rules/src/ability/resolution-dataflow.ts",
+      "symbols": [
+        "executeResolution",
+        "moveAllRemaining"
+      ],
+      "verification": "Transaction works on clone; actual movedCount used as typed numeric binding. Unsupported owner/player/zone normalization fails."
+    },
+    {
+      "path": "packages/rules/src/match-session.ts",
+      "symbols": [
+        "dispatchPlayerAction"
+      ],
+      "verification": "Rejected command does retain dispatch_rejected audit log/checkpoint. Atomic GameState/events/revision claim does not mean all session metadata/logs are unchanged."
+    },
+    {
+      "path": "data/authoring/masters/master.irisviel.json",
+      "requirement": "Printed clause: discard all hand cards in advance phase, gain one mana per actual discarded card."
+    },
+    {
+      "path": "docs/rules/FD-Game-Rules-Final.md",
+      "sections": [
+        "1.2",
+        "8.3",
+        "11.2"
+      ],
+      "verification": "Read canonical timing/specific-rule/phase-use constraints; ownership fix does not change these rules."
+    }
+  ],
+  "independentTests": {
+    "checkout": "D:/fd-validation/b11-9a4f4c6/checkout",
+    "head": "9a4f4c6ee2723eb7f546341f3c18a1f0a29c3bc1",
+    "command": "npx vitest run packages/rules/tests/regression/b11-conversion-binding-ownership.test.ts packages/rules/tests/regression/b11-conversion-classification-api.test.ts --maxWorkers=1",
+    "exitCode": 0,
+    "files": 2,
+    "tests": 22,
+    "negativeCases": [
+      "unknown legacy binding",
+      "unknown typed binding",
+      "missing binding declaration",
+      "wrong result field",
+      "wrong result type",
+      "scalar instead of result binding",
+      "missing binding use"
+    ],
+    "runtimeAssertions": [
+      "ok=false and resolution_failed",
+      "full GameState unchanged",
+      "events empty",
+      "mana/zones/pending/revision unchanged",
+      "only existing rejection audit log appended"
+    ],
+    "compilerAssertions": [
+      "compileExecutableCardPack throws",
+      "source library unchanged"
+    ],
+    "classifierCases": [
+      "positive",
+      "consistent identity rename",
+      "wrong destination",
+      "wrong origin",
+      "unknown binding",
+      "outside advance",
+      "extra node"
+    ],
+    "fullCiRerun": false,
+    "browserRerun": false
+  },
+  "blockingFindings": [
+    {
+      "code": "QUIET_WINDOW_AUTHORITY_NOT_PROVEN",
+      "owner": "Planner/G",
+      "evidence": "Receipt.window.otherOwnerIndividualAcknowledgements=NOT_SUPPLIED_TO_A; bb41b2cb dispatch requires acknowledgements or WAITING_FOR_WINDOW.",
+      "minimalDisposition": "Provide real contemporaneous acknowledgements or an explicit authorized disposition of this condition. Do not fabricate acknowledgements; no automatic test rerun per review."
+    },
+    {
+      "code": "ORIGINAL_AUTHORIZATION_UNPROVEN",
+      "owner": "Planner/G",
+      "count": 7,
+      "minimalDisposition": "Resolve original authority or explicit prospective adoption; semantic PASS does not retroactively authorize."
+    },
+    {
+      "code": "FINAL_COMBINATION_REVIEW_PENDING",
+      "owner": "RA/RB",
+      "minimalDisposition": "Path-scope table and this narrow Conversion review do not certify full B11/tooling/socket composition."
+    },
+    {
+      "code": "RELEASE_AND_GOVERNANCE_BLOCKED",
+      "owner": "Assets/G/I",
+      "evidence": "93 MISSING_IMAGE, remote required checks and governance remain unresolved."
+    }
+  ],
+  "boundaries": {
+    "aCommandCaptureComplete": true,
+    "quietWindowComplianceAccepted": false,
+    "reviewerAAttestation": false,
+    "gatePromotion": false,
+    "mainPromotion": false,
+    "phase3Complete": false,
+    "releaseReady": false,
+    "coverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0
+  },
+  "commitBinding": "The artifact-containing commit SHA and artifact SHA-256 are reported externally; no self-referential commit/hash field and no invented GitHub attestation."
+}
