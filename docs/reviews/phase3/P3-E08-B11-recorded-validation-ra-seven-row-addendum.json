@@ -1,0 +1,301 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-a-seven-row-scope-addendum-v1",
+  "taskId": "P3-E08-B11-RECORDED-VALIDATION",
+  "reviewDate": "2026-10-12",
+  "reviewer": "Reviewer A",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "controlContinuation": {
+    "plannerEpoch": "FD-P3-2026-09-23-09",
+    "plannerCommit": "e36c3e73133ca9478cdef3b0993d0b20c6ea1dc7",
+    "path": "docs/agents/FD-P3-CONTROL-EPOCH-09.md",
+    "effect": "BOUNDED_SEVEN_ROW_REVIEW_ONLY; HISTORICAL_EPOCH_NOT_RELABELLED; MAIN_PUBLICATION_NOT_ASSERTED"
+  },
+  "candidateSha": "463facb109cc4d19c4fda7af936fb4546fb86091",
+  "reviewedSha": "463facb109cc4d19c4fda7af936fb4546fb86091",
+  "testedImplementationSha": "9a4f4c6ee2723eb7f546341f3c18a1f0a29c3bc1",
+  "conclusion": "REVIEW_ACCEPTED",
+  "finalVerdict": "PASS",
+  "acceptedScope": "SEVEN_REMAINING_A_OWNED_TOOLING_EVIDENCE_PATH_SCOPES_AND_EXACT_RECORDED_VALIDATION_BINDING_ONLY",
+  "sourceScopeTable": {
+    "commit": "94e5588955fa96f1c160aebcb55f895346036fd3",
+    "path": "docs/reviews/phase3/P3-E08-B11-463facb-path-scope-review.json",
+    "sha256": "C9B0144AB478A1CF833126E98EB39DC0E8EEA76F93306DA5C9D5AD7B42951040"
+  },
+  "preservedPriorReview": {
+    "commit": "2c412fd3b242f40c3f96b5dbbdb4bde063f4785c",
+    "path": "docs/reviews/phase3/P3-E08-B11-recorded-validation-reviewer-a.json",
+    "sha256": "01D7082F8D0690B3E6677E19D7FD4C574971F2DBE70F4CC87A813FD7D106F54D",
+    "changed": false
+  },
+  "boundPackets": [
+    {
+      "path": "artifacts/phase3-e08-b11-environment-reverification-receipts.json",
+      "sha256": "DCC796D63EBA088260440DFAF4B4C53B9E3AF8A3032055336530DD8FCF47F08A"
+    },
+    {
+      "path": "artifacts/phase3-e08-b11-final-combination-evidence.json",
+      "sha256": "94889745F47B1865C62EC8D6C1633D960C02828344B3DB28B0F16C7DAD010854"
+    }
+  ],
+  "reviewMethod": "READ_ONLY_EXACT_GIT_BYTES_SOURCE_INSPECTION_DETERMINISTIC_IN_MEMORY_RECOMPUTATION_AND_EXISTING_VERIFIED_RECEIPTS; NO_RUNTIME_SUITE_RERUN",
+  "rows": [
+    {
+      "index": 3,
+      "path": "artifacts/phase3-e08-b11-tooling-coverage.json",
+      "previousScopeVerdict": "NOT_VERIFIED",
+      "scopeVerdict": "PASS",
+      "currentContent": {
+        "commit": "463facb109cc4d19c4fda7af936fb4546fb86091",
+        "blob": "32042afce793d54082f31dd3403d617c5ad219e6",
+        "sha256": "876A7E0D20FDF92D9ECCF9E3EEB50347AC748032F78E7F8B026B0D99FDD505DC"
+      },
+      "historicalFinalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "artifacts/phase3-e08-b11-tooling-coverage.json",
+        "sha256": "876A7E0D20FDF92D9ECCF9E3EEB50347AC748032F78E7F8B026B0D99FDD505DC"
+      },
+      "historicalContentChanged": false,
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "acceptedScope": "DETERMINISTIC_HISTORICAL_COVERAGE_PAYLOAD_AND_CLASSIFICATION_ACCOUNTING",
+      "verification": "Recomputed all 281 semantic-axis identities, aggregate fields, fingerprint and route accounting against unchanged authoring/classifier inputs. The only runtime-scan difference is later interpreter line numbering; every preserved handler literal/line was checked against d7805bda96d0322fd461bd7bf50755e272dbbca1.",
+      "excludedOrStillNotVerified": "No independent runtime semantic acceptance or migration credit. compiledDefinitions is a historical compiler summary, not independently rerun in this addendum."
+    },
+    {
+      "index": 4,
+      "path": "artifacts/phase3-e08-b11-tooling-handoff.json",
+      "previousScopeVerdict": "NOT_VERIFIED",
+      "scopeVerdict": "PASS",
+      "currentContent": {
+        "commit": "463facb109cc4d19c4fda7af936fb4546fb86091",
+        "blob": "65844184da7e7cd2abc41de8c09d09e54bceacfd",
+        "sha256": "C53E70D169211299BBEF432EE2D049C55748B69989B038BC06FD5057BFE1E9D4"
+      },
+      "historicalFinalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "artifacts/phase3-e08-b11-tooling-handoff.json",
+        "sha256": "C53E70D169211299BBEF432EE2D049C55748B69989B038BC06FD5057BFE1E9D4"
+      },
+      "historicalContentChanged": false,
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "acceptedScope": "HISTORICAL_HANDOFF_INTERNAL_ARTIFACT_REFERENCE_AND_LIMITATION_CONSISTENCY",
+      "verification": "Three artifact hashes checked against introducing carrier 961ac01aa1cb22dfa30212332bd4af4d5a80c035. Coverage counts agree with row 3. Commands and remote observation explicitly remain historical producer statements; blocked/readiness/zero-credit boundaries are preserved.",
+      "excludedOrStillNotVerified": "Historical command stdout and remote observation are not reconstructed or upgraded to current execution/GitHub proof."
+    },
+    {
+      "index": 8,
+      "path": "artifacts/phase3-e08-b11-tooling-review-fix-handoff.json",
+      "previousScopeVerdict": "NOT_VERIFIED",
+      "scopeVerdict": "PASS",
+      "currentContent": {
+        "commit": "463facb109cc4d19c4fda7af936fb4546fb86091",
+        "blob": "4c70eb57ddfb1996220a1329e73e22f3252c1b51",
+        "sha256": "73842C2A70FFCBB1FE81F8E92F028522EDA29F438BE245CE2166C085A7E4543E"
+      },
+      "historicalFinalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "artifacts/phase3-e08-b11-tooling-review-fix-handoff.json",
+        "sha256": "73842C2A70FFCBB1FE81F8E92F028522EDA29F438BE245CE2166C085A7E4543E"
+      },
+      "historicalContentChanged": false,
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "acceptedScope": "HISTORICAL_REPAIR_HANDOFF_REFERENCE_AND_EXECUTION_SCOPE_SEPARATION",
+      "verification": "parityInput and parityArtifact hashes checked against 32eb054f49e2413d2f9891d6edbd665d7eb3c154. Historical implementation/adapter/fixture identities, failed parity result, pending observations and Reviewer B premise ownership remain separately recorded.",
+      "excludedOrStillNotVerified": "Two historical runs and producer command claims are not fresh raw receipts; fixture semantics and fallback closure remain outside RA acceptance."
+    },
+    {
+      "index": 17,
+      "path": "package.json",
+      "previousScopeVerdict": "NOT_VERIFIED",
+      "scopeVerdict": "PASS",
+      "currentContent": {
+        "commit": "463facb109cc4d19c4fda7af936fb4546fb86091",
+        "blob": "0f311821628a0a60cb37d752a259e6d688f7a6e9",
+        "sha256": "6FFED5CF04F2F5FD13538E7EF86E5C59D2F50B5DB2401C9424264E50204A1658"
+      },
+      "historicalFinalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "package.json",
+        "sha256": "7BC2EDC15A74AF833F4A5EFE50509F8AA03C07990AB7B19AADCCC9AEF6127593"
+      },
+      "historicalContentChanged": true,
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "acceptedScope": "EXACT_TOOLING_SCRIPT_ENTRIES_AND_MAXWORKERS_ONLY_PACKAGE_DELTA",
+      "verification": "Introducing diff adds only phase3:preflight and phase3:contract-parity. Current versus historical package changes only test:ci by appending --maxWorkers=2. Exact continuation validator checks full JSON and package bytes; no new exclusions, dependencies, retries, global timeout or workflows.",
+      "excludedOrStillNotVerified": "Historical package writer reservation remains NOT_SUPPLIED. Technical scope PASS does not retroactively authorize that writer action; Planner/G disposition remains required."
+    },
+    {
+      "index": 20,
+      "path": "scripts/fixtures/phase3-b11-task-check.json",
+      "previousScopeVerdict": "NOT_VERIFIED",
+      "scopeVerdict": "PASS",
+      "currentContent": {
+        "commit": "463facb109cc4d19c4fda7af936fb4546fb86091",
+        "blob": "591d486c9b96638f15d897247fc968f56e7b05f9",
+        "sha256": "3C6C98AE11033E5E5BEDE6EE40A2D510B1616CE06D52B119329CF01E04B1FB7B"
+      },
+      "historicalFinalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/fixtures/phase3-b11-task-check.json",
+        "sha256": "499D8AED4DCED6D08914387D7CD00FED235EA08EBB4336EEF9235C92B791D9FE"
+      },
+      "historicalContentChanged": true,
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "acceptedScope": "CURRENT_V3_INPUT_IMMUTABLE_REFERENCE_AND_PENDING_STATE_CLOSURE",
+      "verification": "144 recursively discovered commit/path/SHA-256 references checked against Git bytes. validateContinuationTaskCheck reconstructs history, authorizations, scopes, checks and pending states; exact input passes validation without granting readiness.",
+      "excludedOrStillNotVerified": "Fresh recorded-validation continuation does not overwrite this older input. Path registration is not authority; final reviews and external dispositions are not automatically consumed."
+    },
+    {
+      "index": 27,
+      "path": "scripts/phase3-preflight.ts",
+      "previousScopeVerdict": "NOT_VERIFIED",
+      "scopeVerdict": "PASS",
+      "currentContent": {
+        "commit": "463facb109cc4d19c4fda7af936fb4546fb86091",
+        "blob": "12a347ee40fa7277eea7f81512209be2f2891b18",
+        "sha256": "036E026A238EA1ABB25710F15D820F53F456916B0B4373BA3FFB93BC9BD16343"
+      },
+      "historicalFinalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/phase3-preflight.ts",
+        "sha256": "60EED991C5825FE004166414B23B9DB13C3FBBBDC78BE0CB0D798F1D13D38F5A"
+      },
+      "historicalContentChanged": true,
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "acceptedScope": "READ_ONLY_V1_V2_V3_PREFLIGHT_AND_FAIL_CLOSED_CONTINUATION",
+      "verification": "Reviewed validator and coverage-sync dependency. Exact v3 input validates; runPreflight remains FAIL with 33 scope-pending, 7 authorization-unproven, 2 overlap-pending, 3 fresh-binding-pending and 1 final-review-pending issues. Six in-memory schema/history/scope/pending/credit/review-hash tamper cases rejected.",
+      "excludedOrStillNotVerified": "No runtime behavior, promotion policy, GitHub identity authentication or automatic adoption is accepted. Status changes require a separately authorized evidence-consumption path."
+    },
+    {
+      "index": 33,
+      "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+      "previousScopeVerdict": "NOT_VERIFIED",
+      "scopeVerdict": "PASS",
+      "currentContent": {
+        "commit": "463facb109cc4d19c4fda7af936fb4546fb86091",
+        "blob": "bbb2a1735aa86801552421cfb8fc9bc8b1ada3b9",
+        "sha256": "6D74A343F1379D841F8836BD1784CE4E5702B77C84A25B61C1298032543F5B09"
+      },
+      "historicalFinalContent": {
+        "commit": "46dbd031b06192e7e81479706678937064cdc1a3",
+        "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+        "sha256": "A2A8475FDD4F9BF5DD7CDA3B62DEADBD05E2A9A4AC550D3BAA6D1504F047DFEE"
+      },
+      "historicalContentChanged": true,
+      "originalAuthorization": {
+        "commit": "e65503e601d7a3a4d1265d87a09484cb8295f2c2",
+        "path": "docs/agents/P3-E08-B11-TOOLING-MINIMUM-CONTRACT.md",
+        "sha256": "772D3226B7A85B0A775341A54BB9C081D9A4AEAE091E8FCC3567DDA3A018B886",
+        "section": "## Implementation And Handoff"
+      },
+      "acceptedScope": "CONTINUATION_AND_ADVERSARIAL_PREFLIGHT_AUTOMATION_ASSERTIONS",
+      "verification": "Reviewed complete current test file and joint validator/dependency surface: real Git delete/rename and unauthorized committed deltas, appended timeout rejection, receipt tampering after rehash, historical hash/scope/credit mutation, pending dependencies and dirty-worktree separation. Synthetic receipts are explicitly labeled. Fresh focused 40/40 receipt is reused from already reviewed exact tested source; no suites rerun.",
+      "excludedOrStillNotVerified": "Synthetic fixture reviews/receipts are not genuine human approvals or execution proof. Test success does not grant runtime semantic or GitHub acceptance."
+    }
+  ],
+  "summary": {
+    "reviewedIndices": [
+      3,
+      4,
+      8,
+      17,
+      20,
+      27,
+      33
+    ],
+    "reviewedRows": 7,
+    "scopedPass": 7,
+    "technicalBlockingFindings": 0,
+    "other26RowsReopened": false,
+    "scopeTableTechnicalAcceptanceComplete": true,
+    "blanketFileBehaviorAcceptance": false
+  },
+  "verification": {
+    "currentSevenHashes": "PASS",
+    "historicalHandoffReferences": 5,
+    "taskInputGitReferences": 144,
+    "coverageIdentityRowsRecomputed": 281,
+    "coverageInitialComparison": "Full equality initially differed only in runtime handler line metadata after interpreter edits; resolved by checking historical lines against historical source. compiledDefinitions excluded explicitly.",
+    "coverageClassificationAndAggregateEquality": "PASS",
+    "historicalHandlerLineLiterals": "PASS",
+    "exactV3InputValidation": "PASS",
+    "sixInMemoryTamperNegatives": "PASS",
+    "fullCiBrowserOrRuntimeSuitesRerun": false,
+    "existingExecutionEvidence": "Reused previously independently decoded 18 command receipts and 36 complete streams, bound to exact tested source; not claimed as new execution."
+  },
+  "technicalFindings": [],
+  "externalPrerequisites": [
+    {
+      "id": "PACKAGE_HISTORICAL_WRITER_RESERVATION",
+      "state": "NOT_SUPPLIED",
+      "owner": "Planner/G",
+      "dispositionByReviewerA": false
+    },
+    {
+      "id": "ORIGINAL_B_AUTHORITY_AND_TWO_RUNTIME_OVERLAPS",
+      "state": "NO_RETROSPECTIVE_AUTHORITY_GRANTED",
+      "owner": "Planner/G and Reviewer B",
+      "dispositionByReviewerA": false
+    },
+    {
+      "id": "FINAL_EXACT_RUNTIME_COMBINATION",
+      "state": "NOT_GRANTED_BY_RA",
+      "owner": "Reviewer B",
+      "scope": "malformed input, atomicity, fallback and Golden Eater/socket composition"
+    },
+    {
+      "id": "GITHUB_NODE20_REQUIRED_CHECKS",
+      "state": "NOT_VERIFIED"
+    },
+    {
+      "id": "SOURCE_ASSETS",
+      "state": "FAIL_93_MISSING_IMAGE"
+    }
+  ],
+  "boundary": {
+    "overallReadiness": "BLOCKED_EXTERNAL_PREREQUISITES",
+    "runtimeAcceptance": false,
+    "fixtureSemanticAcceptance": false,
+    "originalAuthorizationReconstructed": false,
+    "historicalQuietConditionRetained": "CONDITION_UNMET; NO_UNINTERRUPTED_EXCLUSIVITY_PROOF",
+    "promotionAllowed": false,
+    "githubAttestationProvided": false,
+    "globalGateC": "NOT_VERIFIED",
+    "accepted": 111,
+    "denominator": 944,
+    "remaining": 833,
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0
+  },
+  "commitBinding": "Immutable addendum commit and file SHA-256 are returned externally. No self-referential hash or invented review URL."
+}
