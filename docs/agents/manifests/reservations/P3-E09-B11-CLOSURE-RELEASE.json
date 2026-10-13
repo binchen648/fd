@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "fd-planner-reservation-release-v1",
+  "taskId": "P3-E09-B11-CLOSURE",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "issuerRole": "Planner / Process Controller",
+  "issuedDate": "2026-10-13",
+  "observedMain": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+  "status": "RELEASED",
+  "basis": {
+    "reviewedSha": "17570203d0cdc3ecfebe7f15da518028e05d54e7",
+    "reviewCommit": "c23a2ce1d356fd1d2f29ebc5e83acd01bc2e00c4",
+    "path": "docs/reviews/phase3/P3-E09-B11-17570203-post-merge-reviewer-a.json",
+    "sha256": "D56DA03B49DAD5D89C7F63C57EC511CE5697CCD7190284875D836CEBD0AE0D85",
+    "verdict": "PASS",
+    "scope": "EXACT_B11_POST_MERGE_PROVENANCE_GITHUB_OBSERVATIONS_ROUTING_RECOUNT_AND_ZERO_CREDIT_SYNC_ONLY"
+  },
+  "releasedReservations": [
+    {
+      "reservationId": "P3-E09-B11-TRANSPORT-SECURITY-REPAIR",
+      "domains": [
+        "session-authority",
+        "server-transport"
+      ],
+      "record": "docs/agents/manifests/reservations/P3-E09-B11-TRANSPORT-SECURITY-REPAIR.json"
+    },
+    {
+      "reservationId": "P3-E09-B11-TEMPORAL-FIXTURE-FINALIZATION",
+      "domains": [
+        "B11-integration-closure-tooling"
+      ],
+      "record": "docs/agents/P3-E09-B11-TEMPORAL-FIXTURE-FINALIZATION.md"
+    }
+  ],
+  "retainedReservations": [
+    "P3-EFP-K02-TOOLING",
+    "Any unrelated active worker reservation"
+  ],
+  "conditions": "Release applies only to completed B11 task grants; it does not prove absence of competing writers, delete worktrees or grant a successor task. New writes require a separately named task/base/reservation.",
+  "frozenEvidence": "All accepted candidate and historical evidence remain immutable. Post-merge evidence carrier is accepted off-main; this release does not merge it.",
+  "runtimeRepairAuthorized": false,
+  "nextRuntimeTaskAuthorized": false,
+  "creditDelta": 0,
+  "ledger": "111/944",
+  "gateC": "NOT_VERIFIED",
+  "sourceAssets": "93_MISSING_IMAGE"
+}
