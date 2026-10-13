@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "fd-engineering-gap-selection-review-v1",
+  "taskId": "P3-EFP-K03-A",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "reviewDate": "2026-10-13",
+  "reviewer": "Reviewer A",
+  "candidateSha": "e86e9b19d5af4cfa0ca160377ec1e09d13336744",
+  "reviewedSha": "e86e9b19d5af4cfa0ca160377ec1e09d13336744",
+  "boundMainSha": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+  "finalVerdict": "PASS",
+  "acceptedScope": "EXACT_READ_ONLY_STATIC_GAP_EXTRACTION_APPLICABILITY_AND_MINIMUM_SLICE_PROPOSAL_ONLY",
+  "blockingFindingsWithinAcceptedScope": [],
+  "boundPacket": {
+    "path": "docs/engineering/lessons/K03-CURRENT-MAIN-GAP-SELECTION.json",
+    "sha256": "45934DF6D2959284643CFE26D99FA4B63BC7A603C8F74B506624E1A3234683FA"
+  },
+  "boundReport": {
+    "path": "docs/engineering/lessons/K03-CURRENT-MAIN-GAP-SELECTION.md",
+    "sha256": "81502C55C3E3755DB8A0BA094F47A7A2097A2A664BE09CE9425481776E81AFFB"
+  },
+  "authorityCommit": "163f8e8469e81bf998f22884e9e529d5792fabe0",
+  "caseVerdicts": {
+    "FD-SHAPE-003": "PASS_STATIC_EXTRACTION: current loader node(array) normalizes four supplied containers to empty objects; actual current predicate and compiled consumer call corroborate the report; existing focused near-match negative changes scope instead. Dynamic red reproduction remains required.",
+    "FD-RESTORE-004": "PASS_DEFER: historical sc3 and named outer transaction absent on pinned main; other authenticated continuation tests do not establish this old contract or permit transplanting its tests.",
+    "FD-SEC-001": "PASS_REUSE: current main source/test objects equal accepted B11 candidate; existing identity negatives reused, no new global security verdict.",
+    "FD-REV-002": "PASS_REUSE: current main source/test objects equal accepted B11 candidate; direct Hub/raw WS revision negatives reused, no duplicate runtime assignment."
+  },
+  "minimumSlice": {
+    "proposal": "CURRENT_MAIN_STATIC_REWARD_COMPILED_ENVELOPE_GUARD",
+    "proposalEvidenceScopeAccepted": true,
+    "runtimeTaskAuthorizedByReviewerA": false,
+    "owner": "Codex B after fresh Planner task and reservation",
+    "technicalReviewer": "Reviewer B",
+    "redBeforeRepairRequired": true,
+    "currentDynamicReproduction": "NOT_VERIFIED",
+    "guardBoundary": "FOUR_OPTIONAL_OBJECT_CONTAINER_CHECKS_INSIDE_CURRENT_PREDICATE; NO_GLOBAL_NODE_HELPER_OR_REWARD_ARITHMETIC_CHANGE",
+    "validAbsentAndCanonicalCompiledControlsRequired": true,
+    "normalVsFullNumerics": "CURRENT_FIXTURE 2/3 VS 4/6; HISTORICAL PR474 FULL5 NOT_REUSED",
+    "validBattleProgressionMustRemain": true,
+    "reanchorIfMainChangesBeforeDispatch": true
+  },
+  "independentVerification": {
+    "sourceGitBytesHashAndLengthVerified": 24,
+    "candidateMainAncestryResultsVerified": 4,
+    "securitySourceComparisonsVerified": 6,
+    "currentPredicateExactSourceTextVerified": true,
+    "predicateMatchesAcceptedFb234DependencyText": true,
+    "existingRewardSelectorsInspected": true,
+    "sc3AndNamedHistoricalTransactionAbsenceVerified": true,
+    "fb234CanonicalReviewCommentReadLive": "https://github.com/binchen648/fd/pull/378#issuecomment-5744013376",
+    "storedAttestationHashVerified": true,
+    "k02CliRawStdoutStderrHashVerified": true,
+    "k02WorkingTreeObservationsNotRepresentedAsMainSource": true,
+    "diffCheck": "PASS",
+    "producerCheckoutClean": true,
+    "remoteExactCarrierVerified": true,
+    "runtimeTestsOrHeavySuitesExecuted": 0
+  },
+  "boundaries": {
+    "staticSelectionAccepted": true,
+    "dynamicRuntimeDefectIndependentlyConfirmed": false,
+    "automaticBAssignment": false,
+    "sourcePublicationGapsInI01": "RETAINED; LOCAL_K03_SOURCE_VERIFICATION_DOES_NOT_PROVE_REMOTE_AVAILABILITY",
+    "gateC": "NOT_VERIFIED",
+    "sourceAssetsMissing": 93,
+    "ledger": "111/944_RETAINED_NOT_RECOUNTED",
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0,
+    "promotionAllowed": false
+  },
+  "nextOwner": "PLANNER_DECIDES_EXACT_B_TASK_AND_FILE_DOMAIN_RESERVATION; B_RECORDS_CURRENT_RED_BEFORE_LIMITED_REPAIR; RB_JUDGES_RUNTIME_SEMANTICS",
+  "commitBinding": "Artifact-only immutable review commit directly parents exact selection carrier; review SHA and hash returned externally"
+}
