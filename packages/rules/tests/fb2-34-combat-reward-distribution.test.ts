@@ -111,6 +111,38 @@ function result(state: ReturnType<typeof setup>, powers?: [number, number, numbe
 }
 
 describe('P3-FB2-34 combat reward distribution', () => {
+  const optionalContainers = ['activation', 'lifecycle', 'limit', 'visibility'] as const;
+
+  it.each(optionalContainers)('rejects malformed compiled %s container at admission', (field) => {
+    const state = setup({ modifierController: 'p1' });
+    const ability = state.abilityRuntime!.pack.cards['skill.reward-a']!.abilities[0]!;
+    (ability as unknown as RuleNode)[field] = [{ unexpected: true }];
+    expect(rules.isAcceptedStaticCombatRewardDistributionAbility(ability as unknown as RuleNode, 'compiled')).toBe(false);
+  });
+
+  it.each(optionalContainers)('preserves ordinary reward progression for malformed compiled %s container', (field) => {
+    const state = setup({ modifierController: 'p1' });
+    const ability = state.abilityRuntime!.pack.cards['skill.reward-a']!.abilities[0]!;
+    (ability as unknown as RuleNode)[field] = [{ unexpected: true }];
+    const ordinary = result(setup());
+    const actual = result(state);
+    expect(actual.battle).toMatchObject({ winnerPlayerIds: ['p1', 'p2'], vpReward: 2, baseVpPerWinner: 3, eventVpPool: 4, competitionVpPool: 2 });
+    expect(actual.battle.vpAdjustments).toEqual(ordinary.battle.vpAdjustments);
+    expect(actual.scored.players.map(player => ({ id: player.id, vp: player.vp }))).toEqual(ordinary.scored.players.map(player => ({ id: player.id, vp: player.vp })));
+    expect(actual.scored.battleResults).toHaveLength(1);
+  });
+
+  it('preserves absent optional containers and canonical compiled objects', () => {
+    const state = setup({ modifierController: 'p1' });
+    const ability = state.abilityRuntime!.pack.cards['skill.reward-a']!.abilities[0]!;
+    expect(rules.isAcceptedStaticCombatRewardDistributionAbility(ability as unknown as RuleNode, 'compiled')).toBe(true);
+    for (const field of optionalContainers) delete (ability as unknown as RuleNode)[field];
+    expect(rules.isAcceptedStaticCombatRewardDistributionAbility(ability as unknown as RuleNode, 'compiled')).toBe(true);
+    expect(result(state).battle).toMatchObject({ vpReward: 4, baseVpPerWinner: 6 });
+    const raw = rewardAbility() as unknown as RuleNode;
+    for (const field of optionalContainers) delete raw[field];
+    expect(rules.isAcceptedStaticCombatRewardDistributionAbility(raw, 'authoring')).toBe(true);
+  });
   it('loader accepts only the exact static passive full_reward_each envelope', () => {
     expect(rules.loadAuthoringJson(archive()).report).toEqual([]);
 
