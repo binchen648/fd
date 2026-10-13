@@ -53,4 +53,3 @@ This command is NOT_IMPLEMENTED until K02. Output can be embedded in the
 existing task packet. It must not auto-run tests, acquire locks, dispatch
 workers, edit runtime or award acceptance. Synthetic unit fixtures must be
 clearly marked and must never become historical case evidence.
-

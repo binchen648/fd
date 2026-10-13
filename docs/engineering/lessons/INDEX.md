@@ -25,4 +25,3 @@ prevention aids, never new gameplay rules or acceptance votes.
 
 Retrieve at most five relevant cases; default three. Read pinned evidence only
 when a claim or missing test requires verification. No whole-history startup.
-

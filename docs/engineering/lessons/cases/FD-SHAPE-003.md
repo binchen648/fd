@@ -49,4 +49,3 @@ Load for a task changing the listed files, contracts or runtime domains. Match
 by task metadata rather than card names alone. Excluded: Unrelated numeric primitives with no compiled envelope/provider authority.
 No live runtime edit or heavy test run is authorized by this case. Original
 contracts, review scopes and writer reservations govern actual work.
-

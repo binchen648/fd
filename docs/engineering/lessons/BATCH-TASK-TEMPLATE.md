@@ -45,4 +45,3 @@ locks remain authoritative.
 Record timestamps and exact terminal state, first-review verdict, repeated
 failure IDs, rework count, accepted contract count, and preflight elapsed time.
 Unknown data is null, never zero. No claimed speedup without a comparable pilot.
-

@@ -21,4 +21,3 @@ If a proposed guardrail conflicts with an accepted contract, stop that specific
 claim and return the exact conflict to Planner. Do not reinterpret canonical
 rules. New missing regressions require Runtime Owner authorization and a free
 domain reservation; a lesson alone never grants a write lock.
-
