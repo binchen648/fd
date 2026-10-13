@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-a-integration-closure-review-v1",
+  "taskId": "P3-E09-B11-INTEGRATION-CLOSURE-REPAIR",
+  "repairTaskId": "P3-E09-B11-INTEGRATION-CLOSURE-TEST-STABILITY",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "reviewDate": "2026-10-13",
+  "reviewer": "Reviewer A",
+  "candidateSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+  "reviewedSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+  "implementationSha": "078b79c714e0d3814dd03942ba77abd7d5c7599a",
+  "boundMainSha": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+  "runtimeCandidateSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+  "acceptedScope": "EXACT_INTEGRATION_CLOSURE_REFERENCE_CONTRACT_AND_FINAL_ASSEMBLY_EVIDENCE_ONLY",
+  "finalVerdict": "PASS",
+  "conclusion": "REVIEW_ACCEPTED",
+  "technicalBlockingFindingsWithinAcceptedScope": [],
+  "boundPacket": {
+    "path": "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+    "sha256": "03F7F5EAD4127117193CA9A5AEC0D99F0E0FAA6071B696511BCBF47AAA7A71F1"
+  },
+  "boundReport": {
+    "path": "docs/reports/2026-10-12-p3-e09-b11-integration-evidence-binding.md",
+    "sha256": "B3C970A79FBABEDD2D2086BC4A13659753099D9BAC2BC41DF4641B72380C3427"
+  },
+  "authorization": {
+    "originalCommit": "bd0dabe80c40cdc3bae024303b68851d11f980b2",
+    "supplementCommit": "4ecae8e9097d28d401df5a2cf0eec96be28ebe08",
+    "path": "docs/agents/P3-E09-B11-INTEGRATION-CLOSURE-TEST-STABILITY.md",
+    "originalSha256": "744533D02D848844480521C193E7839E902F243B442E0E49486325B5BBD24A0B",
+    "supplementSha256": "AF2FF3ED6E27560812FE16E751F0EED69B7675A916312232B3CD28E2B3934308",
+    "verifiedAgainstGitBytes": true,
+    "actualChangedPaths": [
+      "scripts/phase3-preflight.ts",
+      "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+      "scripts/tests/phase3-readiness-preflight.test.ts",
+      "scripts/tests/phase3-contract-parity.test.ts",
+      "scripts/fixtures/phase3-e09-b11-integration-binding.json",
+      "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+      "docs/reports/2026-10-12-p3-e09-b11-integration-evidence-binding.md"
+    ],
+    "actualDeltaBase": "cfa6a92551a939709b85a787d9044e19ec00f0ef",
+    "sevenPathsWithinLiteralAuthorization": true
+  },
+  "independentVerification": {
+    "producerCheckout": "D:/fd-validation/a-e09-b11-integration-closure",
+    "exactCarrierHead": true,
+    "producerCheckoutClean": true,
+    "remoteExactCarrierRef": "origin/codex/a-p3-e09-b11-integration-closure-repair",
+    "remoteRefVerified": true,
+    "carrierDirectParentIsTestedImplementation": true,
+    "carrierDeltaFromImplementation": "PACKET_AND_REPORT_ONLY",
+    "diffCheck": "PASS",
+    "sourceReferencesVerified": 5,
+    "rawReceiptsVerified": 15,
+    "rawStreamsVerified": 30,
+    "verification": "PACKET_SHA256_GIT_SOURCE_BLOB_AND_SHA256_AUTHORIZATION_SHA256_EMBEDDED_RAW_LENGTH_AND_SHA256_SOURCE_IDENTITY_AND_EXIT_CODES",
+    "currentImplementationReceipts": 8,
+    "currentImplementationReceiptsCleanBeforeAndAfter": true,
+    "currentImplementationReceiptsAllExitZero": true,
+    "independentFocusedCommand": "npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts scripts/tests/phase3-contract-parity.test.ts --maxWorkers=2",
+    "independentFocusedResult": {
+      "testedSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+      "exitCode": 0,
+      "filesPassed": 3,
+      "testsPassed": 88,
+      "testsFailed": 0,
+      "testsSkipped": 0,
+      "durationSeconds": 133.64,
+      "unhandledErrors": 0,
+      "evidenceOrigin": "REVIEWER_EXECUTION_TOOL_TRANSCRIPT; NO_COMMITTED_RAW_RECEIPT_CLAIM"
+    },
+    "recordedProducerResultsVerifiedNotRerun": {
+      "testedSha": "078b79c714e0d3814dd03942ba77abd7d5c7599a",
+      "focusedRuns": [76, 76],
+      "parityFocusedTests": 12,
+      "defaultCiFiles": 194,
+      "defaultCiTests": 1600,
+      "defaultCiExitCode": 0,
+      "npmCiTypecheckDiffCheck": "EXIT_0"
+    },
+    "quietWindowOrLongTermStabilityCertified": false
+  },
+  "reviewChecks": {
+    "localBudgets": "PASS: only explicitly authorized named tests/hooks changed; no global timeout, retry, skip, workflow, package script or concurrency change",
+    "fixtureReuse": "PASS: exact adapter source bytes hashed before reuse; mutation restoration retained; core.autocrlf=false applies only to isolated fixture checkout",
+    "assertionPreservation": "PASS: real rejected historical proof, wrong candidate, forged review, stale/hash drift, runtime drift, unknown path and malformed authority negatives remain and executed",
+    "authorizationConsumption": "PASS: pinned authority and supplement reconstructed from Git, exact task/paths/failed-carrier lineage checked; no tests-directory allowance",
+    "currentBinding": "PASS: current review and three fresh governance references required for actual assembled HEAD; historical RA/G do not accept this candidate",
+    "temporalBoundary": "PASS: synthetic Git composition is test-only; actual final assembly and GitHub acceptance remain pending",
+    "historicalFailureRetention": "PASS: exact former failed packet retained; initial CRLF CI failure retained as superseded execution, never credited to current implementation"
+  },
+  "preservedFailure": {
+    "reviewedSha": "cfa6a92551a939709b85a787d9044e19ec00f0ef",
+    "packetSha256": "FAED5431BAF496CCC9C8819828B16570129581D73D984E69BB5BCA0929A3CAB4",
+    "embeddedPacketEqualsGitSource": true,
+    "previousReviewerResult": "43 passed / 3 failed / 20 skipped; hook and RPC timeouts",
+    "resolution": "CURRENT_CARRIER_SCOPED_TEST_STABILITY_VERIFIED; HISTORICAL_FAILURE_REMAINS_VALID_FOR_ITS_OLD_SHA"
+  },
+  "boundaries": {
+    "overallReadiness": "BLOCKED_FRESH_GOVERNANCE_ACTUAL_ASSEMBLY_REQUIRED_CHECKS_AND_RELEASE",
+    "githubAttestationProvided": false,
+    "promotionPolicyAttestation": false,
+    "reviewThread": null,
+    "actualFinalAssemblyVerified": false,
+    "githubRequiredChecksVerified": false,
+    "runtimeSemanticAcceptanceGranted": false,
+    "promotionAllowed": false,
+    "promotedOnMain": false,
+    "gateC": "NOT_VERIFIED",
+    "sourceAssetsMissing": 93,
+    "candidateLocalCounts": { "new": 23, "legacyResolve": 144, "legacyExecute": 3, "dual": 0, "notClassifiable": 111 },
+    "acceptedIdentities": 111,
+    "denominator": 944,
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0
+  },
+  "nextOwner": "G_REBINDS_THIS_EXACT_CARRIER_AND_IMMUTABLE_RA_REFERENCE; I_THEN_VALIDATES_ACTUAL_POST_RA_POST_G_ASSEMBLY_HEAD_AND_SEPARATE_POLICY",
+  "commitBinding": "Direct-parent artifact-only review commit and SHA256 returned externally; no embedded self hash"
+}

@@ -1,0 +1,160 @@
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { setImmediate as yieldToEventLoop } from 'node:timers/promises';
+import { createHistoricalEvidenceSnapshot } from '../phase3-e08-b11-coverage-sync';
+import { buildParityInput, diagnosticCandidateSha as combinationSha, fixturePath } from '../phase3-b11-tooling-inputs';
+import { adapterClosurePaths, compareObservations, dependencyClosure, parseFixtures, parseParityInput, runParity, verifyAdapterClosure, verifyDependencyClosure } from '../phase3-contract-parity';
+import { collectCandidateObservations } from '../phase3-contract-parity-worker';
+import { git, gitText, hash, InputError, type Issue } from '../phase3-tooling-common';
+
+const snapshot = createHistoricalEvidenceSnapshot(resolve(fileURLToPath(new URL('../..', import.meta.url))));
+const root = snapshot.root;
+afterAll(snapshot.cleanup);
+let input: ReturnType<typeof buildParityInput>;
+let fixtures: ReturnType<typeof parseFixtures>;
+let result: Awaited<ReturnType<typeof runParity>>;
+let adapterFixture: string;
+afterEach(async () => { await yieldToEventLoop(); });
+afterAll(() => { if (adapterFixture) rmSync(adapterFixture, { recursive: true, force: true }); });
+
+describe('B11 real API contract parity diagnostics', () => {
+  beforeAll(async () => {
+    input = buildParityInput(root, gitText(root, ['rev-parse', 'HEAD']));
+    fixtures = parseFixtures(JSON.parse(readFileSync(resolve(root, fixturePath), 'utf8')));
+    const inheritedBinary = process.env.ESBUILD_BINARY_PATH;
+    const inheritedConfig = process.env.TSX_TSCONFIG_PATH;
+    process.env.ESBUILD_BINARY_PATH = resolve(root, 'untrusted-esbuild.exe');
+    process.env.TSX_TSCONFIG_PATH = resolve(root, 'untrusted-tsconfig.json');
+    try { result = await runParity(root, input, combinationSha, hash(JSON.stringify(input))); }
+    finally {
+      if (inheritedBinary === undefined) delete process.env.ESBUILD_BINARY_PATH;
+      else process.env.ESBUILD_BINARY_PATH = inheritedBinary;
+      if (inheritedConfig === undefined) delete process.env.TSX_TSCONFIG_PATH;
+      else process.env.TSX_TSCONFIG_PATH = inheritedConfig;
+    }
+  }, 120_000);
+  beforeAll(async () => {
+    const started = performance.now();
+    adapterFixture = mkdtempSync(resolve(tmpdir(), 'fd-parity-binding-test-'));
+    git(root, ['clone', '--shared', '--no-checkout', '--', root, adapterFixture]);
+    git(adapterFixture, ['-c', 'core.autocrlf=false', 'checkout', input.executionAdapter[0].commit, '--', ...adapterClosurePaths]);
+    expect(verifyAdapterClosure(adapterFixture, input.executionAdapter, []).commit).toBe(input.executionAdapter[0].commit);
+    for (const ref of input.executionAdapter) expect(hash(readFileSync(resolve(adapterFixture, ref.path)))).toBe(ref.sha256);
+    console.info('FD_EVIDENCE_FIXTURE_TIMING', JSON.stringify({ file: 'phase3-contract-parity.test.ts', name: 'exact adapter closure fixture', durationMs: Math.round(performance.now() - started) }));
+    await yieldToEventLoop();
+  }, 30_000);
+  it('executes candidate APIs in an isolated snapshot with canonical input and fixture hashes', () => {
+    expect(result.executionMethod).toBe('ISOLATED_SHARED_GIT_CLONE_REAL_API_SUBPROCESS');
+    expect(result.executionPerformed).toBe(true);
+    expect(result.dependencyProvider).toContain('ISOLATED_NPM_CI_BOUND_LOCKFILE');
+    expect(result.executionDependencies?.lockfileSha256).toBe(hash(git(root, ['show', `${combinationSha}:package-lock.json`])));
+    expect(result.executionDependencies?.closure.fileCount).toBeGreaterThan(100);
+    expect(result.executionDependencies?.closure.sha256).toMatch(/^[0-9A-F]{64}$/);
+    expect(result.executionDependencies?.nodeVersion).toBe(process.version);
+    expect(result.executionDependencies?.nodeSha256).toBe(hash(readFileSync(process.execPath)));
+    expect(result.executionAdapter.commit).toBe(input.executionAdapter[0].commit);
+    expect(result.executionAdapter.files.map(file => file.path)).toEqual(adapterClosurePaths);
+    for (const ref of result.executionAdapter.files) expect(hash(git(root, ['show', `${ref.commit}:${ref.path}`]))).toBe(ref.sha256);
+    expect(result.results).toHaveLength(10);
+    for (const row of result.results) {
+      expect(row.executedInputSha256).toMatch(/^[0-9A-F]{64}$/);
+      expect(row.apiCalls.compiler).toEqual(['compileExecutableCardPack']);
+      expect(row.apiCalls.coverage).toEqual(['classifyAbilityForCoverage', 'classifyB11CoverageEligibility']);
+      expect(row.apiCalls.inventory).toEqual(['classifyB11InventoryAbility']);
+      expect(row.observations.inventory.evaluationStatus).toBe('EVALUATED');
+      expect(row.observations.coverage.evaluationStatus).toBe('EVALUATED_EXACT_ELIGIBILITY_RAW_CLASSIFICATION_RETAINED');
+      expect(typeof row.observations.inventory.routeCandidate).toBe('boolean');
+      expect(typeof row.observations.inventory.exactEligible).toBe('boolean');
+      expect(typeof row.observations.coverage.exactEligible).toBe('boolean');
+    }
+    for (const id of ['golden-positive', 'golden-renamed-identities', 'conversion-positive', 'conversion-renamed-identities']) {
+      const row = result.results.find(row => row.fixtureId === id)!;
+      expect(row.observations.runtime.exactEligible).toBe(true);
+      expect(row.observations.compiler.compileOutcome).toBe('ACCEPT');
+    }
+  });
+  it('executes owned malformed and outside-scope fixtures without inheriting positive eligibility', () => {
+    for (const row of result.results.filter(row => row.category === 'owned-malformed')) {
+      expect(row.observations.runtime.exactEligible).toBe(false);
+      expect(row.observations.compiler.compileOutcome).toBe('REJECT');
+    }
+    for (const row of result.results.filter(row => row.category === 'outside-scope')) expect(row.observations.runtime.exactEligible).toBe(false);
+  });
+  it('rejects a changed transitive dependency even when the loader stays unchanged', async () => {
+    const temporary = mkdtempSync(resolve(tmpdir(), 'fd-parity-dependency-test-'));
+    try {
+      const modules = resolve(temporary, 'node_modules');
+      mkdirSync(resolve(modules, 'tsx/dist'), { recursive: true });
+      mkdirSync(resolve(modules, 'esbuild/lib'), { recursive: true });
+      const loader = resolve(modules, 'tsx/dist/loader.mjs');
+      const dependency = resolve(modules, 'esbuild/lib/main.js');
+      writeFileSync(loader, 'import "esbuild";'); writeFileSync(dependency, 'export const trusted = true;');
+      const binding = await dependencyClosure(temporary);
+      const loaderDigest = hash(readFileSync(loader));
+      await expect(verifyDependencyClosure(temporary, binding)).resolves.toBeUndefined();
+      writeFileSync(dependency, 'export const trusted = false;');
+      expect(hash(readFileSync(loader))).toBe(loaderDigest);
+      await expect(verifyDependencyClosure(temporary, binding)).rejects.toThrow('Execution dependency closure drift');
+    } finally { rmSync(temporary, { recursive: true, force: true }); }
+  });
+  it('fails readiness only for pending independent review after complete matching API observations', () => {
+    expect(result.status).toBe('FAIL');
+    expect(result.issues.map(issue => issue.code)).toContain('EXPECTATIONS_NOT_INDEPENDENTLY_REVIEWED');
+    expect(result.issues.some(issue => issue.code === 'REQUIRED_OBSERVATION_NOT_EVALUATED')).toBe(false);
+    expect(result.issues.some(issue => issue.code === 'API_EXPECTATION_DISAGREEMENT')).toBe(false);
+    const malformed = result.results.find(row => row.fixtureId === 'conversion-unknown-binding')!;
+    expect(malformed.observations.runtime).toMatchObject({ routeCandidate: true, exactEligible: false });
+    expect(malformed.observations.inventory).toMatchObject({ routeCandidate: true, exactEligible: false });
+    expect(malformed.observations.compiler.compileOutcome).toBe('REJECT');
+    expect(result.acceptanceGranted).toBe(false);
+  });
+  it('never exempts missing Conversion runtime ownership when all other observations agree', () => {
+    const conversion = fixtures.fixtures.filter((fixture: any) => fixture.family === 'conversion-magic');
+    const observed = conversion.map((fixture: any) => ({ fixtureId: fixture.id,
+      fixtureSha256: hash(`${JSON.stringify(fixture)}\n`), observations: structuredClone(fixture.expected) }));
+    for (const row of observed) row.observations.runtime.routeCandidate = null;
+    const issues: Issue[] = []; compareObservations({ fixtures: conversion }, observed, issues);
+    expect(issues).toHaveLength(4);
+    expect(issues.every(issue => issue.code === 'REQUIRED_OBSERVATION_NOT_EVALUATED' && issue.path.endsWith(':runtime.routeCandidate'))).toBe(true);
+    const missing = structuredClone(fixtures); delete missing.fixtures.find((fixture: any) => fixture.family === 'conversion-magic').expected.runtime.routeCandidate;
+    expect(() => parseFixtures(missing)).toThrow(InputError);
+  });
+  it.each(adapterClosurePaths)('rejects local drift in %s before executing candidate APIs', async path => {
+    const original = readFileSync(resolve(adapterFixture, path));
+    try {
+        writeFileSync(resolve(adapterFixture, path), Buffer.concat([original, Buffer.from('\n// unbound local change\n')]));
+        const issues: Issue[] = []; verifyAdapterClosure(adapterFixture, input.executionAdapter, issues);
+        expect(issues.some(issue => issue.code === 'EXECUTION_ADAPTER_DRIFT' && issue.path === path)).toBe(true);
+        if (path.endsWith('phase3-contract-parity-worker.ts')) {
+          const rejected = await runParity(adapterFixture, input, combinationSha, 'drift-probe');
+          expect(rejected.executionPerformed).toBe(false);
+          expect(rejected.results).toEqual([]);
+          expect(rejected.issues.some(issue => issue.code === 'EXECUTION_ADAPTER_DRIFT' && issue.path === path)).toBe(true);
+        }
+    } finally { writeFileSync(resolve(adapterFixture, path), original); }
+  }, 30_000);
+  it('rejects an incomplete adapter closure independently', () => {
+    expect(() => verifyAdapterClosure(adapterFixture, input.executionAdapter.slice(0, 1), [])).toThrow(InputError);
+  });
+  it('detects a real API disagreement rather than equating hand-filled owner values', async () => {
+    const altered = structuredClone(fixtures);
+    altered.fixtures = [altered.fixtures.find((fixture: any) => fixture.id === 'golden-positive')];
+    altered.fixtures[0].expected.runtime.exactEligible = false;
+    const actual = await collectCandidateObservations(root, altered);
+    expect(actual[0].observations.runtime.exactEligible).toBe(true);
+    const issues: Issue[] = [];
+    compareObservations(altered, actual, issues);
+    expect(issues.some(issue => issue.code === 'API_EXPECTATION_DISAGREEMENT' && issue.path === 'golden-positive:runtime.exactEligible')).toBe(true);
+  }, 30_000);
+  it('rejects unsupported/stale/spoofed inputs and incomplete fixture scope', async () => {
+    expect(() => parseParityInput({ ...input, schemaVersion: 'legacy-self-reported-parity' })).toThrow(InputError);
+    expect(() => parseParityInput({ ...input, observations: { runtime: true, compiler: true } })).toThrow(InputError);
+    expect(() => parseFixtures({ ...fixtures, fixtures: fixtures.fixtures.filter((fixture: any) => fixture.category !== 'owned-malformed') })).toThrow(InputError);
+    const stale = await runParity(root, { ...input, candidateSha: '0'.repeat(40) }, combinationSha, 'test');
+    expect(stale.issues.map(issue => issue.code)).toContain('EXACT_SHA_MISMATCH'); expect(stale.results).toEqual([]);
+    expect(stale.executionPerformed).toBe(false); expect(stale.executionMethod).toBe('NOT_EXECUTED_INPUT_REJECTED');
+  }, 15_000);
+});

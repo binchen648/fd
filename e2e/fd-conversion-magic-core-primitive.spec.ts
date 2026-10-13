@@ -1,13 +1,57 @@
-import { expect, test, type APIRequestContext, type Page, type WebSocket as PlaywrightWebSocket } from '@playwright/test';
-import { execFileSync } from 'node:child_process';
-import type { ClientRoomMessage, MatchRoomProjection, MatchRoomSnapshot, RoomHttpResponse, ServerRoomMessage } from '@fd/rules';
+import { expect, test, type Page, type WebSocket as PlaywrightWebSocket } from '@playwright/test';
+import { spawn, type ChildProcess } from 'node:child_process';
+import { resolve } from 'node:path';
+import type { ClientRoomMessage, MatchRoomProjection, RoomHttpResponse, ServerRoomMessage } from '@fd/rules';
+import {
+  conversionMagicDecoyInstanceId,
+  conversionMagicFirstMovedInstanceId,
+  conversionMagicSecondMovedInstanceId,
+  conversionMagicSourceInstanceId,
+} from './support/prepare-conversion-magic-room';
 
-const httpBase = 'http://127.0.0.1:8787';
-const wsBase = 'ws://127.0.0.1:8787';
+let fixtureHttpBase = '';
+let fixtureWsBase = '';
+let fixtureProcess: ChildProcess | undefined;
+let fixtureRoom: Pick<RoomHttpResponse, 'roomId' | 'clientId' | 'reconnectToken'>;
 
-test('routes Conversion Magic through browser, WS revision, actual movedCount binding, projection, reconnect, and stale rejection', async ({ page, request }) => {
-  const roomId = `fd-conversion-magic-${Date.now()}`;
-  const room = await restoreAdvancePhaseConversionMagicRoom(request, roomId);
+test.beforeAll(async () => {
+  const script = resolve('e2e/support/start-conversion-magic-fixture-server.ts');
+  fixtureProcess = spawn(process.execPath, ['--import', 'tsx', script], {
+    cwd: process.cwd(),
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+  const ready = await new Promise<{ httpBase: string; wsBase: string; roomId: string; clientId: string; reconnectToken: string }>((resolveReady, reject) => {
+    let output = '';
+    const timer = setTimeout(() => reject(new Error(`Conversion Magic fixture server did not start: ${output}`)), 15_000);
+    fixtureProcess!.stdout?.on('data', (chunk: Buffer) => {
+      output += chunk.toString('utf8');
+      const line = output.split(/\r?\n/).find((candidate) => candidate.trim().startsWith('{'));
+      if (!line) return;
+      clearTimeout(timer);
+      try {
+        resolveReady(JSON.parse(line) as { httpBase: string; wsBase: string; roomId: string; clientId: string; reconnectToken: string });
+      } catch (error) {
+        reject(error);
+      }
+    });
+    fixtureProcess!.stderr?.on('data', (chunk: Buffer) => { output += chunk.toString('utf8'); });
+    fixtureProcess!.once('error', reject);
+    fixtureProcess!.once('exit', (code) => {
+      if (code !== null && code !== 0) reject(new Error(`Conversion Magic fixture server exited with ${code}: ${output}`));
+    });
+  });
+  fixtureHttpBase = ready.httpBase;
+  fixtureWsBase = ready.wsBase;
+  fixtureRoom = { roomId: ready.roomId, clientId: ready.clientId, reconnectToken: ready.reconnectToken };
+});
+
+test.afterAll(async () => {
+  fixtureProcess?.kill();
+  fixtureProcess = undefined;
+});
+
+test('routes Conversion Magic through browser, WS revision, actual movedCount binding, projection, reconnect, and stale rejection', async ({ page }) => {
+  const room = fixtureRoom;
   const sentMessages: ClientRoomMessage[] = [];
   const receivedProjections: MatchRoomProjection[] = [];
   const serverErrors: ServerRoomMessage[] = [];
@@ -38,7 +82,7 @@ test('routes Conversion Magic through browser, WS revision, actual movedCount bi
   expect(expectedRevision).toEqual(expect.any(Number));
   expect(initialProjection?.match?.view.legalActions).toContainEqual(expect.objectContaining({
     type: 'activate_ability',
-    cardInstanceId: 'p2-master.irisviel.skill.conversion-magic',
+    cardInstanceId: conversionMagicSourceInstanceId,
     abilityId: 'conversion-magic.preparation',
   }));
 
@@ -56,7 +100,7 @@ test('routes Conversion Magic through browser, WS revision, actual movedCount bi
     expectedRevision,
     command: {
       type: 'activate_ability',
-      cardInstanceId: 'p2-master.irisviel.skill.conversion-magic',
+      cardInstanceId: conversionMagicSourceInstanceId,
       abilityId: 'conversion-magic.preparation',
     },
   });
@@ -64,9 +108,9 @@ test('routes Conversion Magic through browser, WS revision, actual movedCount bi
   const projectedAfterCommand = receivedProjections.find((projection) => latestSelfPlayer([projection])?.mana === 6);
   expect(projectedAfterCommand?.match?.zones.find((zone) => zone.id === 'hand')?.count).toBe(0);
   expect(projectedAfterCommand?.match?.zones.find((zone) => zone.id === 'discard')?.count).toBe(2);
-  expect(projectedCardZone(projectedAfterCommand, 'p2-basic.agility.5-1')).toBe('discard');
-  expect(projectedCardZone(projectedAfterCommand, 'p2-basic.luck-1')).toBe('discard');
-  expect(projectedCardZone(projectedAfterCommand, 'p2-basic.agility.2-1')).toBe('field');
+  expect(projectedCardZone(projectedAfterCommand, conversionMagicFirstMovedInstanceId)).toBe('discard');
+  expect(projectedCardZone(projectedAfterCommand, conversionMagicSecondMovedInstanceId)).toBe('discard');
+  expect(projectedCardZone(projectedAfterCommand, conversionMagicDecoyInstanceId)).toBe('field');
   expect(projectedAfterCommand?.match?.logs).toContainEqual(expect.objectContaining({
     type: 'dispatch_ok',
     payload: expect.objectContaining({
@@ -74,7 +118,7 @@ test('routes Conversion Magic through browser, WS revision, actual movedCount bi
         expect.objectContaining({
           type: 'cards_moved',
           playerId: 'p2',
-          sourceCardId: 'p2-master.irisviel.skill.conversion-magic',
+          sourceCardId: conversionMagicSourceInstanceId,
           abilityId: 'conversion-magic.preparation',
           resultId: expect.stringContaining('.cards_moved'),
           revision: expectedRevision,
@@ -101,11 +145,12 @@ test('routes Conversion Magic through browser, WS revision, actual movedCount bi
   expect(receivedProjections.at(-1)?.match?.zones.find((zone) => zone.id === 'discard')?.count).toBe(2);
 
   const staleErrorCount = serverErrors.length;
-  await page.evaluate(({ roomId: targetRoomId, clientId, token, message }) => {
-    const socket = new WebSocket(`ws://127.0.0.1:8787/rooms/${encodeURIComponent(targetRoomId)}?clientId=${encodeURIComponent(clientId)}&reconnectToken=${encodeURIComponent(token)}`);
+  await page.evaluate(({ wsBase, roomId: targetRoomId, clientId, token, message }) => {
+    const socket = new WebSocket(`${wsBase}/rooms/${encodeURIComponent(targetRoomId)}?clientId=${encodeURIComponent(clientId)}&reconnectToken=${encodeURIComponent(token)}`);
     socket.addEventListener('open', () => socket.send(JSON.stringify(message)));
   }, {
-    roomId,
+    wsBase: fixtureWsBase,
+    roomId: room.roomId,
     clientId: room.clientId,
     token: room.reconnectToken,
     message: command!,
@@ -119,68 +164,19 @@ test('routes Conversion Magic through browser, WS revision, actual movedCount bi
   });
   await expect.poll(() => latestSelfPlayer(receivedProjections)?.mana).toBe(6);
   expect(receivedProjections.at(-1)?.match?.zones.find((zone) => zone.id === 'discard')?.count).toBe(2);
-  expect(projectedCardZone(receivedProjections.at(-1), 'p2-basic.agility.5-1')).toBe('discard');
-  expect(projectedCardZone(receivedProjections.at(-1), 'p2-basic.luck-1')).toBe('discard');
-  expect(projectedCardZone(receivedProjections.at(-1), 'p2-basic.agility.2-1')).toBe('field');
+  expect(projectedCardZone(receivedProjections.at(-1), conversionMagicFirstMovedInstanceId)).toBe('discard');
+  expect(projectedCardZone(receivedProjections.at(-1), conversionMagicSecondMovedInstanceId)).toBe('discard');
+  expect(projectedCardZone(receivedProjections.at(-1), conversionMagicDecoyInstanceId)).toBe('field');
 });
 
-async function restoreAdvancePhaseConversionMagicRoom(request: APIRequestContext, roomId: string): Promise<RoomHttpResponse> {
-  const snapshot = buildAdvancePhaseConversionMagicSnapshot(roomId);
-  const response = await request.post(`${httpBase}/rooms/${encodeURIComponent(roomId)}/restore`, {
-    data: { snapshot },
-  });
-  expect(response.ok()).toBe(true);
-  return response.json() as Promise<RoomHttpResponse>;
-}
-
-function buildAdvancePhaseConversionMagicSnapshot(roomId: string): MatchRoomSnapshot {
-  const script = `
-    import { createMatchRoom } from '@fd/rules';
-    const room = createMatchRoom({ roomId: ${JSON.stringify(roomId)}, hostClientId: 'host-conversion-magic', hostName: '房主', seed: 20260909 });
-    room.selectSeat('host-conversion-magic', 2);
-    room.startMatch('host-conversion-magic');
-    const session = room.session;
-    session.state.round.activePhase = 'advance';
-    session.state.round.prioritySeat = 2;
-    session.state.abilityRuntime.hostRequests = [];
-    session.state.abilityRuntime.responseWindows = [];
-    delete session.state.abilityRuntime.pendingDecision;
-    const player = session.state.players.find((candidate) => candidate.id === 'p2');
-    player.mana = 4;
-    const source = session.state.cards.find((card) => card.controllerPlayerId === 'p2' && card.definitionId === 'master.irisviel.skill.conversion-magic');
-    const candidates = session.state.cards.filter((card) => card.controllerPlayerId === 'p2' && card.instanceId !== source.instanceId);
-    for (const card of candidates) {
-      card.zone = 'deck';
-      card.visibility = { scope: 'owner_only', ownerPlayerId: 'p2' };
-    }
-    const movable = [
-      candidates.find((card) => card.instanceId === 'p2-basic.agility.5-1'),
-      candidates.find((card) => card.instanceId === 'p2-basic.luck-1'),
-    ];
-    const decoy = candidates.find((card) => card.instanceId === 'p2-basic.agility.2-1');
-    if (movable.some((card) => !card) || !decoy) throw new Error('Conversion Magic E2E fixture cards not found');
-    for (const card of movable) {
-      card.zone = 'hand';
-      card.visibility = { scope: 'owner_only', ownerPlayerId: 'p2' };
-    }
-    decoy.zone = 'field';
-    decoy.visibility = { scope: 'public' };
-    process.stdout.write(JSON.stringify(room.serializeRoom()));
-  `;
-  return JSON.parse(execFileSync(process.execPath, ['--import', 'tsx', '--eval', script], {
-    cwd: process.cwd(),
-    encoding: 'utf8',
-  })) as MatchRoomSnapshot;
-}
-
-async function openRemoteRoom(page: Page, response: RoomHttpResponse): Promise<void> {
+async function openRemoteRoom(page: Page, response: Pick<RoomHttpResponse, 'roomId' | 'clientId' | 'reconnectToken'>): Promise<void> {
   const params = new URLSearchParams({
     remote: '1',
     roomId: response.roomId,
     clientId: response.clientId,
     token: response.reconnectToken,
-    http: httpBase,
-    ws: wsBase,
+    http: fixtureHttpBase,
+    ws: fixtureWsBase,
   });
   await page.goto(`/?${params.toString()}`);
 }

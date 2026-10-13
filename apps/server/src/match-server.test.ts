@@ -14,6 +14,41 @@ import { createMatchServer, type MatchServerHandle } from './match-server';
 
 let serverHandle: MatchServerHandle | undefined;
 
+function restoreRequest(snapshot: any) {
+  const clientId = snapshot.hostClientId as string;
+  return { snapshot, clientId, reconnectToken: serverHandle!.hub.getRoom(snapshot.roomId).getIssuedCredential(clientId) };
+}
+
+const goldenEaterSourceInstanceId = 'p1-golden-transport-test';
+function prepareGoldenTransportRoom() {
+  const hub = serverHandle!.hub;
+  const roomId = hub.createRoom({ roomId: 'golden-transport', hostClientId: 'host' }).roomId;
+  hub.selectSeat(roomId, 'host', 1);
+  hub.startMatch(roomId, 'host');
+  const room = hub.getRoom(roomId);
+  const state = room.session!.state;
+  state.round = { roundNumber: 4, activePhase: 'battle', prioritySeat: 1 };
+  state.abilityRuntime!.hostRequests = [];
+  state.abilityRuntime!.responseWindows = [];
+  delete state.abilityRuntime!.pendingDecision;
+  Object.assign(state.players.find(player => player.id === 'p1')!, { servantCardId: 'servant.kintoki', locationId: 'miyama_town', mana: 12, vp: 0 });
+  for (const [instanceId, definitionId, zone] of [
+    [goldenEaterSourceInstanceId, 'servant.kintoki.skill.sc-kintoki-3', 'attack_area'],
+    ['golden-first', 'servant.kintoki.skill.sc-kintoki-1', 'removed_from_game'],
+    ['golden-second', 'servant.kintoki.skill.sc-kintoki-2', 'removed_from_game'],
+  ] as const) {
+    state.cards.push({ instanceId, definitionId, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone, visibility: { scope: 'public' } });
+    state.abilityRuntime!.cardState[instanceId] = { active: zone === 'attack_area', faceDown: false, playedRound: zone === 'attack_area' ? 4 : 1 };
+  }
+  return room;
+}
+
+function legacyToken(roomId: string, clientId: string): string {
+  let hash = 2166136261;
+  for (const char of `${roomId}:${clientId}`) { hash ^= char.charCodeAt(0); hash = Math.imul(hash, 16777619); }
+  return `reconnect-${(hash >>> 0).toString(36)}`;
+}
+
 afterEach(async () => {
   if (serverHandle) {
     await serverHandle.close();
@@ -133,6 +168,252 @@ function nextMessage(socket: WebSocket, messages: ServerRoomMessage[], predicate
 }
 
 describe('match websocket server', () => {
+  it('rejects empty/default/invalid HTTP room IDs without replacing the running default room', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    const hub = serverHandle.hub;
+    const roomId = hub.createRoom({ hostClientId: 'host' }).roomId;
+    hub.selectSeat(roomId, 'host', 1);
+    hub.startMatch(roomId, 'host');
+    const room = hub.getRoom(roomId);
+    const session = room.session;
+    const snapshot = structuredClone(room.serializeRoom());
+    const scope = room.getPersistenceContext().persistenceScope;
+    const version = hub.version(roomId);
+    const projection = structuredClone(hub.project(roomId, 'host'));
+    for (const roomId of ['', undefined, 'fd-room-20260904', '   ', null, 42, {}, []]) {
+      const response = await fetch(`http://127.0.0.1:${port}/rooms`, {
+        method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ roomId, hostClientId: 'replacement-host' }),
+      });
+      expect(response.status).toBe(400);
+      const body = await response.text();
+      expect(body).not.toContain('reconnectToken');
+      expect(body).not.toContain(room.getIssuedCredential('host'));
+      expect(hub.getRoom(snapshot.roomId)).toBe(room);
+      expect(room.session).toBe(session);
+      expect(room.serializeRoom()).toEqual(snapshot);
+      expect(room.getPersistenceContext().persistenceScope).toBe(scope);
+      expect(hub.version(snapshot.roomId)).toBe(version);
+      expect(hub.project(snapshot.roomId, 'host')).toEqual(projection);
+    }
+  });
+  it('blocks RB public-credential and duplicate HTTP identity impersonation without Golden Eater mutation', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    const room = prepareGoldenTransportRoom();
+    const base = `http://127.0.0.1:${port}`;
+    const guest = await postJson<RoomHttpResponse>(`${base}/rooms/${room.roomId}/join`, { clientId: 'guest', displayName: 'Guest', role: 'spectator' });
+    const before = structuredClone(room.serializeRoom());
+    const version = serverHandle.hub.version(room.roomId);
+    const hostToken = room.getIssuedCredential('host');
+    expect(JSON.stringify(guest.projection)).not.toContain('reconnectToken');
+    expect(JSON.stringify(guest.projection)).not.toContain(hostToken);
+    expect(guest.projection.match?.view.legalActions).toEqual([]);
+    const duplicate = await fetch(`${base}/rooms/${room.roomId}/join`, {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ clientId: 'host', displayName: 'Impersonated host', role: 'host' }),
+    });
+    expect(duplicate.status).toBe(400);
+    const duplicateBody = await duplicate.text();
+    expect(duplicateBody).not.toContain(hostToken);
+    expect(duplicateBody).not.toContain('reconnectToken');
+    const recreated = await fetch(`${base}/rooms`, {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ roomId: room.roomId, hostClientId: 'host' }),
+    });
+    expect(recreated.status).toBe(400);
+    const other = await postJson<RoomHttpResponse>(`${base}/rooms`, { roomId: 'cross-room', hostClientId: 'host' });
+    for (const token of [legacyToken(room.roomId, 'host'), guest.reconnectToken, other.reconnectToken]) {
+      await expect(connectSocket(`ws://127.0.0.1:${port}/rooms/${room.roomId}?clientId=host&reconnectToken=${token}`)).rejects.toThrow('401');
+    }
+    expect(room.getIssuedCredential('host')).not.toBe(legacyToken(room.roomId, 'host'));
+    expect(room.serializeRoom()).toEqual(before);
+    expect(serverHandle.hub.version(room.roomId)).toBe(version);
+    expect(room.session!.state.abilityRuntime!.pendingDecision).toBeUndefined();
+  });
+
+  it('requires authenticated host proof for HTTP restore and never issues credentials on rejection', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    const room = prepareGoldenTransportRoom();
+    serverHandle.hub.joinRoom(room.roomId, { clientId: 'guest', displayName: 'Guest', role: 'spectator' });
+    const snapshot = structuredClone(room.serializeRoom());
+    const version = serverHandle.hub.version(room.roomId);
+    for (const proof of [{}, { clientId: 'host', reconnectToken: legacyToken(room.roomId, 'host') }, { clientId: 'guest', reconnectToken: room.getIssuedCredential('guest') }]) {
+      const response = await fetch(`http://127.0.0.1:${port}/rooms/${room.roomId}/restore`, {
+        method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ snapshot, ...proof }),
+      });
+      expect(response.status).toBe(400);
+      expect(await response.text()).not.toContain(room.getIssuedCredential('host'));
+      expect(serverHandle.hub.getRoom(room.roomId)).toBe(room);
+      expect(room.serializeRoom()).toEqual(snapshot);
+      expect(serverHandle.hub.version(room.roomId)).toBe(version);
+    }
+  });
+
+  it('rejects raw WS missing/invalid/stale revisions for dispatch and end_turn without mutation or accepted broadcasts', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    const room = prepareGoldenTransportRoom();
+    const inbox = await connectSocket(`ws://127.0.0.1:${port}/rooms/${room.roomId}?clientId=host&reconnectToken=${room.getIssuedCredential('host')}`);
+    await inbox.next(message => message.type === 'server:projection');
+    const before = structuredClone(room.serializeRoom());
+    const projection = structuredClone(serverHandle.hub.project(room.roomId, 'host'));
+    const version = serverHandle.hub.version(room.roomId);
+    const accepted: unknown[] = [];
+    inbox.socket.on('message', raw => { const message = JSON.parse(String(raw)); if (message.type !== 'server:error') accepted.push(message); });
+    let id = 0;
+    for (const value of [undefined, null, '2', -1, 0.5, Number.MAX_SAFE_INTEGER + 1, projection.match!.view.revision - 1]) {
+      for (const type of ['client:dispatch_command', 'client:end_turn']) {
+        const requestId = `revision-negative-${++id}`;
+        inbox.socket.send(JSON.stringify({ type, requestId, expectedRevision: value, command: { type: 'activate_ability', cardInstanceId: goldenEaterSourceInstanceId, abilityId: 'sc-kintoki-3.golden-eater' } }));
+        const error = await inbox.next(message => message.type === 'server:error' && message.requestId === requestId);
+        expect(error.type).toBe('server:error');
+        expect(room.serializeRoom()).toEqual(before);
+        expect(serverHandle.hub.project(room.roomId, 'host')).toEqual(projection);
+        expect(serverHandle.hub.version(room.roomId)).toBe(version);
+      }
+    }
+    expect(accepted).toEqual([]);
+    inbox.socket.send(JSON.stringify({ type: 'client:end_turn', expectedRevision: projection.match!.view.revision }));
+    await inbox.next(message => message.type === 'server:projection' && message.version > version);
+    expect(room.session!.state.abilityRuntime!.revision).toBeGreaterThan(projection.match!.view.revision);
+    inbox.socket.close();
+  });
+
+  it('preserves credential-free private pending projections across authenticated Golden Eater reconnect', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    const room = prepareGoldenTransportRoom();
+    const guest = await postJson<RoomHttpResponse>(`http://127.0.0.1:${port}/rooms/${room.roomId}/join`, { clientId: 'guest', displayName: 'Guest', role: 'spectator' });
+    const hostToken = room.getIssuedCredential('host');
+    const hostUrl = `ws://127.0.0.1:${port}/rooms/${room.roomId}?clientId=host&reconnectToken=${hostToken}`;
+    const host = await connectSocket(hostUrl);
+    await host.next(message => message.type === 'server:projection');
+    const spectator = await connectSocket(`ws://127.0.0.1:${port}/rooms/${room.roomId}?clientId=guest&reconnectToken=${guest.reconnectToken}`);
+    await spectator.next(message => message.type === 'server:projection');
+    host.socket.send(JSON.stringify({ type: 'client:dispatch_command', expectedRevision: room.session!.state.abilityRuntime!.revision,
+      command: { type: 'activate_ability', cardInstanceId: goldenEaterSourceInstanceId, abilityId: 'sc-kintoki-3.golden-eater' } }));
+    const pending = await host.next(message => message.type === 'server:projection' && !!message.projection.match?.interactionWindows.length);
+    const publicPending = await spectator.next(message => message.type === 'server:projection');
+    expect(JSON.stringify(publicPending)).not.toContain(hostToken);
+    expect(JSON.stringify(publicPending)).not.toContain('reconnectToken');
+    if (publicPending.type !== 'server:projection' || pending.type !== 'server:projection') throw new Error('Expected projections');
+    expect(publicPending.projection.match?.view.legalActions).toEqual([]);
+    expect(publicPending.projection.match?.interactionWindows).toEqual([]);
+    const replacement = await connectSocket(hostUrl);
+    const recovered = await replacement.next(message => message.type === 'server:projection');
+    if (recovered.type !== 'server:projection') throw new Error('Expected recovered projection');
+    expect(recovered.projection.match?.interactionWindows).toEqual(pending.projection.match?.interactionWindows);
+    expect(JSON.stringify(recovered)).not.toContain('reconnectToken');
+    host.socket.close();
+    replacement.socket.close();
+    spectator.socket.close();
+  });
+  it('keeps the replacement socket connected until the final same-client socket closes', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    serverHandle.hub.createRoom({ roomId: 'socket-race', hostClientId: 'host' });
+    const token = serverHandle.hub.getRoom('socket-race').getIssuedCredential('host');
+    const url = `ws://127.0.0.1:${port}/rooms/socket-race?clientId=host&reconnectToken=${token}`;
+    const first = await connectSocket(url);
+    await first.next((message) => message.type === 'server:projection');
+    const second = await connectSocket(url);
+    await second.next((message) => message.type === 'server:projection');
+    const disconnect = vi.spyOn(serverHandle.hub, 'disconnect');
+    const version = serverHandle.hub.version('socket-race');
+    first.socket.close();
+    await new Promise((resolve) => first.socket.once('close', resolve));
+    second.socket.send(JSON.stringify({ type: 'client:request_projection' }));
+    const projection = await second.next((message) => message.type === 'server:projection');
+    expect(projection.type).toBe('server:projection');
+    expect(disconnect).not.toHaveBeenCalled();
+    expect(serverHandle.hub.version('socket-race')).toBe(version);
+    expect(serverHandle.hub.project('socket-race', 'host').clients.find((client) => client.id === 'host')?.connected).toBe(true);
+    second.socket.close();
+    await vi.waitFor(() => expect(disconnect).toHaveBeenCalledTimes(1));
+    expect(serverHandle.hub.project('socket-race', 'host').clients.find((client) => client.id === 'host')?.connected).toBe(false);
+  });
+
+  it('restores connection state if the old close occurs after upgrade validation', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    serverHandle.hub.createRoom({ roomId: 'upgrade-race', hostClientId: 'host' });
+    const token = serverHandle.hub.getRoom('upgrade-race').getIssuedCredential('host');
+    const handleUpgrade = serverHandle.wss.handleUpgrade.bind(serverHandle.wss);
+    vi.spyOn(serverHandle.wss, 'handleUpgrade').mockImplementationOnce((request, socket, head, callback) => {
+      serverHandle!.hub.disconnect('upgrade-race', 'host');
+      handleUpgrade(request, socket, head, callback);
+    });
+    const socket = await connectSocket(`ws://127.0.0.1:${port}/rooms/upgrade-race?clientId=host&reconnectToken=${token}`);
+    const projection = await socket.next((message) => message.type === 'server:projection');
+    if (projection.type !== 'server:projection') throw new Error('Expected projection');
+    expect(projection.projection.clients.find((client) => client.id === 'host')?.connected).toBe(true);
+    socket.socket.close();
+  });
+
+  it.each(['missing', 'wrong-client'] as const)('rejects %s reconnect credentials before registration without mutation', async (variant) => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    serverHandle.hub.createRoom({ roomId: 'credential-race', hostClientId: 'host' });
+    serverHandle.hub.joinRoom('credential-race', { clientId: 'guest', displayName: 'Guest' });
+    const before = structuredClone(serverHandle.hub.project('credential-race', 'host'));
+    const version = serverHandle.hub.version('credential-race');
+    const upgrade = vi.spyOn(serverHandle.wss, 'handleUpgrade');
+    const tokenQuery = variant === 'missing' ? '' : `&reconnectToken=${serverHandle.hub.getRoom('credential-race').getIssuedCredential('guest')}`;
+    await expect(connectSocket(`ws://127.0.0.1:${port}/rooms/credential-race?clientId=host${tokenQuery}`)).rejects.toThrow('401');
+    expect(upgrade).not.toHaveBeenCalled();
+    expect(serverHandle.hub.project('credential-race', 'host')).toEqual(before);
+    expect(serverHandle.hub.version('credential-race')).toBe(version);
+  });
+
+  it('disconnects once when all same-client sockets close simultaneously', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    serverHandle.hub.createRoom({ roomId: 'closing-race', hostClientId: 'host' });
+    const token = serverHandle.hub.getRoom('closing-race').getIssuedCredential('host');
+    const url = `ws://127.0.0.1:${port}/rooms/closing-race?clientId=host&reconnectToken=${token}`;
+    const first = await connectSocket(url);
+    await first.next((message) => message.type === 'server:projection');
+    const second = await connectSocket(url);
+    await second.next((message) => message.type === 'server:projection');
+    const disconnect = vi.spyOn(serverHandle.hub, 'disconnect');
+    const version = serverHandle.hub.version('closing-race');
+    const closed = [first, second].map((inbox) => new Promise<void>((resolve) => inbox.socket.once('close', () => resolve())));
+    for (const socket of serverHandle.wss.clients) socket.close();
+    await Promise.all(closed);
+    await vi.waitFor(() => expect(serverHandle!.wss.clients.size).toBe(0));
+    expect(disconnect).toHaveBeenCalledTimes(1);
+    expect(serverHandle.hub.version('closing-race')).toBe(version + 1);
+    expect(serverHandle.hub.project('closing-race', 'host').clients.find((client) => client.id === 'host')?.connected).toBe(false);
+    const reconnected = await connectSocket(url);
+    await reconnected.next((message) => message.type === 'server:projection');
+    expect(serverHandle.hub.project('closing-race', 'host').clients.find((client) => client.id === 'host')?.connected).toBe(true);
+    reconnected.socket.close();
+    await vi.waitFor(() => expect(disconnect).toHaveBeenCalledTimes(2));
+  });
+
+  it('does not count another room or client as a surviving connection', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    const firstRoom = serverHandle.hub.createRoom({ roomId: 'socket-scope-a', hostClientId: 'host' });
+    const secondRoom = serverHandle.hub.createRoom({ roomId: 'socket-scope-b', hostClientId: 'host' });
+    const guest = serverHandle.hub.joinRoom('socket-scope-a', { clientId: 'guest', displayName: 'Guest' });
+    const connect = async (roomId: string, clientId: string, projection: typeof firstRoom) => {
+      const token = serverHandle!.hub.getRoom(projection.roomId).getIssuedCredential(clientId);
+      const inbox = await connectSocket(`ws://127.0.0.1:${port}/rooms/${roomId}?clientId=${clientId}&reconnectToken=${token}`);
+      await inbox.next((message) => message.type === 'server:projection');
+      return inbox;
+    };
+    const first = await connect('socket-scope-a', 'host', firstRoom);
+    const second = await connect('socket-scope-b', 'host', secondRoom);
+    const otherClient = await connect('socket-scope-a', 'guest', guest);
+    first.socket.close();
+    await vi.waitFor(() => expect(serverHandle!.hub.project('socket-scope-a', 'host').clients.find((client) => client.id === 'host')?.connected).toBe(false));
+    expect(serverHandle.hub.project('socket-scope-b', 'host').clients.find((client) => client.id === 'host')?.connected).toBe(true);
+    expect(serverHandle.hub.project('socket-scope-a', 'guest').clients.find((client) => client.id === 'guest')?.connected).toBe(true);
+    second.socket.close();
+    otherClient.socket.close();
+  });
+
   it('rejects stale expectedRevision commands before mutating a room', async () => {
     serverHandle = createMatchServer();
     const port = await serverHandle.listen();
@@ -183,7 +464,7 @@ describe('match websocket server', () => {
     });
     const snapshot = serverHandle.hub.getRoom('restore-room').serializeRoom();
     const restoreSpy = vi.spyOn(serverHandle.hub, 'restoreRoom');
-    const restored = await postJson<RoomHttpResponse>(`${httpBase}/rooms/restore-room/restore`, { snapshot });
+    const restored = await postJson<RoomHttpResponse>(`${httpBase}/rooms/restore-room/restore`, restoreRequest(snapshot));
     expect(restoreSpy).toHaveBeenCalledTimes(1);
     expect(restoreSpy).toHaveBeenCalledWith('restore-room', snapshot);
     expect(restored.roomId).toBe('restore-room');
@@ -221,7 +502,7 @@ describe('match websocket server', () => {
     const beforeVersion = serverHandle.hub.version('fb2-49-http-guard');
     const beforeRoomSnapshot = structuredClone(beforeRoom.serializeRoom());
     const mixedResponse = await fetch(`${httpBase}/rooms/fb2-49-http-guard/restore`, {
-      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ snapshot: mixedPrefix }),
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(restoreRequest(mixedPrefix)),
     });
     expect(mixedResponse.status).toBe(400);
     const mixedBody = await mixedResponse.json() as { code: string; message: string };
@@ -235,7 +516,7 @@ describe('match websocket server', () => {
     delete liveSnapshot.state.abilityRuntime.pendingDecision;
     delete forged.session.opponentCloseToOneReplayManifest;
     const erasedResponse = await fetch(`${httpBase}/rooms/fb2-49-http-guard/restore`, {
-      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ snapshot: forged }),
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(restoreRequest(forged)),
     });
     expect(erasedResponse.status).toBe(400);
     const erasedBody = await erasedResponse.json() as { code: string; message: string };
@@ -247,7 +528,7 @@ describe('match websocket server', () => {
     const malformed: any = structuredClone(beforeRoom.serializeRoom());
     malformed.session.replaySnapshots[0].state.players = [null];
     const malformedResponse = await fetch(`${httpBase}/rooms/fb2-49-http-guard/restore`, {
-      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ snapshot: malformed }),
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(restoreRequest(malformed)),
     });
     expect(malformedResponse.status).toBe(400);
     const malformedBody = await malformedResponse.json() as { code: string; message: string };
@@ -258,7 +539,7 @@ describe('match websocket server', () => {
     const malformedTopLevel: any = structuredClone(beforeRoom.serializeRoom());
     malformedTopLevel.session.state.players = [null];
     const malformedTopLevelResponse = await fetch(`${httpBase}/rooms/fb2-49-http-guard/restore`, {
-      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ snapshot: malformedTopLevel }),
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(restoreRequest(malformedTopLevel)),
     });
     expect(malformedTopLevelResponse.status).toBe(400);
     const malformedTopLevelBody = await malformedTopLevelResponse.json() as { code: string; message: string };
@@ -291,7 +572,7 @@ describe('match websocket server', () => {
     }
 
     const response = await fetch(`${httpBase}/rooms/pack-http-guard/restore`, {
-      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ snapshot: malformed }),
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(restoreRequest(malformed)),
     });
     expect(response.status).toBe(400);
     const body = await response.json() as { code: string; message: string };
@@ -349,6 +630,13 @@ describe('match websocket server', () => {
     expect(hostPrivateCards.length).toBeGreaterThan(0);
     expect(p2PrivateCards.length).toBeGreaterThan(0);
     expect(hostPrivateCards).not.toEqual(p2PrivateCards);
+    for (const projection of [hostProjection.projection, p2Projection.projection]) {
+      expect(JSON.stringify(projection)).not.toContain('reconnectToken');
+      expect(JSON.stringify(projection)).not.toContain(host.reconnectToken);
+      expect(JSON.stringify(projection)).not.toContain(playerTwo.reconnectToken);
+    }
+    expect(hostPrivateCards.some(id => p2Projection.projection.match?.view.cards.some(card => card.instanceId === id))).toBe(false);
+    expect(p2PrivateCards.some(id => hostProjection.projection.match?.view.cards.some(card => card.instanceId === id))).toBe(false);
 
     p2Socket.socket.send(JSON.stringify({ type: 'client:restore_replay', checkpointId: 'checkpoint:1' }));
     const rejection = await p2Socket.next((message) => message.type === 'server:error');

@@ -124,6 +124,8 @@ function producerFor(effectType: keyof typeof resultSchemas, binding: string): R
       return { id: `produce-${binding}`, type: 'remove_advantage_position', target: { expr: 'same_battlefield_opponents' }, bind: binding };
     case 'create_card':
       return { id: `produce-${binding}`, type: 'create_card', cardId: 'fixture.created.skill', to: 'skill', bind: binding };
+    case 'move_card':
+      return { id: `produce-${binding}`, type: 'move_card', target: 'selected_cards', from: 'removed_from_game', to: 'skill', bind: binding };
     case 'move_all_remaining':
       return { id: `produce-${binding}`, type: 'move_all_remaining', owner: 'controller', from: 'hand', to: 'discard', bind: binding };
     case 'move_source_card':
