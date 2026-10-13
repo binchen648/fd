@@ -2,7 +2,7 @@
   "schemaVersion": "fd-p3-promotion-governance-inputs-v1",
   "taskId": "P3-E09-B11-PROMOTION-ATTESTATION-BRIDGE",
   "controlEpoch": "FD-P3-2026-09-23-09",
-  "status": "CURRENT_CLOSURE_RA_BOUND_REAL_GITHUB_REATTESTATION_PUBLISHED",
+  "status": "TEMPORAL_FIXTURE_RA_BOUND_REAL_GITHUB_REATTESTATION_PUBLISHED",
   "governanceAttestor": "github:binchen648",
   "governanceRole": "Codex G",
   "independentRoleAndArtifact": true,
@@ -62,14 +62,20 @@
       "commit": "4ecae8e9097d28d401df5a2cf0eec96be28ebe08",
       "path": "docs/agents/P3-E09-B11-INTEGRATION-CLOSURE-TEST-STABILITY.md",
       "sha256": "AF2FF3ED6E27560812FE16E751F0EED69B7675A916312232B3CD28E2B3934308"
+    },
+    {
+      "type": "exactTemporalFinalizationAuthority",
+      "commit": "6ea26f3bc12fc3bda37b6b2607fd6edda452eee3",
+      "path": "docs/agents/P3-E09-B11-TEMPORAL-FIXTURE-FINALIZATION.md",
+      "sha256": "ED75593972E4378B2B94A470D2D58BB2ABA230AB965ECC1018588C1D475DC3F7"
     }
   ],
   "newIntegrationRa": {
-    "commit": "dbd430be9550947a2bac691ef645db56cf5c408f",
-    "path": "docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json",
-    "sha256": "A0F4B6FF474B169B36E7FF18092AD93E7F29A573C7E2A0C85BF299011AB0E5A9",
-    "remoteRef": "refs/heads/codex/ra-e09-b11-b5e6844-review",
-    "candidateSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+    "commit": "b3e3d5c1091a9d66654965dbdf01e32624a7db11",
+    "path": "docs/reviews/phase3/P3-E09-B11-1ce0b40-temporal-finalization-reviewer-a.json",
+    "sha256": "FD266AC02BB8DC389AF97E6F8CCA8038BC089534A14398DA977158DE2559118D",
+    "remoteRef": "refs/heads/codex/ra-e09-b11-1ce0b40-review",
+    "candidateSha": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b",
     "conclusion": "REVIEW_ACCEPTED",
     "verdict": "PASS",
     "acceptedScope": "EXACT_INTEGRATION_CLOSURE_REFERENCE_CONTRACT_AND_FINAL_ASSEMBLY_EVIDENCE_ONLY",
@@ -77,11 +83,11 @@
   },
   "integrationPacket": {
     "path": "artifacts/phase3-e09-b11-integration-evidence-binding.json",
-    "sha256": "03F7F5EAD4127117193CA9A5AEC0D99F0E0FAA6071B696511BCBF47AAA7A71F1"
+    "sha256": "E8FD40E8B0F74701755CDAB3135D58E0DC3A7C08AAC7C4DA9652BB622B38103E"
   },
   "integrationReport": {
     "path": "docs/reports/2026-10-12-p3-e09-b11-integration-evidence-binding.md",
-    "sha256": "B3C970A79FBABEDD2D2086BC4A13659753099D9BAC2BC41DF4641B72380C3427"
+    "sha256": "657A253A32F1E937A229B16C5FCD339F650D10BD163EC0BE5C2EE4639DED5C6F"
   },
   "preservedMainControlObjects": [
     {
@@ -155,15 +161,15 @@
   ],
   "oldRaArtifactUnchanged": true,
   "originalReviewArtifactsRewritten": false,
-  "sourceReviewDirectParent": "dbd430be parent equals exact candidate b5e68444; new G bridge descends from dbd430be",
+  "sourceReviewDirectParent": "b3e3d5c parent equals exact candidate 1ce0b406; new G bridge descends from b3e3d5c",
   "githubAttestation": {
     "responseProjection": {
       "author": "binchen648",
-      "body": "Codex G / actual governance attestor: github:binchen648\nTask ID: P3-E09-I-B11-FINAL-PROMOTION\nControl Epoch: FD-P3-2026-09-23-09\nExact reviewed candidate SHA: b5e68444f55ea9fc1a86a9eea0ea0bedce3de229\nConclusion: REVIEW_ACCEPTED\nScope: policy bridge for EXACT_INTEGRATION_CLOSURE_REFERENCE_CONTRACT_AND_FINAL_ASSEMBLY_EVIDENCE_ONLY, no new runtime verdict or overall acceptance.\n\nCurrent independent RA review commit: dbd430be9550947a2bac691ef645db56cf5c408f\nArtifact: docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json\nSHA-256: A0F4B6FF474B169B36E7FF18092AD93E7F29A573C7E2A0C85BF299011AB0E5A9\nRA verdict PASS / REVIEW_ACCEPTED. RA independently executed 88/88 within this tooling/evidence scope; G verifies its immutable evidence, not claiming to have executed RA tests.\nPacket artifacts/phase3-e09-b11-integration-evidence-binding.json SHA-256 03F7F5EAD4127117193CA9A5AEC0D99F0E0FAA6071B696511BCBF47AAA7A71F1\nSeven exact authorized paths and nine unchanged runtime/config objects verified. Historical failed cfa6a925 packet, failed receipts, old RA artifacts and old eaa7435b bridge remain pinned historical evidence.\nOriginal integration RA d12271770d84b615109377ad970b915df246cf19 and old final RA 28875202695d43e580ddd637f1721e3a1dddbc8a are not acceptance of this candidate.\nRuntime RB 4d5b76be9d5459cc0c40e50fae8513bc59cd5d21 remains scoped transport security and B11/Golden Eater/socket review.\nEffective package authority 76133b6dbfc09318143df37b24b0e2e4a2de3a17; room-ID authority 19c3c365443fbbfb3008aaf66d3f72b5d4079c23; closure authority 27dab1ad5b64127dffd7c4108aa9c1c6d4b076dc; stability authority bd0dabe80c40cdc3bae024303b68851d11f980b2 and supplement 4ecae8e9097d28d401df5a2cf0eec96be28ebe08.\nBound main 1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce, six preserved control files unchanged.\nThis is a real statement by G, not an APPROVED GitHub Review or an invented identity for technical RA. Old attestation applies only to its old candidate.\nOverall readiness remains BLOCKED. I must verify actual post-RA/post-G synchronization and final assembly HEAD with evidence preflight, ancestry/policy and actual Node 20 required checks before promotion consideration and human merge.\nNo runtime write, merge authority, Gate C or credit granted. Credit/migration/denominator delta 0; ledger 111/944; 93 missing-image Release blocker and no long-term stability claim retained.",
-      "createdAt": "2026-10-13T02:18:29Z",
-      "id": 6136768549,
-      "updatedAt": "2026-10-13T02:18:29Z",
-      "url": "https://github.com/binchen648/fd/pull/558#issuecomment-6136768549"
+      "body": "Codex G / actual governance attestor: github:binchen648\nTask ID: P3-E09-I-B11-FINAL-PROMOTION\nControl Epoch: FD-P3-2026-09-23-09\nExact reviewed candidate SHA: 1ce0b406ecf1e7389886bd2962e9e28f0d7d444b\nConclusion: REVIEW_ACCEPTED\nScope: EXACT_INTEGRATION_CLOSURE_REFERENCE_CONTRACT_AND_FINAL_ASSEMBLY_EVIDENCE_ONLY; this rebinding covers temporal fixture/tooling/evidence only, not new runtime acceptance.\n\nCurrent RA commit b3e3d5c1091a9d66654965dbdf01e32624a7db11\nArtifact docs/reviews/phase3/P3-E09-B11-1ce0b40-temporal-finalization-reviewer-a.json\nSHA-256 FD266AC02BB8DC389AF97E6F8CCA8038BC089534A14398DA977158DE2559118D\nActual RA PASS / REVIEW_ACCEPTED. RA independently reproduced producer 95/95 and synthetic post-RA/post-G 95/95; those are NOT an execution of the real current I final assembly. G checks immutable RA evidence and does not claim to have run those suites.\nPacket artifacts/phase3-e09-b11-integration-evidence-binding.json, SHA-256 E8FD40E8B0F74701755CDAB3135D58E0DC3A7C08AAC7C4DA9652BB622B38103E.\nTemporal authority 6ea26f3bc12fc3bda37b6b2607fd6edda452eee3, docs/agents/P3-E09-B11-TEMPORAL-FIXTURE-FINALIZATION.md, SHA-256 ED75593972E4378B2B94A470D2D58BB2ABA230AB965ECC1018588C1D475DC3F7.\nSix actual paths within seven authorized paths verified. Nine runtime/config objects and six main-control objects unchanged; main 1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce.\nHistorical 78171bea G/b5e68444 RA and eaa7435b G/a09fe2d RA remain pinned historical evidence only, not acceptance of this changed candidate. Original failed packets and raw failures retained.\nScoped RB 4d5b76be9d5459cc0c40e50fae8513bc59cd5d21 and old final RA 28875202695d43e580ddd637f1721e3a1dddbc8a remain separate source reviews. Effective package/room-ID authorities remain prospectively scoped.\nG is the real new statement author, not an invented RA identity or an APPROVED GitHub Review.\nI must consume distinct candidate -> RA -> G -> actual synchronization -> actual final HEAD. On that REAL HEAD execute focused, default CI, integration evidence preflight and separate ancestry/policy preflight; synthetic results and previous HEAD successes cannot substitute. Actual promotion-head Node 20 checks and human approval remain mandatory.\nOverall readiness BLOCKED. No promotion/merge/Gate C/credit/Release granted. All credit deltas 0; ledger 111/944; 93 missing-image Release blocker retained; no long-term stability certification.",
+      "createdAt": "2026-10-13T04:00:45Z",
+      "id": 6137934872,
+      "updatedAt": "2026-10-13T04:00:45Z",
+      "url": "https://github.com/binchen648/fd/pull/558#issuecomment-6137934872"
     },
     "actualAuthorVerifiedByReadBack": true,
     "exactBodyAndCandidateVerified": true,
@@ -179,8 +185,8 @@
       "schemaVersion": "fd-phase3-review-attestation-v1",
       "taskId": "P3-E09-I-B11-FINAL-PROMOTION",
       "reviewer": "github:binchen648",
-      "reviewThread": "https://github.com/binchen648/fd/pull/558#issuecomment-6136768549",
-      "candidateSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+      "reviewThread": "https://github.com/binchen648/fd/pull/558#issuecomment-6137934872",
+      "candidateSha": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b",
       "conclusion": "REVIEW_ACCEPTED"
     },
     "ownCommitAndHashReportedExternally": true,
@@ -192,18 +198,18 @@
     "sha256": "F4BA772527FB7F1E1739C038D28DC1A80221383F89641D6CE03DCB40B01A634B"
   },
   "finalTopologyRequirements": {
-    "reviewedCandidateSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+    "reviewedCandidateSha": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b",
     "reviewSha": "Use containing G bridge commit reported externally; distinct from base, candidate, synchronization and final head.",
     "synchronizationSha": "I must create actual descendant synchronization commit after consuming immutable bridge; no SHA guessed here.",
     "promotionHead": "Actual later integration HEAD, distinct from synchronization and reviewed candidate.",
-    "ancestry": "Distinct b5e68444 candidate -> dbd430be RA -> new G bridge -> actual I synchronization -> actual final HEAD; I supplies and verifies exact latter identities.",
-    "validation": "I runs existing phase3:ci-gate --verify-git-ancestry against actual promotion manifest and checks exact artifact bytes/hash; no actual final I topology has yet been supplied."
+    "ancestry": "Distinct 1ce0b406 candidate -> b3e3d5c RA -> new G bridge -> actual I synchronization -> actual final HEAD; latter two supplied and validated by I.",
+    "validation": "I must execute focused, default CI, integration evidence preflight and separate ancestry/policy preflight on REAL final HEAD; synthetic proof is not that execution."
   },
   "remoteVerification": {
     "method": "GitHub authenticated API/ref read-back and local immutable Git object hashing",
     "main": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
-    "review": "dbd430be9550947a2bac691ef645db56cf5c408f",
-    "candidate": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229"
+    "review": "b3e3d5c1091a9d66654965dbdf01e32624a7db11",
+    "candidate": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b"
   },
   "boundaries": {
     "runtimeChanged": false,
@@ -225,77 +231,136 @@
   },
   "date": "2026-10-13",
   "historicalBridge": {
-    "commit": "eaa7435b1b60f89c3df870116007bb7bc0a197c0",
+    "commit": "78171beafc4fe3f644d14f4e08cea369c4fb8cc1",
     "references": [
       {
-        "commit": "eaa7435b1b60f89c3df870116007bb7bc0a197c0",
+        "commit": "78171beafc4fe3f644d14f4e08cea369c4fb8cc1",
         "path": "docs/reviews/phase3/P3-E09-B11-promotion-attestation.json",
-        "sha256": "C37074DBE5AA830CFD866A5C4B0695E2850C648DA790C36344015CB18D30EF91"
+        "sha256": "9A5EA7796B0BFA936BFACFB30ED84C3B0E41523AC1058A8DF778E2EA6902D5DB"
       },
       {
-        "commit": "eaa7435b1b60f89c3df870116007bb7bc0a197c0",
+        "commit": "78171beafc4fe3f644d14f4e08cea369c4fb8cc1",
         "path": "docs/agents/manifests/governance/P3-E09-B11-PROMOTION-GOVERNANCE-INPUTS.json",
-        "sha256": "A998942C1D996675592EB9DA37C98908C1FD84657EA78D8481519D0EF48E10B6"
+        "sha256": "A9127818976B947E3932D76C649B02E2505DD2B138742CD04A61AA9E40D3D7D8"
       },
       {
-        "commit": "eaa7435b1b60f89c3df870116007bb7bc0a197c0",
+        "commit": "78171beafc4fe3f644d14f4e08cea369c4fb8cc1",
         "path": "docs/reports/2026-10-12-p3-e09-b11-promotion-attestation.md",
-        "sha256": "F61B8682C749320C50774AC839EF3AD003C01D791681E2D40D47FC159F95065C"
+        "sha256": "8D37D795651DCDA80B49DB0E6F3AD568B3E683EC77BF9A7E0BCB32111B0B5DFE"
       }
     ],
-    "reviewedCandidateSha": "a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da",
+    "reviewedCandidateSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
     "review": {
-      "commit": "d12271770d84b615109377ad970b915df246cf19",
-      "path": "docs/reviews/phase3/P3-E09-B11-a09fe2d-integration-contract-reviewer-a.json",
-      "sha256": "3EC5C7FB57E8A32AD9747EB7F94CC1E5C47C0CCFE2B59DE5578F3864ED3BF230",
-      "remoteRef": "refs/heads/codex/ra-p3-e09-b11-integration-contract-review",
-      "candidateSha": "a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da",
+      "commit": "dbd430be9550947a2bac691ef645db56cf5c408f",
+      "path": "docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json",
+      "sha256": "A0F4B6FF474B169B36E7FF18092AD93E7F29A573C7E2A0C85BF299011AB0E5A9",
+      "remoteRef": "refs/heads/codex/ra-e09-b11-b5e6844-review",
+      "candidateSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
       "conclusion": "REVIEW_ACCEPTED",
       "verdict": "PASS",
-      "acceptedScope": "EXACT_INTEGRATION_BINDING_TOOLING_TEST_CONTRACT_AND_AUTHENTIC_EXECUTION_EVIDENCE_ONLY",
+      "acceptedScope": "EXACT_INTEGRATION_CLOSURE_REFERENCE_CONTRACT_AND_FINAL_ASSEMBLY_EVIDENCE_ONLY",
       "technicalBlockingFindings": []
     },
     "statement": {
       "author": "binchen648",
-      "body": "Codex G / actual Promotion Governance Attestor\nTask ID: P3-E09-I-B11-FINAL-PROMOTION\nControl Epoch: FD-P3-2026-09-23-09\nReviewer/attestor identity: github:binchen648\nExact accepted integration candidate SHA: a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da\nConclusion: REVIEW_ACCEPTED\nScope: policy-compatible governance bridge for exact integration tooling/evidence acceptance; not a new runtime technical verdict, GitHub APPROVED Review, main promotion or overall acceptance.\n\nNew integration Reviewer A: d12271770d84b615109377ad970b915df246cf19\nArtifact: docs/reviews/phase3/P3-E09-B11-a09fe2d-integration-contract-reviewer-a.json\nSHA-256: 3EC5C7FB57E8A32AD9747EB7F94CC1E5C47C0CCFE2B59DE5578F3864ED3BF230\nActual RA verdict: REVIEW_ACCEPTED / PASS, EXACT_INTEGRATION_BINDING_TOOLING_TEST_CONTRACT_AND_AUTHENTIC_EXECUTION_EVIDENCE_ONLY.\nOld final RA: 28875202695d43e580ddd637f1721e3a1dddbc8a; artifact SHA-256 C4A19526A09845214F1C4D2B3B25CC933E75532B8CD7DD8B30C719AB241E7FFE; original JSON unchanged.\nRuntime RB: 4d5b76be9d5459cc0c40e50fae8513bc59cd5d21; artifact SHA-256 6FE0EAD378E31149B3271E137FDB99ACAC161F2894E3FAD21FC0A14986E96DB4; scoped transport security repair and existing B11/Golden Eater/socket composition only.\nEffective package authority: 76133b6dbfc09318143df37b24b0e2e4a2de3a17\nEffective room-ID authority: 19c3c365443fbbfb3008aaf66d3f72b5d4079c23.\nEffective main: 1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce.\nSix main control files and nine runtime/config objects verified against exact accepted sources. Preserved historical missing proof, failed receipts, no serial/quiet-window/stability certification, scoped browser evidence reuse only.\nG is the actual attestor, not an invented identity for old RA. Distinct reviewer roles and immutable source artifacts retained.\nCredit/migration/denominator delta 0; ledger 111/944; Gate C NOT_VERIFIED; 93 missing images remain Release blocking.\nI may consume this bridge under existing Planner assembly authority; eventual exact promotion HEAD still requires current Node 20 build/test/policy and human approval. No merge or Release granted by this comment.",
-      "createdAt": "2026-10-12T10:21:50Z",
-      "id": 6122320706,
-      "updatedAt": "2026-10-12T10:21:50Z",
-      "url": "https://github.com/binchen648/fd/pull/558#issuecomment-6122320706"
+      "body": "Codex G / actual governance attestor: github:binchen648\nTask ID: P3-E09-I-B11-FINAL-PROMOTION\nControl Epoch: FD-P3-2026-09-23-09\nExact reviewed candidate SHA: b5e68444f55ea9fc1a86a9eea0ea0bedce3de229\nConclusion: REVIEW_ACCEPTED\nScope: policy bridge for EXACT_INTEGRATION_CLOSURE_REFERENCE_CONTRACT_AND_FINAL_ASSEMBLY_EVIDENCE_ONLY, no new runtime verdict or overall acceptance.\n\nCurrent independent RA review commit: dbd430be9550947a2bac691ef645db56cf5c408f\nArtifact: docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json\nSHA-256: A0F4B6FF474B169B36E7FF18092AD93E7F29A573C7E2A0C85BF299011AB0E5A9\nRA verdict PASS / REVIEW_ACCEPTED. RA independently executed 88/88 within this tooling/evidence scope; G verifies its immutable evidence, not claiming to have executed RA tests.\nPacket artifacts/phase3-e09-b11-integration-evidence-binding.json SHA-256 03F7F5EAD4127117193CA9A5AEC0D99F0E0FAA6071B696511BCBF47AAA7A71F1\nSeven exact authorized paths and nine unchanged runtime/config objects verified. Historical failed cfa6a925 packet, failed receipts, old RA artifacts and old eaa7435b bridge remain pinned historical evidence.\nOriginal integration RA d12271770d84b615109377ad970b915df246cf19 and old final RA 28875202695d43e580ddd637f1721e3a1dddbc8a are not acceptance of this candidate.\nRuntime RB 4d5b76be9d5459cc0c40e50fae8513bc59cd5d21 remains scoped transport security and B11/Golden Eater/socket review.\nEffective package authority 76133b6dbfc09318143df37b24b0e2e4a2de3a17; room-ID authority 19c3c365443fbbfb3008aaf66d3f72b5d4079c23; closure authority 27dab1ad5b64127dffd7c4108aa9c1c6d4b076dc; stability authority bd0dabe80c40cdc3bae024303b68851d11f980b2 and supplement 4ecae8e9097d28d401df5a2cf0eec96be28ebe08.\nBound main 1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce, six preserved control files unchanged.\nThis is a real statement by G, not an APPROVED GitHub Review or an invented identity for technical RA. Old attestation applies only to its old candidate.\nOverall readiness remains BLOCKED. I must verify actual post-RA/post-G synchronization and final assembly HEAD with evidence preflight, ancestry/policy and actual Node 20 required checks before promotion consideration and human merge.\nNo runtime write, merge authority, Gate C or credit granted. Credit/migration/denominator delta 0; ledger 111/944; 93 missing-image Release blocker and no long-term stability claim retained.",
+      "createdAt": "2026-10-13T02:18:29Z",
+      "id": 6136768549,
+      "updatedAt": "2026-10-13T02:18:29Z",
+      "url": "https://github.com/binchen648/fd/pull/558#issuecomment-6136768549"
     },
-    "acceptsCurrentCandidate": false
+    "acceptsCurrentCandidate": false,
+    "earlierBridgeHistory": {
+      "commit": "eaa7435b1b60f89c3df870116007bb7bc0a197c0",
+      "references": [
+        {
+          "commit": "eaa7435b1b60f89c3df870116007bb7bc0a197c0",
+          "path": "docs/reviews/phase3/P3-E09-B11-promotion-attestation.json",
+          "sha256": "C37074DBE5AA830CFD866A5C4B0695E2850C648DA790C36344015CB18D30EF91"
+        },
+        {
+          "commit": "eaa7435b1b60f89c3df870116007bb7bc0a197c0",
+          "path": "docs/agents/manifests/governance/P3-E09-B11-PROMOTION-GOVERNANCE-INPUTS.json",
+          "sha256": "A998942C1D996675592EB9DA37C98908C1FD84657EA78D8481519D0EF48E10B6"
+        },
+        {
+          "commit": "eaa7435b1b60f89c3df870116007bb7bc0a197c0",
+          "path": "docs/reports/2026-10-12-p3-e09-b11-promotion-attestation.md",
+          "sha256": "F61B8682C749320C50774AC839EF3AD003C01D791681E2D40D47FC159F95065C"
+        }
+      ],
+      "reviewedCandidateSha": "a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da",
+      "review": {
+        "commit": "d12271770d84b615109377ad970b915df246cf19",
+        "path": "docs/reviews/phase3/P3-E09-B11-a09fe2d-integration-contract-reviewer-a.json",
+        "sha256": "3EC5C7FB57E8A32AD9747EB7F94CC1E5C47C0CCFE2B59DE5578F3864ED3BF230",
+        "remoteRef": "refs/heads/codex/ra-p3-e09-b11-integration-contract-review",
+        "candidateSha": "a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da",
+        "conclusion": "REVIEW_ACCEPTED",
+        "verdict": "PASS",
+        "acceptedScope": "EXACT_INTEGRATION_BINDING_TOOLING_TEST_CONTRACT_AND_AUTHENTIC_EXECUTION_EVIDENCE_ONLY",
+        "technicalBlockingFindings": []
+      },
+      "statement": {
+        "author": "binchen648",
+        "body": "Codex G / actual Promotion Governance Attestor\nTask ID: P3-E09-I-B11-FINAL-PROMOTION\nControl Epoch: FD-P3-2026-09-23-09\nReviewer/attestor identity: github:binchen648\nExact accepted integration candidate SHA: a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da\nConclusion: REVIEW_ACCEPTED\nScope: policy-compatible governance bridge for exact integration tooling/evidence acceptance; not a new runtime technical verdict, GitHub APPROVED Review, main promotion or overall acceptance.\n\nNew integration Reviewer A: d12271770d84b615109377ad970b915df246cf19\nArtifact: docs/reviews/phase3/P3-E09-B11-a09fe2d-integration-contract-reviewer-a.json\nSHA-256: 3EC5C7FB57E8A32AD9747EB7F94CC1E5C47C0CCFE2B59DE5578F3864ED3BF230\nActual RA verdict: REVIEW_ACCEPTED / PASS, EXACT_INTEGRATION_BINDING_TOOLING_TEST_CONTRACT_AND_AUTHENTIC_EXECUTION_EVIDENCE_ONLY.\nOld final RA: 28875202695d43e580ddd637f1721e3a1dddbc8a; artifact SHA-256 C4A19526A09845214F1C4D2B3B25CC933E75532B8CD7DD8B30C719AB241E7FFE; original JSON unchanged.\nRuntime RB: 4d5b76be9d5459cc0c40e50fae8513bc59cd5d21; artifact SHA-256 6FE0EAD378E31149B3271E137FDB99ACAC161F2894E3FAD21FC0A14986E96DB4; scoped transport security repair and existing B11/Golden Eater/socket composition only.\nEffective package authority: 76133b6dbfc09318143df37b24b0e2e4a2de3a17\nEffective room-ID authority: 19c3c365443fbbfb3008aaf66d3f72b5d4079c23.\nEffective main: 1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce.\nSix main control files and nine runtime/config objects verified against exact accepted sources. Preserved historical missing proof, failed receipts, no serial/quiet-window/stability certification, scoped browser evidence reuse only.\nG is the actual attestor, not an invented identity for old RA. Distinct reviewer roles and immutable source artifacts retained.\nCredit/migration/denominator delta 0; ledger 111/944; Gate C NOT_VERIFIED; 93 missing images remain Release blocking.\nI may consume this bridge under existing Planner assembly authority; eventual exact promotion HEAD still requires current Node 20 build/test/policy and human approval. No merge or Release granted by this comment.",
+        "createdAt": "2026-10-12T10:21:50Z",
+        "id": 6122320706,
+        "updatedAt": "2026-10-12T10:21:50Z",
+        "url": "https://github.com/binchen648/fd/pull/558#issuecomment-6122320706"
+      },
+      "acceptsCurrentCandidate": false
+    }
   },
   "currentReviewVerification": {
-    "sevenPathDeltaBase": "cfa6a92551a939709b85a787d9044e19ec00f0ef",
-    "sevenAuthorizedPaths": [
-      "scripts/phase3-preflight.ts",
-      "scripts/tests/phase3-e09-b11-final-binding.test.ts",
-      "scripts/tests/phase3-readiness-preflight.test.ts",
-      "scripts/tests/phase3-contract-parity.test.ts",
-      "scripts/fixtures/phase3-e09-b11-integration-binding.json",
-      "artifacts/phase3-e09-b11-integration-evidence-binding.json",
-      "docs/reports/2026-10-12-p3-e09-b11-integration-evidence-binding.md"
-    ],
+    "temporalAuthority": {
+      "commit": "6ea26f3bc12fc3bda37b6b2607fd6edda452eee3",
+      "path": "docs/agents/P3-E09-B11-TEMPORAL-FIXTURE-FINALIZATION.md",
+      "sha256": "ED75593972E4378B2B94A470D2D58BB2ABA230AB965ECC1018588C1D475DC3F7",
+      "inspectedSourceSha": "487ab81a8e3fabf75eea5a73cd3582b37cf65520",
+      "actualChangedPaths": [
+        "scripts/phase3-preflight.ts",
+        "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+        "scripts/tests/phase3-readiness-preflight.test.ts",
+        "scripts/fixtures/phase3-e09-b11-integration-binding.json",
+        "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+        "docs/reports/2026-10-12-p3-e09-b11-integration-evidence-binding.md"
+      ],
+      "sixActualPathsWithinSevenAuthorizedPaths": true,
+      "timeoutWorkflowPackageRuntimeKpiChanged": false
+    },
     "sourceHashAndPacketReportVerified": true,
     "originalRAArtifactUnmodified": true,
-    "reviewerFocused": {
-      "testedSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
-      "exitCode": 0,
-      "filesPassed": 3,
-      "testsPassed": 88,
-      "testsFailed": 0,
-      "testsSkipped": 0,
-      "durationSeconds": 133.64,
-      "unhandledErrors": 0,
-      "evidenceOrigin": "REVIEWER_EXECUTION_TOOL_TRANSCRIPT; NO_COMMITTED_RAW_RECEIPT_CLAIM"
+    "reviewerIndependentExecutions": {
+      "command": "npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts scripts/tests/phase3-contract-parity.test.ts --maxWorkers=2",
+      "producerCarrier": {
+        "testedSha": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b",
+        "filesPassed": 3,
+        "testsPassed": 95,
+        "testsFailed": 0,
+        "testsSkipped": 0,
+        "unhandledErrors": 0,
+        "exitCode": 0,
+        "durationSeconds": 149.95
+      },
+      "syntheticPostRaPostG": {
+        "testedSha": "994943f9bb9bfd0da764971b133b6147faedcadd",
+        "filesPassed": 3,
+        "testsPassed": 95,
+        "testsFailed": 0,
+        "testsSkipped": 0,
+        "unhandledErrors": 0,
+        "exitCode": 0,
+        "durationSeconds": 151.56
+      },
+      "evidenceOrigin": "REVIEWER_TOOL_EXECUTION_TRANSCRIPT; NO_NEW_COMMITTED_RAW_RECEIPT_CLAIM",
+      "fullCiRerunByReviewer": false,
+      "producerFullCiRawEvidenceVerified": "194 files / 1607 tests; exit 0; tested implementation f1b3588b",
+      "syntheticFullCiRawEvidenceVerified": "194 files / 1607 tests; exit 0; tested synthetic final 994943f9",
+      "quietWindowOrLongTermStabilityCertified": false
     },
-    "gSuiteRerun": false,
-    "historicalFailure": {
-      "reviewedSha": "cfa6a92551a939709b85a787d9044e19ec00f0ef",
-      "packetSha256": "FAED5431BAF496CCC9C8819828B16570129581D73D984E69BB5BCA0929A3CAB4",
-      "embeddedPacketEqualsGitSource": true,
-      "previousReviewerResult": "43 passed / 3 failed / 20 skipped; hook and RPC timeouts",
-      "resolution": "CURRENT_CARRIER_SCOPED_TEST_STABILITY_VERIFIED; HISTORICAL_FAILURE_REMAINS_VALID_FOR_ITS_OLD_SHA"
-    }
+    "syntheticIsNotRealFinalAssembly": true,
+    "gRuntimeSuiteRerun": false,
+    "historicalFailurePreservation": "Historical bridge/reviews and exact previously failed source packets remain pinned; no failures re-labelled as current PASS."
   }
 }

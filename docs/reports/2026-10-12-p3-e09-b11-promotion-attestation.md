@@ -1,57 +1,61 @@
-# B11 Current Closure GitHub Bridge Attestation
+# B11 Temporal Fixture GitHub Bridge Rebinding
 
-Rebinding date: 2026-10-13, Asia/Shanghai.
+Date: 2026-10-13, Asia/Shanghai.
 Task: P3-E09-B11-PROMOTION-ATTESTATION-BRIDGE.
-Actual G identity: github:binchen648. Epoch 09 remains current.
+Actual G attestor: github:binchen648. Active Epoch 09.
 
-## Exact Current Acceptance
+## Current Exact Review
 
-Candidate: b5e68444f55ea9fc1a86a9eea0ea0bedce3de229.
-RA: dbd430be9550947a2bac691ef645db56cf5c408f.
-Original review path: `docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json`.
-Original review SHA-256: A0F4B6FF474B169B36E7FF18092AD93E7F29A573C7E2A0C85BF299011AB0E5A9.
+Candidate: 1ce0b406ecf1e7389886bd2962e9e28f0d7d444b.
+RA commit: b3e3d5c1091a9d66654965dbdf01e32624a7db11.
+Artifact: `docs/reviews/phase3/P3-E09-B11-1ce0b40-temporal-finalization-reviewer-a.json`.
+SHA-256: FD266AC02BB8DC389AF97E6F8CCA8038BC089534A14398DA977158DE2559118D.
 Actual REVIEW_ACCEPTED / PASS scope:
 EXACT_INTEGRATION_CLOSURE_REFERENCE_CONTRACT_AND_FINAL_ASSEMBLY_EVIDENCE_ONLY.
-Direct RA parent equals exact candidate; original review artifact unchanged.
-Seven literal authorized paths, packet/report hashes, nine runtime/config
-objects and six preserved main-control files mechanically verified.
-RA independently ran 88/88; G verifies immutable proof, not a new G suite run.
+This is temporal fixture/tooling/evidence acceptance only.
+RA directly parents the exact carrier; original reviewer JSON is unchanged.
+Six actual delta paths match temporal authority, within seven allowed paths.
+Packet/report/authority hashes, nine runtime/config objects and six main
+control objects were independently checked by G.
+Original runtime RB and final RA scopes are unchanged.
 
-Old eaa7435b bridge and a09fe2d RA remain historical sources, not acceptance
-of this candidate. Their hashes and original statement are separately pinned
-in current governance inputs. cfa6a925 failed packet and original failures
-remain historical facts. Missing ownership/quiet evidence is not reconstructed.
-No runtime semantic acceptance is broadened.
+RA independently reproduced producer 95/95 and synthetic post-review 95/95.
+G did not execute those suites or certify a real I final assembly.
+Synthetic head 994943f9 is explicitly test-only. It cannot supply real
+promotion/GitHub checks, current real RA/G provenance or final I receipts.
+Old 78171bea and eaa7435b bridges and old RA artifacts remain source-pinned
+historical evidence, not acceptance inherited by the new candidate.
+Historical failures/missing evidence and no stability claim remain intact.
 
 ## Fresh Actual GitHub Statement
 
-https://github.com/binchen648/fd/pull/558#issuecomment-6136768549
-Numeric ID: 6136768549. Actual author: binchen648.
-Created: 2026-10-13T02:18:29Z. Returned URL/id/author/full body were read back.
-This is a G statement, not an APPROVED Review or invented RA identity.
-External comment mutability is disclosed; immutable Git bytes record the
-verified observation. Exactly the three already authorized G paths change.
+https://github.com/binchen648/fd/pull/558#issuecomment-6137934872
+Comment ID 6137934872, actual author binchen648.
+Created 2026-10-13T04:00:45Z; actual URL/id/author/full body read back and matched.
+Not an APPROVED Review or invented identity for technical RA.
+Immutable Git inputs preserve observed statement bytes and prior history;
+external comment mutability is disclosed.
 
-Policy JSON schema: fd-phase3-review-attestation-v1.
-Promotion task: P3-E09-I-B11-FINAL-PROMOTION.
-Reviewer: github:binchen648; actual reviewThread above.
-Candidate is exact b5e68444 SHA above; conclusion REVIEW_ACCEPTED.
-Governance inputs bind exact current RA commit/path/hash/candidate/scope and
-packet, plus prior RA/RB, package/room-ID and closure/stability authorities.
-Own new G commit and three file hashes are reported externally, not embedded
-self-referentially.
+Policy schema fd-phase3-review-attestation-v1 is unchanged.
+Promotion task P3-E09-I-B11-FINAL-PROMOTION, reviewer github:binchen648,
+candidateSha exact 1ce0b406 SHA above, conclusion REVIEW_ACCEPTED.
+Governance inputs bind new RA commit/path/hash/scope/packet and fresh thread;
+three same-commit G refs and own bridge digest are reported externally.
+Only the three previously authorized G files change. No policy, tooling,
+runtime, original review or producer packet writes are performed.
 
-## I Actual-Head Verification
+## I Mandatory Real Assembly Stage
 
 Preserve distinct candidate -> RA -> G -> synchronization -> final HEAD.
-I must create actual later sync/head; neither is guessed or accepted by G.
-Pass one current typed RA reference plus exactly three same-commit current G
-references to the integration evidence closure validator. Historical RA/G
-references continue to resolve their own immutable source bytes, not new ones.
-Run evidence preflight and separate ancestry/policy on actual post-RA/post-G
-HEAD. Required Node 20 checks must be for actual promotion HEAD.
-No validator edit, one-file exception, runtime write or A repeat sync assigned.
+I supplies actual later identities; G does not guess them.
+Use one current typed RA ref plus exactly three current G refs from the same
+commit. Historical refs still resolve their original commits, not new bytes.
+On the actual REAL post-RA/post-G HEAD, I executes focused, default CI,
+integration evidence preflight, ancestry/policy preflight and diff-check.
+Preserve exact source objects and main; do not inherit synthetic execution.
+Actual promotion-head Node 20 required checks and human approval remain.
+No new A/RA sync cycle merely to copy G fields into immutable producer data.
 
-Overall readiness BLOCKED. No promotion/merge/Gate C/credit or Release granted.
-Ledger 111/944; coverage/migration/denominator delta 0.
-93 missing-image Release blocker remains. No long-term stability certification.
+Overall readiness BLOCKED. No promotion/merge/Gate C/credit/Release granted.
+Ledger 111/944; all credit deltas 0; 93 missing-image Release blocker retained.
+Long-term stability remains unverified.

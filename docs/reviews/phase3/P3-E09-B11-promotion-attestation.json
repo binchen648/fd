@@ -2,7 +2,7 @@
   "schemaVersion": "fd-phase3-review-attestation-v1",
   "taskId": "P3-E09-I-B11-FINAL-PROMOTION",
   "reviewer": "github:binchen648",
-  "reviewThread": "https://github.com/binchen648/fd/pull/558#issuecomment-6136768549",
-  "candidateSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+  "reviewThread": "https://github.com/binchen648/fd/pull/558#issuecomment-6137934872",
+  "candidateSha": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b",
   "conclusion": "REVIEW_ACCEPTED"
 }
