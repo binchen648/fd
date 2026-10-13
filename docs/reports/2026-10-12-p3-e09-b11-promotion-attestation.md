@@ -1,64 +1,57 @@
-# B11 Actual GitHub Bridge Attestation
+# B11 Current Closure GitHub Bridge Attestation
 
-Date: 2026-10-12. G task: P3-E09-B11-PROMOTION-ATTESTATION-BRIDGE.
-Actual attestor: github:binchen648; separate G role/bridge artifact,
-not a replacement technical RA identity or APPROVED GitHub Review.
-Status: REAL_GITHUB_BRIDGE_PUBLISHED_EXACT_INTEGRATION_RA_BOUND.
+Rebinding date: 2026-10-13, Asia/Shanghai.
+Task: P3-E09-B11-PROMOTION-ATTESTATION-BRIDGE.
+Actual G identity: github:binchen648. Epoch 09 remains current.
 
-## Exact Accepted Input
+## Exact Current Acceptance
 
-Reviewed candidate: a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da.
-Integration RA commit: d12271770d84b615109377ad970b915df246cf19.
-Original RA artifact: `docs/reviews/phase3/P3-E09-B11-a09fe2d-integration-contract-reviewer-a.json`.
-Original SHA-256: 3EC5C7FB57E8A32AD9747EB7F94CC1E5C47C0CCFE2B59DE5578F3864ED3BF230.
-Actual verdict REVIEW_ACCEPTED / PASS is limited to
-EXACT_INTEGRATION_BINDING_TOOLING_TEST_CONTRACT_AND_AUTHENTIC_EXECUTION_EVIDENCE_ONLY.
-Direct review parent equals candidate; original RA JSON stays byte-identical.
-Old runtime RB and final RA, effective package/room-ID decisions, exact main,
-six preserved control files and nine runtime/config objects are separately
-bound in governance inputs. No semantic scope or credit is broadened.
+Candidate: b5e68444f55ea9fc1a86a9eea0ea0bedce3de229.
+RA: dbd430be9550947a2bac691ef645db56cf5c408f.
+Original review path: `docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json`.
+Original review SHA-256: A0F4B6FF474B169B36E7FF18092AD93E7F29A573C7E2A0C85BF299011AB0E5A9.
+Actual REVIEW_ACCEPTED / PASS scope:
+EXACT_INTEGRATION_CLOSURE_REFERENCE_CONTRACT_AND_FINAL_ASSEMBLY_EVIDENCE_ONLY.
+Direct RA parent equals exact candidate; original review artifact unchanged.
+Seven literal authorized paths, packet/report hashes, nine runtime/config
+objects and six preserved main-control files mechanically verified.
+RA independently ran 88/88; G verifies immutable proof, not a new G suite run.
 
-## Real GitHub Publication
+Old eaa7435b bridge and a09fe2d RA remain historical sources, not acceptance
+of this candidate. Their hashes and original statement are separately pinned
+in current governance inputs. cfa6a925 failed packet and original failures
+remain historical facts. Missing ownership/quiet evidence is not reconstructed.
+No runtime semantic acceptance is broadened.
 
-Actual comment: https://github.com/binchen648/fd/pull/558#issuecomment-6122320706.
-GitHub numeric ID: 6122320706. Actual author: binchen648.
-Created: 2026-10-12T10:21:50Z.
-Published body and returned author/id/URL were read back and matched exactly.
-Observed response projection including full body is preserved in Git inputs.
-External comments can be edited; immutable bridge/provenance bytes record
-this verified observation, not a claim of uneditable GitHub comment history.
-No future placeholder URL, fictitious object ID or old RA identity is used.
+## Fresh Actual GitHub Statement
 
-Git fetch/ls-remote encountered connection reset/timeout during this run;
-REST git/ref checks independently confirmed current main, RA and candidate
-ref SHAs. This is disclosed separately from successful local object hashing.
+https://github.com/binchen648/fd/pull/558#issuecomment-6136768549
+Numeric ID: 6136768549. Actual author: binchen648.
+Created: 2026-10-13T02:18:29Z. Returned URL/id/author/full body were read back.
+This is a G statement, not an APPROVED Review or invented RA identity.
+External comment mutability is disclosed; immutable Git bytes record the
+verified observation. Exactly the three already authorized G paths change.
 
-## Policy Bridge And I Consumption
+Policy JSON schema: fd-phase3-review-attestation-v1.
+Promotion task: P3-E09-I-B11-FINAL-PROMOTION.
+Reviewer: github:binchen648; actual reviewThread above.
+Candidate is exact b5e68444 SHA above; conclusion REVIEW_ACCEPTED.
+Governance inputs bind exact current RA commit/path/hash/candidate/scope and
+packet, plus prior RA/RB, package/room-ID and closure/stability authorities.
+Own new G commit and three file hashes are reported externally, not embedded
+self-referentially.
 
-New independent JSON:
-`docs/reviews/phase3/P3-E09-B11-promotion-attestation.json`.
-Schema fd-phase3-review-attestation-v1.
-Task ID P3-E09-I-B11-FINAL-PROMOTION; reviewer github:binchen648;
-reviewThread is the actual comment above; candidateSha is exact accepted
-integration candidate; conclusion REVIEW_ACCEPTED.
-Policy JSON fields match the future manifest directly; containing commit and
-lowercase artifact SHA-256 must be reported externally in I review fields.
-Own commit/hash are not embedded self-referentially.
+## I Actual-Head Verification
 
-I consumes immutable bridge via normal lineage integration, preserving main
-and accepted sources. review.sha must be the G bridge commit, distinct from
-base/candidate/synchronization/head. Reviewed candidate must be ancestor of
-actual synchronization and synchronization ancestor of later promotion HEAD.
-I must create actual later sync/head; G does not guess them or claim a test
-manifest represents an existing promotion PR. Validate current policy with
---verify-git-ancestry on actual assembly and freshly bind manifest HEAD.
-Three authorized G output paths are the only new changes in this bridge
-commit; source/runtime/tooling and all original RA/RB artifacts are unchanged.
-No separate stacked role PR or policy modification is created.
+Preserve distinct candidate -> RA -> G -> synchronization -> final HEAD.
+I must create actual later sync/head; neither is guessed or accepted by G.
+Pass one current typed RA reference plus exactly three same-commit current G
+references to the integration evidence closure validator. Historical RA/G
+references continue to resolve their own immutable source bytes, not new ones.
+Run evidence preflight and separate ancestry/policy on actual post-RA/post-G
+HEAD. Required Node 20 checks must be for actual promotion HEAD.
+No validator edit, one-file exception, runtime write or A repeat sync assigned.
 
-Overall remains BLOCKED pending actual promotion checks/human approval and
-separate Release prerequisites. Existing Planner assembly authority is not
-merge authority. No new G runtime verdict, Gate C or overall acceptance.
-Credit/migration/denominator delta 0; ledger 111/944; 93 missing-image blocker
-retained. Historical missing proof/failed receipts/limited browser reuse and
-no quiet-window/stability claim remain. No A per-field re-sync or rerun.
+Overall readiness BLOCKED. No promotion/merge/Gate C/credit or Release granted.
+Ledger 111/944; coverage/migration/denominator delta 0.
+93 missing-image Release blocker remains. No long-term stability certification.
