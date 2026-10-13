@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "fd-planner-writer-reservation-v1",
+  "reservationId": "P3-EFP-K03-B-STATIC-REWARD-GUARD",
+  "issuedDate": "2026-10-13",
+  "issuerRole": "Planner / Process Controller",
+  "ownerRole": "Codex B",
+  "ownerTask": "P3-EFP-K03-B",
+  "status": "GRANTED_PENDING_OWNER_BINDING",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "requiredBase": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+  "resourceDomains": [
+    "ability-loader/static-reward-predicate"
+  ],
+  "sourceAndTestPaths": [
+    "packages/rules/src/ability/loader.ts",
+    "packages/rules/tests/fb2-34-combat-reward-distribution.test.ts"
+  ],
+  "evidencePaths": [
+    "artifacts/phase3-efp-k03-static-reward-guard.json",
+    "docs/reports/2026-10-13-p3-efp-k03-static-reward-guard.md"
+  ],
+  "scope": "Only four optional object-container guards inside isAcceptedStaticCombatRewardDistributionAbility and corresponding real reward-path negatives; no global helper or reward formula edits",
+  "preGrantObservation": {
+    "registeredWorktrees": 243,
+    "inaccessibleWorktrees": 6,
+    "dirtyTargetPaths": 0,
+    "method": "Scoped git status on two exact paths in accessible registered worktrees",
+    "limitations": "Snapshot not cross-chat acknowledgement or inaccessible/remote-writer proof"
+  },
+  "ownerBinding": {
+    "branch": null,
+    "absoluteWorktree": null,
+    "acknowledgement": "PENDING"
+  },
+  "conditions": "Designated B acknowledges fresh base/branch/worktree before writing. If another active loader writer/reservation exists, preserve/report it; do not override. Main drift requires applicability check, not silent rebase.",
+  "release": "Explicit Planner release after frozen handoff/review; no automatic successor grant",
+  "testWindow": "Focused lightweight regression only; full CI requires noncompeting test window before candidate freeze/promotion.",
+  "creditDelta": 0,
+  "promotionAuthorized": false
+}
