@@ -38,9 +38,9 @@ CONFIRMED: raw-loader negatives and valid-passive positives did not cover malfor
 - Required invariant: Absent optional fields and malformed present fields remain distinguishable at privileged runtime gateways.
 - Forbidden pattern: Converting malformed supplied objects/arrays to an empty default before semantic validation.
 - Required negative test: Each of four malformed compiled containers must disable/reject the privileged gateway while minimal valid absent-field passive remains supported.
-- Test paths: `packages/rules/tests/fb2-34-combat-reward-distribution.test.ts`, `docs/reviews/probes/review-474-independent.mjs`
+- Exact historical test: `packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts`; reviewer probe: `docs/reviews/probes/review-474-independent.mjs` at source review commit b22691ab, not the runtime candidate.
 - Historical test status: MISSING; scope is 4dd8eca5746d63d72c7906716cb7118e2569872a.
-- Relevant command: `npx vitest run packages/rules/tests/fb2-34-combat-reward-distribution.test.ts --maxWorkers=2`
+- Historical applicable command (NOT RUN by K01): `npx vitest run packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts --maxWorkers=2`
 - Current-main coverage: NOT_VERIFIED. At reviewed SHA the reviewer probe reproduced acceptance; an enforcing regression rejecting all four shapes is not proved. Inspect latest authorized line before scheduling repair; the independent probe is evidence, not a current-main gate.
 
 ## Applicability
@@ -49,3 +49,17 @@ Load for a task changing the listed files, contracts or runtime domains. Match
 by task metadata rather than card names alone. Excluded: Unrelated numeric primitives with no compiled envelope/provider authority.
 No live runtime edit or heavy test run is authorized by this case. Original
 contracts, review scopes and writer reservations govern actual work.
+
+## K01 Exact-Source Correction
+
+The five-case source audit verifies the original review hash and candidate,
+not the review's correctness by reexecution. The historical seven-test file
+exists; MISSING means the enforcing four-container negative, not all tests.
+The probe asserts that malformed containers ARE accepted to expose the defect;
+it is not a production rejection regression. At observed main
+1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce the named gateway module and historical
+test path are absent, while a differently named fb2-34 test exists. These facts
+do not prove current support, absence of the defect, or an accepted replacement
+contract. First obtain current-owner applicability clarification before any B
+test/repair dispatch. All exact blob/hash records are in K01-SOURCE-AUDIT.json.
+No unsigned snapshot, raw-loader bypass or client exploit is claimed.

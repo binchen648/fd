@@ -49,3 +49,18 @@ Load for a task changing the listed files, contracts or runtime domains. Match
 by task metadata rather than card names alone. Excluded: Read-only queries that cannot mutate match or room state.
 No live runtime edit or heavy test run is authorized by this case. Original
 contracts, review scopes and writer reservations govern actual work.
+
+## K01 Scope And Test Trace
+
+The failed review's /blockingFindings/1 binds an actual raw WS omission on
+source-equivalent 9a4f4c6 under carrier463facb1. Observed deltas are exactly
+revision2->8, roomVersion2->3 and logs19->39; positive component tests did not
+close this independent negative. Required numeric input domains below are a
+regression obligation, not claims that every form was exercised by that probe.
+At 0f62210 the server named test covers undefined/null/string/negative/fractional/
+oversized/stale for both commands; the Hub named test additionally covers NaN
+and Infinity. Each checks atomic rejection and a valid-revision control.
+Follow-up RB4d5b76be grants scoped repair closure only; its full CI remains
+exit1. At observed main the server test includes stale rejection but lacks the
+new combined missing/invalid/end_turn negative. Current execution conformance
+remains NOT_VERIFIED. Exact paths, selectors and blobs are bound in the audit.

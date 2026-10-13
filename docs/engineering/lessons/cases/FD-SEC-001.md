@@ -49,3 +49,20 @@ Load for a task changing the listed files, contracts or runtime domains. Match
 by task metadata rather than card names alone. Excluded: Evidence-only documentation unrelated to credentials, transport or private projection.
 No live runtime edit or heavy test run is authorized by this case. Original
 contracts, review scopes and writer reservations govern actual work.
+
+## K01 Scope And Test Trace
+
+The failed review binds carrier 463facb1 and source-equivalent tested
+implementation 9a4f4c6, not a fresh experiment by K01. Its JSON pointer
+/blockingFindings/0 contains both real-WS impersonation and duplicate-HTTP
+observations; only those bounded observations and source inspection support
+the cause above. No actual secret value is republished.
+Follow-up RB commit 4d5b76be reviews 0f62210, with rules46/server16 executed on
+source-equivalent 88dcd441; browser15 and full-CI exit1 are receipt inspections,
+NOT independent browser or full-CI reruns. Its scoped closure does not grant
+main/Gate/Release acceptance. K01-SOURCE-AUDIT.json binds both artifact hashes
+and test blobs. Historical named negatives cover public credential leakage,
+duplicate join, legacy guess, wrong-client/cross-room token and legitimate
+reconnect controls. Observed main's server test lacks those new named cases;
+test files existing on main do not inherit repaired semantic coverage. No TLS,
+deployment or persisted-secret certification is claimed.

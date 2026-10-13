@@ -14,7 +14,8 @@ This records historical evidence; it grants no current runtime acceptance.
 ## Evidence
 
 - Source task/PR: P3-E09-B11-INTEGRATION-CLOSURE-TEST-STABILITY
-- Reviewed exact SHA: cfa6a92551a939709b85a787d9044e19ec00f0ef
+- Source artifact reviewed exact SHA: b5e68444f55ea9fc1a86a9eea0ea0bedce3de229
+- Preserved historical failure SHA: cfa6a92551a939709b85a787d9044e19ec00f0ef
 - Reviewer verdict: Historical FAIL retained inside later scoped PASS
 - Source commit: dbd430be9550947a2bac691ef645db56cf5c408f
 - Artifact: docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json
@@ -49,3 +50,18 @@ Load for a task changing the listed files, contracts or runtime domains. Match
 by task metadata rather than card names alone. Excluded: Documentation with no execution-result or test-fixture claims.
 No live runtime edit or heavy test run is authorized by this case. Original
 contracts, review scopes and writer reservations govern actual work.
+
+## K01 Scope And Identity Binding
+
+The source artifact is PASS on b5e68444, with direct-parent review commit
+dbd430be. Its preservedFailure section reports the older cfa6a925 failure; it
+is neither PASS nor a direct review artifact on cfa6a925. K01 corrects the
+catalog's former conflation, keeping both immutable identities visible.
+The reviewed implementation is 078b79c7; independent RA focused evidence is
+88/88 on b5e68444, while producer CI is recorded evidence, not independently
+rerun by RA. The artifact explicitly says actualFinalAssemblyVerified=false.
+This case concerns execution reproducibility; the later deterministic temporal
+fixture error is separately FD-FIXTURE-006. Expensive synchronous Git work is
+only a causal hypothesis for the old hook/RPC failure, not an established
+environment-wide diagnosis. No heavy tests are run by K01 and no later A
+candidate is accepted by this source PASS.
