@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-a-post-merge-sync-review-v1",
+  "taskId": "P3-E09-B11-POST-MERGE-SYNC",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "reviewDate": "2026-10-13",
+  "reviewer": "Reviewer A",
+  "candidateSha": "17570203d0cdc3ecfebe7f15da518028e05d54e7",
+  "reviewedSha": "17570203d0cdc3ecfebe7f15da518028e05d54e7",
+  "finalVerdict": "PASS",
+  "conclusion": "REVIEW_ACCEPTED",
+  "acceptedScope": "EXACT_B11_POST_MERGE_PROVENANCE_GITHUB_OBSERVATIONS_ROUTING_RECOUNT_AND_ZERO_CREDIT_SYNC_ONLY",
+  "blockingFindings": [],
+  "observedMainSha": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+  "previousMainSha": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+  "promotionHead": "3ec8b5393118b2b250eacd044dfd18ec098662cb",
+  "promotionPr": "https://github.com/binchen648/fd/pull/559",
+  "boundArtifact": {
+    "path": "artifacts/phase3-e09-b11-post-merge-sync.json",
+    "sha256": "98EFF40A739F395DDEB6C7FCF909F30971A1F49548C7B77E83A982DE0BC66F82"
+  },
+  "boundReport": {
+    "path": "docs/reports/2026-10-13-p3-e09-b11-post-merge-sync.md",
+    "sha256": "BC4C7E3B89F5D69434DB56C308CB431D756C32241A6126CA73B6DD6DEBC8BAC5"
+  },
+  "boundGithubObservations": {
+    "path": "artifacts/phase3-e09-b11-post-merge-github-observations.json",
+    "sha256": "B91CDE6E500FFE7CA894828FB2439338A326EBBD8B0CDA94384C0D62B0480C08"
+  },
+  "independentVerification": {
+    "method": "SOURCE_REVIEW_FULL_BYTE_REGENERATION_FOCUSED_AUTOMATION_AND_LIVE_GITHUB_READ_ONLY_QUERIES",
+    "artifactAndReportReproductionCommand": "npx tsx scripts/phase3-e09-b11-post-merge-sync.ts --baseline-root D:/fd-validation/a-e09-b11-post-merge-baseline --validate",
+    "reproductionExitCode": 0,
+    "artifactAndReportByteReproduction": "PASS",
+    "baselineCheckoutExactAndClean": true,
+    "sourceEquivalenceObjects": 12,
+    "carrierPromotionHeadMainSourceEquivalence": "PASS",
+    "mergeParentAndCandidateRaGSyncAncestry": "PASS",
+    "immutableEvidenceAndPreservedMainControlsHashes": "PASS",
+    "frozenAccountingArtifactsUnchanged": "PASS",
+    "focusedCommand": "npx vitest run scripts/tests/phase3-e09-b11-post-merge-sync.test.ts",
+    "focusedExitCode": 0,
+    "focusedFiles": 1,
+    "focusedTestsPassed": 6,
+    "focusedDurationSeconds": 1.28,
+    "diffCheck": "PASS",
+    "remoteExactCarrierRefVerified": true,
+    "producerWorktreeClean": true,
+    "reviewerFullCiOrBrowserRerun": false,
+    "producerTypecheckResult": "REPORTED_PASS; NOT_RERUN_BY_REVIEWER"
+  },
+  "githubVerification": {
+    "prMetadataQueriedLive": true,
+    "mergeState": "MERGED",
+    "mergeShaMatchesObservedMain": true,
+    "exactMainRunsQueriedLive": true,
+    "successfulCompletedRuns": [
+      { "name": "Build", "id": 38347534764 },
+      { "name": "Phase 3 Pre-Review Gate", "id": 38347534745 },
+      { "name": "Deploy", "id": 38347534730 },
+      { "name": "Test", "id": 38347534732 }
+    ],
+    "fullTestLogQueriedLive": true,
+    "liveFullTestLogEqualsCommittedBytes": true,
+    "testLogSha256": "30AA304F4FA7982A6710D4049B73BCF3482028278D2D5640AE47EA20877818F4",
+    "testFilesPassed": 194,
+    "testsPassed": 1606,
+    "testsSkipped": 1,
+    "totalTests": 1607,
+    "skippedTestNotRepresentedAsPass": true
+  },
+  "routingAccounting": {
+    "before": { "new": 22, "legacyResolve": 144, "legacyExecute": 3, "dual": 0, "notClassifiable": 112 },
+    "after": { "new": 23, "legacyResolve": 144, "legacyExecute": 3, "dual": 0, "notClassifiable": 111 },
+    "onlyChangedRoute": {
+      "cardId": "servant.kintoki.skill.sc-kintoki-3",
+      "abilityId": "sc-kintoki-3.golden-eater",
+      "before": "NOT_CLASSIFIABLE",
+      "after": "NEW_RUNTIME_SEMANTIC_ROUTED"
+    },
+    "accepted": 111,
+    "denominator": 944,
+    "remaining": 833,
+    "duplicates": 0,
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0
+  },
+  "boundaries": {
+    "scopedImplementationMergeFactConfirmed": true,
+    "globalGateC": "NOT_VERIFIED",
+    "releaseReadinessGranted": false,
+    "sourceAssets": "93_MISSING_IMAGE_RETAINED_NOT_REAUDITED",
+    "longTermStability": "NOT_VERIFIED",
+    "runtimeSemanticReviewReopened": false,
+    "a111A112ExecutionVerdictsInherited": false,
+    "githubPolicyAttestationCreatedByReviewer": false,
+    "reviewThread": null,
+    "reservationReleasedByReviewer": false,
+    "newCreditGranted": false
+  },
+  "nextOwner": "PLANNER_REGISTERS_SCOPED_B11_POST_MERGE_CLOSURE_AND_HANDLES_RESERVATION_RELEASE; KEEP_RELEASE_AND_GLOBAL_GATE_C_BLOCKERS",
+  "commitBinding": "Artifact-only immutable review commit directly parents exact carrier; review commit and artifact SHA256 returned externally"
+}
