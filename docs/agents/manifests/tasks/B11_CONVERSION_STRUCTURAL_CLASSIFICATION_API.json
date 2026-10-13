@@ -1,0 +1,49 @@
+{
+  "taskId": "B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "owner": "Codex B",
+  "status": "IMPLEMENTATION_COMPLETE_CANDIDATE",
+  "reviewReady": false,
+  "baseCommit": "9eaa0e0c417486adf7b0449e3d32fb90b7d362f9",
+  "authorization": "User instructed Codex B to proceed with missing API observations; existing B11 runtime reservation continued for read-only export",
+  "dependency": "abdd8e4 observation-gap plan",
+  "fixtureReview": {
+    "commit": "2e94865ff9581f4f41b5d1e8d479479ce75eb135",
+    "path": "docs/reviews/phase3/P3-E08-B11-fixture-expectation-review.json",
+    "verdict": "FAILED",
+    "findings": ["FIXTURE_OWNERSHIP_MEANING_GAP", "OWNER_EXPECTATION_MAPPING_UNDEFINED"],
+    "disposition": "Read-only export supplies authoritative current runtime observation; neither finding is automatically closed by this task"
+  },
+  "hotFiles": ["packages/rules/src/ability/interpreter.ts"],
+  "contract": "Expose the existing runtime-owned structural predicate without changing its body or execution callers",
+  "api": {
+    "input": "AuthoringAbility from loadAuthoringJson",
+    "routeCandidate": "isCardZoneCoreDirectActionRouteCandidate",
+    "exactEligible": "isCardZoneCoreDirectActionSemantic",
+    "readOnly": true,
+    "identityFree": true
+  },
+  "vectors": "docs/agents/manifests/vectors/B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API.json",
+  "parityTest": "packages/rules/tests/regression/b11-conversion-classification-api.test.ts",
+  "regressions": [
+    "packages/rules/tests/regression/card-zone-core-direct-action.test.ts",
+    "packages/rules/tests/regression/production-resolution-bridge.test.ts",
+    "packages/rules/tests/regression/resolution-dataflow.test.ts"
+  ],
+  "observedDisagreement": "Historical conversion-unknown-binding fixture expects routeCandidate=true; actual unchanged runtime predicate returns false. Independent Reviewer B disposition required",
+  "gateAvailability": {
+    "phase3:preflight": "NOT_AVAILABLE_ON_RUNTIME_BASE",
+    "phase3:contract-parity": "NOT_AVAILABLE_ON_RUNTIME_BASE",
+    "phase3:review-packet": "NOT_AVAILABLE_ON_RUNTIME_BASE"
+  },
+  "remainingOwners": { "inventory": "Codex A", "coverageDiagnostic": "Codex A", "fixtureExpectations": "Reviewer B" },
+  "verification": {
+    "focused": "40/40 PASS",
+    "typecheck": "PASS",
+    "diffCheck": "PASS",
+    "testCiBeforeFreeze": "186 files PASS; 1433 tests PASS; 3 skipped; old exact candidate evidence suite rejects Dirty candidate inputs",
+    "requiredFollowup": "A must rebind exact candidate source evidence after Reviewer B reviews the read-only API"
+  },
+  "waivers": [],
+  "nonClaims": ["Semantic route change", "Readiness PASS", "Gate promotion", "KPI change", "Main credit"]
+}

@@ -11,6 +11,8 @@ import { checkExtendedCondition, resolveExtendedEffect } from './extended-effect
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, installRulerSealMovementLock, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, rulerSealMovementLocked, situationForbidsAttribute } from '../core/rule-overrides';
 import { node, nodes, str } from './loader';
+import { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from './card-zone-result-binding';
+export { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from './card-zone-result-binding';
 import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import { isSetupCreateToSkillCandidate, isSetupCreateToSkillSemantic } from './setup-create-to-skill';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
@@ -75,6 +77,8 @@ import {
   normalizeResolutionDataFlowNodes,
   executeResolution,
   ResolutionRuntimeError,
+  isResultBindingProductionBridgeRouteCandidate,
+  isResultBindingProductionBridgeSemantic,
   type KnownEffectResult,
 } from './resolution-dataflow';
 import type {
@@ -670,6 +674,7 @@ function eventCombatOutcomeCondition(s: GameState, ctx: EffectContext, c: RuleNo
 
 function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   if (!c || typeof c !== 'object') reject('unsupported', 'Unsupported condition');
+  if (c.expr === 'controller_at_battlefield') return isBattlefield(s, player(s, ctx.controllerId).locationId);
   if (c.negated === true) return !condition(s, ctx, { ...c, negated: undefined });
   const p = player(s, ctx.controllerId);
   switch (c.type) {
@@ -857,6 +862,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAddToAttackStructuralCandidate(a) && !isAddToAttackRouteCandidate(a)) return false;
   if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) return false;
   if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a)) return false;
+  if (isResultBindingProductionBridgeRouteCandidate(a) && !isResultBindingProductionBridgeSemantic(a)) return false;
+  if (isResultBindingProductionBridgeSemantic(a) && !hasMandatoryTargetAvailability(s, context(s, sourceId, a.id, event), a)) return false;
   if (isMagicResistancePowerModifierCandidate(a) && !isMagicResistancePowerModifierSemantic(a)) return false;
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
   if (isPreBattleDefeatCandidate(a) && !isAcceptedPreBattleDefeatAbility(a, 'compiled')) return false;
@@ -3189,10 +3196,6 @@ export function isResourceNumericDirectActionSemantic(a: AuthoringAbility): bool
       isFixedControllerCommandSealAdjustmentComponent(effect));
 }
 
-export function isCardZoneCoreDirectActionSemantic(a: AuthoringAbility): boolean {
-  return isMoveAllRemainingManaBindingSemantic(a);
-}
-
 export function isPlayActionDirectAction(a: AuthoringAbility): boolean {
   return isPlayActionRouteCandidate(a);
 }
@@ -3227,17 +3230,6 @@ function isPlaySourceCardWithCostResponseStructuralCandidate(a: AuthoringAbility
   if (str(a.responseWindow.opens) !== 'controller_combat_action_window') return false;
   if (a.targets.length || a.creates.length || a.effects.length !== 1) return false;
   return hasFixedManaCost(a.cost, 2) && str(a.effects[0]?.type) === 'play_source_card';
-}
-
-function isCardZoneCoreDirectActionRouteCandidate(a: AuthoringAbility): boolean {
-  if (a.kind !== 'phase_action' || str(a.activation.phase) !== 'advance' || str(a.activation.opens) !== 'controller_action_window') return false;
-  if (a.targets.length || a.cost.length || a.creates.length || a.effects.length !== 2) return false;
-  const [move, mana] = a.effects;
-  const binding = str(move?.resultVar ?? move?.bind);
-  return str(move?.type) === 'move_all_remaining' &&
-    !!binding &&
-    str(mana?.type) === 'adjust_mana' &&
-    referencesMovedCountBinding(mana?.amount, binding);
 }
 
 
@@ -3316,19 +3308,6 @@ function isAddToAttackSemantic(a: AuthoringAbility): boolean {
   const [effect] = a.effects;
   return effect?.returnAtRoundEnd === true &&
     str(effect?.controllerCannotWinStatus) === 'maiya_cannot_win_battle_this_round';
-}
-
-function isMoveAllRemainingManaBindingSemantic(a: AuthoringAbility): boolean {
-  if (a.kind !== 'phase_action' || str(a.activation.phase) !== 'advance' || str(a.activation.opens) !== 'controller_action_window') return false;
-  if (a.targets.length || a.cost.length || a.creates.length || a.effects.length !== 2) return false;
-  const [move, mana] = a.effects;
-  const binding = str(move?.resultVar ?? move?.bind);
-  return str(move?.type) === 'move_all_remaining' &&
-    str(move?.from) === 'hand' &&
-    str(node(move?.to).zone) === 'discard' &&
-    !!binding &&
-    str(mana?.type) === 'adjust_mana' &&
-    referencesMovedCountBinding(mana?.amount, binding);
 }
 
 function hasSingleControllerHandAttackTarget(targets: RuleNode[], targetId: string): boolean {
@@ -3423,12 +3402,6 @@ function assertAddToAttackSupportAvailable(s: GameState, ctx: EffectContext, a: 
   if (!support) reject('resolution_failed', `Missing skill-zone support card '${str(effect?.cardId)}'.`);
 }
 
-function referencesMovedCountBinding(value: unknown, binding: string): boolean {
-  const current = node(value);
-  return str(current.var) === binding ||
-    (str(current.expr) === 'binding_field' && str(current.binding) === binding && str(current.field) === 'movedCount' && str(current.valueType) === 'number');
-}
-
 function pushResourceDirectives(s: GameState, ctx: EffectContext, results: KnownEffectResult[]): void {
   for (const result of results) {
     if (result.effectType !== 'adjust_command_seals') continue;
@@ -3511,12 +3484,53 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
   }
 }
 
+function executeResultBindingProductionBridge(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): void {
+  let executionStartIndex = 0;
+  for (let index = 0; index < effects.length; index += 1) {
+    const effect = effects[index]!;
+    const targetRef = effect.type === 'pay_mana' ? str(effect.selection) : str(effect.target);
+    if (!targetRef || Object.prototype.hasOwnProperty.call(ctx.selections, targetRef)) continue;
+    const target = a.targets.find((candidate) => str(candidate.id) === targetRef);
+    if (!target) reject('resolution_failed', `Missing production bridge target '${targetRef}'.`);
+    if (index > executionStartIndex) executeResolutionEffects(s, ctx, effects.slice(executionStartIndex, index));
+    const count = node(target.count);
+    const min = Number(count.min ?? 1);
+    const max = Number(count.max ?? 1);
+    const choices = candidates(s, ctx, target);
+    if (choices.length < min) reject('no_legal_target', 'No legal target remains');
+    if (choices.length === 0 && min === 0) {
+      ctx.selections[targetRef] = [];
+      executionStartIndex = index + 1;
+      continue;
+    }
+    runtime(s).pendingDecision = {
+      id: nextId(s, 'decision'),
+      controllerId: ctx.controllerId,
+      target,
+      candidates: choices,
+      min,
+      max,
+      context: structuredClone(ctx),
+      remainingEffects: effects.slice(index),
+    };
+    return;
+  }
+  executeResolutionEffects(s, ctx, effects.slice(executionStartIndex));
+  installOngoing(s, ctx, a);
+  cleanupOngoing(s);
+}
+
 function executeFixedControllerManaCost(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
   executeResolutionEffects(s, ctx, a.cost);
 }
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (isResultBindingProductionBridgeSemantic(a)) {
+    executeResultBindingProductionBridge(s, ctx, a, effects);
+    return;
+  }
+  if (isResultBindingProductionBridgeRouteCandidate(a)) reject('resolution_failed', 'Unsupported result-binding production bridge semantic shape.');
   if (isRulerSealBindingCandidate(a)) {
     if (!isRulerSealBindingSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal binding semantic shape');
     const pending = findPendingTarget(s, ctx, a, effects);
@@ -3635,6 +3649,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     return;
   }
   if (isCardZoneCoreDirectActionRouteCandidate(a)) {
+    if (!isCardZoneCoreDirectActionSemantic(a)) reject('resolution_failed', 'Unsupported Card Zone result-binding semantic shape');
     const pending = findPendingTarget(s, ctx, a, effects);
     if (pending) { runtime(s).pendingDecision = pending; return; }
     executeResolutionEffects(s, ctx, effects);
@@ -3816,6 +3831,9 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   if (isSetupCreateToSkillCandidate(a) && !isSetupCreateToSkillSemantic(a)) {
     reject('resolution_failed', 'Unsupported setup create-to-skill semantic shape.');
   }
+  if (isResultBindingProductionBridgeRouteCandidate(a) && !isResultBindingProductionBridgeSemantic(a)) {
+    reject('resolution_failed', 'Unsupported result-binding production bridge semantic shape.');
+  }
   if (isRulerSealBindingCandidate(a) && !isRulerSealBindingSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal binding semantic shape');
   if (isRulerSealUseCandidate(a) && !isRulerSealUseSemantic(a)) reject('resolution_failed', 'Unsupported Ruler seal use semantic shape');
   if (isOuterGodLifeAbilityCandidate(a) && !isOuterGodLifeAbilitySemantic(a)) reject('resolution_failed', 'Unsupported Outer-God-Life relational semantic shape');
@@ -3911,7 +3929,7 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
     });
     return;
   }
-  if (isCardZoneCoreDirectActionRouteCandidate(a) || isFixedControllerAdvanceDrawActionSemantic(a) || isAnyLocationExceptWorkshopMovementSemantic(a) || isPlayActionRouteCandidate(a) || isPlaySourceCardWithCostResponseStructuralCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a) || isSetupCreateToSkillSemantic(a)) {
+  if (isCardZoneCoreDirectActionRouteCandidate(a) || isFixedControllerAdvanceDrawActionSemantic(a) || isAnyLocationExceptWorkshopMovementSemantic(a) || isPlayActionRouteCandidate(a) || isPlaySourceCardWithCostResponseStructuralCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a) || isResultBindingProductionBridgeRouteCandidate(a)) {
     try {
       normalizeResolutionDataFlowNodes([...a.effects, ...a.creates], `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
     } catch (error) {
@@ -4230,6 +4248,19 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       break;
     }
     case 'activate_ability': {
+      const requestedSource = s.cards.find((candidate) =>
+        candidate.instanceId === command.cardInstanceId && candidate.controllerPlayerId === playerId);
+      const requestedAbility = requestedSource
+        ? runtime(s).pack.cards[requestedSource.definitionId]?.abilities.find((ability) => ability.id === command.abilityId)
+        : undefined;
+      if (requestedAbility && isCardZoneCoreDirectActionRouteCandidate(requestedAbility) &&
+        !isCardZoneCoreDirectActionSemantic(requestedAbility)) {
+        reject('resolution_failed', 'Unsupported Card Zone result-binding semantic shape.');
+      }
+      if (requestedAbility && isResultBindingProductionBridgeRouteCandidate(requestedAbility) &&
+        !isResultBindingProductionBridgeSemantic(requestedAbility)) {
+        reject('resolution_failed', 'Unsupported result-binding production bridge semantic shape.');
+      }
       if (!legal.some(a => a.type === command.type && a.cardInstanceId === command.cardInstanceId && a.abilityId === command.abilityId)) reject('illegal_action', 'Ability is not available');
       const ctx = context(s, command.cardInstanceId, command.abilityId); ctx.variables = command.variables ?? {};
       executeAbility(s, ctx); break;

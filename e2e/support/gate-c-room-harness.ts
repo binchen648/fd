@@ -50,8 +50,9 @@ export async function restoreGateCRoomSnapshot(
   endpoints: GateCEndpoints = {},
 ): Promise<RoomHttpResponse> {
   const httpBase = endpoints.httpBase ?? gateCHttpBase;
+  const host = gateCClientFromSnapshot(snapshot, snapshot.hostClientId);
   const response = await request.post(`${httpBase}/rooms/${encodeURIComponent(snapshot.roomId)}/restore`, {
-    data: { snapshot },
+    data: { snapshot, clientId: host.clientId, reconnectToken: host.reconnectToken },
   });
   expect(response.ok()).toBe(true);
   return response.json() as Promise<RoomHttpResponse>;
@@ -60,6 +61,7 @@ export async function restoreGateCRoomSnapshot(
 export function gateCClientFromSnapshot(snapshot: MatchRoomSnapshot, clientId: string): GateCRoomClient {
   const client = snapshot.clients.find((candidate) => candidate.id === clientId);
   if (!client) throw new Error(`Missing snapshot client ${clientId}`);
+  if (!/^reconnect-v2-[0-9a-f]{64}$/.test(client.reconnectToken)) throw new Error('Unsafe legacy fixture credentials');
   return { roomId: snapshot.roomId, clientId, reconnectToken: client.reconnectToken };
 }
 

@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "fd-independent-scoped-review-v1",
+  "reviewerIdentity": "Codex Reviewer B",
+  "githubIdentity": null,
+  "reviewThread": null,
+  "taskId": "P3-E09-B11-TRANSPORT-SECURITY-REPAIR",
+  "reviewDate": "2026-10-12",
+  "baseSha": "463facb109cc4d19c4fda7af936fb4546fb86091",
+  "reviewedSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+  "combinationTestedSha": "88dcd441a17584b4a2a6d1ba78e588ac6a818ed1",
+  "focusedTestedSha": "d9d8a6a480710afba20ee7371ecdedb09de77de1",
+  "verdict": "PASS",
+  "verdictScope": "Scoped transport security repair and existing B11/Golden Eater/socket composition only",
+  "overallReadiness": "BLOCKED",
+  "sourceEquivalence": {
+    "candidateVsCombinationDelta": [
+      "artifacts/phase3-e09-b11-transport-security-repair.json",
+      "docs/reports/2026-10-12-p3-e09-b11-transport-security-repair.md"
+    ],
+    "sourceConfigDelta": "NONE",
+    "validatedSourceFileHashes": 13,
+    "remoteHeadMatches": true
+  },
+  "packet": {
+    "path": "artifacts/phase3-e09-b11-transport-security-repair.json",
+    "sha256": "9b1eb7e165f578722579bc2a44ad79d9ca78d8ddbb72747d83c07678ebab6cf0",
+    "validatedRawStreams": 26,
+    "currentBrowserReceipt": "12-current-combination-browser",
+    "currentCIReceipt": "13-current-combination-default-ci"
+  },
+  "reviewedRuntimePaths": [
+    "HTTP create/join -> MatchRoomHub -> private credential issuance",
+    "WS upgrade/connection/message -> authenticateClient -> original room object binding",
+    "dispatch_command/end_turn -> assertExpectedRevision -> session mutation -> success-only version/broadcast",
+    "socket close -> same room/client active socket check -> final disconnect",
+    "HTTP creation -> resolveMatchRoomId -> Hub duplicate rejection before construction/trust mutation",
+    "Golden Eater activation/first target/second target -> staged resolution -> projection/reconnect/stale rejection"
+  ],
+  "closedFindings": [
+    "PUBLIC_RECONNECT_CREDENTIAL_AND_REJOIN_IDENTITY_BYPASS",
+    "END_TURN_MISSING_REVISION_MUTATION_BYPASS",
+    "EMPTY_ROOM_ID_UNAUTHENTICATED_ROOM_REPLACEMENT"
+  ],
+  "independentEvidence": {
+    "rules": { "files": 4, "passed": 46, "exitCode": 0, "executedAtSourceEquivalentSha": "88dcd441a17584b4a2a6d1ba78e588ac6a818ed1" },
+    "server": { "passed": 16, "exitCode": 0, "executedAtSourceEquivalentSha": "88dcd441a17584b4a2a6d1ba78e588ac6a818ed1" },
+    "httpAdversarialInputs": ["empty string", "omitted", "duplicate default ID", "whitespace", "null", "zero", "false", "object", "array"],
+    "httpAdversarialResult": "All returned 400; original room identity, full serialized state and version unchanged",
+    "browser": { "passed": 15, "exitCode": 0, "method": "Independent receipt/hash and scenario assertion inspection; not a new Reviewer browser execution" },
+    "fullCI": { "exitCode": 1, "filesPassed": 189, "filesFailed": 4, "testsPassed": 1490, "testsFailed": 1, "testsSkipped": 45, "method": "Independent raw receipt inspection" }
+  },
+  "remainingBlockers": [
+    "Historical contract-parity source binding and continuation checks fail for current packages/App.test.tsx; no waiver or test weakening accepted",
+    "Fresh Reviewer A exact evidence acceptance and governance/promotion checks remain separate",
+    "No real GitHub reviewer identity or review thread supplied by this local artifact"
+  ],
+  "limitations": [
+    "Conversion Magic and Golden Eater browser evidence starts at trusted server-process fixtures, not natural full-game progression",
+    "No broad session timeline/replay/directive redesign or full roster acceptance",
+    "No GitHub Node 20 equivalence, deployment/TLS or snapshot-at-rest certification",
+    "Previous client asset inventory failure and 93 missing-image Release blocker are not closed"
+  ],
+  "grants": {
+    "main": false,
+    "phase3": false,
+    "globalGateC": false,
+    "promotion": false,
+    "releaseReady": false,
+    "migrationCreditDelta": 0
+  },
+  "productionOrTestLogicModifiedByReviewer": false,
+  "reviewCommitBinding": "The containing Git commit binds this artifact; commit SHA and artifact SHA-256 are reported externally to avoid self-reference"
+}

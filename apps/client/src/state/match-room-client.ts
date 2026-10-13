@@ -47,6 +47,8 @@ export class RemoteMatchRoomClient {
   }
 
   send(message: ClientRoomMessage): void {
+    if ((message.type === 'client:dispatch_command' || message.type === 'client:end_turn')
+      && (!Number.isSafeInteger(message.expectedRevision) || message.expectedRevision < 0)) return;
     this.socket?.send(JSON.stringify(message));
   }
 
