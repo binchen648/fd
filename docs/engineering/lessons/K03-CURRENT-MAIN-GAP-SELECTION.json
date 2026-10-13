@@ -1,0 +1,1101 @@
+{
+  "schemaVersion": "fd-engineering-k03-current-main-gap-selection-v1",
+  "taskId": "P3-EFP-K03-A",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "observedMainSha": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+  "status": "READ_ONLY_SELECTION_COMPLETE_PENDING_PLANNER_AND_REVIEWER_A",
+  "owner": "Codex A / Coverage & Evidence",
+  "sourceEvidence": [
+    {
+      "commit": "163f8e8469e81bf998f22884e9e529d5792fabe0",
+      "path": "docs/agents/P3-EFP-K02-ACCEPTANCE-AND-INTEGRATION.md",
+      "sha256": "BC128BA0353B2423BC74ED2ED7CD256FDA0B1EF542B4F54B248188E1F2C21928",
+      "gitObject": "1866a23f788853cf1061d4d5e9a403a26fdd070d",
+      "bytes": 5800
+    },
+    {
+      "commit": "163f8e8469e81bf998f22884e9e529d5792fabe0",
+      "path": "docs/agents/P3-E09-B11-CLOSURE-REGISTER.md",
+      "sha256": "B40E0802A2B6D2E28FFE84AF3D75BCD92FE0AE831B45EAD4952AC3B22DF5F5AE",
+      "gitObject": "f409957797d4b68032f4d7ed75d1fce53280a67f",
+      "bytes": 2477
+    },
+    {
+      "commit": "163f8e8469e81bf998f22884e9e529d5792fabe0",
+      "path": "docs/agents/manifests/reservations/P3-E09-B11-CLOSURE-RELEASE.json",
+      "sha256": "ED8C95C6D06AF02E65F366A60C9210D2B815A83B407D3321CCA4011EC9165AF3",
+      "gitObject": "de4ce9f3e799b247b552c33054c35bb3335e38fb",
+      "bytes": 1930
+    },
+    {
+      "commit": "2470f00902bd650bc3122f518b18333afed323f3",
+      "path": "docs/reviews/phase3/P3-EFP-K01-ccbdf647-reviewer-a.json",
+      "sha256": "DA0F45FDED94F1DC941A3A6B7A91DA586D2DE36B0188EC8F3662FCBAF9B98687",
+      "gitObject": "3bd6016552d2c0e74bbd41f65416dcaf3c635644",
+      "bytes": 5313
+    },
+    {
+      "commit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "path": "docs/reviews/phase3/P3-EFP-K02-36de92a-reviewer-a.json",
+      "sha256": "BBB1DA984109B4D75AB17076CCE53FE6A02DD64D5EC2E0D31FA9D463CE4A56BB",
+      "gitObject": "a0f67d343f7d7a0bb050e65b385913a4b6ac0b7c",
+      "bytes": 5093
+    },
+    {
+      "commit": "b22691ab5311cd31f60eb91d573416fea3c7cf98",
+      "path": "docs/reviews/2026-10-10-pr-474-review.md",
+      "sha256": "F588A8B7062E7D57739E1F02B24BF7D939E06A8F203A5542AB374BA7F2F93ADC",
+      "gitObject": "7c71975bf9ebbace443dda7b155f92ab1ca28cea",
+      "bytes": 5684
+    },
+    {
+      "commit": "b22691ab5311cd31f60eb91d573416fea3c7cf98",
+      "path": "docs/reviews/probes/review-474-independent.mjs",
+      "sha256": "AA340CD389F4BA83A2611715247F17CDF334A9EFB8E71D73A210FEEE7FF1F0B3",
+      "gitObject": "fef1876cb129b78bcb34c120c520f4949386aa5e",
+      "bytes": 5063
+    },
+    {
+      "commit": "7e65291a4fa10170e249bc492617ef337caf7f8a",
+      "path": "docs/reviews/2026-10-10-pr-475-review.md",
+      "sha256": "8C67CFE179E02ECE25B6581EE2A23ED776EBF4E95EEAA2A93B2E8D59DC1D7CF6",
+      "gitObject": "88afcbc57b3dd31332766b6d3f83c97caff0c4ee",
+      "bytes": 6319
+    },
+    {
+      "commit": "7e65291a4fa10170e249bc492617ef337caf7f8a",
+      "path": "docs/reviews/probes/review-475-independent.mjs",
+      "sha256": "3E3A78ADD826E091DE030426EAE4C60E404B67967B0D94AAF34F919BA87E6913",
+      "gitObject": "2299a88dab59148ca96442decb9586871e426722",
+      "bytes": 9773
+    },
+    {
+      "commit": "4d5b76be9d5459cc0c40e50fae8513bc59cd5d21",
+      "path": "docs/reviews/phase3/P3-E09-B11-TRANSPORT-SECURITY-REPAIR-0f62210-reviewer-b.json",
+      "sha256": "6FE0EAD378E31149B3271E137FDB99ACAC161F2894E3FAD21FC0A14986E96DB4",
+      "gitObject": "8fc65be0fbfe2ddbb8a0c5682d0c62ce64402439",
+      "bytes": 4138
+    },
+    {
+      "commit": "c23a2ce1d356fd1d2f29ebc5e83acd01bc2e00c4",
+      "path": "docs/reviews/phase3/P3-E09-B11-17570203-post-merge-reviewer-a.json",
+      "sha256": "D56DA03B49DAD5D89C7F63C57EC511CE5697CCD7190284875D836CEBD0AE0D85",
+      "gitObject": "02469df7c4473efd43f997db024f6bbc86174eb9",
+      "bytes": 4602
+    },
+    {
+      "commit": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "path": "docs/reports/2026-09-20-p3-a-r73-fb2-34-acceptance-synchronization.md",
+      "sha256": "0C57C806E215FE53BB3C68EEDC2D784F2FB92C1D1AF7EAA975DA97EC0A28309C",
+      "gitObject": "1cf60aeb031a05406bd5f6c604ae03288fd82931",
+      "bytes": 4218
+    },
+    {
+      "commit": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "path": "packages/rules/src/ability/loader.ts",
+      "sha256": "17A6630E36B3ACEC36E7F684118BB577CF49EA400D98E4BC029C8F01B75ED7C2",
+      "gitObject": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+      "bytes": 50992
+    },
+    {
+      "commit": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "path": "packages/rules/src/core/combat-resolver.ts",
+      "sha256": "6274AB84C7E039C5AF1980476494961F109CF920C0012874BF49E6320CE2137C",
+      "gitObject": "5b32ce5d69298877e83d9438fd80a97b4a740857",
+      "bytes": 38340
+    },
+    {
+      "commit": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "path": "packages/rules/src/ability/interpreter.ts",
+      "sha256": "A5F74D0CDCB71C169640DC6D0C0B7936EB2CB26B4AC8A1421E2DD50783554C43",
+      "gitObject": "25f17fe843a9a05650722e996f0ce97109cfadbe",
+      "bytes": 297265
+    },
+    {
+      "commit": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "path": "packages/rules/tests/fb2-34-combat-reward-distribution.test.ts",
+      "sha256": "938970D36D3E69E378F0F97AE68891D16D8B48A0A6D8F2080B201ACF6D616FCA",
+      "gitObject": "be3c2dcb6ba6ee6f19ae96d430aa97e72749be9e",
+      "bytes": 13339
+    },
+    {
+      "commit": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "path": "packages/rules/tests/stheno-consumer-migration.test.ts",
+      "sha256": "A4FACDBFD24345E2D1D35FC5EAB36CD06E2D6599362058A8E89269785A77A23E",
+      "gitObject": "47c4937a6e94fa8fb66777fe5c7276fac29f5dcc",
+      "bytes": 8237
+    },
+    {
+      "commit": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "path": "packages/rules/tests/match-session.test.ts",
+      "sha256": "CB32867BED4FA9E9D9151B7F05E7D653E2DFD376BD6940F03D68402FD7ADB001",
+      "gitObject": "a95ef79efb7086ec992794c45c0358428e7e2e6c",
+      "bytes": 35918
+    },
+    {
+      "commit": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "path": "packages/rules/tests/match-room.test.ts",
+      "sha256": "FC0E2B34362AE77F61CF2B8764DAD453C2A46862900A46022F434FA2752F81C9",
+      "gitObject": "92332015cd932056143f2ecc57d5ce7f59f790e3",
+      "bytes": 6195
+    },
+    {
+      "commit": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "path": "packages/rules/tests/match-room-hub.test.ts",
+      "sha256": "79084B25E2927048B08FD08FEAA84D36A837261D5A46B34E39A94B0421CC3C44",
+      "gitObject": "d2c95bf2c918aa929b817bd472fa03d6b5c9f4cf",
+      "bytes": 19446
+    },
+    {
+      "commit": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "path": "apps/server/src/match-server.test.ts",
+      "sha256": "527B0C5F95598CBCB2BFEDA07BAEE6ACF9432E1FDCA9454E36FDC577053BD67A",
+      "gitObject": "10248b72cc9a032bfefc7280d6fc44c529b5d56e",
+      "bytes": 39203
+    },
+    {
+      "commit": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "path": "data/authoring/servants/servant.stheno.json",
+      "sha256": "FF23D09F28388C5665881522A304695BBF2C9AE0DF74FDB27162954447C855F1",
+      "gitObject": "21ebf0d3ff1df23ea8aa16b6ba362d7f6eee3ffb",
+      "bytes": 10338
+    },
+    {
+      "commit": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "path": "data/packs/fd-playtest-v1/pack.json",
+      "sha256": "F9DF6313A3B2452815FDA56902DAC5BAC8F1F9C4E2374B11912B8EA82CD9D109",
+      "gitObject": "dc1c7cdc03464e5274fd61ccb3e9d6e7021d00be",
+      "bytes": 2897
+    },
+    {
+      "commit": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "path": "data/generated/fd-playtest-v1.content-library.json",
+      "sha256": "38B1C58E7A1EBA06BC80A1A8F5D302AD4339845EDF6B67A36CF1BBBCAA3E65B1",
+      "gitObject": "6296653f5d53bac3684bd172d04c43c45acae2dc",
+      "bytes": 382530
+    }
+  ],
+  "cases": [
+    {
+      "id": "FD-SHAPE-003",
+      "historicalCandidate": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+      "historicalRuntimeOwner": "packages/rules/src/ability/combat-reward-distribution.ts::isAcceptedFullRewardEachAbility",
+      "historicalFinding": "Trusted compiled fixture: activation/lifecycle/limit/visibility replaced individually by ['unexpected-nonempty-shape']; admission remained true and full baseVpPerWinner=5 instead of ordinary=3. Not a proved client, raw-loader or unsigned snapshot exploit.",
+      "currentMechanismStatus": "PRESENT_DIFFERENT_CURRENT_OWNER",
+      "currentRuntimeOwner": "packages/rules/src/ability/loader.ts::isAcceptedStaticCombatRewardDistributionAbility",
+      "currentConsumption": "packages/rules/src/core/combat-resolver.ts::hasWinningFullRewardEachModifier -> buildBattleResultFromRanked -> shared VP pools",
+      "currentStaticFinding": "RUNTIME_SEMANTIC_GAP: node(non-record) returns {}; the current predicate checks Object.keys(node(field)).length for each of the four fields. The malformed-present versus absent distinction is still erased in this scoped admission path.",
+      "currentDynamicReproduction": "NOT_VERIFIED_NOT_EXECUTED_BY_A",
+      "acceptedContractDependency": {
+        "task": "P3-FB2-34",
+        "candidate": "99032d4458352ecdee26dd8964b46ce4e094c0f3",
+        "reviewUrl": "https://github.com/binchen648/fd/pull/378#issuecomment-5744013376",
+        "scope": "Identity-free static passive full_reward_each, canonical authoring/compiled envelope; winning active face-up field/attack_area source. Not the wider historical PR474 gateway.",
+        "historicalAccountingInherited": false
+      },
+      "existingTests": [
+        "packages/rules/tests/fb2-34-combat-reward-distribution.test.ts",
+        "packages/rules/tests/stheno-consumer-migration.test.ts"
+      ],
+      "existingNegativeSelector": "fails closed at runtime for a malformed near-match even if injected outside the loader",
+      "existingNegativeLimitation": "Mutates an extra rule scope key, not activation/lifecycle/limit/visibility into arrays. Raw loader and valid canonical compiled positives do not enforce these four corruption negatives.",
+      "missingEnforcingNegative": "Four present non-record compiled envelope containers through the current predicate AND authoritative reward calculation, with valid absent-field and canonical loader-compiled controls.",
+      "laterRepairOnObservedMain": "NO_FOUR_CONTAINER_GUARD_OR_ENFORCING_NEGATIVE_FOUND_IN_SCOPED_CURRENT_OWNER_TESTS; NOT_A_REPOSITORY_WIDE_NO_REPAIR_CLAIM",
+      "selection": "ONLY_PROPOSED_MINIMAL_SLICE"
+    },
+    {
+      "id": "FD-RESTORE-004",
+      "historicalCandidate": "fe4653d1013110555881585db3a447880dd463d3",
+      "historicalFinding": "Real sc3 close/refund/draw/play transaction cannot serialize/restore at legal nested opponent response or generic-choice pause; completed continuation restores. Reviewer probe expects failure, not enforcing CI success.",
+      "historicalRuntimeOwner": "pendingBattleCloseDrawPlayTransaction in historical interpreter",
+      "currentMechanismStatus": "HISTORICAL_CONSUMER_AND_NAMED_TRANSACTION_ABSENT",
+      "currentConsumer": "Current Stheno authoring has sc1/sc2 only. Its standalone sc2 test explicitly keeps it out of playtest pack/generated product; this does not add the historical sc3.",
+      "nearestCurrentEvidence": "MatchSession tests have production Artoria Caster looked-card/recon continuation round-trips and tamper rejection. They are not the same outer waiting transaction plus nested response/choice contract.",
+      "currentDynamicReproduction": "NOT_VERIFIED_NOT_APPLICABLE_BY_NAME_ALONE",
+      "acceptedContractDependency": "UNBOUND_FOR_THE_HISTORICAL_NESTED_TRANSACTION; PLANNER/B_RUNTIME_OWNER_CLARIFICATION_REQUIRED",
+      "laterRepairOnObservedMain": "OLD_TRANSACTION_NOT_INCLUDED; NO_CLOSURE_OR_ABSENCE_OF_BUG_INFERRED_FROM_OTHER_RESTORE_TESTS",
+      "selection": "DEFER; DO_NOT_PORT_OLD_STACK_OR_SCHEDULE_MATCHSESSION_REPAIR"
+    },
+    {
+      "id": "FD-SEC-001",
+      "selection": "REUSE_EXISTING_ACCEPTED_B11_NEGATIVES_NO_DUPLICATE_REPAIR",
+      "currentMechanismStatus": "SCOPED_REPAIR_SOURCE_ON_MAIN",
+      "acceptedReviewCommit": "4d5b76be9d5459cc0c40e50fae8513bc59cd5d21",
+      "acceptedRuntimeCandidate": "0f62210a2e007a15e28f945c546ccd00c345942a",
+      "existingSelectors": [
+        "keeps random credentials out of every public projection and rejects duplicate identities",
+        "rejects legacy predictable persisted credentials without insecure adoption",
+        "blocks RB public-credential and duplicate HTTP identity impersonation without Golden Eater mutation",
+        "preserves credential-free private pending projections across authenticated Golden Eater reconnect"
+      ],
+      "testPaths": [
+        "packages/rules/tests/match-room.test.ts",
+        "apps/server/src/match-server.test.ts"
+      ],
+      "currentDynamicReproduction": "NOT_RERUN; HISTORICAL_SCOPED_RB_AND_POST_MERGE_EVIDENCE_SEPARATELY_BOUND",
+      "limits": "No new TLS/deployment/global identity security acceptance. Do not turn this triage into a new transport repair."
+    },
+    {
+      "id": "FD-REV-002",
+      "selection": "REUSE_EXISTING_ACCEPTED_B11_NEGATIVES_NO_DUPLICATE_REPAIR",
+      "currentMechanismStatus": "SCOPED_REPAIR_SOURCE_ON_MAIN",
+      "acceptedReviewCommit": "4d5b76be9d5459cc0c40e50fae8513bc59cd5d21",
+      "acceptedRuntimeCandidate": "0f62210a2e007a15e28f945c546ccd00c345942a",
+      "existingSelectors": [
+        "rejects missing, invalid and stale revisions for both mutation commands without any side effects",
+        "rejects raw WS missing/invalid/stale revisions for dispatch and end_turn without mutation or accepted broadcasts"
+      ],
+      "testPaths": [
+        "packages/rules/tests/match-room-hub.test.ts",
+        "apps/server/src/match-server.test.ts"
+      ],
+      "preservationAssertions": [
+        "serialized room/state",
+        "projection",
+        "Hub version",
+        "no accepted broadcasts",
+        "valid revision positive control"
+      ],
+      "currentDynamicReproduction": "NOT_RERUN; STATIC_SELECTORS_PLUS_ACCEPTED_SCOPED_REVIEW_NOT_A_NEW_RUNTIME_VERDICT"
+    }
+  ],
+  "minimumSliceProposal": {
+    "name": "CURRENT_MAIN_STATIC_REWARD_COMPILED_ENVELOPE_GUARD",
+    "state": "PROPOSED_NOT_AUTHORIZED_NOT_DISPATCHED",
+    "case": "FD-SHAPE-003",
+    "owner": "Codex B / Runtime Owner",
+    "technicalReviewer": "Reviewer B",
+    "evidenceReviewer": "Reviewer A for this read-only selection",
+    "proposedBase": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb; re-anchor if main changes before dispatch",
+    "domains": [
+      "ability-runtime / compiled envelope admission",
+      "battle-reward / static full_reward_each"
+    ],
+    "expectedChangedFiles": [
+      "packages/rules/src/ability/loader.ts",
+      "packages/rules/tests/fb2-34-combat-reward-distribution.test.ts",
+      "docs/reports/2026-10-13-p3-efp-k03-static-reward-envelope-result.md"
+    ],
+    "runtimeBoundary": "Only the four object-container admission checks inside isAcceptedStaticCombatRewardDistributionAbility. Do not change the global node()/nodes() normalization helpers, reward arithmetic, modifier scope, source eligibility, other gateways or card IDs.",
+    "redBeforeFix": "B first adds four trusted compiled nonempty-array cases on the exact current owner and records the expected rejection assertions failing BEFORE a guard change. A has not executed this experiment.",
+    "requiredNegatives": [
+      "activation=['unexpected-nonempty-shape']",
+      "lifecycle=['unexpected-nonempty-shape']",
+      "limit=['unexpected-nonempty-shape']",
+      "visibility=['unexpected-nonempty-shape']"
+    ],
+    "requiredAssertions": [
+      "Each malformed present container disables/rejects the current authoring/compiled envelope predicate before default normalization.",
+      "The authoritative current battlefield fixture retains ordinary split pools: vpReward=2, baseVpPerWinner=3, competition=1 and location=3 per tied winner; do not reuse historical full=5 numerics.",
+      "Valid absent optional fields and canonical loader-generated compiled responseWindow/allowedOperations still admit the accepted static passive; normal full pools remain vpReward=4/baseVpPerWinner=6 with competition=2/location=6 in the CURRENT fixture.",
+      "Existing losing/inactive/face-down, single winner, duplicate modifier and Remote Operation controls remain unchanged.",
+      "Pure classification does not mutate the definition/input. Valid battle progression still occurs normally; do not demand whole battle state to stay unchanged merely because an invalid modifier was ignored."
+    ],
+    "plannedFocusedCommand": "npx vitest run packages/rules/tests/fb2-34-combat-reward-distribution.test.ts packages/rules/tests/stheno-consumer-migration.test.ts --maxWorkers=2",
+    "plannedVerification": "Scoped red/green, typecheck, diff-check, and relevant compatibility checks after fresh Planner authorization; full CI only in a granted noncompeting window. No commands in this plan have been executed by A.",
+    "entryConditions": [
+      "Planner accepts this selection and issues a named runtime task plus literal file/domain reservation.",
+      "Fresh competing-writer check for loader.ts and the FB2-34 test; B11 closure release is not a successor grant.",
+      "RB confirms the current accepted FB2-34 envelope boundary; if the reproduction or absent-field compatibility differs, return one contract conflict instead of widening the task.",
+      "Preserve all existing assertions; no timeout/skip/retry changes, no card-specific repair or new migration credit."
+    ],
+    "excluded": [
+      "Stheno sc3 migration",
+      "old PR474/475 branch merges",
+      "MatchSession/persistence/runtime trust changes",
+      "server/socket/revision repairs",
+      "authoring/generated JSON",
+      "power/lifecycle/trigger family expansion",
+      "package/workflow",
+      "Gate/promotion/credit updates"
+    ]
+  },
+  "boundaries": {
+    "runtimeWrites": false,
+    "runtimeOrRegressionTestsExecuted": 0,
+    "heavyTestsExecuted": false,
+    "automaticBAssignment": false,
+    "newRuntimeAcceptance": false,
+    "gateC": "NOT_VERIFIED",
+    "sourceAssets": "93_MISSING_IMAGE_RETAINED_NOT_REAUDITED",
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0,
+    "ledger": "111/944_RETAINED_NOT_RECOUNTED"
+  },
+  "nextOwner": "Reviewer A / Planner; B remains read-only until a named task and reservation",
+  "ancestry": [
+    {
+      "candidate": "99032d4458352ecdee26dd8964b46ce4e094c0f3",
+      "observedMainSha": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "isAncestor": true,
+      "exitCode": 0
+    },
+    {
+      "candidate": "0f62210a2e007a15e28f945c546ccd00c345942a",
+      "observedMainSha": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "isAncestor": true,
+      "exitCode": 0
+    },
+    {
+      "candidate": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+      "observedMainSha": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "isAncestor": false,
+      "exitCode": 1,
+      "mergeBase": "4b52b3166ed2ba0efaa4569ee95c6513fd26ab2f"
+    },
+    {
+      "candidate": "fe4653d1013110555881585db3a447880dd463d3",
+      "observedMainSha": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "isAncestor": false,
+      "exitCode": 1,
+      "mergeBase": "4b52b3166ed2ba0efaa4569ee95c6513fd26ab2f"
+    }
+  ],
+  "currentShapePredicate": {
+    "path": "packages/rules/src/ability/loader.ts",
+    "line": 73,
+    "helper": "isAcceptedStaticCombatRewardDistributionAbility",
+    "sourceText": "export function isAcceptedStaticCombatRewardDistributionAbility(\n  rawAbility: RuleNode,\n  form: 'authoring' | 'compiled' = 'authoring',\n): boolean {\n  if (str(rawAbility.kind) !== 'passive') return false;\n  const responseWindow = node(rawAbility.responseWindow);\n  const responseKeys = Object.keys(responseWindow);\n  const responseAccepted = form === 'authoring'\n    ? responseKeys.length === 0\n    : responseWindow.order === 'turn_order' && responseWindow.passBehavior === 'decline_this_window' &&\n      responseKeys.length === 2 && responseKeys.every((key) => ['order', 'passBehavior'].includes(key));\n  if (Object.keys(node(rawAbility.activation)).length !== 0 ||\n    nodes(rawAbility.conditions).length !== 0 || nodes(rawAbility.targets).length !== 0 ||\n    (Array.isArray(rawAbility.cost) ? nodes(rawAbility.cost).length !== 0 : rawAbility.cost !== undefined) ||\n    nodes(rawAbility.effects).length !== 0 || nodes(rawAbility.creates).length !== 0 ||\n    Object.keys(node(rawAbility.lifecycle)).length !== 0 || !responseAccepted ||\n    Object.keys(node(rawAbility.limit)).length !== 0 || Object.keys(node(rawAbility.visibility)).length !== 0 ||\n    (Array.isArray(rawAbility.markers) && rawAbility.markers.length !== 0) || rawAbility.copies !== undefined || rawAbility.transforms !== undefined) return false;\n  const modifiers = nodes(rawAbility.ruleModifiers);\n  if (modifiers.length !== 1) return false;\n  const modifier = modifiers[0]!;\n  const scope = node(modifier.scope);\n  if (modifier.operation !== 'replace' || modifier.rule !== 'combat_reward_distribution' ||\n    str(scope.subject) !== 'controller' || scope.whenControllerWins !== true || str(scope.mode) !== 'full_reward_each') return false;\n  if (!Object.keys(scope).every((key) => ['subject', 'whenControllerWins', 'mode'].includes(key))) return false;\n  if (!Object.keys(modifier).every((key) => ['id', 'printedClause', 'operation', 'rule', 'scope'].includes(key))) return false;\n  const execution = node(rawAbility.execution);\n  if (str(execution.mode || 'automatic') !== 'automatic' ||\n    !Object.keys(execution).every((key) => ['mode', 'hostOps', 'allowedOperations'].includes(key))) return false;\n  if (form === 'authoring') {\n    for (const key of ['hostOps', 'allowedOperations']) {\n      if (execution[key] !== undefined && (!Array.isArray(execution[key]) || (execution[key] as unknown[]).length !== 0)) return false;\n    }\n  } else {\n    if (execution.hostOps !== undefined) return false;\n    if (!Array.isArray(execution.allowedOperations)) return false;\n    const allowed = execution.allowedOperations as unknown[];\n    const isExplicitEmpty = allowed.length === 0;\n    const isLoaderDefault = allowed.length === hostOperations.length &&\n      hostOperations.every((operation, index) => allowed[index] === operation);\n    if (!isExplicitEmpty && !isLoaderDefault) return false;\n  }\n  return true;\n}",
+    "sourceTextSha256": "BB0CA583E5B170905F5331CC76C7266C808B151C38E181361E8EE492171221AD",
+    "acceptedDependencyFunctionUnchanged": true,
+    "dependencyFunctionSha256": "BB0CA583E5B170905F5331CC76C7266C808B151C38E181361E8EE492171221AD",
+    "analysisMethod": "STATIC_TEXT_AND_CALL_CHAIN_ONLY_NOT_RUNTIME_EXECUTION"
+  },
+  "selectorAudit": {
+    "rewardFile": "packages/rules/tests/fb2-34-combat-reward-distribution.test.ts",
+    "existingSelectors": [
+      "loader accepts only the exact static passive full_reward_each envelope",
+      "preserves the exact semantic through loadAuthoringJson into the compiled runtime pack",
+      "replaces winner-count splitting with full event, competition, and location rewards",
+      "does not alter distribution for a losing, inactive, or face-down source",
+      "is neutral for a sole winner",
+      "is idempotent across duplicate winning modifiers and does not multiply Remote Operation",
+      "fails closed at runtime for a malformed near-match even if injected outside the loader"
+    ],
+    "currentMissingMatrix": [
+      "activation",
+      "lifecycle",
+      "limit",
+      "visibility"
+    ],
+    "auditMethod": "Full focused-file read plus current predicate caller/selector searches; not exhaustive semantic execution"
+  },
+  "restoreApplicability": {
+    "cardIds": [
+      "servant.stheno.skill.sc-stheno-1",
+      "servant.stheno.skill.sc-stheno-2"
+    ],
+    "historicalSc3Present": false,
+    "namedHistoricalTransactionPresent": false,
+    "ownerTestExplicitlyExcludesSc2FromProductionPack": true,
+    "dynamicCurrentRestoreOutcome": "NOT_VERIFIED"
+  },
+  "securityRevisionSourceComparison": [
+    {
+      "path": "packages/rules/tests/match-room.test.ts",
+      "runtimeCandidate": "0f62210a2e007a15e28f945c546ccd00c345942a",
+      "candidateBlob": "92332015cd932056143f2ecc57d5ce7f59f790e3",
+      "observedMainBlob": "92332015cd932056143f2ecc57d5ce7f59f790e3",
+      "byteEquivalent": true
+    },
+    {
+      "path": "packages/rules/tests/match-room-hub.test.ts",
+      "runtimeCandidate": "0f62210a2e007a15e28f945c546ccd00c345942a",
+      "candidateBlob": "d2c95bf2c918aa929b817bd472fa03d6b5c9f4cf",
+      "observedMainBlob": "d2c95bf2c918aa929b817bd472fa03d6b5c9f4cf",
+      "byteEquivalent": true
+    },
+    {
+      "path": "apps/server/src/match-server.test.ts",
+      "runtimeCandidate": "0f62210a2e007a15e28f945c546ccd00c345942a",
+      "candidateBlob": "10248b72cc9a032bfefc7280d6fc44c529b5d56e",
+      "observedMainBlob": "10248b72cc9a032bfefc7280d6fc44c529b5d56e",
+      "byteEquivalent": true
+    },
+    {
+      "path": "packages/rules/src/match-room.ts",
+      "runtimeCandidate": "0f62210a2e007a15e28f945c546ccd00c345942a",
+      "candidateBlob": "0c4bc3fd8482e2117931d2eed621fee798720fb5",
+      "observedMainBlob": "0c4bc3fd8482e2117931d2eed621fee798720fb5",
+      "byteEquivalent": true
+    },
+    {
+      "path": "packages/rules/src/match-room-hub.ts",
+      "runtimeCandidate": "0f62210a2e007a15e28f945c546ccd00c345942a",
+      "candidateBlob": "f35f25eb62bca10b38e4058db79fc25a55064086",
+      "observedMainBlob": "f35f25eb62bca10b38e4058db79fc25a55064086",
+      "byteEquivalent": true
+    },
+    {
+      "path": "apps/server/src/match-server.ts",
+      "runtimeCandidate": "0f62210a2e007a15e28f945c546ccd00c345942a",
+      "candidateBlob": "47c82a648c43a5bd7debbbada2ba5f6d73db44e4",
+      "observedMainBlob": "47c82a648c43a5bd7debbbada2ba5f6d73db44e4",
+      "byteEquivalent": true
+    }
+  ],
+  "contractAttestation": {
+    "command": "gh api repos/binchen648/fd/issues/comments/5744013376",
+    "exitCode": 0,
+    "observedAt": "2026-10-13T10:29:53.530Z",
+    "raw": "{\"url\":\"https://api.github.com/repos/binchen648/fd/issues/comments/5744013376\",\"html_url\":\"https://github.com/binchen648/fd/pull/378#issuecomment-5744013376\",\"issue_url\":\"https://api.github.com/repos/binchen648/fd/issues/378\",\"id\":5744013376,\"node_id\":\"IC_kwDOURHaic8AAAABVl6wQA\",\"user\":{\"login\":\"fengling20011118-dotcom\",\"id\":319450386,\"node_id\":\"U_kgDOEwptEg\",\"avatar_url\":\"https://avatars.githubusercontent.com/u/319450386?u=845bc5587f4adb2a61cd76ed23b627b8ed916317&v=4\",\"gravatar_id\":\"\",\"url\":\"https://api.github.com/users/fengling20011118-dotcom\",\"html_url\":\"https://github.com/fengling20011118-dotcom\",\"followers_url\":\"https://api.github.com/users/fengling20011118-dotcom/followers\",\"following_url\":\"https://api.github.com/users/fengling20011118-dotcom/following{/other_user}\",\"gists_url\":\"https://api.github.com/users/fengling20011118-dotcom/gists{/gist_id}\",\"starred_url\":\"https://api.github.com/users/fengling20011118-dotcom/starred{/owner}{/repo}\",\"subscriptions_url\":\"https://api.github.com/users/fengling20011118-dotcom/subscriptions\",\"organizations_url\":\"https://api.github.com/users/fengling20011118-dotcom/orgs\",\"repos_url\":\"https://api.github.com/users/fengling20011118-dotcom/repos\",\"events_url\":\"https://api.github.com/users/fengling20011118-dotcom/events{/privacy}\",\"received_events_url\":\"https://api.github.com/users/fengling20011118-dotcom/received_events\",\"type\":\"User\",\"user_view_type\":\"public\",\"site_admin\":false},\"created_at\":\"2026-09-19T17:41:26Z\",\"updated_at\":\"2026-09-19T17:41:26Z\",\"author_association\":\"COLLABORATOR\",\"body\":\"﻿## Fresh independent R review — P3-FB2-34\\n\\n**Verdict:** `IMPLEMENTATION_ACCEPTED_CANDIDATE`\\n\\n- PR: #378\\n- Base: `44339c2ba405d2a4b798b53522e51e1fb11e4121`\\n- Candidate: `99032d4458352ecdee26dd8964b46ce4e094c0f3`\\n- Branch: `codex/b2-p3-fb2-34-combat-reward-distribution`\\n- Task: `P3-FB2-34`\\n\\n### Mechanical recovery\\n\\nRecovered independently from Git/GitHub/repo reports, not Coordinator chat:\\n\\n- GitHub PR `baseRefOid` = exact Base above and `headRefOid` = exact Candidate above; rechecked immediately before evidence publication.\\n- Contract recovered from Base `docs/reports/2026-09-20-p3-a-fb2-34-combat-reward-distribution-dispatch.md` plus `docs/agents/PHASE3-TASK-INDEX.md`.\\n- Authorized implementation surface: generic loader admission, combat reward-distribution scoring runtime, focused tests, one result report. No consumer migration; formal migration credit remains `136/944` and this task is zero-credit infrastructure.\\n- Base..Candidate changes exactly four paths:\\n  - `docs/reports/2026-09-20-p3-fb2-34-combat-reward-distribution-result.md`\\n  - `packages/rules/src/ability/loader.ts`\\n  - `packages/rules/src/core/combat-resolver.ts`\\n  - `packages/rules/tests/fb2-34-combat-reward-distribution.test.ts`\\n\\n### Review findings\\n\\nThe previous review blocker on Candidate `996e7a7c5b294f4d6208ca7ec473d0ef6adccf27` is closed in this Candidate.\\n\\n1. `isAcceptedStaticCombatRewardDistributionAbility` now distinguishes the raw authoring form from the normalized compiled form. Raw authoring still requires the exact static passive envelope; compiled form accepts only the loader's exact canonical response window and either explicit-empty or the exact loader-default host-operation allowlist.\\n2. `combat-resolver.ts` explicitly requests the compiled form, so a real `loadAuthoringJson -> initializeAbilityRuntime -> resolveBattlefield` path now preserves the semantic instead of silently losing it after loader normalization.\\n3. Runtime routing remains structural and fail-closed: source must be a physical card controlled by a winner, in `field`/`attack_area`, runtime-active, face-up, and backed by a compiled definition containing the exact accepted modifier shape. Missing definition/state, losing controller, inactive/face-down source, malformed near-match all do not activate it.\\n4. Scoring change is confined to shared event / competition / location VP pool distribution. Winner selection, participant Power, defeat/exclusion handling, military adjustments, and individual bonuses remain on the existing paths. Duplicate qualifying modifiers are boolean/idempotent; sole-winner behavior is neutral.\\n5. Production diff contains no Stheno/Napoleon identity routing, Locked Reference/F1 hash routing, or `core.structured-skill` handler routing. No authoring/generated product/data/phase3/taxonomy/app migration changes are present.\\n\\nNon-blocking metadata note: the PR description text still names the prior Candidate `996e7a7c...` and the former 6-test focused count, while the authoritative GitHub head OID and checked-in Candidate result report are current at `99032d4...` / 7 focused tests.\\n\\n### Fresh validation on exact Candidate\\n\\nReviewer worktree: existing clean detached reviewer worktree `E:\\\\Codex\\\\FD\\\\fd-review-job-mu7tsihv-2ge20d2`, moved from the prior reviewed commit to the exact Candidate. Candidate branch worktree was not modified.\\n\\nDependency protocol: `node_modules` already existed and Base/Candidate `package-lock.json` blobs were identical (`d7844d900ba14635d4b8d2c50ac4954cbc9c0a93`), so `npm ci` was intentionally not run.\\n\\n- `npm.cmd run typecheck` — PASS. This was run before focused Vitest as required.\\n- focused `packages/rules/tests/fb2-34-combat-reward-distribution.test.ts` — PASS, `1 file / 7 tests`.\\n- rules core + regression + focused — PASS, `79 files / 489 tests`.\\n- `npm.cmd run test:ci` — PASS, `148 files / 1039 tests`.\\n- `npm.cmd run content:validate` — PASS, `7 masters / 7 servants / 20 events / 0 blocking issues`.\\n- `npm.cmd run verify:generated-content` — PASS, unchanged hashes:\\n  - content library `866a5b4249933b172bfebd7548c796a09fdbcf0bd6890929555a398dfa77e736`\\n  - fixture `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`\\n  - evidence report `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`\\n- Locked Reference verifier — PASS against clean `E:\\\\Codex\\\\FD\\\\fd-reference` at exact `b2f9fa15fba07c63530bbf4612b03b8b704755f9` and expected repository. The first no-argument invocation only printed required `--reference-root` usage; corrected reviewer invocation then passed. This is a reviewer invocation issue, not a Candidate failure.\\n- client production build — PASS; only existing Vite `node:crypto` browser-externalization warning.\\n- `git diff --check Base..Candidate` — PASS.\\n- production identity/hash/handler audit — PASS.\\n- reviewer worktree final tracked status — clean.\\n- Candidate worktree final status — clean at exact Candidate.\\n- PR final Base/Head recheck — exact Base/Candidate above, PR still OPEN.\\n\\nNo blocking implementation defect found under the recovered P3-FB2-34 review contract.\\r\\n\",\"reactions\":{\"url\":\"https://api.github.com/repos/binchen648/fd/issues/comments/5744013376/reactions\",\"total_count\":0,\"+1\":0,\"-1\":0,\"laugh\":0,\"hooray\":0,\"confused\":0,\"heart\":0,\"rocket\":0,\"eyes\":0},\"performed_via_github_app\":null,\"minimized\":null,\"pin\":null}",
+    "rawSha256": "B23D6DC0D711E7A9B922C3C7E8D6E00C7E216A1F0641EE0E6320352B623F37DB",
+    "id": 5744013376,
+    "url": "https://github.com/binchen648/fd/pull/378#issuecomment-5744013376",
+    "author": "fengling20011118-dotcom",
+    "scope": "Historical exact FB2-34 acceptance only, no current-main credit or new negative execution"
+  },
+  "preflight": {
+    "toolCandidate": "36de92a0536d7bc06a47f61c8484a51f4e981dfc",
+    "reviewCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+    "workingDirectory": "D:/fd-validation/a-efp-k02",
+    "taskMetadata": {
+      "taskId": "P3-EFP-K03-A",
+      "capabilityFamily": "COMPILED_ENVELOPE_FAIL_CLOSED",
+      "semanticContracts": [
+        "COMPILED_ENVELOPE_FAIL_CLOSED",
+        "FULL_REWARD_EACH",
+        "AUTHENTICATED_CONTINUATION",
+        "NESTED_INTERACTION_RESTORE",
+        "IDENTITY_SECURITY",
+        "MUTATION_REVISION_GATE"
+      ],
+      "expectedChangedFiles": [
+        "docs/engineering/lessons/K03-CURRENT-MAIN-GAP-SELECTION.json",
+        "docs/engineering/lessons/K03-CURRENT-MAIN-GAP-SELECTION.md"
+      ],
+      "runtimeDomains": [
+        "ability-runtime",
+        "battle-reward",
+        "persistence",
+        "session-authority",
+        "server-transport"
+      ],
+      "exactBaseSha": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "selectedIdentities": [
+        "servant.stheno.skill.sc-stheno-2",
+        "servant.stheno.skill.sc-stheno-3"
+      ],
+      "reservationReference": "docs/agents/P3-EFP-K02-ACCEPTANCE-AND-INTEGRATION.md"
+    },
+    "command": "node --import tsx scripts/engineering/historical-failure-preflight.ts --task .cache/historical-failure-preflight/k03-task.json --limit 5 --cache .cache/historical-failure-preflight/k03-cache.json",
+    "startedAt": "2026-10-13T10:29:53.531Z",
+    "finishedAt": "2026-10-13T10:29:57.488Z",
+    "exitCode": 0,
+    "stdout": {
+      "raw": "{\n  \"status\": \"CHECKED\",\n  \"automationAvailable\": true,\n  \"acceptanceGranted\": false,\n  \"runtimeTestsExecuted\": 0,\n  \"taskId\": \"P3-EFP-K03-A\",\n  \"exactBaseSha\": \"219d47c8dcc2b8118f2d3f6b37f51ce465e737cb\",\n  \"selected\": [\n    {\n      \"id\": \"FD-SHAPE-003\",\n      \"score\": 20,\n      \"risk\": \"HIGH\",\n      \"reasons\": [\n        \"contract:COMPILED_ENVELOPE_FAIL_CLOSED:+6\",\n        \"contract:FULL_REWARD_EACH:+6\",\n        \"domain:ability-runtime:+3\",\n        \"domain:battle-reward:+3\",\n        \"family:COMPILED_ENVELOPE_FAIL_CLOSED:+2\"\n      ],\n      \"catalogState\": \"SOURCE_VERIFIED_DRAFT\",\n      \"knowledgeState\": \"ACCEPTED_EXTRACTION_ONLY\",\n      \"invariants\": [\n        \"Absent optional fields and malformed present fields remain distinguishable at privileged runtime gateways.\"\n      ],\n      \"forbiddenPatterns\": [\n        \"Converting malformed supplied objects/arrays to an empty default before semantic validation.\"\n      ],\n      \"negativeObligations\": [\n        \"Each of four malformed compiled containers must disable/reject the privileged gateway while minimal valid absent-field passive remains supported.\"\n      ],\n      \"commands\": [\n        \"npx vitest run packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts --maxWorkers=2\"\n      ],\n      \"constraintsState\": \"PINNED_DOCUMENT_CONSTRAINTS\",\n      \"source\": {\n        \"commit\": \"b22691ab5311cd31f60eb91d573416fea3c7cf98\",\n        \"path\": \"docs/reviews/2026-10-10-pr-474-review.md\",\n        \"sha256\": \"f588a8b7062e7d57739e1f02b24bf7d939e06a8f203a5542ab374ba7f2f93adc\",\n        \"availability\": \"VERIFIED_PINNED_BYTES\",\n        \"sourceReviewRelationship\": \"HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE\"\n      },\n      \"sourceRelationship\": \"HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE\",\n      \"historicalTestStatus\": \"MISSING_ENFORCING_NEGATIVE_NOT_MISSING_ALL_TEST_FILES\",\n      \"currentBaseCoverage\": \"NOT_VERIFIED\",\n      \"regressions\": [\n        {\n          \"path\": \"packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts\",\n          \"pinnedSha\": \"4dd8eca5746d63d72c7906716cb7118e2569872a\",\n          \"pinned\": {\n            \"path\": \"packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"a4c32bd6a919b78551bc154f1a02c0fa9d96e859\"\n          },\n          \"currentBase\": {\n            \"path\": \"packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        },\n        {\n          \"path\": \"docs/reviews/probes/review-474-independent.mjs\",\n          \"pinnedSha\": \"4dd8eca5746d63d72c7906716cb7118e2569872a\",\n          \"pinned\": {\n            \"path\": \"docs/reviews/probes/review-474-independent.mjs\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"currentBase\": {\n            \"path\": \"docs/reviews/probes/review-474-independent.mjs\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"role\": \"REVIEWER_PROBE_NOT_ENFORCING_REGRESSION\"\n        }\n      ]\n    },\n    {\n      \"id\": \"FD-RESTORE-004\",\n      \"score\": 18,\n      \"risk\": \"HIGH\",\n      \"reasons\": [\n        \"contract:AUTHENTICATED_CONTINUATION:+6\",\n        \"contract:NESTED_INTERACTION_RESTORE:+6\",\n        \"domain:ability-runtime:+3\",\n        \"domain:persistence:+3\"\n      ],\n      \"catalogState\": \"SOURCE_VERIFIED_DRAFT\",\n      \"knowledgeState\": \"ACCEPTED_EXTRACTION_ONLY\",\n      \"invariants\": [\n        \"Every legal authenticated pending pause must round-trip; unrelated/orphan continuations must still reject.\"\n      ],\n      \"forbiddenPatterns\": [\n        \"Requiring the outer waiting transaction to be the currently nested interaction owner without representing the authenticated relationship.\"\n      ],\n      \"negativeObligations\": [\n        \"Round-trip at each real response/choice pause; separately reject orphan, unrelated, forged or mismatched parent continuations.\"\n      ],\n      \"commands\": [\n        \"npx vitest run packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=2\"\n      ],\n      \"constraintsState\": \"PINNED_DOCUMENT_CONSTRAINTS\",\n      \"source\": {\n        \"commit\": \"7e65291a4fa10170e249bc492617ef337caf7f8a\",\n        \"path\": \"docs/reviews/2026-10-10-pr-475-review.md\",\n        \"sha256\": \"8c67cfe179e02ece25b6581ee2a23ed776ebf4e95eeaa2a93b2e8d59dc1d7cf6\",\n        \"availability\": \"VERIFIED_PINNED_BYTES\",\n        \"sourceReviewRelationship\": \"HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE\"\n      },\n      \"sourceRelationship\": \"HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE\",\n      \"historicalTestStatus\": \"MISSING_ENFORCING_NEGATIVE_NOT_MISSING_ALL_TEST_FILES\",\n      \"currentBaseCoverage\": \"NOT_VERIFIED\",\n      \"regressions\": [\n        {\n          \"path\": \"packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts\",\n          \"pinnedSha\": \"fe4653d1013110555881585db3a447880dd463d3\",\n          \"pinned\": {\n            \"path\": \"packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"71eceaa9eb11f47715f15daa4ac187c495beacc9\"\n          },\n          \"currentBase\": {\n            \"path\": \"packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        },\n        {\n          \"path\": \"packages/rules/tests/match-session.test.ts\",\n          \"pinnedSha\": \"fe4653d1013110555881585db3a447880dd463d3\",\n          \"pinned\": {\n            \"path\": \"packages/rules/tests/match-session.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"43f5b7fb959cc67cedc31c7336145d39276d7c0c\"\n          },\n          \"currentBase\": {\n            \"path\": \"packages/rules/tests/match-session.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"a95ef79efb7086ec992794c45c0358428e7e2e6c\"\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        },\n        {\n          \"path\": \"docs/reviews/probes/review-475-independent.mjs\",\n          \"pinnedSha\": \"fe4653d1013110555881585db3a447880dd463d3\",\n          \"pinned\": {\n            \"path\": \"docs/reviews/probes/review-475-independent.mjs\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"currentBase\": {\n            \"path\": \"docs/reviews/probes/review-475-independent.mjs\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"role\": \"REVIEWER_PROBE_NOT_ENFORCING_REGRESSION\"\n        }\n      ]\n    },\n    {\n      \"id\": \"FD-SEC-001\",\n      \"score\": 12,\n      \"risk\": \"CRITICAL\",\n      \"reasons\": [\n        \"contract:IDENTITY_SECURITY:+6\",\n        \"domain:session-authority:+3\",\n        \"domain:server-transport:+3\"\n      ],\n      \"catalogState\": \"SOURCE_VERIFIED_DRAFT\",\n      \"knowledgeState\": \"ACCEPTED_EXTRACTION_ONLY\",\n      \"invariants\": [\n        \"Credentials remain server-private and unpredictable. Existing identities require authenticated reconnect proof. Rejection preserves state, revision, room version, logs and private projections.\"\n      ],\n      \"forbiddenPatterns\": [\n        \"Public credential DTOs, public-identifier-derived secrets, duplicate join adoption of an existing identity.\"\n      ],\n      \"negativeObligations\": [\n        \"Spectator secret extraction, duplicate host join, old deterministic guess, wrong-client credential and raw WS impersonation all reject; valid reconnect still works.\"\n      ],\n      \"commands\": [\n        \"npx vitest run apps/server/src/match-server.test.ts packages/rules/tests/match-room.test.ts --maxWorkers=2\"\n      ],\n      \"constraintsState\": \"PINNED_DOCUMENT_CONSTRAINTS\",\n      \"source\": {\n        \"commit\": \"cf179ca3220a1646c484aa8c660b313e64449488\",\n        \"path\": \"docs/reviews/phase3/P3-E08-B11-463facb-final-combination-reviewer-b.json\",\n        \"sha256\": \"051f5e95c74e9c78546c391fd60f041d9baef29fbba857ec455a598f8d2395bf\",\n        \"availability\": \"VERIFIED_PINNED_BYTES\",\n        \"sourceReviewRelationship\": \"HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE\"\n      },\n      \"sourceRelationship\": \"HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE\",\n      \"historicalTestStatus\": \"EXISTS\",\n      \"currentBaseCoverage\": \"NOT_VERIFIED\",\n      \"regressions\": [\n        {\n          \"path\": \"apps/server/src/match-server.test.ts\",\n          \"pinnedSha\": \"0f62210a2e007a15e28f945c546ccd00c345942a\",\n          \"pinned\": {\n            \"path\": \"apps/server/src/match-server.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"10248b72cc9a032bfefc7280d6fc44c529b5d56e\"\n          },\n          \"currentBase\": {\n            \"path\": \"apps/server/src/match-server.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"10248b72cc9a032bfefc7280d6fc44c529b5d56e\"\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        },\n        {\n          \"path\": \"packages/rules/tests/match-room.test.ts\",\n          \"pinnedSha\": \"0f62210a2e007a15e28f945c546ccd00c345942a\",\n          \"pinned\": {\n            \"path\": \"packages/rules/tests/match-room.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"92332015cd932056143f2ecc57d5ce7f59f790e3\"\n          },\n          \"currentBase\": {\n            \"path\": \"packages/rules/tests/match-room.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"92332015cd932056143f2ecc57d5ce7f59f790e3\"\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        }\n      ]\n    },\n    {\n      \"id\": \"FD-REV-002\",\n      \"score\": 12,\n      \"risk\": \"HIGH\",\n      \"reasons\": [\n        \"contract:MUTATION_REVISION_GATE:+6\",\n        \"domain:session-authority:+3\",\n        \"domain:server-transport:+3\"\n      ],\n      \"catalogState\": \"SOURCE_VERIFIED_DRAFT\",\n      \"knowledgeState\": \"ACCEPTED_EXTRACTION_ONLY\",\n      \"invariants\": [\n        \"Every scoped mutation entry point requires a finite safe integer matching current revision before any state change; rejection is atomic.\"\n      ],\n      \"forbiddenPatterns\": [\n        \"Optional revision on mutation commands or separate permissive end-turn gate.\"\n      ],\n      \"negativeObligations\": [\n        \"Missing, null, string, negative, fractional, oversized and stale revisions reject for dispatch and end_turn via direct Hub and real WS; state/pending/logs/revision/version/broadcast remain unchanged.\"\n      ],\n      \"commands\": [\n        \"npx vitest run apps/server/src/match-server.test.ts packages/rules/tests/match-room-hub.test.ts --maxWorkers=2\"\n      ],\n      \"constraintsState\": \"PINNED_DOCUMENT_CONSTRAINTS\",\n      \"source\": {\n        \"commit\": \"cf179ca3220a1646c484aa8c660b313e64449488\",\n        \"path\": \"docs/reviews/phase3/P3-E08-B11-463facb-final-combination-reviewer-b.json\",\n        \"sha256\": \"051f5e95c74e9c78546c391fd60f041d9baef29fbba857ec455a598f8d2395bf\",\n        \"availability\": \"VERIFIED_PINNED_BYTES\",\n        \"sourceReviewRelationship\": \"HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE\"\n      },\n      \"sourceRelationship\": \"HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE\",\n      \"historicalTestStatus\": \"EXISTS\",\n      \"currentBaseCoverage\": \"NOT_VERIFIED\",\n      \"regressions\": [\n        {\n          \"path\": \"apps/server/src/match-server.test.ts\",\n          \"pinnedSha\": \"0f62210a2e007a15e28f945c546ccd00c345942a\",\n          \"pinned\": {\n            \"path\": \"apps/server/src/match-server.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"10248b72cc9a032bfefc7280d6fc44c529b5d56e\"\n          },\n          \"currentBase\": {\n            \"path\": \"apps/server/src/match-server.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"10248b72cc9a032bfefc7280d6fc44c529b5d56e\"\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        },\n        {\n          \"path\": \"packages/rules/tests/match-room-hub.test.ts\",\n          \"pinnedSha\": \"0f62210a2e007a15e28f945c546ccd00c345942a\",\n          \"pinned\": {\n            \"path\": \"packages/rules/tests/match-room-hub.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"d2c95bf2c918aa929b817bd472fa03d6b5c9f4cf\"\n          },\n          \"currentBase\": {\n            \"path\": \"packages/rules/tests/match-room-hub.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"d2c95bf2c918aa929b817bd472fa03d6b5c9f4cf\"\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        }\n      ]\n    }\n  ],\n  \"overflow\": [],\n  \"unknown\": [\n    {\n      \"id\": \"FD-SHA-007\",\n      \"decision\": \"NOT_ADDED_UNKNOWN\",\n      \"reason\": \"27dab1ad proves missing review-reference contract, not wrong candidate/reviewer SHA; no terminal identity mismatch finding selected\"\n    },\n    {\n      \"id\": \"FD-FALLBACK-008\",\n      \"decision\": \"NOT_ADDED_UNKNOWN\",\n      \"reason\": \"No pinned failing setup/data-flow source in assigned selection; later closed-fallback declarations cannot establish a historical failure\"\n    },\n    {\n      \"id\": \"FD-REVIEW-009\",\n      \"decision\": \"NOT_ADDED_UNKNOWN\",\n      \"reason\": \"PR475 records separate historical relay and independent review; it does not prove relay was mistaken for this review\"\n    },\n    {\n      \"id\": \"FD-WRITER-010\",\n      \"decision\": \"NOT_ADDED_UNKNOWN\",\n      \"reason\": \"Reservation boundary records do not prove an actual competing writer or conflict occurrence\"\n    }\n  ],\n  \"historicalRisk\": \"CRITICAL\",\n  \"cacheHit\": true,\n  \"elapsedMs\": 3712.66,\n  \"synthetic\": false,\n  \"inputDigest\": \"1863f1e5eae17c770483bfc83382f7d52743260f3e35d3b2b0a380fab5b28ad7\",\n  \"knowledgeDigest\": \"3ae0f2ab502bed1890975c42957918a2d8ccd0c7f0754318ec8e8ec8987a5587\",\n  \"sourceDigest\": \"5231e8028d5b9079d88c2aafadf1841d62f4193ba94fa2d26f22686b20326407\",\n  \"engineDigest\": \"654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371\",\n  \"cacheKey\": \"49fe61cf431053b177166378a67734d3c28dc8276e29b484bbd18e54e99ef07f\",\n  \"relevantSourceObjects\": [\n    {\n      \"path\": \"apps/server/src/match-server.test.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"10248b72cc9a032bfefc7280d6fc44c529b5d56e\"\n    },\n    {\n      \"path\": \"apps/server/src/match-server.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"47c82a648c43a5bd7debbbada2ba5f6d73db44e4\"\n    },\n    {\n      \"path\": \"data/authoring/servants/servant.stheno.json\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"21ebf0d3ff1df23ea8aa16b6ba362d7f6eee3ffb\"\n    },\n    {\n      \"path\": \"docs/engineering/lessons/K03-CURRENT-MAIN-GAP-SELECTION.json\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"docs/engineering/lessons/K03-CURRENT-MAIN-GAP-SELECTION.md\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"docs/reviews/probes/review-474-independent.mjs\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"docs/reviews/probes/review-475-independent.mjs\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"packages/rules/src/ability/combat-reward-distribution.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"packages/rules/src/ability/interpreter.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"25f17fe843a9a05650722e996f0ce97109cfadbe\"\n    },\n    {\n      \"path\": \"packages/rules/src/match-room-hub.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"f35f25eb62bca10b38e4058db79fc25a55064086\"\n    },\n    {\n      \"path\": \"packages/rules/src/match-room-protocol.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"12bc2a58f1ffdc5cd3634725ababa46a7a984756\"\n    },\n    {\n      \"path\": \"packages/rules/src/match-room.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"0c4bc3fd8482e2117931d2eed621fee798720fb5\"\n    },\n    {\n      \"path\": \"packages/rules/src/match-session.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"3418ff800b605a6a6e8c93f76eb072699c5c6378\"\n    },\n    {\n      \"path\": \"packages/rules/tests/match-room-hub.test.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"d2c95bf2c918aa929b817bd472fa03d6b5c9f4cf\"\n    },\n    {\n      \"path\": \"packages/rules/tests/match-room.test.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"92332015cd932056143f2ecc57d5ce7f59f790e3\"\n    },\n    {\n      \"path\": \"packages/rules/tests/match-session.test.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"a95ef79efb7086ec992794c45c0358428e7e2e6c\"\n    },\n    {\n      \"path\": \"packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    }\n  ],\n  \"workingTreeRelevantObjects\": [\n    {\n      \"path\": \"apps/server/src/match-server.test.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"73476c9f95227699b0ff010dbbab2432b10de0661de4bef9a760e38b2492feab\"\n    },\n    {\n      \"path\": \"apps/server/src/match-server.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"7e0bc3114887fe34966f64654e0d6612e8e96df8fd5289e9d26885bd0aba2758\"\n    },\n    {\n      \"path\": \"data/authoring/servants/servant.stheno.json\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"ff23d09f28388c5665881522a304695bbf2c9ae0df74fdb27162954447c855f1\"\n    },\n    {\n      \"path\": \"docs/engineering/lessons/K03-CURRENT-MAIN-GAP-SELECTION.json\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    },\n    {\n      \"path\": \"docs/engineering/lessons/K03-CURRENT-MAIN-GAP-SELECTION.md\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    },\n    {\n      \"path\": \"docs/reviews/probes/review-474-independent.mjs\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    },\n    {\n      \"path\": \"docs/reviews/probes/review-475-independent.mjs\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    },\n    {\n      \"path\": \"packages/rules/src/ability/combat-reward-distribution.ts\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    },\n    {\n      \"path\": \"packages/rules/src/ability/interpreter.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"b2c8bb82836eb7291afc0ef5850103665e954b5ae3525066ab98f25a2e6a80d1\"\n    },\n    {\n      \"path\": \"packages/rules/src/match-room-hub.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"54cf729dba698e4d73e95c61e7feb9cb7cc279bd17bbe43dc10fab93620f3fa6\"\n    },\n    {\n      \"path\": \"packages/rules/src/match-room-protocol.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"519e594130a70d78ab38f00dd45ec7c04dc359dc4b3c069e92be50aea53d50c2\"\n    },\n    {\n      \"path\": \"packages/rules/src/match-room.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"c11bd950b01524c5d988b35d60cf6a4ddeb071b7af9506b3f8090f370ff17bd9\"\n    },\n    {\n      \"path\": \"packages/rules/src/match-session.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"a4b440bda535956819d557e89c5c095c765f88b349c78c62d767b3c7a1918c12\"\n    },\n    {\n      \"path\": \"packages/rules/tests/match-room-hub.test.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"002df4f377831a3181e0fce71e517e39888d2f4510cd7389003a90690e0f98f2\"\n    },\n    {\n      \"path\": \"packages/rules/tests/match-room.test.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"58e576702c95deb0149f92d4b776eeec0eae38c44d7cbeb2a5700e6b745b6933\"\n    },\n    {\n      \"path\": \"packages/rules/tests/match-session.test.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"716e0dd2c81e0732065d74bffd968a37354c5039a887e17ca486a060670107d2\"\n    },\n    {\n      \"path\": \"packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    },\n    {\n      \"path\": \"packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    }\n  ],\n  \"reportOnlyTaskOutputs\": [],\n  \"knowledgeReview\": {\n    \"commit\": \"2470f00902bd650bc3122f518b18333afed323f3\",\n    \"candidate\": \"ccbdf647a545e08f09a8067c8f2c4659f849889a\",\n    \"path\": \"docs/reviews/phase3/P3-EFP-K01-ccbdf647-reviewer-a.json\",\n    \"sha256\": \"da0f45fded94f1dc941a3a6b7a91da586d2de36b0188ec8f3662fcbaf9b98687\",\n    \"acceptedScope\": \"EXACT_K01_HISTORICAL_SOURCE_EXTRACTION_PROVENANCE_AND_REGRESSION_GAP_DOCUMENTATION_ONLY\",\n    \"currentBaseExecutionAccepted\": false\n  },\n  \"controlEpoch\": \"FD-P3-2026-09-23-09\",\n  \"criticalOverflow\": [],\n  \"scopeSplittingAlert\": false,\n  \"missingCoverage\": [\n    {\n      \"id\": \"FD-SHAPE-003\",\n      \"historical\": \"MISSING_ENFORCING_NEGATIVE_NOT_MISSING_ALL_TEST_FILES\",\n      \"currentBase\": \"NOT_VERIFIED\",\n      \"missingPaths\": [\n        \"packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts\",\n        \"docs/reviews/probes/review-474-independent.mjs\"\n      ]\n    },\n    {\n      \"id\": \"FD-RESTORE-004\",\n      \"historical\": \"MISSING_ENFORCING_NEGATIVE_NOT_MISSING_ALL_TEST_FILES\",\n      \"currentBase\": \"NOT_VERIFIED\",\n      \"missingPaths\": [\n        \"packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts\",\n        \"docs/reviews/probes/review-475-independent.mjs\"\n      ]\n    },\n    {\n      \"id\": \"FD-SEC-001\",\n      \"historical\": \"EXISTS\",\n      \"currentBase\": \"NOT_VERIFIED\",\n      \"missingPaths\": []\n    },\n    {\n      \"id\": \"FD-REV-002\",\n      \"historical\": \"EXISTS\",\n      \"currentBase\": \"NOT_VERIFIED\",\n      \"missingPaths\": []\n    }\n  ],\n  \"sourceAvailability\": \"VERIFIED_PINNED_BYTES\",\n  \"execution\": \"NO_REGRESSIONS_OR_RUNTIME_EXECUTED\",\n  \"creditDelta\": 0\n}\n",
+      "bytes": 21883,
+      "sha256": "39B7535E5B6929C6193DF8253AD49D0E1FF10F1A83C3E43A06AE6EF4AEEEA750"
+    },
+    "stderr": {
+      "raw": "",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "result": {
+      "status": "CHECKED",
+      "automationAvailable": true,
+      "acceptanceGranted": false,
+      "runtimeTestsExecuted": 0,
+      "taskId": "P3-EFP-K03-A",
+      "exactBaseSha": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "selected": [
+        {
+          "id": "FD-SHAPE-003",
+          "score": 20,
+          "risk": "HIGH",
+          "reasons": [
+            "contract:COMPILED_ENVELOPE_FAIL_CLOSED:+6",
+            "contract:FULL_REWARD_EACH:+6",
+            "domain:ability-runtime:+3",
+            "domain:battle-reward:+3",
+            "family:COMPILED_ENVELOPE_FAIL_CLOSED:+2"
+          ],
+          "catalogState": "SOURCE_VERIFIED_DRAFT",
+          "knowledgeState": "ACCEPTED_EXTRACTION_ONLY",
+          "invariants": [
+            "Absent optional fields and malformed present fields remain distinguishable at privileged runtime gateways."
+          ],
+          "forbiddenPatterns": [
+            "Converting malformed supplied objects/arrays to an empty default before semantic validation."
+          ],
+          "negativeObligations": [
+            "Each of four malformed compiled containers must disable/reject the privileged gateway while minimal valid absent-field passive remains supported."
+          ],
+          "commands": [
+            "npx vitest run packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts --maxWorkers=2"
+          ],
+          "constraintsState": "PINNED_DOCUMENT_CONSTRAINTS",
+          "source": {
+            "commit": "b22691ab5311cd31f60eb91d573416fea3c7cf98",
+            "path": "docs/reviews/2026-10-10-pr-474-review.md",
+            "sha256": "f588a8b7062e7d57739e1f02b24bf7d939e06a8f203a5542ab374ba7f2f93adc",
+            "availability": "VERIFIED_PINNED_BYTES",
+            "sourceReviewRelationship": "HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE"
+          },
+          "sourceRelationship": "HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE",
+          "historicalTestStatus": "MISSING_ENFORCING_NEGATIVE_NOT_MISSING_ALL_TEST_FILES",
+          "currentBaseCoverage": "NOT_VERIFIED",
+          "regressions": [
+            {
+              "path": "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts",
+              "pinnedSha": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+              "pinned": {
+                "path": "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "a4c32bd6a919b78551bc154f1a02c0fa9d96e859"
+              },
+              "currentBase": {
+                "path": "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts",
+                "presence": "MISSING",
+                "blob": null
+              },
+              "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+            },
+            {
+              "path": "docs/reviews/probes/review-474-independent.mjs",
+              "pinnedSha": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+              "pinned": {
+                "path": "docs/reviews/probes/review-474-independent.mjs",
+                "presence": "MISSING",
+                "blob": null
+              },
+              "currentBase": {
+                "path": "docs/reviews/probes/review-474-independent.mjs",
+                "presence": "MISSING",
+                "blob": null
+              },
+              "role": "REVIEWER_PROBE_NOT_ENFORCING_REGRESSION"
+            }
+          ]
+        },
+        {
+          "id": "FD-RESTORE-004",
+          "score": 18,
+          "risk": "HIGH",
+          "reasons": [
+            "contract:AUTHENTICATED_CONTINUATION:+6",
+            "contract:NESTED_INTERACTION_RESTORE:+6",
+            "domain:ability-runtime:+3",
+            "domain:persistence:+3"
+          ],
+          "catalogState": "SOURCE_VERIFIED_DRAFT",
+          "knowledgeState": "ACCEPTED_EXTRACTION_ONLY",
+          "invariants": [
+            "Every legal authenticated pending pause must round-trip; unrelated/orphan continuations must still reject."
+          ],
+          "forbiddenPatterns": [
+            "Requiring the outer waiting transaction to be the currently nested interaction owner without representing the authenticated relationship."
+          ],
+          "negativeObligations": [
+            "Round-trip at each real response/choice pause; separately reject orphan, unrelated, forged or mismatched parent continuations."
+          ],
+          "commands": [
+            "npx vitest run packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=2"
+          ],
+          "constraintsState": "PINNED_DOCUMENT_CONSTRAINTS",
+          "source": {
+            "commit": "7e65291a4fa10170e249bc492617ef337caf7f8a",
+            "path": "docs/reviews/2026-10-10-pr-475-review.md",
+            "sha256": "8c67cfe179e02ece25b6581ee2a23ed776ebf4e95eeaa2a93b2e8d59dc1d7cf6",
+            "availability": "VERIFIED_PINNED_BYTES",
+            "sourceReviewRelationship": "HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE"
+          },
+          "sourceRelationship": "HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE",
+          "historicalTestStatus": "MISSING_ENFORCING_NEGATIVE_NOT_MISSING_ALL_TEST_FILES",
+          "currentBaseCoverage": "NOT_VERIFIED",
+          "regressions": [
+            {
+              "path": "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts",
+              "pinnedSha": "fe4653d1013110555881585db3a447880dd463d3",
+              "pinned": {
+                "path": "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "71eceaa9eb11f47715f15daa4ac187c495beacc9"
+              },
+              "currentBase": {
+                "path": "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts",
+                "presence": "MISSING",
+                "blob": null
+              },
+              "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+            },
+            {
+              "path": "packages/rules/tests/match-session.test.ts",
+              "pinnedSha": "fe4653d1013110555881585db3a447880dd463d3",
+              "pinned": {
+                "path": "packages/rules/tests/match-session.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "43f5b7fb959cc67cedc31c7336145d39276d7c0c"
+              },
+              "currentBase": {
+                "path": "packages/rules/tests/match-session.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "a95ef79efb7086ec992794c45c0358428e7e2e6c"
+              },
+              "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+            },
+            {
+              "path": "docs/reviews/probes/review-475-independent.mjs",
+              "pinnedSha": "fe4653d1013110555881585db3a447880dd463d3",
+              "pinned": {
+                "path": "docs/reviews/probes/review-475-independent.mjs",
+                "presence": "MISSING",
+                "blob": null
+              },
+              "currentBase": {
+                "path": "docs/reviews/probes/review-475-independent.mjs",
+                "presence": "MISSING",
+                "blob": null
+              },
+              "role": "REVIEWER_PROBE_NOT_ENFORCING_REGRESSION"
+            }
+          ]
+        },
+        {
+          "id": "FD-SEC-001",
+          "score": 12,
+          "risk": "CRITICAL",
+          "reasons": [
+            "contract:IDENTITY_SECURITY:+6",
+            "domain:session-authority:+3",
+            "domain:server-transport:+3"
+          ],
+          "catalogState": "SOURCE_VERIFIED_DRAFT",
+          "knowledgeState": "ACCEPTED_EXTRACTION_ONLY",
+          "invariants": [
+            "Credentials remain server-private and unpredictable. Existing identities require authenticated reconnect proof. Rejection preserves state, revision, room version, logs and private projections."
+          ],
+          "forbiddenPatterns": [
+            "Public credential DTOs, public-identifier-derived secrets, duplicate join adoption of an existing identity."
+          ],
+          "negativeObligations": [
+            "Spectator secret extraction, duplicate host join, old deterministic guess, wrong-client credential and raw WS impersonation all reject; valid reconnect still works."
+          ],
+          "commands": [
+            "npx vitest run apps/server/src/match-server.test.ts packages/rules/tests/match-room.test.ts --maxWorkers=2"
+          ],
+          "constraintsState": "PINNED_DOCUMENT_CONSTRAINTS",
+          "source": {
+            "commit": "cf179ca3220a1646c484aa8c660b313e64449488",
+            "path": "docs/reviews/phase3/P3-E08-B11-463facb-final-combination-reviewer-b.json",
+            "sha256": "051f5e95c74e9c78546c391fd60f041d9baef29fbba857ec455a598f8d2395bf",
+            "availability": "VERIFIED_PINNED_BYTES",
+            "sourceReviewRelationship": "HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE"
+          },
+          "sourceRelationship": "HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE",
+          "historicalTestStatus": "EXISTS",
+          "currentBaseCoverage": "NOT_VERIFIED",
+          "regressions": [
+            {
+              "path": "apps/server/src/match-server.test.ts",
+              "pinnedSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+              "pinned": {
+                "path": "apps/server/src/match-server.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "10248b72cc9a032bfefc7280d6fc44c529b5d56e"
+              },
+              "currentBase": {
+                "path": "apps/server/src/match-server.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "10248b72cc9a032bfefc7280d6fc44c529b5d56e"
+              },
+              "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+            },
+            {
+              "path": "packages/rules/tests/match-room.test.ts",
+              "pinnedSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+              "pinned": {
+                "path": "packages/rules/tests/match-room.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "92332015cd932056143f2ecc57d5ce7f59f790e3"
+              },
+              "currentBase": {
+                "path": "packages/rules/tests/match-room.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "92332015cd932056143f2ecc57d5ce7f59f790e3"
+              },
+              "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+            }
+          ]
+        },
+        {
+          "id": "FD-REV-002",
+          "score": 12,
+          "risk": "HIGH",
+          "reasons": [
+            "contract:MUTATION_REVISION_GATE:+6",
+            "domain:session-authority:+3",
+            "domain:server-transport:+3"
+          ],
+          "catalogState": "SOURCE_VERIFIED_DRAFT",
+          "knowledgeState": "ACCEPTED_EXTRACTION_ONLY",
+          "invariants": [
+            "Every scoped mutation entry point requires a finite safe integer matching current revision before any state change; rejection is atomic."
+          ],
+          "forbiddenPatterns": [
+            "Optional revision on mutation commands or separate permissive end-turn gate."
+          ],
+          "negativeObligations": [
+            "Missing, null, string, negative, fractional, oversized and stale revisions reject for dispatch and end_turn via direct Hub and real WS; state/pending/logs/revision/version/broadcast remain unchanged."
+          ],
+          "commands": [
+            "npx vitest run apps/server/src/match-server.test.ts packages/rules/tests/match-room-hub.test.ts --maxWorkers=2"
+          ],
+          "constraintsState": "PINNED_DOCUMENT_CONSTRAINTS",
+          "source": {
+            "commit": "cf179ca3220a1646c484aa8c660b313e64449488",
+            "path": "docs/reviews/phase3/P3-E08-B11-463facb-final-combination-reviewer-b.json",
+            "sha256": "051f5e95c74e9c78546c391fd60f041d9baef29fbba857ec455a598f8d2395bf",
+            "availability": "VERIFIED_PINNED_BYTES",
+            "sourceReviewRelationship": "HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE"
+          },
+          "sourceRelationship": "HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE",
+          "historicalTestStatus": "EXISTS",
+          "currentBaseCoverage": "NOT_VERIFIED",
+          "regressions": [
+            {
+              "path": "apps/server/src/match-server.test.ts",
+              "pinnedSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+              "pinned": {
+                "path": "apps/server/src/match-server.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "10248b72cc9a032bfefc7280d6fc44c529b5d56e"
+              },
+              "currentBase": {
+                "path": "apps/server/src/match-server.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "10248b72cc9a032bfefc7280d6fc44c529b5d56e"
+              },
+              "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+            },
+            {
+              "path": "packages/rules/tests/match-room-hub.test.ts",
+              "pinnedSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+              "pinned": {
+                "path": "packages/rules/tests/match-room-hub.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "d2c95bf2c918aa929b817bd472fa03d6b5c9f4cf"
+              },
+              "currentBase": {
+                "path": "packages/rules/tests/match-room-hub.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "d2c95bf2c918aa929b817bd472fa03d6b5c9f4cf"
+              },
+              "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+            }
+          ]
+        }
+      ],
+      "overflow": [],
+      "unknown": [
+        {
+          "id": "FD-SHA-007",
+          "decision": "NOT_ADDED_UNKNOWN",
+          "reason": "27dab1ad proves missing review-reference contract, not wrong candidate/reviewer SHA; no terminal identity mismatch finding selected"
+        },
+        {
+          "id": "FD-FALLBACK-008",
+          "decision": "NOT_ADDED_UNKNOWN",
+          "reason": "No pinned failing setup/data-flow source in assigned selection; later closed-fallback declarations cannot establish a historical failure"
+        },
+        {
+          "id": "FD-REVIEW-009",
+          "decision": "NOT_ADDED_UNKNOWN",
+          "reason": "PR475 records separate historical relay and independent review; it does not prove relay was mistaken for this review"
+        },
+        {
+          "id": "FD-WRITER-010",
+          "decision": "NOT_ADDED_UNKNOWN",
+          "reason": "Reservation boundary records do not prove an actual competing writer or conflict occurrence"
+        }
+      ],
+      "historicalRisk": "CRITICAL",
+      "cacheHit": true,
+      "elapsedMs": 3712.66,
+      "synthetic": false,
+      "inputDigest": "1863f1e5eae17c770483bfc83382f7d52743260f3e35d3b2b0a380fab5b28ad7",
+      "knowledgeDigest": "3ae0f2ab502bed1890975c42957918a2d8ccd0c7f0754318ec8e8ec8987a5587",
+      "sourceDigest": "5231e8028d5b9079d88c2aafadf1841d62f4193ba94fa2d26f22686b20326407",
+      "engineDigest": "654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371",
+      "cacheKey": "49fe61cf431053b177166378a67734d3c28dc8276e29b484bbd18e54e99ef07f",
+      "relevantSourceObjects": [
+        {
+          "path": "apps/server/src/match-server.test.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "blob": "10248b72cc9a032bfefc7280d6fc44c529b5d56e"
+        },
+        {
+          "path": "apps/server/src/match-server.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "blob": "47c82a648c43a5bd7debbbada2ba5f6d73db44e4"
+        },
+        {
+          "path": "data/authoring/servants/servant.stheno.json",
+          "presence": "PRESENT_STATIC_ONLY",
+          "blob": "21ebf0d3ff1df23ea8aa16b6ba362d7f6eee3ffb"
+        },
+        {
+          "path": "docs/engineering/lessons/K03-CURRENT-MAIN-GAP-SELECTION.json",
+          "presence": "MISSING",
+          "blob": null
+        },
+        {
+          "path": "docs/engineering/lessons/K03-CURRENT-MAIN-GAP-SELECTION.md",
+          "presence": "MISSING",
+          "blob": null
+        },
+        {
+          "path": "docs/reviews/probes/review-474-independent.mjs",
+          "presence": "MISSING",
+          "blob": null
+        },
+        {
+          "path": "docs/reviews/probes/review-475-independent.mjs",
+          "presence": "MISSING",
+          "blob": null
+        },
+        {
+          "path": "packages/rules/src/ability/combat-reward-distribution.ts",
+          "presence": "MISSING",
+          "blob": null
+        },
+        {
+          "path": "packages/rules/src/ability/interpreter.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "blob": "25f17fe843a9a05650722e996f0ce97109cfadbe"
+        },
+        {
+          "path": "packages/rules/src/match-room-hub.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "blob": "f35f25eb62bca10b38e4058db79fc25a55064086"
+        },
+        {
+          "path": "packages/rules/src/match-room-protocol.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "blob": "12bc2a58f1ffdc5cd3634725ababa46a7a984756"
+        },
+        {
+          "path": "packages/rules/src/match-room.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "blob": "0c4bc3fd8482e2117931d2eed621fee798720fb5"
+        },
+        {
+          "path": "packages/rules/src/match-session.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "blob": "3418ff800b605a6a6e8c93f76eb072699c5c6378"
+        },
+        {
+          "path": "packages/rules/tests/match-room-hub.test.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "blob": "d2c95bf2c918aa929b817bd472fa03d6b5c9f4cf"
+        },
+        {
+          "path": "packages/rules/tests/match-room.test.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "blob": "92332015cd932056143f2ecc57d5ce7f59f790e3"
+        },
+        {
+          "path": "packages/rules/tests/match-session.test.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "blob": "a95ef79efb7086ec992794c45c0358428e7e2e6c"
+        },
+        {
+          "path": "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts",
+          "presence": "MISSING",
+          "blob": null
+        },
+        {
+          "path": "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts",
+          "presence": "MISSING",
+          "blob": null
+        }
+      ],
+      "workingTreeRelevantObjects": [
+        {
+          "path": "apps/server/src/match-server.test.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "73476c9f95227699b0ff010dbbab2432b10de0661de4bef9a760e38b2492feab"
+        },
+        {
+          "path": "apps/server/src/match-server.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "7e0bc3114887fe34966f64654e0d6612e8e96df8fd5289e9d26885bd0aba2758"
+        },
+        {
+          "path": "data/authoring/servants/servant.stheno.json",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "ff23d09f28388c5665881522a304695bbf2c9ae0df74fdb27162954447c855f1"
+        },
+        {
+          "path": "docs/engineering/lessons/K03-CURRENT-MAIN-GAP-SELECTION.json",
+          "presence": "MISSING",
+          "sha256": null
+        },
+        {
+          "path": "docs/engineering/lessons/K03-CURRENT-MAIN-GAP-SELECTION.md",
+          "presence": "MISSING",
+          "sha256": null
+        },
+        {
+          "path": "docs/reviews/probes/review-474-independent.mjs",
+          "presence": "MISSING",
+          "sha256": null
+        },
+        {
+          "path": "docs/reviews/probes/review-475-independent.mjs",
+          "presence": "MISSING",
+          "sha256": null
+        },
+        {
+          "path": "packages/rules/src/ability/combat-reward-distribution.ts",
+          "presence": "MISSING",
+          "sha256": null
+        },
+        {
+          "path": "packages/rules/src/ability/interpreter.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "b2c8bb82836eb7291afc0ef5850103665e954b5ae3525066ab98f25a2e6a80d1"
+        },
+        {
+          "path": "packages/rules/src/match-room-hub.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "54cf729dba698e4d73e95c61e7feb9cb7cc279bd17bbe43dc10fab93620f3fa6"
+        },
+        {
+          "path": "packages/rules/src/match-room-protocol.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "519e594130a70d78ab38f00dd45ec7c04dc359dc4b3c069e92be50aea53d50c2"
+        },
+        {
+          "path": "packages/rules/src/match-room.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "c11bd950b01524c5d988b35d60cf6a4ddeb071b7af9506b3f8090f370ff17bd9"
+        },
+        {
+          "path": "packages/rules/src/match-session.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "a4b440bda535956819d557e89c5c095c765f88b349c78c62d767b3c7a1918c12"
+        },
+        {
+          "path": "packages/rules/tests/match-room-hub.test.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "002df4f377831a3181e0fce71e517e39888d2f4510cd7389003a90690e0f98f2"
+        },
+        {
+          "path": "packages/rules/tests/match-room.test.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "58e576702c95deb0149f92d4b776eeec0eae38c44d7cbeb2a5700e6b745b6933"
+        },
+        {
+          "path": "packages/rules/tests/match-session.test.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "716e0dd2c81e0732065d74bffd968a37354c5039a887e17ca486a060670107d2"
+        },
+        {
+          "path": "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts",
+          "presence": "MISSING",
+          "sha256": null
+        },
+        {
+          "path": "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts",
+          "presence": "MISSING",
+          "sha256": null
+        }
+      ],
+      "reportOnlyTaskOutputs": [],
+      "knowledgeReview": {
+        "commit": "2470f00902bd650bc3122f518b18333afed323f3",
+        "candidate": "ccbdf647a545e08f09a8067c8f2c4659f849889a",
+        "path": "docs/reviews/phase3/P3-EFP-K01-ccbdf647-reviewer-a.json",
+        "sha256": "da0f45fded94f1dc941a3a6b7a91da586d2de36b0188ec8f3662fcbaf9b98687",
+        "acceptedScope": "EXACT_K01_HISTORICAL_SOURCE_EXTRACTION_PROVENANCE_AND_REGRESSION_GAP_DOCUMENTATION_ONLY",
+        "currentBaseExecutionAccepted": false
+      },
+      "controlEpoch": "FD-P3-2026-09-23-09",
+      "criticalOverflow": [],
+      "scopeSplittingAlert": false,
+      "missingCoverage": [
+        {
+          "id": "FD-SHAPE-003",
+          "historical": "MISSING_ENFORCING_NEGATIVE_NOT_MISSING_ALL_TEST_FILES",
+          "currentBase": "NOT_VERIFIED",
+          "missingPaths": [
+            "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts",
+            "docs/reviews/probes/review-474-independent.mjs"
+          ]
+        },
+        {
+          "id": "FD-RESTORE-004",
+          "historical": "MISSING_ENFORCING_NEGATIVE_NOT_MISSING_ALL_TEST_FILES",
+          "currentBase": "NOT_VERIFIED",
+          "missingPaths": [
+            "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts",
+            "docs/reviews/probes/review-475-independent.mjs"
+          ]
+        },
+        {
+          "id": "FD-SEC-001",
+          "historical": "EXISTS",
+          "currentBase": "NOT_VERIFIED",
+          "missingPaths": []
+        },
+        {
+          "id": "FD-REV-002",
+          "historical": "EXISTS",
+          "currentBase": "NOT_VERIFIED",
+          "missingPaths": []
+        }
+      ],
+      "sourceAvailability": "VERIFIED_PINNED_BYTES",
+      "execution": "NO_REGRESSIONS_OR_RUNTIME_EXECUTED",
+      "creditDelta": 0
+    },
+    "workingTreeObservationCaveat": "K02 frozen knowledge checkout, not the observed main checkout; current-base Git object evidence separately bound",
+    "invocationRole": "Cached receipt capture after initial startup lookup; no new stable scope, no regression execution"
+  },
+  "generatedAt": "2026-10-13T10:29:57.488Z",
+  "documentReservation": {
+    "authorityCommit": "163f8e8469e81bf998f22884e9e529d5792fabe0",
+    "path": "docs/agents/P3-EFP-K02-ACCEPTANCE-AND-INTEGRATION.md",
+    "branch": "codex/a-p3-efp-k03-gap-selection",
+    "worktree": "D:\\fd-validation\\a-efp-k03",
+    "base": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+    "acceptedByOwner": "Codex A",
+    "authorizedOutputPaths": [
+      "docs/engineering/lessons/K03-CURRENT-MAIN-GAP-SELECTION.json",
+      "docs/engineering/lessons/K03-CURRENT-MAIN-GAP-SELECTION.md"
+    ],
+    "IImmutableSourceReservation": "Unchanged; I imports only frozen reviewed K02 objects, not this moving directory"
+  },
+  "validation": {
+    "sourceHashAssertions": "PASS_READ_ONLY",
+    "ancestryEvaluations": "PASS_READ_ONLY_WITH_FALSE_HISTORICAL_CANDIDATE_RESULTS_RETAINED",
+    "jsonParse": "PASS",
+    "selectorInspection": "STATIC_ONLY",
+    "currentRuntimeTests": "NOT_RUN_NOT_AUTHORIZED",
+    "runtimeSemanticGap": "STATIC_FOUR_FIELD_ERASURE_ON_CURRENT_OWNER; B_DYNAMIC_RED_REPRODUCTION_REQUIRED",
+    "scopedSearchErrors": [
+      {
+        "command": "rg with Windows wildcard path arguments",
+        "exitCode": 1,
+        "reason": "Wildcard literal/file path error, not test or runtime failure; replaced by exact file lists and Git grep",
+        "scope": "DISCOVERY_TRANSCRIPT_ONLY_NO_RAW_RECEIPT_CLAIM"
+      }
+    ],
+    "finalRemoteMainCheck": {
+      "command": "git ls-remote origin refs/heads/main",
+      "sha": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "observedAt": "2026-10-13T10:36:02.849Z",
+      "exitCode": 0
+    },
+    "stagedDiffCheck": {
+      "command": "git diff --cached --check",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "immutableSourceAndRawReceiptHashesVerified": true
+  }
+}
