@@ -1,0 +1,1261 @@
+{
+  "schemaVersion": "fd-engineering-integration-preflight-v1",
+  "taskId": "P3-EFP-I01",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "date": "2026-10-13",
+  "owner": "Codex I / Integration Owner",
+  "state": "VALIDATION_COMPLETE_WAIT_INTEGRATION_REVIEW_AND_GOVERNANCE_DISPOSITION",
+  "baseSha": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+  "testedAssemblySha": "1ac1cd4c171d01a21e09e83fcc93df5d842e1b15",
+  "authority": {
+    "commit": "163f8e8469e81bf998f22884e9e529d5792fabe0",
+    "path": "docs/agents/P3-EFP-K02-ACCEPTANCE-AND-INTEGRATION.md",
+    "sha256": "bc128ba0353b2423bc74ed2ed7cd256fda0b1ef542b4f54b248188e1f2c21928",
+    "promotionPrAuthorized": false
+  },
+  "branch": "codex/i-p3-efp-i01-integration",
+  "importedPaths": [
+    {
+      "path": "docs/engineering/lessons/BATCH-TASK-TEMPLATE.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "a862d033e6985581302289bc5c02e76169a99956",
+      "sha256": "c185331a7fed5671cae474fe5f477499d249cea4affe9ed4b800352ffd479689"
+    },
+    {
+      "path": "docs/engineering/lessons/GUARDRAILS.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "2fc1af8e0f45ae2371ad12a7d22f7675be3aad16",
+      "sha256": "a32471afb749219bdde433b69e601b5d8793ad46d7f12ef5d19afb24407caec1"
+    },
+    {
+      "path": "docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "f409529f325111412d1eaac5dcb5051bc940c340",
+      "sha256": "569e114c87aa701d45470e9457b515c988648594998785455a71f0abdef42ea9"
+    },
+    {
+      "path": "docs/engineering/lessons/INDEX.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "8c503717074e42fc128ce6ef1c77381706f526c0",
+      "sha256": "221ea95e9d948ef2ce04a0768761c19a9263f3d5b823abc049a0b9f27ae33c49"
+    },
+    {
+      "path": "docs/engineering/lessons/K01-HANDOFF.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "70658b4ac6ebcc35f8ed10584eb0cd8449d112a1",
+      "sha256": "ea1b09a175a015609f48d8626d821f10c048e71dc024398ce693be6ec68e5eb5"
+    },
+    {
+      "path": "docs/engineering/lessons/K01-SOURCE-AUDIT.json",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "9ba343490581fb2c5d5c3bf5b02ca774df9809c2",
+      "sha256": "18e59cc07ad380de6b7d77b54e8f5a33b85bb0bd9da95ee667d15a29db18dc78"
+    },
+    {
+      "path": "docs/engineering/lessons/K02-EXECUTION.json",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "00c80c9e8c647df0f290421450415b7f6ba0f560",
+      "sha256": "4a3bb7f969122eb0557e692ee4b00515a304db828c810d4f3a1a02a42ee2ed38"
+    },
+    {
+      "path": "docs/engineering/lessons/K02-HANDOFF.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "575bb351aa2640eff021bdaa68d0a504b18ee48f",
+      "sha256": "a0bb7a27256a0e7244595745da2c4a31432bd11d1258291ceba5ed6e3950a592"
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-EVID-005.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "849062b023592f013e3d293cb3e1462d00efae43",
+      "sha256": "99688fd944fe7ee319b43803a7c0908fd06c4a26e5f461a0b3c44af366103955"
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-FIXTURE-006.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "10c8f00ad14f288c16fdbfa92f133111b9ec1b1c",
+      "sha256": "0b9ff711075d84df0d70b31576287b747d6ca9b650c99f66fd83c95414125e2c"
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-RESTORE-004.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "ccbd072b957587ad42abae0a7dc83a02a8dd2df8",
+      "sha256": "8c31e9a5339a8a2c87042473c50b899af927c6e7c7e4cf824b07648be5f25db1"
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-REV-002.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "977ccbf30212cd69947bd1f186024da11c1365b4",
+      "sha256": "989532443a6e437deb65fb844a83bed807f81512f4939c82888c8ea7328c88dd"
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-SEC-001.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "12bc7fea59e5e4c130060efc53e41aea2cdc4436",
+      "sha256": "fac31591e65b91a8c4c82ab00d3ea5c1306361f188430dc2083e51caf360d8a2"
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-SHAPE-003.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "ed9446dd4308896f6df1a3ccb476a1fce873626a",
+      "sha256": "148eee25f6eec8d3389d502c58055dd96f3d4a5e913e64e08827d21f53147aa0"
+    },
+    {
+      "path": "docs/engineering/lessons/catalog.json",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "93bb684a4c3720aab5249e3dfff720d3ad6685f6",
+      "sha256": "b9ee48a6af45322698f1528a6465ca56b21597270481b79605a6c60f64c794f8"
+    },
+    {
+      "path": "docs/engineering/lessons/verify-k01.mjs",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "b6c3b8d7ce083caa63cf49561dabeb5d469db233",
+      "sha256": "da672e1a281ef23d5a432a751377f2a668636cdf23902b957952dacdc3efd561"
+    },
+    {
+      "path": "scripts/engineering/historical-failure-preflight.ts",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "12a92f18f1616e947e3b9faac615ee66d00ce384",
+      "sha256": "654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371"
+    },
+    {
+      "path": "scripts/tests/engineering-failure-preflight.test.ts",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "0074b58956d7070482373c5a238fa16b16ecb9f7",
+      "sha256": "58235fe17face150db36985d787a51ab5b452001c044629f74f28b3992678757"
+    },
+    {
+      "path": "docs/reviews/phase3/P3-EFP-K01-ccbdf647-reviewer-a.json",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "3bd6016552d2c0e74bbd41f65416dcaf3c635644",
+      "sha256": "da0f45fded94f1dc941a3a6b7a91da586d2de36b0188ec8f3662fcbaf9b98687"
+    },
+    {
+      "path": "docs/reviews/phase3/P3-EFP-K02-36de92a-reviewer-a.json",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "a0f67d343f7d7a0bb050e65b385913a4b6ac0b7c",
+      "sha256": "bbb1da984109b4d75ab17076cce53fe6a02dd64d5ec2e0d31fa9d463ce4a56bb"
+    }
+  ],
+  "sourceEquivalence": [
+    {
+      "path": "packages",
+      "base": "c904b430fa508f32633c94ba0f4a529608906b59",
+      "head": "c904b430fa508f32633c94ba0f4a529608906b59"
+    },
+    {
+      "path": "apps",
+      "base": "c34eef2d6a3827ca60659a0410e4cc2e5c373a12",
+      "head": "c34eef2d6a3827ca60659a0410e4cc2e5c373a12"
+    },
+    {
+      "path": "data",
+      "base": "9afd59edf63bf38293e02950a7c3abd31bbc1938",
+      "head": "9afd59edf63bf38293e02950a7c3abd31bbc1938"
+    },
+    {
+      "path": "e2e",
+      "base": "13b6198a127710b63fead7589d24cd26f59ae6e0",
+      "head": "13b6198a127710b63fead7589d24cd26f59ae6e0"
+    },
+    {
+      "path": ".github",
+      "base": "bea61274875e04b641cdfa591ab97f74f467a39b",
+      "head": "bea61274875e04b641cdfa591ab97f74f467a39b"
+    },
+    {
+      "path": "package.json",
+      "base": "0f311821628a0a60cb37d752a259e6d688f7a6e9",
+      "head": "0f311821628a0a60cb37d752a259e6d688f7a6e9"
+    },
+    {
+      "path": "package-lock.json",
+      "base": "d7844d900ba14635d4b8d2c50ac4954cbc9c0a93",
+      "head": "d7844d900ba14635d4b8d2c50ac4954cbc9c0a93"
+    },
+    {
+      "path": "docs/agents",
+      "base": "ea70bf4ef127d514031144b6c6f62adc8cc22799",
+      "head": "ea70bf4ef127d514031144b6c6f62adc8cc22799"
+    },
+    {
+      "path": "scripts/phase3-governance.ts",
+      "base": "d2e900c2e6dc97aa9a0e65b319d8dcb57fa3ae0e",
+      "head": "d2e900c2e6dc97aa9a0e65b319d8dcb57fa3ae0e"
+    }
+  ],
+  "exactImportedBlobs": "20/20_PASS",
+  "reviewBindings": [
+    {
+      "candidate": "ccbdf647a545e08f09a8067c8f2c4659f849889a",
+      "review": "2470f00902bd650bc3122f518b18333afed323f3",
+      "directParentVerified": true
+    },
+    {
+      "candidate": "36de92a0536d7bc06a47f61c8484a51f4e981dfc",
+      "review": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "directParentVerified": true
+    }
+  ],
+  "verification": {
+    "npmCi": "EXIT_0",
+    "receipts": [
+      {
+        "id": "typecheck",
+        "command": "npm run typecheck",
+        "head": "1ac1cd4c171d01a21e09e83fcc93df5d842e1b15",
+        "started": "2026-10-13T10:17:42.545Z",
+        "ended": "2026-10-13T10:17:47.548Z",
+        "exitCode": 0,
+        "signal": null,
+        "node": "v24.13.1",
+        "stdout": {
+          "path": "D:\\fd-validation\\efp-i01\\typecheck.stdout.log",
+          "bytes": 42,
+          "sha256": "fe697f3caea6aa3017ce001f09cac853c9f311a09a2c043dc56f82c15f02d1d4"
+        },
+        "stderr": {
+          "path": "D:\\fd-validation\\efp-i01\\typecheck.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "id": "focused",
+        "command": "npx vitest run scripts/tests/engineering-failure-preflight.test.ts",
+        "head": "1ac1cd4c171d01a21e09e83fcc93df5d842e1b15",
+        "started": "2026-10-13T10:17:47.551Z",
+        "ended": "2026-10-13T10:18:33.417Z",
+        "exitCode": 0,
+        "signal": null,
+        "node": "v24.13.1",
+        "stdout": {
+          "path": "D:\\fd-validation\\efp-i01\\focused.stdout.log",
+          "bytes": 3672,
+          "sha256": "37a5685721b9c5aed0bec53f779aa0c2d3b78cc1933e29edc065172e6dc6df1d"
+        },
+        "stderr": {
+          "path": "D:\\fd-validation\\efp-i01\\focused.stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "id": "ci",
+        "command": "npm run test:ci",
+        "head": "1ac1cd4c171d01a21e09e83fcc93df5d842e1b15",
+        "started": "2026-10-13T10:18:33.420Z",
+        "ended": "2026-10-13T10:22:35.042Z",
+        "exitCode": 0,
+        "signal": null,
+        "node": "v24.13.1",
+        "stdout": {
+          "path": "D:\\fd-validation\\efp-i01\\ci.stdout.log",
+          "bytes": 39639,
+          "sha256": "0c82c02c9c9524c51f803401d6083521354398962cb0efe62f92008caaf2ea7e"
+        },
+        "stderr": {
+          "path": "D:\\fd-validation\\efp-i01\\ci.stderr.log",
+          "bytes": 5531,
+          "sha256": "3170ade6d5c9728dbb7fd19a3f235d37716f6437f58398e0523e5b25d74f2506"
+        }
+      }
+    ],
+    "focused": "1 file / 22 tests PASS",
+    "defaultCi": "195 files / 1629 tests PASS",
+    "diffCheck": "PASS",
+    "testWindow": "Process snapshot showed no visible active Vitest/typecheck/Playwright batch before starting; sequential own preparation/focused/fullCI, not global quiet-window certification"
+  },
+  "cli": {
+    "task": {
+      "taskId": "P3-EFP-I01",
+      "capabilityFamily": "EXACT_REVIEW_REFERENCE",
+      "semanticContracts": [
+        "EXACT_REVIEW_REFERENCE",
+        "EXACT_EXECUTION_RECEIPTS",
+        "REPRODUCIBLE_REVIEW"
+      ],
+      "expectedChangedFiles": [
+        "scripts/engineering/historical-failure-preflight.ts",
+        "scripts/tests/engineering-failure-preflight.test.ts",
+        "artifacts/phase3-efp-integration-preflight.json",
+        "docs/reports/2026-10-13-p3-efp-integration-preflight.md"
+      ],
+      "runtimeDomains": [
+        "evidence-tooling"
+      ],
+      "exactBaseSha": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+      "selectedIdentities": [
+        "NOT_APPLICABLE_AUTOMATION_NO_CANONICAL_MIGRATION"
+      ],
+      "reservationReference": "docs/agents/P3-EFP-K02-ACCEPTANCE-AND-INTEGRATION.md"
+    },
+    "initialInvalidInput": {
+      "exits": [
+        1,
+        1
+      ],
+      "status": "INPUT_INCOMPLETE",
+      "reason": "Integration metadata reservationReference contained colon; corrected temporary metadata only, engine unchanged",
+      "receiptFiles": [
+        "cli-first.receipt.json",
+        "cli-repeat.receipt.json"
+      ]
+    },
+    "first": {
+      "command": "npx tsx scripts/engineering/historical-failure-preflight.ts --task .codex-efp-i01-task.json --cache .cache/historical-failure-preflight/efp-i01.json",
+      "head": "1ac1cd4c171d01a21e09e83fcc93df5d842e1b15",
+      "start": "2026-10-13T10:19:53.214Z",
+      "end": "2026-10-13T10:19:57.191Z",
+      "exit": 0,
+      "stdoutSha256": "2fb41bf5834e033863548473c1191a0d36158eb48560c8fc8c558fc0157b9bc8",
+      "result": {
+        "status": "CHECKED",
+        "automationAvailable": true,
+        "acceptanceGranted": false,
+        "runtimeTestsExecuted": 0,
+        "taskId": "P3-EFP-I01",
+        "exactBaseSha": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+        "selected": [
+          {
+            "id": "FD-EVID-005",
+            "score": 15,
+            "risk": "MEDIUM",
+            "reasons": [
+              "contract:EXACT_EXECUTION_RECEIPTS:+6",
+              "contract:REPRODUCIBLE_REVIEW:+6",
+              "domain:evidence-tooling:+3"
+            ],
+            "catalogState": "SOURCE_VERIFIED_DRAFT",
+            "knowledgeState": "ACCEPTED_EXTRACTION_ONLY",
+            "invariants": [
+              "Counts bind command, tested SHA, exit code, skipped tests, errors and raw outputs. A scoped PASS does not certify later actual assembly."
+            ],
+            "forbiddenPatterns": [
+              "Transferring old test results to a new SHA; masking nonzero exit or skipped/unhandled failures; declaring assembly PASS from producer-only tests."
+            ],
+            "negativeObligations": [
+              "Run the exact fixture suites in producer and assembled contexts; retain failing receipts and hash/source negatives. Reproduce reviewer failures before classifying them."
+            ],
+            "commands": [
+              "npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts --maxWorkers=2"
+            ],
+            "constraintsState": "PINNED_DOCUMENT_CONSTRAINTS",
+            "source": {
+              "commit": "dbd430be9550947a2bac691ef645db56cf5c408f",
+              "path": "docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json",
+              "sha256": "a0f4b6ff474b169b36e7ff18092ad93e7f29a573c7e2a0c85bf299011ab0e5a9",
+              "availability": "VERIFIED_PINNED_BYTES",
+              "sourceReviewRelationship": "LATER_SCOPED_PASS_PRESERVES_EARLIER_FAILURE_NOT_PASS_ON_FAILURE_SHA"
+            },
+            "sourceRelationship": "LATER_SCOPED_PASS_PRESERVES_EARLIER_FAILURE_NOT_PASS_ON_FAILURE_SHA",
+            "historicalTestStatus": "EXISTS",
+            "currentBaseCoverage": "NOT_VERIFIED",
+            "regressions": [
+              {
+                "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                "pinnedSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+                "pinned": {
+                  "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "dc1ffe1fa8d892b686e8638fac8b61ff314bba3e"
+                },
+                "currentBase": {
+                  "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6ecb9114de49ebf1ee9c3d79a591edbc4d4f4098"
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              },
+              {
+                "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                "pinnedSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+                "pinned": {
+                  "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "ca38692a683a9531169a31598870f244adce20d3"
+                },
+                "currentBase": {
+                  "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6c7e3f3a772867540d29767d27256b3d20ce3812"
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              }
+            ]
+          },
+          {
+            "id": "FD-FIXTURE-006",
+            "score": 11,
+            "risk": "HIGH",
+            "reasons": [
+              "contract:EXACT_REVIEW_REFERENCE:+6",
+              "domain:evidence-tooling:+3",
+              "family:EXACT_REVIEW_REFERENCE:+2"
+            ],
+            "catalogState": "SOURCE_VERIFIED_DRAFT",
+            "knowledgeState": "ACCEPTED_EXTRACTION_ONLY",
+            "invariants": [
+              "Use named immutable pre-review data, execute validator from the tested source,\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\nASSEMBLED checks. No automatic phase inference based on discovered files.\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\npaths and runtime drift still reject. No directory whitelist or skipped test.\nValidate the same focused and default CI at producer and post-review checkouts,\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\nnot technical acceptance or a real GitHub statement."
+            ],
+            "forbiddenPatterns": [
+              "REVIEWED_PROSE_CONSTRAINT: Use named immutable pre-review data, execute validator from the tested source,\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\nASSEMBLED checks. No automatic phase inference based on discovered files.\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\npaths and runtime drift still reject. No directory whitelist or skipped test.\nValidate the same focused and default CI at producer and post-review checkouts,\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\nnot technical acceptance or a real GitHub statement."
+            ],
+            "negativeObligations": [
+              "Use named immutable pre-review data, execute validator from the tested source,\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\nASSEMBLED checks. No automatic phase inference based on discovered files.\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\npaths and runtime drift still reject. No directory whitelist or skipped test.\nValidate the same focused and default CI at producer and post-review checkouts,\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\nnot technical acceptance or a real GitHub statement."
+            ],
+            "commands": [
+              "npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts scripts/tests/phase3-contract-parity.test.ts --maxWorkers=2"
+            ],
+            "constraintsState": "PINNED_DOCUMENT_CONSTRAINTS",
+            "source": {
+              "commit": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b",
+              "path": "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+              "sha256": "e8fd40e8b0f74701755cdab3135d58e0dc3a7c08aac7c4da9652bb622b38103e",
+              "availability": "VERIFIED_PINNED_BYTES",
+              "sourceReviewRelationship": "A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE"
+            },
+            "sourceRelationship": "A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE",
+            "historicalTestStatus": "EXISTS_CANDIDATE_RECEIPTS_NOT_ACCEPTED_BY_THIS_TASK",
+            "currentBaseCoverage": "NOT_VERIFIED",
+            "regressions": [
+              {
+                "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                "pinnedSha": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+                "pinned": {
+                  "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6ecb9114de49ebf1ee9c3d79a591edbc4d4f4098"
+                },
+                "currentBase": {
+                  "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6ecb9114de49ebf1ee9c3d79a591edbc4d4f4098"
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              },
+              {
+                "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                "pinnedSha": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+                "pinned": {
+                  "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6c7e3f3a772867540d29767d27256b3d20ce3812"
+                },
+                "currentBase": {
+                  "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6c7e3f3a772867540d29767d27256b3d20ce3812"
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              }
+            ]
+          }
+        ],
+        "overflow": [],
+        "unknown": [
+          {
+            "id": "FD-SHA-007",
+            "decision": "NOT_ADDED_UNKNOWN",
+            "reason": "27dab1ad proves missing review-reference contract, not wrong candidate/reviewer SHA; no terminal identity mismatch finding selected"
+          },
+          {
+            "id": "FD-FALLBACK-008",
+            "decision": "NOT_ADDED_UNKNOWN",
+            "reason": "No pinned failing setup/data-flow source in assigned selection; later closed-fallback declarations cannot establish a historical failure"
+          },
+          {
+            "id": "FD-REVIEW-009",
+            "decision": "NOT_ADDED_UNKNOWN",
+            "reason": "PR475 records separate historical relay and independent review; it does not prove relay was mistaken for this review"
+          },
+          {
+            "id": "FD-WRITER-010",
+            "decision": "NOT_ADDED_UNKNOWN",
+            "reason": "Reservation boundary records do not prove an actual competing writer or conflict occurrence"
+          }
+        ],
+        "historicalRisk": "HIGH",
+        "cacheHit": false,
+        "elapsedMs": 2268.72,
+        "synthetic": false,
+        "inputDigest": "7e8379992eabb345a2219051613ad52e5df95897548895d060c37f62bd623179",
+        "knowledgeDigest": "3ae0f2ab502bed1890975c42957918a2d8ccd0c7f0754318ec8e8ec8987a5587",
+        "sourceDigest": "e520f384f3c4c982236e2c0c867c805c300bf12f5e67ac87c6a4d89fec162303",
+        "engineDigest": "654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371",
+        "cacheKey": "0bcf8d3efee11e4be6f9f49bd286333045ff3da28065ce5d1a0b684462533ade",
+        "relevantSourceObjects": [
+          {
+            "path": "scripts/engineering/historical-failure-preflight.ts",
+            "presence": "MISSING",
+            "blob": null
+          },
+          {
+            "path": "scripts/phase3-preflight.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "42836ff9511dc48db3758de19d7593056aa65dbb"
+          },
+          {
+            "path": "scripts/tests/engineering-failure-preflight.test.ts",
+            "presence": "MISSING",
+            "blob": null
+          },
+          {
+            "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "6ecb9114de49ebf1ee9c3d79a591edbc4d4f4098"
+          },
+          {
+            "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "6c7e3f3a772867540d29767d27256b3d20ce3812"
+          }
+        ],
+        "workingTreeRelevantObjects": [
+          {
+            "path": "scripts/engineering/historical-failure-preflight.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371"
+          },
+          {
+            "path": "scripts/phase3-preflight.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "b1e13480ad1bcc70e17d16783e6046a131b3b38a8531eb13140bb1dfb22556c9"
+          },
+          {
+            "path": "scripts/tests/engineering-failure-preflight.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "58235fe17face150db36985d787a51ab5b452001c044629f74f28b3992678757"
+          },
+          {
+            "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "d8c25f47e6233db2a290dcadeecdb20896e9f057684a1502ab8ea47bed51f9a0"
+          },
+          {
+            "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "9f2fc8dc3421f07db3ec0e1e00d4be526dc93234ad68fc6109e7e554281ec677"
+          }
+        ],
+        "reportOnlyTaskOutputs": [
+          "artifacts/phase3-efp-integration-preflight.json",
+          "docs/reports/2026-10-13-p3-efp-integration-preflight.md"
+        ],
+        "knowledgeReview": {
+          "commit": "2470f00902bd650bc3122f518b18333afed323f3",
+          "candidate": "ccbdf647a545e08f09a8067c8f2c4659f849889a",
+          "path": "docs/reviews/phase3/P3-EFP-K01-ccbdf647-reviewer-a.json",
+          "sha256": "da0f45fded94f1dc941a3a6b7a91da586d2de36b0188ec8f3662fcbaf9b98687",
+          "acceptedScope": "EXACT_K01_HISTORICAL_SOURCE_EXTRACTION_PROVENANCE_AND_REGRESSION_GAP_DOCUMENTATION_ONLY",
+          "currentBaseExecutionAccepted": false
+        },
+        "controlEpoch": "FD-P3-2026-09-23-09",
+        "criticalOverflow": [],
+        "scopeSplittingAlert": false,
+        "missingCoverage": [
+          {
+            "id": "FD-EVID-005",
+            "historical": "EXISTS",
+            "currentBase": "NOT_VERIFIED",
+            "missingPaths": []
+          },
+          {
+            "id": "FD-FIXTURE-006",
+            "historical": "EXISTS_CANDIDATE_RECEIPTS_NOT_ACCEPTED_BY_THIS_TASK",
+            "currentBase": "NOT_VERIFIED",
+            "missingPaths": []
+          }
+        ],
+        "sourceAvailability": "VERIFIED_PINNED_BYTES",
+        "execution": "NO_REGRESSIONS_OR_RUNTIME_EXECUTED",
+        "creditDelta": 0
+      }
+    },
+    "repeat": {
+      "command": "npx tsx scripts/engineering/historical-failure-preflight.ts --task .codex-efp-i01-task.json --cache .cache/historical-failure-preflight/efp-i01.json",
+      "head": "1ac1cd4c171d01a21e09e83fcc93df5d842e1b15",
+      "start": "2026-10-13T10:19:57.193Z",
+      "end": "2026-10-13T10:20:01.530Z",
+      "exit": 0,
+      "stdoutSha256": "92b4c328a11936023201ddedb428be7d03c62e994779a2946a374169f0e602d3",
+      "result": {
+        "status": "CHECKED",
+        "automationAvailable": true,
+        "acceptanceGranted": false,
+        "runtimeTestsExecuted": 0,
+        "taskId": "P3-EFP-I01",
+        "exactBaseSha": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+        "selected": [
+          {
+            "id": "FD-EVID-005",
+            "score": 15,
+            "risk": "MEDIUM",
+            "reasons": [
+              "contract:EXACT_EXECUTION_RECEIPTS:+6",
+              "contract:REPRODUCIBLE_REVIEW:+6",
+              "domain:evidence-tooling:+3"
+            ],
+            "catalogState": "SOURCE_VERIFIED_DRAFT",
+            "knowledgeState": "ACCEPTED_EXTRACTION_ONLY",
+            "invariants": [
+              "Counts bind command, tested SHA, exit code, skipped tests, errors and raw outputs. A scoped PASS does not certify later actual assembly."
+            ],
+            "forbiddenPatterns": [
+              "Transferring old test results to a new SHA; masking nonzero exit or skipped/unhandled failures; declaring assembly PASS from producer-only tests."
+            ],
+            "negativeObligations": [
+              "Run the exact fixture suites in producer and assembled contexts; retain failing receipts and hash/source negatives. Reproduce reviewer failures before classifying them."
+            ],
+            "commands": [
+              "npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts --maxWorkers=2"
+            ],
+            "constraintsState": "PINNED_DOCUMENT_CONSTRAINTS",
+            "source": {
+              "commit": "dbd430be9550947a2bac691ef645db56cf5c408f",
+              "path": "docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json",
+              "sha256": "a0f4b6ff474b169b36e7ff18092ad93e7f29a573c7e2a0c85bf299011ab0e5a9",
+              "availability": "VERIFIED_PINNED_BYTES",
+              "sourceReviewRelationship": "LATER_SCOPED_PASS_PRESERVES_EARLIER_FAILURE_NOT_PASS_ON_FAILURE_SHA"
+            },
+            "sourceRelationship": "LATER_SCOPED_PASS_PRESERVES_EARLIER_FAILURE_NOT_PASS_ON_FAILURE_SHA",
+            "historicalTestStatus": "EXISTS",
+            "currentBaseCoverage": "NOT_VERIFIED",
+            "regressions": [
+              {
+                "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                "pinnedSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+                "pinned": {
+                  "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "dc1ffe1fa8d892b686e8638fac8b61ff314bba3e"
+                },
+                "currentBase": {
+                  "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6ecb9114de49ebf1ee9c3d79a591edbc4d4f4098"
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              },
+              {
+                "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                "pinnedSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+                "pinned": {
+                  "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "ca38692a683a9531169a31598870f244adce20d3"
+                },
+                "currentBase": {
+                  "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6c7e3f3a772867540d29767d27256b3d20ce3812"
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              }
+            ]
+          },
+          {
+            "id": "FD-FIXTURE-006",
+            "score": 11,
+            "risk": "HIGH",
+            "reasons": [
+              "contract:EXACT_REVIEW_REFERENCE:+6",
+              "domain:evidence-tooling:+3",
+              "family:EXACT_REVIEW_REFERENCE:+2"
+            ],
+            "catalogState": "SOURCE_VERIFIED_DRAFT",
+            "knowledgeState": "ACCEPTED_EXTRACTION_ONLY",
+            "invariants": [
+              "Use named immutable pre-review data, execute validator from the tested source,\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\nASSEMBLED checks. No automatic phase inference based on discovered files.\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\npaths and runtime drift still reject. No directory whitelist or skipped test.\nValidate the same focused and default CI at producer and post-review checkouts,\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\nnot technical acceptance or a real GitHub statement."
+            ],
+            "forbiddenPatterns": [
+              "REVIEWED_PROSE_CONSTRAINT: Use named immutable pre-review data, execute validator from the tested source,\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\nASSEMBLED checks. No automatic phase inference based on discovered files.\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\npaths and runtime drift still reject. No directory whitelist or skipped test.\nValidate the same focused and default CI at producer and post-review checkouts,\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\nnot technical acceptance or a real GitHub statement."
+            ],
+            "negativeObligations": [
+              "Use named immutable pre-review data, execute validator from the tested source,\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\nASSEMBLED checks. No automatic phase inference based on discovered files.\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\npaths and runtime drift still reject. No directory whitelist or skipped test.\nValidate the same focused and default CI at producer and post-review checkouts,\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\nnot technical acceptance or a real GitHub statement."
+            ],
+            "commands": [
+              "npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts scripts/tests/phase3-contract-parity.test.ts --maxWorkers=2"
+            ],
+            "constraintsState": "PINNED_DOCUMENT_CONSTRAINTS",
+            "source": {
+              "commit": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b",
+              "path": "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+              "sha256": "e8fd40e8b0f74701755cdab3135d58e0dc3a7c08aac7c4da9652bb622b38103e",
+              "availability": "VERIFIED_PINNED_BYTES",
+              "sourceReviewRelationship": "A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE"
+            },
+            "sourceRelationship": "A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE",
+            "historicalTestStatus": "EXISTS_CANDIDATE_RECEIPTS_NOT_ACCEPTED_BY_THIS_TASK",
+            "currentBaseCoverage": "NOT_VERIFIED",
+            "regressions": [
+              {
+                "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                "pinnedSha": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+                "pinned": {
+                  "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6ecb9114de49ebf1ee9c3d79a591edbc4d4f4098"
+                },
+                "currentBase": {
+                  "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6ecb9114de49ebf1ee9c3d79a591edbc4d4f4098"
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              },
+              {
+                "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                "pinnedSha": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+                "pinned": {
+                  "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6c7e3f3a772867540d29767d27256b3d20ce3812"
+                },
+                "currentBase": {
+                  "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6c7e3f3a772867540d29767d27256b3d20ce3812"
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              }
+            ]
+          }
+        ],
+        "overflow": [],
+        "unknown": [
+          {
+            "id": "FD-SHA-007",
+            "decision": "NOT_ADDED_UNKNOWN",
+            "reason": "27dab1ad proves missing review-reference contract, not wrong candidate/reviewer SHA; no terminal identity mismatch finding selected"
+          },
+          {
+            "id": "FD-FALLBACK-008",
+            "decision": "NOT_ADDED_UNKNOWN",
+            "reason": "No pinned failing setup/data-flow source in assigned selection; later closed-fallback declarations cannot establish a historical failure"
+          },
+          {
+            "id": "FD-REVIEW-009",
+            "decision": "NOT_ADDED_UNKNOWN",
+            "reason": "PR475 records separate historical relay and independent review; it does not prove relay was mistaken for this review"
+          },
+          {
+            "id": "FD-WRITER-010",
+            "decision": "NOT_ADDED_UNKNOWN",
+            "reason": "Reservation boundary records do not prove an actual competing writer or conflict occurrence"
+          }
+        ],
+        "historicalRisk": "HIGH",
+        "cacheHit": true,
+        "elapsedMs": 2217.02,
+        "synthetic": false,
+        "inputDigest": "7e8379992eabb345a2219051613ad52e5df95897548895d060c37f62bd623179",
+        "knowledgeDigest": "3ae0f2ab502bed1890975c42957918a2d8ccd0c7f0754318ec8e8ec8987a5587",
+        "sourceDigest": "e520f384f3c4c982236e2c0c867c805c300bf12f5e67ac87c6a4d89fec162303",
+        "engineDigest": "654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371",
+        "cacheKey": "0bcf8d3efee11e4be6f9f49bd286333045ff3da28065ce5d1a0b684462533ade",
+        "relevantSourceObjects": [
+          {
+            "path": "scripts/engineering/historical-failure-preflight.ts",
+            "presence": "MISSING",
+            "blob": null
+          },
+          {
+            "path": "scripts/phase3-preflight.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "42836ff9511dc48db3758de19d7593056aa65dbb"
+          },
+          {
+            "path": "scripts/tests/engineering-failure-preflight.test.ts",
+            "presence": "MISSING",
+            "blob": null
+          },
+          {
+            "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "6ecb9114de49ebf1ee9c3d79a591edbc4d4f4098"
+          },
+          {
+            "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "6c7e3f3a772867540d29767d27256b3d20ce3812"
+          }
+        ],
+        "workingTreeRelevantObjects": [
+          {
+            "path": "scripts/engineering/historical-failure-preflight.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371"
+          },
+          {
+            "path": "scripts/phase3-preflight.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "b1e13480ad1bcc70e17d16783e6046a131b3b38a8531eb13140bb1dfb22556c9"
+          },
+          {
+            "path": "scripts/tests/engineering-failure-preflight.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "58235fe17face150db36985d787a51ab5b452001c044629f74f28b3992678757"
+          },
+          {
+            "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "d8c25f47e6233db2a290dcadeecdb20896e9f057684a1502ab8ea47bed51f9a0"
+          },
+          {
+            "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "9f2fc8dc3421f07db3ec0e1e00d4be526dc93234ad68fc6109e7e554281ec677"
+          }
+        ],
+        "reportOnlyTaskOutputs": [
+          "artifacts/phase3-efp-integration-preflight.json",
+          "docs/reports/2026-10-13-p3-efp-integration-preflight.md"
+        ],
+        "knowledgeReview": {
+          "commit": "2470f00902bd650bc3122f518b18333afed323f3",
+          "candidate": "ccbdf647a545e08f09a8067c8f2c4659f849889a",
+          "path": "docs/reviews/phase3/P3-EFP-K01-ccbdf647-reviewer-a.json",
+          "sha256": "da0f45fded94f1dc941a3a6b7a91da586d2de36b0188ec8f3662fcbaf9b98687",
+          "acceptedScope": "EXACT_K01_HISTORICAL_SOURCE_EXTRACTION_PROVENANCE_AND_REGRESSION_GAP_DOCUMENTATION_ONLY",
+          "currentBaseExecutionAccepted": false
+        },
+        "controlEpoch": "FD-P3-2026-09-23-09",
+        "criticalOverflow": [],
+        "scopeSplittingAlert": false,
+        "missingCoverage": [
+          {
+            "id": "FD-EVID-005",
+            "historical": "EXISTS",
+            "currentBase": "NOT_VERIFIED",
+            "missingPaths": []
+          },
+          {
+            "id": "FD-FIXTURE-006",
+            "historical": "EXISTS_CANDIDATE_RECEIPTS_NOT_ACCEPTED_BY_THIS_TASK",
+            "currentBase": "NOT_VERIFIED",
+            "missingPaths": []
+          }
+        ],
+        "sourceAvailability": "VERIFIED_PINNED_BYTES",
+        "execution": "NO_REGRESSIONS_OR_RUNTIME_EXECUTED",
+        "creditDelta": 0
+      }
+    },
+    "remoteOnlyObjects": {
+      "command": "Same CLI with GIT_OBJECT_DIRECTORY=D:/fd-validation/efp-i01/remote-only.git/objects",
+      "exitCode": 0,
+      "result": {
+        "status": "CHECKED",
+        "automationAvailable": true,
+        "acceptanceGranted": false,
+        "runtimeTestsExecuted": 0,
+        "taskId": "P3-EFP-I01",
+        "exactBaseSha": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+        "selected": [
+          {
+            "id": "FD-EVID-005",
+            "score": 15,
+            "risk": "MEDIUM",
+            "reasons": [
+              "contract:EXACT_EXECUTION_RECEIPTS:+6",
+              "contract:REPRODUCIBLE_REVIEW:+6",
+              "domain:evidence-tooling:+3"
+            ],
+            "catalogState": "SOURCE_VERIFIED_DRAFT",
+            "knowledgeState": "ACCEPTED_EXTRACTION_ONLY",
+            "invariants": [
+              "Counts bind command, tested SHA, exit code, skipped tests, errors and raw outputs. A scoped PASS does not certify later actual assembly."
+            ],
+            "forbiddenPatterns": [
+              "Transferring old test results to a new SHA; masking nonzero exit or skipped/unhandled failures; declaring assembly PASS from producer-only tests."
+            ],
+            "negativeObligations": [
+              "Run the exact fixture suites in producer and assembled contexts; retain failing receipts and hash/source negatives. Reproduce reviewer failures before classifying them."
+            ],
+            "commands": [
+              "npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts --maxWorkers=2"
+            ],
+            "constraintsState": "PINNED_DOCUMENT_CONSTRAINTS",
+            "source": {
+              "commit": "dbd430be9550947a2bac691ef645db56cf5c408f",
+              "path": "docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json",
+              "sha256": "a0f4b6ff474b169b36e7ff18092ad93e7f29a573c7e2a0c85bf299011ab0e5a9",
+              "availability": "VERIFIED_PINNED_BYTES",
+              "sourceReviewRelationship": "LATER_SCOPED_PASS_PRESERVES_EARLIER_FAILURE_NOT_PASS_ON_FAILURE_SHA"
+            },
+            "sourceRelationship": "LATER_SCOPED_PASS_PRESERVES_EARLIER_FAILURE_NOT_PASS_ON_FAILURE_SHA",
+            "historicalTestStatus": "EXISTS",
+            "currentBaseCoverage": "NOT_VERIFIED",
+            "regressions": [
+              {
+                "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                "pinnedSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+                "pinned": {
+                  "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "dc1ffe1fa8d892b686e8638fac8b61ff314bba3e"
+                },
+                "currentBase": {
+                  "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6ecb9114de49ebf1ee9c3d79a591edbc4d4f4098"
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              },
+              {
+                "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                "pinnedSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+                "pinned": {
+                  "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "ca38692a683a9531169a31598870f244adce20d3"
+                },
+                "currentBase": {
+                  "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6c7e3f3a772867540d29767d27256b3d20ce3812"
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              }
+            ]
+          },
+          {
+            "id": "FD-FIXTURE-006",
+            "score": 11,
+            "risk": "HIGH",
+            "reasons": [
+              "contract:EXACT_REVIEW_REFERENCE:+6",
+              "domain:evidence-tooling:+3",
+              "family:EXACT_REVIEW_REFERENCE:+2"
+            ],
+            "catalogState": "SOURCE_VERIFIED_DRAFT",
+            "knowledgeState": "ACCEPTED_EXTRACTION_ONLY",
+            "invariants": [
+              "Use named immutable pre-review data, execute validator from the tested source,\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\nASSEMBLED checks. No automatic phase inference based on discovered files.\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\npaths and runtime drift still reject. No directory whitelist or skipped test.\nValidate the same focused and default CI at producer and post-review checkouts,\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\nnot technical acceptance or a real GitHub statement."
+            ],
+            "forbiddenPatterns": [
+              "REVIEWED_PROSE_CONSTRAINT: Use named immutable pre-review data, execute validator from the tested source,\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\nASSEMBLED checks. No automatic phase inference based on discovered files.\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\npaths and runtime drift still reject. No directory whitelist or skipped test.\nValidate the same focused and default CI at producer and post-review checkouts,\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\nnot technical acceptance or a real GitHub statement."
+            ],
+            "negativeObligations": [
+              "Use named immutable pre-review data, execute validator from the tested source,\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\nASSEMBLED checks. No automatic phase inference based on discovered files.\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\npaths and runtime drift still reject. No directory whitelist or skipped test.\nValidate the same focused and default CI at producer and post-review checkouts,\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\nnot technical acceptance or a real GitHub statement."
+            ],
+            "commands": [
+              "npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts scripts/tests/phase3-contract-parity.test.ts --maxWorkers=2"
+            ],
+            "constraintsState": "PINNED_DOCUMENT_CONSTRAINTS",
+            "source": {
+              "commit": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b",
+              "path": "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+              "sha256": "e8fd40e8b0f74701755cdab3135d58e0dc3a7c08aac7c4da9652bb622b38103e",
+              "availability": "VERIFIED_PINNED_BYTES",
+              "sourceReviewRelationship": "A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE"
+            },
+            "sourceRelationship": "A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE",
+            "historicalTestStatus": "EXISTS_CANDIDATE_RECEIPTS_NOT_ACCEPTED_BY_THIS_TASK",
+            "currentBaseCoverage": "NOT_VERIFIED",
+            "regressions": [
+              {
+                "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                "pinnedSha": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+                "pinned": {
+                  "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6ecb9114de49ebf1ee9c3d79a591edbc4d4f4098"
+                },
+                "currentBase": {
+                  "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6ecb9114de49ebf1ee9c3d79a591edbc4d4f4098"
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              },
+              {
+                "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                "pinnedSha": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+                "pinned": {
+                  "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6c7e3f3a772867540d29767d27256b3d20ce3812"
+                },
+                "currentBase": {
+                  "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6c7e3f3a772867540d29767d27256b3d20ce3812"
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              }
+            ]
+          }
+        ],
+        "overflow": [],
+        "unknown": [
+          {
+            "id": "FD-SHA-007",
+            "decision": "NOT_ADDED_UNKNOWN",
+            "reason": "27dab1ad proves missing review-reference contract, not wrong candidate/reviewer SHA; no terminal identity mismatch finding selected"
+          },
+          {
+            "id": "FD-FALLBACK-008",
+            "decision": "NOT_ADDED_UNKNOWN",
+            "reason": "No pinned failing setup/data-flow source in assigned selection; later closed-fallback declarations cannot establish a historical failure"
+          },
+          {
+            "id": "FD-REVIEW-009",
+            "decision": "NOT_ADDED_UNKNOWN",
+            "reason": "PR475 records separate historical relay and independent review; it does not prove relay was mistaken for this review"
+          },
+          {
+            "id": "FD-WRITER-010",
+            "decision": "NOT_ADDED_UNKNOWN",
+            "reason": "Reservation boundary records do not prove an actual competing writer or conflict occurrence"
+          }
+        ],
+        "historicalRisk": "HIGH",
+        "cacheHit": false,
+        "elapsedMs": 1624.46,
+        "synthetic": false,
+        "inputDigest": "7e8379992eabb345a2219051613ad52e5df95897548895d060c37f62bd623179",
+        "knowledgeDigest": "3ae0f2ab502bed1890975c42957918a2d8ccd0c7f0754318ec8e8ec8987a5587",
+        "sourceDigest": "e520f384f3c4c982236e2c0c867c805c300bf12f5e67ac87c6a4d89fec162303",
+        "engineDigest": "654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371",
+        "cacheKey": "0bcf8d3efee11e4be6f9f49bd286333045ff3da28065ce5d1a0b684462533ade",
+        "relevantSourceObjects": [
+          {
+            "path": "scripts/engineering/historical-failure-preflight.ts",
+            "presence": "MISSING",
+            "blob": null
+          },
+          {
+            "path": "scripts/phase3-preflight.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "42836ff9511dc48db3758de19d7593056aa65dbb"
+          },
+          {
+            "path": "scripts/tests/engineering-failure-preflight.test.ts",
+            "presence": "MISSING",
+            "blob": null
+          },
+          {
+            "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "6ecb9114de49ebf1ee9c3d79a591edbc4d4f4098"
+          },
+          {
+            "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "6c7e3f3a772867540d29767d27256b3d20ce3812"
+          }
+        ],
+        "workingTreeRelevantObjects": [
+          {
+            "path": "scripts/engineering/historical-failure-preflight.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371"
+          },
+          {
+            "path": "scripts/phase3-preflight.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "b1e13480ad1bcc70e17d16783e6046a131b3b38a8531eb13140bb1dfb22556c9"
+          },
+          {
+            "path": "scripts/tests/engineering-failure-preflight.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "58235fe17face150db36985d787a51ab5b452001c044629f74f28b3992678757"
+          },
+          {
+            "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "d8c25f47e6233db2a290dcadeecdb20896e9f057684a1502ab8ea47bed51f9a0"
+          },
+          {
+            "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "9f2fc8dc3421f07db3ec0e1e00d4be526dc93234ad68fc6109e7e554281ec677"
+          }
+        ],
+        "reportOnlyTaskOutputs": [
+          "artifacts/phase3-efp-integration-preflight.json",
+          "docs/reports/2026-10-13-p3-efp-integration-preflight.md"
+        ],
+        "knowledgeReview": {
+          "commit": "2470f00902bd650bc3122f518b18333afed323f3",
+          "candidate": "ccbdf647a545e08f09a8067c8f2c4659f849889a",
+          "path": "docs/reviews/phase3/P3-EFP-K01-ccbdf647-reviewer-a.json",
+          "sha256": "da0f45fded94f1dc941a3a6b7a91da586d2de36b0188ec8f3662fcbaf9b98687",
+          "acceptedScope": "EXACT_K01_HISTORICAL_SOURCE_EXTRACTION_PROVENANCE_AND_REGRESSION_GAP_DOCUMENTATION_ONLY",
+          "currentBaseExecutionAccepted": false
+        },
+        "controlEpoch": "FD-P3-2026-09-23-09",
+        "criticalOverflow": [],
+        "scopeSplittingAlert": false,
+        "missingCoverage": [
+          {
+            "id": "FD-EVID-005",
+            "historical": "EXISTS",
+            "currentBase": "NOT_VERIFIED",
+            "missingPaths": []
+          },
+          {
+            "id": "FD-FIXTURE-006",
+            "historical": "EXISTS_CANDIDATE_RECEIPTS_NOT_ACCEPTED_BY_THIS_TASK",
+            "currentBase": "NOT_VERIFIED",
+            "missingPaths": []
+          }
+        ],
+        "sourceAvailability": "VERIFIED_PINNED_BYTES",
+        "execution": "NO_REGRESSIONS_OR_RUNTIME_EXECUTED",
+        "creditDelta": 0
+      }
+    }
+  },
+  "remoteAvailability": {
+    "repository": "D:/fd-validation/efp-i01/remote-only.git",
+    "alternatesPresent": false,
+    "structuredReferencesChecked": 73,
+    "commitIdentitiesChecked": 29,
+    "requiredMissingReferences": [
+      {
+        "commit": "b22691ab5311cd31f60eb91d573416fea3c7cf98",
+        "path": "docs/reviews/2026-10-10-pr-474-review.md",
+        "expectedSha256": "f588a8b7062e7d57739e1f02b24bf7d939e06a8f203a5542ab374ba7f2f93adc",
+        "status": "MISSING_REMOTE_REQUIRED_SOURCE",
+        "error": "fatal: path 'docs/reviews/2026-10-10-pr-474-review.md' does not exist in 'b22691ab5311cd31f60eb91d573416fea3c7cf98'"
+      },
+      {
+        "commit": "7e65291a4fa10170e249bc492617ef337caf7f8a",
+        "path": "docs/reviews/2026-10-10-pr-475-review.md",
+        "expectedSha256": "8c67cfe179e02ece25b6581ee2a23ed776ebf4e95eeaa2a93b2e8d59dc1d7cf6",
+        "status": "MISSING_REMOTE_REQUIRED_SOURCE",
+        "error": "fatal: path 'docs/reviews/2026-10-10-pr-475-review.md' does not exist in '7e65291a4fa10170e249bc492617ef337caf7f8a'"
+      },
+      {
+        "commit": "b22691ab5311cd31f60eb91d573416fea3c7cf98",
+        "path": "docs/reviews/probes/review-474-independent.mjs",
+        "expectedSha256": "aa340cd389f4ba83a2611715247f17cdf334a9efb8e71d73a210feee7ff1f0b3",
+        "status": "MISSING_REMOTE_REQUIRED_SOURCE",
+        "error": "fatal: path 'docs/reviews/probes/review-474-independent.mjs' does not exist in 'b22691ab5311cd31f60eb91d573416fea3c7cf98'"
+      },
+      {
+        "commit": "7e65291a4fa10170e249bc492617ef337caf7f8a",
+        "path": "docs/reviews/probes/review-475-independent.mjs",
+        "expectedSha256": "3e3a78add826e091de030426eae4c60e404b67967b0d94aaf34f919ba87e6913",
+        "status": "MISSING_REMOTE_REQUIRED_SOURCE",
+        "error": "fatal: path 'docs/reviews/probes/review-475-independent.mjs' does not exist in '7e65291a4fa10170e249bc492617ef337caf7f8a'"
+      }
+    ],
+    "missingCommits": [
+      {
+        "commit": "b22691ab5311cd31f60eb91d573416fea3c7cf98",
+        "status": "MISSING_REMOTE_COMMIT",
+        "error": "fatal: Not a valid object name b22691ab5311cd31f60eb91d573416fea3c7cf98^{commit}"
+      },
+      {
+        "commit": "3310fe2cb307ac00891facbe3a192b7b481c2d63",
+        "status": "MISSING_REMOTE_COMMIT",
+        "error": "fatal: Not a valid object name 3310fe2cb307ac00891facbe3a192b7b481c2d63^{commit}"
+      },
+      {
+        "commit": "7e65291a4fa10170e249bc492617ef337caf7f8a",
+        "status": "MISSING_REMOTE_COMMIT",
+        "error": "fatal: Not a valid object name 7e65291a4fa10170e249bc492617ef337caf7f8a^{commit}"
+      }
+    ],
+    "documentedAbsenceProbes": [
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "packages/rules/src/ability/combat-reward-distribution.ts",
+        "status": "DOCUMENTED_ABSENCE_PROBE",
+        "error": "fatal: path 'packages/rules/src/ability/combat-reward-distribution.ts' does not exist in '1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce'"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts",
+        "status": "DOCUMENTED_ABSENCE_PROBE",
+        "error": "fatal: path 'packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts' does not exist in '1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce'"
+      },
+      {
+        "commit": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+        "path": "docs/reviews/probes/review-474-independent.mjs",
+        "status": "DOCUMENTED_ABSENCE_PROBE",
+        "error": "fatal: path 'docs/reviews/probes/review-474-independent.mjs' does not exist in '4dd8eca5746d63d72c7906716cb7118e2569872a'"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "docs/reviews/probes/review-474-independent.mjs",
+        "status": "DOCUMENTED_ABSENCE_PROBE",
+        "error": "fatal: path 'docs/reviews/probes/review-474-independent.mjs' does not exist in '1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce'"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts",
+        "status": "DOCUMENTED_ABSENCE_PROBE",
+        "error": "fatal: path 'packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts' does not exist in '1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce'"
+      },
+      {
+        "commit": "fe4653d1013110555881585db3a447880dd463d3",
+        "path": "docs/reviews/probes/review-475-independent.mjs",
+        "status": "DOCUMENTED_ABSENCE_PROBE",
+        "error": "fatal: path 'docs/reviews/probes/review-475-independent.mjs' does not exist in 'fe4653d1013110555881585db3a447880dd463d3'"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "docs/reviews/probes/review-475-independent.mjs",
+        "status": "DOCUMENTED_ABSENCE_PROBE",
+        "error": "fatal: path 'docs/reviews/probes/review-475-independent.mjs' does not exist in '1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce'"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+        "status": "DOCUMENTED_ABSENCE_PROBE",
+        "error": "fatal: path 'scripts/tests/phase3-e09-b11-final-binding.test.ts' does not exist in '1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce'"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+        "status": "DOCUMENTED_ABSENCE_PROBE",
+        "error": "fatal: path 'scripts/tests/phase3-readiness-preflight.test.ts' does not exist in '1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce'"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "scripts/phase3-preflight.ts",
+        "status": "DOCUMENTED_ABSENCE_PROBE",
+        "error": "fatal: path 'scripts/phase3-preflight.ts' does not exist in '1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce'"
+      }
+    ],
+    "fetchVerification": "All three missing commits exact fetch returned upload-pack: not our ref",
+    "scope": "Pinned structured catalog/audit/execution/review references; documented absent baseline paths are absence probes, not claimed available dependencies"
+  },
+  "topology": [
+    {
+      "candidate": "ccbdf647a545e08f09a8067c8f2c4659f849889a",
+      "ancestorOfAssembly": false
+    },
+    {
+      "candidate": "36de92a0536d7bc06a47f61c8484a51f4e981dfc",
+      "ancestorOfAssembly": false
+    }
+  ],
+  "policyConflicts": [
+    "Exact imported candidate blobs do not make K01/K02 ancestors of assembled HEAD. Repository policy requires reviewed candidate ancestry into synchronization; no manifest or ancestry PASS fabricated.",
+    "K01/K02 RA artifacts have knowledge/tooling-specific schemas and Reviewer A identity, no GitHub policy attestation. Current-main integration exact review and G identity/manifest binding required.",
+    "Planner explicitly withholds Promotion PR authority until integration review and governance disposition."
+  ],
+  "nextOwner": "Reviewer A current-main scoped integration review; G/Planner resolves exact missing remote sources and policy topology, then Planner decides one promotion PR authorization",
+  "limits": {
+    "runtimeSemanticDelta": "NONE",
+    "acceptedB11SourceRetained": true,
+    "coverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0,
+    "ledger": "111/944",
+    "gateC": "NOT_VERIFIED",
+    "missingImageReleaseBlockers": 93,
+    "longTermStability": "NOT_VERIFIED",
+    "phase3Complete": false,
+    "releaseReady": false,
+    "promotionPr": null,
+    "merged": false
+  },
+  "rawReceiptDirectory": "D:/fd-validation/efp-i01",
+  "finalStatus": "PROMOTION_BLOCKED_GOVERNANCE"
+}
