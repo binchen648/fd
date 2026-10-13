@@ -16,11 +16,25 @@ Read: agent contract, assigned task, this preflight protocol, matched cases only
 
 ## Startup
 
-Run Historical Failure Preflight using the structured task fields automatically.
-Before K02 exists perform its deterministic protocol and record
-automationAvailable=false. Attach matched Failure IDs, source bindings,
-invariants, forbidden patterns, required regressions and missing coverage.
-Do not load the full history. A lookup failure is visible, not a silent PASS.
+The task owner invokes Historical Failure Preflight automatically once at
+startup, using the already supplied structured task fields; no repeated user
+copying or separate approval is required for successful retrieval:
+
+```text
+node --import tsx scripts/engineering/historical-failure-preflight.ts --task <repository-relative-task-json> --out artifacts/<task-id>-historical-preflight.json
+```
+
+The task JSON has exactly taskId, capabilityFamily, semanticContracts[],
+expectedChangedFiles[], runtimeDomains[], exactBaseSha, selectedIdentities[],
+reservationReference. All metadata is nonempty; automation tasks explicitly
+use a NOT_APPLICABLE identity marker instead of inventing a canonical identity.
+Attach ranked IDs/reasons, pinned bindings, invariants, forbidden patterns,
+regression obligations, historical risk/overflow and unverified coverage to the
+same task packet. Read only matched case documents if deeper context is needed.
+INPUT_INCOMPLETE/SOURCE_UNAVAILABLE/EVIDENCE_INVALID stop implementation and
+remain visible, not a silent PASS. NO_MATCH is UNKNOWN risk. Retrieval does not
+authorize writes or replace runtime, reservation or independent review gates.
+K02 remains an automation candidate until exact Reviewer A acceptance.
 
 ## Acceptance Matrix
 

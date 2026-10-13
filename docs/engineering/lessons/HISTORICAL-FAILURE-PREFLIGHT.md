@@ -45,11 +45,46 @@ objects at the exact base. Reuse within the task. Recompute only when scope,
 applicable knowledge, or relevant sources change; a report-only commit does
 not alone invalidate the preflight. A failed lookup cannot be cached as success.
 
-## Proposed K02 Invocation
+## K02 Standalone Invocation
 
 node --import tsx scripts/engineering/historical-failure-preflight.ts --task <task-json> --catalog docs/engineering/lessons/catalog.json --out <task-output>
 
-This command is NOT_IMPLEMENTED until K02. Output can be embedded in the
-existing task packet. It must not auto-run tests, acquire locks, dispatch
-workers, edit runtime or award acceptance. Synthetic unit fixtures must be
-clearly marked and must never become historical case evidence.
+Implementation: AUTOMATION_BASELINE_CANDIDATE; K02 exact tooling review pending.
+The command invokes only read-only Git and Node built-ins. It does not import
+runtime, execute regressions, acquire locks or dispatch workers. No package alias.
+Output may be embedded in the existing task packet; --out accepts an untracked
+repository-relative artifacts/*.json receipt, never an existing tracked artifact.
+Unknown/duplicate CLI flags, traversal and symlink input/output are rejected.
+--limit is 3 (default), 4 or 5. --cache accepts only a JSON file below
+.cache/historical-failure-preflight/; the default is default.json in that directory.
+Synthetic unit fixtures are parser/integrity checks, never historical evidence.
+
+The immutable external K01 Reviewer A commit is
+2470f00902bd650bc3122f518b18333afed323f3; artifact
+docs/reviews/phase3/P3-EFP-K01-ccbdf647-reviewer-a.json; SHA-256
+DA0F45FDED94F1DC941A3A6B7A91DA586D2DE36B0188EC8F3662FCBAF9B98687.
+Its direct parent, reviewed candidate, verdict, epoch, scope, bound audit and
+per-case verdicts are checked. Frozen catalog/case PENDING/DRAFT wording remains
+historically accurate; the output adds ACCEPTED_EXTRACTION_ONLY separately.
+No extraction PASS is a current-base semantic execution PASS.
+
+All matched pinned sources, including overflow, are checked on every call.
+The cache is a derived-output snapshot, never an evidence authority. It is
+reused only when both its stable key and its revalidated payload agree.
+Relevant source objects include declared files, matched case files and test
+paths at exactBaseSha and their working-tree byte digests (dirty source cannot
+silently reuse cached output). The base SHA itself is excluded from the stable task
+digest so a report-only descendant can reuse the same cache, while the output
+still names the new exactBaseSha. Engine, scope, catalog, case/audit/review bytes
+and relevant object changes invalidate it. Failed retrieval is not success-cached.
+Hash drift is EVIDENCE_INVALID, unavailable Git/source is SOURCE_UNAVAILABLE,
+malformed task is INPUT_INCOMPLETE; all exit 1 with a structured error.
+NO_MATCH exits 0 as a completed lookup with UNKNOWN risk, not an approval.
+CHECKED also grants no acceptance. Missing static paths are MISSING, existing
+paths PRESENT_STATIC_ONLY, semantic execution coverage always NOT_VERIFIED.
+No measured speedup or current-main coverage is claimed by cache retrieval.
+Ordinary task outputs under docs/reports/ or artifacts/, plus the two K02
+handoff/execution outputs, are excluded from source-object cache keys. Their
+declared paths remain in the task-scope digest. A matched case naming such a
+path adds it back as relevant input; pinned report sources are always verified.
+This is only cache applicability, never a path authorization or evidence waiver.

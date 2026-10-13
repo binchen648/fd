@@ -34,3 +34,18 @@ prevention aids, never new gameplay rules or acceptance votes.
 
 Retrieve at most five relevant cases; default three. Read pinned evidence only
 when a claim or missing test requires verification. No whole-history startup.
+
+## K02 External Review Consumption
+
+The preceding K01 snapshot wording is preserved, not rewritten retroactively.
+External Reviewer A commit 2470f00902bd650bc3122f518b18333afed323f3 accepts
+ccbdf647a545e08f09a8067c8f2c4659f849889a for historical extraction only.
+See HISTORICAL-FAILURE-PREFLIGHT.md for its exact artifact/hash and the standalone
+candidate CLI. It adds that external scope without upgrading frozen case fields
+or treating producer receipts as independent runtime reviews.
+
+Do not rerun the frozen K01 whole-workspace verifier against changed K02 protocol
+documents and claim K01 drift: its original document digests describe its pinned
+candidate. K02 binds that audit at the immutable candidate and checks catalog,
+case documents and source bytes separately. K02 protocol/index/template edits
+are new tooling documentation, not changes to the six historical case records.
