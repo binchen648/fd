@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "fd-engineering-knowledge-review-v1",
+  "taskId": "P3-EFP-K01",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "reviewDate": "2026-10-13",
+  "reviewer": "Reviewer A",
+  "candidateSha": "ccbdf647a545e08f09a8067c8f2c4659f849889a",
+  "reviewedSha": "ccbdf647a545e08f09a8067c8f2c4659f849889a",
+  "finalVerdict": "PASS",
+  "conclusion": "REVIEW_ACCEPTED",
+  "acceptedScope": "EXACT_K01_HISTORICAL_SOURCE_EXTRACTION_PROVENANCE_AND_REGRESSION_GAP_DOCUMENTATION_ONLY",
+  "blockingFindings": [],
+  "boundAudit": {
+    "path": "docs/engineering/lessons/K01-SOURCE-AUDIT.json",
+    "sha256": "18E59CC07AD380DE6B7D77B54E8F5A33B85BB0BD9DA95EE667D15A29DB18DC78"
+  },
+  "boundReport": {
+    "path": "docs/engineering/lessons/K01-HANDOFF.md",
+    "sha256": "EA1B09A175A015609F48D8626D821F10C048E71DC024398CE693BE6EC68E5EB5"
+  },
+  "dispatchCommit": "3ab115927eaf7c104fab9064d71ceebdac870da1",
+  "sourceScope": {
+    "changedFiles": 12,
+    "allUnder": "docs/engineering/lessons/",
+    "runtimeChanged": false,
+    "observedMainSha": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+    "remoteMainObservedAtReview": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+    "newMainConclusionsInherited": false
+  },
+  "caseVerdicts": [
+    {
+      "id": "FD-SEC-001",
+      "verdict": "PASS_SCOPED_EXTRACTION",
+      "evidence": "cf179ca3 blockingFindings[0] supports credential leakage, deterministic generation, real socket impersonation and duplicate HTTP identity mutation. Later RB scoped repair is separately attributed; no current-main security acceptance."
+    },
+    {
+      "id": "FD-REV-002",
+      "verdict": "PASS_SCOPED_EXTRACTION",
+      "evidence": "cf179ca3 blockingFindings[1] supports raw WS end_turn omission and exact revision/version/log deltas. Required invalid-input matrix is a regression obligation, distinct from the original omission probe."
+    },
+    {
+      "id": "FD-SHAPE-003",
+      "verdict": "PASS_SCOPED_EXTRACTION",
+      "evidence": "Pinned PR474 report supports four malformed compiled containers and privileged reward activation in trusted fixtures. Historical test exists; MISSING is qualified as missing enforcing negative, not absence of every file. Raw-loader/client exploitation remains unproved."
+    },
+    {
+      "id": "FD-RESTORE-004",
+      "verdict": "PASS_SCOPED_EXTRACTION",
+      "evidence": "Pinned PR475 report supports legal actual sc3 nested response/choice restore failure and successful completed restore. Inherited runtime exposure and historical probe are distinct from new authoring behavior and accepted production regressions."
+    },
+    {
+      "id": "FD-EVID-005",
+      "verdict": "PASS_SCOPED_EXTRACTION",
+      "evidence": "Source review accepts b5e68444 and separately preserves failure cfa6a925. Full hook/RPC cause remains UNKNOWN; mitigation does not prove a universal cause or actual final assembly acceptance."
+    },
+    {
+      "id": "FD-FIXTURE-006",
+      "verdict": "PASS_SCOPED_EXTRACTION",
+      "evidence": "Exact 1ce0b406 producer packet binds original I failure 487ab81, receipt index/raw streams, inspected source and Planner diagnosis. Producer packet is not an independent review artifact. K01 extraction does not promote the repair or reopen its separate review lane."
+    }
+  ],
+  "unprovedCandidates": {
+    "FD-SHA-007": "UNKNOWN_RETAINED",
+    "FD-FALLBACK-008": "UNKNOWN_RETAINED",
+    "FD-REVIEW-009": "UNKNOWN_RETAINED",
+    "FD-WRITER-010": "UNKNOWN_RETAINED"
+  },
+  "independentVerification": {
+    "method": "READ_ONLY_SELECTED_SOURCE_REPORTS_ARTIFACTS_AND_AUDIT_CODE; NO_RUNTIME_EXECUTION",
+    "command": "node docs/engineering/lessons/verify-k01.mjs --validate",
+    "exitCode": 0,
+    "exactAuditRecomputation": "PASS",
+    "seededSourceBindings": 5,
+    "sourceBackedCases": 6,
+    "unknownArgumentCommand": "node docs/engineering/lessons/verify-k01.mjs --unknown",
+    "unknownArgumentExitCode": 1,
+    "unknownArgumentRejected": true,
+    "diffCheck": "PASS",
+    "remoteExactCarrierRef": "origin/codex/a-p3-efp-k01-evidence",
+    "remoteCarrierVerified": true,
+    "producerCheckoutClean": true,
+    "securityRevisionFollowupScopeVerified": "RB rules46/server16 at source-equivalent88dcd441; browser15 and failed full CI inspected receipts, not independent reruns",
+    "testExistenceMeaning": "STATIC_EXACT_TREE_AND_LITERAL_SELECTORS; NOT_DYNAMIC_SEMANTIC_COVERAGE",
+    "sourceReviewsReopened": false
+  },
+  "boundaries": {
+    "knowledgeExtractionAccepted": true,
+    "frozenDraftFilesRewrittenByReviewer": false,
+    "currentMainDynamicConformance": "NOT_VERIFIED",
+    "runtimeTestsExecuted": 0,
+    "runtimeAcceptanceGranted": false,
+    "retrievalCliImplemented": false,
+    "k02WriteAuthorizationGrantedByReviewer": false,
+    "githubAttestationProvided": false,
+    "promotionAllowed": false,
+    "gateC": "NOT_VERIFIED",
+    "sourceAssetsMissing": 93,
+    "acceptedIdentities": 111,
+    "denominator": 944,
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0
+  },
+  "nextOwner": "PLANNER_MAY_REGISTER_SCOPED_K01_ACCEPTANCE_AND_AUTHORIZE_K02_AFTER_CONFIRMING_ITS_SEPARATE_WRITE_RESERVATION; NO_AUTOMATIC_HISTORICAL_RUNTIME_REPAIR",
+  "commitBinding": "Immutable artifact-only review commit directly parents candidate; commit and artifact SHA256 supplied externally"
+}

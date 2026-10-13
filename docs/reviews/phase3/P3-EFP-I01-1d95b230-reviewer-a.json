@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "fd-engineering-integration-review-v1",
+  "taskId": "P3-EFP-I01",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "reviewDate": "2026-10-13",
+  "reviewer": "Reviewer A",
+  "candidateSha": "1d95b2306b6b3b7aa30c39041b33dad892872657",
+  "reviewedSha": "1d95b2306b6b3b7aa30c39041b33dad892872657",
+  "testedAssemblySha": "1ac1cd4c171d01a21e09e83fcc93df5d842e1b15",
+  "boundMainSha": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+  "finalVerdict": "PASS",
+  "acceptedScope": "EXACT_CURRENT_MAIN_BLOB_MATERIALIZATION_AND_RECORDED_EXECUTION_EVIDENCE_ONLY; NOT_PROMOTION_READINESS",
+  "blockingFindingsWithinAcceptedScope": [],
+  "boundPacket": {
+    "path": "artifacts/phase3-efp-integration-preflight.json",
+    "sha256": "F0B278085D578BA3AE59A7C5D6A1DF6E8A8C2C278B2DD95685D9DA754665044B"
+  },
+  "boundReport": {
+    "path": "docs/reports/2026-10-13-p3-efp-integration-preflight.md",
+    "sha256": "C765038682A34B0AA1A5AECA66EFCE49765232E4CE0ED30152F5B858148CF137"
+  },
+  "authorityCommit": "163f8e8469e81bf998f22884e9e529d5792fabe0",
+  "independentVerification": {
+    "reviewedImportedBlobsVerified": 20,
+    "importedBlobsEqualSourceTestedAssemblyAndCarrier": true,
+    "mainRuntimeAndControlObjectsPreserved": 9,
+    "sourceCandidateReviewsPreservedWithoutAncestryClaim": true,
+    "typecheckFocusedCiRawFilesLengthAndSha256": "PASS; VERIFIED_ORIGINAL_LOCAL_FILES; NOT_EMBEDDED_IN_REVIEW",
+    "recordedDefaultCi": "195 files / 1629 tests; exit 0; exact testedAssemblySha; not rerun by Reviewer A",
+    "independentFocusedCommand": "npx vitest run scripts/tests/engineering-failure-preflight.test.ts",
+    "independentFocusedTestedSha": "1d95b2306b6b3b7aa30c39041b33dad892872657",
+    "independentFocusedPassed": 22,
+    "independentFocusedExitCode": 0,
+    "independentFocusedDurationSeconds": 41.92,
+    "diffCheck": "PASS",
+    "producerCheckoutClean": true,
+    "remoteOnlyObjectDatabase": "D:/fd-validation/efp-i01/remote-only.git",
+    "remoteOnlyAlternatesAbsent": true,
+    "threeMissingCommitsAndFourMissingPathsReproduced": true,
+    "bothOriginalCandidatesNonAncestorOfIntegrationCarrier": true,
+    "fullCiBrowserOrRuntimeProbeRerunByReviewer": false
+  },
+  "preservedPromotionBlockers": {
+    "missingRemoteCommits": [
+      "b22691ab5311cd31f60eb91d573416fea3c7cf98",
+      "7e65291a4fa10170e249bc492617ef337caf7f8a",
+      "3310fe2cb307ac00891facbe3a192b7b481c2d63"
+    ],
+    "missingRemotePaths": [
+      "b22691ab5311cd31f60eb91d573416fea3c7cf98:docs/reviews/2026-10-10-pr-474-review.md",
+      "b22691ab5311cd31f60eb91d573416fea3c7cf98:docs/reviews/probes/review-474-independent.mjs",
+      "7e65291a4fa10170e249bc492617ef337caf7f8a:docs/reviews/2026-10-10-pr-475-review.md",
+      "7e65291a4fa10170e249bc492617ef337caf7f8a:docs/reviews/probes/review-475-independent.mjs"
+    ],
+    "topologyIdentity": "G_AND_PLANNER_MUST_BIND_THIS_EXACT_INTEGRATION_CANDIDATE_TO_APPLICABLE_POLICY; IMPORTED_BLOBS_DO_NOT_SUPPLY_OLD_CANDIDATE_ANCESTRY_OR_GITHUB_ATTESTATION",
+    "wholeCatalogRemoteSelfContained": false,
+    "promotionPrAuthorized": false
+  },
+  "boundaries": {
+    "finalStatus": "PROMOTION_BLOCKED_GOVERNANCE",
+    "runtimeSemanticAcceptanceGranted": false,
+    "sourceReviewsReopened": false,
+    "githubAttestationProvided": false,
+    "promotionAllowed": false,
+    "gateC": "NOT_VERIFIED",
+    "sourceAssetsMissing": 93,
+    "ledger": "111/944",
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0,
+    "integrationAssemblyPublishedByReviewer": false
+  },
+  "nextOwner": "G_AND_PLANNER_RESOLVE_REMOTE_PUBLICATION_AND_EXACT_INTEGRATION_TOPOLOGY_IDENTITY_BEFORE_PROMOTION_AUTHORIZATION",
+  "commitBinding": "Artifact-only local immutable review commit directly parents reviewed carrier; no push because integration assembly publication is not authorized"
+}

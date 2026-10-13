@@ -1,0 +1,780 @@
+{
+  "schemaVersion": "fd-efp-integration-governance-inputs-v1",
+  "taskId": "P3-EFP-G01",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "date": "2026-10-13",
+  "status": "GOVERNANCE_INPUT_COMPLETE",
+  "assessment": "EXISTING_POLICY_SUPPORTS_CURRENT_REVIEWED_INTEGRATION_CHAIN_NO_POLICY_CHANGE_REQUIRED",
+  "role": "Codex G / actual governance attestor",
+  "authority": {
+    "commit": "dd3cfd5cd7232a3935ba8df42b7c14359d856002",
+    "path": "docs/agents/P3-EFP-I01-K03-NEXT-DISPATCH.md",
+    "sha256": "C5C903B20B98BFBC3F1B93EA91AB94142B1B57518429DFDAB51B4A6CF8D52743"
+  },
+  "baseSha": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+  "reviewedCandidateSha": "1d95b2306b6b3b7aa30c39041b33dad892872657",
+  "integrationReview": {
+    "commit": "dd9a869de718bc1cf23cf5a9826149becc3cb659",
+    "path": "docs/reviews/phase3/P3-EFP-I01-1d95b230-reviewer-a.json",
+    "sha256": "5C8638CC04DBBD1F2EC84283B04007D96719F882E3E61FE2FD2D70DE0B9A0CF5",
+    "verdict": "PASS",
+    "scope": "EXACT_CURRENT_MAIN_BLOB_MATERIALIZATION_AND_RECORDED_EXECUTION_EVIDENCE_ONLY; NOT_PROMOTION_READINESS",
+    "remoteRef": "refs/heads/codex/ra-p3-efp-i01-review",
+    "directParentEqualsCandidate": true,
+    "oldArtifactUnchanged": true
+  },
+  "packet": {
+    "path": "artifacts/phase3-efp-integration-preflight.json",
+    "sha256": "F0B278085D578BA3AE59A7C5D6A1DF6E8A8C2C278B2DD95685D9DA754665044B"
+  },
+  "report": {
+    "path": "docs/reports/2026-10-13-p3-efp-integration-preflight.md",
+    "sha256": "C765038682A34B0AA1A5AECA66EFCE49765232E4CE0ED30152F5B858148CF137"
+  },
+  "sourceReviews": [
+    {
+      "candidate": "ccbdf647a545e08f09a8067c8f2c4659f849889a",
+      "review": "2470f00902bd650bc3122f518b18333afed323f3",
+      "directParentVerified": true,
+      "path": "docs/reviews/phase3/P3-EFP-K01-ccbdf647-reviewer-a.json",
+      "sha256": "DA0F45FDED94F1DC941A3A6B7A91DA586D2DE36B0188EC8F3662FCBAF9B98687",
+      "scope": "EXACT_K01_HISTORICAL_SOURCE_EXTRACTION_PROVENANCE_AND_REGRESSION_GAP_DOCUMENTATION_ONLY",
+      "oldCandidateAncestor": false
+    },
+    {
+      "candidate": "36de92a0536d7bc06a47f61c8484a51f4e981dfc",
+      "review": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "directParentVerified": true,
+      "path": "docs/reviews/phase3/P3-EFP-K02-36de92a-reviewer-a.json",
+      "sha256": "BBB1DA984109B4D75AB17076CCE53FE6A02DD64D5EC2E0D31FA9D463CE4A56BB",
+      "scope": "EXACT_K02_STANDALONE_HISTORICAL_RETRIEVAL_TOOLING_SOURCE_INTEGRITY_CACHE_AND_STARTUP_PROTOCOL_ONLY",
+      "oldCandidateAncestor": false
+    }
+  ],
+  "importedPathTable": [
+    {
+      "path": "docs/engineering/lessons/BATCH-TASK-TEMPLATE.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "a862d033e6985581302289bc5c02e76169a99956",
+      "sha256": "c185331a7fed5671cae474fe5f477499d249cea4affe9ed4b800352ffd479689"
+    },
+    {
+      "path": "docs/engineering/lessons/GUARDRAILS.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "2fc1af8e0f45ae2371ad12a7d22f7675be3aad16",
+      "sha256": "a32471afb749219bdde433b69e601b5d8793ad46d7f12ef5d19afb24407caec1"
+    },
+    {
+      "path": "docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "f409529f325111412d1eaac5dcb5051bc940c340",
+      "sha256": "569e114c87aa701d45470e9457b515c988648594998785455a71f0abdef42ea9"
+    },
+    {
+      "path": "docs/engineering/lessons/INDEX.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "8c503717074e42fc128ce6ef1c77381706f526c0",
+      "sha256": "221ea95e9d948ef2ce04a0768761c19a9263f3d5b823abc049a0b9f27ae33c49"
+    },
+    {
+      "path": "docs/engineering/lessons/K01-HANDOFF.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "70658b4ac6ebcc35f8ed10584eb0cd8449d112a1",
+      "sha256": "ea1b09a175a015609f48d8626d821f10c048e71dc024398ce693be6ec68e5eb5"
+    },
+    {
+      "path": "docs/engineering/lessons/K01-SOURCE-AUDIT.json",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "9ba343490581fb2c5d5c3bf5b02ca774df9809c2",
+      "sha256": "18e59cc07ad380de6b7d77b54e8f5a33b85bb0bd9da95ee667d15a29db18dc78"
+    },
+    {
+      "path": "docs/engineering/lessons/K02-EXECUTION.json",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "00c80c9e8c647df0f290421450415b7f6ba0f560",
+      "sha256": "4a3bb7f969122eb0557e692ee4b00515a304db828c810d4f3a1a02a42ee2ed38"
+    },
+    {
+      "path": "docs/engineering/lessons/K02-HANDOFF.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "575bb351aa2640eff021bdaa68d0a504b18ee48f",
+      "sha256": "a0bb7a27256a0e7244595745da2c4a31432bd11d1258291ceba5ed6e3950a592"
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-EVID-005.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "849062b023592f013e3d293cb3e1462d00efae43",
+      "sha256": "99688fd944fe7ee319b43803a7c0908fd06c4a26e5f461a0b3c44af366103955"
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-FIXTURE-006.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "10c8f00ad14f288c16fdbfa92f133111b9ec1b1c",
+      "sha256": "0b9ff711075d84df0d70b31576287b747d6ca9b650c99f66fd83c95414125e2c"
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-RESTORE-004.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "ccbd072b957587ad42abae0a7dc83a02a8dd2df8",
+      "sha256": "8c31e9a5339a8a2c87042473c50b899af927c6e7c7e4cf824b07648be5f25db1"
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-REV-002.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "977ccbf30212cd69947bd1f186024da11c1365b4",
+      "sha256": "989532443a6e437deb65fb844a83bed807f81512f4939c82888c8ea7328c88dd"
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-SEC-001.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "12bc7fea59e5e4c130060efc53e41aea2cdc4436",
+      "sha256": "fac31591e65b91a8c4c82ab00d3ea5c1306361f188430dc2083e51caf360d8a2"
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-SHAPE-003.md",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "ed9446dd4308896f6df1a3ccb476a1fce873626a",
+      "sha256": "148eee25f6eec8d3389d502c58055dd96f3d4a5e913e64e08827d21f53147aa0"
+    },
+    {
+      "path": "docs/engineering/lessons/catalog.json",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "93bb684a4c3720aab5249e3dfff720d3ad6685f6",
+      "sha256": "b9ee48a6af45322698f1528a6465ca56b21597270481b79605a6c60f64c794f8"
+    },
+    {
+      "path": "docs/engineering/lessons/verify-k01.mjs",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "b6c3b8d7ce083caa63cf49561dabeb5d469db233",
+      "sha256": "da672e1a281ef23d5a432a751377f2a668636cdf23902b957952dacdc3efd561"
+    },
+    {
+      "path": "scripts/engineering/historical-failure-preflight.ts",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "12a92f18f1616e947e3b9faac615ee66d00ce384",
+      "sha256": "654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371"
+    },
+    {
+      "path": "scripts/tests/engineering-failure-preflight.test.ts",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "0074b58956d7070482373c5a238fa16b16ecb9f7",
+      "sha256": "58235fe17face150db36985d787a51ab5b452001c044629f74f28b3992678757"
+    },
+    {
+      "path": "docs/reviews/phase3/P3-EFP-K01-ccbdf647-reviewer-a.json",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "3bd6016552d2c0e74bbd41f65416dcaf3c635644",
+      "sha256": "da0f45fded94f1dc941a3a6b7a91da586d2de36b0188ec8f3662fcbaf9b98687"
+    },
+    {
+      "path": "docs/reviews/phase3/P3-EFP-K02-36de92a-reviewer-a.json",
+      "sourceCommit": "d1a8276fd2ed1181ca281b27e840cb022d9079e6",
+      "blob": "a0f67d343f7d7a0bb050e65b385913a4b6ac0b7c",
+      "sha256": "bbb1da984109b4d75ab17076cce53fe6a02dd64d5ec2e0d31fa9d463ce4a56bb"
+    }
+  ],
+  "preservedMainObjects": [
+    {
+      "path": "packages",
+      "base": "c904b430fa508f32633c94ba0f4a529608906b59",
+      "head": "c904b430fa508f32633c94ba0f4a529608906b59"
+    },
+    {
+      "path": "apps",
+      "base": "c34eef2d6a3827ca60659a0410e4cc2e5c373a12",
+      "head": "c34eef2d6a3827ca60659a0410e4cc2e5c373a12"
+    },
+    {
+      "path": "data",
+      "base": "9afd59edf63bf38293e02950a7c3abd31bbc1938",
+      "head": "9afd59edf63bf38293e02950a7c3abd31bbc1938"
+    },
+    {
+      "path": "e2e",
+      "base": "13b6198a127710b63fead7589d24cd26f59ae6e0",
+      "head": "13b6198a127710b63fead7589d24cd26f59ae6e0"
+    },
+    {
+      "path": ".github",
+      "base": "bea61274875e04b641cdfa591ab97f74f467a39b",
+      "head": "bea61274875e04b641cdfa591ab97f74f467a39b"
+    },
+    {
+      "path": "package.json",
+      "base": "0f311821628a0a60cb37d752a259e6d688f7a6e9",
+      "head": "0f311821628a0a60cb37d752a259e6d688f7a6e9"
+    },
+    {
+      "path": "package-lock.json",
+      "base": "d7844d900ba14635d4b8d2c50ac4954cbc9c0a93",
+      "head": "d7844d900ba14635d4b8d2c50ac4954cbc9c0a93"
+    },
+    {
+      "path": "docs/agents",
+      "base": "ea70bf4ef127d514031144b6c6f62adc8cc22799",
+      "head": "ea70bf4ef127d514031144b6c6f62adc8cc22799"
+    },
+    {
+      "path": "scripts/phase3-governance.ts",
+      "base": "d2e900c2e6dc97aa9a0e65b319d8dcb57fa3ae0e",
+      "head": "d2e900c2e6dc97aa9a0e65b319d8dcb57fa3ae0e"
+    }
+  ],
+  "topology": {
+    "currentMainAncestorOfI01": true,
+    "currentReviewDirectChildOfI01": true,
+    "k01CandidateAncestorOfI01": false,
+    "k02CandidateAncestorOfI01": false,
+    "reuseMeaning": "Exact reviewed blob equality plus new current-main I01 integration RA, never invented old candidate ancestry.",
+    "legalProposedChain": "main -> I01 candidate -> exact I01 RA -> distinct G policy bridge -> actual synchronization -> distinct promotion HEAD",
+    "futureBridgeCommit": "Containing new terminal G commit, reported externally",
+    "futureSynchronization": null,
+    "futureHead": null,
+    "policyConstraints": [
+      "review.sha distinct from main/candidate/sync/head",
+      "reviewedCandidateSha is I01 1d95b230, not K01/K02",
+      "candidate ancestor of synchronization; synchronization ancestor of head; distinct identities",
+      "immutable policy artifact hash and exact task/reviewer/thread/candidate/conclusion",
+      "do not merge historical Planner ancestry; only reviewed materialized blob sources"
+    ]
+  },
+  "identity": {
+    "authenticatedLogin": "binchen648",
+    "reviewer": "github:binchen648",
+    "actualGithubStatement": {
+      "author": "binchen648",
+      "body": "Codex G / P3-EFP-G01 actual policy attestor: github:binchen648\nPromotion taskId: P3-EFP-I01\nControl Epoch: FD-P3-2026-09-23-09\nExact reviewedCandidateSha: 1d95b2306b6b3b7aa30c39041b33dad892872657\nConclusion: REVIEW_ACCEPTED\nBounded scope: EXACT_CURRENT_MAIN_BLOB_MATERIALIZATION_AND_RECORDED_EXECUTION_EVIDENCE_ONLY; NOT_PROMOTION_READINESS; bridge of exact current-main materialization and execution evidence only, no runtime or promotion-readiness verdict.\n\nCurrent I01 RA: dd9a869de718bc1cf23cf5a9826149becc3cb659, docs/reviews/phase3/P3-EFP-I01-1d95b230-reviewer-a.json, SHA-256 5C8638CC04DBBD1F2EC84283B04007D96719F882E3E61FE2FD2D70DE0B9A0CF5.\nK01/K02 original candidates are NOT ancestors of I01; only independently verified equality of 20 imported blobs supports reuse. K01/K02 and I01 original reviewer artifacts remain unchanged and retain separate scopes.\nTwenty imported blobs and nine preserved main source/control objects verified. Bound main 219d47c8dcc2b8118f2d3f6b37f51ce465e737cb.\nPlanner exact bridge path authority: 3d5b5fc96f6fb1afb5106b4eeb30b5520de6b9af, docs/agents/P3-EFP-G01-BRIDGE-AND-I-PROMOTION-AUTHORIZATION.md, SHA-256 b50d025c5ae5c39fb7e2cdba3d4d9d99387471cc9f1aed4e08eeb4d0cf788bb7.\nOnly separate fd-phase3-review-attestation-v1 output docs/reviews/phase3/P3-EFP-I01-promotion-attestation.json is newly authorized; existing G inputs/report record terminal binding.\nHistorical required source publication verified in remote-only no-alternates database; documented absence probes not relabelled available.\nG is the actual authenticated publisher, not an invented old technical reviewer identity or an APPROVED GitHub Review. No self-invented human approval.\nApplicable topology: current I01 candidate -> independent I01 RA -> distinct G bridge -> actual synchronization -> actual final HEAD. I must supply distinct real later commits, current policy manifest, actual-head preflights/checks and human merge approval.\nGOVERNANCE_INPUT_COMPLETE may be returned only after immutable remote bridge/source/hash verification; this statement alone does not grant merge or overall acceptance.\nAll credit/migration/denominator deltas0; ledger111/944; Gate C NOT_VERIFIED,93 missing-image Release blockers and long-term stability limitations retained. No measured efficiency gain.",
+      "createdAt": "2026-10-13T11:16:41Z",
+      "id": 6144335361,
+      "url": "https://github.com/binchen648/fd/pull/559#issuecomment-6144335361"
+    },
+    "authorBodyReadBackVerified": true,
+    "statementIsApprovedReview": false,
+    "oldReviewerIdentityRewritten": false,
+    "commentMutabilityDisclosed": true
+  },
+  "remoteClosure": {
+    "source": "Updated existing remote-only bare clone, no alternates; exact published historical and I01 review refs fetched from origin this turn.",
+    "remoteOnly": "D:/fd-validation/efp-i01/remote-only.git",
+    "alternates": false,
+    "structuredReferences": 54,
+    "commitIdentities": 19,
+    "missingCommits": [],
+    "results": [
+      {
+        "commit": "3ab115927eaf7c104fab9064d71ceebdac870da1",
+        "path": "docs/agents/P3-ENGINEERING-FAILURE-PREVENTION-MVP.md",
+        "sha256": "689326c965a0b29f806c50f7e8c034b2aa9d15c28830b1b244647db2f686de63",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "689326C965A0B29F806C50F7E8C034B2AA9D15C28830B1B244647DB2F686DE63"
+      },
+      {
+        "commit": "3ab115927eaf7c104fab9064d71ceebdac870da1",
+        "path": "docs/engineering/lessons/catalog.json",
+        "sha256": "d51d666d45e1b857d4ed889e3c06958ec907d3c367e79256c4fec12984641712",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "D51D666D45E1B857D4ED889E3C06958EC907D3C367E79256C4FEC12984641712"
+      },
+      {
+        "commit": "cf179ca3220a1646c484aa8c660b313e64449488",
+        "path": "docs/reviews/phase3/P3-E08-B11-463facb-final-combination-reviewer-b.json",
+        "sha256": "051f5e95c74e9c78546c391fd60f041d9baef29fbba857ec455a598f8d2395bf",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "051F5E95C74E9C78546C391FD60F041D9BAEF29FBBA857EC455A598F8D2395BF"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "packages/rules/src/match-room.ts",
+        "sha256": "c11bd950b01524c5d988b35d60cf6a4ddeb071b7af9506b3f8090f370ff17bd9",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "C11BD950B01524C5D988B35D60CF6A4DDEB071B7AF9506B3F8090F370FF17BD9"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "apps/server/src/match-server.ts",
+        "sha256": "7e0bc3114887fe34966f64654e0d6612e8e96df8fd5289e9d26885bd0aba2758",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "7E0BC3114887FE34966F64654E0D6612E8E96DF8FD5289E9D26885BD0ABA2758"
+      },
+      {
+        "commit": "0f62210a2e007a15e28f945c546ccd00c345942a",
+        "path": "apps/server/src/match-server.test.ts",
+        "sha256": "527b0c5f95598cbcb2bfeda07baee6acf9432e1fdca9454e36fdc577053bd67a",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "527B0C5F95598CBCB2BFEDA07BAEE6ACF9432E1FDCA9454E36FDC577053BD67A"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "apps/server/src/match-server.test.ts",
+        "sha256": "73476c9f95227699b0ff010dbbab2432b10de0661de4bef9a760e38b2492feab",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "73476C9F95227699B0FF010DBBAB2432B10DE0661DE4BEF9A760E38B2492FEAB"
+      },
+      {
+        "commit": "0f62210a2e007a15e28f945c546ccd00c345942a",
+        "path": "packages/rules/tests/match-room.test.ts",
+        "sha256": "fc0e2b34362ae77f61cf2b8764dad453c2a46862900a46022f434fa2752f81c9",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "FC0E2B34362AE77F61CF2B8764DAD453C2A46862900A46022F434FA2752F81C9"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "packages/rules/tests/match-room.test.ts",
+        "sha256": "58e576702c95deb0149f92d4b776eeec0eae38c44d7cbeb2a5700e6b745b6933",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "58E576702C95DEB0149F92D4B776EEEC0EAE38C44D7CBEB2A5700E6B745B6933"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "packages/rules/src/match-room-hub.ts",
+        "sha256": "54cf729dba698e4d73e95c61e7feb9cb7cc279bd17bbe43dc10fab93620f3fa6",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "54CF729DBA698E4D73E95C61E7FEB9CB7CC279BD17BBE43DC10FAB93620F3FA6"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "packages/rules/src/match-room-protocol.ts",
+        "sha256": "519e594130a70d78ab38f00dd45ec7c04dc359dc4b3c069e92be50aea53d50c2",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "519E594130A70D78AB38F00DD45EC7C04DC359DC4B3C069E92BE50AEA53D50C2"
+      },
+      {
+        "commit": "0f62210a2e007a15e28f945c546ccd00c345942a",
+        "path": "packages/rules/tests/match-room-hub.test.ts",
+        "sha256": "79084b25e2927048b08fd08feaa84d36a837261d5a46b34e39a94b0421cc3c44",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "79084B25E2927048B08FD08FEAA84D36A837261D5A46B34E39A94B0421CC3C44"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "packages/rules/tests/match-room-hub.test.ts",
+        "sha256": "002df4f377831a3181e0fce71e517e39888d2f4510cd7389003a90690e0f98f2",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "002DF4F377831A3181E0FCE71E517E39888D2F4510CD7389003A90690E0F98F2"
+      },
+      {
+        "commit": "b22691ab5311cd31f60eb91d573416fea3c7cf98",
+        "path": "docs/reviews/2026-10-10-pr-474-review.md",
+        "sha256": "f588a8b7062e7d57739e1f02b24bf7d939e06a8f203a5542ab374ba7f2f93adc",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "F588A8B7062E7D57739E1F02B24BF7D939E06A8F203A5542AB374BA7F2F93ADC"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "packages/rules/src/ability/combat-reward-distribution.ts",
+        "sha256": null,
+        "status": "DOCUMENTED_ABSENCE_NOT_REQUIRED_ARTIFACT",
+        "error": "fatal: path 'packages/rules/src/ability/combat-reward-distribution.ts' does not exist in '1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce'\n"
+      },
+      {
+        "commit": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+        "path": "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts",
+        "sha256": "23ffcf87a360aac072c1fe5f74f4f299a38658ad441d26d20be6c4c81de734de",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "23FFCF87A360AAC072C1FE5F74F4F299A38658AD441D26D20BE6C4C81DE734DE"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts",
+        "sha256": null,
+        "status": "DOCUMENTED_ABSENCE_NOT_REQUIRED_ARTIFACT",
+        "error": "fatal: path 'packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts' does not exist in '1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce'\n"
+      },
+      {
+        "commit": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+        "path": "docs/reviews/probes/review-474-independent.mjs",
+        "sha256": null,
+        "status": "DOCUMENTED_ABSENCE_NOT_REQUIRED_ARTIFACT",
+        "error": "fatal: path 'docs/reviews/probes/review-474-independent.mjs' does not exist in '4dd8eca5746d63d72c7906716cb7118e2569872a'\n"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "docs/reviews/probes/review-474-independent.mjs",
+        "sha256": null,
+        "status": "DOCUMENTED_ABSENCE_NOT_REQUIRED_ARTIFACT",
+        "error": "fatal: path 'docs/reviews/probes/review-474-independent.mjs' does not exist in '1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce'\n"
+      },
+      {
+        "commit": "7e65291a4fa10170e249bc492617ef337caf7f8a",
+        "path": "docs/reviews/2026-10-10-pr-475-review.md",
+        "sha256": "8c67cfe179e02ece25b6581ee2a23ed776ebf4e95eeaa2a93b2e8d59dc1d7cf6",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "8C67CFE179E02ECE25B6581EE2A23ED776EBF4E95EEAA2A93B2E8D59DC1D7CF6"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "packages/rules/src/ability/interpreter.ts",
+        "sha256": "b2c8bb82836eb7291afc0ef5850103665e954b5ae3525066ab98f25a2e6a80d1",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "B2C8BB82836EB7291AFC0EF5850103665E954B5AE3525066AB98F25A2E6A80D1"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "packages/rules/src/match-session.ts",
+        "sha256": "a4b440bda535956819d557e89c5c095c765f88b349c78c62d767b3c7a1918c12",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "A4B440BDA535956819D557E89C5C095C765F88B349C78C62D767B3C7A1918C12"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "data/authoring/servants/servant.stheno.json",
+        "sha256": "ff23d09f28388c5665881522a304695bbf2c9ae0df74fdb27162954447c855f1",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "FF23D09F28388C5665881522A304695BBF2C9AE0DF74FDB27162954447C855F1"
+      },
+      {
+        "commit": "fe4653d1013110555881585db3a447880dd463d3",
+        "path": "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts",
+        "sha256": "aa71a3c4cf8274dcf9a783191fe861a4fa0e62bed10279a66322aa32cb948053",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "AA71A3C4CF8274DCF9A783191FE861A4FA0E62BED10279A66322AA32CB948053"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts",
+        "sha256": null,
+        "status": "DOCUMENTED_ABSENCE_NOT_REQUIRED_ARTIFACT",
+        "error": "fatal: path 'packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts' does not exist in '1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce'\n"
+      },
+      {
+        "commit": "fe4653d1013110555881585db3a447880dd463d3",
+        "path": "packages/rules/tests/match-session.test.ts",
+        "sha256": "b52edea1cf312923230e8339742dcc2ccb39d46c9ddb7868a67608297d70d93c",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "B52EDEA1CF312923230E8339742DCC2CCB39D46C9DDB7868A67608297D70D93C"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "packages/rules/tests/match-session.test.ts",
+        "sha256": "cb32867bed4fa9e9d9151b7f05e7d653e2dfd376bd6940f03d68402fd7adb001",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "CB32867BED4FA9E9D9151B7F05E7D653E2DFD376BD6940F03D68402FD7ADB001"
+      },
+      {
+        "commit": "fe4653d1013110555881585db3a447880dd463d3",
+        "path": "docs/reviews/probes/review-475-independent.mjs",
+        "sha256": null,
+        "status": "DOCUMENTED_ABSENCE_NOT_REQUIRED_ARTIFACT",
+        "error": "fatal: path 'docs/reviews/probes/review-475-independent.mjs' does not exist in 'fe4653d1013110555881585db3a447880dd463d3'\n"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "docs/reviews/probes/review-475-independent.mjs",
+        "sha256": null,
+        "status": "DOCUMENTED_ABSENCE_NOT_REQUIRED_ARTIFACT",
+        "error": "fatal: path 'docs/reviews/probes/review-475-independent.mjs' does not exist in '1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce'\n"
+      },
+      {
+        "commit": "dbd430be9550947a2bac691ef645db56cf5c408f",
+        "path": "docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json",
+        "sha256": "a0f4b6ff474b169b36e7ff18092ad93e7f29a573c7e2a0c85bf299011ab0e5a9",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "A0F4B6FF474B169B36E7FF18092AD93E7F29A573C7E2A0C85BF299011AB0E5A9"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+        "sha256": null,
+        "status": "DOCUMENTED_ABSENCE_NOT_REQUIRED_ARTIFACT",
+        "error": "fatal: path 'scripts/tests/phase3-e09-b11-final-binding.test.ts' does not exist in '1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce'\n"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+        "sha256": null,
+        "status": "DOCUMENTED_ABSENCE_NOT_REQUIRED_ARTIFACT",
+        "error": "fatal: path 'scripts/tests/phase3-readiness-preflight.test.ts' does not exist in '1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce'\n"
+      },
+      {
+        "commit": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+        "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+        "sha256": "e57af1a0414d677394aa544b8fea08146692de4f40e97eb595c53126158644a9",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "E57AF1A0414D677394AA544B8FEA08146692DE4F40E97EB595C53126158644A9"
+      },
+      {
+        "commit": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+        "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+        "sha256": "2061288322b2e426c3f4464dda474b892223e03aae9eee1d605f532ad66f0133",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "2061288322B2E426C3F4464DDA474B892223E03AAE9EEE1D605F532AD66F0133"
+      },
+      {
+        "commit": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b",
+        "path": "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+        "sha256": "e8fd40e8b0f74701755cdab3135d58e0dc3a7c08aac7c4da9652bb622b38103e",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "E8FD40E8B0F74701755CDAB3135D58E0DC3A7C08AAC7C4DA9652BB622B38103E"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "scripts/phase3-preflight.ts",
+        "sha256": null,
+        "status": "DOCUMENTED_ABSENCE_NOT_REQUIRED_ARTIFACT",
+        "error": "fatal: path 'scripts/phase3-preflight.ts' exists on disk, but not in '1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce'\n"
+      },
+      {
+        "commit": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+        "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+        "sha256": "d8c25f47e6233db2a290dcadeecdb20896e9f057684a1502ab8ea47bed51f9a0",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "D8C25F47E6233DB2A290DCADEECDB20896E9F057684A1502AB8EA47BED51F9A0"
+      },
+      {
+        "commit": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+        "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+        "sha256": "9f2fc8dc3421f07db3ec0e1e00d4be526dc93234ad68fc6109e7e554281ec677",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "9F2FC8DC3421F07DB3EC0E1E00D4BE526DC93234AD68FC6109E7E554281EC677"
+      },
+      {
+        "commit": "4d5b76be9d5459cc0c40e50fae8513bc59cd5d21",
+        "path": "docs/reviews/phase3/P3-E09-B11-TRANSPORT-SECURITY-REPAIR-0f62210-reviewer-b.json",
+        "sha256": "6fe0ead378e31149b3271e137fdb99acac161f2894e3fad21fc0a14986e96db4",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "6FE0EAD378E31149B3271E137FDB99ACAC161F2894E3FAD21FC0A14986E96DB4"
+      },
+      {
+        "commit": "27dab1ad5b64127dffd7c4108aa9c1c6d4b076dc",
+        "path": "docs/agents/P3-E09-B11-INTEGRATION-CLOSURE-REPAIR.md",
+        "sha256": "17ae3ba6cc383eb3bf267fe6f21d0e7fc591eb9110a97e110a94527b26de7dc2",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "17AE3BA6CC383EB3BF267FE6F21D0E7FC591EB9110A97E110A94527B26DE7DC2"
+      },
+      {
+        "commit": "6ea26f3bc12fc3bda37b6b2607fd6edda452eee3",
+        "path": "docs/agents/P3-E09-B11-TEMPORAL-FIXTURE-FINALIZATION.md",
+        "sha256": "ed75593972e4378b2b94a470d2d58bb2aba230ab965ecc1018588c1d475dc3f7",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "ED75593972E4378B2B94A470D2D58BB2ABA230AB965ECC1018588C1D475DC3F7"
+      },
+      {
+        "commit": "b22691ab5311cd31f60eb91d573416fea3c7cf98",
+        "path": "docs/reviews/probes/review-474-independent.mjs",
+        "sha256": "aa340cd389f4ba83a2611715247f17cdf334a9efb8e71d73a210feee7ff1f0b3",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "AA340CD389F4BA83A2611715247F17CDF334A9EFB8E71D73A210FEEE7FF1F0B3"
+      },
+      {
+        "commit": "7e65291a4fa10170e249bc492617ef337caf7f8a",
+        "path": "docs/reviews/probes/review-475-independent.mjs",
+        "sha256": "3e3a78add826e091de030426eae4c60e404b67967b0d94aaf34f919ba87e6913",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "3E3A78ADD826E091DE030426EAE4C60E404B67967B0D94AAF34F919BA87E6913"
+      },
+      {
+        "commit": "3ab115927eaf7c104fab9064d71ceebdac870da1",
+        "path": "docs/agents/manifests/reservations/P3-E09-B11-TRANSPORT-SECURITY-REPAIR.json",
+        "sha256": "0b94649520e1833648f575163bf68f4679e33b068d67275f38bc8c188bf6611c",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "0B94649520E1833648F575163BF68F4679E33B068D67275F38BC8C188BF6611C"
+      },
+      {
+        "commit": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+        "path": "packages/rules/src/ability/combat-reward-distribution.ts",
+        "sha256": "4d39f9153d7f5d89f54047f9d2f8afe719c6de7b6586e036695be12d8635e5e8",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "4D39F9153D7F5D89F54047F9D2F8AFE719C6DE7B6586E036695BE12D8635E5E8"
+      },
+      {
+        "commit": "fe4653d1013110555881585db3a447880dd463d3",
+        "path": "packages/rules/src/ability/interpreter.ts",
+        "sha256": "0f3f1773fb1395e3e1189b93532475ff46dfe51beaef6fd885d6455272a9d796",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "0F3F1773FB1395E3E1189B93532475FF46DFE51BEAEF6FD885D6455272A9D796"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "packages/rules/tests/fb2-34-combat-reward-distribution.test.ts",
+        "sha256": "938970d36d3e69e378f0f97ae68891d16d8b48a0a6d8f2080b201acf6d616fca",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "938970D36D3E69E378F0F97AE68891D16D8B48A0A6D8F2080B201ACF6D616FCA"
+      },
+      {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "packages/rules/tests/stheno-consumer-migration.test.ts",
+        "sha256": "a4facdbfd24345e2d1d35fc5eab36cd06e2d6599362058a8e89269785a77a23e",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "A4FACDBFD24345E2D1D35FC5EAB36CD06E2D6599362058A8E89269785A77A23E"
+      },
+      {
+        "commit": "487ab81a8e3fabf75eea5a73cd3582b37cf65520",
+        "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+        "sha256": "e57af1a0414d677394aa544b8fea08146692de4f40e97eb595c53126158644a9",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "E57AF1A0414D677394AA544B8FEA08146692DE4F40E97EB595C53126158644A9"
+      },
+      {
+        "commit": "487ab81a8e3fabf75eea5a73cd3582b37cf65520",
+        "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+        "sha256": "2061288322b2e426c3f4464dda474b892223e03aae9eee1d605f532ad66f0133",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "2061288322B2E426C3F4464DDA474B892223E03AAE9EEE1D605F532AD66F0133"
+      },
+      {
+        "commit": "5b613b4ad9f3302fb16c308909968d084b3b2fe1",
+        "path": "docs/agents/P3-EFP-K01-ACCEPTANCE-AND-K02-DISPATCH.md",
+        "sha256": "A73D3C08FD26834477532DFAFE3FD5D8EED90AA317640581D094DACA9AD609E8",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "A73D3C08FD26834477532DFAFE3FD5D8EED90AA317640581D094DACA9AD609E8"
+      },
+      {
+        "commit": "5b613b4ad9f3302fb16c308909968d084b3b2fe1",
+        "path": "docs/agents/manifests/reservations/P3-EFP-K02-TOOLING.json",
+        "sha256": "C2DE158BED6ABF40160C086708716D203E87D45C280DBC1F258797C579689DFE",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "C2DE158BED6ABF40160C086708716D203E87D45C280DBC1F258797C579689DFE"
+      },
+      {
+        "commit": "2470f00902bd650bc3122f518b18333afed323f3",
+        "path": "docs/reviews/phase3/P3-EFP-K01-ccbdf647-reviewer-a.json",
+        "sha256": "da0f45fded94f1dc941a3a6b7a91da586d2de36b0188ec8f3662fcbaf9b98687",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "DA0F45FDED94F1DC941A3A6B7A91DA586D2DE36B0188EC8F3662FCBAF9B98687"
+      },
+      {
+        "commit": "163f8e8469e81bf998f22884e9e529d5792fabe0",
+        "path": "docs/agents/P3-EFP-K02-ACCEPTANCE-AND-INTEGRATION.md",
+        "sha256": "bc128ba0353b2423bc74ed2ed7cd256fda0b1ef542b4f54b248188e1f2c21928",
+        "status": "AVAILABLE_HASH_VERIFIED",
+        "actualSha256": "BC128BA0353B2423BC74ED2ED7CD256FDA0B1EF542B4F54B248188E1F2C21928"
+      }
+    ],
+    "formerFourMissingPaths": "AVAILABLE_EXPECTED_HASH_VERIFIED",
+    "i01ReviewRemoteHash": "5C8638CC04DBBD1F2EC84283B04007D96719F882E3E61FE2FD2D70DE0B9A0CF5",
+    "scopeLimitation": "54 unique structured source references recursively extracted from imported JSON plus authority, 19 commit identities; not falsely claimed as the earlier 73-reference audit. Four formerly missing required paths individually checked; documented absence probes kept separate.",
+    "historicalRef": "refs/heads/codex/efp-historical-review-sources",
+    "historicalHead": "7e65291a4fa10170e249bc492617ef337caf7f8a"
+  },
+  "policy": {
+    "sourceCommit": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+    "path": "scripts/phase3-governance.ts",
+    "sha256": "F4BA772527FB7F1E1739C038D28DC1A80221383F89641D6CE03DCB40B01A634B",
+    "reviewedCandidateMapping": "I01 exact current integration carrier",
+    "policyEvidenceProposal": {
+      "schemaVersion": "fd-phase3-review-attestation-v1",
+      "taskId": "P3-EFP-I01",
+      "reviewer": "github:binchen648",
+      "reviewThread": "https://github.com/binchen648/fd/pull/559#issuecomment-6144335361",
+      "candidateSha": "1d95b2306b6b3b7aa30c39041b33dad892872657",
+      "conclusion": "REVIEW_ACCEPTED"
+    },
+    "manifestTemplate": {
+      "schemaVersion": "fd-phase3-promotion-manifest-v2",
+      "role": "I",
+      "taskId": "P3-EFP-I01",
+      "prType": "promotion",
+      "base": {
+        "ref": "main",
+        "sha": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb"
+      },
+      "head": {
+        "ref": null,
+        "sha": null
+      },
+      "dependsOnPrs": [
+        559
+      ],
+      "affectedAbilityIds": [],
+      "runtimeBehaviorChanged": false,
+      "rules": {
+        "source": "docs/agents/P3-EFP-I01-K03-NEXT-DISPATCH.md",
+        "referenceCommit": "dd3cfd5cd7232a3935ba8df42b7c14359d856002"
+      },
+      "review": {
+        "sha": null,
+        "reviewer": "github:binchen648",
+        "reviewThread": "https://github.com/binchen648/fd/pull/559#issuecomment-6144335361",
+        "evidencePath": "docs/reviews/phase3/P3-EFP-I01-promotion-attestation.json",
+        "evidenceSha256": null,
+        "conclusion": "REVIEW_ACCEPTED",
+        "reviewedCandidateSha": "1d95b2306b6b3b7aa30c39041b33dad892872657"
+      },
+      "synchronization": {
+        "sha": null
+      },
+      "migrationCounts": {
+        "mainline": 0,
+        "recovery": 0,
+        "candidate": 0
+      },
+      "tests": [
+        {
+          "command": "Actual-head focused/fullCI/preflights",
+          "result": "PENDING; fill real results after authorized assembly"
+        }
+      ],
+      "uncoveredScenarios": [
+        "Knowledge/tooling reuse and integration evidence only; no runtime or throughput benefit claim."
+      ],
+      "knownBlockers": [
+        "Actual I synchronization/HEAD, final local preflights/GitHub checks and human approval remain; no merge authorized."
+      ],
+      "zeroMigrationCredit": true,
+      "reverifyOnUpstreamHeadChange": true
+    },
+    "templateNotSubmission": true,
+    "bridge": {
+      "path": "docs/reviews/phase3/P3-EFP-I01-promotion-attestation.json",
+      "fields": {
+        "schemaVersion": "fd-phase3-review-attestation-v1",
+        "taskId": "P3-EFP-I01",
+        "reviewer": "github:binchen648",
+        "reviewThread": "https://github.com/binchen648/fd/pull/559#issuecomment-6144335361",
+        "candidateSha": "1d95b2306b6b3b7aa30c39041b33dad892872657",
+        "conclusion": "REVIEW_ACCEPTED"
+      },
+      "containingCommitAndSha256": "Reported externally in final immutable handoff; no self-reference",
+      "separateArtifact": true
+    }
+  },
+  "boundedMissingAuthority": {
+    "resolved": true,
+    "authority": {
+      "commit": "3d5b5fc96f6fb1afb5106b4eeb30b5520de6b9af",
+      "path": "docs/agents/P3-EFP-G01-BRIDGE-AND-I-PROMOTION-AUTHORIZATION.md",
+      "sha256": "b50d025c5ae5c39fb7e2cdba3d4d9d99387471cc9f1aed4e08eeb4d0cf788bb7"
+    },
+    "authorizedAdditionalPath": "docs/reviews/phase3/P3-EFP-I01-promotion-attestation.json",
+    "policyImplementationChange": false,
+    "waiver": false,
+    "historicalUnmetOutputAuthorityRetainedInPriorPacket": true
+  },
+  "boundaries": {
+    "runtimeChanged": false,
+    "packageChanged": false,
+    "workflowChanged": false,
+    "policyChanged": false,
+    "oldRaChanged": false,
+    "promotionPrCreated": false,
+    "promotionAllowed": false,
+    "mergeAllowed": false,
+    "governanceInputComplete": true,
+    "creditDelta": 0,
+    "migrationDelta": 0,
+    "denominatorDelta": 0,
+    "ledger": "111/944",
+    "gateC": "NOT_VERIFIED",
+    "missingImageReleaseBlockers": 93,
+    "releaseReady": false,
+    "measuredThroughputImprovement": false
+  },
+  "nextOwner": "I: conditional PR authority from 3d5b5fc9 now eligible after independently reading this complete G bridge packet; assemble actual distinct sync/head, execute authorized checks, and seek human merge approval.",
+  "bridgeAuthority": {
+    "commit": "3d5b5fc96f6fb1afb5106b4eeb30b5520de6b9af",
+    "path": "docs/agents/P3-EFP-G01-BRIDGE-AND-I-PROMOTION-AUTHORIZATION.md",
+    "sha256": "b50d025c5ae5c39fb7e2cdba3d4d9d99387471cc9f1aed4e08eeb4d0cf788bb7"
+  },
+  "previousGovernancePacket": {
+    "commit": "4e6b969335e15c0f32ec9e86b7162bc7426ecca6",
+    "status": "HISTORICAL_PATH_AUTHORITY_PENDING_SNAPSHOT",
+    "originalStatement": {
+      "author": "binchen648",
+      "body": "Codex G / P3-EFP-G01 actual attestor: github:binchen648.\nExact I01 reviewed candidate: 1d95b2306b6b3b7aa30c39041b33dad892872657\nIntegration RA: dd9a869de718bc1cf23cf5a9826149becc3cb659, artifact docs/reviews/phase3/P3-EFP-I01-1d95b230-reviewer-a.json, SHA-256 5C8638CC04DBBD1F2EC84283B04007D96719F882E3E61FE2FD2D70DE0B9A0CF5.\nRA PASS scope: EXACT_CURRENT_MAIN_BLOB_MATERIALIZATION_AND_RECORDED_EXECUTION_EVIDENCE_ONLY; NOT_PROMOTION_READINESS. G confirms exact 20-blob materialization and nine preserved current-main runtime/control objects, not a runtime technical verdict.\nK01/K02 source reviews are separately preserved: 2470f00902bd650bc3122f518b18333afed323f3 / DA0F45FDED94F1DC941A3A6B7A91DA586D2DE36B0188EC8F3662FCBAF9B98687 / EXACT_K01_HISTORICAL_SOURCE_EXTRACTION_PROVENANCE_AND_REGRESSION_GAP_DOCUMENTATION_ONLY; d1a8276fd2ed1181ca281b27e840cb022d9079e6 / BBB1DA984109B4D75AB17076CCE53FE6A02DD64D5EC2E0D31FA9D463CE4A56BB / EXACT_K02_STANDALONE_HISTORICAL_RETRIEVAL_TOOLING_SOURCE_INTEGRITY_CACHE_AND_STARTUP_PROTOCOL_ONLY.\nTheir original candidates are NOT ancestors of I01. Exact blob equality, not fabricated ancestry, supports reuse. The promotion reviewedCandidateSha proposal is I01 1d95b2306b6b3b7aa30c39041b33dad892872657.\nActual account github:binchen648 verified via gh api user. This is a real scoped governance statement, not an APPROVED Review or self-invented human approval.\nExisting policy supports candidate -> independent I01 RA -> separate policy bridge -> synchronization -> final HEAD with distinct identities. The current G dispatch authorizes only two governance outputs; a separate policy evidence file under docs/reviews/phase3/P3-EFP-I01-promotion-attestation.json needs explicit bounded output-path authority. No policy change/waiver required; no file created outside current scope.\nHistorical missing four paths now resolve with expected hashes in updated remote-only no-alternates Git DB; original absence probes remain absences. Original artifacts are not rewritten.\nI waits for GOVERNANCE_INPUT_COMPLETE and explicit Planner promotion PR authorization. Actual synchronization/final HEAD do not yet exist in this G proposal; required checks cannot be inherited from B11 or source review.\nLedger111/944, all credit deltas0; Gate C NOT_VERIFIED, 93 missing-image Release blockers and no measured throughput benefit retained. No runtime/package/workflow/policy changes or merge authorized.",
+      "createdAt": "2026-10-13T11:05:19Z",
+      "id": 6144148395,
+      "url": "https://github.com/binchen648/fd/pull/559#issuecomment-6144148395"
+    }
+  },
+  "completionScope": "All current G identity/source/ref/blob/hash and proposed topology inputs complete; not certification of an unbuilt I final HEAD, PR check SUCCESS, throughput benefit or runtime acceptance."
+}

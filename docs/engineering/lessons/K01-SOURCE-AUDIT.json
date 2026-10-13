@@ -1,0 +1,984 @@
+{
+  "schemaVersion": "fd-engineering-k01-source-audit-v1",
+  "taskId": "P3-EFP-K01",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "dispatch": {
+    "commit": "3ab115927eaf7c104fab9064d71ceebdac870da1",
+    "path": "docs/agents/P3-ENGINEERING-FAILURE-PREVENTION-MVP.md",
+    "sha256": "689326c965a0b29f806c50f7e8c034b2aa9d15c28830b1b244647db2f686de63",
+    "gitBlob": "2497afcb7130c0f1808217247d1e3f5eac41fdc9",
+    "bytes": 14154
+  },
+  "observedMainSha": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+  "seededCatalog": {
+    "commit": "3ab115927eaf7c104fab9064d71ceebdac870da1",
+    "path": "docs/engineering/lessons/catalog.json",
+    "sha256": "d51d666d45e1b857d4ed889e3c06958ec907d3c367e79256c4fec12984641712",
+    "gitBlob": "271ae7777b528a992d56f2d9e423ee56f7b75a50",
+    "bytes": 5680
+  },
+  "catalogSha256": "b9ee48a6af45322698f1528a6465ca56b21597270481b79605a6c60f64c794f8",
+  "auditToolSha256": "da672e1a281ef23d5a432a751377f2a668636cdf23902b957952dacdc3efd561",
+  "entries": [
+    {
+      "id": "FD-SEC-001",
+      "source": {
+        "commit": "cf179ca3220a1646c484aa8c660b313e64449488",
+        "path": "docs/reviews/phase3/P3-E08-B11-463facb-final-combination-reviewer-b.json",
+        "sha256": "051f5e95c74e9c78546c391fd60f041d9baef29fbba857ec455a598f8d2395bf",
+        "gitBlob": "2562b8fb04753ee3afa073a6c32c4287b665510a",
+        "bytes": 16907
+      },
+      "sourcePointer": "/blockingFindings/0",
+      "sourceReviewIdentity": {
+        "reviewedSha": "463facb109cc4d19c4fda7af936fb4546fb86091",
+        "testedSha": "9a4f4c6ee2723eb7f546341f3c18a1f0a29c3bc1",
+        "verdict": "FAILED",
+        "reviewer": "Codex Reviewer B",
+        "scope": {
+          "consumers": [
+            "conversion-magic.preparation",
+            "sc-kintoki-3.golden-eater"
+          ],
+          "components": [
+            "shared binding ownership/compiler",
+            "typed resolution and staged pending",
+            "MatchSession dispatch and rollback",
+            "MatchRoomHub mutation gate",
+            "server socket registration/authentication/disconnection",
+            "browser projection/reconnect/stale evidence"
+          ],
+          "browserStartingState": "Trusted server process fixture; no natural room progression acceptance."
+        },
+        "browserRerun": false,
+        "fullCiRerun": false
+      },
+      "sourceCommitParent": "94e5588955fa96f1c160aebcb55f895346036fd3",
+      "extractionState": "A_HASH_AND_IDENTITY_VERIFIED_DRAFT_RA_KNOWLEDGE_REVIEW_PENDING",
+      "rootCauseEvidence": "SOURCE_STATIC_PLUS_REVIEW_OBSERVATION",
+      "runtimePathsAtMain": [
+        {
+          "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "path": "packages/rules/src/match-room.ts",
+          "sha256": "c11bd950b01524c5d988b35d60cf6a4ddeb071b7af9506b3f8090f370ff17bd9",
+          "gitBlob": "7e850652fceae69bb25453616cb57ed13115167a",
+          "bytes": 11087,
+          "presence": "PRESENT_STATIC_ONLY",
+          "execution": "NOT_RUN_K01"
+        },
+        {
+          "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "path": "apps/server/src/match-server.ts",
+          "sha256": "7e0bc3114887fe34966f64654e0d6612e8e96df8fd5289e9d26885bd0aba2758",
+          "gitBlob": "afc45e698a612e5226dd8bb57b927f089dac85b7",
+          "bytes": 9439,
+          "presence": "PRESENT_STATIC_ONLY",
+          "execution": "NOT_RUN_K01"
+        }
+      ],
+      "tests": [
+        {
+          "path": "apps/server/src/match-server.test.ts",
+          "sourceSnapshot": {
+            "commit": "0f62210a2e007a15e28f945c546ccd00c345942a",
+            "path": "apps/server/src/match-server.test.ts",
+            "sha256": "527b0c5f95598cbcb2bfeda07baee6acf9432e1fdca9454e36fdc577053bd67a",
+            "gitBlob": "10248b72cc9a032bfefc7280d6fc44c529b5d56e",
+            "bytes": 39203,
+            "presence": "PRESENT_STATIC_ONLY",
+            "execution": "NOT_RUN_K01"
+          },
+          "currentMain": {
+            "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+            "path": "apps/server/src/match-server.test.ts",
+            "sha256": "73476c9f95227699b0ff010dbbab2432b10de0661de4bef9a760e38b2492feab",
+            "gitBlob": "cbaa99910de9785364bc3fdc0e0a29f9c625971f",
+            "bytes": 20052,
+            "presence": "PRESENT_STATIC_ONLY",
+            "execution": "NOT_RUN_K01"
+          },
+          "role": "TEST_FILE_NOT_PROOF_OF_SPECIFIC_NEGATIVE_OR_EXECUTION"
+        },
+        {
+          "path": "packages/rules/tests/match-room.test.ts",
+          "sourceSnapshot": {
+            "commit": "0f62210a2e007a15e28f945c546ccd00c345942a",
+            "path": "packages/rules/tests/match-room.test.ts",
+            "sha256": "fc0e2b34362ae77f61cf2b8764dad453c2a46862900a46022f434fa2752f81c9",
+            "gitBlob": "92332015cd932056143f2ecc57d5ce7f59f790e3",
+            "bytes": 6195,
+            "presence": "PRESENT_STATIC_ONLY",
+            "execution": "NOT_RUN_K01"
+          },
+          "currentMain": {
+            "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+            "path": "packages/rules/tests/match-room.test.ts",
+            "sha256": "58e576702c95deb0149f92d4b776eeec0eae38c44d7cbeb2a5700e6b745b6933",
+            "gitBlob": "6a804cddce0442d84cddb9416631c4d365785b3e",
+            "bytes": 4523,
+            "presence": "PRESENT_STATIC_ONLY",
+            "execution": "NOT_RUN_K01"
+          },
+          "role": "TEST_FILE_NOT_PROOF_OF_SPECIFIC_NEGATIVE_OR_EXECUTION"
+        }
+      ],
+      "namedHistoricalTestSelectors": [
+        {
+          "title": "blocks RB public-credential and duplicate HTTP identity impersonation without Golden Eater mutation",
+          "exactSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+          "paths": [
+            "apps/server/src/match-server.test.ts"
+          ],
+          "observedMainSha": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "currentMainMatches": [],
+          "method": "LITERAL_SOURCE_INSPECTION_NOT_TEST_EXECUTION"
+        },
+        {
+          "title": "keeps random credentials out of every public projection and rejects duplicate identities",
+          "exactSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+          "paths": [
+            "packages/rules/tests/match-room.test.ts"
+          ],
+          "observedMainSha": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "currentMainMatches": [],
+          "method": "LITERAL_SOURCE_INSPECTION_NOT_TEST_EXECUTION"
+        },
+        {
+          "title": "preserves credential-free private pending projections across authenticated Golden Eater reconnect",
+          "exactSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+          "paths": [
+            "apps/server/src/match-server.test.ts"
+          ],
+          "observedMainSha": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "currentMainMatches": [],
+          "method": "LITERAL_SOURCE_INSPECTION_NOT_TEST_EXECUTION"
+        }
+      ],
+      "currentMainSemanticCoverage": "NOT_VERIFIED_NO_RUNTIME_EXECUTION_OR_ACCEPTANCE_INHERITANCE"
+    },
+    {
+      "id": "FD-REV-002",
+      "source": {
+        "commit": "cf179ca3220a1646c484aa8c660b313e64449488",
+        "path": "docs/reviews/phase3/P3-E08-B11-463facb-final-combination-reviewer-b.json",
+        "sha256": "051f5e95c74e9c78546c391fd60f041d9baef29fbba857ec455a598f8d2395bf",
+        "gitBlob": "2562b8fb04753ee3afa073a6c32c4287b665510a",
+        "bytes": 16907
+      },
+      "sourcePointer": "/blockingFindings/1",
+      "sourceReviewIdentity": {
+        "reviewedSha": "463facb109cc4d19c4fda7af936fb4546fb86091",
+        "testedSha": "9a4f4c6ee2723eb7f546341f3c18a1f0a29c3bc1",
+        "verdict": "FAILED",
+        "reviewer": "Codex Reviewer B",
+        "scope": {
+          "consumers": [
+            "conversion-magic.preparation",
+            "sc-kintoki-3.golden-eater"
+          ],
+          "components": [
+            "shared binding ownership/compiler",
+            "typed resolution and staged pending",
+            "MatchSession dispatch and rollback",
+            "MatchRoomHub mutation gate",
+            "server socket registration/authentication/disconnection",
+            "browser projection/reconnect/stale evidence"
+          ],
+          "browserStartingState": "Trusted server process fixture; no natural room progression acceptance."
+        },
+        "browserRerun": false,
+        "fullCiRerun": false
+      },
+      "sourceCommitParent": "94e5588955fa96f1c160aebcb55f895346036fd3",
+      "extractionState": "A_HASH_AND_IDENTITY_VERIFIED_DRAFT_RA_KNOWLEDGE_REVIEW_PENDING",
+      "rootCauseEvidence": "SOURCE_STATIC_PLUS_REVIEW_OBSERVATION",
+      "runtimePathsAtMain": [
+        {
+          "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "path": "packages/rules/src/match-room-hub.ts",
+          "sha256": "54cf729dba698e4d73e95c61e7feb9cb7cc279bd17bbe43dc10fab93620f3fa6",
+          "gitBlob": "a4f8d8b5dc0845ac5b0d18e5e0b06fc4c61dee11",
+          "bytes": 7910,
+          "presence": "PRESENT_STATIC_ONLY",
+          "execution": "NOT_RUN_K01"
+        },
+        {
+          "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "path": "packages/rules/src/match-room-protocol.ts",
+          "sha256": "519e594130a70d78ab38f00dd45ec7c04dc359dc4b3c069e92be50aea53d50c2",
+          "gitBlob": "dbf6044f486bc8ea440d939469394c16fe599536",
+          "bytes": 1505,
+          "presence": "PRESENT_STATIC_ONLY",
+          "execution": "NOT_RUN_K01"
+        },
+        {
+          "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "path": "apps/server/src/match-server.ts",
+          "sha256": "7e0bc3114887fe34966f64654e0d6612e8e96df8fd5289e9d26885bd0aba2758",
+          "gitBlob": "afc45e698a612e5226dd8bb57b927f089dac85b7",
+          "bytes": 9439,
+          "presence": "PRESENT_STATIC_ONLY",
+          "execution": "NOT_RUN_K01"
+        }
+      ],
+      "tests": [
+        {
+          "path": "apps/server/src/match-server.test.ts",
+          "sourceSnapshot": {
+            "commit": "0f62210a2e007a15e28f945c546ccd00c345942a",
+            "path": "apps/server/src/match-server.test.ts",
+            "sha256": "527b0c5f95598cbcb2bfeda07baee6acf9432e1fdca9454e36fdc577053bd67a",
+            "gitBlob": "10248b72cc9a032bfefc7280d6fc44c529b5d56e",
+            "bytes": 39203,
+            "presence": "PRESENT_STATIC_ONLY",
+            "execution": "NOT_RUN_K01"
+          },
+          "currentMain": {
+            "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+            "path": "apps/server/src/match-server.test.ts",
+            "sha256": "73476c9f95227699b0ff010dbbab2432b10de0661de4bef9a760e38b2492feab",
+            "gitBlob": "cbaa99910de9785364bc3fdc0e0a29f9c625971f",
+            "bytes": 20052,
+            "presence": "PRESENT_STATIC_ONLY",
+            "execution": "NOT_RUN_K01"
+          },
+          "role": "TEST_FILE_NOT_PROOF_OF_SPECIFIC_NEGATIVE_OR_EXECUTION"
+        },
+        {
+          "path": "packages/rules/tests/match-room-hub.test.ts",
+          "sourceSnapshot": {
+            "commit": "0f62210a2e007a15e28f945c546ccd00c345942a",
+            "path": "packages/rules/tests/match-room-hub.test.ts",
+            "sha256": "79084b25e2927048b08fd08feaa84d36a837261d5a46b34e39a94b0421cc3c44",
+            "gitBlob": "d2c95bf2c918aa929b817bd472fa03d6b5c9f4cf",
+            "bytes": 19446,
+            "presence": "PRESENT_STATIC_ONLY",
+            "execution": "NOT_RUN_K01"
+          },
+          "currentMain": {
+            "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+            "path": "packages/rules/tests/match-room-hub.test.ts",
+            "sha256": "002df4f377831a3181e0fce71e517e39888d2f4510cd7389003a90690e0f98f2",
+            "gitBlob": "6813c545240bb1b16bfc539e91b8f9914584d5d5",
+            "bytes": 16285,
+            "presence": "PRESENT_STATIC_ONLY",
+            "execution": "NOT_RUN_K01"
+          },
+          "role": "TEST_FILE_NOT_PROOF_OF_SPECIFIC_NEGATIVE_OR_EXECUTION"
+        }
+      ],
+      "namedHistoricalTestSelectors": [
+        {
+          "title": "rejects raw WS missing/invalid/stale revisions for dispatch and end_turn without mutation or accepted broadcasts",
+          "exactSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+          "paths": [
+            "apps/server/src/match-server.test.ts"
+          ],
+          "observedMainSha": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "currentMainMatches": [],
+          "method": "LITERAL_SOURCE_INSPECTION_NOT_TEST_EXECUTION"
+        },
+        {
+          "title": "rejects missing, invalid and stale revisions for both mutation commands without any side effects",
+          "exactSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+          "paths": [
+            "packages/rules/tests/match-room-hub.test.ts"
+          ],
+          "observedMainSha": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "currentMainMatches": [],
+          "method": "LITERAL_SOURCE_INSPECTION_NOT_TEST_EXECUTION"
+        }
+      ],
+      "currentMainSemanticCoverage": "NOT_VERIFIED_NO_RUNTIME_EXECUTION_OR_ACCEPTANCE_INHERITANCE"
+    },
+    {
+      "id": "FD-SHAPE-003",
+      "source": {
+        "commit": "b22691ab5311cd31f60eb91d573416fea3c7cf98",
+        "path": "docs/reviews/2026-10-10-pr-474-review.md",
+        "sha256": "f588a8b7062e7d57739e1f02b24bf7d939e06a8f203a5542ab374ba7f2f93adc",
+        "gitBlob": "7c71975bf9ebbace443dda7b155f92ab1ca28cea",
+        "bytes": 5684
+      },
+      "sourcePointer": "Finding and Verification sections",
+      "sourceReviewIdentity": {
+        "reviewedSha": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+        "verdict": "FAILED_TECHNICAL_ONLY",
+        "reviewer": "Codex Automation Review Owner",
+        "formalAcceptance": false,
+        "scope": "TRUSTED_COMPILED_FIXTURE_FULL_REWARD_EACH_GATEWAY_NOT_RAW_LOADER_OR_CLIENT_EXPLOIT"
+      },
+      "sourceCommitParent": "3310fe2cb307ac00891facbe3a192b7b481c2d63",
+      "extractionState": "A_HASH_AND_IDENTITY_VERIFIED_DRAFT_RA_KNOWLEDGE_REVIEW_PENDING",
+      "rootCauseEvidence": "SOURCE_STATIC_PLUS_REVIEW_OBSERVATION",
+      "runtimePathsAtMain": [
+        {
+          "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "path": "packages/rules/src/ability/combat-reward-distribution.ts",
+          "presence": "ABSENT_EXACT_TREE",
+          "execution": "NOT_RUN_K01"
+        }
+      ],
+      "tests": [
+        {
+          "path": "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts",
+          "sourceSnapshot": {
+            "commit": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+            "path": "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts",
+            "sha256": "23ffcf87a360aac072c1fe5f74f4f299a38658ad441d26d20be6c4c81de734de",
+            "gitBlob": "a4c32bd6a919b78551bc154f1a02c0fa9d96e859",
+            "bytes": 8797,
+            "presence": "PRESENT_STATIC_ONLY",
+            "execution": "NOT_RUN_K01"
+          },
+          "currentMain": {
+            "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+            "path": "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts",
+            "presence": "ABSENT_EXACT_TREE",
+            "execution": "NOT_RUN_K01"
+          },
+          "role": "TEST_FILE_NOT_PROOF_OF_SPECIFIC_NEGATIVE_OR_EXECUTION"
+        },
+        {
+          "path": "docs/reviews/probes/review-474-independent.mjs",
+          "sourceSnapshot": {
+            "commit": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+            "path": "docs/reviews/probes/review-474-independent.mjs",
+            "presence": "ABSENT_EXACT_TREE",
+            "execution": "NOT_RUN_K01"
+          },
+          "currentMain": {
+            "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+            "path": "docs/reviews/probes/review-474-independent.mjs",
+            "presence": "ABSENT_EXACT_TREE",
+            "execution": "NOT_RUN_K01"
+          },
+          "role": "REVIEWER_PROBE_NOT_ENFORCING_REGRESSION"
+        }
+      ],
+      "namedHistoricalTestSelectors": [
+        {
+          "title": "accepts only the exact identity-free whole-ability replacement shell",
+          "exactSha": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+          "paths": [
+            "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts"
+          ],
+          "observedMainSha": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "currentMainMatches": [],
+          "method": "LITERAL_SOURCE_INSPECTION_NOT_TEST_EXECUTION"
+        },
+        {
+          "title": "replaces normal tie splitting with full event, competition, and location rewards for every winner",
+          "exactSha": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+          "paths": [
+            "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts"
+          ],
+          "observedMainSha": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "currentMainMatches": [],
+          "method": "LITERAL_SOURCE_INSPECTION_NOT_TEST_EXECUTION"
+        }
+      ],
+      "currentMainSemanticCoverage": "NOT_VERIFIED_NO_RUNTIME_EXECUTION_OR_ACCEPTANCE_INHERITANCE"
+    },
+    {
+      "id": "FD-RESTORE-004",
+      "source": {
+        "commit": "7e65291a4fa10170e249bc492617ef337caf7f8a",
+        "path": "docs/reviews/2026-10-10-pr-475-review.md",
+        "sha256": "8c67cfe179e02ece25b6581ee2a23ed776ebf4e95eeaa2a93b2e8d59dc1d7cf6",
+        "gitBlob": "88afcbc57b3dd31332766b6d3f83c97caff0c4ee",
+        "bytes": 6319
+      },
+      "sourcePointer": "Finding and Verification sections",
+      "sourceReviewIdentity": {
+        "reviewedSha": "fe4653d1013110555881585db3a447880dd463d3",
+        "verdict": "FAILED_TECHNICAL_ONLY",
+        "reviewer": "Codex Automation Review Owner",
+        "formalAcceptance": false,
+        "scope": "ACTUAL_SC3_LEGAL_NESTED_PAUSE_INHERITED_RUNTIME_EXPOSURE_NOT_NEW_AUTHORING_RUNTIME_DELTA"
+      },
+      "sourceCommitParent": "b22691ab5311cd31f60eb91d573416fea3c7cf98",
+      "extractionState": "A_HASH_AND_IDENTITY_VERIFIED_DRAFT_RA_KNOWLEDGE_REVIEW_PENDING",
+      "rootCauseEvidence": "SOURCE_STATIC_PLUS_REVIEW_OBSERVATION",
+      "runtimePathsAtMain": [
+        {
+          "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "path": "packages/rules/src/ability/interpreter.ts",
+          "sha256": "b2c8bb82836eb7291afc0ef5850103665e954b5ae3525066ab98f25a2e6a80d1",
+          "gitBlob": "b19b61493841ae0d46b5cf179feaa89dec0147d5",
+          "bytes": 295202,
+          "presence": "PRESENT_STATIC_ONLY",
+          "execution": "NOT_RUN_K01"
+        },
+        {
+          "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "path": "packages/rules/src/match-session.ts",
+          "sha256": "a4b440bda535956819d557e89c5c095c765f88b349c78c62d767b3c7a1918c12",
+          "gitBlob": "3418ff800b605a6a6e8c93f76eb072699c5c6378",
+          "bytes": 166433,
+          "presence": "PRESENT_STATIC_ONLY",
+          "execution": "NOT_RUN_K01"
+        },
+        {
+          "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "path": "data/authoring/servants/servant.stheno.json",
+          "sha256": "ff23d09f28388c5665881522a304695bbf2c9ae0df74fdb27162954447c855f1",
+          "gitBlob": "21ebf0d3ff1df23ea8aa16b6ba362d7f6eee3ffb",
+          "bytes": 10338,
+          "presence": "PRESENT_STATIC_ONLY",
+          "execution": "NOT_RUN_K01"
+        }
+      ],
+      "tests": [
+        {
+          "path": "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts",
+          "sourceSnapshot": {
+            "commit": "fe4653d1013110555881585db3a447880dd463d3",
+            "path": "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts",
+            "sha256": "aa71a3c4cf8274dcf9a783191fe861a4fa0e62bed10279a66322aa32cb948053",
+            "gitBlob": "71eceaa9eb11f47715f15daa4ac187c495beacc9",
+            "bytes": 12356,
+            "presence": "PRESENT_STATIC_ONLY",
+            "execution": "NOT_RUN_K01"
+          },
+          "currentMain": {
+            "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+            "path": "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts",
+            "presence": "ABSENT_EXACT_TREE",
+            "execution": "NOT_RUN_K01"
+          },
+          "role": "TEST_FILE_NOT_PROOF_OF_SPECIFIC_NEGATIVE_OR_EXECUTION"
+        },
+        {
+          "path": "packages/rules/tests/match-session.test.ts",
+          "sourceSnapshot": {
+            "commit": "fe4653d1013110555881585db3a447880dd463d3",
+            "path": "packages/rules/tests/match-session.test.ts",
+            "sha256": "b52edea1cf312923230e8339742dcc2ccb39d46c9ddb7868a67608297d70d93c",
+            "gitBlob": "43f5b7fb959cc67cedc31c7336145d39276d7c0c",
+            "bytes": 42400,
+            "presence": "PRESENT_STATIC_ONLY",
+            "execution": "NOT_RUN_K01"
+          },
+          "currentMain": {
+            "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+            "path": "packages/rules/tests/match-session.test.ts",
+            "sha256": "cb32867bed4fa9e9d9151b7f05e7d653e2dfd376bd6940f03d68402fd7adb001",
+            "gitBlob": "a95ef79efb7086ec992794c45c0358428e7e2e6c",
+            "bytes": 35918,
+            "presence": "PRESENT_STATIC_ONLY",
+            "execution": "NOT_RUN_K01"
+          },
+          "role": "TEST_FILE_NOT_PROOF_OF_SPECIFIC_NEGATIVE_OR_EXECUTION"
+        },
+        {
+          "path": "docs/reviews/probes/review-475-independent.mjs",
+          "sourceSnapshot": {
+            "commit": "fe4653d1013110555881585db3a447880dd463d3",
+            "path": "docs/reviews/probes/review-475-independent.mjs",
+            "presence": "ABSENT_EXACT_TREE",
+            "execution": "NOT_RUN_K01"
+          },
+          "currentMain": {
+            "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+            "path": "docs/reviews/probes/review-475-independent.mjs",
+            "presence": "ABSENT_EXACT_TREE",
+            "execution": "NOT_RUN_K01"
+          },
+          "role": "REVIEWER_PROBE_NOT_ENFORCING_REGRESSION"
+        }
+      ],
+      "namedHistoricalTestSelectors": [
+        {
+          "title": "runs real sc3 Luck discard -> close/refund/draw -> turn-order exact drawn optional play with combat Action permission",
+          "exactSha": "fe4653d1013110555881585db3a447880dd463d3",
+          "paths": [
+            "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts"
+          ],
+          "observedMainSha": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "currentMainMatches": [],
+          "method": "LITERAL_SOURCE_INSPECTION_NOT_TEST_EXECUTION"
+        }
+      ],
+      "currentMainSemanticCoverage": "NOT_VERIFIED_NO_RUNTIME_EXECUTION_OR_ACCEPTANCE_INHERITANCE"
+    },
+    {
+      "id": "FD-EVID-005",
+      "source": {
+        "commit": "dbd430be9550947a2bac691ef645db56cf5c408f",
+        "path": "docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json",
+        "sha256": "a0f4b6ff474b169b36e7ff18092ad93e7f29a573c7e2a0c85bf299011ab0e5a9",
+        "gitBlob": "5931db5bd740e7ec825e0393d9a252b01b4ebc11",
+        "bytes": 6658
+      },
+      "sourcePointer": "/preservedFailure",
+      "sourceReviewIdentity": {
+        "reviewedSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+        "implementationSha": "078b79c714e0d3814dd03942ba77abd7d5c7599a",
+        "verdict": "PASS",
+        "reviewer": "Reviewer A",
+        "historicalFailureSha": "cfa6a92551a939709b85a787d9044e19ec00f0ef",
+        "scope": "EXACT_INTEGRATION_CLOSURE_REFERENCE_CONTRACT_AND_FINAL_ASSEMBLY_EVIDENCE_ONLY",
+        "actualFinalAssemblyVerified": false
+      },
+      "sourceCommitParent": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+      "extractionState": "A_HASH_AND_IDENTITY_VERIFIED_DRAFT_RA_KNOWLEDGE_REVIEW_PENDING",
+      "rootCauseEvidence": "FULL_HOOK_RPC_CAUSE_UNKNOWN_SYNCHRONOUS_GIT_COST_HYPOTHESIS_ONLY",
+      "runtimePathsAtMain": [
+        {
+          "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+          "presence": "ABSENT_EXACT_TREE",
+          "execution": "NOT_RUN_K01"
+        },
+        {
+          "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+          "presence": "ABSENT_EXACT_TREE",
+          "execution": "NOT_RUN_K01"
+        }
+      ],
+      "tests": [
+        {
+          "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+          "sourceSnapshot": {
+            "commit": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+            "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+            "sha256": "e57af1a0414d677394aa544b8fea08146692de4f40e97eb595c53126158644a9",
+            "gitBlob": "dc1ffe1fa8d892b686e8638fac8b61ff314bba3e",
+            "bytes": 20918,
+            "presence": "PRESENT_STATIC_ONLY",
+            "execution": "NOT_RUN_K01"
+          },
+          "currentMain": {
+            "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+            "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+            "presence": "ABSENT_EXACT_TREE",
+            "execution": "NOT_RUN_K01"
+          },
+          "role": "TEST_FILE_NOT_PROOF_OF_SPECIFIC_NEGATIVE_OR_EXECUTION"
+        },
+        {
+          "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+          "sourceSnapshot": {
+            "commit": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+            "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+            "sha256": "2061288322b2e426c3f4464dda474b892223e03aae9eee1d605f532ad66f0133",
+            "gitBlob": "ca38692a683a9531169a31598870f244adce20d3",
+            "bytes": 19729,
+            "presence": "PRESENT_STATIC_ONLY",
+            "execution": "NOT_RUN_K01"
+          },
+          "currentMain": {
+            "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+            "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+            "presence": "ABSENT_EXACT_TREE",
+            "execution": "NOT_RUN_K01"
+          },
+          "role": "TEST_FILE_NOT_PROOF_OF_SPECIFIC_NEGATIVE_OR_EXECUTION"
+        }
+      ],
+      "namedHistoricalTestSelectors": [],
+      "currentMainSemanticCoverage": "NOT_VERIFIED_NO_RUNTIME_EXECUTION_OR_ACCEPTANCE_INHERITANCE"
+    },
+    {
+      "id": "FD-FIXTURE-006",
+      "source": {
+        "commit": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b",
+        "path": "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+        "sha256": "e8fd40e8b0f74701755cdab3135d58e0dc3a7c08aac7c4da9652bb622b38103e",
+        "gitBlob": "ac92be82664850f44059af942896f60e97cb8322",
+        "bytes": 1291417
+      },
+      "sourcePointer": "/previousIntegrationFailure",
+      "sourceReviewIdentity": {
+        "reviewedSha": null,
+        "verdict": "NOT_REVIEWED_BY_K01",
+        "evidenceCarrier": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b",
+        "implementationSha": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+        "failedTestedSha": "487ab81a8e3fabf75eea5a73cd3582b37cf65520",
+        "rawFailureExit": 1,
+        "repairClaim": "IMPLEMENTATION_COMPLETE_CANDIDATE",
+        "grants": "NONE"
+      },
+      "sourceCommitParent": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+      "extractionState": "A_HASH_AND_IDENTITY_VERIFIED_DRAFT_RA_KNOWLEDGE_REVIEW_PENDING",
+      "rootCauseEvidence": "SOURCE_STATIC_PLUS_REVIEW_OBSERVATION",
+      "runtimePathsAtMain": [
+        {
+          "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+          "presence": "ABSENT_EXACT_TREE",
+          "execution": "NOT_RUN_K01"
+        },
+        {
+          "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+          "presence": "ABSENT_EXACT_TREE",
+          "execution": "NOT_RUN_K01"
+        },
+        {
+          "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+          "path": "scripts/phase3-preflight.ts",
+          "presence": "ABSENT_EXACT_TREE",
+          "execution": "NOT_RUN_K01"
+        }
+      ],
+      "tests": [
+        {
+          "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+          "sourceSnapshot": {
+            "commit": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+            "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+            "sha256": "d8c25f47e6233db2a290dcadeecdb20896e9f057684a1502ab8ea47bed51f9a0",
+            "gitBlob": "6ecb9114de49ebf1ee9c3d79a591edbc4d4f4098",
+            "bytes": 24460,
+            "presence": "PRESENT_STATIC_ONLY",
+            "execution": "NOT_RUN_K01"
+          },
+          "currentMain": {
+            "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+            "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+            "presence": "ABSENT_EXACT_TREE",
+            "execution": "NOT_RUN_K01"
+          },
+          "role": "TEST_FILE_NOT_PROOF_OF_SPECIFIC_NEGATIVE_OR_EXECUTION"
+        },
+        {
+          "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+          "sourceSnapshot": {
+            "commit": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+            "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+            "sha256": "9f2fc8dc3421f07db3ec0e1e00d4be526dc93234ad68fc6109e7e554281ec677",
+            "gitBlob": "6c7e3f3a772867540d29767d27256b3d20ce3812",
+            "bytes": 19732,
+            "presence": "PRESENT_STATIC_ONLY",
+            "execution": "NOT_RUN_K01"
+          },
+          "currentMain": {
+            "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+            "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+            "presence": "ABSENT_EXACT_TREE",
+            "execution": "NOT_RUN_K01"
+          },
+          "role": "TEST_FILE_NOT_PROOF_OF_SPECIFIC_NEGATIVE_OR_EXECUTION"
+        }
+      ],
+      "namedHistoricalTestSelectors": [],
+      "currentMainSemanticCoverage": "NOT_VERIFIED_NO_RUNTIME_EXECUTION_OR_ACCEPTANCE_INHERITANCE"
+    }
+  ],
+  "lessonDocumentDigests": [
+    {
+      "path": "docs/engineering/lessons/cases/FD-SEC-001.md",
+      "sha256": "fac31591e65b91a8c4c82ab00d3ea5c1306361f188430dc2083e51caf360d8a2"
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-REV-002.md",
+      "sha256": "989532443a6e437deb65fb844a83bed807f81512f4939c82888c8ea7328c88dd"
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-SHAPE-003.md",
+      "sha256": "148eee25f6eec8d3389d502c58055dd96f3d4a5e913e64e08827d21f53147aa0"
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-RESTORE-004.md",
+      "sha256": "8c31e9a5339a8a2c87042473c50b899af927c6e7c7e4cf824b07648be5f25db1"
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-EVID-005.md",
+      "sha256": "99688fd944fe7ee319b43803a7c0908fd06c4a26e5f461a0b3c44af366103955"
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-FIXTURE-006.md",
+      "sha256": "0b9ff711075d84df0d70b31576287b747d6ca9b650c99f66fd83c95414125e2c"
+    },
+    {
+      "path": "docs/engineering/lessons/INDEX.md",
+      "sha256": "8567703df39a5c43f518b28263c76a3e489b76cb753c862c4bfa3b806e715f0d"
+    },
+    {
+      "path": "docs/engineering/lessons/GUARDRAILS.md",
+      "sha256": "a32471afb749219bdde433b69e601b5d8793ad46d7f12ef5d19afb24407caec1"
+    },
+    {
+      "path": "docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md",
+      "sha256": "d2f3f0abd959a1ac5310edd5700e9796503bffa4dd69e062d40e9be95fc4a112"
+    },
+    {
+      "path": "docs/engineering/lessons/BATCH-TASK-TEMPLATE.md",
+      "sha256": "f76a88888d8598551fd6f2bb10421daf0d6442fa51d2da3b2bacf0f5b268b356"
+    },
+    {
+      "path": "docs/engineering/lessons/K01-HANDOFF.md",
+      "sha256": "ea1b09a175a015609f48d8626d821f10c048e71dc024398ce693be6ec68e5eb5"
+    }
+  ],
+  "scopedFollowUpReview": {
+    "source": {
+      "commit": "4d5b76be9d5459cc0c40e50fae8513bc59cd5d21",
+      "path": "docs/reviews/phase3/P3-E09-B11-TRANSPORT-SECURITY-REPAIR-0f62210-reviewer-b.json",
+      "sha256": "6fe0ead378e31149b3271e137fdb99acac161f2894e3fad21fc0a14986e96db4",
+      "gitBlob": "8fc65be0fbfe2ddbb8a0c5682d0c62ce64402439",
+      "bytes": 4138
+    },
+    "reviewedSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+    "testedSha": "88dcd441a17584b4a2a6d1ba78e588ac6a818ed1",
+    "verdict": "PASS",
+    "acceptedScope": "Scoped transport security repair and existing B11/Golden Eater/socket composition only",
+    "overallReadiness": "BLOCKED",
+    "independentEvidence": {
+      "rules": {
+        "files": 4,
+        "passed": 46,
+        "exitCode": 0,
+        "executedAtSourceEquivalentSha": "88dcd441a17584b4a2a6d1ba78e588ac6a818ed1"
+      },
+      "server": {
+        "passed": 16,
+        "exitCode": 0,
+        "executedAtSourceEquivalentSha": "88dcd441a17584b4a2a6d1ba78e588ac6a818ed1"
+      },
+      "httpAdversarialInputs": [
+        "empty string",
+        "omitted",
+        "duplicate default ID",
+        "whitespace",
+        "null",
+        "zero",
+        "false",
+        "object",
+        "array"
+      ],
+      "httpAdversarialResult": "All returned 400; original room identity, full serialized state and version unchanged",
+      "browser": {
+        "passed": 15,
+        "exitCode": 0,
+        "method": "Independent receipt/hash and scenario assertion inspection; not a new Reviewer browser execution"
+      },
+      "fullCI": {
+        "exitCode": 1,
+        "filesPassed": 189,
+        "filesFailed": 4,
+        "testsPassed": 1490,
+        "testsFailed": 1,
+        "testsSkipped": 45,
+        "method": "Independent raw receipt inspection"
+      }
+    },
+    "limitations": [
+      "Conversion Magic and Golden Eater browser evidence starts at trusted server-process fixtures, not natural full-game progression",
+      "No broad session timeline/replay/directive redesign or full roster acceptance",
+      "No GitHub Node 20 equivalence, deployment/TLS or snapshot-at-rest certification",
+      "Previous client asset inventory failure and 93 missing-image Release blocker are not closed"
+    ],
+    "grants": {
+      "main": false,
+      "phase3": false,
+      "globalGateC": false,
+      "promotion": false,
+      "releaseReady": false,
+      "migrationCreditDelta": 0
+    },
+    "knowledgeReview": "NOT_GRANTED_BY_RUNTIME_REVIEW"
+  },
+  "supplementarySources": [
+    {
+      "commit": "4d5b76be9d5459cc0c40e50fae8513bc59cd5d21",
+      "path": "docs/reviews/phase3/P3-E09-B11-TRANSPORT-SECURITY-REPAIR-0f62210-reviewer-b.json",
+      "sha256": "6fe0ead378e31149b3271e137fdb99acac161f2894e3fad21fc0a14986e96db4",
+      "gitBlob": "8fc65be0fbfe2ddbb8a0c5682d0c62ce64402439",
+      "bytes": 4138
+    },
+    {
+      "commit": "27dab1ad5b64127dffd7c4108aa9c1c6d4b076dc",
+      "path": "docs/agents/P3-E09-B11-INTEGRATION-CLOSURE-REPAIR.md",
+      "sha256": "17ae3ba6cc383eb3bf267fe6f21d0e7fc591eb9110a97e110a94527b26de7dc2",
+      "gitBlob": "a317bc9f4c44ab43807d345237aed438654cf7b8",
+      "bytes": 6231
+    },
+    {
+      "commit": "6ea26f3bc12fc3bda37b6b2607fd6edda452eee3",
+      "path": "docs/agents/P3-E09-B11-TEMPORAL-FIXTURE-FINALIZATION.md",
+      "sha256": "ed75593972e4378b2b94a470d2d58bb2aba230ab965ecc1018588c1d475dc3f7",
+      "gitBlob": "17114670b05c8f7b8a314178d728567aca542d1b",
+      "bytes": 7083
+    },
+    {
+      "commit": "b22691ab5311cd31f60eb91d573416fea3c7cf98",
+      "path": "docs/reviews/probes/review-474-independent.mjs",
+      "sha256": "aa340cd389f4ba83a2611715247f17cdf334a9efb8e71d73a210feee7ff1f0b3",
+      "gitBlob": "fef1876cb129b78bcb34c120c520f4949386aa5e",
+      "bytes": 5063
+    },
+    {
+      "commit": "7e65291a4fa10170e249bc492617ef337caf7f8a",
+      "path": "docs/reviews/probes/review-475-independent.mjs",
+      "sha256": "3e3a78add826e091de030426eae4c60e404b67967b0d94aaf34f919ba87e6913",
+      "gitBlob": "2299a88dab59148ca96442decb9586871e426722",
+      "bytes": 9773
+    },
+    {
+      "commit": "3ab115927eaf7c104fab9064d71ceebdac870da1",
+      "path": "docs/agents/manifests/reservations/P3-E09-B11-TRANSPORT-SECURITY-REPAIR.json",
+      "sha256": "0b94649520e1833648f575163bf68f4679e33b068d67275f38bc8c188bf6611c",
+      "gitBlob": "744985a0190a7ac8d02c36035536b5cc8b55fe5c",
+      "bytes": 3175
+    },
+    {
+      "commit": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+      "path": "packages/rules/src/ability/combat-reward-distribution.ts",
+      "sha256": "4d39f9153d7f5d89f54047f9d2f8afe719c6de7b6586e036695be12d8635e5e8",
+      "gitBlob": "09cc273f5660b6a660704c4b700146b8cd5e26aa",
+      "bytes": 4479
+    },
+    {
+      "commit": "fe4653d1013110555881585db3a447880dd463d3",
+      "path": "packages/rules/src/ability/interpreter.ts",
+      "sha256": "0f3f1773fb1395e3e1189b93532475ff46dfe51beaef6fd885d6455272a9d796",
+      "gitBlob": "21124893f48ea5474f6c62fdbc6c892ba193b636",
+      "bytes": 352799
+    },
+    {
+      "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+      "path": "data/authoring/servants/servant.stheno.json",
+      "sha256": "ff23d09f28388c5665881522a304695bbf2c9ae0df74fdb27162954447c855f1",
+      "gitBlob": "21ebf0d3ff1df23ea8aa16b6ba362d7f6eee3ffb",
+      "bytes": 10338
+    },
+    {
+      "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+      "path": "packages/rules/tests/fb2-34-combat-reward-distribution.test.ts",
+      "sha256": "938970d36d3e69e378f0f97ae68891d16d8b48a0a6d8f2080b201acf6d616fca",
+      "gitBlob": "be3c2dcb6ba6ee6f19ae96d430aa97e72749be9e",
+      "bytes": 13339
+    },
+    {
+      "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+      "path": "packages/rules/tests/stheno-consumer-migration.test.ts",
+      "sha256": "a4facdbfd24345e2d1d35fc5eab36cd06e2d6599362058a8e89269785a77a23e",
+      "gitBlob": "47c4937a6e94fa8fb66777fe5c7276fac29f5dcc",
+      "bytes": 8237
+    },
+    {
+      "commit": "487ab81a8e3fabf75eea5a73cd3582b37cf65520",
+      "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+      "sha256": "e57af1a0414d677394aa544b8fea08146692de4f40e97eb595c53126158644a9",
+      "gitBlob": "dc1ffe1fa8d892b686e8638fac8b61ff314bba3e",
+      "bytes": 20918
+    },
+    {
+      "commit": "487ab81a8e3fabf75eea5a73cd3582b37cf65520",
+      "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+      "sha256": "2061288322b2e426c3f4464dda474b892223e03aae9eee1d605f532ad66f0133",
+      "gitBlob": "ca38692a683a9531169a31598870f244adce20d3",
+      "bytes": 19729
+    }
+  ],
+  "currentMainFootprints": {
+    "shape": {
+      "inspectedMainModule": {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "packages/rules/src/ability/combat-reward-distribution.ts",
+        "presence": "ABSENT_EXACT_TREE",
+        "execution": "NOT_RUN_K01"
+      },
+      "differentlyNamedMainTest": {
+        "commit": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+        "path": "packages/rules/tests/fb2-34-combat-reward-distribution.test.ts",
+        "sha256": "938970d36d3e69e378f0f97ae68891d16d8b48a0a6d8f2080b201acf6d616fca",
+        "gitBlob": "be3c2dcb6ba6ee6f19ae96d430aa97e72749be9e",
+        "bytes": 13339,
+        "presence": "PRESENT_STATIC_ONLY",
+        "execution": "NOT_RUN_K01"
+      },
+      "applicability": "CONTRACT_UNBOUND_DO_NOT_PORT_OLD_STACK_BY_NAME"
+    },
+    "restore": {
+      "currentMainContainsSc3Ability": false,
+      "currentMainContainsNamedTransaction": false,
+      "applicability": "ACTUAL_HISTORICAL_CONSUMER_NOT_PRESENT_AT_OBSERVED_MAIN"
+    },
+    "temporal": {
+      "failureSha": "487ab81a8e3fabf75eea5a73cd3582b37cf65520",
+      "failingSourceBound": true,
+      "currentMainProductionInclusion": "ABSENT_EXACT_LISTED_PATHS_NOT_INFERRED"
+    }
+  },
+  "candidateMainAncestry": [
+    {
+      "candidate": "0f62210a2e007a15e28f945c546ccd00c345942a",
+      "observedMain": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+      "candidateIsMainAncestor": false
+    },
+    {
+      "candidate": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+      "observedMain": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+      "candidateIsMainAncestor": false
+    },
+    {
+      "candidate": "fe4653d1013110555881585db3a447880dd463d3",
+      "observedMain": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+      "candidateIsMainAncestor": false
+    },
+    {
+      "candidate": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+      "observedMain": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+      "candidateIsMainAncestor": false
+    },
+    {
+      "candidate": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+      "observedMain": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+      "candidateIsMainAncestor": false
+    }
+  ],
+  "candidateTriage": [
+    {
+      "id": "FD-FIXTURE-006",
+      "decision": "SOURCE_BACKED_DRAFT_ADDED_NO_ACCEPTANCE",
+      "reason": "Exact failing I receipts embedded and hash-bound; explicit Planner diagnosis and inspected failing source available"
+    },
+    {
+      "id": "FD-SHA-007",
+      "decision": "NOT_ADDED_UNKNOWN",
+      "reason": "27dab1ad proves missing review-reference contract, not wrong candidate/reviewer SHA; no terminal identity mismatch finding selected"
+    },
+    {
+      "id": "FD-FALLBACK-008",
+      "decision": "NOT_ADDED_UNKNOWN",
+      "reason": "No pinned failing setup/data-flow source in assigned selection; later closed-fallback declarations cannot establish a historical failure"
+    },
+    {
+      "id": "FD-REVIEW-009",
+      "decision": "NOT_ADDED_UNKNOWN",
+      "reason": "PR475 records separate historical relay and independent review; it does not prove relay was mistaken for this review"
+    },
+    {
+      "id": "FD-WRITER-010",
+      "decision": "NOT_ADDED_UNKNOWN",
+      "reason": "Reservation boundary records do not prove an actual competing writer or conflict occurrence"
+    }
+  ],
+  "summary": {
+    "initialCases": 5,
+    "verifiedInitialSourceBindings": 5,
+    "addedSourceBackedDrafts": 1,
+    "cases": 6,
+    "unprovedCandidatesRetained": 4,
+    "independentKnowledgeAcceptance": "PENDING_RA",
+    "runtimeTestsExecuted": 0,
+    "sourceAssetsMissing": 93,
+    "creditDelta": 0,
+    "denominatorDelta": 0,
+    "ledger": "111/944"
+  },
+  "boundaries": {
+    "runtimeModified": false,
+    "runtimeAcceptanceGranted": false,
+    "gateOrPromotionGranted": false,
+    "sourceReviewReopened": false,
+    "heavyTestsExecuted": false,
+    "historicalFailuresRewritten": false,
+    "currentMainDynamicConformance": "NOT_VERIFIED"
+  }
+}
