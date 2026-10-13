@@ -3,7 +3,7 @@
   "taskId": "P3-EFP-G01",
   "controlEpoch": "FD-P3-2026-09-23-09",
   "date": "2026-10-13",
-  "status": "GOVERNANCE_INPUT_INCOMPLETE_EXACT_BRIDGE_PATH_AUTHORITY_REQUIRED",
+  "status": "GOVERNANCE_INPUT_COMPLETE",
   "assessment": "EXISTING_POLICY_SUPPORTS_CURRENT_REVIEWED_INTEGRATION_CHAIN_NO_POLICY_CHANGE_REQUIRED",
   "role": "Codex G / actual governance attestor",
   "authority": {
@@ -227,7 +227,7 @@
     "k02CandidateAncestorOfI01": false,
     "reuseMeaning": "Exact reviewed blob equality plus new current-main I01 integration RA, never invented old candidate ancestry.",
     "legalProposedChain": "main -> I01 candidate -> exact I01 RA -> distinct G policy bridge -> actual synchronization -> distinct promotion HEAD",
-    "futureBridgeCommit": null,
+    "futureBridgeCommit": "Containing new terminal G commit, reported externally",
     "futureSynchronization": null,
     "futureHead": null,
     "policyConstraints": [
@@ -243,10 +243,10 @@
     "reviewer": "github:binchen648",
     "actualGithubStatement": {
       "author": "binchen648",
-      "body": "Codex G / P3-EFP-G01 actual attestor: github:binchen648.\nExact I01 reviewed candidate: 1d95b2306b6b3b7aa30c39041b33dad892872657\nIntegration RA: dd9a869de718bc1cf23cf5a9826149becc3cb659, artifact docs/reviews/phase3/P3-EFP-I01-1d95b230-reviewer-a.json, SHA-256 5C8638CC04DBBD1F2EC84283B04007D96719F882E3E61FE2FD2D70DE0B9A0CF5.\nRA PASS scope: EXACT_CURRENT_MAIN_BLOB_MATERIALIZATION_AND_RECORDED_EXECUTION_EVIDENCE_ONLY; NOT_PROMOTION_READINESS. G confirms exact 20-blob materialization and nine preserved current-main runtime/control objects, not a runtime technical verdict.\nK01/K02 source reviews are separately preserved: 2470f00902bd650bc3122f518b18333afed323f3 / DA0F45FDED94F1DC941A3A6B7A91DA586D2DE36B0188EC8F3662FCBAF9B98687 / EXACT_K01_HISTORICAL_SOURCE_EXTRACTION_PROVENANCE_AND_REGRESSION_GAP_DOCUMENTATION_ONLY; d1a8276fd2ed1181ca281b27e840cb022d9079e6 / BBB1DA984109B4D75AB17076CCE53FE6A02DD64D5EC2E0D31FA9D463CE4A56BB / EXACT_K02_STANDALONE_HISTORICAL_RETRIEVAL_TOOLING_SOURCE_INTEGRITY_CACHE_AND_STARTUP_PROTOCOL_ONLY.\nTheir original candidates are NOT ancestors of I01. Exact blob equality, not fabricated ancestry, supports reuse. The promotion reviewedCandidateSha proposal is I01 1d95b2306b6b3b7aa30c39041b33dad892872657.\nActual account github:binchen648 verified via gh api user. This is a real scoped governance statement, not an APPROVED Review or self-invented human approval.\nExisting policy supports candidate -> independent I01 RA -> separate policy bridge -> synchronization -> final HEAD with distinct identities. The current G dispatch authorizes only two governance outputs; a separate policy evidence file under docs/reviews/phase3/P3-EFP-I01-promotion-attestation.json needs explicit bounded output-path authority. No policy change/waiver required; no file created outside current scope.\nHistorical missing four paths now resolve with expected hashes in updated remote-only no-alternates Git DB; original absence probes remain absences. Original artifacts are not rewritten.\nI waits for GOVERNANCE_INPUT_COMPLETE and explicit Planner promotion PR authorization. Actual synchronization/final HEAD do not yet exist in this G proposal; required checks cannot be inherited from B11 or source review.\nLedger111/944, all credit deltas0; Gate C NOT_VERIFIED, 93 missing-image Release blockers and no measured throughput benefit retained. No runtime/package/workflow/policy changes or merge authorized.",
-      "createdAt": "2026-10-13T11:05:19Z",
-      "id": 6144148395,
-      "url": "https://github.com/binchen648/fd/pull/559#issuecomment-6144148395"
+      "body": "Codex G / P3-EFP-G01 actual policy attestor: github:binchen648\nPromotion taskId: P3-EFP-I01\nControl Epoch: FD-P3-2026-09-23-09\nExact reviewedCandidateSha: 1d95b2306b6b3b7aa30c39041b33dad892872657\nConclusion: REVIEW_ACCEPTED\nBounded scope: EXACT_CURRENT_MAIN_BLOB_MATERIALIZATION_AND_RECORDED_EXECUTION_EVIDENCE_ONLY; NOT_PROMOTION_READINESS; bridge of exact current-main materialization and execution evidence only, no runtime or promotion-readiness verdict.\n\nCurrent I01 RA: dd9a869de718bc1cf23cf5a9826149becc3cb659, docs/reviews/phase3/P3-EFP-I01-1d95b230-reviewer-a.json, SHA-256 5C8638CC04DBBD1F2EC84283B04007D96719F882E3E61FE2FD2D70DE0B9A0CF5.\nK01/K02 original candidates are NOT ancestors of I01; only independently verified equality of 20 imported blobs supports reuse. K01/K02 and I01 original reviewer artifacts remain unchanged and retain separate scopes.\nTwenty imported blobs and nine preserved main source/control objects verified. Bound main 219d47c8dcc2b8118f2d3f6b37f51ce465e737cb.\nPlanner exact bridge path authority: 3d5b5fc96f6fb1afb5106b4eeb30b5520de6b9af, docs/agents/P3-EFP-G01-BRIDGE-AND-I-PROMOTION-AUTHORIZATION.md, SHA-256 b50d025c5ae5c39fb7e2cdba3d4d9d99387471cc9f1aed4e08eeb4d0cf788bb7.\nOnly separate fd-phase3-review-attestation-v1 output docs/reviews/phase3/P3-EFP-I01-promotion-attestation.json is newly authorized; existing G inputs/report record terminal binding.\nHistorical required source publication verified in remote-only no-alternates database; documented absence probes not relabelled available.\nG is the actual authenticated publisher, not an invented old technical reviewer identity or an APPROVED GitHub Review. No self-invented human approval.\nApplicable topology: current I01 candidate -> independent I01 RA -> distinct G bridge -> actual synchronization -> actual final HEAD. I must supply distinct real later commits, current policy manifest, actual-head preflights/checks and human merge approval.\nGOVERNANCE_INPUT_COMPLETE may be returned only after immutable remote bridge/source/hash verification; this statement alone does not grant merge or overall acceptance.\nAll credit/migration/denominator deltas0; ledger111/944; Gate C NOT_VERIFIED,93 missing-image Release blockers and long-term stability limitations retained. No measured efficiency gain.",
+      "createdAt": "2026-10-13T11:16:41Z",
+      "id": 6144335361,
+      "url": "https://github.com/binchen648/fd/pull/559#issuecomment-6144335361"
     },
     "authorBodyReadBackVerified": true,
     "statementIsApprovedReview": false,
@@ -655,7 +655,7 @@
       "schemaVersion": "fd-phase3-review-attestation-v1",
       "taskId": "P3-EFP-I01",
       "reviewer": "github:binchen648",
-      "reviewThread": "https://github.com/binchen648/fd/pull/559#issuecomment-6144148395",
+      "reviewThread": "https://github.com/binchen648/fd/pull/559#issuecomment-6144335361",
       "candidateSha": "1d95b2306b6b3b7aa30c39041b33dad892872657",
       "conclusion": "REVIEW_ACCEPTED"
     },
@@ -684,7 +684,7 @@
       "review": {
         "sha": null,
         "reviewer": "github:binchen648",
-        "reviewThread": "https://github.com/binchen648/fd/pull/559#issuecomment-6144148395",
+        "reviewThread": "https://github.com/binchen648/fd/pull/559#issuecomment-6144335361",
         "evidencePath": "docs/reviews/phase3/P3-EFP-I01-promotion-attestation.json",
         "evidenceSha256": null,
         "conclusion": "REVIEW_ACCEPTED",
@@ -708,31 +708,37 @@
         "Knowledge/tooling reuse and integration evidence only; no runtime or throughput benefit claim."
       ],
       "knownBlockers": [
-        "Policy bridge output path needs explicit authority; Planner promotion PR authorization pending; actual-head checks and human approval required."
+        "Actual I synchronization/HEAD, final local preflights/GitHub checks and human approval remain; no merge authorized."
       ],
       "zeroMigrationCredit": true,
       "reverifyOnUpstreamHeadChange": true
     },
-    "templateNotSubmission": true
+    "templateNotSubmission": true,
+    "bridge": {
+      "path": "docs/reviews/phase3/P3-EFP-I01-promotion-attestation.json",
+      "fields": {
+        "schemaVersion": "fd-phase3-review-attestation-v1",
+        "taskId": "P3-EFP-I01",
+        "reviewer": "github:binchen648",
+        "reviewThread": "https://github.com/binchen648/fd/pull/559#issuecomment-6144335361",
+        "candidateSha": "1d95b2306b6b3b7aa30c39041b33dad892872657",
+        "conclusion": "REVIEW_ACCEPTED"
+      },
+      "containingCommitAndSha256": "Reported externally in final immutable handoff; no self-reference",
+      "separateArtifact": true
+    }
   },
   "boundedMissingAuthority": {
-    "currentAllowedPaths": [
-      "docs/agents/manifests/governance/P3-EFP-I01-GOVERNANCE-INPUTS.json",
-      "docs/reports/2026-10-13-p3-efp-i01-governance-inputs.md"
-    ],
-    "requiredAdditionalPath": "docs/reviews/phase3/P3-EFP-I01-promotion-attestation.json",
-    "reason": "Promotion policy rejects governance-manifest paths as review.evidencePath; raw I01 RA artifact uses fd-engineering-integration-review-v1, not fd-phase3-review-attestation-v1. Preserve raw RA and add separate exact bridge only after path authority.",
-    "minimalDecision": "Planner explicitly authorizes this single additional immutable bridge path for G and fixes promotion taskId P3-EFP-I01 (or requests freshly matched statement if task differs). Then G publishes separate bridge with actual statement, exact candidate and immutable hash, followed by one authorized I promotion PR.",
+    "resolved": true,
+    "authority": {
+      "commit": "3d5b5fc96f6fb1afb5106b4eeb30b5520de6b9af",
+      "path": "docs/agents/P3-EFP-G01-BRIDGE-AND-I-PROMOTION-AUTHORIZATION.md",
+      "sha256": "b50d025c5ae5c39fb7e2cdba3d4d9d99387471cc9f1aed4e08eeb4d0cf788bb7"
+    },
+    "authorizedAdditionalPath": "docs/reviews/phase3/P3-EFP-I01-promotion-attestation.json",
     "policyImplementationChange": false,
     "waiver": false,
-    "negativeCases": [
-      "governance path used as policy review.evidencePath rejected",
-      "raw I01/K01/K02 RA schema cannot masquerade as policy bridge",
-      "K01/K02 reviewedCandidateSha ancestry incorrectly asserted rejected",
-      "stale candidate or task/thread/reviewer mismatch rejected",
-      "review commit equal candidate/sync/head rejected",
-      "unknown additional output path remains unauthorized"
-    ]
+    "historicalUnmetOutputAuthorityRetainedInPriorPacket": true
   },
   "boundaries": {
     "runtimeChanged": false,
@@ -743,7 +749,7 @@
     "promotionPrCreated": false,
     "promotionAllowed": false,
     "mergeAllowed": false,
-    "governanceInputComplete": false,
+    "governanceInputComplete": true,
     "creditDelta": 0,
     "migrationDelta": 0,
     "denominatorDelta": 0,
@@ -753,5 +759,22 @@
     "releaseReady": false,
     "measuredThroughputImprovement": false
   },
-  "nextOwner": "Planner: exact single bridge-path authority and separate I promotion PR authorization; G then publishes bridge commit/hash, I validates actual final HEAD and checks. No A re-sync per governance field."
+  "nextOwner": "I: conditional PR authority from 3d5b5fc9 now eligible after independently reading this complete G bridge packet; assemble actual distinct sync/head, execute authorized checks, and seek human merge approval.",
+  "bridgeAuthority": {
+    "commit": "3d5b5fc96f6fb1afb5106b4eeb30b5520de6b9af",
+    "path": "docs/agents/P3-EFP-G01-BRIDGE-AND-I-PROMOTION-AUTHORIZATION.md",
+    "sha256": "b50d025c5ae5c39fb7e2cdba3d4d9d99387471cc9f1aed4e08eeb4d0cf788bb7"
+  },
+  "previousGovernancePacket": {
+    "commit": "4e6b969335e15c0f32ec9e86b7162bc7426ecca6",
+    "status": "HISTORICAL_PATH_AUTHORITY_PENDING_SNAPSHOT",
+    "originalStatement": {
+      "author": "binchen648",
+      "body": "Codex G / P3-EFP-G01 actual attestor: github:binchen648.\nExact I01 reviewed candidate: 1d95b2306b6b3b7aa30c39041b33dad892872657\nIntegration RA: dd9a869de718bc1cf23cf5a9826149becc3cb659, artifact docs/reviews/phase3/P3-EFP-I01-1d95b230-reviewer-a.json, SHA-256 5C8638CC04DBBD1F2EC84283B04007D96719F882E3E61FE2FD2D70DE0B9A0CF5.\nRA PASS scope: EXACT_CURRENT_MAIN_BLOB_MATERIALIZATION_AND_RECORDED_EXECUTION_EVIDENCE_ONLY; NOT_PROMOTION_READINESS. G confirms exact 20-blob materialization and nine preserved current-main runtime/control objects, not a runtime technical verdict.\nK01/K02 source reviews are separately preserved: 2470f00902bd650bc3122f518b18333afed323f3 / DA0F45FDED94F1DC941A3A6B7A91DA586D2DE36B0188EC8F3662FCBAF9B98687 / EXACT_K01_HISTORICAL_SOURCE_EXTRACTION_PROVENANCE_AND_REGRESSION_GAP_DOCUMENTATION_ONLY; d1a8276fd2ed1181ca281b27e840cb022d9079e6 / BBB1DA984109B4D75AB17076CCE53FE6A02DD64D5EC2E0D31FA9D463CE4A56BB / EXACT_K02_STANDALONE_HISTORICAL_RETRIEVAL_TOOLING_SOURCE_INTEGRITY_CACHE_AND_STARTUP_PROTOCOL_ONLY.\nTheir original candidates are NOT ancestors of I01. Exact blob equality, not fabricated ancestry, supports reuse. The promotion reviewedCandidateSha proposal is I01 1d95b2306b6b3b7aa30c39041b33dad892872657.\nActual account github:binchen648 verified via gh api user. This is a real scoped governance statement, not an APPROVED Review or self-invented human approval.\nExisting policy supports candidate -> independent I01 RA -> separate policy bridge -> synchronization -> final HEAD with distinct identities. The current G dispatch authorizes only two governance outputs; a separate policy evidence file under docs/reviews/phase3/P3-EFP-I01-promotion-attestation.json needs explicit bounded output-path authority. No policy change/waiver required; no file created outside current scope.\nHistorical missing four paths now resolve with expected hashes in updated remote-only no-alternates Git DB; original absence probes remain absences. Original artifacts are not rewritten.\nI waits for GOVERNANCE_INPUT_COMPLETE and explicit Planner promotion PR authorization. Actual synchronization/final HEAD do not yet exist in this G proposal; required checks cannot be inherited from B11 or source review.\nLedger111/944, all credit deltas0; Gate C NOT_VERIFIED, 93 missing-image Release blockers and no measured throughput benefit retained. No runtime/package/workflow/policy changes or merge authorized.",
+      "createdAt": "2026-10-13T11:05:19Z",
+      "id": 6144148395,
+      "url": "https://github.com/binchen648/fd/pull/559#issuecomment-6144148395"
+    }
+  },
+  "completionScope": "All current G identity/source/ref/blob/hash and proposed topology inputs complete; not certification of an unbuilt I final HEAD, PR check SUCCESS, throughput benefit or runtime acceptance."
 }
