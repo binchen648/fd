@@ -6,13 +6,14 @@ import { fileURLToPath } from 'node:url';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { setImmediate as yieldToEventLoop } from 'node:timers/promises';
 import { buildE09FinalBinding, validateE09FinalBinding, validateE09RawStreams, buildE09IntegrationBinding, validateE09IntegrationBinding, runPreflight,
-  buildE09ClosureProducerBinding, buildE09IntegrationReviewReference, validateE09IntegrationClosure, type E09ClosureInputs } from '../phase3-preflight';
+  buildE09ClosureProducerBinding, buildE09IntegrationReviewReference, validateE09IntegrationClosure, buildE09TemporalFinalizationContext, e09PreReviewFixtureSha, type E09ClosureInputs } from '../phase3-preflight';
 import { hash } from '../phase3-tooling-common';
 import { assertSameEvidence, buildSnapshotAtCheckout } from '../phase3-e08-b11-coverage-sync';
 
 const root = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 let input: ReturnType<typeof buildE09FinalBinding>;
 let directory: string;
+let historicalDirectory: string;
 const gitProbe = (...args: string[]) => execFileSync('git', args, { cwd: directory, encoding: 'utf8', stdio: 'pipe' });
 const prepareGitFixture = (name: string, prepare: () => void) => async () => {
   const started = performance.now();
@@ -28,6 +29,9 @@ beforeAll(prepareGitFixture('shared historical objects and transport binding', (
   directory = mkdtempSync(join(tmpdir(), 'fd-e09-evidence-negative-'));
   execFileSync('git', ['clone', '--shared', '--no-checkout', '--', root, directory], { stdio: 'pipe' });
   gitProbe('checkout', '--detach', '086a86a24f5cf0991b3743ceb28b34a767252070');
+  historicalDirectory = mkdtempSync(join(tmpdir(), 'fd-e09-frozen-producer-'));
+  execFileSync('git', ['clone', '--shared', '--no-checkout', '--', root, historicalDirectory], { stdio: 'pipe' });
+  execFileSync('git', ['checkout', '--detach', e09PreReviewFixtureSha], { cwd: historicalDirectory, stdio: 'pipe' });
 }), 30_000);
 
 describe('candidate -> independent RA -> G -> synchronization -> actual final HEAD closure', () => {
@@ -46,8 +50,8 @@ describe('candidate -> independent RA -> G -> synchronization -> actual final HE
     return gitProbe('rev-parse', 'HEAD').trim();
   };
   beforeAll(prepareGitFixture('frozen producer and contract binding', () => {
-    producer = buildE09ClosureProducerBinding(root, true);
-    gitProbe('checkout', '--detach', execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim());
+    producer = buildE09ClosureProducerBinding(historicalDirectory, true);
+    gitProbe('checkout', '--detach', e09PreReviewFixtureSha);
     write('artifacts/phase3-e09-b11-integration-evidence-binding.json', { taskId: producer.taskId, producerBinding: producer, testOnlySyntheticProof: true });
     producerHead = commit('test-only frozen producer');
   }), 30_000);
@@ -77,13 +81,13 @@ describe('candidate -> independent RA -> G -> synchronization -> actual final HE
       governanceReferences: ['docs/reviews/phase3/P3-E09-B11-promotion-attestation.json', 'docs/agents/manifests/governance/P3-E09-B11-PROMOTION-GOVERNANCE-INPUTS.json', 'docs/reports/2026-10-12-p3-e09-b11-promotion-attestation.md'].map(path => ({ commit: g, path, sha256: hash(gitProbe('show', `${g}:${path}`)) })) };
   }), 30_000);
   beforeAll(prepareGitFixture('complete new candidate RA G final proof', () => { positive = validateE09IntegrationClosure(directory, producer, current); }), 60_000);
-  beforeAll(prepareGitFixture('complete real rejected historical proof', () => { historical = validateE09IntegrationClosure(root, producer, { stage: 'PRODUCER', producerCandidateSha: null, reviewReferences: [], governanceReferences: [], synchronizationSha: null, finalHeadSha: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim() }); }), 60_000);
+  beforeAll(prepareGitFixture('complete real rejected historical proof', () => { historical = validateE09IntegrationClosure(historicalDirectory, producer, { stage: 'PRODUCER', producerCandidateSha: null, reviewReferences: [], governanceReferences: [], synchronizationSha: null, finalHeadSha: e09PreReviewFixtureSha }); }), 60_000);
   it('validates the real formerly rejected RA and G/synchronization/final historical assembly without accepting changed code', () => {
     const result = historical;
     expect(result.historicalAssembly.finalHeadSha).toBe('9dbeef07d6bf8a9b956d2291e768b5369f09803b');
     expect(result.currentReviewStatus).toBe('PENDING_NEW_INDEPENDENT_REVIEW');
     expect(result.acceptanceGranted).toBe(false);
-    expect(JSON.parse(readFileSync(join(root, 'scripts/fixtures/phase3-e09-b11-integration-binding.json'), 'utf8'))).toEqual(producer);
+    expect(JSON.parse(readFileSync(join(historicalDirectory, 'scripts/fixtures/phase3-e09-b11-integration-binding.json'), 'utf8'))).toEqual(producer);
   });
   it('validates the full differently named next-candidate review and actual post-G final HEAD, not only the producer', () => {
     expect(positive.currentAssembly?.finalHeadSha).toBe(current.finalHeadSha);
@@ -125,7 +129,48 @@ describe('candidate -> independent RA -> G -> synchronization -> actual final HE
     } finally { gitProbe('checkout', '--detach', current.finalHeadSha); }
   }, 30_000);
 });
-afterAll(() => { if (directory) rmSync(directory, { recursive: true, force: true }); });
+afterAll(() => {
+  if (directory) rmSync(directory, { recursive: true, force: true });
+  if (historicalDirectory) rmSync(historicalDirectory, { recursive: true, force: true });
+});
+
+describe('explicit immutable real assembly is not a producer fixture', () => {
+  let assembled: E09ClosureInputs;
+  let producer: ReturnType<typeof buildE09ClosureProducerBinding>;
+  let checked: ReturnType<typeof validateE09IntegrationClosure>;
+  let currentProducer: ReturnType<typeof buildE09ClosureProducerBinding>;
+  let continued: ReturnType<typeof validateE09IntegrationClosure>;
+  beforeAll(prepareGitFixture('explicit historical real assembly checkout', () => {
+    assembled = buildE09TemporalFinalizationContext(root).preservedAssembly;
+    gitProbe('checkout', '--detach', assembled.finalHeadSha);
+    producer = buildE09ClosureProducerBinding(directory, true);
+    checked = validateE09IntegrationClosure(directory, producer, assembled);
+    expect(() => validateE09IntegrationClosure(directory, producer, { stage: 'PRODUCER', producerCandidateSha: null, reviewReferences: [], governanceReferences: [], synchronizationSha: null, finalHeadSha: assembled.finalHeadSha })).toThrow('Unknown integration delta');
+    currentProducer = buildE09ClosureProducerBinding(directory, true, true);
+    continued = validateE09IntegrationClosure(directory, currentProducer, { stage: 'PRODUCER', producerCandidateSha: null, reviewReferences: [], governanceReferences: [], synchronizationSha: null, finalHeadSha: assembled.finalHeadSha });
+  }), 30_000);
+  it('validates the actual candidate RA G synchronization and final HEAD with explicit references', () => {
+    expect(checked.currentAssembly?.finalHeadSha).toBe(assembled.finalHeadSha);
+    expect(checked.acceptanceGranted).toBe(false);
+    expect(checked.promotionAllowed).toBe(false);
+  });
+  it('requires exact authorization to preserve the previous assembly as history for a new producer', () => {
+    expect(currentProducer.temporalFinalization?.preReviewFixtureSha).toBe(e09PreReviewFixtureSha);
+    expect(currentProducer.temporalFinalization?.authority.commit).toBe('6ea26f3bc12fc3bda37b6b2607fd6edda452eee3');
+    expect(continued.currentAssembly).toBeNull();
+    expect(continued.currentReviewStatus).toBe('PENDING_NEW_INDEPENDENT_REVIEW');
+    expect(continued.acceptanceGranted).toBe(false);
+  });
+  it.each(['authority-hash', 'authority-commit', 'source', 'paths', 'review'])('rejects mismatched temporal %s inputs', mode => {
+    const bad = structuredClone(currentProducer);
+    if (mode === 'authority-hash') bad.temporalFinalization!.authority.sha256 = '0'.repeat(64);
+    if (mode === 'authority-commit') bad.temporalFinalization!.authority.commit = producer.authority.commit;
+    if (mode === 'source') bad.temporalFinalization!.inspectedSourceSha = e09PreReviewFixtureSha;
+    if (mode === 'paths') bad.temporalFinalization!.authorizedPaths.push('scripts/tests/UNKNOWN.test.ts');
+    if (mode === 'review') bad.temporalFinalization!.preservedAssembly.reviewReferences[0].sha256 = '0'.repeat(64);
+    expect(() => validateE09IntegrationClosure(directory, bad, { stage: 'PRODUCER', producerCandidateSha: null, reviewReferences: [], governanceReferences: [], synchronizationSha: null, finalHeadSha: assembled.finalHeadSha })).toThrow();
+  });
+});
 
 describe('B11 current transport evidence is distinct from immutable history', () => {
   beforeAll(prepareGitFixture('restore exact transport fixture', () => { gitProbe('checkout', '--detach', '086a86a24f5cf0991b3743ceb28b34a767252070'); }), 30_000);

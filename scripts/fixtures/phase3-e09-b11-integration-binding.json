@@ -27,6 +27,67 @@
       "scripts/tests/phase3-contract-parity.test.ts"
     ]
   },
+  "temporalFinalization": {
+    "taskId": "P3-E09-B11-TEMPORAL-FIXTURE-FINALIZATION",
+    "authority": {
+      "commit": "6ea26f3bc12fc3bda37b6b2607fd6edda452eee3",
+      "path": "docs/agents/P3-E09-B11-TEMPORAL-FIXTURE-FINALIZATION.md",
+      "sha256": "ED75593972E4378B2B94A470D2D58BB2ABA230AB965ECC1018588C1D475DC3F7"
+    },
+    "inspectedSourceSha": "487ab81a8e3fabf75eea5a73cd3582b37cf65520",
+    "preReviewFixtureSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+    "authorizedPaths": [
+      "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+      "docs/reports/2026-10-12-p3-e09-b11-integration-evidence-binding.md",
+      "scripts/fixtures/phase3-e09-b11-integration-binding.json",
+      "scripts/phase3-preflight.ts",
+      "scripts/tests/phase3-contract-parity.test.ts",
+      "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+      "scripts/tests/phase3-readiness-preflight.test.ts"
+    ],
+    "preservedAssembly": {
+      "stage": "ASSEMBLED",
+      "producerCandidateSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+      "reviewReferences": [
+        {
+          "commit": "dbd430be9550947a2bac691ef645db56cf5c408f",
+          "path": "docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json",
+          "sha256": "A0F4B6FF474B169B36E7FF18092AD93E7F29A573C7E2A0C85BF299011AB0E5A9",
+          "schemaVersion": "fd-phase3-reviewer-a-integration-closure-review-v1",
+          "taskId": "P3-E09-B11-INTEGRATION-CLOSURE-REPAIR",
+          "controlEpoch": "FD-P3-2026-09-23-09",
+          "reviewer": "Reviewer A",
+          "reviewedCandidateSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+          "acceptedScope": "EXACT_INTEGRATION_CLOSURE_REFERENCE_CONTRACT_AND_FINAL_ASSEMBLY_EVIDENCE_ONLY",
+          "verdict": "PASS",
+          "boundPacket": {
+            "commit": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+            "path": "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+            "sha256": "03F7F5EAD4127117193CA9A5AEC0D99F0E0FAA6071B696511BCBF47AAA7A71F1"
+          }
+        }
+      ],
+      "governanceReferences": [
+        {
+          "commit": "78171beafc4fe3f644d14f4e08cea369c4fb8cc1",
+          "path": "docs/reviews/phase3/P3-E09-B11-promotion-attestation.json",
+          "sha256": "9A5EA7796B0BFA936BFACFB30ED84C3B0E41523AC1058A8DF778E2EA6902D5DB"
+        },
+        {
+          "commit": "78171beafc4fe3f644d14f4e08cea369c4fb8cc1",
+          "path": "docs/agents/manifests/governance/P3-E09-B11-PROMOTION-GOVERNANCE-INPUTS.json",
+          "sha256": "A9127818976B947E3932D76C649B02E2505DD2B138742CD04A61AA9E40D3D7D8"
+        },
+        {
+          "commit": "78171beafc4fe3f644d14f4e08cea369c4fb8cc1",
+          "path": "docs/reports/2026-10-12-p3-e09-b11-promotion-attestation.md",
+          "sha256": "8D37D795651DCDA80B49DB0E6F3AD568B3E683EC77BF9A7E0BCB32111B0B5DFE"
+        }
+      ],
+      "synchronizationSha": "36f0a82ca2341e707d4824a1940350c619968dbc",
+      "finalHeadSha": "487ab81a8e3fabf75eea5a73cd3582b37cf65520"
+    }
+  },
   "technicalBinding": {
     "schemaVersion": "fd-p3-e09-integration-binding-v1",
     "taskId": "P3-E09-B11-INTEGRATION-EVIDENCE-CONTRACT",

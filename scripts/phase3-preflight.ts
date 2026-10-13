@@ -333,13 +333,32 @@ function buildE09StabilityAuthorization(root: string) {
   return { taskId: e09StabilityTask, failedCarrierSha: e09StabilityBase, authority: refs[0], supplement: refs[1], authorizedTestPaths: [...e09StabilityTests] };
 }
 
-export function buildE09ClosureProducerBinding(root: string, includeStabilityAuthorization = false) {
+export const e09PreReviewFixtureSha = 'b5e68444f55ea9fc1a86a9eea0ea0bedce3de229';
+const e09TemporalSource = '487ab81a8e3fabf75eea5a73cd3582b37cf65520';
+const e09TemporalAuthority = '6ea26f3bc12fc3bda37b6b2607fd6edda452eee3';
+export function buildE09TemporalFinalizationContext(root: string) {
+  const authority = exactReference(root, e09TemporalAuthority, 'docs/agents/P3-E09-B11-TEMPORAL-FIXTURE-FINALIZATION.md');
+  const text = git(root, ['show', `${authority.commit}:${authority.path}`]).toString();
+  const authorizedPaths = [...e09IntegrationPaths, 'scripts/tests/phase3-contract-parity.test.ts'].sort();
+  if (!text.includes('Task: P3-E09-B11-TEMPORAL-FIXTURE-FINALIZATION.') ||
+    !text.includes(`Inspected source: ${e09TemporalSource}.`) || authorizedPaths.some(path => !text.includes(`- ${path}\n`))) throw new InputError('Temporal finalization authority mismatch');
+  git(root, ['merge-base', '--is-ancestor', e09PreReviewFixtureSha, e09TemporalSource]);
+  return { taskId: 'P3-E09-B11-TEMPORAL-FIXTURE-FINALIZATION', authority, inspectedSourceSha: e09TemporalSource,
+    preReviewFixtureSha: e09PreReviewFixtureSha, authorizedPaths,
+    preservedAssembly: { stage: 'ASSEMBLED' as const, producerCandidateSha: e09PreReviewFixtureSha,
+      reviewReferences: [buildE09IntegrationReviewReference(root, 'dbd430be9550947a2bac691ef645db56cf5c408f', 'docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json')],
+      governanceReferences: batchReferences(root, e09PromotionPaths.map(path => ({ commit: '78171beafc4fe3f644d14f4e08cea369c4fb8cc1', path }))),
+      synchronizationSha: '36f0a82ca2341e707d4824a1940350c619968dbc', finalHeadSha: e09TemporalSource } };
+}
+
+export function buildE09ClosureProducerBinding(root: string, includeStabilityAuthorization = false, includeTemporalFinalization = false) {
   const reviewPaths = changedPaths(root, 'a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da', e09HistoricalReview);
   if (reviewPaths.length !== 1) throw new InputError('Historical review must introduce exactly one immutable artifact');
   return { schemaVersion: 'fd-p3-e09-integration-producer-v1', taskId: e09ClosureTask,
     controlEpoch: 'FD-P3-2026-09-23-09', frozenAssemblySha: e09ClosureStart,
     authority: exactReference(root, e09ClosureAuthority, 'docs/agents/P3-E09-B11-INTEGRATION-CLOSURE-REPAIR.md'),
     ...(includeStabilityAuthorization ? { authorizationContinuation: buildE09StabilityAuthorization(root) } : {}),
+    ...(includeTemporalFinalization ? { temporalFinalization: buildE09TemporalFinalizationContext(root) } : {}),
     technicalBinding: buildE09IntegrationBinding(root),
     historicalReviews: [buildE09IntegrationReviewReference(root, e09HistoricalReview, reviewPaths[0])],
     historicalGovernance: batchReferences(root, e09PromotionPaths.map(path => ({ commit: e09HistoricalG, path }))),
@@ -418,14 +437,18 @@ export function validateE09IntegrationClosure(root: string, producer: ReturnType
     binding.acceptedPacket, binding.acceptedCoverage, ...binding.preservedControlFiles,
     ...producer.historicalGovernance, ...producer.historicalReviews, ...temporal.reviewReferences,
     ...temporal.governanceReferences, ...producer.historicalReviews.map(ref => ref.boundPacket),
-    ...temporal.reviewReferences.map(ref => ref.boundPacket)];
+    ...temporal.reviewReferences.map(ref => ref.boundPacket),
+    ...(producer.temporalFinalization ? [producer.temporalFinalization.authority,
+      ...producer.temporalFinalization.preservedAssembly.reviewReferences,
+      ...producer.temporalFinalization.preservedAssembly.governanceReferences,
+      ...producer.temporalFinalization.preservedAssembly.reviewReferences.map(ref => ref.boundPacket)] : [])];
   return withEvidenceReads(root, () => evaluateE09IntegrationClosure(root, producer, temporal),
     [...refs.map(ref => `${sha(ref.commit, 'evidence commit')}:${safePath(ref.path, 'evidence path')}`),
       ...e09References.map(([commit, path]) => `${commit}:${path}`)]);
 }
 
 function evaluateE09IntegrationClosure(root: string, producer: ReturnType<typeof buildE09ClosureProducerBinding>, temporal: E09ClosureInputs) {
-  assertFinalTaskCheck(producer, buildE09ClosureProducerBinding(root, producer.authorizationContinuation !== null && producer.authorizationContinuation !== undefined));
+  assertFinalTaskCheck(producer, buildE09ClosureProducerBinding(root, producer.authorizationContinuation !== null && producer.authorizationContinuation !== undefined, producer.temporalFinalization !== null && producer.temporalFinalization !== undefined));
   fields(object(temporal, 'temporal inputs'), ['stage', 'producerCandidateSha', 'reviewReferences', 'governanceReferences', 'synchronizationSha', 'finalHeadSha'], 'temporal inputs');
   const head = git(root, ['rev-parse', 'HEAD']).toString().trim();
   if (temporal.finalHeadSha !== head || !['PRODUCER', 'ASSEMBLED'].includes(temporal.stage)) throw new InputError('Actual final HEAD and supported temporal stage required');
@@ -436,13 +459,19 @@ function evaluateE09IntegrationClosure(root: string, producer: ReturnType<typeof
     const delta = changedPaths(root, e09StabilityBase, head);
     for (const path of e09StabilityTests) if (delta.includes(path)) authorizedTestPaths.add(path);
   }
-  const reviews = [...producer.historicalReviews, ...array(temporal.reviewReferences, 'review references')];
+  const preservedAssembly = producer.temporalFinalization?.preservedAssembly;
+  if (producer.temporalFinalization) git(root, ['merge-base', '--is-ancestor', producer.temporalFinalization.inspectedSourceSha, head]);
+  const reviews = [...producer.historicalReviews, ...(preservedAssembly?.reviewReferences ?? []), ...array(temporal.reviewReferences, 'review references')];
   if (new Set(reviews.map(ref => `${ref.commit}:${ref.path}`)).size !== reviews.length || new Set(reviews.map(ref => ref.path)).size !== reviews.length) throw new InputError('Duplicate review references');
   const packets = new Map(reviews.map(ref => [ref.commit, validateE09ReviewReference(root, ref, head)]));
   const historicalReview = producer.historicalReviews[0];
   validateE09GovernanceClosure(root, producer.historicalGovernance, historicalReview, producer.historicalSynchronizationSha, producer.frozenAssemblySha);
   let assembly: ReturnType<typeof validateE09GovernanceClosure> | null = null;
   let governance = producer.historicalGovernance;
+  if (preservedAssembly) {
+    validateE09GovernanceClosure(root, preservedAssembly.governanceReferences, preservedAssembly.reviewReferences[0], preservedAssembly.synchronizationSha, preservedAssembly.finalHeadSha);
+    governance = preservedAssembly.governanceReferences;
+  }
   if (temporal.stage === 'PRODUCER') {
     if (temporal.producerCandidateSha !== null || temporal.synchronizationSha !== null || temporal.reviewReferences.length || temporal.governanceReferences.length) throw new InputError('Producer cannot embed future acceptance proofs');
   } else {

@@ -4,7 +4,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { setImmediate as yieldToEventLoop } from 'node:timers/promises';
-import { assertFinalTaskCheck, buildFinalTaskCheck, buildContinuationTaskCheck, runPreflight, buildE09IntegrationBinding, buildE09ClosureProducerBinding, validateE09IntegrationClosure, type E09ClosureInputs } from '../phase3-preflight';
+import { assertFinalTaskCheck, buildFinalTaskCheck, buildContinuationTaskCheck, runPreflight, buildE09IntegrationBinding, buildE09ClosureProducerBinding, validateE09IntegrationClosure, e09PreReviewFixtureSha, type E09ClosureInputs } from '../phase3-preflight';
 import { git, gitText, hash, InputError } from '../phase3-tooling-common';
 import { publicationSha, reference } from '../phase3-b11-tooling-inputs';
 import { buildContinuationBinding, validateContinuationBinding, validateContinuationReceiptReference, createHistoricalEvidenceSnapshot, type ContinuationReceipt, type ReceiptReference } from '../phase3-e08-b11-coverage-sync';
@@ -83,7 +83,7 @@ describe('exact Planner stability authorization continuation', () => {
   beforeAll(async () => {
     cwd = mkdtempSync(join(tmpdir(), 'fd-stability-authority-'));
     git(currentRoot, ['clone', '--shared', '--no-checkout', '--', currentRoot, cwd]);
-    git(cwd, ['checkout', '--detach', gitText(currentRoot, ['rev-parse', 'HEAD'])]);
+    git(cwd, ['checkout', '--detach', e09PreReviewFixtureSha]);
     const path = 'scripts/tests/phase3-contract-parity.test.ts';
     writeFileSync(join(cwd, path), readFileSync(join(cwd, path), 'utf8') + '\n// test-only exact authorized delta\n');
     git(cwd, ['add', path]);
