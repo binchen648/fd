@@ -1,0 +1,197 @@
+{
+  "schemaVersion": "fd-engineering-failure-catalog-v1",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "observedMain": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+  "knowledgeReview": "PENDING",
+  "entries": [
+    {
+      "id": "FD-SEC-001",
+      "path": "docs/engineering/lessons/cases/FD-SEC-001.md",
+      "state": "SOURCE_VERIFIED_DRAFT",
+      "risk": "CRITICAL",
+      "domains": [
+        "session-authority",
+        "server-transport"
+      ],
+      "contracts": [
+        "IDENTITY_SECURITY",
+        "PRIVATE_PROJECTION"
+      ],
+      "files": [
+        "packages/rules/src/match-room.ts",
+        "apps/server/src/match-server.ts"
+      ],
+      "source": {
+        "commit": "cf179ca3220a1646c484aa8c660b313e64449488",
+        "path": "docs/reviews/phase3/P3-E08-B11-463facb-final-combination-reviewer-b.json",
+        "sha256": "051f5e95c74e9c78546c391fd60f041d9baef29fbba857ec455a598f8d2395bf"
+      },
+      "reviewedSha": "463facb109cc4d19c4fda7af936fb4546fb86091",
+      "tests": [
+        "apps/server/src/match-server.test.ts",
+        "packages/rules/tests/match-room.test.ts"
+      ],
+      "testStatus": "EXISTS",
+      "testStatusAt": "0f62210a2e007a15e28f945c546ccd00c345942a",
+      "currentMainTestCoverage": "NOT_VERIFIED"
+    },
+    {
+      "id": "FD-REV-002",
+      "path": "docs/engineering/lessons/cases/FD-REV-002.md",
+      "state": "SOURCE_VERIFIED_DRAFT",
+      "risk": "HIGH",
+      "domains": [
+        "session-authority",
+        "server-transport"
+      ],
+      "contracts": [
+        "MUTATION_REVISION_GATE",
+        "ATOMIC_REJECTION"
+      ],
+      "files": [
+        "packages/rules/src/match-room-hub.ts",
+        "packages/rules/src/match-room-protocol.ts",
+        "apps/server/src/match-server.ts"
+      ],
+      "source": {
+        "commit": "cf179ca3220a1646c484aa8c660b313e64449488",
+        "path": "docs/reviews/phase3/P3-E08-B11-463facb-final-combination-reviewer-b.json",
+        "sha256": "051f5e95c74e9c78546c391fd60f041d9baef29fbba857ec455a598f8d2395bf"
+      },
+      "reviewedSha": "463facb109cc4d19c4fda7af936fb4546fb86091",
+      "tests": [
+        "apps/server/src/match-server.test.ts",
+        "packages/rules/tests/match-room-hub.test.ts"
+      ],
+      "testStatus": "EXISTS",
+      "testStatusAt": "0f62210a2e007a15e28f945c546ccd00c345942a",
+      "currentMainTestCoverage": "NOT_VERIFIED"
+    },
+    {
+      "id": "FD-SHAPE-003",
+      "path": "docs/engineering/lessons/cases/FD-SHAPE-003.md",
+      "state": "SOURCE_VERIFIED_DRAFT",
+      "risk": "HIGH",
+      "domains": [
+        "ability-runtime",
+        "battle-reward"
+      ],
+      "contracts": [
+        "COMPILED_ENVELOPE_FAIL_CLOSED",
+        "FULL_REWARD_EACH"
+      ],
+      "files": [
+        "packages/rules/src/ability/combat-reward-distribution.ts"
+      ],
+      "source": {
+        "commit": "b22691ab5311cd31f60eb91d573416fea3c7cf98",
+        "path": "docs/reviews/2026-10-10-pr-474-review.md",
+        "sha256": "f588a8b7062e7d57739e1f02b24bf7d939e06a8f203a5542ab374ba7f2f93adc"
+      },
+      "reviewedSha": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+      "tests": [
+        "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts",
+        "docs/reviews/probes/review-474-independent.mjs"
+      ],
+      "testStatus": "MISSING_ENFORCING_NEGATIVE_NOT_MISSING_ALL_TEST_FILES",
+      "testStatusAt": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+      "currentMainTestCoverage": "NOT_VERIFIED"
+    },
+    {
+      "id": "FD-RESTORE-004",
+      "path": "docs/engineering/lessons/cases/FD-RESTORE-004.md",
+      "state": "SOURCE_VERIFIED_DRAFT",
+      "risk": "HIGH",
+      "domains": [
+        "ability-runtime",
+        "persistence"
+      ],
+      "contracts": [
+        "AUTHENTICATED_CONTINUATION",
+        "NESTED_INTERACTION_RESTORE"
+      ],
+      "files": [
+        "packages/rules/src/ability/interpreter.ts",
+        "packages/rules/src/match-session.ts",
+        "data/authoring/servants/servant.stheno.json"
+      ],
+      "source": {
+        "commit": "7e65291a4fa10170e249bc492617ef337caf7f8a",
+        "path": "docs/reviews/2026-10-10-pr-475-review.md",
+        "sha256": "8c67cfe179e02ece25b6581ee2a23ed776ebf4e95eeaa2a93b2e8d59dc1d7cf6"
+      },
+      "reviewedSha": "fe4653d1013110555881585db3a447880dd463d3",
+      "tests": [
+        "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts",
+        "packages/rules/tests/match-session.test.ts",
+        "docs/reviews/probes/review-475-independent.mjs"
+      ],
+      "testStatus": "MISSING_ENFORCING_NEGATIVE_NOT_MISSING_ALL_TEST_FILES",
+      "testStatusAt": "fe4653d1013110555881585db3a447880dd463d3",
+      "currentMainTestCoverage": "NOT_VERIFIED"
+    },
+    {
+      "id": "FD-EVID-005",
+      "path": "docs/engineering/lessons/cases/FD-EVID-005.md",
+      "state": "SOURCE_VERIFIED_DRAFT",
+      "risk": "MEDIUM",
+      "domains": [
+        "evidence-tooling"
+      ],
+      "contracts": [
+        "EXACT_EXECUTION_RECEIPTS",
+        "REPRODUCIBLE_REVIEW"
+      ],
+      "files": [
+        "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+        "scripts/tests/phase3-readiness-preflight.test.ts"
+      ],
+      "source": {
+        "commit": "dbd430be9550947a2bac691ef645db56cf5c408f",
+        "path": "docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json",
+        "sha256": "a0f4b6ff474b169b36e7ff18092ad93e7f29a573c7e2a0c85bf299011ab0e5a9"
+      },
+      "reviewedSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+      "failureSha": "cfa6a92551a939709b85a787d9044e19ec00f0ef",
+      "sourceReviewRelationship": "LATER_SCOPED_PASS_PRESERVES_EARLIER_FAILURE_NOT_PASS_ON_FAILURE_SHA",
+      "tests": [
+        "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+        "scripts/tests/phase3-readiness-preflight.test.ts"
+      ],
+      "testStatus": "EXISTS",
+      "testStatusAt": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+      "currentMainTestCoverage": "NOT_VERIFIED"
+    },
+    {
+      "id": "FD-FIXTURE-006",
+      "path": "docs/engineering/lessons/cases/FD-FIXTURE-006.md",
+      "state": "SOURCE_VERIFIED_DRAFT",
+      "risk": "HIGH",
+      "domains": ["evidence-tooling", "integration"],
+      "contracts": ["EXPLICIT_TEMPORAL_FIXTURE", "EXACT_REVIEW_REFERENCE"],
+      "files": ["scripts/tests/phase3-e09-b11-final-binding.test.ts", "scripts/tests/phase3-readiness-preflight.test.ts", "scripts/phase3-preflight.ts"],
+      "source": {
+        "commit": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b",
+        "path": "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+        "sha256": "e8fd40e8b0f74701755cdab3135d58e0dc3a7c08aac7c4da9652bb622b38103e"
+      },
+      "reviewedSha": null,
+      "failureSha": "487ab81a8e3fabf75eea5a73cd3582b37cf65520",
+      "sourceReviewRelationship": "A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE",
+      "tests": ["scripts/tests/phase3-e09-b11-final-binding.test.ts", "scripts/tests/phase3-readiness-preflight.test.ts"],
+      "testStatus": "EXISTS_CANDIDATE_RECEIPTS_NOT_ACCEPTED_BY_THIS_TASK",
+      "testStatusAt": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+      "currentMainTestCoverage": "NOT_VERIFIED"
+    }
+  ],
+  "taskId": "P3-EFP-K01",
+  "dispatchCommit": "3ab115927eaf7c104fab9064d71ceebdac870da1",
+  "auditPath": "docs/engineering/lessons/K01-SOURCE-AUDIT.json",
+  "candidateTriage": [
+    {"id": "FD-FIXTURE-006", "decision": "SOURCE_BACKED_DRAFT_ADDED_NO_ACCEPTANCE", "reason": "Exact failing I receipts embedded and hash-bound; explicit Planner diagnosis and inspected failing source available"},
+    {"id": "FD-SHA-007", "decision": "NOT_ADDED_UNKNOWN", "reason": "27dab1ad proves missing review-reference contract, not wrong candidate/reviewer SHA; no terminal identity mismatch finding selected"},
+    {"id": "FD-FALLBACK-008", "decision": "NOT_ADDED_UNKNOWN", "reason": "No pinned failing setup/data-flow source in assigned selection; later closed-fallback declarations cannot establish a historical failure"},
+    {"id": "FD-REVIEW-009", "decision": "NOT_ADDED_UNKNOWN", "reason": "PR475 records separate historical relay and independent review; it does not prove relay was mistaken for this review"},
+    {"id": "FD-WRITER-010", "decision": "NOT_ADDED_UNKNOWN", "reason": "Reservation boundary records do not prove an actual competing writer or conflict occurrence"}
+  ]
+}

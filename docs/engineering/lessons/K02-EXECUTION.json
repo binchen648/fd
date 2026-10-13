@@ -1,0 +1,1710 @@
+{
+  "schemaVersion": "fd-engineering-k02-execution-v1",
+  "taskId": "P3-EFP-K02",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "generatedAt": "2026-10-13T05:19:38.751Z",
+  "claimedResult": "AUTOMATION_BASELINE_CANDIDATE",
+  "status": "READY_FOR_REVIEW",
+  "base": "2470f00902bd650bc3122f518b18333afed323f3",
+  "implementationSha": "2777dc9ecf9063cd3c356701e14796a067b76ac7",
+  "evidenceCarrierShaPolicy": "EXACT_FINAL_COMMIT_RETURNED_EXTERNALLY; EVIDENCE_ONLY_DESCENDANT_OF_IMPLEMENTATION",
+  "authority": {
+    "dispatch": {
+      "commit": "5b613b4ad9f3302fb16c308909968d084b3b2fe1",
+      "path": "docs/agents/P3-EFP-K01-ACCEPTANCE-AND-K02-DISPATCH.md",
+      "sha256": "A73D3C08FD26834477532DFAFE3FD5D8EED90AA317640581D094DACA9AD609E8"
+    },
+    "reservation": {
+      "commit": "5b613b4ad9f3302fb16c308909968d084b3b2fe1",
+      "path": "docs/agents/manifests/reservations/P3-EFP-K02-TOOLING.json",
+      "sha256": "C2DE158BED6ABF40160C086708716D203E87D45C280DBC1F258797C579689DFE"
+    }
+  },
+  "ownerBinding": {
+    "branch": "codex/a-p3-efp-k02-tooling",
+    "worktree": "D:\\fd-validation\\a-efp-k02",
+    "base": "2470f00902bd650bc3122f518b18333afed323f3",
+    "reservationId": "P3-EFP-K02-TOOLING",
+    "ownerAcceptance": "ACCEPTED_BY_DESIGNATED_CODEX_A",
+    "newTargetExistenceCheck": {
+      "registeredWorktrees": 238,
+      "otherAccessibleWorktreesContainingTargets": 0,
+      "limitations": "existence scan only; not a process lock or inaccessible-worktree claim"
+    }
+  },
+  "taskMetadata": {
+    "taskId": "P3-EFP-K02",
+    "capabilityFamily": "EXACT_REVIEW_REFERENCE",
+    "semanticContracts": [
+      "EXACT_REVIEW_REFERENCE",
+      "EXACT_EXECUTION_RECEIPTS",
+      "REPRODUCIBLE_REVIEW"
+    ],
+    "expectedChangedFiles": [
+      "scripts/engineering/historical-failure-preflight.ts",
+      "scripts/tests/engineering-failure-preflight.test.ts",
+      "docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md",
+      "docs/engineering/lessons/BATCH-TASK-TEMPLATE.md",
+      "docs/engineering/lessons/INDEX.md",
+      "docs/engineering/lessons/K02-HANDOFF.md",
+      "docs/engineering/lessons/K02-EXECUTION.json"
+    ],
+    "runtimeDomains": [
+      "evidence-tooling"
+    ],
+    "exactBaseSha": "2470f00902bd650bc3122f518b18333afed323f3",
+    "selectedIdentities": [
+      "NOT_APPLICABLE_AUTOMATION_NO_CANONICAL_MIGRATION"
+    ],
+    "reservationReference": "docs/agents/manifests/reservations/P3-EFP-K02-TOOLING.json"
+  },
+  "knowledgeReference": {
+    "commit": "2470f00902bd650bc3122f518b18333afed323f3",
+    "candidate": "ccbdf647a545e08f09a8067c8f2c4659f849889a",
+    "path": "docs/reviews/phase3/P3-EFP-K01-ccbdf647-reviewer-a.json",
+    "sha256": "da0f45fded94f1dc941a3a6b7a91da586d2de36b0188ec8f3662fcbaf9b98687",
+    "acceptedScope": "EXACT_K01_HISTORICAL_SOURCE_EXTRACTION_PROVENANCE_AND_REGRESSION_GAP_DOCUMENTATION_ONLY",
+    "currentBaseExecutionAccepted": false
+  },
+  "implementationFiles": [
+    {
+      "path": "scripts/engineering/historical-failure-preflight.ts",
+      "sha256": "654C8688B1A4D332BCEE7E777090B467CABE70FAF6788816D5480D84E1E5E371",
+      "gitBlob": "12a92f18f1616e947e3b9faac615ee66d00ce384"
+    },
+    {
+      "path": "scripts/tests/engineering-failure-preflight.test.ts",
+      "sha256": "58235FE17FACE150DB36985D787A51AB5B452001C044629F74F28B3992678757",
+      "gitBlob": "0074b58956d7070482373c5a238fa16b16ecb9f7"
+    },
+    {
+      "path": "docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md",
+      "sha256": "569E114C87AA701D45470E9457B515C988648594998785455A71F0ABDEF42EA9",
+      "gitBlob": "f409529f325111412d1eaac5dcb5051bc940c340"
+    },
+    {
+      "path": "docs/engineering/lessons/BATCH-TASK-TEMPLATE.md",
+      "sha256": "C185331A7FED5671CAE474FE5F477499D249CEA4AFFE9ED4B800352FFD479689",
+      "gitBlob": "a862d033e6985581302289bc5c02e76169a99956"
+    },
+    {
+      "path": "docs/engineering/lessons/INDEX.md",
+      "sha256": "221EA95E9D948EF2CE04A0768761C19A9263F3D5B823ABC049A0B9F27AE33C49",
+      "gitBlob": "8c503717074e42fc128ce6ef1c77381706f526c0"
+    }
+  ],
+  "preservation": [
+    {
+      "path": "docs/engineering/lessons/catalog.json",
+      "sha256": "B9EE48A6AF45322698F1528A6465CA56B21597270481B79605A6C60F64C794F8",
+      "unchanged": true
+    },
+    {
+      "path": "docs/engineering/lessons/K01-SOURCE-AUDIT.json",
+      "sha256": "18E59CC07AD380DE6B7D77B54E8F5A33B85BB0BD9DA95EE667D15A29DB18DC78",
+      "unchanged": true
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-SEC-001.md",
+      "sha256": "FAC31591E65B91A8C4C82AB00D3EA5C1306361F188430DC2083E51CAF360D8A2",
+      "unchanged": true
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-REV-002.md",
+      "sha256": "989532443A6E437DEB65FB844A83BED807F81512F4939C82888C8EA7328C88DD",
+      "unchanged": true
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-SHAPE-003.md",
+      "sha256": "148EEE25F6EEC8D3389D502C58055DD96F3D4A5E913E64E08827D21F53147AA0",
+      "unchanged": true
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-RESTORE-004.md",
+      "sha256": "8C31E9A5339A8A2C87042473C50B899AF927C6E7C7E4CF824B07648BE5F25DB1",
+      "unchanged": true
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-EVID-005.md",
+      "sha256": "99688FD944FE7EE319B43803A7C0908FD06C4A26E5F461A0B3C44AF366103955",
+      "unchanged": true
+    },
+    {
+      "path": "docs/engineering/lessons/cases/FD-FIXTURE-006.md",
+      "sha256": "0B9FF711075D84DF0D70B31576287B747D6CA9B650C99F66FD83C95414125E2C",
+      "unchanged": true
+    }
+  ],
+  "receipts": [
+    {
+      "command": "node node_modules/vitest/vitest.mjs run scripts/tests/engineering-failure-preflight.test.ts --maxWorkers=1",
+      "testedImplementationSha": "2777dc9ecf9063cd3c356701e14796a067b76ac7",
+      "startedAt": "2026-10-13T05:18:41.094Z",
+      "finishedAt": "2026-10-13T05:19:24.800Z",
+      "exitCode": 0,
+      "signal": null,
+      "expectedExitCode": 0,
+      "stdout": {
+        "raw": "\n RUN  v3.2.7 D:/fd-validation/a-efp-k02\n\n{\"status\":\"INPUT_INCOMPLETE\",\"error\":\"unknown/duplicate/missing CLI argument\",\"automationAvailable\":true,\"acceptanceGranted\":false,\"creditDelta\":0}\n{\"status\":\"INPUT_INCOMPLETE\",\"error\":\"unknown/duplicate/missing CLI argument\",\"automationAvailable\":true,\"acceptanceGranted\":false,\"creditDelta\":0}\n{\"status\":\"INPUT_INCOMPLETE\",\"error\":\"--task required\",\"automationAvailable\":true,\"acceptanceGranted\":false,\"creditDelta\":0}\n{\"status\":\"INPUT_INCOMPLETE\",\"error\":\"unknown/duplicate/missing CLI argument\",\"automationAvailable\":true,\"acceptanceGranted\":false,\"creditDelta\":0}\n ✓ scripts/tests/engineering-failure-preflight.test.ts (22 tests) 42443ms\n   ✓ standalone historical preflight (synthetic integrity fixtures only) > retains overflow and critical visibility while enforcing max five  2312ms\n   ✓ standalone historical preflight (synthetic integrity fixtures only) > supports exactly five results without hiding two remaining critical matches  2228ms\n   ✓ standalone historical preflight (synthetic integrity fixtures only) > returns verified extraction but not execution, retaining MISSING and UNKNOWN  2108ms\n   ✓ standalone historical preflight (synthetic integrity fixtures only) > no-match is UNKNOWN risk, not LOW or proof of absence  1573ms\n   ✓ standalone historical preflight (synthetic integrity fixtures only) > missing historical source is a controlled error  1406ms\n   ✓ standalone historical preflight (synthetic integrity fixtures only) > rejects catalog drift and source hash tampering without caching success  1473ms\n   ✓ standalone historical preflight (synthetic integrity fixtures only) > rejects exact review mismatch  1438ms\n   ✓ standalone historical preflight (synthetic integrity fixtures only) > reuses the stable cache within a task  3022ms\n   ✓ standalone historical preflight (synthetic integrity fixtures only) > does not invalidate cache for ordinary report commits  3402ms\n   ✓ standalone historical preflight (synthetic integrity fixtures only) > invalidates cache for relevant source commits  3457ms\n   ✓ standalone historical preflight (synthetic integrity fixtures only) > invalidates cache when scope changes  3117ms\n   ✓ standalone historical preflight (synthetic integrity fixtures only) > invalidates cache for dirty relevant source without pretending the base commit moved  3085ms\n   ✓ standalone historical preflight (synthetic integrity fixtures only) > fails closed on an audit-bound incorrect source hash  1531ms\n   ✓ standalone historical preflight (synthetic integrity fixtures only) > fails closed on an audit-bound unavailable source  1457ms\n   ✓ standalone historical preflight (synthetic integrity fixtures only) > rejects an external review that did not accept the selected case  1535ms\n   ✓ standalone historical preflight (synthetic integrity fixtures only) > rejects malformed JSON and does not import runtime or execute regression commands  2555ms\n   ✓ standalone historical preflight (synthetic integrity fixtures only) > records changed case knowledge as invalid instead of returning a cached success  2400ms\n   ✓ standalone historical preflight (synthetic integrity fixtures only) > rejects malformed or modified cached payloads  3172ms\n   ✓ standalone historical preflight (synthetic integrity fixtures only) > rejects malformed nested task metadata instead of throwing a raw TypeError  1164ms\n\n Test Files  1 passed (1)\n      Tests  22 passed (22)\n   Start at  13:18:41\n   Duration  42.91s (transform 87ms, setup 0ms, collect 106ms, tests 42.44s, environment 0ms, prepare 125ms)\n\n",
+        "sha256": "572136A4523C4F3254C715D878769360FC7928CB5831E3ECEDA4DD529B8C868E",
+        "bytes": 3623
+      },
+      "stderr": {
+        "raw": "",
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "bytes": 0
+      }
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc --noEmit --target ES2022 --module ESNext --moduleResolution Bundler --types node --skipLibCheck --strict scripts/engineering/historical-failure-preflight.ts scripts/tests/engineering-failure-preflight.test.ts",
+      "testedImplementationSha": "2777dc9ecf9063cd3c356701e14796a067b76ac7",
+      "startedAt": "2026-10-13T05:19:24.800Z",
+      "finishedAt": "2026-10-13T05:19:26.087Z",
+      "exitCode": 0,
+      "signal": null,
+      "expectedExitCode": 0,
+      "stdout": {
+        "raw": "",
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "bytes": 0
+      },
+      "stderr": {
+        "raw": "",
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "bytes": 0
+      }
+    },
+    {
+      "command": "node --import tsx scripts/engineering/historical-failure-preflight.ts --task .cache/historical-failure-preflight/task.json --cache .cache/historical-failure-preflight/recorded.json",
+      "testedImplementationSha": "2777dc9ecf9063cd3c356701e14796a067b76ac7",
+      "startedAt": "2026-10-13T05:19:26.087Z",
+      "finishedAt": "2026-10-13T05:19:28.645Z",
+      "exitCode": 0,
+      "signal": null,
+      "expectedExitCode": 0,
+      "stdout": {
+        "raw": "{\n  \"status\": \"CHECKED\",\n  \"automationAvailable\": true,\n  \"acceptanceGranted\": false,\n  \"runtimeTestsExecuted\": 0,\n  \"taskId\": \"P3-EFP-K02\",\n  \"exactBaseSha\": \"2470f00902bd650bc3122f518b18333afed323f3\",\n  \"selected\": [\n    {\n      \"id\": \"FD-EVID-005\",\n      \"score\": 15,\n      \"risk\": \"MEDIUM\",\n      \"reasons\": [\n        \"contract:EXACT_EXECUTION_RECEIPTS:+6\",\n        \"contract:REPRODUCIBLE_REVIEW:+6\",\n        \"domain:evidence-tooling:+3\"\n      ],\n      \"catalogState\": \"SOURCE_VERIFIED_DRAFT\",\n      \"knowledgeState\": \"ACCEPTED_EXTRACTION_ONLY\",\n      \"invariants\": [\n        \"Counts bind command, tested SHA, exit code, skipped tests, errors and raw outputs. A scoped PASS does not certify later actual assembly.\"\n      ],\n      \"forbiddenPatterns\": [\n        \"Transferring old test results to a new SHA; masking nonzero exit or skipped/unhandled failures; declaring assembly PASS from producer-only tests.\"\n      ],\n      \"negativeObligations\": [\n        \"Run the exact fixture suites in producer and assembled contexts; retain failing receipts and hash/source negatives. Reproduce reviewer failures before classifying them.\"\n      ],\n      \"commands\": [\n        \"npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts --maxWorkers=2\"\n      ],\n      \"constraintsState\": \"PINNED_DOCUMENT_CONSTRAINTS\",\n      \"source\": {\n        \"commit\": \"dbd430be9550947a2bac691ef645db56cf5c408f\",\n        \"path\": \"docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json\",\n        \"sha256\": \"a0f4b6ff474b169b36e7ff18092ad93e7f29a573c7e2a0c85bf299011ab0e5a9\",\n        \"availability\": \"VERIFIED_PINNED_BYTES\",\n        \"sourceReviewRelationship\": \"LATER_SCOPED_PASS_PRESERVES_EARLIER_FAILURE_NOT_PASS_ON_FAILURE_SHA\"\n      },\n      \"sourceRelationship\": \"LATER_SCOPED_PASS_PRESERVES_EARLIER_FAILURE_NOT_PASS_ON_FAILURE_SHA\",\n      \"historicalTestStatus\": \"EXISTS\",\n      \"currentBaseCoverage\": \"NOT_VERIFIED\",\n      \"regressions\": [\n        {\n          \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n          \"pinnedSha\": \"b5e68444f55ea9fc1a86a9eea0ea0bedce3de229\",\n          \"pinned\": {\n            \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"dc1ffe1fa8d892b686e8638fac8b61ff314bba3e\"\n          },\n          \"currentBase\": {\n            \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        },\n        {\n          \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n          \"pinnedSha\": \"b5e68444f55ea9fc1a86a9eea0ea0bedce3de229\",\n          \"pinned\": {\n            \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"ca38692a683a9531169a31598870f244adce20d3\"\n          },\n          \"currentBase\": {\n            \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        }\n      ]\n    },\n    {\n      \"id\": \"FD-FIXTURE-006\",\n      \"score\": 11,\n      \"risk\": \"HIGH\",\n      \"reasons\": [\n        \"contract:EXACT_REVIEW_REFERENCE:+6\",\n        \"domain:evidence-tooling:+3\",\n        \"family:EXACT_REVIEW_REFERENCE:+2\"\n      ],\n      \"catalogState\": \"SOURCE_VERIFIED_DRAFT\",\n      \"knowledgeState\": \"ACCEPTED_EXTRACTION_ONLY\",\n      \"invariants\": [\n        \"Use named immutable pre-review data, execute validator from the tested source,\\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\\nASSEMBLED checks. No automatic phase inference based on discovered files.\\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\\npaths and runtime drift still reject. No directory whitelist or skipped test.\\nValidate the same focused and default CI at producer and post-review checkouts,\\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\\nnot technical acceptance or a real GitHub statement.\"\n      ],\n      \"forbiddenPatterns\": [\n        \"REVIEWED_PROSE_CONSTRAINT: Use named immutable pre-review data, execute validator from the tested source,\\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\\nASSEMBLED checks. No automatic phase inference based on discovered files.\\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\\npaths and runtime drift still reject. No directory whitelist or skipped test.\\nValidate the same focused and default CI at producer and post-review checkouts,\\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\\nnot technical acceptance or a real GitHub statement.\"\n      ],\n      \"negativeObligations\": [\n        \"Use named immutable pre-review data, execute validator from the tested source,\\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\\nASSEMBLED checks. No automatic phase inference based on discovered files.\\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\\npaths and runtime drift still reject. No directory whitelist or skipped test.\\nValidate the same focused and default CI at producer and post-review checkouts,\\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\\nnot technical acceptance or a real GitHub statement.\"\n      ],\n      \"commands\": [\n        \"npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts scripts/tests/phase3-contract-parity.test.ts --maxWorkers=2\"\n      ],\n      \"constraintsState\": \"PINNED_DOCUMENT_CONSTRAINTS\",\n      \"source\": {\n        \"commit\": \"1ce0b406ecf1e7389886bd2962e9e28f0d7d444b\",\n        \"path\": \"artifacts/phase3-e09-b11-integration-evidence-binding.json\",\n        \"sha256\": \"e8fd40e8b0f74701755cdab3135d58e0dc3a7c08aac7c4da9652bb622b38103e\",\n        \"availability\": \"VERIFIED_PINNED_BYTES\",\n        \"sourceReviewRelationship\": \"A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE\"\n      },\n      \"sourceRelationship\": \"A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE\",\n      \"historicalTestStatus\": \"EXISTS_CANDIDATE_RECEIPTS_NOT_ACCEPTED_BY_THIS_TASK\",\n      \"currentBaseCoverage\": \"NOT_VERIFIED\",\n      \"regressions\": [\n        {\n          \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n          \"pinnedSha\": \"f1b3588b0b9eb4be943fa127ae24409e067566bf\",\n          \"pinned\": {\n            \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"6ecb9114de49ebf1ee9c3d79a591edbc4d4f4098\"\n          },\n          \"currentBase\": {\n            \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        },\n        {\n          \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n          \"pinnedSha\": \"f1b3588b0b9eb4be943fa127ae24409e067566bf\",\n          \"pinned\": {\n            \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"6c7e3f3a772867540d29767d27256b3d20ce3812\"\n          },\n          \"currentBase\": {\n            \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        }\n      ]\n    }\n  ],\n  \"overflow\": [],\n  \"unknown\": [\n    {\n      \"id\": \"FD-SHA-007\",\n      \"decision\": \"NOT_ADDED_UNKNOWN\",\n      \"reason\": \"27dab1ad proves missing review-reference contract, not wrong candidate/reviewer SHA; no terminal identity mismatch finding selected\"\n    },\n    {\n      \"id\": \"FD-FALLBACK-008\",\n      \"decision\": \"NOT_ADDED_UNKNOWN\",\n      \"reason\": \"No pinned failing setup/data-flow source in assigned selection; later closed-fallback declarations cannot establish a historical failure\"\n    },\n    {\n      \"id\": \"FD-REVIEW-009\",\n      \"decision\": \"NOT_ADDED_UNKNOWN\",\n      \"reason\": \"PR475 records separate historical relay and independent review; it does not prove relay was mistaken for this review\"\n    },\n    {\n      \"id\": \"FD-WRITER-010\",\n      \"decision\": \"NOT_ADDED_UNKNOWN\",\n      \"reason\": \"Reservation boundary records do not prove an actual competing writer or conflict occurrence\"\n    }\n  ],\n  \"historicalRisk\": \"HIGH\",\n  \"cacheHit\": false,\n  \"elapsedMs\": 2176.64,\n  \"synthetic\": false,\n  \"inputDigest\": \"da99f81c50e79d3f534c691908c31f2bc85e38dd5e117156c97b05730d662796\",\n  \"knowledgeDigest\": \"3ae0f2ab502bed1890975c42957918a2d8ccd0c7f0754318ec8e8ec8987a5587\",\n  \"sourceDigest\": \"fd9273007b7a6e43c8157c9dc818eeb6c8cb7084acb0f2b6942855298af68c73\",\n  \"engineDigest\": \"654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371\",\n  \"cacheKey\": \"190feeb06bd011fea3d18c35b84526b3b9d59e20038985d39997667b4077f737\",\n  \"relevantSourceObjects\": [\n    {\n      \"path\": \"docs/engineering/lessons/BATCH-TASK-TEMPLATE.md\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"aa58d90605110500b189dd08249c9520d30d80ce\"\n    },\n    {\n      \"path\": \"docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"bb741cbeb8e5cb1d03379309ed78c23ae77b15d2\"\n    },\n    {\n      \"path\": \"docs/engineering/lessons/INDEX.md\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"bd2cf1005e4f83810936f20585ce39c5aef21e48\"\n    },\n    {\n      \"path\": \"scripts/engineering/historical-failure-preflight.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"scripts/phase3-preflight.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"scripts/tests/engineering-failure-preflight.test.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    }\n  ],\n  \"workingTreeRelevantObjects\": [\n    {\n      \"path\": \"docs/engineering/lessons/BATCH-TASK-TEMPLATE.md\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"c185331a7fed5671cae474fe5f477499d249cea4affe9ed4b800352ffd479689\"\n    },\n    {\n      \"path\": \"docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"569e114c87aa701d45470e9457b515c988648594998785455a71f0abdef42ea9\"\n    },\n    {\n      \"path\": \"docs/engineering/lessons/INDEX.md\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"221ea95e9d948ef2ce04a0768761c19a9263f3d5b823abc049a0b9f27ae33c49\"\n    },\n    {\n      \"path\": \"scripts/engineering/historical-failure-preflight.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371\"\n    },\n    {\n      \"path\": \"scripts/phase3-preflight.ts\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    },\n    {\n      \"path\": \"scripts/tests/engineering-failure-preflight.test.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"58235fe17face150db36985d787a51ab5b452001c044629f74f28b3992678757\"\n    },\n    {\n      \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    },\n    {\n      \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    }\n  ],\n  \"reportOnlyTaskOutputs\": [\n    \"docs/engineering/lessons/K02-EXECUTION.json\",\n    \"docs/engineering/lessons/K02-HANDOFF.md\"\n  ],\n  \"knowledgeReview\": {\n    \"commit\": \"2470f00902bd650bc3122f518b18333afed323f3\",\n    \"candidate\": \"ccbdf647a545e08f09a8067c8f2c4659f849889a\",\n    \"path\": \"docs/reviews/phase3/P3-EFP-K01-ccbdf647-reviewer-a.json\",\n    \"sha256\": \"da0f45fded94f1dc941a3a6b7a91da586d2de36b0188ec8f3662fcbaf9b98687\",\n    \"acceptedScope\": \"EXACT_K01_HISTORICAL_SOURCE_EXTRACTION_PROVENANCE_AND_REGRESSION_GAP_DOCUMENTATION_ONLY\",\n    \"currentBaseExecutionAccepted\": false\n  },\n  \"controlEpoch\": \"FD-P3-2026-09-23-09\",\n  \"criticalOverflow\": [],\n  \"scopeSplittingAlert\": false,\n  \"missingCoverage\": [\n    {\n      \"id\": \"FD-EVID-005\",\n      \"historical\": \"EXISTS\",\n      \"currentBase\": \"NOT_VERIFIED\",\n      \"missingPaths\": [\n        \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n        \"scripts/tests/phase3-readiness-preflight.test.ts\"\n      ]\n    },\n    {\n      \"id\": \"FD-FIXTURE-006\",\n      \"historical\": \"EXISTS_CANDIDATE_RECEIPTS_NOT_ACCEPTED_BY_THIS_TASK\",\n      \"currentBase\": \"NOT_VERIFIED\",\n      \"missingPaths\": [\n        \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n        \"scripts/tests/phase3-readiness-preflight.test.ts\"\n      ]\n    }\n  ],\n  \"sourceAvailability\": \"VERIFIED_PINNED_BYTES\",\n  \"execution\": \"NO_REGRESSIONS_OR_RUNTIME_EXECUTED\",\n  \"creditDelta\": 0\n}\n",
+        "sha256": "2F2DA63126F8A876429C5950135CB7AFB72F5D0113A56AA091ED4952E000D48A",
+        "bytes": 13124
+      },
+      "stderr": {
+        "raw": "",
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "bytes": 0
+      }
+    },
+    {
+      "command": "node --import tsx scripts/engineering/historical-failure-preflight.ts --task .cache/historical-failure-preflight/task.json --cache .cache/historical-failure-preflight/recorded.json",
+      "testedImplementationSha": "2777dc9ecf9063cd3c356701e14796a067b76ac7",
+      "startedAt": "2026-10-13T05:19:28.645Z",
+      "finishedAt": "2026-10-13T05:19:31.122Z",
+      "exitCode": 0,
+      "signal": null,
+      "expectedExitCode": 0,
+      "stdout": {
+        "raw": "{\n  \"status\": \"CHECKED\",\n  \"automationAvailable\": true,\n  \"acceptanceGranted\": false,\n  \"runtimeTestsExecuted\": 0,\n  \"taskId\": \"P3-EFP-K02\",\n  \"exactBaseSha\": \"2470f00902bd650bc3122f518b18333afed323f3\",\n  \"selected\": [\n    {\n      \"id\": \"FD-EVID-005\",\n      \"score\": 15,\n      \"risk\": \"MEDIUM\",\n      \"reasons\": [\n        \"contract:EXACT_EXECUTION_RECEIPTS:+6\",\n        \"contract:REPRODUCIBLE_REVIEW:+6\",\n        \"domain:evidence-tooling:+3\"\n      ],\n      \"catalogState\": \"SOURCE_VERIFIED_DRAFT\",\n      \"knowledgeState\": \"ACCEPTED_EXTRACTION_ONLY\",\n      \"invariants\": [\n        \"Counts bind command, tested SHA, exit code, skipped tests, errors and raw outputs. A scoped PASS does not certify later actual assembly.\"\n      ],\n      \"forbiddenPatterns\": [\n        \"Transferring old test results to a new SHA; masking nonzero exit or skipped/unhandled failures; declaring assembly PASS from producer-only tests.\"\n      ],\n      \"negativeObligations\": [\n        \"Run the exact fixture suites in producer and assembled contexts; retain failing receipts and hash/source negatives. Reproduce reviewer failures before classifying them.\"\n      ],\n      \"commands\": [\n        \"npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts --maxWorkers=2\"\n      ],\n      \"constraintsState\": \"PINNED_DOCUMENT_CONSTRAINTS\",\n      \"source\": {\n        \"commit\": \"dbd430be9550947a2bac691ef645db56cf5c408f\",\n        \"path\": \"docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json\",\n        \"sha256\": \"a0f4b6ff474b169b36e7ff18092ad93e7f29a573c7e2a0c85bf299011ab0e5a9\",\n        \"availability\": \"VERIFIED_PINNED_BYTES\",\n        \"sourceReviewRelationship\": \"LATER_SCOPED_PASS_PRESERVES_EARLIER_FAILURE_NOT_PASS_ON_FAILURE_SHA\"\n      },\n      \"sourceRelationship\": \"LATER_SCOPED_PASS_PRESERVES_EARLIER_FAILURE_NOT_PASS_ON_FAILURE_SHA\",\n      \"historicalTestStatus\": \"EXISTS\",\n      \"currentBaseCoverage\": \"NOT_VERIFIED\",\n      \"regressions\": [\n        {\n          \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n          \"pinnedSha\": \"b5e68444f55ea9fc1a86a9eea0ea0bedce3de229\",\n          \"pinned\": {\n            \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"dc1ffe1fa8d892b686e8638fac8b61ff314bba3e\"\n          },\n          \"currentBase\": {\n            \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        },\n        {\n          \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n          \"pinnedSha\": \"b5e68444f55ea9fc1a86a9eea0ea0bedce3de229\",\n          \"pinned\": {\n            \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"ca38692a683a9531169a31598870f244adce20d3\"\n          },\n          \"currentBase\": {\n            \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        }\n      ]\n    },\n    {\n      \"id\": \"FD-FIXTURE-006\",\n      \"score\": 11,\n      \"risk\": \"HIGH\",\n      \"reasons\": [\n        \"contract:EXACT_REVIEW_REFERENCE:+6\",\n        \"domain:evidence-tooling:+3\",\n        \"family:EXACT_REVIEW_REFERENCE:+2\"\n      ],\n      \"catalogState\": \"SOURCE_VERIFIED_DRAFT\",\n      \"knowledgeState\": \"ACCEPTED_EXTRACTION_ONLY\",\n      \"invariants\": [\n        \"Use named immutable pre-review data, execute validator from the tested source,\\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\\nASSEMBLED checks. No automatic phase inference based on discovered files.\\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\\npaths and runtime drift still reject. No directory whitelist or skipped test.\\nValidate the same focused and default CI at producer and post-review checkouts,\\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\\nnot technical acceptance or a real GitHub statement.\"\n      ],\n      \"forbiddenPatterns\": [\n        \"REVIEWED_PROSE_CONSTRAINT: Use named immutable pre-review data, execute validator from the tested source,\\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\\nASSEMBLED checks. No automatic phase inference based on discovered files.\\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\\npaths and runtime drift still reject. No directory whitelist or skipped test.\\nValidate the same focused and default CI at producer and post-review checkouts,\\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\\nnot technical acceptance or a real GitHub statement.\"\n      ],\n      \"negativeObligations\": [\n        \"Use named immutable pre-review data, execute validator from the tested source,\\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\\nASSEMBLED checks. No automatic phase inference based on discovered files.\\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\\npaths and runtime drift still reject. No directory whitelist or skipped test.\\nValidate the same focused and default CI at producer and post-review checkouts,\\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\\nnot technical acceptance or a real GitHub statement.\"\n      ],\n      \"commands\": [\n        \"npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts scripts/tests/phase3-contract-parity.test.ts --maxWorkers=2\"\n      ],\n      \"constraintsState\": \"PINNED_DOCUMENT_CONSTRAINTS\",\n      \"source\": {\n        \"commit\": \"1ce0b406ecf1e7389886bd2962e9e28f0d7d444b\",\n        \"path\": \"artifacts/phase3-e09-b11-integration-evidence-binding.json\",\n        \"sha256\": \"e8fd40e8b0f74701755cdab3135d58e0dc3a7c08aac7c4da9652bb622b38103e\",\n        \"availability\": \"VERIFIED_PINNED_BYTES\",\n        \"sourceReviewRelationship\": \"A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE\"\n      },\n      \"sourceRelationship\": \"A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE\",\n      \"historicalTestStatus\": \"EXISTS_CANDIDATE_RECEIPTS_NOT_ACCEPTED_BY_THIS_TASK\",\n      \"currentBaseCoverage\": \"NOT_VERIFIED\",\n      \"regressions\": [\n        {\n          \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n          \"pinnedSha\": \"f1b3588b0b9eb4be943fa127ae24409e067566bf\",\n          \"pinned\": {\n            \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"6ecb9114de49ebf1ee9c3d79a591edbc4d4f4098\"\n          },\n          \"currentBase\": {\n            \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        },\n        {\n          \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n          \"pinnedSha\": \"f1b3588b0b9eb4be943fa127ae24409e067566bf\",\n          \"pinned\": {\n            \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"6c7e3f3a772867540d29767d27256b3d20ce3812\"\n          },\n          \"currentBase\": {\n            \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        }\n      ]\n    }\n  ],\n  \"overflow\": [],\n  \"unknown\": [\n    {\n      \"id\": \"FD-SHA-007\",\n      \"decision\": \"NOT_ADDED_UNKNOWN\",\n      \"reason\": \"27dab1ad proves missing review-reference contract, not wrong candidate/reviewer SHA; no terminal identity mismatch finding selected\"\n    },\n    {\n      \"id\": \"FD-FALLBACK-008\",\n      \"decision\": \"NOT_ADDED_UNKNOWN\",\n      \"reason\": \"No pinned failing setup/data-flow source in assigned selection; later closed-fallback declarations cannot establish a historical failure\"\n    },\n    {\n      \"id\": \"FD-REVIEW-009\",\n      \"decision\": \"NOT_ADDED_UNKNOWN\",\n      \"reason\": \"PR475 records separate historical relay and independent review; it does not prove relay was mistaken for this review\"\n    },\n    {\n      \"id\": \"FD-WRITER-010\",\n      \"decision\": \"NOT_ADDED_UNKNOWN\",\n      \"reason\": \"Reservation boundary records do not prove an actual competing writer or conflict occurrence\"\n    }\n  ],\n  \"historicalRisk\": \"HIGH\",\n  \"cacheHit\": true,\n  \"elapsedMs\": 2188.76,\n  \"synthetic\": false,\n  \"inputDigest\": \"da99f81c50e79d3f534c691908c31f2bc85e38dd5e117156c97b05730d662796\",\n  \"knowledgeDigest\": \"3ae0f2ab502bed1890975c42957918a2d8ccd0c7f0754318ec8e8ec8987a5587\",\n  \"sourceDigest\": \"fd9273007b7a6e43c8157c9dc818eeb6c8cb7084acb0f2b6942855298af68c73\",\n  \"engineDigest\": \"654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371\",\n  \"cacheKey\": \"190feeb06bd011fea3d18c35b84526b3b9d59e20038985d39997667b4077f737\",\n  \"relevantSourceObjects\": [\n    {\n      \"path\": \"docs/engineering/lessons/BATCH-TASK-TEMPLATE.md\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"aa58d90605110500b189dd08249c9520d30d80ce\"\n    },\n    {\n      \"path\": \"docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"bb741cbeb8e5cb1d03379309ed78c23ae77b15d2\"\n    },\n    {\n      \"path\": \"docs/engineering/lessons/INDEX.md\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"bd2cf1005e4f83810936f20585ce39c5aef21e48\"\n    },\n    {\n      \"path\": \"scripts/engineering/historical-failure-preflight.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"scripts/phase3-preflight.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"scripts/tests/engineering-failure-preflight.test.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    }\n  ],\n  \"workingTreeRelevantObjects\": [\n    {\n      \"path\": \"docs/engineering/lessons/BATCH-TASK-TEMPLATE.md\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"c185331a7fed5671cae474fe5f477499d249cea4affe9ed4b800352ffd479689\"\n    },\n    {\n      \"path\": \"docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"569e114c87aa701d45470e9457b515c988648594998785455a71f0abdef42ea9\"\n    },\n    {\n      \"path\": \"docs/engineering/lessons/INDEX.md\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"221ea95e9d948ef2ce04a0768761c19a9263f3d5b823abc049a0b9f27ae33c49\"\n    },\n    {\n      \"path\": \"scripts/engineering/historical-failure-preflight.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371\"\n    },\n    {\n      \"path\": \"scripts/phase3-preflight.ts\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    },\n    {\n      \"path\": \"scripts/tests/engineering-failure-preflight.test.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"58235fe17face150db36985d787a51ab5b452001c044629f74f28b3992678757\"\n    },\n    {\n      \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    },\n    {\n      \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    }\n  ],\n  \"reportOnlyTaskOutputs\": [\n    \"docs/engineering/lessons/K02-EXECUTION.json\",\n    \"docs/engineering/lessons/K02-HANDOFF.md\"\n  ],\n  \"knowledgeReview\": {\n    \"commit\": \"2470f00902bd650bc3122f518b18333afed323f3\",\n    \"candidate\": \"ccbdf647a545e08f09a8067c8f2c4659f849889a\",\n    \"path\": \"docs/reviews/phase3/P3-EFP-K01-ccbdf647-reviewer-a.json\",\n    \"sha256\": \"da0f45fded94f1dc941a3a6b7a91da586d2de36b0188ec8f3662fcbaf9b98687\",\n    \"acceptedScope\": \"EXACT_K01_HISTORICAL_SOURCE_EXTRACTION_PROVENANCE_AND_REGRESSION_GAP_DOCUMENTATION_ONLY\",\n    \"currentBaseExecutionAccepted\": false\n  },\n  \"controlEpoch\": \"FD-P3-2026-09-23-09\",\n  \"criticalOverflow\": [],\n  \"scopeSplittingAlert\": false,\n  \"missingCoverage\": [\n    {\n      \"id\": \"FD-EVID-005\",\n      \"historical\": \"EXISTS\",\n      \"currentBase\": \"NOT_VERIFIED\",\n      \"missingPaths\": [\n        \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n        \"scripts/tests/phase3-readiness-preflight.test.ts\"\n      ]\n    },\n    {\n      \"id\": \"FD-FIXTURE-006\",\n      \"historical\": \"EXISTS_CANDIDATE_RECEIPTS_NOT_ACCEPTED_BY_THIS_TASK\",\n      \"currentBase\": \"NOT_VERIFIED\",\n      \"missingPaths\": [\n        \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n        \"scripts/tests/phase3-readiness-preflight.test.ts\"\n      ]\n    }\n  ],\n  \"sourceAvailability\": \"VERIFIED_PINNED_BYTES\",\n  \"execution\": \"NO_REGRESSIONS_OR_RUNTIME_EXECUTED\",\n  \"creditDelta\": 0\n}\n",
+        "sha256": "C89C871EF6F8D77D1654544BA57E2A60B7FFAF29566296A6D82E0E8F88A4A108",
+        "bytes": 13123
+      },
+      "stderr": {
+        "raw": "",
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "bytes": 0
+      }
+    },
+    {
+      "command": "node --import tsx scripts/engineering/historical-failure-preflight.ts --unknown true",
+      "testedImplementationSha": "2777dc9ecf9063cd3c356701e14796a067b76ac7",
+      "startedAt": "2026-10-13T05:19:31.122Z",
+      "finishedAt": "2026-10-13T05:19:31.388Z",
+      "exitCode": 1,
+      "signal": null,
+      "expectedExitCode": 1,
+      "stdout": {
+        "raw": "{\"status\":\"INPUT_INCOMPLETE\",\"error\":\"unknown/duplicate/missing CLI argument\",\"automationAvailable\":true,\"acceptanceGranted\":false,\"creditDelta\":0}\n",
+        "sha256": "901A04018BD9B709CD4BF6911CD9AE9781E824FA1E3EE5D2EE4F275B7B0E31B0",
+        "bytes": 148
+      },
+      "stderr": {
+        "raw": "",
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "bytes": 0
+      }
+    },
+    {
+      "command": "node --import tsx scripts/engineering/historical-failure-preflight.ts --task .cache/historical-failure-preflight/broad-task.json --limit 5 --cache .cache/historical-failure-preflight/broad.json",
+      "testedImplementationSha": "2777dc9ecf9063cd3c356701e14796a067b76ac7",
+      "startedAt": "2026-10-13T05:19:31.389Z",
+      "finishedAt": "2026-10-13T05:19:37.703Z",
+      "exitCode": 0,
+      "signal": null,
+      "expectedExitCode": 0,
+      "stdout": {
+        "raw": "{\n  \"status\": \"CHECKED\",\n  \"automationAvailable\": true,\n  \"acceptanceGranted\": false,\n  \"runtimeTestsExecuted\": 0,\n  \"taskId\": \"P3-EFP-K02_HISTORICAL_RETRIEVAL_SMOKE_ONLY\",\n  \"exactBaseSha\": \"2470f00902bd650bc3122f518b18333afed323f3\",\n  \"selected\": [\n    {\n      \"id\": \"FD-SEC-001\",\n      \"score\": 14,\n      \"risk\": \"CRITICAL\",\n      \"reasons\": [\n        \"contract:IDENTITY_SECURITY:+6\",\n        \"domain:session-authority:+3\",\n        \"domain:server-transport:+3\",\n        \"family:IDENTITY_SECURITY:+2\"\n      ],\n      \"catalogState\": \"SOURCE_VERIFIED_DRAFT\",\n      \"knowledgeState\": \"ACCEPTED_EXTRACTION_ONLY\",\n      \"invariants\": [\n        \"Credentials remain server-private and unpredictable. Existing identities require authenticated reconnect proof. Rejection preserves state, revision, room version, logs and private projections.\"\n      ],\n      \"forbiddenPatterns\": [\n        \"Public credential DTOs, public-identifier-derived secrets, duplicate join adoption of an existing identity.\"\n      ],\n      \"negativeObligations\": [\n        \"Spectator secret extraction, duplicate host join, old deterministic guess, wrong-client credential and raw WS impersonation all reject; valid reconnect still works.\"\n      ],\n      \"commands\": [\n        \"npx vitest run apps/server/src/match-server.test.ts packages/rules/tests/match-room.test.ts --maxWorkers=2\"\n      ],\n      \"constraintsState\": \"PINNED_DOCUMENT_CONSTRAINTS\",\n      \"source\": {\n        \"commit\": \"cf179ca3220a1646c484aa8c660b313e64449488\",\n        \"path\": \"docs/reviews/phase3/P3-E08-B11-463facb-final-combination-reviewer-b.json\",\n        \"sha256\": \"051f5e95c74e9c78546c391fd60f041d9baef29fbba857ec455a598f8d2395bf\",\n        \"availability\": \"VERIFIED_PINNED_BYTES\",\n        \"sourceReviewRelationship\": \"HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE\"\n      },\n      \"sourceRelationship\": \"HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE\",\n      \"historicalTestStatus\": \"EXISTS\",\n      \"currentBaseCoverage\": \"NOT_VERIFIED\",\n      \"regressions\": [\n        {\n          \"path\": \"apps/server/src/match-server.test.ts\",\n          \"pinnedSha\": \"0f62210a2e007a15e28f945c546ccd00c345942a\",\n          \"pinned\": {\n            \"path\": \"apps/server/src/match-server.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"10248b72cc9a032bfefc7280d6fc44c529b5d56e\"\n          },\n          \"currentBase\": {\n            \"path\": \"apps/server/src/match-server.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"cbaa99910de9785364bc3fdc0e0a29f9c625971f\"\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        },\n        {\n          \"path\": \"packages/rules/tests/match-room.test.ts\",\n          \"pinnedSha\": \"0f62210a2e007a15e28f945c546ccd00c345942a\",\n          \"pinned\": {\n            \"path\": \"packages/rules/tests/match-room.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"92332015cd932056143f2ecc57d5ce7f59f790e3\"\n          },\n          \"currentBase\": {\n            \"path\": \"packages/rules/tests/match-room.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"6a804cddce0442d84cddb9416631c4d365785b3e\"\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        }\n      ]\n    },\n    {\n      \"id\": \"FD-FIXTURE-006\",\n      \"score\": 12,\n      \"risk\": \"HIGH\",\n      \"reasons\": [\n        \"contract:EXPLICIT_TEMPORAL_FIXTURE:+6\",\n        \"domain:evidence-tooling:+3\",\n        \"domain:integration:+3\"\n      ],\n      \"catalogState\": \"SOURCE_VERIFIED_DRAFT\",\n      \"knowledgeState\": \"ACCEPTED_EXTRACTION_ONLY\",\n      \"invariants\": [\n        \"Use named immutable pre-review data, execute validator from the tested source,\\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\\nASSEMBLED checks. No automatic phase inference based on discovered files.\\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\\npaths and runtime drift still reject. No directory whitelist or skipped test.\\nValidate the same focused and default CI at producer and post-review checkouts,\\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\\nnot technical acceptance or a real GitHub statement.\"\n      ],\n      \"forbiddenPatterns\": [\n        \"REVIEWED_PROSE_CONSTRAINT: Use named immutable pre-review data, execute validator from the tested source,\\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\\nASSEMBLED checks. No automatic phase inference based on discovered files.\\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\\npaths and runtime drift still reject. No directory whitelist or skipped test.\\nValidate the same focused and default CI at producer and post-review checkouts,\\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\\nnot technical acceptance or a real GitHub statement.\"\n      ],\n      \"negativeObligations\": [\n        \"Use named immutable pre-review data, execute validator from the tested source,\\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\\nASSEMBLED checks. No automatic phase inference based on discovered files.\\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\\npaths and runtime drift still reject. No directory whitelist or skipped test.\\nValidate the same focused and default CI at producer and post-review checkouts,\\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\\nnot technical acceptance or a real GitHub statement.\"\n      ],\n      \"commands\": [\n        \"npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts scripts/tests/phase3-contract-parity.test.ts --maxWorkers=2\"\n      ],\n      \"constraintsState\": \"PINNED_DOCUMENT_CONSTRAINTS\",\n      \"source\": {\n        \"commit\": \"1ce0b406ecf1e7389886bd2962e9e28f0d7d444b\",\n        \"path\": \"artifacts/phase3-e09-b11-integration-evidence-binding.json\",\n        \"sha256\": \"e8fd40e8b0f74701755cdab3135d58e0dc3a7c08aac7c4da9652bb622b38103e\",\n        \"availability\": \"VERIFIED_PINNED_BYTES\",\n        \"sourceReviewRelationship\": \"A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE\"\n      },\n      \"sourceRelationship\": \"A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE\",\n      \"historicalTestStatus\": \"EXISTS_CANDIDATE_RECEIPTS_NOT_ACCEPTED_BY_THIS_TASK\",\n      \"currentBaseCoverage\": \"NOT_VERIFIED\",\n      \"regressions\": [\n        {\n          \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n          \"pinnedSha\": \"f1b3588b0b9eb4be943fa127ae24409e067566bf\",\n          \"pinned\": {\n            \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"6ecb9114de49ebf1ee9c3d79a591edbc4d4f4098\"\n          },\n          \"currentBase\": {\n            \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        },\n        {\n          \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n          \"pinnedSha\": \"f1b3588b0b9eb4be943fa127ae24409e067566bf\",\n          \"pinned\": {\n            \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"6c7e3f3a772867540d29767d27256b3d20ce3812\"\n          },\n          \"currentBase\": {\n            \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        }\n      ]\n    },\n    {\n      \"id\": \"FD-RESTORE-004\",\n      \"score\": 12,\n      \"risk\": \"HIGH\",\n      \"reasons\": [\n        \"contract:AUTHENTICATED_CONTINUATION:+6\",\n        \"domain:ability-runtime:+3\",\n        \"domain:persistence:+3\"\n      ],\n      \"catalogState\": \"SOURCE_VERIFIED_DRAFT\",\n      \"knowledgeState\": \"ACCEPTED_EXTRACTION_ONLY\",\n      \"invariants\": [\n        \"Every legal authenticated pending pause must round-trip; unrelated/orphan continuations must still reject.\"\n      ],\n      \"forbiddenPatterns\": [\n        \"Requiring the outer waiting transaction to be the currently nested interaction owner without representing the authenticated relationship.\"\n      ],\n      \"negativeObligations\": [\n        \"Round-trip at each real response/choice pause; separately reject orphan, unrelated, forged or mismatched parent continuations.\"\n      ],\n      \"commands\": [\n        \"npx vitest run packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=2\"\n      ],\n      \"constraintsState\": \"PINNED_DOCUMENT_CONSTRAINTS\",\n      \"source\": {\n        \"commit\": \"7e65291a4fa10170e249bc492617ef337caf7f8a\",\n        \"path\": \"docs/reviews/2026-10-10-pr-475-review.md\",\n        \"sha256\": \"8c67cfe179e02ece25b6581ee2a23ed776ebf4e95eeaa2a93b2e8d59dc1d7cf6\",\n        \"availability\": \"VERIFIED_PINNED_BYTES\",\n        \"sourceReviewRelationship\": \"HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE\"\n      },\n      \"sourceRelationship\": \"HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE\",\n      \"historicalTestStatus\": \"MISSING_ENFORCING_NEGATIVE_NOT_MISSING_ALL_TEST_FILES\",\n      \"currentBaseCoverage\": \"NOT_VERIFIED\",\n      \"regressions\": [\n        {\n          \"path\": \"packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts\",\n          \"pinnedSha\": \"fe4653d1013110555881585db3a447880dd463d3\",\n          \"pinned\": {\n            \"path\": \"packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"71eceaa9eb11f47715f15daa4ac187c495beacc9\"\n          },\n          \"currentBase\": {\n            \"path\": \"packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        },\n        {\n          \"path\": \"packages/rules/tests/match-session.test.ts\",\n          \"pinnedSha\": \"fe4653d1013110555881585db3a447880dd463d3\",\n          \"pinned\": {\n            \"path\": \"packages/rules/tests/match-session.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"43f5b7fb959cc67cedc31c7336145d39276d7c0c\"\n          },\n          \"currentBase\": {\n            \"path\": \"packages/rules/tests/match-session.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"22c6f8c83d73ffb2f96c84afad35fa9c36261a74\"\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        },\n        {\n          \"path\": \"docs/reviews/probes/review-475-independent.mjs\",\n          \"pinnedSha\": \"fe4653d1013110555881585db3a447880dd463d3\",\n          \"pinned\": {\n            \"path\": \"docs/reviews/probes/review-475-independent.mjs\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"currentBase\": {\n            \"path\": \"docs/reviews/probes/review-475-independent.mjs\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"role\": \"REVIEWER_PROBE_NOT_ENFORCING_REGRESSION\"\n        }\n      ]\n    },\n    {\n      \"id\": \"FD-REV-002\",\n      \"score\": 12,\n      \"risk\": \"HIGH\",\n      \"reasons\": [\n        \"contract:MUTATION_REVISION_GATE:+6\",\n        \"domain:session-authority:+3\",\n        \"domain:server-transport:+3\"\n      ],\n      \"catalogState\": \"SOURCE_VERIFIED_DRAFT\",\n      \"knowledgeState\": \"ACCEPTED_EXTRACTION_ONLY\",\n      \"invariants\": [\n        \"Every scoped mutation entry point requires a finite safe integer matching current revision before any state change; rejection is atomic.\"\n      ],\n      \"forbiddenPatterns\": [\n        \"Optional revision on mutation commands or separate permissive end-turn gate.\"\n      ],\n      \"negativeObligations\": [\n        \"Missing, null, string, negative, fractional, oversized and stale revisions reject for dispatch and end_turn via direct Hub and real WS; state/pending/logs/revision/version/broadcast remain unchanged.\"\n      ],\n      \"commands\": [\n        \"npx vitest run apps/server/src/match-server.test.ts packages/rules/tests/match-room-hub.test.ts --maxWorkers=2\"\n      ],\n      \"constraintsState\": \"PINNED_DOCUMENT_CONSTRAINTS\",\n      \"source\": {\n        \"commit\": \"cf179ca3220a1646c484aa8c660b313e64449488\",\n        \"path\": \"docs/reviews/phase3/P3-E08-B11-463facb-final-combination-reviewer-b.json\",\n        \"sha256\": \"051f5e95c74e9c78546c391fd60f041d9baef29fbba857ec455a598f8d2395bf\",\n        \"availability\": \"VERIFIED_PINNED_BYTES\",\n        \"sourceReviewRelationship\": \"HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE\"\n      },\n      \"sourceRelationship\": \"HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE\",\n      \"historicalTestStatus\": \"EXISTS\",\n      \"currentBaseCoverage\": \"NOT_VERIFIED\",\n      \"regressions\": [\n        {\n          \"path\": \"apps/server/src/match-server.test.ts\",\n          \"pinnedSha\": \"0f62210a2e007a15e28f945c546ccd00c345942a\",\n          \"pinned\": {\n            \"path\": \"apps/server/src/match-server.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"10248b72cc9a032bfefc7280d6fc44c529b5d56e\"\n          },\n          \"currentBase\": {\n            \"path\": \"apps/server/src/match-server.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"cbaa99910de9785364bc3fdc0e0a29f9c625971f\"\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        },\n        {\n          \"path\": \"packages/rules/tests/match-room-hub.test.ts\",\n          \"pinnedSha\": \"0f62210a2e007a15e28f945c546ccd00c345942a\",\n          \"pinned\": {\n            \"path\": \"packages/rules/tests/match-room-hub.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"d2c95bf2c918aa929b817bd472fa03d6b5c9f4cf\"\n          },\n          \"currentBase\": {\n            \"path\": \"packages/rules/tests/match-room-hub.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"6813c545240bb1b16bfc539e91b8f9914584d5d5\"\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        }\n      ]\n    },\n    {\n      \"id\": \"FD-SHAPE-003\",\n      \"score\": 12,\n      \"risk\": \"HIGH\",\n      \"reasons\": [\n        \"contract:COMPILED_ENVELOPE_FAIL_CLOSED:+6\",\n        \"domain:ability-runtime:+3\",\n        \"domain:battle-reward:+3\"\n      ],\n      \"catalogState\": \"SOURCE_VERIFIED_DRAFT\",\n      \"knowledgeState\": \"ACCEPTED_EXTRACTION_ONLY\",\n      \"invariants\": [\n        \"Absent optional fields and malformed present fields remain distinguishable at privileged runtime gateways.\"\n      ],\n      \"forbiddenPatterns\": [\n        \"Converting malformed supplied objects/arrays to an empty default before semantic validation.\"\n      ],\n      \"negativeObligations\": [\n        \"Each of four malformed compiled containers must disable/reject the privileged gateway while minimal valid absent-field passive remains supported.\"\n      ],\n      \"commands\": [\n        \"npx vitest run packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts --maxWorkers=2\"\n      ],\n      \"constraintsState\": \"PINNED_DOCUMENT_CONSTRAINTS\",\n      \"source\": {\n        \"commit\": \"b22691ab5311cd31f60eb91d573416fea3c7cf98\",\n        \"path\": \"docs/reviews/2026-10-10-pr-474-review.md\",\n        \"sha256\": \"f588a8b7062e7d57739e1f02b24bf7d939e06a8f203a5542ab374ba7f2f93adc\",\n        \"availability\": \"VERIFIED_PINNED_BYTES\",\n        \"sourceReviewRelationship\": \"HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE\"\n      },\n      \"sourceRelationship\": \"HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE\",\n      \"historicalTestStatus\": \"MISSING_ENFORCING_NEGATIVE_NOT_MISSING_ALL_TEST_FILES\",\n      \"currentBaseCoverage\": \"NOT_VERIFIED\",\n      \"regressions\": [\n        {\n          \"path\": \"packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts\",\n          \"pinnedSha\": \"4dd8eca5746d63d72c7906716cb7118e2569872a\",\n          \"pinned\": {\n            \"path\": \"packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts\",\n            \"presence\": \"PRESENT_STATIC_ONLY\",\n            \"blob\": \"a4c32bd6a919b78551bc154f1a02c0fa9d96e859\"\n          },\n          \"currentBase\": {\n            \"path\": \"packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"role\": \"STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF\"\n        },\n        {\n          \"path\": \"docs/reviews/probes/review-474-independent.mjs\",\n          \"pinnedSha\": \"4dd8eca5746d63d72c7906716cb7118e2569872a\",\n          \"pinned\": {\n            \"path\": \"docs/reviews/probes/review-474-independent.mjs\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"currentBase\": {\n            \"path\": \"docs/reviews/probes/review-474-independent.mjs\",\n            \"presence\": \"MISSING\",\n            \"blob\": null\n          },\n          \"role\": \"REVIEWER_PROBE_NOT_ENFORCING_REGRESSION\"\n        }\n      ]\n    }\n  ],\n  \"overflow\": [\n    {\n      \"id\": \"FD-EVID-005\",\n      \"score\": 9,\n      \"risk\": \"MEDIUM\",\n      \"reasons\": [\n        \"contract:EXACT_EXECUTION_RECEIPTS:+6\",\n        \"domain:evidence-tooling:+3\"\n      ]\n    }\n  ],\n  \"unknown\": [\n    {\n      \"id\": \"FD-SHA-007\",\n      \"decision\": \"NOT_ADDED_UNKNOWN\",\n      \"reason\": \"27dab1ad proves missing review-reference contract, not wrong candidate/reviewer SHA; no terminal identity mismatch finding selected\"\n    },\n    {\n      \"id\": \"FD-FALLBACK-008\",\n      \"decision\": \"NOT_ADDED_UNKNOWN\",\n      \"reason\": \"No pinned failing setup/data-flow source in assigned selection; later closed-fallback declarations cannot establish a historical failure\"\n    },\n    {\n      \"id\": \"FD-REVIEW-009\",\n      \"decision\": \"NOT_ADDED_UNKNOWN\",\n      \"reason\": \"PR475 records separate historical relay and independent review; it does not prove relay was mistaken for this review\"\n    },\n    {\n      \"id\": \"FD-WRITER-010\",\n      \"decision\": \"NOT_ADDED_UNKNOWN\",\n      \"reason\": \"Reservation boundary records do not prove an actual competing writer or conflict occurrence\"\n    }\n  ],\n  \"historicalRisk\": \"CRITICAL\",\n  \"cacheHit\": false,\n  \"elapsedMs\": 6043.58,\n  \"synthetic\": false,\n  \"inputDigest\": \"832dec75e52f35993f8cf00c665d7c5822275d6a3a3ccace34d0c92dabd72a7d\",\n  \"knowledgeDigest\": \"3ae0f2ab502bed1890975c42957918a2d8ccd0c7f0754318ec8e8ec8987a5587\",\n  \"sourceDigest\": \"3e6a35f1ed1deb1b95514320eb6ee3f1f5bdf7135d31396521a847d1c3e375cd\",\n  \"engineDigest\": \"654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371\",\n  \"cacheKey\": \"6800d2ccaec0e8373bea37f316067e89a330dd9881da1d7308be60fb5c2c3211\",\n  \"relevantSourceObjects\": [\n    {\n      \"path\": \"apps/server/src/match-server.test.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"cbaa99910de9785364bc3fdc0e0a29f9c625971f\"\n    },\n    {\n      \"path\": \"apps/server/src/match-server.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"afc45e698a612e5226dd8bb57b927f089dac85b7\"\n    },\n    {\n      \"path\": \"data/authoring/servants/servant.stheno.json\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"21ebf0d3ff1df23ea8aa16b6ba362d7f6eee3ffb\"\n    },\n    {\n      \"path\": \"docs/engineering/lessons/BATCH-TASK-TEMPLATE.md\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"aa58d90605110500b189dd08249c9520d30d80ce\"\n    },\n    {\n      \"path\": \"docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"bb741cbeb8e5cb1d03379309ed78c23ae77b15d2\"\n    },\n    {\n      \"path\": \"docs/engineering/lessons/INDEX.md\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"bd2cf1005e4f83810936f20585ce39c5aef21e48\"\n    },\n    {\n      \"path\": \"docs/reviews/probes/review-474-independent.mjs\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"docs/reviews/probes/review-475-independent.mjs\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"packages/rules/src/ability/combat-reward-distribution.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"packages/rules/src/ability/interpreter.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"b19b61493841ae0d46b5cf179feaa89dec0147d5\"\n    },\n    {\n      \"path\": \"packages/rules/src/match-room-hub.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"a4f8d8b5dc0845ac5b0d18e5e0b06fc4c61dee11\"\n    },\n    {\n      \"path\": \"packages/rules/src/match-room-protocol.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"dbf6044f486bc8ea440d939469394c16fe599536\"\n    },\n    {\n      \"path\": \"packages/rules/src/match-room.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"7e850652fceae69bb25453616cb57ed13115167a\"\n    },\n    {\n      \"path\": \"packages/rules/src/match-session.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"3418ff800b605a6a6e8c93f76eb072699c5c6378\"\n    },\n    {\n      \"path\": \"packages/rules/tests/match-room-hub.test.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"6813c545240bb1b16bfc539e91b8f9914584d5d5\"\n    },\n    {\n      \"path\": \"packages/rules/tests/match-room.test.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"6a804cddce0442d84cddb9416631c4d365785b3e\"\n    },\n    {\n      \"path\": \"packages/rules/tests/match-session.test.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"blob\": \"22c6f8c83d73ffb2f96c84afad35fa9c36261a74\"\n    },\n    {\n      \"path\": \"packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"scripts/engineering/historical-failure-preflight.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"scripts/phase3-preflight.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"scripts/tests/engineering-failure-preflight.test.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    },\n    {\n      \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n      \"presence\": \"MISSING\",\n      \"blob\": null\n    }\n  ],\n  \"workingTreeRelevantObjects\": [\n    {\n      \"path\": \"apps/server/src/match-server.test.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"73476c9f95227699b0ff010dbbab2432b10de0661de4bef9a760e38b2492feab\"\n    },\n    {\n      \"path\": \"apps/server/src/match-server.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"7e0bc3114887fe34966f64654e0d6612e8e96df8fd5289e9d26885bd0aba2758\"\n    },\n    {\n      \"path\": \"data/authoring/servants/servant.stheno.json\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"ff23d09f28388c5665881522a304695bbf2c9ae0df74fdb27162954447c855f1\"\n    },\n    {\n      \"path\": \"docs/engineering/lessons/BATCH-TASK-TEMPLATE.md\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"c185331a7fed5671cae474fe5f477499d249cea4affe9ed4b800352ffd479689\"\n    },\n    {\n      \"path\": \"docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"569e114c87aa701d45470e9457b515c988648594998785455a71f0abdef42ea9\"\n    },\n    {\n      \"path\": \"docs/engineering/lessons/INDEX.md\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"221ea95e9d948ef2ce04a0768761c19a9263f3d5b823abc049a0b9f27ae33c49\"\n    },\n    {\n      \"path\": \"docs/reviews/probes/review-474-independent.mjs\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    },\n    {\n      \"path\": \"docs/reviews/probes/review-475-independent.mjs\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    },\n    {\n      \"path\": \"packages/rules/src/ability/combat-reward-distribution.ts\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    },\n    {\n      \"path\": \"packages/rules/src/ability/interpreter.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"b2c8bb82836eb7291afc0ef5850103665e954b5ae3525066ab98f25a2e6a80d1\"\n    },\n    {\n      \"path\": \"packages/rules/src/match-room-hub.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"54cf729dba698e4d73e95c61e7feb9cb7cc279bd17bbe43dc10fab93620f3fa6\"\n    },\n    {\n      \"path\": \"packages/rules/src/match-room-protocol.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"519e594130a70d78ab38f00dd45ec7c04dc359dc4b3c069e92be50aea53d50c2\"\n    },\n    {\n      \"path\": \"packages/rules/src/match-room.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"c11bd950b01524c5d988b35d60cf6a4ddeb071b7af9506b3f8090f370ff17bd9\"\n    },\n    {\n      \"path\": \"packages/rules/src/match-session.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"a4b440bda535956819d557e89c5c095c765f88b349c78c62d767b3c7a1918c12\"\n    },\n    {\n      \"path\": \"packages/rules/tests/match-room-hub.test.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"002df4f377831a3181e0fce71e517e39888d2f4510cd7389003a90690e0f98f2\"\n    },\n    {\n      \"path\": \"packages/rules/tests/match-room.test.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"58e576702c95deb0149f92d4b776eeec0eae38c44d7cbeb2a5700e6b745b6933\"\n    },\n    {\n      \"path\": \"packages/rules/tests/match-session.test.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"716e0dd2c81e0732065d74bffd968a37354c5039a887e17ca486a060670107d2\"\n    },\n    {\n      \"path\": \"packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    },\n    {\n      \"path\": \"packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    },\n    {\n      \"path\": \"scripts/engineering/historical-failure-preflight.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371\"\n    },\n    {\n      \"path\": \"scripts/phase3-preflight.ts\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    },\n    {\n      \"path\": \"scripts/tests/engineering-failure-preflight.test.ts\",\n      \"presence\": \"PRESENT_STATIC_ONLY\",\n      \"sha256\": \"58235fe17face150db36985d787a51ab5b452001c044629f74f28b3992678757\"\n    },\n    {\n      \"path\": \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    },\n    {\n      \"path\": \"scripts/tests/phase3-readiness-preflight.test.ts\",\n      \"presence\": \"MISSING\",\n      \"sha256\": null\n    }\n  ],\n  \"reportOnlyTaskOutputs\": [\n    \"docs/engineering/lessons/K02-EXECUTION.json\",\n    \"docs/engineering/lessons/K02-HANDOFF.md\"\n  ],\n  \"knowledgeReview\": {\n    \"commit\": \"2470f00902bd650bc3122f518b18333afed323f3\",\n    \"candidate\": \"ccbdf647a545e08f09a8067c8f2c4659f849889a\",\n    \"path\": \"docs/reviews/phase3/P3-EFP-K01-ccbdf647-reviewer-a.json\",\n    \"sha256\": \"da0f45fded94f1dc941a3a6b7a91da586d2de36b0188ec8f3662fcbaf9b98687\",\n    \"acceptedScope\": \"EXACT_K01_HISTORICAL_SOURCE_EXTRACTION_PROVENANCE_AND_REGRESSION_GAP_DOCUMENTATION_ONLY\",\n    \"currentBaseExecutionAccepted\": false\n  },\n  \"controlEpoch\": \"FD-P3-2026-09-23-09\",\n  \"criticalOverflow\": [],\n  \"scopeSplittingAlert\": true,\n  \"missingCoverage\": [\n    {\n      \"id\": \"FD-SEC-001\",\n      \"historical\": \"EXISTS\",\n      \"currentBase\": \"NOT_VERIFIED\",\n      \"missingPaths\": []\n    },\n    {\n      \"id\": \"FD-FIXTURE-006\",\n      \"historical\": \"EXISTS_CANDIDATE_RECEIPTS_NOT_ACCEPTED_BY_THIS_TASK\",\n      \"currentBase\": \"NOT_VERIFIED\",\n      \"missingPaths\": [\n        \"scripts/tests/phase3-e09-b11-final-binding.test.ts\",\n        \"scripts/tests/phase3-readiness-preflight.test.ts\"\n      ]\n    },\n    {\n      \"id\": \"FD-RESTORE-004\",\n      \"historical\": \"MISSING_ENFORCING_NEGATIVE_NOT_MISSING_ALL_TEST_FILES\",\n      \"currentBase\": \"NOT_VERIFIED\",\n      \"missingPaths\": [\n        \"packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts\",\n        \"docs/reviews/probes/review-475-independent.mjs\"\n      ]\n    },\n    {\n      \"id\": \"FD-REV-002\",\n      \"historical\": \"EXISTS\",\n      \"currentBase\": \"NOT_VERIFIED\",\n      \"missingPaths\": []\n    },\n    {\n      \"id\": \"FD-SHAPE-003\",\n      \"historical\": \"MISSING_ENFORCING_NEGATIVE_NOT_MISSING_ALL_TEST_FILES\",\n      \"currentBase\": \"NOT_VERIFIED\",\n      \"missingPaths\": [\n        \"packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts\",\n        \"docs/reviews/probes/review-474-independent.mjs\"\n      ]\n    }\n  ],\n  \"sourceAvailability\": \"VERIFIED_PINNED_BYTES\",\n  \"execution\": \"NO_REGRESSIONS_OR_RUNTIME_EXECUTED\",\n  \"creditDelta\": 0\n}\n",
+        "sha256": "C2245B1AD6E4F41F5C225866410B2AD88B396DC091E08C6AC5F3612B805C67A8",
+        "bytes": 28831
+      },
+      "stderr": {
+        "raw": "",
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "bytes": 0
+      }
+    },
+    {
+      "command": "git diff --cached --check",
+      "testedImplementationSha": "2777dc9ecf9063cd3c356701e14796a067b76ac7",
+      "startedAt": "2026-10-13T05:23:06.214Z",
+      "exitCode": 0,
+      "stdout": {
+        "raw": "",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "stderr": {
+        "raw": "",
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    }
+  ],
+  "observations": {
+    "actualToolingTask": "node --import tsx scripts/engineering/historical-failure-preflight.ts --task .cache/historical-failure-preflight/task.json --cache .cache/historical-failure-preflight/recorded.json",
+    "matched": [
+      {
+        "id": "FD-EVID-005",
+        "score": 15,
+        "risk": "MEDIUM",
+        "source": {
+          "commit": "dbd430be9550947a2bac691ef645db56cf5c408f",
+          "path": "docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json",
+          "sha256": "a0f4b6ff474b169b36e7ff18092ad93e7f29a573c7e2a0c85bf299011ab0e5a9",
+          "availability": "VERIFIED_PINNED_BYTES",
+          "sourceReviewRelationship": "LATER_SCOPED_PASS_PRESERVES_EARLIER_FAILURE_NOT_PASS_ON_FAILURE_SHA"
+        }
+      },
+      {
+        "id": "FD-FIXTURE-006",
+        "score": 11,
+        "risk": "HIGH",
+        "source": {
+          "commit": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b",
+          "path": "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+          "sha256": "e8fd40e8b0f74701755cdab3135d58e0dc3a7c08aac7c4da9652bb622b38103e",
+          "availability": "VERIFIED_PINNED_BYTES",
+          "sourceReviewRelationship": "A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE"
+        }
+      }
+    ],
+    "first": {
+      "status": "CHECKED",
+      "automationAvailable": true,
+      "acceptanceGranted": false,
+      "runtimeTestsExecuted": 0,
+      "taskId": "P3-EFP-K02",
+      "exactBaseSha": "2470f00902bd650bc3122f518b18333afed323f3",
+      "selected": [
+        {
+          "id": "FD-EVID-005",
+          "score": 15,
+          "risk": "MEDIUM",
+          "reasons": [
+            "contract:EXACT_EXECUTION_RECEIPTS:+6",
+            "contract:REPRODUCIBLE_REVIEW:+6",
+            "domain:evidence-tooling:+3"
+          ],
+          "catalogState": "SOURCE_VERIFIED_DRAFT",
+          "knowledgeState": "ACCEPTED_EXTRACTION_ONLY",
+          "invariants": [
+            "Counts bind command, tested SHA, exit code, skipped tests, errors and raw outputs. A scoped PASS does not certify later actual assembly."
+          ],
+          "forbiddenPatterns": [
+            "Transferring old test results to a new SHA; masking nonzero exit or skipped/unhandled failures; declaring assembly PASS from producer-only tests."
+          ],
+          "negativeObligations": [
+            "Run the exact fixture suites in producer and assembled contexts; retain failing receipts and hash/source negatives. Reproduce reviewer failures before classifying them."
+          ],
+          "commands": [
+            "npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts --maxWorkers=2"
+          ],
+          "constraintsState": "PINNED_DOCUMENT_CONSTRAINTS",
+          "source": {
+            "commit": "dbd430be9550947a2bac691ef645db56cf5c408f",
+            "path": "docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json",
+            "sha256": "a0f4b6ff474b169b36e7ff18092ad93e7f29a573c7e2a0c85bf299011ab0e5a9",
+            "availability": "VERIFIED_PINNED_BYTES",
+            "sourceReviewRelationship": "LATER_SCOPED_PASS_PRESERVES_EARLIER_FAILURE_NOT_PASS_ON_FAILURE_SHA"
+          },
+          "sourceRelationship": "LATER_SCOPED_PASS_PRESERVES_EARLIER_FAILURE_NOT_PASS_ON_FAILURE_SHA",
+          "historicalTestStatus": "EXISTS",
+          "currentBaseCoverage": "NOT_VERIFIED",
+          "regressions": [
+            {
+              "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+              "pinnedSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+              "pinned": {
+                "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "dc1ffe1fa8d892b686e8638fac8b61ff314bba3e"
+              },
+              "currentBase": {
+                "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                "presence": "MISSING",
+                "blob": null
+              },
+              "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+            },
+            {
+              "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+              "pinnedSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+              "pinned": {
+                "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "ca38692a683a9531169a31598870f244adce20d3"
+              },
+              "currentBase": {
+                "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                "presence": "MISSING",
+                "blob": null
+              },
+              "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+            }
+          ]
+        },
+        {
+          "id": "FD-FIXTURE-006",
+          "score": 11,
+          "risk": "HIGH",
+          "reasons": [
+            "contract:EXACT_REVIEW_REFERENCE:+6",
+            "domain:evidence-tooling:+3",
+            "family:EXACT_REVIEW_REFERENCE:+2"
+          ],
+          "catalogState": "SOURCE_VERIFIED_DRAFT",
+          "knowledgeState": "ACCEPTED_EXTRACTION_ONLY",
+          "invariants": [
+            "Use named immutable pre-review data, execute validator from the tested source,\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\nASSEMBLED checks. No automatic phase inference based on discovered files.\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\npaths and runtime drift still reject. No directory whitelist or skipped test.\nValidate the same focused and default CI at producer and post-review checkouts,\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\nnot technical acceptance or a real GitHub statement."
+          ],
+          "forbiddenPatterns": [
+            "REVIEWED_PROSE_CONSTRAINT: Use named immutable pre-review data, execute validator from the tested source,\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\nASSEMBLED checks. No automatic phase inference based on discovered files.\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\npaths and runtime drift still reject. No directory whitelist or skipped test.\nValidate the same focused and default CI at producer and post-review checkouts,\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\nnot technical acceptance or a real GitHub statement."
+          ],
+          "negativeObligations": [
+            "Use named immutable pre-review data, execute validator from the tested source,\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\nASSEMBLED checks. No automatic phase inference based on discovered files.\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\npaths and runtime drift still reject. No directory whitelist or skipped test.\nValidate the same focused and default CI at producer and post-review checkouts,\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\nnot technical acceptance or a real GitHub statement."
+          ],
+          "commands": [
+            "npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts scripts/tests/phase3-contract-parity.test.ts --maxWorkers=2"
+          ],
+          "constraintsState": "PINNED_DOCUMENT_CONSTRAINTS",
+          "source": {
+            "commit": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b",
+            "path": "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+            "sha256": "e8fd40e8b0f74701755cdab3135d58e0dc3a7c08aac7c4da9652bb622b38103e",
+            "availability": "VERIFIED_PINNED_BYTES",
+            "sourceReviewRelationship": "A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE"
+          },
+          "sourceRelationship": "A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE",
+          "historicalTestStatus": "EXISTS_CANDIDATE_RECEIPTS_NOT_ACCEPTED_BY_THIS_TASK",
+          "currentBaseCoverage": "NOT_VERIFIED",
+          "regressions": [
+            {
+              "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+              "pinnedSha": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+              "pinned": {
+                "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "6ecb9114de49ebf1ee9c3d79a591edbc4d4f4098"
+              },
+              "currentBase": {
+                "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                "presence": "MISSING",
+                "blob": null
+              },
+              "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+            },
+            {
+              "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+              "pinnedSha": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+              "pinned": {
+                "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "6c7e3f3a772867540d29767d27256b3d20ce3812"
+              },
+              "currentBase": {
+                "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                "presence": "MISSING",
+                "blob": null
+              },
+              "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+            }
+          ]
+        }
+      ],
+      "overflow": [],
+      "unknown": [
+        {
+          "id": "FD-SHA-007",
+          "decision": "NOT_ADDED_UNKNOWN",
+          "reason": "27dab1ad proves missing review-reference contract, not wrong candidate/reviewer SHA; no terminal identity mismatch finding selected"
+        },
+        {
+          "id": "FD-FALLBACK-008",
+          "decision": "NOT_ADDED_UNKNOWN",
+          "reason": "No pinned failing setup/data-flow source in assigned selection; later closed-fallback declarations cannot establish a historical failure"
+        },
+        {
+          "id": "FD-REVIEW-009",
+          "decision": "NOT_ADDED_UNKNOWN",
+          "reason": "PR475 records separate historical relay and independent review; it does not prove relay was mistaken for this review"
+        },
+        {
+          "id": "FD-WRITER-010",
+          "decision": "NOT_ADDED_UNKNOWN",
+          "reason": "Reservation boundary records do not prove an actual competing writer or conflict occurrence"
+        }
+      ],
+      "historicalRisk": "HIGH",
+      "cacheHit": false,
+      "elapsedMs": 2176.64,
+      "synthetic": false,
+      "inputDigest": "da99f81c50e79d3f534c691908c31f2bc85e38dd5e117156c97b05730d662796",
+      "knowledgeDigest": "3ae0f2ab502bed1890975c42957918a2d8ccd0c7f0754318ec8e8ec8987a5587",
+      "sourceDigest": "fd9273007b7a6e43c8157c9dc818eeb6c8cb7084acb0f2b6942855298af68c73",
+      "engineDigest": "654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371",
+      "cacheKey": "190feeb06bd011fea3d18c35b84526b3b9d59e20038985d39997667b4077f737",
+      "relevantSourceObjects": [
+        {
+          "path": "docs/engineering/lessons/BATCH-TASK-TEMPLATE.md",
+          "presence": "PRESENT_STATIC_ONLY",
+          "blob": "aa58d90605110500b189dd08249c9520d30d80ce"
+        },
+        {
+          "path": "docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md",
+          "presence": "PRESENT_STATIC_ONLY",
+          "blob": "bb741cbeb8e5cb1d03379309ed78c23ae77b15d2"
+        },
+        {
+          "path": "docs/engineering/lessons/INDEX.md",
+          "presence": "PRESENT_STATIC_ONLY",
+          "blob": "bd2cf1005e4f83810936f20585ce39c5aef21e48"
+        },
+        {
+          "path": "scripts/engineering/historical-failure-preflight.ts",
+          "presence": "MISSING",
+          "blob": null
+        },
+        {
+          "path": "scripts/phase3-preflight.ts",
+          "presence": "MISSING",
+          "blob": null
+        },
+        {
+          "path": "scripts/tests/engineering-failure-preflight.test.ts",
+          "presence": "MISSING",
+          "blob": null
+        },
+        {
+          "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+          "presence": "MISSING",
+          "blob": null
+        },
+        {
+          "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+          "presence": "MISSING",
+          "blob": null
+        }
+      ],
+      "workingTreeRelevantObjects": [
+        {
+          "path": "docs/engineering/lessons/BATCH-TASK-TEMPLATE.md",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "c185331a7fed5671cae474fe5f477499d249cea4affe9ed4b800352ffd479689"
+        },
+        {
+          "path": "docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "569e114c87aa701d45470e9457b515c988648594998785455a71f0abdef42ea9"
+        },
+        {
+          "path": "docs/engineering/lessons/INDEX.md",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "221ea95e9d948ef2ce04a0768761c19a9263f3d5b823abc049a0b9f27ae33c49"
+        },
+        {
+          "path": "scripts/engineering/historical-failure-preflight.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371"
+        },
+        {
+          "path": "scripts/phase3-preflight.ts",
+          "presence": "MISSING",
+          "sha256": null
+        },
+        {
+          "path": "scripts/tests/engineering-failure-preflight.test.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "58235fe17face150db36985d787a51ab5b452001c044629f74f28b3992678757"
+        },
+        {
+          "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+          "presence": "MISSING",
+          "sha256": null
+        },
+        {
+          "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+          "presence": "MISSING",
+          "sha256": null
+        }
+      ],
+      "reportOnlyTaskOutputs": [
+        "docs/engineering/lessons/K02-EXECUTION.json",
+        "docs/engineering/lessons/K02-HANDOFF.md"
+      ],
+      "knowledgeReview": {
+        "commit": "2470f00902bd650bc3122f518b18333afed323f3",
+        "candidate": "ccbdf647a545e08f09a8067c8f2c4659f849889a",
+        "path": "docs/reviews/phase3/P3-EFP-K01-ccbdf647-reviewer-a.json",
+        "sha256": "da0f45fded94f1dc941a3a6b7a91da586d2de36b0188ec8f3662fcbaf9b98687",
+        "acceptedScope": "EXACT_K01_HISTORICAL_SOURCE_EXTRACTION_PROVENANCE_AND_REGRESSION_GAP_DOCUMENTATION_ONLY",
+        "currentBaseExecutionAccepted": false
+      },
+      "controlEpoch": "FD-P3-2026-09-23-09",
+      "criticalOverflow": [],
+      "scopeSplittingAlert": false,
+      "missingCoverage": [
+        {
+          "id": "FD-EVID-005",
+          "historical": "EXISTS",
+          "currentBase": "NOT_VERIFIED",
+          "missingPaths": [
+            "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+            "scripts/tests/phase3-readiness-preflight.test.ts"
+          ]
+        },
+        {
+          "id": "FD-FIXTURE-006",
+          "historical": "EXISTS_CANDIDATE_RECEIPTS_NOT_ACCEPTED_BY_THIS_TASK",
+          "currentBase": "NOT_VERIFIED",
+          "missingPaths": [
+            "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+            "scripts/tests/phase3-readiness-preflight.test.ts"
+          ]
+        }
+      ],
+      "sourceAvailability": "VERIFIED_PINNED_BYTES",
+      "execution": "NO_REGRESSIONS_OR_RUNTIME_EXECUTED",
+      "creditDelta": 0
+    },
+    "second": {
+      "status": "CHECKED",
+      "automationAvailable": true,
+      "acceptanceGranted": false,
+      "runtimeTestsExecuted": 0,
+      "taskId": "P3-EFP-K02",
+      "exactBaseSha": "2470f00902bd650bc3122f518b18333afed323f3",
+      "selected": [
+        {
+          "id": "FD-EVID-005",
+          "score": 15,
+          "risk": "MEDIUM",
+          "reasons": [
+            "contract:EXACT_EXECUTION_RECEIPTS:+6",
+            "contract:REPRODUCIBLE_REVIEW:+6",
+            "domain:evidence-tooling:+3"
+          ],
+          "catalogState": "SOURCE_VERIFIED_DRAFT",
+          "knowledgeState": "ACCEPTED_EXTRACTION_ONLY",
+          "invariants": [
+            "Counts bind command, tested SHA, exit code, skipped tests, errors and raw outputs. A scoped PASS does not certify later actual assembly."
+          ],
+          "forbiddenPatterns": [
+            "Transferring old test results to a new SHA; masking nonzero exit or skipped/unhandled failures; declaring assembly PASS from producer-only tests."
+          ],
+          "negativeObligations": [
+            "Run the exact fixture suites in producer and assembled contexts; retain failing receipts and hash/source negatives. Reproduce reviewer failures before classifying them."
+          ],
+          "commands": [
+            "npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts --maxWorkers=2"
+          ],
+          "constraintsState": "PINNED_DOCUMENT_CONSTRAINTS",
+          "source": {
+            "commit": "dbd430be9550947a2bac691ef645db56cf5c408f",
+            "path": "docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json",
+            "sha256": "a0f4b6ff474b169b36e7ff18092ad93e7f29a573c7e2a0c85bf299011ab0e5a9",
+            "availability": "VERIFIED_PINNED_BYTES",
+            "sourceReviewRelationship": "LATER_SCOPED_PASS_PRESERVES_EARLIER_FAILURE_NOT_PASS_ON_FAILURE_SHA"
+          },
+          "sourceRelationship": "LATER_SCOPED_PASS_PRESERVES_EARLIER_FAILURE_NOT_PASS_ON_FAILURE_SHA",
+          "historicalTestStatus": "EXISTS",
+          "currentBaseCoverage": "NOT_VERIFIED",
+          "regressions": [
+            {
+              "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+              "pinnedSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+              "pinned": {
+                "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "dc1ffe1fa8d892b686e8638fac8b61ff314bba3e"
+              },
+              "currentBase": {
+                "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                "presence": "MISSING",
+                "blob": null
+              },
+              "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+            },
+            {
+              "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+              "pinnedSha": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+              "pinned": {
+                "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "ca38692a683a9531169a31598870f244adce20d3"
+              },
+              "currentBase": {
+                "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                "presence": "MISSING",
+                "blob": null
+              },
+              "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+            }
+          ]
+        },
+        {
+          "id": "FD-FIXTURE-006",
+          "score": 11,
+          "risk": "HIGH",
+          "reasons": [
+            "contract:EXACT_REVIEW_REFERENCE:+6",
+            "domain:evidence-tooling:+3",
+            "family:EXACT_REVIEW_REFERENCE:+2"
+          ],
+          "catalogState": "SOURCE_VERIFIED_DRAFT",
+          "knowledgeState": "ACCEPTED_EXTRACTION_ONLY",
+          "invariants": [
+            "Use named immutable pre-review data, execute validator from the tested source,\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\nASSEMBLED checks. No automatic phase inference based on discovered files.\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\npaths and runtime drift still reject. No directory whitelist or skipped test.\nValidate the same focused and default CI at producer and post-review checkouts,\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\nnot technical acceptance or a real GitHub statement."
+          ],
+          "forbiddenPatterns": [
+            "REVIEWED_PROSE_CONSTRAINT: Use named immutable pre-review data, execute validator from the tested source,\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\nASSEMBLED checks. No automatic phase inference based on discovered files.\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\npaths and runtime drift still reject. No directory whitelist or skipped test.\nValidate the same focused and default CI at producer and post-review checkouts,\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\nnot technical acceptance or a real GitHub statement."
+          ],
+          "negativeObligations": [
+            "Use named immutable pre-review data, execute validator from the tested source,\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\nASSEMBLED checks. No automatic phase inference based on discovered files.\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\npaths and runtime drift still reject. No directory whitelist or skipped test.\nValidate the same focused and default CI at producer and post-review checkouts,\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\nnot technical acceptance or a real GitHub statement."
+          ],
+          "commands": [
+            "npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts scripts/tests/phase3-contract-parity.test.ts --maxWorkers=2"
+          ],
+          "constraintsState": "PINNED_DOCUMENT_CONSTRAINTS",
+          "source": {
+            "commit": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b",
+            "path": "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+            "sha256": "e8fd40e8b0f74701755cdab3135d58e0dc3a7c08aac7c4da9652bb622b38103e",
+            "availability": "VERIFIED_PINNED_BYTES",
+            "sourceReviewRelationship": "A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE"
+          },
+          "sourceRelationship": "A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE",
+          "historicalTestStatus": "EXISTS_CANDIDATE_RECEIPTS_NOT_ACCEPTED_BY_THIS_TASK",
+          "currentBaseCoverage": "NOT_VERIFIED",
+          "regressions": [
+            {
+              "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+              "pinnedSha": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+              "pinned": {
+                "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "6ecb9114de49ebf1ee9c3d79a591edbc4d4f4098"
+              },
+              "currentBase": {
+                "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                "presence": "MISSING",
+                "blob": null
+              },
+              "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+            },
+            {
+              "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+              "pinnedSha": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+              "pinned": {
+                "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                "presence": "PRESENT_STATIC_ONLY",
+                "blob": "6c7e3f3a772867540d29767d27256b3d20ce3812"
+              },
+              "currentBase": {
+                "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                "presence": "MISSING",
+                "blob": null
+              },
+              "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+            }
+          ]
+        }
+      ],
+      "overflow": [],
+      "unknown": [
+        {
+          "id": "FD-SHA-007",
+          "decision": "NOT_ADDED_UNKNOWN",
+          "reason": "27dab1ad proves missing review-reference contract, not wrong candidate/reviewer SHA; no terminal identity mismatch finding selected"
+        },
+        {
+          "id": "FD-FALLBACK-008",
+          "decision": "NOT_ADDED_UNKNOWN",
+          "reason": "No pinned failing setup/data-flow source in assigned selection; later closed-fallback declarations cannot establish a historical failure"
+        },
+        {
+          "id": "FD-REVIEW-009",
+          "decision": "NOT_ADDED_UNKNOWN",
+          "reason": "PR475 records separate historical relay and independent review; it does not prove relay was mistaken for this review"
+        },
+        {
+          "id": "FD-WRITER-010",
+          "decision": "NOT_ADDED_UNKNOWN",
+          "reason": "Reservation boundary records do not prove an actual competing writer or conflict occurrence"
+        }
+      ],
+      "historicalRisk": "HIGH",
+      "cacheHit": true,
+      "elapsedMs": 2188.76,
+      "synthetic": false,
+      "inputDigest": "da99f81c50e79d3f534c691908c31f2bc85e38dd5e117156c97b05730d662796",
+      "knowledgeDigest": "3ae0f2ab502bed1890975c42957918a2d8ccd0c7f0754318ec8e8ec8987a5587",
+      "sourceDigest": "fd9273007b7a6e43c8157c9dc818eeb6c8cb7084acb0f2b6942855298af68c73",
+      "engineDigest": "654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371",
+      "cacheKey": "190feeb06bd011fea3d18c35b84526b3b9d59e20038985d39997667b4077f737",
+      "relevantSourceObjects": [
+        {
+          "path": "docs/engineering/lessons/BATCH-TASK-TEMPLATE.md",
+          "presence": "PRESENT_STATIC_ONLY",
+          "blob": "aa58d90605110500b189dd08249c9520d30d80ce"
+        },
+        {
+          "path": "docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md",
+          "presence": "PRESENT_STATIC_ONLY",
+          "blob": "bb741cbeb8e5cb1d03379309ed78c23ae77b15d2"
+        },
+        {
+          "path": "docs/engineering/lessons/INDEX.md",
+          "presence": "PRESENT_STATIC_ONLY",
+          "blob": "bd2cf1005e4f83810936f20585ce39c5aef21e48"
+        },
+        {
+          "path": "scripts/engineering/historical-failure-preflight.ts",
+          "presence": "MISSING",
+          "blob": null
+        },
+        {
+          "path": "scripts/phase3-preflight.ts",
+          "presence": "MISSING",
+          "blob": null
+        },
+        {
+          "path": "scripts/tests/engineering-failure-preflight.test.ts",
+          "presence": "MISSING",
+          "blob": null
+        },
+        {
+          "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+          "presence": "MISSING",
+          "blob": null
+        },
+        {
+          "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+          "presence": "MISSING",
+          "blob": null
+        }
+      ],
+      "workingTreeRelevantObjects": [
+        {
+          "path": "docs/engineering/lessons/BATCH-TASK-TEMPLATE.md",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "c185331a7fed5671cae474fe5f477499d249cea4affe9ed4b800352ffd479689"
+        },
+        {
+          "path": "docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "569e114c87aa701d45470e9457b515c988648594998785455a71f0abdef42ea9"
+        },
+        {
+          "path": "docs/engineering/lessons/INDEX.md",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "221ea95e9d948ef2ce04a0768761c19a9263f3d5b823abc049a0b9f27ae33c49"
+        },
+        {
+          "path": "scripts/engineering/historical-failure-preflight.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371"
+        },
+        {
+          "path": "scripts/phase3-preflight.ts",
+          "presence": "MISSING",
+          "sha256": null
+        },
+        {
+          "path": "scripts/tests/engineering-failure-preflight.test.ts",
+          "presence": "PRESENT_STATIC_ONLY",
+          "sha256": "58235fe17face150db36985d787a51ab5b452001c044629f74f28b3992678757"
+        },
+        {
+          "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+          "presence": "MISSING",
+          "sha256": null
+        },
+        {
+          "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+          "presence": "MISSING",
+          "sha256": null
+        }
+      ],
+      "reportOnlyTaskOutputs": [
+        "docs/engineering/lessons/K02-EXECUTION.json",
+        "docs/engineering/lessons/K02-HANDOFF.md"
+      ],
+      "knowledgeReview": {
+        "commit": "2470f00902bd650bc3122f518b18333afed323f3",
+        "candidate": "ccbdf647a545e08f09a8067c8f2c4659f849889a",
+        "path": "docs/reviews/phase3/P3-EFP-K01-ccbdf647-reviewer-a.json",
+        "sha256": "da0f45fded94f1dc941a3a6b7a91da586d2de36b0188ec8f3662fcbaf9b98687",
+        "acceptedScope": "EXACT_K01_HISTORICAL_SOURCE_EXTRACTION_PROVENANCE_AND_REGRESSION_GAP_DOCUMENTATION_ONLY",
+        "currentBaseExecutionAccepted": false
+      },
+      "controlEpoch": "FD-P3-2026-09-23-09",
+      "criticalOverflow": [],
+      "scopeSplittingAlert": false,
+      "missingCoverage": [
+        {
+          "id": "FD-EVID-005",
+          "historical": "EXISTS",
+          "currentBase": "NOT_VERIFIED",
+          "missingPaths": [
+            "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+            "scripts/tests/phase3-readiness-preflight.test.ts"
+          ]
+        },
+        {
+          "id": "FD-FIXTURE-006",
+          "historical": "EXISTS_CANDIDATE_RECEIPTS_NOT_ACCEPTED_BY_THIS_TASK",
+          "currentBase": "NOT_VERIFIED",
+          "missingPaths": [
+            "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+            "scripts/tests/phase3-readiness-preflight.test.ts"
+          ]
+        }
+      ],
+      "sourceAvailability": "VERIFIED_PINNED_BYTES",
+      "execution": "NO_REGRESSIONS_OR_RUNTIME_EXECUTED",
+      "creditDelta": 0
+    },
+    "allSourceSmoke": {
+      "purpose": "READ_ONLY_RETRIEVAL_QUERY_NOT_RUNTIME_ASSIGNMENT",
+      "metadata": {
+        "taskId": "P3-EFP-K02_HISTORICAL_RETRIEVAL_SMOKE_ONLY",
+        "capabilityFamily": "IDENTITY_SECURITY",
+        "semanticContracts": [
+          "IDENTITY_SECURITY",
+          "MUTATION_REVISION_GATE",
+          "COMPILED_ENVELOPE_FAIL_CLOSED",
+          "AUTHENTICATED_CONTINUATION",
+          "EXACT_EXECUTION_RECEIPTS",
+          "EXPLICIT_TEMPORAL_FIXTURE"
+        ],
+        "expectedChangedFiles": [
+          "scripts/engineering/historical-failure-preflight.ts",
+          "scripts/tests/engineering-failure-preflight.test.ts",
+          "docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md",
+          "docs/engineering/lessons/BATCH-TASK-TEMPLATE.md",
+          "docs/engineering/lessons/INDEX.md",
+          "docs/engineering/lessons/K02-HANDOFF.md",
+          "docs/engineering/lessons/K02-EXECUTION.json"
+        ],
+        "runtimeDomains": [
+          "session-authority",
+          "server-transport",
+          "ability-runtime",
+          "battle-reward",
+          "persistence",
+          "evidence-tooling",
+          "integration"
+        ],
+        "exactBaseSha": "2470f00902bd650bc3122f518b18333afed323f3",
+        "selectedIdentities": [
+          "NOT_APPLICABLE_AUTOMATION_NO_CANONICAL_MIGRATION"
+        ],
+        "reservationReference": "docs/agents/manifests/reservations/P3-EFP-K02-TOOLING.json"
+      },
+      "result": {
+        "status": "CHECKED",
+        "automationAvailable": true,
+        "acceptanceGranted": false,
+        "runtimeTestsExecuted": 0,
+        "taskId": "P3-EFP-K02_HISTORICAL_RETRIEVAL_SMOKE_ONLY",
+        "exactBaseSha": "2470f00902bd650bc3122f518b18333afed323f3",
+        "selected": [
+          {
+            "id": "FD-SEC-001",
+            "score": 14,
+            "risk": "CRITICAL",
+            "reasons": [
+              "contract:IDENTITY_SECURITY:+6",
+              "domain:session-authority:+3",
+              "domain:server-transport:+3",
+              "family:IDENTITY_SECURITY:+2"
+            ],
+            "catalogState": "SOURCE_VERIFIED_DRAFT",
+            "knowledgeState": "ACCEPTED_EXTRACTION_ONLY",
+            "invariants": [
+              "Credentials remain server-private and unpredictable. Existing identities require authenticated reconnect proof. Rejection preserves state, revision, room version, logs and private projections."
+            ],
+            "forbiddenPatterns": [
+              "Public credential DTOs, public-identifier-derived secrets, duplicate join adoption of an existing identity."
+            ],
+            "negativeObligations": [
+              "Spectator secret extraction, duplicate host join, old deterministic guess, wrong-client credential and raw WS impersonation all reject; valid reconnect still works."
+            ],
+            "commands": [
+              "npx vitest run apps/server/src/match-server.test.ts packages/rules/tests/match-room.test.ts --maxWorkers=2"
+            ],
+            "constraintsState": "PINNED_DOCUMENT_CONSTRAINTS",
+            "source": {
+              "commit": "cf179ca3220a1646c484aa8c660b313e64449488",
+              "path": "docs/reviews/phase3/P3-E08-B11-463facb-final-combination-reviewer-b.json",
+              "sha256": "051f5e95c74e9c78546c391fd60f041d9baef29fbba857ec455a598f8d2395bf",
+              "availability": "VERIFIED_PINNED_BYTES",
+              "sourceReviewRelationship": "HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE"
+            },
+            "sourceRelationship": "HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE",
+            "historicalTestStatus": "EXISTS",
+            "currentBaseCoverage": "NOT_VERIFIED",
+            "regressions": [
+              {
+                "path": "apps/server/src/match-server.test.ts",
+                "pinnedSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+                "pinned": {
+                  "path": "apps/server/src/match-server.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "10248b72cc9a032bfefc7280d6fc44c529b5d56e"
+                },
+                "currentBase": {
+                  "path": "apps/server/src/match-server.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "cbaa99910de9785364bc3fdc0e0a29f9c625971f"
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              },
+              {
+                "path": "packages/rules/tests/match-room.test.ts",
+                "pinnedSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+                "pinned": {
+                  "path": "packages/rules/tests/match-room.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "92332015cd932056143f2ecc57d5ce7f59f790e3"
+                },
+                "currentBase": {
+                  "path": "packages/rules/tests/match-room.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6a804cddce0442d84cddb9416631c4d365785b3e"
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              }
+            ]
+          },
+          {
+            "id": "FD-FIXTURE-006",
+            "score": 12,
+            "risk": "HIGH",
+            "reasons": [
+              "contract:EXPLICIT_TEMPORAL_FIXTURE:+6",
+              "domain:evidence-tooling:+3",
+              "domain:integration:+3"
+            ],
+            "catalogState": "SOURCE_VERIFIED_DRAFT",
+            "knowledgeState": "ACCEPTED_EXTRACTION_ONLY",
+            "invariants": [
+              "Use named immutable pre-review data, execute validator from the tested source,\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\nASSEMBLED checks. No automatic phase inference based on discovered files.\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\npaths and runtime drift still reject. No directory whitelist or skipped test.\nValidate the same focused and default CI at producer and post-review checkouts,\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\nnot technical acceptance or a real GitHub statement."
+            ],
+            "forbiddenPatterns": [
+              "REVIEWED_PROSE_CONSTRAINT: Use named immutable pre-review data, execute validator from the tested source,\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\nASSEMBLED checks. No automatic phase inference based on discovered files.\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\npaths and runtime drift still reject. No directory whitelist or skipped test.\nValidate the same focused and default CI at producer and post-review checkouts,\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\nnot technical acceptance or a real GitHub statement."
+            ],
+            "negativeObligations": [
+              "Use named immutable pre-review data, execute validator from the tested source,\nand explicitly supply candidate/RA/G/synchronization/actual-head references for\nASSEMBLED checks. No automatic phase inference based on discovered files.\nUnbound producer RA, forged/missing/unrelated refs, wrong stage/head, unknown\npaths and runtime drift still reject. No directory whitelist or skipped test.\nValidate the same focused and default CI at producer and post-review checkouts,\nbind all source objects and raw receipts. Synthetic PASS proofs are test data,\nnot technical acceptance or a real GitHub statement."
+            ],
+            "commands": [
+              "npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts scripts/tests/phase3-contract-parity.test.ts --maxWorkers=2"
+            ],
+            "constraintsState": "PINNED_DOCUMENT_CONSTRAINTS",
+            "source": {
+              "commit": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b",
+              "path": "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+              "sha256": "e8fd40e8b0f74701755cdab3135d58e0dc3a7c08aac7c4da9652bb622b38103e",
+              "availability": "VERIFIED_PINNED_BYTES",
+              "sourceReviewRelationship": "A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE"
+            },
+            "sourceRelationship": "A_RECEIPT_PACKET_NOT_INDEPENDENT_REVIEW_ACCEPTANCE",
+            "historicalTestStatus": "EXISTS_CANDIDATE_RECEIPTS_NOT_ACCEPTED_BY_THIS_TASK",
+            "currentBaseCoverage": "NOT_VERIFIED",
+            "regressions": [
+              {
+                "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                "pinnedSha": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+                "pinned": {
+                  "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6ecb9114de49ebf1ee9c3d79a591edbc4d4f4098"
+                },
+                "currentBase": {
+                  "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+                  "presence": "MISSING",
+                  "blob": null
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              },
+              {
+                "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                "pinnedSha": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+                "pinned": {
+                  "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6c7e3f3a772867540d29767d27256b3d20ce3812"
+                },
+                "currentBase": {
+                  "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+                  "presence": "MISSING",
+                  "blob": null
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              }
+            ]
+          },
+          {
+            "id": "FD-RESTORE-004",
+            "score": 12,
+            "risk": "HIGH",
+            "reasons": [
+              "contract:AUTHENTICATED_CONTINUATION:+6",
+              "domain:ability-runtime:+3",
+              "domain:persistence:+3"
+            ],
+            "catalogState": "SOURCE_VERIFIED_DRAFT",
+            "knowledgeState": "ACCEPTED_EXTRACTION_ONLY",
+            "invariants": [
+              "Every legal authenticated pending pause must round-trip; unrelated/orphan continuations must still reject."
+            ],
+            "forbiddenPatterns": [
+              "Requiring the outer waiting transaction to be the currently nested interaction owner without representing the authenticated relationship."
+            ],
+            "negativeObligations": [
+              "Round-trip at each real response/choice pause; separately reject orphan, unrelated, forged or mismatched parent continuations."
+            ],
+            "commands": [
+              "npx vitest run packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts packages/rules/tests/match-session.test.ts --maxWorkers=2"
+            ],
+            "constraintsState": "PINNED_DOCUMENT_CONSTRAINTS",
+            "source": {
+              "commit": "7e65291a4fa10170e249bc492617ef337caf7f8a",
+              "path": "docs/reviews/2026-10-10-pr-475-review.md",
+              "sha256": "8c67cfe179e02ece25b6581ee2a23ed776ebf4e95eeaa2a93b2e8d59dc1d7cf6",
+              "availability": "VERIFIED_PINNED_BYTES",
+              "sourceReviewRelationship": "HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE"
+            },
+            "sourceRelationship": "HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE",
+            "historicalTestStatus": "MISSING_ENFORCING_NEGATIVE_NOT_MISSING_ALL_TEST_FILES",
+            "currentBaseCoverage": "NOT_VERIFIED",
+            "regressions": [
+              {
+                "path": "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts",
+                "pinnedSha": "fe4653d1013110555881585db3a447880dd463d3",
+                "pinned": {
+                  "path": "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "71eceaa9eb11f47715f15daa4ac187c495beacc9"
+                },
+                "currentBase": {
+                  "path": "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts",
+                  "presence": "MISSING",
+                  "blob": null
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              },
+              {
+                "path": "packages/rules/tests/match-session.test.ts",
+                "pinnedSha": "fe4653d1013110555881585db3a447880dd463d3",
+                "pinned": {
+                  "path": "packages/rules/tests/match-session.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "43f5b7fb959cc67cedc31c7336145d39276d7c0c"
+                },
+                "currentBase": {
+                  "path": "packages/rules/tests/match-session.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "22c6f8c83d73ffb2f96c84afad35fa9c36261a74"
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              },
+              {
+                "path": "docs/reviews/probes/review-475-independent.mjs",
+                "pinnedSha": "fe4653d1013110555881585db3a447880dd463d3",
+                "pinned": {
+                  "path": "docs/reviews/probes/review-475-independent.mjs",
+                  "presence": "MISSING",
+                  "blob": null
+                },
+                "currentBase": {
+                  "path": "docs/reviews/probes/review-475-independent.mjs",
+                  "presence": "MISSING",
+                  "blob": null
+                },
+                "role": "REVIEWER_PROBE_NOT_ENFORCING_REGRESSION"
+              }
+            ]
+          },
+          {
+            "id": "FD-REV-002",
+            "score": 12,
+            "risk": "HIGH",
+            "reasons": [
+              "contract:MUTATION_REVISION_GATE:+6",
+              "domain:session-authority:+3",
+              "domain:server-transport:+3"
+            ],
+            "catalogState": "SOURCE_VERIFIED_DRAFT",
+            "knowledgeState": "ACCEPTED_EXTRACTION_ONLY",
+            "invariants": [
+              "Every scoped mutation entry point requires a finite safe integer matching current revision before any state change; rejection is atomic."
+            ],
+            "forbiddenPatterns": [
+              "Optional revision on mutation commands or separate permissive end-turn gate."
+            ],
+            "negativeObligations": [
+              "Missing, null, string, negative, fractional, oversized and stale revisions reject for dispatch and end_turn via direct Hub and real WS; state/pending/logs/revision/version/broadcast remain unchanged."
+            ],
+            "commands": [
+              "npx vitest run apps/server/src/match-server.test.ts packages/rules/tests/match-room-hub.test.ts --maxWorkers=2"
+            ],
+            "constraintsState": "PINNED_DOCUMENT_CONSTRAINTS",
+            "source": {
+              "commit": "cf179ca3220a1646c484aa8c660b313e64449488",
+              "path": "docs/reviews/phase3/P3-E08-B11-463facb-final-combination-reviewer-b.json",
+              "sha256": "051f5e95c74e9c78546c391fd60f041d9baef29fbba857ec455a598f8d2395bf",
+              "availability": "VERIFIED_PINNED_BYTES",
+              "sourceReviewRelationship": "HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE"
+            },
+            "sourceRelationship": "HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE",
+            "historicalTestStatus": "EXISTS",
+            "currentBaseCoverage": "NOT_VERIFIED",
+            "regressions": [
+              {
+                "path": "apps/server/src/match-server.test.ts",
+                "pinnedSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+                "pinned": {
+                  "path": "apps/server/src/match-server.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "10248b72cc9a032bfefc7280d6fc44c529b5d56e"
+                },
+                "currentBase": {
+                  "path": "apps/server/src/match-server.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "cbaa99910de9785364bc3fdc0e0a29f9c625971f"
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              },
+              {
+                "path": "packages/rules/tests/match-room-hub.test.ts",
+                "pinnedSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+                "pinned": {
+                  "path": "packages/rules/tests/match-room-hub.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "d2c95bf2c918aa929b817bd472fa03d6b5c9f4cf"
+                },
+                "currentBase": {
+                  "path": "packages/rules/tests/match-room-hub.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "6813c545240bb1b16bfc539e91b8f9914584d5d5"
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              }
+            ]
+          },
+          {
+            "id": "FD-SHAPE-003",
+            "score": 12,
+            "risk": "HIGH",
+            "reasons": [
+              "contract:COMPILED_ENVELOPE_FAIL_CLOSED:+6",
+              "domain:ability-runtime:+3",
+              "domain:battle-reward:+3"
+            ],
+            "catalogState": "SOURCE_VERIFIED_DRAFT",
+            "knowledgeState": "ACCEPTED_EXTRACTION_ONLY",
+            "invariants": [
+              "Absent optional fields and malformed present fields remain distinguishable at privileged runtime gateways."
+            ],
+            "forbiddenPatterns": [
+              "Converting malformed supplied objects/arrays to an empty default before semantic validation."
+            ],
+            "negativeObligations": [
+              "Each of four malformed compiled containers must disable/reject the privileged gateway while minimal valid absent-field passive remains supported."
+            ],
+            "commands": [
+              "npx vitest run packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts --maxWorkers=2"
+            ],
+            "constraintsState": "PINNED_DOCUMENT_CONSTRAINTS",
+            "source": {
+              "commit": "b22691ab5311cd31f60eb91d573416fea3c7cf98",
+              "path": "docs/reviews/2026-10-10-pr-474-review.md",
+              "sha256": "f588a8b7062e7d57739e1f02b24bf7d939e06a8f203a5542ab374ba7f2f93adc",
+              "availability": "VERIFIED_PINNED_BYTES",
+              "sourceReviewRelationship": "HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE"
+            },
+            "sourceRelationship": "HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE",
+            "historicalTestStatus": "MISSING_ENFORCING_NEGATIVE_NOT_MISSING_ALL_TEST_FILES",
+            "currentBaseCoverage": "NOT_VERIFIED",
+            "regressions": [
+              {
+                "path": "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts",
+                "pinnedSha": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+                "pinned": {
+                  "path": "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts",
+                  "presence": "PRESENT_STATIC_ONLY",
+                  "blob": "a4c32bd6a919b78551bc154f1a02c0fa9d96e859"
+                },
+                "currentBase": {
+                  "path": "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts",
+                  "presence": "MISSING",
+                  "blob": null
+                },
+                "role": "STATIC_FILE_NOT_SEMANTIC_EXECUTION_PROOF"
+              },
+              {
+                "path": "docs/reviews/probes/review-474-independent.mjs",
+                "pinnedSha": "4dd8eca5746d63d72c7906716cb7118e2569872a",
+                "pinned": {
+                  "path": "docs/reviews/probes/review-474-independent.mjs",
+                  "presence": "MISSING",
+                  "blob": null
+                },
+                "currentBase": {
+                  "path": "docs/reviews/probes/review-474-independent.mjs",
+                  "presence": "MISSING",
+                  "blob": null
+                },
+                "role": "REVIEWER_PROBE_NOT_ENFORCING_REGRESSION"
+              }
+            ]
+          }
+        ],
+        "overflow": [
+          {
+            "id": "FD-EVID-005",
+            "score": 9,
+            "risk": "MEDIUM",
+            "reasons": [
+              "contract:EXACT_EXECUTION_RECEIPTS:+6",
+              "domain:evidence-tooling:+3"
+            ]
+          }
+        ],
+        "unknown": [
+          {
+            "id": "FD-SHA-007",
+            "decision": "NOT_ADDED_UNKNOWN",
+            "reason": "27dab1ad proves missing review-reference contract, not wrong candidate/reviewer SHA; no terminal identity mismatch finding selected"
+          },
+          {
+            "id": "FD-FALLBACK-008",
+            "decision": "NOT_ADDED_UNKNOWN",
+            "reason": "No pinned failing setup/data-flow source in assigned selection; later closed-fallback declarations cannot establish a historical failure"
+          },
+          {
+            "id": "FD-REVIEW-009",
+            "decision": "NOT_ADDED_UNKNOWN",
+            "reason": "PR475 records separate historical relay and independent review; it does not prove relay was mistaken for this review"
+          },
+          {
+            "id": "FD-WRITER-010",
+            "decision": "NOT_ADDED_UNKNOWN",
+            "reason": "Reservation boundary records do not prove an actual competing writer or conflict occurrence"
+          }
+        ],
+        "historicalRisk": "CRITICAL",
+        "cacheHit": false,
+        "elapsedMs": 6043.58,
+        "synthetic": false,
+        "inputDigest": "832dec75e52f35993f8cf00c665d7c5822275d6a3a3ccace34d0c92dabd72a7d",
+        "knowledgeDigest": "3ae0f2ab502bed1890975c42957918a2d8ccd0c7f0754318ec8e8ec8987a5587",
+        "sourceDigest": "3e6a35f1ed1deb1b95514320eb6ee3f1f5bdf7135d31396521a847d1c3e375cd",
+        "engineDigest": "654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371",
+        "cacheKey": "6800d2ccaec0e8373bea37f316067e89a330dd9881da1d7308be60fb5c2c3211",
+        "relevantSourceObjects": [
+          {
+            "path": "apps/server/src/match-server.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "cbaa99910de9785364bc3fdc0e0a29f9c625971f"
+          },
+          {
+            "path": "apps/server/src/match-server.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "afc45e698a612e5226dd8bb57b927f089dac85b7"
+          },
+          {
+            "path": "data/authoring/servants/servant.stheno.json",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "21ebf0d3ff1df23ea8aa16b6ba362d7f6eee3ffb"
+          },
+          {
+            "path": "docs/engineering/lessons/BATCH-TASK-TEMPLATE.md",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "aa58d90605110500b189dd08249c9520d30d80ce"
+          },
+          {
+            "path": "docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "bb741cbeb8e5cb1d03379309ed78c23ae77b15d2"
+          },
+          {
+            "path": "docs/engineering/lessons/INDEX.md",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "bd2cf1005e4f83810936f20585ce39c5aef21e48"
+          },
+          {
+            "path": "docs/reviews/probes/review-474-independent.mjs",
+            "presence": "MISSING",
+            "blob": null
+          },
+          {
+            "path": "docs/reviews/probes/review-475-independent.mjs",
+            "presence": "MISSING",
+            "blob": null
+          },
+          {
+            "path": "packages/rules/src/ability/combat-reward-distribution.ts",
+            "presence": "MISSING",
+            "blob": null
+          },
+          {
+            "path": "packages/rules/src/ability/interpreter.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "b19b61493841ae0d46b5cf179feaa89dec0147d5"
+          },
+          {
+            "path": "packages/rules/src/match-room-hub.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "a4f8d8b5dc0845ac5b0d18e5e0b06fc4c61dee11"
+          },
+          {
+            "path": "packages/rules/src/match-room-protocol.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "dbf6044f486bc8ea440d939469394c16fe599536"
+          },
+          {
+            "path": "packages/rules/src/match-room.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "7e850652fceae69bb25453616cb57ed13115167a"
+          },
+          {
+            "path": "packages/rules/src/match-session.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "3418ff800b605a6a6e8c93f76eb072699c5c6378"
+          },
+          {
+            "path": "packages/rules/tests/match-room-hub.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "6813c545240bb1b16bfc539e91b8f9914584d5d5"
+          },
+          {
+            "path": "packages/rules/tests/match-room.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "6a804cddce0442d84cddb9416631c4d365785b3e"
+          },
+          {
+            "path": "packages/rules/tests/match-session.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "blob": "22c6f8c83d73ffb2f96c84afad35fa9c36261a74"
+          },
+          {
+            "path": "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts",
+            "presence": "MISSING",
+            "blob": null
+          },
+          {
+            "path": "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts",
+            "presence": "MISSING",
+            "blob": null
+          },
+          {
+            "path": "scripts/engineering/historical-failure-preflight.ts",
+            "presence": "MISSING",
+            "blob": null
+          },
+          {
+            "path": "scripts/phase3-preflight.ts",
+            "presence": "MISSING",
+            "blob": null
+          },
+          {
+            "path": "scripts/tests/engineering-failure-preflight.test.ts",
+            "presence": "MISSING",
+            "blob": null
+          },
+          {
+            "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+            "presence": "MISSING",
+            "blob": null
+          },
+          {
+            "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+            "presence": "MISSING",
+            "blob": null
+          }
+        ],
+        "workingTreeRelevantObjects": [
+          {
+            "path": "apps/server/src/match-server.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "73476c9f95227699b0ff010dbbab2432b10de0661de4bef9a760e38b2492feab"
+          },
+          {
+            "path": "apps/server/src/match-server.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "7e0bc3114887fe34966f64654e0d6612e8e96df8fd5289e9d26885bd0aba2758"
+          },
+          {
+            "path": "data/authoring/servants/servant.stheno.json",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "ff23d09f28388c5665881522a304695bbf2c9ae0df74fdb27162954447c855f1"
+          },
+          {
+            "path": "docs/engineering/lessons/BATCH-TASK-TEMPLATE.md",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "c185331a7fed5671cae474fe5f477499d249cea4affe9ed4b800352ffd479689"
+          },
+          {
+            "path": "docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "569e114c87aa701d45470e9457b515c988648594998785455a71f0abdef42ea9"
+          },
+          {
+            "path": "docs/engineering/lessons/INDEX.md",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "221ea95e9d948ef2ce04a0768761c19a9263f3d5b823abc049a0b9f27ae33c49"
+          },
+          {
+            "path": "docs/reviews/probes/review-474-independent.mjs",
+            "presence": "MISSING",
+            "sha256": null
+          },
+          {
+            "path": "docs/reviews/probes/review-475-independent.mjs",
+            "presence": "MISSING",
+            "sha256": null
+          },
+          {
+            "path": "packages/rules/src/ability/combat-reward-distribution.ts",
+            "presence": "MISSING",
+            "sha256": null
+          },
+          {
+            "path": "packages/rules/src/ability/interpreter.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "b2c8bb82836eb7291afc0ef5850103665e954b5ae3525066ab98f25a2e6a80d1"
+          },
+          {
+            "path": "packages/rules/src/match-room-hub.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "54cf729dba698e4d73e95c61e7feb9cb7cc279bd17bbe43dc10fab93620f3fa6"
+          },
+          {
+            "path": "packages/rules/src/match-room-protocol.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "519e594130a70d78ab38f00dd45ec7c04dc359dc4b3c069e92be50aea53d50c2"
+          },
+          {
+            "path": "packages/rules/src/match-room.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "c11bd950b01524c5d988b35d60cf6a4ddeb071b7af9506b3f8090f370ff17bd9"
+          },
+          {
+            "path": "packages/rules/src/match-session.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "a4b440bda535956819d557e89c5c095c765f88b349c78c62d767b3c7a1918c12"
+          },
+          {
+            "path": "packages/rules/tests/match-room-hub.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "002df4f377831a3181e0fce71e517e39888d2f4510cd7389003a90690e0f98f2"
+          },
+          {
+            "path": "packages/rules/tests/match-room.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "58e576702c95deb0149f92d4b776eeec0eae38c44d7cbeb2a5700e6b745b6933"
+          },
+          {
+            "path": "packages/rules/tests/match-session.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "716e0dd2c81e0732065d74bffd968a37354c5039a887e17ca486a060670107d2"
+          },
+          {
+            "path": "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts",
+            "presence": "MISSING",
+            "sha256": null
+          },
+          {
+            "path": "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts",
+            "presence": "MISSING",
+            "sha256": null
+          },
+          {
+            "path": "scripts/engineering/historical-failure-preflight.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371"
+          },
+          {
+            "path": "scripts/phase3-preflight.ts",
+            "presence": "MISSING",
+            "sha256": null
+          },
+          {
+            "path": "scripts/tests/engineering-failure-preflight.test.ts",
+            "presence": "PRESENT_STATIC_ONLY",
+            "sha256": "58235fe17face150db36985d787a51ab5b452001c044629f74f28b3992678757"
+          },
+          {
+            "path": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+            "presence": "MISSING",
+            "sha256": null
+          },
+          {
+            "path": "scripts/tests/phase3-readiness-preflight.test.ts",
+            "presence": "MISSING",
+            "sha256": null
+          }
+        ],
+        "reportOnlyTaskOutputs": [
+          "docs/engineering/lessons/K02-EXECUTION.json",
+          "docs/engineering/lessons/K02-HANDOFF.md"
+        ],
+        "knowledgeReview": {
+          "commit": "2470f00902bd650bc3122f518b18333afed323f3",
+          "candidate": "ccbdf647a545e08f09a8067c8f2c4659f849889a",
+          "path": "docs/reviews/phase3/P3-EFP-K01-ccbdf647-reviewer-a.json",
+          "sha256": "da0f45fded94f1dc941a3a6b7a91da586d2de36b0188ec8f3662fcbaf9b98687",
+          "acceptedScope": "EXACT_K01_HISTORICAL_SOURCE_EXTRACTION_PROVENANCE_AND_REGRESSION_GAP_DOCUMENTATION_ONLY",
+          "currentBaseExecutionAccepted": false
+        },
+        "controlEpoch": "FD-P3-2026-09-23-09",
+        "criticalOverflow": [],
+        "scopeSplittingAlert": true,
+        "missingCoverage": [
+          {
+            "id": "FD-SEC-001",
+            "historical": "EXISTS",
+            "currentBase": "NOT_VERIFIED",
+            "missingPaths": []
+          },
+          {
+            "id": "FD-FIXTURE-006",
+            "historical": "EXISTS_CANDIDATE_RECEIPTS_NOT_ACCEPTED_BY_THIS_TASK",
+            "currentBase": "NOT_VERIFIED",
+            "missingPaths": [
+              "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+              "scripts/tests/phase3-readiness-preflight.test.ts"
+            ]
+          },
+          {
+            "id": "FD-RESTORE-004",
+            "historical": "MISSING_ENFORCING_NEGATIVE_NOT_MISSING_ALL_TEST_FILES",
+            "currentBase": "NOT_VERIFIED",
+            "missingPaths": [
+              "packages/rules/tests/regression/p3-owner-stheno-complete-migration.test.ts",
+              "docs/reviews/probes/review-475-independent.mjs"
+            ]
+          },
+          {
+            "id": "FD-REV-002",
+            "historical": "EXISTS",
+            "currentBase": "NOT_VERIFIED",
+            "missingPaths": []
+          },
+          {
+            "id": "FD-SHAPE-003",
+            "historical": "MISSING_ENFORCING_NEGATIVE_NOT_MISSING_ALL_TEST_FILES",
+            "currentBase": "NOT_VERIFIED",
+            "missingPaths": [
+              "packages/rules/tests/regression/p3-stheno-full-reward-each-readiness-capability.test.ts",
+              "docs/reviews/probes/review-474-independent.mjs"
+            ]
+          }
+        ],
+        "sourceAvailability": "VERIFIED_PINNED_BYTES",
+        "execution": "NO_REGRESSIONS_OR_RUNTIME_EXECUTED",
+        "creditDelta": 0
+      }
+    },
+    "unitFixtureMeaning": "SYNTHETIC_PARSER_MATCHING_INTEGRITY_TESTS_ONLY_NO_HISTORICAL_OR_GITHUB_PROOF"
+  },
+  "validation": {
+    "focused": {
+      "files": 1,
+      "tests": 22,
+      "exitCode": 0
+    },
+    "targetedTypecheckExit": 0,
+    "cacheReuse": true,
+    "errors": [],
+    "fullCi": "NOT_RUN_NOT_AUTHORIZED",
+    "playwright": "NOT_RUN_NOT_AUTHORIZED",
+    "stagedDiffCheckExit": 0
+  },
+  "historicalDevelopmentFailures": [
+    {
+      "command": "npx vitest run scripts/tests/engineering-failure-preflight.test.ts --maxWorkers=1",
+      "exitCode": 1,
+      "result": "Initial RED: missing implementation module",
+      "evidence": "CODEX_TOOL_TRANSCRIPT_ONLY_NO_COMMITTED_RAW_LOG_CLAIM"
+    },
+    {
+      "command": "npx vitest run scripts/tests/engineering-failure-preflight.test.ts --maxWorkers=1",
+      "exitCode": 1,
+      "result": "First implementation attempt: 11/12 PASS; multi-operation cache test exceeded 5000 ms; split all preserved assertions and memoized exact Git reads; no timeout increase",
+      "evidence": "CODEX_TOOL_TRANSCRIPT_ONLY_NO_COMMITTED_RAW_LOG_CLAIM"
+    }
+  ],
+  "boundaries": {
+    "runtimeChanged": false,
+    "B11Changed": false,
+    "packageWorkflowChanged": false,
+    "historicalCaseFieldsRewritten": false,
+    "regressionsExecuted": 0,
+    "acceptanceGranted": false,
+    "gatePromotionGranted": false,
+    "creditDelta": 0,
+    "denominatorDelta": 0,
+    "mainComparison": "NOT_REQUESTED; KNOWLEDGE_REVIEW_LINEAGE_NOT_CURRENT_MAIN",
+    "gateC": "NOT_VERIFIED",
+    "sourceAssetsMissing": 93,
+    "cacheSpeedup": "NOT_MEASURED",
+    "integration": "NOT_AUTHORIZED",
+    "reservationReleased": false
+  },
+  "nextOwner": "Reviewer A",
+  "executionEnvironment": {
+    "node": "v24.13.1",
+    "platform": "win32",
+    "architecture": "x64",
+    "temporaryDirectory": "D:/fd-validation/temp",
+    "packageLockSha256": "FC6C2F52D0B092461C0A8538810B49FC10CA72B28D8F35AB654F3EC502476C58",
+    "tsxVersion": "4.21.0",
+    "vitestVersion": "3.2.7",
+    "typescriptVersion": "5.9.3",
+    "dependencyInstall": "npm ci exit 0 before implementation freeze; 239 packages; 12 audit findings retained; not a new raw receipt claim"
+  },
+  "scopeValidation": {
+    "sourcePaths": [
+      "docs/engineering/lessons/BATCH-TASK-TEMPLATE.md",
+      "docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md",
+      "docs/engineering/lessons/INDEX.md",
+      "scripts/engineering/historical-failure-preflight.ts",
+      "scripts/tests/engineering-failure-preflight.test.ts"
+    ],
+    "evidencePaths": [
+      "docs/engineering/lessons/K02-EXECUTION.json",
+      "docs/engineering/lessons/K02-HANDOFF.md"
+    ],
+    "onlyAuthorizedPaths": true
+  }
+}
