@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "fd-planner-writer-reservation-v1",
+  "reservationId": "P3-EFP-K02-TOOLING",
+  "issuedDate": "2026-10-13",
+  "issuerRole": "Planner / Process Controller",
+  "ownerRole": "Codex A / engineering evidence automation",
+  "ownerTask": "P3-EFP-K02",
+  "status": "GRANTED_PENDING_OWNER_BINDING",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "observedMain": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+  "requiredBase": "2470f00902bd650bc3122f518b18333afed323f3",
+  "resourceDomains": [
+    "engineering-failure-preflight"
+  ],
+  "sourceAndTestPaths": [
+    "scripts/engineering/historical-failure-preflight.ts",
+    "scripts/tests/engineering-failure-preflight.test.ts"
+  ],
+  "evidencePaths": [
+    "docs/engineering/lessons/K02-HANDOFF.md",
+    "docs/engineering/lessons/K02-EXECUTION.json"
+  ],
+  "knowledgePaths": [
+    "docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md",
+    "docs/engineering/lessons/BATCH-TASK-TEMPLATE.md",
+    "docs/engineering/lessons/INDEX.md"
+  ],
+  "preGrantObservation": {
+    "registeredWorktrees": 235,
+    "inaccessibleWorktrees": 6,
+    "existingNewTargetFiles": 0,
+    "method": "Read-only existence checks for the two exact new files in accessible registered worktree directories; no corresponding reservation found in inspected Planner manifests",
+    "limitations": "Not a process lock, remote fork scan or inaccessible-worktree audit; preserves any subsequently discovered conflict"
+  },
+  "ownerBinding": {
+    "branch": null,
+    "absoluteWorktree": null,
+    "acknowledgement": "PENDING_OWNER_HANDOFF"
+  },
+  "conditions": "Designated A binds branch/worktree/exact base before edits. Preserve and report any competing edits/reservation; do not reset. B11/runtime reservations unchanged.",
+  "release": "Explicit Planner release/transfer after frozen handoff; no automatic transfer",
+  "heavyTests": "NOT_GRANTED; tiny isolated automation unit tests only",
+  "runtimeAcceptance": false,
+  "integrationAuthorized": false,
+  "creditDelta": 0
+}
