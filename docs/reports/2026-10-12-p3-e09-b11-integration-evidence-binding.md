@@ -1,76 +1,48 @@
-# B11 Integration Closure Test Stability
+# B11 Temporal Fixture Finalization
 
-Task: P3-E09-B11-INTEGRATION-CLOSURE-TEST-STABILITY. Epoch: FD-P3-2026-09-23-09.
-Status: TOOLING_CANDIDATE_READY_FOR_INDEPENDENT_REVIEW_OVERALL_BLOCKED. Independent Reviewer A acceptance remains pending.
+Execution task: P3-E09-B11-TEMPORAL-FIXTURE-FINALIZATION. Epoch: FD-P3-2026-09-23-09. Frozen closure/review contract task: P3-E09-B11-INTEGRATION-CLOSURE-REPAIR; retained for exact current review-reference validation, not an alias or acceptance upgrade.
 
-Implementation SHA: 078b79c714e0d3814dd03942ba77abd7d5c7599a. Carrier: external containing commit, never a self hash.
-Artifact: artifacts/phase3-e09-b11-integration-evidence-binding.json. SHA-256: 03F7F5EAD4127117193CA9A5AEC0D99F0E0FAA6071B696511BCBF47AAA7A71F1.
+Planner: 6ea26f3bc12fc3bda37b6b2607fd6edda452eee3, docs/agents/P3-E09-B11-TEMPORAL-FIXTURE-FINALIZATION.md, SHA-256 ED75593972E4378B2B94A470D2D58BB2ABA230AB965ECC1018588C1D475DC3F7.
+Inspected real assembly: 487ab81a8e3fabf75eea5a73cd3582b37cf65520. Implementation: f1b3588b0b9eb4be943fa127ae24409e067566bf. Final carrier identity is the external containing commit.
+Packet: artifacts/phase3-e09-b11-integration-evidence-binding.json. SHA-256: E8FD40E8B0F74701755CDAB3135D58E0DC3A7C08AAC7C4DA9652BB622B38103E. Status: IMPLEMENTATION_COMPLETE_CANDIDATE. Overall readiness remains BLOCKED.
 
-## Exact Authorization And Scope
+## Repair And Temporal Contract
 
-Original authorization: bd0dabe80c40cdc3bae024303b68851d11f980b2. Supplemental authorization: 4ecae8e9097d28d401df5a2cf0eec96be28ebe08. Failed carrier: cfa6a92551a939709b85a787d9044e19ec00f0ef. Only the seven exact authorized paths are writable. Preflight admits the three exact test paths only through reconstructed commit/path/hash/task/lineage binding, not a directory or arbitrary Planner commit. Missing/forged authorization and unknown actual paths remain rejected. Historical mode remains intact. Runtime, authoring, workflow, package scripts, KPI and migration credit are unchanged.
+Unit producer fixtures start at exact pre-review SHA b5e68444f55ea9fc1a86a9eea0ea0bedce3de229, never executing HEAD. Their validator is imported from the tested implementation; frozen historical code is data only. Existing synthetic candidate/RA/G/synchronization/final chain and all negative assertions are retained. The inspected real 487ab81 assembly is verified with explicit ASSEMBLED references. New source lineage explicitly preserves its prior RA/G as immutable historical inputs, via full authorization commit/path/hash and exact source lineage. Unknown files and missing/forged references still reject. No added directory/path exception, inferred stage, timeout, workflow/package or runtime change.
 
-## Frozen Execution
+The new producer remains awaiting its own RA. The previous real PASS only accepts its original source. For the new candidate, future RA and G remain external exact references; they are never embedded as promised future proofs. A's synthetic PASS objects are test-only and never GitHub attestations or acceptance.
 
-All raw stdout/stderr, byte counts, hashes, exit codes, source SHA and before/after status are committed in the packet. Both focused executions target the same clean implementation. No claim that CI executed on the later evidence-only carrier. All prior failures and receipts remain in the immutable failed packet embedded with its exact source hash. npm ci reports 12 vulnerability advisories; no dependency repair is authorized.
+## Two Clean Execution Stages
 
-| Receipt | Command | Exit | Source phase | Result |
-| --- | --- | --- | --- | --- |
-| stability-v1-default-ci | npm run test:ci | 1 | HISTORICAL_SUPERSEDED_IMPLEMENTATION_EXECUTION | Test Files  1 failed / 193 passed (194); Tests  1588 passed / 12 skipped (1600) |
-| stability-v1-diff-check | git diff --check cfa6a925..HEAD | 0 | HISTORICAL_SUPERSEDED_IMPLEMENTATION_EXECUTION | See full raw streams |
-| stability-v1-focused-1 | npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts --maxWorkers=2 | 0 | HISTORICAL_SUPERSEDED_IMPLEMENTATION_EXECUTION | Test Files  2 passed (2); Tests  76 passed (76) |
-| stability-v1-focused-2 | npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts --maxWorkers=2 | 0 | HISTORICAL_SUPERSEDED_IMPLEMENTATION_EXECUTION | Test Files  2 passed (2); Tests  76 passed (76) |
-| stability-v1-implementation-preflight | node --import tsx D:/fd-validation/check-e09-stability.mjs | 0 | HISTORICAL_SUPERSEDED_IMPLEMENTATION_EXECUTION | See full raw streams |
-| stability-v1-npm-ci | npm ci | 0 | HISTORICAL_SUPERSEDED_IMPLEMENTATION_EXECUTION | See full raw streams |
-| stability-v1-typecheck | npm run typecheck | 0 | HISTORICAL_SUPERSEDED_IMPLEMENTATION_EXECUTION | See full raw streams |
-| stability-v2-default-ci | npm run test:ci | 0 | FROZEN_IMPLEMENTATION_EXECUTION | Test Files  194 passed (194); Tests  1600 passed (1600) |
-| stability-v2-diff-check | git diff --check cfa6a925..HEAD | 0 | FROZEN_IMPLEMENTATION_EXECUTION | See full raw streams |
-| stability-v2-focused-1 | npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts --maxWorkers=2 | 0 | FROZEN_IMPLEMENTATION_EXECUTION | Test Files  2 passed (2); Tests  76 passed (76) |
-| stability-v2-focused-2 | npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts --maxWorkers=2 | 0 | FROZEN_IMPLEMENTATION_EXECUTION | Test Files  2 passed (2); Tests  76 passed (76) |
-| stability-v2-implementation-preflight | node --import tsx D:/fd-validation/check-e09-stability.mjs | 0 | FROZEN_IMPLEMENTATION_EXECUTION | See full raw streams |
-| stability-v2-npm-ci | npm ci | 0 | FROZEN_IMPLEMENTATION_EXECUTION | See full raw streams |
-| stability-v2-parity-focused | npx vitest run scripts/tests/phase3-contract-parity.test.ts --maxWorkers=2 | 0 | FROZEN_IMPLEMENTATION_EXECUTION | Test Files  1 passed (1); Tests  12 passed (12) |
-| stability-v2-typecheck | npm run typecheck | 0 | FROZEN_IMPLEMENTATION_EXECUTION | See full raw streams |
+Producer tested SHA: f1b3588b0b9eb4be943fa127ae24409e067566bf. Synthetic candidate: d2e92eb9def92e595f59a623c005218510235d6e. Synthetic final tested HEAD: 994943f9bb9bfd0da764971b133b6147faedcadd. RA: 748c6661547e79f9e6b663a65a90b2bf3bf87f7a. G: 3d435d5fec847f8d0ad4300a4ebd1babdc4d70c0. Synchronization: 8d2befdba6fc6369822319aeb3168f6dd0872a59.
 
-## Local Budgets And Measurements
+Both checkouts run npm ci, typecheck, the same three-suite focused command, default npm run test:ci, diff-check and explicit temporal preflight. All source/config/workflow objects match between implementation and synthetic assembly; only the five declared test-only packet/review/G paths vary. No full CI claim for the later evidence-only carrier. Preparation is separately marked unfrozen. All stdout/stderr bytes, hashes, timestamps, exit codes, exact source SHA and before/after cleanliness are embedded.
 
-| File | Named test/hook | Old ms | New ms |
+| Receipt | Tested SHA | Exit | Result |
 | --- | --- | --- | --- |
-| scripts/tests/phase3-e09-b11-final-binding.test.ts | shared historical objects and transport binding | 10000 | 30000 |
-| scripts/tests/phase3-e09-b11-final-binding.test.ts | frozen producer and contract binding | 10000 | 30000 |
-| scripts/tests/phase3-e09-b11-final-binding.test.ts | independent exact review fixture | 10000 | 30000 |
-| scripts/tests/phase3-e09-b11-final-binding.test.ts | three exact governance outputs | 10000 | 30000 |
-| scripts/tests/phase3-e09-b11-final-binding.test.ts | synchronization and actual final HEAD | 10000 | 30000 |
-| scripts/tests/phase3-e09-b11-final-binding.test.ts | complete new candidate RA G final proof | 10000 | 60000 |
-| scripts/tests/phase3-e09-b11-final-binding.test.ts | complete real rejected historical proof | 10000 | 60000 |
-| scripts/tests/phase3-e09-b11-final-binding.test.ts | rejects %s in the assembled closure | 5000 | 30000 |
-| scripts/tests/phase3-e09-b11-final-binding.test.ts | rejects actual final review blob tampering even if the original source hash remains valid | 5000 | 30000 |
-| scripts/tests/phase3-e09-b11-final-binding.test.ts | rejects committed final %s changes rather than accepting a reviewed ancestor | 5000 | 30000 |
-| scripts/tests/phase3-e09-b11-final-binding.test.ts | restore exact transport fixture | 10000 | 30000 |
-| scripts/tests/phase3-e09-b11-final-binding.test.ts | recomputes current coverage separately without rewriting the historical artifact or classifier | 5000 | 30000 |
-| scripts/tests/phase3-e09-b11-final-binding.test.ts | immutable integration contract and checkout | 10000 | 30000 |
-| scripts/tests/phase3-e09-b11-final-binding.test.ts | complete preserved main and technical preflight | 10000 | 60000 |
-| scripts/tests/phase3-e09-b11-final-binding.test.ts | rejects a rewritten accepted Reviewer A artifact instead of inheriting its old PASS | 5000 | 30000 |
-| scripts/tests/phase3-readiness-preflight.test.ts | beforeAll-1 | NEW_INDEPENDENT_CASE_OR_HOOK | 30000 |
-| scripts/tests/phase3-readiness-preflight.test.ts | admits the exact authorized parity delta without granting acceptance | NEW_INDEPENDENT_CASE_OR_HOOK | 60000 |
-| scripts/tests/phase3-readiness-preflight.test.ts | rejects the parity delta when exact continuation authority is absent | NEW_INDEPENDENT_CASE_OR_HOOK | 30000 |
-| scripts/tests/phase3-readiness-preflight.test.ts | rejects forged or mismatched %s authorization | NEW_INDEPENDENT_CASE_OR_HOOK | 15000 |
-| scripts/tests/phase3-readiness-preflight.test.ts | rejects an actual extra test file instead of admitting a tests directory | NEW_INDEPENDENT_CASE_OR_HOOK | 30000 |
-| scripts/tests/phase3-readiness-preflight.test.ts | rejects output tampering even after a caller recomputes the receipt hash | 5000 | 30000 |
-| scripts/tests/phase3-readiness-preflight.test.ts | fails closed for invalid current %s inputs | 5000 | 15000 |
-| scripts/tests/phase3-readiness-preflight.test.ts | rejects %s independently | 30000 | 15000 |
-| scripts/tests/phase3-contract-parity.test.ts | beforeAll-2 | NEW_INDEPENDENT_CASE_OR_HOOK | 30000 |
-| scripts/tests/phase3-contract-parity.test.ts | rejects local drift in %s before executing candidate APIs | 15000 | 30000 |
-| scripts/tests/phase3-contract-parity.test.ts | rejects an incomplete adapter closure independently | NEW_INDEPENDENT_CASE_OR_HOOK | 5000 |
+| temporal-assembled-bundle-verify | 994943f9bb9bfd0da764971b133b6147faedcadd | 0 | git bundle verify D:/fd-validation/e09-temporal-metadata/synthetic-assembly.bundle |
+| temporal-assembled-default-ci | 994943f9bb9bfd0da764971b133b6147faedcadd | 0 | Test Files  194 passed (194); Tests  1607 passed (1607) |
+| temporal-assembled-diff-check | 994943f9bb9bfd0da764971b133b6147faedcadd | 0 | git diff --check f1b3588b..HEAD |
+| temporal-assembled-focused | 994943f9bb9bfd0da764971b133b6147faedcadd | 0 | Test Files  3 passed (3); Tests  95 passed (95) |
+| temporal-assembled-git-bundle | 994943f9bb9bfd0da764971b133b6147faedcadd | 0 | git bundle create D:/fd-validation/e09-temporal-metadata/synthetic-assembly.bundle HEAD ^f1b3588b0b9eb4be943fa127ae24409e067566bf |
+| temporal-assembled-npm-ci | 994943f9bb9bfd0da764971b133b6147faedcadd | 0 | npm ci |
+| temporal-assembled-preflight | 994943f9bb9bfd0da764971b133b6147faedcadd | 0 | node --import tsx D:/fd-validation/check-e09-temporal.mjs assembled D:/fd-validation/a-e09-b11-temporal-assembly |
+| temporal-assembled-scoped-bundle | 994943f9bb9bfd0da764971b133b6147faedcadd | 0 | node D:/fd-validation/bundle-e09-temporal.mjs |
+| temporal-assembled-typecheck | 994943f9bb9bfd0da764971b133b6147faedcadd | 0 | npm run typecheck |
+| temporal-preparation-npm-ci | 487ab81a8e3fabf75eea5a73cd3582b37cf65520 | 0 | npm ci |
+| temporal-producer-build-synthetic | f1b3588b0b9eb4be943fa127ae24409e067566bf | 0 | node --import tsx D:/fd-validation/build-e09-temporal-assembly.mjs |
+| temporal-producer-default-ci | f1b3588b0b9eb4be943fa127ae24409e067566bf | 0 | Test Files  194 passed (194); Tests  1607 passed (1607) |
+| temporal-producer-diff-check | f1b3588b0b9eb4be943fa127ae24409e067566bf | 0 | git diff --check 487ab81..HEAD |
+| temporal-producer-focused | f1b3588b0b9eb4be943fa127ae24409e067566bf | 0 | Test Files  3 passed (3); Tests  95 passed (95) |
+| temporal-producer-npm-ci | f1b3588b0b9eb4be943fa127ae24409e067566bf | 0 | npm ci |
+| temporal-producer-preflight | f1b3588b0b9eb4be943fa127ae24409e067566bf | 0 | node --import tsx D:/fd-validation/check-e09-temporal.mjs producer D:/fd-validation/a-e09-b11-temporal-finalization |
+| temporal-producer-typecheck | f1b3588b0b9eb4be943fa127ae24409e067566bf | 0 | npm run typecheck |
+| temporal-real-assembly-preflight | 487ab81a8e3fabf75eea5a73cd3582b37cf65520 | 0 | node --import tsx D:/fd-validation/check-e09-temporal.mjs real-historical C:/Users/chenshang/.config/superpowers/worktrees/fd/i-p3-e09-b11-final-promotion-v3 |
 
-Actual hook durations and individual slow-case durations are recorded verbatim under execution.timingObservations, with receipt IDs and full raw streams for independent replay. Fast cases without per-case console duration remain below the Vitest reporting threshold, not falsely measured as zero. New authorization tests have local 15s/30s/60s budgets and preserve all positive and negative assertions. No global timeout, retry, skip, workflow or concurrency change. Shared fixture bytes are independently hashed before reuse; validation still reads live dirty state and exact Git objects.
+## Historical Failures And Remaining Boundaries
 
-## Historical And External Boundaries
+Prior I failure at 487ab81a8e3fabf75eea5a73cd3582b37cf65520: user-reported 192/194 files, 1578 passed / 2 failed / 20 skipped, Unknown integration delta from wrong producer lifecycle. Original I receipt index and stdout/stderr were located, matched exact 487ab81 head/exit/hash/byte counts, and are embedded under previousIntegrationFailure. This preserves the genuine failed run; A did not reexecute or reclassify it. Other historical missing evidence stays missing. All older packet and failure receipts are retained as exact Git-bound history, not replaced by fresh success. npm ci's 12 audit advisories remain without unauthorized dependency changes.
 
-The previous focused 43/3/20 review failure, original default/isolated parity failure and all earlier authorization, CI RPC and history issues are preserved; they are not replaced by fresh success. Technical preflight retains BLOCKED for new RA, fresh G/policy and source assets. Historical RA/G do not accept the new source. Final carrier preflight is captured externally after commit to avoid a self-referential receipt; actual post-RA/post-G assembly must still run evidence plus ancestry/policy checks. No new runtime/browser tests or GitHub checks are claimed.
+A delivers a scoped candidate only. RA independently reviews exact carrier and verifies post-review checkout portability. G must bind the new carrier and RA. I must then execute focused/default CI and both evidence/ancestry-policy checks on the actual real final HEAD before a single Promotion PR; synthetic A tests do not replace that execution. GitHub required checks and human merge remain pending. No role-level PR.
 
-Credit delta=0; accounting=111/944; 93 MISSING_IMAGE and Global Gate C NOT_VERIFIED remain. Overall promotion/readiness PASS is not granted. No PR or C01 dispatch. Next: Reviewer A reviews the one frozen carrier; only after independent PASS can G rebind and I verify the real final assembly.
-
-## Preserved First Repair Failure
-
-Implementation 0018479cc53e54ce519927c51b6e524584f7bed4 passed both focused runs (76/76 each), but its default CI failed (193/194 files, 1588 passed / 12 skipped): the newly introduced fixture byte-hash assertion saw Git CRLF conversion instead of bound LF blob bytes. The assertion was not removed or normalized; only the isolated fixture checkout uses core.autocrlf=false so its actual bytes match the exact Git blob. All initial receipts remain historical. Fresh current results belong only to the new frozen implementation, never to the failed one.
+Credit/main/migration/denominator delta=0, promotedOnMain=false, ledger 111/944. 93 MISSING_IMAGE, Global Gate C and long-term stability remain unverified/blocked. No runtime or socket repair, no new consumer, no KPI/taxonomy or historical review rewrite.
