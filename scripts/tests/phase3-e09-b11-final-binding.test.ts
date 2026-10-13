@@ -11,17 +11,27 @@ import { hash } from '../phase3-tooling-common';
 import { assertSameEvidence, buildSnapshotAtCheckout } from '../phase3-e08-b11-coverage-sync';
 
 const root = resolve(fileURLToPath(new URL('../..', import.meta.url)));
-const input = buildE09FinalBinding(root);
+let input: ReturnType<typeof buildE09FinalBinding>;
 let directory: string;
 const gitProbe = (...args: string[]) => execFileSync('git', args, { cwd: directory, encoding: 'utf8', stdio: 'pipe' });
-beforeAll(() => {
+const prepareGitFixture = (name: string, prepare: () => void) => async () => {
+  const started = performance.now();
+  try { prepare(); }
+  finally {
+    console.info('FD_EVIDENCE_FIXTURE_TIMING', JSON.stringify({ file: 'phase3-e09-b11-final-binding.test.ts', name, durationMs: Math.round(performance.now() - started) }));
+    await yieldToEventLoop();
+  }
+};
+afterEach(async () => { await yieldToEventLoop(); });
+beforeAll(prepareGitFixture('shared historical objects and transport binding', () => {
+  input = buildE09FinalBinding(root);
   directory = mkdtempSync(join(tmpdir(), 'fd-e09-evidence-negative-'));
   execFileSync('git', ['clone', '--shared', '--no-checkout', '--', root, directory], { stdio: 'pipe' });
   gitProbe('checkout', '--detach', '086a86a24f5cf0991b3743ceb28b34a767252070');
-});
+}), 30_000);
 
 describe('candidate -> independent RA -> G -> synchronization -> actual final HEAD closure', () => {
-  const producer = buildE09ClosureProducerBinding(root);
+  let producer: ReturnType<typeof buildE09ClosureProducerBinding>;
   let producerHead: string;
   let current: E09ClosureInputs;
   let positive: ReturnType<typeof validateE09IntegrationClosure>;
@@ -35,12 +45,13 @@ describe('candidate -> independent RA -> G -> synchronization -> actual final HE
     gitProbe('-c', 'user.name=Test-only evidence fixture', '-c', 'user.email=fixture@example.invalid', 'commit', ...(empty ? ['--allow-empty'] : []), '-m', message);
     return gitProbe('rev-parse', 'HEAD').trim();
   };
-  beforeAll(() => {
+  beforeAll(prepareGitFixture('frozen producer and contract binding', () => {
+    producer = buildE09ClosureProducerBinding(root, true);
     gitProbe('checkout', '--detach', execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim());
     write('artifacts/phase3-e09-b11-integration-evidence-binding.json', { taskId: producer.taskId, producerBinding: producer, testOnlySyntheticProof: true });
     producerHead = commit('test-only frozen producer');
-  });
-  beforeAll(() => {
+  }), 30_000);
+  beforeAll(prepareGitFixture('independent exact review fixture', () => {
     const reviewPath = 'docs/reviews/phase3/DIFFERENT-NAME-closure-proof.json';
     reviewPacketHash = hash(readFileSync(join(directory, 'artifacts/phase3-e09-b11-integration-evidence-binding.json')));
     write(reviewPath, { schemaVersion: 'fd-phase3-reviewer-a-integration-closure-review-v1', taskId: producer.taskId,
@@ -50,24 +61,23 @@ describe('candidate -> independent RA -> G -> synchronization -> actual final HE
       boundPacket: { path: 'artifacts/phase3-e09-b11-integration-evidence-binding.json', sha256: reviewPacketHash }, testOnlySyntheticProof: true });
     const reviewCommit = commit('test-only independent differently named RA artifact');
     review = buildE09IntegrationReviewReference(directory, reviewCommit, reviewPath);
-  });
-  beforeAll(() => {
+  }), 30_000);
+  beforeAll(prepareGitFixture('three exact governance outputs', () => {
     write('docs/reviews/phase3/P3-E09-B11-promotion-attestation.json', { schemaVersion: 'fd-phase3-review-attestation-v1', taskId: 'P3-E09-I-B11-FINAL-PROMOTION', reviewer: 'github:test-fixture', reviewThread: 'https://github.com/binchen648/fd/pull/0#issuecomment-0', candidateSha: producerHead, conclusion: 'REVIEW_ACCEPTED', testOnlySyntheticProof: true });
     write('docs/agents/manifests/governance/P3-E09-B11-PROMOTION-GOVERNANCE-INPUTS.json', {
       schemaVersion: 'fd-p3-promotion-governance-inputs-v1', taskId: 'P3-E09-B11-PROMOTION-ATTESTATION-BRIDGE', controlEpoch: producer.controlEpoch, effectiveMain: producer.technicalBinding.observedMainSha,
       newIntegrationRa: { ...review, candidateSha: producerHead }, integrationPacket: { sha256: reviewPacketHash }, testOnlySyntheticProof: true });
     write('docs/reports/2026-10-12-p3-e09-b11-promotion-attestation.md', '# Test-only synthetic G proof; never published\n');
     g = commit('test-only three G outputs');
-  });
-  beforeAll(() => {
+  }), 30_000);
+  beforeAll(prepareGitFixture('synchronization and actual final HEAD', () => {
     const synchronizationSha = commit('test-only synchronization', true);
     const finalHeadSha = commit('test-only final HEAD', true);
     current = { stage: 'ASSEMBLED', producerCandidateSha: producerHead, reviewReferences: [review], synchronizationSha, finalHeadSha,
       governanceReferences: ['docs/reviews/phase3/P3-E09-B11-promotion-attestation.json', 'docs/agents/manifests/governance/P3-E09-B11-PROMOTION-GOVERNANCE-INPUTS.json', 'docs/reports/2026-10-12-p3-e09-b11-promotion-attestation.md'].map(path => ({ commit: g, path, sha256: hash(gitProbe('show', `${g}:${path}`)) })) };
-  });
-  beforeAll(() => { positive = validateE09IntegrationClosure(directory, producer, current); });
-  beforeAll(() => { historical = validateE09IntegrationClosure(root, producer, { stage: 'PRODUCER', producerCandidateSha: null, reviewReferences: [], governanceReferences: [], synchronizationSha: null, finalHeadSha: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim() }); });
-  afterEach(async () => { await yieldToEventLoop(); });
+  }), 30_000);
+  beforeAll(prepareGitFixture('complete new candidate RA G final proof', () => { positive = validateE09IntegrationClosure(directory, producer, current); }), 60_000);
+  beforeAll(prepareGitFixture('complete real rejected historical proof', () => { historical = validateE09IntegrationClosure(root, producer, { stage: 'PRODUCER', producerCandidateSha: null, reviewReferences: [], governanceReferences: [], synchronizationSha: null, finalHeadSha: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim() }); }), 60_000);
   it('validates the real formerly rejected RA and G/synchronization/final historical assembly without accepting changed code', () => {
     const result = historical;
     expect(result.historicalAssembly.finalHeadSha).toBe('9dbeef07d6bf8a9b956d2291e768b5369f09803b');
@@ -99,12 +109,12 @@ describe('candidate -> independent RA -> G -> synchronization -> actual final HE
     if (mode === 'wrong-head') bad.finalHeadSha = bad.synchronizationSha;
     if (mode === 'unrelated-review') bad.reviewReferences = [producer.historicalReviews[0]];
     expect(() => validateE09IntegrationClosure(directory, source, bad)).toThrow();
-  });
+  }, 30_000);
   it('rejects actual final review blob tampering even if the original source hash remains valid', () => {
     const path = join(directory, current.reviewReferences[0].path); const bytes = readFileSync(path);
     try { writeFileSync(path, Buffer.concat([bytes, Buffer.from('\n// forged\n')])); expect(() => validateE09IntegrationClosure(directory, producer, current)).toThrow('Dirty review artifact'); }
     finally { writeFileSync(path, bytes); }
-  });
+  }, 30_000);
   it.each(['runtime', 'unknown'])('rejects committed final %s changes rather than accepting a reviewed ancestor', mode => {
     try {
       const path = mode === 'runtime' ? 'packages/rules/src/match-room.ts' : 'docs/reviews/phase3/UNBOUND-EXTRA.json';
@@ -113,12 +123,12 @@ describe('candidate -> independent RA -> G -> synchronization -> actual final HE
       const bad = { ...current, finalHeadSha: gitProbe('rev-parse', 'HEAD').trim() };
       expect(() => validateE09IntegrationClosure(directory, producer, bad)).toThrow('Unauthorized post-candidate delta');
     } finally { gitProbe('checkout', '--detach', current.finalHeadSha); }
-  });
+  }, 30_000);
 });
 afterAll(() => { if (directory) rmSync(directory, { recursive: true, force: true }); });
 
 describe('B11 current transport evidence is distinct from immutable history', () => {
-  beforeAll(() => { gitProbe('checkout', '--detach', '086a86a24f5cf0991b3743ceb28b34a767252070'); });
+  beforeAll(prepareGitFixture('restore exact transport fixture', () => { gitProbe('checkout', '--detach', '086a86a24f5cf0991b3743ceb28b34a767252070'); }), 30_000);
   it('recomputes current coverage separately without rewriting the historical artifact or classifier', async () => {
     const result = await buildSnapshotAtCheckout(root, input.candidateSha);
     const bytes = readFileSync(join(root, 'artifacts/phase3-e09-b11-final-coverage.json'));
@@ -129,7 +139,7 @@ describe('B11 current transport evidence is distinct from immutable history', ()
       const rows = result.coverage.semanticAxes.filter(row => row.cardId === cardId && row.abilityId === abilityId);
       expect(rows).toHaveLength(1); expect(rows[0].runtimeRoute).toBe('NEW_RUNTIME_SEMANTIC_ROUTED');
     }
-  });
+  }, 30_000);
   it('binds scoped RB, all raw bytes, current provider and later transport authorization without inheriting CI PASS', () => {
     const result = validateE09FinalBinding(directory, input);
     expect(result.rawStreams).toBe(26);
@@ -177,11 +187,11 @@ describe('B11 current transport evidence is distinct from immutable history', ()
 });
 
 describe('integration binds preserved main control without broadening historical acceptance', () => {
-  const integration = buildE09IntegrationBinding(root);
+  let integration: ReturnType<typeof buildE09IntegrationBinding>;
   const currentHead = 'a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da';
-  beforeAll(() => { gitProbe('checkout', '--detach', currentHead); });
+  beforeAll(prepareGitFixture('immutable integration contract and checkout', () => { integration = buildE09IntegrationBinding(root); gitProbe('checkout', '--detach', currentHead); }), 30_000);
   let checked: ReturnType<typeof runPreflight>;
-  beforeAll(() => { checked = runPreflight(directory, integration, currentHead, integration.observedMainSha, hash(JSON.stringify(integration))); });
+  beforeAll(prepareGitFixture('complete preserved main and technical preflight', () => { checked = runPreflight(directory, integration, currentHead, integration.observedMainSha, hash(JSON.stringify(integration))); }), 60_000);
   const commitProbe = () => {
     gitProbe('add', '.'); gitProbe('-c', 'user.name=Evidence Test', '-c', 'user.email=evidence@example.invalid', 'commit', '-m', 'integration drift probe');
   };
@@ -243,5 +253,5 @@ describe('integration binds preserved main control without broadening historical
       writeFileSync(path, JSON.stringify({ finalVerdict: 'PASS', acceptedScope: 'WHOLE_BRANCH' })); commitProbe();
       expect(() => validateE09IntegrationBinding(directory, integration)).toThrow('Accepted technical artifact drift');
     } finally { gitProbe('checkout', '--detach', currentHead); }
-  });
+  }, 30_000);
 });

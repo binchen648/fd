@@ -8,6 +8,25 @@
     "path": "docs/agents/P3-E09-B11-INTEGRATION-CLOSURE-REPAIR.md",
     "sha256": "17AE3BA6CC383EB3BF267FE6F21D0E7FC591EB9110A97E110A94527B26DE7DC2"
   },
+  "authorizationContinuation": {
+    "taskId": "P3-E09-B11-INTEGRATION-CLOSURE-TEST-STABILITY",
+    "failedCarrierSha": "cfa6a92551a939709b85a787d9044e19ec00f0ef",
+    "authority": {
+      "commit": "bd0dabe80c40cdc3bae024303b68851d11f980b2",
+      "path": "docs/agents/P3-E09-B11-INTEGRATION-CLOSURE-TEST-STABILITY.md",
+      "sha256": "744533D02D848844480521C193E7839E902F243B442E0E49486325B5BBD24A0B"
+    },
+    "supplement": {
+      "commit": "4ecae8e9097d28d401df5a2cf0eec96be28ebe08",
+      "path": "docs/agents/P3-E09-B11-INTEGRATION-CLOSURE-TEST-STABILITY.md",
+      "sha256": "AF2FF3ED6E27560812FE16E751F0EED69B7675A916312232B3CD28E2B3934308"
+    },
+    "authorizedTestPaths": [
+      "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+      "scripts/tests/phase3-readiness-preflight.test.ts",
+      "scripts/tests/phase3-contract-parity.test.ts"
+    ]
+  },
   "technicalBinding": {
     "schemaVersion": "fd-p3-e09-integration-binding-v1",
     "taskId": "P3-E09-B11-INTEGRATION-EVIDENCE-CONTRACT",

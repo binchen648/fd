@@ -166,11 +166,11 @@ export function validateE09IntegrationBinding(root: string, input: ReturnType<ty
   return withEvidenceReads(root, () => evaluateE09IntegrationBinding(root, input));
 }
 
-function evaluateE09IntegrationBinding(root: string, input: ReturnType<typeof buildE09IntegrationBinding>, reviewPaths: ReadonlySet<string> = new Set()) {
+function evaluateE09IntegrationBinding(root: string, input: ReturnType<typeof buildE09IntegrationBinding>, reviewPaths: ReadonlySet<string> = new Set(), authorizedTestPaths: ReadonlySet<string> = new Set()) {
   if (git(root, ['diff', 'HEAD', '--', ...e09RuntimePaths]).length || git(root, ['ls-files', '--others', '--exclude-standard', '--', ...e09RuntimePaths]).length) throw new InputError('Dirty current provider');
   if (!Array.isArray(input.promotionEvidence)) throw new InputError('Explicit promotion evidence references required');
   const permitted = new Set<string>([...e09ControlPaths, ...e09IntegrationPaths,
-    'docs/reviews/phase3/P3-E09-B11-086a86a-final-contract-reviewer-a.json', ...reviewPaths]);
+    'docs/reviews/phase3/P3-E09-B11-086a86a-final-contract-reviewer-a.json', ...reviewPaths, ...authorizedTestPaths]);
   for (const raw of input.promotionEvidence) {
     const ref = parseReference(raw, 'promotion evidence');
     if (!(e09PromotionPaths as readonly string[]).includes(ref.path)) throw new InputError('Unknown or duplicate promotion evidence path');
@@ -245,7 +245,7 @@ function evaluateE09IntegrationBinding(root: string, input: ReturnType<typeof bu
   const packageBlob = input.technical.sourceObjects['package.json'];
   const packageHash = hash(git(root, ['show', `${e09CandidateSha}:package.json`]));
   if (!promotionAuthority.includes(`Final package.json blob: ${packageBlob}.`) || !promotionAuthority.includes(`Final SHA-256: ${packageHash}.`)) throw new InputError('Package prospective authority mismatch');
-  const preservedPaths = new Set<string>([...e09ControlPaths, ...e09IntegrationPaths, input.finalReviewerA.path, ...reviewPaths]);
+  const preservedPaths = new Set<string>([...e09ControlPaths, ...e09IntegrationPaths, input.finalReviewerA.path, ...reviewPaths, ...authorizedTestPaths]);
   const newEvidence = new Set<string>();
   const promotionRefs = input.promotionEvidence.map(raw => parseReference(raw, 'promotion evidence'));
   if (promotionRefs.length) {
@@ -312,12 +312,34 @@ export function buildE09IntegrationReviewReference(root: string, commit: string,
     reviewer: review.reviewer, reviewedCandidateSha: reviewed, acceptedScope: review.acceptedScope, verdict: review.finalVerdict, boundPacket: packet };
 }
 
-export function buildE09ClosureProducerBinding(root: string) {
+const e09StabilityTask = 'P3-E09-B11-INTEGRATION-CLOSURE-TEST-STABILITY';
+const e09StabilityBase = 'cfa6a92551a939709b85a787d9044e19ec00f0ef';
+const e09StabilityAuthority = 'bd0dabe80c40cdc3bae024303b68851d11f980b2';
+const e09StabilitySupplement = '4ecae8e9097d28d401df5a2cf0eec96be28ebe08';
+const e09StabilityPath = 'docs/agents/P3-E09-B11-INTEGRATION-CLOSURE-TEST-STABILITY.md';
+const e09StabilityTests = [
+  'scripts/tests/phase3-e09-b11-final-binding.test.ts',
+  'scripts/tests/phase3-readiness-preflight.test.ts',
+  'scripts/tests/phase3-contract-parity.test.ts',
+] as const;
+
+function buildE09StabilityAuthorization(root: string) {
+  const refs = batchReferences(root, [e09StabilityAuthority, e09StabilitySupplement].map(commit => ({ commit, path: e09StabilityPath })));
+  git(root, ['merge-base', '--is-ancestor', e09StabilityAuthority, e09StabilitySupplement]);
+  for (const ref of refs) {
+    const text = git(root, ['show', `${ref.commit}:${ref.path}`]).toString();
+    if (!text.includes(`Task: \`${e09StabilityTask}\``) || e09StabilityTests.some(path => !text.includes(`- \`${path}\``))) throw new InputError('Stability task/path authority missing');
+  }
+  return { taskId: e09StabilityTask, failedCarrierSha: e09StabilityBase, authority: refs[0], supplement: refs[1], authorizedTestPaths: [...e09StabilityTests] };
+}
+
+export function buildE09ClosureProducerBinding(root: string, includeStabilityAuthorization = false) {
   const reviewPaths = changedPaths(root, 'a09fe2d62ad7be07fdfaa9edfef2ab2803a0e2da', e09HistoricalReview);
   if (reviewPaths.length !== 1) throw new InputError('Historical review must introduce exactly one immutable artifact');
   return { schemaVersion: 'fd-p3-e09-integration-producer-v1', taskId: e09ClosureTask,
     controlEpoch: 'FD-P3-2026-09-23-09', frozenAssemblySha: e09ClosureStart,
     authority: exactReference(root, e09ClosureAuthority, 'docs/agents/P3-E09-B11-INTEGRATION-CLOSURE-REPAIR.md'),
+    ...(includeStabilityAuthorization ? { authorizationContinuation: buildE09StabilityAuthorization(root) } : {}),
     technicalBinding: buildE09IntegrationBinding(root),
     historicalReviews: [buildE09IntegrationReviewReference(root, e09HistoricalReview, reviewPaths[0])],
     historicalGovernance: batchReferences(root, e09PromotionPaths.map(path => ({ commit: e09HistoricalG, path }))),
@@ -403,11 +425,17 @@ export function validateE09IntegrationClosure(root: string, producer: ReturnType
 }
 
 function evaluateE09IntegrationClosure(root: string, producer: ReturnType<typeof buildE09ClosureProducerBinding>, temporal: E09ClosureInputs) {
-  assertFinalTaskCheck(producer, buildE09ClosureProducerBinding(root));
+  assertFinalTaskCheck(producer, buildE09ClosureProducerBinding(root, producer.authorizationContinuation !== null && producer.authorizationContinuation !== undefined));
   fields(object(temporal, 'temporal inputs'), ['stage', 'producerCandidateSha', 'reviewReferences', 'governanceReferences', 'synchronizationSha', 'finalHeadSha'], 'temporal inputs');
   const head = git(root, ['rev-parse', 'HEAD']).toString().trim();
   if (temporal.finalHeadSha !== head || !['PRODUCER', 'ASSEMBLED'].includes(temporal.stage)) throw new InputError('Actual final HEAD and supported temporal stage required');
   git(root, ['merge-base', '--is-ancestor', producer.frozenAssemblySha, head]);
+  const authorizedTestPaths = new Set<string>();
+  if (producer.authorizationContinuation) {
+    git(root, ['merge-base', '--is-ancestor', e09StabilityBase, head]);
+    const delta = changedPaths(root, e09StabilityBase, head);
+    for (const path of e09StabilityTests) if (delta.includes(path)) authorizedTestPaths.add(path);
+  }
   const reviews = [...producer.historicalReviews, ...array(temporal.reviewReferences, 'review references')];
   if (new Set(reviews.map(ref => `${ref.commit}:${ref.path}`)).size !== reviews.length || new Set(reviews.map(ref => ref.path)).size !== reviews.length) throw new InputError('Duplicate review references');
   const packets = new Map(reviews.map(ref => [ref.commit, validateE09ReviewReference(root, ref, head)]));
@@ -432,7 +460,7 @@ function evaluateE09IntegrationClosure(root: string, producer: ReturnType<typeof
     assembly = validateE09GovernanceClosure(root, governance, current, sha(temporal.synchronizationSha, 'synchronization'), head);
   }
   const technicalBinding = { ...producer.technicalBinding, promotionEvidence: governance };
-  const result = evaluateE09IntegrationBinding(root, technicalBinding, new Set(reviews.map(ref => ref.path)));
+  const result = evaluateE09IntegrationBinding(root, technicalBinding, new Set(reviews.map(ref => ref.path)), authorizedTestPaths);
   return { ...result, schemaVersion: 'fd-p3-e09-integration-closure-result-v1', taskId: e09ClosureTask,
     issues: assembly ? result.issues.filter(issue => issue.code !== 'INTEGRATION_REVIEWER_A_PENDING') : result.issues,
     historicalAssembly: { finalHeadSha: producer.frozenAssemblySha, verifiedAsHistoricalOnly: true },

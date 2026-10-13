@@ -2,7 +2,8 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'nod
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { setImmediate as yieldToEventLoop } from 'node:timers/promises';
 import { createHistoricalEvidenceSnapshot } from '../phase3-e08-b11-coverage-sync';
 import { buildParityInput, diagnosticCandidateSha as combinationSha, fixturePath } from '../phase3-b11-tooling-inputs';
 import { adapterClosurePaths, compareObservations, dependencyClosure, parseFixtures, parseParityInput, runParity, verifyAdapterClosure, verifyDependencyClosure } from '../phase3-contract-parity';
@@ -15,6 +16,9 @@ afterAll(snapshot.cleanup);
 let input: ReturnType<typeof buildParityInput>;
 let fixtures: ReturnType<typeof parseFixtures>;
 let result: Awaited<ReturnType<typeof runParity>>;
+let adapterFixture: string;
+afterEach(async () => { await yieldToEventLoop(); });
+afterAll(() => { if (adapterFixture) rmSync(adapterFixture, { recursive: true, force: true }); });
 
 describe('B11 real API contract parity diagnostics', () => {
   beforeAll(async () => {
@@ -32,6 +36,16 @@ describe('B11 real API contract parity diagnostics', () => {
       else process.env.TSX_TSCONFIG_PATH = inheritedConfig;
     }
   }, 120_000);
+  beforeAll(async () => {
+    const started = performance.now();
+    adapterFixture = mkdtempSync(resolve(tmpdir(), 'fd-parity-binding-test-'));
+    git(root, ['clone', '--shared', '--no-checkout', '--', root, adapterFixture]);
+    git(adapterFixture, ['checkout', input.executionAdapter[0].commit, '--', ...adapterClosurePaths]);
+    expect(verifyAdapterClosure(adapterFixture, input.executionAdapter, []).commit).toBe(input.executionAdapter[0].commit);
+    for (const ref of input.executionAdapter) expect(hash(readFileSync(resolve(adapterFixture, ref.path)))).toBe(ref.sha256);
+    console.info('FD_EVIDENCE_FIXTURE_TIMING', JSON.stringify({ file: 'phase3-contract-parity.test.ts', name: 'exact adapter closure fixture', durationMs: Math.round(performance.now() - started) }));
+    await yieldToEventLoop();
+  }, 30_000);
   it('executes candidate APIs in an isolated snapshot with canonical input and fixture hashes', () => {
     expect(result.executionMethod).toBe('ISOLATED_SHARED_GIT_CLONE_REAL_API_SUBPROCESS');
     expect(result.executionPerformed).toBe(true);
@@ -108,28 +122,23 @@ describe('B11 real API contract parity diagnostics', () => {
     const missing = structuredClone(fixtures); delete missing.fixtures.find((fixture: any) => fixture.family === 'conversion-magic').expected.runtime.routeCandidate;
     expect(() => parseFixtures(missing)).toThrow(InputError);
   });
-  it('rejects local drift in controller, worker and its dependency before executing candidate APIs', async () => {
-    const temporary = mkdtempSync(resolve(tmpdir(), 'fd-parity-binding-test-'));
+  it.each(adapterClosurePaths)('rejects local drift in %s before executing candidate APIs', async path => {
+    const original = readFileSync(resolve(adapterFixture, path));
     try {
-      git(root, ['clone', '--shared', '--no-checkout', '--', root, temporary]);
-      git(temporary, ['checkout', input.executionAdapter[0].commit, '--', ...adapterClosurePaths]);
-      expect(verifyAdapterClosure(temporary, input.executionAdapter, []).commit).toBe(input.executionAdapter[0].commit);
-      for (const path of adapterClosurePaths) {
-        const original = readFileSync(resolve(temporary, path));
-        writeFileSync(resolve(temporary, path), Buffer.concat([original, Buffer.from('\n// unbound local change\n')]));
-        const issues: Issue[] = []; verifyAdapterClosure(temporary, input.executionAdapter, issues);
+        writeFileSync(resolve(adapterFixture, path), Buffer.concat([original, Buffer.from('\n// unbound local change\n')]));
+        const issues: Issue[] = []; verifyAdapterClosure(adapterFixture, input.executionAdapter, issues);
         expect(issues.some(issue => issue.code === 'EXECUTION_ADAPTER_DRIFT' && issue.path === path)).toBe(true);
         if (path.endsWith('phase3-contract-parity-worker.ts')) {
-          const rejected = await runParity(temporary, input, combinationSha, 'drift-probe');
+          const rejected = await runParity(adapterFixture, input, combinationSha, 'drift-probe');
           expect(rejected.executionPerformed).toBe(false);
           expect(rejected.results).toEqual([]);
           expect(rejected.issues.some(issue => issue.code === 'EXECUTION_ADAPTER_DRIFT' && issue.path === path)).toBe(true);
         }
-        writeFileSync(resolve(temporary, path), original);
-      }
-      expect(() => verifyAdapterClosure(temporary, input.executionAdapter.slice(0, 1), [])).toThrow(InputError);
-    } finally { rmSync(temporary, { recursive: true, force: true }); }
-  }, 15_000);
+    } finally { writeFileSync(resolve(adapterFixture, path), original); }
+  }, 30_000);
+  it('rejects an incomplete adapter closure independently', () => {
+    expect(() => verifyAdapterClosure(adapterFixture, input.executionAdapter.slice(0, 1), [])).toThrow(InputError);
+  });
   it('detects a real API disagreement rather than equating hand-filled owner values', async () => {
     const altered = structuredClone(fixtures);
     altered.fixtures = [altered.fixtures.find((fixture: any) => fixture.id === 'golden-positive')];

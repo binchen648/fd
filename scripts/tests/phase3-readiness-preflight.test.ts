@@ -4,7 +4,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { setImmediate as yieldToEventLoop } from 'node:timers/promises';
-import { assertFinalTaskCheck, buildFinalTaskCheck, buildContinuationTaskCheck, runPreflight, buildE09IntegrationBinding, buildE09ClosureProducerBinding } from '../phase3-preflight';
+import { assertFinalTaskCheck, buildFinalTaskCheck, buildContinuationTaskCheck, runPreflight, buildE09IntegrationBinding, buildE09ClosureProducerBinding, validateE09IntegrationClosure, type E09ClosureInputs } from '../phase3-preflight';
 import { git, gitText, hash, InputError } from '../phase3-tooling-common';
 import { publicationSha, reference } from '../phase3-b11-tooling-inputs';
 import { buildContinuationBinding, validateContinuationBinding, validateContinuationReceiptReference, createHistoricalEvidenceSnapshot, type ContinuationReceipt, type ReceiptReference } from '../phase3-e08-b11-coverage-sync';
@@ -54,6 +54,7 @@ let normal: ReturnType<typeof fixture>;
 let deleted: ReturnType<typeof fixture>;
 let renamed: ReturnType<typeof fixture>;
 let finalTask: ReturnType<typeof buildFinalTaskCheck>;
+let continuationTask: ReturnType<typeof buildContinuationTaskCheck>;
 let currentResult: ReturnType<typeof runPreflight>;
 let unauthorized: string;
 let invalidCommand: string;
@@ -62,7 +63,7 @@ const evaluate = (context: ReturnType<typeof fixture>, input: unknown = context.
 
 describe('integration preflight does not inherit historical readiness', () => {
   it('requires the actual final SHA and rejects unsupported external closure fields', () => {
-    const producer = buildE09ClosureProducerBinding(currentRoot);
+    const producer = buildE09ClosureProducerBinding(currentRoot, true);
     expect(() => runPreflight(currentRoot, producer, producer.technicalBinding.technicalCarrierSha, producer.technicalBinding.observedMainSha, hash(JSON.stringify(producer)))).toThrow('Closure CLI SHA mismatch');
     const head = gitText(currentRoot, ['rev-parse', 'HEAD']);
     expect(() => runPreflight(currentRoot, { schemaVersion: 'fd-p3-e09-integration-closure-check-v1', producerBinding: producer, temporal: {}, waiveMissingReview: true }, head, producer.technicalBinding.observedMainSha, '0'.repeat(64))).toThrow('unknown field');
@@ -74,6 +75,58 @@ describe('integration preflight does not inherit historical readiness', () => {
   });
 });
 
+describe('exact Planner stability authorization continuation', () => {
+  let cwd: string;
+  let candidate: string;
+  let producer: ReturnType<typeof buildE09ClosureProducerBinding>;
+  const temporal = (): E09ClosureInputs => ({ stage: 'PRODUCER', producerCandidateSha: null, reviewReferences: [], governanceReferences: [], synchronizationSha: null, finalHeadSha: gitText(cwd, ['rev-parse', 'HEAD']) });
+  beforeAll(async () => {
+    cwd = mkdtempSync(join(tmpdir(), 'fd-stability-authority-'));
+    git(currentRoot, ['clone', '--shared', '--no-checkout', '--', currentRoot, cwd]);
+    git(cwd, ['checkout', '--detach', gitText(currentRoot, ['rev-parse', 'HEAD'])]);
+    const path = 'scripts/tests/phase3-contract-parity.test.ts';
+    writeFileSync(join(cwd, path), readFileSync(join(cwd, path), 'utf8') + '\n// test-only exact authorized delta\n');
+    git(cwd, ['add', path]);
+    git(cwd, ['-c', 'user.name=Evidence fixture', '-c', 'user.email=fixture@example.invalid', 'commit', '-m', 'test-only authorized parity delta']);
+    candidate = gitText(cwd, ['rev-parse', 'HEAD']);
+    producer = buildE09ClosureProducerBinding(cwd, true);
+    await yieldToEventLoop();
+  }, 30_000);
+  afterEach(async () => { await yieldToEventLoop(); });
+  afterAll(() => { if (cwd) rmSync(cwd, { recursive: true, force: true }); });
+  it('admits the exact authorized parity delta without granting acceptance', () => {
+    const result = validateE09IntegrationClosure(cwd, producer, temporal());
+    expect(producer.authorizationContinuation?.authority.commit).toBe('bd0dabe80c40cdc3bae024303b68851d11f980b2');
+    expect(producer.authorizationContinuation?.supplement.commit).toBe('4ecae8e9097d28d401df5a2cf0eec96be28ebe08');
+    expect(producer.authorizationContinuation?.authorizedTestPaths).toEqual([
+      'scripts/tests/phase3-e09-b11-final-binding.test.ts', 'scripts/tests/phase3-readiness-preflight.test.ts', 'scripts/tests/phase3-contract-parity.test.ts',
+    ]);
+    expect(result.acceptanceGranted).toBe(false);
+    expect(result.promotionAllowed).toBe(false);
+  }, 60_000);
+  it('rejects the parity delta when exact continuation authority is absent', () => {
+    expect(() => validateE09IntegrationClosure(cwd, buildE09ClosureProducerBinding(cwd), temporal())).toThrow('Unknown integration delta');
+  }, 30_000);
+  it.each(['hash', 'commit', 'task', 'paths', 'lineage'])('rejects forged or mismatched %s authorization', mode => {
+    const bad = structuredClone(producer);
+    const continuation = bad.authorizationContinuation!;
+    if (mode === 'hash') continuation.authority.sha256 = '0'.repeat(64);
+    if (mode === 'commit') continuation.authority.commit = continuation.supplement.commit;
+    if (mode === 'task') continuation.taskId = 'ARBITRARY_TASK';
+    if (mode === 'paths') continuation.authorizedTestPaths.push('scripts/tests/unknown.test.ts');
+    if (mode === 'lineage') continuation.failedCarrierSha = producer.frozenAssemblySha;
+    expect(() => validateE09IntegrationClosure(cwd, bad, temporal())).toThrow();
+  }, 15_000);
+  it('rejects an actual extra test file instead of admitting a tests directory', () => {
+    const path = 'scripts/tests/UNAUTHORIZED-STABILITY.test.ts';
+    try {
+      writeFileSync(join(cwd, path), '// unknown test path\n'); git(cwd, ['add', path]);
+      git(cwd, ['-c', 'user.name=Evidence fixture', '-c', 'user.email=fixture@example.invalid', 'commit', '-m', 'test-only forbidden path']);
+      expect(() => validateE09IntegrationClosure(cwd, producer, temporal())).toThrow(`Unknown integration delta: ${path}`);
+    } finally { git(cwd, ['checkout', '--detach', candidate]); }
+  }, 30_000);
+});
+
 describe('readiness preflight, independent from promotion policy', () => {
   // Synchronous Git diagnostics must let Vitest deliver queued RPC updates between cases.
   afterEach(async () => { await yieldToEventLoop(); });
@@ -81,6 +134,7 @@ describe('readiness preflight, independent from promotion policy', () => {
     normal = fixture('normal'); deleted = fixture('delete'); renamed = fixture('rename');
     const input = JSON.parse(readFileSync(join(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
     finalTask = buildFinalTaskCheck(root, input.finalBinding.sourceSha);
+    continuationTask = buildContinuationTaskCheck(root, input.finalBinding.sourceSha);
     currentResult = runPreflight(root, input, input.candidateSha, input.baseSha, hash(JSON.stringify(input)));
     for (const mode of ['unauthorized', 'invalidCommand']) {
       const cwd = mkdtempSync(join(tmpdir(), 'fd-continuation-delta-')); directories.push(cwd);
@@ -141,17 +195,16 @@ describe('readiness preflight, independent from promotion policy', () => {
     validateContinuationReceiptReference(unauthorized, ref, receipts, binding);
     const bad = structuredClone(receipts); bad[0].stdout = 'forged'; bad[0].outputSha256 = hash(`${bad[0].stdout}\n${bad[0].stderr}`);
     expect(() => validateContinuationReceiptReference(unauthorized, ref, bad, binding)).toThrow();
-  });
+  }, 30_000);
   it.each(['schema', 'receipt', 'history', 'scope', 'pending'])('fails closed for invalid current %s inputs', mode => {
-    const task = JSON.parse(readFileSync(join(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
-    const bad: any = buildContinuationTaskCheck(root, task.finalBinding.sourceSha);
+    const bad: any = structuredClone(continuationTask);
     if (mode === 'schema') bad.schemaVersion = 'fd-p3-task-check-v999';
     if (mode === 'receipt') bad.execution.receipts = [{ command: 'npm run test:ci', exitCode: 0, trusted: true }];
     if (mode === 'history') bad.historicalInputSha256 = '0'.repeat(64);
     if (mode === 'scope') bad.execution.reviews[0].scope = 'FINAL_ACCEPTANCE';
     if (mode === 'pending') bad.execution.finalReviewState = 'PASS';
     expect(() => runPreflight(root, bad, bad.candidateSha, bad.baseSha, hash(JSON.stringify(bad)))).toThrow();
-  });
+  }, 15_000);
   it('rejects altered introducing SHA, hashes, original authority, scope, checks and credit', () => {
     for (const mutate of [
       (v: any) => { v.provenance[0].introducingSha = '0'.repeat(40); },
@@ -172,15 +225,19 @@ describe('readiness preflight, independent from promotion policy', () => {
     expect(result.status).toBe('PASS'); expect(result.issues).toEqual([]);
     expect(result.acceptanceGranted).toBe(false); expect(result.reviewReadyChanged).toBe(false);
   }, 15_000);
-  it('rejects stale candidate, pending or missing dependency evidence', () => {
-    expect(evaluate(normal, normal.input, normal.review).issues.map(issue => issue.code)).toContain('EXACT_SHA_MISMATCH');
-    const pending = structuredClone(normal.input) as any;
-    pending.segments[0].dependencies[0] = { taskId, candidateSha: normal.candidate, state: 'PENDING' };
-    expect(evaluate(normal, pending).issues.map(issue => issue.code)).toContain('DEPENDENCY_PENDING');
-    const missing = structuredClone(normal.input);
-    missing.segments[0].dependencies[0].review.path = 'missing.json';
-    expect(evaluate(normal, missing).issues.map(issue => issue.code)).toContain('REFERENCE_BINDING_FAILED');
-  }, 30_000);
+  it.each(['stale candidate', 'pending dependency', 'missing dependency evidence'])('rejects %s independently', mode => {
+    if (mode === 'stale candidate') {
+      expect(evaluate(normal, normal.input, normal.review).issues.map(issue => issue.code)).toContain('EXACT_SHA_MISMATCH');
+    } else if (mode === 'pending dependency') {
+      const pending = structuredClone(normal.input) as any;
+      pending.segments[0].dependencies[0] = { taskId, candidateSha: normal.candidate, state: 'PENDING' };
+      expect(evaluate(normal, pending).issues.map(issue => issue.code)).toContain('DEPENDENCY_PENDING');
+    } else {
+      const missing = structuredClone(normal.input);
+      missing.segments[0].dependencies[0].review.path = 'missing.json';
+      expect(evaluate(normal, missing).issues.map(issue => issue.code)).toContain('REFERENCE_BINDING_FAILED');
+    }
+  }, 15_000);
   it('rejects unauthorized deleted and renamed paths, not just surviving files', () => {
     expect(evaluate(deleted).issues.some(issue => issue.code === 'UNAUTHORIZED_CHANGED_PATH' && issue.path === 'apps/client/outside.txt')).toBe(true);
     const result = evaluate(renamed);
