@@ -129,7 +129,7 @@ describe('P3-FB2-34 combat reward distribution', () => {
     expect(actual.battle).toMatchObject({ winnerPlayerIds: ['p1', 'p2'], vpReward: 2, baseVpPerWinner: 3, eventVpPool: 4, competitionVpPool: 2 });
     expect(actual.battle.vpAdjustments).toEqual(ordinary.battle.vpAdjustments);
     expect(actual.scored.players.map(player => ({ id: player.id, vp: player.vp }))).toEqual(ordinary.scored.players.map(player => ({ id: player.id, vp: player.vp })));
-    expect(actual.scored.battleResults).toHaveLength(1);
+    expect(actual.scored.battleResults).toEqual(ordinary.scored.battleResults);
   });
 
   it('preserves absent optional containers and canonical compiled objects', () => {
@@ -138,10 +138,13 @@ describe('P3-FB2-34 combat reward distribution', () => {
     expect(rules.isAcceptedStaticCombatRewardDistributionAbility(ability as unknown as RuleNode, 'compiled')).toBe(true);
     for (const field of optionalContainers) delete (ability as unknown as RuleNode)[field];
     expect(rules.isAcceptedStaticCombatRewardDistributionAbility(ability as unknown as RuleNode, 'compiled')).toBe(true);
-    expect(result(state).battle).toMatchObject({ vpReward: 4, baseVpPerWinner: 6 });
+    expect(result(setup({ modifierController: 'p1' })).battle).toMatchObject({ vpReward: 4, baseVpPerWinner: 6 });
     const raw = rewardAbility() as unknown as RuleNode;
     for (const field of optionalContainers) delete raw[field];
     expect(rules.isAcceptedStaticCombatRewardDistributionAbility(raw, 'authoring')).toBe(true);
+    const loaded = rules.loadAuthoringJson(archive(raw as unknown as AuthoringAbility));
+    expect(loaded.report).toEqual([]);
+    expect(rules.isAcceptedStaticCombatRewardDistributionAbility(loaded.cards['skill.reward-source']!.abilities[0]! as unknown as RuleNode, 'compiled')).toBe(true);
   });
   it('loader accepts only the exact static passive full_reward_each envelope', () => {
     expect(rules.loadAuthoringJson(archive()).report).toEqual([]);
