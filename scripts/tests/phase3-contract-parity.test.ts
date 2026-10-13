@@ -40,7 +40,7 @@ describe('B11 real API contract parity diagnostics', () => {
     const started = performance.now();
     adapterFixture = mkdtempSync(resolve(tmpdir(), 'fd-parity-binding-test-'));
     git(root, ['clone', '--shared', '--no-checkout', '--', root, adapterFixture]);
-    git(adapterFixture, ['checkout', input.executionAdapter[0].commit, '--', ...adapterClosurePaths]);
+    git(adapterFixture, ['-c', 'core.autocrlf=false', 'checkout', input.executionAdapter[0].commit, '--', ...adapterClosurePaths]);
     expect(verifyAdapterClosure(adapterFixture, input.executionAdapter, []).commit).toBe(input.executionAdapter[0].commit);
     for (const ref of input.executionAdapter) expect(hash(readFileSync(resolve(adapterFixture, ref.path)))).toBe(ref.sha256);
     console.info('FD_EVIDENCE_FIXTURE_TIMING', JSON.stringify({ file: 'phase3-contract-parity.test.ts', name: 'exact adapter closure fixture', durationMs: Math.round(performance.now() - started) }));
