@@ -1,6 +1,7 @@
 import type { GameState, PlayerState } from '../schema/game';
 import type { LocationId } from '../schema/location';
-import type { AbilityRuntime, ExecutableCardDefinition, PlayerId, SafeEvent } from './types';
+import { getEnabledLocations } from '../core/map-engine';
+import type { AbilityRuntime, AuthoringAbility, ExecutableCardDefinition, PlayerId, SafeEvent } from './types';
 import { clearTransientCardTransformState } from './card-instance-state';
 import { isCardCloseForbidden } from './card-close-forbid';
 import { grantMana } from '../core/rule-overrides';
@@ -11,6 +12,7 @@ export type BindingFieldType = 'number' | 'player_ids' | 'boolean' | 'status';
 export type EffectResultType =
   | 'remove_advantage_position'
   | 'create_card'
+  | 'move_card'
   | 'move_all_remaining'
   | 'move_source_card'
   | 'move_player'
@@ -30,7 +32,7 @@ export type EffectResultType =
   | 'fail_invariant';
 
 export interface AffectedEntityRef {
-  kind: 'player';
+  kind: 'player' | 'card';
   id: PlayerId;
 }
 
@@ -46,6 +48,11 @@ export interface EffectResultEnvelope<Type extends EffectResultType = EffectResu
 export interface RemoveAdvantagePositionResult {
   affectedPlayerIds: PlayerId[];
   removedCount: number;
+}
+
+export interface MoveCardResult {
+  movedCardIds: string[];
+  movedCount: number;
 }
 
 export interface AdjustVictoryPointsResult {
@@ -179,6 +186,7 @@ export interface FailInvariantResult {
 export type KnownEffectResult =
   | EffectResultEnvelope<'remove_advantage_position', RemoveAdvantagePositionResult>
   | EffectResultEnvelope<'create_card', CreateCardResult>
+  | EffectResultEnvelope<'move_card', MoveCardResult>
   | EffectResultEnvelope<'move_all_remaining', MoveAllRemainingResult>
   | EffectResultEnvelope<'move_source_card', MoveSourceCardResult>
   | EffectResultEnvelope<'move_player', MovePlayerEffectResult>
@@ -207,6 +215,10 @@ export const resultSchemas: Record<EffectResultType, BindingFieldSchema> = {
   },
   create_card: {
     createdCount: 'number',
+    status: 'status',
+  },
+  move_card: {
+    movedCount: 'number',
     status: 'status',
   },
   move_all_remaining: {
@@ -335,7 +347,8 @@ export interface AbilityResolutionHooks {
 
 export type ValueExpression =
   | number
-  | { expr: 'binding_field'; binding: string; field: string; valueType: 'number' };
+  | { expr: 'binding_field'; binding: string; field: string; valueType: 'number' }
+  | { expr: 'multiply'; args: ValueExpression[] };
 
 export type TargetExpression =
   | { expr: 'player_ids'; ids: PlayerId[] }
@@ -344,12 +357,14 @@ export type TargetExpression =
 
 export type ConditionExpression =
   | boolean
+  | { expr: 'controller_at_battlefield' }
   | { expr: 'binding_field'; binding: string; field: string; valueType: 'boolean' }
   | { expr: 'binding_status'; binding: string; status: EffectExecutionStatus };
 
 export type ResolutionEffectNode =
   | { id: string; type: 'remove_advantage_position'; target: TargetExpression; bind?: string }
   | { id: string; type: 'create_card'; cardId: string; to: 'skill'; bind?: string }
+  | { id: string; type: 'move_card'; target: string; from: string; to: string; bind?: string }
   | { id: string; type: 'move_all_remaining'; owner: 'controller'; from: string; to: string; bind?: string }
   | { id: string; type: 'move_source_card'; to: 'skill' | 'removed_from_game'; bind?: string }
   | { id: string; type: 'move_player'; player: 'controller'; to: string; bind?: string }
@@ -362,7 +377,7 @@ export type ResolutionEffectNode =
   | { id: string; type: 'close_source_card'; bind?: string }
   | { id: string; type: 'adjust_mana'; player: 'controller'; amount: ValueExpression; bind?: string }
   | { id: string; type: 'set_mana'; player: 'controller'; amount: number; bind?: string }
-  | { id: string; type: 'pay_mana'; player: 'controller'; amount: ValueExpression; bind?: string }
+  | { id: string; type: 'pay_mana'; player: 'controller'; amount: ValueExpression; selection?: string; bind?: string }
   | { id: string; type: 'adjust_command_seals'; player: 'controller'; amount: ValueExpression; directive?: string; bind?: string }
   | { id: string; type: 'adjust_victory_points'; player: 'controller'; amount: ValueExpression; bind?: string }
   | { id: string; type: 'noop'; reason: string; bind?: string }
@@ -445,6 +460,11 @@ const primitiveDefinitions: ResolutionPrimitive[] = [
     type: 'create_card',
     resultSchema: resultSchemas.create_card,
     execute: createCardPrimitive,
+  },
+  {
+    type: 'move_card',
+    resultSchema: resultSchemas.move_card,
+    execute: moveCardPrimitive,
   },
   {
     type: 'move_all_remaining',
@@ -553,6 +573,131 @@ export function hasResolutionDataFlowSyntax(value: unknown): boolean {
   if (current.expr === 'binding_field' || current.expr === 'binding_status') return true;
   if (current.type === 'remove_advantage_position' || current.type === 'noop' || current.type === 'fail_invariant') return true;
   return Object.values(current).some(hasResolutionDataFlowSyntax);
+}
+
+export function isResultBindingProductionBridgeRouteCandidate(ability: AuthoringAbility): boolean {
+  if (ability.kind !== 'phase_action' || value(ability.activation.phase) !== 'combat' || value(ability.activation.opens) !== 'controller_combat_action_window') return false;
+  return hasEffectType([...ability.effects, ...ability.creates], 'move_card') &&
+    (hasResultBindingProductionBridgeSyntax([...ability.effects, ...ability.creates]) || hasResultBindingProductionBridgeTargetShape(ability.targets));
+}
+
+export function isResultBindingProductionBridgeSemantic(ability: AuthoringAbility): boolean {
+  if (!isResultBindingProductionBridgeRouteCandidate(ability) || ability.execution.mode !== 'automatic') return false;
+  if (ability.conditions.length || ability.cost.length || ability.creates.length || ability.effects.length !== 5) return false;
+  if (ability.activation.requiresSourceState !== 'active') return false;
+  const firstTarget = record(ability.targets[0]);
+  const secondTarget = record(ability.targets[1]);
+  const firstMove = record(ability.effects[0]);
+  const firstAward = record(ability.effects[1]);
+  const payment = record(ability.effects[2]);
+  const secondMove = record(ability.effects[3]);
+  const secondAward = record(ability.effects[4]);
+  const firstTargetId = value(firstTarget?.id);
+  const secondTargetId = value(secondTarget?.id);
+  const firstBinding = value(firstMove.bind);
+  const secondBinding = value(secondMove.bind);
+  return ability.targets.length === 2 &&
+    isRemovedControllerCardTarget(firstTarget, 1, 1) &&
+    isRemovedControllerCardTarget(secondTarget, 0, 1) &&
+    hasPrivateVisibility(firstTarget) && hasPrivateVisibility(secondTarget) &&
+    hasPairedGoldenImpactConstraints(firstTarget, secondTarget) &&
+    nodeList(secondTarget?.conditions).length === 1 &&
+    value(nodeList(secondTarget?.conditions)[0]?.type) === 'controller_mana_at_least' &&
+    Number(nodeList(secondTarget?.conditions)[0]?.value) === 7 &&
+    isBoundMoveToSkill(firstMove, firstTargetId, firstBinding) &&
+    isVictoryPointAward(firstAward, firstBinding) &&
+    value(payment.player ?? 'controller') === 'controller' &&
+    Number(payment.amount) === 7 &&
+    value(payment.selection) === secondTargetId &&
+    !!value(payment.bind) &&
+    isBoundMoveToSkill(secondMove, secondTargetId, secondBinding) &&
+    firstBinding !== secondBinding &&
+    isVictoryPointAward(secondAward, secondBinding);
+}
+
+function hasEffectType(effects: unknown[], wanted: string): boolean {
+  return effects.some((effect) => {
+    const current = record(effect);
+    if (value(current.type) === wanted) return true;
+    return Object.values(current).some((child) => Array.isArray(child)
+      ? hasEffectType(child, wanted)
+      : child && typeof child === 'object' ? hasEffectType([child], wanted) : false);
+  });
+}
+
+function hasResultBindingProductionBridgeSyntax(valueToInspect: unknown): boolean {
+  if (Array.isArray(valueToInspect)) return valueToInspect.some(hasResultBindingProductionBridgeSyntax);
+  if (!valueToInspect || typeof valueToInspect !== 'object') return false;
+  const current = valueToInspect as Record<string, unknown>;
+  if (typeof current.bind === 'string' || current.expr === 'binding_field' || current.expr === 'binding_status') return true;
+  if (current.type === 'move_card' && (current.from !== undefined || current.bind !== undefined)) return true;
+  if (current.type === 'pay_mana' && typeof current.selection === 'string') return true;
+  return Object.values(current).some(hasResultBindingProductionBridgeSyntax);
+}
+
+function hasResultBindingProductionBridgeTargetShape(targets: unknown[]): boolean {
+  return targets.some((target) => {
+    const current = record(target);
+    const scope = record(current.scope);
+    return value(current.type) === 'card_instance' && value(scope.zone) === 'removed_from_game' && value(scope.owner) === 'controller';
+  });
+}
+
+function isRemovedControllerCardTarget(target: Record<string, unknown> | undefined, min: number, max: number): boolean {
+  const scope = record(target?.scope);
+  const count = record(target?.count);
+  return value(target?.type) === 'card_instance' && value(scope.zone) === 'removed_from_game' && value(scope.owner) === 'controller' &&
+    Number(count.min) === min && Number(count.max) === max;
+}
+
+function hasPrivateVisibility(target: Record<string, unknown> | undefined): boolean {
+  return value(target?.visibility) === 'private_to_controller';
+}
+
+function hasPairedGoldenImpactConstraints(first: Record<string, unknown> | undefined, second: Record<string, unknown> | undefined): boolean {
+  const read = (target: Record<string, unknown> | undefined): string[] | undefined => {
+    const constraints = nodeList(target?.constraints);
+    if (constraints.length !== 1 || value(constraints[0]?.type) !== 'or') return undefined;
+    const conditions = nodeList(constraints[0]?.conditions);
+    const ids = conditions.filter((condition) => value(condition.type) === 'has_card_id').map((condition) => value(condition.cardId));
+    return ids.length === 2 && ids.every(Boolean) && new Set(ids).size === 2 ? ids.sort() : undefined;
+  };
+  const firstIds = read(first);
+  const secondIds = read(second);
+  return !!firstIds && !!secondIds && firstIds.join('|') === secondIds.join('|');
+}
+
+function isBoundMoveToSkill(effect: Record<string, unknown>, targetId: string, binding: string): boolean {
+  return value(effect.type) === 'move_card' && value(effect.target) === targetId && value(record(effect.from).zone || effect.from) === 'removed_from_game' &&
+    value(record(effect.to).zone || effect.to) === 'skill' && !!binding;
+}
+
+function isVictoryPointAward(effect: Record<string, unknown>, binding: string): boolean {
+  const branches = nodeList(effect.branches);
+  if (value(effect.type) !== 'branch' || branches.length !== 1) return false;
+  const branch = branches[0]!;
+  const then = nodeList(branch.then);
+  const award = then[0];
+  if (then.length !== 1 || value(record(branch.if).expr) !== 'controller_at_battlefield' || value(award?.type) !== 'adjust_victory_points') return false;
+  const amount = record(award?.amount);
+  const args = Array.isArray(amount.args) ? amount.args : [];
+  const bindingExpression = args.find((argument) => value(record(argument).expr) === 'binding_field');
+  const literal = args.find((argument) => typeof argument === 'number' ? argument === 2 : value(record(argument).expr) === 'const' && Number(record(argument).value) === 2);
+  return value(award?.player) === 'controller' && value(amount.expr) === 'multiply' && args.length === 2 && literal !== undefined &&
+    value(record(bindingExpression).binding) === binding && value(record(bindingExpression).field) === 'movedCount' &&
+    value(record(bindingExpression).valueType) === 'number';
+}
+
+function record(input: unknown): Record<string, unknown> {
+  return input && typeof input === 'object' && !Array.isArray(input) ? input as Record<string, unknown> : {};
+}
+
+function nodeList(input: unknown): Record<string, unknown>[] {
+  return Array.isArray(input) ? input.map(record) : [];
+}
+
+function value(input: unknown): string {
+  return typeof input === 'string' ? input : '';
 }
 
 export function normalizeResolutionDataFlowNodes(effects: unknown[], rootPath = 'effects'): ResolutionEffectNode[] {
@@ -707,6 +852,15 @@ function validateEffectReferences(
         issues.push({ code: 'invalid_resolution_node', path, message: 'Only create_card to controller skill is supported.' });
       }
       break;
+    case 'move_card':
+      if (!effect.target || effect.from !== 'removed_from_game' || effect.to !== 'skill') {
+        issues.push({
+          code: 'invalid_resolution_node',
+          path,
+          message: 'Production result-binding move_card requires a target and removed-from-game to skill route.',
+        });
+      }
+      break;
     case 'draw_cards':
       validateValueExpression(effect.count, available, unsafeBranchBindings, issues, `${path}.count`);
       break;
@@ -801,6 +955,10 @@ function validateValueExpression(
   path: string,
 ): void {
   if (typeof expression === 'number') return;
+  if (expression.expr === 'multiply') {
+    expression.args.forEach((argument, index) => validateValueExpression(argument, available, unsafeBranchBindings, issues, `${path}.args[${index}]`));
+    return;
+  }
   validateBindingField(expression.binding, expression.field, 'number', expression.valueType, available, unsafeBranchBindings, issues, path);
 }
 
@@ -823,6 +981,7 @@ function validateConditionExpression(
   path: string,
 ): void {
   if (typeof expression === 'boolean') return;
+  if (expression.expr === 'controller_at_battlefield') return;
   if (expression.expr === 'binding_status') {
     validateBindingField(expression.binding, 'status', 'status', 'status', available, unsafeBranchBindings, issues, path);
     return;
@@ -916,6 +1075,48 @@ function createCardPrimitive(
 ): KnownEffectResult {
   if (effect.type !== 'create_card') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
   return createCard(transaction, effect);
+}
+
+function moveCardPrimitive(
+  transaction: AbilityResolutionTransaction,
+  effect: ResolutionPrimitiveNode,
+): KnownEffectResult {
+  if (effect.type !== 'move_card') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  const selectedIds = transaction.context.selections[effect.target];
+  if (!selectedIds) throw new ResolutionRuntimeError('missing_selection', `Missing target selection '${effect.target}'.`);
+  const movedCardIds: string[] = [];
+  for (const cardInstanceId of selectedIds) {
+    const selected = transaction.workingState.cards.find((candidate) => candidate.instanceId === cardInstanceId);
+    if (!selected || selected.ownerPlayerId !== transaction.context.controllerId) {
+      throw new ResolutionRuntimeError('invalid_selected_card', `Selected card '${cardInstanceId}' is not controlled by the resolution owner.`);
+    }
+    if (selected.zone !== effect.from) {
+      throw new ResolutionRuntimeError('invalid_source_zone', `Selected card '${cardInstanceId}' is not in '${effect.from}'.`);
+    }
+    moveCardInstance(transaction, cardInstanceId, effect.to);
+    movedCardIds.push(cardInstanceId);
+  }
+  const eventId = `${transaction.context.resolutionId}.${effect.id}.card_moved`;
+  if (movedCardIds.length > 0) {
+    transaction.emittedEvents.push({
+      type: 'card_moved',
+      playerId: transaction.context.controllerId,
+      sourceCardId: transaction.context.sourceCardId,
+      abilityId: transaction.context.abilityId,
+      visibility: transaction.context.controllerId,
+      resultId: eventId,
+      revision: transaction.workingState.abilityRuntime?.revision ?? 0,
+      movedCount: movedCardIds.length,
+    });
+  }
+  return {
+    effectId: effect.id,
+    effectType: 'move_card',
+    status: movedCardIds.length > 0 ? 'applied' : 'no_op',
+    affectedEntities: movedCardIds.map((id) => ({ kind: 'card', id })),
+    payload: { movedCardIds, movedCount: movedCardIds.length },
+    emittedEventIds: movedCardIds.length > 0 ? [eventId] : [],
+  };
 }
 
 function moveAllRemainingPrimitive(
@@ -1798,6 +1999,17 @@ function payMana(
   if (amount < 0) throw new ResolutionRuntimeError('invalid_amount', 'Mana payment amount must be nonnegative.');
   const player = findPlayer(transaction.workingState, transaction.context.controllerId);
   const before = player.mana;
+  if (effect.selection && Object.prototype.hasOwnProperty.call(transaction.context.selections, effect.selection) &&
+    transaction.context.selections[effect.selection]!.length === 0) {
+    return {
+      effectId: effect.id,
+      effectType: 'pay_mana',
+      status: 'no_op',
+      affectedEntities: [],
+      payload: { playerId: player.id, requestedAmount: amount, actualAmount: 0, before, after: before },
+      emittedEventIds: [],
+    };
+  }
   if (amount > before) throw new ResolutionRuntimeError('insufficient_mana', 'Cannot pay mana.');
   player.mana = before - amount;
   const eventId = `${transaction.context.resolutionId}.${effect.id}.mana_paid`;
@@ -1864,10 +2076,12 @@ function resourceEvent(
 
 function evaluateValue(transaction: AbilityResolutionTransaction, expression: ValueExpression): number {
   if (typeof expression === 'number') return expression;
+  if (expression.expr === 'multiply') return expression.args.reduce<number>((product, argument) => product * evaluateValue(transaction, argument), 1);
   const result = transaction.context.bindings.get(expression.binding);
   if (!result) throw new ResolutionRuntimeError('missing_binding', `Missing binding '${expression.binding}'`);
   if (result.effectType === 'remove_advantage_position' && expression.field === 'removedCount') return result.payload.removedCount;
   if (result.effectType === 'create_card' && expression.field === 'createdCount') return result.payload.createdCount;
+  if (result.effectType === 'move_card' && expression.field === 'movedCount') return result.payload.movedCount;
   if (result.effectType === 'move_all_remaining' && expression.field === 'movedCount') return result.payload.movedCount;
   if (result.effectType === 'move_source_card' && expression.field === 'movedCount') return result.payload.movedCount;
   if (result.effectType === 'move_player' && expression.field === 'movedCount') return result.payload.movedCount;
@@ -1927,6 +2141,13 @@ function evaluateTargets(transaction: AbilityResolutionTransaction, expression: 
 
 function evaluateCondition(transaction: AbilityResolutionTransaction, expression: ConditionExpression): boolean {
   if (typeof expression === 'boolean') return expression;
+  if (expression.expr === 'controller_at_battlefield') {
+    const controller = findPlayer(transaction.workingState, transaction.context.controllerId);
+    const location = controller.locationId
+      ? getEnabledLocations(transaction.workingState.map, transaction.workingState.locationConfig).find((candidate) => candidate.id === controller.locationId)
+      : undefined;
+    return !!location?.tags.includes('battlefield');
+  }
   const result = transaction.context.bindings.get(expression.binding);
   if (!result) throw new ResolutionRuntimeError('missing_binding', `Missing binding '${expression.binding}'`);
   if (expression.expr === 'binding_status') return result.status === expression.status;
@@ -2033,8 +2254,14 @@ function coerceResolutionEffectNode(value: unknown, path: string, issues: DataFl
     }
     case 'move_card':
       if (current.target !== 'this_card') {
-        invalidNode(`${path}.target`, 'Typed source-card movement requires target=this_card.', issues);
-        return { id, type: 'noop', reason: 'invalid source-card target' };
+        return {
+          id,
+          type,
+          target: stringField(current, 'target', `${path}.target`, issues),
+          from: zoneField(current.from, `${path}.from`, issues),
+          to: zoneField(current.to, `${path}.to`, issues),
+          ...coerceBind(current.bind),
+        };
       }
       return {
         id,
@@ -2143,6 +2370,7 @@ function coerceResolutionEffectNode(value: unknown, path: string, issues: DataFl
         type,
         player: current.player === undefined || current.player === 'controller' ? 'controller' : reportControllerPlayer(path, issues),
         amount: coerceValueExpression(current.amount, `${path}.amount`, issues),
+        ...(type === 'pay_mana' && typeof current.selection === 'string' ? { selection: current.selection } : {}),
         ...coerceBind(current.bind),
       };
     case 'adjust_command_seals':
@@ -2202,6 +2430,14 @@ function coerceValueExpression(value: unknown, path: string, issues: DataFlowIss
     return 0;
   }
   const expression = objectExpression(value, path, issues);
+  if (expression?.expr === 'const' && Number.isSafeInteger(expression.value)) return Number(expression.value);
+  if (expression?.expr === 'multiply') {
+    if (!Array.isArray(expression.args) || expression.args.length < 2) {
+      invalidNode(`${path}.args`, 'Multiply expression requires at least two arguments.', issues);
+      return 0;
+    }
+    return { expr: 'multiply', args: expression.args.map((argument, index) => coerceValueExpression(argument, `${path}.args[${index}]`, issues)) };
+  }
   if (expression?.expr === 'binding_field') {
     return {
       expr: 'binding_field',
@@ -2246,6 +2482,7 @@ function coerceTargetExpression(value: unknown, path: string, issues: DataFlowIs
 function coerceConditionExpression(value: unknown, path: string, issues: DataFlowIssue[]): ConditionExpression {
   if (typeof value === 'boolean') return value;
   const expression = objectExpression(value, path, issues);
+  if (expression?.expr === 'controller_at_battlefield') return { expr: 'controller_at_battlefield' };
   if (expression?.expr === 'binding_status') {
     return {
       expr: 'binding_status',

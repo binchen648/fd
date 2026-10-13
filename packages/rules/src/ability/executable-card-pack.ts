@@ -4,6 +4,7 @@ import type {
 } from '@fd/content';
 
 import { loadAuthoringJson, node, nodes, str } from './loader';
+import { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from './card-zone-result-binding';
 import { gameStartSkillProvisioningTargetDefinitionIds, isGameStartSkillProvisioningCandidate } from './game-start-skill-provisioning';
 import { isSetupCreateToSkillCandidate, isSetupCreateToSkillSemantic, isSetupCreateToSkillTargetDefinition } from './setup-create-to-skill';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
@@ -11,6 +12,8 @@ import { sha256Hex } from './portable-sha256';
 import {
   DataFlowValidationError,
   hasResolutionDataFlowSyntax,
+  isResultBindingProductionBridgeRouteCandidate,
+  isResultBindingProductionBridgeSemantic,
   validateResolutionDataFlowNodes,
 } from './resolution-dataflow';
 import type {
@@ -478,6 +481,9 @@ function validateAbilityTargetReferences(card: ExecutableCardDefinition, cards: 
 function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition, cards: Record<string, ExecutableCardDefinition>): void {
   for (const ability of card.abilities) {
     const effects = [...ability.effects, ...ability.creates];
+    if (isResultBindingProductionBridgeRouteCandidate(ability) && !isResultBindingProductionBridgeSemantic(ability)) {
+      throw new Error(`Unsupported result-binding production bridge semantic shape: ${card.id}:${ability.id}`);
+    }
     const path = `cards.${card.id}.abilities.${ability.id}.effects`;
     if (isSetupCreateToSkillCandidate(ability) && !isSetupCreateToSkillSemantic(ability)) {
       throw new Error(`Unsupported setup create-to-skill semantic shape at ${path}`);
@@ -492,13 +498,16 @@ function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition, cards
         throw new Error(`Invalid setup create-to-skill target definition '${String(targetDefinitionId)}' at ${path}`);
       }
     }
-    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isBattleLossResourceTriggerRouteCandidate(ability) && !isBattleLossServantRevealRouteCandidate(ability) && !isSharedVictoryVpTriggerRouteCandidate(ability) && !isBattleEndSourceReturnRouteCandidate(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isPlayActionRouteCandidate(ability) && !isPlaySourceCardWithCostResponseStructuralCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability) && !isSetupCreateToSkillSemantic(ability)) continue;
+    if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isBattleLossResourceTriggerRouteCandidate(ability) && !isBattleLossServantRevealRouteCandidate(ability) && !isSharedVictoryVpTriggerRouteCandidate(ability) && !isBattleEndSourceReturnRouteCandidate(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isPlayActionRouteCandidate(ability) && !isPlaySourceCardWithCostResponseStructuralCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability) && !isSetupCreateToSkillSemantic(ability) && !isResultBindingProductionBridgeRouteCandidate(ability)) continue;
     try {
       validateResolutionDataFlowNodes(effects, path);
     } catch (error) {
       if (!(error instanceof DataFlowValidationError)) throw error;
       const detail = error.issues.map((issue) => `${issue.path}: ${issue.code}: ${issue.message}`).join('\n');
       throw new Error(`Resolution data-flow validation failed at ${path}:\n${detail}`);
+    }
+    if (isCardZoneCoreDirectActionRouteCandidate(ability) && !isCardZoneCoreDirectActionSemantic(ability)) {
+      throw new Error(`Unsupported Card Zone result-binding semantic shape at ${path}`);
     }
   }
 }
@@ -545,17 +554,6 @@ function isBattleEndSourceReturnRouteCandidate(ability: AuthoringAbility): boole
     ability.effects.length === 1 &&
     str(ability.effects[0]?.type) === 'move_card' &&
     str(ability.effects[0]?.target) === 'this_card';
-}
-
-function isCardZoneCoreDirectActionRouteCandidate(ability: AuthoringAbility): boolean {
-  if (ability.kind !== 'phase_action' || str(ability.activation.phase) !== 'advance' || str(ability.activation.opens) !== 'controller_action_window') return false;
-  if (ability.targets.length || ability.cost.length || ability.creates.length || ability.effects.length !== 2) return false;
-  const [move, mana] = ability.effects;
-  const binding = str(move?.resultVar ?? move?.bind);
-  return str(move?.type) === 'move_all_remaining' &&
-    !!binding &&
-    str(mana?.type) === 'adjust_mana' &&
-    referencesMovedCountBinding(mana?.amount, binding);
 }
 
 function isPlayActionRouteCandidate(ability: AuthoringAbility): boolean {
@@ -636,12 +634,6 @@ function hasSingleNonControllerPlayerTarget(targets: RuleNode[], targetId: strin
     Number(count.max ?? 1) === 1 &&
     nodes(target.constraints).some((constraint) => str(constraint.type) === 'not_controller');
 }
-function referencesMovedCountBinding(value: unknown, binding: string): boolean {
-  const current = node(value);
-  return str(current.var) === binding ||
-    (str(current.expr) === 'binding_field' && str(current.binding) === binding && str(current.field) === 'movedCount' && str(current.valueType) === 'number');
-}
-
 function validatePresentationReferences(input: CompileInput, cards: Record<string, ExecutableCardDefinition>): void {
   for (const character of [...input.masters, ...input.servants]) {
     for (const cardId of character.skillCardIds) {

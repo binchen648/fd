@@ -151,9 +151,7 @@ function LocalRoomApp() {
   };
 
   const reconnect = () => {
-    const token = roomProjection.clients.find((client) => client.id === activeClientId)?.reconnectToken;
-    if (!token) return;
-    room.reconnect(token);
+    room.reconnect(room.getIssuedCredential(activeClientId));
     refreshRoom();
   };
 
@@ -481,7 +479,11 @@ function RemoteRoomApp({ connection }: { connection: RemoteRoomConnection }) {
           onConsumeDirective={(directiveId) => client.send({ type: 'client:consume_directive', directiveId })}
           onPauseForFix={(directiveId) => setPauseNotice(`已暂停在 directive：${directiveId}。请保留当前房间 ${connection.roomId} 供排查。`)}
           onRestoreReplay={(checkpointId) => client.send({ type: 'client:restore_replay', checkpointId })}
-          onEndTurn={() => client.send({ type: 'client:end_turn', expectedRevision: projection?.match?.view.revision })}
+          onEndTurn={() => {
+            const expectedRevision = projection?.match?.view.revision;
+            if (expectedRevision === undefined) return;
+            client.send({ type: 'client:end_turn', expectedRevision });
+          }}
           canAdjudicate={projection?.viewer.isHost ?? false}
         />
       ) : null}

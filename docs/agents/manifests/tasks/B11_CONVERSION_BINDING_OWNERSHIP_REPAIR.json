@@ -1,0 +1,32 @@
+{
+  "taskId": "B11_CONVERSION_BINDING_OWNERSHIP_REPAIR",
+  "controlEpoch": "FD-P3-2026-09-23-08",
+  "owner": "Codex B",
+  "status": "IMPLEMENTATION_COMPLETE_CANDIDATE",
+  "reviewReady": false,
+  "baseCommit": "c0db16ae65699b2e2789c7776c0aa4271b11e496",
+  "authorization": "User supplied P1 binding ownership finding and directed continued fix within B11 runtime scope",
+  "hotFiles": ["packages/rules/src/ability/interpreter.ts", "packages/rules/src/ability/executable-card-pack.ts"],
+  "consumer": "Conversion Magic",
+  "sharedCandidate": "packages/rules/src/ability/card-zone-result-binding.ts::isCardZoneCoreDirectActionRouteCandidate",
+  "ownership": "Existing advance phase_action/controller_action_window, no cost/target/creates, two ordered move_all_remaining and adjust_mana nodes. Binding declaration/reference validity is checked after ownership",
+  "exactValidation": "Existing exact semantics extracted unchanged into shared module; compiler and runtime both enforce candidate + exact, then typed data-flow validation",
+  "vectors": "docs/agents/manifests/vectors/B11_CONVERSION_BINDING_OWNERSHIP_REPAIR.json",
+  "classificationVectors": "docs/agents/manifests/vectors/B11_CONVERSION_STRUCTURAL_CLASSIFICATION_API.json",
+  "parityTests": [
+    "packages/rules/tests/regression/b11-conversion-classification-api.test.ts",
+    "packages/rules/tests/regression/b11-conversion-binding-ownership.test.ts"
+  ],
+  "negatives": ["unknown legacy binding", "unknown typed binding", "missing binding declaration", "wrong result field", "wrong result type", "scalar instead of result binding", "missing binding use"],
+  "invariants": ["Full GameState unchanged", "events empty", "pending unchanged", "mana/card zones/revision unchanged", "compiler input unchanged"],
+  "sessionLogging": "Existing rejected-command audit log and checkpoint behavior retained; no log-immutability claim",
+  "legacy": "Owned malformed bindings reject resolution_failed before generic legality or legacy settlement; unrelated routes unchanged",
+  "gateAvailability": {
+    "phase3:preflight": "NOT_AVAILABLE_ON_RUNTIME_BASE",
+    "phase3:contract-parity": "NOT_AVAILABLE_ON_RUNTIME_BASE",
+    "phase3:review-packet": "NOT_AVAILABLE_ON_RUNTIME_BASE"
+  },
+  "retainedBlockers": ["A exact-SHA evidence rebind", "A inventory/coverage API observations", "Independent fixture expectation review"],
+  "waivers": [],
+  "nonClaims": ["Readiness PASS", "Gate promotion", "KPI change", "Main credit", "Browser verification"]
+}

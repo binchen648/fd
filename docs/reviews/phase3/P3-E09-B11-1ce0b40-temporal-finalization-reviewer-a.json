@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "fd-phase3-reviewer-a-integration-closure-review-v1",
+  "taskId": "P3-E09-B11-INTEGRATION-CLOSURE-REPAIR",
+  "repairTaskId": "P3-E09-B11-TEMPORAL-FIXTURE-FINALIZATION",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "reviewDate": "2026-10-13",
+  "reviewer": "Reviewer A",
+  "candidateSha": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b",
+  "reviewedSha": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b",
+  "implementationSha": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+  "boundMainSha": "1d0e102c1ff43c272dc5ccfb2871eda48a5f52ce",
+  "runtimeCandidateSha": "0f62210a2e007a15e28f945c546ccd00c345942a",
+  "acceptedScope": "EXACT_INTEGRATION_CLOSURE_REFERENCE_CONTRACT_AND_FINAL_ASSEMBLY_EVIDENCE_ONLY",
+  "finalVerdict": "PASS",
+  "conclusion": "REVIEW_ACCEPTED",
+  "technicalBlockingFindingsWithinAcceptedScope": [],
+  "boundPacket": {
+    "path": "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+    "sha256": "E8FD40E8B0F74701755CDAB3135D58E0DC3A7C08AAC7C4DA9652BB622B38103E"
+  },
+  "boundReport": {
+    "path": "docs/reports/2026-10-12-p3-e09-b11-integration-evidence-binding.md",
+    "sha256": "657A253A32F1E937A229B16C5FCD339F650D10BD163EC0BE5C2EE4639DED5C6F"
+  },
+  "authorization": {
+    "commit": "6ea26f3bc12fc3bda37b6b2607fd6edda452eee3",
+    "path": "docs/agents/P3-E09-B11-TEMPORAL-FIXTURE-FINALIZATION.md",
+    "sha256": "ED75593972E4378B2B94A470D2D58BB2ABA230AB965ECC1018588C1D475DC3F7",
+    "inspectedSourceSha": "487ab81a8e3fabf75eea5a73cd3582b37cf65520",
+    "actualChangedPaths": [
+      "scripts/phase3-preflight.ts",
+      "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+      "scripts/tests/phase3-readiness-preflight.test.ts",
+      "scripts/fixtures/phase3-e09-b11-integration-binding.json",
+      "artifacts/phase3-e09-b11-integration-evidence-binding.json",
+      "docs/reports/2026-10-12-p3-e09-b11-integration-evidence-binding.md"
+    ],
+    "sixActualPathsWithinSevenAuthorizedPaths": true,
+    "timeoutWorkflowPackageRuntimeKpiChanged": false
+  },
+  "contractReview": {
+    "fixtureLifecycle": "PASS: isolated PRODUCER fixtures use explicit b5e68444 pre-review SHA; repaired validator executes from tested source, not historical fixture source",
+    "explicitStages": "PASS: PRODUCER and ASSEMBLED use explicit inputs; no discovery-based inference or directory allowance introduced",
+    "historicalAssembly": "PASS: exact prior RA/G/source references reconstructed under pinned Planner authority; preserved PASS applies only to its original source",
+    "freshAssembly": "PASS: current candidate still requires a fresh exact RA, three G references, synchronization and actual final HEAD; historical PASS is not inherited",
+    "negativeAssertions": "PASS: mismatched temporal authority/hash/source/path/review, wrong candidate, unknown delta, forged review and runtime drift negatives preserved and independently executed",
+    "syntheticBoundary": "PASS: synthetic RA/G are test-only; neither test success nor contract reference validation grants GitHub acceptance or promotion"
+  },
+  "independentEvidenceVerification": {
+    "producerCheckout": "D:/fd-validation/a-e09-b11-temporal-finalization",
+    "syntheticPostReviewCheckout": "D:/fd-validation/a-e09-b11-temporal-assembly",
+    "carrierDirectParentIsImplementation": true,
+    "implementationDirectParentIsInspectedSource": true,
+    "carrierDelta": "PACKET_AND_REPORT_ONLY",
+    "remoteExactCarrierRefVerified": true,
+    "producerAndSyntheticCheckoutClean": true,
+    "diffCheck": "PASS",
+    "currentRawReceipts": 18,
+    "currentRawStreams": 36,
+    "embeddedRawLengthAndSha256ChecksIncludingHistoricalData": 103,
+    "sourceReferencesVerified": 5,
+    "preReviewFixtureSourceReferencesVerified": 5,
+    "sourceEquivalenceObjectsVerified": 14,
+    "syntheticReviewAndGovernanceHashVerification": "PASS",
+    "syntheticGitBundle": {
+      "sha256": "ACBE8FC9F109D57A3EF459D4E43FF7F1D245B45C86C3E07B26CABD035542A0C1",
+      "bytes": 7330,
+      "implementationPrerequisite": "f1b3588b0b9eb4be943fa127ae24409e067566bf",
+      "head": "994943f9bb9bfd0da764971b133b6147faedcadd",
+      "embeddedBytesEqualSelectedBundle": true,
+      "gitBundleVerify": "PASS"
+    },
+    "priorPacketGitHashAndEmbeddedEquality": "PASS",
+    "originalIntegrationFailureIndexBinding": "PASS: exact head, exit code, timestamps and stdout/stderr byte counts and hashes match original receipt index",
+    "independentExplicitPreflight": {
+      "producer": "BLOCKED; PENDING_NEW_INDEPENDENT_REVIEW; currentAssembly=null",
+      "syntheticAssembled": "EXACT_CURRENT_REFERENCE_BOUND_NOT_PROMOTION",
+      "acceptanceGranted": false,
+      "promotionAllowed": false
+    }
+  },
+  "independentExecutions": {
+    "command": "npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-readiness-preflight.test.ts scripts/tests/phase3-contract-parity.test.ts --maxWorkers=2",
+    "producerCarrier": {
+      "testedSha": "1ce0b406ecf1e7389886bd2962e9e28f0d7d444b",
+      "filesPassed": 3,
+      "testsPassed": 95,
+      "testsFailed": 0,
+      "testsSkipped": 0,
+      "unhandledErrors": 0,
+      "exitCode": 0,
+      "durationSeconds": 149.95
+    },
+    "syntheticPostRaPostG": {
+      "testedSha": "994943f9bb9bfd0da764971b133b6147faedcadd",
+      "filesPassed": 3,
+      "testsPassed": 95,
+      "testsFailed": 0,
+      "testsSkipped": 0,
+      "unhandledErrors": 0,
+      "exitCode": 0,
+      "durationSeconds": 151.56
+    },
+    "evidenceOrigin": "REVIEWER_TOOL_EXECUTION_TRANSCRIPT; NO_NEW_COMMITTED_RAW_RECEIPT_CLAIM",
+    "fullCiRerunByReviewer": false,
+    "producerFullCiRawEvidenceVerified": "194 files / 1607 tests; exit 0; tested implementation f1b3588b",
+    "syntheticFullCiRawEvidenceVerified": "194 files / 1607 tests; exit 0; tested synthetic final 994943f9",
+    "quietWindowOrLongTermStabilityCertified": false
+  },
+  "boundaries": {
+    "overallReadiness": "BLOCKED_FRESH_GOVERNANCE_REAL_FINAL_ASSEMBLY_CHECKS_AND_RELEASE",
+    "githubAttestationProvided": false,
+    "promotionPolicyAttestation": false,
+    "reviewThread": null,
+    "realPostNewRaPostNewGAssemblyExecuted": false,
+    "githubRequiredChecksVerified": false,
+    "runtimeSemanticAcceptanceGranted": false,
+    "promotionAllowed": false,
+    "promotedOnMain": false,
+    "globalGateC": "NOT_VERIFIED",
+    "sourceAssetsMissing": 93,
+    "acceptedIdentities": 111,
+    "denominator": 944,
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0
+  },
+  "nextOwner": "G_BINDS_NEW_CARRIER_AND_THIS_EXACT_REVIEW; I_RUNS_FOCUSED_DEFAULT_CI_INTEGRATION_EVIDENCE_PREFLIGHT_AND_ANCESTRY_POLICY_PREFLIGHT_ON_REAL_FINAL_HEAD",
+  "commitBinding": "Artifact-only immutable review commit directly parents reviewed carrier; commit SHA and artifact hash returned externally"
+}

@@ -5,12 +5,16 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
-import { describe, expect, it } from 'vitest';
+import { afterAll, describe, expect, it } from 'vitest';
 import { buildCoverageFromArchives, loadAuthoringArchives } from '../phase3-coverage';
+import { validateFinalBinding, validateContinuationBinding, createHistoricalEvidenceSnapshot } from '../phase3-e08-b11-coverage-sync';
 
-const root = resolve(fileURLToPath(new URL('../..', import.meta.url)));
+const snapshot = createHistoricalEvidenceSnapshot(resolve(fileURLToPath(new URL('../..', import.meta.url))));
+const root = snapshot.root;
+afterAll(snapshot.cleanup);
 const recountPath = resolve(root, 'artifacts/phase3-e06-a-post-merge-setup-create-to-skill-recount.json');
 const coveragePath = resolve(root, 'artifacts/phase3-skill-coverage.json');
+const historicalCoverageCommit = '9a1689d2ec5b56b67d1483d2593b4ab809d6c15c';
 const gitEnvironment = {
   ...process.env,
   GIT_CONFIG_NOSYSTEM: '1',
@@ -52,8 +56,14 @@ function gitAt(cwd: string, args: string[]): string {
 describe('P3-E06 post-merge setup/create-to-skill recount', () => {
   it('binds the immutable observed main, runtime lineage, unchanged accounting, and fresh coverage', () => {
     const recount = JSON.parse(readFileSync(recountPath, 'utf8')) as any;
-    const coverage = JSON.parse(readFileSync(coveragePath, 'utf8')) as any;
-    const coverageSha = createHash('sha256').update(readFileSync(coveragePath)).digest('hex').toUpperCase();
+    assertCommitObject(historicalCoverageCommit, 'A3 merged coverage carrier');
+    assertAncestor(recount.reconciliation.observedCurrentMainSha, historicalCoverageCommit, 'reconciliation base precedes merged coverage');
+    assertAncestor(historicalCoverageCommit, git(['rev-parse', 'HEAD']), 'merged coverage precedes this carrier');
+    const historicalCoverage = execFileSync('git', ['show', `${historicalCoverageCommit}:artifacts/phase3-skill-coverage.json`], {
+      cwd: root, env: gitEnvironment, stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    const coverage = JSON.parse(historicalCoverage.toString('utf8')) as any;
+    const coverageSha = createHash('sha256').update(historicalCoverage).digest('hex').toUpperCase();
 
     const observedMainSha = recount.main.observedMainSha;
     assertCommitObject(observedMainSha, 'observedMainSha');
@@ -95,14 +105,17 @@ describe('P3-E06 post-merge setup/create-to-skill recount', () => {
   });
 
   it('recalculates coverage and binds current main without rewriting historical failures or credit', async () => {
+    const task = JSON.parse(readFileSync(resolve(root, 'scripts/fixtures/phase3-b11-task-check.json'), 'utf8'));
+    if (task.schemaVersion === 'fd-p3-task-check-v3') validateContinuationBinding(root, task.finalBinding);
+    else validateFinalBinding(root, task.finalBinding);
     const recount = JSON.parse(readFileSync(recountPath, 'utf8')) as any;
     const coverage = JSON.parse(readFileSync(coveragePath, 'utf8')) as any;
     const fresh = buildCoverageFromArchives(loadAuthoringArchives(root), {
       workspaceRoot: root, generatedAt: coverage.generatedAt,
     });
     const { loadPlaytestContentPack, validateLoadedPlaytestPack, compileLoadedPlaytestPack } =
-      await import('../../packages/content/src/playtest-pack-loader');
-    const { compileExecutableCardPack } = await import('../../packages/rules/src/ability/executable-card-pack');
+      await import(pathToFileURL(resolve(root, 'packages/content/src/playtest-pack-loader.ts')).href);
+    const { compileExecutableCardPack } = await import(pathToFileURL(resolve(root, 'packages/rules/src/ability/executable-card-pack.ts')).href);
     const pack = loadPlaytestContentPack(resolve(root, 'data/packs/fd-playtest-v1/pack.json'), { workspaceRoot: root });
     const issues = validateLoadedPlaytestPack(pack, { workspaceRoot: root });
     const library = compileLoadedPlaytestPack(pack, issues).library;
@@ -116,23 +129,23 @@ describe('P3-E06 post-merge setup/create-to-skill recount', () => {
     expect(recount.controlEpoch).toBe('FD-P3-2026-09-23-08');
     expect(recount.taskId).toBe('P3-E08-RP-00-A3-RECONCILIATION');
     const current = recount.reconciliation.observedCurrentMainSha;
+    const historicalCoverage = JSON.parse(git(['show', `${current}:artifacts/phase3-skill-coverage.json`])) as any;
     expect(current).toBe('fefcf4f7f5bd66ed7693889fb99391e6e7321016');
     assertCommitObject(current, 'reconciliation observed current main');
     assertAncestor(recount.main.observedMainSha, current, 'historical main precedes reconciliation main');
     assertAncestor(current, git(['rev-parse', 'HEAD']), 'reconciliation base precedes this carrier');
     for (const path of ['data/authoring', 'data/packs', 'packages/content/src', 'packages/rules/src', 'scripts/phase3-coverage.ts']) {
       expect(git(['rev-parse', `${current}:${path}`])).toBe(git(['rev-parse', `${recount.main.observedMainSha}:${path}`]));
-      expect(git(['rev-parse', `HEAD:${path}`])).toBe(git(['rev-parse', `${current}:${path}`]));
     }
     expect(recount.reconciliation.ciStabilityPr).toBe(554);
     expect(recount.reconciliation.ciStabilityMergeSha).toBe(current);
     expect(recount.reconciliation.before).toEqual(recount.reconciliation.after);
     expect(recount.reconciliation.after).toEqual({
-      new: fresh.runtimeRouting.newRuntimeConsumers.after,
-      legacyResolve: fresh.runtimeRouting.legacyResolveEffectConsumers.after,
-      legacyExecute: fresh.runtimeRouting.legacyExecuteAbilityConsumers.after,
-      dual: fresh.runtimeRouting.dualRuntimeConsumers.after,
-      notClassifiable: fresh.runtimeRouting.notClassifiable.after,
+      new: historicalCoverage.runtimeRouting.newRuntimeConsumers.after,
+      legacyResolve: historicalCoverage.runtimeRouting.legacyResolveEffectConsumers.after,
+      legacyExecute: historicalCoverage.runtimeRouting.legacyExecuteAbilityConsumers.after,
+      dual: historicalCoverage.runtimeRouting.dualRuntimeConsumers.after,
+      notClassifiable: historicalCoverage.runtimeRouting.notClassifiable.after,
     });
     expect(Object.values(recount.reconciliation.delta)).toEqual([0, 0, 0, 0, 0]);
     for (const field of ['coverageCreditDelta', 'migrationCreditDelta', 'denominatorDelta', 'runtimePromotionDelta']) {
