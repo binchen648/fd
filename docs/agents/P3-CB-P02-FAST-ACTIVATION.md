@@ -25,6 +25,11 @@ historical evidence-test work is not a P02 dependency or content write grant.
 P02 expected content ownership may touch pack/generated paths; these are shared
 content resources, not independent merely because runtime sources are excluded.
 No blanket reservation until A gives literal paths and active writers are checked.
+Planner scoped scan on 2026-10-14: 255 registered worktrees; 249 accessible,
+six inaccessible historical temporary paths. No uncommitted changes to Iliya,
+Taiga, pack.json, initial-mana consumer test or generated content library in
+accessible worktrees. This is a bounded dirty-path snapshot, not proof that
+no writer is active or that broader proposed generated outputs are conflict-free.
 Root D:/fd user changes must be preserved. Snapshots do not prove every remote
 or inaccessible worker idle. No shared-runtime writing or heavy test window is
 granted by this control record.
