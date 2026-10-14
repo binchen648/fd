@@ -1,0 +1,577 @@
+{
+  "schemaVersion": "fd-scoped-evidence-synchronization-v1",
+  "taskId": "P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "generatedAt": "2026-10-14T00:00:00.000Z",
+  "finalState": "READY_FOR_REVIEW_A",
+  "classification": "REVIEWER_ACCEPTED_CANDIDATE",
+  "implementation": "ACCEPTED_FOR_EVIDENCE_SYNC",
+  "main": "UNCHANGED",
+  "promotion": "NOT_READY",
+  "candidateSha": "3ec55814b8aca84416fca46dfaf7032a7f115094",
+  "testedImplementationSha": "8fba9c457de11f849353b5ad84c6165bfa4493b8",
+  "candidateBranch": "codex/b-p3-cb-a0-time-alter-play-legality-repair",
+  "evidenceSyncBranch": "codex/a-p3-cb-a0-time-alter-evidence-sync",
+  "evidenceSyncWorktree": "D:/fd-validation/a-cb-a0-time-alter-sync",
+  "exactReviewScope": "Time Alter ruled hand-target legality repair and scoped production/browser chain only",
+  "reviewer": {
+    "identity": "Codex Reviewer B",
+    "githubIdentity": null,
+    "reviewThread": null,
+    "verdict": "PASS",
+    "reviewedSha": "3ec55814b8aca84416fca46dfaf7032a7f115094",
+    "commit": "fb487f1397b02663bac1ab065864aa484830c390",
+    "artifact": {
+      "commit": "fb487f1397b02663bac1ab065864aa484830c390",
+      "path": "docs/reviews/phase3/P3-CB-A0-TIME-ALTER-3ec55814-reviewer-b.json",
+      "sha256": "54cab8cde8ef835a12afb78e803f3082a249831ba1146849da73b5b5f798e26a",
+      "blob": "5d768320e2a1837864f3a191e9c2e2daeb5cdfdb"
+    },
+    "independentExecution": {
+      "command": "npx vitest run packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts packages/rules/tests/regression/card-action-play.test.ts packages/rules/tests/regression/fb2-required-additional-play.test.ts --maxWorkers=1",
+      "filesPassed": 3,
+      "testsPassed": 26,
+      "exitCode": 0
+    },
+    "identityScope": {
+      "frozen": "master.kiritsugu.skill.s2",
+      "productionDefinition": "master.kiritsugu.skill.time-alter",
+      "ability": "time-alter.action"
+    }
+  },
+  "lineage": {
+    "candidateParent": "8fba9c457de11f849353b5ad84c6165bfa4493b8",
+    "reviewParent": "3ec55814b8aca84416fca46dfaf7032a7f115094",
+    "baseAncestor": true,
+    "implementationAncestor": true,
+    "candidateInObservedMain": false,
+    "implementationToCandidateEvidenceOnly": true
+  },
+  "observedMainSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "sourceBindings": {
+    "review": {
+      "commit": "fb487f1397b02663bac1ab065864aa484830c390",
+      "path": "docs/reviews/phase3/P3-CB-A0-TIME-ALTER-3ec55814-reviewer-b.json",
+      "sha256": "54cab8cde8ef835a12afb78e803f3082a249831ba1146849da73b5b5f798e26a",
+      "blob": "5d768320e2a1837864f3a191e9c2e2daeb5cdfdb"
+    },
+    "packet": {
+      "commit": "3ec55814b8aca84416fca46dfaf7032a7f115094",
+      "path": "artifacts/phase3-cb-a0-time-alter-play-legality-repair.json",
+      "sha256": "0411d702b35a8f253712cc52f3dfa97d32b7cb7971d7551a686ad68f0b5e977a",
+      "blob": "f1c003fb8b39bc6fffebd7228cebeb75d86b00e3"
+    },
+    "rule": {
+      "commit": "a1328bead4d653991f7b52817686e24e882d50b4",
+      "path": "docs/rules/2026-10-14-time-alter-user-ruling.md",
+      "sha256": "a145f36f29319586560e4b238d3d75010e501bb0a17b81ef044e81cbde028589",
+      "blob": "5865aa653f614da29361b777569cb8a0f44d0c2f"
+    },
+    "authorization": {
+      "commit": "b52d09178737465525f09457b5145c40fbb097ee",
+      "path": "docs/agents/manifests/tasks/P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR.json",
+      "sha256": "be8cdc9b9fe4f2363af3c9cddbea71e99370300cb2410b7deeac2850aca36c34",
+      "blob": "51e58267ef88ea7ec22fdb94c63e899c0791e208"
+    },
+    "source": [
+      {
+        "commit": "8fba9c457de11f849353b5ad84c6165bfa4493b8",
+        "path": "docs/agents/manifests/tasks/P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR.json",
+        "sha256": "157f2c266331ab73e5a753d72df4deee8ddc1a58c6478b43bc665660447032c1",
+        "blob": "13580084de364a70b2ed790e5639daa3db80ebbf"
+      },
+      {
+        "commit": "8fba9c457de11f849353b5ad84c6165bfa4493b8",
+        "path": "e2e/fd-time-alter-core-primitive.spec.ts",
+        "sha256": "ea5b27cd247f4e6d71b8cc3461a9f9ea0db066d1cadab6bf5bc9e0ad06a8f601",
+        "blob": "ef6e1d3ad9ca5fff773717a6f7cb3afd849ce74f"
+      },
+      {
+        "commit": "8fba9c457de11f849353b5ad84c6165bfa4493b8",
+        "path": "packages/rules/src/ability/interpreter.ts",
+        "sha256": "f1e96819ba829f7410b145caa97b54c5034fd44280de81acc58b10f263065ee2",
+        "blob": "b2a7fa373b3fb8a607ad1c5b233a5aa190bc454b"
+      },
+      {
+        "commit": "8fba9c457de11f849353b5ad84c6165bfa4493b8",
+        "path": "packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts",
+        "sha256": "a4cd4c2d44d3423d1bd4a71befe00fc0501d9b22dacfcc9e7f5a7ca8165e5fe6",
+        "blob": "37c9e87eb0c0570c863301abf5d16f024c784b21"
+      },
+      {
+        "commit": "8fba9c457de11f849353b5ad84c6165bfa4493b8",
+        "path": "packages/rules/tests/regression/fb2-required-additional-play.test.ts",
+        "sha256": "6a7233d7fa00bfa77bf005f8843e2e6230206fe4a9c0f35b72ac10c8e861aeb2",
+        "blob": "49668bb3630e64e4f8ca1165334fc48e91a7dffe"
+      }
+    ],
+    "coverage": {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "artifacts/phase3-skill-coverage.json",
+      "sha256": "f058502226911f579c56cd5a9b302833c1731d07c96adce74625631fcff7d1b8",
+      "blob": "0c4c7035f631760c196ac2ed78aaf5ead8dc850b"
+    },
+    "classifier": {
+      "commit": "3ec55814b8aca84416fca46dfaf7032a7f115094",
+      "path": "scripts/phase3-coverage.ts",
+      "sha256": "092ad1202288a61ed25a2171338079fd8b3ba7b5d5aec35deed3b9db9e1d0f3a",
+      "blob": "ce6f84862de382703d6bfbf2940e535f1b238be3"
+    },
+    "authoring": {
+      "commit": "3ec55814b8aca84416fca46dfaf7032a7f115094",
+      "path": "data/authoring/masters/master.kiritsugu.json",
+      "sha256": "dd5f80ab900e21a7e563500f087aa03c93206e7427a091cb7e8634e4a6c7a97b",
+      "blob": "f2f3ff12c172160ec27a1a6c065c1d0919572373"
+    },
+    "ledger": {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "artifacts/phase3-e04-current-main-accepted-111-execution-matrix.json",
+      "sha256": "34ce9258e94e9bf44243cdd76be223f599d4776c13e2ef623382ae44a2f4f965",
+      "blob": "d7a3f280afc26bc4efefdef75ee6cd7c89eb9704"
+    }
+  },
+  "ruleEvidence": {
+    "commit": "a1328bead4d653991f7b52817686e24e882d50b4",
+    "path": "docs/rules/2026-10-14-time-alter-user-ruling.md",
+    "sha256": "a145f36f29319586560e4b238d3d75010e501bb0a17b81ef044e81cbde028589",
+    "blob": "5865aa653f614da29361b777569cb8a0f44d0c2f",
+    "rulingBlob": "5865aa653f614da29361b777569cb8a0f44d0c2f",
+    "scope": "Time Alter only; separate Master activation and target play; Origin Bullet allowed when otherwise legal in hand; no skill-card face-down exemption; normal prohibitions remain.",
+    "printedTextUnchanged": true
+  },
+  "currentCandidateValidation": {
+    "status": "SCOPED_RB_PASS",
+    "acceptance": "ACCEPTED_FOR_EVIDENCE_SYNC",
+    "reviewIndependentFocused": {
+      "files": 3,
+      "tests": 26,
+      "exitCode": 0,
+      "source": "Reviewer B persisted artifact; not rerun by A"
+    },
+    "recordedImplementationValidation": {
+      "focused": "8 files / 216 tests PASS",
+      "typecheck": "PASS",
+      "contentValidation": "PASS; 0 blocking",
+      "generatedDeterminism": "PASS",
+      "browser": "5/5 PASS",
+      "historicalPreflight": "CHECKED; extraction only; no acceptance",
+      "firstDefaultCi": "3 files failed / 193 passed; 3 tests failed / 1640 passed",
+      "defaultCi": "1 file failed / 195 passed; 1 test failed / 1642 passed; only B11 source binding",
+      "isolatedDiagnostic": "Historical preflight tests 22/22 PASS; additional-play 7/8 PASS"
+    },
+    "rawReceiptsBinding": {
+      "commit": "3ec55814b8aca84416fca46dfaf7032a7f115094",
+      "path": "artifacts/phase3-cb-a0-time-alter-play-legality-repair.json",
+      "sha256": "0411d702b35a8f253712cc52f3dfa97d32b7cb7971d7551a686ad68f0b5e977a",
+      "blob": "f1c003fb8b39bc6fffebd7228cebeb75d86b00e3"
+    },
+    "verifiedReceiptCount": 16,
+    "verifiedRawStreamCount": 32,
+    "verifiedImplementationSourceCount": 5,
+    "receiptIndex": [
+      {
+        "id": "browser-final",
+        "command": "npx playwright test -c playwright.config.ts e2e/fd-time-alter-core-primitive.spec.ts --project=chromium --repeat-each=5",
+        "testedSha": "82d8bb06dc8155ab082b4f1ded6ead3c3e7e6680",
+        "exitCode": 0,
+        "streams": [
+          {
+            "name": "stdout",
+            "bytes": 943,
+            "sha256": "0d0854b29bd65808f4ec32015e03800d7c49d8de6dbeb97f6e320d059a6d25cf"
+          },
+          {
+            "name": "stderr",
+            "bytes": 1572,
+            "sha256": "53fd29ef9ac37522c4c6f36f2e4e237a6ac11877ec07234189aad3d1befbf2a0"
+          }
+        ],
+        "atReviewedImplementation": false
+      },
+      {
+        "id": "browser-freeze",
+        "command": "npx playwright test -c playwright.config.ts e2e/fd-time-alter-core-primitive.spec.ts --project=chromium --repeat-each=5",
+        "testedSha": "8fba9c457de11f849353b5ad84c6165bfa4493b8",
+        "exitCode": 0,
+        "streams": [
+          {
+            "name": "stdout",
+            "bytes": 943,
+            "sha256": "0cb28dec775dab7b5451bbae870729e0a50427cd36c77709dcf19e9825312162"
+          },
+          {
+            "name": "stderr",
+            "bytes": 1571,
+            "sha256": "1083ba3901084d394254b8c8a966a78987678c8ee0e6e94c97c2a85b6180a6e7"
+          }
+        ],
+        "atReviewedImplementation": true
+      },
+      {
+        "id": "browser-green",
+        "command": "npx playwright test -c playwright.config.ts e2e/fd-time-alter-core-primitive.spec.ts --project=chromium",
+        "testedSha": "646568a842dd354be1acb836d5c3ff04dd11fd44",
+        "exitCode": 1,
+        "streams": [
+          {
+            "name": "stdout",
+            "bytes": 2023,
+            "sha256": "075a36a3d43822c9b0fabbde52906c6ace363047a6e354f05d219b4680994c30"
+          },
+          {
+            "name": "stderr",
+            "bytes": 914,
+            "sha256": "bad3ca460f44d9c2142f7fb404020648b202ae9aa3ebed9fad8f7b9e33733259"
+          }
+        ],
+        "atReviewedImplementation": false
+      },
+      {
+        "id": "browser",
+        "command": "npx playwright test -c playwright.config.ts e2e/fd-time-alter-core-primitive.spec.ts --project=chromium",
+        "testedSha": "8dec63f8bfb2d9a2177bc251289dac9605fb0e11",
+        "exitCode": 1,
+        "streams": [
+          {
+            "name": "stdout",
+            "bytes": 358,
+            "sha256": "f2c5323ae5523c12434e1efdc5a5543e199804b0363145a7f821b311bd6b6284"
+          },
+          {
+            "name": "stderr",
+            "bytes": 752,
+            "sha256": "6b26173dbe68204393d7b2f65ab4fc400d44815294d08b82adff96930fad9147"
+          }
+        ],
+        "atReviewedImplementation": false
+      },
+      {
+        "id": "content-validation",
+        "command": "npm run content:validate",
+        "testedSha": "82d8bb06dc8155ab082b4f1ded6ead3c3e7e6680",
+        "exitCode": 0,
+        "streams": [
+          {
+            "name": "stdout",
+            "bytes": 198,
+            "sha256": "1e9efe9020c2dcf014d3285336f42e6e85d0f66639e126ddca0ac84254910906"
+          },
+          {
+            "name": "stderr",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "atReviewedImplementation": false
+      },
+      {
+        "id": "default-ci-final",
+        "command": "npm run test:ci",
+        "testedSha": "8fba9c457de11f849353b5ad84c6165bfa4493b8",
+        "exitCode": 1,
+        "streams": [
+          {
+            "name": "stdout",
+            "bytes": 44994,
+            "sha256": "563edcc475e8fb3ddb7313571991d32e21dcf371f98c1444d101e616c8da2360"
+          },
+          {
+            "name": "stderr",
+            "bytes": 6514,
+            "sha256": "cb20a3df75f3abde193b914139dd0519654cbc9526fae2fa35e080060333e27a"
+          }
+        ],
+        "atReviewedImplementation": true
+      },
+      {
+        "id": "default-ci",
+        "command": "npm run test:ci",
+        "testedSha": "82d8bb06dc8155ab082b4f1ded6ead3c3e7e6680",
+        "exitCode": 1,
+        "streams": [
+          {
+            "name": "stdout",
+            "bytes": 46862,
+            "sha256": "e960e5c305b86b968c32670c4b3e7c355542b370cc624ddb7f2bee5f5bc42f4b"
+          },
+          {
+            "name": "stderr",
+            "bytes": 8176,
+            "sha256": "56bf44c3389a3a91c2ead61a47e949266a722a075c1a3ed8e121658e93ba0324"
+          }
+        ],
+        "atReviewedImplementation": false
+      },
+      {
+        "id": "focused-final",
+        "command": "npx vitest run packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts packages/rules/tests/regression/card-action-play.test.ts packages/rules/tests/regression/attack-play-classifier-regression.test.ts packages/rules/tests/regression/complex-skills-regression.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/regression/card-action-play-source-response.test.ts packages/rules/tests/regression/fb2-required-additional-play.test.ts packages/rules/tests/authoring-interpreter.test.ts --maxWorkers=2",
+        "testedSha": "8fba9c457de11f849353b5ad84c6165bfa4493b8",
+        "exitCode": 0,
+        "streams": [
+          {
+            "name": "stdout",
+            "bytes": 2904,
+            "sha256": "b2c74430cf785072ecf6b4be4632bc1d6b6f653cf54537fe311fc931bfc95709"
+          },
+          {
+            "name": "stderr",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "atReviewedImplementation": true
+      },
+      {
+        "id": "focused",
+        "command": "npx vitest run packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts packages/rules/tests/regression/card-action-play.test.ts packages/rules/tests/regression/attack-play-classifier-regression.test.ts packages/rules/tests/regression/complex-skills-regression.test.ts packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/ability-loader.test.ts packages/rules/tests/regression/card-action-play-source-response.test.ts",
+        "testedSha": "8dec63f8bfb2d9a2177bc251289dac9605fb0e11",
+        "exitCode": 0,
+        "streams": [
+          {
+            "name": "stdout",
+            "bytes": 2743,
+            "sha256": "478e3f970962185d98bc4d3cefee28a9047b32f84401c2e24cdc2556cb2206ae"
+          },
+          {
+            "name": "stderr",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "atReviewedImplementation": false
+      },
+      {
+        "id": "generated-determinism",
+        "command": "npm run verify:generated-content",
+        "testedSha": "82d8bb06dc8155ab082b4f1ded6ead3c3e7e6680",
+        "exitCode": 0,
+        "streams": [
+          {
+            "name": "stdout",
+            "bytes": 400,
+            "sha256": "7b7c76808cebdd0b6eda5c2a4bd8ecad7321fdcb67297d5ef799c1014b8f26e0"
+          },
+          {
+            "name": "stderr",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "atReviewedImplementation": false
+      },
+      {
+        "id": "historical-preflight-supplement",
+        "command": "node --import tsx D:/fd-validation/cb-a0-historical-preflight.mts",
+        "testedSha": "8fba9c457de11f849353b5ad84c6165bfa4493b8",
+        "exitCode": 0,
+        "streams": [
+          {
+            "name": "stdout",
+            "bytes": 13550,
+            "sha256": "0d97e902f7799413e11869b76e8999dc30f686c9b1203fbd4fa4816c4fc2212a"
+          },
+          {
+            "name": "stderr",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "atReviewedImplementation": true
+      },
+      {
+        "id": "historical-preflight",
+        "command": "node --import tsx D:/fd-validation/cb-a0-historical-preflight.mts",
+        "testedSha": "82d8bb06dc8155ab082b4f1ded6ead3c3e7e6680",
+        "exitCode": 0,
+        "streams": [
+          {
+            "name": "stdout",
+            "bytes": 13032,
+            "sha256": "30eee87f1a137d87f1e430e59b33b3b183c986af5539c05247164d26c1c320f1"
+          },
+          {
+            "name": "stderr",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "atReviewedImplementation": false
+      },
+      {
+        "id": "neighboring-failure",
+        "command": "npx vitest run packages/rules/tests/regression/fb2-required-additional-play.test.ts scripts/tests/engineering-failure-preflight.test.ts --maxWorkers=2",
+        "testedSha": "82d8bb06dc8155ab082b4f1ded6ead3c3e7e6680",
+        "exitCode": 1,
+        "streams": [
+          {
+            "name": "stdout",
+            "bytes": 4963,
+            "sha256": "078b51926176be6385645c137270607e32d1806dedbdd4fb5d7128b536124df1"
+          },
+          {
+            "name": "stderr",
+            "bytes": 884,
+            "sha256": "6201276a1413ad3f85cb4d0159b934bca4de721993e357476edb00fcd4aa6200"
+          }
+        ],
+        "atReviewedImplementation": false
+      },
+      {
+        "id": "typecheck-final",
+        "command": "npm run typecheck",
+        "testedSha": "82d8bb06dc8155ab082b4f1ded6ead3c3e7e6680",
+        "exitCode": 0,
+        "streams": [
+          {
+            "name": "stdout",
+            "bytes": 42,
+            "sha256": "fe697f3caea6aa3017ce001f09cac853c9f311a09a2c043dc56f82c15f02d1d4"
+          },
+          {
+            "name": "stderr",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "atReviewedImplementation": false
+      },
+      {
+        "id": "typecheck-freeze",
+        "command": "npm run typecheck",
+        "testedSha": "8fba9c457de11f849353b5ad84c6165bfa4493b8",
+        "exitCode": 0,
+        "streams": [
+          {
+            "name": "stdout",
+            "bytes": 42,
+            "sha256": "fe697f3caea6aa3017ce001f09cac853c9f311a09a2c043dc56f82c15f02d1d4"
+          },
+          {
+            "name": "stderr",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "atReviewedImplementation": true
+      },
+      {
+        "id": "typecheck",
+        "command": "npm run typecheck",
+        "testedSha": "8dec63f8bfb2d9a2177bc251289dac9605fb0e11",
+        "exitCode": 0,
+        "streams": [
+          {
+            "name": "stdout",
+            "bytes": 42,
+            "sha256": "fe697f3caea6aa3017ce001f09cac853c9f311a09a2c043dc56f82c15f02d1d4"
+          },
+          {
+            "name": "stderr",
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "atReviewedImplementation": false
+      }
+    ],
+    "sourceEquivalence": "Implementation to reviewed candidate changes only original artifact/report; five source blobs identical.",
+    "browserBoundary": "Independent production server and pack. Server fixture uses real create/select/start, Session dispatch/passPriority and runFullMatch for round transition; no raw state/zone/definition/usage rewrite and no HTTP restore. Browser covers second-round activation, choose, reload and stale choose replay. Not an all-browser setup proof.",
+    "notFullCiPass": true
+  },
+  "historicalB11CiDebt": {
+    "status": "OPEN_SEPARATE_FROM_SCOPED_TIME_ALTER_ACCEPTANCE",
+    "reproducedDuringCurrentCandidateCI": true,
+    "sourceReceiptId": "default-ci-final",
+    "testedSha": "8fba9c457de11f849353b5ad84c6165bfa4493b8",
+    "exitCode": 1,
+    "file": "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+    "test": "recomputes current coverage separately without rewriting the historical artifact or classifier",
+    "error": "Candidate source drift: packages/rules/src",
+    "throwSite": "scripts/phase3-e08-b11-coverage-sync.ts:138",
+    "result": "195/196 files; 1642/1643 tests",
+    "nature": "Historical B11 provider binding rejects newer Time Alter source; not a Time Alter legality assertion failure.",
+    "disposition": "Preserve immutable B11 history and failed receipts. Separate automation task/authorization needed to resolve test binding; no waiver or historical rewrite in this sync.",
+    "impactOnCurrentEvidenceSync": "Does not negate RB scoped PASS; still blocks green default CI and promotion.",
+    "initialFailuresAndBrowserAttempts": "All retained in original immutable implementation packet; no successful-run selection."
+  },
+  "coverageLedgerPath": "artifacts/phase3-cb-a0-time-alter-coverage-ledger-sync.json",
+  "consumerCounts": {
+    "before": {
+      "new": 23,
+      "legacyResolve": 144,
+      "legacyExecute": 3,
+      "dual": 0,
+      "notClassifiable": 111,
+      "totalAbilities": 281
+    },
+    "after": {
+      "new": 23,
+      "legacyResolve": 144,
+      "legacyExecute": 3,
+      "dual": 0,
+      "notClassifiable": 111,
+      "totalAbilities": 281
+    },
+    "delta": {
+      "new": 0,
+      "legacyResolve": 0,
+      "legacyExecute": 0,
+      "dual": 0,
+      "notClassifiable": 0,
+      "totalAbilities": 0
+    },
+    "measurement": "Actual buildCoverageFromArchives + classifyAbilityForCoverage; counts are ability routes, not frozen-identity migration credit.",
+    "sourceFingerprint": "45159c58666046414b1f0b4a66d58b97a27feb6da27e6e6333e7a6fdfbbe3d3a",
+    "unchangedAuthoringAndClassifierGitDiffVerified": true,
+    "baselineCheckout": "D:/fd-validation/a-cb-p03-select",
+    "candidateCheckout": "D:\\fd-validation\\a-cb-a0-time-alter-sync",
+    "classifier": {
+      "commit": "3ec55814b8aca84416fca46dfaf7032a7f115094",
+      "path": "scripts/phase3-coverage.ts",
+      "sha256": "092ad1202288a61ed25a2171338079fd8b3ba7b5d5aec35deed3b9db9e1d0f3a",
+      "blob": "ce6f84862de382703d6bfbf2940e535f1b238be3"
+    }
+  },
+  "frozenAccounting": {
+    "accepted": 111,
+    "denominator": 944,
+    "remaining": 833,
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "mainDenominatorDelta": 0
+  },
+  "promotedOnMain": false,
+  "creditDelta": 0,
+  "gateVerdicts": {
+    "gateA": "NO_PROMOTION_BY_A",
+    "gateB": "NO_PROMOTION_BY_A",
+    "gateC": "SCOPED_BROWSER_EVIDENCE_REVIEWED_GLOBAL_NOT_VERIFIED"
+  },
+  "retainedLegacy": [
+    "magus-killer.setup replacement path",
+    "unmigrated abilities outside this task"
+  ],
+  "remainingDependencies": [
+    "Reviewer A exact sync review",
+    "Historical B11 CI binding disposition with exact scope authorization",
+    "Governance attestation / required checks / Integration separately",
+    "No GitHub reviewer identity/thread in current RB artifact"
+  ],
+  "releaseLimits": {
+    "missingImages": 93,
+    "globalGateC": "NOT_VERIFIED",
+    "longTermStability": "NOT_VERIFIED",
+    "phase3Completion": "NOT_GRANTED"
+  },
+  "aVerification": {
+    "sourceHashAndLineage": "PASS_READ_ONLY",
+    "rawReceiptIntegrity": "PASS_16_RECEIPTS_32_STREAMS",
+    "coverageRecalculation": "PASS_ZERO_DELTA",
+    "runtimeTestsExecuted": 0,
+    "browserTestsExecuted": 0,
+    "fullCiExecuted": 0,
+    "noRuntimeAuthoringTestsChanged": true
+  },
+  "nextOwner": "Reviewer A",
+  "nextAction": "Review exact frozen synchronization carrier; candidate validation and historical debt remain distinct."
+}

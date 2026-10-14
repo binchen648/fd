@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "fd-scoped-coverage-ledger-overlay-v1",
+  "taskId": "P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "observedMainSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "reviewedCandidateSha": "3ec55814b8aca84416fca46dfaf7032a7f115094",
+  "reviewerBinding": {
+    "commit": "fb487f1397b02663bac1ab065864aa484830c390",
+    "path": "docs/reviews/phase3/P3-CB-A0-TIME-ALTER-3ec55814-reviewer-b.json",
+    "sha256": "54cab8cde8ef835a12afb78e803f3082a249831ba1146849da73b5b5f798e26a",
+    "blob": "5d768320e2a1837864f3a191e9c2e2daeb5cdfdb"
+  },
+  "updateScope": "ONE_CONSUMER_REVIEW_STATUS_ONLY_NO_GLOBAL_LEDGER_OR_KPI_REWRITE",
+  "rows": [
+    {
+      "canonicalIdentityId": "master.kiritsugu.skill.s2",
+      "productionDefinitionId": "master.kiritsugu.skill.time-alter",
+      "abilityId": "time-alter.action",
+      "runtimeRouteBefore": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "runtimeRouteAfter": "NEW_RUNTIME_SEMANTIC_ROUTED",
+      "semanticContracts": [
+        "CARD_ACTION_SEMANTICS_MINIMAL:PLAY"
+      ],
+      "priorScopedReviewState": "NOT_BOUND_BY_THIS_PACKET",
+      "currentScopedReviewState": "REVIEWER_ACCEPTED_CANDIDATE",
+      "implementation": "ACCEPTED_FOR_EVIDENCE_SYNC",
+      "acceptanceScope": "Time Alter ruled hand-target legality repair and scoped production/browser chain only",
+      "wholeIdentityMigrationAcceptance": "NOT_GRANTED",
+      "promotedOnMain": false,
+      "mainMigrationState": "UNCHANGED_NOT_PROMOTED",
+      "legacyFallbackStatus": "CLOSED_FOR_SCOPED_TYPED_PLAY_REJECTION_REVIEW_BOUND",
+      "reviewedSource": {
+        "commit": "8fba9c457de11f849353b5ad84c6165bfa4493b8",
+        "path": "packages/rules/src/ability/interpreter.ts",
+        "sha256": "f1e96819ba829f7410b145caa97b54c5034fd44280de81acc58b10f263065ee2",
+        "blob": "b2a7fa373b3fb8a607ad1c5b233a5aa190bc454b"
+      },
+      "ruleEvidence": {
+        "commit": "a1328bead4d653991f7b52817686e24e882d50b4",
+        "path": "docs/rules/2026-10-14-time-alter-user-ruling.md",
+        "sha256": "a145f36f29319586560e4b238d3d75010e501bb0a17b81ef044e81cbde028589",
+        "blob": "5865aa653f614da29361b777569cb8a0f44d0c2f"
+      },
+      "sourceEvidence": {
+        "commit": "3ec55814b8aca84416fca46dfaf7032a7f115094",
+        "path": "data/authoring/masters/master.kiritsugu.json",
+        "sha256": "dd5f80ab900e21a7e563500f087aa03c93206e7427a091cb7e8634e4a6c7a97b",
+        "blob": "f2f3ff12c172160ec27a1a6c065c1d0919572373"
+      },
+      "currentMainCredit": 0
+    }
+  ],
+  "consumerCounts": {
+    "before": {
+      "new": 23,
+      "legacyResolve": 144,
+      "legacyExecute": 3,
+      "dual": 0,
+      "notClassifiable": 111,
+      "totalAbilities": 281
+    },
+    "after": {
+      "new": 23,
+      "legacyResolve": 144,
+      "legacyExecute": 3,
+      "dual": 0,
+      "notClassifiable": 111,
+      "totalAbilities": 281
+    },
+    "delta": {
+      "new": 0,
+      "legacyResolve": 0,
+      "legacyExecute": 0,
+      "dual": 0,
+      "notClassifiable": 0,
+      "totalAbilities": 0
+    },
+    "measurement": "Actual buildCoverageFromArchives + classifyAbilityForCoverage; counts are ability routes, not frozen-identity migration credit.",
+    "sourceFingerprint": "45159c58666046414b1f0b4a66d58b97a27feb6da27e6e6333e7a6fdfbbe3d3a",
+    "unchangedAuthoringAndClassifierGitDiffVerified": true,
+    "baselineCheckout": "D:/fd-validation/a-cb-p03-select",
+    "candidateCheckout": "D:\\fd-validation\\a-cb-a0-time-alter-sync",
+    "classifier": {
+      "commit": "3ec55814b8aca84416fca46dfaf7032a7f115094",
+      "path": "scripts/phase3-coverage.ts",
+      "sha256": "092ad1202288a61ed25a2171338079fd8b3ba7b5d5aec35deed3b9db9e1d0f3a",
+      "blob": "ce6f84862de382703d6bfbf2940e535f1b238be3"
+    }
+  },
+  "frozenAccounting": {
+    "accepted": 111,
+    "denominator": 944,
+    "remaining": 833,
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "mainDenominatorDelta": 0
+  },
+  "mainLedgerBinding": {
+    "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+    "path": "artifacts/phase3-e04-current-main-accepted-111-execution-matrix.json",
+    "sha256": "34ce9258e94e9bf44243cdd76be223f599d4776c13e2ef623382ae44a2f4f965",
+    "blob": "d7a3f280afc26bc4efefdef75ee6cd7c89eb9704"
+  },
+  "globalCoverageArtifact": {
+    "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+    "path": "artifacts/phase3-skill-coverage.json",
+    "sha256": "f058502226911f579c56cd5a9b302833c1731d07c96adce74625631fcff7d1b8",
+    "blob": "0c4c7035f631760c196ac2ed78aaf5ead8dc850b"
+  },
+  "noUnrelatedRowStatusChanged": true,
+  "globalGateC": "NOT_VERIFIED",
+  "promotion": "NOT_READY"
+}
