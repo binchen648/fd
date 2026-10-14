@@ -3,7 +3,12 @@
 Date: 2026-10-14. Planner. Epoch FD-P3-2026-09-23-09 unchanged.
 Exact observed main: a42b5e1c517141b90f3407773958b0d8afe63264.
 Mode: A0 SINGLE_CAPABILITY_SLICE / EXISTING_PATH_CONFORMANCE.
-Status: BLOCKED_SEMANTIC_MISMATCH / CONTRACT_NEEDS_CLARIFICATION.
+Status: BLOCKED_SEMANTIC_MISMATCH / USER_RULE_CLARIFIED_WAITING_SCOPED_REPAIR.
+Rule ruling: docs/rules/2026-10-14-time-alter-user-ruling.md.
+Origin Bullet is allowed as a legal hand face-down target. Master ability
+activation does not require playing the Master ability source. Skill cards are
+not hand targets. Historical attack-only envelope below describes the existing
+implementation only, not the complete ruled identity contract.
 Production write authorized: false. Migration/coverage/denominator credit:0.
 Semantic disposition task: docs/agents/P3-CB-A0-PLAY-TARGET-SEMANTIC-CLARIFICATION.md.
 The existing test-only reservation is suspended pending this disposition; do not
