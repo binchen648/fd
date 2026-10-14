@@ -1,0 +1,1061 @@
+{
+  "schemaVersion": "fd-phase3-capability-readiness-map-v1",
+  "taskId": "P3-CAPABILITY-READINESS-MAP",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "exactMainSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "sourceCatalog": "data/phase3/full-roster-capability-catalog.json",
+  "classificationMeaning": {
+    "A": "2-4 uncredited whole identities, one current accepted contract, mature primitive/production route, no shared runtime/initialization changes; write grant separate",
+    "B": "Content admission prerequisite; primitive presence not registration",
+    "C": "Identified semantic/runtime extension needed for the stated envelope, not a claim all family members need runtime",
+    "D": "Missing evidence/full-clause scope/eligible multiplicity/rule proof; do not infer runtime gap"
+  },
+  "excludedPilotDomains": [
+    "initialization",
+    "authority",
+    "session"
+  ],
+  "firstVerifiedA": null,
+  "scopeLimit": "32 historical catalog entries mapped fail-closed plus two independently inspected narrow scopes; NOT exhaustive 833-identity runtime audit",
+  "creditDelta": 0,
+  "entries": [
+    {
+      "capability": "CARD_ACTION_ACTIVATE",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "CARD_ACTION_ADD_TO_ATTACK",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "servant.kagekiyo.skill.sc-kagekiyo-2"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "CARD_ACTION_CLOSE",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "servant.chloe.skill.sc-chloe-1",
+        "servant.darius.skill.sc-darius-1",
+        "servant.edison.skill.sc-edison-2",
+        "servant.edison.skill.sc-edison-3",
+        "servant.gorgon.skill.sc-gorgon-2",
+        "servant.kama.skill.sc-kama-1",
+        "servant.kama.skill.sc-kama-2",
+        "servant.leonidas.skill.sc-leonidas-1",
+        "servant.nero.skill.sc-nero-1",
+        "servant.ozymandias.skill.sc-ozymandias-2",
+        "servant.siegfried.skill.sc-siegfried-2"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "CARD_ACTION_CREATE_AND_ACTIVATE",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "servant.darius.skill.sc-darius-3"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "CARD_ACTION_PLAY",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "master.sion.skill.s13",
+        "servant.caligula.skill.sc-caligula-1",
+        "servant.chloe.skill.sc-chloe-1",
+        "servant.helena.skill.sc-helena-1",
+        "servant.napoleon.skill.sc-napoleon-2",
+        "servant.nero.skill.sc-nero-2",
+        "servant.parvati.skill.sc-parvati-3"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "CARD_ACTION_SEMANTICS_MINIMAL_ACTIVATE",
+      "classification": "D",
+      "contract": "CARD_ACTION_SEMANTICS_MINIMAL_ACTIVATE",
+      "primitive": "Narrow implementation exists; current acceptance and selected batch must be bound",
+      "candidateIdentities": [],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [
+        "master.olga-marie.skill.astronomical-science"
+      ],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "MEDIUM",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "NO_VERIFIED_2_TO_4_INCREMENTAL_WHOLE_IDENTITIES",
+        "CURRENT_PRODUCTION_AND_REVIEW_BINDING_REQUIRED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "CARD_ACTION_SEMANTICS_MINIMAL_ADD_TO_ATTACK",
+      "classification": "D",
+      "contract": "CARD_ACTION_SEMANTICS_MINIMAL_ADD_TO_ATTACK",
+      "primitive": "Narrow implementation exists; current acceptance and selected batch must be bound",
+      "candidateIdentities": [],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [
+        "master.maiya.skill.military"
+      ],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "MEDIUM",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "NO_VERIFIED_2_TO_4_INCREMENTAL_WHOLE_IDENTITIES",
+        "CURRENT_PRODUCTION_AND_REVIEW_BINDING_REQUIRED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "CARD_ACTION_SEMANTICS_MINIMAL_CLOSE",
+      "classification": "D",
+      "contract": "CARD_ACTION_SEMANTICS_MINIMAL_CLOSE",
+      "primitive": "Narrow implementation exists; current acceptance and selected batch must be bound",
+      "candidateIdentities": [],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [
+        "servant.artoria-alt.skill.sc-artoria-alt-2"
+      ],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "MEDIUM",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "NO_VERIFIED_2_TO_4_INCREMENTAL_WHOLE_IDENTITIES",
+        "CURRENT_PRODUCTION_AND_REVIEW_BINDING_REQUIRED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "CARD_ACTION_SEMANTICS_MINIMAL_PLAY",
+      "classification": "D",
+      "contract": "CARD_ACTION_SEMANTICS_MINIMAL_PLAY",
+      "primitive": "Narrow implementation exists; current acceptance and selected batch must be bound",
+      "candidateIdentities": [],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [
+        "master.kiritsugu.skill.time-alter"
+      ],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "MEDIUM",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "NO_VERIFIED_2_TO_4_INCREMENTAL_WHOLE_IDENTITIES",
+        "CURRENT_PRODUCTION_AND_REVIEW_BINDING_REQUIRED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "CARD_ACTION_SEMANTICS_MINIMAL_PLAY_SOURCE_CARD_WITH_COST_RESPONSE",
+      "classification": "D",
+      "contract": "CARD_ACTION_SEMANTICS_MINIMAL_PLAY_SOURCE_CARD_WITH_COST_RESPONSE",
+      "primitive": "Narrow implementation exists; current acceptance and selected batch must be bound",
+      "candidateIdentities": [],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [
+        "master.kayneth.deck.volumen-hydrargyrum"
+      ],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "MEDIUM",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "NO_VERIFIED_2_TO_4_INCREMENTAL_WHOLE_IDENTITIES",
+        "CURRENT_PRODUCTION_AND_REVIEW_BINDING_REQUIRED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "CARD_ZONE_CORE_DIRECT_ACTION",
+      "classification": "D",
+      "contract": "CARD_ZONE_CORE_DIRECT_ACTION",
+      "primitive": "Narrow implementation exists; current acceptance and selected batch must be bound",
+      "candidateIdentities": [],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [
+        "master.irisviel.skill.conversion-magic",
+        "master.kiritsugu.skill.time-alter"
+      ],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "MEDIUM",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "NO_VERIFIED_2_TO_4_INCREMENTAL_WHOLE_IDENTITIES",
+        "CURRENT_PRODUCTION_AND_REVIEW_BINDING_REQUIRED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "GENERIC_BATTLE_INTEGRATION",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "master.araya.skill.s1a",
+        "master.arcueid.skill.s1a",
+        "master.ciel.skill.s2",
+        "master.ciel.skill.s3",
+        "master.darnic.skill.s1a",
+        "master.kuzuki.skill.s2",
+        "master.twice.skill.ascension",
+        "servant.albion.skill.sc-albion-1",
+        "servant.andersen.skill.sc-andersen-2",
+        "servant.arjuna.skill.sc-arjuna-1",
+        "servant.astolfo.skill.sc-astolfo-1",
+        "servant.darius.skill.sc-darius-1",
+        "servant.diarmuid.skill.sc-diarmuid-1",
+        "servant.edison.skill.sc-edison-3",
+        "servant.gorgon.skill.sc-gorgon-2",
+        "servant.ibaraki.skill.sc-ibaraki-1",
+        "servant.iskandar.skill.sc-iskandar-2",
+        "servant.kagekiyo.skill.sc-kagekiyo-2",
+        "servant.kama.skill.sc-kama-1",
+        "servant.kama.skill.sc-kama-2",
+        "servant.kiritsugu.skill.sc-kiritsugu-2",
+        "servant.kiritsugu.skill.sc-kiritsugu-3",
+        "servant.lionking.skill.sc-lionking-3",
+        "servant.mechaeli.skill.sc-mechaeli-2",
+        "servant.merlin.skill.sc-merlin-3",
+        "servant.mozart.skill.sc-mozart-2",
+        "servant.napoleon.skill.sc-napoleon-1",
+        "servant.nero.skill.sc-nero-1",
+        "servant.nobunaga.skill.sc-nobunaga-3",
+        "servant.roberts.skill.sc-roberts-1",
+        "servant.siegfried.skill.sc-siegfried-2",
+        "servant.spartacus.skill.sc-spartacus-2",
+        "servant.stheno.skill.sc-stheno-2"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "GENERIC_CARD_CREATE",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "master.akasha.skill.s1",
+        "master.arcueid.skill.s1a"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "GENERIC_CARD_ZONE",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "master.araya.skill.s1a",
+        "master.arcueid.skill.s1",
+        "master.ciel.skill.s1b",
+        "master.twice.skill.s1",
+        "servant.albion.skill.sc-albion-1",
+        "servant.amakusa.skill.sc-amakusa-1",
+        "servant.clytie.skill.sc-clytie-3",
+        "servant.emiya.skill.sc-emiya-np",
+        "servant.helena.skill.sc-helena-1",
+        "servant.iskandar.skill.sc-iskandar-2",
+        "servant.kagekiyo.skill.sc-kagekiyo-2",
+        "servant.kiritsugu.skill.sc-kiritsugu-3",
+        "servant.lionking.skill.sc-lionking-3",
+        "servant.merlin.skill.sc-merlin-3",
+        "servant.napoleon.skill.sc-napoleon-2",
+        "servant.nero.skill.sc-nero-2",
+        "servant.roberts.skill.sc-roberts-2"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "GENERIC_CONDITION_EVALUATION",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "master.amakusa.skill.s1",
+        "master.amakusa.skill.s1a",
+        "master.amakusa.skill.s2",
+        "master.araya.skill.s1a",
+        "master.arcueid.skill.s1",
+        "master.arcueid.skill.s1a",
+        "master.arcueid.skill.s3",
+        "master.ciel.skill.s1b",
+        "master.ciel.skill.s2",
+        "master.ciel.skill.s3",
+        "master.darnic.skill.s1a",
+        "master.kayneth.skill.s3",
+        "master.kuzuki.skill.s2",
+        "master.sion.skill.s13",
+        "master.twice.skill.ascension",
+        "master.twice.skill.s1",
+        "servant.albion.skill.sc-albion-1",
+        "servant.albion.skill.sc-albion-2",
+        "servant.amakusa.skill.sc-amakusa-1",
+        "servant.andersen.skill.sc-andersen-2",
+        "servant.arjuna.skill.sc-arjuna-1",
+        "servant.astolfo.skill.sc-astolfo-1",
+        "servant.atalanta.skill.sc-atalanta-1",
+        "servant.atalanta.skill.sc-atalanta-2",
+        "servant.caligula.skill.sc-caligula-1",
+        "servant.chloe.skill.sc-chloe-1",
+        "servant.clytie.skill.sc-clytie-3",
+        "servant.darius.skill.sc-darius-1",
+        "servant.darius.skill.sc-darius-2",
+        "servant.darius.skill.sc-darius-3",
+        "servant.diarmuid.skill.sc-diarmuid-1",
+        "servant.drake.skill.sc-drake-2",
+        "servant.drake.skill.sc-drake-3",
+        "servant.edison.skill.sc-edison-2",
+        "servant.edison.skill.sc-edison-3",
+        "servant.emiya.skill.sc-emiya-np",
+        "servant.gorgon.skill.sc-gorgon-2",
+        "servant.gorgon.skill.sc-gorgon-3",
+        "servant.helena.skill.sc-helena-3",
+        "servant.ibaraki.skill.sc-ibaraki-1",
+        "servant.iskandar.skill.sc-iskandar-2",
+        "servant.kagekiyo.skill.sc-kagekiyo-2",
+        "servant.kama.skill.sc-kama-1",
+        "servant.kama.skill.sc-kama-2",
+        "servant.kiritsugu.skill.sc-kiritsugu-2",
+        "servant.kiritsugu.skill.sc-kiritsugu-3",
+        "servant.leonidas.skill.sc-leonidas-1",
+        "servant.lionking.skill.sc-lionking-3",
+        "servant.mechaeli.skill.sc-mechaeli-2",
+        "servant.medusa.skill.sc-medusa-2",
+        "servant.medusa.skill.sc-medusa-np",
+        "servant.mephisto.skill.sc-mephisto-2",
+        "servant.mephisto.skill.sc-mephisto-3",
+        "servant.merlin.skill.sc-merlin-3",
+        "servant.mozart.skill.sc-mozart-1",
+        "servant.mozart.skill.sc-mozart-2",
+        "servant.napoleon.skill.sc-napoleon-1",
+        "servant.napoleon.skill.sc-napoleon-2",
+        "servant.nero.skill.sc-nero-1",
+        "servant.nero.skill.sc-nero-2",
+        "servant.nobunaga.skill.sc-nobunaga-3",
+        "servant.nursery.skill.sc-nursery-2",
+        "servant.ozymandias.skill.sc-ozymandias-2",
+        "servant.parvati.skill.sc-parvati-3",
+        "servant.roberts.skill.sc-roberts-1",
+        "servant.roberts.skill.sc-roberts-2",
+        "servant.siegfried.skill.sc-siegfried-2",
+        "servant.spartacus.skill.sc-spartacus-2",
+        "servant.stheno.skill.sc-stheno-2",
+        "servant.valkyrie.skill.sc-valkyrie-3"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "GENERIC_COST_PAYMENT",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "master.sion.skill.s13",
+        "servant.roberts.skill.sc-roberts-1",
+        "servant.roberts.skill.sc-roberts-2"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "GENERIC_EVENT_DECK",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "master.twice.skill.s1",
+        "servant.amakusa.skill.sc-amakusa-1",
+        "servant.iskandar.skill.sc-iskandar-2",
+        "servant.kiritsugu.skill.sc-kiritsugu-3",
+        "servant.lionking.skill.sc-lionking-3",
+        "servant.merlin.skill.sc-merlin-3"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "GENERIC_LIFECYCLE_POLICY",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "master.akasha.skill.s1",
+        "master.amakusa.skill.s1a",
+        "master.arcueid.skill.s1a",
+        "master.ciel.skill.s3",
+        "master.kayneth.skill.s3",
+        "master.kuzuki.skill.s2",
+        "servant.andersen.skill.sc-andersen-2",
+        "servant.arjuna.skill.sc-arjuna-1",
+        "servant.atalanta.skill.sc-atalanta-1",
+        "servant.atalanta.skill.sc-atalanta-2",
+        "servant.caligula.skill.sc-caligula-1",
+        "servant.chloe.skill.sc-chloe-1",
+        "servant.darius.skill.sc-darius-1",
+        "servant.darius.skill.sc-darius-2",
+        "servant.darius.skill.sc-darius-3",
+        "servant.diarmuid.skill.sc-diarmuid-1",
+        "servant.edison.skill.sc-edison-2",
+        "servant.edison.skill.sc-edison-3",
+        "servant.emiya.skill.sc-emiya-np",
+        "servant.gorgon.skill.sc-gorgon-2",
+        "servant.gorgon.skill.sc-gorgon-3",
+        "servant.helena.skill.sc-helena-3",
+        "servant.ibaraki.skill.sc-ibaraki-1",
+        "servant.kama.skill.sc-kama-1",
+        "servant.kama.skill.sc-kama-2",
+        "servant.kiritsugu.skill.sc-kiritsugu-2",
+        "servant.leonidas.skill.sc-leonidas-1",
+        "servant.lionking.skill.sc-lionking-3",
+        "servant.mephisto.skill.sc-mephisto-3",
+        "servant.mozart.skill.sc-mozart-1",
+        "servant.napoleon.skill.sc-napoleon-1",
+        "servant.nero.skill.sc-nero-1",
+        "servant.nursery.skill.sc-nursery-2",
+        "servant.ozymandias.skill.sc-ozymandias-2",
+        "servant.parvati.skill.sc-parvati-3",
+        "servant.roberts.skill.sc-roberts-1",
+        "servant.spartacus.skill.sc-spartacus-2"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "GENERIC_MODIFIER",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "master.amakusa.skill.s1a",
+        "master.arcueid.skill.s3",
+        "master.ciel.skill.s3",
+        "master.kayneth.skill.s3",
+        "master.kuzuki.skill.s2",
+        "master.twice.skill.ascension",
+        "servant.albion.skill.sc-albion-2",
+        "servant.amakusa.skill.sc-amakusa-1",
+        "servant.andersen.skill.sc-andersen-2",
+        "servant.arjuna.skill.sc-arjuna-1",
+        "servant.atalanta.skill.sc-atalanta-1",
+        "servant.caligula.skill.sc-caligula-1",
+        "servant.darius.skill.sc-darius-2",
+        "servant.drake.skill.sc-drake-3",
+        "servant.edison.skill.sc-edison-3",
+        "servant.emiya.skill.sc-emiya-np",
+        "servant.gorgon.skill.sc-gorgon-2",
+        "servant.gorgon.skill.sc-gorgon-3",
+        "servant.helena.skill.sc-helena-3",
+        "servant.ibaraki.skill.sc-ibaraki-1",
+        "servant.kama.skill.sc-kama-1",
+        "servant.kiritsugu.skill.sc-kiritsugu-2",
+        "servant.leonidas.skill.sc-leonidas-1",
+        "servant.mechaeli.skill.sc-mechaeli-2",
+        "servant.mephisto.skill.sc-mephisto-2",
+        "servant.mozart.skill.sc-mozart-1",
+        "servant.napoleon.skill.sc-napoleon-1",
+        "servant.nursery.skill.sc-nursery-2",
+        "servant.ozymandias.skill.sc-ozymandias-2",
+        "servant.stheno.skill.sc-stheno-2"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "GENERIC_MOVEMENT",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "servant.drake.skill.sc-drake-2"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "GENERIC_PENDING_INTERACTION",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "master.amakusa.skill.s1a",
+        "master.amakusa.skill.s2",
+        "master.araya.skill.s1a",
+        "master.arcueid.skill.s1a",
+        "master.darnic.skill.s1a",
+        "master.sion.skill.s13",
+        "master.twice.skill.s1",
+        "servant.albion.skill.sc-albion-1",
+        "servant.astolfo.skill.sc-astolfo-1",
+        "servant.atalanta.skill.sc-atalanta-2",
+        "servant.caligula.skill.sc-caligula-1",
+        "servant.chloe.skill.sc-chloe-1",
+        "servant.drake.skill.sc-drake-2",
+        "servant.emiya.skill.sc-emiya-np",
+        "servant.helena.skill.sc-helena-1",
+        "servant.iskandar.skill.sc-iskandar-2",
+        "servant.kagekiyo.skill.sc-kagekiyo-2",
+        "servant.kama.skill.sc-kama-1",
+        "servant.kiritsugu.skill.sc-kiritsugu-2",
+        "servant.kiritsugu.skill.sc-kiritsugu-3",
+        "servant.medusa.skill.sc-medusa-np",
+        "servant.mephisto.skill.sc-mephisto-3",
+        "servant.napoleon.skill.sc-napoleon-1",
+        "servant.napoleon.skill.sc-napoleon-2",
+        "servant.nero.skill.sc-nero-2",
+        "servant.parvati.skill.sc-parvati-3",
+        "servant.roberts.skill.sc-roberts-1",
+        "servant.roberts.skill.sc-roberts-2",
+        "servant.spartacus.skill.sc-spartacus-2"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "GENERIC_POWER",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "servant.albion.skill.sc-albion-2",
+        "servant.amakusa.skill.sc-amakusa-1",
+        "servant.arjuna.skill.sc-arjuna-1",
+        "servant.kama.skill.sc-kama-1",
+        "servant.mechaeli.skill.sc-mechaeli-2",
+        "servant.mephisto.skill.sc-mephisto-2",
+        "servant.ozymandias.skill.sc-ozymandias-2"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "GENERIC_RESOURCE_NUMERIC",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "master.araya.skill.s1a",
+        "master.arcueid.skill.s3",
+        "master.ciel.skill.s2",
+        "master.darnic.skill.s1a",
+        "servant.albion.skill.sc-albion-1",
+        "servant.drake.skill.sc-drake-3",
+        "servant.edison.skill.sc-edison-2",
+        "servant.kama.skill.sc-kama-1",
+        "servant.kama.skill.sc-kama-2",
+        "servant.kiritsugu.skill.sc-kiritsugu-2",
+        "servant.kiritsugu.skill.sc-kiritsugu-3",
+        "servant.mechaeli.skill.sc-mechaeli-2",
+        "servant.mephisto.skill.sc-mephisto-2",
+        "servant.mephisto.skill.sc-mephisto-3",
+        "servant.merlin.skill.sc-merlin-3",
+        "servant.mozart.skill.sc-mozart-2",
+        "servant.nero.skill.sc-nero-1",
+        "servant.nobunaga.skill.sc-nobunaga-3",
+        "servant.ozymandias.skill.sc-ozymandias-2",
+        "servant.spartacus.skill.sc-spartacus-2",
+        "servant.stheno.skill.sc-stheno-2"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "GENERIC_RESULT_BINDING",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "master.amakusa.skill.s1a",
+        "master.araya.skill.s1a",
+        "master.sion.skill.s13",
+        "master.twice.skill.s1",
+        "servant.astolfo.skill.sc-astolfo-1",
+        "servant.atalanta.skill.sc-atalanta-2",
+        "servant.caligula.skill.sc-caligula-1",
+        "servant.chloe.skill.sc-chloe-1",
+        "servant.drake.skill.sc-drake-2",
+        "servant.emiya.skill.sc-emiya-np",
+        "servant.helena.skill.sc-helena-1",
+        "servant.iskandar.skill.sc-iskandar-2",
+        "servant.kagekiyo.skill.sc-kagekiyo-2",
+        "servant.kiritsugu.skill.sc-kiritsugu-3",
+        "servant.medusa.skill.sc-medusa-np",
+        "servant.mephisto.skill.sc-mephisto-3",
+        "servant.napoleon.skill.sc-napoleon-1",
+        "servant.napoleon.skill.sc-napoleon-2",
+        "servant.nero.skill.sc-nero-2",
+        "servant.parvati.skill.sc-parvati-3",
+        "servant.roberts.skill.sc-roberts-1"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "GENERIC_STATUS_STATE",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "master.amakusa.skill.s1",
+        "master.amakusa.skill.s1a",
+        "master.amakusa.skill.s2",
+        "master.arcueid.skill.s1a",
+        "master.ciel.skill.s3",
+        "servant.albion.skill.sc-albion-2",
+        "servant.arjuna.skill.sc-arjuna-1",
+        "servant.diarmuid.skill.sc-diarmuid-1",
+        "servant.kama.skill.sc-kama-2",
+        "servant.lionking.skill.sc-lionking-3",
+        "servant.mozart.skill.sc-mozart-2",
+        "servant.roberts.skill.sc-roberts-1"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "GENERIC_TARGET_SELECTION",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "master.amakusa.skill.s1a",
+        "master.amakusa.skill.s2",
+        "master.araya.skill.s1a",
+        "master.arcueid.skill.s1a",
+        "master.darnic.skill.s1a",
+        "master.sion.skill.s13",
+        "master.twice.skill.s1",
+        "servant.albion.skill.sc-albion-1",
+        "servant.astolfo.skill.sc-astolfo-1",
+        "servant.atalanta.skill.sc-atalanta-2",
+        "servant.caligula.skill.sc-caligula-1",
+        "servant.chloe.skill.sc-chloe-1",
+        "servant.drake.skill.sc-drake-2",
+        "servant.emiya.skill.sc-emiya-np",
+        "servant.helena.skill.sc-helena-1",
+        "servant.iskandar.skill.sc-iskandar-2",
+        "servant.kagekiyo.skill.sc-kagekiyo-2",
+        "servant.kama.skill.sc-kama-1",
+        "servant.kiritsugu.skill.sc-kiritsugu-2",
+        "servant.kiritsugu.skill.sc-kiritsugu-3",
+        "servant.medusa.skill.sc-medusa-np",
+        "servant.mephisto.skill.sc-mephisto-3",
+        "servant.napoleon.skill.sc-napoleon-1",
+        "servant.napoleon.skill.sc-napoleon-2",
+        "servant.nero.skill.sc-nero-2",
+        "servant.parvati.skill.sc-parvati-3",
+        "servant.roberts.skill.sc-roberts-1",
+        "servant.roberts.skill.sc-roberts-2",
+        "servant.spartacus.skill.sc-spartacus-2"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "GENERIC_TRIGGER_GATEWAY",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "master.akasha.skill.s1",
+        "master.amakusa.skill.s1",
+        "master.amakusa.skill.s2",
+        "master.araya.skill.s1a",
+        "master.arcueid.skill.s1",
+        "master.arcueid.skill.s1a",
+        "master.arcueid.skill.s3",
+        "master.ciel.skill.s1b",
+        "master.ciel.skill.s2",
+        "master.darnic.skill.s1a",
+        "master.kuzuki.skill.s2",
+        "servant.albion.skill.sc-albion-1",
+        "servant.albion.skill.sc-albion-2",
+        "servant.amakusa.skill.sc-amakusa-1",
+        "servant.arjuna.skill.sc-arjuna-1",
+        "servant.clytie.skill.sc-clytie-3",
+        "servant.darius.skill.sc-darius-1",
+        "servant.diarmuid.skill.sc-diarmuid-1",
+        "servant.edison.skill.sc-edison-2",
+        "servant.edison.skill.sc-edison-3",
+        "servant.gorgon.skill.sc-gorgon-2",
+        "servant.kagekiyo.skill.sc-kagekiyo-2",
+        "servant.kama.skill.sc-kama-2",
+        "servant.leonidas.skill.sc-leonidas-1",
+        "servant.lionking.skill.sc-lionking-3",
+        "servant.mechaeli.skill.sc-mechaeli-2",
+        "servant.mephisto.skill.sc-mephisto-2",
+        "servant.merlin.skill.sc-merlin-3",
+        "servant.mozart.skill.sc-mozart-1",
+        "servant.mozart.skill.sc-mozart-2",
+        "servant.nero.skill.sc-nero-1",
+        "servant.nobunaga.skill.sc-nobunaga-3",
+        "servant.ozymandias.skill.sc-ozymandias-2",
+        "servant.siegfried.skill.sc-siegfried-2",
+        "servant.spartacus.skill.sc-spartacus-2",
+        "servant.stheno.skill.sc-stheno-2"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "GENERIC_VISIBILITY",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "master.amakusa.skill.s1a",
+        "master.arcueid.skill.s1",
+        "master.ciel.skill.s1b",
+        "servant.albion.skill.sc-albion-1",
+        "servant.amakusa.skill.sc-amakusa-1",
+        "servant.arjuna.skill.sc-arjuna-1",
+        "servant.astolfo.skill.sc-astolfo-1",
+        "servant.atalanta.skill.sc-atalanta-1",
+        "servant.chloe.skill.sc-chloe-1",
+        "servant.darius.skill.sc-darius-2",
+        "servant.darius.skill.sc-darius-3",
+        "servant.drake.skill.sc-drake-2",
+        "servant.edison.skill.sc-edison-3",
+        "servant.emiya.skill.sc-emiya-np",
+        "servant.gorgon.skill.sc-gorgon-3",
+        "servant.helena.skill.sc-helena-1",
+        "servant.helena.skill.sc-helena-3",
+        "servant.iskandar.skill.sc-iskandar-2",
+        "servant.kagekiyo.skill.sc-kagekiyo-2",
+        "servant.kiritsugu.skill.sc-kiritsugu-2",
+        "servant.kiritsugu.skill.sc-kiritsugu-3",
+        "servant.lionking.skill.sc-lionking-3",
+        "servant.medusa.skill.sc-medusa-2",
+        "servant.medusa.skill.sc-medusa-np",
+        "servant.merlin.skill.sc-merlin-3",
+        "servant.mozart.skill.sc-mozart-1",
+        "servant.mozart.skill.sc-mozart-2",
+        "servant.napoleon.skill.sc-napoleon-1",
+        "servant.napoleon.skill.sc-napoleon-2",
+        "servant.nero.skill.sc-nero-1",
+        "servant.nero.skill.sc-nero-2",
+        "servant.nursery.skill.sc-nursery-2",
+        "servant.roberts.skill.sc-roberts-2",
+        "servant.valkyrie.skill.sc-valkyrie-3"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "RESOURCE_NUMERIC_CORE_DIRECT_ACTION",
+      "classification": "D",
+      "contract": "RESOURCE_NUMERIC_CORE_DIRECT_ACTION",
+      "primitive": "Narrow implementation exists; current acceptance and selected batch must be bound",
+      "candidateIdentities": [],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [
+        "master.gatou.command-spell",
+        "master.olga-marie.command-spell",
+        "servant.tomoe.skill.sc-tomoe-1"
+      ],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "MEDIUM",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "NO_VERIFIED_2_TO_4_INCREMENTAL_WHOLE_IDENTITIES",
+        "CURRENT_PRODUCTION_AND_REVIEW_BINDING_REQUIRED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "RESULT_BINDING_PHASE3A",
+      "classification": "D",
+      "contract": "RESULT_BINDING_PHASE3A",
+      "primitive": "Narrow implementation exists; current acceptance and selected batch must be bound",
+      "candidateIdentities": [],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [
+        "servant.kintoki.skill.sc-kintoki-3"
+      ],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "MEDIUM",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "NO_VERIFIED_2_TO_4_INCREMENTAL_WHOLE_IDENTITIES",
+        "CURRENT_PRODUCTION_AND_REVIEW_BINDING_REQUIRED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "REVIEWED_SPECIAL_HANDLER",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "servant.diarmuid.skill.sc-diarmuid-1",
+        "servant.gorgon.skill.sc-gorgon-3",
+        "servant.medusa.skill.sc-medusa-2",
+        "servant.mephisto.skill.sc-mephisto-2",
+        "servant.valkyrie.skill.sc-valkyrie-3"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "REVIEWED_SPECIAL_TRANSFORM",
+      "classification": "D",
+      "contract": "NO_WHOLE_IDENTITY_CURRENT_MAIN_CONTRACT_BOUND",
+      "primitive": "Partial/generic family inventory; exact primitive envelope NOT_VERIFIED",
+      "candidateIdentities": [
+        "servant.andersen.skill.sc-andersen-2"
+      ],
+      "candidateStatus": "HISTORICAL_DISCOVERY_ONLY_NOT_ELIGIBLE_BATCH",
+      "representatives": [],
+      "requiredOwner": "A: whole-clause/credit/route binding; RB: contract conflicts only; no runtime writer grant",
+      "estimatedRisk": "UNKNOWN",
+      "recommendedWorkflow": "One bounded source/contract/production check; if admission-only -> B; proven missing semantic support -> C; unknowns stay D; grant A only for 2-4 fully eligible identities",
+      "blockers": [
+        "HISTORICAL_CATALOG_NOT_CURRENT_READINESS",
+        "WHOLE_SKILL_CONTRACT_AND_PRODUCTION_ROUTE_NOT_VERIFIED"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "GAME_START_FIXED_CONTROLLER_SET_MANA",
+      "classification": "B",
+      "contract": "P3-R51/FB2-25; current-main isGameStartFixedControllerManaSetSemantic",
+      "primitive": "fixed controller set_mana",
+      "candidateIdentities": [
+        "master.iliya.skill.s1",
+        "master.taiga.skill.s1"
+      ],
+      "candidateStatus": "UNCREDITED_FULL_IDENTITIES_BUT_ADMISSION_BLOCKED",
+      "requiredOwner": "A/content owner; B only if separately authorized initialization extension",
+      "estimatedRisk": "MEDIUM_CONTENT_HIGH_IF_INITIALIZER_CHANGED",
+      "recommendedWorkflow": "Resolve source metadata/archive admission and product path; not selected as Lead Pilot or initialization task",
+      "blockers": [
+        "SOURCE_METADATA_MISSING",
+        "NO_AUTHORIZED_RUNTIME_FREE_ADMISSION_PATH"
+      ],
+      "readyForImplementation": false
+    },
+    {
+      "capability": "PLAY_FACE_UP_THEN_DRAW_PER_ROUND_THREE",
+      "classification": "C",
+      "contract": "No accepted extension bound; current MINIMAL_PLAY requires face_down",
+      "primitive": "play_selected_cards + draw_cards exist; broader complete contract unsupported by minimal route",
+      "candidateIdentities": [
+        "servant.okita.skill.sc-okita-1"
+      ],
+      "candidateStatus": "ONE_CANDIDATE_NOT_BATCH; admission also unresolved",
+      "requiredOwner": "B scoped Ability Owner + RB if later authorized; NOT current pilot",
+      "estimatedRisk": "HIGH",
+      "recommendedWorkflow": "Keep off Lead Ready; semantic route/limit extension and admission need separate scope; no writer granted",
+      "blockers": [
+        "FACE_SEMANTIC_MISMATCH",
+        "ONLY_ONE_IDENTITY",
+        "ADMISSION_UNVERIFIED"
+      ],
+      "readyForImplementation": false
+    }
+  ]
+}
