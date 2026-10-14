@@ -3,8 +3,11 @@
 Date: 2026-10-14. Planner. Epoch FD-P3-2026-09-23-09 unchanged.
 Exact observed main: a42b5e1c517141b90f3407773958b0d8afe63264.
 Mode: A0 SINGLE_CAPABILITY_SLICE / EXISTING_PATH_CONFORMANCE.
-Status: SELECTED_FOR_TEST_ONLY_PILOT_PENDING_OWNER_BINDING.
+Status: BLOCKED_SEMANTIC_MISMATCH / CONTRACT_NEEDS_CLARIFICATION.
 Production write authorized: false. Migration/coverage/denominator credit:0.
+Semantic disposition task: docs/agents/P3-CB-A0-PLAY-TARGET-SEMANTIC-CLARIFICATION.md.
+The existing test-only reservation is suspended pending this disposition; do not
+start or resume Lead Builder writes based on the earlier selected status.
 
 ## Entry Strategy
 
