@@ -1,212 +1,102 @@
 {
-  "schemaVersion": "fd-capability-batch-prepare-v1",
+  "schemaVersion": "fd-p3-cb-p02-prepare-v1",
   "taskId": "P3-CB-P02-A-PREPARE",
+  "owner": "Codex A",
   "controlEpoch": "FD-P3-2026-09-23-09",
-  "generatedAt": "2026-10-14T00:00:00.000Z",
-  "status": "NOT_ELIGIBLE_EXISTING_CONTRACT",
-  "readyForLeadBuilder": false,
-  "readyForReviewerA": true,
-  "authority": {
-    "plannerCommit": "055d186e65740fd36cf641d62bf6f62989493726",
-    "planningCommitIsImplementationBase": false,
-    "implementationBase": "a42b5e1c517141b90f3407773958b0d8afe63264",
-    "originMainAtStart": "a42b5e1c517141b90f3407773958b0d8afe63264",
-    "currentMainDrift": "NONE_REMOTE_LS_REMOTE_RECHECK",
-    "originMainAtFinalRead": "a42b5e1c517141b90f3407773958b0d8afe63264"
+  "date": "2026-10-14",
+  "status": "BLOCKED_NO_RUNTIME_FREE_PATH",
+  "reason": "No proven production registration path within authorized two-identity scope; ordinary append requires unapproved playable-roster/core initialization changes.",
+  "exactBaseSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "liveMainVerification": {
+    "method": "git ls-remote origin refs/heads/main",
+    "initialSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+    "latestObservedSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+    "sourceInspectionOnly": true,
+    "runtimeAcceptance": false
   },
-  "reservation": {
-    "id": "P3-CB-P02-A-PREPARE",
-    "acknowledgement": "ACKNOWLEDGED_FOR_THREE_EVIDENCE_OUTPUTS",
+  "ownerBinding": {
     "branch": "codex/a-p3-cb-p02-prepare",
-    "worktree": "D:/fd-validation/a-cb-p02-prepare",
-    "cleanExactBaseConfirmed": true,
-    "outputPaths": [
+    "absoluteWorktree": "D:/fd-validation/a-cb-p02-prepare",
+    "baseCheckoutCleanVerified": true,
+    "worktreeDisposition": "Already existed at exact base; verified and reused without resetting.",
+    "acknowledgement": "ACKNOWLEDGED_THREE_OUTPUT_RESERVATION",
+    "reservationReference": "docs/agents/manifests/reservations/P3-CB-P02-A-PREPARE.json",
+    "authorizedOutputs": [
       "artifacts/phase3-cb-p02-prepare.json",
       "artifacts/phase3-cb-p02-historical-preflight.json",
       "docs/reports/2026-10-14-p3-cb-p02-prepare.md"
     ],
-    "conflictCheck": {
-      "rootScopedStatus": "No changed/untracked P02 output found",
-      "isolatedOutputs": "ABSENT_BEFORE_WRITES",
-      "plannerEvidenceReservation": "GRANTED_PENDING_OWNER_BINDING",
-      "leadReservation": "DRAFT_NOT_GRANTED",
-      "knownCompetingOutputWriter": "NONE_FOUND_IN_SCOPED_GIT_AND_RESERVATION_CHECK",
-      "workerLiveness": "NOT_GLOBALLY_VERIFIED",
-      "productionPathReservation": "NOT_GRANTED"
-    }
+    "productionWriteAuthorized": false,
+    "testWriteAuthorized": false,
+    "globalFilesystemLockClaim": false
   },
-  "accounting": {
-    "accepted": 111,
-    "duplicates": 0,
-    "denominator": 944,
-    "remaining": 833,
-    "mainCreditDelta": 0,
-    "migrationCreditDelta": 0,
-    "denominatorDelta": 0,
-    "promotedOnMain": false,
-    "baselinePurpose": "Frozen accepted-111 membership only; no A111 runtime diagnosis inherited."
+  "writerConflictSnapshot": {
+    "laterActualCollision": {
+      "observedConcurrentCommit": "8f5544011d90a813b9c4d383d9ce6351a445985c",
+      "state": "ACTUAL_TRACKED_WRITER_OVERLAP_DETECTED_DURING_FREEZE",
+      "effect": "Concurrent commit contains another producer packet/report and our earlier receipt bytes, with mismatching report hashes. Original commit remains immutable in ancestry; this scoped carrier binds final consistent three outputs and reports collision, not global writer exclusivity.",
+      "disposition": "Parent Planner must reconcile duplicate A execution and release writer. No implementation grant; collision is not waived by an earlier clean snapshot."
+    },
+    "evidenceOutputs": "Only P02-A reservation names these three outputs in inspected Planner reservation directory. A worktree clean before delegation; no competing tracked writer observed.",
+    "plannerUserSuppliedSnapshot": {
+      "registeredWorktrees": 255,
+      "accessible": 249,
+      "inaccessibleHistoricalTemporary": 6,
+      "dirtyScopedProductionPaths": [],
+      "scope": "Iliya/Taiga, pack, current consumer test and generated library",
+      "absoluteLivenessProof": false
+    },
+    "untrackedScratchObserved": {
+      "paths": [
+        ".cache/p02-task.json",
+        ".cache/historical-failure-preflight/p3-cb-p02.json"
+      ],
+      "disposition": "Appeared during parallel work; provenance not established. Preserved and not used as our input/receipt. No acceptance of unknown producer; no deletion."
+    },
+    "implementationReservation": "DRAFT_NOT_GRANTED; recheck all literal proposed paths including generator co-outputs before any grant."
   },
-  "boundSources": [
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "data/phase3/full-roster-ability-inventory.json",
-      "sha256": "4242922cd047ba3452878ee7dba3d25b2afe3a22294c4a097102997fcfec019f",
-      "blob": "e39b8e1036a372affc4db45be41995815648f433"
+  "actualParallelDelegation": {
+    "method": "Two independent Codex CLI subprocesses, concurrent Promise dispatch; read-only sandbox; ephemeral; no Orca dispatch claim",
+    "orcaAttempt": {
+      "runtimeStarted": true,
+      "error": "no_active_sender_terminal",
+      "reason": "Desktop tool session has no authenticated Orca sender terminal."
     },
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "artifacts/phase3-e04-current-main-accepted-111-execution-matrix.json",
-      "sha256": "34ce9258e94e9bf44243cdd76be223f599d4776c13e2ef623382ae44a2f4f965",
-      "blob": "d7a3f280afc26bc4efefdef75ee6cd7c89eb9704"
-    },
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "data/packs/fd-playtest-v1/pack.json",
-      "sha256": "f9df6313a3b2452815fda56902dac5bac8f1f9c4e2374b11912b8ea82cd9d109",
-      "blob": "dc1c7cdc03464e5274fd61ccb3e9d6e7021d00be"
-    },
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "data/generated/fd-playtest-v1.content-library.json",
-      "sha256": "38b1c58e7a1eba06bc80a1a8f5d302ad4339845edf6b67a36cf1bbbcaa3e65b1",
-      "blob": "6296653f5d53bac3684bd172d04c43c45acae2dc"
-    },
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "packages/content/src/playtest-pack-loader.ts",
-      "sha256": "2b1eead567384500b4e83a63273fc6d714dbf0ddd5a3e0d9bf2bcdacc7f59f20",
-      "blob": "10ccb1f08193006c035862722b82f1a6715471f7"
-    },
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "packages/rules/src/ability/executable-card-pack.ts",
-      "sha256": "7f00857bbb67fe47fb1e61200aac84a8e174378ed1c8bddcf74a9190db2a0bc0",
-      "blob": "1e6eef44d3cd177616575a9e9050e9a996c9ec51"
-    },
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "packages/rules/src/ability/interpreter.ts",
-      "sha256": "a5f74d0cdcb71c169640dc6d0c0b7936eb2cb26b4ac8a1421e2dd50783554c43",
-      "blob": "25f17fe843a9a05650722e996f0ce97109cfadbe"
-    },
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "packages/rules/src/ability/resolution-dataflow.ts",
-      "sha256": "361ea71ab056bdfb8548a3aa353911b6bd5560d57ea7d6049b3250d12196996e",
-      "blob": "edbcce8a6967782011a9a76f9122b32a6236bfb3"
-    },
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "packages/rules/src/match-session.ts",
-      "sha256": "a4b440bda535956819d557e89c5c095c765f88b349c78c62d767b3c7a1918c12",
-      "blob": "3418ff800b605a6a6e8c93f76eb072699c5c6378"
-    },
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "scripts/compile-playtest-content-pack.ts",
-      "sha256": "e79775f3a45568b2b8020af541446e6c9aab3049eb608dde2f3cce2dd6774547",
-      "blob": "dc1438e13ee8cc16264193b444ce3a7d6bab8899"
-    },
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "scripts/engineering/historical-failure-preflight.ts",
-      "sha256": "654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371",
-      "blob": "12a92f18f1616e947e3b9faac615ee66d00ce384"
-    },
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "docs/engineering/lessons/catalog.json",
-      "sha256": "b9ee48a6af45322698f1528a6465ca56b21597270481b79605a6c60f64c794f8",
-      "blob": "93bb684a4c3720aab5249e3dfff720d3ad6685f6"
-    },
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "packages/rules/tests/fb2-25-initial-mana-consumer-migration.test.ts",
-      "sha256": "b43e1a35c03b925122c9972f36287dac1e5f49e66def10718705c49563a10dc8",
-      "blob": "a010fd51a052f4c0010e77472d189f87d8319ccd"
-    },
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "packages/rules/tests/regression/fb2-game-start-fixed-set-mana.test.ts",
-      "sha256": "954b4ea5aace5525eda5d6148982bd84af56dfcd2c220185bab0294854b83372",
-      "blob": "793eef41f45dcce2eca9801953095b9108aaced3"
-    },
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "packages/rules/tests/regression/fb2-fixed-controller-set-mana.test.ts",
-      "sha256": "181accd1d5d9f3cb78dd01820ddfc4edb2baae2c31babb2346a7c92554ee5859",
-      "blob": "8912cb660a7b729d3d6b899e73887e8402b26c31"
-    },
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "docs/reports/2026-09-18-p3-a-r51-fb2-25-acceptance-synchronization.md",
-      "sha256": "8318c794b293c8894831990eec2e8fbe211d07dca41fa7e2ab47e153aafb9cee",
-      "blob": "f10689ba914decb7874588f354ad4a99426e51ad"
-    },
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "docs/reports/2026-09-18-p3-a-r52-initial-mana-acceptance-synchronization.md",
-      "sha256": "dabfa346e9491c1bb4ae80c8f40066a48df1117c9d27c15b770d82f89081b0b5",
-      "blob": "1cd76f5ea79dad5b7e3076944070fedbeec56d69"
-    },
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "data/authoring/masters/master.kiritsugu.json",
-      "sha256": "dd5f80ab900e21a7e563500f087aa03c93206e7427a091cb7e8634e4a6c7a97b",
-      "blob": "f2f3ff12c172160ec27a1a6c065c1d0919572373"
-    },
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "packages/rules/tests/regression/card-action-play.test.ts",
-      "sha256": "21af423e1396fb5882a1dc741a32ba3bbc97cb699921187a7515c27fb9293ec2",
-      "blob": "a35808db52994119552a1568f0d399eda23e24d6"
-    },
-    {
-      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-      "path": "e2e/fd-time-alter-core-primitive.spec.ts",
-      "sha256": "623f79efe0994c7238d149eb252ad5d22ee51964fd05dd08baa4412ff4e93fae",
-      "blob": "ba14fe55a08dd7e0a1bdd252eeda413b4ad2113d"
-    },
-    {
-      "commit": "59f145434695d29bdd17e4cb3adc887e84182377",
-      "path": "data/phase3/full-roster-ability-inventory.json",
-      "sha256": "598c3101e510592bcdbe5b8913c07c95415770b5cc6d1e2ee8160d8e64532578",
-      "blob": "7ffaf21dd8632e9c752218c809bb1dc4159acd3a"
-    },
-    {
-      "commit": "055d186e65740fd36cf641d62bf6f62989493726",
-      "path": "docs/agents/P3-CB-P01-OPTIONAL-AND-P02-DISPATCH.md",
-      "sha256": "fb2583a9e41ccb0b46b43a7a199e91e4ae2851dad704f9a546097a18d6596ad3",
-      "blob": "f651fc56f9980f5a8b88b87e0294c3a420294e95"
-    },
-    {
-      "commit": "055d186e65740fd36cf641d62bf6f62989493726",
-      "path": "docs/agents/manifests/tasks/P3-CB-P02-A-PREPARE.json",
-      "sha256": "f86cef0971cebc796119f2eddd8aff141ca08dc97a88e3fce0bca762fe55c2cc",
-      "blob": "d634d2f5fff3010d2038a0c75d1f4bd4d5cc47f1"
-    },
-    {
-      "commit": "055d186e65740fd36cf641d62bf6f62989493726",
-      "path": "docs/agents/manifests/reservations/P3-CB-P02-A-PREPARE.json",
-      "sha256": "4eea050cc8afde29af3ca4f96984c3b15aa4178772f583f79f2cece0dc0b4a66",
-      "blob": "be5f5fdc383054c8a8572b0cc5a8b189f9733210"
-    }
-  ],
+    "workers": [
+      {
+        "lane": "registration",
+        "sessionId": "01a138a3-efa5-7d22-830e-79535f3e0862",
+        "execSessionId": 33040,
+        "model": "gpt-5.5",
+        "status": "COMPLETED_EXIT_0",
+        "scope": "Archive shape, generator, source instantiation and production start; no write authority",
+        "findings": "Normal registration creates playable masters; support/rule shapes fail as-is; source-image metadata absent; nine-master append conflicts with seven-player start."
+      },
+      {
+        "lane": "history",
+        "sessionId": "01a138a3-f2e2-73f1-bfcb-4c3950368c93",
+        "execSessionId": 55893,
+        "model": "gpt-5.5",
+        "status": "COMPLETED_EXIT_0",
+        "scope": "R51/R52, current narrow predicate and accepted111 exclusion; no write authority",
+        "findings": "Historical summary/candidates exist, original independent reviewer/probe paths not pinned by bounded retrieval. Darius suggestions lack same-contract/full-clause proof and are not promoted into an alternative batch."
+      }
+    ],
+    "independentRA": "Required on exact frozen carrier; A does not approve own PREPARE or runtime."
+  },
+  "counts": {
+    "frozenDenominator": 944,
+    "mainAccepted": 111,
+    "currentCreditDelta": 0,
+    "ledgerEligibleWholeIdentities": 2,
+    "implementationReadyIdentities": 0,
+    "currentRuntimeAcceptedIdentities": 0,
+    "potentialAfterIndependentAcceptancePromotion": 2
+  },
   "identities": [
     {
       "canonicalIdentityId": "master.iliya.skill.s1",
-      "authoring": {
-        "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-        "path": "data/authoring/masters/master.iliya.json",
-        "sha256": "f6abf7f2986b1569bf0161a5960b36c2af33908577f75940346dac8beda6e39a",
-        "blob": "e6b6fb09afcd915c8eca07627254d65dc4a7faf3"
-      },
-      "ownerId": "master.iliya",
-      "archiveType": "master_skill_card_archive",
-      "cardName": "人工生命体",
-      "printedText": "你的魔力初始值为6。",
-      "printedTextSha256": "681da5eab6814317aeb7428ffedec22af430a9b4f889ef2950a7f04ef6a12335",
-      "exactFrozenTextMatches": true,
+      "fullPrintedText": "你的魔力初始值为6。",
       "clauses": [
         {
           "text": "你的魔力初始值为6。",
@@ -219,136 +109,245 @@
           }
         }
       ],
-      "sourceReferences": [
-        {
-          "kind": "development-image",
-          "document": "Fate_Domination-开发版",
-          "category": "master",
-          "page": "images/masters/伊莉雅斯菲尔.png",
-          "locator": "master.iliya/伊莉雅斯菲尔"
-        },
-        {
-          "kind": "legacy",
-          "document": "legacy-content.json",
-          "locator": "master/master.iliya/s1"
-        }
-      ],
-      "authoringAbility": {
-        "id": "iliya.homunculus.initial-mana",
-        "kind": "forced_trigger",
-        "printedClause": "你的魔力初始值为6。",
-        "activation": {
-          "trigger": "game_start"
-        },
-        "conditions": [],
-        "targets": [],
-        "cost": [],
-        "creates": [],
-        "ruleModifiers": [],
-        "lifecycle": {},
-        "responseWindow": {},
-        "limit": {},
-        "visibility": {},
-        "effects": [
+      "wholeIdentity": true,
+      "amount": 6,
+      "sourceGroundedF1Row": {
+        "canonicalAbilityId": "master.iliya.skill.s1",
+        "canonicalCardId": "master.iliya.skill.s1",
+        "ownerId": "master.iliya",
+        "ownerType": "master",
+        "ownerName": "伊莉雅斯菲尔",
+        "skillName": "人工生命体",
+        "printedText": "你的魔力初始值为6。",
+        "clauses": [
           {
-            "type": "set_mana",
-            "player": "controller",
-            "amount": 6
+            "text": "你的魔力初始值为6。",
+            "classification": "DISCOVERED",
+            "derivation": "mechanical_line_split",
+            "source": {
+              "document": "src/content/generated/legacy-content.json",
+              "locator": "masters[7].skills[0].text#line=1",
+              "sha256": "681da5eab6814317aeb7428ffedec22af430a9b4f889ef2950a7f04ef6a12335"
+            }
           }
         ],
-        "execution": {
-          "mode": "automatic",
-          "allowedOperations": []
+        "sources": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/伊莉雅斯菲尔.png",
+            "locator": "master.iliya/伊莉雅斯菲尔"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.iliya/s1"
+          }
+        ],
+        "reference": {
+          "skillId": "master.iliya.skill.s1",
+          "legacySkillId": "s1",
+          "handlerId": "core.master-initial-mana",
+          "executionRoute": "shared_handler",
+          "hasAuthoringCard": false,
+          "hasConfirmedOverride": true,
+          "dynamic": false
+        },
+        "classification": "CONTRACT_MAPPED",
+        "blockedBy": [],
+        "semanticNormalization": {
+          "status": "SOURCE_GROUNDED",
+          "source": {
+            "document": "Fate_Domination-开发版/data_masters.js",
+            "locator": "m_iliya.skills[s1]#line=12"
+          },
+          "axes": {
+            "timing": [],
+            "trigger": [
+              "game.started"
+            ],
+            "condition": [],
+            "cost": [],
+            "target": [],
+            "effect": [
+              "SET_MANA"
+            ],
+            "interaction": [],
+            "lifecycle": [],
+            "modifier": [],
+            "visibility": [],
+            "binding": [],
+            "battle": []
+          },
+          "abilities": [
+            {
+              "sourceAbilityId": "iliya.homunculus.initial-mana",
+              "kind": "TRIGGERED",
+              "source": {
+                "document": "Fate_Domination-开发版/data_masters.js",
+                "locator": "m_iliya.skills[s1]#line=12#ability-1"
+              },
+              "axes": {
+                "timing": [],
+                "trigger": [
+                  "game.started"
+                ],
+                "condition": [],
+                "cost": [],
+                "target": [],
+                "effect": [
+                  "SET_MANA"
+                ],
+                "interaction": [],
+                "lifecycle": [],
+                "modifier": [],
+                "visibility": [],
+                "binding": [],
+                "battle": []
+              }
+            }
+          ],
+          "blocks": [],
+          "observedBehavior": {
+            "executionRoute": "shared_handler",
+            "handlerId": "core.master-initial-mana"
+          }
+        },
+        "phase3": {
+          "mechanicFamilies": [
+            "RESOURCE_NUMERIC",
+            "TRIGGER"
+          ],
+          "requiredCapabilities": [
+            "GENERIC_RESOURCE_NUMERIC",
+            "GENERIC_TRIGGER_GATEWAY"
+          ],
+          "currentRoute": "none",
+          "referenceRoute": "shared_handler",
+          "inheritedAcceptanceContracts": [],
+          "partialAcceptanceContracts": [],
+          "classificationRoute": "READY_GENERIC_EXTENSION",
+          "mappingStatus": "CONTRACT_MAPPED",
+          "blockedBy": [],
+          "routeEvidence": {
+            "currentAbilityIds": [],
+            "currentAcceptanceContracts": [],
+            "referenceHandlerId": "core.master-initial-mana"
+          }
         }
       },
-      "generatedRegistryPresent": false,
-      "generatedCharacterPresent": false,
-      "mainAcceptedMembership": false,
-      "initialManaTarget": 6,
-      "wholeSkillClauseCount": 1,
-      "compileStatus": "NOT_EXECUTED_THIS_PREPARE_EXISTING_ARCHIVE_TEST_STATIC",
-      "productionAdmission": "ABSENT",
-      "perIdentityAcceptanceMatrix": [
-        {
-          "criterion": "source fidelity / exact source binding",
-          "current": "STATIC_VERIFIED",
-          "expected": "Frozen F1 text equals current inventory, full authoring printedText and ability printedClause; all Git blob/hash bindings resolve.",
-          "identity": "master.iliya.skill.s1",
-          "specifiedValue": 6,
-          "gateStatus": "NOT_VERIFIED"
+      "currentInventoryRow": {
+        "canonicalAbilityId": "master.iliya.skill.s1",
+        "canonicalCardId": "master.iliya.skill.s1",
+        "ownerId": "master.iliya",
+        "ownerType": "master",
+        "ownerName": "伊莉雅斯菲尔",
+        "skillName": "人工生命体",
+        "printedText": "你的魔力初始值为6。",
+        "clauses": [
+          {
+            "text": "你的魔力初始值为6。",
+            "classification": "DISCOVERED",
+            "derivation": "mechanical_line_split",
+            "source": {
+              "document": "src/content/generated/legacy-content.json",
+              "locator": "masters[7].skills[0].text#line=1",
+              "sha256": "681da5eab6814317aeb7428ffedec22af430a9b4f889ef2950a7f04ef6a12335"
+            }
+          }
+        ],
+        "sources": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/伊莉雅斯菲尔.png",
+            "locator": "master.iliya/伊莉雅斯菲尔"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.iliya/s1"
+          }
+        ],
+        "reference": {
+          "skillId": "master.iliya.skill.s1",
+          "legacySkillId": "s1",
+          "handlerId": "core.master-initial-mana",
+          "executionRoute": "shared_handler",
+          "hasAuthoringCard": false,
+          "hasConfirmedOverride": true,
+          "dynamic": false
         },
-        {
-          "criterion": "production registration",
-          "current": "ABSENT",
-          "expected": "Generated executable cards, sourceMap and owner character contain this exact identity once; pack references the canonical archive through an approved channel.",
-          "identity": "master.iliya.skill.s1",
-          "specifiedValue": 6,
-          "gateStatus": "NOT_VERIFIED"
+        "classification": "DISCOVERED",
+        "blockedBy": [],
+        "semanticNormalization": {
+          "status": "BLOCKED",
+          "source": null,
+          "axes": {
+            "timing": [],
+            "trigger": [],
+            "condition": [],
+            "cost": [],
+            "target": [],
+            "effect": [],
+            "interaction": [],
+            "lifecycle": [],
+            "modifier": [],
+            "visibility": [],
+            "binding": [],
+            "battle": []
+          },
+          "abilities": [],
+          "blocks": [
+            "SEMANTIC_SOURCE_REQUIRED"
+          ],
+          "observedBehavior": {
+            "executionRoute": "shared_handler",
+            "handlerId": "core.master-initial-mana"
+          }
         },
-        {
-          "criterion": "real game_start initialization",
-          "current": "NOT_EXECUTED_PRODUCTION_IDENTITY_ABSENT",
-          "expected": "Construct the production MatchSession with approved seven-seat roster; source instance created before match-session-game-start; mana equals fixed target immediately after event and before round-start rewards.",
-          "identity": "master.iliya.skill.s1",
-          "specifiedValue": 6,
-          "gateStatus": "NOT_VERIFIED"
-        },
-        {
-          "criterion": "specified initial mana / not additive",
-          "current": "STATIC_TYPED_SET_ROUTE_PRESENT",
-          "expected": "Iliya=6 and Taiga=3, regardless of prior default 4; not 4+6/4+3; other players remain unchanged.",
-          "identity": "master.iliya.skill.s1",
-          "specifiedValue": 6,
-          "gateStatus": "NOT_VERIFIED"
-        },
-        {
-          "criterion": "duplicate initialization",
-          "current": "SAME_EVENT_REPLAY_TEST_PRESENT_NOT_RERUN",
-          "expected": "Replay identical trusted event: whole state/events/revision unchanged; same-value set emits no extra resource event. Different event IDs/later phase replay are NOT proven one-time initialization and need explicit authoritative boundary testing.",
-          "identity": "master.iliya.skill.s1",
-          "specifiedValue": 6,
-          "gateStatus": "NOT_VERIFIED"
-        },
-        {
-          "criterion": "atomic failure",
-          "current": "OVER_CAP_AND_LATER_NODE_ROLLBACK_TESTS_PRESENT_NOT_RERUN",
-          "expected": "Malformed/over-cap/invalid controller or source rejected without partial player/resource/event/revision mutation; compare full snapshots.",
-          "identity": "master.iliya.skill.s1",
-          "specifiedValue": 6,
-          "gateStatus": "NOT_VERIFIED"
-        },
-        {
-          "criterion": "applicable negative tests",
-          "current": "PLAN_ONLY",
-          "expected": "Wrong/extended trigger, non-controller/nonliteral/negative/fractional amount, extra cost/target/condition/lifecycle/host operation, duplicate registry, source absent/wrong owner/wrong zone, same event replay, cross-player isolation.",
-          "identity": "master.iliya.skill.s1",
-          "specifiedValue": 6,
-          "gateStatus": "NOT_VERIFIED"
-        },
-        {
-          "criterion": "no legacy fallback",
-          "current": "EXACT_SHAPE_TYPED_BRANCH_STATIC_ONLY",
-          "expected": "Real initialization reaches executeResolutionEffects -> typed set_mana; corrupted near-match cannot execute legacy resolveEffect; inspect exact lineage and result/event provenance.",
-          "identity": "master.iliya.skill.s1",
-          "specifiedValue": 6,
-          "gateStatus": "NOT_VERIFIED"
+        "phase3": {
+          "mechanicFamilies": [],
+          "requiredCapabilities": [],
+          "currentRoute": "none",
+          "referenceRoute": "shared_handler",
+          "inheritedAcceptanceContracts": [],
+          "partialAcceptanceContracts": [],
+          "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
+          "mappingStatus": "EXPLICIT_BLOCK",
+          "blockedBy": [
+            "SEMANTIC_SOURCE_REQUIRED"
+          ],
+          "routeEvidence": {
+            "currentAbilityIds": [],
+            "currentAcceptanceContracts": [],
+            "referenceHandlerId": "core.master-initial-mana"
+          }
         }
-      ]
+      },
+      "authoringReference": {
+        "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+        "path": "data/authoring/masters/master.iliya.json",
+        "blob": "e6b6fb09afcd915c8eca07627254d65dc4a7faf3",
+        "sha256": "f6abf7f2986b1569bf0161a5960b36c2af33908577f75940346dac8beda6e39a",
+        "checkoutMatches": true
+      },
+      "frozenTextMatchesAuthoring": true,
+      "mainAcceptedLedgerMember": false,
+      "generatedDefinitionPresent": false,
+      "generatedOwnerPresent": false,
+      "ledgerEligibility": "ELIGIBLE_UNCREDITED_COMPLETE_IDENTITY",
+      "productionReadiness": "BLOCKED",
+      "runtimeAcceptance": "PROVISIONAL_CURRENT_SOURCE_ONLY",
+      "positiveEvidence": "R52 authoring and archive regression exact bytes remain unchanged; current engine has narrow generic predicate.",
+      "negativeEvidence": "Production definition/source absent; current archive tests manually inject source and assert manifest exclusion.",
+      "requiredIndependentReview": "RA PREPARE; later RB current contract plus per-identity production positives/negatives; promotion/accounting separate"
     },
     {
       "canonicalIdentityId": "master.taiga.skill.s1",
-      "authoring": {
-        "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
-        "path": "data/authoring/masters/master.taiga.json",
-        "sha256": "f64e2d9ccbeee564648e99b37a16e00050ba00c1493c975589bb21809a1c3c54",
-        "blob": "b54f12a5155cedae9b4aa6d246973c912e5592d3"
-      },
-      "ownerId": "master.taiga",
-      "archiveType": "master_skill_card_archive",
-      "cardName": "带着她的头号帮手",
-      "printedText": "你的魔力初始值为3。",
-      "printedTextSha256": "ab00e7ecf418b26b1a697eaede5ef229bfa9ad00707630efd97fd9c1b5352951",
-      "exactFrozenTextMatches": true,
+      "fullPrintedText": "你的魔力初始值为3。",
       "clauses": [
         {
           "text": "你的魔力初始值为3。",
@@ -361,400 +360,673 @@
           }
         }
       ],
-      "sourceReferences": [
-        {
-          "kind": "development-image",
-          "document": "Fate_Domination-开发版",
-          "category": "master",
-          "page": "images/masters/藤村大河.png",
-          "locator": "master.taiga/藤村大河"
-        },
-        {
-          "kind": "legacy",
-          "document": "legacy-content.json",
-          "locator": "master/master.taiga/s1"
-        }
-      ],
-      "authoringAbility": {
-        "id": "taiga.helper.initial-mana",
-        "kind": "forced_trigger",
-        "printedClause": "你的魔力初始值为3。",
-        "activation": {
-          "trigger": "game_start"
-        },
-        "conditions": [],
-        "targets": [],
-        "cost": [],
-        "creates": [],
-        "ruleModifiers": [],
-        "lifecycle": {},
-        "responseWindow": {},
-        "limit": {},
-        "visibility": {},
-        "effects": [
+      "wholeIdentity": true,
+      "amount": 3,
+      "sourceGroundedF1Row": {
+        "canonicalAbilityId": "master.taiga.skill.s1",
+        "canonicalCardId": "master.taiga.skill.s1",
+        "ownerId": "master.taiga",
+        "ownerType": "master",
+        "ownerName": "藤村大河",
+        "skillName": "带着她的头号帮手",
+        "printedText": "你的魔力初始值为3。",
+        "clauses": [
           {
-            "type": "set_mana",
-            "player": "controller",
-            "amount": 3
+            "text": "你的魔力初始值为3。",
+            "classification": "DISCOVERED",
+            "derivation": "mechanical_line_split",
+            "source": {
+              "document": "src/content/generated/legacy-content.json",
+              "locator": "masters[30].skills[0].text#line=1",
+              "sha256": "ab00e7ecf418b26b1a697eaede5ef229bfa9ad00707630efd97fd9c1b5352951"
+            }
           }
         ],
-        "execution": {
-          "mode": "automatic",
-          "allowedOperations": []
+        "sources": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/藤村大河.png",
+            "locator": "master.taiga/藤村大河"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.taiga/s1"
+          }
+        ],
+        "reference": {
+          "skillId": "master.taiga.skill.s1",
+          "legacySkillId": "s1",
+          "handlerId": "core.master-initial-mana",
+          "executionRoute": "shared_handler",
+          "hasAuthoringCard": false,
+          "hasConfirmedOverride": true,
+          "dynamic": false
+        },
+        "classification": "CONTRACT_MAPPED",
+        "blockedBy": [],
+        "semanticNormalization": {
+          "status": "SOURCE_GROUNDED",
+          "source": {
+            "document": "Fate_Domination-开发版/data_masters.js",
+            "locator": "m_taiga.skills[s1]#line=136"
+          },
+          "axes": {
+            "timing": [],
+            "trigger": [
+              "game.started"
+            ],
+            "condition": [],
+            "cost": [],
+            "target": [],
+            "effect": [
+              "SET_MANA"
+            ],
+            "interaction": [],
+            "lifecycle": [],
+            "modifier": [],
+            "visibility": [],
+            "binding": [],
+            "battle": []
+          },
+          "abilities": [
+            {
+              "sourceAbilityId": "taiga.helper.initial-mana",
+              "kind": "TRIGGERED",
+              "source": {
+                "document": "Fate_Domination-开发版/data_masters.js",
+                "locator": "m_taiga.skills[s1]#line=136#ability-1"
+              },
+              "axes": {
+                "timing": [],
+                "trigger": [
+                  "game.started"
+                ],
+                "condition": [],
+                "cost": [],
+                "target": [],
+                "effect": [
+                  "SET_MANA"
+                ],
+                "interaction": [],
+                "lifecycle": [],
+                "modifier": [],
+                "visibility": [],
+                "binding": [],
+                "battle": []
+              }
+            }
+          ],
+          "blocks": [],
+          "observedBehavior": {
+            "executionRoute": "shared_handler",
+            "handlerId": "core.master-initial-mana"
+          }
+        },
+        "phase3": {
+          "mechanicFamilies": [
+            "RESOURCE_NUMERIC",
+            "TRIGGER"
+          ],
+          "requiredCapabilities": [
+            "GENERIC_RESOURCE_NUMERIC",
+            "GENERIC_TRIGGER_GATEWAY"
+          ],
+          "currentRoute": "none",
+          "referenceRoute": "shared_handler",
+          "inheritedAcceptanceContracts": [],
+          "partialAcceptanceContracts": [],
+          "classificationRoute": "READY_GENERIC_EXTENSION",
+          "mappingStatus": "CONTRACT_MAPPED",
+          "blockedBy": [],
+          "routeEvidence": {
+            "currentAbilityIds": [],
+            "currentAcceptanceContracts": [],
+            "referenceHandlerId": "core.master-initial-mana"
+          }
         }
       },
-      "generatedRegistryPresent": false,
-      "generatedCharacterPresent": false,
-      "mainAcceptedMembership": false,
-      "initialManaTarget": 3,
-      "wholeSkillClauseCount": 1,
-      "compileStatus": "NOT_EXECUTED_THIS_PREPARE_EXISTING_ARCHIVE_TEST_STATIC",
-      "productionAdmission": "ABSENT",
-      "perIdentityAcceptanceMatrix": [
-        {
-          "criterion": "source fidelity / exact source binding",
-          "current": "STATIC_VERIFIED",
-          "expected": "Frozen F1 text equals current inventory, full authoring printedText and ability printedClause; all Git blob/hash bindings resolve.",
-          "identity": "master.taiga.skill.s1",
-          "specifiedValue": 3,
-          "gateStatus": "NOT_VERIFIED"
+      "currentInventoryRow": {
+        "canonicalAbilityId": "master.taiga.skill.s1",
+        "canonicalCardId": "master.taiga.skill.s1",
+        "ownerId": "master.taiga",
+        "ownerType": "master",
+        "ownerName": "藤村大河",
+        "skillName": "带着她的头号帮手",
+        "printedText": "你的魔力初始值为3。",
+        "clauses": [
+          {
+            "text": "你的魔力初始值为3。",
+            "classification": "DISCOVERED",
+            "derivation": "mechanical_line_split",
+            "source": {
+              "document": "src/content/generated/legacy-content.json",
+              "locator": "masters[30].skills[0].text#line=1",
+              "sha256": "ab00e7ecf418b26b1a697eaede5ef229bfa9ad00707630efd97fd9c1b5352951"
+            }
+          }
+        ],
+        "sources": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/藤村大河.png",
+            "locator": "master.taiga/藤村大河"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.taiga/s1"
+          }
+        ],
+        "reference": {
+          "skillId": "master.taiga.skill.s1",
+          "legacySkillId": "s1",
+          "handlerId": "core.master-initial-mana",
+          "executionRoute": "shared_handler",
+          "hasAuthoringCard": false,
+          "hasConfirmedOverride": true,
+          "dynamic": false
         },
-        {
-          "criterion": "production registration",
-          "current": "ABSENT",
-          "expected": "Generated executable cards, sourceMap and owner character contain this exact identity once; pack references the canonical archive through an approved channel.",
-          "identity": "master.taiga.skill.s1",
-          "specifiedValue": 3,
-          "gateStatus": "NOT_VERIFIED"
+        "classification": "DISCOVERED",
+        "blockedBy": [],
+        "semanticNormalization": {
+          "status": "BLOCKED",
+          "source": null,
+          "axes": {
+            "timing": [],
+            "trigger": [],
+            "condition": [],
+            "cost": [],
+            "target": [],
+            "effect": [],
+            "interaction": [],
+            "lifecycle": [],
+            "modifier": [],
+            "visibility": [],
+            "binding": [],
+            "battle": []
+          },
+          "abilities": [],
+          "blocks": [
+            "SEMANTIC_SOURCE_REQUIRED"
+          ],
+          "observedBehavior": {
+            "executionRoute": "shared_handler",
+            "handlerId": "core.master-initial-mana"
+          }
         },
-        {
-          "criterion": "real game_start initialization",
-          "current": "NOT_EXECUTED_PRODUCTION_IDENTITY_ABSENT",
-          "expected": "Construct the production MatchSession with approved seven-seat roster; source instance created before match-session-game-start; mana equals fixed target immediately after event and before round-start rewards.",
-          "identity": "master.taiga.skill.s1",
-          "specifiedValue": 3,
-          "gateStatus": "NOT_VERIFIED"
-        },
-        {
-          "criterion": "specified initial mana / not additive",
-          "current": "STATIC_TYPED_SET_ROUTE_PRESENT",
-          "expected": "Iliya=6 and Taiga=3, regardless of prior default 4; not 4+6/4+3; other players remain unchanged.",
-          "identity": "master.taiga.skill.s1",
-          "specifiedValue": 3,
-          "gateStatus": "NOT_VERIFIED"
-        },
-        {
-          "criterion": "duplicate initialization",
-          "current": "SAME_EVENT_REPLAY_TEST_PRESENT_NOT_RERUN",
-          "expected": "Replay identical trusted event: whole state/events/revision unchanged; same-value set emits no extra resource event. Different event IDs/later phase replay are NOT proven one-time initialization and need explicit authoritative boundary testing.",
-          "identity": "master.taiga.skill.s1",
-          "specifiedValue": 3,
-          "gateStatus": "NOT_VERIFIED"
-        },
-        {
-          "criterion": "atomic failure",
-          "current": "OVER_CAP_AND_LATER_NODE_ROLLBACK_TESTS_PRESENT_NOT_RERUN",
-          "expected": "Malformed/over-cap/invalid controller or source rejected without partial player/resource/event/revision mutation; compare full snapshots.",
-          "identity": "master.taiga.skill.s1",
-          "specifiedValue": 3,
-          "gateStatus": "NOT_VERIFIED"
-        },
-        {
-          "criterion": "applicable negative tests",
-          "current": "PLAN_ONLY",
-          "expected": "Wrong/extended trigger, non-controller/nonliteral/negative/fractional amount, extra cost/target/condition/lifecycle/host operation, duplicate registry, source absent/wrong owner/wrong zone, same event replay, cross-player isolation.",
-          "identity": "master.taiga.skill.s1",
-          "specifiedValue": 3,
-          "gateStatus": "NOT_VERIFIED"
-        },
-        {
-          "criterion": "no legacy fallback",
-          "current": "EXACT_SHAPE_TYPED_BRANCH_STATIC_ONLY",
-          "expected": "Real initialization reaches executeResolutionEffects -> typed set_mana; corrupted near-match cannot execute legacy resolveEffect; inspect exact lineage and result/event provenance.",
-          "identity": "master.taiga.skill.s1",
-          "specifiedValue": 3,
-          "gateStatus": "NOT_VERIFIED"
+        "phase3": {
+          "mechanicFamilies": [],
+          "requiredCapabilities": [],
+          "currentRoute": "none",
+          "referenceRoute": "shared_handler",
+          "inheritedAcceptanceContracts": [],
+          "partialAcceptanceContracts": [],
+          "classificationRoute": "SOURCE_EVIDENCE_REQUIRED",
+          "mappingStatus": "EXPLICIT_BLOCK",
+          "blockedBy": [
+            "SEMANTIC_SOURCE_REQUIRED"
+          ],
+          "routeEvidence": {
+            "currentAbilityIds": [],
+            "currentAcceptanceContracts": [],
+            "referenceHandlerId": "core.master-initial-mana"
+          }
         }
-      ]
+      },
+      "authoringReference": {
+        "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+        "path": "data/authoring/masters/master.taiga.json",
+        "blob": "b54f12a5155cedae9b4aa6d246973c912e5592d3",
+        "sha256": "f64e2d9ccbeee564648e99b37a16e00050ba00c1493c975589bb21809a1c3c54",
+        "checkoutMatches": true
+      },
+      "frozenTextMatchesAuthoring": true,
+      "mainAcceptedLedgerMember": false,
+      "generatedDefinitionPresent": false,
+      "generatedOwnerPresent": false,
+      "ledgerEligibility": "ELIGIBLE_UNCREDITED_COMPLETE_IDENTITY",
+      "productionReadiness": "BLOCKED",
+      "runtimeAcceptance": "PROVISIONAL_CURRENT_SOURCE_ONLY",
+      "positiveEvidence": "R52 authoring and archive regression exact bytes remain unchanged; current engine has narrow generic predicate.",
+      "negativeEvidence": "Production definition/source absent; current archive tests manually inject source and assert manifest exclusion.",
+      "requiredIndependentReview": "RA PREPARE; later RB current contract plus per-identity production positives/negatives; promotion/accounting separate"
     }
   ],
-  "runtimeFeasibility": {
-    "numericPrimitive": "set_mana",
-    "assignmentSemantics": "after=amount; actualDelta=after-before; not adjust_mana",
-    "existingCurrentMainContract": "forced_trigger + exact game_start + automatic + one fixed-controller literal set_mana + empty semantic axes",
-    "route": [
-      {
-        "path": "packages/rules/src/match-session.ts",
-        "lines": "2138-2188",
-        "operation": "Default mana=4; instantiate character.cardIds at initialZone; initializeAbilityRuntime; process match-session-game-start; then startRound"
-      },
-      {
-        "path": "packages/rules/src/ability/interpreter.ts",
-        "lines": "2413-2427,3585-3589",
-        "operation": "Exact game-start semantic -> executeResolutionEffects -> return, avoiding legacy branch"
-      },
-      {
-        "path": "packages/rules/src/ability/resolution-dataflow.ts",
-        "lines": "1962-1994",
-        "operation": "Transactional fixed-controller set; invalid amount/cap throws; typed targetAmount/actualDelta/before/after"
-      }
-    ],
-    "newPrimitiveRequired": false,
-    "initializationOrderChangeRequiredForAlreadyRegisteredOwners": false,
-    "sharedRuntimeImplementationAuthorized": false,
-    "productionInitializationForSelectedIdentities": "NOT_REACHABLE_CURRENT_REGISTRY",
-    "historicalScope": "R51/R52 recovery-line synthetic/source-added scenarios only, not fresh current-main admission; historical +2 NOT reused",
-    "oneTimeInitializationBoundary": "Same event ID deduplicated via processedEvents; arbitrary distinct game_start IDs are not demonstrated to be rejected. Do not claim universal one-time initialization."
-  },
-  "productionAdmission": {
-    "currentMasterCount": 7,
-    "currentServantCount": 7,
-    "currentChannel": "authoringMasterFiles -> convertAuthoringMaster -> compileExecutableCardPack.characters -> MatchSession.buildInitialState",
-    "candidatePath": [
-      "canonical archive files",
-      "data/packs/fd-playtest-v1/pack.json:authoringMasterFiles",
-      "packages/content/src/playtest-pack-loader.ts:convertAuthoringMaster",
-      "scripts/compile-playtest-content-pack.ts",
-      "data/generated/fd-playtest-v1.content-library.json:rules.cards/characters/sourceMap",
-      "MatchSession character card instances in skill",
-      "initializeAbilityRuntime -> processAbilityEvent(game_start) -> exact typed set_mana"
-    ],
-    "channelsRejected": [
-      {
-        "channel": "authoringMasterSupportFiles",
-        "reason": "Requires every master_skill initialPlacement=outside_game; initial source would not exist at game_start. Canonical single ordinary source does not satisfy contract."
-      },
-      {
-        "channel": "authoringMasterRuleFiles",
-        "reason": "Requires >=2 cards, at least one outside_game and one ordinary. No placeholder/card semantic changes allowed."
-      }
-    ],
-    "additivePlayableRegistration": {
-      "proposedMasterCount": 9,
-      "reason": "MatchSession maps ALL masters to pairings, but state has only p1..p7 and seven servants; p8/p9 lookup cannot succeed. Static source conclusion; no injected pack runtime execution was performed.",
-      "repairOwner": "Planner decides roster substitution or separately dispatches shared runtime owner; A cannot enlarge runtime."
+  "historicalContract": {
+    "r51": {
+      "candidate": "101cb0d4e3fbd105cfadafda26585b3825616fe1",
+      "base": "c04e42ea8d002e974f8965218f915d642fe26ea5",
+      "summaryCommit": "f81cdbf42e7469e75213b51a97b1202670022831",
+      "credit": 0,
+      "scope": "Identity-free forced automatic game_start + exactly one fixed-controller literal set_mana."
     },
-    "runtimeFreeConditionalOption": "Replace two existing authoringMasterFiles with these archives to preserve 7/7; exact removals and product surface require separate Planner/user decision. No replacement selected here.",
-    "sourceChangesNeededForNumericRule": "NONE",
-    "conditionallyProposedChangedFiles": [
+    "r52": {
+      "candidate": "0de67e5b5c4f403f04fa54868c6db09b980c90f8",
+      "base": "bfa9087ab77223e40525fe36214509b1f2cdf9ff",
+      "summaryCommit": "caacad5634dfbcb14314c29125cdd21071141a72",
+      "credit": "+2 on recovery line only",
+      "scope": "Two standalone archives and fixture/manual-insertion tests; pack/generated untouched."
+    },
+    "sourceBindings": [
+      {
+        "commit": "101cb0d4e3fbd105cfadafda26585b3825616fe1",
+        "path": "packages/rules/src/ability/interpreter.ts",
+        "blob": "a2a7f1e49cafa52e55b7c57466473b094fb229f8",
+        "sha256": "c3a43ac1c02a1d0303a5b295c545264e86f9dca943da049acb9c2a09a300ebc7",
+        "sameAsCurrent": false
+      },
+      {
+        "commit": "101cb0d4e3fbd105cfadafda26585b3825616fe1",
+        "path": "packages/rules/tests/regression/fb2-game-start-fixed-set-mana.test.ts",
+        "blob": "793eef41f45dcce2eca9801953095b9108aaced3",
+        "sha256": "954b4ea5aace5525eda5d6148982bd84af56dfcd2c220185bab0294854b83372",
+        "sameAsCurrent": true
+      },
+      {
+        "commit": "0de67e5b5c4f403f04fa54868c6db09b980c90f8",
+        "path": "data/authoring/masters/master.iliya.json",
+        "blob": "e6b6fb09afcd915c8eca07627254d65dc4a7faf3",
+        "sha256": "f6abf7f2986b1569bf0161a5960b36c2af33908577f75940346dac8beda6e39a",
+        "sameAsCurrent": true
+      },
+      {
+        "commit": "0de67e5b5c4f403f04fa54868c6db09b980c90f8",
+        "path": "data/authoring/masters/master.taiga.json",
+        "blob": "b54f12a5155cedae9b4aa6d246973c912e5592d3",
+        "sha256": "f64e2d9ccbeee564648e99b37a16e00050ba00c1493c975589bb21809a1c3c54",
+        "sameAsCurrent": true
+      },
+      {
+        "commit": "0de67e5b5c4f403f04fa54868c6db09b980c90f8",
+        "path": "packages/rules/tests/fb2-25-initial-mana-consumer-migration.test.ts",
+        "blob": "a010fd51a052f4c0010e77472d189f87d8319ccd",
+        "sha256": "b43e1a35c03b925122c9972f36287dac1e5f49e66def10718705c49563a10dc8",
+        "sameAsCurrent": true
+      },
+      {
+        "commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "path": "data/phase3/full-roster-ability-inventory.json",
+        "blob": "7ffaf21dd8632e9c752218c809bb1dc4159acd3a",
+        "sha256": "598c3101e510592bcdbe5b8913c07c95415770b5cc6d1e2ee8160d8e64532578",
+        "sameAsCurrent": false
+      },
+      {
+        "commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "path": "data/phase3/full-roster-source-evidence-overlays.json",
+        "blob": "d7996a27691f6e205f50ade738fb1f6c1f57c60c",
+        "sha256": "c96a3732e1f96bc9e93216b287374b739a7112097a6ffbeaf1700138072f8096",
+        "sameAsCurrent": false
+      }
+    ],
+    "currentVsHistorical": {
+      "wholeInterpreterIdentical": false,
+      "archiveAndFocusedRegressionBytesIdentical": true,
+      "exactPredicateSlices": [
+        {
+          "symbol": "isFixedControllerManaSetComponent",
+          "sameNormalizedLfText": true,
+          "sha256": "c27a2265e7f7a580e75859a4fd7e081acf534da06f69d2e3222391cdc435f76c"
+        },
+        {
+          "symbol": "isGameStartFixedControllerManaSetSemantic",
+          "sameNormalizedLfText": true,
+          "sha256": "a137ba5a77f38f2d20c3baa1f1c600555e9353900d4612c55ffb8ba3e3e0299f"
+        }
+      ],
+      "sliceMethod": "Git blob UTF-8 text; exact export function through closing newline brace; same literal slices; no runtime execution."
+    },
+    "originalIndependentProof": "NOT_PINNED_BY_BOUNDED_RETRIEVAL; reports are A synchronization, not original R51/R52 independent probes or current-main runtime acceptance.",
+    "excludedConsumers": [
+      "master.shirou-emiya.skill.s1",
+      "master.zouken.skill.s1",
+      "master.tiamat initial-mana rows"
+    ],
+    "excludedReason": "Other lifecycle/modifier/additional full-skill clauses; no automatic batch expansion."
+  },
+  "productionPath": [
+    {
+      "path": "data/packs/fd-playtest-v1/pack.json",
+      "lines": [
+        25,
+        34
+      ],
+      "finding": "Seven ordinary authoring masters; target archives absent."
+    },
+    {
+      "path": "packages/content/src/playtest-pack-loader.ts",
+      "lines": [
+        186,
+        268,
+        318,
+        337,
+        576,
+        615,
+        625,
+        685
+      ],
+      "finding": "Ordinary single-skill archives pass normal shape and generate MasterDefinition + overview + skill; support requires outside_game; rule requires ordinary+outside_game and >=2 cards."
+    },
+    {
+      "path": "packages/rules/src/ability/executable-card-pack.ts",
+      "lines": [
+        802,
+        851,
+        873
+      ],
+      "finding": "Ordinary archives create master characters; missing command_spell generates fallback; nondeferred master_skill initialZone=skill. Normal registration imports only current one card, not other frozen skills automatically."
+    },
+    {
+      "path": "packages/rules/src/match-session.ts",
+      "lines": [
+        52,
+        220,
+        1330,
+        2123,
+        2129,
+        2135,
+        2141,
+        2186,
+        2187
+      ],
+      "finding": "Imports generated library; every master is paired with corresponding servant; fixed seven seeded seats; character cardIds instantiate sources before initializeAbilityRuntime and real game_start. Nine masters with seven servants => missing pairing/players, no legal runtime-free append demonstrated."
+    },
+    {
+      "path": "packages/content/src/playtest-pack-loader.ts",
+      "lines": [
+        388,
+        394,
+        408,
+        424,
+        740
+      ],
+      "finding": "Recognized source-image keys are absent in both archives; F1 development-image page is not recognized, so reviewedAgainstImage=false and SOURCE_EVIDENCE_REQUIRED is blocking even metadata_only."
+    },
+    {
+      "path": "packages/rules/tests/fb2-25-initial-mana-consumer-migration.test.ts",
+      "lines": [
+        23,
+        32,
+        114,
+        116,
+        117
+      ],
+      "finding": "Archive-only setup inserts card manually and exclusion assertions are historical; replacing them requires current production registration contract."
+    }
+  ],
+  "blockers": [
+    {
+      "id": "UNAPPROVED_PLAYABLE_MASTER_ROSTER_EXPANSION",
+      "evidence": "Normal authoringMasterFiles adds two masters plus overviews/fallback command spells. No master-selection contract in MatchSessionConfig. Cannot append nine to seven-seat/seven-servant init.",
+      "requiredDecision": "Planner/product owner must explicitly decide bounded roster substitution or separately authorized selection/initialization contract; A cannot approve."
+    },
+    {
+      "id": "NO_VALID_RULES_ONLY_SINGLE_CARD_REGISTRATION",
+      "evidence": "Support outside_game and rule mixed ordinary/outside_game shapes mandatory; would change meaning or require extra real identity. Unregistered rules-only skill has no production instantiated owner source.",
+      "requiredDecision": "No placeholder/retag/whole-roster expansion; any new rules-only registration/init contract is shared-core work outside task."
+    },
+    {
+      "id": "SOURCE_METADATA_NOT_PRODUCTION_LOADABLE",
+      "evidence": "Both current archives lack loader-recognized source images. Source evidence locators alone do not satisfy production metadata gate.",
+      "requiredDecision": "Evidence-grounded authoring metadata paths require explicit reservation; do not repair 93 missing assets or waive Release."
+    },
+    {
+      "id": "CURRENT_RUNTIME_ACCEPTANCE_NOT_EXECUTED",
+      "evidence": "Predicate bytes match narrow historical slices, interpreter/compiler changed overall. Original independent R51/R52 reviewer/probe blobs not pinned. Only source inspection.",
+      "requiredDecision": "RA examines PREPARE once; future RB reviews current generated production paths and identity results; no inherited PASS."
+    },
+    {
+      "id": "MISSING_VALID_REAL_CLI_RECEIPT",
+      "evidence": "Real unchanged CLI INPUT_INCOMPLETE on outside-tree task path. Direct same-engine diagnostic CHECKED includes 3 selected, 1 overflow, missing regressions and unknowns, but is not CLI PASS or accepted equivalent.",
+      "requiredDecision": "Independent RA may assess negative packet; valid real CLI/input-location accommodation or accepted traceable method must be resolved before Lead condition 5."
+    }
+  ],
+  "proposedImplementation": {
+    "status": "CONDITIONAL_NOT_AUTHORIZED_NOT_PROVEN",
+    "minimumRegistrationAttempt": [
       "data/packs/fd-playtest-v1/pack.json",
       "data/generated/fd-playtest-v1.content-library.json",
       "data/generated/fd-playtest-v1.fixture.json",
       "data/generated/fd-playtest-v1.evidence-report.json",
       "packages/rules/tests/fb2-25-initial-mana-consumer-migration.test.ts",
-      "packages/rules/tests/regression/cb-p02-initial-mana-production-admission.test.ts"
+      "packages/rules/tests/regression/cb-p02-initial-mana-production.test.ts",
+      "packages/content/src/__tests__/fd-playtest-masters.test.ts"
     ],
-    "notAuthorizedChanges": [
+    "conditionalAdditionalContentPaths": [
+      "data/authoring/masters/master.iliya.json",
+      "data/authoring/masters/master.taiga.json"
+    ],
+    "reason": "Loader-recognized evidence metadata needed; no numeric semantic change required. These additions were not in minimum attempt preflight scope; scope change requires new binding/lookup before activation.",
+    "generation": {
+      "existingCommand": "npm run content:compile",
+      "generator": "scripts/compile-playtest-content-pack.ts",
+      "generatedCoOutputs": [
+        "data/generated/fd-playtest-v1.content-library.json",
+        "data/generated/fd-playtest-v1.fixture.json",
+        "data/generated/fd-playtest-v1.evidence-report.json"
+      ],
+      "manualPatchingAllowed": false
+    },
+    "outOfScopeBottleneckPaths": [
       "packages/rules/src/match-session.ts",
       "packages/content/src/playtest-pack-loader.ts",
-      "packages/rules/src/ability/executable-card-pack.ts",
-      "apps/client/**",
-      "apps/server/**"
+      "packages/rules/src/ability/executable-card-pack.ts"
     ],
-    "generatedOutputs": "Only existing generator; no manual registry edits",
-    "newTestPath": "packages/rules/tests/regression/cb-p02-initial-mana-production-admission.test.ts",
-    "existingTestPaths": [
-      "packages/rules/tests/fb2-25-initial-mana-consumer-migration.test.ts",
-      "packages/rules/tests/regression/fb2-game-start-fixed-set-mana.test.ts",
-      "packages/rules/tests/regression/fb2-fixed-controller-set-mana.test.ts"
-    ],
-    "existingExpectationConflict": "Archive consumer test explicitly requires both archives excluded from pack. Exact admission authorization is required before changing that expectation."
+    "outOfScopeCondition": "Only identify potential contract boundaries; no edit proposal approved. Roster substitution also requires explicit product decision even if content-only.",
+    "leadBranch": "codex/lead-p3-cb-p02-initial-mana",
+    "leadWorktree": "D:/fd-validation/lead-cb-p02-initial-mana",
+    "leadReservation": "P3-CB-P02-LEAD DRAFT_NOT_GRANTED"
   },
-  "historicalFailurePreflight": {
-    "receiptPath": "artifacts/phase3-cb-p02-historical-preflight.json",
-    "status": "CHECKED",
-    "cacheRepeat": true,
-    "currentExecutionAcceptance": false,
-    "supplementaryInspection": [
-      {
-        "topic": "registration omission",
-        "evidence": "Actual pack and generated registry absence + fb2-25 consumer exclusion assertion",
-        "coverage": "CURRENT_STATIC_ONLY"
-      },
-      {
-        "topic": "initialization replay",
-        "evidence": "fb2-game-start-fixed-set-mana replay and same-value tests; interpreter processedEvents",
-        "coverage": "SAME_EVENT_ONLY_NOT_RERUN"
-      },
-      {
-        "topic": "illegal controller/source",
-        "evidence": "Primitive findPlayer and event source eligibility; no explicit P02 production negative",
-        "coverage": "TEST_GAP"
-      },
-      {
-        "topic": "state consistency/rollback",
-        "evidence": "fb2 fixed-controller set-mana later-node rollback; game-start over-cap rollback",
-        "coverage": "STATIC_TEST_PRESENT_NOT_RERUN"
-      },
-      {
-        "topic": "fallback",
-        "evidence": "Exact semantic branch returns; near-match game-start rejection regression",
-        "coverage": "STATIC_CURRENT_SOURCE_NOT_PRODUCTION_PROOF"
-      },
-      {
-        "topic": "exact SHA mismatch",
-        "evidence": "Preflight verified pinned lesson sources, Git SHA and hash; UNKNOWN catalog entries remain visible",
-        "coverage": "SOURCE_BINDING_CHECKED_NO_CONFORMANCE_ACCEPTANCE"
-      }
-    ]
+  "alternatives": {
+    "provenSingleContractBatch": [],
+    "status": "NO_PROVEN_ALTERNATIVE_IN_BOUNDED_PASS",
+    "reason": "Latest user instructs freeze blockers without broader alternative survey. Worker Darius hints not whole-clause/production/same-operation verified; no mixed PLAY/ACTIVATE/CLOSE batch offered."
   },
-  "alternative": {
-    "canonicalIdentityId": "master.kiritsugu.skill.s2",
-    "printedText": "暗置打出一张牌，然后抽一张牌。",
-    "clauses": [
-      {
-        "text": "暗置打出一张牌，然后抽一张牌。",
-        "classification": "DISCOVERED",
-        "derivation": "mechanical_line_split",
-        "source": {
-          "document": "src/content/generated/legacy-content.json",
-          "locator": "masters[0].skills[1].text#line=1",
-          "sha256": "37250362ba119e621015b05c59c6694b319f15900647522fb8c5400ea8290df0"
-        }
-      }
-    ],
-    "accepted": false,
-    "productionCard": {
-      "id": "master.kiritsugu.skill.time-alter",
-      "name": "固有时制御",
-      "cardType": "master_skill",
-      "printedText": "行动阶段：暗置打出一张牌，然后抽一张牌。",
-      "cardFace": {
-        "cost": 0,
-        "basePower": 0
-      },
-      "playTiming": {
-        "phase": "action",
-        "window": "controller_play_card_window"
-      },
-      "playRequirements": [],
-      "abilities": [
-        {
-          "id": "time-alter.action",
-          "kind": "phase_action",
-          "printedClause": "行动阶段：暗置打出一张牌，然后抽一张牌。",
-          "activation": {
-            "phase": "action",
-            "opens": "controller_action_window"
-          },
-          "targets": [
-            {
-              "id": "card_to_play",
-              "type": "card_instance",
-              "scope": {
-                "zone": "hand",
-                "owner": "controller"
-              },
-              "count": {
-                "min": 1,
-                "max": 1
-              },
-              "constraints": [
-                {
-                  "type": "is_attack"
-                }
-              ]
-            }
-          ],
-          "effects": [
-            {
-              "type": "play_selected_cards",
-              "target": "card_to_play",
-              "face": "face_down"
-            },
-            {
-              "type": "draw_cards",
-              "count": 1
-            }
-          ],
-          "execution": {
-            "mode": "automatic"
-          }
-        }
-      ],
-      "evidence": [
-        {
-          "type": "legacy_generated_content",
-          "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json"
-        }
-      ]
-    },
-    "registryPresent": true,
-    "family": "CARD_ACTION_SEMANTICS_MINIMAL_PLAY",
-    "abilityId": "time-alter.action",
-    "scope": "ONE_BOUNDED_ALTERNATIVE_IDENTITY_REQUIRES_PLANNER_SELECTION",
-    "mapping": "Frozen master.kiritsugu.skill.s2 -> production master.kiritsugu.skill.time-alter#time-alter.action",
-    "why": "Already on a selected seven-seat owner; avoids new roster or initial-source registration. Typed PLAY + draw shared contract and focused production tests exist.",
-    "sourceFidelity": "Frozen whole text omits action-phase prefix present in current authoring; target restricts is_attack whereas text says a card. RB must adjudicate whole-clause scope, not inherit old PASS.",
-    "contractEvidence": [
-      "packages/rules/src/ability/interpreter.ts:isPlayActionDirectAction/isPlayActionRouteCandidate",
-      "packages/rules/tests/regression/card-action-play.test.ts",
-      "e2e/fd-time-alter-core-primitive.spec.ts"
-    ],
-    "testStatus": "PRESENT_STATIC_NOT_RERUN",
-    "browserLimitation": "Current E2E uses restoreActionPhaseTimeAlterRoom; not proof of real startup.",
-    "eligibility": "BLOCKED_SOURCE_SCOPE_REVIEW_NOT_READY_FOR_IMPLEMENTATION",
-    "additionalIdentities": [],
-    "boundedSearchDisposition": "No second same-contract identity is padded into the batch; no mixed PLAY/ADD_TO_ATTACK/ACTIVATE/CLOSE family.",
-    "productionOrCreditChange": 0
+  "preflight": {
+    "path": "artifacts/phase3-cb-p02-historical-preflight.json",
+    "sha256": "964ec1fb82036604587667903aaeb603abdfc07683a362036d46ef6fdcbc5f40",
+    "strictExternalInputSha256": "6658000315863708af353c52491b3b240e94bed27b322d54d23bed54e66dbbbc",
+    "realCliStatus": "INPUT_INCOMPLETE",
+    "diagnosticStatus": "CHECKED_NOT_ACCEPTANCE",
+    "independentEquivalenceApproved": false
   },
-  "blockers": [
+  "currentSourceReferences": [
     {
-      "id": "REGISTRATION_REQUIRES_UNAPPROVED_PRODUCT_EXPANSION",
-      "owner": "Planner",
-      "resolution": "Authorize exact seven-seat roster substitution or choose alternative; additive nine-master path requires out-of-scope runtime work."
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/phase3/full-roster-ability-inventory.json",
+      "blob": "e39b8e1036a372affc4db45be41995815648f433",
+      "sha256": "4242922cd047ba3452878ee7dba3d25b2afe3a22294c4a097102997fcfec019f",
+      "checkoutMatches": true
     },
     {
-      "id": "PRODUCTION_INITIALIZATION_EVIDENCE_MISSING",
-      "owner": "Lead Builder/RB after dispatch",
-      "resolution": "Real generated registry -> production constructor evidence for each identity, initialization timing and atomic negatives."
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "artifacts/phase3-e04-current-main-accepted-111-execution-matrix.json",
+      "blob": "d7a3f280afc26bc4efefdef75ee6cd7c89eb9704",
+      "sha256": "34ce9258e94e9bf44243cdd76be223f599d4776c13e2ef623382ae44a2f4f965",
+      "checkoutMatches": true
     },
     {
-      "id": "EXACT_IMPLEMENTATION_PATHS_AND_WRITER_RESERVATION_NOT_GRANTED",
-      "owner": "Planner",
-      "resolution": "Resolve literal manifest/generated/test paths and named Lead; no coding entry yet."
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/authoring/masters/master.iliya.json",
+      "blob": "e6b6fb09afcd915c8eca07627254d65dc4a7faf3",
+      "sha256": "f6abf7f2986b1569bf0161a5960b36c2af33908577f75940346dac8beda6e39a",
+      "checkoutMatches": true
     },
     {
-      "id": "RA_PREPARE_REVIEW_PENDING",
-      "owner": "Reviewer A",
-      "resolution": "Review this frozen evidence packet only."
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/authoring/masters/master.taiga.json",
+      "blob": "b54f12a5155cedae9b4aa6d246973c912e5592d3",
+      "sha256": "f64e2d9ccbeee564648e99b37a16e00050ba00c1493c975589bb21809a1c3c54",
+      "checkoutMatches": true
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/packs/fd-playtest-v1/pack.json",
+      "blob": "dc1c7cdc03464e5274fd61ccb3e9d6e7021d00be",
+      "sha256": "f9df6313a3b2452815fda56902dac5bac8f1f9c4e2374b11912b8ea82cd9d109",
+      "checkoutMatches": true
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/generated/fd-playtest-v1.content-library.json",
+      "blob": "6296653f5d53bac3684bd172d04c43c45acae2dc",
+      "sha256": "38b1c58e7a1eba06bc80a1a8f5d302ad4339845edf6b67a36cf1bbbcaa3e65b1",
+      "checkoutMatches": true
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/content/src/playtest-pack-loader.ts",
+      "blob": "10ccb1f08193006c035862722b82f1a6715471f7",
+      "sha256": "2b1eead567384500b4e83a63273fc6d714dbf0ddd5a3e0d9bf2bcdacc7f59f20",
+      "checkoutMatches": true
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/content/src/playtest-content-pack.ts",
+      "blob": "08a52d40e8dcf5b80c79b1528f0ceb0723a8b584",
+      "sha256": "bcd2986cab645819ffb2735c76632f2149782e4b9f63fa67d17fac88afe7903c",
+      "checkoutMatches": true
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/ability/executable-card-pack.ts",
+      "blob": "1e6eef44d3cd177616575a9e9050e9a996c9ec51",
+      "sha256": "7f00857bbb67fe47fb1e61200aac84a8e174378ed1c8bddcf74a9190db2a0bc0",
+      "checkoutMatches": true
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/ability/loader.ts",
+      "blob": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+      "sha256": "17a6630e36b3acec36e7f684118bb577cf49ea400d98e4bc029c8f01b75ed7c2",
+      "checkoutMatches": true
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/ability/interpreter.ts",
+      "blob": "25f17fe843a9a05650722e996f0ce97109cfadbe",
+      "sha256": "a5f74d0cdcb71c169640dc6d0c0b7936eb2cb26b4ac8a1421e2dd50783554c43",
+      "checkoutMatches": true
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/ability/resolution-dataflow.ts",
+      "blob": "edbcce8a6967782011a9a76f9122b32a6236bfb3",
+      "sha256": "361ea71ab056bdfb8548a3aa353911b6bd5560d57ea7d6049b3250d12196996e",
+      "checkoutMatches": true
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/match-session.ts",
+      "blob": "3418ff800b605a6a6e8c93f76eb072699c5c6378",
+      "sha256": "a4b440bda535956819d557e89c5c095c765f88b349c78c62d767b3c7a1918c12",
+      "checkoutMatches": true
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/tests/fb2-25-initial-mana-consumer-migration.test.ts",
+      "blob": "a010fd51a052f4c0010e77472d189f87d8319ccd",
+      "sha256": "b43e1a35c03b925122c9972f36287dac1e5f49e66def10718705c49563a10dc8",
+      "checkoutMatches": true
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/tests/regression/fb2-game-start-fixed-set-mana.test.ts",
+      "blob": "793eef41f45dcce2eca9801953095b9108aaced3",
+      "sha256": "954b4ea5aace5525eda5d6148982bd84af56dfcd2c220185bab0294854b83372",
+      "checkoutMatches": true
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "scripts/compile-playtest-content-pack.ts",
+      "blob": "dc1438e13ee8cc16264193b444ce3a7d6bab8899",
+      "sha256": "e79775f3a45568b2b8020af541446e6c9aab3049eb608dde2f3cce2dd6774547",
+      "checkoutMatches": true
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "scripts/engineering/historical-failure-preflight.ts",
+      "blob": "12a92f18f1616e947e3b9faac615ee66d00ce384",
+      "sha256": "654c8688b1a4d332bcee7e777090b467cabe70faf6788816d5480d84e1e5e371",
+      "checkoutMatches": true
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "docs/engineering/lessons/catalog.json",
+      "blob": "93bb684a4c3720aab5249e3dfff720d3ad6685f6",
+      "sha256": "b9ee48a6af45322698f1528a6465ca56b21597270481b79605a6c60f64c794f8",
+      "checkoutMatches": true
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "docs/reports/2026-09-18-p3-a-r51-fb2-25-acceptance-synchronization.md",
+      "blob": "f10689ba914decb7874588f354ad4a99426e51ad",
+      "sha256": "8318c794b293c8894831990eec2e8fbe211d07dca41fa7e2ab47e153aafb9cee",
+      "checkoutMatches": true
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "docs/reports/2026-09-18-p3-a-r52-initial-mana-acceptance-synchronization.md",
+      "blob": "1cd76f5ea79dad5b7e3076944070fedbeec56d69",
+      "sha256": "dabfa346e9491c1bb4ae80c8f40066a48df1117c9d27c15b770d82f89081b0b5",
+      "checkoutMatches": true
     }
   ],
-  "releaseLimitations": {
-    "globalGateC": "NOT_VERIFIED",
-    "missingImages": 93,
-    "longTermStability": "NOT_VERIFIED"
-  },
-  "testsExecuted": [],
-  "heavyTestsExecuted": false,
-  "legacyPathsIntentionallyRetained": "Existing global legacy paths unchanged. Exact game-start shape has static typed route; no production identity fallback closure acceptance created.",
-  "finalConclusion": "NOT_ELIGIBLE_EXISTING_CONTRACT",
-  "validation": {
-    "commands": [
-      {
-        "command": "git fetch origin",
-        "exitCode": 0
-      },
-      {
-        "command": "git ls-remote origin refs/heads/main",
-        "exitCode": 0,
-        "observedSha": "a42b5e1c517141b90f3407773958b0d8afe63264"
-      },
-      {
-        "command": "Historical Failure Preflight (valid file URL), twice",
-        "exitCode": 0,
-        "counts": "5 selected, 0 runtime tests, cache miss then hit"
-      },
-      {
-        "command": "git diff --check",
-        "exitCode": 0,
-        "scope": "Tracked changes empty before staging; final staged check required"
-      }
-    ],
-    "readOnlyExtractionFailure": {
-      "error": "Node execFileSync default maxBuffer ENOBUFS reading frozen F1 inventory",
-      "resolution": "Repeated read with maxBuffer 64 MiB; succeeded; no production/CLI code changed"
+  "controlReferences": [
+    {
+      "commit": "6c666f3b911377819371df523aa2b6e2c9e9062e",
+      "path": "docs/agents/P3-CB-P01-OPTIONAL-AND-P02-DISPATCH.md",
+      "blob": "f651fc56f9980f5a8b88b87e0294c3a420294e95",
+      "sha256": "fb2583a9e41ccb0b46b43a7a199e91e4ae2851dad704f9a546097a18d6596ad3"
     },
-    "reviewDisposition": "One frozen PREPARE packet to Reviewer A; result is not coding authorization"
-  }
+    {
+      "commit": "6c666f3b911377819371df523aa2b6e2c9e9062e",
+      "path": "docs/agents/manifests/tasks/P3-CB-P02-A-PREPARE.json",
+      "blob": "d634d2f5fff3010d2038a0c75d1f4bd4d5cc47f1",
+      "sha256": "f86cef0971cebc796119f2eddd8aff141ca08dc97a88e3fce0bca762fe55c2cc"
+    },
+    {
+      "commit": "6c666f3b911377819371df523aa2b6e2c9e9062e",
+      "path": "docs/agents/manifests/reservations/P3-CB-P02-A-PREPARE.json",
+      "blob": "be5f5fdc383054c8a8572b0cc5a8b189f9733210",
+      "sha256": "4eea050cc8afde29af3ca4f96984c3b15aa4178772f583f79f2cece0dc0b4a66"
+    },
+    {
+      "commit": "6c666f3b911377819371df523aa2b6e2c9e9062e",
+      "path": "docs/agents/P3-CB-P02-FAST-ACTIVATION.md",
+      "blob": "597f5943d8ee0a5f83c87cf8f504b79f701324ee",
+      "sha256": "1b57f7297546062dcfdda5b978f3cfeec6f567c940aecc0dedecbca7f3f4427c"
+    },
+    {
+      "commit": "6c666f3b911377819371df523aa2b6e2c9e9062e",
+      "path": "docs/agents/manifests/reservations/P3-CB-P02-LEAD-DRAFT.json",
+      "blob": "4b48a3ee06ce7daa4057c4183e2203d528763e30",
+      "sha256": "15361c6ef1aa3bf8debcc85b95af40fb566a71674c0d3d5787bcafc0e3fcae41"
+    }
+  ],
+  "activationConditions": {
+    "ready": false,
+    "exactMain": true,
+    "ledgerEligible": true,
+    "currentRuntimeFreeRegistration": false,
+    "raPrepareAccepted": false,
+    "leadReservationGranted": false,
+    "validRealPreflight": false,
+    "dependencyOnP01": false,
+    "dependencyOnK03Merge": false
+  },
+  "execution": {
+    "productionEdits": 0,
+    "testEdits": 0,
+    "packageInstalls": 0,
+    "fullTests": 0,
+    "runtimeTests": 0,
+    "prs": 0,
+    "noRootOrPlannerTrackedEdits": true
+  },
+  "nextOwner": "Parent Planner dispatches independent RA for this exact negative carrier; no self-approval, credit or promotion. User requests immediate RA; a read-only independent CLI RA may inspect the frozen SHA without writing new tracked outputs."
 }

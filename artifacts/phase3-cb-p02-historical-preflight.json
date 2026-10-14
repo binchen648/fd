@@ -7,8 +7,8 @@
   "realCliAccepted": false,
   "acceptanceGranted": false,
   "creditDelta": 0,
-  "executionTimeUtc": "2026-10-14T04:22:00Z",
-  "timePrecision": "Approximate turn timestamp; command elapsed times below are measured",
+  "executionDate": "2026-10-14",
+  "timePrecision": "Exact wall-clock start was not captured; command elapsed times below are measured",
   "inputPath": "D:/fd-validation/p02-preflight-input.json",
   "input": {
     "taskId": "P3-CB-P02-A-PREPARE",
