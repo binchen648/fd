@@ -11,7 +11,9 @@ played as its source card. Skill cards are not hand targets in this contract.
 The historical questions below are retained as investigation history, not open
 questions. Production writes and the suspended reservation are not reauthorized
 by this clarification. Planner must dispatch a separate limited correction.
-Next owner: Codex B (read-only semantic evidence) -> Reviewer B (independent scope review) -> Planner / rule authority if the evidence still leaves a rule choice.
+Next owner: Codex B for the separately authorized correction at
+docs/agents/P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR.md; Reviewer B then
+reviews the frozen candidate. The historical read-only task is closed.
 
 ## Verified Boundary
 
