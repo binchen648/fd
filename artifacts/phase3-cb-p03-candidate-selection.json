@@ -1,0 +1,1092 @@
+{
+  "taskId": "P3-CB-P03-A-SELECT",
+  "role": "Codex A / Evidence and Candidate Analyst",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "sourceMainSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "generatedAt": "2026-10-14T00:00:00.000Z",
+  "status": "NO_VALID_BATCH_FOUND",
+  "productionCodeChanged": false,
+  "branch": "codex/a-p3-cb-p03-select",
+  "worktree": "D:/fd-validation/a-cb-p03-select",
+  "authority": "Direct user P03 read-only selection instruction; no new Planner implementation/reservation grant inferred.",
+  "eligibilityInterpretation": {
+    "identityUnit": "Complete frozen canonical skill identity, not a single reusable sub-ability or generated clone.",
+    "unconnected": "Separate production registration/whole-contract connection from accepted-111 credit. Already connected controls and already credited family members cannot satisfy a new batch.",
+    "noNewAdmission": "A definition absent from registry can be a mapping candidate when its existing playable owner and source-instantiation path already exist. A new playable owner/source contract is excluded.",
+    "batchSize": "2..4 identities sharing one exact whole-skill contract.",
+    "forbiddenMixes": [
+      "draw",
+      "movement",
+      "trigger",
+      "battle",
+      "lifecycle"
+    ]
+  },
+  "scanSummary": {
+    "denominator": 944,
+    "accepted": 111,
+    "unacceptedStatic": 832,
+    "unacceptedDynamic": 1,
+    "remaining": 833,
+    "archiveCount": 127,
+    "currentPlayableOwnerUnaccepted": 19,
+    "alreadyCreditedCurrentServantSkillCards": 21,
+    "possibleOwnerExistingMappingCandidates": 14,
+    "ascensionRowsExcluded": 5,
+    "registeredExactPendingRuleOnlyIds": [
+      "master.ciel.skill.s1a",
+      "master.ciel.skill.s2",
+      "master.shiki-ryougi.skill.s1a",
+      "master.shiki-ryougi.skill.s3",
+      "master.shirou-emiya.skill.s2"
+    ],
+    "validBatchCount": 0,
+    "accountingDelta": {
+      "main": 0,
+      "migration": 0,
+      "denominator": 0
+    }
+  },
+  "boundSources": [
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/phase3/full-roster-ability-inventory.json",
+      "sha256": "4242922cd047ba3452878ee7dba3d25b2afe3a22294c4a097102997fcfec019f",
+      "blob": "e39b8e1036a372affc4db45be41995815648f433"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "artifacts/phase3-e04-current-main-accepted-111-execution-matrix.json",
+      "sha256": "34ce9258e94e9bf44243cdd76be223f599d4776c13e2ef623382ae44a2f4f965",
+      "blob": "d7a3f280afc26bc4efefdef75ee6cd7c89eb9704"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/generated/fd-playtest-v1.content-library.json",
+      "sha256": "38b1c58e7a1eba06bc80a1a8f5d302ad4339845edf6b67a36cf1bbbcaa3e65b1",
+      "blob": "6296653f5d53bac3684bd172d04c43c45acae2dc"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/packs/fd-playtest-v1/pack.json",
+      "sha256": "f9df6313a3b2452815fda56902dac5bac8f1f9c4e2374b11912b8ea82cd9d109",
+      "blob": "dc1c7cdc03464e5274fd61ccb3e9d6e7021d00be"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/ability/interpreter.ts",
+      "sha256": "a5f74d0cdcb71c169640dc6d0c0b7936eb2cb26b4ac8a1421e2dd50783554c43",
+      "blob": "25f17fe843a9a05650722e996f0ce97109cfadbe"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/ability/executable-card-pack.ts",
+      "sha256": "7f00857bbb67fe47fb1e61200aac84a8e174378ed1c8bddcf74a9190db2a0bc0",
+      "blob": "1e6eef44d3cd177616575a9e9050e9a996c9ec51"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/ability/resolution-dataflow.ts",
+      "sha256": "361ea71ab056bdfb8548a3aa353911b6bd5560d57ea7d6049b3250d12196996e",
+      "blob": "edbcce8a6967782011a9a76f9122b32a6236bfb3"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/match-session.ts",
+      "sha256": "a4b440bda535956819d557e89c5c095c765f88b349c78c62d767b3c7a1918c12",
+      "blob": "3418ff800b605a6a6e8c93f76eb072699c5c6378"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/ability/card-zone-result-binding.ts",
+      "sha256": "3042c4143ce4982dd5750f301c36786e4908a4a0d8dc3ad7543445d21884f90d",
+      "blob": "958013fcf75ccd9b8a08ecb2f0dcd2fd30a55fab"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "docs/audits/fd-card-action-play-inventory.mjs",
+      "sha256": "fc35756e038a32493fe9f9fb2ebee05d187b6982b70de0e43b9138d260540824",
+      "blob": "e46d0f22ed14ae834af4f0973b52976da86bdcc3"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "docs/audits/fd-resource-numeric-core-direct-action-inventory.mjs",
+      "sha256": "2b643ca1cc2695d984dd7bfc7992a964b14d230c581f6007a39ff050e58d1d59",
+      "blob": "04b3480f4312acef401fcfae02d90e7dd5af27c5"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "docs/reports/2026-09-08-card-action-play-result.md",
+      "sha256": "f018fb2f5ac43ad3c617c11a93c07a394dec6b5cdfeeda8df6f198ea1217e246",
+      "blob": "5406334bca14b78c1232e8f414618c5ccbc9f310"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "docs/reports/2026-09-16-p3-r32-fm04-independent-action-migration-review.md",
+      "sha256": "b9e330491d092759c8c7d470743b7708d547773f93e582e01906de574228b5dc",
+      "blob": "e8590f7b60d8d458489ec2fa8b809567523d20dd"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/tests/regression/card-action-play.test.ts",
+      "sha256": "21af423e1396fb5882a1dc741a32ba3bbc97cb699921187a7515c27fb9293ec2",
+      "blob": "a35808db52994119552a1568f0d399eda23e24d6"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/tests/regression/complex-skills-regression.test.ts",
+      "sha256": "522e20015ddbe84646e9b0d8c9d70a7fece2b4f83c62f8848b81505507b1eddf",
+      "blob": "d1559f7a5cf7e3e578e069c9b0f052032711138b"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/authoring/masters/master.kayneth.json",
+      "sha256": "8047edd19f83c733e72c2b25c6c9bdf76e36a0d8005d358bbe6a2e6df4304c20",
+      "blob": "85566cc68fef031b804fe00c7fa8184afdff8a4c"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/authoring/masters/master.kiritsugu.json",
+      "sha256": "dd5f80ab900e21a7e563500f087aa03c93206e7427a091cb7e8634e4a6c7a97b",
+      "blob": "f2f3ff12c172160ec27a1a6c065c1d0919572373"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/authoring/masters/master.maiya.json",
+      "sha256": "93c222368e2d9e1ff3dc3a92275f8bb68c27256865892e6ef158b412be522132",
+      "blob": "e4fad421b04b2cb1b81eea680acf99e23fbf3261"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/authoring/masters/master.irisviel.json",
+      "sha256": "f81d3e1e03276c9e2404e09712b139b00eafe1f8a5f141ceda867fbc901d61c8",
+      "blob": "ee8d7085011190272615242d706e97987030e6c0"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/authoring/masters/master.ciel.json",
+      "sha256": "d6648f6efe0962e1558b32b3ad1e4d4e50e809ef43fcefcb10bb4adbd0beef22",
+      "blob": "c64d5ab914a19fe98b04b0a528d7c518a87cdd07"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/authoring/masters/master.darnic.json",
+      "sha256": "e33bd457f30d5f2e1e6566559784d3af1f7d6d82a390169b726e87a12d249374",
+      "blob": "f56f50289d4cebe9f7281bcfb903d502e6b1681d"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/authoring/masters/master.iliya.json",
+      "sha256": "f6abf7f2986b1569bf0161a5960b36c2af33908577f75940346dac8beda6e39a",
+      "blob": "e6b6fb09afcd915c8eca07627254d65dc4a7faf3"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/authoring/masters/master.taiga.json",
+      "sha256": "f64e2d9ccbeee564648e99b37a16e00050ba00c1493c975589bb21809a1c3c54",
+      "blob": "b54f12a5155cedae9b4aa6d246973c912e5592d3"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/authoring/masters/master.sion.json",
+      "sha256": "b5e57bc1c932b0d987f3e29815789bf784ffb4dd497c7f7b6eb200bbf790ad33",
+      "blob": "8b899dddccf246b0b28b4f921eec80f7e564b46f"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/authoring/servants/servant.atalanta.json",
+      "sha256": "4f6e53ad542cb3dcb4d3fc871e6b8d1a4e4a5d8278fc3542114b2a1291c15755",
+      "blob": "173ec2f1b041d6e9fdd30af3d3e0517217d25830"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/authoring/servants/servant.baobhan.json",
+      "sha256": "6eb74a7bd29f9faad30aab625ac871e7596771d544a5e70a0bbae7a247b7b151",
+      "blob": "0fe94eecfb146b9c80141771076f240155ef01b2"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/authoring/servants/servant.kintoki.json",
+      "sha256": "2e5cbaa6965924e306d1e61764cc75a52f278039d5871b39c51de431cf268b35",
+      "blob": "52a4985bac48512154832b19fcc48ed35f29c423"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "docs/engineering/lessons/catalog.json",
+      "sha256": "b9ee48a6af45322698f1528a6465ca56b21597270481b79605a6c60f64c794f8",
+      "blob": "93bb684a4c3720aab5249e3dfff720d3ad6685f6"
+    }
+  ],
+  "sourceIdentityEvidence": [
+    {
+      "id": "master.kiritsugu.skill.s2",
+      "owner": "master.kiritsugu",
+      "text": "暗置打出一张牌，然后抽一张牌。",
+      "textSha256": "37250362ba119e621015b05c59c6694b319f15900647522fb8c5400ea8290df0",
+      "clauses": [
+        {
+          "text": "暗置打出一张牌，然后抽一张牌。",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[0].skills[1].text#line=1",
+            "sha256": "37250362ba119e621015b05c59c6694b319f15900647522fb8c5400ea8290df0"
+          }
+        }
+      ],
+      "accepted": false
+    },
+    {
+      "id": "master.kiritsugu.skill.s3",
+      "owner": "master.kiritsugu",
+      "text": "关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。",
+      "textSha256": "f2ce7d4ead6a7cc61555aa758d70c9bde30ef087a74fc2ac3de2469accaf6227",
+      "clauses": [
+        {
+          "text": "关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[0].skills[2].text#line=1",
+            "sha256": "f2ce7d4ead6a7cc61555aa758d70c9bde30ef087a74fc2ac3de2469accaf6227"
+          }
+        }
+      ],
+      "accepted": false
+    },
+    {
+      "id": "master.kayneth.skill.s1",
+      "owner": "master.kayneth",
+      "text": "你拥有的魔力少于8点也可以使用技能牌。",
+      "textSha256": "f271e17c6be016ad61c54b06c0ab0b36e456d427e169b63fcb3e847c825c4c57",
+      "clauses": [
+        {
+          "text": "你拥有的魔力少于8点也可以使用技能牌。",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[10].skills[0].text#line=1",
+            "sha256": "f271e17c6be016ad61c54b06c0ab0b36e456d427e169b63fcb3e847c825c4c57"
+          }
+        }
+      ],
+      "accepted": false
+    },
+    {
+      "id": "master.kayneth.skill.s2",
+      "owner": "master.kayneth",
+      "text": "游戏开始时，将6张【月灵髓液】洗成一副独立的牌库。行动阶段：从独立牌库抽一张【月灵髓液】。",
+      "textSha256": "08f2fbaa07d05dc2db3c1f63b77440aa9a1bea43da025e36a8f39305e5af8208",
+      "clauses": [
+        {
+          "text": "游戏开始时，将6张【月灵髓液】洗成一副独立的牌库。行动阶段：从独立牌库抽一张【月灵髓液】。",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[10].skills[1].text#line=1",
+            "sha256": "08f2fbaa07d05dc2db3c1f63b77440aa9a1bea43da025e36a8f39305e5af8208"
+          }
+        }
+      ],
+      "accepted": false
+    },
+    {
+      "id": "master.kayneth.skill.s3",
+      "owner": "master.kayneth",
+      "text": "若你可以部署于一名战果低于你且独自位于战场的其他玩家所在的战场，则你必须部署。",
+      "textSha256": "c3e30045f8b00e75f66735aace73f68594ac59d77c0782de75093dbaee31a294",
+      "clauses": [
+        {
+          "text": "若你可以部署于一名战果低于你且独自位于战场的其他玩家所在的战场，则你必须部署。",
+          "classification": "SOURCE_GROUNDED",
+          "derivation": "v2_printed_clause",
+          "sourceAbilityId": "arrogant-forced-deployment",
+          "source": {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[37].abilities[0].printedClause",
+            "sha256": "c3e30045f8b00e75f66735aace73f68594ac59d77c0782de75093dbaee31a294"
+          }
+        }
+      ],
+      "accepted": false
+    },
+    {
+      "id": "master.maiya.skill.s1",
+      "owner": "master.maiya",
+      "text": "你拥有【援护射击】。前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。",
+      "textSha256": "77888ae06935bfb944e87df2010bbee9217505ba5c60f38d795b0ab06d04b8c6",
+      "clauses": [
+        {
+          "text": "你拥有【援护射击】。前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[11].skills[0].text#line=1",
+            "sha256": "77888ae06935bfb944e87df2010bbee9217505ba5c60f38d795b0ab06d04b8c6"
+          }
+        }
+      ],
+      "accepted": false
+    },
+    {
+      "id": "master.maiya.skill.s2",
+      "owner": "master.maiya",
+      "text": "迅捷属性，2魔耗2需0威力。此牌需追加打出。压制-行动阶段：若你不是久宇舞弥，你需向其支付2点战果使用此效果。获得+1基础地利后，翻倍你的地利。",
+      "textSha256": "f15b1ffd62526b08391b162fadf7af70e9961db21c0f11ab3f3464624683af4f",
+      "clauses": [
+        {
+          "text": "迅捷属性，2魔耗2需0威力。此牌需追加打出。压制-行动阶段：若你不是久宇舞弥，你需向其支付2点战果使用此效果。获得+1基础地利后，翻倍你的地利。",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[11].skills[1].text#line=1",
+            "sha256": "f15b1ffd62526b08391b162fadf7af70e9961db21c0f11ab3f3464624683af4f"
+          }
+        }
+      ],
+      "accepted": false
+    },
+    {
+      "id": "master.irisviel.skill.s2",
+      "owner": "master.irisviel",
+      "text": "弃置所有手牌，每1张获得1点魔力。",
+      "textSha256": "75fa71628bf0f1ce128eb156a6b7bd1d3e49bf1e155e3e11978d342190548304",
+      "clauses": [
+        {
+          "text": "弃置所有手牌，每1张获得1点魔力。",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[15].skills[1].text#line=1",
+            "sha256": "75fa71628bf0f1ce128eb156a6b7bd1d3e49bf1e155e3e11978d342190548304"
+          }
+        }
+      ],
+      "accepted": false
+    },
+    {
+      "id": "master.ciel.skill.s2",
+      "owner": "master.ciel",
+      "text": "你拥有的魔力少于8点也可以打出此牌。\n驱魔-战斗阶段：若你赢得一场未进行争夺战的战斗，获得等于你地利位置数的战果。\n神职便利-战斗阶段：若你位于侦查，获得2点魔力。",
+      "textSha256": "12f7f6379c73d8ff648eff78c0ba08460e4ed27c7c11a991ada3695fd81fcbb5",
+      "clauses": [
+        {
+          "text": "驱魔-战斗阶段：若你赢得一场未进行争夺战的战斗，获得等于你地利位置数的战果",
+          "classification": "SOURCE_GROUNDED",
+          "derivation": "v2_printed_clause",
+          "sourceAbilityId": "exorcism-uncontested-win",
+          "source": {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[11].abilities[0].printedClause",
+            "sha256": "232427277ebaef014071cc298108bdae588937e0a1cad95e09bfeb2be825f676"
+          }
+        },
+        {
+          "text": "神职便利-战斗阶段：若你位于侦查，获得2点魔力",
+          "classification": "SOURCE_GROUNDED",
+          "derivation": "v2_printed_clause",
+          "sourceAbilityId": "clerical-convenience",
+          "source": {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[11].abilities[1].printedClause",
+            "sha256": "aa9c706b41223a3a1ce19a89093bf5f533af1ae483ce352319e94a7081869b57"
+          }
+        }
+      ],
+      "accepted": false
+    },
+    {
+      "id": "master.darnic.skill.s1a",
+      "owner": "master.darnic",
+      "text": "当你赢得一场战斗后，你可以将你的魔力设为4点。\n回合结束时，若你的魔力小于等于2，失去2点战果。",
+      "textSha256": "088a6c3e26174bb98ead15d585dc8cc408d6925acd3b0405dd4f62ab1c10653e",
+      "clauses": [
+        {
+          "text": "当你赢得一场战斗后，你可以将你的魔力设为4点。",
+          "classification": "SOURCE_GROUNDED",
+          "derivation": "v2_printed_clause",
+          "sourceAbilityId": "soul-eater-win-set-mana",
+          "source": {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[23].abilities[0].printedClause",
+            "sha256": "464fd9246076fc8c86029d2c63bbbbe81df7d31390196595f2e3b94c4a79a02b"
+          }
+        },
+        {
+          "text": "回合结束时，若你的魔力小于等于2，失去2点战果。",
+          "classification": "SOURCE_GROUNDED",
+          "derivation": "v2_printed_clause",
+          "sourceAbilityId": "soul-eater-round-end-loss",
+          "source": {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[23].abilities[1].printedClause",
+            "sha256": "7a159e392ad4e1dcb5ad3edf73800151c33353a2bb39da2f01eebeb92bdf64b4"
+          }
+        }
+      ],
+      "accepted": false
+    },
+    {
+      "id": "master.iliya.skill.s1",
+      "owner": "master.iliya",
+      "text": "你的魔力初始值为6。",
+      "textSha256": "681da5eab6814317aeb7428ffedec22af430a9b4f889ef2950a7f04ef6a12335",
+      "clauses": [
+        {
+          "text": "你的魔力初始值为6。",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[7].skills[0].text#line=1",
+            "sha256": "681da5eab6814317aeb7428ffedec22af430a9b4f889ef2950a7f04ef6a12335"
+          }
+        }
+      ],
+      "accepted": false
+    },
+    {
+      "id": "master.taiga.skill.s1",
+      "owner": "master.taiga",
+      "text": "你的魔力初始值为3。",
+      "textSha256": "ab00e7ecf418b26b1a697eaede5ef229bfa9ad00707630efd97fd9c1b5352951",
+      "clauses": [
+        {
+          "text": "你的魔力初始值为3。",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[30].skills[0].text#line=1",
+            "sha256": "ab00e7ecf418b26b1a697eaede5ef229bfa9ad00707630efd97fd9c1b5352951"
+          }
+        }
+      ],
+      "accepted": false
+    },
+    {
+      "id": "master.sion.skill.s13",
+      "owner": "master.sion",
+      "text": "滔天怨焰-被动/行动阶段：花费2点战果，从你的弃牌堆打出一张牌。",
+      "textSha256": "381fae14c8722c124a3e6578d17559a3792c4e0ef0b63b1dd5a55f932718980c",
+      "clauses": [
+        {
+          "text": "滔天怨焰-被动/行动阶段：花费2点战果，从你的弃牌堆打出一张牌。",
+          "classification": "SOURCE_GROUNDED",
+          "derivation": "v2_printed_clause",
+          "sourceAbilityId": "avenger-ex-blazing-grudge",
+          "source": {
+            "document": "src/content/authoring/cards.json",
+            "locator": "skillCards[22].abilities[0].printedClause",
+            "sha256": "381fae14c8722c124a3e6578d17559a3792c4e0ef0b63b1dd5a55f932718980c"
+          }
+        }
+      ],
+      "accepted": false
+    },
+    {
+      "id": "servant.atalanta.skill.sc-atalanta-3",
+      "owner": "servant.atalanta",
+      "text": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+      "textSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5",
+      "clauses": [
+        {
+          "text": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[37].skills[2].text#line=1",
+            "sha256": "7c6de07a6a417f713775f4b60e841702f277911a2cf4be6c44eb3a94daf890eb"
+          }
+        },
+        {
+          "text": "行动阶段：你获得3点战果。",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[37].skills[2].text#line=2",
+            "sha256": "776f615275054afec79151bd37488df2ec5bbc5cc74adc3a48e5355ed8456a14"
+          }
+        },
+        {
+          "text": "如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[37].skills[2].text#line=3",
+            "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
+          }
+        }
+      ],
+      "accepted": true
+    },
+    {
+      "id": "servant.baobhan.skill.sc-baobhan-3",
+      "owner": "servant.baobhan",
+      "text": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。\n如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+      "textSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5",
+      "clauses": [
+        {
+          "text": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[51].skills[2].text#line=1",
+            "sha256": "7c6de07a6a417f713775f4b60e841702f277911a2cf4be6c44eb3a94daf890eb"
+          }
+        },
+        {
+          "text": "行动阶段：你获得3点战果。",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[51].skills[2].text#line=2",
+            "sha256": "776f615275054afec79151bd37488df2ec5bbc5cc74adc3a48e5355ed8456a14"
+          }
+        },
+        {
+          "text": "如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[51].skills[2].text#line=3",
+            "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
+          }
+        }
+      ],
+      "accepted": true
+    },
+    {
+      "id": "servant.kintoki.skill.sc-kintoki-1",
+      "owner": "servant.kintoki",
+      "text": "【真名解放】<每局游戏限一次>你拥有的魔力少于8点也可打出此牌。局势牌无法禁止你打出此牌。",
+      "textSha256": "2ba5830e96a355944cb174a95f5ba1713c139c4386d33fc374295beb49dcd198",
+      "clauses": [
+        {
+          "text": "【真名解放】<每局游戏限一次>你拥有的魔力少于8点也可打出此牌。局势牌无法禁止你打出此牌。",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[147].skills[0].text#line=1",
+            "sha256": "2ba5830e96a355944cb174a95f5ba1713c139c4386d33fc374295beb49dcd198"
+          }
+        }
+      ],
+      "accepted": true
+    },
+    {
+      "id": "servant.kintoki.skill.sc-kintoki-2",
+      "owner": "servant.kintoki",
+      "text": "【真名解放】<每局游戏限一次>你拥有的魔力少于8点也可打出此牌。局势牌无法禁止你打出此牌。",
+      "textSha256": "2ba5830e96a355944cb174a95f5ba1713c139c4386d33fc374295beb49dcd198",
+      "clauses": [
+        {
+          "text": "【真名解放】<每局游戏限一次>你拥有的魔力少于8点也可打出此牌。局势牌无法禁止你打出此牌。",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[147].skills[1].text#line=1",
+            "sha256": "2ba5830e96a355944cb174a95f5ba1713c139c4386d33fc374295beb49dcd198"
+          }
+        }
+      ],
+      "accepted": true
+    }
+  ],
+  "candidateMatrix": [
+    {
+      "identity": [
+        "master.kiritsugu.skill.s2"
+      ],
+      "semanticContract": "CARD_ACTION_SEMANTICS_MINIMAL_PLAY: exact hand attack face_down + draw(1)",
+      "existingPrimitive": [
+        "play_selected_cards",
+        "draw_cards"
+      ],
+      "currentRegistryStatus": "Named production definition master.kiritsugu.skill.time-alter already exists; canonical s2 mapping not formal acceptance.",
+      "missingPiece": "Only one exact shape; draw companion excluded by task; canonical text says a card while target is_attack requires source review.",
+      "requiredFiles": [
+        "data/authoring/masters/master.kiritsugu.json",
+        "data/generated/fd-playtest-v1.content-library.json",
+        "packages/rules/tests/regression/card-action-play.test.ts"
+      ],
+      "runtimeChangeNeeded": "No for existing shape; broader shape would require prohibited contract work",
+      "hotFileImpact": "NONE_FOR_EXISTING_SHAPE_NOT_IMPLEMENT_AUTHORIZATION",
+      "historicalRisks": [
+        "Full-card text fidelity",
+        "Reference alias is not admission or credit",
+        "Do not broaden PLAY to get batch size"
+      ],
+      "batchEligible": "NO"
+    },
+    {
+      "identity": [
+        "master.kiritsugu.skill.s3"
+      ],
+      "semanticContract": "Composite CLOSE + ACTIVATE; no single accepted exact direct-action contract for this whole skill",
+      "existingPrimitive": [
+        "close_source_card",
+        "activate_card_by_id"
+      ],
+      "currentRegistryStatus": "Named square-accel card registered; currently record_master_directive",
+      "missingPiece": "Single identity; mixed CLOSE/ACTIVATE and combat window; primitive presence does not cover exact compound semantics.",
+      "requiredFiles": [
+        "data/authoring/masters/master.kiritsugu.json",
+        "focused regression: no path granted"
+      ],
+      "runtimeChangeNeeded": "UNPROVEN_COMPOUND_ROUTE_NOT_ELIGIBLE",
+      "hotFileImpact": "Would require runtime-owner feasibility; no A hot-file write",
+      "historicalRisks": [
+        "Wrong ACTIVATE timing",
+        "Source identity",
+        "Partial clause credit"
+      ],
+      "batchEligible": "NO"
+    },
+    {
+      "identity": [
+        "master.maiya.skill.s1"
+      ],
+      "semanticContract": "ADD_TO_ATTACK exact military.attach-support-shot, plus setup and round-end return",
+      "existingPrimitive": [
+        "typed attack attachment"
+      ],
+      "currentRegistryStatus": "Named military and support-shot registered; whole frozen s1 mapping pending",
+      "missingPiece": "One whole identity; game_start provisioning and round-end return are outside task; cannot accept just attachment clause.",
+      "requiredFiles": [
+        "data/authoring/masters/master.maiya.json",
+        "data/generated/fd-playtest-v1.content-library.json",
+        "packages/rules/tests/regression/card-action-add-to-attack.test.ts"
+      ],
+      "runtimeChangeNeeded": "No for attachment already present; excluded setup/lifecycle remain",
+      "hotFileImpact": "NONE_FOR_EXISTING_ATTACHMENT",
+      "historicalRisks": [
+        "Setup mistaken for accepted partial action",
+        "Cannot-win and cleanup",
+        "CardAction contracts cannot be mixed"
+      ],
+      "batchEligible": "NO"
+    },
+    {
+      "identity": [
+        "master.sion.skill.s13"
+      ],
+      "semanticContract": "Costed discard PLAY; outside exact Time Alter PLAY contract",
+      "existingPrimitive": [
+        "play_selected_cards component exists"
+      ],
+      "currentRegistryStatus": "Canonical archive exists; card and playable owner absent",
+      "missingPiece": "Cost VP=2 and discard source not exact hand/face_down/draw contract; production owner admission also required.",
+      "requiredFiles": [
+        "data/authoring/masters/master.sion.json",
+        "production mapping: NOT_AUTHORIZED",
+        "focused regression: NOT_GRANTED"
+      ],
+      "runtimeChangeNeeded": "YES_OR_NEW_CONTRACT_REQUIRED",
+      "hotFileImpact": "Interpreter/owner admission would be outside scope",
+      "historicalRisks": [
+        "Unsupported shape",
+        "Private target",
+        "No primitive-only acceptance"
+      ],
+      "batchEligible": "NO"
+    },
+    {
+      "identity": [
+        "master.kayneth.skill.s1"
+      ],
+      "semanticContract": "Skill-use low-mana normalization; current per-card exception is not owner-wide permission",
+      "existingPrimitive": [
+        "play requirement exception lookup"
+      ],
+      "currentRegistryStatus": "Named double-master definition registered; current modifier object=this_card and record_master_directive",
+      "missingPiece": "Single identity; full text applies to skill cards in general, whereas inspected helper consumes card-local modifiers. Existing regression checks directive, not cross-card legality. No owner-wide production proof.",
+      "requiredFiles": [
+        "data/authoring/masters/master.kayneth.json",
+        "focused cross-card legality tests: NOT_GRANTED"
+      ],
+      "runtimeChangeNeeded": "UNKNOWN_OWNER_WIDE_CONTRACT_NOT_PROVEN",
+      "hotFileImpact": "No authorized change; escalate only if selected",
+      "historicalRisks": [
+        "Legacy directive is not execution proof",
+        "Global vs this_card scope",
+        "Avoid silent rule-scope narrowing"
+      ],
+      "batchEligible": "NO"
+    },
+    {
+      "identity": [
+        "servant.kintoki.skill.sc-kintoki-1",
+        "servant.kintoki.skill.sc-kintoki-2"
+      ],
+      "semanticContract": "Skill normalization: reveal / low-mana / situation exception / once-per-game",
+      "existingPrimitive": [
+        "reveal_information",
+        "play-rule exception",
+        "per-game play counter"
+      ],
+      "currentRegistryStatus": "Both canonical definitions registered and both already in accepted-111",
+      "missingPiece": "Meets numeric batch size, fails real unconnected-identity condition; cannot count accepted identities again.",
+      "requiredFiles": [
+        "NONE_FOR_NEW_MIGRATION"
+      ],
+      "runtimeChangeNeeded": "NO_NEW_CHANGE_JUSTIFIED",
+      "hotFileImpact": "NONE",
+      "historicalRisks": [
+        "Duplicate migration credit",
+        "Shared evidence does not create new identities"
+      ],
+      "batchEligible": "NO"
+    },
+    {
+      "identity": [
+        "servant.atalanta.skill.sc-atalanta-3",
+        "servant.baobhan.skill.sc-baobhan-3"
+      ],
+      "semanticContract": "RESOURCE_NUMERIC_DIRECT_ACTION + battle-loss penalty whole-card contract",
+      "existingPrimitive": [
+        "adjust_victory_points"
+      ],
+      "currentRegistryStatus": "Archives present but production owners/cards absent; both identities already in accepted-111",
+      "missingPiece": "Already accepted; production admission required; whole text contains battle-loss -5 unpreventable trigger, so resource-only clause is not complete identity.",
+      "requiredFiles": [
+        "data/authoring/servants/servant.atalanta.json",
+        "data/authoring/servants/servant.baobhan.json",
+        "production pack mapping: NOT_AUTHORIZED"
+      ],
+      "runtimeChangeNeeded": "Production admission/whole battle dependency outside task",
+      "hotFileImpact": "No hot-file proposal within P03",
+      "historicalRisks": [
+        "Archive membership vs production registry",
+        "Recovery credit vs main",
+        "Partial-card acceptance"
+      ],
+      "batchEligible": "NO"
+    },
+    {
+      "identity": [
+        "master.ciel.skill.s2",
+        "master.darnic.skill.s1a"
+      ],
+      "semanticContract": "Resource components with battle/round triggers, not direct action-only",
+      "existingPrimitive": [
+        "adjust_mana",
+        "set_mana",
+        "adjust_victory_points"
+      ],
+      "currentRegistryStatus": "Ciel definition rules-only registered, no playable character; Darnic absent from production",
+      "missingPiece": "Both whole texts require battle or lifecycle; Ciel source creation is game_start-provisioned; pairing does not share one pure contract.",
+      "requiredFiles": [
+        "data/authoring/masters/master.ciel.json",
+        "data/authoring/masters/master.darnic.json",
+        "focused tests: NOT_GRANTED"
+      ],
+      "runtimeChangeNeeded": "Production admission + excluded contracts needed",
+      "hotFileImpact": "No authorized hot-file change",
+      "historicalRisks": [
+        "Rules-only definition not instantiated source",
+        "Trigger/round ordering",
+        "Mixed-contract batch"
+      ],
+      "batchEligible": "NO"
+    },
+    {
+      "identity": [
+        "master.iliya.skill.s1",
+        "master.taiga.skill.s1"
+      ],
+      "semanticContract": "GAME_START_FIXED_CONTROLLER_SET_MANA",
+      "existingPrimitive": [
+        "set_mana"
+      ],
+      "currentRegistryStatus": "Both canonical archives present, generated identities/owners absent",
+      "missingPiece": "P02 result preserved: game_start and playable identity admission prohibited by P03; cannot relabel initialization as adjust_mana.",
+      "requiredFiles": [
+        "data/packs/fd-playtest-v1/pack.json",
+        "generated outputs after separate decision"
+      ],
+      "runtimeChangeNeeded": "No new numeric primitive; admission cannot be resolved under P03",
+      "hotFileImpact": "MatchSession/additive roster issue excluded",
+      "historicalRisks": [
+        "Assignment vs gain",
+        "Nine-master/seven-seat mismatch",
+        "Repeated game_start"
+      ],
+      "batchEligible": "NO"
+    },
+    {
+      "identity": [
+        "master.gatou.command-spell#command-spell.gain-mana",
+        "master.olga-marie.command-spell#command-spell.gain-mana"
+      ],
+      "semanticContract": "DIRECT_ACTION_ADJUST_MANA_4_SPEND_COMMAND_SEAL_1",
+      "existingPrimitive": [
+        "adjust_mana",
+        "adjust_command_seals"
+      ],
+      "currentRegistryStatus": "Both compiled and already semantic-routed; P01 existing zero-increment controls",
+      "missingPiece": "Already connected controls; not two new frozen-944 skill identities. Other generated command-spell copies do not create frozen identities.",
+      "requiredFiles": [
+        "Optional focused conformance only, separate P01 reservation"
+      ],
+      "runtimeChangeNeeded": "NONE",
+      "hotFileImpact": "NONE",
+      "historicalRisks": [
+        "Repeated ability ID cross-identity evidence",
+        "Generated fallback != new canonical identity",
+        "Zero-increment control mistaken for batch"
+      ],
+      "batchEligible": "NO"
+    }
+  ],
+  "existingOwnerExhaustion": [
+    {
+      "canonicalIdentityId": "master.irisviel.skill.ascension",
+      "printedText": "（升华技，将此牌加入你的技能区）\n你每回合只能使用此攻击的其中一项能力。\n行动阶段：本回合的一张基础攻击可以保持激活至下回合结束。\n战斗阶段：你的攻击获得魔术属性并且威力+1。",
+      "ownerId": "master.irisviel",
+      "candidateDefinitionId": null,
+      "mappingStatus": "NO_PRODUCTION_ASCENSION_MAPPING",
+      "blockingReason": "Ascension/lifecycle or source unlocking not admitted in current product; excluded",
+      "batchEligible": "NO"
+    },
+    {
+      "canonicalIdentityId": "master.irisviel.skill.s2",
+      "printedText": "弃置所有手牌，每1张获得1点魔力。",
+      "ownerId": "master.irisviel",
+      "candidateDefinitionId": "master.irisviel.skill.conversion-magic",
+      "mappingStatus": "EXPLICIT_ANALYST_CORRESPONDENCE_NOT_ACCEPTANCE",
+      "blockingReason": "Zone movement + numeric result binding; forbidden mixed family, singleton",
+      "batchEligible": "NO"
+    },
+    {
+      "canonicalIdentityId": "master.kayneth.skill.ascension",
+      "printedText": "你的所有攻击牌可以残留至下回合结束。当你从从者牌库中抽到【月灵髓液】时，你可以将其展示并再抽一张牌。",
+      "ownerId": "master.kayneth",
+      "candidateDefinitionId": null,
+      "mappingStatus": "NO_PRODUCTION_ASCENSION_MAPPING",
+      "blockingReason": "Ascension/lifecycle or source unlocking not admitted in current product; excluded",
+      "batchEligible": "NO"
+    },
+    {
+      "canonicalIdentityId": "master.kayneth.skill.s1",
+      "printedText": "你拥有的魔力少于8点也可以使用技能牌。",
+      "ownerId": "master.kayneth",
+      "candidateDefinitionId": "master.kayneth.skill.double-master",
+      "mappingStatus": "EXPLICIT_ANALYST_CORRESPONDENCE_NOT_ACCEPTANCE",
+      "blockingReason": "Global scope unproven; singleton",
+      "batchEligible": "NO"
+    },
+    {
+      "canonicalIdentityId": "master.kayneth.skill.s2",
+      "printedText": "游戏开始时，将6张【月灵髓液】洗成一副独立的牌库。行动阶段：从独立牌库抽一张【月灵髓液】。",
+      "ownerId": "master.kayneth",
+      "candidateDefinitionId": "master.kayneth.skill.alchemist",
+      "mappingStatus": "EXPLICIT_ANALYST_CORRESPONDENCE_NOT_ACCEPTANCE",
+      "blockingReason": "game_start + draw; excluded",
+      "batchEligible": "NO"
+    },
+    {
+      "canonicalIdentityId": "master.kayneth.skill.s3",
+      "printedText": "若你可以部署于一名战果低于你且独自位于战场的其他玩家所在的战场，则你必须部署。",
+      "ownerId": "master.kayneth",
+      "candidateDefinitionId": "master.kayneth.skill.pride",
+      "mappingStatus": "EXPLICIT_ANALYST_CORRESPONDENCE_NOT_ACCEPTANCE",
+      "blockingReason": "Deployment obligation; singleton distinct contract",
+      "batchEligible": "NO"
+    },
+    {
+      "canonicalIdentityId": "master.kiritsugu.skill.ascension",
+      "printedText": "解锁此技能后立刻移除你弃牌堆中的2张牌并将2张游戏外的起源弹加入手牌。",
+      "ownerId": "master.kiritsugu",
+      "candidateDefinitionId": null,
+      "mappingStatus": "NO_PRODUCTION_ASCENSION_MAPPING",
+      "blockingReason": "Ascension/lifecycle or source unlocking not admitted in current product; excluded",
+      "batchEligible": "NO"
+    },
+    {
+      "canonicalIdentityId": "master.kiritsugu.skill.s1",
+      "printedText": "游戏开始时，将你牌库的一张牌替换为【起源弹】。",
+      "ownerId": "master.kiritsugu",
+      "candidateDefinitionId": "master.kiritsugu.skill.magus-killer",
+      "mappingStatus": "EXPLICIT_ANALYST_CORRESPONDENCE_NOT_ACCEPTANCE",
+      "blockingReason": "game_start text vs preparation action; card replacement contract unproven",
+      "batchEligible": "NO"
+    },
+    {
+      "canonicalIdentityId": "master.kiritsugu.skill.s2",
+      "printedText": "暗置打出一张牌，然后抽一张牌。",
+      "ownerId": "master.kiritsugu",
+      "candidateDefinitionId": "master.kiritsugu.skill.time-alter",
+      "mappingStatus": "EXPLICIT_ANALYST_CORRESPONDENCE_NOT_ACCEPTANCE",
+      "blockingReason": "Single exact PLAY + draw; excluded companion",
+      "batchEligible": "NO"
+    },
+    {
+      "canonicalIdentityId": "master.kiritsugu.skill.s3",
+      "printedText": "关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。",
+      "ownerId": "master.kiritsugu",
+      "candidateDefinitionId": "master.kiritsugu.skill.square-accel",
+      "mappingStatus": "EXPLICIT_ANALYST_CORRESPONDENCE_NOT_ACCEPTANCE",
+      "blockingReason": "Mixed CLOSE/ACTIVATE and combat",
+      "batchEligible": "NO"
+    },
+    {
+      "canonicalIdentityId": "master.kiritsugu.skill.s4",
+      "printedText": "迅捷0耗2威。[切断与结合]-战斗阶段：令一名你的交战对手失去三分之一的魔力（向上取整），然后此牌获得等同于其失去魔力值二倍的威力。",
+      "ownerId": "master.kiritsugu",
+      "candidateDefinitionId": "master.kiritsugu.deck.origin-bullet",
+      "mappingStatus": "EXPLICIT_ANALYST_CORRESPONDENCE_NOT_ACCEPTANCE",
+      "blockingReason": "Battle mana/power; excluded",
+      "batchEligible": "NO"
+    },
+    {
+      "canonicalIdentityId": "master.maiya.skill.ascension",
+      "printedText": "解锁此技能后，立即从手牌、牌库和弃牌堆移除所有魔术牌，每以此法移除一张魔术牌，你获得2点魔力。然后将游戏外的一张【射击】加入你的技能区。",
+      "ownerId": "master.maiya",
+      "candidateDefinitionId": null,
+      "mappingStatus": "NO_PRODUCTION_ASCENSION_MAPPING",
+      "blockingReason": "Ascension/lifecycle or source unlocking not admitted in current product; excluded",
+      "batchEligible": "NO"
+    },
+    {
+      "canonicalIdentityId": "master.maiya.skill.s1",
+      "printedText": "你拥有【援护射击】。前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。",
+      "ownerId": "master.maiya",
+      "candidateDefinitionId": "master.maiya.skill.military",
+      "mappingStatus": "EXPLICIT_ANALYST_CORRESPONDENCE_NOT_ACCEPTANCE",
+      "blockingReason": "Setup + ADD_TO_ATTACK + round cleanup",
+      "batchEligible": "NO"
+    },
+    {
+      "canonicalIdentityId": "master.maiya.skill.s2",
+      "printedText": "迅捷属性，2魔耗2需0威力。此牌需追加打出。压制-行动阶段：若你不是久宇舞弥，你需向其支付2点战果使用此效果。获得+1基础地利后，翻倍你的地利。",
+      "ownerId": "master.maiya",
+      "candidateDefinitionId": "master.maiya.deck.support-shot",
+      "mappingStatus": "EXPLICIT_ANALYST_CORRESPONDENCE_NOT_ACCEPTANCE",
+      "blockingReason": "VP payment + terrain/battle semantics",
+      "batchEligible": "NO"
+    },
+    {
+      "canonicalIdentityId": "master.shinji.skill.ascension",
+      "printedText": "此牌在第八回合结束后，并且莎士比亚是你的从者时生效。你失去【伪臣之书】。若莎士比亚是你的第一名从者，你位于深山町时合计威力+12，当你获得X点战果时，所有位于深山町的对手失去X点战果；若莎士比亚并非你的第一名从者，你获得8点战果。",
+      "ownerId": "master.shinji",
+      "candidateDefinitionId": null,
+      "mappingStatus": "NO_PRODUCTION_ASCENSION_MAPPING",
+      "blockingReason": "Ascension/lifecycle or source unlocking not admitted in current product; excluded",
+      "batchEligible": "NO"
+    },
+    {
+      "canonicalIdentityId": "master.shinji.skill.s1",
+      "printedText": "进入深山町时，获得1点魔力。",
+      "ownerId": "master.shinji",
+      "candidateDefinitionId": "master.shinji.skill.drain-command",
+      "mappingStatus": "EXPLICIT_ANALYST_CORRESPONDENCE_NOT_ACCEPTANCE",
+      "blockingReason": "Movement-trigger resource",
+      "batchEligible": "NO"
+    },
+    {
+      "canonicalIdentityId": "master.shinji.skill.s2",
+      "printedText": "开局获得【伪臣之书】。",
+      "ownerId": "master.shinji",
+      "candidateDefinitionId": "master.shinji.skill.useless-person",
+      "mappingStatus": "EXPLICIT_ANALYST_CORRESPONDENCE_NOT_ACCEPTANCE",
+      "blockingReason": "game_start",
+      "batchEligible": "NO"
+    },
+    {
+      "canonicalIdentityId": "master.shinji.skill.s3",
+      "printedText": "当你战败时，失去一枚令咒。",
+      "ownerId": "master.shinji",
+      "candidateDefinitionId": "master.shinji.skill.clown",
+      "mappingStatus": "EXPLICIT_ANALYST_CORRESPONDENCE_NOT_ACCEPTANCE",
+      "blockingReason": "battle-loss trigger",
+      "batchEligible": "NO"
+    },
+    {
+      "canonicalIdentityId": "master.shinji.skill.s4",
+      "printedText": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。\n当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
+      "ownerId": "master.shinji",
+      "candidateDefinitionId": "master.shinji.skill.false-attendant-book",
+      "mappingStatus": "EXPLICIT_ANALYST_CORRESPONDENCE_NOT_ACCEPTANCE",
+      "blockingReason": "Authority/character replacement and round-end compound",
+      "batchEligible": "NO"
+    }
+  ],
+  "mappingLimitations": "Automatic direct/legacy-id matching found 5 registry rows. Named product aliases require explicit analyst correspondence; no name/alias match is claimed as accepted canonical equivalence.",
+  "inventoryReceipts": [
+    {
+      "command": "node docs/audits/fd-card-action-play-inventory.mjs",
+      "testedSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "exitCode": 0,
+      "rawOutput": "CARD_ACTION_SEMANTICS_MINIMAL PLAY inventory\nsourceFiles=127\ncardActionSemanticAbilities=35\neligible=1\nskipped=34\n\nEligible abilities\nmaster.kiritsugu\tmaster.kiritsugu.skill.time-alter\ttime-alter.action\tplay_selected_cards,draw_cards\n\nSkipped abilities\nmaster.kayneth\tmaster.kayneth.deck.volumen-hydrargyrum\tvolumen.extra-play\tplay_source_card\tseparate_contract:play_source_card_response\nmaster.maiya\tmaster.maiya.skill.military\tmilitary.attach-support-shot\tattach_card_to_player_attack\tout_of_scope:add_to_attack_semantics\nmaster.maiya\tmaster.maiya.deck.support-shot\tsupport-shot.append-only\tappend_only_rule\tout_of_scope:append_only_rule_marker\nmaster.olga-marie\tmaster.olga-marie.skill.astronomical-science\tastronomical-science.first-loss\tactivate_card_by_id\tout_of_scope:activate_semantics\nmaster.shiki-ryougi\tmaster.shiki-ryougi.skill.s3\trequired-additional-play\tappend_only_rule\tout_of_scope:append_only_rule_marker\nmaster.shirou-emiya\tcard.derived.master.shirou-emiya.ganjiang-moye\tganjiang-moye.append-only\tappend_only_rule\tout_of_scope:append_only_rule_marker\nservant.artoria-alt\tservant.artoria-alt.skill.sc-artoria-alt-2\tsc-artoria-alt-2.angra-mainyu-embrace\tclose_source_card\tout_of_scope:close_semantics\nservant.boudica\tservant.boudica.skill.sc-boudica-3\tsc-boudica-3.mount-summon\tplay_selected_cards\tnot_verified:play_selected_shape_not_exact_match\nservant.constantine\tservant.constantine.skill.sc-constantine-1\tsc-constantine-1.mount-summon\tplay_selected_cards\tnot_verified:play_selected_shape_not_exact_match\nservant.darius\tservant.darius.skill.sc-darius-1\tachaemenid-glory-residual\tclose_source_card\tout_of_scope:close_semantics\nservant.douman\tservant.douman.skill.sc-douman-3\tsc-douman-3.alter-ego-transform\ttransform_event_source_card,close_source_card\tout_of_scope:close_semantics\nservant.drake\tservant.drake.skill.sc-drake-1\tsc-drake-1.mount-summon\tplay_selected_cards\tnot_verified:play_selected_shape_not_exact_match\nservant.hephaistion\tservant.hephaistion.skill.sc-hephaistion-3\tsc-hephaistion-3.mount-summon\tplay_selected_cards\tnot_verified:play_selected_shape_not_exact_match\nservant.iskandar\tservant.iskandar.skill.sc-iskandar-1\tsc-iskandar-1.mount-summon\tplay_selected_cards\tnot_verified:play_selected_shape_not_exact_match\nservant.ivan\tservant.ivan.skill.sc-ivan-3\tsc-ivan-3.mount-summon\tplay_selected_cards\tnot_verified:play_selected_shape_not_exact_match\nservant.koyanskaya\tservant.koyanskaya.skill.sc-koyanskaya-1\tsc-koyanskaya-1.alter-ego-transform\ttransform_event_source_card,close_source_card\tout_of_scope:close_semantics\nservant.leonidas\tservant.leonidas.skill.sc-leonidas-1\tthermopylae-close-on-move\tclose_source_card\tout_of_scope:close_semantics\nservant.mandricardo\tservant.mandricardo.skill.sc-mandricardo-3\tsc-mandricardo-3.mount-summon\tplay_selected_cards\tnot_verified:play_selected_shape_not_exact_match\nservant.martha\tservant.martha.skill.sc-martha-3\tsc-martha-3.mount-summon\tplay_selected_cards\tnot_verified:play_selected_shape_not_exact_match\nservant.mechaeli\tservant.mechaeli.skill.sc-mechaeli-3\tsc-mechaeli-3.alter-ego-transform\ttransform_event_source_card,close_source_card\tout_of_scope:close_semantics\nservant.medb\tservant.medb.skill.sc-medb-1\tsc-medb-1.mount-summon\tplay_selected_cards\tnot_verified:play_selected_shape_not_exact_match\nservant.medusa\tservant.medusa.skill.sc-medusa-1\tsc-medusa-1.mount-summon\tplay_selected_cards\tnot_verified:play_selected_shape_not_exact_match\nservant.meltryllis\tservant.meltryllis.skill.sc-meltryllis-3\tsc-meltryllis-3.alter-ego-transform\ttransform_event_source_card,close_source_card\tout_of_scope:close_semantics\nservant.muramasa\tservant.muramasa.skill.sc-muramasa-3\tsc-muramasa-3.alter-ego-transform\ttransform_event_source_card,close_source_card\tout_of_scope:close_semantics\nservant.nero\tservant.nero.skill.sc-nero-1\tgolden-theater-close-on-no-win\tclose_source_card\tout_of_scope:close_semantics\nservant.odysseus\tservant.odysseus.skill.sc-odysseus-3\tsc-odysseus-3.mount-summon\tplay_selected_cards\tnot_verified:play_selected_shape_not_exact_match\nservant.okita-alt\tservant.okita-alt.skill.sc-okita-alt-1\tsc-okita-alt-1.alter-ego-transform\ttransform_event_source_card,close_source_card\tout_of_scope:close_semantics\nservant.passionlip\tservant.passionlip.skill.sc-passionlip-1\tsc-passionlip-1.alter-ego-transform\ttransform_event_source_card,close_source_card\tout_of_scope:close_semantics\nservant.roberts\tservant.roberts.skill.sc-roberts-3\tsc-roberts-3.mount-summon\tplay_selected_cards\tnot_verified:play_selected_shape_not_exact_match\nservant.siegfried\tservant.siegfried.skill.sc-siegfried-2\tarmor-of-fafnir\tclose_source_card\tout_of_scope:close_semantics\nservant.sitonai\tservant.sitonai.skill.sc-sitonai-3\tsc-sitonai-3.alter-ego-transform\ttransform_event_source_card,close_source_card\tout_of_scope:close_semantics\nservant.taisui\tservant.taisui.skill.sc-taisui-1\tsc-taisui-1.alter-ego-transform\ttransform_event_source_card,close_source_card\tout_of_scope:close_semantics\nservant.teach\tservant.teach.skill.sc-teach-3\tsc-teach-3.mount-summon\tplay_selected_cards\tnot_verified:play_selected_shape_not_exact_match\nservant.ushiwakamaru\tservant.ushiwakamaru.skill.sc-ushiwakamaru-3\tsc-ushiwakamaru-3.mount-summon\tplay_selected_cards\tnot_verified:play_selected_shape_not_exact_match\n\nCannot inherit PLAY Gate C\nmaster.kayneth\tmaster.kayneth.deck.volumen-hydrargyrum\tvolumen.extra-play\tseparate_contract:play_source_card_response\nmaster.maiya\tmaster.maiya.skill.military\tmilitary.attach-support-shot\tout_of_scope:add_to_attack_semantics\nmaster.maiya\tmaster.maiya.deck.support-shot\tsupport-shot.append-only\tout_of_scope:append_only_rule_marker\nmaster.olga-marie\tmaster.olga-marie.skill.astronomical-science\tastronomical-science.first-loss\tout_of_scope:activate_semantics\nmaster.shiki-ryougi\tmaster.shiki-ryougi.skill.s3\trequired-additional-play\tout_of_scope:append_only_rule_marker\nmaster.shirou-emiya\tcard.derived.master.shirou-emiya.ganjiang-moye\tganjiang-moye.append-only\tout_of_scope:append_only_rule_marker\nservant.artoria-alt\tservant.artoria-alt.skill.sc-artoria-alt-2\tsc-artoria-alt-2.angra-mainyu-embrace\tout_of_scope:close_semantics\nservant.boudica\tservant.boudica.skill.sc-boudica-3\tsc-boudica-3.mount-summon\tnot_verified:play_selected_shape_not_exact_match\nservant.constantine\tservant.constantine.skill.sc-constantine-1\tsc-constantine-1.mount-summon\tnot_verified:play_selected_shape_not_exact_match\nservant.darius\tservant.darius.skill.sc-darius-1\tachaemenid-glory-residual\tout_of_scope:close_semantics\nservant.douman\tservant.douman.skill.sc-douman-3\tsc-douman-3.alter-ego-transform\tout_of_scope:close_semantics\nservant.drake\tservant.drake.skill.sc-drake-1\tsc-drake-1.mount-summon\tnot_verified:play_selected_shape_not_exact_match\nservant.hephaistion\tservant.hephaistion.skill.sc-hephaistion-3\tsc-hephaistion-3.mount-summon\tnot_verified:play_selected_shape_not_exact_match\nservant.iskandar\tservant.iskandar.skill.sc-iskandar-1\tsc-iskandar-1.mount-summon\tnot_verified:play_selected_shape_not_exact_match\nservant.ivan\tservant.ivan.skill.sc-ivan-3\tsc-ivan-3.mount-summon\tnot_verified:play_selected_shape_not_exact_match\nservant.koyanskaya\tservant.koyanskaya.skill.sc-koyanskaya-1\tsc-koyanskaya-1.alter-ego-transform\tout_of_scope:close_semantics\nservant.leonidas\tservant.leonidas.skill.sc-leonidas-1\tthermopylae-close-on-move\tout_of_scope:close_semantics\nservant.mandricardo\tservant.mandricardo.skill.sc-mandricardo-3\tsc-mandricardo-3.mount-summon\tnot_verified:play_selected_shape_not_exact_match\nservant.martha\tservant.martha.skill.sc-martha-3\tsc-martha-3.mount-summon\tnot_verified:play_selected_shape_not_exact_match\nservant.mechaeli\tservant.mechaeli.skill.sc-mechaeli-3\tsc-mechaeli-3.alter-ego-transform\tout_of_scope:close_semantics\nservant.medb\tservant.medb.skill.sc-medb-1\tsc-medb-1.mount-summon\tnot_verified:play_selected_shape_not_exact_match\nservant.medusa\tservant.medusa.skill.sc-medusa-1\tsc-medusa-1.mount-summon\tnot_verified:play_selected_shape_not_exact_match\nservant.meltryllis\tservant.meltryllis.skill.sc-meltryllis-3\tsc-meltryllis-3.alter-ego-transform\tout_of_scope:close_semantics\nservant.muramasa\tservant.muramasa.skill.sc-muramasa-3\tsc-muramasa-3.alter-ego-transform\tout_of_scope:close_semantics\nservant.nero\tservant.nero.skill.sc-nero-1\tgolden-theater-close-on-no-win\tout_of_scope:close_semantics\nservant.odysseus\tservant.odysseus.skill.sc-odysseus-3\tsc-odysseus-3.mount-summon\tnot_verified:play_selected_shape_not_exact_match\nservant.okita-alt\tservant.okita-alt.skill.sc-okita-alt-1\tsc-okita-alt-1.alter-ego-transform\tout_of_scope:close_semantics\nservant.passionlip\tservant.passionlip.skill.sc-passionlip-1\tsc-passionlip-1.alter-ego-transform\tout_of_scope:close_semantics\nservant.roberts\tservant.roberts.skill.sc-roberts-3\tsc-roberts-3.mount-summon\tnot_verified:play_selected_shape_not_exact_match\nservant.siegfried\tservant.siegfried.skill.sc-siegfried-2\tarmor-of-fafnir\tout_of_scope:close_semantics\nservant.sitonai\tservant.sitonai.skill.sc-sitonai-3\tsc-sitonai-3.alter-ego-transform\tout_of_scope:close_semantics\nservant.taisui\tservant.taisui.skill.sc-taisui-1\tsc-taisui-1.alter-ego-transform\tout_of_scope:close_semantics\nservant.teach\tservant.teach.skill.sc-teach-3\tsc-teach-3.mount-summon\tnot_verified:play_selected_shape_not_exact_match\nservant.ushiwakamaru\tservant.ushiwakamaru.skill.sc-ushiwakamaru-3\tsc-ushiwakamaru-3.mount-summon\tnot_verified:play_selected_shape_not_exact_match\n\nBefore/after metrics\nlegacyPlayConsumerCount.before=1\nlegacyPlayConsumerCount.after=0\nnewRuntimeSemanticRoutedPlayCount.before=0\nnewRuntimeSemanticRoutedPlayCount.after=1\ndualCompatiblePlayCount.before=1\ndualCompatiblePlayCount.after=0\nremainingSkippedCardActionCount.after=34\n"
+    },
+    {
+      "command": "node docs/audits/fd-resource-numeric-core-direct-action-inventory.mjs",
+      "testedSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "exitCode": 0,
+      "rawOutput": "RESOURCE_NUMERIC_CORE_DIRECT_ACTION inventory\nsourceFiles=127\nresourceNumericAbilities=78\neligible=13\nmigrated=13\nblocked=58\nspecial=7\nskipped=65\n\nEligible abilities\nmaster.gatou\tmaster.gatou.command-spell\tcommand-spell.gain-mana\tadjust_mana,adjust_command_seals\tDIRECT_RESOURCE\nmaster.olga-marie\tmaster.olga-marie.command-spell\tcommand-spell.gain-mana\tadjust_mana,adjust_command_seals\tDIRECT_RESOURCE\nservant.atalanta\tservant.atalanta.skill.sc-atalanta-3\tsc-atalanta-3.independent-action\tadjust_victory_points\tDIRECT_RESOURCE\nservant.baobhan\tservant.baobhan.skill.sc-baobhan-3\tsc-baobhan-3.independent-action\tadjust_victory_points\tDIRECT_RESOURCE\nservant.chiron\tservant.chiron.skill.sc-chiron-1\tsc-chiron-1.independent-action\tadjust_victory_points\tDIRECT_RESOURCE\nservant.emiya-alt\tservant.emiya-alt.skill.sc-emiya-alt-1\tsc-emiya-alt-1.independent-action\tadjust_victory_points\tDIRECT_RESOURCE\nservant.euryale\tservant.euryale.skill.sc-euryale-1\tsc-euryale-1.independent-action\tadjust_victory_points\tDIRECT_RESOURCE\nservant.gil\tservant.gil.skill.sc-gil-1\tsc-gil-1.independent-action\tadjust_victory_points\tDIRECT_RESOURCE\nservant.ishtar\tservant.ishtar.skill.sc-ishtar-3\tsc-ishtar-3.independent-action\tadjust_victory_points\tDIRECT_RESOURCE\nservant.napoleon\tservant.napoleon.skill.sc-napoleon-3\tsc-napoleon-3.independent-action\tadjust_victory_points\tDIRECT_RESOURCE\nservant.robin\tservant.robin.skill.sc-robin-1\tsc-robin-1.independent-action\tadjust_victory_points\tDIRECT_RESOURCE\nservant.tomoe\tservant.tomoe.skill.sc-tomoe-1\tsc-tomoe-1.independent-action\tadjust_victory_points\tDIRECT_RESOURCE\nservant.tristan\tservant.tristan.skill.sc-tristan-3\tsc-tristan-3.independent-action\tadjust_victory_points\tDIRECT_RESOURCE\n\nBlocked/special abilities\nmaster.ciel\tmaster.ciel.skill.s2\texorcism-uncontested-win\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE,RESOURCE_WITH_LIFECYCLE\tout_of_scope:forced_trigger\nmaster.ciel\tmaster.ciel.skill.s2\tclerical-convenience\tadjust_mana\tblocked\tRESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE,RESOURCE_WITH_LIFECYCLE\tout_of_scope:combat_window\nmaster.darnic\tmaster.darnic.skill.s1a\tsoul-eater-round-end-loss\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_LIFECYCLE\tout_of_scope:forced_trigger\nmaster.gatou\tmaster.gatou.command-spell\tcommand-spell.power-victory\trecord_master_directive,adjust_command_seals\tspecial\tRESOURCE_WITH_BATTLE,RESOURCE_WITH_LIFECYCLE,SPECIAL\tout_of_scope:mixed_non_resource_effect\nmaster.gatou\tmaster.gatou.command-spell\tcommand-spell.free-move\trecord_master_directive,adjust_command_seals\tspecial\tRESOURCE_WITH_BATTLE,SPECIAL\tout_of_scope:mixed_non_resource_effect\nmaster.irisviel\tmaster.irisviel.skill.conversion-magic\tconversion-magic.preparation\tmove_all_remaining,adjust_mana\tspecial\tRESOURCE_WITH_RESULT_BINDING,SPECIAL\tout_of_scope:mixed_non_resource_effect\nmaster.olga-marie\tmaster.olga-marie.command-spell\tcommand-spell.power-victory\trecord_master_directive,adjust_command_seals\tspecial\tRESOURCE_WITH_BATTLE,RESOURCE_WITH_LIFECYCLE,SPECIAL\tout_of_scope:mixed_non_resource_effect\nmaster.olga-marie\tmaster.olga-marie.command-spell\tcommand-spell.free-move\trecord_master_directive,adjust_command_seals\tspecial\tRESOURCE_WITH_BATTLE,SPECIAL\tout_of_scope:mixed_non_resource_effect\nmaster.shinji\tmaster.shinji.skill.drain-command\tdrain-command.enter-miyama\tadjust_mana\tblocked\tRESOURCE_WITH_TRIGGER\tout_of_scope:forced_trigger\nmaster.shinji\tmaster.shinji.skill.clown\tclown.lose-command-seal\tadjust_command_seals\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE\tout_of_scope:forced_trigger\nservant.altera\tservant.altera.skill.sc-altera-3\tsc-altera-3.noble-bloom\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.altera\tservant.altera.skill.sc-altera-3\tsc-altera-3.noble-bloom-extra-vp\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.anastasia\tservant.anastasia.skill.sc-anastasia-1\tsc-anastasia-1.deployment-reward\tadjust_mana,adjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE,RESOURCE_WITH_LIFECYCLE\tout_of_scope:forced_trigger\nservant.andersen\tservant.andersen.skill.sc-andersen-1\tsc-andersen-1.deployment-reward\tadjust_mana,adjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE,RESOURCE_WITH_LIFECYCLE\tout_of_scope:forced_trigger\nservant.arthur\tservant.arthur.skill.sc-arthur-3\tsc-arthur-3.noble-bloom\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.arthur\tservant.arthur.skill.sc-arthur-3\tsc-arthur-3.noble-bloom-extra-vp\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.artoria-alt\tservant.artoria-alt.skill.sc-artoria-alt-3\tsc-artoria-alt-3.noble-bloom\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.artoria-alt\tservant.artoria-alt.skill.sc-artoria-alt-3\tsc-artoria-alt-3.noble-bloom-extra-vp\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.artoriac\tservant.artoriac.skill.sc-artoriac-4\tsc-artoriac-4.recon-gain-vp-and-move\tadjust_victory_points,move_player\tspecial\tRESOURCE_WITH_INTERACTION,SPECIAL\tout_of_scope:mixed_non_resource_effect\nservant.artoriac\tservant.artoriac.skill.sc-artoriac-6\tsc-artoriac-6.gain-vp-if-not-sole-winner\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE\tout_of_scope:forced_trigger\nservant.atalanta\tservant.atalanta.skill.sc-atalanta-3\tsc-atalanta-3.penalty-on-defeat\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE\tout_of_scope:forced_trigger\nservant.avicebron\tservant.avicebron.skill.sc-avicebron-3\tsc-avicebron-3.deployment-reward\tadjust_mana,adjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE,RESOURCE_WITH_LIFECYCLE\tout_of_scope:forced_trigger\nservant.baobhan\tservant.baobhan.skill.sc-baobhan-3\tsc-baobhan-3.penalty-on-defeat\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE\tout_of_scope:forced_trigger\nservant.bedivere\tservant.bedivere.skill.sc-bedivere-1\tsc-bedivere-1.noble-bloom\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.bedivere\tservant.bedivere.skill.sc-bedivere-1\tsc-bedivere-1.noble-bloom-extra-vp\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.charlemagne\tservant.charlemagne.skill.sc-charlemagne-3\tsc-charlemagne-3.noble-bloom\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.charlemagne\tservant.charlemagne.skill.sc-charlemagne-3\tsc-charlemagne-3.noble-bloom-extra-vp\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.chiron\tservant.chiron.skill.sc-chiron-1\tsc-chiron-1.penalty-on-defeat\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE\tout_of_scope:forced_trigger\nservant.drake\tservant.drake.skill.sc-drake-3\tsc-drake-3.plunder\tadjust_victory_points\tblocked\tRESOURCE_WITH_BATTLE\tout_of_scope:combat_window\nservant.emiya-alt\tservant.emiya-alt.skill.sc-emiya-alt-1\tsc-emiya-alt-1.penalty-on-defeat\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE\tout_of_scope:forced_trigger\nservant.ereshkigal\tservant.ereshkigal.skill.sc-ereshkigal-2\tsc-ereshkigal-2.gain-mana-on-deploy\tadjust_mana\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE\tout_of_scope:forced_trigger\nservant.euryale\tservant.euryale.skill.sc-euryale-1\tsc-euryale-1.penalty-on-defeat\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE\tout_of_scope:forced_trigger\nservant.gawain\tservant.gawain.skill.sc-gawain-3\tsc-gawain-3.noble-bloom\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.gawain\tservant.gawain.skill.sc-gawain-3\tsc-gawain-3.noble-bloom-extra-vp\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.gil\tservant.gil.skill.sc-gil-1\tsc-gil-1.penalty-on-defeat\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE\tout_of_scope:forced_trigger\nservant.gilles\tservant.gilles.skill.sc-gilles-2\tsc-gilles-2.deployment-reward\tadjust_mana,adjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE,RESOURCE_WITH_LIFECYCLE\tout_of_scope:forced_trigger\nservant.ishtar\tservant.ishtar.skill.sc-ishtar-3\tsc-ishtar-3.penalty-on-defeat\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE\tout_of_scope:forced_trigger\nservant.kinggil\tservant.kinggil.skill.sc-kinggil-1\tsc-kinggil-1.deployment-reward\tadjust_mana,adjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE,RESOURCE_WITH_LIFECYCLE\tout_of_scope:forced_trigger\nservant.kintoki\tservant.kintoki.skill.sc-kintoki-3\tsc-kintoki-3.golden-eater\tmove_card,branch,pay_mana,move_card,branch\tspecial\tRESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE,RESOURCE_WITH_HIDDEN,RESOURCE_WITH_RESULT_BINDING,SPECIAL\tout_of_scope:pending_payment_or_cost\nservant.ladyavalon\tservant.ladyavalon.skill.sc-ladyavalon-3\tsc-ladyavalon-3.deployment-reward\tadjust_mana,adjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE,RESOURCE_WITH_LIFECYCLE\tout_of_scope:forced_trigger\nservant.lakshmibai\tservant.lakshmibai.skill.sc-lakshmibai-3\tsc-lakshmibai-3.noble-bloom\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.lakshmibai\tservant.lakshmibai.skill.sc-lakshmibai-3\tsc-lakshmibai-3.noble-bloom-extra-vp\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.maxwell\tservant.maxwell.skill.sc-maxwell-1\tsc-maxwell-1.deployment-reward\tadjust_mana,adjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE,RESOURCE_WITH_LIFECYCLE\tout_of_scope:forced_trigger\nservant.medea\tservant.medea.skill.sc-medea-2\tsc-medea-2.deployment-reward\tadjust_mana,adjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE,RESOURCE_WITH_LIFECYCLE\tout_of_scope:forced_trigger\nservant.mephisto\tservant.mephisto.skill.sc-mephisto-1\tsc-mephisto-1.deployment-reward\tadjust_mana,adjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE,RESOURCE_WITH_LIFECYCLE\tout_of_scope:forced_trigger\nservant.mhx\tservant.mhx.skill.sc-mhx-3\tsc-mhx-3.noble-bloom\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.mhx\tservant.mhx.skill.sc-mhx-3\tsc-mhx-3.noble-bloom-extra-vp\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.mordred\tservant.mordred.skill.sc-mordred-3\tsc-mordred-3.noble-bloom\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.mordred\tservant.mordred.skill.sc-mordred-3\tsc-mordred-3.noble-bloom-extra-vp\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.mozart\tservant.mozart.skill.sc-mozart-3\tsc-mozart-3.deployment-reward\tadjust_mana,adjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE,RESOURCE_WITH_LIFECYCLE\tout_of_scope:forced_trigger\nservant.musashi\tservant.musashi.skill.sc-musashi-3\tsc-musashi-3.noble-bloom\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.musashi\tservant.musashi.skill.sc-musashi-3\tsc-musashi-3.noble-bloom-extra-vp\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.napoleon\tservant.napoleon.skill.sc-napoleon-3\tsc-napoleon-3.penalty-on-defeat\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE\tout_of_scope:forced_trigger\nservant.nero\tservant.nero.skill.sc-nero-1\tgolden-theater-win-reward\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE,RESOURCE_WITH_HIDDEN,RESOURCE_WITH_LIFECYCLE\tout_of_scope:residual\nservant.nobunaga\tservant.nobunaga.skill.sc-nobunaga-3\tfool-defeat-reward\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE,RESOURCE_WITH_LIFECYCLE\tout_of_scope:forced_trigger\nservant.robin\tservant.robin.skill.sc-robin-1\tsc-robin-1.penalty-on-defeat\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE\tout_of_scope:forced_trigger\nservant.saber\tservant.saber.skill.sc-saber-1\tsc-saber-1.noble-bloom\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.saber\tservant.saber.skill.sc-saber-1\tsc-saber-1.noble-bloom-extra-vp\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.saitou\tservant.saitou.skill.sc-saitou-1\tsc-saitou-1.noble-bloom\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.saitou\tservant.saitou.skill.sc-saitou-1\tsc-saitou-1.noble-bloom-extra-vp\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE\tout_of_scope:optional_trigger\nservant.semiramis\tservant.semiramis.skill.sc-semiramis-2\tsc-semiramis-2.deployment-reward\tadjust_mana,adjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE,RESOURCE_WITH_LIFECYCLE\tout_of_scope:forced_trigger\nservant.shakespeare\tservant.shakespeare.skill.sc-shakespeare-1\tsc-shakespeare-1.deployment-reward\tadjust_mana,adjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE,RESOURCE_WITH_LIFECYCLE\tout_of_scope:forced_trigger\nservant.stheno\tservant.stheno.skill.sc-stheno-2\tgoddess-smile-win-reward\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_INTERACTION,RESOURCE_WITH_BATTLE,RESOURCE_WITH_LIFECYCLE\tout_of_scope:forced_trigger\nservant.tomoe\tservant.tomoe.skill.sc-tomoe-1\tsc-tomoe-1.penalty-on-defeat\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE\tout_of_scope:forced_trigger\nservant.tristan\tservant.tristan.skill.sc-tristan-3\tsc-tristan-3.penalty-on-defeat\tadjust_victory_points\tblocked\tRESOURCE_WITH_TRIGGER,RESOURCE_WITH_BATTLE\tout_of_scope:forced_trigger\n\nBefore/after metrics\nlegacyResourceConsumerCount.before=13\nlegacyResourceConsumerCount.after=0\nnewRuntimeSemanticRoutedCount.before=0\nnewRuntimeSemanticRoutedCount.after=13\ndualCompatibleCount.before=NOT_CLASSIFIABLE\ndualCompatibleCount.after=0\nremainingSkippedCount.after=65\n"
+    }
+  ],
+  "inventoryCaveats": [
+    "PLAY inventory shape eligible=1 is not P03 batch eligibility.",
+    "Resource inventory shape eligible=13/migrated=13 is ability-level classification, not 13 new eligible whole identities or promotion proof.",
+    "No historical report PASS inherited. Raw current-main source and accepted list checked separately."
+  ],
+  "historicalRisks": [
+    {
+      "id": "FD-EVID-005",
+      "binding": "docs/engineering/lessons/catalog.json exact source hash",
+      "risk": "Exact SHA/review/test binding; no execution acceptance inferred"
+    },
+    {
+      "id": "FD-SHAPE-003",
+      "risk": "Components do not prove complete envelope; unreviewed near-matches stay excluded"
+    },
+    {
+      "id": "P02_REGISTRATION",
+      "risk": "Material archive and rules-only definitions do not guarantee owner/source production path"
+    }
+  ],
+  "negativeEvidenceRequiredIfReScoped": [
+    "Whole printed text and ability scope binding",
+    "No duplicate canonical or generated aliases",
+    "Wrong phase/source/controller and malformed shape fail-closed",
+    "No hidden legacy fallback",
+    "State/events/revision atomic rejection",
+    "Distinct canonical cardId plus abilityId evidence binding"
+  ],
+  "writerStatus": {
+    "productionReservation": "NONE_GRANTED",
+    "outputScope": [
+      "artifacts/phase3-cb-p03-candidate-selection.json",
+      "docs/reports/2026-10-14-p3-cb-p03-candidate-selection.md"
+    ],
+    "separateCleanCheckout": true,
+    "noPR": true
+  },
+  "testsExecuted": "No runtime/compiler/unit/CI/browser tests; only readonly inventory and source audits.",
+  "releaseLimits": {
+    "gateC": "NOT_VERIFIED",
+    "missingImages": 93,
+    "longTermStability": "NOT_VERIFIED"
+  },
+  "nextOwner": "Planner",
+  "nextDecision": "Keep existing restrictions and accept NO_VALID_BATCH_FOUND, or explicitly re-scope a singleton existing-owner skill/content contract. Do not silently lower minimum batch size or add owners/contracts.",
+  "leadBuilderWriteAuthorized": false,
+  "creditDelta": 0
+}
