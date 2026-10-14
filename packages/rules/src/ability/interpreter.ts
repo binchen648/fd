@@ -135,7 +135,7 @@ function active(s: GameState, id: string): boolean {
 }
 function phase(s: GameState): string { return s.round.activePhase === 'battle' ? 'combat' : s.round.activePhase; }
 function isAttack(d: AuthoringCard | undefined): boolean {
-  return !!d && ['servant_skill', 'servant_deck_card', 'servant_attack', 'basic_attack'].includes(d.cardType);
+  return !!d && ['servant_skill', 'servant_deck_card', 'servant_attack', 'basic_attack', 'master_deck_card'].includes(d.cardType);
 }
 function legacyCardPlayClassification(d: AuthoringCard | undefined): CardPlayClassification {
   if (!d) return { playKind: 'support', destinationZone: 'field' };
@@ -589,12 +589,15 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
   }
   const scope = node(target.scope); const zone = scope.zone === 'battle_area' ? 'attack_area' : scope.zone;
   const alreadySelected = new Set(Object.values(ctx.selections).flat());
+  const ability = definition(s, ctx.sourceCardId)?.abilities.find((entry) => entry.id === ctx.abilityId);
+  const faceDownEffectTarget = !!ability && isPlayActionRouteCandidate(ability) && str(ability.effects[0]?.target) === str(target.id);
   return s.cards.filter(c =>
     !alreadySelected.has(c.instanceId) &&
     (scope.controller === 'any' || c.controllerPlayerId === ctx.controllerId) &&
     (scope.owner === 'any' || c.ownerPlayerId === ctx.controllerId || !scope.owner) &&
     c.zone === zone &&
-    nodes(target.constraints).every(x => constraint(s, ctx, c, x))).map(c => c.instanceId);
+    nodes(target.constraints).every(x => constraint(s, ctx, c, x)) &&
+    (!faceDownEffectTarget || faceDownEffectPlayFailure(s, ctx.controllerId, c.instanceId) === undefined)).map(c => c.instanceId);
 }
 function trustedBattlePowerSnapshot(event: AbilityEvent | undefined): { participantIds: string[]; powers: Record<string, number> } | undefined {
   const participantIds = event?.battleParticipantIds;
@@ -1014,6 +1017,9 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
     const blocked = d.abilities.find(a => a.execution.mode !== 'automatic'); if (blocked) return blocked.execution.mode;
   }
   return undefined;
+}
+function faceDownEffectPlayFailure(s: GameState, playerId: string, cardId: string): string | undefined {
+  return playFailure(s, playerId, cardId, true, true, true, true);
 }
 export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
   const r = runtime(s); const p = s.players.find(p => p.id === playerId); if (!p || p.status !== 'active') return [];
@@ -4550,7 +4556,9 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   const paidManaByCard = new Map<string, number>();
   for (const c of choices) {
     const allowRequiredAdditional = quota === 'regular' && requiredAdditionalIds.has(c.cardInstanceId) && regularAttackChoices > 0;
-    const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost);
+    const failure = quota === 'effect' && c.faceDown === true
+      ? faceDownEffectPlayFailure(s, playerId, c.cardInstanceId)
+      : playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost);
     if (failure) reject(failure, 'Card cannot be played in this batch');
     const paidMana = !waiveManaCost && !c.faceDown ? Number(definition(s, c.cardInstanceId)!.cardFace.cost ?? 0) : 0;
     if (!Number.isSafeInteger(paidMana) || paidMana < 0) reject('invalid_cost', 'Card paid mana provenance must be a nonnegative safe integer');
