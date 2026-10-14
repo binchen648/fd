@@ -42,6 +42,7 @@
     "packages/rules/src/ability/interpreter.ts",
     "packages/rules/src/ability/loader.ts",
     "packages/rules/tests/regression/card-action-play.test.ts",
+    "packages/rules/tests/regression/fb2-required-additional-play.test.ts",
     "packages/rules/tests/regression/complex-skills-regression.test.ts",
     "packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts",
     "packages/rules/tests/executable-card-pack.test.ts",
@@ -50,6 +51,12 @@
     "docs/reports/2026-10-14-p3-cb-a0-time-alter-play-legality-repair.md"
   ],
   "expectedFilesAreUpperBound": true,
+  "supplementalScopeAuthorization": {
+    "authority": "User confirmation in this task on 2026-10-14",
+    "path": "packages/rules/tests/regression/fb2-required-additional-play.test.ts",
+    "scope": "Update only impossible append-only target projection and atomic forged activation expectations; no production expansion",
+    "plannerMirror": "Not claimed to be included in pinned b52d0917; user supplement recorded separately"
+  },
   "historicalPreflight": "Run the existing task-aware Historical Failure Preflight on exact scope once and include actual receipt in B packet; it is not an additional approval role",
   "implementationAuthorization": "Only the literal source/test/evidence paths in reservation, after owner binding; loader.ts only if the typed constraint needs it",
   "acceptance": "Real Origin Bullet replacement -> draw into hand -> legal face-down play -> one draw, plus identity-free semantic route, illegal-target atomicity, privacy and no-fallback negatives; fresh RB then A/RA",
