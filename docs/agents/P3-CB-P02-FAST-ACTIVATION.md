@@ -121,3 +121,38 @@ docs/reviews/phase3/P3-CB-P02-A-8a477e72-reviewer-a.json.
 Scope: exact three-output provenance, eligibility, contract/registration gap and
 preflight method. No source fixes, runtime acceptance, heavy tests or PR.
 Lead state remains BLOCKED_ENTRY_CONDITIONS_NOT_MET; draft is NOT_GRANTED.
+
+## Final RA And Planner Disposition
+
+RA exact candidate review:18155f1565dc2795c84dcd9d31517720a936240b, remote verified.
+Artifact hash:50fe249e9f46ec6ad719518b5e45bed8efa121d5e94d06ec883a5b0c6fe30809.
+Verdict PASS_SCOPED_PROVENANCE_SELECTION_WITH_QUALIFICATIONS; no implementation
+entry grant. RA independently reproduced exported-engine checks with equal
+parsed outputs except elapsedMs and independently reproduced failed CLI input.
+Planner explicitly accepts EQUIVALENT_TRACEABLE_CHECK for this exact original
+eight-field task, including this CLI-input failure situation, under the user's
+request to decide equivalence. This extends the earlier CLI-absence-only wording
+for P02 historical risk lookup, not policy or production authorization. It is a
+Planner scope decision, not a claim the user personally approved that method or
+that CLI is absent/PASS. The review's attribution to user clarification should
+be read as Planner-delegated same-review method, not an authenticated user waiver.
+Any additional authoring/source metadata paths require updated applicable input
+and risk receipt; no repeated independent preflight approval is introduced.
+
+Remaining entry blockers: no proven authorized production registration/init,
+loader-recognized source metadata missing, roster substitution unapproved and
+not verified, actual same-output writer collision and exclusivity unresolved.
+No exact implementation source/test/generated path set can yet be granted.
+P02 selected original pair is ledger-eligible only; implementation-ready set=[];
+alternative selected set=[] because no whole-identity alternative was proven.
+
+Do not inflate the observed append failure into a universal new-runtime-contract
+requirement. Original pair stays blocked; bounded alternatives or a separately
+authorized product-registration decision must precede implementation. P01 and
+K03 are still not prerequisites. No IMPLEMENT prompt is issued as READY.
+A/RA tasks closed after immutable handoff; three-output A reservation released
+for this completed packet only, without resolving unknown overlapping writer.
+Historical bytes remain unchanged; Lead draft stays NOT_GRANTED, credit0.
+Next actionable sync: proven single-contract alternative or explicit registration
+path/product decision plus real exclusive writer acknowledgement. Do not repeat
+the completed whole PREPARE or receipt review merely to restate these blockers.
