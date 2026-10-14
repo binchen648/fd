@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "fd-scoped-evidence-sync-review-v1",
+  "taskId": "P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "reviewer": "Reviewer A",
+  "reviewedSha": "5b7f08ee047c671f08625283c7112736b063067a",
+  "candidateSha": "5b7f08ee047c671f08625283c7112736b063067a",
+  "runtimeCandidateSha": "3ec55814b8aca84416fca46dfaf7032a7f115094",
+  "reviewerBCommit": "fb487f1397b02663bac1ab065864aa484830c390",
+  "observedMainSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "conclusion": "REVIEW_ACCEPTED",
+  "finalVerdict": "PASS",
+  "scope": "EXACT_TIME_ALTER_A_SYNC_PROVENANCE_RB_VERDICT_RECEIPTS_ONE_ROW_OVERLAY_AND_ZERO_CREDIT_ONLY",
+  "findings": [],
+  "bindings": {
+    "syncPacket": {
+      "path": "artifacts/phase3-cb-a0-time-alter-evidence-sync.json",
+      "sha256": "3CC0CA0DF635EF117E3E52CA1EB7D59AAF6AABF8913F8DE430723333F45E50D1"
+    },
+    "ledgerOverlay": {
+      "path": "artifacts/phase3-cb-a0-time-alter-coverage-ledger-sync.json",
+      "sha256": "A46583D5BD44D7F6E87295CF0E9DF7F48DB67FD32F6C03B82E66D3F095B6C483"
+    },
+    "report": {
+      "path": "docs/reports/2026-10-14-p3-cb-a0-time-alter-evidence-synchronization.md",
+      "sha256": "DE85D0DC2C3374035FA8D6C19F7611A9560EA747AF53F8909D76565A2D655BD8"
+    },
+    "reviewerBArtifactSha256": "54CAB8CDE8EF835A12AFB78E803F3082A249831BA1146849DA73B5B5F798E26A"
+  },
+  "verification": {
+    "sourceGitBlobAndHashChecks": "24/24 PASS",
+    "rbCandidateIdentityVerdictScopeAndImplementation": "PASS",
+    "candidateAndReviewDirectParents": "PASS",
+    "mainCandidateReviewSyncAncestry": "PASS",
+    "candidateInObservedMain": false,
+    "exactRemoteSyncRef": "PASS_AT_REVIEW_TIME",
+    "threeEvidencePathsOnly": "PASS",
+    "rawReceipts": "16/16 PASS",
+    "rawStreamByteCountsAndHashes": "32/32 PASS",
+    "receiptIndexCommandsTestedShaAndExitCodes": "PASS",
+    "currentSourceMatchesReviewedImplementation": "PASS",
+    "oneCanonicalConsumerOverlay": "PASS",
+    "unchangedAuthoringAndClassifier": "PASS",
+    "independentCoverageRecalculation": "PASS_BOTH_BASELINE_AND_CANDIDATE",
+    "sourceFingerprint": "45159c58666046414b1f0b4a66d58b97a27feb6da27e6e6333e7a6fdfbbe3d3a",
+    "consumerCountsBeforeAndAfter": "23/144/3/0/111; totalAbilities=281",
+    "historicalFailuresAndGlobalAcceptanceBoundary": "PASS",
+    "diffCheck": "PASS"
+  },
+  "identity": {
+    "canonicalIdentityId": "master.kiritsugu.skill.s2",
+    "productionDefinitionId": "master.kiritsugu.skill.time-alter",
+    "abilityId": "time-alter.action",
+    "classification": "REVIEWER_ACCEPTED_CANDIDATE",
+    "implementation": "ACCEPTED_FOR_EVIDENCE_SYNC",
+    "fallback": "RB_BOUND_SCOPED_TYPED_PLAY_REJECTION_ONLY",
+    "wholeIdentityMigrationAcceptance": "NOT_GRANTED"
+  },
+  "accounting": {
+    "accepted": 111,
+    "denominator": 944,
+    "remaining": 833,
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0
+  },
+  "retainedLimits": {
+    "promotion": "NOT_READY",
+    "defaultCi": "EXIT_1_B11_SOURCE_BINDING_FAILURE_AT_8fba9c4; 195/196 files and 1642/1643 tests",
+    "historicalFailures": "PRESERVED_AT_ORIGINAL_TESTED_SHAS",
+    "browser": "RB_INSPECTED_SCOPED_RECEIPT; NO_ALL_BROWSER_STARTUP_ACCEPTANCE",
+    "globalGateC": "NOT_VERIFIED",
+    "missingImages": 93,
+    "setupReplacementAndOtherLegacyConsumers": "UNCHANGED",
+    "githubGovernance": "PENDING",
+    "runtimeBrowserOrFullCiRerunByReviewerA": false
+  },
+  "reviewerProbeCorrection": "Initial coverage probe read a nonexistent counts.runtimeRouteCounts property; corrected to runtimeRouting counters and reran successfully. No candidate files changed.",
+  "grants": { "mainPromotion": false, "gatePromotion": false, "migrationCredit": false, "runtimeWrite": false },
+  "nextOwner": "Planner handles separate B11 binding debt; Governance and Integration require their own exact evidence and green final checks"
+}
