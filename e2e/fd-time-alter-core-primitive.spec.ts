@@ -17,7 +17,7 @@ test.afterEach(async () => {
   }
 });
 
-test('plays a genuinely replaced and drawn Origin Bullet through browser, reconnect, and stale rejection', async ({ page }) => {
+test('plays a genuinely replaced and drawn Origin Bullet through browser, reconnect, and stale rejection', async ({ page, request }) => {
   const roomId = `fd-time-alter-${Date.now()}`;
   const room = await createNaturalTimeAlterRoom(roomId);
   const sentMessages: ClientRoomMessage[] = [];
@@ -46,6 +46,7 @@ test('plays a genuinely replaced and drawn Origin Bullet through browser, reconn
 
   const initialProjection = receivedProjections.at(-1);
   const priorEffectCount = countTimeAlterEffectResolved(initialProjection);
+  const priorMana = initialProjection!.match!.view.players.find((entry) => entry.id === 'p6')!.mana;
   const expectedRevision = initialProjection?.match?.view.revision;
   expect(expectedRevision).toEqual(expect.any(Number));
   expect(initialProjection?.match?.view.legalActions).toContainEqual(expect.objectContaining({
@@ -96,6 +97,8 @@ test('plays a genuinely replaced and drawn Origin Bullet through browser, reconn
     zone: 'attack_area',
     faceDown: true,
   }));
+  expect(projectedCardZone(receivedProjections.at(-1), timeAlterInstanceId)).toBe('skill');
+  expect(receivedProjections.at(-1)!.match!.view.players.find((entry) => entry.id === 'p6')!.mana).toBe(priorMana);
 
   const targetCommand = sentMessages.find((message) =>
     message.type === 'client:dispatch_command' &&
@@ -128,11 +131,14 @@ test('plays a genuinely replaced and drawn Origin Bullet through browser, reconn
   await expect.poll(() => projectedCardZone(receivedProjections.at(-1), selectedAttackInstanceId)).toBe('attack_area');
   await expect.poll(() => projectedCardZone(receivedProjections.at(-1), drawnCardInstanceId)).toBe('hand');
 
+  const settledView = structuredClone(receivedProjections.at(-1)!.match!.view);
   const staleErrorCount = serverErrors.length;
   await page.evaluate(({ wsBase: endpoint, roomId: targetRoomId, clientId, token, message }) => {
     const socket = new WebSocket(`${endpoint}/rooms/${encodeURIComponent(targetRoomId)}?clientId=${encodeURIComponent(clientId)}&reconnectToken=${encodeURIComponent(token)}`);
     socket.addEventListener('open', () => socket.send(JSON.stringify(message)));
-    socket.addEventListener('message', () => socket.close());
+    socket.addEventListener('message', (event) => {
+      if (JSON.parse(String(event.data)).type === 'server:error') socket.close();
+    });
   }, {
     wsBase,
     roomId,
@@ -150,6 +156,13 @@ test('plays a genuinely replaced and drawn Origin Bullet through browser, reconn
   expect(projectedCardZone(receivedProjections.at(-1), selectedAttackInstanceId)).toBe('attack_area');
   expect(projectedCardZone(receivedProjections.at(-1), drawnCardInstanceId)).toBe('hand');
   expect(countTimeAlterEffectResolved(receivedProjections.at(-1))).toBe(priorEffectCount + 2);
+  expect(receivedProjections.at(-1)!.match!.view).toEqual(settledView);
+  const observer = await request.post(`${httpBase}/rooms/${encodeURIComponent(roomId)}/join`, {
+    data: { clientId: 'time-alter-observer', displayName: 'Observer', role: 'spectator' },
+  });
+  expect(observer.ok()).toBe(true);
+  const observation = await observer.json() as RoomHttpResponse;
+  expect(JSON.stringify(observation.projection.match!.view)).not.toContain('master.kiritsugu.deck.origin-bullet');
 });
 
 async function createNaturalTimeAlterRoom(roomId: string): Promise<RoomHttpResponse> {
