@@ -9,6 +9,22 @@
 
 This file is the task lookup entry point for Phase 3 agents. Do not read the full `docs/plans/fd-phase-3-parallel-work-queue.md` by default. Read only the assigned task block below, then follow its explicit `Read` list.
 
+## TASK P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR
+
+Owner: Codex B. State: `AUTHORIZED_PENDING_OWNER_BINDING_AND_NONCONFLICT`.
+Epoch: `FD-P3-2026-09-23-09`. Exact implementation base:
+`origin/main@a42b5e1c517141b90f3407773958b0d8afe63264`.
+This block supersedes the historical Epoch 07 header for this task only.
+Read: `docs/agents/manifests/tasks/P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR.json`,
+`docs/agents/P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR.md`,
+`docs/agents/manifests/reservations/P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR.json`,
+exact ruling `a1328bea:docs/rules/2026-10-14-time-alter-user-ruling.md`,
+Final Rules 9.5-9.6/11.1 and K03 loader release record named in the manifest.
+Goal: repair only Time Alter's legal face-down hand-target selection and shared
+play legality, including Origin Bullet; freeze one candidate for fresh RB review.
+The manifest is a Planner control path, not a B writable path. No migration
+credit, Gate C or promotion is authorized by this task entry.
+
 ## Flow Summary
 
 1. Codex A owns measurement, automation, evidence packets, and taxonomy drift protection.

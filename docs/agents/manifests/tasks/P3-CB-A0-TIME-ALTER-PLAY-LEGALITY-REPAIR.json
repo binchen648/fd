@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "fd-phase3-scoped-runtime-task-v1",
+  "taskId": "P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "status": "AUTHORIZED_PENDING_OWNER_BINDING_AND_NONCONFLICT",
+  "owner": "Codex B",
+  "reviewer": "Reviewer B",
+  "evidenceOwner": "Codex A",
+  "evidenceReviewer": "Reviewer A",
+  "exactBaseSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "selectedIdentities": ["master.kiritsugu.skill.s2"],
+  "productionDefinitionId": "master.kiritsugu.skill.time-alter",
+  "abilityId": "time-alter.action",
+  "capabilityFamily": "CARD_ACTION_SEMANTICS_MINIMAL_PLAY",
+  "semanticContracts": ["TIME_ALTER_LEGAL_FACE_DOWN_HAND_TARGET", "PLAY_SELECTED_CARDS_THEN_DRAW_ONE"],
+  "runtimeDomains": ["ability-runtime/card-action-play", "content/authoring/master.kiritsugu"],
+  "ruleAuthority": {
+    "commit": "a1328bead4d653991f7b52817686e24e882d50b4",
+    "path": "docs/rules/2026-10-14-time-alter-user-ruling.md",
+    "blob": "5865aa653f614da29361b777569cb8a0f44d0c2f",
+    "scope": "Time Alter only; allows Origin Bullet if legally in controller hand; Master source activation is separate from playing the selected card"
+  },
+  "taskCard": "docs/agents/P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR.md",
+  "reservationReference": "docs/agents/manifests/reservations/P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR.json",
+  "priorLoaderReservation": {
+    "reservationId": "P3-EFP-K03-B-STATIC-REWARD-GUARD",
+    "releaseRecord": "docs/agents/P3-EFP-K03-B-RUNTIME-CLOSURE-REGISTER.md",
+    "releaseCommit": "c3577bdc1143ff3918d902fecbb48fb0dd70aafe",
+    "effectiveState": "RELEASED_FOR_SCHEDULING",
+    "limitation": "Release resolves the historical K03 claim only; B must still check for a live competing writer before editing loader.ts"
+  },
+  "expectedChangedFiles": [
+    "data/authoring/masters/master.kiritsugu.json",
+    "packages/rules/src/ability/interpreter.ts",
+    "packages/rules/src/ability/loader.ts",
+    "packages/rules/tests/regression/card-action-play.test.ts",
+    "packages/rules/tests/regression/complex-skills-regression.test.ts",
+    "packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts",
+    "packages/rules/tests/executable-card-pack.test.ts",
+    "e2e/fd-time-alter-core-primitive.spec.ts",
+    "artifacts/phase3-cb-a0-time-alter-play-legality-repair.json",
+    "docs/reports/2026-10-14-p3-cb-a0-time-alter-play-legality-repair.md"
+  ],
+  "expectedFilesAreUpperBound": true,
+  "historicalPreflight": "Run the existing task-aware Historical Failure Preflight on exact scope once and include actual receipt in B packet; it is not an additional approval role",
+  "implementationAuthorization": "Only the literal source/test/evidence paths in reservation, after owner binding; loader.ts only if the typed constraint needs it",
+  "acceptance": "Real Origin Bullet replacement -> draw into hand -> legal face-down play -> one draw, plus identity-free semantic route, illegal-target atomicity, privacy and no-fallback negatives; fresh RB then A/RA",
+  "productionWriteAuthorized": true,
+  "promotionAuthorized": false,
+  "migrationCreditDelta": 0,
+  "gateC": "NOT_VERIFIED"
+}

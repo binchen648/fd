@@ -3,6 +3,7 @@
   "reservationId": "P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR",
   "ownerTask": "P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR",
   "ownerRole": "Codex B",
+  "taskManifestPath": "docs/agents/manifests/tasks/P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR.json",
   "controlEpoch": "FD-P3-2026-09-23-09",
   "requiredBase": "a42b5e1c517141b90f3407773958b0d8afe63264",
   "ruleRulingCommit": "a1328bead4d653991f7b52817686e24e882d50b4",
@@ -25,10 +26,17 @@
     "docs/reports/2026-10-14-p3-cb-a0-time-alter-play-legality-repair.md"
   ],
   "resourceDomains": ["ability-runtime/card-action-play", "content/authoring/master.kiritsugu"],
+  "priorLoaderReservation": {
+    "reservationId": "P3-EFP-K03-B-STATIC-REWARD-GUARD",
+    "releaseRecord": "docs/agents/P3-EFP-K03-B-RUNTIME-CLOSURE-REGISTER.md",
+    "releaseCommit": "c3577bdc1143ff3918d902fecbb48fb0dd70aafe",
+    "effectiveState": "RELEASED_FOR_SCHEDULING"
+  },
+  "plannerPublishedControlPath": "docs/agents/manifests/tasks/P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR.json",
   "ownerBinding": {"branch": null, "absoluteWorktree": null, "acknowledgement": "PENDING"},
   "proposedBranch": "codex/b-p3-cb-a0-time-alter-play-legality-repair",
   "proposedWorktree": "D:/fd-validation/b-cb-a0-play-clarification",
-  "conditions": "B binds a clean exact-main branch and confirms no competing writer for listed paths before modifying them. Permission is literal and does not authorize other shared-runtime files or a heavy-test window. Preserve dirty D:/fd user work.",
+  "conditions": "Planner publishes the task manifest and index entry before B writes. K03 loader claim is released by the cited closure register; B still binds a clean exact-main branch and confirms no live competing writer for listed paths. Permission is literal and does not authorize other shared-runtime files or a heavy-test window. Preserve dirty D:/fd user work.",
   "productionWriteAuthorized": true,
   "sharedRuntimeWriteAuthorized": true,
   "testWindowExclusive": false,

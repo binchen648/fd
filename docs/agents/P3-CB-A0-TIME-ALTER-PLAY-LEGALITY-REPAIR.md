@@ -25,9 +25,15 @@ not create an exception for skill cards, other card families or illegal plays.
 
 Writer reservation:
 docs/agents/manifests/reservations/P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR.json.
+Machine task manifest:
+docs/agents/manifests/tasks/P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR.json.
 It grants only the listed paths after B binds an actual clean branch/worktree
 at the exact base and checks for competing writers. The existing A0 test-only
 reservation stays suspended. Do not write in the dirty D:/fd root.
+The older K03 reservation still has its original historical label, but the
+later docs/agents/P3-EFP-K03-B-RUNTIME-CLOSURE-REGISTER.md explicitly releases
+that writer grant for scheduling. This resolves the historical loader.ts claim;
+it does not prove no current live writer exists.
 
 Permitted production changes, only where required for this correction:
 
@@ -89,7 +95,7 @@ human approval. Ledger remains 111/944; credit delta 0; Global Gate C and the
 ## Copyable B Task
 
 You are Codex B for P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR. Read this file,
-the exact user ruling at a1328bea, the reservation and relevant Final Rules
+the exact user ruling at a1328bea, task manifest, reservation and relevant Final Rules
 9.5-9.6/11.1. Start from origin/main@a42b5e1c in a clean isolated worktree.
 Bind your actual owner/branch/worktree and verify no competing writer for the
 literal paths before changing files. Repair only the allowed Time Alter
