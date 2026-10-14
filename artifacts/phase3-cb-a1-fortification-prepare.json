@@ -1,0 +1,727 @@
+{
+  "taskId": "P3-CB-A1-FORTIFICATION-PREPARE",
+  "role": "Codex A / Evidence and Scope Analyst",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "sourceMainSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "generatedAt": "2026-10-14T00:00:00.000Z",
+  "conclusion": "BLOCKED_WITH_REASON",
+  "implementationReady": false,
+  "decisionBlocker": {
+    "id": "WHOLE_FORTIFICATION_PRODUCTION_CONTRACT_NOT_CLOSED",
+    "description": "The identical formula/reward components are present, but no approved production entry plus canonical residual retention chain is established for either full identity.",
+    "evidenceFacets": [
+      "Standalone servant archives cannot satisfy current three-skill/12-card-deck playable admission.",
+      "Canonical residual text is not encoded as residual capability; current production cleanup retains only residual-kind sources. Existing tests manually mark active and do not run real cross-round cleanup."
+    ],
+    "notClaimed": "This umbrella decision blocker does not imply that admission and lifecycle require the same technical fix; both observations remain visible.",
+    "nextOwner": "Planner / Runtime contract owner B + Reviewer B for narrowly bounded full-contract clarification",
+    "ordinaryA1Batch": "EXITED",
+    "leadTaskPackage": null
+  },
+  "identities": [
+    {
+      "canonicalIdentityId": "servant.gilles.skill.sc-gilles-2",
+      "archiveType": "servant_skill_card_archive",
+      "ownerId": "servant.gilles",
+      "source": {
+        "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+        "path": "data/authoring/servants/servant.gilles.json",
+        "sha256": "7491310f403e46352dc1848b2a0c17c64bab0d07d67887a072f8b09fbee3b166",
+        "blob": "49b6b5f694fe94c541d482d38613da5702be1c37"
+      },
+      "printedText": "X为16 - (当前回合数 × 2)\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+      "printedTextSha256": "33c9377158b49fad67a503f1368f81efa65b97cff870c2331c8ca4ee69937446",
+      "clauses": [
+        {
+          "text": "X为16 - (当前回合数 × 2)",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[9].skills[1].text#line=1",
+            "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+          }
+        },
+        {
+          "text": "残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[9].skills[1].text#line=2",
+            "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+          }
+        }
+      ],
+      "authoringCard": {
+        "id": "servant.gilles.skill.sc-gilles-2",
+        "aliases": [
+          "sc_gilles_2"
+        ],
+        "legacyId": "sc_gilles_2",
+        "name": "阵地建造",
+        "cardType": "servant_skill",
+        "owner": {
+          "type": "servant",
+          "id": "servant.gilles"
+        },
+        "printedText": "X为16 - (当前回合数 × 2)\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+        "cardFace": {
+          "typeLabel": "魔术",
+          "attributes": [
+            "魔术"
+          ],
+          "cost": 0,
+          "basePower": {
+            "printedExpression": "X",
+            "formula": {
+              "op": "add",
+              "args": [
+                16,
+                {
+                  "op": "multiply",
+                  "args": [
+                    -2,
+                    {
+                      "var": "game.round_number"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 8
+          }
+        ],
+        "abilities": [
+          {
+            "id": "sc-gilles-2.round-power",
+            "kind": "continuous_formula",
+            "printedClause": "X为16 - (当前回合数 × 2)",
+            "activation": {
+              "trigger": "on_card_played",
+              "requiresSourceState": "active"
+            },
+            "execution": {
+              "mode": "automatic"
+            }
+          },
+          {
+            "id": "sc-gilles-2.deployment-reward",
+            "kind": "forced_trigger",
+            "printedClause": "残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+            "activation": {
+              "trigger": "after_player_deployed_to_battlefield",
+              "eventLocationId": "magic_workshop"
+            },
+            "effects": [
+              {
+                "type": "adjust_mana",
+                "player": "controller",
+                "amount": 1
+              },
+              {
+                "type": "adjust_victory_points",
+                "player": "controller",
+                "amount": 2
+              }
+            ],
+            "execution": {
+              "mode": "automatic"
+            }
+          }
+        ],
+        "phase3Evidence": {
+          "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+          "f1SourceReferences": [
+            {
+              "kind": "chm",
+              "document": "FD全卡图鉴V2.0.chm",
+              "category": "servant/english",
+              "page": "吉尔·德·雷.htm",
+              "locator": "从者/魔术师/英文版/吉尔·德·雷.htm"
+            },
+            {
+              "kind": "development-image",
+              "document": "Fate_Domination-开发版",
+              "category": "servant",
+              "page": "images/servants/吉尔·德·雷.png",
+              "locator": "servant.gilles/吉尔·德·雷"
+            }
+          ],
+          "f1ClauseSources": [
+            {
+              "document": "src/content/generated/legacy-content.json",
+              "locator": "servants[9].skills[1].text#line=1",
+              "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+            },
+            {
+              "document": "src/content/generated/legacy-content.json",
+              "locator": "servants[9].skills[1].text#line=2",
+              "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+            }
+          ],
+          "sourceTextSha256": "33c9377158b49fad67a503f1368f81efa65b97cff870c2331c8ca4ee69937446",
+          "referenceStaticMetadata": {
+            "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+            "legacySkillId": "sc_gilles_2",
+            "cost": 0,
+            "basePower": 2,
+            "legacyRequirement": 0,
+            "typeLabel": "魔术"
+          },
+          "canonicalSkillZoneManaRequirement": {
+            "value": 8,
+            "authority": "final_rules_9.4",
+            "note": "Legacy requirement is retained as evidence metadata only."
+          },
+          "acceptedContracts": {
+            "roundPower": "P3-R33/FB2-11",
+            "deploymentReward": "P3-R19/FB2-02",
+            "familyPrecedent": "P3-R34/FM05"
+          }
+        }
+      },
+      "sourceEvidencePresent": true,
+      "sourceMetadata": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "吉尔·德·雷.htm",
+            "locator": "从者/魔术师/英文版/吉尔·德·雷.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/吉尔·德·雷.png",
+            "locator": "servant.gilles/吉尔·德·雷"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[9].skills[1].text#line=1",
+            "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[9].skills[1].text#line=2",
+            "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+          }
+        ],
+        "sourceTextSha256": "33c9377158b49fad67a503f1368f81efa65b97cff870c2331c8ca4ee69937446",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_gilles_2",
+          "cost": 0,
+          "basePower": 2,
+          "legacyRequirement": 0,
+          "typeLabel": "魔术"
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4",
+          "note": "Legacy requirement is retained as evidence metadata only."
+        },
+        "acceptedContracts": {
+          "roundPower": "P3-R33/FB2-11",
+          "deploymentReward": "P3-R19/FB2-02",
+          "familyPrecedent": "P3-R34/FM05"
+        }
+      },
+      "generatedRegistryPresent": false,
+      "generatedOwnerPresent": false,
+      "previouslyMainCredited": false,
+      "hasResidualAbility": false,
+      "productMetadata": {
+        "skills": 1,
+        "deckPresent": false,
+        "deckCount": 0,
+        "sourceImagesDeclaredForProductLoader": false
+      }
+    },
+    {
+      "canonicalIdentityId": "servant.medea.skill.sc-medea-2",
+      "archiveType": "servant_skill_card_archive",
+      "ownerId": "servant.medea",
+      "source": {
+        "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+        "path": "data/authoring/servants/servant.medea.json",
+        "sha256": "39dc14c106474727522511156c0a7ada31b7474d5c08e549d57cee8b768fa182",
+        "blob": "0a083a9ba591e206e02a91d7c5481d47e2140a0f"
+      },
+      "printedText": "X为16 - (当前回合数 × 2)\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+      "printedTextSha256": "33c9377158b49fad67a503f1368f81efa65b97cff870c2331c8ca4ee69937446",
+      "clauses": [
+        {
+          "text": "X为16 - (当前回合数 × 2)",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[8].skills[1].text#line=1",
+            "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+          }
+        },
+        {
+          "text": "残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+          "classification": "DISCOVERED",
+          "derivation": "mechanical_line_split",
+          "source": {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[8].skills[1].text#line=2",
+            "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+          }
+        }
+      ],
+      "authoringCard": {
+        "id": "servant.medea.skill.sc-medea-2",
+        "aliases": [
+          "sc_medea_2"
+        ],
+        "legacyId": "sc_medea_2",
+        "name": "阵地建造",
+        "cardType": "servant_skill",
+        "owner": {
+          "type": "servant",
+          "id": "servant.medea"
+        },
+        "printedText": "X为16 - (当前回合数 × 2)\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+        "cardFace": {
+          "typeLabel": "魔术",
+          "attributes": [
+            "魔术"
+          ],
+          "cost": 0,
+          "basePower": {
+            "printedExpression": "X",
+            "formula": {
+              "op": "add",
+              "args": [
+                16,
+                {
+                  "op": "multiply",
+                  "args": [
+                    -2,
+                    {
+                      "var": "game.round_number"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 8
+          }
+        ],
+        "abilities": [
+          {
+            "id": "sc-medea-2.round-power",
+            "kind": "continuous_formula",
+            "printedClause": "X为16 - (当前回合数 × 2)",
+            "activation": {
+              "trigger": "on_card_played",
+              "requiresSourceState": "active"
+            },
+            "execution": {
+              "mode": "automatic"
+            }
+          },
+          {
+            "id": "sc-medea-2.deployment-reward",
+            "kind": "forced_trigger",
+            "printedClause": "残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+            "activation": {
+              "trigger": "after_player_deployed_to_battlefield",
+              "eventLocationId": "magic_workshop"
+            },
+            "effects": [
+              {
+                "type": "adjust_mana",
+                "player": "controller",
+                "amount": 1
+              },
+              {
+                "type": "adjust_victory_points",
+                "player": "controller",
+                "amount": 2
+              }
+            ],
+            "execution": {
+              "mode": "automatic"
+            }
+          }
+        ],
+        "phase3Evidence": {
+          "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+          "f1SourceReferences": [
+            {
+              "kind": "chm",
+              "document": "FD全卡图鉴V2.0.chm",
+              "category": "servant/english",
+              "page": "美狄亚.htm",
+              "locator": "从者/魔术师/英文版/美狄亚.htm"
+            },
+            {
+              "kind": "development-image",
+              "document": "Fate_Domination-开发版",
+              "category": "servant",
+              "page": "images/servants/美狄亚.png",
+              "locator": "servant.medea/美狄亚"
+            }
+          ],
+          "f1ClauseSources": [
+            {
+              "document": "src/content/generated/legacy-content.json",
+              "locator": "servants[8].skills[1].text#line=1",
+              "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+            },
+            {
+              "document": "src/content/generated/legacy-content.json",
+              "locator": "servants[8].skills[1].text#line=2",
+              "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+            }
+          ],
+          "sourceTextSha256": "33c9377158b49fad67a503f1368f81efa65b97cff870c2331c8ca4ee69937446",
+          "referenceStaticMetadata": {
+            "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+            "legacySkillId": "sc_medea_2",
+            "cost": 0,
+            "basePower": 2,
+            "legacyRequirement": 0,
+            "typeLabel": "魔术"
+          },
+          "canonicalSkillZoneManaRequirement": {
+            "value": 8,
+            "authority": "final_rules_9.4",
+            "note": "Legacy requirement is retained as evidence metadata only."
+          },
+          "acceptedContracts": {
+            "roundPower": "P3-R33/FB2-11",
+            "deploymentReward": "P3-R19/FB2-02",
+            "familyPrecedent": "P3-R34/FM05"
+          }
+        }
+      },
+      "sourceEvidencePresent": true,
+      "sourceMetadata": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "美狄亚.htm",
+            "locator": "从者/魔术师/英文版/美狄亚.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/美狄亚.png",
+            "locator": "servant.medea/美狄亚"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[8].skills[1].text#line=1",
+            "sha256": "553fdbcf7626fff5a498ed55e850e13260030b9c3d911adcbaa43a578a39c2c5"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "servants[8].skills[1].text#line=2",
+            "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+          }
+        ],
+        "sourceTextSha256": "33c9377158b49fad67a503f1368f81efa65b97cff870c2331c8ca4ee69937446",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "sc_medea_2",
+          "cost": 0,
+          "basePower": 2,
+          "legacyRequirement": 0,
+          "typeLabel": "魔术"
+        },
+        "canonicalSkillZoneManaRequirement": {
+          "value": 8,
+          "authority": "final_rules_9.4",
+          "note": "Legacy requirement is retained as evidence metadata only."
+        },
+        "acceptedContracts": {
+          "roundPower": "P3-R33/FB2-11",
+          "deploymentReward": "P3-R19/FB2-02",
+          "familyPrecedent": "P3-R34/FM05"
+        }
+      },
+      "generatedRegistryPresent": false,
+      "generatedOwnerPresent": false,
+      "previouslyMainCredited": false,
+      "hasResidualAbility": false,
+      "productMetadata": {
+        "skills": 1,
+        "deckPresent": false,
+        "deckCount": 0,
+        "sourceImagesDeclaredForProductLoader": false
+      }
+    }
+  ],
+  "contract": {
+    "semanticName": "FM05 Territory Creation / Fortification: FB2-11 round-number formula + FB2-02 controller workshop deployment reward + canonical residual lifecycle",
+    "sameComponentContracts": true,
+    "samePrimitiveSet": true,
+    "sameInspectedComponentRuntimeRoutes": true,
+    "sameCompleteProductionRuntimeRoute": "NOT_VERIFIED",
+    "primitives": [
+      "evaluateFormula: add/multiply/game.round_number",
+      "typed adjust_mana(+1)",
+      "typed adjust_victory_points(+2)"
+    ],
+    "noStandaloneFortificationPrimitive": true,
+    "formulaRoute": "calculateCardPower -> evaluateFormula -> authoritative game.round_number; X=16-2*round",
+    "rewardRoute": "MatchSession.deploy emits after_player_deployed_to_battlefield -> triggerEventScopeMatches magic_workshop + controller check -> isDeploymentResourceRewardSemantic -> executeResolutionEffects -> typed mana/VP",
+    "existingPaths": [
+      {
+        "path": "packages/rules/src/ability/interpreter.ts",
+        "anchors": [
+          "calculateCardPower",
+          "isDeploymentResourceRewardSemantic",
+          "after_player_deployed_to_battlefield",
+          "executeResolutionEffects"
+        ]
+      },
+      {
+        "path": "packages/rules/src/match-session.ts",
+        "anchors": [
+          "deploy",
+          "discardRoundAttackAreaCards"
+        ]
+      }
+    ],
+    "historicalAcceptance": "R50/R34 reports retained as historical scoped component/archive evidence, not current production acceptance or main credit."
+  },
+  "productionAdmission": {
+    "registryEntries": "ABSENT_FOR_BOTH_CARDS_AND_OWNERS",
+    "generatedArtifacts": "Definitions/sourceMap/characters absent in current generated library",
+    "canonicalSourceEvidence": "PRESENT_EXACT_FROZEN_FULL_TEXT_AND_CLAUSE_HASH_MATCH",
+    "productLoaderMetadata": "MISSING_THREE_SKILL_PACKAGE_AND_12_CARD_DECK; no declared top-level product source image list",
+    "existingLoaderPath": "pack.authoringServantFiles -> convertAuthoringServant requires exactly 3 servant skills -> startingDeckFromAuthoring requires 12 cards -> executable characters/decks -> MatchSession",
+    "standaloneServantRulesOnlyChannel": "NONE_PRESENT_IN_CURRENT_MANIFEST_SCHEMA",
+    "noPlaceholderCardsOrDeckPadding": true,
+    "generatedOnlyFixSufficient": false,
+    "newOwnerProductSurfaceNeedsApproval": true
+  },
+  "boundaryCheck": {
+    "initializationChange": "NOT_PROVEN_NEEDED; cannot infer from numeric components",
+    "authorityChange": "NO_NEW_AUTHORITY_SEMANTICS_IDENTIFIED",
+    "matchSessionChange": "NOT_AUTHORIZED; current cleanup dependency is incompatible with missing residual marker; exact remedy not chosen",
+    "triggerContract": "Existing narrow workshop deployment trigger component present; no new trigger engine justified",
+    "lifecycleContract": "CANONICAL_RESIDUAL_DEPENDENCY_REQUIRES_REVIEWED_MAPPING_AND_REAL_CLEANUP_EVIDENCE",
+    "battlePipeline": "Existing power evaluator present; no new battle pipeline proved necessary; complete source retention chain not covered",
+    "runtimeSemanticGap": {
+      "classification": "RUNTIME_SEMANTIC_GAP",
+      "basis": "Static authoring/runtime-contract mismatch, not a fresh production regression execution",
+      "canonicalRules": "Final Rules 11.3 and 11.5 require residual retention",
+      "source": "Both authoring cards contain continuous_formula + forced_trigger; neither contains residual nor lifecycle",
+      "runtime": "MatchSession.discardRoundAttackAreaCards checks ability.kind === residual",
+      "tests": "Manual active source in seeded state, no production initialization/full-round cleanup",
+      "fixOwner": "B / RB after scoped authorization; A does not repair or convert kind"
+    },
+    "hotFilesModified": false
+  },
+  "fileImpact": {
+    "contentPaths": [
+      "data/authoring/servants/servant.gilles.json",
+      "data/authoring/servants/servant.medea.json"
+    ],
+    "registryPaths": [
+      "data/packs/fd-playtest-v1/pack.json"
+    ],
+    "generatedPaths": [
+      "data/generated/fd-playtest-v1.content-library.json",
+      "data/generated/fd-playtest-v1.fixture.json",
+      "data/generated/fd-playtest-v1.evidence-report.json"
+    ],
+    "focusedTestProposal": [
+      "packages/rules/tests/regression/cb-a1-fortification-production.test.ts"
+    ],
+    "existingTests": [
+      "packages/rules/tests/fm05-territory-variant-extension.test.ts",
+      "packages/rules/tests/fm05-territory-creation-authoring.test.ts",
+      "packages/rules/tests/regression/fb2-round-number-formula.test.ts",
+      "packages/rules/tests/regression/fb2-deployment-resource-reward.test.ts"
+    ],
+    "hotFilesForOwnerInvestigationOnly": [
+      "packages/content/src/playtest-pack-loader.ts",
+      "packages/rules/src/ability/executable-card-pack.ts",
+      "packages/rules/src/ability/interpreter.ts",
+      "packages/rules/src/match-session.ts"
+    ],
+    "expectedWritableFiles": "NOT_GRANTED_OR_FINALIZED_WHILE_BLOCKED",
+    "authoringExisting": "Do not recreate existing identity or synthesize missing unrelated skills/decks."
+  },
+  "evidenceGaps": {
+    "existingTestsStaticOnly": [
+      "Formula values 14/8/2/0",
+      "Typed +1 mana/+2 VP",
+      "Wrong location/other-player",
+      "Deployment vs movement",
+      "Stable event-id replay",
+      "Malformed reward shape no fallback"
+    ],
+    "missingWholeProductionTests": [
+      "Real registry -> instantiated source -> legal play -> workshop deployment",
+      "Reward must not fire before activation/after source closes",
+      "Both exact identities survive canonical round cleanup",
+      "Cross-round residual remains attack without repaying cost",
+      "Source/control/cap corruption atomic state/events/revision rejection"
+    ],
+    "noHistoricalPassInherited": true
+  },
+  "boundSources": [
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/packs/fd-playtest-v1/pack.json",
+      "sha256": "f9df6313a3b2452815fda56902dac5bac8f1f9c4e2374b11912b8ea82cd9d109",
+      "blob": "dc1c7cdc03464e5274fd61ccb3e9d6e7021d00be"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/generated/fd-playtest-v1.content-library.json",
+      "sha256": "38b1c58e7a1eba06bc80a1a8f5d302ad4339845edf6b67a36cf1bbbcaa3e65b1",
+      "blob": "6296653f5d53bac3684bd172d04c43c45acae2dc"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/phase3/full-roster-ability-inventory.json",
+      "sha256": "4242922cd047ba3452878ee7dba3d25b2afe3a22294c4a097102997fcfec019f",
+      "blob": "e39b8e1036a372affc4db45be41995815648f433"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "artifacts/phase3-e04-current-main-accepted-111-execution-matrix.json",
+      "sha256": "34ce9258e94e9bf44243cdd76be223f599d4776c13e2ef623382ae44a2f4f965",
+      "blob": "d7a3f280afc26bc4efefdef75ee6cd7c89eb9704"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/content/src/playtest-pack-loader.ts",
+      "sha256": "2b1eead567384500b4e83a63273fc6d714dbf0ddd5a3e0d9bf2bcdacc7f59f20",
+      "blob": "10ccb1f08193006c035862722b82f1a6715471f7"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/ability/loader.ts",
+      "sha256": "17a6630e36b3acec36e7f684118bb577cf49ea400d98e4bc029c8f01b75ed7c2",
+      "blob": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/ability/interpreter.ts",
+      "sha256": "a5f74d0cdcb71c169640dc6d0c0b7936eb2cb26b4ac8a1421e2dd50783554c43",
+      "blob": "25f17fe843a9a05650722e996f0ce97109cfadbe"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/ability/resolution-dataflow.ts",
+      "sha256": "361ea71ab056bdfb8548a3aa353911b6bd5560d57ea7d6049b3250d12196996e",
+      "blob": "edbcce8a6967782011a9a76f9122b32a6236bfb3"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/ability/executable-card-pack.ts",
+      "sha256": "7f00857bbb67fe47fb1e61200aac84a8e174378ed1c8bddcf74a9190db2a0bc0",
+      "blob": "1e6eef44d3cd177616575a9e9050e9a996c9ec51"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/match-session.ts",
+      "sha256": "a4b440bda535956819d557e89c5c095c765f88b349c78c62d767b3c7a1918c12",
+      "blob": "3418ff800b605a6a6e8c93f76eb072699c5c6378"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "docs/rules/FD-Game-Rules-Final.md",
+      "sha256": "4cbf96c27235670f89aaab8f4c8c1416f9f64180da864e521f5ef6e75cceb227",
+      "blob": "3ed3309bb37bfc376dd98cff9657ab64406dc315"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/tests/fm05-territory-variant-extension.test.ts",
+      "sha256": "bcbab27fea30faa56ae570a57a253762b8467e60337f96fc7b418e0fdb6c77e8",
+      "blob": "3b8fec1260825a0d2988b35fa7a0ce4a22f89331"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/tests/fm05-territory-creation-authoring.test.ts",
+      "sha256": "c464aac15e45d5bb7c860e6fb20283f5aa3eb4cf0bf4fb7635ce0661ca7f16bd",
+      "blob": "2aefaa029334e153b381d8e8da0a838c70297a68"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/tests/regression/fb2-round-number-formula.test.ts",
+      "sha256": "bce993d17542a7184d3ab802fb386229c5bebce95ed4bca415b90d4805f408c5",
+      "blob": "24cb883cc9354bef48822e63cd316aa45001d726"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/tests/regression/fb2-deployment-resource-reward.test.ts",
+      "sha256": "12a272218d98120ed3777c0bba1675b4ca798fd9ef9dfd7d1b17544c7937df87",
+      "blob": "853f435f503e58fc5759371075513aa360823929"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "docs/reports/2026-09-18-p3-a-r50-fm05-territory-variant-extension-acceptance-synchronization.md",
+      "sha256": "f254cc040b61f70bb7335c52bf76c0995dff14a88460b3fd5a3fb1d71a4b2ccf",
+      "blob": "3637c9d73d28d22f2f577f0cfe5fb85553acfaca"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "docs/reports/2026-09-16-p3-r34-fm05-territory-creation-migration-review.md",
+      "sha256": "74a6cf8b1048ff0a88e54308eea1df973c9ece918a8a8263e85e6760f1143f73",
+      "blob": "826c2e0c32b3f89db2d5b4e5b1c2ce1ad8fd657e"
+    }
+  ],
+  "accounting": {
+    "accepted": 111,
+    "denominator": 944,
+    "remaining": 833,
+    "mainCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0
+  },
+  "testsRun": "Read-only whole-text hash/structural equality/registry/ledger audit; gameplay/compiler/unit/CI/browser not run",
+  "releaseLimits": {
+    "globalGateC": "NOT_VERIFIED",
+    "missingImages": 93,
+    "longTermStability": "NOT_VERIFIED"
+  },
+  "outputPaths": [
+    "artifacts/phase3-cb-a1-fortification-prepare.json",
+    "docs/reports/2026-10-14-p3-cb-a1-fortification-prepare.md"
+  ],
+  "branch": "codex/a-p3-cb-a1-fortification-prepare",
+  "worktree": "D:/fd-validation/a-cb-a1-fortification-prepare",
+  "productionOrAuthoringChanges": false,
+  "prCreated": false
+}
