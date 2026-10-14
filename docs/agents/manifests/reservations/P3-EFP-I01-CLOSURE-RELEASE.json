@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "fd-planner-reservation-release-v1",
+  "taskId": "P3-EFP-I01",
+  "issuedDate": "2026-10-14",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "issuerRole": "Planner / Process Controller",
+  "status": "RELEASED_SCOPED_EFP_INTEGRATION",
+  "observedMain": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "basis": {
+    "candidate": "62de6f4f980d1bdbb95deed356412a199620839c",
+    "reviewCommit": "4d27d4a2c91ae36153d7e0bc96144b2632bec1df",
+    "artifact": "docs/reviews/phase3/P3-EFP-I01-62de6f4-post-merge-reviewer-a.json",
+    "sha256": "D0B33D77FD88EE220F5113BD8A0A8A345F6D1F27E6580CADC020CD02EFC4A5D7",
+    "verdict": "PASS_POST_MERGE_SYNC_ONLY"
+  },
+  "released": [
+    "P3-EFP-I01 integration assembly and outputs under163f8e84",
+    "P3-EFP-G01 governance bridge and three outputs underdd3cfd5c/3d5b5fc9",
+    "Completed P3-EFP-I01 post-merge evidence output scope"
+  ],
+  "retained": [
+    "P3-CB-P01-A-PREPARE",
+    "P3-EFP-K03-B-STATIC-REWARD-GUARD unless separately explicitly released",
+    "Any unrelated reservation"
+  ],
+  "conditions": "No successor write grant, worktree deletion, evidence mutation or history-ref removal. Preserve published source refs used by catalog/tests.",
+  "creditDelta": 0,
+  "ledger": "111/944",
+  "runtimeAcceptance": false,
+  "efficiencyImprovement": "NOT_VERIFIED"
+}
