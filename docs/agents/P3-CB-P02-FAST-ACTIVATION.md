@@ -89,3 +89,35 @@ IMPLEMENT prompt pretending READY.
 Next sync is A frozen carrier; dispatch RA immediately. P01 completion and K03
 merge are not prerequisites. Automatic activation authorization is effective;
 production writer permission remains false until the conditions are evidenced.
+
+## Executed PREPARE And Immediate Review Dispatch
+
+A froze and pushed carrier8a477e729d1ddb2a5d53798e75e1a65bc2ff02db;
+remote SHA verified. Packet hash
+bc07d45a97607b21654670565285f60af15ea05048b4e570b1fff59f089600d4.
+A scope is complete as a BLOCKED feasibility/evidence packet, NOT readiness.
+Ledger-eligible pair remains Iliya s1/Taiga s1; implementation-ready pair absent.
+Normal registration introduces playable owners beyond the current fixed-seven
+initialization, source-image metadata is not established, and no authorized
+runtime-free product registration has been proven. No verified alternative pair
+returned. This is not a finding that a new runtime contract is unavoidable under
+every possible product design; it is lack of a proven path under current scope.
+
+CLI exists but rejected the external task path with INPUT_INCOMPLETE. Planner's
+outside-tree input suggestion was incompatible with the CLI safePath contract.
+The separate exported-engine diagnostic reported CHECKED; this is not CLI PASS.
+RA examines whether its actual traceable receipt qualifies as equivalent under
+the existing same-review rule. Missing equivalence is not silently waived.
+
+An overlapping execution committed the same three outputs during freeze at
+8f5544011d90a813b9c4d383d9ce6351a445985c. Final correction preserves that history;
+initial clean-path observation did not establish continued writer exclusivity.
+A stopped and was closed after frozen handoff. No production writer grant.
+
+Independent RA dispatched immediately: agent01a138ae-5c4e-7022-9c72-7979984f6a4e,
+branchcodex/ra-p3-cb-p02-prepare-review, worktreeD:/fd-validation/ra-cb-p02-prepare.
+Single review artifact path:
+docs/reviews/phase3/P3-CB-P02-A-8a477e72-reviewer-a.json.
+Scope: exact three-output provenance, eligibility, contract/registration gap and
+preflight method. No source fixes, runtime acceptance, heavy tests or PR.
+Lead state remains BLOCKED_ENTRY_CONDITIONS_NOT_MET; draft is NOT_GRANTED.
