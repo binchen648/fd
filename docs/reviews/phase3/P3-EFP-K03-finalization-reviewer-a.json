@@ -1,0 +1,504 @@
+{
+  "schemaVersion": "fd-independent-scoped-review-v1",
+  "taskId": "P3-EFP-K03-A-FINALIZATION",
+  "reviewerIdentity": "Codex Reviewer A",
+  "githubIdentity": null,
+  "reviewThread": null,
+  "reviewDate": "2026-10-14",
+  "reviewedSha": "8a900a2bed074508dcd8e4e0affde523763291b0",
+  "candidateSha": "8a900a2bed074508dcd8e4e0affde523763291b0",
+  "testedImplementationSha": "6679730b2fad17873025016771c4febf3e11aea7",
+  "baseSha": "7124364b1d9909273e8bf1d1baba2f0691fe5801",
+  "authority": {
+    "commit": "6284de6aade2b20fd9e313f43e5e66d0a7f9c32d",
+    "path": "docs/agents/P3-EFP-K03-EVIDENCE-FINALIZATION-DISPATCH.md",
+    "gitBlob": "4a9abf9211c28df8139b75d00353ba5bc7cf981e",
+    "sha256": "08514aeac161018bb2422a8929703d276806cec6eaa028e1d5c82fecb72c236a"
+  },
+  "verdict": "PASS",
+  "scope": "EXACT_K03_EVIDENCE_FINALIZATION_AND_HISTORICAL_FIXTURE_ISOLATION_ONLY",
+  "overallReadiness": "BLOCKED_PENDING_GOVERNANCE_INTEGRATION_AND_ACTUAL_HEAD_CHECKS",
+  "packet": {
+    "path": "artifacts/phase3-efp-k03-evidence-finalization.json",
+    "sha256": "2b06d92336f2875c027a4d4299466e9391099d4e15f17f3e9e36c6b6767c39bd",
+    "bytes": 207686
+  },
+  "report": {
+    "path": "docs/reports/2026-10-14-p3-efp-k03-evidence-finalization.md",
+    "sha256": "daa5ffd8aef3903bb19decdb6ceeeebbec9296627796b7c3a8418839a9d070d9"
+  },
+  "reviewIsolation": {
+    "implementationFilesModified": false,
+    "implementationCommitsModified": false,
+    "implementationFixesPerformed": false,
+    "reviewWorktree": "D:/fd-validation/ra-k03-finalization-8a900a2b",
+    "reviewBranch": "codex/ra-p3-efp-k03-finalization-8a900a2b",
+    "reviewCommitRequiredParent": "8a900a2bed074508dcd8e4e0affde523763291b0",
+    "onlyAuthorizedOutput": "docs/reviews/phase3/P3-EFP-K03-finalization-reviewer-a.json",
+    "independentTestsExecutedFrom": "D:/fd-validation/k03-evidence-finalization",
+    "sourceAndTrackedEvidenceCleanAfterTests": true,
+    "testWindow": "Parent explicitly released heavy-test window before independent execution; no fullCI rerun by Reviewer A."
+  },
+  "sourceReview": {
+    "changedSourcePaths": [
+      "scripts/tests/phase3-e09-b11-final-binding.test.ts",
+      "scripts/tests/phase3-efp-k03-evidence-contract.test.ts"
+    ],
+    "implementationObjects": {
+      "scripts/tests/phase3-e09-b11-final-binding.test.ts": "f3209f0617ca9304c0397d5f7e77956aa1c2f782",
+      "scripts/tests/phase3-efp-k03-evidence-contract.test.ts": "5a4b13c56319e5f1ca619b60e90f989a795c5178"
+    },
+    "historicalB11Fixture": "b5e68444f55ea9fc1a86a9eea0ea0bedce3de229",
+    "frozenK03Fixture": "9d2854d241bfdb5eefc426b3ec854b802062e4ca",
+    "differentOuterFixture": "a42b5e1c517141b90f3407773958b0d8afe63264",
+    "b11Change": "One buildSnapshotAtCheckout call now receives existing historicalDirectory instead of outer root; all original 55 B11 tests, comparisons and negative assertions are preserved.",
+    "preservedNegatives": [
+      "tampered raw bytes/hash/length",
+      "stale candidate/review",
+      "unknown schema/path/control files",
+      "dirty and committed runtime drift",
+      "historical failed-CI exit 1 and no inherited acceptance",
+      "exact main/control/review/governance bindings"
+    ],
+    "k03Boundary": "Explicit fixture context, frozen RB commit and pinned objects; future outer HEAD is not locked to K03.",
+    "k03Negatives": [
+      "seven tampered/unbound references",
+      "three observed source/test/byte drifts",
+      "different explicit outer context rejected while frozen fixture remains valid",
+      "real committed loader drift in disposable fixture rejected despite unchanged historical RB"
+    ],
+    "unauthorizedChangesFound": false,
+    "productionRuntimeChanged": false,
+    "productionValidatorChanged": false,
+    "policyPackageWorkflowTimeoutChanged": false,
+    "protectedObjectsVerified": 9,
+    "carrierDelta": "Only named finalization packet and report; direct parent is tested implementation. Assembly-to-carrier diff is exactly the four dispatch-authorized paths."
+  },
+  "exactRbDependency": {
+    "candidate": "540abe6c8cadc015fe7ad4030673091405a61063",
+    "reviewCommit": "9d2854d241bfdb5eefc426b3ec854b802062e4ca",
+    "testedImplementationSha": "e239b3cc0b24dd2521468d42994cb24d5dc34750",
+    "reviewPath": "docs/reviews/phase3/P3-EFP-K03-B-540abe6-reviewer-b.json",
+    "reviewSha256": "0214eccc3f2b5701752d2461085bb10c01c02ac7d35a2bcc0f3209726bfad119",
+    "packetPath": "artifacts/phase3-efp-k03-static-reward-guard.json",
+    "packetSha256": "ee707b5133cc5f495c58aeda027a61501447739d619b9d2993e869d173a8caac",
+    "acceptedScope": "CURRENT_MAIN_STATIC_REWARD_COMPILED_ENVELOPE_GUARD: activation/lifecycle/limit/visibility only",
+    "wholeTrees": [
+      {
+        "path": "packages/rules/src",
+        "object": "7e2086aef86ffde917bd6b12e994b2360a2e8a55"
+      },
+      {
+        "path": "packages/rules/tests",
+        "object": "5c0d26f74648c16fe359fb9235c12c5dacefe08a"
+      }
+    ],
+    "wholeTreeEqualityVerifiedAcross": [
+      "e239b3cc0b24dd2521468d42994cb24d5dc34750",
+      "540abe6c8cadc015fe7ad4030673091405a61063",
+      "9d2854d241bfdb5eefc426b3ec854b802062e4ca",
+      "7124364b1d9909273e8bf1d1baba2f0691fe5801",
+      "6679730b2fad17873025016771c4febf3e11aea7",
+      "8a900a2bed074508dcd8e4e0affde523763291b0"
+    ],
+    "files": [
+      {
+        "path": "packages/rules/src/ability/loader.ts",
+        "gitBlob": "bbaf57a4e23b2a038d45745826a987484eb332fd",
+        "sha256": "74788600fd72fb6c7d63727584d2e2ef1b010b5ffd8adcc2921bc4e51fad81cc"
+      },
+      {
+        "path": "packages/rules/tests/fb2-34-combat-reward-distribution.test.ts",
+        "gitBlob": "7f91ec3762daec7ce7ed414985e75fbbfa4f9691",
+        "sha256": "30019f597d94890dd0bf7541c9c3ac02ca384bd227a81d89a0c53374bd50386c"
+      }
+    ],
+    "baselineRelationship": "a42b5e1c is explicitly pre-guard history; both baseline rules trees differ from reviewed K03.",
+    "reuseRule": "Original RB scope reused solely through exact whole-current rules-source/test tree and file equality, ancestry and unchanged review/packet bytes. No new runtime acceptance."
+  },
+  "evidenceVerification": {
+    "verifiedAtUtc": "2026-10-14T00:56:58.078Z",
+    "checks": [
+      "Exact carrier parent, remote producer ref and clean checkout",
+      "Exact packet and report Git blob bytes/hash",
+      "Dispatch commit/path/blob/hash",
+      "Whole-current rules and test trees and changed file hashes",
+      "All 15 finalization raw streams: canonical base64, length and SHA-256",
+      "Original failed CI structured receipt copied exactly from immutable candidate",
+      "Original 15 RB command receipt metadata hashes and 30 raw command streams, including failures; local original logs byte-equal",
+      "Original receipt source commits and loader/test blobs exist; source-tree relationships inspected",
+      "Fresh install/typecheck/focused/defaultCI exit codes, source SHA, chronological order and output summaries",
+      "Saved temporary coverage snapshot hash, counts and complete equality to immutable B11 except generatedAt",
+      "Tracked coverage unchanged; acceptance/promotion flags false and credit deltas zero"
+    ],
+    "finalizationRawStreamCount": 15,
+    "finalizationRawStreams": [
+      {
+        "path": "packet.currentSourceVerification.originalFailingCiReceipt.stdout",
+        "bytes": 39182,
+        "sha256": "5365d44c8eea427e244c6bdf7506e9d26872dcb0574b850f7dc65469b7d272eb"
+      },
+      {
+        "path": "packet.currentSourceVerification.originalFailingCiReceipt.stderr",
+        "bytes": 6895,
+        "sha256": "cd21035d1209f5297334a01af47483360927d8a4d533cb70f2d409df8e61ca0d"
+      },
+      {
+        "path": "packet.preservedBaselineReproduction.combinedOutput",
+        "bytes": 12777,
+        "sha256": "b2b08a29aaca38c100a98d0caa41ed2813685405d9ec5f1d5cb02f04d3e0a286"
+      },
+      {
+        "path": "packet.supersededDraftFocusedReceipt.stdout",
+        "bytes": 14006,
+        "sha256": "076de084b66c1a470170ab1e5b812ac6d1eb6660705f4b7ac7e46b8610fff819"
+      },
+      {
+        "path": "packet.supersededDraftFocusedReceipt.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "packet.freshValidationReceipts.0.stdout",
+        "bytes": 361,
+        "sha256": "2291069750aa373942e445c85ffa0eee9d4cd41cb6475554085edf64cce6bba6"
+      },
+      {
+        "path": "packet.freshValidationReceipts.0.stderr",
+        "bytes": 122,
+        "sha256": "67389c0b6efbe86c5fc51293d278be25159d27ace6d73ae2da626b49a0143470"
+      },
+      {
+        "path": "packet.freshValidationReceipts.1.stdout",
+        "bytes": 42,
+        "sha256": "fe697f3caea6aa3017ce001f09cac853c9f311a09a2c043dc56f82c15f02d1d4"
+      },
+      {
+        "path": "packet.freshValidationReceipts.1.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "packet.freshValidationReceipts.2.stdout",
+        "bytes": 14337,
+        "sha256": "c3b449a9e836615bd6cbee3c6e542731237253a88c1347b84af671f6b8b81571"
+      },
+      {
+        "path": "packet.freshValidationReceipts.2.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "packet.freshValidationReceipts.3.stdout",
+        "bytes": 482,
+        "sha256": "f163989b3574311b6c3b4a00d166855b2f73e8fc6576bffd5c5df206a36326dc"
+      },
+      {
+        "path": "packet.freshValidationReceipts.3.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "packet.freshValidationReceipts.4.stdout",
+        "bytes": 41218,
+        "sha256": "edd121115e8671f10c40f0ec460cc3d969dcf84078f873dbbd749fcb378727e2"
+      },
+      {
+        "path": "packet.freshValidationReceipts.4.stderr",
+        "bytes": 5912,
+        "sha256": "ca00b808b38553da320a270a8ffc9c5765c6e312c659810c7ad3503beaab8ed9"
+      }
+    ],
+    "originalFailedCi": {
+      "sourceSha": "e239b3cc0b24dd2521468d42994cb24d5dc34750",
+      "exitCode": 1,
+      "receiptSha256": "1c52fac84322c1ed93ddaa43df32248a3ab85a34a7764e945981d9aaa58fd410",
+      "preservedExactly": true
+    },
+    "baselineFailure": {
+      "sourceSha": "7124364b1d9909273e8bf1d1baba2f0691fe5801",
+      "exitCode": 1
+    },
+    "supersededDraft": {
+      "sourceSha": "6e2863244fe0b3d66f4553623847179735998e8c",
+      "exitCode": 0
+    },
+    "originalRbReceipts": {
+      "originalReceiptCount": 15,
+      "originalCommandStreams": 30,
+      "localOriginalsByteEqual": true,
+      "receiptMetadataHashesVerified": true,
+      "rows": [
+        {
+          "id": "default-ci",
+          "exitCode": 1,
+          "sourceSha": "e239b3cc0b24dd2521468d42994cb24d5dc34750",
+          "loaderBlob": "bbaf57a4e23b2a038d45745826a987484eb332fd",
+          "testBlob": "7f91ec3762daec7ce7ed414985e75fbbfa4f9691",
+          "receiptSha256": "1c52fac84322c1ed93ddaa43df32248a3ab85a34a7764e945981d9aaa58fd410",
+          "sourceLoader": "bbaf57a4e23b2a038d45745826a987484eb332fd",
+          "sourceTest": "7f91ec3762daec7ce7ed414985e75fbbfa4f9691"
+        },
+        {
+          "id": "green-diff-check",
+          "exitCode": 0,
+          "sourceSha": "e239b3cc0b24dd2521468d42994cb24d5dc34750",
+          "loaderBlob": "bbaf57a4e23b2a038d45745826a987484eb332fd",
+          "testBlob": "7f91ec3762daec7ce7ed414985e75fbbfa4f9691",
+          "receiptSha256": "141313c1959882f1c560b0e88da4017df93891c901fc44545cbf8917ad9716bb",
+          "sourceLoader": "bbaf57a4e23b2a038d45745826a987484eb332fd",
+          "sourceTest": "7f91ec3762daec7ce7ed414985e75fbbfa4f9691"
+        },
+        {
+          "id": "green-final-focused",
+          "exitCode": 0,
+          "sourceSha": "e239b3cc0b24dd2521468d42994cb24d5dc34750",
+          "loaderBlob": "bbaf57a4e23b2a038d45745826a987484eb332fd",
+          "testBlob": "7f91ec3762daec7ce7ed414985e75fbbfa4f9691",
+          "receiptSha256": "e8aa2d73f003880c89c4d5507819410677b18ac162eb9bc2e064291d28605d69",
+          "sourceLoader": "bbaf57a4e23b2a038d45745826a987484eb332fd",
+          "sourceTest": "7f91ec3762daec7ce7ed414985e75fbbfa4f9691"
+        },
+        {
+          "id": "green-final-typecheck",
+          "exitCode": 0,
+          "sourceSha": "e239b3cc0b24dd2521468d42994cb24d5dc34750",
+          "loaderBlob": "bbaf57a4e23b2a038d45745826a987484eb332fd",
+          "testBlob": "7f91ec3762daec7ce7ed414985e75fbbfa4f9691",
+          "receiptSha256": "8a003b82e86cf06c2090bba19eafdb55c6f35963be182d93a682f5480eb329d1",
+          "sourceLoader": "bbaf57a4e23b2a038d45745826a987484eb332fd",
+          "sourceTest": "7f91ec3762daec7ce7ed414985e75fbbfa4f9691"
+        },
+        {
+          "id": "green-focused",
+          "exitCode": 1,
+          "sourceSha": "13d0922ebbdb5a30c814d1164ce4535096cb9df0",
+          "loaderBlob": "bbaf57a4e23b2a038d45745826a987484eb332fd",
+          "testBlob": "498037717ee7449bd37efedf89469fe3a3eee349",
+          "receiptSha256": "a1baf59694f10906b05b94da4d0f4bfd12d705c16749344581bb19bd160d207d",
+          "sourceLoader": "bbaf57a4e23b2a038d45745826a987484eb332fd",
+          "sourceTest": "498037717ee7449bd37efedf89469fe3a3eee349"
+        },
+        {
+          "id": "green-typecheck",
+          "exitCode": 0,
+          "sourceSha": "13d0922ebbdb5a30c814d1164ce4535096cb9df0",
+          "loaderBlob": "bbaf57a4e23b2a038d45745826a987484eb332fd",
+          "testBlob": "498037717ee7449bd37efedf89469fe3a3eee349",
+          "receiptSha256": "41d8fe2f5728f0191a7a6f269f38651ba01a3af3c77aaa8c5c671707bdaf7969",
+          "sourceLoader": "bbaf57a4e23b2a038d45745826a987484eb332fd",
+          "sourceTest": "498037717ee7449bd37efedf89469fe3a3eee349"
+        },
+        {
+          "id": "red-activation",
+          "exitCode": 0,
+          "sourceSha": "4e72e2c9b78a0e8ec7f76bc7be47767faa427e92",
+          "loaderBlob": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+          "testBlob": "498037717ee7449bd37efedf89469fe3a3eee349",
+          "receiptSha256": "a966d15ff3a6c396f62c7c677f4a8f9f4f0e419e2e903346f641bc7ce5a6a004",
+          "sourceLoader": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+          "sourceTest": "498037717ee7449bd37efedf89469fe3a3eee349"
+        },
+        {
+          "id": "red-confirmed-activation",
+          "exitCode": 1,
+          "sourceSha": "4e72e2c9b78a0e8ec7f76bc7be47767faa427e92",
+          "loaderBlob": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+          "testBlob": "498037717ee7449bd37efedf89469fe3a3eee349",
+          "receiptSha256": "b1c436e563ea7c0478f8e807cf5f6d5ccda04a63b117e0ec87bce5e0ae0efa2b",
+          "sourceLoader": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+          "sourceTest": "498037717ee7449bd37efedf89469fe3a3eee349"
+        },
+        {
+          "id": "red-confirmed-lifecycle",
+          "exitCode": 1,
+          "sourceSha": "4e72e2c9b78a0e8ec7f76bc7be47767faa427e92",
+          "loaderBlob": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+          "testBlob": "498037717ee7449bd37efedf89469fe3a3eee349",
+          "receiptSha256": "69a3c503af0cb5b9fcb1470c96c7fa4c5025b0b905b729c47718c2f5d78e786b",
+          "sourceLoader": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+          "sourceTest": "498037717ee7449bd37efedf89469fe3a3eee349"
+        },
+        {
+          "id": "red-confirmed-limit",
+          "exitCode": 1,
+          "sourceSha": "4e72e2c9b78a0e8ec7f76bc7be47767faa427e92",
+          "loaderBlob": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+          "testBlob": "498037717ee7449bd37efedf89469fe3a3eee349",
+          "receiptSha256": "8f74703ca5771b7275480c7d212e6a4f2e9a6b57e2eb7bd3ad00dff0b14ed643",
+          "sourceLoader": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+          "sourceTest": "498037717ee7449bd37efedf89469fe3a3eee349"
+        },
+        {
+          "id": "red-confirmed-visibility",
+          "exitCode": 1,
+          "sourceSha": "4e72e2c9b78a0e8ec7f76bc7be47767faa427e92",
+          "loaderBlob": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+          "testBlob": "498037717ee7449bd37efedf89469fe3a3eee349",
+          "receiptSha256": "8e5c4e99f5246a91489ca8703e22f8c8bf5cea1ee5f52afe70623dc0b945cfce",
+          "sourceLoader": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+          "sourceTest": "498037717ee7449bd37efedf89469fe3a3eee349"
+        },
+        {
+          "id": "red-final-tests-unfixed-loader",
+          "exitCode": 1,
+          "sourceSha": "e239b3cc0b24dd2521468d42994cb24d5dc34750",
+          "loaderBlob": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+          "testBlob": "7f91ec3762daec7ce7ed414985e75fbbfa4f9691",
+          "receiptSha256": "fa24267f154afee94edfe5050f3d842f9e9ede3f0338d587e090397cdd1d3611",
+          "sourceLoader": "bbaf57a4e23b2a038d45745826a987484eb332fd",
+          "sourceTest": "7f91ec3762daec7ce7ed414985e75fbbfa4f9691"
+        },
+        {
+          "id": "red-lifecycle",
+          "exitCode": 0,
+          "sourceSha": "4e72e2c9b78a0e8ec7f76bc7be47767faa427e92",
+          "loaderBlob": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+          "testBlob": "498037717ee7449bd37efedf89469fe3a3eee349",
+          "receiptSha256": "c6c2e650d5d03b9ce590e9aaedfc4130300fafbf832856dea95b80c35892c031",
+          "sourceLoader": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+          "sourceTest": "498037717ee7449bd37efedf89469fe3a3eee349"
+        },
+        {
+          "id": "red-limit",
+          "exitCode": 0,
+          "sourceSha": "4e72e2c9b78a0e8ec7f76bc7be47767faa427e92",
+          "loaderBlob": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+          "testBlob": "498037717ee7449bd37efedf89469fe3a3eee349",
+          "receiptSha256": "c29a20d9e48426a0d2cf5dccb69ae9dfc3afda38474de393058185cfd28c1946",
+          "sourceLoader": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+          "sourceTest": "498037717ee7449bd37efedf89469fe3a3eee349"
+        },
+        {
+          "id": "red-visibility",
+          "exitCode": 0,
+          "sourceSha": "4e72e2c9b78a0e8ec7f76bc7be47767faa427e92",
+          "loaderBlob": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+          "testBlob": "498037717ee7449bd37efedf89469fe3a3eee349",
+          "receiptSha256": "c713f97d6403d40d1ea7f7854f9ec1196ea3fb611f161e806c4996f9930381b3",
+          "sourceLoader": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+          "sourceTest": "498037717ee7449bd37efedf89469fe3a3eee349"
+        }
+      ]
+    },
+    "originalReceiptHashMethod": "Remove receiptSha256/evidenceRole and stdout/stderr raw/encoding fields; SHA-256 of JSON.stringify(metadata, null, 2) plus newline.",
+    "originalReceiptInterpretation": "red-final-tests-unfixed-loader intentionally uses baseline loader blob overlay on e239b3cc; retained as declared historical overlay, not source equality. Four invalid all-skipped red filter exits 0 are retained but do not prove red/green acceptance.",
+    "freshProducerReceipts": [
+      {
+        "command": "npm ci",
+        "sourceSha": "6679730b2fad17873025016771c4febf3e11aea7",
+        "exitCode": 0,
+        "startedAtUtc": "2026-10-14T00:43:34.397Z",
+        "endedAtUtc": "2026-10-14T00:43:42.103Z"
+      },
+      {
+        "command": "npm run typecheck",
+        "sourceSha": "6679730b2fad17873025016771c4febf3e11aea7",
+        "exitCode": 0,
+        "startedAtUtc": "2026-10-14T00:43:46.954Z",
+        "endedAtUtc": "2026-10-14T00:43:47.631Z"
+      },
+      {
+        "command": "npx vitest run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-efp-k03-evidence-contract.test.ts scripts/tests/phase3-readiness-preflight.test.ts scripts/tests/phase3-contract-parity.test.ts packages/rules/tests/fb2-34-combat-reward-distribution.test.ts packages/rules/tests/stheno-consumer-migration.test.ts --maxWorkers=2",
+        "sourceSha": "6679730b2fad17873025016771c4febf3e11aea7",
+        "exitCode": 0,
+        "startedAtUtc": "2026-10-14T00:43:51.862Z",
+        "endedAtUtc": "2026-10-14T00:46:18.115Z"
+      },
+      {
+        "command": "exported runPhase3CoverageCli([--out, absoluteTempPath], worktree) via node --import tsx",
+        "sourceSha": "6679730b2fad17873025016771c4febf3e11aea7",
+        "exitCode": 0,
+        "startedAtUtc": "2026-10-14T00:45:09.673Z",
+        "endedAtUtc": "2026-10-14T00:45:10.049Z"
+      },
+      {
+        "command": "npm run test:ci",
+        "sourceSha": "6679730b2fad17873025016771c4febf3e11aea7",
+        "exitCode": 0,
+        "startedAtUtc": "2026-10-14T00:47:01.996Z",
+        "endedAtUtc": "2026-10-14T00:51:31.156Z"
+      }
+    ],
+    "producerFocused": {
+      "files": 6,
+      "tests": 129,
+      "exitCode": 0
+    },
+    "producerFullCI": {
+      "files": 196,
+      "tests": 1651,
+      "exitCode": 0,
+      "sourceSha": "6679730b2fad17873025016771c4febf3e11aea7",
+      "independentlyRerun": false
+    },
+    "coverage": {
+      "sha256": "877a31198cbe6c92dcc5b78e7bd70ca6f37a6b0fa5cbcf706949a0adb22524a3",
+      "counts": {
+        "new": 23,
+        "legacyResolve": 144,
+        "legacyExecute": 3,
+        "dual": 0,
+        "notClassifiable": 111
+      },
+      "equalExceptGeneratedAt": true
+    }
+  },
+  "independentExecution": {
+    "command": "node node_modules/vitest/vitest.mjs run scripts/tests/phase3-e09-b11-final-binding.test.ts scripts/tests/phase3-efp-k03-evidence-contract.test.ts --maxWorkers=2",
+    "cwd": "D:\\fd-validation\\k03-evidence-finalization",
+    "sourceSha": "8a900a2bed074508dcd8e4e0affde523763291b0",
+    "startedAtUtc": "2026-10-14T00:54:49.221Z",
+    "endedAtUtc": "2026-10-14T00:56:20.695Z",
+    "exitCode": 0,
+    "stdout": {
+      "encoding": "base64",
+      "raw": "CiBSVU4gIHYzLjIuNyBEOi9mZC12YWxpZGF0aW9uL2swMy1ldmlkZW5jZS1maW5hbGl6YXRpb24KCnN0ZG91dCB8IHNjcmlwdHMvdGVzdHMvcGhhc2UzLWUwOS1iMTEtZmluYWwtYmluZGluZy50ZXN0LnRzCkZEX0VWSURFTkNFX0ZJWFRVUkVfVElNSU5HIHsiZmlsZSI6InBoYXNlMy1lMDktYjExLWZpbmFsLWJpbmRpbmcudGVzdC50cyIsIm5hbWUiOiJzaGFyZWQgaGlzdG9yaWNhbCBvYmplY3RzIGFuZCB0cmFuc3BvcnQgYmluZGluZyIsImR1cmF0aW9uTXMiOjY1Mjh9CgpzdGRvdXQgfCBzY3JpcHRzL3Rlc3RzL3BoYXNlMy1lMDktYjExLWZpbmFsLWJpbmRpbmcudGVzdC50cyA+IGNhbmRpZGF0ZSAtPiBpbmRlcGVuZGVudCBSQSAtPiBHIC0+IHN5bmNocm9uaXphdGlvbiAtPiBhY3R1YWwgZmluYWwgSEVBRCBjbG9zdXJlCkZEX0VWSURFTkNFX0ZJWFRVUkVfVElNSU5HIHsiZmlsZSI6InBoYXNlMy1lMDktYjExLWZpbmFsLWJpbmRpbmcudGVzdC50cyIsIm5hbWUiOiJmcm96ZW4gcHJvZHVjZXIgYW5kIGNvbnRyYWN0IGJpbmRpbmciLCJkdXJhdGlvbk1zIjoyOTk4fQoKc3Rkb3V0IHwgc2NyaXB0cy90ZXN0cy9waGFzZTMtZTA5LWIxMS1maW5hbC1iaW5kaW5nLnRlc3QudHMgPiBjYW5kaWRhdGUgLT4gaW5kZXBlbmRlbnQgUkEgLT4gRyAtPiBzeW5jaHJvbml6YXRpb24gLT4gYWN0dWFsIGZpbmFsIEhFQUQgY2xvc3VyZQpGRF9FVklERU5DRV9GSVhUVVJFX1RJTUlORyB7ImZpbGUiOiJwaGFzZTMtZTA5LWIxMS1maW5hbC1iaW5kaW5nLnRlc3QudHMiLCJuYW1lIjoiaW5kZXBlbmRlbnQgZXhhY3QgcmV2aWV3IGZpeHR1cmUiLCJkdXJhdGlvbk1zIjo4MTB9CgpzdGRvdXQgfCBzY3JpcHRzL3Rlc3RzL3BoYXNlMy1lMDktYjExLWZpbmFsLWJpbmRpbmcudGVzdC50cyA+IGNhbmRpZGF0ZSAtPiBpbmRlcGVuZGVudCBSQSAtPiBHIC0+IHN5bmNocm9uaXphdGlvbiAtPiBhY3R1YWwgZmluYWwgSEVBRCBjbG9zdXJlCkZEX0VWSURFTkNFX0ZJWFRVUkVfVElNSU5HIHsiZmlsZSI6InBoYXNlMy1lMDktYjExLWZpbmFsLWJpbmRpbmcudGVzdC50cyIsIm5hbWUiOiJ0aHJlZSBleGFjdCBnb3Zlcm5hbmNlIG91dHB1dHMiLCJkdXJhdGlvbk1zIjo0NzV9CgpzdGRvdXQgfCBzY3JpcHRzL3Rlc3RzL3BoYXNlMy1lMDktYjExLWZpbmFsLWJpbmRpbmcudGVzdC50cyA+IGNhbmRpZGF0ZSAtPiBpbmRlcGVuZGVudCBSQSAtPiBHIC0+IHN5bmNocm9uaXphdGlvbiAtPiBhY3R1YWwgZmluYWwgSEVBRCBjbG9zdXJlCkZEX0VWSURFTkNFX0ZJWFRVUkVfVElNSU5HIHsiZmlsZSI6InBoYXNlMy1lMDktYjExLWZpbmFsLWJpbmRpbmcudGVzdC50cyIsIm5hbWUiOiJzeW5jaHJvbml6YXRpb24gYW5kIGFjdHVhbCBmaW5hbCBIRUFEIiwiZHVyYXRpb25NcyI6OTc5fQoKc3Rkb3V0IHwgc2NyaXB0cy90ZXN0cy9waGFzZTMtZTA5LWIxMS1maW5hbC1iaW5kaW5nLnRlc3QudHMgPiBjYW5kaWRhdGUgLT4gaW5kZXBlbmRlbnQgUkEgLT4gRyAtPiBzeW5jaHJvbml6YXRpb24gLT4gYWN0dWFsIGZpbmFsIEhFQUQgY2xvc3VyZQpGRF9FVklERU5DRV9GSVhUVVJFX1RJTUlORyB7ImZpbGUiOiJwaGFzZTMtZTA5LWIxMS1maW5hbC1iaW5kaW5nLnRlc3QudHMiLCJuYW1lIjoiY29tcGxldGUgbmV3IGNhbmRpZGF0ZSBSQSBHIGZpbmFsIHByb29mIiwiZHVyYXRpb25NcyI6NjU5MX0KCiDinJMgc2NyaXB0cy90ZXN0cy9waGFzZTMtZWZwLWswMy1ldmlkZW5jZS1jb250cmFjdC50ZXN0LnRzICgxMyB0ZXN0cykgMjMyMDVtcwogICDinJMgSzAzIGV4YWN0IHNvdXJjZSBhbmQgc2NvcGVkIFJCIGV2aWRlbmNlIHJlbWFpbiBzZXBhcmF0ZSBmcm9tIEIxMSBoaXN0b3J5ID4gYmluZHMgZnJvemVuIHNvdXJjZS90ZXN0IG9iamVjdHMgdG8gZXhhY3QgUkIgd2hpbGUgY2xhc3NpZnlpbmcgYmFzZWxpbmUgYXMgcHJlLWd1YXJkIGhpc3RvcnkgIDI5ODFtcwogICDinJMgSzAzIGV4YWN0IHNvdXJjZSBhbmQgc2NvcGVkIFJCIGV2aWRlbmNlIHJlbWFpbiBzZXBhcmF0ZSBmcm9tIEIxMSBoaXN0b3J5ID4gdmVyaWZpZXMgZnJvemVuIEswMyBpbmRlcGVuZGVudGx5IG9mIGEgZGlmZmVyZW50IG91dGVyIHJ1bnRpbWUsIHRlc3QgYW5kIHJlcG9ydCBIRUFEICAzNjc4bXMKICAg4pyTIEswMyBleGFjdCBzb3VyY2UgYW5kIHNjb3BlZCBSQiBldmlkZW5jZSByZW1haW4gc2VwYXJhdGUgZnJvbSBCMTEgaGlzdG9yeSA+IHJlamVjdHMgb2JzZXJ2ZWQgY3VycmVudCBzb3VyY2UgZHJpZnQgZGVzcGl0ZSB2YWxpZCBoaXN0b3JpY2FsIFJCICAxMjkxbXMKICAg4pyTIEswMyBleGFjdCBzb3VyY2UgYW5kIHNjb3BlZCBSQiBldmlkZW5jZSByZW1haW4gc2VwYXJhdGUgZnJvbSBCMTEgaGlzdG9yeSA+IHJlamVjdHMgb2JzZXJ2ZWQgY3VycmVudCB0ZXN0IGRyaWZ0IGRlc3BpdGUgdmFsaWQgaGlzdG9yaWNhbCBSQiAgMTU2MW1zCiAgIOKckyBLMDMgZXhhY3Qgc291cmNlIGFuZCBzY29wZWQgUkIgZXZpZGVuY2UgcmVtYWluIHNlcGFyYXRlIGZyb20gQjExIGhpc3RvcnkgPiByZWplY3RzIG9ic2VydmVkIGN1cnJlbnQgYnl0ZXMgZHJpZnQgZGVzcGl0ZSB2YWxpZCBoaXN0b3JpY2FsIFJCICAxNDMybXMKICAg4pyTIEswMyBleGFjdCBzb3VyY2UgYW5kIHNjb3BlZCBSQiBldmlkZW5jZSByZW1haW4gc2VwYXJhdGUgZnJvbSBCMTEgaGlzdG9yeSA+IHJlamVjdHMgYWN0dWFsIGNvbW1pdHRlZCBmaXh0dXJlIHJ1bnRpbWUgZHJpZnQgZGVzcGl0ZSB1bmNoYW5nZWQgYWNjZXB0ZWQgUkIgIDIwNjFtcwpzdGRvdXQgfCBzY3JpcHRzL3Rlc3RzL3BoYXNlMy1lMDktYjExLWZpbmFsLWJpbmRpbmcudGVzdC50cyA+IGNhbmRpZGF0ZSAtPiBpbmRlcGVuZGVudCBSQSAtPiBHIC0+IHN5bmNocm9uaXphdGlvbiAtPiBhY3R1YWwgZmluYWwgSEVBRCBjbG9zdXJlCkZEX0VWSURFTkNFX0ZJWFRVUkVfVElNSU5HIHsiZmlsZSI6InBoYXNlMy1lMDktYjExLWZpbmFsLWJpbmRpbmcudGVzdC50cyIsIm5hbWUiOiJjb21wbGV0ZSByZWFsIHJlamVjdGVkIGhpc3RvcmljYWwgcHJvb2YiLCJkdXJhdGlvbk1zIjo1NTI2fQoKc3Rkb3V0IHwgc2NyaXB0cy90ZXN0cy9waGFzZTMtZTA5LWIxMS1maW5hbC1iaW5kaW5nLnRlc3QudHMgPiBleHBsaWNpdCBpbW11dGFibGUgcmVhbCBhc3NlbWJseSBpcyBub3QgYSBwcm9kdWNlciBmaXh0dXJlCkZEX0VWSURFTkNFX0ZJWFRVUkVfVElNSU5HIHsiZmlsZSI6InBoYXNlMy1lMDktYjExLWZpbmFsLWJpbmRpbmcudGVzdC50cyIsIm5hbWUiOiJleHBsaWNpdCBoaXN0b3JpY2FsIHJlYWwgYXNzZW1ibHkgY2hlY2tvdXQiLCJkdXJhdGlvbk1zIjoxNjYzM30KCnN0ZG91dCB8IHNjcmlwdHMvdGVzdHMvcGhhc2UzLWUwOS1iMTEtZmluYWwtYmluZGluZy50ZXN0LnRzID4gQjExIGN1cnJlbnQgdHJhbnNwb3J0IGV2aWRlbmNlIGlzIGRpc3RpbmN0IGZyb20gaW1tdXRhYmxlIGhpc3RvcnkKRkRfRVZJREVOQ0VfRklYVFVSRV9USU1JTkcgeyJmaWxlIjoicGhhc2UzLWUwOS1iMTEtZmluYWwtYmluZGluZy50ZXN0LnRzIiwibmFtZSI6InJlc3RvcmUgZXhhY3QgdHJhbnNwb3J0IGZpeHR1cmUiLCJkdXJhdGlvbk1zIjoyNjB9CgpzdGRvdXQgfCBzY3JpcHRzL3Rlc3RzL3BoYXNlMy1lMDktYjExLWZpbmFsLWJpbmRpbmcudGVzdC50cyA+IGludGVncmF0aW9uIGJpbmRzIHByZXNlcnZlZCBtYWluIGNvbnRyb2wgd2l0aG91dCBicm9hZGVuaW5nIGhpc3RvcmljYWwgYWNjZXB0YW5jZQpGRF9FVklERU5DRV9GSVhUVVJFX1RJTUlORyB7ImZpbGUiOiJwaGFzZTMtZTA5LWIxMS1maW5hbC1iaW5kaW5nLnRlc3QudHMiLCJuYW1lIjoiaW1tdXRhYmxlIGludGVncmF0aW9uIGNvbnRyYWN0IGFuZCBjaGVja291dCIsImR1cmF0aW9uTXMiOjgxMn0KCnN0ZG91dCB8IHNjcmlwdHMvdGVzdHMvcGhhc2UzLWUwOS1iMTEtZmluYWwtYmluZGluZy50ZXN0LnRzID4gaW50ZWdyYXRpb24gYmluZHMgcHJlc2VydmVkIG1haW4gY29udHJvbCB3aXRob3V0IGJyb2FkZW5pbmcgaGlzdG9yaWNhbCBhY2NlcHRhbmNlCkZEX0VWSURFTkNFX0ZJWFRVUkVfVElNSU5HIHsiZmlsZSI6InBoYXNlMy1lMDktYjExLWZpbmFsLWJpbmRpbmcudGVzdC50cyIsIm5hbWUiOiJjb21wbGV0ZSBwcmVzZXJ2ZWQgbWFpbiBhbmQgdGVjaG5pY2FsIHByZWZsaWdodCIsImR1cmF0aW9uTXMiOjMyNzF9Cgog4pyTIHNjcmlwdHMvdGVzdHMvcGhhc2UzLWUwOS1iMTEtZmluYWwtYmluZGluZy50ZXN0LnRzICg1NSB0ZXN0cykgOTAwNjltcwogICDinJMgY2FuZGlkYXRlIC0+IGluZGVwZW5kZW50IFJBIC0+IEcgLT4gc3luY2hyb25pemF0aW9uIC0+IGFjdHVhbCBmaW5hbCBIRUFEIGNsb3N1cmUgPiByZWplY3RzIGR1cGxpY2F0ZS1yZXZpZXcgaW4gdGhlIGFzc2VtYmxlZCBjbG9zdXJlICAxMTU1bXMKICAg4pyTIGNhbmRpZGF0ZSAtPiBpbmRlcGVuZGVudCBSQSAtPiBHIC0+IHN5bmNocm9uaXphdGlvbiAtPiBhY3R1YWwgZmluYWwgSEVBRCBjbG9zdXJlID4gcmVqZWN0cyBmb3JnZWQtcGFzcyBpbiB0aGUgYXNzZW1ibGVkIGNsb3N1cmUgIDE1NzdtcwogICDinJMgY2FuZGlkYXRlIC0+IGluZGVwZW5kZW50IFJBIC0+IEcgLT4gc3luY2hyb25pemF0aW9uIC0+IGFjdHVhbCBmaW5hbCBIRUFEIGNsb3N1cmUgPiByZWplY3RzIGJhZC1yZXZpZXctaGFzaCBpbiB0aGUgYXNzZW1ibGVkIGNsb3N1cmUgIDE1OTBtcwogICDinJMgY2FuZGlkYXRlIC0+IGluZGVwZW5kZW50IFJBIC0+IEcgLT4gc3luY2hyb25pemF0aW9uIC0+IGFjdHVhbCBmaW5hbCBIRUFEIGNsb3N1cmUgPiByZWplY3RzIHdyb25nLWNhbmRpZGF0ZSBpbiB0aGUgYXNzZW1ibGVkIGNsb3N1cmUgIDE2MTBtcwogICDinJMgY2FuZGlkYXRlIC0+IGluZGVwZW5kZW50IFJBIC0+IEcgLT4gc3luY2hyb25pemF0aW9uIC0+IGFjdHVhbCBmaW5hbCBIRUFEIGNsb3N1cmUgPiByZWplY3RzIHVua25vd24tc2NoZW1hIGluIHRoZSBhc3NlbWJsZWQgY2xvc3VyZSAgMTU3MG1zCiAgIOKckyBjYW5kaWRhdGUgLT4gaW5kZXBlbmRlbnQgUkEgLT4gRyAtPiBzeW5jaHJvbml6YXRpb24gLT4gYWN0dWFsIGZpbmFsIEhFQUQgY2xvc3VyZSA+IHJlamVjdHMgYnJvYWQtc2NvcGUgaW4gdGhlIGFzc2VtYmxlZCBjbG9zdXJlICAxNTcxbXMKICAg4pyTIGNhbmRpZGF0ZSAtPiBpbmRlcGVuZGVudCBSQSAtPiBHIC0+IHN5bmNocm9uaXphdGlvbiAtPiBhY3R1YWwgZmluYWwgSEVBRCBjbG9zdXJlID4gcmVqZWN0cyBzdGFsZS1tYWluIGluIHRoZSBhc3NlbWJsZWQgY2xvc3VyZSAgODg0bXMKICAg4pyTIGNhbmRpZGF0ZSAtPiBpbmRlcGVuZGVudCBSQSAtPiBHIC0+IHN5bmNocm9uaXphdGlvbiAtPiBhY3R1YWwgZmluYWwgSEVBRCBjbG9zdXJlID4gcmVqZWN0cyB3cm9uZy1zeW5jIGluIHRoZSBhc3NlbWJsZWQgY2xvc3VyZSAgMjcxNm1zCiAgIOKckyBjYW5kaWRhdGUgLT4gaW5kZXBlbmRlbnQgUkEgLT4gRyAtPiBzeW5jaHJvbml6YXRpb24gLT4gYWN0dWFsIGZpbmFsIEhFQUQgY2xvc3VyZSA+IHJlamVjdHMgYWN0dWFsIGZpbmFsIHJldmlldyBibG9iIHRhbXBlcmluZyBldmVuIGlmIHRoZSBvcmlnaW5hbCBzb3VyY2UgaGFzaCByZW1haW5zIHZhbGlkICAyMDExbXMKICAg4pyTIGNhbmRpZGF0ZSAtPiBpbmRlcGVuZGVudCBSQSAtPiBHIC0+IHN5bmNocm9uaXphdGlvbiAtPiBhY3R1YWwgZmluYWwgSEVBRCBjbG9zdXJlID4gcmVqZWN0cyBjb21taXR0ZWQgZmluYWwgcnVudGltZSBjaGFuZ2VzIHJhdGhlciB0aGFuIGFjY2VwdGluZyBhIHJldmlld2VkIGFuY2VzdG9yICA2ODltcwogICDinJMgY2FuZGlkYXRlIC0+IGluZGVwZW5kZW50IFJBIC0+IEcgLT4gc3luY2hyb25pemF0aW9uIC0+IGFjdHVhbCBmaW5hbCBIRUFEIGNsb3N1cmUgPiByZWplY3RzIGNvbW1pdHRlZCBmaW5hbCB1bmtub3duIGNoYW5nZXMgcmF0aGVyIHRoYW4gYWNjZXB0aW5nIGEgcmV2aWV3ZWQgYW5jZXN0b3IgIDY3MW1zCiAgIOKckyBleHBsaWNpdCBpbW11dGFibGUgcmVhbCBhc3NlbWJseSBpcyBub3QgYSBwcm9kdWNlciBmaXh0dXJlID4gcmVqZWN0cyBtaXNtYXRjaGVkIHRlbXBvcmFsIGF1dGhvcml0eS1oYXNoIGlucHV0cyAgODY2bXMKICAg4pyTIGV4cGxpY2l0IGltbXV0YWJsZSByZWFsIGFzc2VtYmx5IGlzIG5vdCBhIHByb2R1Y2VyIGZpeHR1cmUgPiByZWplY3RzIG1pc21hdGNoZWQgdGVtcG9yYWwgc291cmNlIGlucHV0cyAgODg4bXMKICAg4pyTIGV4cGxpY2l0IGltbXV0YWJsZSByZWFsIGFzc2VtYmx5IGlzIG5vdCBhIHByb2R1Y2VyIGZpeHR1cmUgPiByZWplY3RzIG1pc21hdGNoZWQgdGVtcG9yYWwgcGF0aHMgaW5wdXRzICAxMDAybXMKICAg4pyTIGV4cGxpY2l0IGltbXV0YWJsZSByZWFsIGFzc2VtYmx5IGlzIG5vdCBhIHByb2R1Y2VyIGZpeHR1cmUgPiByZWplY3RzIG1pc21hdGNoZWQgdGVtcG9yYWwgcmV2aWV3IGlucHV0cyAgOTIzbXMKICAg4pyTIEIxMSBjdXJyZW50IHRyYW5zcG9ydCBldmlkZW5jZSBpcyBkaXN0aW5jdCBmcm9tIGltbXV0YWJsZSBoaXN0b3J5ID4gcmVjb21wdXRlcyBjdXJyZW50IGNvdmVyYWdlIHNlcGFyYXRlbHkgd2l0aG91dCByZXdyaXRpbmcgdGhlIGhpc3RvcmljYWwgYXJ0aWZhY3Qgb3IgY2xhc3NpZmllciAgMjU4MG1zCiAgIOKckyBCMTEgY3VycmVudCB0cmFuc3BvcnQgZXZpZGVuY2UgaXMgZGlzdGluY3QgZnJvbSBpbW11dGFibGUgaGlzdG9yeSA+IGJpbmRzIHNjb3BlZCBSQiwgYWxsIHJhdyBieXRlcywgY3VycmVudCBwcm92aWRlciBhbmQgbGF0ZXIgdHJhbnNwb3J0IGF1dGhvcml6YXRpb24gd2l0aG91dCBpbmhlcml0aW5nIENJIFBBU1MgIDE2NTdtcwogICDinJMgQjExIGN1cnJlbnQgdHJhbnNwb3J0IGV2aWRlbmNlIGlzIGRpc3RpbmN0IGZyb20gaW1tdXRhYmxlIGhpc3RvcnkgPiByZWplY3RzIG1pc3NpbmctYXV0aG9yaXphdGlvbiBldmVuIGlmIHRoZSByZXN0IG9mIHRoZSByZWNvcmQgaXMgdW5jaGFuZ2VkICA0NTJtcwogICDinJMgQjExIGN1cnJlbnQgdHJhbnNwb3J0IGV2aWRlbmNlIGlzIGRpc3RpbmN0IGZyb20gaW1tdXRhYmxlIGhpc3RvcnkgPiByZWplY3RzIGZvcmdlZC1hdXRob3JpemF0aW9uIGV2ZW4gaWYgdGhlIHJlc3Qgb2YgdGhlIHJlY29yZCBpcyB1bmNoYW5nZWQgIDQ1MG1zCiAgIOKckyBCMTEgY3VycmVudCB0cmFuc3BvcnQgZXZpZGVuY2UgaXMgZGlzdGluY3QgZnJvbSBpbW11dGFibGUgaGlzdG9yeSA+IHJlamVjdHMgdW5rbm93bi1zY2hlbWEta2V5IGV2ZW4gaWYgdGhlIHJlc3Qgb2YgdGhlIHJlY29yZCBpcyB1bmNoYW5nZWQgIDQ0OW1zCiAgIOKckyBCMTEgY3VycmVudCB0cmFuc3BvcnQgZXZpZGVuY2UgaXMgZGlzdGluY3QgZnJvbSBpbW11dGFibGUgaGlzdG9yeSA+IHJlamVjdHMgc3RhbGUtY2FuZGlkYXRlIGV2ZW4gaWYgdGhlIHJlc3Qgb2YgdGhlIHJlY29yZCBpcyB1bmNoYW5nZWQgIDQ1N21zCiAgIOKckyBCMTEgY3VycmVudCB0cmFuc3BvcnQgZXZpZGVuY2UgaXMgZGlzdGluY3QgZnJvbSBpbW11dGFibGUgaGlzdG9yeSA+IHJlamVjdHMgc3RhbGUtcmV2aWV3IGV2ZW4gaWYgdGhlIHJlc3Qgb2YgdGhlIHJlY29yZCBpcyB1bmNoYW5nZWQgIDQ1NG1zCiAgIOKckyBCMTEgY3VycmVudCB0cmFuc3BvcnQgZXZpZGVuY2UgaXMgZGlzdGluY3QgZnJvbSBpbW11dGFibGUgaGlzdG9yeSA+IHJlamVjdHMgc291cmNlLW9iamVjdCBldmVuIGlmIHRoZSByZXN0IG9mIHRoZSByZWNvcmQgaXMgdW5jaGFuZ2VkICA0NjZtcwogICDinJMgQjExIGN1cnJlbnQgdHJhbnNwb3J0IGV2aWRlbmNlIGlzIGRpc3RpbmN0IGZyb20gaW1tdXRhYmxlIGhpc3RvcnkgPiByZWplY3RzIGhpc3RvcmljYWwtcGFzcyBldmVuIGlmIHRoZSByZXN0IG9mIHRoZSByZWNvcmQgaXMgdW5jaGFuZ2VkICA0NTdtcwogICDinJMgQjExIGN1cnJlbnQgdHJhbnNwb3J0IGV2aWRlbmNlIGlzIGRpc3RpbmN0IGZyb20gaW1tdXRhYmxlIGhpc3RvcnkgPiByZWplY3RzIGN1cnJlbnQgZGlydHkgc291cmNlIHdoaWxlIHRoZSBoaXN0b3JpY2FsIGNvbnRyYWN0IHJlbWFpbnMgcGlubmVkICA5NDZtcwogICDinJMgQjExIGN1cnJlbnQgdHJhbnNwb3J0IGV2aWRlbmNlIGlzIGRpc3RpbmN0IGZyb20gaW1tdXRhYmxlIGhpc3RvcnkgPiByZWplY3RzIGNvbW1pdHRlZCB1bmtub3duIHBhdGhzIHdpdGhvdXQgZXhwYW5kaW5nIHRoZSBoaXN0b3JpY2FsIGFsbG93bGlzdCAgMTczM21zCiAgIOKckyBpbnRlZ3JhdGlvbiBiaW5kcyBwcmVzZXJ2ZWQgbWFpbiBjb250cm9sIHdpdGhvdXQgYnJvYWRlbmluZyBoaXN0b3JpY2FsIGFjY2VwdGFuY2UgPiByZWplY3RzIGZvcmdlZC9zdGFsZSBtYWluIGJpbmRpbmcgIDg5Mm1zCiAgIOKckyBpbnRlZ3JhdGlvbiBiaW5kcyBwcmVzZXJ2ZWQgbWFpbiBjb250cm9sIHdpdGhvdXQgYnJvYWRlbmluZyBoaXN0b3JpY2FsIGFjY2VwdGFuY2UgPiByZWplY3RzIGZvcmdlZC9zdGFsZSBjYW5kaWRhdGUgYmluZGluZyAgODgybXMKICAg4pyTIGludGVncmF0aW9uIGJpbmRzIHByZXNlcnZlZCBtYWluIGNvbnRyb2wgd2l0aG91dCBicm9hZGVuaW5nIGhpc3RvcmljYWwgYWNjZXB0YW5jZSA+IHJlamVjdHMgZm9yZ2VkL3N0YWxlIGNvbnRyb2wtYmxvYiBiaW5kaW5nICA4OTVtcwogICDinJMgaW50ZWdyYXRpb24gYmluZHMgcHJlc2VydmVkIG1haW4gY29udHJvbCB3aXRob3V0IGJyb2FkZW5pbmcgaGlzdG9yaWNhbCBhY2NlcHRhbmNlID4gcmVqZWN0cyBmb3JnZWQvc3RhbGUgY29udHJvbC1oYXNoIGJpbmRpbmcgIDk5M21zCiAgIOKckyBpbnRlZ3JhdGlvbiBiaW5kcyBwcmVzZXJ2ZWQgbWFpbiBjb250cm9sIHdpdGhvdXQgYnJvYWRlbmluZyBoaXN0b3JpY2FsIGFjY2VwdGFuY2UgPiByZWplY3RzIGZvcmdlZC9zdGFsZSByZXZpZXcgYmluZGluZyAgOTAzbXMKICAg4pyTIGludGVncmF0aW9uIGJpbmRzIHByZXNlcnZlZCBtYWluIGNvbnRyb2wgd2l0aG91dCBicm9hZGVuaW5nIGhpc3RvcmljYWwgYWNjZXB0YW5jZSA+IHJlamVjdHMgZm9yZ2VkL3N0YWxlIGFkb3B0aW9uIGJpbmRpbmcgIDg4OG1zCiAgIOKckyBpbnRlZ3JhdGlvbiBiaW5kcyBwcmVzZXJ2ZWQgbWFpbiBjb250cm9sIHdpdGhvdXQgYnJvYWRlbmluZyBoaXN0b3JpY2FsIGFjY2VwdGFuY2UgPiByZWplY3RzIGZvcmdlZC9zdGFsZSBzY29wZSBiaW5kaW5nICA4OTFtcwogICDinJMgaW50ZWdyYXRpb24gYmluZHMgcHJlc2VydmVkIG1haW4gY29udHJvbCB3aXRob3V0IGJyb2FkZW5pbmcgaGlzdG9yaWNhbCBhY2NlcHRhbmNlID4gcmVqZWN0cyBmb3JnZWQvc3RhbGUgdW5rbm93bi1rZXkgYmluZGluZyAgODkxbXMKICAg4pyTIGludGVncmF0aW9uIGJpbmRzIHByZXNlcnZlZCBtYWluIGNvbnRyb2wgd2l0aG91dCBicm9hZGVuaW5nIGhpc3RvcmljYWwgYWNjZXB0YW5jZSA+IHJlamVjdHMgYSBjb21taXR0ZWQgdGFtcGVyZWQgbWFpbiBjb250cm9sIGJsb2IgIDg3Mm1zCiAgIOKckyBpbnRlZ3JhdGlvbiBiaW5kcyBwcmVzZXJ2ZWQgbWFpbiBjb250cm9sIHdpdGhvdXQgYnJvYWRlbmluZyBoaXN0b3JpY2FsIGFjY2VwdGFuY2UgPiByZWplY3RzIG5ldyBjb250cm9sIGZpbGVzIGV2ZW4gdW5kZXIgdGhlIGV4aXN0aW5nIGdvdmVybmFuY2UgZGlyZWN0b3J5ICA4MjltcwogICDinJMgaW50ZWdyYXRpb24gYmluZHMgcHJlc2VydmVkIG1haW4gY29udHJvbCB3aXRob3V0IGJyb2FkZW5pbmcgaGlzdG9yaWNhbCBhY2NlcHRhbmNlID4gcmVqZWN0cyBjb21taXR0ZWQgcnVudGltZSBkcmlmdCByYXRoZXIgdGhhbiB0cmVhdGluZyBjYW5kaWRhdGUgYW5jZXN0cnkgYXMgc291cmNlIGVxdWl2YWxlbmNlICA4MTltcwogICDinJMgaW50ZWdyYXRpb24gYmluZHMgcHJlc2VydmVkIG1haW4gY29udHJvbCB3aXRob3V0IGJyb2FkZW5pbmcgaGlzdG9yaWNhbCBhY2NlcHRhbmNlID4gcmVqZWN0cyBhIHJld3JpdHRlbiBhY2NlcHRlZCBSZXZpZXdlciBBIGFydGlmYWN0IGluc3RlYWQgb2YgaW5oZXJpdGluZyBpdHMgb2xkIFBBU1MgIDIzNDVtcwoKIFRlc3QgRmlsZXMgIDIgcGFzc2VkICgyKQogICAgICBUZXN0cyAgNjggcGFzc2VkICg2OCkKICAgU3RhcnQgYXQgIDA4OjU0OjQ5CiAgIER1cmF0aW9uICA5MC42NnMgKHRyYW5zZm9ybSA1MjVtcywgc2V0dXAgMG1zLCBjb2xsZWN0IDI5Mm1zLCB0ZXN0cyAxMTMuMjdzLCBlbnZpcm9ubWVudCAwbXMsIHByZXBhcmUgMjU3bXMpCgo=",
+      "bytes": 10112,
+      "sha256": "dcd3c05d0923551f4f2f84e1e89f575b21357117ff9286b0cee37b720d27fbf0"
+    },
+    "stderr": {
+      "encoding": "base64",
+      "raw": "",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "testFiles": 2,
+    "testsPassed": 68,
+    "suiteCounts": {
+      "scripts/tests/phase3-e09-b11-final-binding.test.ts": 55,
+      "scripts/tests/phase3-efp-k03-evidence-contract.test.ts": 13
+    },
+    "receiptProvenance": "Captured independently by Reviewer A using node child_process spawn; full stdout/stderr embedded without truncation.",
+    "runtimeSuitesRepeated": false
+  },
+  "findings": [],
+  "handoffObservations": [
+    {
+      "code": "REPORT_HASH_HANDOFF_TYPO",
+      "severity": "INFORMATIONAL",
+      "blocking": false,
+      "suppliedHash": "daa5ffd8aef3903bb19decdb6ceeeebbbec9296627796b7c3a8418839a9d070d9",
+      "suppliedHashLength": 65,
+      "actualHash": "daa5ffd8aef3903bb19decdb6ceeeebbec9296627796b7c3a8418839a9d070d9",
+      "disposition": "Exact carrier report bytes independently hashed and bound above; malformed handoff digest recorded, no file modification."
+    }
+  ],
+  "grants": {
+    "runtimeAcceptance": false,
+    "phase3": false,
+    "globalGate": false,
+    "main": false,
+    "promotion": false,
+    "releaseReady": false,
+    "creditDelta": 0
+  },
+  "retainedLimitations": [
+    "Governance/GitHub identity and truthful attestation remain separate.",
+    "Integration and required GitHub actual-head checks remain separate; producer fullCI tests frozen implementation, not future assembly.",
+    "Global Gate C, 93 missing images and long-term stability remain open.",
+    "This review does not grant runtime acceptance or blanket future-source equivalence."
+  ],
+  "reviewerChanges": "One immutable review JSON only; no implementation/evidence edits and no role PR.",
+  "reviewCommitBinding": "Containing review commit and artifact SHA-256 reported externally after commit; no fabricated self-referential SHA."
+}

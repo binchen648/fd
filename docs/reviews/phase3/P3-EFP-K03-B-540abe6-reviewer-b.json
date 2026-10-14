@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "fd-independent-scoped-review-v1",
+  "taskId": "P3-EFP-K03-B",
+  "reviewerIdentity": "Codex Reviewer B",
+  "githubIdentity": null,
+  "reviewThread": null,
+  "reviewDate": "2026-10-13",
+  "baseSha": "219d47c8dcc2b8118f2d3f6b37f51ce465e737cb",
+  "reviewedSha": "540abe6c8cadc015fe7ad4030673091405a61063",
+  "testedImplementationSha": "e239b3cc0b24dd2521468d42994cb24d5dc34750",
+  "authorizationSha": "dd3cfd5cd7232a3935ba8df42b7c14359d856002",
+  "verdict": "PASS",
+  "scope": "CURRENT_MAIN_STATIC_REWARD_COMPILED_ENVELOPE_GUARD: activation/lifecycle/limit/visibility only",
+  "overallReadiness": "BLOCKED",
+  "productionDiff": "Four localized lines in isAcceptedStaticCombatRewardDistributionAbility; no resolver, formula, global helpers, authoring or identity routing changes",
+  "productionCallChain": "resolveBattlefield -> buildBattleResultFromRanked -> hasWinningFullRewardEachModifier -> isAcceptedStaticCombatRewardDistributionAbility(compiled) -> reward distribution -> applyBattleScoring",
+  "packet": {
+    "path": "artifacts/phase3-efp-k03-static-reward-guard.json",
+    "sha256": "ee707b5133cc5f495c58aeda027a61501447739d619b9d2993e869d173a8caac",
+    "receiptsValidated": 15,
+    "rawStreamsLengthAndHashValidated": 30,
+    "sourceFilesHashValidated": 2
+  },
+  "sourceEquivalence": "Tested implementation and candidate differ only in packet/report; remote head matches candidate",
+  "independentExecution": {
+    "focusedCommand": "npx vitest run packages/rules/tests/fb2-34-combat-reward-distribution.test.ts packages/rules/tests/stheno-consumer-migration.test.ts --maxWorkers=2",
+    "focusedPassed": 21,
+    "focusedExitCode": 0,
+    "additionalPredicateNegatives": 24,
+    "additionalValues": ["null", "empty array", "nonempty array", "false", "zero", "string"],
+    "baselineFunctionProbe": "Exact baseline predicate extracted and transpiled in memory; four nonempty arrays accepted by baseline and rejected by candidate",
+    "positiveControls": "Canonical compiled object and omission of each of the four optional fields accepted"
+  },
+  "inspectedRedGreenEvidence": {
+    "sameFinalTestBlob": "7f91ec3762daec7ce7ed414985e75fbbfa4f9691",
+    "unfixedLoaderBlob": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+    "fixedLoaderBlob": "bbaf57a4e23b2a038d45745826a987484eb332fd",
+    "unfixed": "Recorded baseline-loader overlay: 8 failed negatives, 13 passed controls, exit 1",
+    "fixed": "Recorded 21/21 passed, exit 0; independently rerun",
+    "invalidFilters": "All-skipped executions are not red or green acceptance evidence",
+    "reviewerDidNotClaimFullBaselineTestExecution": true
+  },
+  "behavior": {
+    "malformedModifierAdmission": "CLOSED for the four scoped containers",
+    "ordinaryBattleProgression": "PASS; malformed modifier omitted, ordinary reward and scoring continue",
+    "validRewardControls": "PASS for tied full/ordinary reward, losing/inactive/face-down source, sole winner, duplicate modifiers, Remote Operation and Stheno controls",
+    "transactionWideRollbackClaim": false,
+    "scopeExpansionFound": false
+  },
+  "retainedBlockers": [
+    "Default CI exit 1: old B11 final-binding test rejects packages/rules/src Candidate source drift; no waiver granted",
+    "Browser Gate C, governance, GitHub identity/thread, main promotion and Release checks are outside this review"
+  ],
+  "fullCIEvidence": "Receipt inspected, not rerun by Reviewer: 193/194 files and 1615/1616 tests pass; one source-binding failure",
+  "grants": {
+    "phase3": false,
+    "globalGate": false,
+    "main": false,
+    "promotion": false,
+    "releaseReady": false,
+    "creditDelta": 0
+  },
+  "reviewerChanges": "Review artifact only; no production or test logic edits",
+  "reviewCommitBinding": "Containing commit and artifact SHA-256 reported externally; no self-referential SHA invented"
+}
