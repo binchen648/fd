@@ -5,6 +5,8 @@ Role: Planner / Process Controller
 Scope: candidate selection only
 Status: BLOCKED_WITH_REASON
 
+Latest Planner disposition: CONTENT_BLOCKED / DEFERRED_CAPABILITY_CANDIDATE, recorded in docs/agents/P3-CB-A1-FORTIFICATION-DISPOSITION.md. A1 eligibility now requires complete production identity, full contract, production runtime and applicable lifecycle/event proof. The backup is not automatically promoted to READY.
+
 ## PREPARE disposition, 2026-10-14
 
 Exact A PREPARE carrier `96788cb775c400aa3a2a8d5b1bfeb8f440772014` confirms `WHOLE_FORTIFICATION_PRODUCTION_CONTRACT_NOT_CLOSED`. The two selected archives do not satisfy the production loader's three-skill and 12-card-deck requirements. Their printed residual clause has no structural residual marker, while round cleanup checks `ability.kind === 'residual'`. Historical tests manually activate the source and do not prove real cross-round retention.

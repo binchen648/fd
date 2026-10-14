@@ -4,10 +4,12 @@ Role: Planner disposition and bounded read-only task packet
 Control Epoch: FD-P3-2026-09-23-09
 Exact main: a42b5e1c517141b90f3407773958b0d8afe63264
 Input carrier: 96788cb775c400aa3a2a8d5b1bfeb8f440772014
-Status: READY_FOR_READ_ONLY_CONTRACT_ANALYSIS
+Status: ANALYSIS_DELIVERED_FORTIFICATION_DEFERRED
 Runtime authorization: NONE
 Production writer reservation: NOT_GRANTED
 Migration / coverage / denominator credit delta: 0
+
+Planner continuation is superseded by P3-CB-A1-FORTIFICATION-DISPOSITION.md after the content-blocked handoff and B's static analysis. No RB acceptance is implied; historical analysis scope below is preserved.
 
 ## Decision
 
