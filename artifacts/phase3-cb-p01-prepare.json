@@ -1,0 +1,834 @@
+{
+  "taskId": "P3-CB-P01-A",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "pilotMode": "ZERO_INCREMENT_CONFORMANCE",
+  "status": "PREPARE_PACKET_READY_FOR_REVIEW_IMPLEMENTATION_BLOCKED",
+  "testedSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "authoritativeBaseSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "observedOriginMainSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "mainDrift": "NONE",
+  "authority": [
+    {
+      "commit": "b1e6b73c74eea9a917e25d11b0647e0cbd8855f5",
+      "path": "docs/agents/P3-CB-P01-ZERO-INCREMENT-DECISION.md",
+      "sha256": "3076B66F371CF88B463EB02DBCCC17BA7B2B2C80A3E1C80CB8B48EA147CD25AC",
+      "gitBlob": "5d5f36ef59e511bc9f44c8266f23f1e9e3eedfef"
+    },
+    {
+      "commit": "b1e6b73c74eea9a917e25d11b0647e0cbd8855f5",
+      "path": "docs/agents/manifests/tasks/P3-CB-P01-ZERO-INCREMENT.json",
+      "sha256": "5FD0C41654F7FE25FF4E3E86551E5BE2897E0C597CB40AEAEDF2E8C5162130F9",
+      "gitBlob": "8a2636fae4a43e6857aba1644d7baf35af794d02"
+    },
+    {
+      "commit": "b1e6b73c74eea9a917e25d11b0647e0cbd8855f5",
+      "path": "docs/agents/manifests/reservations/P3-CB-P01-A-PREPARE.json",
+      "sha256": "9EA9753448726C00A9E99B548E2A834FBA3FB63D6B28D67F075D8D5E88218218",
+      "gitBlob": "94157e7de812bda385c5538c057eb43a0d7f154d"
+    }
+  ],
+  "writerReservation": {
+    "schemaVersion": "fd-planner-writer-reservation-v1",
+    "reservationId": "P3-CB-P01-A-PREPARE",
+    "issuedDate": "2026-10-13",
+    "issuerRole": "Planner / Process Controller",
+    "ownerRole": "Codex A / PREPARE evidence owner",
+    "ownerTask": "P3-CB-P01-A",
+    "status": "GRANTED_PENDING_OWNER_BINDING",
+    "controlEpoch": "FD-P3-2026-09-23-09",
+    "requiredBase": "a42b5e1c517141b90f3407773958b0d8afe63264",
+    "resourceDomains": [
+      "capability-batch/P01/prepare-evidence"
+    ],
+    "sourceAndTestPaths": [],
+    "evidencePaths": [
+      "artifacts/phase3-cb-p01-prepare.json",
+      "docs/reports/2026-10-13-p3-cb-p01-prepare.md",
+      "artifacts/phase3-cb-p01-historical-preflight.json"
+    ],
+    "ownerBinding": {
+      "branch": "codex/a-p3-cb-p01-zero-increment-prepare",
+      "absoluteWorktree": "D:\\fd-validation\\a-cb-p01-zero-prepare",
+      "acknowledgement": "ACCEPTED_ONLY_ORIGINAL_THREE_EVIDENCE_PATHS"
+    },
+    "conditions": "A uses clean current-base checkout, reports branch/worktree/base and confirms no competing writer for three output paths. Preserve any existing edits; this is no runtime/content ownership.",
+    "leadReservation": {
+      "reservationId": "P3-CB-P01-LEAD",
+      "status": "NOT_GRANTED_WAIT_EXACT_IDENTITIES_AND_PATHS",
+      "scope": "2-4 selected resource identities inside one accepted direct-action contract; no global runtime write grant"
+    },
+    "heavyTests": "NOT_AUTHORIZED; read-only retrieval/source audit only",
+    "release": "Planner releases after frozen PREPARE packet/review/selection",
+    "creditDelta": 0,
+    "runtimeAcceptance": false,
+    "verification": "Single Planner P01-A reservation found; clean isolated baseline; old root draft preserved. Cross-worker liveness confirmation is pending; no claim of globally acquired filesystem lock.",
+    "competingWriterConfirmation": "UNKNOWN_PENDING_USER_RESPONSE",
+    "oldRootDraft": {
+      "path": "D:/fd/docs/reports/2026-10-13-p3-cb-p01-prepare.md",
+      "sha256": "80D442C9BFFB2F6456C7493B4C9A80A6ADC863A16CD245AF335182062A95A004",
+      "preserved": true,
+      "role": "Untracked prior draft, not current PREPARE evidence"
+    },
+    "leadWritePermission": false,
+    "bTestPermission": "NOT_GRANTED_WAIT_PLANNER_EXACT_DISPATCH"
+  },
+  "eligibleInput": {
+    "commit": "4aecfc76aa8068315e626f071944dc27a638f192",
+    "path": "artifacts/phase3-cb-p01-exact-eligibility.json",
+    "sha256": "E81EDC65F7481DB9E839777CD2E224167FCCAF3C11058A5E00BA585C304F896C",
+    "gitBlob": "0259eee162043b6dcb013321a4ed02e2e0c64333"
+  },
+  "eligibleInputReview": "A_CANDIDATE_NOT_RA_ACCEPTANCE",
+  "contractSourceBindings": [
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/ability/interpreter.ts",
+      "sha256": "A5F74D0CDCB71C169640DC6D0C0B7936EB2CB26B4AC8A1421E2DD50783554C43",
+      "gitBlob": "25f17fe843a9a05650722e996f0ce97109cfadbe"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/ability/resolution-dataflow.ts",
+      "sha256": "361EA71AB056BDFB8548A3AA353911B6BD5560D57EA7D6049B3250D12196996E",
+      "gitBlob": "edbcce8a6967782011a9a76f9122b32a6236bfb3"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/ability/loader.ts",
+      "sha256": "17A6630E36B3ACEC36E7F684118BB577CF49EA400D98E4BC029C8F01B75ED7C2",
+      "gitBlob": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/ability/executable-card-pack.ts",
+      "sha256": "7F00857BBB67FE47FB1E61200AAC84A8E174378ED1C8BDDCF74A9190DB2A0BC0",
+      "gitBlob": "1e6eef44d3cd177616575a9e9050e9a996c9ec51"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/match-session.ts",
+      "sha256": "A4B440BDA535956819D557E89C5C095C765F88B349C78C62D767B3C7A1918C12",
+      "gitBlob": "3418ff800b605a6a6e8c93f76eb072699c5c6378"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/match-room-hub.ts",
+      "sha256": "7BC9745617076BDAECEFFE3582A36EF620C4D541C8D6324433907D649ACD5AD1",
+      "gitBlob": "f35f25eb62bca10b38e4058db79fc25a55064086"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/match-room-protocol.ts",
+      "sha256": "F6CE50C9B77A82C1835A680DA53502D2EFBA35925ABE54F09243F1BE38B92143",
+      "gitBlob": "12bc2a58f1ffdc5cd3634725ababa46a7a984756"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "scripts/engineering/historical-failure-preflight.ts",
+      "sha256": "654C8688B1A4D332BCEE7E777090B467CABE70FAF6788816D5480D84E1E5E371",
+      "gitBlob": "12a92f18f1616e947e3b9faac615ee66d00ce384"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "docs/engineering/lessons/HISTORICAL-FAILURE-PREFLIGHT.md",
+      "sha256": "569E114C87AA701D45470E9457B515C988648594998785455A71F0ABDEF42EA9",
+      "gitBlob": "f409529f325111412d1eaac5dcb5051bc940c340"
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/packs/fd-playtest-v1/pack.json",
+      "sha256": "F9DF6313A3B2452815FDA56902DAC5BAC8F1F9C4E2374B11912B8EA82CD9D109",
+      "gitBlob": "dc1c7cdc03464e5274fd61ccb3e9d6e7021d00be"
+    }
+  ],
+  "currentContractAcceptance": "NOT_REGRANTED_BY_PREPARE; CURRENT_CONFORMANCE_NEEDS_B_AND_RB",
+  "historicalContract": {
+    "candidate": "81dfe1b2d7651adc10e4bc03a13c6df15ccee3ef",
+    "ancestorOfMain": false,
+    "ancestorExit": 1,
+    "scope": "Gatou/Olga gain mana and Tomoe direct VP only",
+    "wholePredicateEquivalent": false,
+    "currentPredicate": "export function isResourceNumericDirectActionSemantic(a: AuthoringAbility): boolean {\n  return a.kind === 'phase_action' &&\n    str(a.activation.phase) === 'action' &&\n    str(a.activation.opens) === 'controller_action_window' &&\n    a.targets.length === 0 &&\n    a.cost.length === 0 &&\n    a.creates.length === 0 &&\n    a.effects.length > 0 &&\n    a.effects.every((effect) =>\n      directResourcePrimitiveTypes.has(str(effect.type)) ||\n      isFixedControllerCommandSealAdjustmentComponent(effect));\n}",
+    "currentPredicateSha256": "C0E67746225D3C030FECC1B4E963B93AE4787CA6E200172E20FAA32156A90563",
+    "historicalPredicate": "export function isResourceNumericDirectActionSemantic(a: AuthoringAbility): boolean {\n  return a.kind === 'phase_action' &&\n    str(a.activation.phase) === 'action' &&\n    str(a.activation.opens) === 'controller_action_window' &&\n    a.targets.length === 0 &&\n    a.cost.length === 0 &&\n    a.creates.length === 0 &&\n    a.effects.length > 0 &&\n    a.effects.every((effect) => directResourcePrimitiveTypes.has(str(effect.type)));\n}",
+    "historicalPredicateSha256": "277C410D5A776926CAEEFC0EC36E6F0260A3629BF788E5A09B785B0DC39455DE",
+    "difference": "Current command-seal component admission differs; historical whole-runtime Gate proof cannot be inherited"
+  },
+  "identities": [
+    {
+      "canonicalIdentity": "master.gatou.command-spell#command-spell.gain-mana",
+      "cardId": "master.gatou.command-spell",
+      "abilityId": "command-spell.gain-mana",
+      "source": {
+        "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+        "path": "data/authoring/masters/master.gatou.json",
+        "sha256": "19AAA7ED91BD4C49C1EB5CD605E31C5033738751C15998DB6ACCC597A434CFCD",
+        "gitBlob": "1cb41f49d9a41cc091b3f8579c8f0780b60a553b"
+      },
+      "fullPrintedText": "行动阶段：获得4魔力。行动阶段：总威力+2，如果你本回合每赢得一场战斗，获得2战果。行动阶段：从新都或深山町移动至任意位置，无视交战状态。",
+      "textSha256": "FE83BECB4AF3E2315E8F0A09E814CD5BB1E59FFD706E05297E212A44C9536C7B",
+      "scopedAbility": {
+        "id": "command-spell.gain-mana",
+        "kind": "phase_action",
+        "printedClause": "行动阶段：获得4魔力。",
+        "activation": {
+          "phase": "action",
+          "opens": "controller_action_window"
+        },
+        "effects": [
+          {
+            "type": "adjust_mana",
+            "amount": 4
+          },
+          {
+            "type": "adjust_command_seals",
+            "amount": -1,
+            "directive": "spend_command_spell"
+          }
+        ],
+        "execution": {
+          "mode": "automatic"
+        }
+      },
+      "normalizedDirectEffects": [
+        {
+          "id": "cards.master.gatou.command-spell.command-spell.gain-mana[0]",
+          "type": "adjust_mana",
+          "player": "controller",
+          "amount": 4
+        },
+        {
+          "id": "cards.master.gatou.command-spell.command-spell.gain-mana[1]",
+          "type": "adjust_command_seals",
+          "player": "controller",
+          "amount": -1,
+          "directive": "spend_command_spell"
+        }
+      ],
+      "excludedClauses": [
+        {
+          "abilityId": "command-spell.power-victory",
+          "printedClause": "行动阶段：总威力+2，如果你本回合每赢得一场战斗，获得2战果。",
+          "printedClauseSha256": "80AD23A4ADF754B87A2943EE30333BABE75DFA42955FEF0CA4B150427AA37838",
+          "startOffset": 11,
+          "endOffset": 42,
+          "currentMainApi": {
+            "abilityId": "command-spell.power-victory",
+            "printedClause": "行动阶段：总威力+2，如果你本回合每赢得一场战斗，获得2战果。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "cost": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "record_master_directive",
+                "directive": "gain_2_vp_for_each_battle_won_this_round"
+              },
+              {
+                "type": "adjust_command_seals",
+                "amount": -1,
+                "directive": "spend_command_spell"
+              }
+            ],
+            "ruleModifiers": [],
+            "lifecycle": {},
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            },
+            "directApi": false,
+            "battleLossExceptionApi": false
+          },
+          "requiredContract": "COMMAND_DIRECTIVE_POWER_VICTORY_OR_MOVEMENT_SEPARATE_CONTRACT",
+          "currentAcceptance": "NOT_NEWLY_ATTESTED"
+        },
+        {
+          "abilityId": "command-spell.free-move",
+          "printedClause": "行动阶段：从新都或深山町移动至任意位置，无视交战状态。",
+          "printedClauseSha256": "8B4A8BB00D5FE44A245FD4F1A2FE1DA7E80B2171E368739E51A5BA95B330F4A4",
+          "startOffset": 42,
+          "endOffset": 69,
+          "currentMainApi": {
+            "abilityId": "command-spell.free-move",
+            "printedClause": "行动阶段：从新都或深山町移动至任意位置，无视交战状态。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "cost": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "record_master_directive",
+                "directive": "move_from_shinto_or_miyama_to_any_location_ignore_engagement"
+              },
+              {
+                "type": "adjust_command_seals",
+                "amount": -1,
+                "directive": "spend_command_spell"
+              }
+            ],
+            "ruleModifiers": [],
+            "lifecycle": {},
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            },
+            "directApi": false,
+            "battleLossExceptionApi": false
+          },
+          "requiredContract": "COMMAND_DIRECTIVE_POWER_VICTORY_OR_MOVEMENT_SEPARATE_CONTRACT",
+          "currentAcceptance": "NOT_NEWLY_ATTESTED"
+        }
+      ],
+      "clauseScope": "ONLY_GAIN_MANA_ABILITY; NOT_WHOLE_COMMAND_SPELL_CARD",
+      "generatedRegistryPresent": true,
+      "registryVerification": "PINNED_ELIGIBILITY_OBSERVATION_AT_IDENTICAL_MAIN; NOT_COMPILER_OR_RUNTIME_EXECUTION",
+      "currentRuntimeDependency": "Semantic direct-resource route; typed adjust_mana + adjust_command_seals and atomic executeResolution",
+      "runtimeSourceBindings": [
+        {
+          "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+          "path": "packages/rules/src/ability/interpreter.ts",
+          "sha256": "A5F74D0CDCB71C169640DC6D0C0B7936EB2CB26B4AC8A1421E2DD50783554C43",
+          "gitBlob": "25f17fe843a9a05650722e996f0ce97109cfadbe"
+        },
+        {
+          "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+          "path": "packages/rules/src/ability/resolution-dataflow.ts",
+          "sha256": "361EA71AB056BDFB8548A3AA353911B6BD5560D57EA7D6049B3250D12196996E",
+          "gitBlob": "edbcce8a6967782011a9a76f9122b32a6236bfb3"
+        },
+        {
+          "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+          "path": "packages/rules/src/ability/executable-card-pack.ts",
+          "sha256": "7F00857BBB67FE47FB1E61200AAC84A8E174378ED1C8BDDCF74A9190DB2A0BC0",
+          "gitBlob": "1e6eef44d3cd177616575a9e9050e9a996c9ec51"
+        },
+        {
+          "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+          "path": "packages/rules/src/match-session.ts",
+          "sha256": "A4B440BDA535956819D557E89C5C095C765F88B349C78C62D767B3C7A1918C12",
+          "gitBlob": "3418ff800b605a6a6e8c93f76eb072699c5c6378"
+        }
+      ],
+      "historicalGateInheritance": "NONE; historical TO08 full predicate differs and candidate is not main ancestor",
+      "positivePlan": [
+        "LEGAL_DIRECT_ACTION"
+      ],
+      "negativePlan": [
+        "SEAL_UNDERFLOW",
+        "WRONG_SOURCE_CONTROLLER_PHASE",
+        "MALFORMED_GRAPH",
+        "REVISION_BOUNDARY",
+        "SCOPE_AND_EVIDENCE_ISOLATION"
+      ],
+      "acceptanceMatrix": {
+        "sourceShape": "EXACT_MAIN_SOURCE_VERIFIED",
+        "compiler": "NOT_VERIFIED_FUTURE_B",
+        "productionDispatch": "NOT_VERIFIED_FUTURE_B",
+        "typedResults": "NOT_VERIFIED_FUTURE_B",
+        "atomicNegatives": "NOT_VERIFIED_FUTURE_B",
+        "legacyFallback": "NOT_REATTESTED",
+        "historicalRecurrence": "PLANNED_NOT_EXECUTED",
+        "gateA": "NOT_VERIFIED_THIS_PREPARE",
+        "gateB": "NOT_VERIFIED_THIS_PREPARE",
+        "gateC": "NOT_VERIFIED_NO_INHERITANCE",
+        "independentReviewer": "RB_PENDING_AFTER_EXACT_DISPATCH"
+      },
+      "additionalMigrationIdentity": false,
+      "creditDelta": 0
+    },
+    {
+      "canonicalIdentity": "master.olga-marie.command-spell#command-spell.gain-mana",
+      "cardId": "master.olga-marie.command-spell",
+      "abilityId": "command-spell.gain-mana",
+      "source": {
+        "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+        "path": "data/authoring/masters/master.olga-marie.json",
+        "sha256": "4E6252018AD083EFF1D182C4246012B975E25E78D22D8FB04BD900C8FC1FCC7C",
+        "gitBlob": "9c09e8604f7c0fabac824310bd9ef690a445d60d"
+      },
+      "fullPrintedText": "行动阶段：获得4点魔力。行动阶段：+2合计威力，若你获胜，获得2点战果。行动阶段：无视交战状态从深山町或新都移动至任意地点。",
+      "textSha256": "387A60F76374A4DAFE0AECE17D1759F127490D1C7E2497153285571EEAD103BF",
+      "scopedAbility": {
+        "id": "command-spell.gain-mana",
+        "kind": "phase_action",
+        "printedClause": "行动阶段：获得4点魔力。",
+        "activation": {
+          "phase": "action",
+          "opens": "controller_action_window"
+        },
+        "effects": [
+          {
+            "type": "adjust_mana",
+            "amount": 4
+          },
+          {
+            "type": "adjust_command_seals",
+            "amount": -1,
+            "directive": "spend_command_spell"
+          }
+        ],
+        "execution": {
+          "mode": "automatic"
+        }
+      },
+      "normalizedDirectEffects": [
+        {
+          "id": "cards.master.olga-marie.command-spell.command-spell.gain-mana[0]",
+          "type": "adjust_mana",
+          "player": "controller",
+          "amount": 4
+        },
+        {
+          "id": "cards.master.olga-marie.command-spell.command-spell.gain-mana[1]",
+          "type": "adjust_command_seals",
+          "player": "controller",
+          "amount": -1,
+          "directive": "spend_command_spell"
+        }
+      ],
+      "excludedClauses": [
+        {
+          "abilityId": "command-spell.power-victory",
+          "printedClause": "行动阶段：+2合计威力，若你获胜，获得2点战果。",
+          "printedClauseSha256": "EE769CE9D8AA280FDA5C400ECD60AF9EE2C905AE05D40CA5BDC4DFCEE9B7DD3A",
+          "startOffset": 12,
+          "endOffset": 36,
+          "currentMainApi": {
+            "abilityId": "command-spell.power-victory",
+            "printedClause": "行动阶段：+2合计威力，若你获胜，获得2点战果。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "cost": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "record_master_directive",
+                "directive": "gain_2_vp_if_win_this_round"
+              },
+              {
+                "type": "adjust_command_seals",
+                "amount": -1,
+                "directive": "spend_command_spell"
+              }
+            ],
+            "ruleModifiers": [],
+            "lifecycle": {},
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            },
+            "directApi": false,
+            "battleLossExceptionApi": false
+          },
+          "requiredContract": "COMMAND_DIRECTIVE_POWER_VICTORY_OR_MOVEMENT_SEPARATE_CONTRACT",
+          "currentAcceptance": "NOT_NEWLY_ATTESTED"
+        },
+        {
+          "abilityId": "command-spell.free-move",
+          "printedClause": "行动阶段：无视交战状态从深山町或新都移动至任意地点。",
+          "printedClauseSha256": "7A53179D6E5E270BD6CCD009F996EA66AD203B8C36A187537217CFCBC2AED10C",
+          "startOffset": 36,
+          "endOffset": 62,
+          "currentMainApi": {
+            "abilityId": "command-spell.free-move",
+            "printedClause": "行动阶段：无视交战状态从深山町或新都移动至任意地点。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "cost": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "record_master_directive",
+                "directive": "move_from_shinto_or_miyama_to_any_location_ignore_engagement"
+              },
+              {
+                "type": "adjust_command_seals",
+                "amount": -1,
+                "directive": "spend_command_spell"
+              }
+            ],
+            "ruleModifiers": [],
+            "lifecycle": {},
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            },
+            "directApi": false,
+            "battleLossExceptionApi": false
+          },
+          "requiredContract": "COMMAND_DIRECTIVE_POWER_VICTORY_OR_MOVEMENT_SEPARATE_CONTRACT",
+          "currentAcceptance": "NOT_NEWLY_ATTESTED"
+        }
+      ],
+      "clauseScope": "ONLY_GAIN_MANA_ABILITY; NOT_WHOLE_COMMAND_SPELL_CARD",
+      "generatedRegistryPresent": true,
+      "registryVerification": "PINNED_ELIGIBILITY_OBSERVATION_AT_IDENTICAL_MAIN; NOT_COMPILER_OR_RUNTIME_EXECUTION",
+      "currentRuntimeDependency": "Semantic direct-resource route; typed adjust_mana + adjust_command_seals and atomic executeResolution",
+      "runtimeSourceBindings": [
+        {
+          "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+          "path": "packages/rules/src/ability/interpreter.ts",
+          "sha256": "A5F74D0CDCB71C169640DC6D0C0B7936EB2CB26B4AC8A1421E2DD50783554C43",
+          "gitBlob": "25f17fe843a9a05650722e996f0ce97109cfadbe"
+        },
+        {
+          "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+          "path": "packages/rules/src/ability/resolution-dataflow.ts",
+          "sha256": "361EA71AB056BDFB8548A3AA353911B6BD5560D57EA7D6049B3250D12196996E",
+          "gitBlob": "edbcce8a6967782011a9a76f9122b32a6236bfb3"
+        },
+        {
+          "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+          "path": "packages/rules/src/ability/executable-card-pack.ts",
+          "sha256": "7F00857BBB67FE47FB1E61200AAC84A8E174378ED1C8BDDCF74A9190DB2A0BC0",
+          "gitBlob": "1e6eef44d3cd177616575a9e9050e9a996c9ec51"
+        },
+        {
+          "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+          "path": "packages/rules/src/match-session.ts",
+          "sha256": "A4B440BDA535956819D557E89C5C095C765F88B349C78C62D767B3C7A1918C12",
+          "gitBlob": "3418ff800b605a6a6e8c93f76eb072699c5c6378"
+        }
+      ],
+      "historicalGateInheritance": "NONE; historical TO08 full predicate differs and candidate is not main ancestor",
+      "positivePlan": [
+        "LEGAL_DIRECT_ACTION"
+      ],
+      "negativePlan": [
+        "SEAL_UNDERFLOW",
+        "WRONG_SOURCE_CONTROLLER_PHASE",
+        "MALFORMED_GRAPH",
+        "REVISION_BOUNDARY",
+        "SCOPE_AND_EVIDENCE_ISOLATION"
+      ],
+      "acceptanceMatrix": {
+        "sourceShape": "EXACT_MAIN_SOURCE_VERIFIED",
+        "compiler": "NOT_VERIFIED_FUTURE_B",
+        "productionDispatch": "NOT_VERIFIED_FUTURE_B",
+        "typedResults": "NOT_VERIFIED_FUTURE_B",
+        "atomicNegatives": "NOT_VERIFIED_FUTURE_B",
+        "legacyFallback": "NOT_REATTESTED",
+        "historicalRecurrence": "PLANNED_NOT_EXECUTED",
+        "gateA": "NOT_VERIFIED_THIS_PREPARE",
+        "gateB": "NOT_VERIFIED_THIS_PREPARE",
+        "gateC": "NOT_VERIFIED_NO_INHERITANCE",
+        "independentReviewer": "RB_PENDING_AFTER_EXACT_DISPATCH"
+      },
+      "additionalMigrationIdentity": false,
+      "creditDelta": 0
+    }
+  ],
+  "conformancePlan": [
+    {
+      "id": "LEGAL_DIRECT_ACTION",
+      "kind": "positive",
+      "entry": "MatchSession.dispatchPlayerAction then MatchRoomHub.dispatchCommand with current expectedRevision",
+      "assertions": [
+        "Actual compiled card definition matches canonical cardId AND abilityId",
+        "Correct controller, legal action window, skill source, mana=8 and seals=3",
+        "After mana=12, seals=2; exactly one typed event for each resource",
+        "Verify sourceAbilityId/controllerId/resource/delta/before/after/resultId/revision and source instance identity"
+      ],
+      "status": "PLANNED_NOT_EXECUTED"
+    },
+    {
+      "id": "SEAL_UNDERFLOW",
+      "kind": "negative",
+      "entry": "MatchSession.dispatchPlayerAction",
+      "assertions": [
+        "Zero seals rejects; mana does not become 12 before seal failure",
+        "Deep state including ability runtime, events/logs/revision/pending unchanged"
+      ],
+      "status": "PLANNED_NOT_EXECUTED"
+    },
+    {
+      "id": "WRONG_SOURCE_CONTROLLER_PHASE",
+      "kind": "negative",
+      "entry": "MatchSession and Hub dispatch",
+      "assertions": [
+        "Foreign source/controller, wrong source definition or unauthorized phase/window rejects",
+        "Controller/source identity revalidated on server; no UI legality reconstruction",
+        "Deep state, events/logs/pending/revision/room version unchanged"
+      ],
+      "status": "PLANNED_NOT_EXECUTED"
+    },
+    {
+      "id": "MALFORMED_GRAPH",
+      "kind": "negative",
+      "entry": "Candidate-owned executable pack corruption in test only",
+      "assertions": [
+        "Invalid mana amount, invalid seal amount/field/player and unknown primitive reject",
+        "resolution_failed DTO, no thrown validation exception",
+        "Failure after first resource node rolls back mana and all events",
+        "No legacy resolveEffect fallback"
+      ],
+      "status": "PLANNED_NOT_EXECUTED"
+    },
+    {
+      "id": "REVISION_BOUNDARY",
+      "kind": "negative",
+      "entry": "Real Hub mutation boundary: dispatchCommand AND endTurn",
+      "assertions": [
+        "Missing/null/string/negative/fractional/unsafe/NaN/Infinity/stale revision reject before mutation",
+        "Serialize snapshots plus room version/projection before and after",
+        "Valid revision control still succeeds; repeating old revision cannot debit second seal"
+      ],
+      "status": "PLANNED_NOT_EXECUTED"
+    },
+    {
+      "id": "SCOPE_AND_EVIDENCE_ISOLATION",
+      "kind": "negative",
+      "entry": "Read-only assertions plus production valid controls",
+      "assertions": [
+        "Both cardId and abilityId bound within each identity evidence; never inherit Gatou test for Olga",
+        "Other power/victory/free-move clauses remain unmodified and NOT_ACCEPTED_BY_THIS_PILOT",
+        "Tomoe and Archer not selected; no card/ability-ID semantic route introduced",
+        "Exact implementation/test overlay SHA and hashes required for all receipts"
+      ],
+      "status": "PLANNED_NOT_EXECUTED"
+    }
+  ],
+  "expectedFuturePaths": [
+    {
+      "path": "packages/rules/tests/regression/p3-cb-p01-resource-controls-conformance.test.ts",
+      "owner": "Existing Codex B",
+      "status": "PROPOSED_NOT_AUTHORIZED",
+      "reason": "Exact two-control conformance and revision negatives; not production edits"
+    },
+    {
+      "path": "packages/rules/tests/p3-cb-p01-resource-controls-revision.test.ts",
+      "owner": "Existing Codex B",
+      "status": "PROPOSED_NOT_AUTHORIZED",
+      "reason": "Exact two-control conformance and revision negatives; not production edits"
+    }
+  ],
+  "recurrence": {
+    "failureId": "FD-REV-002",
+    "historicalSource": {
+      "commit": "cf179ca3220a1646c484aa8c660b313e64449488",
+      "path": "docs/reviews/phase3/P3-E08-B11-463facb-final-combination-reviewer-b.json",
+      "sha256": "051f5e95c74e9c78546c391fd60f041d9baef29fbba857ec455a598f8d2395bf",
+      "availability": "VERIFIED_PINNED_BYTES",
+      "sourceReviewRelationship": "HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE"
+    },
+    "priorError": "Optional expectedRevision allowed public mutation replay without stale protection",
+    "validControl": "Same compiled gain-mana command through authoritative Hub with valid revision succeeds exactly once",
+    "controlledRecurrence": "Future B test-only isolated overlay removes the missing-revision rejection from Hub assertExpectedRevision. Keep valid-revision control and run identical missing-revision atomicity assertion.",
+    "expectedCatch": "Missing-revision negative MUST fail against recurrence overlay; same test MUST pass unmodified exact candidate",
+    "overlayAuthorization": "NOT_GRANTED; Planner must explicitly approve precise test-only mechanism/source before B executes",
+    "overlayEvidence": [
+      "base implementation SHA",
+      "original and overlay source hashes",
+      "exact overlay diff",
+      "exit codes and full logs for valid baseline and recurrence run",
+      "restoration/cleanliness evidence"
+    ],
+    "executed": false
+  },
+  "preflight": {
+    "receiptPath": "artifacts/phase3-cb-p01-historical-preflight.json",
+    "sha256": "76AF6E0F6FC1013463BDF819099F65F80D4B5EA256E0F779A6AECF2D47E2B633",
+    "status": "CHECKED",
+    "firstCacheHit": false,
+    "repeatCacheHit": true,
+    "selectedCases": [
+      {
+        "id": "FD-REV-002",
+        "reasons": [
+          "contract:MUTATION_REVISION_GATE:+6",
+          "contract:ATOMIC_REJECTION:+6",
+          "domain:session-authority:+3"
+        ],
+        "source": {
+          "commit": "cf179ca3220a1646c484aa8c660b313e64449488",
+          "path": "docs/reviews/phase3/P3-E08-B11-463facb-final-combination-reviewer-b.json",
+          "sha256": "051f5e95c74e9c78546c391fd60f041d9baef29fbba857ec455a598f8d2395bf",
+          "availability": "VERIFIED_PINNED_BYTES",
+          "sourceReviewRelationship": "HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE"
+        },
+        "scope": "ACCEPTED_EXTRACTION_ONLY",
+        "currentBaseCoverage": "NOT_VERIFIED"
+      },
+      {
+        "id": "FD-EVID-005",
+        "reasons": [
+          "contract:EXACT_EXECUTION_RECEIPTS:+6",
+          "contract:REPRODUCIBLE_REVIEW:+6",
+          "domain:evidence-tooling:+3"
+        ],
+        "source": {
+          "commit": "dbd430be9550947a2bac691ef645db56cf5c408f",
+          "path": "docs/reviews/phase3/P3-E09-B11-b5e6844-integration-closure-reviewer-a.json",
+          "sha256": "a0f4b6ff474b169b36e7ff18092ad93e7f29a573c7e2a0c85bf299011ab0e5a9",
+          "availability": "VERIFIED_PINNED_BYTES",
+          "sourceReviewRelationship": "LATER_SCOPED_PASS_PRESERVES_EARLIER_FAILURE_NOT_PASS_ON_FAILURE_SHA"
+        },
+        "scope": "ACCEPTED_EXTRACTION_ONLY",
+        "currentBaseCoverage": "NOT_VERIFIED"
+      },
+      {
+        "id": "FD-SEC-001",
+        "reasons": [
+          "domain:session-authority:+3"
+        ],
+        "source": {
+          "commit": "cf179ca3220a1646c484aa8c660b313e64449488",
+          "path": "docs/reviews/phase3/P3-E08-B11-463facb-final-combination-reviewer-b.json",
+          "sha256": "051f5e95c74e9c78546c391fd60f041d9baef29fbba857ec455a598f8d2395bf",
+          "availability": "VERIFIED_PINNED_BYTES",
+          "sourceReviewRelationship": "HISTORICAL_REVIEW_ONLY_NO_CURRENT_ACCEPTANCE"
+        },
+        "scope": "ACCEPTED_EXTRACTION_ONLY",
+        "currentBaseCoverage": "NOT_VERIFIED"
+      }
+    ],
+    "overflow": [
+      {
+        "id": "FD-FIXTURE-006",
+        "score": 3,
+        "risk": "HIGH",
+        "reasons": [
+          "domain:evidence-tooling:+3"
+        ]
+      }
+    ],
+    "scopeSplittingAlert": true,
+    "unknown": [
+      {
+        "id": "FD-SHA-007",
+        "decision": "NOT_ADDED_UNKNOWN",
+        "reason": "27dab1ad proves missing review-reference contract, not wrong candidate/reviewer SHA; no terminal identity mismatch finding selected"
+      },
+      {
+        "id": "FD-FALLBACK-008",
+        "decision": "NOT_ADDED_UNKNOWN",
+        "reason": "No pinned failing setup/data-flow source in assigned selection; later closed-fallback declarations cannot establish a historical failure"
+      },
+      {
+        "id": "FD-REVIEW-009",
+        "decision": "NOT_ADDED_UNKNOWN",
+        "reason": "PR475 records separate historical relay and independent review; it does not prove relay was mistaken for this review"
+      },
+      {
+        "id": "FD-WRITER-010",
+        "decision": "NOT_ADDED_UNKNOWN",
+        "reason": "Reservation boundary records do not prove an actual competing writer or conflict occurrence"
+      }
+    ],
+    "applicability": "SEC authority checks and REV mutation boundary are relevant; EVID receipts provenance applies. FIXTURE overflow remains visible. SHAPE003 is not forced onto direct resource contract.",
+    "scopeSplittingDisposition": "One three-output A packet; B must keep future test-only task narrow. Overflow is not silently waived.",
+    "currentRuntimeAcceptance": false
+  },
+  "productionDispatchPlan": {
+    "definitions": "Real executable content from current-main MatchSession; never fabricate alternate definitions as positive proof",
+    "pairing": "For each control select corresponding real master; assert pairing and source definition identities before dispatch",
+    "legalSetup": "Use production start/preparation/turn progression where possible. Any bounded test fixture phase setup declared explicitly; not claimed as browser start flow",
+    "boundary": "Hub expectedRevision + server revalidation for revision tests; no UI rebuilt rules",
+    "browser": "No browser execution authorized in PREPARE; future browser requirement decided by Planner/RB. No Gate C inheritance"
+  },
+  "accounting": {
+    "accepted": 111,
+    "denominator": 944,
+    "remaining": 833,
+    "newSelectedIdentities": [],
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0
+  },
+  "measurement": {
+    "preflightElapsedMs": 3094.73,
+    "cacheRepeatElapsedMs": 3101.48,
+    "semanticTestsRun": 0,
+    "speedupClaim": "NONE",
+    "firstReviewResult": "PENDING_RA",
+    "runtimeRework": "NOT_MEASURED",
+    "historicalComparator": null
+  },
+  "blockers": [
+    {
+      "id": "WRITER_LIVENESS_UNCONFIRMED",
+      "owner": "Planner/User",
+      "state": "UNKNOWN",
+      "detail": "Prior untracked root draft retained; repository reservation does not prove another process is idle."
+    },
+    {
+      "id": "PREPARE_REVIEW_PENDING",
+      "owner": "Reviewer A",
+      "state": "PENDING",
+      "detail": "This frozen PREPARE is not independent acceptance."
+    },
+    {
+      "id": "B_EXACT_TEST_RESERVATION_PENDING",
+      "owner": "Planner",
+      "state": "PENDING",
+      "detail": "Two proposed test paths and any recurrence overlay require actual dispatch and writer grant."
+    },
+    {
+      "id": "CURRENT_CONFORMANCE_NOT_EXECUTED",
+      "owner": "Existing Codex B / Reviewer B",
+      "state": "NOT_VERIFIED",
+      "detail": "No source presence, primitive normalization or cache success implies production correctness."
+    },
+    {
+      "id": "WHOLE_CARD_NON_SCOPED_CLAUSES",
+      "owner": "Planner",
+      "state": "EXCLUDED_NOT_ACCEPTED",
+      "detail": "Power/victory/free-move remain out of scope."
+    }
+  ],
+  "preservedBoundaries": {
+    "globalGateC": "NOT_VERIFIED",
+    "missingImageReleaseBlockers": 93,
+    "longTermStability": "NOT_VERIFIED",
+    "runtimeAuthoringEdits": 0,
+    "cliPolicyEdits": 0,
+    "heavyTestsRun": 0,
+    "leadBuilderGrant": false,
+    "promotion": false
+  },
+  "nextOwner": "Reviewer A exact PREPARE review; Planner then resolves writer confirmation and grants existing B literal test-only scope"
+}
