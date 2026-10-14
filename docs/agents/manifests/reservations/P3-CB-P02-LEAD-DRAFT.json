@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "fd-planner-writer-reservation-v1",
+  "reservationId": "P3-CB-P02-LEAD",
+  "ownerTask": "P3-CB-P02-IMPLEMENT",
+  "ownerRole": "Existing Codex B/S acting as Lead Builder",
+  "status": "DRAFT_NOT_GRANTED",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "observedBase": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "proposedBranch": "codex/lead-p3-cb-p02-initial-mana",
+  "proposedWorktree": "D:/fd-validation/lead-cb-p02-initial-mana",
+  "candidateIdentities": ["master.iliya.skill.s1", "master.taiga.skill.s1"],
+  "resourceDomains": ["content-registration/production-pack", "content-generated-library", "capability-batch/P02/tests"],
+  "sourceAndTestPaths": [],
+  "proposedReadOrConditionalChangePaths": [
+    "data/authoring/masters/master.iliya.json",
+    "data/authoring/masters/master.taiga.json",
+    "data/packs/fd-playtest-v1/pack.json",
+    "packages/rules/tests/fb2-25-initial-mana-consumer-migration.test.ts"
+  ],
+  "pathsApproved": false,
+  "ownerBinding": {"branch": null, "absoluteWorktree": null, "acknowledgement": "PENDING"},
+  "productionWriteAuthorized": false,
+  "sharedRuntimeWriteAuthorized": false,
+  "heavyTestWindowGranted": false,
+  "activationRequires": ["EXACT_MAIN_BINDING", "CURRENT_CONTRACT_AND_PRODUCTION_REGISTRATION_PROOF", "RA_PREPARE_ACCEPTANCE", "LITERAL_PATHS_AND_WRITER_NONCONFLICT_ACK", "HISTORICAL_PREFLIGHT_RECEIPT"],
+  "excludedPaths": ["packages/rules/src/**", "apps/server/**", "apps/client/**", "scripts/**", ".github/workflows/**"],
+  "potentialMigrationIncrement": 2,
+  "grantedMigrationIncrement": 0,
+  "note": "Proposed paths are not authorization. Generated paths, content surface and test filename must be explicitly resolved before grant. No permission to force a new runtime contract."
+}
