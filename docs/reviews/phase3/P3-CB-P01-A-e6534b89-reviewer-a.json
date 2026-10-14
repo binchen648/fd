@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "fd-prepare-scoped-evidence-review-v1",
+  "taskId": "P3-CB-P01-A",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "reviewer": "Reviewer A",
+  "reviewedSha": "e6534b89eba39891d1ff610cec0f9afab6c0bdad",
+  "candidateSha": "e6534b89eba39891d1ff610cec0f9afab6c0bdad",
+  "baseSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "conclusion": "REVIEW_ACCEPTED",
+  "finalVerdict": "PASS",
+  "acceptedScope": "EXACT_ZERO_INCREMENT_PREPARE_SCOPE_SOURCE_PROVENANCE_RECORDED_PREFLIGHT_AND_FUTURE_TEST_PLAN_ONLY",
+  "findings": [],
+  "packet": {
+    "path": "artifacts/phase3-cb-p01-prepare.json",
+    "sha256": "AA2578BA299C03DD4541A0E8ED1C5C315E7FC4E26493E44553FA29364B77802A"
+  },
+  "receipts": {
+    "path": "artifacts/phase3-cb-p01-historical-preflight.json",
+    "sha256": "76AF6E0F6FC1013463BDF819099F65F80D4B5EA256E0F779A6AECF2D47E2B633",
+    "recordedRuns": 2,
+    "recordedExitCodes": [0, 0],
+    "recordedStatuses": ["CHECKED", "CHECKED"],
+    "cacheHit": [false, true],
+    "reviewerReexecutedPreflight": false,
+    "verification": "Embedded input/stdout/stderr SHA-256, parsed task input, exact argv, tested base, digest consistency, source references and static Git objects verified independently"
+  },
+  "verifiedChecks": {
+    "exactParentAndRemoteCarrier": "PASS",
+    "observedRemoteMainMatchesBase": "PASS_AT_REVIEW_TIME",
+    "authorizedThreeOutputDelta": "PASS",
+    "rawGitSourceReferenceChecks": 36,
+    "plannerAuthorityAndReservationBinding": "PASS",
+    "canonicalCardAndAbilityDualKey": "PASS",
+    "printedTextEffectsAndExcludedClauses": "PASS",
+    "historicalVersusCurrentEvidenceSeparation": "PASS",
+    "historicalCacheSuccessNotRuntimeAcceptance": "PASS",
+    "positiveNegativeAtomicityRevisionPlan": "PASS_FOR_PREPARE_ONLY",
+    "recurrenceOverlayNotAuthorizedOrExecuted": "PASS",
+    "zeroCreditAndNoRuntimeDelta": "PASS",
+    "diffCheck": "PASS"
+  },
+  "identities": [
+    "master.gatou.command-spell#command-spell.gain-mana",
+    "master.olga-marie.command-spell#command-spell.gain-mana"
+  ],
+  "accounting": {
+    "accepted": 111,
+    "denominator": 944,
+    "remaining": 833,
+    "mainCoverageCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0
+  },
+  "remainingPrerequisites": [
+    "Planner confirms writer liveness and absence of conflicting writers",
+    "Planner issues literal B test-only paths, branch/worktree/base and reservation",
+    "Any controlled recurrence overlay requires explicit precise authorization",
+    "B executes exact identity-specific production conformance; Reviewer B independently reviews results"
+  ],
+  "notGranted": {
+    "bImplementationPermission": true,
+    "runtimeOrAuthoringWritePermission": true,
+    "compilerOrProductionConformanceAcceptance": true,
+    "legacyFallbackClosureAcceptance": true,
+    "wholeCardAcceptance": true,
+    "gateABCOrPromotion": true,
+    "newMigrationCredit": true
+  },
+  "preservedLimits": {
+    "sourceAssetsMissingImages": 93,
+    "globalGateC": "NOT_VERIFIED",
+    "historicalRecurrence": "PLANNED_NOT_EXECUTED",
+    "longTermStability": "NOT_VERIFIED",
+    "speedupClaim": "NONE",
+    "heavyTestsExecutedByReviewer": 0,
+    "githubAttestationCreated": false
+  },
+  "nextOwner": "Planner resolves writer confirmation and exact B dispatch prerequisites; this review itself grants no implementation permission"
+}
