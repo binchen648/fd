@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "fd-prepare-scoped-evidence-review-v1",
+  "taskId": "P3-CB-P02-A-PREPARE",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "reviewer": "Reviewer A",
+  "reviewedSha": "6fb7253dd6c325ddb88865178ae3afbb1fe5c0ca",
+  "candidateSha": "6fb7253dd6c325ddb88865178ae3afbb1fe5c0ca",
+  "baseSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "conclusion": "REVIEW_ACCEPTED",
+  "finalVerdict": "PASS",
+  "acceptedScope": "EXACT_P02_PREPARE_SOURCE_PROVENANCE_RECORDED_PREFLIGHT_AND_BLOCKED_REGISTRATION_FEASIBILITY_ONLY",
+  "acceptedPrepareDisposition": "NOT_ELIGIBLE_EXISTING_CONTRACT",
+  "dispositionMeaning": "Existing fixed-set semantic route is statically present. Proposed identities lack production registration; current roster/product authorization does not permit additive nine-master registration. No absence of numeric runtime capability is inferred.",
+  "findings": [],
+  "packet": {
+    "path": "artifacts/phase3-cb-p02-prepare.json",
+    "sha256": "97F116E8A08CF5F424A197B988B8E56F5F1D2DDDD3047366C75CB83115D6AF8F"
+  },
+  "receipts": {
+    "path": "artifacts/phase3-cb-p02-historical-preflight.json",
+    "sha256": "9451ECFEEAE6D7AC10E94A6D5F9815813A06CF84B33BFA4E4887A5C2F563CFF9",
+    "recordedExitCodes": [1, 1, 0, 0],
+    "failedLaunches": "Two bare Windows loader-path failures preserved",
+    "successfulStatuses": ["CHECKED", "CHECKED"],
+    "successfulCacheHit": [false, true],
+    "rawOutputHashesAndParsedResults": "PASS",
+    "cacheDigestConsistency": "PASS",
+    "actualExecutionDirectory": "D:/fd-validation/a-cb-p02-prepare",
+    "receiptRelocationDisclosed": true,
+    "reviewerReranPreflight": false
+  },
+  "verifiedChecks": {
+    "exactParentRemoteCarrierAndObservedMain": "PASS_AT_REVIEW_TIME",
+    "authorizedThreePathDelta": "PASS",
+    "gitSourceHashAndBlobBindings": "26/26 PASS",
+    "canonicalAuthoringAndPrintedText": "PASS",
+    "productionRegistryIdentityAbsence": "PASS_STATIC",
+    "typedSetManaAssignmentNotAddition": "PASS_STATIC_SOURCE_ONLY",
+    "sevenSeatAndAllMasterPairingConstraint": "PASS_STATIC_SOURCE_ONLY; NO_NINE_MASTER_EXECUTION_CLAIM",
+    "supportAndRuleChannelRestrictions": "PASS_STATIC_SOURCE_ONLY",
+    "sourceBeforeGameStartOrdering": "PASS_STATIC_SOURCE_ONLY",
+    "perIdentityExecutionAndFallbackRemainUnverified": "PASS",
+    "historicalAcceptanceNotInherited": "PASS",
+    "writerIncidentAndUnconfirmedLivenessPreserved": "PASS_DISCLOSURE_ONLY",
+    "timeAlterAlternativeRemainsBlockedAndUnaccepted": "PASS",
+    "zeroCredit": "PASS",
+    "diffCheck": "PASS"
+  },
+  "identities": ["master.iliya.skill.s1", "master.taiga.skill.s1"],
+  "remainingPrerequisites": [
+    "Planner chooses exact seven-seat roster substitution or separately scopes another batch",
+    "Planner reconciles the prior receipt writer conflict and grants exact production/test paths with reservation",
+    "Dispatched implementation must prove real production registration and game_start initialization separately for both identities",
+    "Cross-event initialization, atomic negatives and fallback require fresh independent runtime review",
+    "Time Alter alternative requires Planner selection and Reviewer B full-clause/target-scope review"
+  ],
+  "accounting": {
+    "accepted": 111,
+    "denominator": 944,
+    "remaining": 833,
+    "mainCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0
+  },
+  "grants": {
+    "leadBuilderCoding": false,
+    "runtimeOrRosterChange": false,
+    "runtimeConformanceAcceptance": false,
+    "fallbackClosure": false,
+    "gateABC": false,
+    "promotion": false
+  },
+  "limits": {
+    "heavyTestsExecutedByReviewer": 0,
+    "dynamicNineMasterFailureReproduced": false,
+    "receiptWriterAttributionEstablished": false,
+    "globalGateC": "NOT_VERIFIED",
+    "missingImages": 93,
+    "githubAttestationCreated": false
+  },
+  "nextOwner": "Planner registration/scope decision and writer reconciliation; no Lead Builder coding is authorized by this verdict"
+}
