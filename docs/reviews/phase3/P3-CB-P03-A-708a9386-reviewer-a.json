@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "fd-selection-scoped-evidence-review-v1",
+  "taskId": "P3-CB-P03-A-SELECT",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "reviewer": "Reviewer A",
+  "reviewedSha": "708a9386730e9beb5024bd58535eb3d7522fff39",
+  "candidateSha": "708a9386730e9beb5024bd58535eb3d7522fff39",
+  "baseSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "conclusion": "REVIEW_ACCEPTED",
+  "finalVerdict": "PASS",
+  "acceptedScope": "EXACT_P03_BOUNDED_WHOLE_IDENTITY_BATCH_SELECTION_SOURCE_PROVENANCE_AND_EXCLUSION_ACCOUNTING_ONLY",
+  "selectionDisposition": "NO_VALID_BATCH_FOUND",
+  "findings": [],
+  "packet": {
+    "path": "artifacts/phase3-cb-p03-candidate-selection.json",
+    "sha256": "703A44F979C123503BD4BC8342D813226C5F8AA535CE10592B7FE2EA03B46FE4"
+  },
+  "report": {
+    "path": "docs/reports/2026-10-14-p3-cb-p03-candidate-selection.md",
+    "sha256": "1214D21E0252A51FAAA67FA37EC2CAF0A059A84222097300F7A767E86A690F4A"
+  },
+  "independentVerification": {
+    "exactParentRemoteCarrierAndObservedMain": "PASS_AT_REVIEW_TIME",
+    "onlyTwoEvidencePathsChanged": "PASS",
+    "rawGitSourceBlobAndSha256Bindings": "28/28 PASS",
+    "readonlyInventoryCommands": [
+      "node docs/audits/fd-card-action-play-inventory.mjs",
+      "node docs/audits/fd-resource-numeric-core-direct-action-inventory.mjs"
+    ],
+    "inventoryReplay": "Both exit 0 and exact stdout equality with embedded receipts",
+    "frozenStaticIdentities": 943,
+    "frozenDynamicIdentities": 1,
+    "uniqueAcceptedIdentities": 111,
+    "currentPlayableOwners": 14,
+    "currentPlayableOwnerUnacceptedIdentitySet": "19/19 exact identity-set and full-text equality with matrix",
+    "candidateSourceIdentityTextHashAndMembership": "17/17 PASS",
+    "wholeIdentityVersusComponentAndGeneratedAliasBoundary": "PASS",
+    "alreadyCreditedCandidatesExcludedFromNewBatch": "PASS",
+    "namedCorrespondencesNotAcceptedMappings": "PASS",
+    "allCandidateMatrixRowsRemainIneligible": "PASS",
+    "diffCheck": "PASS"
+  },
+  "interpretation": {
+    "batch": "2-4 genuinely new complete canonical identities sharing one existing production contract within the stated exclusions",
+    "p02Relationship": "Independent task: P02 audits a specified initialization pair; P03 searches for a qualifying batch",
+    "noValidBatchMeaning": "No qualifying batch established within this bounded current-source search and stated constraints",
+    "notInferred": "No assertion that all remaining 833 identities are permanently unmigratable or that excluded singleton/compound contracts are runtime defects",
+    "noPadding": "Existing Gatou/Olga controls and credited Kintoki/Independent Action identities cannot supply new identity credit",
+    "noAutomaticSingleton": "Minimum batch size and semantic exclusions require an explicit Planner decision to change"
+  },
+  "accounting": {
+    "accepted": 111,
+    "denominator": 944,
+    "remaining": 833,
+    "mainCreditDelta": 0,
+    "migrationCreditDelta": 0,
+    "denominatorDelta": 0
+  },
+  "grants": {
+    "leadBuilderDispatch": false,
+    "productionOrRuntimeWrite": false,
+    "singletonContractAcceptance": false,
+    "gateABC": false,
+    "promotion": false
+  },
+  "limits": {
+    "runtimeCompilerBrowserOrFullCiExecutedByReviewer": false,
+    "globalGateC": "NOT_VERIFIED",
+    "missingImages": 93,
+    "longTermStability": "NOT_VERIFIED",
+    "githubAttestationCreated": false
+  },
+  "nextOwner": "Planner explicitly retains the constraints or authorizes a narrow singleton/changed selection scope; no implementation follows automatically"
+}
