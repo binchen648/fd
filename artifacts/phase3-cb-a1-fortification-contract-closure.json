@@ -1,0 +1,254 @@
+{
+  "schemaVersion": "fd-scoped-readonly-contract-analysis-v1",
+  "taskId": "P3-CB-A1-FORTIFICATION-CONTRACT-CLOSURE",
+  "runtimeSubtask": "P3-CB-A1-FORTIFICATION-RESIDUAL-ANALYSIS",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "mainSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "plannerSha": "831db1780432446e7171bad9295698f3b1a2041f",
+  "inputCarrierSha": "96788cb775c400aa3a2a8d5b1bfeb8f440772014",
+  "status": "BLOCKED_WITH_REASON",
+  "dispositions": ["CONTENT_ADMISSION_DEPENDENCY", "SCOPED_CAPABILITY_ENABLER_REQUIRED"],
+  "role": "Codex B read-only runtime analysis; content admission corroborated statically, not Content Owner acceptance",
+  "branch": "codex/b-p3-cb-a1-fortification-contract-analysis",
+  "absoluteWorktree": "D:/fd-validation/b-cb-a1-fortification-analysis",
+  "identities": ["servant.gilles.skill.sc-gilles-2", "servant.medea.skill.sc-medea-2"],
+  "mappedConsumers": 2,
+  "consumerDenominator": 2,
+  "observations": [
+    {
+      "id": "ADMISSION",
+      "classification": "CONFIRMED_STATIC",
+      "finding": "Each selected archive has one servant_skill and no deck; neither owner/card is in the current production executable pack.",
+      "existingSupport": "authoringServantFiles -> convertAuthoringServant -> startingDeckFromAuthoring -> compileExecutableCardPack -> MatchSession buildInitialState",
+      "guard": "Product loader and executable compiler independently require exactly three servant skills and twelve deck cards.",
+      "cardOnlyPath": "No existing servant rules-only archive/channel found. servantCardFiles is presentation input, not executable rules.archives and not owner instantiation. Rules-only exemptions cover master support/master rules/events, not servants.",
+      "owner": "Content Owner",
+      "minimumDelta": "Complete canonically sourced playable owner content with source assets, or obtain separately reviewed admission design. Do not bypass current invariants, synthesize missing skills/decks, borrow a different owner, or manually patch generated files."
+    },
+    {
+      "id": "RESIDUAL_MAPPING",
+      "classification": "CONFIRMED_STATIC",
+      "finding": "Both cards encode continuous_formula + forced_trigger, no residual kind or lifecycle. Session round cleanup retains attack_area cards only if a residual-kind ability survives its cleanup exclusion.",
+      "rule": "Final Rules 11.3/11.5: active residual remains until closed and participates each round without repeat payment.",
+      "reuse": "Existing residual marker, shared playBatch, attack_area active state and cleanup machinery can be reused as components.",
+      "minimumDelta": "Map the actual printed reward ability to an explicit active-source residual contract, not a dummy residual ability. Its exact compiler/runtime ownership must be reviewed together with reward routing."
+    },
+    {
+      "id": "REWARD_KIND_AND_SOURCE",
+      "classification": "CONFIRMED_STATIC",
+      "finding": "isDeploymentResourceRewardCandidate requires forced_trigger; exact validator rejects requiresSourceState and any lifecycle. Current reward has no active-source requirement. Changing kind to residual leaves the typed candidate and allows generic/legacy execution; adding active/lifecycle alone makes the current forced-trigger exact shape reject.",
+      "currentEligibility": "Generic canActivate only validates active source when activation.requiresSourceState explicitly says active. A residual kind alone does not enforce active provenance.",
+      "minimumDelta": "Add one identity-free residual deployment-reward ownership/validator boundary using accepted Card Zone active-source policy, retaining the old forced-trigger contract unchanged and reusing typed mana/VP effects. Malformed candidate must not escape to legacy.",
+      "owner": "Codex B after implementation authorization"
+    },
+    {
+      "id": "WORKSHOP_PRODUCER_GAP",
+      "classification": "CONFIRMED_STATIC",
+      "finding": "MatchSession.deploy emits after_player_deployed_to_battlefield only inside tags.includes(battlefield). Default magic_workshop tags are support_location, and legalDeploymentActions includes it. Real workshop deployment does not emit the currently authored reward trigger.",
+      "inputPacketCorrection": "PREPARE describes the existing event/component chain but does not establish that the real workshop producer executes it.",
+      "testBoundary": "FM05 and FB2-02 tests directly inject after_player_deployed_to_battlefield with magic_workshop; not real deployment evidence.",
+      "minimumDelta": "Freeze a location-deployment occurrence contract covering legal support-location deployment while preserving existing battlefield-trigger meaning and movement != deployment. Decide exact event encoding with RB before implementation; do not silently broaden every battlefield consumer.",
+      "owner": "Codex B / contract review"
+    },
+    {
+      "id": "NEXT_ROUND_COMPONENTS",
+      "classification": "CONFIRMED_STATIC",
+      "finding": "startRound resets locations and draws hands without replaying retained attacks. Combat authoredAttacks uses controller, attack_area and active cardState without requiring current playedRound, then calculateCardPower reads current round. Shared playBatch pays printed cost on first play only.",
+      "cost": "Printed cost 0; skill-zone play still requires at least 8 mana under Final Rules 9.4 and the existing playRequirements. Retention does not mean paying 8 mana or paying cost each round.",
+      "gap": "Without canonical residual mapping the card is discarded and deactivated at cleanup. Production retention, next-round reward and battle result remain NOT_VERIFIED."
+    }
+  ],
+  "decisionMatrix": [
+    {"facet": "production admission", "disposition": "CONTENT_ADMISSION_DEPENDENCY", "existing": "Strict complete-owner route", "missing": "Real complete owner and sourced deck/skills", "owner": "Content Owner", "testsNeeded": "Real registry/source construction; incomplete-owner rejection; missing source evidence rejection"},
+    {"facet": "residual retention", "disposition": "SCOPED_CAPABILITY_ENABLER_REQUIRED", "existing": "Residual retention, shared activation and current-round power", "missing": "Explicit genuine residual authoring compatible with typed reward/source eligibility", "owner": "B", "testsNeeded": "Real first play, cleanup, next round, closure, no repeat payment"},
+    {"facet": "reward eligibility", "disposition": "SCOPED_CAPABILITY_ENABLER_REQUIRED", "existing": "Formula and typed mana/VP primitives", "missing": "Active residual candidate and real workshop deployment occurrence", "owner": "B", "testsNeeded": "Real deployment not injected event; inactive/closed/wrong owner/location/movement/replay and atomicity"}
+  ],
+  "minimumProposal": {
+    "status": "HYPOTHESIS_NOT_IMPLEMENTATION_AUTHORIZATION",
+    "contract": "Active-source residual location-deployment reward for the two identical whole identities, reusing existing formula/resource/play/cleanup/battle machinery.",
+    "notEstablished": "Not yet certified to be one accepted contract delta. Location event encoding and lawful content entry require independent review. If admission demands a new contract, Planner must assess multiple-contract scope before implementation.",
+    "noNewEnginesJustified": ["broad Trigger", "Battle", "Lifecycle engine", "MatchSession initialization engine"],
+    "runtimePaths": ["packages/rules/src/ability/interpreter.ts", "packages/rules/src/ability/loader.ts", "packages/rules/src/ability/executable-card-pack.ts", "packages/rules/src/match-session.ts"],
+    "conditionalContentPaths": ["data/authoring/servants/servant.gilles.json", "data/authoring/servants/servant.medea.json", "data/packs/fd-playtest-v1/pack.json"],
+    "conditionallyGeneratedPaths": ["data/generated/fd-playtest-v1.content-library.json", "data/generated/fd-playtest-v1.fixture.json", "data/generated/fd-playtest-v1.evidence-report.json"],
+    "testPaths": ["packages/rules/tests/regression/cb-a1-fortification-production.test.ts", "packages/rules/tests/fm05-territory-variant-extension.test.ts", "packages/rules/tests/regression/fb2-deployment-resource-reward.test.ts", "packages/rules/tests/executable-card-pack.test.ts"],
+    "requiredFutureManifest": "docs/agents/manifests/tasks/P3-CB-A1-FORTIFICATION-IMPLEMENTATION.json",
+    "additionalUnrelatedOwnerContent": "Content Owner must return exact missing source files before any write scope; not invented here",
+    "reservations": "No production reservation granted for this analysis. A0 B writer grant overlaps interpreter/loader; frozen 3ec55814 candidate does not itself prove Planner release. Reconfirm ownership before a future implementation.",
+    "hotDomains": ["ability-runtime/deployment-resource", "session/deployment-occurrence", "content/servant-admission"]
+  },
+  "requiredNegativeMatrix": [
+    "Both consumers: exact printed text and full source provenance survive compile",
+    "First face-up skill play with >=8 mana, printed cost 0; <8 rejects; face-down skill rejects",
+    "Before activation, after close, face-down, missing/corrupt cardState, wrong controller or source zone: no reward",
+    "Real deployment to workshop triggers only controller source; ordinary movement, wrong location/player and disallowed deployment do not",
+    "Activate in action does not retroactively reward earlier advance deployment; same-round future eligible occurrence only if legally available",
+    "Cleanup keeps live residual, next-round formula recomputes and attack participates without re-use/re-payment; closed source does not revive",
+    "Same event replay no duplicate reward; mana cap applies; second resource failure rolls back cards/resources/events/revision for declared transaction",
+    "Wrong kind/trigger/source policy/extra fields and malformed effect/binding rejected by compiler/runtime ownership; no legacy success",
+    "Production pack/session/reconnect restore of retained active source; synthetic owner/card assignment never counts as admission proof"
+  ],
+  "historicalGuardrails": {
+    "mode": "Read-only traceable equivalent source applicability check; no CLI receipt claimed",
+    "references": ["docs/engineering/lessons/GUARDRAILS.md", "docs/engineering/lessons/cases/FD-RESTORE-004.md", "docs/reports/2026-10-14-p3-cb-a1-fortification-prepare.md at 96788cb775c400aa3a2a8d5b1bfeb8f440772014"],
+    "application": "Do not inherit historical component PASS as whole-production evidence; keep source snapshot/acceptance scopes separate; pending-restore lesson is not directly applicable to this noninteractive reward and grants no runtime permission.",
+    "limitation": "No fresh gameplay/parity/CI or accepted current-main applicability verdict"
+  },
+  "testsRun": [],
+  "gameplayExecution": "NOT_REQUESTED_NOT_RUN",
+  "runtimeOrContentChanges": false,
+  "reviewerVerdict": "PENDING",
+  "creditDelta": 0,
+  "ledger": "111/944 unchanged",
+  "gateC": "NOT_VERIFIED",
+  "release": "Existing 93 missing-image and other global blockers unchanged",
+  "boundSources": [
+    {
+      "commit": "831db1780432446e7171bad9295698f3b1a2041f",
+      "path": "docs/agents/P3-CB-A1-FORTIFICATION-CONTRACT-CLOSURE.md",
+      "gitBlob": "e62fba32d62927406d22035017d8855b6f678faa",
+      "sha256": "4605647eba805aa934ead6b6b3033d58f36a1320a4736247eb691468a9e04fb5",
+      "bytes": 9333
+    },
+    {
+      "commit": "96788cb775c400aa3a2a8d5b1bfeb8f440772014",
+      "path": "artifacts/phase3-cb-a1-fortification-prepare.json",
+      "gitBlob": "b0d9904d39f1a206fd317224f93515efaeb5e5ce",
+      "sha256": "7f3b27bf5e999c7e656c6ad0a75e96b1c8e45f05d90c69947dd9a96bd3c2278f",
+      "bytes": 29492
+    },
+    {
+      "commit": "96788cb775c400aa3a2a8d5b1bfeb8f440772014",
+      "path": "docs/reports/2026-10-14-p3-cb-a1-fortification-prepare.md",
+      "gitBlob": "1fa5cc6cc54875026ea319ae0087ea395cb40cd3",
+      "sha256": "029f043de2a8ade7ea2e90ef94fcb5cd69c05c2d62394d174647338919ceb9f7",
+      "bytes": 6081
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "docs/rules/FD-Game-Rules-Final.md",
+      "gitBlob": "3ed3309bb37bfc376dd98cff9657ab64406dc315",
+      "sha256": "4cbf96c27235670f89aaab8f4c8c1416f9f64180da864e521f5ef6e75cceb227",
+      "bytes": 36201
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/authoring/servants/servant.gilles.json",
+      "gitBlob": "49b6b5f694fe94c541d482d38613da5702be1c37",
+      "sha256": "7491310f403e46352dc1848b2a0c17c64bab0d07d67887a072f8b09fbee3b166",
+      "bytes": 4787
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/authoring/servants/servant.medea.json",
+      "gitBlob": "0a083a9ba591e206e02a91d7c5481d47e2140a0f",
+      "sha256": "39dc14c106474727522511156c0a7ada31b7474d5c08e549d57cee8b768fa182",
+      "bytes": 4742
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/packs/fd-playtest-v1/pack.json",
+      "gitBlob": "dc1c7cdc03464e5274fd61ccb3e9d6e7021d00be",
+      "sha256": "f9df6313a3b2452815fda56902dac5bac8f1f9c4e2374b11912b8ea82cd9d109",
+      "bytes": 2897
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "data/generated/fd-playtest-v1.content-library.json",
+      "gitBlob": "6296653f5d53bac3684bd172d04c43c45acae2dc",
+      "sha256": "38b1c58e7a1eba06bc80a1a8f5d302ad4339845edf6b67a36cf1bbbcaa3e65b1",
+      "bytes": 382530
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/content/src/playtest-pack-loader.ts",
+      "gitBlob": "10ccb1f08193006c035862722b82f1a6715471f7",
+      "sha256": "2b1eead567384500b4e83a63273fc6d714dbf0ddd5a3e0d9bf2bcdacc7f59f20",
+      "bytes": 35583
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/ability/loader.ts",
+      "gitBlob": "e3ce053f95f6b635b5c2f3fc8ae08d3d360f63e5",
+      "sha256": "17a6630e36b3acec36e7f684118bb577cf49ea400d98e4bc029c8f01b75ed7c2",
+      "bytes": 50992
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/ability/interpreter.ts",
+      "gitBlob": "25f17fe843a9a05650722e996f0ce97109cfadbe",
+      "sha256": "a5f74d0cdcb71c169640dc6d0c0b7936eb2cb26b4ac8a1421e2dd50783554c43",
+      "bytes": 297265
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/ability/executable-card-pack.ts",
+      "gitBlob": "1e6eef44d3cd177616575a9e9050e9a996c9ec51",
+      "sha256": "7f00857bbb67fe47fb1e61200aac84a8e174378ed1c8bddcf74a9190db2a0bc0",
+      "bytes": 48261
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/core/card-source-state.ts",
+      "gitBlob": "9a3cb5ee1a32d1767d73514a158ac1e559997de3",
+      "sha256": "a49508fb90cec9f65740a9fc0f4b689933e1633ac64fcfa6aac6ee75a0fd5c22",
+      "bytes": 2584
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/core/combat-resolver.ts",
+      "gitBlob": "5b32ce5d69298877e83d9438fd80a97b4a740857",
+      "sha256": "6274ab84c7e039c5af1980476494961f109cf920c0012874bf49e6320ce2137c",
+      "bytes": 38340
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/match-session.ts",
+      "gitBlob": "3418ff800b605a6a6e8c93f76eb072699c5c6378",
+      "sha256": "a4b440bda535956819d557e89c5c095c765f88b349c78c62d767b3c7a1918c12",
+      "bytes": 166433
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/src/data/maps/default-7p-map.json",
+      "gitBlob": "d995912831aa92a98cb76bf47ea03b1a498b73bd",
+      "sha256": "413788df2910168712092e65522f445687527fb545a89b1a47deddb5548cfc02",
+      "bytes": 3134
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/tests/fm05-territory-variant-extension.test.ts",
+      "gitBlob": "3b8fec1260825a0d2988b35fa7a0ce4a22f89331",
+      "sha256": "bcbab27fea30faa56ae570a57a253762b8467e60337f96fc7b418e0fdb6c77e8",
+      "bytes": 6602
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/tests/fm05-territory-creation-authoring.test.ts",
+      "gitBlob": "2aefaa029334e153b381d8e8da0a838c70297a68",
+      "sha256": "c464aac15e45d5bb7c860e6fb20283f5aa3eb4cf0bf4fb7635ce0661ca7f16bd",
+      "bytes": 7451
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "packages/rules/tests/regression/fb2-deployment-resource-reward.test.ts",
+      "gitBlob": "853f435f503e58fc5759371075513aa360823929",
+      "sha256": "12a272218d98120ed3777c0bba1675b4ca798fd9ef9dfd7d1b17544c7937df87",
+      "bytes": 9750
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "docs/engineering/lessons/GUARDRAILS.md",
+      "gitBlob": "2fc1af8e0f45ae2371ad12a7d22f7675be3aad16",
+      "sha256": "a32471afb749219bdde433b69e601b5d8793ad46d7f12ef5d19afb24407caec1",
+      "bytes": 2357
+    },
+    {
+      "commit": "a42b5e1c517141b90f3407773958b0d8afe63264",
+      "path": "docs/engineering/lessons/cases/FD-RESTORE-004.md",
+      "gitBlob": "ccbd072b957587ad42abae0a7dc83a02a8dd2df8",
+      "sha256": "8c31e9a5339a8a2c87042473c50b899af927c6e7c7e4cf824b07648be5f25db1",
+      "bytes": 4420
+    }
+  ]
+}
