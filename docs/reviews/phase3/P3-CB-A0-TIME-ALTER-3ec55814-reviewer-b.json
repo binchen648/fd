@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "fd-independent-scoped-review-v1",
+  "taskId": "P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR",
+  "reviewerIdentity": "Codex Reviewer B",
+  "githubIdentity": null,
+  "reviewThread": null,
+  "reviewDate": "2026-10-14",
+  "baseSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "reviewedSha": "3ec55814b8aca84416fca46dfaf7032a7f115094",
+  "testedImplementationSha": "8fba9c457de11f849353b5ad84c6165bfa4493b8",
+  "authorizationSha": "b52d09178737465525f09457b5145c40fbb097ee",
+  "userRulingSha": "a1328bead4d653991f7b52817686e24e882d50b4",
+  "verdict": "PASS",
+  "verdictScope": "Time Alter ruled hand-target legality repair and scoped production/browser chain only",
+  "overallReadiness": "BLOCKED",
+  "identity": {
+    "frozen": "master.kiritsugu.skill.s2",
+    "productionDefinition": "master.kiritsugu.skill.time-alter",
+    "ability": "time-alter.action"
+  },
+  "findings": [],
+  "reviewedBehavior": [
+    "Master phase ability activation does not play its source; source remains skill",
+    "Real setup replacement and draw make Origin Bullet reachable in hand; subsequent face-down play and one draw succeed",
+    "Shared isAttack includes master_deck_card consistently with compiled play classification",
+    "Semantic PLAY target projection and final face-down effect play use one shared playFailure helper",
+    "Controller/owner/zone, card requirements and prohibitions remain enforced; no skill face-down exception",
+    "Target drift, stale decision, wrong phase, corrupt pending target/draw graph reject atomically",
+    "Typed ownership failures return resolution_failed without legacy fallback",
+    "Private pending/card information, reload and stale WS target replay retain scoped browser evidence",
+    "No new card/ability identity-specific production literal, authoring/compiler/KPI change or additional consumer migration"
+  ],
+  "independentExecution": {
+    "command": "npx vitest run packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts packages/rules/tests/regression/card-action-play.test.ts packages/rules/tests/regression/fb2-required-additional-play.test.ts --maxWorkers=1",
+    "filesPassed": 3,
+    "testsPassed": 26,
+    "exitCode": 0
+  },
+  "packet": {
+    "path": "artifacts/phase3-cb-a0-time-alter-play-legality-repair.json",
+    "sha256": "0411d702b35a8f253712cc52f3dfa97d32b7cb7971d7551a686ad68f0b5e977a",
+    "validatedReceipts": 16,
+    "validatedRawStreams": 32,
+    "validatedSourceHashes": 5
+  },
+  "recordedEvidenceInspected": {
+    "focused": "216/216, exit 0 at 8fba9c4",
+    "browser": "browser-freeze receipt: 5/5, exit 0 at 8fba9c4; not rerun by Reviewer",
+    "defaultCI": "1642/1643, exit 1 at 8fba9c4; old B11 source-binding failure retained",
+    "sourceEquivalence": "8fba9c4 to reviewed candidate differs only in artifact/report",
+    "remoteHeadMatches": true
+  },
+  "adjacentTestReview": "User-authorized append-only regression now asserts no impossible activation offer and atomic forged-command rejection; existing shared play enforcement retained",
+  "remainingBlockersAndLimits": [
+    "Default CI remains failed on old B11 Candidate source drift; Automation Owner must disposition evidence without weakening historical checks",
+    "Historical Failure Preflight was correctly run only after the initial incorrect CLI attempt; no pre-implementation prevention success accepted",
+    "Browser preconditions use public server/session progression, not all-browser setup",
+    "Whole-game flow, full roster, Global Gate C and independent A/RA/governance promotion are not accepted here",
+    "No real GitHub-bound reviewer identity/thread is asserted"
+  ],
+  "grants": { "main": false, "phase3": false, "globalGateC": false, "promotion": false, "releaseReady": false, "creditDelta": 0 },
+  "reviewerEdits": "Review artifact only; no production/test logic modification",
+  "reviewCommitBinding": "Containing commit and artifact SHA-256 reported externally; no self-referential SHA invented"
+}
