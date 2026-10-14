@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "fd-planner-writer-reservation-v1",
+  "reservationId": "P3-CB-P02-A-PREPARE",
+  "issuedDate": "2026-10-14",
+  "issuerRole": "Planner / Process Controller",
+  "ownerRole": "Codex A / PREPARE evidence owner",
+  "ownerTask": "P3-CB-P02-A-PREPARE",
+  "status": "GRANTED_PENDING_OWNER_BINDING",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "requiredBase": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "resourceDomains": ["capability-batch/P02/prepare-evidence"],
+  "sourceAndTestPaths": [],
+  "evidencePaths": [
+    "artifacts/phase3-cb-p02-prepare.json",
+    "artifacts/phase3-cb-p02-historical-preflight.json",
+    "docs/reports/2026-10-14-p3-cb-p02-prepare.md"
+  ],
+  "ownerBinding": {"branch": null, "absoluteWorktree": null, "acknowledgement": "PENDING"},
+  "conditions": "Confirm clean exact-base checkout, actual branch/worktree, no competing writer for these three outputs; preserve existing work. No claim of a globally acquired filesystem lock.",
+  "heavyTests": "NOT_AUTHORIZED",
+  "runtimeReservation": "NOT_GRANTED",
+  "leadReservation": "NOT_GRANTED_PENDING_EXACT_IMPLEMENTATION_SCOPE",
+  "creditDelta": 0,
+  "release": "Planner releases on frozen PREPARE packet or explicit cancellation"
+}

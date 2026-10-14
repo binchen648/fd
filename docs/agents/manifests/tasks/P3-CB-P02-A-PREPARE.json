@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "fd-capability-batch-prepare-task-v1",
+  "taskId": "P3-CB-P02-A-PREPARE",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "owner": "Codex A",
+  "status": "READY_READ_ONLY_PENDING_RESERVATION_ACKNOWLEDGEMENT",
+  "exactBaseSha": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "capabilityFamily": "GAME_START_FIXED_CONTROLLER_SET_MANA",
+  "selectedIdentities": ["master.iliya.skill.s1", "master.taiga.skill.s1"],
+  "selectionStatus": "CANDIDATE_PAIR_NOT_IMPLEMENTATION_AUTHORIZATION",
+  "semanticContracts": ["P3-R51/FB2-25", "FIXED_CONTROLLER_SET_MANA", "PRODUCTION_GAME_START_REGISTRATION"],
+  "runtimeDomains": ["ability-runtime", "content-registration", "evidence-tooling"],
+  "outputs": [
+    "artifacts/phase3-cb-p02-prepare.json",
+    "artifacts/phase3-cb-p02-historical-preflight.json",
+    "docs/reports/2026-10-14-p3-cb-p02-prepare.md"
+  ],
+  "reservationReference": "docs/agents/manifests/reservations/P3-CB-P02-A-PREPARE.json",
+  "preflightInputProtocol": "Project exactly taskId, capabilityFamily, semanticContracts, expectedChangedFiles, runtimeDomains, exactBaseSha, selectedIdentities, reservationReference into the strict CLI task schema; derive expectedChangedFiles from the actual proposed implementation scope and embed that input in the receipt. This Planner card itself is not CLI input.",
+  "dependencies": ["CURRENT_MAIN_BINDING", "THREE_OUTPUT_RESERVATION_ACKNOWLEDGEMENT"],
+  "notDependencies": ["P3-CB-P01_CONFORMANCE", "P3-EFP-K03_PROMOTION"],
+  "productionWriteAuthorized": false,
+  "sharedRuntimeWriteAuthorized": false,
+  "leadReservationGranted": false,
+  "newControlEpochRequired": false,
+  "currentCreditDelta": 0,
+  "possibleCreditAfterIndependentAcceptanceAndPromotion": 2,
+  "stopConditions": ["SHARED_RUNTIME_CHANGE_REQUIRED", "REGISTRATION_REQUIRES_UNAPPROVED_PRODUCT_EXPANSION", "CONTRACT_CONFLICT", "ALREADY_CREDITED_IDENTITY", "SOURCE_PROOF_UNAVAILABLE"],
+  "exitPacket": "One exact candidate pair and proposed file list with all blockers; if impossible, one separately contracted alternative pair/batch. No automatic fallback implementation."
+}
