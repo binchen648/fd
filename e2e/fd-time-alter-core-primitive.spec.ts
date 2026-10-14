@@ -1,15 +1,21 @@
 import { expect, test, type Page, type WebSocket as PlaywrightWebSocket } from '@playwright/test';
 import type { ClientRoomMessage, MatchRoomProjection, RoomHttpResponse, ServerRoomMessage } from '@fd/rules';
-import { createMatchServer } from '../apps/server/src/match-server';
+import { spawn, type ChildProcess } from 'node:child_process';
 
 let httpBase = '';
 let wsBase = '';
-let fixtureServer: ReturnType<typeof createMatchServer> | undefined;
+let fixtureProcess: ChildProcess | undefined;
 const timeAlterInstanceId = 'p6-master.kiritsugu.skill.time-alter';
 const selectedAttackInstanceId = 'p6-basic.strength.5-2';
 const drawnCardInstanceId = 'p6-basic.luck-1';
 
-test.afterEach(async () => { await fixtureServer?.close(); fixtureServer = undefined; });
+test.afterEach(async () => {
+  const child = fixtureProcess;
+  fixtureProcess = undefined;
+  if (child && child.exitCode === null && child.signalCode === null) {
+    await new Promise<void>((resolve) => { child.once('exit', () => resolve()); child.kill(); });
+  }
+});
 
 test('plays a genuinely replaced and drawn Origin Bullet through browser, reconnect, and stale rejection', async ({ page }) => {
   const roomId = `fd-time-alter-${Date.now()}`;
@@ -147,53 +153,77 @@ test('plays a genuinely replaced and drawn Origin Bullet through browser, reconn
 });
 
 async function createNaturalTimeAlterRoom(roomId: string): Promise<RoomHttpResponse> {
-  fixtureServer = createMatchServer();
-  const port = await fixtureServer.listen(0);
-  httpBase = `http://127.0.0.1:${port}`;
-  wsBase = `ws://127.0.0.1:${port}`;
-  const hub = fixtureServer.hub;
-  const hostId = 'host-time-alter';
-  hub.createRoom({ roomId, hostClientId: hostId, seed: 20260909 });
-  hub.selectSeat(roomId, hostId, 6);
-  for (const seat of [1, 2, 3, 4, 5, 7]) {
-    const clientId = `time-alter-human-${seat}`;
-    hub.joinRoom(roomId, { clientId, displayName: clientId, role: 'player' });
-    hub.selectSeat(roomId, clientId, seat);
-  }
-  hub.startMatch(roomId, hostId);
-  const room = hub.getRoom(roomId);
-  const session = room.session!;
-  const pass = () => {
-    const player = session.state.players.find((entry) => entry.seat === session.state.round.prioritySeat)!;
-    expect(session.passPriority(player.id).ok).toBe(true);
-  };
-  const reach = (phase: string) => {
-    for (let step = 0; step < 30; step++) {
-      if (session.state.round.activePhase === phase && session.state.round.prioritySeat === 6) return;
-      pass();
+  const script = `
+    import assert from 'node:assert/strict';
+    import { createMatchServer } from './apps/server/src/match-server.ts';
+    const server = createMatchServer();
+    const port = await server.listen(0);
+    const roomId = ${JSON.stringify(roomId)};
+    const hub = server.hub;
+    const hostId = 'host-time-alter';
+    hub.createRoom({ roomId, hostClientId: hostId, seed: 20260909 });
+    hub.selectSeat(roomId, hostId, 6);
+    for (const seat of [1, 2, 3, 4, 5, 7]) {
+      const clientId = 'time-alter-human-' + seat;
+      hub.joinRoom(roomId, { clientId, displayName: clientId, role: 'player' });
+      hub.selectSeat(roomId, clientId, seat);
     }
-    throw new Error('Natural Time Alter setup did not reach the phase window');
-  };
-  const choose = (selected: string) => {
-    const action = session.getPlayerView('p6').legalActions.find((entry) => entry.type === 'choose_target')!;
-    expect(session.dispatchPlayerAction('p6', { type: 'choose_target', decisionId: action.decisionId, selectedIds: [selected] }).ok).toBe(true);
-  };
-  reach('preparation');
-  expect(session.state.cards.find((card) => card.instanceId === selectedAttackInstanceId)!.zone).toBe('deck');
-  expect(session.dispatchPlayerAction('p6', { type: 'activate_ability', cardInstanceId: 'p6-master.kiritsugu.skill.magus-killer', abilityId: 'magus-killer.setup' }).ok).toBe(true);
-  choose(selectedAttackInstanceId);
-  reach('action');
-  expect(session.dispatchPlayerAction('p6', { type: 'activate_ability', cardInstanceId: timeAlterInstanceId, abilityId: 'time-alter.action' }).ok).toBe(true);
-  const first = session.getPlayerView('p6').legalActions.find((entry) => entry.type === 'choose_target')!;
-  choose(first.candidates[0]!);
-  expect(session.state.cards.find((card) => card.instanceId === selectedAttackInstanceId)).toMatchObject({ definitionId: 'master.kiritsugu.deck.origin-bullet', zone: 'hand' });
-  for (let step = 0; step < 30 && session.state.round.activePhase !== 'round_end'; step++) pass();
-  expect(session.state.round.activePhase).toBe('round_end');
-  session.runFullMatch({ maxRounds: 2 });
-  reach('action');
-  expect(session.state.round.roundNumber).toBe(2);
-  expect(session.state.cards.find((card) => card.instanceId === drawnCardInstanceId)!.zone).toBe('deck');
-  return { roomId, clientId: hostId, reconnectToken: room.getIssuedCredential(hostId), projection: hub.project(roomId, hostId) };
+    hub.startMatch(roomId, hostId);
+    const room = hub.getRoom(roomId);
+    const session = room.session;
+    const pass = () => {
+      const player = session.state.players.find(entry => entry.seat === session.state.round.prioritySeat);
+      assert.equal(session.passPriority(player.id).ok, true);
+    };
+    const reach = phase => {
+      for (let step = 0; step < 30; step++) {
+        if (session.state.round.activePhase === phase && session.state.round.prioritySeat === 6) return;
+        pass();
+      }
+      throw new Error('Natural Time Alter setup did not reach the phase window');
+    };
+    const choose = selected => {
+      const action = session.getPlayerView('p6').legalActions.find(entry => entry.type === 'choose_target');
+      assert.equal(session.dispatchPlayerAction('p6', { type: 'choose_target', decisionId: action.decisionId, selectedIds: [selected] }).ok, true);
+    };
+    reach('preparation');
+    assert.equal(session.state.cards.find(card => card.instanceId === '${selectedAttackInstanceId}').zone, 'deck');
+    assert.equal(session.dispatchPlayerAction('p6', { type: 'activate_ability', cardInstanceId: 'p6-master.kiritsugu.skill.magus-killer', abilityId: 'magus-killer.setup' }).ok, true);
+    choose('${selectedAttackInstanceId}');
+    reach('action');
+    assert.equal(session.dispatchPlayerAction('p6', { type: 'activate_ability', cardInstanceId: '${timeAlterInstanceId}', abilityId: 'time-alter.action' }).ok, true);
+    const first = session.getPlayerView('p6').legalActions.find(entry => entry.type === 'choose_target');
+    choose(first.candidates[0]);
+    assert.equal(session.state.cards.find(card => card.instanceId === '${selectedAttackInstanceId}').definitionId, 'master.kiritsugu.deck.origin-bullet');
+    assert.equal(session.state.cards.find(card => card.instanceId === '${selectedAttackInstanceId}').zone, 'hand');
+    for (let step = 0; step < 30 && session.state.round.activePhase !== 'round_end'; step++) pass();
+    assert.equal(session.state.round.activePhase, 'round_end');
+    session.runFullMatch({ maxRounds: 2 });
+    reach('action');
+    assert.equal(session.state.round.roundNumber, 2);
+    assert.equal(session.state.cards.find(card => card.instanceId === '${drawnCardInstanceId}').zone, 'deck');
+    console.log(JSON.stringify({ roomId, clientId: hostId, reconnectToken: room.getIssuedCredential(hostId), httpBase: 'http://127.0.0.1:' + port, wsBase: 'ws://127.0.0.1:' + port, projection: hub.project(roomId, hostId) }));
+    process.once('SIGTERM', async () => { await server.close(); process.exit(0); });
+  `;
+  const child = spawn(process.execPath, ['--import', 'tsx', '--eval', script], { cwd: process.cwd(), stdio: ['ignore', 'pipe', 'pipe'] });
+  fixtureProcess = child;
+  return new Promise<RoomHttpResponse>((resolve, reject) => {
+    let output = '';
+    let errors = '';
+    child.stderr!.on('data', (chunk) => { errors += String(chunk); });
+    child.once('error', reject);
+    child.once('exit', () => reject(new Error('Time Alter fixture exited before readiness: ' + errors)));
+    child.stdout!.on('data', (chunk) => {
+      output += String(chunk);
+      if (!output.includes('\n')) return;
+      try {
+        const response = JSON.parse(output.split('\n')[0]!) as RoomHttpResponse & { httpBase: string; wsBase: string };
+        httpBase = response.httpBase;
+        wsBase = response.wsBase;
+        resolve(response);
+      } catch (error) { reject(error); }
+    });
+  });
 }
 
 async function openRemoteRoom(page: Page, response: RoomHttpResponse): Promise<void> {
