@@ -11,13 +11,22 @@ const archive = JSON.parse(readFileSync('data/authoring/masters/master.hinako.js
 
 function load(withAttack = false) {
   const value = structuredClone(archive);
-  if (withAttack) value.cards.push({
-    id: 'fixture.hinako.basic', aliases: ['fixture-hinako-basic'], legacyId: 'fixture-hinako-basic', name: '测试基础攻击',
-    cardType: 'basic_attack', owner: { type: 'master', id: ROOT }, printedText: '',
-    cardFace: { typeLabel: '力量', attributes: [], cost: 0, basePower: 5 },
-    playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], abilities: [],
-    verification: { implementationStatus: 'complete' },
-  });
+  if (withAttack) value.cards.push(
+    {
+      id: 'fixture.hinako.basic', aliases: ['fixture-hinako-basic'], legacyId: 'fixture-hinako-basic', name: '测试基础攻击',
+      cardType: 'basic_attack', owner: { type: 'master', id: ROOT }, printedText: '',
+      cardFace: { typeLabel: '力量', attributes: [], cost: 0, basePower: 5 },
+      playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], abilities: [],
+      verification: { implementationStatus: 'complete' },
+    },
+    {
+      id: 'fixture.hinako.master-deck-attack', aliases: ['fixture-hinako-master-deck-attack'], legacyId: 'fixture-hinako-master-deck-attack', name: '测试御主牌组攻击',
+      cardType: 'master_deck_card', owner: { type: 'master', id: ROOT }, printedText: '',
+      cardFace: { typeLabel: '特殊', attributes: [], cost: 0, basePower: 6 },
+      playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], abilities: [],
+      verification: { implementationStatus: 'complete' },
+    },
+  );
   return rules.loadAuthoringJson(value);
 }
 
@@ -82,13 +91,16 @@ describe('P3 Hinako owner-complete canonical migration', () => {
     const { value } = state(true);
     const source = add(value, `${ROOT}.skill.s2`, 'p1', 'attack_area');
     const attack = add(value, 'fixture.hinako.basic', 'p2', 'attack_area');
+    const masterDeckAttack = add(value, 'fixture.hinako.master-deck-attack', 'p2', 'attack_area');
     const opponentSkill = add(value, `${ROOT}.skill.s1a`, 'p2', 'attack_area');
     expect(rules.calculateCardPower(value, attack).value).toBe(5);
     const action = rules.getLegalActions(value, 'p1').find((candidate) => candidate.type === 'activate_ability' && candidate.cardInstanceId === source && candidate.abilityId === 'hinako.blood-song.combat');
     expect(action).toBeDefined();
     expect(rules.dispatchAbilityCommand(value, 'p1', action!).ok).toBe(true);
     expect(rules.calculateCardPower(value, attack).value).toBe(3);
+    expect(rules.calculateCardPower(value, masterDeckAttack).value).toBe(4);
     expect(value.cards.find((card) => card.instanceId === attack)?.powerModifiers).toHaveLength(1);
+    expect(value.cards.find((card) => card.instanceId === masterDeckAttack)?.powerModifiers).toHaveLength(1);
     expect(value.cards.find((card) => card.instanceId === opponentSkill)?.powerModifiers).toBeUndefined();
     value.round.roundNumber += 1;
     expect(rules.calculateCardPower(value, attack).value).toBe(5);

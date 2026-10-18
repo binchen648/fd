@@ -52,7 +52,7 @@ function isActiveFieldCard(state: GameState, card: GameState['cards'][number]): 
 function isAttackCard(state: GameState, card: GameState['cards'][number]): boolean {
   const packCard = (state as any).abilityRuntime?.pack?.cards?.[card.definitionId];
   return !!packCard && (hasDefinitionVariantAttackMarker(packCard) ||
-    ['servant_skill', 'servant_deck_card', 'servant_attack', 'basic_attack'].includes(packCard.cardType));
+    ['servant_skill', 'servant_deck_card', 'servant_attack', 'master_deck_card', 'basic_attack'].includes(packCard.cardType));
 }
 
 function sourceCardId(context?: Record<string, unknown>): string {
