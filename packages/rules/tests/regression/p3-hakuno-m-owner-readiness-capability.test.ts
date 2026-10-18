@@ -23,7 +23,7 @@ function setup(phase: 'action' | 'combat' = 'action'): GameState {
   const state = createSeededGameState({ activeSeats: [1, 2, 3] });
   state.cards = [];
   state.round.activePhase = phase;
-  state.players[0]!.masterCardId = ROOT;
+  state.players.forEach((entry) => { entry.masterCardId = ROOT; });
   state.players[0]!.mana = 4;
   state.players[0]!.locationId = 'miyama_town';
   state.players[1]!.locationId = 'miyama_town';
@@ -54,19 +54,14 @@ function addCard(state: GameState, definitionId: string, owner = 'p1', zone = 's
 }
 
 describe('P3 Hakuno-M owner readiness capability', () => {
-  it('loads exactly the four frozen skills and records the three explicit readiness gaps', () => {
+  it('loads exactly the four frozen skills as executable server-owned abilities', () => {
     const loaded = rules.loadAuthoringJson(rawArchive());
-    expect(loaded.report).toEqual(expect.arrayContaining([
-      expect.objectContaining({ path: 'verification.implementationStatus', status: 'unsupported', cardId: S1 }),
-      expect.objectContaining({ abilityId: 'hakuno-m.challenge-result', status: 'host_adjudicated' }),
-      expect.objectContaining({ abilityId: 'hakuno-m.analysis', status: 'host_adjudicated' }),
-      expect.objectContaining({ path: 'verification.implementationStatus', status: 'unsupported' }),
-    ]));
+    expect(loaded.report.filter((entry) => entry.cardId === S1 || entry.cardId === S2 || entry.cardId === S3)).toEqual([]);
     expect(loaded.report.some((entry) => entry.abilityId === YOMI && entry.status === 'unsupported')).toBe(false);
     expect(loaded.report.some((entry) => entry.abilityId === DEAD_FACE && entry.status === 'unsupported')).toBe(false);
     expect(Object.keys(loaded.cards).sort()).toEqual([ASCENSION, S1, S2, S3].sort());
     expect(loaded.cards[S1]!.abilities[0]!.effects[0]).toEqual({
-      type: 'hakuno_m_yomi', mode: 'analysis', target: 'opponent',
+      type: 'hakuno_m_yomi', mode: 'analysis_or_challenge', target: 'opponent',
     });
     expect(loaded.cards[ASCENSION]!.abilities[0]!.cost).toEqual([{ type: 'pay_mana', amount: 1 }]);
   });
@@ -133,6 +128,8 @@ describe('P3 Hakuno-M owner readiness capability', () => {
       controllerId: 'p1', sourceCardId: source, abilityId: YOMI,
       variables: {}, selections: { opponent: ['p2'] },
     });
+    const branch = state.abilityRuntime!.pendingDecision!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: branch.id, selectedIds: ['analysis'] }).ok).toBe(true);
 
     expect(state.abilityRuntime!.roundPlayerPowerAdjustments).toContainEqual(expect.objectContaining({
       playerId: 'p1', amount: -2, sourceCardId: source, abilityId: YOMI,
@@ -140,6 +137,58 @@ describe('P3 Hakuno-M owner readiness capability', () => {
     expect(state.cards).toContainEqual(expect.objectContaining({
       definitionId: S3, ownerPlayerId: 'p2', controllerPlayerId: 'p2', zone: 'skill', generatedBy: source,
     }));
+  });
+
+  it('runs the three-round Yomi continuation with server-owned alternating choices and S2 settlement', () => {
+    const state = setup('combat');
+    const source = addCard(state, S1);
+    rules.executeAbility(state, { controllerId: 'p1', sourceCardId: source, abilityId: YOMI, variables: {}, selections: { opponent: ['p2'] } });
+    const choose = (playerId: string, selected: string[]) => {
+      const decision = state.abilityRuntime!.pendingDecision!;
+      const result = rules.dispatchAbilityCommand(state, playerId, { type: 'choose_target', decisionId: decision.id, selectedIds: selected });
+      expect(result.ok).toBe(true);
+    };
+    choose('p1', ['challenge']);
+    choose('p1', ['rock']); choose('p2', ['scissors']);
+    choose('p1', ['paper']); choose('p2', ['rock']);
+    choose('p1', ['scissors']); choose('p2', ['rock']);
+    expect(state.abilityRuntime!.pendingDecision).toBeUndefined();
+    expect(state.abilityRuntime!.roundPlayerPowerAdjustments).toContainEqual(expect.objectContaining({ playerId: 'p1', amount: 3, sourceCardId: source, abilityId: YOMI }));
+    expect(state.cards).toContainEqual(expect.objectContaining({ definitionId: S3, ownerPlayerId: 'p2', generatedBy: source }));
+    expect(state.abilityRuntime!.events.filter((event) => event.type === 'hakuno_m_challenge_round_resolved')).toHaveLength(3);
+    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'hakuno_m_challenge_result_resolved', challengeWins: 2 }));
+  });
+
+  it('rejects a challenge branch from the wrong participant or with a forged option and preserves the pending state', () => {
+    const state = setup('combat');
+    const source = addCard(state, S1);
+    rules.executeAbility(state, { controllerId: 'p1', sourceCardId: source, abilityId: YOMI, variables: {}, selections: { opponent: ['p2'] } });
+    const decision = state.abilityRuntime!.pendingDecision!;
+    expect(rules.dispatchAbilityCommand(state, 'p2', { type: 'choose_target', decisionId: decision.id, selectedIds: ['challenge'] }).ok).toBe(false);
+    expect(state.abilityRuntime!.pendingDecision?.id).toBe(decision.id);
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: decision.id, selectedIds: ['forged'] }).ok).toBe(false);
+    expect(state.abilityRuntime!.pendingDecision?.id).toBe(decision.id);
+  });
+
+  it('applies Analysis threshold wins and transfers held Analysis after post-scoring elimination', () => {
+    const state = setup('combat');
+    const source = addCard(state, S1);
+    addCard(state, S3, 'p2'); addCard(state, S3, 'p2'); addCard(state, S3, 'p2');
+    rules.executeAbility(state, { controllerId: 'p1', sourceCardId: source, abilityId: YOMI, variables: {}, selections: { opponent: ['p2'] } });
+    const choose = (playerId: string, selected: string[]) => {
+      const decision = state.abilityRuntime!.pendingDecision!;
+      const result = rules.dispatchAbilityCommand(state, playerId, { type: 'choose_target', decisionId: decision.id, selectedIds: selected });
+      expect(result.ok).toBe(true);
+    };
+    choose('p1', ['challenge']);
+    choose('p1', ['rock']); choose('p2', ['scissors']);
+    choose('p1', ['rock']); choose('p2', ['scissors']);
+    choose('p1', ['rock']); choose('p2', ['scissors']);
+    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'hakuno_m_challenge_result_resolved', challengeWins: 4, analysisCount: 3 }));
+    state.players[1]!.status = 'eliminated';
+    rules.processAbilityEvent(state, { id: 'hakuno-m-elimination', type: 'after_battle_result_determined', battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] } });
+    expect(state.cards.filter((entry) => entry.definitionId === S3 && entry.ownerPlayerId === 'p3')).toHaveLength(4);
+    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'hakuno_analysis_handoff_resolved', playerId: 'p2', controllerId: 'p3', movedCount: 4 }));
   });
 
   it('executes Dead Face as a repeatable paid owner transfer and preserves the Analysis definition', () => {
@@ -170,14 +219,15 @@ describe('P3 Hakuno-M owner readiness capability', () => {
       expect(() => rules.resolveEffect(state, {
         controllerId: 'p1', sourceCardId: source, abilityId,
         variables: {}, selections: {},
-      }, { type: effectType })).toThrow(/unimplemented continuation\/round-end host contract/);
+      }, { type: effectType })).toThrow(/authenticated continuation or elimination event/);
     }
   });
 
-  it('keeps challenge-result and Analysis as explicit readiness gaps instead of claiming runtime completion', () => {
+  it('records the frozen lifecycle marker identities without host-adjudicated execution', () => {
     const raw = rawArchive();
-    expect(raw.sourcePolicy.note).toContain('three-round RPS continuation');
-    expect(raw.sourcePolicy.note).toContain('round-end eliminated-holder handoff');
+    expect(raw.sourcePolicy.note).toContain('server-owned Yomi continuation');
+    expect(raw.cards.find((card: any) => card.id === S2).abilities[0].execution.mode).toBe('automatic');
+    expect(raw.cards.find((card: any) => card.id === S3).abilities[0].execution.mode).toBe('automatic');
     expect(raw.cards.find((card: any) => card.id === S2).abilities[0].effects).toEqual([
       { type: 'hakuno_m_challenge_result' },
     ]);

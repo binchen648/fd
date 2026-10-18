@@ -80,6 +80,7 @@ import { DEDUCTION_RECORD_ATTRIBUTES, deductionRecordAttribute } from './ability
 import { SOURCE_LOCATION_BASE_POWER_ATTRIBUTES, isAcceptedPostDrawHandShuffleAbility, isAcceptedSourceLocationBasicPowerAbility } from './ability/source-location-rune-capability';
 import { isAcceptedDiscardShuffleSourceXAbility } from './ability/battle-discard-binding-capability';
 import { isAcceptedOneShotUsedAttackAbilityReuseAbility } from './ability/cross-phase-redeployment-capability';
+import { isAcceptedHakunoMaleAbility } from './ability/hakuno-m-yomi-capability';
 import { applyLinkedRoleEntrySealCost, linkedRoleEntrySealAuthority } from './ability/linked-role-core-capability';
 import { isRulerSealBindingSemantic } from './ability/ruler-seal';
 import {
@@ -708,6 +709,22 @@ function isRestorePendingInteraction(value: unknown): boolean {
       typeof value.kind !== 'string' || typeof value.sourceCardInstanceId !== 'string' || typeof value.abilityId !== 'string' ||
       !isRestoreSafeInteger(value.createdRevision) || typeof value.continuationRef !== 'string') return false;
   switch (value.kind) {
+    case 'hakuno_m_challenge_v1': {
+      const stages = ['branch', 'initiator_throw', 'opponent_throw'];
+      const throws = ['rock', 'paper', 'scissors'];
+      return hasExactRestoreKeys(value, ['kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'initiatorId','opponentId','battlefieldId','round','stage','roundIndex','initiatorThrows','opponentThrows','wins','analysisCount','options','constraints']) &&
+        typeof value.initiatorId === 'string' && typeof value.opponentId === 'string' && typeof value.battlefieldId === 'string' &&
+        isRestoreSafeInteger(value.round, 1) && stages.includes(String(value.stage)) && isRestoreSafeInteger(value.roundIndex) && Number(value.roundIndex) >= 0 && Number(value.roundIndex) <= 2 &&
+        isRestoreStringArray(value.initiatorThrows) && isRestoreStringArray(value.opponentThrows) &&
+        (value.initiatorThrows as string[]).every((entry) => throws.includes(entry)) && (value.opponentThrows as string[]).every((entry) => throws.includes(entry)) &&
+        (value.initiatorThrows as string[]).length === Number(value.roundIndex) + (value.stage === 'opponent_throw' ? 1 : 0) &&
+        (value.opponentThrows as string[]).length === Number(value.roundIndex) &&
+        isRestoreSafeInteger(value.wins) && Number(value.wins) >= 0 && Number(value.wins) <= 3 && isRestoreSafeInteger(value.analysisCount) && Number(value.analysisCount) >= 0 &&
+        isRestoreStringArray(value.options) && ((value.stage === 'branch' && value.options.length === 2 && value.options[0] === 'analysis' && value.options[1] === 'challenge') ||
+          (value.stage !== 'branch' && value.options.length === 3 && value.options[0] === 'rock' && value.options[1] === 'paper' && value.options[2] === 'scissors')) &&
+        isRestoreInteractionConstraints(value.constraints, ['choice']) && (value.constraints as Record<string, unknown>).min === 1 && (value.constraints as Record<string, unknown>).max === 1;
+    }
     case 'mystic_code_recon_escape_v1':
       return hasExactRestoreKeys(value,['kind','template','visibility','cancelPolicy',
         'sourceCardInstanceId','abilityId','createdRevision','continuationRef',
@@ -1902,6 +1919,24 @@ function isRestoreAbilityRuntimeReferences(
     }
   }
   const pendingDecision = value.pendingDecision;
+  if (isRestoreRecord(pendingDecision) && isRestoreRecord(pendingDecision.interaction) && pendingDecision.interaction.kind === 'hakuno_m_challenge_v1') {
+    const meta = pendingDecision.interaction;
+    const source = cardsByInstance.get(meta.sourceCardInstanceId as string);
+    const sourceController = source?.controllerPlayerId;
+    const initiator = meta.initiatorId as string;
+    const opponent = meta.opponentId as string;
+    const options = meta.options as string[];
+    const expectedController = meta.stage === 'opponent_throw' ? opponent : initiator;
+    if (!source || sourceController !== initiator || !playerIds.has(initiator) || !playerIds.has(opponent) || initiator === opponent ||
+        !locationIds.has(meta.battlefieldId as string) || pendingDecision.controllerId !== expectedController || pendingDecision.min !== 1 || pendingDecision.max !== 1 ||
+        !isRestoreRecord(pendingDecision.target) || pendingDecision.target.type !== 'choice' || pendingDecision.target.id !== (meta.stage === 'branch' ? 'hakuno_m_yomi_branch' : 'hakuno_m_rps_choice') ||
+        !isRestoreRecord(pendingDecision.target.count) || pendingDecision.target.count.min !== 1 || pendingDecision.target.count.max !== 1 ||
+        !isRestoreStringArray(pendingDecision.candidates) || !isRestoreStringArray(options) || pendingDecision.candidates.length !== options.length ||
+        pendingDecision.candidates.some((id: string, index: number) => id !== options[index]) || !Array.isArray(pendingDecision.remainingEffects) || pendingDecision.remainingEffects.length !== 0 ||
+        !isRestoreRecord(pendingDecision.context) || pendingDecision.context.controllerId !== initiator || pendingDecision.context.sourceCardId !== meta.sourceCardInstanceId ||
+        pendingDecision.context.abilityId !== meta.abilityId || !restoreSourceHasAcceptedAbilityId(pack, cardsByInstance, eventPlacements, meta.sourceCardInstanceId as string, meta.abilityId as string,
+          (ability) => isAcceptedHakunoMaleAbility(ability))) return false;
+  }
   if (isRestoreRecord(pendingDecision) && isRestoreRecord(pendingDecision.interaction) &&
       pendingDecision.interaction.kind === 'post_draw_hand_shuffle_v1') {
     const meta = pendingDecision.interaction;

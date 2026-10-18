@@ -60,7 +60,7 @@ export function isAcceptedHakunoMaleAbility(a: AuthoringAbility): boolean {
       opponentConstraints.every((constraint, index) => exact(constraint, ['type']) && constraint.type === [
         'not_controller', 'same_location_as_controller', 'at_battlefield',
       ][index]) &&
-      exact(effect, ['type', 'mode', 'target']) && effect.mode === 'analysis' && effect.target === 'opponent';
+      exact(effect, ['type', 'mode', 'target']) && effect.mode === 'analysis_or_challenge' && effect.target === 'opponent';
   }
   if (effect.type === HAKUNO_M_CHALLENGE_RESULT_EFFECT) {
     return a.id === 'hakuno-m.challenge-result' && a.kind === 'passive' &&

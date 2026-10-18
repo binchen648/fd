@@ -8,7 +8,7 @@
   "sourcePolicy": {
     "phase3EvidenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
     "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
-    "note": "Frozen printed text and source locators are corroborated by Fate_Domination-重构版 legacy-content masters[31] and the Phase 3 full-roster evidence packet. The migration gateway closes Analysis creation and Dead Face transfer. The original Yomi three-round RPS continuation and round-end eliminated-holder handoff remain explicit engine gaps and are not represented as fabricated automatic effects."
+    "note": "Frozen printed text and source locators are corroborated by Fate_Domination-重构版 legacy-content masters[31] and the Phase 3 full-roster evidence packet. The migration gateway executes the server-owned Yomi continuation, challenge settlement, Analysis threshold, and eliminated-holder handoff."
   },
   "cards": [
     {
@@ -48,10 +48,10 @@
         "id": "hakuno-m.yomi", "kind": "phase_action", "printedClause": "战斗阶段：失去2威力然后给你交战的对手一张【分析】牌；或【挑战】与之进行三次猜拳，根据你获胜的次数决定【挑战结果】的全部效果。",
         "activation": {"phase": "combat", "opens": "controller_combat_action_window"}, "conditions": [],
         "targets": [{"id": "opponent", "type": "player", "count": {"min": 1, "max": 1}, "constraints": [{"type": "not_controller"}, {"type": "same_location_as_controller"}, {"type": "at_battlefield"}]}],
-        "effects": [{"type": "hakuno_m_yomi", "mode": "analysis", "target": "opponent"}], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+        "effects": [{"type": "hakuno_m_yomi", "mode": "analysis_or_challenge", "target": "opponent"}], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
         "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}
       }],
-      "verification": {"implementationStatus": "readiness_gap", "gap": "Yomi's three-round challenge branch is not implemented; only the analysis branch is executable"}
+      "verification": {"implementationStatus": "complete"}
     },
     {
       "id": "master.hakuno-m.skill.s2", "aliases": ["s2"], "legacyId": "s2", "name": "挑战结果",
@@ -59,8 +59,8 @@
       "printedText": "0胜：你【败北】。\n1+胜：你总威力+2。\n2+胜：你总威力+3。给挑战的对手1张【分析】。\n3+胜：挑战的对手【败北】。",
       "cardFace": {"typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0},
       "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
-      "abilities": [{"id": "hakuno-m.challenge-result", "kind": "passive", "printedClause": "0胜：你【败北】。1+胜：你总威力+2。2+胜：你总威力+3。给挑战的对手1张【分析】。3+胜：挑战的对手【败北】。", "activation": {"trigger": "while_active"}, "conditions": [], "targets": [], "effects": [{"type": "hakuno_m_challenge_result"}], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {}, "execution": {"mode": "host_adjudicated", "reason": "Challenge result requires the unimplemented three-round RPS continuation and settlement", "allowedOperations": []}}],
-      "verification": {"implementationStatus": "readiness_gap", "gap": "Challenge result settlement is not implemented in the current engine"}
+      "abilities": [{"id": "hakuno-m.challenge-result", "kind": "passive", "printedClause": "0胜：你【败北】。1+胜：你总威力+2。2+胜：你总威力+3。给挑战的对手1张【分析】。3+胜：挑战的对手【败北】。", "activation": {"trigger": "while_active"}, "conditions": [], "targets": [], "effects": [{"type": "hakuno_m_challenge_result"}], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}}],
+      "verification": {"implementationStatus": "complete"}
     },
     {
       "id": "master.hakuno-m.skill.s3", "aliases": ["s3"], "legacyId": "s3", "name": "分析",
@@ -68,8 +68,8 @@
       "printedText": "当岸波白野【挑战】你时，每持有3张【分析】将使岸波白野获胜一局。\n当你被淘汰时，将你的【分析】按回合顺序传给下一位未被淘汰的岸波白野的对手。",
       "cardFace": {"typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0},
       "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
-      "abilities": [{"id": "hakuno-m.analysis", "kind": "passive", "printedClause": "当岸波白野【挑战】你时，每持有3张【分析】将使岸波白野获胜一局。\n当你被淘汰时，将你的【分析】按回合顺序传给下一位未被淘汰的岸波白野的对手。", "activation": {"trigger": "while_active"}, "conditions": [], "targets": [], "effects": [{"type": "hakuno_m_analysis"}], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {}, "execution": {"mode": "host_adjudicated", "reason": "Analysis trigger lifecycle and eliminated-holder handoff are not implemented", "allowedOperations": []}}],
-      "verification": {"implementationStatus": "readiness_gap", "gap": "Analysis threshold and round-end eliminated-holder handoff are not implemented in the current engine"}
+      "abilities": [{"id": "hakuno-m.analysis", "kind": "passive", "printedClause": "当岸波白野【挑战】你时，每持有3张【分析】将使岸波白野获胜一局。\n当你被淘汰时，将你的【分析】按回合顺序传给下一位未被淘汰的岸波白野的对手。", "activation": {"trigger": "while_active"}, "conditions": [], "targets": [], "effects": [{"type": "hakuno_m_analysis"}], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}}],
+      "verification": {"implementationStatus": "complete"}
     }
   ],
   "sources": [{"id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/岸波白野（男）.png"]}]

@@ -101,6 +101,17 @@ export interface AbilityEvent {
   /** Trusted movement provenance for location-enter events. */
   previousLocationId?: string;
   movementKind?: 'normal' | 'effect';
+  /** Server-owned Hakuno-M challenge audit facts. */
+  challengeRound?: number;
+  challengeWins?: number;
+  challengeChoice?: 'rock' | 'paper' | 'scissors';
+  challengeResult?: 'draw' | 'initiator' | 'opponent';
+  analysisCount?: number;
+  qualifyingPlayerIds?: PlayerId[];
+  cardInstanceId?: string;
+  fromZone?: string;
+  toZone?: string;
+  movedCount?: number;
 }
 export interface TriggeredAbility { cardInstanceId: string; abilityId: string; controllerId: PlayerId }
 export interface UniqueTriggerGroup { groupId: string; policy: 'only_one_effect_may_activate_per_window' }
@@ -399,6 +410,16 @@ export interface LinkedAuxiliarySuiteInteractionMetadata {
   candidateIds: string[];
   constraints: { kind: 'target'; targetKind: 'card' | 'choice' | 'location'; min: number; max: number; distinct: true };
 }
+export type HakunoMChallengeThrow = 'rock' | 'paper' | 'scissors';
+export interface HakunoMChallengeInteractionMetadata {
+  kind: 'hakuno_m_challenge_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  initiatorId: PlayerId; opponentId: PlayerId; battlefieldId: string; round: number;
+  stage: 'branch' | 'initiator_throw' | 'opponent_throw'; roundIndex: 0 | 1 | 2;
+  initiatorThrows: HakunoMChallengeThrow[]; opponentThrows: HakunoMChallengeThrow[];
+  wins: number; analysisCount: number; options: string[];
+  constraints: { kind: 'target'; targetKind: 'choice'; min: 1; max: 1; distinct: true };
+}
 export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata |
   OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata | DeductionRecordChoiceInteractionMetadata |
   PostDrawHandShuffleInteractionMetadata | DiscardShuffleSourceXInteractionMetadata | RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata |
@@ -410,7 +431,8 @@ export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetad
   DeploymentTerrainVpChoiceInteractionMetadata | OneShotAbilityReuseChoiceInteractionMetadata |
   GlobalDefinitionRevealRewardInteractionMetadata | DiscardDefinitionPlayAllInteractionMetadata | MultiPresenceLocationContextInteractionMetadata |
   BoundOpponentRoundRuleInteractionMetadata | WitherPainStakeInteractionMetadata | DefinitionSideDeckInteractionMetadata |
-  EliminationRescueInteractionMetadata | InjuryWarpChoiceInteractionMetadata | LinkedAuxiliarySuiteInteractionMetadata;
+  EliminationRescueInteractionMetadata | InjuryWarpChoiceInteractionMetadata | LinkedAuxiliarySuiteInteractionMetadata |
+  HakunoMChallengeInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -477,6 +499,11 @@ export interface SafeEvent {
   revealedCardDefinitionIds?: string[];
   revealedCardInstanceIds?: string[];
   attribute?: string;
+  challengeRound?: number;
+  challengeWins?: number;
+  challengeChoice?: 'rock' | 'paper' | 'scissors';
+  challengeResult?: 'draw' | 'initiator' | 'opponent';
+  analysisCount?: number;
 }
 export interface CardRuntimeState {
   active: boolean; faceDown: boolean; playedRound: number; paidManaOnPlay?: number;
