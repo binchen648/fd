@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 28,
+    "masters": 29,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -2163,6 +2163,94 @@
       "htmPath": "chm-extract/岸波白野（男）.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/岸波白野（男）.png",
       "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hinako",
+      "displayName": "芥雏子",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/芥雏子.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/芥雏子.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hinako.overview",
+      "displayName": "芥雏子",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/芥雏子.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/芥雏子.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hinako.skill.ascension",
+      "displayName": "真祖",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/芥雏子.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/芥雏子.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hinako.skill.s1",
+      "displayName": "隐匿者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/芥雏子.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/芥雏子.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hinako.skill.s1a",
+      "displayName": "死之愿望",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/芥雏子.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/芥雏子.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hinako.skill.s2",
+      "displayName": "咒血尸解叹歌",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/芥雏子.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/芥雏子.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hinako.skill.s3",
+      "displayName": "始皇帝",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/芥雏子.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/芥雏子.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hinako.skill.s4",
+      "displayName": "中国异闻带",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/芥雏子.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/芥雏子.png",
+      "imageIndex": 6,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

@@ -263,6 +263,39 @@ export function resolveExtendedEffect(
       pushMasterDirective(state, controllerId, effect, directiveContext(context));
       break;
     }
+    case 'hinako_blood_song': {
+      const amount = Number(effect.amount);
+      const duration = str(effect.duration);
+      const keys = Object.keys(effect).sort();
+      if (amount !== -2 || duration !== 'round' || keys.length !== 3 ||
+          keys.some((key, index) => key !== ['amount', 'duration', 'type'][index])) {
+        throw new Error('Unsupported Hinako Blood Song semantic shape');
+      }
+      if (p.locationId !== 'miyama_town' && p.locationId !== 'shinto') {
+        throw new Error('Hinako Blood Song requires a battlefield');
+      }
+      const runtime = (state as any).abilityRuntime;
+      const opponents = state.players.filter((candidate) => candidate.id !== controllerId &&
+        candidate.status === 'active' && candidate.locationId === p.locationId &&
+        !playerIgnoresAbilityFromController(state, candidate.id, controllerId));
+      let affected = 0;
+      for (const opponent of opponents) {
+        for (const attack of state.cards.filter((candidate) => candidate.controllerPlayerId === opponent.id &&
+          candidate.zone === 'attack_area' && runtime?.cardState?.[candidate.instanceId]?.active === true &&
+          runtime?.cardState?.[candidate.instanceId]?.faceDown !== true)) {
+          const carrier = attack as any;
+          carrier.powerModifiers ??= [];
+          const id = `${context?.sourceCardId ?? 'hinako'}:${context?.abilityId ?? 'blood-song'}:${attack.instanceId}`;
+          if (!carrier.powerModifiers.some((modifier: any) => modifier.id === id)) {
+            carrier.powerModifiers.push({ id, sourceId: context?.sourceCardId ?? 'hinako',
+              controllerId, kind: 'add', value: -2, duration: 'round', round: state.round.roundNumber });
+            affected++;
+          }
+        }
+      }
+      if (affected === 0) throw new Error('Hinako Blood Song has no engaged attack target');
+      break;
+    }
     case 'movement_rule_override': {
       state.ruleOverrides = state.ruleOverrides || {};
       const rule = str(effect.rule);
