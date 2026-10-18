@@ -330,6 +330,12 @@ function isCompleteGameStartFixedControllerMana(card: AuthoringCard): boolean {
   }
   if (!Array.isArray(card.abilities) || card.abilities.length !== 1) return false;
   const ability = card.abilities[0] as Record<string, unknown>;
+  const abilityKeys = new Set([
+    'id', 'kind', 'printedClause', 'markers', 'activation', 'conditions', 'targets', 'effects', 'cost',
+    'ruleModifiers', 'creates', 'lifecycle', 'responseWindow', 'limit', 'visibility', 'execution', 'copies', 'transforms',
+  ]);
+  if (!Object.keys(ability).every((key) => abilityKeys.has(key))) return false;
+  if (Object.prototype.hasOwnProperty.call(ability, 'copies') || Object.prototype.hasOwnProperty.call(ability, 'transforms')) return false;
   const activation = ability.activation as Record<string, unknown> | undefined;
   const effects = Array.isArray(ability.effects) ? ability.effects : [];
   const effect = effects[0] as Record<string, unknown> | undefined;
@@ -338,6 +344,8 @@ function isCompleteGameStartFixedControllerMana(card: AuthoringCard): boolean {
   const lifecycle = (ability.lifecycle ?? {}) as Record<string, unknown>;
   const limit = (ability.limit ?? {}) as Record<string, unknown>;
   const visibility = (ability.visibility ?? {}) as Record<string, unknown>;
+  if (!execution || !Object.keys(execution).every((key) => ['mode', 'allowedOperations'].includes(key)) ||
+    Object.keys(execution).length !== 2) return false;
   return ability.kind === 'forced_trigger' &&
     activation?.trigger === 'game_start' &&
     Object.keys(activation).every((key) => key === 'trigger') &&
