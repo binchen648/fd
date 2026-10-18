@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 import * as rules from '../../src/index';
+import { capabilityForAuthoringCard } from '../../../content/src/playtest-pack-loader';
 import type { GameState } from '../../src/schema/game';
 import { createSeededGameState } from '../../src/tools/seeded-state';
 
@@ -107,6 +108,30 @@ describe('P3 Iliya owner migration boundary', () => {
     expect(rules.isGameStartFixedControllerManaSetSemantic(rules.loadAuthoringJson(malformed).cards[`${ROOT}.skill.s1`]!.abilities[0]!)).toBe(true);
     malformed.cards[1].abilities[0].effects[0].player = 'target';
     expect(rules.isGameStartFixedControllerManaSetSemantic(rules.loadAuthoringJson(malformed).cards[`${ROOT}.skill.s1`]!.abilities[0]!)).toBe(false);
+  });
+
+  it('keeps malformed fixed set-mana shapes host-adjudicated in the generated capability gate', () => {
+    const malformedCases: Array<[string, (card: any) => void]> = [
+      ['negative amount', (card) => { card.abilities[0].effects[0].amount = -1; }],
+      ['fractional amount', (card) => { card.abilities[0].effects[0].amount = 1.5; }],
+      ['unsafe amount', (card) => { card.abilities[0].effects[0].amount = Number.MAX_SAFE_INTEGER + 1; }],
+      ['extra effect field', (card) => { card.abilities[0].effects[0].audit = true; }],
+      ['non-empty lifecycle', (card) => { card.abilities[0].lifecycle.cleanup = 'discard_at_round_end'; }],
+      ['non-empty limit', (card) => { card.abilities[0].limit.type = 'per_game'; }],
+      ['non-empty visibility', (card) => { card.abilities[0].visibility.scope = 'owner_only'; }],
+      ['unsupported response key', (card) => { card.abilities[0].responseWindow.opens = 'game_start'; }],
+      ['invalid response order', (card) => { card.abilities[0].responseWindow.order = 'seat_order'; }],
+    ];
+    for (const [label, mutate] of malformedCases) {
+      const malformed = structuredClone(archive);
+      mutate(malformed.cards[1]);
+      expect(capabilityForAuthoringCard(malformed.cards[1]), label).toEqual({
+        status: 'HOST_ADJUDICATED',
+        hostRulingReason: expect.any(String),
+      });
+      const ability = rules.loadAuthoringJson(malformed).cards[`${ROOT}.skill.s1`]!.abilities[0]!;
+      expect(rules.isGameStartFixedControllerManaSetSemantic(ability), label).toBe(false);
+    }
   });
 
   it('registers Iliya exactly once after Hisui in the canonical pack', () => {

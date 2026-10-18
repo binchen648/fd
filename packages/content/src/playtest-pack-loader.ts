@@ -334,6 +334,10 @@ function isCompleteGameStartFixedControllerMana(card: AuthoringCard): boolean {
   const effects = Array.isArray(ability.effects) ? ability.effects : [];
   const effect = effects[0] as Record<string, unknown> | undefined;
   const execution = ability.execution as Record<string, unknown> | undefined;
+  const responseWindow = (ability.responseWindow ?? {}) as Record<string, unknown>;
+  const lifecycle = (ability.lifecycle ?? {}) as Record<string, unknown>;
+  const limit = (ability.limit ?? {}) as Record<string, unknown>;
+  const visibility = (ability.visibility ?? {}) as Record<string, unknown>;
   return ability.kind === 'forced_trigger' &&
     activation?.trigger === 'game_start' &&
     Object.keys(activation).every((key) => key === 'trigger') &&
@@ -343,12 +347,19 @@ function isCompleteGameStartFixedControllerMana(card: AuthoringCard): boolean {
     Array.isArray(ability.ruleModifiers) && ability.ruleModifiers.length === 0 &&
     Array.isArray(ability.creates) && ability.creates.length === 0 &&
     effect !== undefined && effects.length === 1 &&
-    effect.type === 'set_mana' && effect.player === 'controller' && Number.isFinite(effect.amount) &&
+    effect.type === 'set_mana' &&
+    (effect.player === undefined || effect.player === 'controller') &&
+    Number.isSafeInteger(effect.amount) && Number(effect.amount) >= 0 &&
+    Object.keys(effect).every((key) => ['type', 'player', 'amount'].includes(key)) &&
+    Object.keys(responseWindow).every((key) => ['order', 'passBehavior'].includes(key)) &&
+    (responseWindow.order === undefined || responseWindow.order === 'turn_order') &&
+    (responseWindow.passBehavior === undefined || responseWindow.passBehavior === 'decline_this_window') &&
+    Object.keys(lifecycle).length === 0 && Object.keys(limit).length === 0 && Object.keys(visibility).length === 0 &&
     execution?.mode === 'automatic' &&
     Array.isArray(execution.allowedOperations) && execution.allowedOperations.length === 0;
 }
 
-function capabilityForAuthoringCard(card: AuthoringCard): NamedCardDefinition['capability'] {
+export function capabilityForAuthoringCard(card: AuthoringCard): NamedCardDefinition['capability'] {
   if (isCompleteGameStartFixedControllerMana(card)) {
     return {
       status: 'FULL',
