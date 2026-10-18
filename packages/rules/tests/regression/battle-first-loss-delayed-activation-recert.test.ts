@@ -9,11 +9,13 @@ import {
   restoreMatchSession,
   resolveBattlefield,
 } from '../../src/index';
+import { seedIncludingPairings } from './deterministic-character-fixture';
 
 const OLGA_PLAYER_ID = 'p4';
 const ASTRONOMY_ID = 'master.olga-marie.skill.astronomical-science';
 const ASTRONOMY_ABILITY_ID = 'astronomical-science.first-loss';
 const TRISMEGISTUS_ID = 'master.olga-marie.skill.trismegistus-grief';
+const OLGA_SEED = seedIncludingPairings([{ playerId: OLGA_PLAYER_ID, masterId: 'master.olga-marie' }]);
 
 type Session = ReturnType<typeof createMatchSession>;
 
@@ -32,7 +34,7 @@ function activateAttack(session: Session, ownerPlayerId: string, definitionId = 
 }
 
 function prepareBattleSession(): { session: Session; astronomyInstanceId: string; trismegistusInstanceId: string } {
-  const session = createMatchSession({ seed: 20260904, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+  const session = createMatchSession({ seed: OLGA_SEED, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
   const pairing = session.pairings.find((candidate) => candidate.playerId === OLGA_PLAYER_ID);
   expect(pairing?.master.id).toBe('master.olga-marie');
 
