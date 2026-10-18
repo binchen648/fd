@@ -5,6 +5,7 @@ import type { AuthoringAbility, GameState } from '../../src/ability/types';
 import * as rules from '../../src/index';
 import { resolveBattlefield } from '../../src/core/combat-resolver';
 import { createSeededGameState } from '../../src/tools/seeded-state';
+import { seedIncludingMaster } from './deterministic-character-fixture';
 
 const raw = JSON.parse(readFileSync('data/authoring/masters/master.olga-marie.json', 'utf8'));
 const SOURCE_DEFINITION_ID = 'master.olga-marie.skill.trismegistus-grief';
@@ -176,7 +177,7 @@ describe('P3-B23 Olga source-bound battle-loss state transform', () => {
   });
 
   it('transforms through the production post-scoring MatchSession loss-event lineage', () => {
-    const session = rules.createMatchSession({ seed: 20260904, humanPlayerId: 'p1', humanPlayerIds: ['p1'] });
+    const session = rules.createMatchSession({ seed: seedIncludingMaster('master.olga-marie'), humanPlayerId: 'p1', humanPlayerIds: ['p1'] });
     const state = session.state;
     const controller = state.players.find((player) => player.masterCardId === raw.id);
     if (!controller) throw new Error('Expected Olga in deterministic match roster');
