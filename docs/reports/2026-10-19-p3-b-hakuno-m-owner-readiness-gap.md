@@ -18,7 +18,7 @@ The archive contains exactly the four frozen skills: `ascension`/死相, `s1`/�
 
 ## Verification
 
-- Builder environment (`node_modules` present): `npx vitest run packages/rules/tests/regression/p3-hakuno-m-owner-readiness-capability.test.ts`: **13/13 PASS**.
+- Builder environment (`node_modules` present): `npx vitest run packages/rules/tests/regression/p3-hakuno-m-owner-readiness-capability.test.ts`: **15/15 PASS**. This includes direct 0/1/2/3-win S2 assertions, Analysis threshold settlement, stale replay rejection, cross-stage/phase/identity/location/revision rollback checks, and holder handoff boundaries.
 - Builder environment: `npm run typecheck`: **PASS**.
 - Builder environment: `npm run content:validate`: **PASS** (`28 masters, 19 servants, 20 events, 0 blocking issues`).
 - Builder environment: `npm run content:compile`: **PASS**; generated library/evidence artifacts regenerated.

@@ -3475,7 +3475,7 @@ function hakunoChallengeLive(s: GameState, d: PendingDecision, meta: Extract<Non
   const sourceAbility = ability && isAcceptedHakunoMaleAbility(ability);
   const live = !!source && !!sourceAbility && !!initiator && !!opponent && initiator.id !== opponent.id && !!initiator.locationId &&
     initiator.locationId === opponent.locationId && initiator.locationId === meta.battlefieldId && isBattlefield(s, meta.battlefieldId) &&
-    s.round.roundNumber === meta.round && d.context.controllerId === meta.initiatorId && d.context.sourceCardId === meta.sourceCardInstanceId &&
+    s.round.roundNumber === meta.round && phase(s) === 'combat' && d.context.controllerId === meta.initiatorId && d.context.sourceCardId === meta.sourceCardInstanceId &&
     d.context.abilityId === meta.abilityId && d.controllerId === (meta.stage === 'opponent_throw' ? meta.opponentId : meta.initiatorId) &&
     (meta.createdRevision === runtime(s).revision || meta.createdRevision === runtime(s).revision + 1) && meta.continuationRef === `${d.id}:continuation` &&
     meta.constraints.kind === 'target' && meta.constraints.targetKind === 'choice' && meta.constraints.min === 1 && meta.constraints.max === 1 &&

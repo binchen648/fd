@@ -161,6 +161,69 @@ describe('P3 Hakuno-M owner readiness capability', () => {
     expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'hakuno_m_challenge_result_resolved', challengeWins: 2 }));
   });
 
+  it('settles every direct S2 result branch with exact Power, Analysis, defeat, and audit outcomes', () => {
+    const cases = [
+      { name: 'zero', initiator: ['rock', 'rock', 'rock'], opponent: ['paper', 'paper', 'paper'], power: undefined, analysis: 0, defeated: 'p1', otherDefeated: undefined, wins: 0 },
+      { name: 'one', initiator: ['rock', 'rock', 'rock'], opponent: ['scissors', 'paper', 'paper'], power: 2, analysis: 0, defeated: undefined, otherDefeated: undefined, wins: 1 },
+      { name: 'two', initiator: ['rock', 'rock', 'rock'], opponent: ['scissors', 'scissors', 'paper'], power: 3, analysis: 1, defeated: undefined, otherDefeated: undefined, wins: 2 },
+      { name: 'three', initiator: ['rock', 'rock', 'rock'], opponent: ['scissors', 'scissors', 'scissors'], power: 3, analysis: 1, defeated: undefined, otherDefeated: 'p2', wins: 3 },
+    ] as const;
+    for (const scenario of cases) {
+      const state = setup('combat');
+      const source = addCard(state, S1);
+      rules.executeAbility(state, { controllerId: 'p1', sourceCardId: source, abilityId: YOMI, variables: {}, selections: { opponent: ['p2'] } });
+      const choose = (playerId: string, selected: string[]) => {
+        const decision = state.abilityRuntime!.pendingDecision!;
+        expect(rules.dispatchAbilityCommand(state, playerId, { type: 'choose_target', decisionId: decision.id, selectedIds: selected }).ok).toBe(true);
+      };
+      choose('p1', ['challenge']);
+      for (let index = 0; index < 3; index++) {
+        choose('p1', [scenario.initiator[index]!]);
+        choose('p2', [scenario.opponent[index]!]);
+      }
+      const adjustment = state.abilityRuntime!.roundPlayerPowerAdjustments?.find((entry) => entry.sourceCardId === source && entry.abilityId === YOMI);
+      if (scenario.power === undefined) expect(adjustment).toBeUndefined();
+      else expect(adjustment).toMatchObject({ playerId: 'p1', amount: scenario.power, round: 1 });
+      expect(state.cards.filter((entry) => entry.definitionId === S3 && entry.ownerPlayerId === 'p2')).toHaveLength(scenario.analysis);
+      expect(state.abilityRuntime!.battleDefeatRoundByPlayer?.p1).toBe(scenario.defeated ? 1 : undefined);
+      expect(state.abilityRuntime!.battleDefeatRoundByPlayer?.p2).toBe(scenario.otherDefeated ? 1 : undefined);
+      expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'hakuno_m_challenge_result_resolved', challengeWins: scenario.wins, sourceCardId: source, abilityId: YOMI }));
+    }
+  });
+
+  it('rejects stale replay, cross-stage, location, identity, and revision tampering without consuming continuation state', () => {
+    const state = setup('combat');
+    const source = addCard(state, S1);
+    rules.executeAbility(state, { controllerId: 'p1', sourceCardId: source, abilityId: YOMI, variables: {}, selections: { opponent: ['p2'] } });
+    const branch = state.abilityRuntime!.pendingDecision!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: branch.id, selectedIds: ['challenge'] }).ok).toBe(true);
+    const throwDecision = state.abilityRuntime!.pendingDecision!;
+    const replay = rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: branch.id, selectedIds: ['challenge'] });
+    expect(replay.ok).toBe(false);
+    expect(state.abilityRuntime!.pendingDecision?.id).toBe(throwDecision.id);
+
+    const originalPhase = state.round.activePhase;
+    state.round.activePhase = 'action';
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: throwDecision.id, selectedIds: ['rock'] }).ok).toBe(false);
+    state.round.activePhase = originalPhase;
+    expect(state.abilityRuntime!.pendingDecision?.id).toBe(throwDecision.id);
+
+    const originalLocation = state.players[1]!.locationId;
+    state.players[1]!.locationId = 'shinto';
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: throwDecision.id, selectedIds: ['rock'] }).ok).toBe(false);
+    state.players[1]!.locationId = originalLocation;
+    expect(state.abilityRuntime!.pendingDecision?.id).toBe(throwDecision.id);
+
+    const originalRevision = state.abilityRuntime!.pendingDecision!.interaction!.createdRevision;
+    state.abilityRuntime!.pendingDecision!.interaction!.createdRevision = 999;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: throwDecision.id, selectedIds: ['rock'] }).ok).toBe(false);
+    state.abilityRuntime!.pendingDecision!.interaction!.createdRevision = originalRevision;
+    expect(state.abilityRuntime!.pendingDecision?.id).toBe(throwDecision.id);
+
+    expect(rules.dispatchAbilityCommand(state, 'p2', { type: 'choose_target', decisionId: throwDecision.id, selectedIds: ['rock'] }).ok).toBe(false);
+    expect(state.abilityRuntime!.pendingDecision?.id).toBe(throwDecision.id);
+  });
+
   it('rejects a challenge branch from the wrong participant or with a forged option and preserves the pending state', () => {
     const state = setup('combat');
     const source = addCard(state, S1);
