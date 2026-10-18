@@ -1,6 +1,6 @@
 # P3-S Hakuno-F Owner-Complete Migration Candidate
 
-Date: 2026-10-18
+Date: 2026-10-19
 Task: `P3-S-OWNER-HAKUNO-F-COMPLETE-MIGRATION`
 Owner: FORMAL / Codex S
 Classification: owner-complete frozen consumer migration
@@ -36,10 +36,27 @@ The readiness Candidate was independently accepted only as a zero-credit identit
 
 The required source-assets mode still reports the repository's known 93 missing `chm-extract/图包` files. The Hakuno-F development image resolves successfully and adds no new missing asset; this historical asset debt is not silently reclassified as green.
 
-## Formal gate and accounting
+## Independent review closure and formal A-sync
 
-- Candidate status: `IMPLEMENTATION_COMPLETE_CANDIDATE` until fresh independent review.
-- Strict accounting remains **273/944**, remaining **671**.
-- This Candidate contributes **+0** until exact `MIGRATION_ACCEPTED` followed by FORMAL A-sync/accounting.
-- Maximum later lawful increment for this owner is exactly **+6**, advancing `273/944` to `279/944`.
-- Do not merge, retarget, force-push, or claim F5/full-suite closure from this report.
+- Exact remote Candidate: `935dbc6382b29d57ba8c7b554290da0f26d45f96` (PR `#562`).
+- Exact Base: `0ec4e67dd3999449eb367f5d3433c3e13c84ad54`.
+- Fresh GPT-6 Sol verdict: `MIGRATION_ACCEPTED`, limited to the six frozen Hakuno-F owner skills.
+- ReviewJobKey: `pr562:935dbc6382b29d57ba8c7b554290da0f26d45f96:review-20261019`.
+- Independent report: `E:\Codex\FD\.fd-takeover-audit-20261018\FD-REVIEWER-PR562-935DBC6-20261019.md`.
+- Reviewer HEAD matched the remote Candidate exactly, remained clean, and `git diff --check` passed.
+
+The independent review confirmed the exact six-card archive, unique active-pack registration, deterministic generated content, and no production runtime delta. Fresh scoped execution passed the two restore fixtures `12/12`, four roster fixtures `24/24`, Hakuno owner/focused files `91/91`, shared MatchSession/complex-skills files `72/72`, MatchRoom control `5/5`, typecheck/content/generated verification, Phase 3 coverage with zero blocking issues, and the automation audit with 20 findings preserved.
+
+The full repository suite remains disclosed as `1847/1858 PASS`, `11 FAIL`, exit 1. The remaining failures are cross-owner historical/stale assertions and four full-run stack-trace wrappers; this synchronization does not claim F5/full-suite green, close A02's 20 findings, or waive the known 93 historical source-asset gaps.
+
+FORMAL mechanical rescan confirms the exact Base had no canonical `master.hakuno-f` archive, while the accepted Candidate has exactly the six frozen identities and one active-pack registration, with no deleted or renamed owner material. Therefore the lawful new migration credit is exactly `+6`.
+
+## Formal accounting
+
+- Before: **273/944**, remaining **671**.
+- Newly accepted Hakuno-F frozen owner skills: **+6**.
+- Helper/preservation/shared-fixture credit: **+0**.
+- After: **279/944**, remaining **665**.
+- Hakuno-F owner migration: **6/6**.
+
+Do not merge, retarget, force-push, or claim F5/full-suite closure from this report.
