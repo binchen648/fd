@@ -962,7 +962,14 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (Array.isArray(requested) && requested.some(op => !hostOperations.includes(op as typeof hostOperations[number]))) issue('execution.hostOps', 'Operation outside the host allowlist', id);
       if (mode !== 'automatic') issue('execution.mode', str(execution.reason) || mode, id, mode as ExecutionMode);
       const candidateAbility: AuthoringAbility = { id, kind: str(a.kind), printedClause: str(a.printedClause),
-        ...(Array.isArray(a.markers) ? { markers: a.markers.filter((marker): marker is string => typeof marker === 'string') } : {}), activation,
+        ...(Array.isArray(a.markers) ? {
+          // M50's structured marker authenticates the authoring envelope but
+          // is not part of the executable compiled shape. Strip only after
+          // the exact authoring gateway has accepted the whole ability.
+          markers: isAcceptedOpponentCloseOneNonResidualAbility(a, 'authoring')
+            ? []
+            : a.markers.filter((marker): marker is string => typeof marker === 'string'),
+        } : {}), activation,
         conditions: nodes(a.conditions), targets: nodes(a.targets), effects: nodes(a.effects),
         cost: Array.isArray(a.cost) ? nodes(a.cost) : a.cost ? [node(a.cost)] : [],
         ruleModifiers: nodes(a.ruleModifiers), creates: nodes(a.creates), lifecycle,
