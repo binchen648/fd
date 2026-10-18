@@ -9787,3 +9787,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-iliya-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#569` or any prior open PR.
+
+## TASK P3-S-OWNER-ILLYA-MAHOU-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly three skills for `master.illya-mahou`
+
+Exact accepted review:
+
+- PR `#571`, Base `ecfd1a1e8d82b7cf39381732b8d8cf2c361165f5`;
+- accepted Candidate `46ce072cf983c09642f83ddbf43acab6e2357326`;
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from `/root/iliya_reviewer_r5`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-illya-mahou` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly three identities: `master.illya-mahou.skill.ascension`, `.s1`, and `.s1a`.
+
+All three cards preserve exact legacy/generated text and are explicitly `HOST_ADJUDICATED`; audit-only `record_master_directive` effects are blocked from automatic/direct execution because the current engine lacks the required dynamic deck, modifier, and lifecycle contracts.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `299/944`, remaining `645`;
+- exact owner increment: `+3`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`302/944`**, remaining **`642`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-illya-mahou-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#571` or any prior open PR.
