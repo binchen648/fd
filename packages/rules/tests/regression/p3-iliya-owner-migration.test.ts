@@ -68,6 +68,25 @@ describe('P3 Iliya owner migration boundary', () => {
     expect(state.abilityRuntime!.events.filter((event) => event.type === 'mana_adjusted')).toHaveLength(1);
   });
 
+  it('publishes the supported S1 capability as FULL/automatic in generated artifacts', () => {
+    const library = JSON.parse(readFileSync('data/generated/fd-playtest-v1.content-library.json', 'utf8')) as any;
+    const evidence = JSON.parse(readFileSync('data/generated/fd-playtest-v1.evidence-report.json', 'utf8')) as any;
+    const card = library.cards.find((entry: any) => entry.id === `${ROOT}.skill.s1`);
+    const ruleCard = library.rules.cards[`${ROOT}.skill.s1`];
+    const evidenceRow = evidence.entities.find((entry: any) => entry.entityId === `${ROOT}.skill.s1`);
+    expect(card.capability).toEqual({
+      status: 'FULL',
+      supportedDimensions: ['game_start_fixed_controller_mana'],
+    });
+    expect(ruleCard.mode).toBe('automatic');
+    expect(ruleCard.abilities[0].execution.mode).toBe('automatic');
+    expect(evidenceRow.capabilityStatus).toBe('FULL');
+    for (const id of IDS.filter((value) => value !== `${ROOT}.skill.s1`)) {
+      expect(library.cards.find((entry: any) => entry.id === id).capability.status).toBe('HOST_ADJUDICATED');
+      expect(evidence.entities.find((entry: any) => entry.entityId === id).capabilityStatus).toBe('HOST_ADJUDICATED');
+    }
+  });
+
   it('keeps unsupported deck, situation, attack-history, and elimination semantics host-adjudicated', () => {
     const { state, loaded } = setup();
     for (const id of IDS.filter((value) => value !== `${ROOT}.skill.s1`)) addSkill(state, id);

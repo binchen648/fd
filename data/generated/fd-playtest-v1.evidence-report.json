@@ -2368,7 +2368,7 @@
       "entityId": "master.iliya.skill.s1",
       "displayName": "人工生命体",
       "entityKind": "master_skill",
-      "capabilityStatus": "HOST_ADJUDICATED",
+      "capabilityStatus": "FULL",
       "htmPath": "chm-extract/伊莉雅斯菲尔.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/伊莉雅斯菲尔.png",
       "imageIndex": 2,

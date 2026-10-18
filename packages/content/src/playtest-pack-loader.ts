@@ -324,6 +324,43 @@ function toCardType(cardType: string): NamedCardDefinition['cardType'] {
   return 'generated';
 }
 
+function isCompleteGameStartFixedControllerMana(card: AuthoringCard): boolean {
+  if ((card.verification as { implementationStatus?: unknown } | undefined)?.implementationStatus !== 'complete') {
+    return false;
+  }
+  if (!Array.isArray(card.abilities) || card.abilities.length !== 1) return false;
+  const ability = card.abilities[0] as Record<string, unknown>;
+  const activation = ability.activation as Record<string, unknown> | undefined;
+  const effects = Array.isArray(ability.effects) ? ability.effects : [];
+  const effect = effects[0] as Record<string, unknown> | undefined;
+  const execution = ability.execution as Record<string, unknown> | undefined;
+  return ability.kind === 'forced_trigger' &&
+    activation?.trigger === 'game_start' &&
+    Object.keys(activation).every((key) => key === 'trigger') &&
+    Array.isArray(ability.conditions) && ability.conditions.length === 0 &&
+    Array.isArray(ability.targets) && ability.targets.length === 0 &&
+    Array.isArray(ability.cost) && ability.cost.length === 0 &&
+    Array.isArray(ability.ruleModifiers) && ability.ruleModifiers.length === 0 &&
+    Array.isArray(ability.creates) && ability.creates.length === 0 &&
+    effect !== undefined && effects.length === 1 &&
+    effect.type === 'set_mana' && effect.player === 'controller' && Number.isFinite(effect.amount) &&
+    execution?.mode === 'automatic' &&
+    Array.isArray(execution.allowedOperations) && execution.allowedOperations.length === 0;
+}
+
+function capabilityForAuthoringCard(card: AuthoringCard): NamedCardDefinition['capability'] {
+  if (isCompleteGameStartFixedControllerMana(card)) {
+    return {
+      status: 'FULL',
+      supportedDimensions: ['game_start_fixed_controller_mana'],
+    };
+  }
+  return {
+    status: 'HOST_ADJUDICATED',
+    hostRulingReason: 'Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter.',
+  };
+}
+
 function toNamedCard(
   card: AuthoringCard,
   archive: AuthoringArchive,
@@ -346,10 +383,7 @@ function toNamedCard(
     ...(card.cardFace?.cost !== undefined ? { printedCost: card.cardFace.cost } : {}),
     ...(card.printedText ? { printedText: card.printedText } : {}),
     ...(timing ? { timing } : {}),
-    capability: {
-      status: 'HOST_ADJUDICATED',
-      hostRulingReason: 'Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter.',
-    },
+    capability: capabilityForAuthoringCard(card),
     source: sourceForArchive(archive, workspaceRoot, imageIndex),
   };
 }

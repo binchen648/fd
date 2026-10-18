@@ -6951,8 +6951,10 @@
         "action"
       ],
       "capability": {
-        "status": "HOST_ADJUDICATED",
-        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+        "status": "FULL",
+        "supportedDimensions": [
+          "game_start_fixed_controller_mana"
+        ]
       },
       "source": {
         "htmPath": "chm-extract/伊莉雅斯菲尔.htm",
@@ -36865,11 +36867,11 @@
       "master.hisui-detective": "master.hisui-detective.command-spell",
       "master.iliya": "master.iliya.command-spell"
     },
-    "definitionHash": "aefbbaf03367f5810505bacf3ba958789cab90415b8f1894781501e9a54d08b4",
+    "definitionHash": "18c57377c29278cc82261075f4326807c087ac57bbf4004cce4ca8ac425229d1",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "aefbbaf03367f5810505bacf3ba958789cab90415b8f1894781501e9a54d08b4"
+      "definitionHash": "18c57377c29278cc82261075f4326807c087ac57bbf4004cce4ca8ac425229d1"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
