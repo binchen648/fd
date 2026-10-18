@@ -47,10 +47,19 @@ export function isAcceptedHakunoMaleAbility(a: AuthoringAbility): boolean {
   const effect = a.effects[0]!;
   if (!EFFECTS.has(String(effect.type))) return false;
   if (effect.type === HAKUNO_M_YOMI_EFFECT) {
+    const targets = nodes(a.targets);
+    if (targets.length !== 1) return false;
+    const opponentTarget = targets[0]!;
+    const opponentCount = node(opponentTarget.count);
+    const opponentConstraints = nodes(opponentTarget.constraints);
     return a.id === 'hakuno-m.yomi' && a.kind === 'phase_action' &&
       a.activation.phase === 'combat' && a.activation.opens === 'controller_combat_action_window' &&
-      nodes(a.targets).length === 1 && nodes(a.targets)[0]!.id === 'opponent' &&
-      nodes(a.targets)[0]!.type === 'player' &&
+      a.cost.length === 0 && exact(opponentTarget, ['id', 'type', 'count', 'constraints']) &&
+      opponentTarget.id === 'opponent' && opponentTarget.type === 'player' && exactCount(opponentCount) &&
+      opponentConstraints.length === 3 &&
+      opponentConstraints.every((constraint, index) => exact(constraint, ['type']) && constraint.type === [
+        'not_controller', 'same_location_as_controller', 'at_battlefield',
+      ][index]) &&
       exact(effect, ['type', 'mode', 'target']) && effect.mode === 'analysis' && effect.target === 'opponent';
   }
   if (effect.type === HAKUNO_M_CHALLENGE_RESULT_EFFECT) {
@@ -63,15 +72,18 @@ export function isAcceptedHakunoMaleAbility(a: AuthoringAbility): boolean {
       (a.activation.trigger === 'while_active' || Object.keys(a.activation).length === 0) &&
       nodes(a.targets).length === 0 && exact(effect, ['type']);
   }
-  const analysisTarget = nodes(a.targets)[0]!;
-  const recipientTarget = nodes(a.targets)[1]!;
+  const targets = nodes(a.targets);
+  if (targets.length !== 2 || a.cost.length !== 1) return false;
+  const analysisTarget = targets[0]!;
+  const recipientTarget = targets[1]!;
+  if (!exact(analysisTarget, ['id', 'type', 'scope', 'count', 'constraints']) ||
+      !exact(recipientTarget, ['id', 'type', 'count', 'constraints'])) return false;
   const analysisScope = node(analysisTarget.scope);
   const analysisConstraint = nodes(analysisTarget.constraints)[0]!;
   const recipientConstraint = nodes(recipientTarget.constraints)[0]!;
-  const cost = a.cost[0]!;
+  const cost = node(a.cost[0]);
   return a.id === 'hakuno-m.dead-face-transfer' && a.kind === 'phase_action' &&
     a.activation.phase === 'action' && a.activation.opens === 'controller_action_window' &&
-    nodes(a.targets).length === 2 && exact(analysisTarget, ['id', 'type', 'scope', 'count', 'constraints']) &&
     analysisTarget.id === 'analysis' && analysisTarget.type === 'card_instance' && exactCount(analysisTarget.count) &&
     exact(analysisScope, ['zone', 'owner', 'controller']) && analysisScope.zone === 'skill' &&
     analysisScope.owner === 'any' && analysisScope.controller === 'any' &&

@@ -80,6 +80,24 @@ describe('P3 Hakuno-M owner readiness capability', () => {
     ]));
   });
 
+  it('rejects missing, extra, and tampered Yomi target/cost envelope fields without throwing', () => {
+    const mutations = [
+      (archive: any) => { delete archive.cards[1].abilities[0].targets[0].count; },
+      (archive: any) => { archive.cards[1].abilities[0].targets[0].count.max = 2; },
+      (archive: any) => { archive.cards[1].abilities[0].targets[0].constraints = []; },
+      (archive: any) => { archive.cards[1].abilities[0].targets[0].extra = true; },
+      (archive: any) => { archive.cards[1].abilities[0].cost = [{ type: 'pay_mana', amount: 1 }]; },
+    ];
+    for (const mutate of mutations) {
+      const malformed = rawArchive();
+      mutate(malformed);
+      expect(() => rules.loadAuthoringJson(malformed)).not.toThrow();
+      expect(rules.loadAuthoringJson(malformed).report).toEqual(expect.arrayContaining([
+        expect.objectContaining({ path: 'hakunoMale.gateway', abilityId: YOMI, status: 'unsupported' }),
+      ]));
+    }
+  });
+
   it('rejects widened Dead Face cost and target envelopes at the whole-ability gateway', () => {
     const wrongCost = rawArchive();
     wrongCost.cards[0].abilities[0].cost[0].amount = 2;
@@ -90,6 +108,20 @@ describe('P3 Hakuno-M owner readiness capability', () => {
     const wrongRecipient = rawArchive();
     wrongRecipient.cards[0].abilities[0].targets[1].constraints = [{ type: 'same_location_as_controller' }];
     expect(rules.loadAuthoringJson(wrongRecipient).report).toEqual(expect.arrayContaining([
+      expect.objectContaining({ path: 'hakunoMale.gateway', abilityId: DEAD_FACE, status: 'unsupported' }),
+    ]));
+
+    const missingAnalysisTarget = rawArchive();
+    missingAnalysisTarget.cards[0].abilities[0].targets = [];
+    expect(() => rules.loadAuthoringJson(missingAnalysisTarget)).not.toThrow();
+    expect(rules.loadAuthoringJson(missingAnalysisTarget).report).toEqual(expect.arrayContaining([
+      expect.objectContaining({ path: 'hakunoMale.gateway', abilityId: DEAD_FACE, status: 'unsupported' }),
+    ]));
+
+    const extraAnalysisTargetField = rawArchive();
+    extraAnalysisTargetField.cards[0].abilities[0].targets[0].unexpected = 'tampered';
+    expect(() => rules.loadAuthoringJson(extraAnalysisTargetField)).not.toThrow();
+    expect(rules.loadAuthoringJson(extraAnalysisTargetField).report).toEqual(expect.arrayContaining([
       expect.objectContaining({ path: 'hakunoMale.gateway', abilityId: DEAD_FACE, status: 'unsupported' }),
     ]));
   });

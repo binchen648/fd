@@ -42,7 +42,7 @@ The current engine has no authoritative cross-command interaction state for thre
 
 ## Verification
 
-- Builder environment with `node_modules` present: `npx vitest run packages/rules/tests/regression/p3-hakuno-m-owner-readiness-capability.test.ts`: **7/7 PASS**
+- Builder environment with `node_modules` present: `npx vitest run packages/rules/tests/regression/p3-hakuno-m-owner-readiness-capability.test.ts`: **8/8 PASS**
 - Builder environment: `npm run typecheck`: **PASS**
 - Builder environment: `git diff --check 82b9e57c HEAD`: **PASS**
 - Builder environment: `npm run content:validate`: **BLOCKED as expected**; executable compilation rejects the three explicit readiness gaps (S1 challenge branch, S2 challenge settlement, and S3 Analysis lifecycle), plus their strict gateway status. No generated artifact was written.
