@@ -33,7 +33,7 @@ function state(withAttack = false) {
   const loaded = load(withAttack);
   for (const definition of Object.values(loaded.cards) as any[]) definition.ownerId = ROOT;
   expect(loaded.report.filter((entry) => entry.path === 'verification.implementationStatus').map((entry) => entry.cardId).sort())
-    .toEqual([`${ROOT}.skill.s1`, `${ROOT}.skill.s3`, `${ROOT}.skill.s4`]);
+    .toEqual([`${ROOT}.skill.ascension`, `${ROOT}.skill.s1`, `${ROOT}.skill.s2`, `${ROOT}.skill.s3`, `${ROOT}.skill.s4`]);
   const value = createSeededGameState({ activeSeats: [1, 2] });
   value.cards = [];
   value.players[0]!.masterCardId = ROOT;
@@ -51,6 +51,8 @@ describe('P3 Hinako owner-complete canonical migration', () => {
     expect(Object.keys(loaded.cards).sort()).toEqual(IDS.sort());
     expect(loaded.cards[`${ROOT}.skill.s2`]!.abilities[0]!.effects[0]).toEqual({ type: 'hinako_blood_song', amount: -2, duration: 'round' });
     expect(loaded.cards[`${ROOT}.skill.s1`]!.mode).toBe('host_adjudicated');
+    expect(loaded.cards[`${ROOT}.skill.ascension`]!.mode).toBe('host_adjudicated');
+    expect(loaded.cards[`${ROOT}.skill.s2`]!.mode).toBe('host_adjudicated');
     expect(loaded.cards[`${ROOT}.skill.s3`]!.mode).toBe('host_adjudicated');
     expect(loaded.cards[`${ROOT}.skill.s4`]!.mode).toBe('host_adjudicated');
     // The shared marker means “must be additional”, while Hinako's text says
@@ -80,12 +82,14 @@ describe('P3 Hinako owner-complete canonical migration', () => {
     const { value } = state(true);
     const source = add(value, `${ROOT}.skill.s2`, 'p1', 'attack_area');
     const attack = add(value, 'fixture.hinako.basic', 'p2', 'attack_area');
+    const opponentSkill = add(value, `${ROOT}.skill.s1a`, 'p2', 'attack_area');
     expect(rules.calculateCardPower(value, attack).value).toBe(5);
     const action = rules.getLegalActions(value, 'p1').find((candidate) => candidate.type === 'activate_ability' && candidate.cardInstanceId === source && candidate.abilityId === 'hinako.blood-song.combat');
     expect(action).toBeDefined();
     expect(rules.dispatchAbilityCommand(value, 'p1', action!).ok).toBe(true);
     expect(rules.calculateCardPower(value, attack).value).toBe(3);
     expect(value.cards.find((card) => card.instanceId === attack)?.powerModifiers).toHaveLength(1);
+    expect(value.cards.find((card) => card.instanceId === opponentSkill)?.powerModifiers).toBeUndefined();
     value.round.roundNumber += 1;
     expect(rules.calculateCardPower(value, attack).value).toBe(5);
     delete value.abilityRuntime!.abilityUsage[`${source}:hinako.blood-song.combat`];

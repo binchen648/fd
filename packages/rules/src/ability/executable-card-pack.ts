@@ -518,6 +518,11 @@ function validatePresentationReferences(input: CompileInput, cards: Record<strin
   }
 }
 
+function hasVerifiedPartialHinakoBloodSongConsumer(card: ExecutableCardDefinition | undefined): boolean {
+  return !!card && card.abilities.some((ability) =>
+    ability.effects.some((effect) => effect.type === 'hinako_blood_song'));
+}
+
 function validatedGameStartSkillProvisioningDeferrals(cards: Record<string, ExecutableCardDefinition>): { targetIds: Set<string>; sourceIds: Set<string> } {
   const targetIds = new Set<string>();
   const sourceIds = new Set<string>();
@@ -531,7 +536,7 @@ function validatedGameStartSkillProvisioningDeferrals(cards: Record<string, Exec
       }
       for (const definitionId of targets) {
         const target = cards[definitionId];
-        if (!target || target.id === source.id || target.mode !== 'automatic' || target.cardType !== 'master_skill' || target.ownerId !== source.ownerId) {
+        if (!target || target.id === source.id || (target.mode !== 'automatic' && !hasVerifiedPartialHinakoBloodSongConsumer(target)) || target.cardType !== 'master_skill' || target.ownerId !== source.ownerId) {
           throw new Error(`Invalid game-start skill provisioning target ${definitionId}: ${source.id}#${ability.id}`);
         }
       }

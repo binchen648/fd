@@ -21312,7 +21312,7 @@
             }
           }
         ],
-        "mode": "automatic",
+        "mode": "host_adjudicated",
         "ownerId": "master.hinako",
         "playKind": "support",
         "destinationZone": "field",
@@ -21513,7 +21513,7 @@
             }
           }
         ],
-        "mode": "automatic",
+        "mode": "host_adjudicated",
         "ownerId": "master.hinako",
         "playKind": "support",
         "destinationZone": "field"
@@ -35734,11 +35734,11 @@
       "master.hakuno-m": "master.hakuno-m.command-spell",
       "master.hinako": "master.hinako.command-spell"
     },
-    "definitionHash": "5416c7ca191e714a28cd0f160ebf8194466bed1e2a8e4961b593bc94b8d3d61c",
+    "definitionHash": "79891295035d0d8c636f0f362a40b3cbd81a2b6b353c7d0af7538faac6e4fe89",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "5416c7ca191e714a28cd0f160ebf8194466bed1e2a8e4961b593bc94b8d3d61c"
+      "definitionHash": "79891295035d0d8c636f0f362a40b3cbd81a2b6b353c7d0af7538faac6e4fe89"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {

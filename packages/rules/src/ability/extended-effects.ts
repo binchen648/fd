@@ -15,6 +15,7 @@ import { clearTransientCardTransformState } from './card-instance-state';
 import { playerIgnoresAbilityFromController } from './player-ability-immunity';
 import { notifyManaAdjusted } from '../core/rule-overrides';
 import { markCommandSealSpent, recordSkillReturnedToSkillZone } from './permanent-skill-tuning-capability';
+import { hasDefinitionVariantAttackMarker } from './definition-variant-battery-capability';
 
 function modeState(state: GameState): Record<string, any> {
   (state as any).modeState = (state as any).modeState || {};
@@ -46,6 +47,12 @@ function directiveContext(context?: Record<string, unknown>): Record<string, unk
 
 function isActiveFieldCard(state: GameState, card: GameState['cards'][number]): boolean {
   return ['field', 'attack_area'].includes(card.zone) && (((state as any).abilityRuntime?.cardState?.[card.instanceId]?.active === true) || (card as any).active === true);
+}
+
+function isAttackCard(state: GameState, card: GameState['cards'][number]): boolean {
+  const packCard = (state as any).abilityRuntime?.pack?.cards?.[card.definitionId];
+  return !!packCard && (hasDefinitionVariantAttackMarker(packCard) ||
+    ['servant_skill', 'servant_deck_card', 'servant_attack', 'basic_attack'].includes(packCard.cardType));
 }
 
 function sourceCardId(context?: Record<string, unknown>): string {
@@ -281,7 +288,7 @@ export function resolveExtendedEffect(
       let affected = 0;
       for (const opponent of opponents) {
         for (const attack of state.cards.filter((candidate) => candidate.controllerPlayerId === opponent.id &&
-          candidate.zone === 'attack_area' && runtime?.cardState?.[candidate.instanceId]?.active === true &&
+          candidate.zone === 'attack_area' && isAttackCard(state, candidate) && runtime?.cardState?.[candidate.instanceId]?.active === true &&
           runtime?.cardState?.[candidate.instanceId]?.faceDown !== true)) {
           const carrier = attack as any;
           carrier.powerModifiers ??= [];
