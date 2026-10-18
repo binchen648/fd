@@ -68,7 +68,8 @@
                                  "data/authoring/masters/master.hakuno-f.json",
                                  "data/authoring/masters/master.hakuno-m.json",
                                  "data/authoring/masters/master.hinako.json",
-                                 "data/authoring/masters/master.hisui-detective.json"
+                                 "data/authoring/masters/master.hisui-detective.json",
+                                 "data/authoring/masters/master.iliya.json"
                              ],
     "authoringMasterSupportFiles":  [
                                         "data/authoring/masters/master.shirou-emiya.json"

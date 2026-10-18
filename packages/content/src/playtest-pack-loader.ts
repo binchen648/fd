@@ -324,6 +324,72 @@ function toCardType(cardType: string): NamedCardDefinition['cardType'] {
   return 'generated';
 }
 
+function isCompleteGameStartFixedControllerMana(card: AuthoringCard): boolean {
+  if ((card.verification as { implementationStatus?: unknown } | undefined)?.implementationStatus !== 'complete') {
+    return false;
+  }
+  if (!Array.isArray(card.abilities) || card.abilities.length !== 1) return false;
+  const ability = card.abilities[0] as Record<string, unknown>;
+  const abilityKeys = new Set([
+    'id', 'kind', 'printedClause', 'markers', 'activation', 'conditions', 'targets', 'effects', 'cost',
+    'ruleModifiers', 'creates', 'lifecycle', 'responseWindow', 'limit', 'visibility', 'execution', 'copies', 'transforms',
+  ]);
+  if (!Object.keys(ability).every((key) => abilityKeys.has(key))) return false;
+  if (Object.prototype.hasOwnProperty.call(ability, 'copies') || Object.prototype.hasOwnProperty.call(ability, 'transforms')) return false;
+  const activation = ability.activation as Record<string, unknown> | undefined;
+  const effects = Array.isArray(ability.effects) ? ability.effects : [];
+  const effect = effects[0] as Record<string, unknown> | undefined;
+  const execution = ability.execution as Record<string, unknown> | undefined;
+  const responseWindow = (ability.responseWindow ?? {}) as Record<string, unknown>;
+  const lifecycle = (ability.lifecycle ?? {}) as Record<string, unknown>;
+  const limit = (ability.limit ?? {}) as Record<string, unknown>;
+  const visibility = (ability.visibility ?? {}) as Record<string, unknown>;
+  if (!execution || !Object.keys(execution).every((key) => ['mode', 'allowedOperations'].includes(key)) ||
+    Object.keys(execution).length !== 2) return false;
+  return ability.kind === 'forced_trigger' &&
+    activation?.trigger === 'game_start' &&
+    Object.keys(activation).every((key) => key === 'trigger') &&
+    Array.isArray(ability.conditions) && ability.conditions.length === 0 &&
+    Array.isArray(ability.targets) && ability.targets.length === 0 &&
+    Array.isArray(ability.cost) && ability.cost.length === 0 &&
+    Array.isArray(ability.ruleModifiers) && ability.ruleModifiers.length === 0 &&
+    Array.isArray(ability.creates) && ability.creates.length === 0 &&
+    effect !== undefined && effects.length === 1 &&
+    effect.type === 'set_mana' &&
+    (effect.player === undefined || effect.player === 'controller') &&
+    Number.isSafeInteger(effect.amount) && Number(effect.amount) >= 0 &&
+    Object.keys(effect).every((key) => ['type', 'player', 'amount'].includes(key)) &&
+    Object.keys(responseWindow).every((key) => ['order', 'passBehavior'].includes(key)) &&
+    (responseWindow.order === undefined || responseWindow.order === 'turn_order') &&
+    (responseWindow.passBehavior === undefined || responseWindow.passBehavior === 'decline_this_window') &&
+    Object.keys(lifecycle).length === 0 && Object.keys(limit).length === 0 && Object.keys(visibility).length === 0 &&
+    execution?.mode === 'automatic' &&
+    Array.isArray(execution.allowedOperations) && execution.allowedOperations.length === 0;
+}
+
+export function capabilityForAuthoringCard(card: AuthoringCard): NamedCardDefinition['capability'] {
+  const face = card.cardFace as Record<string, unknown> | undefined;
+  const timing = card.playTiming as Record<string, unknown> | undefined;
+  const exactFace = face !== undefined && !Array.isArray(face) &&
+    Object.keys(face).every((key) => ['typeLabel', 'attributes', 'cost', 'basePower'].includes(key)) &&
+    face.typeLabel === '被动' && Array.isArray(face.attributes) && face.attributes.length === 0 &&
+    face.cost === 0 && face.basePower === 0;
+  const exactTiming = timing !== undefined && !Array.isArray(timing) &&
+    Object.keys(timing).every((key) => ['phase', 'window'].includes(key)) &&
+    timing.phase === 'action' && timing.window === 'controller_play_card_window';
+  const exactRequirements = Array.isArray(card.playRequirements) && card.playRequirements.length === 0;
+  if (exactFace && exactTiming && exactRequirements && isCompleteGameStartFixedControllerMana(card)) {
+    return {
+      status: 'FULL',
+      supportedDimensions: ['game_start_fixed_controller_mana'],
+    };
+  }
+  return {
+    status: 'HOST_ADJUDICATED',
+    hostRulingReason: 'Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter.',
+  };
+}
+
 function toNamedCard(
   card: AuthoringCard,
   archive: AuthoringArchive,
@@ -346,10 +412,7 @@ function toNamedCard(
     ...(card.cardFace?.cost !== undefined ? { printedCost: card.cardFace.cost } : {}),
     ...(card.printedText ? { printedText: card.printedText } : {}),
     ...(timing ? { timing } : {}),
-    capability: {
-      status: 'HOST_ADJUDICATED',
-      hostRulingReason: 'Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter.',
-    },
+    capability: capabilityForAuthoringCard(card),
     source: sourceForArchive(archive, workspaceRoot, imageIndex),
   };
 }
