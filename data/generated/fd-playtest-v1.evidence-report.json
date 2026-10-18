@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 26,
+    "masters": 27,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -2009,6 +2009,94 @@
       "htmPath": "chm-extract/戈尔德鲁夫·穆吉克.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/戈尔德鲁夫·穆吉克.png",
       "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hakuno-f",
+      "displayName": "岸波白野（女）",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/岸波白野（女）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/岸波白野（女）.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hakuno-f.overview",
+      "displayName": "岸波白野（女）",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/岸波白野（女）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/岸波白野（女）.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hakuno-f.skill.ascension",
+      "displayName": "月之王权",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/岸波白野（女）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/岸波白野（女）.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hakuno-f.skill.s1",
+      "displayName": "换装",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/岸波白野（女）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/岸波白野（女）.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hakuno-f.skill.s2",
+      "displayName": "神秘代码：Link",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/岸波白野（女）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/岸波白野（女）.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hakuno-f.skill.s3",
+      "displayName": "神秘代码：CCC",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/岸波白野（女）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/岸波白野（女）.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hakuno-f.skill.s4",
+      "displayName": "神秘代码：Extella",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/岸波白野（女）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/岸波白野（女）.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hakuno-f.skill.s5",
+      "displayName": "神秘代码：Extra",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/岸波白野（女）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/岸波白野（女）.png",
+      "imageIndex": 6,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },
