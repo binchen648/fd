@@ -1,8 +1,8 @@
 # P3-S Hakuno-F Owner-Complete Migration Candidate
 
-Date: 2026-10-18  
-Task: `P3-S-OWNER-HAKUNO-F-COMPLETE-MIGRATION`  
-Owner: FORMAL / Codex S  
+Date: 2026-10-18
+Task: `P3-S-OWNER-HAKUNO-F-COMPLETE-MIGRATION`
+Owner: FORMAL / Codex S
 Classification: owner-complete frozen consumer migration
 
 ## Pinned ancestry and scope
