@@ -9761,3 +9761,25 @@ Formal review/accounting closure:
 - formal A-sync lawfully advances accounting `273/944 + 6 = 279/944`, remaining `665`;
 - acceptance synchronization report: `docs/reports/2026-10-19-p3-a-owner-hakuno-f-acceptance-synchronization.md`;
 - full-suite red findings, A02/source-asset history, and the non-green F5 boundary remain disclosed and are not reclassified as green.
+
+## TASK P3-S-OWNER-HISUI-DETECTIVE-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner migration with explicit host-adjudicated boundaries, frozen exactly five skills for `master.hisui-detective`
+
+Exact Base: `96f66230c0e2c2c7a8b30ee671bbc662253450a3` — Hinako accepted Candidate.
+Exact Candidate: `2adc423fe17a3ad0310cf18ca9152b0850b4163a` — PR #567.
+
+Independent GPT-6 Sol Reviewer returned exact `MIGRATION_ACCEPTED` in separate worktree `review-hisui`.
+
+Canonical materialization and evidence:
+- `data/authoring/masters/master.hisui-detective.json` contains exactly the five frozen skills;
+- `data/packs/fd-playtest-v1/pack.json` registers the archive once;
+- generated content/evidence are synchronized and validated;
+- all five skills are explicitly host-adjudicated because the current engine lacks first-class Solid State event, clue/suspect, investigation, and one-time continuation state contracts;
+- the card-level gate blocks automatic/direct execution of audit directives.
+
+Formal synchronization report: `docs/reports/2026-10-19-p3-a-owner-hisui-detective-acceptance-synchronization.md`.
+
+Synchronized frontier accounting: `289/944 + 5 = 294/944`, remaining `650`; mainline remains `279/944` until open PRs #563/#564/#565/#566/#567 and synchronization PRs are integrated. PR #567 remains open and unmerged.
