@@ -6,6 +6,10 @@ import {
   consumeForcedDeploymentLocationForPlayer,
   initializeAbilityRuntime,
   isCanonicalGenericPendingDecisionForRestore,
+  isPrintedManaPowerBonusStateValidForRestore,
+  isMysticCodePaidCopyStateValidForRestore,
+  isMysticCodeRecoveryArmsValidForRestore,
+  isMysticCodeReconCapacityStateValidForRestore,
   isDeferredAbilityRuntimeProvenanceValidForRestore,
   processAbilityEvent,
   processAbilitySystemEvent,
@@ -704,6 +708,77 @@ function isRestorePendingInteraction(value: unknown): boolean {
       typeof value.kind !== 'string' || typeof value.sourceCardInstanceId !== 'string' || typeof value.abilityId !== 'string' ||
       !isRestoreSafeInteger(value.createdRevision) || typeof value.continuationRef !== 'string') return false;
   switch (value.kind) {
+    case 'mystic_code_recon_escape_v1':
+      return hasExactRestoreKeys(value,['kind','template','visibility','cancelPolicy',
+        'sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'controllerId','triggerEventId','triggeringOpponentId','battlefieldId',
+        'round','options','constraints']) &&
+        typeof value.controllerId==='string' && typeof value.triggerEventId==='string' &&
+        typeof value.triggeringOpponentId==='string' && typeof value.battlefieldId==='string' &&
+        isRestoreSafeInteger(value.round,1) &&
+        isRestoreStringArray(value.options) && value.options.length===2 &&
+        value.options[0]==='stay' && value.options[1]==='recon' &&
+        isRestoreInteractionConstraints(value.constraints,['choice']) &&
+        (value.constraints as Record<string,unknown>).min===1 &&
+        (value.constraints as Record<string,unknown>).max===1;
+    case 'mystic_code_battle_recovery_v1':
+      return hasExactRestoreKeys(value,['kind','template','visibility','cancelPolicy',
+        'sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'controllerId','triggerEventId','resultId','round','candidateIds','constraints']) &&
+        typeof value.controllerId==='string' && typeof value.triggerEventId==='string' &&
+        typeof value.resultId==='string' && isRestoreSafeInteger(value.round,1) &&
+        isRestoreStringArray(value.candidateIds) && value.candidateIds.length>0 &&
+        new Set(value.candidateIds).size===value.candidateIds.length &&
+        isRestoreInteractionConstraints(value.constraints,['card']) &&
+        (value.constraints as Record<string,unknown>).min===1 &&
+        (value.constraints as Record<string,unknown>).max===1;
+    case 'mystic_code_recovery_arm_v1':
+      return hasExactRestoreKeys(value,['kind','template','visibility','cancelPolicy',
+        'sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'controllerId','round','candidateIds','constraints']) &&
+        typeof value.controllerId==='string' && isRestoreSafeInteger(value.round,1) &&
+        isRestoreStringArray(value.candidateIds) && value.candidateIds.length>0 &&
+        new Set(value.candidateIds).size===value.candidateIds.length &&
+        isRestoreInteractionConstraints(value.constraints,['card']) &&
+        (value.constraints as Record<string,unknown>).min===1 &&
+        (value.constraints as Record<string,unknown>).max===1;
+    case 'mystic_code_switch_v1':
+      return hasExactRestoreKeys(value,['kind','template','visibility','cancelPolicy',
+        'sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'controllerId','codeDefinitionIds','codePhysicalIds','constraints']) &&
+        typeof value.controllerId==='string' && isRestoreStringArray(value.codeDefinitionIds) &&
+        isRestoreStringArray(value.codePhysicalIds) &&
+        value.codeDefinitionIds.length===4 && value.codePhysicalIds.length===4 &&
+        new Set(value.codeDefinitionIds).size===4 && new Set(value.codePhysicalIds).size===4 &&
+        isRestoreInteractionConstraints(value.constraints,['card']) &&
+        (value.constraints as Record<string,unknown>).min===1 &&
+        (value.constraints as Record<string,unknown>).max===1;
+    case 'private_deck_top_choice_v1': {
+      const stage=value.stage;
+      if (!['player','discard','reorder','copy'].includes(String(stage))) return false;
+      const base=['kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId',
+        'createdRevision','continuationRef','controllerId','stage','battlefieldId','constraints'];
+      const specific=stage==='player' ? [] : stage==='discard' ?
+        ['targetPlayerId','topCardIds'] : stage==='reorder' ?
+        ['targetPlayerId','topCardIds','keptCardIds','discardedIds'] :
+        ['targetPlayerId','topCardIds','discardedIds'];
+      const ids=stage==='reorder' ? value.keptCardIds : value.topCardIds;
+      return hasExactRestoreKeys(value,[...base,...specific]) &&
+        typeof value.controllerId==='string' && typeof value.battlefieldId==='string' &&
+        (stage==='player' || (typeof value.targetPlayerId==='string' &&
+          isRestoreStringArray(value.topCardIds) && (value.topCardIds as string[]).length<=3 &&
+          new Set(value.topCardIds).size===value.topCardIds.length)) &&
+        (stage==='player' || stage==='discard' || (isRestoreStringArray(value.discardedIds) &&
+          (value.discardedIds as string[]).length<=3 &&
+          new Set(value.discardedIds).size===value.discardedIds.length &&
+          (value.discardedIds as string[]).every(id=>(value.topCardIds as string[]).includes(id)))) &&
+        (stage!=='reorder' || (isRestoreStringArray(value.keptCardIds) &&
+          new Set(value.keptCardIds).size===value.keptCardIds.length &&
+          (value.keptCardIds as string[]).every(id=>(value.topCardIds as string[]).includes(id)))) &&
+        isRestoreInteractionConstraints(value.constraints,[stage==='player'?'player':'card']) &&
+        (value.constraints as Record<string,unknown>).min===(stage==='discard'?0:stage==='player'||stage==='copy'?1:(ids as string[]).length) &&
+        (value.constraints as Record<string,unknown>).max===(stage==='player'||stage==='copy'?1:(ids as string[]).length);
+    }
     case 'multi_presence_location_context_v1':
       return hasExactRestoreKeys(value, ['kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef','controllerId','presenceKey','candidateLocationIds','constraints']) &&
         typeof value.controllerId === 'string' && typeof value.presenceKey === 'string' && value.presenceKey.length > 0 &&
@@ -957,6 +1032,20 @@ function isRestoreCardRuntimeState(value: unknown): boolean {
       hasExactRestoreKeys(value.returnToDeckAfterBattle, ['round','controllerId','sourceCardId','abilityId']) &&
       isRestoreSafeInteger(value.returnToDeckAfterBattle.round, 1) && typeof value.returnToDeckAfterBattle.controllerId === 'string' &&
       typeof value.returnToDeckAfterBattle.sourceCardId === 'string' && typeof value.returnToDeckAfterBattle.abilityId === 'string')) &&
+    (value.printedManaPowerBonus === undefined || (isRestoreRecord(value.printedManaPowerBonus) &&
+      hasExactRestoreKeys(value.printedManaPowerBonus,['round','amount','sourceCardId','sourceAbilityId']) &&
+      isRestoreSafeInteger(value.printedManaPowerBonus.round,1) &&
+      isRestoreSafeInteger(value.printedManaPowerBonus.amount,0) &&
+      Number(value.printedManaPowerBonus.amount)<=3 &&
+      typeof value.printedManaPowerBonus.sourceCardId==='string' &&
+      typeof value.printedManaPowerBonus.sourceAbilityId==='string')) &&
+    (value.mysticCodePaidCopy === undefined || (isRestoreRecord(value.mysticCodePaidCopy) &&
+      hasExactRestoreKeys(value.mysticCodePaidCopy,['round','controllerId','sourceCardId','originalInstanceId','originalDefinitionId']) &&
+      isRestoreSafeInteger(value.mysticCodePaidCopy.round,1) &&
+      typeof value.mysticCodePaidCopy.controllerId==='string' &&
+      typeof value.mysticCodePaidCopy.sourceCardId==='string' &&
+      typeof value.mysticCodePaidCopy.originalInstanceId==='string' &&
+      typeof value.mysticCodePaidCopy.originalDefinitionId==='string')) &&
     (value.roundPowerBonus === undefined || (isRestoreRecord(value.roundPowerBonus) &&
       hasExactRestoreKeys(value.roundPowerBonus, ['round','amount','sourceAbilityId']) && isRestoreSafeInteger(value.roundPowerBonus.round, 1) &&
       isRestoreSafeInteger(value.roundPowerBonus.amount, 0) && typeof value.roundPowerBonus.sourceAbilityId === 'string')) &&
@@ -1359,7 +1448,7 @@ function isRestoreRuleOverrides(value: unknown, playerIds: Set<string>, location
       locationIds.has(id) && (limit === null || isRestoreSafeInteger(limit)))) return false;
   }
   const playerLists = [
-    'ignoreMovementLinkPlayerIds','reverseArrowMovementPlayerIds','ignoreOccupancyLimitPlayerIds','engagedPlayerIds',
+    'ignoreMovementLinkPlayerIds','reverseArrowMovementPlayerIds','ignoreOccupancyLimitPlayerIds','reconCapacityExemptPlayerIds','engagedPlayerIds',
     'ignoreEngagementForMovementPlayerIds','mustDeployToBattlefieldPlayerIds','movementLockedOwnActionCombatPlayerIds',
     'viewOpponentDiscardPlayerIds','viewFaceDownEventsPlayerIds',
   ] as const;
@@ -2013,6 +2102,10 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
   const restoredState = value as unknown as GameState;
   if (!terrainAssignmentAuthorityConsistentForRestore(restoredState)) return false;
   if (!isDeferredAbilityRuntimeProvenanceValidForRestore(restoredState, { deferBloodlustContributionAuthority: true })) return false;
+  if (!isPrintedManaPowerBonusStateValidForRestore(restoredState)) return false;
+  if (!isMysticCodePaidCopyStateValidForRestore(restoredState)) return false;
+  if (!isMysticCodeRecoveryArmsValidForRestore(restoredState)) return false;
+  if (!isMysticCodeReconCapacityStateValidForRestore(restoredState)) return false;
   if (restoredState.abilityRuntime?.pendingDecision?.interaction?.kind === 'deployment_terrain_vp_choice_v1' &&
       !deploymentTerrainVpDecisionLiveValid(restoredState, restoredState.abilityRuntime.pendingDecision)) return false;
   if (restoredState.abilityRuntime?.pendingDecision &&
@@ -2451,6 +2544,7 @@ function zone(state: GameState, id: string, label: string, predicate: (card: Gam
 }
 
 function labelCandidate(state: GameState, id: string): { id: string; label: string; kind: 'card' | 'player' | 'location' | 'option'; zone?: string } {
+  if (id === '__fd_decline_ccc_copy__') return { id, label: 'Do not copy a card', kind: 'option' };
   const card = state.cards.find((candidate) => candidate.instanceId === id);
   if (card) return { id, label: state.abilityRuntime?.pack.cards[card.definitionId]?.name ?? card.definitionId, kind: 'card', zone: card.zone };
   const player = state.players.find((candidate) => candidate.id === id);

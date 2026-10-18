@@ -54,13 +54,18 @@ export function canOccupyLocation(input: OccupancyCheckInput): boolean {
     return true;
   }
 
+  if (input.locationId==='recon' && input.movingPlayerId &&
+      input.ruleOverrides?.reconCapacityExemptPlayerIds?.includes(input.movingPlayerId)) return true;
   const occupancyLimit = getOccupancyLimit(location, input.locationId, input.ruleOverrides);
 
   if (occupancyLimit === null) {
     return true;
   }
 
-  return input.occupyingPlayerIds.length < occupancyLimit;
+  const occupants=input.locationId==='recon'
+    ? input.occupyingPlayerIds.filter(id=>!input.ruleOverrides?.reconCapacityExemptPlayerIds?.includes(id))
+    : input.occupyingPlayerIds;
+  return occupants.length < occupancyLimit;
 }
 
 export function canMoveToLocation(input: MovementCheckInput): boolean {

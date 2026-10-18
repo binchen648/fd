@@ -237,6 +237,39 @@ export interface SealedCardDispositionInteractionMetadata {
   controllerId: PlayerId; sealKey: string; hostSourceCardId: string; candidateIds: string[]; resealMana: 1;
   constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: number; distinct: true };
 }
+export interface MysticCodeReconEscapeInteractionMetadata {
+  kind: 'mystic_code_recon_escape_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; triggerEventId: string; triggeringOpponentId: PlayerId; battlefieldId: string;
+  round: number; options: ['stay','recon'];
+  constraints: { kind: 'target'; targetKind: 'choice'; min: 1; max: 1; distinct: true };
+}
+export interface MysticCodeBattleRecoveryInteractionMetadata {
+  kind: 'mystic_code_battle_recovery_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; triggerEventId: string; resultId: string; round: number; candidateIds: string[];
+  constraints: { kind: 'target'; targetKind: 'card'; min: 1; max: 1; distinct: true };
+}
+/** A combat-phase choice made before battle loss is decided. */
+export interface MysticCodeRecoveryArmInteractionMetadata {
+  kind: 'mystic_code_recovery_arm_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; round: number; candidateIds: string[];
+  constraints: { kind: 'target'; targetKind: 'card'; min: 1; max: 1; distinct: true };
+}
+export interface MysticCodeSwitchChoiceInteractionMetadata {
+  kind: 'mystic_code_switch_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; codeDefinitionIds: string[]; codePhysicalIds: string[];
+  constraints: { kind: 'target'; targetKind: 'card'; min: 1; max: 1; distinct: true };
+}
+export interface PrivateDeckTopChoiceInteractionMetadata {
+  kind: 'private_deck_top_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; stage: 'player' | 'discard' | 'reorder' | 'copy'; battlefieldId: string;
+  targetPlayerId?: PlayerId; topCardIds?: string[]; keptCardIds?: string[]; discardedIds?: string[];
+  constraints: { kind: 'target'; targetKind: 'player' | 'card'; min: number; max: number; distinct: true };
+}
 export interface BattlePlunderChoiceInteractionMetadata {
   kind: 'battle_plunder_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
   sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
@@ -371,7 +404,7 @@ export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetad
   PostDrawHandShuffleInteractionMetadata | DiscardShuffleSourceXInteractionMetadata | RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata |
   OwnedRulerSealPowerInteractionMetadata | CombatOpponentPowerVpRewardInteractionMetadata | AutomaticRecycleKeepInteractionMetadata |
   CounterSpendChoiceInteractionMetadata | DiscardBasicReplayChoiceInteractionMetadata | SealedCardChoiceInteractionMetadata |
-  SealedCardDispositionInteractionMetadata | BattlePlunderChoiceInteractionMetadata | RecordedRemovedReplayChoiceInteractionMetadata |
+  SealedCardDispositionInteractionMetadata | MysticCodeReconEscapeInteractionMetadata | MysticCodeBattleRecoveryInteractionMetadata | MysticCodeRecoveryArmInteractionMetadata | MysticCodeSwitchChoiceInteractionMetadata | PrivateDeckTopChoiceInteractionMetadata | BattlePlunderChoiceInteractionMetadata | RecordedRemovedReplayChoiceInteractionMetadata |
   BattleLuckDiscardInteractionMetadata | BattleOpponentCloseRewardInteractionMetadata |
   BattleDrawnCardOptionalPlayInteractionMetadata | BattlefieldAttackOfferChoiceInteractionMetadata |
   DeploymentTerrainVpChoiceInteractionMetadata | OneShotAbilityReuseChoiceInteractionMetadata |
@@ -470,6 +503,10 @@ export interface CardRuntimeState {
   returnToDeckAfterBattle?: { round: number; controllerId: PlayerId; sourceCardId: string; abilityId: string };
   /** Source-card current-round Power bonus, persisted by physical instance. */
   roundPowerBonus?: { round: number; amount: number; sourceAbilityId: string };
+  /** Independent source-bound printed mana Power bonus; stacks with unrelated accepted round bonuses. */
+  printedManaPowerBonus?: { round: number; amount: number; sourceCardId: string; sourceAbilityId: string };
+  /** Paid one-round CCC copy, bound to the exact discarded physical source. */
+  mysticCodePaidCopy?: { round: number; controllerId: string; sourceCardId: string; originalInstanceId: string; originalDefinitionId: string };
   /** Source-owned mana-overflow close request for the canonical battle terminal. */
   manaOverflowCloseAfterBattle?: { round: number; sourceAbilityId: string };
   /** Latest authoritative round in which this existing physical skill returned to its owner's skill zone. */
@@ -664,6 +701,10 @@ export interface LinkedAuxiliarySuiteState {
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
+  mysticCodeRecoveryArms?: Record<PlayerId,{
+    round:number;controllerId:PlayerId;sourceCardId:string;abilityId:string;
+    attackInstanceId:string;printedCost:number;battlefieldId:string;
+  }>;
   /** Identity-free extra physical presences owned by one logical player. */
   extraPlayerPresences?: MultiPresenceState[];
   /** Last authoritative battle-loss round recorded by structural multi-presence providers. */
