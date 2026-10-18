@@ -1173,12 +1173,15 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       return { ...candidateAbility, visibility,
         execution: { mode: failure ? 'unsupported' : mode as ExecutionMode, allowedOperations: allowed } };
     });
+    const verificationStatus = str(node(raw.verification).implementationStatus);
     cards[cardId] = { id: cardId, name: str(raw.name), cardType: str(raw.cardType), cardFace: face,
       playTiming: timing, playRequirements: nodes(raw.playRequirements), abilities,
       ...(initialPlacement === 'outside_game' && (ownedMasterSkill || exactOwnedServantSkill)
         ? { initialPlacement: 'outside_game' as const }
         : {}),
-      mode: report.some(r => r.cardId === cardId && !r.abilityId) ? 'unsupported' : 'automatic' };
+      mode: verificationStatus === 'host_adjudicated'
+        ? 'host_adjudicated'
+        : report.some(r => r.cardId === cardId && !r.abilityId) ? 'unsupported' : 'automatic' };
   }
   const publicCards = nodes(root.cards).map(c => ({ id: str(c.id), name: str(c.name), printedText: str(c.printedText), cardFace: node(c.cardFace) }));
   return { cards, report, servantPackage: { id: str(root.id), name: str(root.name), class: str(root.class),

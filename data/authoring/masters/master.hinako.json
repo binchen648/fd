@@ -8,7 +8,7 @@
   "sourcePolicy": {
     "phase3EvidenceCommit": "aff3960a968af29eb015033a7af6e6632771941f",
     "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
-    "note": "Frozen six-skill text is corroborated by Fate_Domination-开发版 data_masters.js (芥雏子) and locked generated locators masters[56].skills[0..5].text in full-roster-ability-inventory.json. Legacy locators are legacy-content.json#master/master.hinako/{ascension,s1,s1a,s2,s3,s4}; generated sha256 values are recorded in data/phase3/full-roster-rule-decisions.json. Existing legacy handler is core.hinako-package. NPC and China Lostbelt state is preserved as auditable directives until a first-class NPC deck exists in the current engine."
+    "note": "Frozen six-skill text is corroborated by Fate_Domination-开发版 data_masters.js (芥雏子) and locked generated locators masters[56].skills[0..5].text in full-roster-ability-inventory.json. Legacy locators are legacy-content.json#master/master.hinako/{ascension,s1,s1a,s2,s3,s4}; generated sha256 values are recorded in data/phase3/full-roster-rule-decisions.json. Existing legacy handler is core.hinako-package. NPC and China Lostbelt state is not modeled by the current engine: s1, s3, and s4 are intentionally host-adjudicated/blocked in the generated rules and are not owner-complete. Their directives are audit records only, not gameplay implementation."
   },
   "cards": [
     {
@@ -41,7 +41,7 @@
         "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
         "execution": {"mode": "automatic", "allowedOperations": []}
       }],
-      "verification": {"implementationStatus": "complete"}
+      "verification": {"implementationStatus": "host_adjudicated"}
     },
     {
       "id": "master.hinako.skill.s1a",
@@ -98,7 +98,7 @@
         {"id": "hinako.qin.presence", "kind": "passive", "printedClause": "你的合计威力为14（可以被修正）。你出现在所有具有【中国】事件牌的地点。", "activation": {"trigger": "while_active"}, "conditions": [], "targets": [], "effects": [{"type": "record_master_directive", "directive": "hinako_qin_presence"}], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}},
         {"id": "hinako.qin.no-location-reward", "kind": "forced_trigger", "printedClause": "战力结算时，若你不位于任何地点，获得2点战果。", "activation": {"trigger": "after_battle_ended"}, "conditions": [], "targets": [], "effects": [{"type": "record_master_directive", "directive": "hinako_qin_no_location_reward"}], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}}
       ],
-      "verification": {"implementationStatus": "complete"}
+      "verification": {"implementationStatus": "host_adjudicated"}
     },
     {
       "id": "master.hinako.skill.s4",
@@ -108,7 +108,7 @@
       "cardFace": {"typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0},
       "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
       "abilities": [{"id": "hinako.china.lostbelt", "kind": "passive", "printedClause": "扩张-从游戏外的【中国】事件牌中随机抽取一张并洗入事件牌堆；始皇帝事件修正规则。", "activation": {"trigger": "while_active"}, "conditions": [], "targets": [], "effects": [{"type": "record_master_directive", "directive": "hinako_china_lostbelt"}], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}}],
-      "verification": {"implementationStatus": "complete"}
+      "verification": {"implementationStatus": "host_adjudicated"}
     }
   ],
   "sources": [{"id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/芥雏子.png"]}]

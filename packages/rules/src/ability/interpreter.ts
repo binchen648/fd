@@ -2260,6 +2260,10 @@ function eligibleMultiPresenceResolutionContexts(s: GameState, sourceId: string,
 }
 function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
   if (a.execution.mode !== 'automatic') return false;
+  // A card-level host-adjudicated downgrade must also suppress its automatic
+  // triggers. Otherwise an audit-only directive could still mutate runtime
+  // state when the physical skill happens to be in a skill/field zone.
+  if (definition(s, sourceId)?.mode !== 'automatic') return false;
   if (linkedRoleOriginalSkillUseLocked(s, sourceId, card(s, sourceId).controllerPlayerId)) return false;
   if (isPlayActionStructuralCandidate(a) && !isPlayActionRouteCandidate(a)) return false;
   if (isPlaySourceCardWithCostResponseStructuralCandidate(a) && !isPlaySourceCardWithCostResponseRouteCandidate(a)) return false;
@@ -7707,6 +7711,8 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 /** Server-only execution after discovery/trigger validation. Never accept an effect or context from the client. */
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  const sourceDefinition = definition(s, ctx.sourceCardId);
+  if (sourceDefinition?.mode !== 'automatic') reject(sourceDefinition?.mode ?? 'unsupported', 'Card requires an adapter or host ruling');
   if (isForbiddenCodeSealUse(s,ctx.sourceCardId,a)) reject('illegal_action','Active Mystic Code forbids Command Seal Power/Victory use');
   if (hasControllerMasterSkillDefinitionReturnCandidate(a) && !isAcceptedOpponentRoundVpGainThresholdAbility(a, 'compiled')) reject('resolution_failed', 'Definition-return component requires an independently accepted parent route');
   if (isNextRoundSituationBenefitSuppressionCandidate(a) && !isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled')) reject('resolution_failed', 'Unsupported next-round situation-benefit suppression semantic shape');

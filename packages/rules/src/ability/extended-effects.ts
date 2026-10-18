@@ -286,14 +286,19 @@ export function resolveExtendedEffect(
           const carrier = attack as any;
           carrier.powerModifiers ??= [];
           const id = `${context?.sourceCardId ?? 'hinako'}:${context?.abilityId ?? 'blood-song'}:${attack.instanceId}`;
-          if (!carrier.powerModifiers.some((modifier: any) => modifier.id === id)) {
-            carrier.powerModifiers.push({ id, sourceId: context?.sourceCardId ?? 'hinako',
-              controllerId, kind: 'add', value: -2, duration: 'round', round: state.round.roundNumber });
-            affected++;
-          }
+          const currentRound = state.round.roundNumber;
+          const existingIndex = carrier.powerModifiers.findIndex((modifier: any) =>
+            modifier.id === id && modifier.duration === 'round' && modifier.round === currentRound);
+          if (existingIndex >= 0) continue;
+          // Replace a stale copy of the same source/attack modifier when the
+          // next round reuses this ability. The lifecycle marker is consumed by
+          // card-power calculation, so the previous round cannot leak forward.
+          carrier.powerModifiers = carrier.powerModifiers.filter((modifier: any) => modifier.id !== id);
+          carrier.powerModifiers.push({ id, sourceId: context?.sourceCardId ?? 'hinako',
+            controllerId, kind: 'add', value: -2, duration: 'round', lifecycle: 'until_leaves_active_area', round: currentRound });
+          affected++;
         }
       }
-      if (affected === 0) throw new Error('Hinako Blood Song has no engaged attack target');
       break;
     }
     case 'movement_rule_override': {
@@ -674,7 +679,8 @@ export function resolveExtendedEffect(
       const cardId = str(effect.cardId);
       const targetCard = state.cards.find(c =>
         c.definitionId === cardId &&
-        c.ownerPlayerId === controllerId
+        c.ownerPlayerId === controllerId &&
+        c.zone === 'removed_from_game'
       );
       if (targetCard) {
         const fromZone = targetCard.zone;
