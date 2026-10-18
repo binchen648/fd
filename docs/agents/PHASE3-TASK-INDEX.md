@@ -9761,3 +9761,25 @@ Formal review/accounting closure:
 - formal A-sync lawfully advances accounting `273/944 + 6 = 279/944`, remaining `665`;
 - acceptance synchronization report: `docs/reports/2026-10-19-p3-a-owner-hakuno-f-acceptance-synchronization.md`;
 - full-suite red findings, A02/source-asset history, and the non-green F5 boundary remain disclosed and are not reclassified as green.
+
+## TASK P3-S-OWNER-HAKUNO-M-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly four skills for `master.hakuno-m`
+
+Exact Base: `82b9e57cb386abb6318677bd2866236a00e4e795` — Hakuno-F acceptance-sync frontier used by the independent review.
+Exact Candidate: `aff3960a968af29eb015033a7af6e6632771941f` — PR #563.
+
+Canonical materialization in this Candidate:
+- `data/authoring/masters/master.hakuno-m.json` contains the four frozen skills;
+- `data/packs/fd-playtest-v1/pack.json` registers the Hakuno-M archive exactly once;
+- generated content and evidence are regenerated and verified;
+- runtime implements server-owned RPS continuation, threshold settlement, Analysis handoff, and both battle/upkeep elimination paths.
+
+Formal review/accounting closure:
+- separated GPT-6 Sol Reviewer returned exact `MIGRATION_ACCEPTED` for the four frozen owner skills;
+- Builder verification is focused `17/17`, typecheck/content/compile/generated verification PASS;
+- formal synchronization report: `docs/reports/2026-10-19-p3-a-owner-hakuno-m-acceptance-synchronization.md`;
+- synchronized frontier accounting: `279/944 + 4 = 283/944`, remaining `661`;
+- PR #563 remains open and unmerged; mainline accounting remains `279/944` until this synchronization is integrated.
