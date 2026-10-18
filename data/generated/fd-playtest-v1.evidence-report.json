@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 31,
+    "masters": 32,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -2405,6 +2405,61 @@
       "htmPath": "chm-extract/伊莉雅斯菲尔.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/伊莉雅斯菲尔.png",
       "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.illya-mahou",
+      "displayName": "魔法少女☆伊莉雅",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/魔法少女☆伊莉雅.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/魔法少女☆伊莉雅.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.illya-mahou.overview",
+      "displayName": "魔法少女☆伊莉雅",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/魔法少女☆伊莉雅.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/魔法少女☆伊莉雅.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.illya-mahou.skill.ascension",
+      "displayName": "双生",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/魔法少女☆伊莉雅.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/魔法少女☆伊莉雅.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.illya-mahou.skill.s1",
+      "displayName": "无限的想象力",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/魔法少女☆伊莉雅.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/魔法少女☆伊莉雅.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.illya-mahou.skill.s1a",
+      "displayName": "万花筒之杖",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/魔法少女☆伊莉雅.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/魔法少女☆伊莉雅.png",
+      "imageIndex": 3,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

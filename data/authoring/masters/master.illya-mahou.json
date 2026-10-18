@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.illya-mahou",
+  "name": "魔法少女☆伊莉雅",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "ecfd1a1e",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "冻结三项技能的旧文本、开发版定位和 generated legacy-content 定位均已保留。当前引擎没有权威的回合结束条件付费/移除、局势与事件影响翻倍（含排除项）、牌库进入替换拦截、任意抽牌、手牌数倍动态费用或弃牌堆洗回牌库语义；core.magical-ruby 仅是旧版引用 handler，不提供这些 state contracts。三张牌全部保持 host_adjudicated；record_master_directive 仅供主持人审计，不能伪装成 complete 或 automatic。",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版#master.illya-mahou/魔法少女☆伊莉雅",
+      "legacy": {
+        "master.illya-mahou.skill.ascension": "legacy-content.json#master/master.illya-mahou/ascension",
+        "master.illya-mahou.skill.s1": "legacy-content.json#master/master.illya-mahou/s1",
+        "master.illya-mahou.skill.s1a": "legacy-content.json#master/master.illya-mahou/s1a"
+      },
+      "generated": {
+        "master.illya-mahou.skill.ascension": "src/content/generated/legacy-content.json#masters[62].skills[2].text#line=1 sha256=261756c8216c3d8d50f197e8d19b9f97adbe08e5aee2de9e04da1fd747a2b67e; line=2 sha256=63162edc6fbe753a0e8b6d0a66c0724a42695313cd28892dd49556c6b6e55abd",
+        "master.illya-mahou.skill.s1": "src/content/generated/legacy-content.json#masters[62].skills[0].text#line=1 sha256=cd9408ccd7d5299c4c1e258a45f11a3cba07991864d28a915fdfa32237c1d8ed",
+        "master.illya-mahou.skill.s1a": "src/content/generated/legacy-content.json#masters[62].skills[1].text#line=1 sha256=7e3ba930644cf954890adb898088c60487c2b87a430e660b2c296a675f1f89c8; line=2 sha256=bb4d280acff7f0f06fc2eb849bf7234a289a846d91da3a52b7653659cca54f21"
+      }
+    }
+  },
+  "cards": [
+    {
+      "id": "master.illya-mahou.skill.ascension",
+      "aliases": ["ascension"], "legacyId": "ascension", "name": "双生",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.illya-mahou"},
+      "printedText": "回合结束时，花费3点魔力，否则将此牌移除游戏。\n你从局势牌和事件牌受到的影响翻倍。（不包括局势牌的魔力和事件牌的战果）",
+      "cardFace": {"typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{
+        "id": "illya-mahou.twin",
+        "kind": "forced_trigger",
+        "printedClause": "回合结束时，花费3点魔力，否则将此牌移除游戏；你的局势牌与事件牌影响翻倍，但不包括局势牌魔力与事件牌战果。",
+        "activation": {"trigger": "after_master_ascension_unlocked"}, "conditions": [], "targets": [],
+        "effects": [{"type": "record_master_directive", "directive": "illya_mahou_twin"}],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "verification": {"implementationStatus": "host_adjudicated"}
+    },
+    {
+      "id": "master.illya-mahou.skill.s1",
+      "aliases": ["s1"], "legacyId": "s1", "name": "无限的想象力",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.illya-mahou"},
+      "printedText": "当有牌将通过万花筒之杖以外的效果进入你的牌库时，改为将其弃置。",
+      "cardFace": {"typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{
+        "id": "illya-mahou.infinite-imagination",
+        "kind": "passive",
+        "printedClause": "除万花筒之杖外，牌将进入你的牌库时改为弃置。",
+        "activation": {"trigger": "while_active"}, "conditions": [], "targets": [],
+        "effects": [{"type": "record_master_directive", "directive": "illya_mahou_infinite_imagination"}],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "verification": {"implementationStatus": "host_adjudicated"}
+    },
+    {
+      "id": "master.illya-mahou.skill.s1a",
+      "aliases": ["s1a"], "legacyId": "s1a", "name": "万花筒之杖",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.illya-mahou"},
+      "printedText": "准备阶段：抽任意张牌。\n准备阶段：花费你手牌数两倍的魔力，将你弃牌堆的牌洗入牌库。",
+      "cardFace": {"typeLabel": "魔术", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{
+        "id": "illya-mahou.kaleidoscope-staff",
+        "kind": "phase_action",
+        "printedClause": "准备阶段：抽任意张牌；准备阶段：花费你手牌数两倍的魔力，将弃牌堆的牌洗入牌库。",
+        "activation": {"phase": "preparation", "opens": "controller_action_window"}, "conditions": [], "targets": [],
+        "effects": [{"type": "record_master_directive", "directive": "illya_mahou_kaleidoscope_staff"}],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "verification": {"implementationStatus": "host_adjudicated"}
+    }
+  ],
+  "sources": [{
+    "id": "development_card_images",
+    "type": "development_image_set",
+    "imageOrder": ["../../Fate_Domination-开发版/images/masters/魔法少女☆伊莉雅.png"]
+  }]
+}
