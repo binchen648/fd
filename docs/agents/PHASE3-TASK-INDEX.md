@@ -9727,12 +9727,12 @@ Acceptance synchronization:
 - formal report: `docs/reports/2026-10-18-p3-a-hakuno-f-owner-readiness-acceptance-synchronization.md`;
 - wider full-suite red findings remain disclosed and are not reclassified as readiness acceptance.
 
-Release: `P3-S-OWNER-HAKUNO-F-COMPLETE-MIGRATION` is READY from the synchronization HEAD. Its maximum later lawful increment is exactly `+6`, only after fresh `MIGRATION_ACCEPTED` and formal A-sync/accounting.
+Release: `P3-S-OWNER-HAKUNO-F-COMPLETE-MIGRATION` is `SYNCHRONIZED` and closed for the six frozen Hakuno-F identities from the exact accepted Candidate and formal A-sync below.
 
 ## TASK P3-S-OWNER-HAKUNO-F-COMPLETE-MIGRATION
 
 Owner: Codex S / FORMAL
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Status: `SYNCHRONIZED`
 Classification: owner-complete canonical consumer migration, frozen exactly six skills for `master.hakuno-f`
 
 Exact Base: `0ec4e67dd3999449eb367f5d3433c3e13c84ad54` — published Hakuno-F readiness acceptance synchronization.
@@ -9754,7 +9754,10 @@ FORMAL implementation verification (not independent acceptance):
 - external automation audit PASS with `promotionFindings=20` preserved;
 - required source-assets mode still reports the repository's known 93 historical missing `chm-extract/图包` assets; Hakuno-F's development image is present and introduces no new missing asset.
 
-Formal review gate:
-- publish exactly one owner Candidate PR from this exact Base and request one fresh independent GPT-6 Sol review;
-- do not merge, A-sync, or add credit until the Reviewer returns exact `MIGRATION_ACCEPTED`;
-- accounting remains `273/944`, remaining `671`; maximum increment is `+6`.
+Formal review/accounting closure:
+- exact accepted Candidate `935dbc6382b29d57ba8c7b554290da0f26d45f96` from exact Base `0ec4e67dd3999449eb367f5d3433c3e13c84ad54`;
+- fresh independent GPT-6 Sol review returned exact `MIGRATION_ACCEPTED` for the six frozen owner skills;
+- ReviewJobKey `pr562:935dbc6382b29d57ba8c7b554290da0f26d45f96:review-20261019`;
+- formal A-sync lawfully advances accounting `273/944 + 6 = 279/944`, remaining `665`;
+- acceptance synchronization report: `docs/reports/2026-10-19-p3-a-owner-hakuno-f-acceptance-synchronization.md`;
+- full-suite red findings, A02/source-asset history, and the non-green F5 boundary remain disclosed and are not reclassified as green.
