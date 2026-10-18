@@ -123,6 +123,10 @@ describe('P3 Iliya owner migration boundary', () => {
       ['non-empty visibility', (card) => { card.abilities[0].visibility.scope = 'owner_only'; }],
       ['unsupported response key', (card) => { card.abilities[0].responseWindow.opens = 'game_start'; }],
       ['invalid response order', (card) => { card.abilities[0].responseWindow.order = 'seat_order'; }],
+      ['invalid play timing window', (card) => { card.playTiming.window = 'invalid_window'; }],
+      ['invalid card-face cost', (card) => { card.cardFace.cost = -1; }],
+      ['unsupported play requirement', (card) => { card.playRequirements = [{ type: 'unsupported_requirement' }]; }],
+      ['non-empty play requirements', (card) => { card.playRequirements = [{ type: 'skill_zone_mana_at_least', value: 1 }]; }],
     ];
     for (const [label, mutate] of malformedCases) {
       const malformed = structuredClone(archive);
@@ -131,12 +135,17 @@ describe('P3 Iliya owner migration boundary', () => {
         status: 'HOST_ADJUDICATED',
         hostRulingReason: expect.any(String),
       });
-      const ability = rules.loadAuthoringJson(malformed).cards[`${ROOT}.skill.s1`]!.abilities[0]!;
-      if (label !== 'extra execution field') {
+      const loadedMalformed = rules.loadAuthoringJson(malformed);
+      const ability = loadedMalformed.cards[`${ROOT}.skill.s1`]!.abilities[0]!;
+      if (!label.includes('execution field') && !label.includes('play timing') &&
+        !label.includes('card-face') && !label.includes('play requirement')) {
         expect(rules.isGameStartFixedControllerManaSetSemantic(ability), label).toBe(false);
       }
       if (label === 'unmapped ability field') {
         expect(ability.execution.mode, label).toBe('unsupported');
+      }
+      if (['invalid play timing window', 'invalid card-face cost', 'unsupported play requirement'].includes(label)) {
+        expect(loadedMalformed.report.some((entry) => entry.cardId === `${ROOT}.skill.s1` && entry.status === 'unsupported'), label).toBe(true);
       }
     }
   });

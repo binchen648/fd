@@ -368,7 +368,17 @@ function isCompleteGameStartFixedControllerMana(card: AuthoringCard): boolean {
 }
 
 export function capabilityForAuthoringCard(card: AuthoringCard): NamedCardDefinition['capability'] {
-  if (isCompleteGameStartFixedControllerMana(card)) {
+  const face = card.cardFace as Record<string, unknown> | undefined;
+  const timing = card.playTiming as Record<string, unknown> | undefined;
+  const exactFace = face !== undefined && !Array.isArray(face) &&
+    Object.keys(face).every((key) => ['typeLabel', 'attributes', 'cost', 'basePower'].includes(key)) &&
+    face.typeLabel === '被动' && Array.isArray(face.attributes) && face.attributes.length === 0 &&
+    face.cost === 0 && face.basePower === 0;
+  const exactTiming = timing !== undefined && !Array.isArray(timing) &&
+    Object.keys(timing).every((key) => ['phase', 'window'].includes(key)) &&
+    timing.phase === 'action' && timing.window === 'controller_play_card_window';
+  const exactRequirements = Array.isArray(card.playRequirements) && card.playRequirements.length === 0;
+  if (exactFace && exactTiming && exactRequirements && isCompleteGameStartFixedControllerMana(card)) {
     return {
       status: 'FULL',
       supportedDimensions: ['game_start_fixed_controller_mana'],
