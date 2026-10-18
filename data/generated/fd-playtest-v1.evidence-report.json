@@ -2469,12 +2469,10 @@
       "entityKind": "master",
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/爱丽丝菲尔·冯·爱因兹贝伦.htm",
-      "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_200845_151.png",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/爱丽丝菲尔.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.irisviel.overview",
@@ -2482,38 +2480,43 @@
       "entityKind": "master_overview",
       "capabilityStatus": "FULL",
       "htmPath": "chm-extract/爱丽丝菲尔·冯·爱因兹贝伦.htm",
-      "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_200845_151.png",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/爱丽丝菲尔.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
-      "entityId": "master.irisviel.skill.conversion-magic",
-      "displayName": "转换魔术",
+      "entityId": "master.irisviel.skill.ascension",
+      "displayName": "生命赋予",
       "entityKind": "master_skill",
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/爱丽丝菲尔·冯·爱因兹贝伦.htm",
-      "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_200854_918.png",
-      "imageIndex": 2,
+      "imagePath": "../../Fate_Domination-开发版/images/masters/爱丽丝菲尔.png",
+      "imageIndex": 1,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
-      "entityId": "master.irisviel.skill.proxy-master",
+      "entityId": "master.irisviel.skill.s1",
       "displayName": "代理御主",
       "entityKind": "master_skill",
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/爱丽丝菲尔·冯·爱因兹贝伦.htm",
-      "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_200849_886.png",
-      "imageIndex": 1,
+      "imagePath": "../../Fate_Domination-开发版/images/masters/爱丽丝菲尔.png",
+      "imageIndex": 2,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.irisviel.skill.s2",
+      "displayName": "转换魔术",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/爱丽丝菲尔·冯·爱因兹贝伦.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/爱丽丝菲尔.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
     },
     {
       "entityId": "master.kayneth",
@@ -4259,34 +4262,6 @@
       "code": "SOURCE_ASSET_UNVERIFIED",
       "message": "master.gatou.skill.seeker source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_222924_628.png",
       "entityId": "master.gatou.skill.seeker",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.irisviel source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_200845_151.png",
-      "entityId": "master.irisviel",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.irisviel.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_200845_151.png",
-      "entityId": "master.irisviel.overview",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.irisviel.skill.conversion-magic source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_200854_918.png",
-      "entityId": "master.irisviel.skill.conversion-magic",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.irisviel.skill.proxy-master source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_200849_886.png",
-      "entityId": "master.irisviel.skill.proxy-master",
       "field": "source.imagePath",
       "blocking": false
     },

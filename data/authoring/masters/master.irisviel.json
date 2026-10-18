@@ -1,68 +1,88 @@
 {
   "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
   "id": "master.irisviel",
   "name": "爱丽丝菲尔·冯·爱因兹贝伦",
   "class": "Master",
   "aliases": ["master.irisviel-von-einzbern"],
   "publicInformation": { "type": "master_package", "initialMana": 4 },
-  "sources": [
-    {
-      "id": "chm_page",
-      "type": "chm_page",
-      "path": "D:/fd/chm-extract/爱丽丝菲尔·冯·爱因兹贝伦.htm",
-      "pageTitle": "爱丽丝菲尔·冯·爱因兹贝伦",
-      "imageOrder": [
-        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_200845_151.png",
-        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_200849_886.png",
-        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_200854_918.png"
-      ]
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "4dd3dbb3",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "冻结三项技能的 canonical printedText、development/legacy 定位和 generated legacy-content 哈希均按 full-roster evidence 保留。当前引擎没有权威的基础攻击跨回合激活生命周期与战斗属性修改、令咒时序重写、或按弃置手牌数量转魔力的完整动态结算合同；旧版 handler/reference 仅是来源证据，不构成验收。三张牌全部保持 host_adjudicated；record_master_directive 仅供主持人审计，不能伪装成 complete 或 automatic。",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版#master.irisviel/爱丽丝菲尔",
+      "legacy": {
+        "master.irisviel.skill.ascension": "legacy-content.json#master/master.irisviel/ascension",
+        "master.irisviel.skill.s1": "legacy-content.json#master/master.irisviel/s1",
+        "master.irisviel.skill.s2": "legacy-content.json#master/master.irisviel/s2"
+      },
+      "generated": {
+        "master.irisviel.skill.ascension": "src/content/generated/legacy-content.json#masters[15].skills[2].text#line=1 sha256=764186a6e18e6809aae2fac1606962feda161ba0f7e5a91e9d5a2a4575f2d0f2; line=2 sha256=2e1aa81c66cb7c8c37ca72d9da458c2e0aee4ea286f510a4c386abbd5f73060f; line=3 sha256=3b8136218dd2ca0707eb4d6b480ee36d3d4186bcfebd586a4f96cee39adad95f; line=4 sha256=ce2524bda62f58881683da59bf06a5ee7bab5a8ff7d3820b074b8401ccb861c2",
+        "master.irisviel.skill.s1": "src/content/generated/legacy-content.json#masters[15].skills[0].text#line=1 sha256=d880afd3807b56ddd0ae4c2ad35829fc7991428aee15438515ade2ade66bf9fd",
+        "master.irisviel.skill.s2": "src/content/generated/legacy-content.json#masters[15].skills[1].text#line=1 sha256=75fa71628bf0f1ce128eb156a6b7bd1d3e49bf1e155e3e11978d342190548304"
+      }
     }
-  ],
+  },
   "cards": [
     {
-      "id": "master.irisviel.skill.proxy-master",
-      "name": "代理御主",
-      "cardType": "master_skill",
-      "printedText": "令咒改为在前哨阶段使用。",
-      "cardFace": { "cost": 0, "basePower": 0 },
-      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
-      "playRequirements": [],
-      "abilities": [
-        {
-          "id": "proxy-master.command-spell-timing",
-          "kind": "passive",
-          "printedClause": "令咒改为在前哨阶段使用。",
-          "activation": { "trigger": "while_active" },
-          "effects": [{ "type": "record_master_directive", "directive": "command_spells_used_in_preparation_phase" }],
-          "execution": { "mode": "automatic" }
-        }
-      ],
-      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
+      "id": "master.irisviel.skill.ascension",
+      "aliases": ["ascension"], "legacyId": "ascension", "name": "生命赋予",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.irisviel"},
+      "printedText": "（升华技，将此牌加入你的技能区）\n你每回合只能使用此攻击的其中一项能力。\n行动阶段：本回合的一张基础攻击可以保持激活至下回合结束。\n战斗阶段：你的攻击获得魔术属性并且威力+1。",
+      "cardFace": {"typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{
+        "id": "irisviel.life-giving",
+        "kind": "passive",
+        "printedClause": "每回合只能使用此攻击的一项能力；行动阶段可使一张基础攻击保持激活至下回合结束；战斗阶段攻击获得魔术属性并且威力+1。",
+        "activation": {"trigger": "while_active"}, "conditions": [], "targets": [],
+        "effects": [{"type": "record_master_directive", "directive": "irisviel_life_giving"}],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "verification": {"implementationStatus": "host_adjudicated"}
     },
     {
-      "id": "master.irisviel.skill.conversion-magic",
-      "name": "转换魔术",
-      "cardType": "master_skill",
-      "printedText": "前哨阶段：弃置所有手牌，每1张获得1点魔力。",
-      "cardFace": { "cost": 0, "basePower": 0 },
-      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
-      "playRequirements": [],
-      "abilities": [
-        {
-          "id": "conversion-magic.preparation",
-          "kind": "phase_action",
-          "printedClause": "前哨阶段：弃置所有手牌，每1张获得1点魔力。",
-          "activation": { "phase": "advance", "opens": "controller_action_window" },
-          "effects": [
-            { "type": "move_all_remaining", "from": "hand", "to": { "zone": "discard" }, "resultVar": "discarded_cards" },
-            { "type": "adjust_mana", "amount": { "var": "discarded_cards" } }
-          ],
-          "execution": { "mode": "automatic" }
-        }
-      ],
-      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
+      "id": "master.irisviel.skill.s1",
+      "aliases": ["s1", "master.irisviel.skill.proxy-master"], "legacyId": "s1", "name": "代理御主",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.irisviel"},
+      "printedText": "令咒改为在前哨阶段使用。",
+      "cardFace": {"typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{
+        "id": "irisviel.proxy-master.command-seal-window",
+        "kind": "passive",
+        "printedClause": "令咒改为在前哨阶段使用。",
+        "activation": {"trigger": "while_active"}, "conditions": [], "targets": [],
+        "effects": [{"type": "record_master_directive", "directive": "irisviel_proxy_master_command_seal_window"}],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "verification": {"implementationStatus": "host_adjudicated"}
+    },
+    {
+      "id": "master.irisviel.skill.s2",
+      "aliases": ["s2", "master.irisviel.skill.conversion-magic"], "legacyId": "s2", "name": "转换魔术",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.irisviel"},
+      "printedText": "弃置所有手牌，每1张获得1点魔力。",
+      "cardFace": {"typeLabel": "魔术", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{
+        "id": "irisviel.conversion-magic",
+        "kind": "phase_action",
+        "printedClause": "弃置所有手牌，每1张获得1点魔力。",
+        "activation": {"phase": "advance", "opens": "controller_action_window"}, "conditions": [], "targets": [],
+        "effects": [{"type": "record_master_directive", "directive": "irisviel_conversion_magic"}],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "verification": {"implementationStatus": "host_adjudicated"}
     }
   ],
-  "excludedCards": [{ "id": "master.irisviel.skill.ascension", "name": "生命赋予", "reason": "user_scope_excluded_ascension" }],
-  "adapterNotes": ["升华技按用户规则排除。"]
+  "sources": [{
+    "id": "development_card_images",
+    "type": "development_image_set",
+    "imageOrder": ["../../Fate_Domination-开发版/images/masters/爱丽丝菲尔.png"]
+  }]
 }
