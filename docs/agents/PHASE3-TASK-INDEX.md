@@ -9704,3 +9704,57 @@ Acceptance synchronization (2026-10-09):
 - Exact new credit `+3`: accounting `270/944 -> 273/944`, remaining `674 -> 671`, no duplicate readiness credit.
 - Independent scoped checks were accepted, but full `test:ci` was not rerun; historical wider-suite issues are not declared closed.
 - Formal A-sync report: `docs/reports/2026-10-09-p3-a-goredolf-owner-migration-acceptance-synchronization.md`.
+
+## TASK P3-B-HAKUNO-F-OWNER-READINESS-CAPABILITY
+
+Owner: Codex B2 / FORMAL
+Status: `SYNCHRONIZED`
+Classification: zero-credit owner-local readiness capability for `master.hakuno-f`
+
+Exact accepted readiness Candidate:
+- PR `#557`, Base `bf96a9444857b88fe351d2a8d8e0d6f42a7177b9`;
+- Candidate `75f26150e30e08df9c0e7602e0a382e8a19f6835`;
+- independent verdict `IMPLEMENTATION_ACCEPTED_CANDIDATE`;
+- ReviewJobKey `pr557:75f26150e30e08df9c0e7602e0a382e8a19f6835:independent-scoped-20261018`;
+- locked Reference `b2f9fa15fba07c63530bbf4612b03b8b704755f9`.
+
+Frozen owner scope is exactly six identities: `master.hakuno-f.skill.ascension`, `.s1`, `.s2`, `.s3`, `.s4`, and `.s5`.
+
+Readiness acceptance is permanently zero-credit. The accepted Candidate has no canonical authoring archive, active-pack registration, or generated consumer, so Hakuno-F remains `0/6`; strict formal accounting remains `273/944`, remaining `671`.
+
+Acceptance synchronization:
+- exact synchronization commit `0ec4e67dd3999449eb367f5d3433c3e13c84ad54` records the independent scoped verdict and the `0/6` mechanical rescan;
+- formal report: `docs/reports/2026-10-18-p3-a-hakuno-f-owner-readiness-acceptance-synchronization.md`;
+- wider full-suite red findings remain disclosed and are not reclassified as readiness acceptance.
+
+Release: `P3-S-OWNER-HAKUNO-F-COMPLETE-MIGRATION` is READY from the synchronization HEAD. Its maximum later lawful increment is exactly `+6`, only after fresh `MIGRATION_ACCEPTED` and formal A-sync/accounting.
+
+## TASK P3-S-OWNER-HAKUNO-F-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Classification: owner-complete canonical consumer migration, frozen exactly six skills for `master.hakuno-f`
+
+Exact Base: `0ec4e67dd3999449eb367f5d3433c3e13c84ad54` — published Hakuno-F readiness acceptance synchronization.
+
+Canonical materialization in this Candidate:
+- `data/authoring/masters/master.hakuno-f.json` contains the six frozen skills and one four-Code roster;
+- `data/packs/fd-playtest-v1/pack.json` registers the Hakuno-F archive exactly once;
+- `data/generated/fd-playtest-v1.content-library.json` and `fd-playtest-v1.evidence-report.json` are deterministically regenerated;
+- no runtime source or unrelated owner archive is modified.
+
+FORMAL implementation verification (not independent acceptance):
+- canonical archive regression `2/2 PASS`;
+- all Hakuno-F/Mystic Code focused regressions `48/48 PASS`;
+- selected `complex-skills` and `MatchSession` regressions `72/72 PASS`;
+- typecheck PASS;
+- content validation PASS: `27 masters / 19 servants / 20 events / 0 blocking issues`;
+- generated-content determinism PASS;
+- external Phase 3 coverage PASS: `archives=131`, `cards=315`, `abilities=557`, `compiledCards=256`, `compiledCharacters=46`, `blockingIssues=0`;
+- external automation audit PASS with `promotionFindings=20` preserved;
+- required source-assets mode still reports the repository's known 93 historical missing `chm-extract/图包` assets; Hakuno-F's development image is present and introduces no new missing asset.
+
+Formal review gate:
+- publish exactly one owner Candidate PR from this exact Base and request one fresh independent GPT-6 Sol review;
+- do not merge, A-sync, or add credit until the Reviewer returns exact `MIGRATION_ACCEPTED`;
+- accounting remains `273/944`, remaining `671`; maximum increment is `+6`.

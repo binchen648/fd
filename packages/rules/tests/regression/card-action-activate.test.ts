@@ -1,4 +1,4 @@
-﻿import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { createMatchSession } from '../../src/match-session';
 import {
@@ -8,6 +8,9 @@ import {
   processAbilityEvent,
 } from '../../src/ability/interpreter';
 import type { AuthoringAbility } from '../../src/ability/types';
+import { seedIncludingMaster } from './deterministic-character-fixture';
+
+const OLGA_SEED = seedIncludingMaster('master.olga-marie');
 
 function prepareOlga(session: ReturnType<typeof createMatchSession>) {
   const pairing = session.pairings.find((candidate) => candidate.master.id === 'master.olga-marie')!;
@@ -56,7 +59,7 @@ function firstLoss(session: ReturnType<typeof createMatchSession>, playerId: str
 
 describe('CARD_ACTION_SEMANTICS_MINIMAL_ACTIVATE recovery', () => {
   it('stages Olga first-loss and activates Trismegistus only on formal round_end', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createMatchSession({ seed: OLGA_SEED, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
     const { playerId, astronomy, trismegistus } = prepareOlga(session);
 
     expect(getLegalActions(session.state, playerId)).not.toContainEqual(expect.objectContaining({
@@ -110,7 +113,7 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_ACTIVATE recovery', () => {
   });
 
   it('fails closed at round_end and preserves the staged state when the target leaves skill', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createMatchSession({ seed: OLGA_SEED, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
     const { playerId, trismegistus } = prepareOlga(session);
     firstLoss(session, playerId);
     const currentTrismegistus = session.state.cards.find((card) => card.instanceId === trismegistus.instanceId)!;
@@ -129,7 +132,7 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_ACTIVATE recovery', () => {
   });
 
   it('does not duplicate the same delayed activation within one round', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createMatchSession({ seed: OLGA_SEED, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
     const { playerId } = prepareOlga(session);
     firstLoss(session, playerId);
     processAbilityEvent(session.state, {
@@ -143,7 +146,7 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_ACTIVATE recovery', () => {
   });
 
   it('rejects malformed first-loss events without staging delayed activation', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createMatchSession({ seed: OLGA_SEED, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
     const { playerId } = prepareOlga(session);
     const before = structuredClone(session.state);
 
@@ -157,7 +160,7 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_ACTIVATE recovery', () => {
   });
 
   it('fails closed when activation target definition is ambiguous', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createMatchSession({ seed: OLGA_SEED, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
     const { playerId, trismegistus } = prepareOlga(session);
     firstLoss(session, playerId);
     session.state.cards.push({
@@ -172,7 +175,7 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_ACTIVATE recovery', () => {
   });
 
   it('fails closed when the owned activation target is controlled by another player', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createMatchSession({ seed: OLGA_SEED, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
     const { playerId, trismegistus } = prepareOlga(session);
     firstLoss(session, playerId);
     const authoritativeTarget = session.state.cards.find((card) => card.instanceId === trismegistus.instanceId)!;
@@ -185,7 +188,7 @@ describe('CARD_ACTION_SEMANTICS_MINIMAL_ACTIVATE recovery', () => {
   });
 
   it('queues authoritative first-loss once from MatchSession battle history behind the post-scoring barrier', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createMatchSession({ seed: OLGA_SEED, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
     const { playerId } = prepareOlga(session);
     const firstBattle = {
       battlefieldId: 'miyama_town',

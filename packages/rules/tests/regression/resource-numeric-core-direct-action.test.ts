@@ -3,6 +3,10 @@ import { describe, expect, it } from 'vitest';
 import { createMatchSession } from '../../src/match-session';
 import { isResourceNumericDirectActionSemantic } from '../../src/ability/interpreter';
 import type { AuthoringAbility } from '../../src/ability/types';
+import { seedIncludingMaster, seedIncludingServant } from './deterministic-character-fixture';
+
+const GATOU_SEED = seedIncludingMaster('master.gatou');
+const TOMOE_SEED = seedIncludingServant('servant.tomoe');
 
 function commandSpells(player: object): number {
   return (player as { commandSpells?: number }).commandSpells ?? 3;
@@ -19,7 +23,7 @@ function preparePlayerForAction(session: ReturnType<typeof createMatchSession>, 
 
 describe('RESOURCE_NUMERIC_CORE_DIRECT_ACTION', () => {
   it('routes command spell gain mana by executable semantic form and emits typed resource evidence', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createMatchSession({ seed: GATOU_SEED, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
     const pairing = session.pairings.find((candidate) => candidate.master.id === 'master.gatou')!;
     preparePlayerForAction(session, pairing.playerId);
 
@@ -61,7 +65,7 @@ describe('RESOURCE_NUMERIC_CORE_DIRECT_ACTION', () => {
   });
 
   it('fails closed through MatchSession dispatch when migrated resource definitions are corrupted', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createMatchSession({ seed: GATOU_SEED, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
     const pairing = session.pairings.find((candidate) => candidate.master.id === 'master.gatou')!;
     preparePlayerForAction(session, pairing.playerId);
 
@@ -90,7 +94,7 @@ describe('RESOURCE_NUMERIC_CORE_DIRECT_ACTION', () => {
   });
 
   it('routes Tomoe direct VP action from real compiled content without legacy fallback', () => {
-    const session = createMatchSession({ seed: 20260909, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const session = createMatchSession({ seed: TOMOE_SEED, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
     const pairing = session.pairings.find((candidate) => candidate.servant.id === 'servant.tomoe')!;
     preparePlayerForAction(session, pairing.playerId);
     const player = session.state.players.find((candidate) => candidate.id === pairing.playerId)!;

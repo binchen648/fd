@@ -1,0 +1,237 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.hakuno-f",
+  "name": "岸波白野（女）",
+  "class": "Master",
+  "publicInformation": {
+    "type": "master_package",
+    "initialMana": 4
+  },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "75f26150e30e08df9c0e7602e0a382e8a19f6835",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "The accepted Hakuno-F readiness Candidate supplies identity-free Mystic Code runtime contracts. Locked Reference metadata and the full-roster inventory supply the six exact skill identities and printed texts. This owner archive is a separate migration Candidate and requires fresh independent migration review."
+  },
+  "cards": [
+    {
+      "id": "master.hakuno-f.skill.ascension",
+      "aliases": ["ascension"],
+      "legacyId": "ascension",
+      "name": "月之王权",
+      "cardType": "master_skill",
+      "owner": {"type": "master", "id": "master.hakuno-f"},
+      "printedText": "【Extra】获得：你拥有的魔力少于8点也可使用此牌。\n【CCC】获得：临时打出一张因此弃置的牌的复制。\n【Extella】获得威力+5且你的地利变为0。\n【Link】获得：你的基础攻击威力+1。",
+      "cardFace": {"typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"},
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "hakuno-f.mystic-code-regalia",
+          "kind": "passive",
+          "printedClause": "四种神秘代码由升华技授予。",
+          "activation": {"trigger": "while_active"},
+          "conditions": [], "targets": [], "cost": [],
+          "effects": [{"type": "mystic_code_regalia", "codeDefinitionIds": {
+            "extra": "master.hakuno-f.skill.s5",
+            "ccc": "master.hakuno-f.skill.s3",
+            "extella": "master.hakuno-f.skill.s4",
+            "link": "master.hakuno-f.skill.s2"
+          }}],
+          "creates": [], "ruleModifiers": [], "lifecycle": {},
+          "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"},
+          "limit": {}, "visibility": {},
+          "execution": {"mode": "automatic", "allowedOperations": []}
+        }
+      ],
+      "verification": {"implementationStatus": "complete"}
+    },
+    {
+      "id": "master.hakuno-f.skill.s1",
+      "aliases": ["s1"],
+      "legacyId": "s1",
+      "name": "换装",
+      "cardType": "master_skill",
+      "owner": {"type": "master", "id": "master.hakuno-f"},
+      "printedText": "前哨阶段：随机弃置1张手牌。选择游戏外的一张【神秘代码】加入技能区，直到你再次使用此效果。【神秘代码】为追加打出。",
+      "cardFace": {"typeLabel": "前哨", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"},
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "hakuno-f.mystic-code-switch",
+          "kind": "phase_action",
+          "printedClause": "前哨阶段：随机弃置1张手牌并选择一张游戏外神秘代码。",
+          "activation": {"phase": "preparation", "opens": "controller_action_window"},
+          "conditions": [], "targets": [], "cost": [],
+          "effects": [{"type": "mystic_code_switch", "definitionIds": [
+            "master.hakuno-f.skill.s2", "master.hakuno-f.skill.s3",
+            "master.hakuno-f.skill.s4", "master.hakuno-f.skill.s5"
+          ]}],
+          "creates": [], "ruleModifiers": [], "lifecycle": {},
+          "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"},
+          "limit": {}, "visibility": {},
+          "execution": {"mode": "automatic", "allowedOperations": []}
+        }
+      ],
+      "verification": {"implementationStatus": "complete"}
+    },
+    {
+      "id": "master.hakuno-f.skill.s2",
+      "aliases": ["s2"],
+      "legacyId": "s2",
+      "name": "神秘代码：Link",
+      "cardType": "master_skill",
+      "owner": {"type": "master", "id": "master.hakuno-f"},
+      "printedText": "（此牌为追加打出）\n精神同步-被动：你的令咒只可用来移动和支付它来使用某些能力。\n代码_月球驱动-行动阶段：你本回合的攻击增加其自身魔力消耗等值的威力（最多+3）。",
+      "cardFace": {"typeLabel": "追加", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"},
+      "playRequirements": [], "initialPlacement": "outside_game",
+      "abilities": [
+        {
+          "id": "hakuno-f.link.additional",
+          "kind": "passive", "printedClause": "此牌为追加打出。",
+          "activation": {"trigger": "while_active"}, "conditions": [], "targets": [], "cost": [],
+          "effects": [{"type": "append_only_rule"}], "creates": [], "ruleModifiers": [], "lifecycle": {},
+          "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {},
+          "execution": {"mode": "automatic", "allowedOperations": []}
+        },
+        {
+          "id": "hakuno-f.link.command-seal-limit",
+          "kind": "passive", "printedClause": "令咒只可用来移动和支付特定能力。",
+          "activation": {"trigger": "while_active"}, "conditions": [], "targets": [], "cost": [],
+          "effects": [{"type": "mystic_code_command_seal_limit"}], "creates": [], "ruleModifiers": [], "lifecycle": {},
+          "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {},
+          "execution": {"mode": "automatic", "allowedOperations": []}
+        },
+        {
+          "id": "hakuno-f.link.moon-drive",
+          "kind": "phase_action", "printedClause": "本回合攻击增加其自身魔力消耗等值的威力，最多+3。",
+          "activation": {"phase": "action", "opens": "controller_action_window"}, "conditions": [], "targets": [], "cost": [],
+          "effects": [{"type": "grant_played_attacks_printed_mana_power", "maximumBonus": 3}], "creates": [], "ruleModifiers": [], "lifecycle": {},
+          "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {},
+          "execution": {"mode": "automatic", "allowedOperations": []}
+        }
+      ],
+      "verification": {"implementationStatus": "complete"}
+    },
+    {
+      "id": "master.hakuno-f.skill.s3",
+      "aliases": ["s3"],
+      "legacyId": "s3",
+      "name": "神秘代码：CCC",
+      "cardType": "master_skill",
+      "owner": {"type": "master", "id": "master.hakuno-f"},
+      "printedText": "（此牌为追加打出）\n数据泄露-被动：当你输掉一场战斗时，失去1点战果。\n代码_非法侵入-行动阶段：选择一名位于当前战场的玩家，查看其牌堆顶3张牌。弃置其中任意数量的牌，然后将剩余牌按任意顺序放回其牌堆顶部。",
+      "cardFace": {"typeLabel": "追加", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"},
+      "playRequirements": [], "initialPlacement": "outside_game",
+      "abilities": [
+        {
+          "id": "hakuno-f.ccc.additional", "kind": "passive", "printedClause": "此牌为追加打出。",
+          "activation": {"trigger": "while_active"}, "conditions": [], "targets": [], "cost": [],
+          "effects": [{"type": "append_only_rule"}], "creates": [], "ruleModifiers": [], "lifecycle": {},
+          "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {},
+          "execution": {"mode": "automatic", "allowedOperations": []}
+        },
+        {
+          "id": "hakuno-f.ccc.data-leak", "kind": "forced_trigger", "printedClause": "输掉战斗时失去1点战果。",
+          "activation": {"trigger": "after_controller_loses_battle"}, "conditions": [], "targets": [], "cost": [],
+          "effects": [{"type": "mystic_code_battle_loss_vp", "amount": -1}], "creates": [], "ruleModifiers": [], "lifecycle": {},
+          "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {},
+          "execution": {"mode": "automatic", "allowedOperations": []}
+        },
+        {
+          "id": "hakuno-f.ccc.illegal-intrusion", "kind": "phase_action", "printedClause": "查看战场玩家牌堆顶3张牌并选择弃置和重排。",
+          "activation": {"phase": "action", "opens": "controller_action_window"}, "conditions": [], "targets": [], "cost": [],
+          "effects": [{"type": "private_deck_top_choice", "count": 3}], "creates": [], "ruleModifiers": [], "lifecycle": {},
+          "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {},
+          "execution": {"mode": "automatic", "allowedOperations": []}
+        }
+      ],
+      "verification": {"implementationStatus": "complete"}
+    },
+    {
+      "id": "master.hakuno-f.skill.s4",
+      "aliases": ["s4"],
+      "legacyId": "s4",
+      "name": "神秘代码：Extella",
+      "cardType": "master_skill",
+      "owner": {"type": "master", "id": "master.hakuno-f"},
+      "printedText": "（此牌为追加打出）\n频率对接-被动：当你移动时，将此牌移除游戏（其可以被再度加入技能区）。\ncc_回复()-战斗阶段：若你战败，获得等于你本回合打出的一张非残留攻击的魔力消耗一半的魔力（向上取整）。",
+      "cardFace": {"typeLabel": "追加", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"},
+      "playRequirements": [], "initialPlacement": "outside_game",
+      "abilities": [
+        {
+          "id": "hakuno-f.extella.additional", "kind": "passive", "printedClause": "此牌为追加打出。",
+          "activation": {"trigger": "while_active"}, "conditions": [], "targets": [], "cost": [],
+          "effects": [{"type": "append_only_rule"}], "creates": [], "ruleModifiers": [], "lifecycle": {},
+          "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {},
+          "execution": {"mode": "automatic", "allowedOperations": []}
+        },
+        {
+          "id": "hakuno-f.extella.frequency-link", "kind": "forced_trigger", "printedClause": "移动时将此牌移除游戏。",
+          "activation": {"trigger": "after_controller_enters_location"}, "conditions": [], "targets": [], "cost": [],
+          "effects": [{"type": "mystic_code_expire_on_event", "when": "after_controller_enters_location"}], "creates": [], "ruleModifiers": [], "lifecycle": {},
+          "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {},
+          "execution": {"mode": "automatic", "allowedOperations": []}
+        },
+        {
+          "id": "hakuno-f.extella.recovery", "kind": "phase_action", "printedClause": "战败时按本回合非残留攻击魔力消耗的一半恢复魔力。",
+          "activation": {"phase": "combat", "opens": "controller_combat_action_window", "requiresSourceState": "active"}, "conditions": [], "targets": [], "cost": [],
+          "effects": [{"type": "mystic_code_battle_recovery"}], "creates": [], "ruleModifiers": [], "lifecycle": {},
+          "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {},
+          "execution": {"mode": "automatic", "allowedOperations": []}
+        }
+      ],
+      "verification": {"implementationStatus": "complete"}
+    },
+    {
+      "id": "master.hakuno-f.skill.s5",
+      "aliases": ["s5"],
+      "legacyId": "s5",
+      "name": "神秘代码：Extra",
+      "cardType": "master_skill",
+      "owner": {"type": "master", "id": "master.hakuno-f"},
+      "printedText": "（此牌为追加打出）\n应急协议-被动：当你赢得一场战斗时，将此牌移除游戏。\n代码_秘密通道-当一名其他玩家进入你所在的战场时，你可移动至侦查，此时你不计入侦查的人数限制。",
+      "cardFace": {"typeLabel": "追加", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"},
+      "playRequirements": [], "initialPlacement": "outside_game",
+      "abilities": [
+        {
+          "id": "hakuno-f.extra.additional", "kind": "passive", "printedClause": "此牌为追加打出。",
+          "activation": {"trigger": "while_active"}, "conditions": [], "targets": [], "cost": [],
+          "effects": [{"type": "append_only_rule"}], "creates": [], "ruleModifiers": [], "lifecycle": {},
+          "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {},
+          "execution": {"mode": "automatic", "allowedOperations": []}
+        },
+        {
+          "id": "hakuno-f.extra.emergency-protocol", "kind": "forced_trigger", "printedClause": "赢得战斗时将此牌移除游戏。",
+          "activation": {"trigger": "after_controller_wins_battle"}, "conditions": [], "targets": [], "cost": [],
+          "effects": [{"type": "mystic_code_expire_on_event", "when": "after_controller_wins_battle"}], "creates": [], "ruleModifiers": [], "lifecycle": {},
+          "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {},
+          "execution": {"mode": "automatic", "allowedOperations": []}
+        },
+        {
+          "id": "hakuno-f.extra.secret-backdoor", "kind": "forced_trigger", "printedClause": "其他玩家进入你所在战场时可移动至侦查。",
+          "activation": {"trigger": "after_controller_enters_location"},
+          "conditions": [{"type": "event_player_is_opponent"}], "targets": [], "cost": [],
+          "effects": [{"type": "mystic_code_recon_escape"}], "creates": [], "ruleModifiers": [], "lifecycle": {},
+          "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {},
+          "execution": {"mode": "automatic", "allowedOperations": []}
+        }
+      ],
+      "verification": {"implementationStatus": "complete"}
+    }
+  ],
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": [
+        "../../Fate_Domination-开发版/images/masters/岸波白野（女）.png"
+      ]
+    }
+  ]
+}
