@@ -114,6 +114,14 @@ import {
   isAcceptedFortifyMovedInBattlefieldAbility, isAcceptedTerrainExtraHandPlayAbility,
   isAcceptedTerrainFortificationExtraPlayAbility, isControllerHasPositiveTerrainCondition, isEffectPlayableFaceUpConstraint,
 } from './terrain-fortification-extra-play-capability';
+import {
+  HAKUNO_M_ANALYSIS_DEFINITION,
+  HAKUNO_M_YOMI_EFFECT,
+  HAKUNO_M_CHALLENGE_RESULT_EFFECT,
+  HAKUNO_M_ANALYSIS_EFFECT,
+  HAKUNO_M_DEAD_FACE_EFFECT,
+  isAcceptedHakunoMaleAbility,
+} from './hakuno-m-yomi-capability';
 import { isHideServantTrueNameUntilRoundEndEffect, isLoseVpEqualSourcePlayCountEffect, isRevealHandRoundPowerEffect, PLAYER_COMBAT_TOTAL_POWER_RULE, servantRevealSuppressedByTemporaryConcealment } from './owner-self-mechanics';
 import {
   isAnyBattlefieldConstraint,
@@ -3422,6 +3430,51 @@ export function isControllerMasterSkillDefinitionReturnComponent(effect: Authori
     ['type', 'target', 'definitionId', 'linkedSkillId', 'destination', 'createIfMissing', 'face', 'active'].includes(key));
 }
 
+/** Minimal identity-free Hakuno-M closure.  The challenge continuation and
+ * round-end handoff remain explicit follow-up seams; analysis creation and
+ * Dead Face transfer are fully server-owned and provenance checked here. */
+function resolveHakunoMaleEffect(s: GameState, ctx: EffectContext, effect: RuleNode): boolean {
+  const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (!isAcceptedHakunoMaleAbility(ability)) reject('resolution_failed', 'Unsupported Hakuno-M semantic shape');
+  const r = runtime(s); const controller = player(s, ctx.controllerId);
+  if (effect.type === HAKUNO_M_CHALLENGE_RESULT_EFFECT || effect.type === HAKUNO_M_ANALYSIS_EFFECT) return true;
+  if (effect.type === HAKUNO_M_YOMI_EFFECT) {
+    const targetId = ctx.selections[String(effect.target)]?.[0];
+    const target = targetId ? s.players.find((candidate) => candidate.id === targetId) : undefined;
+    if (!target || target.id === controller.id || target.status !== 'active' || !controller.locationId ||
+        target.locationId !== controller.locationId || !isBattlefield(s, controller.locationId)) {
+      reject('invalid_target', 'Hakuno-M Yomi requires one active engaged battlefield opponent');
+    }
+    r.roundPlayerPowerAdjustments ??= [];
+    r.roundPlayerPowerAdjustments.push({ playerId: controller.id, amount: -2, round: s.round.roundNumber,
+      sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+    const instanceId = nextId(s, 'hakuno-analysis');
+    s.cards.push({ instanceId, definitionId: HAKUNO_M_ANALYSIS_DEFINITION, ownerPlayerId: target.id,
+      controllerPlayerId: target.id, zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: target.id },
+      generatedBy: ctx.sourceCardId });
+    r.cardState[instanceId] = { active: false, faceDown: false, playedRound: s.round.roundNumber };
+    r.events.push({ type: 'card_created', playerId: target.id, controllerId: controller.id, sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId, cardInstanceId: instanceId, toZone: 'skill', movedCount: 1 });
+    return true;
+  }
+  const sourceId = ctx.selections[String(effect.source)]?.[0];
+  const targetId = ctx.selections[String(effect.target)]?.[0];
+  const source = sourceId ? s.cards.find((candidate) => candidate.instanceId === sourceId) : undefined;
+  const target = targetId ? s.players.find((candidate) => candidate.id === targetId) : undefined;
+  if (!source || source.definitionId !== HAKUNO_M_ANALYSIS_DEFINITION || source.ownerPlayerId === controller.id ||
+      !target || target.status !== 'active' || target.id === source.ownerPlayerId || target.id === controller.id) {
+    reject('invalid_target', 'Hakuno-M Dead Face requires an opponent-owned Analysis and a distinct active recipient');
+  }
+  const fromZone = source.zone;
+  source.ownerPlayerId = target.id;
+  source.controllerPlayerId = target.id;
+  source.zone = 'skill';
+  source.visibility = { scope: 'owner_only', ownerPlayerId: target.id };
+  r.events.push({ type: 'card_moved', playerId: target.id, controllerId: controller.id, sourceCardId: ctx.sourceCardId,
+    abilityId: ctx.abilityId, cardInstanceId: source.instanceId, fromZone, toZone: 'skill', movedCount: 1 });
+  return true;
+}
+
 function hasControllerMasterSkillDefinitionReturnCandidate(a: AuthoringAbility): boolean {
   return a.effects.some((effect) => str(effect.type) === 'return_card_by_definition');
 }
@@ -3475,6 +3528,12 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
   const unpreventable = a.ruleModifiers.some(m => m.rule === 'effect_prevention' && m.operation === 'ignore' && node(m.priority).tier === 'explicit_exception');
   if (r.preventEffects && !unpreventable) { r.events.push({ type: 'effect_prevented', playerId: p.id }); return; }
   switch (effect.type) {
+    case HAKUNO_M_YOMI_EFFECT:
+    case HAKUNO_M_CHALLENGE_RESULT_EFFECT:
+    case HAKUNO_M_ANALYSIS_EFFECT:
+    case HAKUNO_M_DEAD_FACE_EFFECT:
+      resolveHakunoMaleEffect(s, ctx, effect);
+      break;
     case 'return_card_by_definition': resolveControllerMasterSkillDefinitionReturn(s, ctx, effect); break;
     case SWITCH_ROUND_SKILL_PROFILE_EFFECT: {
       if (!isAcceptedRoundSkillProfileAbility(a) || a.effects.length !== 1 || a.effects[0]?.type !== SWITCH_ROUND_SKILL_PROFILE_EFFECT) {

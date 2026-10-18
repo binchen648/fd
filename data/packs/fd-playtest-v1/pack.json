@@ -65,7 +65,8 @@
                                  "data/authoring/masters/master.fujino.json",
                                  "data/authoring/masters/master.goetia.json",
                                  "data/authoring/masters/master.goredolf.json",
-                                 "data/authoring/masters/master.hakuno-f.json"
+                                 "data/authoring/masters/master.hakuno-f.json",
+                                 "data/authoring/masters/master.hakuno-m.json"
                              ],
     "authoringMasterSupportFiles":  [
                                         "data/authoring/masters/master.shirou-emiya.json"

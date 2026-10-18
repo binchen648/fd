@@ -261,6 +261,14 @@ import {
   containsTerrainFortificationExtraPlayPrivilegedNode,
   isAcceptedTerrainFortificationExtraPlayAbility,
 } from './terrain-fortification-extra-play-capability';
+import {
+  containsHakunoMalePrivilegedNode,
+  isAcceptedHakunoMaleAbility,
+  HAKUNO_M_YOMI_EFFECT,
+  HAKUNO_M_CHALLENGE_RESULT_EFFECT,
+  HAKUNO_M_ANALYSIS_EFFECT,
+  HAKUNO_M_DEAD_FACE_EFFECT,
+} from './hakuno-m-yomi-capability';
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
 }
@@ -292,7 +300,8 @@ const supportedTypes = new Set([
   'skill_zone_mana_at_least', 'played_with_basic_attack', 'draw_cards', 'play_selected_cards', 'base_power_at_most',
   'reveal_information', 'set_zone_visibility', 'look_at_deck_top', 'move_card', 'move_all_remaining', 'discard_random_owned_hand', 'grant_played_attacks_printed_mana_power', 'private_deck_top_choice', 'mystic_code_switch', 'mystic_code_expire_on_event', 'mystic_code_command_seal_limit', 'mystic_code_battle_recovery', 'mystic_code_recon_escape', 'mystic_code_regalia', 'mystic_code_battle_loss_vp',
   'shuffle_zone_into_deck', 'shuffle_deck', 'adjust_mana', 'adjust_victory_points', 'move_player', 'branch',
-  'create_card', 'pay_mana', 'move_source_card', 'integer', 'lte', 'gt', 'exists_target', 'played_this_round',
+  'create_card', 'pay_mana', 'move_source_card', HAKUNO_M_YOMI_EFFECT, HAKUNO_M_CHALLENGE_RESULT_EFFECT,
+  HAKUNO_M_ANALYSIS_EFFECT, HAKUNO_M_DEAD_FACE_EFFECT, 'integer', 'lte', 'gt', 'exists_target', 'played_this_round',
   'or', 'and', 'not', 'not_card_type', 'is_attack', 'has_attribute', 'not_source_card', 'has_card_id',
   'source_card_in_zone', 'controller_at_location_kind', 'reachable_along_arrows', 'can_adjust_mana',
   'event_played_card_has_attribute', 'source_reversed', 'source_active', 'source_owned', 'source_revealed',
@@ -989,6 +998,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (containsTerrainFortificationExtraPlayPrivilegedNode(candidateAbility) &&
           !isAcceptedTerrainFortificationExtraPlayAbility(candidateAbility) && !isAcceptedReactionCounterPlayHandAbility(candidateAbility)) {
         issue('terrainFortification.gateway', 'Terrain/fortification/extra-play privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsHakunoMalePrivilegedNode(candidateAbility) && !isAcceptedHakunoMaleAbility(candidateAbility)) {
+        issue('hakunoMale.gateway', 'Hakuno-M Yomi/Analysis/Dead Face mechanics require the accepted exact whole-ability semantic', id);
       }
       if (containsReactionCounterPrivilegedNode(candidateAbility) &&
           !isAcceptedReactionCounterCapabilityAbility(candidateAbility)) {
