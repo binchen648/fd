@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.iliya",
+  "name": "伊莉雅斯菲尔",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "2adc423f",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen five-card identity and printed text are corroborated by Fate_Domination-开发版 master.iliya/伊莉雅斯菲尔 and the generated legacy-content locators below. Only 人工生命体 has an exact current runtime seam: game_start fixed controller set_mana(6). The deck purge, Heaven's Cup all-player victory, round-start Heaven's Garment activation, 小圣杯 attack-cost/face-down history, and Heaven's Garment eliminated-player tracking require authoritative deck, situation, attack-history, or elimination state that the current host does not expose; those cards remain host_adjudicated and their directives are audit-only.",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版#master.iliya/伊莉雅斯菲尔",
+      "legacy": {
+        "master.iliya.skill.ascension": "legacy-content.json#master/master.iliya/ascension",
+        "master.iliya.skill.s1": "legacy-content.json#master/master.iliya/s1",
+        "master.iliya.skill.s2": "legacy-content.json#master/master.iliya/s2",
+        "master.iliya.skill.s3": "legacy-content.json#master/master.iliya/s3",
+        "master.iliya.skill.s4": "legacy-content.json#master/master.iliya/s4"
+      },
+      "generated": {
+        "master.iliya.skill.ascension": "src/content/generated/legacy-content.json#masters[7].skills[4].text#line=1 sha256=27c1eaa2e2cca2c08ce680c5625206565eefe7e09cd5b4ac059ea216a89ddf17",
+        "master.iliya.skill.s1": "src/content/generated/legacy-content.json#masters[7].skills[0].text#line=1 sha256=681da5eab6814317aeb7428ffedec22af430a9b4f889ef2950a7f04ef6a12335",
+        "master.iliya.skill.s2": "src/content/generated/legacy-content.json#masters[7].skills[1].text#line=1 sha256=d397f42e1e5003272afd361aab824eddbf0a245ad358e0cc0096135be2887fa0",
+        "master.iliya.skill.s3": "src/content/generated/legacy-content.json#masters[7].skills[2].text#line=1 sha256=6cd57042536e4a4d1b955db999aa3fb62ab82c1eb74cebcdd09954ff7ee52d7d",
+        "master.iliya.skill.s4": "src/content/generated/legacy-content.json#masters[7].skills[3].text#line=1 sha256=191995cd2586600a461b045351d6419e71145c287a7bcdce3407dbb1b8a948d5"
+      }
+    }
+  },
+  "cards": [
+    {
+      "id": "master.iliya.skill.ascension",
+      "aliases": ["ascension"], "legacyId": "ascension", "name": "第三法",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.iliya"},
+      "printedText": "解锁此技能后，你立即从手牌、牌库及弃牌堆中移除所有力量牌。你的魔术和特殊属性的基本攻击获得+2威力。当局势牌为天之杯时，未被淘汰的玩家全部获胜。",
+      "cardFace": {"typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{
+        "id": "iliya.third-magic", "kind": "forced_trigger",
+        "printedClause": "解锁此技能后，移除所有力量牌；魔术和特殊属性的基本攻击+2；天之杯时未被淘汰玩家全部获胜。",
+        "activation": {"trigger": "after_master_ascension_unlocked"}, "conditions": [], "targets": [],
+        "effects": [{"type": "record_master_directive", "directive": "iliya_third_magic"}],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "verification": {"implementationStatus": "host_adjudicated"}
+    },
+    {
+      "id": "master.iliya.skill.s1",
+      "aliases": ["s1"], "legacyId": "s1", "name": "人工生命体",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.iliya"},
+      "printedText": "你的魔力初始值为6。",
+      "cardFace": {"typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{
+        "id": "iliya.homunculus.initial-mana", "kind": "forced_trigger", "printedClause": "你的魔力初始值为6。",
+        "activation": {"trigger": "game_start"}, "conditions": [], "targets": [],
+        "effects": [{"type": "set_mana", "player": "controller", "amount": 6}],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "verification": {"implementationStatus": "complete"}
+    },
+    {
+      "id": "master.iliya.skill.s2",
+      "aliases": ["s2"], "legacyId": "s2", "name": "圣杯容器",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.iliya"},
+      "printedText": "第八回合开始时，激活【天之衣】。",
+      "cardFace": {"typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{
+        "id": "iliya.grail-vessel", "kind": "forced_trigger", "printedClause": "第八回合开始时，激活【天之衣】。",
+        "activation": {"trigger": "round_start"}, "conditions": [], "targets": [],
+        "effects": [{"type": "record_master_directive", "directive": "iliya_grail_vessel_round_eight"}],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "verification": {"implementationStatus": "host_adjudicated"}
+    },
+    {
+      "id": "master.iliya.skill.s3",
+      "aliases": ["s3"], "legacyId": "s3", "name": "小圣杯",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.iliya"},
+      "printedText": "你打出攻击时所需的魔力消耗-1。回合结束时，若你本回合打出的攻击均为暗置，获得1点魔力。",
+      "cardFace": {"typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{
+        "id": "iliya.small-grail", "kind": "passive", "printedClause": "攻击魔力消耗-1；若本回合攻击均为暗置，回合结束获得1点魔力。",
+        "activation": {"trigger": "while_active"}, "conditions": [], "targets": [],
+        "effects": [{"type": "record_master_directive", "directive": "iliya_small_grail"}],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "verification": {"implementationStatus": "host_adjudicated"}
+    },
+    {
+      "id": "master.iliya.skill.s4",
+      "aliases": ["s4"], "legacyId": "s4", "name": "天之衣",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.iliya"},
+      "printedText": "归于虚无-回合开始时，若你上回合在战斗阶段时与至少一名被淘汰的玩家位于同一战场，获得2点战果。",
+      "cardFace": {"typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{
+        "id": "iliya.heavenly-garment", "kind": "forced_trigger", "printedClause": "回合开始时，若上回合曾与被淘汰玩家同战场，获得2点战果。",
+        "activation": {"trigger": "round_start"}, "conditions": [], "targets": [],
+        "effects": [{"type": "record_master_directive", "directive": "iliya_heavenly_garment"}],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "verification": {"implementationStatus": "host_adjudicated"}
+    }
+  ],
+  "sources": [{"id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/伊莉雅斯菲尔.png"]}]
+}

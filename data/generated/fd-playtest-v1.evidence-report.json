@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 30,
+    "masters": 31,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -2328,6 +2328,83 @@
       "htmPath": "chm-extract/洗脑侦探·翡翠.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/洗脑侦探·翡翠.png",
       "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.iliya",
+      "displayName": "伊莉雅斯菲尔",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/伊莉雅斯菲尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/伊莉雅斯菲尔.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.iliya.overview",
+      "displayName": "伊莉雅斯菲尔",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/伊莉雅斯菲尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/伊莉雅斯菲尔.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.iliya.skill.ascension",
+      "displayName": "第三法",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/伊莉雅斯菲尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/伊莉雅斯菲尔.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.iliya.skill.s1",
+      "displayName": "人工生命体",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/伊莉雅斯菲尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/伊莉雅斯菲尔.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.iliya.skill.s2",
+      "displayName": "圣杯容器",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/伊莉雅斯菲尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/伊莉雅斯菲尔.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.iliya.skill.s3",
+      "displayName": "小圣杯",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/伊莉雅斯菲尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/伊莉雅斯菲尔.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.iliya.skill.s4",
+      "displayName": "天之衣",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/伊莉雅斯菲尔.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/伊莉雅斯菲尔.png",
+      "imageIndex": 5,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },
