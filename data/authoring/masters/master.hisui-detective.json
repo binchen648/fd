@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.hisui-detective",
+  "name": "洗脑侦探·翡翠",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "96f66230",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen five-skill identity and text are corroborated by FD全卡图鉴V2.0.chm/#从者/御主/洗脑侦探·翡翠, Fate_Domination-开发版#master.hisui-detective/洗脑侦探·翡翠, and src/content/generated/legacy-content.json#masters[20].skills[]. Current engine has event placements/discard, locations, VP and round power, but no authoritative 固有结界, clue/suspect record, investigation phase, or one-shot detective continuation state. All five cards therefore remain host_adjudicated and their directives are audit-only until those state contracts exist; no record_master_directive is claimed complete.",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版#master.hisui-detective/洗脑侦探·翡翠",
+      "legacy": {
+        "master.hisui-detective.skill.s1": "legacy-content.json#master/master.hisui-detective/s1",
+        "master.hisui-detective.skill.s1a": "legacy-content.json#master/master.hisui-detective/s1a",
+        "master.hisui-detective.skill.s2": "legacy-content.json#master/master.hisui-detective/s2",
+        "master.hisui-detective.skill.s3": "legacy-content.json#master/master.hisui-detective/s3",
+        "master.hisui-detective.skill.ascension": "legacy-content.json#master/master.hisui-detective/ascension"
+      },
+      "generated": {
+        "master.hisui-detective.skill.s1": "src/content/generated/legacy-content.json#masters[20].skills[0].text#line=1 sha256=211e6d3ae17a990d50d9a6407188189b3cc6bd11dcde294c73960f5519f5603e",
+        "master.hisui-detective.skill.s1a": "src/content/generated/legacy-content.json#masters[20].skills[1].text#line=1 sha256=892055d541656dad3ddc204c7b0f7c73eae8399338263f00c0be967784c689f1",
+        "master.hisui-detective.skill.s2": "src/content/generated/legacy-content.json#masters[20].skills[2].text#line=1-3 sha256=7e6fd5862182ec15171c7680cad9c35edc1260619b44502d7f9adc28d0bba7e0,ef657af2bb6ae18782b6af1bad4b2e09fe77a4796509060597b03c8781fc25e4,95a67d705d3bf01d8f9a7214179f3ceb76cacee9a9ccf8feaa842fa1b4915d7d",
+        "master.hisui-detective.skill.s3": "src/content/generated/legacy-content.json#masters[20].skills[3].text#line=1-2 sha256=d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24,81565717413621a7051069ab0e829e4c34c6f8dd527c2ca72db6b58f141d1b3e",
+        "master.hisui-detective.skill.ascension": "src/content/generated/legacy-content.json#masters[20].skills[4].text#line=1 sha256=d7e7c4b3104e40c62875f879d36c5d45fe4754c127b85cdb5bc56780a216b33e"
+      }
+    }
+  },
+  "cards": [
+    {
+      "id": "master.hisui-detective.skill.s1",
+      "aliases": ["s1"], "legacyId": "s1", "name": "密室难题",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.hisui-detective"},
+      "printedText": "游戏开始时，查看并选择一张事件牌堆内的【固有结界】（或类似事件牌）移除游戏。",
+      "cardFace": {"typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{
+        "id": "hisui.locked-room", "kind": "forced_trigger", "printedClause": "游戏开始时，查看并选择一张事件牌堆内的【固有结界】（或类似事件牌）移除游戏。",
+        "activation": {"trigger": "game_start"}, "conditions": [], "targets": [],
+        "effects": [{"type": "record_master_directive", "directive": "hisui_locked_room_setup"}],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "verification": {"implementationStatus": "host_adjudicated"}
+    },
+    {
+      "id": "master.hisui-detective.skill.s1a",
+      "aliases": ["s1a"], "legacyId": "s1a", "name": "携闻而至",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.hisui-detective"},
+      "printedText": "每局游戏限一次，所有人的前哨阶段结束时，将一张被移除的【固有结界】放置于一处拥有2+名对手的战场，本回合于该战场获胜的对手在该处留下一枚【线索】。",
+      "cardFace": {"typeLabel": "前哨", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{
+        "id": "hisui.arrival-with-clue", "kind": "phase_action", "printedClause": "每局游戏限一次，所有人的前哨阶段结束时，将一张被移除的【固有结界】放置于一处拥有2+名对手的战场，本回合于该战场获胜的对手在该处留下一枚【线索】。",
+        "activation": {"phase": "preparation", "opens": "controller_action_window"}, "conditions": [], "targets": [],
+        "effects": [{"type": "record_master_directive", "directive": "hisui_arrival_with_clue"}],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {},
+        "limit": {"type": "per_game", "uses": 1, "scope": "this_card"}, "visibility": {},
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "verification": {"implementationStatus": "host_adjudicated"}
+    },
+    {
+      "id": "master.hisui-detective.skill.s2",
+      "aliases": ["s2"], "legacyId": "s2", "name": "线索",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.hisui-detective"},
+      "printedText": "（将留下此【线索】的嫌疑人记录于此牌上。）\n唯一：当翡翠部署于此地点的地利位置时，将一张此地点的【线索】加入其技能区。\n调查-被动：当你进入侦查时，切换此牌。",
+      "cardFace": {"typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{
+        "id": "hisui.clue-record", "kind": "passive", "printedClause": "（将留下此【线索】的嫌疑人记录于此牌上。）唯一：地利部署时获得线索；调查时切换此牌。",
+        "activation": {"trigger": "while_active"}, "conditions": [], "targets": [],
+        "effects": [{"type": "record_master_directive", "directive": "hisui_clue_record_investigation"}],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "verification": {"implementationStatus": "host_adjudicated"}
+    },
+    {
+      "id": "master.hisui-detective.skill.s3",
+      "aliases": ["s3"], "legacyId": "s3", "name": "指证",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.hisui-detective"},
+      "printedText": "<每局游戏限一次>\n完美推理-被动/行动阶段：若此时为第11回合，令嫌疑人淘汰。若不为第11回合且嫌疑人与你位于同一战场，你获得5点合计威力并偷取其4点战果。",
+      "cardFace": {"typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{
+        "id": "hisui.perfect-deduction", "kind": "phase_action", "printedClause": "<每局游戏限一次> 完美推理-被动/行动阶段：第11回合淘汰嫌疑人；否则同战场时+5合计威力并偷取4点战果。",
+        "activation": {"phase": "action", "opens": "controller_action_window"}, "conditions": [], "targets": [],
+        "effects": [{"type": "record_master_directive", "directive": "hisui_perfect_deduction"}],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {},
+        "limit": {"type": "per_game", "uses": 1, "scope": "this_card"}, "visibility": {},
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "verification": {"implementationStatus": "host_adjudicated"}
+    },
+    {
+      "id": "master.hisui-detective.skill.ascension",
+      "aliases": ["ascension"], "legacyId": "ascension", "name": "侦探模式",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.hisui-detective"},
+      "printedText": "解锁此牌时，你立即切换一张【线索】，然后将一张事件牌弃牌堆的【固有结界】移除游戏。若你如此做，你可以于本局游戏重新使用一次携闻而至。",
+      "cardFace": {"typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{
+        "id": "hisui.detective-mode", "kind": "forced_trigger", "printedClause": "解锁此牌时立即切换一张【线索】，移除弃牌堆固有结界；若如此做，本局重新使用一次携闻而至。",
+        "activation": {"trigger": "after_master_ascension_unlocked"}, "conditions": [], "targets": [],
+        "effects": [{"type": "record_master_directive", "directive": "hisui_detective_mode"}],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "verification": {"implementationStatus": "host_adjudicated"}
+    }
+  ],
+  "sources": [{
+    "id": "development_card_images",
+    "type": "development_image_set",
+    "imageOrder": ["../../Fate_Domination-开发版/images/masters/洗脑侦探·翡翠.png"]
+  }]
+}

@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 29,
+    "masters": 30,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -2251,6 +2251,83 @@
       "htmPath": "chm-extract/芥雏子.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/芥雏子.png",
       "imageIndex": 6,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hisui-detective",
+      "displayName": "洗脑侦探·翡翠",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/洗脑侦探·翡翠.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/洗脑侦探·翡翠.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hisui-detective.overview",
+      "displayName": "洗脑侦探·翡翠",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/洗脑侦探·翡翠.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/洗脑侦探·翡翠.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hisui-detective.skill.ascension",
+      "displayName": "侦探模式",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/洗脑侦探·翡翠.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/洗脑侦探·翡翠.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hisui-detective.skill.s1",
+      "displayName": "密室难题",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/洗脑侦探·翡翠.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/洗脑侦探·翡翠.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hisui-detective.skill.s1a",
+      "displayName": "携闻而至",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/洗脑侦探·翡翠.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/洗脑侦探·翡翠.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hisui-detective.skill.s2",
+      "displayName": "线索",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/洗脑侦探·翡翠.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/洗脑侦探·翡翠.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hisui-detective.skill.s3",
+      "displayName": "指证",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/洗脑侦探·翡翠.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/洗脑侦探·翡翠.png",
+      "imageIndex": 4,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },
