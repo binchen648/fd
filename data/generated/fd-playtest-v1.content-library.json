@@ -753,8 +753,9 @@
       "initialMana": 4,
       "commandSpellCardIds": [],
       "skillCardIds": [
-        "master.irisviel.skill.proxy-master",
-        "master.irisviel.skill.conversion-magic"
+        "master.irisviel.skill.ascension",
+        "master.irisviel.skill.s1",
+        "master.irisviel.skill.s2"
       ],
       "linkedCards": {
         "generated": []
@@ -765,7 +766,7 @@
       },
       "source": {
         "htmPath": "chm-extract/爱丽丝菲尔·冯·爱因兹贝伦.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_200845_151.png",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/爱丽丝菲尔.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
@@ -7133,24 +7134,24 @@
       "id": "master.irisviel.overview",
       "name": "爱丽丝菲尔·冯·爱因兹贝伦",
       "cardType": "master_overview",
-      "printedText": "代理御主: 令咒改为在前哨阶段使用。\n转换魔术: 前哨阶段：弃置所有手牌，每1张获得1点魔力。",
+      "printedText": "生命赋予: （升华技，将此牌加入你的技能区）\n你每回合只能使用此攻击的其中一项能力。\n行动阶段：本回合的一张基础攻击可以保持激活至下回合结束。\n战斗阶段：你的攻击获得魔术属性并且威力+1。\n代理御主: 令咒改为在前哨阶段使用。\n转换魔术: 弃置所有手牌，每1张获得1点魔力。",
       "capability": {
         "status": "FULL"
       },
       "source": {
         "htmPath": "chm-extract/爱丽丝菲尔·冯·爱因兹贝伦.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_200845_151.png",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/爱丽丝菲尔.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
     },
     {
-      "id": "master.irisviel.skill.conversion-magic",
-      "name": "转换魔术",
+      "id": "master.irisviel.skill.ascension",
+      "name": "生命赋予",
       "cardType": "master_skill",
       "printedValue": 0,
       "printedCost": 0,
-      "printedText": "前哨阶段：弃置所有手牌，每1张获得1点魔力。",
+      "printedText": "（升华技，将此牌加入你的技能区）\n你每回合只能使用此攻击的其中一项能力。\n行动阶段：本回合的一张基础攻击可以保持激活至下回合结束。\n战斗阶段：你的攻击获得魔术属性并且威力+1。",
       "timing": [
         "action"
       ],
@@ -7160,13 +7161,13 @@
       },
       "source": {
         "htmPath": "chm-extract/爱丽丝菲尔·冯·爱因兹贝伦.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_200854_918.png",
-        "imageIndex": 2,
+        "imagePath": "../../Fate_Domination-开发版/images/masters/爱丽丝菲尔.png",
+        "imageIndex": 1,
         "reviewedAgainstImage": true
       }
     },
     {
-      "id": "master.irisviel.skill.proxy-master",
+      "id": "master.irisviel.skill.s1",
       "name": "代理御主",
       "cardType": "master_skill",
       "printedValue": 0,
@@ -7181,8 +7182,29 @@
       },
       "source": {
         "htmPath": "chm-extract/爱丽丝菲尔·冯·爱因兹贝伦.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_200849_886.png",
-        "imageIndex": 1,
+        "imagePath": "../../Fate_Domination-开发版/images/masters/爱丽丝菲尔.png",
+        "imageIndex": 2,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.irisviel.skill.s2",
+      "name": "转换魔术",
+      "cardType": "master_skill",
+      "printedValue": 0,
+      "printedCost": 0,
+      "printedText": "弃置所有手牌，每1张获得1点魔力。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/爱丽丝菲尔·冯·爱因兹贝伦.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/爱丽丝菲尔.png",
+        "imageIndex": 3,
         "reviewedAgainstImage": true
       }
     },
@@ -10896,11 +10918,13 @@
         "destinationZone": "field",
         "initialZone": "skill"
       },
-      "master.irisviel.skill.proxy-master": {
-        "id": "master.irisviel.skill.proxy-master",
-        "name": "代理御主",
+      "master.irisviel.skill.ascension": {
+        "id": "master.irisviel.skill.ascension",
+        "name": "生命赋予",
         "cardType": "master_skill",
         "cardFace": {
+          "typeLabel": "升华技",
+          "attributes": [],
           "cost": 0,
           "basePower": 0
         },
@@ -10911,7 +10935,60 @@
         "playRequirements": [],
         "abilities": [
           {
-            "id": "proxy-master.command-spell-timing",
+            "id": "irisviel.life-giving",
+            "kind": "passive",
+            "printedClause": "每回合只能使用此攻击的一项能力；行动阶段可使一张基础攻击保持激活至下回合结束；战斗阶段攻击获得魔术属性并且威力+1。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "record_master_directive",
+                "directive": "irisviel_life_giving"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "host_adjudicated",
+        "ownerId": "master.irisviel",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
+      },
+      "master.irisviel.skill.s1": {
+        "id": "master.irisviel.skill.s1",
+        "name": "代理御主",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "被动",
+          "attributes": [],
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "irisviel.proxy-master.command-seal-window",
             "kind": "passive",
             "printedClause": "令咒改为在前哨阶段使用。",
             "activation": {
@@ -10922,7 +10999,7 @@
             "effects": [
               {
                 "type": "record_master_directive",
-                "directive": "command_spells_used_in_preparation_phase"
+                "directive": "irisviel_proxy_master_command_seal_window"
               }
             ],
             "cost": [],
@@ -10937,27 +11014,23 @@
             "visibility": {},
             "execution": {
               "mode": "automatic",
-              "allowedOperations": [
-                "adjust-mana",
-                "adjust-victory-points",
-                "move-card",
-                "create-status",
-                "skip-ability"
-              ]
+              "allowedOperations": []
             }
           }
         ],
-        "mode": "automatic",
+        "mode": "host_adjudicated",
         "ownerId": "master.irisviel",
         "playKind": "support",
         "destinationZone": "field",
         "initialZone": "skill"
       },
-      "master.irisviel.skill.conversion-magic": {
-        "id": "master.irisviel.skill.conversion-magic",
+      "master.irisviel.skill.s2": {
+        "id": "master.irisviel.skill.s2",
         "name": "转换魔术",
         "cardType": "master_skill",
         "cardFace": {
+          "typeLabel": "魔术",
+          "attributes": [],
           "cost": 0,
           "basePower": 0
         },
@@ -10968,9 +11041,9 @@
         "playRequirements": [],
         "abilities": [
           {
-            "id": "conversion-magic.preparation",
+            "id": "irisviel.conversion-magic",
             "kind": "phase_action",
-            "printedClause": "前哨阶段：弃置所有手牌，每1张获得1点魔力。",
+            "printedClause": "弃置所有手牌，每1张获得1点魔力。",
             "activation": {
               "phase": "advance",
               "opens": "controller_action_window"
@@ -10979,18 +11052,8 @@
             "targets": [],
             "effects": [
               {
-                "type": "move_all_remaining",
-                "from": "hand",
-                "to": {
-                  "zone": "discard"
-                },
-                "resultVar": "discarded_cards"
-              },
-              {
-                "type": "adjust_mana",
-                "amount": {
-                  "var": "discarded_cards"
-                }
+                "type": "record_master_directive",
+                "directive": "irisviel_conversion_magic"
               }
             ],
             "cost": [],
@@ -11005,17 +11068,11 @@
             "visibility": {},
             "execution": {
               "mode": "automatic",
-              "allowedOperations": [
-                "adjust-mana",
-                "adjust-victory-points",
-                "move-card",
-                "create-status",
-                "skip-ability"
-              ]
+              "allowedOperations": []
             }
           }
         ],
-        "mode": "automatic",
+        "mode": "host_adjudicated",
         "ownerId": "master.irisviel",
         "playKind": "support",
         "destinationZone": "field",
@@ -36203,20 +36260,14 @@
         "class": "Master",
         "kind": "master",
         "cardIds": [
-          "master.irisviel.skill.proxy-master",
-          "master.irisviel.skill.conversion-magic"
+          "master.irisviel.skill.ascension",
+          "master.irisviel.skill.s1",
+          "master.irisviel.skill.s2"
         ],
         "publicInformation": {
           "type": "master_package",
           "initialMana": 4
-        },
-        "excludedCards": [
-          {
-            "id": "master.irisviel.skill.ascension",
-            "name": "生命赋予",
-            "reason": "user_scope_excluded_ascension"
-          }
-        ]
+        }
       },
       "master.olga-marie": {
         "id": "master.olga-marie",
@@ -37276,11 +37327,11 @@
       "master.iliya": "master.iliya.command-spell",
       "master.illya-mahou": "master.illya-mahou.command-spell"
     },
-    "definitionHash": "e5daaffa78c136b3131a4d02d7d1ea6956061eae8f65d09ae121a42247671e61",
+    "definitionHash": "f6fb6f58b413606657b83c414419dfc8294cef22702a56420afb3436ca75c3e6",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "e5daaffa78c136b3131a4d02d7d1ea6956061eae8f65d09ae121a42247671e61"
+      "definitionHash": "f6fb6f58b413606657b83c414419dfc8294cef22702a56420afb3436ca75c3e6"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
@@ -37540,31 +37591,44 @@
         "abilityIndex": 2,
         "path": "archives[4].cards[1].abilities[2]"
       },
-      "master.irisviel.skill.proxy-master": {
+      "master.irisviel.skill.ascension": {
         "archiveId": "master.irisviel",
         "archiveIndex": 5,
         "cardIndex": 0,
         "path": "archives[5].cards[0]"
       },
-      "master.irisviel.skill.proxy-master#proxy-master.command-spell-timing": {
+      "master.irisviel.skill.ascension#irisviel.life-giving": {
         "archiveId": "master.irisviel",
         "archiveIndex": 5,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[5].cards[0].abilities[0]"
       },
-      "master.irisviel.skill.conversion-magic": {
+      "master.irisviel.skill.s1": {
         "archiveId": "master.irisviel",
         "archiveIndex": 5,
         "cardIndex": 1,
         "path": "archives[5].cards[1]"
       },
-      "master.irisviel.skill.conversion-magic#conversion-magic.preparation": {
+      "master.irisviel.skill.s1#irisviel.proxy-master.command-seal-window": {
         "archiveId": "master.irisviel",
         "archiveIndex": 5,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[5].cards[1].abilities[0]"
+      },
+      "master.irisviel.skill.s2": {
+        "archiveId": "master.irisviel",
+        "archiveIndex": 5,
+        "cardIndex": 2,
+        "path": "archives[5].cards[2]"
+      },
+      "master.irisviel.skill.s2#irisviel.conversion-magic": {
+        "archiveId": "master.irisviel",
+        "archiveIndex": 5,
+        "cardIndex": 2,
+        "abilityIndex": 0,
+        "path": "archives[5].cards[2].abilities[0]"
       },
       "master.olga-marie.skill.astronomical-science": {
         "archiveId": "master.olga-marie",
