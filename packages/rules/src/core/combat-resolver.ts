@@ -662,7 +662,18 @@ export function resolveBattlefield(
   });
   if (newlyActivatedEvents.length) {
     const activatedState = structuredClone(state); activatedState.eventPlacements = nextPlacements;
-    for (const entry of newlyActivatedEvents) processAbilitySystemEvent(activatedState, 'event-activated', { type: 'event_activated', sourceCardId: entry.ruleInstanceId, revealedKind: 'event', revealedId: entry.eventCardId, locationId: entry.locationId });
+    // Legacy simulation inputs may intentionally omit the ability runtime.
+    // Reveal the event in that mode, but do not ask the ability interpreter to
+    // process a system event it cannot authenticate without an initialized
+    // pack/runtime. Initialized matches retain the existing event processing.
+    if (activatedState.abilityRuntime) {
+      for (const entry of newlyActivatedEvents) {
+        processAbilitySystemEvent(activatedState, 'event-activated', {
+          type: 'event_activated', sourceCardId: entry.ruleInstanceId,
+          revealedKind: 'event', revealedId: entry.eventCardId, locationId: entry.locationId,
+        });
+      }
+    }
     state = activatedState;
   } else if (nextPlacements !== state.eventPlacements) { state = { ...state, eventPlacements: nextPlacements }; }
 
