@@ -15,6 +15,7 @@ import { clearTransientCardTransformState } from './card-instance-state';
 import { playerIgnoresAbilityFromController } from './player-ability-immunity';
 import { notifyManaAdjusted } from '../core/rule-overrides';
 import { markCommandSealSpent, recordSkillReturnedToSkillZone } from './permanent-skill-tuning-capability';
+import { hasDefinitionVariantAttackMarker } from './definition-variant-battery-capability';
 
 function modeState(state: GameState): Record<string, any> {
   (state as any).modeState = (state as any).modeState || {};
@@ -46,6 +47,12 @@ function directiveContext(context?: Record<string, unknown>): Record<string, unk
 
 function isActiveFieldCard(state: GameState, card: GameState['cards'][number]): boolean {
   return ['field', 'attack_area'].includes(card.zone) && (((state as any).abilityRuntime?.cardState?.[card.instanceId]?.active === true) || (card as any).active === true);
+}
+
+function isAttackCard(state: GameState, card: GameState['cards'][number]): boolean {
+  const packCard = (state as any).abilityRuntime?.pack?.cards?.[card.definitionId];
+  return !!packCard && (hasDefinitionVariantAttackMarker(packCard) ||
+    ['servant_skill', 'servant_deck_card', 'servant_attack', 'master_deck_card', 'basic_attack'].includes(packCard.cardType));
 }
 
 function sourceCardId(context?: Record<string, unknown>): string {
@@ -261,6 +268,44 @@ export function resolveExtendedEffect(
     }
     case 'record_master_directive': {
       pushMasterDirective(state, controllerId, effect, directiveContext(context));
+      break;
+    }
+    case 'hinako_blood_song': {
+      const amount = Number(effect.amount);
+      const duration = str(effect.duration);
+      const keys = Object.keys(effect).sort();
+      if (amount !== -2 || duration !== 'round' || keys.length !== 3 ||
+          keys.some((key, index) => key !== ['amount', 'duration', 'type'][index])) {
+        throw new Error('Unsupported Hinako Blood Song semantic shape');
+      }
+      if (p.locationId !== 'miyama_town' && p.locationId !== 'shinto') {
+        throw new Error('Hinako Blood Song requires a battlefield');
+      }
+      const runtime = (state as any).abilityRuntime;
+      const opponents = state.players.filter((candidate) => candidate.id !== controllerId &&
+        candidate.status === 'active' && candidate.locationId === p.locationId &&
+        !playerIgnoresAbilityFromController(state, candidate.id, controllerId));
+      let affected = 0;
+      for (const opponent of opponents) {
+        for (const attack of state.cards.filter((candidate) => candidate.controllerPlayerId === opponent.id &&
+          candidate.zone === 'attack_area' && isAttackCard(state, candidate) && runtime?.cardState?.[candidate.instanceId]?.active === true &&
+          runtime?.cardState?.[candidate.instanceId]?.faceDown !== true)) {
+          const carrier = attack as any;
+          carrier.powerModifiers ??= [];
+          const id = `${context?.sourceCardId ?? 'hinako'}:${context?.abilityId ?? 'blood-song'}:${attack.instanceId}`;
+          const currentRound = state.round.roundNumber;
+          const existingIndex = carrier.powerModifiers.findIndex((modifier: any) =>
+            modifier.id === id && modifier.duration === 'round' && modifier.round === currentRound);
+          if (existingIndex >= 0) continue;
+          // Replace a stale copy of the same source/attack modifier when the
+          // next round reuses this ability. The lifecycle marker is consumed by
+          // card-power calculation, so the previous round cannot leak forward.
+          carrier.powerModifiers = carrier.powerModifiers.filter((modifier: any) => modifier.id !== id);
+          carrier.powerModifiers.push({ id, sourceId: context?.sourceCardId ?? 'hinako',
+            controllerId, kind: 'add', value: -2, duration: 'round', lifecycle: 'until_leaves_active_area', round: currentRound });
+          affected++;
+        }
+      }
       break;
     }
     case 'movement_rule_override': {
@@ -641,7 +686,8 @@ export function resolveExtendedEffect(
       const cardId = str(effect.cardId);
       const targetCard = state.cards.find(c =>
         c.definitionId === cardId &&
-        c.ownerPlayerId === controllerId
+        c.ownerPlayerId === controllerId &&
+        c.zone === 'removed_from_game'
       );
       if (targetCard) {
         const fromZone = targetCard.zone;

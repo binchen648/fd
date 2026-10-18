@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.hinako",
+  "name": "芥雏子",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "aff3960a968af29eb015033a7af6e6632771941f",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen six-skill text is corroborated by Fate_Domination-开发版 data_masters.js (芥雏子) and locked generated locators masters[56].skills[0..5].text in full-roster-ability-inventory.json. Legacy locators are legacy-content.json#master/master.hinako/{ascension,s1,s1a,s2,s3,s4}; generated sha256 values are recorded in data/phase3/full-roster-rule-decisions.json. Existing legacy handler is core.hinako-package. The current engine has no core.hinako-package consumer for ascension's Shakespeare removal/reacquisition/copy behavior, no NPC/expansion/China Lostbelt state for s1/s3/s4, and no generic route for s2's optional additional play. Those cards are intentionally host-adjudicated/blocked in generated rules; s2's engaged-attack -2 is retained only as a verified partial, never as a claim of full owner-complete behavior."
+  },
+  "cards": [
+    {
+      "id": "master.hinako.skill.ascension",
+      "aliases": ["ascension"], "legacyId": "ascension", "name": "真祖",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.hinako"},
+      "printedText": "将莎士比亚的所有技能牌移除游戏，不再拥有从者牌。再次获得【咒血尸解叹歌】，该牌获得：\"行动阶段：花费4X点魔力，你的X张基础牌变为【咒血尸解叹歌】的复制，直至战斗阶段结束并且失去<每局游戏限一次>。\"",
+      "cardFace": {"typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{
+        "id": "hinako.true-ancestor", "kind": "passive", "printedClause": "升华时移除莎士比亚并重获咒血尸解叹歌；复制效果由 core.hinako-package 续接。",
+        "activation": {"trigger": "while_active"}, "conditions": [], "targets": [],
+        "effects": [{"type": "record_master_directive", "directive": "hinako_true_ancestor_unlock"}],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "verification": {"implementationStatus": "host_adjudicated"}
+    },
+    {
+      "id": "master.hinako.skill.s1",
+      "aliases": ["s1"], "legacyId": "s1", "name": "隐匿者",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.hinako"},
+      "printedText": "将NPC【始皇帝】加入游戏。他负责【中国异闻带】。",
+      "cardFace": {"typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{
+        "id": "hinako.rogue.qin-provision", "kind": "forced_trigger", "printedClause": "将NPC【始皇帝】加入游戏。他负责【中国异闻带】。",
+        "activation": {"trigger": "game_start"}, "conditions": [], "targets": [],
+        "effects": [{"type": "record_master_directive", "directive": "hinako_qin_npc_provision"}],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "verification": {"implementationStatus": "host_adjudicated"}
+    },
+    {
+      "id": "master.hinako.skill.s1a",
+      "aliases": ["s1a"], "legacyId": "s1a", "name": "死之愿望",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.hinako"},
+      "printedText": "将【咒血尸解叹歌】加入你的技能区。当你战败时，将游戏外的【咒血尸解叹歌】加入技能区。",
+      "cardFace": {"typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [
+        {
+          "id": "hinako.death-wish.provision", "kind": "forced_trigger", "printedClause": "将【咒血尸解叹歌】加入你的技能区。",
+          "activation": {"trigger": "game_start"}, "conditions": [], "targets": [],
+          "effects": [{"type": "provision_skill_cards", "player": "controller", "targetDefinitionIds": ["master.hinako.skill.s2"]}],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+          "execution": {"mode": "automatic", "allowedOperations": []}
+        },
+        {
+          "id": "hinako.death-wish.return-on-loss", "kind": "forced_trigger", "printedClause": "当你战败时，将游戏外的【咒血尸解叹歌】加入技能区。",
+          "activation": {"trigger": "after_controller_loses_battle"}, "conditions": [], "targets": [],
+          "effects": [{"type": "move_card_from_zone_to_skill", "cardId": "master.hinako.skill.s2"}],
+          "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+          "execution": {"mode": "automatic", "allowedOperations": []}
+        }
+      ],
+      "verification": {"implementationStatus": "complete"}
+    },
+    {
+      "id": "master.hinako.skill.s2",
+      "aliases": ["s2"], "legacyId": "s2", "name": "咒血尸解叹歌",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.hinako"},
+      "printedText": "<每局游戏限一次>\n此牌可以追加打出。\n战斗阶段：与你交战的对手的每张攻击威力-2。",
+      "cardFace": {"typeLabel": "魔术/宝具", "attributes": ["魔术", "宝具"], "cost": 4, "basePower": 3},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{
+        "id": "hinako.blood-song.combat", "kind": "phase_action", "printedClause": "战斗阶段：与你交战的对手的每张攻击威力-2。",
+        "activation": {"phase": "combat", "opens": "controller_combat_action_window"}, "conditions": [], "targets": [],
+        "effects": [{"type": "hinako_blood_song", "amount": -2, "duration": "round"}],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {},
+        "limit": {"type": "per_game", "uses": 1, "scope": "this_card"}, "visibility": {},
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "verification": {"implementationStatus": "host_adjudicated"}
+    },
+    {
+      "id": "master.hinako.skill.s3",
+      "aliases": ["s3"], "legacyId": "s3", "name": "始皇帝",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.hinako"},
+      "printedText": "游戏开始时，你进行4次扩张。当你获胜时，你进行扩张且芥雏子获得3点战果。\n你的合计威力为14（可以被修正）。你出现在所有具有【中国】事件牌的地点。战力结算时，若你不位于任何地点，获得2点战果。",
+      "cardFace": {"typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [
+        {"id": "hinako.qin.start-expansion", "kind": "forced_trigger", "printedClause": "游戏开始时，你进行4次扩张。", "activation": {"trigger": "game_start"}, "conditions": [], "targets": [], "effects": [{"type": "record_master_directive", "directive": "hinako_qin_expansion", "count": 4, "reason": "game_start"}], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}},
+        {"id": "hinako.qin.win-expansion", "kind": "forced_trigger", "printedClause": "当你获胜时，你进行扩张且芥雏子获得3点战果。", "activation": {"trigger": "after_controller_wins_battle"}, "conditions": [], "targets": [], "effects": [{"type": "record_master_directive", "directive": "hinako_qin_expansion_on_win"}], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}},
+        {"id": "hinako.qin.presence", "kind": "passive", "printedClause": "你的合计威力为14（可以被修正）。你出现在所有具有【中国】事件牌的地点。", "activation": {"trigger": "while_active"}, "conditions": [], "targets": [], "effects": [{"type": "record_master_directive", "directive": "hinako_qin_presence"}], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}},
+        {"id": "hinako.qin.no-location-reward", "kind": "forced_trigger", "printedClause": "战力结算时，若你不位于任何地点，获得2点战果。", "activation": {"trigger": "after_battle_ended"}, "conditions": [], "targets": [], "effects": [{"type": "record_master_directive", "directive": "hinako_qin_no_location_reward"}], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}}
+      ],
+      "verification": {"implementationStatus": "host_adjudicated"}
+    },
+    {
+      "id": "master.hinako.skill.s4",
+      "aliases": ["s4"], "legacyId": "s4", "name": "中国异闻带",
+      "cardType": "master_skill", "owner": {"type": "master", "id": "master.hinako"},
+      "printedText": "扩张-从游戏外的【中国】事件牌中随机抽取一张，展示并将其洗入事件牌堆。同时满足【扩张】条件的玩家需要同步执行【扩张】。\n【风暴帝都】战果7：始皇帝于此战斗威力+7。战斗结束后将此牌移除游戏，此牌不会因【扩张】再次回到游戏。\n【完美的追求】战果3：始皇帝于此战斗威力+2。此战场上，攻击因局势牌和事件牌提升的威力翻倍。\n【长生的追求】战果3：始皇帝于此战斗威力+2。任何人于此战斗皆无视【战败】效果。\n【云中行】战果2：始皇帝于此战斗威力+3。若此战场的玩家本回合只打出了一张正面攻击牌，则他的合计威力+5。\n【日下行】战果2：始皇帝于此战斗威力+3。若此战场的玩家于本回合进行了【真名解放】，则他的合计威力+5。\n【水上行】战果2：始皇帝于此战斗威力+3。若此战场的玩家控制的所有攻击印刷威力均为偶数，则他的合计威力+5。\n【宁静】战果1：始皇帝于此战斗威力-3。力量攻击于此战场禁止打出。\n【深潜】战果1：始皇帝于此战斗威力-3。迅捷攻击于此战场禁止打出。\n【博学】战果1：始皇帝于此战斗威力-3。魔术攻击于此战场禁止打出。",
+      "cardFace": {"typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [{"id": "hinako.china.lostbelt", "kind": "passive", "printedClause": "扩张-从游戏外的【中国】事件牌中随机抽取一张并洗入事件牌堆；始皇帝事件修正规则。", "activation": {"trigger": "while_active"}, "conditions": [], "targets": [], "effects": [{"type": "record_master_directive", "directive": "hinako_china_lostbelt"}], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}}],
+      "verification": {"implementationStatus": "host_adjudicated"}
+    }
+  ],
+  "sources": [{"id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/芥雏子.png"]}]
+}

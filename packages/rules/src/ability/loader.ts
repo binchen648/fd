@@ -368,6 +368,7 @@ const supportedTypes = new Set([
   'create_modifier', 'not_location_kind', 'power_bonus', 'card_not_on_board', 'not_card_id',
   // Master authoring adapters
   'record_master_directive', 'adjust_command_seals', 'set_mana', 'create_independent_deck',
+  'hinako_blood_song',
   'draw_from_independent_deck', 'activate_card_by_id', 'replace_card_in_deck', 'return_card_by_definition',
   'movement_rule_override', 'deployment_rule_override', 'play_source_card',
   'attach_card_to_player_attack', 'append_only_rule', 'transfer_vp_to_owner',
@@ -1172,12 +1173,15 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       return { ...candidateAbility, visibility,
         execution: { mode: failure ? 'unsupported' : mode as ExecutionMode, allowedOperations: allowed } };
     });
+    const verificationStatus = str(node(raw.verification).implementationStatus);
     cards[cardId] = { id: cardId, name: str(raw.name), cardType: str(raw.cardType), cardFace: face,
       playTiming: timing, playRequirements: nodes(raw.playRequirements), abilities,
       ...(initialPlacement === 'outside_game' && (ownedMasterSkill || exactOwnedServantSkill)
         ? { initialPlacement: 'outside_game' as const }
         : {}),
-      mode: report.some(r => r.cardId === cardId && !r.abilityId) ? 'unsupported' : 'automatic' };
+      mode: verificationStatus === 'host_adjudicated'
+        ? 'host_adjudicated'
+        : report.some(r => r.cardId === cardId && !r.abilityId) ? 'unsupported' : 'automatic' };
   }
   const publicCards = nodes(root.cards).map(c => ({ id: str(c.id), name: str(c.name), printedText: str(c.printedText), cardFace: node(c.cardFace) }));
   return { cards, report, servantPackage: { id: str(root.id), name: str(root.name), class: str(root.class),

@@ -518,6 +518,11 @@ function validatePresentationReferences(input: CompileInput, cards: Record<strin
   }
 }
 
+function hasVerifiedPartialHinakoBloodSongConsumer(card: ExecutableCardDefinition | undefined): boolean {
+  return !!card && card.abilities.some((ability) =>
+    ability.effects.some((effect) => effect.type === 'hinako_blood_song'));
+}
+
 function validatedGameStartSkillProvisioningDeferrals(cards: Record<string, ExecutableCardDefinition>): { targetIds: Set<string>; sourceIds: Set<string> } {
   const targetIds = new Set<string>();
   const sourceIds = new Set<string>();
@@ -531,7 +536,7 @@ function validatedGameStartSkillProvisioningDeferrals(cards: Record<string, Exec
       }
       for (const definitionId of targets) {
         const target = cards[definitionId];
-        if (!target || target.id === source.id || target.mode !== 'automatic' || target.cardType !== 'master_skill' || target.ownerId !== source.ownerId) {
+        if (!target || target.id === source.id || (target.mode !== 'automatic' && !hasVerifiedPartialHinakoBloodSongConsumer(target)) || target.cardType !== 'master_skill' || target.ownerId !== source.ownerId) {
           throw new Error(`Invalid game-start skill provisioning target ${definitionId}: ${source.id}#${ability.id}`);
         }
       }
@@ -587,8 +592,12 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
     archiveIds.add(archive.id);
     assertMasterSupportArchive(archive);
     const compiled = loadAuthoringJson(archive);
-    if (compiled.report.length) {
-      const detail = compiled.report.map((issue) => `${issue.cardId}:${issue.abilityId ?? 'card'}:${issue.path}: ${issue.reason}`).join('\n');
+    // A card-level verification status is an intentional product-playtest
+    // capability downgrade, not an unsupported rule node. Preserve it in the
+    // generated card mode while still rejecting all malformed semantics.
+    const semanticReports = compiled.report.filter((issue) => issue.path !== 'verification.implementationStatus');
+    if (semanticReports.length) {
+      const detail = semanticReports.map((issue) => `${issue.cardId}:${issue.abilityId ?? 'card'}:${issue.path}: ${issue.reason}`).join('\n');
       throw new Error(`Executable compilation rejected unsupported semantics:\n${detail}`);
     }
     archive.cards.forEach((rawCard, cardIndex) => {
