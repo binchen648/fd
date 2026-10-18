@@ -8112,8 +8112,7 @@ function rememberTrustedBattleResultSnapshot(r: AbilityRuntime, event: AbilityEv
 function settleHakunoAnalysisHandoffs(s: GameState, event: AbilityEvent): void {
   if (event.type !== 'after_battle_result_determined' || !Array.isArray(event.battleParticipantIds)) return;
   const r = runtime(s);
-  for (const holder of s.players.filter((candidate) => event.battleParticipantIds!.includes(candidate.id) && candidate.status === 'eliminated' &&
-    candidate.masterCardId === 'master.hakuno-m')) {
+  for (const holder of s.players.filter((candidate) => event.battleParticipantIds!.includes(candidate.id) && candidate.status === 'eliminated')) {
     const analysis = s.cards.filter((entry) => entry.definitionId === HAKUNO_M_ANALYSIS_DEFINITION && entry.ownerPlayerId === holder.id && entry.zone === 'skill');
     if (analysis.length === 0) continue;
     const eligible = s.players.filter((candidate) => candidate.id !== holder.id && candidate.status === 'active' && candidate.masterCardId !== 'master.hakuno-m')
