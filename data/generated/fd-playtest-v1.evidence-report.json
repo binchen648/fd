@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 27,
+    "masters": 28,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -2097,6 +2097,72 @@
       "htmPath": "chm-extract/岸波白野（女）.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/岸波白野（女）.png",
       "imageIndex": 6,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hakuno-m",
+      "displayName": "岸波白野（男）",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/岸波白野（男）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/岸波白野（男）.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hakuno-m.overview",
+      "displayName": "岸波白野（男）",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/岸波白野（男）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/岸波白野（男）.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hakuno-m.skill.ascension",
+      "displayName": "死相",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/岸波白野（男）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/岸波白野（男）.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hakuno-m.skill.s1",
+      "displayName": "阅览",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/岸波白野（男）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/岸波白野（男）.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hakuno-m.skill.s2",
+      "displayName": "挑战结果",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/岸波白野（男）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/岸波白野（男）.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.hakuno-m.skill.s3",
+      "displayName": "分析",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/岸波白野（男）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/岸波白野（男）.png",
+      "imageIndex": 4,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

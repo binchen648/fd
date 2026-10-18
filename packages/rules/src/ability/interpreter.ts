@@ -114,6 +114,14 @@ import {
   isAcceptedFortifyMovedInBattlefieldAbility, isAcceptedTerrainExtraHandPlayAbility,
   isAcceptedTerrainFortificationExtraPlayAbility, isControllerHasPositiveTerrainCondition, isEffectPlayableFaceUpConstraint,
 } from './terrain-fortification-extra-play-capability';
+import {
+  HAKUNO_M_ANALYSIS_DEFINITION,
+  HAKUNO_M_YOMI_EFFECT,
+  HAKUNO_M_CHALLENGE_RESULT_EFFECT,
+  HAKUNO_M_ANALYSIS_EFFECT,
+  HAKUNO_M_DEAD_FACE_EFFECT,
+  isAcceptedHakunoMaleAbility,
+} from './hakuno-m-yomi-capability';
 import { isHideServantTrueNameUntilRoundEndEffect, isLoseVpEqualSourcePlayCountEffect, isRevealHandRoundPowerEffect, PLAYER_COMBAT_TOTAL_POWER_RULE, servantRevealSuppressedByTemporaryConcealment } from './owner-self-mechanics';
 import {
   isAnyBattlefieldConstraint,
@@ -354,6 +362,7 @@ import type {
   LegalAction, OngoingEffect, PendingDecision, PendingOpponentCloseToOne, PendingBattleCloseDrawPlayTransaction,
   PendingBattlefieldAttackOfferTransaction, PlayerId, RuleNode, TriggeredAbility,
   AbilityInteractionClassification,
+  HakunoMChallengeThrow,
   PlayCardAction,
 } from './types';
 
@@ -3422,6 +3431,170 @@ export function isControllerMasterSkillDefinitionReturnComponent(effect: Authori
     ['type', 'target', 'definitionId', 'linkedSkillId', 'destination', 'createIfMissing', 'face', 'active'].includes(key));
 }
 
+function hakunoAnalysisCount(s: GameState, playerId: string): number {
+  return s.cards.filter((entry) => entry.definitionId === HAKUNO_M_ANALYSIS_DEFINITION &&
+    entry.ownerPlayerId === playerId && entry.zone === 'skill').length;
+}
+function createHakunoAnalysis(s: GameState, ownerId: string, sourceCardId: string, abilityId: string, controllerId: string): string {
+  const instanceId = nextId(s, 'hakuno-analysis');
+  s.cards.push({ instanceId, definitionId: HAKUNO_M_ANALYSIS_DEFINITION, ownerPlayerId: ownerId,
+    controllerPlayerId: ownerId, zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: ownerId }, generatedBy: sourceCardId });
+  runtime(s).cardState[instanceId] = { active: false, faceDown: false, playedRound: s.round.roundNumber };
+  runtime(s).events.push({ type: 'card_created', playerId: ownerId, controllerId, sourceCardId, abilityId,
+    cardInstanceId: instanceId, toZone: 'skill', movedCount: 1 });
+  return instanceId;
+}
+function hakunoRpsResult(left: HakunoMChallengeThrow, right: HakunoMChallengeThrow): 'draw' | 'initiator' | 'opponent' {
+  if (left === right) return 'draw';
+  return (left === 'rock' && right === 'scissors') || (left === 'scissors' && right === 'paper') || (left === 'paper' && right === 'rock')
+    ? 'initiator' : 'opponent';
+}
+function hakunoChallengeOptions(): string[] { return ['rock', 'paper', 'scissors']; }
+function stageHakunoMChallengeDecision(s: GameState, contextValue: EffectContext, stage: 'branch' | 'initiator_throw' | 'opponent_throw',
+  roundIndex: 0 | 1 | 2, initiatorId: string, opponentId: string, battlefieldId: string, initiatorThrows: HakunoMChallengeThrow[],
+  opponentThrows: HakunoMChallengeThrow[], wins: number, analysisCount: number): void {
+  const r = runtime(s); if (r.pendingDecision) reject('pending_resolution', 'Hakuno-M challenge already has a pending decision');
+  const id = nextId(s, 'hakuno-m-challenge');
+  const options = stage === 'branch' ? ['analysis', 'challenge'] : hakunoChallengeOptions();
+  const controllerId = stage === 'opponent_throw' ? opponentId : initiatorId;
+  r.pendingDecision = { id, controllerId,
+    target: { id: stage === 'branch' ? 'hakuno_m_yomi_branch' : 'hakuno_m_rps_choice', type: 'choice',
+      options: options.map((option) => ({ id: option })), count: { min: 1, max: 1 } },
+    candidates: [...options], min: 1, max: 1, context: structuredClone(contextValue), remainingEffects: [],
+    interaction: { kind: 'hakuno_m_challenge_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: contextValue.sourceCardId, abilityId: contextValue.abilityId, createdRevision: r.revision + 1,
+      continuationRef: `${id}:continuation`, initiatorId, opponentId, battlefieldId, round: s.round.roundNumber, stage, roundIndex,
+      initiatorThrows: [...initiatorThrows], opponentThrows: [...opponentThrows], wins, analysisCount, options: [...options],
+      constraints: { kind: 'target', targetKind: 'choice', min: 1, max: 1, distinct: true } } };
+}
+function hakunoChallengeLive(s: GameState, d: PendingDecision, meta: Extract<NonNullable<PendingDecision['interaction']>, { kind: 'hakuno_m_challenge_v1' }>): boolean {
+  const source = s.cards.find((entry) => entry.instanceId === meta.sourceCardInstanceId);
+  const ability = source ? abilityDefinition(s, meta.sourceCardInstanceId, meta.abilityId) : undefined;
+  const initiator = s.players.find((entry) => entry.id === meta.initiatorId && entry.status === 'active');
+  const opponent = s.players.find((entry) => entry.id === meta.opponentId && entry.status === 'active');
+  const sourceAbility = ability && isAcceptedHakunoMaleAbility(ability);
+  const live = !!source && !!sourceAbility && !!initiator && !!opponent && initiator.id !== opponent.id && !!initiator.locationId &&
+    initiator.locationId === opponent.locationId && initiator.locationId === meta.battlefieldId && isBattlefield(s, meta.battlefieldId) &&
+    s.round.roundNumber === meta.round && phase(s) === 'combat' && d.context.controllerId === meta.initiatorId && d.context.sourceCardId === meta.sourceCardInstanceId &&
+    d.context.abilityId === meta.abilityId && d.controllerId === (meta.stage === 'opponent_throw' ? meta.opponentId : meta.initiatorId) &&
+    (meta.createdRevision === runtime(s).revision || meta.createdRevision === runtime(s).revision + 1) && meta.continuationRef === `${d.id}:continuation` &&
+    meta.constraints.kind === 'target' && meta.constraints.targetKind === 'choice' && meta.constraints.min === 1 && meta.constraints.max === 1 &&
+    meta.constraints.distinct === true && d.min === 1 && d.max === 1 && d.remainingEffects.length === 0 &&
+    exactPlayerArray(meta.options, d.candidates) && (meta.stage === 'branch' ? exactPlayerArray(meta.options, ['analysis', 'challenge']) : exactPlayerArray(meta.options, hakunoChallengeOptions())) &&
+    meta.initiatorThrows.length === meta.roundIndex + (meta.stage === 'opponent_throw' ? 1 : 0) &&
+    meta.opponentThrows.length === meta.roundIndex &&
+    meta.initiatorThrows.length <= 3 && meta.opponentThrows.length <= 3 && hakunoAnalysisCount(s, meta.opponentId) === meta.analysisCount;
+  return live;
+}
+function settleHakunoChallenge(s: GameState, meta: Extract<NonNullable<PendingDecision['interaction']>, { kind: 'hakuno_m_challenge_v1' }>, contextValue: EffectContext): void {
+  const r = runtime(s); const initiator = player(s, meta.initiatorId); const opponent = player(s, meta.opponentId);
+  const wins = meta.wins + Math.floor(meta.analysisCount / 3);
+  const amount = wins >= 2 ? 3 : wins >= 1 ? 2 : 0;
+  if (amount > 0) {
+    r.roundPlayerPowerAdjustments ??= [];
+    r.roundPlayerPowerAdjustments.push({ playerId: initiator.id, amount, round: s.round.roundNumber,
+      sourceCardId: contextValue.sourceCardId, abilityId: contextValue.abilityId });
+  }
+  if (wins >= 2) createHakunoAnalysis(s, opponent.id, contextValue.sourceCardId, contextValue.abilityId, initiator.id);
+  if (wins === 0) {
+    (r.battleDefeatRoundByPlayer ??= {})[initiator.id] = s.round.roundNumber;
+    r.events.push({ type: 'player_defeated_by_effect', playerId: initiator.id, controllerId: opponent.id,
+      sourceCardId: contextValue.sourceCardId, abilityId: contextValue.abilityId });
+  }
+  if (wins >= 3) {
+    (r.battleDefeatRoundByPlayer ??= {})[opponent.id] = s.round.roundNumber;
+    r.events.push({ type: 'player_defeated_by_effect', playerId: opponent.id, controllerId: initiator.id,
+      sourceCardId: contextValue.sourceCardId, abilityId: contextValue.abilityId });
+  }
+  r.events.push({ type: 'hakuno_m_challenge_result_resolved', playerId: initiator.id, controllerId: initiator.id,
+    sourceCardId: contextValue.sourceCardId, abilityId: contextValue.abilityId, challengeWins: wins, analysisCount: meta.analysisCount,
+    qualifyingPlayerIds: [initiator.id, opponent.id], delta: amount });
+}
+function resolveHakunoMChallengeDecision(s: GameState, playerId: string, d: PendingDecision, selected: unknown[]): void {
+  const meta = d.interaction;
+  if (!meta || meta.kind !== 'hakuno_m_challenge_v1' || !Array.isArray(selected) || selected.length !== 1 ||
+      !hakunoChallengeLive(s, d, meta) || playerId !== d.controllerId || !meta.options.includes(String(selected[0])) ||
+      new Set(selected).size !== selected.length) reject('resolution_failed', 'Corrupt or stale Hakuno-M challenge interaction state');
+  const rawChoice = String(selected[0]);
+  const contextValue = structuredClone(d.context); delete runtime(s).pendingDecision;
+  if (meta.stage === 'branch') {
+    contextValue.selections.hakuno_m_yomi_branch = [rawChoice];
+    if (rawChoice === 'analysis') {
+      resolveHakunoMaleEffect(s, contextValue, { type: HAKUNO_M_YOMI_EFFECT, mode: 'analysis_or_challenge', target: 'opponent' }); return;
+    }
+    stageHakunoMChallengeDecision(s, contextValue, 'initiator_throw', 0, meta.initiatorId, meta.opponentId, meta.battlefieldId, [], [], 0, meta.analysisCount);
+    return;
+  }
+  const choice = rawChoice as HakunoMChallengeThrow;
+  if (meta.stage === 'initiator_throw') {
+    stageHakunoMChallengeDecision(s, contextValue, 'opponent_throw', meta.roundIndex, meta.initiatorId, meta.opponentId, meta.battlefieldId,
+      [...meta.initiatorThrows, choice], [...meta.opponentThrows], meta.wins, meta.analysisCount); return;
+  }
+  const initiatorChoice = meta.initiatorThrows[meta.roundIndex];
+  if (!initiatorChoice) reject('resolution_failed', 'Hakuno-M challenge is missing the initiator throw');
+  const result = hakunoRpsResult(initiatorChoice, choice);
+  const wins = meta.wins + (result === 'initiator' ? 1 : 0);
+  runtime(s).events.push({ type: 'hakuno_m_challenge_round_resolved', playerId: meta.initiatorId, controllerId: meta.initiatorId,
+    sourceCardId: contextValue.sourceCardId, abilityId: contextValue.abilityId, challengeRound: meta.roundIndex + 1,
+    challengeChoice: initiatorChoice, challengeResult: result, challengeWins: wins, qualifyingPlayerIds: [meta.initiatorId, meta.opponentId] });
+  const opponentThrows = [...meta.opponentThrows, choice];
+  if (meta.roundIndex < 2) {
+    stageHakunoMChallengeDecision(s, contextValue, 'initiator_throw', (meta.roundIndex + 1) as 0 | 1 | 2, meta.initiatorId, meta.opponentId,
+      meta.battlefieldId, [...meta.initiatorThrows], opponentThrows, wins, meta.analysisCount); return;
+  }
+  settleHakunoChallenge(s, { ...meta, wins, opponentThrows }, contextValue);
+}
+
+/** Server-owned Hakuno-M closure: Yomi stages a durable branch/throw continuation;
+ * challenge settlement and Analysis lifecycle are resolved from authenticated state. */
+function resolveHakunoMaleEffect(s: GameState, ctx: EffectContext, effect: RuleNode): boolean {
+  const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (effect.type === HAKUNO_M_CHALLENGE_RESULT_EFFECT || effect.type === HAKUNO_M_ANALYSIS_EFFECT) {
+    reject('invalid_state', 'Hakuno-M lifecycle marker is resolved only by its authenticated continuation or elimination event');
+  }
+  if (!isAcceptedHakunoMaleAbility(ability)) reject('resolution_failed', 'Unsupported Hakuno-M semantic shape');
+  const r = runtime(s); const controller = player(s, ctx.controllerId);
+  if (effect.type === HAKUNO_M_YOMI_EFFECT) {
+    const targetId = ctx.selections[String(effect.target)]?.[0];
+    const target = targetId ? s.players.find((candidate) => candidate.id === targetId) : undefined;
+    if (!target || target.id === controller.id || target.status !== 'active' || !controller.locationId ||
+        target.locationId !== controller.locationId || !isBattlefield(s, controller.locationId)) {
+      reject('invalid_target', 'Hakuno-M Yomi requires one active engaged battlefield opponent');
+    }
+    const branch = ctx.selections.hakuno_m_yomi_branch?.[0];
+    if (effect.mode === 'analysis_or_challenge' && !branch) {
+      stageHakunoMChallengeDecision(s, ctx, 'branch', 0, controller.id, target.id, controller.locationId!, [], [], 0, hakunoAnalysisCount(s, target.id));
+      return true;
+    }
+    if (branch === 'challenge') {
+      stageHakunoMChallengeDecision(s, ctx, 'initiator_throw', 0, controller.id, target.id, controller.locationId!, [], [], 0, hakunoAnalysisCount(s, target.id));
+      return true;
+    }
+    if (branch !== undefined && branch !== 'analysis') reject('invalid_target', 'Hakuno-M Yomi branch is invalid');
+    r.roundPlayerPowerAdjustments ??= [];
+    r.roundPlayerPowerAdjustments.push({ playerId: controller.id, amount: -2, round: s.round.roundNumber,
+      sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+    createHakunoAnalysis(s, target.id, ctx.sourceCardId, ctx.abilityId, controller.id);
+    return true;
+  }
+  const sourceId = ctx.selections[String(effect.source)]?.[0];
+  const targetId = ctx.selections[String(effect.target)]?.[0];
+  const source = sourceId ? s.cards.find((candidate) => candidate.instanceId === sourceId) : undefined;
+  const target = targetId ? s.players.find((candidate) => candidate.id === targetId) : undefined;
+  if (!source || source.definitionId !== HAKUNO_M_ANALYSIS_DEFINITION || source.ownerPlayerId === controller.id ||
+      !target || target.status !== 'active' || target.id === source.ownerPlayerId || target.id === controller.id) {
+    reject('invalid_target', 'Hakuno-M Dead Face requires an opponent-owned Analysis and a distinct active recipient');
+  }
+  const fromZone = source.zone;
+  source.ownerPlayerId = target.id;
+  source.controllerPlayerId = target.id;
+  source.zone = 'skill';
+  source.visibility = { scope: 'owner_only', ownerPlayerId: target.id };
+  r.events.push({ type: 'card_moved', playerId: target.id, controllerId: controller.id, sourceCardId: ctx.sourceCardId,
+    abilityId: ctx.abilityId, cardInstanceId: source.instanceId, fromZone, toZone: 'skill', movedCount: 1 });
+  return true;
+}
+
 function hasControllerMasterSkillDefinitionReturnCandidate(a: AuthoringAbility): boolean {
   return a.effects.some((effect) => str(effect.type) === 'return_card_by_definition');
 }
@@ -3475,6 +3648,12 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
   const unpreventable = a.ruleModifiers.some(m => m.rule === 'effect_prevention' && m.operation === 'ignore' && node(m.priority).tier === 'explicit_exception');
   if (r.preventEffects && !unpreventable) { r.events.push({ type: 'effect_prevented', playerId: p.id }); return; }
   switch (effect.type) {
+    case HAKUNO_M_YOMI_EFFECT:
+    case HAKUNO_M_CHALLENGE_RESULT_EFFECT:
+    case HAKUNO_M_ANALYSIS_EFFECT:
+    case HAKUNO_M_DEAD_FACE_EFFECT:
+      resolveHakunoMaleEffect(s, ctx, effect);
+      break;
     case 'return_card_by_definition': resolveControllerMasterSkillDefinitionReturn(s, ctx, effect); break;
     case SWITCH_ROUND_SKILL_PROFILE_EFFECT: {
       if (!isAcceptedRoundSkillProfileAbility(a) || a.effects.length !== 1 || a.effects[0]?.type !== SWITCH_ROUND_SKILL_PROFILE_EFFECT) {
@@ -7930,6 +8109,44 @@ function rememberTrustedBattleResultSnapshot(r: AbilityRuntime, event: AbilityEv
   };
 }
 
+function settleHakunoAnalysisForHolder(s: GameState, holderId: string, sourceCardId: string, abilityId: string): void {
+  const r = runtime(s);
+  const holder = s.players.find((candidate) => candidate.id === holderId && candidate.status === 'eliminated');
+  if (!holder) return;
+  const analysis = s.cards.filter((entry) => entry.definitionId === HAKUNO_M_ANALYSIS_DEFINITION && entry.ownerPlayerId === holder.id && entry.zone === 'skill');
+  if (analysis.length === 0) return;
+  const eligible = s.players.filter((candidate) => candidate.id !== holder.id && candidate.status === 'active' && candidate.masterCardId !== 'master.hakuno-m')
+    .sort((left, right) => left.seat - right.seat);
+  const after = eligible.filter((candidate) => candidate.seat > holder.seat);
+  const recipient = [...after, ...eligible.filter((candidate) => candidate.seat < holder.seat)][0];
+  if (!recipient) {
+    if (r.events.some((entry) => entry.type === 'hakuno_analysis_handoff_skipped' && entry.playerId === holder.id && entry.sourceCardId === sourceCardId && entry.abilityId === abilityId)) return;
+    r.events.push({ type: 'hakuno_analysis_handoff_skipped', playerId: holder.id, sourceCardId,
+      abilityId, movedCount: analysis.length, qualifyingPlayerIds: [holder.id] });
+    return;
+  }
+  for (const physical of analysis) {
+    physical.ownerPlayerId = recipient.id; physical.controllerPlayerId = recipient.id;
+    physical.visibility = { scope: 'owner_only', ownerPlayerId: recipient.id };
+    r.events.push({ type: 'card_moved', playerId: recipient.id, controllerId: holder.id, sourceCardId,
+      abilityId, cardInstanceId: physical.instanceId, fromZone: 'skill', toZone: 'skill', movedCount: 1 });
+  }
+  r.events.push({ type: 'hakuno_analysis_handoff_resolved', playerId: holder.id, controllerId: recipient.id,
+    sourceCardId, abilityId, movedCount: analysis.length, qualifyingPlayerIds: [holder.id, recipient.id] });
+}
+function settleHakunoAnalysisHandoffs(s: GameState, event: AbilityEvent): void {
+  if (event.type !== 'after_battle_result_determined' || !Array.isArray(event.battleParticipantIds)) return;
+  for (const holder of s.players.filter((candidate) => event.battleParticipantIds!.includes(candidate.id) && candidate.status === 'eliminated')) {
+    settleHakunoAnalysisForHolder(s, holder.id, event.id, 'hakuno-m.analysis');
+  }
+}
+function settleHakunoAnalysisHandoffsFromEliminationEvents(s: GameState, startIndex: number): void {
+  for (const event of runtime(s).events.slice(startIndex)) {
+    if (event.type !== 'player_eliminated_by_linked_auxiliary_upkeep' || !event.playerId || !event.sourceCardId || !event.abilityId) continue;
+    settleHakunoAnalysisForHolder(s, event.playerId, event.sourceCardId, event.abilityId);
+  }
+}
+
 function settleArmedAttributeUseDefeat(s: GameState, event: AbilityEvent): void {
   const candidate = armedAttributeUseDefeatCandidate(s, event, (instanceId) => getEffectiveCardAttributes(s, instanceId));
   if (!candidate) return;
@@ -7965,6 +8182,7 @@ function settleArmedAttributeUseDefeat(s: GameState, event: AbilityEvent): void 
 
 function processEvent(s: GameState, event: AbilityEvent): void {
   const r = runtime(s);
+  const eventAuditStart = r.events.length;
   reconcileVesselCycleVictoryPoints(s); reconcileBloodlustVictoryPoints(s); reconcileBattleWitherVictoryPoints(s); if (r.processedEvents.includes(event.id)) return;
   if (event.type === OPPONENT_ROUND_VP_GAIN_TRIGGER) {
     const trusted = r.trustedVictoryPointChanges?.[event.id];
@@ -8000,6 +8218,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   if (!event.id) reject('invalid_event', 'Events require stable ids');
   r.processedEvents.push(event.id);
   rememberTrustedBattleResultSnapshot(r, event);
+  settleHakunoAnalysisHandoffs(s, event);
   settleMysticCodeRecoveryArm(s,event);
   settleDefinitionSideDeckBattleEvent(s, event);
   settleArmedAttributeUseDefeat(s, event);
@@ -8079,6 +8298,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
       w.choices.push(t);
     } else executeAbility(s, context(s, t.cardInstanceId, t.abilityId, event));
   }
+  settleHakunoAnalysisHandoffsFromEliminationEvents(s, eventAuditStart);
   const canonicalBattleTerminalId = `battle-phase:${s.round.roundNumber}`;
   if (event.type === 'after_battle_ended' &&
       event.battlePhaseResolutionId === canonicalBattleTerminalId &&
@@ -8429,6 +8649,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const selected = command.selectedIds;
       if (d.interaction) {
         const meta = d.interaction;
+        if (meta.kind === 'hakuno_m_challenge_v1') {
+          resolveHakunoMChallengeDecision(s, playerId, d, selected);
+          break;
+        }
         if (meta.kind === 'injury_warp_choice_v1') {
           if (!Array.isArray(selected) || !resolveInjuryWarpDecision(s, d, selected)) reject('resolution_failed', 'Corrupt or stale injury/topology interaction state');
           break;
