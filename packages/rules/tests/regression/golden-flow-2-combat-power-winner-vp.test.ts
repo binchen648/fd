@@ -7,7 +7,7 @@ function buildGoldenFlow2Room(roomId = 'golden-flow-2-regression') {
     roomId,
     hostClientId: 'host-gf2',
     hostName: 'Golden Flow 2 Host',
-    seed: 20260914,
+    seed: 1,
   });
   room.selectSeat('host-gf2', 5);
   room.startMatch('host-gf2');

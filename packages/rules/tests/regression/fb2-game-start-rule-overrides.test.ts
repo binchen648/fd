@@ -388,7 +388,7 @@ describe('P3-FB2-14 identity-free game-start RuleOverride runtime', () => {
   });
 
   it('serializes and restores typed overrides plus the round gain ledger without widening authority', () => {
-    const session = createMatchSession({ seed: 20260916, humanPlayerId: 'p1' });
+    const session = createMatchSession({ seed: 1, humanPlayerId: 'p1' });
     session.state.ruleOverrides = { roundTotalManaGainCapByPlayer: { p1: { regular: 2, climax: 4 } }, viewFaceDownEventsPlayerIds: ['p1'] };
     session.state.abilityRuntime!.manaGainedThisRound = { round: 3, byPlayer: { p1: 2 } };
     const restored = restoreMatchSession(session.serializeSession());
