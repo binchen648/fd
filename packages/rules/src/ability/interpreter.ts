@@ -8112,10 +8112,11 @@ function rememberTrustedBattleResultSnapshot(r: AbilityRuntime, event: AbilityEv
 function settleHakunoAnalysisHandoffs(s: GameState, event: AbilityEvent): void {
   if (event.type !== 'after_battle_result_determined' || !Array.isArray(event.battleParticipantIds)) return;
   const r = runtime(s);
-  for (const holder of s.players.filter((candidate) => event.battleParticipantIds!.includes(candidate.id) && candidate.status === 'eliminated')) {
+  for (const holder of s.players.filter((candidate) => event.battleParticipantIds!.includes(candidate.id) && candidate.status === 'eliminated' &&
+    candidate.masterCardId === 'master.hakuno-m')) {
     const analysis = s.cards.filter((entry) => entry.definitionId === HAKUNO_M_ANALYSIS_DEFINITION && entry.ownerPlayerId === holder.id && entry.zone === 'skill');
     if (analysis.length === 0) continue;
-    const eligible = s.players.filter((candidate) => candidate.id !== holder.id && candidate.status === 'active' && candidate.masterCardId === 'master.hakuno-m')
+    const eligible = s.players.filter((candidate) => candidate.id !== holder.id && candidate.status === 'active' && candidate.masterCardId !== 'master.hakuno-m')
       .sort((left, right) => left.seat - right.seat);
     const after = eligible.filter((candidate) => candidate.seat > holder.seat);
     const recipient = [...after, ...eligible.filter((candidate) => candidate.seat < holder.seat)][0];

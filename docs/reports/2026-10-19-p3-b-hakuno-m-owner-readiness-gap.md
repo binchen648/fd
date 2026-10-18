@@ -14,11 +14,11 @@ The archive contains exactly the four frozen skills: `ascension`/死相, `s1`/�
 - `hakuno_m_challenge_v1` uses the existing durable `PendingDecision` continuation boundary. It stores branch, round index, both throw histories, win count, frozen Analysis count, source/participant/battlefield identity, revision and continuation reference.
 - Every branch and throw validates source ability, active participants, same battlefield, round, authority, exact candidates, stage, count and revision. Dispatch is transactional, so rejected choices roll back; the interaction metadata is restore-validated for reconnect/replay snapshots.
 - Settlement writes auditable round/result events, applies exact total-Power adjustments, creates Analysis for 2+ wins, and records defeat markers for 0 or 3 wins. Analysis threshold wins are included from the frozen holder count.
-- Post-scoring `after_battle_result_determined` events transfer all held Analysis from an eliminated holder to the next active Hakuno-M by circular seat order, or emit an explicit no-target audit event.
+- Post-scoring `after_battle_result_determined` events transfer all held Analysis from an eliminated Hakuno-M to the next active opponent with a different Master identity by circular seat order, or emit an explicit no-target audit event.
 
 ## Verification
 
-- Builder environment (`node_modules` present): `npx vitest run packages/rules/tests/regression/p3-hakuno-m-owner-readiness-capability.test.ts`: **11/11 PASS**.
+- Builder environment (`node_modules` present): `npx vitest run packages/rules/tests/regression/p3-hakuno-m-owner-readiness-capability.test.ts`: **13/13 PASS**.
 - Builder environment: `npm run typecheck`: **PASS**.
 - Builder environment: `npm run content:validate`: **PASS** (`28 masters, 19 servants, 20 events, 0 blocking issues`).
 - Builder environment: `npm run content:compile`: **PASS**; generated library/evidence artifacts regenerated.

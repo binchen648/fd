@@ -23,7 +23,9 @@ function setup(phase: 'action' | 'combat' = 'action'): GameState {
   const state = createSeededGameState({ activeSeats: [1, 2, 3] });
   state.cards = [];
   state.round.activePhase = phase;
-  state.players.forEach((entry) => { entry.masterCardId = ROOT; });
+  state.players[0]!.masterCardId = ROOT;
+  state.players[1]!.masterCardId = 'master.artoria';
+  state.players[2]!.masterCardId = 'master.irisviel';
   state.players[0]!.mana = 4;
   state.players[0]!.locationId = 'miyama_town';
   state.players[1]!.locationId = 'miyama_town';
@@ -170,7 +172,7 @@ describe('P3 Hakuno-M owner readiness capability', () => {
     expect(state.abilityRuntime!.pendingDecision?.id).toBe(decision.id);
   });
 
-  it('applies Analysis threshold wins and transfers held Analysis after post-scoring elimination', () => {
+  it('applies the Analysis threshold as an additional challenge win', () => {
     const state = setup('combat');
     const source = addCard(state, S1);
     addCard(state, S3, 'p2'); addCard(state, S3, 'p2'); addCard(state, S3, 'p2');
@@ -185,10 +187,36 @@ describe('P3 Hakuno-M owner readiness capability', () => {
     choose('p1', ['rock']); choose('p2', ['scissors']);
     choose('p1', ['rock']); choose('p2', ['scissors']);
     expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'hakuno_m_challenge_result_resolved', challengeWins: 4, analysisCount: 3 }));
+  });
+
+  it('transfers Analysis from an eliminated Hakuno-M to the next active opponent by seat, including wraparound', () => {
+    const state = setup('combat');
+    const first = addCard(state, S3, 'p1');
+    const second = addCard(state, S3, 'p1');
+    state.players[0]!.status = 'eliminated';
+    rules.processAbilityEvent(state, { id: 'hakuno-m-elimination', type: 'after_battle_result_determined', battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p2'], loserIds: ['p1'] } });
+    expect(state.cards.filter((entry) => [first, second].includes(entry.instanceId) && entry.ownerPlayerId === 'p2')).toHaveLength(2);
+    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'hakuno_analysis_handoff_resolved', playerId: 'p1', controllerId: 'p2', movedCount: 2 }));
+
+    const wrapped = setup('combat');
+    const wrappedAnalysis = addCard(wrapped, S3, 'p1');
+    wrapped.players[0]!.seat = 3;
+    wrapped.players[1]!.seat = 1;
+    wrapped.players[2]!.seat = 2;
+    wrapped.players[0]!.status = 'eliminated';
+    rules.processAbilityEvent(wrapped, { id: 'hakuno-m-elimination-wrap', type: 'after_battle_result_determined', battleParticipantIds: ['p1'], battleResult: { winners: [], loserIds: ['p1'] } });
+    expect(wrapped.cards.find((entry) => entry.instanceId === wrappedAnalysis)?.ownerPlayerId).toBe('p2');
+  });
+
+  it('records a structured no-target handoff when every non-Hakuno opponent is eliminated', () => {
+    const state = setup('combat');
+    const analysis = addCard(state, S3, 'p1');
+    state.players[0]!.status = 'eliminated';
     state.players[1]!.status = 'eliminated';
-    rules.processAbilityEvent(state, { id: 'hakuno-m-elimination', type: 'after_battle_result_determined', battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] } });
-    expect(state.cards.filter((entry) => entry.definitionId === S3 && entry.ownerPlayerId === 'p3')).toHaveLength(4);
-    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'hakuno_analysis_handoff_resolved', playerId: 'p2', controllerId: 'p3', movedCount: 4 }));
+    state.players[2]!.status = 'eliminated';
+    rules.processAbilityEvent(state, { id: 'hakuno-m-elimination-no-target', type: 'after_battle_result_determined', battleParticipantIds: ['p1'], battleResult: { winners: [], loserIds: ['p1'] } });
+    expect(state.cards.find((entry) => entry.instanceId === analysis)?.ownerPlayerId).toBe('p1');
+    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'hakuno_analysis_handoff_skipped', playerId: 'p1', movedCount: 1 }));
   });
 
   it('executes Dead Face as a repeatable paid owner transfer and preserves the Analysis definition', () => {
