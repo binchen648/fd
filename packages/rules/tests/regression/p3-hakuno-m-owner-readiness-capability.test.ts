@@ -54,9 +54,10 @@ function addCard(state: GameState, definitionId: string, owner = 'p1', zone = 's
 }
 
 describe('P3 Hakuno-M owner readiness capability', () => {
-  it('loads exactly the four frozen skills and records only the two explicit host gaps', () => {
+  it('loads exactly the four frozen skills and records the three explicit readiness gaps', () => {
     const loaded = rules.loadAuthoringJson(rawArchive());
     expect(loaded.report).toEqual(expect.arrayContaining([
+      expect.objectContaining({ path: 'verification.implementationStatus', status: 'unsupported', cardId: S1 }),
       expect.objectContaining({ abilityId: 'hakuno-m.challenge-result', status: 'host_adjudicated' }),
       expect.objectContaining({ abilityId: 'hakuno-m.analysis', status: 'host_adjudicated' }),
       expect.objectContaining({ path: 'verification.implementationStatus', status: 'unsupported' }),
@@ -76,6 +77,20 @@ describe('P3 Hakuno-M owner readiness capability', () => {
     const loaded = rules.loadAuthoringJson(malformed);
     expect(loaded.report).toEqual(expect.arrayContaining([
       expect.objectContaining({ status: 'unsupported', path: 'hakunoMale.gateway' }),
+    ]));
+  });
+
+  it('rejects widened Dead Face cost and target envelopes at the whole-ability gateway', () => {
+    const wrongCost = rawArchive();
+    wrongCost.cards[0].abilities[0].cost[0].amount = 2;
+    expect(rules.loadAuthoringJson(wrongCost).report).toEqual(expect.arrayContaining([
+      expect.objectContaining({ path: 'hakunoMale.gateway', abilityId: DEAD_FACE, status: 'unsupported' }),
+    ]));
+
+    const wrongRecipient = rawArchive();
+    wrongRecipient.cards[0].abilities[0].targets[1].constraints = [{ type: 'same_location_as_controller' }];
+    expect(rules.loadAuthoringJson(wrongRecipient).report).toEqual(expect.arrayContaining([
+      expect.objectContaining({ path: 'hakunoMale.gateway', abilityId: DEAD_FACE, status: 'unsupported' }),
     ]));
   });
 
@@ -111,6 +126,20 @@ describe('P3 Hakuno-M owner readiness capability', () => {
     expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({
       type: 'card_moved', cardInstanceId: analysis, fromZone: 'skill', toZone: 'skill', abilityId: DEAD_FACE,
     }));
+  });
+
+  it('never treats challenge-result or Analysis marker effects as successful interpreter no-ops', () => {
+    const state = setup('combat');
+    for (const [definitionId, abilityId, effectType] of [
+      [S2, 'hakuno-m.challenge-result', 'hakuno_m_challenge_result'],
+      [S3, 'hakuno-m.analysis', 'hakuno_m_analysis'],
+    ] as const) {
+      const source = addCard(state, definitionId);
+      expect(() => rules.resolveEffect(state, {
+        controllerId: 'p1', sourceCardId: source, abilityId,
+        variables: {}, selections: {},
+      }, { type: effectType })).toThrow(/unimplemented continuation\/round-end host contract/);
+    }
   });
 
   it('keeps challenge-result and Analysis as explicit readiness gaps instead of claiming runtime completion', () => {

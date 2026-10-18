@@ -21,6 +21,10 @@ function nodes(value: unknown): RuleNode[] { return Array.isArray(value) ? value
 function exact(value: RuleNode, keys: string[]): boolean {
   return Object.keys(value).sort().join('|') === [...keys].sort().join('|');
 }
+function exactCount(value: unknown): boolean {
+  const count = node(value);
+  return exact(count, ['min', 'max']) && count.min === 1 && count.max === 1;
+}
 function emptyEnvelope(a: AuthoringAbility, kind: string): boolean {
   return a.kind === kind && nodes(a.conditions).length === 0 && nodes(a.ruleModifiers).length === 0 &&
     nodes(a.creates).length === 0 && Object.keys(node(a.lifecycle)).length === 0 &&
@@ -59,11 +63,24 @@ export function isAcceptedHakunoMaleAbility(a: AuthoringAbility): boolean {
       (a.activation.trigger === 'while_active' || Object.keys(a.activation).length === 0) &&
       nodes(a.targets).length === 0 && exact(effect, ['type']);
   }
+  const analysisTarget = nodes(a.targets)[0]!;
+  const recipientTarget = nodes(a.targets)[1]!;
+  const analysisScope = node(analysisTarget.scope);
+  const analysisConstraint = nodes(analysisTarget.constraints)[0]!;
+  const recipientConstraint = nodes(recipientTarget.constraints)[0]!;
+  const cost = a.cost[0]!;
   return a.id === 'hakuno-m.dead-face-transfer' && a.kind === 'phase_action' &&
     a.activation.phase === 'action' && a.activation.opens === 'controller_action_window' &&
-    nodes(a.targets).length === 2 && nodes(a.targets)[0]!.id === 'analysis' &&
-    nodes(a.targets)[0]!.type === 'card_instance' && nodes(a.targets)[1]!.id === 'recipient' &&
-    nodes(a.targets)[1]!.type === 'player' && a.cost.length === 1 && a.cost[0]!.type === 'pay_mana' &&
+    nodes(a.targets).length === 2 && exact(analysisTarget, ['id', 'type', 'scope', 'count', 'constraints']) &&
+    analysisTarget.id === 'analysis' && analysisTarget.type === 'card_instance' && exactCount(analysisTarget.count) &&
+    exact(analysisScope, ['zone', 'owner', 'controller']) && analysisScope.zone === 'skill' &&
+    analysisScope.owner === 'any' && analysisScope.controller === 'any' &&
+    nodes(analysisTarget.constraints).length === 1 && exact(analysisConstraint, ['type', 'cardId']) &&
+    analysisConstraint.type === 'has_card_id' && analysisConstraint.cardId === HAKUNO_M_ANALYSIS_DEFINITION &&
+    exact(recipientTarget, ['id', 'type', 'count', 'constraints']) && recipientTarget.id === 'recipient' &&
+    recipientTarget.type === 'player' && exactCount(recipientTarget.count) &&
+    nodes(recipientTarget.constraints).length === 1 && exact(recipientConstraint, ['type']) &&
+    recipientConstraint.type === 'not_controller' && a.cost.length === 1 && exact(cost, ['type', 'amount']) &&
+    cost.type === 'pay_mana' && cost.amount === 1 &&
     exact(effect, ['type', 'source', 'target']) && effect.source === 'analysis' && effect.target === 'recipient';
 }
-

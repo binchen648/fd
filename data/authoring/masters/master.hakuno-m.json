@@ -51,7 +51,7 @@
         "effects": [{"type": "hakuno_m_yomi", "mode": "analysis", "target": "opponent"}], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
         "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}
       }],
-      "verification": {"implementationStatus": "complete"}
+      "verification": {"implementationStatus": "readiness_gap", "gap": "Yomi's three-round challenge branch is not implemented; only the analysis branch is executable"}
     },
     {
       "id": "master.hakuno-m.skill.s2", "aliases": ["s2"], "legacyId": "s2", "name": "挑战结果",

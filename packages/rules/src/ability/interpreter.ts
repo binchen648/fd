@@ -3435,9 +3435,11 @@ export function isControllerMasterSkillDefinitionReturnComponent(effect: Authori
  * Dead Face transfer are fully server-owned and provenance checked here. */
 function resolveHakunoMaleEffect(s: GameState, ctx: EffectContext, effect: RuleNode): boolean {
   const ability = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (effect.type === HAKUNO_M_CHALLENGE_RESULT_EFFECT || effect.type === HAKUNO_M_ANALYSIS_EFFECT) {
+    reject('host_adjudicated', 'Hakuno-M challenge-result and Analysis lifecycle require an unimplemented continuation/round-end host contract');
+  }
   if (!isAcceptedHakunoMaleAbility(ability)) reject('resolution_failed', 'Unsupported Hakuno-M semantic shape');
   const r = runtime(s); const controller = player(s, ctx.controllerId);
-  if (effect.type === HAKUNO_M_CHALLENGE_RESULT_EFFECT || effect.type === HAKUNO_M_ANALYSIS_EFFECT) return true;
   if (effect.type === HAKUNO_M_YOMI_EFFECT) {
     const targetId = ctx.selections[String(effect.target)]?.[0];
     const target = targetId ? s.players.find((candidate) => candidate.id === targetId) : undefined;

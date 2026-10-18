@@ -1,8 +1,8 @@
 # P3-B Hakuno-M owner-readiness / capability gap
 
-Date: 2026-10-19  
-Owner: `master.hakuno-m` / 岸波白野男  
-Classification: zero-credit readiness package; **not owner-complete and not a Candidate**  
+Date: 2026-10-19
+Owner: `master.hakuno-m` / 岸波白野男
+Classification: zero-credit readiness package; **not owner-complete and not a Candidate**
 Locked Reference: `b2f9fa15fba07c63530bbf4612b03b8b704755f9`
 
 ## Frozen scope
@@ -23,31 +23,33 @@ Reference source inspection confirms the following contracts:
 
 ## Implemented bounded capability
 
-`packages/rules/src/ability/hakuno-m-yomi-capability.ts` and the loader gateway are identity-free and fail closed. They accept the exact authoring envelope for the four frozen IDs, while rejecting widened privileged shapes.
+`packages/rules/src/ability/hakuno-m-yomi-capability.ts` and the loader gateway are identity-free and fail closed. They recognize only the exact authoring envelopes for the four frozen IDs, reject widened privileged shapes, and reject host-adjudicated gap abilities from automatic execution.
 
 The interpreter closes only the two currently verifiable transaction seams:
 
-- Yomi's analysis branch: trusted same-battlefield opponent target, `-2` round Power adjustment, and provenance-bound Analysis creation in the opponent's skill zone;
+- Yomi's analysis branch only: trusted same-battlefield opponent target, `-2` round Power adjustment, and provenance-bound Analysis creation in the opponent's skill zone;
 - Dead Face: fixed one-mana cost, opponent-owned Analysis selection, distinct active recipient, owner/controller transfer, and card-move audit event.
 
 ## Explicit blockers
 
 The current engine has no authoritative cross-command interaction state for three sequential RPS decisions and no round-end elimination lifecycle hook that can deterministically select the next eligible Hakuno opponent. Therefore:
 
+- `master.hakuno-m.skill.s1` is marked `readiness_gap` because Yomi's challenge branch is not executable;
 - `hakuno-m.challenge-result` is marked `host_adjudicated` with `verification.implementationStatus=readiness_gap`;
 - `hakuno-m.analysis` is marked `host_adjudicated` with `verification.implementationStatus=readiness_gap`;
-- their marker effects are not executable no-ops and must not be counted as completed semantics;
+- S2/S3 marker effects are explicitly rejected by the interpreter and are not successful no-ops;
 - the canonical pack is registered for discoverability, but generated content is intentionally not regenerated while the pack's executable validation is blocked.
 
 ## Verification
 
-- `npx vitest run packages/rules/tests/regression/p3-hakuno-m-owner-readiness-capability.test.ts`: **5/5 PASS**
-- `npm run typecheck`: **PASS**
-- `git diff --check`: **PASS**
-- `npm run content:validate`: **BLOCKED as expected**; executable compilation rejects the two explicit readiness gaps (`s2` challenge settlement and `s3` Analysis lifecycle), plus their strict gateway status. No generated artifact was written.
+- Builder environment with `node_modules` present: `npx vitest run packages/rules/tests/regression/p3-hakuno-m-owner-readiness-capability.test.ts`: **7/7 PASS**
+- Builder environment: `npm run typecheck`: **PASS**
+- Builder environment: `git diff --check 82b9e57c HEAD`: **PASS**
+- Builder environment: `npm run content:validate`: **BLOCKED as expected**; executable compilation rejects the three explicit readiness gaps (S1 challenge branch, S2 challenge settlement, and S3 Analysis lifecycle), plus their strict gateway status. No generated artifact was written.
+- The isolated Reviewer did not rerun dependency-backed commands; its environment limitation is kept distinct from these Builder results and is not reported as a test result.
 
 No changes were made to `E:\Codex\FD\Fate_Domination-重构版`, no Hakuno-F file was modified, and no reset/clean/push/merge was performed.
 
 ## Required follow-up before owner-complete
 
-Implement and test a server-owned three-round RPS continuation (including reconnect/replay/rollback) and a round-end elimination transfer event with deterministic turn-order selection and restore provenance. Only then can `s2`/`s3` move from readiness gaps to automatic executable authoring and can `content:validate`/generated-content gates be rerun.
+Implement and test a server-owned three-round RPS continuation (including reconnect/replay/rollback), wire Yomi's challenge branch to it, and add a round-end elimination transfer event with deterministic turn-order selection and restore provenance. Only then can `s1`/`s2`/`s3` move from readiness gaps to automatic executable authoring and can `content:validate`/generated-content gates be rerun.
