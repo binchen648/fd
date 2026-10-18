@@ -9761,3 +9761,25 @@ Formal review/accounting closure:
 - formal A-sync lawfully advances accounting `273/944 + 6 = 279/944`, remaining `665`;
 - acceptance synchronization report: `docs/reports/2026-10-19-p3-a-owner-hakuno-f-acceptance-synchronization.md`;
 - full-suite red findings, A02/source-asset history, and the non-green F5 boundary remain disclosed and are not reclassified as green.
+
+## TASK P3-S-OWNER-HINAKO-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner migration with explicit host-adjudicated boundaries, frozen exactly six skills for `master.hinako`
+
+Exact Base: `aff3960a968af29eb015033a7af6e6632771941f` — Hakuno-M accepted Candidate.
+Exact Candidate: `96f66230c0e2c2c7a8b30ee671bbc662253450a3` — PR #565.
+
+Independent GPT-6 Sol Reviewer returned exact `MIGRATION_ACCEPTED` in separate worktree `review-hinako-r4`.
+
+Canonical materialization and evidence:
+- `data/authoring/masters/master.hinako.json` contains exactly the six frozen skills;
+- `data/packs/fd-playtest-v1/pack.json` registers the archive once;
+- generated content/evidence are synchronized and validated;
+- ascension/s1/s3/s4 are explicitly host-adjudicated due to missing first-class NPC/China expansion state;
+- s1a removed-from-game restriction and s2 round-limited attack modifier are covered by tests/static evidence; master-deck attacks are included.
+
+Formal synchronization report: `docs/reports/2026-10-19-p3-a-owner-hinako-acceptance-synchronization.md`.
+
+Synchronized frontier accounting: `283/944 + 6 = 289/944`, remaining `655`; mainline remains `279/944` until open PRs #563/#564/#565 and this synchronization are integrated. PR #565 remains open and unmerged.
