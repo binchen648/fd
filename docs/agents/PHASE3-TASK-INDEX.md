@@ -9813,3 +9813,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-illya-mahou-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#571` or any prior open PR.
+
+## TASK P3-S-OWNER-IRISVIEL-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: corrective owner-complete canonical consumer migration, frozen exactly three skills for `master.irisviel`
+
+Exact accepted review:
+
+- PR `#573`, Base `4dd3dbb3`;
+- accepted Candidate `7b6a57df`;
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from `/root/irisviel_reviewer`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-irisviel` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly three identities: `master.irisviel.skill.ascension`, `.s1`, and `.s2`.
+
+This Candidate corrects the prior incomplete archive: all three canonical cards are present, stale `excludedCards` is removed, and `转换魔术` matches the inventory exactly. All three cards are explicitly `HOST_ADJUDICATED`; old automatic handlers are blocked by card-level gates because the current engine lacks authoritative attack-lifecycle, command-spell timing, and dynamic hand-to-mana contracts.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `302/944`, remaining `642`;
+- exact owner increment: `+3`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`305/944`**, remaining **`639`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-irisviel-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#573` or any prior open PR.
