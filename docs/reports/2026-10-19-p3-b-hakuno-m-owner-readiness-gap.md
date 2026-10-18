@@ -14,11 +14,11 @@ The archive contains exactly the four frozen skills: `ascension`/死相, `s1`/�
 - `hakuno_m_challenge_v1` uses the existing durable `PendingDecision` continuation boundary. It stores branch, round index, both throw histories, win count, frozen Analysis count, source/participant/battlefield identity, revision and continuation reference.
 - Every branch and throw validates source ability, active participants, same battlefield, round, authority, exact candidates, stage, count and revision. Dispatch is transactional, so rejected choices roll back; the interaction metadata is restore-validated for reconnect/replay snapshots.
 - Settlement writes auditable round/result events, applies exact total-Power adjustments, creates Analysis for 2+ wins, and records defeat markers for 0 or 3 wins. Analysis threshold wins are included from the frozen holder count.
-- Post-scoring `after_battle_result_determined` events transfer all held Analysis from any eliminated holder to the next active opponent with a different Master identity by circular seat order, or emit an explicit no-target audit event.
+- Battle-result processing and the authoritative linked-auxiliary `player_eliminated_by_linked_auxiliary_upkeep` event both transfer all held Analysis from an eliminated holder to the next active opponent with a different Master identity by circular seat order, or emit an explicit no-target audit event. Replayed elimination events are idempotent and cannot duplicate a transfer.
 
 ## Verification
 
-- Builder environment (`node_modules` present): `npx vitest run packages/rules/tests/regression/p3-hakuno-m-owner-readiness-capability.test.ts`: **15/15 PASS**. This includes direct 0/1/2/3-win S2 assertions, Analysis threshold settlement, stale replay rejection, cross-stage/phase/identity/location/revision rollback checks, and holder handoff boundaries.
+- Builder environment (`node_modules` present): `npx vitest run packages/rules/tests/regression/p3-hakuno-m-owner-readiness-capability.test.ts`: **17/17 PASS**. This includes direct 0/1/2/3-win S2 assertions, Analysis threshold settlement, stale replay rejection, cross-stage/phase/identity/location/revision rollback checks, battle and non-battle holder handoff boundaries, no-target handling, and duplicate-event idempotence.
 - Builder environment: `npm run typecheck`: **PASS**.
 - Builder environment: `npm run content:validate`: **PASS** (`28 masters, 19 servants, 20 events, 0 blocking issues`).
 - Builder environment: `npm run content:compile`: **PASS**; generated library/evidence artifacts regenerated.
@@ -30,4 +30,4 @@ No changes were made to `E:\Codex\FD\Fate_Domination-重构版`; no Hakuno-F/V2 
 
 ## Residual scope
 
-This remains a zero-credit migration verification. The generic rules engine still represents defeat through its established round marker; the game loop consumes that marker through existing elimination/scoring semantics. No host-adjudicated or successful no-op path is used for S1/S2/S3.
+This remains a zero-credit migration verification. The generic rules engine retains its established defeat marker, while linked-auxiliary upkeep additionally emits the authoritative elimination event consumed by the Analysis handoff. No host-adjudicated or successful no-op path is used for S1/S2/S3.

@@ -8109,30 +8109,41 @@ function rememberTrustedBattleResultSnapshot(r: AbilityRuntime, event: AbilityEv
   };
 }
 
+function settleHakunoAnalysisForHolder(s: GameState, holderId: string, sourceCardId: string, abilityId: string): void {
+  const r = runtime(s);
+  const holder = s.players.find((candidate) => candidate.id === holderId && candidate.status === 'eliminated');
+  if (!holder) return;
+  const analysis = s.cards.filter((entry) => entry.definitionId === HAKUNO_M_ANALYSIS_DEFINITION && entry.ownerPlayerId === holder.id && entry.zone === 'skill');
+  if (analysis.length === 0) return;
+  const eligible = s.players.filter((candidate) => candidate.id !== holder.id && candidate.status === 'active' && candidate.masterCardId !== 'master.hakuno-m')
+    .sort((left, right) => left.seat - right.seat);
+  const after = eligible.filter((candidate) => candidate.seat > holder.seat);
+  const recipient = [...after, ...eligible.filter((candidate) => candidate.seat < holder.seat)][0];
+  if (!recipient) {
+    if (r.events.some((entry) => entry.type === 'hakuno_analysis_handoff_skipped' && entry.playerId === holder.id && entry.sourceCardId === sourceCardId && entry.abilityId === abilityId)) return;
+    r.events.push({ type: 'hakuno_analysis_handoff_skipped', playerId: holder.id, sourceCardId,
+      abilityId, movedCount: analysis.length, qualifyingPlayerIds: [holder.id] });
+    return;
+  }
+  for (const physical of analysis) {
+    physical.ownerPlayerId = recipient.id; physical.controllerPlayerId = recipient.id;
+    physical.visibility = { scope: 'owner_only', ownerPlayerId: recipient.id };
+    r.events.push({ type: 'card_moved', playerId: recipient.id, controllerId: holder.id, sourceCardId,
+      abilityId, cardInstanceId: physical.instanceId, fromZone: 'skill', toZone: 'skill', movedCount: 1 });
+  }
+  r.events.push({ type: 'hakuno_analysis_handoff_resolved', playerId: holder.id, controllerId: recipient.id,
+    sourceCardId, abilityId, movedCount: analysis.length, qualifyingPlayerIds: [holder.id, recipient.id] });
+}
 function settleHakunoAnalysisHandoffs(s: GameState, event: AbilityEvent): void {
   if (event.type !== 'after_battle_result_determined' || !Array.isArray(event.battleParticipantIds)) return;
-  const r = runtime(s);
   for (const holder of s.players.filter((candidate) => event.battleParticipantIds!.includes(candidate.id) && candidate.status === 'eliminated')) {
-    const analysis = s.cards.filter((entry) => entry.definitionId === HAKUNO_M_ANALYSIS_DEFINITION && entry.ownerPlayerId === holder.id && entry.zone === 'skill');
-    if (analysis.length === 0) continue;
-    const eligible = s.players.filter((candidate) => candidate.id !== holder.id && candidate.status === 'active' && candidate.masterCardId !== 'master.hakuno-m')
-      .sort((left, right) => left.seat - right.seat);
-    const after = eligible.filter((candidate) => candidate.seat > holder.seat);
-    const recipient = [...after, ...eligible.filter((candidate) => candidate.seat < holder.seat)][0];
-    if (!recipient) {
-      r.events.push({ type: 'hakuno_analysis_handoff_skipped', playerId: holder.id, sourceCardId: event.id,
-        abilityId: 'hakuno-m.analysis', movedCount: analysis.length, qualifyingPlayerIds: [holder.id] });
-      continue;
-    }
-    for (const physical of analysis) {
-      physical.ownerPlayerId = recipient.id; physical.controllerPlayerId = recipient.id;
-      physical.visibility = { scope: 'owner_only', ownerPlayerId: recipient.id };
-      r.events.push({ type: 'card_moved', playerId: recipient.id, controllerId: holder.id, sourceCardId: event.id,
-        abilityId: 'hakuno-m.analysis', cardInstanceId: physical.instanceId, fromZone: 'skill', toZone: 'skill', movedCount: 1 });
-    }
-    r.events.push({ type: 'hakuno_analysis_handoff_resolved', playerId: holder.id, controllerId: recipient.id,
-      sourceCardId: event.id, abilityId: 'hakuno-m.analysis', movedCount: analysis.length,
-      qualifyingPlayerIds: [holder.id, recipient.id] });
+    settleHakunoAnalysisForHolder(s, holder.id, event.id, 'hakuno-m.analysis');
+  }
+}
+function settleHakunoAnalysisHandoffsFromEliminationEvents(s: GameState, startIndex: number): void {
+  for (const event of runtime(s).events.slice(startIndex)) {
+    if (event.type !== 'player_eliminated_by_linked_auxiliary_upkeep' || !event.playerId || !event.sourceCardId || !event.abilityId) continue;
+    settleHakunoAnalysisForHolder(s, event.playerId, event.sourceCardId, event.abilityId);
   }
 }
 
@@ -8171,6 +8182,7 @@ function settleArmedAttributeUseDefeat(s: GameState, event: AbilityEvent): void 
 
 function processEvent(s: GameState, event: AbilityEvent): void {
   const r = runtime(s);
+  const eventAuditStart = r.events.length;
   reconcileVesselCycleVictoryPoints(s); reconcileBloodlustVictoryPoints(s); reconcileBattleWitherVictoryPoints(s); if (r.processedEvents.includes(event.id)) return;
   if (event.type === OPPONENT_ROUND_VP_GAIN_TRIGGER) {
     const trusted = r.trustedVictoryPointChanges?.[event.id];
@@ -8286,6 +8298,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
       w.choices.push(t);
     } else executeAbility(s, context(s, t.cardInstanceId, t.abilityId, event));
   }
+  settleHakunoAnalysisHandoffsFromEliminationEvents(s, eventAuditStart);
   const canonicalBattleTerminalId = `battle-phase:${s.round.roundNumber}`;
   if (event.type === 'after_battle_ended' &&
       event.battlePhaseResolutionId === canonicalBattleTerminalId &&

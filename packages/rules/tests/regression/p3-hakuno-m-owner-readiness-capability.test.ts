@@ -14,12 +14,43 @@ const S2 = `${ROOT}.skill.s2`;
 const S3 = `${ROOT}.skill.s3`;
 const YOMI = 'hakuno-m.yomi';
 const DEAD_FACE = 'hakuno-m.dead-face-transfer';
+const LINKED_PROVIDER = `${ROOT}.test-linked-provider`;
+const LINKED_MEMBER = `${ROOT}.test-linked-member`;
+const LINKED_MEMBER_TWO = `${ROOT}.test-linked-member-two`;
+const LINKED_STATE = 'hakuno-test-linked-upkeep';
 
 function rawArchive() {
   return JSON.parse(readFileSync(ARCHIVE_PATH, 'utf8')) as any;
 }
 
-function setup(phase: 'action' | 'combat' = 'action'): GameState {
+function linkedUpkeepArchive() {
+  const archive = rawArchive();
+  const envelope = (id: string, trigger: string, effect: Record<string, unknown>) => ({
+    id, kind: 'forced_trigger', printedClause: id, activation: { trigger }, conditions: [], targets: [], effects: [effect], cost: [],
+    ruleModifiers: [], creates: [], lifecycle: {}, responseWindow: {}, limit: {}, visibility: {}, execution: { mode: 'automatic', allowedOperations: [] },
+  });
+  archive.cards.push({
+    id: LINKED_PROVIDER, aliases: [], legacyId: LINKED_PROVIDER, name: LINKED_PROVIDER, cardType: 'master_skill', owner: { type: 'master', id: ROOT },
+    printedText: 'test linked provider', cardFace: { typeLabel: 'test', attributes: [], cost: 0, basePower: 0 }, playTiming: {}, playRequirements: [],
+    abilities: [
+      envelope(`${LINKED_PROVIDER}.setup`, 'game_start', { type: 'linked_auxiliary_suite', op: 'setup', stateKey: LINKED_STATE, definitionIds: [LINKED_MEMBER, LINKED_MEMBER_TWO], destination: 'attack_area', zeroCommandSeals: true }),
+      envelope(`${LINKED_PROVIDER}.upkeep`, 'round_end', { type: 'linked_auxiliary_suite', op: 'round_end_upkeep', stateKey: LINKED_STATE }),
+    ], verification: { implementationStatus: 'complete' },
+  });
+  archive.cards.push({
+    id: LINKED_MEMBER, aliases: [], legacyId: LINKED_MEMBER, name: LINKED_MEMBER, cardType: 'basic_attack', owner: { type: 'master', id: ROOT },
+    printedText: 'test linked member', cardFace: { typeLabel: 'test', attributes: [], cost: 0, basePower: 1 }, playTiming: {}, playRequirements: [],
+    abilities: [], verification: { implementationStatus: 'complete' },
+  });
+  archive.cards.push({
+    id: LINKED_MEMBER_TWO, aliases: [], legacyId: LINKED_MEMBER_TWO, name: LINKED_MEMBER_TWO, cardType: 'basic_attack', owner: { type: 'master', id: ROOT },
+    printedText: 'test linked member two', cardFace: { typeLabel: 'test', attributes: [], cost: 0, basePower: 1 }, playTiming: {}, playRequirements: [],
+    abilities: [], verification: { implementationStatus: 'complete' },
+  });
+  return archive;
+}
+
+function setup(phase: 'action' | 'combat' = 'action', archive = rawArchive()): GameState {
   const state = createSeededGameState({ activeSeats: [1, 2, 3] });
   state.cards = [];
   state.round.activePhase = phase;
@@ -33,7 +64,7 @@ function setup(phase: 'action' | 'combat' = 'action'): GameState {
   state.players[0]!.status = 'active';
   state.players[1]!.status = 'active';
   state.players[2]!.status = 'active';
-  rules.initializeAbilityRuntime(state, rules.loadAuthoringJson(rawArchive()), { seed: 20261019 });
+  rules.initializeAbilityRuntime(state, rules.loadAuthoringJson(archive), { seed: 20261019 });
   return state;
 }
 
@@ -292,6 +323,54 @@ describe('P3 Hakuno-M owner readiness capability', () => {
     state.players[1]!.status = 'eliminated';
     state.players[2]!.status = 'eliminated';
     rules.processAbilityEvent(state, { id: 'hakuno-m-elimination-no-target', type: 'after_battle_result_determined', battleParticipantIds: ['p2'], battleResult: { winners: [], loserIds: ['p2'] } });
+    expect(state.cards.find((entry) => entry.instanceId === analysis!.instanceId)?.ownerPlayerId).toBe('p2');
+    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'hakuno_analysis_handoff_skipped', playerId: 'p2', movedCount: 1 }));
+  });
+
+  it('hands off Analysis when linked-auxiliary upkeep eliminates its non-Hakuno holder, with duplicate events idempotent', () => {
+    const state = setup('combat', linkedUpkeepArchive());
+    const yomi = addCard(state, S1);
+    rules.executeAbility(state, { controllerId: 'p1', sourceCardId: yomi, abilityId: YOMI, variables: {}, selections: { opponent: ['p2'] } });
+    const yomiBranch = state.abilityRuntime!.pendingDecision!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: yomiBranch.id, selectedIds: ['analysis'] }).ok).toBe(true);
+    const analysis = state.cards.find((entry) => entry.definitionId === S3 && entry.ownerPlayerId === 'p2');
+    expect(analysis).toBeDefined();
+    const provider = addCard(state, LINKED_PROVIDER, 'p2');
+    rules.executeAbility(state, { controllerId: 'p2', sourceCardId: provider, abilityId: `${LINKED_PROVIDER}.setup`, variables: {}, selections: {} });
+    const members = state.cards.filter((entry) => [LINKED_MEMBER, LINKED_MEMBER_TWO].includes(entry.definitionId) && entry.ownerPlayerId === 'p2');
+    expect(members).toHaveLength(2);
+    for (const member of members) {
+      state.cards = state.cards.filter((entry) => entry.instanceId !== member.instanceId);
+      delete state.abilityRuntime!.cardState[member.instanceId];
+    }
+    rules.processAbilityEvent(state, { id: 'hakuno-linked-upkeep-elimination', type: 'round_end' });
+    expect(state.players.find((entry) => entry.id === 'p2')?.status).toBe('eliminated');
+    expect(state.cards.find((entry) => entry.instanceId === analysis!.instanceId)?.ownerPlayerId).toBe('p3');
+    const resolved = state.abilityRuntime!.events.filter((entry) => entry.type === 'hakuno_analysis_handoff_resolved');
+    expect(resolved).toHaveLength(1);
+    rules.processAbilityEvent(state, { id: 'hakuno-linked-upkeep-elimination', type: 'round_end' });
+    rules.processAbilityEvent(state, { id: 'hakuno-linked-upkeep-elimination-replay', type: 'round_end' });
+    expect(state.abilityRuntime!.events.filter((entry) => entry.type === 'hakuno_analysis_handoff_resolved')).toHaveLength(1);
+    expect(state.cards.filter((entry) => entry.definitionId === S3 && entry.ownerPlayerId === 'p3')).toHaveLength(1);
+  });
+
+  it('records no-target and preserves Analysis when linked upkeep eliminates the holder outside battle', () => {
+    const state = setup('combat', linkedUpkeepArchive());
+    state.players[2]!.status = 'eliminated';
+    const yomi = addCard(state, S1);
+    rules.executeAbility(state, { controllerId: 'p1', sourceCardId: yomi, abilityId: YOMI, variables: {}, selections: { opponent: ['p2'] } });
+    const yomiBranch = state.abilityRuntime!.pendingDecision!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: yomiBranch.id, selectedIds: ['analysis'] }).ok).toBe(true);
+    const analysis = state.cards.find((entry) => entry.definitionId === S3 && entry.ownerPlayerId === 'p2');
+    const provider = addCard(state, LINKED_PROVIDER, 'p2');
+    rules.executeAbility(state, { controllerId: 'p2', sourceCardId: provider, abilityId: `${LINKED_PROVIDER}.setup`, variables: {}, selections: {} });
+    const members = state.cards.filter((entry) => [LINKED_MEMBER, LINKED_MEMBER_TWO].includes(entry.definitionId) && entry.ownerPlayerId === 'p2');
+    expect(members).toHaveLength(2);
+    for (const member of members) {
+      state.cards = state.cards.filter((entry) => entry.instanceId !== member.instanceId);
+      delete state.abilityRuntime!.cardState[member.instanceId];
+    }
+    rules.processAbilityEvent(state, { id: 'hakuno-linked-upkeep-no-target', type: 'round_end' });
     expect(state.cards.find((entry) => entry.instanceId === analysis!.instanceId)?.ownerPlayerId).toBe('p2');
     expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'hakuno_analysis_handoff_skipped', playerId: 'p2', movedCount: 1 }));
   });
