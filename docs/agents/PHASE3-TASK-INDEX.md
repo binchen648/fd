@@ -9761,3 +9761,29 @@ Formal review/accounting closure:
 - formal A-sync lawfully advances accounting `273/944 + 6 = 279/944`, remaining `665`;
 - acceptance synchronization report: `docs/reports/2026-10-19-p3-a-owner-hakuno-f-acceptance-synchronization.md`;
 - full-suite red findings, A02/source-asset history, and the non-green F5 boundary remain disclosed and are not reclassified as green.
+
+## TASK P3-S-OWNER-ILIYA-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly five skills for `master.iliya`
+
+Exact accepted review:
+
+- PR `#569`, Base `2adc423fe17a3ad0310cf18ca9152b0850b4163a`;
+- accepted Candidate `46fbae03d7e1c58e0e8623b26babc1d763cccd06`;
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from `/root/iliya_reviewer_r5`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-iliya-r5` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly five identities: `master.iliya.skill.ascension`, `.s1`, `.s2`, `.s3`, and `.s4`.
+
+The Candidate publishes a loader-compatible `game_start`/`set_mana` implementation for `s1` (initial mana 6) as `FULL`/automatic. Ascension, `s2`, `s3`, and `s4` remain explicit `HOST_ADJUDICATED` boundaries because the current engine lacks the required first-class deck, round-start, attack-cost/face-down, and prior-battle/shared-field state. No unsupported automatic behavior is claimed.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `294/944`, remaining `650`;
+- exact owner increment: `+5`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`299/944`**, remaining **`645`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-iliya-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#569` or any prior open PR.
