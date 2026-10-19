@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 47,
+    "masters": 48,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -4014,6 +4014,61 @@
       "htmPath": "chm-extract/远坂凛.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/远坂凛.png",
       "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ritsuka-f",
+      "displayName": "藤丸立香（女）",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/藤丸立香（女）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/藤丸立香（女）.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ritsuka-f.overview",
+      "displayName": "藤丸立香（女）",
+      "entityKind": "master_overview",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/藤丸立香（女）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/藤丸立香（女）.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ritsuka-f.skill.ascension",
+      "displayName": "连锁指令",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/藤丸立香（女）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/藤丸立香（女）.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ritsuka-f.skill.s1",
+      "displayName": "扭蛋女皇",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/藤丸立香（女）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/藤丸立香（女）.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ritsuka-f.skill.s1a",
+      "displayName": "支援",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/藤丸立香（女）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/藤丸立香（女）.png",
+      "imageIndex": 3,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

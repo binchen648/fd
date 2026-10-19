@@ -85,7 +85,8 @@
                                  "data/authoring/masters/master.peperoncino.canonical.json",
                                  "data/authoring/masters/master.rani.json",
                                  "data/authoring/masters/master.reines.json",
-                                 "data/authoring/masters/master.rin.json"
+                                 "data/authoring/masters/master.rin.json",
+                                 "data/authoring/masters/master.ritsuka-f.json"
                              ],
     "authoringMasterSupportFiles":  [
                                         "data/authoring/masters/master.shirou-emiya.json"

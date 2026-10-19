@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.ritsuka-f",
+  "name": "藤丸立香（女）",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "overviewCapabilityStatus": "HOST_ADJUDICATED",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "1286aa30643b165845f2363a6b25c198df83a342",
+    "referenceMetadataCommit": "1286aa30643b165845f2363a6b25c198df83a342",
+    "note": "Frozen three-skill inventory is DISCOVERED with semanticNormalization BLOCKED by SEMANTIC_SOURCE_REQUIRED and Phase3 mappingStatus EXPLICIT_BLOCK. core.ritsuka-f-dual-servant is reference-only evidence; same-attribute grouping and effect selection, next-round timing, dual-servant draw/deck composition and Warrior/Substitute assignment, Substitute skill removal, and outpost hand replacement/swapping remain HOST_ADJUDICATED. No automatic or FULL capability is inferred.",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版#master.ritsuka-f/藤丸立香（女）",
+      "legacy": {
+        "master.ritsuka-f.skill.ascension": "legacy-content.json#master/master.ritsuka-f/ascension",
+        "master.ritsuka-f.skill.s1": "legacy-content.json#master/master.ritsuka-f/s1",
+        "master.ritsuka-f.skill.s1a": "legacy-content.json#master/master.ritsuka-f/s1a"
+      },
+      "generated": {
+        "master.ritsuka-f.skill.ascension": "src/content/generated/legacy-content.json#masters[49].skills[2].text#line=1 sha256=bfc8f20f45dfbc5286ea230738bae6d74c257e89d3a02bce3c548e049f427409; line=2 sha256=18862e3b4f69601a9bebb32e5439618ab50a460a5afafd231d78c52a9ff65c11; line=3 sha256=38991002454cd70f68510c575bd929cb536fb8f8992a5ae03ed72e3d99d03693; line=4 sha256=77788d1a4d8b54b1a928b157e87d18122e38f4e0797bc23a4cb81dde60d05097",
+        "master.ritsuka-f.skill.s1": "src/content/generated/legacy-content.json#masters[49].skills[0].text#line=1 sha256=c6c4fd4373de83c57836b55300fac6962e3cb9815dafb4229ded438efe27aaea",
+        "master.ritsuka-f.skill.s1a": "src/content/generated/legacy-content.json#masters[49].skills[1].text#line=1 sha256=570e076a1bfcc12e08075786f96790a0f4ac7b2d78fd681b2119fc9b2870faa8"
+      }
+    }
+  },
+  "cards": [
+    { "id": "master.ritsuka-f.skill.ascension", "aliases": ["ascension"], "legacyId": "ascension", "name": "连锁指令", "cardType": "master_skill", "owner": { "type": "master", "id": "master.ritsuka-f" }, "printedText": "行动阶段：如果你打出两张具有相同属性的卡牌，根据相同的属性激活以下其中一种效果：\n力量：合计威力+3。\n迅捷：下一回合，合计威力+5。\n魔术：获得2点魔力。", "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "ritsuka-f.chain-command", "kind": "passive", "printedClause": "行动阶段：如果你打出两张具有相同属性的卡牌，根据相同的属性激活以下其中一种效果：\n力量：合计威力+3。\n迅捷：下一回合，合计威力+5。\n魔术：获得2点魔力。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "ritsuka_f_chain_command" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.ritsuka-f.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "扭蛋女皇", "cardType": "master_skill", "owner": { "type": "master", "id": "master.ritsuka-f" }, "printedText": "游戏开始时你抽取2名从者。将二者的牌堆组合在一起，分配一名从者为【战士】，一名从者为【替补】。【替补】从者的技能牌从游戏中移除。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "ritsuka-f.gacha-queen", "kind": "forced_trigger", "printedClause": "游戏开始时你抽取2名从者。将二者的牌堆组合在一起，分配一名从者为【战士】，一名从者为【替补】。【替补】从者的技能牌从游戏中移除。", "activation": { "trigger": "game_start" }, "effects": [{ "type": "record_master_directive", "directive": "ritsuka_f_gacha_queen" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.ritsuka-f.skill.s1a", "aliases": ["s1a"], "legacyId": "s1a", "name": "支援", "cardType": "master_skill", "owner": { "type": "master", "id": "master.ritsuka-f" }, "printedText": "前哨阶段：弃置所有手牌，抽3张牌。将【战士】与【替补】进行替换。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "ritsuka-f.support", "kind": "passive", "printedClause": "前哨阶段：弃置所有手牌，抽3张牌。将【战士】与【替补】进行替换。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "ritsuka_f_support" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } }
+  ],
+  "sources": [{ "id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/藤丸立香（女）.png"] }]
+}
