@@ -10099,3 +10099,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-kuzuki-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#593` or any prior open synchronization PR.
+
+## TASK P3-S-OWNER-LEONARDO-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly three skills for `master.leonardo`
+
+Exact accepted review:
+
+- PR `#595`, exact Base `056d323c`;
+- accepted Candidate `870b8bb2ce7ad9876b3fb614dfabb0dca7315eda`;
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from `/root/kirei_reviewer`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-leonardo` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly three identities: `master.leonardo.skill.ascension`, `.s1`, and `.s1a`.
+
+All three cards preserve exact inventory/generated text and four source hashes, including both ascension clauses. All three remain `HOST_ADJUDICATED` because the current engine lacks authoritative contracts for their full behavior.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `352/944`, remaining `592`;
+- exact owner increment: `+3`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`355/944`**, remaining **`589`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-leonardo-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#595` or any prior open synchronization PR.
