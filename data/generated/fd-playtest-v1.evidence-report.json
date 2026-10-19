@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 41,
+    "masters": 42,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -3408,6 +3408,72 @@
       "htmPath": "chm-extract/久宇舞弥.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/久宇舞弥.png",
       "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.miyu",
+      "displayName": "卫宫美游",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卫宫美游.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卫宫美游.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.miyu.overview",
+      "displayName": "卫宫美游",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/卫宫美游.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卫宫美游.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.miyu.skill.ascension",
+      "displayName": "多重选择",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卫宫美游.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卫宫美游.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.miyu.skill.s1",
+      "displayName": "魔法蓝宝石",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卫宫美游.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卫宫美游.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.miyu.skill.s2",
+      "displayName": "卡牌选择",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卫宫美游.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卫宫美游.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.miyu.skill.s3",
+      "displayName": "梦幻召唤",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卫宫美游.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卫宫美游.png",
+      "imageIndex": 4,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

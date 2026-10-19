@@ -79,7 +79,8 @@
                                  "data/authoring/masters/master.kirei.json",
                                  "data/authoring/masters/master.kohaku.json",
                                  "data/authoring/masters/master.kuzuki.json",
-                                 "data/authoring/masters/master.leonardo.json"
+                                 "data/authoring/masters/master.leonardo.json",
+                                 "data/authoring/masters/master.miyu.json"
                              ],
     "authoringMasterSupportFiles":  [
                                         "data/authoring/masters/master.shirou-emiya.json"

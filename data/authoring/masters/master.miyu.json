@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.miyu",
+  "name": "卫宫美游",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "52a736f3",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "冻结四项技能的 canonical printedText、开发版/legacy 定位、full-roster inventory 原文及十个 generated clause SHA。当前 loader/runtime 没有权威合同证明跨从者抽取与技能构筑、动态名称/职阶绑定、梦幻召唤交换与生命周期、阶段移动/地利/威力/费用修改、以及战果窃取；四张牌全部保持 HOST_ADJUDICATED。core.miyu-sapphire 仅为 reference handler，不能当作 runtime contract。record_master_directive 仅供主持人审计，不能伪装成 complete/FULL/automatic。",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版#master.miyu/卫宫美游",
+      "legacy": {
+        "master.miyu.skill.ascension": "legacy-content.json#master/master.miyu/ascension",
+        "master.miyu.skill.s1": "legacy-content.json#master/master.miyu/s1",
+        "master.miyu.skill.s2": "legacy-content.json#master/master.miyu/s2",
+        "master.miyu.skill.s3": "legacy-content.json#master/master.miyu/s3"
+      },
+      "generated": {
+        "master.miyu.skill.ascension": "src/content/generated/legacy-content.json#masters[63].skills[3].text#line=1 sha256=d2e3ed4d43af37a32746b023cba1e3a6c5ee2af211750ef0a4a01c2f5673fe27; line=2 sha256=3c6cd54b6324e47f3f4d0f7417a6655db693396169254a694e388a4a6e21de12",
+        "master.miyu.skill.s1": "src/content/generated/legacy-content.json#masters[63].skills[0].text#line=1 sha256=1aef43ee7ded86be0c82e81b5d947e7bb06763e59c2943c830b02276503c6288",
+        "master.miyu.skill.s2": "src/content/generated/legacy-content.json#masters[63].skills[1].text#line=1 sha256=43f6a679aafaa68021099b1343f6b83099c27a5d68d872fe5af3da6a82f550d7; line=2 sha256=8565d676108f11d12c47a0b85d566ff3a18022356f75c0ea4ec984b0ab8a9465",
+        "master.miyu.skill.s3": "src/content/generated/legacy-content.json#masters[63].skills[2].text#line=1 sha256=3ef51a57dcc2d1d9d069d642e55fa2626008d825c1e17a49bce79cbee88c2155; line=2 sha256=15820bc7fd9bb68277f0d99bbd521a3e0ff66109aeb81c1cc61082c5902e67a4; line=3 sha256=bc8bb75a3f46e0668f1e34f09a56d0876bbe30fe4227a9f4379777f4d713eed1; line=4 sha256=0fe9ccb0595e95a4e6c101ea1780f9ea496a27977cb26d1d43e7c3b4931072df; line=5 sha256=c6576550876b47ef014cf5da4103db7d624b4cab065e2659cdd93b9091a367f4; line=6 sha256=026663c283e7ab469e479b6d19ebbedc1fdd3b1991247909ff16402dffb3890d"
+      }
+    }
+  },
+  "cards": [
+    { "id": "master.miyu.skill.ascension", "aliases": ["ascension"], "legacyId": "ascension", "name": "多重选择", "cardType": "master_skill", "owner": { "type": "master", "id": "master.miyu" }, "printedText": "解锁此牌后立刻将美游所有的【梦幻召唤】从游戏外加入手牌。\n前哨阶段：弃置1张牌，抽2张牌。", "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "miyu.multiple-choice", "kind": "passive", "printedClause": "解锁此牌后立刻将美游所有的【梦幻召唤】从游戏外加入手牌。\n前哨阶段：弃置1张牌，抽2张牌。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "miyu_multiple_choice" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.miyu.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "魔法蓝宝石", "cardType": "master_skill", "owner": { "type": "master", "id": "master.miyu" }, "printedText": "美游的从者是【魔法蓝宝石】。游戏开始时，从未被抽取的从者中抽取3名并选择他们的3个技能构筑你的技能区。【魔法蓝宝石】额外获得被抽取的从者的名称和职阶。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "miyu.sapphire", "kind": "passive", "printedClause": "美游的从者是【魔法蓝宝石】。游戏开始时，从未被抽取的从者中抽取3名并选择他们的3个技能构筑你的技能区。【魔法蓝宝石】额外获得被抽取的从者的名称和职阶。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "miyu_sapphire" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.miyu.skill.s2", "aliases": ["s2"], "legacyId": "s2", "name": "卡牌选择", "cardType": "master_skill", "owner": { "type": "master", "id": "master.miyu" }, "printedText": "被动/前哨阶段：弃置此牌，抽2张牌。\n被动/前哨阶段：将此牌与游戏开始时你所抽取从者的牌堆中的牌或游戏外的【梦幻召唤】交换。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "miyu.card-choice", "kind": "passive", "printedClause": "被动/前哨阶段：弃置此牌，抽2张牌。\n被动/前哨阶段：将此牌与游戏开始时你所抽取从者的牌堆中的牌或游戏外的【梦幻召唤】交换。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "miyu_card_choice" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.miyu.skill.s3", "aliases": ["s3"], "legacyId": "s3", "name": "梦幻召唤", "cardType": "master_skill", "owner": { "type": "master", "id": "master.miyu" }, "printedText": "【梦幻召唤-剑士】特殊0耗0需3威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。战斗阶段：将同一战场所有对手的魔术属性威力变为0。\n【梦幻召唤-枪兵】特殊0耗0需4威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。行动阶段：移动到【魔术工房】以外的任何地点。\n【梦幻召唤-弓兵】力量/迅捷/魔术0耗0需4威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。行动阶段：将你的地利翻倍。\n【梦幻召唤-骑兵】特殊0耗0需0威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。行动阶段：从手牌中打出至多3张基本威力3及以下的牌。\n【梦幻召唤-魔术师】魔术0耗0需2威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。残留：当你打出另一张非基础攻击时关闭此牌。令那张牌获得获得威力+2或费用-3。\n【梦幻召唤-暗杀者】迅捷0耗0需2威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。战斗阶段：与你交战的对手本回合每使用过一张技能牌，便偷取他们的1点战果。", "cardFace": { "typeLabel": "独立牌库牌", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "miyu.dream-summon", "kind": "passive", "printedClause": "【梦幻召唤-剑士】特殊0耗0需3威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。战斗阶段：将同一战场所有对手的魔术属性威力变为0。\n【梦幻召唤-枪兵】特殊0耗0需4威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。行动阶段：移动到【魔术工房】以外的任何地点。\n【梦幻召唤-弓兵】力量/迅捷/魔术0耗0需4威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。行动阶段：将你的地利翻倍。\n【梦幻召唤-骑兵】特殊0耗0需0威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。行动阶段：从手牌中打出至多3张基本威力3及以下的牌。\n【梦幻召唤-魔术师】魔术0耗0需2威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。残留：当你打出另一张非基础攻击时关闭此牌。令那张牌获得获得威力+2或费用-3。\n【梦幻召唤-暗杀者】迅捷0耗0需2威：每回合只能进行1次【梦幻召唤】<每局游戏限一次>。战斗阶段：与你交战的对手本回合每使用过一张技能牌，便偷取他们的1点战果。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "miyu_dream_summon" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } }
+  ],
+  "sources": [{ "id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/卫宫美游.png"] }]
+}
