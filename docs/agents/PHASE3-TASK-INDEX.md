@@ -10203,3 +10203,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-ophelia-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#601` or any prior open synchronization PR.
+
+## TASK P3-S-OWNER-PEPERONCINO-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly seven skills for `master.peperoncino`
+
+Exact accepted review:
+
+- PR `#603`, exact Base `0c1db487`;
+- accepted Candidate `5a18362be491623ea6d681daee6bcacd1c2604c7`;
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from `/root/kirei_reviewer`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-peperoncino` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly seven identities: `master.peperoncino.skill.ascension`, `.s1`, `.s1a`, `.s1b`, `.s2`, `.s3`, and `.s4`.
+
+All seven cards preserve exact inventory text, locators and 21 source hashes. The legacy `s1a` automatic-rule claim is evidence only; canonical behavior remains `HOST_ADJUDICATED` because the frozen inventory has no accepted automatic contract.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `372/944`, remaining `572`;
+- exact owner increment: `+7`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`379/944`**, remaining **`565`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-peperoncino-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#603` or any prior open synchronization PR.
