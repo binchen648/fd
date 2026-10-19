@@ -1,9 +1,58 @@
 {
   "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
   "id": "master.kayneth",
   "name": "肯尼斯·阿其波卢德",
   "class": "Master",
   "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "aca523da",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "冻结四项技能的 canonical printedText、开发版/legacy 定位、full-roster inventory 原文及全部 generated legacy-content SHA。当前 loader/runtime 没有权威合同证明攻击牌残留、从者牌库触发展示重抽、独立牌库生命周期/抽取或强制部署全部语义；四张牌全部保持 HOST_ADJUDICATED。record_master_directive 仅供主持人审计，不能伪装成 complete/FULL/automatic；legacy handler 名称仅为来源证据。",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版#master.kayneth/肯尼斯",
+      "legacy": {
+        "master.kayneth.skill.ascension": "legacy-content.json#master/master.kayneth/ascension",
+        "master.kayneth.skill.s1": "legacy-content.json#master/master.kayneth/s1",
+        "master.kayneth.skill.s2": "legacy-content.json#master/master.kayneth/s2",
+        "master.kayneth.skill.s3": "legacy-content.json#master/master.kayneth/s3"
+      },
+      "generated": {
+        "master.kayneth.skill.ascension": "src/content/generated/legacy-content.json#masters[10].skills[3].text#line=1 sha256=0f929075d814cc90bb289af7e6aa62a2e9790aaffa6949d6478ca45407199505",
+        "master.kayneth.skill.s1": "src/content/generated/legacy-content.json#masters[10].skills[0].text#line=1 sha256=f271e17c6be016ad61c54b06c0ab0b36e456d427e169b63fcb3e847c825c4c57",
+        "master.kayneth.skill.s2": "src/content/generated/legacy-content.json#masters[10].skills[1].text#line=1 sha256=08f2fbaa07d05dc2db3c1f63b77440aa9a1bea43da025e36a8f39305e5af8208",
+        "master.kayneth.skill.s3": "src/content/authoring/cards.json#skillCards[37].abilities[0].printedClause sha256=c3e30045f8b00e75f66735aace73f68594ac59d77c0782de75093dbaee31a294"
+      }
+    }
+  },
+  "cards": [
+    {
+      "id": "master.kayneth.skill.ascension", "aliases": ["ascension"], "legacyId": "ascension", "name": "流体力学", "cardType": "master_skill", "owner": { "type": "master", "id": "master.kayneth" },
+      "printedText": "你的所有攻击牌可以残留至下回合结束。当你从从者牌库中抽到【月灵髓液】时，你可以将其展示并再抽一张牌。",
+      "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{ "id": "kayneth.fluid-dynamics", "kind": "passive", "printedClause": "攻击牌可残留至下回合结束；从者牌库抽到月灵髓液时可展示并再抽一张。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "kayneth_fluid_dynamics" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.kayneth.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "双重御主", "cardType": "master_skill", "owner": { "type": "master", "id": "master.kayneth" },
+      "printedText": "你拥有的魔力少于8点也可以使用技能牌。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{ "id": "double-master.passive", "kind": "passive", "printedClause": "你拥有的魔力少于8点也可以使用技能牌。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "low_mana_skill_cards_allowed" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.kayneth.skill.s2", "aliases": ["s2"], "legacyId": "s2", "name": "炼金术师", "cardType": "master_skill", "owner": { "type": "master", "id": "master.kayneth" },
+      "printedText": "游戏开始时，将6张【月灵髓液】洗成一副独立的牌库。行动阶段：从独立牌库抽一张【月灵髓液】。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{ "id": "alchemist.setup", "kind": "forced_trigger", "printedClause": "游戏开始时建立6张月灵髓液独立牌库；行动阶段从中抽一张。", "activation": { "trigger": "game_start" }, "effects": [{ "type": "record_master_directive", "directive": "kayneth_alchemist" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.kayneth.skill.s3", "aliases": ["s3"], "legacyId": "s3", "name": "倨傲", "cardType": "master_skill", "owner": { "type": "master", "id": "master.kayneth" },
+      "printedText": "若你可以部署于一名战果低于你且独自位于战场的其他玩家所在的战场，则你必须部署。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{ "id": "pride.must-deploy", "kind": "passive", "printedClause": "若可部署于战果低于你且独自位于战场的其他玩家所在战场，则必须部署。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "kayneth_pride" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.kayneth.deck.volumen-hydrargyrum", "name": "月灵髓液", "cardType": "master_deck_card", "owner": { "type": "master", "id": "master.kayneth" },
+      "printedText": "涌涌不绝-被动/战斗阶段：可以花费2点魔力从手牌中打出此牌。斩击-行动阶段：此牌威力+2。", "cardFace": { "typeLabel": "独立牌库牌", "attributes": ["魔术", "迅捷"], "cost": 0, "basePower": 2 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{ "id": "volumen.extra-play", "kind": "response", "printedClause": "涌涌不绝-被动/战斗阶段：可以花费2点魔力从手牌中打出此牌。", "activation": { "trigger": "controller_combat_action_window" }, "responseWindow": { "opens": "controller_combat_action_window" }, "cost": [{ "type": "pay_mana", "amount": 2 }], "effects": [{ "type": "play_source_card", "face": "face_up" }], "execution": { "mode": "automatic" } }, { "id": "volumen.slash", "kind": "phase_action", "printedClause": "斩击-行动阶段：此牌威力+2。", "activation": { "phase": "action", "opens": "controller_action_window", "requiresSourceState": "active" }, "creates": [{ "type": "create_modifier", "modifier": { "type": "power_bonus", "target": "this_card", "amount": 2, "duration": "this_round" } }], "execution": { "mode": "automatic" } }], "evidence": [{ "type": "original_card_image", "path": "D:/fd/chm-extract/图包/ScreenShot_2025-10-29_163045_049.png", "imageIndex": 1 }], "verification": { "implementationStatus": "host_adjudicated" }
+    }
+  ],
   "sources": [
     {
       "id": "chm_page",
@@ -19,122 +68,5 @@
         "D:/fd/chm-extract/图包/ScreenShot_2025-10-29_163109_825.png"
       ]
     }
-  ],
-  "cards": [
-    {
-      "id": "master.kayneth.skill.double-master",
-      "name": "双重御主",
-      "cardType": "master_skill",
-      "printedText": "双重御主-你拥有的魔力少于8点也可以使用技能牌。",
-      "cardFace": { "cost": 0, "basePower": 0 },
-      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
-      "playRequirements": [],
-      "abilities": [
-        {
-          "id": "double-master.passive",
-          "kind": "passive",
-          "printedClause": "双重御主-你拥有的魔力少于8点也可以使用技能牌。",
-          "activation": { "trigger": "while_active" },
-          "ruleModifiers": [
-            { "id": "kayneth-low-mana-skill-exception", "operation": "ignore", "rule": "skill_zone_mana_requirement", "scope": { "object": "this_card" } }
-          ],
-          "effects": [
-            { "type": "record_master_directive", "directive": "low_mana_skill_cards_allowed", "payload": "controller may use skill cards below 8 mana" }
-          ],
-          "execution": { "mode": "automatic" }
-        }
-      ],
-      "evidence": [{ "type": "original_card_image", "path": "D:/fd/chm-extract/图包/ScreenShot_2025-10-29_163037_577.png", "imageIndex": 0 }]
-    },
-    {
-      "id": "master.kayneth.skill.alchemist",
-      "name": "炼金术师",
-      "cardType": "master_skill",
-      "printedText": "炼金术师-游戏开始时，将6张【月灵髓液】洗成一副独立的牌库。行动阶段：从独立牌库抽一张【月灵髓液】。",
-      "cardFace": { "cost": 0, "basePower": 0 },
-      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
-      "playRequirements": [],
-      "abilities": [
-        {
-          "id": "alchemist.setup",
-          "kind": "forced_trigger",
-          "printedClause": "炼金术师-游戏开始时，将6张【月灵髓液】洗成一副独立的牌库。",
-          "activation": { "trigger": "game_start" },
-          "effects": [
-            { "type": "create_independent_deck", "deckId": "kayneth-volumen", "definitionId": "master.kayneth.deck.volumen-hydrargyrum", "quantity": 6 }
-          ],
-          "execution": { "mode": "automatic" }
-        },
-        {
-          "id": "alchemist.draw-volumen",
-          "kind": "phase_action",
-          "printedClause": "行动阶段：从独立牌库抽一张【月灵髓液】。",
-          "activation": { "phase": "action", "opens": "controller_action_window" },
-          "effects": [
-            { "type": "draw_from_independent_deck", "deckId": "kayneth-volumen" }
-          ],
-          "execution": { "mode": "automatic" }
-        }
-      ],
-      "evidence": [{ "type": "original_card_image", "path": "D:/fd/chm-extract/图包/ScreenShot_2025-10-29_163037_577.png", "imageIndex": 0 }]
-    },
-    {
-      "id": "master.kayneth.skill.pride",
-      "name": "倨傲",
-      "cardType": "master_skill",
-      "printedText": "倨傲-若你可以部署于一名战果低于你且独自位于战场的其他玩家所在的战场，则你必须部署。",
-      "cardFace": { "cost": 0, "basePower": 0 },
-      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
-      "playRequirements": [],
-      "abilities": [
-        {
-          "id": "pride.must-deploy",
-          "kind": "passive",
-          "printedClause": "倨傲-若你可以部署于一名战果低于你且独自位于战场的其他玩家所在的战场，则你必须部署。",
-          "activation": { "trigger": "while_active" },
-          "effects": [
-            { "type": "deployment_rule_override", "rule": "must_deploy_to_lower_vp_lone_battlefield" }
-          ],
-          "execution": { "mode": "automatic" }
-        }
-      ],
-      "evidence": [{ "type": "original_card_image", "path": "D:/fd/chm-extract/图包/ScreenShot_2025-10-29_163037_577.png", "imageIndex": 0 }]
-    },
-    {
-      "id": "master.kayneth.deck.volumen-hydrargyrum",
-      "name": "月灵髓液",
-      "cardType": "master_deck_card",
-      "printedText": "涌涌不绝-被动/战斗阶段：可以花费2点魔力从手牌中打出此牌。斩击-行动阶段：此牌威力+2。",
-      "cardFace": { "cost": 0, "basePower": 2, "attributes": ["魔术", "迅捷"] },
-      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
-      "playRequirements": [],
-      "abilities": [
-        {
-          "id": "volumen.extra-play",
-          "kind": "response",
-          "printedClause": "涌涌不绝-被动/战斗阶段：可以花费2点魔力从手牌中打出此牌。",
-          "activation": { "trigger": "controller_combat_action_window" },
-          "responseWindow": { "opens": "controller_combat_action_window" },
-          "cost": [{ "type": "pay_mana", "amount": 2 }],
-          "effects": [{ "type": "play_source_card", "face": "face_up" }],
-          "execution": { "mode": "automatic" }
-        },
-        {
-          "id": "volumen.slash",
-          "kind": "phase_action",
-          "printedClause": "斩击-行动阶段：此牌威力+2。",
-          "activation": { "phase": "action", "opens": "controller_action_window", "requiresSourceState": "active" },
-          "creates": [
-            { "type": "create_modifier", "modifier": { "type": "power_bonus", "target": "this_card", "amount": 2, "duration": "this_round" } }
-          ],
-          "execution": { "mode": "automatic" }
-        }
-      ],
-      "evidence": [{ "type": "original_card_image", "path": "D:/fd/chm-extract/图包/ScreenShot_2025-10-29_163045_049.png", "imageIndex": 1 }]
-    }
-  ],
-  "excludedCards": [
-    { "id": "master.kayneth.skill.ascension", "name": "流体力学", "reason": "user_scope_excluded_ascension" }
-  ],
-  "adapterNotes": ["升华技按用户规则排除：令咒后/下方最后一张不进入本轮自动适配统计。"]
+  ]
 }

@@ -2810,7 +2810,7 @@
       "entityKind": "master",
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/肯尼斯·阿其波卢德.htm",
-      "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163037_577.png",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163045_049.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
       "issueCodes": [
@@ -2824,7 +2824,7 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/肯尼斯·阿其波卢德.htm",
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163104_009.png",
-      "imageIndex": 4,
+      "imageIndex": 5,
       "reviewedAgainstImage": true,
       "issueCodes": [
         "SOURCE_ASSET_UNVERIFIED"
@@ -2836,7 +2836,7 @@
       "entityKind": "master_overview",
       "capabilityStatus": "FULL",
       "htmPath": "chm-extract/肯尼斯·阿其波卢德.htm",
-      "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163037_577.png",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163045_049.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
       "issueCodes": [
@@ -2844,25 +2844,12 @@
       ]
     },
     {
-      "entityId": "master.kayneth.skill.alchemist",
-      "displayName": "炼金术师",
+      "entityId": "master.kayneth.skill.ascension",
+      "displayName": "流体力学",
       "entityKind": "master_skill",
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/肯尼斯·阿其波卢德.htm",
-      "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163051_633.png",
-      "imageIndex": 2,
-      "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
-    },
-    {
-      "entityId": "master.kayneth.skill.double-master",
-      "displayName": "双重御主",
-      "entityKind": "master_skill",
-      "capabilityStatus": "HOST_ADJUDICATED",
-      "htmPath": "chm-extract/肯尼斯·阿其波卢德.htm",
-      "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163045_049.png",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163037_577.png",
       "imageIndex": 1,
       "reviewedAgainstImage": true,
       "issueCodes": [
@@ -2870,13 +2857,39 @@
       ]
     },
     {
-      "entityId": "master.kayneth.skill.pride",
+      "entityId": "master.kayneth.skill.s1",
+      "displayName": "双重御主",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/肯尼斯·阿其波卢德.htm",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163045_049.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.kayneth.skill.s2",
+      "displayName": "炼金术师",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/肯尼斯·阿其波卢德.htm",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163051_633.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.kayneth.skill.s3",
       "displayName": "倨傲",
       "entityKind": "master_skill",
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/肯尼斯·阿其波卢德.htm",
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163058_193.png",
-      "imageIndex": 3,
+      "imageIndex": 4,
       "reviewedAgainstImage": true,
       "issueCodes": [
         "SOURCE_ASSET_UNVERIFIED"
@@ -4553,7 +4566,7 @@
     },
     {
       "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kayneth source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_163037_577.png",
+      "message": "master.kayneth source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_163045_049.png",
       "entityId": "master.kayneth",
       "field": "source.imagePath",
       "blocking": false
@@ -4567,29 +4580,36 @@
     },
     {
       "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kayneth.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_163037_577.png",
+      "message": "master.kayneth.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_163045_049.png",
       "entityId": "master.kayneth.overview",
       "field": "source.imagePath",
       "blocking": false
     },
     {
       "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kayneth.skill.alchemist source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_163051_633.png",
-      "entityId": "master.kayneth.skill.alchemist",
+      "message": "master.kayneth.skill.ascension source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_163037_577.png",
+      "entityId": "master.kayneth.skill.ascension",
       "field": "source.imagePath",
       "blocking": false
     },
     {
       "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kayneth.skill.double-master source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_163045_049.png",
-      "entityId": "master.kayneth.skill.double-master",
+      "message": "master.kayneth.skill.s1 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_163045_049.png",
+      "entityId": "master.kayneth.skill.s1",
       "field": "source.imagePath",
       "blocking": false
     },
     {
       "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kayneth.skill.pride source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_163058_193.png",
-      "entityId": "master.kayneth.skill.pride",
+      "message": "master.kayneth.skill.s2 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_163051_633.png",
+      "entityId": "master.kayneth.skill.s2",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.kayneth.skill.s3 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_163058_193.png",
+      "entityId": "master.kayneth.skill.s3",
       "field": "source.imagePath",
       "blocking": false
     },
