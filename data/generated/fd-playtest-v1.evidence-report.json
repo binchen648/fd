@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 52,
+    "masters": 53,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -4321,6 +4321,83 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/间桐樱.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/间桐樱.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-nanaya",
+      "displayName": "远野志贵",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野志贵.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野志贵.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-nanaya.overview",
+      "displayName": "远野志贵",
+      "entityKind": "master_overview",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野志贵.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野志贵.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-nanaya.skill.ascension",
+      "displayName": "歌月十夜",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野志贵.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野志贵.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-nanaya.skill.s1",
+      "displayName": "半身",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野志贵.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野志贵.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-nanaya.skill.s1a",
+      "displayName": "贫血症",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野志贵.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野志贵.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-nanaya.skill.s1b",
+      "displayName": "退魔者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野志贵.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野志贵.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-nanaya.skill.s2",
+      "displayName": "直死之魔眼",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野志贵.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野志贵.png",
       "imageIndex": 5,
       "reviewedAgainstImage": true,
       "issueCodes": []

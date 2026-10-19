@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.shiki-nanaya",
+  "name": "远野志贵",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "overviewCapabilityStatus": "HOST_ADJUDICATED",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "1c991357a8ffc76ffbff6cbb67073cc030b49006",
+    "referenceMetadataCommit": "1c991357a8ffc76ffbff6cbb67073cc030b49006",
+    "note": "冻结五项技能的 canonical printedText、开发版/legacy 定位、full-roster inventory 原文及全部八个 generated clause SHA。五项均为 DISCOVERED，semanticNormalization.status=BLOCKED、blockedBy=SEMANTIC_SOURCE_REQUIRED、Phase3 mappingStatus=EXPLICIT_BLOCK；所有语义仍保持 HOST_ADJUDICATED。core.nanaya-dark-compulsion (specific_handler)、core.game-start-add-skill (shared_handler)、core.combat-history (shared_handler)、core.nanaya-demon-hunter (specific_handler) 和 core.nanaya-death-perception (specific_handler) 仅为 reference handler，不能当作 runtime contract。record_master_directive 仅供主持人审计，不能伪装成 complete/FULL/automatic。",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版/images/masters/远野志贵.png#master.shiki-nanaya/远野志贵",
+      "legacy": {
+        "master.shiki-nanaya.skill.ascension": "legacy-content.json#master/master.shiki-nanaya/ascension",
+        "master.shiki-nanaya.skill.s1": "legacy-content.json#master/master.shiki-nanaya/s1",
+        "master.shiki-nanaya.skill.s1a": "legacy-content.json#master/master.shiki-nanaya/s1a",
+        "master.shiki-nanaya.skill.s1b": "legacy-content.json#master/master.shiki-nanaya/s1b",
+        "master.shiki-nanaya.skill.s2": "legacy-content.json#master/master.shiki-nanaya/s2"
+      },
+      "generated": {
+        "master.shiki-nanaya.skill.ascension": "src/content/generated/legacy-content.json#masters[21].skills[4].text#line=1 sha256=98b745b683b01cf25d8f8e5f3c63a4477aac0d90d781114a347e9d0b8ab465fe; line=2 sha256=e5b3a351ce4ce96626a16bb2f16fd252c686170430aab39325b49c9814084b4a",
+        "master.shiki-nanaya.skill.s1": "src/content/generated/legacy-content.json#masters[21].skills[0].text#line=1 sha256=b80e3620292b5d67e0bff3f7f13959cf7843e804a8e61172a786faf94a12a685",
+        "master.shiki-nanaya.skill.s1a": "src/content/generated/legacy-content.json#masters[21].skills[1].text#line=1 sha256=104e9ec9041f3766e8e2b5731ab79158bec082f3cb6a1bea3c5fa33178d0b048",
+        "master.shiki-nanaya.skill.s1b": "src/content/generated/legacy-content.json#masters[21].skills[2].text#line=1 sha256=c51a83fb7c4f4784708df8b479dede38fa70bf7fbb6050ea1bfb896987e0f242",
+        "master.shiki-nanaya.skill.s2": "src/content/generated/legacy-content.json#masters[21].skills[3].text#line=1 sha256=a6de816c1364261a5383057a91903649a1930fd1470c2cba3315b44da7d93e00; line=2 sha256=35adb0944b2d502a4ca7be0ec9b33f3ffe7add8e8df7010fac5777085c6f21bb; line=3 sha256=75711c5135668714044b97c11c252ab4873d95d14f985931a9d81e4a4ad40c38"
+      }
+    }
+  },
+  "cards": [
+    { "id": "master.shiki-nanaya.skill.ascension", "aliases": ["ascension"], "legacyId": "ascension", "name": "歌月十夜", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shiki-nanaya" }, "printedText": "解锁此牌时，立即将你剩余的【闪走】和/或【闪鞘】洗入牌库。\n在你的战斗阶段，若你与被捕捉的对手战斗，抽一张牌并将其打出。若此牌不是基础攻击，你受到1点【损伤】。", "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "nanaya.dark-compulsion", "kind": "passive", "printedClause": "解锁此牌时，立即将你剩余的【闪走】和/或【闪鞘】洗入牌库。\n在你的战斗阶段，若你与被捕捉的对手战斗，抽一张牌并将其打出。若此牌不是基础攻击，你受到1点【损伤】。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "nanaya_dark_compulsion" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.shiki-nanaya.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "半身", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shiki-nanaya" }, "printedText": "你拥有【直死之魔眼】。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "nanaya.half-body", "kind": "passive", "printedClause": "你拥有【直死之魔眼】。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "nanaya_half_body" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.shiki-nanaya.skill.s1a", "aliases": ["s1a"], "legacyId": "s1a", "name": "贫血症", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shiki-nanaya" }, "printedText": "若你上回合进行了争夺战，你-2合计威力。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "nanaya.anemia", "kind": "passive", "printedClause": "若你上回合进行了争夺战，你-2合计威力。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "nanaya_anemia" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.shiki-nanaya.skill.s1b", "aliases": ["s1b"], "legacyId": "s1b", "name": "退魔者", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shiki-nanaya" }, "printedText": "游戏开始时，将你牌库的至多4张牌替换为【闪走】和/或【闪鞘】。（【闪走】和【闪鞘】分别各有3张）", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "nanaya.demon-hunter", "kind": "passive", "printedClause": "游戏开始时，将你牌库的至多4张牌替换为【闪走】和/或【闪鞘】。（【闪走】和【闪鞘】分别各有3张）", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "nanaya_demon_hunter" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.shiki-nanaya.skill.s2", "aliases": ["s2"], "legacyId": "s2", "name": "直死之魔眼", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shiki-nanaya" }, "printedText": "直面死亡-第9和第11回合开始时，你失去等同于你【损伤】数的战果。\n捕捉-前哨阶段：受到1点【损伤】，然后选择一名本局游戏未被捕捉过的玩家查看其牌库顶的3张牌。你可以将其中任意张弃置，然后将剩余的牌以任意顺序放回其牌堆顶。\n【闪鞘】与【闪走】为牌库替换牌（见【退魔者】），抽到手牌后于战斗时打出。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "nanaya.death-perception", "kind": "passive", "printedClause": "直面死亡-第9和第11回合开始时，你失去等同于你【损伤】数的战果。\n捕捉-前哨阶段：受到1点【损伤】，然后选择一名本局游戏未被捕捉过的玩家查看其牌库顶的3张牌。你可以将其中任意张弃置，然后将剩余的牌以任意顺序放回其牌堆顶。\n【闪鞘】与【闪走】为牌库替换牌（见【退魔者】），抽到手牌后于战斗时打出。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "nanaya_death_perception" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } }
+  ],
+  "sources": [{ "id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/远野志贵.png"] }]
+}
