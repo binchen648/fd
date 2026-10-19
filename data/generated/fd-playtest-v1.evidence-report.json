@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 33,
+    "masters": 34,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -2569,6 +2569,61 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/吉娜可·加里吉利.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/吉娜可·加里吉利.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.julius",
+      "displayName": "尤里鸟斯·贝尔奇斯科·哈维",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/尤里鸟斯·贝尔奇斯科·哈维.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/尤里鸟斯·贝尔奇斯科·哈维.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.julius.overview",
+      "displayName": "尤里鸟斯·贝尔奇斯科·哈维",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/尤里鸟斯·贝尔奇斯科·哈维.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/尤里鸟斯·贝尔奇斯科·哈维.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.julius.skill.ascension",
+      "displayName": "黑蝎",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/尤里鸟斯·贝尔奇斯科·哈维.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/尤里鸟斯·贝尔奇斯科·哈维.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.julius.skill.s1",
+      "displayName": "代码_潜行",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/尤里鸟斯·贝尔奇斯科·哈维.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/尤里鸟斯·贝尔奇斯科·哈维.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.julius.skill.s1a",
+      "displayName": "快速老化",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/尤里鸟斯·贝尔奇斯科·哈维.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/尤里鸟斯·贝尔奇斯科·哈维.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
       "issueCodes": []
