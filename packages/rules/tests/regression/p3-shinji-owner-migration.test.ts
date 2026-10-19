@@ -95,15 +95,31 @@ describe('P3 Shinji owner migration boundary', () => {
     const owned = session.state.cards.filter((card) => card.ownerPlayerId === 'p1');
     expect(owned.find((card) => card.definitionId === `${ROOT}.skill.s1`)).toBeDefined();
     expect(owned.find((card) => card.definitionId === `${ROOT}.skill.s3`)).toBeDefined();
-    expect(owned.find((card) => card.definitionId === `${ROOT}.skill.drain-command`)).toBeDefined();
-    expect(owned.find((card) => card.definitionId === `${ROOT}.skill.clown`)).toBeDefined();
+    expect(owned.find((card) => card.definitionId === `${ROOT}.skill.drain-command`)).toBeUndefined();
+    expect(owned.find((card) => card.definitionId === `${ROOT}.skill.clown`)).toBeUndefined();
     const entered = rules.collectTriggeredAbilities(session.state, {
       id: 'shinji-compat-enter',
       type: 'after_controller_enters_location',
       playerId: 'p1',
       locationId: 'miyama_town',
     });
-    expect(entered.filter((ability) => ability.abilityId === 'drain-command.enter-miyama')).toHaveLength(1);
+    expect(entered.filter((ability) => ability.abilityId === 'drain-command.enter-miyama')).toHaveLength(0);
     expect(entered.some((ability) => ability.abilityId === 'shinji.enter-miyama-gain-mana')).toBe(false);
+
+    session.state.cards.push({
+      instanceId: 'p1-explicit-legacy-drain',
+      definitionId: `${ROOT}.skill.drain-command`,
+      ownerPlayerId: 'p1',
+      controllerPlayerId: 'p1',
+      zone: 'skill',
+      visibility: { scope: 'owner_only', ownerPlayerId: 'p1' },
+    });
+    const legacyEntered = rules.collectTriggeredAbilities(session.state, {
+      id: 'shinji-explicit-legacy-enter',
+      type: 'after_controller_enters_location',
+      playerId: 'p1',
+      locationId: 'miyama_town',
+    });
+    expect(legacyEntered.filter((ability) => ability.abilityId === 'drain-command.enter-miyama')).toHaveLength(1);
   });
 });

@@ -2395,11 +2395,6 @@ function hasCoherentReplayRestoreEnvelope(
 const masterCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'master');
 const servantCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'servant');
 
-const legacyShinjiCompatibilityDefinitionIds = [
-  'master.shinji.skill.drain-command',
-  'master.shinji.skill.clown',
-] as const;
-
 const attributeTags = {
   strength: '力量',
   agility: '敏捷',
@@ -3516,22 +3511,6 @@ export class MatchSession {
           state.cards.push({
             instanceId: `${pairing.playerId}-${cardId}`,
             definitionId: cardId,
-            ownerPlayerId: pairing.playerId,
-            controllerPlayerId: pairing.playerId,
-            zone: zoneName,
-            visibility: visibleScope(zoneName, pairing.playerId),
-          });
-        }
-      }
-      if (pairing.master.id === 'master.shinji') {
-        for (const definitionId of legacyShinjiCompatibilityDefinitionIds) {
-          const card = pack.cards[definitionId];
-          if (!card) throw new Error(`Compiled legacy Shinji compatibility card missing: ${definitionId}`);
-          const zoneName = card.initialZone;
-          if (!zoneName) continue;
-          state.cards.push({
-            instanceId: `${pairing.playerId}-${definitionId}`,
-            definitionId,
             ownerPlayerId: pairing.playerId,
             controllerPlayerId: pairing.playerId,
             zone: zoneName,

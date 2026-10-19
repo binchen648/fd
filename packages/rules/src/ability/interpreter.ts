@@ -8458,11 +8458,32 @@ export function adjustVictoryPointsAuthoritatively(s: GameState, playerId: strin
 }
 
 /** Trusted backend event hook. Events are not part of AbilityCommand. */
+function ensureLegacyShinjiBattleConsumer(s: GameState, event: AbilityEvent): void {
+  if (event.type !== 'after_battle_result_determined' || !event.battleResult) return;
+  for (const playerId of event.battleResult.loserIds) {
+    const player = s.players.find((candidate) => candidate.id === playerId);
+    if (!player || player.masterCardId !== 'master.shinji' ||
+        s.cards.some((card) => card.ownerPlayerId === playerId && card.definitionId === 'master.shinji.skill.clown')) continue;
+    const definitionId = 'master.shinji.skill.clown';
+    const definition = runtime(s).pack.cards[definitionId];
+    if (!definition) reject('invalid_state', `Compiled legacy Shinji compatibility card missing: ${definitionId}`);
+    const zone = (definition as AuthoringCard & { initialZone?: string }).initialZone ?? 'skill';
+    s.cards.push({
+      instanceId: `${playerId}-${definitionId}-battle-consumer`,
+      definitionId,
+      ownerPlayerId: playerId,
+      controllerPlayerId: playerId,
+      zone,
+      visibility: { scope: 'owner_only', ownerPlayerId: playerId },
+    });
+  }
+}
+
 export function processAbilityEvent(s: GameState, event: AbilityEvent): void {
   if (runtime(s).processedEvents.includes(event.id)) return;
   const eventStart = runtime(s).events.length;
   const copy = structuredClone(s); copyBattlefieldAttackOfferServerAuthority(s, copy);
-  copyBloodlustContributionServerAuthority(s, copy); processEvent(copy, event); settleDefinitionResourceEvent(copy, event); settleDefinitionResourceAuditEvents(copy, eventStart); settleOpponentRoundVpThresholdAuditEvents(copy, eventStart); settleDefinitionSideDeckManaEvents(copy); runtime(copy).revision++;
+  copyBloodlustContributionServerAuthority(s, copy); ensureLegacyShinjiBattleConsumer(copy, event); processEvent(copy, event); settleDefinitionResourceEvent(copy, event); settleDefinitionResourceAuditEvents(copy, eventStart); settleOpponentRoundVpThresholdAuditEvents(copy, eventStart); settleDefinitionSideDeckManaEvents(copy); runtime(copy).revision++;
   Object.assign(s, copy); copyBattlefieldAttackOfferServerAuthority(copy, s);
   copyBloodlustContributionServerAuthority(copy, s);
 }
