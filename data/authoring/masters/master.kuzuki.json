@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.kuzuki",
+  "name": "葛木宗一郎",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "976e7b36",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "冻结四项技能的 canonical printedText、开发版/legacy 定位、full-roster inventory 原文及五个 generated/authoring clause SHA。当前 loader/runtime 没有权威合同证明批量移除魔术/迅捷牌、蛇的六魔力攻击整合、开局牌库插入、魔术工房部署/移动成本与战果分支、以及蛇的属性费用威力；四张牌全部保持 HOST_ADJUDICATED。s2 虽为 inventory CONTRACT_MAPPED/READY_GENERIC_EXTENSION，但其 source cards.json 在当前 checkout 缺失，不能越过证据或宣称 FULL。record_master_directive 仅供主持人审计，不能伪装成 complete/FULL/automatic；legacy handler 名称仅为来源证据。",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版#master.kuzuki/葛木宗一郎",
+      "legacy": {
+        "master.kuzuki.skill.ascension": "legacy-content.json#master/master.kuzuki/ascension",
+        "master.kuzuki.skill.s1": "legacy-content.json#master/master.kuzuki/s1",
+        "master.kuzuki.skill.s2": "legacy-content.json#master/master.kuzuki/s2",
+        "master.kuzuki.skill.s3": "legacy-content.json#master/master.kuzuki/s3"
+      },
+      "generated": {
+        "master.kuzuki.skill.ascension": "src/content/generated/legacy-content.json#masters[6].skills[3].text#line=1 sha256=db80f07b3f83b38fd5f9684efd369197e5b96dd7dd13d4a165ea443d454b0fc5",
+        "master.kuzuki.skill.s1": "src/content/generated/legacy-content.json#masters[6].skills[0].text#line=1 sha256=57a179229fd21e16f7706da54ca31ffb9108416e8f71e4c3595a26df174e3e8a",
+        "master.kuzuki.skill.s2": "src/content/authoring/cards.json#skillCards[18].abilities[0].printedClause sha256=d8c539fda9b75ec2b37758ef73b792278f3d46c786bb2a88b910321cd61e00cf; skillCards[18].abilities[1].printedClause sha256=9791b82ccb714d58496185f8c15ce2b66ddcd11d37ae22403293d2c7edb84a6c",
+        "master.kuzuki.skill.s3": "src/content/generated/legacy-content.json#masters[6].skills[2].text#line=1 sha256=553b4905122fbf6fe2f72151dc81d707e9c28640b8e0b43935a6fffd3331ae20"
+      }
+    }
+  },
+  "cards": [
+    { "id": "master.kuzuki.skill.ascension", "aliases": ["ascension"], "legacyId": "ascension", "name": "完美呼吸", "cardType": "master_skill", "owner": { "type": "master", "id": "master.kuzuki" }, "printedText": "解锁此技能后立刻从牌库，弃牌堆及手牌中移除所有魔术牌、迅捷基础牌威力+3。你的【蛇】获得以下效果\"被动/战斗阶段：花费6点魔力，将此牌加入你的攻击中。\"", "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "kuzuki.perfect-breathing", "kind": "passive", "printedClause": "解锁此技能后立刻从牌库，弃牌堆及手牌中移除所有魔术牌、迅捷基础牌威力+3。你的【蛇】获得以下效果\"被动/战斗阶段：花费6点魔力，将此牌加入你的攻击中。\"", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "kuzuki_perfect_breathing" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.kuzuki.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "暗杀术", "cardType": "master_skill", "owner": { "type": "master", "id": "master.kuzuki" }, "printedText": "开局将两张【蛇】加入牌库。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "kuzuki-assassination", "kind": "forced_trigger", "printedClause": "开局将两张【蛇】加入牌库。", "activation": { "trigger": "game_start" }, "effects": [{ "type": "record_master_directive", "directive": "kuzuki_assassination_add_two_snakes" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.kuzuki.skill.s2", "aliases": ["s2"], "legacyId": "s2", "name": "局外人", "cardType": "master_skill", "owner": { "type": "master", "id": "master.kuzuki" }, "printedText": "你无法通过部署于魔术工房获得魔力，但你以常规移动从魔术工房离开时-1移动成本。每回合战斗阶段结束后，若你于该回合未获得战果，获得1点战果，若你同时是位于魔术工房的唯一玩家，改为获得2点战果。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "kuzuki-outsider", "kind": "passive", "printedClause": "你无法通过部署于魔术工房获得魔力，但你以常规移动从魔术工房离开时-1移动成本。每回合战斗阶段结束后，若你于该回合未获得战果，获得1点战果，若你同时是位于魔术工房的唯一玩家，改为获得2点战果。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "kuzuki_outsider" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.kuzuki.skill.s3", "aliases": ["s3"], "legacyId": "s3", "name": "蛇", "cardType": "master_skill", "owner": { "type": "master", "id": "master.kuzuki" }, "printedText": "力量和迅捷属性，0魔耗5威力。", "cardFace": { "typeLabel": "独立牌库牌", "attributes": ["力量", "迅捷"], "cost": 0, "basePower": 5 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "kuzuki-snake", "kind": "passive", "printedClause": "力量和迅捷属性，0魔耗5威力。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "kuzuki_snake" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } }
+  ],
+  "sources": [{ "id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/葛木宗一郎.png"] }]
+}

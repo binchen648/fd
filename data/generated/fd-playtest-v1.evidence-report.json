@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 39,
+    "masters": 40,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -3231,6 +3231,72 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/琥珀.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/琥珀.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kuzuki",
+      "displayName": "葛木宗一郎",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/葛木宗一郎.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/葛木宗一郎.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kuzuki.overview",
+      "displayName": "葛木宗一郎",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/葛木宗一郎.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/葛木宗一郎.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kuzuki.skill.ascension",
+      "displayName": "完美呼吸",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/葛木宗一郎.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/葛木宗一郎.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kuzuki.skill.s1",
+      "displayName": "暗杀术",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/葛木宗一郎.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/葛木宗一郎.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kuzuki.skill.s2",
+      "displayName": "局外人",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/葛木宗一郎.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/葛木宗一郎.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kuzuki.skill.s3",
+      "displayName": "蛇",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/葛木宗一郎.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/葛木宗一郎.png",
       "imageIndex": 4,
       "reviewedAgainstImage": true,
       "issueCodes": []
