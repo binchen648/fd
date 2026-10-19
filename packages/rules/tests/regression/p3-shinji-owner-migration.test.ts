@@ -105,6 +105,15 @@ describe('P3 Shinji owner migration boundary', () => {
     });
     expect(entered.filter((ability) => ability.abilityId === 'drain-command.enter-miyama')).toHaveLength(0);
     expect(entered.some((ability) => ability.abilityId === 'shinji.enter-miyama-gain-mana')).toBe(false);
+    (session.state.players.find((player) => player.id === 'p1') as any).commandSpells = 3;
+    rules.processAbilityEvent(session.state, {
+      id: 'shinji-canonical-loss',
+      type: 'after_battle_result_determined',
+      playerId: 'p1',
+      battleResult: { winners: ['p2'], loserIds: ['p1'] },
+    });
+    expect(owned.find((card) => card.definitionId === `${ROOT}.skill.clown`)).toBeUndefined();
+    expect((session.state.players.find((player) => player.id === 'p1') as any).commandSpells).toBe(3);
 
     session.state.cards.push({
       instanceId: 'p1-explicit-legacy-drain',
@@ -121,5 +130,20 @@ describe('P3 Shinji owner migration boundary', () => {
       locationId: 'miyama_town',
     });
     expect(legacyEntered.filter((ability) => ability.abilityId === 'drain-command.enter-miyama')).toHaveLength(1);
+    session.state.cards.push({
+      instanceId: 'p1-explicit-legacy-clown',
+      definitionId: `${ROOT}.skill.clown`,
+      ownerPlayerId: 'p1',
+      controllerPlayerId: 'p1',
+      zone: 'skill',
+      visibility: { scope: 'owner_only', ownerPlayerId: 'p1' },
+    });
+    rules.processAbilityEvent(session.state, {
+      id: 'shinji-explicit-legacy-loss',
+      type: 'after_battle_result_determined',
+      playerId: 'p1',
+      battleResult: { winners: ['p2'], loserIds: ['p1'] },
+    });
+    expect((session.state.players.find((player) => player.id === 'p1') as any).commandSpells).toBe(2);
   });
 });
