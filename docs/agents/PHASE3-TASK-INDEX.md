@@ -9865,3 +9865,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-jinako-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#575` or any prior open PR.
+
+## TASK P3-S-OWNER-JULIUS-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly three skills for `master.julius`
+
+Exact accepted review:
+
+- PR `#577`, review parent `9906e13e3d24f083995675ea80f87142127dfb5`;
+- accepted successor Candidate `133e2b8bf8675c39b7324f7d62cf882774c9c756`;
+- independent GPT-6 Sol r2 verdict `MIGRATION_ACCEPTED` from `/root/julius_reviewer_r2`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-julius-r2` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly three identities: `master.julius.skill.ascension`, `.s1`, and `.s1a`.
+
+All three cards preserve exact legacy/generated text and source hashes and are explicitly `HOST_ADJUDICATED`; loader/interpreter gates block unsupported automatic behavior for stealth/deployment timing, outpost/action-phase transition, end-of-round discard/exile choice, random discard, and draw fallback. The accepted successor only removes an EOF blank line from the migration report; it does not change skill data or generated content.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `308/944`, remaining `636`;
+- exact owner increment: `+3`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`311/944`**, remaining **`633`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-julius-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#577` or prior open synchronization PRs.
