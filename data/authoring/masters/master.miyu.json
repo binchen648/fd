@@ -8,7 +8,7 @@
   "sourcePolicy": {
     "phase3EvidenceCommit": "52a736f3",
     "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
-    "note": "冻结四项技能的 canonical printedText、开发版/legacy 定位、full-roster inventory 原文及十个 generated clause SHA。当前 loader/runtime 没有权威合同证明跨从者抽取与技能构筑、动态名称/职阶绑定、梦幻召唤交换与生命周期、阶段移动/地利/威力/费用修改、以及战果窃取；四张牌全部保持 HOST_ADJUDICATED。core.miyu-sapphire 仅为 reference handler，不能当作 runtime contract。record_master_directive 仅供主持人审计，不能伪装成 complete/FULL/automatic。",
+    "note": "冻结四项技能的 canonical printedText、开发版/legacy 定位、full-roster inventory 原文及十一个 generated clause SHA。当前 loader/runtime 没有权威合同证明跨从者抽取与技能构筑、动态名称/职阶绑定、梦幻召唤交换与生命周期、阶段移动/地利/威力/费用修改、以及战果窃取；四张牌全部保持 HOST_ADJUDICATED。core.miyu-sapphire 仅为 reference handler，不能当作 runtime contract。record_master_directive 仅供主持人审计，不能伪装成 complete/FULL/automatic。",
     "sourceLocators": {
       "development": "Fate_Domination-开发版#master.miyu/卫宫美游",
       "legacy": {
