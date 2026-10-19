@@ -9918,3 +9918,28 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-kadoc-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#579` or prior open synchronization PRs.
+## TASK P3-S-OWNER-KARIYA-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly five skills for `master.kariya`
+
+Exact accepted review:
+
+- PR `#581`, exact Base `5a3358b6`;
+- accepted Candidate `f2a6450fb658d0ecc5c31af56b59728a6265c1a3`;
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from `/root/kariya_reviewer`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-kariya` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly five identities: `master.kariya.skill.ascension`, `.s1`, `.s2`, `.s3`, and `.s4`.
+
+All five cards preserve exact inventory/generated text and source hashes and are explicitly `HOST_ADJUDICATED`; loader/interpreter gates retain the unsupported automatic behavior as host-adjudicated directives.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `318/944`, remaining `626`;
+- exact owner increment: `+5`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`323/944`**, remaining **`621`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-kariya-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#581` or any prior open synchronization PR.
