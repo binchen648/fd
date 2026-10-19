@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 49,
+    "masters": 50,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -4124,6 +4124,72 @@
       "htmPath": "chm-extract/藤丸立香（男）.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/藤丸立香（男）.png",
       "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.roche",
+      "displayName": "罗榭·弗雷因",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/罗榭·弗雷因.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/罗榭·弗雷因.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.roche.overview",
+      "displayName": "罗榭·弗雷因",
+      "entityKind": "master_overview",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/罗榭·弗雷因.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/罗榭·弗雷因.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.roche.skill.ascension",
+      "displayName": "崇高牺牲",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/罗榭·弗雷因.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/罗榭·弗雷因.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.roche.skill.s1",
+      "displayName": "天真",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/罗榭·弗雷因.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/罗榭·弗雷因.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.roche.skill.s1a",
+      "displayName": "巨测指导",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/罗榭·弗雷因.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/罗榭·弗雷因.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.roche.skill.s2",
+      "displayName": "变节",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/罗榭·弗雷因.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/罗榭·弗雷因.png",
+      "imageIndex": 4,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

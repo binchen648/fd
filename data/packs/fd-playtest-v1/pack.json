@@ -87,7 +87,8 @@
                                  "data/authoring/masters/master.reines.json",
                                  "data/authoring/masters/master.rin.json",
                                  "data/authoring/masters/master.ritsuka-f.json",
-                                 "data/authoring/masters/master.ritsuka-m.json"
+                                 "data/authoring/masters/master.ritsuka-m.json",
+                                 "data/authoring/masters/master.roche.json"
                              ],
     "authoringMasterSupportFiles":  [
                                         "data/authoring/masters/master.shirou-emiya.json"

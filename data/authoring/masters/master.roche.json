@@ -1,0 +1,36 @@
+{
+  "schemaVersion":"fd-card-authoring-v1",
+  "archiveType":"master_skill_card_archive",
+  "id":"master.roche",
+  "name":"罗榭·弗雷因",
+  "class":"Master",
+  "publicInformation":{"type":"master_package","initialMana":4},
+  "overviewCapabilityStatus":"HOST_ADJUDICATED",
+  "sourcePolicy":{
+    "phase3EvidenceCommit":"b23faaa41e1bbb6f58bcc46a18a86b2fae74bd8c",
+    "referenceMetadataCommit":"b23faaa41e1bbb6f58bcc46a18a86b2fae74bd8c",
+    "note":"Frozen four-skill inventory is DISCOVERED with semanticNormalization BLOCKED by SEMANTIC_SOURCE_REQUIRED and Phase3 mappingStatus EXPLICIT_BLOCK. The four shared handlers are reference-only; conditional defeat/Command Seal transfer and card mutation, draw timing, out-of-game Betrayal insertion, and the three-card Betrayal branch remain HOST_ADJUDICATED. No automatic or FULL capability is inferred.",
+    "sourceLocators":{
+      "development":"Fate_Domination-开发版#master.roche/罗榭·弗雷因",
+      "legacy":{
+        "master.roche.skill.ascension":"legacy-content.json#master/master.roche/ascension",
+        "master.roche.skill.s1":"legacy-content.json#master/master.roche/s1",
+        "master.roche.skill.s1a":"legacy-content.json#master/master.roche/s1a",
+        "master.roche.skill.s2":"legacy-content.json#master/master.roche/s2"
+      },
+      "generated":{
+        "master.roche.skill.ascension":"src/content/generated/legacy-content.json#masters[44].skills[3].text#line=1 sha256=0a562f8797aa2de5f7ebfea3a1a6b8285aacba0e6150786e3e80b47bbdd9ee53",
+        "master.roche.skill.s1":"src/content/generated/legacy-content.json#masters[44].skills[0].text#line=1 sha256=c21cc7056dcd9b129a004a0de428e842517497949e012c2202bb91287f64ad61",
+        "master.roche.skill.s1a":"src/content/generated/legacy-content.json#masters[44].skills[1].text#line=1 sha256=127dcbf5cae10887c188efd676b8d6eb01dcf2331656120ad1760f64633dac2f",
+        "master.roche.skill.s2":"src/content/generated/legacy-content.json#masters[44].skills[2].text#line=1 sha256=fc7634da4fe8164655b6cd01499c2c950ef780d4772b365756237a893f4ee6a0; line=2 sha256=1c99ed1710381fb1177290a3ac8975518ed26e6de24d871ae244e62a6d701697"
+      }
+    }
+  },
+  "cards":[
+    {"id":"master.roche.skill.ascension","aliases":["ascension"],"legacyId":"ascension","name":"崇高牺牲","cardType":"master_skill","owner":{"type":"master","id":"master.roche"},"printedText":"若你本局游戏未因【变节】败北：失去巨测指导、天真和你的所有令咒。每失去一枚令咒，【变节】获得+3威力。【变节】同时获得魔术属性和\"此牌需追加打出\"并失去主从争斗。","cardFace":{"typeLabel":"升华技","attributes":[],"cost":0,"basePower":0},"playTiming":{"phase":"action","window":"controller_play_card_window"},"playRequirements":[],"abilities":[{"id":"roche.noble-sacrifice","kind":"passive","printedClause":"若你本局游戏未因【变节】败北：失去巨测指导、天真和你的所有令咒。每失去一枚令咒，【变节】获得+3威力。【变节】同时获得魔术属性和\"此牌需追加打出\"并失去主从争斗。","activation":{"trigger":"while_active"},"effects":[{"type":"record_master_directive","directive":"roche_noble_sacrifice"}],"execution":{"mode":"host_adjudicated","allowedOperations":[]}}],"verification":{"implementationStatus":"host_adjudicated"}},
+    {"id":"master.roche.skill.s1","aliases":["s1"],"legacyId":"s1","name":"天真","cardType":"master_skill","owner":{"type":"master","id":"master.roche"},"printedText":"你的手牌保持展示，你改为于整个行动阶段开始时而不是准备阶段开始时抽牌。","cardFace":{"typeLabel":"被动","attributes":[],"cost":0,"basePower":0},"playTiming":{"phase":"action","window":"controller_play_card_window"},"playRequirements":[],"abilities":[{"id":"roche.innocence","kind":"passive","printedClause":"你的手牌保持展示，你改为于整个行动阶段开始时而不是准备阶段开始时抽牌。","activation":{"trigger":"while_active"},"effects":[{"type":"record_master_directive","directive":"roche_innocence"}],"execution":{"mode":"host_adjudicated","allowedOperations":[]}}],"verification":{"implementationStatus":"host_adjudicated"}},
+    {"id":"master.roche.skill.s1a","aliases":["s1a"],"legacyId":"s1a","name":"巨测指导","cardType":"master_skill","owner":{"type":"master","id":"master.roche"},"printedText":"行动阶段：获得1点战果、1点魔力，2点合计威力并抽一张牌。然后将一张【变节】从游戏外洗入你的牌库。","cardFace":{"typeLabel":"行动","attributes":[],"cost":0,"basePower":0},"playTiming":{"phase":"action","window":"controller_play_card_window"},"playRequirements":[],"abilities":[{"id":"roche.giant-guidance","kind":"phase_action","printedClause":"行动阶段：获得1点战果、1点魔力，2点合计威力并抽一张牌。然后将一张【变节】从游戏外洗入你的牌库。","activation":{"phase":"action","opens":"controller_action_window"},"effects":[{"type":"record_master_directive","directive":"roche_giant_guidance"}],"execution":{"mode":"host_adjudicated","allowedOperations":[]}}],"verification":{"implementationStatus":"host_adjudicated"}},
+    {"id":"master.roche.skill.s2","aliases":["s2"],"legacyId":"s2","name":"变节","cardType":"master_skill","owner":{"type":"master","id":"master.roche"},"printedText":"被动：当你抽到此牌时，再抽一张牌。\n主从争斗-唯一/被动：当罗榭的手牌中拥有3张或更多【变节】时，他立即失去6点战果，然后他可以花费一枚令咒并将所有【变节】洗回牌堆。若他不花费，其立即【败北】并将所有【变节】弃置。","cardFace":{"typeLabel":"被动","attributes":[],"cost":0,"basePower":0},"playTiming":{"phase":"action","window":"controller_play_card_window"},"playRequirements":[],"abilities":[{"id":"roche.betrayal","kind":"passive","printedClause":"被动：当你抽到此牌时，再抽一张牌。\n主从争斗-唯一/被动：当罗榭的手牌中拥有3张或更多【变节】时，他立即失去6点战果，然后他可以花费一枚令咒并将所有【变节】洗回牌堆。若他不花费，其立即【败北】并将所有【变节】弃置。","activation":{"trigger":"while_active"},"effects":[{"type":"record_master_directive","directive":"roche_betrayal"}],"execution":{"mode":"host_adjudicated","allowedOperations":[]}}],"verification":{"implementationStatus":"host_adjudicated"}}
+  ],
+  "sources":[{"id":"development_card_images","type":"development_image_set","imageOrder":["../../Fate_Domination-开发版/images/masters/罗榭·弗雷因.png"]}]
+}
