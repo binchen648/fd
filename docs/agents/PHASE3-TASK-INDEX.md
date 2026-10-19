@@ -9943,3 +9943,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-kariya-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#581` or any prior open synchronization PR.
+
+## TASK P3-S-OWNER-KAYNETH-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: corrective owner-complete canonical consumer migration, frozen exactly four skills for `master.kayneth`
+
+Exact accepted review:
+
+- PR `#583`, exact Base `aca523da4f0131ca4a6881df41f2f8deda77361b`;
+- accepted Candidate `4d28380ff5a0ec8cf0f5f2c2500cd62baa369447`;
+- independent GPT-6 Sol r2 verdict `MIGRATION_ACCEPTED` from `/root/kayneth_reviewer_r2`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-kayneth-r2` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly four identities: `master.kayneth.skill.ascension`, `.s1`, `.s2`, and `.s3`.
+
+The Candidate restores the excluded `ascension` card, keeps the existing 月灵髓液 deck evidence, and preserves exact inventory/generated text and source hashes. All four cards remain `HOST_ADJUDICATED` where the current engine lacks authoritative contracts.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `323/944`, remaining `621`;
+- exact owner increment: `+4`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`327/944`**, remaining **`617`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-kayneth-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#583` or any prior open synchronization PR.
