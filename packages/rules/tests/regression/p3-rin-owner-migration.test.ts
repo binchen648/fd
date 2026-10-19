@@ -30,11 +30,14 @@ describe('P3 Rin owner migration boundary', () => {
     for (const id of IDS) expect(loaded.cards[id]!.mode).toBe('host_adjudicated');
     expect(archive.cards.every((card: any) => card.verification.implementationStatus === 'host_adjudicated')).toBe(true);
     expect(archive.cards.every((card: any) => card.abilities.every((ability: any) => ability.effects.every((effect: any) => effect.type === 'record_master_directive')))).toBe(true);
+    expect(archive.cards.every((card: any) => card.abilities.every((ability: any) => ability.execution.mode === 'host_adjudicated'))).toBe(true);
   });
 
   it('registers the canonical archive exactly once in the master pack', () => {
     const pack = JSON.parse(readFileSync('data/packs/fd-playtest-v1/pack.json', 'utf8')) as any;
     expect(pack.authoringMasterFiles.filter((entry: string) => entry === PATH)).toHaveLength(1);
     expect(pack.authoringMasterFiles.at(-1)).toBe(PATH);
+    const generated = JSON.parse(readFileSync('data/generated/fd-playtest-v1.content-library.json', 'utf8')) as any;
+    expect(generated.cards.find((card: any) => card.id === 'master.rin.overview')?.capability.status).toBe('HOST_ADJUDICATED');
   });
 });

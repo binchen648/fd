@@ -3955,7 +3955,7 @@
       "entityId": "master.rin.overview",
       "displayName": "远坂凛",
       "entityKind": "master_overview",
-      "capabilityStatus": "FULL",
+      "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/远坂凛.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/远坂凛.png",
       "imageIndex": 0,

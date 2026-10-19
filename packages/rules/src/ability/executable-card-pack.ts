@@ -595,7 +595,7 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
     // A card-level verification status is an intentional product-playtest
     // capability downgrade, not an unsupported rule node. Preserve it in the
     // generated card mode while still rejecting all malformed semantics.
-    const semanticReports = compiled.report.filter((issue) => issue.path !== 'verification.implementationStatus');
+    const semanticReports = compiled.report.filter((issue) => issue.path !== 'verification.implementationStatus' && issue.status !== 'host_adjudicated');
     if (semanticReports.length) {
       const detail = semanticReports.map((issue) => `${issue.cardId}:${issue.abilityId ?? 'card'}:${issue.path}: ${issue.reason}`).join('\n');
       throw new Error(`Executable compilation rejected unsupported semantics:\n${detail}`);

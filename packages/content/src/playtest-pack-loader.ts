@@ -517,6 +517,7 @@ function convertAuthoringMaster(
   const generatedCardIds = archive.cards
     .filter((card) => card.cardType === 'master_deck_card')
     .map((card) => card.id);
+  const overviewCapabilityStatus = archive.overviewCapabilityStatus === 'HOST_ADJUDICATED' ? 'HOST_ADJUDICATED' : 'FULL';
   return {
     master: {
       id: archive.id,
@@ -541,7 +542,7 @@ function convertAuthoringMaster(
         name: archive.name,
         cardType: 'master_overview',
         printedText: archive.cards.map((card) => `${card.name}: ${card.printedText ?? ''}`).join('\n'),
-        capability: { status: 'FULL' },
+        capability: { status: overviewCapabilityStatus },
         source: sourceForArchive(archive, workspaceRoot),
       },
       ...archive.cards.map((card, index) => toNamedCard(card, archive, workspaceRoot, index + 1)),
