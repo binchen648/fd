@@ -1,107 +1,39 @@
 {
   "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
   "id": "master.shinji",
   "name": "间桐慎二",
   "class": "Master",
   "publicInformation": { "type": "master_package", "initialMana": 4 },
-  "sources": [
-    {
-      "id": "chm_page",
-      "type": "chm_page",
-      "path": "D:/fd/chm-extract/间桐慎二.htm",
-      "pageTitle": "间桐慎二",
-      "imageOrder": [
-        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_194536_066.png",
-        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_194540_736.png",
-        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_194545_992.png",
-        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_194550_681.png",
-        "D:/fd/chm-extract/图包/ScreenShot_2025-10-30_194556_480.png"
-      ]
+  "overviewCapabilityStatus": "HOST_ADJUDICATED",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "e92e025e59c5830dd56edf813b5a94a86944b5b9",
+    "referenceMetadataCommit": "e92e025e59c5830dd56edf813b5a94a86944b5b9",
+    "note": "冻结五项技能的 canonical printedText、开发版/legacy 定位、full-roster inventory 原文及全部六个 generated clause SHA。五项均为 DISCOVERED，semanticNormalization.status=BLOCKED、blockedBy=SEMANTIC_SOURCE_REQUIRED、Phase3 mappingStatus=EXPLICIT_BLOCK；所有语义仍保持 HOST_ADJUDICATED。core.shinji-book (shared_handler)、core.enter-location-gain-mana (specific_handler) 和 core.defeat-lose-command-seal (specific_handler) 仅为 reference handler，不能当作 runtime contract。record_master_directive 仅供主持人审计，不能伪装成 complete/FULL/automatic。",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版/images/masters/间桐慎二.png#master.shinji/间桐慎二",
+      "legacy": {
+        "master.shinji.skill.ascension": "legacy-content.json#master/master.shinji/ascension",
+        "master.shinji.skill.s1": "legacy-content.json#master/master.shinji/s1",
+        "master.shinji.skill.s2": "legacy-content.json#master/master.shinji/s2",
+        "master.shinji.skill.s3": "legacy-content.json#master/master.shinji/s3",
+        "master.shinji.skill.s4": "legacy-content.json#master/master.shinji/s4"
+      },
+      "generated": {
+        "master.shinji.skill.ascension": "src/content/generated/legacy-content.json#masters[8].skills[4].text#line=1 sha256=807f73bce3a525bb284717c080adb54fe809def1d4ac8d599b3903faa1850707",
+        "master.shinji.skill.s1": "src/content/generated/legacy-content.json#masters[8].skills[0].text#line=1 sha256=135c32f6a2c99d178870dfe25a15126672b1e30448eab864a1f5fe1a78f3eaa4",
+        "master.shinji.skill.s2": "src/content/generated/legacy-content.json#masters[8].skills[1].text#line=1 sha256=65930c3e1c3105fa047b5e61c1aea90ccca535edf590fad93cb1e6f1b8b74b92",
+        "master.shinji.skill.s3": "src/content/generated/legacy-content.json#masters[8].skills[2].text#line=1 sha256=ab192089e51de200b3818017d6c94a671644b18b06b78762e67468111a9ab768",
+        "master.shinji.skill.s4": "src/content/generated/legacy-content.json#masters[8].skills[3].text#line=1 sha256=f2137f50ea381cd89ddf810e42b10d2cd1eadc9d3a5fc4b0c2071db2cb965427; line=2 sha256=7050c5acdb9c773fe60d03b17b54a2a96c965c573ff82d9003aaab73398f392c"
+      }
     }
-  ],
+  },
   "cards": [
-    {
-      "id": "master.shinji.skill.drain-command",
-      "name": "吸魔命令",
-      "cardType": "master_skill",
-      "printedText": "进入深山町时，获得1点魔力。",
-      "cardFace": { "cost": 0, "basePower": 0 },
-      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
-      "playRequirements": [],
-      "abilities": [
-        {
-          "id": "drain-command.enter-miyama",
-          "kind": "forced_trigger",
-          "printedClause": "进入深山町时，获得1点魔力。",
-          "activation": { "trigger": "after_controller_enters_location", "eventLocationId": "miyama_town" },
-          "effects": [{ "type": "adjust_mana", "amount": 1 }],
-          "execution": { "mode": "automatic" }
-        }
-      ],
-      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
-    },
-    {
-      "id": "master.shinji.skill.useless-person",
-      "name": "无用之人",
-      "cardType": "master_skill",
-      "printedText": "开局获得【伪臣之书】。",
-      "cardFace": { "cost": 0, "basePower": 0 },
-      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
-      "playRequirements": [],
-      "abilities": [
-        {
-          "id": "useless-person.setup",
-          "kind": "forced_trigger",
-          "printedClause": "开局获得【伪臣之书】。",
-          "activation": { "trigger": "game_start" },
-          "effects": [{ "type": "create_card", "cardId": "master.shinji.skill.false-attendant-book", "to": { "zone": "skill" } }],
-          "execution": { "mode": "automatic" }
-        }
-      ],
-      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
-    },
-    {
-      "id": "master.shinji.skill.clown",
-      "name": "小丑",
-      "cardType": "master_skill",
-      "printedText": "当你战败时，失去一枚令咒。",
-      "cardFace": { "cost": 0, "basePower": 0 },
-      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
-      "playRequirements": [],
-      "abilities": [
-        {
-          "id": "clown.lose-command-seal",
-          "kind": "forced_trigger",
-          "printedClause": "当你战败时，失去一枚令咒。",
-          "activation": { "trigger": "after_controller_loses_battle" },
-          "effects": [{ "type": "adjust_command_seals", "amount": -1, "directive": "lose_command_seal_after_battle_loss" }],
-          "execution": { "mode": "automatic" }
-        }
-      ],
-      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
-    },
-    {
-      "id": "master.shinji.skill.false-attendant-book",
-      "name": "伪臣之书",
-      "cardType": "master_skill",
-      "printedText": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。 当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
-      "cardFace": { "cost": 0, "basePower": 0 },
-      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
-      "playRequirements": [],
-      "abilities": [
-        {
-          "id": "false-attendant-book.first-empty-seals",
-          "kind": "forced_trigger",
-          "printedClause": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。 当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
-          "activation": { "trigger": "after_controller_loses_all_command_seals" },
-          "limit": { "type": "per_game", "scope": "this_card", "uses": 1 },
-          "effects": [{ "type": "false_attendant_book_replacement", "sakuraMasterId": "master.sakura", "preserveVictoryPoints": true }],
-          "execution": { "mode": "automatic" }
-        }
-      ],
-      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
-    }
+    { "id": "master.shinji.skill.ascension", "aliases": ["ascension"], "legacyId": "ascension", "name": "圣杯核心", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shinji" }, "printedText": "此牌在第八回合结束后，并且莎士比亚是你的从者时生效。你失去【伪臣之书】。若莎士比亚是你的第一名从者，你位于深山町时合计威力+12，当你获得X点战果时，所有位于深山町的对手失去X点战果；若莎士比亚并非你的第一名从者，你获得8点战果。", "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "shinji.sacred-grail-core", "kind": "passive", "printedClause": "此牌在第八回合结束后，并且莎士比亚是你的从者时生效。你失去【伪臣之书】。若莎士比亚是你的第一名从者，你位于深山町时合计威力+12，当你获得X点战果时，所有位于深山町的对手失去X点战果；若莎士比亚并非你的第一名从者，你获得8点战果。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "shinji_sacred_grail_core" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.shinji.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "吸魔命令", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shinji" }, "printedText": "进入深山町时，获得1点魔力。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "shinji.enter-miyama-gain-mana", "kind": "passive", "printedClause": "进入深山町时，获得1点魔力。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "shinji_enter_miyama_gain_mana" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.shinji.skill.s2", "aliases": ["s2"], "legacyId": "s2", "name": "无用之人", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shinji" }, "printedText": "开局获得【伪臣之书】。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "shinji.false-attendant-book-setup", "kind": "passive", "printedClause": "开局获得【伪臣之书】。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "shinji_false_attendant_book_setup" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.shinji.skill.s3", "aliases": ["s3"], "legacyId": "s3", "name": "小丑", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shinji" }, "printedText": "当你战败时，失去一枚令咒。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "shinji.defeat-lose-command-seal", "kind": "passive", "printedClause": "当你战败时，失去一枚令咒。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "shinji_defeat_lose_command_seal" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.shinji.skill.s4", "aliases": ["s4"], "legacyId": "s4", "name": "伪臣之书", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shinji" }, "printedText": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。\n当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "shinji.false-attendant-book", "kind": "passive", "printedClause": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。\n当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "shinji_false_attendant_book" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } }
   ],
-  "excludedCards": [{ "id": "master.shinji.skill.ascension", "name": "圣杯核心", "reason": "user_scope_excluded_ascension" }],
-  "adapterNotes": ["升华技按用户规则排除。"]
+  "sources": [{ "id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/间桐慎二.png"] }]
 }

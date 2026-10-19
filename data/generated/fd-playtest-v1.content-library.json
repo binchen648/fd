@@ -1521,10 +1521,11 @@
       "initialMana": 4,
       "commandSpellCardIds": [],
       "skillCardIds": [
-        "master.shinji.skill.drain-command",
-        "master.shinji.skill.useless-person",
-        "master.shinji.skill.clown",
-        "master.shinji.skill.false-attendant-book"
+        "master.shinji.skill.ascension",
+        "master.shinji.skill.s1",
+        "master.shinji.skill.s2",
+        "master.shinji.skill.s3",
+        "master.shinji.skill.s4"
       ],
       "linkedCards": {
         "generated": []
@@ -1535,7 +1536,7 @@
       },
       "source": {
         "htmPath": "chm-extract/间桐慎二.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_194536_066.png",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/间桐慎二.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
@@ -10993,24 +10994,24 @@
       "id": "master.shinji.overview",
       "name": "间桐慎二",
       "cardType": "master_overview",
-      "printedText": "吸魔命令: 进入深山町时，获得1点魔力。\n无用之人: 开局获得【伪臣之书】。\n小丑: 当你战败时，失去一枚令咒。\n伪臣之书: 当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。 当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
+      "printedText": "圣杯核心: 此牌在第八回合结束后，并且莎士比亚是你的从者时生效。你失去【伪臣之书】。若莎士比亚是你的第一名从者，你位于深山町时合计威力+12，当你获得X点战果时，所有位于深山町的对手失去X点战果；若莎士比亚并非你的第一名从者，你获得8点战果。\n吸魔命令: 进入深山町时，获得1点魔力。\n无用之人: 开局获得【伪臣之书】。\n小丑: 当你战败时，失去一枚令咒。\n伪臣之书: 当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。\n当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
       "capability": {
-        "status": "FULL"
+        "status": "HOST_ADJUDICATED"
       },
       "source": {
         "htmPath": "chm-extract/间桐慎二.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_194536_066.png",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/间桐慎二.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
     },
     {
-      "id": "master.shinji.skill.clown",
-      "name": "小丑",
+      "id": "master.shinji.skill.ascension",
+      "name": "圣杯核心",
       "cardType": "master_skill",
       "printedValue": 0,
       "printedCost": 0,
-      "printedText": "当你战败时，失去一枚令咒。",
+      "printedText": "此牌在第八回合结束后，并且莎士比亚是你的从者时生效。你失去【伪臣之书】。若莎士比亚是你的第一名从者，你位于深山町时合计威力+12，当你获得X点战果时，所有位于深山町的对手失去X点战果；若莎士比亚并非你的第一名从者，你获得8点战果。",
       "timing": [
         "action"
       ],
@@ -11020,13 +11021,13 @@
       },
       "source": {
         "htmPath": "chm-extract/间桐慎二.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_194550_681.png",
-        "imageIndex": 3,
+        "imagePath": "../../Fate_Domination-开发版/images/masters/间桐慎二.png",
+        "imageIndex": 1,
         "reviewedAgainstImage": true
       }
     },
     {
-      "id": "master.shinji.skill.drain-command",
+      "id": "master.shinji.skill.s1",
       "name": "吸魔命令",
       "cardType": "master_skill",
       "printedValue": 0,
@@ -11041,34 +11042,13 @@
       },
       "source": {
         "htmPath": "chm-extract/间桐慎二.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_194540_736.png",
-        "imageIndex": 1,
+        "imagePath": "../../Fate_Domination-开发版/images/masters/间桐慎二.png",
+        "imageIndex": 2,
         "reviewedAgainstImage": true
       }
     },
     {
-      "id": "master.shinji.skill.false-attendant-book",
-      "name": "伪臣之书",
-      "cardType": "master_skill",
-      "printedValue": 0,
-      "printedCost": 0,
-      "printedText": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。 当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
-      "timing": [
-        "action"
-      ],
-      "capability": {
-        "status": "HOST_ADJUDICATED",
-        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
-      },
-      "source": {
-        "htmPath": "chm-extract/间桐慎二.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_194556_480.png",
-        "imageIndex": 4,
-        "reviewedAgainstImage": true
-      }
-    },
-    {
-      "id": "master.shinji.skill.useless-person",
+      "id": "master.shinji.skill.s2",
       "name": "无用之人",
       "cardType": "master_skill",
       "printedValue": 0,
@@ -11083,8 +11063,50 @@
       },
       "source": {
         "htmPath": "chm-extract/间桐慎二.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_194545_992.png",
-        "imageIndex": 2,
+        "imagePath": "../../Fate_Domination-开发版/images/masters/间桐慎二.png",
+        "imageIndex": 3,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.shinji.skill.s3",
+      "name": "小丑",
+      "cardType": "master_skill",
+      "printedValue": 0,
+      "printedCost": 0,
+      "printedText": "当你战败时，失去一枚令咒。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/间桐慎二.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/间桐慎二.png",
+        "imageIndex": 4,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.shinji.skill.s4",
+      "name": "伪臣之书",
+      "cardType": "master_skill",
+      "printedValue": 0,
+      "printedCost": 0,
+      "printedText": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。\n当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/间桐慎二.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/间桐慎二.png",
+        "imageIndex": 5,
         "reviewedAgainstImage": true
       }
     },
@@ -13019,11 +13041,66 @@
   "rules": {
     "schemaVersion": "fd-executable-card-pack-v1",
     "cards": {
-      "master.shinji.skill.drain-command": {
-        "id": "master.shinji.skill.drain-command",
+      "master.shinji.skill.ascension": {
+        "id": "master.shinji.skill.ascension",
+        "name": "圣杯核心",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "升华技",
+          "attributes": [],
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "shinji.sacred-grail-core",
+            "kind": "passive",
+            "printedClause": "此牌在第八回合结束后，并且莎士比亚是你的从者时生效。你失去【伪臣之书】。若莎士比亚是你的第一名从者，你位于深山町时合计威力+12，当你获得X点战果时，所有位于深山町的对手失去X点战果；若莎士比亚并非你的第一名从者，你获得8点战果。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "record_master_directive",
+                "directive": "shinji_sacred_grail_core"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "host_adjudicated",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "host_adjudicated",
+        "ownerId": "master.shinji",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
+      },
+      "master.shinji.skill.s1": {
+        "id": "master.shinji.skill.s1",
         "name": "吸魔命令",
         "cardType": "master_skill",
         "cardFace": {
+          "typeLabel": "被动",
+          "attributes": [],
           "cost": 0,
           "basePower": 0
         },
@@ -13034,19 +13111,18 @@
         "playRequirements": [],
         "abilities": [
           {
-            "id": "drain-command.enter-miyama",
-            "kind": "forced_trigger",
+            "id": "shinji.enter-miyama-gain-mana",
+            "kind": "passive",
             "printedClause": "进入深山町时，获得1点魔力。",
             "activation": {
-              "trigger": "after_controller_enters_location",
-              "eventLocationId": "miyama_town"
+              "trigger": "while_active"
             },
             "conditions": [],
             "targets": [],
             "effects": [
               {
-                "type": "adjust_mana",
-                "amount": 1
+                "type": "record_master_directive",
+                "directive": "shinji_enter_miyama_gain_mana"
               }
             ],
             "cost": [],
@@ -13060,28 +13136,24 @@
             "limit": {},
             "visibility": {},
             "execution": {
-              "mode": "automatic",
-              "allowedOperations": [
-                "adjust-mana",
-                "adjust-victory-points",
-                "move-card",
-                "create-status",
-                "skip-ability"
-              ]
+              "mode": "host_adjudicated",
+              "allowedOperations": []
             }
           }
         ],
-        "mode": "automatic",
+        "mode": "host_adjudicated",
         "ownerId": "master.shinji",
         "playKind": "support",
         "destinationZone": "field",
         "initialZone": "skill"
       },
-      "master.shinji.skill.useless-person": {
-        "id": "master.shinji.skill.useless-person",
+      "master.shinji.skill.s2": {
+        "id": "master.shinji.skill.s2",
         "name": "无用之人",
         "cardType": "master_skill",
         "cardFace": {
+          "typeLabel": "被动",
+          "attributes": [],
           "cost": 0,
           "basePower": 0
         },
@@ -13092,21 +13164,18 @@
         "playRequirements": [],
         "abilities": [
           {
-            "id": "useless-person.setup",
-            "kind": "forced_trigger",
+            "id": "shinji.false-attendant-book-setup",
+            "kind": "passive",
             "printedClause": "开局获得【伪臣之书】。",
             "activation": {
-              "trigger": "game_start"
+              "trigger": "while_active"
             },
             "conditions": [],
             "targets": [],
             "effects": [
               {
-                "type": "create_card",
-                "cardId": "master.shinji.skill.false-attendant-book",
-                "to": {
-                  "zone": "skill"
-                }
+                "type": "record_master_directive",
+                "directive": "shinji_false_attendant_book_setup"
               }
             ],
             "cost": [],
@@ -13120,28 +13189,24 @@
             "limit": {},
             "visibility": {},
             "execution": {
-              "mode": "automatic",
-              "allowedOperations": [
-                "adjust-mana",
-                "adjust-victory-points",
-                "move-card",
-                "create-status",
-                "skip-ability"
-              ]
+              "mode": "host_adjudicated",
+              "allowedOperations": []
             }
           }
         ],
-        "mode": "automatic",
+        "mode": "host_adjudicated",
         "ownerId": "master.shinji",
         "playKind": "support",
         "destinationZone": "field",
         "initialZone": "skill"
       },
-      "master.shinji.skill.clown": {
-        "id": "master.shinji.skill.clown",
+      "master.shinji.skill.s3": {
+        "id": "master.shinji.skill.s3",
         "name": "小丑",
         "cardType": "master_skill",
         "cardFace": {
+          "typeLabel": "被动",
+          "attributes": [],
           "cost": 0,
           "basePower": 0
         },
@@ -13152,19 +13217,18 @@
         "playRequirements": [],
         "abilities": [
           {
-            "id": "clown.lose-command-seal",
-            "kind": "forced_trigger",
+            "id": "shinji.defeat-lose-command-seal",
+            "kind": "passive",
             "printedClause": "当你战败时，失去一枚令咒。",
             "activation": {
-              "trigger": "after_controller_loses_battle"
+              "trigger": "while_active"
             },
             "conditions": [],
             "targets": [],
             "effects": [
               {
-                "type": "adjust_command_seals",
-                "amount": -1,
-                "directive": "lose_command_seal_after_battle_loss"
+                "type": "record_master_directive",
+                "directive": "shinji_defeat_lose_command_seal"
               }
             ],
             "cost": [],
@@ -13178,28 +13242,24 @@
             "limit": {},
             "visibility": {},
             "execution": {
-              "mode": "automatic",
-              "allowedOperations": [
-                "adjust-mana",
-                "adjust-victory-points",
-                "move-card",
-                "create-status",
-                "skip-ability"
-              ]
+              "mode": "host_adjudicated",
+              "allowedOperations": []
             }
           }
         ],
-        "mode": "automatic",
+        "mode": "host_adjudicated",
         "ownerId": "master.shinji",
         "playKind": "support",
         "destinationZone": "field",
         "initialZone": "skill"
       },
-      "master.shinji.skill.false-attendant-book": {
-        "id": "master.shinji.skill.false-attendant-book",
+      "master.shinji.skill.s4": {
+        "id": "master.shinji.skill.s4",
         "name": "伪臣之书",
         "cardType": "master_skill",
         "cardFace": {
+          "typeLabel": "被动",
+          "attributes": [],
           "cost": 0,
           "basePower": 0
         },
@@ -13210,19 +13270,18 @@
         "playRequirements": [],
         "abilities": [
           {
-            "id": "false-attendant-book.first-empty-seals",
-            "kind": "forced_trigger",
-            "printedClause": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。 当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
+            "id": "shinji.false-attendant-book",
+            "kind": "passive",
+            "printedClause": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。\n当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
             "activation": {
-              "trigger": "after_controller_loses_all_command_seals"
+              "trigger": "while_active"
             },
             "conditions": [],
             "targets": [],
             "effects": [
               {
-                "type": "false_attendant_book_replacement",
-                "sakuraMasterId": "master.sakura",
-                "preserveVictoryPoints": true
+                "type": "record_master_directive",
+                "directive": "shinji_false_attendant_book"
               }
             ],
             "cost": [],
@@ -13233,28 +13292,19 @@
               "order": "turn_order",
               "passBehavior": "decline_this_window"
             },
-            "limit": {
-              "type": "per_game",
-              "scope": "this_card",
-              "uses": 1
-            },
+            "limit": {},
             "visibility": {},
             "execution": {
-              "mode": "automatic",
-              "allowedOperations": [
-                "adjust-mana",
-                "adjust-victory-points",
-                "move-card",
-                "create-status",
-                "skip-ability"
-              ]
+              "mode": "host_adjudicated",
+              "allowedOperations": []
             }
           }
         ],
-        "mode": "automatic",
+        "mode": "host_adjudicated",
         "ownerId": "master.shinji",
         "playKind": "support",
-        "destinationZone": "field"
+        "destinationZone": "field",
+        "initialZone": "skill"
       },
       "master.kiritsugu.skill.ascension": {
         "id": "master.kiritsugu.skill.ascension",
@@ -48901,22 +48951,16 @@
         "class": "Master",
         "kind": "master",
         "cardIds": [
-          "master.shinji.skill.drain-command",
-          "master.shinji.skill.useless-person",
-          "master.shinji.skill.clown",
-          "master.shinji.skill.false-attendant-book"
+          "master.shinji.skill.ascension",
+          "master.shinji.skill.s1",
+          "master.shinji.skill.s2",
+          "master.shinji.skill.s3",
+          "master.shinji.skill.s4"
         ],
         "publicInformation": {
           "type": "master_package",
           "initialMana": 4
-        },
-        "excludedCards": [
-          {
-            "id": "master.shinji.skill.ascension",
-            "name": "圣杯核心",
-            "reason": "user_scope_excluded_ascension"
-          }
-        ]
+        }
       },
       "master.kiritsugu": {
         "id": "master.kiritsugu",
@@ -50473,64 +50517,77 @@
       "master.shiki-ryougi": "master.shiki-ryougi.command-spell",
       "master.shiki-tohno": "master.shiki-tohno.command-spell"
     },
-    "definitionHash": "79e424270ad339a1e740ae2edcedcf04d82e1510ee861de527f30c0cfe664097",
+    "definitionHash": "99d233c65d43ac584dc5540a560f9b71768fa2ac7ccfb4d04a3516635073e51b",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "79e424270ad339a1e740ae2edcedcf04d82e1510ee861de527f30c0cfe664097"
+      "definitionHash": "99d233c65d43ac584dc5540a560f9b71768fa2ac7ccfb4d04a3516635073e51b"
     },
     "sourceMap": {
-      "master.shinji.skill.drain-command": {
+      "master.shinji.skill.ascension": {
         "archiveId": "master.shinji",
         "archiveIndex": 0,
         "cardIndex": 0,
         "path": "archives[0].cards[0]"
       },
-      "master.shinji.skill.drain-command#drain-command.enter-miyama": {
+      "master.shinji.skill.ascension#shinji.sacred-grail-core": {
         "archiveId": "master.shinji",
         "archiveIndex": 0,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[0].cards[0].abilities[0]"
       },
-      "master.shinji.skill.useless-person": {
+      "master.shinji.skill.s1": {
         "archiveId": "master.shinji",
         "archiveIndex": 0,
         "cardIndex": 1,
         "path": "archives[0].cards[1]"
       },
-      "master.shinji.skill.useless-person#useless-person.setup": {
+      "master.shinji.skill.s1#shinji.enter-miyama-gain-mana": {
         "archiveId": "master.shinji",
         "archiveIndex": 0,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[0].cards[1].abilities[0]"
       },
-      "master.shinji.skill.clown": {
+      "master.shinji.skill.s2": {
         "archiveId": "master.shinji",
         "archiveIndex": 0,
         "cardIndex": 2,
         "path": "archives[0].cards[2]"
       },
-      "master.shinji.skill.clown#clown.lose-command-seal": {
+      "master.shinji.skill.s2#shinji.false-attendant-book-setup": {
         "archiveId": "master.shinji",
         "archiveIndex": 0,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[0].cards[2].abilities[0]"
       },
-      "master.shinji.skill.false-attendant-book": {
+      "master.shinji.skill.s3": {
         "archiveId": "master.shinji",
         "archiveIndex": 0,
         "cardIndex": 3,
         "path": "archives[0].cards[3]"
       },
-      "master.shinji.skill.false-attendant-book#false-attendant-book.first-empty-seals": {
+      "master.shinji.skill.s3#shinji.defeat-lose-command-seal": {
         "archiveId": "master.shinji",
         "archiveIndex": 0,
         "cardIndex": 3,
         "abilityIndex": 0,
         "path": "archives[0].cards[3].abilities[0]"
+      },
+      "master.shinji.skill.s4": {
+        "archiveId": "master.shinji",
+        "archiveIndex": 0,
+        "cardIndex": 4,
+        "path": "archives[0].cards[4]"
+      },
+      "master.shinji.skill.s4#shinji.false-attendant-book": {
+        "archiveId": "master.shinji",
+        "archiveIndex": 0,
+        "cardIndex": 4,
+        "abilityIndex": 0,
+        "path": "archives[0].cards[4].abilities[0]"
       },
       "master.kiritsugu.skill.ascension": {
         "archiveId": "master.kiritsugu",
