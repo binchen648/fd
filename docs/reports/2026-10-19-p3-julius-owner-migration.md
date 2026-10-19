@@ -46,4 +46,3 @@ Each card uses an audit-only `record_master_directive` envelope with no allowed 
 - `data/generated/fd-playtest-v1.evidence-report.json`
 - `packages/rules/tests/regression/p3-julius-owner-migration.test.ts`
 - `docs/reports/2026-10-19-p3-julius-owner-migration.md`
-
