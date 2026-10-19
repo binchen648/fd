@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 36,
+    "masters": 37,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -2894,6 +2894,116 @@
       "issueCodes": [
         "SOURCE_ASSET_UNVERIFIED"
       ]
+    },
+    {
+      "entityId": "master.kiara",
+      "displayName": "杀生院祈荒",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/杀生院祈荒.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/杀生院祈荒.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kiara.overview",
+      "displayName": "杀生院祈荒",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/杀生院祈荒.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/杀生院祈荒.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kiara.skill.ascension",
+      "displayName": "魔性菩萨",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/杀生院祈荒.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/杀生院祈荒.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kiara.skill.s1",
+      "displayName": "杀生院祈荒",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/杀生院祈荒.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/杀生院祈荒.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kiara.skill.s1a",
+      "displayName": "五停心观",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/杀生院祈荒.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/杀生院祈荒.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kiara.skill.s2",
+      "displayName": "秘密花园",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/杀生院祈荒.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/杀生院祈荒.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kiara.skill.s3",
+      "displayName": "天堂之孔",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/杀生院祈荒.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/杀生院祈荒.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kiara.skill.s4",
+      "displayName": "胎藏界·理拳印",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/杀生院祈荒.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/杀生院祈荒.png",
+      "imageIndex": 6,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kiara.skill.s5",
+      "displayName": "钻石领域",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/杀生院祈荒.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/杀生院祈荒.png",
+      "imageIndex": 7,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kiara.skill.s6",
+      "displayName": "此世全部之欲",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/杀生院祈荒.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/杀生院祈荒.png",
+      "imageIndex": 8,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
     },
     {
       "entityId": "master.kiritsugu",
