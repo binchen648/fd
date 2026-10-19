@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.julius",
+  "name": "尤里鸟斯·贝尔奇斯科·哈维",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "fe79d7a24ecda8511b330d812ad11638f783f602",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "冻结三项技能的 canonical printedText、开发版/legacy 定位、full-roster inventory 原文及全部 generated legacy-content SHA。当前 loader/runtime 没有权威合同证明安全增强方案的魔术工房部署、隐身增强方案支付2点魔力并在战斗阶段部署、潜行前哨阶段不部署且行动阶段开始时部署、回合结束移除弃牌堆两张或随机弃置一张以及无法执行时先抽牌的时序与选择。三张牌全部保持 HOST_ADJUDICATED；record_master_directive 仅供主持人审计，不能伪装成 complete/FULL/automatic；legacy handler 名称仅为来源证据。",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版#master.julius/尤里鸟斯·贝尔奇斯科·哈维",
+      "legacy": {
+        "master.julius.skill.ascension": "legacy-content.json#master/master.julius/ascension",
+        "master.julius.skill.s1": "legacy-content.json#master/master.julius/s1",
+        "master.julius.skill.s1a": "legacy-content.json#master/master.julius/s1a"
+      },
+      "generated": {
+        "master.julius.skill.ascension": "src/content/generated/legacy-content.json#masters[37].skills[2].text#line=1 sha256=c4c5a1f3075becdc764fa906321256200cebf8c551ebc302f6c8155bf440e2af; line=2 sha256=e338554947be5bf626cc86fed1bc3672975297f1d49de502122bbc028bcfc29f",
+        "master.julius.skill.s1": "src/content/generated/legacy-content.json#masters[37].skills[0].text#line=1 sha256=855d431ea91523425e464ff49af8e5a25b84946b675c6113f697c1af9464ecef",
+        "master.julius.skill.s1a": "src/content/generated/legacy-content.json#masters[37].skills[1].text#line=1 sha256=58df0e9303c120dc11606102e7ffdcc107622f195cbd2f01e5693386d8c00dc0"
+      }
+    }
+  },
+  "cards": [
+    {
+      "id": "master.julius.skill.ascension",
+      "aliases": ["ascension"], "legacyId": "ascension", "name": "黑蝎",
+      "cardType": "master_skill", "owner": { "type": "master", "id": "master.julius" },
+      "printedText": "安全增强方案-当你使用【潜行】时，可以部署于魔术工房。\n隐身增强方案-当你使用【潜行】时，可以花费2点魔力，改为于自己的战斗阶段中进行部署。",
+      "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{
+        "id": "julius.black-scorpion", "kind": "passive",
+        "printedClause": "安全增强方案允许潜行部署于魔术工房；隐身增强方案可支付2点魔力改为自己的战斗阶段部署。",
+        "activation": { "trigger": "while_active" }, "conditions": [], "targets": [],
+        "effects": [{ "type": "record_master_directive", "directive": "julius_black_scorpion" }],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": { "mode": "automatic", "allowedOperations": [] }
+      }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.julius.skill.s1",
+      "aliases": ["s1"], "legacyId": "s1", "name": "代码_潜行",
+      "cardType": "master_skill", "owner": { "type": "master", "id": "master.julius" },
+      "printedText": "前哨阶段：本阶段不进行部署，于你的行动阶段开始时部署于一处战场。",
+      "cardFace": { "typeLabel": "魔术", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{
+        "id": "julius.skulk", "kind": "passive",
+        "printedClause": "前哨阶段不部署，于行动阶段开始时部署于一处战场。",
+        "activation": { "trigger": "while_active" }, "conditions": [], "targets": [],
+        "effects": [{ "type": "record_master_directive", "directive": "julius_skulk" }],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": { "mode": "automatic", "allowedOperations": [] }
+      }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.julius.skill.s1a",
+      "aliases": ["s1a"], "legacyId": "s1a", "name": "快速老化",
+      "cardType": "master_skill", "owner": { "type": "master", "id": "master.julius" },
+      "printedText": "每回合结束时移除你弃牌堆中两张牌或随机弃置一张牌。若无法执行，需要先抽一张牌。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{
+        "id": "julius.rapid-aging", "kind": "forced_trigger",
+        "printedClause": "每回合结束时移除弃牌堆两张牌或随机弃置一张牌；无法执行时先抽一张牌。",
+        "activation": { "trigger": "round_end" }, "conditions": [], "targets": [],
+        "effects": [{ "type": "record_master_directive", "directive": "julius_rapid_aging" }],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": { "mode": "automatic", "allowedOperations": [] }
+      }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    }
+  ],
+  "sources": [{
+    "id": "development_card_images", "type": "development_image_set",
+    "imageOrder": ["../../Fate_Domination-开发版/images/masters/尤里鸟斯·贝尔奇斯科·哈维.png"]
+  }]
+}
