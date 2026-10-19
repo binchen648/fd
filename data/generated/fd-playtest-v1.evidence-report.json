@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 32,
+    "masters": 33,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -2514,6 +2514,61 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/爱丽丝菲尔·冯·爱因兹贝伦.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/爱丽丝菲尔.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.jinako",
+      "displayName": "吉娜可·加里吉利",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/吉娜可·加里吉利.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/吉娜可·加里吉利.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.jinako.overview",
+      "displayName": "吉娜可·加里吉利",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/吉娜可·加里吉利.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/吉娜可·加里吉利.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.jinako.skill.ascension",
+      "displayName": "中场休息",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/吉娜可·加里吉利.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/吉娜可·加里吉利.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.jinako.skill.s1",
+      "displayName": "吉娜可·加里吉利",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/吉娜可·加里吉利.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/吉娜可·加里吉利.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.jinako.skill.s2",
+      "displayName": "作弊代码转换",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/吉娜可·加里吉利.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/吉娜可·加里吉利.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
       "issueCodes": []

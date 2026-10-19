@@ -70,7 +70,8 @@
                                  "data/authoring/masters/master.hinako.json",
                                  "data/authoring/masters/master.hisui-detective.json",
                                  "data/authoring/masters/master.iliya.json",
-                                 "data/authoring/masters/master.illya-mahou.json"
+                                 "data/authoring/masters/master.illya-mahou.json",
+                                 "data/authoring/masters/master.jinako.json"
                              ],
     "authoringMasterSupportFiles":  [
                                         "data/authoring/masters/master.shirou-emiya.json"

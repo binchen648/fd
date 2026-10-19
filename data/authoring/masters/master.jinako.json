@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.jinako",
+  "name": "吉娜可·加里吉利",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "e9091c1b29c80851c3ce7db85eb76407d3bcc70d",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "冻结三项技能的 canonical printedText、开发版/legacy 定位、full-roster inventory 原文及全部 generated legacy-content SHA。当前 loader/runtime 没有权威合同证明游戏开始时按从者牌库中基础特殊属性攻击牌数量动态计算 X、作弊代码转换的每局一次生命周期、激活攻击保留原印刷属性、转换后基础攻击的魔力费用、或魔术工房离开与前哨部署时序。三张牌全部保持 HOST_ADJUDICATED；record_master_directive 仅供主持人审计，不能伪装成 complete/FULL/automatic。",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版#master.jinako/吉娜可·加里吉利",
+      "legacy": {
+        "master.jinako.skill.ascension": "legacy-content.json#master/master.jinako/ascension",
+        "master.jinako.skill.s1": "legacy-content.json#master/master.jinako/s1",
+        "master.jinako.skill.s2": "legacy-content.json#master/master.jinako/s2"
+      },
+      "generated": {
+        "master.jinako.skill.ascension": "src/content/generated/legacy-content.json#masters[34].skills[2].text#line=1 sha256=1b4e4b0bff4586c9e2d659215cc38b0aaf5fd03dc7083a84bbfd079ccef1d17f",
+        "master.jinako.skill.s1": "src/content/generated/legacy-content.json#masters[34].skills[0].text#line=1 sha256=15f270cfdab5a2f45482d33e0c50efc8cc9bcc66f934eab1ea80fa55ae969bde; line=2 sha256=25ad45a115ded7dc1aa6113e8f2be2118aea59883c7036f9cc1b933693f89d8a; line=3 sha256=6506468bd07d1edeecddc9a4b6fab63463be102c5e55e97f6008b428addcb809",
+        "master.jinako.skill.s2": "src/content/generated/legacy-content.json#masters[34].skills[1].text#line=1 sha256=1a0fcd48118eb47ac98de4aae367b2d95e196e4df62b98b79f557d7b290b40c0; line=2 sha256=0aa4873676bee849f375a2c7ec893e83a57ee264282f49ddbc370497421f659f"
+      }
+    }
+  },
+  "cards": [
+    {
+      "id": "master.jinako.skill.ascension",
+      "aliases": ["ascension"],
+      "legacyId": "ascension",
+      "name": "中场休息",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.jinako" },
+      "printedText": "你可以于前哨阶段选择不进行部署，若如此做，则重新获得【作弊代码转换】。你激活的攻击一直保留其原本印刷的属性。",
+      "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [{
+        "id": "jinako.time-out",
+        "kind": "passive",
+        "printedClause": "前哨阶段可选择不部署并重新获得作弊代码转换；激活攻击保留原印刷属性。",
+        "activation": { "trigger": "while_active" },
+        "conditions": [], "targets": [],
+        "effects": [{ "type": "record_master_directive", "directive": "jinako_time_out" }],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": { "mode": "automatic", "allowedOperations": [] }
+      }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.jinako.skill.s1",
+      "aliases": ["s1"],
+      "legacyId": "s1",
+      "name": "吉娜可·加里吉利",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.jinako" },
+      "printedText": "游戏开始时拥有【作弊代码转换】。\n你的基础特殊属性攻击威力增加X点（X=8-2Y【Y=游戏开始时从者牌库中基础特殊属性攻击牌的数量】，且X至少为1。）\n当你离开魔术工房时，失去3点魔力。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [{
+        "id": "jinako.gamer",
+        "kind": "passive",
+        "printedClause": "游戏开始时获得作弊代码转换；特殊属性基础攻击威力按游戏开始时从者牌库数量动态增加；离开魔术工房时失去3点魔力。",
+        "activation": { "trigger": "while_active" },
+        "conditions": [], "targets": [],
+        "effects": [{ "type": "record_master_directive", "directive": "jinako_gamer" }],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "execution": { "mode": "automatic", "allowedOperations": [] }
+      }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.jinako.skill.s2",
+      "aliases": ["s2"],
+      "legacyId": "s2",
+      "name": "作弊代码转换",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.jinako" },
+      "printedText": "<每局游戏一次>\n行动阶段：本回合你可以将你的非特殊属性基础攻击变为威力相同的特殊属性基础攻击打出。（4变为【幸运】，3变为【急行】，2变为【远隔操作】，你需要支付它们变更后的魔力。）",
+      "cardFace": { "typeLabel": "魔术", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [{
+        "id": "jinako.cheat-code-cast",
+        "kind": "phase_action",
+        "printedClause": "每局一次；行动阶段可将非特殊属性基础攻击转换为等威力特殊属性基础攻击，并支付转换后的魔力。",
+        "activation": { "phase": "action", "opens": "controller_action_window" },
+        "conditions": [], "targets": [],
+        "effects": [{ "type": "record_master_directive", "directive": "jinako_cheat_code_cast" }],
+        "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {},
+        "responseWindow": {}, "limit": { "type": "per_game", "uses": 1, "scope": "this_card" }, "visibility": {},
+        "execution": { "mode": "automatic", "allowedOperations": [] }
+      }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    }
+  ],
+  "sources": [{
+    "id": "development_card_images",
+    "type": "development_image_set",
+    "imageOrder": ["../../Fate_Domination-开发版/images/masters/吉娜可·加里吉利.png"]
+  }]
+}
