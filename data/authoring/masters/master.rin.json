@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.rin",
+  "name": "远坂凛",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen five-skill inventory is DISCOVERED with semanticNormalization BLOCKED by SEMANTIC_SOURCE_REQUIRED. Legacy handlers and core.card-play are reference-only; no runtime contract is inferred. All unsupported semantics remain HOST_ADJUDICATED and record_master_directive.",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版#master.rin/远坂凛",
+      "legacy": {
+        "master.rin.skill.ascension": "legacy-content.json#master/master.rin/ascension",
+        "master.rin.skill.s1": "legacy-content.json#master/master.rin/s1",
+        "master.rin.skill.s2": "legacy-content.json#master/master.rin/s2",
+        "master.rin.skill.s3": "legacy-content.json#master/master.rin/s3",
+        "master.rin.skill.s4": "legacy-content.json#master/master.rin/s4"
+      },
+      "generated": {
+        "master.rin.skill.ascension": "src/content/generated/legacy-content.json#masters[3].skills[4].text#line=1 sha256=764186a6e18e6809aae2fac1606962feda161ba0f7e5a91e9d5a2a4575f2d0f2; line=2 sha256=d420cb5378f198e4b8460b1dd55466d5d2211e0af1da676d4cb8d078618979dd; line=3 sha256=dc979913ab90f001064390c0a94568676b98316a1b3d38739f1851df9833c384",
+        "master.rin.skill.s1": "src/content/generated/legacy-content.json#masters[3].skills[0].text#line=1 sha256=1ad529117c79a886e5780e3f5faae6504631e0c268a435b672fc1fdce7bf4829",
+        "master.rin.skill.s2": "src/content/generated/legacy-content.json#masters[3].skills[1].text#line=1 sha256=dfb0c1309e905d358d459460f23cf6993f48565fc08ca77bd3cf87b43634aa28",
+        "master.rin.skill.s3": "src/content/generated/legacy-content.json#masters[3].skills[2].text#line=1 sha256=d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24; line=2 sha256=5cb8cc0584c3947a3417c6e47fa2e82bad23f108beecb56b6e52fe7a73d2a8c0; line=3 sha256=0ac25f48c2d3c654c7d4c432e74bcc7c18ab04afe95074548a7d206dcf41c805; line=4 sha256=afb92f89d19eed9a2a768220f7b8e8c953acc68d7a3bc2ba7f16fb94b501e95e; line=5 sha256=9d13e552ca4191717d6bdfbc7533d2af9a78fb7b2039ee415f8cd9d8bdc0ca18",
+        "master.rin.skill.s4": "src/content/generated/legacy-content.json#masters[3].skills[3].text#line=1 sha256=0920b9a2a1323b9d495e68e604dca664d584583a02e1d034181569b54fac9ad2; line=2 sha256=7ee407d9af9e4bd2db96350d8afbeb62dc33997fc27af041c37bcf0df4e84516"
+      }
+    }
+  },
+  "cards": [
+    { "id": "master.rin.skill.ascension", "aliases": ["ascension"], "legacyId": "ascension", "name": "宝石剑泽尔里奇", "cardType": "master_skill", "owner": { "type": "master", "id": "master.rin" }, "printedText": "（升华技，将此牌加入你的技能区）\n被动：你的魔术基础牌和【阴炁弹】的威力+2。\n行动阶段：获得本回合所有玩家花费的魔力。战斗结束后，将此牌移除游戏。", "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "rin.jewel-sword", "kind": "passive", "printedClause": "（升华技，将此牌加入你的技能区）\n被动：你的魔术基础牌和【阴炁弹】的威力+2。\n行动阶段：获得本回合所有玩家花费的魔力。战斗结束后，将此牌移除游戏。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "rin_jewel_sword" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.rin.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "宝石魔术", "cardType": "master_skill", "owner": { "type": "master", "id": "master.rin" }, "printedText": "游戏开始时，你获得10枚【宝石】。高潮阶段时你可以在【宝石】上选择相同的选项，每个选项至多3次(共计9次)。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "rin.gem-magic", "kind": "passive", "printedClause": "游戏开始时，你获得10枚【宝石】。高潮阶段时你可以在【宝石】上选择相同的选项，每个选项至多3次(共计9次)。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "rin_gem_magic" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.rin.skill.s2", "aliases": ["s2"], "legacyId": "s2", "name": "绝对服从的命令", "cardType": "master_skill", "owner": { "type": "master", "id": "master.rin" }, "printedText": "你必须于第一回合使用一枚令咒。否则于该回合结束失去一枚令咒。若你以该令咒获得了魔力，战斗阶段结束后，你失去4点魔力。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "rin.command-seal-duty", "kind": "passive", "printedClause": "你必须于第一回合使用一枚令咒。否则于该回合结束失去一枚令咒。若你以该令咒获得了魔力，战斗阶段结束后，你失去4点魔力。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "rin_command_seal_duty" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.rin.skill.s3", "aliases": ["s3"], "legacyId": "s3", "name": "宝石", "cardType": "master_skill", "owner": { "type": "master", "id": "master.rin" }, "printedText": "<每局游戏限一次>\n行动阶段：选择一项本回合没有选择过的选项：\n-获得1点魔力。\n-打出一张游戏外的【阴炁弹】。\n-弃置1-3张牌，然后抽取相同数量的牌。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "rin.gem", "kind": "passive", "printedClause": "<每局游戏限一次>\n行动阶段：选择一项本回合没有选择过的选项：\n-获得1点魔力。\n-打出一张游戏外的【阴炁弹】。\n-弃置1-3张牌，然后抽取相同数量的牌。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "rin_gem" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.rin.skill.s4", "aliases": ["s4"], "legacyId": "s4", "name": "阴炁弹", "cardType": "master_skill", "owner": { "type": "master", "id": "master.rin" }, "printedText": "魔术属性，0耗1威。<每局游戏限一次>\n(<每局游戏限一次>的卡牌，关闭后将被移除游戏。对于其他卡牌的效果而言，它们便是游戏外的。)", "cardFace": { "typeLabel": "独立牌库牌", "attributes": ["magic"], "cost": 0, "basePower": 1 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "rin.yin-qi-bullet", "kind": "passive", "printedClause": "魔术属性，0耗1威。<每局游戏限一次>\n(<每局游戏限一次>的卡牌，关闭后将被移除游戏。对于其他卡牌的效果而言，它们便是游戏外的。)", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "rin_yin_qi_bullet" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } }
+  ],
+  "sources": [{ "id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/远坂凛.png"] }]
+}
