@@ -10255,3 +10255,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-rani-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#605` or any prior open synchronization PR.
+
+## TASK P3-S-OWNER-REINES-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly six skills for `master.reines`
+
+Exact accepted review:
+
+- PR `#607`, exact Base `d3bfb3b7`;
+- accepted Candidate `2dd8bffbb869f31aa3b75e8de27c2b1cb6d06b4f`;
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from `/root/kirei_reviewer`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-reines` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly six identities: `master.reines.skill.ascension`, `.s1`, `.s1a`, `.s2`, `.s3`, and `.s4`.
+
+All six cards preserve exact inventory text, locators and ten source hashes. `core.reines-trimmau` remains reference-only; all six remain `HOST_ADJUDICATED` because the current engine lacks authoritative contracts for their full behavior.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `383/944`, remaining `561`;
+- exact owner increment: `+6`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`389/944`**, remaining **`555`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-reines-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#607` or any prior open synchronization PR.
