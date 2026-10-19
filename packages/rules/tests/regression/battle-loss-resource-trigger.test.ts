@@ -36,6 +36,15 @@ function activateAttack(session: ReturnType<typeof createMatchSession>, ownerPla
 function twoBattlefieldSession(): ReturnType<typeof createMatchSession> {
   const session = createMatchSession({ seed: SHINJI_FIXTURE_SEED, humanPlayerId: 'p1', humanPlayerIds: ['p1'] });
   expect(session.pairings.find((pairing) => pairing.playerId === 'p1')?.master.id).toBe('master.shinji');
+  // This suite exercises the legacy clown consumer explicitly; canonical s3 is host-only.
+  session.state.cards.push({
+    instanceId: 'p1-explicit-legacy-clown',
+    definitionId: 'master.shinji.skill.clown',
+    ownerPlayerId: 'p1',
+    controllerPlayerId: 'p1',
+    zone: 'skill',
+    visibility: { scope: 'owner_only', ownerPlayerId: 'p1' },
+  });
   session.state.round.activePhase = 'battle';
   session.state.eventPlacements = [];
   session.state.currentSituationModifiers = [];
