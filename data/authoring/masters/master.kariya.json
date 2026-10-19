@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.kariya",
+  "name": "间桐雁夜",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "8dc838a2",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "冻结五项技能的 canonical printedText、开发版/legacy 定位、full-roster inventory 原文及全部 generated legacy-content SHA。现有 loader/runtime 没有权威合同证明基础牌魔力费用/威力修正、牌堆顶加入攻击、准备阶段随机展示与强制出牌、宿敌关系绑定、战斗淘汰/战果联动或跨战场移动等语义；因此五张牌全部保持 HOST_ADJUDICATED。record_master_directive 仅供主持人审计，不能伪装成 complete/FULL/automatic；legacy handler 名称仅为来源证据，loader/runtime 不自动执行旧 handler。",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版#master.kariya/间桐雁夜",
+      "legacy": {
+        "master.kariya.skill.ascension": "legacy-content.json#master/master.kariya/ascension",
+        "master.kariya.skill.s1": "legacy-content.json#master/master.kariya/s1",
+        "master.kariya.skill.s2": "legacy-content.json#master/master.kariya/s2",
+        "master.kariya.skill.s3": "legacy-content.json#master/master.kariya/s3",
+        "master.kariya.skill.s4": "legacy-content.json#master/master.kariya/s4"
+      },
+      "generated": {
+        "master.kariya.skill.ascension": "src/content/generated/legacy-content.json#masters[13].skills[4].text#line=1 sha256=7ccba7da61ac28d1a19964cec4e51d125bc6503cb1fe75dff14bf96a9409cd04; line=2 sha256=d0b88c3c84e0a31eee5f038f97c6f56071d700acd3cabaa9d625ded817334a68; line=3 sha256=8c3d1e070e77439dc1939e849c7ac67d5e2475efc3dadf916f6b23cd713a8e26",
+        "master.kariya.skill.s1": "src/content/generated/legacy-content.json#masters[13].skills[0].text#line=1 sha256=eab1164923d6799ca6710c7fe591bb4ad66c153f144f94914e6aae6e2ddb8756",
+        "master.kariya.skill.s2": "src/content/generated/legacy-content.json#masters[13].skills[1].text#line=1 sha256=ceada8a47324177f7c34ebd5ef22d4b286eb6a2430cf218fe0aeb5cf65625486",
+        "master.kariya.skill.s3": "src/content/generated/legacy-content.json#masters[13].skills[2].text#line=1 sha256=5f8e12732d54470a99e894c03f77623513f92c0eae91cb1c2916771ea93daf5d",
+        "master.kariya.skill.s4": "src/content/generated/legacy-content.json#masters[13].skills[3].text#line=1 sha256=3b9148db1680b9b8b656b323e4c7e6a8ee4f7df57b2b04edbf09df57374e5094"
+      }
+    }
+  },
+  "cards": [
+    {
+      "id": "master.kariya.skill.ascension", "aliases": ["ascension"], "legacyId": "ascension", "name": "人体反应堆",
+      "cardType": "master_skill", "owner": { "type": "master", "id": "master.kariya" },
+      "printedText": "你的基础牌的魔力消耗+3且威力+4。\n行动阶段：如果你已【崩坏】，你可花费4点魔力将牌堆顶的那张牌加入攻击。\n战斗阶段：如果你在【魔术工房】，你可以移动至宿敌所在的战场。",
+      "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{ "id": "kariya.human-battery", "kind": "passive", "printedClause": "基础牌魔力消耗+3且威力+4；崩坏时可花费4点魔力将牌堆顶牌加入攻击；魔术工房可移动至宿敌所在战场。", "activation": { "trigger": "while_active" }, "conditions": [], "targets": [], "effects": [{ "type": "record_master_directive", "directive": "kariya_human_battery" }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.kariya.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "刻印虫",
+      "cardType": "master_skill", "owner": { "type": "master", "id": "master.kariya" },
+      "printedText": "部署于魔术工房额外+2魔。常规移动每步额外耗1魔。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{ "id": "kariya.insects", "kind": "passive", "printedClause": "部署于魔术工房额外+2魔；常规移动每步额外耗1魔。", "activation": { "trigger": "while_active" }, "conditions": [], "targets": [], "effects": [{ "type": "record_master_directive", "directive": "kariya_insects" }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.kariya.skill.s2", "aliases": ["s2"], "legacyId": "s2", "name": "虚妄梦境",
+      "cardType": "master_skill", "owner": { "type": "master", "id": "master.kariya" },
+      "printedText": "在游戏开始时，你右边的玩家将成为你的【宿敌】。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{ "id": "kariya.nemesis-dream", "kind": "forced_trigger", "printedClause": "游戏开始时，右边的玩家成为你的宿敌。", "activation": { "trigger": "game_start" }, "conditions": [], "targets": [], "effects": [{ "type": "record_master_directive", "directive": "kariya_nemesis_dream" }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.kariya.skill.s3", "aliases": ["s3"], "legacyId": "s3", "name": "宿敌",
+      "cardType": "master_skill", "owner": { "type": "master", "id": "master.kariya" },
+      "printedText": "你不能于自己回合从间桐雁夜所在的战场上离开。间桐雁夜与你战斗时将威力-2。当间桐雁夜战胜你时，其获得3点战果。当你在游戏中被淘汰时，间桐雁夜获得4点战果并【崩坏】。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{ "id": "kariya.nemesis", "kind": "passive", "printedClause": "宿敌不能离开雁夜所在战场；雁夜与其战斗时-2威力；雁夜获胜得3点战果；宿敌淘汰时雁夜得4点战果并崩坏。", "activation": { "trigger": "while_active" }, "conditions": [], "targets": [], "effects": [{ "type": "record_master_directive", "directive": "kariya_nemesis" }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.kariya.skill.s4", "aliases": ["s4"], "legacyId": "s4", "name": "崩坏",
+      "cardType": "master_skill", "owner": { "type": "master", "id": "master.kariya" },
+      "printedText": "准备阶段：将你技能区的牌与手牌混洗之后，随机抽取一张牌并展示。若该牌是攻击牌，则你本回合必须在常规出牌时将其打出（可以暗置）且该牌获得“此牌获得+3威力”。该效果具有强制性。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{ "id": "kariya.collapse", "kind": "forced_trigger", "printedClause": "准备阶段混洗技能区与手牌后随机展示一张；若为攻击牌，本回合强制常规出牌并+3威力。", "activation": { "trigger": "round_start" }, "conditions": [], "targets": [], "effects": [{ "type": "record_master_directive", "directive": "kariya_collapse" }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    }
+  ],
+  "sources": [{ "id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/间桐雁夜.png"] }]
+}

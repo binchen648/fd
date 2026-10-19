@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 35,
+    "masters": 36,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -2724,6 +2724,83 @@
       "htmPath": "chm-extract/卡多克·泽姆露普斯.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/卡多克·泽姆露普斯.png",
       "imageIndex": 7,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kariya",
+      "displayName": "间桐雁夜",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/间桐雁夜.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/间桐雁夜.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kariya.overview",
+      "displayName": "间桐雁夜",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/间桐雁夜.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/间桐雁夜.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kariya.skill.ascension",
+      "displayName": "人体反应堆",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/间桐雁夜.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/间桐雁夜.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kariya.skill.s1",
+      "displayName": "刻印虫",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/间桐雁夜.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/间桐雁夜.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kariya.skill.s2",
+      "displayName": "虚妄梦境",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/间桐雁夜.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/间桐雁夜.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kariya.skill.s3",
+      "displayName": "宿敌",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/间桐雁夜.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/间桐雁夜.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kariya.skill.s4",
+      "displayName": "崩坏",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/间桐雁夜.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/间桐雁夜.png",
+      "imageIndex": 5,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },
