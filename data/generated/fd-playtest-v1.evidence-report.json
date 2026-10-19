@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 38,
+    "masters": 39,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -3166,6 +3166,72 @@
       "htmPath": "chm-extract/卫宫切嗣.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/卫宫切嗣.png",
       "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kohaku",
+      "displayName": "琥珀",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/琥珀.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/琥珀.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kohaku.overview",
+      "displayName": "琥珀",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/琥珀.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/琥珀.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kohaku.skill.ascension",
+      "displayName": "机械翡翠",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/琥珀.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/琥珀.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kohaku.skill.s1",
+      "displayName": "笑面琥",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/琥珀.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/琥珀.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kohaku.skill.s1a",
+      "displayName": "共感者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/琥珀.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/琥珀.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kohaku.skill.s3",
+      "displayName": "燃尽的工房",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/琥珀.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/琥珀.png",
+      "imageIndex": 4,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

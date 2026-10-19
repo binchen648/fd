@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.kohaku",
+  "name": "琥珀",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "225f5d22",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "冻结四项技能的 canonical printedText、开发版/legacy 定位、full-roster inventory 原文及全部 generated legacy-content SHA。当前 loader/runtime 没有权威合同证明魔力猛攻牌库生命周期与抽牌/战斗时序、升华技多阶段威力与战果效果、同名攻击匹配及动态威力/魔力、地利/部署/事件魔力修改、正面攻击限制和回合结束移除；四张牌全部保持 HOST_ADJUDICATED。record_master_directive 仅供主持人审计，不能伪装成 complete/FULL/automatic；legacy handler 名称仅为来源证据。",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版#master.kohaku/琥珀",
+      "legacy": {
+        "master.kohaku.skill.ascension": "legacy-content.json#master/master.kohaku/ascension",
+        "master.kohaku.skill.s1": "legacy-content.json#master/master.kohaku/s1",
+        "master.kohaku.skill.s1a": "legacy-content.json#master/master.kohaku/s1a",
+        "master.kohaku.skill.s3": "legacy-content.json#master/master.kohaku/s3"
+      },
+      "generated": {
+        "master.kohaku.skill.ascension": "src/content/generated/legacy-content.json#masters[19].skills[3].text#line=1 sha256=17043b50b8bbe804c923a3b31410db7dbe30ba66990201affbc06e78f9a9f0b5; line=2 sha256=73bd3f1cf8fc5878fec2e443a689ac67741c1786424e860e3b2e4ef7ad2a1c5f; line=3 sha256=2263078b443ddc525d8fb532951e3249e3e41c4120e46056207d36168ac86f75",
+        "master.kohaku.skill.s1": "src/content/generated/legacy-content.json#masters[19].skills[0].text#line=1 sha256=90c8823a0a49f0dca70cd93c536d678294a264fe849a8366ad57353affc15d4f",
+        "master.kohaku.skill.s1a": "src/content/generated/legacy-content.json#masters[19].skills[1].text#line=1 sha256=fb18bc0a7cf2add58e1afb62547175e4c5139bb961dc18cf106339d39e1d7d59; line=2 sha256=b8b641e7f5f7effd9b827b574d60a316da97f4708ea28ded5e526428acaaad9f",
+        "master.kohaku.skill.s3": "src/content/generated/legacy-content.json#masters[19].skills[2].text#line=1 sha256=f5c37ce2900d6b21c23eead13881f87d2b30ff0eb2cbf65480541fbabc84533f"
+      }
+    }
+  },
+  "cards": [
+    { "id": "master.kohaku.skill.ascension", "aliases": ["ascension"], "legacyId": "ascension", "name": "机械翡翠", "cardType": "master_skill", "owner": { "type": "master", "id": "master.kohaku" }, "printedText": "（将此卡加入你的技能区）\n行动阶段：使用至多2张【魔力猛攻】。\n战斗阶段：与你交战的对手地利小于你则合计威力-4。如果你获胜，所有位于魔术工房的玩家获得【燃尽的工房】。", "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "kohaku.mech-hisui", "kind": "passive", "printedClause": "（将此卡加入你的技能区）\n行动阶段：使用至多2张【魔力猛攻】。\n战斗阶段：与你交战的对手地利小于你则合计威力-4。如果你获胜，所有位于魔术工房的玩家获得【燃尽的工房】。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "kohaku_mech_hisui" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.kohaku.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "笑面琥", "cardType": "master_skill", "owner": { "type": "master", "id": "master.kohaku" }, "printedText": "游戏开始，将2张【魔力猛攻】加入你的牌库。准备阶段开始进行抽牌时，你抽至4张牌（而不是3张）。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "kohaku.smile", "kind": "passive", "printedClause": "游戏开始，将2张【魔力猛攻】加入你的牌库。准备阶段开始进行抽牌时，你抽至4张牌（而不是3张）。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "kohaku_smile" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.kohaku.skill.s1a", "aliases": ["s1a"], "legacyId": "s1a", "name": "共感者", "cardType": "master_skill", "owner": { "type": "master", "id": "master.kohaku" }, "printedText": "行动阶段：弃置一张与你控制的攻击完全相同的手牌，获得+2合计威力和1点魔力。\n【魔力猛攻】为牌库牌，抽到手牌后于战斗时打出。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "kohaku.empathizer", "kind": "passive", "printedClause": "行动阶段：弃置一张与你控制的攻击完全相同的手牌，获得+2合计威力和1点魔力。\n【魔力猛攻】为牌库牌，抽到手牌后于战斗时打出。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "kohaku_empathizer" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.kohaku.skill.s3", "aliases": ["s3"], "legacyId": "s3", "name": "燃尽的工房", "cardType": "master_skill", "owner": { "type": "master", "id": "master.kohaku" }, "printedText": "你无法部署于魔术工房，且你通过局势牌获得的魔力减半。行动阶段：本回合你只能使用一张正面向上的攻击。如果你在战斗阶段后位于【深山町】，则在本回合结束后将此卡移出游戏。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "kohaku.burned-workshop", "kind": "passive", "printedClause": "你无法部署于魔术工房，且你通过局势牌获得的魔力减半。行动阶段：本回合你只能使用一张正面向上的攻击。如果你在战斗阶段后位于【深山町】，则在本回合结束后将此卡移出游戏。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "kohaku_burned_workshop" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } }
+  ],
+  "sources": [{ "id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/琥珀.png"] }]
+}
