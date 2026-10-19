@@ -9995,3 +9995,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-kiara-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#585` or any prior open synchronization PR.
+
+## TASK P3-S-OWNER-KIREI-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly four skills for `master.kirei`
+
+Exact accepted review:
+
+- PR `#587`, exact Base `b3f75764`;
+- accepted Candidate `934d02c8adc6415c395bc3f34391c4f1d5330760`;
+- independent GPT-6 Sol r2 verdict `MIGRATION_ACCEPTED` from `/root/kirei_reviewer_r2`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-kirei-r2` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly four identities: `master.kirei.skill.ascension`, `.s1`, `.s2`, and `.s3`.
+
+All four cards preserve exact inventory/generated text and source hashes, including the frozen spacing in `s2`; all four remain `HOST_ADJUDICATED` because the current engine lacks authoritative contracts for role switching, private class reporting, true-name defeat and movement/power semantics.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `335/944`, remaining `609`;
+- exact owner increment: `+4`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`339/944`**, remaining **`605`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-kirei-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#587` or any prior open synchronization PR.
