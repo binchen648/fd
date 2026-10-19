@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 48,
+    "masters": 49,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -4068,6 +4068,61 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/藤丸立香（女）.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/藤丸立香（女）.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ritsuka-m",
+      "displayName": "藤丸立香（男）",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/藤丸立香（男）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/藤丸立香（男）.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ritsuka-m.overview",
+      "displayName": "藤丸立香（男）",
+      "entityKind": "master_overview",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/藤丸立香（男）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/藤丸立香（男）.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ritsuka-m.skill.ascension",
+      "displayName": "主的恩宠",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/藤丸立香（男）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/藤丸立香（男）.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ritsuka-m.skill.s1",
+      "displayName": "扭蛋奴隶",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/藤丸立香（男）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/藤丸立香（男）.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ritsuka-m.skill.s2",
+      "displayName": "精品",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/藤丸立香（男）.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/藤丸立香（男）.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
       "issueCodes": []
