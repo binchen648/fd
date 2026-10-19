@@ -10047,3 +10047,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-kiritsugu-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#589` or any prior open synchronization PR.
+
+## TASK P3-S-OWNER-KOHAKU-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly four skills for `master.kohaku`
+
+Exact accepted review:
+
+- PR `#591`, exact Base `225f5d22`;
+- accepted Candidate `976e7b3695ceaf170d37eb56984f85c8787780e5`;
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from `/root/kirei_reviewer`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-kohaku` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly four identities: `master.kohaku.skill.ascension`, `.s1`, `.s1a`, and `.s3`.
+
+All four cards preserve exact inventory/generated text and seven source hashes, including the multi-line ascension and s1a clauses. All four remain `HOST_ADJUDICATED` because the current engine lacks authoritative contracts for their dynamic card, draw, battle, location and workshop effects.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `344/944`, remaining `600`;
+- exact owner increment: `+4`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`348/944`**, remaining **`596`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-kohaku-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#591` or any prior open synchronization PR.
