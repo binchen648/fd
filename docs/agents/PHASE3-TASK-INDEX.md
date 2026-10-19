@@ -9839,3 +9839,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-irisviel-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#573` or any prior open PR.
+
+## TASK P3-S-OWNER-JINAKO-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly three skills for `master.jinako`
+
+Exact accepted review:
+
+- PR `#575`, Base `e9091c1b29c80851c3ce7db85eb76407d3bcc70d`;
+- accepted Candidate `05dbd2e43f530b07e09f539d54eafebad7f65458`;
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from `/root/jinako_reviewer_r2`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-jinako-r2` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly three identities: `master.jinako.skill.ascension`, `.s1`, and `.s2`.
+
+All three cards preserve exact legacy/generated text and hashes and are explicitly `HOST_ADJUDICATED`; loader/interpreter gates block unsupported automatic behavior for dynamic deck count, once-per-game, attack conversion, and workshop/outpost timing.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `305/944`, remaining `639`;
+- exact owner increment: `+3`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`308/944`**, remaining **`636`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-jinako-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#575` or any prior open PR.
