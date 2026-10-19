@@ -508,13 +508,16 @@ function convertAuthoringMaster(
   archive: AuthoringArchive,
   workspaceRoot: string,
 ): { master: MasterDefinition; cards: NamedCardDefinition[] } {
-  const skillCardIds = archive.cards
+  // Legacy Shinji IDs remain in the authoring archive for existing consumers,
+  // but are compatibility shims rather than canonical pack entries.
+  const canonicalCards = archive.cards.filter((card) => card.compatibilityOnly !== true);
+  const skillCardIds = canonicalCards
     .filter((card) => card.cardType === 'master_skill')
     .map((card) => card.id);
-  const commandSpellCardIds = archive.cards
+  const commandSpellCardIds = canonicalCards
     .filter((card) => card.cardType === 'command_spell')
     .map((card) => card.id);
-  const generatedCardIds = archive.cards
+  const generatedCardIds = canonicalCards
     .filter((card) => card.cardType === 'master_deck_card')
     .map((card) => card.id);
   const overviewCapabilityStatus = archive.overviewCapabilityStatus === 'HOST_ADJUDICATED' ? 'HOST_ADJUDICATED' : 'FULL';
@@ -541,11 +544,11 @@ function convertAuthoringMaster(
         id: overviewCardId(archive),
         name: archive.name,
         cardType: 'master_overview',
-        printedText: archive.cards.map((card) => `${card.name}: ${card.printedText ?? ''}`).join('\n'),
+        printedText: canonicalCards.map((card) => `${card.name}: ${card.printedText ?? ''}`).join('\n'),
         capability: { status: overviewCapabilityStatus },
         source: sourceForArchive(archive, workspaceRoot),
       },
-      ...archive.cards.map((card, index) => toNamedCard(card, archive, workspaceRoot, index + 1)),
+      ...canonicalCards.map((card, index) => toNamedCard(card, archive, workspaceRoot, index + 1)),
     ],
   };
 }

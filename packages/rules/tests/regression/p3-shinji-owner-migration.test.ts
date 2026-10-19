@@ -4,6 +4,7 @@ import * as rules from '../../src/index';
 
 const ROOT = 'master.shinji';
 const IDS = ['ascension', 's1', 's2', 's3', 's4'].map((skill) => `${ROOT}.skill.${skill}`);
+const LEGACY_IDS = ['drain-command', 'useless-person', 'clown', 'false-attendant-book'].map((skill) => `${ROOT}.skill.${skill}`);
 const PATH = 'data/authoring/masters/master.shinji.json';
 const archive = JSON.parse(readFileSync(PATH, 'utf8')) as any;
 const inventory = JSON.parse(readFileSync('data/phase3/full-roster-ability-inventory.json', 'utf8')) as any;
@@ -13,14 +14,15 @@ const loaded = rules.loadAuthoringJson(archive);
 
 describe('P3 Shinji owner migration boundary', () => {
   it('preserves all five canonical identities, exact text/line breaks, legacy locators, and six clause hashes', () => {
-    expect(archive.cards.map((card: any) => card.id)).toEqual(IDS);
-    expect(Object.keys(loaded.cards).sort()).toEqual(IDS.sort());
+    const canonicalCards = archive.cards.filter((card: any) => card.compatibilityOnly !== true);
+    expect(canonicalCards.map((card: any) => card.id)).toEqual(IDS);
+    expect(IDS.every((id) => Object.prototype.hasOwnProperty.call(loaded.cards, id))).toBe(true);
     const rows = [...inventory.staticSkills, ...inventory.dynamicSkills]
       .filter((entry: any) => IDS.includes(entry.canonicalAbilityId));
     expect(rows).toHaveLength(5);
     let clauseCount = 0;
     for (const entry of rows) {
-      const card = archive.cards.find((candidate: any) => candidate.id === entry.canonicalAbilityId);
+      const card = canonicalCards.find((candidate: any) => candidate.id === entry.canonicalAbilityId);
       expect(card.owner).toEqual({ type: 'master', id: ROOT });
       expect(card.printedText).toBe(entry.printedText);
       expect(archive.sourcePolicy.sourceLocators.legacy[entry.canonicalAbilityId])
@@ -32,8 +34,22 @@ describe('P3 Shinji owner migration boundary', () => {
       }
     }
     expect(clauseCount).toBe(6);
-    expect(archive.cards.find((card: any) => card.id === `${ROOT}.skill.s4`).printedText.split('\n'))
+    expect(canonicalCards.find((card: any) => card.id === `${ROOT}.skill.s4`).printedText.split('\n'))
       .toHaveLength(2);
+  });
+
+  it('retains legacy Shinji IDs as compatibility-only automatic cards', () => {
+    expect(LEGACY_IDS.every((id) => archive.cards.some((card: any) => card.id === id && card.compatibilityOnly === true))).toBe(true);
+    expect(loaded.cards['master.shinji.skill.drain-command'].abilities[0]).toMatchObject({
+      id: 'drain-command.enter-miyama',
+      activation: { trigger: 'after_controller_enters_location', eventLocationId: 'miyama_town' },
+      execution: { mode: 'automatic' },
+    });
+    expect(loaded.cards['master.shinji.skill.clown'].abilities[0]).toMatchObject({
+      id: 'clown.lose-command-seal',
+      activation: { trigger: 'after_controller_loses_battle' },
+      execution: { mode: 'automatic' },
+    });
   });
 
   it('keeps shared and specific handler boundaries reference-only and host-adjudicated', () => {
@@ -43,11 +59,12 @@ describe('P3 Shinji owner migration boundary', () => {
       'core.defeat-lose-command-seal (specific_handler)',
     ]) expect(archive.sourcePolicy.note).toContain(handler);
     expect(archive.sourcePolicy.note).toMatch(/reference handler/);
-    expect(archive.cards.every((card: any) => card.verification.implementationStatus === 'host_adjudicated')).toBe(true);
-    expect(archive.cards.every((card: any) => card.abilities.every((ability: any) => ability.execution.mode === 'host_adjudicated'))).toBe(true);
-    expect(archive.cards.every((card: any) => card.abilities.every((ability: any) =>
+    const canonicalCards = archive.cards.filter((card: any) => card.compatibilityOnly !== true);
+    expect(canonicalCards.every((card: any) => card.verification.implementationStatus === 'host_adjudicated')).toBe(true);
+    expect(canonicalCards.every((card: any) => card.abilities.every((ability: any) => ability.execution.mode === 'host_adjudicated'))).toBe(true);
+    expect(canonicalCards.every((card: any) => card.abilities.every((ability: any) =>
       ability.effects.every((effect: any) => effect.type === 'record_master_directive')))).toBe(true);
-    expect(Object.values(loaded.cards).every((card: any) => card.mode === 'host_adjudicated')).toBe(true);
+    expect(Object.values(loaded.cards).filter((card: any) => !LEGACY_IDS.includes(card.id)).every((card: any) => card.mode === 'host_adjudicated')).toBe(true);
   });
 
   it('registers canonical generated cards, evidence, and source-map entries exactly once', () => {

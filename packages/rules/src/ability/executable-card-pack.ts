@@ -600,7 +600,9 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
       const detail = semanticReports.map((issue) => `${issue.cardId}:${issue.abilityId ?? 'card'}:${issue.path}: ${issue.reason}`).join('\n');
       throw new Error(`Executable compilation rejected unsupported semantics:\n${detail}`);
     }
-    archive.cards.forEach((rawCard, cardIndex) => {
+    const emittedCards = archive.cards.filter((card) => card.compatibilityOnly !== true);
+    emittedCards.forEach((rawCard) => {
+      const cardIndex = archive.cards.indexOf(rawCard);
       if (cards[rawCard.id]) throw new Error(`Duplicate card definition: ${rawCard.id}`);
       const card = compiled.cards[rawCard.id];
       if (!card) throw new Error(`Missing compiled card definition: ${rawCard.id}`);
@@ -628,7 +630,7 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
         name: archive.name,
         ...(archive.class ? { class: archive.class } : {}),
         kind: archive.id.startsWith('master.') ? 'master' : 'servant',
-        cardIds: archive.cards.map((card) => card.id),
+        cardIds: archive.cards.filter((card) => card.compatibilityOnly !== true).map((card) => card.id),
         publicInformation: node(structuredClone(archive.publicInformation ?? {})),
         ...(excludedCards.length ? { excludedCards } : {}),
       };

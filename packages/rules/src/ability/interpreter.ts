@@ -2265,7 +2265,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   // state when the physical skill happens to be in a skill/field zone. The
   // narrowly accepted Hinako Blood Song handler is a verified partial runtime
   // consumer; the card remains host-adjudicated for its unimplemented clause.
-  if (definition(s, sourceId)?.mode !== 'automatic' && !a.effects.some((effect) => effect.type === 'hinako_blood_song')) return false;
+  const isLegacyShinjiCompatibilityAbility = ['drain-command.enter-miyama', 'clown.lose-command-seal'].includes(a.id);
+  if (definition(s, sourceId)?.mode !== 'automatic' && !isLegacyShinjiCompatibilityAbility && !a.effects.some((effect) => effect.type === 'hinako_blood_song')) return false;
   if (linkedRoleOriginalSkillUseLocked(s, sourceId, card(s, sourceId).controllerPlayerId)) return false;
   if (isPlayActionStructuralCandidate(a) && !isPlayActionRouteCandidate(a)) return false;
   if (isPlaySourceCardWithCostResponseStructuralCandidate(a) && !isPlaySourceCardWithCostResponseRouteCandidate(a)) return false;
@@ -2793,7 +2794,7 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
   const found: TriggeredAbility[] = [];
   for (const c of s.cards) {
     const controllerEligible = battleEventControllerEligibleAfterScoring(s, event, c.controllerPlayerId);
-    for (const a of definition(s, c.instanceId)?.abilities ?? []) {
+    for (const a of effectiveAbilitiesForPhysicalCard(s, c.instanceId)) {
       const eliminatedRoundCleanup = event.type === 'round_end' && isBattlefieldSourceRoundCleanupAbility(a);
       if (!controllerEligible && !eliminatedRoundCleanup) continue;
       if (a.effects.some(effect=>effect.type==='mystic_code_recon_escape') &&
@@ -7735,7 +7736,8 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   const sourceDefinition = definition(s, ctx.sourceCardId);
-  if (sourceDefinition?.mode !== 'automatic' && !a.effects.some((effect) => effect.type === 'hinako_blood_song')) {
+  const isLegacyShinjiCompatibilityAbility = ['drain-command.enter-miyama', 'clown.lose-command-seal'].includes(a.id);
+  if (sourceDefinition?.mode !== 'automatic' && !isLegacyShinjiCompatibilityAbility && !a.effects.some((effect) => effect.type === 'hinako_blood_song')) {
     reject(sourceDefinition?.mode ?? 'unsupported', 'Card requires an adapter or host ruling');
   }
   if (isForbiddenCodeSealUse(s,ctx.sourceCardId,a)) reject('illegal_action','Active Mystic Code forbids Command Seal Power/Victory use');
