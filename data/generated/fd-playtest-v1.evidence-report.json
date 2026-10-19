@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 54,
+    "masters": 55,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -4486,6 +4486,94 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/两仪式.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/两仪式.png",
+      "imageIndex": 6,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-tohno",
+      "displayName": "远野四季",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野四季.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野四季.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-tohno.overview",
+      "displayName": "远野四季",
+      "entityKind": "master_overview",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野四季.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野四季.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-tohno.skill.ascension",
+      "displayName": "幡然悔悟",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野四季.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野四季.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-tohno.skill.s1",
+      "displayName": "血之艺术",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野四季.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野四季.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-tohno.skill.s1a",
+      "displayName": "升格/吞噬",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野四季.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野四季.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-tohno.skill.s2",
+      "displayName": "侵蚀",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野四季.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野四季.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-tohno.skill.s3",
+      "displayName": "蛇",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野四季.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野四季.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-tohno.skill.s4",
+      "displayName": "魔",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远野四季.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远野四季.png",
       "imageIndex": 6,
       "reviewedAgainstImage": true,
       "issueCodes": []

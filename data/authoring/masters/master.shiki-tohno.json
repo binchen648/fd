@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.shiki-tohno",
+  "name": "远野四季",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "overviewCapabilityStatus": "HOST_ADJUDICATED",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "68ef0769f630aa595ae69af486ac664d41238cf5",
+    "referenceMetadataCommit": "68ef0769f630aa595ae69af486ac664d41238cf5",
+    "note": "冻结六项技能的 canonical printedText、开发版/legacy 定位、full-roster inventory 原文及全部九个 generated clause SHA。六项均为 DISCOVERED，semanticNormalization.status=BLOCKED、blockedBy=SEMANTIC_SOURCE_REQUIRED、Phase3 mappingStatus=EXPLICIT_BLOCK；所有语义仍保持 HOST_ADJUDICATED。core.tohno-shiki-possession (shared_handler) 与 core.game-start-add-skill (shared_handler) 仅为 reference handler，不能当作 runtime contract。record_master_directive 仅供主持人审计，不能伪装成 complete/FULL/automatic。",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版/images/masters/远野四季.png#master.shiki-tohno/远野四季",
+      "legacy": {
+        "master.shiki-tohno.skill.ascension": "legacy-content.json#master/master.shiki-tohno/ascension",
+        "master.shiki-tohno.skill.s1": "legacy-content.json#master/master.shiki-tohno/s1",
+        "master.shiki-tohno.skill.s1a": "legacy-content.json#master/master.shiki-tohno/s1a",
+        "master.shiki-tohno.skill.s2": "legacy-content.json#master/master.shiki-tohno/s2",
+        "master.shiki-tohno.skill.s3": "legacy-content.json#master/master.shiki-tohno/s3",
+        "master.shiki-tohno.skill.s4": "legacy-content.json#master/master.shiki-tohno/s4"
+      },
+      "generated": {
+        "master.shiki-tohno.skill.ascension": "src/content/generated/legacy-content.json#masters[27].skills[5].text#line=1 sha256=8934a63d45029e2c6cdb8847bccd2500cb85eaa3d7ebfec32f63a8c9fb00359e",
+        "master.shiki-tohno.skill.s1": "src/content/generated/legacy-content.json#masters[27].skills[0].text#line=1 sha256=273cf9ef232863882acbc556785d1d2741a3a7752041987287f13df90989c97e",
+        "master.shiki-tohno.skill.s1a": "src/content/generated/legacy-content.json#masters[27].skills[1].text#line=1 sha256=2a56e2e743844d85cfcfdebe472161a0852cb345dfc84d7aeefe37a3b57b3edf",
+        "master.shiki-tohno.skill.s2": "src/content/generated/legacy-content.json#masters[27].skills[2].text#line=1 sha256=b8948b29606c56ee673f234c17afe98448ae3986ee1a6155b5b827e23096a239; line=2 sha256=ed7c402c8b0c88db06542dc1e21ef906c7b43446adac61da64f1937664b54f8d; line=3 sha256=894c2318e1bab1b7513e2191cad56335ce6a666c621a0b63a0d5cc281c0c27f8",
+        "master.shiki-tohno.skill.s3": "src/content/generated/legacy-content.json#masters[27].skills[3].text#line=1 sha256=cd4596242e8ab81fcb364b6af8841b7b60864dee21caeb049afb0f2527f5d729; line=2 sha256=dff50198cc44a4bf6d024791958243482ede8cbc50dab62cdc7d30464e8b3a21",
+        "master.shiki-tohno.skill.s4": "src/content/generated/legacy-content.json#masters[27].skills[4].text#line=1 sha256=89b6057410b2cbf816c0a881d022dbd934b778c0ce1bb0b5fc2f60389c1fa02d"
+      }
+    }
+  },
+  "cards": [
+    { "id": "master.shiki-tohno.skill.ascension", "aliases": ["ascension"], "legacyId": "ascension", "name": "幡然悔悟", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shiki-tohno" }, "printedText": "得不偿失-解锁此牌的下个回合开始时，获得等同于你【控制权】数量的战果。然后，你的合计威力视为0且无法被增加直至游戏结束。", "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "tohno.shiki-possession-ascension", "kind": "passive", "printedClause": "得不偿失-解锁此牌的下个回合开始时，获得等同于你【控制权】数量的战果。然后，你的合计威力视为0且无法被增加直至游戏结束。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "tohno_shiki_possession_ascension" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.shiki-tohno.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "血之艺术", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shiki-tohno" }, "printedText": "将【侵蚀】加入你的技能区。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "tohno.game-start-add-skill", "kind": "passive", "printedClause": "将【侵蚀】加入你的技能区。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "tohno_game_start_add_skill" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.shiki-tohno.skill.s1a", "aliases": ["s1a"], "legacyId": "s1a", "name": "升格/吞噬", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shiki-tohno" }, "printedText": "当你因能力外的方式获得战果时，获得等量的【控制权】。当你的战果数第一次达到或超过13点时，若你拥有13点及以上的【控制权】，你转变为【魔】。否则，你转变为【蛇】。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "tohno.shiki-possession-transformation", "kind": "passive", "printedClause": "当你因能力外的方式获得战果时，获得等量的【控制权】。当你的战果数第一次达到或超过13点时，若你拥有13点及以上的【控制权】，你转变为【魔】。否则，你转变为【蛇】。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "tohno_shiki_possession_transformation" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.shiki-tohno.skill.s2", "aliases": ["s2"], "legacyId": "s2", "name": "侵蚀", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shiki-tohno" }, "printedText": "此牌需追加打出。\n血滴-你需花费1点战果来打出此牌。\n共融-战斗阶段：随机展示一名你交战对手弃牌堆的至多3张牌，你可以选择其中的一张基础牌与你控制或手牌的一张基础牌交换。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "tohno.shiki-possession-erosion", "kind": "passive", "printedClause": "此牌需追加打出。\n血滴-你需花费1点战果来打出此牌。\n共融-战斗阶段：随机展示一名你交战对手弃牌堆的至多3张牌，你可以选择其中的一张基础牌与你控制或手牌的一张基础牌交换。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "tohno_shiki_possession_erosion" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.shiki-tohno.skill.s3", "aliases": ["s3"], "legacyId": "s3", "name": "蛇", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shiki-tohno" }, "printedText": "你无法再获得【控制权】或使用共融。\n阿卡夏之蛇-【侵蚀】获得魔术属性且你拥有的魔力少于8点也可以打出此牌。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "tohno.shiki-possession-snake", "kind": "passive", "printedClause": "你无法再获得【控制权】或使用共融。\n阿卡夏之蛇-【侵蚀】获得魔术属性且你拥有的魔力少于8点也可以打出此牌。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "tohno_shiki_possession_snake" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.shiki-tohno.skill.s4", "aliases": ["s4"], "legacyId": "s4", "name": "魔", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shiki-tohno" }, "printedText": "复仇之灵-血滴不再需要花费战果，当你与一名战果点数多于你的对手共融时，偷取其2点战果。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "tohno.shiki-possession-magic", "kind": "passive", "printedClause": "复仇之灵-血滴不再需要花费战果，当你与一名战果点数多于你的对手共融时，偷取其2点战果。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "tohno_shiki_possession_magic" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } }
+  ],
+  "sources": [{ "id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/远野四季.png"] }]
+}
