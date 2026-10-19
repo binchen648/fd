@@ -1,0 +1,33 @@
+{
+  "schemaVersion":"fd-card-authoring-v1",
+  "archiveType":"master_skill_card_archive",
+  "id":"master.ryuunosuke",
+  "name":"雨生龙之介",
+  "class":"Master",
+  "publicInformation":{"type":"master_package","initialMana":4},
+  "overviewCapabilityStatus":"HOST_ADJUDICATED",
+  "sourcePolicy":{
+    "phase3EvidenceCommit":"973ab17705d1c8d6e33627a803c850da676a2801",
+    "referenceMetadataCommit":"973ab17705d1c8d6e33627a803c850da676a2801",
+    "note":"Frozen three-skill inventory is DISCOVERED with semanticNormalization BLOCKED by SEMANTIC_SOURCE_REQUIRED and Phase3 mappingStatus EXPLICIT_BLOCK. The three shared handlers are reference-only; unlock/phase-action cost and event discard, battle-stage opponent penalties, workshop/deployment and battle-win triggers, and location surrender/reward/closure remain HOST_ADJUDICATED. No automatic or FULL capability is inferred.",
+    "sourceLocators":{
+      "development":"Fate_Domination-开发版/images/masters/雨生龙之介.png#master.ryuunosuke/雨生龙之介",
+      "legacy":{
+        "master.ryuunosuke.skill.ascension":"legacy-content.json#master/master.ryuunosuke/ascension",
+        "master.ryuunosuke.skill.s1":"legacy-content.json#master/master.ryuunosuke/s1",
+        "master.ryuunosuke.skill.s2":"legacy-content.json#master/master.ryuunosuke/s2"
+      },
+      "generated":{
+        "master.ryuunosuke.skill.ascension":"src/content/generated/legacy-content.json#masters[1].skills[2].text#line=1 sha256=fbb395f952aa899154f91453136cc848c5059aed37d9eac3aaf2fc1a5c8fcfed; line=2 sha256=2bab7ccbc98eadf81c8565041cf7987dd133240a7b13e0803fc8008bbc52343c",
+        "master.ryuunosuke.skill.s1":"src/content/generated/legacy-content.json#masters[1].skills[0].text#line=1 sha256=0497e792b347460ecfe5e510f45f19b21b722096e154ba8cb2f963ac41176c1f",
+        "master.ryuunosuke.skill.s2":"src/content/generated/legacy-content.json#masters[1].skills[1].text#line=1 sha256=794290d8678ccd27ced654caa5cba1a9ec75a1c8a98325ba2a5215e40023a540"
+      }
+    }
+  },
+  "cards":[
+    {"id":"master.ryuunosuke.skill.ascension","aliases":["ascension"],"legacyId":"ascension","name":"渎神者","cardType":"master_skill","owner":{"type":"master","id":"master.ryuunosuke"},"printedText":"（升华技，解锁后将此牌加入你的技能区）\n行动阶段：花费2X点魔力。弃置一张你所在战场战果为X的事件牌。之后在该战场的对手于战斗阶段失去地利和X点战果且合计威力-2X。","cardFace":{"typeLabel":"升华技","attributes":[],"cost":0,"basePower":0},"playTiming":{"phase":"action","window":"controller_play_card_window"},"playRequirements":[],"abilities":[{"id":"ryuunosuke.blasphemer","kind":"phase_action","printedClause":"（升华技，解锁后将此牌加入你的技能区）\n行动阶段：花费2X点魔力。弃置一张你所在战场战果为X的事件牌。之后在该战场的对手于战斗阶段失去地利和X点战果且合计威力-2X。","activation":{"phase":"action","opens":"controller_action_window"},"effects":[{"type":"record_master_directive","directive":"ryuunosuke_blasphemer"}],"execution":{"mode":"host_adjudicated","allowedOperations":[]}}],"verification":{"implementationStatus":"host_adjudicated"}},
+    {"id":"master.ryuunosuke.skill.s1","aliases":["s1"],"legacyId":"s1","name":"连环杀手","cardType":"master_skill","owner":{"type":"master","id":"master.ryuunosuke"},"printedText":"游戏开始时你得到【死之艺术】。你不能从魔术工房获得魔力。每当你部署在魔术工房或战斗胜利时，激活【死之艺术】。","cardFace":{"typeLabel":"被动","attributes":[],"cost":0,"basePower":0},"playTiming":{"phase":"action","window":"controller_play_card_window"},"playRequirements":[],"abilities":[{"id":"ryuunosuke.chain-killer","kind":"passive","printedClause":"游戏开始时你得到【死之艺术】。你不能从魔术工房获得魔力。每当你部署在魔术工房或战斗胜利时，激活【死之艺术】。","activation":{"trigger":"while_active"},"effects":[{"type":"record_master_directive","directive":"ryuunosuke_chain_killer"}],"execution":{"mode":"host_adjudicated","allowedOperations":[]}}],"verification":{"implementationStatus":"host_adjudicated"}},
+    {"id":"master.ryuunosuke.skill.s2","aliases":["s2"],"legacyId":"s2","name":"死之艺术","cardType":"master_skill","owner":{"type":"master","id":"master.ryuunosuke"},"printedText":"放弃你的地利位置，获得2点战果或等于该地利位置数+2的魔力，然后关闭【死之艺术】。","cardFace":{"typeLabel":"行动","attributes":[],"cost":0,"basePower":0},"playTiming":{"phase":"action","window":"controller_play_card_window"},"playRequirements":[],"abilities":[{"id":"ryuunosuke.death-art","kind":"phase_action","printedClause":"放弃你的地利位置，获得2点战果或等于该地利位置数+2的魔力，然后关闭【死之艺术】。","activation":{"phase":"action","opens":"controller_action_window"},"effects":[{"type":"record_master_directive","directive":"ryuunosuke_death_art"}],"execution":{"mode":"host_adjudicated","allowedOperations":[]}}],"verification":{"implementationStatus":"host_adjudicated"}}
+  ],
+  "sources":[{"id":"development_card_images","type":"development_image_set","imageOrder":["../../Fate_Domination-开发版/images/masters/雨生龙之介.png"]}]
+}

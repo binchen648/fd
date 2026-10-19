@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 50,
+    "masters": 51,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -4190,6 +4190,61 @@
       "htmPath": "chm-extract/罗榭·弗雷因.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/罗榭·弗雷因.png",
       "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ryuunosuke",
+      "displayName": "雨生龙之介",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/雨生龙之介.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/雨生龙之介.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ryuunosuke.overview",
+      "displayName": "雨生龙之介",
+      "entityKind": "master_overview",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/雨生龙之介.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/雨生龙之介.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ryuunosuke.skill.ascension",
+      "displayName": "渎神者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/雨生龙之介.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/雨生龙之介.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ryuunosuke.skill.s1",
+      "displayName": "连环杀手",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/雨生龙之介.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/雨生龙之介.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ryuunosuke.skill.s2",
+      "displayName": "死之艺术",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/雨生龙之介.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/雨生龙之介.png",
+      "imageIndex": 3,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },
