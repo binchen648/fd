@@ -10073,3 +10073,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-kohaku-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#591` or any prior open synchronization PR.
+
+## TASK P3-S-OWNER-KUZUKI-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly four skills for `master.kuzuki`
+
+Exact accepted review:
+
+- PR `#593`, exact Base `976e7b36`;
+- accepted Candidate `056d323cd62bf28f69b389fa0c0076772cdb8665`;
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from `/root/kirei_reviewer`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-kuzuki` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly four identities: `master.kuzuki.skill.ascension`, `.s1`, `.s2`, and `.s3`.
+
+All four cards preserve exact inventory/generated text and five source hashes, including the two `s2` clauses. Despite the inventory's `CONTRACT_MAPPED` label for `s2`, all four remain `HOST_ADJUDICATED` because the current engine lacks sufficient authoritative evidence for full automatic behavior.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `348/944`, remaining `596`;
+- exact owner increment: `+4`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`352/944`**, remaining **`592`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-kuzuki-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#593` or any prior open synchronization PR.
