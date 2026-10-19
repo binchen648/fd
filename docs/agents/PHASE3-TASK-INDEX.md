@@ -10177,3 +10177,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-miyu-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#599` or any prior open synchronization PR.
+
+## TASK P3-S-OWNER-OPHELIA-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly ten skills for `master.ophelia`
+
+Exact accepted review:
+
+- PR `#601`, exact Base `b3e754ef`;
+- accepted Candidate `0c1db487e37c75b86da4c85ccc7de8ec979b525a`;
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from `/root/kirei_reviewer`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-ophelia` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly ten identities: `master.ophelia.skill.ascension`, `.s1`, `.s1a`, `.s1b`, `.s2`, `.s3`, `.s4`, `.s5`, `.s6`, and `.s7`.
+
+All ten cards preserve exact inventory text, locators and 16 clause entries containing 14 distinct source hashes. Reference handlers remain evidence only; all ten remain `HOST_ADJUDICATED` because the current engine lacks authoritative contracts for their full behavior.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `362/944`, remaining `582`;
+- exact owner increment: `+10`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`372/944`**, remaining **`572`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-ophelia-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#601` or any prior open synchronization PR.
