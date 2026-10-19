@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.rani",
+  "name": "拉尼VIII",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "5a18362b",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "冻结四项技能的 canonical printedText、开发版/legacy 定位、full-roster inventory 原文及六个 generated clause SHA。当前 loader/runtime 没有权威合同证明回合/存活玩家算术、预言重置、高潮事件放置、弃置局势牌替换、延迟预言创建与使用、淘汰存活奖励及首轮淘汰条件；四张牌全部保持 HOST_ADJUDICATED。core.rani-prophecies 仅为 reference handler，不能当作 runtime contract。record_master_directive 仅供主持人审计，不能伪装成 complete/FULL/automatic。",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版#master.rani/拉尼VIII",
+      "legacy": {
+        "master.rani.skill.ascension": "legacy-content.json#master/master.rani/ascension",
+        "master.rani.skill.s1": "legacy-content.json#master/master.rani/s1",
+        "master.rani.skill.s2": "legacy-content.json#master/master.rani/s2",
+        "master.rani.skill.s3": "legacy-content.json#master/master.rani/s3"
+      },
+      "generated": {
+        "master.rani.skill.ascension": "src/content/generated/legacy-content.json#masters[33].skills[3].text#line=1 sha256=79bddddb91bc98b38f8b9e00360aa4be702b231b57649611a642151ca524b43a; line=2 sha256=3f31159e594538de2a5d520353778166968f5b09e3f2b691af1034dcc237c5f3",
+        "master.rani.skill.s1": "src/content/generated/legacy-content.json#masters[33].skills[0].text#line=1 sha256=7ea358dc4cc408d2132f7a4a7617318e608d3e7c8d6a0a6bc952f3783872d45f; line=2 sha256=367ca8d880af08f1b15619e7bda49763e70335289cfa12e04051520effd41b0b",
+        "master.rani.skill.s2": "src/content/generated/legacy-content.json#masters[33].skills[1].text#line=1 sha256=e8c2f717972a6cc3e4057e67ca8ae01e1246c8a2cee8a92191ff56adb9425a91",
+        "master.rani.skill.s3": "src/content/generated/legacy-content.json#masters[33].skills[2].text#line=1 sha256=3c77488efb27965f91c95feda686def407444defaa18c628f86fbd14d7b85874"
+      }
+    }
+  },
+  "cards": [
+    { "id": "master.rani.skill.ascension", "aliases": ["ascension"], "legacyId": "ascension", "name": "阿特拉斯科研", "cardType": "master_skill", "owner": { "type": "master", "id": "master.rani" }, "printedText": "解锁此技能后立刻获得数值等同于回合数的二倍减去当前存活玩家数的战果，并重新决定你的【预言】。\n在高潮回合，你从剩余的事件牌堆中选择放置新的事件牌。", "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "rani.atlas-research", "kind": "passive", "printedClause": "解锁此技能后立刻获得数值等同于回合数的二倍减去当前存活玩家数的战果，并重新决定你的【预言】。\n在高潮回合，你从剩余的事件牌堆中选择放置新的事件牌。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "rani_atlas_research" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.rani.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "占星术", "cardType": "master_skill", "owner": { "type": "master", "id": "master.rani" }, "printedText": "你可以查看被弃置的局势牌。当一张非高潮局势牌将要生效时，将其弃置。然后你放置一张被弃置的局势牌。\n在第四回合结束后，获得两张【预言】并立即使用。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "rani.astrology", "kind": "passive", "printedClause": "你可以查看被弃置的局势牌。当一张非高潮局势牌将要生效时，将其弃置。然后你放置一张被弃置的局势牌。\n在第四回合结束后，获得两张【预言】并立即使用。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "rani_astrology" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.rani.skill.s2", "aliases": ["s2"], "legacyId": "s2", "name": "天从人愿", "cardType": "master_skill", "owner": { "type": "master", "id": "master.rani" }, "printedText": "选择你的一名对手。每次该玩家从淘汰中幸存，你得到2战果。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "rani.favorable-will", "kind": "passive", "printedClause": "选择你的一名对手。每次该玩家从淘汰中幸存，你得到2战果。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "rani_favorable_will" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.rani.skill.s3", "aliases": ["s3"], "legacyId": "s3", "name": "一语成谶", "cardType": "master_skill", "owner": { "type": "master", "id": "master.rani" }, "printedText": "选择一位对手，如果他是第一轮被淘汰的玩家，你获得6点战果。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "rani-words-come-true", "kind": "passive", "printedClause": "选择一位对手，如果他是第一轮被淘汰的玩家，你获得6点战果。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "rani_words_come_true" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } }
+  ],
+  "sources": [{ "id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/拉尼VIII.png"] }]
+}

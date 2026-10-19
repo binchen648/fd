@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 44,
+    "masters": 45,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -3783,6 +3783,72 @@
       "htmPath": "chm-extract/斯堪的纳维亚·佩佩隆奇诺.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/斯堪的纳维亚·佩佩隆奇诺.png",
       "imageIndex": 7,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.rani",
+      "displayName": "拉尼VIII",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/拉尼VIII.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/拉尼VIII.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.rani.overview",
+      "displayName": "拉尼VIII",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/拉尼VIII.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/拉尼VIII.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.rani.skill.ascension",
+      "displayName": "阿特拉斯科研",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/拉尼VIII.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/拉尼VIII.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.rani.skill.s1",
+      "displayName": "占星术",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/拉尼VIII.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/拉尼VIII.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.rani.skill.s2",
+      "displayName": "天从人愿",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/拉尼VIII.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/拉尼VIII.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.rani.skill.s3",
+      "displayName": "一语成谶",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/拉尼VIII.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/拉尼VIII.png",
+      "imageIndex": 4,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },
