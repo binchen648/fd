@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 34,
+    "masters": 35,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -2625,6 +2625,105 @@
       "htmPath": "chm-extract/尤里鸟斯·贝尔奇斯科·哈维.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/尤里鸟斯·贝尔奇斯科·哈维.png",
       "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kadoc",
+      "displayName": "卡多克·泽姆露普斯",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卡多克·泽姆露普斯.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卡多克·泽姆露普斯.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kadoc.overview",
+      "displayName": "卡多克·泽姆露普斯",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/卡多克·泽姆露普斯.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卡多克·泽姆露普斯.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kadoc.skill.ascension",
+      "displayName": "快速扩张",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卡多克·泽姆露普斯.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卡多克·泽姆露普斯.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kadoc.skill.s1",
+      "displayName": "隐匿者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卡多克·泽姆露普斯.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卡多克·泽姆露普斯.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kadoc.skill.s1a",
+      "displayName": "缺乏自信",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卡多克·泽姆露普斯.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卡多克·泽姆露普斯.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kadoc.skill.s2",
+      "displayName": "俄罗斯异闻带",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卡多克·泽姆露普斯.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卡多克·泽姆露普斯.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kadoc.skill.s3",
+      "displayName": "冻土",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卡多克·泽姆露普斯.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卡多克·泽姆露普斯.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kadoc.skill.s4",
+      "displayName": "适者生存",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卡多克·泽姆露普斯.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卡多克·泽姆露普斯.png",
+      "imageIndex": 6,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kadoc.skill.s5",
+      "displayName": "皇帝敕令",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卡多克·泽姆露普斯.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卡多克·泽姆露普斯.png",
+      "imageIndex": 7,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

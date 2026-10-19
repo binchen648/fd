@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.kadoc",
+  "name": "卡多克·泽姆露普斯",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "644fb8cc59d58763f8c3ec7f943892cb14724d58",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "冻结七项技能的 canonical printedText、开发版/legacy 定位、full-roster inventory 原文及全部 generated legacy-content SHA。当前 loader/runtime 没有权威合同证明俄罗斯事件牌扩张与替换同步、俄罗斯事件免疫、战场部署/进入/离开/战败效果、回合结束战果扣除或失去本回合战果等语义。七张牌全部保持 HOST_ADJUDICATED；record_master_directive 仅供主持人审计，不能伪装成 complete/FULL/automatic；legacy handler 名称仅为来源证据。",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版#master.kadoc/卡多克·泽姆露普斯",
+      "legacy": {
+        "master.kadoc.skill.ascension": "legacy-content.json#master/master.kadoc/ascension",
+        "master.kadoc.skill.s1": "legacy-content.json#master/master.kadoc/s1",
+        "master.kadoc.skill.s1a": "legacy-content.json#master/master.kadoc/s1a",
+        "master.kadoc.skill.s2": "legacy-content.json#master/master.kadoc/s2",
+        "master.kadoc.skill.s3": "legacy-content.json#master/master.kadoc/s3",
+        "master.kadoc.skill.s4": "legacy-content.json#master/master.kadoc/s4",
+        "master.kadoc.skill.s5": "legacy-content.json#master/master.kadoc/s5"
+      },
+      "generated": {
+        "master.kadoc.skill.ascension": "src/content/generated/legacy-content.json#masters[54].skills[6].text#line=1 sha256=9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42; line=2 sha256=c504352f9328ec24dced4f09ea919f440fabf73d167b137774902f18dcbc50fd; line=3 sha256=b9389954966307a7466aca8cd46481dde2f30d5feb3669bacba343da6b13e8de",
+        "master.kadoc.skill.s1": "src/content/generated/legacy-content.json#masters[54].skills[0].text#line=1 sha256=9801507f397ab509146fbd309e10a683f8cd96cd6985016f3ccb63e93f9636c9",
+        "master.kadoc.skill.s1a": "src/content/generated/legacy-content.json#masters[54].skills[1].text#line=1 sha256=a5a36bc2cfa18747f2ed0a8cf79a9bb4f4e1b44cc384925c67819b66f66291c9",
+        "master.kadoc.skill.s2": "src/content/generated/legacy-content.json#masters[54].skills[2].text#line=1 sha256=a4109bdad12d33c53b9e2d9db7894e1e55a12b1a43646716e48bb98efceff17c",
+        "master.kadoc.skill.s3": "src/content/generated/legacy-content.json#masters[54].skills[3].text#line=1 sha256=79b43e85325b94864cb8006cc67f7635a9bb4313ef3d3d8ac740fd6ba897c3a5; line=2 sha256=d8cd9a53abcbde4a35dd65a15be52b21f172a8dbb1d85aa9c206c75a9bf56fde",
+        "master.kadoc.skill.s4": "src/content/generated/legacy-content.json#masters[54].skills[4].text#line=1 sha256=4c9975aa9393ed9bc713b9b4c18d3dfd0f3b680bbdab75e93dc159c7c16e4925; line=2 sha256=a4081eaad773755f43a1cddf8f2e46e72a3c6e6e18f3fc95c64130fc70cb0e50",
+        "master.kadoc.skill.s5": "src/content/generated/legacy-content.json#masters[54].skills[5].text#line=1 sha256=54f290cd60896e4bda2297d6cf4dbc11534a1a82c50f1bbbb2239b676d31683c; line=2 sha256=1f21da1740bfe6ac8e30f1ab8d8e88392294436ee1458acf405f628e22840d0c"
+      }
+    }
+  },
+  "cards": [
+    {
+      "id": "master.kadoc.skill.ascension", "aliases": ["ascension"], "legacyId": "ascension", "name": "快速扩张",
+      "cardType": "master_skill", "owner": { "type": "master", "id": "master.kadoc" },
+      "printedText": "（将此牌加入你的技能区）\n被动：你位于【俄罗斯】战场时合计威力+5。\n行动阶段：将一张【俄罗斯】事件牌从游戏外放入你所在的战场（视为一次扩张）。若你无法做到，改为获得5点战果。",
+      "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{ "id": "kadoc.fast-expansion", "kind": "passive", "printedClause": "俄罗斯战场合计威力+5；行动阶段将俄罗斯事件牌放入所在战场进行扩张，无法做到则获得5点战果。", "activation": { "trigger": "while_active" }, "conditions": [], "targets": [], "effects": [{ "type": "record_master_directive", "directive": "kadoc_fast_expansion" }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.kadoc.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "隐匿者",
+      "cardType": "master_skill", "owner": { "type": "master", "id": "master.kadoc" },
+      "printedText": "你负责【俄罗斯异闻带】。当你赢得一场战斗时，进行【扩张】。在游戏开始时，【扩张】两次。你不会受到【俄罗斯】事件牌的影响。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{ "id": "kadoc.crypter", "kind": "passive", "printedClause": "负责俄罗斯异闻带；游戏开始时扩张两次；赢得战斗时扩张；免疫俄罗斯事件牌。", "activation": { "trigger": "while_active" }, "conditions": [], "targets": [], "effects": [{ "type": "record_master_directive", "directive": "kadoc_crypter" }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.kadoc.skill.s1a", "aliases": ["s1a"], "legacyId": "s1a", "name": "缺乏自信",
+      "cardType": "master_skill", "owner": { "type": "master", "id": "master.kadoc" },
+      "printedText": "回合结束时若你位于魔术工房，则失去1点战果。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{ "id": "kadoc.confidence-deficit", "kind": "forced_trigger", "printedClause": "回合结束时若位于魔术工房，失去1点战果。", "activation": { "trigger": "round_end" }, "conditions": [], "targets": [], "effects": [{ "type": "record_master_directive", "directive": "kadoc_confidence_deficit" }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.kadoc.skill.s2", "aliases": ["s2"], "legacyId": "s2", "name": "俄罗斯异闻带",
+      "cardType": "master_skill", "owner": { "type": "master", "id": "master.kadoc" },
+      "printedText": "扩张-抽2张事件牌并展示。你可以将游戏外的【俄罗斯】事件牌替换其中一张，然后将它们洗回事件牌堆。同时满足【扩张】条件的玩家需要同步执行【扩张】。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{ "id": "kadoc.russia-lostbelt", "kind": "passive", "printedClause": "扩张时抽两张事件牌，可用游戏外俄罗斯事件牌替换其中一张并洗回；满足扩张条件的玩家同步扩张。", "activation": { "trigger": "while_active" }, "conditions": [], "targets": [], "effects": [{ "type": "record_master_directive", "directive": "kadoc_russia_lostbelt" }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.kadoc.skill.s3", "aliases": ["s3"], "legacyId": "s3", "name": "冻土",
+      "cardType": "master_skill", "owner": { "type": "master", "id": "master.kadoc" },
+      "printedText": "【俄罗斯事件牌】战果1，数量5。\n部署于此战场的玩家立即失去2点魔力。进入此战场的玩家失去2点魔力。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{ "id": "kadoc.frozen-soil", "kind": "passive", "printedClause": "俄罗斯事件牌战果1且数量5；部署或进入此战场的玩家立即失去2点魔力。", "activation": { "trigger": "while_active" }, "conditions": [], "targets": [], "effects": [{ "type": "record_master_directive", "directive": "kadoc_frozen_soil" }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.kadoc.skill.s4", "aliases": ["s4"], "legacyId": "s4", "name": "适者生存",
+      "cardType": "master_skill", "owner": { "type": "master", "id": "master.kadoc" },
+      "printedText": "【俄罗斯事件牌】战果3，数量2。\n玩家无法从此战场离开。此战场的战败者失去3点战果。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{ "id": "kadoc.survival-of-the-fittest", "kind": "passive", "printedClause": "俄罗斯事件牌战果3且数量2；玩家不能离开此战场，战败者失去3点战果。", "activation": { "trigger": "while_active" }, "conditions": [], "targets": [], "effects": [{ "type": "record_master_directive", "directive": "kadoc_survival_of_the_fittest" }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.kadoc.skill.s5", "aliases": ["s5"], "legacyId": "s5", "name": "皇帝敕令",
+      "cardType": "master_skill", "owner": { "type": "master", "id": "master.kadoc" },
+      "printedText": "【俄罗斯事件牌】战果5，数量2。\n在此战场发生战斗后，不位于此战场的玩家失去2点战果。不位于任何战场的玩家失去所有本回合获得的战果。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{ "id": "kadoc.emperor-edict", "kind": "passive", "printedClause": "俄罗斯事件牌战果5且数量2；战斗后不在此战场的玩家失去2点战果，不在任何战场的玩家失去本回合获得的全部战果。", "activation": { "trigger": "while_active" }, "conditions": [], "targets": [], "effects": [{ "type": "record_master_directive", "directive": "kadoc_emperor_edict" }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    }
+  ],
+  "sources": [{ "id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/卡多克·泽姆露普斯.png"] }]
+}
