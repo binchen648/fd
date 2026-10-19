@@ -10229,3 +10229,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-peperoncino-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#603` or any prior open synchronization PR.
+
+## TASK P3-S-OWNER-RANI-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly four skills for `master.rani`
+
+Exact accepted review:
+
+- PR `#605`, exact Base `5a18362b`;
+- accepted Candidate `d3bfb3b74ffe94b3bad2e0d5504c61a94c1b963c`;
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from `/root/kirei_reviewer`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-rani` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly four identities: `master.rani.skill.ascension`, `.s1`, `.s2`, and `.s3`.
+
+All four cards preserve exact inventory text, locators and six source hashes. `core.rani-prophecies` remains reference-only; all four remain `HOST_ADJUDICATED` because the current engine lacks authoritative contracts for their full behavior.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `379/944`, remaining `565`;
+- exact owner increment: `+4`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`383/944`**, remaining **`561`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-rani-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#605` or any prior open synchronization PR.
