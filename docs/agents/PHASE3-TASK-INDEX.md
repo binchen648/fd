@@ -9891,3 +9891,30 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-julius-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#577` or prior open synchronization PRs.
+
+## TASK P3-S-OWNER-KADOC-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly seven skills for `master.kadoc`
+
+Exact accepted review:
+
+- PR `#579`, exact Base `644fb8cc59d58763f8c3ec7f943892cb14724d58`;
+- implementation Candidate `634c0564ca437e4fe2ed3bbf1d1e797837f6375c`;
+- accepted successor Candidate `3267b9f0d6262fd0df5802d790a65a9bc131c6f6`;
+- independent GPT-6 Sol r2 verdict `MIGRATION_ACCEPTED` from `/root/kadoc_reviewer_r2`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-kadoc-r2` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly seven identities: `master.kadoc.skill.ascension`, `.s1`, `.s1a`, `.s2`, `.s3`, `.s4`, and `.s5`.
+
+All seven cards preserve exact legacy/generated text and source hashes and are explicitly `HOST_ADJUDICATED`; loader/interpreter gates block unsupported automatic behavior for expansion/event replacement and synchronization, Russia-event immunity, location deployment/entry/leave/defeat effects, and round-end victory-point history. The accepted successor only corrects Candidate/parent metadata in the migration report; it does not change skill data or generated content.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `311/944`, remaining `633`;
+- exact owner increment: `+7`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`318/944`**, remaining **`626`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-kadoc-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#579` or prior open synchronization PRs.
