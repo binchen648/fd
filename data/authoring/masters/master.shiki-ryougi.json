@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.shiki-ryougi",
+  "name": "两仪式",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "overviewCapabilityStatus": "HOST_ADJUDICATED",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "fc61be53d7e8a251099f3feeeabf39e542ab33c3",
+    "referenceMetadataCommit": "fc61be53d7e8a251099f3feeeabf39e542ab33c3",
+    "note": "冻结六项技能的 canonical printedText、开发版/legacy 定位、full-roster inventory 原文及全部八个 generated clause SHA。六项均为 DISCOVERED，semanticNormalization.status=BLOCKED、blockedBy=SEMANTIC_SOURCE_REQUIRED、Phase3 mappingStatus=EXPLICIT_BLOCK；所有语义仍保持 HOST_ADJUDICATED。core.rule-marker (shared_handler)、core.game-start-add-skill (shared_handler)、core.ryougi-void (specific_handler)、core.ryougi-sever-life (specific_handler) 和 core.structured-skill (shared_handler) 仅为 reference handler，不能当作 runtime contract。record_master_directive 仅供主持人审计，不能伪装成 complete/FULL/automatic。",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版/images/masters/两仪式.png#master.shiki-ryougi/两仪式",
+      "legacy": {
+        "master.shiki-ryougi.skill.ascension": "legacy-content.json#master/master.shiki-ryougi/ascension",
+        "master.shiki-ryougi.skill.s1": "legacy-content.json#master/master.shiki-ryougi/s1",
+        "master.shiki-ryougi.skill.s1a": "legacy-content.json#master/master.shiki-ryougi/s1a",
+        "master.shiki-ryougi.skill.s1b": "legacy-content.json#master/master.shiki-ryougi/s1b",
+        "master.shiki-ryougi.skill.s2": "legacy-content.json#master/master.shiki-ryougi/s2",
+        "master.shiki-ryougi.skill.s3": "legacy-content.json#master/master.shiki-ryougi/s3"
+      },
+      "generated": {
+        "master.shiki-ryougi.skill.ascension": "src/content/generated/legacy-content.json#masters[64].skills[5].text#line=1 sha256=17babbf0b288ccaabb893285b979e569241c414e42575702403e642ccb426226",
+        "master.shiki-ryougi.skill.s1": "src/content/generated/legacy-content.json#masters[64].skills[0].text#line=1 sha256=15e33e1b9482d12051e5b028e9bf5b81bbe9e9204afcd6723190573ae1867d69",
+        "master.shiki-ryougi.skill.s1a": "src/content/generated/legacy-content.json#masters[64].skills[1].text#line=1 sha256=d1e84428f5798f573fd01ed7f061e937925424f2fbab89c4a43ad6af7782d98f",
+        "master.shiki-ryougi.skill.s1b": "src/content/generated/legacy-content.json#masters[64].skills[2].text#line=1 sha256=3bf048d50b2543b3447c284f3b503205cf74af3aa53c03d1d4fb2e8871196470",
+        "master.shiki-ryougi.skill.s2": "src/content/generated/legacy-content.json#masters[64].skills[3].text#line=1 sha256=cf0cf5e5983f19f5ed37322102c48ddd86d19824f33fcff273676a73a6a85ab1; line=2 sha256=a9d2a1663283996bccf40f6d0a3ae0e68e16aee36495c49ef609e87e07f642f6",
+        "master.shiki-ryougi.skill.s3": "src/content/generated/legacy-content.json#masters[64].skills[4].text#line=1 sha256=b8948b29606c56ee673f234c17afe98448ae3986ee1a6155b5b827e23096a239; line=2 sha256=c3554f0f6f966f69aa14816bcba99bb291db64c13b4ca8f345a74fd4619c95c4"
+      }
+    }
+  },
+  "cards": [
+    { "id": "master.shiki-ryougi.skill.ascension", "aliases": ["ascension"], "legacyId": "ascension", "name": "空之境界", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shiki-ryougi" }, "printedText": "你的敏捷攻击获得威力+2和\"战斗阶段：弃置一张你战斗中的一名玩家牌堆底的牌。\"", "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "ryougi.rule-marker", "kind": "passive", "printedClause": "你的敏捷攻击获得威力+2和\"战斗阶段：弃置一张你战斗中的一名玩家牌堆底的牌。\"", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "ryougi_rule_marker" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.shiki-ryougi.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "死线", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shiki-ryougi" }, "printedText": "游戏开始时，将【生・切断】加入你的技能区。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "ryougi.game-start-add-skill", "kind": "passive", "printedClause": "游戏开始时，将【生・切断】加入你的技能区。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "ryougi_game_start_add_skill" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.shiki-ryougi.skill.s1a", "aliases": ["s1a"], "legacyId": "s1a", "name": "欠损", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shiki-ryougi" }, "printedText": "游戏开始时，将【死・紧握】加入你的技能区。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "ryougi.game-start-add-skill-dead", "kind": "passive", "printedClause": "游戏开始时，将【死・紧握】加入你的技能区。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "ryougi_game_start_add_skill_dead" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.shiki-ryougi.skill.s1b", "aliases": ["s1b"], "legacyId": "s1b", "name": "虚无", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shiki-ryougi" }, "printedText": "你可以查看所有玩家牌库底部的牌。战力结算时，你所在的战斗中所有牌库没有牌的玩家【败北】。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "ryougi.void", "kind": "passive", "printedClause": "你可以查看所有玩家牌库底部的牌。战力结算时，你所在的战斗中所有牌库没有牌的玩家【败北】。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "ryougi_void" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.shiki-ryougi.skill.s2", "aliases": ["s2"], "legacyId": "s2", "name": "生・切断", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shiki-ryougi" }, "printedText": "此牌需追加打出。若此牌与【死・紧握】一同打出，其+2魔力消耗。\n战斗阶段：选择一张你战斗中的非技能攻击，若其印刷威力与其所有者牌库底部的牌相同，弃置这两张牌。", "cardFace": { "typeLabel": "魔术", "attributes": ["魔术"], "cost": 1, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "ryougi.sever-life", "kind": "passive", "printedClause": "此牌需追加打出。若此牌与【死・紧握】一同打出，其+2魔力消耗。\n战斗阶段：选择一张你战斗中的非技能攻击，若其印刷威力与其所有者牌库底部的牌相同，弃置这两张牌。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "ryougi_sever_life" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.shiki-ryougi.skill.s3", "aliases": ["s3"], "legacyId": "s3", "name": "死・紧握", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shiki-ryougi" }, "printedText": "此牌需追加打出。\n行动阶段：查看一名与你位于同一战场的玩家的手牌，你可将其中一张牌洗回其所有者的牌库。", "cardFace": { "typeLabel": "魔术", "attributes": ["魔术"], "cost": 1, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "ryougi.structured-skill", "kind": "passive", "printedClause": "此牌需追加打出。\n行动阶段：查看一名与你位于同一战场的玩家的手牌，你可将其中一张牌洗回其所有者的牌库。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "ryougi_structured_skill" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } }
+  ],
+  "sources": [{ "id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/两仪式.png"] }]
+}

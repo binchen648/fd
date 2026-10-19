@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 53,
+    "masters": 54,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -4399,6 +4399,94 @@
       "htmPath": "chm-extract/远野志贵.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/远野志贵.png",
       "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-ryougi",
+      "displayName": "两仪式",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/两仪式.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/两仪式.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-ryougi.overview",
+      "displayName": "两仪式",
+      "entityKind": "master_overview",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/两仪式.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/两仪式.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-ryougi.skill.ascension",
+      "displayName": "空之境界",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/两仪式.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/两仪式.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-ryougi.skill.s1",
+      "displayName": "死线",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/两仪式.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/两仪式.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-ryougi.skill.s1a",
+      "displayName": "欠损",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/两仪式.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/两仪式.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-ryougi.skill.s1b",
+      "displayName": "虚无",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/两仪式.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/两仪式.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-ryougi.skill.s2",
+      "displayName": "生・切断",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/两仪式.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/两仪式.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.shiki-ryougi.skill.s3",
+      "displayName": "死・紧握",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/两仪式.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/两仪式.png",
+      "imageIndex": 6,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },
