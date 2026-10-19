@@ -39,7 +39,6 @@
                                   "data/authoring/servants/servant.tezcat.json"
                               ],
     "authoringMasterFiles":  [
-                                 "data/authoring/masters/master.kayneth.json",
                                  "data/authoring/masters/master.shinji.json",
                                  "data/authoring/masters/master.kiritsugu.json",
                                  "data/authoring/masters/master.maiya.json",
@@ -74,7 +73,8 @@
                                  "data/authoring/masters/master.jinako.json",
                                  "data/authoring/masters/master.julius.json",
                                  "data/authoring/masters/master.kadoc.json",
-                                 "data/authoring/masters/master.kariya.json"
+                                 "data/authoring/masters/master.kariya.json",
+                                 "data/authoring/masters/master.kayneth.json"
                              ],
     "authoringMasterSupportFiles":  [
                                         "data/authoring/masters/master.shirou-emiya.json"
