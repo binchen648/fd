@@ -31597,7 +31597,7 @@
         "name": "直死之魔眼",
         "cardType": "master_skill",
         "cardFace": {
-          "typeLabel": "被动",
+          "typeLabel": "前哨",
           "attributes": [],
           "cost": 0,
           "basePower": 0
@@ -49185,11 +49185,11 @@
       "master.sakura": "master.sakura.command-spell",
       "master.shiki-nanaya": "master.shiki-nanaya.command-spell"
     },
-    "definitionHash": "57fa140077d272ede81210c39d808098b1ad8acb08c504c2efd84f1743bc5424",
+    "definitionHash": "4c8853ce8902bd4d9616094e7977893b7a0978674b6d9d5a3eb8c98ac164e1a8",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "57fa140077d272ede81210c39d808098b1ad8acb08c504c2efd84f1743bc5424"
+      "definitionHash": "4c8853ce8902bd4d9616094e7977893b7a0978674b6d9d5a3eb8c98ac164e1a8"
     },
     "sourceMap": {
       "master.shinji.skill.drain-command": {
