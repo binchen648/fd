@@ -600,7 +600,9 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
       const detail = semanticReports.map((issue) => `${issue.cardId}:${issue.abilityId ?? 'card'}:${issue.path}: ${issue.reason}`).join('\n');
       throw new Error(`Executable compilation rejected unsupported semantics:\n${detail}`);
     }
-    const emittedCards = archive.cards.filter((card) => card.compatibilityOnly !== true);
+    // Compatibility cards stay executable for legacy consumers, but are not
+    // exposed through the canonical character card lists.
+    const emittedCards = archive.cards;
     emittedCards.forEach((rawCard) => {
       const cardIndex = archive.cards.indexOf(rawCard);
       if (cards[rawCard.id]) throw new Error(`Duplicate card definition: ${rawCard.id}`);

@@ -2395,6 +2395,12 @@ function hasCoherentReplayRestoreEnvelope(
 const masterCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'master');
 const servantCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'servant');
 
+function legacyRuntimeDefinitionId(definitionId: string): string {
+  if (definitionId === 'master.shinji.skill.s1') return 'master.shinji.skill.drain-command';
+  if (definitionId === 'master.shinji.skill.s3') return 'master.shinji.skill.clown';
+  return definitionId;
+}
+
 const attributeTags = {
   strength: '力量',
   agility: '敏捷',
@@ -3504,13 +3510,14 @@ export class MatchSession {
       (player as unknown as { commandSpells: number }).commandSpells = 3;
       for (const character of [pairing.master, pairing.servant]) {
         for (const cardId of character.cardIds) {
-          const card = pack.cards[cardId];
+          const runtimeCardId = legacyRuntimeDefinitionId(cardId);
+          const card = pack.cards[runtimeCardId];
           if (!card) throw new Error(`Compiled character ${character.id} references missing card ${cardId}`);
           const zoneName = card.initialZone;
           if (!zoneName) continue;
           state.cards.push({
-            instanceId: `${pairing.playerId}-${card.id}`,
-            definitionId: card.id,
+            instanceId: `${pairing.playerId}-${cardId}`,
+            definitionId: runtimeCardId,
             ownerPlayerId: pairing.playerId,
             controllerPlayerId: pairing.playerId,
             zone: zoneName,

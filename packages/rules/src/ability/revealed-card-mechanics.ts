@@ -126,39 +126,11 @@ export function grantedBasicDoubleRemoveAbility(state: GameState, cardInstanceId
   };
 }
 
-function legacyShinjiCompatibilityAbility(definitionId: string): AuthoringAbility | undefined {
-  if (definitionId === 'master.shinji.skill.s1') {
-    return {
-      id: 'drain-command.enter-miyama',
-      kind: 'forced_trigger',
-      printedClause: '进入深山町时，获得1点魔力。',
-      activation: { trigger: 'after_controller_enters_location', eventLocationId: 'miyama_town' },
-      conditions: [], targets: [], effects: [{ type: 'adjust_mana', amount: 1 }], cost: [],
-      ruleModifiers: [], creates: [], lifecycle: {}, responseWindow: {}, limit: {}, visibility: {},
-      execution: { mode: 'automatic', allowedOperations: [] },
-    };
-  }
-  if (definitionId === 'master.shinji.skill.s3') {
-    return {
-      id: 'clown.lose-command-seal',
-      kind: 'forced_trigger',
-      printedClause: '当你战败时，失去一枚令咒。',
-      activation: { trigger: 'after_controller_loses_battle' },
-      conditions: [], targets: [], effects: [{ type: 'adjust_command_seals', amount: -1, directive: 'lose_command_seal_after_battle_loss' }], cost: [],
-      ruleModifiers: [], creates: [], lifecycle: {}, responseWindow: {}, limit: {}, visibility: {},
-      execution: { mode: 'automatic', allowedOperations: [] },
-    };
-  }
-  return undefined;
-}
-
 export function effectiveAbilitiesForPhysicalCard(state: GameState, cardInstanceId: string): AuthoringAbility[] {
   const runtime = state.abilityRuntime;
   const card = state.cards.find((candidate) => candidate.instanceId === cardInstanceId);
   const authored = card && runtime?.pack.cards[card.definitionId]?.abilities;
   if (!authored) return [];
-  const compatibility = card ? legacyShinjiCompatibilityAbility(card.definitionId) : undefined;
-  const effectiveAuthored = compatibility ? [...authored, compatibility] : authored;
   const granted = grantedBasicDoubleRemoveAbility(state, cardInstanceId);
-  return granted ? [...effectiveAuthored, granted] : effectiveAuthored;
+  return granted ? [...authored, granted] : authored;
 }

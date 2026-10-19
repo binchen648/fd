@@ -13306,6 +13306,243 @@
         "destinationZone": "field",
         "initialZone": "skill"
       },
+      "master.shinji.skill.drain-command": {
+        "id": "master.shinji.skill.drain-command",
+        "name": "吸魔命令",
+        "cardType": "master_skill",
+        "cardFace": {
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "drain-command.enter-miyama",
+            "kind": "forced_trigger",
+            "printedClause": "进入深山町时，获得1点魔力。",
+            "activation": {
+              "trigger": "after_controller_enters_location",
+              "eventLocationId": "miyama_town"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "adjust_mana",
+                "amount": 1
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "master.shinji",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
+      },
+      "master.shinji.skill.useless-person": {
+        "id": "master.shinji.skill.useless-person",
+        "name": "无用之人",
+        "cardType": "master_skill",
+        "cardFace": {
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "useless-person.setup",
+            "kind": "forced_trigger",
+            "printedClause": "开局获得【伪臣之书】。",
+            "activation": {
+              "trigger": "game_start"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "create_card",
+                "cardId": "master.shinji.skill.false-attendant-book",
+                "to": {
+                  "zone": "skill"
+                }
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "master.shinji",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
+      },
+      "master.shinji.skill.clown": {
+        "id": "master.shinji.skill.clown",
+        "name": "小丑",
+        "cardType": "master_skill",
+        "cardFace": {
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "clown.lose-command-seal",
+            "kind": "forced_trigger",
+            "printedClause": "当你战败时，失去一枚令咒。",
+            "activation": {
+              "trigger": "after_controller_loses_battle"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "adjust_command_seals",
+                "amount": -1,
+                "directive": "lose_command_seal_after_battle_loss"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "master.shinji",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
+      },
+      "master.shinji.skill.false-attendant-book": {
+        "id": "master.shinji.skill.false-attendant-book",
+        "name": "伪臣之书",
+        "cardType": "master_skill",
+        "cardFace": {
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "false-attendant-book.first-empty-seals",
+            "kind": "forced_trigger",
+            "printedClause": "当间桐樱在场时：当你第一次失去所有令咒时，在该回合结束时，将从者替换为一个随机的，未被使用的从者。重新获得3令咒。 当间桐樱不在场时：当你第一次失去所有令咒时，在该回合结束时，将你的御主替换为【间桐樱】。重置你的魔力，获得2令咒，保持战果不变。",
+            "activation": {
+              "trigger": "after_controller_loses_all_command_seals"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "false_attendant_book_replacement",
+                "sakuraMasterId": "master.sakura",
+                "preserveVictoryPoints": true
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {
+              "type": "per_game",
+              "scope": "this_card",
+              "uses": 1
+            },
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "master.shinji",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
       "master.kiritsugu.skill.ascension": {
         "id": "master.kiritsugu.skill.ascension",
         "name": "冷血杀手",
@@ -50517,11 +50754,11 @@
       "master.shiki-ryougi": "master.shiki-ryougi.command-spell",
       "master.shiki-tohno": "master.shiki-tohno.command-spell"
     },
-    "definitionHash": "99d233c65d43ac584dc5540a560f9b71768fa2ac7ccfb4d04a3516635073e51b",
+    "definitionHash": "dd59e684614c1470ba4c81d778c880997f96d500fe1595c4273615f3543f3533",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "99d233c65d43ac584dc5540a560f9b71768fa2ac7ccfb4d04a3516635073e51b"
+      "definitionHash": "dd59e684614c1470ba4c81d778c880997f96d500fe1595c4273615f3543f3533"
     },
     "sourceMap": {
       "master.shinji.skill.ascension": {
@@ -50588,6 +50825,58 @@
         "cardIndex": 4,
         "abilityIndex": 0,
         "path": "archives[0].cards[4].abilities[0]"
+      },
+      "master.shinji.skill.drain-command": {
+        "archiveId": "master.shinji",
+        "archiveIndex": 0,
+        "cardIndex": 5,
+        "path": "archives[0].cards[5]"
+      },
+      "master.shinji.skill.drain-command#drain-command.enter-miyama": {
+        "archiveId": "master.shinji",
+        "archiveIndex": 0,
+        "cardIndex": 5,
+        "abilityIndex": 0,
+        "path": "archives[0].cards[5].abilities[0]"
+      },
+      "master.shinji.skill.useless-person": {
+        "archiveId": "master.shinji",
+        "archiveIndex": 0,
+        "cardIndex": 6,
+        "path": "archives[0].cards[6]"
+      },
+      "master.shinji.skill.useless-person#useless-person.setup": {
+        "archiveId": "master.shinji",
+        "archiveIndex": 0,
+        "cardIndex": 6,
+        "abilityIndex": 0,
+        "path": "archives[0].cards[6].abilities[0]"
+      },
+      "master.shinji.skill.clown": {
+        "archiveId": "master.shinji",
+        "archiveIndex": 0,
+        "cardIndex": 7,
+        "path": "archives[0].cards[7]"
+      },
+      "master.shinji.skill.clown#clown.lose-command-seal": {
+        "archiveId": "master.shinji",
+        "archiveIndex": 0,
+        "cardIndex": 7,
+        "abilityIndex": 0,
+        "path": "archives[0].cards[7].abilities[0]"
+      },
+      "master.shinji.skill.false-attendant-book": {
+        "archiveId": "master.shinji",
+        "archiveIndex": 0,
+        "cardIndex": 8,
+        "path": "archives[0].cards[8]"
+      },
+      "master.shinji.skill.false-attendant-book#false-attendant-book.first-empty-seals": {
+        "archiveId": "master.shinji",
+        "archiveIndex": 0,
+        "cardIndex": 8,
+        "abilityIndex": 0,
+        "path": "archives[0].cards[8].abilities[0]"
       },
       "master.kiritsugu.skill.ascension": {
         "archiveId": "master.kiritsugu",

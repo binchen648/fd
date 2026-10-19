@@ -75,5 +75,12 @@ describe('P3 Shinji owner migration boundary', () => {
     for (const id of IDS) expect(generated.rules.sourceMap[id]).toMatchObject({ archiveId: ROOT });
     expect(evidence.entities.find((entity: any) => entity.entityId === ROOT)?.capabilityStatus).toBe('HOST_ADJUDICATED');
     expect(evidence.entities.filter((entity: any) => IDS.includes(entity.entityId))).toHaveLength(5);
+    for (const id of IDS) expect(generated.rules.cards[id].mode).toBe('host_adjudicated');
+    expect(generated.rules.cards['master.shinji.skill.s1'].abilities.map((ability: any) => ability.id))
+      .not.toContain('drain-command.enter-miyama');
+    expect(generated.rules.cards['master.shinji.skill.s3'].abilities.map((ability: any) => ability.id))
+      .not.toContain('clown.lose-command-seal');
+    expect(generated.rules.cards['master.shinji.skill.drain-command'].mode).toBe('automatic');
+    expect(generated.rules.cards['master.shinji.skill.clown'].mode).toBe('automatic');
   });
 });
