@@ -31,6 +31,9 @@ describe('P3 Shiki Tohno owner migration boundary', () => {
       }
     }
     expect(clauseCount).toBe(9);
+    const s2 = archive.cards.find((card: any) => card.id === `${ROOT}.skill.s2`);
+    expect(s2.cardFace).toMatchObject({ typeLabel: '迅捷', attributes: ['迅捷'], cost: 1, requirement: 1, basePower: 4 });
+    expect(s2.abilities[0]).toMatchObject({ kind: 'phase_action', activation: { phase: 'combat', opens: 'controller_combat_action_window' } });
   });
 
   it('keeps both shared handler boundaries reference-only and host-adjudicated', () => {

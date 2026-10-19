@@ -10930,8 +10930,8 @@
       "id": "master.shiki-tohno.skill.s2",
       "name": "侵蚀",
       "cardType": "master_skill",
-      "printedValue": 0,
-      "printedCost": 0,
+      "printedValue": 4,
+      "printedCost": 1,
       "printedText": "此牌需追加打出。\n血滴-你需花费1点战果来打出此牌。\n共融-战斗阶段：随机展示一名你交战对手弃牌堆的至多3张牌，你可以选择其中的一张基础牌与你控制或手牌的一张基础牌交换。",
       "timing": [
         "action"
@@ -32477,10 +32477,13 @@
         "name": "侵蚀",
         "cardType": "master_skill",
         "cardFace": {
-          "typeLabel": "被动",
-          "attributes": [],
-          "cost": 0,
-          "basePower": 0
+          "typeLabel": "迅捷",
+          "attributes": [
+            "迅捷"
+          ],
+          "cost": 1,
+          "requirement": 1,
+          "basePower": 4
         },
         "playTiming": {
           "phase": "action",
@@ -32490,10 +32493,11 @@
         "abilities": [
           {
             "id": "tohno.shiki-possession-erosion",
-            "kind": "passive",
+            "kind": "phase_action",
             "printedClause": "此牌需追加打出。\n血滴-你需花费1点战果来打出此牌。\n共融-战斗阶段：随机展示一名你交战对手弃牌堆的至多3张牌，你可以选择其中的一张基础牌与你控制或手牌的一张基础牌交换。",
             "activation": {
-              "trigger": "while_active"
+              "phase": "combat",
+              "opens": "controller_combat_action_window"
             },
             "conditions": [],
             "targets": [],
@@ -50469,11 +50473,11 @@
       "master.shiki-ryougi": "master.shiki-ryougi.command-spell",
       "master.shiki-tohno": "master.shiki-tohno.command-spell"
     },
-    "definitionHash": "f6c5bc3576d8aca82e447c449f012ab970763ab65ae65a11e7165d0a2cfaf998",
+    "definitionHash": "79e424270ad339a1e740ae2edcedcf04d82e1510ee861de527f30c0cfe664097",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "f6c5bc3576d8aca82e447c449f012ab970763ab65ae65a11e7165d0a2cfaf998"
+      "definitionHash": "79e424270ad339a1e740ae2edcedcf04d82e1510ee861de527f30c0cfe664097"
     },
     "sourceMap": {
       "master.shinji.skill.drain-command": {
