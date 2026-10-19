@@ -10021,3 +10021,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-kirei-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#587` or any prior open synchronization PR.
+
+## TASK P3-S-OWNER-KIRITSUGU-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly five skills for `master.kiritsugu`
+
+Exact accepted review:
+
+- PR `#589`, exact Base `934d02c8`;
+- accepted Candidate `225f5d22ca06b0d92244706a916aaf8c5d30fed6`;
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from `/root/kirei_reviewer`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-kiritsugu` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly five identities: `master.kiritsugu.skill.ascension`, `.s1`, `.s2`, `.s3`, and `.s4`.
+
+The Candidate restores the excluded ascension card, adds the canonical s1-s4 archive, and preserves the legacy `master.kiritsugu.deck.origin-bullet` evidence. All five skills and the deck card remain `HOST_ADJUDICATED` because the current engine lacks authoritative contracts for their full behavior.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `339/944`, remaining `605`;
+- exact owner increment: `+5`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`344/944`**, remaining **`600`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-kiritsugu-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#589` or any prior open synchronization PR.
