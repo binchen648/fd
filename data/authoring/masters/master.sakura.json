@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.sakura",
+  "name": "间桐樱",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "overviewCapabilityStatus": "HOST_ADJUDICATED",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "2d935e9b268802efa255590aba0c86725676664b",
+    "referenceMetadataCommit": "2d935e9b268802efa255590aba0c86725676664b",
+    "note": "冻结五项技能的 canonical printedText、开发版/legacy 定位、full-roster inventory 原文及五个 generated clause SHA。五项均为 DISCOVERED，semanticNormalization.status=BLOCKED、blockedBy=SEMANTIC_SOURCE_REQUIRED、Phase3 mappingStatus=EXPLICIT_BLOCK；所有语义仍保持 HOST_ADJUDICATED。core.sakura-corrosion (specific_handler)、core.sakura-corrupted-grail-trigger (shared_handler)、core.sakura-black-mud (specific_handler) 和 core.rule-marker (shared_handler) 仅为 reference handler，不能当作 runtime contract。record_master_directive 仅供主持人审计，不能伪装成 complete/FULL/automatic。",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版/images/masters/间桐樱.png#master.sakura/间桐樱",
+      "legacy": {
+        "master.sakura.skill.ascension": "legacy-content.json#master/master.sakura/ascension",
+        "master.sakura.skill.s1": "legacy-content.json#master/master.sakura/s1",
+        "master.sakura.skill.s2": "legacy-content.json#master/master.sakura/s2",
+        "master.sakura.skill.s3": "legacy-content.json#master/master.sakura/s3",
+        "master.sakura.skill.s4": "legacy-content.json#master/master.sakura/s4"
+      },
+      "generated": {
+        "master.sakura.skill.ascension": "src/content/generated/legacy-content.json#masters[4].skills[4].text#line=1 sha256=3ffe8725ccd12e36689dcb651368423cf5677b636352b1e5bf78c563a51ee648",
+        "master.sakura.skill.s1": "src/content/generated/legacy-content.json#masters[4].skills[0].text#line=1 sha256=8612397268ca8d6f0c0421603be3720bf4c0d4b16a3ae757872f725dc0b8b540",
+        "master.sakura.skill.s2": "src/content/generated/legacy-content.json#masters[4].skills[1].text#line=1 sha256=0da9388a0e5d12e7b0f6f9c7cdf49c86e23c44bbf2b29eb0f3b1121767e62048",
+        "master.sakura.skill.s3": "src/content/generated/legacy-content.json#masters[4].skills[2].text#line=1 sha256=c999a08540cf5e45b1370dff95a74320c0e93f747223dc31c2f45596f2f26e59",
+        "master.sakura.skill.s4": "src/content/generated/legacy-content.json#masters[4].skills[3].text#line=1 sha256=8cd2d57e4efad5a93f04ad20dacf2b08a05881bdcdcff09158420412cf20f588"
+      }
+    }
+  },
+  "cards": [
+    { "id": "master.sakura.skill.ascension", "aliases": ["ascension"], "legacyId": "ascension", "name": "腐蚀", "cardType": "master_skill", "owner": { "type": "master", "id": "master.sakura" }, "printedText": "你只能在游戏的前四回合中解锁此牌。每局游戏限一次，当一名玩家被淘汰且【被污染的圣杯】处于激活状态，你可将其拥有的任意张从者技能牌加入你的技能区。", "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "sakura.corrosion", "kind": "passive", "printedClause": "你只能在游戏的前四回合中解锁此牌。每局游戏限一次，当一名玩家被淘汰且【被污染的圣杯】处于激活状态，你可将其拥有的任意张从者技能牌加入你的技能区。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "sakura_corrosion" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.sakura.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "欠损容器", "cardType": "master_skill", "owner": { "type": "master", "id": "master.sakura" }, "printedText": "回合结束时，若你的战果低于所有其他玩家且你的第一名御主不是【间桐慎二】，激活【黑泥】。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "sakura.corrupted-vessel", "kind": "passive", "printedClause": "回合结束时，若你的战果低于所有其他玩家且你的第一名御主不是【间桐慎二】，激活【黑泥】。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "sakura_corrupted_vessel" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.sakura.skill.s2", "aliases": ["s2"], "legacyId": "s2", "name": "此世全部之恶", "cardType": "master_skill", "owner": { "type": "master", "id": "master.sakura" }, "printedText": "第8回合结束时，若你的战果排名不为第一，激活【被污染的圣杯】。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "sakura.all-the-worlds-evil", "kind": "passive", "printedClause": "第8回合结束时，若你的战果排名不为第一，激活【被污染的圣杯】。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "sakura_all_the_worlds_evil" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.sakura.skill.s3", "aliases": ["s3"], "legacyId": "s3", "name": "黑泥", "cardType": "master_skill", "owner": { "type": "master", "id": "master.sakura" }, "printedText": "准备阶段：花费2点魔力，若你未激活【被污染的圣杯】，获得2点战果。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "sakura.black-mud", "kind": "passive", "printedClause": "准备阶段：花费2点魔力，若你未激活【被污染的圣杯】，获得2点战果。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "sakura_black_mud" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.sakura.skill.s4", "aliases": ["s4"], "legacyId": "s4", "name": "被污染的圣杯", "cardType": "master_skill", "owner": { "type": "master", "id": "master.sakura" }, "printedText": "你拥有无限魔力（此状态下无法获得或失去魔力）。每回合常规攻击可以多打一张牌。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "sakura.corrupted-grail", "kind": "passive", "printedClause": "你拥有无限魔力（此状态下无法获得或失去魔力）。每回合常规攻击可以多打一张牌。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "sakura_corrupted_grail" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } }
+  ],
+  "sources": [{ "id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/间桐樱.png"] }]
+}

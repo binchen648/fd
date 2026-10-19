@@ -89,7 +89,8 @@
                                  "data/authoring/masters/master.ritsuka-f.json",
                                  "data/authoring/masters/master.ritsuka-m.json",
                                  "data/authoring/masters/master.roche.json",
-                                 "data/authoring/masters/master.ryuunosuke.json"
+                                 "data/authoring/masters/master.ryuunosuke.json",
+                                 "data/authoring/masters/master.sakura.json"
                              ],
     "authoringMasterSupportFiles":  [
                                         "data/authoring/masters/master.shirou-emiya.json"
