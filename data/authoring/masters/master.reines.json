@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.reines",
+  "name": "莱妮丝·阿奇佐尔缇",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "d3bfb3b7",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "冻结六项技能的 canonical printedText、开发版/legacy 定位、full-roster inventory 原文及十个 generated clause SHA。当前 loader/runtime 没有权威合同证明特里姆玛乌创建与全局属性生命周期、战果/淘汰与手牌弃置、攻击与移动、真名解放分支、手牌条件加成及永久威力更新；六张牌全部保持 HOST_ADJUDICATED。core.reines-trimmau 仅为 reference handler，不能当作 runtime contract。record_master_directive 仅供主持人审计，不能伪装成 complete/FULL/automatic。",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版#master.reines/莱妮丝·阿奇佐尔缇",
+      "legacy": {
+        "master.reines.skill.ascension": "legacy-content.json#master/master.reines/ascension",
+        "master.reines.skill.s1": "legacy-content.json#master/master.reines/s1",
+        "master.reines.skill.s1a": "legacy-content.json#master/master.reines/s1a",
+        "master.reines.skill.s2": "legacy-content.json#master/master.reines/s2",
+        "master.reines.skill.s3": "legacy-content.json#master/master.reines/s3",
+        "master.reines.skill.s4": "legacy-content.json#master/master.reines/s4"
+      },
+      "generated": {
+        "master.reines.skill.ascension": "src/content/generated/legacy-content.json#masters[61].skills[5].text#line=1 sha256=57053e27a537bea7939efa5fa5cd45426632998f31dfa4549149370f779c6f16; line=2 sha256=a71a7eb3b3f146c6d9a6303ba19472127ba890efe3b8618b47865f8a70765e61",
+        "master.reines.skill.s1": "src/content/generated/legacy-content.json#masters[61].skills[0].text#line=1 sha256=5adfc4a0dd7d4ec0c569f41505468b9c965bb38fe046c5540a82523d975afa5b",
+        "master.reines.skill.s1a": "src/content/generated/legacy-content.json#masters[61].skills[1].text#line=1 sha256=4cae3b2f77351cdaed5045882067802f2ec23c29c6044cdf9dff5a781ca0965a",
+        "master.reines.skill.s2": "src/content/generated/legacy-content.json#masters[61].skills[2].text#line=1 sha256=f69b9a81d7e8054b873c5cd27135f096d595c04148ef6c32469499f47ab4e2df; line=2 sha256=6aba54bbb8574d69486f1aab8ac5af73a26f1dec28dc1d1fb99f5d1c763edd13",
+        "master.reines.skill.s3": "src/content/generated/legacy-content.json#masters[61].skills[3].text#line=1 sha256=a3f47132a6aad2250a72cc8efe4cc323cb333a11c2a7da2696d6d65972b56f20; line=2 sha256=e0b1b4d3fcad223e6e295905a64d5d24aea5a31300b48e98424ad656df2d3f13",
+        "master.reines.skill.s4": "src/content/generated/legacy-content.json#masters[61].skills[4].text#line=1 sha256=3fa4cc9b913c3d266a91c9b5f7fe77c6b7cd9424a389dfd533ac80e33b70d087; line=2 sha256=21cb80ccbafa65adf1a34acb044589e7f12bfb1cfda5e6c4bee8fb3aa68c2466"
+      }
+    }
+  },
+  "cards": [
+    { "id": "master.reines.skill.ascension", "aliases": ["ascension"], "legacyId": "ascension", "name": "特里姆玛乌·沸腾", "cardType": "master_skill", "owner": { "type": "master", "id": "master.reines" }, "printedText": "（将此牌加入你的技能区。）\n沸腾吧，我的血液-被动：所有【特里姆玛乌】获得力量属性，你每于本局游戏打出一张【特里姆玛乌】，你的所有【特里姆玛乌】获得+1威力至游戏结束。", "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "reines.trimmau-boil", "kind": "passive", "printedClause": "（将此牌加入你的技能区。）\n沸腾吧，我的血液-被动：所有【特里姆玛乌】获得力量属性，你每于本局游戏打出一张【特里姆玛乌】，你的所有【特里姆玛乌】获得+1威力至游戏结束。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "reines_trimmau_boil" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.reines.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "炼金术师", "cardType": "master_skill", "owner": { "type": "master", "id": "master.reines" }, "printedText": "行动阶段：将一张游戏外的【特里姆玛乌】加入你的手牌（不展示）。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "reines.alchemist", "kind": "passive", "printedClause": "行动阶段：将一张游戏外的【特里姆玛乌】加入你的手牌（不展示）。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "reines_alchemist" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.reines.skill.s1a", "aliases": ["s1a"], "legacyId": "s1a", "name": "小恶魔", "cardType": "master_skill", "owner": { "type": "master", "id": "master.reines" }, "printedText": "当你获胜并计算战果后，从你的战斗中的一名下次淘汰结算时会被淘汰的败者处偷取1点战果。当你战败时，弃置所有手牌。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "reines-little-devil", "kind": "passive", "printedClause": "当你获胜并计算战果后，从你的战斗中的一名下次淘汰结算时会被淘汰的败者处偷取1点战果。当你战败时，弃置所有手牌。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "reines_little_devil" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.reines.skill.s2", "aliases": ["s2"], "legacyId": "s2", "name": "特里姆玛乌·斩击", "cardType": "master_skill", "owner": { "type": "master", "id": "master.reines" }, "printedText": "斩击-行动阶段：打出一张攻击。\n被动/战斗阶段：若此牌在你的手牌中，获得+2合计威力。", "cardFace": { "typeLabel": "独立牌库牌", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "reines.trimmau-slash", "kind": "passive", "printedClause": "斩击-行动阶段：打出一张攻击。\n被动/战斗阶段：若此牌在你的手牌中，获得+2合计威力。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "reines_trimmau_slash" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.reines.skill.s3", "aliases": ["s3"], "legacyId": "s3", "name": "特里姆玛乌·羽翼", "cardType": "master_skill", "owner": { "type": "master", "id": "master.reines" }, "printedText": "汝之骨血，化为羽翼-行动阶段：逆着箭头移动一步。\n被动/战斗阶段：若此牌在你的手牌中，沿着箭头移动一步。", "cardFace": { "typeLabel": "独立牌库牌", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "reines.trimmau-wings", "kind": "passive", "printedClause": "汝之骨血，化为羽翼-行动阶段：逆着箭头移动一步。\n被动/战斗阶段：若此牌在你的手牌中，沿着箭头移动一步。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "reines_trimmau_wings" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.reines.skill.s4", "aliases": ["s4"], "legacyId": "s4", "name": "特里姆玛乌·告解", "cardType": "master_skill", "owner": { "type": "master", "id": "master.reines" }, "printedText": "指令：告解-行动阶段：查看一名与你位于同一地点的对手的技能区，若你使用此效果时其已【真名解放】，你改为获得+4合计威力。\n被动/战斗阶段：若此牌在你的手牌中，获得1点魔力。", "cardFace": { "typeLabel": "独立牌库牌", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "reines.trimmau-confession", "kind": "passive", "printedClause": "指令：告解-行动阶段：查看一名与你位于同一地点的对手的技能区，若你使用此效果时其已【真名解放】，你改为获得+4合计威力。\n被动/战斗阶段：若此牌在你的手牌中，获得1点魔力。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "reines_trimmau_confession" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } }
+  ],
+  "sources": [{ "id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/莱妮丝·阿奇佐尔缇.png"] }]
+}

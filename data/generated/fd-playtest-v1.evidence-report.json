@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 45,
+    "masters": 46,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -3849,6 +3849,94 @@
       "htmPath": "chm-extract/拉尼VIII.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/拉尼VIII.png",
       "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.reines",
+      "displayName": "莱妮丝·阿奇佐尔缇",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/莱妮丝·阿奇佐尔缇.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/莱妮丝·阿奇佐尔缇.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.reines.overview",
+      "displayName": "莱妮丝·阿奇佐尔缇",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/莱妮丝·阿奇佐尔缇.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/莱妮丝·阿奇佐尔缇.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.reines.skill.ascension",
+      "displayName": "特里姆玛乌·沸腾",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/莱妮丝·阿奇佐尔缇.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/莱妮丝·阿奇佐尔缇.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.reines.skill.s1",
+      "displayName": "炼金术师",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/莱妮丝·阿奇佐尔缇.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/莱妮丝·阿奇佐尔缇.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.reines.skill.s1a",
+      "displayName": "小恶魔",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/莱妮丝·阿奇佐尔缇.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/莱妮丝·阿奇佐尔缇.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.reines.skill.s2",
+      "displayName": "特里姆玛乌·斩击",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/莱妮丝·阿奇佐尔缇.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/莱妮丝·阿奇佐尔缇.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.reines.skill.s3",
+      "displayName": "特里姆玛乌·羽翼",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/莱妮丝·阿奇佐尔缇.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/莱妮丝·阿奇佐尔缇.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.reines.skill.s4",
+      "displayName": "特里姆玛乌·告解",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/莱妮丝·阿奇佐尔缇.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/莱妮丝·阿奇佐尔缇.png",
+      "imageIndex": 6,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },
