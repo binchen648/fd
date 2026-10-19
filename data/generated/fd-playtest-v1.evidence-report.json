@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 42,
+    "masters": 43,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -3554,6 +3554,138 @@
       "issueCodes": [
         "SOURCE_ASSET_UNVERIFIED"
       ]
+    },
+    {
+      "entityId": "master.ophelia",
+      "displayName": "奥菲莉娅·法姆索罗涅",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/奥菲莉娅·法姆索罗涅.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/奥菲莉娅·法姆索罗涅.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ophelia.overview",
+      "displayName": "奥菲莉娅·法姆索罗涅",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/奥菲莉娅·法姆索罗涅.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/奥菲莉娅·法姆索罗涅.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ophelia.skill.ascension",
+      "displayName": "诸神黄昏",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/奥菲莉娅·法姆索罗涅.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/奥菲莉娅·法姆索罗涅.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ophelia.skill.s1",
+      "displayName": "隐匿者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/奥菲莉娅·法姆索罗涅.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/奥菲莉娅·法姆索罗涅.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ophelia.skill.s1a",
+      "displayName": "魔眼",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/奥菲莉娅·法姆索罗涅.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/奥菲莉娅·法姆索罗涅.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ophelia.skill.s1b",
+      "displayName": "童年创伤",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/奥菲莉娅·法姆索罗涅.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/奥菲莉娅·法姆索罗涅.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ophelia.skill.s2",
+      "displayName": "迁延之魔眼",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/奥菲莉娅·法姆索罗涅.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/奥菲莉娅·法姆索罗涅.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ophelia.skill.s3",
+      "displayName": "北欧异闻带",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/奥菲莉娅·法姆索罗涅.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/奥菲莉娅·法姆索罗涅.png",
+      "imageIndex": 6,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ophelia.skill.s4",
+      "displayName": "和平日",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/奥菲莉娅·法姆索罗涅.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/奥菲莉娅·法姆索罗涅.png",
+      "imageIndex": 7,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ophelia.skill.s5",
+      "displayName": "苏尔特领域",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/奥菲莉娅·法姆索罗涅.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/奥菲莉娅·法姆索罗涅.png",
+      "imageIndex": 8,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ophelia.skill.s6",
+      "displayName": "女武神领域",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/奥菲莉娅·法姆索罗涅.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/奥菲莉娅·法姆索罗涅.png",
+      "imageIndex": 9,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.ophelia.skill.s7",
+      "displayName": "斯卡蒂领域",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/奥菲莉娅·法姆索罗涅.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/奥菲莉娅·法姆索罗涅.png",
+      "imageIndex": 10,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
     },
     {
       "entityId": "master.shinji",
