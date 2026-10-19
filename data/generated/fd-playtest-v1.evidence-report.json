@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 37,
+    "masters": 38,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -3002,6 +3002,72 @@
       "htmPath": "chm-extract/杀生院祈荒.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/杀生院祈荒.png",
       "imageIndex": 8,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kirei",
+      "displayName": "言峰绮礼",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/言峰绮礼.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/言峰绮礼.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kirei.overview",
+      "displayName": "言峰绮礼",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/言峰绮礼.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/言峰绮礼.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kirei.skill.ascension",
+      "displayName": "恶的庇护者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/言峰绮礼.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/言峰绮礼.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kirei.skill.s1",
+      "displayName": "两幅面孔",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/言峰绮礼.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/言峰绮礼.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kirei.skill.s2",
+      "displayName": "监督者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/言峰绮礼.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/言峰绮礼.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kirei.skill.s3",
+      "displayName": "执行者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/言峰绮礼.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/言峰绮礼.png",
+      "imageIndex": 3,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

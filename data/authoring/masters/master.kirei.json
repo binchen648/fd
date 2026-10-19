@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.kirei",
+  "name": "言峰绮礼",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "b3f75764",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "冻结四项技能的 canonical printedText、开发版/legacy 定位、full-roster inventory 原文及 generated legacy-content SHA。当前引擎没有权威合同证明真名隐藏与角色切换、秘密职阶信息、真名解放/强制败北、无视交战移动或角色相关威力修改；四张牌全部保持 HOST_ADJUDICATED。record_master_directive 仅供主持人审计，不能伪装成 complete/FULL/automatic；legacy handler 名称仅为来源证据，loader/runtime 不自动执行旧 handler。",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版#master.kirei/言峰绮礼",
+      "legacy": {
+        "master.kirei.skill.s1": "legacy-content.json#master/master.kirei/s1",
+        "master.kirei.skill.s2": "legacy-content.json#master/master.kirei/s2",
+        "master.kirei.skill.s3": "legacy-content.json#master/master.kirei/s3",
+        "master.kirei.skill.ascension": "legacy-content.json#master/master.kirei/ascension"
+      },
+      "generated": {
+        "master.kirei.skill.s1": "src/content/generated/legacy-content.json#masters[5].skills[0].text#line=1 sha256=0075b055045448dd1cee1f808c317e9ea8322e0777d58195b5e99a5e9a04c430",
+        "master.kirei.skill.s2": "src/content/generated/legacy-content.json#masters[5].skills[1].text#line=1 sha256=eefeef6faec214e753ac8ae30009da8ee71c79e7f3bc407b4dec52c4feb8228d",
+        "master.kirei.skill.s3": "src/content/generated/legacy-content.json#masters[5].skills[2].text#line=1 sha256=19a115e54c0c7434f6365093c5bd1192d7b461ed156872c0c172a18ebe076f38",
+        "master.kirei.skill.ascension": "src/content/generated/legacy-content.json#masters[5].skills[3].text#line=1 sha256=292b6f9e7def0abe286ea7be936b832cbdd464fabc2a6d32cd862e4eac8e2b76"
+      }
+    }
+  },
+  "cards": [
+    { "id": "master.kirei.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "两幅面孔", "cardType": "master_skill", "owner": { "type": "master", "id": "master.kirei" }, "printedText": "当从者真名隐藏时，你是【监督者】；其他情况下，你是【执行者】。（包括且不限于你没有从者）", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "kirei.two-faces", "kind": "passive", "printedClause": "当从者真名隐藏时，你是【监督者】；其他情况下，你是【执行者】。（包括且不限于你没有从者）", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "kirei_role_switch_by_servant_true_name_visibility" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.kirei.skill.s2", "aliases": ["s2"], "legacyId": "s2", "name": "监督者", "cardType": "master_skill", "owner": { "type": "master", "id": "master.kirei" }, "printedText": "管理者-所有玩家秘密告诉你从者职阶。 中立-行动阶段：你可以无视交战状态，花费2魔力移动至侦察。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "kirei.supervisor", "kind": "passive", "printedClause": "管理者-所有玩家秘密告诉你从者职阶。 中立-行动阶段：你可以无视交战状态，花费2魔力移动至侦察。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "kirei_secret_servant_class_reports_and_ignore_engagement_move" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.kirei.skill.s3", "aliases": ["s3"], "legacyId": "s3", "name": "执行者", "cardType": "master_skill", "owner": { "type": "master", "id": "master.kirei" }, "printedText": "战斗阶段：你的总威力+2。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "kirei-executor", "kind": "passive", "printedClause": "战斗阶段：你的总威力+2。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "kirei_executor_total_power_plus_two" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.kirei.skill.ascension", "aliases": ["ascension"], "legacyId": "ascension", "name": "恶的庇护者", "cardType": "master_skill", "owner": { "type": "master", "id": "master.kirei" }, "printedText": "当你为【监督者】时，战斗阶段：可【真名解放】使与你位于同一战场的一名玩家【败北】。当你为【执行者】时，你的所有基础攻击牌威力+2且无视【败北】。", "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "kirei.ascension", "kind": "passive", "printedClause": "当你为【监督者】时，战斗阶段：可【真名解放】使与你位于同一战场的一名玩家【败北】。当你为【执行者】时，你的所有基础攻击牌威力+2且无视【败北】。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "kirei_role_dependent_true_name_release_defeat_and_attack_modifiers" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } }
+  ],
+  "sources": [{ "id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/言峰绮礼.png"] }]
+}
