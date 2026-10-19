@@ -4,7 +4,7 @@
 - Worktree: `E:\Codex\FD\binchen648_fd\kadoc-owner-migration`
 - Base: Julius A-sync `644fb8cc59d58763f8c3ec7f943892cb14724d58` (candidate parent `133e2b8bf8675c39b7324f7d62cf882774c9c756`)
 - Scope: exactly seven frozen identities: `ascension`, `s1`, `s1a`, `s2`, `s3`, `s4`, and `s5`.
-- Candidate SHA: pending final local commit; no push, PR, merge, or A-sync action performed.
+- Candidate SHA: `be0a4a8d83cbc85af5f90d61ae17b5c0d0b603b6`; no push, PR, merge, or A-sync action performed.
 
 ## Evidence preserved
 
