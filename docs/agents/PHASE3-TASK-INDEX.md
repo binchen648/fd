@@ -9969,3 +9969,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-kayneth-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#583` or any prior open synchronization PR.
+
+## TASK P3-S-OWNER-KIARA-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly eight skills for `master.kiara`
+
+Exact accepted review:
+
+- PR `#585`, exact Base `5cbf004a4f0131ca4a6881df41f2f8deda77361b`;
+- accepted Candidate `1afa96a7e3ed3d9d646e75b0e99e813f39ba63a5`;
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from `/root/kiara_reviewer`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-kiara` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly eight identities: `master.kiara.skill.ascension`, `.s1`, `.s1a`, `.s2`, `.s3`, `.s4`, `.s5`, and `.s6`.
+
+All eight cards preserve exact inventory/generated text and source hashes, including the complete multi-line `秘密花园`; all eight remain `HOST_ADJUDICATED` because the current engine lacks authoritative contracts for the multi-stage dynamic behavior.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `327/944`, remaining `617`;
+- exact owner increment: `+8`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`335/944`**, remaining **`609`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-kiara-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#585` or any prior open synchronization PR.
