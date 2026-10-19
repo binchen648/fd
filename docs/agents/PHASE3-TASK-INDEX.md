@@ -10125,3 +10125,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-leonardo-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#595` or any prior open synchronization PR.
+
+## TASK P3-S-OWNER-MAIYA-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly three skills for `master.maiya`
+
+Exact accepted review:
+
+- PR `#597`, exact Base `870b8bb2`;
+- accepted Candidate `52a736f3e630e7f4a4e8559a07ae4fb6248f092d`;
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from `/root/kirei_reviewer`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-maiya` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly three identities: `master.maiya.skill.ascension`, `.s1`, and `.s2`.
+
+All three cards preserve exact inventory text, locators and source hashes. The legacy `military`/`deck.support-shot` identities and excluded ascension are retained as evidence; all three canonical skills remain `HOST_ADJUDICATED` because the current engine lacks authoritative contracts for their full behavior.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `355/944`, remaining `589`;
+- exact owner increment: `+3`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`358/944`**, remaining **`586`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-maiya-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#597` or any prior open synchronization PR.
