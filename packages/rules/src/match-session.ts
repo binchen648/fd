@@ -2395,11 +2395,10 @@ function hasCoherentReplayRestoreEnvelope(
 const masterCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'master');
 const servantCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'servant');
 
-function legacyRuntimeDefinitionId(definitionId: string): string {
-  if (definitionId === 'master.shinji.skill.s1') return 'master.shinji.skill.drain-command';
-  if (definitionId === 'master.shinji.skill.s3') return 'master.shinji.skill.clown';
-  return definitionId;
-}
+const legacyShinjiCompatibilityDefinitionIds = [
+  'master.shinji.skill.drain-command',
+  'master.shinji.skill.clown',
+] as const;
 
 const attributeTags = {
   strength: '力量',
@@ -3510,14 +3509,29 @@ export class MatchSession {
       (player as unknown as { commandSpells: number }).commandSpells = 3;
       for (const character of [pairing.master, pairing.servant]) {
         for (const cardId of character.cardIds) {
-          const runtimeCardId = legacyRuntimeDefinitionId(cardId);
-          const card = pack.cards[runtimeCardId];
+          const card = pack.cards[cardId];
           if (!card) throw new Error(`Compiled character ${character.id} references missing card ${cardId}`);
           const zoneName = card.initialZone;
           if (!zoneName) continue;
           state.cards.push({
             instanceId: `${pairing.playerId}-${cardId}`,
-            definitionId: runtimeCardId,
+            definitionId: cardId,
+            ownerPlayerId: pairing.playerId,
+            controllerPlayerId: pairing.playerId,
+            zone: zoneName,
+            visibility: visibleScope(zoneName, pairing.playerId),
+          });
+        }
+      }
+      if (pairing.master.id === 'master.shinji') {
+        for (const definitionId of legacyShinjiCompatibilityDefinitionIds) {
+          const card = pack.cards[definitionId];
+          if (!card) throw new Error(`Compiled legacy Shinji compatibility card missing: ${definitionId}`);
+          const zoneName = card.initialZone;
+          if (!zoneName) continue;
+          state.cards.push({
+            instanceId: `${pairing.playerId}-${definitionId}`,
+            definitionId,
             ownerPlayerId: pairing.playerId,
             controllerPlayerId: pairing.playerId,
             zone: zoneName,

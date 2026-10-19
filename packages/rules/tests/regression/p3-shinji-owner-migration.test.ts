@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import * as rules from '../../src/index';
+import { createMatchSession } from '../../src/match-session';
+import { seedIncludingMaster } from './deterministic-character-fixture';
 
 const ROOT = 'master.shinji';
 const IDS = ['ascension', 's1', 's2', 's3', 's4'].map((skill) => `${ROOT}.skill.${skill}`);
@@ -82,5 +84,26 @@ describe('P3 Shinji owner migration boundary', () => {
       .not.toContain('clown.lose-command-seal');
     expect(generated.rules.cards['master.shinji.skill.drain-command'].mode).toBe('automatic');
     expect(generated.rules.cards['master.shinji.skill.clown'].mode).toBe('automatic');
+  });
+
+  it('keeps canonical initial Shinji skills host-only while explicit legacy instances remain automatic', () => {
+    const session = createMatchSession({
+      seed: seedIncludingMaster(ROOT, 'p1'),
+      humanPlayerId: 'p1',
+      humanPlayerIds: ['p1'],
+    });
+    const owned = session.state.cards.filter((card) => card.ownerPlayerId === 'p1');
+    expect(owned.find((card) => card.definitionId === `${ROOT}.skill.s1`)).toBeDefined();
+    expect(owned.find((card) => card.definitionId === `${ROOT}.skill.s3`)).toBeDefined();
+    expect(owned.find((card) => card.definitionId === `${ROOT}.skill.drain-command`)).toBeDefined();
+    expect(owned.find((card) => card.definitionId === `${ROOT}.skill.clown`)).toBeDefined();
+    const entered = rules.collectTriggeredAbilities(session.state, {
+      id: 'shinji-compat-enter',
+      type: 'after_controller_enters_location',
+      playerId: 'p1',
+      locationId: 'miyama_town',
+    });
+    expect(entered.filter((ability) => ability.abilityId === 'drain-command.enter-miyama')).toHaveLength(1);
+    expect(entered.some((ability) => ability.abilityId === 'shinji.enter-miyama-gain-mana')).toBe(false);
   });
 });
