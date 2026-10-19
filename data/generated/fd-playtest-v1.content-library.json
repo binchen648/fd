@@ -976,9 +976,11 @@
       "initialMana": 4,
       "commandSpellCardIds": [],
       "skillCardIds": [
-        "master.kiritsugu.skill.magus-killer",
-        "master.kiritsugu.skill.time-alter",
-        "master.kiritsugu.skill.square-accel"
+        "master.kiritsugu.skill.ascension",
+        "master.kiritsugu.skill.s1",
+        "master.kiritsugu.skill.s2",
+        "master.kiritsugu.skill.s3",
+        "master.kiritsugu.skill.s4"
       ],
       "linkedCards": {
         "generated": [
@@ -8219,6 +8221,10 @@
       "id": "master.kiritsugu.deck.origin-bullet",
       "name": "起源弹",
       "cardType": "generated",
+      "attribute": "magecraft",
+      "attributes": [
+        "magecraft"
+      ],
       "printedValue": 2,
       "printedCost": 0,
       "printedText": "迅捷0耗2威。[切断与结合]-战斗阶段：令一名你的交战对手失去三分之一的魔力（向上取整），然后此牌获得等同于其失去魔力值二倍的威力。",
@@ -8231,8 +8237,8 @@
       },
       "source": {
         "htmPath": "chm-extract/卫宫切嗣.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_215437_375.png",
-        "imageIndex": 4,
+        "imagePath": "../../Fate_Domination-开发版/images/masters/卫宫切嗣.png",
+        "imageIndex": 6,
         "reviewedAgainstImage": true
       }
     },
@@ -8240,7 +8246,7 @@
       "id": "master.kiritsugu.overview",
       "name": "卫宫切嗣",
       "cardType": "master_overview",
-      "printedText": "魔术师杀手: 游戏开始时，将你牌库的一张牌替换为【起源弹】。\n固有时制御: 行动阶段：暗置打出一张牌，然后抽一张牌。\n四倍速: 战斗阶段：关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。\n起源弹: 迅捷0耗2威。[切断与结合]-战斗阶段：令一名你的交战对手失去三分之一的魔力（向上取整），然后此牌获得等同于其失去魔力值二倍的威力。",
+      "printedText": "冷血杀手: 解锁此技能后立刻移除你弃牌堆中的2张牌并将2张游戏外的起源弹加入手牌。\n魔术师杀手: 游戏开始时，将你牌库的一张牌替换为【起源弹】。\n固有时制御: 暗置打出一张牌，然后抽一张牌。\n四倍速: 关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。\n起源弹: 迅捷0耗2威。[切断与结合]-战斗阶段：令一名你的交战对手失去三分之一的魔力（向上取整），然后此牌获得等同于其失去魔力值二倍的威力。\n起源弹: 迅捷0耗2威。[切断与结合]-战斗阶段：令一名你的交战对手失去三分之一的魔力（向上取整），然后此牌获得等同于其失去魔力值二倍的威力。",
       "capability": {
         "status": "FULL"
       },
@@ -8252,12 +8258,12 @@
       }
     },
     {
-      "id": "master.kiritsugu.skill.magus-killer",
-      "name": "魔术师杀手",
+      "id": "master.kiritsugu.skill.ascension",
+      "name": "冷血杀手",
       "cardType": "master_skill",
       "printedValue": 0,
       "printedCost": 0,
-      "printedText": "游戏开始时，将你牌库的一张牌替换为【起源弹】。",
+      "printedText": "解锁此技能后立刻移除你弃牌堆中的2张牌并将2张游戏外的起源弹加入手牌。",
       "timing": [
         "action"
       ],
@@ -8273,12 +8279,33 @@
       }
     },
     {
-      "id": "master.kiritsugu.skill.square-accel",
-      "name": "四倍速",
+      "id": "master.kiritsugu.skill.s1",
+      "name": "魔术师杀手",
       "cardType": "master_skill",
       "printedValue": 0,
       "printedCost": 0,
-      "printedText": "战斗阶段：关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。",
+      "printedText": "游戏开始时，将你牌库的一张牌替换为【起源弹】。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/卫宫切嗣.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_215432_872.png",
+        "imageIndex": 2,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.kiritsugu.skill.s2",
+      "name": "固有时制御",
+      "cardType": "master_skill",
+      "printedValue": 0,
+      "printedCost": 0,
+      "printedText": "暗置打出一张牌，然后抽一张牌。",
       "timing": [
         "action"
       ],
@@ -8294,12 +8321,12 @@
       }
     },
     {
-      "id": "master.kiritsugu.skill.time-alter",
-      "name": "固有时制御",
+      "id": "master.kiritsugu.skill.s3",
+      "name": "四倍速",
       "cardType": "master_skill",
       "printedValue": 0,
       "printedCost": 0,
-      "printedText": "行动阶段：暗置打出一张牌，然后抽一张牌。",
+      "printedText": "关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。",
       "timing": [
         "action"
       ],
@@ -8309,8 +8336,33 @@
       },
       "source": {
         "htmPath": "chm-extract/卫宫切嗣.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_215432_872.png",
-        "imageIndex": 2,
+        "imagePath": "../../Fate_Domination-开发版/images/masters/卫宫切嗣.png",
+        "imageIndex": 4,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.kiritsugu.skill.s4",
+      "name": "起源弹",
+      "cardType": "master_skill",
+      "attribute": "magecraft",
+      "attributes": [
+        "magecraft"
+      ],
+      "printedValue": 2,
+      "printedCost": 0,
+      "printedText": "迅捷0耗2威。[切断与结合]-战斗阶段：令一名你的交战对手失去三分之一的魔力（向上取整），然后此牌获得等同于其失去魔力值二倍的威力。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/卫宫切嗣.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/卫宫切嗣.png",
+        "imageIndex": 5,
         "reviewedAgainstImage": true
       }
     },
@@ -10737,11 +10789,72 @@
         "playKind": "support",
         "destinationZone": "field"
       },
-      "master.kiritsugu.skill.magus-killer": {
-        "id": "master.kiritsugu.skill.magus-killer",
+      "master.kiritsugu.skill.ascension": {
+        "id": "master.kiritsugu.skill.ascension",
+        "name": "冷血杀手",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "升华技",
+          "attributes": [],
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "kiritsugu.ascension",
+            "kind": "passive",
+            "printedClause": "解锁此技能后立刻移除你弃牌堆中的2张牌并将2张游戏外的起源弹加入手牌。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "record_master_directive",
+                "directive": "kiritsugu_ascension_discard_two_and_add_two_origin_bullets"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "mode": "host_adjudicated",
+        "ownerId": "master.kiritsugu",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
+      },
+      "master.kiritsugu.skill.s1": {
+        "id": "master.kiritsugu.skill.s1",
         "name": "魔术师杀手",
         "cardType": "master_skill",
         "cardFace": {
+          "typeLabel": "被动",
+          "attributes": [],
           "cost": 0,
           "basePower": 0
         },
@@ -10760,32 +10873,11 @@
               "opens": "controller_action_window"
             },
             "conditions": [],
-            "targets": [
-              {
-                "id": "card_to_replace",
-                "type": "card_instance",
-                "scope": {
-                  "zone": "deck",
-                  "owner": "controller"
-                },
-                "count": {
-                  "min": 1,
-                  "max": 1
-                },
-                "constraints": [
-                  {
-                    "type": "not_card_id",
-                    "cardId": "master.kiritsugu.deck.origin-bullet"
-                  }
-                ]
-              }
-            ],
+            "targets": [],
             "effects": [
               {
-                "type": "replace_card_in_deck",
-                "target": "card_to_replace",
-                "definitionId": "master.kiritsugu.deck.origin-bullet",
-                "directive": "replace_one_deck_card_with_origin_bullet"
+                "type": "record_master_directive",
+                "directive": "kiritsugu_replace_one_deck_card_with_origin_bullet"
               }
             ],
             "cost": [],
@@ -10810,17 +10902,19 @@
             }
           }
         ],
-        "mode": "automatic",
+        "mode": "host_adjudicated",
         "ownerId": "master.kiritsugu",
         "playKind": "support",
         "destinationZone": "field",
         "initialZone": "skill"
       },
-      "master.kiritsugu.skill.time-alter": {
-        "id": "master.kiritsugu.skill.time-alter",
+      "master.kiritsugu.skill.s2": {
+        "id": "master.kiritsugu.skill.s2",
         "name": "固有时制御",
         "cardType": "master_skill",
         "cardFace": {
+          "typeLabel": "被动",
+          "attributes": [],
           "cost": 0,
           "basePower": 0
         },
@@ -10833,40 +10927,17 @@
           {
             "id": "time-alter.action",
             "kind": "phase_action",
-            "printedClause": "行动阶段：暗置打出一张牌，然后抽一张牌。",
+            "printedClause": "暗置打出一张牌，然后抽一张牌。",
             "activation": {
               "phase": "action",
               "opens": "controller_action_window"
             },
             "conditions": [],
-            "targets": [
-              {
-                "id": "card_to_play",
-                "type": "card_instance",
-                "scope": {
-                  "zone": "hand",
-                  "owner": "controller"
-                },
-                "count": {
-                  "min": 1,
-                  "max": 1
-                },
-                "constraints": [
-                  {
-                    "type": "is_attack"
-                  }
-                ]
-              }
-            ],
+            "targets": [],
             "effects": [
               {
-                "type": "play_selected_cards",
-                "target": "card_to_play",
-                "face": "face_down"
-              },
-              {
-                "type": "draw_cards",
-                "count": 1
+                "type": "record_master_directive",
+                "directive": "kiritsugu_face_down_play_then_draw"
               }
             ],
             "cost": [],
@@ -10891,17 +10962,19 @@
             }
           }
         ],
-        "mode": "automatic",
+        "mode": "host_adjudicated",
         "ownerId": "master.kiritsugu",
         "playKind": "support",
         "destinationZone": "field",
         "initialZone": "skill"
       },
-      "master.kiritsugu.skill.square-accel": {
-        "id": "master.kiritsugu.skill.square-accel",
+      "master.kiritsugu.skill.s3": {
+        "id": "master.kiritsugu.skill.s3",
         "name": "四倍速",
         "cardType": "master_skill",
         "cardFace": {
+          "typeLabel": "被动",
+          "attributes": [],
           "cost": 0,
           "basePower": 0
         },
@@ -10914,7 +10987,7 @@
           {
             "id": "square-accel.combat",
             "kind": "phase_action",
-            "printedClause": "战斗阶段：关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。",
+            "printedClause": "关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。",
             "activation": {
               "phase": "combat",
               "opens": "controller_combat_action_window"
@@ -10949,7 +11022,72 @@
             }
           }
         ],
-        "mode": "automatic",
+        "mode": "host_adjudicated",
+        "ownerId": "master.kiritsugu",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
+      },
+      "master.kiritsugu.skill.s4": {
+        "id": "master.kiritsugu.skill.s4",
+        "name": "起源弹",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "独立牌库牌",
+          "attributes": [
+            "魔术",
+            "迅捷"
+          ],
+          "cost": 0,
+          "basePower": 2
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "origin-bullet.cut-bind",
+            "kind": "phase_action",
+            "printedClause": "迅捷0耗2威。[切断与结合]-战斗阶段：令一名你的交战对手失去三分之一的魔力（向上取整），然后此牌获得等同于其失去魔力值二倍的威力。",
+            "activation": {
+              "phase": "combat",
+              "opens": "controller_combat_action_window",
+              "requiresSourceState": "active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "record_master_directive",
+                "directive": "engaged_opponent_loses_one_third_mana_then_source_gains_twice_lost_power",
+                "rounding": "ceil"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "mode": "host_adjudicated",
         "ownerId": "master.kiritsugu",
         "playKind": "support",
         "destinationZone": "field",
@@ -10960,11 +11098,13 @@
         "name": "起源弹",
         "cardType": "master_deck_card",
         "cardFace": {
-          "cost": 0,
-          "basePower": 2,
+          "typeLabel": "独立牌库牌",
           "attributes": [
+            "魔术",
             "迅捷"
-          ]
+          ],
+          "cost": 0,
+          "basePower": 2
         },
         "playTiming": {
           "phase": "action",
@@ -10973,7 +11113,7 @@
         "playRequirements": [],
         "abilities": [
           {
-            "id": "origin-bullet.cut-bind",
+            "id": "origin-bullet.cut-bind.legacy-deck",
             "kind": "phase_action",
             "printedClause": "[切断与结合]-战斗阶段：令一名你的交战对手失去三分之一的魔力（向上取整），然后此牌获得等同于其失去魔力值二倍的威力。",
             "activation": {
@@ -11012,7 +11152,7 @@
             }
           }
         ],
-        "mode": "automatic",
+        "mode": "host_adjudicated",
         "ownerId": "master.kiritsugu",
         "playKind": "attack",
         "destinationZone": "attack_area"
@@ -39540,22 +39680,17 @@
         "class": "Master",
         "kind": "master",
         "cardIds": [
-          "master.kiritsugu.skill.magus-killer",
-          "master.kiritsugu.skill.time-alter",
-          "master.kiritsugu.skill.square-accel",
+          "master.kiritsugu.skill.ascension",
+          "master.kiritsugu.skill.s1",
+          "master.kiritsugu.skill.s2",
+          "master.kiritsugu.skill.s3",
+          "master.kiritsugu.skill.s4",
           "master.kiritsugu.deck.origin-bullet"
         ],
         "publicInformation": {
           "type": "master_package",
           "initialMana": 4
-        },
-        "excludedCards": [
-          {
-            "id": "master.kiritsugu.skill.ascension",
-            "name": "冷血杀手",
-            "reason": "user_scope_excluded_ascension"
-          }
-        ]
+        }
       },
       "master.maiya": {
         "id": "master.maiya",
@@ -40797,11 +40932,11 @@
       "master.kiara": "master.kiara.command-spell",
       "master.kirei": "master.kirei.command-spell"
     },
-    "definitionHash": "ce5e1c0e76d746fbc665f4866291c69a468e4492aa938fbab4de76d11b7fd398",
+    "definitionHash": "b0beaad491ba6377e8a023ed8d7aa865a0cb9ab9fde5258502ca660e121a952d",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "ce5e1c0e76d746fbc665f4866291c69a468e4492aa938fbab4de76d11b7fd398"
+      "definitionHash": "b0beaad491ba6377e8a023ed8d7aa865a0cb9ab9fde5258502ca660e121a952d"
     },
     "sourceMap": {
       "master.shinji.skill.drain-command": {
@@ -40856,57 +40991,83 @@
         "abilityIndex": 0,
         "path": "archives[0].cards[3].abilities[0]"
       },
-      "master.kiritsugu.skill.magus-killer": {
+      "master.kiritsugu.skill.ascension": {
         "archiveId": "master.kiritsugu",
         "archiveIndex": 1,
         "cardIndex": 0,
         "path": "archives[1].cards[0]"
       },
-      "master.kiritsugu.skill.magus-killer#magus-killer.setup": {
+      "master.kiritsugu.skill.ascension#kiritsugu.ascension": {
         "archiveId": "master.kiritsugu",
         "archiveIndex": 1,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[1].cards[0].abilities[0]"
       },
-      "master.kiritsugu.skill.time-alter": {
+      "master.kiritsugu.skill.s1": {
         "archiveId": "master.kiritsugu",
         "archiveIndex": 1,
         "cardIndex": 1,
         "path": "archives[1].cards[1]"
       },
-      "master.kiritsugu.skill.time-alter#time-alter.action": {
+      "master.kiritsugu.skill.s1#magus-killer.setup": {
         "archiveId": "master.kiritsugu",
         "archiveIndex": 1,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[1].cards[1].abilities[0]"
       },
-      "master.kiritsugu.skill.square-accel": {
+      "master.kiritsugu.skill.s2": {
         "archiveId": "master.kiritsugu",
         "archiveIndex": 1,
         "cardIndex": 2,
         "path": "archives[1].cards[2]"
       },
-      "master.kiritsugu.skill.square-accel#square-accel.combat": {
+      "master.kiritsugu.skill.s2#time-alter.action": {
         "archiveId": "master.kiritsugu",
         "archiveIndex": 1,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[1].cards[2].abilities[0]"
       },
-      "master.kiritsugu.deck.origin-bullet": {
+      "master.kiritsugu.skill.s3": {
         "archiveId": "master.kiritsugu",
         "archiveIndex": 1,
         "cardIndex": 3,
         "path": "archives[1].cards[3]"
       },
-      "master.kiritsugu.deck.origin-bullet#origin-bullet.cut-bind": {
+      "master.kiritsugu.skill.s3#square-accel.combat": {
         "archiveId": "master.kiritsugu",
         "archiveIndex": 1,
         "cardIndex": 3,
         "abilityIndex": 0,
         "path": "archives[1].cards[3].abilities[0]"
+      },
+      "master.kiritsugu.skill.s4": {
+        "archiveId": "master.kiritsugu",
+        "archiveIndex": 1,
+        "cardIndex": 4,
+        "path": "archives[1].cards[4]"
+      },
+      "master.kiritsugu.skill.s4#origin-bullet.cut-bind": {
+        "archiveId": "master.kiritsugu",
+        "archiveIndex": 1,
+        "cardIndex": 4,
+        "abilityIndex": 0,
+        "path": "archives[1].cards[4].abilities[0]"
+      },
+      "master.kiritsugu.deck.origin-bullet": {
+        "archiveId": "master.kiritsugu",
+        "archiveIndex": 1,
+        "cardIndex": 5,
+        "path": "archives[1].cards[5]"
+      },
+      "master.kiritsugu.deck.origin-bullet#origin-bullet.cut-bind.legacy-deck": {
+        "archiveId": "master.kiritsugu",
+        "archiveIndex": 1,
+        "cardIndex": 5,
+        "abilityIndex": 0,
+        "path": "archives[1].cards[5].abilities[0]"
       },
       "master.maiya.skill.military": {
         "archiveId": "master.maiya",

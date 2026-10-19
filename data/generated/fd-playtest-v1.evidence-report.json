@@ -3090,12 +3090,10 @@
       "entityKind": "generated",
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/卫宫切嗣.htm",
-      "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_215437_375.png",
-      "imageIndex": 4,
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卫宫切嗣.png",
+      "imageIndex": 6,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.kiritsugu.overview",
@@ -3111,8 +3109,8 @@
       ]
     },
     {
-      "entityId": "master.kiritsugu.skill.magus-killer",
-      "displayName": "魔术师杀手",
+      "entityId": "master.kiritsugu.skill.ascension",
+      "displayName": "冷血杀手",
       "entityKind": "master_skill",
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/卫宫切嗣.htm",
@@ -3124,8 +3122,21 @@
       ]
     },
     {
-      "entityId": "master.kiritsugu.skill.square-accel",
-      "displayName": "四倍速",
+      "entityId": "master.kiritsugu.skill.s1",
+      "displayName": "魔术师杀手",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卫宫切嗣.htm",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_215432_872.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.kiritsugu.skill.s2",
+      "displayName": "固有时制御",
       "entityKind": "master_skill",
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/卫宫切嗣.htm",
@@ -3137,17 +3148,26 @@
       ]
     },
     {
-      "entityId": "master.kiritsugu.skill.time-alter",
-      "displayName": "固有时制御",
+      "entityId": "master.kiritsugu.skill.s3",
+      "displayName": "四倍速",
       "entityKind": "master_skill",
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/卫宫切嗣.htm",
-      "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_215432_872.png",
-      "imageIndex": 2,
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卫宫切嗣.png",
+      "imageIndex": 4,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.kiritsugu.skill.s4",
+      "displayName": "起源弹",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卫宫切嗣.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/卫宫切嗣.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
     },
     {
       "entityId": "master.maiya",
@@ -4798,13 +4818,6 @@
     },
     {
       "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kiritsugu.deck.origin-bullet source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_215437_375.png",
-      "entityId": "master.kiritsugu.deck.origin-bullet",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
       "message": "master.kiritsugu.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_215423_544.png",
       "entityId": "master.kiritsugu.overview",
       "field": "source.imagePath",
@@ -4812,22 +4825,22 @@
     },
     {
       "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kiritsugu.skill.magus-killer source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_215428_559.png",
-      "entityId": "master.kiritsugu.skill.magus-killer",
+      "message": "master.kiritsugu.skill.ascension source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_215428_559.png",
+      "entityId": "master.kiritsugu.skill.ascension",
       "field": "source.imagePath",
       "blocking": false
     },
     {
       "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kiritsugu.skill.square-accel source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_215437_375.png",
-      "entityId": "master.kiritsugu.skill.square-accel",
+      "message": "master.kiritsugu.skill.s1 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_215432_872.png",
+      "entityId": "master.kiritsugu.skill.s1",
       "field": "source.imagePath",
       "blocking": false
     },
     {
       "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kiritsugu.skill.time-alter source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_215432_872.png",
-      "entityId": "master.kiritsugu.skill.time-alter",
+      "message": "master.kiritsugu.skill.s2 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_215437_375.png",
+      "entityId": "master.kiritsugu.skill.s2",
       "field": "source.imagePath",
       "blocking": false
     },
