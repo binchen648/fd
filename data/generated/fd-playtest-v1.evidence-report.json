@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 40,
+    "masters": 41,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -3298,6 +3298,61 @@
       "htmPath": "chm-extract/葛木宗一郎.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/葛木宗一郎.png",
       "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.leonardo",
+      "displayName": "雷欧纳多·比斯塔里奥·哈维",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/雷欧纳多·比斯塔里奥·哈维.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/雷欧纳多·比斯塔里奥·哈维.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.leonardo.overview",
+      "displayName": "雷欧纳多·比斯塔里奥·哈维",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/雷欧纳多·比斯塔里奥·哈维.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/雷欧纳多·比斯塔里奥·哈维.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.leonardo.skill.ascension",
+      "displayName": "最终审判",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/雷欧纳多·比斯塔里奥·哈维.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/雷欧纳多·比斯塔里奥·哈维.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.leonardo.skill.s1",
+      "displayName": "生而为王",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/雷欧纳多·比斯塔里奥·哈维.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/雷欧纳多·比斯塔里奥·哈维.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.leonardo.skill.s1a",
+      "displayName": "帝王之气",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/雷欧纳多·比斯塔里奥·哈维.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/雷欧纳多·比斯塔里奥·哈维.png",
+      "imageIndex": 3,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

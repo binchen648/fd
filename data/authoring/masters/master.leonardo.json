@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.leonardo",
+  "name": "雷欧纳多·比斯塔里奥·哈维",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "056d323c",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "冻结三项技能的 canonical printedText、开发版/legacy 定位、full-roster inventory 原文及四个 generated clause SHA。当前 loader/runtime 没有权威合同证明最终审判的战斗阶段结束阈值与对手战果扣除、生而为王的跨回合胜利历史与条件威力、以及帝王之气的事件牌战果/魔力与右上角战果修改；三张牌全部保持 HOST_ADJUDICATED。record_master_directive 仅供主持人审计，不能伪装成 complete/FULL/automatic；legacy handler 名称仅为来源证据。",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版#master.leonardo/雷欧纳多·比斯塔里奥·哈维",
+      "legacy": {
+        "master.leonardo.skill.ascension": "legacy-content.json#master/master.leonardo/ascension",
+        "master.leonardo.skill.s1": "legacy-content.json#master/master.leonardo/s1",
+        "master.leonardo.skill.s1a": "legacy-content.json#master/master.leonardo/s1a"
+      },
+      "generated": {
+        "master.leonardo.skill.ascension": "src/content/generated/legacy-content.json#masters[38].skills[2].text#line=1 sha256=9bdc46aa84a640441d81d906889e4b43f02db18616e31580dfd170fb1dd12e42; line=2 sha256=c98fc16dfc39e2b905787bd21c83e8ece9e6fd7ae1f6c3050195ed15fef62195",
+        "master.leonardo.skill.s1": "src/content/generated/legacy-content.json#masters[38].skills[0].text#line=1 sha256=7bdfc80338b6a0b1186b541604848458a9928867e2a68bcd99d989de3cf3b45b",
+        "master.leonardo.skill.s1a": "src/content/generated/legacy-content.json#masters[38].skills[1].text#line=1 sha256=3e3e881e4d5558767dfbb924aca0f228d698d5172ca0291ddd070314bbadb9a0"
+      }
+    }
+  },
+  "cards": [
+    { "id": "master.leonardo.skill.ascension", "aliases": ["ascension"], "legacyId": "ascension", "name": "最终审判", "cardType": "master_skill", "owner": { "type": "master", "id": "master.leonardo" }, "printedText": "（将此牌加入你的技能区）\n战斗阶段：战斗阶段结束后，若你的合计威力≥20，所有合计威力低于你的交战对手失去3点战果。", "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "leonardo.final-judgment", "kind": "passive", "printedClause": "（将此牌加入你的技能区）\n战斗阶段：战斗阶段结束后，若你的合计威力≥20，所有合计威力低于你的交战对手失去3点战果。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "leonardo_final_judgment" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.leonardo.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "生而为王", "cardType": "master_skill", "owner": { "type": "master", "id": "master.leonardo" }, "printedText": "若你于上回合获得胜利，合计威力+3。若你于之前的两回合都获得胜利，改为合计威力+5。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "leonardo.born-to-rule", "kind": "passive", "printedClause": "若你于上回合获得胜利，合计威力+3。若你于之前的两回合都获得胜利，改为合计威力+5。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "leonardo_born_to_rule" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.leonardo.skill.s1a", "aliases": ["s1a"], "legacyId": "s1a", "name": "帝王之气", "cardType": "master_skill", "owner": { "type": "master", "id": "master.leonardo" }, "printedText": "为你所在战场上事件牌描述的战果和魔力增加1点。（也会增加事件牌右上角的战果数。）", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "leonardo.imperial-aura", "kind": "passive", "printedClause": "为你所在战场上事件牌描述的战果和魔力增加1点。（也会增加事件牌右上角的战果数。）", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "leonardo_imperial_aura" }], "execution": { "mode": "automatic" } }], "verification": { "implementationStatus": "host_adjudicated" } }
+  ],
+  "sources": [{ "id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/雷欧纳多·比斯塔里奥·哈维.png"] }]
+}
