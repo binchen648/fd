@@ -1090,8 +1090,9 @@
       "initialMana": 4,
       "commandSpellCardIds": [],
       "skillCardIds": [
-        "master.maiya.skill.military",
-        "master.maiya.deck.support-shot"
+        "master.maiya.skill.ascension",
+        "master.maiya.skill.s1",
+        "master.maiya.skill.s2"
       ],
       "linkedCards": {
         "generated": []
@@ -1102,7 +1103,7 @@
       },
       "source": {
         "htmPath": "chm-extract/久宇舞弥.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_230925_200.png",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/久宇舞弥.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
@@ -8724,12 +8725,27 @@
       }
     },
     {
-      "id": "master.maiya.deck.support-shot",
-      "name": "援护射击",
+      "id": "master.maiya.overview",
+      "name": "久宇舞弥",
+      "cardType": "master_overview",
+      "printedText": "甜品狂热者: 解锁此技能后，立即从手牌、牌库和弃牌堆移除所有魔术牌，每以此法移除一张魔术牌，你获得2点魔力。然后将游戏外的一张【射击】加入你的技能区。\n军旅: 你拥有【援护射击】。前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。\n援护射击: 迅捷属性，2魔耗2需0威力。此牌需追加打出。压制-行动阶段：若你不是久宇舞弥，你需向其支付2点战果使用此效果。获得+1基础地利后，翻倍你的地利。",
+      "capability": {
+        "status": "FULL"
+      },
+      "source": {
+        "htmPath": "chm-extract/久宇舞弥.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/久宇舞弥.png",
+        "imageIndex": 0,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.maiya.skill.ascension",
+      "name": "甜品狂热者",
       "cardType": "master_skill",
       "printedValue": 0,
-      "printedCost": 2,
-      "printedText": "迅捷属性，2魔耗2需0威力。此牌需追加打出。压制-行动阶段：若你不是久宇舞弥，你需向其支付2点战果使用此效果。获得+1基础地利后，翻倍你的地利。",
+      "printedCost": 0,
+      "printedText": "解锁此技能后，立即从手牌、牌库和弃牌堆移除所有魔术牌，每以此法移除一张魔术牌，你获得2点魔力。然后将游戏外的一张【射击】加入你的技能区。",
       "timing": [
         "action"
       ],
@@ -8739,28 +8755,13 @@
       },
       "source": {
         "htmPath": "chm-extract/久宇舞弥.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_230935_247.png",
-        "imageIndex": 2,
+        "imagePath": "../../Fate_Domination-开发版/images/masters/久宇舞弥.png",
+        "imageIndex": 1,
         "reviewedAgainstImage": true
       }
     },
     {
-      "id": "master.maiya.overview",
-      "name": "久宇舞弥",
-      "cardType": "master_overview",
-      "printedText": "军旅: 你拥有【援护射击】。前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。\n援护射击: 迅捷属性，2魔耗2需0威力。此牌需追加打出。压制-行动阶段：若你不是久宇舞弥，你需向其支付2点战果使用此效果。获得+1基础地利后，翻倍你的地利。",
-      "capability": {
-        "status": "FULL"
-      },
-      "source": {
-        "htmPath": "chm-extract/久宇舞弥.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_230925_200.png",
-        "imageIndex": 0,
-        "reviewedAgainstImage": true
-      }
-    },
-    {
-      "id": "master.maiya.skill.military",
+      "id": "master.maiya.skill.s1",
       "name": "军旅",
       "cardType": "master_skill",
       "printedValue": 0,
@@ -8775,8 +8776,29 @@
       },
       "source": {
         "htmPath": "chm-extract/久宇舞弥.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_230929_848.png",
-        "imageIndex": 1,
+        "imagePath": "../../Fate_Domination-开发版/images/masters/久宇舞弥.png",
+        "imageIndex": 2,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.maiya.skill.s2",
+      "name": "援护射击",
+      "cardType": "master_skill",
+      "printedValue": 0,
+      "printedCost": 2,
+      "printedText": "迅捷属性，2魔耗2需0威力。此牌需追加打出。压制-行动阶段：若你不是久宇舞弥，你需向其支付2点战果使用此效果。获得+1基础地利后，翻倍你的地利。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/久宇舞弥.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/久宇舞弥.png",
+        "imageIndex": 3,
         "reviewedAgainstImage": true
       }
     },
@@ -11514,11 +11536,13 @@
         "playKind": "attack",
         "destinationZone": "attack_area"
       },
-      "master.maiya.skill.military": {
-        "id": "master.maiya.skill.military",
-        "name": "军旅",
+      "master.maiya.skill.ascension": {
+        "id": "master.maiya.skill.ascension",
+        "name": "甜品狂热者",
         "cardType": "master_skill",
         "cardFace": {
+          "typeLabel": "升华技",
+          "attributes": [],
           "cost": 0,
           "basePower": 0
         },
@@ -11529,21 +11553,18 @@
         "playRequirements": [],
         "abilities": [
           {
-            "id": "military.has-support-shot",
-            "kind": "forced_trigger",
-            "printedClause": "你拥有【援护射击】。",
+            "id": "maiya.dessert-fanatic",
+            "kind": "passive",
+            "printedClause": "解锁此技能后，立即从手牌、牌库和弃牌堆移除所有魔术牌，每以此法移除一张魔术牌，你获得2点魔力。然后将游戏外的一张【射击】加入你的技能区。",
             "activation": {
-              "trigger": "game_start"
+              "trigger": "while_active"
             },
             "conditions": [],
             "targets": [],
             "effects": [
               {
-                "type": "create_card",
-                "cardId": "master.maiya.deck.support-shot",
-                "to": {
-                  "zone": "skill"
-                }
+                "type": "record_master_directive",
+                "directive": "maiya_dessert_fanatic"
               }
             ],
             "cost": [],
@@ -11566,90 +11587,23 @@
                 "skip-ability"
               ]
             }
-          },
-          {
-            "id": "military.attach-support-shot",
-            "kind": "phase_action",
-            "printedClause": "前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。",
-            "activation": {
-              "phase": "advance",
-              "opens": "controller_action_window"
-            },
-            "conditions": [
-              {
-                "type": "not",
-                "condition": {
-                  "type": "controller_at_battlefield"
-                }
-              }
-            ],
-            "targets": [
-              {
-                "id": "supported_player",
-                "type": "player",
-                "constraints": [
-                  {
-                    "type": "not_controller"
-                  }
-                ],
-                "count": {
-                  "min": 1,
-                  "max": 1
-                }
-              }
-            ],
-            "effects": [
-              {
-                "type": "attach_card_to_player_attack",
-                "cardId": "master.maiya.deck.support-shot",
-                "target": "supported_player",
-                "returnAtRoundEnd": true,
-                "controllerCannotWinStatus": "maiya_cannot_win_battle_this_round"
-              }
-            ],
-            "cost": [
-              {
-                "type": "pay_mana",
-                "amount": 2
-              }
-            ],
-            "ruleModifiers": [],
-            "creates": [],
-            "lifecycle": {},
-            "responseWindow": {
-              "order": "turn_order",
-              "passBehavior": "decline_this_window"
-            },
-            "limit": {},
-            "visibility": {},
-            "execution": {
-              "mode": "automatic",
-              "allowedOperations": [
-                "adjust-mana",
-                "adjust-victory-points",
-                "move-card",
-                "create-status",
-                "skip-ability"
-              ]
-            }
           }
         ],
-        "mode": "automatic",
+        "mode": "host_adjudicated",
         "ownerId": "master.maiya",
         "playKind": "support",
         "destinationZone": "field",
         "initialZone": "skill"
       },
-      "master.maiya.deck.support-shot": {
-        "id": "master.maiya.deck.support-shot",
-        "name": "援护射击",
+      "master.maiya.skill.s1": {
+        "id": "master.maiya.skill.s1",
+        "name": "军旅",
         "cardType": "master_skill",
         "cardFace": {
-          "cost": 2,
-          "basePower": 0,
-          "attributes": [
-            "迅捷"
-          ]
+          "typeLabel": "被动",
+          "attributes": [],
+          "cost": 0,
+          "basePower": 0
         },
         "playTiming": {
           "phase": "action",
@@ -11658,9 +11612,9 @@
         "playRequirements": [],
         "abilities": [
           {
-            "id": "support-shot.append-only",
+            "id": "maiya.military",
             "kind": "passive",
-            "printedClause": "此牌需追加打出。",
+            "printedClause": "你拥有【援护射击】。前哨阶段：若你不位于战场，花费2点魔力，将【援护射击】加入一名其他玩家的攻击，回合结束时令其返回你的技能区。若如此做，你本回合无法成为战斗的胜者。",
             "activation": {
               "trigger": "while_active"
             },
@@ -11668,49 +11622,8 @@
             "targets": [],
             "effects": [
               {
-                "type": "append_only_rule"
-              }
-            ],
-            "cost": [],
-            "ruleModifiers": [],
-            "creates": [],
-            "lifecycle": {},
-            "responseWindow": {
-              "order": "turn_order",
-              "passBehavior": "decline_this_window"
-            },
-            "limit": {},
-            "visibility": {},
-            "execution": {
-              "mode": "automatic",
-              "allowedOperations": [
-                "adjust-mana",
-                "adjust-victory-points",
-                "move-card",
-                "create-status",
-                "skip-ability"
-              ]
-            }
-          },
-          {
-            "id": "support-shot.suppress",
-            "kind": "phase_action",
-            "printedClause": "压制-行动阶段：若你不是久宇舞弥，你需向其支付2点战果使用此效果。获得+1基础地利后，翻倍你的地利。",
-            "activation": {
-              "phase": "action",
-              "opens": "controller_action_window",
-              "requiresSourceState": "active"
-            },
-            "conditions": [],
-            "targets": [],
-            "effects": [
-              {
-                "type": "terrain_multiplier",
-                "value": 2
-              },
-              {
-                "type": "transfer_vp_to_owner",
-                "amount": 2
+                "type": "record_master_directive",
+                "directive": "maiya_military"
               }
             ],
             "cost": [],
@@ -11735,10 +11648,72 @@
             }
           }
         ],
-        "mode": "automatic",
+        "mode": "host_adjudicated",
         "ownerId": "master.maiya",
-        "playKind": "attack",
-        "destinationZone": "attack_area"
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
+      },
+      "master.maiya.skill.s2": {
+        "id": "master.maiya.skill.s2",
+        "name": "援护射击",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "独立牌库牌",
+          "attributes": [
+            "迅捷"
+          ],
+          "cost": 2,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "maiya.supporting-fire",
+            "kind": "passive",
+            "printedClause": "迅捷属性，2魔耗2需0威力。此牌需追加打出。压制-行动阶段：若你不是久宇舞弥，你需向其支付2点战果使用此效果。获得+1基础地利后，翻倍你的地利。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "record_master_directive",
+                "directive": "maiya_supporting_fire"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "mode": "host_adjudicated",
+        "ownerId": "master.maiya",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
       },
       "master.gatou.skill.seeker": {
         "id": "master.gatou.skill.seeker",
@@ -41097,20 +41072,14 @@
         "class": "Master",
         "kind": "master",
         "cardIds": [
-          "master.maiya.skill.military",
-          "master.maiya.deck.support-shot"
+          "master.maiya.skill.ascension",
+          "master.maiya.skill.s1",
+          "master.maiya.skill.s2"
         ],
         "publicInformation": {
           "type": "master_package",
           "initialMana": 4
-        },
-        "excludedCards": [
-          {
-            "id": "master.maiya.skill.ascension",
-            "name": "甜品狂热者",
-            "reason": "user_scope_excluded_ascension"
-          }
-        ]
+        }
       },
       "master.gatou": {
         "id": "master.gatou",
@@ -42381,11 +42350,11 @@
       "master.kuzuki": "master.kuzuki.command-spell",
       "master.leonardo": "master.leonardo.command-spell"
     },
-    "definitionHash": "3c7060dd1a5d4f97c468a29bfec94e69f469234d3dac3df4ae282f43d9483235",
+    "definitionHash": "2a3b2f23d04b0f99e839d8f830fd10a23c1df286767ac8302849ce829d26a142",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "3c7060dd1a5d4f97c468a29bfec94e69f469234d3dac3df4ae282f43d9483235"
+      "definitionHash": "2a3b2f23d04b0f99e839d8f830fd10a23c1df286767ac8302849ce829d26a142"
     },
     "sourceMap": {
       "master.shinji.skill.drain-command": {
@@ -42518,45 +42487,44 @@
         "abilityIndex": 0,
         "path": "archives[1].cards[5].abilities[0]"
       },
-      "master.maiya.skill.military": {
+      "master.maiya.skill.ascension": {
         "archiveId": "master.maiya",
         "archiveIndex": 2,
         "cardIndex": 0,
         "path": "archives[2].cards[0]"
       },
-      "master.maiya.skill.military#military.has-support-shot": {
+      "master.maiya.skill.ascension#maiya.dessert-fanatic": {
         "archiveId": "master.maiya",
         "archiveIndex": 2,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[2].cards[0].abilities[0]"
       },
-      "master.maiya.skill.military#military.attach-support-shot": {
-        "archiveId": "master.maiya",
-        "archiveIndex": 2,
-        "cardIndex": 0,
-        "abilityIndex": 1,
-        "path": "archives[2].cards[0].abilities[1]"
-      },
-      "master.maiya.deck.support-shot": {
+      "master.maiya.skill.s1": {
         "archiveId": "master.maiya",
         "archiveIndex": 2,
         "cardIndex": 1,
         "path": "archives[2].cards[1]"
       },
-      "master.maiya.deck.support-shot#support-shot.append-only": {
+      "master.maiya.skill.s1#maiya.military": {
         "archiveId": "master.maiya",
         "archiveIndex": 2,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[2].cards[1].abilities[0]"
       },
-      "master.maiya.deck.support-shot#support-shot.suppress": {
+      "master.maiya.skill.s2": {
         "archiveId": "master.maiya",
         "archiveIndex": 2,
-        "cardIndex": 1,
-        "abilityIndex": 1,
-        "path": "archives[2].cards[1].abilities[1]"
+        "cardIndex": 2,
+        "path": "archives[2].cards[2]"
+      },
+      "master.maiya.skill.s2#maiya.supporting-fire": {
+        "archiveId": "master.maiya",
+        "archiveIndex": 2,
+        "cardIndex": 2,
+        "abilityIndex": 0,
+        "path": "archives[2].cards[2].abilities[0]"
       },
       "master.gatou.skill.seeker": {
         "archiveId": "master.gatou",
