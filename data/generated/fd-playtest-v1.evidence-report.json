@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 43,
+    "masters": 44,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -3684,6 +3684,105 @@
       "htmPath": "chm-extract/奥菲莉娅·法姆索罗涅.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/奥菲莉娅·法姆索罗涅.png",
       "imageIndex": 10,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.peperoncino",
+      "displayName": "斯堪的纳维亚·佩佩隆奇诺",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/斯堪的纳维亚·佩佩隆奇诺.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/斯堪的纳维亚·佩佩隆奇诺.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.peperoncino.overview",
+      "displayName": "斯堪的纳维亚·佩佩隆奇诺",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/斯堪的纳维亚·佩佩隆奇诺.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/斯堪的纳维亚·佩佩隆奇诺.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.peperoncino.skill.ascension",
+      "displayName": "涅槃",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/斯堪的纳维亚·佩佩隆奇诺.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/斯堪的纳维亚·佩佩隆奇诺.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.peperoncino.skill.s1",
+      "displayName": "隐匿者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/斯堪的纳维亚·佩佩隆奇诺.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/斯堪的纳维亚·佩佩隆奇诺.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.peperoncino.skill.s1a",
+      "displayName": "心理论",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/斯堪的纳维亚·佩佩隆奇诺.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/斯堪的纳维亚·佩佩隆奇诺.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.peperoncino.skill.s1b",
+      "displayName": "身体论",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/斯堪的纳维亚·佩佩隆奇诺.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/斯堪的纳维亚·佩佩隆奇诺.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.peperoncino.skill.s2",
+      "displayName": "印度异闻带",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/斯堪的纳维亚·佩佩隆奇诺.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/斯堪的纳维亚·佩佩隆奇诺.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.peperoncino.skill.s3",
+      "displayName": "时代轮回",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/斯堪的纳维亚·佩佩隆奇诺.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/斯堪的纳维亚·佩佩隆奇诺.png",
+      "imageIndex": 6,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.peperoncino.skill.s4",
+      "displayName": "印度事件牌",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/斯堪的纳维亚·佩佩隆奇诺.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/斯堪的纳维亚·佩佩隆奇诺.png",
+      "imageIndex": 7,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

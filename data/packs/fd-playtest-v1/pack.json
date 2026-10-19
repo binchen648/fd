@@ -81,7 +81,8 @@
                                  "data/authoring/masters/master.kuzuki.json",
                                  "data/authoring/masters/master.leonardo.json",
                                  "data/authoring/masters/master.miyu.json",
-                                 "data/authoring/masters/master.ophelia.json"
+                                 "data/authoring/masters/master.ophelia.json",
+                                 "data/authoring/masters/master.peperoncino.canonical.json"
                              ],
     "authoringMasterSupportFiles":  [
                                         "data/authoring/masters/master.shirou-emiya.json"
