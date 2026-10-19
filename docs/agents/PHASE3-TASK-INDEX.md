@@ -10151,3 +10151,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-maiya-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#597` or any prior open synchronization PR.
+
+## TASK P3-S-OWNER-MIYU-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly four skills for `master.miyu`
+
+Exact accepted review:
+
+- PR `#599`, exact Base `52a736f3`;
+- accepted successor Candidate `b3e754efe6942ab99a67784fc7e07226e78fdac8` (parent `1b09c1736956209634570a7b0f0ff4a2827127e6`);
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from `/root/kirei_reviewer`;
+- the Reviewer used the separate worktree `E:\Codex\FD\binchen648_fd\review-miyu` and disclosed that `node_modules` was unavailable.
+
+Frozen owner scope is exactly four identities: `master.miyu.skill.ascension`, `.s1`, `.s2`, and `.s3`.
+
+All four cards preserve exact inventory text, locators and 11 source hashes. The successor corrects the source-policy note from ten to eleven clauses; `core.miyu-sapphire` remains reference-only. All four remain `HOST_ADJUDICATED` because the current engine lacks authoritative contracts for their full behavior.
+
+Formal A-sync accounting:
+
+- exact formal frontier before this transaction: `358/944`, remaining `586`;
+- exact owner increment: `+4`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`362/944`**, remaining **`582`**;
+- report: `docs/reports/2026-10-19-p3-a-owner-miyu-acceptance-synchronization.md`.
+
+This A-sync records acceptance and accounting only; it does not merge PR `#599` or any prior open synchronization PR.
