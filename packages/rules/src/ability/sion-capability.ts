@@ -72,7 +72,7 @@ type SionRuntime = GameState['abilityRuntime'] & { sion?: {
   experience: Record<string, number>; territoryWins: Record<string, number>; covered: Record<string, string>;
   trainingTargets: Record<string, string>; transformedTraining: Record<string, string>; exProvenance: Record<string, {
     originalDefinitionId: string; originalName: string; exDefinitionId: string; servantClass: string;
-    sourcePath: string; sourceSha256: string; imageIndex: number; imagePath: string;
+    sourcePath: string; sourceSha256: string; imageIndex: number; imagePath: string; resolution: 'replaced' | 'obtained';
   }>; roundUses: Record<string, number>; trainingSpent: Record<string, number>; restartUsed: Record<string, boolean>;
   s8CloseRound?: Record<string, number>; s14LastTargetRound?: Record<string, number>;
 } };
@@ -182,19 +182,21 @@ function consumeTraining(state: GameState, ctx: EffectContext): boolean {
     if (!target || !player || !servant || !mapping || !exDefinition || !exDefinition.name.includes('EX')) return false;
     const originalDefinitionId = target.definitionId;
     const originalName = rt(state).pack.cards[originalDefinitionId]?.name ?? originalDefinitionId;
-    target.definitionId = mapping.definitionId;
+    const obtainsCoveredSkill = mapping.definitionId === `${SION}.skill.s15`;
+    if (!obtainsCoveredSkill) target.definitionId = mapping.definitionId;
     const provenance = {
       originalDefinitionId, originalName, exDefinitionId: mapping.definitionId, servantClass: classTag,
       sourcePath: SION_EX_SOURCE_PATH, sourceSha256: SION_EX_SOURCE_SHA256, imageIndex: mapping.imageIndex, imagePath: mapping.imagePath,
+      resolution: obtainsCoveredSkill ? 'obtained' as const : 'replaced' as const,
     };
     s.transformedTraining[targetId] = mapping.definitionId;
     s.exProvenance[targetId] = provenance;
     const cardState = rt(state).cardState[targetId];
-    if (cardState) cardState.sionExAlias = provenance;
+    if (cardState && !obtainsCoveredSkill) cardState.sionExAlias = provenance;
     if (s.covered[targetId] === ctx.sourceCardId) delete s.covered[targetId];
     delete s.trainingTargets[ctx.sourceCardId];
     s.trainingSpent[ctx.sourceCardId] = spent + 1;
-    rt(state).events.push({ type: 'sion_cafeteria_ex_replaced', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: targetId, fromState: originalDefinitionId, toState: mapping.definitionId });
+    rt(state).events.push({ type: obtainsCoveredSkill ? 'sion_cafeteria_ex_obtained' : 'sion_cafeteria_ex_replaced', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: targetId, fromState: obtainsCoveredSkill ? mapping.definitionId : originalDefinitionId, toState: originalDefinitionId, ...(obtainsCoveredSkill ? { revealedCardDefinitionIds: [mapping.definitionId] } : {}) });
   } else if (ctx.abilityId === 'sion.s4.gym') {
     if (Math.floor(exp / 2) <= spent || covered.length === 0) return false;
     stageChoice(state, ctx, 'training', ['power', 'attack_strength', 'attack_agility'], 1, 1, 'choice', ['power', 'attack_strength', 'attack_agility']);

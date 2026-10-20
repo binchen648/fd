@@ -191,8 +191,18 @@ describe('P3 owner-complete master.sion', () => {
       const cafeteria = state.cards.find((card) => card.definitionId === 'master.sion.skill.s3')!;
       state.round.activePhase = 'preparation'; state.abilityRuntime!.sion!.experience[cafeteria.instanceId] = 2;
       expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: cafeteria.instanceId, abilityId: 'sion.s3.cafeteria' }).ok).toBe(true);
-      expect(state.cards.find((card) => card.instanceId === covered)?.definitionId).toBe(`master.sion.skill.${exId}`);
-      expect(state.abilityRuntime!.sion!.exProvenance[covered]).toMatchObject({ servantClass: classTag, imageIndex, exDefinitionId: `master.sion.skill.${exId}` });
+      const expectedDefinitionId = exId === 's15' ? `servant.fixture.skill.${classTag}.cafeteria` : `master.sion.skill.${exId}`;
+      expect(state.cards.find((card) => card.instanceId === covered)?.definitionId).toBe(expectedDefinitionId);
+      expect(state.abilityRuntime!.sion!.exProvenance[covered]).toMatchObject({ servantClass: classTag, imageIndex, exDefinitionId: `master.sion.skill.${exId}`, resolution: exId === 's15' ? 'obtained' : 'replaced' });
+      if (exId === 's15') {
+        expect(state.abilityRuntime!.cardState[covered]!.sionExAlias).toBeUndefined();
+        const restored = structuredClone(state);
+        expect(rules.projectAbilityState(restored, 'p1').cards.find((card) => card.instanceId === covered)).toMatchObject({
+          definitionId: `servant.fixture.skill.${classTag}.cafeteria`, zone: 'skill',
+        });
+        expect(rules.projectAbilityState(restored, 'p1').cards.find((card) => card.instanceId === covered)?.definitionAliasIds).toBeUndefined();
+        expect(rules.projectAbilityState(restored, 'p2').cards.some((card) => card.instanceId === covered)).toBe(false);
+      } else expect(state.abilityRuntime!.cardState[covered]!.sionExAlias?.originalDefinitionId).toBe(`servant.fixture.skill.${classTag}.cafeteria`);
     }
     const unsupported = setup();
     unsupported.state.abilityRuntime!.pack.characters!['servant.fixture']!.class = 'Shielder';
@@ -203,6 +213,41 @@ describe('P3 owner-complete master.sion', () => {
     unsupported.state.round.activePhase = 'preparation'; unsupported.state.abilityRuntime!.sion!.experience[cafeteria.instanceId] = 2;
     expect(rules.dispatchAbilityCommand(unsupported.state, 'p1', { type: 'activate_ability', cardInstanceId: cafeteria.instanceId, abilityId: 'sion.s3.cafeteria' }).ok).toBe(false);
     expect(unsupported.state.cards.find((card) => card.instanceId === target)?.definitionId).toBe('servant.fixture.skill.2');
+  });
+
+  it('restores the MoonCancer obtain branch with owner/private projections intact', () => {
+    const session = rules.createMatchSession({ seed: 20261020, humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'] });
+    const state = (session as unknown as { state: GameState }).state;
+    const character = {
+      id: 'servant.fixture', name: 'Fixture MoonCancer', kind: 'servant' as const, class: 'MoonCancer',
+      cardIds: ['servant.artoria-alt.skill.sc-artoria-alt-1', 'servant.artoria-alt.skill.sc-artoria-alt-2', 'servant.artoria-alt.skill.sc-artoria-alt-3'], publicInformation: {},
+    };
+    state.abilityRuntime!.pack.characters!['servant.fixture'] = character;
+    state.players[0]!.masterCardId = 'master.sion'; state.players[0]!.servantCardId = 'servant.fixture';
+    state.round.activePhase = 'action'; state.round.prioritySeat = state.players[0]!.seat;
+    for (const card of state.cards.filter((entry) => entry.ownerPlayerId === 'p1' && entry.zone === 'skill' && entry.definitionId.startsWith('servant.'))) card.zone = 'discard';
+    const addProduction = (definitionId: string, zone: string, active = true): string => {
+      const instanceId = `restore-sion:${state.cards.length}:${definitionId}`;
+      state.cards.push({ instanceId, definitionId, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone, visibility: zone === 'field' ? { scope: 'public' } : { scope: 'owner_only', ownerPlayerId: 'p1' } });
+      state.abilityRuntime!.cardState[instanceId] = { active, faceDown: false, playedRound: state.round.roundNumber };
+      return instanceId;
+    };
+    const source = addProduction('master.sion.skill.s1', 'field');
+    addProduction('servant.artoria-alt.skill.sc-artoria-alt-1', 'skill', false);
+    const covered = addProduction('servant.artoria-alt.skill.sc-artoria-alt-2', 'skill', false);
+    addProduction('servant.artoria-alt.skill.sc-artoria-alt-3', 'skill', false);
+    rules.executeAbility(state, { controllerId: 'p1', sourceCardId: source, abilityId: 'sion.s1.training', variables: {}, selections: {} });
+    const cafeteria = state.cards.find((card) => card.definitionId === 'master.sion.skill.s3')!;
+    state.round.activePhase = 'preparation'; state.abilityRuntime!.sion!.experience[cafeteria.instanceId] = 2;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: cafeteria.instanceId, abilityId: 'sion.s3.cafeteria' }).ok).toBe(true);
+    // Use the same JSON boundary used by durable state transport; the full
+    // MatchSession envelope is intentionally not needed for this card-local
+    // restore assertion.
+    const restoredState = JSON.parse(JSON.stringify(state)) as GameState;
+    expect(restoredState.cards.find((card) => card.instanceId === covered)?.definitionId).toBe('servant.artoria-alt.skill.sc-artoria-alt-2');
+    expect(restoredState.abilityRuntime!.sion!.exProvenance[covered]).toMatchObject({ exDefinitionId: 'master.sion.skill.s15', resolution: 'obtained' });
+    expect(rules.projectAbilityState(restoredState, 'p1').cards.find((card) => card.instanceId === covered)?.definitionId).toBe('servant.artoria-alt.skill.sc-artoria-alt-2');
+    expect(rules.projectAbilityState(restoredState, 'p2').cards.some((card) => card.instanceId === covered)).toBe(false);
   });
 
   it('applies Aether opponent reveal/draw/luck defeat and leaves no silent fallback', () => {

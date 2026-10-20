@@ -446,6 +446,10 @@ function card(s: GameState, id: string): CardInstance {
   const c = s.cards.find(c => c.instanceId === id); if (!c) reject('illegal_action', 'Card is not available'); return c;
 }
 function definition(s: GameState, id: string): AuthoringCard | undefined { return runtime(s).pack.cards[card(s, id).definitionId]; }
+/** Sion's EX replacement remains name-equivalent to the covered skill. */
+function cardMatchesDefinitionId(s: GameState, physical: CardInstance, definitionId: string): boolean {
+  return physical.definitionId === definitionId || runtime(s).cardState[physical.instanceId]?.sionExAlias?.originalDefinitionId === definitionId;
+}
 function abilityDefinition(s: GameState, source: string, abilityId: string): AuthoringAbility {
   const a = effectiveAbilitiesForPhysicalCard(s, source).find((ability) => ability.id === abilityId);
   if (!a) reject('illegal_action', 'Ability is not available'); return a;
@@ -1201,8 +1205,8 @@ function constraint(s: GameState, ctx: EffectContext, candidate: CardInstance, c
       d.cardFace.basePower !== undefined && evaluateFormula(d.cardFace.basePower, s, ctx.controllerId, candidate.instanceId).value <= Number(c.value);
     case 'base_power_at_least': return !!d && d.mode === 'automatic' && d.abilities.every(a => a.execution.mode === 'automatic') &&
       d.cardFace.basePower !== undefined && evaluateFormula(d.cardFace.basePower, s, ctx.controllerId, candidate.instanceId).value >= Number(c.value);
-    case 'has_card_id': return candidate.definitionId === c.cardId;
-    case 'not_card_id': return candidate.definitionId !== c.cardId;
+    case 'has_card_id': return cardMatchesDefinitionId(s, candidate, str(c.cardId));
+    case 'not_card_id': return !cardMatchesDefinitionId(s, candidate, str(c.cardId));
     case 'has_attribute': return getEffectiveCardAttributes(s, candidate.instanceId).includes(str(c.attribute));
     case 'not_source_card': return candidate.instanceId !== ctx.sourceCardId;
     case 'effect_playable_face_up': {
@@ -2041,7 +2045,7 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
       return c.type === 'controller_command_seals_at_least' ? seals >= Number(c.value) : seals <= Number(c.value);
     }
     case 'source_card_in_zone': return card(s, ctx.sourceCardId).zone === c.zone || (c.zone === 'field' && card(s, ctx.sourceCardId).zone === 'attack_area');
-    case 'card_not_on_board': return !s.cards.some(candidate => candidate.definitionId === c.cardId && candidate.zone === 'field');
+    case 'card_not_on_board': return !s.cards.some(candidate => cardMatchesDefinitionId(s, candidate, str(c.cardId)) && candidate.zone === 'field');
     case 'controller_at_location_kind': return c.locationKind === '侦察' || c.locationKind === '侦查' ? resolutionLocation === 'recon' : c.locationKind === 'workshop' ? isPlayerAtEffectiveLocationKind(s, ctx.controllerId, 'workshop') : false;
     case 'controller_servant_revealed': return runtime(s).revealedServants.includes(ctx.controllerId);
     case 'source_reversed': return runtime(s).cardState[ctx.sourceCardId]?.reversed === true;
@@ -2261,7 +2265,7 @@ function definitionIdsFromNode(value: unknown): string[] {
 }
 function liveOwnedDefinitionSetCards(s: GameState, controllerId: string, definitionIds: readonly string[]): CardInstance[] {
   return s.cards.filter((physical) => physical.ownerPlayerId === controllerId && physical.controllerPlayerId === controllerId &&
-    physical.zone === 'attack_area' && definitionIds.includes(physical.definitionId) &&
+    physical.zone === 'attack_area' && definitionIds.some((definitionId) => cardMatchesDefinitionId(s, physical, definitionId)) &&
     runtime(s).cardState[physical.instanceId]?.active === true && runtime(s).cardState[physical.instanceId]?.faceDown !== true);
 }
 function recallDefinitionSetCandidateIds(s: GameState, controllerId: string, ability: AuthoringAbility): string[] {
@@ -2271,7 +2275,7 @@ function recallDefinitionSetCandidateIds(s: GameState, controllerId: string, abi
 function definitionSetRelocationPreflight(s: GameState, controllerId: string, ability: AuthoringAbility): boolean {
   if (!isAcceptedDefinitionSetRelocationAbility(ability)) return false;
   const ids = definitionIdsFromNode(ability.effects[0]?.definitionIds);
-  return ids.every((definitionId) => s.cards.filter((physical) => physical.definitionId === definitionId &&
+  return ids.every((definitionId) => s.cards.filter((physical) => cardMatchesDefinitionId(s, physical, definitionId) &&
     physical.ownerPlayerId === controllerId && physical.controllerPlayerId === controllerId).length === 1);
 }
 function definitionSetActiveCountCondition(s: GameState, ctx: EffectContext, value: RuleNode): boolean {
@@ -3030,7 +3034,7 @@ function implicitCardTargets(s: GameState, ctx: EffectContext, target: unknown):
   if (!targetId) return [];
   if (targetId === 'this_card' || targetId === 'source_card') return [ctx.sourceCardId];
   return s.cards.filter(c => c.controllerPlayerId === ctx.controllerId &&
-    (c.definitionId === targetId || c.definitionId.endsWith(`.${targetId}`) || c.definitionId.endsWith(`.skill.${targetId}`))).map(c => c.instanceId);
+    (cardMatchesDefinitionId(s, c, targetId) || c.definitionId.endsWith(`.${targetId}`) || c.definitionId.endsWith(`.skill.${targetId}`))).map(c => c.instanceId);
 }
 function installCreatedPowerModifier(s: GameState, ctx: EffectContext, effect: RuleNode): void {
   const modifier = node(effect.modifier);
@@ -3435,7 +3439,7 @@ function activePlayerIdsInSeatOrder(s: GameState): PlayerId[] {
 }
 function definitionIdsInZone(s: GameState, playerId: PlayerId, zone: string, definitionId: string): string[] {
   return s.cards.filter((entry) => entry.ownerPlayerId === playerId && entry.controllerPlayerId === playerId &&
-    entry.zone === zone && entry.definitionId === definitionId).map((entry) => entry.instanceId);
+    entry.zone === zone && cardMatchesDefinitionId(s, entry, definitionId)).map((entry) => entry.instanceId);
 }
 function exactStringArray(left: readonly string[], right: readonly string[]): boolean {
   return left.length === right.length && left.every((value, index) => value === right[index]);
@@ -3499,7 +3503,7 @@ function stageDiscardDefinitionPlayAllDecision(s: GameState, ctx: EffectContext,
     reject('invalid_target', 'Discard reveal target must be an active opponent');
   const revealedDiscardIds = s.cards.filter((entry) => entry.ownerPlayerId === targetPlayerId && entry.zone === 'discard').map((entry) => entry.instanceId);
   const definitionId = str(effect.definitionId);
-  const matchingCardIds = revealedDiscardIds.filter((id) => card(s, id).definitionId === definitionId);
+  const matchingCardIds = revealedDiscardIds.filter((id) => cardMatchesDefinitionId(s, card(s, id), definitionId));
   runtime(s).events.push({ type: 'opponent_discard_revealed_for_matching_play', playerId: targetPlayerId, controllerId: ctx.controllerId,
     sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, revealedCardInstanceIds: [...revealedDiscardIds] });
   if (matchingCardIds.length === 0) return;
@@ -3525,7 +3529,7 @@ function revealAllHandsAndZeroMatchingAttacks(s: GameState, ctx: EffectContext, 
     const handIds = s.cards.filter((entry) => entry.ownerPlayerId === playerId && entry.zone === 'hand').map((entry) => entry.instanceId);
     r.events.push({ type: 'hand_revealed_for_matching_definition_check', playerId, controllerId: ctx.controllerId,
       sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, revealedCardInstanceIds: [...handIds] });
-    if (!handIds.some((id) => card(s, id).definitionId === definitionId)) continue;
+    if (!handIds.some((id) => cardMatchesDefinitionId(s, card(s, id), definitionId))) continue;
     for (const physical of s.cards.filter((entry) => entry.controllerPlayerId === playerId && entry.zone === 'attack_area')) {
       const state = r.cardState[physical.instanceId]; if (!state?.active || state.faceDown) continue;
       const carrier = physical as unknown as { powerModifiers?: Array<Record<string, unknown>> };
@@ -3769,7 +3773,7 @@ function resolveControllerMasterSkillDefinitionReturn(s: GameState, ctx: EffectC
     reject('invalid_target', 'Definition-return target must be a controller-owned master_skill definition');
   }
   const physical = s.cards.filter((candidate) =>
-    candidate.definitionId === targetDefinitionId && candidate.ownerPlayerId === controller.id);
+    cardMatchesDefinitionId(s, candidate, targetDefinitionId) && candidate.ownerPlayerId === controller.id);
   if (physical.length > 1) reject('invalid_target', 'Definition-return target has duplicate controller-owned physical instances');
   if (physical.length === 1) {
     const target = physical[0]!;
@@ -5073,7 +5077,7 @@ function isMatchingDefinitionPendingDecisionLiveValid(s: GameState, decision: Pe
     const effect = ability?.effects[0]; if (!ability || !effect) return false;
     const targetSelection = decision.context.selections[str(effect.target)];
     const revealedDiscardIds = s.cards.filter((entry) => entry.ownerPlayerId === meta.targetPlayerId && entry.zone === 'discard').map((entry) => entry.instanceId);
-    const matchingCardIds = revealedDiscardIds.filter((id) => card(s, id).definitionId === meta.definitionId);
+    const matchingCardIds = revealedDiscardIds.filter((id) => cardMatchesDefinitionId(s, card(s, id), meta.definitionId));
     const count = node(decision.target.count);
     return !!source && active(s, source.instanceId) && isAcceptedOpponentDiscardPlayAllAbility(ability) && isOpponentDiscardFreePlayAllMatchingEffect(effect) &&
       str(effect.definitionId) === meta.definitionId && meta.transferVp === 2 &&
@@ -7716,7 +7720,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     }
     if (destinations.size !== ids.length) reject('invalid_target', 'Every definition requires exactly one destination');
     const physicalByDefinition = new Map(ids.map((definitionId) => [definitionId, s.cards.find((physical) =>
-      physical.definitionId === definitionId && physical.ownerPlayerId === ctx.controllerId && physical.controllerPlayerId === ctx.controllerId)!]));
+      cardMatchesDefinitionId(s, physical, definitionId) && physical.ownerPlayerId === ctx.controllerId && physical.controllerPlayerId === ctx.controllerId)!]));
     for (const definitionId of ids) {
       const physical = physicalByDefinition.get(definitionId)!; const destination = destinations.get(definitionId)!;
       moveCard(s, physical.instanceId, destination);
@@ -9165,7 +9169,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           const effect = ability?.effects[0];
           const targetSelection = effect ? d.context.selections[str(effect.target)] : undefined;
           const revealedDiscardIds = s.cards.filter((entry) => entry.ownerPlayerId === meta.targetPlayerId && entry.zone === 'discard').map((entry) => entry.instanceId);
-          const matchingCardIds = revealedDiscardIds.filter((id) => card(s, id).definitionId === meta.definitionId);
+          const matchingCardIds = revealedDiscardIds.filter((id) => cardMatchesDefinitionId(s, card(s, id), meta.definitionId));
           const count = node(d.target.count);
           if (!source || !active(s, source.instanceId) || !ability || !effect || !isAcceptedOpponentDiscardPlayAllAbility(ability) ||
               !isOpponentDiscardFreePlayAllMatchingEffect(effect) || str(effect.definitionId) !== meta.definitionId || meta.transferVp !== 2 ||
