@@ -2,6 +2,7 @@ import type { AuthoringAbility, RuleNode } from './types';
 
 export const WODIME_ASTROLOGY_ROUND_TARGET = 'wodime_astrology_rounds';
 export const WODIME_ASTROLOGY_ROUND_OPTIONS = Array.from({ length: 11 }, (_, index) => `round:${index + 1}`);
+export const WODIME_LOSTBELT_EXPANSION_EFFECT = 'wodime_lostbelt_expansion' as const;
 
 export function isGameStartSkillProvisioningCandidate(ability: AuthoringAbility): boolean {
   return ability.effects.some((effect) => effect.type === 'provision_skill_cards' ||
@@ -108,4 +109,25 @@ export function isWodimeCelestialSphereSemantic(ability: AuthoringAbility): bool
       ability.effects.length !== 1) return false;
   const effect = ability.effects[0]!;
   return effect.type === 'wodime_celestial_sphere_battle' && Object.keys(effect).length === 1;
+}
+
+export function isWodimeLostbeltExpansionSemantic(ability: AuthoringAbility): boolean {
+  const effect = ability.effects[0];
+  const envelope = ability.conditions.length === 0 && ability.targets.length === 0 && ability.cost.length === 0 &&
+    ability.creates.length === 0 && ability.ruleModifiers.length === 0 && Object.keys(ability.lifecycle).length === 0 &&
+    Object.keys(ability.limit).length === 0 && Object.keys(ability.visibility).length === 0 &&
+    Object.keys(ability.responseWindow).every((key) => ['order', 'passBehavior'].includes(key)) &&
+    (ability.responseWindow.order === undefined || ability.responseWindow.order === 'turn_order') &&
+    (ability.responseWindow.passBehavior === undefined || ability.responseWindow.passBehavior === 'decline_this_window') && ability.effects.length === 1 &&
+    ability.execution.mode === 'automatic' && ability.execution.allowedOperations.length === 0 &&
+    effect?.type === WODIME_LOSTBELT_EXPANSION_EFFECT && Object.keys(effect).length === 2;
+  if (!envelope) return false;
+  if (ability.id === 'wodime.crypter.atlantis' && ability.kind === 'forced_trigger' && ability.activation.trigger === 'game_start') {
+    return effect.lostbelt === 'atlantis' && Object.keys(ability.activation).every((key) => key === 'trigger');
+  }
+  if (ability.id === 'wodime.crypter.olympus' && ability.kind === 'phase_action' &&
+      ability.activation.phase === 'action' && ability.activation.opens === 'controller_action_window') {
+    return effect.lostbelt === 'olympus' && Object.keys(ability.activation).every((key) => ['phase', 'opens'].includes(key));
+  }
+  return false;
 }

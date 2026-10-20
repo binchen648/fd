@@ -14,8 +14,8 @@ describe('Wodime frozen authoring archive', () => {
     expect(raw.id).toBe('master.wodime');
     expect(raw.cards.map((card: any) => card.legacyId)).toEqual(expectedIds);
     expect(raw.cards).toHaveLength(11);
-    expect(raw.cards.filter((card: any) => card.verification.implementationStatus === 'complete').map((card: any) => card.legacyId)).toEqual(['ascension', 's1a', 's2']);
-    expect(raw.cards.filter((card: any) => card.verification.implementationStatus === 'host_adjudicated')).toHaveLength(8);
+    expect(raw.cards.filter((card: any) => card.verification.implementationStatus === 'complete').map((card: any) => card.legacyId)).toEqual(['ascension', 's1', 's1a', 's2']);
+    expect(raw.cards.filter((card: any) => card.verification.implementationStatus === 'host_adjudicated')).toHaveLength(7);
     expect(raw.cards.every((card: any) => card.abilities.every((ability: any) => card.printedText.includes(ability.printedClause)))).toBe(true);
     const loaded = rules.loadAuthoringJson(raw);
     const report = rules.buildAuthoringAdapterReport(loaded, raw, archivePath);
@@ -24,8 +24,39 @@ describe('Wodime frozen authoring archive', () => {
     // report describes interpreter nodes (record_master_directive remains a
     // routable audit marker rather than a completed runtime implementation).
     expect(report.summary.hostAdjudicated).toBe(0);
-    expect(report.summary.unsupported).toBe(8);
+    expect(report.summary.unsupported).toBe(7);
     expect(report.summary.textUnconfirmed).toBe(0);
+  });
+
+  it('expands Atlantis at game start and pays exactly five God Legacy for Olympus in the action window', () => {
+    const raw = JSON.parse(readFileSync(archivePath, 'utf8'));
+    const loaded = rules.loadAuthoringJson(raw);
+    for (const definition of Object.values(loaded.cards)) {
+      definition.ownerId = 'master.wodime';
+      if (definition.id !== 'master.wodime.skill.s2') definition.initialPlacement = 'outside_game';
+    }
+    const state = createSeededGameState({ activeSeats: [1, 2] });
+    state.cards = [];
+    state.players[0]!.masterCardId = 'master.wodime';
+    rules.initializeAbilityRuntime(state, loaded, { seed: 44 });
+    installMasterSupportOwnerCards(state, loaded as any, { ownerId: 'master.wodime', playerId: 'p1' });
+    rules.processAbilityEvent(state, { id: 'wodime-s1-game-start', type: 'game_start' });
+    expect((state as any).modeState.wodimeAtlantisExpandedSkillIds).toEqual(['master.wodime.skill.s6']);
+    expect((state as any).modeState.wodimeLocationLegacy).toEqual({ mountain: 3, city: 3 });
+    const astrology = state.abilityRuntime!.pendingDecision!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: astrology.id, selectedIds: ['round:1', 'round:2'] }).ok).toBe(true);
+    state.round.activePhase = 'action';
+    state.round.prioritySeat = state.players[0]!.seat;
+    (state.abilityRuntime as any).structuredPlayerFlagsByPlayer = { p1: { 'wodime.god_legacy': 6 } };
+    const s1 = state.cards.find((card) => card.definitionId === 'master.wodime.skill.s1')!;
+    const legal = rules.projectAbilityState(state, 'p1').legalActions;
+    expect(legal).toContainEqual(expect.objectContaining({ type: 'activate_ability', cardInstanceId: s1.instanceId, abilityId: 'wodime.crypter.olympus' }));
+    const result = rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: s1.instanceId, abilityId: 'wodime.crypter.olympus' });
+    expect(result.ok).toBe(true);
+    expect((state as any).modeState.wodimeOlympusExpandedSkillIds).toEqual(['master.wodime.skill.s7', 'master.wodime.skill.s8', 'master.wodime.skill.s9']);
+    expect((state.abilityRuntime as any).structuredPlayerFlagsByPlayer.p1['wodime.god_legacy']).toBe(1);
+    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'wodime_olympus_expanded', visibility: 'public' }));
+    expect(rules.projectAbilityState(state, 'p1').legalActions.some((action: any) => action.abilityId === 'wodime.crypter.olympus')).toBe(false);
   });
 
   it('opens a private two-round game-start decision and provisions the orb', () => {

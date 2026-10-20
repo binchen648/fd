@@ -55,7 +55,7 @@ import { clearTransientCardTransformState, getEffectiveCardAttributes } from './
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
 import { classifyManaContributionChoices, commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, installRulerSealMovementLock, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, resolveManaContributionPaymentPlan, rulerSealMovementLocked, situationForbidsAttribute, spendMana } from '../core/rule-overrides';
 import { node, nodes, str } from './loader';
-import { gameStartSkillProvisioningTargetDefinitionIds, isBattleWinRoundProvisioningSemantic, isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic, isWodimeAstrologyAscensionSemantic, isWodimeAstrologyRoundSelectionSemantic, isWodimeCelestialSphereSemantic, WODIME_ASTROLOGY_ROUND_OPTIONS, WODIME_ASTROLOGY_ROUND_TARGET } from './game-start-skill-provisioning';
+import { gameStartSkillProvisioningTargetDefinitionIds, isBattleWinRoundProvisioningSemantic, isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic, isWodimeAstrologyAscensionSemantic, isWodimeAstrologyRoundSelectionSemantic, isWodimeCelestialSphereSemantic, isWodimeLostbeltExpansionSemantic, WODIME_ASTROLOGY_ROUND_OPTIONS, WODIME_ASTROLOGY_ROUND_TARGET } from './game-start-skill-provisioning';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
 import { currentDeploymentBonus } from '../core/terrain-advantage';
 import {
@@ -2487,6 +2487,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   }
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) return false;
+  if (a.effects.some((effect) => effect.type === 'wodime_lostbelt_expansion') && !canWodimeLostbeltExpansion(s, sourceId, a, event)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     ((!isGameStartSkillProvisioningSemantic(a) && !isBattleWinRoundProvisioningSemantic(a)) ||
       (isBattleWinRoundProvisioningSemantic(a) && event?.type !== 'after_controller_wins_battle') ||
@@ -2751,6 +2752,54 @@ function wodimeCelestialSphereSuppressesAttack(s: GameState, sourceId: string): 
     runtime(s).cardState[candidate.instanceId]?.active === true &&
     runtime(s).cardState[candidate.instanceId]?.playedRound === s.round.roundNumber &&
     wodimeCelestialSpherePlayedSource(s, attack.controllerPlayerId, candidate.instanceId));
+}
+
+const WODIME_ATLANTIS_EVENT_IDS = ['master.wodime.skill.s6'];
+const WODIME_OLYMPUS_EVENT_IDS = ['master.wodime.skill.s7', 'master.wodime.skill.s8', 'master.wodime.skill.s9'];
+const WODIME_BATTLEFIELD_IDS = ['mountain', 'city'];
+const WODIME_GOD_LEGACY_KEY = 'wodime.god_legacy';
+
+function wodimeLostbeltSource(s: GameState, sourceId: string, playerId: string): boolean {
+  const source = s.cards.find((candidate) => candidate.instanceId === sourceId);
+  const controller = s.players.find((candidate) => candidate.id === playerId);
+  return !!source && !!controller && source.definitionId === 'master.wodime.skill.s1' &&
+    source.ownerPlayerId === playerId && source.controllerPlayerId === playerId &&
+    ['skill', 'field'].includes(source.zone) && runtime(s).cardState[sourceId]?.faceDown !== true &&
+    controller.masterCardId === 'master.wodime';
+}
+
+function wodimeLostbeltExpanded(s: GameState, lostbelt: 'atlantis' | 'olympus'): boolean {
+  const ids = modeState(s)[lostbelt === 'atlantis' ? 'wodimeAtlantisExpandedSkillIds' : 'wodimeOlympusExpandedSkillIds'];
+  return Array.isArray(ids) && ids.length > 0;
+}
+
+function canWodimeLostbeltExpansion(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
+  if (!isWodimeLostbeltExpansionSemantic(a)) return false;
+  const source = s.cards.find((candidate) => candidate.instanceId === sourceId);
+  if (!source || !wodimeLostbeltSource(s, sourceId, source.controllerPlayerId)) return false;
+  if (a.id === 'wodime.crypter.atlantis') return event?.type === 'game_start' && !wodimeLostbeltExpanded(s, 'atlantis');
+  const p = player(s, source.controllerPlayerId);
+  return phase(s) === 'action' && s.round.prioritySeat === p.seat && !wodimeLostbeltExpanded(s, 'olympus') &&
+    structuredCounterValue(s, p.id, WODIME_GOD_LEGACY_KEY) >= 5;
+}
+
+function resolveWodimeLostbeltExpansion(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isWodimeLostbeltExpansionSemantic(a) || !canWodimeLostbeltExpansion(s, ctx.sourceCardId, a, ctx.event)) {
+    reject('resolution_failed', 'Wodime Lostbelt expansion contract is not live');
+  }
+  const lostbelt = a.id === 'wodime.crypter.atlantis' ? 'atlantis' : 'olympus';
+  if (lostbelt === 'atlantis') {
+    const state = modeState(s);
+    state.wodimeAtlantisExpandedSkillIds = [...WODIME_ATLANTIS_EVENT_IDS];
+    const legacy = (state.wodimeLocationLegacy ??= {}) as Record<string, number>;
+    for (const locationId of WODIME_BATTLEFIELD_IDS) if ((legacy[locationId] ?? 0) === 0) legacy[locationId] = 3;
+    (state.wodimeLostbeltResponsibilityByPlayer ??= {})[ctx.controllerId] = 'atlantis,olympus';
+  } else {
+    setStructuredCounter(s, ctx.controllerId, WODIME_GOD_LEGACY_KEY,
+      structuredCounterValue(s, ctx.controllerId, WODIME_GOD_LEGACY_KEY) - 5);
+    modeState(s).wodimeOlympusExpandedSkillIds = [...WODIME_OLYMPUS_EVENT_IDS];
+  }
+  runtime(s).events.push({ type: `wodime_${lostbelt}_expanded`, playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, visibility: 'public' });
 }
 
 function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean {
@@ -8215,6 +8264,10 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (hasControllerMasterSkillDefinitionReturnCandidate(a) && !isAcceptedOpponentRoundVpGainThresholdAbility(a, 'compiled')) reject('resolution_failed', 'Definition-return component requires an independently accepted parent route');
   if (isNextRoundSituationBenefitSuppressionCandidate(a) && !isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled')) reject('resolution_failed', 'Unsupported next-round situation-benefit suppression semantic shape');
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
+  if (isWodimeLostbeltExpansionSemantic(a)) {
+    resolveWodimeLostbeltExpansion(s, ctx, a);
+    return;
+  }
   if (containsSionPrivilegedNode(a)) {
     if (!isAcceptedSionAbility(a)) reject('resolution_failed', 'Unsupported Sion semantic');
     const effect = a.effects.find((entry) => containsSionPrivilegedNode(entry));

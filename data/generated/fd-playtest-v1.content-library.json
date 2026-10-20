@@ -38245,18 +38245,18 @@
         "playRequirements": [],
         "abilities": [
           {
-            "id": "wodime.crypter",
-            "kind": "passive",
-            "printedClause": "你负责【亚特兰蒂斯】和【奥林匹斯】异闻带。\n游戏开始时，扩张【亚特兰蒂斯】。\n行动阶段：支付5个【神之遗产】，扩张【奥林匹斯】。",
+            "id": "wodime.crypter.atlantis",
+            "kind": "forced_trigger",
+            "printedClause": "游戏开始时，扩张【亚特兰蒂斯】。",
             "activation": {
-              "trigger": "while_active"
+              "trigger": "game_start"
             },
             "conditions": [],
             "targets": [],
             "effects": [
               {
-                "type": "record_master_directive",
-                "directive": "wodime_atlantis_olympus_lostbelts"
+                "type": "wodime_lostbelt_expansion",
+                "lostbelt": "atlantis"
               }
             ],
             "cost": [],
@@ -38271,17 +38271,42 @@
             "visibility": {},
             "execution": {
               "mode": "automatic",
-              "allowedOperations": [
-                "adjust-mana",
-                "adjust-victory-points",
-                "move-card",
-                "create-status",
-                "skip-ability"
-              ]
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "wodime.crypter.olympus",
+            "kind": "phase_action",
+            "printedClause": "行动阶段：支付5个【神之遗产】，扩张【奥林匹斯】。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "wodime_lostbelt_expansion",
+                "lostbelt": "olympus"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
             }
           }
         ],
-        "mode": "host_adjudicated",
+        "mode": "automatic",
         "ownerId": "master.wodime",
         "playKind": "support",
         "destinationZone": "field",
@@ -58408,11 +58433,11 @@
       "master.waver": "master.waver.command-spell",
       "master.wodime": "master.wodime.command-spell"
     },
-    "definitionHash": "a8087cbb8a094fd18ea7e73732f676400b3c1d7493bb53a565b2afe905dd8c28",
+    "definitionHash": "1415a1547bb7a21120ac53855b48120b0df5d93f070e79843add9ec7fcda7b0d",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "a8087cbb8a094fd18ea7e73732f676400b3c1d7493bb53a565b2afe905dd8c28"
+      "definitionHash": "1415a1547bb7a21120ac53855b48120b0df5d93f070e79843add9ec7fcda7b0d"
     },
     "sourceMap": {
       "master.shinji.skill.ascension": {
@@ -63535,12 +63560,19 @@
         "cardIndex": 1,
         "path": "archives[64].cards[1]"
       },
-      "master.wodime.skill.s1#wodime.crypter": {
+      "master.wodime.skill.s1#wodime.crypter.atlantis": {
         "archiveId": "master.wodime",
         "archiveIndex": 64,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[64].cards[1].abilities[0]"
+      },
+      "master.wodime.skill.s1#wodime.crypter.olympus": {
+        "archiveId": "master.wodime",
+        "archiveIndex": 64,
+        "cardIndex": 1,
+        "abilityIndex": 1,
+        "path": "archives[64].cards[1].abilities[1]"
       },
       "master.wodime.skill.s1a": {
         "archiveId": "master.wodime",
