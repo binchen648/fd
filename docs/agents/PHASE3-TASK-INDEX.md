@@ -9996,6 +9996,32 @@ Formal A-sync accounting:
 
 This A-sync records acceptance and accounting only; it does not merge PR `#585` or any prior open synchronization PR.
 
+## TASK P3-S-OWNER-TAIGA-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly three skills for `master.taiga`
+
+Exact accepted review:
+
+- PR `#638`, exact Base `be3c1188` (Sion formal A-sync; code parent `1aac16fc`);
+- accepted Candidate `18921c2f28f445a525aa4418b90fd5ff8ff722e6`;
+- independent verdict `MIGRATION_ACCEPTED` from the separated GPT-6 Sol Reviewer;
+- reviewer evidence: `E:\Codex\FD\.fd-takeover-audit-20261018\FD-TAIGA-REVIEW-18921c2f-20261020.md`.
+
+Frozen owner scope is exactly three identities: `master.taiga.skill.ascension`, `.s1`, and `.s1a`.
+
+The exact Base had no Taiga authoring archive, active-pack reference, or generated consumer. The accepted Candidate adds one canonical archive, routes Workshop occupancy through both real battle enumerators, and proves s1a through a real `stepGameLoop` battle. The situation-mana and no-event boundaries remain explicit.
+
+Formal A-sync accounting:
+
+- exact auditable frontier before this transaction: `353/944`, remaining `591`;
+- exact owner increment: `+3`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`356/944`**, remaining **`588`**;
+- report: `docs/reports/2026-10-20-p3-a-owner-taiga-migration-acceptance-synchronization.md`.
+
+This synchronization does not merge PR `#638` or prior open PRs. The next owner is derived mechanically as `master.tiamat` (three frozen skills), released only from this synchronization frontier.
+
 ## TASK P3-S-OWNER-SION-COMPLETE-MIGRATION
 
 Owner: Codex S / FORMAL
