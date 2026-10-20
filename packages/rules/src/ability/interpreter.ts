@@ -2676,8 +2676,10 @@ function resolveWodimeAstrologyRoundSelection(s: GameState, ctx: EffectContext, 
   s.cards.push({ instanceId, definitionId: 'master.wodime.skill.s2', ownerPlayerId: ctx.controllerId, controllerPlayerId: ctx.controllerId,
     zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: ctx.controllerId }, generatedBy: ctx.sourceCardId });
   runtime(s).cardState[instanceId] = { active: false, faceDown: false, playedRound: s.round.roundNumber };
-  runtime(s).events.push({ type: 'wodime_astrology_rounds_recorded', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
-    abilityId: ctx.abilityId, roundNumbers: rounds, cardInstanceId: instanceId, toZone: 'skill', movedCount: 1 } as any);
+  // The selected round numbers are owner-private state. Mark the audit event
+  // owner-only and never put the values in the transport-facing event DTO.
+  runtime(s).events.push({ type: 'wodime_astrology_rounds_recorded', playerId: ctx.controllerId, visibility: ctx.controllerId,
+    sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: instanceId, toZone: 'skill', movedCount: 1 } as any);
 }
 
 function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean {

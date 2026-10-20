@@ -55,8 +55,12 @@ describe('Wodime frozen authoring archive', () => {
       type: 'choose_target', decisionId: decision.id, selectedIds: ['round:2', 'round:7'],
     });
     expect(validResult.ok).toBe(true);
+    expect(validResult.events).toContainEqual(expect.objectContaining({ type: 'wodime_astrology_rounds_recorded' }));
+    expect(validResult.events.some((event: any) => 'roundNumbers' in event)).toBe(false);
     expect((state.abilityRuntime as any).wodimeAstrologyRoundsByPlayer.p1).toEqual([2, 7]);
     expect(state.cards.filter((card) => card.definitionId === 'master.wodime.skill.s2')).toHaveLength(1);
-    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'wodime_astrology_rounds_recorded', sourceCardId: expect.stringContaining('master.wodime.skill.s1a') }));
+    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'wodime_astrology_rounds_recorded', sourceCardId: expect.stringContaining('master.wodime.skill.s1a'), visibility: 'p1' }));
+    expect(state.abilityRuntime!.events.find((event: any) => event.type === 'wodime_astrology_rounds_recorded')).not.toHaveProperty('roundNumbers');
+    expect(rules.projectAbilityState(state, 'p2').pendingDecision).toBeUndefined();
   });
 });
