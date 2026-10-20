@@ -2727,18 +2727,6 @@ function resolveWodimeCelestialSphere(s: GameState, ctx: EffectContext, effect: 
       runtime(s).cardState[source.instanceId]?.active !== true || !wodimeCelestialSpherePlayedSource(s, ctx.controllerId, source.instanceId)) {
     reject('invalid_state', 'Wodime Celestial Sphere source is not an authenticated generated combat play');
   }
-  const id = `wodime-celestial-sphere:${s.round.roundNumber}:${ctx.sourceCardId}:${ctx.abilityId}`;
-  for (const attack of s.cards.filter((candidate) => candidate.instanceId !== source.instanceId &&
-      candidate.controllerPlayerId === ctx.controllerId && candidate.zone === 'attack_area' &&
-      runtime(s).cardState[candidate.instanceId]?.active === true && runtime(s).cardState[candidate.instanceId]?.faceDown !== true &&
-      cardPlayClassification(s, candidate.instanceId).playKind === 'attack')) {
-    const carrier = attack as unknown as { powerModifiers?: Array<Record<string, unknown>> };
-    carrier.powerModifiers ??= [];
-    if (!carrier.powerModifiers.some((modifier) => modifier.id === id && modifier.sourceId === ctx.sourceCardId)) {
-      carrier.powerModifiers.push({ id, sourceId: ctx.sourceCardId, sourceAbilityId: ctx.abilityId,
-        controllerId: ctx.controllerId, kind: 'set', value: 0, lifecycle: 'until_leaves_active_area', round: s.round.roundNumber });
-    }
-  }
   runtime(s).events.push({ type: 'wodime_celestial_sphere_applied', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, visibility: 'public' });
 }
 

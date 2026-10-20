@@ -116,6 +116,7 @@ describe('Wodime frozen authoring archive', () => {
     state.abilityRuntime!.cardState['wodime-late-attack'] = { active: true, faceDown: false, playedRound: 2, paidManaOnPlay: 0 };
     expect(rules.calculateCardPower(state, 'wodime-late-attack').value).toBe(0);
     state.abilityRuntime!.cardState[orb.instanceId]!.active = false;
+    expect(rules.calculateCardPower(state, 'wodime-other-attack').value).toBeGreaterThan(0);
     expect(rules.calculateCardPower(state, 'wodime-late-attack').value).toBeGreaterThan(0);
     state.abilityRuntime!.cardState[orb.instanceId]!.active = true;
     state.round.roundNumber = 3;
