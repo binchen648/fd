@@ -2756,7 +2756,6 @@ function wodimeCelestialSphereSuppressesAttack(s: GameState, sourceId: string): 
 
 const WODIME_ATLANTIS_EVENT_IDS = ['master.wodime.skill.s6'];
 const WODIME_OLYMPUS_EVENT_IDS = ['master.wodime.skill.s7', 'master.wodime.skill.s8', 'master.wodime.skill.s9'];
-const WODIME_BATTLEFIELD_IDS = ['mountain', 'city'];
 const WODIME_GOD_LEGACY_KEY = 'wodime.god_legacy';
 
 function wodimeLostbeltSource(s: GameState, sourceId: string, playerId: string): boolean {
@@ -2790,13 +2789,15 @@ function resolveWodimeLostbeltExpansion(s: GameState, ctx: EffectContext, a: Aut
   const lostbelt = a.id === 'wodime.crypter.atlantis' ? 'atlantis' : 'olympus';
   if (lostbelt === 'atlantis') {
     const state = modeState(s);
+    s.eventDeck ??= [];
+    s.eventDeck.push(...Array.from({ length: 6 }, () => WODIME_ATLANTIS_EVENT_IDS[0]!));
     state.wodimeAtlantisExpandedSkillIds = [...WODIME_ATLANTIS_EVENT_IDS];
-    const legacy = (state.wodimeLocationLegacy ??= {}) as Record<string, number>;
-    for (const locationId of WODIME_BATTLEFIELD_IDS) if ((legacy[locationId] ?? 0) === 0) legacy[locationId] = 3;
     (state.wodimeLostbeltResponsibilityByPlayer ??= {})[ctx.controllerId] = 'atlantis,olympus';
   } else {
     setStructuredCounter(s, ctx.controllerId, WODIME_GOD_LEGACY_KEY,
       structuredCounterValue(s, ctx.controllerId, WODIME_GOD_LEGACY_KEY) - 5);
+    s.eventDeck ??= [];
+    for (const eventId of WODIME_OLYMPUS_EVENT_IDS) s.eventDeck.push(...Array.from({ length: 2 }, () => eventId));
     modeState(s).wodimeOlympusExpandedSkillIds = [...WODIME_OLYMPUS_EVENT_IDS];
   }
   runtime(s).events.push({ type: `wodime_${lostbelt}_expanded`, playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, visibility: 'public' });

@@ -42,7 +42,7 @@ describe('Wodime frozen authoring archive', () => {
     installMasterSupportOwnerCards(state, loaded as any, { ownerId: 'master.wodime', playerId: 'p1' });
     rules.processAbilityEvent(state, { id: 'wodime-s1-game-start', type: 'game_start' });
     expect((state as any).modeState.wodimeAtlantisExpandedSkillIds).toEqual(['master.wodime.skill.s6']);
-    expect((state as any).modeState.wodimeLocationLegacy).toEqual({ mountain: 3, city: 3 });
+    expect(state.eventDeck?.filter((id) => id === 'master.wodime.skill.s6')).toHaveLength(6);
     const astrology = state.abilityRuntime!.pendingDecision!;
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: astrology.id, selectedIds: ['round:1', 'round:2'] }).ok).toBe(true);
     state.round.activePhase = 'action';
@@ -54,6 +54,9 @@ describe('Wodime frozen authoring archive', () => {
     const result = rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: s1.instanceId, abilityId: 'wodime.crypter.olympus' });
     expect(result.ok).toBe(true);
     expect((state as any).modeState.wodimeOlympusExpandedSkillIds).toEqual(['master.wodime.skill.s7', 'master.wodime.skill.s8', 'master.wodime.skill.s9']);
+    expect(state.eventDeck?.filter((id) => id === 'master.wodime.skill.s7')).toHaveLength(2);
+    expect(state.eventDeck?.filter((id) => id === 'master.wodime.skill.s8')).toHaveLength(2);
+    expect(state.eventDeck?.filter((id) => id === 'master.wodime.skill.s9')).toHaveLength(2);
     expect((state.abilityRuntime as any).structuredPlayerFlagsByPlayer.p1['wodime.god_legacy']).toBe(1);
     expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'wodime_olympus_expanded', visibility: 'public' }));
     expect(rules.projectAbilityState(state, 'p1').legalActions.some((action: any) => action.abilityId === 'wodime.crypter.olympus')).toBe(false);
