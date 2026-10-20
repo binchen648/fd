@@ -10047,3 +10047,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-20-p3-a-owner-sion-migration-acceptance-synchronization.md`.
 
 This synchronization does not merge PR `#637` or prior open PRs. The next owner is derived mechanically as `master.taiga` (three frozen skills), released only from this synchronization frontier.
+
+## TASK P3-S-OWNER-TIAMAT-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly three skills for `master.tiamat`
+
+Exact accepted review:
+
+- PR `#639`, exact Base `0b16681a` (Taiga formal A-sync);
+- accepted Candidate `553743640d8756ca115a370b88c69a62b82f679d`;
+- independent verdict `MIGRATION_ACCEPTED` from the separated GPT-6 Sol Reviewer;
+- reviewer evidence: `E:\Codex\FD\.fd-takeover-audit-20261018\FD-TIAMAT-REVIEW-55374364-20261020.md`.
+
+Frozen owner scope is exactly three identities: `master.tiamat.skill.ascension`, `.s1`, and `.s1a`.
+
+The exact Base had no Tiamat authoring archive, active-pack registration, or generated consumer. The accepted Candidate adds one canonical archive, one active-pack registration and deterministic generated evidence, while all three semantic routes remain explicitly `HOST_ADJUDICATED` with no unsupported automatic handler.
+
+Formal A-sync accounting:
+
+- exact auditable frontier before this transaction: `356/944`, remaining `588`;
+- exact owner increment: `+3`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`359/944`**, remaining **`585`**;
+- report: `docs/reports/2026-10-20-p3-a-owner-tiamat-migration-acceptance-synchronization.md`.
+
+This synchronization does not merge PR `#639` or prior open PRs. The next owner is derived mechanically as `master.tokiomi` (three frozen skills), released only from this synchronization frontier.
