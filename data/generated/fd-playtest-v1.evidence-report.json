@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 59,
+    "masters": 60,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -5081,6 +5081,61 @@
       "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
       "imageIndex": 10,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.tiamat",
+      "displayName": "提亚马特",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/提亚马特.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/提亚马特.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.tiamat.overview",
+      "displayName": "提亚马特",
+      "entityKind": "master_overview",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/提亚马特.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/提亚马特.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.tiamat.skill.ascension",
+      "displayName": "泰坦模式",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/提亚马特.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/提亚马特.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.tiamat.skill.s1",
+      "displayName": "万物之母",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/提亚马特.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/提亚马特.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.tiamat.skill.s1a",
+      "displayName": "人类恶",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/提亚马特.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/提亚马特.png",
+      "imageIndex": 2,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

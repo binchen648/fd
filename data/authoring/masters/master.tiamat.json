@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.tiamat",
+  "name": "提亚马特",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "overviewCapabilityStatus": "HOST_ADJUDICATED",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "0b16681a",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen three-skill owner scope. Printed text and source hashes are preserved exactly from the Phase 3 inventory. Semantic normalization remains BLOCKED/SEMANTIC_SOURCE_REQUIRED; reference handlers are corroboration only. No identity-specific runtime route is claimed.",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版/images/masters/提亚马特.png#master.tiamat/提亚马特",
+      "legacy": {
+        "master.tiamat.skill.ascension": "legacy-content.json#master/master.tiamat/ascension",
+        "master.tiamat.skill.s1": "legacy-content.json#master/master.tiamat/s1",
+        "master.tiamat.skill.s1a": "legacy-content.json#master/master.tiamat/s1a"
+      },
+      "generated": {
+        "master.tiamat.skill.ascension": "src/content/generated/legacy-content.json#masters[60].skills[2].text#line=1 sha256=6f050b968e748f09520b88e7f2fdb568870638b9fc6d76567768b61db7621642",
+        "master.tiamat.skill.s1": "src/content/generated/legacy-content.json#masters[60].skills[0].text#line=1 sha256=b3cde0a75fcfe40ac04bd6f792b5d8561e516c140eb684fa8649be9e8e3950cb",
+        "master.tiamat.skill.s1a": "src/content/generated/legacy-content.json#masters[60].skills[1].text#line=1 sha256=daf0a7c59653a82ac8437c7abed7a3d3c0951dc5ac7a892d1f9bd3f603440ff8"
+      }
+    }
+  },
+  "cards": [
+    { "id": "master.tiamat.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "万物之母", "cardType": "master_skill", "owner": { "type": "master", "id": "master.tiamat" }, "printedText": "你没有令咒。将【生命之海】加入你的技能区。当你获得令咒时，改为将一张【魔兽】加入攻击。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "tiamat.s1.mother-of-all", "kind": "passive", "printedClause": "你没有令咒。将【生命之海】加入你的技能区。当你获得令咒时，改为将一张【魔兽】加入攻击。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "tiamat_mother_of_all" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.tiamat.skill.s1a", "aliases": ["s1a"], "legacyId": "s1a", "name": "人类恶", "cardType": "master_skill", "owner": { "type": "master", "id": "master.tiamat" }, "printedText": "你的魔力初始值为8点。战胜你的玩家获得1点战果。", "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "tiamat.s1a.human-evil", "kind": "passive", "printedClause": "你的魔力初始值为8点。战胜你的玩家获得1点战果。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "tiamat_human_evil" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } },
+    { "id": "master.tiamat.skill.ascension", "aliases": ["ascension"], "legacyId": "ascension", "name": "泰坦模式", "cardType": "master_skill", "owner": { "type": "master", "id": "master.tiamat" }, "initialPlacement": "outside_game", "printedText": "你不能进入魔术工房。无视阻碍你打出牌的卡牌效果。你的基础攻击费用+3且威力+5。你可以选择暗置打出2张牌作为攻击，若如此，将【生命之海】加入你的攻击。", "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [], "abilities": [{ "id": "tiamat.ascension.titan-mode", "kind": "passive", "printedClause": "你不能进入魔术工房。无视阻碍你打出牌的卡牌效果。你的基础攻击费用+3且威力+5。你可以选择暗置打出2张牌作为攻击，若如此，将【生命之海】加入你的攻击。", "activation": { "trigger": "while_active" }, "effects": [{ "type": "record_master_directive", "directive": "tiamat_titan_mode" }], "execution": { "mode": "host_adjudicated", "allowedOperations": [] } }], "verification": { "implementationStatus": "host_adjudicated" } }
+  ],
+  "sources": [{ "id": "development_card_images", "type": "development_image_set", "imageOrder": ["../../Fate_Domination-开发版/images/masters/提亚马特.png"] }]
+}
