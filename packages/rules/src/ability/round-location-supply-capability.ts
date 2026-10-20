@@ -181,11 +181,15 @@ function supplyRecordValid(state: GameState, record: AttachedSupplyState): boole
     (Number.isSafeInteger(record.lastPlayRound) && record.lastPlayRound >= 1 && record.lastPlayRound <= state.round.roundNumber);
 }
 
-function drawOne(state: GameState, controllerId: PlayerId): void {
-  if (isNormalCardDrawSuppressed(state, controllerId)) return;
+function drawOne(state: GameState, controllerId: PlayerId, automaticRecycle?: () => boolean): boolean {
+  if (isNormalCardDrawSuppressed(state, controllerId)) return false;
   if (!state.cards.some((card) => card.ownerPlayerId === controllerId && card.zone === 'deck')) {
     const discard = state.cards.filter((card) => card.ownerPlayerId === controllerId && card.zone === 'discard');
-    if (!discard.length) return;
+    if (!discard.length) return false;
+    // The ordinary draw-after-play route must use the same recycle entry as
+    // engine draws.  The callback may stage the owner-only keep interaction;
+    // it returns true only when a pending continuation now owns the draw.
+    if (automaticRecycle?.()) return true;
     for (const card of discard) {
       card.zone = 'deck';
       card.visibility = { scope: 'owner_only', ownerPlayerId: controllerId };
@@ -193,7 +197,7 @@ function drawOne(state: GameState, controllerId: PlayerId): void {
     shuffleOwnedDeckDeterministically(state, controllerId);
   }
   const drawn = state.cards.find((card) => card.ownerPlayerId === controllerId && card.zone === 'deck');
-  if (!drawn) return;
+  if (!drawn) return false;
   drawn.zone = 'hand';
   drawn.controllerPlayerId = controllerId;
   drawn.visibility = { scope: 'owner_only', ownerPlayerId: controllerId };
@@ -202,6 +206,7 @@ function drawOne(state: GameState, controllerId: PlayerId): void {
     playerId: controllerId,
     cardInstanceId: drawn.instanceId,
   });
+  return false;
 }
 
 export function canExecuteRoundLocationSupplyEffect(
@@ -245,12 +250,14 @@ export function canExecuteRoundLocationSupplyEffect(
 export interface RoundLocationSupplyResolution {
   handled: boolean;
   playedCardInstanceId?: string;
+  pendingDecision?: boolean;
 }
 
 export function resolveRoundLocationSupplyEffect(
   state: GameState,
   ctx: EffectContext,
   ability: AuthoringAbility,
+  automaticRecycle?: () => boolean,
 ): RoundLocationSupplyResolution {
   if (!canExecuteRoundLocationSupplyEffect(state, ctx, ability)) return { handled: false };
   const effect = ability.effects[0]!;
@@ -335,8 +342,12 @@ export function resolveRoundLocationSupplyEffect(
     runtime(state).playCounters.cardsPlayedByPlayer[ctx.controllerId] =
       (runtime(state).playCounters.cardsPlayedByPlayer[ctx.controllerId] ?? 0) + 1;
     record.lastPlayRound = state.round.roundNumber;
-    if (Number(effect.drawAfterPlay) === 1) drawOne(state, ctx.controllerId);
-    return { handled: true, playedCardInstanceId: target.instanceId };
+    const pendingDecision = Number(effect.drawAfterPlay) === 1 ? drawOne(state, ctx.controllerId, automaticRecycle) : false;
+    return {
+      handled: true,
+      playedCardInstanceId: target.instanceId,
+      ...(pendingDecision ? { pendingDecision: true } : {}),
+    };
   }
   return { handled: false };
 }

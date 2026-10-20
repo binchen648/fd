@@ -1838,16 +1838,26 @@ function stageAutomaticRecycleKeepDecision(s: GameState, ctx: EffectContext, rem
   };
   return true;
 }
+/**
+ * Refill an empty owned deck for an automatic draw.  This is deliberately
+ * separate from the draw loop so non-effect draw producers (for example the
+ * attached-supply draw-after-play route) can enter the same provenance-safe
+ * recycle/keep continuation without pretending their draw was an authored
+ * effect.
+ */
+function recycleDeckForAutomaticDraw(s: GameState, ctx: EffectContext, remainingDraws: number, remainingEffects: RuleNode[], chargeShirouMealGluttony: boolean): boolean {
+  if (s.cards.some((physical) => physical.ownerPlayerId === ctx.controllerId && physical.zone === 'deck')) return false;
+  const discard = s.cards.filter((physical) => physical.ownerPlayerId === ctx.controllerId && physical.zone === 'discard');
+  if (discard.length === 0) return false;
+  if (stageAutomaticRecycleKeepDecision(s, ctx, remainingDraws, remainingEffects, chargeShirouMealGluttony)) return true;
+  for (const physical of discard) moveCard(s, physical.instanceId, 'deck');
+  if (chargeShirouMealGluttony) shuffleOwnedDeckForShirouMeal(s, ctx.controllerId, ctx.sourceCardId, ctx.abilityId);
+  else shuffle(s, ctx.controllerId);
+  return false;
+}
 function drawCardsWithAutomaticRecycle(s: GameState, ctx: EffectContext, count: number, remainingEffects: RuleNode[], chargeShirouMealGluttony: boolean): boolean {
   for (let remaining = count; remaining > 0; remaining--) {
-    if (!s.cards.some((physical) => physical.ownerPlayerId === ctx.controllerId && physical.zone === 'deck')) {
-      const discard = s.cards.filter((physical) => physical.ownerPlayerId === ctx.controllerId && physical.zone === 'discard');
-      if (discard.length === 0) return false;
-      if (stageAutomaticRecycleKeepDecision(s, ctx, remaining, remainingEffects, chargeShirouMealGluttony)) return true;
-      for (const physical of discard) moveCard(s, physical.instanceId, 'deck');
-      if (chargeShirouMealGluttony) shuffleOwnedDeckForShirouMeal(s, ctx.controllerId, ctx.sourceCardId, ctx.abilityId);
-      else shuffle(s, ctx.controllerId);
-    }
+    if (recycleDeckForAutomaticDraw(s, ctx, remaining, remainingEffects, chargeShirouMealGluttony)) return true;
     const top = s.cards.find((physical) => physical.ownerPlayerId === ctx.controllerId && physical.zone === 'deck');
     if (!top) return false;
     moveCard(s, top.instanceId, 'hand');
@@ -7848,7 +7858,12 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (containsRoundLocationSupplyPrivilegedNode(a)) {
     if (!isAcceptedRoundLocationSupplyAbility(a)) reject('resolution_failed', 'Unsupported round-location / attached-supply semantic');
-    const resolved = resolveRoundLocationSupplyEffect(s, ctx, a);
+    // This draw-after-play is an ordinary engine draw, not an authored draw
+    // effect.  Preserve that distinction at the only production entry that
+    // bypasses executeEffects, while still reusing the strict keep
+    // continuation and provider provenance.
+    const resolved = resolveRoundLocationSupplyEffect(s, ctx, a,
+      () => recycleDeckForAutomaticDraw(s, ctx, 1, [], true));
     if (!resolved.handled) reject('resolution_failed', 'Round-location / attached-supply resolution failed');
     if (resolved.playedCardInstanceId) {
       const playedId = resolved.playedCardInstanceId;

@@ -228,6 +228,70 @@ describe('P3 Shirou Meal owner-complete migration', () => {
     expect(state.cards.find((entry) => entry.instanceId === ascension)?.zone).toBe('field');
   });
 
+  it('routes normal attached-supply recycle through the real keep continuation with true gluttony provenance', () => {
+    const state = setup();
+    const shell = (id: string, kind: string, activation: Record<string, unknown>, effects: any[]) => ({
+      id, kind, printedClause: id, activation, conditions: [], targets: [], effects, cost: [], ruleModifiers: [], creates: [],
+      lifecycle: {}, responseWindow: { order: 'turn_order', passBehavior: 'decline_this_window' }, limit: {}, visibility: {},
+      execution: { mode: 'automatic', allowedOperations: [] },
+    });
+    const seed = shell('fixture.seed', 'forced_trigger', { trigger: 'after_master_ascension_unlocked' }, [{
+      type: rules.SEED_ATTACHED_SUPPLY_EFFECT, cards: [
+        { definitionId: 'basic.preparation', count: 3 }, { definitionId: 'basic.surveil', count: 2 },
+      ],
+    }]);
+    const play = shell('fixture.play-prep', 'phase_action', { phase: 'action', opens: 'controller_action_window' }, [{
+      type: rules.PLAY_ATTACHED_SUPPLY_DEFINITION_EFFECT, definitionId: 'basic.preparation', drawAfterPlay: 1, maxPerRound: 1,
+    }]);
+    const provider = shell('fixture.recycle-provider', 'passive', {}, [{
+      type: 'automatic_recycle_keep_gain_counter', counterKey: 'fixture:recycle', keepMax: 3, gain: 1, reason: 'automatic_recycle',
+    }]);
+    for (const definitionId of ['basic.preparation', 'basic.surveil']) {
+      state.abilityRuntime!.pack.cards[definitionId] = {
+        id: definitionId, name: definitionId, cardType: 'basic_attack', ownerId: 'fixture',
+        cardFace: { typeLabel: 'fixture', cost: 0, basePower: 0, attributes: [] },
+        playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], abilities: [],
+        mode: 'automatic', playKind: 'attack', destinationZone: 'attack_area',
+      } as any;
+    }
+    const fixtureDefinition = structuredClone(state.abilityRuntime!.pack.cards[ASC]!);
+    fixtureDefinition.id = 'fixture.attached-supply-provider';
+    fixtureDefinition.abilities = [seed, play, provider] as any;
+    state.abilityRuntime!.pack.cards[fixtureDefinition.id] = fixtureDefinition as any;
+    const providerCard = add(state, fixtureDefinition.id, 'skill');
+    rules.processAbilityEvent(state, { id: 'fixture-seed', type: 'after_master_ascension_unlocked', playerId: 'p1', sourceCardId: providerCard });
+
+    const menu = add(state, S2, 'field', true);
+    rules.grantShirouMealFood(state, 'p1', '肉', 3);
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: menu, abilityId: 'shirou-meal.menu' }).ok).toBe(true);
+    const menuDecision = rules.projectAbilityState(state, 'p1').pendingDecision!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: menuDecision.id, selectedIds: ['肉,肉,肉'] }).ok).toBe(true);
+
+    state.cards = state.cards.filter((card) => card.ownerPlayerId !== 'p1' || !['deck', 'discard'].includes(card.zone));
+    const discarded = add(state, 'fixture.normal-discard', 'discard');
+    state.players[0]!.vp = 5;
+    const playResult = rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: providerCard, abilityId: play.id });
+    expect(playResult, JSON.stringify(playResult)).toMatchObject({ ok: true });
+    const pending = rules.projectAbilityState(state, 'p1').pendingDecision!;
+    expect(state.abilityRuntime!.pendingDecision!.interaction).toMatchObject({ kind: 'automatic_recycle_keep_v1', chargeShirouMealGluttony: true });
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: pending.id, selectedIds: [] }).ok).toBe(true);
+    expect(state.players[0]!.vp).toBe(5);
+    expect(state.abilityRuntime!.shirouMealProtectedNextShuffleByPlayer?.p1).toBeUndefined();
+    expect(state.cards.find((card) => card.instanceId === discarded)?.zone).toBe('hand');
+
+    state.round.roundNumber += 1;
+    state.round.activePhase = 'action'; state.round.prioritySeat = state.players[0]!.seat;
+    const secondDiscard = add(state, 'fixture.normal-discard-2', 'discard');
+    state.players[0]!.vp = 5;
+    const second = rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: providerCard, abilityId: play.id });
+    expect(second, JSON.stringify(second)).toMatchObject({ ok: true });
+    const secondPending = rules.projectAbilityState(state, 'p1').pendingDecision!;
+    expect(state.abilityRuntime!.pendingDecision!.interaction).toMatchObject({ kind: 'automatic_recycle_keep_v1', chargeShirouMealGluttony: true });
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: secondPending.id, selectedIds: [] }).ok).toBe(true);
+    expect(state.players[0]!.vp).toBe(2);
+    expect(state.cards.find((card) => card.instanceId === secondDiscard)?.zone).toBe('hand');
+  });
+
   it('rejects a foreign-owner exact-shape menu before spending food', () => {
     const state = setup();
     const source = add(state, S2, 'field', true);
