@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 63,
+    "masters": 64,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -5378,6 +5378,72 @@
       "htmPath": "chm-extract/瓦拉几亚之夜.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/瓦拉几亚之夜.png",
       "imageIndex": 9,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.waver",
+      "displayName": "韦伯·维尔维特",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/韦伯·维尔维特.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/韦伯·维尔维特.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.waver.overview",
+      "displayName": "韦伯·维尔维特",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/韦伯·维尔维特.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/韦伯·维尔维特.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.waver.skill.ascension",
+      "displayName": "埃尔梅罗二世事件簿",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/韦伯·维尔维特.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/韦伯·维尔维特.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.waver.skill.s1",
+      "displayName": "鉴识眼",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/韦伯·维尔维特.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/韦伯·维尔维特.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.waver.skill.s2",
+      "displayName": "战略部署",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/韦伯·维尔维特.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/韦伯·维尔维特.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.waver.skill.s3",
+      "displayName": "调查",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/韦伯·维尔维特.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/韦伯·维尔维特.png",
+      "imageIndex": 4,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

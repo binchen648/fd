@@ -1,0 +1,331 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.waver",
+  "name": "韦伯·维尔维特",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "83ca54c7727cadd872bbc6d1ce5760ed8d6034d9",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen four-skill scope. Printed text, ability IDs, and generated source hashes are preserved exactly from Phase 3. 鉴识眼 uses the accepted game-start visibility contract. Prediction/reward, random discard, mana draw, and investigation hand/top-deck manipulation have no accepted generic contracts and remain HOST_ADJUDICATED; record_master_directive is an audit boundary, not private automation.",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版/images/masters/韦伯·维尔维特.png#master.waver/韦伯·维尔维特",
+      "legacy": {
+        "master.waver.skill.ascension": "legacy-content.json#master/master.waver/ascension",
+        "master.waver.skill.s1": "legacy-content.json#master/master.waver/s1",
+        "master.waver.skill.s2": "legacy-content.json#master/master.waver/s2",
+        "master.waver.skill.s3": "legacy-content.json#master/master.waver/s3"
+      },
+      "generated": {
+        "master.waver.skill.ascension": "src/content/generated/legacy-content.json#masters[9].skills[3].text#line=1 sha256=bf05e37a6177c644224c34511d01997b7976944ea964770962bfa5859f0ba40d;line=2 sha256=bb8b7ebe4ca71288efd61bf47b0573c5b8078d5bae03e476838dcfb9f93acc5c",
+        "master.waver.skill.s1": "src/content/generated/legacy-content.json#masters[9].skills[0].text#line=1 sha256=c4004b02a61eb2cefa01526f174f4fb7815644f4267735020b2507177797058f",
+        "master.waver.skill.s2": "src/content/generated/legacy-content.json#masters[9].skills[1].text#line=1 sha256=68b3ada84d7058a23517d12544478e2ed6f95274922ccc6010f2ae3819d0eb59",
+        "master.waver.skill.s3": "src/content/generated/legacy-content.json#masters[9].skills[2].text#line=1 sha256=9863f1c6785fc3be2d26cd4314f8c31c8117115e75711a658f4af57acad23e04"
+      }
+    }
+  },
+  "cards": [
+    {
+      "id": "master.waver.skill.ascension",
+      "aliases": ["ascension"],
+      "legacyId": "ascension",
+      "name": "埃尔梅罗二世事件簿",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.waver" },
+      "printedText": "前哨阶段：预测每个游戏内的战场的胜者，战斗阶段结束时，你每预测正确一个，便获得1点战果。你本回合无法从侦查获得战果。\n前哨阶段：花费5点魔力，本阶段结束时，你所在地点的所有玩家均随机弃置2张手牌。",
+      "cardFace": {
+        "typeLabel": "升华技",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "waver.el-melloi-case-files",
+          "kind": "passive",
+          "printedClause": "前哨阶段：预测每个游戏内的战场的胜者，战斗阶段结束时，你每预测正确一个，便获得1点战果。你本回合无法从侦查获得战果。\n前哨阶段：花费5点魔力，本阶段结束时，你所在地点的所有玩家均随机弃置2张手牌。",
+          "activation": { "trigger": "while_active" },
+          "effects": [
+            {
+              "type": "record_master_directive",
+              "directive": "waver_case_files_prediction_and_random_discard"
+            }
+          ],
+          "execution": { "mode": "host_adjudicated", "allowedOperations": [] }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/韦伯·维尔维特.png",
+            "locator": "master.waver/韦伯·维尔维特"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.waver/ascension"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[9].skills[3].text#line=1",
+            "sha256": "bf05e37a6177c644224c34511d01997b7976944ea964770962bfa5859f0ba40d"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[9].skills[3].text#line=2",
+            "sha256": "bb8b7ebe4ca71288efd61bf47b0573c5b8078d5bae03e476838dcfb9f93acc5c"
+          }
+        ],
+        "sourceTextSha256": "bf05e37a6177c644224c34511d01997b7976944ea964770962bfa5859f0ba40d",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "ascension",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": null,
+          "typeLabel": "升华技"
+        }
+      },
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.waver.skill.s1",
+      "aliases": ["s1"],
+      "legacyId": "s1",
+      "name": "鉴识眼",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.waver" },
+      "printedText": "你可观看背面朝上的事件牌。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "master.waver.skill.s1.game-start-rules",
+          "kind": "forced_trigger",
+          "printedClause": "你可观看背面朝上的事件牌。",
+          "activation": { "trigger": "game_start" },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "install_rule_override",
+              "player": "controller",
+              "rule": "view_face_down_events",
+              "enabled": true
+            }
+          ],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "83ca54c7727cadd872bbc6d1ce5760ed8d6034d9",
+        "f1SourceReferences": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/韦伯·维尔维特.png",
+            "locator": "master.waver/韦伯·维尔维特"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.waver/s1"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[9].skills[0].text#line=1",
+            "sha256": "c4004b02a61eb2cefa01526f174f4fb7815644f4267735020b2507177797058f"
+          }
+        ],
+        "sourceTextSha256": "c4004b02a61eb2cefa01526f174f4fb7815644f4267735020b2507177797058f",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s1",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": null,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": { "gameStartRuleOverrides": "P3-R39/FB2-14" }
+      },
+      "verification": { "implementationStatus": "automatic" }
+    },
+    {
+      "id": "master.waver.skill.s2",
+      "aliases": ["s2"],
+      "legacyId": "s2",
+      "name": "战略部署",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.waver" },
+      "printedText": "你能支付1魔力来抽2张牌。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "waver.strategic-deployment",
+          "kind": "passive",
+          "printedClause": "你能支付1魔力来抽2张牌。",
+          "activation": { "trigger": "while_active" },
+          "effects": [
+            {
+              "type": "record_master_directive",
+              "directive": "waver_pay_one_mana_draw_two"
+            }
+          ],
+          "execution": { "mode": "host_adjudicated", "allowedOperations": [] }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "83ca54c7727cadd872bbc6d1ce5760ed8d6034d9",
+        "f1SourceReferences": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/韦伯·维尔维特.png",
+            "locator": "master.waver/韦伯·维尔维特"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.waver/s2"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[9].skills[1].text#line=1",
+            "sha256": "68b3ada84d7058a23517d12544478e2ed6f95274922ccc6010f2ae3819d0eb59"
+          }
+        ],
+        "sourceTextSha256": "68b3ada84d7058a23517d12544478e2ed6f95274922ccc6010f2ae3819d0eb59",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s2",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": null,
+          "typeLabel": "被动"
+        }
+      },
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.waver.skill.s3",
+      "aliases": ["s3"],
+      "legacyId": "s3",
+      "name": "调查",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.waver" },
+      "printedText": "查看一位玩家的手牌。你可选择其中一张牌放于其拥有的牌库顶部，若如此，下回合你不可进行【调查】。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "waver.investigation",
+          "kind": "passive",
+          "printedClause": "查看一位玩家的手牌。你可选择其中一张牌放于其拥有的牌库顶部，若如此，下回合你不可进行【调查】。",
+          "activation": { "trigger": "while_active" },
+          "effects": [
+            {
+              "type": "record_master_directive",
+              "directive": "waver_investigate_hand_and_topdeck"
+            }
+          ],
+          "execution": { "mode": "host_adjudicated", "allowedOperations": [] }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "83ca54c7727cadd872bbc6d1ce5760ed8d6034d9",
+        "f1SourceReferences": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/韦伯·维尔维特.png",
+            "locator": "master.waver/韦伯·维尔维特"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.waver/s3"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[9].skills[2].text#line=1",
+            "sha256": "9863f1c6785fc3be2d26cd4314f8c31c8117115e75711a658f4af57acad23e04"
+          }
+        ],
+        "sourceTextSha256": "9863f1c6785fc3be2d26cd4314f8c31c8115e75711a658f4af57acad23e04",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s3",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": null,
+          "typeLabel": "被动"
+        }
+      },
+      "verification": { "implementationStatus": "host_adjudicated" }
+    }
+  ],
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": [
+        "../../Fate_Domination-开发版/images/masters/韦伯·维尔维特.png"
+      ]
+    }
+  ]
+}
