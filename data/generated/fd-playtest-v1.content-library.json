@@ -38306,17 +38306,40 @@
         "abilities": [
           {
             "id": "wodime.astrology",
-            "kind": "passive",
+            "kind": "forced_trigger",
             "printedClause": "秘密记录两个回合数并将【人理保障天球】加入你的技能区。",
             "activation": {
-              "trigger": "while_active"
+              "trigger": "after_controller_wins_battle"
             },
             "conditions": [],
             "targets": [],
             "effects": [
               {
-                "type": "record_master_directive",
-                "directive": "wodime_astrology_record_rounds_and_add_orb"
+                "type": "add_player_flag_number",
+                "target": "controller",
+                "key": "wodime_astrology_rounds",
+                "amount": 1
+              },
+              {
+                "type": "branch",
+                "branches": [
+                  {
+                    "if": {
+                      "type": "player_flag_number_at_least",
+                      "key": "wodime_astrology_rounds",
+                      "value": 2
+                    },
+                    "then": [
+                      {
+                        "type": "provision_skill_cards",
+                        "player": "controller",
+                        "targetDefinitionIds": [
+                          "master.wodime.skill.s2"
+                        ]
+                      }
+                    ]
+                  }
+                ]
               }
             ],
             "cost": [],
@@ -38331,17 +38354,11 @@
             "visibility": {},
             "execution": {
               "mode": "automatic",
-              "allowedOperations": [
-                "adjust-mana",
-                "adjust-victory-points",
-                "move-card",
-                "create-status",
-                "skip-ability"
-              ]
+              "allowedOperations": []
             }
           }
         ],
-        "mode": "host_adjudicated",
+        "mode": "automatic",
         "ownerId": "master.wodime",
         "playKind": "support",
         "destinationZone": "field",
@@ -38403,8 +38420,7 @@
         "mode": "host_adjudicated",
         "ownerId": "master.wodime",
         "playKind": "support",
-        "destinationZone": "field",
-        "initialZone": "skill"
+        "destinationZone": "field"
       },
       "master.wodime.skill.s3": {
         "id": "master.wodime.skill.s3",
@@ -58372,11 +58388,11 @@
       "master.waver": "master.waver.command-spell",
       "master.wodime": "master.wodime.command-spell"
     },
-    "definitionHash": "fb92df0ba0771774b9eab2c3b3afcfd027f251ed5c1ea7345f99a7f514a2cd79",
+    "definitionHash": "0304ac7c14fdc043f27e8ed672a411441d8d960d02bb7c32b7d41b58cb295ecc",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "fb92df0ba0771774b9eab2c3b3afcfd027f251ed5c1ea7345f99a7f514a2cd79"
+      "definitionHash": "0304ac7c14fdc043f27e8ed672a411441d8d960d02bb7c32b7d41b58cb295ecc"
     },
     "sourceMap": {
       "master.shinji.skill.ascension": {

@@ -55,7 +55,7 @@ import { clearTransientCardTransformState, getEffectiveCardAttributes } from './
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
 import { classifyManaContributionChoices, commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, installRulerSealMovementLock, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, resolveManaContributionPaymentPlan, rulerSealMovementLocked, situationForbidsAttribute, spendMana } from '../core/rule-overrides';
 import { node, nodes, str } from './loader';
-import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
+import { gameStartSkillProvisioningTargetDefinitionIds, isBattleWinRoundProvisioningSemantic, isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
 import { currentDeploymentBonus } from '../core/terrain-advantage';
 import {
@@ -375,6 +375,7 @@ import {
   installOpponentCloseToOneServerAuthority,
 } from './opponent-close-to-one-authority';
 export { isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
+export { isBattleWinRoundProvisioningSemantic } from './game-start-skill-provisioning';
 import {
   DataFlowValidationError,
   normalizeResolutionDataFlowNodes,
@@ -2483,7 +2484,9 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
-    (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
+    ((!isGameStartSkillProvisioningSemantic(a) && !isBattleWinRoundProvisioningSemantic(a)) ||
+      (isBattleWinRoundProvisioningSemantic(a) && event?.type !== 'after_controller_wins_battle') ||
+      !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
   if (isForbiddenCodeSealUse(s,sourceId,a)) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId) && !isAcceptedInjuryWarpRepairAbility(a)) return false;
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
@@ -2614,14 +2617,14 @@ function gameStartSkillProvisioningPreflight(s: GameState, sourceId: string, a: 
   const sourceDefinition = definition(s, sourceId) as ExecutableCardDefinition | undefined;
   if (source.ownerPlayerId !== controller.id || source.zone !== 'skill' || sourceDefinition?.cardType !== 'master_skill' ||
     sourceDefinition.ownerId !== controller.masterCardId) return false;
-  const targets = a.effects[0]?.targetDefinitionIds;
+  const targets = gameStartSkillProvisioningTargetDefinitionIds(a);
   if (!Array.isArray(targets)) return false;
   for (const definitionId of targets) {
     if (typeof definitionId !== 'string') return false;
     const target = runtime(s).pack.cards[definitionId] as ExecutableCardDefinition | undefined;
     const hasVerifiedPartialConsumer = target?.abilities.some((ability) =>
       ability.effects.some((effect) => effect.type === 'hinako_blood_song')) ?? false;
-    if (!target || (target.mode !== 'automatic' && !hasVerifiedPartialConsumer) || target.cardType !== 'master_skill' ||
+    if (!target || (target.mode !== 'automatic' && !(isBattleWinRoundProvisioningSemantic(a) && target.mode === 'host_adjudicated') && !hasVerifiedPartialConsumer) || target.cardType !== 'master_skill' ||
       target.ownerId !== controller.masterCardId || target.initialZone !== undefined) return false;
     const existing = s.cards.filter((candidate) => candidate.definitionId === definitionId);
     if (existing.length > 1 || (existing.length === 1 && !provisionedSkillCardIsValid(s, existing[0]!, controller.id))) return false;
@@ -2630,10 +2633,11 @@ function gameStartSkillProvisioningPreflight(s: GameState, sourceId: string, a: 
 }
 
 function provisionGameStartSkillCards(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
-  if (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, ctx.sourceCardId, a)) {
+  if ((!isGameStartSkillProvisioningSemantic(a) && !isBattleWinRoundProvisioningSemantic(a)) || !gameStartSkillProvisioningPreflight(s, ctx.sourceCardId, a)) {
     reject('resolution_failed', 'Unsupported game-start skill-provisioning semantic shape');
   }
-  const targets = a.effects[0]!.targetDefinitionIds as string[];
+  const targets = gameStartSkillProvisioningTargetDefinitionIds(a);
+  if (!targets) reject('resolution_failed', 'Missing skill-provisioning targets');
   for (const definitionId of targets) {
     if (s.cards.some((candidate) => candidate.definitionId === definitionId)) continue;
     const instanceId = nextId(s, 'provisioned-skill');
@@ -4556,7 +4560,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       break;
     }
     case 'add_player_flag_number': {
-      if (!exactRuleNodeKeys(effect, ['type', 'target', 'key', 'amount', 'lifecycle']) || effect.target !== 'controller' ||
+      if (Object.keys(effect).some((key) => !['type', 'target', 'key', 'amount', 'lifecycle'].includes(key)) || effect.target !== 'controller' ||
           !str(effect.key) || !Number.isSafeInteger(effect.amount))
         reject('unsupported', 'Structured add_player_flag_number shape is invalid');
       const prior = structuredFlagValue(s, ctx.controllerId, str(effect.key));
@@ -4565,6 +4569,13 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       const next = current + Number(effect.amount);
       if (!Number.isSafeInteger(next)) reject('invalid_state', 'Structured numeric player flag would exceed safe integer range');
       setStructuredFlag(s, ctx.controllerId, str(effect.key), next, structuredFlagLifecycle(effect.lifecycle));
+      break;
+    }
+    case 'provision_skill_cards': {
+      if (!isBattleWinRoundProvisioningSemantic(a) || ctx.event?.type !== 'after_controller_wins_battle' ||
+          !gameStartSkillProvisioningPreflight(s, ctx.sourceCardId, a))
+        reject('resolution_failed', 'Battle-win skill provisioning requires the accepted event contract');
+      provisionGameStartSkillCards(s, ctx, a);
       break;
     }
     case 'double_source_base_power_and_remove_after_battle': {
@@ -8350,7 +8361,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) {
     reject('resolution_failed', 'Unsupported game-start fixed set-mana semantic shape');
   }
-  if (isGameStartSkillProvisioningCandidate(a)) {
+  if (isGameStartSkillProvisioningSemantic(a)) {
     provisionGameStartSkillCards(s, ctx, a);
     return;
   }

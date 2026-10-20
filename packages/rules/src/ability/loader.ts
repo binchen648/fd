@@ -671,7 +671,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         issue(path, 'Unsupported source-location basic base-Power multiplier effect shape', abilityId);
       }
       if (['player_flag_equals', 'player_flag_number_at_least', 'player_flag_number_current_round', 'player_flag_number_not_current_round'].includes(str(n.type))) {
-        if (!/^conditions\[\d+\]$/.test(path)) issue(path, 'Structured player-flag condition is supported only as a direct ability condition', abilityId);
+        if (!/^conditions\[\d+\]$/.test(path) && path !== 'effects[1].branches[0].if') issue(path, 'Structured player-flag condition is supported only as a direct ability condition', abilityId);
         const key = str(n.key);
         if (!key) issue(path, 'Structured player-flag condition requires a nonempty key', abilityId);
         const keys = Object.keys(n);

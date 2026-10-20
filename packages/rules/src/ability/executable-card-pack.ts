@@ -4,7 +4,7 @@ import type {
 } from '@fd/content';
 
 import { loadAuthoringJson, node, nodes, str } from './loader';
-import { gameStartSkillProvisioningTargetDefinitionIds, isGameStartSkillProvisioningCandidate } from './game-start-skill-provisioning';
+import { gameStartSkillProvisioningTargetDefinitionIds, isBattleWinRoundProvisioningSemantic, isGameStartSkillProvisioningCandidate } from './game-start-skill-provisioning';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
 import { hasDefinitionVariantAttackMarker } from './definition-variant-battery-capability';
 import { sha256Hex } from './portable-sha256';
@@ -536,7 +536,7 @@ function validatedGameStartSkillProvisioningDeferrals(cards: Record<string, Exec
       }
       for (const definitionId of targets) {
         const target = cards[definitionId];
-        if (!target || target.id === source.id || (target.mode !== 'automatic' && !hasVerifiedPartialHinakoBloodSongConsumer(target)) || target.cardType !== 'master_skill' || target.ownerId !== source.ownerId) {
+        if (!target || target.id === source.id || (target.mode !== 'automatic' && !(isBattleWinRoundProvisioningSemantic(ability) && target.mode === 'host_adjudicated') && !hasVerifiedPartialHinakoBloodSongConsumer(target)) || target.cardType !== 'master_skill' || target.ownerId !== source.ownerId) {
           throw new Error(`Invalid game-start skill provisioning target ${definitionId}: ${source.id}#${ability.id}`);
         }
       }
