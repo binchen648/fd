@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 62,
+    "masters": 63,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -5257,6 +5257,127 @@
       "htmPath": "chm-extract/特维斯·I·皮斯曼.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/特维斯·I·皮斯曼.png",
       "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wallachia",
+      "displayName": "瓦拉几亚之夜",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/瓦拉几亚之夜.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/瓦拉几亚之夜.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wallachia.overview",
+      "displayName": "瓦拉几亚之夜",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/瓦拉几亚之夜.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/瓦拉几亚之夜.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wallachia.skill.ascension",
+      "displayName": "不休梦魇",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/瓦拉几亚之夜.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/瓦拉几亚之夜.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wallachia.skill.s1",
+      "displayName": "恐惧化身",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/瓦拉几亚之夜.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/瓦拉几亚之夜.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wallachia.skill.s2",
+      "displayName": "恐惧",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/瓦拉几亚之夜.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/瓦拉几亚之夜.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wallachia.skill.s3",
+      "displayName": "塔塔利",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/瓦拉几亚之夜.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/瓦拉几亚之夜.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wallachia.skill.s4",
+      "displayName": "疯狂",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/瓦拉几亚之夜.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/瓦拉几亚之夜.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wallachia.skill.s5",
+      "displayName": "黑暗",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/瓦拉几亚之夜.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/瓦拉几亚之夜.png",
+      "imageIndex": 6,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wallachia.skill.s6",
+      "displayName": "恶意",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/瓦拉几亚之夜.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/瓦拉几亚之夜.png",
+      "imageIndex": 7,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wallachia.skill.s7",
+      "displayName": "妄执",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/瓦拉几亚之夜.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/瓦拉几亚之夜.png",
+      "imageIndex": 8,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wallachia.skill.s8",
+      "displayName": "戏剧",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/瓦拉几亚之夜.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/瓦拉几亚之夜.png",
+      "imageIndex": 9,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

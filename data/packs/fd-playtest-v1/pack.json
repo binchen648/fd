@@ -100,7 +100,8 @@
                                  "data/authoring/masters/master.sion.json",
                                  "data/authoring/masters/master.tiamat.json",
                                  "data/authoring/masters/master.tokiomi.json",
-                                 "data/authoring/masters/master.twice.json"
+                                 "data/authoring/masters/master.twice.json",
+                                 "data/authoring/masters/master.wallachia.json"
                              ],
     "authoringMasterSupportFiles":  [
                                         "data/authoring/masters/master.shirou-emiya.json"
