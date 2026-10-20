@@ -804,6 +804,8 @@ export interface AbilityRuntime {
   wodimeGodLegacyActivation?: {
     sourceCardId: string; controllerId: PlayerId; abilityId: string; activatedRound: number; lifecycle: 'game';
   };
+  /** Stable physical event placement identities already provisioned for God Legacy. */
+  wodimeGodLegacyProcessedPlacementIds?: Record<string, true>;
   /** Owner-scoped typed food resources and once-per-round procurement authority. */
   shirouMealFoodByPlayer?: Record<PlayerId, { 肉: number; 蔬菜: number; 鱼: number }>;
   shirouMealProcurementRoundByPlayer?: Record<PlayerId, { round: number; attributes: string[] }>;

@@ -5722,7 +5722,8 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
       if (entry.amount === 2 && isAcceptedBloodlustAbility(ability) && isBloodlustActionEffect(ability.effects[0]!) && source.controllerPlayerId === entry.playerId) return true;
       if (entry.amount === 6 && isShirouMealMenuAbility(ability) && isShirouMealSourceAbility(s, source.instanceId, entry.playerId, ability)) return true;
       if (entry.amount >= 1 && entry.amount <= 3 && entry.abilityId === 'wodime.god-legacy' && ability.id === 'wodime.god-legacy' &&
-          source.definitionId === 'master.wodime.skill.s3' && source.controllerPlayerId === entry.playerId &&
+          source.definitionId === 'master.wodime.skill.s3' &&
+          s.abilityRuntime?.wodimeGodLegacyActivation?.controllerId === source.controllerPlayerId &&
           s.abilityRuntime?.wodimeGodLegacyActivation?.sourceCardId === source.instanceId) return true;
       if (isBoundOpponentRoundPowerAdjustmentValid(s, entry)) return true;
       if (linkedAuxiliaryRoundPowerAdjustmentRestoreValid(s, entry)) return true;

@@ -2,6 +2,7 @@ import type { GameState } from '../schema/game';
 import type { AbilityEvent, WodimeGodLegacyLocationState } from './types';
 import type { LocationId } from '../schema/location';
 import { terrainAdvantageAtLocation } from './terrain-advantage-override';
+import { grantMana } from '../core/rule-overrides';
 
 const SOURCE_DEFINITION = 'master.wodime.skill.s3';
 const SOURCE_ABILITY = 'wodime.god-legacy';
@@ -34,17 +35,22 @@ function ensureActivated(state: GameState): boolean {
   const r = runtime(state);
   r.wodimeGodLegacyByLocation ??= {};
   r.wodimeGodLegacyByPlayer ??= {};
+  r.wodimeGodLegacyProcessedPlacementIds ??= {};
   if (!r.wodimeGodLegacyActivation) {
     r.wodimeGodLegacyActivation = { sourceCardId: origin.cardId, controllerId: origin.playerId, abilityId: SOURCE_ABILITY, activatedRound: state.round.roundNumber, lifecycle: 'game' };
-  } else if (Object.keys(r.wodimeGodLegacyByLocation).length > 0) return true;
-  for (const placement of state.eventPlacements) {
+  }
+  for (const [index, placement] of state.eventPlacements.entries()) {
     if (placement.eventCardId !== ATLANTIS_EVENT) continue;
+    const placementId = placement.ruleInstanceId ?? `wodime-god-legacy:${placement.eventCardId}:${placement.locationId}:${index}`;
+    if (!placement.ruleInstanceId) placement.ruleInstanceId = placementId;
+    if (r.wodimeGodLegacyProcessedPlacementIds[placementId]) continue;
     const entry = r.wodimeGodLegacyByLocation[placement.locationId] ?? {
       locationId: placement.locationId, tokens: 0, sourceCardId: origin.cardId, abilityId: SOURCE_ABILITY,
       activatedRound: state.round.roundNumber, lifecycle: 'game' as const,
     };
     entry.tokens += 3;
     r.wodimeGodLegacyByLocation[placement.locationId] = entry;
+    r.wodimeGodLegacyProcessedPlacementIds[placementId] = true;
   }
   // The state is still authoritative even when no Hephaestus card is currently placed;
   // later event resolution may add a location entry through the same source contract.
@@ -108,7 +114,8 @@ export function isWodimeGodLegacyRuntimeStateValid(state: GameState): boolean {
   return Object.entries(r.wodimeGodLegacyByLocation).every(([id, entry]) => id === entry.locationId && locations.has(id) &&
     Number.isSafeInteger(entry.tokens) && entry.tokens >= 0 && typeof entry.sourceCardId === 'string' && entry.abilityId === SOURCE_ABILITY &&
     entry.lifecycle === 'game' && Number.isSafeInteger(entry.activatedRound) && entry.activatedRound >= 1 &&
-    state.cards.some((card) => card.instanceId === entry.sourceCardId && card.definitionId === SOURCE_DEFINITION));
+    state.cards.some((card) => card.instanceId === entry.sourceCardId && card.definitionId === SOURCE_DEFINITION)) &&
+    Object.keys(r.wodimeGodLegacyProcessedPlacementIds ?? {}).every((id) => typeof id === 'string' && id.length > 0);
 }
 
 export function wodimeGodLegacyActions(state: GameState, playerId: string): Array<{ type: 'wodime_god_legacy_action'; mode: 'power' | 'mana'; amount: number }> {
@@ -127,7 +134,10 @@ export function executeWodimeGodLegacyAction(state: GameState, playerId: string,
   const r = runtime(state); const tokens = r.wodimeGodLegacyByPlayer?.[playerId] ?? 0; const cost = mode === 'power' ? amount * 3 : amount * 4;
   if (tokens < cost) return false;
   r.wodimeGodLegacyByPlayer![playerId] = tokens - cost;
-  if (mode === 'mana') state.players.find((player) => player.id === playerId)!.mana += amount;
+  if (mode === 'mana') grantMana(state, playerId, amount, {
+    source: 'generic', controllerId: r.wodimeGodLegacyActivation!.controllerId,
+    sourceCardId: r.wodimeGodLegacyActivation!.sourceCardId, abilityId: SOURCE_ABILITY,
+  });
   else {
     r.roundPlayerPowerAdjustments ??= [];
     r.roundPlayerPowerAdjustments.push({ playerId, amount, round: state.round.roundNumber, sourceCardId: r.wodimeGodLegacyActivation!.sourceCardId, abilityId: SOURCE_ABILITY });

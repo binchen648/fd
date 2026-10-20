@@ -1394,6 +1394,8 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       typeof value.wodimeGodLegacyActivation.sourceCardId !== 'string' || typeof value.wodimeGodLegacyActivation.controllerId !== 'string' ||
       value.wodimeGodLegacyActivation.abilityId !== 'wodime.god-legacy' || !isRestoreSafeInteger(value.wodimeGodLegacyActivation.activatedRound, 1) ||
       value.wodimeGodLegacyActivation.lifecycle !== 'game')) return false;
+  if (value.wodimeGodLegacyProcessedPlacementIds !== undefined && (!isRestoreRecord(value.wodimeGodLegacyProcessedPlacementIds) ||
+      Object.values(value.wodimeGodLegacyProcessedPlacementIds).some((entry) => entry !== true))) return false;
   if (value.structuredRoundFlagKeysByPlayer !== undefined && !isRestoreStructuredRoundFlagKeys(value.structuredRoundFlagKeysByPlayer)) return false;
   if (value.deductionRecordsByPlayer !== undefined && (!isRestoreRecord(value.deductionRecordsByPlayer) || !Object.values(value.deductionRecordsByPlayer).every((entry) =>
       isRestoreRecord(entry) && typeof entry.definitionId === 'string' && DEDUCTION_RECORD_ATTRIBUTES.includes(entry.attribute as typeof DEDUCTION_RECORD_ATTRIBUTES[number]) && isRestoreSafeInteger(entry.recordedRound, 1)))) return false;

@@ -110,12 +110,33 @@ describe('Wodime frozen authoring archive', () => {
     expect((restored.state.abilityRuntime as any).wodimeGodLegacyByPlayer.p2).toBe(6);
     expect((restored.state.abilityRuntime as any).wodimeGodLegacyActivation).toMatchObject({ controllerId: 'p1', abilityId: 'wodime.god-legacy', lifecycle: 'game' });
     expect(isWodimeGodLegacyRuntimeStateValid(state)).toBe(true);
+    // A later Hephaestus placement is a new physical source and must add once;
+    // replaying the same event must not double-count it.
+    state.eventPlacements.push({ locationId: 'magic_workshop', eventCardId: 'event.wodime.atlantis.hephaestus', victoryPoints: 0, visibility: { scope: 'public' } });
+    rules.processAbilityEvent(state, { id: 'wodime-god-legacy-refresh', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:2', battleId: 'battle-legacy-2', resultId: 'result-legacy-2', battlefieldId: 'magic_workshop', battleParticipantIds: ['p2'], battleResult: { winners: ['p2'], loserIds: [] } });
+    rules.processAbilityEvent(state, { id: 'wodime-god-legacy-refresh-replay', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:2', battleId: 'battle-legacy-2', resultId: 'result-legacy-2', battlefieldId: 'magic_workshop', battleParticipantIds: ['p2'], battleResult: { winners: ['p2'], loserIds: [] } });
+    expect((state.abilityRuntime as any).wodimeGodLegacyByPlayer.p2).toBe(12);
+    expect(Object.keys((state.abilityRuntime as any).wodimeGodLegacyProcessedPlacementIds)).toHaveLength(4);
     state.round.activePhase = 'action'; state.round.prioritySeat = state.players.find((player) => player.id === 'p2')!.seat;
     expect(rules.projectAbilityState(state, 'p2').legalActions).toContainEqual({ type: 'wodime_god_legacy_action', mode: 'power', amount: 1 });
     expect(rules.dispatchAbilityCommand(state, 'p2', { type: 'wodime_god_legacy_action', mode: 'power', amount: 1 }).ok).toBe(true);
-    expect((state.abilityRuntime as any).wodimeGodLegacyByPlayer.p2).toBe(3);
+    expect((state.abilityRuntime as any).wodimeGodLegacyByPlayer.p2).toBe(9);
     expect((state.abilityRuntime as any).roundPlayerPowerAdjustments).toContainEqual(expect.objectContaining({ playerId: 'p2', amount: 1, abilityId: 'wodime.god-legacy' }));
-    expect(rules.dispatchAbilityCommand(state, 'p2', { type: 'wodime_god_legacy_action', mode: 'power', amount: 2 }).ok).toBe(false);
+    state.players.find((player) => player.id === 'p2')!.mana = 11;
+    state.abilityRuntime!.manaGainBlocked.push('p2');
+    expect(rules.dispatchAbilityCommand(state, 'p2', { type: 'wodime_god_legacy_action', mode: 'mana', amount: 1 }).ok).toBe(true);
+    expect(state.players.find((player) => player.id === 'p2')!.mana).toBe(11);
+    state.abilityRuntime!.manaGainBlocked = state.abilityRuntime!.manaGainBlocked.filter((id) => id !== 'p2');
+    state.eventPlacements.push({ locationId: 'shinto', eventCardId: 'event.wodime.atlantis.hephaestus', victoryPoints: 0, visibility: { scope: 'public' } });
+    rules.processAbilityEvent(state, { id: 'wodime-god-legacy-refresh-2', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:3', battleId: 'battle-legacy-3', resultId: 'result-legacy-3', battlefieldId: 'shinto', battleParticipantIds: ['p2'], battleResult: { winners: ['p2'], loserIds: [] } });
+    expect(rules.dispatchAbilityCommand(state, 'p2', { type: 'wodime_god_legacy_action', mode: 'mana', amount: 1 }).ok).toBe(true);
+    expect(state.players.find((player) => player.id === 'p2')!.mana).toBe(12);
+    expect(state.abilityRuntime!.manaGainedThisRound.byPlayer.p2).toBe(1);
+    (session as any).checkpoint('wodime-god-legacy-after-payer-action');
+    const payerRestored = restoreMatchSession(session.serializeSession(), { restorePackKind: 'production_executable' });
+    expect((payerRestored.state.abilityRuntime as any).wodimeGodLegacyByPlayer.p2).toBe(4);
+    expect(payerRestored.state.players.find((player) => player.id === 'p2')!.mana).toBe(12);
+    expect((payerRestored.state.abilityRuntime as any).roundPlayerPowerAdjustments).toContainEqual(expect.objectContaining({ playerId: 'p2', amount: 1, abilityId: 'wodime.god-legacy' }));
   });
 
   it('opens a private two-round game-start decision and provisions the orb', () => {
