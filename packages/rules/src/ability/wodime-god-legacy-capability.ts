@@ -21,7 +21,7 @@ function source(state: GameState): { cardId: string; playerId: string } | undefi
   for (const physical of state.cards) {
     if (physical.definitionId !== SOURCE_DEFINITION || physical.zone !== 'skill') continue;
     const owner = state.players.find((player) => player.id === physical.ownerPlayerId);
-    if (!owner || owner.status !== 'eliminated' || physical.ownerPlayerId !== physical.controllerPlayerId) continue;
+    if (!owner || physical.ownerPlayerId !== physical.controllerPlayerId) continue;
     const ability = runtime(state).pack.cards[physical.definitionId]?.abilities.find((entry) => entry.id === SOURCE_ABILITY);
     if (!ability) continue;
     return { cardId: physical.instanceId, playerId: owner.id };

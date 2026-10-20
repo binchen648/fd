@@ -8800,7 +8800,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
     r.locationEntryRoundByPlayer ??= {}; r.locationEntryRoundByPlayer[event.playerId] ??= {}; r.locationEntryRoundByPlayer[event.playerId]![event.locationId] = s.round.roundNumber;
   }
   settleWodimeGodLegacyEvent(s, event);
-  settleWodimeAtlantisEvent(s, event);
+  const wodimeAtlantisReplacement = settleWodimeAtlantisEvent(s, event);
   if (event.type === 'after_battle_result_determined' && event.battlefieldId && event.resultId && event.battlePhaseResolutionId && event.battleResult && Array.isArray(event.battleParticipantIds)) {
     const pending = r.pendingBattlefieldFortifications ?? []; const remaining = [];
     for (const entry of pending) {
@@ -8817,6 +8817,10 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   }
   if (!event.id) reject('invalid_event', 'Events require stable ids');
   r.processedEvents.push(event.id);
+  const replacementDepth = Number((event as AbilityEvent & { wodimeReplacementDepth?: number }).wodimeReplacementDepth ?? 0);
+  if (wodimeAtlantisReplacement && replacementDepth < 8) {
+    processEvent(s, { ...wodimeAtlantisReplacement, wodimeReplacementDepth: replacementDepth + 1 } as AbilityEvent);
+  }
   rememberTrustedBattleResultSnapshot(r, event);
   settleSionEvent(s, event);
   settleHakunoAnalysisHandoffs(s, event);
