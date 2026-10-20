@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 60,
+    "masters": 61,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -5135,6 +5135,83 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/提亚马特.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/提亚马特.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.tokiomi",
+      "displayName": "远坂时臣",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远坂时臣.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远坂时臣.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.tokiomi.generated.fireball",
+      "displayName": "火炎弹",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远坂时臣.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远坂时臣.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.tokiomi.generated.item",
+      "displayName": "道具",
+      "entityKind": "generated",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远坂时臣.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远坂时臣.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.tokiomi.overview",
+      "displayName": "远坂时臣",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/远坂时臣.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远坂时臣.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.tokiomi.skill.ascension",
+      "displayName": "赫须绅士的令印",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远坂时臣.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远坂时臣.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.tokiomi.skill.s1",
+      "displayName": "元素使",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远坂时臣.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远坂时臣.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.tokiomi.skill.s2",
+      "displayName": "粗心导师",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/远坂时臣.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/远坂时臣.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
       "issueCodes": []

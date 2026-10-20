@@ -98,7 +98,8 @@
                                  "data/authoring/masters/master.shishigou.json",
                                  "data/authoring/masters/master.sieg.json",
                                  "data/authoring/masters/master.sion.json",
-                                 "data/authoring/masters/master.tiamat.json"
+                                 "data/authoring/masters/master.tiamat.json",
+                                 "data/authoring/masters/master.tokiomi.json"
                              ],
     "authoringMasterSupportFiles":  [
                                         "data/authoring/masters/master.shirou-emiya.json"

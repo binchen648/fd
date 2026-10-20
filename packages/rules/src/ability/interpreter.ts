@@ -49,6 +49,7 @@ import {
 import { containsSiegPrivilegedNode, isAcceptedSiegAbility, isSiegBalmungFreePlayAbility, isSiegBalmungPenaltyAbility, isSiegDragonCommandAbility, isSiegGalvanismAbility, isSiegSyncState, isSiegSyncStrengthAbility, SIEG_BALMUNG_FREE_PLAY_EFFECT, SIEG_BALMUNG_PENALTY_EFFECT, SIEG_DRAGON_COMMAND_EFFECT, SIEG_SYNC_STATE_KEY, SIEG_SYNC_STRENGTH_EFFECT } from './sieg-capability';
 import { containsSionPrivilegedNode, isAcceptedSionAbility, isSionCoveredCard, resolveSionChoice, resolveSionEffect, settleSionEvent, sionCardPlayCommandSealCost, sionMagicAttackSuppressed, sionPowerBonus } from './sion-capability';
 import { containsTaigaPrivilegedNode, isAcceptedTaigaAbility, resolveTaigaEffect, taigaActive, taigaPowerBonus } from './taiga-capability';
+import { containsTokiomiPrivilegedNode, isAcceptedTokiomiAbility, resolveTokiomiEffect } from './tokiomi-capability';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
@@ -3812,6 +3813,10 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
   if (r.preventEffects && !unpreventable) { r.events.push({ type: 'effect_prevented', playerId: p.id }); return; }
   if (containsTaigaPrivilegedNode(effect)) {
     if (!isAcceptedTaigaAbility(a) || !resolveTaigaEffect(s, ctx, a, effect)) reject('resolution_failed', 'Taiga effect resolution failed');
+    return;
+  }
+  if (containsTokiomiPrivilegedNode(effect)) {
+    if (!isAcceptedTokiomiAbility(a) || !resolveTokiomiEffect(s, ctx, a, effect)) reject('resolution_failed', 'Tokiomi effect resolution failed');
     return;
   }
   switch (effect.type) {
