@@ -27,13 +27,12 @@ function sourceLive(s: GameState, ctx: EffectContext): boolean {
 }
 export function taigaActive(s: GameState, locationId: string | undefined): boolean {
   if (!locationId) return false;
-  return Object.values((runtime(s) as any).taigaDomesticCarnageByPlayer ?? {}).some((x: any) => x.locationId === locationId && sourceLive(s, { controllerId: x.controllerId, sourceCardId: x.sourceCardId, abilityId: x.abilityId } as EffectContext));
+  return Object.values((runtime(s) as any).taigaDomesticCarnageByPlayer ?? {}).some((x: any) => x.locationId === locationId && sourceLive(s, { controllerId: x.controllerId, sourceCardId: x.sourceCardId, abilityId: x.abilityId } as EffectContext)) ||
+    s.cards.some(card => card.definitionId === `${TAIGA}.skill.ascension` && card.zone === 'field' && card.ownerPlayerId === card.controllerPlayerId && runtime(s).cardState[card.instanceId]?.active === true && runtime(s).cardState[card.instanceId]?.faceDown !== true && s.players.some(p => p.id === card.controllerPlayerId && p.masterCardId === TAIGA));
 }
 export function taigaCompetitionReward(s: GameState, locationId: string): number | undefined {
   if (locationId !== 'magic_workshop' || !taigaActive(s, locationId)) return undefined;
-  const id = String((s as any).currentSituationCardId ?? '');
-  const mana: Record<string, number> = { 'situation.turning_point': 2, 'situation.battle_of_shinto': 2, 'situation.miyama_murderer': 2, 'situation.furious': 2, 'situation.calm_before_storm': 2, 'situation.perfect_flow': 2, 'situation.fate_night': 4, 'situation.gate_of_hell': 4, 'situation.heavens_cup': 6 };
-  return Number((s as any).currentSituation?.mana ?? (s as any).round?.currentSituationMana ?? mana[id] ?? 0);
+  return Number(s.currentSituationMana ?? 0);
 }
 export function taigaPowerBonus(s: GameState, playerId: string): number {
   const n = Number((runtime(s) as any).taigaTigerStampsByPlayer?.[playerId] ?? 0); return Number.isSafeInteger(n) ? Math.min(3, Math.max(0, n)) : 0;

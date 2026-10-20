@@ -200,6 +200,7 @@ export interface GameState {
   situationDiscardPile?: string[];
   burnedSituationCardIds?: string[];
   currentSituationCardId?: string;
+  currentSituationMana?: number;
   currentSituationModifiers?: CombatModifierRule[];
   eventPlacements: EventPlacementState[];
   /** Physical events removed by an ability, retained for later deck recycling. */

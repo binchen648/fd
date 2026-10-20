@@ -109,6 +109,7 @@ import { resolveBattlefield } from './core/combat-resolver';
 import { applyBattleScoring } from './core/scoring-resolver';
 import { projectBattleEliminationCandidatePlayerIds } from './core/elimination-resolver';
 import { canOccupyLocation, getEnabledLocations } from './core/map-engine';
+import { taigaActive } from './ability/taiga-capability';
 import { canViewFaceDownEvents, canViewOpponentDiscard, grantMana, rulerSealMovementLocked } from './core/rule-overrides';
 import { createSeededGameState } from './tools/seeded-state';
 
@@ -2167,6 +2168,7 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
     if (value[key] !== undefined && !isRestoreStringArray(value[key])) return false;
   }
   if (value.currentSituationCardId !== undefined && typeof value.currentSituationCardId !== 'string') return false;
+  if (value.currentSituationMana !== undefined && (typeof value.currentSituationMana !== 'number' || !Number.isSafeInteger(value.currentSituationMana) || value.currentSituationMana < 0)) return false;
   if (value.currentSituationModifiers !== undefined && (!Array.isArray(value.currentSituationModifiers) || !value.currentSituationModifiers.every(isRestoreRecord))) return false;
   if (!value.eventPlacements.every((entry) => isRestoreEventPlacement(entry, locationIds, playerIds, eventIds))) return false;
   const cardsByInstance = new Map(cards.map((card) => [card.instanceId as string, card] as const));
@@ -3680,6 +3682,7 @@ export class MatchSession {
       : climaxSituations[round - 9]?.id;
     const situation = situationById.get(situationId ?? '') ?? nonClimaxSituations[0]!;
     targetState.currentSituationCardId = situation.id;
+    targetState.currentSituationMana = situation.mana;
     const resolvedSituation = situationById.get(targetState.currentSituationCardId ?? situation.id) ?? situation;
     delete targetState.currentSituationModifiers;
     if (resolvedSituation.battleModifiers) targetState.currentSituationModifiers = resolvedSituation.battleModifiers;
@@ -3781,6 +3784,7 @@ export class MatchSession {
       eventReturned: returning,
     });
     delete this.state.currentSituationCardId;
+    delete this.state.currentSituationMana;
     delete this.state.currentSituationModifiers;
     this.state.eventPlacements = [];
     this.returnRoundEndAttachedCards();
@@ -4046,7 +4050,7 @@ export class MatchSession {
     const resolvedBattles: GameState['battleResults'] = rescueLedgerFrozen ? structuredClone(this.state.battleResults) : [];
     const battlefields = getEnabledLocations(this.state.map, this.state.locationConfig)
       .filter((location) => !((modeStateOf(this.state).closedLocations as string[] | undefined) ?? []).includes(location.id))
-      .filter((location) => location.tags.includes('battlefield') || location.rewardHooks.includes('battle_rewards'));
+      .filter((location) => location.tags.includes('battlefield') || location.rewardHooks.includes('battle_rewards') || taigaActive(this.state, location.id));
     if (!rescueLedgerFrozen) {
       for (const battlefield of battlefields) {
         if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length) break;

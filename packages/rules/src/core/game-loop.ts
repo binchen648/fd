@@ -19,6 +19,7 @@ import { assignInitialPlayerLocations, movePlayer } from "./movement";
 import { resolveBattlefield } from "./combat-resolver";
 import { resolveEffectsForWindow } from "./effect-resolver";
 import { getEnabledLocations } from "./map-engine";
+import { taigaActive } from "../ability/taiga-capability";
 import { advanceAbilityPhase, processAbilityEvent, processAbilitySystemEvent, recordAuthoritativeVictoryPointChange } from '../ability/interpreter';
 import type { ManaContributionChoice } from '../ability/types';
 import { copyBattleCloseDrawPlayServerAuthority } from '../ability/battle-close-draw-play-authority';
@@ -405,7 +406,7 @@ function runBattlePhase(state: GameState): GameState {
   const enabledLocations = getEnabledLocations(flushed.map, flushed.locationConfig);
   const contestedBattlefields = enabledLocations.filter((location) => {
     const supportsBattle =
-      location.rewardHooks.includes("battle_rewards") || location.tags.includes("battlefield");
+      location.rewardHooks.includes("battle_rewards") || location.tags.includes("battlefield") || taigaActive(flushed, location.id);
 
     if (!supportsBattle || !shouldResolveBattlefield(location.id, flushed.battleDeclarations)) {
       return false;
