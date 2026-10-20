@@ -1,0 +1,83 @@
+import type { GameState } from '../schema/game';
+import type { AbilityEvent } from './types';
+
+const SOURCE_DEFINITION = 'master.wodime.skill.s4';
+const SOURCE_ABILITY = 'wodime.atlantis';
+const ATLANTIS_PREFIX = 'event.wodime.atlantis.';
+
+function runtime(state: GameState) { return state.abilityRuntime!; }
+
+function sourceCard(state: GameState): { instanceId: string; controllerId: string } | undefined {
+  for (const card of state.cards) {
+    if (card.definitionId !== SOURCE_DEFINITION || card.zone !== 'skill') continue;
+    const ability = runtime(state).pack.cards[card.definitionId]?.abilities.find((entry) => entry.id === SOURCE_ABILITY);
+    if (ability && card.ownerPlayerId === card.controllerPlayerId) return { instanceId: card.instanceId, controllerId: card.controllerPlayerId };
+  }
+  return undefined;
+}
+
+function shuffleInPlace(items: string[], seed: number): void {
+  let x = (seed >>> 0) || 1;
+  for (let i = items.length - 1; i > 0; i--) {
+    x = (Math.imul(x, 1664525) + 1013904223) >>> 0;
+    const j = x % (i + 1);
+    [items[i], items[j]] = [items[j]!, items[i]!];
+  }
+}
+
+function isBattlefield(state: GameState, locationId: string): boolean {
+  return state.map.locations.some((location) => location.id === locationId && location.tags.includes('battlefield'));
+}
+
+function replacementPlacement(state: GameState, old: GameState['eventPlacements'][number], eventCardId: string): GameState['eventPlacements'][number] {
+  const ruleInstanceId = `wodime-atlantis-replacement:${state.round.roundNumber}:${old.locationId}:${eventCardId}:${runtime(state).revision}:${state.eventPlacements.length}`;
+  return { locationId: old.locationId, eventCardId, ruleInstanceId, visibility: { scope: 'public', revealReason: 'wodime_atlantis_replacement' } };
+}
+
+export function settleWodimeAtlantisEvent(state: GameState, event: AbilityEvent): void {
+  const source = sourceCard(state);
+  if (!source) return;
+  const r = runtime(state);
+  r.wodimeAtlantisHandledEventPlacementIds ??= {};
+  r.wodimeAtlantisPendingBattlefieldRemovalIds ??= {};
+  r.wodimeAtlantisConsumedEventPlacementIds ??= {};
+  if (event.type === 'event_activated') {
+    if (!event.revealedId?.startsWith(ATLANTIS_PREFIX) || !event.locationId || !event.sourceCardId) return;
+    const placement = state.eventPlacements.find((entry) => entry.ruleInstanceId === event.sourceCardId);
+    if (!placement || placement.eventCardId !== event.revealedId || placement.locationId !== event.locationId || r.wodimeAtlantisHandledEventPlacementIds[event.sourceCardId]) return;
+    r.wodimeAtlantisHandledEventPlacementIds[event.sourceCardId] = true;
+    if (isBattlefield(state, placement.locationId)) {
+      // Keep the placement through combat so its authored modifiers resolve; remove it at battle close.
+      r.wodimeAtlantisPendingBattlefieldRemovalIds[event.sourceCardId] = true;
+      return;
+    }
+    const index = state.eventPlacements.findIndex((entry) => entry.ruleInstanceId === event.sourceCardId);
+    if (index < 0) return;
+    const [removed] = state.eventPlacements.splice(index, 1);
+    r.wodimeAtlantisConsumedEventPlacementIds[event.sourceCardId] = true;
+    state.eventDeck ??= [];
+    state.eventDeck.push(removed!.eventCardId);
+    shuffleInPlace(state.eventDeck, state.round.roundNumber + index + r.revision);
+    const replacementId = state.eventDeck.shift();
+    if (replacementId) state.eventPlacements.push(replacementPlacement(state, removed!, replacementId));
+    return;
+  }
+  if (event.type === 'after_battle_ended' && event.battlefieldId) {
+    for (const placement of [...state.eventPlacements]) {
+      if (placement.locationId !== event.battlefieldId || !placement.ruleInstanceId || !r.wodimeAtlantisPendingBattlefieldRemovalIds[placement.ruleInstanceId]) continue;
+      state.eventPlacements = state.eventPlacements.filter((entry) => entry.ruleInstanceId !== placement.ruleInstanceId);
+      delete r.wodimeAtlantisPendingBattlefieldRemovalIds[placement.ruleInstanceId];
+      r.wodimeAtlantisConsumedEventPlacementIds[placement.ruleInstanceId] = true;
+    }
+  }
+}
+
+export function isWodimeAtlantisRuntimeStateValid(state: GameState): boolean {
+  const r = state.abilityRuntime;
+  if (!r) return true;
+  for (const record of [r.wodimeAtlantisHandledEventPlacementIds, r.wodimeAtlantisPendingBattlefieldRemovalIds, r.wodimeAtlantisConsumedEventPlacementIds]) {
+    if (record && Object.values(record).some((value) => value !== true)) return false;
+    if (record === r.wodimeAtlantisPendingBattlefieldRemovalIds && record && Object.keys(record).some((id) => !state.eventPlacements.some((placement) => placement.ruleInstanceId === id))) return false;
+  }
+  return true;
+}

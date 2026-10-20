@@ -806,6 +806,10 @@ export interface AbilityRuntime {
   };
   /** Stable physical event placement identities already provisioned for God Legacy. */
   wodimeGodLegacyProcessedPlacementIds?: Record<string, true>;
+  /** Idempotent event placements processed by Wodime's Atlantis replacement rule. */
+  wodimeAtlantisHandledEventPlacementIds?: Record<string, true>;
+  wodimeAtlantisPendingBattlefieldRemovalIds?: Record<string, true>;
+  wodimeAtlantisConsumedEventPlacementIds?: Record<string, true>;
   /** Owner-scoped typed food resources and once-per-round procurement authority. */
   shirouMealFoodByPlayer?: Record<PlayerId, { 肉: number; 蔬菜: number; 鱼: number }>;
   shirouMealProcurementRoundByPlayer?: Record<PlayerId, { round: number; attributes: string[] }>;

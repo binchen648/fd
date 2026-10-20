@@ -109,6 +109,7 @@ import { resolveBattlefield } from './core/combat-resolver';
 import { applyBattleScoring } from './core/scoring-resolver';
 import { projectBattleEliminationCandidatePlayerIds } from './core/elimination-resolver';
 import { isWodimeGodLegacyRuntimeStateValid } from './ability/wodime-god-legacy-capability';
+import { isWodimeAtlantisRuntimeStateValid } from './ability/wodime-atlantis-capability';
 import { canOccupyLocation, getEnabledLocations } from './core/map-engine';
 import { taigaActive } from './ability/taiga-capability';
 import { canViewFaceDownEvents, canViewOpponentDiscard, grantMana, rulerSealMovementLocked } from './core/rule-overrides';
@@ -1396,6 +1397,10 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       value.wodimeGodLegacyActivation.lifecycle !== 'game')) return false;
   if (value.wodimeGodLegacyProcessedPlacementIds !== undefined && (!isRestoreRecord(value.wodimeGodLegacyProcessedPlacementIds) ||
       Object.values(value.wodimeGodLegacyProcessedPlacementIds).some((entry) => entry !== true))) return false;
+  for (const key of ['wodimeAtlantisHandledEventPlacementIds', 'wodimeAtlantisPendingBattlefieldRemovalIds', 'wodimeAtlantisConsumedEventPlacementIds'] as const) {
+    const record = value[key];
+    if (record !== undefined && (!isRestoreRecord(record) || Object.values(record).some((entry) => entry !== true))) return false;
+  }
   if (value.structuredRoundFlagKeysByPlayer !== undefined && !isRestoreStructuredRoundFlagKeys(value.structuredRoundFlagKeysByPlayer)) return false;
   if (value.deductionRecordsByPlayer !== undefined && (!isRestoreRecord(value.deductionRecordsByPlayer) || !Object.values(value.deductionRecordsByPlayer).every((entry) =>
       isRestoreRecord(entry) && typeof entry.definitionId === 'string' && DEDUCTION_RECORD_ATTRIBUTES.includes(entry.attribute as typeof DEDUCTION_RECORD_ATTRIBUTES[number]) && isRestoreSafeInteger(entry.recordedRound, 1)))) return false;
@@ -2208,6 +2213,7 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
   if (!terrainAssignmentAuthorityConsistentForRestore(restoredState)) return false;
   if (!isDeferredAbilityRuntimeProvenanceValidForRestore(restoredState, { deferBloodlustContributionAuthority: true })) return false;
   if (!isWodimeGodLegacyRuntimeStateValid(restoredState)) return false;
+  if (!isWodimeAtlantisRuntimeStateValid(restoredState)) return false;
   if (!isPrintedManaPowerBonusStateValidForRestore(restoredState)) return false;
   if (!isMysticCodePaidCopyStateValidForRestore(restoredState)) return false;
   if (!isMysticCodeRecoveryArmsValidForRestore(restoredState)) return false;
