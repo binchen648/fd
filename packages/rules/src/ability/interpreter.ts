@@ -1508,6 +1508,10 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     result.value = 0;
     result.lines.push({ label: 'sion_magic_immunity_zero_final', value: 0 });
   }
+  if (wodimeCelestialSphereSuppressesAttack(s, sourceId) && result.value !== 0) {
+    result.value = 0;
+    result.lines.push({ label: 'wodime_celestial_sphere_other_attack_suppression', value: 0 });
+  }
   return result;
 }
 
@@ -2745,6 +2749,20 @@ function wodimeCelestialSpherePlayedSource(s: GameState, playerId: string, sourc
   return !!source && !!generator && generator.definitionId === 'master.wodime.skill.s1a' &&
     generator.ownerPlayerId === playerId && generator.controllerPlayerId === playerId &&
     Array.isArray(rounds) && rounds.includes(s.round.roundNumber);
+}
+
+function wodimeCelestialSphereSuppressesAttack(s: GameState, sourceId: string): boolean {
+  const attack = s.cards.find((candidate) => candidate.instanceId === sourceId);
+  if (!attack || attack.zone !== 'attack_area' || runtime(s).cardState[sourceId]?.active !== true ||
+      runtime(s).cardState[sourceId]?.faceDown === true || cardPlayClassification(s, sourceId).playKind !== 'attack') return false;
+  const rounds = (runtime(s) as any).wodimeAstrologyRoundsByPlayer?.[attack.controllerPlayerId];
+  if (!Array.isArray(rounds) || !rounds.includes(s.round.roundNumber)) return false;
+  return s.cards.some((candidate) => candidate.definitionId === 'master.wodime.skill.s2' &&
+    candidate.instanceId !== sourceId && candidate.ownerPlayerId === attack.controllerPlayerId &&
+    candidate.controllerPlayerId === attack.controllerPlayerId && ['skill', 'field'].includes(candidate.zone) &&
+    runtime(s).cardState[candidate.instanceId]?.active === true &&
+    runtime(s).cardState[candidate.instanceId]?.playedRound === s.round.roundNumber &&
+    wodimeCelestialSpherePlayedSource(s, attack.controllerPlayerId, candidate.instanceId));
 }
 
 function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean {

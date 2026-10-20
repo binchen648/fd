@@ -112,6 +112,15 @@ describe('Wodime frozen authoring archive', () => {
     expect(rules.calculateCardPower(state, 'wodime-other-attack').value).toBe(0);
     expect(rules.calculateCardPower(state, 'wodime-opponent-attack').value).toBeGreaterThan(0);
     expect(beforePower).toBeGreaterThan(0);
+    state.cards.push({ instanceId: 'wodime-late-attack', definitionId: attackDefinition.id, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'attack_area', visibility: { scope: 'public' } });
+    state.abilityRuntime!.cardState['wodime-late-attack'] = { active: true, faceDown: false, playedRound: 2, paidManaOnPlay: 0 };
+    expect(rules.calculateCardPower(state, 'wodime-late-attack').value).toBe(0);
+    state.abilityRuntime!.cardState[orb.instanceId]!.active = false;
+    expect(rules.calculateCardPower(state, 'wodime-late-attack').value).toBeGreaterThan(0);
+    state.abilityRuntime!.cardState[orb.instanceId]!.active = true;
+    state.round.roundNumber = 3;
+    expect(rules.calculateCardPower(state, 'wodime-late-attack').value).toBeGreaterThan(0);
+    state.round.roundNumber = 2;
     const forged = { instanceId: 'wodime-forged-orb', definitionId: 'master.wodime.skill.s2', ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: 'p1' } } as any;
     state.cards.push(forged);
     state.abilityRuntime!.cardState[forged.instanceId] = { active: false, faceDown: false, playedRound: 2 };
