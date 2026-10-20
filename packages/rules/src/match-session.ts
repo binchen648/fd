@@ -1090,6 +1090,7 @@ function isRestoreCardRuntimeState(value: unknown): boolean {
       (typeof value.paidManaOnPlay === 'number' && Number.isFinite(value.paidManaOnPlay))) &&
     (value.playManaContributions === undefined || (Array.isArray(value.playManaContributions) && value.playManaContributions.every((entry) =>
       isRestoreRecord(entry) && hasExactRestoreKeys(entry, ['playerId','amount']) && typeof entry.playerId === 'string' && isRestoreSafeInteger(entry.amount, 1)))) &&
+    (value.markers === undefined || isRestoreStringArray(value.markers)) &&
     (value.reversed === undefined || typeof value.reversed === 'boolean') &&
     (value.attributeOverrides === undefined || isRestoreStringArray(value.attributeOverrides)) &&
     (value.basePowerMultiplier === undefined || value.basePowerMultiplier === 2) &&

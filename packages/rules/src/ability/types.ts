@@ -514,6 +514,8 @@ export interface SafeEvent {
 }
 export interface CardRuntimeState {
   active: boolean; faceDown: boolean; playedRound: number; paidManaOnPlay?: number;
+  /** Generic persistent card markers owned by authenticated rule consumers. */
+  markers?: string[];
   /** Exact linked-player mana contributions consumed by this physical play. */
   playManaContributions?: Array<{ playerId: PlayerId; amount: number }>;
   reversed?: boolean; attributeOverrides?: string[];
@@ -926,7 +928,8 @@ export interface DeployPlayerAction { type: 'deploy_player'; locationId: string 
 export interface TokiomiSetBurningMarkerAction { type: 'set_tokiomi_burning_marker'; cardInstanceId: string }
 export interface TokiomiRemoveBurningMarkerAction { type: 'remove_tokiomi_burning_marker'; cardInstanceId: string }
 export type LegalAction = PlayCardAction | StageAttackCardAction | ConfirmStagedAttackAction | CancelStagedAttackAction |
-  ActivateAbilityAction | ChooseTargetAction | ResolveResponseAction | DeclineWindowAction | DeployPlayerAction;
+  ActivateAbilityAction | ChooseTargetAction | ResolveResponseAction | DeclineWindowAction | DeployPlayerAction |
+  TokiomiSetBurningMarkerAction | TokiomiRemoveBurningMarkerAction;
 export type AbilityCommand = PlayCardAction | (ActivateAbilityAction & { variables?: Record<string, number> }) |
   { type: 'choose_target'; decisionId: string; selectedIds: string[] } | ResolveResponseAction | DeclineWindowAction |
   { type: 'pass'; windowId: string } | DeployPlayerAction | StageAttackCardAction | ConfirmStagedAttackAction | CancelStagedAttackAction |
