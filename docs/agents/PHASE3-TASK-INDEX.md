@@ -10099,3 +10099,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-20-p3-a-owner-tokiomi-migration-acceptance-synchronization.md`.
 
 This synchronization does not merge PR `#640` or prior open PRs. The next owner is derived mechanically as `master.twice` (three frozen skills), released only from this synchronization frontier.
+
+## TASK P3-S-OWNER-TWICE-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly two skills for `master.twice`
+
+Exact accepted review:
+
+- PR `#641`, exact Base `315f7de5adde0ea4f918260967f8fbcdae8212e4`;
+- accepted Candidate `a6a573e816015c2e69fa915d2051541c92fad00f`;
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from the separated Reviewer;
+- reviewer evidence: `E:\Codex\FD\.fd-takeover-audit-20261018\FD-TWICE-REVIEW-a6a573e8-20261020.md`.
+
+Frozen owner scope is exactly two identities: `master.twice.skill.ascension` and `.s1`.
+
+The accepted Candidate preserves frozen text and three source hashes, materializes canonical authoring and active-pack/generated evidence, and adds focused regression coverage. Both semantic effects remain explicitly `HOST_ADJUDICATED` because no generic runtime contract exists; no unsupported private action path is claimed.
+
+Formal A-sync accounting:
+
+- exact auditable frontier before this transaction: `362/944`, remaining `582`;
+- exact owner increment: `+2`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`364/944`**, remaining **`580`**;
+- report: `docs/reports/2026-10-20-p3-a-owner-twice-migration-acceptance-synchronization.md`.
+
+This synchronization does not merge PR `#641` or prior open PRs. The next owner is derived mechanically from this synchronization frontier.
