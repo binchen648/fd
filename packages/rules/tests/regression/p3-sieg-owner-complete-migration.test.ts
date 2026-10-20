@@ -2,8 +2,9 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { createSeededGameState } from '../../src/tools/seeded-state';
 import { loadAuthoringJson } from '../../src/ability/loader';
-import { advanceAbilityPhase, calculateCardPower, createAbilitySession, dispatchAbilityCommand, initializeAbilityRuntime, playAbilityCardBatch, processAbilityEvent } from '../../src/ability/interpreter';
+import { advanceAbilityPhase, calculateCardPower, createAbilitySession, dispatchAbilityCommand, getLegalActions, initializeAbilityRuntime, playAbilityCardBatch, processAbilityEvent } from '../../src/ability/interpreter';
 import { persistentExtraAttackAllowance, spendMana } from '../../src/core/rule-overrides';
+import { SIEG_SYNC_STATE_KEY } from '../../src/ability/sieg-capability';
 import type { AuthoringCard } from '../../src/ability/types';
 import type { GameState } from '../../src/schema/game';
 
@@ -36,9 +37,10 @@ describe('P3 owner-complete master.sieg', () => {
     state.abilityRuntime!.pack.cards[basicDef.id] = basicDef;
     const basic = add(state, basicDef.id, 'p1', 'attack_area', true);
     expect(calculateCardPower(state, basic).value).toBe(2);
-    expect(dispatchAbilityCommand(state, 'p1', { type: 'set_sieg_sync_state', providerCardInstanceId: asc, active: true }).ok).toBe(true);
+    // Trusted-state fixture: no player-facing rule currently defines how 【同调】 begins.
+    state.abilityRuntime!.structuredPlayerFlagsByPlayer!.p1 = { [SIEG_SYNC_STATE_KEY]: true };
     expect(calculateCardPower(state, basic).value).toBe(5);
-    expect(dispatchAbilityCommand(state, 'p1', { type: 'set_sieg_sync_state', providerCardInstanceId: asc, active: false }).ok).toBe(true);
+    delete state.abilityRuntime!.structuredPlayerFlagsByPlayer!.p1![SIEG_SYNC_STATE_KEY];
     expect(calculateCardPower(state, basic).value).toBe(2);
   });
 
@@ -48,8 +50,8 @@ describe('P3 owner-complete master.sieg', () => {
     const basicDef: AuthoringCard = { id: 'fixture.sieg.basic.provider', name: 'fixture', cardType: 'basic_attack', cardFace: { attributes: ['力量'], cost: 0, basePower: 2 }, playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], abilities: [], mode: 'automatic' };
     state.abilityRuntime!.pack.cards[basicDef.id] = basicDef;
     const basic = add(state, basicDef.id, 'p1', 'attack_area', true);
-    expect(dispatchAbilityCommand(state, 'p2', { type: 'set_sieg_sync_state', providerCardInstanceId: asc, active: true }).ok).toBe(false);
-    expect(dispatchAbilityCommand(state, 'p1', { type: 'set_sieg_sync_state', providerCardInstanceId: asc, active: true }).ok).toBe(true);
+    expect(getLegalActions(state, 'p1').some((action) => (action as { type: string }).type === 'set_sieg_sync_state')).toBe(false);
+    state.abilityRuntime!.structuredPlayerFlagsByPlayer!.p1 = { [SIEG_SYNC_STATE_KEY]: true };
     expect(calculateCardPower(state, basic).value).toBe(5);
     state.abilityRuntime!.cardState[asc]!.active = false;
     expect(calculateCardPower(state, basic).value).toBe(2);
@@ -59,10 +61,11 @@ describe('P3 owner-complete master.sieg', () => {
 
     state.cards.find((card) => card.instanceId === asc)!.ownerPlayerId = 'p1';
     state.abilityRuntime!.cardState[asc]!.active = true;
-    state.abilityRuntime!.structuredPlayerFlagsByPlayer!.p1 = {};
+    state.abilityRuntime!.structuredPlayerFlagsByPlayer!.p1 = { [SIEG_SYNC_STATE_KEY]: true };
     const isolated = createAbilitySession(state);
-    expect(isolated.dispatch('p1', { type: 'set_sieg_sync_state', providerCardInstanceId: asc, active: true }).ok).toBe(true);
-    expect(state.abilityRuntime!.structuredPlayerFlagsByPlayer!.p1?.__fd_sieg_sync_active).toBeUndefined();
+    const selfServiceAttempt = isolated.dispatch('p1', { type: 'set_sieg_sync_state', providerCardInstanceId: asc, active: false } as any);
+    expect(selfServiceAttempt.ok).toBe(false);
+    expect(state.abilityRuntime!.structuredPlayerFlagsByPlayer!.p1?.[SIEG_SYNC_STATE_KEY]).toBe(true);
   });
 
   it('keeps the overdrive mana threshold exact at 10/11 across a new round', () => {
