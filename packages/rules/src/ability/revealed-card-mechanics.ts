@@ -1,5 +1,6 @@
 import type { GameState } from '../schema/game';
 import type { AuthoringAbility, RuleNode } from './types';
+import { shishigouBaseAbilityForBasic } from './shishigou-necromancy-capability';
 
 export const GRANTED_BASIC_DOUBLE_REMOVE_ABILITY_ID = 'granted-basic-double-base-remove-after-battle';
 
@@ -132,5 +133,6 @@ export function effectiveAbilitiesForPhysicalCard(state: GameState, cardInstance
   const authored = card && runtime?.pack.cards[card.definitionId]?.abilities;
   if (!authored) return [];
   const granted = grantedBasicDoubleRemoveAbility(state, cardInstanceId);
-  return granted ? [...authored, granted] : authored;
+  const shishigou = shishigouBaseAbilityForBasic(state, cardInstanceId);
+  return [...authored, ...(granted ? [granted] : []), ...(shishigou ? [shishigou] : [])];
 }

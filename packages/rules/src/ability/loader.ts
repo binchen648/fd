@@ -10,6 +10,11 @@ import { containsShirouMealPrivilegedNode, isAcceptedShirouMealAbility,
   SHIROU_MEAL_ASCENSION_EFFECT, SHIROU_MEAL_ASCENSION_ROUND_END_EFFECT, SHIROU_MEAL_PROCUREMENT_EFFECT,
   SHIROU_MEAL_MENU_EFFECT, SHIROU_MEAL_GLUTTONY_EFFECT } from './shirou-meal-capability';
 import {
+  SHISHIGOU_BASE_ACTIVATE_EFFECT, SHISHIGOU_CORPSE_REVEAL_EFFECT, SHISHIGOU_CORPSE_REMOVE_ATTACK_EFFECT,
+  SHISHIGOU_STRENGTH_EFFECT, SHISHIGOU_AGILITY_EFFECT, SHISHIGOU_MAGIC_EFFECT, SHISHIGOU_SPECIAL_EFFECT,
+  containsShishigouPrivilegedNode, isAcceptedShishigouAbility,
+} from './shishigou-necromancy-capability';
+import {
   isRulerSealBindingCandidate, isRulerSealBindingSemantic,
   isRulerSealUseCandidate, isRulerSealUseSemantic,
 } from './ruler-seal';
@@ -303,6 +308,7 @@ function isAcceptedMagicResistanceIndependentModifierLifecycle(rawAbility: RuleN
     Object.keys(modifier).every((key) => ['id', 'printedClause', 'type', 'operation', 'rule', 'scope', 'value', 'lifecycle'].includes(key));
 }
 const supportedTypes = new Set([
+  'shishigou_ascension',
   'controller_alone_at_battlefield', 'claim_and_discard_location_events', 'any_enabled_location',
   'skill_zone_mana_at_least', 'played_with_basic_attack', 'draw_cards', 'play_selected_cards', 'base_power_at_most',
   'reveal_information', 'set_zone_visibility', 'look_at_deck_top', 'move_card', 'move_all_remaining', 'discard_random_owned_hand', 'grant_played_attacks_printed_mana_power', 'private_deck_top_choice', 'mystic_code_switch', 'mystic_code_expire_on_event', 'mystic_code_command_seal_limit', 'mystic_code_battle_recovery', 'mystic_code_recon_escape', 'mystic_code_regalia', 'mystic_code_battle_loss_vp',
@@ -378,6 +384,8 @@ const supportedTypes = new Set([
   'shirou_emiya_basic_power_bonus', 'shirou_emiya_climax_power_bonus', 'shirou_emiya_first_elimination_continue',
   SHIROU_MEAL_ASCENSION_EFFECT, SHIROU_MEAL_ASCENSION_ROUND_END_EFFECT, SHIROU_MEAL_PROCUREMENT_EFFECT,
   SHIROU_MEAL_MENU_EFFECT, SHIROU_MEAL_GLUTTONY_EFFECT,
+  SHISHIGOU_BASE_ACTIVATE_EFFECT, SHISHIGOU_CORPSE_REVEAL_EFFECT, SHISHIGOU_CORPSE_REMOVE_ATTACK_EFFECT,
+  SHISHIGOU_STRENGTH_EFFECT, SHISHIGOU_AGILITY_EFFECT, SHISHIGOU_MAGIC_EFFECT, SHISHIGOU_SPECIAL_EFFECT,
   'hinako_blood_song',
   'draw_from_independent_deck', 'activate_card_by_id', 'replace_card_in_deck', 'return_card_by_definition',
   'movement_rule_override', 'deployment_rule_override', 'play_source_card',
@@ -1016,6 +1024,13 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (containsShirouMealPrivilegedNode(candidateAbility) &&
           !(rootId === 'master.shirou-meal' && owner.type === 'master' && owner.id === rootId && cardId.startsWith('master.shirou-meal.skill.'))) {
         issue('shirouMeal.owner', 'Shirou Meal owner mechanics require the canonical master.shirou-meal owner', id);
+      }
+      if (containsShishigouPrivilegedNode(candidateAbility) && !isAcceptedShishigouAbility(candidateAbility)) {
+        issue('shishigou.gateway', 'Shishigou Necromancy mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsShishigouPrivilegedNode(candidateAbility) &&
+          !(rootId === 'master.shishigou' && owner.type === 'master' && owner.id === rootId && cardId.startsWith('master.shishigou.skill.'))) {
+        issue('shishigou.owner', 'Shishigou mechanics require the canonical master.shishigou owner', id);
       }
       if (containsCommanderLifecyclePrivilegedNode(candidateAbility) &&
           !isAcceptedCommanderLifecyclePrivilegedAbility(candidateAbility)) {

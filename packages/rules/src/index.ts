@@ -73,3 +73,4 @@ export * from './ability/definition-declaration-deck-capability';
 export * from './ability/definition-variant-battery-capability';
 export * from './ability/shirou-emiya-capability';
 export * from './ability/shirou-meal-capability';
+export * from './ability/shishigou-necromancy-capability';

@@ -783,6 +783,8 @@ export interface AbilityRuntime {
   shirouMealProcurementRoundByPlayer?: Record<PlayerId, { round: number; attributes: string[] }>;
   /** One-shot protection consumed by the next automatic discard-pile recycle shuffle. */
   shirouMealProtectedNextShuffleByPlayer?: Record<PlayerId, { sourceCardId: string; abilityId: string }>;
+  /** Physical cards removed by Shishigou's corpse refrigeration; face-up reveal is one-shot. */
+  shishigouCorpseRemovedCardIds?: string[];
   /** Round marker for flags whose authored lifecycle is exactly this_round. */
   structuredRoundFlagKeysByPlayer?: Record<PlayerId, Record<string, number>>;
   /** Server-owned one-per-player deduction record selected from exact outside-game marker definitions. */

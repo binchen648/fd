@@ -37,6 +37,15 @@ import { containsShirouMealPrivilegedNode, isAcceptedShirouMealAbility, isShirou
   isShirouMealProcurementAbility, isShirouMealAscensionAbility, shirouMealFoodPlayCost,
   shirouMealMenuChoices, resolveShirouMealAbility, applyShirouMealPower, shuffleOwnedDeckForShirouMeal,
   canShirouMealProcurement, shirouMealTotalFood, spendAnyShirouMealFood, isShirouMealSourceAbility } from './shirou-meal-capability';
+import {
+  SHISHIGOU_BASE_ACTIVATE_EFFECT, SHISHIGOU_CORPSE_REVEAL_EFFECT, SHISHIGOU_CORPSE_REMOVE_ATTACK_EFFECT,
+  SHISHIGOU_STRENGTH_EFFECT, SHISHIGOU_AGILITY_EFFECT, SHISHIGOU_MAGIC_EFFECT, SHISHIGOU_SPECIAL_EFFECT,
+  SHISHIGOU_CORPSE_TARGET_ID, SHISHIGOU_FACE_DOWN_ATTACK_TARGET_ID, SHISHIGOU_LOCATION_TARGET_ID, SHISHIGOU_POWER_TARGET_ID,
+  containsShishigouPrivilegedNode, isAcceptedShishigouAbility, isShishigouBaseActivationAbility, isShishigouBaseGrantedAbility, isShishigouCorpseRevealAbility,
+  isShishigouCorpseRemoveAttackAbility, isShishigouStrengthAbility, isShishigouAgilityAbility, isShishigouMagicAbility,
+  isShishigouSpecialAbility, isShishigouNecromancyAbility, shishigouBaseAbilityForBasic, shishigouCorpseCardIds,
+  resolveShishigouAbility, shishigouNecromancyTarget, markShishigouCorpseRemoval, resolveShishigouStrength, resolveShishigouMagic,
+} from './shishigou-necromancy-capability';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
@@ -1112,7 +1121,7 @@ function context(s: GameState, sourceCardId: string, abilityId: string, event?: 
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-    cardState: {}, extraPlayerPresences: [], multiPresenceLastBattleLossRoundByPlayer: {}, locationMarkers: {}, roundDefinitionAttributeReplacements: {}, sealedCardBindings: {}, armedSealedCardActions: [], sealedCardReplays: {}, recordedRemovedCards: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, battleLossIgnoreRoundByPlayer: {}, shirouMealFoodByPlayer: {}, shirouMealProcurementRoundByPlayer: {}, shirouMealProtectedNextShuffleByPlayer: {},
+    cardState: {}, extraPlayerPresences: [], multiPresenceLastBattleLossRoundByPlayer: {}, locationMarkers: {}, roundDefinitionAttributeReplacements: {}, sealedCardBindings: {}, armedSealedCardActions: [], sealedCardReplays: {}, recordedRemovedCards: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, battleLossIgnoreRoundByPlayer: {}, shirouMealFoodByPlayer: {}, shirouMealProcurementRoundByPlayer: {}, shirouMealProtectedNextShuffleByPlayer: {}, shishigouCorpseRemovedCardIds: [],
     startingDeckSizeByPlayer: Object.fromEntries(s.players.map((candidate) => [candidate.id, s.cards.filter((entry) => entry.ownerPlayerId === candidate.id && entry.zone === 'deck').length])),
     cardPlayCountByInstance: {}, grantedPerGamePlayLimitCardIds: [], grantedPerGamePlayLimitBaselineByCardId: {},
     ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [],
@@ -1524,6 +1533,9 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
   }
   if (target.type === 'card_instance') {
     const sourceAbility = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+    if (isShishigouCorpseRevealAbility(sourceAbility) && target.id === SHISHIGOU_CORPSE_TARGET_ID) {
+      return shishigouCorpseCardIds(s, ctx.controllerId);
+    }
     if (target.id === 'other_fist' && isRoundCommitmentFistDoubleAbility(sourceAbility)) {
       return roundCommitmentFistDoubleCandidateIds(s, ctx.controllerId, ctx.sourceCardId);
     }
@@ -2330,6 +2342,16 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsShirouEmiyaPrivilegedNode(a) && !isAcceptedShirouEmiyaAbility(a)) return false;
   if (containsShirouMealPrivilegedNode(a) && !isAcceptedShirouMealAbility(a)) return false;
   if (containsShirouMealPrivilegedNode(a) && !isShirouMealSourceAbility(s, sourceId, card(s, sourceId).controllerPlayerId, a)) return false;
+  if (containsShishigouPrivilegedNode(a) && !isAcceptedShishigouAbility(a)) return false;
+  if (containsShishigouPrivilegedNode(a) && isShishigouNecromancyAbility(a)) return false;
+  if (isShishigouBaseGrantedAbility(a) && !shishigouBaseAbilityForBasic(s, sourceId)) return false;
+  if (isShishigouCorpseRevealAbility(a) && shishigouCorpseCardIds(s, card(s, sourceId).controllerPlayerId).length === 0) return false;
+  if (isShishigouCorpseRemoveAttackAbility(a) && (player(s, card(s, sourceId).controllerPlayerId).locationId !== 'magic_workshop' ||
+      candidates(s, context(s, sourceId, a.id, event), a.targets[0]!).length === 0)) return false;
+  if (isShishigouMagicAbility(a)) {
+    const location = card(s, sourceId).controllerPlayerId && player(s, card(s, sourceId).controllerPlayerId).locationId;
+    if (!location || terrainAdvantageAtLocation(s, card(s, sourceId).controllerPlayerId, location as LocationId) <= 0) return false;
+  }
   if (isShirouMealMenuAbility(a) && (shirouMealMenuChoices(s, card(s, sourceId).controllerPlayerId).length === 0 ||
       card(s, sourceId).zone !== 'field' || runtime(s).cardState[sourceId]?.active !== true)) return false;
   if (isShirouMealProcurementAbility(a) && !canShirouMealProcurement(s, card(s, sourceId).controllerPlayerId)) return false;
@@ -7432,6 +7454,78 @@ function stageCombatOpponentPowerVpReward(s: GameState, ctx: EffectContext, a: A
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (containsShishigouPrivilegedNode(a)) {
+    if (!isAcceptedShishigouAbility(a)) reject('resolution_failed', 'Unsupported Shishigou Necromancy semantic');
+    const pending = findPendingTarget(s, ctx, a, effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    // The authored ascension is a passive marker consumed by the dynamic
+    // basic-card grant; it has no standalone resolution. The generated basic
+    // ability is the only base activation that enters the shared handler.
+    if (isShishigouBaseActivationAbility(a)) return;
+    if (isShishigouBaseGrantedAbility(a)) {
+      const resolved = resolveShishigouAbility(s, ctx, a);
+      if (!resolved || !resolved.activate) reject('no_legal_target', 'No matching Necromancy skill is available');
+      executeAbility(s, { controllerId: ctx.controllerId, sourceCardId: resolved.activate.cardId, abilityId: resolved.activate.abilityId, variables: {}, selections: {} });
+      return;
+    }
+    if (isShishigouCorpseRevealAbility(a)) {
+      const resolved = resolveShishigouAbility(s, ctx, a);
+      if (!resolved) reject('invalid_target', 'Corpse target is no longer eligible');
+      const revealed = resolved.targetCardId!;
+      const attrs = getEffectiveCardAttributes(s, revealed);
+      const target = attrs.find((value) => ['力量', '迅捷', '魔术', '特殊'].includes(value));
+      if (target) {
+        const activation = shishigouNecromancyTarget(s, ctx.controllerId, target);
+        if (activation) executeAbility(s, { controllerId: ctx.controllerId, sourceCardId: activation.cardId, abilityId: activation.abilityId, variables: {}, selections: {} });
+      }
+      runtime(s).events.push({ type: 'shishigou_corpse_revealed', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: revealed });
+      return;
+    }
+    if (isShishigouCorpseRemoveAttackAbility(a)) {
+      const target = ctx.selections[SHISHIGOU_FACE_DOWN_ATTACK_TARGET_ID]?.[0];
+      if (!target) reject('invalid_target', 'A face-down controlled attack is required');
+      const physical = s.cards.find((entry) => entry.instanceId === target);
+      if (!physical || physical.controllerPlayerId !== ctx.controllerId || physical.zone !== 'attack_area' || runtime(s).cardState[target]?.faceDown !== true) reject('invalid_target', 'Face-down attack target is no longer eligible');
+      moveCard(s, target, 'removed_from_game');
+      runtime(s).cardState[target]!.faceDown = true;
+      physical.visibility = { scope: 'owner_only', ownerPlayerId: ctx.controllerId };
+      markShishigouCorpseRemoval(s, target);
+      runtime(s).events.push({ type: 'shishigou_corpse_attack_removed', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: target });
+      return;
+    }
+    if (isShishigouStrengthAbility(a)) {
+      const locationId = ctx.selections[SHISHIGOU_LOCATION_TARGET_ID]?.[0];
+      if (!locationId) reject('invalid_target', 'Strength Necromancy requires a battlefield');
+      resolveShishigouStrength(s, ctx.controllerId, locationId, (destination) => {
+        moveControllerResolutionPresence(s, ctx, destination);
+      }, ctx.sourceCardId);
+      runtime(s).events.push({ type: 'shishigou_strength_resolved', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, locationId, requestedDelta: 2 } as any);
+      return;
+    }
+    if (isShishigouAgilityAbility(a)) {
+      const top = s.cards.find((entry) => entry.ownerPlayerId === ctx.controllerId && entry.controllerPlayerId === ctx.controllerId && entry.zone === 'deck');
+      if (!top) reject('no_legal_target', 'Agility Necromancy requires a card on top of the deck');
+      playBatch(s, ctx.controllerId, [{ type: 'play_card', cardInstanceId: top.instanceId }], 'effect', false, ['deck']);
+      runtime(s).events.push({ type: 'shishigou_agility_resolved', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: top.instanceId });
+      return;
+    }
+    if (isShishigouMagicAbility(a)) {
+      const locationId = player(s, ctx.controllerId).locationId;
+      if (!locationId) reject('invalid_state', 'Magic Necromancy requires a location');
+      resolveShishigouMagic(s, ctx.controllerId, locationId, ctx.sourceCardId);
+      runtime(s).events.push({ type: 'shishigou_magic_resolved', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, locationId, multiplier: 2 } as any);
+      return;
+    }
+    if (isShishigouSpecialAbility(a)) {
+      const target = ctx.selections[SHISHIGOU_POWER_TARGET_ID]?.[0];
+      const physical = target && s.cards.find((entry) => entry.instanceId === target);
+      const attrs = target ? getEffectiveCardAttributes(s, target) : [];
+      if (!physical || physical.ownerPlayerId !== ctx.controllerId || physical.controllerPlayerId !== ctx.controllerId || physical.zone !== 'attack_area' || runtime(s).cardState[target]?.active !== true || runtime(s).cardState[target]?.faceDown === true || !attrs.some((value) => value === '力量' || value === '迅捷')) reject('invalid_target', 'Special Necromancy target is no longer eligible');
+      runtime(s).cardState[target]!.basePowerMultiplier = 2;
+      runtime(s).events.push({ type: 'shishigou_special_resolved', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: target, multiplier: 2 } as any);
+      return;
+    }
+  }
   if (containsShirouMealPrivilegedNode(a)) {
     if (!isAcceptedShirouMealAbility(a)) reject('resolution_failed', 'Unsupported Shirou Meal semantic');
     try {

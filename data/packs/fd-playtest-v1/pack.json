@@ -94,7 +94,8 @@
                                  "data/authoring/masters/master.shiki-nanaya.json",
                                  "data/authoring/masters/master.shiki-ryougi.json",
                                  "data/authoring/masters/master.shiki-tohno.json",
-                                 "data/authoring/masters/master.shirou-meal.json"
+                                 "data/authoring/masters/master.shirou-meal.json",
+                                 "data/authoring/masters/master.shishigou.json"
                              ],
     "authoringMasterSupportFiles":  [
                                         "data/authoring/masters/master.shirou-emiya.json"
