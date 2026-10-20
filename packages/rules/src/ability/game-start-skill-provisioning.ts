@@ -85,3 +85,13 @@ export function isWodimeAstrologyRoundSelectionSemantic(ability: AuthoringAbilit
     effect.provisionDefinitionId === 'master.wodime.skill.s2' &&
     Object.keys(effect).every((key) => ['type', 'target', 'provisionDefinitionId'].includes(key));
 }
+
+export function isWodimeAstrologyAscensionSemantic(ability: AuthoringAbility): boolean {
+  if (ability.id !== 'wodime.ascension' || ability.kind !== 'passive' ||
+      ability.activation.trigger !== 'after_controller_wins_battle' || ability.conditions.length !== 0 ||
+      ability.targets.length !== 0 || ability.cost.length !== 0 || ability.creates.length !== 0 ||
+      ability.ruleModifiers.length !== 0 || Object.keys(ability.lifecycle).length !== 0 ||
+      Object.keys(ability.limit).length !== 0 || ability.effects.length !== 1) return false;
+  const effect = ability.effects[0]!;
+  return effect.type === 'wodime_astrology_ascension_record' && Object.keys(effect).length === 1;
+}

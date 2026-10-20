@@ -38191,14 +38191,13 @@
             "kind": "passive",
             "printedClause": "你每赢得一场战斗即可额外秘密写入一个回合数以触发【人理保障天球】。",
             "activation": {
-              "trigger": "while_active"
+              "trigger": "after_controller_wins_battle"
             },
             "conditions": [],
             "targets": [],
             "effects": [
               {
-                "type": "record_master_directive",
-                "directive": "wodime_secret_round_recording"
+                "type": "wodime_astrology_ascension_record"
               }
             ],
             "cost": [],
@@ -38223,7 +38222,7 @@
             }
           }
         ],
-        "mode": "host_adjudicated",
+        "mode": "automatic",
         "ownerId": "master.wodime",
         "playKind": "support",
         "destinationZone": "field",
@@ -58411,11 +58410,11 @@
       "master.waver": "master.waver.command-spell",
       "master.wodime": "master.wodime.command-spell"
     },
-    "definitionHash": "f511ceeff0fcde565cf6d2cf84a91acf1582f9437b9889429d32841ad7d22edd",
+    "definitionHash": "adbcb03e611089171efb951b51aa5cb5be1789a217e4903c830c1e9242d184ba",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "f511ceeff0fcde565cf6d2cf84a91acf1582f9437b9889429d32841ad7d22edd"
+      "definitionHash": "adbcb03e611089171efb951b51aa5cb5be1789a217e4903c830c1e9242d184ba"
     },
     "sourceMap": {
       "master.shinji.skill.ascension": {

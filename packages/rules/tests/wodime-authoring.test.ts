@@ -14,8 +14,8 @@ describe('Wodime frozen authoring archive', () => {
     expect(raw.id).toBe('master.wodime');
     expect(raw.cards.map((card: any) => card.legacyId)).toEqual(expectedIds);
     expect(raw.cards).toHaveLength(11);
-    expect(raw.cards.filter((card: any) => card.verification.implementationStatus === 'complete').map((card: any) => card.legacyId)).toEqual(['s1a']);
-    expect(raw.cards.filter((card: any) => card.verification.implementationStatus === 'host_adjudicated')).toHaveLength(10);
+    expect(raw.cards.filter((card: any) => card.verification.implementationStatus === 'complete').map((card: any) => card.legacyId)).toEqual(['ascension', 's1a']);
+    expect(raw.cards.filter((card: any) => card.verification.implementationStatus === 'host_adjudicated')).toHaveLength(9);
     expect(raw.cards.every((card: any) => card.abilities.every((ability: any) => card.printedText.includes(ability.printedClause)))).toBe(true);
     const loaded = rules.loadAuthoringJson(raw);
     const report = rules.buildAuthoringAdapterReport(loaded, raw, archivePath);
@@ -24,7 +24,7 @@ describe('Wodime frozen authoring archive', () => {
     // report describes interpreter nodes (record_master_directive remains a
     // routable audit marker rather than a completed runtime implementation).
     expect(report.summary.hostAdjudicated).toBe(0);
-    expect(report.summary.unsupported).toBe(10);
+    expect(report.summary.unsupported).toBe(9);
     expect(report.summary.textUnconfirmed).toBe(0);
   });
 
@@ -62,5 +62,12 @@ describe('Wodime frozen authoring archive', () => {
     expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'wodime_astrology_rounds_recorded', sourceCardId: expect.stringContaining('master.wodime.skill.s1a'), visibility: 'p1' }));
     expect(state.abilityRuntime!.events.find((event: any) => event.type === 'wodime_astrology_rounds_recorded')).not.toHaveProperty('roundNumbers');
     expect(rules.projectAbilityState(state, 'p2').pendingDecision).toBeUndefined();
+    state.round.roundNumber = 3;
+    rules.processAbilityEvent(state, { id: 'wodime-ascension-win', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1', battleId: 'battle-1', resultId: 'result-1', battlefieldId: 'shinto', battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] } });
+    expect((state.abilityRuntime as any).wodimeAstrologyRoundsByPlayer.p1).toEqual([2, 4, 7]);
+    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'wodime_astrology_ascension_round_recorded', visibility: 'p1' }));
+    expect(state.abilityRuntime!.events.find((event: any) => event.type === 'wodime_astrology_ascension_round_recorded')).not.toHaveProperty('roundNumber');
+    rules.processAbilityEvent(state, { id: 'wodime-ascension-win-repeat', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1', battleId: 'battle-2', resultId: 'result-2', battlefieldId: 'shinto', battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] } });
+    expect((state.abilityRuntime as any).wodimeAstrologyRoundsByPlayer.p1).toEqual([2, 4, 7]);
   });
 });

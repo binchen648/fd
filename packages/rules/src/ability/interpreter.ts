@@ -55,7 +55,7 @@ import { clearTransientCardTransformState, getEffectiveCardAttributes } from './
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
 import { classifyManaContributionChoices, commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, installRulerSealMovementLock, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, resolveManaContributionPaymentPlan, rulerSealMovementLocked, situationForbidsAttribute, spendMana } from '../core/rule-overrides';
 import { node, nodes, str } from './loader';
-import { gameStartSkillProvisioningTargetDefinitionIds, isBattleWinRoundProvisioningSemantic, isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic, isWodimeAstrologyRoundSelectionSemantic, WODIME_ASTROLOGY_ROUND_OPTIONS, WODIME_ASTROLOGY_ROUND_TARGET } from './game-start-skill-provisioning';
+import { gameStartSkillProvisioningTargetDefinitionIds, isBattleWinRoundProvisioningSemantic, isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic, isWodimeAstrologyAscensionSemantic, isWodimeAstrologyRoundSelectionSemantic, WODIME_ASTROLOGY_ROUND_OPTIONS, WODIME_ASTROLOGY_ROUND_TARGET } from './game-start-skill-provisioning';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
 import { currentDeploymentBonus } from '../core/terrain-advantage';
 import {
@@ -2682,6 +2682,20 @@ function resolveWodimeAstrologyRoundSelection(s: GameState, ctx: EffectContext, 
     sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: instanceId, toZone: 'skill', movedCount: 1 } as any);
 }
 
+function resolveWodimeAstrologyAscension(s: GameState, ctx: EffectContext, effect: RuleNode, a: AuthoringAbility): void {
+  if (!isWodimeAstrologyAscensionSemantic(a) || effect.type !== 'wodime_astrology_ascension_record' || ctx.event?.type !== 'after_controller_wins_battle' ||
+      !ctx.event.battleResult?.winners.includes(ctx.controllerId)) reject('resolution_failed', 'Invalid Wodime ascension round-recording contract');
+  const r = runtime(s) as any;
+  const rounds = r.wodimeAstrologyRoundsByPlayer?.[ctx.controllerId];
+  if (!rounds || !s.cards.some((candidate) => candidate.definitionId === 'master.wodime.skill.s2' && candidate.ownerPlayerId === ctx.controllerId)) return;
+  const nextRound = s.round.roundNumber + 1;
+  if (rounds.includes(nextRound)) return;
+  rounds.push(nextRound);
+  rounds.sort((left: number, right: number) => left - right);
+  r.events.push({ type: 'wodime_astrology_ascension_round_recorded', playerId: ctx.controllerId, visibility: ctx.controllerId,
+    sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+}
+
 function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean {
   return Object.values(runtime(s).pack.cards).some((source) =>
     source.abilities.some((ability) =>
@@ -4609,6 +4623,9 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
     }
     case 'wodime_astrology_round_selection':
       resolveWodimeAstrologyRoundSelection(s, ctx, effect, a);
+      break;
+    case 'wodime_astrology_ascension_record':
+      resolveWodimeAstrologyAscension(s, ctx, effect, a);
       break;
     case 'double_source_base_power_and_remove_after_battle': {
       if (!isGrantedBasicDoubleRemoveEffect(effect)) reject('unsupported', 'Unsupported granted basic double/remove effect shape');
@@ -8685,6 +8702,12 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   settleMovementCompetitionSuppression(s, event);
   settleBoundOpponentBattleOutcome(s, event);
   settleRoundSkillProfileEvent(s, event);
+  if (event.type === 'after_controller_wins_battle' && event.playerId) {
+    for (const source of s.cards.filter((candidate) => candidate.controllerPlayerId === event.playerId && candidate.zone === 'skill')) {
+      const ascension = definition(s, source.instanceId)?.abilities.find((ability) => isWodimeAstrologyAscensionSemantic(ability));
+      if (ascension) resolveWodimeAstrologyAscension(s, { ...context(s, source.instanceId, ascension.id, event), event }, ascension.effects[0]!, ascension);
+    }
+  }
   if (event.type === 'round_end') {
     for (const physical of [...s.cards]) {
       const temporaryBalmung = physical.definitionId === 'master.sieg.skill.s2' && isSiegTemporaryBalmungCard(s, physical.instanceId);
