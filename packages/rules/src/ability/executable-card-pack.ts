@@ -536,7 +536,7 @@ function validatedGameStartSkillProvisioningDeferrals(cards: Record<string, Exec
       }
       for (const definitionId of targets) {
         const target = cards[definitionId];
-        if (!target || target.id === source.id || (target.mode !== 'automatic' && !hasVerifiedPartialHinakoBloodSongConsumer(target)) || target.cardType !== 'master_skill' || target.ownerId !== source.ownerId) {
+        if (!target || target.id === source.id || (target.mode !== 'automatic' && target.mode !== 'host_adjudicated' && !hasVerifiedPartialHinakoBloodSongConsumer(target)) || target.cardType !== 'master_skill' || target.ownerId !== source.ownerId) {
           throw new Error(`Invalid game-start skill provisioning target ${definitionId}: ${source.id}#${ability.id}`);
         }
       }
