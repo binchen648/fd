@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.twice",
+  "name": "特维斯·I·皮斯曼",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "315f7de5adde0ea4f918260967f8fbcdae8212e4",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen two-skill scope. Printed text and generated source hashes are preserved exactly from the Phase 3 inventory. The current repository has no accepted generic contract for lowest-victory-point power projection, elimination replacement, or event placement swap/deck replacement; both cards remain HOST_ADJUDICATED. record_master_directive is an audit boundary, not an automatic implementation.",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版/images/masters/特维斯·I·皮斯曼.png#master.twice/特维斯·I·皮斯曼",
+      "legacy": {
+        "master.twice.skill.ascension": "legacy-content.json#master/master.twice/ascension",
+        "master.twice.skill.s1": "legacy-content.json#master/master.twice/s1"
+      },
+      "generated": {
+        "master.twice.skill.ascension": "src/content/generated/legacy-content.json#master.twice/ascension#line=1 sha256=d3d645d77030cab67a7014375c03635eb02d2cabf0be2eb4cc6917cbb1a5c7f8;line=2 sha256=8ecb762f99c38bb995a2665d5923c3f169a080598d4f64346b74739160ba365b",
+        "master.twice.skill.s1": "src/content/generated/legacy-content.json#master.twice/s1#line=1 sha256=33d11b1841cc14efd79190e2b23a9bf542285176a80f0405cb9d5a1d7370981d"
+      }
+    }
+  },
+  "cards": [
+    {
+      "id": "master.twice.skill.ascension",
+      "aliases": ["ascension"],
+      "legacyId": "ascension",
+      "name": "救世主",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.twice" },
+      "printedText": "当你在游戏中拥有最少的战果时，合计威力+12。\n当你即将被淘汰时，将此牌移除游戏取代淘汰。",
+      "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [{
+        "id": "twice.savior",
+        "kind": "passive",
+        "printedClause": "当你在游戏中拥有最少的战果时，合计威力+12。\n当你即将被淘汰时，将此牌移除游戏取代淘汰。",
+        "activation": { "trigger": "while_active" },
+        "effects": [{ "type": "record_master_directive", "directive": "twice_savior_lowest_victory_power_and_elimination_replacement" }],
+        "execution": { "mode": "automatic" }
+      }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.twice.skill.s1",
+      "aliases": ["s1"],
+      "legacyId": "s1",
+      "name": "游戏胜利者",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.twice" },
+      "printedText": "准备阶段和行动阶段：当你于第10回合前，行动阶段时使用此能力需要支付一枚令咒。将桌面上两张事件牌交换位置（不将它们翻开），或将桌面上一张正面表示的事件牌洗回事件牌库，抽一张新的事件牌代替它的位置。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [{
+        "id": "twice.game-winner",
+        "kind": "passive",
+        "printedClause": "准备阶段和行动阶段：当你于第10回合前，行动阶段时使用此能力需要支付一枚令咒。将桌面上两张事件牌交换位置（不将它们翻开），或将桌面上一张正面表示的事件牌洗回事件牌库，抽一张新的事件牌代替它的位置。",
+        "activation": { "trigger": "while_active" },
+        "effects": [{ "type": "record_master_directive", "directive": "twice_game_winner_event_swap_or_replace_before_round_ten" }],
+        "execution": { "mode": "automatic" }
+      }],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    }
+  ],
+  "sources": [{
+    "id": "development_card_images",
+    "type": "development_image_set",
+    "imageOrder": ["../../Fate_Domination-开发版/images/masters/特维斯·I·皮斯曼.png"]
+  }]
+}

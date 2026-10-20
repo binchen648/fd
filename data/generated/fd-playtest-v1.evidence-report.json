@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 61,
+    "masters": 62,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -5212,6 +5212,50 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/远坂时臣.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/远坂时臣.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.twice",
+      "displayName": "特维斯·I·皮斯曼",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/特维斯·I·皮斯曼.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/特维斯·I·皮斯曼.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.twice.overview",
+      "displayName": "特维斯·I·皮斯曼",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/特维斯·I·皮斯曼.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/特维斯·I·皮斯曼.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.twice.skill.ascension",
+      "displayName": "救世主",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/特维斯·I·皮斯曼.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/特维斯·I·皮斯曼.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.twice.skill.s1",
+      "displayName": "游戏胜利者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/特维斯·I·皮斯曼.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/特维斯·I·皮斯曼.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
       "issueCodes": []
