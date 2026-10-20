@@ -46,7 +46,7 @@ import {
   isShishigouSpecialAbility, isShishigouNecromancyAbility, shishigouBaseAbilityForBasic, shishigouCorpseCardIds,
   resolveShishigouAbility, shishigouNecromancyTarget, markShishigouCorpseRemoval, resolveShishigouStrength, resolveShishigouMagic,
 } from './shishigou-necromancy-capability';
-import { containsSiegPrivilegedNode, isAcceptedSiegAbility, isSiegBalmungFreePlayAbility, isSiegBalmungPenaltyAbility, isSiegDragonCommandAbility, isSiegGalvanismAbility, isSiegSyncState, isSiegSyncStrengthAbility, SIEG_BALMUNG_FREE_PLAY_EFFECT, SIEG_BALMUNG_PENALTY_EFFECT, SIEG_DRAGON_COMMAND_EFFECT, SIEG_SYNC_STRENGTH_EFFECT } from './sieg-capability';
+import { containsSiegPrivilegedNode, isAcceptedSiegAbility, isSiegBalmungFreePlayAbility, isSiegBalmungPenaltyAbility, isSiegDragonCommandAbility, isSiegGalvanismAbility, isSiegSyncProviderLive, isSiegSyncState, isSiegSyncStrengthAbility, setSiegSyncState, SIEG_BALMUNG_FREE_PLAY_EFFECT, SIEG_BALMUNG_PENALTY_EFFECT, SIEG_DRAGON_COMMAND_EFFECT, SIEG_SYNC_STRENGTH_EFFECT } from './sieg-capability';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
@@ -2776,6 +2776,10 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
   ] : [];
   if (r.hostRequests.length) return [];
   const result: LegalAction[] = [];
+  for (const provider of s.cards.filter((card) => isSiegSyncProviderLive(s, playerId, card.instanceId))) {
+    result.push({ type: 'set_sieg_sync_state', providerCardInstanceId: provider.instanceId, active: true });
+    result.push({ type: 'set_sieg_sync_state', providerCardInstanceId: provider.instanceId, active: false });
+  }
   const staged = stagedAttacks(s)[playerId] ?? [];
   if (staged.length && s.round.prioritySeat === p.seat) {
     const faceDownRequired = effectiveLocationRestrictionRequiresFaceDownStandardAttack(s, playerId);
@@ -8920,6 +8924,14 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
   const r = runtime(s); const legal = getLegalActions(s, playerId);
   if (!command || typeof command !== 'object') reject('illegal_action', 'Invalid command');
   switch (command.type) {
+    case 'set_sieg_sync_state': {
+      if (!legal.some((action) => action.type === command.type && action.providerCardInstanceId === command.providerCardInstanceId && action.active === command.active)) {
+        reject('illegal_action', 'Sieg sync state change is not available');
+      }
+      if (!isSiegSyncProviderLive(s, playerId, command.providerCardInstanceId)) reject('invalid_state', 'Sieg sync state provider is not live');
+      setSiegSyncState(s, playerId, command.providerCardInstanceId, command.active);
+      break;
+    }
     case 'play_card': {
       const owned = s.cards.find(c => c.instanceId === command.cardInstanceId && c.controllerPlayerId === playerId);
       if (!owned) reject('illegal_action', 'Card is not available');

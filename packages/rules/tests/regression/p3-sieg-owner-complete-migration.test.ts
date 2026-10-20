@@ -2,9 +2,8 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { createSeededGameState } from '../../src/tools/seeded-state';
 import { loadAuthoringJson } from '../../src/ability/loader';
-import { advanceAbilityPhase, calculateCardPower, dispatchAbilityCommand, initializeAbilityRuntime, playAbilityCardBatch, processAbilityEvent } from '../../src/ability/interpreter';
+import { advanceAbilityPhase, calculateCardPower, createAbilitySession, dispatchAbilityCommand, initializeAbilityRuntime, playAbilityCardBatch, processAbilityEvent } from '../../src/ability/interpreter';
 import { persistentExtraAttackAllowance, spendMana } from '../../src/core/rule-overrides';
-import { setSiegSyncState } from '../../src/ability/sieg-capability';
 import type { AuthoringCard } from '../../src/ability/types';
 import type { GameState } from '../../src/schema/game';
 
@@ -37,10 +36,33 @@ describe('P3 owner-complete master.sieg', () => {
     state.abilityRuntime!.pack.cards[basicDef.id] = basicDef;
     const basic = add(state, basicDef.id, 'p1', 'attack_area', true);
     expect(calculateCardPower(state, basic).value).toBe(2);
-    setSiegSyncState(state, 'p1', true);
+    expect(dispatchAbilityCommand(state, 'p1', { type: 'set_sieg_sync_state', providerCardInstanceId: asc, active: true }).ok).toBe(true);
     expect(calculateCardPower(state, basic).value).toBe(5);
-    setSiegSyncState(state, 'p1', false);
+    expect(dispatchAbilityCommand(state, 'p1', { type: 'set_sieg_sync_state', providerCardInstanceId: asc, active: false }).ok).toBe(true);
     expect(calculateCardPower(state, basic).value).toBe(2);
+  });
+
+  it('fails closed when sync provider state is lost and rejects cross-owner/session mutation', () => {
+    const { state } = setup();
+    const asc = add(state, 'master.sieg.skill.ascension', 'p1', 'field', true);
+    const basicDef: AuthoringCard = { id: 'fixture.sieg.basic.provider', name: 'fixture', cardType: 'basic_attack', cardFace: { attributes: ['力量'], cost: 0, basePower: 2 }, playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], abilities: [], mode: 'automatic' };
+    state.abilityRuntime!.pack.cards[basicDef.id] = basicDef;
+    const basic = add(state, basicDef.id, 'p1', 'attack_area', true);
+    expect(dispatchAbilityCommand(state, 'p2', { type: 'set_sieg_sync_state', providerCardInstanceId: asc, active: true }).ok).toBe(false);
+    expect(dispatchAbilityCommand(state, 'p1', { type: 'set_sieg_sync_state', providerCardInstanceId: asc, active: true }).ok).toBe(true);
+    expect(calculateCardPower(state, basic).value).toBe(5);
+    state.abilityRuntime!.cardState[asc]!.active = false;
+    expect(calculateCardPower(state, basic).value).toBe(2);
+    state.abilityRuntime!.cardState[asc]!.active = true;
+    state.cards.find((card) => card.instanceId === asc)!.ownerPlayerId = 'p2';
+    expect(calculateCardPower(state, basic).value).toBe(2);
+
+    state.cards.find((card) => card.instanceId === asc)!.ownerPlayerId = 'p1';
+    state.abilityRuntime!.cardState[asc]!.active = true;
+    state.abilityRuntime!.structuredPlayerFlagsByPlayer!.p1 = {};
+    const isolated = createAbilitySession(state);
+    expect(isolated.dispatch('p1', { type: 'set_sieg_sync_state', providerCardInstanceId: asc, active: true }).ok).toBe(true);
+    expect(state.abilityRuntime!.structuredPlayerFlagsByPlayer!.p1?.__fd_sieg_sync_active).toBeUndefined();
   });
 
   it('keeps the overdrive mana threshold exact at 10/11 across a new round', () => {

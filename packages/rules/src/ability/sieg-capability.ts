@@ -67,19 +67,21 @@ export function isAcceptedSiegAbility(a: AuthoringAbility): boolean {
  * ascension card's active marker: an active card only provides the clause,
  * while this state records whether the printed condition is currently true.
  */
-export function setSiegSyncState(state: GameState, playerId: string, active: boolean): void {
-  if (!state.abilityRuntime) throw new Error('Sieg sync state requires initialized ability runtime');
-  if (!state.players.some((player) => player.id === playerId)) throw new Error('Unknown Sieg sync-state owner');
-  const flags = (state.abilityRuntime.structuredPlayerFlagsByPlayer ??= {})[playerId] ??= {};
+export function setSiegSyncState(state: GameState, playerId: string, providerCardInstanceId: string, active: boolean): void {
+  if (!isSiegSyncProviderLive(state, playerId, providerCardInstanceId)) throw new Error('Sieg sync state provider is not live');
+  const runtime = state.abilityRuntime;
+  if (!runtime) throw new Error('Sieg sync state requires initialized ability runtime');
+  const flags = (runtime.structuredPlayerFlagsByPlayer ??= {})[playerId] ??= {};
   if (active) flags[SIEG_SYNC_STATE_KEY] = true;
   else delete flags[SIEG_SYNC_STATE_KEY];
-  delete (state.abilityRuntime.structuredRoundFlagKeysByPlayer ??= {})[playerId]?.[SIEG_SYNC_STATE_KEY];
+  delete (runtime.structuredRoundFlagKeysByPlayer ??= {})[playerId]?.[SIEG_SYNC_STATE_KEY];
 }
 
-function hasLiveSiegSyncProvider(state: GameState, playerId: string): boolean {
+export function isSiegSyncProviderLive(state: GameState, playerId: string, providerCardInstanceId?: string): boolean {
   const player = state.players.find((entry) => entry.id === playerId);
   if (!player || player.masterCardId !== 'master.sieg') return false;
   return state.cards.some((source) => source.definitionId === 'master.sieg.skill.ascension' &&
+    (providerCardInstanceId === undefined || source.instanceId === providerCardInstanceId) &&
     source.ownerPlayerId === playerId && source.controllerPlayerId === playerId &&
     ['skill', 'field', 'attack_area'].includes(source.zone) &&
     state.abilityRuntime?.cardState[source.instanceId]?.active === true &&
@@ -90,7 +92,7 @@ function hasLiveSiegSyncProvider(state: GameState, playerId: string): boolean {
 /** True only when canonical sync state and its live Sieg provider both hold. */
 export function isSiegSyncState(state: GameState, playerId: string): boolean {
   return state.abilityRuntime?.structuredPlayerFlagsByPlayer?.[playerId]?.[SIEG_SYNC_STATE_KEY] === true &&
-    hasLiveSiegSyncProvider(state, playerId);
+    isSiegSyncProviderLive(state, playerId);
 }
 
 /** Apply the residual mana-spend clause from the authoritative payment hook. */
