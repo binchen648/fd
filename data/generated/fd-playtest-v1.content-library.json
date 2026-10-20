@@ -41699,6 +41699,256 @@
         "destinationZone": "attack_area",
         "initialZone": "skill"
       },
+      "master.shirou-emiya.skill.ascension": {
+        "id": "master.shirou-emiya.skill.ascension",
+        "name": "必胜黄金之剑",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "升华技",
+          "attributes": [],
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "shirou-emiya.ascension.basic-power",
+            "kind": "passive",
+            "printedClause": "被动：你的力量和迅捷属性的基本牌威力+2。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "shirou_emiya_basic_power_bonus",
+                "amount": 2,
+                "attributes": [
+                  "力量",
+                  "迅捷"
+                ]
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "shirou-emiya.ascension.climax-power",
+            "kind": "passive",
+            "printedClause": "战斗阶段：此攻击在高潮回合威力+4。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "shirou_emiya_climax_power_bonus",
+                "amount": 4
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.shirou-emiya",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
+      "master.shirou-emiya.skill.s1": {
+        "id": "master.shirou-emiya.skill.s1",
+        "name": "未熟",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "被动",
+          "attributes": [],
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "shirou-emiya.unskilled.initial-mana",
+            "kind": "forced_trigger",
+            "printedClause": "你的魔力初始值为2。",
+            "activation": {
+              "trigger": "game_start"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "set_mana",
+                "player": "controller",
+                "amount": 2
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.shirou-emiya",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
+      "master.shirou-emiya.skill.s2": {
+        "id": "master.shirou-emiya.skill.s2",
+        "name": "投影",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "被动",
+          "attributes": [],
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "shirou-emiya.projection.provision",
+            "kind": "forced_trigger",
+            "printedClause": "将【干将·莫邪】加入你的技能区。",
+            "activation": {
+              "trigger": "game_start"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "provision_skill_cards",
+                "player": "controller",
+                "targetDefinitionIds": [
+                  "card.derived.master.shirou-emiya.ganjiang-moye"
+                ]
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.shirou-emiya",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
+      },
+      "master.shirou-emiya.skill.s3": {
+        "id": "master.shirou-emiya.skill.s3",
+        "name": "远离尘世的理想乡",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "被动",
+          "attributes": [],
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "shirou-emiya.avalon.first-elimination",
+            "kind": "forced_trigger",
+            "printedClause": "当你首次被淘汰时你将失去所有的魔力来继续游戏。",
+            "activation": {
+              "trigger": "after_battle_result_determined"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "shirou_emiya_first_elimination_continue"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.shirou-emiya",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
       "card.derived.master.shirou-emiya.ganjiang-moye": {
         "id": "card.derived.master.shirou-emiya.ganjiang-moye",
         "name": "干将·莫邪",
@@ -50754,11 +51004,11 @@
       "master.shiki-ryougi": "master.shiki-ryougi.command-spell",
       "master.shiki-tohno": "master.shiki-tohno.command-spell"
     },
-    "definitionHash": "dd59e684614c1470ba4c81d778c880997f96d500fe1595c4273615f3543f3533",
+    "definitionHash": "1740e8c3bbf783a82add908c1b8de9ebb1a8ee3c38ee476152bec7127683ec28",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "dd59e684614c1470ba4c81d778c880997f96d500fe1595c4273615f3543f3533"
+      "definitionHash": "1740e8c3bbf783a82add908c1b8de9ebb1a8ee3c38ee476152bec7127683ec28"
     },
     "sourceMap": {
       "master.shinji.skill.ascension": {
@@ -56551,18 +56801,77 @@
         "abilityIndex": 2,
         "path": "archives[73].cards[2].abilities[2]"
       },
-      "card.derived.master.shirou-emiya.ganjiang-moye": {
+      "master.shirou-emiya.skill.ascension": {
         "archiveId": "master.shirou-emiya",
         "archiveIndex": 74,
         "cardIndex": 0,
         "path": "archives[74].cards[0]"
       },
-      "card.derived.master.shirou-emiya.ganjiang-moye#ganjiang-moye.append-only": {
+      "master.shirou-emiya.skill.ascension#shirou-emiya.ascension.basic-power": {
         "archiveId": "master.shirou-emiya",
         "archiveIndex": 74,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[74].cards[0].abilities[0]"
+      },
+      "master.shirou-emiya.skill.ascension#shirou-emiya.ascension.climax-power": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 74,
+        "cardIndex": 0,
+        "abilityIndex": 1,
+        "path": "archives[74].cards[0].abilities[1]"
+      },
+      "master.shirou-emiya.skill.s1": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 74,
+        "cardIndex": 1,
+        "path": "archives[74].cards[1]"
+      },
+      "master.shirou-emiya.skill.s1#shirou-emiya.unskilled.initial-mana": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 74,
+        "cardIndex": 1,
+        "abilityIndex": 0,
+        "path": "archives[74].cards[1].abilities[0]"
+      },
+      "master.shirou-emiya.skill.s2": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 74,
+        "cardIndex": 2,
+        "path": "archives[74].cards[2]"
+      },
+      "master.shirou-emiya.skill.s2#shirou-emiya.projection.provision": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 74,
+        "cardIndex": 2,
+        "abilityIndex": 0,
+        "path": "archives[74].cards[2].abilities[0]"
+      },
+      "master.shirou-emiya.skill.s3": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 74,
+        "cardIndex": 3,
+        "path": "archives[74].cards[3]"
+      },
+      "master.shirou-emiya.skill.s3#shirou-emiya.avalon.first-elimination": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 74,
+        "cardIndex": 3,
+        "abilityIndex": 0,
+        "path": "archives[74].cards[3].abilities[0]"
+      },
+      "card.derived.master.shirou-emiya.ganjiang-moye": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 74,
+        "cardIndex": 4,
+        "path": "archives[74].cards[4]"
+      },
+      "card.derived.master.shirou-emiya.ganjiang-moye#ganjiang-moye.append-only": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 74,
+        "cardIndex": 4,
+        "abilityIndex": 0,
+        "path": "archives[74].cards[4].abilities[0]"
       }
     }
   }

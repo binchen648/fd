@@ -23,6 +23,15 @@ import { projectCurrentPlayerTotalPower } from '../core/combat-resolver';
 import { swapActivePlayerDeploymentPositions } from '../core/atomic-redeployment';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID, evaluateCardSourceValidity, isActiveCardSource } from '../core/card-source-state';
 import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
+import {
+  canExecuteShirouEmiyaAvalon,
+  containsShirouEmiyaPrivilegedNode,
+  isAcceptedShirouEmiyaAbility,
+  isAcceptedShirouEmiyaAvalonAbility,
+  resolveShirouEmiyaAvalon,
+  shirouEmiyaPowerBonus,
+  SHIROU_EMIYA_AVALON_EFFECT,
+} from './shirou-emiya-capability';
 import { isCardCloseForbidden } from './card-close-forbid';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
@@ -1394,6 +1403,15 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     result.value += conditionalAttributeBonus;
     result.lines.push({ label: 'controller_attack_attribute_power_bonus', value: result.value });
   }
+  const shirouEmiyaBonus = shirouEmiyaPowerBonus(s, sourceId);
+  if (shirouEmiyaBonus.basic !== 0) {
+    result.value += shirouEmiyaBonus.basic;
+    result.lines.push({ label: 'shirou_emiya_basic_power_bonus', value: result.value });
+  }
+  if (shirouEmiyaBonus.climax !== 0) {
+    result.value += shirouEmiyaBonus.climax;
+    result.lines.push({ label: 'shirou_emiya_climax_power_bonus', value: result.value });
+  }
   const injuryPower = injuryWarpCardPowerAdjustment(s, sourceId);
   if (injuryPower !== 0) {
     result.value += injuryPower;
@@ -2286,6 +2304,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled') &&
       !trustedCombatOpponentPowerRewardFacts(s, card(s, sourceId).controllerPlayerId, event)) return false;
   if (containsTimedGlobalResourceSuppressionNode(a.effects) && !isAcceptedTimedGlobalResourceSuppressionAbility(a)) return false;
+  if (containsShirouEmiyaPrivilegedNode(a) && !isAcceptedShirouEmiyaAbility(a)) return false;
+  if (isAcceptedShirouEmiyaAvalonAbility(a) && !canExecuteShirouEmiyaAvalon(s, sourceId, card(s, sourceId).controllerPlayerId, event)) return false;
   if (containsSourceSkillAttackJoinNode(a.effects) && !isAcceptedSourceSkillAttackJoinAbility(a)) return false;
   if (containsSourceLocationRunePrivilegedNode(a) && !isAcceptedSourceLocationRunePrivilegedAbility(a)) return false;
   if (containsCommandSealPowerPrivilegedNode(a) && !isAcceptedCommandSealPowerPrivilegedAbility(a)) return false;
@@ -3657,6 +3677,13 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
   const unpreventable = a.ruleModifiers.some(m => m.rule === 'effect_prevention' && m.operation === 'ignore' && node(m.priority).tier === 'explicit_exception');
   if (r.preventEffects && !unpreventable) { r.events.push({ type: 'effect_prevented', playerId: p.id }); return; }
   switch (effect.type) {
+    case SHIROU_EMIYA_AVALON_EFFECT:
+      if (!isAcceptedShirouEmiyaAvalonAbility(a) || a.effects.length !== 1 || a.effects[0]?.type !== SHIROU_EMIYA_AVALON_EFFECT) {
+        reject('resolution_failed', 'Shirou-Emiya Avalon requires the accepted exact whole-ability envelope');
+      }
+      try { resolveShirouEmiyaAvalon(s, ctx.sourceCardId, ctx.abilityId, ctx.controllerId, ctx.event); }
+      catch (error) { reject('resolution_failed', error instanceof Error ? error.message : 'Shirou-Emiya Avalon resolution failed'); }
+      break;
     case HAKUNO_M_YOMI_EFFECT:
     case HAKUNO_M_CHALLENGE_RESULT_EFFECT:
     case HAKUNO_M_ANALYSIS_EFFECT:

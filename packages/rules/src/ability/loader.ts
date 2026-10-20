@@ -3,6 +3,10 @@ import { hostOperations } from './types';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID } from '../core/card-source-state';
 import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
 import {
+  containsShirouEmiyaPrivilegedNode,
+  isAcceptedShirouEmiyaAbility,
+} from './shirou-emiya-capability';
+import {
   isRulerSealBindingCandidate, isRulerSealBindingSemantic,
   isRulerSealUseCandidate, isRulerSealUseSemantic,
 } from './ruler-seal';
@@ -368,6 +372,7 @@ const supportedTypes = new Set([
   'create_modifier', 'not_location_kind', 'power_bonus', 'card_not_on_board', 'not_card_id',
   // Master authoring adapters
   'record_master_directive', 'adjust_command_seals', 'set_mana', 'create_independent_deck',
+  'shirou_emiya_basic_power_bonus', 'shirou_emiya_climax_power_bonus', 'shirou_emiya_first_elimination_continue',
   'hinako_blood_song',
   'draw_from_independent_deck', 'activate_card_by_id', 'replace_card_in_deck', 'return_card_by_definition',
   'movement_rule_override', 'deployment_rule_override', 'play_source_card',
@@ -450,7 +455,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'resultZone', 'visibility', 'to', 'from', 'optional', 'excluding', 'branches', 'if', 'then', 'else', 'cardId', 'zone',
   'var', 'op', 'args', 'left', 'right', 'formula', 'formulaRef', 'printedExpression', 'constraints', 'value', 'min', 'max',
   'targetRef', 'resultVar', 'optionalCost', 'uses', 'conditions', 'locationKind', 'maxSteps', 'cardType', 'face', 'attribute', 'sourceCard',
-  'countTarget', 'amountPerTarget',
+  'countTarget', 'amountPerTarget', 'attributes',
   'object', 'controller', 'location', 'negated', 'tier', 'specificity',
   'source', 'interpretation', 'name',
   'discardAttribute', 'maxClosePerOpponent', 'excludePerGame', 'refund', 'drawCount', 'playDrawnCard', 'immediatePlayQuota', 'actionAbilityPermission',
@@ -991,6 +996,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (containsCrossPhaseRedeploymentPrivilegedNode(candidateAbility) &&
           !isAcceptedCrossPhaseRedeploymentPrivilegedAbility(candidateAbility)) {
         issue('crossPhaseRedeployment.gateway', 'Cross-phase/redeployment privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsShirouEmiyaPrivilegedNode(candidateAbility) && !isAcceptedShirouEmiyaAbility(candidateAbility)) {
+        issue('shirouEmiya.gateway', 'Shirou-Emiya owner mechanics require an accepted exact whole-ability semantic', id);
       }
       if (containsCommanderLifecyclePrivilegedNode(candidateAbility) &&
           !isAcceptedCommanderLifecyclePrivilegedAbility(candidateAbility)) {

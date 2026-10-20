@@ -569,9 +569,12 @@ function deferredCardIds(cards: Record<string, ExecutableCardDefinition>): Set<s
   Object.values(cards).forEach((card) => card.abilities.forEach(visit));
   const provisioning = validatedGameStartSkillProvisioningDeferrals(cards);
   for (const sourceId of provisioning.sourceIds) {
-    if (deferred.has(sourceId) || provisioning.targetIds.has(sourceId)) {
-      throw new Error(`Game-start skill provisioning source cannot itself be deferred: ${sourceId}`);
-    }
+    // Master-support archives keep every physical source definition outside
+    // the canonical master package while still allowing the source to be
+    // provisioned by the host at game start. Do not defer that source from the
+    // executable definition table; only the provisioned target is deferred.
+    deferred.delete(sourceId);
+    if (provisioning.targetIds.has(sourceId)) throw new Error(`Game-start skill provisioning source cannot itself be a target: ${sourceId}`);
   }
   provisioning.targetIds.forEach((definitionId) => deferred.add(definitionId));
   return deferred;
