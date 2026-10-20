@@ -10125,3 +10125,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-20-p3-a-owner-twice-migration-acceptance-synchronization.md`.
 
 This synchronization does not merge PR `#641` or prior open PRs. The next owner is derived mechanically from this synchronization frontier.
+
+## TASK P3-S-OWNER-WALLACHIA-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly nine skills for `master.wallachia`
+
+Exact accepted review:
+
+- PR `#642`, exact Base `647e2abf13720735ed410abfb32966d8265d0b43`;
+- accepted Candidate `0fd7d88fdf7266c483b3c8012e685a7bb8555142`;
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from the separated Reviewer;
+- reviewer evidence: `E:\Codex\FD\.fd-takeover-audit-20261018\FD-WALLACHIA-REVIEW-0fd7d88f-20261020.md`.
+
+Frozen owner scope is exactly nine identities: `master.wallachia.skill.ascension` and `.s1` through `.s8`.
+
+The accepted Candidate preserves all printed text and source hashes, adds canonical authoring, active-pack registration, generated evidence and focused regressions. The Tatari effects are explicitly `HOST_ADJUDICATED` because no generic runtime contract exists; no unsupported private bypass is claimed.
+
+Formal A-sync accounting:
+
+- exact auditable frontier before this transaction: `364/944`, remaining `580`;
+- exact owner increment: `+9`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`373/944`**, remaining **`571`**;
+- report: `docs/reports/2026-10-20-p3-a-owner-wallachia-migration-acceptance-synchronization.md`.
+
+This synchronization does not merge PR `#642` or prior open PRs. The next owner is derived mechanically from this synchronization frontier.
