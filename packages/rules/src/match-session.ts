@@ -156,6 +156,47 @@ export interface MatchSessionConfig {
   persistenceScope?: string;
   /** Server-owned restore context. Production defaults to canonical executable-pack validation; tests may bind an authoring fixture explicitly. Never serialized. */
   restorePackKind?: MatchSessionRestorePackKind;
+  /** Optional host-owned support binding for one explicitly selected owner/player. Never enabled by default. */
+  masterSupportHostBinding?: { ownerId: string; playerId: string };
+}
+
+/**
+ * Installs only the selected support archive's source skills. The compiler
+ * deliberately leaves every outside-game definition without `initialZone`;
+ * this host seam is the explicit, owner-scoped exception used by a session
+ * that opts into a support-only owner.
+ */
+export function installMasterSupportOwnerCards(
+  state: GameState,
+  pack: ExecutableCardPack,
+  binding: { ownerId: string; playerId: string },
+): string[] {
+  const player = state.players.find((candidate) => candidate.id === binding.playerId);
+  if (!player || player.masterCardId !== binding.ownerId) throw new Error(`Master support host binding owner/player mismatch: ${binding.ownerId}/${binding.playerId}`);
+  const sourceDefinitions = Object.values(pack.cards).filter((card) =>
+    card.id.startsWith(`${binding.ownerId}.skill.`) && card.ownerId === binding.ownerId &&
+    card.cardType === 'master_skill' && card.initialPlacement === 'outside_game');
+  if (sourceDefinitions.length === 0) throw new Error(`Master support host binding has no outside-game source skills: ${binding.ownerId}`);
+  const runtime = state.abilityRuntime;
+  if (!runtime) throw new Error('Master support host binding requires initialized ability runtime');
+  return sourceDefinitions.map((definition) => {
+    const existing = state.cards.find((card) => card.definitionId === definition.id && card.ownerPlayerId === binding.playerId && card.controllerPlayerId === binding.playerId);
+    if (existing) {
+      if (existing.zone !== 'skill') throw new Error(`Master support source already exists outside skill zone: ${definition.id}`);
+      return existing.instanceId;
+    }
+    const instanceId = `host-support-${binding.playerId}-${definition.id}`;
+    state.cards.push({
+      instanceId,
+      definitionId: definition.id,
+      ownerPlayerId: binding.playerId,
+      controllerPlayerId: binding.playerId,
+      zone: 'skill',
+      visibility: { scope: 'owner_only', ownerPlayerId: binding.playerId },
+    });
+    runtime.cardState[instanceId] = { active: false, faceDown: false, playedRound: state.round.roundNumber };
+    return instanceId;
+  });
 }
 
 export type MatchPauseReason =
@@ -2834,6 +2875,7 @@ export class MatchSession {
   private readonly persistenceSecret: string;
   private readonly persistenceScope: string;
   private readonly restorePackKind: MatchSessionRestorePackKind;
+  private readonly masterSupportHostBinding: { ownerId: string; playerId: string } | undefined;
   state: GameState;
   pairings: Array<{ playerId: string; seat: number; master: ExecutableCharacterDefinition; servant: ExecutableCharacterDefinition }>;
   rawCards: Map<string, RuntimeRawCard>;
@@ -2860,6 +2902,7 @@ export class MatchSession {
     this.persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
     this.persistenceScope = config.persistenceScope ?? createOpponentCloseToOnePersistenceScope();
     this.restorePackKind = config.restorePackKind ?? 'production_executable';
+    this.masterSupportHostBinding = config.masterSupportHostBinding;
     const built = this.buildInitialState();
     this.state = built.state;
     this.pairings = built.pairings;
@@ -3486,8 +3529,20 @@ export class MatchSession {
   }
 
   private buildInitialState(): { state: GameState; pairings: MatchSession['pairings']; rawCards: MatchSession['rawCards'] } {
-    const pairings = buildSevenPlayerCharacterPairings(masterCharacters, servantCharacters, this.seed);
     const pack = runtimeContent.rules;
+    const pairings = buildSevenPlayerCharacterPairings(masterCharacters, servantCharacters, this.seed);
+    const supportBinding = this.masterSupportHostBinding;
+    if (supportBinding) {
+      const target = pairings.find((pairing) => pairing.playerId === supportBinding.playerId);
+      if (!target) throw new Error(`Unknown master support host player: ${supportBinding.playerId}`);
+      const sourceCardIds = Object.values(pack.cards)
+        .filter((card) => card.id.startsWith(`${supportBinding.ownerId}.skill.`) && card.ownerId === supportBinding.ownerId && card.cardType === 'master_skill' && card.initialPlacement === 'outside_game')
+        .map((card) => card.id);
+      if (sourceCardIds.length === 0) throw new Error(`Unknown master support host owner: ${supportBinding.ownerId}`);
+      // This synthetic pairing is intentionally opt-in: support archives are
+      // rules-only and never enter the canonical seven-master roster.
+      target.master = { id: supportBinding.ownerId, name: supportBinding.ownerId, kind: 'master', cardIds: sourceCardIds, publicInformation: {} };
+    }
     const rawCards = new Map<string, RuntimeRawCard>(Object.values(pack.cards).map((card) => [card.id, card] as const));
     const state = createSeededGameState({ activeSeats: [...SEVEN_PLAYER_SEATS] });
     state.cards = [];
@@ -3547,6 +3602,7 @@ export class MatchSession {
       }
     }
     initializeAbilityRuntime(state, pack, { seed: this.seed });
+    if (supportBinding) installMasterSupportOwnerCards(state, pack, supportBinding);
     processAbilityEvent(state, { id: 'match-session-game-start', type: 'game_start' });
     this.startRound(1, state);
     return { state, pairings, rawCards };

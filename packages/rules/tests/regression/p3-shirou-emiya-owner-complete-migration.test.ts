@@ -73,6 +73,24 @@ describe('P3 Shirou-Emiya owner migration boundary', () => {
     expect(rules.calculateCardPower(state, attack).value).toBe(9);
     const special = addCard(state, 'basic.特殊.3', 'attack_area');
     expect(rules.calculateCardPower(state, special).value).toBe(7);
+    (state as any).modeState = { currentSituationIsClimax: false };
+    state.round.roundNumber = 9;
+    expect(rules.calculateCardPower(state, attack).value).toBe(5);
+  });
+
+  it('constructs a real MatchSession through an explicit Shirou support-owner host binding', () => {
+    const session = rules.createMatchSession({
+      seed: 20261020,
+      masterSupportHostBinding: { ownerId: ROOT, playerId: 'p1' },
+    });
+    expect(session.pairings.find((pairing) => pairing.playerId === 'p1')?.master.id).toBe(ROOT);
+    const state = session.getState();
+    expect(state.players.find((player) => player.id === 'p1')?.masterCardId).toBe(ROOT);
+    expect(state.cards.filter((card) => card.ownerPlayerId === 'p1' && card.definitionId.startsWith(`${ROOT}.skill.`))).toHaveLength(4);
+    expect(state.cards.filter((card) => card.definitionId === 'card.derived.master.shirou-emiya.ganjiang-moye')).toHaveLength(1);
+    expect(state.cards.find((card) => card.definitionId === 'card.derived.master.shirou-emiya.ganjiang-moye')).toMatchObject({ zone: 'skill' });
+    const ordinary = rules.createMatchSession({ seed: 20261020 });
+    expect(ordinary.getState().cards.some((card) => card.definitionId.startsWith(`${ROOT}.skill.`))).toBe(false);
   });
 
   it('clears mana and restores play on the first authoritative elimination only', () => {
@@ -89,6 +107,43 @@ describe('P3 Shirou-Emiya owner migration boundary', () => {
     state.players[0]!.status = 'eliminated';
     state.players[0]!.mana = 4;
     rules.processAbilityEvent(state, { ...event, id: 'shirou-result-2', resultId: 'shirou-result-2' });
+    expect(state.players[0]!.mana).toBe(4);
+  });
+
+  it('handles the real linked-auxiliary upkeep elimination path exactly once', () => {
+    const linkedArchive = structuredClone(archive);
+    linkedArchive.cards.push({
+      id: `${ROOT}.test-linked-provider`, name: 'linked provider', cardType: 'master_skill',
+      owner: { type: 'master', id: ROOT }, initialPlacement: 'outside_game',
+      cardFace: { typeLabel: 'test', attributes: [], cost: 0, basePower: 0 }, playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [],
+      abilities: [
+        { id: 'shirou-linked-setup', kind: 'forced_trigger', printedClause: 'fixture', activation: { trigger: 'game_start' }, conditions: [], targets: [], effects: [{ type: 'linked_auxiliary_suite', op: 'setup', stateKey: 'shirou-linked', definitionIds: ['shirou-linked-member-a', 'shirou-linked-member-b'], destination: 'attack_area', zeroCommandSeals: true }], cost: [], ruleModifiers: [], creates: [], lifecycle: {}, responseWindow: {}, limit: {}, visibility: {}, execution: { mode: 'automatic', allowedOperations: [] } },
+        { id: 'shirou-linked-upkeep', kind: 'forced_trigger', printedClause: 'fixture', activation: { trigger: 'round_end' }, conditions: [], targets: [], effects: [{ type: 'linked_auxiliary_suite', op: 'round_end_upkeep', stateKey: 'shirou-linked' }], cost: [], ruleModifiers: [], creates: [], lifecycle: {}, responseWindow: {}, limit: {}, visibility: {}, execution: { mode: 'automatic', allowedOperations: [] } },
+      ], verification: { implementationStatus: 'complete' },
+    });
+    for (const id of ['shirou-linked-member-a', 'shirou-linked-member-b']) linkedArchive.cards.push({
+      id, name: id, cardType: 'basic_attack', owner: { type: 'master', id: ROOT }, cardFace: { typeLabel: 'test', attributes: [], cost: 0, basePower: 1 }, playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], abilities: [], verification: { implementationStatus: 'complete' },
+    });
+    const loaded = rules.loadAuthoringJson(linkedArchive);
+    expect(loaded.report).toEqual([]);
+    const state = createSeededGameState({ activeSeats: [1, 2] });
+    state.cards = [];
+    state.players[0]!.masterCardId = ROOT;
+    state.players[0]!.mana = 6;
+    rules.initializeAbilityRuntime(state, loaded, { seed: 20261020 });
+    const source = addCard(state, `${ROOT}.skill.s3`);
+    addCard(state, `${ROOT}.test-linked-provider`);
+    rules.processAbilityEvent(state, { id: 'shirou-linked-game-start', type: 'game_start' });
+    const suiteCards = state.abilityRuntime!.linkedAuxiliarySuites?.['p1:shirou-linked']?.cardInstanceIds ?? [];
+    expect(suiteCards).toHaveLength(2);
+    for (const id of suiteCards) state.cards.find((card) => card.instanceId === id)!.zone = 'removed_from_game';
+    state.round.activePhase = 'round_end';
+    rules.processAbilityEvent(state, { id: 'shirou-linked-round-end', type: 'round_end' });
+    expect(state.players[0]).toMatchObject({ status: 'active', mana: 0 });
+    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'shirou_emiya_avalon_continued', sourceCardId: source }));
+    state.players[0]!.status = 'eliminated';
+    state.players[0]!.mana = 4;
+    rules.processAbilityEvent(state, { id: 'shirou-linked-round-end-replay', type: 'round_end' });
     expect(state.players[0]!.mana).toBe(4);
   });
 

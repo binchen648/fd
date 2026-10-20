@@ -2803,6 +2803,7 @@ export function triggerEventScopeMatches(a: AuthoringAbility, event: AbilityEven
 }
 function battleEventControllerEligibleAfterScoring(s: GameState, event: AbilityEvent, controllerId: string): boolean {
   if (player(s, controllerId).status === 'active') return true;
+  if (event.type === 'player_eliminated_by_linked_auxiliary_upkeep') return event.playerId === controllerId;
   const perBattleScoped = !!event.battlePhaseResolutionId && !!event.battleId && !!event.resultId &&
     ['after_battle_result_determined', 'after_controller_wins_battle', 'after_controller_loses_battle', 'after_controller_first_loses_battle', 'after_controller_gains_victory'].includes(event.type);
   const phaseTerminalScoped = !!event.battlePhaseResolutionId && event.type === 'after_battle_ended';
@@ -2821,7 +2822,9 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
            event.playerId===c.controllerPlayerId ||
            event.locationId!==player(s,c.controllerPlayerId).locationId ||
            !event.locationId || !isBattlefield(s,event.locationId))) continue;
-      const matches = a.activation.trigger === event.type || (!a.activation.trigger && a.kind === 'phase_action' && a.activation.opens === event.type);
+      const matches = a.activation.trigger === event.type ||
+        (isAcceptedShirouEmiyaAvalonAbility(a) && event.type === 'player_eliminated_by_linked_auxiliary_upkeep') ||
+        (!a.activation.trigger && a.kind === 'phase_action' && a.activation.opens === event.type);
       if (event.type === 'while_active') {
         const transformed = runtime(s).transformedReturnSilenceSourceCardIds?.includes(c.instanceId) === true;
         const isSoulDragState = a.effects.some((effect) => effect.type === 'soul_drag_power_bonus');
@@ -7838,7 +7841,23 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (containsLinkedAuxiliarySuitePrivilegedNode(a)) {
     if (!isAcceptedLinkedAuxiliarySuiteAbility(a)) reject('resolution_failed', 'Unsupported linked-auxiliary suite semantic');
+    const emittedEvents = runtime(s).events;
+    const eventStart = emittedEvents.length;
     if (!resolveLinkedAuxiliarySuiteEffect(s, ctx, a, linkedAuxiliaryOps(s))) reject('resolution_failed', 'Linked-auxiliary suite resolution failed');
+    // The linked-suite upkeep path emits an authoritative elimination fact as
+    // runtime telemetry. Feed that fact back through the normal trigger
+    // dispatcher so owner-scoped first-elimination abilities (including
+    // Avalon) observe the real path rather than a fabricated battle result.
+    for (const emitted of emittedEvents.slice(eventStart)) {
+      if (emitted.type !== 'player_eliminated_by_linked_auxiliary_upkeep' || !emitted.playerId || !emitted.sourceCardId || !emitted.abilityId) continue;
+      processEvent(s, {
+        id: `linked-auxiliary-elimination:${emitted.playerId}:${emitted.sourceCardId}:${emitted.abilityId}`,
+        type: emitted.type,
+        playerId: emitted.playerId,
+        sourceCardId: emitted.sourceCardId,
+        abilityId: emitted.abilityId,
+      });
+    }
     return;
   }
   if (containsRoundCommitmentPrivilegedNode(a)) {

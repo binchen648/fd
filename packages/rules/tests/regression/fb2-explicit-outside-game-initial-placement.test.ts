@@ -15,9 +15,7 @@ function sourceInput() {
 }
 
 function masterSkillFixture(input: ReturnType<typeof sourceInput>) {
-  const archive = input.rules.archives.find((candidate) =>
-    candidate.id.startsWith('master.') && candidate.cards.filter((card) => card.cardType === 'master_skill').length >= 2,
-  );
+  const archive = input.rules.archives.find((candidate) => candidate.id === 'master.akasha');
   expect(archive).toBeDefined();
   const skills = archive!.cards.filter((card) => card.cardType === 'master_skill');
   return { archive: archive!, source: skills[0]!, target: skills[1]! };

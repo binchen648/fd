@@ -67,7 +67,8 @@ export function shirouEmiyaPowerBonus(s: GameState, sourceCardId: string): { bas
   const attrs = Array.isArray(d.cardFace.attributes) ? d.cardFace.attributes : [];
   const basic = d.cardType === 'basic_attack' && attrs.some((a) => a === '力量' || a === '迅捷') &&
     sourceHasEffect(s, source.controllerPlayerId, SHIROU_EMIYA_BASIC_POWER_BONUS_EFFECT, isAcceptedShirouEmiyaBasicPowerAbility) ? 2 : 0;
-  const climax = (s.round.roundNumber >= 9 || (s as unknown as { modeState?: { currentSituationIsClimax?: boolean } }).modeState?.currentSituationIsClimax === true) &&
+  const currentSituationIsClimax = (s as unknown as { modeState?: { currentSituationIsClimax?: boolean } }).modeState?.currentSituationIsClimax;
+  const climax = ((typeof currentSituationIsClimax === 'boolean' ? currentSituationIsClimax : s.round.roundNumber >= 9)) &&
     sourceHasEffect(s, source.controllerPlayerId, SHIROU_EMIYA_CLIMAX_POWER_BONUS_EFFECT, isAcceptedShirouEmiyaClimaxPowerAbility) ? 4 : 0;
   return { basic, climax };
 }
@@ -75,9 +76,12 @@ export function canExecuteShirouEmiyaAvalon(s: GameState, sourceCardId: string, 
   const source = s.cards.find((candidate) => candidate.instanceId === sourceCardId);
   const p = s.players.find((candidate) => candidate.id === controllerId);
   const flags = s.abilityRuntime?.structuredPlayerFlagsByPlayer?.[controllerId];
+  const battleElimination = event?.type === 'after_battle_result_determined' &&
+    event.battleParticipantIds?.includes(controllerId) === true && event.battleResult?.loserIds.includes(controllerId) === true;
+  const linkedAuxiliaryElimination = event?.type === 'player_eliminated_by_linked_auxiliary_upkeep' &&
+    event.playerId === controllerId && typeof event.sourceCardId === 'string' && typeof event.abilityId === 'string';
   return !!source && !!p && ownerMatchesController(s, source.definitionId, p.masterCardId) && source.ownerPlayerId === controllerId && source.controllerPlayerId === controllerId && source.zone === 'skill' &&
-    p.status === 'eliminated' && event?.type === 'after_battle_result_determined' && event.battleParticipantIds?.includes(controllerId) === true &&
-    event.battleResult?.loserIds.includes(controllerId) === true && flags?.[AVALON_USED_FLAG] !== true;
+    p.status === 'eliminated' && (battleElimination || linkedAuxiliaryElimination) && flags?.[AVALON_USED_FLAG] !== true;
 }
 export function resolveShirouEmiyaAvalon(s: GameState, sourceCardId: string, abilityId: string, controllerId: string, event?: AbilityEvent): void {
   if (!s.abilityRuntime || !canExecuteShirouEmiyaAvalon(s, sourceCardId, controllerId, event)) throw new Error('Avalon requires the first authoritative elimination event');

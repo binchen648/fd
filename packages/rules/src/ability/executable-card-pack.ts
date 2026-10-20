@@ -547,7 +547,7 @@ function validatedGameStartSkillProvisioningDeferrals(cards: Record<string, Exec
   return { targetIds, sourceIds };
 }
 
-function deferredCardIds(cards: Record<string, ExecutableCardDefinition>): Set<string> {
+function deferredCardIds(cards: Record<string, ExecutableCardDefinition>, scopedProvisioningSourceIds = new Set<string>()): Set<string> {
   const deferred = new Set<string>();
   for (const card of Object.values(cards)) {
     if (card.initialPlacement !== 'outside_game') continue;
@@ -569,12 +569,13 @@ function deferredCardIds(cards: Record<string, ExecutableCardDefinition>): Set<s
   Object.values(cards).forEach((card) => card.abilities.forEach(visit));
   const provisioning = validatedGameStartSkillProvisioningDeferrals(cards);
   for (const sourceId of provisioning.sourceIds) {
-    // Master-support archives keep every physical source definition outside
-    // the canonical master package while still allowing the source to be
-    // provisioned by the host at game start. Do not defer that source from the
-    // executable definition table; only the provisioned target is deferred.
-    deferred.delete(sourceId);
-    if (provisioning.targetIds.has(sourceId)) throw new Error(`Game-start skill provisioning source cannot itself be a target: ${sourceId}`);
+    // A provisioning source is still governed by its authored placement. An
+    // outside-game source must not be silently rewritten into the initial
+    // skill zone by this generic compiler. A scoped host/session integration
+    // may explicitly install such a source for its selected owner.
+    if ((deferred.has(sourceId) && !scopedProvisioningSourceIds.has(sourceId)) || provisioning.targetIds.has(sourceId)) {
+      throw new Error(`Game-start skill provisioning source cannot itself be deferred: ${sourceId}`);
+    }
   }
   provisioning.targetIds.forEach((definitionId) => deferred.add(definitionId));
   return deferred;
@@ -671,7 +672,10 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
     decks[archive.id] = deck;
   }
 
-  const deferred = deferredCardIds(cards);
+  const scopedProvisioningSourceIds = new Set(
+    archives.filter(isMasterSupportArchive).flatMap((archive) => archive.cards.map((card) => card.id)),
+  );
+  const deferred = deferredCardIds(cards, scopedProvisioningSourceIds);
   for (const card of Object.values(cards)) {
     if (['servant_skill', 'master_skill', 'command_spell'].includes(card.cardType) && !deferred.has(card.id)) card.initialZone = 'skill';
     validateCardReferences(card.abilities, cards, `cards.${card.id}.abilities`);

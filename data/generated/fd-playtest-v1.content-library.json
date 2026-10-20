@@ -41894,8 +41894,7 @@
         "mode": "automatic",
         "ownerId": "master.shirou-emiya",
         "playKind": "support",
-        "destinationZone": "field",
-        "initialZone": "skill"
+        "destinationZone": "field"
       },
       "master.shirou-emiya.skill.s3": {
         "id": "master.shirou-emiya.skill.s3",
@@ -51004,11 +51003,11 @@
       "master.shiki-ryougi": "master.shiki-ryougi.command-spell",
       "master.shiki-tohno": "master.shiki-tohno.command-spell"
     },
-    "definitionHash": "1740e8c3bbf783a82add908c1b8de9ebb1a8ee3c38ee476152bec7127683ec28",
+    "definitionHash": "85e36ea6fda05f9170fd8ef24178df8cb4823800f49137f9a723d5c6e0eed321",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "1740e8c3bbf783a82add908c1b8de9ebb1a8ee3c38ee476152bec7127683ec28"
+      "definitionHash": "85e36ea6fda05f9170fd8ef24178df8cb4823800f49137f9a723d5c6e0eed321"
     },
     "sourceMap": {
       "master.shinji.skill.ascension": {
