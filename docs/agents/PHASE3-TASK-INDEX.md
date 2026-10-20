@@ -10151,3 +10151,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-20-p3-a-owner-wallachia-migration-acceptance-synchronization.md`.
 
 This synchronization does not merge PR `#642` or prior open PRs. The next owner is derived mechanically from this synchronization frontier.
+
+## TASK P3-S-OWNER-WAVER-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly four skills for `master.waver`
+
+Exact accepted review:
+
+- PR `#643`, exact Base `83ca54c7727cadd872bbc6d1ce5760ed8d6034d9`;
+- accepted Candidate `eb7458ff74dc761007b3e20b2bad36c2df7367e6`;
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from the separated Reviewer;
+- reviewer evidence: `E:\Codex\FD\.fd-takeover-audit-20261018\FD-WAVER-REVIEW-eb7458ff-20261020.md`.
+
+Frozen owner scope is exactly four identities: `master.waver.skill.ascension` and `.s1` through `.s3`.
+
+The accepted Candidate preserves printed text and source hashes, adds canonical authoring, active-pack/generated evidence and focused regressions. Three unsupported generic runtime clauses remain explicitly `HOST_ADJUDICATED`; no private bypass is claimed. Existing unrelated FM08/FB2 failures remain recorded as Base failures.
+
+Formal A-sync accounting:
+
+- exact auditable frontier before this transaction: `373/944`, remaining `571`;
+- exact owner increment: `+4`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`377/944`**, remaining **`567`**;
+- report: `docs/reports/2026-10-20-p3-a-owner-waver-migration-acceptance-synchronization.md`.
+
+This synchronization does not merge PR `#643` or prior open PRs. The next owner is derived mechanically from this synchronization frontier.
