@@ -9995,3 +9995,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-19-p3-a-owner-kiara-acceptance-synchronization.md`.
 
 This A-sync records acceptance and accounting only; it does not merge PR `#585` or any prior open synchronization PR.
+
+## TASK P3-S-OWNER-SION-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly 18 skills for `master.sion`
+
+Exact accepted review:
+
+- PR `#637`, exact Base `a42b5e1c517141b90f3407773958b0d8afe63264`;
+- accepted Candidate `1aac16fc16910a7dc212a55a6847a0f619c8d18e`;
+- independent verdict `MIGRATION_ACCEPTED` from the separated GPT-6 Sol Reviewer;
+- reviewer evidence: `E:\Codex\FD\.fd-takeover-audit-20261018\FD-SION-REVIEW-1aac16fc-20261020.md`.
+
+Frozen owner scope is exactly 18 identities: `master.sion.skill.ascension` and `.s1` through `.s17`.
+
+The exact Base had a partial non-consumer archive containing only `.s12` and no active-pack reference. The accepted Candidate materializes the complete 18-card archive and registers it exactly once in the active pack. The partial archive therefore earns no duplicate credit; the complete owner migration contributes exactly `+18`. The MoonCancer trusted-authoring-fixture boundary and production fail-closed restore behavior remain explicit.
+
+Formal A-sync accounting:
+
+- exact auditable frontier before this transaction: `335/944`, remaining `609`;
+- exact owner increment: `+18`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`353/944`**, remaining **`591`**;
+- report: `docs/reports/2026-10-20-p3-a-owner-sion-migration-acceptance-synchronization.md`.
+
+This synchronization does not merge PR `#637` or prior open PRs. The next owner is derived mechanically as `master.taiga` (three frozen skills), released only from this synchronization frontier.
