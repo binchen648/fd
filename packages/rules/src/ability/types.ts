@@ -942,14 +942,15 @@ export interface StageAttackCardAction { type: 'stage_attack_card'; cardInstance
 export interface ConfirmStagedAttackAction { type: 'confirm_staged_attack' }
 export interface CancelStagedAttackAction { type: 'cancel_staged_attack' }
 export interface ActivateAbilityAction { type: 'activate_ability'; cardInstanceId: string; abilityId: string; variableCosts?: { name: string; min: number; max: number }[]; manaContributions?: ManaContributionChoice[] }
+export interface WodimeGodLegacyAction { type: 'wodime_god_legacy_action'; mode: 'power' | 'mana'; amount: number }
 export interface ChooseTargetAction { type: 'choose_target'; decisionId: string; candidates: string[]; min: number; max: number }
 export interface ResolveResponseAction { type: 'resolve_response'; windowId: string; cardInstanceId: string; abilityId: string }
 export interface DeclineWindowAction { type: 'decline_this_window'; windowId: string }
 export interface DeployPlayerAction { type: 'deploy_player'; locationId: string }
 export type LegalAction = PlayCardAction | StageAttackCardAction | ConfirmStagedAttackAction | CancelStagedAttackAction |
-  ActivateAbilityAction | ChooseTargetAction | ResolveResponseAction | DeclineWindowAction | DeployPlayerAction;
+  ActivateAbilityAction | WodimeGodLegacyAction | ChooseTargetAction | ResolveResponseAction | DeclineWindowAction | DeployPlayerAction;
 export type AbilityCommand = PlayCardAction | (ActivateAbilityAction & { variables?: Record<string, number> }) |
-  { type: 'choose_target'; decisionId: string; selectedIds: string[] } | ResolveResponseAction | DeclineWindowAction |
+  WodimeGodLegacyAction | { type: 'choose_target'; decisionId: string; selectedIds: string[] } | ResolveResponseAction | DeclineWindowAction |
   { type: 'pass'; windowId: string } | DeployPlayerAction | StageAttackCardAction | ConfirmStagedAttackAction | CancelStagedAttackAction;
 export interface AbilityPlayerView {
   revision: number; phase: PhaseName; round: number; legalActions: LegalAction[];

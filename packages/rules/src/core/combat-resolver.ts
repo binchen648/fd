@@ -425,7 +425,9 @@ export function deriveBattleParticipantsFromState(
         card.controllerPlayerId === player.id && isCombatCardZone(state, card) &&
         state.abilityRuntime!.cardState[card.instanceId]?.active &&
         state.abilityRuntime!.pack.cards[card.definitionId]) : [];
-      const authoredPower = authoredAttacks.reduce((sum, card) => sum + calculateCardPower(state, card.instanceId).value, 0);
+      const authoredPower = authoredAttacks.reduce((sum, card) => sum + calculateCardPower(state, card.instanceId).value, 0) +
+        (state.abilityRuntime?.roundPlayerPowerAdjustments ?? []).filter((entry) => entry.playerId === player.id && entry.round === state.round.roundNumber)
+          .reduce((sum, entry) => sum + entry.amount, 0);
 
       const terrainSlotIndex = assignedTerrainSlotIndex(state, battlefieldId, player.id);
       const fixedRoundTerrainValue = roundLocationTerrainReplacement(state, player.id, battlefieldId);

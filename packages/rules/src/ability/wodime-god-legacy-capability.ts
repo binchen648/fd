@@ -110,3 +110,29 @@ export function isWodimeGodLegacyRuntimeStateValid(state: GameState): boolean {
     entry.lifecycle === 'game' && Number.isSafeInteger(entry.activatedRound) && entry.activatedRound >= 1 &&
     state.cards.some((card) => card.instanceId === entry.sourceCardId && card.definitionId === SOURCE_DEFINITION));
 }
+
+export function wodimeGodLegacyActions(state: GameState, playerId: string): Array<{ type: 'wodime_god_legacy_action'; mode: 'power' | 'mana'; amount: number }> {
+  if (state.round.activePhase !== 'action' || state.players.find((player) => player.id === playerId)?.status !== 'active' ||
+      state.players.find((player) => player.id === playerId)?.seat !== state.players.find((player) => player.seat === state.round.prioritySeat)?.seat) return [];
+  const tokens = runtime(state).wodimeGodLegacyByPlayer?.[playerId] ?? 0;
+  const result: Array<{ type: 'wodime_god_legacy_action'; mode: 'power' | 'mana'; amount: number }> = [];
+  for (let amount = 1; amount <= Math.min(3, Math.floor(tokens / 3)); amount++) result.push({ type: 'wodime_god_legacy_action', mode: 'power', amount });
+  for (let amount = 1; amount <= Math.floor(tokens / 4); amount++) result.push({ type: 'wodime_god_legacy_action', mode: 'mana', amount });
+  return result;
+}
+
+export function executeWodimeGodLegacyAction(state: GameState, playerId: string, mode: 'power' | 'mana', amount: number): boolean {
+  const action = wodimeGodLegacyActions(state, playerId).find((candidate) => candidate.mode === mode && candidate.amount === amount);
+  if (!action || !Number.isSafeInteger(amount) || amount < 1) return false;
+  const r = runtime(state); const tokens = r.wodimeGodLegacyByPlayer?.[playerId] ?? 0; const cost = mode === 'power' ? amount * 3 : amount * 4;
+  if (tokens < cost) return false;
+  r.wodimeGodLegacyByPlayer![playerId] = tokens - cost;
+  if (mode === 'mana') state.players.find((player) => player.id === playerId)!.mana += amount;
+  else {
+    r.roundPlayerPowerAdjustments ??= [];
+    r.roundPlayerPowerAdjustments.push({ playerId, amount, round: state.round.roundNumber, sourceCardId: r.wodimeGodLegacyActivation!.sourceCardId, abilityId: SOURCE_ABILITY });
+  }
+  r.events.push({ type: mode === 'power' ? 'wodime_god_legacy_power_paid' : 'wodime_god_legacy_mana_paid', playerId, controllerId: playerId,
+    sourceCardId: r.wodimeGodLegacyActivation!.sourceCardId, abilityId: SOURCE_ABILITY, visibility: playerId });
+  return true;
+}

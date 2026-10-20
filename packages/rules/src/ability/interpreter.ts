@@ -171,7 +171,7 @@ import { cleanupMasterAscensionEventPowerAtRoundEnd, containsMasterAscensionEven
 import { canExecutePersistentLocationTerrainEffect, containsPersistentLocationTerrainPrivilegedNode, isAcceptedPersistentLocationTerrainAbility, isPersistentLocationTerrainRuntimeProvenanceValidForRestore, resolvePersistentLocationTerrainEffect } from './persistent-location-terrain-capability';
 import { canExecuteRoundLocationSupplyEffect, cleanupRoundLocationSupplyAtRoundEnd, containsRoundLocationSupplyPrivilegedNode, isAcceptedRoundLocationSupplyAbility, isRoundLocationSupplyRuntimeProvenanceValidForRestore, resolveRoundLocationSupplyEffect, settleMovementCompetitionSuppression } from './round-location-supply-capability';
 import { settleSameBattlefieldTerrainUpkeepForPriorityPlayer } from './unclaimed-terrain-upkeep-capability';
-import { settleWodimeGodLegacyEvent } from './wodime-god-legacy-capability';
+import { executeWodimeGodLegacyAction, settleWodimeGodLegacyEvent, wodimeGodLegacyActions } from './wodime-god-legacy-capability';
 import { SWITCH_ROUND_SKILL_PROFILE_EFFECT, canExecuteRoundSkillProfileEffect, cleanupRoundSkillProfilesAtRoundEnd, containsRoundSkillProfilePrivilegedNode, isAcceptedRoundSkillProfileAbility, isRoundSkillProfileRuntimeProvenanceValidForRestore, resolveRoundSkillProfileEffect, roundSkillCardPowerBonus, roundSkillProfileSuppressed, settleRoundSkillProfileEvent } from './round-skill-profile-capability';
 import {
   applyPermanentReturnedSkillTuning, applyPhysicalCardCostModifiers, cardReturnedToSkillThisRound,
@@ -2959,6 +2959,7 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
   ] : [];
   if (r.hostRequests.length) return [];
   const result: LegalAction[] = [];
+  result.push(...wodimeGodLegacyActions(s, playerId));
   const staged = stagedAttacks(s)[playerId] ?? [];
   if (staged.length && s.round.prioritySeat === p.seat) {
     const faceDownRequired = effectiveLocationRestrictionRequiresFaceDownStandardAttack(s, playerId);
@@ -5720,6 +5721,9 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
       if (entry.amount === -4 && isAcceptedFortifyMovedInBattlefieldAbility(ability)) return true;
       if (entry.amount === 2 && isAcceptedBloodlustAbility(ability) && isBloodlustActionEffect(ability.effects[0]!) && source.controllerPlayerId === entry.playerId) return true;
       if (entry.amount === 6 && isShirouMealMenuAbility(ability) && isShirouMealSourceAbility(s, source.instanceId, entry.playerId, ability)) return true;
+      if (entry.amount >= 1 && entry.amount <= 3 && entry.abilityId === 'wodime.god-legacy' && ability.id === 'wodime.god-legacy' &&
+          source.definitionId === 'master.wodime.skill.s3' && source.controllerPlayerId === entry.playerId &&
+          s.abilityRuntime?.wodimeGodLegacyActivation?.sourceCardId === source.instanceId) return true;
       if (isBoundOpponentRoundPowerAdjustmentValid(s, entry)) return true;
       if (linkedAuxiliaryRoundPowerAdjustmentRestoreValid(s, entry)) return true;
       if (isRoundCommitmentPowerAdjustmentValidForRestore(s, entry)) return true;
@@ -6214,6 +6218,7 @@ function startBattlefieldAttackOffer(s: GameState, ctx: EffectContext, ability: 
 function settleBattlefieldAttackOffers(s: GameState, event: AbilityEvent): void {
   const r = runtime(s);
   if (event.type === 'round_end') {
+    r.roundPlayerPowerAdjustments = (r.roundPlayerPowerAdjustments ?? []).filter((entry) => entry.round !== s.round.roundNumber || entry.abilityId !== 'wodime.god-legacy');
     cleanupMasterAscensionEventPowerAtRoundEnd(s);
     const expired = (r.battlefieldAttackOfferSettlements ?? []).filter((entry) => entry.round <= s.round.roundNumber);
     for (const entry of expired) retireBattlefieldAttackOfferAuthority(s, entry.transactionId);
@@ -9200,6 +9205,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
   const r = runtime(s); const legal = getLegalActions(s, playerId);
   if (!command || typeof command !== 'object') reject('illegal_action', 'Invalid command');
   switch (command.type) {
+    case 'wodime_god_legacy_action':
+      if (!legal.some((action) => action.type === command.type && action.mode === command.mode && action.amount === command.amount) ||
+          !executeWodimeGodLegacyAction(s, playerId, command.mode, command.amount)) reject('illegal_action', 'God Legacy action is not available');
+      break;
     case 'play_card': {
       const owned = s.cards.find(c => c.instanceId === command.cardInstanceId && c.controllerPlayerId === playerId);
       if (!owned) reject('illegal_action', 'Card is not available');

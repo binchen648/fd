@@ -110,6 +110,12 @@ describe('Wodime frozen authoring archive', () => {
     expect((restored.state.abilityRuntime as any).wodimeGodLegacyByPlayer.p2).toBe(6);
     expect((restored.state.abilityRuntime as any).wodimeGodLegacyActivation).toMatchObject({ controllerId: 'p1', abilityId: 'wodime.god-legacy', lifecycle: 'game' });
     expect(isWodimeGodLegacyRuntimeStateValid(state)).toBe(true);
+    state.round.activePhase = 'action'; state.round.prioritySeat = state.players.find((player) => player.id === 'p2')!.seat;
+    expect(rules.projectAbilityState(state, 'p2').legalActions).toContainEqual({ type: 'wodime_god_legacy_action', mode: 'power', amount: 1 });
+    expect(rules.dispatchAbilityCommand(state, 'p2', { type: 'wodime_god_legacy_action', mode: 'power', amount: 1 }).ok).toBe(true);
+    expect((state.abilityRuntime as any).wodimeGodLegacyByPlayer.p2).toBe(3);
+    expect((state.abilityRuntime as any).roundPlayerPowerAdjustments).toContainEqual(expect.objectContaining({ playerId: 'p2', amount: 1, abilityId: 'wodime.god-legacy' }));
+    expect(rules.dispatchAbilityCommand(state, 'p2', { type: 'wodime_god_legacy_action', mode: 'power', amount: 2 }).ok).toBe(false);
   });
 
   it('opens a private two-round game-start decision and provisions the orb', () => {
