@@ -10073,3 +10073,29 @@ Formal A-sync accounting:
 - report: `docs/reports/2026-10-20-p3-a-owner-tiamat-migration-acceptance-synchronization.md`.
 
 This synchronization does not merge PR `#639` or prior open PRs. The next owner is derived mechanically as `master.tokiomi` (three frozen skills), released only from this synchronization frontier.
+
+## TASK P3-S-OWNER-TOKIOMI-COMPLETE-MIGRATION
+
+Owner: Codex S / FORMAL
+Status: `SYNCHRONIZED`
+Classification: owner-complete canonical consumer migration, frozen exactly three skills for `master.tokiomi`
+
+Exact accepted review:
+
+- PR `#640`, exact Base `4b6b979ebbc7004331975d5ac0356afa49c9c3bd`;
+- accepted remote Candidate `94c77ef3b252354cdc3717754c435d36141e4e46`;
+- independent GPT-6 Sol verdict `MIGRATION_ACCEPTED` from the separated Reviewer;
+- reviewer evidence: `E:\Codex\FD\.fd-takeover-audit-20261018\FD-TOKIOMI-REVIEW-94c77ef3-20261020.md`.
+
+Frozen owner scope is exactly three identities: `master.tokiomi.skill.ascension`, `.s1`, and `.s2`.
+
+The accepted Candidate preserves the frozen text and source hashes, materializes canonical authoring and generated evidence, wires the live-Crest fireball modifier, and implements the real item distribution/use and Tokiomi-only competition/location reward suppression. The repository has no generic burning marker producer/removal transaction; the burning clause is explicitly `HOST_ADJUDICATED` and is not claimed as automatic. Unsupported private player marker actions were removed.
+
+Formal A-sync accounting:
+
+- exact auditable frontier before this transaction: `359/944`, remaining `585`;
+- exact owner increment: `+3`, helper/shared-fixture credit `+0`;
+- synchronized frontier: **`362/944`**, remaining **`582`**;
+- report: `docs/reports/2026-10-20-p3-a-owner-tokiomi-migration-acceptance-synchronization.md`.
+
+This synchronization does not merge PR `#640` or prior open PRs. The next owner is derived mechanically as `master.twice` (three frozen skills), released only from this synchronization frontier.
