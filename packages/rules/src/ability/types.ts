@@ -427,6 +427,12 @@ export interface SionChoiceInteractionMetadata {
   candidateIds: string[]; constraints: { kind: 'target'; targetKind: 'card' | 'player' | 'location' | 'choice'; min: number; max: number; distinct: true };
   round: number; coveredCardIds?: string[]; options?: string[];
 }
+export interface WodimeAstrologyRoundSelectionInteractionMetadata {
+  kind: 'wodime_astrology_rounds_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; options: string[];
+  constraints: { kind: 'target'; targetKind: 'choice'; min: 2; max: 2; distinct: true };
+}
 export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata |
   OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata | DeductionRecordChoiceInteractionMetadata |
   PostDrawHandShuffleInteractionMetadata | DiscardShuffleSourceXInteractionMetadata | RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata |
@@ -439,7 +445,7 @@ export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetad
   GlobalDefinitionRevealRewardInteractionMetadata | DiscardDefinitionPlayAllInteractionMetadata | MultiPresenceLocationContextInteractionMetadata |
   BoundOpponentRoundRuleInteractionMetadata | WitherPainStakeInteractionMetadata | DefinitionSideDeckInteractionMetadata |
   EliminationRescueInteractionMetadata | InjuryWarpChoiceInteractionMetadata | LinkedAuxiliarySuiteInteractionMetadata |
-  HakunoMChallengeInteractionMetadata | SionChoiceInteractionMetadata;
+  HakunoMChallengeInteractionMetadata | SionChoiceInteractionMetadata | WodimeAstrologyRoundSelectionInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];

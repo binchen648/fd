@@ -28,7 +28,7 @@ describe('Wodime frozen authoring archive', () => {
     expect(report.summary.textUnconfirmed).toBe(0);
   });
 
-  it('records two real battle wins and provisions the orb through shared contracts', () => {
+  it('opens a private two-round game-start decision and provisions the orb', () => {
     const raw = JSON.parse(readFileSync(archivePath, 'utf8'));
     const loaded = rules.loadAuthoringJson(raw);
     for (const definition of Object.values(loaded.cards)) {
@@ -40,16 +40,23 @@ describe('Wodime frozen authoring archive', () => {
     state.players[0]!.masterCardId = 'master.wodime';
     rules.initializeAbilityRuntime(state, loaded, { seed: 42 });
     installMasterSupportOwnerCards(state, loaded as any, { ownerId: 'master.wodime', playerId: 'p1' });
-    const astrologySource = state.cards.find((card) => card.definitionId === 'master.wodime.skill.s1a')!;
-    state.abilityRuntime!.cardState[astrologySource.instanceId]!.active = true;
-
-    rules.processAbilityEvent(state, { id: 'wodime-win-1', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1', battleId: 'battle-1', resultId: 'result-1', battlefieldId: 'shinto', battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] } });
-    expect(state.abilityRuntime!.structuredPlayerFlagsByPlayer?.p1?.wodime_astrology_rounds).toBe(1);
-    expect(state.cards.filter((card) => card.definitionId === 'master.wodime.skill.s2')).toHaveLength(0);
-
-    rules.processAbilityEvent(state, { id: 'wodime-win-2', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1', battleId: 'battle-2', resultId: 'result-2', battlefieldId: 'shinto', battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] } });
-    expect(state.abilityRuntime!.structuredPlayerFlagsByPlayer?.p1?.wodime_astrology_rounds).toBe(2);
+    rules.processAbilityEvent(state, { id: 'wodime-game-start', type: 'game_start' });
+    const decision = state.abilityRuntime!.pendingDecision!;
+    expect(decision.controllerId).toBe('p1');
+    expect(decision.min).toBe(2);
+    expect(decision.max).toBe(2);
+    expect(decision.candidates).toEqual(Array.from({ length: 11 }, (_, i) => `round:${i + 1}`));
+    expect(decision.interaction?.kind).toBe('wodime_astrology_rounds_v1');
+    expect(rules.dispatchAbilityCommand(state, 'p1', {
+      type: 'choose_target', decisionId: decision.id, selectedIds: ['round:2'],
+    }).ok).toBe(false);
+    expect(state.abilityRuntime!.pendingDecision?.id).toBe(decision.id);
+    const validResult = rules.dispatchAbilityCommand(state, 'p1', {
+      type: 'choose_target', decisionId: decision.id, selectedIds: ['round:2', 'round:7'],
+    });
+    expect(validResult.ok).toBe(true);
+    expect((state.abilityRuntime as any).wodimeAstrologyRoundsByPlayer.p1).toEqual([2, 7]);
     expect(state.cards.filter((card) => card.definitionId === 'master.wodime.skill.s2')).toHaveLength(1);
-    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'card_created', sourceCardId: expect.stringContaining('master.wodime.skill.s1a') }));
+    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'wodime_astrology_rounds_recorded', sourceCardId: expect.stringContaining('master.wodime.skill.s1a') }));
   });
 });

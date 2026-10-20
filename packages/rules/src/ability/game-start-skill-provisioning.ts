@@ -1,5 +1,8 @@
 import type { AuthoringAbility, RuleNode } from './types';
 
+export const WODIME_ASTROLOGY_ROUND_TARGET = 'wodime_astrology_rounds';
+export const WODIME_ASTROLOGY_ROUND_OPTIONS = Array.from({ length: 11 }, (_, index) => `round:${index + 1}`);
+
 export function isGameStartSkillProvisioningCandidate(ability: AuthoringAbility): boolean {
   return ability.effects.some((effect) => effect.type === 'provision_skill_cards' ||
     (effect.type === 'branch' && Array.isArray(effect.branches) && effect.branches.some((branch: RuleNode) =>
@@ -63,4 +66,22 @@ export function gameStartSkillProvisioningTargetDefinitionIds(ability: Authoring
   if (isGameStartSkillProvisioningSemantic(ability)) return ability.effects[0]!.targetDefinitionIds as string[];
   if (isBattleWinRoundProvisioningSemantic(ability)) return ((ability.effects[1]!.branches as RuleNode[])[0]!.then as RuleNode[])[0]!.targetDefinitionIds as string[];
   return undefined;
+}
+
+export function isWodimeAstrologyRoundSelectionSemantic(ability: AuthoringAbility): boolean {
+  if (ability.id !== 'wodime.astrology' || ability.kind !== 'forced_trigger' || ability.execution.mode !== 'automatic' ||
+      ability.activation.trigger !== 'game_start' || Object.keys(ability.activation).some((key) => key !== 'trigger') ||
+      ability.conditions.length || ability.cost.length || ability.creates.length || ability.ruleModifiers.length ||
+      Object.keys(ability.lifecycle).length || Object.keys(ability.limit).length || Object.keys(ability.visibility).length ||
+      ability.targets.length !== 1 || ability.effects.length !== 1) return false;
+  const target = ability.targets[0]!;
+  const count = target.count as { min?: unknown; max?: unknown } | undefined;
+  if (target.type !== 'choice' || target.id !== WODIME_ASTROLOGY_ROUND_TARGET ||
+      !Array.isArray(target.options) || target.options.length !== 11 ||
+      target.options.some((option: RuleNode, index: number) => option.id !== WODIME_ASTROLOGY_ROUND_OPTIONS[index]) ||
+      count?.min !== 2 || count.max !== 2) return false;
+  const effect = ability.effects[0]!;
+  return effect.type === 'wodime_astrology_round_selection' && effect.target === WODIME_ASTROLOGY_ROUND_TARGET &&
+    effect.provisionDefinitionId === 'master.wodime.skill.s2' &&
+    Object.keys(effect).every((key) => ['type', 'target', 'provisionDefinitionId'].includes(key));
 }

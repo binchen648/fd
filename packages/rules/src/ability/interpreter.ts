@@ -55,7 +55,7 @@ import { clearTransientCardTransformState, getEffectiveCardAttributes } from './
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
 import { classifyManaContributionChoices, commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, installRulerSealMovementLock, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, resolveManaContributionPaymentPlan, rulerSealMovementLocked, situationForbidsAttribute, spendMana } from '../core/rule-overrides';
 import { node, nodes, str } from './loader';
-import { gameStartSkillProvisioningTargetDefinitionIds, isBattleWinRoundProvisioningSemantic, isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
+import { gameStartSkillProvisioningTargetDefinitionIds, isBattleWinRoundProvisioningSemantic, isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic, isWodimeAstrologyRoundSelectionSemantic, WODIME_ASTROLOGY_ROUND_OPTIONS, WODIME_ASTROLOGY_ROUND_TARGET } from './game-start-skill-provisioning';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
 import { currentDeploymentBonus } from '../core/terrain-advantage';
 import {
@@ -2653,6 +2653,33 @@ function provisionGameStartSkillCards(s: GameState, ctx: EffectContext, a: Autho
   }
 }
 
+function resolveWodimeAstrologyRoundSelection(s: GameState, ctx: EffectContext, effect: RuleNode, a: AuthoringAbility): void {
+  if (!isWodimeAstrologyRoundSelectionSemantic(a) || ctx.event?.type !== 'game_start' || effect.target !== WODIME_ASTROLOGY_ROUND_TARGET ||
+      effect.provisionDefinitionId !== 'master.wodime.skill.s2') reject('resolution_failed', 'Invalid Wodime astrology round-selection contract');
+  const selected = ctx.selections[WODIME_ASTROLOGY_ROUND_TARGET];
+  if (!Array.isArray(selected) || selected.length !== 2 || new Set(selected).size !== 2 || selected.some((id) => !WODIME_ASTROLOGY_ROUND_OPTIONS.includes(id))) {
+    reject('invalid_target', 'Wodime astrology requires two distinct legal round selections');
+  }
+  const source = card(s, ctx.sourceCardId); const controller = player(s, ctx.controllerId);
+  const target = runtime(s).pack.cards['master.wodime.skill.s2'] as ExecutableCardDefinition | undefined;
+  if (source.ownerPlayerId !== ctx.controllerId || source.controllerPlayerId !== ctx.controllerId || source.zone !== 'skill' ||
+      controller.masterCardId !== 'master.wodime' || !target || target.ownerId !== 'master.wodime' || target.initialZone !== undefined ||
+      s.cards.some((candidate) => candidate.definitionId === 'master.wodime.skill.s2')) {
+    reject('resolution_failed', 'Wodime astrology source or target is no longer valid');
+  }
+  const runtimeExtension = runtime(s) as unknown as { wodimeAstrologyRoundsByPlayer?: Record<string, number[]>; pack: { cards: Record<string, any> }; cardState: Record<string, any>; events: any[] };
+  if (runtimeExtension.wodimeAstrologyRoundsByPlayer?.[ctx.controllerId]) reject('invalid_state', 'Wodime astrology selection already recorded');
+  const rounds = selected.map((id) => Number(id.slice('round:'.length))).sort((left, right) => left - right);
+  runtimeExtension.wodimeAstrologyRoundsByPlayer ??= {};
+  runtimeExtension.wodimeAstrologyRoundsByPlayer[ctx.controllerId] = rounds;
+  const instanceId = nextId(s, 'provisioned-skill');
+  s.cards.push({ instanceId, definitionId: 'master.wodime.skill.s2', ownerPlayerId: ctx.controllerId, controllerPlayerId: ctx.controllerId,
+    zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: ctx.controllerId }, generatedBy: ctx.sourceCardId });
+  runtime(s).cardState[instanceId] = { active: false, faceDown: false, playedRound: s.round.roundNumber };
+  runtime(s).events.push({ type: 'wodime_astrology_rounds_recorded', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+    abilityId: ctx.abilityId, roundNumbers: rounds, cardInstanceId: instanceId, toZone: 'skill', movedCount: 1 } as any);
+}
+
 function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean {
   return Object.values(runtime(s).pack.cards).some((source) =>
     source.abilities.some((ability) =>
@@ -4578,6 +4605,9 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       provisionGameStartSkillCards(s, ctx, a);
       break;
     }
+    case 'wodime_astrology_round_selection':
+      resolveWodimeAstrologyRoundSelection(s, ctx, effect, a);
+      break;
     case 'double_source_base_power_and_remove_after_battle': {
       if (!isGrantedBasicDoubleRemoveEffect(effect)) reject('unsupported', 'Unsupported granted basic double/remove effect shape');
       const source = card(s, ctx.sourceCardId); const sourceDef = definition(s, ctx.sourceCardId); const state = r.cardState[source.instanceId];
@@ -4897,8 +4927,17 @@ function findPendingTargetRestoreSpec(s: GameState, ctx: EffectContext, a: Autho
 function findPendingTarget(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): PendingDecision | undefined {
   const pending = findPendingTargetRestoreSpec(s, ctx, a, effects);
   if (!pending) return undefined;
-  return { id: nextId(s, 'decision'), controllerId: ctx.controllerId, target: pending.target, candidates: pending.candidates,
-    min: pending.min, max: pending.max, context: structuredClone(ctx), remainingEffects: pending.remainingEffects };
+  const id = nextId(s, 'decision');
+  return { id, controllerId: ctx.controllerId, target: pending.target, candidates: pending.candidates,
+    min: pending.min, max: pending.max, context: structuredClone(ctx), remainingEffects: pending.remainingEffects,
+    ...(isWodimeAstrologyRoundSelectionSemantic(a) ? {
+      interaction: {
+        kind: 'wodime_astrology_rounds_v1' as const, template: 'target' as const, visibility: 'owner_only' as const, cancelPolicy: 'forbidden' as const,
+        sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: runtime(s).revision,
+        continuationRef: `${id}:continuation`, controllerId: ctx.controllerId, options: [...WODIME_ASTROLOGY_ROUND_OPTIONS],
+        constraints: { kind: 'target' as const, targetKind: 'choice' as const, min: 2 as const, max: 2 as const, distinct: true as const },
+      },
+    } : {}) };
 }
 
 function exactRestoreValue(left: unknown, right: unknown): boolean {
@@ -9071,6 +9110,25 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const selected = command.selectedIds;
       if (d.interaction) {
         const meta = d.interaction;
+        if (meta.kind === 'wodime_astrology_rounds_v1') {
+          const ability = abilityDefinition(s, d.context.sourceCardId, d.context.abilityId);
+          const count = node(d.target.count);
+          if (!isWodimeAstrologyRoundSelectionSemantic(ability) || d.controllerId !== playerId || d.context.controllerId !== playerId ||
+              meta.sourceCardInstanceId !== d.context.sourceCardId || meta.abilityId !== d.context.abilityId || meta.controllerId !== playerId ||
+              meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
+              (meta.createdRevision !== r.revision && meta.createdRevision !== r.revision - 1) || meta.continuationRef !== `${d.id}:continuation` ||
+              meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'choice' || meta.constraints.min !== 2 || meta.constraints.max !== 2 ||
+              d.target.id !== WODIME_ASTROLOGY_ROUND_TARGET || d.target.type !== 'choice' || count.min !== 2 || count.max !== 2 ||
+              d.min !== 2 || d.max !== 2 || d.remainingEffects.length !== 1 || !exactPlayerArray(meta.options, WODIME_ASTROLOGY_ROUND_OPTIONS) ||
+              !exactPlayerArray(d.candidates, WODIME_ASTROLOGY_ROUND_OPTIONS) || !Array.isArray(selected) || selected.length !== 2 ||
+              new Set(selected).size !== 2 || selected.some((id) => !WODIME_ASTROLOGY_ROUND_OPTIONS.includes(id))) {
+            reject('resolution_failed', 'Corrupt or stale Wodime astrology round-selection interaction');
+          }
+          d.context.selections[WODIME_ASTROLOGY_ROUND_TARGET] = [...selected];
+          delete r.pendingDecision;
+          executeEffects(s, d.context, d.remainingEffects);
+          break;
+        }
         if (meta.kind === 'sion_choice_v1') {
           if (!Array.isArray(selected) || !resolveSionChoice(s, playerId, d, selected, (cardIds, allowedZones) => {
             try { playBatch(s, playerId, cardIds.map((cardInstanceId) => ({ type: 'play_card' as const, cardInstanceId })), 'effect', false, allowedZones); return true; }

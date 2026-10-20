@@ -1,6 +1,7 @@
 import type { AuthoringAbility, AuthoringCard, AuthoringPack, ExecutionMode, RuleNode, AdapterReportEntry } from './types';
 import { hostOperations } from './types';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID } from '../core/card-source-state';
+import { isWodimeAstrologyRoundSelectionSemantic } from './game-start-skill-provisioning';
 import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
 import {
   containsShirouEmiyaPrivilegedNode,
@@ -388,7 +389,7 @@ const supportedTypes = new Set([
   'highest_cost_noble_phantasm_cost_at_least', 'selected_count_at_least',
   'create_modifier', 'not_location_kind', 'power_bonus', 'card_not_on_board', 'not_card_id',
   // Master authoring adapters
-  'record_master_directive', 'adjust_command_seals', 'set_mana', 'create_independent_deck',
+  'record_master_directive', 'wodime_astrology_round_selection', 'adjust_command_seals', 'set_mana', 'create_independent_deck',
   'shirou_emiya_basic_power_bonus', 'shirou_emiya_climax_power_bonus', 'shirou_emiya_first_elimination_continue',
   SHIROU_MEAL_ASCENSION_EFFECT, SHIROU_MEAL_ASCENSION_ROUND_END_EFFECT, SHIROU_MEAL_PROCUREMENT_EFFECT,
   SHIROU_MEAL_MENU_EFFECT, SHIROU_MEAL_GLUTTONY_EFFECT,
@@ -580,6 +581,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (Array.isArray(value)) { value.forEach((v, i) => scan(v, `${path}[${i}]`, abilityId)); return; }
       if (!value || typeof value !== 'object') return;
       const n = node(value);
+      if (n.type === 'wodime_astrology_round_selection') return;
       for (const key of Object.keys(n)) {
         // This is a validated four-key, string-only leaf of Regalia, not an
         // arbitrary nested mechanic AST. Do not globally allow its keys.
