@@ -48,7 +48,7 @@ export function resolveTokiomiEffect(s: GameState, ctx: EffectContext, ability: 
     const owner = s.players.find((player) => player.id === ctx.controllerId);
     const state = runtime(s) as GameState['abilityRuntime'] & { tokiomi?: TokiomiRuntime };
     const eligible = s.players.filter((player) => player.status === 'active').sort((left, right) => right.seat - left.seat).slice(0, 2).map((player) => player.id);
-    if (!source || !owner || source.definitionId !== `${TOKIOMI}.generated.item` || !eligible.includes(ctx.controllerId) || s.round.prioritySeat !== owner.seat || state.tokiomi?.itemUseRound[ctx.controllerId] === s.round.roundNumber) return false;
+    if (!source || !owner || source.definitionId !== `${TOKIOMI}.generated.item` || !eligible.includes(ctx.controllerId) || s.round.prioritySeat !== owner.seat || tokiomiItemUseRecordedThisRound(s, ctx.controllerId)) return false;
     state.tokiomi ??= { crestByPlayer: {}, itemUseRound: {}, burningByCard: {} }; state.tokiomi.itemUseRound[ctx.controllerId] = s.round.roundNumber;
     source.zone = 'removed_from_game'; runtime(s).events.push({ type: 'tokiomi_item_used', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId }); return true;
   }
@@ -74,7 +74,8 @@ export function tokiomiFireballModifier(s: GameState, playerId: string, definiti
 export function tokiomiBurningPowerPenalty(s: GameState, sourceId: string): number { const source = s.cards.find((card) => card.instanceId === sourceId); return source && tokiomiState(s)?.burningByCard[sourceId] === true && liveCrest(s, source.controllerPlayerId) ? -3 : 0; }
 export function tokiomiSetBurningMarker(s: GameState, sourceId: string): void { const state = runtime(s) as GameState['abilityRuntime'] & { tokiomi?: TokiomiRuntime }; state.tokiomi ??= { crestByPlayer: {}, itemUseRound: {}, burningByCard: {} }; state.tokiomi.burningByCard[sourceId] = true; }
 export function tokiomiRemoveBurningMarker(s: GameState, sourceId: string): boolean { const source = s.cards.find((card) => card.instanceId === sourceId); const state = tokiomiState(s); if (!source || !state?.burningByCard[sourceId] || !liveCrest(s, source.controllerPlayerId)) return false; const player = s.players.find((entry) => entry.id === source.controllerPlayerId); if (!player || player.mana < 2) return false; player.mana -= 2; delete state.burningByCard[sourceId]; runtime(s).events.push({ type: 'tokiomi_burning_removed', playerId: player.id, sourceCardId: sourceId, abilityId: 'tokiomi.ascension.crest' }); return true; }
-export function tokiomiItemUsedThisRound(s: GameState, playerId: string): boolean { return tokiomiState(s)?.itemUseRound[playerId] === s.round.roundNumber && s.players.find((player) => player.id === playerId)?.masterCardId === TOKIOMI; }
+export function tokiomiItemUseRecordedThisRound(s: GameState, playerId: string): boolean { return tokiomiState(s)?.itemUseRound[playerId] === s.round.roundNumber; }
+export function tokiomiItemUsedThisRound(s: GameState, playerId: string): boolean { return tokiomiItemUseRecordedThisRound(s, playerId) && s.players.find((player) => player.id === playerId)?.masterCardId === TOKIOMI; }
 export function tokiomiProvisionItemDestination(s: GameState, ctx: EffectContext, definitionId: string): { playerId: string; zone: 'hand' } | undefined {
   if (ctx.abilityId !== 'tokiomi.careless-tutor' || definitionId !== `${TOKIOMI}.generated.item`) return undefined;
   const eligible = s.players.filter((player) => player.status === 'active').sort((left, right) => right.seat - left.seat).slice(0, 2);
@@ -85,7 +86,7 @@ export function tokiomiProvisionItemDestination(s: GameState, ctx: EffectContext
 export function tokiomiCanUseItem(s: GameState, playerId: string, sourceId: string): boolean {
   const source = s.cards.find((card) => card.instanceId === sourceId); const player = s.players.find((entry) => entry.id === playerId);
   const eligible = s.players.filter((entry) => entry.status === 'active').sort((left, right) => right.seat - left.seat).slice(0, 2).some((entry) => entry.id === playerId);
-  return !!source && !!player && source.definitionId === `${TOKIOMI}.generated.item` && source.ownerPlayerId === playerId && source.controllerPlayerId === playerId && eligible && s.round.prioritySeat === player.seat && !tokiomiItemUsedThisRound(s, playerId);
+  return !!source && !!player && source.definitionId === `${TOKIOMI}.generated.item` && source.ownerPlayerId === playerId && source.controllerPlayerId === playerId && eligible && s.round.prioritySeat === player.seat && !tokiomiItemUseRecordedThisRound(s, playerId);
 }
 export function tokiomiRecordItemUse(s: GameState, playerId: string, sourceId: string): void {
   const state = runtime(s) as GameState['abilityRuntime'] & { tokiomi?: TokiomiRuntime };

@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import * as rules from '../../src/index';
 import { createSeededGameState } from '../../src/tools/seeded-state';
-import { resolveTokiomiEffect, tokiomiBurningPowerPenalty, tokiomiItemUsedThisRound, tokiomiRemoveBurningMarker, tokiomiSetBurningMarker } from '../../src/ability/tokiomi-capability';
+import { resolveTokiomiEffect, tokiomiBurningPowerPenalty, tokiomiItemUsedThisRound } from '../../src/ability/tokiomi-capability';
 
 const archive = JSON.parse(readFileSync('data/authoring/masters/master.tokiomi.json', 'utf8'));
 function setup() {
@@ -58,6 +58,8 @@ describe('P3 Tokiomi owner-complete migration', () => {
     state.players[2]!.mana = 5; state.round.activePhase = 'action'; state.round.prioritySeat = state.players[2]!.seat;
     expect(rules.playAbilityCardBatch(state, 'p3', [{ cardInstanceId: p3Item.instanceId }])).toBeUndefined();
     expect(tokiomiItemUsedThisRound(state, 'p3')).toBe(false);
+    const secondItem = state.cards.find((card) => card.definitionId === 'master.tokiomi.generated.item' && card.ownerPlayerId === 'p3' && card.zone === 'hand')!;
+    expect(() => rules.playAbilityCardBatch(state, 'p3', [{ cardInstanceId: secondItem.instanceId }])).toThrow();
   });
   it('suppresses Tokiomi battle-result VP after item use in the real battlefield resolver', () => {
     const state = setup(); add(state, 'master.tokiomi.skill.s2'); rules.processAbilityEvent(state, { id: 'tokiomi-items-battle', type: 'game_start', playerId: 'p1' });
@@ -90,11 +92,12 @@ describe('P3 Tokiomi owner-complete migration', () => {
     const state = setup(); const crest = add(state, 'master.tokiomi.skill.ascension', 'field');
     const ability = state.abilityRuntime!.pack.cards['master.tokiomi.skill.ascension']!.abilities[0]!;
     expect(resolveTokiomiEffect(state, { controllerId: 'p1', sourceCardId: crest, abilityId: ability.id }, ability, ability.effects[0]!)).toBe(true);
-    const attack = add(state, 'master.tokiomi.generated.fireball', 'field'); tokiomiSetBurningMarker(state, attack);
+    const attack = add(state, 'master.tokiomi.generated.fireball', 'field');
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'set_tokiomi_burning_marker', cardInstanceId: attack }).ok).toBe(true);
     expect(tokiomiBurningPowerPenalty(state, attack)).toBe(-3);
     expect(rules.calculateCardPower(state, attack).value).toBe(1);
     state.players[0]!.mana = 2;
-    expect(tokiomiRemoveBurningMarker(state, attack)).toBe(true);
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'remove_tokiomi_burning_marker', cardInstanceId: attack }).ok).toBe(true);
     expect(state.players[0]!.mana).toBe(0);
     expect(rules.calculateCardPower(state, attack).value).toBe(4);
   });

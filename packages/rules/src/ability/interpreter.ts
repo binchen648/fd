@@ -49,7 +49,7 @@ import {
 import { containsSiegPrivilegedNode, isAcceptedSiegAbility, isSiegBalmungFreePlayAbility, isSiegBalmungPenaltyAbility, isSiegDragonCommandAbility, isSiegGalvanismAbility, isSiegSyncState, isSiegSyncStrengthAbility, SIEG_BALMUNG_FREE_PLAY_EFFECT, SIEG_BALMUNG_PENALTY_EFFECT, SIEG_DRAGON_COMMAND_EFFECT, SIEG_SYNC_STATE_KEY, SIEG_SYNC_STRENGTH_EFFECT } from './sieg-capability';
 import { containsSionPrivilegedNode, isAcceptedSionAbility, isSionCoveredCard, resolveSionChoice, resolveSionEffect, settleSionEvent, sionCardPlayCommandSealCost, sionMagicAttackSuppressed, sionPowerBonus } from './sion-capability';
 import { containsTaigaPrivilegedNode, isAcceptedTaigaAbility, resolveTaigaEffect, taigaActive, taigaPowerBonus } from './taiga-capability';
-import { containsTokiomiPrivilegedNode, isAcceptedTokiomiAbility, resolveTokiomiEffect, tokiomiFireballModifier, tokiomiBurningPowerPenalty, tokiomiProvisionItemDestination, tokiomiItemUsedThisRound, tokiomiCanUseItem, tokiomiRecordItemUse } from './tokiomi-capability';
+import { containsTokiomiPrivilegedNode, isAcceptedTokiomiAbility, resolveTokiomiEffect, tokiomiFireballModifier, tokiomiBurningPowerPenalty, tokiomiProvisionItemDestination, tokiomiItemUsedThisRound, tokiomiCanUseItem, tokiomiRecordItemUse, tokiomiSetBurningMarker, tokiomiRemoveBurningMarker } from './tokiomi-capability';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
@@ -9006,6 +9006,17 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
   const r = runtime(s); const legal = getLegalActions(s, playerId);
   if (!command || typeof command !== 'object') reject('illegal_action', 'Invalid command');
   switch (command.type) {
+    case 'set_tokiomi_burning_marker': {
+      const source = s.cards.find((card) => card.instanceId === command.cardInstanceId && card.controllerPlayerId === playerId);
+      if (!source || !tokiomiFireballModifier(s, playerId, 'master.tokiomi.generated.fireball').costAdd) reject('illegal_action', 'Tokiomi burning marker requires a live Crest of Command');
+      tokiomiSetBurningMarker(s, command.cardInstanceId);
+      break;
+    }
+    case 'remove_tokiomi_burning_marker': {
+      const source = s.cards.find((card) => card.instanceId === command.cardInstanceId && card.controllerPlayerId === playerId);
+      if (!source || !tokiomiRemoveBurningMarker(s, command.cardInstanceId)) reject('illegal_action', 'Tokiomi burning marker cannot be removed');
+      break;
+    }
     case 'play_card': {
       const owned = s.cards.find(c => c.instanceId === command.cardInstanceId && c.controllerPlayerId === playerId);
       if (!owned) reject('illegal_action', 'Card is not available');
