@@ -420,6 +420,13 @@ export interface HakunoMChallengeInteractionMetadata {
   wins: number; analysisCount: number; options: string[];
   constraints: { kind: 'target'; targetKind: 'choice'; min: 1; max: 1; distinct: true };
 }
+export interface SionChoiceInteractionMetadata {
+  kind: 'sion_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; mode: 'training' | 'riding' | 'hunt' | 'execution' | 'avenger' | 'ruler' | 'abyss';
+  candidateIds: string[]; constraints: { kind: 'target'; targetKind: 'card' | 'player' | 'location' | 'choice'; min: number; max: number; distinct: true };
+  round: number; coveredCardIds?: string[]; options?: string[];
+}
 export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata |
   OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata | DeductionRecordChoiceInteractionMetadata |
   PostDrawHandShuffleInteractionMetadata | DiscardShuffleSourceXInteractionMetadata | RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata |
@@ -432,7 +439,7 @@ export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetad
   GlobalDefinitionRevealRewardInteractionMetadata | DiscardDefinitionPlayAllInteractionMetadata | MultiPresenceLocationContextInteractionMetadata |
   BoundOpponentRoundRuleInteractionMetadata | WitherPainStakeInteractionMetadata | DefinitionSideDeckInteractionMetadata |
   EliminationRescueInteractionMetadata | InjuryWarpChoiceInteractionMetadata | LinkedAuxiliarySuiteInteractionMetadata |
-  HakunoMChallengeInteractionMetadata;
+  HakunoMChallengeInteractionMetadata | SionChoiceInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];

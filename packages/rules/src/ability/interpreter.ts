@@ -47,7 +47,7 @@ import {
   resolveShishigouAbility, shishigouNecromancyTarget, markShishigouCorpseRemoval, resolveShishigouStrength, resolveShishigouMagic,
 } from './shishigou-necromancy-capability';
 import { containsSiegPrivilegedNode, isAcceptedSiegAbility, isSiegBalmungFreePlayAbility, isSiegBalmungPenaltyAbility, isSiegDragonCommandAbility, isSiegGalvanismAbility, isSiegSyncState, isSiegSyncStrengthAbility, SIEG_BALMUNG_FREE_PLAY_EFFECT, SIEG_BALMUNG_PENALTY_EFFECT, SIEG_DRAGON_COMMAND_EFFECT, SIEG_SYNC_STATE_KEY, SIEG_SYNC_STRENGTH_EFFECT } from './sieg-capability';
-import { containsSionPrivilegedNode, isAcceptedSionAbility, resolveSionEffect, settleSionEvent, sionPowerBonus } from './sion-capability';
+import { containsSionPrivilegedNode, isAcceptedSionAbility, isSionCoveredCard, resolveSionChoice, resolveSionEffect, settleSionEvent, sionCardPlayCommandSealCost, sionMagicAttackSuppressed, sionPowerBonus } from './sion-capability';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
@@ -1341,6 +1341,7 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     return { value: persistentLock.value, lines: [{ label: 'persistent_situation_attribute_power_lock', value: persistentLock.value }] };
   }
   const result = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
+  if (sionMagicAttackSuppressed(s, sourceId)) { result.value = 0; result.lines.push({ label: 'sion_magic_immunity_zero', value: 0 }); }
   const sionBonus = sionPowerBonus(s, sourceId);
   if (sionBonus !== 0) { result.value += sionBonus; result.lines.push({ label: 'sion_owner_power_bonus', value: result.value }); }
   const siegBonus = siegSyncStrengthBonus(s, sourceId);
@@ -2678,7 +2679,8 @@ export function effectiveCardPlayCost(s: GameState, playerId: string, sourceId: 
   const vesselAura = vesselCycleSkillAura(s, playerId, d.id, d.cardType);
   const bloodlustAscension = bloodlustAscensionAdjustments(s, playerId, d.id);
   const injuryCost = injuryWarpCardCostAdjustment(s, sourceId);
-  const beforePhysical = Math.max(0, baseCost + replayIncrease + battlefieldSourceCardPlayCostIncrease(s, playerId, sourceId) + vesselAura.costDelta + (bloodlustAscension?.costAdd ?? 0) + injuryCost);
+  const trainingReduction = Number((runtime(s).cardState[sourceId] as any)?.sionCostReduction ?? 0);
+  const beforePhysical = Math.max(0, baseCost - trainingReduction + replayIncrease + battlefieldSourceCardPlayCostIncrease(s, playerId, sourceId) + vesselAura.costDelta + (bloodlustAscension?.costAdd ?? 0) + injuryCost);
   return applyPhysicalCardCostModifiers(s, sourceId, beforePhysical, dynamic.length ? baseCost : base);
 }
 
@@ -2716,6 +2718,7 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   if (linkedRoleOriginalSkillUseLocked(s, sourceId, p)) return 'skill_use_forbidden';
   if (d.mode !== 'automatic') return d.mode;
   if (c.controllerPlayerId !== p || !allowedSourceZones.includes(c.zone) || player(s, p).status !== 'active') return 'illegal_action';
+  if (isSionCoveredCard(s, sourceId)) return 'skill_use_forbidden';
   const foodCost = !faceDown ? shirouMealFoodPlayCost(s, sourceId) : 0;
   if (foodCost > 0 && shirouMealTotalFood(s, p) < foodCost) return 'insufficient_resource';
   if (c.zone === 'skill' && (isActivationOnlyDefinition(s, c.definitionId) || d.abilities.some((ability) =>
@@ -2754,7 +2757,9 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   if (!faceDown && !ignoreManaCost && !siegFreeBalmung &&
       player(s, p).mana + bloodlustMaximumContributionAmount(s, p) + linkedRoleMaximumContributionAmount(s, p) <
         effectiveCardPlayCost(s, p, sourceId) + sealManaCost) return 'insufficient_mana';
+  const sionSealCost = !faceDown ? sionCardPlayCommandSealCost(d.id) : 0;
   if (sealCost && sealManaRate === undefined && Number((player(s, p) as unknown as { commandSpells?: number }).commandSpells ?? 3) < sealCost.amount) return 'insufficient_command_seals';
+  if (sionSealCost > 0 && sealManaRate === undefined && Number((player(s, p) as any).commandSpells ?? 3) < sionSealCost) return 'insufficient_command_seals';
   const unconfirmed = d.abilities.find(a => ['unsupported', 'text_unconfirmed'].includes(a.execution.mode));
   if (unconfirmed) return unconfirmed.execution.mode;
   if (!faceDown) {
@@ -2808,6 +2813,7 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
     return result;
   }
   for (const c of s.cards.filter(c => c.controllerPlayerId === playerId)) {
+    if (isSionCoveredCard(s, c.instanceId)) continue;
     const alreadyStaged = staged.some((entry) => entry.cardInstanceId === c.instanceId);
     if (!alreadyStaged && !playFailure(s, playerId, c.instanceId)) {
       const declarationRule = declarationPlayRule(definition(s, c.instanceId));
@@ -2834,8 +2840,9 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
     for (const a of effectiveAbilitiesForPhysicalCard(s, c.instanceId)) {
       const interaction = classifyAbilityInteraction(a);
       const outOfTurnInjuryWarpRepair = isAcceptedInjuryWarpRepairAbility(a);
-      if (interaction.kind !== 'phase_activation' || effectiveActivationPhase(s, c.instanceId, a) !== phase(s) ||
-          (!outOfTurnInjuryWarpRepair && s.round.prioritySeat !== p.seat) || !canActivate(s, c.instanceId, a)) continue;
+      const sionTrainingPreparation = phase(s) === 'preparation' && c.zone === 'skill' && ['sion.s2.library', 'sion.s3.cafeteria', 'sion.s4.gym'].includes(a.id);
+      if ((!sionTrainingPreparation && interaction.kind !== 'phase_activation') || (!sionTrainingPreparation && effectiveActivationPhase(s, c.instanceId, a) !== phase(s)) ||
+          (!outOfTurnInjuryWarpRepair && s.round.prioritySeat !== p.seat) || (!sionTrainingPreparation && !canActivate(s, c.instanceId, a))) continue;
       const costs = a.cost.filter(x => x.type === 'pay_mana' && node(x.amount).var).map(x => ({ name: str(node(x.amount).var), min: 0, max: p.mana }));
       result.push({ type: 'activate_ability', cardInstanceId: c.instanceId, abilityId: a.id, ...(costs.length ? { variableCosts: costs } : {}) });
     }
@@ -2923,6 +2930,7 @@ function battleEventControllerEligibleAfterScoring(s: GameState, event: AbilityE
 export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): TriggeredAbility[] {
   const found: TriggeredAbility[] = [];
   for (const c of s.cards) {
+    if (isSionCoveredCard(s, c.instanceId)) continue;
     const controllerEligible = battleEventControllerEligibleAfterScoring(s, event, c.controllerPlayerId);
     for (const a of definition(s, c.instanceId)?.abilities ?? []) {
       const eliminatedRoundCleanup = event.type === 'round_end' && isBattlefieldSourceRoundCleanupAbility(a);
@@ -7999,6 +8007,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 }
 /** Server-only execution after discovery/trigger validation. Never accept an effect or context from the client. */
 export function executeAbility(s: GameState, ctx: EffectContext): void {
+  if (isSionCoveredCard(s, ctx.sourceCardId)) reject('skill_use_forbidden', 'Sion training has covered this skill');
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   const sourceDefinition = definition(s, ctx.sourceCardId);
   if (containsShirouMealPrivilegedNode(a) && !isShirouMealSourceAbility(s, ctx.sourceCardId, ctx.controllerId, a)) {
@@ -8985,6 +8994,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const selected = command.selectedIds;
       if (d.interaction) {
         const meta = d.interaction;
+        if (meta.kind === 'sion_choice_v1') {
+          if (!Array.isArray(selected) || !resolveSionChoice(s, playerId, d, selected)) reject('resolution_failed', 'Corrupt or stale Sion interaction state');
+          break;
+        }
         if (meta.kind === 'hakuno_m_challenge_v1') {
           resolveHakunoMChallengeDecision(s, playerId, d, selected);
           break;
@@ -10083,7 +10096,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
       linkedReduction);
     paidCostByCard.set(c.cardInstanceId, cardCost);
     cost += cardCost;
-    if (!c.faceDown) commandSealCost += cardPlayCommandSealCost(definition(s, c.cardInstanceId))?.amount ?? 0;
+    if (!c.faceDown) commandSealCost += (cardPlayCommandSealCost(definition(s, c.cardInstanceId))?.amount ?? 0) + sionCardPlayCommandSealCost(definition(s, c.cardInstanceId)!.id);
   }
   const sealManaRate = linkedAuxiliarySealManaSubstitution(s, playerId);
   const substitutedSealManaCost = commandSealCost > 0 && sealManaRate !== undefined ? commandSealCost * sealManaRate : 0;

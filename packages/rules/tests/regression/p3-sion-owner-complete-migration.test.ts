@@ -5,6 +5,9 @@ import type { GameState } from '../../src/schema/game';
 
 const archive = JSON.parse(readFileSync('data/authoring/masters/master.sion.json', 'utf8'));
 const inventory = JSON.parse(readFileSync('data/phase3/full-roster-ability-inventory.json', 'utf8'));
+const generated = JSON.parse(readFileSync('data/generated/fd-playtest-v1.content-library.json', 'utf8'));
+const evidence = JSON.parse(readFileSync('data/generated/fd-playtest-v1.evidence-report.json', 'utf8'));
+const packManifest = JSON.parse(readFileSync('data/packs/fd-playtest-v1/pack.json', 'utf8'));
 function setup(): { state: GameState; pack: ReturnType<typeof rules.loadAuthoringJson> } {
   const pack = rules.loadAuthoringJson(archive);
   const state = rules.createSeededGameState(); state.cards = [];
@@ -33,6 +36,20 @@ describe('P3 owner-complete master.sion', () => {
     }
   });
 
+  it('keeps frozen source SHA, generated sourceMap, pack inclusion, and evidence aligned', () => {
+    expect(packManifest.authoringMasterFiles).toContain('data/authoring/masters/master.sion.json');
+    const sourceMap = generated.rules.sourceMap as Record<string, { archiveId: string; path: string }>;
+    const sionEvidence = (evidence.entities as Array<{ entityId: string }>).filter((entry) => entry.entityId.startsWith('master.sion.skill.'));
+    expect(sionEvidence).toHaveLength(18);
+    for (const row of inventory.staticSkills.filter((entry: any) => entry.ownerId === 'master.sion')) {
+      const card = archive.cards.find((entry: any) => entry.id === row.canonicalAbilityId);
+      expect(card.phase3Evidence.sourceTextSha256).toBe(row.clauses[0].source.sha256);
+      expect(sourceMap[row.canonicalAbilityId]?.archiveId).toBe('master.sion');
+      expect(sourceMap[`${row.canonicalAbilityId}#${card.abilities[0].id}`]?.archiveId).toBe('master.sion');
+      expect(sourceMap[`${row.canonicalAbilityId}#${card.abilities[0].id}`]?.path).toMatch(/^archives\[\d+\]\.cards\[\d+\]\.abilities\[0\]$/);
+    }
+  });
+
   it('provisions New Chaldea skills only for the source owner and applies gym basic-power bonus', () => {
     const { state } = setup(); const source = add(state, 'master.sion.skill.ascension', 'skill', true);
     rules.processAbilityEvent(state, { id: 'sion-game-start', type: 'game_start' });
@@ -50,8 +67,11 @@ describe('P3 owner-complete master.sion', () => {
     state.players[0]!.vp = 1;
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: source, abilityId: 'sion.s13.avenger' }).ok).toBe(false);
     const paid = setup(); const paidSource = add(paid.state, 'master.sion.skill.s13', 'field', true);
+    const discard = add(paid.state, 'basic.fixture', 'discard', true);
     paid.state.players[0]!.vp = 2;
     expect(rules.dispatchAbilityCommand(paid.state, 'p1', { type: 'activate_ability', cardInstanceId: paidSource, abilityId: 'sion.s13.avenger' }).ok).toBe(true);
+    const decision = paid.state.abilityRuntime!.pendingDecision!;
+    expect(rules.dispatchAbilityCommand(paid.state, 'p1', { type: 'choose_target', decisionId: decision.id, selectedIds: [discard] }).ok).toBe(true);
     expect(paid.state.players[0]!.vp).toBe(0);
   });
 
@@ -95,6 +115,51 @@ describe('P3 owner-complete master.sion', () => {
     expect(state.cards.find((card) => card.instanceId === concealment)?.zone).toBe('removed_from_game');
     expect(state.abilityRuntime!.cardState[concealment]?.active).toBe(false);
     expect(state.cards.find((card) => card.instanceId === territory)?.zone).toBe('field');
+  });
+
+  it('uses production choices for riding, abyss, ruler cooldown, and training consumption', () => {
+    const { state } = setup();
+    const s1 = add(state, 'master.sion.skill.s1', 'field', true);
+    const covered = add(state, 'servant.fixture.skill', 'skill', true);
+    rules.executeAbility(state, { controllerId: 'p1', sourceCardId: s1, abilityId: 'sion.s1.training', variables: {}, selections: {} });
+    const library = state.cards.find((card) => card.definitionId === 'master.sion.skill.s2')!;
+    state.round.activePhase = 'preparation'; state.abilityRuntime!.sion!.experience[library.instanceId] = 2;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: library.instanceId, abilityId: 'sion.s2.library' }).ok).toBe(true);
+    expect((state.abilityRuntime!.cardState[covered] as any).sionCostReduction).toBe(1);
+    expect(state.cards.find((card) => card.instanceId === library.instanceId)?.zone).toBe('removed_from_game');
+
+    state.abilityRuntime!.pack.cards['basic.fixture'] = { id: 'basic.fixture', name: 'basic', cardType: 'basic_attack', cardFace: { attributes: ['力量'], cost: 0, basePower: 1 }, playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], abilities: [], mode: 'automatic' } as any;
+    state.round.activePhase = 'action'; const riding = add(state, 'master.sion.skill.s8', 'field', true); const hand = add(state, 'basic.fixture', 'hand', true);
+    rules.executeAbility(state, { controllerId: 'p1', sourceCardId: riding, abilityId: 'sion.s8.riding', variables: {}, selections: {} });
+    const rideDecision = state.abilityRuntime!.pendingDecision!;
+    expect(rideDecision.interaction?.kind).toBe('sion_choice_v1');
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: rideDecision.id, selectedIds: [hand] }).ok).toBe(true);
+    expect(state.cards.find((card) => card.instanceId === hand)?.zone).toBe('attack_area');
+
+    const abyss = add(state, 'master.sion.skill.s16', 'field', true); const p2Hand = `${'fixture.hand'}:p2`;
+    state.cards.push({ instanceId: p2Hand, definitionId: 'basic.fixture', ownerPlayerId: 'p2', controllerPlayerId: 'p2', zone: 'hand', visibility: { scope: 'owner_only', ownerPlayerId: 'p2' } });
+    state.players[1]!.locationId = 'shinto'; state.players[1]!.mana = 0; state.players[0]!.mana = 2;
+    rules.executeAbility(state, { controllerId: 'p1', sourceCardId: abyss, abilityId: 'sion.s16.abyss', variables: {}, selections: {} });
+    const abyssDecision = state.abilityRuntime!.pendingDecision!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: abyssDecision.id, selectedIds: ['all_players'] }).ok).toBe(true);
+    expect(state.cards.find((card) => card.instanceId === p2Hand)?.zone).toBe('discard');
+  });
+
+  it('applies Aether opponent reveal/draw/luck defeat and leaves no silent fallback', () => {
+    const { state } = setup();
+    const aether = add(state, 'master.sion.skill.s17', 'field', true);
+    state.players[0]!.locationId = 'shinto'; state.players[1]!.locationId = 'shinto';
+    const lucky = 'fixture.lucky:p2'; const deck = 'fixture.deck:p2';
+    state.cards.push(
+      { instanceId: lucky, definitionId: 'fixture.lucky', ownerPlayerId: 'p2', controllerPlayerId: 'p2', zone: 'hand', visibility: { scope: 'owner_only', ownerPlayerId: 'p2' } },
+      { instanceId: deck, definitionId: 'fixture.deck', ownerPlayerId: 'p2', controllerPlayerId: 'p2', zone: 'deck', visibility: { scope: 'owner_only', ownerPlayerId: 'p2' } },
+    );
+    state.abilityRuntime!.pack.cards['fixture.lucky'] = { id: 'fixture.lucky', name: 'lucky', cardType: 'basic_attack', cardFace: { attributes: ['幸运'], cost: 0, basePower: 1 }, playTiming: { phase: 'battle', window: 'controller_play_card_window' }, playRequirements: [], abilities: [], mode: 'automatic' } as any;
+    state.abilityRuntime!.pack.cards['fixture.deck'] = state.abilityRuntime!.pack.cards['fixture.lucky'];
+    state.round.activePhase = 'battle'; rules.executeAbility(state, { controllerId: 'p1', sourceCardId: aether, abilityId: 'sion.s17.aether', variables: {}, selections: {} });
+    expect(state.players[1]!.status).toBe('eliminated');
+    expect(state.cards.find((card) => card.instanceId === lucky)?.visibility.scope).toBe('public');
+    expect(state.cards.find((card) => card.instanceId === deck)?.zone).toBe('hand');
   });
 });
 

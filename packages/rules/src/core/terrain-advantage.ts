@@ -38,9 +38,12 @@ function terrainMultiplierForPlayer(state: GameState, playerId: string): number 
       : multiplier;
   }, 1);
   const currentBattlefieldId = state.players.find((player) => player.id === playerId)?.locationId;
-  return currentBattlefieldId && hasRemoteOperationBonus(state, playerId, currentBattlefieldId)
-    ? authoredMultiplier * 2
-    : authoredMultiplier;
+  const remoteOperation = currentBattlefieldId && hasRemoteOperationBonus(state, playerId, currentBattlefieldId);
+  const sionRemoteOperation = currentBattlefieldId && state.cards.some((card) =>
+    card.ownerPlayerId === playerId && card.controllerPlayerId === playerId && card.definitionId === 'master.sion.skill.s7' &&
+    ['field', 'attack_area'].includes(card.zone) && state.abilityRuntime?.cardState[card.instanceId]?.active === true &&
+    state.abilityRuntime.cardState[card.instanceId]?.faceDown !== true);
+  return remoteOperation || sionRemoteOperation ? authoredMultiplier * 2 : authoredMultiplier;
 }
 
 function isTerrainSuppressedByAuthoredDuel(state: GameState, battlefieldId: LocationId, playerId: string): boolean {
