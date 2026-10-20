@@ -49,7 +49,7 @@ import {
 import { containsSiegPrivilegedNode, isAcceptedSiegAbility, isSiegBalmungFreePlayAbility, isSiegBalmungPenaltyAbility, isSiegDragonCommandAbility, isSiegGalvanismAbility, isSiegSyncState, isSiegSyncStrengthAbility, SIEG_BALMUNG_FREE_PLAY_EFFECT, SIEG_BALMUNG_PENALTY_EFFECT, SIEG_DRAGON_COMMAND_EFFECT, SIEG_SYNC_STATE_KEY, SIEG_SYNC_STRENGTH_EFFECT } from './sieg-capability';
 import { containsSionPrivilegedNode, isAcceptedSionAbility, isSionCoveredCard, resolveSionChoice, resolveSionEffect, settleSionEvent, sionCardPlayCommandSealCost, sionMagicAttackSuppressed, sionPowerBonus } from './sion-capability';
 import { containsTaigaPrivilegedNode, isAcceptedTaigaAbility, resolveTaigaEffect, taigaActive, taigaPowerBonus } from './taiga-capability';
-import { containsTokiomiPrivilegedNode, isAcceptedTokiomiAbility, resolveTokiomiEffect } from './tokiomi-capability';
+import { containsTokiomiPrivilegedNode, isAcceptedTokiomiAbility, resolveTokiomiEffect, tokiomiFireballModifier, tokiomiProvisionItemDestination, tokiomiItemUsedThisRound, tokiomiCanUseItem, tokiomiRecordItemUse } from './tokiomi-capability';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
@@ -1347,6 +1347,8 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     return { value: persistentLock.value, lines: [{ label: 'persistent_situation_attribute_power_lock', value: persistentLock.value }] };
   }
   const result = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
+  const tokiomiModifier = tokiomiFireballModifier(s, source.controllerPlayerId, d?.id ?? source.definitionId);
+  if (tokiomiModifier.powerAdd !== 0) { result.value += tokiomiModifier.powerAdd; result.lines.push({ label: 'tokiomi_crest_fireball_power', value: result.value }); }
   if (sionMagicAttackSuppressed(s, sourceId)) { result.value = 0; result.lines.push({ label: 'sion_magic_immunity_zero', value: 0 }); }
   const sionBonus = sionPowerBonus(s, sourceId);
   if (sionBonus !== 0) { result.value += sionBonus; result.lines.push({ label: 'sion_owner_power_bonus', value: result.value }); }
@@ -2692,7 +2694,8 @@ export function effectiveCardPlayCost(s: GameState, playerId: string, sourceId: 
   const bloodlustAscension = bloodlustAscensionAdjustments(s, playerId, d.id);
   const injuryCost = injuryWarpCardCostAdjustment(s, sourceId);
   const trainingReduction = Number((runtime(s).cardState[sourceId] as any)?.sionCostReduction ?? 0);
-  const beforePhysical = Math.max(0, baseCost - trainingReduction + replayIncrease + battlefieldSourceCardPlayCostIncrease(s, playerId, sourceId) + vesselAura.costDelta + (bloodlustAscension?.costAdd ?? 0) + injuryCost);
+  const tokiomiModifier = tokiomiFireballModifier(s, playerId, d.id);
+  const beforePhysical = Math.max(0, baseCost - trainingReduction + replayIncrease + battlefieldSourceCardPlayCostIncrease(s, playerId, sourceId) + vesselAura.costDelta + (bloodlustAscension?.costAdd ?? 0) + injuryCost + tokiomiModifier.costAdd);
   return applyPhysicalCardCostModifiers(s, sourceId, beforePhysical, dynamic.length ? baseCost : base);
 }
 
@@ -4768,9 +4771,9 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       shuffle(s, p.id); break;
     case 'shuffle_deck': shuffle(s, p.id); break;
     case 'create_card': {
-      const id = nextId(s, 'created'); const zone = str(node(effect.to).zone);
-      s.cards.push({ instanceId: id, definitionId: str(effect.cardId), ownerPlayerId: p.id, controllerPlayerId: p.id,
-        zone, visibility: { scope: 'owner_only', ownerPlayerId: p.id }, generatedBy: ctx.sourceCardId });
+      const id = nextId(s, 'created'); const definitionId = str(effect.cardId); const destination = tokiomiProvisionItemDestination(s, ctx, definitionId); const zone = destination?.zone ?? str(node(effect.to).zone); const ownerId = destination?.playerId ?? p.id;
+      s.cards.push({ instanceId: id, definitionId, ownerPlayerId: ownerId, controllerPlayerId: ownerId,
+        zone, visibility: { scope: 'owner_only', ownerPlayerId: ownerId }, generatedBy: ctx.sourceCardId });
       for (const next of nodes(effect.then)) resolveEffect(s, ctx, next); break;
     }
     case 'create_modifier': installCreatedPowerModifier(s, ctx, effect); break;
@@ -10145,6 +10148,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   let commandSealCost = 0;
   const paidCostByCard = new Map<string, number>();
   for (const c of choices) {
+    if (definition(s, c.cardInstanceId)?.id === 'master.tokiomi.generated.item' && !tokiomiCanUseItem(s, playerId, c.cardInstanceId)) reject('illegal_timing', 'Tokiomi item is limited to the last two turn-order players once per turn');
     const allowRequiredAdditional = quota === 'regular' && requiredAdditionalIds.has(c.cardInstanceId) && regularAttackChoices > 0;
     const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost, allowedSourceZones);
     if (failure) reject(failure, 'Card cannot be played in this batch');
@@ -10215,6 +10219,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     rememberBloodlustContributionAuthority(s, contributionSeal ? { cardInstanceId: c.cardInstanceId, ...contributionSeal } : undefined, c.cardInstanceId);
     if (!c.faceDown) rememberVesselCyclePlayProvenance(s, playerId, c.cardInstanceId, prePaymentMana);
     if (c.faceDown) card(s, c.cardInstanceId).visibility = { scope: 'owner_only', ownerPlayerId: playerId };
+    if (definition(s, c.cardInstanceId)?.id === 'master.tokiomi.generated.item') tokiomiRecordItemUse(s, playerId, c.cardInstanceId);
 
     // Track noble phantasm costs for cards with 宝具 attribute
     const d = definition(s, c.cardInstanceId);

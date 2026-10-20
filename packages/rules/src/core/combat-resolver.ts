@@ -28,6 +28,7 @@ import { unclaimedBattlefieldTerrainBonus } from '../ability/unclaimed-terrain-u
 import { roundCurrentLocationTerrainBonus, roundSkillProfileSuppressed } from '../ability/round-skill-profile-capability';
 import { logicalDayForPlayer } from './rule-overrides';
 import { situationBenefitsSuppressedForPlayer } from '../ability/next-round-situation-benefit-suppression';
+import { tokiomiItemUsedThisRound } from '../ability/tokiomi-capability';
 
 export interface CombatParticipantInput {
   playerId: string;
@@ -507,6 +508,7 @@ function buildDefaultVpAdjustments(
 
   if (competitionVpPerWinner > 0 && hooks.has("competition_rewards")) {
     for (const playerId of winnerPlayerIds) {
+      if (tokiomiItemUsedThisRound(state, playerId)) continue;
       if ((hasAuthoritativeLoser && controllerHasCompetitionRewardPlunderReplacement(state, playerId)) ||
           movementCompetitionRewardSuppressed(state, playerId, battlefieldId)) continue;
       adjustments.push({
