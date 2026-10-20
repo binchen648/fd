@@ -31,7 +31,15 @@ function isBattlefield(state: GameState, locationId: string): boolean {
 
 function replacementPlacement(state: GameState, old: GameState['eventPlacements'][number], eventCardId: string): GameState['eventPlacements'][number] {
   const ruleInstanceId = `wodime-atlantis-replacement:${state.round.roundNumber}:${old.locationId}:${eventCardId}:${runtime(state).revision}:${state.eventPlacements.length}`;
-  return { locationId: old.locationId, eventCardId, ruleInstanceId, visibility: { scope: 'public', revealReason: 'wodime_atlantis_replacement' } };
+  return { ...old, locationId: old.locationId, eventCardId, ruleInstanceId, visibility: { scope: 'public', revealReason: 'wodime_atlantis_replacement' } };
+}
+
+function replaceAtLocation(state: GameState, old: GameState['eventPlacements'][number]): void {
+  state.eventDeck ??= [];
+  state.eventDeck.push(old.eventCardId);
+  shuffleInPlace(state.eventDeck, state.round.roundNumber + state.eventPlacements.length + runtime(state).revision);
+  const replacementId = state.eventDeck.shift();
+  if (replacementId) state.eventPlacements.push(replacementPlacement(state, old, replacementId));
 }
 
 export function settleWodimeAtlantisEvent(state: GameState, event: AbilityEvent): void {
@@ -55,11 +63,7 @@ export function settleWodimeAtlantisEvent(state: GameState, event: AbilityEvent)
     if (index < 0) return;
     const [removed] = state.eventPlacements.splice(index, 1);
     r.wodimeAtlantisConsumedEventPlacementIds[event.sourceCardId] = true;
-    state.eventDeck ??= [];
-    state.eventDeck.push(removed!.eventCardId);
-    shuffleInPlace(state.eventDeck, state.round.roundNumber + index + r.revision);
-    const replacementId = state.eventDeck.shift();
-    if (replacementId) state.eventPlacements.push(replacementPlacement(state, removed!, replacementId));
+    replaceAtLocation(state, removed!);
     return;
   }
   if (event.type === 'after_battle_ended' && event.battlefieldId) {
@@ -68,6 +72,7 @@ export function settleWodimeAtlantisEvent(state: GameState, event: AbilityEvent)
       state.eventPlacements = state.eventPlacements.filter((entry) => entry.ruleInstanceId !== placement.ruleInstanceId);
       delete r.wodimeAtlantisPendingBattlefieldRemovalIds[placement.ruleInstanceId];
       r.wodimeAtlantisConsumedEventPlacementIds[placement.ruleInstanceId] = true;
+      replaceAtLocation(state, placement);
     }
   }
 }

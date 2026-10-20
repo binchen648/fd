@@ -3,6 +3,7 @@ import type { ResolverResult } from "./resolver-contracts";
 import { ELIMINATION_MILITARY_THRESHOLD, resolveEliminationBatch } from "./elimination-resolver";
 import { vesselCycleReconBonus } from '../ability/vessel-cycle-capability';
 import { playerEliminationPreventedByAcceptedRescue } from '../ability/elimination-rescue-link-capability';
+import { activateWodimeGodLegacyOnElimination } from '../ability/wodime-god-legacy-capability';
 
 export { ELIMINATION_MILITARY_THRESHOLD } from "./elimination-resolver";
 
@@ -298,6 +299,11 @@ export function applyBattleScoring(state: GameState): ResolverResult {
   };
 
   const thresholdResult = applyEliminationAndThresholdLog(scoredState);
+
+  for (const player of thresholdResult.nextState.players) {
+    const before = state.players.find((candidate) => candidate.id === player.id);
+    if (before?.status !== 'eliminated' && player.status === 'eliminated') activateWodimeGodLegacyOnElimination(thresholdResult.nextState, player.id);
+  }
 
   return {
     nextState: thresholdResult.nextState,

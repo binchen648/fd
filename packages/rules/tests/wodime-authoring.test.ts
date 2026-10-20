@@ -89,8 +89,10 @@ describe('Wodime frozen authoring archive', () => {
     state.eventPlacements = [battlefield];
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-reveal', { type: 'event_activated', sourceCardId: battlefield.ruleInstanceId, revealedKind: 'event', revealedId: battlefield.eventCardId, locationId: battlefield.locationId });
     expect(state.eventPlacements).toHaveLength(1);
+    expect((state.abilityRuntime as any).wodimeAtlantisPendingBattlefieldRemovalIds).toEqual({ [battlefield.ruleInstanceId]: true });
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-close', { type: 'after_battle_ended', battlefieldId: 'shinto' });
-    expect(state.eventPlacements).toHaveLength(0);
+    expect(state.eventPlacements).toHaveLength(1);
+    expect(state.eventPlacements[0]!.ruleInstanceId).not.toBe(battlefield.ruleInstanceId);
     const nonBattle = { locationId: 'clock_tower' as const, eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-atlantis-nonbattle-1', visibility: { scope: 'public' as const }, victoryPoints: 0 };
     state.eventPlacements = [nonBattle]; state.eventDeck = ['event.wodime.atlantis.hephaestus'];
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-reveal-nonbattle', { type: 'event_activated', sourceCardId: nonBattle.ruleInstanceId, revealedKind: 'event', revealedId: nonBattle.eventCardId, locationId: nonBattle.locationId });
@@ -99,6 +101,23 @@ describe('Wodime frozen authoring archive', () => {
     const replacementId = state.eventPlacements[0]!.ruleInstanceId;
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-replay-nonbattle', { type: 'event_activated', sourceCardId: nonBattle.ruleInstanceId, revealedKind: 'event', revealedId: nonBattle.eventCardId, locationId: nonBattle.locationId });
     expect(state.eventPlacements[0]!.ruleInstanceId).toBe(replacementId);
+  });
+
+  it('activates God Legacy at the real elimination transition before the first later event reveal', () => {
+    const raw = JSON.parse(readFileSync(archivePath, 'utf8'));
+    const loaded = rules.loadAuthoringJson(raw);
+    for (const definition of Object.values(loaded.cards)) { definition.ownerId = 'master.wodime'; definition.initialPlacement = 'outside_game'; }
+    const state = createSeededGameState({ activeSeats: [1, 2] });
+    state.cards = []; state.players[0]!.masterCardId = 'master.wodime';
+    rules.initializeAbilityRuntime(state, loaded, { seed: 100 });
+    installMasterSupportOwnerCards(state, loaded as any, { ownerId: 'master.wodime', playerId: 'p1' });
+    state.battleResults = [{ battlefieldId: 'shinto', winnerPlayerId: 'p2', winnerPlayerIds: ['p2'], margin: 1, vpReward: 0, participantBreakdowns: [], militaryAdjustments: [{ playerId: 'p1', delta: -8 }, { playerId: 'p2', delta: 8 }] }];
+    const scored = rules.applyBattleScoring(state).nextState;
+    expect(scored.players.find((player) => player.id === 'p1')!.status).toBe('eliminated');
+    scored.eventPlacements = [{ locationId: 'shinto', eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-atlantis-after-elimination', visibility: { scope: 'public' }, victoryPoints: 0 }];
+    rules.processAbilitySystemEvent(scored, 'wodime-after-elimination-reveal', { type: 'event_activated', sourceCardId: 'wodime-atlantis-after-elimination', revealedKind: 'event', revealedId: 'event.wodime.atlantis.hephaestus', locationId: 'shinto' });
+    expect((scored.abilityRuntime as any).wodimeGodLegacyActivation).toMatchObject({ controllerId: 'p1', abilityId: 'wodime.god-legacy' });
+    expect((scored.abilityRuntime as any).wodimeGodLegacyByLocation.shinto.tokens).toBe(3);
   });
 
   it('transfers authenticated God Legacy from a placed location on a unique battle win and survives restore', () => {

@@ -57,6 +57,13 @@ function ensureActivated(state: GameState): boolean {
   return true;
 }
 
+/** Called by the scoring transition after a player status changes to eliminated. */
+export function activateWodimeGodLegacyOnElimination(state: GameState, playerId: string): void {
+  const player = state.players.find((candidate) => candidate.id === playerId);
+  if (!player || player.status !== 'eliminated') return;
+  ensureActivated(state);
+}
+
 function audit(state: GameState, event: AbilityEvent, playerId: string, sourceCardId: string): void {
   runtime(state).events.push({
     type: event.type === 'after_battle_result_determined' ? 'wodime_god_legacy_battle_transfer' : 'wodime_god_legacy_location_carry',
@@ -69,7 +76,7 @@ function audit(state: GameState, event: AbilityEvent, playerId: string, sourceCa
 }
 
 export function settleWodimeGodLegacyEvent(state: GameState, event: AbilityEvent): void {
-  if (!['after_battle_result_determined', 'after_controller_enters_location'].includes(event.type)) return;
+  if (!['after_battle_result_determined', 'after_controller_enters_location', 'event_activated'].includes(event.type)) return;
   if (!ensureActivated(state)) return;
   const r = runtime(state);
   const origin = source(state);
