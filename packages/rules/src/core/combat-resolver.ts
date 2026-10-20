@@ -522,6 +522,7 @@ function buildDefaultVpAdjustments(
 
   if (locationVpPerWinner > 0 && hooks.has("location_rewards")) {
     for (const playerId of winnerPlayerIds) {
+      if (tokiomiItemUsedThisRound(state, playerId)) continue;
       adjustments.push({
         playerId,
         delta: locationVpPerWinner,

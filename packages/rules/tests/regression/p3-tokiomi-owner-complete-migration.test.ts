@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import * as rules from '../../src/index';
 import { createSeededGameState } from '../../src/tools/seeded-state';
-import { resolveTokiomiEffect, tokiomiItemUsedThisRound } from '../../src/ability/tokiomi-capability';
+import { resolveTokiomiEffect, tokiomiBurningPowerPenalty, tokiomiItemUsedThisRound, tokiomiRemoveBurningMarker, tokiomiSetBurningMarker } from '../../src/ability/tokiomi-capability';
 
 const archive = JSON.parse(readFileSync('data/authoring/masters/master.tokiomi.json', 'utf8'));
 function setup() {
@@ -44,6 +44,12 @@ describe('P3 Tokiomi owner-complete migration', () => {
     expect(rules.effectiveCardPlayCost(state, 'p1', fireball)).toBe(4);
     expect(rules.playAbilityCardBatch(state, 'p1', [{ cardInstanceId: fireball }])).toBeUndefined();
     expect(rules.calculateCardPower(state, fireball).value).toBe(4);
+    state.cards.find((card) => card.instanceId === source)!.zone = 'skill';
+    expect(rules.effectiveCardPlayCost(state, 'p1', fireball)).toBe(2);
+    expect(rules.calculateCardPower(state, fireball).value).toBe(2);
+    state.cards.find((card) => card.instanceId === source)!.zone = 'field';
+    state.abilityRuntime!.cardState[source]!.active = false;
+    expect(rules.effectiveCardPlayCost(state, 'p1', fireball)).toBe(2);
   });
   it('distributes items to the last two seats and consumes one item on the real play path', () => {
     const state = setup(); add(state, 'master.tokiomi.skill.s2'); rules.processAbilityEvent(state, { id: 'tokiomi-items', type: 'game_start', playerId: 'p1' });
@@ -51,10 +57,11 @@ describe('P3 Tokiomi owner-complete migration', () => {
     expect(state.cards.filter((card) => card.definitionId === 'master.tokiomi.generated.item' && card.zone === 'hand').map((card) => card.ownerPlayerId)).toEqual(['p3', 'p2', 'p3', 'p2']);
     state.players[2]!.mana = 5; state.round.activePhase = 'action'; state.round.prioritySeat = state.players[2]!.seat;
     expect(rules.playAbilityCardBatch(state, 'p3', [{ cardInstanceId: p3Item.instanceId }])).toBeUndefined();
-    expect(tokiomiItemUsedThisRound(state, 'p3')).toBe(true);
+    expect(tokiomiItemUsedThisRound(state, 'p3')).toBe(false);
   });
   it('suppresses Tokiomi battle-result VP after item use in the real battlefield resolver', () => {
     const state = setup(); add(state, 'master.tokiomi.skill.s2'); rules.processAbilityEvent(state, { id: 'tokiomi-items-battle', type: 'game_start', playerId: 'p1' });
+    state.players[2]!.masterCardId = 'master.tokiomi';
     const item = state.cards.find((card) => card.definitionId === 'master.tokiomi.generated.item' && card.ownerPlayerId === 'p3')!;
     state.round.activePhase = 'action'; state.round.prioritySeat = state.players[2]!.seat;
     rules.playAbilityCardBatch(state, 'p3', [{ cardInstanceId: item.instanceId }]);
@@ -64,5 +71,31 @@ describe('P3 Tokiomi owner-complete migration', () => {
     const result = rules.resolveBattlefield(state, { battlefieldId: 'miyama_town', revealHiddenEvents: false }).nextState.battleResults.at(-1)!;
     expect(result.winnerPlayerIds).toContain('p3');
     expect(result.vpAdjustments?.some((adjustment) => adjustment.playerId === 'p3')).toBe(false);
+  });
+  it('keeps non-Tokiomi item users eligible for both competition and location rewards', () => {
+    const state = setup(); add(state, 'master.tokiomi.skill.s2'); rules.processAbilityEvent(state, { id: 'tokiomi-items-other', type: 'game_start', playerId: 'p1' });
+    const item = state.cards.find((card) => card.definitionId === 'master.tokiomi.generated.item' && card.ownerPlayerId === 'p3')!;
+    state.round.activePhase = 'action'; state.round.prioritySeat = state.players[2]!.seat;
+    rules.playAbilityCardBatch(state, 'p3', [{ cardInstanceId: item.instanceId }]);
+    state.players[1]!.locationId = 'miyama_town'; state.players[2]!.locationId = 'miyama_town';
+    const location = state.map.locations.find((entry) => entry.id === 'miyama_town')!;
+    location.vpRewardRules = { ...location.vpRewardRules, location: 1 };
+    state.abilityRuntime!.pack.cards['fixture.attack'] = { id: 'fixture.attack', name: 'fixture', cardType: 'basic_attack', cardFace: { attributes: ['力量'], cost: 0, basePower: 4 }, playTiming: { phase: 'battle', window: 'controller_combat_action_window' }, playRequirements: [], abilities: [], mode: 'automatic' } as any;
+    for (const playerId of ['p2', 'p3']) { const id = `fixture-other-${playerId}`; state.cards.push({ instanceId: id, definitionId: 'fixture.attack', ownerPlayerId: playerId, controllerPlayerId: playerId, zone: 'attack_area', visibility: { scope: 'public' } }); state.abilityRuntime!.cardState[id] = { active: true, faceDown: false, playedRound: state.round.roundNumber }; }
+    const result = rules.resolveBattlefield(state, { battlefieldId: 'miyama_town', revealHiddenEvents: false }).nextState.battleResults.at(-1)!;
+    expect(result.vpAdjustments?.some((adjustment) => adjustment.playerId === 'p3' && adjustment.source === 'competition_vp')).toBe(true);
+    expect(result.vpAdjustments?.some((adjustment) => adjustment.playerId === 'p3' && adjustment.source === 'location_vp')).toBe(true);
+  });
+  it('applies and removes burning through the production power/removal consumers', () => {
+    const state = setup(); const crest = add(state, 'master.tokiomi.skill.ascension', 'field');
+    const ability = state.abilityRuntime!.pack.cards['master.tokiomi.skill.ascension']!.abilities[0]!;
+    expect(resolveTokiomiEffect(state, { controllerId: 'p1', sourceCardId: crest, abilityId: ability.id }, ability, ability.effects[0]!)).toBe(true);
+    const attack = add(state, 'master.tokiomi.generated.fireball', 'field'); tokiomiSetBurningMarker(state, attack);
+    expect(tokiomiBurningPowerPenalty(state, attack)).toBe(-3);
+    expect(rules.calculateCardPower(state, attack).value).toBe(1);
+    state.players[0]!.mana = 2;
+    expect(tokiomiRemoveBurningMarker(state, attack)).toBe(true);
+    expect(state.players[0]!.mana).toBe(0);
+    expect(rules.calculateCardPower(state, attack).value).toBe(4);
   });
 });

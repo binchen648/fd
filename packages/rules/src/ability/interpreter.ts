@@ -49,7 +49,7 @@ import {
 import { containsSiegPrivilegedNode, isAcceptedSiegAbility, isSiegBalmungFreePlayAbility, isSiegBalmungPenaltyAbility, isSiegDragonCommandAbility, isSiegGalvanismAbility, isSiegSyncState, isSiegSyncStrengthAbility, SIEG_BALMUNG_FREE_PLAY_EFFECT, SIEG_BALMUNG_PENALTY_EFFECT, SIEG_DRAGON_COMMAND_EFFECT, SIEG_SYNC_STATE_KEY, SIEG_SYNC_STRENGTH_EFFECT } from './sieg-capability';
 import { containsSionPrivilegedNode, isAcceptedSionAbility, isSionCoveredCard, resolveSionChoice, resolveSionEffect, settleSionEvent, sionCardPlayCommandSealCost, sionMagicAttackSuppressed, sionPowerBonus } from './sion-capability';
 import { containsTaigaPrivilegedNode, isAcceptedTaigaAbility, resolveTaigaEffect, taigaActive, taigaPowerBonus } from './taiga-capability';
-import { containsTokiomiPrivilegedNode, isAcceptedTokiomiAbility, resolveTokiomiEffect, tokiomiFireballModifier, tokiomiProvisionItemDestination, tokiomiItemUsedThisRound, tokiomiCanUseItem, tokiomiRecordItemUse } from './tokiomi-capability';
+import { containsTokiomiPrivilegedNode, isAcceptedTokiomiAbility, resolveTokiomiEffect, tokiomiFireballModifier, tokiomiBurningPowerPenalty, tokiomiProvisionItemDestination, tokiomiItemUsedThisRound, tokiomiCanUseItem, tokiomiRecordItemUse } from './tokiomi-capability';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
@@ -1349,6 +1349,8 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
   const result = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
   const tokiomiModifier = tokiomiFireballModifier(s, source.controllerPlayerId, d?.id ?? source.definitionId);
   if (tokiomiModifier.powerAdd !== 0) { result.value += tokiomiModifier.powerAdd; result.lines.push({ label: 'tokiomi_crest_fireball_power', value: result.value }); }
+  const tokiomiBurningPenalty = tokiomiBurningPowerPenalty(s, sourceId);
+  if (tokiomiBurningPenalty !== 0) { result.value += tokiomiBurningPenalty; result.lines.push({ label: 'tokiomi_crest_burning_power', value: result.value }); }
   if (sionMagicAttackSuppressed(s, sourceId)) { result.value = 0; result.lines.push({ label: 'sion_magic_immunity_zero', value: 0 }); }
   const sionBonus = sionPowerBonus(s, sourceId);
   if (sionBonus !== 0) { result.value += sionBonus; result.lines.push({ label: 'sion_owner_power_bonus', value: result.value }); }
