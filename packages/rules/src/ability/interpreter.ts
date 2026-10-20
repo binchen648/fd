@@ -2621,10 +2621,7 @@ function gameStartSkillProvisioningPreflight(s: GameState, sourceId: string, a: 
     const target = runtime(s).pack.cards[definitionId] as ExecutableCardDefinition | undefined;
     const hasVerifiedPartialConsumer = target?.abilities.some((ability) =>
       ability.effects.some((effect) => effect.type === 'hinako_blood_song')) ?? false;
-    // Provisioning is allowed to materialize a host-adjudicated support card:
-    // the shared contract owns only the physical skill-zone transition, while
-    // the target's later effect remains explicitly outside the interpreter.
-    if (!target || (target.mode !== 'automatic' && target.mode !== 'host_adjudicated' && !hasVerifiedPartialConsumer) || target.cardType !== 'master_skill' ||
+    if (!target || (target.mode !== 'automatic' && !hasVerifiedPartialConsumer) || target.cardType !== 'master_skill' ||
       target.ownerId !== controller.masterCardId || target.initialZone !== undefined) return false;
     const existing = s.cards.filter((candidate) => candidate.definitionId === definitionId);
     if (existing.length > 1 || (existing.length === 1 && !provisionedSkillCardIsValid(s, existing[0]!, controller.id))) return false;

@@ -38306,20 +38306,17 @@
         "abilities": [
           {
             "id": "wodime.astrology",
-            "kind": "forced_trigger",
+            "kind": "passive",
             "printedClause": "秘密记录两个回合数并将【人理保障天球】加入你的技能区。",
             "activation": {
-              "trigger": "game_start"
+              "trigger": "while_active"
             },
             "conditions": [],
             "targets": [],
             "effects": [
               {
-                "type": "provision_skill_cards",
-                "player": "controller",
-                "targetDefinitionIds": [
-                  "master.wodime.skill.s2"
-                ]
+                "type": "record_master_directive",
+                "directive": "wodime_astrology_record_rounds_and_add_orb"
               }
             ],
             "cost": [],
@@ -38334,11 +38331,17 @@
             "visibility": {},
             "execution": {
               "mode": "automatic",
-              "allowedOperations": []
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
             }
           }
         ],
-        "mode": "automatic",
+        "mode": "host_adjudicated",
         "ownerId": "master.wodime",
         "playKind": "support",
         "destinationZone": "field",
@@ -38400,7 +38403,8 @@
         "mode": "host_adjudicated",
         "ownerId": "master.wodime",
         "playKind": "support",
-        "destinationZone": "field"
+        "destinationZone": "field",
+        "initialZone": "skill"
       },
       "master.wodime.skill.s3": {
         "id": "master.wodime.skill.s3",
@@ -58368,11 +58372,11 @@
       "master.waver": "master.waver.command-spell",
       "master.wodime": "master.wodime.command-spell"
     },
-    "definitionHash": "c84a8036c56d89ba9084caee52f7dc129d82844cae1e4d92f29aec2aa9f7d5f0",
+    "definitionHash": "fb92df0ba0771774b9eab2c3b3afcfd027f251ed5c1ea7345f99a7f514a2cd79",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "c84a8036c56d89ba9084caee52f7dc129d82844cae1e4d92f29aec2aa9f7d5f0"
+      "definitionHash": "fb92df0ba0771774b9eab2c3b3afcfd027f251ed5c1ea7345f99a7f514a2cd79"
     },
     "sourceMap": {
       "master.shinji.skill.ascension": {
