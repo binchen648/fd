@@ -171,6 +171,7 @@ import { cleanupMasterAscensionEventPowerAtRoundEnd, containsMasterAscensionEven
 import { canExecutePersistentLocationTerrainEffect, containsPersistentLocationTerrainPrivilegedNode, isAcceptedPersistentLocationTerrainAbility, isPersistentLocationTerrainRuntimeProvenanceValidForRestore, resolvePersistentLocationTerrainEffect } from './persistent-location-terrain-capability';
 import { canExecuteRoundLocationSupplyEffect, cleanupRoundLocationSupplyAtRoundEnd, containsRoundLocationSupplyPrivilegedNode, isAcceptedRoundLocationSupplyAbility, isRoundLocationSupplyRuntimeProvenanceValidForRestore, resolveRoundLocationSupplyEffect, settleMovementCompetitionSuppression } from './round-location-supply-capability';
 import { settleSameBattlefieldTerrainUpkeepForPriorityPlayer } from './unclaimed-terrain-upkeep-capability';
+import { settleWodimeGodLegacyEvent } from './wodime-god-legacy-capability';
 import { SWITCH_ROUND_SKILL_PROFILE_EFFECT, canExecuteRoundSkillProfileEffect, cleanupRoundSkillProfilesAtRoundEnd, containsRoundSkillProfilePrivilegedNode, isAcceptedRoundSkillProfileAbility, isRoundSkillProfileRuntimeProvenanceValidForRestore, resolveRoundSkillProfileEffect, roundSkillCardPowerBonus, roundSkillProfileSuppressed, settleRoundSkillProfileEvent } from './round-skill-profile-capability';
 import {
   applyPermanentReturnedSkillTuning, applyPhysicalCardCostModifiers, cardReturnedToSkillThisRound,
@@ -1137,7 +1138,7 @@ function context(s: GameState, sourceCardId: string, abilityId: string, event?: 
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-    cardState: {}, extraPlayerPresences: [], multiPresenceLastBattleLossRoundByPlayer: {}, locationMarkers: {}, roundDefinitionAttributeReplacements: {}, sealedCardBindings: {}, armedSealedCardActions: [], sealedCardReplays: {}, recordedRemovedCards: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, battleLossIgnoreRoundByPlayer: {}, shirouMealFoodByPlayer: {}, shirouMealProcurementRoundByPlayer: {}, shirouMealProtectedNextShuffleByPlayer: {}, shishigouCorpseRemovedCardIds: [],
+    cardState: {}, extraPlayerPresences: [], multiPresenceLastBattleLossRoundByPlayer: {}, locationMarkers: {}, roundDefinitionAttributeReplacements: {}, sealedCardBindings: {}, armedSealedCardActions: [], sealedCardReplays: {}, recordedRemovedCards: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, battleLossIgnoreRoundByPlayer: {}, shirouMealFoodByPlayer: {}, shirouMealProcurementRoundByPlayer: {}, shirouMealProtectedNextShuffleByPlayer: {}, shishigouCorpseRemovedCardIds: [], wodimeGodLegacyByLocation: {}, wodimeGodLegacyByPlayer: {},
     startingDeckSizeByPlayer: Object.fromEntries(s.players.map((candidate) => [candidate.id, s.cards.filter((entry) => entry.ownerPlayerId === candidate.id && entry.zone === 'deck').length])),
     cardPlayCountByInstance: {}, grantedPerGamePlayLimitCardIds: [], grantedPerGamePlayLimitBaselineByCardId: {},
     ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [],
@@ -8791,6 +8792,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   if (event.type === 'after_controller_enters_location' && event.playerId && event.locationId && (event.movementKind === 'normal' || event.movementKind === 'effect')) {
     r.locationEntryRoundByPlayer ??= {}; r.locationEntryRoundByPlayer[event.playerId] ??= {}; r.locationEntryRoundByPlayer[event.playerId]![event.locationId] = s.round.roundNumber;
   }
+  settleWodimeGodLegacyEvent(s, event);
   if (event.type === 'after_battle_result_determined' && event.battlefieldId && event.resultId && event.battlePhaseResolutionId && event.battleResult && Array.isArray(event.battleParticipantIds)) {
     const pending = r.pendingBattlefieldFortifications ?? []; const remaining = [];
     for (const entry of pending) {

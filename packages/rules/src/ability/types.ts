@@ -798,6 +798,9 @@ export interface AbilityRuntime {
   commandSealSpentOrUsedRoundByPlayer?: Record<PlayerId, number>;
   /** Identity-free server-owned structured player flags. */
   structuredPlayerFlagsByPlayer?: Record<PlayerId, Record<string, boolean | string | number>>;
+  /** Authenticated Wodime God Legacy state; location tokens and carried player totals. */
+  wodimeGodLegacyByLocation?: Record<string, WodimeGodLegacyLocationState>;
+  wodimeGodLegacyByPlayer?: Record<PlayerId, number>;
   /** Owner-scoped typed food resources and once-per-round procurement authority. */
   shirouMealFoodByPlayer?: Record<PlayerId, { 肉: number; 蔬菜: number; 鱼: number }>;
   shirouMealProcurementRoundByPlayer?: Record<PlayerId, { round: number; attributes: string[] }>;
@@ -921,6 +924,15 @@ export interface AbilityRuntime {
   situationBenefitsSuppressedRoundByPlayer?: Record<PlayerId, number>;
   playRulesVersion: PlayRulesVersion;
   playCounters: RoundPlayCounters;
+}
+
+export interface WodimeGodLegacyLocationState {
+  locationId: string;
+  tokens: number;
+  sourceCardId: string;
+  abilityId: string;
+  activatedRound: number;
+  lifecycle: 'game';
 }
 export interface PlayCardAction { type: 'play_card'; cardInstanceId: string; faceDown?: boolean; manaContributions?: ManaContributionChoice[]; declaredAttribute?: string }
 export interface StageAttackCardAction { type: 'stage_attack_card'; cardInstanceId: string; faceDown?: boolean; declaredAttribute?: string }

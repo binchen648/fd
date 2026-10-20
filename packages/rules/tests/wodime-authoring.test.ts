@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import * as rules from '../src/index';
 import { createSeededGameState } from '../src/tools/seeded-state';
 import { createMatchSession, installMasterSupportOwnerCards, restoreMatchSession } from '../src/match-session';
+import { isWodimeGodLegacyRuntimeStateValid } from '../src/ability/wodime-god-legacy-capability';
 
 const archivePath = 'data/authoring/masters/master.wodime.json';
 const expectedIds = ['ascension', 's1', 's1a', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9'];
@@ -74,6 +75,29 @@ describe('Wodime frozen authoring archive', () => {
     const restored = restoreMatchSession(session.serializeSession(), { restorePackKind: 'production_executable' });
     expect(restored.state.eventDeck).toEqual([]);
     expect(restored.state.eventPlacements.map((event) => event.eventCardId)).toContain('event.wodime.atlantis.hephaestus');
+  });
+
+  it('transfers authenticated God Legacy from a placed location on a unique battle win and survives restore', () => {
+    const raw = JSON.parse(readFileSync(archivePath, 'utf8'));
+    const loaded = rules.loadAuthoringJson(raw);
+    for (const definition of Object.values(loaded.cards)) {
+      definition.ownerId = 'master.wodime';
+      definition.initialPlacement = 'outside_game';
+    }
+    const session = createMatchSession({ seed: 77, humanPlayerId: 'p1', restorePackKind: 'production_executable' });
+    const state = session.state;
+    state.cards = [];
+    state.players[0]!.masterCardId = 'master.wodime';
+    delete state.abilityRuntime;
+    rules.initializeAbilityRuntime(state, loaded, { seed: 77 });
+    installMasterSupportOwnerCards(state, loaded as any, { ownerId: 'master.wodime', playerId: 'p1' });
+    const wodime = state.players.find((player) => player.id === 'p1')!;
+    wodime.status = 'eliminated';
+    state.eventPlacements.push({ locationId: 'shinto', eventCardId: 'event.wodime.atlantis.hephaestus', victoryPoints: 0, visibility: { scope: 'public' } });
+    rules.processAbilityEvent(state, { id: 'wodime-god-legacy-win', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1', battleId: 'battle-legacy', resultId: 'result-legacy', battlefieldId: 'shinto', battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p2'], loserIds: ['p1'] } });
+    expect((state.abilityRuntime as any).wodimeGodLegacyByLocation.shinto.tokens).toBe(0);
+    expect((state.abilityRuntime as any).wodimeGodLegacyByPlayer.p2).toBe(3);
+    expect(isWodimeGodLegacyRuntimeStateValid(state)).toBe(true);
   });
 
   it('opens a private two-round game-start decision and provisions the orb', () => {

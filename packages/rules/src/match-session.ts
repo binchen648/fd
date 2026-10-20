@@ -108,6 +108,7 @@ import type { CompiledPlaytestContentLibrary } from '@fd/content';
 import { resolveBattlefield } from './core/combat-resolver';
 import { applyBattleScoring } from './core/scoring-resolver';
 import { projectBattleEliminationCandidatePlayerIds } from './core/elimination-resolver';
+import { isWodimeGodLegacyRuntimeStateValid } from './ability/wodime-god-legacy-capability';
 import { canOccupyLocation, getEnabledLocations } from './core/map-engine';
 import { taigaActive } from './ability/taiga-capability';
 import { canViewFaceDownEvents, canViewOpponentDiscard, grantMana, rulerSealMovementLocked } from './core/rule-overrides';
@@ -1381,6 +1382,13 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
         isRestoreSafeInteger(entry.value, 1) && Number(entry.value) <= 5 && isRestoreStringArray(entry.triggerEventIds) &&
         entry.triggerEventIds.length === Number(entry.value) && new Set(entry.triggerEventIds).size === entry.triggerEventIds.length)))) return false;
   if (value.structuredPlayerFlagsByPlayer !== undefined && !isRestoreStructuredPlayerFlags(value.structuredPlayerFlagsByPlayer)) return false;
+  if (value.wodimeGodLegacyByPlayer !== undefined && (!isRestoreRecord(value.wodimeGodLegacyByPlayer) ||
+      Object.values(value.wodimeGodLegacyByPlayer).some((amount) => !isRestoreSafeInteger(amount, 0)))) return false;
+  if (value.wodimeGodLegacyByLocation !== undefined && (!isRestoreRecord(value.wodimeGodLegacyByLocation) ||
+      Object.values(value.wodimeGodLegacyByLocation).some((entry) => isRestoreRecord(entry) === false ||
+        !hasExactRestoreKeys(entry, ['locationId','tokens','sourceCardId','abilityId','activatedRound','lifecycle']) ||
+        typeof entry.locationId !== 'string' || !isRestoreSafeInteger(entry.tokens, 0) || typeof entry.sourceCardId !== 'string' ||
+        entry.abilityId !== 'wodime.god-legacy' || !isRestoreSafeInteger(entry.activatedRound, 1) || entry.lifecycle !== 'game'))) return false;
   if (value.structuredRoundFlagKeysByPlayer !== undefined && !isRestoreStructuredRoundFlagKeys(value.structuredRoundFlagKeysByPlayer)) return false;
   if (value.deductionRecordsByPlayer !== undefined && (!isRestoreRecord(value.deductionRecordsByPlayer) || !Object.values(value.deductionRecordsByPlayer).every((entry) =>
       isRestoreRecord(entry) && typeof entry.definitionId === 'string' && DEDUCTION_RECORD_ATTRIBUTES.includes(entry.attribute as typeof DEDUCTION_RECORD_ATTRIBUTES[number]) && isRestoreSafeInteger(entry.recordedRound, 1)))) return false;
@@ -2192,6 +2200,7 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
   const restoredState = value as unknown as GameState;
   if (!terrainAssignmentAuthorityConsistentForRestore(restoredState)) return false;
   if (!isDeferredAbilityRuntimeProvenanceValidForRestore(restoredState, { deferBloodlustContributionAuthority: true })) return false;
+  if (!isWodimeGodLegacyRuntimeStateValid(restoredState)) return false;
   if (!isPrintedManaPowerBonusStateValidForRestore(restoredState)) return false;
   if (!isMysticCodePaidCopyStateValidForRestore(restoredState)) return false;
   if (!isMysticCodeRecoveryArmsValidForRestore(restoredState)) return false;
