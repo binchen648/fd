@@ -553,6 +553,11 @@ export interface CardRuntimeState {
   declaredAttribute?: string;
   /** False while an accepted rewrite keeps that declaration secret until combat. */
   declaredAttributeRevealed?: boolean;
+  /** Authenticated Sion cafeteria replacement; the EX card keeps its original skill identity. */
+  sionExAlias?: {
+    originalDefinitionId: string; originalName: string; exDefinitionId: string; servantClass: string;
+    sourcePath: string; sourceSha256: string; imageIndex: number; imagePath: string;
+  };
 }
 export interface RulerSealBinding {
   id: string; issuerPlayerId: PlayerId; boundPlayerId: PlayerId; sourceCardId: string; abilityId: string;
@@ -926,7 +931,7 @@ export type AbilityCommand = PlayCardAction | (ActivateAbilityAction & { variabl
 export interface AbilityPlayerView {
   revision: number; phase: PhaseName; round: number; legalActions: LegalAction[];
   players: { id: PlayerId; seat: number; mana: number; vp: number; commandSpells?: number; locationId?: string; masterCardId: string; handCount: number; deckCount: number; servantPackage?: ServantPackage }[];
-  cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean; reversed?: boolean; attributeOverrides?: string[]; declaredAttribute?: string; definitionVariantId?: string }[];
+  cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean; reversed?: boolean; attributeOverrides?: string[]; declaredAttribute?: string; definitionVariantId?: string; definitionAliasIds?: string[] }[];
   stagedAttacks?: { playerId: PlayerId; cards: PlayCardAction[] }[];
   pendingDecision?: {
     id: string; candidates: string[]; min: number; max: number;

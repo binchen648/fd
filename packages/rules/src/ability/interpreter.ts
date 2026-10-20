@@ -8960,6 +8960,7 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
       ...(!hidden && variantState ? { definitionVariantId: variantState.variantId } : {}),
       ...(!hidden && physicalState?.reversed ? { reversed: true } : {}),
       ...(!hidden && physicalState?.attributeOverrides !== undefined ? { attributeOverrides: [...physicalState.attributeOverrides] } : {}),
+      ...(!hidden && physicalState?.sionExAlias ? { definitionAliasIds: [physicalState.sionExAlias.originalDefinitionId] } : {}),
       ...(!hidden && physicalState?.declaredAttribute !== undefined && (own || physicalState.declaredAttributeRevealed === true)
         ? { declaredAttribute: physicalState.declaredAttribute } : {}) });
   }

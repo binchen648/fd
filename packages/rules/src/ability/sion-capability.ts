@@ -14,6 +14,25 @@ export const SION_EFFECTS = [SION_ASCENSION_EFFECT, SION_TRAINING_EFFECT, SION_M
   SION_INDEPENDENT_ACTION_EFFECT, SION_TERRITORY_EFFECT, SION_RIDING_EFFECT, SION_STRUCTURED_EFFECT] as const;
 
 const SION = 'master.sion';
+/** Canonical card source for the class EX identities used by Sion's cafeteria. */
+export const SION_EX_SOURCE_PATH = 'chm-extract/【EX技能_】.htm' as const;
+export const SION_EX_SOURCE_SHA256 = '0405961CA3309871E6BEE5965BCE2EC7CB23C419B7374C30FBF4302491695344' as const;
+const SION_EX_BY_CLASS: Record<string, { definitionId: string; imageIndex: number; imagePath: string }> = {
+  saber: { definitionId: `${SION}.skill.s5`, imageIndex: 1, imagePath: '图包/ScreenShot_2025-10-30_192904_202.png' },
+  lancer: { definitionId: `${SION}.skill.s6`, imageIndex: 2, imagePath: '图包/ScreenShot_2025-10-30_192908_692.png' },
+  archer: { definitionId: `${SION}.skill.s7`, imageIndex: 3, imagePath: '图包/ScreenShot_2025-10-30_192913_586.png' },
+  rider: { definitionId: `${SION}.skill.s8`, imageIndex: 4, imagePath: '图包/ScreenShot_2025-10-30_192941_411.png' },
+  caster: { definitionId: `${SION}.skill.s9`, imageIndex: 5, imagePath: '图包/ScreenShot_2025-10-30_192946_523.png' },
+  assassin: { definitionId: `${SION}.skill.s10`, imageIndex: 6, imagePath: '图包/ScreenShot_2025-10-30_192950_810.png' },
+  berserker: { definitionId: `${SION}.skill.s11`, imageIndex: 7, imagePath: '图包/ScreenShot_2025-10-30_192955_675.png' },
+  alterego: { definitionId: `${SION}.skill.s12`, imageIndex: 9, imagePath: '图包/ScreenShot_2025-10-30_192929_130.png' },
+  avenger: { definitionId: `${SION}.skill.s13`, imageIndex: 10, imagePath: '图包/ScreenShot_2025-10-30_192918_530.png' },
+  ruler: { definitionId: `${SION}.skill.s14`, imageIndex: 8, imagePath: '图包/ScreenShot_2025-10-30_192923_450.png' },
+  // The first two Moon Cancer images are other variants. The Sion-specific
+  // training/replacement card is HTML image 14 (192935_986).
+  mooncancer: { definitionId: `${SION}.skill.s15`, imageIndex: 14, imagePath: '图包/ScreenShot_2025-10-30_192935_986.png' },
+  foreigner: { definitionId: `${SION}.skill.s16`, imageIndex: 11, imagePath: '图包/ScreenShot_2025-10-30_192845_619.png' },
+};
 const SION_STRUCTURED_SKILL_BY_ABILITY: Record<string, string> = {
   'sion.s2.library': 'library', 'sion.s3.cafeteria': 'cafeteria',
   'sion.s4.gym': 'gym', 'sion.s4.gym-experience': 'gym_experience',
@@ -51,13 +70,17 @@ export function sionEffect(a: AuthoringAbility): RuleNode | undefined { return e
 
 type SionRuntime = GameState['abilityRuntime'] & { sion?: {
   experience: Record<string, number>; territoryWins: Record<string, number>; covered: Record<string, string>;
-  trainingTargets: Record<string, string>; transformedTraining: Record<string, string>; roundUses: Record<string, number>; trainingSpent: Record<string, number>; restartUsed: Record<string, boolean>;
+  trainingTargets: Record<string, string>; transformedTraining: Record<string, string>; exProvenance: Record<string, {
+    originalDefinitionId: string; originalName: string; exDefinitionId: string; servantClass: string;
+    sourcePath: string; sourceSha256: string; imageIndex: number; imagePath: string;
+  }>; roundUses: Record<string, number>; trainingSpent: Record<string, number>; restartUsed: Record<string, boolean>;
   s8CloseRound?: Record<string, number>; s14LastTargetRound?: Record<string, number>;
 } };
 function rt(state: GameState): SionRuntime { return state.abilityRuntime as SionRuntime; }
 function store(state: GameState) {
-  const r = rt(state); const s = r.sion ??= { experience: {}, territoryWins: {}, covered: {}, trainingTargets: {}, transformedTraining: {}, roundUses: {}, trainingSpent: {}, restartUsed: {} };
+  const r = rt(state); const s = r.sion ??= { experience: {}, territoryWins: {}, covered: {}, trainingTargets: {}, transformedTraining: {}, exProvenance: {}, roundUses: {}, trainingSpent: {}, restartUsed: {} };
   s.trainingTargets ??= {}; s.trainingSpent ??= {}; s.restartUsed ??= {};
+  s.exProvenance ??= {};
   return s;
 }
 function sourceCard(state: GameState, sourceCardId: string) { return state.cards.find((c) => c.instanceId === sourceCardId); }
@@ -127,26 +150,51 @@ function provision(state: GameState, ctx: EffectContext): void {
 }
 function train(state: GameState, ctx: EffectContext): void {
   const s = store(state);
-  for (const id of ['s2', 's3', 's4']) {
+  const servantSkills = state.cards.filter((c) => c.ownerPlayerId === ctx.controllerId && c.controllerPlayerId === ctx.controllerId && c.zone === 'skill' && c.definitionId.startsWith('servant.'));
+  for (const [index, id] of ['s2', 's3', 's4'].entries()) {
     const card = addSkill(state, ctx.controllerId, `${SION}.skill.${id}`, ctx.sourceCardId);
-    const servant = state.cards.find((c) => c.ownerPlayerId === ctx.controllerId && c.controllerPlayerId === ctx.controllerId && c.zone === 'skill' && c.definitionId.startsWith('servant.'));
+    const servant = servantSkills[index];
     if (servant) { s.covered[servant.instanceId] = card; s.trainingTargets[card] = servant.instanceId; }
   }
   rt(state).events.push({ type: 'sion_chaldea_training_installed', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
 }
 function consumeTraining(state: GameState, ctx: EffectContext): boolean {
   const source = sourceCard(state, ctx.sourceCardId); if (!source || source.zone !== 'skill' || state.round.activePhase !== 'preparation') return false;
-  const s = store(state); const covered = Object.entries(s.covered).filter(([, provider]) => provider === ctx.sourceCardId).map(([id]) => id);
+  const s = store(state); const covered = [...new Set(Object.entries(s.covered).filter(([, provider]) => provider === ctx.sourceCardId).map(([id]) => id))];
   const exp = s.experience[ctx.sourceCardId] ?? 0; const spent = s.trainingSpent[ctx.sourceCardId] ?? 0;
-  const target = s.trainingTargets[ctx.sourceCardId]; if (target) covered.push(target);
+  const target = s.trainingTargets[ctx.sourceCardId]; if (target && !covered.includes(target)) covered.push(target);
   if (ctx.abilityId === 'sion.s2.library') {
     const upgrades = Math.floor(exp / 2) - spent; if (upgrades < 1) return false;
     for (const id of covered) (rt(state).cardState[id] as any).sionCostReduction = ((rt(state).cardState[id] as any).sionCostReduction ?? 0) + upgrades;
     s.trainingSpent[ctx.sourceCardId] = spent + upgrades;
   } else if (ctx.abilityId === 'sion.s3.cafeteria') {
-    // The repository contains no class-specific EX card identity/source. Do not
-    // fabricate an empty definition: this frozen branch remains explicitly blocked.
-    return false;
+    if (Math.floor(exp / 2) <= spent || covered.length !== 1) return false;
+    const targetId = covered[0]!;
+    const target = sourceCard(state, targetId);
+    const player = controller(state, ctx.controllerId);
+    const servant = player?.servantCardId ? rt(state).pack.characters?.[player.servantCardId] : undefined;
+    const classTag = str(servant?.class);
+    const classKey = classTag.toLowerCase().replace(/[^a-z]/g, '');
+    const mapping = SION_EX_BY_CLASS[classKey];
+    const exDefinition = mapping ? rt(state).pack.cards[mapping.definitionId] : undefined;
+    // A missing class-specific source or runtime identity is a hard failure. In
+    // particular, never synthesize an empty EX card to make this path appear live.
+    if (!target || !player || !servant || !mapping || !exDefinition || !exDefinition.name.includes('EX')) return false;
+    const originalDefinitionId = target.definitionId;
+    const originalName = rt(state).pack.cards[originalDefinitionId]?.name ?? originalDefinitionId;
+    target.definitionId = mapping.definitionId;
+    const provenance = {
+      originalDefinitionId, originalName, exDefinitionId: mapping.definitionId, servantClass: classTag,
+      sourcePath: SION_EX_SOURCE_PATH, sourceSha256: SION_EX_SOURCE_SHA256, imageIndex: mapping.imageIndex, imagePath: mapping.imagePath,
+    };
+    s.transformedTraining[targetId] = mapping.definitionId;
+    s.exProvenance[targetId] = provenance;
+    const cardState = rt(state).cardState[targetId];
+    if (cardState) cardState.sionExAlias = provenance;
+    if (s.covered[targetId] === ctx.sourceCardId) delete s.covered[targetId];
+    delete s.trainingTargets[ctx.sourceCardId];
+    s.trainingSpent[ctx.sourceCardId] = spent + 1;
+    rt(state).events.push({ type: 'sion_cafeteria_ex_replaced', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: targetId, fromState: originalDefinitionId, toState: mapping.definitionId });
   } else if (ctx.abilityId === 'sion.s4.gym') {
     if (Math.floor(exp / 2) <= spent || covered.length === 0) return false;
     stageChoice(state, ctx, 'training', ['power', 'attack_strength', 'attack_agility'], 1, 1, 'choice', ['power', 'attack_strength', 'attack_agility']);

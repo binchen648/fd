@@ -13,6 +13,10 @@ function setup(): { state: GameState; pack: ReturnType<typeof rules.loadAuthorin
   const state = rules.createSeededGameState(); state.cards = [];
   state.players[0]!.masterCardId = 'master.sion'; state.players[0]!.locationId = 'shinto'; state.round.activePhase = 'action'; state.round.prioritySeat = state.players[0]!.seat;
   rules.initializeAbilityRuntime(state, pack, { seed: 20261020 });
+  state.players[0]!.servantCardId = 'servant.fixture';
+  state.abilityRuntime!.pack.characters = {
+    'servant.fixture': { id: 'servant.fixture', name: 'Fixture Saber', kind: 'servant', class: 'Saber', cardIds: [], publicInformation: {} },
+  };
   return { state, pack };
 }
 function add(state: GameState, definitionId: string, zone: string, active = true): string {
@@ -123,6 +127,8 @@ describe('P3 owner-complete master.sion', () => {
     const { state } = setup();
     const s1 = add(state, 'master.sion.skill.s1', 'field', true);
     const covered = add(state, 'servant.fixture.skill', 'skill', true);
+    const cafeteriaCovered = add(state, 'servant.fixture.skill.cafeteria', 'skill', true);
+    const gymCovered = add(state, 'servant.fixture.skill.gym', 'skill', true);
     rules.executeAbility(state, { controllerId: 'p1', sourceCardId: s1, abilityId: 'sion.s1.training', variables: {}, selections: {} });
     const library = state.cards.find((card) => card.definitionId === 'master.sion.skill.s2')!;
     state.round.activePhase = 'preparation'; state.abilityRuntime!.sion!.experience[library.instanceId] = 2;
@@ -131,8 +137,18 @@ describe('P3 owner-complete master.sion', () => {
     expect(state.cards.find((card) => card.instanceId === library.instanceId)?.zone).toBe('removed_from_game');
     const cafeteria = state.cards.find((card) => card.definitionId === 'master.sion.skill.s3')!;
     state.abilityRuntime!.sion!.experience[cafeteria.instanceId] = 2;
-    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: cafeteria.instanceId, abilityId: 'sion.s3.cafeteria' }).ok).toBe(false);
-    expect(state.cards.find((card) => card.instanceId === covered)?.definitionId).toBe('servant.fixture.skill');
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: cafeteria.instanceId, abilityId: 'sion.s3.cafeteria' }).ok).toBe(true);
+    expect(state.cards.find((card) => card.instanceId === cafeteriaCovered)?.definitionId).toBe('master.sion.skill.s5');
+    expect(state.abilityRuntime!.sion!.transformedTraining[cafeteriaCovered]).toBe('master.sion.skill.s5');
+    expect(state.abilityRuntime!.sion!.exProvenance[cafeteriaCovered]).toMatchObject({
+      originalDefinitionId: 'servant.fixture.skill.cafeteria', exDefinitionId: 'master.sion.skill.s5', servantClass: 'Saber',
+      sourcePath: 'chm-extract/【EX技能_】.htm', sourceSha256: '0405961CA3309871E6BEE5965BCE2EC7CB23C419B7374C30FBF4302491695344', imageIndex: 1,
+      imagePath: '图包/ScreenShot_2025-10-30_192904_202.png',
+    });
+    expect(state.abilityRuntime!.cardState[cafeteriaCovered]!.sionExAlias?.originalDefinitionId).toBe('servant.fixture.skill.cafeteria');
+    expect(rules.projectAbilityState(state, 'p1').cards.find((card) => card.instanceId === cafeteriaCovered)?.definitionAliasIds).toEqual(['servant.fixture.skill.cafeteria']);
+    expect(state.cards.find((card) => card.instanceId === cafeteria.instanceId)?.zone).toBe('removed_from_game');
+    expect(rules.isSionCoveredCard(state, cafeteriaCovered)).toBe(false);
     const gym = state.cards.find((card) => card.definitionId === 'master.sion.skill.s4')!;
     state.abilityRuntime!.sion!.experience[gym.instanceId] = 2;
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: gym.instanceId, abilityId: 'sion.s4.gym' }).ok).toBe(true);
@@ -155,6 +171,38 @@ describe('P3 owner-complete master.sion', () => {
     const abyssDecision = state.abilityRuntime!.pendingDecision!;
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: abyssDecision.id, selectedIds: ['all_players'] }).ok).toBe(true);
     expect(state.cards.find((card) => card.instanceId === p2Hand)?.zone).toBe('discard');
+  });
+
+  it('binds every sourced class EX identity and fails closed for an unsupported class', () => {
+    const mappings = [
+      ['Saber', 's5', 1], ['Lancer', 's6', 2], ['Archer', 's7', 3], ['Rider', 's8', 4],
+      ['Caster', 's9', 5], ['Assassin', 's10', 6], ['Berserker', 's11', 7], ['Ruler', 's14', 8],
+      ['AlterEgo', 's12', 9], ['Avenger', 's13', 10], ['Foreigner', 's16', 11], ['MoonCancer', 's15', 14],
+    ] as const;
+    for (const [classTag, exId, imageIndex] of mappings) {
+      const { state } = setup();
+      state.abilityRuntime!.pack.characters!['servant.fixture']!.class = classTag;
+      const s1 = add(state, 'master.sion.skill.s1', 'field', true);
+      add(state, `servant.fixture.skill.${classTag}`, 'skill', true);
+      const covered = add(state, `servant.fixture.skill.${classTag}.cafeteria`, 'skill', true);
+      add(state, `servant.fixture.skill.${classTag}.second`, 'skill', true);
+      add(state, `servant.fixture.skill.${classTag}.third`, 'skill', true);
+      rules.executeAbility(state, { controllerId: 'p1', sourceCardId: s1, abilityId: 'sion.s1.training', variables: {}, selections: {} });
+      const cafeteria = state.cards.find((card) => card.definitionId === 'master.sion.skill.s3')!;
+      state.round.activePhase = 'preparation'; state.abilityRuntime!.sion!.experience[cafeteria.instanceId] = 2;
+      expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: cafeteria.instanceId, abilityId: 'sion.s3.cafeteria' }).ok).toBe(true);
+      expect(state.cards.find((card) => card.instanceId === covered)?.definitionId).toBe(`master.sion.skill.${exId}`);
+      expect(state.abilityRuntime!.sion!.exProvenance[covered]).toMatchObject({ servantClass: classTag, imageIndex, exDefinitionId: `master.sion.skill.${exId}` });
+    }
+    const unsupported = setup();
+    unsupported.state.abilityRuntime!.pack.characters!['servant.fixture']!.class = 'Shielder';
+    const s1 = add(unsupported.state, 'master.sion.skill.s1', 'field', true);
+    add(unsupported.state, 'servant.fixture.skill', 'skill', true); const target = add(unsupported.state, 'servant.fixture.skill.2', 'skill', true); add(unsupported.state, 'servant.fixture.skill.3', 'skill', true);
+    rules.executeAbility(unsupported.state, { controllerId: 'p1', sourceCardId: s1, abilityId: 'sion.s1.training', variables: {}, selections: {} });
+    const cafeteria = unsupported.state.cards.find((card) => card.definitionId === 'master.sion.skill.s3')!;
+    unsupported.state.round.activePhase = 'preparation'; unsupported.state.abilityRuntime!.sion!.experience[cafeteria.instanceId] = 2;
+    expect(rules.dispatchAbilityCommand(unsupported.state, 'p1', { type: 'activate_ability', cardInstanceId: cafeteria.instanceId, abilityId: 'sion.s3.cafeteria' }).ok).toBe(false);
+    expect(unsupported.state.cards.find((card) => card.instanceId === target)?.definitionId).toBe('servant.fixture.skill.2');
   });
 
   it('applies Aether opponent reveal/draw/luck defeat and leaves no silent fallback', () => {
