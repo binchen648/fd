@@ -5,6 +5,7 @@ import { commitLinkedRoleContributions, linkedRoleCanContribute, resolveLinkedRo
 import { isManaGainSuppressed } from '../ability/timed-resource-suppression';
 import { applyStorageManaOverflowReactions, collectSameLocationManaSpendRewards } from '../ability/mana-transaction-capability';
 import { settleDefinitionResourceAuditEvents } from '../ability/definition-resource-binding-capability';
+import { applySiegGalvanism } from '../ability/sieg-capability';
 import { situationBenefitsSuppressedForPlayer } from '../ability/next-round-situation-benefit-suppression';
 import { roundSkillProfileSuppressed } from '../ability/round-skill-profile-capability';
 import { roundCommitmentMovementLocked } from '../ability/round-commitment-capability';
@@ -234,6 +235,9 @@ export function notifyManaSpent(state: GameState, playerId: string, amount: numb
   state.abilityRuntime.events.push({ type: 'mana_spent', playerId, resource: 'mana', requestedDelta: -amount, delta: -amount, before, after });
   settleDefinitionResourceAuditEvents(state, eventStart);
   notifyBloodlustManaSpent(state, playerId, amount);
+  for (const reward of applySiegGalvanism(state, playerId, amount)) {
+    state.abilityRuntime.events.push({ type: 'sieg_galvanism_command_seal_restored', playerId: reward.controllerId, sourceCardId: reward.sourceCardId, abilityId: reward.abilityId, resource: 'command_seals', requestedDelta: 1, delta: 1 });
+  }
   const rewards = collectSameLocationManaSpendRewards(state, playerId, amount);
   for (const reward of rewards) {
     const result = grantMana(state, reward.controllerId, reward.amount, { source: 'generic' });

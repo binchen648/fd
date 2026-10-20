@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 57,
+    "masters": 58,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -4797,6 +4797,72 @@
       "issueCodes": [
         "SOURCE_ASSET_UNVERIFIED"
       ]
+    },
+    {
+      "entityId": "master.sieg",
+      "displayName": "齐格",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/齐格.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/齐格.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.sieg.overview",
+      "displayName": "齐格",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/齐格.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/齐格.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.sieg.skill.ascension",
+      "displayName": "第二类永动机碎片",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/齐格.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/齐格.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.sieg.skill.s1",
+      "displayName": "过载炉心",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/齐格.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/齐格.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.sieg.skill.s1a",
+      "displayName": "龙告令咒",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/齐格.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/齐格.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.sieg.skill.s2",
+      "displayName": "幻想大剑·天魔失坠",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/齐格.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/齐格.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
     },
     {
       "entityId": "servant.achilles",

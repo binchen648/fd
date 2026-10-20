@@ -281,6 +281,7 @@ import {
   HAKUNO_M_ANALYSIS_EFFECT,
   HAKUNO_M_DEAD_FACE_EFFECT,
 } from './hakuno-m-yomi-capability';
+import { containsSiegPrivilegedNode, isAcceptedSiegAbility, SIEG_GALVANISM_EFFECT, SIEG_SYNC_STRENGTH_EFFECT, SIEG_DRAGON_COMMAND_EFFECT, SIEG_BALMUNG_FREE_PLAY_EFFECT, SIEG_BALMUNG_PENALTY_EFFECT } from './sieg-capability';
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
 }
@@ -310,7 +311,8 @@ function isAcceptedMagicResistanceIndependentModifierLifecycle(rawAbility: RuleN
 const supportedTypes = new Set([
   'shishigou_ascension',
   'controller_alone_at_battlefield', 'claim_and_discard_location_events', 'any_enabled_location',
-  'skill_zone_mana_at_least', 'played_with_basic_attack', 'draw_cards', 'play_selected_cards', 'base_power_at_most',
+  'skill_zone_mana_at_least', 'played_with_basic_attack', 'draw_cards', 'play_selected_cards', 'base_power_at_most', 'base_power_at_least',
+  SIEG_GALVANISM_EFFECT, SIEG_SYNC_STRENGTH_EFFECT, SIEG_DRAGON_COMMAND_EFFECT, SIEG_BALMUNG_FREE_PLAY_EFFECT, SIEG_BALMUNG_PENALTY_EFFECT,
   'reveal_information', 'set_zone_visibility', 'look_at_deck_top', 'move_card', 'move_all_remaining', 'discard_random_owned_hand', 'grant_played_attacks_printed_mana_power', 'private_deck_top_choice', 'mystic_code_switch', 'mystic_code_expire_on_event', 'mystic_code_command_seal_limit', 'mystic_code_battle_recovery', 'mystic_code_recon_escape', 'mystic_code_regalia', 'mystic_code_battle_loss_vp',
   'shuffle_zone_into_deck', 'shuffle_deck', 'adjust_mana', 'adjust_victory_points', 'move_player', 'branch',
   'create_card', 'pay_mana', 'move_source_card', HAKUNO_M_YOMI_EFFECT, HAKUNO_M_CHALLENGE_RESULT_EFFECT,
@@ -476,6 +478,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'skillPlayGain', 'commandSealUseGain', 'moveToControllerBattlefieldGain', 'moveAwardOncePerPlayerPerRound', 'rounding', 'direction', 'manaCost', 'minimumMovementDistance', 'multiplier',
   'discardTop', 'excludeSource', 'selectionZone', 'shuffleInto', 'upkeep',
   'foodCost', 'samePowerBonus', 'differentMana', 'protectNextShuffle',
+  'minimumSpent', 'restoreCommandSeals', 'temporaryDefinitionId', 'penaltyDefinitionId', 'defeatController',
   'costIncreasePerPlay', 'costDuration', 'revealDiscardTop', 'printedPowerEquals', 'powerBonus', 'powerDuration',
   'markerKey', 'terrainAmount', 'vpTransferAmount', 'distance',
   'targetDefinitionIds', 'replaceAttributes', 'sourcePlayers', 'prevent', 'sealKey', 'cardKind', 'eligibleAttribute', 'eligibleDefinitionIds', 'sameLocation', 'trigger', 'payCardCosts', 'resealMana', 'discardDestination', 'dispositionTrigger',
@@ -751,6 +754,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         }
       }
       if (n.type === 'base_power_at_most' && (typeof n.value !== 'number' || !Number.isFinite(n.value))) issue(`${path}.value`, 'Base power bound must be finite', abilityId);
+      if (n.type === 'base_power_at_least' && (typeof n.value !== 'number' || !Number.isFinite(n.value))) issue(`${path}.value`, 'Base power bound must be finite', abilityId);
       if (['move_card', 'move_source_card', 'move_all_remaining', 'create_card'].includes(str(n.type)) &&
         !['hand', 'deck', 'discard', 'field', 'skill', 'attack_area', 'removed_from_game'].includes(str(node(n.to).zone))) issue(`${path}.to.zone`, 'Unsupported or missing destination zone', abilityId);
       if (n.optionalCost && str(node(n.optionalCost).type) !== 'pay_mana') issue(`${path}.optionalCost`, 'Only optional mana payment is supported', abilityId);
@@ -1027,6 +1031,13 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsShishigouPrivilegedNode(candidateAbility) && !isAcceptedShishigouAbility(candidateAbility)) {
         issue('shishigou.gateway', 'Shishigou Necromancy mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsSiegPrivilegedNode(candidateAbility) && !isAcceptedSiegAbility(candidateAbility)) {
+        issue('sieg.gateway', 'Sieg privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsSiegPrivilegedNode(candidateAbility) &&
+          !(rootId === 'master.sieg' && owner.type === 'master' && owner.id === rootId && cardId.startsWith('master.sieg.skill.'))) {
+        issue('sieg.owner', 'Sieg mechanics require the canonical master.sieg owner', id);
       }
       if (containsShishigouPrivilegedNode(candidateAbility) &&
           !(rootId === 'master.shishigou' && owner.type === 'master' && owner.id === rootId && cardId.startsWith('master.shishigou.skill.'))) {

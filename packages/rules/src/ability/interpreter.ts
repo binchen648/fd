@@ -46,6 +46,7 @@ import {
   isShishigouSpecialAbility, isShishigouNecromancyAbility, shishigouBaseAbilityForBasic, shishigouCorpseCardIds,
   resolveShishigouAbility, shishigouNecromancyTarget, markShishigouCorpseRemoval, resolveShishigouStrength, resolveShishigouMagic,
 } from './shishigou-necromancy-capability';
+import { containsSiegPrivilegedNode, isAcceptedSiegAbility, isSiegBalmungFreePlayAbility, isSiegBalmungPenaltyAbility, isSiegDragonCommandAbility, isSiegGalvanismAbility, isSiegSyncStrengthAbility, SIEG_BALMUNG_FREE_PLAY_EFFECT, SIEG_BALMUNG_PENALTY_EFFECT, SIEG_DRAGON_COMMAND_EFFECT, SIEG_SYNC_STRENGTH_EFFECT } from './sieg-capability';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
@@ -477,8 +478,19 @@ export function classifyCardPlay(d: AuthoringCard | undefined): CardPlayClassifi
       destinationZone: d.destinationZone as CardPlayClassification['destinationZone'],
     };
   }
-  const attack = !!d && ['servant_skill', 'servant_deck_card', 'servant_attack', 'basic_attack', 'master_deck_card'].includes(d.cardType);
+  const attack = !!d && (d.id === 'master.sieg.skill.s2' || ['servant_skill', 'servant_deck_card', 'servant_attack', 'basic_attack', 'master_deck_card'].includes(d.cardType));
   return attack ? { playKind: 'attack', destinationZone: 'attack_area' } : { playKind: 'support', destinationZone: 'field' };
+}
+function liveSiegAscension(s: GameState, playerId: string): boolean {
+  const p = s.players.find((entry) => entry.id === playerId);
+  if (!p || p.masterCardId !== 'master.sieg') return false;
+  return s.cards.some((source) => source.definitionId === 'master.sieg.skill.ascension' && source.ownerPlayerId === playerId && source.controllerPlayerId === playerId &&
+    ['skill', 'field', 'attack_area'].includes(source.zone) && runtime(s).cardState[source.instanceId]?.active === true && runtime(s).cardState[source.instanceId]?.faceDown !== true &&
+    runtime(s).pack.cards[source.definitionId]?.abilities.some(isSiegSyncStrengthAbility));
+}
+function siegSyncStrengthBonus(s: GameState, sourceId: string): number {
+  const source = card(s, sourceId); const d = definition(s, sourceId);
+  return d?.cardType === 'basic_attack' && getEffectiveCardAttributes(s, sourceId).includes('力量') && liveSiegAscension(s, source.controllerPlayerId) ? 3 : 0;
 }
 function cardPlayClassification(s: GameState, sourceId: string): CardPlayClassification {
   const d = definition(s, sourceId);
@@ -1190,6 +1202,8 @@ function constraint(s: GameState, ctx: EffectContext, candidate: CardInstance, c
       return cardReturnedToSkillThisRound(s, candidate.instanceId, ctx.controllerId);
     case 'base_power_at_most': return !!d && d.mode === 'automatic' && d.abilities.every(a => a.execution.mode === 'automatic') &&
       d.cardFace.basePower !== undefined && evaluateFormula(d.cardFace.basePower, s, ctx.controllerId, candidate.instanceId).value <= Number(c.value);
+    case 'base_power_at_least': return !!d && d.mode === 'automatic' && d.abilities.every(a => a.execution.mode === 'automatic') &&
+      d.cardFace.basePower !== undefined && evaluateFormula(d.cardFace.basePower, s, ctx.controllerId, candidate.instanceId).value >= Number(c.value);
     case 'has_card_id': return candidate.definitionId === c.cardId;
     case 'not_card_id': return candidate.definitionId !== c.cardId;
     case 'has_attribute': return getEffectiveCardAttributes(s, candidate.instanceId).includes(str(c.attribute));
@@ -1330,6 +1344,8 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     return { value: persistentLock.value, lines: [{ label: 'persistent_situation_attribute_power_lock', value: persistentLock.value }] };
   }
   const result = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
+  const siegBonus = siegSyncStrengthBonus(s, sourceId);
+  if (siegBonus !== 0) { result.value += siegBonus; result.lines.push({ label: 'sieg_sync_strength_basic_attack', value: result.value }); }
   const regaliaBonus=mysticCodeRegaliaPowerBonus(s,sourceId);
   if(regaliaBonus){result.value+=regaliaBonus;result.lines.push({label:'mystic_code_regalia_power',value:result.value});}
   const linkedAuxiliaryBonus = linkedAuxiliaryOnPlayPowerBonus(s, sourceId);
@@ -2343,6 +2359,15 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsShirouMealPrivilegedNode(a) && !isAcceptedShirouMealAbility(a)) return false;
   if (containsShirouMealPrivilegedNode(a) && !isShirouMealSourceAbility(s, sourceId, card(s, sourceId).controllerPlayerId, a)) return false;
   if (containsShishigouPrivilegedNode(a) && !isAcceptedShishigouAbility(a)) return false;
+  if (containsSiegPrivilegedNode(a) && !isAcceptedSiegAbility(a)) return false;
+  if (containsSiegPrivilegedNode(a)) {
+    const source = card(s, sourceId);
+    if (source.controllerPlayerId !== card(s, sourceId).ownerPlayerId) return false;
+    if (isSiegSyncStrengthAbility(a) || isSiegGalvanismAbility(a)) return false;
+    if (isSiegDragonCommandAbility(a) && (source.definitionId !== 'master.sieg.skill.s1a' || !['field', 'attack_area'].includes(source.zone) || Number((player(s, source.controllerPlayerId) as any).commandSpells ?? 3) < 1)) return false;
+    if (isSiegBalmungFreePlayAbility(a) && (source.definitionId !== 'master.sieg.skill.s2' || source.zone !== 'skill')) return false;
+    if (isSiegBalmungPenaltyAbility(a) && (source.zone !== 'skill' || !source.generatedBy)) return false;
+  }
   if (containsShishigouPrivilegedNode(a) && isShishigouNecromancyAbility(a)) return false;
   if (isShishigouBaseGrantedAbility(a) && !shishigouBaseAbilityForBasic(s, sourceId)) return false;
   if (isShishigouCorpseRevealAbility(a) && shishigouCorpseCardIds(s, card(s, sourceId).controllerPlayerId).length === 0) return false;
@@ -2658,6 +2683,35 @@ export function effectiveCardPlayCost(s: GameState, playerId: string, sourceId: 
   return applyPhysicalCardCostModifiers(s, sourceId, beforePhysical, dynamic.length ? baseCost : base);
 }
 
+function isSiegTemporaryBalmungCard(s: GameState, sourceId: string): boolean {
+  const source = s.cards.find((candidate) => candidate.instanceId === sourceId);
+  if (!source || source.definitionId !== 'master.sieg.skill.s2' || !source.generatedBy) return false;
+  const provider = s.cards.find((candidate) => candidate.instanceId === source.generatedBy);
+  return !!provider && provider.definitionId === 'master.sieg.skill.s1a' && provider.ownerPlayerId === source.ownerPlayerId &&
+    provider.controllerPlayerId === source.controllerPlayerId && source.ownerPlayerId === source.controllerPlayerId;
+}
+function ensureSiegPenaltyDefinition(s: GameState, definitionId: string): void {
+  if (runtime(s).pack.cards[definitionId]) return;
+  runtime(s).pack.cards[definitionId] = {
+    id: definitionId, name: '幻想大剑·天魔失坠（行动）', cardType: 'master_skill',
+    cardFace: { attributes: [], cost: 0, basePower: 0 }, playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], mode: 'automatic',
+    abilities: [{ id: `${definitionId}.activate`, kind: 'phase_action', printedClause: '行动阶段：关闭一张你控制的，基本威力大于等于5的敏捷攻击，然后令齐格【败北】。', activation: { phase: 'action', opens: 'controller_action_window' }, conditions: [],
+      targets: [{ id: 'agility_attack', type: 'card_instance', scope: { zone: 'attack_area', owner: 'controller', controller: 'self' }, count: { min: 1, max: 1 }, constraints: [{ type: 'is_attack' }, { type: 'has_attribute', attribute: '迅捷' }, { type: 'base_power_at_least', value: 5 }] }],
+      effects: [{ type: SIEG_BALMUNG_PENALTY_EFFECT, target: 'agility_attack', defeatController: true }], cost: [], ruleModifiers: [], creates: [], lifecycle: {}, responseWindow: {}, limit: {}, visibility: {}, execution: { mode: 'automatic', allowedOperations: [] } }],
+  } as AuthoringCard;
+}
+function installSiegBalmungPenalties(s: GameState, balmungId: string): void {
+  const balmung = card(s, balmungId); const owner = player(s, balmung.ownerPlayerId);
+  if (balmung.definitionId !== 'master.sieg.skill.s2' || !isBattlefield(s, owner.locationId)) return;
+  ensureSiegPenaltyDefinition(s, 'master.sieg.skill.s2.penalty');
+  for (const target of s.players.filter((candidate) => candidate.id !== owner.id && candidate.status === 'active' && sameBattlefield(s, candidate.locationId, owner.locationId))) {
+    const instanceId = nextId(s, 'sieg-balmung-penalty');
+    s.cards.push({ instanceId, definitionId: 'master.sieg.skill.s2.penalty', ownerPlayerId: target.id, controllerPlayerId: target.id, zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: target.id }, generatedBy: balmungId });
+    runtime(s).cardState[instanceId] = { active: false, faceDown: false, playedRound: s.round.roundNumber };
+    runtime(s).events.push({ type: 'card_created', playerId: target.id, sourceCardId: balmungId, abilityId: 'master.sieg.skill.s2.balmung', cardInstanceId: instanceId, toZone: 'skill', movedCount: 1 });
+  }
+}
+
 function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false, ignoreManaCost = false, allowedSourceZones: readonly string[] = ['hand', 'skill']): string | undefined {
   const c = card(s, sourceId); const d = definition(s, sourceId); if (!d) return 'unsupported';
   if (linkedRoleOriginalSkillUseLocked(s, sourceId, p)) return 'skill_use_forbidden';
@@ -2689,15 +2743,16 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   }
   if (!ignoreAttackLimit && attackPlayLimitReached(s, p, sourceId, ignoreStagedAttackLimit)) return 'attack_play_limit_reached';
   const regaliaExtra=liveMysticCodeMode(s,p,'extra');
+  const siegFreeBalmung = isSiegTemporaryBalmungCard(s, sourceId) && !faceDown;
   const requirements = d.playRequirements.concat(nodes(d.cardFace.requirements)).filter(r =>
-    str(r.type) && !(str(r.type) === 'skill_zone_mana_at_least' && (linkedRoundException || hasPlayRuleException(d, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)) || bloodlustPlayRequirementWaived(s, p, 'skill_zone_mana_at_least', Number(r.value)) || logicalDayDefinitionPlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)) ||
+    str(r.type) && !(siegFreeBalmung && str(r.type) === 'skill_zone_mana_at_least') && !(str(r.type) === 'skill_zone_mana_at_least' && (linkedRoundException || hasPlayRuleException(d, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)) || bloodlustPlayRequirementWaived(s, p, 'skill_zone_mana_at_least', Number(r.value)) || logicalDayDefinitionPlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)) ||
       (Number(r.value)===8 && regaliaExtra?.instanceId===sourceId))));
   if (!requirements.every(r => condition(s, context(s, sourceId, ''), r))) return 'play_requirement';
 
   const sealCost = !faceDown ? cardPlayCommandSealCost(d) : undefined;
   const sealManaRate = linkedAuxiliarySealManaSubstitution(s, p);
   const sealManaCost = sealCost && sealManaRate !== undefined ? sealCost.amount * sealManaRate : 0;
-  if (!faceDown && !ignoreManaCost &&
+  if (!faceDown && !ignoreManaCost && !siegFreeBalmung &&
       player(s, p).mana + bloodlustMaximumContributionAmount(s, p) + linkedRoleMaximumContributionAmount(s, p) <
         effectiveCardPlayCost(s, p, sourceId) + sealManaCost) return 'insufficient_mana';
   if (sealCost && sealManaRate === undefined && Number((player(s, p) as unknown as { commandSpells?: number }).commandSpells ?? 3) < sealCost.amount) return 'insufficient_command_seals';
@@ -3738,6 +3793,38 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
   const unpreventable = a.ruleModifiers.some(m => m.rule === 'effect_prevention' && m.operation === 'ignore' && node(m.priority).tier === 'explicit_exception');
   if (r.preventEffects && !unpreventable) { r.events.push({ type: 'effect_prevented', playerId: p.id }); return; }
   switch (effect.type) {
+    case SIEG_DRAGON_COMMAND_EFFECT: {
+      if (!isSiegDragonCommandAbility(a)) reject('resolution_failed', 'Sieg Dragon Command requires the accepted exact whole-ability envelope');
+      const source = card(s, ctx.sourceCardId);
+      if (source.ownerPlayerId !== ctx.controllerId || source.controllerPlayerId !== ctx.controllerId || source.zone !== 'field') reject('invalid_state', 'Dragon Command source is no longer live');
+      if (s.cards.some((candidate) => candidate.definitionId === 'master.sieg.skill.s2' && candidate.generatedBy === source.instanceId && candidate.zone !== 'removed_from_game')) reject('invalid_state', 'Dragon Command already provisioned this round');
+      const instanceId = nextId(s, 'sieg-balmung');
+      s.cards.push({ instanceId, definitionId: 'master.sieg.skill.s2', ownerPlayerId: ctx.controllerId, controllerPlayerId: ctx.controllerId, zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: ctx.controllerId }, generatedBy: source.instanceId });
+      r.cardState[instanceId] = { active: false, faceDown: false, playedRound: s.round.roundNumber };
+      r.events.push({ type: 'card_created', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: instanceId, toZone: 'skill', movedCount: 1 });
+      break;
+    }
+    case SIEG_BALMUNG_FREE_PLAY_EFFECT: {
+      if (!isSiegBalmungFreePlayAbility(a) || !isSiegTemporaryBalmungCard(s, ctx.sourceCardId)) reject('resolution_failed', 'Sieg Balmung free play requires an authenticated temporary card');
+      playBatch(s, ctx.controllerId, [{ type: 'play_card', cardInstanceId: ctx.sourceCardId }], 'effect', true, ['skill']);
+      break;
+    }
+    case SIEG_BALMUNG_PENALTY_EFFECT: {
+      if (!isSiegBalmungPenaltyAbility(a) || effect.target !== 'agility_attack' || effect.defeatController !== true) reject('resolution_failed', 'Sieg Balmung penalty requires the accepted exact whole-ability envelope');
+      const penalty = card(s, ctx.sourceCardId); const balmungId = penalty.generatedBy; const balmung = balmungId && s.cards.find((candidate) => candidate.instanceId === balmungId);
+      const targetId = ctx.selections.agility_attack?.[0]; const target = targetId && s.cards.find((candidate) => candidate.instanceId === targetId);
+      const owner = balmung && s.players.find((candidate) => candidate.id === balmung.ownerPlayerId);
+      if (!balmung || balmung.definitionId !== 'master.sieg.skill.s2' || !isSiegTemporaryBalmungCard(s, balmung.instanceId) || !owner || !isBattlefield(s, owner.locationId) || !sameBattlefield(s, owner.locationId, p.locationId) ||
+          !target || target.controllerPlayerId !== ctx.controllerId || target.zone !== 'attack_area' || runtime(s).cardState[target.instanceId]?.active !== true || runtime(s).cardState[target.instanceId]?.faceDown === true ||
+          !getEffectiveCardAttributes(s, target.instanceId).includes('迅捷') || Number(runtime(s).pack.cards[target.definitionId]?.cardFace.basePower ?? 0) < 5) reject('invalid_target', 'Balmung penalty target is no longer eligible');
+      moveCard(s, target.instanceId, 'skill');
+      const defeated = s.players.find((candidate) => candidate.id === owner.id);
+      if (defeated && defeated.status === 'active' && !playerIgnoresAbilityFromController(s, defeated.id, ctx.controllerId)) {
+        (r.battleDefeatRoundByPlayer ??= {})[defeated.id] = s.round.roundNumber;
+        r.events.push({ type: 'player_defeated_by_effect', playerId: defeated.id, controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+      }
+      break;
+    }
     case SHIROU_EMIYA_AVALON_EFFECT:
       if (!isAcceptedShirouEmiyaAvalonAbility(a) || a.effects.length !== 1 || a.effects[0]?.type !== SHIROU_EMIYA_AVALON_EFFECT) {
         reject('resolution_failed', 'Shirou-Emiya Avalon requires the accepted exact whole-ability envelope');
@@ -8466,6 +8553,11 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   settleBoundOpponentBattleOutcome(s, event);
   settleRoundSkillProfileEvent(s, event);
   if (event.type === 'round_end') {
+    for (const physical of [...s.cards]) {
+      const temporaryBalmung = physical.definitionId === 'master.sieg.skill.s2' && isSiegTemporaryBalmungCard(s, physical.instanceId);
+      const penalty = physical.definitionId === 'master.sieg.skill.s2.penalty' && !!physical.generatedBy && s.cards.some((source) => source.instanceId === physical.generatedBy && source.definitionId === 'master.sieg.skill.s2');
+      if ((temporaryBalmung || penalty) && physical.zone !== 'removed_from_game') moveCard(s, physical.instanceId, 'removed_from_game');
+    }
     for(const physical of s.cards) {
       const marker=r.cardState[physical.instanceId]?.mysticCodePaidCopy;
       if(!marker || marker.round>s.round.roundNumber)continue;
@@ -9977,7 +10069,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     const foodCost = c.faceDown ? 0 : shirouMealFoodPlayCost(s, c.cardInstanceId);
     if (foodCost > 0) shirouMealFoodCosts.set(c.cardInstanceId, foodCost);
     const linkedReduction = linkedAuxiliarySameBatchReductionEligible(s, c.cardInstanceId) ? linkedAuxiliaryOtherAttackCost : 0;
-    const cardCost = c.faceDown || waiveManaCost ? 0 : Math.max(minimumManaCost,
+    const cardCost = c.faceDown || waiveManaCost || isSiegTemporaryBalmungCard(s, c.cardInstanceId) ? 0 : Math.max(minimumManaCost,
       effectiveCardPlayCost(s, playerId, c.cardInstanceId) +
       (jointCostIncreaseByCard.get(c.cardInstanceId) ?? 0) +
       (conditionalAdditional.get(c.cardInstanceId)?.additionalManaCost ?? 0) -
@@ -10091,6 +10183,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     }
   }
   for (const c of choices.filter(c => !c.faceDown)) {
+    if (isSiegTemporaryBalmungCard(s, c.cardInstanceId)) installSiegBalmungPenalties(s, c.cardInstanceId);
     processEvent(s, { id: nextId(s, 'declare'), type: 'on_use_declared', playerId, sourceCardId: c.cardInstanceId, playedCards });
     processEvent(s, { id: nextId(s, 'play'), type: 'on_card_played', playerId, sourceCardId: c.cardInstanceId, playedCards });
   }
