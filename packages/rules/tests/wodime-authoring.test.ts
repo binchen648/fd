@@ -94,9 +94,21 @@ describe('Wodime frozen authoring archive', () => {
     const wodime = state.players.find((player) => player.id === 'p1')!;
     wodime.status = 'eliminated';
     state.eventPlacements.push({ locationId: 'shinto', eventCardId: 'event.wodime.atlantis.hephaestus', victoryPoints: 0, visibility: { scope: 'public' } });
+    state.eventPlacements.push({ locationId: 'shinto', eventCardId: 'event.wodime.atlantis.hephaestus', victoryPoints: 0, visibility: { scope: 'public' } });
+    state.eventPlacements.push({ locationId: 'magic_workshop', eventCardId: 'event.wodime.atlantis.hephaestus', victoryPoints: 0, visibility: { scope: 'public' } });
     rules.processAbilityEvent(state, { id: 'wodime-god-legacy-win', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1', battleId: 'battle-legacy', resultId: 'result-legacy', battlefieldId: 'shinto', battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p2'], loserIds: ['p1'] } });
     expect((state.abilityRuntime as any).wodimeGodLegacyByLocation.shinto.tokens).toBe(0);
-    expect((state.abilityRuntime as any).wodimeGodLegacyByPlayer.p2).toBe(3);
+    expect((state.abilityRuntime as any).wodimeGodLegacyByLocation.magic_workshop.tokens).toBe(3);
+    expect((state.abilityRuntime as any).wodimeGodLegacyByPlayer.p2).toBe(6);
+    expect((state.abilityRuntime as any).wodimeGodLegacyActivation).toMatchObject({ sourceCardId: expect.any(String), controllerId: 'p1', lifecycle: 'game' });
+    const restorePack = createMatchSession({ seed: 78, humanPlayerId: 'p1', restorePackKind: 'production_executable' });
+    state.abilityRuntime!.pack = restorePack.state.abilityRuntime!.pack;
+    (session as any).checkpoint('wodime-god-legacy-restore');
+    const serialized = session.serializeSession();
+    const restored = restoreMatchSession(serialized, { restorePackKind: 'production_executable' });
+    expect((restored.state.abilityRuntime as any).wodimeGodLegacyByLocation.magic_workshop.tokens).toBe(3);
+    expect((restored.state.abilityRuntime as any).wodimeGodLegacyByPlayer.p2).toBe(6);
+    expect((restored.state.abilityRuntime as any).wodimeGodLegacyActivation).toMatchObject({ controllerId: 'p1', abilityId: 'wodime.god-legacy', lifecycle: 'game' });
     expect(isWodimeGodLegacyRuntimeStateValid(state)).toBe(true);
   });
 

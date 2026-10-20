@@ -10,6 +10,13 @@ const ATLANTIS_EVENT = 'event.wodime.atlantis.hephaestus';
 function runtime(state: GameState) { return state.abilityRuntime!; }
 
 function source(state: GameState): { cardId: string; playerId: string } | undefined {
+  const activation = runtime(state).wodimeGodLegacyActivation;
+  if (activation) {
+    const physical = state.cards.find((candidate) => candidate.instanceId === activation.sourceCardId);
+    if (!physical || physical.definitionId !== SOURCE_DEFINITION || physical.ownerPlayerId !== activation.controllerId ||
+        physical.controllerPlayerId !== activation.controllerId || activation.abilityId !== SOURCE_ABILITY || activation.lifecycle !== 'game') return undefined;
+    return { cardId: activation.sourceCardId, playerId: activation.controllerId };
+  }
   for (const physical of state.cards) {
     if (physical.definitionId !== SOURCE_DEFINITION || physical.zone !== 'skill') continue;
     const owner = state.players.find((player) => player.id === physical.ownerPlayerId);
@@ -27,17 +34,16 @@ function ensureActivated(state: GameState): boolean {
   const r = runtime(state);
   r.wodimeGodLegacyByLocation ??= {};
   r.wodimeGodLegacyByPlayer ??= {};
-  if (Object.values(r.wodimeGodLegacyByLocation).some((entry) => entry.sourceCardId === origin.cardId)) return true;
+  if (!r.wodimeGodLegacyActivation) {
+    r.wodimeGodLegacyActivation = { sourceCardId: origin.cardId, controllerId: origin.playerId, abilityId: SOURCE_ABILITY, activatedRound: state.round.roundNumber, lifecycle: 'game' };
+  } else if (Object.keys(r.wodimeGodLegacyByLocation).length > 0) return true;
   for (const placement of state.eventPlacements) {
     if (placement.eventCardId !== ATLANTIS_EVENT) continue;
-    const entry: WodimeGodLegacyLocationState = {
-      locationId: placement.locationId,
-      tokens: 3,
-      sourceCardId: origin.cardId,
-      abilityId: SOURCE_ABILITY,
-      activatedRound: state.round.roundNumber,
-      lifecycle: 'game',
+    const entry = r.wodimeGodLegacyByLocation[placement.locationId] ?? {
+      locationId: placement.locationId, tokens: 0, sourceCardId: origin.cardId, abilityId: SOURCE_ABILITY,
+      activatedRound: state.round.roundNumber, lifecycle: 'game' as const,
     };
+    entry.tokens += 3;
     r.wodimeGodLegacyByLocation[placement.locationId] = entry;
   }
   // The state is still authoritative even when no Hephaestus card is currently placed;
@@ -93,6 +99,12 @@ export function isWodimeGodLegacyRuntimeStateValid(state: GameState): boolean {
   const locations = new Set<string>(state.map.locations.map((location) => location.id));
   if (r.wodimeGodLegacyByPlayer && Object.entries(r.wodimeGodLegacyByPlayer).some(([id, value]) => !players.has(id) || !Number.isSafeInteger(value) || value < 0)) return false;
   if (!r.wodimeGodLegacyByLocation) return true;
+  const activation = r.wodimeGodLegacyActivation;
+  if (!activation && Object.keys(r.wodimeGodLegacyByLocation).length === 0 && Object.keys(r.wodimeGodLegacyByPlayer ?? {}).length === 0) return true;
+  if (!activation || activation.abilityId !== SOURCE_ABILITY || activation.lifecycle !== 'game' || !players.has(activation.controllerId) ||
+      !Number.isSafeInteger(activation.activatedRound) || activation.activatedRound < 1 ||
+      !state.cards.some((card) => card.instanceId === activation.sourceCardId && card.definitionId === SOURCE_DEFINITION &&
+        card.ownerPlayerId === activation.controllerId && card.controllerPlayerId === activation.controllerId)) return false;
   return Object.entries(r.wodimeGodLegacyByLocation).every(([id, entry]) => id === entry.locationId && locations.has(id) &&
     Number.isSafeInteger(entry.tokens) && entry.tokens >= 0 && typeof entry.sourceCardId === 'string' && entry.abilityId === SOURCE_ABILITY &&
     entry.lifecycle === 'game' && Number.isSafeInteger(entry.activatedRound) && entry.activatedRound >= 1 &&

@@ -1389,6 +1389,11 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
         !hasExactRestoreKeys(entry, ['locationId','tokens','sourceCardId','abilityId','activatedRound','lifecycle']) ||
         typeof entry.locationId !== 'string' || !isRestoreSafeInteger(entry.tokens, 0) || typeof entry.sourceCardId !== 'string' ||
         entry.abilityId !== 'wodime.god-legacy' || !isRestoreSafeInteger(entry.activatedRound, 1) || entry.lifecycle !== 'game'))) return false;
+  if (value.wodimeGodLegacyActivation !== undefined && (!isRestoreRecord(value.wodimeGodLegacyActivation) ||
+      !hasExactRestoreKeys(value.wodimeGodLegacyActivation, ['sourceCardId','controllerId','abilityId','activatedRound','lifecycle']) ||
+      typeof value.wodimeGodLegacyActivation.sourceCardId !== 'string' || typeof value.wodimeGodLegacyActivation.controllerId !== 'string' ||
+      value.wodimeGodLegacyActivation.abilityId !== 'wodime.god-legacy' || !isRestoreSafeInteger(value.wodimeGodLegacyActivation.activatedRound, 1) ||
+      value.wodimeGodLegacyActivation.lifecycle !== 'game')) return false;
   if (value.structuredRoundFlagKeysByPlayer !== undefined && !isRestoreStructuredRoundFlagKeys(value.structuredRoundFlagKeysByPlayer)) return false;
   if (value.deductionRecordsByPlayer !== undefined && (!isRestoreRecord(value.deductionRecordsByPlayer) || !Object.values(value.deductionRecordsByPlayer).every((entry) =>
       isRestoreRecord(entry) && typeof entry.definitionId === 'string' && DEDUCTION_RECORD_ATTRIBUTES.includes(entry.attribute as typeof DEDUCTION_RECORD_ATTRIBUTES[number]) && isRestoreSafeInteger(entry.recordedRound, 1)))) return false;

@@ -801,6 +801,9 @@ export interface AbilityRuntime {
   /** Authenticated Wodime God Legacy state; location tokens and carried player totals. */
   wodimeGodLegacyByLocation?: Record<string, WodimeGodLegacyLocationState>;
   wodimeGodLegacyByPlayer?: Record<PlayerId, number>;
+  wodimeGodLegacyActivation?: {
+    sourceCardId: string; controllerId: PlayerId; abilityId: string; activatedRound: number; lifecycle: 'game';
+  };
   /** Owner-scoped typed food resources and once-per-round procurement authority. */
   shirouMealFoodByPlayer?: Record<PlayerId, { 肉: number; 蔬菜: number; 鱼: number }>;
   shirouMealProcurementRoundByPlayer?: Record<PlayerId, { round: number; attributes: string[] }>;
