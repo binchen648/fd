@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 55,
+    "masters": 56,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -4656,6 +4656,71 @@
       "issueCodes": []
     },
     {
+      "entityId": "master.shirou-meal",
+      "displayName": "卫宫士郎（今天的饭）",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卫宫士郎（今天的饭）.htm",
+      "imagePath": "images/masters/卫宫士郎（今天的饭）.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.shirou-meal.overview",
+      "displayName": "卫宫士郎（今天的饭）",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/卫宫士郎（今天的饭）.htm",
+      "imagePath": "images/masters/卫宫士郎（今天的饭）.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.shirou-meal.skill.ascension",
+      "displayName": "饿死鬼投胎",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卫宫士郎（今天的饭）.htm",
+      "imagePath": "images/masters/卫宫士郎（今天的饭）.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.shirou-meal.skill.s1",
+      "displayName": "食材采购",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卫宫士郎（今天的饭）.htm",
+      "imagePath": "images/masters/卫宫士郎（今天的饭）.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.shirou-meal.skill.s2",
+      "displayName": "卫宫家今天的饭",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/卫宫士郎（今天的饭）.htm",
+      "imagePath": "images/masters/卫宫士郎（今天的饭）.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
       "entityId": "servant.achilles",
       "displayName": "阿喀琉斯",
       "entityKind": "servant",
@@ -6161,6 +6226,41 @@
       "code": "SOURCE_ASSET_UNVERIFIED",
       "message": "master.olga-marie.skill.trismegistus-grief source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_182304_865.png",
       "entityId": "master.olga-marie.skill.trismegistus-grief",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.shirou-meal source image was not verified in this checkout: images/masters/卫宫士郎（今天的饭）.png",
+      "entityId": "master.shirou-meal",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.shirou-meal.overview source image was not verified in this checkout: images/masters/卫宫士郎（今天的饭）.png",
+      "entityId": "master.shirou-meal.overview",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.shirou-meal.skill.ascension source image was not verified in this checkout: images/masters/卫宫士郎（今天的饭）.png",
+      "entityId": "master.shirou-meal.skill.ascension",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.shirou-meal.skill.s1 source image was not verified in this checkout: images/masters/卫宫士郎（今天的饭）.png",
+      "entityId": "master.shirou-meal.skill.s1",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.shirou-meal.skill.s2 source image was not verified in this checkout: images/masters/卫宫士郎（今天的饭）.png",
+      "entityId": "master.shirou-meal.skill.s2",
       "field": "source.imagePath",
       "blocking": false
     },

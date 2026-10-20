@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.shirou-meal",
+  "name": "卫宫士郎（今天的饭）",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "6b27e8f16c0a449d73cf97eba08baf93fafef4bf",
+    "referenceMetadataCommit": "6b27e8f16c0a449d73cf97eba08baf93fafef4bf",
+    "note": "Canonical owner archive created from the frozen Shirou Meal inventory. The eight generated legacy clause hashes, legacy locators, and development image locator are retained verbatim; the old specific-handler names are source references only.",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版#master.shirou-meal/卫宫士郎（今天的饭）",
+      "legacy": {
+        "master.shirou-meal.skill.ascension": "legacy-content.json#master/master.shirou-meal/ascension",
+        "master.shirou-meal.skill.s1": "legacy-content.json#master/master.shirou-meal/s1",
+        "master.shirou-meal.skill.s2": "legacy-content.json#master/master.shirou-meal/s2"
+      },
+      "generated": {
+        "master.shirou-meal.skill.ascension": "src/content/generated/legacy-content.json#masters[18].skills[2].text#line=1 sha256=04524fa1a93216241e9cc62d82f5b96a1c1555e8c864ee5d9b3b88ef37937921; line=2 sha256=a1903f9ba6e11673b3e2fb5a11531d45a6830498a3a520768eaa5fb799966d33; line=3 sha256=d55e1d5a44d2e2cb3a76ddb02f9911193ae17a480bc8592ba5a6aea079662a85; line=4 sha256=cd8b4e5c5a962889acd1b24c599c710bae53fefcf3924f85a20b83c5781207e1",
+        "master.shirou-meal.skill.s1": "src/content/generated/legacy-content.json#masters[18].skills[0].text#line=1 sha256=56f7b33b0418323d0044241be12b10c42b5761692a38c02bb359b0e378043bf5; line=2 sha256=62eaf020dd5d4a6f656ce832b2bc69b18eb4e369a4e9aa8fed6e0013d1d813cf",
+        "master.shirou-meal.skill.s2": "src/content/generated/legacy-content.json#masters[18].skills[1].text#line=1 sha256=a8e94b33bce6804c4c167f625b3895deef234af3da4c5b50ceec447d57bd2162; line=2 sha256=c403613b0016714dbdaf8b2521fda72ccb88be0e5b779ba57f2743afeedcd9d5"
+      }
+    },
+    "clauseEvidence": [
+      { "abilityId": "master.shirou-meal.skill.ascension", "text": "（此牌加入你的技能区）", "locator": "src/content/generated/legacy-content.json#masters[18].skills[2].text#line=1", "sha256": "04524fa1a93216241e9cc62d82f5b96a1c1555e8c864ee5d9b3b88ef37937921" },
+      { "abilityId": "master.shirou-meal.skill.ascension", "text": "此牌需弃置一份【食物】来打出。", "locator": "src/content/generated/legacy-content.json#masters[18].skills[2].text#line=2", "sha256": "a1903f9ba6e11673b3e2fb5a11531d45a6830498a3a520768eaa5fb799966d33" },
+      { "abilityId": "master.shirou-meal.skill.ascension", "text": "被动：你每有一份【食物】，你对应属性的基础攻击便+1威力。", "locator": "src/content/generated/legacy-content.json#masters[18].skills[2].text#line=3", "sha256": "d55e1d5a44d2e2cb3a76ddb02f9911193ae17a480bc8592ba5a6aea079662a85" },
+      { "abilityId": "master.shirou-meal.skill.ascension", "text": "回合结束时，弃置你牌堆顶的一张牌。", "locator": "src/content/generated/legacy-content.json#masters[18].skills[2].text#line=4", "sha256": "cd8b4e5c5a962889acd1b24c599c710bae53fefcf3924f85a20b83c5781207e1" },
+      { "abilityId": "master.shirou-meal.skill.s1", "text": "行动阶段：若你位于地利位置，你所在地点的事件牌和激活的局势牌上每具有一种非特殊或宝具的属性，你便获得一份相应的【食物】。（每种属性每回合仅提供一份食物——力量-肉，迅捷-蔬菜，魔术-鱼）", "locator": "src/content/generated/legacy-content.json#masters[18].skills[0].text#line=1", "sha256": "56f7b33b0418323d0044241be12b10c42b5761692a38c02bb359b0e378043bf5" },
+      { "abilityId": "master.shirou-meal.skill.s1", "text": "【食物】用于制作【卫宫家今天的饭】。", "locator": "src/content/generated/legacy-content.json#masters[18].skills[0].text#line=2", "sha256": "62eaf020dd5d4a6f656ce832b2bc69b18eb4e369a4e9aa8fed6e0013d1d813cf" },
+      { "abilityId": "master.shirou-meal.skill.s2", "text": "饕餮-当你因效果以外将弃牌堆洗回牌库时失去3点战果。", "locator": "src/content/generated/legacy-content.json#masters[18].skills[1].text#line=1", "sha256": "a8e94b33bce6804c4c167f625b3895deef234af3da4c5b50ceec447d57bd2162" },
+      { "abilityId": "master.shirou-meal.skill.s2", "text": "行动阶段：弃置3份【食物】，下次洗牌你不会因饕餮失去战果。若你弃置了3种相同的【食物】，+6合计威力。若你弃置了3种不同的【食物】，获得4点魔力。", "locator": "src/content/generated/legacy-content.json#masters[18].skills[1].text#line=2", "sha256": "c403613b0016714dbdaf8b2521fda72ccb88be0e5b779ba57f2743afeedcd9d5" }
+    ]
+  },
+  "cards": [
+    {
+      "id": "master.shirou-meal.skill.ascension", "aliases": ["ascension"], "legacyId": "ascension", "name": "饿死鬼投胎", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shirou-meal" }, "initialPlacement": "outside_game",
+      "printedText": "（此牌加入你的技能区）\n此牌需弃置一份【食物】来打出。\n被动：你每有一份【食物】，你对应属性的基础攻击便+1威力。\n回合结束时，弃置你牌堆顶的一张牌。",
+      "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [
+        { "id": "shirou-meal.hungry-ghost", "kind": "passive", "printedClause": "被动：你每有一份【食物】，你对应属性的基础攻击便+1威力。", "activation": { "trigger": "while_active" }, "conditions": [], "targets": [], "effects": [{ "type": "shirou_meal_ascension", "foodCost": 1, "topDiscard": 1 }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } },
+        { "id": "shirou-meal.hungry-ghost-round-end", "kind": "forced_trigger", "printedClause": "回合结束时，弃置你牌堆顶的一张牌。", "activation": { "trigger": "round_end" }, "conditions": [], "targets": [], "effects": [{ "type": "shirou_meal_ascension_round_end", "topDiscard": 1 }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } }
+      ], "phase3Evidence": { "f1Commit": "6b27e8f16c0a449d73cf97eba08baf93fafef4bf", "f1SourceReferences": [{ "kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/卫宫士郎（今天的饭）.png", "locator": "master.shirou-meal/卫宫士郎（今天的饭）" }, { "kind": "legacy", "document": "legacy-content.json", "locator": "master/master.shirou-meal/ascension" }], "f1ClauseSources": [{ "document": "src/content/generated/legacy-content.json", "locator": "masters[18].skills[2].text#line=1", "sha256": "04524fa1a93216241e9cc62d82f5b96a1c1555e8c864ee5d9b3b88ef37937921" }, { "document": "src/content/generated/legacy-content.json", "locator": "masters[18].skills[2].text#line=2", "sha256": "a1903f9ba6e11673b3e2fb5a11531d45a6830498a3a520768eaa5fb799966d33" }, { "document": "src/content/generated/legacy-content.json", "locator": "masters[18].skills[2].text#line=3", "sha256": "d55e1d5a44d2e2cb3a76ddb02f9911193ae17a480bc8592ba5a6aea079662a85" }, { "document": "src/content/generated/legacy-content.json", "locator": "masters[18].skills[2].text#line=4", "sha256": "cd8b4e5c5a962889acd1b24c599c710bae53fefcf3924f85a20b83c5781207e1" }] }, "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.shirou-meal.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "食材采购", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shirou-meal" }, "initialPlacement": "outside_game",
+      "printedText": "行动阶段：若你位于地利位置，你所在地点的事件牌和激活的局势牌上每具有一种非特殊或宝具的属性，你便获得一份相应的【食物】。（每种属性每回合仅提供一份食物——力量-肉，迅捷-蔬菜，魔术-鱼）\n【食物】用于制作【卫宫家今天的饭】。",
+      "cardFace": { "typeLabel": "行动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{ "id": "shirou-meal.procurement", "kind": "phase_action", "printedClause": "行动阶段：按所在地点事件牌与激活局势牌属性获得食物。", "activation": { "phase": "action", "opens": "controller_action_window" }, "conditions": [], "targets": [], "effects": [{ "type": "shirou_meal_procurement" }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } }],
+      "phase3Evidence": { "f1Commit": "6b27e8f16c0a449d73cf97eba08baf93fafef4bf", "f1SourceReferences": [{ "kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/卫宫士郎（今天的饭）.png", "locator": "master.shirou-meal/卫宫士郎（今天的饭）" }, { "kind": "legacy", "document": "legacy-content.json", "locator": "master/master.shirou-meal/s1" }], "f1ClauseSources": [{ "document": "src/content/generated/legacy-content.json", "locator": "masters[18].skills[0].text#line=1", "sha256": "56f7b33b0418323d0044241be12b10c42b5761692a38c02bb359b0e378043bf5" }, { "document": "src/content/generated/legacy-content.json", "locator": "masters[18].skills[0].text#line=2", "sha256": "62eaf020dd5d4a6f656ce832b2bc69b18eb4e369a4e9aa8fed6e0013d1d813cf" }] }, "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.shirou-meal.skill.s2", "aliases": ["s2"], "legacyId": "s2", "name": "卫宫家今天的饭", "cardType": "master_skill", "owner": { "type": "master", "id": "master.shirou-meal" }, "initialPlacement": "outside_game",
+      "printedText": "饕餮-当你因效果以外将弃牌堆洗回牌库时失去3点战果。\n行动阶段：弃置3份【食物】，下次洗牌你不会因饕餮失去战果。若你弃置了3种相同的【食物】，+6合计威力。若你弃置了3种不同的【食物】，获得4点魔力。",
+      "cardFace": { "typeLabel": "行动", "attributes": [], "cost": 0, "basePower": 0 }, "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [
+        { "id": "shirou-meal.menu", "kind": "phase_action", "printedClause": "行动阶段：弃置3份食物；三同获得+6合计威力，三异获得4点魔力，并保护下次洗牌。", "activation": { "phase": "action", "opens": "controller_action_window" }, "conditions": [], "targets": [{ "id": "food_selection", "type": "choice", "options": [{ "id": "肉,肉,肉" }, { "id": "蔬菜,蔬菜,蔬菜" }, { "id": "鱼,鱼,鱼" }, { "id": "肉,蔬菜,鱼" }], "count": { "min": 1, "max": 1 } }], "effects": [{ "type": "shirou_meal_menu", "foodCost": 3, "samePowerBonus": 6, "differentMana": 4, "protectNextShuffle": true }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } },
+        { "id": "shirou-meal.gluttony", "kind": "passive", "printedClause": "饕餮-当你因效果以外将弃牌堆洗回牌库时失去3点战果。", "activation": { "trigger": "while_active" }, "conditions": [], "targets": [], "effects": [{ "type": "shirou_meal_gluttony", "vpLoss": 3 }], "cost": [], "ruleModifiers": [], "creates": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] } }
+      ], "phase3Evidence": { "f1Commit": "6b27e8f16c0a449d73cf97eba08baf93fafef4bf", "f1SourceReferences": [{ "kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/卫宫士郎（今天的饭）.png", "locator": "master.shirou-meal/卫宫士郎（今天的饭）" }, { "kind": "legacy", "document": "legacy-content.json", "locator": "master/master.shirou-meal/s2" }], "f1ClauseSources": [{ "document": "src/content/generated/legacy-content.json", "locator": "masters[18].skills[1].text#line=1", "sha256": "a8e94b33bce6804c4c167f625b3895deef234af3da4c5b50ceec447d57bd2162" }, { "document": "src/content/generated/legacy-content.json", "locator": "masters[18].skills[1].text#line=2", "sha256": "c403613b0016714dbdaf8b2521fda72ccb88be0e5b779ba57f2743afeedcd9d5" }] }, "verification": { "implementationStatus": "complete" }
+    }
+  ],
+  "sources": [{ "id": "development_card_images", "type": "development_image_set", "imageOrder": ["images/masters/卫宫士郎（今天的饭）.png"] }]
+}

@@ -33,6 +33,10 @@ import {
   SHIROU_EMIYA_AVALON_EFFECT,
 } from './shirou-emiya-capability';
 import { isCardCloseForbidden } from './card-close-forbid';
+import { containsShirouMealPrivilegedNode, isAcceptedShirouMealAbility, isShirouMealMenuAbility,
+  isShirouMealProcurementAbility, isShirouMealAscensionAbility, shirouMealFoodPlayCost,
+  shirouMealMenuChoices, resolveShirouMealAbility, applyShirouMealPower, shuffleOwnedDeckForShirouMeal,
+  canShirouMealProcurement, shirouMealTotalFood, spendAnyShirouMealFood } from './shirou-meal-capability';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
@@ -1108,7 +1112,7 @@ function context(s: GameState, sourceCardId: string, abilityId: string, event?: 
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-    cardState: {}, extraPlayerPresences: [], multiPresenceLastBattleLossRoundByPlayer: {}, locationMarkers: {}, roundDefinitionAttributeReplacements: {}, sealedCardBindings: {}, armedSealedCardActions: [], sealedCardReplays: {}, recordedRemovedCards: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, battleLossIgnoreRoundByPlayer: {},
+    cardState: {}, extraPlayerPresences: [], multiPresenceLastBattleLossRoundByPlayer: {}, locationMarkers: {}, roundDefinitionAttributeReplacements: {}, sealedCardBindings: {}, armedSealedCardActions: [], sealedCardReplays: {}, recordedRemovedCards: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, battleLossIgnoreRoundByPlayer: {}, shirouMealFoodByPlayer: {}, shirouMealProcurementRoundByPlayer: {}, shirouMealProtectedNextShuffleByPlayer: {},
     startingDeckSizeByPlayer: Object.fromEntries(s.players.map((candidate) => [candidate.id, s.cards.filter((entry) => entry.ownerPlayerId === candidate.id && entry.zone === 'deck').length])),
     cardPlayCountByInstance: {}, grantedPerGamePlayLimitCardIds: [], grantedPerGamePlayLimitBaselineByCardId: {},
     ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [],
@@ -1412,6 +1416,11 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     result.value += shirouEmiyaBonus.climax;
     result.lines.push({ label: 'shirou_emiya_climax_power_bonus', value: result.value });
   }
+  const shirouMealBonus = d?.cardType === 'basic_attack' ? applyShirouMealPower(s, sourceId, getEffectiveCardAttributes(s, sourceId)) : 0;
+  if (shirouMealBonus !== 0) {
+    result.value += shirouMealBonus;
+    result.lines.push({ label: 'shirou_meal_food_basic_power_bonus', value: result.value });
+  }
   const injuryPower = injuryWarpCardPowerAdjustment(s, sourceId);
   if (injuryPower !== 0) {
     result.value += injuryPower;
@@ -1499,6 +1508,9 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
   if (nodes(target.conditions).some(c => !condition(s, ctx, c))) return [];
   if (target.type === 'choice') {
     const sourceAbility = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+    if (isShirouMealMenuAbility(sourceAbility) && target.id === 'food_selection') {
+      return shirouMealMenuChoices(s, ctx.controllerId);
+    }
     if (isAcceptedDefinitionDeclarationDeckAbility(sourceAbility) && isDeploymentBatteryChoiceEffect(sourceAbility.effects[0]!)) {
       return deploymentBatteryChoiceCandidates(s, ctx.controllerId, sourceAbility);
     }
@@ -1833,7 +1845,7 @@ function drawCardsWithAutomaticRecycle(s: GameState, ctx: EffectContext, count: 
       if (discard.length === 0) return false;
       if (stageAutomaticRecycleKeepDecision(s, ctx, remaining, remainingEffects)) return true;
       for (const physical of discard) moveCard(s, physical.instanceId, 'deck');
-      shuffle(s, ctx.controllerId);
+      shuffleOwnedDeckForShirouMeal(s, ctx.controllerId, ctx.sourceCardId, ctx.abilityId);
     }
     const top = s.cards.find((physical) => physical.ownerPlayerId === ctx.controllerId && physical.zone === 'deck');
     if (!top) return false;
@@ -2305,6 +2317,10 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
       !trustedCombatOpponentPowerRewardFacts(s, card(s, sourceId).controllerPlayerId, event)) return false;
   if (containsTimedGlobalResourceSuppressionNode(a.effects) && !isAcceptedTimedGlobalResourceSuppressionAbility(a)) return false;
   if (containsShirouEmiyaPrivilegedNode(a) && !isAcceptedShirouEmiyaAbility(a)) return false;
+  if (containsShirouMealPrivilegedNode(a) && !isAcceptedShirouMealAbility(a)) return false;
+  if (isShirouMealMenuAbility(a) && (shirouMealMenuChoices(s, card(s, sourceId).controllerPlayerId).length === 0 ||
+      card(s, sourceId).zone !== 'field' || runtime(s).cardState[sourceId]?.active !== true)) return false;
+  if (isShirouMealProcurementAbility(a) && !canShirouMealProcurement(s, card(s, sourceId).controllerPlayerId)) return false;
   if (isAcceptedShirouEmiyaAvalonAbility(a) && !canExecuteShirouEmiyaAvalon(s, sourceId, card(s, sourceId).controllerPlayerId, event)) return false;
   if (containsSourceSkillAttackJoinNode(a.effects) && !isAcceptedSourceSkillAttackJoinAbility(a)) return false;
   if (containsSourceLocationRunePrivilegedNode(a) && !isAcceptedSourceLocationRunePrivilegedAbility(a)) return false;
@@ -2609,6 +2625,8 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   if (linkedRoleOriginalSkillUseLocked(s, sourceId, p)) return 'skill_use_forbidden';
   if (d.mode !== 'automatic') return d.mode;
   if (c.controllerPlayerId !== p || !allowedSourceZones.includes(c.zone) || player(s, p).status !== 'active') return 'illegal_action';
+  const foodCost = !faceDown ? shirouMealFoodPlayCost(s, sourceId) : 0;
+  if (foodCost > 0 && shirouMealTotalFood(s, p) < foodCost) return 'insufficient_resource';
   if (c.zone === 'skill' && (isActivationOnlyDefinition(s, c.definitionId) || d.abilities.some((ability) =>
     ability.effects.some((effect) => isPlaceSourceAtBattlefieldEffect(effect) || isSourceSkillAttackJoinEffect(effect) || isJoinSourceSkillToAttackZeroCostEffect(effect))))) return 'activation_only';
   const hasLegacyAppendOnlyMarker = d.abilities.some(a => a.effects.some(effect => effect.type === 'append_only_rule' && effect.rule !== 'ignore_battle_loss_effects'));
@@ -7395,6 +7413,24 @@ function stageCombatOpponentPowerVpReward(s: GameState, ctx: EffectContext, a: A
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (containsShirouMealPrivilegedNode(a)) {
+    if (!isAcceptedShirouMealAbility(a)) reject('resolution_failed', 'Unsupported Shirou Meal semantic');
+    try {
+      const resolved = resolveShirouMealAbility(s, ctx, a, () => {
+        const pending = findPendingTarget(s, ctx, a, effects);
+        if (pending) { runtime(s).pendingDecision = pending; return true; }
+        return false;
+      });
+      if (!resolved) reject('resolution_failed', 'Shirou Meal resolution failed');
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (message === 'INSUFFICIENT_FOOD') reject('insufficient_resource', 'Insufficient food');
+      if (message === 'INVALID_FOOD_SELECTION' || message === 'FOOD_SELECTION_REQUIRED') reject('invalid_target', message);
+      if (message === 'INVALID_SOURCE_STATE') reject('invalid_state', 'Shirou Meal source is no longer active');
+      throw error;
+    }
+    return;
+  }
   if (containsCommanderLifecyclePrivilegedNode(a) && !isAcceptedCommanderLifecyclePrivilegedAbility(a)) {
     reject('resolution_failed', 'Unsupported definition-set relocation/recall/retrigger semantic shape');
   }
@@ -9805,12 +9841,15 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
       (jointCostIncreaseByCard.get(choice.cardInstanceId) ?? 0) +
       (conditionalAdditional.get(choice.cardInstanceId)?.additionalManaCost ?? 0), 0);
   let cost = 0;
+  const shirouMealFoodCosts = new Map<string, number>();
   let commandSealCost = 0;
   const paidCostByCard = new Map<string, number>();
   for (const c of choices) {
     const allowRequiredAdditional = quota === 'regular' && requiredAdditionalIds.has(c.cardInstanceId) && regularAttackChoices > 0;
     const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost, allowedSourceZones);
     if (failure) reject(failure, 'Card cannot be played in this batch');
+    const foodCost = c.faceDown || waiveManaCost ? 0 : shirouMealFoodPlayCost(s, c.cardInstanceId);
+    if (foodCost > 0) shirouMealFoodCosts.set(c.cardInstanceId, foodCost);
     const linkedReduction = linkedAuxiliarySameBatchReductionEligible(s, c.cardInstanceId) ? linkedAuxiliaryOtherAttackCost : 0;
     const cardCost = c.faceDown || waiveManaCost ? 0 : Math.max(minimumManaCost,
       effectiveCardPlayCost(s, playerId, c.cardInstanceId) +
@@ -9830,6 +9869,12 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   catch { reject('insufficient_mana', 'Cannot classify requested card-play contributions'); }
   let paymentPlan; try { paymentPlan = resolveManaContributionPaymentPlan(s, playerId, cost, explicitContributions); } catch { reject('insufficient_mana', 'Cannot pay aggregate batch cost with requested contributions'); }
   if (paymentPlan!.payerAmount > player(s, playerId).mana) reject('insufficient_mana', 'Cannot pay aggregate batch cost');
+  if (shirouMealFoodCosts.size > 0) {
+    const totalFood = [...shirouMealFoodCosts.values()].reduce((sum, amount) => sum + amount, 0);
+    if ((runtime(s).shirouMealFoodByPlayer?.[playerId]?.肉 ?? 0) + (runtime(s).shirouMealFoodByPlayer?.[playerId]?.蔬菜 ?? 0) + (runtime(s).shirouMealFoodByPlayer?.[playerId]?.鱼 ?? 0) < totalFood) {
+      reject('insufficient_resource', 'Cannot pay Shirou Meal food cost');
+    }
+  }
   const sealCarrier = player(s, playerId) as unknown as { commandSpells?: number };
   const availableSeals = Number(sealCarrier.commandSpells ?? 3);
   if (!Number.isSafeInteger(availableSeals) || (sealManaRate === undefined && availableSeals < commandSealCost)) reject('insufficient_command_seals', 'Cannot pay aggregate Command Seal card-play cost');
@@ -9838,6 +9883,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     cardType: definition(s, c.cardInstanceId)!.cardType, faceDown: !!c.faceDown }));
   const prePaymentMana = player(s, playerId).mana;
   if (cost > 0) spendMana(s, playerId, cost, explicitContributions);
+  for (const [cardInstanceId, foodCost] of shirouMealFoodCosts) spendAnyShirouMealFood(s, playerId, foodCost, cardInstanceId, 'play');
   if (commandSealCost > 0 && sealManaRate !== undefined) {
     runtime(s).events.push({ type: 'command_seal_cost_substituted_with_mana', playerId, resource: 'mana',
       requestedDelta: -substitutedSealManaCost, delta: -substitutedSealManaCost });

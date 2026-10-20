@@ -778,6 +778,11 @@ export interface AbilityRuntime {
   commandSealSpentOrUsedRoundByPlayer?: Record<PlayerId, number>;
   /** Identity-free server-owned structured player flags. */
   structuredPlayerFlagsByPlayer?: Record<PlayerId, Record<string, boolean | string | number>>;
+  /** Owner-scoped typed food resources and once-per-round procurement authority. */
+  shirouMealFoodByPlayer?: Record<PlayerId, { 肉: number; 蔬菜: number; 鱼: number }>;
+  shirouMealProcurementRoundByPlayer?: Record<PlayerId, { round: number; attributes: string[] }>;
+  /** One-shot protection consumed by the next automatic discard-pile recycle shuffle. */
+  shirouMealProtectedNextShuffleByPlayer?: Record<PlayerId, { sourceCardId: string; abilityId: string }>;
   /** Round marker for flags whose authored lifecycle is exactly this_round. */
   structuredRoundFlagKeysByPlayer?: Record<PlayerId, Record<string, number>>;
   /** Server-owned one-per-player deduction record selected from exact outside-game marker definitions. */

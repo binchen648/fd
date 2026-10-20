@@ -6,6 +6,9 @@ import {
   containsShirouEmiyaPrivilegedNode,
   isAcceptedShirouEmiyaAbility,
 } from './shirou-emiya-capability';
+import { containsShirouMealPrivilegedNode, isAcceptedShirouMealAbility,
+  SHIROU_MEAL_ASCENSION_EFFECT, SHIROU_MEAL_ASCENSION_ROUND_END_EFFECT, SHIROU_MEAL_PROCUREMENT_EFFECT,
+  SHIROU_MEAL_MENU_EFFECT, SHIROU_MEAL_GLUTTONY_EFFECT } from './shirou-meal-capability';
 import {
   isRulerSealBindingCandidate, isRulerSealBindingSemantic,
   isRulerSealUseCandidate, isRulerSealUseSemantic,
@@ -373,6 +376,8 @@ const supportedTypes = new Set([
   // Master authoring adapters
   'record_master_directive', 'adjust_command_seals', 'set_mana', 'create_independent_deck',
   'shirou_emiya_basic_power_bonus', 'shirou_emiya_climax_power_bonus', 'shirou_emiya_first_elimination_continue',
+  SHIROU_MEAL_ASCENSION_EFFECT, SHIROU_MEAL_ASCENSION_ROUND_END_EFFECT, SHIROU_MEAL_PROCUREMENT_EFFECT,
+  SHIROU_MEAL_MENU_EFFECT, SHIROU_MEAL_GLUTTONY_EFFECT,
   'hinako_blood_song',
   'draw_from_independent_deck', 'activate_card_by_id', 'replace_card_in_deck', 'return_card_by_definition',
   'movement_rule_override', 'deployment_rule_override', 'play_source_card',
@@ -462,6 +467,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'counterKey', 'keepMax', 'gain', 'maxSpend', 'baseCount', 'base', 'sourceZone', 'cardKind', 'payCardCosts', 'returnAfter',
   'skillPlayGain', 'commandSealUseGain', 'moveToControllerBattlefieldGain', 'moveAwardOncePerPlayerPerRound', 'rounding', 'direction', 'manaCost', 'minimumMovementDistance', 'multiplier',
   'discardTop', 'excludeSource', 'selectionZone', 'shuffleInto', 'upkeep',
+  'foodCost', 'samePowerBonus', 'differentMana', 'protectNextShuffle',
   'costIncreasePerPlay', 'costDuration', 'revealDiscardTop', 'printedPowerEquals', 'powerBonus', 'powerDuration',
   'markerKey', 'terrainAmount', 'vpTransferAmount', 'distance',
   'targetDefinitionIds', 'replaceAttributes', 'sourcePlayers', 'prevent', 'sealKey', 'cardKind', 'eligibleAttribute', 'eligibleDefinitionIds', 'sameLocation', 'trigger', 'payCardCosts', 'resealMana', 'discardDestination', 'dispositionTrigger',
@@ -517,7 +523,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'minimumPowerPenalty', 'maximumPowerPenalty', 'blockOwnTurnMovement', 'removeSourceIfTargetLosesThisRound',
   'batteryDefinitionId', 'sharedUsageKey', 'accessProviderDefinitionId', 'enhancedProviderDefinitionId', 'enhancedAttribute', 'enhancedPowerBonus',
   'vpTargetId', 'manaBase', 'manaPerVp', 'variantDefinitionId', 'variantTargetId', 'variants', 'excludeDefinitionIds', 'excludeCardTypes',
-  'statusKey', 'clearRoundVpGainThreshold', 'vpLoss', 'discardPolicy',
+  'statusKey', 'clearRoundVpGainThreshold', 'vpLoss', 'discardPolicy', 'topDiscard',
   'deckKey', 'shuffle', 'recycleDiscard', 'replaceOrdinaryCommandSealsWithVirtual', 'divisor', 'excludedSourceDefinitionIds',
   'usageKey', 'maxUsesPerRound', 'costSource', 'amountPerOpponent', 'maxDiscard', 'manaPerCard', 'suppressManaDrawObserver', 'delayRounds', 'discardCount',
   'controllerGain', 'loserLoss', 'requiredControlledDefinitionId', 'targetCount', 'closeSourceAfterUse',
@@ -999,6 +1005,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsShirouEmiyaPrivilegedNode(candidateAbility) && !isAcceptedShirouEmiyaAbility(candidateAbility)) {
         issue('shirouEmiya.gateway', 'Shirou-Emiya owner mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsShirouMealPrivilegedNode(candidateAbility) && !isAcceptedShirouMealAbility(candidateAbility)) {
+        issue('shirouMeal.gateway', 'Shirou Meal owner mechanics require an accepted exact whole-ability semantic', id);
       }
       if (containsCommanderLifecyclePrivilegedNode(candidateAbility) &&
           !isAcceptedCommanderLifecyclePrivilegedAbility(candidateAbility)) {
