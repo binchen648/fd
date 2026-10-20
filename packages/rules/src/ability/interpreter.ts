@@ -1838,7 +1838,7 @@ function stageAutomaticRecycleKeepDecision(s: GameState, ctx: EffectContext, rem
   };
   return true;
 }
-function drawCardsWithAutomaticRecycle(s: GameState, ctx: EffectContext, count: number, remainingEffects: RuleNode[], chargeShirouMealGluttony = true): boolean {
+function drawCardsWithAutomaticRecycle(s: GameState, ctx: EffectContext, count: number, remainingEffects: RuleNode[], chargeShirouMealGluttony: boolean): boolean {
   for (let remaining = count; remaining > 0; remaining--) {
     if (!s.cards.some((physical) => physical.ownerPlayerId === ctx.controllerId && physical.zone === 'deck')) {
       const discard = s.cards.filter((physical) => physical.ownerPlayerId === ctx.controllerId && physical.zone === 'discard');
@@ -3046,7 +3046,9 @@ function linkedAuxiliaryOps(s: GameState): LinkedAuxiliarySuiteOps {
         previousLocationId: from, locationId: target.id, movementKind: 'effect', sourceCardId, abilityId });
       return true;
     },
-    drawCards: (playerId, count, ctx) => playerId === ctx.controllerId && drawCardsWithAutomaticRecycle(s, ctx, count, []),
+    // Linked-suite ascension redraw is an authored effect draw.  It must not
+    // enter Shirou Meal's automatic recycle/gluttony route.
+    drawCards: (playerId, count, ctx) => playerId === ctx.controllerId && drawCardsWithAutomaticRecycle(s, ctx, count, [], false),
   };
 }
 function shortestPath(s: GameState, from: string, to: string): string[] {
@@ -5381,6 +5383,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState, 
       if (!playerIds.has(entry.playerId) || entry.round !== s.round.roundNumber || !source || !ability) return false;
       if (entry.amount === -4 && isAcceptedFortifyMovedInBattlefieldAbility(ability)) return true;
       if (entry.amount === 2 && isAcceptedBloodlustAbility(ability) && isBloodlustActionEffect(ability.effects[0]!) && source.controllerPlayerId === entry.playerId) return true;
+      if (entry.amount === 6 && isShirouMealMenuAbility(ability) && isShirouMealSourceAbility(s, source.instanceId, entry.playerId, ability)) return true;
       if (isBoundOpponentRoundPowerAdjustmentValid(s, entry)) return true;
       if (linkedAuxiliaryRoundPowerAdjustmentRestoreValid(s, entry)) return true;
       if (isRoundCommitmentPowerAdjustmentValidForRestore(s, entry)) return true;

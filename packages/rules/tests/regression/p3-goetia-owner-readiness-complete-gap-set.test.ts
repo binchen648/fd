@@ -219,6 +219,7 @@ describe('P3 Goetia owner readiness linked-auxiliary suite capability', () => {
     const s = state();
     const provider = add(s, PROVIDER);
     const asc = add(s, ASC);
+    (s.abilityRuntime!.pack.cards[ASC] as any).mode = 'automatic';
     const ctx = { controllerId: 'p1', sourceCardId: provider, abilityId: 'suite.setup', variables: {}, selections: {} } as any;
     expect(rules.resolveLinkedAuxiliarySuiteEffect(s, ctx, get(PROVIDER, 'suite.setup'), testOps(s))).toBe(true);
 
@@ -331,5 +332,50 @@ describe('P3 Goetia owner readiness linked-auxiliary suite capability', () => {
       ops,
     )).toBe(true);
     expect(s.players[0]!.status).toBe('eliminated');
+  });
+
+  it('routes authored ascension redraw through the real interpreter adapter without Shirou Meal gluttony', () => {
+    const s = state();
+    const provider = add(s, PROVIDER);
+    const asc = add(s, ASC);
+    const gluttonyAbility = ability('shirou-meal.gluttony', 'passive', { trigger: 'while_active' }, {
+      type: 'shirou_meal_gluttony', vpLoss: 3,
+    });
+    const gluttonyDefinition = card('master.shirou-meal.skill.gluttony', [gluttonyAbility], 'master_skill');
+    (gluttonyDefinition as any).owner = { type: 'master', id: 'master.shirou-meal' };
+    (gluttonyDefinition as any).mode = 'automatic';
+    s.abilityRuntime!.pack.cards[gluttonyDefinition.id] = gluttonyDefinition as any;
+    const gluttony = add(s, gluttonyDefinition.id, 'attack_area', true);
+    const recycleAbility = ability('recycle.keep', 'passive', {}, {
+      type: 'automatic_recycle_keep_gain_counter', counterKey: 'test:ascension-redraw', keepMax: 3, gain: 1, reason: 'automatic_recycle',
+    });
+    recycleAbility.responseWindow = { order: 'turn_order', passBehavior: 'decline_this_window' };
+    const recycleDefinition = card('fixture.ascension-redraw-recycle-provider', [recycleAbility], 'master_skill');
+    (recycleDefinition as any).mode = 'automatic';
+    s.abilityRuntime!.pack.cards[recycleDefinition.id] = recycleDefinition as any;
+    add(s, recycleDefinition.id);
+    for (const name of ['discard-a', 'discard-b', 'discard-c']) add(s, `fixture.${name}`, 'discard');
+    s.players[0]!.vp = 5;
+    expect(rules.resolveLinkedAuxiliarySuiteEffect(
+      s,
+      { controllerId: 'p1', sourceCardId: provider, abilityId: 'suite.setup', variables: {}, selections: {} } as any,
+      get(PROVIDER, 'suite.setup'), testOps(s),
+    )).toBe(true);
+    expect(rules.resolveLinkedAuxiliarySuiteEffect(
+      s,
+      {
+        controllerId: 'p1', sourceCardId: asc, abilityId: 'temple.activate', variables: {}, selections: {},
+        event: { id: 'asc-redraw-activate', type: 'after_master_ascension_unlocked', playerId: 'p1', sourceCardId: asc },
+      } as any,
+      get(ASC, 'temple.activate'), testOps(s),
+    )).toBe(true);
+    s.round.activePhase = 'preparation';
+    expect(rules.dispatchAbilityCommand(s, 'p1', { type: 'activate_ability', cardInstanceId: asc, abilityId: 'temple.redraw' }).ok).toBe(true);
+    const pending = s.abilityRuntime!.pendingDecision!;
+    expect(pending.interaction).toMatchObject({ kind: 'automatic_recycle_keep_v1', chargeShirouMealGluttony: false });
+    expect(rules.dispatchAbilityCommand(s, 'p1', { type: 'choose_target', decisionId: pending.id, selectedIds: [] }).ok).toBe(true);
+    expect(s.players[0]!.vp).toBe(5);
+    expect(s.cards.find((entry) => entry.instanceId === gluttony)!.zone).toBe('attack_area');
+    expect(s.abilityRuntime!.shirouMealProtectedNextShuffleByPlayer?.p1).toBeUndefined();
   });
 });

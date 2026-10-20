@@ -186,6 +186,46 @@ describe('P3 Shirou Meal owner-complete migration', () => {
     const decision = rules.projectAbilityState(state, 'p1').pendingDecision!;
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: decision.id, selectedIds: ['肉,蔬菜,鱼'] }).ok).toBe(true);
     expect(state.abilityRuntime!.roundPlayerPowerAdjustments?.filter((entry) => entry.sourceCardId === source && entry.amount === 6)).toHaveLength(2);
+    expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(state)).toBe(true);
+    const persisted = JSON.parse(JSON.stringify(state)) as GameState;
+    expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(persisted)).toBe(true);
+    const forged = structuredClone(persisted);
+    forged.cards.find((entry) => entry.instanceId === source)!.ownerPlayerId = 'p2';
+    expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(forged)).toBe(false);
+  });
+
+  it('charges ascension food on a real waived-mana effect play, and rejects zero food atomically', () => {
+    const state = setup();
+    const reactionAbility = {
+      id: 'fixture.play-hand-free', kind: 'phase_action', printedClause: 'fixture.play-hand-free',
+      activation: { phase: 'combat', opens: 'controller_combat_action_window' }, conditions: [],
+      targets: [{ id: 'hand_card', type: 'card_instance', scope: { zone: 'hand', owner: 'controller' }, count: { min: 1, max: 1 }, constraints: [{ type: 'effect_playable_face_up' }] }],
+      effects: [{ type: 'spend_reaction_counter_play_hand_free', counterKey: 'test:shirou-food', amount: 7, sourceZone: 'hand', payCardCosts: false, target: 'hand_card' }],
+      cost: [], ruleModifiers: [], creates: [], lifecycle: {}, responseWindow: { order: 'turn_order', passBehavior: 'decline_this_window' }, limit: {}, visibility: {},
+      execution: { mode: 'automatic', allowedOperations: [] },
+    } as any;
+    const reactionDefinition = {
+      id: 'fixture.shirou-waived-mana-source', name: 'fixture.shirou-waived-mana-source', cardType: 'master_skill',
+      owner: { type: 'master', id: ROOT }, cardFace: { typeLabel: '', attributes: [], cost: 0, basePower: 0 },
+      playTiming: { phase: 'combat', window: 'controller_combat_action_window' }, playRequirements: [], abilities: [reactionAbility],
+      verification: { implementationStatus: 'complete' }, mode: 'automatic',
+    };
+    state.abilityRuntime!.pack.cards[reactionDefinition.id] = reactionDefinition as any;
+    const reaction = add(state, reactionDefinition.id);
+    const ascension = add(state, ASC, 'hand');
+    state.round.activePhase = 'combat';
+    rules.setReactionCounterValue(state, 'p1', 'test:shirou-food', 7);
+    const noFood = rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: reaction, abilityId: reactionAbility.id });
+    expect(noFood.ok).toBe(false);
+    expect(state.abilityRuntime!.pendingDecision).toBeUndefined();
+    rules.grantShirouMealFood(state, 'p1', '肉', 1);
+    const activation = rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: reaction, abilityId: reactionAbility.id });
+    expect(activation, JSON.stringify(activation)).toMatchObject({ ok: true });
+    const pending = state.abilityRuntime!.pendingDecision!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: pending.id, selectedIds: [ascension] }).ok).toBe(true);
+    expect(rules.shirouMealFood(state, 'p1')).toEqual({ 肉: 0, 蔬菜: 0, 鱼: 0 });
+    expect(rules.reactionCounterValue(state, 'p1', 'test:shirou-food')).toBe(0);
+    expect(state.cards.find((entry) => entry.instanceId === ascension)?.zone).toBe('field');
   });
 
   it('rejects a foreign-owner exact-shape menu before spending food', () => {
@@ -235,13 +275,12 @@ describe('P3 Shirou Meal owner-complete migration', () => {
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: drawSource2, abilityId: drawDefinition.abilities[0]!.id }).ok).toBe(true);
     const decision = rules.projectAbilityState(state, 'p1').pendingDecision!;
     expect(state.abilityRuntime!.pendingDecision?.interaction?.kind).toBe('automatic_recycle_keep_v1');
-    // The authored draw above intentionally stages the same interaction with
-    // provenance=false. Exercise the automatic-recycle continuation branch
-    // through the real command resolver after authenticating that provenance.
-    (state.abilityRuntime!.pendingDecision!.interaction as any).chargeShirouMealGluttony = true;
+    // The authored draw must carry its effect-driven provenance through the
+    // real continuation; forged pending metadata is intentionally not used.
+    expect(state.abilityRuntime!.pendingDecision!.interaction).toMatchObject({ chargeShirouMealGluttony: false });
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: decision.id, selectedIds: [decision.candidates[0]!] }).ok).toBe(true);
     expect(state.players[0]!.vp).toBe(5);
-    expect(state.abilityRuntime!.shirouMealProtectedNextShuffleByPlayer?.p1).toBeUndefined();
+    expect(state.abilityRuntime!.shirouMealProtectedNextShuffleByPlayer?.p1).toBeDefined();
   });
 
   it('rejects widened or foreign owner-specific mechanics at the loader gateway', () => {
