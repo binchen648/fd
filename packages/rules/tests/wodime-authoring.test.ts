@@ -14,8 +14,8 @@ describe('Wodime frozen authoring archive', () => {
     expect(raw.id).toBe('master.wodime');
     expect(raw.cards.map((card: any) => card.legacyId)).toEqual(expectedIds);
     expect(raw.cards).toHaveLength(11);
-    expect(raw.cards.filter((card: any) => card.verification.implementationStatus === 'complete').map((card: any) => card.legacyId)).toEqual(['ascension', 's1a']);
-    expect(raw.cards.filter((card: any) => card.verification.implementationStatus === 'host_adjudicated')).toHaveLength(9);
+    expect(raw.cards.filter((card: any) => card.verification.implementationStatus === 'complete').map((card: any) => card.legacyId)).toEqual(['ascension', 's1a', 's2']);
+    expect(raw.cards.filter((card: any) => card.verification.implementationStatus === 'host_adjudicated')).toHaveLength(8);
     expect(raw.cards.every((card: any) => card.abilities.every((ability: any) => card.printedText.includes(ability.printedClause)))).toBe(true);
     const loaded = rules.loadAuthoringJson(raw);
     const report = rules.buildAuthoringAdapterReport(loaded, raw, archivePath);
@@ -24,7 +24,7 @@ describe('Wodime frozen authoring archive', () => {
     // report describes interpreter nodes (record_master_directive remains a
     // routable audit marker rather than a completed runtime implementation).
     expect(report.summary.hostAdjudicated).toBe(0);
-    expect(report.summary.unsupported).toBe(9);
+    expect(report.summary.unsupported).toBe(8);
     expect(report.summary.textUnconfirmed).toBe(0);
   });
 
@@ -69,5 +69,52 @@ describe('Wodime frozen authoring archive', () => {
     expect(state.abilityRuntime!.events.find((event: any) => event.type === 'wodime_astrology_ascension_round_recorded')).not.toHaveProperty('roundNumber');
     rules.processAbilityEvent(state, { id: 'wodime-ascension-win-repeat', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1', battleId: 'battle-2', resultId: 'result-2', battlefieldId: 'shinto', battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] } });
     expect((state.abilityRuntime as any).wodimeAstrologyRoundsByPlayer.p1).toEqual([2, 4, 7]);
+  });
+
+  it('plays the generated orb in combat under the private round and zeros only other owned attacks', () => {
+    const raw = JSON.parse(readFileSync(archivePath, 'utf8'));
+    const loaded = rules.loadAuthoringJson(raw);
+    (loaded.cards as any)['test.basic_attack'] = {
+      id: 'test.basic_attack', name: 'Test Attack', cardType: 'basic_attack', ownerId: 'test',
+      cardFace: { typeLabel: '攻击', attributes: ['力量'], cost: 0, basePower: 5 },
+      playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], abilities: [], mode: 'automatic',
+    };
+    for (const definition of Object.values(loaded.cards)) {
+      definition.ownerId = 'master.wodime';
+      if (definition.id !== 'master.wodime.skill.s2') definition.initialPlacement = 'outside_game';
+    }
+    const state = createSeededGameState({ activeSeats: [1, 2] });
+    state.cards = [];
+    state.players[0]!.masterCardId = 'master.wodime';
+    rules.initializeAbilityRuntime(state, loaded, { seed: 43 });
+    installMasterSupportOwnerCards(state, loaded as any, { ownerId: 'master.wodime', playerId: 'p1' });
+    rules.processAbilityEvent(state, { id: 'wodime-game-start-play', type: 'game_start' });
+    const decision = state.abilityRuntime!.pendingDecision!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: decision.id, selectedIds: ['round:2', 'round:7'] }).ok).toBe(true);
+    const attackDefinition = loaded.cards['test.basic_attack'] as any;
+    state.cards.push({ instanceId: 'wodime-other-attack', definitionId: attackDefinition.id, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'attack_area', visibility: { scope: 'public' } });
+    state.cards.push({ instanceId: 'wodime-opponent-attack', definitionId: attackDefinition.id, ownerPlayerId: 'p2', controllerPlayerId: 'p2', zone: 'attack_area', visibility: { scope: 'public' } });
+    state.abilityRuntime!.cardState['wodime-other-attack'] = { active: true, faceDown: false, playedRound: 2, paidManaOnPlay: 0 };
+    state.abilityRuntime!.cardState['wodime-opponent-attack'] = { active: true, faceDown: false, playedRound: 2, paidManaOnPlay: 0 };
+    state.round.roundNumber = 3;
+    state.round.activePhase = 'battle';
+    state.round.prioritySeat = state.players[0]!.seat;
+    const orb = state.cards.find((card) => card.definitionId === 'master.wodime.skill.s2')!;
+    expect(rules.projectAbilityState(state, 'p1').legalActions.some((action: any) => action.type === 'play_card' && action.cardInstanceId === orb.instanceId)).toBe(false);
+    state.round.roundNumber = 2;
+    const beforePower = rules.calculateCardPower(state, 'wodime-other-attack').value;
+    const legal = rules.projectAbilityState(state, 'p1').legalActions;
+    expect(legal).toContainEqual({ type: 'play_card', cardInstanceId: orb.instanceId });
+    expect(state.players[0]!.mana).toBeLessThan(8);
+    const playResult = rules.dispatchAbilityCommand(state, 'p1', { type: 'play_card', cardInstanceId: orb.instanceId });
+    expect(playResult.ok).toBe(true);
+    expect(orb.zone).toBe('skill');
+    expect(rules.calculateCardPower(state, 'wodime-other-attack').value).toBe(0);
+    expect(rules.calculateCardPower(state, 'wodime-opponent-attack').value).toBeGreaterThan(0);
+    expect(beforePower).toBeGreaterThan(0);
+    const forged = { instanceId: 'wodime-forged-orb', definitionId: 'master.wodime.skill.s2', ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: 'p1' } } as any;
+    state.cards.push(forged);
+    state.abilityRuntime!.cardState[forged.instanceId] = { active: false, faceDown: false, playedRound: 2 };
+    expect(rules.projectAbilityState(state, 'p1').legalActions.some((action: any) => action.type === 'play_card' && action.cardInstanceId === forged.instanceId)).toBe(false);
   });
 });

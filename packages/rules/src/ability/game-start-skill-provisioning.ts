@@ -95,3 +95,17 @@ export function isWodimeAstrologyAscensionSemantic(ability: AuthoringAbility): b
   const effect = ability.effects[0]!;
   return effect.type === 'wodime_astrology_ascension_record' && Object.keys(effect).length === 1;
 }
+
+/** Exact runtime contract for Wodime's generated Celestial Sphere. */
+export function isWodimeCelestialSphereSemantic(ability: AuthoringAbility): boolean {
+  if (ability.id !== 'wodime.orb' || ability.kind !== 'forced_trigger' ||
+      ability.activation.trigger !== 'on_card_played' ||
+      Object.keys(ability.activation).some((key) => key !== 'trigger') ||
+      ability.conditions.length !== 0 || ability.targets.length !== 0 ||
+      ability.cost.length !== 0 || ability.creates.length !== 0 ||
+      ability.ruleModifiers.length !== 0 || Object.keys(ability.lifecycle).length !== 0 ||
+      Object.keys(ability.limit).length !== 0 || Object.keys(ability.visibility).length !== 0 ||
+      ability.effects.length !== 1) return false;
+  const effect = ability.effects[0]!;
+  return effect.type === 'wodime_celestial_sphere_battle' && Object.keys(effect).length === 1;
+}

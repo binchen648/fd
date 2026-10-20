@@ -55,7 +55,7 @@ import { clearTransientCardTransformState, getEffectiveCardAttributes } from './
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
 import { classifyManaContributionChoices, commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, installRulerSealMovementLock, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, resolveManaContributionPaymentPlan, rulerSealMovementLocked, situationForbidsAttribute, spendMana } from '../core/rule-overrides';
 import { node, nodes, str } from './loader';
-import { gameStartSkillProvisioningTargetDefinitionIds, isBattleWinRoundProvisioningSemantic, isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic, isWodimeAstrologyAscensionSemantic, isWodimeAstrologyRoundSelectionSemantic, WODIME_ASTROLOGY_ROUND_OPTIONS, WODIME_ASTROLOGY_ROUND_TARGET } from './game-start-skill-provisioning';
+import { gameStartSkillProvisioningTargetDefinitionIds, isBattleWinRoundProvisioningSemantic, isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic, isWodimeAstrologyAscensionSemantic, isWodimeAstrologyRoundSelectionSemantic, isWodimeCelestialSphereSemantic, WODIME_ASTROLOGY_ROUND_OPTIONS, WODIME_ASTROLOGY_ROUND_TARGET } from './game-start-skill-provisioning';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
 import { currentDeploymentBonus } from '../core/terrain-advantage';
 import {
@@ -2566,6 +2566,10 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAcceptedOpponentCloseToOneAbility(a, 'compiled')) return canActivateAcceptedOpponentCloseToOne(s, sourceId, a);
   if (isAcceptedOpponentCloseOneNonResidualAbility(a, 'compiled')) return canActivateAcceptedOpponentCloseSelectedOne(s, sourceId, a);
   const ctx = context(s, sourceId, a.id, event);
+  if (isWodimeCelestialSphereSemantic(a)) {
+    if (!event || event.type !== 'on_card_played' || event.sourceCardId !== sourceId || event.playerId !== sourceControllerId ||
+        !wodimeCelestialSpherePlayedSource(s, sourceControllerId, sourceId)) return false;
+  }
   if (isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled')) return true;
   if (isAcceptedPostDrawHandShuffleAbility(a)) {
     if (!hasAvailableManaForFixedCosts(s, ctx, a)) return false;
@@ -2696,6 +2700,53 @@ function resolveWodimeAstrologyAscension(s: GameState, ctx: EffectContext, effec
     sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
 }
 
+function wodimeCelestialSpherePlayable(s: GameState, playerId: string, sourceId: string): boolean {
+  const source = s.cards.find((candidate) => candidate.instanceId === sourceId);
+  const state = runtime(s).cardState[sourceId];
+  if (!source || source.definitionId !== 'master.wodime.skill.s2' || source.ownerPlayerId !== playerId ||
+      source.controllerPlayerId !== playerId || source.zone !== 'skill' || state?.active === true || state?.faceDown === true ||
+      phase(s) !== 'combat' || s.round.prioritySeat !== player(s, playerId).seat) return false;
+  const generator = source.generatedBy && s.cards.find((candidate) => candidate.instanceId === source.generatedBy);
+  if (!generator || generator.definitionId !== 'master.wodime.skill.s1a' || generator.ownerPlayerId !== playerId ||
+      generator.controllerPlayerId !== playerId) return false;
+  const rounds = (runtime(s) as any).wodimeAstrologyRoundsByPlayer?.[playerId];
+  return Array.isArray(rounds) && rounds.includes(s.round.roundNumber);
+}
+
+function resolveWodimeCelestialSphere(s: GameState, ctx: EffectContext, effect: RuleNode, a: AuthoringAbility): void {
+  if (!isWodimeCelestialSphereSemantic(a) || effect.type !== 'wodime_celestial_sphere_battle' ||
+      ctx.event?.type !== 'on_card_played' || ctx.event.sourceCardId !== ctx.sourceCardId ||
+      ctx.event.playerId !== ctx.controllerId) reject('resolution_failed', 'Invalid Wodime Celestial Sphere contract');
+  const source = card(s, ctx.sourceCardId);
+  if (source.definitionId !== 'master.wodime.skill.s2' || source.zone !== 'field' ||
+      source.ownerPlayerId !== ctx.controllerId || source.controllerPlayerId !== ctx.controllerId ||
+      runtime(s).cardState[source.instanceId]?.active !== true || !wodimeCelestialSpherePlayedSource(s, ctx.controllerId, source.instanceId)) {
+    reject('invalid_state', 'Wodime Celestial Sphere source is not an authenticated generated combat play');
+  }
+  const id = `wodime-celestial-sphere:${s.round.roundNumber}:${ctx.sourceCardId}:${ctx.abilityId}`;
+  for (const attack of s.cards.filter((candidate) => candidate.instanceId !== source.instanceId &&
+      candidate.controllerPlayerId === ctx.controllerId && candidate.zone === 'attack_area' &&
+      runtime(s).cardState[candidate.instanceId]?.active === true && runtime(s).cardState[candidate.instanceId]?.faceDown !== true &&
+      cardPlayClassification(s, candidate.instanceId).playKind === 'attack')) {
+    const carrier = attack as unknown as { powerModifiers?: Array<Record<string, unknown>> };
+    carrier.powerModifiers ??= [];
+    if (!carrier.powerModifiers.some((modifier) => modifier.id === id && modifier.sourceId === ctx.sourceCardId)) {
+      carrier.powerModifiers.push({ id, sourceId: ctx.sourceCardId, sourceAbilityId: ctx.abilityId,
+        controllerId: ctx.controllerId, kind: 'set', value: 0, lifecycle: 'until_leaves_active_area', round: s.round.roundNumber });
+    }
+  }
+  runtime(s).events.push({ type: 'wodime_celestial_sphere_applied', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, visibility: 'public' });
+}
+
+function wodimeCelestialSpherePlayedSource(s: GameState, playerId: string, sourceId: string): boolean {
+  const source = s.cards.find((candidate) => candidate.instanceId === sourceId);
+  const generator = source?.generatedBy && s.cards.find((candidate) => candidate.instanceId === source.generatedBy);
+  const rounds = (runtime(s) as any).wodimeAstrologyRoundsByPlayer?.[playerId];
+  return !!source && !!generator && generator.definitionId === 'master.wodime.skill.s1a' &&
+    generator.ownerPlayerId === playerId && generator.controllerPlayerId === playerId &&
+    Array.isArray(rounds) && rounds.includes(s.round.roundNumber);
+}
+
 function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean {
   return Object.values(runtime(s).pack.cards).some((source) =>
     source.abilities.some((ability) =>
@@ -2788,9 +2839,10 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   if (c.zone === 'skill' && (isActivationOnlyDefinition(s, c.definitionId) || d.abilities.some((ability) =>
     ability.effects.some((effect) => isPlaceSourceAtBattlefieldEffect(effect) || isSourceSkillAttackJoinEffect(effect) || isJoinSourceSkillToAttackZeroCostEffect(effect))))) return 'activation_only';
   const hasLegacyAppendOnlyMarker = d.abilities.some(a => a.effects.some(effect => effect.type === 'append_only_rule' && effect.rule !== 'ignore_battle_loss_effects'));
+  const wodimeCelestialSpherePlay = d.id === 'master.wodime.skill.s2' && wodimeCelestialSpherePlayable(s, p, sourceId);
   const requiredAdditionalPlay = isRequiredAdditionalPlayCard(s, sourceId);
   if ((hasLegacyAppendOnlyMarker || linkedAuxiliaryRequiresAdditionalPlay(s, sourceId)) && (!allowRequiredAdditionalPlay || !requiredAdditionalPlay)) return 'append_only';
-  if (!ignoreTiming && (phase(s) !== d.playTiming.phase || s.round.prioritySeat !== player(s, p).seat)) return 'illegal_timing';
+  if (!ignoreTiming && !wodimeCelestialSpherePlay && (phase(s) !== d.playTiming.phase || s.round.prioritySeat !== player(s, p).seat)) return 'illegal_timing';
   if (faceDown && (!isAttack(d) || d.cardType === 'servant_skill')) return 'illegal_face_down';
   const forbidRules = ongoingCardPlayForbidRules(s, p, sourceId);
   const linkedRoundException = linkedAuxiliaryRoundPlayExceptionsActive(s, p);
@@ -2811,7 +2863,7 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   const regaliaExtra=liveMysticCodeMode(s,p,'extra');
   const siegFreeBalmung = isSiegTemporaryBalmungCard(s, sourceId) && !faceDown;
   const requirements = d.playRequirements.concat(nodes(d.cardFace.requirements)).filter(r =>
-    str(r.type) && !(siegFreeBalmung && str(r.type) === 'skill_zone_mana_at_least') && !(str(r.type) === 'skill_zone_mana_at_least' && (linkedRoundException || hasPlayRuleException(d, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)) || bloodlustPlayRequirementWaived(s, p, 'skill_zone_mana_at_least', Number(r.value)) || logicalDayDefinitionPlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)) ||
+    str(r.type) && !(wodimeCelestialSpherePlay && str(r.type) === 'skill_zone_mana_at_least') && !(siegFreeBalmung && str(r.type) === 'skill_zone_mana_at_least') && !(str(r.type) === 'skill_zone_mana_at_least' && (linkedRoundException || hasPlayRuleException(d, 'skill_zone_mana_at_least') || vesselCyclePlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)) || bloodlustPlayRequirementWaived(s, p, 'skill_zone_mana_at_least', Number(r.value)) || logicalDayDefinitionPlayRequirementWaived(s, p, d.id, 'skill_zone_mana_at_least', Number(r.value)) ||
       (Number(r.value)===8 && regaliaExtra?.instanceId===sourceId))));
   if (!requirements.every(r => condition(s, context(s, sourceId, ''), r))) return 'play_requirement';
 
@@ -4626,6 +4678,9 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       break;
     case 'wodime_astrology_ascension_record':
       resolveWodimeAstrologyAscension(s, ctx, effect, a);
+      break;
+    case 'wodime_celestial_sphere_battle':
+      resolveWodimeCelestialSphere(s, ctx, effect, a);
       break;
     case 'double_source_base_power_and_remove_after_battle': {
       if (!isGrantedBasicDoubleRemoveEffect(effect)) reject('unsupported', 'Unsupported granted basic double/remove effect shape');

@@ -38399,21 +38399,25 @@
           "phase": "action",
           "window": "controller_play_card_window"
         },
-        "playRequirements": [],
+        "playRequirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 8
+          }
+        ],
         "abilities": [
           {
             "id": "wodime.orb",
-            "kind": "passive",
+            "kind": "forced_trigger",
             "printedClause": "星体回路-被动/战斗阶段：若你以天体学记录了本回合，打出此牌（你拥有的魔力少于8点也可打出），战力结算时，忽略你其他攻击的威力。此牌不能通过其他任何方式入场。",
             "activation": {
-              "trigger": "while_active"
+              "trigger": "on_card_played"
             },
             "conditions": [],
             "targets": [],
             "effects": [
               {
-                "type": "record_master_directive",
-                "directive": "wodime_astrology_orb_battle"
+                "type": "wodime_celestial_sphere_battle"
               }
             ],
             "cost": [],
@@ -38428,17 +38432,11 @@
             "visibility": {},
             "execution": {
               "mode": "automatic",
-              "allowedOperations": [
-                "adjust-mana",
-                "adjust-victory-points",
-                "move-card",
-                "create-status",
-                "skip-ability"
-              ]
+              "allowedOperations": []
             }
           }
         ],
-        "mode": "host_adjudicated",
+        "mode": "automatic",
         "ownerId": "master.wodime",
         "playKind": "support",
         "destinationZone": "field",
@@ -58410,11 +58408,11 @@
       "master.waver": "master.waver.command-spell",
       "master.wodime": "master.wodime.command-spell"
     },
-    "definitionHash": "adbcb03e611089171efb951b51aa5cb5be1789a217e4903c830c1e9242d184ba",
+    "definitionHash": "a8087cbb8a094fd18ea7e73732f676400b3c1d7493bb53a565b2afe905dd8c28",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "adbcb03e611089171efb951b51aa5cb5be1789a217e4903c830c1e9242d184ba"
+      "definitionHash": "a8087cbb8a094fd18ea7e73732f676400b3c1d7493bb53a565b2afe905dd8c28"
     },
     "sourceMap": {
       "master.shinji.skill.ascension": {
