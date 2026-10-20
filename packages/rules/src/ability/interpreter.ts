@@ -8818,8 +8818,10 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   if (!event.id) reject('invalid_event', 'Events require stable ids');
   r.processedEvents.push(event.id);
   const replacementDepth = Number((event as AbilityEvent & { wodimeReplacementDepth?: number }).wodimeReplacementDepth ?? 0);
-  if (wodimeAtlantisReplacement && replacementDepth < 8) {
-    processEvent(s, { ...wodimeAtlantisReplacement, wodimeReplacementDepth: replacementDepth + 1 } as AbilityEvent);
+  if (replacementDepth < 8) {
+    for (const replacement of wodimeAtlantisReplacement) {
+      processEvent(s, { ...replacement, wodimeReplacementDepth: replacementDepth + 1 } as AbilityEvent);
+    }
   }
   rememberTrustedBattleResultSnapshot(r, event);
   settleSionEvent(s, event);

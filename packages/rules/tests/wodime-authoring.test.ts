@@ -97,6 +97,14 @@ describe('Wodime frozen authoring archive', () => {
     // The replacement is dispatched through the normal event_activated path,
     // so the replacement Hephaestus placement contributes its own tokens.
     expect((state.abilityRuntime as any).wodimeGodLegacyByLocation.shinto.tokens).toBe(6);
+    const secondBattlefield = { locationId: 'shinto' as const, eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-atlantis-battle-2', visibility: { scope: 'public' as const }, victoryPoints: 0 };
+    state.eventPlacements.push(secondBattlefield);
+    rules.processAbilitySystemEvent(state, 'wodime-atlantis-reveal-second', { type: 'event_activated', sourceCardId: secondBattlefield.ruleInstanceId, revealedKind: 'event', revealedId: secondBattlefield.eventCardId, locationId: secondBattlefield.locationId });
+    const pendingBeforeClose = Object.keys((state.abilityRuntime as any).wodimeAtlantisPendingBattlefieldRemovalIds);
+    expect(pendingBeforeClose).toContain(secondBattlefield.ruleInstanceId);
+    rules.processAbilitySystemEvent(state, 'wodime-atlantis-close-second', { type: 'after_battle_ended', battlefieldId: 'shinto' });
+    expect(state.eventPlacements.filter((entry) => entry.locationId === 'shinto')).toHaveLength(2);
+    expect(new Set(state.eventPlacements.filter((entry) => entry.locationId === 'shinto').map((entry) => entry.ruleInstanceId)).size).toBe(2);
     const nonBattle = { locationId: 'clock_tower' as const, eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-atlantis-nonbattle-1', visibility: { scope: 'public' as const }, victoryPoints: 0 };
     state.eventPlacements = [nonBattle]; state.eventDeck = ['event.wodime.atlantis.hephaestus'];
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-reveal-nonbattle', { type: 'event_activated', sourceCardId: nonBattle.ruleInstanceId, revealedKind: 'event', revealedId: nonBattle.eventCardId, locationId: nonBattle.locationId });
@@ -109,7 +117,7 @@ describe('Wodime frozen authoring archive', () => {
     const afterElimination = { locationId: 'magic_workshop' as const, eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-atlantis-after-elimination-1', visibility: { scope: 'public' as const }, victoryPoints: 0 };
     state.eventPlacements = [afterElimination];
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-after-elimination-reveal', { type: 'event_activated', sourceCardId: afterElimination.ruleInstanceId, revealedKind: 'event', revealedId: afterElimination.eventCardId, locationId: afterElimination.locationId });
-    expect((state.abilityRuntime as any).wodimeGodLegacyByLocation.magic_workshop.tokens).toBe(6);
+    expect((state.abilityRuntime as any).wodimeGodLegacyByLocation.magic_workshop.tokens).toBe(27);
   });
 
   it('activates God Legacy at the real elimination transition before the first later event reveal', () => {
