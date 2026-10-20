@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import * as rules from '../../src/index';
 import type { GameState } from '../../src/schema/game';
 import { createSeededGameState } from '../../src/tools/seeded-state';
+import { terrainAdvantageAtLocation } from '../../src/ability/terrain-advantage-override';
 
 const ROOT = 'master.shishigou';
 const ASC = `${ROOT}.skill.ascension`;
@@ -57,6 +58,8 @@ describe('P3 Shishigou owner-complete migration', () => {
     for (const id of [ASC, S1, S2, S3]) {
       expect(generated.rules.sourceMap[id]).toMatchObject({ archiveId: ROOT });
       expect(evidence.entities.find((entry: any) => entry.entityId === id)).toBeDefined();
+      expect(generated.cards.find((entry: any) => entry.id === id)?.capability).toMatchObject({ status: 'FULL' });
+      expect(evidence.entities.find((entry: any) => entry.entityId === id)?.capabilityStatus).toBe('FULL');
     }
     expect(archive.cards[0].printedText).toBe('你所有的的基础牌得到效果："行动阶段：花费3点魔力，根据此牌属性激活【死灵魔术】。"');
     expect(archive.sourcePolicy.clauseEvidence.map((entry: any) => entry.sha256)).toEqual([
@@ -117,20 +120,28 @@ describe('P3 Shishigou owner-complete migration', () => {
     fixture(state, 'fixture.top-attack', 'basic_attack', ['迅捷'], 1);
     fixture(state, 'fixture.special-attack', 'basic_attack', ['力量'], 0);
     fixture(state, 'fixture.basic-speed', 'basic_attack', ['迅捷']);
+    fixture(state, 'fixture.basic-strength', 'basic_attack', ['力量']);
     fixture(state, 'fixture.basic-magic', 'basic_attack', ['魔术']);
     fixture(state, 'fixture.basic-special', 'basic_attack', ['特殊']);
     add(state, ASC, 'field', { active: true });
     add(state, S2, 'skill');
     add(state, S3, 'skill');
+    state.players[0]!.mana = 30;
     const top = add(state, 'fixture.top-attack', 'deck');
     const agilitySource = add(state, 'fixture.basic-speed', 'field', { active: true });
     const agility = rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: agilitySource, abilityId: rules.SHISHIGOU_GENERATED_BASIC_ABILITY_ID });
     expect(agility.ok, JSON.stringify(agility)).toBe(true);
     expect(state.cards.find((entry) => entry.instanceId === top)?.zone).toBe('attack_area');
-    expect(state.players[0]!.mana).toBe(6);
+    expect(state.players[0]!.mana).toBe(26);
+    const strengthSource = add(state, 'fixture.basic-strength', 'field', { active: true });
+    const strength = rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: strengthSource, abilityId: rules.SHISHIGOU_GENERATED_BASIC_ABILITY_ID });
+    expect(strength.ok, JSON.stringify(strength)).toBe(true);
+    const strengthDecision = state.abilityRuntime!.pendingDecision!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: strengthDecision.id, selectedIds: ['miyama_town'] }).ok).toBe(true);
+    expect(terrainAdvantageAtLocation(state, 'p1', 'miyama_town')).toBe(2);
     const magicSource = add(state, 'fixture.basic-magic', 'field', { active: true });
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: magicSource, abilityId: rules.SHISHIGOU_GENERATED_BASIC_ABILITY_ID }).ok).toBe(true);
-    expect((state as any).modeState.terrainAdvantageOverrides).toContainEqual(expect.objectContaining({ playerId: 'p1', multiply: 2 }));
+    expect(terrainAdvantageAtLocation(state, 'p1', 'miyama_town')).toBe(4);
     const special = add(state, 'fixture.special-attack', 'attack_area', { active: true });
     const specialSource = add(state, 'fixture.basic-special', 'field', { active: true });
     const specialActivation = rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: specialSource, abilityId: rules.SHISHIGOU_GENERATED_BASIC_ABILITY_ID });
@@ -138,5 +149,35 @@ describe('P3 Shishigou owner-complete migration', () => {
     const specialDecision = state.abilityRuntime!.pendingDecision!;
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: specialDecision.id, selectedIds: [special] }).ok).toBe(true);
     expect(state.abilityRuntime!.cardState[special]!.basePowerMultiplier).toBe(2);
+  });
+
+  it('composes reverse-order and repeated same-round Strength/Magic terrain adjustments', () => {
+    const reverse = setup();
+    (reverse as any).modeState.terrainAssignments = { shinto: ['p1'] };
+    const base = terrainAdvantageAtLocation(reverse, 'p1', 'shinto');
+    expect(base).toBeGreaterThan(0);
+    rules.resolveShishigouMagic(reverse, 'p1', 'shinto', 'magic-first');
+    rules.resolveShishigouStrength(reverse, 'p1', 'shinto', () => undefined, 'strength-second');
+    expect(terrainAdvantageAtLocation(reverse, 'p1', 'shinto')).toBe((base + 2) * 2);
+
+    const repeated = setup();
+    (repeated as any).modeState.terrainAssignments = {};
+    rules.resolveShishigouStrength(repeated, 'p1', 'miyama_town', () => undefined, 'strength-one');
+    rules.resolveShishigouStrength(repeated, 'p1', 'miyama_town', () => undefined, 'strength-two');
+    expect(terrainAdvantageAtLocation(repeated, 'p1', 'miyama_town')).toBe(4);
+    rules.resolveShishigouMagic(repeated, 'p1', 'miyama_town', 'magic-after-strength');
+    expect(terrainAdvantageAtLocation(repeated, 'p1', 'miyama_town')).toBe(8);
+  });
+
+  it('rejects foreign owner archives and keeps corpse tracking isolated per runtime session', () => {
+    const foreign = structuredClone(archive);
+    foreign.id = 'master.foreign';
+    const foreignReport = rules.loadAuthoringJson(foreign).report;
+    expect(foreignReport).toContainEqual(expect.objectContaining({ path: 'shishigou.owner', status: 'unsupported' }));
+    const first = setup();
+    const second = setup();
+    rules.markShishigouCorpseRemoval(first, 'first-session-card');
+    expect(first.abilityRuntime!.shishigouCorpseRemovedCardIds).toEqual(['first-session-card']);
+    expect(second.abilityRuntime!.shishigouCorpseRemovedCardIds).toEqual([]);
   });
 });

@@ -88,3 +88,28 @@ export function setTerrainAdvantageOverride(
     !(entry.playerId === playerId && entry.locationId === locationId && entry.round === state.round.roundNumber));
   store.terrainAdvantageOverrides.push({ playerId, locationId, round: state.round.roundNumber, add, multiply, sourceCardId });
 }
+
+/**
+ * Compose same-round adjustments whose authored meanings are additive terrain
+ * gains and multiplicative terrain changes. This preserves both components
+ * regardless of activation order while retaining the compact override shape.
+ */
+export function composeTerrainAdvantageOverride(
+  state: GameState,
+  playerId: string,
+  locationId: LocationId,
+  add: number,
+  multiply: number,
+  sourceCardId: string,
+): void {
+  if (!Number.isFinite(add) || !Number.isFinite(multiply)) throw new Error('Terrain advantage adjustment must be finite');
+  const existing = currentAdjustment(state, playerId, locationId);
+  setTerrainAdvantageOverride(
+    state,
+    playerId,
+    locationId,
+    (existing?.add ?? 0) + add,
+    (existing?.multiply ?? 1) * multiply,
+    sourceCardId,
+  );
+}

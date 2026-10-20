@@ -1,6 +1,6 @@
 import type { GameState } from '../schema/game';
 import type { AuthoringAbility, PlayerId, RuleNode } from './types';
-import { setTerrainAdvantageOverride, terrainAdvantageAtLocation } from './terrain-advantage-override';
+import { composeTerrainAdvantageOverride, terrainAdvantageAtLocation } from './terrain-advantage-override';
 
 export const SHISHIGOU_BASE_ACTIVATE_EFFECT = 'shishigou_base_necromancy' as const;
 export const SHISHIGOU_CORPSE_REVEAL_EFFECT = 'shishigou_corpse_reveal' as const;
@@ -202,9 +202,9 @@ export function markShishigouCorpseRemoval(state: GameState, cardInstanceId: str
   if (!r.shishigouCorpseRemovedCardIds.includes(cardInstanceId)) r.shishigouCorpseRemovedCardIds.push(cardInstanceId);
 }
 export function resolveShishigouStrength(state: GameState, playerId: string, locationId: string, move: (locationId: string) => void, sourceCardId = 'shishigou-necromancy'): void {
-  move(locationId); setTerrainAdvantageOverride(state, playerId, locationId as any, 2, 1, sourceCardId);
+  move(locationId); composeTerrainAdvantageOverride(state, playerId, locationId as any, 2, 1, sourceCardId);
 }
 export function resolveShishigouMagic(state: GameState, playerId: string, locationId: string, sourceCardId: string): void {
   if (terrainAdvantageAtLocation(state, playerId, locationId as any) <= 0) throw new Error('NO_TERRAIN_ADVANTAGE');
-  setTerrainAdvantageOverride(state, playerId, locationId as any, 0, 2, sourceCardId);
+  composeTerrainAdvantageOverride(state, playerId, locationId as any, 0, 2, sourceCardId);
 }

@@ -11265,8 +11265,12 @@
         "action"
       ],
       "capability": {
-        "status": "HOST_ADJUDICATED",
-        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+        "status": "FULL",
+        "supportedDimensions": [
+          "authoring_semantics",
+          "runtime_interpreter",
+          "engine_regression"
+        ]
       },
       "source": {
         "htmPath": "chm-extract/狮子劫界离.htm",
@@ -11286,8 +11290,12 @@
         "action"
       ],
       "capability": {
-        "status": "HOST_ADJUDICATED",
-        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+        "status": "FULL",
+        "supportedDimensions": [
+          "authoring_semantics",
+          "runtime_interpreter",
+          "engine_regression"
+        ]
       },
       "source": {
         "htmPath": "chm-extract/狮子劫界离.htm",
@@ -11307,8 +11315,12 @@
         "action"
       ],
       "capability": {
-        "status": "HOST_ADJUDICATED",
-        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+        "status": "FULL",
+        "supportedDimensions": [
+          "authoring_semantics",
+          "runtime_interpreter",
+          "engine_regression"
+        ]
       },
       "source": {
         "htmPath": "chm-extract/狮子劫界离.htm",
@@ -11328,8 +11340,12 @@
         "action"
       ],
       "capability": {
-        "status": "HOST_ADJUDICATED",
-        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+        "status": "FULL",
+        "supportedDimensions": [
+          "authoring_semantics",
+          "runtime_interpreter",
+          "engine_regression"
+        ]
       },
       "source": {
         "htmPath": "chm-extract/狮子劫界离.htm",
@@ -52154,11 +52170,11 @@
       "master.shirou-meal": "master.shirou-meal.command-spell",
       "master.shishigou": "master.shishigou.command-spell"
     },
-    "definitionHash": "0d7e4d6ef9b18dea72174fc295e3e5ce00e6f8a351dcf296469d7bcaefdb0ca0",
+    "definitionHash": "34c76512de10efa17235e00e8bfc57cefcc7aa86f39f27870d5b67ce81fb59d9",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "0d7e4d6ef9b18dea72174fc295e3e5ce00e6f8a351dcf296469d7bcaefdb0ca0"
+      "definitionHash": "34c76512de10efa17235e00e8bfc57cefcc7aa86f39f27870d5b67ce81fb59d9"
     },
     "sourceMap": {
       "master.shinji.skill.ascension": {

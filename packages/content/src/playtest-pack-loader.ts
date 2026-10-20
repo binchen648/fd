@@ -368,6 +368,17 @@ function isCompleteGameStartFixedControllerMana(card: AuthoringCard): boolean {
 }
 
 export function capabilityForAuthoringCard(card: AuthoringCard): NamedCardDefinition['capability'] {
+  // Owner-complete migrations may opt into a generated FULL evidence status
+  // only when the archive carries both an explicit declaration and its card
+  // verification record is complete. This keeps the status auditable at the
+  // canonical generation boundary instead of hand-editing generated JSON.
+  const verification = card.verification as Record<string, unknown> | undefined;
+  if (card.capabilityStatus === 'FULL' && verification?.implementationStatus === 'complete') {
+    return {
+      status: 'FULL',
+      supportedDimensions: ['authoring_semantics', 'runtime_interpreter', 'engine_regression'],
+    };
+  }
   const face = card.cardFace as Record<string, unknown> | undefined;
   const timing = card.playTiming as Record<string, unknown> | undefined;
   const exactFace = face !== undefined && !Array.isArray(face) &&
