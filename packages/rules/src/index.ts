@@ -65,6 +65,7 @@ export * from './ability/resolution-dataflow';
 export * from './ability/event-location-equals-controller';
 
 export * from './ability/master-ascension-unlock-capability';
+export * from './ability/taiga-capability';
 export * from './ability/multi-presence-player-capability';
 export * from './ability/battle-wither-capability';
 export * from './ability/definition-side-deck-capability';

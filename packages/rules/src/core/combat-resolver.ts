@@ -13,6 +13,7 @@ import type { VisibilityState } from "../schema/visibility";
 import type { ResolverResult } from "./resolver-contracts";
 import { getLocationById } from "./map-engine";
 import { calculateCardPower, mysticCodeTerrainZero, processAbilityEvent, processAbilitySystemEvent } from '../ability/interpreter';
+import { taigaCompetitionReward } from '../ability/taiga-capability';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
 import { isPlayerPresentAtLocation, multiPresenceTerrainAdvantageAtLocation } from '../ability/multi-presence-player-capability';
 import { applyLinkedOwnerCombatPowerSharing, playerHasLinkedOwnerLossImmunity, prepareLinkedOwnerCardsForBattle } from '../ability/linked-owner-combat';
@@ -560,7 +561,8 @@ function buildBattleResultFromRanked(
   const hasCompetitionReward = ranked.length > 1 &&
     location?.rewardHooks.includes("competition_rewards") === true &&
     typeof location.vpRewardRules?.competition === "number";
-  const competitionVpPool = hasCompetitionReward ? location!.vpRewardRules!.competition! : 0;
+  const taigaPool = taigaCompetitionReward(state, battlefieldId);
+  const competitionVpPool = taigaPool !== undefined ? taigaPool : (hasCompetitionReward ? location!.vpRewardRules!.competition! : 0);
   const hasLocationReward = location?.rewardHooks.includes("location_rewards") === true &&
     typeof location.vpRewardRules?.location === "number";
   const locationVpPool = hasLocationReward ? location!.vpRewardRules!.location! : 0;

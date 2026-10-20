@@ -48,6 +48,7 @@ import {
 } from './shishigou-necromancy-capability';
 import { containsSiegPrivilegedNode, isAcceptedSiegAbility, isSiegBalmungFreePlayAbility, isSiegBalmungPenaltyAbility, isSiegDragonCommandAbility, isSiegGalvanismAbility, isSiegSyncState, isSiegSyncStrengthAbility, SIEG_BALMUNG_FREE_PLAY_EFFECT, SIEG_BALMUNG_PENALTY_EFFECT, SIEG_DRAGON_COMMAND_EFFECT, SIEG_SYNC_STATE_KEY, SIEG_SYNC_STRENGTH_EFFECT } from './sieg-capability';
 import { containsSionPrivilegedNode, isAcceptedSionAbility, isSionCoveredCard, resolveSionChoice, resolveSionEffect, settleSionEvent, sionCardPlayCommandSealCost, sionMagicAttackSuppressed, sionPowerBonus } from './sion-capability';
+import { containsTaigaPrivilegedNode, isAcceptedTaigaAbility, resolveTaigaEffect, taigaActive, taigaPowerBonus } from './taiga-capability';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
@@ -663,7 +664,7 @@ export function classifyAbilityInteraction(a: AuthoringAbility): AbilityInteract
   return { kind: 'unsupported', ...phasePart, window: opens, trigger, reason: `unknown_kind:${a.kind}` };
 }
 function isBattlefield(s: GameState, locationId: string | undefined): boolean {
-  return !!locationId && getEnabledLocations(s.map, s.locationConfig).some(l => l.id === locationId && l.tags.includes('battlefield'));
+  return !!locationId && (taigaActive(s, locationId) || getEnabledLocations(s.map, s.locationConfig).some(l => l.id === locationId && l.tags.includes('battlefield')));
 }
 function sameBattlefield(s: GameState, a: string | undefined, b: string | undefined): boolean {
   return !!a && a === b && isBattlefield(s, a);
@@ -1350,6 +1351,8 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
   if (sionBonus !== 0) { result.value += sionBonus; result.lines.push({ label: 'sion_owner_power_bonus', value: result.value }); }
   const siegBonus = siegSyncStrengthBonus(s, sourceId);
   if (siegBonus !== 0) { result.value += siegBonus; result.lines.push({ label: 'sieg_sync_strength_basic_attack', value: result.value }); }
+  const taigaBonus = taigaPowerBonus(s, source.controllerPlayerId);
+  if (taigaBonus !== 0) { result.value += taigaBonus; result.lines.push({ label: 'taiga_tiger_stamp_power_bonus', value: result.value }); }
   const regaliaBonus=mysticCodeRegaliaPowerBonus(s,sourceId);
   if(regaliaBonus){result.value+=regaliaBonus;result.lines.push({label:'mystic_code_regalia_power',value:result.value});}
   const linkedAuxiliaryBonus = linkedAuxiliaryOnPlayPowerBonus(s, sourceId);
@@ -3807,6 +3810,10 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
   const p = player(s, ctx.controllerId); const r = runtime(s); const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   const unpreventable = a.ruleModifiers.some(m => m.rule === 'effect_prevention' && m.operation === 'ignore' && node(m.priority).tier === 'explicit_exception');
   if (r.preventEffects && !unpreventable) { r.events.push({ type: 'effect_prevented', playerId: p.id }); return; }
+  if (containsTaigaPrivilegedNode(effect)) {
+    if (!isAcceptedTaigaAbility(a) || !resolveTaigaEffect(s, ctx, a, effect)) reject('resolution_failed', 'Taiga effect resolution failed');
+    return;
+  }
   switch (effect.type) {
     case SIEG_DRAGON_COMMAND_EFFECT: {
       if (!isSiegDragonCommandAbility(a)) reject('resolution_failed', 'Sieg Dragon Command requires the accepted exact whole-ability envelope');
