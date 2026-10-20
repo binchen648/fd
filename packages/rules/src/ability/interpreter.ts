@@ -46,7 +46,7 @@ import {
   isShishigouSpecialAbility, isShishigouNecromancyAbility, shishigouBaseAbilityForBasic, shishigouCorpseCardIds,
   resolveShishigouAbility, shishigouNecromancyTarget, markShishigouCorpseRemoval, resolveShishigouStrength, resolveShishigouMagic,
 } from './shishigou-necromancy-capability';
-import { containsSiegPrivilegedNode, isAcceptedSiegAbility, isSiegBalmungFreePlayAbility, isSiegBalmungPenaltyAbility, isSiegDragonCommandAbility, isSiegGalvanismAbility, isSiegSyncStrengthAbility, SIEG_BALMUNG_FREE_PLAY_EFFECT, SIEG_BALMUNG_PENALTY_EFFECT, SIEG_DRAGON_COMMAND_EFFECT, SIEG_SYNC_STRENGTH_EFFECT } from './sieg-capability';
+import { containsSiegPrivilegedNode, isAcceptedSiegAbility, isSiegBalmungFreePlayAbility, isSiegBalmungPenaltyAbility, isSiegDragonCommandAbility, isSiegGalvanismAbility, isSiegSyncState, isSiegSyncStrengthAbility, SIEG_BALMUNG_FREE_PLAY_EFFECT, SIEG_BALMUNG_PENALTY_EFFECT, SIEG_DRAGON_COMMAND_EFFECT, SIEG_SYNC_STRENGTH_EFFECT } from './sieg-capability';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
@@ -482,11 +482,7 @@ export function classifyCardPlay(d: AuthoringCard | undefined): CardPlayClassifi
   return attack ? { playKind: 'attack', destinationZone: 'attack_area' } : { playKind: 'support', destinationZone: 'field' };
 }
 function liveSiegAscension(s: GameState, playerId: string): boolean {
-  const p = s.players.find((entry) => entry.id === playerId);
-  if (!p || p.masterCardId !== 'master.sieg') return false;
-  return s.cards.some((source) => source.definitionId === 'master.sieg.skill.ascension' && source.ownerPlayerId === playerId && source.controllerPlayerId === playerId &&
-    ['skill', 'field', 'attack_area'].includes(source.zone) && runtime(s).cardState[source.instanceId]?.active === true && runtime(s).cardState[source.instanceId]?.faceDown !== true &&
-    runtime(s).pack.cards[source.definitionId]?.abilities.some(isSiegSyncStrengthAbility));
+  return isSiegSyncState(s, playerId);
 }
 function siegSyncStrengthBonus(s: GameState, sourceId: string): number {
   const source = card(s, sourceId); const d = definition(s, sourceId);

@@ -8,6 +8,9 @@ export const SIEG_DRAGON_COMMAND_EFFECT = 'sieg_dragon_command' as const;
 export const SIEG_BALMUNG_FREE_PLAY_EFFECT = 'sieg_balmung_free_play' as const;
 export const SIEG_BALMUNG_PENALTY_EFFECT = 'sieg_balmung_penalty' as const;
 
+/** Canonical owner-scoped runtime state for the printed 【同调】 condition. */
+export const SIEG_SYNC_STATE_KEY = '__fd_sieg_sync_active' as const;
+
 const privileged = new Set<string>([
   SIEG_GALVANISM_EFFECT, SIEG_SYNC_STRENGTH_EFFECT, SIEG_DRAGON_COMMAND_EFFECT,
   SIEG_BALMUNG_FREE_PLAY_EFFECT, SIEG_BALMUNG_PENALTY_EFFECT,
@@ -23,7 +26,6 @@ function walk(value: unknown): boolean {
   if (typeof record.type === 'string' && privileged.has(record.type)) return true;
   return Object.values(record).some(walk);
 }
-
 export function containsSiegPrivilegedNode(value: unknown): boolean { return walk(value); }
 export function isSiegGalvanismAbility(a: AuthoringAbility): boolean {
   const e = a.effects[0];
@@ -58,6 +60,37 @@ export function isSiegBalmungPenaltyAbility(a: AuthoringAbility): boolean {
 export function isAcceptedSiegAbility(a: AuthoringAbility): boolean {
   return isSiegGalvanismAbility(a) || isSiegSyncStrengthAbility(a) || isSiegDragonCommandAbility(a) ||
     isSiegBalmungFreePlayAbility(a) || isSiegBalmungPenaltyAbility(a);
+}
+
+/**
+ * Set the canonical 【同调】 state. This is deliberately separate from the
+ * ascension card's active marker: an active card only provides the clause,
+ * while this state records whether the printed condition is currently true.
+ */
+export function setSiegSyncState(state: GameState, playerId: string, active: boolean): void {
+  if (!state.abilityRuntime) throw new Error('Sieg sync state requires initialized ability runtime');
+  if (!state.players.some((player) => player.id === playerId)) throw new Error('Unknown Sieg sync-state owner');
+  const flags = (state.abilityRuntime.structuredPlayerFlagsByPlayer ??= {})[playerId] ??= {};
+  if (active) flags[SIEG_SYNC_STATE_KEY] = true;
+  else delete flags[SIEG_SYNC_STATE_KEY];
+  delete (state.abilityRuntime.structuredRoundFlagKeysByPlayer ??= {})[playerId]?.[SIEG_SYNC_STATE_KEY];
+}
+
+function hasLiveSiegSyncProvider(state: GameState, playerId: string): boolean {
+  const player = state.players.find((entry) => entry.id === playerId);
+  if (!player || player.masterCardId !== 'master.sieg') return false;
+  return state.cards.some((source) => source.definitionId === 'master.sieg.skill.ascension' &&
+    source.ownerPlayerId === playerId && source.controllerPlayerId === playerId &&
+    ['skill', 'field', 'attack_area'].includes(source.zone) &&
+    state.abilityRuntime?.cardState[source.instanceId]?.active === true &&
+    state.abilityRuntime.cardState[source.instanceId]?.faceDown !== true &&
+    state.abilityRuntime.pack.cards[source.definitionId]?.abilities.some(isSiegSyncStrengthAbility) === true);
+}
+
+/** True only when canonical sync state and its live Sieg provider both hold. */
+export function isSiegSyncState(state: GameState, playerId: string): boolean {
+  return state.abilityRuntime?.structuredPlayerFlagsByPlayer?.[playerId]?.[SIEG_SYNC_STATE_KEY] === true &&
+    hasLiveSiegSyncProvider(state, playerId);
 }
 
 /** Apply the residual mana-spend clause from the authoritative payment hook. */
