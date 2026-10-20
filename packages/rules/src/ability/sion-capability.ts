@@ -90,14 +90,16 @@ function activeSource(state: GameState, sourceCardId: string, controllerId: stri
     ['field', 'attack_area'].includes(c.zone) && rt(state).cardState[sourceCardId]?.active === true && rt(state).cardState[sourceCardId]?.faceDown !== true;
 }
 function nextId(state: GameState, label: string): string { const r = rt(state); r.sequence += 1; return `${label}:${r.sequence}`; }
-function addSkill(state: GameState, controllerId: string, definitionId: string, generatedBy: string): string {
-  const existing = state.cards.find((c) => c.ownerPlayerId === controllerId && c.definitionId === definitionId && c.zone !== 'removed_from_game');
+/** Shared ability-card lifecycle; forceNew is used for an obtain/reveal that must create a physical card. */
+function addSkill(state: GameState, controllerId: string, definitionId: string, generatedBy: string, forceNew = false): string {
+  const existing = forceNew ? undefined : state.cards.find((c) => c.ownerPlayerId === controllerId && c.definitionId === definitionId && c.zone !== 'removed_from_game');
   if (existing) return existing.instanceId;
   const instanceId = nextId(state, 'sion-skill');
   state.cards.push({ instanceId, definitionId, ownerPlayerId: controllerId, controllerPlayerId: controllerId, zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: controllerId }, generatedBy });
   rt(state).cardState[instanceId] = { active: false, faceDown: false, playedRound: state.round.roundNumber };
   return instanceId;
 }
+
 function activeSionSources(state: GameState, controllerId: string, abilityType: string): string[] {
   return state.cards.filter((c) => c.ownerPlayerId === controllerId && c.controllerPlayerId === controllerId && ['field', 'attack_area'].includes(c.zone) &&
     rt(state).cardState[c.instanceId]?.active === true && rt(state).cardState[c.instanceId]?.faceDown !== true &&
@@ -193,10 +195,20 @@ function consumeTraining(state: GameState, ctx: EffectContext): boolean {
     s.exProvenance[targetId] = provenance;
     const cardState = rt(state).cardState[targetId];
     if (cardState && !obtainsCoveredSkill) cardState.sionExAlias = provenance;
+    let obtainedExCardId: string | undefined;
+    if (obtainsCoveredSkill) {
+      obtainedExCardId = addSkill(state, ctx.controllerId, mapping.definitionId, ctx.sourceCardId, true);
+      s.exProvenance[obtainedExCardId] = provenance;
+      rt(state).events.push({
+        type: 'card_created', playerId: ctx.controllerId, visibility: ctx.controllerId,
+        sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: obtainedExCardId,
+        toZone: 'skill', movedCount: 1, revealedCardDefinitionIds: [mapping.definitionId], revealedCardInstanceIds: [obtainedExCardId],
+      });
+    }
     if (s.covered[targetId] === ctx.sourceCardId) delete s.covered[targetId];
     delete s.trainingTargets[ctx.sourceCardId];
     s.trainingSpent[ctx.sourceCardId] = spent + 1;
-    rt(state).events.push({ type: obtainsCoveredSkill ? 'sion_cafeteria_ex_obtained' : 'sion_cafeteria_ex_replaced', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: targetId, fromState: obtainsCoveredSkill ? mapping.definitionId : originalDefinitionId, toState: originalDefinitionId, ...(obtainsCoveredSkill ? { revealedCardDefinitionIds: [mapping.definitionId] } : {}) });
+    rt(state).events.push({ type: obtainsCoveredSkill ? 'sion_cafeteria_ex_obtained' : 'sion_cafeteria_ex_replaced', playerId: ctx.controllerId, ...(obtainsCoveredSkill ? { visibility: ctx.controllerId } : {}), sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: targetId, fromState: obtainsCoveredSkill ? mapping.definitionId : originalDefinitionId, toState: originalDefinitionId, ...(obtainsCoveredSkill ? { revealedCardDefinitionIds: [mapping.definitionId], ...(obtainedExCardId ? { revealedCardInstanceIds: [obtainedExCardId] } : {}) } : {}) });
   } else if (ctx.abilityId === 'sion.s4.gym') {
     if (Math.floor(exp / 2) <= spent || covered.length === 0) return false;
     stageChoice(state, ctx, 'training', ['power', 'attack_strength', 'attack_agility'], 1, 1, 'choice', ['power', 'attack_strength', 'attack_agility']);

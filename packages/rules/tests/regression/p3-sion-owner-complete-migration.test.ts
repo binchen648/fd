@@ -240,14 +240,26 @@ describe('P3 owner-complete master.sion', () => {
     const cafeteria = state.cards.find((card) => card.definitionId === 'master.sion.skill.s3')!;
     state.round.activePhase = 'preparation'; state.abilityRuntime!.sion!.experience[cafeteria.instanceId] = 2;
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: cafeteria.instanceId, abilityId: 'sion.s3.cafeteria' }).ok).toBe(true);
-    // Use the same JSON boundary used by durable state transport; the full
-    // MatchSession envelope is intentionally not needed for this card-local
-    // restore assertion.
-    const restoredState = JSON.parse(JSON.stringify(state)) as GameState;
+    const obtained = state.cards.find((card) => card.definitionId === 'master.sion.skill.s15' && card.generatedBy === cafeteria.instanceId);
+    expect(obtained).toMatchObject({ ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: 'p1' } });
+    expect(state.abilityRuntime!.sion!.exProvenance[obtained!.instanceId]).toMatchObject({ exDefinitionId: 'master.sion.skill.s15', resolution: 'obtained' });
+    expect(rules.projectAbilityState(state, 'p1').cards.find((card) => card.instanceId === obtained!.instanceId)?.definitionId).toBe('master.sion.skill.s15');
+    expect(rules.projectAbilityState(state, 'p2').cards.some((card) => card.instanceId === obtained!.instanceId)).toBe(false);
+    const durable = session.serializeSession();
+    const restored = rules.restoreMatchSession(durable, { restorePackKind: 'trusted_authoring_fixture' });
+    const restoredState = restored.getState();
     expect(restoredState.cards.find((card) => card.instanceId === covered)?.definitionId).toBe('servant.artoria-alt.skill.sc-artoria-alt-2');
     expect(restoredState.abilityRuntime!.sion!.exProvenance[covered]).toMatchObject({ exDefinitionId: 'master.sion.skill.s15', resolution: 'obtained' });
     expect(rules.projectAbilityState(restoredState, 'p1').cards.find((card) => card.instanceId === covered)?.definitionId).toBe('servant.artoria-alt.skill.sc-artoria-alt-2');
     expect(rules.projectAbilityState(restoredState, 'p2').cards.some((card) => card.instanceId === covered)).toBe(false);
+    const restoredLive = (restored as unknown as { state: GameState }).state;
+    const restoredEx = restoredLive.cards.find((card) => card.instanceId === obtained!.instanceId)!;
+    restoredEx.zone = 'field'; restoredEx.visibility = { scope: 'public' };
+    restoredLive.abilityRuntime!.cardState[restoredEx.instanceId]!.active = true;
+    restoredLive.round.activePhase = 'combat'; restoredLive.locationConfig.enabledLocationIds = ['miyama_town', 'shinto', 'magic_workshop', 'recon', 'moon_holy_grail']; restoredLive.players[1]!.locationId = 'moon_holy_grail';
+    const restartResult = restored.dispatchPlayerAction('p1', { type: 'activate_ability', cardInstanceId: restoredEx.instanceId, abilityId: 'sion.s15.restart' });
+    expect(restartResult.ok).toBe(true);
+    expect(restoredLive.abilityRuntime!.sion!.restartUsed[restoredEx.instanceId]).toBe(true);
   });
 
   it('applies Aether opponent reveal/draw/luck defeat and leaves no silent fallback', () => {
