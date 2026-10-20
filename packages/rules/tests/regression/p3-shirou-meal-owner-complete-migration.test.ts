@@ -126,6 +126,18 @@ describe('P3 Shirou Meal owner-complete migration', () => {
     expect(rules.canShirouMealProcurement(state, 'p1')).toBe(false);
   });
 
+  it('uses remaining attributes for a later same-round S1 activation', () => {
+    const state = setup();
+    const source = add(state, S1, 'field', true);
+    state.eventPlacements = [{ locationId: 'shinto', eventCardId: 'event.strength', visibility: { scope: 'public' } }] as any;
+    state.currentSituationCardId = undefined;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: source, abilityId: 'shirou-meal.procurement' }).ok).toBe(true);
+    expect(rules.shirouMealFood(state, 'p1')).toEqual({ 肉: 1, 蔬菜: 0, 鱼: 0 });
+    state.currentSituationCardId = 'situation.speed';
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: source, abilityId: 'shirou-meal.procurement' }).ok).toBe(true);
+    expect(rules.shirouMealFood(state, 'p1')).toEqual({ 肉: 1, 蔬菜: 1, 鱼: 0 });
+  });
+
   it('requires three food, resolves same/different menu branches, and protects exactly the next automatic recycle', () => {
     const state = setup();
     const source = add(state, S2, 'field', true);
@@ -157,11 +169,91 @@ describe('P3 Shirou Meal owner-complete migration', () => {
     expect(rules.shirouMealFood(state, 'p1')).toEqual({ 肉: 0, 蔬菜: 0, 鱼: 0 });
   });
 
+  it('accumulates every same-food S2 payment and keeps prior bonuses after a mixed payment', () => {
+    const state = setup();
+    const source = add(state, S2, 'field', true);
+    rules.grantShirouMealFood(state, 'p1', '肉', 6);
+    for (let index = 0; index < 2; index++) {
+      expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: source, abilityId: 'shirou-meal.menu' }).ok).toBe(true);
+      const decision = rules.projectAbilityState(state, 'p1').pendingDecision!;
+      expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: decision.id, selectedIds: ['肉,肉,肉'] }).ok).toBe(true);
+    }
+    expect(state.abilityRuntime!.roundPlayerPowerAdjustments?.filter((entry) => entry.sourceCardId === source && entry.amount === 6)).toHaveLength(2);
+    rules.grantShirouMealFood(state, 'p1', '肉', 1);
+    rules.grantShirouMealFood(state, 'p1', '蔬菜', 1);
+    rules.grantShirouMealFood(state, 'p1', '鱼', 1);
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: source, abilityId: 'shirou-meal.menu' }).ok).toBe(true);
+    const decision = rules.projectAbilityState(state, 'p1').pendingDecision!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: decision.id, selectedIds: ['肉,蔬菜,鱼'] }).ok).toBe(true);
+    expect(state.abilityRuntime!.roundPlayerPowerAdjustments?.filter((entry) => entry.sourceCardId === source && entry.amount === 6)).toHaveLength(2);
+  });
+
+  it('rejects a foreign-owner exact-shape menu before spending food', () => {
+    const state = setup();
+    const source = add(state, S2, 'field', true);
+    const physical = state.cards.find((entry) => entry.instanceId === source)!;
+    physical.ownerPlayerId = 'p2';
+    physical.controllerPlayerId = 'p2';
+    rules.grantShirouMealFood(state, 'p1', '肉', 3);
+    const before = rules.shirouMealFood(state, 'p1');
+    expect(() => rules.resolveShirouMealAbility(state, {
+      controllerId: 'p1', sourceCardId: source, abilityId: 'shirou-meal.menu', selections: { food_selection: ['肉,肉,肉'] },
+    }, loaded.cards[S2]!.abilities[0]!, () => false)).toThrow('INVALID_SOURCE_OWNER');
+    expect(rules.shirouMealFood(state, 'p1')).toEqual(before);
+  });
+
+  it('distinguishes authored draw recycle from automatic recycle keep continuation', () => {
+    const state = setup();
+    const drawDefinition = structuredClone(loaded.cards[S1]!);
+    drawDefinition.id = 'test.authored-draw';
+    drawDefinition.abilities = [structuredClone(drawDefinition.abilities[0]!)];
+    drawDefinition.abilities[0]!.id = 'test.authored-draw.ability';
+    drawDefinition.abilities[0]!.effects = [{ type: 'draw_cards', count: 1 }];
+    state.abilityRuntime!.pack.cards[drawDefinition.id] = drawDefinition;
+    const drawSource = add(state, drawDefinition.id, 'field', true);
+    const discard = add(state, 'test.authored-discard', 'discard');
+    void discard;
+    const meal = add(state, S2, 'field', true);
+    state.players[0]!.vp = 5;
+    state.abilityRuntime!.shirouMealProtectedNextShuffleByPlayer = { p1: { sourceCardId: meal, abilityId: 'shirou-meal.menu' } };
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: drawSource, abilityId: drawDefinition.abilities[0]!.id }).ok).toBe(true);
+    expect(state.players[0]!.vp).toBe(5);
+    expect(state.abilityRuntime!.shirouMealProtectedNextShuffleByPlayer?.p1).toBeDefined();
+
+    const providerDefinition = structuredClone(loaded.cards[S1]!);
+    providerDefinition.id = 'test.recycle-provider';
+    providerDefinition.abilities = [structuredClone(providerDefinition.abilities[0]!)];
+    providerDefinition.abilities[0]!.id = 'test.recycle-provider.ability';
+    providerDefinition.abilities[0]!.kind = 'passive';
+    providerDefinition.abilities[0]!.activation = {};
+    providerDefinition.abilities[0]!.effects = [{ type: 'automatic_recycle_keep_gain_counter', counterKey: 'test:counter', keepMax: 3, gain: 1, reason: 'automatic_recycle' }];
+    state.abilityRuntime!.pack.cards[providerDefinition.id] = providerDefinition;
+    add(state, providerDefinition.id, 'skill');
+    add(state, 'test.recycle-discard-a', 'discard');
+    add(state, 'test.recycle-discard-b', 'discard');
+    const drawSource2 = add(state, drawDefinition.id, 'field', true);
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: drawSource2, abilityId: drawDefinition.abilities[0]!.id }).ok).toBe(true);
+    const decision = rules.projectAbilityState(state, 'p1').pendingDecision!;
+    expect(state.abilityRuntime!.pendingDecision?.interaction?.kind).toBe('automatic_recycle_keep_v1');
+    // The authored draw above intentionally stages the same interaction with
+    // provenance=false. Exercise the automatic-recycle continuation branch
+    // through the real command resolver after authenticating that provenance.
+    (state.abilityRuntime!.pendingDecision!.interaction as any).chargeShirouMealGluttony = true;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: decision.id, selectedIds: [decision.candidates[0]!] }).ok).toBe(true);
+    expect(state.players[0]!.vp).toBe(5);
+    expect(state.abilityRuntime!.shirouMealProtectedNextShuffleByPlayer?.p1).toBeUndefined();
+  });
+
   it('rejects widened or foreign owner-specific mechanics at the loader gateway', () => {
     const malformed = structuredClone(archive);
     malformed.cards[1].abilities[0].effects[0].foreign = true;
     expect(rules.loadAuthoringJson(malformed).report).toEqual(expect.arrayContaining([
       expect.objectContaining({ cardId: S1, abilityId: 'shirou-meal.procurement', path: 'shirouMeal.gateway', status: 'unsupported' }),
+    ]));
+    const foreignArchive = structuredClone(archive);
+    foreignArchive.cards[1].owner = { type: 'master', id: 'master.foreign' };
+    expect(rules.loadAuthoringJson(foreignArchive).report).toEqual(expect.arrayContaining([
+      expect.objectContaining({ cardId: S1, abilityId: 'shirou-meal.procurement', path: 'shirouMeal.owner', status: 'unsupported' }),
     ]));
     const foreign = structuredClone(archive.cards[1].abilities[0]);
     foreign.effects[0].type = 'shirou_meal_menu';

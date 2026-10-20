@@ -221,7 +221,7 @@ export interface DeductionRecordState { definitionId: string; attribute: '力量
 export interface AutomaticRecycleKeepInteractionMetadata {
   kind: 'automatic_recycle_keep_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
   sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
-  controllerId: PlayerId; counterKey: string; candidateIds: string[]; keepMax: 3; gain: 1; remainingDraws: number;
+  controllerId: PlayerId; counterKey: string; candidateIds: string[]; keepMax: 3; gain: 1; remainingDraws: number; chargeShirouMealGluttony: boolean;
   constraints: { kind: 'target'; targetKind: 'card'; min: 0; max: number; distinct: true };
 }
 export interface CounterSpendChoiceInteractionMetadata {

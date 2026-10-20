@@ -1009,6 +1009,14 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (containsShirouMealPrivilegedNode(candidateAbility) && !isAcceptedShirouMealAbility(candidateAbility)) {
         issue('shirouMeal.gateway', 'Shirou Meal owner mechanics require an accepted exact whole-ability semantic', id);
       }
+      // The exact effect envelope is not sufficient authority at the archive
+      // boundary.  Only the canonical master.shirou-meal owner archive may
+      // compile these privileged nodes; runtime source ownership is checked
+      // again when an ability is activated/resolved.
+      if (containsShirouMealPrivilegedNode(candidateAbility) &&
+          !(rootId === 'master.shirou-meal' && owner.type === 'master' && owner.id === rootId && cardId.startsWith('master.shirou-meal.skill.'))) {
+        issue('shirouMeal.owner', 'Shirou Meal owner mechanics require the canonical master.shirou-meal owner', id);
+      }
       if (containsCommanderLifecyclePrivilegedNode(candidateAbility) &&
           !isAcceptedCommanderLifecyclePrivilegedAbility(candidateAbility)) {
         issue('commanderLifecycle.gateway', 'Definition-set relocation/recall/retrigger mechanics require an accepted exact whole-ability semantic', id);

@@ -36,7 +36,7 @@ import { isCardCloseForbidden } from './card-close-forbid';
 import { containsShirouMealPrivilegedNode, isAcceptedShirouMealAbility, isShirouMealMenuAbility,
   isShirouMealProcurementAbility, isShirouMealAscensionAbility, shirouMealFoodPlayCost,
   shirouMealMenuChoices, resolveShirouMealAbility, applyShirouMealPower, shuffleOwnedDeckForShirouMeal,
-  canShirouMealProcurement, shirouMealTotalFood, spendAnyShirouMealFood } from './shirou-meal-capability';
+  canShirouMealProcurement, shirouMealTotalFood, spendAnyShirouMealFood, isShirouMealSourceAbility } from './shirou-meal-capability';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
@@ -1818,7 +1818,7 @@ function controllerDiscardBasicAttackIds(s: GameState, controllerId: PlayerId): 
   return s.cards.filter((physical) => physical.ownerPlayerId === controllerId && physical.controllerPlayerId === controllerId &&
     physical.zone === 'discard' && runtime(s).pack.cards[physical.definitionId]?.cardType === 'basic_attack').map((physical) => physical.instanceId);
 }
-function stageAutomaticRecycleKeepDecision(s: GameState, ctx: EffectContext, remainingDraws: number, remainingEffects: RuleNode[]): boolean {
+function stageAutomaticRecycleKeepDecision(s: GameState, ctx: EffectContext, remainingDraws: number, remainingEffects: RuleNode[], chargeShirouMealGluttony: boolean): boolean {
   const provider = acceptedRecycleProvider(s, ctx.controllerId);
   const candidates = s.cards.filter((physical) => physical.ownerPlayerId === ctx.controllerId && physical.zone === 'discard').map((physical) => physical.instanceId);
   if (!provider || candidates.length === 0) return false;
@@ -1832,20 +1832,21 @@ function stageAutomaticRecycleKeepDecision(s: GameState, ctx: EffectContext, rem
       kind: 'automatic_recycle_keep_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
       sourceCardInstanceId: provider.sourceCardId, abilityId: provider.ability.id, createdRevision: runtime(s).revision + 1,
       continuationRef: `${id}:continuation`, controllerId: ctx.controllerId, counterKey: provider.counterKey,
-      candidateIds: [...candidates], keepMax: 3, gain: 1, remainingDraws,
+      candidateIds: [...candidates], keepMax: 3, gain: 1, remainingDraws, chargeShirouMealGluttony,
       constraints: { kind: 'target', targetKind: 'card', min: 0, max, distinct: true },
     },
   };
   return true;
 }
-function drawCardsWithAutomaticRecycle(s: GameState, ctx: EffectContext, count: number, remainingEffects: RuleNode[]): boolean {
+function drawCardsWithAutomaticRecycle(s: GameState, ctx: EffectContext, count: number, remainingEffects: RuleNode[], chargeShirouMealGluttony = true): boolean {
   for (let remaining = count; remaining > 0; remaining--) {
     if (!s.cards.some((physical) => physical.ownerPlayerId === ctx.controllerId && physical.zone === 'deck')) {
       const discard = s.cards.filter((physical) => physical.ownerPlayerId === ctx.controllerId && physical.zone === 'discard');
       if (discard.length === 0) return false;
-      if (stageAutomaticRecycleKeepDecision(s, ctx, remaining, remainingEffects)) return true;
+      if (stageAutomaticRecycleKeepDecision(s, ctx, remaining, remainingEffects, chargeShirouMealGluttony)) return true;
       for (const physical of discard) moveCard(s, physical.instanceId, 'deck');
-      shuffleOwnedDeckForShirouMeal(s, ctx.controllerId, ctx.sourceCardId, ctx.abilityId);
+      if (chargeShirouMealGluttony) shuffleOwnedDeckForShirouMeal(s, ctx.controllerId, ctx.sourceCardId, ctx.abilityId);
+      else shuffle(s, ctx.controllerId);
     }
     const top = s.cards.find((physical) => physical.ownerPlayerId === ctx.controllerId && physical.zone === 'deck');
     if (!top) return false;
@@ -2318,6 +2319,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (containsTimedGlobalResourceSuppressionNode(a.effects) && !isAcceptedTimedGlobalResourceSuppressionAbility(a)) return false;
   if (containsShirouEmiyaPrivilegedNode(a) && !isAcceptedShirouEmiyaAbility(a)) return false;
   if (containsShirouMealPrivilegedNode(a) && !isAcceptedShirouMealAbility(a)) return false;
+  if (containsShirouMealPrivilegedNode(a) && !isShirouMealSourceAbility(s, sourceId, card(s, sourceId).controllerPlayerId, a)) return false;
   if (isShirouMealMenuAbility(a) && (shirouMealMenuChoices(s, card(s, sourceId).controllerPlayerId).length === 0 ||
       card(s, sourceId).zone !== 'field' || runtime(s).cardState[sourceId]?.active !== true)) return false;
   if (isShirouMealProcurementAbility(a) && !canShirouMealProcurement(s, card(s, sourceId).controllerPlayerId)) return false;
@@ -2425,8 +2427,12 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     Number((player(s, card(s, sourceId).controllerPlayerId) as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) return false;
   const activeReuseGrant = liveReuseGrantForAbility(s, sourceControllerId, sourceId, a.id);
   const definitionSideDeckOwnUsage = isAcceptedDefinitionSideDeckAbility(a) && !!a.effects[0] && isDefinitionSideDeckPlayEffect(a.effects[0]!);
+  // Shirou Meal phase actions are paid per valid attribute/meal, not one use
+  // per physical ability per round; their capability handlers enforce the
+  // resource/attribute limits authoritatively.
+  const repeatableShirouMealAction = isShirouMealProcurementAbility(a) || isShirouMealMenuAbility(a);
   if (!isRulerSealUseSemantic(a) && !isCommandSpellCard(s, sourceId) && !isRepeatableSealPowerReplacementAbility(a) && !isAcceptedReactionCounterCapabilityAbility(a) &&
-      !definitionSideDeckOwnUsage && a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber && !activeReuseGrant) return false;
+      !definitionSideDeckOwnUsage && !repeatableShirouMealAction && a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber && !activeReuseGrant) return false;
   if (abilityLimitReached(s, sourceId, a) && !activeReuseGrant) return false;
   if (isAcceptedDefinitionSetRelocationAbility(a) && !definitionSetRelocationPreflight(s, sourceControllerId, a)) return false;
   if (isAcceptedDoubleControllerTerrainAbility(a)) {
@@ -4794,7 +4800,7 @@ function isDeckRecycleReplayGrowthPendingDecisionLiveValid(s: GameState, decisio
     return !!source && source.controllerPlayerId === meta.controllerId && source.zone === 'skill' && !!ability &&
       isAcceptedAutomaticRecycleKeepGainCounterAbility(ability) && str(ability.effects[0]?.counterKey) === meta.counterKey &&
       meta.controllerId === decision.controllerId && meta.remainingDraws >= 1 && Number.isSafeInteger(meta.remainingDraws) &&
-      meta.keepMax === 3 && meta.gain === 1 && exactPlayerArray(meta.candidateIds, currentCandidates) &&
+      meta.keepMax === 3 && meta.gain === 1 && typeof meta.chargeShirouMealGluttony === 'boolean' && exactPlayerArray(meta.candidateIds, currentCandidates) &&
       exactPlayerArray(decision.candidates, currentCandidates) && decision.min === 0 && decision.max === max &&
       meta.constraints.kind === 'target' && meta.constraints.targetKind === 'card' && meta.constraints.min === 0 && meta.constraints.max === max;
   }
@@ -7789,7 +7795,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     if (effect.type === 'draw_cards') {
       const count = numeric(s, ctx, effect.count);
       if (!Number.isSafeInteger(count) || count < 0) reject('invalid_count', 'Invalid draw count');
-      if (!isNormalCardDrawSuppressed(s, ctx.controllerId) && drawCardsWithAutomaticRecycle(s, ctx, count, effects.slice(i + 1))) return;
+      if (!isNormalCardDrawSuppressed(s, ctx.controllerId) && drawCardsWithAutomaticRecycle(s, ctx, count, effects.slice(i + 1), false)) return;
       if (!isNormalCardDrawSuppressed(s, ctx.controllerId)) continue;
     }
     resolveEffect(s, ctx, effect);
@@ -7801,6 +7807,9 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   const sourceDefinition = definition(s, ctx.sourceCardId);
+  if (containsShirouMealPrivilegedNode(a) && !isShirouMealSourceAbility(s, ctx.sourceCardId, ctx.controllerId, a)) {
+    reject('illegal_action', 'Shirou Meal ability requires its owned source card');
+  }
   if (sourceDefinition?.mode !== 'automatic' && !a.effects.some((effect) => effect.type === 'hinako_blood_song')) {
     reject(sourceDefinition?.mode ?? 'unsupported', 'Card requires an adapter or host ruling');
   }
@@ -8930,7 +8939,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
               d.controllerId !== meta.controllerId || playerId !== meta.controllerId || d.context.controllerId !== meta.controllerId ||
               meta.createdRevision !== r.revision || meta.continuationRef !== `${d.id}:continuation` || meta.keepMax !== 3 || meta.gain !== 1 ||
               meta.remainingDraws < 1 || !Number.isSafeInteger(meta.remainingDraws) || meta.constraints.kind !== 'target' ||
-              meta.constraints.targetKind !== 'card' || meta.constraints.min !== 0 || meta.constraints.max !== expectedMax ||
+              meta.constraints.targetKind !== 'card' || meta.constraints.min !== 0 || meta.constraints.max !== expectedMax || typeof meta.chargeShirouMealGluttony !== 'boolean' ||
               d.min !== 0 || d.max !== expectedMax || !exactPlayerArray(meta.candidateIds, currentCandidates) ||
               !exactPlayerArray(d.candidates, currentCandidates) || !Array.isArray(selected) || selected.length > expectedMax ||
               new Set(selected).size !== selected.length || selected.some((id) => !currentCandidates.includes(id))) {
@@ -8938,10 +8947,13 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           }
           const kept = new Set(selected);
           for (const instanceId of currentCandidates) if (!kept.has(instanceId)) moveCard(s, instanceId, 'deck');
-          if (currentCandidates.length > kept.size) shuffle(s, meta.controllerId);
+          if (currentCandidates.length > kept.size) {
+            if (meta.chargeShirouMealGluttony) shuffleOwnedDeckForShirouMeal(s, meta.controllerId, meta.sourceCardInstanceId, meta.abilityId);
+            else shuffle(s, meta.controllerId);
+          }
           setStructuredCounter(s, meta.controllerId, meta.counterKey, structuredCounterValue(s, meta.controllerId, meta.counterKey) + 1);
           delete r.pendingDecision;
-          if (!drawCardsWithAutomaticRecycle(s, d.context, meta.remainingDraws, d.remainingEffects)) {
+          if (!drawCardsWithAutomaticRecycle(s, d.context, meta.remainingDraws, d.remainingEffects, meta.chargeShirouMealGluttony)) {
             executeEffects(s, d.context, d.remainingEffects);
           }
           break;
@@ -9848,7 +9860,9 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     const allowRequiredAdditional = quota === 'regular' && requiredAdditionalIds.has(c.cardInstanceId) && regularAttackChoices > 0;
     const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost, allowedSourceZones);
     if (failure) reject(failure, 'Card cannot be played in this batch');
-    const foodCost = c.faceDown || waiveManaCost ? 0 : shirouMealFoodPlayCost(s, c.cardInstanceId);
+    // waiveManaCost affects only mana. Shirou Meal ascension's food discard is
+    // an independent printed cost and remains payable on effect/free plays.
+    const foodCost = c.faceDown ? 0 : shirouMealFoodPlayCost(s, c.cardInstanceId);
     if (foodCost > 0) shirouMealFoodCosts.set(c.cardInstanceId, foodCost);
     const linkedReduction = linkedAuxiliarySameBatchReductionEligible(s, c.cardInstanceId) ? linkedAuxiliaryOtherAttackCost : 0;
     const cardCost = c.faceDown || waiveManaCost ? 0 : Math.max(minimumManaCost,

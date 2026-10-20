@@ -91,6 +91,25 @@ function isShirouMealDefinition(definition: { id?: string; ownerId?: string; own
   const ownerId = definition?.ownerId ?? definition?.owner?.id;
   return ownerId === 'master.shirou-meal' || (ownerId === undefined && definition?.id?.startsWith('master.shirou-meal.skill.') === true);
 }
+/**
+ * Every Shirou Meal privileged route is source-bound.  Shape alone is not
+ * authority: a foreign owner's card may carry an identical effect envelope,
+ * but it must not be able to borrow Shirou's food/menu/protection handlers.
+ */
+export function isShirouMealSourceAbility(state: GameState, sourceCardId: string, controllerId: PlayerId, ability: AuthoringAbility): boolean {
+  const source = state.cards.find((entry) => entry.instanceId === sourceCardId);
+  if (!source || source.ownerPlayerId !== controllerId || source.controllerPlayerId !== controllerId) return false;
+  const definition = runtime(state).pack.cards[source.definitionId];
+  if (!isShirouMealDefinition(definition) || !definition) return false;
+  const canonical = definition.abilities.find((entry) => entry.id === ability.id);
+  return !!canonical && isAcceptedShirouMealAbility(canonical) && isAcceptedShirouMealAbility(ability);
+}
+function isShirouMealActionSource(state: GameState, sourceCardId: string, controllerId: PlayerId, abilityId: string, predicate: (ability: AuthoringAbility) => boolean): boolean {
+  const source = state.cards.find((entry) => entry.instanceId === sourceCardId);
+  if (!source || source.ownerPlayerId !== controllerId || source.controllerPlayerId !== controllerId) return false;
+  const definition = runtime(state).pack.cards[source.definitionId];
+  return !!definition && isShirouMealDefinition(definition) && definition.abilities.some((entry) => entry.id === abilityId && predicate(entry));
+}
 function foodState(state: GameState, playerId: PlayerId): ShirouMealFoodState {
   const store = (runtime(state).shirouMealFoodByPlayer ??= {});
   const current = store[playerId] ?? { 肉: 0, 蔬菜: 0, 鱼: 0 };
@@ -174,14 +193,18 @@ function validProcurementAttributes(state: GameState, playerId: PlayerId): Shiro
 }
 export function canShirouMealProcurement(state: GameState, playerId: PlayerId): boolean {
   const previous = runtime(state).shirouMealProcurementRoundByPlayer?.[playerId];
-  return previous?.round !== state.round.roundNumber && validProcurementAttributes(state, playerId).length > 0;
+  const available = validProcurementAttributes(state, playerId);
+  const alreadyTaken = previous?.round === state.round.roundNumber ? new Set(previous.attributes) : new Set<string>();
+  return available.some((attribute) => !alreadyTaken.has(attribute));
 }
 export function shirouMealProcurement(state: GameState, playerId: PlayerId, sourceCardId: string, abilityId: string): boolean {
+  if (!isShirouMealActionSource(state, sourceCardId, playerId, abilityId, isShirouMealProcurementAbility)) return false;
   const r = runtime(state); const previous = r.shirouMealProcurementRoundByPlayer?.[playerId];
-  if (previous?.round === state.round.roundNumber) return false;
-  const attributes = validProcurementAttributes(state, playerId);
+  const alreadyTaken = previous?.round === state.round.roundNumber ? new Set(previous.attributes) : new Set<string>();
+  const attributes = validProcurementAttributes(state, playerId).filter((attribute) => !alreadyTaken.has(attribute));
+  if (attributes.length === 0) return false;
   r.shirouMealProcurementRoundByPlayer ??= {};
-  r.shirouMealProcurementRoundByPlayer[playerId] = { round: state.round.roundNumber, attributes: [...attributes] };
+  r.shirouMealProcurementRoundByPlayer[playerId] = { round: state.round.roundNumber, attributes: [...alreadyTaken, ...attributes] };
   for (const attribute of attributes) grantShirouMealFood(state, playerId, FOOD_FOR_ATTRIBUTE[attribute], 1, sourceCardId, abilityId);
   runtime(state).events.push({ type: 'shirou_meal_procurement_resolved', playerId, sourceCardId, abilityId, roundNumber: state.round.roundNumber, movedCount: attributes.length });
   return true;
@@ -199,6 +222,7 @@ function parseMenuChoice(value: string): ShirouMealFood[] {
   return selected as ShirouMealFood[];
 }
 export function resolveShirouMealAbility(state: GameState, ctx: { controllerId: PlayerId; sourceCardId: string; abilityId: string; selections: Record<string, string[]>; event?: AbilityEvent }, ability: AuthoringAbility, findPending: () => boolean): boolean {
+  if (!isShirouMealSourceAbility(state, ctx.sourceCardId, ctx.controllerId, ability)) throw new Error('INVALID_SOURCE_OWNER');
   const effect = ability.effects[0]!;
   if (isShirouMealProcurementAbility(ability)) return shirouMealProcurement(state, ctx.controllerId, ctx.sourceCardId, ctx.abilityId);
   if (isShirouMealAscensionRoundEndAbility(ability)) {
@@ -210,11 +234,11 @@ export function resolveShirouMealAbility(state: GameState, ctx: { controllerId: 
     if (!selected) { if (shirouMealMenuChoices(state, ctx.controllerId).length === 0) throw new Error('INSUFFICIENT_FOOD'); if (findPending()) return true; throw new Error('FOOD_SELECTION_REQUIRED'); }
     const choices = shirouMealMenuChoices(state, ctx.controllerId);
     if (!choices.includes(selected)) throw new Error('INVALID_FOOD_SELECTION');
-    const foods = parseMenuChoice(selected); spendShirouMealFood(state, ctx.controllerId, foods, ctx.sourceCardId, ctx.abilityId);
+    const foods = parseMenuChoice(selected);
     const r = runtime(state); const source = state.cards.find((entry) => entry.instanceId === ctx.sourceCardId);
     if (!source || source.ownerPlayerId !== ctx.controllerId || source.controllerPlayerId !== ctx.controllerId || source.zone !== 'field' || r.cardState[source.instanceId]?.active !== true) throw new Error('INVALID_SOURCE_STATE');
+    spendShirouMealFood(state, ctx.controllerId, foods, ctx.sourceCardId, ctx.abilityId);
     r.roundPlayerPowerAdjustments ??= [];
-    r.roundPlayerPowerAdjustments = r.roundPlayerPowerAdjustments.filter((entry) => !(entry.playerId === ctx.controllerId && entry.round === state.round.roundNumber && entry.sourceCardId === ctx.sourceCardId && entry.abilityId === ctx.abilityId));
     if (foods.every((food) => food === foods[0])) r.roundPlayerPowerAdjustments.push({ playerId: ctx.controllerId, amount: 6, round: state.round.roundNumber, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
     else grantMana(state, ctx.controllerId, 4, { source: 'generic', controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
     r.shirouMealProtectedNextShuffleByPlayer ??= {};

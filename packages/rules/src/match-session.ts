@@ -855,10 +855,10 @@ function isRestorePendingInteraction(value: unknown): boolean {
     case 'automatic_recycle_keep_v1':
       return hasExactRestoreKeys(value, [
         'kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
-        'controllerId','counterKey','candidateIds','keepMax','gain','remainingDraws','constraints',
+        'controllerId','counterKey','candidateIds','keepMax','gain','remainingDraws','chargeShirouMealGluttony','constraints',
       ]) && typeof value.controllerId === 'string' && typeof value.counterKey === 'string' && isRestoreStringArray(value.candidateIds) &&
         new Set(value.candidateIds).size === value.candidateIds.length && value.keepMax === 3 && value.gain === 1 &&
-        isRestoreSafeInteger(value.remainingDraws, 1) && isRestoreInteractionConstraints(value.constraints, ['card']) &&
+        isRestoreSafeInteger(value.remainingDraws, 1) && typeof value.chargeShirouMealGluttony === 'boolean' && isRestoreInteractionConstraints(value.constraints, ['card']) &&
         (value.constraints as Record<string, unknown>).min === 0 && Number.isSafeInteger((value.constraints as Record<string, unknown>).max) &&
         Number((value.constraints as Record<string, unknown>).max) >= 0 && Number((value.constraints as Record<string, unknown>).max) <= 3;
     case 'counter_spend_choice_v1':
