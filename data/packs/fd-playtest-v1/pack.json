@@ -102,7 +102,8 @@
                                  "data/authoring/masters/master.tokiomi.json",
                                  "data/authoring/masters/master.twice.json",
                                  "data/authoring/masters/master.wallachia.json",
-                                 "data/authoring/masters/master.waver.canonical.json"
+                                 "data/authoring/masters/master.waver.canonical.json",
+                                 "data/authoring/masters/master.wodime.json"
                              ],
     "authoringMasterSupportFiles":  [
                                         "data/authoring/masters/master.shirou-emiya.json"

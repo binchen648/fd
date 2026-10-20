@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 64,
+    "masters": 65,
     "servants": 19,
     "events": 20,
     "blockingIssues": 0
@@ -5444,6 +5444,149 @@
       "htmPath": "chm-extract/韦伯·维尔维特.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/韦伯·维尔维特.png",
       "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wodime",
+      "displayName": "基尔什塔利亚·沃戴姆",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/基尔什塔利亚·沃戴姆.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/基尔什塔利亚·沃戴姆.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wodime.overview",
+      "displayName": "基尔什塔利亚·沃戴姆",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/基尔什塔利亚·沃戴姆.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/基尔什塔利亚·沃戴姆.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wodime.skill.ascension",
+      "displayName": "冠位指定",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/基尔什塔利亚·沃戴姆.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/基尔什塔利亚·沃戴姆.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wodime.skill.s1",
+      "displayName": "隐匿者之首",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/基尔什塔利亚·沃戴姆.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/基尔什塔利亚·沃戴姆.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wodime.skill.s1a",
+      "displayName": "天体学",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/基尔什塔利亚·沃戴姆.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/基尔什塔利亚·沃戴姆.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wodime.skill.s2",
+      "displayName": "人理保障天球",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/基尔什塔利亚·沃戴姆.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/基尔什塔利亚·沃戴姆.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wodime.skill.s3",
+      "displayName": "神之遗产",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/基尔什塔利亚·沃戴姆.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/基尔什塔利亚·沃戴姆.png",
+      "imageIndex": 5,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wodime.skill.s4",
+      "displayName": "亚特兰蒂斯异闻带",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/基尔什塔利亚·沃戴姆.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/基尔什塔利亚·沃戴姆.png",
+      "imageIndex": 6,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wodime.skill.s5",
+      "displayName": "奥林匹斯异闻带",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/基尔什塔利亚·沃戴姆.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/基尔什塔利亚·沃戴姆.png",
+      "imageIndex": 7,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wodime.skill.s6",
+      "displayName": "赫菲斯托斯终端",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/基尔什塔利亚·沃戴姆.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/基尔什塔利亚·沃戴姆.png",
+      "imageIndex": 8,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wodime.skill.s7",
+      "displayName": "宙斯的雷霆",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/基尔什塔利亚·沃戴姆.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/基尔什塔利亚·沃戴姆.png",
+      "imageIndex": 9,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wodime.skill.s8",
+      "displayName": "阿芙洛狄忒的心绪",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/基尔什塔利亚·沃戴姆.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/基尔什塔利亚·沃戴姆.png",
+      "imageIndex": 10,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.wodime.skill.s9",
+      "displayName": "德墨忒尔的丰壤",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/基尔什塔利亚·沃戴姆.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/基尔什塔利亚·沃戴姆.png",
+      "imageIndex": 11,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },
