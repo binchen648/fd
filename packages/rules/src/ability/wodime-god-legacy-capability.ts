@@ -59,6 +59,7 @@ function ensureActivated(state: GameState): boolean {
 
 /** Called by the scoring transition after a player status changes to eliminated. */
 export function activateWodimeGodLegacyOnElimination(state: GameState, playerId: string): void {
+  if (!state.abilityRuntime) return;
   const player = state.players.find((candidate) => candidate.id === playerId);
   if (!player || player.status !== 'eliminated') return;
   ensureActivated(state);

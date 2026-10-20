@@ -1,5 +1,6 @@
 import type { GameState } from '../schema/game';
 import type { AbilityEvent } from './types';
+import { canonicalEventPlacementMetadata } from './canonical-event-placement';
 
 const SOURCE_DEFINITION = 'master.wodime.skill.s4';
 const SOURCE_ABILITY = 'wodime.atlantis';
@@ -31,7 +32,7 @@ function isBattlefield(state: GameState, locationId: string): boolean {
 
 function replacementPlacement(state: GameState, old: GameState['eventPlacements'][number], eventCardId: string): GameState['eventPlacements'][number] {
   const ruleInstanceId = `wodime-atlantis-replacement:${state.round.roundNumber}:${old.locationId}:${eventCardId}:${runtime(state).revision}:${state.eventPlacements.length}`;
-  return { ...old, locationId: old.locationId, eventCardId, ruleInstanceId, visibility: { scope: 'public', revealReason: 'wodime_atlantis_replacement' } };
+  return { ...old, ...canonicalEventPlacementMetadata(eventCardId), locationId: old.locationId, eventCardId, ruleInstanceId, visibility: { scope: 'public', revealReason: 'wodime_atlantis_replacement' } };
 }
 
 function replaceAtLocation(state: GameState, old: GameState['eventPlacements'][number]): void {
@@ -40,6 +41,7 @@ function replaceAtLocation(state: GameState, old: GameState['eventPlacements'][n
   shuffleInPlace(state.eventDeck, state.round.roundNumber + state.eventPlacements.length + runtime(state).revision);
   const replacementId = state.eventDeck.shift();
   if (replacementId) state.eventPlacements.push(replacementPlacement(state, old, replacementId));
+  if (replacementId) runtime(state).events.push({ type: 'event_activated', sourceCardId: state.eventPlacements.at(-1)!.ruleInstanceId, abilityId: SOURCE_ABILITY, visibility: 'public' } as any);
 }
 
 export function settleWodimeAtlantisEvent(state: GameState, event: AbilityEvent): void {
@@ -80,6 +82,9 @@ export function settleWodimeAtlantisEvent(state: GameState, event: AbilityEvent)
 export function isWodimeAtlantisRuntimeStateValid(state: GameState): boolean {
   const r = state.abilityRuntime;
   if (!r) return true;
+  const hasLineage = [r.wodimeAtlantisHandledEventPlacementIds, r.wodimeAtlantisPendingBattlefieldRemovalIds, r.wodimeAtlantisConsumedEventPlacementIds]
+    .some((record) => record && Object.keys(record).length > 0);
+  if (hasLineage && !sourceCard(state)) return false;
   for (const record of [r.wodimeAtlantisHandledEventPlacementIds, r.wodimeAtlantisPendingBattlefieldRemovalIds, r.wodimeAtlantisConsumedEventPlacementIds]) {
     if (record && Object.values(record).some((value) => value !== true)) return false;
     if (record === r.wodimeAtlantisPendingBattlefieldRemovalIds && record && Object.keys(record).some((id) => !state.eventPlacements.some((placement) => placement.ruleInstanceId === id))) return false;
