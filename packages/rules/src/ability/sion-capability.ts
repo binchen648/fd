@@ -74,12 +74,14 @@ type SionRuntime = GameState['abilityRuntime'] & { sion?: {
     originalDefinitionId: string; originalName: string; exDefinitionId: string; servantClass: string;
     sourcePath: string; sourceSha256: string; imageIndex: number; imagePath: string; resolution: 'replaced' | 'obtained';
   }>; roundUses: Record<string, number>; trainingSpent: Record<string, number>; restartUsed: Record<string, boolean>;
+  /** Opponent-wide first face-up Noble Phantasm release, persisted across Sion activation and rounds. */
+  trueNameReleasedByPlayer?: Record<string, boolean>;
   s8CloseRound?: Record<string, number>; s14LastTargetRound?: Record<string, number>;
 } };
 function rt(state: GameState): SionRuntime { return state.abilityRuntime as SionRuntime; }
 function store(state: GameState) {
   const r = rt(state); const s = r.sion ??= { experience: {}, territoryWins: {}, covered: {}, trainingTargets: {}, transformedTraining: {}, exProvenance: {}, roundUses: {}, trainingSpent: {}, restartUsed: {} };
-  s.trainingTargets ??= {}; s.trainingSpent ??= {}; s.restartUsed ??= {};
+  s.trainingTargets ??= {}; s.trainingSpent ??= {}; s.restartUsed ??= {}; s.trueNameReleasedByPlayer ??= {};
   s.exProvenance ??= {};
   return s;
 }
@@ -393,10 +395,20 @@ export function settleSionEvent(state: GameState, event: { type: string; playerI
   const s = store(state);
   if (event.type === 'on_card_played' && event.sourceCardId) {
     const played = sourceCard(state, event.sourceCardId); const d = played && rt(state).pack.cards[played.definitionId]; const owner = played && controller(state, played.controllerPlayerId);
-    if (played && d && owner && ((d.cardFace.attributes as string[] | undefined) ?? []).includes('宝具')) for (const sourceId of activeSionSources(state, owner.id, SION_STRUCTURED_EFFECT)) {
+    const playedState = played && rt(state).cardState[played.instanceId];
+    if (played && d && owner && event.playerId === played.controllerPlayerId && playedState?.faceDown !== true && ((d.cardFace.attributes as string[] | undefined) ?? []).includes('宝具')) {
+      const firstTrueNameRelease = !s.trueNameReleasedByPlayer![owner.id];
+      // Record the first true-name release even when no Sion s2 is active or
+      // the players are in different locations; later plays can never become
+      // a false "first" release merely because s2 was activated afterwards.
+      s.trueNameReleasedByPlayer![owner.id] = true;
+      const opposingSionSources = state.players.filter((player) => player.status === 'active' && player.id !== owner.id)
+        .flatMap((player) => activeSionSources(state, player.id, SION_STRUCTURED_EFFECT));
+      if (firstTrueNameRelease) for (const sourceId of opposingSionSources) {
       const source = sourceCard(state, sourceId); if (!source?.definitionId.endsWith('.s2')) continue; const key = `${sourceId}:${owner.id}`;
-      if (s.roundUses[key] === 1 || owner.id === source.controllerPlayerId) continue; const controllerPlayer = controller(state, source.controllerPlayerId); if (!controllerPlayer || controllerPlayer.locationId !== owner.locationId) continue;
+      if (s.roundUses[key] === 1 || owner.id === source.controllerPlayerId) continue; const controllerPlayer = controller(state, source.controllerPlayerId); if (!controllerPlayer || !owner.locationId || !controllerPlayer.locationId || controllerPlayer.locationId !== owner.locationId) continue;
       controllerPlayer.vp += 1; s.experience[sourceId] = (s.experience[sourceId] ?? 0) + 1; s.roundUses[key] = 1;
+      }
     }
   }
   if (event.type === 'controller_combat_action_window' && event.playerId) for (const sourceId of activeSionSources(state, event.playerId, SION_STRUCTURED_EFFECT)) {

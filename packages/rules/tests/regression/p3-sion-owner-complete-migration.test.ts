@@ -104,6 +104,66 @@ describe('P3 owner-complete master.sion', () => {
     })).toThrow();
   });
 
+  it('rewards only an opponent first face-up Noble Phantasm release, including when s2 activates later', () => {
+    const { state } = setup();
+    state.players[1]!.locationId = 'shinto';
+    state.abilityRuntime!.pack.cards['fixture.np'] = {
+      id: 'fixture.np', name: 'fixture np', cardType: 'basic_attack',
+      cardFace: { attributes: ['宝具'], cost: 0, basePower: 1 },
+      playTiming: { phase: 'battle', window: 'controller_play_card_window' }, playRequirements: [], abilities: [], mode: 'automatic',
+    } as any;
+    const addOpponentNp = (suffix: string): string => {
+      const instanceId = `fixture.np:p2:${suffix}`;
+      state.cards.push({ instanceId, definitionId: 'fixture.np', ownerPlayerId: 'p2', controllerPlayerId: 'p2', zone: 'attack_area', visibility: { scope: 'public' } });
+      state.abilityRuntime!.cardState[instanceId] = { active: true, faceDown: false, playedRound: state.round.roundNumber };
+      return instanceId;
+    };
+    const first = addOpponentNp('first');
+    state.abilityRuntime!.cardState[first]!.faceDown = true;
+    rules.processAbilityEvent(state, { id: 'sion-np-hidden', type: 'on_card_played', playerId: 'p2', sourceCardId: first });
+    expect(state.abilityRuntime!.sion!.trueNameReleasedByPlayer?.p2).toBeUndefined();
+    state.abilityRuntime!.cardState[first]!.faceDown = false;
+    rules.processAbilityEvent(state, { id: 'sion-np-first', type: 'on_card_played', playerId: 'p2', sourceCardId: first });
+    expect(state.abilityRuntime!.sion!.trueNameReleasedByPlayer?.p2).toBe(true);
+    const source = add(state, 'master.sion.skill.s2', 'field', true);
+    expect(state.players[0]!.vp).toBe(0);
+    expect(state.abilityRuntime!.sion!.experience[source]).toBeUndefined();
+    const second = addOpponentNp('second');
+    rules.processAbilityEvent(state, { id: 'sion-np-second', type: 'on_card_played', playerId: 'p2', sourceCardId: second });
+    expect(state.players[0]!.vp).toBe(0);
+    expect(state.abilityRuntime!.sion!.experience[source]).toBeUndefined();
+  });
+
+  it('rewards the first opponent release at the shared location and restores the consumed first-release state', () => {
+    const session = rules.createMatchSession({ seed: 20261020, humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'] });
+    const live = (session as unknown as { state: GameState }).state;
+    live.players[0]!.locationId = 'shinto'; live.players[1]!.locationId = 'shinto';
+    live.abilityRuntime!.pack.cards['fixture.np'] = {
+      id: 'fixture.np', name: 'fixture np', cardType: 'basic_attack',
+      cardFace: { attributes: ['宝具'], cost: 0, basePower: 1 },
+      playTiming: { phase: 'battle', window: 'controller_play_card_window' }, playRequirements: [], abilities: [], mode: 'automatic',
+    } as any;
+    const source = `restore-sion-s2:${live.cards.length}`;
+    live.cards.push({ instanceId: source, definitionId: 'master.sion.skill.s2', ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'field', visibility: { scope: 'public' } });
+    live.abilityRuntime!.cardState[source] = { active: true, faceDown: false, playedRound: live.round.roundNumber };
+    const first = `restore-np:first:${live.cards.length}`;
+    live.cards.push({ instanceId: first, definitionId: 'fixture.np', ownerPlayerId: 'p2', controllerPlayerId: 'p2', zone: 'attack_area', visibility: { scope: 'public' } });
+    live.abilityRuntime!.cardState[first] = { active: true, faceDown: false, playedRound: live.round.roundNumber };
+    rules.processAbilityEvent(live, { id: 'restore-sion-np-first', type: 'on_card_played', playerId: 'p2', sourceCardId: first });
+    expect(live.players[0]!.vp).toBe(1);
+    expect(live.abilityRuntime!.sion!.experience[source]).toBe(1);
+    const durable = session.serializeSession();
+    const restored = rules.restoreMatchSession(durable, { restorePackKind: 'trusted_authoring_fixture' });
+    const restoredLive = (restored as unknown as { state: GameState }).state;
+    expect(restoredLive.abilityRuntime!.sion!.trueNameReleasedByPlayer?.p2).toBe(true);
+    const second = `restore-np:second:${restoredLive.cards.length}`;
+    restoredLive.cards.push({ instanceId: second, definitionId: 'fixture.np', ownerPlayerId: 'p2', controllerPlayerId: 'p2', zone: 'attack_area', visibility: { scope: 'public' } });
+    restoredLive.abilityRuntime!.cardState[second] = { active: true, faceDown: false, playedRound: restoredLive.round.roundNumber };
+    rules.processAbilityEvent(restoredLive, { id: 'restore-sion-np-second', type: 'on_card_played', playerId: 'p2', sourceCardId: second });
+    expect(restoredLive.players[0]!.vp).toBe(1);
+    expect(restoredLive.abilityRuntime!.sion!.experience[source]).toBe(1);
+  });
+
   it('settles territory wins through battle events and removes concealment on loss', () => {
     const { state } = setup();
     state.players[0]!.locationId = 'magic_workshop';
