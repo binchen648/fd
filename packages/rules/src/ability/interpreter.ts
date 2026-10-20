@@ -49,7 +49,7 @@ import {
 import { containsSiegPrivilegedNode, isAcceptedSiegAbility, isSiegBalmungFreePlayAbility, isSiegBalmungPenaltyAbility, isSiegDragonCommandAbility, isSiegGalvanismAbility, isSiegSyncState, isSiegSyncStrengthAbility, SIEG_BALMUNG_FREE_PLAY_EFFECT, SIEG_BALMUNG_PENALTY_EFFECT, SIEG_DRAGON_COMMAND_EFFECT, SIEG_SYNC_STATE_KEY, SIEG_SYNC_STRENGTH_EFFECT } from './sieg-capability';
 import { containsSionPrivilegedNode, isAcceptedSionAbility, isSionCoveredCard, resolveSionChoice, resolveSionEffect, settleSionEvent, sionCardPlayCommandSealCost, sionMagicAttackSuppressed, sionPowerBonus } from './sion-capability';
 import { containsTaigaPrivilegedNode, isAcceptedTaigaAbility, resolveTaigaEffect, taigaActive, taigaPowerBonus } from './taiga-capability';
-import { containsTokiomiPrivilegedNode, isAcceptedTokiomiAbility, resolveTokiomiEffect, tokiomiFireballModifier, tokiomiBurningPowerPenalty, tokiomiProvisionItemDestination, tokiomiItemUsedThisRound, tokiomiCanUseItem, tokiomiRecordItemUse, tokiomiSetBurningMarker, tokiomiRemoveBurningMarker, tokiomiCanMarkBurning, tokiomiCanRemoveBurning } from './tokiomi-capability';
+import { containsTokiomiPrivilegedNode, isAcceptedTokiomiAbility, resolveTokiomiEffect, tokiomiFireballModifier, tokiomiBurningPowerPenalty, tokiomiProvisionItemDestination, tokiomiItemUsedThisRound, tokiomiCanUseItem, tokiomiRecordItemUse } from './tokiomi-capability';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
@@ -2801,10 +2801,6 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
   ] : [];
   if (r.hostRequests.length) return [];
   const result: LegalAction[] = [];
-  for (const source of s.cards.filter((card) => card.controllerPlayerId === playerId)) {
-    if (tokiomiCanMarkBurning(s, playerId, source.instanceId)) result.push({ type: 'set_tokiomi_burning_marker', cardInstanceId: source.instanceId });
-    if (tokiomiCanRemoveBurning(s, playerId, source.instanceId)) result.push({ type: 'remove_tokiomi_burning_marker', cardInstanceId: source.instanceId });
-  }
   const staged = stagedAttacks(s)[playerId] ?? [];
   if (staged.length && s.round.prioritySeat === p.seat) {
     const faceDownRequired = effectiveLocationRestrictionRequiresFaceDownStandardAttack(s, playerId);
@@ -9010,17 +9006,6 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
   const r = runtime(s); const legal = getLegalActions(s, playerId);
   if (!command || typeof command !== 'object') reject('illegal_action', 'Invalid command');
   switch (command.type) {
-    case 'set_tokiomi_burning_marker': {
-      const source = s.cards.find((card) => card.instanceId === command.cardInstanceId && card.controllerPlayerId === playerId);
-      if (!source || !tokiomiCanMarkBurning(s, playerId, command.cardInstanceId) || !legal.some((action) => action.type === 'set_tokiomi_burning_marker' && action.cardInstanceId === command.cardInstanceId)) reject('illegal_action', 'Tokiomi burning marker action is not legal');
-      tokiomiSetBurningMarker(s, command.cardInstanceId);
-      break;
-    }
-    case 'remove_tokiomi_burning_marker': {
-      const source = s.cards.find((card) => card.instanceId === command.cardInstanceId && card.controllerPlayerId === playerId);
-      if (!source || !tokiomiCanRemoveBurning(s, playerId, command.cardInstanceId) || !legal.some((action) => action.type === 'remove_tokiomi_burning_marker' && action.cardInstanceId === command.cardInstanceId) || !tokiomiRemoveBurningMarker(s, command.cardInstanceId)) reject('illegal_action', 'Tokiomi burning marker removal is not legal');
-      break;
-    }
     case 'play_card': {
       const owned = s.cards.find(c => c.instanceId === command.cardInstanceId && c.controllerPlayerId === playerId);
       if (!owned) reject('illegal_action', 'Card is not available');

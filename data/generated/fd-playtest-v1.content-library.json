@@ -36538,7 +36538,7 @@
           }
         ],
         "initialPlacement": "outside_game",
-        "mode": "automatic",
+        "mode": "host_adjudicated",
         "ownerId": "master.tokiomi",
         "playKind": "support",
         "destinationZone": "field"
@@ -55554,11 +55554,11 @@
       "master.tiamat": "master.tiamat.command-spell",
       "master.tokiomi": "master.tokiomi.command-spell"
     },
-    "definitionHash": "1368308ba0ed75a3ac34016e58b5d0f32439fb287c186be0d4195bda5e08c271",
+    "definitionHash": "da9c1126ba12992cb5b44a04cc8d86bcdb04caa28445446a9d51e19ae79bd860",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "1368308ba0ed75a3ac34016e58b5d0f32439fb287c186be0d4195bda5e08c271"
+      "definitionHash": "da9c1126ba12992cb5b44a04cc8d86bcdb04caa28445446a9d51e19ae79bd860"
     },
     "sourceMap": {
       "master.shinji.skill.ascension": {

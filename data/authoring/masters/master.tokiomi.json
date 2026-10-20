@@ -1,12 +1,208 @@
 {
-  "schemaVersion":"fd-card-authoring-v1","archiveType":"master_skill_card_archive","id":"master.tokiomi","name":"远坂时臣","class":"Master",
-  "sourcePolicy":{"phase3EvidenceCommit":"4b6b979e","referenceMetadataCommit":"b2f9fa15fba07c63530bbf4612b03b8b704755f9","note":"Frozen three-skill scope. Printed text and generated source hashes are preserved exactly from the Phase 3 inventory; runtime routes use the authenticated Tokiomi gateway and generic production primitives.","sourceLocators":{"development":"Fate_Domination-开发版/images/masters/远坂时臣.png#master.tokiomi/远坂时臣","legacy":{"master.tokiomi.skill.ascension":"legacy-content.json#master/master.tokiomi/ascension","master.tokiomi.skill.s1":"legacy-content.json#master/master.tokiomi/s1","master.tokiomi.skill.s2":"legacy-content.json#master/master.tokiomi/s2"},"generated":{"master.tokiomi.skill.ascension":"src/content/generated/legacy-content.json#masters[12].skills[2].text#line=1 sha256=0000f8f3790a2748d6862463abbd71bccf18448538378e3abd9415c9bfa755d8;line=2 sha256=7e11d40c1395a450fa4b0de330ca981dda45cdbe053a18af93efa2d6aa23bdb4","master.tokiomi.skill.s1":"src/content/generated/legacy-content.json#masters[12].skills[0].text#line=1 sha256=1b9d0afa8f14520cb93d03b56c0bb8ac65a5802f8f2b7d33ca8acaf9016ede9c","master.tokiomi.skill.s2":"src/content/generated/legacy-content.json#masters[12].skills[1].text#line=1 sha256=4dcdbe858fe81e809aa7718fcce90844e4c3b122c04f3a745d982217e379d1d2"}}},
-  "cards":[
-    {"id":"master.tokiomi.skill.s1","aliases":["s1"],"legacyId":"s1","name":"元素使","cardType":"master_skill","owner":{"type":"master","id":"master.tokiomi"},"printedText":"将【火炎弹】加入你的技能区。","cardFace":{"typeLabel":"被动","attributes":[],"cost":0,"basePower":0},"playTiming":{"phase":"action","window":"controller_play_card_window"},"playRequirements":[],"abilities":[{"id":"tokiomi.elementalist","kind":"forced_trigger","printedClause":"将【火炎弹】加入你的技能区。","activation":{"trigger":"game_start"},"effects":[],"creates":[{"type":"create_card","cardId":"master.tokiomi.generated.fireball","to":{"zone":"skill","owner":"controller"}}],"execution":{"mode":"automatic","allowedOperations":[]}}],"verification":{"implementationStatus":"complete"}},
-    {"id":"master.tokiomi.skill.s2","aliases":["s2"],"legacyId":"s2","name":"粗心导师","cardType":"master_skill","owner":{"type":"master","id":"master.tokiomi"},"printedText":"将4件【道具】加入游戏。回合顺位倒数两位的玩家可以在他们的回合使用1件【道具】。远坂时臣使用【道具】时无法获得战果。","cardFace":{"typeLabel":"被动","attributes":[],"cost":0,"basePower":0},"playTiming":{"phase":"action","window":"controller_play_card_window"},"playRequirements":[],"abilities":[{"id":"tokiomi.careless-tutor","kind":"forced_trigger","printedClause":"将4件【道具】加入游戏。回合顺位倒数两位的玩家可以在他们的回合使用1件【道具】。远坂时臣使用【道具】时无法获得战果。","activation":{"trigger":"game_start"},"effects":[],"creates":[{"type":"create_card","cardId":"master.tokiomi.generated.item","to":{"zone":"deck","owner":"controller"}},{"type":"create_card","cardId":"master.tokiomi.generated.item","to":{"zone":"deck","owner":"controller"}},{"type":"create_card","cardId":"master.tokiomi.generated.item","to":{"zone":"deck","owner":"controller"}},{"type":"create_card","cardId":"master.tokiomi.generated.item","to":{"zone":"deck","owner":"controller"}}],"execution":{"mode":"automatic","allowedOperations":[]}}],"verification":{"implementationStatus":"complete"}},
-    {"id":"master.tokiomi.skill.ascension","aliases":["ascension"],"legacyId":"ascension","name":"赫须绅士的令印","cardType":"master_skill","owner":{"type":"master","id":"master.tokiomi"},"initialPlacement":"outside_game","printedText":"【火炎弹】+2魔力消耗与威力。\n【燃烧】印记更改为-3合计威力且移除时需额外花费2点魔力。","cardFace":{"typeLabel":"升华技","attributes":[],"cost":0,"basePower":0},"playTiming":{"phase":"action","window":"controller_play_card_window"},"playRequirements":[],"abilities":[{"id":"tokiomi.ascension.crest","kind":"passive","printedClause":"【火炎弹】+2魔力消耗与威力。\n【燃烧】印记更改为-3合计威力且移除时需额外花费2点魔力。","activation":{"trigger":"while_active"},"conditions":[],"targets":[],"cost":[],"creates":[],"ruleModifiers":[],"lifecycle":{},"responseWindow":{},"limit":{},"visibility":{},"effects":[{"type":"tokiomi_crest_of_command"}],"execution":{"mode":"automatic","allowedOperations":[]}}],"verification":{"implementationStatus":"complete"}},
-    {"id":"master.tokiomi.generated.fireball","aliases":["火炎弹"],"name":"火炎弹","cardType":"master_skill","owner":{"type":"master","id":"master.tokiomi"},"printedText":"火炎弹。","cardFace":{"typeLabel":"力量","attributes":["力量"],"cost":2,"basePower":2},"playTiming":{"phase":"action","window":"controller_play_card_window"},"playRequirements":[],"abilities":[],"verification":{"implementationStatus":"complete"}},
-    {"id":"master.tokiomi.generated.item","aliases":["道具"],"name":"道具","cardType":"item","owner":{"type":"master","id":"master.tokiomi"},"printedText":"道具。","cardFace":{"typeLabel":"道具","attributes":[],"cost":0,"basePower":0},"playTiming":{"phase":"action","window":"controller_play_card_window"},"playRequirements":[],"abilities":[],"verification":{"implementationStatus":"complete"}}
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.tokiomi",
+  "name": "远坂时臣",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "4b6b979e",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen three-skill scope. Printed text and generated source hashes are preserved exactly from the Phase 3 inventory; runtime routes use the authenticated Tokiomi gateway and generic production primitives. The ascension Fireball modifier is executable; the printed Burning marker producer/removal transaction is HOST_ADJUDICATED because this repository has no generic burning-marker lifecycle. record_master_directive remains the audit boundary until that shared primitive exists.",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版/images/masters/远坂时臣.png#master.tokiomi/远坂时臣",
+      "legacy": {
+        "master.tokiomi.skill.ascension": "legacy-content.json#master/master.tokiomi/ascension",
+        "master.tokiomi.skill.s1": "legacy-content.json#master/master.tokiomi/s1",
+        "master.tokiomi.skill.s2": "legacy-content.json#master/master.tokiomi/s2"
+      },
+      "generated": {
+        "master.tokiomi.skill.ascension": "src/content/generated/legacy-content.json#masters[12].skills[2].text#line=1 sha256=0000f8f3790a2748d6862463abbd71bccf18448538378e3abd9415c9bfa755d8;line=2 sha256=7e11d40c1395a450fa4b0de330ca981dda45cdbe053a18af93efa2d6aa23bdb4",
+        "master.tokiomi.skill.s1": "src/content/generated/legacy-content.json#masters[12].skills[0].text#line=1 sha256=1b9d0afa8f14520cb93d03b56c0bb8ac65a5802f8f2b7d33ca8acaf9016ede9c",
+        "master.tokiomi.skill.s2": "src/content/generated/legacy-content.json#masters[12].skills[1].text#line=1 sha256=4dcdbe858fe81e809aa7718fcce90844e4c3b122c04f3a745d982217e379d1d2"
+      }
+    }
+  },
+  "cards": [
+    {
+      "id": "master.tokiomi.skill.s1",
+      "aliases": ["s1"],
+      "legacyId": "s1",
+      "name": "元素使",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.tokiomi" },
+      "printedText": "将【火炎弹】加入你的技能区。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "tokiomi.elementalist",
+          "kind": "forced_trigger",
+          "printedClause": "将【火炎弹】加入你的技能区。",
+          "activation": { "trigger": "game_start" },
+          "effects": [],
+          "creates": [
+            {
+              "type": "create_card",
+              "cardId": "master.tokiomi.generated.fireball",
+              "to": { "zone": "skill", "owner": "controller" }
+            }
+          ],
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.tokiomi.skill.s2",
+      "aliases": ["s2"],
+      "legacyId": "s2",
+      "name": "粗心导师",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.tokiomi" },
+      "printedText": "将4件【道具】加入游戏。回合顺位倒数两位的玩家可以在他们的回合使用1件【道具】。远坂时臣使用【道具】时无法获得战果。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "tokiomi.careless-tutor",
+          "kind": "forced_trigger",
+          "printedClause": "将4件【道具】加入游戏。回合顺位倒数两位的玩家可以在他们的回合使用1件【道具】。远坂时臣使用【道具】时无法获得战果。",
+          "activation": { "trigger": "game_start" },
+          "effects": [],
+          "creates": [
+            {
+              "type": "create_card",
+              "cardId": "master.tokiomi.generated.item",
+              "to": { "zone": "deck", "owner": "controller" }
+            },
+            {
+              "type": "create_card",
+              "cardId": "master.tokiomi.generated.item",
+              "to": { "zone": "deck", "owner": "controller" }
+            },
+            {
+              "type": "create_card",
+              "cardId": "master.tokiomi.generated.item",
+              "to": { "zone": "deck", "owner": "controller" }
+            },
+            {
+              "type": "create_card",
+              "cardId": "master.tokiomi.generated.item",
+              "to": { "zone": "deck", "owner": "controller" }
+            }
+          ],
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.tokiomi.skill.ascension",
+      "aliases": ["ascension"],
+      "legacyId": "ascension",
+      "name": "赫须绅士的令印",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.tokiomi" },
+      "initialPlacement": "outside_game",
+      "printedText": "【火炎弹】+2魔力消耗与威力。\n【燃烧】印记更改为-3合计威力且移除时需额外花费2点魔力。",
+      "cardFace": {
+        "typeLabel": "升华技",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "tokiomi.ascension.crest",
+          "kind": "passive",
+          "printedClause": "【火炎弹】+2魔力消耗与威力。\n【燃烧】印记更改为-3合计威力且移除时需额外花费2点魔力。",
+          "activation": { "trigger": "while_active" },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [{ "type": "tokiomi_crest_of_command" }],
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.tokiomi.generated.fireball",
+      "aliases": ["火炎弹"],
+      "name": "火炎弹",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.tokiomi" },
+      "printedText": "火炎弹。",
+      "cardFace": {
+        "typeLabel": "力量",
+        "attributes": ["力量"],
+        "cost": 2,
+        "basePower": 2
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [],
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.tokiomi.generated.item",
+      "aliases": ["道具"],
+      "name": "道具",
+      "cardType": "item",
+      "owner": { "type": "master", "id": "master.tokiomi" },
+      "printedText": "道具。",
+      "cardFace": {
+        "typeLabel": "道具",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [],
+      "verification": { "implementationStatus": "complete" }
+    }
   ],
-  "sources":[{"id":"development_card_images","type":"development_image_set","imageOrder":["../../Fate_Domination-开发版/images/masters/远坂时臣.png"]}]
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": ["../../Fate_Domination-开发版/images/masters/远坂时臣.png"]
+    }
+  ]
 }

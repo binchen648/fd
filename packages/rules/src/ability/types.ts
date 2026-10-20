@@ -925,15 +925,11 @@ export interface ChooseTargetAction { type: 'choose_target'; decisionId: string;
 export interface ResolveResponseAction { type: 'resolve_response'; windowId: string; cardInstanceId: string; abilityId: string }
 export interface DeclineWindowAction { type: 'decline_this_window'; windowId: string }
 export interface DeployPlayerAction { type: 'deploy_player'; locationId: string }
-export interface TokiomiSetBurningMarkerAction { type: 'set_tokiomi_burning_marker'; cardInstanceId: string }
-export interface TokiomiRemoveBurningMarkerAction { type: 'remove_tokiomi_burning_marker'; cardInstanceId: string }
 export type LegalAction = PlayCardAction | StageAttackCardAction | ConfirmStagedAttackAction | CancelStagedAttackAction |
-  ActivateAbilityAction | ChooseTargetAction | ResolveResponseAction | DeclineWindowAction | DeployPlayerAction |
-  TokiomiSetBurningMarkerAction | TokiomiRemoveBurningMarkerAction;
+  ActivateAbilityAction | ChooseTargetAction | ResolveResponseAction | DeclineWindowAction | DeployPlayerAction;
 export type AbilityCommand = PlayCardAction | (ActivateAbilityAction & { variables?: Record<string, number> }) |
   { type: 'choose_target'; decisionId: string; selectedIds: string[] } | ResolveResponseAction | DeclineWindowAction |
-  { type: 'pass'; windowId: string } | DeployPlayerAction | StageAttackCardAction | ConfirmStagedAttackAction | CancelStagedAttackAction |
-  TokiomiSetBurningMarkerAction | TokiomiRemoveBurningMarkerAction;
+  { type: 'pass'; windowId: string } | DeployPlayerAction | StageAttackCardAction | ConfirmStagedAttackAction | CancelStagedAttackAction;
 export interface AbilityPlayerView {
   revision: number; phase: PhaseName; round: number; legalActions: LegalAction[];
   players: { id: PlayerId; seat: number; mana: number; vp: number; commandSpells?: number; locationId?: string; masterCardId: string; handCount: number; deckCount: number; servantPackage?: ServantPackage }[];
