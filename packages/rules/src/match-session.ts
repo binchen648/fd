@@ -750,6 +750,17 @@ function isRestorePendingInteraction(value: unknown): boolean {
       typeof value.kind !== 'string' || typeof value.sourceCardInstanceId !== 'string' || typeof value.abilityId !== 'string' ||
       !isRestoreSafeInteger(value.createdRevision) || typeof value.continuationRef !== 'string') return false;
   switch (value.kind) {
+    case 'sion_choice_v1': {
+      const modes = ['training', 'riding', 'hunt', 'execution', 'avenger', 'ruler', 'abyss', 'berserk'];
+      const keys = Object.keys(value).sort();
+      const base = ['abilityId','candidateIds','cancelPolicy','constraints','continuationRef','controllerId','createdRevision','kind','mode','round','sourceCardInstanceId','template','visibility'];
+      const withOptions = [...base, 'options'].sort();
+      if (!(keys.length === base.length && keys.every((key, index) => key === base.sort()[index]) || keys.length === withOptions.length && keys.every((key, index) => key === withOptions[index]))) return false;
+      return typeof value.controllerId === 'string' && modes.includes(String(value.mode)) && isRestoreSafeInteger(value.round, 1) &&
+        isRestoreStringArray(value.candidateIds) && new Set(value.candidateIds).size === value.candidateIds.length &&
+        (value.options === undefined || isRestoreStringArray(value.options)) && isRestoreInteractionConstraints(value.constraints, ['card','player','location','choice']) &&
+        isRestoreSafeInteger((value.constraints as Record<string, unknown>).min) && isRestoreSafeInteger((value.constraints as Record<string, unknown>).max);
+    }
     case 'hakuno_m_challenge_v1': {
       const stages = ['branch', 'initiator_throw', 'opponent_throw'];
       const throws = ['rock', 'paper', 'scissors'];

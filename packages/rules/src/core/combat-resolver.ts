@@ -19,6 +19,7 @@ import { applyLinkedOwnerCombatPowerSharing, playerHasLinkedOwnerLossImmunity, p
 import { applyTerrainAdvantageOverride } from '../ability/terrain-advantage-override';
 import { playerCombatTotalPowerAdjustment } from '../ability/owner-self-mechanics';
 import { dynamicUnusedEngagedSealPowerAdjustment } from '../ability/command-seal-power-capability';
+import { sionTerritoryAggregateBonus } from '../ability/sion-capability';
 import { shouldEachBattleWinnerReceiveFullReward } from '../ability/combat-reward-distribution';
 import { controllerHasCompetitionRewardPlunderReplacement } from '../ability/battle-plunder-replay-capability';
 import { movementCompetitionRewardSuppressed, roundLocationTerrainReplacement } from '../ability/round-location-supply-capability';
@@ -460,7 +461,7 @@ export function deriveBattleParticipantsFromState(
       }
       const participant = {
         playerId: player.id,
-        totalPower: definitions.filter(entry => !state.abilityRuntime?.pack.cards[entry.id]).reduce((sum, entry) => sum + (entry.basePower ?? 0), 0) + authoredPower + persistentPowerAdjustment + playerCombatTotalPowerAdjustment(state, player.id) + dynamicUnusedEngagedSealPowerAdjustment(state, player.id),
+        totalPower: definitions.filter(entry => !state.abilityRuntime?.pack.cards[entry.id]).reduce((sum, entry) => sum + (entry.basePower ?? 0), 0) + authoredPower + sionTerritoryAggregateBonus(state, player.id) + persistentPowerAdjustment + playerCombatTotalPowerAdjustment(state, player.id) + dynamicUnusedEngagedSealPowerAdjustment(state, player.id),
         attackTags: definitions.flatMap((entry) => entry.tags).concat(authoredAttacks.flatMap(card =>
           getEffectiveCardAttributes(state, card.instanceId))),
         externalSkillEffects,

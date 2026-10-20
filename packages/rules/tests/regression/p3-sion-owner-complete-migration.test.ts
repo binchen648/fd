@@ -68,6 +68,7 @@ describe('P3 owner-complete master.sion', () => {
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: source, abilityId: 'sion.s13.avenger' }).ok).toBe(false);
     const paid = setup(); const paidSource = add(paid.state, 'master.sion.skill.s13', 'field', true);
     const discard = add(paid.state, 'basic.fixture', 'discard', true);
+    paid.state.abilityRuntime!.pack.cards['basic.fixture'] = { id: 'basic.fixture', name: 'basic', cardType: 'basic_attack', cardFace: { attributes: ['力量'], cost: 0, basePower: 1 }, playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], abilities: [], mode: 'automatic' } as any;
     paid.state.players[0]!.vp = 2;
     expect(rules.dispatchAbilityCommand(paid.state, 'p1', { type: 'activate_ability', cardInstanceId: paidSource, abilityId: 'sion.s13.avenger' }).ok).toBe(true);
     const decision = paid.state.abilityRuntime!.pendingDecision!;
@@ -108,7 +109,8 @@ describe('P3 owner-complete master.sion', () => {
     const attack = add(state, basic.id, 'attack_area', true);
     expect(rules.calculateCardPower(state, attack).value).toBe(2);
     rules.processAbilityEvent(state, { id: 'sion-territory-win', type: 'after_controller_wins_battle', playerId: 'p1' });
-    expect(rules.calculateCardPower(state, attack).value).toBe(3);
+    expect(rules.calculateCardPower(state, attack).value).toBe(2);
+    expect(rules.deriveBattleParticipantsFromState(state, 'magic_workshop').find((entry) => entry.playerId === 'p1')?.totalPower).toBe(3);
 
     const concealment = add(state, 'master.sion.skill.s10', 'field', true);
     rules.processAbilityEvent(state, { id: 'sion-concealment-loss', type: 'after_controller_loses_battle', playerId: 'p1' });
@@ -127,6 +129,16 @@ describe('P3 owner-complete master.sion', () => {
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: library.instanceId, abilityId: 'sion.s2.library' }).ok).toBe(true);
     expect((state.abilityRuntime!.cardState[covered] as any).sionCostReduction).toBe(1);
     expect(state.cards.find((card) => card.instanceId === library.instanceId)?.zone).toBe('removed_from_game');
+    const cafeteria = state.cards.find((card) => card.definitionId === 'master.sion.skill.s3')!;
+    state.abilityRuntime!.sion!.experience[cafeteria.instanceId] = 2;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: cafeteria.instanceId, abilityId: 'sion.s3.cafeteria' }).ok).toBe(false);
+    expect(state.cards.find((card) => card.instanceId === covered)?.definitionId).toBe('servant.fixture.skill');
+    const gym = state.cards.find((card) => card.definitionId === 'master.sion.skill.s4')!;
+    state.abilityRuntime!.sion!.experience[gym.instanceId] = 2;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: gym.instanceId, abilityId: 'sion.s4.gym' }).ok).toBe(true);
+    const gymDecision = state.abilityRuntime!.pendingDecision!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: gymDecision.id, selectedIds: ['attack_strength'] }).ok).toBe(true);
+    expect(state.cards.some((card) => card.generatedBy === gym.instanceId && card.zone === 'hand' && state.abilityRuntime!.pack.cards[card.definitionId]?.cardFace.basePower === 5)).toBe(true);
 
     state.abilityRuntime!.pack.cards['basic.fixture'] = { id: 'basic.fixture', name: 'basic', cardType: 'basic_attack', cardFace: { attributes: ['力量'], cost: 0, basePower: 1 }, playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], abilities: [], mode: 'automatic' } as any;
     state.round.activePhase = 'action'; const riding = add(state, 'master.sion.skill.s8', 'field', true); const hand = add(state, 'basic.fixture', 'hand', true);
@@ -160,6 +172,44 @@ describe('P3 owner-complete master.sion', () => {
     expect(state.players[1]!.status).toBe('eliminated');
     expect(state.cards.find((card) => card.instanceId === lucky)?.visibility.scope).toBe('public');
     expect(state.cards.find((card) => card.instanceId === deck)?.zone).toBe('hand');
+  });
+
+  it('restore-validates Sion continuation, owner/controller, source lifecycle, and candidate freshness', () => {
+    const { state } = setup();
+    state.abilityRuntime!.pack.cards['basic.restore'] = { id: 'basic.restore', name: 'restore', cardType: 'basic_attack', cardFace: { attributes: ['力量'], cost: 0, basePower: 1 }, playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], abilities: [], mode: 'automatic' } as any;
+    const source = add(state, 'master.sion.skill.s8', 'field', true); add(state, 'basic.restore', 'hand', true);
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: source, abilityId: 'sion.s8.riding' }).ok).toBe(true);
+    const decision = state.abilityRuntime!.pendingDecision!;
+    expect(rules.isCanonicalGenericPendingDecisionForRestore(state, decision)).toBe(true);
+    const forged = structuredClone(decision); forged.controllerId = 'p2';
+    expect(rules.isCanonicalGenericPendingDecisionForRestore(state, forged)).toBe(false);
+    const crossSession = structuredClone(decision); crossSession.context.sourceCardId = 'other-session-source';
+    expect(rules.isCanonicalGenericPendingDecisionForRestore(state, crossSession)).toBe(false);
+    const stale = structuredClone(decision); state.cards.find((card) => card.instanceId === source)!.zone = 'skill';
+    expect(rules.isCanonicalGenericPendingDecisionForRestore(state, stale)).toBe(false);
+  });
+
+  it('resolves Berserk random count and Restart redeployment/event discard through production commands', () => {
+    const { state } = setup();
+    state.locationConfig.enabledLocationIds = ['miyama_town', 'shinto', 'magic_workshop', 'recon', 'moon_holy_grail'];
+    state.round.activePhase = 'action';
+    const berserk = add(state, 'master.sion.skill.s11', 'field', true);
+    for (let i = 0; i < 3; i += 1) add(state, `fixture.deck.${i}`, 'deck', false);
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: berserk, abilityId: 'sion.s11.berserk' }).ok).toBe(true);
+    const berserkDecision = state.abilityRuntime!.pendingDecision!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: berserkDecision.id, selectedIds: ['2'] }).ok).toBe(true);
+    expect(state.cards.filter((card) => card.zone === 'removed_from_game' && card.definitionId.startsWith('fixture.deck.'))).toHaveLength(2);
+    expect(state.abilityRuntime!.cardState[berserk]?.roundPowerBonus?.amount).toBe(8);
+
+    state.round.activePhase = 'combat';
+    const restart = add(state, 'master.sion.skill.s15', 'field', true);
+    state.players[1]!.locationId = 'moon_holy_grail';
+    state.eventPlacements.push({ locationId: 'moon_holy_grail', eventCardId: 'fixture.event', visibility: { scope: 'public' } });
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: restart, abilityId: 'sion.s15.restart' }).ok).toBe(true);
+    expect(state.players[1]!.locationId).not.toBe('moon_holy_grail');
+    expect(state.eventPlacements).toHaveLength(0);
+    expect(state.eventDiscardPile?.map((event) => event.eventCardId)).toEqual(['fixture.event']);
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: restart, abilityId: 'sion.s15.restart' }).ok).toBe(false);
   });
 });
 

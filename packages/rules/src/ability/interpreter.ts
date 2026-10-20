@@ -1491,6 +1491,10 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     result.value = 0;
     result.lines.push({ label: 'definition_side_deck_forced_zero', value: 0 });
   }
+  if (sionMagicAttackSuppressed(s, sourceId) && result.value !== 0) {
+    result.value = 0;
+    result.lines.push({ label: 'sion_magic_immunity_zero_final', value: 0 });
+  }
   return result;
 }
 
@@ -5396,6 +5400,7 @@ export function isPrintedManaPowerBonusStateValidForRestore(s: GameState): boole
   } catch{return false;}
 }
 export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decision: PendingDecision): boolean {
+  if (decision.interaction?.kind === 'sion_choice_v1') return isSionChoicePendingDecisionLiveValid(s, decision);
   if (decision.interaction?.kind === 'mystic_code_recon_escape_v1') return isMysticCodeReconEscapePendingDecisionLiveValid(s,decision);
   if (decision.interaction?.kind === 'mystic_code_recovery_arm_v1') return isMysticCodeRecoveryArmPendingDecisionLiveValid(s,decision);
   if (decision.interaction?.kind === 'mystic_code_battle_recovery_v1') return isMysticCodeBattleRecoveryPendingDecisionLiveValid(s,decision);
@@ -5571,6 +5576,45 @@ function createPrivateOptionalHandPlayInteraction(s: GameState, ctx: EffectConte
 
 function exactPlayerArray(left: readonly string[], right: readonly string[]): boolean {
   return left.length === right.length && left.every((value, index) => value === right[index]);
+}
+
+function isSionChoicePendingDecisionLiveValid(s: GameState, decision: PendingDecision): boolean {
+  const meta = decision.interaction;
+  if (!meta || meta.kind !== 'sion_choice_v1' || decision.controllerId !== meta.controllerId || meta.round !== s.round.roundNumber ||
+      meta.createdRevision !== runtime(s).revision || decision.id + ':continuation' !== meta.continuationRef ||
+      decision.min !== meta.constraints.min || decision.max !== meta.constraints.max || decision.target.type !== meta.constraints.targetKind ||
+      decision.target.id !== `sion-${meta.mode}` || !exactPlayerArray(decision.candidates, meta.candidateIds) || new Set(meta.candidateIds).size !== meta.candidateIds.length ||
+      decision.context.controllerId !== meta.controllerId || decision.context.sourceCardId !== meta.sourceCardInstanceId || decision.context.abilityId !== meta.abilityId) return false;
+  const source = restoredPhysicalSource(s, meta.sourceCardInstanceId, meta.controllerId);
+  const ability = source && restoredAbility(s, meta.sourceCardInstanceId, meta.abilityId);
+  if (!source || !ability || !isAcceptedSionAbility(ability) ||
+      (meta.mode === 'training' ? source.zone !== 'skill' : source.zone !== 'field' && source.zone !== 'attack_area') ||
+      (meta.mode !== 'training' && (runtime(s).cardState[source.instanceId]?.active !== true || runtime(s).cardState[source.instanceId]?.faceDown === true))) return false;
+  const controller = s.players.find((player) => player.id === meta.controllerId);
+  if (!controller || controller.status !== 'active') return false;
+  const legal = (id: string): boolean => {
+    const card = s.cards.find((candidate) => candidate.instanceId === id);
+    if (meta.mode === 'riding') return !!card && card.ownerPlayerId === meta.controllerId && card.controllerPlayerId === meta.controllerId && card.zone === 'hand' && Number(runtime(s).pack.cards[card.definitionId]?.cardFace.basePower ?? 99) <= 3;
+    if (meta.mode === 'avenger') return !!card && card.ownerPlayerId === meta.controllerId && card.controllerPlayerId === meta.controllerId && card.zone === 'discard';
+    if (meta.mode === 'execution') {
+      const participants = decision.context.event?.battleParticipantIds;
+      return !!s.players.find((player) => player.id === id && player.status === 'active' && player.id !== meta.controllerId && player.locationId === controller.locationId &&
+        (Array.isArray(participants) ? participants.includes(player.id) : true));
+    }
+    if (meta.mode === 'ruler') return !!s.players.find((player) => player.id === id && player.status === 'active' && player.id !== meta.controllerId);
+    if (meta.mode === 'abyss') return id === 'local' || (id === 'all_players' && (controller?.mana ?? 0) >= 2);
+    if (meta.mode === 'hunt') {
+      if (id === 'recon') return s.map.locations.some((location) => location.id === 'recon') && (controller?.mana ?? 0) >= 1;
+      const destination = s.map.locations.find((location) => location.id === id);
+      if (!destination || !s.locationConfig.enabledLocationIds.includes(id as never)) return false;
+      const player = controller; if (!player) return false;
+      const occupants = s.players.filter((candidate) => candidate.id !== player.id && candidate.status === 'active' && candidate.locationId === id).map((candidate) => candidate.id);
+      return canOccupyLocation({ map: s.map, config: s.locationConfig, locationId: id as LocationId, movingPlayerId: player.id, occupyingPlayerIds: occupants, ...(s.ruleOverrides ? { ruleOverrides: s.ruleOverrides } : {}) });
+    }
+    if (meta.mode === 'berserk') return ['0', '1', '2', '3'].includes(id);
+    return id === 'power' || id === 'attack_strength' || id === 'attack_agility';
+  };
+  return meta.candidateIds.every(legal);
 }
 
 function isExactFrozenCardIdList(value: unknown): value is string[] {
@@ -8995,7 +9039,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       if (d.interaction) {
         const meta = d.interaction;
         if (meta.kind === 'sion_choice_v1') {
-          if (!Array.isArray(selected) || !resolveSionChoice(s, playerId, d, selected)) reject('resolution_failed', 'Corrupt or stale Sion interaction state');
+          if (!Array.isArray(selected) || !resolveSionChoice(s, playerId, d, selected, (cardIds, allowedZones) => {
+            try { playBatch(s, playerId, cardIds.map((cardInstanceId) => ({ type: 'play_card' as const, cardInstanceId })), 'effect', false, allowedZones); return true; }
+            catch { return false; }
+          })) reject('resolution_failed', 'Corrupt or stale Sion interaction state');
           break;
         }
         if (meta.kind === 'hakuno_m_challenge_v1') {

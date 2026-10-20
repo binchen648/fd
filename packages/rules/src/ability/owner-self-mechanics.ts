@@ -2,6 +2,7 @@ import type { GameState } from '../schema/game';
 import type { RuleNode } from './types';
 import { bloodlustContributorPenalty } from './bloodlust-cycle-capability';
 import { definitionSideDeckPlayerPowerAdjustment } from './definition-side-deck-capability';
+import { sionCommandSealPowerSuppressed } from './sion-capability';
 
 export const LOSE_VP_EQUAL_SOURCE_PLAY_COUNT_EFFECT = 'lose_victory_points_equal_source_play_count' as const;
 export const HIDE_SERVANT_TRUE_NAME_UNTIL_ROUND_END_EFFECT = 'hide_servant_true_name_until_round_end' as const;
@@ -60,6 +61,10 @@ export function playerCombatTotalPowerAdjustment(state: GameState, playerId: str
   }
   for (const adjustment of runtime.roundPlayerPowerAdjustments ?? []) {
     if (adjustment.playerId === playerId && adjustment.round === state.round.roundNumber && Number.isFinite(adjustment.amount)) {
+      const source = state.cards.find((card) => card.instanceId === adjustment.sourceCardId);
+      const ability = source && runtime.pack.cards[source.definitionId]?.abilities.find((candidate) => candidate.id === adjustment.abilityId);
+      const isCommandSealPower = ability?.effects.some((effect) => ['spend_controller_normal_command_seal_for_round_power', 'spend_controller_owned_ruler_seal_for_round_power'].includes(String(effect.type))) === true;
+      if (isCommandSealPower && sionCommandSealPowerSuppressed(state, playerId)) continue;
       total += adjustment.amount;
     }
   }

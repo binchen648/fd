@@ -423,7 +423,7 @@ export interface HakunoMChallengeInteractionMetadata {
 export interface SionChoiceInteractionMetadata {
   kind: 'sion_choice_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
   sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
-  controllerId: PlayerId; mode: 'training' | 'riding' | 'hunt' | 'execution' | 'avenger' | 'ruler' | 'abyss';
+  controllerId: PlayerId; mode: 'training' | 'riding' | 'hunt' | 'execution' | 'avenger' | 'ruler' | 'abyss' | 'berserk';
   candidateIds: string[]; constraints: { kind: 'target'; targetKind: 'card' | 'player' | 'location' | 'choice'; min: number; max: number; distinct: true };
   round: number; coveredCardIds?: string[]; options?: string[];
 }
