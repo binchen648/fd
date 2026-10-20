@@ -4,12 +4,858 @@
   "id": "master.sion",
   "name": "紫苑·艾尔特纳姆",
   "class": "Master",
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": [
+        "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png"
+      ]
+    }
+  ],
   "sourcePolicy": {
     "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
     "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
-    "note": "Semantics come from frozen F1 plus accepted FB2-13/R37; locked Reference is used only for owner/static metadata."
+    "note": "All printed clauses and generated source hashes are frozen. Runtime effects are authenticated by the Sion owner gateway.",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png#master.sion/紫苑·艾尔特纳姆",
+      "legacy": {
+        "master.sion.skill.ascension": "legacy-content.json#master/master.sion/ascension",
+        "master.sion.skill.s1": "legacy-content.json#master/master.sion/s1",
+        "master.sion.skill.s2": "legacy-content.json#master/master.sion/s2",
+        "master.sion.skill.s3": "legacy-content.json#master/master.sion/s3",
+        "master.sion.skill.s4": "legacy-content.json#master/master.sion/s4",
+        "master.sion.skill.s5": "legacy-content.json#master/master.sion/s5",
+        "master.sion.skill.s6": "legacy-content.json#master/master.sion/s6",
+        "master.sion.skill.s7": "legacy-content.json#master/master.sion/s7",
+        "master.sion.skill.s8": "legacy-content.json#master/master.sion/s8",
+        "master.sion.skill.s9": "legacy-content.json#master/master.sion/s9",
+        "master.sion.skill.s10": "legacy-content.json#master/master.sion/s10",
+        "master.sion.skill.s11": "legacy-content.json#master/master.sion/s11",
+        "master.sion.skill.s12": "legacy-content.json#master/master.sion/s12",
+        "master.sion.skill.s13": "legacy-content.json#master/master.sion/s13",
+        "master.sion.skill.s14": "legacy-content.json#master/master.sion/s14",
+        "master.sion.skill.s15": "legacy-content.json#master/master.sion/s15",
+        "master.sion.skill.s16": "legacy-content.json#master/master.sion/s16",
+        "master.sion.skill.s17": "legacy-content.json#master/master.sion/s17"
+      },
+      "generated": {
+        "master.sion.skill.ascension": "masters[52].skills[17].text#line=1 sha256=25eb4c46743cb51e34bdf6323cb8f45e7462416b54e76370774f57c0c811a7d2",
+        "master.sion.skill.s1": "masters[52].skills[0].text#line=1 sha256=80923f8c74b6a084deef1d9c73af7e5afd58ae8a0adb4e28cdd0672945dca340;masters[52].skills[0].text#line=2 sha256=6c454c273444db713c98064c966df38782dd45b21281bd8b145847b400dbfc81",
+        "master.sion.skill.s10": "masters[52].skills[9].text#line=1 sha256=53c15760d67187bdefaf87276837fae5fb45152304dd3765472b47936aae7876;masters[52].skills[9].text#line=2 sha256=cab0fa732dd872487028d518afdd992635410fcfd98520dda90b0706641fa691",
+        "master.sion.skill.s11": "masters[52].skills[10].text#line=1 sha256=52f7bce2381d558397ba5f1f2d534b776804e646aac6aec44ed949ae1105efd5;masters[52].skills[10].text#line=2 sha256=93d8aa1eb10d6e0fb6004dae2a7387a460e11dece4932b7be148270c9778750c",
+        "master.sion.skill.s12": "masters[52].skills[11].text#line=1 sha256=43c84de7cf6532ee6b561d8cfa35ddbdeac52850f6105684b23a82121636a892",
+        "master.sion.skill.s13": "skillCards[22].abilities[0].printedClause sha256=381fae14c8722c124a3e6578d17559a3792c4e0ef0b63b1dd5a55f932718980c",
+        "master.sion.skill.s14": "masters[52].skills[13].text#line=1 sha256=df1b7f58a7450a5c2b06e9a36e8e1cb7f448f66d546cea487ee1c13495147a3f",
+        "master.sion.skill.s15": "masters[52].skills[14].text#line=1 sha256=d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24;masters[52].skills[14].text#line=2 sha256=39706ee6ac22b2daf65242ec7e33673aa4425022eb7ea7165d9d2837c6bbc4cc;masters[52].skills[14].text#line=3 sha256=c7ce06ac3c24e36bf984f24fb6aba5d5ab7d35cd0f095980b9567c5a5b45c184",
+        "master.sion.skill.s16": "masters[52].skills[15].text#line=1 sha256=82ed8c111a52acee84cc45f5c3500866eea4282e24592147fc1eda67ed32707f",
+        "master.sion.skill.s17": "masters[52].skills[16].text#line=1 sha256=ef899905ef32f2e16e0e8fb887e5982f1e81707658e245ca39234a96a15aacdb;masters[52].skills[16].text#line=2 sha256=72beae45a5db0a85dd87b4566ba975d31e10eee1a381b03c6369d64c32173dc1",
+        "master.sion.skill.s2": "masters[52].skills[1].text#line=1 sha256=ce65f74499522972933e1af07177bf754aa0438360ec67d9ad82d6743ffbf025;masters[52].skills[1].text#line=2 sha256=76685cc5680476df285c2759a258f9f40b1c421412b665fcb6dbb76f79c1bf58",
+        "master.sion.skill.s3": "masters[52].skills[2].text#line=1 sha256=4c57c846bb14b58c2decbd1ae02d9f28fe65e9844102ade5354843c0c4569912;masters[52].skills[2].text#line=2 sha256=71434957df62024c494ddf76de024f3fb3d2b64a7f0d8e00980ba06956563684",
+        "master.sion.skill.s4": "masters[52].skills[3].text#line=1 sha256=fbf8b8e250298a4a8a435065e058211cd515f585a32617bbbec47c1b59fef20f;masters[52].skills[3].text#line=2 sha256=0612c95813732ee78eda7c8bc0d2d7bbda08459cdd5ab1adbc3a28a7ed581d2b",
+        "master.sion.skill.s5": "masters[52].skills[4].text#line=1 sha256=177b76d8d447463c6046dc322441a9e1c70350ea99bd3bedbd49b4fac77b4745",
+        "master.sion.skill.s6": "masters[52].skills[5].text#line=1 sha256=c18c4c5bcd6a2996af3d6de8f21020f096bdb2f47dd375ab0e2cdd9adb4708ed",
+        "master.sion.skill.s7": "masters[52].skills[6].text#line=1 sha256=b441c43c525bfc15048c2f84ad2359eecb61e5125313795a966e2fc943033575;masters[52].skills[6].text#line=2 sha256=f47bd8d15749df33192fcb36f858bb51f2a1bff8fd7df25bcef3e25d5829cacd",
+        "master.sion.skill.s8": "masters[52].skills[7].text#line=1 sha256=bebbfef5240c32e5383b427e1264712c0b5d8b6845c491aa68f0c67491844ee4;masters[52].skills[7].text#line=2 sha256=db468dc7209153b75c852dfdeb9df0b2a7e6a82efc553c4d1876e222644ec522",
+        "master.sion.skill.s9": "masters[52].skills[8].text#line=1 sha256=c77ada71896665f9ef44c7aa8f8201478c983cd33cc520141deb1c9908bd39ea"
+      }
+    }
   },
   "cards": [
+    {
+      "id": "master.sion.skill.ascension",
+      "aliases": [
+        "ascension"
+      ],
+      "legacyId": "ascension",
+      "name": "于彷徨海",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "新迦勒底-此牌展示时，将【对魔力】，【战斗续行】，【单独行动】，【骑乘】，【气息遮断】与【狂战士】（力量属性，5/9，你拥有的魔力少于8点也可以使用此牌且为技能）分别加入你的技能区。",
+      "cardFace": {
+        "typeLabel": "升华技",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sion.ascension.provision",
+          "kind": "forced_trigger",
+          "printedClause": "新迦勒底-此牌展示时，将【对魔力】，【战斗续行】，【单独行动】，【骑乘】，【气息遮断】与【狂战士】（力量属性，5/9，你拥有的魔力少于8点也可以使用此牌且为技能）分别加入你的技能区。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_ascension_provision"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "25eb4c46743cb51e34bdf6323cb8f45e7462416b54e76370774f57c0c811a7d2",
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.sion.skill.s1",
+      "aliases": [
+        "s1"
+      ],
+      "legacyId": "s1",
+      "name": "实战训练",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "游戏开始时，以3张【迦勒底】技能分别覆盖你的从者技能。被覆盖的技能无法使用且失去所有卡牌文字效果。\n准备阶段：移除任意张你的【迦勒底】技能，然后激活其训练效果。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sion.s1.training",
+          "kind": "forced_trigger",
+          "printedClause": "游戏开始时，以3张【迦勒底】技能分别覆盖你的从者技能。被覆盖的技能无法使用且失去所有卡牌文字效果。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_chaldea_training"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "80923f8c74b6a084deef1d9c73af7e5afd58ae8a0adb4e28cdd0672945dca340",
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.sion.skill.s2",
+      "aliases": [
+        "s2"
+      ],
+      "legacyId": "s2",
+      "name": "迦勒底·图书馆",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "被动：当一名与你位于同一地点的对手首次真名解放时，你获得1点战果并将1枚【经验】放置于此牌上。\n训练：此牌上每有2枚【经验】，便永久减少此牌覆盖的技能的1点魔力消耗。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": [
+          "魔术"
+        ],
+        "cost": 2,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sion.s2.library",
+          "kind": "phase_action",
+          "printedClause": "被动：当一名与你位于同一地点的对手首次真名解放时，你获得1点战果并将1枚【经验】放置于此牌上。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_structured_skill",
+              "skill": "library"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "ce65f74499522933e1af07177bf754aa0438360ec67d9ad82d6743ffbf025",
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.sion.skill.s3",
+      "aliases": [
+        "s3"
+      ],
+      "legacyId": "s3",
+      "name": "迦勒底·食堂",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "被动/战斗阶段：令所有与你位于同一地点的玩家获得1点魔力。若有对手获得，将1枚【经验】放置于此牌上。\n训练：若此牌上有2枚及以上的【经验】，你可以将覆盖的技能替换为游戏外的暗置的，你从者职阶的【EX技能】。【EX技能】在卡名上同时视为原技能。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": [
+          "魔术"
+        ],
+        "cost": 2,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sion.s3.cafeteria",
+          "kind": "phase_action",
+          "printedClause": "被动/战斗阶段：令所有与你位于同一地点的玩家获得1点魔力。若有对手获得，将1枚【经验】放置于此牌上。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_structured_skill",
+              "skill": "cafeteria"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "4c57c846bb14b58c2decbd1ae02d9f28fe65e9844102ade5354c0c4569912",
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.sion.skill.s4",
+      "aliases": [
+        "s4"
+      ],
+      "legacyId": "s4",
+      "name": "迦勒底·体育馆",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "被动：你的基础攻击获得+1威力。当你进行了一场争夺战后，将1枚【经验】放置于此牌上。\n训练：此牌上每有2枚经验，便永久增加此牌覆盖的技能的1点威力或将一张基础力量或敏捷，5威力的攻击加入你的手牌。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": [
+          "魔术"
+        ],
+        "cost": 2,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sion.s4.gym",
+          "kind": "passive",
+          "printedClause": "被动：你的基础攻击获得+1威力。",
+          "activation": {
+            "trigger": "while_active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_structured_skill",
+              "skill": "gym"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sion.s4.gym-experience",
+          "kind": "passive",
+          "printedClause": "当你进行了一场争夺战后，将1枚【经验】放置于此牌上。",
+          "activation": {
+            "trigger": "after_battle_result_determined"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_structured_skill",
+              "skill": "gym_experience"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "fbf8b8e250298a4a8a435065e058211cd515f585a32617bbbec47c1b59fef20f",
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.sion.skill.s5",
+      "aliases": [
+        "s5"
+      ],
+      "legacyId": "s5",
+      "name": "对魔力 EX",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "魔术免疫-战斗阶段：将同一战场所有对手的魔术属性攻击威力以及通过令咒获得的威力变为0。",
+      "cardFace": {
+        "typeLabel": "技能",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 2,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sion.s5.magic-immunity",
+          "kind": "phase_action",
+          "printedClause": "魔术免疫-战斗阶段：将同一战场所有对手的魔术属性攻击威力以及通过令咒获得的威力变为0。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_magic_immunity_ex"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "177b76d8d447463c6046dc322441a9e1c70350ea99bd3bedbd49b4fac77b4745",
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.sion.skill.s6",
+      "aliases": [
+        "s6"
+      ],
+      "legacyId": "s6",
+      "name": "战斗续行 EX",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "追猎-行动阶段：重新部署至一处战场或花费1点魔力，移动至侦查。",
+      "cardFace": {
+        "typeLabel": "技能",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 1,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sion.s6.hunt",
+          "kind": "phase_action",
+          "printedClause": "追猎-行动阶段：重新部署至一处战场或花费1点魔力，移动至侦查。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_structured_skill",
+              "skill": "hunt"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "c18c4c5bcd6a2996af3d6de8f21020f096bdb2f47dd375ab0e2cdd9adb4708ed",
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.sion.skill.s7",
+      "aliases": [
+        "s7"
+      ],
+      "legacyId": "s7",
+      "name": "单独行动 EX",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "远隔操作-行动阶段：地利效果翻倍。\n战斗阶段：若你赢得战斗，获得2点战果。如果你本回合战斗失败，失去3点战果，此效果不能被任何方式阻止。",
+      "cardFace": {
+        "typeLabel": "技能",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 2,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sion.s7.independent",
+          "kind": "passive",
+          "printedClause": "远隔操作-行动阶段：地利效果翻倍。",
+          "activation": {
+            "trigger": "while_active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_independent_action_ex"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sion.s7.independent-battle",
+          "kind": "passive",
+          "printedClause": "战斗阶段：若你赢得战斗，获得2点战果。如果你本回合战斗失败，失去3点战果，此效果不能被任何方式阻止。",
+          "activation": {
+            "trigger": "after_controller_wins_battle"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_independent_action_ex"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "b441c43c525bfc15048c2f84ad2359eecb61e5125313795a966e2fc943033575",
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.sion.skill.s8",
+      "aliases": [
+        "s8"
+      ],
+      "legacyId": "s8",
+      "name": "骑乘 EX",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "延时召唤-残留。\n行动阶段：从手牌中追加打出至多3张基本威力3及以下的牌，在你使用此效果的回合结束关闭此牌。",
+      "cardFace": {
+        "typeLabel": "技能",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 2,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sion.s8.riding",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：从手牌中追加打出至多3张基本威力3及以下的牌，在你使用此效果的回合结束关闭此牌。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_riding_ex"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "bebbfef5240c32e5383b427e1264712c0b5d8b6845c491aa68f0c67491844ee4",
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.sion.skill.s9",
+      "aliases": [
+        "s9"
+      ],
+      "legacyId": "s9",
+      "name": "阵地作成 EX",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "领域扩张-残留：当你部署于魔术工房时，获得X点合计威力和战果。X初始为0，每当你赢得一场战斗，X永久增加1点。",
+      "cardFace": {
+        "typeLabel": "技能",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 2,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sion.s9.territory",
+          "kind": "passive",
+          "printedClause": "领域扩张-残留：当你部署于魔术工房时，获得X点合计威力和战果。X初始为0，每当你赢得一场战斗，X永久增加1点。",
+          "activation": {
+            "trigger": "while_active"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_territory_expansion_ex"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "c77ada71896665f9ef44c7aa8f8201478c983cd33cc520141deb1c9908bd39ea",
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.sion.skill.s10",
+      "aliases": [
+        "s10"
+      ],
+      "legacyId": "s10",
+      "name": "气息遮断 EX",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "被动：当你输掉一场战斗后，将此牌移除游戏。\n完美处决-战斗阶段：令一名与你交战的对手【败北】。",
+      "cardFace": {
+        "typeLabel": "技能",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 2,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sion.s10.concealment-loss",
+          "kind": "passive",
+          "printedClause": "被动：当你输掉一场战斗后，将此牌移除游戏。",
+          "activation": {
+            "trigger": "after_controller_loses_battle"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_structured_skill",
+              "skill": "concealment_loss"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sion.s10.execution",
+          "kind": "phase_action",
+          "printedClause": "完美处决-战斗阶段：令一名与你交战的对手【败北】。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_structured_skill",
+              "skill": "execution"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "53c15760d67187bdefaf87276837fae5fb45152304dd3765472b47936aae7876",
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.sion.skill.s11",
+      "aliases": [
+        "s11"
+      ],
+      "legacyId": "s11",
+      "name": "狂战士 EX",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "你拥有的魔力少于8点也可使用此牌。\n狂化-行动阶段：以背面朝上抽取至多三张牌并将其移除（以此方法被移除的牌不触发任何卡牌效果），你每以此法抽一张牌，此牌+4威力。",
+      "cardFace": {
+        "typeLabel": "技能",
+        "attributes": [
+          "力量"
+        ],
+        "cost": 3,
+        "basePower": 9
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sion.s11.berserk",
+          "kind": "phase_action",
+          "printedClause": "狂化-行动阶段：以背面朝上抽取至多三张牌并将其移除（以此方法被移除的牌不触发任何卡牌效果），你每以此法抽一张牌，此牌+4威力。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_structured_skill",
+              "skill": "berserk"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "52f7bce2381d558397ba5f1f2d534b776804e646aac6aec44ed949ae1105efd5",
+        "implementationStatus": "complete"
+      }
+    },
     {
       "id": "master.sion.skill.s12",
       "aliases": [
@@ -69,9 +915,7 @@
           "ruleModifiers": [],
           "lifecycle": {},
           "responseWindow": {
-            "opens": "on_card_played",
-            "order": "turn_order",
-            "passBehavior": "decline_this_window"
+            "opens": "on_card_played"
           },
           "limit": {
             "type": "per_round",
@@ -86,20 +930,7 @@
       ],
       "phase3Evidence": {
         "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
-        "f1SourceReferences": [
-          {
-            "kind": "development-image",
-            "document": "Fate_Domination-开发版",
-            "category": "master",
-            "page": "images/masters/紫苑·艾尔特纳姆.png",
-            "locator": "master.sion/紫苑·艾尔特纳姆"
-          },
-          {
-            "kind": "legacy",
-            "document": "legacy-content.json",
-            "locator": "master/master.sion/s12"
-          }
-        ],
+        "sourceTextSha256": "43c84de7cf6532ee6b561d8cfa35ddbdeac52850f6105684b23a82121636a892",
         "f1ClauseSources": [
           {
             "document": "src/content/generated/legacy-content.json",
@@ -107,7 +938,6 @@
             "sha256": "43c84de7cf6532ee6b561d8cfa35ddbdeac52850f6105684b23a82121636a892"
           }
         ],
-        "sourceTextSha256": "43c84de7cf6532ee6b561d8cfa35ddbdeac52850f6105684b23a82121636a892",
         "referenceStaticMetadata": {
           "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
           "legacySkillId": "s12",
@@ -118,12 +948,321 @@
         },
         "canonicalSkillZoneManaRequirement": {
           "value": 8,
-          "authority": "final_rules_9.4",
-          "note": "Legacy requirement is retained as evidence metadata only; the final skill-zone play threshold is 8 mana."
+          "authority": "final_rules_9.4"
         },
         "acceptedContracts": {
           "alterEgoTransform": "P3-R37/FB2-13"
+        },
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.sion.skill.s13",
+      "aliases": [
+        "s13"
+      ],
+      "legacyId": "s13",
+      "name": "复仇者 EX",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "滔天怨焰-被动/行动阶段：花费2点战果，从你的弃牌堆打出一张牌。",
+      "cardFace": {
+        "typeLabel": "技能",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 2,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sion.s13.avenger",
+          "kind": "phase_action",
+          "printedClause": "滔天怨焰-被动/行动阶段：花费2点战果，从你的弃牌堆打出一张牌。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_structured_skill",
+              "skill": "avenger"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
         }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "381fae14c8722c124a3e6578d17559a3792c4e0ef0b63b1dd5a55f932718980c",
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.sion.skill.s14",
+      "aliases": [
+        "s14"
+      ],
+      "legacyId": "s14",
+      "name": "裁决者 EX",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "神圣敕条-被动/前哨阶段：令一名其他玩家获得一枚临时的【裁决者令咒】直至回合结束。你不能在三回合之内选择同一名玩家。",
+      "cardFace": {
+        "typeLabel": "技能",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 2,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sion.s14.ruler",
+          "kind": "phase_action",
+          "printedClause": "神圣敕条-被动/前哨阶段：令一名其他玩家获得一枚临时的【裁决者令咒】直至回合结束。你不能在三回合之内选择同一名玩家。",
+          "activation": {
+            "phase": "advance",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_structured_skill",
+              "skill": "ruler"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "df1b7f58a7450a5c2b06e9a36e8e1cb7f448f66d546cea487ee1c13495147a3f",
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.sion.skill.s15",
+      "aliases": [
+        "s15"
+      ],
+      "legacyId": "s15",
+      "name": "月之癌 EX",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "<每局游戏限一次>\n当此牌因训练被展示后，改为获得被覆盖的技能而非替换。\n重启-被动/战斗阶段：依轮次顺序，所有位于【月之圣杯】的玩家重新部署，然后弃置【月之圣杯】上的所有事件牌并将其从游戏中移除（可以再被开启）。",
+      "cardFace": {
+        "typeLabel": "技能",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 3,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sion.s15.restart",
+          "kind": "phase_action",
+          "printedClause": "重启-被动/战斗阶段：依轮次顺序，所有位于【月之圣杯】的玩家重新部署，然后弃置【月之圣杯】上的所有事件牌并将其从游戏中移除（可以再被开启）。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_structured_skill",
+              "skill": "restart"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {
+            "type": "per_game",
+            "uses": 1,
+            "scope": "this_card"
+          },
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "d94a6cf1b6d7d410942f56a6c7d86871352592347f2172f7691da32328195a24",
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.sion.skill.s16",
+      "aliases": [
+        "s16"
+      ],
+      "legacyId": "s16",
+      "name": "领域外生命 EX",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "凝视深渊-行动阶段：你所在地点的所有玩家弃置所有手牌。你可花费2点魔力，将目标更改为\"游戏内的所有玩家\"。",
+      "cardFace": {
+        "typeLabel": "技能",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 2,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sion.s16.abyss",
+          "kind": "phase_action",
+          "printedClause": "凝视深渊-行动阶段：你所在地点的所有玩家弃置所有手牌。你可花费2点魔力，将目标更改为\"游戏内的所有玩家\"。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_structured_skill",
+              "skill": "abyss"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "82ed8c111a52acee84cc45f5c3500866eea4282e24592147fc1eda67ed32707",
+        "implementationStatus": "complete"
+      }
+    },
+    {
+      "id": "master.sion.skill.s17",
+      "aliases": [
+        "s17"
+      ],
+      "legacyId": "s17",
+      "name": "黑铳",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.sion"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "此牌需花费1枚令咒打出。\n以太湮灭-战斗阶段：关闭你战斗中所有的【幸运】。所有与你交战的对手抽2张牌并展示所有手牌和暗置攻击，然后令展示了【幸运】的所有对手【败北】。",
+      "cardFace": {
+        "typeLabel": "宝具",
+        "attributes": [
+          "特殊"
+        ],
+        "cost": 1,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "sion.s17.aether",
+          "kind": "phase_action",
+          "printedClause": "以太湮灭-战斗阶段：关闭你战斗中所有的【幸运】。所有与你交战的对手抽2张牌并展示所有手牌和暗置攻击，然后令展示了【幸运】的所有对手【败北】。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window"
+          },
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "sion_structured_skill",
+              "skill": "aether"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "ef899905ef32f2e16e0e8fb887e5982f1e81707658e245ca39234a96a15aacdb",
+        "implementationStatus": "complete"
       }
     }
   ]

@@ -75,3 +75,4 @@ export * from './ability/shirou-emiya-capability';
 export * from './ability/shirou-meal-capability';
 export * from './ability/shishigou-necromancy-capability';
 export * from './ability/sieg-capability';
+export * from './ability/sion-capability';

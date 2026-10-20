@@ -282,6 +282,7 @@ import {
   HAKUNO_M_DEAD_FACE_EFFECT,
 } from './hakuno-m-yomi-capability';
 import { containsSiegPrivilegedNode, isAcceptedSiegAbility, SIEG_GALVANISM_EFFECT, SIEG_SYNC_STRENGTH_EFFECT, SIEG_DRAGON_COMMAND_EFFECT, SIEG_BALMUNG_FREE_PLAY_EFFECT, SIEG_BALMUNG_PENALTY_EFFECT } from './sieg-capability';
+import { containsSionPrivilegedNode, isAcceptedSionAbility, SION_ASCENSION_EFFECT, SION_TRAINING_EFFECT, SION_MAGIC_IMMUNITY_EFFECT, SION_INDEPENDENT_ACTION_EFFECT, SION_TERRITORY_EFFECT, SION_RIDING_EFFECT, SION_STRUCTURED_EFFECT } from './sion-capability';
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
 }
@@ -313,6 +314,7 @@ const supportedTypes = new Set([
   'controller_alone_at_battlefield', 'claim_and_discard_location_events', 'any_enabled_location',
   'skill_zone_mana_at_least', 'played_with_basic_attack', 'draw_cards', 'play_selected_cards', 'base_power_at_most', 'base_power_at_least',
   SIEG_GALVANISM_EFFECT, SIEG_SYNC_STRENGTH_EFFECT, SIEG_DRAGON_COMMAND_EFFECT, SIEG_BALMUNG_FREE_PLAY_EFFECT, SIEG_BALMUNG_PENALTY_EFFECT,
+  SION_ASCENSION_EFFECT, SION_TRAINING_EFFECT, SION_MAGIC_IMMUNITY_EFFECT, SION_INDEPENDENT_ACTION_EFFECT, SION_TERRITORY_EFFECT, SION_RIDING_EFFECT, SION_STRUCTURED_EFFECT,
   'reveal_information', 'set_zone_visibility', 'look_at_deck_top', 'move_card', 'move_all_remaining', 'discard_random_owned_hand', 'grant_played_attacks_printed_mana_power', 'private_deck_top_choice', 'mystic_code_switch', 'mystic_code_expire_on_event', 'mystic_code_command_seal_limit', 'mystic_code_battle_recovery', 'mystic_code_recon_escape', 'mystic_code_regalia', 'mystic_code_battle_loss_vp',
   'shuffle_zone_into_deck', 'shuffle_deck', 'adjust_mana', 'adjust_victory_points', 'move_player', 'branch',
   'create_card', 'pay_mana', 'move_source_card', HAKUNO_M_YOMI_EFFECT, HAKUNO_M_CHALLENGE_RESULT_EFFECT,
@@ -487,7 +489,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'manaCostIncrease', 'lossVp',
   'definitionId', 'linkedSkillId', 'destination', 'createIfMissing', 'active', 'allowedAttributes', 'uniquePerGame', 'requiresActiveSkillSource', 'basicOnly', 'allowRepeat',
   'where', 'roundOffset', 'benefits', 'activeOnly',
-  'minimumControllerMana', 'additionalManaCost', 'triggerLocationId', 'replacements', 'opponentCount', 'suppresses', 'cards', 'drawAfterPlay', 'maxPerRound', 'victoryPointCost',
+  'minimumControllerMana', 'additionalManaCost', 'triggerLocationId', 'replacements', 'opponentCount', 'suppresses', 'cards', 'drawAfterPlay', 'maxPerRound', 'victoryPointCost', 'skill',
   'stateKey', 'profileKey', 'enhancedDefinitionId', 'suppress', 'mode', 'requireHigherVictoryPointTarget', 'afterBattleManaLoss', 'onBattleLossVictoryPointLoss', 'requireBattlefield', 'requireNoAssignedTerrain', 'cardTypes',
   'minPrintedFraction', 'preventElimination', 'swapVictoryPointsWithOpponent', 'shareVictory',
   'injuryKeys', 'immediateRandomDiscardKey', 'recurringRandomDiscardKey', 'basicPowerPenaltyKey', 'basicPowerDelta',
@@ -1034,6 +1036,13 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (containsSiegPrivilegedNode(candidateAbility) && !isAcceptedSiegAbility(candidateAbility)) {
         issue('sieg.gateway', 'Sieg privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsSionPrivilegedNode(candidateAbility) && !isAcceptedSionAbility(candidateAbility)) {
+        issue('sion.gateway', 'Sion privileged mechanics require an accepted exact whole-ability semantic', id);
+      }
+      if (containsSionPrivilegedNode(candidateAbility) &&
+          !(rootId === 'master.sion' && owner.type === 'master' && owner.id === rootId && cardId.startsWith('master.sion.skill.'))) {
+        issue('sion.owner', 'Sion mechanics require the canonical master.sion owner', id);
       }
       if (containsSiegPrivilegedNode(candidateAbility) &&
           !(rootId === 'master.sieg' && owner.type === 'master' && owner.id === rootId && cardId.startsWith('master.sieg.skill.'))) {

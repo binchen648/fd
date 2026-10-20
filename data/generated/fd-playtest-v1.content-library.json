@@ -1617,6 +1617,46 @@
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
+    },
+    {
+      "id": "master.sion",
+      "name": "紫苑·艾尔特纳姆",
+      "overviewCardId": "master.sion.overview",
+      "initialMana": 4,
+      "commandSpellCardIds": [],
+      "skillCardIds": [
+        "master.sion.skill.ascension",
+        "master.sion.skill.s1",
+        "master.sion.skill.s2",
+        "master.sion.skill.s3",
+        "master.sion.skill.s4",
+        "master.sion.skill.s5",
+        "master.sion.skill.s6",
+        "master.sion.skill.s7",
+        "master.sion.skill.s8",
+        "master.sion.skill.s9",
+        "master.sion.skill.s10",
+        "master.sion.skill.s11",
+        "master.sion.skill.s12",
+        "master.sion.skill.s13",
+        "master.sion.skill.s14",
+        "master.sion.skill.s15",
+        "master.sion.skill.s16",
+        "master.sion.skill.s17"
+      ],
+      "linkedCards": {
+        "generated": []
+      },
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Authoring master converted for seven-player product playtest."
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 0,
+        "reviewedAgainstImage": true
+      }
     }
   ],
   "servants": [
@@ -11481,6 +11521,463 @@
         "htmPath": "chm-extract/齐格.htm",
         "imagePath": "../../Fate_Domination-开发版/images/masters/齐格.png",
         "imageIndex": 4,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.sion.overview",
+      "name": "紫苑·艾尔特纳姆",
+      "cardType": "master_overview",
+      "printedText": "于彷徨海: 新迦勒底-此牌展示时，将【对魔力】，【战斗续行】，【单独行动】，【骑乘】，【气息遮断】与【狂战士】（力量属性，5/9，你拥有的魔力少于8点也可以使用此牌且为技能）分别加入你的技能区。\n实战训练: 游戏开始时，以3张【迦勒底】技能分别覆盖你的从者技能。被覆盖的技能无法使用且失去所有卡牌文字效果。\n准备阶段：移除任意张你的【迦勒底】技能，然后激活其训练效果。\n迦勒底·图书馆: 被动：当一名与你位于同一地点的对手首次真名解放时，你获得1点战果并将1枚【经验】放置于此牌上。\n训练：此牌上每有2枚【经验】，便永久减少此牌覆盖的技能的1点魔力消耗。\n迦勒底·食堂: 被动/战斗阶段：令所有与你位于同一地点的玩家获得1点魔力。若有对手获得，将1枚【经验】放置于此牌上。\n训练：若此牌上有2枚及以上的【经验】，你可以将覆盖的技能替换为游戏外的暗置的，你从者职阶的【EX技能】。【EX技能】在卡名上同时视为原技能。\n迦勒底·体育馆: 被动：你的基础攻击获得+1威力。当你进行了一场争夺战后，将1枚【经验】放置于此牌上。\n训练：此牌上每有2枚经验，便永久增加此牌覆盖的技能的1点威力或将一张基础力量或敏捷，5威力的攻击加入你的手牌。\n对魔力 EX: 魔术免疫-战斗阶段：将同一战场所有对手的魔术属性攻击威力以及通过令咒获得的威力变为0。\n战斗续行 EX: 追猎-行动阶段：重新部署至一处战场或花费1点魔力，移动至侦查。\n单独行动 EX: 远隔操作-行动阶段：地利效果翻倍。\n战斗阶段：若你赢得战斗，获得2点战果。如果你本回合战斗失败，失去3点战果，此效果不能被任何方式阻止。\n骑乘 EX: 延时召唤-残留。\n行动阶段：从手牌中追加打出至多3张基本威力3及以下的牌，在你使用此效果的回合结束关闭此牌。\n阵地作成 EX: 领域扩张-残留：当你部署于魔术工房时，获得X点合计威力和战果。X初始为0，每当你赢得一场战斗，X永久增加1点。\n气息遮断 EX: 被动：当你输掉一场战斗后，将此牌移除游戏。\n完美处决-战斗阶段：令一名与你交战的对手【败北】。\n狂战士 EX: 你拥有的魔力少于8点也可使用此牌。\n狂化-行动阶段：以背面朝上抽取至多三张牌并将其移除（以此方法被移除的牌不触发任何卡牌效果），你每以此法抽一张牌，此牌+4威力。\n他人格 EX: 残留：当你将一张牌放置入场时，你可以支付3点魔力以使其获得反转效果。此效果每回合仅对一张牌生效。\n复仇者 EX: 滔天怨焰-被动/行动阶段：花费2点战果，从你的弃牌堆打出一张牌。\n裁决者 EX: 神圣敕条-被动/前哨阶段：令一名其他玩家获得一枚临时的【裁决者令咒】直至回合结束。你不能在三回合之内选择同一名玩家。\n月之癌 EX: <每局游戏限一次>\n当此牌因训练被展示后，改为获得被覆盖的技能而非替换。\n重启-被动/战斗阶段：依轮次顺序，所有位于【月之圣杯】的玩家重新部署，然后弃置【月之圣杯】上的所有事件牌并将其从游戏中移除（可以再被开启）。\n领域外生命 EX: 凝视深渊-行动阶段：你所在地点的所有玩家弃置所有手牌。你可花费2点魔力，将目标更改为\"游戏内的所有玩家\"。\n黑铳: 此牌需花费1枚令咒打出。\n以太湮灭-战斗阶段：关闭你战斗中所有的【幸运】。所有与你交战的对手抽2张牌并展示所有手牌和暗置攻击，然后令展示了【幸运】的所有对手【败北】。",
+      "capability": {
+        "status": "FULL"
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 0,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.sion.skill.ascension",
+      "name": "于彷徨海",
+      "cardType": "master_skill",
+      "printedValue": 0,
+      "printedCost": 0,
+      "printedText": "新迦勒底-此牌展示时，将【对魔力】，【战斗续行】，【单独行动】，【骑乘】，【气息遮断】与【狂战士】（力量属性，5/9，你拥有的魔力少于8点也可以使用此牌且为技能）分别加入你的技能区。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 1,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.sion.skill.s1",
+      "name": "实战训练",
+      "cardType": "master_skill",
+      "printedValue": 0,
+      "printedCost": 0,
+      "printedText": "游戏开始时，以3张【迦勒底】技能分别覆盖你的从者技能。被覆盖的技能无法使用且失去所有卡牌文字效果。\n准备阶段：移除任意张你的【迦勒底】技能，然后激活其训练效果。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 2,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.sion.skill.s10",
+      "name": "气息遮断 EX",
+      "cardType": "master_skill",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 0,
+      "printedCost": 2,
+      "printedText": "被动：当你输掉一场战斗后，将此牌移除游戏。\n完美处决-战斗阶段：令一名与你交战的对手【败北】。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 11,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.sion.skill.s11",
+      "name": "狂战士 EX",
+      "cardType": "master_skill",
+      "attribute": "strength",
+      "attributes": [
+        "strength"
+      ],
+      "printedValue": 9,
+      "printedCost": 3,
+      "printedText": "你拥有的魔力少于8点也可使用此牌。\n狂化-行动阶段：以背面朝上抽取至多三张牌并将其移除（以此方法被移除的牌不触发任何卡牌效果），你每以此法抽一张牌，此牌+4威力。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 12,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.sion.skill.s12",
+      "name": "他人格 EX",
+      "cardType": "master_skill",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 3,
+      "printedCost": 3,
+      "printedText": "残留：当你将一张牌放置入场时，你可以支付3点魔力以使其获得反转效果。此效果每回合仅对一张牌生效。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 13,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.sion.skill.s13",
+      "name": "复仇者 EX",
+      "cardType": "master_skill",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 0,
+      "printedCost": 2,
+      "printedText": "滔天怨焰-被动/行动阶段：花费2点战果，从你的弃牌堆打出一张牌。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 14,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.sion.skill.s14",
+      "name": "裁决者 EX",
+      "cardType": "master_skill",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 0,
+      "printedCost": 2,
+      "printedText": "神圣敕条-被动/前哨阶段：令一名其他玩家获得一枚临时的【裁决者令咒】直至回合结束。你不能在三回合之内选择同一名玩家。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 15,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.sion.skill.s15",
+      "name": "月之癌 EX",
+      "cardType": "master_skill",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 0,
+      "printedCost": 3,
+      "printedText": "<每局游戏限一次>\n当此牌因训练被展示后，改为获得被覆盖的技能而非替换。\n重启-被动/战斗阶段：依轮次顺序，所有位于【月之圣杯】的玩家重新部署，然后弃置【月之圣杯】上的所有事件牌并将其从游戏中移除（可以再被开启）。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 16,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.sion.skill.s16",
+      "name": "领域外生命 EX",
+      "cardType": "master_skill",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 0,
+      "printedCost": 2,
+      "printedText": "凝视深渊-行动阶段：你所在地点的所有玩家弃置所有手牌。你可花费2点魔力，将目标更改为\"游戏内的所有玩家\"。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 17,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.sion.skill.s17",
+      "name": "黑铳",
+      "cardType": "master_skill",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 0,
+      "printedCost": 1,
+      "printedText": "此牌需花费1枚令咒打出。\n以太湮灭-战斗阶段：关闭你战斗中所有的【幸运】。所有与你交战的对手抽2张牌并展示所有手牌和暗置攻击，然后令展示了【幸运】的所有对手【败北】。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 18,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.sion.skill.s2",
+      "name": "迦勒底·图书馆",
+      "cardType": "master_skill",
+      "attribute": "magecraft",
+      "attributes": [
+        "magecraft"
+      ],
+      "printedValue": 0,
+      "printedCost": 2,
+      "printedText": "被动：当一名与你位于同一地点的对手首次真名解放时，你获得1点战果并将1枚【经验】放置于此牌上。\n训练：此牌上每有2枚【经验】，便永久减少此牌覆盖的技能的1点魔力消耗。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 3,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.sion.skill.s3",
+      "name": "迦勒底·食堂",
+      "cardType": "master_skill",
+      "attribute": "magecraft",
+      "attributes": [
+        "magecraft"
+      ],
+      "printedValue": 0,
+      "printedCost": 2,
+      "printedText": "被动/战斗阶段：令所有与你位于同一地点的玩家获得1点魔力。若有对手获得，将1枚【经验】放置于此牌上。\n训练：若此牌上有2枚及以上的【经验】，你可以将覆盖的技能替换为游戏外的暗置的，你从者职阶的【EX技能】。【EX技能】在卡名上同时视为原技能。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 4,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.sion.skill.s4",
+      "name": "迦勒底·体育馆",
+      "cardType": "master_skill",
+      "attribute": "magecraft",
+      "attributes": [
+        "magecraft"
+      ],
+      "printedValue": 0,
+      "printedCost": 2,
+      "printedText": "被动：你的基础攻击获得+1威力。当你进行了一场争夺战后，将1枚【经验】放置于此牌上。\n训练：此牌上每有2枚经验，便永久增加此牌覆盖的技能的1点威力或将一张基础力量或敏捷，5威力的攻击加入你的手牌。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 5,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.sion.skill.s5",
+      "name": "对魔力 EX",
+      "cardType": "master_skill",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 0,
+      "printedCost": 2,
+      "printedText": "魔术免疫-战斗阶段：将同一战场所有对手的魔术属性攻击威力以及通过令咒获得的威力变为0。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 6,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.sion.skill.s6",
+      "name": "战斗续行 EX",
+      "cardType": "master_skill",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 0,
+      "printedCost": 1,
+      "printedText": "追猎-行动阶段：重新部署至一处战场或花费1点魔力，移动至侦查。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 7,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.sion.skill.s7",
+      "name": "单独行动 EX",
+      "cardType": "master_skill",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 0,
+      "printedCost": 2,
+      "printedText": "远隔操作-行动阶段：地利效果翻倍。\n战斗阶段：若你赢得战斗，获得2点战果。如果你本回合战斗失败，失去3点战果，此效果不能被任何方式阻止。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 8,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.sion.skill.s8",
+      "name": "骑乘 EX",
+      "cardType": "master_skill",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 0,
+      "printedCost": 2,
+      "printedText": "延时召唤-残留。\n行动阶段：从手牌中追加打出至多3张基本威力3及以下的牌，在你使用此效果的回合结束关闭此牌。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 9,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.sion.skill.s9",
+      "name": "阵地作成 EX",
+      "cardType": "master_skill",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 0,
+      "printedCost": 2,
+      "printedText": "领域扩张-残留：当你部署于魔术工房时，获得X点合计威力和战果。X初始为0，每当你赢得一场战斗，X永久增加1点。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/紫苑·艾尔特纳姆.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/紫苑·艾尔特纳姆.png",
+        "imageIndex": 10,
         "reviewedAgainstImage": true
       }
     },
@@ -34216,6 +34713,1234 @@
         "playKind": "support",
         "destinationZone": "field"
       },
+      "master.sion.skill.ascension": {
+        "id": "master.sion.skill.ascension",
+        "name": "于彷徨海",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "升华技",
+          "attributes": [],
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "sion.ascension.provision",
+            "kind": "forced_trigger",
+            "printedClause": "新迦勒底-此牌展示时，将【对魔力】，【战斗续行】，【单独行动】，【骑乘】，【气息遮断】与【狂战士】（力量属性，5/9，你拥有的魔力少于8点也可以使用此牌且为技能）分别加入你的技能区。",
+            "activation": {
+              "trigger": "game_start"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_ascension_provision"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.sion",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
+      "master.sion.skill.s1": {
+        "id": "master.sion.skill.s1",
+        "name": "实战训练",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "被动",
+          "attributes": [],
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "sion.s1.training",
+            "kind": "forced_trigger",
+            "printedClause": "游戏开始时，以3张【迦勒底】技能分别覆盖你的从者技能。被覆盖的技能无法使用且失去所有卡牌文字效果。",
+            "activation": {
+              "trigger": "game_start"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_chaldea_training"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.sion",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
+      "master.sion.skill.s2": {
+        "id": "master.sion.skill.s2",
+        "name": "迦勒底·图书馆",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "魔术",
+          "attributes": [
+            "魔术"
+          ],
+          "cost": 2,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "sion.s2.library",
+            "kind": "phase_action",
+            "printedClause": "被动：当一名与你位于同一地点的对手首次真名解放时，你获得1点战果并将1枚【经验】放置于此牌上。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_structured_skill",
+                "skill": "library"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.sion",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
+      "master.sion.skill.s3": {
+        "id": "master.sion.skill.s3",
+        "name": "迦勒底·食堂",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "魔术",
+          "attributes": [
+            "魔术"
+          ],
+          "cost": 2,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "sion.s3.cafeteria",
+            "kind": "phase_action",
+            "printedClause": "被动/战斗阶段：令所有与你位于同一地点的玩家获得1点魔力。若有对手获得，将1枚【经验】放置于此牌上。",
+            "activation": {
+              "phase": "combat",
+              "opens": "controller_combat_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_structured_skill",
+                "skill": "cafeteria"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.sion",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
+      "master.sion.skill.s4": {
+        "id": "master.sion.skill.s4",
+        "name": "迦勒底·体育馆",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "魔术",
+          "attributes": [
+            "魔术"
+          ],
+          "cost": 2,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "sion.s4.gym",
+            "kind": "passive",
+            "printedClause": "被动：你的基础攻击获得+1威力。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_structured_skill",
+                "skill": "gym"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          },
+          {
+            "id": "sion.s4.gym-experience",
+            "kind": "passive",
+            "printedClause": "当你进行了一场争夺战后，将1枚【经验】放置于此牌上。",
+            "activation": {
+              "trigger": "after_battle_result_determined"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_structured_skill",
+                "skill": "gym_experience"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.sion",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
+      "master.sion.skill.s5": {
+        "id": "master.sion.skill.s5",
+        "name": "对魔力 EX",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "技能",
+          "attributes": [
+            "特殊"
+          ],
+          "cost": 2,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "sion.s5.magic-immunity",
+            "kind": "phase_action",
+            "printedClause": "魔术免疫-战斗阶段：将同一战场所有对手的魔术属性攻击威力以及通过令咒获得的威力变为0。",
+            "activation": {
+              "phase": "combat",
+              "opens": "controller_combat_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_magic_immunity_ex"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.sion",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
+      "master.sion.skill.s6": {
+        "id": "master.sion.skill.s6",
+        "name": "战斗续行 EX",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "技能",
+          "attributes": [
+            "特殊"
+          ],
+          "cost": 1,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "sion.s6.hunt",
+            "kind": "phase_action",
+            "printedClause": "追猎-行动阶段：重新部署至一处战场或花费1点魔力，移动至侦查。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_structured_skill",
+                "skill": "hunt"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.sion",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
+      "master.sion.skill.s7": {
+        "id": "master.sion.skill.s7",
+        "name": "单独行动 EX",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "技能",
+          "attributes": [
+            "特殊"
+          ],
+          "cost": 2,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "sion.s7.independent",
+            "kind": "passive",
+            "printedClause": "远隔操作-行动阶段：地利效果翻倍。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_independent_action_ex"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          },
+          {
+            "id": "sion.s7.independent-battle",
+            "kind": "passive",
+            "printedClause": "战斗阶段：若你赢得战斗，获得2点战果。如果你本回合战斗失败，失去3点战果，此效果不能被任何方式阻止。",
+            "activation": {
+              "trigger": "after_controller_wins_battle"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_independent_action_ex"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.sion",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
+      "master.sion.skill.s8": {
+        "id": "master.sion.skill.s8",
+        "name": "骑乘 EX",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "技能",
+          "attributes": [
+            "特殊"
+          ],
+          "cost": 2,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "sion.s8.riding",
+            "kind": "phase_action",
+            "printedClause": "行动阶段：从手牌中追加打出至多3张基本威力3及以下的牌，在你使用此效果的回合结束关闭此牌。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_riding_ex"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.sion",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
+      "master.sion.skill.s9": {
+        "id": "master.sion.skill.s9",
+        "name": "阵地作成 EX",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "技能",
+          "attributes": [
+            "特殊"
+          ],
+          "cost": 2,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "sion.s9.territory",
+            "kind": "passive",
+            "printedClause": "领域扩张-残留：当你部署于魔术工房时，获得X点合计威力和战果。X初始为0，每当你赢得一场战斗，X永久增加1点。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_territory_expansion_ex"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.sion",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
+      "master.sion.skill.s10": {
+        "id": "master.sion.skill.s10",
+        "name": "气息遮断 EX",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "技能",
+          "attributes": [
+            "特殊"
+          ],
+          "cost": 2,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "sion.s10.concealment-loss",
+            "kind": "passive",
+            "printedClause": "被动：当你输掉一场战斗后，将此牌移除游戏。",
+            "activation": {
+              "trigger": "after_controller_loses_battle"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_structured_skill",
+                "skill": "concealment_loss"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          },
+          {
+            "id": "sion.s10.execution",
+            "kind": "phase_action",
+            "printedClause": "完美处决-战斗阶段：令一名与你交战的对手【败北】。",
+            "activation": {
+              "phase": "combat",
+              "opens": "controller_combat_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_structured_skill",
+                "skill": "execution"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.sion",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
+      "master.sion.skill.s11": {
+        "id": "master.sion.skill.s11",
+        "name": "狂战士 EX",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "技能",
+          "attributes": [
+            "力量"
+          ],
+          "cost": 3,
+          "basePower": 9
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "sion.s11.berserk",
+            "kind": "phase_action",
+            "printedClause": "狂化-行动阶段：以背面朝上抽取至多三张牌并将其移除（以此方法被移除的牌不触发任何卡牌效果），你每以此法抽一张牌，此牌+4威力。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_structured_skill",
+                "skill": "berserk"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.sion",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
+      "master.sion.skill.s12": {
+        "id": "master.sion.skill.s12",
+        "name": "他人格 EX",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "特殊",
+          "attributes": [
+            "特殊"
+          ],
+          "cost": 3,
+          "basePower": 3
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 8
+          }
+        ],
+        "abilities": [
+          {
+            "id": "s12.alter-ego-transform",
+            "kind": "optional_trigger",
+            "printedClause": "残留：当你将一张牌放置入场时，你可以支付3点魔力以使其获得反转效果。此效果每回合仅对一张牌生效。",
+            "activation": {
+              "phase": "action",
+              "trigger": "on_card_played",
+              "requiresSourceState": "active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "transform_event_source_card"
+              }
+            ],
+            "cost": [
+              {
+                "type": "pay_mana",
+                "player": "controller",
+                "amount": 3
+              }
+            ],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "opens": "on_card_played",
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {
+              "type": "per_round",
+              "uses": 1,
+              "scope": "this_card"
+            },
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "master.sion",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
+      },
+      "master.sion.skill.s13": {
+        "id": "master.sion.skill.s13",
+        "name": "复仇者 EX",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "技能",
+          "attributes": [
+            "特殊"
+          ],
+          "cost": 2,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "sion.s13.avenger",
+            "kind": "phase_action",
+            "printedClause": "滔天怨焰-被动/行动阶段：花费2点战果，从你的弃牌堆打出一张牌。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_structured_skill",
+                "skill": "avenger"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.sion",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
+      "master.sion.skill.s14": {
+        "id": "master.sion.skill.s14",
+        "name": "裁决者 EX",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "技能",
+          "attributes": [
+            "特殊"
+          ],
+          "cost": 2,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "sion.s14.ruler",
+            "kind": "phase_action",
+            "printedClause": "神圣敕条-被动/前哨阶段：令一名其他玩家获得一枚临时的【裁决者令咒】直至回合结束。你不能在三回合之内选择同一名玩家。",
+            "activation": {
+              "phase": "advance",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_structured_skill",
+                "skill": "ruler"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.sion",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
+      "master.sion.skill.s15": {
+        "id": "master.sion.skill.s15",
+        "name": "月之癌 EX",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "技能",
+          "attributes": [
+            "特殊"
+          ],
+          "cost": 3,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "sion.s15.restart",
+            "kind": "phase_action",
+            "printedClause": "重启-被动/战斗阶段：依轮次顺序，所有位于【月之圣杯】的玩家重新部署，然后弃置【月之圣杯】上的所有事件牌并将其从游戏中移除（可以再被开启）。",
+            "activation": {
+              "phase": "combat",
+              "opens": "controller_combat_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_structured_skill",
+                "skill": "restart"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {
+              "type": "per_game",
+              "uses": 1,
+              "scope": "this_card"
+            },
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.sion",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
+      "master.sion.skill.s16": {
+        "id": "master.sion.skill.s16",
+        "name": "领域外生命 EX",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "技能",
+          "attributes": [
+            "特殊"
+          ],
+          "cost": 2,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "sion.s16.abyss",
+            "kind": "phase_action",
+            "printedClause": "凝视深渊-行动阶段：你所在地点的所有玩家弃置所有手牌。你可花费2点魔力，将目标更改为\"游戏内的所有玩家\"。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_structured_skill",
+                "skill": "abyss"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.sion",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
+      "master.sion.skill.s17": {
+        "id": "master.sion.skill.s17",
+        "name": "黑铳",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "宝具",
+          "attributes": [
+            "特殊"
+          ],
+          "cost": 1,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "sion.s17.aether",
+            "kind": "phase_action",
+            "printedClause": "以太湮灭-战斗阶段：关闭你战斗中所有的【幸运】。所有与你交战的对手抽2张牌并展示所有手牌和暗置攻击，然后令展示了【幸运】的所有对手【败北】。",
+            "activation": {
+              "phase": "combat",
+              "opens": "controller_combat_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "sion_structured_skill",
+                "skill": "aether"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "initialPlacement": "outside_game",
+        "mode": "automatic",
+        "ownerId": "master.sion",
+        "playKind": "support",
+        "destinationZone": "field"
+      },
       "servant.artoriac.skill.sc-artoriac-1": {
         "id": "servant.artoriac.skill.sc-artoriac-1",
         "name": "选王剑",
@@ -51112,6 +52837,136 @@
         "playKind": "support",
         "destinationZone": "field",
         "initialZone": "skill"
+      },
+      "master.sion.command-spell": {
+        "id": "master.sion.command-spell",
+        "name": "令咒",
+        "cardType": "command_spell",
+        "cardFace": {
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "mode": "automatic",
+        "abilities": [
+          {
+            "id": "command-spell.gain-mana",
+            "kind": "phase_action",
+            "printedClause": "行动阶段：获得4点魔力。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "adjust_mana",
+                "amount": 4
+              },
+              {
+                "type": "adjust_command_seals",
+                "amount": -1,
+                "directive": "spend_command_spell"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {},
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "command-spell.power-victory",
+            "kind": "phase_action",
+            "printedClause": "行动阶段：总威力+2，如果你本回合赢得战斗，获得2点战果。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "record_master_directive",
+                "directive": "gain_2_vp_if_win_this_round"
+              },
+              {
+                "type": "adjust_command_seals",
+                "amount": -1,
+                "directive": "spend_command_spell"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [
+              {
+                "type": "create_modifier",
+                "modifier": {
+                  "type": "power_bonus",
+                  "target": "controller",
+                  "amount": 2,
+                  "duration": "this_round"
+                }
+              }
+            ],
+            "lifecycle": {},
+            "responseWindow": {},
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "command-spell.free-move",
+            "kind": "phase_action",
+            "printedClause": "行动阶段：无视交战状态，从深山町或新都移动至任意地点。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "record_master_directive",
+                "directive": "move_from_shinto_or_miyama_to_any_location_ignore_engagement"
+              },
+              {
+                "type": "adjust_command_seals",
+                "amount": -1,
+                "directive": "spend_command_spell"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {},
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "ownerId": "master.sion",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
       }
     },
     "characters": {
@@ -52115,6 +53970,33 @@
         ],
         "publicInformation": {}
       },
+      "master.sion": {
+        "id": "master.sion",
+        "name": "紫苑·艾尔特纳姆",
+        "class": "Master",
+        "kind": "master",
+        "cardIds": [
+          "master.sion.skill.ascension",
+          "master.sion.skill.s1",
+          "master.sion.skill.s2",
+          "master.sion.skill.s3",
+          "master.sion.skill.s4",
+          "master.sion.skill.s5",
+          "master.sion.skill.s6",
+          "master.sion.skill.s7",
+          "master.sion.skill.s8",
+          "master.sion.skill.s9",
+          "master.sion.skill.s10",
+          "master.sion.skill.s11",
+          "master.sion.skill.s12",
+          "master.sion.skill.s13",
+          "master.sion.skill.s14",
+          "master.sion.skill.s15",
+          "master.sion.skill.s16",
+          "master.sion.skill.s17"
+        ],
+        "publicInformation": {}
+      },
       "servant.artoriac": {
         "id": "servant.artoriac",
         "name": "阿尔托莉雅·卡斯特",
@@ -52732,13 +54614,14 @@
       "master.shiki-tohno": "master.shiki-tohno.command-spell",
       "master.shirou-meal": "master.shirou-meal.command-spell",
       "master.shishigou": "master.shishigou.command-spell",
-      "master.sieg": "master.sieg.command-spell"
+      "master.sieg": "master.sieg.command-spell",
+      "master.sion": "master.sion.command-spell"
     },
-    "definitionHash": "caa0e67405d0d3b44f56e15cd1dcb0ef60b06fefc12961c489924cb779765a12",
+    "definitionHash": "870b37f030b686f786dafc3dd6558699e7653c39056c92ebfff1e79cced514ac",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "caa0e67405d0d3b44f56e15cd1dcb0ef60b06fefc12961c489924cb779765a12"
+      "definitionHash": "870b37f030b686f786dafc3dd6558699e7653c39056c92ebfff1e79cced514ac"
     },
     "sourceMap": {
       "master.shinji.skill.ascension": {
@@ -57302,1491 +59185,1746 @@
         "abilityIndex": 0,
         "path": "archives[57].cards[3].abilities[0]"
       },
-      "servant.artoriac.skill.sc-artoriac-1": {
-        "archiveId": "servant.artoriac",
+      "master.sion.skill.ascension": {
+        "archiveId": "master.sion",
         "archiveIndex": 58,
         "cardIndex": 0,
         "path": "archives[58].cards[0]"
       },
-      "servant.artoriac.skill.sc-artoriac-1#sc-artoriac-1.true-name-release": {
-        "archiveId": "servant.artoriac",
+      "master.sion.skill.ascension#sion.ascension.provision": {
+        "archiveId": "master.sion",
         "archiveIndex": 58,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[58].cards[0].abilities[0]"
       },
-      "servant.artoriac.skill.sc-artoriac-1#sc-artoriac-1.residual-special-power-bonus": {
-        "archiveId": "servant.artoriac",
-        "archiveIndex": 58,
-        "cardIndex": 0,
-        "abilityIndex": 1,
-        "path": "archives[58].cards[0].abilities[1]"
-      },
-      "servant.artoriac.skill.sc-artoriac-1#sc-artoriac-1.return-current-round-attack": {
-        "archiveId": "servant.artoriac",
-        "archiveIndex": 58,
-        "cardIndex": 0,
-        "abilityIndex": 2,
-        "path": "archives[58].cards[0].abilities[2]"
-      },
-      "servant.artoriac.skill.sc-artoriac-2": {
-        "archiveId": "servant.artoriac",
+      "master.sion.skill.s1": {
+        "archiveId": "master.sion",
         "archiveIndex": 58,
         "cardIndex": 1,
         "path": "archives[58].cards[1]"
       },
-      "servant.artoriac.skill.sc-artoriac-2#sc-artoriac-2.pay-x-look-x-plus-two": {
-        "archiveId": "servant.artoriac",
+      "master.sion.skill.s1#sion.s1.training": {
+        "archiveId": "master.sion",
         "archiveIndex": 58,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[58].cards[1].abilities[0]"
       },
-      "servant.artoriac.skill.sc-artoriac-3": {
-        "archiveId": "servant.artoriac",
+      "master.sion.skill.s2": {
+        "archiveId": "master.sion",
         "archiveIndex": 58,
         "cardIndex": 2,
         "path": "archives[58].cards[2]"
       },
-      "servant.artoriac.skill.sc-artoriac-3#sc-artoriac-3.discard-public-and-power-formula": {
-        "archiveId": "servant.artoriac",
+      "master.sion.skill.s2#sion.s2.library": {
+        "archiveId": "master.sion",
         "archiveIndex": 58,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[58].cards[2].abilities[0]"
       },
-      "servant.artoriac.skill.sc-artoriac-3#sc-artoriac-3.conditional-true-name-release": {
-        "archiveId": "servant.artoriac",
-        "archiveIndex": 58,
-        "cardIndex": 2,
-        "abilityIndex": 1,
-        "path": "archives[58].cards[2].abilities[1]"
-      },
-      "servant.artoriac.skill.sc-artoriac-3#sc-artoriac-3.shuffle-discard-on-victory": {
-        "archiveId": "servant.artoriac",
-        "archiveIndex": 58,
-        "cardIndex": 2,
-        "abilityIndex": 2,
-        "path": "archives[58].cards[2].abilities[2]"
-      },
-      "servant.artoriac.skill.sc-artoriac-4": {
-        "archiveId": "servant.artoriac",
+      "master.sion.skill.s3": {
+        "archiveId": "master.sion",
         "archiveIndex": 58,
         "cardIndex": 3,
         "path": "archives[58].cards[3]"
       },
-      "servant.artoriac.skill.sc-artoriac-4#sc-artoriac-4.unique-passive-luck-on-win": {
-        "archiveId": "servant.artoriac",
+      "master.sion.skill.s3#sion.s3.cafeteria": {
+        "archiveId": "master.sion",
         "archiveIndex": 58,
         "cardIndex": 3,
         "abilityIndex": 0,
         "path": "archives[58].cards[3].abilities[0]"
       },
-      "servant.artoriac.skill.sc-artoriac-4#sc-artoriac-4.recon-gain-vp-and-move": {
-        "archiveId": "servant.artoriac",
-        "archiveIndex": 58,
-        "cardIndex": 3,
-        "abilityIndex": 1,
-        "path": "archives[58].cards[3].abilities[1]"
-      },
-      "servant.artoriac.skill.sc-artoriac-5": {
-        "archiveId": "servant.artoriac",
+      "master.sion.skill.s4": {
+        "archiveId": "master.sion",
         "archiveIndex": 58,
         "cardIndex": 4,
         "path": "archives[58].cards[4]"
       },
-      "servant.artoriac.skill.sc-artoriac-5#sc-artoriac-5.unique-passive-luck-on-win": {
-        "archiveId": "servant.artoriac",
+      "master.sion.skill.s4#sion.s4.gym": {
+        "archiveId": "master.sion",
         "archiveIndex": 58,
         "cardIndex": 4,
         "abilityIndex": 0,
         "path": "archives[58].cards[4].abilities[0]"
       },
-      "servant.artoriac.skill.sc-artoriac-5#sc-artoriac-5.gain-mana-or-vp": {
-        "archiveId": "servant.artoriac",
+      "master.sion.skill.s4#sion.s4.gym-experience": {
+        "archiveId": "master.sion",
         "archiveIndex": 58,
         "cardIndex": 4,
         "abilityIndex": 1,
         "path": "archives[58].cards[4].abilities[1]"
       },
-      "servant.artoriac.skill.sc-artoriac-6": {
-        "archiveId": "servant.artoriac",
+      "master.sion.skill.s5": {
+        "archiveId": "master.sion",
         "archiveIndex": 58,
         "cardIndex": 5,
         "path": "archives[58].cards[5]"
       },
-      "servant.artoriac.skill.sc-artoriac-6#sc-artoriac-6.unique-passive-luck-on-win": {
-        "archiveId": "servant.artoriac",
+      "master.sion.skill.s5#sion.s5.magic-immunity": {
+        "archiveId": "master.sion",
         "archiveIndex": 58,
         "cardIndex": 5,
         "abilityIndex": 0,
         "path": "archives[58].cards[5].abilities[0]"
       },
-      "servant.artoriac.skill.sc-artoriac-6#sc-artoriac-6.gain-vp-if-not-sole-winner": {
-        "archiveId": "servant.artoriac",
+      "master.sion.skill.s6": {
+        "archiveId": "master.sion",
         "archiveIndex": 58,
-        "cardIndex": 5,
-        "abilityIndex": 1,
-        "path": "archives[58].cards[5].abilities[1]"
+        "cardIndex": 6,
+        "path": "archives[58].cards[6]"
       },
-      "servant.drake.skill.sc-drake-1": {
-        "archiveId": "servant.drake",
+      "master.sion.skill.s6#sion.s6.hunt": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 6,
+        "abilityIndex": 0,
+        "path": "archives[58].cards[6].abilities[0]"
+      },
+      "master.sion.skill.s7": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 7,
+        "path": "archives[58].cards[7]"
+      },
+      "master.sion.skill.s7#sion.s7.independent": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 7,
+        "abilityIndex": 0,
+        "path": "archives[58].cards[7].abilities[0]"
+      },
+      "master.sion.skill.s7#sion.s7.independent-battle": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 7,
+        "abilityIndex": 1,
+        "path": "archives[58].cards[7].abilities[1]"
+      },
+      "master.sion.skill.s8": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 8,
+        "path": "archives[58].cards[8]"
+      },
+      "master.sion.skill.s8#sion.s8.riding": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 8,
+        "abilityIndex": 0,
+        "path": "archives[58].cards[8].abilities[0]"
+      },
+      "master.sion.skill.s9": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 9,
+        "path": "archives[58].cards[9]"
+      },
+      "master.sion.skill.s9#sion.s9.territory": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 9,
+        "abilityIndex": 0,
+        "path": "archives[58].cards[9].abilities[0]"
+      },
+      "master.sion.skill.s10": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 10,
+        "path": "archives[58].cards[10]"
+      },
+      "master.sion.skill.s10#sion.s10.concealment-loss": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 10,
+        "abilityIndex": 0,
+        "path": "archives[58].cards[10].abilities[0]"
+      },
+      "master.sion.skill.s10#sion.s10.execution": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 10,
+        "abilityIndex": 1,
+        "path": "archives[58].cards[10].abilities[1]"
+      },
+      "master.sion.skill.s11": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 11,
+        "path": "archives[58].cards[11]"
+      },
+      "master.sion.skill.s11#sion.s11.berserk": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 11,
+        "abilityIndex": 0,
+        "path": "archives[58].cards[11].abilities[0]"
+      },
+      "master.sion.skill.s12": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 12,
+        "path": "archives[58].cards[12]"
+      },
+      "master.sion.skill.s12#s12.alter-ego-transform": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 12,
+        "abilityIndex": 0,
+        "path": "archives[58].cards[12].abilities[0]"
+      },
+      "master.sion.skill.s13": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 13,
+        "path": "archives[58].cards[13]"
+      },
+      "master.sion.skill.s13#sion.s13.avenger": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 13,
+        "abilityIndex": 0,
+        "path": "archives[58].cards[13].abilities[0]"
+      },
+      "master.sion.skill.s14": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 14,
+        "path": "archives[58].cards[14]"
+      },
+      "master.sion.skill.s14#sion.s14.ruler": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 14,
+        "abilityIndex": 0,
+        "path": "archives[58].cards[14].abilities[0]"
+      },
+      "master.sion.skill.s15": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 15,
+        "path": "archives[58].cards[15]"
+      },
+      "master.sion.skill.s15#sion.s15.restart": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 15,
+        "abilityIndex": 0,
+        "path": "archives[58].cards[15].abilities[0]"
+      },
+      "master.sion.skill.s16": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 16,
+        "path": "archives[58].cards[16]"
+      },
+      "master.sion.skill.s16#sion.s16.abyss": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 16,
+        "abilityIndex": 0,
+        "path": "archives[58].cards[16].abilities[0]"
+      },
+      "master.sion.skill.s17": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 17,
+        "path": "archives[58].cards[17]"
+      },
+      "master.sion.skill.s17#sion.s17.aether": {
+        "archiveId": "master.sion",
+        "archiveIndex": 58,
+        "cardIndex": 17,
+        "abilityIndex": 0,
+        "path": "archives[58].cards[17].abilities[0]"
+      },
+      "servant.artoriac.skill.sc-artoriac-1": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 59,
         "cardIndex": 0,
         "path": "archives[59].cards[0]"
       },
-      "servant.drake.skill.sc-drake-1#sc-drake-1.draw": {
-        "archiveId": "servant.drake",
+      "servant.artoriac.skill.sc-artoriac-1#sc-artoriac-1.true-name-release": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 59,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[59].cards[0].abilities[0]"
       },
-      "servant.drake.skill.sc-drake-1#sc-drake-1.mount-summon": {
-        "archiveId": "servant.drake",
+      "servant.artoriac.skill.sc-artoriac-1#sc-artoriac-1.residual-special-power-bonus": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 59,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[59].cards[0].abilities[1]"
       },
-      "servant.drake.skill.sc-drake-2": {
-        "archiveId": "servant.drake",
+      "servant.artoriac.skill.sc-artoriac-1#sc-artoriac-1.return-current-round-attack": {
+        "archiveId": "servant.artoriac",
+        "archiveIndex": 59,
+        "cardIndex": 0,
+        "abilityIndex": 2,
+        "path": "archives[59].cards[0].abilities[2]"
+      },
+      "servant.artoriac.skill.sc-artoriac-2": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 59,
         "cardIndex": 1,
         "path": "archives[59].cards[1]"
       },
-      "servant.drake.skill.sc-drake-2#sc-drake-2.reveal": {
-        "archiveId": "servant.drake",
+      "servant.artoriac.skill.sc-artoriac-2#sc-artoriac-2.pay-x-look-x-plus-two": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 59,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[59].cards[1].abilities[0]"
       },
-      "servant.drake.skill.sc-drake-2#sc-drake-2.reward-and-move": {
-        "archiveId": "servant.drake",
-        "archiveIndex": 59,
-        "cardIndex": 1,
-        "abilityIndex": 1,
-        "path": "archives[59].cards[1].abilities[1]"
-      },
-      "servant.drake.skill.sc-drake-3": {
-        "archiveId": "servant.drake",
+      "servant.artoriac.skill.sc-artoriac-3": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 59,
         "cardIndex": 2,
         "path": "archives[59].cards[2]"
       },
-      "servant.drake.skill.sc-drake-3#sc-drake-3.reveal": {
-        "archiveId": "servant.drake",
+      "servant.artoriac.skill.sc-artoriac-3#sc-artoriac-3.discard-public-and-power-formula": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 59,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[59].cards[2].abilities[0]"
       },
-      "servant.drake.skill.sc-drake-3#sc-drake-3.movement-power": {
-        "archiveId": "servant.drake",
+      "servant.artoriac.skill.sc-artoriac-3#sc-artoriac-3.conditional-true-name-release": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 59,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[59].cards[2].abilities[1]"
       },
-      "servant.drake.skill.sc-drake-3#sc-drake-3.reverse-dash": {
-        "archiveId": "servant.drake",
+      "servant.artoriac.skill.sc-artoriac-3#sc-artoriac-3.shuffle-discard-on-victory": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 59,
         "cardIndex": 2,
         "abilityIndex": 2,
         "path": "archives[59].cards[2].abilities[2]"
       },
-      "servant.drake.skill.sc-drake-3#sc-drake-3.plunder": {
-        "archiveId": "servant.drake",
+      "servant.artoriac.skill.sc-artoriac-4": {
+        "archiveId": "servant.artoriac",
         "archiveIndex": 59,
-        "cardIndex": 2,
-        "abilityIndex": 3,
-        "path": "archives[59].cards[2].abilities[3]"
+        "cardIndex": 3,
+        "path": "archives[59].cards[3]"
       },
-      "servant.achilles.skill.sc-achilles-1": {
-        "archiveId": "servant.achilles",
+      "servant.artoriac.skill.sc-artoriac-4#sc-artoriac-4.unique-passive-luck-on-win": {
+        "archiveId": "servant.artoriac",
+        "archiveIndex": 59,
+        "cardIndex": 3,
+        "abilityIndex": 0,
+        "path": "archives[59].cards[3].abilities[0]"
+      },
+      "servant.artoriac.skill.sc-artoriac-4#sc-artoriac-4.recon-gain-vp-and-move": {
+        "archiveId": "servant.artoriac",
+        "archiveIndex": 59,
+        "cardIndex": 3,
+        "abilityIndex": 1,
+        "path": "archives[59].cards[3].abilities[1]"
+      },
+      "servant.artoriac.skill.sc-artoriac-5": {
+        "archiveId": "servant.artoriac",
+        "archiveIndex": 59,
+        "cardIndex": 4,
+        "path": "archives[59].cards[4]"
+      },
+      "servant.artoriac.skill.sc-artoriac-5#sc-artoriac-5.unique-passive-luck-on-win": {
+        "archiveId": "servant.artoriac",
+        "archiveIndex": 59,
+        "cardIndex": 4,
+        "abilityIndex": 0,
+        "path": "archives[59].cards[4].abilities[0]"
+      },
+      "servant.artoriac.skill.sc-artoriac-5#sc-artoriac-5.gain-mana-or-vp": {
+        "archiveId": "servant.artoriac",
+        "archiveIndex": 59,
+        "cardIndex": 4,
+        "abilityIndex": 1,
+        "path": "archives[59].cards[4].abilities[1]"
+      },
+      "servant.artoriac.skill.sc-artoriac-6": {
+        "archiveId": "servant.artoriac",
+        "archiveIndex": 59,
+        "cardIndex": 5,
+        "path": "archives[59].cards[5]"
+      },
+      "servant.artoriac.skill.sc-artoriac-6#sc-artoriac-6.unique-passive-luck-on-win": {
+        "archiveId": "servant.artoriac",
+        "archiveIndex": 59,
+        "cardIndex": 5,
+        "abilityIndex": 0,
+        "path": "archives[59].cards[5].abilities[0]"
+      },
+      "servant.artoriac.skill.sc-artoriac-6#sc-artoriac-6.gain-vp-if-not-sole-winner": {
+        "archiveId": "servant.artoriac",
+        "archiveIndex": 59,
+        "cardIndex": 5,
+        "abilityIndex": 1,
+        "path": "archives[59].cards[5].abilities[1]"
+      },
+      "servant.drake.skill.sc-drake-1": {
+        "archiveId": "servant.drake",
         "archiveIndex": 60,
         "cardIndex": 0,
         "path": "archives[60].cards[0]"
       },
-      "servant.achilles.skill.sc-achilles-1#sc-achilles-1.achilles-heel": {
-        "archiveId": "servant.achilles",
+      "servant.drake.skill.sc-drake-1#sc-drake-1.draw": {
+        "archiveId": "servant.drake",
         "archiveIndex": 60,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[60].cards[0].abilities[0]"
       },
-      "servant.achilles.skill.sc-achilles-1#sc-achilles-1.gale-advance": {
-        "archiveId": "servant.achilles",
+      "servant.drake.skill.sc-drake-1#sc-drake-1.mount-summon": {
+        "archiveId": "servant.drake",
         "archiveIndex": 60,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[60].cards[0].abilities[1]"
       },
-      "servant.achilles.skill.sc-achilles-2": {
-        "archiveId": "servant.achilles",
+      "servant.drake.skill.sc-drake-2": {
+        "archiveId": "servant.drake",
         "archiveIndex": 60,
         "cardIndex": 1,
         "path": "archives[60].cards[1]"
       },
-      "servant.achilles.skill.sc-achilles-2#sc-achilles-2.blue-sky": {
-        "archiveId": "servant.achilles",
+      "servant.drake.skill.sc-drake-2#sc-drake-2.reveal": {
+        "archiveId": "servant.drake",
         "archiveIndex": 60,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[60].cards[1].abilities[0]"
       },
-      "servant.achilles.skill.sc-achilles-3": {
-        "archiveId": "servant.achilles",
+      "servant.drake.skill.sc-drake-2#sc-drake-2.reward-and-move": {
+        "archiveId": "servant.drake",
+        "archiveIndex": 60,
+        "cardIndex": 1,
+        "abilityIndex": 1,
+        "path": "archives[60].cards[1].abilities[1]"
+      },
+      "servant.drake.skill.sc-drake-3": {
+        "archiveId": "servant.drake",
         "archiveIndex": 60,
         "cardIndex": 2,
         "path": "archives[60].cards[2]"
       },
-      "servant.achilles.skill.sc-achilles-3#sc-achilles-3.hero-duel": {
-        "archiveId": "servant.achilles",
+      "servant.drake.skill.sc-drake-3#sc-drake-3.reveal": {
+        "archiveId": "servant.drake",
         "archiveIndex": 60,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[60].cards[2].abilities[0]"
       },
-      "servant.artoria-alt.skill.sc-artoria-alt-1": {
-        "archiveId": "servant.artoria-alt",
+      "servant.drake.skill.sc-drake-3#sc-drake-3.movement-power": {
+        "archiveId": "servant.drake",
+        "archiveIndex": 60,
+        "cardIndex": 2,
+        "abilityIndex": 1,
+        "path": "archives[60].cards[2].abilities[1]"
+      },
+      "servant.drake.skill.sc-drake-3#sc-drake-3.reverse-dash": {
+        "archiveId": "servant.drake",
+        "archiveIndex": 60,
+        "cardIndex": 2,
+        "abilityIndex": 2,
+        "path": "archives[60].cards[2].abilities[2]"
+      },
+      "servant.drake.skill.sc-drake-3#sc-drake-3.plunder": {
+        "archiveId": "servant.drake",
+        "archiveIndex": 60,
+        "cardIndex": 2,
+        "abilityIndex": 3,
+        "path": "archives[60].cards[2].abilities[3]"
+      },
+      "servant.achilles.skill.sc-achilles-1": {
+        "archiveId": "servant.achilles",
         "archiveIndex": 61,
         "cardIndex": 0,
         "path": "archives[61].cards[0]"
       },
-      "servant.artoria-alt.skill.sc-artoria-alt-1#sc-artoria-alt-1.true-name-release": {
-        "archiveId": "servant.artoria-alt",
+      "servant.achilles.skill.sc-achilles-1#sc-achilles-1.achilles-heel": {
+        "archiveId": "servant.achilles",
         "archiveIndex": 61,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[61].cards[0].abilities[0]"
       },
-      "servant.artoria-alt.skill.sc-artoria-alt-1#sc-artoria-alt-1.ignore-situation-restrictions": {
-        "archiveId": "servant.artoria-alt",
+      "servant.achilles.skill.sc-achilles-1#sc-achilles-1.gale-advance": {
+        "archiveId": "servant.achilles",
         "archiveIndex": 61,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[61].cards[0].abilities[1]"
       },
-      "servant.artoria-alt.skill.sc-artoria-alt-1#sc-artoria-alt-1.chain-of-wind-king": {
-        "archiveId": "servant.artoria-alt",
-        "archiveIndex": 61,
-        "cardIndex": 0,
-        "abilityIndex": 2,
-        "path": "archives[61].cards[0].abilities[2]"
-      },
-      "servant.artoria-alt.skill.sc-artoria-alt-2": {
-        "archiveId": "servant.artoria-alt",
+      "servant.achilles.skill.sc-achilles-2": {
+        "archiveId": "servant.achilles",
         "archiveIndex": 61,
         "cardIndex": 1,
         "path": "archives[61].cards[1]"
       },
-      "servant.artoria-alt.skill.sc-artoria-alt-2#sc-artoria-alt-2.low-mana-play-override": {
-        "archiveId": "servant.artoria-alt",
+      "servant.achilles.skill.sc-achilles-2#sc-achilles-2.blue-sky": {
+        "archiveId": "servant.achilles",
         "archiveIndex": 61,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[61].cards[1].abilities[0]"
       },
-      "servant.artoria-alt.skill.sc-artoria-alt-2#sc-artoria-alt-2.angra-mainyu-embrace": {
-        "archiveId": "servant.artoria-alt",
-        "archiveIndex": 61,
-        "cardIndex": 1,
-        "abilityIndex": 1,
-        "path": "archives[61].cards[1].abilities[1]"
-      },
-      "servant.artoria-alt.skill.sc-artoria-alt-2#sc-artoria-alt-2.forbid-noble-phantasm-when-low-mana": {
-        "archiveId": "servant.artoria-alt",
-        "archiveIndex": 61,
-        "cardIndex": 1,
-        "abilityIndex": 2,
-        "path": "archives[61].cards[1].abilities[2]"
-      },
-      "servant.artoria-alt.skill.sc-artoria-alt-3": {
-        "archiveId": "servant.artoria-alt",
+      "servant.achilles.skill.sc-achilles-3": {
+        "archiveId": "servant.achilles",
         "archiveIndex": 61,
         "cardIndex": 2,
         "path": "archives[61].cards[2]"
       },
-      "servant.artoria-alt.skill.sc-artoria-alt-3#sc-artoria-alt-3.noble-bloom": {
-        "archiveId": "servant.artoria-alt",
+      "servant.achilles.skill.sc-achilles-3#sc-achilles-3.hero-duel": {
+        "archiveId": "servant.achilles",
         "archiveIndex": 61,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[61].cards[2].abilities[0]"
       },
-      "servant.artoria-alt.skill.sc-artoria-alt-3#sc-artoria-alt-3.noble-bloom-extra-vp": {
+      "servant.artoria-alt.skill.sc-artoria-alt-1": {
         "archiveId": "servant.artoria-alt",
-        "archiveIndex": 61,
-        "cardIndex": 2,
-        "abilityIndex": 1,
-        "path": "archives[61].cards[2].abilities[1]"
-      },
-      "servant.artoria-alt.skill.sc-artoria-alt-3#sc-artoria-alt-3.magic-resistance": {
-        "archiveId": "servant.artoria-alt",
-        "archiveIndex": 61,
-        "cardIndex": 2,
-        "abilityIndex": 2,
-        "path": "archives[61].cards[2].abilities[2]"
-      },
-      "servant.ereshkigal.skill.sc-ereshkigal-1": {
-        "archiveId": "servant.ereshkigal",
         "archiveIndex": 62,
         "cardIndex": 0,
         "path": "archives[62].cards[0]"
       },
-      "servant.ereshkigal.skill.sc-ereshkigal-1#sc-ereshkigal-1.battle-continuation": {
-        "archiveId": "servant.ereshkigal",
+      "servant.artoria-alt.skill.sc-artoria-alt-1#sc-artoria-alt-1.true-name-release": {
+        "archiveId": "servant.artoria-alt",
         "archiveIndex": 62,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[62].cards[0].abilities[0]"
       },
-      "servant.ereshkigal.skill.sc-ereshkigal-2": {
-        "archiveId": "servant.ereshkigal",
+      "servant.artoria-alt.skill.sc-artoria-alt-1#sc-artoria-alt-1.ignore-situation-restrictions": {
+        "archiveId": "servant.artoria-alt",
+        "archiveIndex": 62,
+        "cardIndex": 0,
+        "abilityIndex": 1,
+        "path": "archives[62].cards[0].abilities[1]"
+      },
+      "servant.artoria-alt.skill.sc-artoria-alt-1#sc-artoria-alt-1.chain-of-wind-king": {
+        "archiveId": "servant.artoria-alt",
+        "archiveIndex": 62,
+        "cardIndex": 0,
+        "abilityIndex": 2,
+        "path": "archives[62].cards[0].abilities[2]"
+      },
+      "servant.artoria-alt.skill.sc-artoria-alt-2": {
+        "archiveId": "servant.artoria-alt",
         "archiveIndex": 62,
         "cardIndex": 1,
         "path": "archives[62].cards[1]"
       },
-      "servant.ereshkigal.skill.sc-ereshkigal-2#sc-ereshkigal-2.netherworld-protection": {
-        "archiveId": "servant.ereshkigal",
+      "servant.artoria-alt.skill.sc-artoria-alt-2#sc-artoria-alt-2.low-mana-play-override": {
+        "archiveId": "servant.artoria-alt",
         "archiveIndex": 62,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[62].cards[1].abilities[0]"
       },
-      "servant.ereshkigal.skill.sc-ereshkigal-2#sc-ereshkigal-2.gain-mana-on-deploy": {
-        "archiveId": "servant.ereshkigal",
+      "servant.artoria-alt.skill.sc-artoria-alt-2#sc-artoria-alt-2.angra-mainyu-embrace": {
+        "archiveId": "servant.artoria-alt",
         "archiveIndex": 62,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[62].cards[1].abilities[1]"
       },
-      "servant.ereshkigal.skill.sc-ereshkigal-2#sc-ereshkigal-2.self-exempt": {
-        "archiveId": "servant.ereshkigal",
+      "servant.artoria-alt.skill.sc-artoria-alt-2#sc-artoria-alt-2.forbid-noble-phantasm-when-low-mana": {
+        "archiveId": "servant.artoria-alt",
         "archiveIndex": 62,
         "cardIndex": 1,
         "abilityIndex": 2,
         "path": "archives[62].cards[1].abilities[2]"
       },
-      "servant.ereshkigal.skill.sc-ereshkigal-2#sc-ereshkigal-2.return-to-skill-zone": {
-        "archiveId": "servant.ereshkigal",
-        "archiveIndex": 62,
-        "cardIndex": 1,
-        "abilityIndex": 3,
-        "path": "archives[62].cards[1].abilities[3]"
-      },
-      "servant.ereshkigal.skill.sc-ereshkigal-3": {
-        "archiveId": "servant.ereshkigal",
+      "servant.artoria-alt.skill.sc-artoria-alt-3": {
+        "archiveId": "servant.artoria-alt",
         "archiveIndex": 62,
         "cardIndex": 2,
         "path": "archives[62].cards[2]"
       },
-      "servant.ereshkigal.skill.sc-ereshkigal-3#sc-ereshkigal-3.true-name-release": {
-        "archiveId": "servant.ereshkigal",
+      "servant.artoria-alt.skill.sc-artoria-alt-3#sc-artoria-alt-3.noble-bloom": {
+        "archiveId": "servant.artoria-alt",
         "archiveIndex": 62,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[62].cards[2].abilities[0]"
       },
-      "servant.ereshkigal.skill.sc-ereshkigal-3#sc-ereshkigal-3.blooming-netherworld": {
-        "archiveId": "servant.ereshkigal",
+      "servant.artoria-alt.skill.sc-artoria-alt-3#sc-artoria-alt-3.noble-bloom-extra-vp": {
+        "archiveId": "servant.artoria-alt",
         "archiveIndex": 62,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[62].cards[2].abilities[1]"
       },
-      "servant.tomoe.skill.sc-tomoe-1": {
-        "archiveId": "servant.tomoe",
+      "servant.artoria-alt.skill.sc-artoria-alt-3#sc-artoria-alt-3.magic-resistance": {
+        "archiveId": "servant.artoria-alt",
+        "archiveIndex": 62,
+        "cardIndex": 2,
+        "abilityIndex": 2,
+        "path": "archives[62].cards[2].abilities[2]"
+      },
+      "servant.ereshkigal.skill.sc-ereshkigal-1": {
+        "archiveId": "servant.ereshkigal",
         "archiveIndex": 63,
         "cardIndex": 0,
         "path": "archives[63].cards[0]"
       },
-      "servant.tomoe.skill.sc-tomoe-1#sc-tomoe-1.independent-action": {
-        "archiveId": "servant.tomoe",
+      "servant.ereshkigal.skill.sc-ereshkigal-1#sc-ereshkigal-1.battle-continuation": {
+        "archiveId": "servant.ereshkigal",
         "archiveIndex": 63,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[63].cards[0].abilities[0]"
       },
-      "servant.tomoe.skill.sc-tomoe-1#sc-tomoe-1.penalty-on-defeat": {
-        "archiveId": "servant.tomoe",
-        "archiveIndex": 63,
-        "cardIndex": 0,
-        "abilityIndex": 1,
-        "path": "archives[63].cards[0].abilities[1]"
-      },
-      "servant.tomoe.skill.sc-tomoe-2": {
-        "archiveId": "servant.tomoe",
+      "servant.ereshkigal.skill.sc-ereshkigal-2": {
+        "archiveId": "servant.ereshkigal",
         "archiveIndex": 63,
         "cardIndex": 1,
         "path": "archives[63].cards[1]"
       },
-      "servant.tomoe.skill.sc-tomoe-2#sc-tomoe-2.inferno-fire": {
-        "archiveId": "servant.tomoe",
+      "servant.ereshkigal.skill.sc-ereshkigal-2#sc-ereshkigal-2.netherworld-protection": {
+        "archiveId": "servant.ereshkigal",
         "archiveIndex": 63,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[63].cards[1].abilities[0]"
       },
-      "servant.tomoe.skill.sc-tomoe-2#sc-tomoe-2.double-terrain": {
-        "archiveId": "servant.tomoe",
+      "servant.ereshkigal.skill.sc-ereshkigal-2#sc-ereshkigal-2.gain-mana-on-deploy": {
+        "archiveId": "servant.ereshkigal",
         "archiveIndex": 63,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[63].cards[1].abilities[1]"
       },
-      "servant.tomoe.skill.sc-tomoe-3": {
-        "archiveId": "servant.tomoe",
+      "servant.ereshkigal.skill.sc-ereshkigal-2#sc-ereshkigal-2.self-exempt": {
+        "archiveId": "servant.ereshkigal",
+        "archiveIndex": 63,
+        "cardIndex": 1,
+        "abilityIndex": 2,
+        "path": "archives[63].cards[1].abilities[2]"
+      },
+      "servant.ereshkigal.skill.sc-ereshkigal-2#sc-ereshkigal-2.return-to-skill-zone": {
+        "archiveId": "servant.ereshkigal",
+        "archiveIndex": 63,
+        "cardIndex": 1,
+        "abilityIndex": 3,
+        "path": "archives[63].cards[1].abilities[3]"
+      },
+      "servant.ereshkigal.skill.sc-ereshkigal-3": {
+        "archiveId": "servant.ereshkigal",
         "archiveIndex": 63,
         "cardIndex": 2,
         "path": "archives[63].cards[2]"
       },
-      "servant.tomoe.skill.sc-tomoe-3#sc-tomoe-3.true-name-release": {
-        "archiveId": "servant.tomoe",
+      "servant.ereshkigal.skill.sc-ereshkigal-3#sc-ereshkigal-3.true-name-release": {
+        "archiveId": "servant.ereshkigal",
         "archiveIndex": 63,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[63].cards[2].abilities[0]"
       },
-      "servant.tomoe.skill.sc-tomoe-3#sc-tomoe-3.rain-of-fire": {
-        "archiveId": "servant.tomoe",
+      "servant.ereshkigal.skill.sc-ereshkigal-3#sc-ereshkigal-3.blooming-netherworld": {
+        "archiveId": "servant.ereshkigal",
         "archiveIndex": 63,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[63].cards[2].abilities[1]"
       },
-      "servant.tristan.skill.sc-tristan-1": {
-        "archiveId": "servant.tristan",
+      "servant.tomoe.skill.sc-tomoe-1": {
+        "archiveId": "servant.tomoe",
         "archiveIndex": 64,
         "cardIndex": 0,
         "path": "archives[64].cards[0]"
       },
-      "servant.tristan.skill.sc-tristan-1#sc-tristan-1.true-name-release": {
-        "archiveId": "servant.tristan",
+      "servant.tomoe.skill.sc-tomoe-1#sc-tomoe-1.independent-action": {
+        "archiveId": "servant.tomoe",
         "archiveIndex": 64,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[64].cards[0].abilities[0]"
       },
-      "servant.tristan.skill.sc-tristan-1#sc-tristan-1.lament-resonance": {
-        "archiveId": "servant.tristan",
+      "servant.tomoe.skill.sc-tomoe-1#sc-tomoe-1.penalty-on-defeat": {
+        "archiveId": "servant.tomoe",
         "archiveIndex": 64,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[64].cards[0].abilities[1]"
       },
-      "servant.tristan.skill.sc-tristan-2": {
-        "archiveId": "servant.tristan",
+      "servant.tomoe.skill.sc-tomoe-2": {
+        "archiveId": "servant.tomoe",
         "archiveIndex": 64,
         "cardIndex": 1,
         "path": "archives[64].cards[1]"
       },
-      "servant.tristan.skill.sc-tristan-2#sc-tristan-2.memory-fades": {
-        "archiveId": "servant.tristan",
+      "servant.tomoe.skill.sc-tomoe-2#sc-tomoe-2.inferno-fire": {
+        "archiveId": "servant.tomoe",
         "archiveIndex": 64,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[64].cards[1].abilities[0]"
       },
-      "servant.tristan.skill.sc-tristan-3": {
-        "archiveId": "servant.tristan",
+      "servant.tomoe.skill.sc-tomoe-2#sc-tomoe-2.double-terrain": {
+        "archiveId": "servant.tomoe",
+        "archiveIndex": 64,
+        "cardIndex": 1,
+        "abilityIndex": 1,
+        "path": "archives[64].cards[1].abilities[1]"
+      },
+      "servant.tomoe.skill.sc-tomoe-3": {
+        "archiveId": "servant.tomoe",
         "archiveIndex": 64,
         "cardIndex": 2,
         "path": "archives[64].cards[2]"
       },
-      "servant.tristan.skill.sc-tristan-3#sc-tristan-3.independent-action": {
-        "archiveId": "servant.tristan",
+      "servant.tomoe.skill.sc-tomoe-3#sc-tomoe-3.true-name-release": {
+        "archiveId": "servant.tomoe",
         "archiveIndex": 64,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[64].cards[2].abilities[0]"
       },
-      "servant.tristan.skill.sc-tristan-3#sc-tristan-3.penalty-on-defeat": {
-        "archiveId": "servant.tristan",
+      "servant.tomoe.skill.sc-tomoe-3#sc-tomoe-3.rain-of-fire": {
+        "archiveId": "servant.tomoe",
         "archiveIndex": 64,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[64].cards[2].abilities[1]"
       },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-1": {
-        "archiveId": "servant.ushiwakamaru",
+      "servant.tristan.skill.sc-tristan-1": {
+        "archiveId": "servant.tristan",
         "archiveIndex": 65,
         "cardIndex": 0,
         "path": "archives[65].cards[0]"
       },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-1#sc-ushiwakamaru-1.true-name-release": {
-        "archiveId": "servant.ushiwakamaru",
+      "servant.tristan.skill.sc-tristan-1#sc-tristan-1.true-name-release": {
+        "archiveId": "servant.tristan",
         "archiveIndex": 65,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[65].cards[0].abilities[0]"
       },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-1#sc-ushiwakamaru-1.cross-phase-action": {
-        "archiveId": "servant.ushiwakamaru",
+      "servant.tristan.skill.sc-tristan-1#sc-tristan-1.lament-resonance": {
+        "archiveId": "servant.tristan",
         "archiveIndex": 65,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[65].cards[0].abilities[1]"
       },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-1#sc-ushiwakamaru-1.whirling-slashes": {
-        "archiveId": "servant.ushiwakamaru",
-        "archiveIndex": 65,
-        "cardIndex": 0,
-        "abilityIndex": 2,
-        "path": "archives[65].cards[0].abilities[2]"
-      },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-2": {
-        "archiveId": "servant.ushiwakamaru",
+      "servant.tristan.skill.sc-tristan-2": {
+        "archiveId": "servant.tristan",
         "archiveIndex": 65,
         "cardIndex": 1,
         "path": "archives[65].cards[1]"
       },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-2#sc-ushiwakamaru-2.true-name-release": {
-        "archiveId": "servant.ushiwakamaru",
+      "servant.tristan.skill.sc-tristan-2#sc-tristan-2.memory-fades": {
+        "archiveId": "servant.tristan",
         "archiveIndex": 65,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[65].cards[1].abilities[0]"
       },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-2#sc-ushiwakamaru-2.eight-boat-leap": {
-        "archiveId": "servant.ushiwakamaru",
-        "archiveIndex": 65,
-        "cardIndex": 1,
-        "abilityIndex": 1,
-        "path": "archives[65].cards[1].abilities[1]"
-      },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-3": {
-        "archiveId": "servant.ushiwakamaru",
+      "servant.tristan.skill.sc-tristan-3": {
+        "archiveId": "servant.tristan",
         "archiveIndex": 65,
         "cardIndex": 2,
         "path": "archives[65].cards[2]"
       },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-3#sc-ushiwakamaru-3.draw": {
-        "archiveId": "servant.ushiwakamaru",
+      "servant.tristan.skill.sc-tristan-3#sc-tristan-3.independent-action": {
+        "archiveId": "servant.tristan",
         "archiveIndex": 65,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[65].cards[2].abilities[0]"
       },
-      "servant.ushiwakamaru.skill.sc-ushiwakamaru-3#sc-ushiwakamaru-3.mount-summon": {
-        "archiveId": "servant.ushiwakamaru",
+      "servant.tristan.skill.sc-tristan-3#sc-tristan-3.penalty-on-defeat": {
+        "archiveId": "servant.tristan",
         "archiveIndex": 65,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[65].cards[2].abilities[1]"
       },
-      "servant.valkyrie.skill.sc-valkyrie-1": {
-        "archiveId": "servant.valkyrie",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-1": {
+        "archiveId": "servant.ushiwakamaru",
         "archiveIndex": 66,
         "cardIndex": 0,
         "path": "archives[66].cards[0]"
       },
-      "servant.valkyrie.skill.sc-valkyrie-1#sc-valkyrie-1.maiden-descent": {
-        "archiveId": "servant.valkyrie",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-1#sc-ushiwakamaru-1.true-name-release": {
+        "archiveId": "servant.ushiwakamaru",
         "archiveIndex": 66,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[66].cards[0].abilities[0]"
       },
-      "servant.valkyrie.skill.sc-valkyrie-2": {
-        "archiveId": "servant.valkyrie",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-1#sc-ushiwakamaru-1.cross-phase-action": {
+        "archiveId": "servant.ushiwakamaru",
+        "archiveIndex": 66,
+        "cardIndex": 0,
+        "abilityIndex": 1,
+        "path": "archives[66].cards[0].abilities[1]"
+      },
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-1#sc-ushiwakamaru-1.whirling-slashes": {
+        "archiveId": "servant.ushiwakamaru",
+        "archiveIndex": 66,
+        "cardIndex": 0,
+        "abilityIndex": 2,
+        "path": "archives[66].cards[0].abilities[2]"
+      },
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-2": {
+        "archiveId": "servant.ushiwakamaru",
         "archiveIndex": 66,
         "cardIndex": 1,
         "path": "archives[66].cards[1]"
       },
-      "servant.valkyrie.skill.sc-valkyrie-2#sc-valkyrie-2.forward-action": {
-        "archiveId": "servant.valkyrie",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-2#sc-ushiwakamaru-2.true-name-release": {
+        "archiveId": "servant.ushiwakamaru",
         "archiveIndex": 66,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[66].cards[1].abilities[0]"
       },
-      "servant.valkyrie.skill.sc-valkyrie-2#sc-valkyrie-2.forward-combat": {
-        "archiveId": "servant.valkyrie",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-2#sc-ushiwakamaru-2.eight-boat-leap": {
+        "archiveId": "servant.ushiwakamaru",
         "archiveIndex": 66,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[66].cards[1].abilities[1]"
       },
-      "servant.valkyrie.skill.sc-valkyrie-2#sc-valkyrie-2.steel-shield": {
-        "archiveId": "servant.valkyrie",
-        "archiveIndex": 66,
-        "cardIndex": 1,
-        "abilityIndex": 2,
-        "path": "archives[66].cards[1].abilities[2]"
-      },
-      "servant.valkyrie.skill.sc-valkyrie-3": {
-        "archiveId": "servant.valkyrie",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-3": {
+        "archiveId": "servant.ushiwakamaru",
         "archiveIndex": 66,
         "cardIndex": 2,
         "path": "archives[66].cards[2]"
       },
-      "servant.valkyrie.skill.sc-valkyrie-3#false-gungnir-retrigger-commanders": {
-        "archiveId": "servant.valkyrie",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-3#sc-ushiwakamaru-3.draw": {
+        "archiveId": "servant.ushiwakamaru",
         "archiveIndex": 66,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[66].cards[2].abilities[0]"
       },
-      "card.x-commanderortlinde": {
-        "archiveId": "servant.valkyrie",
+      "servant.ushiwakamaru.skill.sc-ushiwakamaru-3#sc-ushiwakamaru-3.mount-summon": {
+        "archiveId": "servant.ushiwakamaru",
         "archiveIndex": 66,
-        "cardIndex": 3,
-        "path": "archives[66].cards[3]"
+        "cardIndex": 2,
+        "abilityIndex": 1,
+        "path": "archives[66].cards[2].abilities[1]"
       },
-      "card.x-commanderortlinde#card.x-commanderortlinde.on-play-power": {
+      "servant.valkyrie.skill.sc-valkyrie-1": {
         "archiveId": "servant.valkyrie",
-        "archiveIndex": 66,
-        "cardIndex": 3,
-        "abilityIndex": 0,
-        "path": "archives[66].cards[3].abilities[0]"
-      },
-      "card.x-commanderhildr": {
-        "archiveId": "servant.valkyrie",
-        "archiveIndex": 66,
-        "cardIndex": 4,
-        "path": "archives[66].cards[4]"
-      },
-      "card.x-commanderhildr#card.x-commanderhildr.on-play-power": {
-        "archiveId": "servant.valkyrie",
-        "archiveIndex": 66,
-        "cardIndex": 4,
-        "abilityIndex": 0,
-        "path": "archives[66].cards[4].abilities[0]"
-      },
-      "card.x-commanderthrud": {
-        "archiveId": "servant.valkyrie",
-        "archiveIndex": 66,
-        "cardIndex": 5,
-        "path": "archives[66].cards[5]"
-      },
-      "card.x-commanderthrud#card.x-commanderthrud.on-play-power": {
-        "archiveId": "servant.valkyrie",
-        "archiveIndex": 66,
-        "cardIndex": 5,
-        "abilityIndex": 0,
-        "path": "archives[66].cards[5].abilities[0]"
-      },
-      "servant.vlad.skill.sc-vlad-1": {
-        "archiveId": "servant.vlad",
         "archiveIndex": 67,
         "cardIndex": 0,
         "path": "archives[67].cards[0]"
       },
-      "servant.vlad.skill.sc-vlad-1#sc-vlad-1.terrain-doubling": {
-        "archiveId": "servant.vlad",
+      "servant.valkyrie.skill.sc-valkyrie-1#sc-valkyrie-1.maiden-descent": {
+        "archiveId": "servant.valkyrie",
         "archiveIndex": 67,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[67].cards[0].abilities[0]"
       },
-      "servant.vlad.skill.sc-vlad-1#sc-vlad-1.fortification": {
-        "archiveId": "servant.vlad",
-        "archiveIndex": 67,
-        "cardIndex": 0,
-        "abilityIndex": 1,
-        "path": "archives[67].cards[0].abilities[1]"
-      },
-      "servant.vlad.skill.sc-vlad-2": {
-        "archiveId": "servant.vlad",
+      "servant.valkyrie.skill.sc-valkyrie-2": {
+        "archiveId": "servant.valkyrie",
         "archiveIndex": 67,
         "cardIndex": 1,
         "path": "archives[67].cards[1]"
       },
-      "servant.vlad.skill.sc-vlad-2#sc-vlad-2.kazikli-bey": {
-        "archiveId": "servant.vlad",
+      "servant.valkyrie.skill.sc-valkyrie-2#sc-valkyrie-2.forward-action": {
+        "archiveId": "servant.valkyrie",
         "archiveIndex": 67,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[67].cards[1].abilities[0]"
       },
-      "servant.vlad.skill.sc-vlad-3": {
-        "archiveId": "servant.vlad",
+      "servant.valkyrie.skill.sc-valkyrie-2#sc-valkyrie-2.forward-combat": {
+        "archiveId": "servant.valkyrie",
+        "archiveIndex": 67,
+        "cardIndex": 1,
+        "abilityIndex": 1,
+        "path": "archives[67].cards[1].abilities[1]"
+      },
+      "servant.valkyrie.skill.sc-valkyrie-2#sc-valkyrie-2.steel-shield": {
+        "archiveId": "servant.valkyrie",
+        "archiveIndex": 67,
+        "cardIndex": 1,
+        "abilityIndex": 2,
+        "path": "archives[67].cards[1].abilities[2]"
+      },
+      "servant.valkyrie.skill.sc-valkyrie-3": {
+        "archiveId": "servant.valkyrie",
         "archiveIndex": 67,
         "cardIndex": 2,
         "path": "archives[67].cards[2]"
       },
-      "servant.vlad.skill.sc-vlad-3#sc-vlad-3.move": {
-        "archiveId": "servant.vlad",
+      "servant.valkyrie.skill.sc-valkyrie-3#false-gungnir-retrigger-commanders": {
+        "archiveId": "servant.valkyrie",
         "archiveIndex": 67,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[67].cards[2].abilities[0]"
       },
-      "servant.voyager.skill.sc-voyager-1": {
-        "archiveId": "servant.voyager",
+      "card.x-commanderortlinde": {
+        "archiveId": "servant.valkyrie",
+        "archiveIndex": 67,
+        "cardIndex": 3,
+        "path": "archives[67].cards[3]"
+      },
+      "card.x-commanderortlinde#card.x-commanderortlinde.on-play-power": {
+        "archiveId": "servant.valkyrie",
+        "archiveIndex": 67,
+        "cardIndex": 3,
+        "abilityIndex": 0,
+        "path": "archives[67].cards[3].abilities[0]"
+      },
+      "card.x-commanderhildr": {
+        "archiveId": "servant.valkyrie",
+        "archiveIndex": 67,
+        "cardIndex": 4,
+        "path": "archives[67].cards[4]"
+      },
+      "card.x-commanderhildr#card.x-commanderhildr.on-play-power": {
+        "archiveId": "servant.valkyrie",
+        "archiveIndex": 67,
+        "cardIndex": 4,
+        "abilityIndex": 0,
+        "path": "archives[67].cards[4].abilities[0]"
+      },
+      "card.x-commanderthrud": {
+        "archiveId": "servant.valkyrie",
+        "archiveIndex": 67,
+        "cardIndex": 5,
+        "path": "archives[67].cards[5]"
+      },
+      "card.x-commanderthrud#card.x-commanderthrud.on-play-power": {
+        "archiveId": "servant.valkyrie",
+        "archiveIndex": 67,
+        "cardIndex": 5,
+        "abilityIndex": 0,
+        "path": "archives[67].cards[5].abilities[0]"
+      },
+      "servant.vlad.skill.sc-vlad-1": {
+        "archiveId": "servant.vlad",
         "archiveIndex": 68,
         "cardIndex": 0,
         "path": "archives[68].cards[0]"
       },
-      "servant.voyager.skill.sc-voyager-1#sc-voyager-1.voices-of-stars": {
-        "archiveId": "servant.voyager",
+      "servant.vlad.skill.sc-vlad-1#sc-vlad-1.terrain-doubling": {
+        "archiveId": "servant.vlad",
         "archiveIndex": 68,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[68].cards[0].abilities[0]"
       },
-      "servant.voyager.skill.sc-voyager-1#sc-voyager-1.hope-reveal": {
-        "archiveId": "servant.voyager",
+      "servant.vlad.skill.sc-vlad-1#sc-vlad-1.fortification": {
+        "archiveId": "servant.vlad",
         "archiveIndex": 68,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[68].cards[0].abilities[1]"
       },
-      "servant.voyager.skill.sc-voyager-2": {
-        "archiveId": "servant.voyager",
+      "servant.vlad.skill.sc-vlad-2": {
+        "archiveId": "servant.vlad",
         "archiveIndex": 68,
         "cardIndex": 1,
         "path": "archives[68].cards[1]"
       },
-      "servant.voyager.skill.sc-voyager-2#sc-voyager-2.peace-action": {
-        "archiveId": "servant.voyager",
+      "servant.vlad.skill.sc-vlad-2#sc-vlad-2.kazikli-bey": {
+        "archiveId": "servant.vlad",
         "archiveIndex": 68,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[68].cards[1].abilities[0]"
       },
-      "servant.voyager.skill.sc-voyager-2#sc-voyager-2.peace-combat": {
-        "archiveId": "servant.voyager",
-        "archiveIndex": 68,
-        "cardIndex": 1,
-        "abilityIndex": 1,
-        "path": "archives[68].cards[1].abilities[1]"
-      },
-      "servant.voyager.skill.sc-voyager-3": {
-        "archiveId": "servant.voyager",
+      "servant.vlad.skill.sc-vlad-3": {
+        "archiveId": "servant.vlad",
         "archiveIndex": 68,
         "cardIndex": 2,
         "path": "archives[68].cards[2]"
       },
-      "servant.voyager.skill.sc-voyager-3#sc-voyager-3.pale-blue-dot": {
-        "archiveId": "servant.voyager",
+      "servant.vlad.skill.sc-vlad-3#sc-vlad-3.move": {
+        "archiveId": "servant.vlad",
         "archiveIndex": 68,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[68].cards[2].abilities[0]"
       },
-      "servant.voyager.skill.sc-voyager-4": {
+      "servant.voyager.skill.sc-voyager-1": {
         "archiveId": "servant.voyager",
-        "archiveIndex": 68,
-        "cardIndex": 3,
-        "path": "archives[68].cards[3]"
-      },
-      "servant.voyager.skill.sc-voyager-4#sc-voyager-4.outer-god-life-power": {
-        "archiveId": "servant.voyager",
-        "archiveIndex": 68,
-        "cardIndex": 3,
-        "abilityIndex": 0,
-        "path": "archives[68].cards[3].abilities[0]"
-      },
-      "servant.voyager.skill.sc-voyager-4#sc-voyager-4.outer-god-life-return": {
-        "archiveId": "servant.voyager",
-        "archiveIndex": 68,
-        "cardIndex": 3,
-        "abilityIndex": 1,
-        "path": "archives[68].cards[3].abilities[1]"
-      },
-      "servant.xiangyu.skill.sc-xiangyu-1": {
-        "archiveId": "servant.xiangyu",
         "archiveIndex": 69,
         "cardIndex": 0,
         "path": "archives[69].cards[0]"
       },
-      "servant.xiangyu.skill.sc-xiangyu-1#sc-xiangyu-1.arm-matrix": {
-        "archiveId": "servant.xiangyu",
+      "servant.voyager.skill.sc-voyager-1#sc-voyager-1.voices-of-stars": {
+        "archiveId": "servant.voyager",
         "archiveIndex": 69,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[69].cards[0].abilities[0]"
       },
-      "servant.xiangyu.skill.sc-xiangyu-1#sc-xiangyu-1.battle-end-decay": {
-        "archiveId": "servant.xiangyu",
+      "servant.voyager.skill.sc-voyager-1#sc-voyager-1.hope-reveal": {
+        "archiveId": "servant.voyager",
         "archiveIndex": 69,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[69].cards[0].abilities[1]"
       },
-      "servant.xiangyu.skill.sc-xiangyu-2": {
-        "archiveId": "servant.xiangyu",
+      "servant.voyager.skill.sc-voyager-2": {
+        "archiveId": "servant.voyager",
         "archiveIndex": 69,
         "cardIndex": 1,
         "path": "archives[69].cards[1]"
       },
-      "servant.xiangyu.skill.sc-xiangyu-2#sc-xiangyu-2.backward-one": {
-        "archiveId": "servant.xiangyu",
+      "servant.voyager.skill.sc-voyager-2#sc-voyager-2.peace-action": {
+        "archiveId": "servant.voyager",
         "archiveIndex": 69,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[69].cards[1].abilities[0]"
       },
-      "servant.xiangyu.skill.sc-xiangyu-2#sc-xiangyu-2.forward-one": {
-        "archiveId": "servant.xiangyu",
+      "servant.voyager.skill.sc-voyager-2#sc-voyager-2.peace-combat": {
+        "archiveId": "servant.voyager",
         "archiveIndex": 69,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[69].cards[1].abilities[1]"
       },
-      "servant.xiangyu.skill.sc-xiangyu-2#sc-xiangyu-2.play-top": {
-        "archiveId": "servant.xiangyu",
-        "archiveIndex": 69,
-        "cardIndex": 1,
-        "abilityIndex": 2,
-        "path": "archives[69].cards[1].abilities[2]"
-      },
-      "servant.xiangyu.skill.sc-xiangyu-2#sc-xiangyu-2.play-hand-free": {
-        "archiveId": "servant.xiangyu",
-        "archiveIndex": 69,
-        "cardIndex": 1,
-        "abilityIndex": 3,
-        "path": "archives[69].cards[1].abilities[3]"
-      },
-      "servant.xiangyu.skill.sc-xiangyu-3": {
-        "archiveId": "servant.xiangyu",
+      "servant.voyager.skill.sc-voyager-3": {
+        "archiveId": "servant.voyager",
         "archiveIndex": 69,
         "cardIndex": 2,
         "path": "archives[69].cards[2]"
       },
-      "servant.xiangyu.skill.sc-xiangyu-3#sc-xiangyu-3.gain-reaction": {
-        "archiveId": "servant.xiangyu",
+      "servant.voyager.skill.sc-voyager-3#sc-voyager-3.pale-blue-dot": {
+        "archiveId": "servant.voyager",
         "archiveIndex": 69,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[69].cards[2].abilities[0]"
       },
-      "servant.xiangyu.skill.sc-xiangyu-3#sc-xiangyu-3.unstoppable-force": {
-        "archiveId": "servant.xiangyu",
+      "servant.voyager.skill.sc-voyager-4": {
+        "archiveId": "servant.voyager",
         "archiveIndex": 69,
-        "cardIndex": 2,
-        "abilityIndex": 1,
-        "path": "archives[69].cards[2].abilities[1]"
+        "cardIndex": 3,
+        "path": "archives[69].cards[3]"
       },
-      "servant.kintoki.skill.sc-kintoki-1": {
-        "archiveId": "servant.kintoki",
+      "servant.voyager.skill.sc-voyager-4#sc-voyager-4.outer-god-life-power": {
+        "archiveId": "servant.voyager",
+        "archiveIndex": 69,
+        "cardIndex": 3,
+        "abilityIndex": 0,
+        "path": "archives[69].cards[3].abilities[0]"
+      },
+      "servant.voyager.skill.sc-voyager-4#sc-voyager-4.outer-god-life-return": {
+        "archiveId": "servant.voyager",
+        "archiveIndex": 69,
+        "cardIndex": 3,
+        "abilityIndex": 1,
+        "path": "archives[69].cards[3].abilities[1]"
+      },
+      "servant.xiangyu.skill.sc-xiangyu-1": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 70,
         "cardIndex": 0,
         "path": "archives[70].cards[0]"
       },
-      "servant.kintoki.skill.sc-kintoki-1#sc-kintoki-1.true-name-release": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-1#sc-xiangyu-1.arm-matrix": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 70,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[70].cards[0].abilities[0]"
       },
-      "servant.kintoki.skill.sc-kintoki-1#sc-kintoki-1.ignore-skill-zone-mana-requirement": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-1#sc-xiangyu-1.battle-end-decay": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 70,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[70].cards[0].abilities[1]"
       },
-      "servant.kintoki.skill.sc-kintoki-1#sc-kintoki-1.ignore-situation-play-forbid": {
-        "archiveId": "servant.kintoki",
-        "archiveIndex": 70,
-        "cardIndex": 0,
-        "abilityIndex": 2,
-        "path": "archives[70].cards[0].abilities[2]"
-      },
-      "servant.kintoki.skill.sc-kintoki-1#sc-kintoki-1.once-per-game": {
-        "archiveId": "servant.kintoki",
-        "archiveIndex": 70,
-        "cardIndex": 0,
-        "abilityIndex": 3,
-        "path": "archives[70].cards[0].abilities[3]"
-      },
-      "servant.kintoki.skill.sc-kintoki-2": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-2": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 70,
         "cardIndex": 1,
         "path": "archives[70].cards[1]"
       },
-      "servant.kintoki.skill.sc-kintoki-2#sc-kintoki-2.true-name-release": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-2#sc-xiangyu-2.backward-one": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 70,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[70].cards[1].abilities[0]"
       },
-      "servant.kintoki.skill.sc-kintoki-2#sc-kintoki-2.ignore-skill-zone-mana-requirement": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-2#sc-xiangyu-2.forward-one": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 70,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[70].cards[1].abilities[1]"
       },
-      "servant.kintoki.skill.sc-kintoki-2#sc-kintoki-2.ignore-situation-play-forbid": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-2#sc-xiangyu-2.play-top": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 70,
         "cardIndex": 1,
         "abilityIndex": 2,
         "path": "archives[70].cards[1].abilities[2]"
       },
-      "servant.kintoki.skill.sc-kintoki-2#sc-kintoki-2.once-per-game": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-2#sc-xiangyu-2.play-hand-free": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 70,
         "cardIndex": 1,
         "abilityIndex": 3,
         "path": "archives[70].cards[1].abilities[3]"
       },
-      "servant.kintoki.skill.sc-kintoki-3": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-3": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 70,
         "cardIndex": 2,
         "path": "archives[70].cards[2]"
       },
-      "servant.kintoki.skill.sc-kintoki-3#sc-kintoki-3.true-name-release": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-3#sc-xiangyu-3.gain-reaction": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 70,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[70].cards[2].abilities[0]"
       },
-      "servant.kintoki.skill.sc-kintoki-3#sc-kintoki-3.golden-eater": {
-        "archiveId": "servant.kintoki",
+      "servant.xiangyu.skill.sc-xiangyu-3#sc-xiangyu-3.unstoppable-force": {
+        "archiveId": "servant.xiangyu",
         "archiveIndex": 70,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[70].cards[2].abilities[1]"
       },
-      "servant.mash.skill.sc-mash-1": {
-        "archiveId": "servant.mash",
+      "servant.kintoki.skill.sc-kintoki-1": {
+        "archiveId": "servant.kintoki",
         "archiveIndex": 71,
         "cardIndex": 0,
         "path": "archives[71].cards[0]"
       },
-      "servant.mash.skill.sc-mash-1#distant-utopia-terrain": {
-        "archiveId": "servant.mash",
+      "servant.kintoki.skill.sc-kintoki-1#sc-kintoki-1.true-name-release": {
+        "archiveId": "servant.kintoki",
         "archiveIndex": 71,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[71].cards[0].abilities[0]"
       },
-      "servant.mash.skill.sc-mash-2": {
-        "archiveId": "servant.mash",
+      "servant.kintoki.skill.sc-kintoki-1#sc-kintoki-1.ignore-skill-zone-mana-requirement": {
+        "archiveId": "servant.kintoki",
+        "archiveIndex": 71,
+        "cardIndex": 0,
+        "abilityIndex": 1,
+        "path": "archives[71].cards[0].abilities[1]"
+      },
+      "servant.kintoki.skill.sc-kintoki-1#sc-kintoki-1.ignore-situation-play-forbid": {
+        "archiveId": "servant.kintoki",
+        "archiveIndex": 71,
+        "cardIndex": 0,
+        "abilityIndex": 2,
+        "path": "archives[71].cards[0].abilities[2]"
+      },
+      "servant.kintoki.skill.sc-kintoki-1#sc-kintoki-1.once-per-game": {
+        "archiveId": "servant.kintoki",
+        "archiveIndex": 71,
+        "cardIndex": 0,
+        "abilityIndex": 3,
+        "path": "archives[71].cards[0].abilities[3]"
+      },
+      "servant.kintoki.skill.sc-kintoki-2": {
+        "archiveId": "servant.kintoki",
         "archiveIndex": 71,
         "cardIndex": 1,
         "path": "archives[71].cards[1]"
       },
-      "servant.mash.skill.sc-mash-2#snowflake-wall-attack-reduction": {
-        "archiveId": "servant.mash",
+      "servant.kintoki.skill.sc-kintoki-2#sc-kintoki-2.true-name-release": {
+        "archiveId": "servant.kintoki",
         "archiveIndex": 71,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[71].cards[1].abilities[0]"
       },
-      "servant.mash.skill.sc-mash-3": {
-        "archiveId": "servant.mash",
+      "servant.kintoki.skill.sc-kintoki-2#sc-kintoki-2.ignore-skill-zone-mana-requirement": {
+        "archiveId": "servant.kintoki",
+        "archiveIndex": 71,
+        "cardIndex": 1,
+        "abilityIndex": 1,
+        "path": "archives[71].cards[1].abilities[1]"
+      },
+      "servant.kintoki.skill.sc-kintoki-2#sc-kintoki-2.ignore-situation-play-forbid": {
+        "archiveId": "servant.kintoki",
+        "archiveIndex": 71,
+        "cardIndex": 1,
+        "abilityIndex": 2,
+        "path": "archives[71].cards[1].abilities[2]"
+      },
+      "servant.kintoki.skill.sc-kintoki-2#sc-kintoki-2.once-per-game": {
+        "archiveId": "servant.kintoki",
+        "archiveIndex": 71,
+        "cardIndex": 1,
+        "abilityIndex": 3,
+        "path": "archives[71].cards[1].abilities[3]"
+      },
+      "servant.kintoki.skill.sc-kintoki-3": {
+        "archiveId": "servant.kintoki",
         "archiveIndex": 71,
         "cardIndex": 2,
         "path": "archives[71].cards[2]"
       },
-      "servant.mash.skill.sc-mash-3#ortenaus-continuous-rule": {
-        "archiveId": "servant.mash",
+      "servant.kintoki.skill.sc-kintoki-3#sc-kintoki-3.true-name-release": {
+        "archiveId": "servant.kintoki",
         "archiveIndex": 71,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[71].cards[2].abilities[0]"
       },
-      "servant.mash.skill.sc-mash-3#ortenaus-game-start-hide": {
-        "archiveId": "servant.mash",
+      "servant.kintoki.skill.sc-kintoki-3#sc-kintoki-3.golden-eater": {
+        "archiveId": "servant.kintoki",
         "archiveIndex": 71,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[71].cards[2].abilities[1]"
       },
-      "servant.mash.skill.sc-mash-3#ortenaus-empty-seals-hide": {
+      "servant.mash.skill.sc-mash-1": {
         "archiveId": "servant.mash",
-        "archiveIndex": 71,
-        "cardIndex": 2,
-        "abilityIndex": 2,
-        "path": "archives[71].cards[2].abilities[2]"
-      },
-      "servant.mash.skill.sc-mash-4": {
-        "archiveId": "servant.mash",
-        "archiveIndex": 71,
-        "cardIndex": 3,
-        "path": "archives[71].cards[3]"
-      },
-      "servant.mash.skill.sc-mash-4#guard-catalogue-marker": {
-        "archiveId": "servant.mash",
-        "archiveIndex": 71,
-        "cardIndex": 3,
-        "abilityIndex": 0,
-        "path": "archives[71].cards[3].abilities[0]"
-      },
-      "card.x-guard": {
-        "archiveId": "servant.mash",
-        "archiveIndex": 71,
-        "cardIndex": 4,
-        "path": "archives[71].cards[4]"
-      },
-      "card.x-guard#lend-linked-owner-card": {
-        "archiveId": "servant.mash",
-        "archiveIndex": 71,
-        "cardIndex": 4,
-        "abilityIndex": 0,
-        "path": "archives[71].cards[4].abilities[0]"
-      },
-      "card.x-guard#linked-owner-combat-rule": {
-        "archiveId": "servant.mash",
-        "archiveIndex": 71,
-        "cardIndex": 4,
-        "abilityIndex": 1,
-        "path": "archives[71].cards[4].abilities[1]"
-      },
-      "servant.sherlock.skill.sc-sherlock-1": {
-        "archiveId": "servant.sherlock",
         "archiveIndex": 72,
         "cardIndex": 0,
         "path": "archives[72].cards[0]"
       },
-      "servant.sherlock.skill.sc-sherlock-1#sc-sherlock-1.elementary": {
-        "archiveId": "servant.sherlock",
+      "servant.mash.skill.sc-mash-1#distant-utopia-terrain": {
+        "archiveId": "servant.mash",
         "archiveIndex": 72,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[72].cards[0].abilities[0]"
       },
-      "servant.sherlock.skill.sc-sherlock-2": {
-        "archiveId": "servant.sherlock",
+      "servant.mash.skill.sc-mash-2": {
+        "archiveId": "servant.mash",
         "archiveIndex": 72,
         "cardIndex": 1,
         "path": "archives[72].cards[1]"
       },
-      "servant.sherlock.skill.sc-sherlock-2#sc-sherlock-2.dynamic-cost": {
-        "archiveId": "servant.sherlock",
+      "servant.mash.skill.sc-mash-2#snowflake-wall-attack-reduction": {
+        "archiveId": "servant.mash",
         "archiveIndex": 72,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[72].cards[1].abilities[0]"
       },
-      "servant.sherlock.skill.sc-sherlock-2#sc-sherlock-2.workshop-residual": {
-        "archiveId": "servant.sherlock",
-        "archiveIndex": 72,
-        "cardIndex": 1,
-        "abilityIndex": 1,
-        "path": "archives[72].cards[1].abilities[1]"
-      },
-      "servant.sherlock.skill.sc-sherlock-2#sc-sherlock-2.memory-palace": {
-        "archiveId": "servant.sherlock",
-        "archiveIndex": 72,
-        "cardIndex": 1,
-        "abilityIndex": 2,
-        "path": "archives[72].cards[1].abilities[2]"
-      },
-      "servant.sherlock.skill.sc-sherlock-3": {
-        "archiveId": "servant.sherlock",
+      "servant.mash.skill.sc-mash-3": {
+        "archiveId": "servant.mash",
         "archiveIndex": 72,
         "cardIndex": 2,
         "path": "archives[72].cards[2]"
       },
-      "servant.sherlock.skill.sc-sherlock-3#sc-sherlock-3.trigger": {
-        "archiveId": "servant.sherlock",
+      "servant.mash.skill.sc-mash-3#ortenaus-continuous-rule": {
+        "archiveId": "servant.mash",
         "archiveIndex": 72,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[72].cards[2].abilities[0]"
       },
-      "servant.sherlock.skill.sc-sherlock-3#sc-sherlock-3.expire": {
-        "archiveId": "servant.sherlock",
+      "servant.mash.skill.sc-mash-3#ortenaus-game-start-hide": {
+        "archiveId": "servant.mash",
         "archiveIndex": 72,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[72].cards[2].abilities[1]"
       },
-      "servant.sherlock.skill.sc-sherlock-4": {
-        "archiveId": "servant.sherlock",
+      "servant.mash.skill.sc-mash-3#ortenaus-empty-seals-hide": {
+        "archiveId": "servant.mash",
+        "archiveIndex": 72,
+        "cardIndex": 2,
+        "abilityIndex": 2,
+        "path": "archives[72].cards[2].abilities[2]"
+      },
+      "servant.mash.skill.sc-mash-4": {
+        "archiveId": "servant.mash",
         "archiveIndex": 72,
         "cardIndex": 3,
         "path": "archives[72].cards[3]"
       },
-      "servant.sherlock.skill.sc-sherlock-4#sc-sherlock-4.deduction-record": {
-        "archiveId": "servant.sherlock",
+      "servant.mash.skill.sc-mash-4#guard-catalogue-marker": {
+        "archiveId": "servant.mash",
         "archiveIndex": 72,
         "cardIndex": 3,
         "abilityIndex": 0,
         "path": "archives[72].cards[3].abilities[0]"
       },
-      "servant.sherlock.skill.sc-sherlock-5": {
-        "archiveId": "servant.sherlock",
+      "card.x-guard": {
+        "archiveId": "servant.mash",
         "archiveIndex": 72,
         "cardIndex": 4,
         "path": "archives[72].cards[4]"
       },
-      "servant.sherlock.skill.sc-sherlock-5#sc-sherlock-5.deduction-record": {
-        "archiveId": "servant.sherlock",
+      "card.x-guard#lend-linked-owner-card": {
+        "archiveId": "servant.mash",
         "archiveIndex": 72,
         "cardIndex": 4,
         "abilityIndex": 0,
         "path": "archives[72].cards[4].abilities[0]"
       },
-      "servant.sherlock.skill.sc-sherlock-6": {
-        "archiveId": "servant.sherlock",
+      "card.x-guard#linked-owner-combat-rule": {
+        "archiveId": "servant.mash",
         "archiveIndex": 72,
-        "cardIndex": 5,
-        "path": "archives[72].cards[5]"
+        "cardIndex": 4,
+        "abilityIndex": 1,
+        "path": "archives[72].cards[4].abilities[1]"
       },
-      "servant.sherlock.skill.sc-sherlock-6#sc-sherlock-6.deduction-record": {
+      "servant.sherlock.skill.sc-sherlock-1": {
         "archiveId": "servant.sherlock",
-        "archiveIndex": 72,
-        "cardIndex": 5,
-        "abilityIndex": 0,
-        "path": "archives[72].cards[5].abilities[0]"
-      },
-      "servant.sherlock.skill.sc-sherlock-7": {
-        "archiveId": "servant.sherlock",
-        "archiveIndex": 72,
-        "cardIndex": 6,
-        "path": "archives[72].cards[6]"
-      },
-      "servant.sherlock.skill.sc-sherlock-7#sc-sherlock-7.deduction-record": {
-        "archiveId": "servant.sherlock",
-        "archiveIndex": 72,
-        "cardIndex": 6,
-        "abilityIndex": 0,
-        "path": "archives[72].cards[6].abilities[0]"
-      },
-      "servant.shuten.skill.sc-shuten-1": {
-        "archiveId": "servant.shuten",
         "archiveIndex": 73,
         "cardIndex": 0,
         "path": "archives[73].cards[0]"
       },
-      "servant.shuten.skill.sc-shuten-1#sc-shuten-1.place-banquet": {
-        "archiveId": "servant.shuten",
+      "servant.sherlock.skill.sc-sherlock-1#sc-sherlock-1.elementary": {
+        "archiveId": "servant.sherlock",
         "archiveIndex": 73,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[73].cards[0].abilities[0]"
       },
-      "servant.shuten.skill.sc-shuten-1#sc-shuten-1.cost-aura": {
-        "archiveId": "servant.shuten",
-        "archiveIndex": 73,
-        "cardIndex": 0,
-        "abilityIndex": 1,
-        "path": "archives[73].cards[0].abilities[1]"
-      },
-      "servant.shuten.skill.sc-shuten-1#sc-shuten-1.battle-end-vp": {
-        "archiveId": "servant.shuten",
-        "archiveIndex": 73,
-        "cardIndex": 0,
-        "abilityIndex": 2,
-        "path": "archives[73].cards[0].abilities[2]"
-      },
-      "servant.shuten.skill.sc-shuten-1#sc-shuten-1.round-cleanup": {
-        "archiveId": "servant.shuten",
-        "archiveIndex": 73,
-        "cardIndex": 0,
-        "abilityIndex": 3,
-        "path": "archives[73].cards[0].abilities[3]"
-      },
-      "servant.shuten.skill.sc-shuten-2": {
-        "archiveId": "servant.shuten",
+      "servant.sherlock.skill.sc-sherlock-2": {
+        "archiveId": "servant.sherlock",
         "archiveIndex": 73,
         "cardIndex": 1,
         "path": "archives[73].cards[1]"
       },
-      "servant.shuten.skill.sc-shuten-2#sc-shuten-2.required-additional-play": {
-        "archiveId": "servant.shuten",
+      "servant.sherlock.skill.sc-sherlock-2#sc-sherlock-2.dynamic-cost": {
+        "archiveId": "servant.sherlock",
         "archiveIndex": 73,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[73].cards[1].abilities[0]"
       },
-      "servant.shuten.skill.sc-shuten-2#sc-shuten-2.ignore-eight-mana": {
-        "archiveId": "servant.shuten",
+      "servant.sherlock.skill.sc-sherlock-2#sc-sherlock-2.workshop-residual": {
+        "archiveId": "servant.sherlock",
         "archiveIndex": 73,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[73].cards[1].abilities[1]"
       },
-      "servant.shuten.skill.sc-shuten-2#sc-shuten-2.delirium": {
-        "archiveId": "servant.shuten",
+      "servant.sherlock.skill.sc-sherlock-2#sc-sherlock-2.memory-palace": {
+        "archiveId": "servant.sherlock",
         "archiveIndex": 73,
         "cardIndex": 1,
         "abilityIndex": 2,
         "path": "archives[73].cards[1].abilities[2]"
       },
-      "servant.shuten.skill.sc-shuten-3": {
-        "archiveId": "servant.shuten",
+      "servant.sherlock.skill.sc-sherlock-3": {
+        "archiveId": "servant.sherlock",
         "archiveIndex": 73,
         "cardIndex": 2,
         "path": "archives[73].cards[2]"
       },
-      "servant.shuten.skill.sc-shuten-3#sc-shuten-3.true-name-release": {
-        "archiveId": "servant.shuten",
+      "servant.sherlock.skill.sc-sherlock-3#sc-sherlock-3.trigger": {
+        "archiveId": "servant.sherlock",
         "archiveIndex": 73,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[73].cards[2].abilities[0]"
       },
-      "servant.shuten.skill.sc-shuten-3#sc-shuten-3.bone-collector": {
-        "archiveId": "servant.shuten",
+      "servant.sherlock.skill.sc-sherlock-3#sc-sherlock-3.expire": {
+        "archiveId": "servant.sherlock",
         "archiveIndex": 73,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[73].cards[2].abilities[1]"
       },
-      "servant.siegfried.skill.sc-siegfried-1": {
-        "archiveId": "servant.siegfried",
+      "servant.sherlock.skill.sc-sherlock-4": {
+        "archiveId": "servant.sherlock",
+        "archiveIndex": 73,
+        "cardIndex": 3,
+        "path": "archives[73].cards[3]"
+      },
+      "servant.sherlock.skill.sc-sherlock-4#sc-sherlock-4.deduction-record": {
+        "archiveId": "servant.sherlock",
+        "archiveIndex": 73,
+        "cardIndex": 3,
+        "abilityIndex": 0,
+        "path": "archives[73].cards[3].abilities[0]"
+      },
+      "servant.sherlock.skill.sc-sherlock-5": {
+        "archiveId": "servant.sherlock",
+        "archiveIndex": 73,
+        "cardIndex": 4,
+        "path": "archives[73].cards[4]"
+      },
+      "servant.sherlock.skill.sc-sherlock-5#sc-sherlock-5.deduction-record": {
+        "archiveId": "servant.sherlock",
+        "archiveIndex": 73,
+        "cardIndex": 4,
+        "abilityIndex": 0,
+        "path": "archives[73].cards[4].abilities[0]"
+      },
+      "servant.sherlock.skill.sc-sherlock-6": {
+        "archiveId": "servant.sherlock",
+        "archiveIndex": 73,
+        "cardIndex": 5,
+        "path": "archives[73].cards[5]"
+      },
+      "servant.sherlock.skill.sc-sherlock-6#sc-sherlock-6.deduction-record": {
+        "archiveId": "servant.sherlock",
+        "archiveIndex": 73,
+        "cardIndex": 5,
+        "abilityIndex": 0,
+        "path": "archives[73].cards[5].abilities[0]"
+      },
+      "servant.sherlock.skill.sc-sherlock-7": {
+        "archiveId": "servant.sherlock",
+        "archiveIndex": 73,
+        "cardIndex": 6,
+        "path": "archives[73].cards[6]"
+      },
+      "servant.sherlock.skill.sc-sherlock-7#sc-sherlock-7.deduction-record": {
+        "archiveId": "servant.sherlock",
+        "archiveIndex": 73,
+        "cardIndex": 6,
+        "abilityIndex": 0,
+        "path": "archives[73].cards[6].abilities[0]"
+      },
+      "servant.shuten.skill.sc-shuten-1": {
+        "archiveId": "servant.shuten",
         "archiveIndex": 74,
         "cardIndex": 0,
         "path": "archives[74].cards[0]"
       },
-      "servant.siegfried.skill.sc-siegfried-1#sc-siegfried-1.play-vp-loss": {
-        "archiveId": "servant.siegfried",
+      "servant.shuten.skill.sc-shuten-1#sc-shuten-1.place-banquet": {
+        "archiveId": "servant.shuten",
         "archiveIndex": 74,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[74].cards[0].abilities[0]"
       },
-      "servant.siegfried.skill.sc-siegfried-1#sc-siegfried-1.invisibility-cloak": {
-        "archiveId": "servant.siegfried",
+      "servant.shuten.skill.sc-shuten-1#sc-shuten-1.cost-aura": {
+        "archiveId": "servant.shuten",
         "archiveIndex": 74,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[74].cards[0].abilities[1]"
       },
-      "servant.siegfried.skill.sc-siegfried-2": {
-        "archiveId": "servant.siegfried",
+      "servant.shuten.skill.sc-shuten-1#sc-shuten-1.battle-end-vp": {
+        "archiveId": "servant.shuten",
+        "archiveIndex": 74,
+        "cardIndex": 0,
+        "abilityIndex": 2,
+        "path": "archives[74].cards[0].abilities[2]"
+      },
+      "servant.shuten.skill.sc-shuten-1#sc-shuten-1.round-cleanup": {
+        "archiveId": "servant.shuten",
+        "archiveIndex": 74,
+        "cardIndex": 0,
+        "abilityIndex": 3,
+        "path": "archives[74].cards[0].abilities[3]"
+      },
+      "servant.shuten.skill.sc-shuten-2": {
+        "archiveId": "servant.shuten",
         "archiveIndex": 74,
         "cardIndex": 1,
         "path": "archives[74].cards[1]"
       },
-      "servant.siegfried.skill.sc-siegfried-2#sc-siegfried-2.true-name-release": {
-        "archiveId": "servant.siegfried",
+      "servant.shuten.skill.sc-shuten-2#sc-shuten-2.required-additional-play": {
+        "archiveId": "servant.shuten",
         "archiveIndex": 74,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[74].cards[1].abilities[0]"
       },
-      "servant.siegfried.skill.sc-siegfried-2#sc-siegfried-2.armor-of-fafnir": {
-        "archiveId": "servant.siegfried",
+      "servant.shuten.skill.sc-shuten-2#sc-shuten-2.ignore-eight-mana": {
+        "archiveId": "servant.shuten",
         "archiveIndex": 74,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[74].cards[1].abilities[1]"
       },
-      "servant.siegfried.skill.sc-siegfried-3": {
-        "archiveId": "servant.siegfried",
+      "servant.shuten.skill.sc-shuten-2#sc-shuten-2.delirium": {
+        "archiveId": "servant.shuten",
+        "archiveIndex": 74,
+        "cardIndex": 1,
+        "abilityIndex": 2,
+        "path": "archives[74].cards[1].abilities[2]"
+      },
+      "servant.shuten.skill.sc-shuten-3": {
+        "archiveId": "servant.shuten",
         "archiveIndex": 74,
         "cardIndex": 2,
         "path": "archives[74].cards[2]"
       },
-      "servant.siegfried.skill.sc-siegfried-3#sc-siegfried-3.true-name-release": {
-        "archiveId": "servant.siegfried",
+      "servant.shuten.skill.sc-shuten-3#sc-shuten-3.true-name-release": {
+        "archiveId": "servant.shuten",
         "archiveIndex": 74,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[74].cards[2].abilities[0]"
       },
-      "servant.siegfried.skill.sc-siegfried-3#sc-siegfried-3.reveal-hand-power": {
-        "archiveId": "servant.siegfried",
+      "servant.shuten.skill.sc-shuten-3#sc-shuten-3.bone-collector": {
+        "archiveId": "servant.shuten",
         "archiveIndex": 74,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[74].cards[2].abilities[1]"
       },
-      "servant.sigurd.skill.sc-sigurd-1": {
-        "archiveId": "servant.sigurd",
+      "servant.siegfried.skill.sc-siegfried-1": {
+        "archiveId": "servant.siegfried",
         "archiveIndex": 75,
         "cardIndex": 0,
         "path": "archives[75].cards[0]"
       },
-      "servant.sigurd.skill.sc-sigurd-1#sc-sigurd-1.true-name-release": {
-        "archiveId": "servant.sigurd",
+      "servant.siegfried.skill.sc-siegfried-1#sc-siegfried-1.play-vp-loss": {
+        "archiveId": "servant.siegfried",
         "archiveIndex": 75,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[75].cards[0].abilities[0]"
       },
-      "servant.sigurd.skill.sc-sigurd-1#sc-sigurd-1.curse": {
-        "archiveId": "servant.sigurd",
+      "servant.siegfried.skill.sc-siegfried-1#sc-siegfried-1.invisibility-cloak": {
+        "archiveId": "servant.siegfried",
         "archiveIndex": 75,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[75].cards[0].abilities[1]"
       },
-      "servant.sigurd.skill.sc-sigurd-1#sc-sigurd-1.after-battle-refund": {
-        "archiveId": "servant.sigurd",
-        "archiveIndex": 75,
-        "cardIndex": 0,
-        "abilityIndex": 2,
-        "path": "archives[75].cards[0].abilities[2]"
-      },
-      "servant.sigurd.skill.sc-sigurd-2": {
-        "archiveId": "servant.sigurd",
+      "servant.siegfried.skill.sc-siegfried-2": {
+        "archiveId": "servant.siegfried",
         "archiveIndex": 75,
         "cardIndex": 1,
         "path": "archives[75].cards[1]"
       },
-      "servant.sigurd.skill.sc-sigurd-2#sc-sigurd-2.curse": {
-        "archiveId": "servant.sigurd",
+      "servant.siegfried.skill.sc-siegfried-2#sc-siegfried-2.true-name-release": {
+        "archiveId": "servant.siegfried",
         "archiveIndex": 75,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[75].cards[1].abilities[0]"
       },
-      "servant.sigurd.skill.sc-sigurd-2#sc-sigurd-2.blade-storm": {
-        "archiveId": "servant.sigurd",
+      "servant.siegfried.skill.sc-siegfried-2#sc-siegfried-2.armor-of-fafnir": {
+        "archiveId": "servant.siegfried",
         "archiveIndex": 75,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[75].cards[1].abilities[1]"
       },
-      "servant.sigurd.skill.sc-sigurd-3": {
-        "archiveId": "servant.sigurd",
+      "servant.siegfried.skill.sc-siegfried-3": {
+        "archiveId": "servant.siegfried",
         "archiveIndex": 75,
         "cardIndex": 2,
         "path": "archives[75].cards[2]"
       },
-      "servant.sigurd.skill.sc-sigurd-3#sc-sigurd-3.required-additional-play": {
-        "archiveId": "servant.sigurd",
+      "servant.siegfried.skill.sc-siegfried-3#sc-siegfried-3.true-name-release": {
+        "archiveId": "servant.siegfried",
         "archiveIndex": 75,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[75].cards[2].abilities[0]"
       },
-      "servant.sigurd.skill.sc-sigurd-3#sc-sigurd-3.revealed-attributes": {
-        "archiveId": "servant.sigurd",
+      "servant.siegfried.skill.sc-siegfried-3#sc-siegfried-3.reveal-hand-power": {
+        "archiveId": "servant.siegfried",
         "archiveIndex": 75,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[75].cards[2].abilities[1]"
       },
-      "servant.tezcat.skill.sc-tezcat-1": {
-        "archiveId": "servant.tezcat",
+      "servant.sigurd.skill.sc-sigurd-1": {
+        "archiveId": "servant.sigurd",
         "archiveIndex": 76,
         "cardIndex": 0,
         "path": "archives[76].cards[0]"
       },
-      "servant.tezcat.skill.sc-tezcat-1#sc-tezcat-1.required-additional": {
-        "archiveId": "servant.tezcat",
+      "servant.sigurd.skill.sc-sigurd-1#sc-sigurd-1.true-name-release": {
+        "archiveId": "servant.sigurd",
         "archiveIndex": 76,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[76].cards[0].abilities[0]"
       },
-      "servant.tezcat.skill.sc-tezcat-1#sc-tezcat-1.joint-other-modifier": {
-        "archiveId": "servant.tezcat",
+      "servant.sigurd.skill.sc-sigurd-1#sc-sigurd-1.curse": {
+        "archiveId": "servant.sigurd",
         "archiveIndex": 76,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[76].cards[0].abilities[1]"
       },
-      "servant.tezcat.skill.sc-tezcat-2": {
-        "archiveId": "servant.tezcat",
+      "servant.sigurd.skill.sc-sigurd-1#sc-sigurd-1.after-battle-refund": {
+        "archiveId": "servant.sigurd",
+        "archiveIndex": 76,
+        "cardIndex": 0,
+        "abilityIndex": 2,
+        "path": "archives[76].cards[0].abilities[2]"
+      },
+      "servant.sigurd.skill.sc-sigurd-2": {
+        "archiveId": "servant.sigurd",
         "archiveIndex": 76,
         "cardIndex": 1,
         "path": "archives[76].cards[1]"
       },
-      "servant.tezcat.skill.sc-tezcat-2#sc-tezcat-2.battlefield-offer": {
-        "archiveId": "servant.tezcat",
+      "servant.sigurd.skill.sc-sigurd-2#sc-sigurd-2.curse": {
+        "archiveId": "servant.sigurd",
         "archiveIndex": 76,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[76].cards[1].abilities[0]"
       },
-      "servant.tezcat.skill.sc-tezcat-3": {
-        "archiveId": "servant.tezcat",
+      "servant.sigurd.skill.sc-sigurd-2#sc-sigurd-2.blade-storm": {
+        "archiveId": "servant.sigurd",
+        "archiveIndex": 76,
+        "cardIndex": 1,
+        "abilityIndex": 1,
+        "path": "archives[76].cards[1].abilities[1]"
+      },
+      "servant.sigurd.skill.sc-sigurd-3": {
+        "archiveId": "servant.sigurd",
         "archiveIndex": 76,
         "cardIndex": 2,
         "path": "archives[76].cards[2]"
       },
-      "servant.tezcat.skill.sc-tezcat-3#sc-tezcat-3.true-name-release": {
-        "archiveId": "servant.tezcat",
+      "servant.sigurd.skill.sc-sigurd-3#sc-sigurd-3.required-additional-play": {
+        "archiveId": "servant.sigurd",
         "archiveIndex": 76,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[76].cards[2].abilities[0]"
       },
-      "servant.tezcat.skill.sc-tezcat-3#sc-tezcat-3.seal-play-cost": {
-        "archiveId": "servant.tezcat",
+      "servant.sigurd.skill.sc-sigurd-3#sc-sigurd-3.revealed-attributes": {
+        "archiveId": "servant.sigurd",
         "archiveIndex": 76,
         "cardIndex": 2,
         "abilityIndex": 1,
         "path": "archives[76].cards[2].abilities[1]"
       },
-      "servant.tezcat.skill.sc-tezcat-3#sc-tezcat-3.defeat-engaged": {
+      "servant.tezcat.skill.sc-tezcat-1": {
         "archiveId": "servant.tezcat",
-        "archiveIndex": 76,
-        "cardIndex": 2,
-        "abilityIndex": 2,
-        "path": "archives[76].cards[2].abilities[2]"
-      },
-      "master.shirou-emiya.skill.ascension": {
-        "archiveId": "master.shirou-emiya",
         "archiveIndex": 77,
         "cardIndex": 0,
         "path": "archives[77].cards[0]"
       },
-      "master.shirou-emiya.skill.ascension#shirou-emiya.ascension.basic-power": {
-        "archiveId": "master.shirou-emiya",
+      "servant.tezcat.skill.sc-tezcat-1#sc-tezcat-1.required-additional": {
+        "archiveId": "servant.tezcat",
         "archiveIndex": 77,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[77].cards[0].abilities[0]"
       },
-      "master.shirou-emiya.skill.ascension#shirou-emiya.ascension.climax-power": {
-        "archiveId": "master.shirou-emiya",
+      "servant.tezcat.skill.sc-tezcat-1#sc-tezcat-1.joint-other-modifier": {
+        "archiveId": "servant.tezcat",
         "archiveIndex": 77,
         "cardIndex": 0,
         "abilityIndex": 1,
         "path": "archives[77].cards[0].abilities[1]"
       },
-      "master.shirou-emiya.skill.s1": {
-        "archiveId": "master.shirou-emiya",
+      "servant.tezcat.skill.sc-tezcat-2": {
+        "archiveId": "servant.tezcat",
         "archiveIndex": 77,
         "cardIndex": 1,
         "path": "archives[77].cards[1]"
       },
-      "master.shirou-emiya.skill.s1#shirou-emiya.unskilled.initial-mana": {
-        "archiveId": "master.shirou-emiya",
+      "servant.tezcat.skill.sc-tezcat-2#sc-tezcat-2.battlefield-offer": {
+        "archiveId": "servant.tezcat",
         "archiveIndex": 77,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[77].cards[1].abilities[0]"
       },
-      "master.shirou-emiya.skill.s2": {
-        "archiveId": "master.shirou-emiya",
+      "servant.tezcat.skill.sc-tezcat-3": {
+        "archiveId": "servant.tezcat",
         "archiveIndex": 77,
         "cardIndex": 2,
         "path": "archives[77].cards[2]"
       },
-      "master.shirou-emiya.skill.s2#shirou-emiya.projection.provision": {
-        "archiveId": "master.shirou-emiya",
+      "servant.tezcat.skill.sc-tezcat-3#sc-tezcat-3.true-name-release": {
+        "archiveId": "servant.tezcat",
         "archiveIndex": 77,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[77].cards[2].abilities[0]"
       },
+      "servant.tezcat.skill.sc-tezcat-3#sc-tezcat-3.seal-play-cost": {
+        "archiveId": "servant.tezcat",
+        "archiveIndex": 77,
+        "cardIndex": 2,
+        "abilityIndex": 1,
+        "path": "archives[77].cards[2].abilities[1]"
+      },
+      "servant.tezcat.skill.sc-tezcat-3#sc-tezcat-3.defeat-engaged": {
+        "archiveId": "servant.tezcat",
+        "archiveIndex": 77,
+        "cardIndex": 2,
+        "abilityIndex": 2,
+        "path": "archives[77].cards[2].abilities[2]"
+      },
+      "master.shirou-emiya.skill.ascension": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 78,
+        "cardIndex": 0,
+        "path": "archives[78].cards[0]"
+      },
+      "master.shirou-emiya.skill.ascension#shirou-emiya.ascension.basic-power": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 78,
+        "cardIndex": 0,
+        "abilityIndex": 0,
+        "path": "archives[78].cards[0].abilities[0]"
+      },
+      "master.shirou-emiya.skill.ascension#shirou-emiya.ascension.climax-power": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 78,
+        "cardIndex": 0,
+        "abilityIndex": 1,
+        "path": "archives[78].cards[0].abilities[1]"
+      },
+      "master.shirou-emiya.skill.s1": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 78,
+        "cardIndex": 1,
+        "path": "archives[78].cards[1]"
+      },
+      "master.shirou-emiya.skill.s1#shirou-emiya.unskilled.initial-mana": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 78,
+        "cardIndex": 1,
+        "abilityIndex": 0,
+        "path": "archives[78].cards[1].abilities[0]"
+      },
+      "master.shirou-emiya.skill.s2": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 78,
+        "cardIndex": 2,
+        "path": "archives[78].cards[2]"
+      },
+      "master.shirou-emiya.skill.s2#shirou-emiya.projection.provision": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 78,
+        "cardIndex": 2,
+        "abilityIndex": 0,
+        "path": "archives[78].cards[2].abilities[0]"
+      },
       "master.shirou-emiya.skill.s3": {
         "archiveId": "master.shirou-emiya",
-        "archiveIndex": 77,
+        "archiveIndex": 78,
         "cardIndex": 3,
-        "path": "archives[77].cards[3]"
+        "path": "archives[78].cards[3]"
       },
       "master.shirou-emiya.skill.s3#shirou-emiya.avalon.first-elimination": {
         "archiveId": "master.shirou-emiya",
-        "archiveIndex": 77,
+        "archiveIndex": 78,
         "cardIndex": 3,
         "abilityIndex": 0,
-        "path": "archives[77].cards[3].abilities[0]"
+        "path": "archives[78].cards[3].abilities[0]"
       },
       "card.derived.master.shirou-emiya.ganjiang-moye": {
         "archiveId": "master.shirou-emiya",
-        "archiveIndex": 77,
+        "archiveIndex": 78,
         "cardIndex": 4,
-        "path": "archives[77].cards[4]"
+        "path": "archives[78].cards[4]"
       },
       "card.derived.master.shirou-emiya.ganjiang-moye#ganjiang-moye.append-only": {
         "archiveId": "master.shirou-emiya",
-        "archiveIndex": 77,
+        "archiveIndex": 78,
         "cardIndex": 4,
         "abilityIndex": 0,
-        "path": "archives[77].cards[4].abilities[0]"
+        "path": "archives[78].cards[4].abilities[0]"
       }
     }
   }

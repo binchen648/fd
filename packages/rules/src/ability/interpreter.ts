@@ -47,6 +47,7 @@ import {
   resolveShishigouAbility, shishigouNecromancyTarget, markShishigouCorpseRemoval, resolveShishigouStrength, resolveShishigouMagic,
 } from './shishigou-necromancy-capability';
 import { containsSiegPrivilegedNode, isAcceptedSiegAbility, isSiegBalmungFreePlayAbility, isSiegBalmungPenaltyAbility, isSiegDragonCommandAbility, isSiegGalvanismAbility, isSiegSyncState, isSiegSyncStrengthAbility, SIEG_BALMUNG_FREE_PLAY_EFFECT, SIEG_BALMUNG_PENALTY_EFFECT, SIEG_DRAGON_COMMAND_EFFECT, SIEG_SYNC_STATE_KEY, SIEG_SYNC_STRENGTH_EFFECT } from './sieg-capability';
+import { containsSionPrivilegedNode, isAcceptedSionAbility, resolveSionEffect, settleSionEvent, sionPowerBonus } from './sion-capability';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
@@ -1340,6 +1341,8 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     return { value: persistentLock.value, lines: [{ label: 'persistent_situation_attribute_power_lock', value: persistentLock.value }] };
   }
   const result = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
+  const sionBonus = sionPowerBonus(s, sourceId);
+  if (sionBonus !== 0) { result.value += sionBonus; result.lines.push({ label: 'sion_owner_power_bonus', value: result.value }); }
   const siegBonus = siegSyncStrengthBonus(s, sourceId);
   if (siegBonus !== 0) { result.value += siegBonus; result.lines.push({ label: 'sieg_sync_strength_basic_attack', value: result.value }); }
   const regaliaBonus=mysticCodeRegaliaPowerBonus(s,sourceId);
@@ -8008,6 +8011,12 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (hasControllerMasterSkillDefinitionReturnCandidate(a) && !isAcceptedOpponentRoundVpGainThresholdAbility(a, 'compiled')) reject('resolution_failed', 'Definition-return component requires an independently accepted parent route');
   if (isNextRoundSituationBenefitSuppressionCandidate(a) && !isAcceptedNextRoundSituationBenefitSuppressionAbility(a, 'compiled')) reject('resolution_failed', 'Unsupported next-round situation-benefit suppression semantic shape');
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
+  if (containsSionPrivilegedNode(a)) {
+    if (!isAcceptedSionAbility(a)) reject('resolution_failed', 'Unsupported Sion semantic');
+    const effect = a.effects.find((entry) => containsSionPrivilegedNode(entry));
+    if (!effect || !resolveSionEffect(s, ctx, a, effect)) reject('resolution_failed', 'Sion effect resolution failed');
+    return;
+  }
   if (!commitLinkedRoleCopiedSkillUse(s, ctx.sourceCardId, ctx.controllerId)) reject('invalid_state', 'Copied linked-role servant skill lost source provenance');
   const useInteraction = classifyAbilityInteraction(a);
   if (['phase_activation', 'response_window'].includes(useInteraction.kind) && ctx.event?.type !== 'on_ability_used') {
@@ -8539,6 +8548,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   if (!event.id) reject('invalid_event', 'Events require stable ids');
   r.processedEvents.push(event.id);
   rememberTrustedBattleResultSnapshot(r, event);
+  settleSionEvent(s, event);
   settleHakunoAnalysisHandoffs(s, event);
   settleMysticCodeRecoveryArm(s,event);
   settleDefinitionSideDeckBattleEvent(s, event);
