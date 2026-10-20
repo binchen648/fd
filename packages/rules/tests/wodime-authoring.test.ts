@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import * as rules from '../src/index';
 import { createSeededGameState } from '../src/tools/seeded-state';
-import { installMasterSupportOwnerCards } from '../src/match-session';
+import { createMatchSession, installMasterSupportOwnerCards, restoreMatchSession } from '../src/match-session';
 
 const archivePath = 'data/authoring/masters/master.wodime.json';
 const expectedIds = ['ascension', 's1', 's1a', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9'];
@@ -42,7 +42,7 @@ describe('Wodime frozen authoring archive', () => {
     installMasterSupportOwnerCards(state, loaded as any, { ownerId: 'master.wodime', playerId: 'p1' });
     rules.processAbilityEvent(state, { id: 'wodime-s1-game-start', type: 'game_start' });
     expect((state as any).modeState.wodimeAtlantisExpandedSkillIds).toEqual(['master.wodime.skill.s6']);
-    expect(state.eventDeck?.filter((id) => id === 'master.wodime.skill.s6')).toHaveLength(6);
+    expect(state.eventDeck?.filter((id) => id === 'event.wodime.atlantis.hephaestus')).toHaveLength(6);
     const astrology = state.abilityRuntime!.pendingDecision!;
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: astrology.id, selectedIds: ['round:1', 'round:2'] }).ok).toBe(true);
     state.round.activePhase = 'action';
@@ -54,12 +54,26 @@ describe('Wodime frozen authoring archive', () => {
     const result = rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: s1.instanceId, abilityId: 'wodime.crypter.olympus' });
     expect(result.ok).toBe(true);
     expect((state as any).modeState.wodimeOlympusExpandedSkillIds).toEqual(['master.wodime.skill.s7', 'master.wodime.skill.s8', 'master.wodime.skill.s9']);
-    expect(state.eventDeck?.filter((id) => id === 'master.wodime.skill.s7')).toHaveLength(2);
-    expect(state.eventDeck?.filter((id) => id === 'master.wodime.skill.s8')).toHaveLength(2);
-    expect(state.eventDeck?.filter((id) => id === 'master.wodime.skill.s9')).toHaveLength(2);
+    expect(state.eventDeck?.filter((id) => id === 'event.wodime.olympus.zeus')).toHaveLength(2);
+    expect(state.eventDeck?.filter((id) => id === 'event.wodime.olympus.aphrodite')).toHaveLength(2);
+    expect(state.eventDeck?.filter((id) => id === 'event.wodime.olympus.demeter')).toHaveLength(2);
     expect((state.abilityRuntime as any).structuredPlayerFlagsByPlayer.p1['wodime.god_legacy']).toBe(1);
     expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'wodime_olympus_expanded', visibility: 'public' }));
     expect(rules.projectAbilityState(state, 'p1').legalActions.some((action: any) => action.abilityId === 'wodime.crypter.olympus')).toBe(false);
+  });
+
+  it('draws, places, and restores a Wodime event through the canonical event directory', () => {
+    const session = createMatchSession({ seed: 101, humanPlayerId: 'p1', restorePackKind: 'production_executable' });
+    session.state.eventDeck = ['event.wodime.atlantis.hephaestus'];
+    (session as any).startRound(2, session.state);
+    expect(session.state.eventDeck).toEqual([]);
+    expect(session.state.eventPlacements.find((event: any) => event.eventCardId === 'event.wodime.atlantis.hephaestus')).toMatchObject({
+      eventCardId: 'event.wodime.atlantis.hephaestus',
+      victoryPoints: 0,
+    });
+    const restored = restoreMatchSession(session.serializeSession(), { restorePackKind: 'production_executable' });
+    expect(restored.state.eventDeck).toEqual([]);
+    expect(restored.state.eventPlacements.map((event) => event.eventCardId)).toContain('event.wodime.atlantis.hephaestus');
   });
 
   it('opens a private two-round game-start decision and provisions the orb', () => {

@@ -2754,8 +2754,10 @@ function wodimeCelestialSphereSuppressesAttack(s: GameState, sourceId: string): 
     wodimeCelestialSpherePlayedSource(s, attack.controllerPlayerId, candidate.instanceId));
 }
 
-const WODIME_ATLANTIS_EVENT_IDS = ['master.wodime.skill.s6'];
-const WODIME_OLYMPUS_EVENT_IDS = ['master.wodime.skill.s7', 'master.wodime.skill.s8', 'master.wodime.skill.s9'];
+const WODIME_ATLANTIS_EVENT_IDS = ['event.wodime.atlantis.hephaestus'];
+const WODIME_OLYMPUS_EVENT_IDS = ['event.wodime.olympus.zeus', 'event.wodime.olympus.aphrodite', 'event.wodime.olympus.demeter'];
+const WODIME_ATLANTIS_SOURCE_IDS = ['master.wodime.skill.s6'];
+const WODIME_OLYMPUS_SOURCE_IDS = ['master.wodime.skill.s7', 'master.wodime.skill.s8', 'master.wodime.skill.s9'];
 const WODIME_GOD_LEGACY_KEY = 'wodime.god_legacy';
 
 function wodimeLostbeltSource(s: GameState, sourceId: string, playerId: string): boolean {
@@ -2791,14 +2793,14 @@ function resolveWodimeLostbeltExpansion(s: GameState, ctx: EffectContext, a: Aut
     const state = modeState(s);
     s.eventDeck ??= [];
     s.eventDeck.push(...Array.from({ length: 6 }, () => WODIME_ATLANTIS_EVENT_IDS[0]!));
-    state.wodimeAtlantisExpandedSkillIds = [...WODIME_ATLANTIS_EVENT_IDS];
+    state.wodimeAtlantisExpandedSkillIds = [...WODIME_ATLANTIS_SOURCE_IDS];
     (state.wodimeLostbeltResponsibilityByPlayer ??= {})[ctx.controllerId] = 'atlantis,olympus';
   } else {
     setStructuredCounter(s, ctx.controllerId, WODIME_GOD_LEGACY_KEY,
       structuredCounterValue(s, ctx.controllerId, WODIME_GOD_LEGACY_KEY) - 5);
     s.eventDeck ??= [];
     for (const eventId of WODIME_OLYMPUS_EVENT_IDS) s.eventDeck.push(...Array.from({ length: 2 }, () => eventId));
-    modeState(s).wodimeOlympusExpandedSkillIds = [...WODIME_OLYMPUS_EVENT_IDS];
+    modeState(s).wodimeOlympusExpandedSkillIds = [...WODIME_OLYMPUS_SOURCE_IDS];
   }
   runtime(s).events.push({ type: `wodime_${lostbelt}_expanded`, playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, visibility: 'public' });
 }

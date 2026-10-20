@@ -140,7 +140,13 @@ describe('playtest pack loader', () => {
     );
     expect(loaded.eventSets).toHaveLength(1);
     expect(loaded.eventSets[0]!.cardIds).toHaveLength(20);
-    expect(loaded.eventCards).toHaveLength(18);
+    expect(loaded.eventCards.filter((card) => card.id.startsWith('event.waxing_moon_ritual.'))).toHaveLength(18);
+    expect(loaded.eventCards.map((card) => card.id)).toEqual(expect.arrayContaining([
+      'event.wodime.atlantis.hephaestus',
+      'event.wodime.olympus.zeus',
+      'event.wodime.olympus.aphrodite',
+      'event.wodime.olympus.demeter',
+    ]));
     expect(loaded.servants.map((servant) => servant.id)).toContain('servant.tezcat');
     expect([
       'servant.tezcat.skill.sc-tezcat-1',

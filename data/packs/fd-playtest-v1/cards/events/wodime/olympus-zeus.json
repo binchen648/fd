@@ -1,0 +1,13 @@
+{
+  "id": "event.wodime.olympus.zeus",
+  "name": "宙斯的雷霆",
+  "cardType": "event",
+  "printedReward": 5,
+  "applicableLocations": ["deep_mountain", "new_capital"],
+  "printedText": "【奥林匹斯事件牌】战果5，数量2。【沃戴姆】的对手位于此战场时不能无视【败北】效果。计算战力后，使此处战力未达到21的所有人【败北】。",
+  "timing": ["battle", "after_battle"],
+  "interactions": [{ "kind": "automatic", "visibility": "public" }],
+  "effects": [{ "type": "record_master_directive", "directive": "wodime_zeus_event" }],
+  "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "The battle defeat effect remains host-adjudicated; event identity, reward, deck and placement are executable." },
+  "source": { "htmPath": "chm-extract/沃戴姆.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211319_640.png", "imageIndex": 0, "reviewedAgainstImage": true }
+}

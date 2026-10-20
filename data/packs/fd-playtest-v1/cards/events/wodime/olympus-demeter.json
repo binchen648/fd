@@ -1,0 +1,13 @@
+{
+  "id": "event.wodime.olympus.demeter",
+  "name": "德墨忒尔的丰壤",
+  "cardType": "event",
+  "printedReward": 3,
+  "applicableLocations": ["deep_mountain", "new_capital"],
+  "printedText": "【奥林匹斯事件牌】战果3，数量2。战力计算后，于前哨阶段部署于此处的沃戴姆的对手【败北】。",
+  "timing": ["battle", "after_battle"],
+  "interactions": [{ "kind": "automatic", "visibility": "public" }],
+  "effects": [{ "type": "record_master_directive", "directive": "wodime_demeter_event" }],
+  "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "The deployment-stage defeat effect remains host-adjudicated; event identity, reward, deck and placement are executable." },
+  "source": { "htmPath": "chm-extract/沃戴姆.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211319_640.png", "imageIndex": 0, "reviewedAgainstImage": true }
+}

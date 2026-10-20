@@ -112,6 +112,10 @@
                           "data/packs/fd-playtest-v1/events/waxing-moon-ritual.json"
                       ],
     "eventCardFiles":  [
+                           "data/packs/fd-playtest-v1/cards/events/wodime/atlantis-hephaestus.json",
+                           "data/packs/fd-playtest-v1/cards/events/wodime/olympus-zeus.json",
+                           "data/packs/fd-playtest-v1/cards/events/wodime/olympus-aphrodite.json",
+                           "data/packs/fd-playtest-v1/cards/events/wodime/olympus-demeter.json",
                            "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/ritual.json",
                            "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/resistance.json",
                            "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/dark-current.json",

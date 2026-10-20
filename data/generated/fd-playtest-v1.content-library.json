@@ -4674,6 +4674,154 @@
       }
     },
     {
+      "id": "event.wodime.atlantis.hephaestus",
+      "name": "赫菲斯托斯终端",
+      "cardType": "event",
+      "printedReward": 0,
+      "applicableLocations": [
+        "deep_mountain",
+        "new_capital"
+      ],
+      "printedText": "【亚特兰蒂斯事件牌】战果0，数量6。将3个【神之遗产】放置于此地点。所有玩家获得1个【神之遗产】。",
+      "timing": [
+        "action",
+        "battle"
+      ],
+      "interactions": [
+        {
+          "kind": "automatic",
+          "visibility": "public"
+        }
+      ],
+      "effects": [
+        {
+          "type": "record_master_directive",
+          "directive": "wodime_hephaestus_event"
+        }
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "The legacy-token placement and grant remain host-adjudicated; the event card identity, reward, deck and placement are executable."
+      },
+      "source": {
+        "htmPath": "chm-extract/沃戴姆.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211319_640.png",
+        "imageIndex": 0,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "event.wodime.olympus.aphrodite",
+      "name": "阿芙洛狄忒的心绪",
+      "cardType": "event",
+      "printedReward": 4,
+      "applicableLocations": [
+        "deep_mountain",
+        "new_capital"
+      ],
+      "printedText": "【奥林匹斯事件牌】战果4，数量2。战力计算后，此处本回合所有未使用令咒的沃戴姆的对手【败北】。",
+      "timing": [
+        "battle",
+        "after_battle"
+      ],
+      "interactions": [
+        {
+          "kind": "automatic",
+          "visibility": "public"
+        }
+      ],
+      "effects": [
+        {
+          "type": "record_master_directive",
+          "directive": "wodime_aphrodite_event"
+        }
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "The command-seal defeat effect remains host-adjudicated; event identity, reward, deck and placement are executable."
+      },
+      "source": {
+        "htmPath": "chm-extract/沃戴姆.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211319_640.png",
+        "imageIndex": 0,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "event.wodime.olympus.demeter",
+      "name": "德墨忒尔的丰壤",
+      "cardType": "event",
+      "printedReward": 3,
+      "applicableLocations": [
+        "deep_mountain",
+        "new_capital"
+      ],
+      "printedText": "【奥林匹斯事件牌】战果3，数量2。战力计算后，于前哨阶段部署于此处的沃戴姆的对手【败北】。",
+      "timing": [
+        "battle",
+        "after_battle"
+      ],
+      "interactions": [
+        {
+          "kind": "automatic",
+          "visibility": "public"
+        }
+      ],
+      "effects": [
+        {
+          "type": "record_master_directive",
+          "directive": "wodime_demeter_event"
+        }
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "The deployment-stage defeat effect remains host-adjudicated; event identity, reward, deck and placement are executable."
+      },
+      "source": {
+        "htmPath": "chm-extract/沃戴姆.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211319_640.png",
+        "imageIndex": 0,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "event.wodime.olympus.zeus",
+      "name": "宙斯的雷霆",
+      "cardType": "event",
+      "printedReward": 5,
+      "applicableLocations": [
+        "deep_mountain",
+        "new_capital"
+      ],
+      "printedText": "【奥林匹斯事件牌】战果5，数量2。【沃戴姆】的对手位于此战场时不能无视【败北】效果。计算战力后，使此处战力未达到21的所有人【败北】。",
+      "timing": [
+        "battle",
+        "after_battle"
+      ],
+      "interactions": [
+        {
+          "kind": "automatic",
+          "visibility": "public"
+        }
+      ],
+      "effects": [
+        {
+          "type": "record_master_directive",
+          "directive": "wodime_zeus_event"
+        }
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "The battle defeat effect remains host-adjudicated; event identity, reward, deck and placement are executable."
+      },
+      "source": {
+        "htmPath": "chm-extract/沃戴姆.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211319_640.png",
+        "imageIndex": 0,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
       "id": "master.akasha.overview",
       "name": "阿卡夏之蛇",
       "cardType": "master_overview",
@@ -58433,11 +58581,11 @@
       "master.waver": "master.waver.command-spell",
       "master.wodime": "master.wodime.command-spell"
     },
-    "definitionHash": "1415a1547bb7a21120ac53855b48120b0df5d93f070e79843add9ec7fcda7b0d",
+    "definitionHash": "70bdb026a9c296599c30fa0999fa9fce967ca861f3226b706b9bf4e98536d25d",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "1415a1547bb7a21120ac53855b48120b0df5d93f070e79843add9ec7fcda7b0d"
+      "definitionHash": "70bdb026a9c296599c30fa0999fa9fce967ca861f3226b706b9bf4e98536d25d"
     },
     "sourceMap": {
       "master.shinji.skill.ascension": {

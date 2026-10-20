@@ -1,0 +1,13 @@
+{
+  "id": "event.wodime.atlantis.hephaestus",
+  "name": "赫菲斯托斯终端",
+  "cardType": "event",
+  "printedReward": 0,
+  "applicableLocations": ["deep_mountain", "new_capital"],
+  "printedText": "【亚特兰蒂斯事件牌】战果0，数量6。将3个【神之遗产】放置于此地点。所有玩家获得1个【神之遗产】。",
+  "timing": ["action", "battle"],
+  "interactions": [{ "kind": "automatic", "visibility": "public" }],
+  "effects": [{ "type": "record_master_directive", "directive": "wodime_hephaestus_event" }],
+  "capability": { "status": "HOST_ADJUDICATED", "hostRulingReason": "The legacy-token placement and grant remain host-adjudicated; the event card identity, reward, deck and placement are executable." },
+  "source": { "htmPath": "chm-extract/沃戴姆.htm", "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211319_640.png", "imageIndex": 0, "reviewedAgainstImage": true }
+}

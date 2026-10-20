@@ -25,6 +25,7 @@ function readJson<T>(workspaceRelativePath: string): T {
 const manifest = readJson<PackManifest>('data/packs/fd-playtest-v1/pack.json');
 const eventSets = manifest.eventSetFiles.map((path) => readJson<EventSetDefinition>(path));
 const eventCards = manifest.eventCardFiles.map((path) => readJson<EventCard>(path));
+const waxingMoonCards = eventCards.filter((card) => card.id.startsWith('event.waxing_moon_ritual.'));
 
 function findEvent(id: string): EventCard {
   const card = eventCards.find((candidate) => candidate.id === id);
@@ -38,7 +39,7 @@ describe('Waxing Moon Ritual event set', () => {
     expect(eventSets[0]!.id).toBe('event-set.waxing_moon_ritual');
     expect(eventSets[0]!.name).toBe('盈月之仪');
     expect(eventSets[0]!.cardIds).toHaveLength(20);
-    expect(eventCards).toHaveLength(18);
+    expect(waxingMoonCards).toHaveLength(18);
 
     const slotCounts = eventSets[0]!.cardIds.reduce<Record<string, number>>((counts, id) => {
       counts[id] = (counts[id] ?? 0) + 1;
@@ -48,7 +49,7 @@ describe('Waxing Moon Ritual event set', () => {
     expect(slotCounts['event.waxing_moon_ritual.ritual']).toBe(2);
     expect(slotCounts['event.waxing_moon_ritual.vengeful_spirit_barrier']).toBe(2);
     expect(Object.values(slotCounts).reduce((sum, count) => sum + count, 0)).toBe(20);
-    expect(new Set(eventSets[0]!.cardIds)).toEqual(new Set(eventCards.map((card) => card.id)));
+    expect(new Set(eventSets[0]!.cardIds)).toEqual(new Set(waxingMoonCards.map((card) => card.id)));
   });
 
   it('preserves each event reward and source-image occurrence from the HTM page', () => {
@@ -78,7 +79,7 @@ describe('Waxing Moon Ritual event set', () => {
   });
 
   it('requires every reviewed event card to include printed text, timing, interactions and effects', () => {
-    for (const card of eventCards) {
+    for (const card of waxingMoonCards) {
       expect(card.cardType, card.id).toBe('event');
       const printedText = card.printedText;
       expect(printedText, card.id).toEqual(expect.any(String));
@@ -118,10 +119,17 @@ describe('Waxing Moon Ritual event set', () => {
   });
 
   it('uses reviewed workspace-relative source image metadata', () => {
-    for (const entity of [...eventSets, ...eventCards]) {
+    for (const entity of [...eventSets, ...waxingMoonCards]) {
       expect(entity.source.reviewedAgainstImage).toBe(true);
       expect(entity.source.htmPath).toMatch(/^chm-extract\//);
       expect(entity.source.imagePath).toMatch(/^chm-extract\/图包\/ScreenShot_/);
     }
+  });
+
+  it('registers Wodime expansion events as real event cards with printed rewards', () => {
+    expect(findEvent('event.wodime.atlantis.hephaestus')).toMatchObject({ printedReward: 0 });
+    expect(findEvent('event.wodime.olympus.zeus')).toMatchObject({ printedReward: 5 });
+    expect(findEvent('event.wodime.olympus.aphrodite')).toMatchObject({ printedReward: 4 });
+    expect(findEvent('event.wodime.olympus.demeter')).toMatchObject({ printedReward: 3 });
   });
 });
