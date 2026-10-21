@@ -112,6 +112,12 @@ export interface AbilityEvent {
   fromZone?: string;
   toZone?: string;
   movedCount?: number;
+  /** Internal bounded-replacement metadata. Never client supplied. */
+  wodimeReplacementDepth?: number;
+  wodimePlacementId?: string;
+  wodimePlacementLocationId?: string;
+  wodimePlacementEventCardId?: string;
+  grantedTokens?: number;
 }
 export interface TriggeredAbility { cardInstanceId: string; abilityId: string; controllerId: PlayerId }
 export interface UniqueTriggerGroup { groupId: string; policy: 'only_one_effect_may_activate_per_window' }
@@ -517,6 +523,10 @@ export interface SafeEvent {
   challengeChoice?: 'rock' | 'paper' | 'scissors';
   challengeResult?: 'draw' | 'initiator' | 'opponent';
   analysisCount?: number;
+  wodimePlacementId?: string;
+  wodimePlacementLocationId?: string;
+  wodimePlacementEventCardId?: string;
+  grantedTokens?: number;
 }
 export interface CardRuntimeState {
   active: boolean; faceDown: boolean; playedRound: number; paidManaOnPlay?: number;
@@ -806,10 +816,21 @@ export interface AbilityRuntime {
   };
   /** Stable physical event placement identities already provisioned for God Legacy. */
   wodimeGodLegacyProcessedPlacementIds?: Record<string, true>;
+  /** Authenticated provenance for every God Legacy placement marker. */
+  wodimeGodLegacyPlacementProvenance?: Record<string, {
+    locationId: string; eventCardId: string; sourceCardId: string; controllerId: PlayerId;
+    grantedTokens: number; activatedRound: number;
+  }>;
   /** Idempotent event placements processed by Wodime's Atlantis replacement rule. */
   wodimeAtlantisHandledEventPlacementIds?: Record<string, true>;
   wodimeAtlantisPendingBattlefieldRemovalIds?: Record<string, true>;
   wodimeAtlantisConsumedEventPlacementIds?: Record<string, true>;
+  /** Authenticated provenance for Atlantis handled/consumed placement IDs. */
+  wodimeAtlantisPlacementProvenance?: Record<string, {
+    eventCardId: string; locationId: string; sourceCardId: string; controllerId: PlayerId;
+  }>;
+  /** Replacement reveals that reached the explicit same-card safety boundary. */
+  wodimeAtlantisPendingReplacementEvents?: AbilityEvent[];
   /** Owner-scoped typed food resources and once-per-round procurement authority. */
   shirouMealFoodByPlayer?: Record<PlayerId, { 肉: number; 蔬菜: number; 鱼: number }>;
   shirouMealProcurementRoundByPlayer?: Record<PlayerId, { round: number; attributes: string[] }>;

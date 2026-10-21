@@ -36,6 +36,7 @@ function ensureActivated(state: GameState): boolean {
   r.wodimeGodLegacyByLocation ??= {};
   r.wodimeGodLegacyByPlayer ??= {};
   r.wodimeGodLegacyProcessedPlacementIds ??= {};
+  r.wodimeGodLegacyPlacementProvenance ??= {};
   if (!r.wodimeGodLegacyActivation) {
     r.wodimeGodLegacyActivation = { sourceCardId: origin.cardId, controllerId: origin.playerId, abilityId: SOURCE_ABILITY, activatedRound: state.round.roundNumber, lifecycle: 'game' };
   }
@@ -43,7 +44,18 @@ function ensureActivated(state: GameState): boolean {
     if (placement.eventCardId !== ATLANTIS_EVENT) continue;
     const placementId = placement.ruleInstanceId ?? `wodime-god-legacy:${placement.eventCardId}:${placement.locationId}:${index}`;
     if (!placement.ruleInstanceId) placement.ruleInstanceId = placementId;
-    if (r.wodimeGodLegacyProcessedPlacementIds[placementId]) continue;
+    if (r.wodimeGodLegacyProcessedPlacementIds[placementId]) {
+      // A restored runtime may contain the legacy boolean marker but not the
+      // richer record. Reconstruct it only from the currently present,
+      // canonical Hephaestus placement; arbitrary IDs are never accepted by
+      // the restore validator below.
+      r.wodimeGodLegacyPlacementProvenance[placementId] ??= {
+        locationId: placement.locationId, eventCardId: placement.eventCardId,
+        sourceCardId: origin.cardId, controllerId: origin.playerId, grantedTokens: 3,
+        activatedRound: r.wodimeGodLegacyActivation.activatedRound,
+      };
+      continue;
+    }
     const entry = r.wodimeGodLegacyByLocation[placement.locationId] ?? {
       locationId: placement.locationId, tokens: 0, sourceCardId: origin.cardId, abilityId: SOURCE_ABILITY,
       activatedRound: state.round.roundNumber, lifecycle: 'game' as const,
@@ -51,6 +63,15 @@ function ensureActivated(state: GameState): boolean {
     entry.tokens += 3;
     r.wodimeGodLegacyByLocation[placement.locationId] = entry;
     r.wodimeGodLegacyProcessedPlacementIds[placementId] = true;
+    r.wodimeGodLegacyPlacementProvenance[placementId] = {
+      locationId: placement.locationId, eventCardId: placement.eventCardId,
+      sourceCardId: origin.cardId, controllerId: origin.playerId, grantedTokens: 3,
+      activatedRound: r.wodimeGodLegacyActivation.activatedRound,
+    };
+    r.events.push({ type: 'wodime_god_legacy_placement_provisioned', sourceCardId: origin.cardId,
+      abilityId: SOURCE_ABILITY, controllerId: origin.playerId, visibility: 'public',
+      wodimePlacementId: placementId, wodimePlacementLocationId: placement.locationId,
+      wodimePlacementEventCardId: placement.eventCardId, grantedTokens: 3 });
   }
   // The state is still authoritative even when no Hephaestus card is currently placed;
   // later event resolution may add a location entry through the same source contract.
@@ -112,18 +133,49 @@ export function isWodimeGodLegacyRuntimeStateValid(state: GameState): boolean {
   const players = new Set(state.players.map((player) => player.id));
   const locations = new Set<string>(state.map.locations.map((location) => location.id));
   if (r.wodimeGodLegacyByPlayer && Object.entries(r.wodimeGodLegacyByPlayer).some(([id, value]) => !players.has(id) || !Number.isSafeInteger(value) || value < 0)) return false;
-  if (!r.wodimeGodLegacyByLocation) return true;
+  if (!r.wodimeGodLegacyByLocation) {
+    return Object.keys(r.wodimeGodLegacyProcessedPlacementIds ?? {}).length === 0 &&
+      Object.keys(r.wodimeGodLegacyPlacementProvenance ?? {}).length === 0 &&
+      Object.keys(r.wodimeGodLegacyByPlayer ?? {}).length === 0 && !r.wodimeGodLegacyActivation;
+  }
   const activation = r.wodimeGodLegacyActivation;
-  if (!activation && Object.keys(r.wodimeGodLegacyByLocation).length === 0 && Object.keys(r.wodimeGodLegacyByPlayer ?? {}).length === 0) return true;
+  if (!activation && Object.keys(r.wodimeGodLegacyByLocation).length === 0 && Object.keys(r.wodimeGodLegacyByPlayer ?? {}).length === 0 &&
+      Object.keys(r.wodimeGodLegacyProcessedPlacementIds ?? {}).length === 0 && Object.keys(r.wodimeGodLegacyPlacementProvenance ?? {}).length === 0) return true;
   if (!activation || activation.abilityId !== SOURCE_ABILITY || activation.lifecycle !== 'game' || !players.has(activation.controllerId) ||
       !Number.isSafeInteger(activation.activatedRound) || activation.activatedRound < 1 ||
       !state.cards.some((card) => card.instanceId === activation.sourceCardId && card.definitionId === SOURCE_DEFINITION &&
         card.ownerPlayerId === activation.controllerId && card.controllerPlayerId === activation.controllerId)) return false;
+  const processed = r.wodimeGodLegacyProcessedPlacementIds ?? {};
+  const provenance = r.wodimeGodLegacyPlacementProvenance ?? {};
+  if (Object.keys(processed).some((id) => !provenance[id]) || Object.keys(provenance).some((id) => !processed[id])) return false;
+  const provisionEvents = new Set(r.events.filter((event) => event.type === 'wodime_god_legacy_placement_provisioned')
+    .map((event) => event.wodimePlacementId).filter((id): id is string => typeof id === 'string'));
+  if (Object.entries(provenance).some(([id, record]) => !isAuthenticatedPlacementRecord(state, id, record, activation, provisionEvents))) return false;
+  const grantedByLocation: Record<string, number> = {};
+  for (const record of Object.values(provenance)) grantedByLocation[record.locationId] = (grantedByLocation[record.locationId] ?? 0) + record.grantedTokens;
   return Object.entries(r.wodimeGodLegacyByLocation).every(([id, entry]) => id === entry.locationId && locations.has(id) &&
     Number.isSafeInteger(entry.tokens) && entry.tokens >= 0 && typeof entry.sourceCardId === 'string' && entry.abilityId === SOURCE_ABILITY &&
     entry.lifecycle === 'game' && Number.isSafeInteger(entry.activatedRound) && entry.activatedRound >= 1 &&
-    state.cards.some((card) => card.instanceId === entry.sourceCardId && card.definitionId === SOURCE_DEFINITION)) &&
-    Object.keys(r.wodimeGodLegacyProcessedPlacementIds ?? {}).every((id) => typeof id === 'string' && id.length > 0);
+    entry.sourceCardId === activation.sourceCardId && grantedByLocation[id] !== undefined && entry.tokens <= grantedByLocation[id]!) &&
+    Object.entries(r.wodimeGodLegacyByPlayer ?? {}).every(([id, tokens]) => players.has(id) && Number.isSafeInteger(tokens) && tokens >= 0) &&
+    (Object.values(r.wodimeGodLegacyByLocation).reduce((sum, entry) => sum + entry.tokens, 0) +
+      Object.values(r.wodimeGodLegacyByPlayer ?? {}).reduce((sum, tokens) => sum + tokens, 0)) <=
+      Object.values(provenance).reduce((sum, record) => sum + record.grantedTokens, 0);
+}
+
+function isAuthenticatedPlacementRecord(
+  state: GameState,
+  placementId: string,
+  record: NonNullable<NonNullable<GameState['abilityRuntime']>['wodimeGodLegacyPlacementProvenance']>[string],
+  activation: NonNullable<NonNullable<GameState['abilityRuntime']>['wodimeGodLegacyActivation']>,
+  provisionEvents: Set<string>,
+): boolean {
+  if (!placementId || record.eventCardId !== ATLANTIS_EVENT || record.sourceCardId !== activation.sourceCardId ||
+      record.controllerId !== activation.controllerId || record.grantedTokens !== 3 || !Number.isSafeInteger(record.activatedRound) ||
+      record.activatedRound !== activation.activatedRound || !state.map.locations.some((location) => location.id === record.locationId)) return false;
+  const live = state.eventPlacements.some((placement) => placement.ruleInstanceId === placementId &&
+    placement.eventCardId === record.eventCardId && placement.locationId === record.locationId);
+  return live || provisionEvents.has(placementId);
 }
 
 export function wodimeGodLegacyActions(state: GameState, playerId: string): Array<{ type: 'wodime_god_legacy_action'; mode: 'power' | 'mana'; amount: number }> {

@@ -1139,7 +1139,7 @@ function context(s: GameState, sourceCardId: string, abilityId: string, event?: 
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-      cardState: {}, extraPlayerPresences: [], multiPresenceLastBattleLossRoundByPlayer: {}, locationMarkers: {}, roundDefinitionAttributeReplacements: {}, sealedCardBindings: {}, armedSealedCardActions: [], sealedCardReplays: {}, recordedRemovedCards: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, battleLossIgnoreRoundByPlayer: {}, shirouMealFoodByPlayer: {}, shirouMealProcurementRoundByPlayer: {}, shishigouCorpseRemovedCardIds: [], wodimeGodLegacyByLocation: {}, wodimeGodLegacyByPlayer: {}, wodimeAtlantisHandledEventPlacementIds: {}, wodimeAtlantisPendingBattlefieldRemovalIds: {}, wodimeAtlantisConsumedEventPlacementIds: {},
+      cardState: {}, extraPlayerPresences: [], multiPresenceLastBattleLossRoundByPlayer: {}, locationMarkers: {}, roundDefinitionAttributeReplacements: {}, sealedCardBindings: {}, armedSealedCardActions: [], sealedCardReplays: {}, recordedRemovedCards: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, battleLossIgnoreRoundByPlayer: {}, shirouMealFoodByPlayer: {}, shirouMealProcurementRoundByPlayer: {}, shishigouCorpseRemovedCardIds: [], wodimeGodLegacyByLocation: {}, wodimeGodLegacyByPlayer: {}, wodimeGodLegacyProcessedPlacementIds: {}, wodimeGodLegacyPlacementProvenance: {}, wodimeAtlantisHandledEventPlacementIds: {}, wodimeAtlantisPendingBattlefieldRemovalIds: {}, wodimeAtlantisConsumedEventPlacementIds: {}, wodimeAtlantisPlacementProvenance: {}, wodimeAtlantisPendingReplacementEvents: [],
     startingDeckSizeByPlayer: Object.fromEntries(s.players.map((candidate) => [candidate.id, s.cards.filter((entry) => entry.ownerPlayerId === candidate.id && entry.zone === 'deck').length])),
     cardPlayCountByInstance: {}, grantedPerGamePlayLimitCardIds: [], grantedPerGamePlayLimitBaselineByCardId: {},
     ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [],
@@ -8818,9 +8818,17 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   if (!event.id) reject('invalid_event', 'Events require stable ids');
   r.processedEvents.push(event.id);
   const replacementDepth = Number((event as AbilityEvent & { wodimeReplacementDepth?: number }).wodimeReplacementDepth ?? 0);
-  if (replacementDepth < 8) {
-    for (const replacement of wodimeAtlantisReplacement) {
-      processEvent(s, { ...replacement, wodimeReplacementDepth: replacementDepth + 1 } as AbilityEvent);
+  for (const replacement of wodimeAtlantisReplacement) {
+    const next = { ...replacement, wodimeReplacementDepth: replacementDepth + 1 } as AbilityEvent;
+    if (replacementDepth < 8) processEvent(s, next);
+    else {
+      // A one-card Atlantis deck can legally reveal Atlantis forever. Keep
+      // the final replacement as an explicit, restorable pending event rather
+      // than silently dropping it at an implementation depth limit.
+      r.wodimeAtlantisPendingReplacementEvents ??= [];
+      if (!r.wodimeAtlantisPendingReplacementEvents.some((pending) => pending.id === next.id)) {
+        r.wodimeAtlantisPendingReplacementEvents.push(next);
+      }
     }
   }
   rememberTrustedBattleResultSnapshot(r, event);

@@ -1397,10 +1397,25 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       value.wodimeGodLegacyActivation.lifecycle !== 'game')) return false;
   if (value.wodimeGodLegacyProcessedPlacementIds !== undefined && (!isRestoreRecord(value.wodimeGodLegacyProcessedPlacementIds) ||
       Object.values(value.wodimeGodLegacyProcessedPlacementIds).some((entry) => entry !== true))) return false;
+  if (value.wodimeGodLegacyPlacementProvenance !== undefined && (!isRestoreRecord(value.wodimeGodLegacyPlacementProvenance) ||
+      !Object.values(value.wodimeGodLegacyPlacementProvenance).every((entry) => isRestoreRecord(entry) &&
+        hasExactRestoreKeys(entry, ['locationId','eventCardId','sourceCardId','controllerId','grantedTokens','activatedRound']) &&
+        typeof entry.locationId === 'string' && entry.eventCardId === 'event.wodime.atlantis.hephaestus' &&
+        typeof entry.sourceCardId === 'string' && typeof entry.controllerId === 'string' &&
+        entry.grantedTokens === 3 && isRestoreSafeInteger(entry.activatedRound, 1)))) return false;
   for (const key of ['wodimeAtlantisHandledEventPlacementIds', 'wodimeAtlantisPendingBattlefieldRemovalIds', 'wodimeAtlantisConsumedEventPlacementIds'] as const) {
     const record = value[key];
     if (record !== undefined && (!isRestoreRecord(record) || Object.values(record).some((entry) => entry !== true))) return false;
   }
+  if (value.wodimeAtlantisPlacementProvenance !== undefined && (!isRestoreRecord(value.wodimeAtlantisPlacementProvenance) ||
+      !Object.values(value.wodimeAtlantisPlacementProvenance).every((entry) => isRestoreRecord(entry) &&
+        hasExactRestoreKeys(entry, ['eventCardId','locationId','sourceCardId','controllerId']) &&
+        typeof entry.eventCardId === 'string' && entry.eventCardId.startsWith('event.wodime.atlantis.') &&
+        typeof entry.locationId === 'string' && typeof entry.sourceCardId === 'string' && typeof entry.controllerId === 'string'))) return false;
+  if (value.wodimeAtlantisPendingReplacementEvents !== undefined && (!Array.isArray(value.wodimeAtlantisPendingReplacementEvents) ||
+      !value.wodimeAtlantisPendingReplacementEvents.every((event) => isRestoreSafeEvent(event) && event.type === 'event_activated' &&
+        typeof event.sourceCardId === 'string' && typeof event.revealedId === 'string' && typeof event.locationId === 'string' &&
+        event.revealedId.startsWith('event.wodime.atlantis.')))) return false;
   if (value.structuredRoundFlagKeysByPlayer !== undefined && !isRestoreStructuredRoundFlagKeys(value.structuredRoundFlagKeysByPlayer)) return false;
   if (value.deductionRecordsByPlayer !== undefined && (!isRestoreRecord(value.deductionRecordsByPlayer) || !Object.values(value.deductionRecordsByPlayer).every((entry) =>
       isRestoreRecord(entry) && typeof entry.definitionId === 'string' && DEDUCTION_RECORD_ATTRIBUTES.includes(entry.attribute as typeof DEDUCTION_RECORD_ATTRIBUTES[number]) && isRestoreSafeInteger(entry.recordedRound, 1)))) return false;
