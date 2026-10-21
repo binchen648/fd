@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 import * as rules from '../../src/index';
+import { createMatchSession } from '../../src/match-session';
 import type { GameState } from '../../src/schema/game';
 import { createSeededGameState } from '../../src/tools/seeded-state';
 
@@ -38,6 +39,16 @@ function directS1State(): { state: GameState; ability: ReturnType<typeof rules.l
 }
 
 describe('P3 Zouken s1 game-start mana bootstrap', () => {
+  it('samples the fixed seven-player session from the expanded master pool', () => {
+    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
+    expect(session.pairings).toHaveLength(7);
+    const masterIds = session.pairings.map((pairing) => pairing.master.id);
+    expect(masterIds).toEqual(expect.arrayContaining([
+      'master.kayneth', 'master.irisviel', 'master.kiritsugu', 'master.zouken',
+    ]));
+    expect(session.pairings.some((pairing) => pairing.servant.id === 'servant.ereshkigal')).toBe(true);
+  });
+
   it('sets controller mana to 10, installs cap 16, and caps later gains', () => {
     const { state, ability } = directS1State();
     expect(rules.isZoukenManaBootstrapSemantic(ability)).toBe(true);
