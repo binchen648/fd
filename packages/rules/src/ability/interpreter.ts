@@ -3608,16 +3608,36 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   }
   checkFormulaTriggers(s);
 }
+
+/**
+ * S2 provisioning is a source-specific automatic game_start transaction.  A
+ * malformed retained card or mutated source must be rejected before the
+ * normal event ledger records the event; otherwise a failed trigger would
+ * still consume the event id/revision and make the rejection observable.
+ */
+function zoukenS2GameStartPreflight(s: GameState, event: AbilityEvent): boolean {
+  if (event.type !== 'game_start') return true;
+  for (const source of s.cards) {
+    for (const ability of definition(s, source.instanceId)?.abilities ?? []) {
+      if (isZoukenS2AbilityCandidate(ability) && str(ability.activation.trigger) === 'game_start' &&
+        !gameStartSkillProvisioningPreflight(s, source.instanceId, ability)) return false;
+    }
+  }
+  return true;
+}
 /** Trusted backend event hook. Events are not part of AbilityCommand. */
 export function processAbilityEvent(s: GameState, event: AbilityEvent): void {
   if (runtime(s).processedEvents.includes(event.id)) return;
+  if (!zoukenS2GameStartPreflight(s, event)) return;
   const copy = structuredClone(s); processEvent(copy, event); runtime(copy).revision++;
   Object.assign(s, copy);
 }
 /** Trusted backend producer helper. Allocates event identity inside the same cloned transaction. */
 export function processAbilitySystemEvent(s: GameState, label: string, event: Omit<AbilityEvent, 'id'>): void {
   const copy = structuredClone(s);
-  processEvent(copy, { ...event, id: nextId(copy, label) });
+  const materialized = { ...event, id: nextId(copy, label) } as AbilityEvent;
+  if (!zoukenS2GameStartPreflight(s, materialized)) return;
+  processEvent(copy, materialized);
   runtime(copy).revision++;
   Object.assign(s, copy);
 }

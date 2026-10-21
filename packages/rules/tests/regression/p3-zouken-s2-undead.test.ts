@@ -62,7 +62,9 @@ describe('P3 Zouken s2 owner-bound provisioning contract', () => {
     ];
     for (const mutate of mutations) {
       const { state } = setup(); mutate(state);
+      const beforeRejectedEvent = JSON.stringify(state);
       expect(rules.processAbilityEvent(state, { id: `s2-invalid-${mutations.indexOf(mutate)}`, type: 'game_start' })).toBeUndefined();
+      expect(JSON.stringify(state)).toBe(beforeRejectedEvent);
       expect(provisioned(state, TARGETS[0])).toHaveLength(0);
       expect(provisioned(state, TARGETS[1])).toHaveLength(0);
     }
@@ -73,13 +75,15 @@ describe('P3 Zouken s2 owner-bound provisioning contract', () => {
     rules.processAbilityEvent(retained.state, { id: 's2-game-start-valid', type: 'game_start' });
     const forgedTarget = provisioned(retained.state, TARGETS[0])[0]!;
     forgedTarget.generatedBy = 'forged-source';
-    const beforeForgedReplay = JSON.stringify(retained.state.cards);
+    const beforeForgedReplay = JSON.stringify(retained.state);
     expect(rules.processAbilityEvent(retained.state, { id: 's2-game-start-forged-replay', type: 'game_start' })).toBeUndefined();
-    expect(JSON.stringify(retained.state.cards)).toBe(beforeForgedReplay);
+    expect(JSON.stringify(retained.state)).toBe(beforeForgedReplay);
 
     const hostileSource = setup();
     (hostileSource.state.abilityRuntime!.pack.cards[SOURCE_ID] as ExecutableCardDefinition).mode = 'host_adjudicated';
+    const beforeHostileSource = JSON.stringify(hostileSource.state);
     expect(rules.processAbilityEvent(hostileSource.state, { id: 's2-game-start-hostile-source', type: 'game_start' })).toBeUndefined();
+    expect(JSON.stringify(hostileSource.state)).toBe(beforeHostileSource);
     expect(provisioned(hostileSource.state, TARGETS[0])).toHaveLength(0);
     expect(provisioned(hostileSource.state, TARGETS[1])).toHaveLength(0);
   });

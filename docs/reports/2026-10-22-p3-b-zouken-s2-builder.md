@@ -28,6 +28,8 @@ The active archive retains the exact source clause and binds it to `legacy-conte
 
 R1 closes the runtime provenance gaps identified by independent review: source-specific retained-card validation now requires the exact s2 source instance in `generatedBy`, and runtime provisioning rejects a mutated non-automatic source definition even when its compiled shape was previously valid. Regression coverage exercises both forged retained provenance and hostile runtime source mode.
 
+R2 moves that s2-specific game-start preflight ahead of event-ledger bookkeeping for both trusted event entry points. Any malformed/replayed s2 provisioning attempt now leaves the serialized state byte-for-byte unchanged, including `processedEvents` and `revision`; a valid game-start remains idempotent.
+
 The generic provisioning primitive remains available for its existing FB2 contracts; the s2 path adds source-specific shape and canonical target checks at executable-pack compilation and runtime preflight.
 
 ## Verification
