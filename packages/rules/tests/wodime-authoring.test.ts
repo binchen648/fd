@@ -49,6 +49,9 @@ describe('Wodime frozen authoring archive', () => {
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: astrology.id, selectedIds: ['round:1', 'round:2'] }).ok).toBe(true);
     state.round.activePhase = 'action';
     state.round.prioritySeat = state.players[0]!.seat;
+    state.eventDeck = ['event.waxing_moon_ritual.ritual'];
+    expect(rules.projectAbilityState(state, 'p1').legalActions.some((action: any) => action.abilityId === 'wodime.crypter.olympus')).toBe(false);
+    state.eventDeck = ['event.waxing_moon_ritual.ritual', 'event.waxing_moon_ritual.resistance'];
     (state.abilityRuntime as any).structuredPlayerFlagsByPlayer = { p1: { 'wodime.god_legacy': 6 } };
     const s1 = state.cards.find((card) => card.definitionId === 'master.wodime.skill.s1')!;
     const legal = rules.projectAbilityState(state, 'p1').legalActions;
@@ -56,9 +59,15 @@ describe('Wodime frozen authoring archive', () => {
     const result = rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: s1.instanceId, abilityId: 'wodime.crypter.olympus' });
     expect(result.ok).toBe(true);
     expect((state as any).modeState.wodimeOlympusExpandedSkillIds).toEqual(['master.wodime.skill.s7', 'master.wodime.skill.s8', 'master.wodime.skill.s9']);
-    expect(state.eventDeck?.filter((id) => id === 'event.wodime.olympus.zeus')).toHaveLength(2);
-    expect(state.eventDeck?.filter((id) => id === 'event.wodime.olympus.aphrodite')).toHaveLength(2);
-    expect(state.eventDeck?.filter((id) => id === 'event.wodime.olympus.demeter')).toHaveLength(2);
+    expect(state.eventDeck).toEqual([]);
+    expect(state.eventOutsideGame).toEqual([
+      'event.wodime.olympus.zeus', 'event.wodime.olympus.aphrodite', 'event.wodime.olympus.demeter',
+      'event.wodime.olympus.zeus', 'event.wodime.olympus.aphrodite', 'event.wodime.olympus.demeter',
+    ]);
+    expect((state as any).modeState.masterDirectives).toContainEqual(expect.objectContaining({
+      directive: 'wodime_olympus_expansion', controllerId: 'p1', consumed: false,
+      drawnEventCardIds: ['event.waxing_moon_ritual.ritual', 'event.waxing_moon_ritual.resistance'],
+    }));
     expect((state.abilityRuntime as any).structuredPlayerFlagsByPlayer.p1['wodime.god_legacy']).toBe(1);
     expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'wodime_olympus_expanded', visibility: 'public' }));
     expect(rules.projectAbilityState(state, 'p1').legalActions.some((action: any) => action.abilityId === 'wodime.crypter.olympus')).toBe(false);
@@ -118,6 +127,50 @@ describe('Wodime frozen authoring archive', () => {
       forged.state.eventDeck = ['event.wodime.olympus.not-a-real-card'];
       expect(() => restoreMatchSession(forged, { restorePackKind: 'production_executable' })).toThrow();
     }
+  });
+
+  it('restores and resolves the s5 two-card expansion with an optional Olympus replacement', () => {
+    const session = createMatchSession({ seed: 505, humanPlayerId: 'p1', restorePackKind: 'production_executable' });
+    const modeState = ((session.state as any).modeState ??= {});
+    const source = structuredClone(session.state.cards.find((card) => card.controllerPlayerId === 'p1')!);
+    source.instanceId = 'host-support-p1-master.wodime.skill.s1';
+    source.definitionId = 'master.wodime.skill.s1';
+    source.ownerPlayerId = 'p1';
+    source.controllerPlayerId = 'p1';
+    source.zone = 'skill';
+    session.state.cards.push(source);
+    const sourceCardId = source.instanceId;
+    modeState.masterDirectives = [{
+      directive: 'wodime_olympus_expansion', controllerId: 'p1', sourceCardId,
+      abilityId: 'wodime.crypter.olympus', consumed: false,
+      drawnEventCardIds: ['event.waxing_moon_ritual.ritual', 'event.waxing_moon_ritual.resistance'],
+      replacementEventCardIds: ['event.wodime.olympus.zeus', 'event.wodime.olympus.aphrodite', 'event.wodime.olympus.demeter'],
+      eventOutsideGameCount: 6,
+    }];
+    session.state.eventDeck = [];
+    session.state.eventOutsideGame = [
+      'event.wodime.olympus.zeus', 'event.wodime.olympus.aphrodite', 'event.wodime.olympus.demeter',
+      'event.wodime.olympus.zeus', 'event.wodime.olympus.aphrodite', 'event.wodime.olympus.demeter',
+    ];
+    const snapshot = session.serializeSession();
+    const forged = structuredClone(snapshot);
+    forged.state.modeState.masterDirectives[0].drawnEventCardIds = ['event.waxing_moon_ritual.ritual', 'event.wodime.olympus.not-real'];
+    expect(() => restoreMatchSession(forged, { restorePackKind: 'production_executable' })).toThrow();
+    const restored = restoreMatchSession(snapshot, { restorePackKind: 'production_executable' });
+    const pending = restored.projectToClientState('p1').directives.find((entry) => entry.label === 'wodime_olympus_expansion' && entry.status === 'pending');
+    expect(pending).toBeDefined();
+    expect(restored.consumeDirective(pending!.id, { replacementEventCardId: 'event.waxing_moon_ritual.ritual', replacementSlot: 1 })).toBe(false);
+    expect(restored.consumeDirective(pending!.id, { replacementEventCardId: 'event.wodime.olympus.zeus', replacementSlot: 1 })).toBe(true);
+    expect(restored.state.eventDeck).toHaveLength(2);
+    expect(restored.state.eventDeck).toContain('event.waxing_moon_ritual.ritual');
+    expect(restored.state.eventDeck).toContain('event.wodime.olympus.zeus');
+    expect(restored.state.eventOutsideGame).toHaveLength(6);
+    expect(restored.state.eventOutsideGame?.filter((id) => id === 'event.wodime.olympus.zeus')).toHaveLength(1);
+    expect(restored.state.eventOutsideGame).toContain('event.waxing_moon_ritual.resistance');
+    expect(restored.projectToClientState('p1').directives).toContainEqual(expect.objectContaining({
+      label: 'wodime_olympus_expansion', kind: 'display', status: 'consumed',
+      payload: expect.objectContaining({ replacementEventCardId: 'event.wodime.olympus.zeus', replacementSlot: 1 }),
+    }));
   });
 
   it('draws, places, and restores a Wodime event through the canonical event directory', () => {

@@ -217,10 +217,10 @@ export class MatchRoom {
     return result;
   }
 
-  consumeDirective(clientId: string, directiveId: string): boolean {
+  consumeDirective(clientId: string, directiveId: string, choice: { replacementEventCardId?: string; replacementSlot?: number } = {}): boolean {
     this.requireHost(clientId);
     if (!this.session) throw new Error('Match has not started');
-    const consumed = this.session.consumeDirective(directiveId);
+    const consumed = this.session.consumeDirective(directiveId, choice);
     if (consumed) {
       this.session.runUntilHumanInputOrRoundEnd();
       if (this.session.stopReason === 'match_complete') this.status = 'ended';

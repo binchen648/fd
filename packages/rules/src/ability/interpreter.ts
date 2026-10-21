@@ -2762,6 +2762,14 @@ const WODIME_ATLANTIS_SOURCE_IDS = ['master.wodime.skill.s6'];
 const WODIME_OLYMPUS_SOURCE_IDS = ['master.wodime.skill.s7', 'master.wodime.skill.s8', 'master.wodime.skill.s9'];
 const WODIME_GOD_LEGACY_KEY = 'wodime.god_legacy';
 
+function initializeWodimeOlympusOutsideGame(s: GameState): string[] {
+  s.eventOutsideGame ??= [];
+  if (!s.eventOutsideGame.some((id) => WODIME_OLYMPUS_EVENT_IDS.includes(id))) {
+    s.eventOutsideGame.push(...WODIME_OLYMPUS_EVENT_IDS, ...WODIME_OLYMPUS_EVENT_IDS);
+  }
+  return s.eventOutsideGame;
+}
+
 function wodimeLostbeltSource(s: GameState, sourceId: string, playerId: string): boolean {
   const source = s.cards.find((candidate) => candidate.instanceId === sourceId);
   const controller = s.players.find((candidate) => candidate.id === playerId);
@@ -2783,7 +2791,7 @@ function canWodimeLostbeltExpansion(s: GameState, sourceId: string, a: Authoring
   if (a.id === 'wodime.crypter.atlantis') return event?.type === 'game_start' && !wodimeLostbeltExpanded(s, 'atlantis');
   const p = player(s, source.controllerPlayerId);
   return phase(s) === 'action' && s.round.prioritySeat === p.seat && !wodimeLostbeltExpanded(s, 'olympus') &&
-    structuredCounterValue(s, p.id, WODIME_GOD_LEGACY_KEY) >= 5;
+    structuredCounterValue(s, p.id, WODIME_GOD_LEGACY_KEY) >= 5 && (s.eventDeck?.length ?? 0) >= 2;
 }
 
 function resolveWodimeLostbeltExpansion(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
@@ -2801,7 +2809,18 @@ function resolveWodimeLostbeltExpansion(s: GameState, ctx: EffectContext, a: Aut
     setStructuredCounter(s, ctx.controllerId, WODIME_GOD_LEGACY_KEY,
       structuredCounterValue(s, ctx.controllerId, WODIME_GOD_LEGACY_KEY) - 5);
     s.eventDeck ??= [];
-    for (const eventId of WODIME_OLYMPUS_EVENT_IDS) s.eventDeck.push(...Array.from({ length: 2 }, () => eventId));
+    const drawnEventCardIds = s.eventDeck.splice(0, 2);
+    const eventOutsideGame = initializeWodimeOlympusOutsideGame(s);
+    pushModeDirective(s, {
+      directive: 'wodime_olympus_expansion',
+      controllerId: ctx.controllerId,
+      sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId,
+      drawnEventCardIds,
+      replacementEventCardIds: [...WODIME_OLYMPUS_EVENT_IDS],
+      eventOutsideGameCount: eventOutsideGame.length,
+      consumed: false,
+    });
     modeState(s).wodimeOlympusExpandedSkillIds = [...WODIME_OLYMPUS_SOURCE_IDS];
   }
   runtime(s).events.push({ type: `wodime_${lostbelt}_expanded`, playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, visibility: 'public' });

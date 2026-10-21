@@ -196,6 +196,8 @@ export interface GameState {
   locationConfig: MatchLocationConfig;
   cards: CardInstance[];
   eventDeck?: string[];
+  /** Event cards currently held outside the deck by an expansion effect. */
+  eventOutsideGame?: string[];
   situationDeck?: string[];
   situationDiscardPile?: string[];
   burnedSituationCardIds?: string[];

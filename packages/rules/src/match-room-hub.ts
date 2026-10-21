@@ -92,9 +92,9 @@ export class MatchRoomHub {
     return room.getProjection(client.id);
   }
 
-  consumeDirective(roomId: string, clientId: string, directiveId: string): MatchRoomProjection {
+  consumeDirective(roomId: string, clientId: string, directiveId: string, choice: { replacementEventCardId?: string; replacementSlot?: number } = {}): MatchRoomProjection {
     const room = this.getRoom(roomId);
-    room.consumeDirective(clientId, directiveId);
+    room.consumeDirective(clientId, directiveId, choice);
     this.bump(roomId, 'directive_consumed');
     return room.getProjection(clientId);
   }

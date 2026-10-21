@@ -2220,6 +2220,54 @@ function isRestoreAbilityRuntimeReferences(
   return value.pendingDecision === undefined || playerIds.has((value.pendingDecision as Record<string, unknown>).controllerId as string);
 }
 
+function isRestoreWodimeOlympusExpansionDirective(
+  value: unknown,
+  state: Record<string, unknown>,
+  playerIds: Set<string>,
+  cardsByInstance: Map<string, Record<string, unknown>>,
+  pack: Record<string, unknown>,
+  eventPlacements: Array<Record<string, unknown>>,
+  eventIds: Set<string>,
+): boolean {
+  if (!isRestoreRecord(value) || value.directive !== 'wodime_olympus_expansion' ||
+      typeof value.controllerId !== 'string' || !playerIds.has(value.controllerId) ||
+      typeof value.sourceCardId !== 'string' || !cardsByInstance.has(value.sourceCardId) ||
+      typeof value.abilityId !== 'string' || value.abilityId !== 'wodime.crypter.olympus' ||
+      !restoreSourceControllerMatches(cardsByInstance, eventPlacements, value.sourceCardId, value.controllerId) ||
+      !restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, value.sourceCardId, value.abilityId) ||
+      typeof value.consumed !== 'boolean' || !isRestoreStringArray(value.drawnEventCardIds) ||
+      value.drawnEventCardIds.length !== 2 || !value.drawnEventCardIds.every((id) => eventIds.has(id)) ||
+      !isRestoreStringArray(value.replacementEventCardIds) ||
+      value.replacementEventCardIds.length !== wodimeOlympusEventIds.length ||
+      value.replacementEventCardIds.some((id, index) => id !== wodimeOlympusEventIds[index]) ||
+      !isRestoreSafeInteger(value.eventOutsideGameCount, 0)) return false;
+  const drawnEventCardIds = value.drawnEventCardIds as string[];
+  const outside = state.eventOutsideGame;
+  if (!isRestoreStringArray(outside) || value.eventOutsideGameCount !== outside.length) return false;
+  const olympusCount = (id: string) => outside.filter((candidate) => candidate === id).length;
+  if (value.consumed !== true) {
+    return wodimeOlympusEventIds.every((id) => olympusCount(id) === 2) &&
+      value.replacementEventCardId === undefined && value.replacementSlot === undefined &&
+      value.replacedEventCardId === undefined && value.resolvedEventCardIds === undefined;
+  }
+  const resolvedEventCardIds = value.resolvedEventCardIds as string[];
+  if (!isRestoreStringArray(value.resolvedEventCardIds) || value.resolvedEventCardIds.length !== 2 ||
+      !value.resolvedEventCardIds.every((id) => eventIds.has(id))) return false;
+  const replacement = value.replacementEventCardId;
+  const slot = value.replacementSlot;
+  if (replacement === undefined) {
+    return wodimeOlympusEventIds.every((id) => olympusCount(id) === 2) &&
+      slot === undefined && value.replacedEventCardId === undefined &&
+      resolvedEventCardIds.every((id, index) => id === drawnEventCardIds[index]);
+  }
+  return (wodimeOlympusEventIds as readonly string[]).includes(replacement as string) &&
+    isRestoreSafeInteger(slot, 0) && (slot as number) < 2 &&
+    typeof value.replacedEventCardId === 'string' && eventIds.has(value.replacedEventCardId) &&
+    outside.includes(value.replacedEventCardId) && olympusCount(replacement as string) === 1 &&
+    resolvedEventCardIds[slot as number] === replacement &&
+    resolvedEventCardIds[(slot as number) ^ 1] === drawnEventCardIds[(slot as number) ^ 1];
+}
+
 function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKind = 'production_executable'): value is GameState {
   if (!isRestoreRecord(value) || typeof value.id !== 'string' || !Array.isArray(value.players) || value.players.length < 1 ||
       !value.players.every(isRestorePlayerState) || !isRestoreRecord(value.round) || !isRestoreMapDefinition(value.map) ||
@@ -2280,6 +2328,15 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
   if (value.currentSituationModifiers !== undefined && (!Array.isArray(value.currentSituationModifiers) || !value.currentSituationModifiers.every(isRestoreRecord))) return false;
   if (!value.eventPlacements.every((entry) => isRestoreEventPlacement(entry, locationIds, playerIds, eventIds))) return false;
   const cardsByInstance = new Map(cards.map((card) => [card.instanceId as string, card] as const));
+  const modeState = value.modeState;
+  if (modeState !== undefined && !isRestoreRecord(modeState)) return false;
+  if (isRestoreRecord(modeState) && modeState.masterDirectives !== undefined) {
+    if (!Array.isArray(modeState.masterDirectives)) return false;
+    if (!(modeState.masterDirectives as unknown[]).every((entry) =>
+      !isRestoreRecord(entry) || entry.directive !== 'wodime_olympus_expansion' ||
+      isRestoreWodimeOlympusExpansionDirective(entry, value, playerIds, cardsByInstance, pack,
+        value.eventPlacements as Array<Record<string, unknown>>, eventIds))) return false;
+  }
   const servantRootByPlayer = new Map(players.map((player) => [player.id as string, player.servantCardId as string] as const));
   const restoredEventPlacements = value.eventPlacements as Array<Record<string, unknown>>;
   if (!isRestoreAbilityRuntimeReferences(abilityRuntime, playerIds, locationIds, cardsByInstance, pack, servantRootByPlayer, restoredEventPlacements, round.roundNumber as number)) return false;
@@ -2592,6 +2649,11 @@ const eventCards = (contentLibrary as { cards?: RuntimeEventCard[] }).cards ?? [
 const eventCardById = new Map(eventCards.filter((card) => card.id.startsWith('event.')).map((card) => [card.id, card] as const));
 const eventDeckTemplate = ((contentLibrary as { eventSets?: Array<{ id: string; cardIds: string[] }> }).eventSets ?? [])
   .find((set) => set.id === 'event-set.waxing_moon_ritual')?.cardIds ?? [];
+const wodimeOlympusEventIds = [
+  'event.wodime.olympus.zeus',
+  'event.wodime.olympus.aphrodite',
+  'event.wodime.olympus.demeter',
+] as const;
 
 function nextRandom(seed: number): () => number {
   let state = seed >>> 0 || 1;
@@ -2749,6 +2811,48 @@ function classifyDirective(entry: Record<string, unknown>, consumed: boolean): M
     label: directive,
     payload: entry,
   };
+}
+
+interface WodimeOlympusExpansionChoice {
+  replacementEventCardId?: string;
+  replacementSlot?: number;
+}
+
+function applyWodimeOlympusExpansionDirective(
+  state: GameState,
+  directive: Record<string, unknown>,
+  choice: WodimeOlympusExpansionChoice = {},
+  shuffleSeed = 0,
+): boolean {
+  const drawn = directive.drawnEventCardIds;
+  if (!Array.isArray(drawn) || drawn.length !== 2 || !drawn.every((id) => typeof id === 'string' && eventCardById.has(id))) return false;
+  const outside = state.eventOutsideGame;
+  if (!Array.isArray(outside)) return false;
+  const replacement = choice.replacementEventCardId;
+  const slot = choice.replacementSlot;
+  if (replacement !== undefined) {
+    if (!(wodimeOlympusEventIds as readonly string[]).includes(replacement) || !Number.isInteger(slot) || slot! < 0 || slot! > 1) return false;
+    const outsideIndex = outside.indexOf(replacement);
+    if (outsideIndex < 0) return false;
+    outside.splice(outsideIndex, 1);
+  } else if (slot !== undefined) {
+    return false;
+  }
+  const finalCards = [...drawn] as string[];
+  const replacedEventCardId = replacement === undefined ? undefined : finalCards[slot!];
+  if (replacement !== undefined) {
+    // The selected revealed card is not silently destroyed: it is now outside
+    // the deck while the face-up Olympus card takes its slot.
+    outside.push(replacedEventCardId!);
+    finalCards[slot!] = replacement;
+  }
+  state.eventDeck = shuffle([...(state.eventDeck ?? []), ...finalCards], shuffleSeed ^ state.round.roundNumber ^ finalCards.length);
+  directive.replacementEventCardId = replacement;
+  directive.replacementSlot = slot;
+  directive.replacedEventCardId = replacedEventCardId;
+  directive.resolvedEventCardIds = finalCards;
+  directive.eventOutsideGameCount = outside.length;
+  return true;
 }
 
 function zone(state: GameState, id: string, label: string, predicate: (card: GameState['cards'][number]) => boolean, status: MatchZoneProjection['status'] = 'enabled'): MatchZoneProjection {
@@ -3589,7 +3693,7 @@ export class MatchSession {
     };
   }
 
-  consumeDirective(id: string): boolean {
+  consumeDirective(id: string, choice: WodimeOlympusExpansionChoice = {}): boolean {
     if (id.startsWith('host:')) {
       const index = Number(id.slice('host:'.length)) - 1;
       const hostRequests = this.state.abilityRuntime?.hostRequests;
@@ -3607,6 +3711,8 @@ export class MatchSession {
       return viewId === id || rawId === id;
     });
     if (!directive) return false;
+    if (directive.directive === 'wodime_olympus_expansion' &&
+        !applyWodimeOlympusExpansionDirective(this.state, directive, choice, this.seed)) return false;
     directive.consumed = true;
     this.record('directive_consumed', id, directive);
     this.checkpoint(`consume ${id}`);
@@ -4302,7 +4408,7 @@ export class MatchSession {
       // queue item; the other legacy audit directives remain display-only.
       const pendingHost = entry.consumed !== true &&
         ((directive === 'event_effect_host_review' && wodimeEventRequiresHostAdjudication(this.state, String(entry.eventCardId ?? ''))) ||
-          directive === 'wodime_olympus_lostbelt');
+          directive === 'wodime_olympus_lostbelt' || directive === 'wodime_olympus_expansion');
       return classifyDirective({ id: `directive:${index + 1}`, ...entry }, pendingHost ? false : true);
     });
     const host = (this.state.abilityRuntime?.hostRequests ?? []).map((entry, index) => ({
