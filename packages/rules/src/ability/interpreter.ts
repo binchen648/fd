@@ -2056,7 +2056,9 @@ export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decisi
     if (isAbigailS3bActionSemantic(ability)) {
       if (!isAbigailS3aSource(s, decision.context.sourceCardId) || !active(s, decision.context.sourceCardId) || phase(s) !== 'action' ||
           s.round.prioritySeat !== player(s, decision.context.controllerId).seat) return false;
-      if (Object.keys(decision.context.selections).length !== 0) return false;
+      const contextKeys = Object.keys(decision.context).sort();
+      if (contextKeys.join(',') !== 'abilityId,controllerId,selections,sourceCardId,variables' ||
+          Object.keys(decision.context.variables).length !== 0 || Object.keys(decision.context.selections).length !== 0) return false;
       const expectedCandidates = abigailS3bTargetCandidates(s, decision.context, ability);
       return decision.min === 0 && decision.max === Math.min(ABIGAIL_S3B_MAX_PLAY_COUNT, expectedCandidates.length) &&
         exactRestoreValue(decision.target, ability.targets[0]) && exactRestoreValue(decision.candidates, expectedCandidates) &&

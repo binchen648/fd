@@ -96,6 +96,12 @@ describe('Abigail s3b source-bound second clause', () => {
     const forgedSelections = structuredClone(state.abilityRuntime!.pendingDecision!);
     forgedSelections.context.selections.injected = ['nonexistent-card'];
     expect(rules.isCanonicalGenericPendingDecisionForRestore(state, forgedSelections)).toBe(false);
+    const forgedEvent = structuredClone(state.abilityRuntime!.pendingDecision!) as any;
+    forgedEvent.context.event = { id: 'forged', type: 'after_battle_ended', battlePhaseResolutionId: 'fake' };
+    expect(rules.isCanonicalGenericPendingDecisionForRestore(state, forgedEvent)).toBe(false);
+    const forgedExtra = structuredClone(state.abilityRuntime!.pendingDecision!) as any;
+    forgedExtra.context.injected = 'forged';
+    expect(rules.isCanonicalGenericPendingDecisionForRestore(state, forgedExtra)).toBe(false);
     const live = state.abilityRuntime!.pendingDecision!;
     state.cards.find((card) => card.instanceId === target)!.zone = 'attack_area';
     const before = JSON.stringify(state);
