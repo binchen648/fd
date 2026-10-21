@@ -4,6 +4,7 @@ import type { PlayerId, SafeEvent } from './types';
 import { clearTransientCardTransformState } from './card-instance-state';
 import { isCardCloseForbidden } from './card-close-forbid';
 import { grantMana } from '../core/rule-overrides';
+import { hasActiveZoukenFounder } from '../core/zouken-founder';
 
 export type EffectExecutionStatus = 'applied' | 'no_op';
 export type BindingFieldType = 'number' | 'player_ids' | 'boolean' | 'status';
@@ -1628,6 +1629,41 @@ function adjustCommandSeals(
   const amount = evaluateIntegerAmount(transaction, effect.amount, 'adjust_command_seals');
   const player = findPlayer(transaction.workingState, transaction.context.controllerId) as PlayerState & { commandSpells?: number };
   const before = Number(player.commandSpells ?? 3);
+  if (hasActiveZoukenFounder(transaction.workingState, transaction.context.controllerId) && amount !== 0) {
+    // The canonical command-spell gain-mana primitive is a mixed [gain 4 mana,
+    // spend one seal] resolution. The founder has no entity seals: retain the
+    // printed mana gain and consume the virtual seal obligation without mutating
+    // the entity. Other seal spends are handled by the interpreter's exact
+    // four-mana replacement path.
+    if (transaction.context.abilityId === 'command-spell.gain-mana' && amount === -1) {
+      const eventId = `${transaction.context.resolutionId}.${effect.id}.zouken_founder_virtual_seal`;
+      transaction.emittedEvents.push({ type: 'zouken_s3_command_seal_replaced', playerId: player.id,
+        sourceCardId: transaction.context.sourceCardId, abilityId: transaction.context.abilityId,
+        resource: 'mana', requestedDelta: -4, delta: 0, before: player.mana, after: player.mana });
+      return {
+        effectId: effect.id, effectType: 'adjust_command_seals', status: 'no_op', affectedEntities: [],
+        payload: { playerId: player.id, requestedAmount: amount, actualAmount: 0, before, after: before }, emittedEventIds: [eventId],
+      };
+    }
+    const replacement = Math.abs(amount) * 4;
+    const manaBefore = player.mana;
+    if (amount < 0) {
+      if (manaBefore < replacement) throw new ResolutionRuntimeError('insufficient_mana', 'Zouken founder command-seal replacement requires four mana per seal.');
+      player.mana -= replacement;
+    } else {
+      grantMana(transaction.workingState, player.id, replacement, { source: 'generic' });
+    }
+    const eventId = `${transaction.context.resolutionId}.${effect.id}.zouken_founder_seal_replaced`;
+    transaction.emittedEvents.push({ type: 'zouken_s3_command_seal_replaced', playerId: player.id,
+      sourceCardId: transaction.context.sourceCardId, abilityId: transaction.context.abilityId,
+      resource: 'mana', requestedDelta: amount < 0 ? -replacement : replacement,
+      delta: player.mana - manaBefore, before: manaBefore, after: player.mana });
+    return {
+      effectId: effect.id, effectType: 'adjust_command_seals', status: 'applied',
+      affectedEntities: [{ kind: 'player', id: player.id }],
+      payload: { playerId: player.id, requestedAmount: amount, actualAmount: 0, before, after: before }, emittedEventIds: [eventId],
+    };
+  }
   const after = before + amount;
   if (!Number.isSafeInteger(before) || !Number.isSafeInteger(after) || after < 0) {
     throw new ResolutionRuntimeError('insufficient_command_seals', 'Command seal adjustment would go below zero.');

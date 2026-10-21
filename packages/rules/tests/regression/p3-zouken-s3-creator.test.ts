@@ -55,7 +55,8 @@ describe('P3 Zouken s3 creator source-specific contract', () => {
     expect(action).toMatchObject({ variableCosts: [{ name: 'X', min: 1, max: 5 }] });
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: CARD_INSTANCE, abilityId: ACTION_ID, variables: { X: 3 } }).ok).toBe(true);
     expect(state.players[0]!.mana).toBe(4);
-    expect(state.ruleOverrides?.zoukenFounderPowerByPlayer?.p1).toEqual({ round: 1, amount: 3 });
+    expect(state.ruleOverrides?.zoukenFounderPowerByPlayer?.p1).toMatchObject({ round: 1, amount: 3, paidMana: 6,
+      manaBefore: 10, manaAfter: 4, sourceCardId: CARD_INSTANCE, abilityId: ACTION_ID, controllerId: 'p1' });
     const snapshot = JSON.stringify(state);
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: CARD_INSTANCE, abilityId: ACTION_ID, variables: { X: 6 } }).ok).toBe(false);
     expect(JSON.stringify(state)).toBe(snapshot);
@@ -94,5 +95,44 @@ describe('P3 Zouken s3 creator source-specific contract', () => {
     expect(state.players[0]!.mana).toBe(1);
     expect((state.players[0] as unknown as { commandSpells: number }).commandSpells).toBe(0);
     expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'zouken_s3_command_seal_replaced', delta: -4 }));
+  });
+
+  it('keeps the standard mixed command-spell gain path source-bound and seal-stable', () => {
+    const { state } = setup();
+    const commandInstance = 'p1-gatou-command-spell';
+    const definitionId = 'master.zouken.command-spell';
+    const commandDefinition = contentLibrary.rules.cards[definitionId]!;
+    expect(commandDefinition).toBeDefined();
+    state.abilityRuntime!.pack.cards[definitionId] = commandDefinition as never;
+    state.cards.push({ instanceId: commandInstance, definitionId, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'field', visibility: { scope: 'public' } });
+    state.abilityRuntime!.cardState[commandInstance] = { active: true, faceDown: false, playedRound: 1 };
+    state.players[0]!.mana = 5;
+    (state.players[0] as unknown as { commandSpells: number }).commandSpells = 3;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: commandInstance, abilityId: 'command-spell.gain-mana' }).ok).toBe(true);
+    expect(state.players[0]!.mana).toBe(9);
+    expect((state.players[0] as unknown as { commandSpells: number }).commandSpells).toBe(3);
+    expect(rules.projectAbilityState(state, 'p1').players[0]!.commandSpells).toBe(0);
+    expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'zouken_s3_command_seal_replaced', requestedDelta: -4 }));
+  });
+
+  it('rejects forged founder power envelopes during MatchSession restore', () => {
+    const session = rules.createMatchSession({ seed: 20261023, humanPlayerId: 'p1' });
+    const pairing = session.pairings.find((entry) => entry.master.id === 'master.zouken');
+    expect(pairing).toBeDefined();
+    const ownerId = pairing!.playerId;
+    const source = session.state.cards.find((candidate) => candidate.definitionId === CARD_ID && candidate.ownerPlayerId === ownerId);
+    expect(source).toBeDefined();
+    source!.zone = 'field';
+    session.state.abilityRuntime!.cardState[source!.instanceId] = { active: true, faceDown: false, playedRound: 1 };
+    const owner = session.state.players.find((candidate) => candidate.id === ownerId)!;
+    session.state.ruleOverrides = { zoukenFounderPowerByPlayer: { [ownerId]: {
+      round: 1, amount: 2, sourceCardId: source!.instanceId, abilityId: ACTION_ID, controllerId: ownerId,
+      paidMana: 4, manaBefore: owner.mana + 4, manaAfter: owner.mana,
+    } } };
+    const snapshot = session.serializeSession();
+    expect(() => rules.restoreMatchSession(snapshot)).not.toThrow();
+    const forged = structuredClone(snapshot);
+    forged.state.ruleOverrides!.zoukenFounderPowerByPlayer![ownerId]!.amount = 99;
+    expect(() => rules.restoreMatchSession(forged)).toThrow();
   });
 });

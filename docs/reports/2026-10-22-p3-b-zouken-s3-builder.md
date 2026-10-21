@@ -31,3 +31,7 @@ All three shapes are source-specific and fail closed through semantic guards; ma
 - `git diff --check`: PASS.
 
 Remaining boundary: s3 is implemented as a strict source-specific contract on this Builder branch and has not been Candidate-reviewed or credited. It must be independently reviewed before any Candidate/A-sync action.
+
+## R1 reviewer repair
+
+R1 extends the same contract across the resolution-dataflow mixed `adjust_mana` + `adjust_command_seals` command-spell path. The canonical `command-spell.gain-mana` mixed primitive leaves entity seals unchanged while preserving the printed four-mana gain; other controller seal deltas use the exact four-mana replacement and fail atomically. Founder power now stores source card, ability, controller, paid mana, and before/after mana in the override. Restore requires those fields, the payment equation, current-round binding, an active canonical s3 source, and the exact conversion ability; malformed or forged envelopes are rejected before combat projection.

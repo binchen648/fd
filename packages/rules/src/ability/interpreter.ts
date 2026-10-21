@@ -1059,7 +1059,8 @@ function executeZoukenS3Action(s: GameState, ctx: EffectContext, a: AuthoringAbi
   s.ruleOverrides ??= {};
   s.ruleOverrides.zoukenFounderPowerByPlayer = {
     ...(s.ruleOverrides.zoukenFounderPowerByPlayer ?? {}),
-    [ctx.controllerId]: { round: s.round.roundNumber, amount: x },
+    [ctx.controllerId]: { round: s.round.roundNumber, amount: x, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+      controllerId: ctx.controllerId, paidMana: x * 2, manaBefore: before, manaAfter: controller.mana },
   };
   runtime(s).usedAbilities[`${ctx.sourceCardId}:${a.id}`] = s.round.roundNumber;
   runtime(s).events.push({ type: 'zouken_s3_power_conversion', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,

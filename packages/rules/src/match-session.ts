@@ -839,7 +839,13 @@ function isRestoreRuleOverrides(value: unknown, playerIds: Set<string>, location
   if (value.zoukenFounderPowerByPlayer !== undefined && (!isRestoreRecord(value.zoukenFounderPowerByPlayer) ||
       !restoreRecordKeysBelongTo(value.zoukenFounderPowerByPlayer, playerIds) ||
       !Object.values(value.zoukenFounderPowerByPlayer).every((entry) => isRestoreRecord(entry) &&
-        isRestoreSafeInteger(entry.round, 1) && isRestoreFiniteNumber(entry.amount)))) return false;
+        isRestoreSafeInteger(entry.round, 1) && isRestoreSafeInteger(entry.amount, 1) &&
+        typeof entry.sourceCardId === 'string' && typeof entry.abilityId === 'string' &&
+        typeof entry.controllerId === 'string' && playerIds.has(entry.controllerId) &&
+        isRestoreSafeInteger(entry.paidMana, 2) && isRestoreFiniteNumber(entry.manaBefore) &&
+        isRestoreFiniteNumber(entry.manaAfter) && entry.paidMana === entry.amount * 2 &&
+        entry.manaBefore - entry.manaAfter === entry.paidMana && entry.manaAfter >= 0 &&
+        entry.amount <= Math.floor(entry.manaBefore / 2)))) return false;
   return true;
 }
 
@@ -1075,8 +1081,22 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
   if (value.contentRuntime !== undefined && !isRestoreContentRuntime(value.contentRuntime, locationIds, eventIds)) return false;
   if (value.scoringBreakdown !== undefined && !isRestoreScoringBreakdown(value.scoringBreakdown, playerIds)) return false;
   if (value.ruleOverrides !== undefined && !isRestoreRuleOverrides(value.ruleOverrides, playerIds, locationIds)) return false;
-  if (!value.effectStack.every((entry) => isRestoreEffectStackItem(entry, playerIds))) return false;
   const restoredState = value as unknown as GameState;
+  const founderPower = restoredState.ruleOverrides?.zoukenFounderPowerByPlayer;
+  if (founderPower !== undefined) {
+    const roundNumber = restoredState.round.roundNumber;
+    for (const [playerId, entry] of Object.entries(founderPower)) {
+      const source = cardsByInstance.get(entry.sourceCardId);
+      const sourceDefinition = source && definitions[source.definitionId as string];
+      const sourceState = isRestoreRecord(abilityRuntime.cardState) ? abilityRuntime.cardState[entry.sourceCardId] : undefined;
+      if (!source || source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId ||
+          !['field', 'attack_area'].includes(source.zone as string) || !isRestoreRecord(sourceDefinition) ||
+          sourceDefinition.id !== 'master.zouken.skill.s3' || entry.controllerId !== playerId ||
+          entry.abilityId !== 'zouken.founder.power-conversion' || entry.round !== roundNumber ||
+          !isRestoreRecord(sourceState) || sourceState.active !== true || sourceState.faceDown === true) return false;
+    }
+  }
+  if (!value.effectStack.every((entry) => isRestoreEffectStackItem(entry, playerIds))) return false;
   if (!isDeferredAbilityRuntimeProvenanceValidForRestore(restoredState)) return false;
   if (restoredState.abilityRuntime?.pendingDecision &&
       !isCanonicalGenericPendingDecisionForRestore(restoredState, restoredState.abilityRuntime.pendingDecision)) return false;
