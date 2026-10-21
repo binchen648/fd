@@ -827,10 +827,16 @@ export interface AbilityRuntime {
     locationId: string; eventCardId: string; sourceCardId: string; controllerId: PlayerId;
     grantedTokens: number; activatedRound: number; triggerEventId: string;
   }>;
+  /** Exact event_activated objects which authenticated each provision trigger. */
+  wodimeGodLegacyEventActivations?: Record<string, {
+    sourceCardId: string; revealedKind: 'event'; revealedId: string; locationId: string;
+  }>;
   /** Idempotent event placements processed by Wodime's Atlantis replacement rule. */
   wodimeAtlantisHandledEventPlacementIds?: Record<string, true>;
   wodimeAtlantisPendingBattlefieldRemovalIds?: Record<string, true>;
   wodimeAtlantisConsumedEventPlacementIds?: Record<string, true>;
+  /** Explicit terminal state when no different event card is available for replacement. */
+  wodimeAtlantisReplacementTerminalIds?: Record<string, true>;
   /** Authenticated provenance for Atlantis handled/consumed placement IDs. */
   wodimeAtlantisPlacementProvenance?: Record<string, {
     eventCardId: string; locationId: string; sourceCardId: string; controllerId: PlayerId;

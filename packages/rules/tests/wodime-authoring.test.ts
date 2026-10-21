@@ -88,6 +88,7 @@ describe('Wodime frozen authoring archive', () => {
     installMasterSupportOwnerCards(state, loaded as any, { ownerId: 'master.wodime', playerId: 'p1' });
     const battlefield = { locationId: 'shinto' as const, eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-atlantis-battle-1', visibility: { scope: 'public' as const }, victoryPoints: 0 };
     state.eventPlacements = [battlefield];
+    state.eventDeck = ['event.wodime.atlantis.zeus'];
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-reveal', { type: 'event_activated', sourceCardId: battlefield.ruleInstanceId, revealedKind: 'event', revealedId: battlefield.eventCardId, locationId: battlefield.locationId });
     expect(state.eventPlacements).toHaveLength(1);
     expect((state.abilityRuntime as any).wodimeGodLegacyByLocation.shinto.tokens).toBe(3);
@@ -99,19 +100,24 @@ describe('Wodime frozen authoring archive', () => {
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-close', { type: 'after_battle_ended', battlefieldId: 'shinto' });
     expect(state.eventPlacements).toHaveLength(1);
     expect(state.eventPlacements[0]!.ruleInstanceId).not.toBe(battlefield.ruleInstanceId);
-    // The replacement is dispatched through the normal event_activated path,
-    // so the replacement Hephaestus placement contributes its own tokens.
-    expect((state.abilityRuntime as any).wodimeGodLegacyByLocation.shinto.tokens).toBe(6);
+    // The replacement is dispatched through the normal event_activated path;
+    // this multi-card draw selects a different event and therefore does not
+    // create another Hephaestus grant.
+    expect((state.abilityRuntime as any).wodimeGodLegacyByLocation.shinto.tokens).toBe(3);
     const secondBattlefield = { locationId: 'shinto' as const, eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-atlantis-battle-2', visibility: { scope: 'public' as const }, victoryPoints: 0 };
     state.eventPlacements.push(secondBattlefield);
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-reveal-second', { type: 'event_activated', sourceCardId: secondBattlefield.ruleInstanceId, revealedKind: 'event', revealedId: secondBattlefield.eventCardId, locationId: secondBattlefield.locationId });
     const pendingBeforeClose = Object.keys((state.abilityRuntime as any).wodimeAtlantisPendingBattlefieldRemovalIds);
     expect(pendingBeforeClose).toContain(secondBattlefield.ruleInstanceId);
+    // Both the replacement already pending from the first close and the new
+    // Hephaestus need a distinct alternate card so neither physical event is
+    // silently exhausted while the other is being drained.
+    state.eventDeck = ['event.wodime.atlantis.zeus', 'event.wodime.atlantis.apollo'];
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-close-second', { type: 'after_battle_ended', battlefieldId: 'shinto' });
     expect(state.eventPlacements.filter((entry) => entry.locationId === 'shinto')).toHaveLength(2);
     expect(new Set(state.eventPlacements.filter((entry) => entry.locationId === 'shinto').map((entry) => entry.ruleInstanceId)).size).toBe(2);
     const nonBattle = { locationId: 'clock_tower' as const, eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-atlantis-nonbattle-1', visibility: { scope: 'public' as const }, victoryPoints: 0 };
-    state.eventPlacements = [nonBattle]; state.eventDeck = ['event.wodime.atlantis.hephaestus'];
+    state.eventPlacements = [nonBattle]; state.eventDeck = ['event.wodime.atlantis.zeus'];
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-reveal-nonbattle', { type: 'event_activated', sourceCardId: nonBattle.ruleInstanceId, revealedKind: 'event', revealedId: nonBattle.eventCardId, locationId: nonBattle.locationId });
     expect(state.eventPlacements).toHaveLength(1);
     expect(state.eventPlacements[0]!.ruleInstanceId).not.toBe(nonBattle.ruleInstanceId);
@@ -122,7 +128,9 @@ describe('Wodime frozen authoring archive', () => {
     const afterElimination = { locationId: 'magic_workshop' as const, eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-atlantis-after-elimination-1', visibility: { scope: 'public' as const }, victoryPoints: 0 };
     state.eventPlacements = [afterElimination];
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-after-elimination-reveal', { type: 'event_activated', sourceCardId: afterElimination.ruleInstanceId, revealedKind: 'event', revealedId: afterElimination.eventCardId, locationId: afterElimination.locationId });
-    expect((state.abilityRuntime as any).wodimeGodLegacyByLocation.magic_workshop.tokens).toBe(27);
+    // Only the physically revealed Hephaestus at this location is
+    // authenticated by this event; historical placements do not get replayed.
+    expect((state.abilityRuntime as any).wodimeGodLegacyByLocation.magic_workshop.tokens).toBe(3);
   });
 
   it('records a recoverable terminal for an unbounded same-card Atlantis replacement chain', () => {
@@ -137,26 +145,29 @@ describe('Wodime frozen authoring archive', () => {
     state.eventPlacements = [placement];
     state.eventDeck = ['event.wodime.atlantis.hephaestus'];
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-repeat', { type: 'event_activated', sourceCardId: placement.ruleInstanceId, revealedKind: 'event', revealedId: placement.eventCardId, locationId: placement.locationId });
+    // A same-card-only deck reaches an explicit, restorable exhaustion
+    // terminal instead of recursively producing pending replacements.
     const pending = (state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents;
-    expect(pending).toHaveLength(1);
-    expect(pending[0]).toMatchObject({ type: 'event_activated', revealedId: placement.eventCardId, locationId: placement.locationId });
-    expect(state.eventPlacements.some((entry) => entry.ruleInstanceId === pending[0].sourceCardId)).toBe(true);
-    expect((state.abilityRuntime as any).wodimeAtlantisHandledEventPlacementIds[pending[0].sourceCardId]).toBeUndefined();
-
-    // Persist the explicit terminal and prove a later authoritative event
-    // resumes it instead of leaving the replacement queue stranded.
+    expect((state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents).toEqual([]);
+    const terminalIds = (state.abilityRuntime as any).wodimeAtlantisReplacementTerminalIds;
+    expect(Object.keys(terminalIds)).toEqual([placement.ruleInstanceId]);
+    expect((state.abilityRuntime as any).wodimeAtlantisConsumedEventPlacementIds[placement.ruleInstanceId]).toBe(true);
+    expect(isWodimeAtlantisRuntimeStateValid(state)).toBe(true);
+    // Persist the terminal and prove a later authoritative event does not
+    // manufacture another replacement after restore.
     const session = createMatchSession({ seed: 902, humanPlayerId: 'p1', restorePackKind: 'trusted_authoring_fixture' });
     session.state = state;
     const resumeSnapshot = session.serializeSession();
     const restored = restoreMatchSession(resumeSnapshot, { restorePackKind: 'trusted_authoring_fixture' });
     expect(isWodimeAtlantisRuntimeStateValid(restored.state)).toBe(true);
-    const pendingId = (restored.state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents[0].id;
+    expect((restored.state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents).toEqual([]);
+    expect((restored.state.abilityRuntime as any).wodimeAtlantisReplacementTerminalIds).toEqual(terminalIds);
     rules.processAbilityEvent(restored.state, {
       id: 'wodime-atlantis-resume-after-restore', type: 'after_controller_enters_location',
       playerId: 'p1', previousLocationId: 'magic_workshop', locationId: 'shinto', movementKind: 'normal',
     } as any);
-    expect(restored.state.abilityRuntime!.processedEvents).toContain(pendingId);
-    expect((restored.state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents[0].id).not.toBe(pendingId);
+    expect((restored.state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents).toEqual([]);
+    expect((restored.state.abilityRuntime as any).wodimeAtlantisReplacementTerminalIds).toEqual(terminalIds);
   });
 
   it('activates God Legacy at the real elimination transition before the first later event reveal', () => {
@@ -192,9 +203,12 @@ describe('Wodime frozen authoring archive', () => {
     installMasterSupportOwnerCards(state, loaded as any, { ownerId: 'master.wodime', playerId: 'p1' });
     const wodime = state.players.find((player) => player.id === 'p1')!;
     wodime.status = 'eliminated';
-    state.eventPlacements.push({ locationId: 'shinto', eventCardId: 'event.wodime.atlantis.hephaestus', victoryPoints: 0, visibility: { scope: 'public' } });
-    state.eventPlacements.push({ locationId: 'shinto', eventCardId: 'event.wodime.atlantis.hephaestus', victoryPoints: 0, visibility: { scope: 'public' } });
-    state.eventPlacements.push({ locationId: 'magic_workshop', eventCardId: 'event.wodime.atlantis.hephaestus', victoryPoints: 0, visibility: { scope: 'public' } });
+    state.eventPlacements.push({ locationId: 'shinto', eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-god-legacy-shinto-1', victoryPoints: 0, visibility: { scope: 'public' } });
+    state.eventPlacements.push({ locationId: 'shinto', eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-god-legacy-shinto-2', victoryPoints: 0, visibility: { scope: 'public' } });
+    state.eventPlacements.push({ locationId: 'magic_workshop', eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-god-legacy-workshop-1', victoryPoints: 0, visibility: { scope: 'public' } });
+    for (const placement of state.eventPlacements.slice(-3)) {
+      rules.processAbilityEvent(state, { id: `wodime-god-legacy-reveal-${placement.ruleInstanceId}`, type: 'event_activated', sourceCardId: placement.ruleInstanceId!, revealedKind: 'event', revealedId: placement.eventCardId, locationId: placement.locationId });
+    }
     rules.processAbilityEvent(state, { id: 'wodime-god-legacy-win', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1', battleId: 'battle-legacy', resultId: 'result-legacy', battlefieldId: 'shinto', battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p2'], loserIds: ['p1'] } });
     expect((state.abilityRuntime as any).wodimeGodLegacyByLocation.shinto.tokens).toBe(0);
     expect((state.abilityRuntime as any).wodimeGodLegacyByLocation.magic_workshop.tokens).toBe(3);
@@ -211,7 +225,8 @@ describe('Wodime frozen authoring archive', () => {
     expect(isWodimeGodLegacyRuntimeStateValid(state)).toBe(true);
     // A later Hephaestus placement is a new physical source and must add once;
     // replaying the same event must not double-count it.
-    state.eventPlacements.push({ locationId: 'magic_workshop', eventCardId: 'event.wodime.atlantis.hephaestus', victoryPoints: 0, visibility: { scope: 'public' } });
+    state.eventPlacements.push({ locationId: 'magic_workshop', eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-god-legacy-refresh-placement', victoryPoints: 0, visibility: { scope: 'public' } });
+    rules.processAbilityEvent(state, { id: 'wodime-god-legacy-refresh-reveal', type: 'event_activated', sourceCardId: 'wodime-god-legacy-refresh-placement', revealedKind: 'event', revealedId: 'event.wodime.atlantis.hephaestus', locationId: 'magic_workshop' });
     rules.processAbilityEvent(state, { id: 'wodime-god-legacy-refresh', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:2', battleId: 'battle-legacy-2', resultId: 'result-legacy-2', battlefieldId: 'magic_workshop', battleParticipantIds: ['p2'], battleResult: { winners: ['p2'], loserIds: [] } });
     rules.processAbilityEvent(state, { id: 'wodime-god-legacy-refresh-replay', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:2', battleId: 'battle-legacy-2', resultId: 'result-legacy-2', battlefieldId: 'magic_workshop', battleParticipantIds: ['p2'], battleResult: { winners: ['p2'], loserIds: [] } });
     expect((state.abilityRuntime as any).wodimeGodLegacyByPlayer.p2).toBe(12);
@@ -226,7 +241,8 @@ describe('Wodime frozen authoring archive', () => {
     expect(rules.dispatchAbilityCommand(state, 'p2', { type: 'wodime_god_legacy_action', mode: 'mana', amount: 1 }).ok).toBe(true);
     expect(state.players.find((player) => player.id === 'p2')!.mana).toBe(11);
     state.abilityRuntime!.manaGainBlocked = state.abilityRuntime!.manaGainBlocked.filter((id) => id !== 'p2');
-    state.eventPlacements.push({ locationId: 'shinto', eventCardId: 'event.wodime.atlantis.hephaestus', victoryPoints: 0, visibility: { scope: 'public' } });
+    state.eventPlacements.push({ locationId: 'shinto', eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-god-legacy-refresh-placement-2', victoryPoints: 0, visibility: { scope: 'public' } });
+    rules.processAbilityEvent(state, { id: 'wodime-god-legacy-refresh-reveal-2', type: 'event_activated', sourceCardId: 'wodime-god-legacy-refresh-placement-2', revealedKind: 'event', revealedId: 'event.wodime.atlantis.hephaestus', locationId: 'shinto' });
     rules.processAbilityEvent(state, { id: 'wodime-god-legacy-refresh-2', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:3', battleId: 'battle-legacy-3', resultId: 'result-legacy-3', battlefieldId: 'shinto', battleParticipantIds: ['p2'], battleResult: { winners: ['p2'], loserIds: [] } });
     expect(rules.dispatchAbilityCommand(state, 'p2', { type: 'wodime_god_legacy_action', mode: 'mana', amount: 1 }).ok).toBe(true);
     expect(state.players.find((player) => player.id === 'p2')!.mana).toBe(12);
@@ -263,6 +279,30 @@ describe('Wodime frozen authoring archive', () => {
       expect(isWodimeGodLegacyRuntimeStateValid(forgedPair.state)).toBe(false);
       expect(() => restoreMatchSession(forgedPair, { restorePackKind: 'production_executable' })).toThrow();
     }
+
+    // A processed marker, provenance, lineage, and matching audit are still
+    // insufficient when the trigger is not a real authenticated activation.
+    // This models the complete four-part forgery with no event object and no
+    // physical placement behind it.
+    const forgedWithoutEvent = JSON.parse(JSON.stringify(serialized));
+    const forgedRuntime = forgedWithoutEvent.state.abilityRuntime;
+    const realPlacementId = Object.keys(forgedRuntime.wodimeGodLegacyPlacementProvenance)[0];
+    const forgedPlacementId = 'forged-without-real-event';
+    const forgedRecord = { ...forgedRuntime.wodimeGodLegacyPlacementProvenance[realPlacementId], triggerEventId: 'forged-event-without-object' };
+    const forgedAudit = forgedRuntime.events.find((event: any) =>
+      event.type === 'wodime_god_legacy_placement_provisioned' && event.wodimePlacementId === realPlacementId);
+    forgedRuntime.wodimeGodLegacyProcessedPlacementIds = { [forgedPlacementId]: true };
+    forgedRuntime.wodimeGodLegacyPlacementProvenance = { [forgedPlacementId]: forgedRecord };
+    forgedRuntime.wodimeGodLegacyPlacementLineage = { [forgedPlacementId]: { ...forgedRecord } };
+    forgedRuntime.wodimeGodLegacyEventActivations = {};
+    forgedRuntime.wodimeGodLegacyByLocation = {};
+    forgedRuntime.wodimeGodLegacyByPlayer = {};
+    forgedWithoutEvent.state.abilityRuntime.processedEvents = ['forged-event-without-object'];
+    forgedRuntime.events = [
+      { ...forgedAudit, wodimePlacementId: forgedPlacementId, triggerEventId: 'forged-event-without-object' },
+    ];
+    expect(isWodimeGodLegacyRuntimeStateValid(forgedWithoutEvent.state)).toBe(false);
+    expect(() => restoreMatchSession(forgedWithoutEvent, { restorePackKind: 'production_executable' })).toThrow();
   });
 
   it('opens a private two-round game-start decision and provisions the orb', () => {

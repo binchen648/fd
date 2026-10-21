@@ -36,10 +36,28 @@ function replacementPlacement(state: GameState, old: GameState['eventPlacements'
 }
 
 function replaceAtLocation(state: GameState, old: GameState['eventPlacements'][number]): AbilityEvent | undefined {
+  const source = sourceCard(state);
+  if (!source) return undefined;
   state.eventDeck ??= [];
+  const alternateAvailable = state.eventDeck.some((eventCardId) => eventCardId !== old.eventCardId);
+  if (!alternateAvailable) {
+    // A one-card (or same-card-only) deck is an authored exhaustion terminal,
+    // not an invitation to recursively reveal the same physical event forever.
+    if (old.ruleInstanceId) {
+      const terminalIds = runtime(state).wodimeAtlantisReplacementTerminalIds ??= {};
+      terminalIds[old.ruleInstanceId] = true;
+      runtime(state).events.push({ type: 'wodime_atlantis_replacement_terminal',
+        sourceCardId: source.instanceId, abilityId: SOURCE_ABILITY,
+        controllerId: source.controllerId, visibility: 'public',
+        wodimePlacementId: old.ruleInstanceId, wodimePlacementLocationId: old.locationId,
+        wodimePlacementEventCardId: old.eventCardId });
+    }
+    return undefined;
+  }
   state.eventDeck.push(old.eventCardId);
   shuffleInPlace(state.eventDeck, state.round.roundNumber + state.eventPlacements.length + runtime(state).revision);
-  const replacementId = state.eventDeck.shift();
+  const replacementIndex = state.eventDeck.findIndex((eventCardId) => eventCardId !== old.eventCardId);
+  const replacementId = replacementIndex >= 0 ? state.eventDeck.splice(replacementIndex, 1)[0] : undefined;
   if (!replacementId) return undefined;
   const replacement = replacementPlacement(state, old, replacementId);
   state.eventPlacements.push(replacement);
@@ -122,6 +140,19 @@ export function isWodimeAtlantisRuntimeStateValid(state: GameState): boolean {
       return !placement || !isBattlefield(state, placement.locationId) || placement.eventCardId !== provenance[id]?.eventCardId;
     })) return false;
   }
+  const terminalIds = r.wodimeAtlantisReplacementTerminalIds ?? {};
+  const terminalAudits = r.events.filter((event) => event.type === 'wodime_atlantis_replacement_terminal');
+  for (const id of Object.keys(terminalIds)) {
+    const provenanceRecord = provenance[id];
+    if (terminalIds[id] !== true || !provenanceRecord || !r.wodimeAtlantisConsumedEventPlacementIds?.[id] ||
+        state.eventPlacements.some((placement) => placement.ruleInstanceId === id)) return false;
+    const audit = terminalAudits.filter((event) => event.wodimePlacementId === id);
+    if (audit.length !== 1 || audit[0]!.sourceCardId !== source?.instanceId || audit[0]!.abilityId !== SOURCE_ABILITY ||
+        audit[0]!.controllerId !== source?.controllerId || audit[0]!.visibility !== 'public' ||
+        audit[0]!.wodimePlacementLocationId !== provenanceRecord.locationId ||
+        audit[0]!.wodimePlacementEventCardId !== provenanceRecord.eventCardId) return false;
+  }
+  if (terminalAudits.some((event) => typeof event.wodimePlacementId !== 'string' || !terminalIds[event.wodimePlacementId])) return false;
   if (r.wodimeAtlantisPendingReplacementEvents !== undefined) {
     const pendingIds = new Set<string>();
     const pendingPlacementIds = new Set<string>();
