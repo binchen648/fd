@@ -1941,7 +1941,7 @@ export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decisi
     if (isAbigailS3aSemantic(ability)) {
       if (!isAbigailS3aSource(s, decision.context.sourceCardId) || !active(s, decision.context.sourceCardId) || phase(s) !== 'action') return false;
       const expectedCandidates = abigailS3aTargetCandidates(s, decision.context, ability);
-      return decision.min === 1 && decision.max === 1 && decision.target.id === 'outside_life' &&
+      return decision.min === 1 && decision.max === 1 && exactRestoreValue(decision.target, ability.targets[0]) &&
         exactRestoreValue(decision.candidates, expectedCandidates) && expectedCandidates.length > 0 &&
         exactRestoreValue(decision.remainingEffects, ability.effects);
     }

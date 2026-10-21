@@ -77,6 +77,16 @@ describe('Abigail s3a source-bound first clause', () => {
     expect(JSON.stringify(state).replace('"zone":"discard"', '"zone":"hand"')).toBe(before);
     const decision = structuredClone(state.abilityRuntime!.pendingDecision!);
     expect(rules.isCanonicalGenericPendingDecisionForRestore(state, decision)).toBe(false);
+
+    const clean = setup();
+    const cleanSource = add(clean, sourceDefinition, 'skill');
+    const cleanTarget = add(clean, outsideLifeDefinition, 'hand', 'servant.abigail.skill.sc-abigail-1');
+    expect(rules.dispatchAbilityCommand(clean, 'p1', { type: 'play_card', cardInstanceId: cleanSource }).ok).toBe(true);
+    expect(rules.dispatchAbilityCommand(clean, 'p1', { type: 'activate_ability', cardInstanceId: cleanSource, abilityId }).ok).toBe(true);
+    const tampered = structuredClone(clean.abilityRuntime!.pendingDecision!);
+    tampered.target.scope.zone = 'discard';
+    expect(tampered.candidates).toContain(cleanTarget);
+    expect(rules.isCanonicalGenericPendingDecisionForRestore(clean, tampered)).toBe(false);
   });
 
   it('is present in the generated live MatchSession pack/deck', () => {
