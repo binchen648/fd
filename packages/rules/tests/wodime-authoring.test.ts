@@ -128,12 +128,12 @@ describe('Wodime frozen authoring archive', () => {
     const afterElimination = { locationId: 'magic_workshop' as const, eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-atlantis-after-elimination-1', visibility: { scope: 'public' as const }, victoryPoints: 0 };
     state.eventPlacements = [afterElimination];
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-after-elimination-reveal', { type: 'event_activated', sourceCardId: afterElimination.ruleInstanceId, revealedKind: 'event', revealedId: afterElimination.eventCardId, locationId: afterElimination.locationId });
-    // Only the physically revealed Hephaestus at this location is
-    // authenticated by this event; historical placements do not get replayed.
-    expect((state.abilityRuntime as any).wodimeGodLegacyByLocation.magic_workshop.tokens).toBe(3);
+    // Each replacement is a real physical placement/event, so the bounded
+    // same-card chain records every authenticated reveal before pausing.
+    expect((state.abilityRuntime as any).wodimeGodLegacyByLocation.magic_workshop.tokens).toBe(27);
   });
 
-  it('records a recoverable terminal for an unbounded same-card Atlantis replacement chain', () => {
+  it('records and explicitly resumes a bounded same-card Atlantis replacement chain', () => {
     const raw = JSON.parse(readFileSync(archivePath, 'utf8'));
     const loaded = rules.loadAuthoringJson(raw);
     for (const definition of Object.values(loaded.cards)) { definition.ownerId = 'master.wodime'; definition.initialPlacement = 'outside_game'; }
@@ -145,29 +145,35 @@ describe('Wodime frozen authoring archive', () => {
     state.eventPlacements = [placement];
     state.eventDeck = ['event.wodime.atlantis.hephaestus'];
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-repeat', { type: 'event_activated', sourceCardId: placement.ruleInstanceId, revealedKind: 'event', revealedId: placement.eventCardId, locationId: placement.locationId });
-    // A same-card-only deck reaches an explicit, restorable exhaustion
-    // terminal instead of recursively producing pending replacements.
+    // A same-card-only deck still creates a fresh placement and event. The
+    // depth boundary is explicit and restorable rather than a silent no-draw.
     const pending = (state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents;
-    expect((state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents).toEqual([]);
+    expect(pending).toHaveLength(1);
+    expect(pending[0]).toMatchObject({ type: 'event_activated', revealedId: placement.eventCardId, locationId: placement.locationId, wodimeReplacementDepth: 9 });
+    expect(state.eventPlacements.some((entry) => entry.ruleInstanceId === pending[0].sourceCardId)).toBe(true);
     const terminalIds = (state.abilityRuntime as any).wodimeAtlantisReplacementTerminalIds;
-    expect(Object.keys(terminalIds)).toEqual([placement.ruleInstanceId]);
-    expect((state.abilityRuntime as any).wodimeAtlantisConsumedEventPlacementIds[placement.ruleInstanceId]).toBe(true);
+    expect(terminalIds).toEqual({});
     expect(isWodimeAtlantisRuntimeStateValid(state)).toBe(true);
-    // Persist the terminal and prove a later authoritative event does not
-    // manufacture another replacement after restore.
+    // Persist the pending event and prove unrelated events do not consume it.
     const session = createMatchSession({ seed: 902, humanPlayerId: 'p1', restorePackKind: 'trusted_authoring_fixture' });
     session.state = state;
     const resumeSnapshot = session.serializeSession();
     const restored = restoreMatchSession(resumeSnapshot, { restorePackKind: 'trusted_authoring_fixture' });
     expect(isWodimeAtlantisRuntimeStateValid(restored.state)).toBe(true);
-    expect((restored.state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents).toEqual([]);
+    expect((restored.state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents).toEqual(pending);
     expect((restored.state.abilityRuntime as any).wodimeAtlantisReplacementTerminalIds).toEqual(terminalIds);
+    const pendingBeforeUnrelated = structuredClone((restored.state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents);
     rules.processAbilityEvent(restored.state, {
       id: 'wodime-atlantis-resume-after-restore', type: 'after_controller_enters_location',
       playerId: 'p1', previousLocationId: 'magic_workshop', locationId: 'shinto', movementKind: 'normal',
     } as any);
-    expect((restored.state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents).toEqual([]);
+    expect((restored.state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents).toEqual(pendingBeforeUnrelated);
     expect((restored.state.abilityRuntime as any).wodimeAtlantisReplacementTerminalIds).toEqual(terminalIds);
+    // Only explicit submission of the queued event resumes one continuation.
+    const queued = (restored.state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents[0];
+    rules.processAbilityEvent(restored.state, queued);
+    expect((restored.state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents).toHaveLength(1);
+    expect((restored.state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents[0].id).not.toBe(queued.id);
   });
 
   it('activates God Legacy at the real elimination transition before the first later event reveal', () => {
@@ -280,6 +286,16 @@ describe('Wodime frozen authoring archive', () => {
       expect(() => restoreMatchSession(forgedPair, { restorePackKind: 'production_executable' })).toThrow();
     }
 
+    const payloadSwap = JSON.parse(JSON.stringify(serialized));
+    const triggerEventId = payloadSwap.state.abilityRuntime.wodimeGodLegacyPlacementProvenance[placementId!].triggerEventId;
+    const payloadSwapLocation = payloadSwap.state.abilityRuntime.wodimeGodLegacyEventActivations[triggerEventId].locationId === 'recon' ? 'shinto' : 'recon';
+    payloadSwap.state.abilityRuntime.wodimeGodLegacyEventActivations[triggerEventId].locationId = payloadSwapLocation;
+    payloadSwap.state.abilityRuntime.wodimeGodLegacyEventLedger[triggerEventId].locationId = payloadSwapLocation;
+    // Updating both descriptors without the authoritative digest/placement
+    // payload must still fail restore rather than becoming a new trigger.
+    expect(isWodimeGodLegacyRuntimeStateValid(payloadSwap.state)).toBe(false);
+    expect(() => restoreMatchSession(payloadSwap, { restorePackKind: 'production_executable' })).toThrow();
+
     // A processed marker, provenance, lineage, and matching audit are still
     // insufficient when the trigger is not a real authenticated activation.
     // This models the complete four-part forgery with no event object and no
@@ -294,7 +310,13 @@ describe('Wodime frozen authoring archive', () => {
     forgedRuntime.wodimeGodLegacyProcessedPlacementIds = { [forgedPlacementId]: true };
     forgedRuntime.wodimeGodLegacyPlacementProvenance = { [forgedPlacementId]: forgedRecord };
     forgedRuntime.wodimeGodLegacyPlacementLineage = { [forgedPlacementId]: { ...forgedRecord } };
-    forgedRuntime.wodimeGodLegacyEventActivations = {};
+    forgedRuntime.wodimeGodLegacyEventActivations = {
+      'forged-event-without-object': { sourceCardId: forgedPlacementId, revealedKind: 'event', revealedId: forgedRecord.eventCardId, locationId: forgedRecord.locationId },
+    };
+    forgedRuntime.wodimeGodLegacyEventLedger = {
+      'forged-event-without-object': { id: 'forged-event-without-object', type: 'event_activated', sourceCardId: forgedPlacementId,
+        revealedKind: 'event', revealedId: forgedRecord.eventCardId, locationId: forgedRecord.locationId, payloadDigest: '00000000' },
+    };
     forgedRuntime.wodimeGodLegacyByLocation = {};
     forgedRuntime.wodimeGodLegacyByPlayer = {};
     forgedWithoutEvent.state.abilityRuntime.processedEvents = ['forged-event-without-object'];

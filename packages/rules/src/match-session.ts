@@ -1435,6 +1435,12 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
         hasExactRestoreKeys(entry, ['sourceCardId','revealedKind','revealedId','locationId']) &&
         typeof entry.sourceCardId === 'string' && entry.revealedKind === 'event' &&
         entry.revealedId === 'event.wodime.atlantis.hephaestus' && typeof entry.locationId === 'string'))) return false;
+  if (value.wodimeGodLegacyEventLedger !== undefined && (!isRestoreRecord(value.wodimeGodLegacyEventLedger) ||
+      !Object.values(value.wodimeGodLegacyEventLedger).every((entry) => isRestoreRecord(entry) &&
+        hasExactRestoreKeys(entry, ['id','type','sourceCardId','revealedKind','revealedId','locationId','payloadDigest']) &&
+        typeof entry.id === 'string' && entry.type === 'event_activated' && typeof entry.sourceCardId === 'string' &&
+        entry.revealedKind === 'event' && entry.revealedId === 'event.wodime.atlantis.hephaestus' &&
+        typeof entry.locationId === 'string' && typeof entry.payloadDigest === 'string' && /^[0-9a-f]{8}$/.test(entry.payloadDigest)))) return false;
   for (const key of ['wodimeAtlantisHandledEventPlacementIds', 'wodimeAtlantisPendingBattlefieldRemovalIds', 'wodimeAtlantisConsumedEventPlacementIds'] as const) {
     const record = value[key];
     if (record !== undefined && (!isRestoreRecord(record) || Object.values(record).some((entry) => entry !== true))) return false;

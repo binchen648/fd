@@ -8,6 +8,16 @@ const SOURCE_DEFINITION = 'master.wodime.skill.s3';
 const SOURCE_ABILITY = 'wodime.god-legacy';
 const ATLANTIS_EVENT = 'event.wodime.atlantis.hephaestus';
 
+function eventPayloadDigest(eventId: string, sourceCardId: string, revealedKind: 'event', revealedId: string, locationId: string): string {
+  const payload = `${eventId}\u0000event_activated\u0000${sourceCardId}\u0000${revealedKind}\u0000${revealedId}\u0000${locationId}`;
+  let hash = 2166136261;
+  for (let index = 0; index < payload.length; index += 1) {
+    hash ^= payload.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0).toString(16).padStart(8, '0');
+}
+
 function runtime(state: GameState) { return state.abilityRuntime!; }
 
 function source(state: GameState): { cardId: string; playerId: string } | undefined {
@@ -39,6 +49,7 @@ function ensureActivated(state: GameState, triggerEventId?: string, provisionPla
   r.wodimeGodLegacyPlacementProvenance ??= {};
   r.wodimeGodLegacyPlacementLineage ??= {};
   r.wodimeGodLegacyEventActivations ??= {};
+  r.wodimeGodLegacyEventLedger ??= {};
   if (!r.wodimeGodLegacyActivation) {
     r.wodimeGodLegacyActivation = { sourceCardId: origin.cardId, controllerId: origin.playerId, abilityId: SOURCE_ABILITY, activatedRound: state.round.roundNumber, lifecycle: 'game' };
   }
@@ -133,8 +144,14 @@ export function settleWodimeGodLegacyEvent(state: GameState, event: AbilityEvent
     const placement = state.eventPlacements.find((candidate) => candidate.ruleInstanceId === event.sourceCardId);
     if (!placement || placement.eventCardId !== event.revealedId || placement.locationId !== event.locationId) return;
     r.wodimeGodLegacyEventActivations ??= {};
+    r.wodimeGodLegacyEventLedger ??= {};
     r.wodimeGodLegacyEventActivations[event.id] = {
       sourceCardId: event.sourceCardId, revealedKind: 'event', revealedId: event.revealedId, locationId: event.locationId,
+    };
+    r.wodimeGodLegacyEventLedger[event.id] = {
+      id: event.id, type: 'event_activated', sourceCardId: event.sourceCardId,
+      revealedKind: 'event', revealedId: event.revealedId, locationId: event.locationId,
+      payloadDigest: eventPayloadDigest(event.id, event.sourceCardId, 'event', event.revealedId, event.locationId),
     };
   }
   if (!ensureActivated(state, event.id, true)) return;
@@ -186,10 +203,18 @@ export function isWodimeGodLegacyRuntimeStateValid(state: GameState): boolean {
   const provenance = r.wodimeGodLegacyPlacementProvenance ?? {};
   const lineage = r.wodimeGodLegacyPlacementLineage ?? {};
   const eventActivations = r.wodimeGodLegacyEventActivations ?? {};
+  const eventLedger = r.wodimeGodLegacyEventLedger ?? {};
   if (Object.keys(processed).some((id) => !provenance[id] || !lineage[id]) ||
       Object.keys(provenance).some((id) => !processed[id] || !lineage[id]) ||
       Object.keys(lineage).some((id) => !processed[id] || !provenance[id])) return false;
+  if (Object.keys(eventActivations).some((id) => !eventLedger[id]) ||
+      Object.keys(eventLedger).some((id) => !eventActivations[id])) return false;
   for (const [eventId, event] of Object.entries(eventActivations)) {
+    const ledger = eventLedger[eventId];
+    if (!ledger || ledger.id !== eventId || ledger.type !== 'event_activated' ||
+        ledger.sourceCardId !== event.sourceCardId || ledger.revealedKind !== event.revealedKind ||
+        ledger.revealedId !== event.revealedId || ledger.locationId !== event.locationId ||
+        ledger.payloadDigest !== eventPayloadDigest(eventId, event.sourceCardId, event.revealedKind, event.revealedId, event.locationId)) return false;
     if (!r.processedEvents.includes(eventId) || event.revealedKind !== 'event' ||
         event.revealedId !== ATLANTIS_EVENT || !event.locationId ||
         !state.map.locations.some((location) => location.id === event.locationId)) return false;
@@ -214,7 +239,7 @@ export function isWodimeGodLegacyRuntimeStateValid(state: GameState): boolean {
     provisionIds.add(id);
   }
   if (provisionIds.size !== Object.keys(provenance).length ||
-      Object.entries(provenance).some(([id, record]) => !isAuthenticatedPlacementRecord(state, id, record, activation, provisionEvents, lineage[id]!, eventActivations))) return false;
+      Object.entries(provenance).some(([id, record]) => !isAuthenticatedPlacementRecord(state, id, record, activation, provisionEvents, lineage[id]!, eventActivations, eventLedger))) return false;
   const grantedByLocation: Record<string, number> = {};
   for (const record of Object.values(provenance)) grantedByLocation[record.locationId] = (grantedByLocation[record.locationId] ?? 0) + record.grantedTokens;
   return Object.entries(r.wodimeGodLegacyByLocation).every(([id, entry]) => id === entry.locationId && locations.has(id) &&
@@ -235,6 +260,7 @@ function isAuthenticatedPlacementRecord(
   provisionEvents: Array<NonNullable<GameState['abilityRuntime']>['events'][number]>,
   lineage: NonNullable<NonNullable<GameState['abilityRuntime']>['wodimeGodLegacyPlacementLineage']>[string],
   eventActivations: NonNullable<NonNullable<GameState['abilityRuntime']>['wodimeGodLegacyEventActivations']>,
+  eventLedger: NonNullable<NonNullable<GameState['abilityRuntime']>['wodimeGodLegacyEventLedger']>,
 ): boolean {
   if (!placementId || record.eventCardId !== ATLANTIS_EVENT || record.sourceCardId !== activation.sourceCardId ||
       record.controllerId !== activation.controllerId || record.grantedTokens !== 3 || !Number.isSafeInteger(record.activatedRound) ||
@@ -244,6 +270,11 @@ function isAuthenticatedPlacementRecord(
   const activationEvent = eventActivations[record.triggerEventId];
   if (!activationEvent || activationEvent.sourceCardId !== placementId || activationEvent.revealedKind !== 'event' ||
       activationEvent.revealedId !== record.eventCardId || activationEvent.locationId !== record.locationId) return false;
+  const ledger = eventLedger[record.triggerEventId];
+  if (!ledger || ledger.id !== record.triggerEventId || ledger.type !== 'event_activated' ||
+      ledger.sourceCardId !== activationEvent.sourceCardId || ledger.revealedKind !== activationEvent.revealedKind ||
+      ledger.revealedId !== activationEvent.revealedId || ledger.locationId !== activationEvent.locationId ||
+      ledger.payloadDigest !== eventPayloadDigest(ledger.id, ledger.sourceCardId, ledger.revealedKind, ledger.revealedId, ledger.locationId)) return false;
   const audit = provisionEvents.find((event) => event.wodimePlacementId === placementId);
   if (!audit || audit.sourceCardId !== activation.sourceCardId || audit.abilityId !== SOURCE_ABILITY ||
       audit.controllerId !== activation.controllerId || audit.visibility !== 'public' ||

@@ -39,26 +39,17 @@ function replaceAtLocation(state: GameState, old: GameState['eventPlacements'][n
   const source = sourceCard(state);
   if (!source) return undefined;
   state.eventDeck ??= [];
-  const alternateAvailable = state.eventDeck.some((eventCardId) => eventCardId !== old.eventCardId);
-  if (!alternateAvailable) {
-    // A one-card (or same-card-only) deck is an authored exhaustion terminal,
-    // not an invitation to recursively reveal the same physical event forever.
-    if (old.ruleInstanceId) {
-      const terminalIds = runtime(state).wodimeAtlantisReplacementTerminalIds ??= {};
-      terminalIds[old.ruleInstanceId] = true;
-      runtime(state).events.push({ type: 'wodime_atlantis_replacement_terminal',
-        sourceCardId: source.instanceId, abilityId: SOURCE_ABILITY,
-        controllerId: source.controllerId, visibility: 'public',
-        wodimePlacementId: old.ruleInstanceId, wodimePlacementLocationId: old.locationId,
-        wodimePlacementEventCardId: old.eventCardId });
-    }
-    return undefined;
-  }
-  state.eventDeck.push(old.eventCardId);
+  // Return the consumed physical card to the deck only after drawing. This
+  // prevents an immediate redraw of the same physical card while preserving
+  // normal shuffled draws for every other card. If it is the only card, the
+  // new placement still receives a fresh physical ruleInstanceId and a real
+  // event_activated dispatch; the bounded pending queue is the explicit
+  // continuation boundary rather than a silent terminal.
+  const sameCardIndex = state.eventDeck.indexOf(old.eventCardId);
+  if (sameCardIndex >= 0) state.eventDeck.splice(sameCardIndex, 1);
   shuffleInPlace(state.eventDeck, state.round.roundNumber + state.eventPlacements.length + runtime(state).revision);
-  const replacementIndex = state.eventDeck.findIndex((eventCardId) => eventCardId !== old.eventCardId);
-  const replacementId = replacementIndex >= 0 ? state.eventDeck.splice(replacementIndex, 1)[0] : undefined;
-  if (!replacementId) return undefined;
+  const replacementId = state.eventDeck.shift() ?? old.eventCardId;
+  state.eventDeck.push(old.eventCardId);
   const replacement = replacementPlacement(state, old, replacementId);
   state.eventPlacements.push(replacement);
   const sourceCardId = replacement.ruleInstanceId;

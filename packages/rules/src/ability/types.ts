@@ -831,6 +831,11 @@ export interface AbilityRuntime {
   wodimeGodLegacyEventActivations?: Record<string, {
     sourceCardId: string; revealedKind: 'event'; revealedId: string; locationId: string;
   }>;
+  /** Full immutable payload ledger for every authenticated event_activated trigger. */
+  wodimeGodLegacyEventLedger?: Record<string, {
+    id: string; type: 'event_activated'; sourceCardId: string; revealedKind: 'event'; revealedId: string; locationId: string;
+    payloadDigest: string;
+  }>;
   /** Idempotent event placements processed by Wodime's Atlantis replacement rule. */
   wodimeAtlantisHandledEventPlacementIds?: Record<string, true>;
   wodimeAtlantisPendingBattlefieldRemovalIds?: Record<string, true>;
