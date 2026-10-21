@@ -497,6 +497,13 @@ function isRestoreAbigailS4RecycleProvenance(value: unknown): boolean {
     typeof value.battlePhaseResolutionId === 'string' && typeof value.triggerEventId === 'string';
 }
 
+function isRestoreAbigailS4EventProvenance(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.eventId === 'string' &&
+    (value.type === 'on_use_declared' || value.type === 'on_card_played') &&
+    typeof value.sourceCardId === 'string' && typeof value.controllerId === 'string' &&
+    typeof value.abilityId === 'string';
+}
+
 function isRestoreAbigailS4PlayProvenanceMap(value: unknown): boolean {
   if (!isRestoreRecord(value)) return false;
   const entries = Object.entries(value);
@@ -515,6 +522,15 @@ function isRestoreAbigailS4RecycleProvenanceMap(value: unknown): boolean {
   const proofs = entries.map(([, proof]) => proof as Record<string, unknown>);
   return new Set(proofs.map((proof) => proof.playEventId)).size === proofs.length &&
     new Set(proofs.map((proof) => proof.releaseEventId)).size === proofs.length;
+}
+
+function isRestoreAbigailS4EventProvenanceMap(value: unknown): boolean {
+  if (!isRestoreRecord(value)) return false;
+  const entries = Object.entries(value);
+  if (!entries.every(([eventId, proof]) => isRestoreAbigailS4EventProvenance(proof) &&
+      (proof as Record<string, unknown>).eventId === eventId)) return false;
+  const proofs = entries.map(([, proof]) => proof as Record<string, unknown>);
+  return new Set(proofs.map((proof) => `${proof.sourceCardId}:${proof.type}`)).size === proofs.length;
 }
 
 function isRestoreAbigailS1DistributionProvenance(events: unknown[], controllerId: string, sourceCardId: string,
@@ -755,6 +771,7 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       (value.zoukenS4RoundSettledBySource !== undefined && !isRestoreNonNegativeIntegerMap(value.zoukenS4RoundSettledBySource)) ||
       (value.zoukenS4BattleSettledBySource !== undefined && !isRestoreStringArrayMap(value.zoukenS4BattleSettledBySource)) ||
       (value.abigailS4PlayProvenance !== undefined && !isRestoreAbigailS4PlayProvenanceMap(value.abigailS4PlayProvenance)) ||
+      (value.abigailS4EventProvenance !== undefined && !isRestoreAbigailS4EventProvenanceMap(value.abigailS4EventProvenance)) ||
       (value.abigailS4RecycleProvenance !== undefined && !isRestoreAbigailS4RecycleProvenanceMap(value.abigailS4RecycleProvenance)) ||
       (value.playRulesVersion !== 'legacy-v0' && value.playRulesVersion !== 'explicit-v1') ||
       !isRestoreRoundPlayCounters(value.playCounters)) return false;
@@ -1237,9 +1254,14 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
               isRestoreRecord(recycledState) && recycledState.active === false && Array.isArray(abilityRuntime.events) &&
               (() => {
                 const playProofMap = isRestoreRecord(abilityRuntime.abigailS4PlayProvenance) ? abilityRuntime.abigailS4PlayProvenance : undefined;
+                const eventProofMap = isRestoreRecord(abilityRuntime.abigailS4EventProvenance) ? abilityRuntime.abigailS4EventProvenance : undefined;
                 const recycleProofMap = isRestoreRecord(abilityRuntime.abigailS4RecycleProvenance) ? abilityRuntime.abigailS4RecycleProvenance : undefined;
                 const playProof = playProofMap && isRestoreRecord(playProofMap[item.cardInstanceId]) ? playProofMap[item.cardInstanceId] as Record<string, unknown> : undefined;
                 const recycleProof = recycleProofMap && isRestoreRecord(recycleProofMap[item.cardInstanceId]) ? recycleProofMap[item.cardInstanceId] as Record<string, unknown> : undefined;
+                const onUseEventId = typeof playProof?.onUseEventId === 'string' ? playProof.onUseEventId : undefined;
+                const onCardPlayedEventId = typeof playProof?.onCardPlayedEventId === 'string' ? playProof.onCardPlayedEventId : undefined;
+                const onUseProof = onUseEventId && eventProofMap && isRestoreRecord(eventProofMap[onUseEventId]) ? eventProofMap[onUseEventId] as Record<string, unknown> : undefined;
+                const onCardPlayedProof = onCardPlayedEventId && eventProofMap && isRestoreRecord(eventProofMap[onCardPlayedEventId]) ? eventProofMap[onCardPlayedEventId] as Record<string, unknown> : undefined;
                 const playProofEntries = playProofMap ? Object.entries(playProofMap) : [];
                 const recycleProofEntries = recycleProofMap ? Object.entries(recycleProofMap) : [];
                 const releaseEvents = (abilityRuntime.events as unknown[]).filter((event) => isRestoreRecord(event) &&
@@ -1254,6 +1276,12 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
                   playProofEntries.every(([cardId, proof]) => cardId === item.cardInstanceId ||
                     (isRestoreRecord(proof) && proof.onUseEventId !== playProof.onUseEventId && proof.onCardPlayedEventId !== playProof.onCardPlayedEventId)) &&
                   releaseEvents[0]!.playerId === item.recipientPlayerId &&
+                  !!onUseProof && onUseProof.eventId === playProof.onUseEventId && onUseProof.type === 'on_use_declared' &&
+                  onUseProof.sourceCardId === item.cardInstanceId && onUseProof.controllerId === item.recipientPlayerId &&
+                  onUseProof.abilityId === 'servant.abigail.skill.sc-abigail-4.true-name-release' &&
+                  !!onCardPlayedProof && onCardPlayedProof.eventId === playProof.onCardPlayedEventId && onCardPlayedProof.type === 'on_card_played' &&
+                  onCardPlayedProof.sourceCardId === item.cardInstanceId && onCardPlayedProof.controllerId === item.recipientPlayerId &&
+                  onCardPlayedProof.abilityId === 'servant.abigail.skill.sc-abigail-4.true-name-release' &&
                   releaseEvents[0]!.abilityId === 'servant.abigail.skill.sc-abigail-4.true-name-release' &&
                   releaseEvents[0]!.triggerEventId === playProof.onUseEventId && releaseEvents[0]!.playEventId === playProof.onCardPlayedEventId &&
                   recycleProof.cardInstanceId === item.cardInstanceId && recycleProof.sourceCardId === item.cardInstanceId &&

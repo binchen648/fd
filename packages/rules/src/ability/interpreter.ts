@@ -203,7 +203,7 @@ export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPa
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
     cardState: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
-    abigailS4PlayProvenance: {}, abigailS4RecycleProvenance: {},
+    abigailS4PlayProvenance: {}, abigailS4EventProvenance: {}, abigailS4RecycleProvenance: {},
     events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [], roomMode: options.roomMode ?? 'standard',
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
@@ -1132,6 +1132,9 @@ function isCanonicalAbigailS1RecycledCard(s: GameState, controllerId: string, re
   const recycleProof = runtime(s).abigailS4RecycleProvenance?.[instanceId];
   const playProofEntries = Object.entries(runtime(s).abigailS4PlayProvenance ?? {});
   const recycleProofEntries = Object.entries(runtime(s).abigailS4RecycleProvenance ?? {});
+  const eventProvenance = runtime(s).abigailS4EventProvenance ?? {};
+  const onUseProof = playProof && eventProvenance[playProof.onUseEventId];
+  const onCardPlayedProof = playProof && eventProvenance[playProof.onCardPlayedEventId];
   const releaseEvents = runtime(s).events.filter((event) => event.type === 'abigail_s4_true_name_released' && event.sourceCardId === instanceId);
   const recycleEvents = runtime(s).events.filter((event) => event.type === 'abigail_s4_true_name_card_recycled' && event.sourceCardId === instanceId);
   return !!created && created.ownerPlayerId === controllerId && created.controllerPlayerId === controllerId && created.zone === 'discard' &&
@@ -1142,6 +1145,10 @@ function isCanonicalAbigailS1RecycledCard(s: GameState, controllerId: string, re
     playProofEntries.every(([cardId, proof]) => cardId === instanceId ||
       (proof.onUseEventId !== playProof.onUseEventId && proof.onCardPlayedEventId !== playProof.onCardPlayedEventId)) &&
     runtime(s).processedEvents.includes(playProof.onUseEventId) && runtime(s).processedEvents.includes(playProof.onCardPlayedEventId) &&
+    !!onUseProof && onUseProof.eventId === playProof.onUseEventId && onUseProof.type === 'on_use_declared' &&
+    onUseProof.sourceCardId === instanceId && onUseProof.controllerId === recipientPlayerId && onUseProof.abilityId === ABIGAIL_S4_RELEASE_ID &&
+    !!onCardPlayedProof && onCardPlayedProof.eventId === playProof.onCardPlayedEventId && onCardPlayedProof.type === 'on_card_played' &&
+    onCardPlayedProof.sourceCardId === instanceId && onCardPlayedProof.controllerId === recipientPlayerId && onCardPlayedProof.abilityId === ABIGAIL_S4_RELEASE_ID &&
     releaseEvents.length === 1 && releaseEvents[0]!.playerId === recipientPlayerId &&
     releaseEvents[0]!.abilityId === ABIGAIL_S4_RELEASE_ID && releaseEvents[0]!.triggerEventId === playProof.onUseEventId &&
     releaseEvents[0]!.playEventId === playProof.onCardPlayedEventId &&
@@ -4641,6 +4648,15 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
       runtime(s).abigailS4PlayProvenance![c.cardInstanceId] = {
         cardInstanceId: c.cardInstanceId, sourceCardId: c.cardInstanceId, controllerId: playerId,
         onUseEventId, onCardPlayedEventId, round: s.round.roundNumber,
+      };
+      runtime(s).abigailS4EventProvenance ??= {};
+      runtime(s).abigailS4EventProvenance![onUseEventId] = {
+        eventId: onUseEventId, type: 'on_use_declared', sourceCardId: c.cardInstanceId,
+        controllerId: playerId, abilityId: ABIGAIL_S4_RELEASE_ID,
+      };
+      runtime(s).abigailS4EventProvenance![onCardPlayedEventId] = {
+        eventId: onCardPlayedEventId, type: 'on_card_played', sourceCardId: c.cardInstanceId,
+        controllerId: playerId, abilityId: ABIGAIL_S4_RELEASE_ID,
       };
     }
     processEvent(s, { id: onUseEventId, type: 'on_use_declared', playerId, sourceCardId: c.cardInstanceId, playedCards });

@@ -238,6 +238,11 @@ export interface AbilityRuntime {
     cardInstanceId: string; sourceCardId: string; controllerId: PlayerId;
     onUseEventId: string; onCardPlayedEventId: string; round: number;
   }>;
+  /** Server-owned identity binding for the actual S4 on-use/card-play events. */
+  abigailS4EventProvenance?: Record<string, {
+    eventId: string; type: 'on_use_declared' | 'on_card_played'; sourceCardId: string;
+    controllerId: PlayerId; abilityId: string;
+  }>;
   /** Server-owned provenance for a cleanup transaction that actually recycled an S4 card. */
   abigailS4RecycleProvenance?: Record<string, {
     cardInstanceId: string; sourceCardId: string; controllerId: PlayerId; recipientPlayerId: PlayerId; abilityId: string;

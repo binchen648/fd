@@ -152,7 +152,7 @@ describe('Abigail S1 source-bound X ledger', () => {
     expect(JSON.stringify(state)).toBe(before);
   });
 
-  it('rejects cross-card transplantation of a real S4 play and recycle proof', () => {
+  it('rejects proof substitution after deleting the original S4 provenance key', () => {
     const state = setup();
     expect(play(state, 'abigail-s1').ok).toBe(true);
     const firstAction = rules.getLegalActions(state, 'p1').find((entry) => entry.type === 'activate_ability' && entry.abilityId === S1_ACTION)!;
@@ -171,6 +171,8 @@ describe('Abigail S1 source-bound X ledger', () => {
     const recycleProof = state.abilityRuntime!.abigailS4RecycleProvenance![other]!;
     const release = state.abilityRuntime!.events.find((event) => event.type === 'abigail_s4_true_name_released' && event.sourceCardId === other)!;
     const recycled = state.abilityRuntime!.events.find((event) => event.type === 'abigail_s4_true_name_card_recycled' && event.sourceCardId === other)!;
+    delete state.abilityRuntime!.abigailS4PlayProvenance![other];
+    delete state.abilityRuntime!.abigailS4RecycleProvenance![other];
     state.abilityRuntime!.abigailS4PlayProvenance![distributed.instanceId] = { ...playProof, cardInstanceId: distributed.instanceId, sourceCardId: distributed.instanceId };
     state.abilityRuntime!.abigailS4RecycleProvenance![distributed.instanceId] = { ...recycleProof, cardInstanceId: distributed.instanceId, sourceCardId: distributed.instanceId };
     state.abilityRuntime!.events.push({ ...release, sourceCardId: distributed.instanceId });
@@ -184,8 +186,8 @@ describe('Abigail S1 source-bound X ledger', () => {
     rules.advanceAbilityPhase(state, 'action', 2);
     state.round.prioritySeat = 1;
     const secondAction = rules.getLegalActions(state, 'p1').find((entry) => entry.type === 'activate_ability' && entry.abilityId === S1_ACTION)!;
-    // reviewer transplant has two map entries with the same server event identities
-    expect(state.abilityRuntime!.abigailS4PlayProvenance![other]!.onUseEventId).toBe(state.abilityRuntime!.abigailS4PlayProvenance![distributed.instanceId]!.onUseEventId);
+    // The event map still binds A's IDs to A; B's forged records must not rebind them.
+    expect(state.abilityRuntime!.abigailS4EventProvenance![playProof.onUseEventId]!.sourceCardId).toBe(other);
     expect(state.ruleOverrides?.abigailSanityLossByPlayer?.p1?.distributed.some((entry) => entry.cardInstanceId === distributed.instanceId)).toBe(true);
     const before = JSON.stringify(state);
     expect(rules.dispatchAbilityCommand(state, 'p1', secondAction as any).ok).toBe(false);
