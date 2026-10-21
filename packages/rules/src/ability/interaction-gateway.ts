@@ -14,6 +14,7 @@ function str(value: unknown): string { return typeof value === 'string' ? value 
  * instead of dropping back to legacy PendingDecision handling.
  */
 export function isPrivateOptionalHandPlayInteractionCandidate(ability: AuthoringAbility): boolean {
+  if (ability.id === 'servant.abigail.skill.sc-abigail-3.banish-outside-life') return false;
   if (ability.kind !== 'phase_action' || str(ability.activation.phase) !== 'action' ||
     str(ability.activation.opens) !== 'controller_action_window' || ability.targets.length !== 1) return false;
   const target = ability.targets[0]!;
