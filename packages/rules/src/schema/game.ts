@@ -184,6 +184,11 @@ export interface RuleOverrideState {
     round: number; amount: number; sourceCardId: string; abilityId: string; controllerId: string;
     paidMana: number; manaBefore: number; manaAfter: number;
   }>;
+  /** Source-specific Abigail s4 total-power bonus envelope, keyed by source card. */
+  abigailTrueNamePowerBySource?: Record<string, {
+    sourceCardId: string; abilityId: string; controllerId: string; abigailPlayerId: string;
+    targetPlayerIds: string[]; amount: number;
+  }>;
 }
 
 export interface GameState {

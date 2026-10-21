@@ -37,6 +37,7 @@ function isAcceptedMagicResistanceIndependentModifierLifecycle(rawAbility: RuleN
 const supportedTypes = new Set([
   'controller_alone_at_battlefield', 'claim_and_discard_location_events', 'any_enabled_location',
   'skill_zone_mana_at_least', 'played_with_basic_attack', 'draw_cards', 'play_selected_cards', 'shuffle_abigail_active_outside_life_into_deck', 'base_power_at_most',
+  'abigail_true_name_release', 'abigail_true_name_recycle_to_discard',
   'reveal_information', 'set_zone_visibility', 'look_at_deck_top', 'move_card', 'move_all_remaining',
   'shuffle_zone_into_deck', 'shuffle_deck', 'adjust_mana', 'adjust_victory_points', 'move_player', 'branch',
   'create_card', 'pay_mana', 'move_source_card', 'integer', 'lte', 'gt', 'exists_target', 'played_this_round',

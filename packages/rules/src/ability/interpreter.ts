@@ -806,6 +806,13 @@ const ABIGAIL_S3B_CLEANUP_ID = 'servant.abigail.skill.sc-abigail-3.recycle-activ
 const ABIGAIL_S3B_ACTION_CLAUSE = '行动阶段：将你的弃牌堆中任意数量的【领域外生命】打出，战斗阶段结束后将你所有激活的【领域外生命】洗入牌库。';
 const ABIGAIL_S3B_CLEANUP_CLAUSE = '战斗阶段结束后将你所有激活的【领域外生命】洗入牌库。';
 const ABIGAIL_S3B_MAX_PLAY_COUNT = 12;
+const ABIGAIL_S4_RELEASE_ID = 'servant.abigail.skill.sc-abigail-4.true-name-release';
+const ABIGAIL_S4_CLEANUP_ID = 'servant.abigail.skill.sc-abigail-4.recycle-to-abigail-discard';
+const ABIGAIL_S4_RELEASE_CLAUSE = '【真名解放】';
+const ABIGAIL_S4_CLEANUP_CLAUSE = '战斗阶段结束后，将此牌加入阿比盖尔的弃牌堆。';
+const ABIGAIL_S4_RELEASE_EFFECT_ID = 'abigail-s4-true-name-release';
+const ABIGAIL_S4_CLEANUP_EFFECT_ID = 'abigail-s4-recycle-to-abigail-discard';
+const ABIGAIL_S4_POWER_AMOUNT = 6;
 
 function isAbigailS3aSource(s: GameState, sourceCardId: string): boolean {
   const source = s.cards.find((candidate) => candidate.instanceId === sourceCardId);
@@ -940,6 +947,66 @@ export function isAbigailS3bSemantic(a: AuthoringAbility): boolean {
   return isAbigailS3bActionSemantic(a) || isAbigailS3bCleanupSemantic(a);
 }
 
+function abigailS4PlayerId(s: GameState): string | undefined {
+  const matches = s.players.filter((candidate) => candidate.status === 'active' && candidate.servantCardId === 'servant.abigail');
+  return matches.length === 1 ? matches[0]!.id : undefined;
+}
+
+function isAbigailS4Source(s: GameState, sourceCardId: string): boolean {
+  const source = s.cards.find((candidate) => candidate.instanceId === sourceCardId);
+  const sourceDefinition = source && runtime(s).pack.cards[source.definitionId];
+  const abigailId = abigailS4PlayerId(s);
+  const sourceState = runtime(s).cardState[sourceCardId];
+  return !!source && !!sourceDefinition && sourceDefinition.id === ABIGAIL_OUTSIDE_LIFE_ID &&
+    sourceDefinition.cardType === 'servant_deck_card' && source.generatedBy === ABIGAIL_OUTSIDE_LIFE_GENERATED_BY &&
+    source.zone === 'attack_area' && source.visibility.scope === 'public' && sourceState?.active === true &&
+    sourceState.faceDown !== true && !!abigailId && (source.ownerPlayerId === source.controllerPlayerId || source.ownerPlayerId === abigailId) &&
+    s.players.some((candidate) => candidate.id === source.controllerPlayerId && candidate.status === 'active');
+}
+
+function isExactAbigailS4RevealVisibility(a: AuthoringAbility): boolean {
+  return exactNodeKeys(a.visibility, ['revealsTrueName', 'revealScope', 'revealTiming']) &&
+    a.visibility.revealsTrueName === true && a.visibility.revealScope === 'servant_package' &&
+    a.visibility.revealTiming === 'on_use_declared';
+}
+
+function isExactAbigailS4ResponseWindow(a: AuthoringAbility): boolean {
+  return exactNodeKeys(a.responseWindow, ['order', 'passBehavior']) &&
+    a.responseWindow.order === 'turn_order' && a.responseWindow.passBehavior === 'decline_this_window';
+}
+
+export function isAbigailS4Candidate(a: AuthoringAbility): boolean {
+  return [ABIGAIL_S4_RELEASE_ID, ABIGAIL_S4_CLEANUP_ID].includes(a.id);
+}
+
+export function isAbigailS4ReleaseSemantic(a: AuthoringAbility): boolean {
+  if (!isAbigailS4Candidate(a) || a.id !== ABIGAIL_S4_RELEASE_ID || a.kind !== 'declaration_reveal' ||
+      a.execution.mode !== 'automatic' || !Array.isArray(a.execution.allowedOperations) || a.execution.allowedOperations.length ||
+      a.printedClause !== ABIGAIL_S4_RELEASE_CLAUSE || !isExactAbigailS4RevealVisibility(a) ||
+      !exactNodeKeys(a.activation, ['phase', 'trigger', 'requiresSourceState']) || a.activation.phase !== 'action' ||
+      a.activation.trigger !== 'on_use_declared' ||
+      a.activation.requiresSourceState !== 'active' || a.conditions.length || a.targets.length || a.cost.length ||
+      a.creates.length || a.ruleModifiers.length || Object.keys(a.lifecycle).length || Object.keys(a.limit).length ||
+      !isExactAbigailS4ResponseWindow(a) || a.effects.length !== 1) return false;
+  const effect = a.effects[0]!;
+  return effect.type === 'abigail_true_name_release' && effect.id === ABIGAIL_S4_RELEASE_EFFECT_ID && exactNodeKeys(effect, ['id', 'type']);
+}
+
+export function isAbigailS4CleanupSemantic(a: AuthoringAbility): boolean {
+  if (!isAbigailS4Candidate(a) || a.id !== ABIGAIL_S4_CLEANUP_ID || a.kind !== 'forced_trigger' ||
+      a.execution.mode !== 'automatic' || !Array.isArray(a.execution.allowedOperations) || a.execution.allowedOperations.length ||
+      a.printedClause !== ABIGAIL_S4_CLEANUP_CLAUSE || !exactNodeKeys(a.activation, ['trigger', 'requiresSourceState']) ||
+      a.activation.trigger !== 'after_battle_ended' || a.activation.requiresSourceState !== 'active' || a.conditions.length ||
+      a.targets.length || a.cost.length || a.creates.length || a.ruleModifiers.length || Object.keys(a.lifecycle).length ||
+      Object.keys(a.limit).length || Object.keys(a.visibility).length || !isExactAbigailS4ResponseWindow(a) || a.effects.length !== 1) return false;
+  const effect = a.effects[0]!;
+  return effect.type === 'abigail_true_name_recycle_to_discard' && effect.id === ABIGAIL_S4_CLEANUP_EFFECT_ID && exactNodeKeys(effect, ['id', 'type']);
+}
+
+export function isAbigailS4Semantic(a: AuthoringAbility): boolean {
+  return isAbigailS4ReleaseSemantic(a) || isAbigailS4CleanupSemantic(a);
+}
+
 function abigailS3bTargetCandidates(s: GameState, ctx: EffectContext, a: AuthoringAbility): string[] {
   const target = a.targets[0];
   if (!target || !isAbigailS3bActionSemantic(a)) return [];
@@ -976,13 +1043,86 @@ function executeAbigailS3bCleanup(s: GameState, ctx: EffectContext, a: Authoring
   }
   const work = structuredClone(s);
   const movedCardIds = work.cards.filter((candidate) =>
-    isCanonicalAbigailOutsideLifeCard(work, ctx.controllerId, candidate.instanceId, ['field', 'attack_area']) && active(work, candidate.instanceId))
+    isCanonicalAbigailOutsideLifeCard(work, ctx.controllerId, candidate.instanceId, ['field', 'attack_area']) && active(work, candidate.instanceId) &&
+    !work.ruleOverrides?.abigailTrueNamePowerBySource?.[candidate.instanceId])
     .map((candidate) => candidate.instanceId);
   for (const instanceId of movedCardIds) moveCard(work, instanceId, 'deck');
   if (movedCardIds.length) shuffle(work, ctx.controllerId);
   runtime(work).events.push({ type: 'abigail_s3b_active_outside_life_recycled', playerId: ctx.controllerId,
     sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceIds: movedCardIds, movedCount: movedCardIds.length,
     battlePhaseResolutionId: ctx.event.battlePhaseResolutionId, triggerEventId: ctx.event.id });
+  Object.assign(s, work);
+}
+
+function executeAbigailS4Release(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isAbigailS4ReleaseSemantic(a) || !isAbigailS4Source(s, ctx.sourceCardId) || card(s, ctx.sourceCardId).controllerPlayerId !== ctx.controllerId ||
+      phase(s) !== 'action' || !ctx.event || ctx.event.type !== 'on_use_declared' || ctx.event.sourceCardId !== ctx.sourceCardId) {
+    reject('resolution_failed', 'Abigail s4 true-name release requires its canonical active source');
+  }
+  const abigailPlayerId = abigailS4PlayerId(s);
+  if (!abigailPlayerId) reject('resolution_failed', 'Abigail s4 requires one active Abigail controller');
+  const source = card(s, ctx.sourceCardId);
+  const targetPlayerIds = [...new Set([ctx.controllerId, abigailPlayerId])];
+  const existing = s.ruleOverrides?.abigailTrueNamePowerBySource?.[source.instanceId];
+  if (existing) {
+    if (existing.sourceCardId !== source.instanceId || existing.abilityId !== ctx.abilityId ||
+        existing.controllerId !== ctx.controllerId || existing.abigailPlayerId !== abigailPlayerId ||
+        existing.amount !== ABIGAIL_S4_POWER_AMOUNT || existing.targetPlayerIds.length !== targetPlayerIds.length ||
+        existing.targetPlayerIds.some((id, index) => id !== targetPlayerIds[index])) {
+      reject('resolution_failed', 'Abigail s4 true-name release envelope is forged');
+    }
+    return;
+  }
+  s.ruleOverrides ??= {};
+  s.ruleOverrides.abigailTrueNamePowerBySource ??= {};
+  s.ruleOverrides.abigailTrueNamePowerBySource[source.instanceId] = {
+    sourceCardId: source.instanceId,
+    abilityId: ctx.abilityId,
+    controllerId: ctx.controllerId,
+    abigailPlayerId,
+    targetPlayerIds,
+    amount: ABIGAIL_S4_POWER_AMOUNT,
+  };
+  reveal(s, abigailPlayerId);
+  runtime(s).events.push({
+    type: 'abigail_s4_true_name_released', playerId: ctx.controllerId, sourceCardId: source.instanceId,
+    abilityId: ctx.abilityId, targetPlayerIds, amount: ABIGAIL_S4_POWER_AMOUNT,
+  });
+}
+
+function executeAbigailS4Cleanup(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  const event = ctx.event;
+  if (!isAbigailS4CleanupSemantic(a) || !isAbigailS4Source(s, ctx.sourceCardId) || card(s, ctx.sourceCardId).controllerPlayerId !== ctx.controllerId ||
+      !event || event.type !== 'after_battle_ended' || typeof event.id !== 'string' || !event.battlePhaseResolutionId) {
+    reject('invalid_event', 'Abigail s4 cleanup requires its canonical active source and battle-terminal event');
+  }
+  const abigailPlayerId = abigailS4PlayerId(s);
+  if (!abigailPlayerId) reject('resolution_failed', 'Abigail s4 cleanup requires one active Abigail controller');
+  const source = card(s, ctx.sourceCardId);
+  const envelope = s.ruleOverrides?.abigailTrueNamePowerBySource?.[source.instanceId];
+  const expectedTargets = [...new Set([ctx.controllerId, abigailPlayerId])];
+  if (!envelope || envelope.sourceCardId !== source.instanceId || envelope.abilityId !== ABIGAIL_S4_RELEASE_ID ||
+      envelope.controllerId !== ctx.controllerId || envelope.abigailPlayerId !== abigailPlayerId ||
+      envelope.amount !== ABIGAIL_S4_POWER_AMOUNT || envelope.targetPlayerIds.length !== expectedTargets.length ||
+      envelope.targetPlayerIds.some((id, index) => id !== expectedTargets[index])) {
+    reject('resolution_failed', 'Abigail s4 cleanup requires the installed true-name release envelope');
+  }
+  const work = structuredClone(s);
+  const target = card(work, source.instanceId);
+  target.ownerPlayerId = abigailPlayerId;
+  target.controllerPlayerId = abigailPlayerId;
+  moveCard(work, target.instanceId, 'discard');
+  const targetState = runtime(work).cardState[target.instanceId];
+  if (!targetState) reject('resolution_failed', 'Abigail s4 source runtime state is missing');
+  targetState.active = false;
+  targetState.faceDown = false;
+  delete work.ruleOverrides!.abigailTrueNamePowerBySource![target.instanceId];
+  if (!Object.keys(work.ruleOverrides!.abigailTrueNamePowerBySource!).length) delete work.ruleOverrides!.abigailTrueNamePowerBySource;
+  runtime(work).events.push({
+    type: 'abigail_s4_true_name_card_recycled', playerId: ctx.controllerId, sourceCardId: target.instanceId,
+    abilityId: ctx.abilityId, recipientPlayerId: abigailPlayerId, fromZone: 'attack_area', toZone: 'discard',
+    battlePhaseResolutionId: event.battlePhaseResolutionId, triggerEventId: event.id, movedCount: 1,
+  });
   Object.assign(s, work);
 }
 
@@ -1543,6 +1683,8 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
         Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) continue;
       if (event.type === 'after_battle_ended' && isZoukenS4BattleEndSemantic(a) &&
         Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) continue;
+      if (event.type === 'after_battle_ended' && isAbigailS4CleanupSemantic(a) &&
+        !s.ruleOverrides?.abigailTrueNamePowerBySource?.[c.instanceId]) continue;
       if (event.type === 'after_player_deployed_to_battlefield' && isDeploymentResourceRewardCandidate(a) &&
         event.playerId !== c.controllerPlayerId) continue;
       if (event.type === 'after_controller_loses_battle' && isBattleLossStateTransformCandidate(a) &&
@@ -3512,6 +3654,14 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     executeAbigailS3bCleanup(s, ctx, a);
     return;
   }
+  if (isAbigailS4ReleaseSemantic(a)) {
+    executeAbigailS4Release(s, ctx, a);
+    return;
+  }
+  if (isAbigailS4CleanupSemantic(a)) {
+    executeAbigailS4Cleanup(s, ctx, a);
+    return;
+  }
   if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isDeploymentResourceRewardSemantic(a) || isBattleLossResourceTriggerSemantic(a) || isBattleLossServantRevealSemantic(a) || isSharedVictoryVpTriggerSemantic(a) || isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a) || isBattleEndSourceReturnSemantic(a) || isSourcePlayBasicAttackDrawTriggerSemantic(a)) {
     executeResolutionEffects(s, ctx, effects);
     installOngoing(s, ctx, a);
@@ -3667,6 +3817,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (isAbigailS3bCandidate(a) && (!isAbigailS3aSource(s, ctx.sourceCardId) || !isAbigailS3bSemantic(a))) {
     reject('resolution_failed', 'Unsupported Abigail S3b source-bound semantic shape');
+  }
+  if (isAbigailS4Candidate(a) && (!isAbigailS4Source(s, ctx.sourceCardId) || !isAbigailS4Semantic(a))) {
+    reject('resolution_failed', 'Unsupported Abigail S4 source-bound semantic shape');
   }
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) {
     reject('resolution_failed', 'Unsupported persistent RuleOverride semantic shape');
@@ -3878,10 +4031,16 @@ function zoukenS2GameStartPreflight(s: GameState, event: AbilityEvent): boolean 
   }
   return true;
 }
+function abigailS4ReleasePreflight(s: GameState, event: AbilityEvent): boolean {
+  if (event.type !== 'on_use_declared' || phase(s) === 'action' || !event.sourceCardId) return true;
+  return !(definition(s, event.sourceCardId)?.abilities ?? []).some((ability) =>
+    isAbigailS4ReleaseSemantic(ability));
+}
 /** Trusted backend event hook. Events are not part of AbilityCommand. */
 export function processAbilityEvent(s: GameState, event: AbilityEvent): void {
   if (runtime(s).processedEvents.includes(event.id)) return;
   if (!zoukenS2GameStartPreflight(s, event)) return;
+  if (!abigailS4ReleasePreflight(s, event)) return;
   const copy = structuredClone(s); processEvent(copy, event); runtime(copy).revision++;
   Object.assign(s, copy);
 }
@@ -3890,6 +4049,7 @@ export function processAbilitySystemEvent(s: GameState, label: string, event: Om
   const copy = structuredClone(s);
   const materialized = { ...event, id: nextId(copy, label) } as AbilityEvent;
   if (!zoukenS2GameStartPreflight(s, materialized)) return;
+  if (!abigailS4ReleasePreflight(s, materialized)) return;
   processEvent(copy, materialized);
   runtime(copy).revision++;
   Object.assign(s, copy);
