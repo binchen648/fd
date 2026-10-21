@@ -198,6 +198,9 @@ export interface SafeEvent {
   toState?: string;
   revision?: number;
   cardInstanceId?: string;
+  sourcePlayerId?: PlayerId;
+  targetPlayerId?: PlayerId;
+  roundNumber?: number;
   fromZone?: string;
   toZone?: string;
   movedCount?: number;
@@ -236,6 +239,9 @@ export interface AbilityRuntime {
   battlefieldsPassedOrStayedThisRound: Record<PlayerId, number>;
   /** Successful positive mana gained in the current authoritative round. */
   manaGainedThisRound: { round: number; byPlayer: Record<PlayerId, number> };
+  /** Source-bound idempotency ledgers for the exact Zouken S4 contract. */
+  zoukenS4RoundSettledBySource: Record<string, number>;
+  zoukenS4BattleSettledBySource: Record<string, string[]>;
   playRulesVersion: PlayRulesVersion;
   playCounters: RoundPlayCounters;
 }

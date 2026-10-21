@@ -23,7 +23,7 @@
       "sha256": "4E4F3F5607D7B39BC16F4ACB01831976E4036F38EBC180514C4E6BC28F75C6B9",
       "locator": "master.zouken/间桐脏砚"
     },
-    "note": "s1 and s5 have accepted target-runtime contracts in this executable archive. The other four source-grounded cards remain in master.zouken-source-candidates.json and are intentionally not active-pack executable content."
+    "note": "s1, s4, and s5 have accepted target-runtime contracts in this executable archive. The other three source-grounded cards remain in master.zouken-source-candidates.json and are intentionally not active-pack executable content."
   },
   "sources": [
     {
@@ -85,6 +85,67 @@
           "typeLabel": "被动"
         },
         "acceptedContracts": { "gameStartManaBootstrap": "P3-ZOUKEN-S1-MANA-BOOTSTRAP" }
+      },
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.zouken.skill.s4",
+      "aliases": ["s4"],
+      "legacyId": "s4",
+      "name": "五百年的执念",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.zouken" },
+      "printedText": "回合结束时，若你本回合获得的魔力少于3点，失去2点战果。\n刻印虫-战斗阶段：战斗阶段结束后，如果你赢得一场战斗，从该战斗的一名败者处吸取至多3点魔力；若该战斗没有其他玩家或你位于侦查，你获得3点魔力。\n虫之身-战斗阶段：花费7点魔力，移动至一处地点。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "zouken.pseudo-vampire.round-end",
+          "kind": "forced_trigger",
+          "printedClause": "回合结束时，若你本回合获得的魔力少于3点，失去2点战果。",
+          "activation": { "trigger": "round_end", "requiresSourceState": "active" },
+          "conditions": [], "targets": [], "cost": [], "creates": [], "ruleModifiers": [],
+          "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+          "effects": [{ "id": "zouken-s4-round-end", "type": "record_master_directive", "directive": "zouken_pseudo_vampire_round_end_vp_loss" }],
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "zouken.pseudo-vampire.battle-end",
+          "kind": "forced_trigger",
+          "printedClause": "刻印虫-战斗阶段：战斗阶段结束后，如果你赢得一场战斗，从该战斗的一名败者处吸取至多3点魔力；若该战斗没有其他玩家或你位于侦查，你获得3点魔力。",
+          "activation": { "trigger": "after_battle_ended", "requiresSourceState": "active" },
+          "conditions": [], "targets": [], "cost": [], "creates": [], "ruleModifiers": [],
+          "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+          "effects": [{ "id": "zouken-s4-battle-end", "type": "record_master_directive", "directive": "zouken_pseudo_vampire_battle_end_siphon" }],
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "zouken.pseudo-vampire.bug-body",
+          "kind": "phase_action",
+          "printedClause": "虫之身-战斗阶段：花费7点魔力，移动至一处地点。",
+          "activation": { "phase": "combat", "opens": "controller_combat_action_window", "requiresSourceState": "active" },
+          "conditions": [],
+          "targets": [{ "id": "destination", "type": "location", "count": { "min": 1, "max": 1 }, "constraints": [{ "type": "any_enabled_location" }] }],
+          "cost": [{ "id": "zouken-s4-pay-seven", "type": "pay_mana", "player": "controller", "amount": 7 }],
+          "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+          "effects": [{ "id": "zouken-s4-move", "type": "move_player", "player": "controller", "to": "destination" }],
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "3b66cc0b2d7c1e95bdd02b34e62de54f5383e53b20a736b69cb023f3388f2f49",
+        "sourceReferences": [
+          { "kind": "development-text", "document": "Fate_Domination-开发版/data_masters.js", "locator": "line=19#record=m_zouken.s4", "sha256": "C596AF5730846EF9092375F18C4200B84F032028DC2E8F5483377D8DDCC22825" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版/images/masters/间桐脏砚.png", "locator": "master.zouken/间桐脏砚", "sha256": "4E4F3F5607D7B39BC16F4ACB01831976E4036F38EBC180514C4E6BC28F75C6B9" },
+          { "kind": "legacy-snapshot", "document": "binchen648_fd/archive/legacy-content-ref.json", "locator": "master/master.zouken/s4", "sha256": "BFF4C268CA3F292E3F32FD2A3B51C7520E3D8C475C703BDB854A43B48318BF2A" }
+        ],
+        "clauseSources": [
+          { "locator": "legacy-content.json#masters[14].skills[3].text#line=1", "sha256": "dea05b1024efdc4802497595a372ed1a2290fb5268c35fe6330fd96f7e1b9305" },
+          { "locator": "legacy-content.json#masters[14].skills[3].text#line=2", "sha256": "3326dc0bdd2db20f88c2652a09ebfb25691c0b4beabf0a2dd86f3f53d76cee98" },
+          { "locator": "legacy-content.json#masters[14].skills[3].text#line=3", "sha256": "1a648249487df828988dd2ecfa5dbbbbaf632d1a84ac55302eaa31428863e1fc" }
+        ],
+        "acceptedContracts": { "roundEndManaThreshold": "P3-ZOUKEN-S4-ROUND-END-LEDGER", "battleEndSiphon": "P3-ZOUKEN-S4-BATTLE-END-SIPHON", "combatMovement": "P3-ZOUKEN-S4-SEVEN-MANA-MOVE" }
       },
       "verification": { "implementationStatus": "complete" }
     },

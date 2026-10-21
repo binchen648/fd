@@ -205,6 +205,7 @@ export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPa
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
     manaGainedThisRound: { round: s.round.roundNumber, byPlayer: {} },
+    zoukenS4RoundSettledBySource: {}, zoukenS4BattleSettledBySource: {},
     playRulesVersion: options.playRulesVersion ?? 'explicit-v1',
     playCounters: { round: s.round.roundNumber, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} } };
 }
@@ -648,12 +649,13 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isPlaySourceCardWithCostResponseStructuralCandidate(a) && !isPlaySourceCardWithCostResponseRouteCandidate(a)) return false;
   if (isAddToAttackStructuralCandidate(a) && !isAddToAttackRouteCandidate(a)) return false;
   if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) return false;
-  if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a)) return false;
+  if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a) && !isZoukenS4MoveSemantic(a)) return false;
   if (isMagicResistancePowerModifierCandidate(a) && !isMagicResistancePowerModifierSemantic(a)) return false;
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
   if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'compiled')) return false;
   if (isZoukenManaBootstrapCandidate(a) && !isZoukenManaBootstrapSemantic(a)) return false;
+  if (isZoukenS4AbilityCandidate(a) && (!isZoukenS4Source(s, sourceId) || !isZoukenS4Semantic(a))) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
@@ -677,6 +679,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   }
   if (isFixedControllerAdvanceDrawActionSemantic(a) &&
     !hasAvailableManaForFixedCosts(s, context(s, sourceId, a.id, event), a)) return false;
+  if (isZoukenS4MoveSemantic(a) && !hasAvailableManaForFixedCosts(s, context(s, sourceId, a.id, event), a)) return false;
   if (isCloseSourceCardOnPlayedTrigger(a) && closeSourceStateError(s, sourceId, card(s, sourceId).controllerPlayerId)) return false;
   if (isAlterEgoTransformSemantic(a)) {
     const ctx = context(s, sourceId, a.id, event);
@@ -739,6 +742,145 @@ function executeZoukenManaBootstrap(s: GameState, ctx: EffectContext, a: Authori
       abilityId: ctx.abilityId, resource: 'mana', before: previousCap, after: 16,
     });
   }
+}
+
+const ZOUKEN_S4_SOURCE_ID = 'master.zouken.skill.s4';
+const ZOUKEN_S4_ROUND_ABILITY_ID = 'zouken.pseudo-vampire.round-end';
+const ZOUKEN_S4_BATTLE_ABILITY_ID = 'zouken.pseudo-vampire.battle-end';
+const ZOUKEN_S4_MOVE_ABILITY_ID = 'zouken.pseudo-vampire.bug-body';
+const ZOUKEN_S4_ROUND_CLAUSE = '回合结束时，若你本回合获得的魔力少于3点，失去2点战果。';
+const ZOUKEN_S4_BATTLE_CLAUSE = '刻印虫-战斗阶段：战斗阶段结束后，如果你赢得一场战斗，从该战斗的一名败者处吸取至多3点魔力；若该战斗没有其他玩家或你位于侦查，你获得3点魔力。';
+const ZOUKEN_S4_MOVE_CLAUSE = '虫之身-战斗阶段：花费7点魔力，移动至一处地点。';
+
+function isZoukenS4Source(s: GameState, sourceCardId: string): boolean {
+  return definition(s, sourceCardId)?.id === ZOUKEN_S4_SOURCE_ID;
+}
+
+function isExactZoukenS4Directive(effect: RuleNode | undefined, id: string, directive: string): boolean {
+  return !!effect && effect.type === 'record_master_directive' && effect.id === id && effect.directive === directive &&
+    exactNodeKeys(effect, ['id', 'type', 'directive']);
+}
+
+function isExactZoukenS4Shell(a: AuthoringAbility, kind: string, activationKeys: string[], allowActionTargetAndCost = false): boolean {
+  if (a.kind !== kind || a.execution.mode !== 'automatic' || !Array.isArray(a.execution.allowedOperations) || a.execution.allowedOperations.length) return false;
+  if (!Object.keys(a.activation).every((key) => activationKeys.includes(key))) return false;
+  if (a.conditions.length || (!allowActionTargetAndCost && (a.targets.length || a.cost.length)) || a.creates.length || a.ruleModifiers.length) return false;
+  if (Object.keys(a.lifecycle).length || str(a.responseWindow.opens) || Object.keys(a.limit).length || Object.keys(a.visibility).length) return false;
+  const responseKeys = Object.keys(a.responseWindow);
+  return responseKeys.every((key) => ['order', 'passBehavior'].includes(key)) &&
+    (a.responseWindow.order === undefined || a.responseWindow.order === 'turn_order') &&
+    (a.responseWindow.passBehavior === undefined || a.responseWindow.passBehavior === 'decline_this_window');
+}
+
+export function isZoukenS4AbilityCandidate(a: AuthoringAbility): boolean {
+  return [ZOUKEN_S4_ROUND_ABILITY_ID, ZOUKEN_S4_BATTLE_ABILITY_ID, ZOUKEN_S4_MOVE_ABILITY_ID].includes(a.id);
+}
+
+export function isZoukenS4RoundEndSemantic(a: AuthoringAbility): boolean {
+  return isExactZoukenS4Shell(a, 'forced_trigger', ['trigger', 'requiresSourceState']) &&
+    a.id === ZOUKEN_S4_ROUND_ABILITY_ID && a.printedClause === ZOUKEN_S4_ROUND_CLAUSE &&
+    a.activation.trigger === 'round_end' && a.activation.requiresSourceState === 'active' && a.effects.length === 1 &&
+    isExactZoukenS4Directive(a.effects[0], 'zouken-s4-round-end', 'zouken_pseudo_vampire_round_end_vp_loss');
+}
+
+export function isZoukenS4BattleEndSemantic(a: AuthoringAbility): boolean {
+  return isExactZoukenS4Shell(a, 'forced_trigger', ['trigger', 'requiresSourceState']) &&
+    a.id === ZOUKEN_S4_BATTLE_ABILITY_ID && a.printedClause === ZOUKEN_S4_BATTLE_CLAUSE &&
+    a.activation.trigger === 'after_battle_ended' && a.activation.requiresSourceState === 'active' && a.effects.length === 1 &&
+    isExactZoukenS4Directive(a.effects[0], 'zouken-s4-battle-end', 'zouken_pseudo_vampire_battle_end_siphon');
+}
+
+export function isZoukenS4MoveSemantic(a: AuthoringAbility): boolean {
+  if (!isExactZoukenS4Shell(a, 'phase_action', ['phase', 'opens', 'requiresSourceState'], true) ||
+      a.id !== ZOUKEN_S4_MOVE_ABILITY_ID || a.printedClause !== ZOUKEN_S4_MOVE_CLAUSE ||
+      a.activation.phase !== 'combat' || a.activation.opens !== 'controller_combat_action_window' || a.activation.requiresSourceState !== 'active' ||
+      a.targets.length !== 1 || a.cost.length !== 1 || a.effects.length !== 1) return false;
+  const target = a.targets[0]!; const count = node(target.count); const constraints = nodes(target.constraints);
+  const cost = a.cost[0]!; const effect = a.effects[0]!;
+  return target.id === 'destination' && target.type === 'location' && Number(count.min) === 1 && Number(count.max) === 1 &&
+    exactNodeKeys(target, ['id', 'type', 'count', 'constraints']) && constraints.length === 1 && constraints[0]!.type === 'any_enabled_location' &&
+    exactNodeKeys(constraints[0]!, ['type']) && cost.type === 'pay_mana' && cost.id === 'zouken-s4-pay-seven' && cost.player === 'controller' && cost.amount === 7 &&
+    exactNodeKeys(cost, ['id', 'type', 'player', 'amount']) && effect.type === 'move_player' && effect.id === 'zouken-s4-move' &&
+    effect.player === 'controller' && effect.to === 'destination' && exactNodeKeys(effect, ['id', 'type', 'player', 'to']);
+}
+
+export function isZoukenS4Semantic(a: AuthoringAbility): boolean {
+  return isZoukenS4RoundEndSemantic(a) || isZoukenS4BattleEndSemantic(a) || isZoukenS4MoveSemantic(a);
+}
+
+function zoukenS4BattleLosers(battle: GameState['battleResults'][number]): string[] {
+  const winners = new Set(battle.winnerPlayerIds);
+  if (battle.participantBreakdowns?.length) return battle.participantBreakdowns.map((entry) => entry.playerId).filter((id) => !winners.has(id));
+  return battle.militaryAdjustments.filter((entry) => entry.delta < 0 && !winners.has(entry.playerId)).map((entry) => entry.playerId);
+}
+
+function zoukenS4TerminalBattles(s: GameState, event: AbilityEvent): Array<{ battleId: string; battle: GameState['battleResults'][number]; winnerIds: string[]; loserIds: string[]; participantIds: string[] }> {
+  if (event.type !== 'after_battle_ended' || !event.battlePhaseResolutionId || !Array.isArray(event.battleIds) || !Array.isArray(event.resultIds) ||
+      !Array.isArray(event.battleParticipantIds) || !Array.isArray(event.battleOutcomes) || event.battleIds.length !== event.resultIds.length ||
+      event.battleIds.length !== event.battleOutcomes.length) {
+    reject('invalid_event', 'Zouken S4 battle settlement requires the complete terminal battle envelope');
+  }
+  return event.battleIds!.map((battleId, index) => {
+    const outcome = event.battleOutcomes![index]!; const prefix = `${event.battlePhaseResolutionId}:battle:${outcome.battlefieldId}:`;
+    if (typeof battleId !== 'string' || !battleId.startsWith(prefix)) reject('invalid_event', 'Zouken S4 terminal battle id is not canonical');
+    const ordinal = Number(battleId.slice(prefix.length)); const battle = s.battleResults[ordinal - 1];
+    if (!Number.isSafeInteger(ordinal) || ordinal < 1 || !battle || battle.battlefieldId !== outcome.battlefieldId ||
+        event.resultIds![index] !== `${battleId}:result`) reject('invalid_event', 'Zouken S4 terminal battle provenance does not match battle history');
+    const winnerIds = [...outcome.winnerPlayerIds]; const loserIds = zoukenS4BattleLosers(battle);
+    const participantIds = battle.participantBreakdowns?.map((entry) => entry.playerId) ?? [...new Set([...winnerIds, ...loserIds])];
+    if (!winnerIds.every((id) => participantIds.includes(id)) || loserIds.some((id) => !participantIds.includes(id)) ||
+        participantIds.some((id) => !event.battleParticipantIds!.includes(id))) reject('invalid_event', 'Zouken S4 terminal participant provenance is inconsistent');
+    return { battleId, battle, winnerIds, loserIds, participantIds };
+  });
+}
+
+function settleZoukenS4RoundEnd(s: GameState, ctx: EffectContext): void {
+  const event = ctx.event;
+  if (!event || event.type !== 'round_end' || !isZoukenS4Source(s, ctx.sourceCardId)) reject('invalid_event', 'Zouken S4 round settlement requires its canonical source and round_end event');
+  const r = runtime(s); const settled = r.zoukenS4RoundSettledBySource ??= {};
+  if (settled[ctx.sourceCardId] === s.round.roundNumber) return;
+  const gained = r.manaGainedThisRound.round === s.round.roundNumber ? (r.manaGainedThisRound.byPlayer[ctx.controllerId] ?? 0) : 0;
+  const controller = player(s, ctx.controllerId); const before = controller.vp;
+  if (gained < 3) controller.vp = Math.max(0, before - 2);
+  settled[ctx.sourceCardId] = s.round.roundNumber;
+  runtime(s).events.push({ type: 'zouken_s4_round_vp_loss_settled', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+    abilityId: ctx.abilityId, resource: 'victory_points', requestedDelta: gained < 3 ? -2 : 0, delta: controller.vp - before,
+    before, after: controller.vp, roundNumber: s.round.roundNumber, triggerEventId: event.id });
+}
+
+function settleZoukenS4BattleEnd(s: GameState, ctx: EffectContext): void {
+  const event = ctx.event;
+  if (!event || event.type !== 'after_battle_ended' || !event.battlePhaseResolutionId) reject('invalid_event', 'Zouken S4 battle settlement requires a canonical terminal event');
+  const battles = zoukenS4TerminalBattles(s, event); const r = runtime(s);
+  const settled = r.zoukenS4BattleSettledBySource ??= {}; const prior = settled[ctx.sourceCardId] ?? [];
+  if (prior.includes(event.battlePhaseResolutionId!)) return;
+  const controller = player(s, ctx.controllerId);
+  for (const entry of battles) {
+    if (!entry.winnerIds.includes(ctx.controllerId)) continue;
+    const atRecon = controller.locationId === 'recon';
+    const hasOtherPlayer = entry.participantIds.some((id) => id !== ctx.controllerId);
+    if (!atRecon && hasOtherPlayer && entry.loserIds.length === 0) continue;
+    let sourcePlayerId: string | undefined; let requested = 3;
+    if (!atRecon && hasOtherPlayer) {
+      sourcePlayerId = [...entry.loserIds].sort((left, right) => player(s, left).seat - player(s, right).seat)[0];
+      if (sourcePlayerId) requested = Math.min(3, player(s, sourcePlayerId).mana);
+    }
+    const before = controller.mana;
+    const gain = grantMana(s, ctx.controllerId, requested, { source: 'generic' });
+    if (sourcePlayerId && gain.actualAmount > 0) player(s, sourcePlayerId).mana -= gain.actualAmount;
+    r.events.push({ type: 'zouken_s4_battle_mana_settled', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId, ...(sourcePlayerId ? { sourcePlayerId } : {}), targetPlayerId: ctx.controllerId,
+      resource: 'mana', requestedDelta: requested, delta: gain.actualAmount, before, after: controller.mana,
+      battlePhaseResolutionId: event.battlePhaseResolutionId, battleId: entry.battleId,
+      battlefieldId: entry.battle.battlefieldId, triggerEventId: event.id,
+      qualifyingPlayerIds: sourcePlayerId ? [sourcePlayerId] : [] });
+  }
+  settled[ctx.sourceCardId] = [...prior, event.battlePhaseResolutionId!];
+}
+
+function executeZoukenS4Move(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isZoukenS4MoveSemantic(a) || player(s, ctx.controllerId).mana < 7) reject('insufficient_mana', 'Zouken S4 movement requires seven mana');
+  executeResolutionEffects(s, ctx, [...a.cost, ...a.effects]);
 }
 
 export function isGameStartRuleOverrideSemantic(a: AuthoringAbility): boolean {
@@ -923,6 +1065,8 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
         Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) continue;
       if (event.type === 'after_battle_ended' && isBattleEndSourceReturnCandidate(a) && !battleEndSourceReturnTriggerEligible(s, c.instanceId)) continue;
       if (event.type === 'after_battle_ended' && isBattleEndMobilePlayersRewardSemantic(a) &&
+        Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) continue;
+      if (event.type === 'after_battle_ended' && isZoukenS4BattleEndSemantic(a) &&
         Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) continue;
       if (event.type === 'after_player_deployed_to_battlefield' && isDeploymentResourceRewardCandidate(a) &&
         event.playerId !== c.controllerPlayerId) continue;
@@ -2655,7 +2799,8 @@ function usesAcceptedFixedControllerManaCostComponent(a: AuthoringAbility): bool
   return isPlaySourceCardWithCostResponseRouteCandidate(a) ||
     isAddToAttackRouteCandidate(a) ||
     isFixedControllerAdvanceDrawActionSemantic(a) ||
-    classifyAlterEgoTransformVariant(a) === 'ex';
+    classifyAlterEgoTransformVariant(a) === 'ex' ||
+    isZoukenS4MoveSemantic(a);
 }
 
 function hasFixedManaCost(costs: RuleNode[], amount: number): boolean {
@@ -2804,6 +2949,20 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     executeZoukenManaBootstrap(s, ctx, a);
     return;
   }
+  if (isZoukenS4RoundEndSemantic(a)) {
+    settleZoukenS4RoundEnd(s, ctx);
+    return;
+  }
+  if (isZoukenS4BattleEndSemantic(a)) {
+    settleZoukenS4BattleEnd(s, ctx);
+    return;
+  }
+  if (isZoukenS4MoveSemantic(a)) {
+    const pending = findPendingTarget(s, ctx, a, effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    executeZoukenS4Move(s, ctx, a);
+    return;
+  }
   if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isDeploymentResourceRewardSemantic(a) || isBattleLossResourceTriggerSemantic(a) || isBattleLossServantRevealSemantic(a) || isSharedVictoryVpTriggerSemantic(a) || isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a) || isBattleEndSourceReturnSemantic(a) || isSourcePlayBasicAttackDrawTriggerSemantic(a)) {
     executeResolutionEffects(s, ctx, effects);
     installOngoing(s, ctx, a);
@@ -2927,7 +3086,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) {
     reject('resolution_failed', 'Unsupported fixed controller advance-draw semantic shape');
   }
-  if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a)) {
+  if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a) && !isZoukenS4MoveSemantic(a)) {
     reject('resolution_failed', 'Unsupported any-location-except-workshop movement semantic shape');
   }
   if (isMagicResistancePowerModifierCandidate(a) && !isMagicResistancePowerModifierSemantic(a)) {
@@ -2941,6 +3100,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (isZoukenManaBootstrapCandidate(a) && !isZoukenManaBootstrapSemantic(a)) {
     reject('resolution_failed', 'Unsupported Zouken game-start mana bootstrap semantic shape');
+  }
+  if (isZoukenS4AbilityCandidate(a) && (!isZoukenS4Source(s, ctx.sourceCardId) || !isZoukenS4Semantic(a))) {
+    reject('resolution_failed', 'Unsupported Zouken S4 semantic shape');
   }
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) {
     reject('resolution_failed', 'Unsupported persistent RuleOverride semantic shape');
@@ -2987,7 +3149,7 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     });
     return;
   }
-  if (isCardZoneCoreDirectActionRouteCandidate(a) || isFixedControllerAdvanceDrawActionSemantic(a) || isAnyLocationExceptWorkshopMovementSemantic(a) || isPlayActionRouteCandidate(a) || isPlaySourceCardWithCostResponseStructuralCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a)) {
+  if (isCardZoneCoreDirectActionRouteCandidate(a) || isFixedControllerAdvanceDrawActionSemantic(a) || isAnyLocationExceptWorkshopMovementSemantic(a) || isZoukenS4MoveSemantic(a) || isPlayActionRouteCandidate(a) || isPlaySourceCardWithCostResponseStructuralCandidate(a) || isAddToAttackRouteCandidate(a) || isActivateCardByIdTrigger(a) || isCloseSourceCardOnPlayedTrigger(a)) {
     try {
       normalizeResolutionDataFlowNodes([...a.effects, ...a.creates], `cards.${ctx.sourceCardId}.abilities.${ctx.abilityId}.effects`);
     } catch (error) {

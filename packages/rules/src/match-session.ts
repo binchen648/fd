@@ -470,14 +470,14 @@ function isRestoreResponseWindow(value: unknown): boolean {
 
 function isRestoreSafeEvent(value: unknown): boolean {
   if (!isRestoreRecord(value) || typeof value.type !== 'string') return false;
-  for (const key of ['playerId','sourceCardId','abilityId','visibility','sourceAbilityId','controllerId','battlePhaseResolutionId','battleId','battlefieldId','resultId','triggerEventId','fromState','toState','cardInstanceId','fromZone','toZone'] as const) {
+  for (const key of ['playerId','sourceCardId','abilityId','visibility','sourceAbilityId','controllerId','sourcePlayerId','targetPlayerId','battlePhaseResolutionId','battleId','battlefieldId','resultId','triggerEventId','fromState','toState','cardInstanceId','fromZone','toZone'] as const) {
     if (value[key] !== undefined && typeof value[key] !== 'string') return false;
   }
   if (value.unpreventable !== undefined && typeof value.unpreventable !== 'boolean') return false;
   if (value.resource !== undefined && !['mana','command_seals','victory_points'].includes(String(value.resource))) return false;
   if (value.rewardBranch !== undefined && value.rewardBranch !== 'mana' && value.rewardBranch !== 'victory_points') return false;
   for (const key of ['delta','before','after','requestedDelta'] as const) if (value[key] !== undefined && !isRestoreFiniteNumber(value[key])) return false;
-  for (const key of ['revision','movedCount'] as const) if (value[key] !== undefined && !isRestoreSafeInteger(value[key])) return false;
+  for (const key of ['revision','movedCount','roundNumber'] as const) if (value[key] !== undefined && !isRestoreSafeInteger(value[key])) return false;
   if (value.qualifyingPlayerIds !== undefined && !isRestoreStringArray(value.qualifyingPlayerIds)) return false;
   return true;
 }
@@ -687,6 +687,8 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
         isRestoreRecord(entry) && typeof entry.cardId === 'string' && isRestoreFiniteNumber(entry.cost))) ||
       !isRestoreNonNegativeIntegerMap(value.consecutivePlayRounds) || !isRestoreNonNegativeIntegerMap(value.movementDistanceThisRound) ||
       !isRestoreNonNegativeIntegerMap(value.battlefieldsPassedOrStayedThisRound) || !isRestoreRoundByPlayerNumberState(value.manaGainedThisRound) ||
+      (value.zoukenS4RoundSettledBySource !== undefined && !isRestoreNonNegativeIntegerMap(value.zoukenS4RoundSettledBySource)) ||
+      (value.zoukenS4BattleSettledBySource !== undefined && !isRestoreStringArrayMap(value.zoukenS4BattleSettledBySource)) ||
       (value.playRulesVersion !== 'legacy-v0' && value.playRulesVersion !== 'explicit-v1') ||
       !isRestoreRoundPlayCounters(value.playCounters)) return false;
 
@@ -928,6 +930,10 @@ function isRestoreAbilityRuntimeReferences(
       if (container[child] !== undefined && !restoreRecordKeysBelongTo(container[child], playerIds)) return false;
     }
   }
+  if (value.zoukenS4BattleSettledBySource !== undefined && !Object.values(value.zoukenS4BattleSettledBySource as Record<string, unknown>).every((ids) => isRestoreStringArray(ids))) return false;
+  const sourceInstanceIds = new Set(cardsByInstance.keys());
+  if (value.zoukenS4RoundSettledBySource !== undefined && !Object.keys(value.zoukenS4RoundSettledBySource as Record<string, unknown>).every((id) => sourceInstanceIds.has(id))) return false;
+  if (value.zoukenS4BattleSettledBySource !== undefined && !Object.keys(value.zoukenS4BattleSettledBySource as Record<string, unknown>).every((id) => sourceInstanceIds.has(id))) return false;
   if (!(value.calculations as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
   if (!(value.hostRequests as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
   if (!(value.ongoingEffects as Array<Record<string, unknown>>).every((entry) => playerIds.has(entry.controllerId as string))) return false;
