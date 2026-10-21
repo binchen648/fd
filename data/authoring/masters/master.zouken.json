@@ -23,7 +23,7 @@
       "sha256": "4E4F3F5607D7B39BC16F4ACB01831976E4036F38EBC180514C4E6BC28F75C6B9",
       "locator": "master.zouken/间桐脏砚"
     },
-    "note": "ascension, s1, s3, s4, and s5 have accepted target-runtime contracts in this executable archive. s2 remains source-only in master.zouken-source-candidates.json."
+    "note": "ascension, s1, s2, s3, s4, and s5 have accepted target-runtime contracts in this executable archive."
   },
   "sources": [
     {
@@ -85,6 +85,33 @@
           "typeLabel": "被动"
         },
         "acceptedContracts": { "gameStartManaBootstrap": "P3-ZOUKEN-S1-MANA-BOOTSTRAP" }
+      },
+      "verification": { "implementationStatus": "complete" }
+    },
+    {
+      "id": "master.zouken.skill.s2",
+      "aliases": ["s2"], "legacyId": "s2", "name": "五百年的活尸", "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.zouken" },
+      "printedText": "你是大圣杯的【创造者】并怀揣【五百年的执念】。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{
+        "id": "zouken.five-hundred-year-undead", "kind": "forced_trigger", "printedClause": "你是大圣杯的【创造者】并怀揣【五百年的执念】。",
+        "activation": { "trigger": "game_start" }, "conditions": [], "targets": [], "cost": [],
+        "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+        "effects": [{ "type": "provision_skill_cards", "player": "controller", "targetDefinitionIds": ["master.zouken.skill.s3", "master.zouken.skill.s4"] }],
+        "execution": { "mode": "automatic", "allowedOperations": [] }
+      }],
+      "phase3Evidence": {
+        "sourceTextSha256": "8b8f4b24424a8600807fd42c0965fad94bd6f9dcdc9917efe10f1bff8b17f3e3",
+        "sourceReferences": [
+          { "kind": "development-text", "document": "Fate_Domination-开发版/data_masters.js", "locator": "line=19#record=m_zouken.s2", "sha256": "C596AF5730846EF9092375F18C4200B84F032028DC2E8F5483377D8DDCC22825" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版/images/masters/间桐脏砚.png", "locator": "master.zouken/间桐脏砚", "sha256": "4E4F3F5607D7B39BC16F4ACB01831976E4036F38EBC180514C4E6BC28F75C6B9" },
+          { "kind": "legacy-snapshot", "document": "binchen648_fd/archive/legacy-content-ref.json", "locator": "master/master.zouken/s2", "sha256": "BFF4C268CA3F292E3F32FD2A3B51C7520E3D8C475C703BDB854A43B48318BF2A" }
+        ],
+        "clauseSources": [{ "locator": "legacy-content.json#masters[14].skills[1].text#line=1", "sha256": "8b8f4b24424a8600807fd42c0965fad94bd6f9dcdc9917efe10f1bff8b17f3e3" }],
+        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "s2", "cost": 0, "basePower": 0, "legacyRequirement": null, "typeLabel": "被动" },
+        "acceptedContracts": { "creatorAndPseudoVampireProvisioning": "P3-ZOUKEN-S2-OWNER-BOUND-PROVISIONING" }
       },
       "verification": { "implementationStatus": "complete" }
     },

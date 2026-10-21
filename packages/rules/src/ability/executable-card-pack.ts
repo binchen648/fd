@@ -517,10 +517,26 @@ function validatedGameStartSkillProvisioningDeferrals(cards: Record<string, Exec
       if (source.cardType !== 'master_skill' || !source.ownerId) {
         throw new Error(`Game-start skill provisioning source must be an owned master_skill: ${source.id}#${ability.id}`);
       }
+      if (source.id === 'master.zouken.skill.s2') {
+        const expected = ['master.zouken.skill.s3', 'master.zouken.skill.s4'];
+        const actual = targets;
+        if (ability.id !== 'zouken.five-hundred-year-undead' || actual.length !== expected.length ||
+            actual.some((id, index) => id !== expected[index])) {
+          throw new Error(`Invalid Zouken s2 owner-bound provisioning envelope: ${source.id}#${ability.id}`);
+        }
+      }
       for (const definitionId of targets) {
         const target = cards[definitionId];
         if (!target || target.id === source.id || target.mode !== 'automatic' || target.cardType !== 'master_skill' || target.ownerId !== source.ownerId) {
           throw new Error(`Invalid game-start skill provisioning target ${definitionId}: ${source.id}#${ability.id}`);
+        }
+        if (source.id === 'master.zouken.skill.s2') {
+          const expectedAbilityIds = definitionId === 'master.zouken.skill.s3'
+            ? ['zouken.founder', 'zouken.founder.power-conversion', 'zouken.founder.after-win']
+            : ['zouken.pseudo-vampire.round-end', 'zouken.pseudo-vampire.battle-end', 'zouken.pseudo-vampire.bug-body'];
+          if (target.abilities.length !== expectedAbilityIds.length || target.abilities.some((candidate, index) => candidate.id !== expectedAbilityIds[index])) {
+            throw new Error(`Invalid Zouken s2 target contract ${definitionId}: ${source.id}#${ability.id}`);
+          }
         }
       }
       sourceIds.add(source.id);

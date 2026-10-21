@@ -663,6 +663,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
   if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'compiled')) return false;
   if (isZoukenManaBootstrapCandidate(a) && !isZoukenManaBootstrapSemantic(a)) return false;
+  if (isZoukenS2AbilityCandidate(a) && (!isZoukenS2Source(s, sourceId) || !isZoukenS2Semantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
   if (isZoukenAscensionAbilityCandidate(a) && (!isZoukenAscensionSource(s, sourceId) || !isZoukenAscensionSemantic(a))) return false;
   if (isZoukenS3AbilityCandidate(a) && (!isZoukenS3Source(s, sourceId) || !isZoukenS3Semantic(a))) return false;
   if (isZoukenS4AbilityCandidate(a) && (!isZoukenS4Source(s, sourceId) || !isZoukenS4Semantic(a))) return false;
@@ -780,6 +781,10 @@ const ZOUKEN_S3_ACTION_ID = 'zouken.founder.power-conversion';
 const ZOUKEN_S3_WIN_ID = 'zouken.founder.after-win';
 const ZOUKEN_S3_PASSIVE_CLAUSE = '你没有令咒。每当你获得令咒时，改为获得4点魔力；当你因其他能力需要花费令咒时，改为花费4点魔力。';
 const ZOUKEN_S3_ACTION_CLAUSE = '行动阶段：花费2X魔力，获得X点合计威力，若你于本回合赢得战斗，获得X点战果。';
+const ZOUKEN_S2_SOURCE_ID = 'master.zouken.skill.s2';
+const ZOUKEN_S2_ABILITY_ID = 'zouken.five-hundred-year-undead';
+const ZOUKEN_S2_CLAUSE = '你是大圣杯的【创造者】并怀揣【五百年的执念】。';
+const ZOUKEN_S2_TARGET_IDS = ['master.zouken.skill.s3', 'master.zouken.skill.s4'] as const;
 
 function isZoukenS4Source(s: GameState, sourceCardId: string): boolean {
   return definition(s, sourceCardId)?.id === ZOUKEN_S4_SOURCE_ID;
@@ -936,6 +941,35 @@ export function isZoukenS3WinSemantic(a: AuthoringAbility): boolean {
 
 export function isZoukenS3Semantic(a: AuthoringAbility): boolean {
   return isZoukenS3PassiveSemantic(a) || isZoukenS3ActionSemantic(a) || isZoukenS3WinSemantic(a);
+}
+
+function isZoukenS2Source(s: GameState, sourceCardId: string): boolean {
+  return definition(s, sourceCardId)?.id === ZOUKEN_S2_SOURCE_ID;
+}
+
+export function isZoukenS2AbilityCandidate(a: AuthoringAbility): boolean {
+  return a.id === ZOUKEN_S2_ABILITY_ID;
+}
+
+export function isZoukenS2Semantic(a: AuthoringAbility): boolean {
+  if (!isGameStartSkillProvisioningSemantic(a) || a.id !== ZOUKEN_S2_ABILITY_ID || a.printedClause !== ZOUKEN_S2_CLAUSE) return false;
+  const targets = a.effects[0]?.targetDefinitionIds;
+  return Array.isArray(targets) && targets.length === 2 && targets[0] === ZOUKEN_S2_TARGET_IDS[0] && targets[1] === ZOUKEN_S2_TARGET_IDS[1];
+}
+
+function exactZoukenS2TargetPack(s: GameState, sourceCardId: string, ability: AuthoringAbility): boolean {
+  if (!isZoukenS2Semantic(ability) || !isZoukenS2Source(s, sourceCardId)) return false;
+  const sourceOwner = player(s, card(s, sourceCardId).controllerPlayerId).masterCardId;
+  const targets = ability.effects[0]?.targetDefinitionIds as string[];
+  return targets.every((targetId, index) => {
+    const target = runtime(s).pack.cards[targetId] as ExecutableCardDefinition | undefined;
+    if (!target || target.id !== ZOUKEN_S2_TARGET_IDS[index] || target.mode !== 'automatic' || target.cardType !== 'master_skill' ||
+        target.ownerId !== sourceOwner || target.initialZone !== undefined) return false;
+    const ids = target.abilities.map((candidate) => candidate.id);
+    const expected = index === 0 ? ['zouken.founder', 'zouken.founder.power-conversion', 'zouken.founder.after-win'] :
+      ['zouken.pseudo-vampire.round-end', 'zouken.pseudo-vampire.battle-end', 'zouken.pseudo-vampire.bug-body'];
+    return ids.length === expected.length && ids.every((id, position) => id === expected[position]);
+  });
 }
 
 function zoukenS4BattleLosers(battle: GameState['battleResults'][number]): string[] {
@@ -1145,6 +1179,7 @@ function gameStartSkillProvisioningPreflight(s: GameState, sourceId: string, a: 
     sourceDefinition.ownerId !== controller.masterCardId) return false;
   const targets = a.effects[0]?.targetDefinitionIds;
   if (!Array.isArray(targets)) return false;
+  if (isZoukenS2AbilityCandidate(a) && !exactZoukenS2TargetPack(s, sourceId, a)) return false;
   for (const definitionId of targets) {
     if (typeof definitionId !== 'string') return false;
     const target = runtime(s).pack.cards[definitionId] as ExecutableCardDefinition | undefined;
@@ -3376,6 +3411,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (isZoukenManaBootstrapCandidate(a) && !isZoukenManaBootstrapSemantic(a)) {
     reject('resolution_failed', 'Unsupported Zouken game-start mana bootstrap semantic shape');
+  }
+  if (isZoukenS2AbilityCandidate(a) && (!isZoukenS2Source(s, ctx.sourceCardId) || !isZoukenS2Semantic(a) || !gameStartSkillProvisioningPreflight(s, ctx.sourceCardId, a))) {
+    reject('resolution_failed', 'Unsupported Zouken s2 owner-bound provisioning semantic shape');
   }
   if (isZoukenAscensionAbilityCandidate(a) && (!isZoukenAscensionSource(s, ctx.sourceCardId) || !isZoukenAscensionSemantic(a))) {
     reject('resolution_failed', 'Unsupported Zouken ascension semantic shape');
