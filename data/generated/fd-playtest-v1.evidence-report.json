@@ -752,7 +752,7 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/间桐脏砚.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
-      "imageIndex": 4,
+      "imageIndex": 5,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },
@@ -768,13 +768,24 @@
       "issueCodes": []
     },
     {
+      "entityId": "master.zouken.skill.s2",
+      "displayName": "五百年的活尸",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/间桐脏砚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
       "entityId": "master.zouken.skill.s3",
       "displayName": "创造者",
       "entityKind": "master_skill",
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/间桐脏砚.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
-      "imageIndex": 5,
+      "imageIndex": 6,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },
@@ -785,7 +796,7 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/间桐脏砚.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
-      "imageIndex": 2,
+      "imageIndex": 3,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },
@@ -796,7 +807,7 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/间桐脏砚.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
-      "imageIndex": 3,
+      "imageIndex": 4,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

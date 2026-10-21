@@ -241,6 +241,7 @@
       "commandSpellCardIds": [],
       "skillCardIds": [
         "master.zouken.skill.s1",
+        "master.zouken.skill.s2",
         "master.zouken.skill.s4",
         "master.zouken.skill.s5",
         "master.zouken.skill.ascension",
@@ -2355,7 +2356,7 @@
       "id": "master.zouken.overview",
       "name": "间桐脏砚",
       "cardType": "master_overview",
-      "printedText": "大空洞的亡者: 游戏开始时，将你的魔力设置为10点且你的魔力上限为16点。\n五百年的执念: 回合结束时，若你本回合获得的魔力少于3点，失去2点战果。\n刻印虫-战斗阶段：战斗阶段结束后，如果你赢得一场战斗，从该战斗的一名败者处吸取至多3点魔力；若该战斗没有其他玩家或你位于侦查，你获得3点魔力。\n虫之身-战斗阶段：花费7点魔力，移动至一处地点。\n间桐家的宗主: 局势牌无法禁止你使用宝具。\n幕后主使: 当你移动时，可以无视交战状态。移除【刻印虫】\"如果你赢得一场战斗\"的触发条件。\n行动阶段：花费6点魔力，使与你处于同一战场的对手失去一枚令咒。\n创造者: 你没有令咒。每当你获得令咒时，改为获得4点魔力；当你因其他能力需要花费令咒时，改为花费4点魔力。\n行动阶段：花费2X魔力，获得X点合计威力，若你于本回合赢得战斗，获得X点战果。",
+      "printedText": "大空洞的亡者: 游戏开始时，将你的魔力设置为10点且你的魔力上限为16点。\n五百年的活尸: 你是大圣杯的【创造者】并怀揣【五百年的执念】。\n五百年的执念: 回合结束时，若你本回合获得的魔力少于3点，失去2点战果。\n刻印虫-战斗阶段：战斗阶段结束后，如果你赢得一场战斗，从该战斗的一名败者处吸取至多3点魔力；若该战斗没有其他玩家或你位于侦查，你获得3点魔力。\n虫之身-战斗阶段：花费7点魔力，移动至一处地点。\n间桐家的宗主: 局势牌无法禁止你使用宝具。\n幕后主使: 当你移动时，可以无视交战状态。移除【刻印虫】\"如果你赢得一场战斗\"的触发条件。\n行动阶段：花费6点魔力，使与你处于同一战场的对手失去一枚令咒。\n创造者: 你没有令咒。每当你获得令咒时，改为获得4点魔力；当你因其他能力需要花费令咒时，改为花费4点魔力。\n行动阶段：花费2X魔力，获得X点合计威力，若你于本回合赢得战斗，获得X点战果。",
       "capability": {
         "status": "FULL"
       },
@@ -2383,7 +2384,7 @@
       "source": {
         "htmPath": "chm-extract/间桐脏砚.htm",
         "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
-        "imageIndex": 4,
+        "imageIndex": 5,
         "reviewedAgainstImage": true
       }
     },
@@ -2409,6 +2410,27 @@
       }
     },
     {
+      "id": "master.zouken.skill.s2",
+      "name": "五百年的活尸",
+      "cardType": "master_skill",
+      "printedValue": 0,
+      "printedCost": 0,
+      "printedText": "你是大圣杯的【创造者】并怀揣【五百年的执念】。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/间桐脏砚.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
+        "imageIndex": 2,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
       "id": "master.zouken.skill.s3",
       "name": "创造者",
       "cardType": "master_skill",
@@ -2425,7 +2447,7 @@
       "source": {
         "htmPath": "chm-extract/间桐脏砚.htm",
         "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
-        "imageIndex": 5,
+        "imageIndex": 6,
         "reviewedAgainstImage": true
       }
     },
@@ -2446,7 +2468,7 @@
       "source": {
         "htmPath": "chm-extract/间桐脏砚.htm",
         "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
-        "imageIndex": 2,
+        "imageIndex": 3,
         "reviewedAgainstImage": true
       }
     },
@@ -2467,7 +2489,7 @@
       "source": {
         "htmPath": "chm-extract/间桐脏砚.htm",
         "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
-        "imageIndex": 3,
+        "imageIndex": 4,
         "reviewedAgainstImage": true
       }
     },
@@ -5207,6 +5229,63 @@
         "destinationZone": "field",
         "initialZone": "skill"
       },
+      "master.zouken.skill.s2": {
+        "id": "master.zouken.skill.s2",
+        "name": "五百年的活尸",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "被动",
+          "attributes": [],
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "zouken.five-hundred-year-undead",
+            "kind": "forced_trigger",
+            "printedClause": "你是大圣杯的【创造者】并怀揣【五百年的执念】。",
+            "activation": {
+              "trigger": "game_start"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "provision_skill_cards",
+                "player": "controller",
+                "targetDefinitionIds": [
+                  "master.zouken.skill.s3",
+                  "master.zouken.skill.s4"
+                ]
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "master.zouken",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
+      },
       "master.zouken.skill.s4": {
         "id": "master.zouken.skill.s4",
         "name": "五百年的执念",
@@ -5346,8 +5425,7 @@
         "mode": "automatic",
         "ownerId": "master.zouken",
         "playKind": "support",
-        "destinationZone": "field",
-        "initialZone": "skill"
+        "destinationZone": "field"
       },
       "master.zouken.skill.s5": {
         "id": "master.zouken.skill.s5",
@@ -5644,8 +5722,7 @@
         "mode": "automatic",
         "ownerId": "master.zouken",
         "playKind": "support",
-        "destinationZone": "field",
-        "initialZone": "skill"
+        "destinationZone": "field"
       },
       "servant.artoriac.skill.sc-artoriac-1": {
         "id": "servant.artoriac.skill.sc-artoriac-1",
@@ -11060,6 +11137,7 @@
         "kind": "master",
         "cardIds": [
           "master.zouken.skill.s1",
+          "master.zouken.skill.s2",
           "master.zouken.skill.s4",
           "master.zouken.skill.s5",
           "master.zouken.skill.ascension",
@@ -11317,11 +11395,11 @@
       "master.irisviel": "master.irisviel.command-spell",
       "master.zouken": "master.zouken.command-spell"
     },
-    "definitionHash": "10ac82358b19f8821dcae1b8958736fb19eb4e420b61448f5e858a033f98bbab",
+    "definitionHash": "ceea954363c5aa4b908d9673970abce758f2c76ed113401673d5448f265086a4",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "10ac82358b19f8821dcae1b8958736fb19eb4e420b61448f5e858a033f98bbab"
+      "definitionHash": "ceea954363c5aa4b908d9673970abce758f2c76ed113401673d5448f265086a4"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
@@ -11714,92 +11792,105 @@
         "abilityIndex": 0,
         "path": "archives[7].cards[0].abilities[0]"
       },
-      "master.zouken.skill.s4": {
+      "master.zouken.skill.s2": {
         "archiveId": "master.zouken",
         "archiveIndex": 7,
         "cardIndex": 1,
         "path": "archives[7].cards[1]"
       },
-      "master.zouken.skill.s4#zouken.pseudo-vampire.round-end": {
+      "master.zouken.skill.s2#zouken.five-hundred-year-undead": {
         "archiveId": "master.zouken",
         "archiveIndex": 7,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[7].cards[1].abilities[0]"
       },
-      "master.zouken.skill.s4#zouken.pseudo-vampire.battle-end": {
-        "archiveId": "master.zouken",
-        "archiveIndex": 7,
-        "cardIndex": 1,
-        "abilityIndex": 1,
-        "path": "archives[7].cards[1].abilities[1]"
-      },
-      "master.zouken.skill.s4#zouken.pseudo-vampire.bug-body": {
-        "archiveId": "master.zouken",
-        "archiveIndex": 7,
-        "cardIndex": 1,
-        "abilityIndex": 2,
-        "path": "archives[7].cards[1].abilities[2]"
-      },
-      "master.zouken.skill.s5": {
+      "master.zouken.skill.s4": {
         "archiveId": "master.zouken",
         "archiveIndex": 7,
         "cardIndex": 2,
         "path": "archives[7].cards[2]"
       },
-      "master.zouken.skill.s5#master.zouken.skill.s5.game-start-rules": {
+      "master.zouken.skill.s4#zouken.pseudo-vampire.round-end": {
         "archiveId": "master.zouken",
         "archiveIndex": 7,
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[7].cards[2].abilities[0]"
       },
-      "master.zouken.skill.ascension": {
+      "master.zouken.skill.s4#zouken.pseudo-vampire.battle-end": {
+        "archiveId": "master.zouken",
+        "archiveIndex": 7,
+        "cardIndex": 2,
+        "abilityIndex": 1,
+        "path": "archives[7].cards[2].abilities[1]"
+      },
+      "master.zouken.skill.s4#zouken.pseudo-vampire.bug-body": {
+        "archiveId": "master.zouken",
+        "archiveIndex": 7,
+        "cardIndex": 2,
+        "abilityIndex": 2,
+        "path": "archives[7].cards[2].abilities[2]"
+      },
+      "master.zouken.skill.s5": {
         "archiveId": "master.zouken",
         "archiveIndex": 7,
         "cardIndex": 3,
         "path": "archives[7].cards[3]"
       },
-      "master.zouken.skill.ascension#zouken.illusive-mastermind": {
+      "master.zouken.skill.s5#master.zouken.skill.s5.game-start-rules": {
         "archiveId": "master.zouken",
         "archiveIndex": 7,
         "cardIndex": 3,
         "abilityIndex": 0,
         "path": "archives[7].cards[3].abilities[0]"
       },
-      "master.zouken.skill.ascension#zouken.illusive-mastermind.seal-loss": {
-        "archiveId": "master.zouken",
-        "archiveIndex": 7,
-        "cardIndex": 3,
-        "abilityIndex": 1,
-        "path": "archives[7].cards[3].abilities[1]"
-      },
-      "master.zouken.skill.s3": {
+      "master.zouken.skill.ascension": {
         "archiveId": "master.zouken",
         "archiveIndex": 7,
         "cardIndex": 4,
         "path": "archives[7].cards[4]"
       },
-      "master.zouken.skill.s3#zouken.founder": {
+      "master.zouken.skill.ascension#zouken.illusive-mastermind": {
         "archiveId": "master.zouken",
         "archiveIndex": 7,
         "cardIndex": 4,
         "abilityIndex": 0,
         "path": "archives[7].cards[4].abilities[0]"
       },
-      "master.zouken.skill.s3#zouken.founder.power-conversion": {
+      "master.zouken.skill.ascension#zouken.illusive-mastermind.seal-loss": {
         "archiveId": "master.zouken",
         "archiveIndex": 7,
         "cardIndex": 4,
         "abilityIndex": 1,
         "path": "archives[7].cards[4].abilities[1]"
       },
+      "master.zouken.skill.s3": {
+        "archiveId": "master.zouken",
+        "archiveIndex": 7,
+        "cardIndex": 5,
+        "path": "archives[7].cards[5]"
+      },
+      "master.zouken.skill.s3#zouken.founder": {
+        "archiveId": "master.zouken",
+        "archiveIndex": 7,
+        "cardIndex": 5,
+        "abilityIndex": 0,
+        "path": "archives[7].cards[5].abilities[0]"
+      },
+      "master.zouken.skill.s3#zouken.founder.power-conversion": {
+        "archiveId": "master.zouken",
+        "archiveIndex": 7,
+        "cardIndex": 5,
+        "abilityIndex": 1,
+        "path": "archives[7].cards[5].abilities[1]"
+      },
       "master.zouken.skill.s3#zouken.founder.after-win": {
         "archiveId": "master.zouken",
         "archiveIndex": 7,
-        "cardIndex": 4,
+        "cardIndex": 5,
         "abilityIndex": 2,
-        "path": "archives[7].cards[4].abilities[2]"
+        "path": "archives[7].cards[5].abilities[2]"
       },
       "servant.artoriac.skill.sc-artoriac-1": {
         "archiveId": "servant.artoriac",
