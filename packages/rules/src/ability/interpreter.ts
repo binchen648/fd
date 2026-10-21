@@ -1165,17 +1165,20 @@ export function isGameStartRuleOverrideSemantic(a: AuthoringAbility): boolean {
   return new Set(rules).size === rules.length;
 }
 
-function provisionedSkillCardIsValid(s: GameState, instance: CardInstance, controllerId: string): boolean {
+function provisionedSkillCardIsValid(s: GameState, instance: CardInstance, controllerId: string, expectedGeneratedBy?: string): boolean {
   const state = runtime(s).cardState[instance.instanceId];
   return instance.ownerPlayerId === controllerId && instance.controllerPlayerId === controllerId &&
     instance.zone === 'skill' && instance.visibility.scope === 'owner_only' &&
-    instance.visibility.ownerPlayerId === controllerId && state?.active !== true && state?.faceDown !== true;
+    instance.visibility.ownerPlayerId === controllerId &&
+    (expectedGeneratedBy === undefined || instance.generatedBy === expectedGeneratedBy) &&
+    state?.active !== true && state?.faceDown !== true;
 }
 
 function gameStartSkillProvisioningPreflight(s: GameState, sourceId: string, a: AuthoringAbility): boolean {
   const source = card(s, sourceId); const controller = player(s, source.controllerPlayerId);
   const sourceDefinition = definition(s, sourceId) as ExecutableCardDefinition | undefined;
-  if (source.ownerPlayerId !== controller.id || source.zone !== 'skill' || sourceDefinition?.cardType !== 'master_skill' ||
+  if (source.ownerPlayerId !== controller.id || source.zone !== 'skill' || sourceDefinition?.mode !== 'automatic' ||
+    sourceDefinition?.cardType !== 'master_skill' ||
     sourceDefinition.ownerId !== controller.masterCardId) return false;
   const targets = a.effects[0]?.targetDefinitionIds;
   if (!Array.isArray(targets)) return false;
@@ -1186,7 +1189,8 @@ function gameStartSkillProvisioningPreflight(s: GameState, sourceId: string, a: 
     if (!target || target.mode !== 'automatic' || target.cardType !== 'master_skill' ||
       target.ownerId !== controller.masterCardId || target.initialZone !== undefined) return false;
     const existing = s.cards.filter((candidate) => candidate.definitionId === definitionId);
-    if (existing.length > 1 || (existing.length === 1 && !provisionedSkillCardIsValid(s, existing[0]!, controller.id))) return false;
+    const expectedGeneratedBy = isZoukenS2AbilityCandidate(a) ? source.instanceId : undefined;
+    if (existing.length > 1 || (existing.length === 1 && !provisionedSkillCardIsValid(s, existing[0]!, controller.id, expectedGeneratedBy))) return false;
   }
   return true;
 }

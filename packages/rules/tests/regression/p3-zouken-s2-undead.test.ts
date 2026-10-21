@@ -68,6 +68,22 @@ describe('P3 Zouken s2 owner-bound provisioning contract', () => {
     }
   });
 
+  it('rejects forged retained provenance and a non-automatic runtime source without mutation', () => {
+    const retained = setup();
+    rules.processAbilityEvent(retained.state, { id: 's2-game-start-valid', type: 'game_start' });
+    const forgedTarget = provisioned(retained.state, TARGETS[0])[0]!;
+    forgedTarget.generatedBy = 'forged-source';
+    const beforeForgedReplay = JSON.stringify(retained.state.cards);
+    expect(rules.processAbilityEvent(retained.state, { id: 's2-game-start-forged-replay', type: 'game_start' })).toBeUndefined();
+    expect(JSON.stringify(retained.state.cards)).toBe(beforeForgedReplay);
+
+    const hostileSource = setup();
+    (hostileSource.state.abilityRuntime!.pack.cards[SOURCE_ID] as ExecutableCardDefinition).mode = 'host_adjudicated';
+    expect(rules.processAbilityEvent(hostileSource.state, { id: 's2-game-start-hostile-source', type: 'game_start' })).toBeUndefined();
+    expect(provisioned(hostileSource.state, TARGETS[0])).toHaveLength(0);
+    expect(provisioned(hostileSource.state, TARGETS[1])).toHaveLength(0);
+  });
+
   it('is present in a live seven-player MatchSession only through the source owner', () => {
     const session = rules.createMatchSession({ seed: 20260904, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
     const pairing = session.pairings.find((entry) => entry.master.id === 'master.zouken');

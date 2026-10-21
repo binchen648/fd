@@ -22,13 +22,18 @@ The active archive retains the exact source clause and binds it to `legacy-conte
 - targets are deferred from initial placement, then created as owner/controller-owned, face-up inactive skill cards in the owner’s skill zone with `generatedBy` bound to the s2 source;
 - duplicate valid material is retained, invalid retained material or cross-owner material fails closed, and repeated/replayed `game_start` does not create duplicates;
 - restore validates the resulting card ownership, source provenance, card zone/visibility and replay envelope through the existing MatchSession restore contract.
+- the s2 runtime source definition must remain `mode=automatic`; retained/generated target cards must carry the exact generating source instance marker (for example, `p1-master.zouken.skill.s2`), and a forged marker or host-adjudicated source is rejected before any provisioning mutation.
+
+## R1 reviewer repair
+
+R1 closes the runtime provenance gaps identified by independent review: source-specific retained-card validation now requires the exact s2 source instance in `generatedBy`, and runtime provisioning rejects a mutated non-automatic source definition even when its compiled shape was previously valid. Regression coverage exercises both forged retained provenance and hostile runtime source mode.
 
 The generic provisioning primitive remains available for its existing FB2 contracts; the s2 path adds source-specific shape and canonical target checks at executable-pack compilation and runtime preflight.
 
 ## Verification
 
-- s2 focused regression: `4/4 PASS`.
-- s2 + s1/s3/s4/ascension + generic provisioning regressions: `38/38 PASS`.
+- s2 focused regression: `5/5 PASS`.
+- s2 + s1/s3/s4/ascension + generic provisioning regressions: `41/41 PASS`.
 - MatchSession: `30/30 PASS`.
 - `content:validate`: PASS, `8 masters, 7 servants, 20 events, 0 blocking issues`.
 - `verify:generated-content`: PASS.
