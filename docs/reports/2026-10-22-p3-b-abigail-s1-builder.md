@@ -34,8 +34,8 @@ The active authoring/provenance record uses the exact printed S1 text, source lo
 
 Final checks were run from this worktree before commit:
 
-- Abigail S1 focused regression: 12/12 pass, including the real S1 -> S4 use -> Abigail discard -> next-round S1 path, immutable per-card distribution provenance, isolated forged-receipt rejection with unchanged state, cross-record/wrong-recipient/repeated-event rejection, and serialize/restore provenance rejection
-- MatchSession/replay/related Abigail regressions: 74/74 pass (`match-session`, replay, Abigail S3a/S3b/S4)
+- Abigail S1 focused regression: 13/13 pass, including the real S1 -> S4 use -> Abigail discard -> next-round S1 path, immutable per-card distribution provenance, isolated forged-receipt and cross-card proof-transplant rejection with unchanged state, cross-record/wrong-recipient/repeated-event rejection, and serialize/restore provenance rejection
+- MatchSession/replay/related Abigail regressions: 75/75 pass (`match-session`, replay, Abigail S3a/S3b/S4)
 - Typecheck: pass
 - `content:validate`: pass
 - `verify:generated-content`: pass (deterministic hashes unchanged)
@@ -56,4 +56,4 @@ The S1 ledger now binds every immutable `cardInstanceId` and original recipient 
 
 ## Independent reviewer blocker repair
 
-The S1 recycled-card predicate no longer trusts a receipt by itself. The runtime now records server-owned provenance for the actual S4 hand-to-attack-area play, its `on_use_declared`/`on_card_played` event IDs, the canonical true-name release, and the cleanup transaction that consumed the canonical `after_battle_ended` event. Both live S1 resolution and MatchSession restore require the exact card, recipient, release/play IDs, terminal IDs, and processed-event membership to agree across those records. A direct discard plus an invented `abigail_s4_true_name_card_recycled` receipt, wrong event chain, replacement card, duplicate, or cross-record receipt is rejected transactionally with no revision, ledger, or state change. The S4 regression fixtures now exercise the real play path, while preserving the forged-source rejection boundary.
+The S1 recycled-card predicate no longer trusts a receipt by itself. The runtime now records server-owned provenance for the actual S4 hand-to-attack-area play, its `on_use_declared`/`on_card_played` event IDs, the canonical true-name release, and the cleanup transaction that consumed the canonical `after_battle_ended` event. Every proof carries and is checked against its unique `cardInstanceId`/source key; play/use IDs and release/recycle IDs must be unique across cards. Both live S1 resolution and MatchSession restore require the exact card, recipient, release/play IDs, terminal IDs, and processed-event membership to agree across those records. A direct discard plus an invented receipt, wrong event chain, replacement card, duplicate, or cross-card proof transplant is rejected transactionally with no revision, ledger, or state change. The S4 regression fixtures now exercise the real play path, while preserving the forged-source rejection boundary.

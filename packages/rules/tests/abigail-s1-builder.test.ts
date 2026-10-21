@@ -152,6 +152,46 @@ describe('Abigail S1 source-bound X ledger', () => {
     expect(JSON.stringify(state)).toBe(before);
   });
 
+  it('rejects cross-card transplantation of a real S4 play and recycle proof', () => {
+    const state = setup();
+    expect(play(state, 'abigail-s1').ok).toBe(true);
+    const firstAction = rules.getLegalActions(state, 'p1').find((entry) => entry.type === 'activate_ability' && entry.abilityId === S1_ACTION)!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', firstAction as any).ok).toBe(true);
+    const distributed = state.cards.find((card) => card.definitionId === S4)!;
+    const other = 'other-s4-real-play';
+    state.cards.push({ instanceId: other, definitionId: S4, ownerPlayerId: 'p2', controllerPlayerId: 'p2', zone: 'hand',
+      visibility: { scope: 'owner_only', ownerPlayerId: 'p2' }, generatedBy: S1 });
+    state.abilityRuntime!.cardState[other] = { active: false, faceDown: false, playedRound: state.round.roundNumber };
+    state.round.prioritySeat = 2;
+    expect(rules.dispatchAbilityCommand(state, 'p2', { type: 'play_card', cardInstanceId: other }).ok).toBe(true);
+    state.round.activePhase = 'battle';
+    rules.processAbilityEvent(state, { id: 'other-s4-battle-end', type: 'after_battle_ended', playerId: 'p2', sourceCardId: other,
+      battlePhaseResolutionId: 'other-s4-battle' });
+    const playProof = state.abilityRuntime!.abigailS4PlayProvenance![other]!;
+    const recycleProof = state.abilityRuntime!.abigailS4RecycleProvenance![other]!;
+    const release = state.abilityRuntime!.events.find((event) => event.type === 'abigail_s4_true_name_released' && event.sourceCardId === other)!;
+    const recycled = state.abilityRuntime!.events.find((event) => event.type === 'abigail_s4_true_name_card_recycled' && event.sourceCardId === other)!;
+    state.abilityRuntime!.abigailS4PlayProvenance![distributed.instanceId] = { ...playProof, cardInstanceId: distributed.instanceId, sourceCardId: distributed.instanceId };
+    state.abilityRuntime!.abigailS4RecycleProvenance![distributed.instanceId] = { ...recycleProof, cardInstanceId: distributed.instanceId, sourceCardId: distributed.instanceId };
+    state.abilityRuntime!.events.push({ ...release, sourceCardId: distributed.instanceId });
+    state.abilityRuntime!.events.push({ ...recycled, sourceCardId: distributed.instanceId });
+    const transplanted = state.cards.find((card) => card.instanceId === distributed.instanceId)!;
+    transplanted.ownerPlayerId = 'p1';
+    transplanted.controllerPlayerId = 'p1';
+    transplanted.zone = 'discard';
+    transplanted.visibility = { scope: 'owner_only', ownerPlayerId: 'p1' };
+    state.abilityRuntime!.cardState[distributed.instanceId] = { active: false, faceDown: false, playedRound: state.round.roundNumber };
+    rules.advanceAbilityPhase(state, 'action', 2);
+    state.round.prioritySeat = 1;
+    const secondAction = rules.getLegalActions(state, 'p1').find((entry) => entry.type === 'activate_ability' && entry.abilityId === S1_ACTION)!;
+    // reviewer transplant has two map entries with the same server event identities
+    expect(state.abilityRuntime!.abigailS4PlayProvenance![other]!.onUseEventId).toBe(state.abilityRuntime!.abigailS4PlayProvenance![distributed.instanceId]!.onUseEventId);
+    expect(state.ruleOverrides?.abigailSanityLossByPlayer?.p1?.distributed.some((entry) => entry.cardInstanceId === distributed.instanceId)).toBe(true);
+    const before = JSON.stringify(state);
+    expect(rules.dispatchAbilityCommand(state, 'p1', secondAction as any).ok).toBe(false);
+    expect(JSON.stringify(state)).toBe(before);
+  });
+
   it('rejects cross-record, repeated, and wrong-recipient distribution provenance', () => {
     const state = setup();
     expect(play(state, 'abigail-s1').ok).toBe(true);

@@ -1130,19 +1130,27 @@ function isCanonicalAbigailS1RecycledCard(s: GameState, controllerId: string, re
   const state = runtime(s).cardState[instanceId];
   const playProof = runtime(s).abigailS4PlayProvenance?.[instanceId];
   const recycleProof = runtime(s).abigailS4RecycleProvenance?.[instanceId];
+  const playProofEntries = Object.entries(runtime(s).abigailS4PlayProvenance ?? {});
+  const recycleProofEntries = Object.entries(runtime(s).abigailS4RecycleProvenance ?? {});
   const releaseEvents = runtime(s).events.filter((event) => event.type === 'abigail_s4_true_name_released' && event.sourceCardId === instanceId);
   const recycleEvents = runtime(s).events.filter((event) => event.type === 'abigail_s4_true_name_card_recycled' && event.sourceCardId === instanceId);
   return !!created && created.ownerPlayerId === controllerId && created.controllerPlayerId === controllerId && created.zone === 'discard' &&
     created.visibility.scope === 'owner_only' && created.visibility.ownerPlayerId === controllerId && state?.active === false &&
     runtime(s).pack.cards[created.definitionId]?.id === ABIGAIL_OUTSIDE_LIFE_ID && created.generatedBy === ABIGAIL_OUTSIDE_LIFE_GENERATED_BY &&
-    !!playProof && playProof.controllerId === recipientPlayerId &&
+    !!playProof && playProof.cardInstanceId === instanceId && playProof.sourceCardId === instanceId &&
+    playProof.controllerId === recipientPlayerId &&
+    playProofEntries.every(([cardId, proof]) => cardId === instanceId ||
+      (proof.onUseEventId !== playProof.onUseEventId && proof.onCardPlayedEventId !== playProof.onCardPlayedEventId)) &&
     runtime(s).processedEvents.includes(playProof.onUseEventId) && runtime(s).processedEvents.includes(playProof.onCardPlayedEventId) &&
     releaseEvents.length === 1 && releaseEvents[0]!.playerId === recipientPlayerId &&
     releaseEvents[0]!.abilityId === ABIGAIL_S4_RELEASE_ID && releaseEvents[0]!.triggerEventId === playProof.onUseEventId &&
     releaseEvents[0]!.playEventId === playProof.onCardPlayedEventId &&
-    !!recycleProof && recycleProof.controllerId === recipientPlayerId && recycleProof.recipientPlayerId === controllerId &&
+    !!recycleProof && recycleProof.cardInstanceId === instanceId && recycleProof.sourceCardId === instanceId &&
+    recycleProof.controllerId === recipientPlayerId && recycleProof.recipientPlayerId === controllerId &&
     recycleProof.abilityId === ABIGAIL_S4_CLEANUP_ID && recycleProof.playEventId === playProof.onCardPlayedEventId &&
     recycleProof.releaseEventId === playProof.onUseEventId &&
+    recycleProofEntries.every(([cardId, proof]) => cardId === instanceId ||
+      (proof.playEventId !== recycleProof.playEventId && proof.releaseEventId !== recycleProof.releaseEventId)) &&
     recycleEvents.length === 1 && recycleEvents[0]!.playerId === recipientPlayerId && recipientPlayerId !== controllerId &&
     recycleEvents[0]!.abilityId === ABIGAIL_S4_CLEANUP_ID && recycleEvents[0]!.recipientPlayerId === controllerId &&
     recycleEvents[0]!.fromZone === 'attack_area' && recycleEvents[0]!.toZone === 'discard' && recycleEvents[0]!.movedCount === 1 &&
@@ -1349,6 +1357,7 @@ function executeAbigailS4Cleanup(s: GameState, ctx: EffectContext, a: AuthoringA
   }
   runtime(work).abigailS4RecycleProvenance ??= {};
   runtime(work).abigailS4RecycleProvenance![target.instanceId] = {
+    cardInstanceId: target.instanceId, sourceCardId: target.instanceId,
     controllerId: ctx.controllerId, recipientPlayerId: abigailPlayerId, abilityId: ctx.abilityId,
     playEventId: playProof.onCardPlayedEventId, releaseEventId: playProof.onUseEventId,
     battlePhaseResolutionId: event.battlePhaseResolutionId, triggerEventId: event.id,
@@ -4630,7 +4639,8 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     if (definition(s, c.cardInstanceId)?.id === ABIGAIL_OUTSIDE_LIFE_ID) {
       runtime(s).abigailS4PlayProvenance ??= {};
       runtime(s).abigailS4PlayProvenance![c.cardInstanceId] = {
-        controllerId: playerId, onUseEventId, onCardPlayedEventId, round: s.round.roundNumber,
+        cardInstanceId: c.cardInstanceId, sourceCardId: c.cardInstanceId, controllerId: playerId,
+        onUseEventId, onCardPlayedEventId, round: s.round.roundNumber,
       };
     }
     processEvent(s, { id: onUseEventId, type: 'on_use_declared', playerId, sourceCardId: c.cardInstanceId, playedCards });

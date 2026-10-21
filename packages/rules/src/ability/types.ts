@@ -235,11 +235,12 @@ export interface AbilityRuntime {
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];
   /** Server-owned provenance for the actual S4 play chain; never supplied by a client receipt. */
   abigailS4PlayProvenance?: Record<string, {
-    controllerId: PlayerId; onUseEventId: string; onCardPlayedEventId: string; round: number;
+    cardInstanceId: string; sourceCardId: string; controllerId: PlayerId;
+    onUseEventId: string; onCardPlayedEventId: string; round: number;
   }>;
   /** Server-owned provenance for a cleanup transaction that actually recycled an S4 card. */
   abigailS4RecycleProvenance?: Record<string, {
-    controllerId: PlayerId; recipientPlayerId: PlayerId; abilityId: string;
+    cardInstanceId: string; sourceCardId: string; controllerId: PlayerId; recipientPlayerId: PlayerId; abilityId: string;
     playEventId: string; releaseEventId: string; battlePhaseResolutionId: string; triggerEventId: string;
   }>;
   events: SafeEvent[]; calculations: { controllerId: PlayerId; lines: CalculationLine[] }[];
