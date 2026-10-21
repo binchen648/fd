@@ -101,7 +101,7 @@
       "abilities": [
         {
           "id": "servant.abigail.skill.sc-abigail-4.true-name-release", "kind": "declaration_reveal", "printedClause": "【真名解放】",
-          "activation": { "trigger": "on_use_declared", "requiresSourceState": "active" }, "conditions": [], "targets": [], "cost": [],
+          "activation": { "phase": "action", "trigger": "on_use_declared", "requiresSourceState": "active" }, "conditions": [], "targets": [], "cost": [],
           "effects": [{ "id": "abigail-s4-true-name-release", "type": "abigail_true_name_release" }],
           "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
           "limit": {}, "visibility": { "revealsTrueName": true, "revealScope": "servant_package", "revealTiming": "on_use_declared" },

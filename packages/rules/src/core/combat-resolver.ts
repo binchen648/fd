@@ -405,8 +405,14 @@ export function deriveBattleParticipantsFromState(
       for (const entry of Object.values(state.ruleOverrides?.abigailTrueNamePowerBySource ?? {})) {
         const source = state.cards.find((candidate) => candidate.instanceId === entry.sourceCardId);
         const sourceState = state.abilityRuntime?.cardState[entry.sourceCardId];
+        const expectedTargetCount = entry.controllerId === entry.abigailPlayerId ? 1 : 2;
+        const exactTargetSet = entry.targetPlayerIds.length === expectedTargetCount &&
+          new Set(entry.targetPlayerIds).size === entry.targetPlayerIds.length &&
+          entry.targetPlayerIds.every((id) => id === entry.controllerId || id === entry.abigailPlayerId) &&
+          entry.targetPlayerIds[0] === entry.controllerId &&
+          (entry.controllerId === entry.abigailPlayerId || entry.targetPlayerIds[1] === entry.abigailPlayerId);
         if (entry.abilityId === "servant.abigail.skill.sc-abigail-4.true-name-release" &&
-            entry.targetPlayerIds.includes(player.id) && source?.definitionId === "servant.abigail.skill.sc-abigail-4" &&
+            exactTargetSet && entry.targetPlayerIds.includes(player.id) && source?.definitionId === "servant.abigail.skill.sc-abigail-4" &&
             source.generatedBy === "servant.abigail.skill.sc-abigail-1" && source.controllerPlayerId === entry.controllerId &&
             source.zone === "attack_area" && source.visibility.scope === "public" &&
             sourceState?.active === true && sourceState.faceDown !== true && Number.isFinite(entry.amount)) {

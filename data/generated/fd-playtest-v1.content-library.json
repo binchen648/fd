@@ -10046,6 +10046,7 @@
             "kind": "declaration_reveal",
             "printedClause": "【真名解放】",
             "activation": {
+              "phase": "action",
               "trigger": "on_use_declared",
               "requiresSourceState": "active"
             },
@@ -11933,11 +11934,11 @@
       "master.irisviel": "master.irisviel.command-spell",
       "master.zouken": "master.zouken.command-spell"
     },
-    "definitionHash": "ffc6460626921ac117f520220636e9529b2db2b18119b7a34ed9b7571d464521",
+    "definitionHash": "b77396c0a42e02a8dddf3f4d511fc5819a5f241417375b8f908b98e526c045ba",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "ffc6460626921ac117f520220636e9529b2db2b18119b7a34ed9b7571d464521"
+      "definitionHash": "b77396c0a42e02a8dddf3f4d511fc5819a5f241417375b8f908b98e526c045ba"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {

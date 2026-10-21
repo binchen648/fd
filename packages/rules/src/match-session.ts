@@ -853,7 +853,10 @@ function isRestoreRuleOverrides(value: unknown, playerIds: Set<string>, location
         typeof entry.controllerId === 'string' && playerIds.has(entry.controllerId) &&
         typeof entry.abigailPlayerId === 'string' && playerIds.has(entry.abigailPlayerId) &&
         isRestoreStringArray(entry.targetPlayerIds) && new Set(entry.targetPlayerIds).size === entry.targetPlayerIds.length &&
-        entry.targetPlayerIds.includes(entry.controllerId) && entry.targetPlayerIds.includes(entry.abigailPlayerId) &&
+        entry.targetPlayerIds.length === (entry.controllerId === entry.abigailPlayerId ? 1 : 2) &&
+        entry.targetPlayerIds.every((id) => id === entry.controllerId || id === entry.abigailPlayerId) &&
+        entry.targetPlayerIds[0] === entry.controllerId &&
+        (entry.controllerId === entry.abigailPlayerId || entry.targetPlayerIds[1] === entry.abigailPlayerId) &&
         isRestoreSafeInteger(entry.amount) && entry.amount === 6))) return false;
   return true;
 }

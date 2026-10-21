@@ -6,10 +6,10 @@ Status: Builder implementation complete; pending independent GPT-6 Sol review. N
 
 Only `servant.abigail.skill.sc-abigail-4` is implemented. The accepted s3a/s3b contracts remain unchanged. The implementation is source-bound to the true-name release and terminal discard clauses:
 
-- `servant.abigail.skill.sc-abigail-4.true-name-release`: on-use declaration installs one auditable +6 total-power envelope for the controller and Abigail; the target list is unique, so Abigail as controller receives +6 once, not +12. It also reveals Abigail's servant package.
+- `servant.abigail.skill.sc-abigail-4.true-name-release`: action-phase on-use declaration installs one auditable +6 total-power envelope for the controller and Abigail; the target list is canonical and exact, so Abigail as controller receives +6 once, not +12. It also reveals Abigail's servant package. Wrong-phase events are rejected before event-ledger mutation.
 - `servant.abigail.skill.sc-abigail-4.recycle-to-abigail-discard`: an active source with an installed release envelope is accepted only for a canonical `after_battle_ended` event, then atomically moves the source to Abigail's owner-only discard and removes the envelope. Event replay is idempotent through the runtime processed-event ledger.
 
-The runtime validates the exact card definition, `generatedBy` marker, owner/controller relationship, active public `attack_area` source state, Abigail uniqueness, exact ability/effect shape, and restore envelope. Combat totals consume only the validated envelope and the active source. Unreleased Outside-Life cards are excluded from the s4 terminal trigger.
+The runtime validates the exact card definition, `generatedBy` marker, owner/controller relationship, active public `attack_area` source state, Abigail uniqueness, exact ability/effect shape, and restore envelope. The target envelope is exactly `[controller, Abigail]` (or `[controller]` when identical), with no third player or reorder. Combat totals consume only the validated envelope and the active source. Unreleased Outside-Life cards are excluded from the s4 terminal trigger, and s3b terminal cleanup skips a released s4 source so same-event ordering remains atomic.
 
 ## Provenance
 
@@ -22,7 +22,7 @@ The runtime validates the exact card definition, `generatedBy` marker, owner/con
 
 ## Verification
 
-- focused Abigail s4 regression: 5/5
+- focused Abigail s4 regression: 8/8
 - accepted Abigail s3a+s3b regressions: 9/9
 - MatchSession suite: 30/30
 - `npm run content:compile`: 0 blocking issues
