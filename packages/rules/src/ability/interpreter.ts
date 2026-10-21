@@ -1139,7 +1139,7 @@ function context(s: GameState, sourceCardId: string, abilityId: string, event?: 
 export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPack, options: { seed?: number; roomMode?: 'standard' | 'development'; playRulesVersion?: 'legacy-v0' | 'explicit-v1' } = {}): void {
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
-      cardState: {}, extraPlayerPresences: [], multiPresenceLastBattleLossRoundByPlayer: {}, locationMarkers: {}, roundDefinitionAttributeReplacements: {}, sealedCardBindings: {}, armedSealedCardActions: [], sealedCardReplays: {}, recordedRemovedCards: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, battleLossIgnoreRoundByPlayer: {}, shirouMealFoodByPlayer: {}, shirouMealProcurementRoundByPlayer: {}, shishigouCorpseRemovedCardIds: [], wodimeGodLegacyByLocation: {}, wodimeGodLegacyByPlayer: {}, wodimeGodLegacyProcessedPlacementIds: {}, wodimeGodLegacyPlacementProvenance: {}, wodimeGodLegacyPlacementLineage: {}, wodimeGodLegacyEventActivations: {}, wodimeGodLegacyEventLedger: {}, wodimeAtlantisHandledEventPlacementIds: {}, wodimeAtlantisPendingBattlefieldRemovalIds: {}, wodimeAtlantisConsumedEventPlacementIds: {}, wodimeAtlantisReplacementTerminalIds: {}, wodimeAtlantisPlacementProvenance: {}, wodimeAtlantisPendingReplacementEvents: [],
+      cardState: {}, extraPlayerPresences: [], multiPresenceLastBattleLossRoundByPlayer: {}, locationMarkers: {}, roundDefinitionAttributeReplacements: {}, sealedCardBindings: {}, armedSealedCardActions: [], sealedCardReplays: {}, recordedRemovedCards: {}, structuredPlayerFlagsByPlayer: {}, structuredRoundFlagKeysByPlayer: {}, deductionRecordsByPlayer: {}, battleDefeatRoundByPlayer: {}, battleLossIgnoreRoundByPlayer: {}, shirouMealFoodByPlayer: {}, shirouMealProcurementRoundByPlayer: {}, shishigouCorpseRemovedCardIds: [], wodimeAstrologyRoundsByPlayer: {}, wodimeGodLegacyByLocation: {}, wodimeGodLegacyByPlayer: {}, wodimeGodLegacyProcessedPlacementIds: {}, wodimeGodLegacyPlacementProvenance: {}, wodimeGodLegacyPlacementLineage: {}, wodimeGodLegacyEventActivations: {}, wodimeGodLegacyEventLedger: {}, wodimeAtlantisHandledEventPlacementIds: {}, wodimeAtlantisPendingBattlefieldRemovalIds: {}, wodimeAtlantisConsumedEventPlacementIds: {}, wodimeAtlantisReplacementTerminalIds: {}, wodimeAtlantisPlacementProvenance: {}, wodimeAtlantisPendingReplacementEvents: [],
     startingDeckSizeByPlayer: Object.fromEntries(s.players.map((candidate) => [candidate.id, s.cards.filter((entry) => entry.ownerPlayerId === candidate.id && entry.zone === 'deck').length])),
     cardPlayCountByInstance: {}, grantedPerGamePlayLimitCardIds: [], grantedPerGamePlayLimitBaselineByCardId: {},
     ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [],
@@ -2699,12 +2699,30 @@ function resolveWodimeAstrologyAscension(s: GameState, ctx: EffectContext, effec
   const r = runtime(s) as any;
   const rounds = r.wodimeAstrologyRoundsByPlayer?.[ctx.controllerId];
   if (!rounds || !s.cards.some((candidate) => candidate.definitionId === 'master.wodime.skill.s2' && candidate.ownerPlayerId === ctx.controllerId)) return;
-  const nextRound = s.round.roundNumber + 1;
-  if (rounds.includes(nextRound)) return;
-  rounds.push(nextRound);
-  rounds.sort((left: number, right: number) => left - right);
-  r.events.push({ type: 'wodime_astrology_ascension_round_recorded', playerId: ctx.controllerId, visibility: ctx.controllerId,
-    sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId });
+  // The ascension text gives the Wodime owner a secret round choice.  Do not
+  // infer a public/fixed `round + 1`: that leaks the choice and cannot model
+  // the printed ability.  The pending interaction is owner-only and its
+  // continuation carries the authenticated battle-win event in context.
+  if (r.pendingDecision) {
+    const pending = r.pendingDecision.interaction;
+    if (pending?.kind === 'wodime_astrology_ascension_round_v1' &&
+        pending.controllerId === ctx.controllerId && pending.triggerEventId === ctx.event.id) return;
+    reject('pending_resolution', 'Resolve Wodime ascension round choice before another battle-win trigger');
+  }
+  const options = WODIME_ASTROLOGY_ROUND_OPTIONS.filter((id) => !rounds.includes(Number(id.slice('round:'.length))));
+  if (options.length === 0) return;
+  const id = nextId(s, 'wodime-ascension-round-choice');
+  r.pendingDecision = {
+    id, controllerId: ctx.controllerId,
+    target: { id: 'wodime_astrology_ascension_round', type: 'choice', options: options.map((option) => ({ id: option })), count: { min: 1, max: 1 } },
+    candidates: [...options], min: 1, max: 1, context: structuredClone(ctx), remainingEffects: [],
+    interaction: {
+      kind: 'wodime_astrology_ascension_round_v1' as const, template: 'target' as const, visibility: 'owner_only' as const, cancelPolicy: 'forbidden' as const,
+      sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: r.revision + 1,
+      continuationRef: `${id}:continuation`, controllerId: ctx.controllerId, triggerEventId: ctx.event.id, options: [...options],
+      constraints: { kind: 'target' as const, targetKind: 'choice' as const, min: 1 as const, max: 1 as const, distinct: true as const },
+    },
+  };
 }
 
 function wodimeCelestialSpherePlayable(s: GameState, playerId: string, sourceId: string): boolean {
@@ -5650,7 +5668,37 @@ export function isPrintedManaPowerBonusStateValidForRestore(s: GameState): boole
     return true;
   } catch{return false;}
 }
+function isWodimeAstrologyAscensionPendingDecisionLiveValid(s: GameState, decision: PendingDecision): boolean {
+  const meta = decision.interaction;
+  if (!meta || meta.kind !== 'wodime_astrology_ascension_round_v1') return false;
+  let ability: AuthoringAbility;
+  try { ability = abilityDefinition(s, meta.sourceCardInstanceId, meta.abilityId); } catch { return false; }
+  const event = decision.context.event;
+  const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
+  const generated = s.cards.filter((candidate) => candidate.definitionId === 'master.wodime.skill.s2' &&
+    candidate.ownerPlayerId === meta.controllerId && candidate.controllerPlayerId === meta.controllerId);
+  const rounds = (runtime(s) as any).wodimeAstrologyRoundsByPlayer?.[meta.controllerId];
+  const expectedOptions = Array.isArray(rounds) ? WODIME_ASTROLOGY_ROUND_OPTIONS.filter((id) => !rounds.includes(Number(id.slice('round:'.length)))) : [];
+  if (!source || source.ownerPlayerId !== meta.controllerId || source.controllerPlayerId !== meta.controllerId || source.zone !== 'skill' ||
+      generated.length !== 1 || !Array.isArray(rounds) || rounds.length < 2 || new Set(rounds).size !== rounds.length ||
+      rounds.some((round: unknown) => !Number.isSafeInteger(round) || Number(round) < 1 || Number(round) > 11) ||
+      !isWodimeAstrologyAscensionSemantic(ability) ||
+      decision.controllerId !== meta.controllerId || decision.context.controllerId !== meta.controllerId ||
+      decision.context.sourceCardId !== meta.sourceCardInstanceId || decision.context.abilityId !== meta.abilityId ||
+      !event || event.type !== 'after_controller_wins_battle' || event.id !== meta.triggerEventId || event.playerId !== meta.controllerId ||
+      !event.battleResult?.winners.includes(meta.controllerId) || meta.sourceCardInstanceId !== decision.context.sourceCardId ||
+      meta.abilityId !== decision.context.abilityId || meta.template !== 'target' || meta.visibility !== 'owner_only' ||
+      meta.cancelPolicy !== 'forbidden' || meta.continuationRef !== `${decision.id}:continuation` ||
+      (meta.createdRevision !== runtime(s).revision && meta.createdRevision !== runtime(s).revision - 1) ||
+      !exactPlayerArray(meta.options, expectedOptions) || !exactPlayerArray(decision.candidates, expectedOptions) ||
+      decision.min !== 1 || decision.max !== 1 || decision.remainingEffects.length !== 0 ||
+      decision.target.type !== 'choice' || decision.target.id !== 'wodime_astrology_ascension_round' ||
+      meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'choice' || meta.constraints.min !== 1 || meta.constraints.max !== 1) return false;
+  return true;
+}
+
 export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decision: PendingDecision): boolean {
+  if (decision.interaction?.kind === 'wodime_astrology_ascension_round_v1') return isWodimeAstrologyAscensionPendingDecisionLiveValid(s, decision);
   if (decision.interaction?.kind === 'sion_choice_v1') return isSionChoicePendingDecisionLiveValid(s, decision);
   if (decision.interaction?.kind === 'mystic_code_recon_escape_v1') return isMysticCodeReconEscapePendingDecisionLiveValid(s,decision);
   if (decision.interaction?.kind === 'mystic_code_recovery_arm_v1') return isMysticCodeRecoveryArmPendingDecisionLiveValid(s,decision);
@@ -9360,6 +9408,35 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           d.context.selections[WODIME_ASTROLOGY_ROUND_TARGET] = [...selected];
           delete r.pendingDecision;
           executeEffects(s, d.context, d.remainingEffects);
+          break;
+        }
+        if (meta.kind === 'wodime_astrology_ascension_round_v1') {
+          const ability = abilityDefinition(s, d.context.sourceCardId, d.context.abilityId);
+          const event = d.context.event;
+          const rounds = (r.wodimeAstrologyRoundsByPlayer ?? {})[playerId];
+          const source = s.cards.find((candidate) => candidate.instanceId === d.context.sourceCardId);
+          const s2 = s.cards.find((candidate) => candidate.definitionId === 'master.wodime.skill.s2' && candidate.ownerPlayerId === playerId && candidate.controllerPlayerId === playerId);
+          const expectedOptions = Array.isArray(rounds) ? WODIME_ASTROLOGY_ROUND_OPTIONS.filter((id) => !rounds.includes(Number(id.slice('round:'.length)))) : [];
+          if (!isWodimeAstrologyAscensionSemantic(ability) || !source || source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId ||
+              source.zone !== 'skill' || !s2 || !event || event.type !== 'after_controller_wins_battle' || event.playerId !== playerId ||
+              !event.battleResult?.winners.includes(playerId) || meta.sourceCardInstanceId !== d.context.sourceCardId || meta.abilityId !== d.context.abilityId ||
+              meta.controllerId !== playerId || meta.triggerEventId !== event.id || meta.template !== 'target' || meta.visibility !== 'owner_only' ||
+              meta.cancelPolicy !== 'forbidden' || meta.continuationRef !== `${d.id}:continuation` ||
+              (meta.createdRevision !== r.revision && meta.createdRevision !== r.revision - 1) || !Array.isArray(rounds) ||
+              !exactPlayerArray(meta.options, expectedOptions) || !exactPlayerArray(d.candidates, expectedOptions) ||
+              d.target.id !== 'wodime_astrology_ascension_round' || d.target.type !== 'choice' || d.min !== 1 || d.max !== 1 ||
+              meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'choice' || meta.constraints.min !== 1 || meta.constraints.max !== 1 ||
+              !Array.isArray(selected) || selected.length !== 1 || !expectedOptions.includes(selected[0]!)) {
+            reject('resolution_failed', 'Corrupt or stale Wodime ascension round-selection interaction');
+          }
+          const chosen = Number(selected[0]!.slice('round:'.length));
+          if (!Number.isSafeInteger(chosen) || chosen < 1 || chosen > 11 || rounds.includes(chosen)) {
+            reject('invalid_target', 'Wodime ascension requires one new legal round');
+          }
+          rounds.push(chosen); rounds.sort((left: number, right: number) => left - right);
+          delete r.pendingDecision;
+          r.events.push({ type: 'wodime_astrology_ascension_round_recorded', playerId, visibility: playerId,
+            sourceCardId: d.context.sourceCardId, abilityId: d.context.abilityId });
           break;
         }
         if (meta.kind === 'sion_choice_v1') {

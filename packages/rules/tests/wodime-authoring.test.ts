@@ -595,10 +595,22 @@ describe('Wodime frozen authoring archive', () => {
     expect(rules.projectAbilityState(state, 'p2').pendingDecision).toBeUndefined();
     state.round.roundNumber = 3;
     rules.processAbilityEvent(state, { id: 'wodime-ascension-win', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1', battleId: 'battle-1', resultId: 'result-1', battlefieldId: 'shinto', battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] } });
+    const ascension = state.abilityRuntime!.pendingDecision!;
+    expect(ascension.controllerId).toBe('p1');
+    expect(ascension.interaction?.kind).toBe('wodime_astrology_ascension_round_v1');
+    expect(ascension.candidates).toContain('round:4');
+    expect(rules.projectAbilityState(state, 'p2').pendingDecision).toBeUndefined();
+    expect(rules.projectAbilityState(state, 'p2').waitingLabel).toBe('等待响应结算');
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: ascension.id, selectedIds: ['round:2'] }).ok).toBe(false);
+    const selectedAscension = rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: ascension.id, selectedIds: ['round:4'] });
+    expect(selectedAscension.ok).toBe(true);
     expect((state.abilityRuntime as any).wodimeAstrologyRoundsByPlayer.p1).toEqual([2, 4, 7]);
     expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'wodime_astrology_ascension_round_recorded', visibility: 'p1' }));
     expect(state.abilityRuntime!.events.find((event: any) => event.type === 'wodime_astrology_ascension_round_recorded')).not.toHaveProperty('roundNumber');
-    rules.processAbilityEvent(state, { id: 'wodime-ascension-win-repeat', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1', battleId: 'battle-2', resultId: 'result-2', battlefieldId: 'shinto', battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] } });
+    // Replaying the exact authoritative battle-result id is idempotent and
+    // cannot reopen or duplicate the private round choice.
+    rules.processAbilityEvent(state, { id: 'wodime-ascension-win', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1', battleId: 'battle-1', resultId: 'result-1', battlefieldId: 'shinto', battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] } });
+    expect(state.abilityRuntime!.pendingDecision).toBeUndefined();
     expect((state.abilityRuntime as any).wodimeAstrologyRoundsByPlayer.p1).toEqual([2, 4, 7]);
   });
 

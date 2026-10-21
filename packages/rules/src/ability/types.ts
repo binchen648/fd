@@ -440,6 +440,12 @@ export interface WodimeAstrologyRoundSelectionInteractionMetadata {
   controllerId: PlayerId; options: string[];
   constraints: { kind: 'target'; targetKind: 'choice'; min: 2; max: 2; distinct: true };
 }
+export interface WodimeAstrologyAscensionInteractionMetadata {
+  kind: 'wodime_astrology_ascension_round_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
+  sourceCardInstanceId: string; abilityId: string; createdRevision: number; continuationRef: string;
+  controllerId: PlayerId; triggerEventId: string; options: string[];
+  constraints: { kind: 'target'; targetKind: 'choice'; min: 1; max: 1; distinct: true };
+}
 export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetadata | AlterEgoAttributeChoiceInteractionMetadata |
   OpponentCloseToOneInteractionMetadata | OpponentCloseSelectedOneInteractionMetadata | DeductionRecordChoiceInteractionMetadata |
   PostDrawHandShuffleInteractionMetadata | DiscardShuffleSourceXInteractionMetadata | RulerSealMoveInteractionMetadata | RulerSealFreePlayInteractionMetadata |
@@ -452,7 +458,8 @@ export type PendingInteractionMetadata = PrivateOptionalHandPlayInteractionMetad
   GlobalDefinitionRevealRewardInteractionMetadata | DiscardDefinitionPlayAllInteractionMetadata | MultiPresenceLocationContextInteractionMetadata |
   BoundOpponentRoundRuleInteractionMetadata | WitherPainStakeInteractionMetadata | DefinitionSideDeckInteractionMetadata |
   EliminationRescueInteractionMetadata | InjuryWarpChoiceInteractionMetadata | LinkedAuxiliarySuiteInteractionMetadata |
-  HakunoMChallengeInteractionMetadata | SionChoiceInteractionMetadata | WodimeAstrologyRoundSelectionInteractionMetadata;
+  HakunoMChallengeInteractionMetadata | SionChoiceInteractionMetadata | WodimeAstrologyRoundSelectionInteractionMetadata |
+  WodimeAstrologyAscensionInteractionMetadata;
 export interface PendingDecision {
   id: string; controllerId: PlayerId; target: RuleNode; candidates: string[];
   min: number; max: number; context: EffectContext; remainingEffects: RuleNode[];
@@ -792,6 +799,8 @@ export interface AbilityRuntime {
   masterAscensionEventPowerByPlayer?: Record<PlayerId, MasterAscensionEventPowerState>;
   /** Exact played-definition +4 basic-card Power authority while the bound physical source remains active. */
   masterAscensionSourceDefinitionPowerByPlayer?: Record<PlayerId, MasterAscensionSourceDefinitionPowerState>;
+  /** Owner-private Wodime round numbers selected by Astrology and Ascension. */
+  wodimeAstrologyRoundsByPlayer?: Record<PlayerId, number[]>;
   /** Identity-free permanent per-location terrain replacement layers with exact source/event provenance. */
   persistentLocationTerrainByPlayer?: Record<PlayerId, Record<string, PersistentLocationTerrainState>>;
   /** Identity-free current-round fixed terrain replacements created by an exact deployment trigger. */

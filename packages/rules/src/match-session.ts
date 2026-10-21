@@ -110,6 +110,7 @@ import { applyBattleScoring } from './core/scoring-resolver';
 import { projectBattleEliminationCandidatePlayerIds } from './core/elimination-resolver';
 import { isWodimeGodLegacyRuntimeStateValid } from './ability/wodime-god-legacy-capability';
 import { isWodimeAtlantisRuntimeStateValid } from './ability/wodime-atlantis-capability';
+import { WODIME_ASTROLOGY_ROUND_OPTIONS, isWodimeAstrologyAscensionSemantic, isWodimeAstrologyRoundSelectionSemantic } from './ability/game-start-skill-provisioning';
 import { canOccupyLocation, getEnabledLocations } from './core/map-engine';
 import { taigaActive } from './ability/taiga-capability';
 import { canViewFaceDownEvents, canViewOpponentDiscard, grantMana, rulerSealMovementLocked } from './core/rule-overrides';
@@ -1103,6 +1104,23 @@ function isRestorePendingInteraction(value: unknown): boolean {
         new Set(value.candidateAbilityIds).size === value.candidateAbilityIds.length &&
         isRestoreInteractionConstraints(value.constraints, ['ability']) && (value.constraints as Record<string, unknown>).min === 1 &&
         (value.constraints as Record<string, unknown>).max === 1;
+    case 'wodime_astrology_rounds_v1':
+      return hasExactRestoreKeys(value, [
+        'kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'controllerId','options','constraints',
+      ]) && typeof value.controllerId === 'string' && isRestoreStringArray(value.options) &&
+        value.options.length === WODIME_ASTROLOGY_ROUND_OPTIONS.length && value.options.every((option, index) => option === WODIME_ASTROLOGY_ROUND_OPTIONS[index]) &&
+        isRestoreInteractionConstraints(value.constraints, ['choice']) && (value.constraints as Record<string, unknown>).min === 2 &&
+        (value.constraints as Record<string, unknown>).max === 2;
+    case 'wodime_astrology_ascension_round_v1':
+      return hasExactRestoreKeys(value, [
+        'kind','template','visibility','cancelPolicy','sourceCardInstanceId','abilityId','createdRevision','continuationRef',
+        'controllerId','triggerEventId','options','constraints',
+      ]) && typeof value.controllerId === 'string' && typeof value.triggerEventId === 'string' &&
+        isRestoreStringArray(value.options) && value.options.length >= 1 && value.options.length <= WODIME_ASTROLOGY_ROUND_OPTIONS.length &&
+        new Set(value.options).size === value.options.length && value.options.every((option) => WODIME_ASTROLOGY_ROUND_OPTIONS.includes(option)) &&
+        isRestoreInteractionConstraints(value.constraints, ['choice']) && (value.constraints as Record<string, unknown>).min === 1 &&
+        (value.constraints as Record<string, unknown>).max === 1;
     default:
       return false;
   }
@@ -1425,6 +1443,11 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
         isRestoreSafeInteger(entry.value, 1) && Number(entry.value) <= 5 && isRestoreStringArray(entry.triggerEventIds) &&
         entry.triggerEventIds.length === Number(entry.value) && new Set(entry.triggerEventIds).size === entry.triggerEventIds.length)))) return false;
   if (value.structuredPlayerFlagsByPlayer !== undefined && !isRestoreStructuredPlayerFlags(value.structuredPlayerFlagsByPlayer)) return false;
+  if (value.wodimeAstrologyRoundsByPlayer !== undefined && (!isRestoreRecord(value.wodimeAstrologyRoundsByPlayer) ||
+      !Object.values(value.wodimeAstrologyRoundsByPlayer).every((rounds) => Array.isArray(rounds) && rounds.length >= 2 && rounds.length <= WODIME_ASTROLOGY_ROUND_OPTIONS.length &&
+        rounds.every((round) => isRestoreSafeInteger(round, 1) && Number(round) <= WODIME_ASTROLOGY_ROUND_OPTIONS.length) &&
+        rounds.every((round, index) => index === 0 || Number(round) > Number(rounds[index - 1])) &&
+        new Set(rounds).size === rounds.length))) return false;
   if (value.wodimeGodLegacyByPlayer !== undefined && (!isRestoreRecord(value.wodimeGodLegacyByPlayer) ||
       Object.values(value.wodimeGodLegacyByPlayer).some((amount) => !isRestoreSafeInteger(amount, 0)))) return false;
   if (value.wodimeGodLegacyByLocation !== undefined && (!isRestoreRecord(value.wodimeGodLegacyByLocation) ||
@@ -1789,6 +1812,25 @@ function isRestoreAbilityRuntimeReferences(
     'normalCommandSealUseRoundByPlayer','rulerCommandSealUseRoundByPlayer','commandSealSpentRoundByPlayer',
   ] as const;
   for (const key of playerKeyedMaps) if (value[key] !== undefined && !restoreRecordKeysBelongTo(value[key], playerIds)) return false;
+  const astrologyRounds = (value.wodimeAstrologyRoundsByPlayer ?? {}) as Record<string, unknown>;
+  for (const [controllerId, rawRounds] of Object.entries(astrologyRounds)) {
+    if (!playerIds.has(controllerId) || !Array.isArray(rawRounds) || rawRounds.length < 2 ||
+        rawRounds.some((round) => !isRestoreSafeInteger(round, 1) || Number(round) > WODIME_ASTROLOGY_ROUND_OPTIONS.length) ||
+        new Set(rawRounds).size !== rawRounds.length) return false;
+    const generated = [...cardsByInstance.values()].filter((card) => card.definitionId === 'master.wodime.skill.s2' &&
+      card.ownerPlayerId === controllerId && card.controllerPlayerId === controllerId);
+    const generatedVisibility = isRestoreRecord(generated[0]?.visibility) ? generated[0]!.visibility : undefined;
+    const generatedZone = generated[0]?.zone;
+    const generatedIsPrivate = generatedVisibility?.scope === 'owner_only' && generatedVisibility?.ownerPlayerId === controllerId;
+    const generatedIsPublic = generatedVisibility?.scope === 'public';
+    if (generated.length !== 1 || !['skill', 'field', 'attack_area'].includes(generatedZone as string) ||
+        (!generatedIsPrivate && !generatedIsPublic) || (generatedZone === 'skill' ? !generatedIsPrivate : !generatedIsPublic) ||
+        typeof generated[0]!.generatedBy !== 'string') return false;
+    const source = cardsByInstance.get(generated[0]!.generatedBy as string);
+    if (!source || source.ownerPlayerId !== controllerId || source.controllerPlayerId !== controllerId || source.zone !== 'skill' ||
+        !restoreSourceHasAcceptedAbilityId(pack, cardsByInstance, eventPlacements, source.instanceId as string, 'wodime.astrology',
+          (ability) => isWodimeAstrologyRoundSelectionSemantic(ability))) return false;
+  }
   if (value.eliminationRescueBattleResolutionRound !== undefined &&
       (!isRestoreSafeInteger(value.eliminationRescueBattleResolutionRound, 1) ||
        value.eliminationRescueBattleResolutionRound !== currentRound)) return false;
