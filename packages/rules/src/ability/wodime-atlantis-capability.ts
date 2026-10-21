@@ -35,16 +35,18 @@ function replacementPlacement(state: GameState, old: GameState['eventPlacements'
   return { ...old, ...canonicalEventPlacementMetadata(eventCardId), locationId: old.locationId, eventCardId, ruleInstanceId, visibility: { scope: 'public', revealReason: 'wodime_atlantis_replacement' } };
 }
 
-function replaceAtLocation(state: GameState, old: GameState['eventPlacements'][number]): AbilityEvent | undefined {
+function replaceAtLocation(
+  state: GameState,
+  old: GameState['eventPlacements'][number],
+  returnConsumedToDeck: boolean,
+): AbilityEvent | undefined {
   const source = sourceCard(state);
   if (!source) return undefined;
   state.eventDeck ??= [];
-  // Return the consumed physical card to the complete deck before drawing.
-  // The deck stores definitions rather than placement identities, so this
-  // preserves duplicate definitions and permits a legitimate same-card draw;
-  // the fresh placement instance below still distinguishes the physical
-  // replacement from the consumed placement.
-  state.eventDeck.push(old.eventCardId);
+  // Non-battlefield Atlantis is washed back before drawing. A battlefield
+  // Atlantis is removed from the game after resolution, so it must stay out
+  // of the deck while the replacement is drawn from the remaining cards.
+  if (returnConsumedToDeck) state.eventDeck.push(old.eventCardId);
   shuffleInPlace(state.eventDeck, state.round.roundNumber + state.eventPlacements.length + runtime(state).revision);
   const replacementId = state.eventDeck.shift() ?? old.eventCardId;
   const replacement = replacementPlacement(state, old, replacementId);
@@ -85,7 +87,7 @@ export function settleWodimeAtlantisEvent(state: GameState, event: AbilityEvent)
     if (index < 0) return [];
     const [removed] = state.eventPlacements.splice(index, 1);
     r.wodimeAtlantisConsumedEventPlacementIds[event.sourceCardId] = true;
-    const replacement = replaceAtLocation(state, removed!);
+    const replacement = replaceAtLocation(state, removed!, true);
     return replacement ? [replacement] : [];
   }
   if (event.type === 'after_battle_ended' && event.battlefieldId) {
@@ -95,7 +97,7 @@ export function settleWodimeAtlantisEvent(state: GameState, event: AbilityEvent)
       state.eventPlacements = state.eventPlacements.filter((entry) => entry.ruleInstanceId !== placement.ruleInstanceId);
       delete r.wodimeAtlantisPendingBattlefieldRemovalIds[placement.ruleInstanceId];
       r.wodimeAtlantisConsumedEventPlacementIds[placement.ruleInstanceId] = true;
-      const replacement = replaceAtLocation(state, placement);
+      const replacement = replaceAtLocation(state, placement, false);
       if (replacement) replacements.push(replacement);
     }
     return replacements;

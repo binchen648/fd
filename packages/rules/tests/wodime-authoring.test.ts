@@ -101,11 +101,11 @@ describe('Wodime frozen authoring archive', () => {
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-close', { type: 'after_battle_ended', battlefieldId: 'shinto' });
     expect(state.eventPlacements).toHaveLength(1);
     expect(state.eventPlacements[0]!.ruleInstanceId).not.toBe(battlefield.ruleInstanceId);
-    // The consumed definition is returned before the draw.  Therefore the
-    // physical definition multiset is conserved even when the replacement is
-    // a legal same-card draw.
+    // Battlefield Atlantis leaves the game; its old definition is not
+    // returned to the deck. The replacement is drawn from the remaining deck.
     expect([...state.eventDeck, state.eventPlacements[0]!.eventCardId].sort()).toEqual(
-      [...deckBeforeFirstReplacement, battlefield.eventCardId].sort());
+      deckBeforeFirstReplacement.sort());
+    expect(state.eventDeck).not.toContain(battlefield.eventCardId);
     const duplicatePlacement = structuredClone(state.eventPlacements[0]);
     state.eventPlacements.push(duplicatePlacement);
     expect(isWodimeAtlantisRuntimeStateValid(state)).toBe(false);
