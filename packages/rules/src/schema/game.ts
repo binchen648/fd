@@ -197,6 +197,7 @@ export interface RuleOverrideState {
   /** Source-bound proof for the exact X=12 instant-victory outcome. */
   abigailSanityLossVictoryByPlayer?: Record<string, {
     sourceCardId: string; abilityId: string; controllerId: string; x: number;
+    distributedCardInstanceIds: string[];
   }>;
 }
 

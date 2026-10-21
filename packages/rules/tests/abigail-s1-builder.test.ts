@@ -32,6 +32,29 @@ function play(state: GameState, cardInstanceId: string) {
   return rules.dispatchAbilityCommand(state, 'p1', { type: 'play_card', cardInstanceId });
 }
 
+function twelveRecordSessionSnapshot() {
+  const session = rules.createMatchSession({ seed: 20261022, humanPlayerId: 'p1' });
+  const state = (session as unknown as { state: GameState }).state;
+  const sourceCardId = 'restore-victory-s1';
+  state.players[0]!.servantCardId = 'servant.abigail';
+  state.cards.push({ instanceId: sourceCardId, definitionId: S1, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'attack_area', visibility: { scope: 'public' } });
+  state.abilityRuntime!.cardState[sourceCardId] = { active: true, faceDown: false, playedRound: 1 };
+  const distributedCardInstanceIds = Array.from({ length: 12 }, (_, index) => `restore-victory-outside-${index}`);
+  for (const cardInstanceId of distributedCardInstanceIds) {
+    state.cards.push({ instanceId: cardInstanceId, definitionId: S4, ownerPlayerId: 'p2', controllerPlayerId: 'p2', zone: 'hand', visibility: { scope: 'owner_only', ownerPlayerId: 'p2' }, generatedBy: S1 });
+  }
+  state.ruleOverrides = {
+    abigailSanityLossByPlayer: {
+      p1: { sourceCardId, abilityId: S1_ACTION, controllerId: 'p1', distributed: distributedCardInstanceIds.map((cardInstanceId) => ({ cardInstanceId, recipientPlayerId: 'p2' })) },
+    },
+    abigailSanityLossVictoryByPlayer: {
+      p1: { sourceCardId, abilityId: S1_WIN, controllerId: 'p1', x: 12, distributedCardInstanceIds: [...distributedCardInstanceIds] },
+    },
+  };
+  state.winnerPlayerIds = ['p1'];
+  return { session, snapshot: session.serializeSession(), distributedCardInstanceIds };
+}
+
 describe('Abigail S1 source-bound X ledger', () => {
   it('deals one canonical Outside-Life to each same-location active opponent atomically', () => {
     const state = setup();
@@ -118,6 +141,29 @@ describe('Abigail S1 source-bound X ledger', () => {
     const forgedCard = forged.state.cards.find((card) => card.instanceId === 'restore-outside-life')!;
     forgedCard.generatedBy = 'forged-source';
     expect(() => restoreMatchSession(forged)).toThrow('Invalid MatchSession state container');
+  });
+
+  it('requires an exact S1 victory proof and stops immediately on an existing winner', () => {
+    const isolated = rules.createMatchSession({ seed: 20261022, humanPlayerId: 'p1' });
+    const isolatedState = (isolated as unknown as { state: GameState }).state;
+    isolatedState.winnerPlayerIds = ['p3'];
+    expect(() => restoreMatchSession(isolated.serializeSession())).toThrow('Invalid MatchSession state container');
+    expect(isolated.runUntilHumanInputOrRoundEnd()).toBe('match_complete');
+
+    const valid = twelveRecordSessionSnapshot();
+    expect(restoreMatchSession(valid.snapshot).getState().winnerPlayerIds).toEqual(['p1']);
+
+    const sourceSwap = structuredClone(valid.snapshot);
+    sourceSwap.state.cards.push({ instanceId: 'restore-victory-other-s1', definitionId: S1, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'attack_area', visibility: { scope: 'public' } });
+    sourceSwap.state.abilityRuntime.cardState['restore-victory-other-s1'] = { active: true, faceDown: false, playedRound: 1 };
+    sourceSwap.state.ruleOverrides!.abigailSanityLossVictoryByPlayer!.p1!.sourceCardId = 'restore-victory-other-s1';
+    expect(() => restoreMatchSession(sourceSwap)).toThrow('Invalid MatchSession state container');
+
+    const recordSwap = structuredClone(valid.snapshot);
+    recordSwap.state.ruleOverrides!.abigailSanityLossVictoryByPlayer!.p1!.distributedCardInstanceIds = [
+      ...valid.distributedCardInstanceIds.slice(0, 11), 'forged-extra-record',
+    ];
+    expect(() => restoreMatchSession(recordSwap)).toThrow('Invalid MatchSession state container');
   });
 
   it('loads the source-bound S1 contract in a live MatchSession executable pack', () => {

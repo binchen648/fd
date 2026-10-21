@@ -34,7 +34,7 @@ The active authoring/provenance record uses the exact printed S1 text, source lo
 
 Final checks were run from this worktree before commit:
 
-- Abigail S1 focused regression: 7/7 pass, including serialize/restore provenance rejection
+- Abigail S1 focused regression: 8/8 pass, including exact victory proof binding, serialize/restore provenance rejection, forged source/record rejection, and pre-existing winner stop handling
 - MatchSession and seven-servant-decks regressions: 32/32 pass
 - Typecheck: pass
 - `content:validate`: pass
@@ -42,3 +42,7 @@ Final checks were run from this worktree before commit:
 - `git diff --check`: pass
 
 Known boundary: this Builder does not claim acceptance of Abigail S1, and it does not alter Abigail S2/S3/S4 or any frozen inventory state. Independent GPT-6 Sol review is required before any Candidate or accounting action.
+
+## Reviewer R1 repair
+
+The follow-up Builder repair makes the S1 winner state fail-closed: `winnerPlayerIds` is accepted only with exactly one matching S1 victory envelope; that envelope must reference the exact source card, owner/controller, win ability, and the exact ordered 12-card ledger record set. Restore rejects isolated winners, source swaps, missing/extra/duplicate records, and cross-player bindings. MatchSession also returns `match_complete` before resetting stop state or entering any interaction when an authoritative winner is already present.

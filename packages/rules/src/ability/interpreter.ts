@@ -1203,11 +1203,15 @@ function executeAbigailS1WinIfX12(s: GameState, ctx: EffectContext, a: Authoring
   work.ruleOverrides ??= {};
   work.ruleOverrides.abigailSanityLossVictoryByPlayer ??= {};
   const existing = work.ruleOverrides.abigailSanityLossVictoryByPlayer[ctx.controllerId];
-  if (existing && (existing.sourceCardId !== ctx.sourceCardId || existing.controllerId !== ctx.controllerId || existing.x !== ABIGAIL_S1_THRESHOLD)) {
+  const distributedCardInstanceIds = ledger.distributed.map((entry) => entry.cardInstanceId);
+  if (existing && (existing.sourceCardId !== ctx.sourceCardId || existing.controllerId !== ctx.controllerId || existing.x !== ABIGAIL_S1_THRESHOLD ||
+      existing.abilityId !== ABIGAIL_S1_WIN_ID || existing.distributedCardInstanceIds.length !== distributedCardInstanceIds.length ||
+      existing.distributedCardInstanceIds.some((id, index) => id !== distributedCardInstanceIds[index]))) {
     reject('resolution_failed', 'Abigail S1 victory envelope changed');
   }
   work.ruleOverrides.abigailSanityLossVictoryByPlayer[ctx.controllerId] = {
     sourceCardId: ctx.sourceCardId, abilityId: ABIGAIL_S1_WIN_ID, controllerId: ctx.controllerId, x,
+    distributedCardInstanceIds,
   };
   runtime(work).events.push({ type: 'abigail_s1_game_victory', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
     abilityId: ctx.abilityId, amount: x, targetPlayerIds: [ctx.controllerId] });

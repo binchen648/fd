@@ -871,7 +871,9 @@ function isRestoreRuleOverrides(value: unknown, playerIds: Set<string>, location
       !Object.values(value.abigailSanityLossVictoryByPlayer).every((entry) => isRestoreRecord(entry) &&
         typeof entry.sourceCardId === 'string' && entry.abilityId === 'servant.abigail.skill.sc-abigail-1.win-at-x12' &&
         typeof entry.controllerId === 'string' && playerIds.has(entry.controllerId) &&
-        isRestoreSafeInteger(entry.x) && entry.x === 12))) return false;
+        isRestoreSafeInteger(entry.x) && entry.x === 12 && isRestoreStringArray(entry.distributedCardInstanceIds) &&
+        new Set(entry.distributedCardInstanceIds).size === entry.distributedCardInstanceIds.length &&
+        entry.distributedCardInstanceIds.length === 12))) return false;
   return true;
 }
 
@@ -1166,15 +1168,26 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
     }
   }
   const abigailVictories = restoredState.ruleOverrides?.abigailSanityLossVictoryByPlayer;
+  const winnerPlayerIds = restoredState.winnerPlayerIds;
+  if ((winnerPlayerIds === undefined) !== (abigailVictories === undefined)) return false;
+  if (winnerPlayerIds !== undefined) {
+    const victoryEntries = Object.entries(abigailVictories ?? {});
+    if (winnerPlayerIds.length !== 1 || new Set(winnerPlayerIds).size !== 1 || victoryEntries.length !== 1 ||
+        victoryEntries[0]![0] !== winnerPlayerIds[0]) return false;
+  }
   if (abigailVictories !== undefined) {
     for (const [playerId, entry] of Object.entries(abigailVictories)) {
       const source = cardsByInstance.get(entry.sourceCardId);
       const sourceDefinition = source && definitions[source.definitionId as string];
       const ledger = restoredState.ruleOverrides?.abigailSanityLossByPlayer?.[playerId];
+      const ledgerIds = ledger?.distributed.map((item) => item.cardInstanceId);
       if (!source || source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId ||
           (!isRestoreRecord(sourceDefinition) || sourceDefinition.id !== 'servant.abigail.skill.sc-abigail-1') || entry.controllerId !== playerId ||
           entry.x !== 12 || !restoredState.winnerPlayerIds?.includes(playerId) ||
-          !ledger || ledger.distributed.length !== 12) return false;
+          !ledger || ledger.sourceCardId !== entry.sourceCardId || ledger.controllerId !== entry.controllerId ||
+          ledger.abilityId !== 'servant.abigail.skill.sc-abigail-1.distribute-outside-life' || ledger.distributed.length !== 12 ||
+          entry.distributedCardInstanceIds.length !== ledgerIds!.length ||
+          entry.distributedCardInstanceIds.some((id, index) => id !== ledgerIds![index])) return false;
     }
   }
   if (!value.effectStack.every((entry) => isRestoreEffectStackItem(entry, playerIds))) return false;
@@ -2003,6 +2016,7 @@ export class MatchSession {
   }
 
   runUntilHumanInputOrRoundEnd(): MatchPauseReason {
+    if ((this.state.winnerPlayerIds?.length ?? 0) > 0) return this.pause('match_complete');
     this.stopReason = undefined;
     for (let guard = 0; guard < 300; guard++) {
       const fingerprint = actionFingerprint(this.state);
