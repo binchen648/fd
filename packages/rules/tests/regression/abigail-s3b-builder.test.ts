@@ -93,6 +93,9 @@ describe('Abigail s3b source-bound second clause', () => {
     const pending = structuredClone(state.abilityRuntime!.pendingDecision!);
     pending.target.scope.zone = 'hand';
     expect(rules.isCanonicalGenericPendingDecisionForRestore(state, pending)).toBe(false);
+    const forgedSelections = structuredClone(state.abilityRuntime!.pendingDecision!);
+    forgedSelections.context.selections.injected = ['nonexistent-card'];
+    expect(rules.isCanonicalGenericPendingDecisionForRestore(state, forgedSelections)).toBe(false);
     const live = state.abilityRuntime!.pendingDecision!;
     state.cards.find((card) => card.instanceId === target)!.zone = 'attack_area';
     const before = JSON.stringify(state);

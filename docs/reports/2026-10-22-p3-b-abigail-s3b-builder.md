@@ -43,12 +43,13 @@ The second-clause runtime is source-specific and fail-closed:
    other-player cards are not moved. Stable event identity makes replay a no-op.
 5. Pending target snapshots and restore validation compare the exact target,
    candidate list, effect suffix, source state, phase, priority, owner/controller,
-   provenance, zone, and visibility contract; stale or forged continuations fail
-   closed without resource or card mutation.
+   provenance, zone, visibility contract, and an empty pre-selection envelope;
+   stale, forged, or injected-selection continuations fail closed without
+   resource or card mutation.
 
 ## Verification
 
-- Abigail focused s3a+s3b regressions: 9/9.
+- Abigail focused s3a+s3b regressions: 9/9 (including forged restore selections).
 - `npm run content:compile`: 8 masters, 8 servants, 20 events, 0 blocking issues.
 - `npm run content:validate`: 8 masters, 8 servants, 20 events, 0 blocking issues.
 - `npm run verify:generated-content`: pass (deterministic generated hashes).
